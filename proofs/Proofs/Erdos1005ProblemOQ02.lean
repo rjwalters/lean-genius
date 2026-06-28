@@ -1388,4 +1388,179 @@ theorem stepPair_cross_one (k a b c d : ℤ) :
         - (stepPair a c [k]).2 * (stepPair b d [k]).1 = a * d - b * c :=
   stepPair_cross [k] a b c d
 
+/-! ## §16: The continuant matrix — Cassini and reversal symmetry
+
+§14's `Continuant` and `secondCont` arose as the controlling coefficients of the
+§9 successor recurrence `tₘ₊₁ = kₘ·tₘ − tₘ₋₁`, equivalently the 2×2 step matrix
+`M(k) = [[k, −1], [1, 0]]` (determinant `1`).  This section makes that matrix
+representation explicit and reads two structural facts off it that the per-rung
+algebra of §11–§13 could only sample:
+
+* **Cassini / determinant invariant.**  Each step matrix has determinant `1`, so
+  the ordered product `P(ks) = M(k₁)·⋯·M(kₙ)` has determinant `1` at every depth.
+  Its top-left and bottom-left entries are exactly `Continuant ks` and
+  `secondCont ks`, giving the continuant Cassini identity
+  `K(ks)·(P ks).d − (P ks).b·secondCont(ks) = 1`.  This is the determinant route
+  the §15 note flagged as the correct replacement for the (false) blanket
+  "continuant positivity" target — the §14 windows' sign structure is governed by
+  a `det = 1` invariant, never by `K ≥ 1`.
+
+* **Reversal symmetry (headline).**  `K(ks.reverse) = K(ks)`.  The step matrix is
+  *not* symmetric, but it satisfies `M(k)ᵀ = J·M(k)·J` with `J = diag(1, −1)`
+  (`J² = I`), so the map `φ(X) = J·Xᵀ·J` fixes every `M(k)` while reversing
+  products (`φ(XY) = φ(Y)·φ(X)`).  Hence `P(ks.reverse) = φ(P ks)`, and the
+  top-left entry of `φ(X)` equals that of `X`, forcing `K(ks.reverse) = K(ks)`.
+  This is the palindrome structure of the run-length windows: a length-`(|ks|+1)`
+  run and its reverse are governed by the *same* continuant. -/
+
+/-- A 2×2 integer matrix `[[a, b], [c, d]]`, used as the step-matrix carrier for
+the §14 continuant.  A bespoke structure (rather than `Matrix (Fin 2) (Fin 2) ℤ`)
+keeps every entry-level proof a one-line `ext`/`ring`. -/
+@[ext] structure Mat2 where
+  a : ℤ
+  b : ℤ
+  c : ℤ
+  d : ℤ
+
+namespace Mat2
+
+/-- Matrix multiplication `[[a,b],[c,d]]·[[a',b'],[c',d']]`. -/
+def mul (X Y : Mat2) : Mat2 :=
+  ⟨X.a * Y.a + X.b * Y.c, X.a * Y.b + X.b * Y.d,
+   X.c * Y.a + X.d * Y.c, X.c * Y.b + X.d * Y.d⟩
+
+/-- The identity matrix. -/
+def one : Mat2 := ⟨1, 0, 0, 1⟩
+
+/-- The transpose `[[a,c],[b,d]]`. -/
+def transpose (X : Mat2) : Mat2 := ⟨X.a, X.c, X.b, X.d⟩
+
+/-- Conjugation by `J = diag(1, −1)`: `J·X·J = [[a,−b],[−c,d]]`. -/
+def conj (X : Mat2) : Mat2 := ⟨X.a, -X.b, -X.c, X.d⟩
+
+/-- The anti-automorphism `φ(X) = J·Xᵀ·J = [[a,−c],[−b,d]]`. -/
+def phi (X : Mat2) : Mat2 := ⟨X.a, -X.c, -X.b, X.d⟩
+
+/-- The determinant `a·d − b·c`. -/
+def det (X : Mat2) : ℤ := X.a * X.d - X.b * X.c
+
+theorem mul_assoc (X Y Z : Mat2) : mul (mul X Y) Z = mul X (mul Y Z) := by
+  ext <;> simp only [mul] <;> ring
+
+theorem one_mul (X : Mat2) : mul one X = X := by
+  ext <;> simp only [mul, one] <;> ring
+
+theorem mul_one (X : Mat2) : mul X one = X := by
+  ext <;> simp only [mul, one] <;> ring
+
+/-- `φ` reverses products: `φ(XY) = φ(Y)·φ(X)`. -/
+theorem phi_mul (X Y : Mat2) : phi (mul X Y) = mul (phi Y) (phi X) := by
+  ext <;> simp only [phi, mul] <;> ring
+
+theorem phi_one : phi one = one := by ext <;> simp [phi, one]
+
+/-- The determinant is multiplicative — the Cassini engine. -/
+theorem det_mul (X Y : Mat2) : det (mul X Y) = det X * det Y := by
+  simp only [det, mul]; ring
+
+theorem det_one : det one = 1 := by simp [det, one]
+
+end Mat2
+
+/-- The §9/§14 step matrix `M(k) = [[k, −1], [1, 0]]`, determinant `1`. -/
+def stepMat (k : ℤ) : Mat2 := ⟨k, -1, 1, 0⟩
+
+theorem det_stepMat (k : ℤ) : Mat2.det (stepMat k) = 1 := by
+  simp [Mat2.det, stepMat]
+
+/-- `φ` fixes every step matrix — the conjugation symmetry `M(k)ᵀ = J·M(k)·J`. -/
+theorem phi_stepMat (k : ℤ) : Mat2.phi (stepMat k) = stepMat k := by
+  simp [Mat2.phi, stepMat]
+
+/-- The ordered product `P(ks) = M(k₁)·⋯·M(kₙ)` of step matrices. -/
+def contMat : List ℤ → Mat2
+  | [] => Mat2.one
+  | k :: ks => Mat2.mul (stepMat k) (contMat ks)
+
+theorem contMat_singleton (k : ℤ) : contMat [k] = stepMat k := by
+  simp [contMat, Mat2.mul_one]
+
+/-- `contMat` is multiplicative on concatenation — the matrix product respects
+list append. -/
+theorem contMat_append (xs ys : List ℤ) :
+    contMat (xs ++ ys) = Mat2.mul (contMat xs) (contMat ys) := by
+  induction xs with
+  | nil => simp [contMat, Mat2.one_mul]
+  | cons k xs ih =>
+    simp only [List.cons_append, contMat, ih, Mat2.mul_assoc]
+
+/-- **Continuant entries.**  The top-left entry of the step-matrix product is the
+§14 `Continuant`, and the bottom-left entry is `secondCont` — the matrix
+representation of the §14 recurrence. -/
+theorem contMat_entries (ks : List ℤ) :
+    (contMat ks).a = Continuant ks ∧ (contMat ks).c = secondCont ks := by
+  induction ks with
+  | nil => exact ⟨rfl, rfl⟩
+  | cons k ks ih =>
+    refine ⟨?_, ?_⟩
+    · simp only [contMat, Mat2.mul, stepMat, ih.1, ih.2, continuant_cons]; ring
+    · simp only [contMat, Mat2.mul, stepMat, ih.1, secondCont]; ring
+
+theorem contMat_a (ks : List ℤ) : (contMat ks).a = Continuant ks :=
+  (contMat_entries ks).1
+
+theorem contMat_c (ks : List ℤ) : (contMat ks).c = secondCont ks :=
+  (contMat_entries ks).2
+
+/-- **The reversal bridge.**  Reversing the quotient list applies `φ` to the
+step-matrix product: `P(ks.reverse) = φ(P ks)`.  Proved by list induction using
+that `φ` reverses products and fixes each step matrix. -/
+theorem contMat_reverse (ks : List ℤ) :
+    contMat ks.reverse = Mat2.phi (contMat ks) := by
+  induction ks with
+  | nil => simp [contMat, Mat2.phi_one]
+  | cons k ks ih =>
+    rw [List.reverse_cons, contMat_append, contMat_singleton, ih,
+      show contMat (k :: ks) = Mat2.mul (stepMat k) (contMat ks) from rfl,
+      Mat2.phi_mul, phi_stepMat]
+
+/-- **Continuant reversal symmetry (headline).**  `K(ks.reverse) = K(ks)`: the
+continuant is invariant under reversing its quotient list.  Reading the top-left
+entry of the reversal bridge `P(ks.reverse) = φ(P ks)`, which `φ` leaves fixed.
+This is the palindrome symmetry of the §14 run-length windows. -/
+theorem continuant_reverse (ks : List ℤ) :
+    Continuant ks.reverse = Continuant ks := by
+  have h := congrArg Mat2.a (contMat_reverse ks)
+  simpa only [contMat_a, Mat2.phi] using h
+
+/-- The reversal symmetry also identifies the top-right entry of the product:
+`(P ks).b = −secondCont(ks.reverse)`.  (The bottom-left entry of `P(ks.reverse)`
+is `secondCont(ks.reverse)`, and the reversal bridge maps it to `−(P ks).b`.) -/
+theorem contMat_b (ks : List ℤ) : (contMat ks).b = - secondCont ks.reverse := by
+  have h := congrArg Mat2.c (contMat_reverse ks)
+  simp only [contMat_c, Mat2.phi] at h
+  linarith [h]
+
+/-- **Determinant invariant.**  `det P(ks) = 1` at every depth — each step matrix
+has determinant `1` and the determinant is multiplicative. -/
+theorem det_contMat (ks : List ℤ) : Mat2.det (contMat ks) = 1 := by
+  induction ks with
+  | nil => simp [contMat, Mat2.det_one]
+  | cons k ks ih => rw [contMat, Mat2.det_mul, det_stepMat, ih]; ring
+
+/-- **Continuant Cassini identity (headline).**  Spelling out `det P(ks) = 1` with
+the continuant entries gives
+`K(ks)·(P ks).d − (P ks).b·secondCont(ks) = 1`,
+and substituting `(P ks).b = −secondCont(ks.reverse)`,
+`K(ks)·(P ks).d + secondCont(ks.reverse)·secondCont(ks) = 1`.
+This is the `det = 1` invariant the §15 note named as the correct replacement for
+the false blanket "continuant positivity" target: the §14 windows are governed by
+a Cassini determinant, not by any sign condition on `K` itself. -/
+theorem continuant_cassini (ks : List ℤ) :
+    Continuant ks * (contMat ks).d
+        + secondCont ks.reverse * secondCont ks = 1 := by
+  have h := det_contMat ks
+  simp only [Mat2.det, contMat_a, contMat_c, contMat_b] at h
+  linear_combination h
+
 end Erdos1005OQ02
