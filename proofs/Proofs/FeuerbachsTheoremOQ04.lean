@@ -259,4 +259,89 @@ theorem externallyTangent_comm (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ)
   unfold ExternallyTangent
   rw [sdist_comm, add_comm]
 
+/-! ## The tangent point of two externally tangent circles
+
+The defining geometric content of tangency is that the two circles actually **meet** — at
+the point on the geodesic joining the centres, at angular distance `ρ₁` from `O₁` (hence
+`ρ₂` from `O₂`).  For externally tangent circles with `0 < ρ₁ + ρ₂ < π` we construct that
+point explicitly by spherical interpolation (`slerp`):
+
+  `P = cos ρ₁ · O₁ + (sin ρ₁ / sin(ρ₁+ρ₂)) · (O₂ − cos(ρ₁+ρ₂) · O₁)`,
+
+and verify it is a model point lying on **both** circles.  The second summand is the unit
+tangent at `O₁` pointing toward `O₂`; the coefficients are exactly the spherical law that
+sends `P` an arc `ρ₁` along the geodesic.  This is the construction-heavy crux underneath
+any tangency conclusion (and ultimately the spherical Feuerbach statement). -/
+
+/-- **Existence of the tangent point (external case).**  Two externally tangent spherical
+circles `(O₁, ρ₁)`, `(O₂, ρ₂)` with `0 < ρ₁ + ρ₂ < π` have a common point — the spherical
+interpolation point at arc `ρ₁` from `O₁` along the geodesic to `O₂`. -/
+theorem externallyTangent_has_common_point {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : ExternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hpos : 0 < ρ₁ + ρ₂) (hlt : ρ₁ + ρ₂ < Real.pi) :
+    ∃ P : E, P ∈ sCircle O₁ ρ₁ ∧ P ∈ sCircle O₂ ρ₂ := by
+  set c : ℝ := ⟪O₁, O₂⟫ with hc_def
+  set s : ℝ := Real.sin (ρ₁ + ρ₂) with hs_def
+  -- unit-vector self-inner products
+  have hO₁O₁ : (⟪O₁, O₁⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, h₁]; norm_num
+  have hO₂O₂ : (⟪O₂, O₂⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, h₂]; norm_num
+  -- cos / sin of the centre distance
+  have hcos : Real.cos (ρ₁ + ρ₂) = c := by
+    have h := cos_sdist O₁ O₂ h₁ h₂
+    rw [htan] at h
+    rw [h]; rfl
+  have hspos : 0 < s := Real.sin_pos_of_pos_of_lt_pi hpos hlt
+  have hsne : s ≠ 0 := ne_of_gt hspos
+  have hs2 : s ^ 2 = 1 - c ^ 2 := by
+    have h := Real.sin_sq_add_cos_sq (ρ₁ + ρ₂)
+    rw [hcos] at h; linarith
+  -- the spherical interpolation point
+  set P : E := Real.cos ρ₁ • O₁ + (Real.sin ρ₁ / s) • (O₂ - c • O₁) with hP_def
+  -- the inner product commutes (folded to c)
+  have hc21 : (⟪O₂, O₁⟫ : ℝ) = c := (real_inner_comm O₂ O₁).symm
+  -- orthogonality and norm of the tangent vector W = O₂ - c • O₁
+  have hW1 : (⟪O₁, O₂ - c • O₁⟫ : ℝ) = 0 := by
+    rw [inner_sub_right, real_inner_smul_right, hO₁O₁]; ring
+  have hW1' : (⟪O₂ - c • O₁, O₁⟫ : ℝ) = 0 := by
+    rw [real_inner_comm]; exact hW1
+  have hWW : (⟪O₂ - c • O₁, O₂ - c • O₁⟫ : ℝ) = s ^ 2 := by
+    simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, real_inner_smul_right,
+      hc21, hO₁O₁, hO₂O₂]
+    rw [hs2]; ring
+  -- P is a model point
+  have hPP : (⟪P, P⟫ : ℝ) = 1 := by
+    have e : (⟪P, P⟫ : ℝ)
+        = Real.cos ρ₁ ^ 2 * ⟪O₁, O₁⟫
+          + 2 * (Real.cos ρ₁ * (Real.sin ρ₁ / s)) * ⟪O₁, O₂ - c • O₁⟫
+          + (Real.sin ρ₁ / s) ^ 2 * ⟪O₂ - c • O₁, O₂ - c • O₁⟫ := by
+      rw [hP_def]
+      simp only [inner_add_left, inner_add_right, real_inner_smul_left, real_inner_smul_right,
+        real_inner_comm (O₂ - c • O₁) O₁]
+      ring
+    rw [e, hO₁O₁, hW1, hWW]
+    have hss : (Real.sin ρ₁ / s) ^ 2 * s ^ 2 = Real.sin ρ₁ ^ 2 := by field_simp
+    linear_combination hss + Real.sin_sq_add_cos_sq ρ₁
+  have hP_sphere : OnSphere P := by
+    have hsq : ‖P‖ ^ 2 = 1 := by rw [← real_inner_self_eq_norm_sq]; exact hPP
+    have hfac : (‖P‖ - 1) * (‖P‖ + 1) = 0 := by nlinarith [hsq]
+    rcases mul_eq_zero.mp hfac with h | h
+    · show ‖P‖ = 1; linarith
+    · exact absurd h (by have := norm_nonneg P; positivity)
+  -- P lies on the first circle
+  have hPO₁ : scos P O₁ = Real.cos ρ₁ := by
+    rw [scos, hP_def, inner_add_left, real_inner_smul_left, real_inner_smul_left,
+      hO₁O₁, hW1']; ring
+  -- P lies on the second circle (spherical angle-subtraction)
+  have hPO₂ : scos P O₂ = Real.cos ρ₂ := by
+    have hsimp : Real.sin ρ₁ / s * s ^ 2 = Real.sin ρ₁ * s := by field_simp
+    rw [scos, hP_def, inner_add_left, real_inner_smul_left, real_inner_smul_left,
+      inner_sub_left, real_inner_smul_left, hO₂O₂,
+      show (1 : ℝ) - c * c = s ^ 2 from by linear_combination -hs2, hsimp,
+      show Real.cos ρ₂
+          = Real.cos (ρ₁ + ρ₂) * Real.cos ρ₁ + Real.sin (ρ₁ + ρ₂) * Real.sin ρ₁
+        from by rw [← Real.cos_sub]; congr 1; ring, hcos, ← hs_def]
+    ring
+  exact ⟨P, ⟨hP_sphere, hPO₁⟩, ⟨hP_sphere, hPO₂⟩⟩
+
 end FeuerbachsTheoremOQ04
