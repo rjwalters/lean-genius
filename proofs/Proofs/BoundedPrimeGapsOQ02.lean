@@ -476,6 +476,28 @@ theorem EHAtLevel_discrepancySum_up_arith (f : ℕ → ℝ → ℝ) {θ₀ δ : 
   refine EHAtLevel_discrepancySum_up_chain f hmono hlow' (fun k A hA => ?_)
   simpa only [Nat.cast_succ] using hband k A hA
 
+/-- **Target-level ascent (equipartition wrapper).**  The packaged form of
+`EHAtLevel_discrepancySum_up_arith` that reaches a *prescribed* target level `θ ≥ θ₀` in a
+chosen number `n ≥ 1` of equal blocks.  It fixes the step `δ := (θ - θ₀)/n` internally and
+discharges the algebra `θ₀ + n·δ = θ`, so the caller only supplies the base EH bound at `θ₀`
+together with an EH-type bound on each of the `n` equal sub-bands
+`θ₀ + k·δ → θ₀ + (k+1)·δ`, and obtains EH at the exact endpoint `θ` (not at the cosmetic
+`θ₀ + n·δ`).  This is the directly usable equipartition form of the dyadic ascent. -/
+theorem EHAtLevel_discrepancySum_up_target (f : ℕ → ℝ → ℝ) {θ₀ θ : ℝ} {n : ℕ}
+    (hn : 0 < n) (hθ : θ₀ ≤ θ)
+    (hlow : EHAtLevel (discrepancySum f) θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (θ₀ + k * ((θ - θ₀) / n)) (θ₀ + (k + 1) * ((θ - θ₀) / n)) x
+          ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel (discrepancySum f) θ := by
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  set δ := (θ - θ₀) / n with hδdef
+  have hδ : 0 ≤ δ := by
+    rw [hδdef]; exact div_nonneg (by linarith) (by positivity)
+  have key := EHAtLevel_discrepancySum_up_arith f hδ hlow hband n
+  have heq : θ₀ + (n : ℝ) * δ = θ := by rw [hδdef]; field_simp; ring
+  rwa [heq] at key
+
 /-! ## Grounding the hierarchy in the genuine von-Mangoldt discrepancy
 
 Everything above treats the per-modulus weight `f` abstractly, requiring only
@@ -619,5 +641,21 @@ theorem EHAtLevel_vonMangoldt_up_arith {θ₀ δ : ℝ} (hδ : 0 ≤ δ)
           ≤ C * x / (Real.log x) ^ A) :
     ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (θ₀ + n * δ) :=
   EHAtLevel_discrepancySum_up_arith vonMangoldtWeight hδ hlow hband
+
+/-- **Target-level ascent for the genuine sum.**  The von-Mangoldt specialization of
+`EHAtLevel_discrepancySum_up_target`: from the genuine EH bound at base `θ₀` together with a
+bound on the real worst-case von-Mangoldt discrepancy of each of `n` equal modulus blocks
+`θ₀ + k·δ → θ₀ + (k+1)·δ` (`δ = (θ - θ₀)/n`), the genuine level of distribution reaches the
+*exact* prescribed target `θ ≥ θ₀`.  This is the directly usable equipartition form of the
+dyadic attack on Elliott–Halberstam — the caller names the endpoint `θ` and the block count
+`n`, and the `θ₀ + n·δ = θ` algebra is discharged internally. -/
+theorem EHAtLevel_vonMangoldt_up_target {θ₀ θ : ℝ} {n : ℕ}
+    (hn : 0 < n) (hθ : θ₀ ≤ θ)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (θ₀ + k * ((θ - θ₀) / n))
+            (θ₀ + (k + 1) * ((θ - θ₀) / n)) x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel vonMangoldtDiscrepancySum θ :=
+  EHAtLevel_discrepancySum_up_target vonMangoldtWeight hn hθ hlow hband
 
 end BoundedPrimeGapsOQ02
