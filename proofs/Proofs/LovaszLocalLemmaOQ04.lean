@@ -202,6 +202,26 @@ theorem variable_lll_symmetric (vars : Fin n → Finset V) (k D : ℕ)
     (sharedDep_maxDegree vars k D hk hD) hprob
 
 -- ═══════════════════════════════════════════════════════════════════
+-- PART V': SHARPNESS OF THE DEGREE BOUND
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- A concrete witness that the degree bound `k·(D-1)` of `sharedDep_maxDegree`
+    is attained, hence cannot be improved in general.  Here `k = 2`, `D = 3`:
+    event `0` uses both variables `{0,1}`; variable `0` is also used by events
+    `1,2` and variable `1` by events `3,4`.  Every event uses ≤ 2 variables and
+    every variable is used by ≤ 3 events, yet event `0` has exactly
+    `2·(3-1) = 4` neighbours. -/
+def tightVars : Fin 5 → Finset (Fin 2) := ![{0, 1}, {0}, {0}, {1}, {1}]
+
+/-- **Sharpness of `sharedDep_maxDegree`.** With `tightVars` (k = 2 variables per
+    event, D = 3 events per variable) the central event has degree exactly
+    `k·(D-1) = 4`, so the bound `sharedDep_maxDegree` is tight. -/
+theorem sharedDep_maxDegree_tight :
+    (∀ i, (tightVars i).card ≤ 2) ∧
+    (∀ v, (occ tightVars v).card ≤ 3) ∧
+    (sharedDep tightVars 0).card = 2 * (3 - 1) := by decide
+
+-- ═══════════════════════════════════════════════════════════════════
 -- PART V: THE ASYMMETRIC LLL BEATS THE UNION BOUND
 -- ═══════════════════════════════════════════════════════════════════
 
