@@ -1,0 +1,114 @@
+{
+  "slug": "abundant-number-oq-02-oq-01",
+  "title": "Smallest Odd Abundant Number Not Divisible by 3 (bounded divisibility-by-3)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "5391411025 = 5^2 \\cdot 7 \\cdot 11 \\cdot 13 \\cdot 17 \\cdot 19 \\cdot 23 \\cdot 29",
+    "plain": "An *abundant* number $n$ satisfies $\\sigma(n) > 2n$, where $\\sigma$ is the sum-of-divisors",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-27T15:29:18-07:00",
+    "iteration": 2,
+    "focus": "Verified the witness half and proved a structural reduction of the minimality half (>=7 distinct prime factors) via the Euler abundancy bound.",
+    "blockers": [],
+    "nextAction": "Formalize the extremal/monotonicity step: product over k distinct primes >=5 of p/(p-1) is maximised by the k smallest, closing >=7 prime factors unconditionally.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: witness half VERIFIED (0-axiom); minimality reduced structurally to a finite primorial inequality, giving >=7 distinct prime factors (no 5.4e9 enumeration).",
+    "builtItems": [
+      "geomSum_mul_pred_lt (per-prime-power Euler bound) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "sigma_mul_prod_sub_one_lt (Euler abundancy bound, N form) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "abundant_imp_two_mul_prod_sub_one_lt (abundance => primorial inequality) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "six_primes_below_two / seven_primes_above_two (numeric boundary anchors) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "Fixed two norm_num gaps in the witness file Proofs/AbundantNumberOQ02OQ01.lean (sigma_N, abundant_N) which previously left sorryAx; now 0-axiom."
+    ],
+    "insights": [
+      "Euler abundancy bound holds purely over N: for n>1, sigma(n)*prod_{p|n}(p-1) < n*prod_{p|n} p. Proved multiplicatively from (sum_{i<=a} p^i)*(p-1)=p^{a+1}-1 (Mathlib geom_sum_mul_add, valid in any semiring). No native_decide.",
+      "Abundance reduces to a primorial inequality independent of the size of n: n abundant => 2*prod_{p|n}(p-1) < prod_{p|n} p. This eliminates any need to enumerate the ~5.4e9 range claimed unavoidable in the witness file header.",
+      "For odd n coprime to 3 all prime factors are >=5; the six smallest such primes give prod p/(p-1) = 1.949 < 2 and seven give 2.038 > 2, so the smallest odd abundant number coprime to 3 must have >=7 distinct prime factors (witness 5391411025 has exactly 8)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize: for a finite set S of distinct primes all >=5, prod_{p in S} p/(p-1) is maximised by taking the |S| smallest such primes (uses monotonicity of p/(p-1) and p_i >= i-th smallest prime >=5, the latter by decide on prime-counting below small thresholds).",
+      "Combine with abundant_imp_two_mul_prod_sub_one_lt to get unconditional: odd abundant n coprime to 3 => n.primeFactors.card >= 7.",
+      "Consider submitting the extremal step to Aristotle as a HARD sorry if the Finset extremal argument proves tedious."
+    ],
+    "markdown": "# Knowledge Base: abundant-number-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "decidability",
+    "divisor-functions"
+  ],
+  "relatedProofs": [
+    "abundant-number-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-27T22:46:40.721Z",
+  "lastUpdate": "2026-06-27T23:45:00-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbundantNumberOQ01.lean",
+      "filename": "AbundantNumberOQ01.lean",
+      "lineCount": 40,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ01.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02.lean",
+      "filename": "AbundantNumberOQ02.lean",
+      "lineCount": 116,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01.lean",
+      "filename": "AbundantNumberOQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01Minimality.lean",
+      "filename": "AbundantNumberOQ02OQ01Minimality.lean",
+      "lineCount": 145,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Minimality.lean"
+    }
+  ]
+}
