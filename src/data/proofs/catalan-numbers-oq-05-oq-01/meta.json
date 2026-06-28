@@ -106,5 +106,27 @@
       "Does the full Catalan triangle B(2n,k) = C(2n,n+k) − C(2n,n+k+1) admit a uniform Lean treatment, with each row entry counting the constrained lattice paths?",
       "Can the reflected sums of several ballot numbers be packaged to recover convolution identities for the Catalan numbers?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "catalan-numbers-oq-05",
+      "relationship": "extends",
+      "description": "Parent entry: works with the Catalan numbers via Mathlib's division formula catalan n = C(2n,n)/(n+1). This entry answers its open question by giving the division-free ballot-number difference form C(2n,n) − C(2n,n+1)."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "The ballot problem and André's reflection principle supply the combinatorial meaning of the binomial differences proved here as ballot numbers (the base case being the Catalan / Dyck-path count)."
+    },
+    {
+      "targetId": "catalan-numbers-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Companion Catalan-number arithmetic in the gallery; shares the central-binomial-coefficient toolkit (succ_mul_catalan_eq_centralBinom, centralBinom) used to derive this difference identity."
+    },
+    {
+      "targetId": "combinations-formula-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Another Pascal's-triangle binomial-identity entry (the Fibonacci shallow-diagonal sum); both read a named integer sequence off a structured combination of binomial coefficients."
+    }
+  ]
 }
