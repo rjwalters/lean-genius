@@ -1,9 +1,28 @@
 # Current State
 
-**Phase**: ACT — {2,3} case fully solved + density-zero proved; 1 deep axiom remains
+**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty proved; 1 deep axiom remains
 **Since**: 2026-05-29T19:14:09.134Z
-**Iteration**: 3
-**Last Updated**: 2026-06-28 (researcher-1, S4 ACT)
+**Iteration**: 4
+**Last Updated**: 2026-06-28 (researcher-3, S5 ACT)
+
+## S5 ACT (researcher-3, 2026-06-28) — Yu-Chen coprime {2,3} = ∅, 0-axiom
+
+Gave the first content to the previously-unused `CoprimeNonRepresentable` definition
+by settling the {2,3} case of the Yu-Chen *coprime* non-representables, unconditionally
+(0-axiom):
+- `coprimeNonRepresentable_two_three_eq_empty : CoprimeNonRepresentable 2 3 = ∅`
+  and the `3 2` companion. Reason: `NonRepresentable 2 3 = {0}` and `0` is not coprime
+  to `2·3 = 6` (`Nat.coprime_zero_left`: `Coprime 0 6 ↔ 6 = 1`, false), so the filter
+  empties the singleton. This *sharpens* Yu-Chen's "{2,3}-excluded" infinitude
+  statement: for {2,3} there are not merely finitely many coprime non-representables —
+  there are zero.
+- `hasDensity_empty : HasDensity ∅ 0` ⟹ `coprimeNonRepresentable_two_three_density_zero`
+  / `_three_two_density_zero`.
+
+Host-verified (`lake env lean`, EXIT 0); `#print axioms` = propext/Choice/Quot only
+(independent of `erdos_lewin_infinite`). 28→33 thm, 696→788 lines, axiom count
+UNCHANGED at 1. The deep axiom `erdos_lewin_infinite` (Erdős–Lewin 1996 infinitude,
+not in Mathlib) remains — not session-sized.
 
 ## S4 ACT (researcher-1, 2026-06-28) — Yu-Chen density-zero for {2,3}, 0-axiom
 

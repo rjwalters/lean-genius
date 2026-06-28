@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "The {2,3} case is fully solved 0-axiom (representability + NonRepresentable={0}). Iter 2 proved the EASY Erdos-Lewin direction unconditionally, weakening the axiom to the deep hard direction only (erdos_lewin_infinite). Iter 3 (S4): proved the {2,3} Yu-Chen density-zero instance 0-axiom (HasDensity (NonRepresentable 2 3) 0). Iter 4 (researcher-10): proved the unconditional EXISTENCE shadow of the deep infinitude axiom 0-axiom — every coprime pair {p,q}!={2,3} has at least one POSITIVE non-representable number (exists_positive_nonRepresentable_of_ne_two_three), with universal witnesses 2 (q>=3) and 3 (q=2). Residual assumption unchanged: the single deep axiom erdos_lewin_infinite (existence=>infinitude jump, not in Mathlib).",
+    "progressSummary": "The {2,3} case is fully solved 0-axiom (representability + NonRepresentable={0}). Iter 2 proved the EASY Erdos-Lewin direction unconditionally, weakening the axiom to the deep hard direction only (erdos_lewin_infinite). Iter 3 (S4): proved the {2,3} Yu-Chen density-zero instance 0-axiom (HasDensity (NonRepresentable 2 3) 0). Iter 4 (researcher-10): proved the unconditional EXISTENCE shadow of the deep infinitude axiom 0-axiom — every coprime pair {p,q}!={2,3} has at least one POSITIVE non-representable number (exists_positive_nonRepresentable_of_ne_two_three), with universal witnesses 2 (q>=3) and 3 (q=2). Iter 4 (S5, researcher-3): settled the {2,3} Yu-Chen COPRIME case 0-axiom — CoprimeNonRepresentable {2,3} = empty (the only non-representable 0 is not coprime to 6), with density-zero corollaries via hasDensity_empty; first content for the previously-unused CoprimeNonRepresentable def. Residual assumption unchanged: the single deep axiom erdos_lewin_infinite (existence=>infinitude jump, not in Mathlib).",
     "builtItems": [
       "exists_positive_nonRepresentable_of_ne_two_three (iter 4, 0-axiom): for coprime p>q>=2 with {p,q}!={2,3}, EXISTS n>=1 with n in NonRepresentable p q. Case split: q=2 (then p>=4) uses witness 3; q>=3 uses witness 2. Unconditional existence half of erdos_lewin_infinite.",
       "two_nonRepresentable_of_three_le (iter 4, 0-axiom): if p,q>=3 then 2 is non-representable. Every summand <=2 is a power form hence =1 (isPowerForm_eq_one_of_le_two); a distinct-element Finset of 1s sums to <=1.",
@@ -46,7 +46,9 @@
       "finite_nonRepresentable_of_two_three (0-axiom): the easy direction {2,3} => Finite, now proved not assumed (returns the singleton {0}).",
       "erdos_lewin_theorem (now a THEOREM): full iff, backward from finite_nonRepresentable_of_two_three, forward from the weaker axiom erdos_lewin_infinite.",
       "hasDensity_singleton_zero (0-axiom): a single point has natural density 0 (count=1, ratio 1/n -> 0).",
-      "nonRepresentable_two_three_density_zero / _three_two_density_zero (0-axiom): the {2,3} non-representable set {0} has density zero — the sharpest Yu-Chen density-zero instance, giving content to the previously def-only HasDensity scaffolding."
+      "nonRepresentable_two_three_density_zero / _three_two_density_zero (0-axiom): the {2,3} non-representable set {0} has density zero — the sharpest Yu-Chen density-zero instance, giving content to the previously def-only HasDensity scaffolding.",
+      "coprimeNonRepresentable_two_three_eq_empty / _three_two_eq_empty (iter 4/S5, 0-axiom): the {2,3} Yu-Chen COPRIME non-representable set is EMPTY — NonRepresentable 2 3 = {0} and 0 is not coprime to 2*3=6 (Nat.coprime_zero_left: Coprime 0 6 iff 6=1, false). Sharpens Yu-Chen's '{2,3}-excluded' coprime infinitude: zero coprime non-representables, not merely finitely many. First content for the previously-unused CoprimeNonRepresentable def.",
+      "hasDensity_empty (0-axiom): the empty set has natural density 0 (numerator always 0) — feeds coprimeNonRepresentable_two_three_density_zero / _three_two_density_zero."
     ],
     "insights": [
       "The deep infinitude axiom has an elementary EXISTENCE shadow: every non-{2,3} coprime pair has a SMALL universal non-representable witness — 2 when q>=3, 3 when q=2. The witness is forced purely by which power forms lie below it: below 2 only 1 exists (both bases>=3), below 3 only {1,2} (q=2, p>=4), and neither lets an antichain hit the target. The (3,2) pair is exactly the exception because there 3=3^1 IS a power form.",
@@ -65,7 +67,8 @@
     ],
     "nextSteps": [
       "Attempt the deep direction erdos_lewin_infinite (or a concrete special case, e.g. a single (p,q)) to reduce/eliminate the last axiom — genuinely hard (Erdos-Lewin 1996, not in Mathlib).",
-      "Optionally prove a HasDensity statement for CoprimeNonRepresentable {2,3}, or remove the still-unused minSummandBound / CoprimeNonRepresentable scaffolding."
+      "CoprimeNonRepresentable {2,3} is now settled (= empty, S5). Remaining scaffolding gap: minSummandBound is still unused (no theorem exercises it) — give it content (a bound for the {2,3} case) or remove it.",
+      "Yu-Chen coprime INFINITUDE for non-{2,3} pairs (q>3, or q=3 p!=5, or q=2 p not in {3,5,9}) — a deeper companion to erdos_lewin_infinite, also not in Mathlib."
     ]
   },
   "tags": [
@@ -93,8 +96,8 @@
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 523,
-      "theoremCount": 20,
+      "lineCount": 788,
+      "theoremCount": 33,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,

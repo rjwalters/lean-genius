@@ -618,6 +618,66 @@ There are infinitely many coprime non-representable numbers for most (p,q):
 def CoprimeNonRepresentable (p q : ℕ) : Set ℕ :=
   {n ∈ NonRepresentable p q | Nat.Coprime n (p * q)}
 
+/-- The empty set has natural density `0`: the counting numerator is always `0`,
+so the ratio is `0` for every `n ≥ 1`. (Helper for the `{2,3}` coprime
+density-zero instances below.) -/
+theorem hasDensity_empty : HasDensity (∅ : Set ℕ) 0 := by
+  intro ε hε
+  refine ⟨1, fun n _ => ?_⟩
+  simp only [Set.mem_empty_iff_false, Finset.filter_false, Finset.card_empty,
+    Nat.cast_zero, zero_div, sub_zero, abs_zero]
+  exact hε
+
+/-- **The `{2,3}` coprime non-representables are empty (unconditional, 0-axiom).**
+
+`CoprimeNonRepresentable` is the Yu-Chen object whose infinitude is asserted "for
+most `(p,q)`" — explicitly excluding `{2,3}`. This theorem makes that exclusion
+*sharp* for `{2,3}`: there are not merely finitely many coprime non-representables,
+there are **none**. Indeed `NonRepresentable 2 3 = {0}` and `0` is not coprime to
+`2·3 = 6` (`gcd 0 6 = 6 ≠ 1`), so the only non-representable is filtered out. This
+gives the first content to the previously-unused `CoprimeNonRepresentable`
+definition. -/
+theorem coprimeNonRepresentable_two_three_eq_empty :
+    CoprimeNonRepresentable 2 3 = ∅ := by
+  rw [CoprimeNonRepresentable, nonRepresentable_two_three]
+  ext n
+  constructor
+  · rintro ⟨hn, hcop⟩
+    rw [Set.mem_singleton_iff] at hn
+    subst hn
+    rw [Nat.coprime_zero_left] at hcop
+    norm_num at hcop
+  · intro h; exact absurd h (Set.notMem_empty n)
+
+/-- **The `{3,2}` coprime non-representables are empty (unconditional, 0-axiom).**
+Same statement for the reversed base pair (`NonRepresentable 3 2 = {0}`, and `0` is
+not coprime to `3·2 = 6`). -/
+theorem coprimeNonRepresentable_three_two_eq_empty :
+    CoprimeNonRepresentable 3 2 = ∅ := by
+  rw [CoprimeNonRepresentable, nonRepresentable_three_two]
+  ext n
+  constructor
+  · rintro ⟨hn, hcop⟩
+    rw [Set.mem_singleton_iff] at hn
+    subst hn
+    rw [Nat.coprime_zero_left] at hcop
+    norm_num at hcop
+  · intro h; exact absurd h (Set.notMem_empty n)
+
+/-- **Yu-Chen coprime density zero, `{2,3}` case (unconditional, 0-axiom).** Since the
+`{2,3}` coprime non-representable set is empty, it has natural density `0` — the
+degenerate extreme of the Yu-Chen coprime-density phenomenon, complementing the
+infinitude that holds for the non-`{2,3}` pairs. -/
+theorem coprimeNonRepresentable_two_three_density_zero :
+    HasDensity (CoprimeNonRepresentable 2 3) 0 := by
+  rw [coprimeNonRepresentable_two_three_eq_empty]; exact hasDensity_empty
+
+/-- **Yu-Chen coprime density zero, `{3,2}` case (unconditional, 0-axiom).** Reversed
+base pair; the coprime non-representable set is again empty. -/
+theorem coprimeNonRepresentable_three_two_density_zero :
+    HasDensity (CoprimeNonRepresentable 3 2) 0 := by
+  rw [coprimeNonRepresentable_three_two_eq_empty]; exact hasDensity_empty
+
 /-
 ## Part V: Minimum Summand Size
 -/
