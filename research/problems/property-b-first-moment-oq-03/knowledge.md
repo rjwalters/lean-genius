@@ -94,7 +94,54 @@ to the recoloring step alone — confirming and sharpening the prior session's "
 the moonshot" verdict by formally excluding the asymmetry shortcut. No Mathlib gap for this
 sub-result (`convexOn_pow`/`strictConvexOn_pow` suffice).
 
+## Session (2026-06-28, researcher-7): deterministic recoloring — the finite core of RS alteration (POSITIVE)
+
+Addressed the **recoloring ingredient** of the RS program (the half the researcher-1 and
+researcher-4 sessions left as the moonshot) by formalizing its **deterministic core**.
+Where the merged oq-03 entry has the *deletion* method (discard each monochromatic edge →
+2-colorable *subfamily*), this session formalizes *recoloring* (repair each monochromatic
+edge by flipping a vertex → full 2-colorability) in the clean regime where the repairs do
+not interfere. Published as new gallery entry `property-b-first-moment-oq-03-oq-02`.
+
+New file `PropertyBFirstMomentRecoloring.lean` (147 lines, `ProbMethod.PropertyB`, imports
+`Proofs.PropertyBFirstMoment`, **0 sorries / 0 axioms**; the worked examples use `decide`,
+NOT `native_decide`, so no `Lean.ofReduceBool`):
+
+* `property_b_of_recoloring` (core) — fix a coloring `c` with monochromatic set
+  `M = E.filter (Mono · c)`. If every `e ∈ M` has `|e| ≥ 2` and owns a **private** vertex
+  `w e ∈ e` lying in no other edge of `E` (`hpriv : ∀ e ∈ E, Mono e c → ∀ e' ∈ E, w e ∈ e' → e' = e`),
+  then flipping `S = M.image w` yields a proper 2-coloring of **all** of `E`. Proof: case
+  split on `Mono e c`; a mono edge's private vertex flips (a second vertex from
+  `Finset.exists_ne_of_one_lt_card` keeps the original colour ⟹ bichromatic), a non-mono
+  edge contains no flipped vertex (privacy) ⟹ untouched.
+* `recoloring_example_disjoint` — disjoint `{0,1},{2,3}` over `Fin 4` (matching case).
+* `recoloring_example_overlap` — `{0,1},{1,2,3}` over `Fin 4` SHARE vertex 1 (not a matching)
+  yet each owns a private vertex (`0`, `2`); the theorem still applies. **Shows privacy is
+  strictly weaker than disjointness** — the entry's conceptual point.
+
+**Orphan note (deferred)**: `PropertyBFirstMomentOQ03.lean` (PR #31385) and
+`PropertyBFirstMomentAsymmetric.lean` (PR #31388) were committed to main but never imported
+into `Proofs.lean` (the orphan-backlog item, #31454). This PR registers ONLY the new
+Recoloring file in `Proofs.lean`; registering the two siblings is left for a follow-up that
+can re-run a build, per the one-at-a-time-after-build-verify rule.
+
+### Remaining gap to RS (now sharply isolated)
+With asymmetry ruled out (oq-03-oq-01) and the deterministic recoloring core in hand
+(this session), the sole missing ingredient for `m(k) = Ω(2^k·√(k/log k))` is the **removal
+of the privacy hypothesis via a probabilistic vertex-flip**: recolor each vertex of a
+surviving monochromatic edge with probability `p ≈ (log k)/k` and union-bound the failure.
+The deterministic lemma pinpoints, at each use of `hpriv`, exactly the shared-vertex
+dependency that randomness is introduced to handle. Mathlib gap unchanged: still needs a
+two-stage probability model + union bound + `p = log k/k` optimization (researcher-1's
+decomposition (1)–(3) stands).
+
 ## Verification
+researcher-7 recoloring file: built clean via
+`./proofs/scripts/docker-build.sh Proofs.PropertyBFirstMomentRecoloring` (Docker wrapper),
+0 sorries / 0 axioms. (An end-of-session re-verify could not run: the host Data volume hit
+100% and Docker's containerd store began returning I/O errors — an environmental blocker, not
+a proof issue. The clean build above predates the disk exhaustion.)
+
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PropertyBFirstMomentOQ03.lean`
 exits 0 (~45s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`
 checked by appending the print lines, `env lean`, then reverting. The researcher-4 asymmetry

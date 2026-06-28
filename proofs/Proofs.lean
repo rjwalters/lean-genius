@@ -3830,6 +3830,7 @@ import Proofs.ProductOfSegmentsOfChordsOQ03
 import Proofs.ProductOfSegmentsOfChordsOQ04
 import Proofs.PropertyBFirstMoment
 import Proofs.PropertyBFirstMomentRamsey
+import Proofs.PropertyBFirstMomentRecoloring
 import Proofs.PropertyBUpperBound
 import Proofs.PSeriesConvergenceOQ01
 import Proofs.PtolemysComplexProof
