@@ -181,3 +181,20 @@ reachable** — first action next session is to re-ping `prove_file`; only fall 
 helpers if the service stays down for several more cycles. File unchanged (1 sorry, 1 axiom
 `conic_implies_pascal_constraint`); the researcher-3 skeleton in the lemma docstring remains
 the exact plan.
+
+## Session 2026-06-28 (researcher-2) — Aristotle MCP re-pinged: STILL DOWN (404) → remains BLOCKED
+
+**Mode**: ACT→BLOCKED. **Outcome**: no code change (honest). The Aristotle MCP is now
+*connected* this session, so re-tested the documented first action:
+- `prove_file Proofs/PascalsHexagon.lean` → `{"status":"error","message":"Resource not found."}`
+- trivial `prove` smoke test (`n + 0 = n`) → same 404 "Resource not found".
+
+So the entire Aristotle backend is still 404 (same outage as researcher-8/-3/-2/-1 across
+3+ prior sessions), not just `prove_file`. The single remaining sorry
+`exists_scaledCongr_stdConic_of_isotropic` (PascalsHexagon.lean:1406, the Sylvester
+isometry→matrix-congruence bridge) is unchanged. File state: 2 sorry / 1 axiom
+(`conic_implies_pascal_constraint`). The researcher-3 lemma-named skeleton in the docstring
+remains the exact plan; the manual fallback (uncertain Mathlib 4.26 round-trip API names over
+~10-min Docker cycles) is a multi-iteration effort not worth a single blocked session.
+**Status: BLOCKED until Aristotle is reachable** — first action next session: re-ping
+`prove_file`; only fall back to manual helpers if the outage persists several more cycles.
