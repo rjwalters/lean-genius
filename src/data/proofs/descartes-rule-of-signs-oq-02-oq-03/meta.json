@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "definition",
+      "title": "Complex Roots via Base Change",
+      "startLine": 27,
+      "endLine": 32,
+      "summary": "complexRoots p := (p.map (algebraMap ℝ ℂ)).roots — the multiplicity-counted root multiset of the real polynomial reinterpreted over the algebraically closed ℂ.",
+      "mathContext": "Reinterpreting p over ℂ, where it splits and has deg p roots."
+    },
+    {
       "id": "membership",
       "title": "Conjugate of a Root Is a Root",
       "startLine": 33,

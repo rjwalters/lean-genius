@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-complexroots-def",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "Complex Roots of a Real Polynomial",
+    "content": "complexRoots p is defined as (p.map (algebraMap ℝ ℂ)).roots — the root multiset, with multiplicity, of the polynomial obtained by reinterpreting p's real coefficients as complex numbers. This base-change p ↦ p.map (algebraMap ℝ ℂ) is the formal device that lets a real polynomial be studied over the algebraically closed field ℂ, where the Fundamental Theorem of Algebra guarantees it splits into linear factors and the root multiset has full cardinality deg p. The definition is noncomputable because Mathlib's roots is defined via classical existence of the factorization, not an algorithm. Everything downstream — conjugation-invariance, equal multiplicity, the {z, z̄} pairing — is phrased in terms of this single multiset.",
+    "mathContext": "$\\mathrm{complexRoots}(p) = \\mathrm{roots}\\big(p^{\\mathbb{C}}\\big)$ where $p^{\\mathbb{C}} = p.\\mathrm{map}(\\mathbb{R}\\hookrightarrow\\mathbb{C})$, a multiset of size $\\deg p$ over $\\mathbb{C}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["base change of polynomials", "root multiset with multiplicity", "algebraMap ℝ ℂ", "algebraically closed field"],
+    "prerequisites": ["polynomial coefficient extension along a ring map", "Polynomial.roots as a Multiset", "ℂ is algebraically closed"]
+  },
+  {
     "id": "ann-aeval-conj",
     "proofId": "descartes-rule-of-signs-oq-02-oq-03",
     "range": {
@@ -13,6 +28,21 @@
     "significance": "key",
     "relatedConcepts": ["complex conjugation", "real polynomials", "Polynomial.aeval_conj", "ring homomorphism fixing reals"],
     "prerequisites": ["complex conjugation as a ring automorphism", "polynomial evaluation aeval", "conjugation fixes ℝ"]
+  },
+  {
+    "id": "ann-map-conj-real",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 41,
+      "endLine": 47
+    },
+    "type": "technique",
+    "title": "Conjugation Fixes the Base-Changed Polynomial",
+    "content": "map_conj_real is the bridge between the pointwise fact (z̄ is a root iff z is) and the global multiset statement (the root multiset is conjugation-invariant). It shows that applying conjugation coefficient-wise to p.map (algebraMap ℝ ℂ) returns the same polynomial. The proof composes the two coefficient maps via Polynomial.map_map, reducing the goal to a ring-homomorphism equality (RingHom.ext), then checks it on each real coefficient r with Complex.conj_ofReal: conj(↑r) = ↑r since real numbers are conjugation-fixed. This is the precise place where the hypothesis 'p has real coefficients' enters — for a genuinely complex polynomial conjugation would change the coefficients and the multiset symmetry would fail.",
+    "mathContext": "$\\overline{p^{\\mathbb{C}}} = p^{\\mathbb{C}}$, because $\\mathrm{conj}\\circ(\\mathbb{R}\\hookrightarrow\\mathbb{C}) = (\\mathbb{R}\\hookrightarrow\\mathbb{C})$ as ring homomorphisms ($\\overline{r} = r$ for $r\\in\\mathbb{R}$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.map_map", "RingHom.ext", "Complex.conj_ofReal", "real coefficients fixed by conjugation"],
+    "prerequisites": ["functoriality of polynomial coefficient maps", "ring homomorphism extensionality", "conjugation fixes ℝ ⊂ ℂ"]
   },
   {
     "id": "ann-invariance",
