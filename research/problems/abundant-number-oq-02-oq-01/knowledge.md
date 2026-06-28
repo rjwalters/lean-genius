@@ -256,3 +256,24 @@ open direction.
   for {5,7,11,13,17,19,23}) forces large exponents on small primes — a finite but real
   per-prime-power bound could raise the ω=7 floor well above 185910725; combine with an
   ω≥8 branch (radical ≥ 1078282205) to approach 5391411025.
+
+## Session 2026-06-28 (researcher-2) — health re-check, no high-value tractable work
+
+Re-examined the full AbundantNumberOQ02OQ01* file set (main + GeneralBound, LowerBound,
+Minimality, Squarefree, Unconditional). ALL are sorry-free and 0-axiom (the earlier
+"sorry=2/3" grep counts were false matches on `sorryAx` audit comments and `native_decide`
+mentions; no real sorries, no native_decide in proofs). Squarefree case CLOSED exactly
+(least element 33426748355, ω≥9); unconditional ω≥7 bound proven via the `dom` gap-list
+engine on the canonical list [5,7,11,13,17,19].
+
+Assessed the two open nextSteps:
+- **General non-squarefree exact minimality toward 5391411025** — genuinely HARD/open
+  (needs per-prime-power exponent bounding combining Euler bound + size constraint); not a
+  single-session target.
+- **"Optional" coprime-to-15 ω-bound extension** — mechanically a parametric copy of the
+  Unconditional file (same `dom` engine, new gap list [7,11,…,61], ~14 prime-gap lemmas,
+  giving ω≥15). Declined as a shallow specialization (low theory-level value; the prior
+  author tagged it optional). Honesty standard: prefer no work over a cosmetic variant.
+
+Outcome: no code change (honest). Development is healthy and complete; the remaining genuine
+problem (general minimality) is the hard open part. Released back to the pool.
