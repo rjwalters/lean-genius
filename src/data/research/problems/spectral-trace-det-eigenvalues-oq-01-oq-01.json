@@ -25,13 +25,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-24T08:00:00.000Z",
-    "iteration": 2,
-    "focus": "Shipped verified entry: determinant power identity in full generality + 2×2 trace power sum (Newton). General trace power sum reduced to the multiset spectral mapping, blocked on missing Mathlib infra.",
+    "since": "2026-06-28T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Shipped verified entry: determinant power identity in full generality + 2×2 trace power sum (Newton) + the multiset spectral mapping for diagonal, upper-triangular, AND every matrix similar to an upper-triangular one (similarity transfer). General trace power sum now blocked on exactly one explicit hypothesis: matrix-level Schur triangularisation.",
     "blockers": [
-      "General trace power sum tr(Aᵏ)=Σλᵢᵏ needs (A^k).charpoly.roots = A.charpoly.roots.map(·^k) — the full multiset spectral mapping. Mathlib v4.26.0 snapshot has no Schur triangulation over a general algebraically closed field and no Newton-identity bridge from charpoly coefficients to root power sums."
+      "General trace power sum tr(Aᵏ)=Σλᵢᵏ for ARBITRARY matrices needs A = U T U⁻¹ with T upper-triangular (Schur). All else is done: trace_pow_eq_sum_pow_eigenvalues_of_triangularizable proves the identity GIVEN that hypothesis. Mathlib v4.26.0 snapshot has no Schur triangulation at the matrix level over a general algebraically closed field (only Module.End genEigenspace decomposition)."
     ],
-    "nextAction": "Build Schur triangulation (matrix conjugate to upper-triangular with eigenvalues on the diagonal over IsAlgClosed) OR a multiset Newton-identities bridge, to lift the trace power sum to all n.",
+    "nextAction": "Discharge the lone triangularizability hypothesis: build matrix-level Schur triangularisation over IsAlgClosed K (∃ unit U, A = U T U⁻¹, T BlockTriangular id), e.g. by bridging Module.End.iSup_maxGenEigenspace_eq_top to a matrix basis. Then trace_pow_eq_sum_pow_eigenvalues_of_triangularizable closes the general case immediately.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: general trace power sum tr(Aᵏ)=Σλᵢᵏ now VERIFIED in every dimension for diagonal AND upper-triangular matrices (PR #31184, 13 new 0-axiom theorems). Open problem reduced (trace_pow_of_eigenvalues_pow) to the single classical Mathlib gap: matrix-level Schur triangularisation over an alg-closed field.",
+    "progressSummary": "PROGRESS: general trace power sum tr(Aᵏ)=Σλᵢᵏ now VERIFIED in every dimension for diagonal, upper-triangular, AND every matrix SIMILAR to an upper-triangular one (PR #31184, 18 new 0-axiom theorems). Similarity transfer (units_conj_pow + eigenvalues_units_conj) reduces the open problem to a SINGLE explicit machine-checked hypothesis — trace_pow_eq_sum_pow_eigenvalues_of_triangularizable — namely matrix-level Schur triangularisation over an alg-closed field.",
     "builtItems": [
       "det_pow_eq_prod_pow_eigenvalues: det(Aᵏ) = Π(λᵢᵏ) over IsAlgClosed K, all n and k — from Matrix.det_pow + det_eq_prod_roots_charpoly + Multiset.prod_hom (SpectralTraceDetEigenvaluesOQ01OQ01.lean)",
       "prod_map_pow_eigenvalues: Π(λᵢᵏ) = (Πλᵢ)ᵏ via powMonoidHom and Multiset.prod_hom",
@@ -52,7 +52,11 @@
       "charpoly_blockTriangular + charmatrix_blockTriangular: charpoly of triangular = ∏(X−C diag)",
       "blockTriangular_pow_diag + blockTriangular_mul_diag + blockTriangular_pow: (Mᵏ)ᵢᵢ=(Mᵢᵢ)ᵏ for triangular M",
       "eigenvalues_pow_diagonal + trace_pow_eq_sum_pow_eigenvalues_diagonal: spectral mapping + power sum for diagonal matrices, all n,k",
-      "trace_pow_of_eigenvalues_pow + trace_pow_eq_sum_pow_eigenvalues_blockTriangular + prod_X_sub_C_roots: reduction lemma + triangular trace power sum + roots-of-product helper"
+      "trace_pow_of_eigenvalues_pow + trace_pow_eq_sum_pow_eigenvalues_blockTriangular + prod_X_sub_C_roots: reduction lemma + triangular trace power sum + roots-of-product helper",
+      "units_conj_pow: (U A U⁻¹)ᵏ = U Aᵏ U⁻¹ over any field, induction with the off-diagonal U⁻¹U factors telescoping (SpectralTraceDetEigenvaluesOQ01OQ01.lean)",
+      "eigenvalues_units_conj: eigenvalues(U A U⁻¹) = eigenvalues A from Mathlib Matrix.charpoly_units_conj (similarity invariance of the eigenvalue multiset)",
+      "eigenvalues_pow_of_units_conj_blockTriangular + trace_pow_eq_sum_pow_eigenvalues_of_units_conj_blockTriangular: spectral mapping + trace power sum for any A = U T U⁻¹ with T upper-triangular, all k",
+      "trace_pow_eq_sum_pow_eigenvalues_of_triangularizable: CAPSTONE — tr(Aᵏ)=Σλᵢᵏ over IsAlgClosed K under the single hypothesis ∃ U T, A = U T U⁻¹ ∧ T.BlockTriangular id (exactly the Schur conclusion); reduces the remaining gap from prose to one machine-checked hypothesis"
     ],
     "insights": [
       "The determinant half of the eigenvalue power sum is FREE: det(Aᵏ)=(det A)ᵏ by multiplicativity (Matrix.det_pow), so det(Aᵏ)=Π(λᵢᵏ) needs no triangularisation and holds for all n, k. The trace half is the genuinely spectral content.",
@@ -62,7 +66,9 @@
       "The general trace power sum tr(Aᵏ)=Σλᵢᵏ is EXACTLY the multiset spectral mapping eigenvalues(Aᵏ)=(eigenvalues A).map(·^k); trace_pow_of_eigenvalues_pow makes this a one-line reduction (rw into trace_eq_sum_roots_charpoly).",
       "The triangular case needs NO algebraic closure for the multiset identity itself: charpoly of an upper-triangular M is ∏(X−C(M i i)) (charmatrix preserves BlockTriangular id + det_of_upperTriangular), and (Mᵏ)ᵢᵢ=(Mᵢᵢ)ᵏ by induction (blockTriangular_mul_diag isolates the j=i term). Mapping diagonals under (·^k) gives the spectral mapping over any field.",
       "Diagonal case is fully elementary via charpoly_diagonal + diagonal_pow + roots_multiset_prod_X_sub_C; holds in every dimension.",
-      "The ONLY remaining gap to arbitrary matrices is matrix-level Schur triangularisation over an alg-closed field — confirmed absent in Mathlib v4.26.0 (only Module.End genEigenspace decomposition Module.End.iSup_maxGenEigenspace_eq_top and RCLike Matrix.schur_triangulation exist; no charpoly-similarity-invariance-to-triangular bridge, no multiset Newton identities — MvPolynomial.NewtonIdentities is σ-variable only)."
+      "The ONLY remaining gap to arbitrary matrices is matrix-level Schur triangularisation over an alg-closed field — confirmed absent in Mathlib v4.26.0 (only Module.End genEigenspace decomposition Module.End.iSup_maxGenEigenspace_eq_top exists; no charpoly-similarity-invariance-to-triangular bridge, no multiset Newton identities — MvPolynomial.NewtonIdentities is σ-variable only).",
+      "SIMILARITY TRANSFER closes the gap from the triangular core to the general case CONDITIONALLY: the eigenvalue multiset is a similarity invariant (Matrix.charpoly_units_conj ⟹ eigenvalues_units_conj) and conjugation commutes with powers ((U A U⁻¹)ᵏ = U Aᵏ U⁻¹, proven by induction as units_conj_pow). So eigenvalues((U T U⁻¹)ᵏ) = eigenvalues(U Tᵏ U⁻¹) = eigenvalues(Tᵏ) = (eigenvalues T).map(·^k) = (eigenvalues(U T U⁻¹)).map(·^k). The general statement now needs ONLY the existence of the triangularising U — stated as the explicit hypothesis of trace_pow_eq_sum_pow_eigenvalues_of_triangularizable.",
+      "Matrix.charpoly_units_conj ((↑U * N * ↑U⁻¹).charpoly = N.charpoly) is the key Mathlib lever for similarity-invariance; it is proven via charpoly_mul_comm and lives in Mathlib.LinearAlgebra.Matrix.Charpoly.Basic."
     ],
     "mathlibGaps": [
       "No matrix Schur triangulation over a general algebraically closed field: no lemma giving ∃ invertible P, P⁻¹AP is BlockTriangular id with the charpoly roots on the diagonal (only GramSchmidt block-triangularisation for RCLike inner-product spaces, and Module.End-level genEigenspace decomposition that is awkward to bridge to the matrix charpoly multiset).",
@@ -105,7 +111,7 @@
     ]
   },
   "started": "2026-06-24T07:25:28.998Z",
-  "lastUpdate": "2026-06-24T08:00:00.000Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
@@ -123,11 +129,11 @@
     {
       "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
       "filename": "SpectralTraceDetEigenvaluesOQ01OQ01.lean",
-      "lineCount": 156,
-      "theoremCount": 10,
+      "lineCount": 354,
+      "theoremCount": 28,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
     },
