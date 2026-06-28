@@ -73,6 +73,19 @@ upper bound.
   The positive-slope affine group is thus the symmetry group of the `B_h` upper bound,
   letting one normalise a `B_h` set by an affine change of variable before counting.
 
+* `IsBh.card_forbidden_poly` — **the forbidden-value count**.  At most
+  `2·h·(|A|+1)^{2h-1}` small values `m` break the `B_h` property when inserted (an
+  explicit degree-`(2h-1)` polynomial in `|A|`), via `card_sym_le_pow` / `card_pool_le`.
+
+* `IsBh.exists_insert_le` / `exists_isBh_subset_Icc` / `exists_isBh_subset_Icc_card` —
+  **the end-to-end greedy lower bound inside `{1, …, N}`**.  Feeding the forbidden count
+  into a counting argument, a `B_h` set with `|A| + 2·h·(|A|+1)^{2h-1} < N` admits a
+  fresh element of `{1, …, N}` (`exists_insert_le`); iterating from `∅` builds a `B_h`
+  subset of `{1, …, N}` of cardinality `k` whenever `k + 2·h·k^{2h-1} ≤ N`
+  (`exists_isBh_subset_Icc_card`).  This is the combinatorial half of the
+  `|A| = Ω(N^{1/(2h-1)})` greedy rate; only the real-power inversion of the count
+  condition remains open.
+
 ## Mathematical note
 
 The bound is *sharp in order*: Singer difference sets give `B_2` sets of size
@@ -1018,5 +1031,116 @@ theorem IsBh.card_forbidden_poly {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA :
     _ = 2 * (h' + 1) * (A.card + 1) ^ (2 * (h' + 1) - 1) := by
         rw [mul_assoc (2 * (h' + 1)), ← pow_add,
           show h' + (h' + 1) = 2 * (h' + 1) - 1 from by omega]
+
+/-! ## Part 9: The end-to-end greedy lower bound inside `{1, …, N}`
+
+Parts 5–8 reduced the open `B_h` lower bound to a *counting* statement:
+`card_forbidden_poly` shows that at most `2·h·(|A|+1)^{2h-1}` small values are
+forbidden.  This part runs the greedy algorithm to completion **inside the interval**
+`{1, …, N}`, with no remaining counting.  A `B_h` set whose size and forbidden count
+together stay below `N` admits a fresh element of `{1, …, N}` (`exists_insert_le`), and
+iterating from `∅` builds a `B_h` subset of `{1, …, N}` of any cardinality `k` for which
+the count condition holds (`exists_isBh_subset_Icc` / `exists_isBh_subset_Icc_card`).
+
+The only piece left genuinely open is the *real-power arithmetic* converting the count
+condition `k + 2·h·k^{2h-1} ≤ N` into an explicit rate `k ≥ c·N^{1/(2h-1)}`; the
+combinatorial greedy iteration itself is now complete and verified. -/
+
+/-- **One greedy step inside `{1, …, N}`.**  If `A` is a `B_h` set (`h ≥ 1`) and the sum
+of `|A|` with the forbidden-value bound `2·h·(|A|+1)^{2h-1}` is still below `N`, then
+there is a fresh element `m ∈ {1, …, N}` (so `1 ≤ m ≤ N` and `m ∉ A`) whose insertion
+keeps `A` a `B_h` set.
+
+*Proof.*  Call `m ∈ {1, …, N}` *bad* if `m ∈ A` or `insert m A` is not `B_h`.  The bad
+values number at most `|A|` (those in `A`) plus the forbidden ones; every forbidden value
+is `≤ h·max A` (by `insert_of_large`, any larger `m` is automatically fine), so the
+forbidden values among `{1, …, N}` inject into those counted by `card_forbidden_poly`,
+giving `≤ 2·h·(|A|+1)^{2h-1}`.  Hence fewer than `N` of the `N` values in `{1, …, N}` are
+bad, so a good one remains. ∎ -/
+theorem IsBh.exists_insert_le {h N : ℕ} {A : Finset ℕ}
+    (hh : 1 ≤ h) (hA : IsBh h A)
+    (hN : A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) < N) :
+    ∃ m, 1 ≤ m ∧ m ≤ N ∧ m ∉ A ∧ IsBh h (insert m A) := by
+  classical
+  -- The set of "bad" values in `{1, …, N}`.
+  set Bad : Finset ℕ :=
+    (Finset.Icc 1 N).filter (fun m => m ∈ A ∨ ¬ IsBh h (insert m A)) with hBad
+  -- Bound its cardinality by `|A|` plus the forbidden count.
+  have hBadcard : Bad.card ≤ A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) := by
+    have hsplit :
+        Bad = (Finset.Icc 1 N).filter (fun m => m ∈ A)
+            ∪ (Finset.Icc 1 N).filter (fun m => ¬ IsBh h (insert m A)) := by
+      rw [hBad, Finset.filter_or]
+    rw [hsplit]
+    refine (Finset.card_union_le _ _).trans ?_
+    have hAcount : ((Finset.Icc 1 N).filter (fun m => m ∈ A)).card ≤ A.card := by
+      apply Finset.card_le_card
+      intro x hx
+      exact (Finset.mem_filter.mp hx).2
+    have hForb :
+        ((Finset.Icc 1 N).filter (fun m => ¬ IsBh h (insert m A))).card
+          ≤ 2 * h * (A.card + 1) ^ (2 * h - 1) := by
+      refine le_trans (Finset.card_le_card ?_) (hA.card_forbidden_poly hh)
+      intro m hm
+      rw [Finset.mem_filter] at hm ⊢
+      refine ⟨Finset.mem_range.mpr ?_, hm.2⟩
+      by_contra hlt
+      push_neg at hlt          -- `h * A.sup id + 1 ≤ m`
+      exact hm.2 (hA.insert_of_large (by omega))
+    omega
+  -- `{1, …, N}` has `N` elements, strictly more than `Bad`, so a good value remains.
+  have hIcc : (Finset.Icc 1 N).card = N := by rw [Nat.card_Icc]; omega
+  have hexists : ∃ m ∈ Finset.Icc 1 N, m ∉ Bad := by
+    by_contra hcon
+    push_neg at hcon
+    have hss : Finset.Icc 1 N ⊆ Bad := fun x hx => hcon x hx
+    have hle := Finset.card_le_card hss
+    omega
+  obtain ⟨m, hmIcc, hmnBad⟩ := hexists
+  have hpred : ¬ (m ∈ A ∨ ¬ IsBh h (insert m A)) := fun hp =>
+    hmnBad (by rw [hBad]; exact Finset.mem_filter.mpr ⟨hmIcc, hp⟩)
+  push_neg at hpred
+  rw [Finset.mem_Icc] at hmIcc
+  exact ⟨m, hmIcc.1, hmIcc.2, hpred.1, hpred.2⟩
+
+/-- **The greedy `B_h` set inside `{1, …, N}`.**  For every target cardinality `k` such
+that the count condition `j + 2·h·(j+1)^{2h-1} < N` holds at each intermediate size
+`j < k`, there is a `B_h` subset of `{1, …, N}` with exactly `k` elements.  This is the
+end-to-end greedy lower bound — the existence of a large `B_h` set inside an interval,
+obtained by iterating `exists_insert_le` from `∅`. -/
+theorem exists_isBh_subset_Icc {h : ℕ} (hh : 1 ≤ h) (N : ℕ) :
+    ∀ k, (∀ j, j < k → j + 2 * h * (j + 1) ^ (2 * h - 1) < N) →
+      ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  intro k
+  induction k with
+  | zero =>
+      intro _
+      exact ⟨∅, Finset.empty_subset _, isBh_empty, Finset.card_empty⟩
+  | succ k ih =>
+      intro hcond
+      obtain ⟨A, hsub, hbh, hcard⟩ := ih (fun j hj => hcond j (by omega))
+      obtain ⟨m, hm1, hmN, hmA, hins⟩ :=
+        hbh.exists_insert_le hh (by rw [hcard]; exact hcond k (by omega))
+      refine ⟨insert m A, ?_, hins, ?_⟩
+      · intro x hx
+        rw [Finset.mem_insert] at hx
+        rcases hx with rfl | hx
+        · exact Finset.mem_Icc.mpr ⟨hm1, hmN⟩
+        · exact hsub hx
+      · rw [Finset.card_insert_of_notMem hmA, hcard]
+
+/-- **Greedy lower bound, closed-form sufficient condition.**  If `k + 2·h·k^{2h-1} ≤ N`
+then `{1, …, N}` contains a `B_h` set of cardinality `k`: the greedy algorithm reaches
+size `k` whenever the degree-`(2h-1)` polynomial budget fits inside `N`.  This is the
+combinatorial half of the `B_h` greedy lower bound `|A| = Ω(N^{1/(2h-1)})`; only the
+real-power inversion of `k + 2·h·k^{2h-1} ≤ N` into `k ≥ c·N^{1/(2h-1)}` remains open. -/
+theorem exists_isBh_subset_Icc_card {h k N : ℕ} (hh : 1 ≤ h)
+    (hkN : k + 2 * h * k ^ (2 * h - 1) ≤ N) :
+    ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  refine exists_isBh_subset_Icc hh N k (fun j hj => ?_)
+  have hmono : 2 * h * (j + 1) ^ (2 * h - 1) ≤ 2 * h * k ^ (2 * h - 1) := by
+    gcongr
+    omega
+  omega
 
 end Erdos340Bh

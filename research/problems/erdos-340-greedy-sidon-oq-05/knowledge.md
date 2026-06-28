@@ -410,3 +410,62 @@ card_pool_le` = `[propext, Classical.choice, Quot.sound]` (0-axiom). 923 → 102
   iterate "forbidden count `< N` ⟹ a small extension exists" inside `{1,…,N}`, then the
   real-power inequality `2h(k+1)^{2h−1} < N` ⟹ `k ≥ (N/(2h))^{1/(2h−1)} − 1`. Only
   remaining open piece; no further counting needed.
+
+### Session 2026-06-27 (researcher-2) — end-to-end greedy lower bound inside {1,…,N}
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+Closed the long-standing "end-to-end greedy iteration" next-step (Part 9, 3 new theorems).
+Turns the abstract forbidden-count polynomial `card_forbidden_poly` into an actual greedy
+**existence** statement: a large `B_h` set lives inside the interval `{1,…,N}`.
+
+#### What I Did
+- `IsBh.exists_insert_le` (`h≥1`): if `|A| + 2h(|A|+1)^{2h-1} < N` then there is a fresh
+  `m ∈ {1,…,N}` (`1 ≤ m ≤ N`, `m ∉ A`) with `insert m A` still `B_h`. Proof: the *bad*
+  values in `{1,…,N}` (`m∈A` or insertion breaks `B_h`) split as `filter_or` into the
+  `A`-part (`≤ |A|`) and the forbidden part; the forbidden part injects into the
+  `card_forbidden_poly` count because any `m > h·max A` is automatically insertable
+  (`insert_of_large`), so only `m ≤ h·max A` can be forbidden. Hence `|Bad| < N = |Icc 1 N|`,
+  so a good value survives.
+- `exists_isBh_subset_Icc` (`h≥1`): induction on target size `k` — if the per-step count
+  condition `j + 2h(j+1)^{2h-1} < N` holds for every `j<k`, then `{1,…,N}` has a `B_h`
+  subset of size exactly `k`. Base `∅`; step applies `exists_insert_le` to the size-`k`
+  set from the IH.
+- `exists_isBh_subset_Icc_card` (`h≥1`): clean closed-form consumer — `k + 2h·k^{2h-1} ≤ N`
+  ⟹ a `B_h` subset of `{1,…,N}` of size `k` exists. Derives the per-step `∀ j<k` condition
+  from the single bound via `gcongr` (pow monotonicity `(j+1)^{2h-1} ≤ k^{2h-1}`) + `omega`.
+
+#### Why it matters
+This is the **combinatorial half** of the `B_h` greedy lower bound `|A| = Ω(N^{1/(2h-1)})`,
+now a verified existence theorem. The ONLY remaining open piece is the real-power inversion
+of `k + 2h·k^{2h-1} ≤ N` into an explicit `k ≥ c·N^{1/(2h-1)}` — pure analysis, no more
+combinatorics. The whole Parts 5–9 arc (forbidden structure → orientation bound → sharp
+count → explicit polynomial → greedy iteration) is now closed end-to-end.
+
+#### Key Findings / gotchas
+- `Finset.card_sdiff` in this Mathlib (v4.26.0) is NOT the subset-hypothesis form
+  `(h:s⊆t)→(t\s).card = t.card - s.card`; it resolved to the unconditional
+  `#(s\t) = #s - #(s∩t)`. Avoided it entirely: proved a good value exists by
+  contradiction — if every `m ∈ Icc 1 N` were bad then `Icc 1 N ⊆ Bad`, so
+  `card_le_card` gives `N ≤ |Bad|`, contradicting `|Bad| < N` (`omega`).
+- `Nat.card_Icc 1 N` leaves the goal `N + 1 - 1 = N`; close with `omega` (not `rfl`).
+- The existence goal `∃ m, …` needs the witness `m` as the FIRST tuple component:
+  `⟨m, hm1, hmN, hmA, hins⟩`, not `⟨hm1, …⟩` (an easy off-by-one in the anonymous ctor).
+- `Finset.filter_or` splits `filter (p ∨ q)` into `filter p ∪ filter q`; `card_union_le`
+  + `card_le_card` then bound each part. `omega` abstracts the nonlinear
+  `2*h*(…)^(2h-1)` product as a consistent atom across the hypotheses.
+- The per-step → closed-form reduction: `gcongr` proves
+  `2h(j+1)^{2h-1} ≤ 2h·k^{2h-1}` leaving the base goal `j+1 ≤ k` (closed by `omega`).
+
+#### Verification
+Docker host down (`docker info` unavailable). Verified via host `v4.26.0`
+`lake env lean`: built the imported `Proofs.Erdos340GreedySidon` olean, then
+`lake env lean Proofs/Erdos340GreedySidonOQ05.lean` → exit 0, no warnings.
+`#print axioms IsBh.exists_insert_le / exists_isBh_subset_Icc / exists_isBh_subset_Icc_card`
+= `[propext, Classical.choice, Quot.sound]` (0-axiom). 1022 → 1146 lines, 34 → 37 theorems.
+
+#### Next Steps
+- Real-power closure: convert `k + 2h·k^{2h-1} ≤ N` into an explicit `Ω(N^{1/(2h-1)})`
+  rate (the last open piece, pure analysis).
+- Optional `h=2` specialization recovering an explicit `|A| ≥ c√N` Sidon lower bound
+  inside `{1,…,N}`, bridging to the parent `greedySidonSeq`.
