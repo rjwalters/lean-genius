@@ -220,6 +220,47 @@ theorem card_mul_le_second_moment (s : Finset ℕ) (g : ℕ → ℤ)
         Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
           (fun i hi _ => hg i hi)
 
+/-- **Subset sums are injective on the powerset (0 axioms).**  The integer subset-sum
+map `T ↦ ∑_{i∈T} i` is injective on `A.powerset` exactly when `A` has distinct subset
+sums.  This is the definitional content of `hasDistinctSubsetSums` transported to `ℤ`
+(via `Nat.cast_sum`), packaged as a `Set.InjOn` for use with `Finset.card_image_of_injOn`. -/
+theorem subsetSum_injOn_of_distinct {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A) :
+    Set.InjOn (fun T : Finset ℕ => ∑ i ∈ T, (i : ℤ)) (A.powerset : Set (Finset ℕ)) := by
+  intro S hS T hT h
+  rw [Finset.mem_coe, Finset.mem_powerset] at hS hT
+  refine hDSS S T hS hT ?_
+  have e : ∀ U : Finset ℕ, ((U.sum id : ℕ) : ℤ) = ∑ i ∈ U, (i : ℤ) := by
+    intro U; simpa using (Nat.cast_sum U id)
+  have heq : ((S.sum id : ℕ) : ℤ) = ((T.sum id : ℕ) : ℤ) := by rw [e, e]; exact h
+  exact_mod_cast heq
+
+/-- **The doubled deviations are injective on the powerset (0 axioms).**  Since
+`T ↦ 2·(∑_{i∈T} i) − S` is an affine reparametrisation of the subset-sum map, it too is
+injective on `A.powerset` for a distinct-subset-sums set.  These are the integer points
+whose second moment is `2^{|A|}·Q` (`second_moment_identity`). -/
+theorem doubledDrop_injOn_of_distinct {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A) :
+    Set.InjOn (fun T : Finset ℕ => 2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ A, (i : ℤ))
+      (A.powerset : Set (Finset ℕ)) := by
+  intro S hS T hT h
+  refine subsetSum_injOn_of_distinct hDSS hS hT ?_
+  show (∑ i ∈ S, (i : ℤ)) = ∑ i ∈ T, (i : ℤ)
+  have h' : 2 * (∑ i ∈ S, (i : ℤ)) - ∑ i ∈ A, (i : ℤ)
+      = 2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ A, (i : ℤ) := h
+  omega
+
+/-- **The `2^{|A|}` doubled deviations are `2^{|A|}` distinct integers (0 axioms).**
+For a distinct-subset-sums set `A`, the image of `A.powerset` under
+`T ↦ 2·(∑_{i∈T} i) − S` has exactly `2^{|A|}` elements.  This is the precise
+"`2ⁿ` distinct integers" input to the central-interval count that recovers the sharp
+constant `3` in `anticoncentration_bound`. -/
+theorem card_doubledDrop_image_of_distinct {A : Finset ℕ}
+    (hDSS : hasDistinctSubsetSums A) :
+    (A.powerset.image
+      (fun T : Finset ℕ => 2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ A, (i : ℤ))).card
+        = 2 ^ A.card := by
+  rw [Finset.card_image_of_injOn (doubledDrop_injOn_of_distinct hDSS),
+    Finset.card_powerset]
+
 /-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
     elements with distinct subset sums, then:
       2ⁿ ≤ 3·√n·N + 2,    equivalently    N ≥ (2ⁿ − 2) / (3·√n).
