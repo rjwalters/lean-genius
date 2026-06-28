@@ -1216,6 +1216,73 @@ private lemma projTransform_valid_of_det_ne_zero {M : Matrix (Fin 3) (Fin 3) ℝ
   rw [Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h0
   exact (smul_eq_zero.mp h0).resolve_left hM
 
+/-- **Quadratic form under a projective transform = matrix congruence.**
+    `conicQuadraticForm S (M *ᵥ p) = conicQuadraticForm (Mᵀ * S * M) p`.
+    This is the algebraic identity `(Mp)ᵀ S (Mp) = pᵀ (Mᵀ S M) p`. -/
+private lemma conicQF_projTransform (S M : Conic) (p : ProjPoint) :
+    conicQuadraticForm S (projTransform M p) = conicQuadraticForm (Mᵀ * S * M) p := by
+  rw [conicQF_eq_dotProduct, conicQF_eq_dotProduct]
+  unfold projTransform
+  -- (M *ᵥ p) ⬝ᵥ (S *ᵥ (M *ᵥ p)) = p ⬝ᵥ ((Mᵀ * S * M) *ᵥ p); rewrite the RHS to the LHS
+  -- (mulVec_mulVec : M *ᵥ N *ᵥ v = (M * N) *ᵥ v)
+  rw [mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
+      Matrix.dotProduct_mulVec p Mᵀ (S *ᵥ (M *ᵥ p)), Matrix.vecMul_transpose]
+
+/-- **Congruence reduction for projective equivalence of conics.**
+    If `M` is invertible and `Mᵀ * stdConic * M = c • C` with `c ≠ 0`, then `M` realises the
+    projective equivalence `pointOnConic p C ↔ pointOnConic (M·p) stdConic`.
+
+    This isolates the *projective-geometry* content of `sylvester_stdConic_of_isotropic`
+    (now fully proved): the only remaining task is the *linear-algebra* fact that such an
+    `M`/`c` exist (`exists_scaledCongr_stdConic_of_isotropic`). The scalar `c` is needed
+    because Sylvester's law yields a congruence to `±stdConic`, and `-stdConic` has the same
+    zero locus as `stdConic`. -/
+private lemma pointOnConic_projTransform_iff_of_congr
+    (C M : Conic) (c : ℝ) (hc : c ≠ 0)
+    (hcong : Mᵀ * stdConic * M = c • C) (p : ProjPoint) :
+    pointOnConic p C ↔ pointOnConic (projTransform M p) stdConic := by
+  unfold pointOnConic
+  rw [conicQF_projTransform, hcong]
+  have hsmul : conicQuadraticForm (c • C) p = c * conicQuadraticForm C p := by
+    simp only [conicQuadraticForm, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
+    apply Finset.sum_congr rfl; intro i _
+    apply Finset.sum_congr rfl; intro j _
+    ring
+  rw [hsmul]
+  constructor
+  · intro h; rw [h, mul_zero]
+  · intro h; exact (mul_eq_zero.mp h).resolve_left hc
+
+/-- **The linear-algebra core of the Sylvester reduction (remaining gap).**
+    A non-degenerate symmetric real conic `C` carrying a real point is *congruent to a
+    nonzero scalar multiple of* `stdConic = diag(1,1,-1)`: there is an invertible `M` and
+    `c ≠ 0` with `Mᵀ * stdConic * M = c • C`.
+
+    Combined with `pointOnConic_projTransform_iff_of_congr` this gives the full
+    `sylvester_stdConic_of_isotropic` below — so the *only* unproved content of Pascal's
+    theorem for general symmetric non-degenerate conics is now this single, purely
+    matrix-algebraic statement (Sylvester's law of inertia + a sign/permutation correction).
+
+    Validated proof plan (every step checked against the Mathlib 4.26 API):
+    1. `mathlibQF_separatingLeft C hC_sym hC_nd` discharges the hypothesis of
+       `QuadraticForm.equivalent_one_neg_one_weighted_sum_squared (Matrix.toQuadraticMap' C)`,
+       yielding `w : Fin (Module.finrank ℝ (Fin 3 → ℝ)) → ℝ` with `w i = ±1` and an isometry
+       `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)`.
+    2. Transport `w` along `Module.finrank ℝ (Fin 3 → ℝ) = 3` to obtain a `Fin 3`-indexed
+       weight vector and turn the abstract isometry into a **matrix congruence**
+       `C = Lᵀ * Matrix.diagonal w * L` with `L = LinearMap.toMatrix' φ` invertible
+       (this `Fin (finrank) ↔ Fin 3` cast is the main remaining technical obstacle).
+    3. The real point `p₀ ≠ 0` with `conicQuadraticForm C p₀ = 0` forces `w` *indefinite*
+       (a definite `±diag(1,1,1)` form vanishes only at `0`, while `φ p₀ ≠ 0`).
+    4. For an indefinite `±1` weight vector there is a permutation/sign matrix `P` and
+       `c = ±1` with `Pᵀ * diagonal w * P = c • stdConic`; set `M := P * L`. -/
+private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
+    (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
+    (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
+    ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
+      ∃ (c : ℝ), c ≠ 0 ∧ Mᵀ * stdConic * M = c • C := by
+  sorry
+
 /-- **Sylvester reduction to the standard conic** — the sole remaining gap in the
     elimination of `conic_implies_pascal_constraint` for non-degenerate symmetric conics.
 
@@ -1252,7 +1319,11 @@ theorem sylvester_stdConic_of_isotropic (C : Conic)
     ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
       ∀ (p : ProjPoint), pointOnConic p C ↔
         pointOnConic (projTransform M p) stdConic := by
-  sorry
+  -- The projective-geometry content is fully discharged by the congruence reduction;
+  -- the remaining linear-algebra core is isolated in `exists_scaledCongr_stdConic_of_isotropic`.
+  obtain ⟨M, hM_det, c, hc, hcong⟩ :=
+    exists_scaledCongr_stdConic_of_isotropic C hC_sym hC_nd p₀ hp₀v hp₀
+  exact ⟨M, hM_det, fun p => pointOnConic_projTransform_iff_of_congr C M c hc hcong p⟩
 
 /-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, for the case
     where C is a symmetric non-degenerate conic. The remaining gap — extracting an

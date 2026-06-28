@@ -1,0 +1,26 @@
+{
+  "id": "pascals-hexagon-incomplete-01-oq-01",
+  "knowledge": {
+    "insights": [
+      "The whole theorem reduces to a matrix congruence: pointOnConic p C ↔ pointOnConic (M·p) stdConic holds whenever Mᵀ*stdConic*M = c•C with c≠0 and M invertible (proved 0-axiom as pointOnConic_projTransform_iff_of_congr).",
+      "The scalar c (signature ±1) is essential: Sylvester yields congruence to ±stdConic, and -stdConic has the same zero locus as stdConic.",
+      "QuadraticForm.equivalent_one_neg_one_weighted_sum_squared applies to Matrix.toQuadraticMap' C with the pre-existing mathlibQF_separatingLeft, giving w : Fin (finrank ℝ (Fin 3→ℝ)) → ℝ, each ±1, plus an IsometryEquiv.",
+      "Real-point hypothesis forces w indefinite: a definite ±diag(1,1,1) form vanishes only at 0 while φ p₀ ≠ 0."
+    ],
+    "builtItems": [
+      "conicQF_projTransform in proofs/Proofs/PascalsHexagon.lean (0-axiom): conicQuadraticForm S (M·p) = conicQuadraticForm (Mᵀ*S*M) p.",
+      "pointOnConic_projTransform_iff_of_congr in proofs/Proofs/PascalsHexagon.lean (0-axiom): congruence reduction for projective equivalence of conics.",
+      "sylvester_stdConic_of_isotropic now sorry-free, reduced to exists_scaledCongr_stdConic_of_isotropic via the congruence reduction.",
+      "exists_scaledCongr_stdConic_of_isotropic: isolated single-sorry core (∃ M, det≠0 ∧ ∃ c≠0, Mᵀ*stdConic*M = c•C) with a fully validated 4-step proof plan in its docstring."
+    ],
+    "mathlibGaps": [
+      "No ready lemma turning an abstract QuadraticMap.IsometryEquiv into a matrix congruence across the Fin (finrank ℝ (Fin 3→ℝ)) ↔ Fin 3 cast — the main remaining obstacle.",
+      "No off-the-shelf 'Pᵀ * diagonal w * P = diagonal (w∘σ)' for permutation matrices found; the sign/permutation correction must be built (elementary)."
+    ],
+    "nextSteps": [
+      "Prove the permutation/sign correction lemma: indefinite ±1 weights ⟹ ∃ invertible P, c≠0, Pᵀ*diagonal w*P = c•stdConic (elementary, finite cases).",
+      "Prove the matrix-congruence extraction from IsometryEquiv + finrank cast; submit exists_scaledCongr_stdConic_of_isotropic to Aristotle once reachable."
+    ],
+    "progressSummary": "PROGRESS: reduced sylvester_stdConic_of_isotropic to a single clean matrix-congruence core lemma; added 2 verified (0-axiom) reusable lemmas; Aristotle was down this session."
+  }
+}
