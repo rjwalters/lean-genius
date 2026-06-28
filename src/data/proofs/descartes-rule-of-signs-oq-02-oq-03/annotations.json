@@ -1,29 +1,74 @@
 [
   {
+    "id": "ann-overview",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "The Open Question: Grounding budan_parity in the FTA",
+    "content": "The parent Budan's-theorem file (descartes-rule-of-signs-oq-02) leaves a budan_parity axiom and asks whether the fact it depends on — complex roots of a real polynomial come in conjugate pairs — can be derived from Mathlib. The parity of real-root counts is forced by exactly this conjugate-pairing: non-real roots split into {z, z̄} pairs, so their number is even and the real-root count has the same parity as deg p. This file derives the conjugate-pair content (membership symmetry, multiset invariance, equal multiplicity, distinct pairing) from Mathlib's FTA machinery.",
+    "mathContext": "For $p \\in \\mathbb{R}[X]$: $\\#\\{\\text{real roots}\\} \\equiv \\deg p \\pmod 2$ because non-real roots pair as $\\{z, \\bar z\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["budan_parity axiom", "Fundamental Theorem of Algebra", "parity of real-root count", "Descartes' rule of signs"],
+    "prerequisites": ["polynomials over ℝ and ℂ", "complex conjugation", "roots with multiplicity"]
+  },
+  {
+    "id": "ann-complexroots-def",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 31,
+      "endLine": 32
+    },
+    "type": "definition",
+    "title": "The Complex Root Multiset",
+    "content": "complexRoots p is defined as (p.map (algebraMap ℝ ℂ)).roots: base-change the real polynomial p to ℂ, then take its multiset of roots (with multiplicity). Working over ℂ is what lets the Fundamental Theorem of Algebra apply — the mapped polynomial splits completely, so this multiset has cardinality exactly deg p. Every subsequent theorem is a statement about how complex conjugation acts on this multiset.",
+    "mathContext": "$\\mathrm{complexRoots}(p) := \\mathrm{roots}\\big(p \\otimes_{\\mathbb{R}} \\mathbb{C}\\big) \\in \\mathrm{Multiset}\\,\\mathbb{C}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["base change of polynomials", "algebraMap ℝ ℂ", "Multiset of roots", "multiplicity"],
+    "prerequisites": ["Polynomial.map", "roots as a Multiset"]
+  },
+  {
     "id": "ann-aeval-conj",
     "proofId": "descartes-rule-of-signs-oq-02-oq-03",
     "range": {
       "startLine": 34,
       "endLine": 39
     },
-    "type": "insight",
+    "type": "theorem",
     "title": "Conjugating a Real Root Equation",
-    "content": "aeval_conj_eq_zero is the analytic heart of conjugate pairs. Mathlib's Polynomial.aeval_conj gives aeval(z̄)p = conj(aeval z p) for a real polynomial p, because conjugation fixes the real coefficients and is a ring homomorphism. So aeval(z̄)p = 0 ⟺ conj(aeval z p) = 0 ⟺ aeval z p = 0 (conjugation is injective, fixing 0). In one line: if z is a complex root of a real polynomial, so is its conjugate z̄.",
+    "content": "aeval_conj_eq_zero is the analytic heart of conjugate pairs. Mathlib's Polynomial.aeval_conj gives aeval(z̄)p = conj(aeval z p) for a real polynomial p, because conjugation fixes the real coefficients and is a ring homomorphism. So aeval(z̄)p = 0 ⟺ conj(aeval z p) = 0 ⟺ aeval z p = 0 (conjugation is injective, fixing 0, closed by simp). In one line: if z is a complex root of a real polynomial, so is its conjugate z̄.",
     "mathContext": "$p(\\bar z) = \\overline{p(z)}$ for $p \\in \\mathbb{R}[X]$, so $p(\\bar z) = 0 \\iff p(z) = 0$.",
     "significance": "key",
     "relatedConcepts": ["complex conjugation", "real polynomials", "Polynomial.aeval_conj", "ring homomorphism fixing reals"],
     "prerequisites": ["complex conjugation as a ring automorphism", "polynomial evaluation aeval", "conjugation fixes ℝ"]
   },
   {
-    "id": "ann-invariance",
+    "id": "ann-map-conj",
     "proofId": "descartes-rule-of-signs-oq-02-oq-03",
     "range": {
       "startLine": 41,
+      "endLine": 47
+    },
+    "type": "lemma",
+    "title": "Conjugation Fixes the Mapped Polynomial",
+    "content": "map_conj_real shows that pushing complex conjugation through the coefficients of p.map (algebraMap ℝ ℂ) returns the same polynomial. Via Polynomial.map_map this reduces to showing the composite ring hom (conj ∘ algebraMap ℝ ℂ) equals algebraMap ℝ ℂ, checked coefficient-wise by RingHom.ext and Complex.conj_ofReal (conjugation fixes real numbers). This is the technical bridge that lets conjugation be applied to the root multiset while leaving the underlying polynomial — and hence its root set — unchanged.",
+    "mathContext": "$\\mathrm{conj}\\big(p \\otimes_{\\mathbb{R}} \\mathbb{C}\\big) = p \\otimes_{\\mathbb{R}} \\mathbb{C}$ since $\\mathrm{conj}(r) = r$ for $r \\in \\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial.map_map", "Complex.conj_ofReal", "RingHom.ext", "coefficient-wise equality"],
+    "prerequisites": ["composition of ring homomorphisms", "conjugation fixes ℝ"]
+  },
+  {
+    "id": "ann-invariance",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 49,
       "endLine": 64
     },
-    "type": "insight",
-    "title": "The Root Multiset Is Conjugation-Invariant",
-    "content": "map_conj_real shows conjugation fixes the mapped polynomial p.map(algebraMap ℝ ℂ) (its coefficients are real, Complex.conj_ofReal). complexRoots_conj_invariant then uses roots_map_of_injective_of_card_eq_natDegree together with IsAlgClosed.card_roots_eq_natDegree (the polynomial splits completely over the algebraically closed ℂ, so its root multiset has full size deg p) to conclude the root multiset is unchanged by conjugation. Because conjugation is injective, count_complexRoots_conj reads off that z and z̄ occur with exactly the same multiplicity (Multiset.count_map_eq_count').",
+    "type": "theorem",
+    "title": "The Root Multiset Is Conjugation-Invariant, with Equal Multiplicity",
+    "content": "complexRoots_conj_invariant uses roots_map_of_injective_of_card_eq_natDegree together with IsAlgClosed.card_roots_eq_natDegree (the mapped polynomial splits completely over the algebraically closed ℂ, so its root multiset has full size deg p) and map_conj_real to conclude the root multiset is unchanged by conjugation. Because conjugation is injective, count_complexRoots_conj reads off that z and z̄ occur with exactly the same multiplicity (Multiset.count_map_eq_count').",
     "mathContext": "$\\mathrm{conj}_*(\\mathrm{roots}\\,p) = \\mathrm{roots}\\,p$ in $\\mathbb{C}$, and $\\mathrm{mult}_z(p) = \\mathrm{mult}_{\\bar z}(p)$.",
     "significance": "key",
     "relatedConcepts": ["root multiset", "Fundamental Theorem of Algebra (splitting)", "multiplicity", "injective image of a multiset"],
@@ -34,11 +79,11 @@
     "proofId": "descartes-rule-of-signs-oq-02-oq-03",
     "range": {
       "startLine": 66,
-      "endLine": 93
+      "endLine": 76
     },
     "type": "concept",
     "title": "Non-Real Roots Split into {z, z̄} Pairs",
-    "content": "conjugate_pair packages the structure: a non-real root z (z̄ ≠ z) is accompanied by the distinct root z̄ of the same multiplicity. Conjugation is thus a fixed-point-free involution on the non-real roots, pairing them up, so their total count (with multiplicity) is even. The fixed points of conjugation are exactly the real roots — hence the number of non-real roots is even and the number of real roots has the same parity as deg p. This is precisely the parity recorded by the parent's budan_parity axiom, now grounded in the Fundamental Theorem of Algebra rather than assumed: the open question is answered by deriving the conjugate-pair content from Mathlib.",
+    "content": "conjugate_pair packages the structure: a non-real root z (z̄ ≠ z) is accompanied by the distinct root z̄ of the same multiplicity (membership recovered from invariance via Multiset.mem_map, equal multiplicity from count_complexRoots_conj). Conjugation is thus a fixed-point-free involution on the non-real roots, pairing them up, so their total count (with multiplicity) is even. The fixed points of conjugation are exactly the real roots — hence the number of real roots has the same parity as deg p. This is precisely the parity recorded by the parent's budan_parity axiom, now grounded in the Fundamental Theorem of Algebra rather than assumed.",
     "mathContext": "Conjugation is a fixed-point-free involution on the non-real roots, so $\\#\\{\\text{non-real roots}\\}$ is even and $\\#\\{\\text{real roots}\\} \\equiv \\deg p \\pmod 2$.",
     "significance": "key",
     "relatedConcepts": ["conjugate pairs", "fixed-point-free involution", "parity of real-root count", "budan_parity", "Descartes' rule of signs"],
