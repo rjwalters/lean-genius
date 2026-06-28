@@ -224,4 +224,97 @@ theorem exists_complementary_simplex {B : V → Prop} [DecidablePred B]
   rw [Finset.mem_filter] at hv
   exact ⟨v, hv.2⟩
 
+/-- **Sharp degree formula: degree = number of shared doors.**  `doorGraph_degree_le_two`
+bounds the degree by `2` via the doors of `v`.  Under two clean geometric facts —
+each door joins at most two simplices (`hdoor`) and two distinct simplices share at
+most one door (`hpair`) — the bound is in fact an *equality* with the number of `v`'s
+**shared** doors (doors some *other* simplex also carries):
+
+> `(doorGraph inc).degree v = #{ d | inc v d ∧ ∃ w ≠ v, inc w d }`.
+
+The map "neighbour `w` ↦ the door it shares with `v`" is a bijection onto the shared
+doors: it lands in the shared doors and is injective by `hdoor` (a door joining `v` to
+two neighbours would touch three simplices), and surjective by `hpair` (the door's
+other endpoint is a neighbour whose shared door is forced to be that very door).
+
+This turns "`v` is a path endpoint" (`degree v = 1`) into the purely local door
+statement "`v` has exactly one shared door", which is the interface the geometric
+construction of `inc` targets. -/
+theorem doorGraph_degree_eq_shared
+    (hdoor : ∀ d, #{v | inc v d} ≤ 2)
+    (hpair : ∀ d d' : D, ∀ v w : V, v ≠ w →
+      inc v d → inc w d → inc v d' → inc w d' → d = d')
+    (v : V) :
+    (doorGraph inc).degree v = #{d | inc v d ∧ ∃ w, w ≠ v ∧ inc w d} := by
+  classical
+  rw [← SimpleGraph.card_neighborFinset_eq_degree]
+  set s := (doorGraph inc).neighborFinset v with hs
+  -- Each neighbour shares a door with `v`.
+  have key : ∀ w ∈ s, ∃ d, inc v d ∧ inc w d := by
+    intro w hw
+    rw [hs, SimpleGraph.mem_neighborFinset] at hw
+    exact hw.2
+  -- Each neighbour is distinct from `v`.
+  have hne : ∀ w ∈ s, v ≠ w := by
+    intro w hw
+    rw [hs, SimpleGraph.mem_neighborFinset] at hw
+    exact hw.1
+  rcases isEmpty_or_nonempty D with hD | hD
+  · -- No doors: no neighbours and no shared doors.
+    have h1 : s = ∅ := by
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro w hw; obtain ⟨d, _, _⟩ := key w hw; exact hD.false d
+    have h2 : ({d | inc v d ∧ ∃ w, w ≠ v ∧ inc w d} : Finset D) = ∅ :=
+      Finset.eq_empty_of_isEmpty _
+    rw [h1, h2, Finset.card_empty, Finset.card_empty]
+  · haveI : Nonempty D := hD
+    -- The shared-door witness map.
+    let g : V → D := fun w =>
+      if h : ∃ d, inc v d ∧ inc w d then h.choose else Classical.arbitrary D
+    have hgspec : ∀ w ∈ s, inc v (g w) ∧ inc w (g w) := by
+      intro w hw
+      have hex := key w hw
+      simp only [g, dif_pos hex]; exact hex.choose_spec
+    refine Finset.card_bij (fun w _ => g w) ?_ ?_ ?_
+    · -- lands in the shared doors
+      intro w hw
+      obtain ⟨hv, hw'⟩ := hgspec w hw
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact ⟨hv, w, (hne w hw).symm, hw'⟩
+    · -- injective: a shared door of two neighbours touches three simplices
+      intro w₁ h₁ w₂ h₂ heq
+      dsimp only at heq
+      obtain ⟨hv₁, hw₁⟩ := hgspec w₁ h₁
+      obtain ⟨_, hw₂⟩ := hgspec w₂ h₂
+      rw [heq] at hw₁
+      by_contra hww
+      have hsub : ({v, w₁, w₂} : Finset V) ⊆ ({u | inc u (g w₂)} : Finset V) := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+        rcases hx with rfl | rfl | rfl
+        · exact (hgspec w₂ h₂).1
+        · exact hw₁
+        · exact hw₂
+      have hcard3 : ({v, w₁, w₂} : Finset V).card = 3 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton]
+              push_neg; exact ⟨hne w₁ h₁, hne w₂ h₂⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hww),
+            Finset.card_singleton]
+      have := Finset.card_le_card hsub
+      rw [hcard3] at this
+      exact absurd (this.trans (hdoor (g w₂))) (by norm_num)
+    · -- surjective: the door's other endpoint is a neighbour, with that very shared door
+      intro d hd
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hd
+      obtain ⟨hvd, w, hwv, hwd⟩ := hd
+      have hws : w ∈ s := by
+        rw [hs, SimpleGraph.mem_neighborFinset]
+        exact ⟨hwv.symm, d, hvd, hwd⟩
+      refine ⟨w, hws, ?_⟩
+      obtain ⟨hvg, hwg⟩ := hgspec w hws
+      exact hpair (g w) d v w hwv.symm hvg hwg hvd hwd
+
 end SpernerTuckerDoorGraph

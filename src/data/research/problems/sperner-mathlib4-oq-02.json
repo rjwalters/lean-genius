@@ -17,8 +17,9 @@
   },
   "currentState": "n=1 Tucker line COMPLETE end-to-end: discrete combinatorial core (SpernerTuckerOneDim, merged) + continuous capstone (SpernerTuckerBorsukUlamOneDim, this session) deriving the genuine 1-D Borsuk-Ulam theorem from IVT. A continuous 1-periodic f:R->R takes equal values at some antipodal pair c, c+1/2. n>=2 Tucker still needs the Freund-Todd / Prescott-Su path-following engine (complementary-edge count is not a parity invariant for n>=2).",
   "knowledge": {
-    "progressSummary": "PROGRESS: n=1 line complete (combinatorial + continuous 1-D Borsuk-Ulam, merged). For n>=2 the abstract path-following engine (PR #30911) + interior-parity refinement are done. This session closes the door-counting→engine gap: SpernerTuckerDoorGraph derives the engine's max-degree-≤2 hypothesis from the door-incidence structure (≤2 doors/simplex, ≤2 simplices/door) via a clean counting injection, and chains it to the quantitative Tucker conclusion (odd boundary endpoints ⟹ odd interior complementary simplices). Verified, 0-axiom. Remaining for n>=2: supply the odd-boundary-endpoint input (inductive (n-1)-Tucker) and the geometric construction of the door-incidence relation for a concrete triangulation.",
+    "progressSummary": "PROGRESS: n=1 line complete (combinatorial + continuous 1-D Borsuk-Ulam, merged). For n>=2 the abstract path-following engine (degree<=2 => even endpoints => interior endpoint) and the door-counting bridge are done. This session SHARPENS the degree bound to an EQUALITY: doorGraph_degree_eq_shared (under hdoor: each door joins <=2 simplices, and the new hpair: two distinct simplices share <=1 door) gives degree v = #{shared doors of v}, so a path endpoint (degree 1) <=> a simplex with exactly one shared door — the local interface the geometric inc construction needs. VERIFIED 0-axiom (lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound]). Remaining open: the geometric inc construction (discharge hdoor/hsimplex/hpair) + Odd #{boundary endpoints} from inductive (n-1)-Tucker + the continuous mesh->0 analytic phase.",
     "builtItems": [
+      "proofs/Proofs/SpernerTuckerDoorGraph.lean (sharp degree formula, VERIFIED 0-axiom: lake env lean exit 0, #print axioms = [propext, Classical.choice, Quot.sound] only): doorGraph_degree_eq_shared — under hdoor (each door joins <=2 simplices) and hpair (two distinct simplices share <=1 door, the door-graph analogue of adj_unique_facet), (doorGraph inc).degree v = #{d | inc v d and exists w != v, inc w d} (the # of vs SHARED doors). Finset.card_bij with the neighbour->shared-door witness map: lands in shared doors, injective by hdoor (a door joining v to two neighbours touches 3 simplices), surjective by hpair (a shared doors other endpoint is a neighbour whose shared door is forced to be that door). Sharpens doorGraph_degree_le_two from a bound to an equality: a path endpoint (degree 1) is exactly a simplex with ONE shared door.",
       "proofs/Proofs/SpernerTuckerOneDim.lean — 1-D Tucker / combinatorial 1-D Borsuk–Ulam (verified, 0-axiom)",
       "TuckerOneDim.complementary_count_cast — telescoping ZMod-2 identity: #complementary-edges ≡ lam 0 + lam (last) (mod 2)",
       "TuckerOneDim.tucker_one_dim — antipodal boundary ⟹ odd #complementary-edges",
@@ -37,11 +38,12 @@
       "Spoke complementary count is NOT a parity invariant either (distribution {0:32,1:96,2:96,3:32}) -- mixed parity confirms n>=2 has no single-set parity shortcut (consistent with Insight 3).",
       "NEGATIVE PARITY (verified, rules out a wrong instantiation route): the complementary-edge count on the BOUNDARY RING of the antipodal hexagon is ALWAYS EVEN (distribution {0,2,6} over 64 antipodal ring labellings; SpernerTuckerBoundaryParity.ring_complementary_count_even). So the path-following engine SpernerTuckerPathFollowing.exists_interior_degree_one CANNOT be fed the raw boundary-circle complementary count as its odd hB hypothesis -- the count is never odd. The engine odd boundary parity must come from the refined almost-complementary structure / inductive (n-1)-Tucker, not raw circle parity.",
       "n=2 Tucker on the hexagon+center triangulation is now kernel-checked (first machine-checked n>=2 instance) -- a concurrent agent landed it in proofs/Proofs/SpernerTuckerHexagon.lean (PR #30917). This session contributes the complementary boundary-parity correction in a separate file.",
-      "The path-following engine's `∀ v, G.degree v ≤ 2` hypothesis is NOT an extra assumption — it is DERIVED from abstract door-counting (SpernerTuckerDoorGraph.doorGraph_degree_le_two). If each almost-complementary simplex has ≤2 doors and each door joins ≤2 simplices, the shared-door graph has max degree ≤2: the neighbours of v inject into the ≤2 doors of v (a single door joining v to two distinct neighbours would be incident to 3 simplices, contradicting the ≤2 door-incidence bound). Fully abstract over inc:V→D→Prop, verified 0-axiom. This realizes the OQ title literally — the degree≤2 input to the engine comes FROM door-counting, not as a black-box hypothesis."
+      "The path-following engine's `∀ v, G.degree v ≤ 2` hypothesis is NOT an extra assumption — it is DERIVED from abstract door-counting (SpernerTuckerDoorGraph.doorGraph_degree_le_two). If each almost-complementary simplex has ≤2 doors and each door joins ≤2 simplices, the shared-door graph has max degree ≤2: the neighbours of v inject into the ≤2 doors of v (a single door joining v to two distinct neighbours would be incident to 3 simplices, contradicting the ≤2 door-incidence bound). Fully abstract over inc:V→D→Prop, verified 0-axiom. This realizes the OQ title literally — the degree≤2 input to the engine comes FROM door-counting, not as a black-box hypothesis.",
+      "Insight 5 — sharp door-degree = #shared-doors (VERIFIED). doorGraph_degree_le_two only gave the path/cycle structure; under the EXTRA natural axiom hpair (distinct simplices share <=1 door) the degree is EXACTLY the number of shared doors of v. This localizes \"path endpoint\" to \"exactly one shared door\", giving the geometric inc construction a per-simplex target instead of a global-graph one. hpair is a third geometric obligation alongside the two <=2 incidence counts."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Construct the concrete door-incidence relation inc:V→D→Prop for a triangulation of B^n (V = almost-complementary simplices, D = complementary facets/doors) and discharge the two ≤2 bounds geometrically, feeding SpernerTuckerDoorGraph.exists_complementary_simplex.",
+      "NEXT: build concrete inc : V->D->Prop (V = almost-complementary simplices, D = complementary facets); discharge hdoor (<=2 simplices/door), hsimplex (<=2 doors/simplex), and hpair (distinct simplices share <=1 door). A path endpoint = a simplex with exactly one shared door (doorGraph_degree_eq_shared).",
       "Supply the odd-boundary-endpoint hypothesis (Odd #{boundary path endpoints}) from the inductive (n-1)-Tucker statement — NOT from the raw boundary-ring complementary count, which is provably EVEN (SpernerTuckerBoundaryParity).",
       "n>=2 Tucker ⟹ Borsuk-Ulam: continuous mesh→0 + compactness (the analytic phase; dim 1 was discharged by IVT)."
     ],
@@ -63,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-06-15T02:22:23.646Z",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-27T20:40:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/SpernerTuckerBorsukUlamOneDim.lean",
@@ -131,5 +133,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorGraph.lean"
     }
-  ]
+  ],
+  "lastVerified": "2026-06-27"
 }
