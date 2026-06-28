@@ -86,6 +86,50 @@
       "The #214 framework (unit-distance-free sets)"
     ]
   },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: closing the non-vacuity gap in erdos-214",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring. The parent erdos-214 entry defines the example set ScaledLattice = √2·ℤ² to illustrate a unit-distance-free set but never proves it is one, leaving the #214 hypothesis formally unwitnessed. This entry supplies that missing verification with a 0-axiom, self-contained proof independent of the axiomatized Juhász theorem."
+    },
+    {
+      "id": "definitions",
+      "title": "Plane, distance, and the scaled lattice",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "Re-states the parent's framework so the entry stands free of the axiomatized core: the Euclidean plane EuclideanSpace ℝ (Fin 2), Euclidean distance, the predicate IsUnitDistanceFree, and ScaledLattice = {(√2·a, √2·b) : a,b ∈ ℤ}."
+    },
+    {
+      "id": "dist-formula",
+      "title": "Coordinate distance formula",
+      "startLine": 73,
+      "endLine": 79,
+      "summary": "dist_eq_coords unfolds the Euclidean norm on EuclideanSpace ℝ (Fin 2) into the two-coordinate Pythagorean form √((p₀-q₀)² + (p₁-q₁)²) via EuclideanSpace.dist_eq and Fin.sum_univ_two."
+    },
+    {
+      "id": "arithmetic-core",
+      "title": "Arithmetic core: 2·(m²+k²) ≠ 1",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "two_mul_sq_add_sq_ne_one: the parity heart of the proof. Casting the real equation 2·(m²+k²) = 1 back to ℤ, omega refutes it because the left-hand side is even while 1 is odd."
+    },
+    {
+      "id": "main-distance",
+      "title": "Lattice points are never at distance 1",
+      "startLine": 89,
+      "endLine": 116,
+      "summary": "scaledLattice_dist_ne_one: substitute the lattice coordinates, use (√2)² = 2 to collapse each squared coordinate difference to 2·(integer)², square the hypothetical distance equation via Real.sq_sqrt on the non-negative radicand, and discharge by the arithmetic core. Notably needs no p ≠ q hypothesis."
+    },
+    {
+      "id": "corollaries",
+      "title": "Unit-distance-freeness and inhabitedness",
+      "startLine": 118,
+      "endLine": 127,
+      "summary": "scaledLattice_unitDistanceFree is the immediate corollary (the #214 hypothesis is non-vacuous), and scaledLattice_nonempty records that the origin (a = b = 0) lies in the set, so it is a genuine, inhabited witness."
+    }
+  ],
   "conclusion": {
     "summary": "The √2-scaled integer lattice ScaledLattice = {(√2·a, √2·b) : a,b ∈ ℤ} is unit-distance-free: the squared distance between any two of its points is 2·((a-a')² + (b-b')²), an even integer never equal to 1. This makes the hypothesis of Erdős #214 non-vacuous with a concrete witness, and it is verified independently of the axiomatized Juhász theorem (0 axioms, 0 sorries).",
     "implications": "This closes a real gap in the parent erdos-214 entry, whose ScaledLattice example was defined but never shown to satisfy the unit-distance-free property. The result certifies that #214's hypothesis class is non-empty (so the theorem is not vacuously true) and provides reusable elementary infrastructure — the coordinate distance formula and the 2·(m²+k²) ≠ 1 parity lemma — for further lattice/geometry formalizations in the gallery.",

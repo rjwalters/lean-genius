@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos214-incomplete01oq01-ann-header",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "Making the #214 hypothesis non-vacuous",
+    "content": "Erdős Problem #214 asks whether the complement of every unit-distance-free planar set (no two points exactly distance 1 apart) must contain the vertices of a unit square; Juhász (1979) proved the stronger statement that the complement contains a congruent copy of every 4-point configuration. The parent gallery entry formalizes Juhász's theorem as an axiom and defines a concrete example set, the √2-scaled lattice, meant to illustrate a unit-distance-free set — but never proves it actually is one, leaving the example inert and the hypothesis formally unwitnessed. This entry closes that gap with an elementary, 0-axiom proof, independent of the axiomatized Juhász core.",
+    "mathContext": "A set $S \\subseteq \\mathbb{R}^2$ is **unit-distance-free** if $\\forall p,q \\in S,\\ p \\ne q \\Rightarrow \\lVert p-q\\rVert \\ne 1$.",
+    "significance": "key",
+    "relatedConcepts": ["unit-distance graph", "combinatorial geometry", "non-vacuity", "Juhász's theorem"],
+    "prerequisites": ["Euclidean geometry", "combinatorics"]
+  },
+  {
+    "id": "erdos214-incomplete01oq01-ann-lattice",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 69, "endLine": 71 },
+    "type": "definition",
+    "title": "The √2-scaled integer lattice",
+    "content": "ScaledLattice is the set of plane points whose two coordinates are both integer multiples of √2. The irrational scaling factor √2 is the whole point: it makes every squared inter-point distance an even integer, which is what forbids a unit distance. The definition is taken verbatim from the parent entry, so that proving its unit-distance-freeness directly upgrades the parent's inert example into a verified witness.",
+    "mathContext": "$\\mathrm{ScaledLattice} = \\{\\,p : p_0 = \\sqrt2\\,a,\\ p_1 = \\sqrt2\\,b,\\ a,b \\in \\mathbb{Z}\\,\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["integer lattice", "scaled lattice", "irrational scaling"],
+    "prerequisites": ["lattices in the plane"]
+  },
+  {
+    "id": "erdos214-incomplete01oq01-ann-distformula",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 73, "endLine": 79 },
+    "type": "technique",
+    "title": "Unfolding the Euclidean norm into coordinates",
+    "content": "dist_eq_coords rewrites the abstract norm ‖p - q‖ on EuclideanSpace ℝ (Fin 2) into the concrete Pythagorean form √((p₀-q₀)² + (p₁-q₁)²). The key steps are EuclideanSpace.dist_eq (distance is the root-sum-of-squares of coordinate distances), Fin.sum_univ_two (expand the 2-element sum), and sq_abs to turn |·|² into (·)². This bridges Mathlib's general inner-product machinery and the elementary coordinate computation that follows.",
+    "mathContext": "$\\mathrm{dist}\\,p\\,q = \\sqrt{(p_0-q_0)^2 + (p_1-q_1)^2}$ on $\\mathbb{R}^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean norm", "Pythagorean theorem", "inner product space"],
+    "prerequisites": ["normed vector spaces"]
+  },
+  {
+    "id": "erdos214-incomplete01oq01-ann-arith",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 81, "endLine": 87 },
+    "type": "theorem",
+    "title": "The parity core: 2·(m²+k²) ≠ 1",
+    "content": "two_mul_sq_add_sq_ne_one is the arithmetic heart of the argument, isolated as a standalone integer lemma. The real equation 2·(m²+k²) = 1 is cast back to ℤ (the values are genuine integers), and omega finishes by parity: the left-hand side is even, 1 is odd, contradiction. Reducing the geometric claim to this single number-theoretic fact is what keeps the whole proof elementary and decidable.",
+    "mathContext": "For all $m,k \\in \\mathbb{Z}$: $2(m^2 + k^2) \\ne 1$, since the left side is even.",
+    "significance": "key",
+    "relatedConcepts": ["parity argument", "omega tactic", "quadratic forms", "even integers"],
+    "prerequisites": ["integer arithmetic"]
+  },
+  {
+    "id": "erdos214-incomplete01oq01-ann-main",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 89, "endLine": 116 },
+    "type": "theorem",
+    "title": "No two lattice points are at distance 1",
+    "content": "scaledLattice_dist_ne_one is the main geometric result. Substituting the lattice coordinates and factoring (√2·a − √2·a')² = (√2)²·(a−a')² with (√2)² = 2 (Real.sq_sqrt) collapses the radicand to the even integer 2·((a−a')² + (b−b')²). If the distance were 1, squaring via Real.sq_sqrt on the non-negative radicand gives that even integer = 1, refuted by the parity core. A subtle strength: the proof needs no p ≠ q hypothesis — equal points give distance 0, distinct points give √(even ≥ 2) > 1, and neither is 1.",
+    "mathContext": "$\\lVert p-q\\rVert^2 = (\\sqrt2)^2(a-a')^2 + (\\sqrt2)^2(b-b')^2 = 2\\big((a-a')^2 + (b-b')^2\\big)$, an even integer $\\ne 1$.",
+    "significance": "key",
+    "relatedConcepts": ["squared distance", "lattice distances", "proof by contradiction"],
+    "prerequisites": ["Euclidean distance", "integer parity"]
+  },
+  {
+    "id": "erdos214-incomplete01oq01-ann-corollary",
+    "proofId": "erdos-214-incomplete-01-oq-01",
+    "range": { "startLine": 118, "endLine": 127 },
+    "type": "insight",
+    "title": "A concrete, inhabited unit-distance-free witness",
+    "content": "scaledLattice_unitDistanceFree falls out immediately: since no two points are at distance 1, the set is unit-distance-free (the p ≠ q clause of the predicate is simply unused). scaledLattice_nonempty adds that the origin (a = b = 0) lies in the set, so the witness is genuinely inhabited rather than vacuously satisfying the property. Together these certify that #214's hypothesis class is non-empty — the theorem is not vacuously true — and hand future formalizations reusable infrastructure: the coordinate distance formula and the 2·(m²+k²) ≠ 1 parity lemma.",
+    "mathContext": "$\\mathrm{IsUnitDistanceFree}(\\mathrm{ScaledLattice})$ and $0 \\in \\mathrm{ScaledLattice}$.",
+    "significance": "important",
+    "relatedConcepts": ["non-vacuity", "witness construction", "reusable lemmas"],
+    "prerequisites": ["unit-distance-free sets"]
+  }
+]
