@@ -108,5 +108,144 @@
       "The count of a B_h set is unbounded for free (greedy extension builds every cardinality); the entire difficulty is the size of the largest element. Counting the forbidden values as an explicit degree-(2h-1) polynomial turns the lower bound into a single root-extraction.",
       "Pairing exists_isBh_rpow_lower with the companion IsBh.card_le_rpow brackets σ_h(N) in [C₁·N^{1/(2h-1)}, C₂·N^{1/h}]; the exponent gap is precisely the open core of Erdős #340 (1/3 vs 1/2 at h=2) and is deliberately left open — only the two endpoints are formalized."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 94,
+      "summary": "Module docstring framing Erdős #340 and the B_h generalization, the open exponent gap 1/(2h-1) vs 1/h, and Mathlib imports (Finset.Sym, powersetCard, Real.rpow). Sets the convention that A ⊆ {1,…,N} and h ≥ 1 throughout."
+    },
+    {
+      "id": "part1-isbh-def",
+      "title": "Part 1 — The B_h Property",
+      "startLine": 95,
+      "endLine": 128,
+      "summary": "Defines IsBh h A as injectivity of the multiset-sum map s ↦ (s : Multiset ℕ).sum on the finset A.sym h of h-element multisets, plus the base facts isBh_empty and the singleton/B_1 cases. The clean Mathlib-native formalization of the B_h property."
+    },
+    {
+      "id": "part1b-downward-h",
+      "title": "Part 1b — Downward Closure in h",
+      "startLine": 129,
+      "endLine": 180,
+      "summary": "IsBh.of_le: B_{h+1} ⟹ B_h. A B_h set stays B_{h'} for every smaller order h' ≥ 1, so the strongest constraint comes from the largest h. Complements IsBh.subset (closure under taking subsets)."
+    },
+    {
+      "id": "part1c-sidon-bridge",
+      "title": "Part 1c — B_2 Is Exactly the Sidon Property",
+      "startLine": 181,
+      "endLine": 266,
+      "summary": "The Sidon bridge isBh_two_iff_isSidon : IsBh 2 A ↔ Erdos340.IsSidon A, translating between the multiset-sum formulation over A.sym 2 and the parent gallery's pairwise-sum Sidon definition. Certifies that B_h genuinely generalizes the parent entry."
+    },
+    {
+      "id": "part2-distinct-subset-sums",
+      "title": "Part 2 — From B_h to Distinct Subset-Sums",
+      "startLine": 267,
+      "endLine": 308,
+      "summary": "IsBh.sum_injOn_powersetCard: the h-element subset sums of a B_h set are all distinct (the subset-sum map is injective on A.powersetCard h). Routes the multiset condition through h-subsets to access Finset.card_powersetCard, sidestepping the missing Finset.sym cardinality lemma."
+    },
+    {
+      "id": "part3-counting-upper-bound",
+      "title": "Part 3 — The B_h Counting Upper Bound",
+      "startLine": 309,
+      "endLine": 370,
+      "summary": "IsBh.choose_card_le: C(|A|,h) ≤ h·N for A ⊆ {1,…,N}. The C(|A|,h) distinct h-subset sums lie in [1, h·N], so they inject into Icc 1 (h·N). Recovers the classical Sidon bound |A|(|A|−1) ≤ 4N at h=2 and |A| = O(N^{1/h}) in general."
+    },
+    {
+      "id": "part4-translation",
+      "title": "Part 4 — Translation Invariance",
+      "startLine": 371,
+      "endLine": 441,
+      "summary": "IsBh.map_add_right: translating every element by a constant d shifts each h-fold sum uniformly by h·d, preserving distinctness. The translation half of the affine symmetry group."
+    },
+    {
+      "id": "part5-greedy-extension",
+      "title": "Part 5 — The Greedy B_h Extension",
+      "startLine": 442,
+      "endLine": 569,
+      "summary": "IsBh.insert_of_large / IsBh.exists_insert: inserting any m > h·max(A) preserves the B_h property, because a fresh sufficiently large element cannot collide with existing h-fold sums. The qualitative engine behind both the explicit family and the lower bound."
+    },
+    {
+      "id": "part5b-forbidden-structure",
+      "title": "Part 5b — The Structure of Forbidden Values",
+      "startLine": 570,
+      "endLine": 652,
+      "summary": "Analyzes the converse: which small values m ≤ h·max(A) are *forbidden* (their insertion breaks B_h). IsBh.exists_diff_eq_of_not_insert characterizes a forbidden m by a sum/difference equation over A, reducing the lower bound to a counting question."
+    },
+    {
+      "id": "part6-greedy-family",
+      "title": "Part 6 — An Explicit Greedy B_h Family",
+      "startLine": 653,
+      "endLine": 699,
+      "summary": "greedyBhSet and exists_isBh_card: iterating the greedy extension builds a concrete B_h set of every cardinality. Isolates that the *count* is unbounded for free; the open difficulty is purely the magnitude of the largest element."
+    },
+    {
+      "id": "part6-dilation-affine",
+      "title": "Part 6 — Dilation and Affine Invariance",
+      "startLine": 700,
+      "endLine": 786,
+      "summary": "IsBh.map_mul_right (scaling every h-fold sum by c) composed with translation gives IsBh.map_affine: B_h is invariant under every positive-slope affine map x ↦ c·x + d. Identifies the positive-slope affine group as the symmetry group of the bound."
+    },
+    {
+      "id": "part7-counting-forbidden",
+      "title": "Part 7 — Counting the Forbidden Values",
+      "startLine": 787,
+      "endLine": 922,
+      "summary": "Bounds the number of forbidden small values by the pool estimate 2·h·T₋·T₊, where T₋ and T₊ are cardinalities of multiset pools over A. Turns the §5b characterization into an explicit counting bound, the abstract precursor of the polynomial."
+    },
+    {
+      "id": "part8-polynomial-bound",
+      "title": "Part 8 — The Closed-Form Polynomial Bound",
+      "startLine": 923,
+      "endLine": 1021,
+      "summary": "IsBh.card_forbidden_poly: the forbidden-value count is ≤ 2h(|A|+1)^{2h−1}, an explicit polynomial of degree exactly 2h−1 in |A|. The degree is precisely what produces the greedy exponent 1/(2h−1)."
+    },
+    {
+      "id": "part9-end-to-end-lower",
+      "title": "Part 9 — The End-to-End Greedy Lower Bound",
+      "startLine": 1022,
+      "endLine": 1123,
+      "summary": "exists_isBh_Icc_card_of_pow_le: whenever the room condition (2h+1)(k+1)^{2h−1} ≤ N holds, a B_h set of size k exists inside {1,…,N}. Assembles Parts 5b–8 into the combinatorial form of the lower bound, ready for analytic inversion."
+    },
+    {
+      "id": "part10-rpow-rate",
+      "title": "Part 10 — The Analytic N^{1/(2h-1)} Rate",
+      "startLine": 1124,
+      "endLine": 1225,
+      "summary": "exists_isBh_rpow_lower: inverting the single-power room condition by (2h−1)-th roots via Real.pow_rpow_inv_natCast and Real.rpow_le_rpow yields the headline |A| ≥ C·N^{1/(2h−1)} with the explicit constant C = 2⁻¹·(2h+1)^{−1/(2h−1)}."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry erects a complete, 0-axiom B_h theory atop the parent Sidon (B_2) gallery proof: the B_h property as multiset-sum injectivity, the Sidon bridge isBh_two_iff_isSidon, the sharp counting upper bound IsBh.choose_card_le (C(|A|,h) ≤ h·N), full positive-slope affine invariance, an explicit greedy family of every cardinality, the closed-form forbidden-value polynomial 2h(|A|+1)^{2h−1}, and the headline analytic greedy lower bound exists_isBh_rpow_lower (|A| ≥ C·N^{1/(2h−1)} with the fully explicit C = 2⁻¹·(2h+1)^{−1/(2h−1)}).",
+    "implications": "Paired with the companion upper bound IsBh.card_le_rpow (entry erdos-340-greedy-sidon-oq-05-oq-01), the two analytic endpoints bracket the maximal B_h size σ_h(N) inside [C₁·N^{1/(2h−1)}, C₂·N^{1/h}]. Both bounds are unconditional and constant-explicit, so the bracket is concrete rather than asymptotic. Because the Bose–Chowla construction attains the N^{1/h} ceiling to within (1−o(1)), the counting side is essentially sharp and the entire open quantitative content of Erdős #340 is localized in the lower exponent 1/(2h−1). The development also demonstrates a reusable pattern: phrasing an additive-combinatorics distinctness property as injectivity of a Mathlib-native sum map makes downward-closure, symmetry, and greedy-extension arguments nearly mechanical.",
+    "openQuestions": [
+      "Can the greedy lower exponent 1/(2h−1) be improved toward the counting exponent 1/h? This is the open core of Erdős #340; at h=2 it is the classical Sidon question of whether the greedy 1/3 can be pushed toward the 1/2 achieved by Singer difference sets.",
+      "Does a probabilistic or algebraic construction beat the deterministic greedy 1/(2h−1) rate for h ≥ 3, as Bose–Chowla does on the upper side?",
+      "Can the explicit constants C₁ = 2⁻¹·(2h+1)^{−1/(2h−1)} and C₂ be sharpened to match the true asymptotic density of the extremal B_h sets?",
+      "Is there a single formalized construction (rather than the present pair of one-sided bounds) that pins σ_h(N) up to a constant factor for some h ≥ 2?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-340-greedy-sidon",
+      "relationship": "Parent gallery proof",
+      "description": "The classical Sidon (B_2) development this entry generalizes. Its Erdos340.IsSidon definition is exactly the h=2 instance of IsBh (isBh_two_iff_isSidon), and its greedy Sidon construction is the h=2 case of the greedy B_h family built here."
+    },
+    {
+      "proofId": "erdos-340-greedy-sidon-oq-05-oq-01",
+      "relationship": "Companion upper bound",
+      "description": "Supplies the matching analytic upper bound IsBh.card_le_rpow (|A| ≤ C₂·N^{1/h}) by taking h-th roots of this entry's counting bound IsBh.choose_card_le. Together the two entries bracket σ_h(N) and frame the open exponent gap."
+    },
+    {
+      "proofId": "erdos-340",
+      "relationship": "Parent problem",
+      "description": "The gallery's top-level Erdős #340 entry on the growth of greedy Sidon sequences; this entry extends that growth question from Sidon (B_2) to general B_h sequences and records exactly which exponent remains open."
+    },
+    {
+      "proofId": "erdos-28-additive-bases",
+      "relationship": "Adjacent additive-combinatorics theme",
+      "description": "Another Erdős additive-combinatorics entry on sizes of sumset-constrained sequences, sharing the counting-bound-versus-construction tension that governs both B_h growth rates and additive bases."
+    }
+  ]
 }
