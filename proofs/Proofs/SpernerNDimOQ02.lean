@@ -1134,4 +1134,88 @@ theorem eq_of_range_eq (hd : 2 ≤ d) {s t : SpernerGrid.GridSimplex d N}
   have hinc := SpernerGrid.GridSimplex.incDir_eq hverts
   exact s.eq_of_base_miss_incDir t hbase hmiss hinc
 
+-- ============================================================
+-- SECTION: GridSimplex-direct carrier for `d ≥ 2`
+-- ============================================================
+-- The `CanonSimplex := {s // IsCanon s}` carrier (base = lex-min vertex) has
+-- *uniqueness* (`canon_eq_of_vertices_range`) but **fails existence**:
+-- `SpernerNDimOQ02Obstruction.sBad_no_canon_rep` exhibits a genuine Freudenthal
+-- cell (`d = 2`, `N = 2`, vertices `(2,0,0), (1,1,0), (0,1,1)`) whose lex-minimum
+-- `(0,1,1)` has every coordinate `< d`, so no grid simplex on that cell can
+-- satisfy `IsCanon` (a base always carries a coordinate `≥ d` by
+-- `base_miss_ge_d`).  Hence `CanonSimplex` *omits cells* and cannot be the
+-- `Simplex` type unmodified.
+--
+-- The repair is to drop the subtype and use `GridSimplex d N` as the carrier
+-- directly.  For `d ≥ 2` that is sound on *both* counts:
+--
+--   * **existence** is now definitional — every geometric cell *is* a
+--     `GridSimplex`, with no constraint left to violate; and
+--   * **uniqueness** is `eq_of_range_eq` — for `d ≥ 2` the `miss` direction and
+--     base are forced by the vertex range, so distinct `GridSimplex`es have
+--     distinct vertex sets.
+--
+-- This section packages the GridSimplex-direct vertex map and the sound
+-- replacement for `canon_eq_of_vertices_range`: the Kuhn-vertex set of a grid
+-- simplex determines it (`grid_eq_of_vertices_range`), equivalently the map
+-- `s ↦ univ.image (gridVertices s)` is injective (`gridVertices_finset_injective`).
+-- These are the carrier lemmas the door-counting `adj` discharge will cite once
+-- the carrier is switched from `CanonSimplex` to `GridSimplex` for `d ≥ 2`.
+
+/-- Vertex map of a grid simplex, pushed to Kuhn coordinates through the bridge
+`toVertex`.  Same as `vertices` but on `GridSimplex` directly (no `IsCanon`
+subtype), for the repaired `d ≥ 2` carrier. -/
+def gridVertices (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    SpernerNDim.Vertex d N :=
+  toVertex (s.verts k)
+
+/-- The `d + 1` Kuhn vertices of a grid simplex are distinct (the
+`vertices_injective` obligation for the GridSimplex-direct carrier).  Combines
+per-cell vertex injectivity (`GridSimplex.verts_injective`) with injectivity of
+the bridge. -/
+theorem gridVertices_injective (s : SpernerGrid.GridSimplex d N) :
+    Function.Injective (gridVertices s) := by
+  intro i j h
+  exact s.verts_injective (toVertex_injective h)
+
+open SpernerGrid in
+/-- **Sound carrier uniqueness for `d ≥ 2`.**  A grid simplex is determined by
+its Kuhn vertex set: two grid simplices with the same `Set.range gridVertices`
+are equal once `d ≥ 2`.  This is the GridSimplex-direct analogue of
+`canon_eq_of_vertices_range`, but with **no `IsCanon` hypothesis**, so the
+existence failure of the `CanonSimplex` carrier
+(`SpernerNDimOQ02Obstruction.sBad_no_canon_rep`) does not arise.  Proof: strip
+the injective bridge `toVertex` to recover equality of the barycentric ranges,
+then apply `eq_of_range_eq`. -/
+theorem grid_eq_of_vertices_range (hd : 2 ≤ d)
+    {s t : SpernerGrid.GridSimplex d N}
+    (h : Set.range (gridVertices s) = Set.range (gridVertices t)) :
+    s = t := by
+  have key : ∀ u : SpernerGrid.GridSimplex d N,
+      Set.range (gridVertices u) = toVertex '' Set.range u.verts := by
+    intro u
+    have huc : gridVertices u = toVertex ∘ u.verts := rfl
+    rw [huc, Set.range_comp]
+  rw [key s, key t] at h
+  have hbary : Set.range s.verts = Set.range t.verts :=
+    Set.image_injective.mpr toVertex_injective h
+  exact eq_of_range_eq hd hbary
+
+open SpernerGrid in
+/-- **The carrier embeds into vertex sets (for `d ≥ 2`).**  The map sending a
+grid simplex to its Kuhn vertex `Finset` is injective.  This is the
+`Finset`-level restatement of `grid_eq_of_vertices_range` that the door-counting
+combinatorics use — cells are identified by their vertex sets, with no
+orientation ambiguity and no omitted cells once `d ≥ 2`. -/
+theorem gridVertices_finset_injective (hd : 2 ≤ d) :
+    Function.Injective
+      (fun s : SpernerGrid.GridSimplex d N =>
+        Finset.univ.image (gridVertices s)) := by
+  intro s t h
+  apply grid_eq_of_vertices_range hd
+  have h' : Finset.univ.image (gridVertices s) = Finset.univ.image (gridVertices t) := h
+  have hcoe : (↑(Finset.univ.image (gridVertices s)) : Set (SpernerNDim.Vertex d N))
+      = ↑(Finset.univ.image (gridVertices t)) := by rw [h']
+  simpa only [Finset.coe_image, Finset.coe_univ, Set.image_univ] using hcoe
+
 end SpernerNDimOQ02
