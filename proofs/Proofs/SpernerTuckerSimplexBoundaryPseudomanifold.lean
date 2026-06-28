@@ -111,4 +111,35 @@ theorem simplex_degree (i : Tet) : (doorGraph inc).degree i = 4 := by
   rw [doorGraph_degree_eq_shared inc hdoor hpair i]
   revert i; decide
 
+/-! ## The general case: `∂Δ^{n+1}` is a closed pseudomanifold in every dimension
+
+The `decide` proofs above are pinned to `n = 3` (`∂Δ⁴`).  The same statement holds in
+*every* dimension and needs no case enumeration.  Model `∂Δ^{n+1}` on the vertex set
+`Fin (n+2)`: the top cell `Sᵢ = univ.erase i` is the facet opposite vertex `i`
+(`n+1` vertices), and a door is any `n`-vertex face `d`.  Then `d ⊆ Sᵢ ⟺ i ∉ d`, so the
+top cells containing a fixed door `d` are exactly the vertices *not* in `d`, of which
+there are `(n+2) - n = 2`.  This is the pseudomanifold property (`hdoor`, the `≤ 2`
+bound) together with closedness (exact incidence `2`) for all `n` at once. -/
+
+/-- **General closed pseudomanifold property of `∂Δ^{n+1}`.**  For every `n`-vertex door
+`d` of the boundary of the standard `(n+1)`-simplex, exactly two top cells
+`Sᵢ = univ.erase i` contain it — in every dimension, with no per-dimension `decide`. -/
+theorem boundary_simplex_closed_incidence {n : ℕ}
+    (d : Finset (Fin (n + 2))) (hd : d.card = n) :
+    #{i | d ⊆ Finset.univ.erase i} = 2 := by
+  have hset : Finset.univ.filter (fun i => d ⊆ Finset.univ.erase i) = dᶜ := by
+    ext i
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_compl,
+      Finset.subset_erase, Finset.subset_univ]
+  rw [hset, Finset.card_compl, Fintype.card_fin, hd]
+  omega
+
+/-- **General `hdoor` (the pseudomanifold `≤ 2` bound) for `∂Δ^{n+1}`, all `n`.**  An
+immediate consequence of `boundary_simplex_closed_incidence`: every door borders at most
+two top cells, in every dimension. -/
+theorem boundary_simplex_hdoor {n : ℕ}
+    (d : Finset (Fin (n + 2))) (hd : d.card = n) :
+    #{i | d ⊆ Finset.univ.erase i} ≤ 2 :=
+  (boundary_simplex_closed_incidence d hd).le
+
 end SpernerTuckerSimplexBoundaryPseudomanifold
