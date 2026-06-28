@@ -227,3 +227,51 @@ density count toward `1/12` must sum over. The continuant matrix identity
 - Total attempts: 5
 - Current approach attempts: 5
 - Approaches tried: 1
+
+## Iteration 15 addition (verified, 0-axiom — researcher-3, `lake env lean`)
+
+Added **§15 (depth-`m` unimodularity of the iterated Farey walk)**, 0-sorry /
+0-axiom (verified by host `lean v4.26.0` over the shared main-repo Mathlib
+`.olean` cache; `#print axioms` reports only propext / Quot.sound — `stepPair_snd`
+is axiom-free). One def + four theorems:
+
+- `stepPair a c ks` — the iterated §9/§14 successor returning the final
+  *consecutive pair* `(t_{|ks|}, t_{|ks|+1})`; `stepPair_snd`: its second
+  component is exactly `stepSeq a c ks`.
+- `stepPair_cross` (**headline**) — the walk's cross-determinant
+  `nₘ·dₘ₊₁ − nₘ₊₁·dₘ = a·d − b·c` is **invariant under every step**. Proof: list
+  induction threading the seed pair `(a,c) ↦ (c, k·c−a)`; each step's matrix
+  `[[k,−1],[1,0]]` has determinant 1. The arbitrary-depth generalisation of §9's
+  single-step `farey_succ_unimodular`.
+- `stepPair_cross_unimodular` — a unimodular seed (`b·c = a·d + 1`) stays
+  unimodular (cross `= −1`) at *every* depth: the depth-uniform consecutiveness
+  §9 supplied one step at a time.
+- `stepPair_cross_one` — §9 subsumption at `ks = [k]`.
+
+**IMPORTANT CORRECTION to Iteration 14's "Next Action (1)".** The proposed target
+`K(ks) ≥ 1` for all-`≥1` quotient lists is **mathematically false** for the
+minus-sign continuant: `K([1,1]) = 0`, `K([1,1,1]) = −1` (all-1's continuant is
+period-6 `1,1,0,−1,−1,0,…`, the rotation-by-60° orbit of `[[1,−1],[1,0]]`). Blanket
+continuant positivity is therefore unavailable. The correct sign handle is the
+**determinant (Cassini) invariant**, which §15 establishes: each step matrix has
+det 1, so the walk's cross-determinant is invariant. A future Cassini/continuant
+determinant identity `K(ks)·sc(ks') − K(ks')·sc(ks) = ±1` (for `ks = ks' ++ [k]`)
+follows the same det-1 reasoning and would let `stepPair_cross` be re-expressed
+purely in continuant terms.
+
+File: 1317 → 1391 lines, 71 → 75 theorems, 5 → 6 defs.
+
+**Honest boundary (unchanged).** This is the structural consecutiveness invariant,
+not a bound on the density of admissible quotient lists — the open `1/12`–`1/4`
+constant remains open.
+
+## Next Action (revised)
+
+- **Continuant Cassini identity** (replaces the false positivity target): prove
+  `Continuant ks · m11 − m01 · secondCont ks = 1` where `(m01, m11)` is the
+  companion second column of the step-matrix product (base `(0,1)`), or the
+  equivalent consecutive-list form `K(ks ++ [k])·sc(ks) − K(ks)·sc(ks ++ [k]) = ±1`.
+  This re-expresses `stepPair_cross` purely in continuant terms and certifies the
+  windows' sign structure.
+- **Continuant reversal symmetry** `Continuant ks.reverse = Continuant ks` (true;
+  verified by hand at rungs 2,3) — the palindrome structure a density count exploits.
