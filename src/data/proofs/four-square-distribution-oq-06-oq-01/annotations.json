@@ -14,7 +14,7 @@
   {
     "id": "fsd-oq0601-ann-part1",
     "proofId": "four-square-distribution-oq-06-oq-01",
-    "range": { "startLine": 68, "endLine": 83 },
+    "range": { "startLine": 72, "endLine": 82 },
     "type": "theorem",
     "title": "When 4 ∤ n, Nothing is Dropped: σ* = σ",
     "content": "sigmaStar_eq_sigma_of_not_four_dvd: if 4 ∤ n then no divisor d of n can be divisible by 4 (else 4 | d | n), so the filter drops nothing and σ*(n) = σ(n). This is the SHARP form of the parent's 'odd ⇒ σ* = σ' — oddness is stronger than needed; 4 ∤ n is exactly the right hypothesis. The proof is a Finset.sum_congr replacing each if-branch by the divisor itself.",
@@ -26,7 +26,7 @@
   {
     "id": "fsd-oq0601-ann-part2",
     "proofId": "four-square-distribution-oq-06-oq-01",
-    "range": { "startLine": 84, "endLine": 116 },
+    "range": { "startLine": 88, "endLine": 115 },
     "type": "technique",
     "title": "The Dropped Part is 4·σ(n/4) via the Bijection e ↦ 4e",
     "content": "sum_filter_four_dvd: for 4 ∣ n, the divisors of n that ARE divisible by 4 are exactly {4e : e | (n/4)}, so their sum is 4·σ(n/4). The core is a set equality (Finset.image of e ↦ 4e equals the filtered divisors), proved by a membership ext argument in both directions using Nat.mul_div_cancel'. Finset.sum_image (with injectivity of e ↦ 4e) and Finset.mul_sum then extract the scalar 4. This identifies the discarded multiples-of-4 as a scaled copy of σ(n/4).",
@@ -38,7 +38,7 @@
   {
     "id": "fsd-oq0601-ann-part3",
     "proofId": "four-square-distribution-oq-06-oq-01",
-    "range": { "startLine": 117, "endLine": 142 },
+    "range": { "startLine": 121, "endLine": 141 },
     "type": "insight",
     "title": "Headline Identity: σ*(n) = σ(n) − 4·σ(n/4)",
     "content": "Splitting σ(n) into its 4∤d and 4∣d parts, sigmaStar_add_eq gives the truncation-free additive form σ*(n) + 4·σ(n/4) = σ(n) for 4 ∣ n (each divisor's two if-branches sum to d). sigmaStar_eq_sigma_sub then states it subtractively σ*(n) = σ(n) − 4·σ(n/4) via omega. This is the structural bridge: Jacobi's σ* is fully determined by the classical multiplicative σ, so all of σ*'s arithmetic is inherited from σ.",
@@ -50,7 +50,7 @@
   {
     "id": "fsd-oq0601-ann-part4",
     "proofId": "four-square-distribution-oq-06-oq-01",
-    "range": { "startLine": 143, "endLine": 214 },
+    "range": { "startLine": 147, "endLine": 213 },
     "type": "insight",
     "title": "Odd-Part Capstone: σ*(2ᵃ·m) = 3·σ(m)",
     "content": "sigmaStar_two_pow_mul_odd shows that for n = 2ᵃ·m with m odd and a ≥ 1, Jacobi's σ* depends ONLY on the odd part: σ*(2ᵃ·m) = 3·σ(m). The case a = 1 has 4 ∤ 2m so σ* = σ and σ(2m) = σ(2)·σ(m) = 3·σ(m) by multiplicativity (Coprime.sum_divisors_mul). For a ≥ 2, the headline identity with (2ᵃm)/4 = 2^{a−2}·m and the geometric σ(2ᵃ) = 2^{a+1}−1 (sigma_two_pow) reduces to a ℕ-arithmetic cancellation: writing 2^{b+1} = Q+1 clears all truncated subtractions and omega finishes. The factor 3 = σ(2) = 1+2 is what survives from every power of two.",
@@ -62,7 +62,7 @@
   {
     "id": "fsd-oq0601-ann-part56",
     "proofId": "four-square-distribution-oq-06-oq-01",
-    "range": { "startLine": 215, "endLine": 249 },
+    "range": { "startLine": 219, "endLine": 248 },
     "type": "context",
     "title": "Jacobi's r₄ in Textbook Form, with Sanity Instances",
     "content": "Translating σ* to jacobiR4 = 8·σ*: for 4 ∤ n, r₄(n) = 8·σ(n) (jacobiR4_of_not_four_dvd); for even n = 2ᵃm (m odd), r₄(2ᵃm) = 24·σ(m) (jacobiR4_two_pow_mul_odd) — the classical textbook statement that the number of representations as four squares depends only on the odd part. Sanity instances σ*(12) = 3·σ(3) = 12 and r₄(12) = 24·σ(3) = 96 are recovered symbolically, with the small σ(2)=3, σ(3)=4 facts by kernel decide (no native_decide, so no Lean.ofReduceBool).",
