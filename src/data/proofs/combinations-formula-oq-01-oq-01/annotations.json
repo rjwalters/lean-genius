@@ -20,6 +20,45 @@
     ]
   },
   {
+    "id": "ann-combinatorial-meaning",
+    "proofId": "combinations-formula-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 43 },
+    "type": "concept",
+    "title": "Why Fibonacci Appears: Tilings and Pascal's Rule",
+    "content": "The proof here is a reindexing of a Mathlib lemma, but the *reason* the diagonal sum is Fibonacci is combinatorial. Count the tilings of a $1 \\times n$ strip by unit squares and dominoes: a tiling using $j$ dominoes uses $n - 2j$ squares, hence $n - j$ tiles in total, and choosing which $j$ of those tiles are dominoes gives $\\binom{n-j}{j}$ tilings. Summing over $j$ counts *all* tilings, and that count satisfies the Fibonacci recurrence (a strip ends in either a square or a domino), so it equals $F_{n+1}$. The same recurrence appears algebraically through Pascal's rule $\\binom{n-j}{j} = \\binom{n-1-j}{j} + \\binom{n-1-j}{j-1}$, which splits the level-$n$ diagonal sum into the level-$(n-1)$ and level-$(n-2)$ sums — exactly $F_{n+1} = F_n + F_{n-1}$. A direct Lean formalization of this bijection is left as one of the entry's open questions.",
+    "mathContext": "$\\#\\{\\text{square/domino tilings of }1\\times n\\} = \\sum_{j} \\binom{n-j}{j} = F_{n+1}$; Pascal's rule reproduces $F_{n+1} = F_n + F_{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "domino tilings",
+      "combinatorial proof",
+      "Pascal's rule",
+      "Fibonacci recurrence"
+    ],
+    "prerequisites": [
+      "binomial coefficients as counts",
+      "the Fibonacci recurrence"
+    ]
+  },
+  {
+    "id": "ann-finite-support",
+    "proofId": "combinations-formula-oq-01-oq-01",
+    "range": { "startLine": 33, "endLine": 35 },
+    "type": "technique",
+    "title": "Automatic Finiteness From Vanishing Binomials",
+    "content": "Both theorems sum over the full `Finset.range (n + 1)`, yet the shallow diagonal only has $\\lfloor n/2 \\rfloor + 1$ nonzero terms. No explicit truncation is needed: `Nat.choose (n - j) j` is definitionally $0$ as soon as the lower index exceeds the upper, i.e. once $2j > n$. Summing over the convenient bound $j \\le n$ therefore introduces only honest zeros and keeps the index algebra clean — this is what lets the antidiagonal sum and the reflected range sum line up term-for-term without case splits. Working over `range (n + 1)` rather than `range (n/2 + 1)` is a deliberate convenience that the vanishing of out-of-support binomials makes free.",
+    "mathContext": "$\\binom{n-j}{j} = 0$ for $2j > n$, so $\\sum_{j=0}^{n} \\binom{n-j}{j} = \\sum_{j=0}^{\\lfloor n/2 \\rfloor} \\binom{n-j}{j}$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Nat.choose support",
+      "vanishing binomial coefficients",
+      "Finset.range",
+      "padding with zeros"
+    ],
+    "prerequisites": [
+      "the convention Nat.choose a b = 0 for b > a"
+    ]
+  },
+  {
     "id": "ann-mirror-form",
     "proofId": "combinations-formula-oq-01-oq-01",
     "range": { "startLine": 30, "endLine": 35 },
