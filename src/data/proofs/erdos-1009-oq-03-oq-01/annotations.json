@@ -7,7 +7,7 @@
     "title": "Decidable K₄ Model: Triangles and Edges",
     "content": "The complete graph $K_4$ is modeled concretely on `Fin 4`: `triangles` are the four 3-element vertex subsets (every 3 vertices of a complete graph span a triangle) and `allEdges` are the six 2-element subsets. `edgesOf T` is a triangle's three edges, `T.powersetCard 2`. Keeping the model finite and decidable lets the structural facts (`triangles_card = 4`, `allEdges_card = 6`, each edge in $\\le 2$ triangles) be discharged by kernel-checked `decide`, so no compiler trust (`native_decide`) is needed.",
     "mathContext": "$K_4$ has $\\binom{4}{3} = 4$ triangles and $\\binom{4}{2} = 6$ edges; each edge lies in exactly $4 - 2 = 2$ triangles.",
-    "significance": "foundational",
+    "significance": "key",
     "relatedConcepts": ["complete graph", "powersetCard", "decidability", "finite combinatorics"],
     "prerequisites": ["finite sets", "binomial coefficients", "Lean 4 Finset"]
   },
