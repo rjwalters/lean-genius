@@ -107,3 +107,49 @@ prime-counting fact provable by `decide` on small thresholds. This is the record
 ### Next steps
 - The ≥7 bound is a lower bound on ω(n); the full numeric minimality (smallest = 5391411025)
   is a separate, harder claim and remains open.
+
+## Session 2026-06-28 (researcher-1) — ω(n)≥7 upgraded to a numeric magnitude bound on n
+
+**Mode**: REVISIT (RICH; ≥7-prime-factors bound already closed) · **Outcome**: progress
+(first numeric lower bound on `n` itself). New file
+`Proofs/AbundantNumberOQ02OQ01LowerBound.lean` (≈190 LOC, 0 sorries, 0 axioms).
+Verified standalone via host `lake env lean` (Docker host down): built the dep oleans
+(`Minimality`, `Unconditional`) into `.lake/build/lib/lean/Proofs/` with `lake env lean -o`,
+then compiled the file — `#print axioms odd_abundant_coprime_three_ge` = `[propext,
+Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`). Like its siblings
+this chain is **not** registered in `Proofs.lean` (verified standalone, by project convention).
+
+### What I did
+Upgraded the prior `ω(n) ≥ 7` result to a lower bound on the number itself:
+`odd_abundant_coprime_three_ge : Odd n → ¬3∣n → Nat.Abundant n → 37182145 ≤ n`
+(= `5·7·11·13·17·19·23`, the product of the seven smallest primes ≥ 5).
+
+### Key technique (what worked)
+- **`domProd`** — the order-dual of the companion's `dom`: along a `GapList` whose entries
+  are forced apart by primality, a strictly increasing list of primes that dominates the
+  gap list entrywise has product **≥** the gap-list product (raw monotone product bounded
+  *below*, vs `dom`'s antitone weight `p/(p−1)` bounded *above*). Same recursion, opposite
+  direction; over ℕ it is cleaner than `dom` — `Nat.mul_le_mul` needs no nonneg side goals.
+- Reused the existing gap machinery verbatim (`GapList`, `gap5..gap17`, the floor/Pairwise
+  hypotheses); only added `gap19` (no prime in (19,23)) and `gapList_canon7`.
+- Radical-divides-`n`: `Nat.prod_primeFactors_dvd n` gives `∏_{p∣n} p ∣ n`, so
+  `n ≥ ∏_{p∣n} p` (`Nat.le_of_dvd`, `n ≠ 0` from `ω(n) ≥ 7`). The radical is the product of
+  ≥7 distinct primes ≥5, hence ≥ the seven-smallest product by `domProd`.
+- Sorted-list product = radical: `Finset.sort_perm_toList` + `Finset.prod_map_toList`.
+
+### Honest status
+A **partial** lower bound. The true minimum `5391411025` is ~145× larger because the witness
+`5²·7·11·13·17·19·23·29` is **not squarefree** — the radical bound cannot see exponents or the
+extra 8th prime. The radical bound is the natural structural milestone the prime-count
+machinery delivers; closing to exact minimality needs the size/exponent structure (genuinely
+harder, still open).
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01LowerBound.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles)
+
+### Next steps
+- Push beyond the radical: incorporate exponents / the ≥8th-prime obligation to raise the
+  bound toward `5391411025`. Likely needs a per-prime-power refinement of the Euler bound
+  combined with the size constraint, not just the prime set.
