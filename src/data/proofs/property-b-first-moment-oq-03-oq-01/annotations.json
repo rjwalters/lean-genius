@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-pbfm-oq03oq01-monoprob",
+    "proofId": "property-b-first-moment-oq-03-oq-01",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "definition",
+    "title": "The p-Biased Monochromatic Probability",
+    "content": "`monoProb k p := p^k + (1-p)^k` models the probability that a fixed edge of size `k` is monochromatic when each vertex is colored Red independently with probability `p` (and Blue with probability `1-p`): one of the two colors must hit all `k` vertices, contributing `p^k` (all Red) and `(1-p)^k` (all Blue). This generalizes the parent file's symmetric count, where every edge is monochromatic with probability `2·2^(-k) = 2^(1-k)`. The simp lemma `monoProb_half` evaluates the symmetric case `monoProb k (1/2) = 2·(1/2)^k`."
+  },
+  {
+    "id": "ann-pbfm-oq03oq01-ge",
+    "proofId": "property-b-first-moment-oq-03-oq-01",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "theorem",
+    "title": "Asymmetry Never Helps (monoProb_ge)",
+    "content": "`monoProb_ge` is the crux: for `k ≥ 1` and any bias `p ∈ [0,1]`, `2·(1/2)^k ≤ monoProb k p`. The proof is one application of `convexOn_pow` (convexity of `x ↦ x^k` on `[0,∞)`): with `p` and `1-p` both in `Ici 0` and weights `a = b = 1/2`, convexity gives `((1/2)p + (1/2)(1-p))^k ≤ (1/2)p^k + (1/2)(1-p)^k`. The argument collapses to `(1/2)^k` (via `ring`), yielding `(1/2)^k ≤ (1/2)·monoProb k p`, i.e. `2·(1/2)^k ≤ monoProb k p`. Since `2·(1/2)^k = 2^(1-k)`, the symmetric value is a global lower bound — biasing the coloring can only raise the monochromatic probability."
+  },
+  {
+    "id": "ann-pbfm-oq03oq01-lt",
+    "proofId": "property-b-first-moment-oq-03-oq-01",
+    "range": { "startLine": 87, "endLine": 104 },
+    "type": "theorem",
+    "title": "Symmetry is the Unique Optimum for k ≥ 2 (monoProb_half_lt)",
+    "content": "`monoProb_half_lt` upgrades optimality to uniqueness: for `k ≥ 2` and `p ∈ [0,1]` with `p ≠ 1/2`, `monoProb k (1/2) < monoProb k p`. The bias condition `p ≠ 1/2` is exactly `p ≠ 1-p`, the distinctness needed to apply `strictConvexOn_pow` (strict convexity of `x ↦ x^k` for `k ≥ 2`) at the points `p` and `1-p`. The strict midpoint inequality then gives `(1/2)^k < (1/2)·monoProb k p`. So any nonzero bias *strictly* increases the monochromatic probability, hence strictly *lowers* the first-moment threshold `1/monoProb k p`."
+  },
+  {
+    "id": "ann-pbfm-oq03oq01-threshold",
+    "proofId": "property-b-first-moment-oq-03-oq-01",
+    "range": { "startLine": 106, "endLine": 118 },
+    "type": "theorem",
+    "title": "The Symmetric Threshold is Exactly 2^(k-1) (threshold_half)",
+    "content": "`threshold_half` anchors the optimum to Erdős' original bound: `1 / monoProb k (1/2) = 2^(k-1)` for `k ≥ 1`. Rewriting `monoProb k (1/2) = 2·(1/2)^k` and `(1/2)^k = 1/2^k` (`one_div_pow`), then clearing denominators (`field_simp`) reduces the claim to `2·2^(k-1) = 2^k` (`pow_succ`). Combined with `monoProb_half_le`, this shows no bias `p` raises the threshold above `2^(k-1)`: the asymmetric first moment cannot beat Erdős, so the Radhakrishnan–Srinivasan gain of order √(k/log k) must come entirely from the recoloring step. `expected_mono_half_le` records the expectation form: an m-edge hypergraph's expected monochromatic-edge count `m·monoProb k p` is minimized at `p = 1/2`."
+  }
+]

@@ -66,7 +66,38 @@ RS formalization is a **moonshot** in Lean 4.26.0:
   effort. Until (1)–(3) exist, further single-round first-moment work adds nothing new
   beyond the criterion proved this session.
 
+## Session (2026-06-28, researcher-4): asymmetry cannot beat Erdős (RS sub-question, NEGATIVE)
+
+Addressed the **first follow-up open question** of the merged oq-03 (formalize the RS
+recoloring sharpening) by settling its **asymmetry ingredient negatively**. The RS program
+has two parts — (1) biasing/asymmetry of the random coloring, (2) the recoloring repair.
+This session proves part (1) is **worthless on its own**, sharply isolating the recoloring
+step as the sole remaining target. Published as new gallery entry
+`property-b-first-moment-oq-03-oq-01`.
+
+New file `PropertyBFirstMomentAsymmetric.lean` (125 lines, `ProbMethod.PropertyB.Asymmetric`,
+**0 sorries / 0 axioms**, `#print axioms` = propext/Classical.choice/Quot.sound only; no
+`native_decide`, no `Lean.ofReduceBool`):
+
+* `monoProb k p := p^k + (1-p)^k` — the p-biased monochromatic probability of a k-edge.
+* `monoProb_ge` — `2·(1/2)^k ≤ monoProb k p` for all `p ∈ [0,1]`, `k ≥ 1`. One application of
+  Mathlib's `convexOn_pow` (convexity of `x ↦ x^k` on `Ici 0`) to the midpoint of `p`, `1-p`.
+* `monoProb_half_lt` — for `k ≥ 2`, `p ≠ 1/2` ⟹ strict increase, via `strictConvexOn_pow`.
+  So `p = 1/2` is the **unique** first-moment optimum.
+* `threshold_half` — `1/monoProb(k,1/2) = 2^(k-1)`, exactly Erdős' bound. No bias lifts the
+  first-moment threshold above `2^(k-1)`.
+* `expected_mono_half_le` — the expectation form: `m·monoProb(k,p)` minimized at `p = 1/2`.
+
+**Key takeaway**: biasing the random coloring can only *raise* the monochromatic probability
+(convexity, symmetric about 1/2), so the entire RS gain of order `√(k/log k)` is attributable
+to the recoloring step alone — confirming and sharpening the prior session's "recoloring is
+the moonshot" verdict by formally excluding the asymmetry shortcut. No Mathlib gap for this
+sub-result (`convexOn_pow`/`strictConvexOn_pow` suffice).
+
 ## Verification
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PropertyBFirstMomentOQ03.lean`
 exits 0 (~45s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`
-checked by appending the print lines, `env lean`, then reverting.
+checked by appending the print lines, `env lean`, then reverting. The researcher-4 asymmetry
+file `PropertyBFirstMomentAsymmetric.lean` was built clean via
+`./proofs/scripts/docker-build.sh Proofs.PropertyBFirstMomentAsymmetric` and axiom-checked
+the same way.
