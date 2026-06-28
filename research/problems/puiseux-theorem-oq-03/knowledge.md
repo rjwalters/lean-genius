@@ -249,3 +249,59 @@ session-4 file, missing session 5's edgeWidths). Fix: created a *separate* workt
 symlinked its `proofs/.lake` → main repo `.lake` for prebuilt oleans, edited +
 committed there. Verify recipe unchanged otherwise:
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`.
+
+## Session 3 (2026-06-28, researcher-6): termination measure + full hull existence
+
+Extended the file from 834→947 lines (+3 theorems, +1 worked corollary; all still 0
+sorries / 0 axioms — `#print axioms` lists only propext/Classical.choice/Quot.sound
+on every new result). This closes the two gaps the file itself flagged: the recursion
+"never builds the chain", and S2-B (termination measure) was deferred.
+
+New content — **the recursion runs to completion**:
+
+* `filter_right_length_lt` (**S2-B, the termination measure**): for `p ∈ pts` with
+  `p.1 < q.1`, the right restriction `pts.filter (q.1 ≤ ·.1)` is strictly shorter than
+  `pts`. Proof: the filter is a `List.Sublist`, so `length ≤`; if equal,
+  `List.Sublist.eq_of_length` forces `filter = pts`, but `p` is dropped (`¬ q.1 ≤ p.1`)
+  — `omega` contradiction. This is exactly the well-founded measure for the hull
+  recursion.
+* `exists_spanning_chain` (**existence of the full Newton polygon**): for any support
+  with **distinct indices** (`∀ a b ∈ pts, a.1 = b.1 → a = b`), there is a complete
+  chain of lower edges of the *full* support from the left endpoint `p` (min index) to
+  the right endpoint `top` (max index). Proven by **the verified hull recursion itself**
+  (`termination_by pts.length`, `decreasing_by exact filter_right_length_lt hp hpq_lt`):
+  if `p = top`, single-point polygon; else peel the dominant edge `p → q`
+  (`exists_isLowerEdge_of_leftmost`), recurse on the strictly-smaller right restriction
+  (distinct indices preserved under filter; `q` is its new leftmost by distinctness;
+  `top` stays rightmost), and splice with `isLowerEdge_chain_extend`.
+* Worked examples: `threeVertex_termination` (cut at index 1 shrinks length 3→2) and
+  `threeVertex_exists_spanning` (the chain `(0,2)→(1,0)→(3,1)` is *constructed* by the
+  recursion — re-deriving the hand-built `threeVertex_chain` automatically).
+
+**Why this matters.** Every prior result in the file (`edgeSlopes_pairwise_le`,
+`sum_edgeWidths_eq_degree`, `sum_slope_mul_width`) consumes a `List.IsChain (IsLowerEdge
+pts)` as a *hypothesis*. `exists_spanning_chain` is the first theorem that *produces* one
+for an arbitrary support set, so the convexity/degree/valuation results now apply to a
+chain that genuinely exists rather than one assumed into being. Together with
+`filter_right_length_lt` this is the verified, terminating divide-and-conquer hull
+construction — the algorithmic backbone of Newton–Puiseux, modulo the still-missing
+valuation API that would connect a polynomial to its support list.
+
+### Gotchas (Lean 4 / Mathlib 4.26.0)
+
+* **`<+` sublist notation did not parse** in this file's context (`pts.filter (...) <+
+  pts` was read as `< +`). Use the explicit `List.Sublist (...) pts` instead.
+* `List.filter_sublist` takes **no explicit list argument** in this Mathlib
+  (`List.filter_sublist : (l.filter p).Sublist l`) — write `List.filter_sublist`, not
+  `List.filter_sublist _`.
+* Recursive *theorem* with `termination_by pts.length` / `decreasing_by` works cleanly;
+  the decreasing goal is literally `(filter ...).length < pts.length`, discharged by the
+  termination lemma with the in-scope `hp`/`hpq_lt`.
+
+### Distinct-indices hypothesis is honest, not a cheat
+
+`exists_spanning_chain` assumes the support has one valuation per `Y`-degree
+(`a.1 = b.1 → a = b`). This is *definitional* for a genuine polynomial support
+`{(i, v(aᵢ)) : aᵢ ≠ 0}` — each exponent `i` contributes exactly one point — so it adds
+no real strength; it is what lets `q` be the unique leftmost point of the right
+restriction so the recursion's invariants hold.

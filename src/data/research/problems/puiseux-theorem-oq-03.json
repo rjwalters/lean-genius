@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-06-28, researcher-5): hull-construction recursion STEP verified 0-axiom. isLowerEdge_of_right (global-support transfer) + chain_transfer + isLowerEdge_chain_extend supply the inductive step of Newton-polygon hull construction — the principal combinatorial input previously missing. Full exists_hull existence and the analytic Newton polygon theorem remain open.",
+    "progressSummary": "PROGRESS (S3, researcher-6): S2-B termination measure proven (filter_right_length_lt) and the full Newton-polygon hull recursion now built and proven complete (exists_spanning_chain) — the lower-edge chain the rest of the file assumed is now constructed, not hypothesized. 947 lines, 49 thms, 0 sorries/0 axioms. Remaining open: Newton polygon theorem (slopes = root valuations, needs valuation API on K((x))[Y]) and S2-C complexity bound.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -46,7 +46,10 @@
       "isLowerEdge_of_right (PuiseuxTheoremOQ03.lean): lower edge of right restriction with slope ≥ dominant slope ⇒ lower edge of full support",
       "chain_transfer (PuiseuxTheoremOQ03.lean): propagates dominant-slope bound along a whole right sub-hull via edgeSlope_mono; upgrades every edge to full-support edge",
       "isLowerEdge_chain_extend (PuiseuxTheoremOQ03.lean): one verified peel of Newton-Puiseux recursion — prepend dominant edge to right sub-hull chain ⇒ IsChain (IsLowerEdge pts) over full support",
-      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator"
+      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator",
+      "filter_right_length_lt in PuiseuxTheoremOQ03.lean (termination measure / S2-B)",
+      "exists_spanning_chain in PuiseuxTheoremOQ03.lean (full hull existence via verified recursion)",
+      "threeVertex_termination + threeVertex_exists_spanning (worked examples)"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -58,7 +61,9 @@
       "slope × width = vertical drop: edgeSlope p q · (q.1−p.1) = q.2−p.2 because the slope denominator IS the width — the per-edge bridge coupling valuations (slopes) to multiplicities (widths)",
       "Capstone bookkeeping: Σ (slopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2; equivalently Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading), the valuation of the product of all roots",
       "The polygon now reads off ALL combinatorial Newton-polygon data from one vertex chain: sorted valuations (edgeSlopes_pairwise_le), total multiplicity (sum_edgeWidths_eq_degree), AND sum-of-valuations-with-multiplicity (neg_sum_slope_mul_width)",
-      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound."
+      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound.",
+      "S2-B SOLVED: filter_right_length_lt is the termination measure — peeling the dominant edge and recursing on pts.filter (q.1 ≤ ·.1) strictly shrinks support length (the left endpoint is always dropped). Proven via List.Sublist.eq_of_length.",
+      "exists_spanning_chain BUILDS the full Newton polygon: distinct-index support ⇒ a complete lower-edge chain from left to right endpoint, via well-founded recursion on support length (termination_by + filter_right_length_lt). First theorem to PRODUCE the IsChain (IsLowerEdge) that all convexity/degree/valuation results consumed as hypothesis."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",

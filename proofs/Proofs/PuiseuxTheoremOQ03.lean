@@ -831,4 +831,117 @@ theorem threeVertex_chain_via_extend :
     (fun r hr => by fin_cases hr <;> norm_num)
     threeVertex_rightHull
 
+/-! ### Termination of the hull recursion, and existence of the full polygon
+
+`isLowerEdge_chain_extend` performs *one* peel of the Newton–Puiseux recursion but
+assumes the right sub-hull is already built.  The two results here close the loop.
+
+`filter_right_length_lt` is the **termination measure** (the deferred S2-B): peeling
+the dominant edge `p → q` and recursing on the right restriction
+`pts.filter (q.1 ≤ ·.1)` strictly shrinks the support, because the left endpoint `p`
+(index `< q.1`) is dropped.  This is exactly the well-founded measure that makes the
+divide-and-conquer hull construction terminate.
+
+`exists_spanning_chain` then runs the recursion to completion: for any support set
+with **distinct indices** (one valuation per `Y`-degree, as a genuine polynomial
+support always has) there exists a chain of lower edges of the *full* support running
+from the left endpoint all the way to the right endpoint.  This is the existence half
+of the Newton polygon — the chain that the convexity (`edgeSlopes_pairwise_le`),
+degree (`sum_edgeWidths_eq_degree`) and valuation (`sum_slope_mul_width`) theorems all
+take as given is now *built*, not assumed.  The proof *is* the verified recursion:
+peel the dominant edge (`exists_isLowerEdge_of_leftmost`), recurse on the
+strictly-smaller right restriction (terminating by `filter_right_length_lt`), and
+splice (`isLowerEdge_chain_extend`). -/
+
+/-- **Termination measure for the hull recursion (S2-B).**  If `p` is a support point
+strictly left of the cut index `q.1`, then the right restriction
+`pts.filter (q.1 ≤ ·.1)` is strictly shorter than `pts`: at least `p` is dropped.
+This is the well-founded measure underlying the Newton–Puiseux recursion — each peel
+removes the points left of the cut, and there is always at least one (the left
+endpoint). -/
+theorem filter_right_length_lt {pts : List SupportPoint} {p q : SupportPoint}
+    (hp : p ∈ pts) (hpq : p.1 < q.1) :
+    (pts.filter (fun r => decide (q.1 ≤ r.1))).length < pts.length := by
+  have hsub : List.Sublist (pts.filter (fun r => decide (q.1 ≤ r.1))) pts :=
+    List.filter_sublist
+  rcases lt_or_eq_of_le hsub.length_le with h | h
+  · exact h
+  · exfalso
+    have heq : pts.filter (fun r => decide (q.1 ≤ r.1)) = pts := hsub.eq_of_length h
+    have hmem : p ∈ pts.filter (fun r => decide (q.1 ≤ r.1)) := by rw [heq]; exact hp
+    have hge : q.1 ≤ p.1 := by simpa using (List.mem_filter.mp hmem).2
+    omega
+
+/-- **Existence of the full Newton polygon.**  Any support set with distinct indices
+admits a complete chain of lower edges of the *full* support, running from the left
+endpoint `p` (a minimum-index point) to the right endpoint `top` (a maximum-index
+point).  This is the existence theorem the rest of the file assumed: the convexity,
+degree-counting and valuation-bookkeeping results all consume a lower-edge chain, and
+this constructs one.
+
+The proof *is* the Newton–Puiseux hull recursion.  If `p = top` the polygon is a
+single point.  Otherwise peel the dominant (least-slope) edge `p → q` out of the left
+endpoint (`exists_isLowerEdge_of_leftmost`), recurse on the right restriction
+`pts.filter (q.1 ≤ ·.1)` — which has distinct indices, has `q` as its new left
+endpoint and `top` still as its right endpoint, and is strictly shorter
+(`filter_right_length_lt`, the termination measure) — and splice the dominant edge
+back on with `isLowerEdge_chain_extend`. -/
+theorem exists_spanning_chain {pts : List SupportPoint}
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b) {p top : SupportPoint}
+    (hp : p ∈ pts) (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1)
+    (htop : top ∈ pts) (hright : ∀ q ∈ pts, q.1 ≤ top.1) :
+    ∃ vs, List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast (List.cons_ne_nil _ _) = top := by
+  by_cases hpt : p = top
+  · exact ⟨[], List.isChain_singleton _, by subst hpt; rfl⟩
+  · obtain ⟨q, hedge⟩ :=
+      exists_isLowerEdge_of_leftmost hp ⟨top, htop, fun h => hpt h.symm⟩ hleft
+    obtain ⟨_, hq_mem, hpq_lt, m₀, b₀, hp_line, hq_line, hsupp0⟩ := hedge
+    have hdist' : ∀ a ∈ pts.filter (fun r => decide (q.1 ≤ r.1)),
+        ∀ b ∈ pts.filter (fun r => decide (q.1 ≤ r.1)), a.1 = b.1 → a = b := by
+      intro a ha b hb hab
+      exact hdist a (List.mem_filter.mp ha).1 b (List.mem_filter.mp hb).1 hab
+    have hq_filt : q ∈ pts.filter (fun r => decide (q.1 ≤ r.1)) :=
+      List.mem_filter.mpr ⟨hq_mem, by simp⟩
+    have hleft' : ∀ r ∈ pts.filter (fun r => decide (q.1 ≤ r.1)), r ≠ q → q.1 < r.1 := by
+      intro r hr hrq
+      have hr_pts : r ∈ pts := (List.mem_filter.mp hr).1
+      have hge : q.1 ≤ r.1 := by simpa using (List.mem_filter.mp hr).2
+      rcases lt_or_eq_of_le hge with h | h
+      · exact h
+      · exact absurd (hdist r hr_pts q hq_mem h.symm) hrq
+    have htop_filt : top ∈ pts.filter (fun r => decide (q.1 ≤ r.1)) :=
+      List.mem_filter.mpr ⟨htop, by simpa using hright q hq_mem⟩
+    have hright' : ∀ r ∈ pts.filter (fun r => decide (q.1 ≤ r.1)), r.1 ≤ top.1 :=
+      fun r hr => hright r (List.mem_filter.mp hr).1
+    obtain ⟨vs, hchain', hlast'⟩ :=
+      exists_spanning_chain hdist' hq_filt hleft' htop_filt hright'
+    refine ⟨q :: vs, ?_, ?_⟩
+    · exact isLowerEdge_chain_extend hp hq_mem hpq_lt hp_line hq_line hsupp0 hchain'
+    · rw [List.getLast_cons (List.cons_ne_nil q vs)]; exact hlast'
+termination_by pts.length
+decreasing_by exact filter_right_length_lt hp hpq_lt
+
+/-! ### Worked example: the recursion terminates and builds the polygon
+
+The two theorems above, exercised on the running three-vertex example. -/
+
+/-- **Termination measure in action.**  Peeling the cut at index `1` from the
+three-vertex example drops the left endpoint `(0,2)`, so the right restriction
+`[(1,0),(3,1)]` is strictly shorter: `2 < 3`. -/
+theorem threeVertex_termination :
+    (threeVertex.filter (fun r => decide ((1 : ℕ) ≤ r.1))).length < threeVertex.length := by
+  rw [threeVertex_filter]; decide
+
+/-- **The Newton polygon of the three-vertex example, built by the recursion.**
+`exists_spanning_chain` constructs the complete lower-edge chain from the left endpoint
+`(0,2)` to the right endpoint `(3,1)` automatically — no chain supplied by hand. -/
+theorem threeVertex_exists_spanning :
+    ∃ vs, List.IsChain (IsLowerEdge threeVertex) (((0, 2) : SupportPoint) :: vs) ∧
+      (((0, 2) : SupportPoint) :: vs).getLast (List.cons_ne_nil _ _) = (3, 1) := by
+  refine exists_spanning_chain ?_ (by simp [threeVertex]) ?_ (by simp [threeVertex]) ?_
+  · intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all
+  · intro q hq hne; fin_cases hq <;> simp_all
+  · intro q hq; fin_cases hq <;> decide
+
 end PuiseuxTheoremOQ03
