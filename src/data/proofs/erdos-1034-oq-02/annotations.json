@@ -1,5 +1,17 @@
 [
   {
+    "id": "erdos-1034-oq-02-triangle-adjcount",
+    "proofId": "erdos-1034-oq-02",
+    "range": { "startLine": 44, "endLine": 71 },
+    "type": "definition",
+    "title": "The Triangle Structure and the Adjacency Counter",
+    "content": "A Triangle G bundles three distinct vertices together with all three distinctness proofs (ne12, ne23, ne13) and all three adjacency proofs (adj12, adj23, adj13). Carrying the proofs in the structure makes the object self-certifying: once you hold a Triangle G you cannot accidentally reason about a degenerate or non-edge triple. adjacentCount G T y then counts how many of T's three vertices are adjacent to y, implemented as the cardinality of the filter T.vertices.filter (G.Adj y). Every downstream notion is phrased through this one counter — y is a good neighbour precisely when adjacentCount G T y ≥ 2 — which is what keeps the finite sharpness check decidable.",
+    "mathContext": "$$\\mathrm{adjacentCount}(T, y) = \\bigl|\\{v \\in \\{v_1,v_2,v_3\\} : y \\sim v\\}\\bigr|.$$",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle", "adjacency count", "Finset.filter", "self-certifying structure"],
+    "prerequisites": ["SimpleGraph.Adj", "Finset.card", "structures with proof fields"]
+  },
+  {
     "id": "erdos-1034-oq-02-good-neighbor",
     "proofId": "erdos-1034-oq-02",
     "range": { "startLine": 75, "endLine": 79 },

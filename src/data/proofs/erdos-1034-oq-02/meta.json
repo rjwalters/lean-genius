@@ -36,6 +36,16 @@
       "targetId": "erdos-1034",
       "relationship": "extends",
       "description": "The parent problem: a graph with > n²/4 edges need NOT contain a triangle with > (1/2 - o(1))n good neighbours (disproved by Ma–Tang). The known bounds are (1/6 - o(1))n ≤ h(n) ≤ (2 - √(5/2) + o(1))n. OQ-02 asks whether the n/6 lower bound — which comes from the book lemma — can be improved."
+    },
+    {
+      "targetId": "erdos-1010-oq-01",
+      "relationship": "related",
+      "description": "A neighbouring triangle-counting extremal question (Erdős #1010): how many triangles a graph past the n²/4 edge threshold must contain. Both problems start from the same Turán/Mantel boundary > n²/4 and ask what the surplus edges force — there a count of triangles, here a triangle rich in good neighbours — and both pin down the exact crossover where the elementary bound becomes sharp."
+    },
+    {
+      "targetId": "erdos-1010",
+      "relationship": "related",
+      "description": "Erdős #1010 (triangle supersaturation): the parent of #1010-oq-01, quantifying how the triangle count grows once the edge count exceeds the Mantel threshold n²/4. The book lemma used here is itself a supersaturation statement — past n²/4 edges some edge lies in many triangles — so the two problems share the book/Turán counting engine."
     }
   ],
   "overview": {
@@ -46,7 +56,8 @@
       "**The book-to-good-neighbour bridge is a clean subset inclusion**: every page other than the chosen spine vertex p₀ lands in `goodNeighbors`, because a page is adjacent to both spine endpoints a and b — two of the triangle's three vertices. The lower bound |P|-1 is then just `card (P.erase p₀)`.",
       "**The bound is sharp for pure books**: in the pure book graph (pages joined only to the spine, never to each other), the spine triangle {a,b,p₀} has good neighbours that are *exactly* the remaining pages — no vertex outside P∪{a,b} is adjacent to anything, and pages see only the spine. So goodNeighborCount = |P| - 1 with equality, not merely ≥.",
       "**Equality is the point for OQ-02**: because the book method converts page count into good-neighbour count one-for-one, the n/6 floor is precisely the largest book the Turán count guarantees. Any improvement to h(n) beyond n/6 must therefore exploit structure the book lemma ignores — this is what makes the open question 'beyond the book lemma'.",
-      "**Axiom-free finite verification**: the sharpness witness is discharged by ordinary `decide` over `Fin 5`, so the entry avoids the `Lean.ofReduceBool` axiom that `native_decide` would introduce. The whole file is verified with only the three foundational axioms."
+      "**Axiom-free finite verification**: the sharpness witness is discharged by ordinary `decide` over `Fin 5`, so the entry avoids the `Lean.ofReduceBool` axiom that `native_decide` would introduce. The whole file is verified with only the three foundational axioms.",
+      "**Good-neighbourhood is a single integer threshold, not a structural condition**: the entire problem is encoded through one counter, `adjacentCount G T y = |{v ∈ T : y ∼ v}|`, with 'good' meaning that counter reaches 2. This is why the finite sharpness check collapses to a decidable computation over `Fin 5` — triangle, page, and good neighbour are all filter-cardinality comparisons, so `decide` evaluates them directly with no real-analytic content. The same uniformity is what lets the general bridge proof reduce to a subset inclusion `P.erase p₀ ⊆ goodNeighbors`."
     ]
   },
   "sections": [
@@ -74,5 +85,15 @@
       "summary": "An explicit pure book graph on Fin 5 (spine {0,1}, pages {2,3,4}). book_goodNeighbors_eq: the spine triangle {0,1,2} has good neighbours exactly {3,4}. book_goodNeighborCount_eq: goodNeighborCount = |pages| - 1 = 2. Both by decide (no native_decide).",
       "mathContext": "For the pure book graph the lower bound is met with equality — the book method delivers exactly its page count, $|P|-1$ good neighbours, neither more nor fewer."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "This entry isolates and verifies, axiom-free, the engine behind the $(1/6 - o(1))n$ lower bound for Erdős #1034. The general bridge `book_le_goodNeighborCount` shows that a book of $|P|$ pages with spine $\\{a,b\\}$ forces a triangle on the spine with at least $|P|-1$ good neighbours, via the clean subset inclusion $P.\\mathrm{erase}\\,p_0 \\subseteq \\mathrm{goodNeighbors}$. The companion `book_goodNeighborCount_eq` proves this is sharp: on the pure book graph (pages joined only to the spine) the count is *exactly* $|P|-1$, checked on an explicit `Fin 5` witness by ordinary `decide`. Together they pin the book method's output to its page count, one-for-one.",
+    "implications": "Because the book argument converts page count into good-neighbour count with equality, the $n/6$ floor is precisely the largest output the book lemma can yield: a Turán-type count guarantees a book of size $\\geq n/6$, and the sharpness result certifies that the book mechanism extracts no surplus beyond that. This reframes OQ-02 with full rigour — any improvement to $h(n)$ past $n/6$ must exploit structure the book lemma discards (flag algebras, regularity, multi-spine or fractional counting), because the single-spine book argument is now formally known to be tight. The formalization thus converts the informal 'the book lemma gives $n/6$' into the sharper 'the book lemma gives no more than $n/6$'.",
+    "openQuestions": [
+      "The headline OQ-02: can $h(n) \\geq (1/6 + \\varepsilon)n$ be established by any method for some fixed $\\varepsilon > 0$, or is $n/6$ a genuine barrier for book-style arguments?",
+      "The wider gap is open: $h(n)$ lies in $[(1/6 - o(1))n,\\ (2 - \\sqrt{5/2} + o(1))n \\approx 0.419n]$. Even deciding whether the truth sits near $n/6$ or near the Ma–Tang construction is unknown.",
+      "Does a weighted or fractional book argument — counting pages with multiplicity across many spines simultaneously — beat the single-spine $n/6$ floor that this entry shows is tight per spine?",
+      "Is there a stability companion: are pure book graphs the *only* configurations meeting the $|P|-1$ bound with equality, or do structurally different graphs also realize it?"
+    ]
+  }
 }
