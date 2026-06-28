@@ -1,0 +1,199 @@
+{
+  "id": "erdos-10-wip-01-oq-01",
+  "title": "Erdős #10: Bounded-Offset Certification — 906 Needs Exactly Three Powers of Two",
+  "slug": "erdos-10-wip-01-oq-01",
+  "description": "Answers the open question left by erdos-10-wip-01: certify a Granville–Soundararajan witness without native_decide. The key is the bounded-offset reformulation isPrimePlusKPowers_iff_offset — substituting m = n−p turns the prime-plus-popcount characterization's unbounded 'search all primes p ≤ n' into a search over the O((log n)^k) offsets m ≤ n with popcount m ≤ k. Applied to the smallest even integer that genuinely needs three powers of two, it gives need_exactly_three_906: 906 = 887 + 2⁰ + 2¹ + 2⁴ is a prime plus three powers, but not a prime plus at most two — the lower bound being the finite '56 offsets, all composite' claim discharged by the kernel `decide` (not native_decide). Genuinely 0-axiom (propext / Classical.choice / Quot.sound only; no Lean.ofReduceBool). Builds on the verified Erdos10WIP01 thread.",
+  "meta": {
+    "author": "Erdős & Graham (problem); Granville–Soundararajan (k=3 conjecture); formalized in Lean 4",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos10WIP01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "powers-of-two",
+      "binary",
+      "popcount",
+      "additive-combinatorics",
+      "erdos-problem"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 203,
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms need_exactly_three_906` (and `isPrimePlusKPowers_iff_offset`, `not_isPrimePlusKPowers_two_906`) reports only the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The lower-bound search is closed by the *kernel* `decide` (with `set_option maxRecDepth 100000`), NOT `native_decide`, so the result does not depend on `Lean.ofReduceBool`. Imports the verified Erdos10WIP01 file and reuses isPrimePlusKPowers_iff_popcount, RepWithAtMost, powSum, IsPrimePlusKPowers; all new results are fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Multiset.card_eq_two",
+        "description": "s.card = 2 ↔ ∃ x y, s = {x, y} — reads the two exponents off a ≤2-power offset multiset",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Nat.sub_sub_self",
+        "description": "m ≤ n → n − (n − m) = m — the involution behind the offset reformulation",
+        "module": "Mathlib.Algebra.Order.Sub.Basic"
+      },
+      {
+        "theorem": "Nat.Prime (norm_num / Decidable)",
+        "description": "Kernel-checked primality of the offset values; the bounded search is decided by `decide`",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "dateAdded": "2026-06-28",
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "parentDependencies": [
+      "Erdos10WIP01"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #10 asks whether some fixed k makes every sufficiently large integer a prime plus at most k powers of 2 — Erdős and Graham conjectured no such k exists. Granville–Soundararajan (1998) conjectured k = 3 suffices for odd integers; the companion even part allows 4. The numerical evidence rests on deciding the predicate IsPrimePlusKPowers k n on concrete inputs: the smallest even integer that genuinely needs three powers of two is 906, and Grechuk found the 10-digit 1117175146 is not a prime plus at most three powers.\n\nThe parent file erdos-10-wip-01 phrased the predicate as 'IsPrimePlusKPowers k n ↔ ∃ prime p ≤ n with popcount(n−p) ≤ k' — an O(log) check *per prime*, but still a sweep over all O(n/log n) primes below n, hopeless for the kernel at 10 digits and left as an explicit open question (certify a witness without native_decide). This file removes the obstruction by dualizing the search.",
+    "problemStatement": "Open question from erdos-10-wip-01: use the prime-plus-popcount characterization with a verified (kernel) primality check to certify a concrete Granville–Soundararajan witness without `native_decide`. This file supplies the bounded-offset reformulation that makes such a certificate finite, and discharges the smallest even three-powers witness, 906, end to end.",
+    "text": "A 203-line, fully verified (0 sorries, 0 axioms, no native_decide) file. Part I proves isPrimePlusKPowers_iff_offset: the involution p ↦ n−p turns the prime sweep into a search over offsets m ≤ n with popcount m ≤ k (only O((log n)^k) of them). Part II reads the shape of ≤2-power offsets off their exponent multiset (repWithAtMost_two_shape: 0, 2^a, or 2^a+2^b) and bounds the exponents from the value (exp_lt_ten). Part III certifies 906: the upper witness 906 = 887 + 2⁰ + 2¹ + 2⁴, and the lower bound ¬IsPrimePlusKPowers 2 906 by reducing to the finite kernel-decidable search search906 over the 56 offsets (all composite).",
+    "proofStrategy": "isPrimePlusKPowers_iff_offset rewrites with the parent's isPrimePlusKPowers_iff_popcount and applies Nat.sub_sub_self in both directions (m = n − p forward, p = n − m backward), with popcount(n − p) = popcount m and (n − m) = p prime. repWithAtMost_two_shape splits on s.card ∈ {0,1,2} (Multiset.card_eq_{zero,one,two}) and evaluates powSum on each. exp_lt_ten derives a < 10 from 2^a ≤ 906 via Nat.pow_le_pow_right and 2¹⁰ = 1024 > 906. isPrimePlus2_906_imp_search threads a hypothetical representation 906 = p + m through the shape lemma, places the (bounded) exponents into Fin 10, and lands in the decidable disjunction search906; not_isPrimePlusKPowers_two_906 refutes search906 by the kernel `decide` and takes the contrapositive. The upper witness is a direct ⟨887, prime, 19 = powSum {0,1,4}, …⟩.",
+    "keyInsights": [
+      "Dualize the search: substituting m = n − p (an involution on [0,n], since p ≤ n) turns 'search all primes p ≤ n' into 'search all offsets m ≤ n with popcount m ≤ k'. The offsets number only ∑_{j≤k} C(⌊log₂ n⌋+1, j) = O((log n)^k) — a few thousand at 10 digits versus tens of millions of primes. This is what makes any concrete witness checkable without enumerating primes.",
+      "A sum of at most two powers of two is exactly 0, 2^a, or 2^a + 2^b — read straight off the exponent multiset of cardinality ≤ 2, with no binary-representation API.",
+      "Once the offset exponents are bounded by the value (2^a ≤ n ⟹ a < ⌈log₂ n⌉), the predicate becomes a finite disjunction over Fin-indexed exponents whose only atoms are primality tests on small numbers — decidable by the kernel.",
+      "906 needs exactly three powers: 906 = 887 + 1 + 2 + 16, while every one of the 56 offsets with popcount ≤ 2 leaves 906 − offset composite. The lower bound is closed by the *kernel* `decide` (maxRecDepth 100000), so the certificate is 0-axiom — no Lean.ofReduceBool, unlike native_decide.",
+      "The 10-digit witness 1117175146 is the identical shape with ~4526 offsets; 906 is the working template, and the honest scaling route is a covering-congruence certificate (a fixed finite prime set dividing n − 2^a − 2^b − 2^c for every exponent triple)."
+    ],
+    "prerequisites": [
+      "The Erdős #10 powers-of-two thread (erdos-10-wip-01: RepWithAtMost, powSum, isPrimePlusKPowers_iff_popcount)",
+      "Multisets and their cardinality in Lean 4/Mathlib",
+      "Kernel decidability of Nat.Prime and `decide` vs `native_decide`"
+    ]
+  },
+  "sections": [
+    {
+      "id": "offset-reformulation",
+      "title": "Part I: The Bounded-Offset Reformulation",
+      "startLine": 52,
+      "endLine": 78,
+      "summary": "isPrimePlusKPowers_iff_offset: IsPrimePlusKPowers k n ↔ ∃ m ≤ n, popcount m ≤ k ∧ (n − m) prime — the involution p ↦ n − m replaces the unbounded prime sweep with a search over O((log n)^k) offsets.",
+      "mathContext": "Nat.sub_sub_self makes m = n − p a self-inverse bijection on [0,n]; popcount and primality transport across it."
+    },
+    {
+      "id": "offset-structure",
+      "title": "Part II: Structure of ≤2-Power Offsets",
+      "startLine": 79,
+      "endLine": 111,
+      "summary": "repWithAtMost_two_shape: a ≤2-power sum is 0, 2^a, or 2^a + 2^b (card-≤2 exponent multiset). exp_lt_ten: 2^a ≤ 906 ⟹ a < 10.",
+      "mathContext": "Multiset.card_eq_{zero,one,two} enumerate the offset shapes; 2¹⁰ = 1024 > 906 bounds the exponents."
+    },
+    {
+      "id": "certify-906",
+      "title": "Part III: Certifying 906 Without native_decide",
+      "startLine": 112,
+      "endLine": 170,
+      "summary": "search906 (the 56-candidate kernel-decidable disjunction), isPrimePlus2_906_imp_search, not_isPrimePlusKPowers_two_906 (lower bound by kernel `decide`), isPrimePlusKPowers_three_906 (= 887 + 1 + 2 + 16), and need_exactly_three_906 combining them.",
+      "mathContext": "The smallest even integer needing three powers of two, certified 0-axiom; `decide` (not native_decide) refutes the finite offset search."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file closes the open question from erdos-10-wip-01 at the scale where the kernel can finish: the bounded-offset reformulation isPrimePlusKPowers_iff_offset replaces the unbounded prime sweep of the Erdős #10 predicate with a finite offset search, and need_exactly_three_906 certifies — 0-axiom, with the kernel `decide` rather than native_decide — that 906 is a prime plus three powers of two but not a prime plus at most two.",
+    "implications": "The reformulation is the missing structural step for any concrete Granville–Soundararajan witness: it bounds the search at O((log n)^k) offsets, finite and (for small n) kernel-decidable. 906 is the smallest even three-powers witness and the working template for the 10-digit 1117175146, whose ~4526 offsets push the aggregate kernel check into heavy territory and motivate a covering-congruence certificate as the faithful scaling route.",
+    "openQuestions": [
+      "Scale need_exactly_three_906 to Grechuk's 1117175146 via a covering-congruence certificate: a fixed finite prime set {3,5,7,13,17,241,…} such that some member divides 1117175146 − 2^a − 2^b − 2^c for every exponent triple, replacing ~4526 kernel primality tests by a finite residue computation.",
+      "Package isPrimePlusKPowers_iff_offset as a reusable Decidable instance for IsPrimePlusKPowers k n bounded by ⌈log₂ n⌉, so any small witness is settled by `decide` with no bespoke shape lemma."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10-wip-01",
+      "relationship": "extends",
+      "description": "Parent: answers its open question (certify a witness without native_decide) by dualizing isPrimePlusKPowers_iff_popcount into a bounded offset search."
+    },
+    {
+      "targetId": "erdos-10-oq-02",
+      "relationship": "extends",
+      "description": "Builds on the reduction lemma and popcount decision procedure of the OQ-02 thread."
+    },
+    {
+      "targetId": "erdos-10",
+      "relationship": "extends",
+      "description": "Parent problem: Erdős #10, sums of a prime and powers of 2."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos10WIP01"
+    ],
+    "opens": [
+      "Erdos10OQ02",
+      "Erdos10WIP01"
+    ],
+    "namespace": "Erdos10WIP01OQ01",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "isPrimePlusKPowers_iff_offset",
+        "type": "core",
+        "description": "Bounded-offset reformulation: IsPrimePlusKPowers k n ↔ ∃ m ≤ n with popcount m ≤ k and (n − m) prime",
+        "leanType": "(k n : ℕ) → IsPrimePlusKPowers k n ↔ ∃ m, m ≤ n ∧ popcount m ≤ k ∧ (n - m).Prime"
+      },
+      {
+        "name": "need_exactly_three_906",
+        "type": "core",
+        "description": "906 is a prime plus three powers of two but not a prime plus at most two — certified 0-axiom, no native_decide",
+        "leanType": "IsPrimePlusKPowers 3 906 ∧ ¬ IsPrimePlusKPowers 2 906"
+      },
+      {
+        "name": "repWithAtMost_two_shape",
+        "type": "key",
+        "description": "A sum of at most two powers of two is 0, 2^a, or 2^a + 2^b",
+        "leanType": "RepWithAtMost 2 m → m = 0 ∨ (∃ a, m = 2 ^ a) ∨ (∃ a b, m = 2 ^ a + 2 ^ b)"
+      }
+    ],
+    "path": "Proofs/Erdos10WIP01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "isPrimePlusKPowers_iff_offset",
+      "type": "core",
+      "description": "Bounded-offset reformulation of the Erdős #10 predicate: search offsets, not primes",
+      "leanType": "(k n : ℕ) → IsPrimePlusKPowers k n ↔ ∃ m, m ≤ n ∧ popcount m ≤ k ∧ (n - m).Prime"
+    },
+    {
+      "name": "need_exactly_three_906",
+      "type": "core",
+      "description": "906 needs exactly three powers of two (= 887 + 1 + 2 + 16), certified without native_decide",
+      "leanType": "IsPrimePlusKPowers 3 906 ∧ ¬ IsPrimePlusKPowers 2 906"
+    },
+    {
+      "name": "repWithAtMost_two_shape",
+      "type": "key",
+      "description": "Shape of a ≤2-power offset: 0, 2^a, or 2^a + 2^b",
+      "leanType": "RepWithAtMost 2 m → m = 0 ∨ (∃ a, m = 2 ^ a) ∨ (∃ a b, m = 2 ^ a + 2 ^ b)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Granville, Andrew; Soundararajan, Kannan",
+      "title": "A binary additive problem of Erdős and the order of 2 mod p²",
+      "year": "1998",
+      "venue": "Ramanujan Journal 2, 283–298",
+      "note": "Conjectures k = 3 for odd integers; the concrete witness searches use the prime-plus-popcount predicate"
+    },
+    {
+      "authors": "Gallagher, Patrick X.",
+      "title": "Primes and powers of 2",
+      "year": "1975",
+      "venue": "Inventiones Mathematicae 29, 125–142",
+      "note": "Density of the representable set tends to 1"
+    },
+    {
+      "authors": "Erdős, Paul; Graham, Ronald",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "The original 'prime plus k powers of 2' problem"
+    }
+  ],
+  "sorries": 0
+}

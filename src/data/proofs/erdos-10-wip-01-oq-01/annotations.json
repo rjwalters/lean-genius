@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-offset-reformulation",
+    "proofId": "erdos-10-wip-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "Search Offsets, Not Primes",
+    "content": "isPrimePlusKPowers_iff_offset is the structural pivot of the file. The parent's isPrimePlusKPowers_iff_popcount phrases membership as 'some prime p ≤ n has popcount(n−p) ≤ k' — correct, but it ranges over all O(n/log n) primes below n. Substituting m = n − p (a self-inverse bijection on [0,n], since p ≤ n, justified by Nat.sub_sub_self) re-indexes the same search by the OFFSET m: now the condition is 'some m ≤ n with popcount m ≤ k has (n − m) prime'. Crucially the offsets with popcount ≤ k number only ∑_{j≤k} C(⌊log₂ n⌋+1, j) = O((log n)^k) — a few thousand at 10 digits, versus tens of millions of primes. The two directions of the iff are symmetric: forward sends p to m = n−p; backward sends m to p = n−m, with popcount and primality transported across the involution.",
+    "mathContext": "$\\mathrm{IsPrimePlusKPowers}\\,k\\,n \\iff \\exists m \\le n,\\ \\mathrm{popcount}\\,m \\le k \\wedge (n-m)\\ \\text{prime}$.",
+    "significance": "key",
+    "relatedConcepts": ["change of variable", "involution n − ·", "popcount", "bounded search", "Erdős–Graham problem"],
+    "prerequisites": ["isPrimePlusKPowers_iff_popcount (parent Erdos10WIP01)", "Nat.sub_sub_self", "binary popcount"]
+  },
+  {
+    "id": "ann-offset-shape",
+    "proofId": "erdos-10-wip-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "The Shape of a ≤2-Power Offset",
+    "content": "repWithAtMost_two_shape pins down exactly which offsets matter when k = 2: a sum of at most two powers of two is 0, a single power 2^a, or a pair 2^a + 2^b. The proof reads this straight off the exponent multiset s with s.card ≤ 2 — split on card ∈ {0,1,2} via Multiset.card_eq_zero / _one / _two and evaluate powSum on each shape, with no binary-representation API. exp_lt_ten supplies the second half of the finiteness: any power actually used satisfies 2^a ≤ 906, and since 2¹⁰ = 1024 > 906 (Nat.pow_le_pow_right), the exponent is below 10. Together these turn the offset search into a finite disjunction over Fin 10–indexed exponents.",
+    "mathContext": "$\\mathrm{RepWithAtMost}\\,2\\,m \\Rightarrow m \\in \\{0\\} \\cup \\{2^a\\} \\cup \\{2^a + 2^b\\}$, with $2^a \\le 906 \\Rightarrow a < 10$.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiset cardinality", "exponent bounds", "finite enumeration", "powers of two"],
+    "prerequisites": ["Multiset.card_eq_two", "Nat.pow_le_pow_right", "the powSum definition"]
+  },
+  {
+    "id": "ann-certify-906",
+    "proofId": "erdos-10-wip-01-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 170
+    },
+    "type": "insight",
+    "title": "906 Needs Exactly Three Powers — by the Kernel, Not native_decide",
+    "content": "need_exactly_three_906 settles the smallest even integer genuinely needing three powers of two. The upper witness isPrimePlusKPowers_three_906 is immediate: 906 = 887 + 2⁰ + 2¹ + 2⁴ with 887 prime and 19 = powSum {0,1,4}. The lower bound not_isPrimePlusKPowers_two_906 is the substantive half: isPrimePlus2_906_imp_search threads a hypothetical 906 = p + m through repWithAtMost_two_shape, drops the (bounded) exponents into Fin 10, and lands in the decidable disjunction search906 — '906, or some 906−2^a, or some 906−2^a−2^b is prime' over the 56 offsets with popcount ≤ 2. All 56 values are composite, so `decide` refutes search906 and the contrapositive gives ¬IsPrimePlusKPowers 2 906. The certificate is closed by the KERNEL `decide` (with maxRecDepth 100000), not native_decide: `#print axioms` lists only propext / Classical.choice / Quot.sound, with no Lean.ofReduceBool — genuinely 0-axiom. The 10-digit witness 1117175146 is the same shape with ~4526 offsets; 906 is its working template, and the faithful scaling route is a covering-congruence certificate.",
+    "mathContext": "$\\mathrm{IsPrimePlusKPowers}\\,3\\,906 \\wedge \\neg\\,\\mathrm{IsPrimePlusKPowers}\\,2\\,906$; lower bound = 56 composite offsets, kernel-decided.",
+    "significance": "key",
+    "relatedConcepts": ["Granville–Soundararajan witness", "decide vs native_decide", "0-axiom certification", "covering congruences", "Erdős #10"],
+    "prerequisites": ["isPrimePlusKPowers_iff_offset", "repWithAtMost_two_shape", "kernel decidability of Nat.Prime"]
+  }
+]
