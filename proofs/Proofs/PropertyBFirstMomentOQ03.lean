@@ -308,4 +308,63 @@ theorem k4_bipartite_subfamily :
   · decide
   · decide
 
+-- ═══════════════════════════════════════════════════
+-- Sharpness: the strict inequality `< 2^n` (i.e. `∑ 2^(1-|e|) < 1`) is best possible
+-- ═══════════════════════════════════════════════════
+
+/-
+  The criterion `property_b_of_weighted_first_moment` requires the *strict* inequality
+  `2·∑ 2^(n-|e|) < 2^n`, equivalently `∑ 2^(1-|e|) < 1`. The lemmas below witness that
+  this threshold is sharp: the inequality cannot be relaxed to `≤` (and the constant `1`
+  cannot be increased). A single *singleton* edge `{v}` is monochromatic under every
+  coloring — a one-element set is trivially monochromatic — so the family `{{v}}` has no
+  proper 2-coloring, yet its incidence total `2·2^(n-1)` sits *exactly* on the boundary
+  `2^n` (i.e. `∑ 2^(1-|e|) = 1`). This is the elementary boundary obstruction; it confirms
+  the "sharp at `∑ 2^(1-|e|) < 1`" framing of OQ-03 is a theorem, not merely an assertion.
+-/
+
+omit [Fintype V] [DecidableEq V] in
+/-- A singleton edge `{v}` is monochromatic under *every* coloring: a one-element set is
+trivially monochromatic (its single vertex agrees with itself). -/
+theorem mono_singleton (v : V) (c : V → Bool) : Mono ({v} : Finset V) c :=
+  ⟨c v, by intro x hx; rw [Finset.mem_singleton] at hx; rw [hx]⟩
+
+omit [DecidableEq V] in
+/-- **Sharpness of the strict first-moment criterion.** For any nonempty `V` (witnessed by
+a vertex `v`), the boundary family `{{v}}` of a single singleton edge
+* consists of nonempty edges,
+* has incidence total *exactly* `2^n` — i.e. it saturates the criterion's bound with
+  equality, `2·∑_{e} 2^(n-|e|) = 2^n` (equivalently `∑_e 2^(1-|e|) = 1`), and
+* has **no** proper 2-coloring (the singleton is monochromatic under every coloring).
+
+Hence the strict `< 2^n` in `property_b_of_weighted_first_moment` cannot be relaxed to
+`≤ 2^n`: the criterion is sharp exactly at `∑ 2^(1-|e|) < 1`. -/
+theorem weighted_criterion_sharp (v : V) :
+    (∀ e ∈ ({{v}} : Finset (Finset V)), e.Nonempty) ∧
+    2 * ∑ e ∈ ({{v}} : Finset (Finset V)), 2 ^ (Fintype.card V - e.card)
+      = 2 ^ Fintype.card V ∧
+    ¬ ∃ c : V → Bool, ∀ e ∈ ({{v}} : Finset (Finset V)), ¬ Mono e c := by
+  refine ⟨?_, ?_, ?_⟩
+  · -- the only edge is `{v}`, which is nonempty
+    intro e he
+    rw [Finset.mem_singleton] at he; subst he
+    exact Finset.singleton_nonempty v
+  · -- incidence `= 2·2^(n-1) = 2^n`, using `n = |V| ≥ 1`
+    have hn : 1 ≤ Fintype.card V := Fintype.card_pos_iff.mpr ⟨v⟩
+    rw [Finset.sum_singleton, Finset.card_singleton, ← pow_succ']
+    congr 1
+    omega
+  · -- a proper coloring would have to make `{v}` non-monochromatic — impossible
+    rintro ⟨c, hc⟩
+    exact hc {v} (Finset.mem_singleton_self ({v} : Finset V)) (mono_singleton v c)
+
+/-- **Concrete boundary witness over `Fin 1`.** The family `{{0}}` over `V = Fin 1` has
+incidence total `2·2^(1-1) = 2 = 2^1` (equality, *not* `< 2^1`) and no proper 2-coloring,
+so the strict inequality of the criterion is sharp at the smallest possible scale. -/
+theorem boundary_singleton_fin1 :
+    2 * ∑ e ∈ ({{0}} : Finset (Finset (Fin 1))), 2 ^ (Fintype.card (Fin 1) - e.card)
+      = 2 ^ Fintype.card (Fin 1) ∧
+    ¬ ∃ c : Fin 1 → Bool, ∀ e ∈ ({{0}} : Finset (Finset (Fin 1))), ¬ Mono e c :=
+  ⟨(weighted_criterion_sharp (0 : Fin 1)).2.1, (weighted_criterion_sharp (0 : Fin 1)).2.2⟩
+
 end ProbMethod.PropertyB

@@ -2,7 +2,7 @@
   "id": "property-b-first-moment-oq-03",
   "title": "Non-Uniform Sharpening of the First-Moment Property B Criterion (∑ 2^(1-|e|) < 1)",
   "slug": "property-b-first-moment-oq-03",
-  "description": "Partially answers open question oq-03 of property-b-first-moment, which ultimately targets the Radhakrishnan–Srinivasan lower bound m(k) = Ω(2^k·√(k/log k)). This entry delivers the *sharp form of the first-moment lower bound itself*: the genuine Erdős criterion ∑_{e∈E} 2^(1-|e|) < 1 ⟹ Property B for hypergraphs with edges of ARBITRARY size, stated over ℕ (no division) as 2·∑_{e} 2^(n-|e|) < 2^n with n = |V|. Large edges contribute geometrically less, so a family dominated by large edges is 2-colorable even when its raw edge count far exceeds 2^(k-1) for the smallest edge size k. The parent file's uniform theorem property_b_two_colorable (k-uniform, < 2^(k-1) edges) is recovered here as the special case |e| = k, confirming the refinement is faithful. The proof reuses the parent's exact monochromatic count card_mono and first moment principle exists_zero_of_sum_lt_card verbatim, dropping only the uniformity assumption. This is NOT the Radhakrishnan–Srinivasan √(k/log k) factor: that needs a random recoloring (alteration) argument — a second round repairing the monochromatic edges left by the first — beyond the single-round first moment formalized here; the recoloring roadmap is recorded in the research knowledge base. Verified, 0 axioms, 0 sorries, no native_decide.",
+  "description": "Partially answers open question oq-03 of property-b-first-moment, which ultimately targets the Radhakrishnan–Srinivasan lower bound m(k) = Ω(2^k·√(k/log k)). This entry delivers the *sharp form of the first-moment lower bound itself*: the genuine Erdős criterion ∑_{e∈E} 2^(1-|e|) < 1 ⟹ Property B for hypergraphs with edges of ARBITRARY size, stated over ℕ (no division) as 2·∑_{e} 2^(n-|e|) < 2^n with n = |V|. Large edges contribute geometrically less, so a family dominated by large edges is 2-colorable even when its raw edge count far exceeds 2^(k-1) for the smallest edge size k. The parent file's uniform theorem property_b_two_colorable (k-uniform, < 2^(k-1) edges) is recovered here as the special case |e| = k, confirming the refinement is faithful. The proof reuses the parent's exact monochromatic count card_mono and first moment principle exists_zero_of_sum_lt_card verbatim, dropping only the uniformity assumption. This is NOT the Radhakrishnan–Srinivasan √(k/log k) factor: that needs a random recoloring (alteration) argument — a second round repairing the monochromatic edges left by the first — beyond the single-round first moment formalized here; the recoloring roadmap is recorded in the research knowledge base. The strict threshold is shown best possible (weighted_criterion_sharp): a single singleton edge {v} saturates the bound with equality ∑ 2^(1-|e|) = 1 yet is never 2-colorable, so the inequality cannot be relaxed to ≤. Verified, 0 axioms, 0 sorries, no native_decide.",
   "meta": {
     "author": "Paul Erdős / László Lovász (non-uniform first moment), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Property_B",
@@ -48,7 +48,8 @@
       "mixed_example_two_colorable: a worked instance over V = Fin 3 with the mixed-size family {{0,1},{0,1,2}} (a size-2 and a size-3 edge), whose weighted sum 2 + 1 = 3 satisfies 2·3 = 6 < 8 = 2^3 — certified 2-colorable by the criterion although the uniform theorem does not apply.",
       "Quantitative first moment (averaging principle): exists_le_of_sum_le_card_mul (nonstrict min ≤ mean over ℕ) and exists_coloring_few_mono — some 2-coloring leaves at most t monochromatic edges whenever the incidence ∑_e 2·2^(n-|e|) ≤ 2^n·t. This stays informative in the regime where the strict criterion FAILS (incidence ≥ 2^n) yet the family admits a coloring with a controlled number t ≥ 1 of defects, with exists_coloring_few_mono_uniform (k-uniform, |E| ≤ 2^(k-1)·t ⟹ ≤ t defects) and triangle_few_mono (K₃ over Fin 3: incidence 12 ≤ 16 ⟹ ≤ 2 mono edges, nontrivial control where the criterion is silent).",
       "Deletion (alteration) method: exists_two_colorable_subfamily — every finite family of nonempty edges has a 2-colorable subfamily after deleting at most t edges whenever the incidence ∑_e 2·2^(n-|e|) ≤ 2^n·t (take the few-mono coloring and delete exactly its monochromatic edges; the same coloring properly 2-colors the remainder). exists_two_colorable_subfamily_uniform gives the standard deletion-method consequence (k-uniform: retain a 2-colorable subfamily of ≥ |E| − ⌈|E|/2^(k-1)⌉ edges), and k4_bipartite_subfamily is a finite Max-Cut-flavored instance (K₄ over Fin 4: delete ≤ 3 of 6 edges to expose a bipartite subgraph). This is the elementary integer sibling of the Radhakrishnan–Srinivasan recoloring repair: RS flips vertices to gain the √(k/log k) factor; deletion simply discards the bad edges.",
-      "An honest scoping of open question oq-03: the single-round first moment is sharp at ∑ 2^(1-|e|) < 1 and the deletion method gains nothing asymptotically; reaching the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)) bound requires the random RECOLORING repair (not deletion), a genuinely different second-round alteration model — recorded as the remaining moonshot."
+      "Sharpness of the strict threshold: weighted_criterion_sharp (with helper mono_singleton and concrete witness boundary_singleton_fin1) proves the strict inequality 2·∑ 2^(n-|e|) < 2^n in property_b_of_weighted_first_moment cannot be relaxed to ≤. A single singleton edge {v} is monochromatic under EVERY coloring (a one-element set is trivially monochromatic), so the family {{v}} has no proper 2-coloring — yet its incidence total is exactly 2·2^(n-1) = 2^n, sitting precisely on the boundary ∑ 2^(1-|e|) = 1. Hence the threshold ∑ 2^(1-|e|) < 1 is best possible: no ≤ 1 criterion can hold. This turns the 'sharp at ∑ 2^(1-|e|) < 1' framing into a theorem rather than an assertion.",
+      "An honest scoping of open question oq-03: the single-round first moment is sharp at ∑ 2^(1-|e|) < 1 (now witnessed by weighted_criterion_sharp) and the deletion method gains nothing asymptotically; reaching the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)) bound requires the random RECOLORING repair (not deletion), a genuinely different second-round alteration model — recorded as the remaining moonshot."
     ],
     "dateAdded": "2026-06-28",
     "relatedProblems": [
@@ -58,10 +59,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 311,
-    "assumptions": "0 axioms, 0 sorries, no native_decide (the worked examples use decide, which depends only on the foundational kernel, not Lean.ofReduceBool). The hypotheses (edges nonempty; weighted-sum / incidence bounds) are inputs to the statements, not standing assumptions; V is an arbitrary Fintype with DecidableEq and n = Fintype.card V. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (criterion, averaging, and deletion families — checked for property_b_of_weighted_first_moment, exists_coloring_few_mono, exists_two_colorable_subfamily, exists_two_colorable_subfamily_uniform, k4_bipartite_subfamily, etc.) — no sorryAx, no Lean.ofReduceBool. This is the single-round FIRST-MOMENT bound plus its quantitative (few-bad-edges) and deletion (alteration) corollaries; the Radhakrishnan–Srinivasan √(k/log k) improvement, which needs random RECOLORING rather than deletion, is NOT formalized and is left open.",
+    "lineCount": 370,
+    "assumptions": "0 axioms, 0 sorries, no native_decide (the worked examples use decide, which depends only on the foundational kernel, not Lean.ofReduceBool). The hypotheses (edges nonempty; weighted-sum / incidence bounds) are inputs to the statements, not standing assumptions; V is an arbitrary Fintype with DecidableEq and n = Fintype.card V. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (criterion, averaging, and deletion families — checked for property_b_of_weighted_first_moment, exists_coloring_few_mono, exists_two_colorable_subfamily, exists_two_colorable_subfamily_uniform, k4_bipartite_subfamily, weighted_criterion_sharp, etc.) — no sorryAx, no Lean.ofReduceBool. This is the single-round FIRST-MOMENT bound plus its quantitative (few-bad-edges) and deletion (alteration) corollaries; the Radhakrishnan–Srinivasan √(k/log k) improvement, which needs random RECOLORING rather than deletion, is NOT formalized and is left open.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 0
   },
   "overview": {
@@ -148,11 +149,11 @@
       "BigOperators"
     ],
     "namespace": "ProbMethod.PropertyB",
-    "lineCount": 311,
+    "lineCount": 370,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 10
+    "theoremCount": 13
   },
   "references": [
     {
@@ -204,5 +205,5 @@
     }
   ],
   "sorries": 0,
-  "theoremCount": 10
+  "theoremCount": 13
 }
