@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-e1100oq02-header",
+    "proofId": "erdos-1100-oq-02",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "Open Question and Answer",
+    "content": "**Which n minimize τ⊥, i.e. achieve τ⊥(n) = ω(n)?**\n\nErdős #1100 gives the bound τ⊥(n) ≥ ω(n), with equality known for primes (τ⊥(p) = 1 = ω(p)). This entry settles the **prime-power** case of the extremal-minimum question: every prime power pᵏ achieves equality, τ⊥(pᵏ) = ω(pᵏ) = 1.\n\nThe results are unconditional and exact, sitting strictly below the conjectural growth regime of the open Erdős–Hall / Erdős–Simonovits questions."
+  },
+  {
+    "id": "ann-e1100oq02-defs",
+    "proofId": "erdos-1100-oq-02",
+    "range": { "startLine": 43, "endLine": 57 },
+    "type": "definition",
+    "title": "τ⊥, ω, divisorList",
+    "content": "The definitions mirror the parent `Erdos1100Problem.lean`:\n\n- `divisorList n` — the divisors of n in increasing order (sort of {d ≤ n : d ∣ n}).\n- `omega n = |n.primeFactors|` — the number of distinct prime divisors ω(n).\n- `tauPerp n` — the count of indices i with gcd(dᵢ, dᵢ₊₁) = 1.\n\nKept self-contained (imports only Mathlib) so the entry verifies independently of the parent."
+  },
+  {
+    "id": "ann-e1100oq02-divlist",
+    "proofId": "erdos-1100-oq-02",
+    "range": { "startLine": 59, "endLine": 95 },
+    "type": "proof",
+    "title": "Sorted divisors of pᵏ are [1, p, …, pᵏ]",
+    "content": "`divisorList_prime_pow`: for prime p and k ≥ 1, the increasing divisor list of pᵏ is (List.range (k+1)).map (p ^ ·).\n\nProof: bridge the range-filtered divisor set to `Nat.divisors` (only 0 is dropped), rewrite via `Nat.divisors_prime_pow` to an image of `range`, then push the sort through the strictly-monotone embedding p ^ · using `Finset.map_sort` and `range_sort` ((range m).sort = List.range m)."
+  },
+  {
+    "id": "ann-e1100oq02-tauperp",
+    "proofId": "erdos-1100-oq-02",
+    "range": { "startLine": 97, "endLine": 151 },
+    "type": "proof",
+    "title": "τ⊥(pᵏ) = 1 = ω(pᵏ)",
+    "content": "`tauPerp_prime_pow`: among consecutive pairs (pⁱ, pⁱ⁺¹), gcd = pⁱ, which equals 1 exactly when i = 0. So the unique coprime consecutive pair is (1, p), giving τ⊥(pᵏ) = 1. The filter predicate is reduced to `i = 0` and the single surviving index counted.\n\n`omega_prime_pow`: ω(pᵏ) = 1 via `Nat.primeFactors_prime_pow`."
+  },
+  {
+    "id": "ann-e1100oq02-family",
+    "proofId": "erdos-1100-oq-02",
+    "range": { "startLine": 153, "endLine": 169 },
+    "type": "concept",
+    "title": "The equality family",
+    "content": "`tauPerp_eq_omega_prime_pow`: τ⊥(pᵏ) = ω(pᵏ) for all prime powers. `tau_perp_equality_prime_powers`: equality holds at arbitrarily large n, realised by 2^(N+1) — a strict strengthening of the prime-only equality-infinitely-often statement.\n\n**Open**: characterize ALL minimizers (are they exactly the prime powers?), and prove the parent axiom τ⊥(n) ≥ ω(n) unconditionally."
+  }
+]
