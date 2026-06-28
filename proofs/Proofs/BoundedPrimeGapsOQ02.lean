@@ -453,6 +453,29 @@ theorem EHAtLevel_discrepancySum_up_chain (f : ℕ → ℝ → ℝ) {L : ℕ →
   | succ k ih =>
       exact EHAtLevel_discrepancySum_up f (hmono (Nat.le_succ k)) ih (hband k)
 
+/-- **Equally-spaced (arithmetic) chain ascent.**  The explicit instantiation of
+`EHAtLevel_discrepancySum_up_chain` at the arithmetic level sequence `L k = θ₀ + k·δ`
+(`δ ≥ 0`): from an EH bound at the base `θ₀` together with an EH-type bound on every equal
+step `θ₀ + k·δ → θ₀ + (k+1)·δ`, EH holds at `θ₀ + n·δ` for all `n`.  This is the concrete,
+equipartition form of the dyadic ascent — by taking `δ := (θ - θ₀)/n` it reaches any
+prescribed target level `θ ≥ θ₀` in `n` equal blocks, with the abstract `Monotone L`
+hypothesis discharged outright from `δ ≥ 0`. -/
+theorem EHAtLevel_discrepancySum_up_arith (f : ℕ → ℝ → ℝ) {θ₀ δ : ℝ} (hδ : 0 ≤ δ)
+    (hlow : EHAtLevel (discrepancySum f) θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (θ₀ + k * δ) (θ₀ + (k + 1) * δ) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel (discrepancySum f) (θ₀ + n * δ) := by
+  have hmono : Monotone (fun k : ℕ => θ₀ + (k : ℝ) * δ) := by
+    intro a b hab
+    have hc : (a : ℝ) ≤ (b : ℝ) := by exact_mod_cast hab
+    have := mul_le_mul_of_nonneg_right hc hδ
+    simp only []
+    linarith
+  have hlow' : EHAtLevel (discrepancySum f) ((fun k : ℕ => θ₀ + (k : ℝ) * δ) 0) := by
+    simpa using hlow
+  refine EHAtLevel_discrepancySum_up_chain f hmono hlow' (fun k A hA => ?_)
+  simpa only [Nat.cast_succ] using hband k A hA
+
 /-! ## Grounding the hierarchy in the genuine von-Mangoldt discrepancy
 
 Everything above treats the per-modulus weight `f` abstractly, requiring only
@@ -581,5 +604,20 @@ theorem EHAtLevel_vonMangoldt_up_chain {L : ℕ → ℝ} (hmono : Monotone L)
         discrepancyBand vonMangoldtWeight (L k) (L (k + 1)) x ≤ C * x / (Real.log x) ^ A) :
     ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (L n) :=
   EHAtLevel_discrepancySum_up_chain vonMangoldtWeight hmono hlow hband
+
+/-- **Equally-spaced chain ascent for the genuine sum.**  The explicit arithmetic
+instantiation `L k = θ₀ + k·δ` (`δ ≥ 0`) of `EHAtLevel_vonMangoldt_up_chain`: bounding the
+real worst-case von-Mangoldt discrepancy on each equal step `θ₀ + k·δ → θ₀ + (k+1)·δ`
+raises the genuine level of distribution to `θ₀ + n·δ` for every `n`.  With `δ := (θ-θ₀)/n`
+this is the formal license to reach any target level `θ ≥ θ₀` in `n` equal modulus blocks —
+the equipartition form of the dyadic attack on Elliott–Halberstam, for the actual
+von-Mangoldt weight. -/
+theorem EHAtLevel_vonMangoldt_up_arith {θ₀ δ : ℝ} (hδ : 0 ≤ δ)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (θ₀ + k * δ) (θ₀ + (k + 1) * δ) x
+          ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (θ₀ + n * δ) :=
+  EHAtLevel_discrepancySum_up_arith vonMangoldtWeight hδ hlow hband
 
 end BoundedPrimeGapsOQ02

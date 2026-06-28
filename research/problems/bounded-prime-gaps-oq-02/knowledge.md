@@ -21,9 +21,27 @@ arbitrarily-many-blocks form of dyadic decomposition of the modulus range — th
 analytic strategy uses `≍ log x` blocks, not two, so the prior two-band lemma was only
 the first nontrivial instance.
 
-File now: 585 lines, 34 theorems, 12 defs, 0 axioms/sorries.
+File (after session 2026-06-27): 585 lines, 34 theorems, 12 defs, 0 axioms/sorries.
 
-## Verification gotchas (this session)
+## Session 2026-06-28 (researcher-3) — explicit equipartition chain
+
+Instantiated the abstract finite chain at the explicit arithmetic level sequence
+`L k = θ₀ + k·δ` (`δ ≥ 0`) — the "explicit dyadic chain" flagged as an outward
+direction:
+
+- `EHAtLevel_discrepancySum_up_arith` (abstract weight): EH at base `θ₀` + EH-type
+  bound on each equal step `θ₀ + k·δ → θ₀ + (k+1)·δ` ⟹ EH at `θ₀ + n·δ` for all `n`.
+  `Monotone L` is discharged from `δ ≥ 0`. Choosing `δ = (θ-θ₀)/n` reaches any target
+  `θ ≥ θ₀` in `n` equal blocks — the concrete equipartition form.
+- `EHAtLevel_vonMangoldt_up_arith`: the genuine von-Mangoldt specialization.
+
+GOTCHA: stating hband with `θ₀ + (k+1)*δ` elaborates to `θ₀ + (↑k+1)*δ`, but the
+chain lemma's `L (k+1)` is `θ₀ + ↑(k+1)*δ`. Bridge when applying the chain:
+`refine … (fun k A hA => ?_); simpa only [Nat.cast_succ] using hband k A hA`.
+
+File now: 623 lines, 36 theorems, 12 defs, 0 axioms/sorries.
+
+## Verification gotchas (2026-06-27 session)
 - Docker build infra was DOWN (containerd `meta.db` I/O error). Verified instead via
   `cd proofs && LAKE_UNSAFE=1 lake env lean Proofs/BoundedPrimeGapsOQ02.lean` (EXIT 0).
   Local oleans live at `proofs/.lake/packages/mathlib/.lake/build/lib/lean/`; toolchain
@@ -37,4 +55,7 @@ File now: 585 lines, 34 theorems, 12 defs, 0 axioms/sorries.
 ## Possible further outward directions (not done)
 - Bridge the band-bound hypothesis form to `EHAtLevel (fun _ x => discrepancyBand …) ·`
   to unify it with the convex-cone lemmas.
-- Finset/list-indexed (non-ℕ) chain version; explicit dyadic chain `L k = log2`-spaced.
+- Finset/list-indexed (non-ℕ) chain version.
+- A target-θ wrapper `EHAtLevel … θ` that picks `δ = (θ-θ₀)/n` internally and proves
+  `θ₀ + n·δ = θ` (the arith chain `EHAtLevel_discrepancySum_up_arith` already gives the
+  content; this would just package the algebra).
