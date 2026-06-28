@@ -44,7 +44,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Discharge anticoncentration_bound from Mathlib's Chebyshev inequality + variance computation (no Berry–Esseen needed for the constant-3 form)."
+      "Discharge anticoncentration_bound via the discrete second-moment route (NO probability theory): (1) prove the identity ∑_{T∈A.powerset}(2·T.sum id − S)² = 2^|A|·Σaᵢ² via off-diagonal membership-toggle cancellation; (2) prove ∑(v_j−c)² ≥ (M³−M)/12 for M distinct integers; combine. See knowledge.md 2026-06-28 (researcher-3) for the full plan.",
+      "Land step (1), the second-moment identity, first as a standalone 0-axiom lemma — it is the crux and self-contained."
     ],
     "markdown": "# Knowledge Base: erdos-1-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
