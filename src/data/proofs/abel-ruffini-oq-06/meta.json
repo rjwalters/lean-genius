@@ -2,7 +2,7 @@
   "id": "abel-ruffini-oq-06",
   "title": "Abel–Ruffini Threshold, Solvable Side: S₂ and S₃ are Solvable via the Aₙ → Sₙ Reduction",
   "slug": "abel-ruffini-oq-06",
-  "description": "The group-theoretic core of Abel–Ruffini is the dichotomy 'Sₙ is solvable ⟺ n ≤ 4'. The non-solvable half (n ≥ 5) is Mathlib's Equiv.Perm.fin_5_not_solvable (generalized in abel-ruffini-obstruction-oq-06); the positive half is not packaged by Mathlib at all. This file supplies the reusable reduction permSolvable_of_alternatingSolvable: Sₙ is solvable whenever the alternating group Aₙ is, because Aₙ = ker(sign) is normal in Sₙ with abelian quotient (Sₙ/Aₙ ↪ ℤˣ) — the short exact sequence 1 → Aₙ → Sₙ → ℤˣ routed through solvable_of_ker_le_range. It then closes the small cases: A₂ (order 1) and A₃ (order 3, prime ⟹ cyclic ⟹ abelian) are solvable, lifting to S₂ and S₃ via the reduction. This directly answers the second open question of abel-ruffini-obstruction-oq-06 (formalize solvability of S₃/S₄), closing n = 3 and isolating n = 4 to a single missing fact (A₄ solvable, A₄ ⊳ V₄ ⊳ 1). 0 axioms, 0 sorries. The characteristic-p / Abhyankar angle of the problem title is deep unformalized theory and out of scope.",
+  "description": "The group-theoretic core of Abel–Ruffini is the dichotomy 'Sₙ is solvable ⟺ n ≤ 4'. The non-solvable half (n ≥ 5) is Mathlib's Equiv.Perm.fin_5_not_solvable (generalized in abel-ruffini-obstruction-oq-06); the positive half is not packaged by Mathlib at all. This file supplies the reusable reduction permSolvable_of_alternatingSolvable: Sₙ is solvable whenever the alternating group Aₙ is, because Aₙ = ker(sign) is normal in Sₙ with abelian quotient (Sₙ/Aₙ ↪ ℤˣ) — the short exact sequence 1 → Aₙ → Sₙ → ℤˣ routed through solvable_of_ker_le_range. It then closes the small cases: A₂ (order 1) and A₃ (order 3, prime ⟹ cyclic ⟹ abelian) are solvable, lifting to S₂ and S₃ via the reduction. This directly answers the second open question of abel-ruffini-obstruction-oq-06 (formalize solvability of S₃/S₄), closing n = 3 and isolating n = 4 to a single missing fact (A₄ solvable, A₄ ⊳ V₄ ⊳ 1). 0 axioms, 0 sorries. The characteristic-p / Abhyankar angle of the problem title is deep unformalized theory and out of scope. The S₃ case (perm_fin_three_solvable) is now proved directly: A₃ = ker(sign) has prime order 3 hence is cyclic/abelian/solvable, and S₃/A₃ ↪ ℤˣ is abelian, so S₃ is solvable by the extension lemma solvable_of_ker_le_range; symmetric_threshold now records both solvable endpoints S₂, S₃ alongside the n≥5 non-solvability.",
   "meta": {
     "author": "Abel (1824), Ruffini (1799), Galois (1830s); formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
@@ -56,10 +56,10 @@
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 94,
+    "lineCount": 142,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (single-file checked with `lake env lean`). #print axioms reports only the foundational propext / Classical.choice / Quot.sound (none of which count). No native_decide, so no Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar refinements are not formalized. The remaining threshold case S₄ (needing A₄ solvable) is deferred to a companion file and is NOT claimed here.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4,
+    "theoremCount": 6,
     "definitionCount": 0
   },
   "overview": {
@@ -86,7 +86,7 @@
       "title": "A₂ and A₃ Solvable",
       "startLine": 67,
       "endLine": 80,
-      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1, subsingleton, solvable. alternatingFinThree_isSolvable: |A₃| = 3 (nat_card_alternatingGroup); prime order ⟹ cyclic (isCyclic_of_prime_card) ⟹ abelian (IsCyclic.commutative) ⟹ solvable (isSolvable_of_comm)."
+      "summary": "alternatingFinTwo_isSolvable: |A₂| = 1, subsingleton, solvable. alternatingFinThree_isSolvable: |A₃| = 3 (nat_card_alternatingGroup); prime order ⟹ cyclic (isCyclic_of_prime_card) ⟹ abelian (IsCyclic.commutative) ⟹ solvable (isSolvable_of_comm). perm_fin_three_solvable adds S₃ via A₃=ker(sign) (prime order 3 ⇒ cyclic ⇒ solvable) and the abelian quotient S₃/A₃, through solvable_of_ker_le_range."
     },
     {
       "id": "symmetric-cases",
