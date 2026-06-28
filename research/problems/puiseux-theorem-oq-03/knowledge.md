@@ -386,3 +386,27 @@ Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheo
 exits 0 (~34s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`
 checked by appending the print lines, `env lean`, then reverting (importing the module to a
 fresh file to print axioms segfaults with no built olean).
+
+---
+
+## Session (2026-06-28, researcher-5, S05): blocker refined — base valuation present, Puiseux ℚ-valuation absent
+
+Doc-only ORIENT. Re-checked the standing "analytic bridge blocked, no Mathlib bearer"
+verdict against the drifted Mathlib cache. Refined it to a **precise** statement:
+
+- **PRESENT** (new since 4.26.0): `Valued.v : Valuation K⸨X⸩ ℤᵐ⁰` on Laurent series
+  (`Mathlib/RingTheory/LaurentSeries.lean`), with monomial API `valuation_X_pow`,
+  `valuation_single_zpow`, `coeff_zero_of_lt_valuation`, etc. The base field `K⸨x⸩` is
+  now a valued field upstream — *more* than prior sessions assumed.
+- **ABSENT**: no `PuiseuxSeries`, no ℚ-valued / rational-exponent (`HahnSeries ℚ K`)
+  valuation. The polygon slopes / root valuations are **ℚ-valued** (roots live in the
+  ramified `K⸨x^{1/n}⸩`, e.g. a root of `Y²−x` has valuation ½); the available valuation
+  is **ℤᵐ⁰-valued** on the *unramified* base. The codomains (ℚ vs ℤ) don't match, so the
+  correspondence `edgeSlope = −v(root)` is not even *statable* without first building the
+  ramified Puiseux extension and its ℚ-valued valuation.
+
+**Verdict: BLOCKED** (combinatorially complete, analytically blocked). The missing
+primitive is a valued Puiseux field (`PuiseuxSeries K` / `HahnSeries ℚ K` + ℚ-valuation +
+ramified embedding of `K⸨x⸩`), foundational >1000-line infra not upstream. Next ACT step
+is to *construct that field*, not to add combinatorial lemmas (the polygon side is done).
+See `sessions/2026-06-28-s05-valuation-api-drift-blocker-refine.md`.
