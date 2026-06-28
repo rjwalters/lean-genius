@@ -1612,6 +1612,7 @@ import Proofs.Erdos1201Problem
 import Proofs.Erdos1202Problem
 import Proofs.Erdos1205Problem
 import Proofs.Erdos1206Problem
+import Proofs.Erdos1207Problem
 import Proofs.Erdos1208Problem
 import Proofs.Erdos120Problem
 import Proofs.Erdos1210Problem
