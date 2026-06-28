@@ -57,8 +57,39 @@ factor type, so once Dedekind's theorem is available the Frobenius elements at
 both primes are 3-cycles — strengthening the evidence that `3 ∣ |Gal(q)|` and
 ruling out a prime-specific accident.
 
+## Iteration 3 (researcher-1, 2026-06-27) — ACT: close mod-7/mod-11 packaging asymmetry
+
+**Outcome**: Strengthened `q_mod7_factor_type` in `Proofs/InverseGaloisOQ06OQ02.lean`
+(still 0-axiom, 0-sorry).
+
+Audit found a genuine gap: the mod-11 packaging `q_mod11_factor_type` carries the
+full factorization **identity** `q.map(ℤ→𝔽₁₁) = linFactor4·linFactor3·cubicMod11`
+as a final conjunct, but the mod-7 `q_mod7_factor_type` did **not** — it asserted
+three distinct irreducibles of degrees (1,1,3) with squarefree product, without
+asserting they are the factors **of `q`**. As stated it was a fact about an
+arbitrary product, not about `q mod 7`.
+
+Fix:
+- Added `q_mod7_factorization : q.map(ℤ→𝔽₇) = linFactor5·linFactor6·cubicMod7`,
+  a thin restatement of `InverseGaloisOQ06OQ01.q_ℤ_mod7_factorization` through the
+  local `linFactor5 = X-5`, `linFactor6 = X-6` definitions (defeq `show` + `exact`).
+- Appended that identity as the final conjunct of `q_mod7_factor_type`, so it is
+  now symmetric with (and as complete as) `q_mod11_factor_type` — the packaged
+  Dedekind input genuinely says "these are the factors of `q mod 7`".
+- Required making `q_ℤ` public in `Proofs/InverseGaloisOQ06OQ01.lean` (it was
+  `private`, so its name could not appear in the new conjunct's *type* from
+  OQ02). This mirrors the sibling `InverseGaloisOQ06OQ02P11.q_ℤ`, which is
+  already public for the same reason. Visibility-only change; OQ01's own proofs
+  are unaffected (re-verified, 0-axiom, 0-sorry).
+
+No new mathematics; this tightens the existing statement so it actually entails
+what Dedekind's theorem consumes. The remaining gap is unchanged (Frobenius
+bridge, sibling track).
+
 ## Next Action
 
 If Dedekind's theorem lands in Mathlib (or the sibling Frobenius bridge
 completes), `q_mod7_factor_type` / `q_mod11_factor_type` plug in directly to
-discharge the axiom.
+discharge the axiom. The algebraic input is now complete and symmetric at both
+unramified primes (7, 11): irreducible factors + degrees + distinctness +
+squarefreeness + factorization identity.

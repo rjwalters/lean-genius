@@ -40,6 +40,21 @@ factorization and that the cubic has no roots — not irreducibility/squarefree.
 
 ---
 
+## Packaging completeness (iter 3)
+
+- A "factor type" theorem that lists irreducibles + degrees + distinctness +
+  squarefreeness is **incomplete** unless it ALSO carries the factorization
+  identity `q.map(ℤ→𝔽ₚ) = f₁·f₂·f₃`. Without it the statement is about an
+  arbitrary product, not about `q mod p`. The mod-11 packaging already had this
+  conjunct; the mod-7 one did not — fixed by re-exporting
+  `q_ℤ_mod7_factorization` through the local factor defs.
+- Restating an identity proved with `(X - C 5)` in terms of a `noncomputable def
+  linFactor5 := X - C 5`: use `show <goal with X - C 5>; exact <lemma>`. The
+  `show` succeeds by defeq (regular defs unfold during `isDefEq`); no `rw`/`simp`
+  unfolding of the def is needed.
+
+---
+
 ## Dead Ends
 
 - `isCoprime_of_irreducible_of_not_associated` does NOT exist in Mathlib 4.26.

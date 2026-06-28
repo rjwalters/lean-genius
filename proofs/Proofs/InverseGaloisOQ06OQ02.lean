@@ -187,13 +187,25 @@ theorem q_mod7_squarefree :
 -- § 5. Packaged Dedekind input
 -- ============================================================================
 
+/-- **`q ≡ (X-5)(X-6)·cubicMod7  (mod 7)`**, restated with the named factors
+`linFactor5`, `linFactor6`. This is `InverseGaloisOQ06OQ01.q_ℤ_mod7_factorization`
+re-expressed through the local factor definitions, so the packaged
+`q_mod7_factor_type` below can carry the identity tying the three irreducibles
+to `q` itself — exactly as the sibling `p = 11` packaging does
+(`InverseGaloisOQ06OQ02P11.q_ℤ_mod11_factorization`). -/
+theorem q_mod7_factorization :
+    q_ℤ.map (Int.castRingHom (ZMod 7)) = linFactor5 * linFactor6 * cubicMod7 := by
+  show q_ℤ.map (Int.castRingHom (ZMod 7)) = (X - C 5) * (X - C 6) * cubicMod7
+  exact q_ℤ_mod7_factorization
+
 /-- **The mod-7 factor type of `q` is `(1, 1, 3)` into distinct irreducibles.**
 
 This bundles everything Dedekind's theorem consumes at `p = 7`:
 * three irreducible factors,
 * of degrees `1, 1, 3`,
 * pairwise non-associated (distinct primes),
-* with squarefree product (`p = 7` unramified).
+* with squarefree product (`p = 7` unramified),
+* whose product is genuinely `q mod 7` (`q_mod7_factorization`).
 
 Combined with Dedekind's theorem (still a Mathlib gap; sibling track), this
 forces `Gal(q)` to contain a 3-cycle, hence `3 ∣ |Gal(q)|`. -/
@@ -203,10 +215,11 @@ theorem q_mod7_factor_type :
     (¬ Associated linFactor5 linFactor6) ∧
     (¬ Associated linFactor5 cubicMod7) ∧
     (¬ Associated linFactor6 cubicMod7) ∧
-    Squarefree (linFactor5 * linFactor6 * cubicMod7) :=
+    Squarefree (linFactor5 * linFactor6 * cubicMod7) ∧
+    q_ℤ.map (Int.castRingHom (ZMod 7)) = linFactor5 * linFactor6 * cubicMod7 :=
   ⟨linFactor5_irreducible, linFactor6_irreducible, cubicMod7_irreducible,
    linFactor5_natDegree, linFactor6_natDegree, cubicMod7_natDegree,
    linFactors_not_associated, linFactor5_not_associated_cubic,
-   linFactor6_not_associated_cubic, q_mod7_squarefree⟩
+   linFactor6_not_associated_cubic, q_mod7_squarefree, q_mod7_factorization⟩
 
 end InverseGaloisOQ06OQ02
