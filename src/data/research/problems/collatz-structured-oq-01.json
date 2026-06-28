@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-04-22T12:51:58.077Z",
-    "iteration": 1,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,27 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-06-27, PR #30960, VERIFIED 0-axiom): Created Proofs/CollatzStructuredOQ01.lean (195 lines, 10 theorems, 0 axioms, 0 sorries) formalizing the BACKWARD dynamics of the Collatz map, all unconditional (independent of the Collatz conjecture). Proved: (1) exact preimage characterization collatz_eq_iff: collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m); (2) branching law odd_pred_exists_iff: odd predecessor exists iff m ≡ 4 (mod 6); (3) in-degree dichotomy two_preds_of_mod / unique_pred_of_not_mod (in-degree 2 on residue 4 mod 6, else 1); (4) backward closure reaches_one_of_collatz / basin_closed_under_pred; (5) basin_infinite: the basin of 1 is infinite (contains every power of two). Reuses parent CollatzStructured definitions. #print axioms confirms only propext/Classical.choice/Quot.sound. Built via lake env lean fallback (Docker meta.db I/O-corrupt on host). Gallery entry added. S2 (researcher-3, 2026-06-28, VERIFIED 0-axiom): sharpened the in-degree dichotomy from qualitative to EXACT — odd_pred_eq (odd predecessor = (m-1)/3), preimage_collatz_eq_pair / preimage_collatz_eq_singleton (full preimage = {2m,(m-1)/3} / {2m}), indegree_eq_two / indegree_eq_one (in-degree = 2 / = 1 exactly, via Set.ncard_pair/ncard_singleton). 195→249 lines, 10→15 theorems, still 0 axioms/0 sorries.",
+    "progressSummary": "S3 (researcher-10, 2026-06-28, VERIFIED 0-axiom): added Part II¾ — a verified DENSITY result for the Collatz graph. indegree_eq_two_iff bridges in-degree to arithmetic (in-degree exactly 2 ⟺ m≡4 mod6); branch_vertices_eq identifies branch vertices with the progression {6j+4}; branch_count proves exactly k branch vertices lie below 6k (density exactly 1/6) via injective j↦6j+4 + Finset.card_image_of_injective; branch_vertices_infinite. 249→317 lines, 15→21 theorems, still 0 axioms/0 sorries. Prior: S1 (researcher-12, PR #30960) created the file (backward dynamics, preimage characterization, branching law, in-degree dichotomy, backward closure, basin infinite); S2 (researcher-3) sharpened in-degree to exact predecessor sets.",
     "builtItems": [
       "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one (S2, 0-axiom): exact predecessor sets and numeric in-degree (2 on residue 4 mod 6, else 1) — sharpens the qualitative dichotomy",
       "collatz_eq_iff: exact Collatz preimage characterization, proved by parity split + omega",
       "odd_pred_exists_iff: mod-6 branching law with explicit witness 2*(m/6)+1",
       "two_preds_of_mod / unique_pred_of_not_mod: in-degree dichotomy of the Collatz graph",
       "reaches_one_of_collatz / basin_closed_under_pred: backward closure of the basin of 1",
-      "basin_infinite: unconditional proof the basin of 1 is infinite via k ↦ 2^(k+1)"
+      "basin_infinite: unconditional proof the basin of 1 is infinite via k ↦ 2^(k+1)",
+      "indegree_eq_two_iff / branch_vertices_eq / branch_count / branch_vertices_infinite (S3, 0-axiom): verified density — in-degree 2 ⟺ m≡4 mod6, branch vertices = {6j+4}, exactly k below 6k (density 1/6), set infinite. Via injective j↦6j+4 + Finset.card_image_of_injective."
     ],
     "insights": [
       "The Collatz preimage is cleanly two-valued: splitting on the parity of a predecessor a gives a = 2m (even) or 3a+1 = m (odd); stating oddness as a % 2 = 1 keeps the whole proof inside omega.",
       "Odd predecessors are governed by a single residue: an odd a = 2t+1 gives 3a+1 = 6t+4, so odd predecessors of m exist exactly when m ≡ 4 (mod 6), and the unique odd predecessor is 2*(m/6)+1.",
       "In-degree dichotomy: every m has the even predecessor 2m, so vertices with m ≡ 4 (mod 6) have in-degree 2 and all others in-degree 1 — one residue in six branches.",
       "Backward closure (collatz a = m, m reaches 1 ⟹ a reaches 1) makes the basin of 1 exactly the set generated from 1 by the set-valued predecessor map — the Collatz tree rooted at 1.",
-      "Infinitude of the basin is unconditional and elementary (powers of two), far weaker than the conjecture; it cleanly separates a provable sub-statement from the open problem."
+      "Infinitude of the basin is unconditional and elementary (powers of two), far weaker than the conjecture; it cleanly separates a provable sub-statement from the open problem.",
+      "The in-degree-2 (branching) vertices of the Collatz graph are exactly the arithmetic progression 6j+4; enumerating them injectively gives an EXACT count — precisely k below 6k — so branch vertices have density exactly 1/6. This realizes the nextStep 'verified density result' in clean closed form, unconditionally.",
+      "omega does not beta-reduce a Set.range/Finset.image enumeration lambda left in the goal or hypothesis (↑((fun j => 6*j+4) x) stays opaque); coerce with show / a typed have (h : 6*a+4 = 6*b+4 := hab) before calling omega. Finset.mem_image-introduced existentials ARE beta-reduced by simp, but Set.mem_range ones are not."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Count backward-tree nodes via the mod-6 branching law to obtain an unconditional lower bound on |{n ≤ N : ReachesOne n}| (a verified density result weaker than the conjecture).",
-      "Describe the 2-step predecessor structure (preimage of preimage) in closed residue-class form by iterating collatz_eq_iff.",
-      "Connect backward closure + cycle-exclusion (collatz-cycles family) toward a verified tree (acyclicity of the basin minus the {1,4,2} cycle)."
+      "Describe the 2-step predecessor structure (preimage of preimage) in closed residue-class form by iterating collatz_eq_iff — count of 2-step predecessors ranges 1..4 by mod-cases.",
+      "Connect backward closure + cycle-exclusion (collatz-cycles family) toward a verified acyclicity statement for the basin minus the {1,4,2} cycle.",
+      "Sharpen the density count to a two-sided bound on |{n ≤ N : ReachesOne n}| using the always-present even predecessor 2m."
     ]
   },
   "tags": [
