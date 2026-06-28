@@ -32,13 +32,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: spherical model verified layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist well-defined ([-1,1] cosine, [0,pi] distance). Spherical circles defined as scos level sets with the internal/external tangency criterion (mem_sCircle_iff_sdist, InternallyTangent/ExternallyTangent + symmetry). NEW (researcher-4): point separation — scos_eq_one_iff, sdist_eq_zero_iff (sdist P Q = 0 <-> P = Q), sdist_pos; with sdist_self/nonneg/comm this makes sdist a genuine metric modulo the spherical triangle inequality. Hyperbolic model deferred (no Mathlib support). Next: spherical triangle inequality, then incircle/nine-point constructions and the Feuerbach tangency.",
+    "progressSummary": "BUILD: spherical model verified layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist well-defined ([-1,1] cosine, [0,pi] distance). Spherical circles defined as scos level sets with the internal/external tangency criterion (mem_sCircle_iff_sdist, InternallyTangent/ExternallyTangent + symmetry). Point separation: scos_eq_one_iff, sdist_eq_zero_iff (sdist P Q = 0 <-> P = Q), sdist_pos. NEW (researcher-4): spherical triangle inequality — sdist_eq_angle identifies sdist with Mathlib's InnerProductGeometry.angle on unit vectors, transporting angle_le_angle_add_angle to sdist_triangle (sdist P R <= sdist P Q + sdist Q R); sdist_isMetric bundles all four metric-space axioms, so (S^n, sdist) is now a genuine metric on the spherical model. Hyperbolic model deferred (no Mathlib support). Next: tangent-point existence and incircle/nine-point constructions toward the Feuerbach tangency.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
       "FeuerbachsTheoremOQ04.scos_self/sdist_self/sdist_nonneg/sdist_le_pi/sdist_eq_zero_of_eq — sdist is a well-defined [0,pi]-valued angle vanishing on the diagonal",
       "defs OnSphere (unit vector), scos := <P,Q>, sdist := arccos <P,Q> — the spherical model primitives",
-      "FeuerbachsTheoremOQ04.scos_eq_one_iff/sdist_eq_zero_iff/sdist_pos (researcher-4) — point separation: for unit vectors sdist P Q = 0 iff P = Q, so sdist separates points (genuine metric modulo triangle ineq). 0-axiom."
+      "FeuerbachsTheoremOQ04.scos_eq_one_iff/sdist_eq_zero_iff/sdist_pos (researcher-4) — point separation: for unit vectors sdist P Q = 0 iff P = Q, so sdist separates points (genuine metric modulo triangle ineq). 0-axiom.",
+      "FeuerbachsTheoremOQ04.sdist_eq_angle/sdist_triangle/sdist_isMetric (researcher-4) — spherical triangle inequality: sdist = InnerProductGeometry.angle on unit vectors, so angle_le_angle_add_angle gives sdist P R <= sdist P Q + sdist Q R; sdist_isMetric bundles all four metric-space axioms, completing (S^n, sdist) as a genuine metric on the spherical model. 0-axiom."
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -50,8 +51,8 @@
       "No spherical-triangle incircle / nine-point-circle construction in Mathlib; must be built on scos/sdist."
     ],
     "nextSteps": [
-      "Prove the spherical triangle inequality sdist P R <= sdist P Q + sdist Q R to make (S^n, sdist) a MetricSpace; check InnerProductGeometry.angle lemmas (sdist = angle on unit vectors).",
-      "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres).",
+      "Bundle (S^n, sdist) as an actual Mathlib MetricSpace instance on the sphere subtype (sdist_isMetric supplies all four axioms; the remaining work is the subtype packaging).",
+      "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
       "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion."
     ]
   },
@@ -91,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-06-28T11:30:00.000Z",
+  "lastUpdate": "2026-06-28T11:55:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [

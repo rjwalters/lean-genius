@@ -44,8 +44,11 @@ construction; this file establishes the metric layer underneath that constructio
   is a well-defined `[0, π]`-valued quantity vanishing on the diagonal.
 * `scos_eq_one_iff`, `sdist_eq_zero_iff`, `sdist_pos` — **point separation**: for unit
   vectors `sdist P Q = 0 ↔ P = Q`, so together with symmetry and nonnegativity `sdist`
-  separates points and is a genuine metric on the spherical model (modulo the spherical
-  triangle inequality).
+  separates points.
+* `sdist_eq_angle`, `sdist_triangle`, `sdist_isMetric` — the **spherical triangle
+  inequality** and metric capstone: identifying `sdist` with Mathlib's unoriented angle
+  transports `angle_le_angle_add_angle` to `sdist P R ≤ sdist P Q + sdist Q R`, completing
+  all four metric-space axioms — `(Sⁿ, sdist)` is a genuine metric on the spherical model.
 -/
 import Mathlib
 
@@ -162,6 +165,43 @@ theorem cos_sdist (P Q : E) (hP : OnSphere P) (hQ : OnSphere Q) :
     Real.cos (sdist P Q) = scos P Q := by
   rw [sdist, scos]
   exact Real.cos_arccos (neg_one_le_scos P Q hP hQ) (scos_le_one P Q hP hQ)
+
+/-- **`sdist` is Mathlib's unoriented vector angle.**  Mathlib defines
+`InnerProductGeometry.angle P Q = arccos (⟪P, Q⟫ / (‖P‖·‖Q‖))`; for unit vectors the
+normalising factor `‖P‖·‖Q‖` is `1`, so it collapses to `arccos ⟪P, Q⟫ = sdist P Q`.  This
+bridge lets the spherical metric inherit Mathlib's developed angle theory — in particular
+the angle triangle inequality, which becomes the spherical triangle inequality below. -/
+theorem sdist_eq_angle {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
+    sdist P Q = InnerProductGeometry.angle P Q := by
+  rw [sdist, InnerProductGeometry.angle, hP, hQ]
+  norm_num
+
+/-- **Spherical triangle inequality.**  For model points (unit vectors),
+`sdist P R ≤ sdist P Q + sdist Q R`.  This is the final metric-space axiom: combined with
+`sdist_self` (vanishing on the diagonal), `sdist_eq_zero_iff` (point separation),
+`sdist_nonneg`, and `sdist_comm` (symmetry), it makes `(Sⁿ, sdist)` a genuine metric space.
+The proof transports Mathlib's `InnerProductGeometry.angle_le_angle_add_angle` along the
+identification `sdist_eq_angle`. -/
+theorem sdist_triangle {P Q R : E} (hP : OnSphere P) (hQ : OnSphere Q) (hR : OnSphere R) :
+    sdist P R ≤ sdist P Q + sdist Q R := by
+  rw [sdist_eq_angle hP hR, sdist_eq_angle hP hQ, sdist_eq_angle hQ hR]
+  exact InnerProductGeometry.angle_le_angle_add_angle P Q R
+
+/-- **`sdist` is a genuine metric on the spherical model.**  All four metric-space axioms
+hold for `sdist` restricted to model points (unit vectors): it vanishes on the diagonal,
+separates points, is symmetric, and satisfies the triangle inequality.  Packaging this as a
+bundled `MetricSpace` instance would only additionally require carving the sphere out as a
+subtype; the mathematical content — the axioms themselves — is exactly this conjunction. -/
+theorem sdist_isMetric :
+    (∀ P : E, OnSphere P → sdist P P = 0) ∧
+    (∀ P Q : E, OnSphere P → OnSphere Q → (sdist P Q = 0 ↔ P = Q)) ∧
+    (∀ P Q : E, sdist P Q = sdist Q P) ∧
+    (∀ P Q R : E, OnSphere P → OnSphere Q → OnSphere R →
+      sdist P R ≤ sdist P Q + sdist Q R) :=
+  ⟨fun P hP => sdist_self P hP,
+   fun _ _ hP hQ => sdist_eq_zero_iff hP hQ,
+   fun P Q => sdist_comm P Q,
+   fun _ _ _ hP hQ hR => sdist_triangle hP hQ hR⟩
 
 /-! ## Spherical circles and tangency
 
