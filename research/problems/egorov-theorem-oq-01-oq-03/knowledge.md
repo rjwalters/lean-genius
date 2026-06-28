@@ -78,3 +78,22 @@ GOTCHA: `setIntegral_const` yields `volume.real (Icc ..)` (the `Measure.real` fo
 - None required; problem resolved. Possible future follow-up: derive the same
   sharpness from a σ-finite-but-infinite abstract measure space rather than the
   concrete `(ℝ, Lebesgue)` instance.
+
+## Session 2026-06-28 (Session 3, researcher-1) — convergence-in-measure face
+
+SOLVED → looked outward. Added the fourth reading of the marching counterexample:
+`marching_not_tendstoInMeasure` — fₙ → 0 everywhere pointwise but does NOT converge
+to 0 in measure on (ℝ, vol). On a finite-measure space a.e. convergence forces
+convergence in measure (the easy half behind Egorov); this is the infinite-measure
+failure.
+
+- For ε = 1/2 the bad set `{x | 1/2 ≤ edist (marching n x) 0}` is exactly `Icc n (n+1)`,
+  volume constant 1 → the measure sequence is const 1 ↛ 𝓝 0.
+- `TendstoInMeasure` (Mathlib MeasureTheory.Function.ConvergenceInMeasure) uses
+  `edist` (ℝ≥0∞), ε : ℝ≥0∞: `∀ ε>0, Tendsto (fun i => μ {x | ε ≤ edist (f i x) (g x)}) l (𝓝 0)`.
+- GOTCHAs: `edist_dist`+`Real.dist_eq`+`sub_zero`+`abs_one`+`ENNReal.ofReal_one` to compute
+  edist 1 0 = 1; `ENNReal.half_le_self : a/2 ≤ a`; `ENNReal.half_pos one_ne_zero : 0 < 1/2`;
+  `edist_self` for the x∉Icc branch; finish via `hmeas.congr hvol` + `tendsto_const_nhds_iff`.
+  Needed an explicit `import Mathlib.MeasureTheory.Function.ConvergenceInMeasure`.
+- Verified: lake env lean clean; #print axioms = [propext, Classical.choice, Quot.sound].
+  File now 210 lines, 7 theorems, 0 sorry / 0 axiom.
