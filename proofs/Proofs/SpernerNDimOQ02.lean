@@ -668,6 +668,43 @@ theorem pivot_ne (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
   intro h
   exact pivot_opposite_ne s a b hb (by rw [h])
 
+/-- **The interior pivot fixes the base vertex.**  The pivot only updates the
+vertex `a.succ`, and `a.succ ≠ 0`, so the lex-base `verts 0` is untouched. -/
+theorem pivot_base_eq (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    (pivotSimplex s a b hb).verts 0 = s.verts 0 := by
+  show Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb)) 0 = s.verts 0
+  rw [Function.update_of_ne (Fin.succ_ne_zero a).symm]
+
+/-- **Canonicality of the interior pivot reduces to a single lex test.**  The pivot
+fixes every vertex except the moved one (`a.succ`), in particular the lex-base
+`verts 0` (`pivot_base_eq`).  Since `s` is canonical, all unchanged vertices already
+dominate that shared base, so the pivot is canonical **iff** its one moved vertex —
+the pivot point — also dominates the base.  This replaces the `d + 1` canonicality
+conditions of the pivoted cell by the single comparison a recanonicalization step
+must check, isolating exactly when the interior pivot already lands on the canonical
+representative of its geometric cell. -/
+theorem pivot_isCanon_iff (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) (hs : SpernerGrid.IsCanon s) :
+    SpernerGrid.IsCanon (pivotSimplex s a b hb)
+      ↔ (s.verts 0).lexLE (pivotPoint s a b (pivot_ab_ne hb)) := by
+  have hpiv : (pivotSimplex s a b hb).verts a.succ
+      = pivotPoint s a b (pivot_ab_ne hb) := by
+    show Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb)) a.succ = _
+    rw [Function.update_self]
+  constructor
+  · intro hcanon
+    have h := hcanon a.succ
+    rwa [pivot_base_eq, hpiv] at h
+  · intro hpivLE k
+    rw [pivot_base_eq]
+    by_cases hk : k = a.succ
+    · subst hk; rw [hpiv]; exact hpivLE
+    · have hvk : (pivotSimplex s a b hb).verts k = s.verts k := by
+        show Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb)) k = s.verts k
+        rw [Function.update_of_ne hk]
+      rw [hvk]; exact hs k
+
 -- ============================================================
 -- SECTION: At most one neighbour across a facet (adj_unique_facet)
 -- ============================================================
