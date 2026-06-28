@@ -39,6 +39,7 @@ import Mathlib.Tactic
 namespace Erdos1043
 
 open MeasureTheory Polynomial Complex
+open scoped ComplexConjugate ENNReal NNReal
 
 /- ## Part I: The Level Set of a Polynomial -/
 
@@ -61,7 +62,7 @@ theorem levelSet_X_pow (n : ℕ) (hn : n > 0) :
     unitLevelSet (X ^ n) = Metric.closedBall 0 1 := by
   ext z
   simp only [unitLevelSet, levelSet, Set.mem_setOf_eq, Metric.mem_closedBall, dist_zero_right,
-    map_pow, Polynomial.eval_pow, Polynomial.eval_X]
+    Polynomial.eval_pow, Polynomial.eval_X]
   constructor
   · intro h
     rwa [norm_pow, pow_le_one_iff_of_nonneg (norm_nonneg z) (by omega)] at h
@@ -89,15 +90,44 @@ noncomputable def projectionMeasure (u : Direction) (S : Set ℂ) : ℝ≥0∞ :
 
 /- ## Part III: Basic Examples -/
 
-/-- The unit disk projects to [-1, 1] in any direction, with measure 2. -/
+/-- The unit disk projects to `[-1, 1]` in any direction, with measure 2.
+
+    The projection map is `z ↦ Re(z · conj u)`. Since `‖u‖ = 1`, for any `z` in the
+    closed unit disk we have `|Re(z · conj u)| ≤ ‖z · conj u‖ = ‖z‖ ≤ 1`, so the
+    image lands in `[-1, 1]`. Conversely every `t ∈ [-1, 1]` is hit by `z = t·u`
+    (which has norm `|t| ≤ 1` and satisfies `Re(t·u · conj u) = t·‖u‖² = t`). Hence
+    the projected set is exactly `Set.Icc (-1) 1`, whose Lebesgue measure is `2`. -/
 theorem disk_projection_measure (u : Direction) :
     projectionMeasure u (Metric.closedBall (0 : ℂ) 1) = 2 := by
-  sorry
+  have hu : ‖u.val‖ = 1 := u.property
+  -- The projection of the closed unit disk onto direction `u` is exactly `[-1, 1]`.
+  have himg : projectSet u (Metric.closedBall (0 : ℂ) 1) = Set.Icc (-1 : ℝ) 1 := by
+    ext t
+    simp only [projectSet, projectOnto, Set.mem_image, Metric.mem_closedBall,
+      dist_zero_right, Set.mem_Icc]
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      have hbound : |(z * conj u.val).re| ≤ 1 := by
+        calc |(z * conj u.val).re|
+            ≤ ‖z * conj u.val‖ := Complex.abs_re_le_norm _
+          _ = ‖z‖ * ‖u.val‖ := by rw [norm_mul, Complex.norm_conj]
+          _ = ‖z‖ := by rw [hu, mul_one]
+          _ ≤ 1 := hz
+      exact abs_le.mp hbound
+    · intro ht
+      refine ⟨(t : ℂ) * u.val, ?_, ?_⟩
+      · rw [norm_mul, Complex.norm_real, hu, mul_one, Real.norm_eq_abs]
+        exact abs_le.mpr ht
+      · rw [mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, hu]
+        simp
+  rw [projectionMeasure, himg, Real.volume_Icc]
+  norm_num
 
 /-- Corollary: For f(z) = zⁿ, every projection has measure 2. -/
 theorem monomial_projection (n : ℕ) (hn : n > 0) (u : Direction) :
     projectionMeasure u (unitLevelSet (X ^ n)) = 2 := by
-  sorry
+  rw [levelSet_X_pow n hn]
+  exact disk_projection_measure u
 
 /- ## Part IV: The Erdős-Herzog-Piranian Question -/
 
@@ -129,16 +159,25 @@ theorem EHP_conjecture_false : ¬EHP_Conjecture := by
   intro h
   obtain ⟨f, hMonic, hDeg, hProj⟩ := pommerenke_counterexample
   obtain ⟨u, hu⟩ := h f hMonic hDeg
-  have := hProj u
-  -- 2.386 > 2 in ℝ≥0∞
-  exact absurd (this.trans hu) (by norm_num)
+  have hge := hProj u
+  -- Chaining 2.386 ≤ proj ≤ 2 gives 2.386 ≤ 2, contradicting 2 < 2.386 in ℝ≥0∞.
+  -- The decimal literals elaborate through `ℚ≥0` (NNRatCast), so we bridge to `ℝ≥0`
+  -- via `ENNReal.coe_nnratCast` and discharge the numeric fact over `ℝ`.
+  have hcontra : (2.386 : ℝ≥0∞) ≤ 2 := le_trans hge hu
+  have hlt : (2 : ℝ≥0∞) < 2.386 := by
+    rw [← NNRat.cast_ofScientific, ← ENNReal.coe_nnratCast,
+        show (2 : ℝ≥0∞) = ((2 : ℝ≥0) : ℝ≥0∞) by norm_cast, ENNReal.coe_lt_coe,
+        ← NNReal.coe_lt_coe]
+    push_cast
+    norm_num
+  exact absurd hcontra (not_le.mpr hlt)
 
 /-- The Pommerenke constant: infimum over all polynomials of the min projection measure. -/
 noncomputable def pommerenkeConstant : ℝ≥0∞ :=
   ⨆ (f : Polynomial ℂ) (_ : f.Monic) (_ : f.natDegree ≥ 1),
     minProjectionMeasure f
 
-/-- Pommerenke showed this constant is at least 2.386. -/
+/- Pommerenke showed this constant is at least 2.386. -/
 /- ## Part VI: Pommerenke's Upper Bound -/
 
 /-- **Pommerenke (1961)**: For any monic polynomial, some projection has measure ≤ 3.3.
@@ -156,7 +195,7 @@ theorem min_projection_bounded (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f
 
 /- ## Part VII: Properties of Level Sets -/
 
-/-- For a degree-n monic polynomial, the level set {|f(z)| ≤ 1} has
+/- For a degree-n monic polynomial, the level set {|f(z)| ≤ 1} has
     logarithmic capacity 1. This follows from the fact that the Green's
     function with pole at infinity has leading term log|z| - (1/n)log|f(z)|. -/
 /-- The level set is connected if and only if all roots lie in the level set. -/
@@ -186,7 +225,7 @@ noncomputable def maxWidth (S : Set ℂ) : ℝ≥0∞ :=
 /-- For convex sets, minWidth = diameter / (some constant related to shape). -/
 theorem convex_width_bounds (S : Set ℂ) (hConvex : Convex ℝ S) (hCompact : IsCompact S) :
     minWidth S ≤ maxWidth S := by
-  have hne : Nonempty Direction := ⟨⟨1, Complex.norm_one⟩⟩
+  have hne : Nonempty Direction := ⟨⟨1, norm_one⟩⟩
   exact (iInf_le (width S) hne.some).trans (le_iSup (width S) hne.some)
 
 /- ## Part IX: Lemniscates -/
@@ -207,9 +246,9 @@ theorem bernoulli_origin : (0 : ℂ) ∈ bernoulliLemniscate 1 := by
 
 /- ## Part X: Related Results -/
 
-/-- The transfinite diameter of the unit level set equals 1 for monic polynomials.
+/- The transfinite diameter of the unit level set equals 1 for monic polynomials.
     Equivalently, cap({|f(z)| ≤ 1}) = 1 when f is monic. -/
-/-- Chebyshev's theorem: Among monic degree-n polynomials, the Chebyshev polynomial
+/- Chebyshev's theorem: Among monic degree-n polynomials, the Chebyshev polynomial
     T_n(z)/2^(n-1) minimizes the sup norm on [-1, 1], achieving ‖·‖ = 1/2^(n-1). -/
 /-- The level set {|f(z)| ≤ 1} contains all roots of f. -/
 theorem roots_in_levelSet (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
@@ -218,9 +257,9 @@ theorem roots_in_levelSet (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
 
 /- ## Part XI: Quantitative Bounds -/
 
-/-- For a monic polynomial of degree n, the level set has area at most π.
+/- For a monic polynomial of degree n, the level set has area at most π.
     (Equality holds for f(z) = zⁿ.) -/
-/-- The diameter of the level set is at most 4 for monic polynomials.
+/- The diameter of the level set is at most 4 for monic polynomials.
     (The unit disk has diameter 2, but level sets can be more spread out.) -/
 /- ## Part XII: Summary -/
 
