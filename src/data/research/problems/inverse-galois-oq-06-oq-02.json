@@ -29,28 +29,29 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-27",
-    "iteration": 3,
-    "focus": "Iteration 3: added Proofs/InverseGaloisOQ06OQ02Cycle.lean (0-axiom, 0-sorry) isolating the PERMUTATION-GROUP half of Dedekind — part (B) cycle type => element order => 3 | |Gal|. Exhibits an explicit (1,1,3) permutation of the five roots (frob113 = (2 3 4), fixing the two linear-factor roots), proves IsThreeCycle/cycleType={3}/orderOf=3, and the abstract bridges three_dvd_card_of_orderOf_three, three_dvd_natCard_of_isThreeCycle_mem, dedekind_consequence_113. This makes precise that the ONLY remaining gap is part (A), the Frobenius<->factorization correspondence (sibling inverse-galois-a5-oq-01). Iteration 2 added P11 (mod-11 corroboration); iteration 1 created the mod-7 packaged input q_mod7_factor_type.",
+    "since": "2026-06-28",
+    "iteration": 4,
+    "focus": "Iteration 4 (researcher-2, 2026-06-28): added Proofs/InverseGaloisOQ06OQ02GalBridge.lean (0-axiom, 0-sorry) instantiating the deterministic half of Dedekind against the REAL q.Gal of the A5 quintic (not an abstract Subgroup (Perm a)). Using the genuine, already-injective root action Polynomial.Gal.galActionHom q q.SplittingField, proves three_dvd_gal_card_of_galAction_isThreeCycle / _cycleType / _of_exists_galAction_threeCycle: IF some sigma in q.Gal acts on the five roots as a 3-cycle THEN 3 | Fintype.card q.Gal. orderOf_injective converts the root-permutation cycle type to orderOf sigma = 3, then orderOf_dvd_card. Also exists_order_three_of_exists_galAction_threeCycle shows this root-3-cycle hypothesis is at least as strong as the sibling InverseGaloisA5Dedekind.exists_gal_order_three. None depend on the three_dvd_gal_card axiom (verified via #print axioms: only propext/Classical.choice/Quot.sound). The residual gap is now exactly: produce sigma in q.Gal whose root permutation has cycle type {3} (Frobenius at 7), phrased directly in terms of the (1,1,3) factorization datum this slug verifies.",
     "blockers": [
       "Dedekind's theorem is not in Mathlib 4.26; the (1,1,3) => 3-cycle => 3 | |Gal| implication stays axiomatized (sibling track)."
     ],
-    "nextAction": "The remaining work is part (A) only: the Frobenius<->factorization correspondence (Dedekind's theorem) in the sibling track. q_mod7_factor_type (input) + dedekind_consequence_113 (consequence) then compose to discharge three_dvd_gal_card.",
+    "nextAction": "Residual gap is part (A) only and now maximally precise: exhibit sigma in q.Gal with (galActionHom q q.SplittingField sigma).IsThreeCycle (the Frobenius at the unramified prime 7, cycle type matching q_mod7_factor_type). Feeding it to three_dvd_gal_card_of_exists_galAction_threeCycle discharges three_dvd_gal_card for the real q.Gal. Owned by sibling inverse-galois-a5-oq-01 (Frobenius/inertia API).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: shipped 0-axiom mod-7 Dedekind input (q_mod7_factor_type), corroborated at p=11 (q_mod11_factor_type), then isolated and verified the permutation-group consequence (part B: cycle type (1,1,3) => order-3 element => 3 | |Gal|) in InverseGaloisOQ06OQ02Cycle.lean — explicit 3-cycle witness + abstract bridges, all 0-axiom/0-sorry. Residual gap is now precisely part (A), Frobenius<->factorization (Dedekind's theorem).",
+    "progressSummary": "ACT: shipped 0-axiom mod-7 Dedekind input (q_mod7_factor_type), corroborated at p=11 (q_mod11_factor_type), isolated the abstract permutation-group consequence (part B) in InverseGaloisOQ06OQ02Cycle.lean, and now (iter 4) instantiated that deterministic half against the ACTUAL q.Gal in InverseGaloisOQ06OQ02GalBridge.lean: IF a Galois automorphism acts on the 5 roots as a 3-cycle THEN 3 | |q.Gal|, via injectivity of galActionHom + orderOf_dvd_card (0-axiom/0-sorry, does not use the three_dvd_gal_card axiom). Residual gap is now the single existential: a Galois element whose root permutation has cycle type {3} (Frobenius at 7) — part (A), sibling track.",
     "builtItems": [
       "cubicMod7_irreducible via irreducible_of_degree_le_three_of_not_isRoot",
       "pairwise non-association of the three factors (eq_of_monic_of_associated + degree bounds)",
       "q_mod7_squarefree via squarefree_mul_iff and pairwise coprimality",
       "q_mod7_factor_type packaged Dedekind input",
       "[p=11 corroboration] InverseGaloisOQ06OQ02P11.lean (0-axiom, 0-sorry): q mod 11 = (X-4)(X-3)(X^3+2X^2+X-5), cubicMod11 irreducible (no roots in F_11), pairwise non-associated, squarefree, AND the full coefficient-by-coefficient factorization identity q_ℤ.map = (X-4)(X-3)*cubicMod11 — an independent (1,1,3) witness at a second unramified prime",
-      "[part B: group-theory consequence] InverseGaloisOQ06OQ02Cycle.lean (0-axiom, 0-sorry): frob113 = swap 2 3 * swap 2 4 an explicit (1,1,3) permutation of the 5 roots (fixes 0,1 = the two linear-factor roots), frob113_isThreeCycle / frob113_cycleType={3} / frob113_orderOf=3; abstract bridges three_dvd_card_of_orderOf_three (finite group + order-3 elt => 3|card via orderOf_dvd_card), three_dvd_natCard_of_isThreeCycle_mem (subgroup of S(α) containing a 3-cycle => 3|Nat.card via Subgroup.orderOf_dvd_natCard), and dedekind_consequence_113. Verifies the deterministic half of Dedekind so the residual gap is exactly part (A)."
+      "[part B: group-theory consequence] InverseGaloisOQ06OQ02Cycle.lean (0-axiom, 0-sorry): frob113 = swap 2 3 * swap 2 4 an explicit (1,1,3) permutation of the 5 roots (fixes 0,1 = the two linear-factor roots), frob113_isThreeCycle / frob113_cycleType={3} / frob113_orderOf=3; abstract bridges three_dvd_card_of_orderOf_three (finite group + order-3 elt => 3|card via orderOf_dvd_card), three_dvd_natCard_of_isThreeCycle_mem (subgroup of S(α) containing a 3-cycle => 3|Nat.card via Subgroup.orderOf_dvd_natCard), and dedekind_consequence_113. Verifies the deterministic half of Dedekind so the residual gap is exactly part (A).",
+      "[part B, instantiated to real q.Gal] InverseGaloisOQ06OQ02GalBridge.lean (0-axiom, 0-sorry): three_dvd_gal_card_of_galAction_isThreeCycle / _cycleType / _of_exists_galAction_threeCycle — if some sigma in q.Gal acts on the five roots as a 3-cycle (cycle type {3}, the (1,1,3) shape of q mod 7) then 3 | Fintype.card q.Gal. orderOf_galActionHom (= orderOf_injective on the injective Polynomial.Gal.galActionHom) carries the permutation cycle type to orderOf sigma = 3, then orderOf_dvd_card. exists_order_three_of_exists_galAction_threeCycle bridges to the sibling exists_gal_order_three shape. Verified by #print axioms to use only propext/Classical.choice/Quot.sound (no dependency on the three_dvd_gal_card axiom)."
     ],
     "insights": [
       "A degree-3 poly over a field with no root is irreducible: irreducible_of_degree_le_three_of_not_isRoot.",
@@ -59,17 +60,19 @@
       "isCoprime_of_irreducible_of_not_associated does not exist in Mathlib 4.26.",
       "Equiv.Perm.isThreeCycle_swap_mul_swap_same (ab ac bc) builds IsThreeCycle (swap a b * swap a c) — cleanest concrete 3-cycle; distinctness over Fin 5 by decide.",
       "Equiv.Perm.IsThreeCycle.orderOf : orderOf g = 3 (cycle type {3} => order 3 via lcm_cycleType).",
-      "Subgroup.orderOf_dvd_natCard (s) (hx : x ∈ s) : orderOf x ∣ Nat.card s — turns an element's order directly into a divisor of the subgroup order (no Fintype needed)."
+      "Subgroup.orderOf_dvd_natCard (s) (hx : x ∈ s) : orderOf x ∣ Nat.card s — turns an element's order directly into a divisor of the subgroup order (no Fintype needed).",
+      "orderOf_injective (f : G ->* H) (hf : Function.Injective f) (x) : orderOf (f x) = orderOf x — converts an injective monoid hom (here Polynomial.Gal.galActionHom, injectivity already in InverseGaloisA5) into order preservation, turning a root-permutation cycle type into the abstract element order.",
+      "IsThreeCycle / cycleType over q.rootSet q.SplittingField needs DecidableEq on the (noncomputable) root subtype; supply via open scoped Classical (matching the A5 parent file)."
     ],
     "mathlibGaps": [
       "Dedekind's theorem: mod-p factorization type => Frobenius cycle type for number fields (not in Mathlib 4.26).",
       "Frobenius element / inertia degree machinery for number field extensions."
     ],
     "nextSteps": [
-      "Plug q_mod7_factor_type (or q_mod11_factor_type) into Dedekind's theorem once available to eliminate three_dvd_gal_card.",
-      "DONE: corroborated at the second unramified prime p=11 (q_mod11_factor_type, independent (1,1,3) witness) in InverseGaloisOQ06OQ02P11.lean.",
-      "DONE: isolated and verified part (B), the permutation-group consequence (cycle type (1,1,3) => order-3 element => 3 | |Gal|), in InverseGaloisOQ06OQ02Cycle.lean — 0-axiom/0-sorry.",
-      "Residual: part (A) only — the Frobenius<->factorization correspondence (Dedekind's theorem) in the sibling track inverse-galois-a5-oq-01 (exists_gal_order_three). Compose q_mod7_factor_type + dedekind_consequence_113 once part (A) lands."
+      "Residual: part (A) only — exhibit sigma in q.Gal with (galActionHom q q.SplittingField sigma).IsThreeCycle (Frobenius at the unramified prime 7). Feed to three_dvd_gal_card_of_exists_galAction_threeCycle to discharge three_dvd_gal_card for the real q.Gal. Owned by sibling inverse-galois-a5-oq-01 (exists_gal_order_three / Frobenius-inertia API).",
+      "DONE (iter 4): instantiated the deterministic half against the real q.Gal via the injective galActionHom (InverseGaloisOQ06OQ02GalBridge.lean).",
+      "DONE (iter 3): abstract part (B) in InverseGaloisOQ06OQ02Cycle.lean.",
+      "DONE (iter 2): p=11 corroboration."
     ],
     "markdown": "See research/problems/inverse-galois-oq-06-oq-02/knowledge.md"
   },
@@ -92,8 +95,19 @@
     "mathlib": []
   },
   "started": "2026-06-27",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-28",
   "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisOQ06OQ02GalBridge.lean",
+      "filename": "InverseGaloisOQ06OQ02GalBridge.lean",
+      "lineCount": 116,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ06OQ02GalBridge.lean"
+    },
     {
       "path": "Proofs/InverseGaloisOQ06OQ02Cycle.lean",
       "filename": "InverseGaloisOQ06OQ02Cycle.lean",
