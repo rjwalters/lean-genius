@@ -396,6 +396,38 @@ def HasDensity (A : Set ℕ) (d : ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |((Finset.filter (· ∈ A) (Finset.range (n + 1))).card : ℝ) / n - d| < ε
 
+/--
+**The {2,3} non-representables have natural density zero (unconditional, 0-axiom).**
+
+In the solved `{2,3}` case every positive integer is representable
+(`case_2_3_all_representable`), so the non-representable set is exactly `{0}`
+(`nonRepresentable_three_two`).  A single point has natural density `0`: for every
+`n ≥ 1` precisely one element of `{0,…,n}` lies in `{0}`, so the counting ratio is
+`1/n → 0`.  This is the density statement of Erdős #1110's *settled* case and the
+first theorem to exercise the `HasDensity` definition.  (The open content of the
+problem is the density in the *non*-`{2,3}` cases — zero in many cases by Yu-Chen
+2022, open in general.) -/
+theorem nonRepresentable_three_two_hasDensity_zero :
+    HasDensity (NonRepresentable 3 2) 0 := by
+  rw [nonRepresentable_three_two]
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  refine ⟨N + 1, fun n hn => ?_⟩
+  have hn1 : 1 ≤ n := le_trans (Nat.le_add_left 1 N) hn
+  -- Exactly one element of `{0,…,n}` lies in the singleton `{0}`, so the count is `1`.
+  have hmem : (0 : ℕ) ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  simp only [Set.mem_singleton_iff, Finset.filter_eq', hmem, if_true,
+    Finset.card_singleton, Nat.cast_one, sub_zero]
+  -- `|1/n| = 1/n < ε`, since `n ≥ N+1 > 1/ε`.
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn1
+  rw [abs_of_pos (by positivity), div_lt_iff₀ hn0]
+  have hNn : (1 / ε) < (n : ℝ) := by
+    refine hN.trans_le ?_
+    exact_mod_cast (by omega : (N : ℕ) ≤ n)
+  rw [div_lt_iff₀ hε] at hNn
+  rw [mul_comm]
+  exact hNn
+
 /-
 **Yu-Chen Density Zero Theorem:**
 The non-representable numbers have density zero for many parameter choices:
