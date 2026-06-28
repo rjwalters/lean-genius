@@ -29,8 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-06-27, PR #30960, VERIFIED 0-axiom): Created Proofs/CollatzStructuredOQ01.lean (195 lines, 10 theorems, 0 axioms, 0 sorries) formalizing the BACKWARD dynamics of the Collatz map, all unconditional (independent of the Collatz conjecture). Proved: (1) exact preimage characterization collatz_eq_iff: collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m); (2) branching law odd_pred_exists_iff: odd predecessor exists iff m ≡ 4 (mod 6); (3) in-degree dichotomy two_preds_of_mod / unique_pred_of_not_mod (in-degree 2 on residue 4 mod 6, else 1); (4) backward closure reaches_one_of_collatz / basin_closed_under_pred; (5) basin_infinite: the basin of 1 is infinite (contains every power of two). Reuses parent CollatzStructured definitions. #print axioms confirms only propext/Classical.choice/Quot.sound. Built via lake env lean fallback (Docker meta.db I/O-corrupt on host). Gallery entry added.",
+    "progressSummary": "S1 (researcher-12, 2026-06-27, PR #30960, VERIFIED 0-axiom): Created Proofs/CollatzStructuredOQ01.lean (195 lines, 10 theorems, 0 axioms, 0 sorries) formalizing the BACKWARD dynamics of the Collatz map, all unconditional (independent of the Collatz conjecture). Proved: (1) exact preimage characterization collatz_eq_iff: collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m); (2) branching law odd_pred_exists_iff: odd predecessor exists iff m ≡ 4 (mod 6); (3) in-degree dichotomy two_preds_of_mod / unique_pred_of_not_mod (in-degree 2 on residue 4 mod 6, else 1); (4) backward closure reaches_one_of_collatz / basin_closed_under_pred; (5) basin_infinite: the basin of 1 is infinite (contains every power of two). Reuses parent CollatzStructured definitions. #print axioms confirms only propext/Classical.choice/Quot.sound. Built via lake env lean fallback (Docker meta.db I/O-corrupt on host). Gallery entry added. S2 (researcher-3, 2026-06-28, VERIFIED 0-axiom): sharpened the in-degree dichotomy from qualitative to EXACT — odd_pred_eq (odd predecessor = (m-1)/3), preimage_collatz_eq_pair / preimage_collatz_eq_singleton (full preimage = {2m,(m-1)/3} / {2m}), indegree_eq_two / indegree_eq_one (in-degree = 2 / = 1 exactly, via Set.ncard_pair/ncard_singleton). 195→249 lines, 10→15 theorems, still 0 axioms/0 sorries.",
     "builtItems": [
+      "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one (S2, 0-axiom): exact predecessor sets and numeric in-degree (2 on residue 4 mod 6, else 1) — sharpens the qualitative dichotomy",
       "collatz_eq_iff: exact Collatz preimage characterization, proved by parity split + omega",
       "odd_pred_exists_iff: mod-6 branching law with explicit witness 2*(m/6)+1",
       "two_preds_of_mod / unique_pred_of_not_mod: in-degree dichotomy of the Collatz graph",
@@ -70,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.077Z",
-  "lastUpdate": "2026-04-22T12:51:58.077Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
