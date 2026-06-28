@@ -1550,4 +1550,80 @@ theorem isInteriorFacet_or_boundary (k : Fin (d + 1)) :
 theorem not_isInteriorFacet_of_boundary {k : Fin (d + 1)} (h : IsBoundaryFacet k) :
     ¬ IsInteriorFacet k := (not_isInteriorFacet_iff k).mpr h
 
+/-!
+## Boundary-face reduction to barycentric coordinates
+
+The abstract `SpernerTriangulation.boundary_face` obligation, specialised to the
+`gridVertices` carrier, asks that whenever the door-graph `adj` sends facet `k`
+to `none`, every *other* vertex of the cell lies on the geometric face `k`
+(`SpernerNDim.onFace _ k`).  Through the coordinate bridge `onFace_toVertex` this
+is a purely barycentric statement: it says the `k`-th barycentric coordinate of
+every vertex `j ≠ k` vanishes.
+
+This section records that reduction once and for all, as the exact goal a total
+`adj` must discharge at each facet it sends to `none`.  It does **not** decide
+*which* facets are `none`: pinning that down is the remaining cross-chain gluing
+frontier (a chain-boundary facet `k ∈ {0, Fin.last d}` that is interior to `Δ_N`
+is glued to a cell in a *different* Kuhn chain, which `pivotSimplex` does not
+produce — see the module header and `IsBoundaryFacet`).  Once that gluing (or a
+proof that such a facet lies on `∂Δ_N`) is in place, `boundary_face` follows from
+`boundary_face_iff_coords_zero` below.
+-/
+
+/-- **Carrier face condition = barycentric coordinate zero.**  A Kuhn vertex
+`gridVertices s j` lies on the geometric face `k` exactly when the `k`-th
+barycentric coordinate of the underlying grid vertex `s.verts j` is `0`.  This is
+just the bridge `onFace_toVertex` transported along the defeq
+`gridVertices s j = toVertex (s.verts j)`. -/
+@[simp] theorem gridVertices_onFace_iff
+    (s : SpernerGrid.GridSimplex d N) (j k : Fin (d + 1)) :
+    SpernerNDim.onFace (gridVertices s j) k ↔ (s.verts j).coords k = 0 := by
+  have h := onFace_toVertex (s.verts j) k
+  simpa [gridVertices, SpernerGrid.BaryPoint.onFace] using h
+
+/-- **Boundary-face obligation, reduced.**  For the `gridVertices` carrier, the
+`boundary_face` requirement at facet `k` — that every vertex `j ≠ k` lies on
+geometric face `k` — is equivalent to the barycentric statement that the `k`-th
+coordinate of every such `s.verts j` vanishes.  A total door-graph `adj` discharges
+`boundary_face` at each `none` facet `k` precisely by establishing the right-hand
+side here. -/
+theorem boundary_face_iff_coords_zero
+    (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    (∀ j : Fin (d + 1), j ≠ k → SpernerNDim.onFace (gridVertices s j) k) ↔
+    (∀ j : Fin (d + 1), j ≠ k → (s.verts j).coords k = 0) := by
+  constructor
+  · intro h j hj; exact (gridVertices_onFace_iff s j k).mp (h j hj)
+  · intro h j hj; exact (gridVertices_onFace_iff s j k).mpr (h j hj)
+
+/-- The facet indexed by the cell's `miss` direction is **never** a geometric
+boundary face (for `d ≥ 2`): its `boundary_face` coordinate condition fails.
+Indeed the `miss` coordinate decreases by exactly `1` per step
+(`GridSimplex.miss_coord_at`) from a base value `≥ d` (`GridSimplex.base_miss_ge_d`),
+so among the two distinct vertices `0` and `⟨1, …⟩` — at least one of which differs
+from the index `miss` — the one chosen still has `miss`-coordinate `≥ d - 1 ≥ 1 > 0`.
+This is one concrete witness that the geometric `none` facets are **not** simply
+read off the facet index, confirming the cross-chain frontier: the `miss` facet
+carries an interior (pivot) partner, never an `adj = none`.  (The `d ≤ 1`
+orientation-doubling case is handled separately.) -/
+theorem miss_not_boundary_face (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) :
+    ¬ (∀ j : Fin (d + 1), j ≠ s.miss → (s.verts j).coords s.miss = 0) := by
+  intro h
+  have hbase : d ≤ (s.verts 0).coords s.miss := s.base_miss_ge_d
+  have hlt : (1 : ℕ) < d + 1 := by omega
+  set v1 : Fin (d + 1) := ⟨1, hlt⟩ with hv1
+  have hv1val : v1.val = 1 := rfl
+  by_cases hm : s.miss = (0 : Fin (d + 1))
+  · -- miss = 0; use vertex v1 (≠ 0), whose miss-coord = base - 1 ≥ d - 1 ≥ 1
+    have hne : v1 ≠ s.miss := by
+      rw [hm]; exact Fin.ne_of_val_ne (by simp [hv1val])
+    have hmca : (s.verts v1).coords s.miss = (s.verts 0).coords s.miss - v1.val :=
+      s.miss_coord_at v1
+    have := h v1 hne
+    rw [hmca, hv1val] at this
+    omega
+  · -- miss ≠ 0; use vertex 0, whose miss-coord = base ≥ d ≥ 2 > 0
+    have hne : (0 : Fin (d + 1)) ≠ s.miss := fun hc => hm hc.symm
+    have := h 0 hne
+    omega
+
 end SpernerNDimOQ02
