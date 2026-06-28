@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1110-oq-01",
   "title": "Erdos 1110: density of non-representables for additive bases",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -18,24 +18,46 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-29T19:14:09.134Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-06-28",
+    "iteration": 2,
+    "focus": "Iteration 2 (researcher-2, 2026-06-28): (a) PROVED the easy direction of the Erdos-Lewin characterisation unconditionally (0-axiom) and weakened the bundled-iff axiom to only the deep direction. Previously `erdos_lewin_theorem` was an `axiom` asserting the full iff `Finite (NonRepresentable p q) <-> {p,q}={2,3}`. The backward direction ({2,3} => Finite) is a corollary of the already-proven case_2_3_all_representable: in fact NonRepresentable 3 2 = NonRepresentable 2 3 = {0} exactly (every n>=1 representable, 0 never representable). Added not_isRepresentable_zero, isPowerForm_comm, isRepresentable_comm, nonRepresentable_three_two, nonRepresentable_two_three, finite_nonRepresentable_of_two_three (all 0-axiom), then replaced the axiom with the strictly-weaker `erdos_lewin_infinite` (only the hard {p,q}!={2,3} => Infinite direction) and re-derived the full iff `erdos_lewin_theorem` as a THEOREM. Axiom count stays an honest 1 but the remaining axiom is weaker. (b) REPAIRED ~10 pre-existing Mathlib-4.26 build breakages that left the file non-compiling: Nat.strong_rec_on->strong_induction_on, Nat.pow_log_le_self / Nat.lt_pow_succ_log_self signature changes, omega-through-lambda in mul_two_injOn, DecidablePred for a Set filter (open scoped Classical in HasDensity), ring on Nat truncated subtraction, nonlinear omega in hs_eq, a subst blocked by a let-dependency (rw instead), and five dangling /-- -/ docstrings. File now compiles clean (lake env lean exit 0).",
+    "blockers": [
+      "The deep direction of Erdos-Lewin ({p,q}!={2,3} => infinitely many non-representable) is not in Mathlib 4.26; it stays axiomatized as erdos_lewin_infinite."
+    ],
+    "nextAction": "Optional: attempt the Erdos-Lewin hard direction or the Yu-Chen density-zero results to further reduce/eliminate erdos_lewin_infinite. The minSummandBound / HasDensity scaffolding is defined but unused; either prove a concrete density statement or trim.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "The {2,3} case is fully solved 0-axiom (case_2_3_all_representable, strong induction). Iteration 2 proved the EASY direction of the Erdos-Lewin iff unconditionally and pinned the non-representable set exactly to {0} for both base orderings, weakening the former bundled-iff axiom to the single deep `erdos_lewin_infinite` (hard direction only). Also repaired ~10 pre-existing Mathlib-4.26 build breakages so the file compiles again. Residual assumption: the deep Erdos-Lewin direction (not in Mathlib).",
+    "builtItems": [
+      "case_2_3_all_representable (pre-existing, 0-axiom): every n>=1 is an antichain sum of 3^a 2^b, by strong induction (even: double; odd: subtract 3^{floor log_3 n}).",
+      "not_isRepresentable_zero (0-axiom): a nonempty antichain of positive power forms has positive sum, so 0 is never representable.",
+      "isPowerForm_comm / isRepresentable_comm (0-axiom): representability is symmetric in the base pair (p^k q^l ranges over the same set as q^k p^l).",
+      "nonRepresentable_three_two / nonRepresentable_two_three (0-axiom): NonRepresentable = {0} exactly for {2,3}.",
+      "finite_nonRepresentable_of_two_three (0-axiom): the easy direction {2,3} => Finite, now proved not assumed (returns the singleton {0}).",
+      "erdos_lewin_theorem (now a THEOREM): full iff, backward from finite_nonRepresentable_of_two_three, forward from the weaker axiom erdos_lewin_infinite."
+    ],
+    "insights": [
+      "The Erdos-Lewin 'iff' splits cleanly: the {2,3}=>finite half is elementary (it is exactly the proven case_2_3 induction), only ¬{2,3}=>infinite is deep. Axiomatising just the deep half (erdos_lewin_infinite) is strictly weaker than axiomatising the iff.",
+      "For {2,3} the non-representable set is the single point {0}, not merely finite.",
+      "Mathlib 4.26 renames hit this file: Nat.strong_rec_on -> Nat.strong_induction_on; Nat.pow_log_le_self now takes (b)(hn:n!=0) with n implicit; Nat.lt_pow_succ_log_self now takes (hb)(n) with n explicit.",
+      "omega cannot see through an un-beta-reduced lambda ((fun x=>x*2) a) nor multiply two unknowns (3^k * c); dsimp/explicit c=1 substitution fixes both. ring fails on Nat truncated subtraction; rw [pow_succ] then omega works.",
+      "A subst is blocked when a `let`-bound local (k := Nat.log 3 n) depends on the variable; rewrite the goal with the equation instead of subst."
+    ],
+    "mathlibGaps": [
+      "Erdos-Lewin deep direction: {p,q}!={2,3} (p>q>=2 coprime) => infinitely many non-representable numbers. Not in Mathlib 4.26.",
+      "Yu-Chen density-zero and coprime-non-representable results (2022). Not in Mathlib."
+    ],
+    "nextSteps": [
+      "DONE (iter 2): proved the easy Erdos-Lewin direction unconditionally; weakened the iff axiom to the deep direction only; repaired Mathlib-4.26 build breakages.",
+      "Attempt the deep direction (or a special case) to reduce/eliminate erdos_lewin_infinite.",
+      "Either prove a concrete HasDensity / minSummandBound statement or remove the unused scaffolding."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -55,15 +77,15 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.134Z",
-  "lastUpdate": "2026-05-29T19:14:09.134Z",
+  "lastUpdate": "2026-06-28",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 438,
-      "theoremCount": 13,
+      "lineCount": 523,
+      "theoremCount": 20,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,

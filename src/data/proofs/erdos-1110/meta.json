@@ -251,19 +251,15 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Pow",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.NumberTheory.Divisors"
+      "Mathlib"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 437,
+    "lineCount": 523,
     "axiomCount": 1,
-    "theoremCount": 13,
+    "theoremCount": 20,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0
