@@ -57,6 +57,13 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Statement and parent import",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring framing the goal — the p-independent sawtooth average (q−1)/2 over a complete residue system — as the arithmetic input to Eisenstein's lemma, followed by `import Proofs.HermiteSawtoothIdentity` (the parent gallery entry supplying hermite_sawtooth_identity) and `open Finset` for the residue-permutation API."
+    },
+    {
       "id": "sawtooth-zero",
       "title": "Sawtooth at x = 0",
       "startLine": 45,
@@ -86,7 +93,8 @@
       "**The value is $p$-independent, and that is the whole point.** Coprimality means multiplication by $p$ only relabels the residues, so $\\sum_k\\{kp/q\\}$ cannot depend on $p$ — it equals the $p = 1$ value $(q-1)/2$ for every unit $p$.",
       "**The fractional part is a residue in disguise.** `Int.fract_div_natCast_eq_div_natCast_mod` turns the analytic $\\{kp/q\\}$ into the arithmetic $(kp \\bmod q)/q$, after which no analysis remains — only a finite sum over a permuted residue system.",
       "**Injective ⟹ bijective is the only number theory used.** Once $k \\mapsto kp \\bmod q$ is shown injective via coprime cancellation, the pigeonhole upgrade to a permutation (`eq_of_subset_of_card_le`) supplies the rearrangement for free.",
-      "**The diagonal term $(q-1)/2$ is the parent sawtooth's fingerprint.** Specialising $\\sum_{k<n}\\{x+k/n\\} = \\{nx\\}+(n-1)/2$ at $x=0$ exhibits exactly the $(n-1)/2$ term the open question asked to surface."
+      "**The diagonal term $(q-1)/2$ is the parent sawtooth's fingerprint.** Specialising $\\sum_{k<n}\\{x+k/n\\} = \\{nx\\}+(n-1)/2$ at $x=0$ exhibits exactly the $(n-1)/2$ term the open question asked to surface.",
+      "**The result is exact equidistribution.** The *average* of the sawtooth over the residue system is $\\tfrac1q\\sum_{k<q}\\{kp/q\\} = \\tfrac{q-1}{2q}$, which converges to $\\tfrac12$ — the mean of $\\{y\\}$ on $[0,1)$ — as $q\\to\\infty$. Coprimality makes this an identity, not just an asymptotic: the residues hit every point of the lattice $\\{0,1/q,\\dots,(q-1)/q\\}$ exactly once."
     ],
     "prerequisites": [
       "Fractional part Int.fract and floor",
