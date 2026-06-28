@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-27T00:00:00.000Z",
-    "iteration": 9,
-    "focus": "Option C, Phase-1 carrier. This session names the recanonicalization TARGET BASE and proves it well-posed: baseOf s := the lex-min vertex of a GridSimplex (choose of exists_lex_min), with baseOf_eq_of_range_eq (the base depends only on the cell geometry / Set.range verts, NOT on the chain ordering) and isCanon_baseOf_eq (on a canonical cell baseOf = verts 0, so recanonicalization is the identity on the CanonSimplex carrier). +8 decls (vertexSet, baseOf + 6 thms), VERIFIED 0-axiom (lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound], Classical.choice only via Exists.choose). Remaining for a full SpernerTriangulation instance: the re-sorted GridSimplex CONSTRUCTION realizing base baseOf s (recover incDir/miss order), then the adj search + adj_symm/adj_vertices/adj_ne/boundary_face.",
+    "since": "2026-06-28T07:00:00.000Z",
+    "iteration": 10,
+    "focus": "Added the index-level boundary half of the adj discharge: not_isInteriorFacet_iff proves the facets with no pivot neighbour are EXACTLY {0, Fin.last d} (IsBoundaryFacet), plus DecidablePred (IsInteriorFacet), the exhaustive isInteriorFacet_or_boundary and the exclusive not_isInteriorFacet_of_boundary. VERIFIED lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound] (0-axiom). Remaining for boundary_face: the GEOMETRIC half (deleted-vertex set on facets 0/last lies on geometric face k), which needs the hard cross-miss gluing or chain-boundary ⊆ ∂Δ_N.",
     "blockers": [
       "The remaining open frontier is the adj field: a facet-adjacency function Simplex → Fin (d+1) → Option (Simplex × Fin (d+1)) realising the Freudenthal pivot, plus its 5 compatibility fields (adj_symm, adj_vertices, adj_ne, adj_unique_facet, boundary_face). facet_injective supplies the within-cell half of adj_unique_facet; the cross-cell half needs canon_eq_of_vertices_range. Estimated ~300-500 lines.",
       "INFRA NOTE: Docker build host containerd metadata DB is corrupt (meta.db I/O error on image inspect/build), so docker-build.sh is unusable; verification this session used the local single-file fallback (lake env lean) after lake exe cache get repaired the host Mathlib olean cache to complete (7382 + root). Do NOT docker-prune while peer builds run."
@@ -83,10 +83,10 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-06-28T09:43:42.000Z",
+  "lastUpdate": "2026-06-28T07:00:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanVerified": true,
   "axiomCount": 0,
-  "lastVerified": "2026-06-27"
+  "lastVerified": "2026-06-28"
 }

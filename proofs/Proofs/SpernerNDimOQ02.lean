@@ -1509,4 +1509,45 @@ theorem exists_neighbor_of_isInteriorFacet (s : SpernerGrid.GridSimplex d N)
   obtain ⟨a, b, hb, rfl⟩ := hk
   exact exists_gridFacet_neighbor s a b hb
 
+/-- Chain-interiority of a facet is decidable (it reduces to the numeric test
+`0 < k < d` via `isInteriorFacet_iff`), so the door-counting `adj` can branch on
+it computably. -/
+instance : DecidablePred (IsInteriorFacet : Fin (d + 1) → Prop) := fun k =>
+  decidable_of_iff _ (isInteriorFacet_iff k).symm
+
+/-- A Kuhn facet is a **geometric boundary facet** when it is the bottom facet
+`0` or the top facet `Fin.last d` — the two facets of a chain with no interior
+Freudenthal pivot partner. -/
+def IsBoundaryFacet (k : Fin (d + 1)) : Prop := k = 0 ∨ k = Fin.last d
+
+/-- **Boundary = exactly not-interior.**  A Kuhn facet carries no glued (pivot)
+neighbour precisely when it is one of the two geometric boundary facets `0` or
+`Fin.last d`.  This pins down exactly which facets the door-counting `adj` must
+send to `none`, and is the index-level half of the eventual `boundary_face`
+obligation: the `none` facets are exactly `{0, Fin.last d}`. -/
+theorem not_isInteriorFacet_iff (k : Fin (d + 1)) :
+    ¬ IsInteriorFacet k ↔ IsBoundaryFacet k := by
+  rw [isInteriorFacet_iff, IsBoundaryFacet]
+  have hk : (k : ℕ) ≤ d := by have := k.isLt; omega
+  constructor
+  · intro h
+    rcases Nat.eq_zero_or_pos (k : ℕ) with h0 | h0
+    · exact Or.inl (Fin.ext (by rw [Fin.val_zero]; exact h0))
+    · exact Or.inr (Fin.ext (by rw [Fin.val_last]; omega))
+  · rintro (rfl | rfl)
+    · rw [Fin.val_zero]; omega
+    · rw [Fin.val_last]; omega
+
+/-- **Every Kuhn facet is interior or boundary** (the two cases are exhaustive).
+Together with `not_isInteriorFacet_iff` this is the clean dichotomy the door
+count rests on: each cell has chain-interior facets (each carrying a pivot
+neighbour) and the two boundary facets `0`, `Fin.last d`. -/
+theorem isInteriorFacet_or_boundary (k : Fin (d + 1)) :
+    IsInteriorFacet k ∨ IsBoundaryFacet k :=
+  (em (IsInteriorFacet k)).imp id (not_isInteriorFacet_iff k).mp
+
+/-- The two cases are **mutually exclusive**: a boundary facet is never interior. -/
+theorem not_isInteriorFacet_of_boundary {k : Fin (d + 1)} (h : IsBoundaryFacet k) :
+    ¬ IsInteriorFacet k := (not_isInteriorFacet_iff k).mpr h
+
 end SpernerNDimOQ02
