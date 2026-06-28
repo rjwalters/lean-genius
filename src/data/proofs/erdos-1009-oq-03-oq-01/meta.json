@@ -1,0 +1,89 @@
+{
+  "id": "erdos-1009-oq-03-oq-01",
+  "title": "Exact Fractional Triangle-Packing Optimum of K₄ via LP Duality",
+  "slug": "erdos-1009-oq-03-oq-01",
+  "description": "Sharpens the K₄ integrality-gap witness for maximum edge-disjoint triangle packing: by formalizing the LP dual (the fractional triangle cover) and weak duality, the fractional optimum is pinned to exactly ν*(K₄) = τ*(K₄) = 2, versus the integer optimum ν(K₄) = 1. The parent file certified only ν* ≥ 2.",
+  "meta": {
+    "author": "Lean Genius Researcher (research-10)",
+    "sourceUrl": "https://erdosproblems.com/1009",
+    "date": "2026-06-28",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1009OQ03OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "edge-disjoint",
+      "integrality-gap",
+      "linear-programming",
+      "lp-duality",
+      "fractional-cover",
+      "complexity"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 1009,
+    "erdosUrl": "https://erdosproblems.com/1009",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-06-28",
+    "mathlib_version": "4.26.0",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "assumptions": "Fully machine-checked: 0 sorries, 0 axioms, no native_decide (only kernel-checked `decide` on the finite K₄ model). Depends only on the foundational propext / Classical.choice / Quot.sound. The main objects are the LP primal (fractional packing) and dual (fractional cover) relaxations of edge-disjoint triangle packing on the complete graph K₄.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Swapping the order of a double finite sum (Fubini), the core step of weak duality",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_ite_mem",
+        "description": "Reduces an indicator-masked sum over a superset to a sum over the intersection",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "mul_le_mul_of_nonneg_left",
+        "description": "Monotonicity of multiplication, used at both the cover and packing constraints",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "Finset.mem_powersetCard",
+        "description": "Membership in the family of fixed-cardinality subsets, used to model edges and triangle edge-sets",
+        "module": "Mathlib.Combinatorics.Enumerative.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "weak_duality: the reusable structural core — for every feasible fractional packing w and every feasible fractional cover y, fracValue w ≤ coverValue y, via finite triangle/edge incidence double-counting (Fubini)",
+      "IsFracCover / coverValue: the LP dual (fractional triangle cover) of the triangle-packing relaxation, absent from the parent file",
+      "frac_optimum: the EXACT fractional packing optimum ν*(K₄) = 2 (IsGreatest), upgrading the parent's one-sided ν* ≥ 2",
+      "cover_optimum: the EXACT fractional cover optimum τ*(K₄) = 2 (IsLeast)",
+      "lp_no_gap: LP strong duality with no relaxation gap, ν*(K₄) = τ*(K₄) = 2, pinning the integrality gap to the exact factor 2 over ν(K₄) = 1",
+      "yThird: the explicit optimal dual certificate (weight ⅓ on every edge)"
+    ],
+    "prerequisites": [
+      "Linear programming duality (primal packing vs dual covering, weak duality)",
+      "Graph theory (triangles and edges of the complete graph K₄)",
+      "Finite double-counting / Fubini for finite sums",
+      "Lean 4 and Mathlib"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1009-oq-02",
+      "relationship": "sibling",
+      "description": "Same Erdős #1009 family, K₄ side: that entry asks the structural K₄ analog of Györi's edge-disjoint-triangle theorem; this one quantifies the LP relaxation of the triangle-packing problem on the canonical K₄ witness."
+    },
+    {
+      "targetId": "erdos-1009",
+      "relationship": "extends",
+      "description": "The parent problem — edge-disjoint triangles (K₃) beyond the Turán threshold, solved by Györi 1988. This entry studies the computational/LP side: the integrality gap between the polynomial fractional relaxation and the NP-hard integer packing."
+    },
+    {
+      "targetId": "erdos-1009-oq-01",
+      "relationship": "sibling",
+      "description": "The quantitative side of #1009 (the optimal constant in Györi's bound); here we instead separate the integer optimum from its LP relaxation by an exact factor 2 on K₄."
+    }
+  ]
+}
