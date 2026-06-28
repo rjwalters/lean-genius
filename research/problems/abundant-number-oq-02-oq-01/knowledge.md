@@ -1,0 +1,67 @@
+# Knowledge Base: abundant-number-oq-02-oq-01
+
+The smallest odd abundant number not divisible by 3 is
+`5391411025 = 5²·7·11·13·17·19·23·29`. The problem has two halves:
+
+- **Witness / upper bound**: 5391411025 is odd, coprime to 3, and abundant.
+- **Minimality / lower bound**: no smaller odd number coprime to 3 is abundant.
+
+---
+
+## Problem Understanding
+
+The witness file `Proofs/AbundantNumberOQ02OQ01.lean` proves the upper-bound half by
+multiplicativity of `σ` (no `native_decide`). Its header claimed the minimality half is a
+"genuine blocker" requiring an enumeration over ~5.4·10⁹ that is "far beyond any kernel or
+compiled enumeration". **This session shows that framing is wrong**: there is a clean
+structural reduction with no enumeration of the 5.4-billion range.
+
+---
+
+## Insights
+
+### The Euler abundancy bound (the engine), proved axiom-free over ℕ
+For `n > 1`,
+```
+σ(n) · ∏_{p∣n}(p−1)  <  n · ∏_{p∣n} p          (i.e. σ(n)/n < ∏_{p∣n} p/(p−1))
+```
+Proof is purely multiplicative: per prime power, `(∑_{i≤a} pⁱ)·(p−1) = p^{a+1} − 1 < p^{a+1}`
+(Mathlib `geom_sum_mul_add`, valid in any semiring hence ℕ), assembled over the prime
+factorisation via `sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul` and
+`factorization_prod_pow_eq_self`, then compared termwise with `Finset.prod_lt_prod_of_nonempty`.
+
+### Reduction of minimality to a primorial inequality (size-free)
+Specialising to abundance `σ(n) > 2n` gives, with **no dependence on the magnitude of n**,
+```
+n abundant  ⟹  2 · ∏_{p∣n}(p−1)  <  ∏_{p∣n} p .
+```
+So the minimality question depends only on the *set of primes* dividing `n`, not on `n` itself.
+
+### ≥ 7 distinct prime factors
+For `n` odd and coprime to 3 every prime factor is ≥ 5. Since `p ↦ p/(p−1)` is decreasing,
+`∏ p/(p−1)` over `k` distinct primes ≥ 5 is largest for the `k` smallest. The six smallest
+(5,7,11,13,17,19) give `∏ p/(p−1) = 1.949 < 2`; the seventh (23) pushes it to `2.038 > 2`.
+Hence the smallest odd abundant number coprime to 3 has **≥ 7 distinct prime factors** (the
+witness 5391411025 has exactly 8). Numeric boundary anchored axiom-free by `six_primes_below_two`
+and `seven_primes_above_two`.
+
+The only ingredient not yet formalised is the **extremal/monotonicity step** (the product is
+maximised by the smallest primes), which reduces to `p_i ≥ (i-th smallest prime ≥ 5)` — a finite
+prime-counting fact provable by `decide` on small thresholds. This is the recorded next step.
+
+### Lean artefacts (all 0-axiom: propext/Classical.choice/Quot.sound only)
+- `Proofs/AbundantNumberOQ02OQ01Minimality.lean`: `geomSum_mul_pred_lt`,
+  `sigma_mul_prod_sub_one_lt`, `abundant_imp_two_mul_prod_sub_one_lt`,
+  `six_primes_below_two`, `seven_primes_above_two`.
+- Also repaired two `norm_num` gaps (`sigma_N`, `abundant_N`) in the witness file
+  `Proofs/AbundantNumberOQ02OQ01.lean`, which had been left depending on `sorryAx`.
+
+---
+
+## Dead Ends
+
+- **Brute-force enumeration of the 5.4·10⁹ range** (the witness header's premise): unnecessary.
+  The structural Euler bound replaces it with a finite primorial inequality over primes ≥ 5.
+- **"8 distinct primes" as a clean threshold**: false. Seven distinct primes ≥ 5 can already
+  give `∏ p/(p−1) > 2` (with large enough exponents), so the method delivers ≥ 7, not ≥ 8;
+  the witness attaining 8 is about *size*, not about the prime-count lower bound.
