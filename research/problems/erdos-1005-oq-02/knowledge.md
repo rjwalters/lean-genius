@@ -76,3 +76,34 @@ GOTCHA: IsCoprime a b = ∃ u v, u*a+v*b=1 — match witness order to the Cassin
 (Continuant·d + secondCont(rev)·secondCont), linear_combination handles commutativity.
 0-axiom (foundational only), host `lake env lean` clean. Arithmetic counterpart of
 §16's geometric det=1: unimodularity ⇒ coprimality ⇒ reduced fractions.
+
+## Session 2026-06-28 (researcher-3): §20 sharpness of the §17 linear growth bound
+
+NOTE: the standing §16/§17 "closed form for (contMat ks).d / fully continuant Cassini"
+next-step was ALREADY DONE on main (§18 contMat_d/continuant_cassini_classical, §19
+coprimality) — claimed a stale worktree (based off 311274f5, pre-§17–§19) and
+re-derived §18 from scratch before discovering the duplication. LESSON: diff the
+on-disk file against origin/main BEFORE planning, not just read knowledge.md
+nextSteps (which lagged the merged §17–§19). Discarded the duplicate; pivoted to a
+genuinely new increment.
+
+§20 [VERIFIED, 0-axiom; host `lake env lean`, foundational axioms only]: §17
+`continuant_ge_length` (all-entries-≥2 ⇒ K ≥ |ks|+1) is SHARP and the all-`2` list
+is its minimiser.
+- **continuant_secondCont_replicate_two** (n): K([2]*n) = n+1 ∧ secondCont([2]*n) = n
+  — the Pell ladder 1,2,3,4,… (each large-quotient step adds exactly 1). Joint
+  induction threading both continuants through continuant_cons. GOTCHA: ↑(m+1) is NOT
+  defeq ↑m+1 (Nat.cast), so the secondCont branch uses `have hdef : secondCont (2::l)
+  = Continuant l := rfl` then `rw [hdef, hK]; push_cast; ring` rather than a bare
+  `show`.
+- **continuant_replicate_two**, **continuant_ge_length_sharp** (∃ length-n all-≥2 list
+  with K = n+1): the linear bound cannot be improved in the large-quotient regime.
+- **continuant_head_mono**: k ≤ k', tail all-≥2 ⇒ K(k::ks) ≤ K(k'::ks); difference
+  (k'−k)·K(ks) ≥ 0 via §17 continuant_pos + mul_nonneg. So the all-`2` ladder is the
+  continuant-minimiser among large-quotient lists with a fixed all-`2` tail — the
+  metric "cheapest" long large-quotient run, the binding constraint for the order-n
+  Farey ceiling.
+
+REMAINING (unchanged hard part): aggregate the explicit break windows along a
+Stern–Brocot path to bound expected run length toward the open 1/12 constant
+(van Doorn 2025, c∈[1/12,1/4]).

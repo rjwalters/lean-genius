@@ -1845,4 +1845,68 @@ theorem continuant_isCoprime_reverse (ks : List ℤ) :
     IsCoprime (Continuant ks) (secondCont ks.reverse) :=
   ⟨(contMat ks).d, secondCont ks, by linear_combination continuant_cassini ks⟩
 
+/-! ## §20: Sharpness of the §17 linear growth bound — the all-`2` minimum
+
+§17's `continuant_ge_length` shows a length-`m` quotient list with every entry `≥ 2`
+has `Continuant ≥ m + 1`.  This section shows that bound is **attained**, and so is
+sharp: the constant list `[2, 2, …, 2]` realises `Continuant = m + 1` exactly — the
+Pell ladder `1, 2, 3, 4, …` in which each large-quotient step adds *exactly* one — and
+raising any leading quotient only increases the continuant.  Hence the exponential
+growth of `continuant_strict_mono`'s larger-quotient neighbours is a phenomenon of
+strictly larger quotients: the metric "cheapest" long large-quotient run is the
+all-`2` ladder, the minimiser of the §17 regime.  This pins down which large-quotient
+runs are the binding constraint for the order-`n` Farey ceiling.
+
+Depends only on the §14 `continuant_cons` recurrence and §17 `continuant_pos`. -/
+
+/-- **Exact value on the all-`2` list (joint with trailing continuant).**  The
+constant quotient list `[2,…,2]` of length `n` has `Continuant = n + 1` and
+`secondCont = n`: the Pell ladder `1, 2, 3, 4, …` in which each step adds exactly `1`.
+Proved by induction threading both continuants through `continuant_cons`. -/
+theorem continuant_secondCont_replicate_two (n : ℕ) :
+    Continuant (List.replicate n 2) = (n : ℤ) + 1
+      ∧ secondCont (List.replicate n 2) = (n : ℤ) := by
+  induction n with
+  | zero => exact ⟨rfl, rfl⟩
+  | succ m ih =>
+    obtain ⟨hK, hs⟩ := ih
+    rw [List.replicate_succ]
+    refine ⟨?_, ?_⟩
+    · rw [continuant_cons, hK, hs]; push_cast; ring
+    · -- `secondCont (2 :: replicate m 2)` is defeq `Continuant (replicate m 2)`.
+      have hdef : secondCont (2 :: List.replicate m 2)
+          = Continuant (List.replicate m 2) := rfl
+      rw [hdef, hK]; push_cast; ring
+
+/-- `Continuant [2,…,2] = n + 1` — the §17 linear bound `continuant_ge_length` is
+**attained** by the constant all-`2` list. -/
+theorem continuant_replicate_two (n : ℕ) :
+    Continuant (List.replicate n 2) = (n : ℤ) + 1 :=
+  (continuant_secondCont_replicate_two n).1
+
+/-- **The §17 linear bound is sharp.**  There is a length-`n` quotient list with every
+entry `≥ 2` whose continuant equals exactly `n + 1` — the all-`2` list.  Hence
+`continuant_ge_length`'s `Continuant ≥ |ks| + 1` cannot be improved in the
+large-quotient regime. -/
+theorem continuant_ge_length_sharp (n : ℕ) :
+    ∃ ks : List ℤ, ks.length = n ∧ (∀ k ∈ ks, (2 : ℤ) ≤ k)
+      ∧ Continuant ks = (n : ℤ) + 1 := by
+  refine ⟨List.replicate n 2, by simp, ?_, continuant_replicate_two n⟩
+  intro k hk
+  have : k = 2 := List.eq_of_mem_replicate hk
+  omega
+
+/-- **Monotonicity in the leading quotient (large-quotient regime).**  Raising the
+first quotient cannot decrease the continuant: for a tail `ks` with every entry `≥ 2`
+and `k ≤ k'`, `Continuant (k :: ks) ≤ Continuant (k' :: ks)`.  The difference is
+`(k' − k)·Continuant ks ≥ 0` by §17 `continuant_pos`.  Together with
+`continuant_replicate_two` this exhibits the all-`2` list as the continuant-minimiser
+among large-quotient lists sharing a fixed all-`2` tail. -/
+theorem continuant_head_mono {k k' : ℤ} {ks : List ℤ}
+    (hkk : k ≤ k') (h : ∀ j ∈ ks, (2 : ℤ) ≤ j) :
+    Continuant (k :: ks) ≤ Continuant (k' :: ks) := by
+  rw [continuant_cons, continuant_cons]
+  have hpos : 0 < Continuant ks := continuant_pos ks h
+  nlinarith [mul_nonneg (sub_nonneg.mpr hkk) (le_of_lt hpos)]
+
 end Erdos1005OQ02
