@@ -252,6 +252,107 @@ theorem branch_vertices_infinite : {m : ℕ | m % 6 = 4}.Infinite := by
   exact Set.infinite_range_of_injective branch_enum_injective
 
 /-!
+## Part II⅞: Geometric growth of the backward tree (`≤ 2^d`)
+
+The in-degree dichotomy (`indegree_le_two`) says every vertex has at most two
+predecessors.  Iterating, the set of depth-`d` backward-ancestors of `m` — the nodes
+`x` with `collatz^[d] x = m` — can at most *double* each level, so it has at most `2^d`
+elements.  This is the unconditional geometric bound the in-degree results were built for
+(docstring of `indegree_eq_one_or_two`): the backward Collatz tree is at worst binary.
+
+We make the bound *constructive*: the explicit predecessor sets (`{2m}` or `{2m,(m-1)/3}`)
+build a `Finset` of depth-`d` ancestors that provably equals the set-preimage
+`(collatz^[d]) ⁻¹' {m}`, and a `card_biUnion_le` induction caps its cardinality at `2^d`.
+A free corollary: every backward level is finite.
+-/
+
+/-- The explicit predecessor `Finset` of `m`: the even predecessor `2m`, together with the
+odd predecessor `(m-1)/3` exactly when `m ≡ 4 (mod 6)`. -/
+def preds (m : ℕ) : Finset ℕ :=
+  insert (2 * m) (if m % 6 = 4 then {(m - 1) / 3} else ∅)
+
+/-- `preds m` is exactly the one-step Collatz preimage of `m`. -/
+theorem mem_preds (m p : ℕ) : p ∈ preds m ↔ collatz p = m := by
+  rw [collatz_eq_iff]
+  by_cases hm : m % 6 = 4
+  · simp only [preds, hm, if_true, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro (rfl | rfl)
+      · exact Or.inl rfl
+      · exact Or.inr (odd_pred_eq hm)
+    · rintro (rfl | ⟨_, _⟩)
+      · exact Or.inl rfl
+      · right; omega
+  · simp only [preds, hm, if_false, Finset.mem_insert, Finset.notMem_empty, or_false]
+    constructor
+    · rintro rfl; exact Or.inl rfl
+    · rintro (rfl | ⟨hodd, h3⟩)
+      · rfl
+      · exact absurd ((odd_pred_exists_iff m).mp ⟨p, hodd, h3⟩) hm
+
+/-- Every vertex has at most two predecessors (the `Finset` form of `indegree_le_two`). -/
+theorem preds_card_le (m : ℕ) : (preds m).card ≤ 2 := by
+  refine (Finset.card_insert_le _ _).trans ?_
+  by_cases hm : m % 6 = 4 <;> simp [hm]
+
+/-- The depth-`d` backward-ancestor `Finset` of `m`, built by iterating `preds`. -/
+def ancestors : ℕ → ℕ → Finset ℕ
+  | 0, m => {m}
+  | d + 1, m => (preds m).biUnion (fun p => ancestors d p)
+
+/-- `ancestors d m` is exactly the depth-`d` preimage: `x` is a depth-`d` ancestor iff
+`collatz^[d] x = m`. -/
+theorem mem_ancestors (d m x : ℕ) : x ∈ ancestors d m ↔ collatz^[d] x = m := by
+  induction d generalizing m with
+  | zero => simp [ancestors]
+  | succ d ih =>
+    rw [ancestors, Finset.mem_biUnion]
+    constructor
+    · rintro ⟨p, hp, hx⟩
+      rw [ih] at hx
+      rw [Function.iterate_succ_apply', hx]
+      exact (mem_preds m p).mp hp
+    · intro hx
+      rw [Function.iterate_succ_apply'] at hx
+      exact ⟨collatz^[d] x, (mem_preds m _).mpr hx, by rw [ih]⟩
+
+/-- **Backward tree, set form.** The depth-`d` preimage of `m` is the coercion of the
+constructive ancestor `Finset`. -/
+theorem iter_preimage_eq_ancestors (d m : ℕ) :
+    (collatz^[d]) ⁻¹' {m} = ↑(ancestors d m) := by
+  ext x
+  simp [Set.mem_preimage, mem_ancestors]
+
+/-- **Each backward level is finite.** -/
+theorem iter_preimage_finite (d m : ℕ) : ((collatz^[d]) ⁻¹' {m}).Finite := by
+  rw [iter_preimage_eq_ancestors]
+  exact (ancestors d m).finite_toSet
+
+/-- **`ancestors` doubles at most each level:** `|ancestors d m| ≤ 2^d`. -/
+theorem ancestors_card_le (d m : ℕ) : (ancestors d m).card ≤ 2 ^ d := by
+  induction d generalizing m with
+  | zero => simp [ancestors]
+  | succ d ih =>
+    calc (ancestors (d + 1) m).card
+        = ((preds m).biUnion (fun p => ancestors d p)).card := by rw [ancestors]
+      _ ≤ ∑ p ∈ preds m, (ancestors d p).card := Finset.card_biUnion_le
+      _ ≤ ∑ _p ∈ preds m, 2 ^ d := Finset.sum_le_sum (fun p _ => ih p)
+      _ = (preds m).card * 2 ^ d := by rw [Finset.sum_const, smul_eq_mul]
+      _ ≤ 2 * 2 ^ d := Nat.mul_le_mul_right _ (preds_card_le m)
+      _ = 2 ^ (d + 1) := by ring
+
+/-- **Geometric growth of the backward tree.** The number of depth-`d` backward-ancestors
+of any `m` is at most `2^d`: the backward Collatz tree is at worst binary.  Unconditional —
+no Collatz conjecture, just the in-degree-`≤ 2` dichotomy iterated. -/
+theorem backward_tree_ncard_le (d m : ℕ) : ((collatz^[d]) ⁻¹' {m}).ncard ≤ 2 ^ d := by
+  rw [iter_preimage_eq_ancestors, Set.ncard_coe_finset]
+  exact ancestors_card_le d m
+
+/-- Sanity check: depth `1` recovers the in-degree bound `≤ 2` of `indegree_le_two`. -/
+theorem backward_tree_depth_one (m : ℕ) : ((collatz^[1]) ⁻¹' {m}).ncard ≤ 2 := by
+  simpa using backward_tree_ncard_le 1 m
+
+/-!
 ## Part III: Backward Closure of the Basin
 
 If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
@@ -333,8 +434,13 @@ example : collatz 16 = 8 := by decide
 5. ✓ Density of branch vertices: `indegree_eq_two_iff` (in-degree `= 2` ⟺ `m ≡ 4 mod 6`),
    `branch_vertices_eq` (branch vertices `= {6j+4}`), `branch_count` (exactly `k` branch
    vertices below `6k`, so density exactly `1/6`), `branch_vertices_infinite`
-6. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
-7. ✓ The basin of 1 is infinite `basin_infinite`
+6. ✓ Geometric growth of the backward tree: `mem_preds`/`preds_card_le` (explicit ≤2
+   predecessor `Finset`), `mem_ancestors`/`iter_preimage_eq_ancestors` (constructive
+   depth-`d` ancestor set = `(collatz^[d]) ⁻¹' {m}`), `ancestors_card_le` /
+   `backward_tree_ncard_le` (depth-`d` backward level has `≤ 2^d` nodes),
+   `iter_preimage_finite` (every backward level is finite)
+7. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
+8. ✓ The basin of 1 is infinite `basin_infinite`
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
