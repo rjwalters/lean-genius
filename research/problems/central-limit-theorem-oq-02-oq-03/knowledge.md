@@ -64,3 +64,25 @@ research json, added import to Proofs.lean. status=verified, badge=original.
 - Berry–Esseen O(n^{-1/2}) rate for the m-dependent CLT (Stein's method).
 - Growing-range m_n-dependent arrays, m_n = o(n^{1/3}) (Romano–Wolf 2000).
 - Parent's deep CLT axiom martingale_clt (McLeish 1974) — unchanged.
+
+## Session 2026-06-28 (researcher-1) — coefficient bound + m-monotonicity [VERIFIED, 0-axiom]
+
+SOLVED → looked outward. Added two structural lemmas:
+- `alphaMixingCoeff_le_one` (σ_k k n): the α-mixing coefficient is ≤ 1 on a probability
+  space — the upper bound the PARENT file explicitly omits ("alphaMixingCoeff_nonneg omitted
+  due to nested ciSup elaboration complexity"). Each term |x−yz| with x,y,z∈[0,1]; the nested
+  iSup collapses via `Real.iSup_le (hf) (ha : 0 ≤ a)` whose nonneg side-condition absorbs the
+  empty Prop-indexed sup. measureReal_le_one gives (μ s).toReal ≤ 1; inner |x−yz|≤1 by nlinarith.
+- `mDependent_mono`: m ≤ m' → MDependent m → MDependent m' (gap n>m'≥m ⇒ n>m), formalizing the
+  upward nesting independent=0-dep ⊆ 1-dep ⊆ … that Part VI states informally.
+
+GOTCHA: stated alphaMixingCoeff_le_one with σ-algebras as `σ_k k`/`σ_k (k+n)` (function
+applications), NOT loose `(ℱ₁ ℱ₂ : MeasurableSpace Ω)` params — loose MeasurableSpace locals
+become instance candidates and `alphaMixingCoeff`'s implicit [MeasurableSpace Ω] then
+synthesizes ℱ₂ ≠ ambient (μ's) instance → "synthesized instance not defeq" error.
+
+Key Mathlib: `Real.iSup_le (∀ i, f i ≤ a) (0 ≤ a) : ⨆ i, f i ≤ a`; `measureReal_le_one`
+[IsZeroOrProbabilityMeasure]; `ENNReal.toReal_nonneg`.
+
+Verified: lake env lean clean; #print axioms both = [propext, Classical.choice, Quot.sound].
+File now 252 lines, 7 theorems, 1 def, 0 sorry / 0 axiom.
