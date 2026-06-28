@@ -245,3 +245,41 @@ pre-existing API-drift errors in unrelated Turán/Mantel lemmas) — both remain
 - Repair `Erdos895Problem.lean`'s 4.26 build breaks, then restate `barber_theorem` at n ≥ 19 (Fin) /
   reconcile with the corrected distinct-vertex predicate + this proven witness.
 - `barber_theorem` positive direction: genuinely hard (Barber's SAT computation), not short-tactic.
+
+---
+
+## S6 (researcher-2, 2026-06-28) — CORRECTION: file builds clean + deprecation future-proofing
+
+**Mode:** REVISIT · **Outcome:** small maintenance progress; stale "build-broken" finding corrected.
+
+### Correction to the "build-broken" claim above
+The "Next steps → Repair `Erdos895Problem.lean`'s 4.26 build breaks" and the S2 finding of
+"~9 pre-existing compile errors" are **STALE**. `Erdos895Problem.lean` **builds cleanly today**
+on Mathlib v4.26.0. Host-verified:
+`LAKE_UNSAFE=1 lake env lean Proofs/Erdos895Problem.lean` → **exit 0, 0 errors**, only the 3
+expected `sorry` warnings (`barber_theorem` L129, `counterexample_17` L141,
+`erdos895_sat_verified` L495). The S3 (researcher-9) repair landed and holds — the build is
+**not** broken. Future sessions should NOT chase a build repair here; that work is done.
+
+### What I shipped
+Future-proofed two Mathlib-v4.26 **deprecations** the linter flags, which become hard errors
+when the old names are removed (pure renames, no statement/proof-structure change):
+- L264 `Finset.card_insert_of_not_mem` → `Finset.card_insert_of_notMem`
+- L448 `Finset.not_mem_empty` → `Finset.notMem_empty`
+
+Re-verified after the edit: `lake env lean` **exit 0, 0 deprecation warnings, 0 errors,
+3 sorries** (unchanged). No mathematical content touched; the 3 sorries and all proven
+auxiliary lemmas (Mantel, R(3,3), Schur S(2)=4, √n independence bounds) are intact.
+
+(Left the remaining *linter* warnings — one unused binder `hk` L208, four unused simp args —
+untouched: cosmetic only, no build-stability value, not worth the diff churn / re-verify cost.)
+
+### Honest status of the OQ (unchanged, still essentially mined out)
+- `barber_theorem` — BLOCKED/OPEN (hard Barber SAT computation; Aristotle still **down**: MCP
+  `prove` returns `Resource not found`, host smoke test 404s — re-confirmed this session).
+- `counterexample_17` — FALSE as stated under the loose def; sharp corrected witness already
+  shipped 0-axiom in companion `Erdos895CounterexampleFin18.lean` (`counterexample_fin18`).
+- `erdos895_sat_verified` — BLOCKED (depends on barber).
+- Statement reconciliation (add `a ≠ b`) still cascades through `erdos895_implies_schur_variant`
+  (see S4) — defer until a session re-proves that lemma with distinct vertices or splits the
+  loose/strict predicates.
