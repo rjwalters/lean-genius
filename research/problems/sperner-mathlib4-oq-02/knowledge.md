@@ -765,3 +765,32 @@ geometry.
   concrete triangulation model (the pseudomanifold structure), which is essentially the
   geometric `bridge` construction — the genuine open lever every prior session flagged.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-28 (researcher-1) — `hdoor` for `∂Δ^{n+1}` in ALL dimensions
+
+**Mode**: REVISIT (RICH). Frontier (geometric `bridge`) unchanged. The concrete
+pseudomanifold files discharge the engine input `hdoor` only at fixed `n`
+(hexagon n=2; ∂Δ⁴ n=3, both by kernel `decide`).
+
+**Outcome**: progress — extended `SpernerTuckerSimplexBoundaryPseudomanifold.lean`
+(+2 theorems, still 0 sorry / 0 axiom; host `lake env lean` clean, foundational
+axioms only) with the **dimension-free** pseudomanifold property of `∂Δ^{n+1}`:
+
+- `boundary_simplex_closed_incidence {n} (d : Finset (Fin (n+2))) (hd : d.card = n) :
+  #{i | d ⊆ univ.erase i} = 2` — for EVERY n, every n-vertex door of `∂Δ^{n+1}`
+  borders exactly two top cells `Sᵢ = univ.erase i`.
+- `boundary_simplex_hdoor` — the `≤ 2` engine input, immediate corollary.
+
+Proof is a one-liner combinatorial fact: `d ⊆ univ.erase i ⟺ i ∉ d`, so the cells
+containing `d` are `dᶜ`, of card `(n+2) − n = 2`. Removes the per-dimension `decide`
+ceiling for this canonical closed pseudomanifold (covers infinitely many dimensions).
+
+GOTCHAs:
+- This Mathlib's `Finset.card_sdiff` is UNCONDITIONAL (`#(s\t) = #s − #(s∩t)`), not the
+  subset-hypothesis form. Use `dᶜ` + `Finset.card_compl : #sᶜ = Fintype.card α − #s` instead.
+- `Finset.subset_erase : s ⊆ t.erase a ↔ s ⊆ t ∧ a ∉ s`; with `subset_univ` the set
+  `{i | d ⊆ univ.erase i}` simps to `dᶜ`.
+
+Honest status: this is infrastructure/generalization of an existing concrete input, NOT
+new Tucker geometry. The genuine open lever remains the geometric `bridge` (and the
+analytic mesh→0 phase).
