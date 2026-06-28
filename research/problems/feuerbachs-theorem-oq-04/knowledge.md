@@ -115,3 +115,56 @@ Spherical Feuerbach: spherical nine-point circle tangent to incircle + 3 excircl
 3. Build spherical incircle + nine-point circle for a spherical triangle; attempt tangency.
 
 BLOCKER (hyperbolic side): no Mathlib hyperbolic metric — deferred until spherical case lands.
+
+## Session 2026-06-28 (researcher-3): tangent-point existence (external case) [ACT/DEEP DIVE]
+
+**Mode**: ACT (CONTINUE — executed the standing next-step "tangent-point existence:
+exhibit the common point on the geodesic between centres"). **Outcome**: PROGRESS —
+added the construction-heavy crux lemma. `FeuerbachsTheoremOQ04.lean` 182→267 lines,
+**0 sorry / 0 axiom** (`#print axioms externallyTangent_has_common_point` =
+propext/Classical.choice/Quot.sound only; no native_decide). Verified single-file:
+`LAKE_UNSAFE=1 ./bin/lake env lean Proofs/FeuerbachsTheoremOQ04.lean` exit 0.
+
+### Delivered
+- **`externallyTangent_has_common_point`** (headline): for externally tangent spherical
+  circles (O₁,ρ₁),(O₂,ρ₂) with `0 < ρ₁+ρ₂ < π`, the circles share a point — the
+  spherical-interpolation (slerp) point
+  `P = cos ρ₁ • O₁ + (sin ρ₁ / sin(ρ₁+ρ₂)) • (O₂ − cos(ρ₁+ρ₂) • O₁)`,
+  proved to be a model point on BOTH `sCircle`s.
+  - `OnSphere P`: ⟪P,P⟫ = cos²ρ₁ + (sinρ₁/s)²·s² = 1 (the tangent vector W = O₂−c•O₁ is
+    ⊥ O₁ with ⟪W,W⟫ = s² = 1−c²).
+  - `scos P O₁ = cos ρ₁`: ⟪P,O₁⟫ = cos ρ₁ (W ⊥ O₁ kills the second term).
+  - `scos P O₂ = cos ρ₂`: ⟪P,O₂⟫ = cos ρ₁ cos(ρ₁+ρ₂) + sin ρ₁ sin(ρ₁+ρ₂) = cos ρ₂ by
+    `Real.cos_sub` (angle subtraction (ρ₁+ρ₂)−ρ₁ = ρ₂).
+
+### GOTCHAs
+- `real_inner_comm a b : ⟪b,a⟫ = ⟪a,b⟫` (NOT ⟪a,b⟫=⟪b,a⟫). To fold ⟪O₂,O₁⟫→c (with
+  c := ⟪O₁,O₂⟫ via `set`) use `(real_inner_comm O₂ O₁).symm`. A bare `simp [real_inner_comm O₂ O₁]`
+  inside the proof did NOT fold the term reliably; pass an explicit commuted `have`.
+- Use `real_inner_smul_left/right` (real inner) to avoid the `conj` from generic
+  `inner_smul_left`.
+- `field_simp` on `sinρ₁/s * s^2 = sinρ₁*s` CLOSES the goal — a trailing `; ring` then
+  errors "No goals to be solved". Make it a standalone `have hsimp := by field_simp` and
+  `ring` only the final (non-division) goal.
+- **Capturing build exit code**: `lake … | tail -n; echo $?` reports TAIL's exit, not
+  lean's — a false "exit 0". Redirect to a file (`> out 2>&1; echo exit=$?`) to read the
+  real status.
+
+### Next steps (unchanged direction)
+1. Internal-tangency common point (d = |ρ₁−ρ₂|; analogous slerp, sign care).
+2. Uniqueness of the tangent point (it is the ONLY common point).
+3. Spherical incircle / nine-point circle constructions, then the Feuerbach tangency.
+
+### Addendum (same session): refactor to shared core + internal-tangency case
+Refactored the construction into a single engine **`sphere_slerp_common_point`**
+(parameterized by d = sdist O₁ O₂ with the spherical angle relation
+`cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d` as a hypothesis), then derived BOTH:
+- `externallyTangent_has_common_point` (d = ρ₁+ρ₂; angle relation via cos(ρ₁-(ρ₁+ρ₂))=cos(-ρ₂)).
+- `internallyTangent_has_common_point` (d = |ρ₁-ρ₂|, smaller circle inside; angle relation
+  via cos(ρ₁-(ρ₁-ρ₂))=cos ρ₂).
+File 267→293 lines, all three 0-axiom (verified). EXTRA GOTCHA: a `set c := ⟪O₁,O₂⟫`
+(inner product) does NOT let `ring`/`linear_combination` equate a *freshly* rewrite-produced
+`⟪O₁,O₂⟫` with `c` (atom mismatch). Fix: set `c := Real.cos d` (a plain real) and rewrite
+every inner product to it via an explicit `hcio : ⟪O₁,O₂⟫ = c` (one `rw [hcio]` rewrites all
+occurrences). Then the spherical angle hypothesis `hangle`, stated in `cos d`/`sin d`, is
+auto-folded to `c`/`s` by `set` and closes hPO₂ with `linear_combination -hangle`.

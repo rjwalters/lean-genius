@@ -259,4 +259,115 @@ theorem externallyTangent_comm (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ)
   unfold ExternallyTangent
   rw [sdist_comm, add_comm]
 
+/-! ## The tangent point of two tangent circles
+
+The defining geometric content of tangency is that the two circles actually **meet** — at
+the point on the geodesic joining the centres, at angular distance `ρ₁` from `O₁` (hence
+`ρ₂` from `O₂`).  We construct that point explicitly by spherical interpolation (`slerp`).
+If `d = sdist O₁ O₂ ∈ (0, π)` then
+
+  `P = cos ρ₁ · O₁ + (sin ρ₁ / sin d) · (O₂ − cos d · O₁)`
+
+is the point an arc `ρ₁` along the geodesic from `O₁` toward `O₂` (the second summand is
+the unit tangent at `O₁` pointing toward `O₂`).  The core lemma
+`sphere_slerp_common_point` shows `P` is a model point with `sdist P O₁ = ρ₁` and, *given
+the spherical angle relation* `cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d`, also `sdist P O₂ = ρ₂`.
+Both the **external** (`d = ρ₁ + ρ₂`) and **internal** (`d = |ρ₁ − ρ₂|`) tangency cases are
+then immediate, since each supplies that angle relation by the cosine subtraction formula.
+This is the construction-heavy crux underneath any tangency conclusion (and ultimately the
+spherical Feuerbach statement). -/
+
+/-- **Spherical slerp common point (core).**  For model points `O₁, O₂` at spherical
+distance `d = sdist O₁ O₂ ∈ (0, π)`, and angular radii `ρ₁, ρ₂` related by the spherical
+law `cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d`, the slerp point at arc `ρ₁` from `O₁` toward
+`O₂` lies on both `sCircle O₁ ρ₁` and `sCircle O₂ ρ₂`.  This is the shared engine behind
+the external and internal tangent-point existence theorems. -/
+theorem sphere_slerp_common_point {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ d : ℝ}
+    (hd : sdist O₁ O₂ = d) (hdpos : 0 < d) (hdpi : d < Real.pi)
+    (hangle : Real.cos ρ₂ = Real.cos ρ₁ * Real.cos d + Real.sin ρ₁ * Real.sin d) :
+    ∃ P : E, P ∈ sCircle O₁ ρ₁ ∧ P ∈ sCircle O₂ ρ₂ := by
+  set c : ℝ := Real.cos d with hc_def
+  set s : ℝ := Real.sin d with hs_def
+  -- unit-vector self-inner products
+  have hO₁O₁ : (⟪O₁, O₁⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, h₁]; norm_num
+  have hO₂O₂ : (⟪O₂, O₂⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, h₂]; norm_num
+  -- the inner product of the two centres is cos d (the spherical cosine), here `c`
+  have hcio : (⟪O₁, O₂⟫ : ℝ) = c := by
+    have h := cos_sdist O₁ O₂ h₁ h₂
+    rw [hd] at h
+    rw [hc_def]; exact h.symm
+  have hc21 : (⟪O₂, O₁⟫ : ℝ) = c := by rw [real_inner_comm]; exact hcio
+  have hspos : 0 < s := Real.sin_pos_of_pos_of_lt_pi hdpos hdpi
+  have hsne : s ≠ 0 := ne_of_gt hspos
+  have hs2 : s ^ 2 = 1 - c ^ 2 := by
+    have h := Real.sin_sq_add_cos_sq d
+    rw [← hc_def, ← hs_def] at h; linarith
+  -- the spherical interpolation point
+  set P : E := Real.cos ρ₁ • O₁ + (Real.sin ρ₁ / s) • (O₂ - c • O₁) with hP_def
+  -- orthogonality and norm of the tangent vector W = O₂ - c • O₁
+  have hW1 : (⟪O₁, O₂ - c • O₁⟫ : ℝ) = 0 := by
+    rw [inner_sub_right, real_inner_smul_right, hcio, hO₁O₁]; ring
+  have hW1' : (⟪O₂ - c • O₁, O₁⟫ : ℝ) = 0 := by
+    rw [real_inner_comm]; exact hW1
+  have hWW : (⟪O₂ - c • O₁, O₂ - c • O₁⟫ : ℝ) = s ^ 2 := by
+    simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, real_inner_smul_right,
+      hcio, hc21, hO₁O₁, hO₂O₂]
+    rw [hs2]; ring
+  -- P is a model point
+  have hPP : (⟪P, P⟫ : ℝ) = 1 := by
+    have e : (⟪P, P⟫ : ℝ)
+        = Real.cos ρ₁ ^ 2 * ⟪O₁, O₁⟫
+          + 2 * (Real.cos ρ₁ * (Real.sin ρ₁ / s)) * ⟪O₁, O₂ - c • O₁⟫
+          + (Real.sin ρ₁ / s) ^ 2 * ⟪O₂ - c • O₁, O₂ - c • O₁⟫ := by
+      rw [hP_def]
+      simp only [inner_add_left, inner_add_right, real_inner_smul_left, real_inner_smul_right,
+        real_inner_comm (O₂ - c • O₁) O₁]
+      ring
+    rw [e, hO₁O₁, hW1, hWW]
+    have hss : (Real.sin ρ₁ / s) ^ 2 * s ^ 2 = Real.sin ρ₁ ^ 2 := by field_simp
+    linear_combination hss + Real.sin_sq_add_cos_sq ρ₁
+  have hP_sphere : OnSphere P := by
+    have hsq : ‖P‖ ^ 2 = 1 := by rw [← real_inner_self_eq_norm_sq]; exact hPP
+    have hfac : (‖P‖ - 1) * (‖P‖ + 1) = 0 := by nlinarith [hsq]
+    rcases mul_eq_zero.mp hfac with h | h
+    · show ‖P‖ = 1; linarith
+    · exact absurd h (by have := norm_nonneg P; positivity)
+  -- P lies on the first circle
+  have hPO₁ : scos P O₁ = Real.cos ρ₁ := by
+    rw [scos, hP_def, inner_add_left, real_inner_smul_left, real_inner_smul_left,
+      hO₁O₁, hW1']; ring
+  -- P lies on the second circle (via the spherical angle relation)
+  have hPO₂ : scos P O₂ = Real.cos ρ₂ := by
+    have hsimp : Real.sin ρ₁ / s * s ^ 2 = Real.sin ρ₁ * s := by field_simp
+    rw [scos, hP_def, inner_add_left, real_inner_smul_left, real_inner_smul_left,
+      inner_sub_left, real_inner_smul_left, hcio, hO₂O₂,
+      show (1 : ℝ) - c * c = s ^ 2 from by linear_combination -hs2, hsimp]
+    linear_combination -hangle
+  exact ⟨P, ⟨hP_sphere, hPO₁⟩, ⟨hP_sphere, hPO₂⟩⟩
+
+/-- **Existence of the tangent point (external case).**  Two externally tangent spherical
+circles `(O₁, ρ₁)`, `(O₂, ρ₂)` with `0 < ρ₁ + ρ₂ < π` have a common point — the spherical
+interpolation point at arc `ρ₁` from `O₁` along the geodesic to `O₂`. -/
+theorem externallyTangent_has_common_point {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : ExternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hpos : 0 < ρ₁ + ρ₂) (hlt : ρ₁ + ρ₂ < Real.pi) :
+    ∃ P : E, P ∈ sCircle O₁ ρ₁ ∧ P ∈ sCircle O₂ ρ₂ :=
+  sphere_slerp_common_point h₁ h₂ htan hpos hlt
+    (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ + ρ₂) = -ρ₂ from by ring, Real.cos_neg])
+
+/-- **Existence of the tangent point (internal case).**  Two internally tangent spherical
+circles `(O₁, ρ₁)`, `(O₂, ρ₂)` with `0 < ρ₁ − ρ₂ < π` (so the second is the smaller, strictly
+inside the first) have a common point — again the geodesic interpolation point at arc `ρ₁`
+from `O₁` toward `O₂`, which overshoots `O₂` by exactly `ρ₂`. -/
+theorem internallyTangent_has_common_point {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : InternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hpos : 0 < ρ₁ - ρ₂) (hlt : ρ₁ - ρ₂ < Real.pi) :
+    ∃ P : E, P ∈ sCircle O₁ ρ₁ ∧ P ∈ sCircle O₂ ρ₂ := by
+  have hd : sdist O₁ O₂ = ρ₁ - ρ₂ := by rw [htan]; exact abs_of_pos hpos
+  exact sphere_slerp_common_point h₁ h₂ hd hpos hlt
+    (by rw [← Real.cos_sub]; congr 1; ring)
+
 end FeuerbachsTheoremOQ04
