@@ -388,12 +388,15 @@ intersection is the singleton `{Pₛ}`. -/
 /-- **Spherical slerp intersection is a singleton (core).**  Under the same hypotheses as
 `sphere_slerp_common_point`, the intersection `sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂` is not merely
 nonempty but a single point: the slerp point at arc `ρ₁` from `O₁` toward `O₂`.  This upgrades
-existence to genuine tangency — a unique point of contact. -/
+existence to genuine tangency — a unique point of contact.  As that point is a linear
+combination of the two centres, it additionally lies on `Submodule.span ℝ {O₁, O₂}`: the
+geodesic (great circle) through `O₁` and `O₂`, i.e. the spherical "line of centres". -/
 theorem sphere_slerp_inter_eq_singleton {O₁ O₂ : E}
     (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ d : ℝ}
     (hd : sdist O₁ O₂ = d) (hdpos : 0 < d) (hdpi : d < Real.pi)
     (hangle : Real.cos ρ₂ = Real.cos ρ₁ * Real.cos d + Real.sin ρ₁ * Real.sin d) :
-    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} := by
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) := by
   set c : ℝ := Real.cos d with hc_def
   set s : ℝ := Real.sin d with hs_def
   have hO₁O₁ : (⟪O₁, O₁⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, h₁]; norm_num
@@ -441,7 +444,15 @@ theorem sphere_slerp_inter_eq_singleton {O₁ O₂ : E}
       inner_sub_left, real_inner_smul_left, hcio, hO₂O₂,
       show (1 : ℝ) - c * c = s ^ 2 from by linear_combination -hs2, hsimp]
     linear_combination -hangle
-  refine ⟨P, Set.eq_singleton_iff_unique_mem.mpr ⟨⟨⟨hP_sphere, hPO₁⟩, ⟨hP_sphere, hPO₂⟩⟩, ?_⟩⟩
+  -- the slerp point lies on the geodesic through the two centres (the spherical "line of
+  -- centres"): it is a linear combination of `O₁` and `O₂`
+  have hspan : P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) := by
+    have hO1 : O₁ ∈ Submodule.span ℝ ({O₁, O₂} : Set E) := Submodule.subset_span (by simp)
+    have hO2 : O₂ ∈ Submodule.span ℝ ({O₁, O₂} : Set E) := Submodule.subset_span (by simp)
+    rw [hP_def]
+    exact Submodule.add_mem _ (Submodule.smul_mem _ _ hO1)
+      (Submodule.smul_mem _ _ (Submodule.sub_mem _ hO2 (Submodule.smul_mem _ _ hO1)))
+  refine ⟨P, Set.eq_singleton_iff_unique_mem.mpr ⟨⟨⟨hP_sphere, hPO₁⟩, ⟨hP_sphere, hPO₂⟩⟩, ?_⟩, hspan⟩
   -- uniqueness: any common point Q coincides with P
   rintro Q ⟨⟨hQsph, hQO₁⟩, ⟨-, hQO₂⟩⟩
   have hQQ : (⟪Q, Q⟫ : ℝ) = 1 := by rw [real_inner_self_eq_norm_sq, hQsph]; norm_num
@@ -462,25 +473,76 @@ theorem sphere_slerp_inter_eq_singleton {O₁ O₂ : E}
   exact sub_eq_zero.mp hQPeq
 
 /-- **Uniqueness of the tangent point (external case).**  Two externally tangent spherical
-circles meet in *exactly one* point — the strengthening of `externallyTangent_has_common_point`
+circles meet in *exactly one* point, and that point lies on the geodesic joining the centres
+(the spherical "line of centres") — the strengthening of `externallyTangent_has_common_point`
 that justifies calling them tangent. -/
 theorem externallyTangent_unique_common_point {O₁ O₂ : E}
     (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
     (htan : ExternallyTangent O₁ ρ₁ O₂ ρ₂)
     (hpos : 0 < ρ₁ + ρ₂) (hlt : ρ₁ + ρ₂ < Real.pi) :
-    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} :=
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) :=
   sphere_slerp_inter_eq_singleton h₁ h₂ htan hpos hlt
     (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ + ρ₂) = -ρ₂ from by ring, Real.cos_neg])
 
 /-- **Uniqueness of the tangent point (internal case).**  Two internally tangent spherical
-circles meet in *exactly one* point. -/
+circles meet in *exactly one* point, lying on the geodesic joining the centres. -/
 theorem internallyTangent_unique_common_point {O₁ O₂ : E}
     (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
     (htan : InternallyTangent O₁ ρ₁ O₂ ρ₂)
     (hpos : 0 < ρ₁ - ρ₂) (hlt : ρ₁ - ρ₂ < Real.pi) :
-    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} := by
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) := by
   have hd : sdist O₁ O₂ = ρ₁ - ρ₂ := by rw [htan]; exact abs_of_pos hpos
   exact sphere_slerp_inter_eq_singleton h₁ h₂ hd hpos hlt
     (by rw [← Real.cos_sub]; congr 1; ring)
+
+/-! ## Full characterization of the tangent point
+
+Bundling the three facts proved above — the intersection is a singleton, the point of
+contact lies on the geodesic through the centres, and it sits at the prescribed angular
+radii from each centre — gives a complete description of the tangent point.  The radii
+follow from `Real.arccos_cos`: a common point `P` has `scos P Oᵢ = cos ρᵢ`, and on the
+admissible range `ρᵢ ∈ [0, π]` this inverts to `sdist P Oᵢ = ρᵢ`. -/
+
+/-- **Tangent point — full specification (core).**  Under the hypotheses of
+`sphere_slerp_inter_eq_singleton` together with `ρ₁, ρ₂ ∈ [0, π]`, the unique common point
+`P` of the two circles (i) is the whole intersection, (ii) lies on the geodesic through the
+centres `O₁, O₂`, and (iii) sits at spherical distance exactly `ρ₁` from `O₁` and `ρ₂` from
+`O₂`.  This is the spherical analogue of "the point of contact lies on the line of centres,
+at the two radii from the respective centres". -/
+theorem sphere_slerp_tangent_point_spec {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ d : ℝ}
+    (hd : sdist O₁ O₂ = d) (hdpos : 0 < d) (hdpi : d < Real.pi)
+    (hangle : Real.cos ρ₂ = Real.cos ρ₁ * Real.cos d + Real.sin ρ₁ * Real.sin d)
+    (hρ₁0 : 0 ≤ ρ₁) (hρ₁pi : ρ₁ ≤ Real.pi) (hρ₂0 : 0 ≤ ρ₂) (hρ₂pi : ρ₂ ≤ Real.pi) :
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) ∧
+      sdist P O₁ = ρ₁ ∧ sdist P O₂ = ρ₂ := by
+  obtain ⟨P, hsing, hspan⟩ :=
+    sphere_slerp_inter_eq_singleton h₁ h₂ hd hdpos hdpi hangle
+  -- the witness is itself a member of the intersection, so it lies on both circles
+  have hPmem : P ∈ sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ := by rw [hsing]; rfl
+  obtain ⟨⟨-, hsc1⟩, ⟨-, hsc2⟩⟩ := hPmem
+  refine ⟨P, hsing, hspan, ?_, ?_⟩
+  · -- sdist P O₁ = arccos (scos P O₁) = arccos (cos ρ₁) = ρ₁
+    rw [sdist, show (⟪P, O₁⟫ : ℝ) = Real.cos ρ₁ from hsc1, Real.arccos_cos hρ₁0 hρ₁pi]
+  · rw [sdist, show (⟪P, O₂⟫ : ℝ) = Real.cos ρ₂ from hsc2, Real.arccos_cos hρ₂0 hρ₂pi]
+
+/-- **Tangent point — full specification (external case).**  For two externally tangent
+spherical circles with `0 ≤ ρ₁`, `0 ≤ ρ₂`, `0 < ρ₁ + ρ₂` and `ρ₁ + ρ₂ < π`, the unique point
+of contact lies on the geodesic through the centres and is at spherical distance `ρ₁` from
+`O₁` and `ρ₂` from `O₂`.  (The two upper-range bounds `ρᵢ ≤ π` are automatic from
+`ρ₁ + ρ₂ < π` and nonnegativity.) -/
+theorem externallyTangent_tangent_point_spec {O₁ O₂ : E}
+    (h₁ : OnSphere O₁) (h₂ : OnSphere O₂) {ρ₁ ρ₂ : ℝ}
+    (htan : ExternallyTangent O₁ ρ₁ O₂ ρ₂)
+    (hρ₁0 : 0 ≤ ρ₁) (hρ₂0 : 0 ≤ ρ₂) (hpos : 0 < ρ₁ + ρ₂) (hlt : ρ₁ + ρ₂ < Real.pi) :
+    ∃ P : E, sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {P} ∧
+      P ∈ Submodule.span ℝ ({O₁, O₂} : Set E) ∧
+      sdist P O₁ = ρ₁ ∧ sdist P O₂ = ρ₂ :=
+  sphere_slerp_tangent_point_spec h₁ h₂ htan hpos hlt
+    (by rw [← Real.cos_sub, show ρ₁ - (ρ₁ + ρ₂) = -ρ₂ from by ring, Real.cos_neg])
+    hρ₁0 (by linarith) hρ₂0 (by linarith)
 
 end FeuerbachsTheoremOQ04
