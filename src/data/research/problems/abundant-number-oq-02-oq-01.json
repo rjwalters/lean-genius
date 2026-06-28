@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (unconditional): the extremal/monotonicity follow-up is now CLOSED. odd_abundant_coprime_three_seven_primeFactors proves UNCONDITIONALLY that any odd abundant number coprime to 3 has >=7 distinct prime factors, fully verified 0-axiom (no native_decide, no enumeration of the 5.4e9 range).",
+    "progressSummary": "PROGRESS: squarefree subproblem fully resolved (exact least element 33426748355, omega>=9), 0-axiom. General non-squarefree exact minimality still open.",
     "builtItems": [
       "geomSum_mul_pred_lt (per-prime-power Euler bound) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "sigma_mul_prod_sub_one_lt (Euler abundancy bound, N form) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
@@ -39,7 +39,11 @@
       "dom (domination lemma): for a strictly increasing list of primes whose i-th entry dominates a gap-list floor, the weighted product prod p/(p-1) is bounded by the product over the gap list. Proof by list recursion with f antitone. In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
       "GapList predicate + gapList_canon: [5,7,11,13,17,19] is a primorial gap list (consecutive entries forced apart by primality via gap5/gap7/gap11/gap13/gap17). In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
       "canon_prod_lt_two: (5/4)(7/6)(11/10)(13/12)(17/16)(19/18) = 1616615/829440 < 2 (norm_num). In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
-      "odd_abundant_coprime_three_seven_primeFactors (MAIN, unconditional, 0-axiom): Odd n -> not 3|n -> Abundant n -> 7 <= n.primeFactors.card. In Proofs/AbundantNumberOQ02OQ01Unconditional.lean"
+      "odd_abundant_coprime_three_seven_primeFactors (MAIN, unconditional, 0-axiom): Odd n -> not 3|n -> Abundant n -> 7 <= n.primeFactors.card. In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
+      "Proofs/AbundantNumberOQ02OQ01Squarefree.lean: sigma_one_squarefree (sigma(n)=prod(p+1) for squarefree via factorization_eq_one_of_squarefree), antitone weight g p=(p+1)/p with domg domination lemma, gap23/gap29, gapList8/gapList9, canon8_g_prod_lt_two, canon9_prod=33426748355.",
+      "squarefree_odd_abundant_coprime_three_nine_primeFactors : Squarefree n -> Odd n -> not 3|n -> Abundant n -> 9 <= omega(n) [VERIFIED 0-axiom].",
+      "squarefree_odd_abundant_coprime_three_ge : ... -> 33426748355 <= n (sharp; radical=n for squarefree, via domProd) [VERIFIED 0-axiom].",
+      "squarefree_odd_abundant_coprime_three_least : IsLeast {Squarefree & Odd & not3| & Abundant} 33426748355, with witness W=33426748355 proved Squarefree/Odd/not3|/Abundant (sigma_W=66886041600>2W via multiplicativity, no native_decide) [VERIFIED 0-axiom]."
     ],
     "insights": [
       "Euler abundancy bound holds purely over N: for n>1, sigma(n)*prod_{p|n}(p-1) < n*prod_{p|n} p. Proved multiplicatively from (sum_{i<=a} p^i)*(p-1)=p^{a+1}-1 (Mathlib geom_sum_mul_add, valid in any semiring). No native_decide.",
@@ -47,13 +51,16 @@
       "For odd n coprime to 3 all prime factors are >=5; the six smallest such primes give prod p/(p-1) = 1.949 < 2 and seven give 2.038 > 2, so the smallest odd abundant number coprime to 3 must have >=7 distinct prime factors (witness 5391411025 has exactly 8).",
       "The extremal step is cleanest as a list recursion in Q (not a Finset optimization): sort the prime factors, peel the head, advance a per-rank floor along a gap list. f(p)=p/(p-1) antitone + per-term domination + product monotonicity. The gap list [5,7,11,13,17,19] encodes the only nontrivial number theory (no prime strictly between consecutive entries), each gap discharged by interval_cases+decide.",
       "Crude bounds fail: (5/4)^6 ~= 3.81 > 2, and 6 distinct INTEGERS >=5 can telescope to 2.5 > 2 (e.g. 5..10). Primality (coprimality to 6) is essential: it forces the i-th smallest prime factor >= the i-th prime >=5, which is exactly the gap-list domination.",
-      "Linking the Q ratio product to the N Euler bound: prod_{p in S} p/(p-1) = (prod p)/(prod (p-1)) over Q (Finset.prod_div_distrib), and 2*prod(p-1) < prod p in N casts up; cancel the positive denominator with lt_of_mul_lt_mul_right. No division-inequality lemma needed."
+      "Linking the Q ratio product to the N Euler bound: prod_{p in S} p/(p-1) = (prod p)/(prod (p-1)) over Q (Finset.prod_div_distrib), and 2*prod(p-1) < prod p in N casts up; cancel the positive denominator with lt_of_mul_lt_mul_right. No division-inequality lemma needed.",
+      "SHARP squarefree boundary: a squarefree odd abundant number coprime to 3 has >=9 distinct prime factors (vs >=7 general). Squarefreeness removes exponent-boosting, so the abundancy index is the strictly smaller product prod (p+1)/p; the 8 smallest primes >=5 give (6/5)(8/7)(12/11)(14/13)(18/17)(20/19)(24/23)(30/29)=2090188800/1078282205~1.938<2, the 9th (31) pushes it >2.",
+      "EXACT squarefree minimum: smallest squarefree odd abundant coprime-to-3 number is 5*7*11*13*17*19*23*29*31 = 33426748355 (IsLeast). Larger than the general min 5391411025 precisely because the latter is non-squarefree (5^2 buys abundancy with only 8 primes)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Optional: extend the gap-list method to bound omega(n) for odd abundant n with other small-prime exclusions (e.g. coprime to 15) — same dom lemma, different canonical gap list.",
       "Optional gallery: the unconditional >=7 result could anchor a short gallery entry on Euler abundancy bounds, pairing the witness (oq-02) with this minimality lower bound.",
-      "The full minimality claim (smallest is exactly 5391411025) still needs the matching upper structure; >=7 prime factors is the proven lower bound on omega, not the full numeric minimality."
+      "The full minimality claim (smallest is exactly 5391411025) still needs the matching upper structure; >=7 prime factors is the proven lower bound on omega, not the full numeric minimality.",
+      "Squarefree case is now CLOSED exactly. For the general (non-squarefree) minimality toward 5391411025, the remaining obstruction is bounding exponents: a per-prime-power refinement combining the Euler bound with the size constraint."
     ],
     "markdown": "# Knowledge Base: abundant-number-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -127,6 +134,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01LowerBound.lean"
+    },
+    {
+      "path": "Proofs/AbundantNumberOQ02OQ01Squarefree.lean",
+      "filename": "AbundantNumberOQ02OQ01Squarefree.lean",
+      "lineCount": 428,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantNumberOQ02OQ01Squarefree.lean"
     }
   ]
 }
