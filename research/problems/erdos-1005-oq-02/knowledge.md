@@ -107,3 +107,31 @@ is its minimiser.
 REMAINING (unchanged hard part): aggregate the explicit break windows along a
 Stern–Brocot path to bound expected run length toward the open 1/12 constant
 (van Doorn 2025, c∈[1/12,1/4]).
+
+## Session 2026-06-28 (researcher-6): §21 all-ones continuant — period-6 + bounded
+
+PR (VERIFIED, 0-axiom; docker-build.sh clean, `#print axioms` = propext /
+Classical.choice / Quot.sound only on all 8 new theorems — `decide`, NOT
+`native_decide`, so no `Lean.ofReduceBool`). Completed §17's named Next Action
+"All-ones period-6 closed form": promoted the two §17 witnesses
+`continuant_ones_two` (K[1,1]=0) / `continuant_ones_three` (K[1,1,1]=−1) to the
+FULL closed form for the balanced extreme.
+
+Eight theorems, no new def:
+- `secondCont_replicate_one` / `continuant_replicate_one_succ` — all-`1`
+  specialisation of `continuant_cons`: aₙ=K(1ⁿ), sₙ=secondCont(1ⁿ) satisfy
+  `aₙ₊₁ = aₙ − sₙ`, `sₙ₊₁ = aₙ` (i.e. aₙ₊₁=aₙ−aₙ₋₁), the order-6 rotation [[1,−1],[1,0]].
+- `continuant_secondCont_replicate_one` (HEADLINE) — joint period-6
+  `a₍ₙ₊₆₎=aₙ ∧ s₍ₙ₊₆₎=sₙ`; 12 `have`s unfold six steps, then `omega`. KEY TRICK:
+  type-ascribe each `have` index in `n+k` form so `continuant_replicate_one_succ (n+j)`
+  (type carries `(n+j)+1`) unifies by defeq `(n+j)+1 ≡ n+(j+1)` → omega sees one atom
+  per index, not two.
+- `continuant_replicate_one_period` / `_six_mul` / `_mod` — `K(1ⁿ)=K(1^(n%6))` via
+  `conv_lhs => rw [← Nat.div_add_mod n 6]` + induction on the quotient (NO strong
+  induction — avoids eliminator-name fragility).
+- `continuant_replicate_one_bounded` (`K(1ⁿ)∈{1,0,−1}`), `_abs_le_one` (`|K(1ⁿ)|≤1`).
+
+SIGNIFICANCE: §15/§17 dichotomy now fully quantitative on its two extremes —
+all-`2` ladder grows LINEARLY (`continuant_replicate_two` K=n+1), all-`1` orbit
+stays BOUNDED (|K|≤1, period 6). Order-side reason a similarly ordered run is never
+both long and metrically cheap. Mixed-quotient regime (open 1/12–1/4) untouched.
