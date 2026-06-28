@@ -45,7 +45,23 @@
     ]
   },
   "overview": {
-    "historicalContext": "Stein's Binary GCD algorithm (1967) replaces Euclidean division by shifts and subtractions. The parent binary-gcd-oq-01-oq-04 verified one witness of worst-case tightness, and the sibling OQ-01 gave the exact a = 1 closed form (the bit-length law), explicitly leaving the full two-argument worst case open. This entry records the most basic structural fact that the two-argument analysis rests on but which had not been formalised: the step count is symmetric, binaryGcdSteps a b = binaryGcdSteps b a. Stein's recursion is visibly symmetric — the even/odd reduction rules and the subtract-smaller-from-larger rule are invariant under swapping the arguments — but turning that observation into a Lean theorem requires unfolding both orientations of the (a+1, b+1) branch and matching them case by case. Once proved, symmetry is a labour-saving device: the whole OQ-01 a = 1 analysis is reflected onto the b = 1 slice for free."
+    "historicalContext": "Stein's Binary GCD algorithm (1967) replaces Euclidean division by shifts and subtractions. The parent binary-gcd-oq-01-oq-04 verified one witness of worst-case tightness, and the sibling OQ-01 gave the exact a = 1 closed form (the bit-length law), explicitly leaving the full two-argument worst case open. This entry records the most basic structural fact that the two-argument analysis rests on but which had not been formalised: the step count is symmetric, binaryGcdSteps a b = binaryGcdSteps b a. Stein's recursion is visibly symmetric — the even/odd reduction rules and the subtract-smaller-from-larger rule are invariant under swapping the arguments — but turning that observation into a Lean theorem requires unfolding both orientations of the (a+1, b+1) branch and matching them case by case. Once proved, symmetry is a labour-saving device: the whole OQ-01 a = 1 analysis is reflected onto the b = 1 slice for free.",
+    "problemStatement": "**OQ-02 of binary-gcd-oq-01-oq-04**: As a structural step toward the open full two-argument worst-case set of Stein's step count, (1) prove that binaryGcdSteps is symmetric in its two arguments, binaryGcdSteps a b = binaryGcdSteps b a; and (2) use that symmetry to transfer the sibling OQ-01's a = 1 closed form to the b = 1 slice — establishing binaryGcdSteps a 1 = Nat.log 2 a + 1, its dyadic-block constancy, monotonicity in a, and the transposed worst-case family binaryGcdSteps (2^n − 1) 1 = n.",
+    "proofStrategy": "**Symmetry (Part I):** A fuelled strong induction on a + b (binaryGcdSteps_comm_aux). The a = 0 and b = 0 base branches simplify directly. In the (a'+1, b'+1) branch, both orientations are unfolded with binaryGcdSteps.eq_3 and the if-trees aligned by split_ifs; a lt_trichotomy on a' vs b' isolates three cases — a' < b' and a' > b' are mirror transposes (the impossible branches are closed by `exfalso; omega`, the surviving ones by `congr 1; apply ih; omega` since each recursive call strictly decreases the argument sum), and a' = b' makes both orientations unfold to the identical if-tree (rfl).\n\n**The b = 1 slice (Part II):** Each result is a one-line rewrite: commute the arguments with binaryGcdSteps_comm, then apply the corresponding OQ-01 lemma about the a = 1 slice (binaryGcdSteps_one_eq_log_succ, _eq_dyadic, _mono, _pow2_sub_one).\n\n**Cross-checks (Part III):** Concrete instances (12,8) and (7,1) discharged symbolically through the theorems, with no decide / native_decide.",
+    "keyInsights": [
+      "Symmetry of the step count is the structural fact the two-argument worst-case analysis silently depends on, yet no sibling file had formalised it — the algorithm is visibly symmetric, but the Lean proof must unfold both argument orientations and match the recursion branch-by-branch.",
+      "The proof is a fuelled strong induction on a + b rather than well-founded recursion on the algorithm itself: an explicit fuel bound n ≥ a + b sidesteps termination obligations, and every recursive call strictly shrinks a + b so the induction hypothesis always applies.",
+      "lt_trichotomy on the two odd arguments is exactly the right case split: the equal case a' = b' collapses both orientations to one identical if-tree (closed by rfl), while the two strict cases are mirror transposes of each other — the a' > b' branch of one orientation is the b' < a' branch of the other.",
+      "Once symmetry is in hand, the entire b = 1 slice is free: each theorem is a single `rw [binaryGcdSteps_comm]` away from the sibling's a = 1 result, so OQ-01's bit-length law, dyadic constancy, monotonicity, and worst-case family all transpose at zero proof cost.",
+      "Symmetry halves any future two-argument worst-case search — it suffices to study a ≤ b — and pins both axis slices of the step-count surface to the same Nat.log 2 bit-length law, making the diagonal/interior behaviour the only remaining unknown.",
+      "Keeping the cross-checks symbolic (deriving binaryGcdSteps 12 8 = binaryGcdSteps 8 12 from the theorem rather than by decide) means even the spot-checks incur no Lean.ofReduceBool, so the whole file rests only on the foundational axioms."
+    ],
+    "prerequisites": [
+      "binary-gcd-oq-01-oq-04-oq-01 — the sibling a = 1 closed form (binaryGcdSteps_one_eq_log_succ and its corollaries)",
+      "binary-gcd-oq-01 — the binaryGcdSteps definition and equation lemma binaryGcdSteps.eq_3",
+      "Strong induction on ℕ and the fuel-parameter technique for recursion without explicit termination proofs",
+      "Stein's Binary GCD reduction rules (even/even, even/odd, odd/odd subtract-smaller)"
+    ]
   },
   "sections": [
     {
@@ -93,7 +109,11 @@
   "conclusion": {
     "summary": "Stein's Binary GCD step count is symmetric: binaryGcdSteps a b = binaryGcdSteps b a, proved by strong induction on a + b with no axioms and no native_decide. Symmetry transfers the sibling's a = 1 closed form to the b = 1 slice, giving binaryGcdSteps a 1 = Nat.log 2 a + 1 and its worst-case consequences.",
     "implications": "Symmetry halves any future two-argument worst-case analysis (it suffices to study a ≤ b) and shows the b = 1 slice is the exact transpose of the a = 1 slice. Combined with OQ-01 it pins both axis slices of the step-count surface to the bit-length law, a concrete step toward the still-open full two-argument worst case.",
-    "openProblems": "The full two-argument worst-case set of binaryGcdSteps (the maximum of binaryGcdSteps a b over a, b < N and its extremal configurations) remains open."
+    "openQuestions": [
+      "The full two-argument worst-case set of binaryGcdSteps: determine the maximum of binaryGcdSteps a b over a, b < N and characterise its extremal configurations (the axis slices are now both the bit-length law, but the interior maximum is unknown).",
+      "Is the global worst case always attained on an axis slice (one argument equal to 1), or do interior pairs a, b > 1 require strictly more steps for some N?",
+      "Derive a closed form or tight two-sided bound for max_{a,b < N} binaryGcdSteps a b in terms of log₂ N, matching Knuth's average-case analysis of the Binary GCD."
+    ]
   },
   "leanFile": {
     "imports": [
