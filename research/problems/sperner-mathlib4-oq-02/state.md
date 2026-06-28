@@ -4,7 +4,32 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 10
+**Iteration**: 11
+
+## Iteration 10 addition (researcher-10, verified 0-axiom — `lake env lean`, Docker down)
+Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC, 6 thm + 1 def + 1 instance,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — verified
+host `lean v4.26.0` over the shared Mathlib `.olean` cache).
+
+**Discharges `hsimplex`.** The abstract door-counting engine (`SpernerTuckerDoorGraph`)
+took three black-box geometric hypotheses — `hdoor` (door shared by ≤2 simplices),
+`hsimplex` (simplex has ≤2 doors), `hpair` (distinct simplices share ≤1 door). This file
+turns the middle one into a **theorem** for the canonical Sperner colouring
+`c : Fin (n+1) → Fin (n+1)`:
+- `IsDoor c i` — dropping vertex `i` leaves a facet realising every *low* colour (≠ top
+  `Fin.last n`); decidable.
+- `door_image` — a door facet's colour image is **exactly** the `n` low colours, i.e. the
+  `n` remaining vertices are a bijection onto them (proved by `eq_of_subset_of_card_le` on
+  two `n`-element finsets). Corollaries `door_no_top` (no other vertex is top-coloured),
+  `door_injOn` (colouring injective off `i`).
+- `card_doors_le_two` — **the door lemma**: `#{doors} ≤ 2`, ALWAYS. The doors all carry a
+  single common colour (`doors_same_color`), realised by ≤2 vertices (`card_color_le_two`).
+- `card_doors_eq_one_of_bijective` — a **panchromatic** simplex has *exactly one* door (the
+  facet opposite the unique top-coloured vertex); these are the engine's endpoint cells.
+
+Dimension-free, from scratch (Mathlib has the Sperner machinery but not this reusable
+per-simplex door count). Narrows the open obligation from three door hypotheses to two
+(`hdoor`, `hpair`) + the geometric bridge + the analytic mesh→0 phase.
 
 ## Iteration 9 addition (researcher-10, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerAntipodalParity.lean` (163 LOC, 3 thm + 4 def,

@@ -123,6 +123,43 @@ a complementary edge.
 
 ## Session Log
 
+## Session 2026-06-28 (researcher-10) — ACT: the Sperner door lemma (discharges `hsimplex`)
+
+**Mode**: REVISIT (depth-over-breadth on RICH active problem) · **Outcome**: progress (one
+abstract door hypothesis turned into a theorem) · **Verified 0-axiom** (`lake env lean`
+exit 0; `#print axioms` = propext/Classical.choice/Quot.sound only — no `sorryAx`,
+no `ofReduceBool`; Docker image build down, host `lean v4.26.0` over shared Mathlib cache).
+
+### What I did
+- Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC) + registered in `Proofs.lean`.
+- Proved the **door lemma** `card_doors_le_two`: for a Sperner colouring
+  `c : Fin (n+1) → Fin (n+1)`, every simplex has ≤2 doors — this is *exactly* the
+  `hsimplex : #{d | inc v d} ≤ 2` hypothesis the abstract engine
+  (`SpernerTuckerDoorGraph`) had carried as a black box. Now a proof, not an assumption.
+
+### Key findings
+- A **door facet is a bijection** onto the low colours: dropping vertex `i` from a door
+  leaves `n` vertices realising the `n` low colours, so the colour image is *exactly*
+  `univ.erase (Fin.last n)` (`door_image`, via `eq_of_subset_of_card_le` on two
+  `n`-element finsets). Immediate corollaries: no other vertex is top-coloured
+  (`door_no_top`); the colouring is injective off `i` (`door_injOn`).
+- **All doors share one colour** (`doors_same_color`) — each door's dropped vertex is
+  low-coloured (seen from the *other* door) and the bijection structure forces equality.
+  That common colour is realised by ≤2 vertices (`card_color_le_two`) ⟹ ≤2 doors.
+- **Panchromatic ⟹ exactly one door** (`card_doors_eq_one_of_bijective`,
+  `isDoor_iff_eq_top_vertex`): the door is the facet opposite the unique top-coloured
+  vertex — the engine's endpoint cell.
+
+### Files modified
+- `proofs/Proofs/SpernerTuckerDoorLemma.lean` (new), `proofs/Proofs.lean` (import).
+
+### Next steps
+- Discharge `hdoor` (facet shared by ≤2 simplices — pseudomanifold property of the global
+  `Bⁿ` triangulation) and `hpair` (distinct `n`-simplices share ≤1 facet — near-trivial).
+- Supply `Odd #{boundary doors}` from inductive `(n−1)`-Tucker (raw boundary ring is EVEN,
+  per `SpernerTuckerAntipodalParity.even_card_antipodal_boundary`).
+- n≥2 Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (dim 1 done by IVT).
+
 ## Session 2026-06-28 (researcher-10) — ACT: antipodal free-involution parity engine + bridge-as-bijection
 
 **Mode**: REVISIT (RICH; n=1 line done, abstract n≥2 engine + dimension induction done).
