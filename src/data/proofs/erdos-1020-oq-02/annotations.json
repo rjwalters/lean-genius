@@ -108,5 +108,44 @@
       "binomial coefficient evaluation",
       "decide"
     ]
+  },
+  {
+    "id": "construction2-step-eq",
+    "proofId": "erdos-1020-oq-02",
+    "range": {
+      "startLine": 177,
+      "endLine": 205
+    },
+    "type": "theorem",
+    "significance": "key",
+    "title": "Exact Step-Difference Identity",
+    "content": "construction2_step_eq sharpens the monotonicity inequality into an exact equality, written additively to stay in ℕ without truncated subtraction: construction2(n+1) + C(n-k+1,r-1) = construction2 n + C(n,r-1). Equivalently the one-step increment is exactly C(n,r-1) - C(n-k+1,r-1). Same Pascal machinery as construction2_mono_step (two Nat.choose_succ_succ rewrites), plus the two facts that the subtractions in construction2 do not underflow (Nat.choose_le_choose), with omega closing the linear nat-arithmetic.",
+    "mathContext": "$$\\mathrm{construction2}(n{+}1)-\\mathrm{construction2}(n)=\\binom{n}{r-1}-\\binom{n-k+1}{r-1}.$$"
+  },
+  {
+    "id": "construction2-strict-mono-step",
+    "proofId": "erdos-1020-oq-02",
+    "range": {
+      "startLine": 207,
+      "endLine": 214
+    },
+    "type": "theorem",
+    "significance": "supporting",
+    "title": "Strict Monotonicity Refinement",
+    "content": "construction2_strict_mono_step reads strict increase straight off the exact identity: when C(n-k+1,r-1) < C(n,r-1) the value strictly increases. The hypothesis holds, e.g., once k ≥ 2 and r-1 ≤ n-k+1, isolating exactly when the regime band has positive width at a given n.",
+    "mathContext": "$$\\binom{n-k+1}{r-1}<\\binom{n}{r-1}\\ \\Rightarrow\\ \\mathrm{construction2}(n)<\\mathrm{construction2}(n{+}1).$$"
+  },
+  {
+    "id": "crossover-r4k2",
+    "proofId": "erdos-1020-oq-02",
+    "range": {
+      "startLine": 216,
+      "endLine": 231
+    },
+    "type": "theorem",
+    "significance": "key",
+    "title": "Sharp Crossover Threshold (r=4, k=2)",
+    "content": "crossover_r4k2 promotes the two boundary checks into a complete characterization of the construction2-dominant region. Backward direction: 8 ≤ n gives dominance by construction2_dominant_up from the n=8 base case. Forward direction: for n < 8, interval_cases enumerates n ∈ {0,…,7} and decide refutes dominance in each. Hence construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n, pinning the crossover threshold to the single value n₀(4,2)=8 — a concrete answer to the file's open next step of characterizing the threshold.",
+    "mathContext": "$$\\binom{7}{4}\\le\\binom{n}{4}-\\binom{n-1}{4}\\iff 8\\le n.$$"
   }
 ]

@@ -2,7 +2,7 @@
   "id": "erdos-1020-oq-02",
   "title": "Erdős #1020 OQ-02: The Small-n / Large-n Regime Transition",
   "slug": "erdos-1020-oq-02",
-  "description": "Open question OQ-02 of Erdős Problem #1020 (the Erdős Matching Conjecture) asks whether the gap between the two regimes in which the conjecture is known — Frankl's small-n result and Huang–Loh–Sudakov's large-n result — can be closed for general r. The conjectured extremal value of f(n;r,k) is max(construction1, construction2) where construction1 r k = C(rk-1,r) (independent of n) and construction2 n r k = C(n,r) - C(n-k+1,r); construction1 is the maximiser for small n and construction2 for large n. This entry does NOT resolve the open gap (OPEN for r≥4). Instead it pins down, axiom-free, the structure of the transition between the two regimes: construction2 is monotonically nondecreasing in n (construction2_mono, via a Pascal-telescoping identity construction2(n+1)-construction2(n) = C(n,r-1)-C(n-k+1,r-1) ≥ 0); hence the set of n on which construction2 dominates construction1 is upward-closed (construction2_dominant_up), so a single threshold separates the small-n regime (extremal value = construction1, conjecturedValue_small) from the large-n regime (extremal value = construction2, conjecturedValue_large); consequently conjecturedValue is itself monotone nondecreasing in n (conjecturedValue_mono). A worked instance (r=4, k=2) exhibits the crossover concretely at n=8 via kernel-decidable checks. No axioms, no native_decide, no sorries.",
+  "description": "Open question OQ-02 of Erdős Problem #1020 (the Erdős Matching Conjecture) asks whether the gap between the two regimes in which the conjecture is known — Frankl's small-n result and Huang–Loh–Sudakov's large-n result — can be closed for general r. The conjectured extremal value of f(n;r,k) is max(construction1, construction2) where construction1 r k = C(rk-1,r) (independent of n) and construction2 n r k = C(n,r) - C(n-k+1,r); construction1 is the maximiser for small n and construction2 for large n. This entry does NOT resolve the open gap (OPEN for r≥4). Instead it pins down, axiom-free, the structure of the transition between the two regimes: construction2 is monotonically nondecreasing in n (construction2_mono, via a Pascal-telescoping identity construction2(n+1)-construction2(n) = C(n,r-1)-C(n-k+1,r-1) ≥ 0); hence the set of n on which construction2 dominates construction1 is upward-closed (construction2_dominant_up), so a single threshold separates the small-n regime (extremal value = construction1, conjecturedValue_small) from the large-n regime (extremal value = construction2, conjecturedValue_large); consequently conjecturedValue is itself monotone nondecreasing in n (conjecturedValue_mono). A worked instance (r=4, k=2) exhibits the crossover concretely at n=8 via kernel-decidable checks. No axioms, no native_decide, no sorries. A follow-up section sharpens this: the exact step-difference identity construction2_step_eq (construction2(n+1) + C(n-k+1,r-1) = construction2 n + C(n,r-1), the equality form of the inequality above), a strict-monotonicity refinement construction2_strict_mono_step, and — using monotonicity to upgrade the two boundary evaluations into a complete characterization — the exact crossover threshold for the worked instance: construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n (crossover_r4k2), pinning n₀(4,2)=8.",
   "meta": {
     "author": "Research formalization 2026",
     "sourceUrl": "https://www.erdosproblems.com/1020",
@@ -20,11 +20,11 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 165,
+    "lineCount": 232,
     "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The concrete crossover examples use kernel `decide` (not `native_decide`), so they introduce no Lean.ofReduceBool dependency. The open content of OQ-02 — whether the small-n/large-n gap can be closed for general r, i.e. the Erdős Matching Conjecture itself for r≥4 — is left unproved and unaxiomatized; only the regime-transition structure of the conjectured extremal value is established.",
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 3
   },
   "overview": {
@@ -37,7 +37,8 @@
       "construction2 is monotonically nondecreasing in n, because its one-step increment is a Pascal telescoping difference construction2(n+1)-construction2(n) = C(n,r-1)-C(n-k+1,r-1), nonnegative since n ≥ n-k+1 for k≥1.",
       "Monotonicity forces the regimes to be cleanly separated: the set of n on which construction2 dominates the constant construction1 is upward-closed (construction2_dominant_up), so there is a single threshold, not an interleaving — once the large-n construction catches up it never falls behind.",
       "Consequently the conjectured extremal value is monotone nondecreasing in n (conjecturedValue_mono) and collapses to construction1 below the threshold (conjecturedValue_small) and to construction2 at and above it (conjecturedValue_large).",
-      "This is unconditional structure of the conjectured value — it does NOT close the open gap (the conjecture for r≥4 is left stated, not axiomatized). It frames the open question precisely: the unknown is whether f equals this value throughout the middle band, not where the two constructions cross."
+      "This is unconditional structure of the conjectured value — it does NOT close the open gap (the conjecture for r≥4 is left stated, not axiomatized). It frames the open question precisely: the unknown is whether f equals this value throughout the middle band, not where the two constructions cross.",
+      "The inequality construction2(n+1) ≥ construction2(n) is in fact an exact identity construction2(n+1)-construction2(n) = C(n,r-1)-C(n-k+1,r-1) (construction2_step_eq); combined with the boundary values this upgrades the worked r=4,k=2 crossover into a sharp characterization construction1 4 2 ≤ construction2 n 4 2 ⇔ 8 ≤ n, fixing the exact threshold n₀(4,2)=8."
     ],
     "prerequisites": [
       "The Erdős Matching Conjecture and its two extremal constructions",
@@ -94,6 +95,14 @@
       "endLine": 163,
       "summary": "Kernel-decidable checks locating the crossover at n=8: construction2 7 4 2 = 20 < 35 = construction1 4 2, while construction2 8 4 2 = 35; conjecturedValue switches from construction1 to construction2 across n=7→8 and is monotone there.",
       "mathContext": "$\\binom{7}{4}-\\binom{6}{4}=20<35=\\binom{7}{4}$ but $\\binom{8}{4}-\\binom{7}{4}=35$: crossover at $n=8$."
+    },
+    {
+      "id": "exact-step-and-threshold",
+      "title": "Exact Step Difference and the Sharp Crossover Threshold",
+      "startLine": 166,
+      "endLine": 231,
+      "summary": "construction2_step_eq gives the exact increment construction2(n+1)+C(n-k+1,r-1) = construction2 n + C(n,r-1) (the equality behind construction2_mono_step); construction2_strict_mono_step is the strict refinement; crossover_r4k2 uses monotonicity to turn the two boundary checks into the complete region {n : 8 ≤ n}, the exact crossover threshold for r=4,k=2.",
+      "mathContext": "$\\mathrm{construction2}(n+1)-\\mathrm{construction2}(n)=\\binom{n}{r-1}-\\binom{n-k+1}{r-1}$; for $r=4,k=2$: $\\binom{rk-1}{r}\\le\\mathrm{construction2}(n)\\iff 8\\le n$."
     }
   ],
   "conclusion": {

@@ -162,4 +162,71 @@ example : conjecturedValue 8 4 2 = construction2 8 4 2 := by decide
 /-- Monotonicity of `conjecturedValue` across the crossover, concretely. -/
 example : conjecturedValue 7 4 2 ≤ conjecturedValue 8 4 2 := by decide
 
+/-! ### 5. The exact step difference, and a strict refinement.
+
+`construction2_mono_step` only records the *inequality* `≤`. The increment is
+in fact exactly `C(n, r−1) − C(n−k+1, r−1)`. We state this additively to keep
+everything in `ℕ` without truncated subtraction, then read off both the
+original monotonicity and a strict version. -/
+
+/-- Exact one-step increment of `construction2`:
+    `construction2 (n+1) − construction2 n = C(n, r−1) − C(n−k+1, r−1)`,
+    written additively. This is the precise identity behind
+    `construction2_mono_step`. -/
+theorem construction2_step_eq (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 (n + 1) r k + Nat.choose (n - k + 1) (r - 1)
+      = construction2 n r k + Nat.choose n (r - 1) := by
+  unfold construction2
+  have hidx : n + 1 - k + 1 = n - k + 2 := by omega
+  rw [hidx]
+  have hr1 : r - 1 + 1 = r := Nat.sub_add_cancel hr
+  -- Pascal at the top: C(n+1, r) = C(n, r-1) + C(n, r).
+  have eq1 : Nat.choose (n + 1) r = Nat.choose n (r - 1) + Nat.choose n r := by
+    have h := Nat.choose_succ_succ n (r - 1)
+    simp only [Nat.succ_eq_add_one] at h
+    rw [hr1] at h
+    omega
+  -- Pascal at the shifted index: C(n-k+2, r) = C(n-k+1, r-1) + C(n-k+1, r).
+  have eq2 : Nat.choose (n - k + 2) r
+      = Nat.choose (n - k + 1) (r - 1) + Nat.choose (n - k + 1) r := by
+    have h := Nat.choose_succ_succ (n - k + 1) (r - 1)
+    simp only [Nat.succ_eq_add_one] at h
+    rw [hr1, show n - k + 1 + 1 = n - k + 2 from by omega] at h
+    omega
+  -- Both truncated subtractions in `construction2` are genuine (no underflow).
+  have hsub1 : Nat.choose (n - k + 2) r ≤ Nat.choose (n + 1) r :=
+    Nat.choose_le_choose r (by omega)
+  have hsub2 : Nat.choose (n - k + 1) r ≤ Nat.choose n r :=
+    Nat.choose_le_choose r (by omega)
+  omega
+
+/-- Strict one-step monotonicity: whenever the lower binomial is strictly
+    smaller, `construction2` strictly increases. (The hypothesis
+    `C(n−k+1, r−1) < C(n, r−1)` holds, e.g., once `k ≥ 2` and `r−1 ≤ n−k+1`.) -/
+theorem construction2_strict_mono_step (n r k : ℕ) (hr : r ≥ 1) (hk : k ≥ 1)
+    (hn : n ≥ k) (hlt : Nat.choose (n - k + 1) (r - 1) < Nat.choose n (r - 1)) :
+    construction2 n r k < construction2 (n + 1) r k := by
+  have h := construction2_step_eq n r k hr hk hn
+  omega
+
+/-! ### 6. The exact crossover threshold for the worked instance `r = 4, k = 2`.
+
+Monotonicity turns the two boundary evaluations (`n = 7` below, `n = 8` at)
+into a *complete* characterization of the construction2-dominant region:
+it is exactly `{ n : 8 ≤ n }`. This pins the crossover threshold to the
+single value `n₀(4, 2) = 8`. -/
+
+/-- `construction2` overtakes `construction1` (for `r = 4, k = 2`) at exactly
+    `n = 8`: the regime boundary is the sharp threshold `n₀ = 8`. -/
+theorem crossover_r4k2 (n : ℕ) :
+    construction1 4 2 ≤ construction2 n 4 2 ↔ 8 ≤ n := by
+  constructor
+  · intro h
+    by_contra hlt
+    push_neg at hlt
+    interval_cases n <;> exact absurd h (by decide)
+  · intro h
+    have h8 : construction1 4 2 ≤ construction2 8 4 2 := by decide
+    exact construction2_dominant_up 8 n 4 2 (by norm_num) (by norm_num) (by norm_num) h h8
+
 end Erdos1020OQ02
