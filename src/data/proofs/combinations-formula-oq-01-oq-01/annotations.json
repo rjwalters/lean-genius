@@ -59,5 +59,45 @@
       "natural-number subtraction",
       "the omega tactic"
     ]
+  },
+  {
+    "id": "ann-finiteness",
+    "proofId": "combinations-formula-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 41 },
+    "type": "concept",
+    "title": "Why the Finite Range Captures the Whole Diagonal",
+    "content": "The sum runs over the finite set `range (n+1)`, yet it equals the *entire* shallow diagonal with no explicit upper cutoff. The reason is that `Nat.choose` returns $0$ outside its support: $\\binom{n-j}{j} = 0$ the moment the lower index exceeds the upper, i.e. as soon as $j > n - j \\iff 2j > n$. So every term with $j > \\lfloor n/2 \\rfloor$ silently vanishes, and the honest diagonal has only $\\lfloor n/2 \\rfloor + 1$ nonzero terms. This is why no floor bound appears in the statement — Lean's truncated binomial coefficient does the bookkeeping for free, and choosing `range (n+1)` (rather than `range (\\lfloor n/2\\rfloor + 1)`) costs nothing while keeping the index reflection $j \\mapsto n-j$ clean.",
+    "mathContext": "$\\binom{n-j}{j} \\ne 0 \\iff 2j \\le n$; the nonzero terms are exactly $0 \\le j \\le \\lfloor n/2 \\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose support",
+      "finite support",
+      "Pascal's triangle",
+      "floor function"
+    ],
+    "prerequisites": [
+      "binomial coefficient conventions",
+      "Finset.range"
+    ]
+  },
+  {
+    "id": "ann-recurrence-shadow",
+    "proofId": "combinations-formula-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 48 },
+    "type": "insight",
+    "title": "The Identity Is a Shadow of the Fibonacci Recurrence",
+    "content": "Beneath the reindexing lies the deeper reason the shallow diagonals are Fibonacci. Write $D_n = \\sum_j \\binom{n-j}{j}$ for the diagonal sum at level $n$. Pascal's rule $\\binom{n-j}{j} = \\binom{n-1-j}{j} + \\binom{n-1-j}{j-1}$ splits each term into one contribution from level $n-1$ and one from level $n-2$; after reindexing, summing gives $D_n = D_{n-1} + D_{n-2}$ — *exactly* the Fibonacci recurrence, with base cases $D_0 = D_1 = 1$. A self-contained Lean proof could induct on this two-step recurrence directly. This file instead borrows the equivalent antidiagonal sum already proved in Mathlib (`Nat.fib_succ_eq_sum_choose`), trading the recurrence argument for a single index reflection — a deliberate choice to lean on the library rather than re-derive the combinatorics.",
+    "mathContext": "$D_n = D_{n-1} + D_{n-2}$ via Pascal's rule, matching $F_{n+1} = F_n + F_{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's rule",
+      "Fibonacci recurrence",
+      "induction",
+      "generating functions"
+    ],
+    "prerequisites": [
+      "Pascal's rule",
+      "the Fibonacci recurrence"
+    ]
   }
 ]
