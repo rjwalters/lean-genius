@@ -20,6 +20,7 @@
     "sorries": 0
   },
   "title": "The Uniform Boundedness Principle from Baire's Theorem",
+  "description": "Derives the Banach–Steinhaus theorem (Uniform Boundedness Principle) directly from the gallery's own Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior) rather than Mathlib's packaged banach_steinhaus: a pointwise-bounded family g : ι → E →L[𝕜] F of bounded linear operators from a Banach space E into a normed space F has uniformly bounded operator norms. The proof runs the classical Rudin-style closed-set exhaustion — closed sublevel sets e n = ⋂ i {x | ‖g i x‖ ≤ n} whose union is the whole space, Baire yielding a ball of local uniform boundedness, and a translation-and-scaling (shell) estimate promoting it to ‖g i‖ ≤ 2m/(ε/‖c‖). Includes the equicontinuity-form restatement ‖g i x‖ ≤ C'·‖x‖ and the contrapositive resonance principle. 119 lines, 3 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
