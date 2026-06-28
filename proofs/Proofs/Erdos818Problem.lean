@@ -38,8 +38,10 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Combinatorics.Additive.Energy
 
 open Finset Real
+open scoped Pointwise
 
 namespace Erdos818
 
@@ -182,6 +184,42 @@ def additiveEnergy (A : Finset ℤ) : ℕ :=
 E×(A) ≥ |A|⁴ / |AA| (by pigeonhole on products).
 -/
 
+/-
+## Part V·b: The Cauchy–Schwarz energy lower bound (proved)
+
+The first ingredient of Solymosi's strategy is the elementary Cauchy–Schwarz
+lower bound `|A|⁴ ≤ |A·A| · E×(A)`. It is *not* the deep part of the argument —
+it follows from grouping the `|A|²` pairs `(a, b)` by their product and applying
+Cauchy–Schwarz to the fiber sizes. Mathlib already provides exactly this fact as
+`Finset.le_card_mul_mul_mulEnergy`, so we connect our local definitions to
+Mathlib's pointwise product and multiplicative energy and transport the bound.
+-/
+
+/-- `productSet A` is the pointwise product `A * A`. -/
+theorem productSet_eq_mul (A : Finset ℤ) : productSet A = A * A := by
+  rw [productSet, Finset.mul_def]
+
+/-- Our `multiplicativeEnergy A` is Mathlib's `Finset.mulEnergy A A`. -/
+theorem multiplicativeEnergy_eq_mulEnergy (A : Finset ℤ) :
+    multiplicativeEnergy A = Finset.mulEnergy A A := by
+  unfold multiplicativeEnergy
+  exact (Finset.mulEnergy_eq_card_filter A A).symm
+
+/--
+**Cauchy–Schwarz energy lower bound (proved):**
+`|A|⁴ ≤ |A·A| · E×(A)`.
+
+This is step 1 of Solymosi's proof strategy. It is a genuine, fully verified
+lemma (no axioms, no `sorry`): grouping the `|A|²` pairs `(a,b) ∈ A × A` by their
+product and applying Cauchy–Schwarz to the fiber sizes gives the bound, which is
+exactly Mathlib's `Finset.le_card_mul_mul_mulEnergy` specialized to `s = t = A`.
+-/
+theorem cauchy_schwarz_energy (A : Finset ℤ) :
+    A.card ^ 4 ≤ (productSet A).card * multiplicativeEnergy A := by
+  rw [productSet_eq_mul, multiplicativeEnergy_eq_mulEnergy]
+  calc A.card ^ 4 = A.card ^ 2 * A.card ^ 2 := by ring
+    _ ≤ (A * A).card * Finset.mulEnergy A A := Finset.le_card_mul_mul_mulEnergy A A
+
 /--
 **Solymosi's key lemma:**
 Bounds multiplicative energy in terms of sumset size.
@@ -207,10 +245,13 @@ Bounds multiplicative energy in terms of sumset size.
     open formalization target left in this file. It is *not* a consequence of
     `solymosi_theorem`: that axiom supplies an absolute constant `c > 0` with
     bound `c·|A|²/log|A|`, whereas this K-dependent bound `|A|²/(K·log|A|)`
-    would require `c·K ≥ 1`, which the axiom does not provide. Proving it from
-    scratch needs the Cauchy–Schwarz lower bound (`cauchy_schwarz_energy`) and
-    Solymosi's multiplicative-energy upper bound, neither of which is yet
-    formalized in Mathlib. -/
+    would require `c·K ≥ 1`, which the axiom does not provide.
+
+    Step 1 of the strategy — the Cauchy–Schwarz lower bound
+    `|A|⁴ ≤ |A·A|·E×(A)` — is now PROVED (`cauchy_schwarz_energy`, axiom-free,
+    via Mathlib's `Finset.le_card_mul_mul_mulEnergy`). The remaining gap is
+    therefore *exactly* Solymosi's multiplicative-energy upper bound
+    `E×(A) ≤ C·|A|²·|A+A|·log|A|`, which is not yet formalized in Mathlib. -/
 theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
     ((productSet A).card : ℝ) ≥
