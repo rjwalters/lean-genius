@@ -1,0 +1,229 @@
+{
+  "id": "algebraic-numbers-countable-oq-01-oq-03",
+  "title": "The Field of Algebraic Numbers is AlgebraicClosure ℚ — and It Is Countable",
+  "slug": "algebraic-numbers-countable-oq-01-oq-03",
+  "description": "Closes the loop between the parent's countability of the algebraic numbers and Mathlib's field-theoretic picture. The algebraic numbers are packaged as Mathlib's relative algebraic closure Qbar = algebraicClosure ℚ ℂ : IntermediateField ℚ ℂ, whose carrier is exactly {x : ℂ | IsAlgebraic ℚ x} (identifying it with the bespoke Subfield of the sibling leaf OQ01). Because ℂ is algebraically closed, Qbar is algebraically closed and is an algebraic closure of ℚ, so uniqueness of algebraic closures gives a ℚ-algebra isomorphism AlgebraicClosure ℚ ≃ₐ[ℚ] Qbar. Transporting the parent's countability across this isomorphism yields the new result: AlgebraicClosure ℚ is countable (in fact #(AlgebraicClosure ℚ) = ℵ₀) — a fact Mathlib does not record, since AlgebraicClosure ℚ is built by a transfinite tower with no a-priori cardinality bound. The same transport gives countability of AlgebraicClosure F for any countable field F.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Algebraic_number",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ01OQ03.lean",
+    "tags": [
+      "field-theory",
+      "algebraic-numbers",
+      "algebraic-closure",
+      "countability",
+      "cardinal-arithmetic",
+      "intermediate-field",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 164,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-27",
+    "originalContributions": [
+      "Qbar := algebraicClosure ℚ ℂ : the algebraic numbers as Mathlib's relative algebraic closure (an IntermediateField), with Qbar_carrier proving its carrier is exactly {x : ℂ | IsAlgebraic ℚ x} — identifying it with the bespoke Subfield algebraicSubfield ℚ ℂ of the sibling leaf OQ01",
+      "IsAlgClosed Qbar instance and IsAlgClosure ℚ Qbar: Qbar is algebraically closed and is an algebraic closure of ℚ (because ℂ is algebraically closed)",
+      "equivAlgebraicClosureRat : AlgebraicClosure ℚ ≃ₐ[ℚ] Qbar — identifies the abstractly-constructed algebraic closure with the concrete field of algebraic numbers, via uniqueness of algebraic closures (IsAlgClosure.equiv)",
+      "countable_algebraicClosure_rat : Countable (AlgebraicClosure ℚ) — the abstract algebraic closure of ℚ is countable, obtained by transporting the parent's set-level countability of the algebraic numbers across equivAlgebraicClosureRat; this is NOT available directly in Mathlib",
+      "cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀ — AlgebraicClosure ℚ is countably infinite (≤ ℵ₀ from countability, ≥ ℵ₀ from being an infinite characteristic-zero field)",
+      "countable_algebraicClosure : Countable (AlgebraicClosure F) for any countable field F (given a chosen algebraically closed extension E) — the base-field-agnostic form, plus the supporting Countable (algebraicClosure F E) instance"
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountable: the algebraic numbers {x : ℂ | IsAlgebraic ℚ x} are a countable set (Algebraic.countable)",
+      "AlgebraicNumbersCountableOQ01: the bespoke Subfield algebraicSubfield ℚ ℂ of algebraic numbers (sibling leaf), identified here with the IntermediateField Qbar",
+      "algebraicClosure F E and mem_algebraicClosure_iff: Mathlib's relative algebraic closure as an IntermediateField with membership = algebraicity",
+      "IsAlgClosure.equiv: any two algebraic closures of a field are (non-canonically) isomorphic as algebras over the base",
+      "Countable.of_equiv: countability transports across an equivalence of types"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "algebraicClosure",
+        "description": "The relative algebraic closure of F in E as an IntermediateField F E; its carrier is the set of elements algebraic over F",
+        "module": "Mathlib.FieldTheory.AlgebraicClosure"
+      },
+      {
+        "theorem": "mem_algebraicClosure_iff",
+        "description": "x ∈ algebraicClosure F E ↔ IsAlgebraic F x — identifies the carrier with the parent's set of algebraic numbers",
+        "module": "Mathlib.FieldTheory.AlgebraicClosure"
+      },
+      {
+        "theorem": "algebraicClosure.isAlgClosure",
+        "description": "If E is algebraically closed, the relative algebraic closure of F in E is an algebraic closure of F (IsAlgClosure F (algebraicClosure F E))",
+        "module": "Mathlib.FieldTheory.AlgebraicClosure"
+      },
+      {
+        "theorem": "IsAlgClosure.equiv",
+        "description": "Uniqueness of algebraic closures: a ℚ-algebra isomorphism between AlgebraicClosure ℚ and Qbar",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Algebraic.countable",
+        "description": "Over a countable ring, the algebraic elements form a countable set — the parent's countability input, transported here to the field objects",
+        "module": "Mathlib.Algebra.AlgebraicCard"
+      },
+      {
+        "theorem": "Countable.of_equiv",
+        "description": "Countability is preserved under an equivalence of types; used to push Countable Qbar to Countable (AlgebraicClosure ℚ)",
+        "module": "Mathlib.Data.Countable.Defs"
+      }
+    ],
+    "theoremCount": 3,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-01",
+        "relationship": "Parent leaf: assembles the algebraic numbers into a bespoke Subfield ℂ. This entry identifies that subfield with Mathlib's IntermediateField algebraicClosure ℚ ℂ and proves it is an algebraic closure of ℚ."
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Grandparent: proves the algebraic numbers are a countable set. This entry transports that countability to the field object AlgebraicClosure ℚ."
+      }
+    ],
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1874 theorem that the algebraic numbers are countable is a statement about a *set*. The algebraic numbers also carry the structure of a field — indeed the algebraic closure $\\overline{\\mathbb{Q}}$ of the rationals, the smallest algebraically closed field of characteristic $0$. Mathlib builds an *abstract* algebraic closure `AlgebraicClosure ℚ` by a transfinite tower of polynomial-quotient extensions (a construction with no obvious cardinality bound), and *separately* knows the algebraic numbers inside $\\mathbb{C}$ are countable. This entry connects the two: the abstract object and the concrete subfield of $\\mathbb{C}$ are the same field up to isomorphism, so the concrete countability is also a fact about the abstract closure. The conclusion $\\#\\overline{\\mathbb{Q}} = \\aleph_0$ is exactly Cantor's theorem read at the level of the field, not the set.",
+    "problemStatement": "Upgrade the bespoke subfield of algebraic numbers from the sibling leaf to Mathlib's `IntermediateField` `algebraicClosure ℚ ℂ`, prove it is algebraically closed and is an algebraic closure of $\\mathbb{Q}$, identify it with the abstract `AlgebraicClosure ℚ`, and use the parent's countability of the algebraic numbers to conclude that `AlgebraicClosure ℚ` is countable (in fact countably infinite).",
+    "proofStrategy": "**§1 — Identification.** `Qbar := algebraicClosure ℚ ℂ : IntermediateField ℚ ℂ` is Mathlib's relative algebraic closure. `mem_algebraicClosure_iff` gives that its carrier is exactly the parent's set $\\{x : \\mathbb{C} \\mid \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,x\\}$ (`Qbar_carrier`), so it coincides with the bespoke `Subfield` of OQ01.\n\n**§2 — It is an algebraic closure of ℚ.** Since $\\mathbb{C}$ is algebraically closed, Mathlib supplies `IsAlgClosed Qbar` and `IsAlgClosure ℚ Qbar`. Uniqueness of algebraic closures (`IsAlgClosure.equiv`) then produces a $\\mathbb{Q}$-algebra isomorphism `equivAlgebraicClosureRat : AlgebraicClosure ℚ ≃ₐ[ℚ] Qbar`.\n\n**§3 — Countability (the new content).** The parent's `Algebraic.countable ℚ ℂ` makes the carrier countable as a set; `Set.Countable.to_subtype` makes `Qbar` countable as a type. Transporting across `equivAlgebraicClosureRat` with `Countable.of_equiv` gives `Countable (AlgebraicClosure ℚ)`. Combining the resulting $\\le \\aleph_0$ with $\\aleph_0 \\le \\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q})$ (it is an infinite characteristic-zero field) yields $\\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}) = \\aleph_0$.\n\n**§4 — Generalization.** The same argument over an arbitrary countable field $F$ with any algebraically closed extension $E$ gives `Countable (AlgebraicClosure F)`.",
+    "keyInsights": [
+      "**Set-level countability becomes field-level countability via uniqueness of algebraic closures.** Mathlib proves the algebraic *numbers* (a subset of ℂ) are countable, but never that the abstractly-constructed *field* `AlgebraicClosure ℚ` is. The bridge is `IsAlgClosure.equiv`: both are algebraic closures of ℚ, hence isomorphic, and `Countable` transports across the isomorphism.",
+      "**The abstract algebraic closure has no manifest cardinality.** `AlgebraicClosure ℚ` is a quotient of a transfinite tower of multivariate polynomial rings; nothing in its definition bounds its size. Recognizing it as the algebraic numbers in ℂ is what pins it at $\\aleph_0$ — a clean instance of computing a cardinal by transport rather than by inspecting a construction.",
+      "**Mathlib already did the hard field theory.** The relative algebraic closure `algebraicClosure ℚ ℂ` being algebraically closed (because ℂ is) is a Mathlib instance; the genuinely new step is purely the cardinality transport, which the field-theory library does not perform.",
+      "**The result is base-field-agnostic.** Countability of $F$ is the only hypothesis that matters: for any countable field $F$ and any algebraically closed extension $E$, `AlgebraicClosure F` is countable. ℚ ⊆ ℂ is just the canonical instance.",
+      "**This realizes the open question posed by the sibling leaf.** OQ01 explicitly asked to strengthen `algebraicSubfield ℚ ℂ` to an `IntermediateField`, prove it algebraically closed, and identify it with $\\overline{\\mathbb{Q}}$ — done here, with countability of $\\overline{\\mathbb{Q}}$ as the payoff."
+    ]
+  },
+  "sections": [
+    {
+      "id": "identification",
+      "title": "§1: The algebraic numbers as Mathlib's relative algebraic closure",
+      "startLine": 60,
+      "endLine": 71,
+      "summary": "Qbar := algebraicClosure ℚ ℂ : IntermediateField ℚ ℂ. Qbar_carrier proves the carrier equals {x : ℂ | IsAlgebraic ℚ x}, identifying it with the bespoke Subfield algebraicSubfield ℚ ℂ of the sibling leaf OQ01.",
+      "mathContext": "Mathlib's algebraicClosure F E is the relative algebraic closure of F in E, an IntermediateField whose membership predicate is exactly algebraicity (mem_algebraicClosure_iff)."
+    },
+    {
+      "id": "algclosure",
+      "title": "§2: Qbar is an algebraic closure of ℚ",
+      "startLine": 73,
+      "endLine": 95,
+      "summary": "IsAlgClosed Qbar and IsAlgClosure ℚ Qbar hold because ℂ is algebraically closed. Uniqueness of algebraic closures (IsAlgClosure.equiv) yields equivAlgebraicClosureRat : AlgebraicClosure ℚ ≃ₐ[ℚ] Qbar.",
+      "mathContext": "The relative algebraic closure of a field inside an algebraically closed field is itself algebraically closed; any two algebraic closures of a field are isomorphic as algebras over that field."
+    },
+    {
+      "id": "countability",
+      "title": "§3: AlgebraicClosure ℚ is countable",
+      "startLine": 97,
+      "endLine": 120,
+      "summary": "Qbar is countable as a type (parent's Algebraic.countable + Set.Countable.to_subtype). Transporting across equivAlgebraicClosureRat gives Countable (AlgebraicClosure ℚ), and #(AlgebraicClosure ℚ) = ℵ₀ by combining ≤ ℵ₀ (countability) with ≥ ℵ₀ (infinite char-0 field).",
+      "mathContext": "Mathlib does not record countability of the abstract AlgebraicClosure ℚ; it is obtained here only by identification with the concrete algebraic numbers."
+    },
+    {
+      "id": "general",
+      "title": "§4: Any countable base field",
+      "startLine": 122,
+      "endLine": 143,
+      "summary": "For any countable field F with an algebraically closed extension E, algebraicClosure F E is countable, hence so is AlgebraicClosure F (same transport across IsAlgClosure.equiv).",
+      "mathContext": "Countability of the base field is the only hypothesis that controls the size of its algebraic closure."
+    }
+  ],
+  "conclusion": {
+    "summary": "The algebraic numbers, packaged as Mathlib's IntermediateField algebraicClosure ℚ ℂ, form an algebraic closure of ℚ isomorphic to the abstract AlgebraicClosure ℚ. Transporting the parent's countability of the algebraic numbers across this isomorphism shows AlgebraicClosure ℚ is countable, and indeed #(AlgebraicClosure ℚ) = ℵ₀. The argument is base-field-agnostic: AlgebraicClosure F is countable for every countable field F.",
+    "implications": [
+      "Supplies a fact Mathlib lacks: Countable (AlgebraicClosure ℚ) as an instance, available to instance search wherever the abstract algebraic closure of ℚ is used.",
+      "Realizes the open question of the sibling leaf OQ01 (upgrade to IntermediateField, prove algebraically closed, identify with the algebraic closure of ℚ), with countability as the new payoff.",
+      "Demonstrates computing the cardinality of an opaquely-constructed object (a transfinite polynomial-quotient tower) by transport across a uniqueness isomorphism rather than by inspecting the construction."
+    ],
+    "openQuestions": [
+      "Make the isomorphism AlgebraicClosure ℚ ≃ₐ[ℚ] algebraicClosure ℚ ℂ explicit/computable on concrete algebraic numbers (e.g. track where √2 goes), rather than the noncanonical IsAlgClosure.equiv.",
+      "Strengthen Countable to a definite cardinal computation for AlgebraicClosure F when F is uncountable: #(AlgebraicClosure F) = #F, transported from #(algebraic elements) over an algebraically closed extension."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-01",
+      "relationship": "parent",
+      "description": "Parent leaf assembles the algebraic numbers into a bespoke Subfield ℂ and asks (open question) to upgrade it to an IntermediateField, prove it algebraically closed, and identify it with the algebraic closure of ℚ — exactly what this entry does."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "ancestor",
+      "description": "Grandparent proof: the algebraic numbers are a countable set. This entry transports that countability to the field object AlgebraicClosure ℚ."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "countable_algebraicClosure_rat",
+      "type": "core",
+      "description": "The abstract algebraic closure of ℚ is countable, by transporting countability of the algebraic numbers in ℂ across the uniqueness isomorphism AlgebraicClosure ℚ ≃ₐ[ℚ] algebraicClosure ℚ ℂ.",
+      "leanType": "Countable (AlgebraicClosure ℚ)"
+    },
+    {
+      "name": "cardinalMk_algebraicClosure_rat",
+      "type": "core",
+      "description": "AlgebraicClosure ℚ is countably infinite: its cardinality is exactly ℵ₀.",
+      "leanType": "#(AlgebraicClosure ℚ) = ℵ₀"
+    },
+    {
+      "name": "equivAlgebraicClosureRat",
+      "type": "core",
+      "description": "A ℚ-algebra isomorphism identifying the abstract AlgebraicClosure ℚ with the concrete field of algebraic numbers Qbar ⊆ ℂ.",
+      "leanType": "AlgebraicClosure ℚ ≃ₐ[ℚ] Qbar"
+    },
+    {
+      "name": "Qbar_carrier",
+      "type": "supporting",
+      "description": "The carrier of Qbar = algebraicClosure ℚ ℂ is exactly the parent's set of algebraic numbers, identifying it with the bespoke Subfield of the sibling leaf.",
+      "leanType": "(Qbar : Set ℂ) = {x : ℂ | IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "countable_algebraicClosure",
+      "type": "supporting",
+      "description": "For any countable field F with an algebraically closed extension E, the abstract algebraic closure AlgebraicClosure F is countable.",
+      "leanType": "[Countable F] → Countable (AlgebraicClosure F)"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Georg Cantor"
+      ],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Countability of the algebraic numbers — read here at the level of the field AlgebraicClosure ℚ rather than the set."
+    },
+    {
+      "authors": [
+        "Ernst Steinitz"
+      ],
+      "title": "Algebraische Theorie der Körper",
+      "year": "1910",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 137, pp. 167–309",
+      "note": "Existence and uniqueness (up to isomorphism) of the algebraic closure — the structural fact underlying IsAlgClosure.equiv, which makes the cardinality transport valid."
+    }
+  ],
+  "sorries": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib.FieldTheory.AlgebraicClosure",
+      "Mathlib.Algebra.AlgebraicCard",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal (scoped)"
+    ],
+    "namespace": "AlgebraicNumbersCountableOQ01OQ03",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/AlgebraicNumbersCountableOQ01OQ03.lean"
+  }
+}
