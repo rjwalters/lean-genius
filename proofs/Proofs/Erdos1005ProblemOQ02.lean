@@ -1314,4 +1314,78 @@ theorem endpoint_window_three (k₁ k₂ k₃ a b c d : ℤ) :
         * ((k₂ * k₃) * b - (k₁ * k₂ * k₃ - k₁ - k₃) * d) := by
   rw [endpoint_window, secondCont_three, continuant_three]; ring
 
+/-! ## §15: Depth-`m` unimodularity of the iterated Farey walk
+
+§9's `farey_succ_unimodular` shows a *single* Farey-successor step preserves
+unimodularity (`b·c = a·d + 1`).  The §14 `stepSeq` recurrence walks along
+arbitrarily many successive Farey neighbours by applying that step once per
+quotient in a list `ks`.  This section proves that the walk's
+**cross-determinant `nₘ·dₘ₊₁ − nₘ₊₁·dₘ` is invariant under every step**, so a
+unimodular start stays unimodular at *every* depth.
+
+This is the depth-uniform form of §9's consecutiveness bridge: it certifies that
+the entire §14 quotient-list walk consists of genuinely *consecutive* Farey
+fractions (each adjacent pair unimodular), not merely similarly-ordered ones.
+Concretely it is the order-`m` Stern–Brocot invariant, the determinant shadow of
+the step matrix `[[k, −1], [1, 0]]` (which has determinant `1`).
+
+The bookkeeping uses `stepPair`, returning the final consecutive *pair*
+`(t_{|ks|}, t_{|ks|+1})` of the §14 recurrence; its second component is exactly
+`stepSeq a c ks` (the §14 final term), and its first is the penultimate term,
+which the determinant invariant needs. -/
+
+/-- The iterated §9/§14 successor returning the final consecutive **pair**
+`(t_{|ks|}, t_{|ks|+1})` (for a numerator seed `(a, c)`, or a denominator seed
+`(b, d)`).  Its second component is `stepSeq a c ks`; the first is the penultimate
+term, needed to state the walk's unimodular invariant. -/
+def stepPair (a c : ℤ) : List ℤ → ℤ × ℤ
+  | [] => (a, c)
+  | k :: ks => stepPair c (k * c - a) ks
+
+/-- `stepPair`'s second component is exactly `stepSeq` — the §14 final term. -/
+theorem stepPair_snd (ks : List ℤ) (a c : ℤ) :
+    (stepPair a c ks).2 = stepSeq a c ks := by
+  induction ks generalizing a c with
+  | nil => rfl
+  | cons k ks ih => simp only [stepPair, stepSeq]; exact ih c (k * c - a)
+
+/-- **Depth-`m` unimodularity (the headline).**  Running the §14 recurrence on a
+numerator seed `(a, c)` and a denominator seed `(b, d)` through the *same* quotient
+list `ks`, the cross-determinant of the final consecutive pairs equals the seed
+cross-determinant:
+`nₘ·dₘ₊₁ − nₘ₊₁·dₘ = a·d − b·c`.
+Each step's matrix `[[k, −1], [1, 0]]` has determinant `1`, so the invariant is
+preserved exactly — proved by list induction with the seed pair threaded through
+the recurrence `(a, c) ↦ (c, k·c − a)`. -/
+theorem stepPair_cross (ks : List ℤ) (a b c d : ℤ) :
+    (stepPair a c ks).1 * (stepPair b d ks).2
+        - (stepPair a c ks).2 * (stepPair b d ks).1
+      = a * d - b * c := by
+  induction ks generalizing a b c d with
+  | nil => simp only [stepPair]; ring
+  | cons k ks ih =>
+      simp only [stepPair]
+      rw [ih c d (k * c - a) (k * d - b)]; ring
+
+/-- **Unimodularity is preserved at every depth.**  If the seed consecutive pair
+`a/b < c/d` is unimodular (`b·c = a·d + 1`, the §1 `Unimodular` convention), then
+so is the final consecutive pair of the depth-`|ks|` walk: its cross-determinant
+is `−1`.  Hence iterating the §14 recurrence from a Farey-adjacent pair lands on a
+Farey-adjacent pair at every depth — the consecutiveness §9 supplies one step at a
+time, now uniform in the run length. -/
+theorem stepPair_cross_unimodular (ks : List ℤ) {a b c d : ℤ}
+    (h : b * c = a * d + 1) :
+    (stepPair a c ks).1 * (stepPair b d ks).2
+        - (stepPair a c ks).2 * (stepPair b d ks).1 = -1 := by
+  rw [stepPair_cross]; omega
+
+/-- **Subsumption check (§9).**  At `ks = [k]` the walk's consecutive pair is
+`(c, k·c − a)` for numerators and `(d, k·d − b)` for denominators, and the
+depth-`m` invariant reduces to the §9 single-step determinant
+`c·(k·d − b) − (k·c − a)·d = a·d − b·c`. -/
+theorem stepPair_cross_one (k a b c d : ℤ) :
+    (stepPair a c [k]).1 * (stepPair b d [k]).2
+        - (stepPair a c [k]).2 * (stepPair b d [k]).1 = a * d - b * c :=
+  stepPair_cross [k] a b c d
+
 end Erdos1005OQ02
