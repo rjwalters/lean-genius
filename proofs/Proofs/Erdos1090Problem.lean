@@ -164,13 +164,13 @@ structure CombinatorialLine (k n : ℕ) where
   disjoint : Disjoint fixed varying
   nonempty_varying : varying.Nonempty
 
-/--
+/-
 **Hales-Jewett Theorem (Statement):**
 For any k and r, there exists n such that any r-coloring of [k]ⁿ
 contains a monochromatic combinatorial line.
 -/
 
-/--
+/-
 **Generic Projection:**
 A "generic" projection from [k]ⁿ to ℝ² maps combinatorial lines
 to geometric lines (for sufficiently general projection).
@@ -202,18 +202,18 @@ theorem erdos_1090_affirmative : ∀ k ≥ 3, Erdos1090Question k := by
 ## Part VII: Special Constructions
 -/
 
-/--
+/-
 **Vertices of Regular n-gon:**
 The vertices of a regular n-gon plus its center.
 -/
 
-/--
+/-
 **Grid Points:**
 An m × m grid of points.
 Axiomatized since it requires embedding ℤ² into the Point type.
 -/
 
-/--
+/-
 **Projective Plane Points:**
 Points from a finite projective plane (useful for Ramsey constructions).
 Axiomatized since the construction depends on projective geometry over 𝔽_q.
@@ -259,7 +259,7 @@ theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by
   rw [ge_iff_le, ← hcard]
   exact hasRamseyProperty_card_ge A k hA
 
-/--
+/-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
 -/
@@ -268,6 +268,7 @@ The k = 3 case can be achieved with a small set of points.
 ## Part IX: Connection to Other Results
 -/
 
+open Classical in
 /--
 **Relation to Sylvester-Gallai:**
 The Sylvester-Gallai theorem says: In any finite set of points in ℝ²
@@ -275,7 +276,8 @@ not all collinear, there exists a line containing exactly 2 points.
 
 This is a structural constraint on point configurations.
 -/
-def SylvesterGallai (A : Finset Point) (hA : ¬ ∀ p q r ∈ A, Collinear p q r) : Prop :=
+def SylvesterGallai (A : Finset Point)
+    (hA : ¬ ∀ p ∈ A, ∀ q ∈ A, ∀ r ∈ A, Collinear p q r) : Prop :=
   ∃ l : Line, (A.filter (OnLine l)).card = 2
 
 /--
@@ -302,9 +304,9 @@ def Erdos1090Generalized (k r : ℕ) : Prop :=
   k ≥ 3 → r ≥ 2 →
   ∃ A : Finset Point, ∀ c : Point → Fin r,
     ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
-      ∀ p q ∈ S, c p = c q
+      ∀ p ∈ S, ∀ q ∈ S, c p = c q
 
-/--
+/-
 **Generalized Version Holds:**
 By Hales-Jewett for r colors, the generalized version also holds.
 -/
