@@ -112,3 +112,24 @@ These are the structural facts that make `R k n` (least `m` with the property) a
 GOTCHAs (session 2): `Fin.castLEEmb (h : n ≤ m) : Fin n ↪ Fin m` is the embedding;
 `Finset.le_card_iff_exists_subset_card : n ≤ s.card ↔ ∃ t ⊆ s, t.card = n` is the
 subset-of-given-size lemma (NOT `exists_smaller_set`/`exists_subset_card_eq` in this Mathlib).
+
+## Iteration (researcher-3, 2026-06-28): faithful quadratic crux + general height gap
+
+**Mode**: BUILD (Docker down; offline `LAKE_UNSAFE=1 ./bin/lake env lean`, REAL_EXIT 0, clean).
+**Base**: rebased onto origin/main 153-line/13-thm version (which already had the Ramsey
+monotonicity session) — caught that my initial worktree base was a stale 110-line snapshot
+and re-applied onto the current file rather than clobbering the merged Ramsey lemmas.
+
+### What I Did
+The file's crux `tower_one_lt_tower_two` compares `2^n < 2^{2^n}` (LINEAR exponent), but the
+real EHR lower bound is `2^{cn²}` — a QUADRATIC exponent. Added the faithful form:
+- `nsq_lt_two_pow_self {n} (5 ≤ n) : n^2 < 2^n` — `Nat.le_induction` from base `25 < 32`;
+  step `2m+1 ≤ m²` (`nlinarith [hm]`) + ih to clear `(m+1)² < 2^m + 2^m = 2^{m+1}`. Tight at n=4.
+- `ehr_lower_lt_tower_two {n} (5 ≤ n) : 2^(n^2) < tower 2 n` — the genuine gap: the
+  quadratic-exponent known lower bound `2^{n²}` is still a whole tower level below the
+  conjectured `2^{2^n} = tower 2 n`. More faithful to Erdős #564 than the linear crux.
+- `tower_lt_of_height_lt {j k n} (j < k) : tower j n < tower k n` — general height gap.
+
+### Verification
+- `#print axioms` on all three → foundational only; NONE of the parent's 3 axioms pulled in.
+- 13→16 theorems, 153→192 lines, 0 axioms, 0 sorries. The open conjecture ($500) stays out of reach.
