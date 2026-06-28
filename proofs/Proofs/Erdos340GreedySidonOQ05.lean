@@ -588,19 +588,31 @@ fails to be `B_h`, then there is a nonzero multiplicity gap `d` (`1 ≤ d ≤ h`
 multisets `sA, tA` drawn from `A`, each of size at most `h`, with
 `d · m + sA.sum = tA.sum`.
 
+The size bound is sharp in a way that matters for the conjectured rate: the two
+`A`-parts together use **at most `2h - 1`** elements, `card sA + card tA ≤ 2h - 1`.
+The reason is structural — one of the `2h` slots across the two colliding `h`-multisets
+is necessarily occupied by a copy of `m` (the larger multiplicity `max j k ≥ d ≥ 1`),
+so only `2h - 1` slots remain for elements of `A`.  This is exactly the source of the
+exponent in the open `N^{1/(2h-1)}` greedy lower bound: each forbidden `m` is pinned
+down (via `IsBh.eq_of_diff_eq`) by a `(d, sA, tA)` triple drawn from a set of size
+`O(|A|^{2h-1})`, not `O(|A|^{2h})`.
+
 *Proof.*  A failure of injectivity gives two distinct `h`-multisets `s ≠ t` over
 `insert m A` with equal sums.  Split each by its multiplicity of `m`
 (`bh_split`): `s = j·{m} + sA`, `t = k·{m} + tA` with `sA, tA ⊆ A`.  Equal sums read
 `j·m + sA.sum = k·m + tA.sum`.  If `j = k` the `A`-parts have equal sums and equal size
 `h - j`, so the `B_{h-j}` property (downward closure) forces `sA = tA` and hence
 `s = t`, a contradiction.  Thus `j ≠ k`; taking `d = |j - k|` and orienting the
-equation so the larger multiplicity is on the right yields `d · m + sA.sum = tA.sum`. ∎ -/
+equation so the larger multiplicity is on the right yields `d · m + sA.sum = tA.sum`.
+The `A`-parts then have sizes `h - j` and `h - k`, summing to `2h - (j + k) ≤ 2h - 1`
+since the larger multiplicity is at least `1`. ∎ -/
 theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
     (hA : IsBh h A) (hbad : ¬ IsBh h (insert m A)) :
     ∃ (d : ℕ) (sA tA : Multiset ℕ),
       1 ≤ d ∧ d ≤ h ∧
       (∀ x ∈ sA, x ∈ A) ∧ (∀ x ∈ tA, x ∈ A) ∧
       Multiset.card sA ≤ h ∧ Multiset.card tA ≤ h ∧
+      Multiset.card sA + Multiset.card tA ≤ 2 * h - 1 ∧
       d * m + sA.sum = tA.sum := by
   classical
   -- A failure of `B_h` injectivity yields a colliding pair `s ≠ t`.
@@ -616,7 +628,8 @@ theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
   rw [hsumS, hsumT] at hsum0  -- `j * m + sA.sum = k * m + tA.sum`
   rcases lt_trichotomy j k with hlt | heq | hgt
   · -- `j < k`: gap `d = k - j`, with the roles of `sA`, `tA` swapped.
-    refine ⟨k - j, tA, sA, by omega, by omega, hmemT, hmemS, by omega, by omega, ?_⟩
+    refine ⟨k - j, tA, sA, by omega, by omega, hmemT, hmemS, by omega, by omega,
+      by omega, ?_⟩
     have hkm : (k - j) * m + j * m = k * m := by rw [← Nat.add_mul]; congr 1; omega
     omega
   · -- `j = k`: the `A`-parts coincide by `B_{h-j}`, forcing `s = t` — impossible.
@@ -635,9 +648,28 @@ theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
     apply Sym.coe_injective
     rw [hsplitS, hsplitT, hAB]
   · -- `j > k`: gap `d = j - k`, equation as stated.
-    refine ⟨j - k, sA, tA, by omega, by omega, hmemS, hmemT, by omega, by omega, ?_⟩
+    refine ⟨j - k, sA, tA, by omega, by omega, hmemS, hmemT, by omega, by omega,
+      by omega, ?_⟩
     have hjm : (j - k) * m + k * m = j * m := by rw [← Nat.add_mul]; congr 1; omega
     omega
+
+/-- **A forbidden value is determined by its witnessing triple.**  The difference
+equation `d · m + sA.sum = tA.sum` with `d ≥ 1` recovers `m` explicitly as
+`(tA.sum - sA.sum) / d`.
+
+Together with `IsBh.exists_diff_eq_of_not_insert` this is the *counting reduction*
+behind the open lower bound: the assignment sending each forbidden value `m` to a
+witnessing triple `(d, sA, tA)` is **injective**, because `m` is a function of that
+triple.  Hence the number of forbidden values is at most the number of admissible
+triples.  As the two `A`-parts together carry at most `2h - 1` elements of `A`
+(`IsBh.exists_diff_eq_of_not_insert`) and `d` ranges over `{1, …, h}`, that triple set
+has cardinality `O(|A|^{2h-1})` — precisely the exponent of the conjectured
+`N^{1/(2h-1)}` greedy lower bound for #340. -/
+theorem eq_of_diff_eq {d m : ℕ} {sA tA : Multiset ℕ}
+    (hd : 1 ≤ d) (heq : d * m + sA.sum = tA.sum) :
+    m = (tA.sum - sA.sum) / d := by
+  have hsub : tA.sum - sA.sum = d * m := by omega
+  rw [hsub, Nat.mul_div_cancel_left m hd]
 
 /-! ## Part 6: An explicit greedy `B_h` family
 

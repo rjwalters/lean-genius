@@ -275,3 +275,59 @@ IsBh.map_mul_right / IsBh.map_affine` = `[propext, Classical.choice, Quot.sound]
 #### Next Steps
 - Unchanged open core: the forbidden-set counting for the `N^{1/(2h-1)}` greedy lower
   bound. `map_affine` now lets one normalise a `B_h` set (least element 0) as a first step.
+
+### Session 2026-06-27 (Session 8, researcher-2) — sharp 2h-1 size bound + counting reduction
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+Builds directly on the just-merged forbidden-value characterization (PR #31024,
+`exists_diff_eq_of_not_insert`).
+
+#### What I Did
+- **Strengthened** `IsBh.exists_diff_eq_of_not_insert` with the conjunct
+  `Multiset.card sA + Multiset.card tA ≤ 2 * h - 1` — the *sharp* size bound on the
+  two A-parts. The merged version only gave the per-part bounds `card ≤ h` (total
+  `≤ 2h`); the `2h-1` is the precise reason the conjectured greedy exponent is
+  `1/(2h-1)` and not `1/(2h)`. **Why 2h-1**: across the two colliding `h`-multisets
+  there are `2h` total slots; the larger multiplicity `max(j,k) ≥ d ≥ 1` forces at
+  least one slot to be a copy of `m`, leaving `≤ 2h-1` for elements of `A`. Concretely
+  the A-parts have sizes `h-j` and `h-k`, summing to `2h-(j+k) ≤ 2h-1`. Discharged by
+  `omega` in both the `j<k` and `j>k` branches using the exact card equalities
+  (`hcardS : card sA = h-j`, `hcardT : card tA = h-k`) from `bh_split`.
+- Added `eq_of_diff_eq`: the **counting reduction**. From `d·m + sA.sum = tA.sum`
+  with `d ≥ 1`, recover `m = (tA.sum - sA.sum) / d`
+  (`omega` gives `tA.sum - sA.sum = d*m`, then `Nat.mul_div_cancel_left m hd`). This
+  makes the map `m ↦ (d, sA, tA)` (forbidden value ↦ witnessing triple) **injective**,
+  so `#(forbidden values) ≤ #(admissible triples) = O(|A|^{2h-1})`.
+
+#### Why it matters
+Together these turn the open `N^{1/(2h-1)}` greedy *lower* bound into a **pure
+multiset cardinality problem**: the exponent `2h-1` is now rigorously pinned (it is
+the bounded total size of the witness data), and each forbidden value is determined
+by its witness. What remains is purely a multichoose count of bounded-size multisets
+over `A` — no longer anything about the `B_h` structure itself.
+
+#### Key Findings / gotchas
+- Strengthening a public theorem by adding a conjunct is safe here since nothing yet
+  consumes `exists_diff_eq_of_not_insert`; the two `refine ⟨…⟩` tuples each just gain
+  one extra `by omega` slot (before the final `?_` for the equation).
+- `bh_split` returns the card as an **equality** (`card sA = h - j`), not just `≤ h`;
+  this exact value is what lets `omega` prove the `2h-1` sum bound (it could not from
+  the `≤ h` bounds alone).
+- `Nat.mul_div_cancel_left (a : ℕ) (H : 0 < b) : b * a / b = a` — args are
+  `(m) (hd)` for `d * m / d = m`; `1 ≤ d` is defeq `0 < d` in ℕ so `hd` works directly.
+
+#### Verification
+Docker host unreliable (per prior sessions). Verified via host `v4.26.0`:
+`lake env lean Proofs/Erdos340GreedySidonOQ05.lean` → exit 0, no warnings (18s, dep
+`Proofs.Erdos340GreedySidon` olean already in the symlinked main `.lake` cache).
+Built OQ05 to a temp olean (`/tmp/oq05build`), prepended to `LEAN_PATH`, ran
+`#print axioms`: `IsBh.exists_diff_eq_of_not_insert` = `[propext, Classical.choice,
+Quot.sound]`; `eq_of_diff_eq` = `[propext, Quot.sound]` (0-axiom).
+776 → 808 lines, +1 theorem (`eq_of_diff_eq`), strengthened 1 theorem.
+
+#### Next Steps
+- Close the count: build the forbidden Finset `F` and the triple Finset, apply
+  `Finset.card_le_card_of_injOn` with `eq_of_diff_eq` as the injectivity, then the
+  remaining multichoose bound `#{multisets over A, card ≤ e} ≤ (|A|+1)^e` gives
+  `F.card = O(|A|^{2h-1})`.
+- Convert to the maximal-set lower bound `|A| = Ω(N^{1/(2h-1)})`.
