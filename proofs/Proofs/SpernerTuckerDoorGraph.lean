@@ -317,4 +317,70 @@ theorem doorGraph_degree_eq_shared
       obtain ⟨hvg, hwg⟩ := hgspec w hws
       exact hpair (g w) d v w hwv.symm hvg hwg hvd hwd
 
+/-- **Door conservation: total doors = shared doors + boundary doors.**  Every
+door of `v` is either *shared* (some other simplex also carries it) or a *boundary
+door* (`v` is its only simplex).  Combined with the sharp degree formula
+(`doorGraph_degree_eq_shared`, which identifies the shared doors with the graph
+degree), this gives the local door-balance identity
+
+> `degree v + #(boundary doors of v) = #(all doors of v)`.
+
+This is the abstract analogue of "interior facets are shared, boundary facets are
+not": it converts the global graph-degree of a simplex into a purely local count of
+its boundary doors.  It is exactly the conservation law the inductive
+lower-dimensional Tucker count plugs into — the boundary doors of the top-dimensional
+simplices are the facets the `(n−1)`-dimensional argument enumerates. -/
+theorem doorGraph_degree_add_boundaryDoors
+    (hdoor : ∀ d, #{v | inc v d} ≤ 2)
+    (hpair : ∀ d d' : D, ∀ v w : V, v ≠ w →
+      inc v d → inc w d → inc v d' → inc w d' → d = d')
+    (v : V) :
+    (doorGraph inc).degree v + #{d | inc v d ∧ ∀ w, w ≠ v → ¬ inc w d}
+      = #{d | inc v d} := by
+  classical
+  rw [doorGraph_degree_eq_shared inc hdoor hpair v]
+  -- Rewrite the boundary doors `∀ w ≠ v, ¬ inc w d` as the negation of "shared".
+  have hbdry : ({d | inc v d ∧ ∀ w, w ≠ v → ¬ inc w d} : Finset D)
+      = ({d | inc v d ∧ ¬ ∃ w, w ≠ v ∧ inc w d} : Finset D) := by
+    apply Finset.filter_congr
+    intro d _
+    constructor
+    · rintro ⟨h1, h2⟩
+      exact ⟨h1, by push_neg; exact h2⟩
+    · rintro ⟨h1, h2⟩
+      push_neg at h2
+      exact ⟨h1, h2⟩
+  rw [hbdry]
+  -- Shared and boundary doors partition the doors of `v`.
+  have e1 : #(({d | inc v d} : Finset D).filter (fun d => ∃ w, w ≠ v ∧ inc w d))
+      = #{d | inc v d ∧ ∃ w, w ≠ v ∧ inc w d} := by rw [Finset.filter_filter]
+  have e2 : #(({d | inc v d} : Finset D).filter (fun d => ¬ ∃ w, w ≠ v ∧ inc w d))
+      = #{d | inc v d ∧ ¬ ∃ w, w ≠ v ∧ inc w d} := by rw [Finset.filter_filter]
+  have hsplit := Finset.filter_card_add_filter_neg_card_eq_card
+    (s := ({d | inc v d} : Finset D)) (p := fun d => ∃ w, w ≠ v ∧ inc w d)
+  rw [e1, e2] at hsplit
+  exact hsplit
+
+/-- **A path endpoint with a full door complement has exactly one boundary door.**
+By door conservation, a degree-1 simplex (`degree v = 1`, the path-following
+*endpoint* condition) that carries the maximal two doors has `1 + b = 2`, i.e.
+exactly one boundary door `b = 1`.
+
+This is the clean local fingerprint of a complementary simplex on the boundary:
+of its two facets, one is shared with an interior neighbour (the unique graph edge)
+and the other lies on the boundary — the facet the inductive `(n−1)`-Tucker count
+pairs.  It turns the order-theoretic "endpoint" predicate into a single boundary
+door, with no reference to the global graph. -/
+theorem boundaryDoor_of_endpoint
+    (hdoor : ∀ d, #{v | inc v d} ≤ 2)
+    (hpair : ∀ d d' : D, ∀ v w : V, v ≠ w →
+      inc v d → inc w d → inc v d' → inc w d' → d = d')
+    (v : V)
+    (hdeg : (doorGraph inc).degree v = 1)
+    (htwo : #{d | inc v d} = 2) :
+    #{d | inc v d ∧ ∀ w, w ≠ v → ¬ inc w d} = 1 := by
+  have hcons := doorGraph_degree_add_boundaryDoors inc hdoor hpair v
+  rw [hdeg, htwo] at hcons
+  omega
+
 end SpernerTuckerDoorGraph

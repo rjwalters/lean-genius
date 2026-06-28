@@ -88,6 +88,19 @@ compactness argument is the real (still-open) analytic phase.
 - **Tucker ⟹ Borsuk–Ulam** (continuous, mesh→0 + compactness) is a separate
   analytic phase, out of scope for the combinatorial engine.
 
+### Insight 5 — door conservation localizes the boundary (PORTABLE, DONE)
+With the sharp degree formula `degree v = #(shared doors of v)` in hand, the doors
+of a simplex split as shared (= graph degree) ⊕ boundary (carried by no other
+simplex), giving `degree v + #(boundary doors v) = #(all doors v)`
+(`doorGraph_degree_add_boundaryDoors`, 0-axiom). Consequence: a degree-1 *endpoint*
+with the maximal two doors has exactly one boundary door (`boundaryDoor_of_endpoint`).
+This makes "is a path endpoint" a **purely local** statement about a simplex's own
+boundary doors, with no reference to the global graph — the precise hook for the
+still-open `Odd #{boundary endpoints}` step, which becomes a count of boundary doors
+supplied by inductive (n−1)-Tucker. The abstract door-counting engine
+(`SpernerTuckerDoorGraph.lean`) is now closed end-to-end up to that one geometric/
+inductive boundary input.
+
 ---
 
 ## Dead Ends
@@ -109,6 +122,49 @@ a complementary edge.
 ---
 
 ## Session Log
+
+## Session 2026-06-27 (researcher-2) — ACT: door-conservation identity (degree + boundary doors = total doors)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — `SpernerTuckerDoorGraph.lean`
+(+2 theorems, ~60 L, 0 sorry, `#print axioms` = `[propext, Classical.choice,
+Quot.sound]` only, NO `ofReduceBool`/`sorryAx`). Verified via single-file
+`lake env lean` against the main-repo Mathlib olean cache (Docker host still down).
+
+### What I Did
+The prior session sharpened the degree bound to an *equality* `degree v =
+#(shared doors of v)` (`doorGraph_degree_eq_shared`). This session uses that to
+prove the **door-conservation law** and read off the local boundary fingerprint:
+
+- `doorGraph_degree_add_boundaryDoors` — under `hdoor` (≤2 simplices/door) and
+  `hpair` (distinct simplices share ≤1 door),
+  `degree v + #{d | inc v d ∧ ∀ w ≠ v, ¬ inc w d} = #{d | inc v d}`.
+  Proof: rewrite `degree` as `#shared` (the sharp formula); the shared doors
+  (`∃ w ≠ v, inc w d`) and the boundary doors (its negation, `push_neg`) partition
+  the doors of `v` via `Finset.filter_card_add_filter_neg_card_eq_card`.
+- `boundaryDoor_of_endpoint` — a degree-1 endpoint carrying the maximal two doors
+  has **exactly one** boundary door (`1 + b = 2`, `omega`).
+
+### Why this matters
+Conservation converts the *global* graph degree of a simplex into a *purely local*
+count of its boundary doors — the abstract analogue of "interior facets are shared,
+boundary facets are not". The endpoint corollary is the clean local fingerprint of
+a boundary complementary simplex: one shared facet (its unique graph edge) + one
+boundary facet (the facet the inductive `(n−1)`-Tucker count enumerates). This is
+the conservation law that the still-open `Odd #{boundary endpoints}` step plugs into:
+boundary endpoints ↔ simplices with an odd number of boundary doors.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerDoorGraph.lean (+`doorGraph_degree_add_boundaryDoors`,
+  +`boundaryDoor_of_endpoint`)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md
+
+### Next Steps (frontier unchanged; boundary interface now local)
+- Supply `Odd #{boundary endpoints}` for a concrete antipodal triangulation by
+  counting **boundary doors** (now a local per-simplex quantity) via inductive
+  (n−1)-Tucker — feeds `exists_complementary_simplex`.
+- Build the concrete `inc : V → D → Prop` and discharge `hdoor`/`hsimplex`/`hpair`
+  geometrically; a boundary endpoint is a two-door simplex with one boundary door.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam: analytic phase.
 
 ## Session 2026-06-27 (researcher-2) — ACT: sharp degree formula (degree = #shared doors)
 
