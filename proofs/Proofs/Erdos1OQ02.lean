@@ -261,6 +261,38 @@ theorem card_doubledDrop_image_of_distinct {A : Finset ℕ}
   rw [Finset.card_image_of_injOn (doubledDrop_injOn_of_distinct hDSS),
     Finset.card_powerset]
 
+/-- **Same-parity integers in a symmetric interval (0 axioms).**  A finite set `V` of
+integers all sharing one parity and all lying in `[−L, L]` (`L ≥ 0`) has at most `L + 1`
+elements.  This is the central-interval count that — applied to the `2^{|A|}` distinct
+same-parity doubled deviations `2·Σ_T − S` confined to `|·| ≤ L` — recovers the sharp
+constant `3` in `anticoncentration_bound` (the pure second-moment spread bound only gives
+`≈ 3.46√Q`).  Proof: `v ↦ (v + L) / 2` maps `V` injectively (same parity ⟹ no collisions,
+`omega`) into `Finset.Icc 0 L`, whose cardinality is `L + 1`. -/
+theorem card_le_of_sameParity_interval (V : Finset ℤ) (p L : ℤ) (hL : 0 ≤ L)
+    (hpar : ∀ v ∈ V, v % 2 = p % 2) (hbd : ∀ v ∈ V, -L ≤ v ∧ v ≤ L) :
+    (V.card : ℤ) ≤ L + 1 := by
+  have hinj : Set.InjOn (fun v => (v + L) / 2) (V : Set ℤ) := by
+    intro u hu v hv h
+    have hu' := hpar u (Finset.mem_coe.mp hu)
+    have hv' := hpar v (Finset.mem_coe.mp hv)
+    simp only at h
+    omega
+  have hsub : V.image (fun v => (v + L) / 2) ⊆ Finset.Icc 0 L := by
+    intro y hy
+    simp only [Finset.mem_image] at hy
+    obtain ⟨v, hv, rfl⟩ := hy
+    obtain ⟨h1, h2⟩ := hbd v hv
+    rw [Finset.mem_Icc]; omega
+  have hcard : V.card ≤ (Finset.Icc 0 L).card := by
+    rw [← Finset.card_image_of_injOn hinj]
+    exact Finset.card_le_card hsub
+  have hIcc : (Finset.Icc (0 : ℤ) L).card = (L + 1).toNat := by
+    rw [Int.card_Icc]; congr 1; omega
+  rw [hIcc] at hcard
+  have : (V.card : ℤ) ≤ ((L + 1).toNat : ℤ) := by exact_mod_cast hcard
+  rw [Int.toNat_of_nonneg (by omega)] at this
+  exact this
+
 /-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
     elements with distinct subset sums, then:
       2ⁿ ≤ 3·√n·N + 2,    equivalently    N ≥ (2ⁿ − 2) / (3·√n).

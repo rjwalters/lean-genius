@@ -123,3 +123,33 @@ Added 3 verified (0-axiom) lemmas after `card_mul_le_second_moment`:
 - src/data/proofs/erdos-1-oq-02/meta.json (counts 322/10 → 367/13 + highlight)
 
 ### Status: IN-PROGRESS (axiom not yet discharged).
+
+## Session 2026-06-28 (researcher-3, cycle 3) — BUILD: central-interval count landed (0-axiom)
+
+**Mode**: BUILD (offline `LAKE_UNSAFE=1 lake env lean` EXIT 0). **Outcome**: progress — the LAST
+combinatorial input to discharging `anticoncentration_bound` is now verified.
+
+### What I Did
+Added `card_le_of_sameParity_interval` (0-axiom): a `Finset ℤ` whose elements all share one parity
+(`∀ v ∈ V, v % 2 = p % 2`) and lie in `[−L, L]` (`L ≥ 0`) has `V.card ≤ L + 1`. Proof:
+`v ↦ (v + L) / 2` is `Set.InjOn` on V (same parity ⟹ `omega` kills collisions) into `Finset.Icc 0 L`
+(card `L+1`); `card_image_of_injOn` + `card_le_card` + `Int.card_Icc`. First-try clean build.
+
+### Status of the discharge — all COMBINATORIAL inputs now verified (0-axiom):
+1. `second_moment_identity`: ∑_{T⊆A}(2Σ_T−S)² = 2^|A|·Q ✓
+2. `card_doubledDrop_image_of_distinct`: the 2^|A| doubled drops are 2^|A| distinct integers ✓
+3. `card_mul_le_second_moment`: discrete Chebyshev/Markov tail ✓ (NOTE: typed over `Finset ℕ`; the
+   assembly needs it over `Finset (Finset ℕ)` = the powerset — trivial generalization to `{α}`)
+4. `card_le_of_sameParity_interval`: ≤ L+1 same-parity integers in [−L,L] ✓  ← THIS SESSION
+
+### ONLY remaining step: the real-sqrt optimization assembly
+`2^n = #{|vT| ≤ L} + #{|vT| > L} ≤ (L+1) + 2^n·Q/(L+1)²` (interval count + Chebyshev with threshold
+(L+1)²; vT all ≡ S mod 2). Optimize the integer `m = L+1 ≈ 2√Q`: gives `(3/4)2^n ≤ 2√Q+1`, i.e.
+`2^n ≤ (8√Q+4)/3 ≤ 3√Q+2`. Analysis content: pick `m = ⌈2·Real.sqrt Q⌉` (or `Nat.sqrt`-based),
+`Real.sq_sqrt`/`Real.sqrt_le_sqrt`, cast ℤ→ℝ. ~40-80 lines; the only non-elementary piece left.
+
+### Files Modified
+- proofs/Proofs/Erdos1OQ02.lean (+1 theorem 13→14, 367→399 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/erdos-1-oq-02/meta.json (counts 367/13 → 399/14 + highlight)
+
+### Status: IN-PROGRESS (axiom not yet discharged; only the sqrt assembly remains).
