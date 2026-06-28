@@ -59,5 +59,47 @@
       "HasDerivAt calculus for compositions",
       "integrability of Gaussian-weighted polynomials"
     ]
+  },
+  {
+    "id": "ann-aoc07oq05-derivatives",
+    "proofId": "area-of-circle-oq-07-oq-05",
+    "range": { "startLine": 60, "endLine": 71 },
+    "type": "technique",
+    "title": "Building the Two Derivatives u and v",
+    "content": "The integration-by-parts lemma is fed two `HasDerivAt` facts. The first, `hu`, says `u = x` has derivative `1` and is `hasDerivAt_id` with a cosmetic `simpa`. The second, `hv`, builds the antiderivative `v = -½ e^{-x²}` with derivative `v' = x e^{-x²}` by composing Mathlib's differentiation API in three steps: `(hasDerivAt_pow 2 x).neg` gives `d/dx(-x²) = -(2x)`; `.exp` chains it through the exponential to `d/dx e^{-x²} = -(2x)·e^{-x²}`; `.const_mul (-½)` scales to `d/dx(-½ e^{-x²}) = -½·(-(2x))·e^{-x²}`. A final `convert … using 1; ring` reconciles this with the clean target `x e^{-x²}`, since `-½·(-(2x)) = x`.",
+    "mathContext": "$\\frac{d}{dx}\\!\\left(-\\tfrac12 e^{-x^2}\\right) = -\\tfrac12 \\cdot (-2x)\\, e^{-x^2} = x\\,e^{-x^2}$, so $v' = x e^{-x^2}$ is exactly the inner factor of the integrand $x^2 e^{-x^2} = x \\cdot (x e^{-x^2}) = u\\,v'$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt.exp",
+      "HasDerivAt.const_mul",
+      "hasDerivAt_pow",
+      "chain rule for compositions"
+    ],
+    "prerequisites": [
+      "differentiation API in Mathlib (HasDerivAt)",
+      "chain and product rules"
+    ]
+  },
+  {
+    "id": "ann-aoc07oq05-obligations",
+    "proofId": "area-of-circle-oq-07-oq-05",
+    "range": { "startLine": 72, "endLine": 98 },
+    "type": "technique",
+    "title": "Discharging the Integrability and Boundary Obligations",
+    "content": "Beyond the two derivatives, `integral_mul_deriv_eq_deriv_mul` requires that both products `u·v'` and `u'·v` be integrable and that the boundary product `u·v` converge at each end. Integrability of `u·v' = x² e^{-x²}` comes from `integrable_rpow_mul_exp_neg_mul_sq` at `s = 2`, after bridging the real power `x^(2:ℝ)` to the natural power `x²` with `Real.rpow_natCast`; integrability of `u'·v = -½ e^{-x²}` is `integrable_exp_neg_mul_sq` scaled by `const_mul`. The two boundary limits `hbot`/`htop` are both obtained from the single cocompact decay `tendsto_mul_gaussian_cocompact`: `cocompact_eq_atBot_atTop` gives `atBot ≤ cocompact ℝ` and `atTop ≤ cocompact ℝ`, so `mono_left` restricts the cocompact limit to each one-sided filter, and `const_mul (-½)` rescales it to the actual boundary factor.",
+    "mathContext": "The IBP lemma's hypotheses are: $u v', u' v \\in L^1(\\mathbb R)$ and $\\lim_{x\\to-\\infty} uv = \\lim_{x\\to+\\infty} uv = 0$. The two one-sided limits are specializations of one cocompact statement because $\\text{cocompact }\\mathbb R = \\text{atBot} \\sqcup \\text{atTop}$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "integrable_rpow_mul_exp_neg_mul_sq",
+      "integrable_exp_neg_mul_sq",
+      "cocompact_eq_atBot_atTop",
+      "Tendsto.mono_left",
+      "Real.rpow_natCast"
+    ],
+    "prerequisites": [
+      "Lebesgue integrability criteria",
+      "filter monotonicity (mono_left)",
+      "cocompact filter on ℝ"
+    ]
   }
 ]
