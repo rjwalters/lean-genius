@@ -403,6 +403,39 @@ The non-representable numbers have density zero for many parameter choices:
 - q = 3 and p > 6, or
 - q = 2 and p > 10
 -/
+
+/-- A single point has natural density `0`: for `n ≥ N` the count
+`|{0} ∩ {0,…,n}| = 1`, so the ratio `1/n → 0`. (Helper for the `{2,3}` density-zero
+instance below.) -/
+theorem hasDensity_singleton_zero : HasDensity {0} 0 := by
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  refine ⟨N + 1, fun n hn => ?_⟩
+  have h0mem : (0 : ℕ) ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  simp only [Set.mem_singleton_iff, Finset.filter_eq', h0mem, if_true,
+    Finset.card_singleton, Nat.cast_one, sub_zero]
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
+  have hcast : (1 : ℝ) / ε < (n : ℝ) := by
+    have : (N : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : N < n)
+    linarith
+  rw [abs_of_nonneg (by positivity), div_lt_iff₀ hnpos]
+  rw [div_lt_iff₀ hε] at hcast
+  linarith [mul_comm (n : ℝ) ε]
+
+/-- **Yu-Chen density zero, `{2,3}` case (unconditional, 0-axiom).** For the base
+pair `{2,3}` the non-representable set is the single point `{0}` (see
+`nonRepresentable_two_three`), hence has natural density `0` — the sharpest possible
+instance of the Yu-Chen density-zero phenomenon. No axiom needed. -/
+theorem nonRepresentable_two_three_density_zero :
+    HasDensity (NonRepresentable 2 3) 0 := by
+  rw [nonRepresentable_two_three]; exact hasDensity_singleton_zero
+
+/-- **Yu-Chen density zero, `{3,2}` case (unconditional, 0-axiom).** Same statement for
+the reversed base pair (`NonRepresentable 3 2 = {0}`). -/
+theorem nonRepresentable_three_two_density_zero :
+    HasDensity (NonRepresentable 3 2) 0 := by
+  rw [nonRepresentable_three_two]; exact hasDensity_singleton_zero
+
 /--
 **Yu-Chen Coprime Non-Representables:**
 There are infinitely many coprime non-representable numbers for most (p,q):

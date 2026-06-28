@@ -33,30 +33,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "The {2,3} case is fully solved 0-axiom (case_2_3_all_representable, strong induction). Iteration 2 proved the EASY direction of the Erdos-Lewin iff unconditionally and pinned the non-representable set exactly to {0} for both base orderings, weakening the former bundled-iff axiom to the single deep `erdos_lewin_infinite` (hard direction only). Also repaired ~10 pre-existing Mathlib-4.26 build breakages so the file compiles again. Residual assumption: the deep Erdos-Lewin direction (not in Mathlib).",
+    "progressSummary": "The {2,3} case is fully solved 0-axiom (representability + NonRepresentable={0}). Iter 2 proved the EASY Erdos-Lewin direction unconditionally, weakening the axiom to the deep hard direction only (erdos_lewin_infinite). Iter 3 (S4): proved the {2,3} Yu-Chen density-zero instance 0-axiom (HasDensity (NonRepresentable 2 3) 0), giving content to the formerly def-only HasDensity scaffolding. Residual assumption unchanged: the single deep axiom erdos_lewin_infinite (hard direction, not in Mathlib).",
     "builtItems": [
       "case_2_3_all_representable (pre-existing, 0-axiom): every n>=1 is an antichain sum of 3^a 2^b, by strong induction (even: double; odd: subtract 3^{floor log_3 n}).",
       "not_isRepresentable_zero (0-axiom): a nonempty antichain of positive power forms has positive sum, so 0 is never representable.",
       "isPowerForm_comm / isRepresentable_comm (0-axiom): representability is symmetric in the base pair (p^k q^l ranges over the same set as q^k p^l).",
       "nonRepresentable_three_two / nonRepresentable_two_three (0-axiom): NonRepresentable = {0} exactly for {2,3}.",
       "finite_nonRepresentable_of_two_three (0-axiom): the easy direction {2,3} => Finite, now proved not assumed (returns the singleton {0}).",
-      "erdos_lewin_theorem (now a THEOREM): full iff, backward from finite_nonRepresentable_of_two_three, forward from the weaker axiom erdos_lewin_infinite."
+      "erdos_lewin_theorem (now a THEOREM): full iff, backward from finite_nonRepresentable_of_two_three, forward from the weaker axiom erdos_lewin_infinite.",
+      "hasDensity_singleton_zero (0-axiom): a single point has natural density 0 (count=1, ratio 1/n -> 0).",
+      "nonRepresentable_two_three_density_zero / _three_two_density_zero (0-axiom): the {2,3} non-representable set {0} has density zero — the sharpest Yu-Chen density-zero instance, giving content to the previously def-only HasDensity scaffolding."
     ],
     "insights": [
       "The Erdos-Lewin 'iff' splits cleanly: the {2,3}=>finite half is elementary (it is exactly the proven case_2_3 induction), only ¬{2,3}=>infinite is deep. Axiomatising just the deep half (erdos_lewin_infinite) is strictly weaker than axiomatising the iff.",
       "For {2,3} the non-representable set is the single point {0}, not merely finite.",
       "Mathlib 4.26 renames hit this file: Nat.strong_rec_on -> Nat.strong_induction_on; Nat.pow_log_le_self now takes (b)(hn:n!=0) with n implicit; Nat.lt_pow_succ_log_self now takes (hb)(n) with n explicit.",
       "omega cannot see through an un-beta-reduced lambda ((fun x=>x*2) a) nor multiply two unknowns (3^k * c); dsimp/explicit c=1 substitution fixes both. ring fails on Nat truncated subtraction; rw [pow_succ] then omega works.",
-      "A subst is blocked when a `let`-bound local (k := Nat.log 3 n) depends on the variable; rewrite the goal with the equation instead of subst."
+      "A subst is blocked when a `let`-bound local (k := Nat.log 3 n) depends on the variable; rewrite the goal with the equation instead of subst.",
+      "The {2,3} case realizes Yu-Chen density-zero exactly: NonRepresentable={0} has density 0 (not just below some bound). Provable 0-axiom by reducing HasDensity {0} 0 to 1/n->0 via Finset.filter_eq' on the singleton.",
+      "Mathlib-4.26 gotcha: div_lt_iff renamed to div_lt_iff₀ (a/c<b iff a<b*c for 0<c); Finset.filter_eq' evaluates filter(.=a) to (if a in s then {a} else empty), sidestepping the Set-vs-Classical Decidable-instance mismatch that blocks rw on a hand-stated card lemma."
     ],
     "mathlibGaps": [
       "Erdos-Lewin deep direction: {p,q}!={2,3} (p>q>=2 coprime) => infinitely many non-representable numbers. Not in Mathlib 4.26.",
       "Yu-Chen density-zero and coprime-non-representable results (2022). Not in Mathlib."
     ],
     "nextSteps": [
-      "DONE (iter 2): proved the easy Erdos-Lewin direction unconditionally; weakened the iff axiom to the deep direction only; repaired Mathlib-4.26 build breakages.",
-      "Attempt the deep direction (or a special case) to reduce/eliminate erdos_lewin_infinite.",
-      "Either prove a concrete HasDensity / minSummandBound statement or remove the unused scaffolding."
+      "Attempt the deep direction erdos_lewin_infinite (or a concrete special case, e.g. a single (p,q)) to reduce/eliminate the last axiom — genuinely hard (Erdos-Lewin 1996, not in Mathlib).",
+      "Optionally prove a HasDensity statement for CoprimeNonRepresentable {2,3}, or remove the still-unused minSummandBound / CoprimeNonRepresentable scaffolding."
     ]
   },
   "tags": [
