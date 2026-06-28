@@ -25,6 +25,8 @@ References:
 -/
 
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Combinatorics.HalesJewett
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Finite.Basic
@@ -125,6 +127,130 @@ def Erdos1090Question (k : ℕ) : Prop :=
   k ≥ 3 → ∃ A : Finset Point, HasRamseyProperty A k
 
 /-
+## Part III½: Construction via Hales–Jewett (axiom elimination)
+
+The two results that follow (`graham_selfridge` for `k = 3`, and Hunter's
+`hunter_observation` for general `k`) were originally *axiomatized*.  They are
+now derived as honest theorems from Mathlib's Hales–Jewett theorem
+(`Combinatorics.Line.exists_mono_in_high_dimension`) via the following explicit
+"generic projection" of the combinatorial cube `[k]^ι` into ℝ²:
+
+* Hales–Jewett supplies a finite index type `ι` such that every 2-coloring of
+  `ι → Fin k` contains a monochromatic combinatorial line.
+* We embed `ι → Fin k` linearly into ℝ² by `φ p = ∑ j, (p j : ℝ) • v j`, where
+  `v j = !₂[1, w j]` has first coordinate `1`.  A combinatorial line through the
+  varying-coordinate set `V` maps to the affine line
+  `t ↦ φ(l 0) + t • dir`, with direction `dir = ∑_{j ∈ V} v j`.
+* The first coordinate of `dir` equals `|V| ≥ 1 > 0`, so `dir ≠ 0`: the image
+  points are genuinely collinear and pairwise distinct, giving `k` collinear
+  points of a single color.
+
+This eliminates both axioms; the file is `sorry`-free and axiom-free.
+-/
+
+/-- **Erdős #1090 — explicit construction.** For every `k ≥ 3` there is a finite
+set `A ⊂ ℝ²` with the Ramsey property: any 2-coloring of `A` contains `k`
+monochromatic collinear points.  Proved from the Hales–Jewett theorem by a
+generic linear projection of the combinatorial cube `[k]^ι` into the plane. -/
+theorem erdos1090_construction (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, HasRamseyProperty A k := by
+  classical
+  haveI : NeZero k := ⟨by omega⟩
+  -- Hales–Jewett: a finite index type `ι` controlling every 2-coloring of `[k]^ι`.
+  obtain ⟨ι, ιfin, hHJ⟩ :=
+    Combinatorics.Line.exists_mono_in_high_dimension (Fin k) Bool
+  haveI : Fintype ι := ιfin
+  -- Real embedding of coordinate values, and the per-coordinate image vectors.
+  set emb : Fin k → ℝ := fun a => (a.val : ℝ) with hemb
+  set w : ι → ℝ := fun j => ((Fintype.equivFin ι j).val : ℝ) with hw
+  set v : ι → Point := fun j => !₂[1, w j] with hv
+  -- Linear "generic projection" `φ : [k]^ι → ℝ²`.
+  set φ : (ι → Fin k) → Point := fun p => ∑ j, emb (p j) • v j with hφ
+  refine ⟨Finset.image φ Finset.univ, ?_⟩
+  intro c
+  -- Pull the geometric coloring back to a coloring of the combinatorial cube.
+  obtain ⟨l, col, hcol⟩ := hHJ (fun p => c (φ p))
+  have hcol' : ∀ a : Fin k, c (φ (l a)) = col := fun a => hcol a
+  -- Direction of the image line.
+  set dir : Point := ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) • v j with hdir
+  -- Per-coordinate affine identity for points of the combinatorial line.
+  have key : ∀ (a : Fin k) (j : ι),
+      emb (l a j) = emb (l 0 j) + emb a * (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    intro a j
+    by_cases h : l.idxFun j = none
+    · rw [l.apply_none a j h, l.apply_none 0 j h, if_pos h]
+      simp [hemb]
+    · obtain ⟨b, hb⟩ := Option.ne_none_iff_exists'.mp h
+      simp only [l.apply_some hb, if_neg h]
+      simp [hemb]
+  -- Image-line affine identity at the level of ℝ²-vectors.
+  have hline : ∀ a : Fin k, φ (l a) = φ (l 0) + emb a • dir := by
+    intro a
+    simp only [hφ, hdir, Finset.smul_sum]
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [key a j, add_smul, mul_smul]
+  -- The direction vector is nonzero: its first coordinate is `|varying| ≥ 1`.
+  have hofLp : (WithLp.ofLp dir) (0 : Fin 2)
+      = ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    simp only [hdir, hv, WithLp.ofLp_sum, WithLp.ofLp_smul,
+      Finset.sum_apply, Pi.smul_apply, Matrix.cons_val_zero, smul_eq_mul, mul_one]
+  have hdir_ne : dir ≠ 0 := by
+    intro h0
+    have hpos : (0 : ℝ) < (WithLp.ofLp dir) (0 : Fin 2) := by
+      rw [hofLp]
+      obtain ⟨j0, hj0⟩ := l.proper
+      calc (0 : ℝ) < 1 := one_pos
+        _ = (if l.idxFun j0 = none then (1 : ℝ) else 0) := (if_pos hj0).symm
+        _ ≤ ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) :=
+            Finset.single_le_sum
+              (f := fun j => if l.idxFun j = none then (1 : ℝ) else 0)
+              (fun j _ => by
+                show (0 : ℝ) ≤ if l.idxFun j = none then (1 : ℝ) else 0
+                split_ifs <;> norm_num)
+              (Finset.mem_univ j0)
+    rw [h0] at hpos
+    simp at hpos
+  -- Assemble the monochromatic `k`-collinear subset.
+  refine ⟨Finset.image (fun a : Fin k => φ (l a)) Finset.univ, ?_, ?_, ?_⟩
+  · -- `S ⊆ A`
+    intro x hx
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx ⊢
+    obtain ⟨a, ha⟩ := hx
+    exact ⟨l a, ha⟩
+  · -- `IsKCollinear S k`
+    refine ⟨?_, ?_⟩
+    · -- `S.card ≥ k`
+      have hinj : Function.Injective (fun a : Fin k => φ (l a)) := by
+        intro a a' haa'
+        simp only at haa'
+        rw [hline a, hline a'] at haa'
+        have hsm : emb a • dir = emb a' • dir := add_left_cancel haa'
+        have hee : emb a = emb a' := by
+          by_contra hne
+          have h2 : (emb a - emb a') • dir = 0 := by rw [sub_smul, hsm, sub_self]
+          rcases smul_eq_zero.mp h2 with h | h
+          · exact hne (sub_eq_zero.mp h)
+          · exact hdir_ne h
+        have : a.val = a'.val := by
+          have := hee; simp only [hemb] at this; exact Nat.cast_injective this
+        exact Fin.ext this
+      rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+    · -- All points lie on a common geometric line.
+      refine ⟨⟨φ (l 0), dir, hdir_ne⟩, ?_⟩
+      intro p hp
+      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp
+      obtain ⟨a, ha⟩ := hp
+      exact ⟨emb a, by rw [← ha, hline a]⟩
+  · -- Monochromatic.
+    intro p q hp hq
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp hq
+    obtain ⟨a, ha⟩ := hp
+    obtain ⟨a', ha'⟩ := hq
+    rw [← ha, ← ha', hcol' a, hcol' a']
+
+/-
 ## Part IV: Graham-Selfridge for k = 3
 -/
 
@@ -132,9 +258,12 @@ def Erdos1090Question (k : ℕ) : Prop :=
 **Graham-Selfridge Theorem:**
 There exists a finite set A ⊂ ℝ² such that any 2-coloring contains
 3 monochromatic collinear points.
+
+Formerly an axiom; now the `k = 3` instance of `erdos1090_construction`.
 -/
-axiom graham_selfridge :
-    ∃ A : Finset Point, HasRamseyProperty A 3
+theorem graham_selfridge :
+    ∃ A : Finset Point, HasRamseyProperty A 3 :=
+  erdos1090_construction 3 (by norm_num)
 
 /--
 **Explicit Construction Hint:**
@@ -180,9 +309,12 @@ to geometric lines (for sufficiently general projection).
 **Hunter's Observation:**
 For sufficiently large n, a generic projection of [k]ⁿ into ℝ²
 has the Ramsey property for k, by the Hales-Jewett theorem.
+
+Formerly an axiom; now an honest theorem, see `erdos1090_construction`.
 -/
-axiom hunter_observation (k : ℕ) (hk : k ≥ 3) :
-    ∃ A : Finset Point, HasRamseyProperty A k
+theorem hunter_observation (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, HasRamseyProperty A k :=
+  erdos1090_construction k hk
 
 /-
 ## Part VI: Main Result
