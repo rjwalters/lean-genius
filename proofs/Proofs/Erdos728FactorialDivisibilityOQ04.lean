@@ -88,14 +88,75 @@ theorem log_barrier_length {a b n : ℕ} (h : a ! * b ! ∣ n !) :
   have hb := digitsum_two_le_length b
   omega
 
+/-!
+## General-prime form of the barrier
+
+Erdős's argument uses only the prime `2` because Legendre's `(p−1)·v_p(m!) = m − s_p(m)`
+has the `(p−1)` factor equal to `1` there, so the valuation inequality reads off the
+digit-sum bound with no division.  But the *same* derivation goes through verbatim for
+**every** prime `p`: multiplying the valuation inequality `v_p(a!)+v_p(b!) ≤ v_p(n!)`
+by `(p−1)` and substituting Legendre gives
+
+  `(a − s_p a) + (b − s_p b) ≤ (n − s_p n)`,  i.e.  `a + b + s_p(n) ≤ n + s_p(a) + s_p(b)`.
+
+This is a strict sharpening of `log_barrier` in two ways: it adds the `+ s_p(n)` term on
+the small side (dropped in the classical statement), and it holds for an arbitrary prime,
+so one may take the prime giving the smallest right-hand side.  The prime `2` is the
+right choice for the *asymptotic* `O(log n)` bound because `s_2` is the slowest-growing
+digit sum, but the inequality itself is prime-uniform.
+-/
+
+/-- **Legendre's formula at a general prime `p`, additive `ℕ` form.**
+`m = (p − 1)·v_p(m!) + s_p(m)`, where `s_p m = (Nat.digits p m).sum`.  Rearranged from
+Mathlib's `sub_one_mul_padicValNat_factorial` to avoid truncated subtraction. -/
+theorem factorial_pval_add_digitsum (p m : ℕ) [Fact p.Prime] :
+    m = (p - 1) * padicValNat p (m !) + (Nat.digits p m).sum := by
+  have hleg := sub_one_mul_padicValNat_factorial (p := p) m
+  have hs : (Nat.digits p m).sum ≤ m := Nat.digit_sum_le p m
+  omega
+
+/-- **The logarithmic barrier at a general prime `p` (sharp form).**  If `a! · b! ∣ n!`
+then `a + b + s_p(n) ≤ n + s_p(a) + s_p(b)` for every prime `p`, where `s_p` is the
+base-`p` digit sum.  Only the single prime `p` is used.  Specializing to `p = 2` and
+dropping the `s_2(n)` term recovers `log_barrier`; keeping it gives a strictly stronger
+bound. -/
+theorem log_barrier_prime {a b n : ℕ} (p : ℕ) [Fact p.Prime] (h : a ! * b ! ∣ n !) :
+    a + b + (Nat.digits p n).sum ≤ n + (Nat.digits p a).sum + (Nat.digits p b).sum := by
+  have hmono : padicValNat p (a ! * b !) ≤ padicValNat p (n !) :=
+    (padicValNat_dvd_iff_le (Nat.factorial_ne_zero n)).mp
+      (dvd_trans (pow_padicValNat_dvd (p := p) (n := a ! * b !)) h)
+  rw [padicValNat.mul (Nat.factorial_ne_zero a) (Nat.factorial_ne_zero b)] at hmono
+  -- Scale the valuation inequality by `(p − 1)` so Legendre substitutes cleanly.
+  have hmul := Nat.mul_le_mul (le_refl (p - 1)) hmono
+  rw [Nat.mul_add] at hmul
+  have ha := factorial_pval_add_digitsum p a
+  have hb := factorial_pval_add_digitsum p b
+  have hn := factorial_pval_add_digitsum p n
+  -- omega atomizes the identical `(p−1)·v_p(·!)` subterms shared by hmul/ha/hb/hn.
+  omega
+
+/-- **The classical barrier is the `p = 2` specialization.**  Recovers `log_barrier`
+(`a + b ≤ n + s₂(a) + s₂(b)`) from the general-prime sharp form, discarding the
+`s₂(n)` slack. -/
+theorem log_barrier_of_prime {a b n : ℕ} (h : a ! * b ! ∣ n !) :
+    a + b ≤ n + (Nat.digits 2 a).sum + (Nat.digits 2 b).sum := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have := log_barrier_prime 2 h
+  omega
+
 #check @factorial_val_add_digitsum
+#check @factorial_pval_add_digitsum
 #check @log_barrier
+#check @log_barrier_prime
 #check @log_barrier_length
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no sorryAx, no Lean.ofReduceBool.
 #print axioms factorial_val_add_digitsum
+#print axioms factorial_pval_add_digitsum
 #print axioms log_barrier
+#print axioms log_barrier_prime
+#print axioms log_barrier_of_prime
 #print axioms digitsum_two_le_length
 #print axioms log_barrier_length
 
