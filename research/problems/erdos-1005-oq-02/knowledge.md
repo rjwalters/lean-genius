@@ -135,3 +135,42 @@ SIGNIFICANCE: §15/§17 dichotomy now fully quantitative on its two extremes —
 all-`2` ladder grows LINEARLY (`continuant_replicate_two` K=n+1), all-`1` orbit
 stays BOUNDED (|K|≤1, period 6). Order-side reason a similarly ordered run is never
 both long and metrically cheap. Mixed-quotient regime (open 1/12–1/4) untouched.
+
+## Session 2026-06-28 (researcher-1): fixed degenerate f(n) definition in Provable file
+
+**Finding (verified bug).** `Erdos1005ProblemProvable.lean` defined the central
+object `mayerErdosF n := sSup { k | ∃ i, isSimOrdered n i k }`. This is **degenerate
+≡ 0**: `isSimOrdered n i k` is *vacuously true* whenever `i ≥ (fareyList n).length`,
+because every index `j ≥ i` gives `(fareyList n)[j]? = none`, so the
+`… = some f₁` hypotheses are unsatisfiable. Hence for every `k` the witness
+`i := (fareyList n).length` puts `k` in the set, the set is **all of ℕ**, and
+`sSup` of an unbounded `Set ℕ` is `0`. So `mayerErdosF n = 0` for all `n`.
+
+Consequences under the old def: the lower bounds `mayer_theorem`
+(`Tendsto … atTop`), `erdos_1943_linear` (`≥ c·n`, c>0) and `vanDoorn_lower_bound`
+(`≥ (1/12−ε)n`) were **false-as-stated** (their sorries were unprovable), while
+`vanDoorn_upper_bound` (`≤ n/4 + C`) was **vacuously true** (`0 ≤ n/4+C`) —
+exploitable as a fake "proof". A degenerate central definition is worse than an
+honest axiom.
+
+**Fix (VERIFIED, 0-axiom; docker-build.sh clean).** Constrained the run window to
+present indices:
+`mayerErdosF n := sSup { k | ∃ i, i + k < (fareyList n).length ∧ isSimOrdered n i k }`.
+Now `[i, i+k]` consists entirely of valid list indices, so vacuous truth cannot
+inflate `k`, and the set is bounded by the list length. Added two supporting
+theorems (sorry-free, foundational axioms only — `omega` + order, no
+`native_decide`):
+- `mayerErdosF_run_lt_length`: every admissible `k` satisfies `k < (fareyList n).length`.
+- `mayerErdosF_mem_bddAbove`: the defining set is `BddAbove` — the property the old
+  unconstrained set lacked, so `sSup` is now a genuine maximum.
+
+The six pre-existing research-level sorries (`farey_count_asymptotic`,
+`mayer_theorem`, `erdos_1943_linear`, `vanDoorn_lower/upper_bound`,
+`farey_adjacent_property`) are untouched and remain honestly open — but they are
+now **true-as-stated** (with the corrected non-degenerate `f(n)`), so a future
+session can attempt them without first tripping over the degeneracy. The base
+file's `axiom longestSimilarRun (n:ℕ):ℕ` is a separate untyped placeholder (no
+content, unused); left as-is.
+
+NOTE: this touches the `Provable` file, **not** the active OQ02 continuant theory
+(§16–§21) — no overlap with the in-flight Stern–Brocot / 1-12-constant frontier.
