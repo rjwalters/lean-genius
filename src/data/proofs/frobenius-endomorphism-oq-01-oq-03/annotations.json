@@ -1,0 +1,79 @@
+[
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-module-header",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "title": "Module Header: Monomorphism and Automorphism",
+    "content": "Building on the parent Frobenius entry (the map $x \\mapsto x^p$ as a ring homomorphism), this file records the two structural facts that pin down the kernel and image of the Frobenius. On an **integral domain** it is injective — a *monomorphism* — because a domain is reduced and $x^p = y^p \\Rightarrow (x-y)^p = 0 \\Rightarrow x = y$. On a **finite field** the injective Frobenius is automatically surjective (a finite injective self-map is bijective), hence an *automorphism*: every element is a $p$-th power and the map packages as a ring equivalence $K \\simeq_{+*} K$. Fully verified: 0 sorries, 0 axioms, no `native_decide`."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-injective",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "title": "Frobenius is Injective on a Domain (Monomorphism)",
+    "content": "`frobenius_injective`: over an integral domain $R$ of characteristic $p$, the map $x \\mapsto x^p$ is injective. This is Mathlib's `frobenius_inj`, which asks only that $R$ be **reduced** (no nonzero nilpotents) — an integral domain qualifies. The mechanism: $x^p = y^p$ gives $(x-y)^p = x^p - y^p = 0$ (the freshman's dream), and in a reduced ring the only $p$-th root of $0$ is $0$, so $x = y$. The Frobenius is therefore a monomorphism."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-cancellation",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 43,
+      "endLine": 53
+    },
+    "title": "Cancellation and Trivial Kernel",
+    "content": "`pow_p_left_inj`: the injectivity as an explicit cancellation rule, $x^p = y^p \\iff x = y$ — the forward direction unfolds `frobenius_def` and applies `frobenius_injective`, the reverse is `rfl`.\n\n`pow_p_eq_zero_iff`: specializing $y = 0$ gives the trivial-kernel statement $x^p = 0 \\iff x = 0$, after rewriting $0^p = 0$ via `zero_pow (expChar_pos R p).ne'`. This 'no nonzero nilpotents' fact is the precise content that makes the Frobenius injective."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-bijective",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "title": "Frobenius is Bijective on a Finite Field (Automorphism)",
+    "content": "`frobenius_bijective`: over a finite field $K$ the Frobenius is bijective. A finite field is a finite integral domain, so the injective Frobenius (`frobenius_injective`) is automatically surjective by the pigeonhole principle `Finite.injective_iff_bijective`. Finiteness is exactly what upgrades the monomorphism to an *automorphism* — on an infinite domain (e.g. $\\mathbb{F}_p(t)$) the Frobenius is injective but not surjective."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-surjective",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "title": "Every Element is a p-th Power",
+    "content": "`exists_pow_p`: surjectivity restated — over a finite field, $\\forall y, \\exists x,\\ x^p = y$. The witness comes from `frobenius_bijective.surjective`, with `frobenius_def` unfolded. This is the defining property of a **perfect field**, proved here for the finite case as a corollary of finite injective $\\Rightarrow$ surjective."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-equiv",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "definition",
+    "range": {
+      "startLine": 76,
+      "endLine": 83
+    },
+    "title": "The Frobenius Ring Automorphism",
+    "content": "`frobeniusEquiv`: the Frobenius of a finite field packaged as a genuine ring **automorphism** $K \\simeq_{+*} K$, via `RingEquiv.ofBijective` applied to the bijective Frobenius. `frobeniusEquiv_apply` ($\\mathrm{frobeniusEquiv}\\,x = x^p$) and `coe_frobeniusEquiv` (the coercion equals the underlying ring hom) are both `rfl`. This is the generator of $\\mathrm{Gal}(K / \\mathbb{F}_p)$. It is `noncomputable` only because the inverse is extracted via choice — no extra axioms are introduced."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-03-concrete",
+    "proofId": "frobenius-endomorphism-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 87,
+      "endLine": 100
+    },
+    "title": "Concrete Checks over ZMod 5 and ZMod 7",
+    "content": "With `Fact (Nat.Prime 5)` / `Fact (Nat.Prime 7)` supplied, $\\mathbb{Z}/5$ and $\\mathbb{Z}/7$ are finite fields and `ExpChar` resolves from `CharP` plus the prime fact. `frobenius_bijective_zmod_five`: $x \\mapsto x^5$ is bijective on $\\mathbb{Z}/5$ (here the identity, by Fermat). `exists_pow_seven_zmod_seven`: every element of $\\mathbb{Z}/7$ is a $7$-th power. Both are direct instantiations of the general finite-field theorems."
+  }
+]
