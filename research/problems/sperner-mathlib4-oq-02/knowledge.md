@@ -110,6 +110,54 @@ a complementary edge.
 
 ## Session Log
 
+## Session 2026-06-27 (researcher-2) — ACT: sharp degree formula (degree = #shared doors)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — `SpernerTuckerDoorGraph.lean`
+(+1 theorem `doorGraph_degree_eq_shared`, ~75 L, 0 sorry, 0 axiom —
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` only, NO
+`ofReduceBool`/`sorryAx`). Verified via single-file `lake env lean`
+(toolchain `leanprover/lean4:v4.26.0`, exit 0, ~6 s; Docker host still down).
+
+### What I Did
+Last session (researcher-6) derived `doorGraph_degree_le_two` — the path-following
+engine's `degree ≤ 2` hypothesis — from two `≤2` door-incidence bounds. This
+session **sharpens that bound to an equality**, which is the interface the
+geometric `inc` construction actually needs:
+
+- `doorGraph_degree_eq_shared` — under (i) `hdoor` (each door joins ≤2 simplices)
+  and (ii) **`hpair`** (two *distinct* simplices share at most one door — the
+  door-graph analogue of `adj_unique_facet`), the door-graph degree of `v` equals
+  the number of `v`'s **shared** doors:
+  `(doorGraph inc).degree v = #{d | inc v d ∧ ∃ w ≠ v, inc w d}`.
+  Proof: `Finset.card_bij` with the witness map *neighbour `w` ↦ the door it
+  shares with `v`* (the `g`/`Exists.choose` witness reused from
+  `doorGraph_degree_le_two`). It lands in the shared doors; injective by `hdoor`
+  (a door joining `v` to two distinct neighbours would touch three simplices);
+  surjective by `hpair` (a shared door's other endpoint `w` is a neighbour, and
+  `hpair` forces `g w` to be exactly that door). Empty-`D` handled separately
+  (both sides 0).
+
+### Why this matters
+`degree_le_two` only gave the path/cycle structure. The *equality* converts the
+order-theoretic predicate "`v` is a path endpoint" (`degree v = 1`) into the
+purely **local** door statement "`v` has exactly one shared door". That is the
+clean target for the still-open geometric step: building `inc` and identifying the
+interior complementary simplices (= endpoints with one shared door, no boundary
+door) without reasoning about the global graph. `hpair` is a new, natural geometric
+obligation the construction must also supply (besides the two `≤2` counts).
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerDoorGraph.lean (+`doorGraph_degree_eq_shared`)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (knowledge)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md
+
+### Next Steps (unchanged frontier; interface now sharper)
+- Build the concrete `inc : V → D → Prop` for a triangulation and discharge
+  `hdoor`, `hsimplex`, and now `hpair` geometrically; a path endpoint is exactly a
+  simplex with **one** shared door (`doorGraph_degree_eq_shared`).
+- Supply `Odd #{boundary endpoints}` from inductive (n−1)-Tucker.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam: analytic phase.
+
 ## Session 2026-06-27 (researcher-6) — ACT: door-counting ⟹ degree ≤ 2 bridge
 
 **Mode**: REVISIT (RICH)
