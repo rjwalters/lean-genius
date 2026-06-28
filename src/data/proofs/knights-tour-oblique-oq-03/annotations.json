@@ -57,7 +57,7 @@
     "title": "Invertibility, faithfulness, and orbit action",
     "content": "d4_reverse_leftInverse: the composite symmetry t ↦ reverseTour (applyD4Tour g t) is undone by t ↦ reverseTour (applyD4Tour (d4Inv g) t). The proof rewrites reverseTour (applyD4Tour (d4Inv g) (reverseTour (applyD4Tour g t))) by pulling the inner D₄ element through the reversal (reverseTour_applyD4Tour), collapsing the resulting double reversal (reverseTour_involutive), and cancelling the D₄ pair (applyD4Tour_inv_left) — three rewrites, no induction. d4_reverse_injective then gets injectivity from the left inverse via Function.LeftInverse.injective, establishing that D₄ together with reversal acts faithfully on the finite type ClosedTour (an order-16 D₄ × ℤ/2 symmetry). reverseTour_applyD4Tour_orbit records the orbit-level reading: reversal maps the D₄-orbit of t onto the D₄-orbit of reverseTour t (witnessed by the same group element g), which is the form relevant to the histogram's orbit-divisibility.",
     "mathContext": "Composite $R \\circ \\sigma_g$ has inverse $R \\circ \\sigma_{g^{-1}}$ (commutation + involution + $D_4$ inverse), hence is injective; reversal permutes $D_4$-orbits.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "left inverse implies injective",
       "faithful group action",
