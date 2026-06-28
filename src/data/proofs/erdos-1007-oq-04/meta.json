@@ -2,7 +2,7 @@
   "id": "erdos-1007-oq-04",
   "title": "The Maximum Dimension of a Graph on n Vertices and m Edges: Monotonicity and the Edge-Count Bound",
   "slug": "erdos-1007-oq-04",
-  "description": "Toward the parent's fourth open question — the maximum graph (Euclidean) dimension as a function of both the vertex count n and the edge count m — this entry proves the two clean, fully-verified bounds available without the deep extremal geometry of House (2013): (1) subgraph monotonicity, so deleting edges never raises the dimension and the maximum over n-vertex graphs is attained by Kₙ (giving n−1 with the simplex bound); and (2) an edge-count upper bound, dim(G) ≤ 2·|E(G)|, proved via a vertex-support embedding and the handshake lemma — only non-isolated vertices cost dimension, so a sparse graph cannot have dimension much larger than its edge count regardless of how many isolated vertices it has.",
+  "description": "Toward the parent's fourth open question — the maximum graph (Euclidean) dimension as a function of both the vertex count n and the edge count m — this entry proves the two clean, fully-verified bounds available without the deep extremal geometry of House (2013): (1) subgraph monotonicity, so deleting edges never raises the dimension and the maximum over n-vertex graphs is attained by Kₙ (giving n−1 with the simplex bound); and (2) an edge-count upper bound, dim(G) ≤ 2·|E(G)|, proved via a vertex-support embedding and the handshake lemma — only non-isolated vertices cost dimension, so a sparse graph cannot have dimension much larger than its edge count regardless of how many isolated vertices it has. A new chromatic-number bound dim(G) ≤ χ(G) is added: the embedding engine's edge-separating index map is exactly a proper coloring, so an N-coloring embeds G in ℝᴺ; since χ(G) ≤ |V| this refines the universal bound (e.g. every bipartite graph embeds in ℝ²).",
   "meta": {
     "author": "Paul Erdős (problem #1007); formalized in Lean 4",
     "date": "2026",
@@ -20,15 +20,16 @@
     "badge": "verified",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 265,
-    "theoremCount": 6,
+    "lineCount": 314,
+    "theoremCount": 11,
     "definitionCount": 3,
     "originalContributions": [
       "hasUnitEmbedding_of_idx: a single reusable engine — placing vertex v at the scaled basis vector (1/√2)·e_{idx v} gives a unit-distance embedding in ℝᴺ whenever the index map idx separates the endpoints of every edge (distinct scaled basis vectors are at distance exactly 1).",
       "hasUnitEmbedding_restrict: subgraph monotonicity — any unit embedding of a graph restricts to every subgraph, so the dimension is monotone under edge addition and the maximum over a fixed vertex set is realized by the complete graph.",
       "hasUnitEmbedding_card: the universal bound dim(G) ≤ |V| for every loopless graph (index all vertices injectively); with dim(Kₙ)=n−1 from Erdos1007OQ01 this pins the maximum dimension on n vertices at exactly n−1.",
       "hasUnitEmbedding_of_cover: an edge-cover bound — if a finite set S contains both endpoints of every edge, the graph embeds in ℝ^{|S|}; isolated vertices are sent to the origin and cost nothing.",
-      "hasUnitEmbedding_two_mul_edges: the edge-count bound dim(G) ≤ 2·|E(G)| for finite simple graphs, via the handshake lemma (∑ degrees = 2m) bounding the support size, independent of |V| — the rigorous form of 'a sparse graph has low dimension'."
+      "hasUnitEmbedding_two_mul_edges: the edge-count bound dim(G) ≤ 2·|E(G)| for finite simple graphs, via the handshake lemma (∑ degrees = 2m) bounding the support size, independent of |V| — the rigorous form of 'a sparse graph has low dimension'.",
+      "hasUnitEmbedding_of_coloring / hasUnitEmbedding_of_chromaticNumber_le / hasUnitEmbedding_chromaticNumber: the chromatic-number bound dim(G) ≤ χ(G). The embedding engine's separating index map IS a proper coloring, so an N-coloring embeds G in ℝᴺ; with χ(G) ≤ |V| this strictly refines the universal bound, and for finite G the chromatic value is realized. Corollary hasUnitEmbedding_two_of_colorable_two: every bipartite (2-colorable) graph embeds in ℝ², regardless of vertex/edge count."
     ],
     "prerequisites": [
       "Unit-distance embeddings of graphs and the graph (Euclidean) dimension",
@@ -94,10 +95,18 @@
       "endLine": 240,
       "summary": "hasUnitEmbedding_card (dim ≤ |V|), hasUnitEmbedding_of_cover (dim ≤ |S| for an edge cover), hasUnitEmbedding_two_mul_edges (dim ≤ 2m via the handshake lemma).",
       "mathContext": "Dimension is bounded by the vertex count and, more finely, by twice the edge count."
+    },
+    {
+      "id": "chromatic-bound",
+      "title": "The Chromatic-Number Bound",
+      "startLine": 247,
+      "endLine": 289,
+      "mathContext": "A proper coloring is a separating index map, so the dimension is bounded by the chromatic number χ(G) ≤ |V|.",
+      "summary": "hasUnitEmbedding_of_coloring (an N-coloring embeds G in ℝᴺ), hasUnitEmbedding_of_chromaticNumber_le (dim ≤ χ when χ ≤ N), hasUnitEmbedding_chromaticNumber (finite G embeds in ℝ^{χ(G)}), hasUnitEmbedding_two_of_colorable_two (bipartite ⇒ dim ≤ 2)."
     }
   ],
   "conclusion": {
-    "summary": "For the dimension of a graph on n vertices and m edges, this entry proves subgraph monotonicity (so the maximum over n vertices is the complete graph's, n−1) and the edge-count bound dim(G) ≤ 2·|E(G)| (so a sparse graph has dimension tied to its edge count, not its vertex count).",
+    "summary": "For the dimension of a graph on n vertices and m edges, this entry proves subgraph monotonicity (so the maximum over n vertices is the complete graph's, n−1) and the edge-count bound dim(G) ≤ 2·|E(G)| (so a sparse graph has dimension tied to its edge count, not its vertex count). In addition, the dimension is bounded by the chromatic number: dim(G) ≤ χ(G) ≤ |V|, since a proper coloring is exactly a separating index map — so e.g. every bipartite graph embeds in ℝ².",
     "implications": "Monotonicity makes 'maximum dimension on n vertices = n−1' rigorous once Kₙ's simplex dimension is known, and shows adding edges can only increase dimension. The edge-count bound formalizes the intuition behind the open question's remark that 'sparse graphs may also have high dimension' by capping that dimension at 2m: high dimension forces many edges. Together they bracket the (n,m) extremal function from both sides.",
     "openQuestions": [
       "Determine the sharp maximum dimension as a function of (n, m), beyond the n−1 and 2m brackets — the heart of the open question.",
@@ -130,11 +139,17 @@
       "Finset"
     ],
     "namespace": "Erdos1007OQ04",
-    "lineCount": 265,
+    "lineCount": 314,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 11,
     "definitionCount": 3,
     "mainTheorems": [
+      {
+        "name": "hasUnitEmbedding_of_chromaticNumber_le",
+        "description": "Chromatic-number bound: if χ(G) ≤ N the graph embeds in ℝᴺ, so dim(G) ≤ χ(G)",
+        "leanType": "{V : Type*} → {N : ℕ} → (G : SimpleGraph V) → G.chromaticNumber ≤ N → hasUnitEmbedding V G.Adj N",
+        "type": "key"
+      },
       {
         "name": "hasUnitEmbedding_two_mul_edges",
         "type": "core",
@@ -181,6 +196,11 @@
       "type": "key",
       "description": "Universal bound dim ≤ |V| via distinct scaled basis vectors",
       "leanType": "(V : Type*) → [Fintype V] → [DecidableEq V] → (adj : V → V → Prop) → (∀ v, ¬ adj v v) → hasUnitEmbedding V adj (Fintype.card V)"
+    },
+    {
+      "name": "hasUnitEmbedding_of_chromaticNumber_le",
+      "statement": "If χ(G) ≤ N then G has a unit-distance embedding in ℝᴺ; the dimension is bounded by the chromatic number.",
+      "significance": "Refines dim ≤ |V| (since χ ≤ |V|) and dim ≤ 2m; e.g. bipartite graphs embed in ℝ²."
     }
   ],
   "references": [

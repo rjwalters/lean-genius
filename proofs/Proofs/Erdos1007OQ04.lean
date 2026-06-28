@@ -244,6 +244,50 @@ theorem hasUnitEmbedding_two_mul_edges {V : Type*} [Fintype V] [DecidableEq V]
       _ ≤ ∑ v, G.degree v := Finset.sum_le_sum_of_subset (Finset.subset_univ _)
   exact hasUnitEmbedding_mono hle hbase
 
+/-! ## The chromatic-number bound: dimension ≤ χ(G)
+
+The index-embedding engine `hasUnitEmbedding_of_idx` asks exactly for an index map
+that sends adjacent vertices to *distinct* coordinates — i.e. a **proper coloring**.
+So a proper `N`-coloring embeds the graph in `ℝ^N`, and the dimension is bounded by
+the chromatic number `χ(G)`. Since `χ(G) ≤ |V|` (and `χ(G)` can be far smaller — `2`
+for any bipartite graph), this strictly refines the universal bound `dim ≤ |V|`:
+a graph of low chromatic number has low dimension regardless of how many vertices
+*or edges* it has. -/
+
+/-- A proper `Fin N`-coloring is precisely a separating index map, so it yields a
+    unit-distance embedding in `ℝ^N`. -/
+theorem hasUnitEmbedding_of_coloring {V : Type*} {N : ℕ}
+    (G : SimpleGraph V) (C : G.Coloring (Fin N)) :
+    hasUnitEmbedding V G.Adj N :=
+  hasUnitEmbedding_of_idx (fun v => C v) (fun _ _ huv => C.valid huv)
+
+/-- If `G` is `N`-colorable then it embeds as unit distances in `ℝ^N`. -/
+theorem hasUnitEmbedding_of_colorable {V : Type*} {N : ℕ}
+    (G : SimpleGraph V) (h : G.Colorable N) :
+    hasUnitEmbedding V G.Adj N :=
+  h.elim (hasUnitEmbedding_of_coloring G)
+
+/-- **Chromatic-number bound.** Whenever the chromatic number satisfies `χ(G) ≤ N`,
+    the graph embeds in `ℝ^N`. Hence the dimension is at most the chromatic number. -/
+theorem hasUnitEmbedding_of_chromaticNumber_le {V : Type*} {N : ℕ}
+    (G : SimpleGraph V) (h : G.chromaticNumber ≤ N) :
+    hasUnitEmbedding V G.Adj N :=
+  hasUnitEmbedding_of_colorable G (G.chromaticNumber_le_iff_colorable.mp h)
+
+/-- For a finite graph the chromatic number is realized: `G` embeds in `ℝ^{χ(G)}`. -/
+theorem hasUnitEmbedding_chromaticNumber {V : Type*} [Finite V] (G : SimpleGraph V) :
+    hasUnitEmbedding V G.Adj (ENat.toNat G.chromaticNumber) :=
+  hasUnitEmbedding_of_colorable G G.colorable_chromaticNumber_of_fintype
+
+/-- **Bipartite graphs embed in the plane.** Any `2`-colorable graph (in particular
+    every bipartite graph) has a unit-distance embedding in `ℝ²` — its dimension is at
+    most `2`, however large its vertex or edge count. This is the chromatic bound at its
+    sharpest contrast with the edge-count bound `dim ≤ 2m`. -/
+theorem hasUnitEmbedding_two_of_colorable_two {V : Type*}
+    (G : SimpleGraph V) (h : G.Colorable 2) :
+    hasUnitEmbedding V G.Adj 2 :=
+  hasUnitEmbedding_of_colorable G h
+
 end Erdos1007OQ04
 
 /-!
@@ -260,6 +304,11 @@ For the dimension of a graph on `n` vertices and `m` edges:
   `dim ≤ 2m`** — only the non-isolated vertices matter, so a sparse graph has low dimension
   irrespective of `n`. This is the rigorous form of "sparse graphs cannot have *arbitrarily*
   high dimension": their dimension is tied to the edge count, not the vertex count.
+- `hasUnitEmbedding_of_coloring` / `hasUnitEmbedding_of_chromaticNumber_le` /
+  `hasUnitEmbedding_chromaticNumber`: **chromatic-number bound `dim ≤ χ(G)`** — the
+  separating index map of the embedding engine *is* a proper coloring. Since `χ(G) ≤ |V|`
+  (and is often far smaller), this refines `dim ≤ |V|`; e.g. every bipartite graph embeds
+  in `ℝ²` (`hasUnitEmbedding_two_of_colorable_two`), no matter how many vertices or edges.
 
 **Status**: 0 sorries, 0 `axiom` declarations, no `native_decide`.
 -/
