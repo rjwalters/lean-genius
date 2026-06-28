@@ -1,0 +1,124 @@
+{
+  "slug": "inverse-galois-oq-06-oq-02",
+  "title": "mod-7 Irreducible Factorization of q (the Dedekind input)",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "q \\bmod 7 = (X-5)(X-6)(X^3+6X^2+4X+1) \\text{ into distinct irreducibles of degrees } (1,1,3), \\text{ squarefree}",
+    "plain": "Verify, with no axioms, the algebraic input that Dedekind's theorem consumes at p=7 to force 3 | |Gal(q)|: namely that q reduces mod 7 to a product of distinct irreducible factors of degrees (1,1,3) and that this product is squarefree (so 7 is unramified). q = X^5 - 5X^4 + 10X^3 - 10X^2 + 25X - 5.",
+    "whyMatters": [
+      "The A5-realizability entry (InverseGaloisA5.lean) is fully proved except the single axiom three_dvd_gal_card; the mod-7 Dedekind route is the intended elimination.",
+      "The sibling track established only the factorization shape and that the cubic has no roots; it did not prove the cubic irreducible or the reduction squarefree.",
+      "Isolating and verifying the algebraic input cleanly separates what is machine-checked (this slug) from the remaining Mathlib gap (Dedekind's theorem itself)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "cubicMod7 (X^3+6X^2+4X+1) is irreducible over F_7 (degree 3 with no roots).",
+      "The two linear factors X-5, X-6 are irreducible and pairwise non-associated to each other and to the cubic (distinct primes).",
+      "q mod 7 = (X-5)(X-6)*cubicMod7 is squarefree, so 7 does not divide disc(q) and 7 is unramified.",
+      "Packaged statement q_mod7_factor_type bundles the full (1,1,3) distinct-irreducible-plus-squarefree Dedekind input."
+    ],
+    "open": [
+      "Dedekind's theorem itself (factor type (1,1,3) => Frobenius 3-cycle => 3 | |Gal|) remains a Mathlib 4.26 gap.",
+      "Eliminating axiom three_dvd_gal_card still requires the sibling Frobenius bridge or an upstream Dedekind formalization."
+    ],
+    "goal": "Provide a verified, 0-axiom, 0-sorry algebraic input to the mod-7 Dedekind route without overclaiming that the axiom is eliminated."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-27",
+    "iteration": 1,
+    "focus": "Created Proofs/InverseGaloisOQ06OQ02.lean (0-axiom, 0-sorry): cubicMod7 irreducible + linear factors irreducible + pairwise non-associated + squarefree product => packaged Dedekind input q_mod7_factor_type. Complementary to sibling Frobenius track (inverse-galois-a5-oq-01); no overlap.",
+    "blockers": [
+      "Dedekind's theorem is not in Mathlib 4.26; the (1,1,3) => 3-cycle => 3 | |Gal| implication stays axiomatized (sibling track)."
+    ],
+    "nextAction": "When Dedekind's theorem (or the sibling Frobenius bridge) lands, q_mod7_factor_type plugs in to discharge three_dvd_gal_card.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT: shipped 0-axiom file upgrading the sibling's no-roots fact to full irreducibility + squarefreeness, packaged as the Dedekind input for the mod-7 route.",
+    "builtItems": [
+      "cubicMod7_irreducible via irreducible_of_degree_le_three_of_not_isRoot",
+      "pairwise non-association of the three factors (eq_of_monic_of_associated + degree bounds)",
+      "q_mod7_squarefree via squarefree_mul_iff and pairwise coprimality",
+      "q_mod7_factor_type packaged Dedekind input"
+    ],
+    "insights": [
+      "A degree-3 poly over a field with no root is irreducible: irreducible_of_degree_le_three_of_not_isRoot.",
+      "squarefree_mul_iff is phrased with IsRelPrime (not IsCoprime); convert via IsCoprime.isRelPrime.",
+      "Linear-vs-cubic coprimality: Irreducible.isRelPrime_iff_not_dvd + dvd_iff_isRoot reduces to eval a cubic != 0.",
+      "isCoprime_of_irreducible_of_not_associated does not exist in Mathlib 4.26."
+    ],
+    "mathlibGaps": [
+      "Dedekind's theorem: mod-p factorization type => Frobenius cycle type for number fields (not in Mathlib 4.26).",
+      "Frobenius element / inertia degree machinery for number field extensions."
+    ],
+    "nextSteps": [
+      "Plug q_mod7_factor_type into Dedekind's theorem once available to eliminate three_dvd_gal_card.",
+      "Optionally corroborate at a second unramified prime (e.g. p=11) for an independent (1,1,3) witness."
+    ],
+    "markdown": "See research/problems/inverse-galois-oq-06-oq-02/knowledge.md"
+  },
+  "tags": [
+    "galois-theory",
+    "algebraic-number-theory",
+    "inverse-galois-problem",
+    "dedekind-theorem"
+  ],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-a5",
+    "inverse-galois-a5-oq-01",
+    "inverse-galois-oq-06",
+    "inverse-galois-oq-06-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-27",
+  "lastUpdate": "2026-06-27",
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisOQ06OQ02.lean",
+      "filename": "InverseGaloisOQ06OQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ06OQ02.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisOQ06OQ01.lean",
+      "filename": "InverseGaloisOQ06OQ01.lean",
+      "lineCount": 256,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ06OQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5.lean",
+      "filename": "InverseGaloisA5.lean",
+      "lineCount": 2068,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    }
+  ]
+}
