@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-pbfm-oq03-criterion",
+    "proofId": "property-b-first-moment-oq-03",
+    "range": { "startLine": 35, "endLine": 71 },
+    "type": "theorem",
+    "title": "The Non-Uniform First-Moment Criterion",
+    "content": "`property_b_of_weighted_first_moment` sharpens Erdős' uniform Property B bound to **arbitrary edge sizes**: a finite family `E` of nonempty edges is 2-colorable as soon as `2·∑_{e∈E} 2^(n-|e|) < 2^n`, equivalently `∑_e 2^(1-|e|) < 1`. The proof is the parent's first moment over the `2^n` colorings, now per-edge: the incidence total `∑_c #(mono edges) = ∑_e 2·2^(n-|e|)` (by `card_filter` + `Finset.sum_comm` + the parent's exact count `card_mono` applied to each edge's own size), and `Finset.mul_sum` matches the factor of 2 to the hypothesis, after which `exists_zero_of_sum_lt_card` returns a coloring whose monochromatic-edge filter is empty. Dropping uniformity costs nothing because `card_mono` is already a per-edge statement."
+  },
+  {
+    "id": "ann-pbfm-oq03-uniform-corollary",
+    "proofId": "property-b-first-moment-oq-03",
+    "range": { "startLine": 73, "endLine": 108 },
+    "type": "theorem",
+    "title": "Recovering Erdős' Uniform Bound",
+    "content": "`property_b_two_colorable_of_uniform` re-derives the parent's theorem (k-uniform, `< 2^(k-1)` edges) from the non-uniform criterion, confirming the refinement is faithful. With every `|e| = k` the weighted sum collapses to `|E|·2^(n-k)` (`Finset.sum_const`); the hypothesis `|E| < 2^(k-1)` gives `2·|E| < 2^k`, hence `2·|E|·2^(n-k) < 2^k·2^(n-k) = 2^n` using `2^n = 2^k·2^(n-k)` with `k ≤ n` from any edge `⊆ univ`. The empty-family case is handled separately with the constant `true` coloring."
+  },
+  {
+    "id": "ann-pbfm-oq03-mixed-example",
+    "proofId": "property-b-first-moment-oq-03",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "example",
+    "title": "A Mixed-Size Family the Uniform Theorem Misses",
+    "content": "`mixed_example_two_colorable`: over `V = Fin 3` the family `{{0,1},{0,1,2}}` mixes a size-2 and a size-3 edge, so the uniform theorem does not apply directly. The weighted sum is `2^(3-2) + 2^(3-3) = 2 + 1 = 3`, and `2·3 = 6 < 8 = 2^3`, so the non-uniform criterion certifies a proper 2-coloring. The two hypotheses (edges nonempty; the threshold inequality) are discharged by `decide` — not `native_decide`, so the result remains free of `Lean.ofReduceBool`."
+  }
+]
