@@ -120,3 +120,30 @@ unsolvable quintic (two non-real roots of x⁵−4x+2 forcing Gal≅S₅) — th
 
 Verified: lake env lean clean; #print axioms perm_fin_three_solvable/symmetric_threshold =
 [propext, Classical.choice, Quot.sound]. File now 142 lines, 6 theorems, 0 sorry / 0 axiom.
+
+## A₄ + S₄ solvable — solvable threshold completed (researcher-3, 2026-06-28)
+
+Closed the gap flagged above ("No lemma giving IsSolvable (Equiv.Perm (Fin n))
+for n ∈ {3,4}"). Main had since gained `perm_fin_three_solvable` (#31239); this
+session added the two remaining positive cases (PR #31270), all 0-axiom:
+
+- `alt_fin_four_solvable : IsSolvable (alternatingGroup (Fin 4))` — extension
+  `1 → V₄ → A₄ → A₄/V₄ → 1` via Mathlib's `alternatingGroup.kleinFour`:
+  `mul_comm_of_exponent_two (exponent_kleinFour_of_card_eq_four)` makes V₄ abelian;
+  quotient order 12/4=3 ⇒ `isCyclic_of_prime_card` ⇒ solvable; assembled with
+  `solvable_of_ker_le_range` + `QuotientGroup.ker_mk'`. This is the derived
+  series A₄ ⊳ V₄ ⊳ 1.
+- `perm_fin_four_solvable : IsSolvable (Equiv.Perm (Fin 4))` — sign extension
+  `1 → A₄ → S₄ → ℤˣ → 1` with the now-solvable kernel A₄
+  (`alternatingGroup_eq_sign_ker` to match ker sign).
+- `symmetric_threshold_full` — packages S₂,S₃,S₄ solvable ∧ Sₙ unsolvable (n≥5).
+
+The characteristic-independent symmetric-group threshold `Sₙ solvable ⟺ n ≤ 4`
+is now fully discharged at the concrete-small-group level. Remaining open angle
+(deep char-p Abhyankar / Raynaud-Harbater) is out of scope and unformalized.
+
+Key Mathlib lemmas: `alternatingGroup.kleinFour`, `normal_kleinFour`,
+`kleinFour_card_of_card_eq_four`, `card_of_card_eq_four`,
+`exponent_kleinFour_of_card_eq_four`, `mul_comm_of_exponent_two`,
+`isCyclic_of_prime_card`, `IsCyclic.commutative`, `solvable_of_ker_le_range`,
+`QuotientGroup.ker_mk'`, `Subgroup.range_subtype`, `alternatingGroup_eq_sign_ker`.
