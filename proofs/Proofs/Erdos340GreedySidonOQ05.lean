@@ -567,6 +567,78 @@ theorem IsBh.exists_insert {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA : IsBh 
   have hpos : A.sup id ≤ h * A.sup id := Nat.le_mul_of_pos_left _ hh
   omega
 
+/-! ## Part 5b: The structure of *forbidden* values (toward the lower bound)
+
+`IsBh.insert_of_large` shows every `m > h·(max A)` extends a `B_h` set; the lower
+bound hinges on the converse direction — how *many* of the small values `m ≤ h·(max A)`
+are **forbidden** (their insertion breaks `B_h`).  The greedy algorithm reaches size
+`k` inside `{1,…,N}` as long as the forbidden set stays smaller than `N`, so the open
+`N^{1/(2h-1)}` rate is exactly a *counting bound on the forbidden values*.
+
+The lemma below is the first rigorous step of that count: it pins down the algebraic
+shape every forbidden value must take.  If inserting `m` breaks `B_h`, then `m` solves
+a **difference equation** `d · m + sA.sum = tA.sum` for some multiplicity gap
+`1 ≤ d ≤ h` and two short multisets `sA, tA` (sizes `≤ h`) drawn from `A`.  Since the
+pair `(sA, tA)` determines `d · m`, hence `m`, the forbidden values are the image of a
+finite index set of `(d, sA, tA)` triples — turning the open lower bound into a pure
+counting problem about multisets over `A`. -/
+
+/-- **Forbidden values solve a difference equation.**  If `A` is `B_h` and `insert m A`
+fails to be `B_h`, then there is a nonzero multiplicity gap `d` (`1 ≤ d ≤ h`) and two
+multisets `sA, tA` drawn from `A`, each of size at most `h`, with
+`d · m + sA.sum = tA.sum`.
+
+*Proof.*  A failure of injectivity gives two distinct `h`-multisets `s ≠ t` over
+`insert m A` with equal sums.  Split each by its multiplicity of `m`
+(`bh_split`): `s = j·{m} + sA`, `t = k·{m} + tA` with `sA, tA ⊆ A`.  Equal sums read
+`j·m + sA.sum = k·m + tA.sum`.  If `j = k` the `A`-parts have equal sums and equal size
+`h - j`, so the `B_{h-j}` property (downward closure) forces `sA = tA` and hence
+`s = t`, a contradiction.  Thus `j ≠ k`; taking `d = |j - k|` and orienting the
+equation so the larger multiplicity is on the right yields `d · m + sA.sum = tA.sum`. ∎ -/
+theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
+    (hA : IsBh h A) (hbad : ¬ IsBh h (insert m A)) :
+    ∃ (d : ℕ) (sA tA : Multiset ℕ),
+      1 ≤ d ∧ d ≤ h ∧
+      (∀ x ∈ sA, x ∈ A) ∧ (∀ x ∈ tA, x ∈ A) ∧
+      Multiset.card sA ≤ h ∧ Multiset.card tA ≤ h ∧
+      d * m + sA.sum = tA.sum := by
+  classical
+  -- A failure of `B_h` injectivity yields a colliding pair `s ≠ t`.
+  unfold IsBh Set.InjOn at hbad
+  push_neg at hbad
+  obtain ⟨s, hs, t, ht, hsum, hne⟩ := hbad
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  have hsM : ∀ x ∈ (s : Multiset ℕ), x ∈ insert m A := hs
+  have htM : ∀ x ∈ (t : Multiset ℕ), x ∈ insert m A := ht
+  have hsum0 : (s : Multiset ℕ).sum = (t : Multiset ℕ).sum := hsum
+  obtain ⟨j, sA, hsplitS, hmemS, hcardS, hjh, hsumS⟩ := bh_split hsM
+  obtain ⟨k, tA, hsplitT, hmemT, hcardT, hkh, hsumT⟩ := bh_split htM
+  rw [hsumS, hsumT] at hsum0  -- `j * m + sA.sum = k * m + tA.sum`
+  rcases lt_trichotomy j k with hlt | heq | hgt
+  · -- `j < k`: gap `d = k - j`, with the roles of `sA`, `tA` swapped.
+    refine ⟨k - j, tA, sA, by omega, by omega, hmemT, hmemS, by omega, by omega, ?_⟩
+    have hkm : (k - j) * m + j * m = k * m := by rw [← Nat.add_mul]; congr 1; omega
+    omega
+  · -- `j = k`: the `A`-parts coincide by `B_{h-j}`, forcing `s = t` — impossible.
+    exfalso
+    subst heq
+    have hsumAB : sA.sum = tA.sum := by omega
+    have hbh : IsBh (h - j) A := hA.of_le (Nat.sub_le h j)
+    have memS : (⟨sA, hcardS⟩ : Sym ℕ (h - j)) ∈ A.sym (h - j) :=
+      Finset.mem_sym_iff.mpr hmemS
+    have memT : (⟨tA, hcardT⟩ : Sym ℕ (h - j)) ∈ A.sym (h - j) :=
+      Finset.mem_sym_iff.mpr hmemT
+    have hsymeq : (⟨sA, hcardS⟩ : Sym ℕ (h - j)) = ⟨tA, hcardT⟩ :=
+      hbh (Finset.mem_coe.mpr memS) (Finset.mem_coe.mpr memT) hsumAB
+    have hAB : sA = tA := congrArg Subtype.val hsymeq
+    apply hne
+    apply Sym.coe_injective
+    rw [hsplitS, hsplitT, hAB]
+  · -- `j > k`: gap `d = j - k`, equation as stated.
+    refine ⟨j - k, sA, tA, by omega, by omega, hmemS, hmemT, by omega, by omega, ?_⟩
+    have hjm : (j - k) * m + k * m = j * m := by rw [← Nat.add_mul]; congr 1; omega
+    omega
+
 /-! ## Part 6: An explicit greedy `B_h` family
 
 Iterating `IsBh.exists_insert` realises the qualitative consequence of the extension
