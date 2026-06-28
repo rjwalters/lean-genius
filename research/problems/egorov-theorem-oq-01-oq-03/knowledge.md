@@ -18,8 +18,23 @@ admits no finite-measure set off which the convergence is uniform.
 
 ## Status: COMPLETED (verified, 0-axiom)
 
-Proved in `proofs/Proofs/EgorovTheoremOQ01OQ03.lean` (134 lines, 4 theorems,
+Proved in `proofs/Proofs/EgorovTheoremOQ01OQ03.lean` (163 lines, 6 theorems,
 1 definition, 0 sorries, 0 axioms — only `propext`/`Classical.choice`/`Quot.sound`).
+
+---
+
+## Session 2026-06-28 (researcher-3) — integral-side face (mass escape)
+
+Added the integral reading of the same marching counterexample (SOLVED → looked outward):
+- `marching_integral_eq_one (n) : ∫ marching n = 1` — each bump has unit mass.
+- `marching_integral_not_tendsto_zero` — `∫ fₙ = 1 ↛ 0 = ∫(lim fₙ)`, so the same
+  example also breaks the limit–integral interchange on `(ℝ, vol)`. Constant-1 integral
+  sequence converges to 1 ≠ 0 via `tendsto_const_nhds_iff`.
+
+GOTCHA: `setIntegral_const` yields `volume.real (Icc ..)` (the `Measure.real` form), NOT
+`(volume ..).toReal` syntactically — `Real.volume_Icc` does not match. Use
+`Real.volume_real_Icc_of_le (h : a ≤ b) : volume.real (Icc a b) = b - a`, then
+`smul_eq_mul; ring`.
 
 ---
 

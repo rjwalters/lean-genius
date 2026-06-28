@@ -131,4 +131,33 @@ theorem marching_not_tendstoUniformlyOn_univ :
     (s := (∅ : Set ℝ)) (by simp)
   rwa [Set.compl_empty] at h
 
+/-! ## The same counterexample, seen through integrals: mass escaping to infinity
+
+The marching indicators converge to `0` at every point, yet each one carries a *fixed
+unit of mass* that simply slides off to `+∞`. This is the integral-side face of the very
+same infinite-measure pathology that defeats Egorov: on a finite-measure space Egorov
+would force uniform convergence off a small set and hence control the integrals, but here
+the integrals stay pinned at `1` while the pointwise limit is `0`. So `(ℝ, vol)` also
+witnesses the failure of the limit–integral interchange `lim ∫ fₙ ≠ ∫ lim fₙ`. -/
+
+/-- Each marching indicator integrates to exactly `1`: it is the indicator of a unit-length
+interval, whose Lebesgue measure is `1`. The mass is conserved for every `n` even as the
+bump marches off to `+∞`. -/
+theorem marching_integral_eq_one (n : ℕ) :
+    ∫ x, marching n x ∂volume = 1 := by
+  have hmar : marching n = Set.indicator (Set.Icc (n : ℝ) (n + 1)) (fun _ => (1 : ℝ)) := rfl
+  rw [hmar, integral_indicator measurableSet_Icc, setIntegral_const,
+    Real.volume_real_Icc_of_le (by linarith : (n : ℝ) ≤ (n : ℝ) + 1), smul_eq_mul]
+  ring
+
+/-- **Mass escapes to infinity.** Although `fₙ → 0` everywhere (`marching_tendsto_zero`), the
+integrals `∫ fₙ = 1` do *not* tend to `0 = ∫ (lim fₙ)`: the same marching counterexample that
+breaks Egorov's finite-measure hypothesis also breaks the limit–integral interchange on
+`(ℝ, vol)`. The integral sequence is constantly `1`, so it converges to `1 ≠ 0`. -/
+theorem marching_integral_not_tendsto_zero :
+    ¬ Tendsto (fun n => ∫ x, marching n x ∂volume) atTop (𝓝 (0 : ℝ)) := by
+  simp only [marching_integral_eq_one]
+  rw [tendsto_const_nhds_iff]
+  norm_num
+
 end EgorovTheoremOQ01OQ03
