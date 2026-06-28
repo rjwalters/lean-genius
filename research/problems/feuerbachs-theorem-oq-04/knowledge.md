@@ -1,5 +1,44 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-06-28 (researcher-4): point separation — sdist is a genuine metric [BUILD]
+
+**Mode**: ACT (CONTINUE). The metric foundations + spherical-circle/tangency layers were
+already verified on `main`; the one property still missing for `sdist` to be a genuine
+metric (besides the hard spherical triangle inequality) was **point separation** — that
+`sdist P Q = 0` forces `P = Q`. `main` only had the trivial forward direction
+(`sdist_eq_zero_of_eq`). **Outcome**: PROGRESS — added 3 verified declarations
+(~30 L). **Docker build VERIFIED** (`docker-build.sh Proofs.FeuerbachsTheoremOQ04`,
+`✔ [7743/7743]`); **0-sorry, 0-axiom**, no native_decide.
+
+### What was delivered (appended after `sdist_comm` in `FeuerbachsTheoremOQ04.lean`)
+- **`scos_eq_one_iff`** (algebraic core) : for unit `P,Q`, `scos P Q = 1 ↔ P = Q`. Forward
+  via `chord_sq` — `‖P−Q‖² = 2 − 2·scos P Q = 0`, so `‖P−Q‖ = 0` (norm nonneg + `nlinarith`)
+  and `sub_eq_zero`; backward is `scos_self`.
+- **`sdist_eq_zero_iff`** (headline) : for unit `P,Q`, `sdist P Q = 0 ↔ P = Q`. Uses
+  `Real.arccos_eq_zero` (`arccos x = 0 ↔ 1 ≤ x`); for unit vectors `scos P Q ≤ 1`, so
+  `1 ≤ scos P Q` forces `scos P Q = 1`, then `scos_eq_one_iff`.
+- **`sdist_pos`** : distinct model points are at strictly positive spherical distance
+  (`lt_of_le_of_ne` on `sdist_nonneg` + `sdist_eq_zero_iff`).
+
+Together with `sdist_self`, `sdist_nonneg`, and `sdist_comm` (all already on `main`), this
+makes `sdist` **separate points** — so `(Sⁿ, sdist)` is a genuine metric on the spherical
+model *modulo* the spherical triangle inequality (the only remaining axiom of a metric).
+
+GOTCHA: `Real.arccos_eq_zero` is stated as `arccos x = 0 ↔ 1 ≤ x` (a one-sided bound, not
+`x = 1`); the `scos P Q ≤ 1` bound is what upgrades `1 ≤ scos` to the equality. For
+`‖P−Q‖² = 0 ⇒ ‖P−Q‖ = 0`, `le_antisymm` of a `nlinarith`-proved `≤ 0` with `norm_nonneg`
+is robust (avoids guessing the exact `pow_eq_zero_iff` argument form).
+
+### Next steps (unchanged direction)
+1. **Spherical triangle inequality** `sdist P R ≤ sdist P Q + sdist Q R` would complete
+   `(Sⁿ, sdist)` as a `MetricSpace`. This is the genuinely hard analytic step (arccos
+   subadditivity / spherical law of cosines); check `InnerProductGeometry.angle` lemmas
+   in Mathlib first — for unit vectors `sdist = InnerProductGeometry.angle`.
+2. **Tangent-point existence** for tangent circles (construction-heavy slerp midpoint).
+3. Spherical incircle + nine-point circle; attempt the spherical Feuerbach tangency.
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
 ## Session 2026-06-28 (researcher-1): spherical circles + tangency layer [BUILD]
 
 **Mode**: ACT (CONTINUE — executed researcher-2's next-steps 1 & 2: "define spherical

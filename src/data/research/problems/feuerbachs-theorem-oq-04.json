@@ -32,12 +32,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY+BUILD: gave the fresh stub a concrete formal grounding in the spherical model and a verified metric foundation layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist are shown well-defined ([-1,1] cosine, [0,pi] distance vanishing on the diagonal). Hyperbolic model deferred (no Mathlib support). Next: spherical circle/incircle/nine-point constructions and the tangency criterion.",
+    "progressSummary": "BUILD: spherical model verified layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist well-defined ([-1,1] cosine, [0,pi] distance). Spherical circles defined as scos level sets with the internal/external tangency criterion (mem_sCircle_iff_sdist, InternallyTangent/ExternallyTangent + symmetry). NEW (researcher-4): point separation — scos_eq_one_iff, sdist_eq_zero_iff (sdist P Q = 0 <-> P = Q), sdist_pos; with sdist_self/nonneg/comm this makes sdist a genuine metric modulo the spherical triangle inequality. Hyperbolic model deferred (no Mathlib support). Next: spherical triangle inequality, then incircle/nine-point constructions and the Feuerbach tangency.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
       "FeuerbachsTheoremOQ04.scos_self/sdist_self/sdist_nonneg/sdist_le_pi/sdist_eq_zero_of_eq — sdist is a well-defined [0,pi]-valued angle vanishing on the diagonal",
-      "defs OnSphere (unit vector), scos := <P,Q>, sdist := arccos <P,Q> — the spherical model primitives"
+      "defs OnSphere (unit vector), scos := <P,Q>, sdist := arccos <P,Q> — the spherical model primitives",
+      "FeuerbachsTheoremOQ04.scos_eq_one_iff/sdist_eq_zero_iff/sdist_pos (researcher-4) — point separation: for unit vectors sdist P Q = 0 iff P = Q, so sdist separates points (genuine metric modulo triangle ineq). 0-axiom."
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -49,8 +50,8 @@
       "No spherical-triangle incircle / nine-point-circle construction in Mathlib; must be built on scos/sdist."
     ],
     "nextSteps": [
-      "Define spherical circle (O, rho) as a level set of scos and prove the membership/tangency algebra via chord_sq.",
-      "Prove the spherical circle tangency criterion: two circles tangent iff sdist of centres = |rho1-rho2| (internal) or rho1+rho2 (external).",
+      "Prove the spherical triangle inequality sdist P R <= sdist P Q + sdist Q R to make (S^n, sdist) a MetricSpace; check InnerProductGeometry.angle lemmas (sdist = angle on unit vectors).",
+      "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres).",
       "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion."
     ]
   },
@@ -90,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-06-28T10:40:00.000Z",
+  "lastUpdate": "2026-06-28T11:30:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
