@@ -35,7 +35,30 @@ remains a Mathlib gap owned by the sibling Frobenius track.
 - Complementary to `inverse-galois-a5-oq-01` (Frobenius bridge) — no overlap:
   this slug owns the algebraic factorization, the sibling owns the group theory.
 
+## Iteration 2 — second unramified prime (p = 11)
+
+Added `Proofs/InverseGaloisOQ06OQ02P11.lean` (0-axiom, 0-sorry), an independent
+corroborating witness at `p = 11`:
+
+  `q ≡ (X - 4)(X - 3)·(X³ + 2X² + X - 5)   (mod 11)`
+
+- `cubicMod11_irreducible` : the cubic `X³ + 2X² + X + 6` (`-5 ≡ 6 mod 11`) has
+  no roots in `𝔽₁₁`, hence is irreducible.
+- pairwise non-association of the three factors (distinct primes).
+- `q_mod11_squarefree` : the product is squarefree (11 unramified).
+- `q_ℤ_mod11_factorization` : the **full coefficient-by-coefficient** identity
+  `q.map (ℤ → 𝔽₁₁) = (X-4)(X-3)·cubicMod11`, so these genuinely are the factors
+  of `q mod 11`.
+- `q_mod11_factor_type` : packaged "(1,1,3) distinct irreducibles + squarefree +
+  factorization identity".
+
+Two independent unramified primes (7 and 11) now exhibit the same `(1,1,3)`
+factor type, so once Dedekind's theorem is available the Frobenius elements at
+both primes are 3-cycles — strengthening the evidence that `3 ∣ |Gal(q)|` and
+ruling out a prime-specific accident.
+
 ## Next Action
 
 If Dedekind's theorem lands in Mathlib (or the sibling Frobenius bridge
-completes), `q_mod7_factor_type` plugs in directly to discharge the axiom.
+completes), `q_mod7_factor_type` / `q_mod11_factor_type` plug in directly to
+discharge the axiom.
