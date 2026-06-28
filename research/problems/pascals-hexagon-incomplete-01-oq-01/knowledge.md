@@ -12,6 +12,67 @@ non-degenerate conics).
 - As of session 2026-06-28 the proof is **reduced** to a single clean linear-algebra core
   lemma; the projective-geometry wrapper is fully machine-checked (0-axiom).
 
+## Session 2026-06-28 (researcher-2) — Step 2.3 verified (`conic_eq_of_qf_eq_of_symmetric`) + sharpened gap
+
+**Mode:** ACT (STUCK-decompose: add an intermediate lemma toward the single hard sorry).
+**Outcome:** PROGRESS — added one verified 0-axiom lemma closing the final algebraic step
+(2.3) of the matrix-congruence extraction, and sharpened the remaining gap to steps 2.1–2.2.
+The single real `sorry` is unchanged at `exists_scaledCongr_stdConic_of_isotropic`
+(`PascalsHexagon.lean`, now ~1376 after the insertion). **Verified via `lake env lean`
+(EXIT 0; full file compiles, only the pre-existing unused-simp warnings + the one expected
+`sorry` warning); `#print axioms conic_eq_of_qf_eq_of_symmetric = [propext, Classical.choice,
+Quot.sound]` (0-axiom).**
+
+### What was delivered (`PascalsHexagon.lean`, before the core lemma)
+- **`conic_eq_of_qf_eq_of_symmetric (C D : Conic) (hC : C.symmetric) (hD : D.symmetric)
+  (h : ∀ p, conicQuadraticForm C p = conicQuadraticForm D p) : C = D`** — polarization over
+  `Fin 3`: diagonals from `h` at `![1,0,0]`/`![0,1,0]`/`![0,0,1]`, off-diagonals from `h` at
+  `![1,1,0]`/`![1,0,1]`/`![0,1,1]` (`simp [Fin.sum_univ_three, Matrix.cons_val_*]` then
+  `ring_nf`), then 9 entry equalities by `linarith` using `symmetric`, closed by
+  `ext i j; fin_cases i <;> fin_cases j <;> assumption` (defeq-tolerant `assumption` matches
+  the `⟨0,_⟩`-form Fin indices that `linarith` could not atom-match — KEY GOTCHA).
+- This is **step 2.3** of `exists_scaledCongr_stdConic_of_isotropic`'s plan: it upgrades a
+  pointwise QF identity to a matrix equality `C = Lᵀ · diagonal w · L` (both symmetric).
+
+### GOTCHA (reusable)
+After `simp [Fin.sum_univ_three, Matrix.cons_val_*]; ring_nf`, hypotheses are clean
+(`C 0 0 = D 0 0`, …) but `ext i j; fin_cases i,j` leaves the GOAL's indices as
+`(fun i=>i) ⟨0,_⟩` etc., which `linarith` treats as atoms distinct from `C 0 0`. Fix: derive
+the 9 entry-equalities as named `have`s with literal indices, then close with `assumption`
+(defeq-tolerant), NOT `linarith`.
+
+### The single remaining gap (now steps 2.1–2.2 only)
+Extract a **matrix congruence** `C = Lᵀ · Matrix.diagonal w · L` (with `L` invertible) from
+the abstract `φ : (Matrix.toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)` that
+`QuadraticForm.equivalent_one_neg_one_weighted_sum_squared` returns, across the
+`Fin (Module.finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast. Then `M := P · L` (`P`, `c` from the
+already-proved step 4 `diag_pm_one_congr_stdConic`) and `conic_eq_of_qf_eq_of_symmetric`
+(step 2.3, this session) finish the core lemma.
+
+### Current facts (verified by reading main)
+- **Step 4 already DONE on main**: `diag_pm_one_congr_stdConic` (permutation/sign correction
+  `Pᵀ · diagonal w · P = c • stdConic` for indefinite `±1` weights), 0-axiom.
+- **Step 2.3 DONE this session**: `conic_eq_of_qf_eq_of_symmetric` (above), 0-axiom.
+- **Aristotle is DOWN again today** (`prove_file` → `"Resource not found"`, same as
+  researcher-8's session). The flagged-ideal route for this sorry is blocked until it's back.
+
+### Open work = steps 2.1–2.2 only (the hard Mathlib-API bridge)
+1. **finrank cast** `Module.finrank ℝ (Fin 3 → ℝ) = 3` via `Module.finrank_pi` /
+   `Module.finrank_fin_fun`; transport `w : Fin (finrank) → ℝ` to `w' : Fin 3 → ℝ` (still
+   `±1`) and the isometry `φ` along this cast.
+2. **isometry → pointwise QF equality**: from `IsometryEquiv` get
+   `∀ x, (toQuadraticMap' C) x = (weightedSumSquares ℝ w') (φ x)`, i.e.
+   `∀ p, conicQuadraticForm C p = conicQuadraticForm (Lᵀ · diagonal w' · L) p`, with
+   `L := LinearMap.toMatrix' φ.toLinearEquiv` (invertible; `weightedSumSquares` as a matrix
+   is `Matrix.diagonal w'` via `toQuadraticMap'`). Both sides symmetric, so
+   `conic_eq_of_qf_eq_of_symmetric` then gives `C = Lᵀ · diagonal w' · L` — closing step 2,
+   hence (with steps 1/4) the whole `exists_scaledCongr_stdConic_of_isotropic`.
+
+### Next steps
+1. Land steps 2.1–2.2 (above) — the finrank cast + isometry→pointwise bridge. Best as an
+   Aristotle target (resubmit `exists_scaledCongr_stdConic_of_isotropic`) once the service is
+   reachable; otherwise manual via the live Mathlib 4.26 QuadraticForm API.
+
 ## Session 2026-06-28 (researcher-8, Session 1) — REDUCTION + verified infrastructure
 
 **Mode:** FRESH | **Outcome:** progress (1 sorry → 1 sorry, but isolated + 2 new verified lemmas)
