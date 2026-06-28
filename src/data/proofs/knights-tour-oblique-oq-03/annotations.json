@@ -69,5 +69,51 @@
       "applyD4Tour_inv_left",
       "Function.LeftInverse.injective"
     ]
+  },
+  {
+    "id": "ann-ktoq03-faithful",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "insight",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "title": "Faithfulness and the order-16 group D₄ × ℤ/2",
+    "content": "d4_reverse_injective upgrades the explicit left inverse to a structural statement: each composite map t ↦ reverseTour (applyD4Tour g t) is injective, hence (on the finite type ClosedTour) a bijection. Combined with the commutation theorem, this means reversal and the board group D₄ generate a faithful action of the direct product D₄ × ℤ/2 — order |D₄| × 2 = 8 × 2 = 16 — on the set of closed tours. The ℤ/2 factor is time-reversal (an involution disjoint from the geometry); the D₄ factor is the board's dihedral symmetry. Because the two factors commute, no extra relations appear, so the group is genuinely the product and not a larger non-abelian extension. Injectivity is obtained purely from the left inverse (Function.LeftInverse.injective) — no counting or finiteness argument is needed beyond the inverse formula itself.",
+    "mathContext": "$\\langle D_4, R\\rangle \\cong D_4 \\times \\mathbb{Z}/2$, $|D_4 \\times \\mathbb{Z}/2| = 16$, acting faithfully on $\\mathrm{ClosedTour}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "direct product of groups",
+      "faithful action",
+      "involution",
+      "bijection on a finite type"
+    ],
+    "prerequisites": [
+      "group direct products",
+      "injectivity from a left inverse"
+    ]
+  },
+  {
+    "id": "ann-ktoq03-orbit",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "insight",
+    "range": {
+      "startLine": 89,
+      "endLine": 94
+    },
+    "title": "Reversal permutes D₄-orbits — the histogram payoff",
+    "content": "reverseTour_applyD4Tour_orbit packages the commutation in the form the oblique-count histogram needs: reversal sends every D₄-image of t to a D₄-image of reverseTour t, witnessed by the very same group element g (the existential is filled by ⟨g, reverseTour_applyD4Tour g t⟩). So reversal descends to a well-defined involution on the set of D₄-orbits, pairing the orbit of t with the orbit of its reverse. This is precisely the structural input behind the orbit-divisibility statements for the histogram: each level set of obliqueCount is closed under both actions, so its size is constrained by the order-16 group acting on it. The file stops short of the deferred reversal-invariance obliqueCount (reverseTour t) = obliqueCount t (iteration-heavy cyclic-list bookkeeping in OQ-02), but supplies the commutation that lets the proven D₄-invariance and that deferred fact be combined.",
+    "mathContext": "$R$ induces an involution on $\\{D_4\\text{-orbits}\\}$: $\\mathrm{orbit}(t) \\mapsto \\mathrm{orbit}(R\\,t)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "orbit",
+      "level set / fiber",
+      "orbit-counting divisibility",
+      "Burnside-type arguments"
+    ],
+    "prerequisites": [
+      "group orbits",
+      "the D₄ histogram invariance oblique_count_invariant"
+    ]
   }
 ]
