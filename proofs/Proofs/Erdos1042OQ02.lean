@@ -172,6 +172,62 @@ component-counting question of #1042 has no naive higher-dimensional analogue. -
 theorem isConnected_cyl : IsConnected (lem cylExample) :=
   convex_cyl.isConnected cyl_nonempty
 
+/-! ### The structural dichotomy (general ℂⁿ)
+
+The cylinder above is not an isolated curiosity: it is an instance of a general
+mechanism. Call a coordinate index `i : Fin n` *free* for `p` when no factor
+reads it (`i ∉ range p.coord`). Then `eval` is independent of that coordinate,
+and as soon as the lemniscate is nonempty it is unbounded along the free
+direction. This pins down *exactly* the obstruction to ℂⁿ confinement:
+surjectivity of `coord` is **necessary** for a nonempty lemniscate to be bounded.
+(It is not sufficient — e.g. `f(z₀,z₁) = z₀ z₁` reads both coordinates yet
+`{|z₀z₁|<1}` is unbounded — so boundedness in ℂⁿ is strictly more fragile than
+in ℂ¹, consistent with the failure recorded above.) -/
+
+/-- If coordinate `i` is *free* (read by no factor), then `eval` does not depend
+on it: overwriting the `i`-th coordinate leaves `f` unchanged. -/
+theorem eval_indep_free_coord (p : CoordPoly n) {i : Fin n}
+    (hi : i ∉ Set.range p.coord) (z : Fin n → ℂ) (t : ℂ) :
+    p.eval (Function.update z i t) = p.eval z := by
+  unfold CoordPoly.eval
+  refine Finset.prod_congr rfl (fun j _ => ?_)
+  have hne : p.coord j ≠ i := fun h => hi ⟨j, h⟩
+  rw [Function.update_of_ne hne]
+
+/-- **General obstruction.** A *free coordinate* forces the lemniscate to be
+unbounded (as long as it is nonempty): slide the free coordinate off to infinity
+while staying inside `{|f| < 1}`. The ℂ² cylinder `cyl_unbounded` is the special
+case `n = 2`, `i = 1`. -/
+theorem free_coord_unbounded (p : CoordPoly n) {i : Fin n}
+    (hi : i ∉ Set.range p.coord) (hne : (lem p).Nonempty) :
+    ¬ Bornology.IsBounded (lem p) := by
+  obtain ⟨z₀, hz₀⟩ := hne
+  rw [isBounded_iff_forall_norm_le]
+  push_neg
+  intro C
+  refine ⟨Function.update z₀ i ((|C| + 1 : ℝ) : ℂ), ?_, ?_⟩
+  · show ‖p.eval (Function.update z₀ i ((|C| + 1 : ℝ) : ℂ))‖ < 1
+    rw [eval_indep_free_coord p hi]
+    exact hz₀
+  · have hle : ‖(Function.update z₀ i ((|C| + 1 : ℝ) : ℂ)) i‖
+        ≤ ‖Function.update z₀ i ((|C| + 1 : ℝ) : ℂ)‖ := norm_le_pi_norm _ i
+    rw [Function.update_self, Complex.norm_of_nonneg (by positivity : (0:ℝ) ≤ |C| + 1)] at hle
+    have hC : C < |C| + 1 := by have := le_abs_self C; linarith
+    linarith
+
+/-- **Necessity of surjectivity.** For a nonempty lemniscate, boundedness forces
+every coordinate to be read by some factor: `coord` must be surjective. This is
+the sharp converse direction — it isolates "no free coordinate" as a *necessary*
+condition for any higher-dimensional confinement to even have a chance. -/
+theorem bounded_imp_surjective_coord (p : CoordPoly n) (hne : (lem p).Nonempty)
+    (hb : Bornology.IsBounded (lem p)) : Function.Surjective p.coord := by
+  intro i
+  by_contra hi
+  have hnot : i ∉ Set.range p.coord := by
+    rintro ⟨a, ha⟩
+    exact hi ⟨a, ha⟩
+  exact free_coord_unbounded p hnot hne hb
+
 /-- **Capstone (answer to oq-02).** Openness and root-containment extend verbatim
 to ℂⁿ, but the geometric heart of #1042 does not: in ℂ² the lemniscate of
 `f(z₀,z₁) = z₀` is open and connected yet UNBOUNDED, in direct contrast to the

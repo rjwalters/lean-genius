@@ -95,5 +95,25 @@
       "LinearMap.proj",
       "component merging"
     ]
+  },
+  {
+    "id": "ann-erdos1042oq02-dichotomy",
+    "proofId": "erdos-1042-oq-02",
+    "range": {
+      "startLine": 175,
+      "endLine": 227
+    },
+    "type": "key-step",
+    "title": "Structural Dichotomy: Free Coordinates Force Unboundedness",
+    "content": "The ℂ² cylinder is not an isolated curiosity but an instance of a general mechanism. Call a coordinate i 'free' for p when no factor reads it (i ∉ range coord). Then eval_indep_free_coord shows f does not depend on z_i: overwriting the i-th coordinate (Function.update) leaves every factor — hence the whole product — unchanged. Consequently free_coord_unbounded slides any point of a nonempty lemniscate off to infinity along the free direction while staying inside {|f| < 1}, so the lemniscate is unbounded; the earlier cyl_unbounded is exactly the case n = 2, i = 1. The contrapositive bounded_imp_surjective_coord then pins down necessity: for a nonempty lemniscate, boundedness forces coord to be surjective (no free coordinate). Surjectivity is necessary but NOT sufficient — f(z₀,z₁) = z₀z₁ reads both coordinates yet {|z₀z₁| < 1} is unbounded — so ℂⁿ boundedness is strictly more fragile than the unconditional one-variable boundedness of oq-03.",
+    "mathContext": "$i \\notin \\operatorname{range}(\\mathrm{coord}) \\Rightarrow f(\\mathrm{update}\\,z\\,i\\,t) = f(z)$, so $\\{|f|<1\\}$ is unbounded along $z_i$. Hence bounded $\\Rightarrow$ $\\mathrm{coord}$ surjective; converse false via $f=z_0 z_1$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Function.update",
+      "free coordinate",
+      "Bornology.IsBounded",
+      "Function.Surjective",
+      "necessary not sufficient"
+    ]
   }
 ]
