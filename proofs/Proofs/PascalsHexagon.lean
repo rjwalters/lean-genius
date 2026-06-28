@@ -1253,6 +1253,60 @@ private lemma pointOnConic_projTransform_iff_of_congr
   · intro h; rw [h, mul_zero]
   · intro h; exact (mul_eq_zero.mp h).resolve_left hc
 
+/-- **Permutation/sign correction — Sylvester step 4 (proved, 0-axiom).**
+    A `±1`-valued *indefinite* weight vector `w : Fin 3 → ℝ` has its diagonal
+    `Matrix.diagonal w` congruent, via an invertible permutation matrix `P`, to a
+    nonzero scalar multiple of `stdConic = diag(1,1,-1)`:
+    `Pᵀ * diagonal w * P = c • stdConic` with `c = ±1`.
+
+    This discharges step 4 of the `exists_scaledCongr_stdConic_of_isotropic` plan: once
+    Sylvester's law gives a congruence `C ≅ diagonal w` with `w` indefinite (steps 1–3),
+    this lemma rotates/signs the inertia form `diagonal w` onto `c • stdConic`. The proof
+    is a finite case split on the eight `±1` patterns: the two *definite* patterns are
+    excluded by `hindef`, and each of the six *indefinite* patterns is handled by an
+    explicit `3×3` permutation matrix (identity, swap `(1 2)`, or swap `(0 2)`) together
+    with `c = ±1`. -/
+private lemma diag_pm_one_congr_stdConic (w : Fin 3 → ℝ)
+    (hw : ∀ i, w i = 1 ∨ w i = -1)
+    (hindef : ∃ i j, w i ≠ w j) :
+    ∃ (P : Matrix (Fin 3) (Fin 3) ℝ), P.det ≠ 0 ∧
+      ∃ (c : ℝ), c ≠ 0 ∧ Pᵀ * Matrix.diagonal w * P = c • stdConic := by
+  rcases hw 0 with h0 | h0 <;> rcases hw 1 with h1 | h1 <;> rcases hw 2 with h2 | h2
+  · -- (+,+,+): definite, excluded by indefiniteness
+    exfalso; obtain ⟨i, j, hij⟩ := hindef; fin_cases i <;> fin_cases j <;> simp_all
+  · -- (+,+,-): identity, c = 1
+    refine ⟨!![1,0,0; 0,1,0; 0,0,1], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (+,-,+): swap (1 2), c = 1
+    refine ⟨!![1,0,0; 0,0,1; 0,1,0], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (+,-,-): swap (0 2), c = -1
+    refine ⟨!![0,0,1; 0,1,0; 1,0,0], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,+,+): swap (0 2), c = 1
+    refine ⟨!![0,0,1; 0,1,0; 1,0,0], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,+,-): swap (1 2), c = -1
+    refine ⟨!![1,0,0; 0,0,1; 0,1,0], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,-,+): identity, c = -1
+    refine ⟨!![1,0,0; 0,1,0; 0,0,1], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,-,-): definite, excluded by indefiniteness
+    exfalso; obtain ⟨i, j, hij⟩ := hindef; fin_cases i <;> fin_cases j <;> simp_all
+
 /-- **The linear-algebra core of the Sylvester reduction (remaining gap).**
     A non-degenerate symmetric real conic `C` carrying a real point is *congruent to a
     nonzero scalar multiple of* `stdConic = diag(1,1,-1)`: there is an invertible `M` and
@@ -1275,7 +1329,11 @@ private lemma pointOnConic_projTransform_iff_of_congr
     3. The real point `p₀ ≠ 0` with `conicQuadraticForm C p₀ = 0` forces `w` *indefinite*
        (a definite `±diag(1,1,1)` form vanishes only at `0`, while `φ p₀ ≠ 0`).
     4. For an indefinite `±1` weight vector there is a permutation/sign matrix `P` and
-       `c = ±1` with `Pᵀ * diagonal w * P = c • stdConic`; set `M := P * L`. -/
+       `c = ±1` with `Pᵀ * diagonal w * P = c • stdConic`; set `M := P * L`.
+       **Step 4 is now discharged by `diag_pm_one_congr_stdConic` (proved above, 0-axiom).**
+       The sole remaining obstacle is step 2: extracting the matrix congruence
+       `C = Lᵀ * diagonal w * L` from the abstract `IsometryEquiv` across the
+       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast. -/
 private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
     (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
     (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
