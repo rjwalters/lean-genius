@@ -162,6 +162,67 @@ theorem indegree_eq_one {m : ℕ} (hm : m % 6 ≠ 4) :
   exact Set.ncard_singleton _
 
 /-!
+## Part II¾: Density of Branch Vertices
+
+The branching dichotomy (in-degree 2 on `m ≡ 4 (mod 6)`, else 1) lets us *count*.
+First we bridge the arithmetic condition to the in-degree itself: a vertex has
+in-degree exactly 2 **iff** `m ≡ 4 (mod 6)`. Then the branch vertices form the
+arithmetic progression `{6j + 4 : j ∈ ℕ}`, enumerated injectively by `j ↦ 6j + 4`,
+and exactly `k` of them lie below `6k`. So branch vertices have density exactly
+`1/6` — an unconditional, verified density fact about the Collatz graph, far weaker
+than the conjecture.
+-/
+
+/-- **In-degree characterizes branching.** A vertex has in-degree exactly `2` in the
+Collatz graph iff it is a branch vertex `m ≡ 4 (mod 6)`; otherwise its in-degree is `1`. -/
+theorem indegree_eq_two_iff (m : ℕ) :
+    (collatz ⁻¹' {m}).ncard = 2 ↔ m % 6 = 4 := by
+  refine ⟨fun h => ?_, indegree_eq_two⟩
+  by_contra hm
+  rw [indegree_eq_one hm] at h
+  exact absurd h (by norm_num)
+
+/-- The branch vertices (in-degree 2, i.e. `m ≡ 4 (mod 6)`) are exactly the arithmetic
+progression `{6j + 4 : j ∈ ℕ}`. -/
+theorem branch_vertices_eq :
+    {m : ℕ | m % 6 = 4} = Set.range (fun j : ℕ => 6 * j + 4) := by
+  ext m
+  simp only [Set.mem_setOf_eq, Set.mem_range]
+  constructor
+  · intro hm; exact ⟨m / 6, by show 6 * (m / 6) + 4 = m; omega⟩
+  · rintro ⟨j, rfl⟩; show (6 * j + 4) % 6 = 4; omega
+
+/-- The enumeration `j ↦ 6j + 4` of branch vertices is injective. -/
+theorem branch_enum_injective : Function.Injective (fun j : ℕ => 6 * j + 4) := by
+  intro a b hab
+  have h : 6 * a + 4 = 6 * b + 4 := hab
+  omega
+
+/-- Below `6k`, the branch vertices are exactly the image of `range k` under `j ↦ 6j + 4`. -/
+theorem branch_below_eq (k : ℕ) :
+    (Finset.range (6 * k)).filter (fun m => m % 6 = 4)
+      = (Finset.range k).image (fun j => 6 * j + 4) := by
+  ext m
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+  constructor
+  · rintro ⟨hlt, hm⟩
+    exact ⟨m / 6, by omega, by omega⟩
+  · rintro ⟨j, hj, rfl⟩
+    exact ⟨by omega, by omega⟩
+
+/-- **Exact count of branch vertices.** Precisely `k` vertices below `6k` are branch
+vertices (in-degree 2). Branch vertices therefore have density exactly `1/6`. -/
+theorem branch_count (k : ℕ) :
+    ((Finset.range (6 * k)).filter (fun m => m % 6 = 4)).card = k := by
+  rw [branch_below_eq, Finset.card_image_of_injective _ branch_enum_injective,
+    Finset.card_range]
+
+/-- The set of branch vertices is infinite (it contains the whole progression `6j + 4`). -/
+theorem branch_vertices_infinite : {m : ℕ | m % 6 = 4}.Infinite := by
+  rw [branch_vertices_eq]
+  exact Set.infinite_range_of_injective branch_enum_injective
+
+/-!
 ## Part III: Backward Closure of the Basin
 
 If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
@@ -240,8 +301,11 @@ example : collatz 16 = 8 := by decide
    `= (m-1)/3`), `preimage_collatz_eq_pair` / `preimage_collatz_eq_singleton`
    (full preimage `= {2m, (m-1)/3}` / `= {2m}`), `indegree_eq_two` / `indegree_eq_one`
    (in-degree `= 2` / `= 1` exactly, via `Set.ncard`)
-5. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
-6. ✓ The basin of 1 is infinite `basin_infinite`
+5. ✓ Density of branch vertices: `indegree_eq_two_iff` (in-degree `= 2` ⟺ `m ≡ 4 mod 6`),
+   `branch_vertices_eq` (branch vertices `= {6j+4}`), `branch_count` (exactly `k` branch
+   vertices below `6k`, so density exactly `1/6`), `branch_vertices_infinite`
+6. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
+7. ✓ The basin of 1 is infinite `basin_infinite`
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
