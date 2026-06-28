@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-ballot-reflection",
+    "proofId": "catalan-numbers-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 11 },
+    "type": "concept",
+    "title": "Ballot Numbers and the Reflection Principle",
+    "content": "The differences $\\binom{2n}{n-k} - \\binom{2n}{n-k-1}$ are the **ballot numbers**, the entries of the Catalan triangle. Their combinatorial meaning comes from André's *reflection principle*: among the $\\binom{2n}{n-k}$ lattice paths to a given endpoint, the ones that touch a forbidden boundary are in bijection with paths to the reflected endpoint, counted by $\\binom{2n}{n-k-1}$; subtracting leaves exactly the paths that stay on the legal side. The base case $k=0$ proved here, $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, is the statement that the Catalan number counts Dyck paths (balanced parenthesizations). So the purely algebraic identity in this file is the arithmetic shadow of a counting bijection.",
+    "mathContext": "Ballot number $\\binom{2n}{n-k} - \\binom{2n}{n-k-1}$; reflection principle: #(good paths) = #(all) − #(reflected bad).",
+    "significance": "supporting",
+    "relatedConcepts": ["ballot problem", "reflection principle", "Dyck paths", "Catalan triangle"],
+    "prerequisites": ["binomial coefficients", "lattice paths"]
+  },
+  {
+    "id": "ann-centralbinom-bridge",
+    "proofId": "catalan-numbers-oq-05-oq-01",
+    "range": { "startLine": 12, "endLine": 33 },
+    "type": "technique",
+    "title": "The Central-Binomial–Catalan Bridge",
+    "content": "The load-bearing sublemma reused by both `choose_two_mul_succ` and `catalan_eq_choose_sub` is the bridge $\\binom{2n}{n} = (n+1)\\,C_n$, assembled from Mathlib's `succ_mul_catalan_eq_centralBinom` and `Nat.centralBinom_eq_two_mul_choose`. With the Pascal step it pins down both central-row entries — $\\binom{2n}{n} = (n+1)C_n$ and $\\binom{2n}{n+1} = n\\,C_n$ — so their difference collapses to $C_n$. This division-free packaging complements the only form Mathlib stores, $C_n = \\binom{2n}{n}/(n+1)$ (`Nat.catalan_eq_centralBinom_div`), trading an exact division for an honest ℕ subtraction.",
+    "mathContext": "Bridge: $\\binom{2n}{n} = (n+1)\\,C_n$, versus Mathlib's $C_n = \\binom{2n}{n}/(n+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["central binomial coefficient", "Nat.catalan_eq_centralBinom_div", "division-free identity"],
+    "prerequisites": ["succ_mul_catalan_eq_centralBinom", "Nat.centralBinom_eq_two_mul_choose"]
+  },
+  {
     "id": "ann-neighbour",
     "proofId": "catalan-numbers-oq-05-oq-01",
     "range": { "startLine": 41, "endLine": 57 },
