@@ -3,8 +3,8 @@
     "id": "ann-imports-helper",
     "proofId": "denumerability-rationals-oq-06",
     "range": {
-      "startLine": 29,
-      "endLine": 31
+      "startLine": 31,
+      "endLine": 32
     },
     "type": "key-step",
     "title": "The Engine Lemma #ℚ = ℵ₀",
@@ -26,8 +26,8 @@
     "id": "ann-polynomial-cardinality",
     "proofId": "denumerability-rationals-oq-06",
     "range": {
-      "startLine": 33,
-      "endLine": 40
+      "startLine": 34,
+      "endLine": 41
     },
     "type": "theorem",
     "title": "#(ℚ[X]) = ℵ₀ via the Max Formula",
@@ -49,8 +49,8 @@
     "id": "ann-denumerable-witness",
     "proofId": "denumerability-rationals-oq-06",
     "range": {
-      "startLine": 46,
-      "endLine": 54
+      "startLine": 47,
+      "endLine": 55
     },
     "type": "theorem",
     "title": "An Explicit Bijection ℕ ≃ ℚ[X]",
@@ -66,6 +66,50 @@
     "prerequisites": [
       "equivalences between types",
       "extracting a witness from a Nonempty"
+    ]
+  },
+  {
+    "id": "ann-why-polynomial-ring",
+    "proofId": "denumerability-rationals-oq-06",
+    "range": {
+      "startLine": 3,
+      "endLine": 25
+    },
+    "type": "context",
+    "title": "Why the Polynomial Ring: From Countable ℚ to Countable Algebraic Numbers",
+    "content": "The base denumerability entry and OQ-05 push countability of ℚ through finite products, lists, and finite subsets (#(ℚ×ℚ), #(List ℚ), #(Finset ℚ) all stay ℵ₀), while the function space ℕ → ℚ already jumps to the continuum 𝔠. None of those reach the object that governs *algebraic* countability: the polynomial ring. This entry isolates #(ℚ[X]) = #(ℤ[X]) = ℵ₀ precisely because it is the cardinal fact behind the countability of the algebraic numbers — every algebraic number is a root of some polynomial in ℚ[X], and each polynomial has only finitely many roots, so the algebraic numbers form a countable union of finite sets, hence are countable. OQ-07 pursues that consequence explicitly.",
+    "mathContext": "$\\#(\\mathbb{Q}[X]) = \\aleph_0$, and each $p \\in \\mathbb{Q}[X]$ has finitely many roots, so $\\overline{\\mathbb{Q}} = \\bigcup_{p \\in \\mathbb{Q}[X]} \\{\\text{roots of } p\\}$ is a countable union of finite sets, hence countable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraic numbers",
+      "countable union of finite sets",
+      "continuum 𝔠",
+      "ℵ₀ stability"
+    ],
+    "prerequisites": [
+      "countability of a type",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-rat-eq-int",
+    "proofId": "denumerability-rationals-oq-06",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "theorem",
+    "title": "ℚ[X] and ℤ[X] Are Equinumerous",
+    "content": "cardinalMk_polynomial_rat_eq_int records #(ℚ[X]) = #(ℤ[X]) as an immediate corollary: both were shown equal to ℵ₀, so they equal each other by transitivity. Slight as it is, it makes explicit that enlarging the coefficient ring from ℤ to ℚ — adjoining all the fractions — does not change the cardinality of the polynomial ring; both remain countably infinite. The same collapse holds for any countably infinite coefficient ring, since the max formula #(R[X]) = max #R ℵ₀ only sees #R through its maximum with ℵ₀.",
+    "mathContext": "$\\#(\\mathbb{Q}[X]) = \\aleph_0 = \\#(\\mathbb{Z}[X])$; more generally $\\#(R[X]) = \\aleph_0$ for every countably infinite ring $R$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "transitivity of cardinal equality",
+      "coefficient ring",
+      "max formula"
+    ],
+    "prerequisites": [
+      "cardinal equality"
     ]
   }
 ]
