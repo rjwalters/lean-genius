@@ -38,7 +38,7 @@
   {
     "id": "ann-fiboq0301-4",
     "proofId": "fibonacci-identities-oq-03-oq-01",
-    "range": { "startLine": 61, "endLine": 74 },
+    "range": { "startLine": 61, "endLine": 79 },
     "type": "theorem",
     "title": "Existential and Integer Forms",
     "content": "**Packaging.** `fib_four_mul_add_three_isSumSq` gives $\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$ over $\\mathbb{N}$ with the explicit witnesses; `fib_four_mul_add_three_iterated_int` casts the decomposition to $\\mathbb{Z}$. The three `decide` checks that follow ($F_3=2$, $F_7=13$, $F_{11}=89$) confirm the $n=0,1,2$ instances by kernel reduction — `decide`, not `native_decide`, so no `Lean.ofReduceBool` and the entry stays 0-axiom.",
