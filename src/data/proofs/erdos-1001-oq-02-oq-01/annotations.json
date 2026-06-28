@@ -3,12 +3,12 @@
     "id": "ann-sharpness-question",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 45,
-      "endLine": 95
+      "startLine": 58,
+      "endLine": 108
     },
     "type": "insight",
     "title": "The O(log N / N) Rate Is Not Sharp: Walfisz Gives a Strictly Better Bound",
-    "content": "The sharpness question for the O(A log N / N) rate has a definitive negative answer: the rate is NOT tight. This is because the elementary Mertens bound used in OQ-02 is not the best possible — Walfisz's 1963 theorem improves it by a factor of (log N)^(1/3). The proof axiomatizes both bounds and then uses IsLittleO transitivity to show the sharper rate dominates.",
+    "content": "The sharpness question for the O(A log N / N) rate has a definitive negative answer: the rate is NOT tight. This is because the elementary Mertens bound used in OQ-02 is not the best possible — Walfisz's 1963 theorem improves it by a factor of (log N)^(1/3). The formalization keeps both totient-sum bounds as commentary and assumes only their Abel-summation consequence (the axiom rangeTotientSum_walfisz_error) plus a pure measure-theoretic EST reduction (est_reduction_to_rangeTotientSum); from these it derives the sharper |S - f| rate and uses IsLittleO transitivity to show it dominates the OQ-02 rate.",
     "mathContext": "The parent proof axiomatized $|S(N,A,c) - f(A,c)| = O(A \\log N/N)$ using the elementary bound $\\sum_{n \\leq x} \\varphi(n) = (3/\\pi^2)x^2 + O(x \\log x)$ (Mertens 1874). Walfisz's sharper $O(x(\\log x)^{2/3}(\\log\\log x)^{4/3})$ error (1963) propagates to a strictly better convergence rate $O(A(\\log N)^{2/3}(\\log\\log N)^{4/3}/N) = o(A \\log N/N)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -27,12 +27,12 @@
     "id": "ann-walfisz-theorem",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 95,
-      "endLine": 140
+      "startLine": 110,
+      "endLine": 132
     },
     "type": "concept",
     "title": "Walfisz's 1963 Theorem: Deep Number Theory via Vinogradov Exponential Sums",
-    "content": "Walfisz's 1963 theorem is a major result in analytic number theory, appearing in his monograph 'Weylsche Exponentialsummen in der neueren Zahlentheorie'. The proof uses Vinogradov's exponential sum method to obtain a zero-free region for ζ(s) near the real axis, which in turn controls the error in Dirichlet series averages like ∑ φ(n). Both the elementary Mertens bound and the Walfisz bound are axiomatized here — neither appears in Mathlib v4.26.",
+    "content": "Walfisz's 1963 theorem is a major result in analytic number theory, appearing in his monograph 'Weylsche Exponentialsummen in der neueren Zahlentheorie'. The proof uses Vinogradov's exponential sum method to obtain a zero-free region for ζ(s) near the real axis, which in turn controls the error in Dirichlet series averages like ∑ φ(n). Both the elementary Mertens bound and the Walfisz bound are kept as commentary here (neither appears in Mathlib v4.26); the formalization assumes only their Abel-summation consequence on the range sum.",
     "mathContext": "The Vinogradov–Korobov zero-free region: $\\zeta(\\sigma + it) \\neq 0$ for $\\sigma > 1 - c / (\\log |t|)^{2/3}(\\log\\log |t|)^{1/3}$. This gives the error $E(N) = \\sum_{n \\leq N} \\varphi(n) - (3/\\pi^2)N^2 = O(N(\\log N)^{2/3}(\\log\\log N)^{4/3})$ (Walfisz 1963).",
     "significance": "supporting",
     "relatedConcepts": [
@@ -51,8 +51,8 @@
     "id": "ann-exponent-2-3",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 95,
-      "endLine": 135
+      "startLine": 110,
+      "endLine": 132
     },
     "type": "insight",
     "title": "The Exponent 2/3: Connection Between Zero-Free Regions and Arithmetic Averages",
@@ -75,12 +75,12 @@
     "id": "ann-comparison-proof",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 140,
-      "endLine": 178
+      "startLine": 134,
+      "endLine": 211
     },
     "type": "concept",
     "title": "IsLittleO Comparison via Real.tendsto_log_div_rpow_atTop",
-    "content": "The core comparison (log N)^(2/3)/N = o(log N/N) reduces to 1/(log N)^(1/3) → 0. In Lean, this follows from Real.tendsto_log_div_rpow_atTop with exponent p=1/3: log(N)/N^(1/3) → 0 implies N^(1/3)/log(N) → ∞ implies (log N)^(1/3) → ∞. Two sorries remain for the formal rpow manipulation — these are Aristotle candidates since the mathematical content is clear. The main result `oq02_rate_not_sharp` uses `IsBigO.trans_isLittleO` to chain the Walfisz O-bound with the IsLittleO comparison.",
+    "content": "The core comparison (log N)^(2/3)/N = o(log N/N) reduces to 1/(log N)^(1/3) → 0. In Lean, this follows from rpow asymptotics: (log N)^(2/3) = o(log N) via tendsto_rpow_neg_atTop, and the log log factor is absorbed by isLittleO_log_rpow_atTop. These comparisons (log_rpow_two_thirds_isLittleO_log, walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate) are fully proved with 0 sorries and 0 axioms. The main result `oq02_rate_not_sharp` uses `IsBigO.trans_isLittleO` to chain the Walfisz O-bound with the IsLittleO comparison.",
     "mathContext": "IsLittleO comparison: $\\frac{(\\log N)^{2/3}}{N} \\div \\frac{\\log N}{N} = (\\log N)^{-1/3} \\to 0$. `Real.tendsto_log_div_rpow_atTop (p:=1/3)`: $\\log(x)/x^{1/3} \\to 0$. Used via: $(\\log N)^{1/3} \\to \\infty$ iff $1/(\\log N)^{1/3} \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -99,8 +99,8 @@
     "id": "ann-practical-implication",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 218,
-      "endLine": 248
+      "startLine": 360,
+      "endLine": 380
     },
     "type": "concept",
     "title": "Slow Improvement: The Factor 1/(log N)^(1/3) in Practice",
@@ -121,8 +121,8 @@
     "id": "ann-rh-conjecture",
     "proofId": "erdos-1001-oq-02-oq-01",
     "range": {
-      "startLine": 248,
-      "endLine": 313
+      "startLine": 382,
+      "endLine": 413
     },
     "type": "insight",
     "title": "Under RH: Exponential Improvement to O(√N log N) for the Totient Error",

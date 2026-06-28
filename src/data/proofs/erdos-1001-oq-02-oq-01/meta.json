@@ -22,8 +22,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 4,
-    "assumptions": "4 axioms (all deep number-theoretic inputs beyond Mathlib v4.26): totient_sum_mertens_error (elementary Mertens O(N log N) totient-sum error), totient_sum_walfisz_error (Walfisz 1963, O(N(logN)^(2/3)(loglogN)^(4/3)) via Vinogradov exponential sums), rangeTotientSum_walfisz_error (Abel-summation propagation of Walfisz to the range sum), convergence_rate_sharp (EST-regime reduction to the range sum). 0 sorries: all four real-analysis rpow/little-o comparisons (walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero) are now fully PROVED with 0 axioms (#print axioms = propext/Classical.choice/Quot.sound), verified 2026-06-27. The main result oq02_rate_not_sharp rests only on convergence_rate_sharp.",
+    "axiomCount": 2,
+    "assumptions": "2 load-bearing axioms (verified via #print axioms 2026-06-28: every main result — oq02_rate_not_sharp, convergence_rate_sharp, erdos_1001_oq02_oq01_summary — depends on exactly these two plus the foundational propext/Classical.choice/Quot.sound, and no sorryAx): rangeTotientSum_walfisz_error (the sole number-theoretic input — the Abel-summation propagation of Walfisz's 1963 totient bound to the range sum ∑_{y=N}^{cN} φ(y)/y², beyond Mathlib v4.26; parallels the parent OQ-02's rangeTotientSum_error) and est_reduction_to_rangeTotientSum (the pure measure-theoretic EST-regime reduction of |S(N,A,c)-f(A,c)| to the range-sum error plus an O(A/N) boundary, parallel to OQ-02's convergence_rate_est). Reduced from 4 axioms on 2026-06-28 (researcher-2): the previous version declared totient_sum_mertens_error, totient_sum_walfisz_error and rangeTotientSum_walfisz_error but NONE were referenced by any proof — the result rested entirely on a monolithic convergence_rate_sharp axiom that assumed its own conclusion. The two dead totient-sum axioms are now commentary (matching the parent, which keeps Mertens as prose), and convergence_rate_sharp is now a THEOREM derived from the two remaining axioms. 0 sorries: the real-analysis rpow/little-o comparisons (walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero) remain fully PROVED with 0 axioms.",
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
     "mathlibDependencies": [
@@ -54,17 +54,16 @@
       }
     ],
     "originalContributions": [
-      "totient_sum_mertens_error: elementary Mertens O(N log N) partial totient sum error",
-      "totient_sum_walfisz_error: Walfisz's sharp O(N(logN)^(2/3)(loglogN)^(4/3)) bound",
-      "partialTotientSum: definition of Φ(n) = ∑_{y≤n} φ(y)",
-      "rangeTotientSum_walfisz_error: improved range sum error from Walfisz",
+      "rangeTotientSum_walfisz_error: improved range sum error from Walfisz (the sole number-theoretic axiom)",
+      "est_reduction_to_rangeTotientSum: pure measure-theoretic EST reduction of |S-f| to the range-sum error (axiom)",
+      "convergence_rate_sharp: now a THEOREM deriving the Walfisz |S-f| rate from the two axioms above",
       "walfisz_rate_isLittleO_mertens_rate: (logN)^(2/3)/N = o(logN/N)",
       "oq02_rate_not_sharp: main result — O(logN/N) is not the tight rate",
       "improvement_factor_tends_to_zero: the factor 1/(logN)^(1/3) → 0",
       "erdos_1001_oq02_oq01_summary: existential witness for the sharper rate"
     ],
-    "lineCount": 360,
-    "theoremCount": 7,
+    "lineCount": 413,
+    "theoremCount": 8,
     "defCount": 3,
     "definitionCount": 7,
     "additionalFiles": [
@@ -72,12 +71,12 @@
     ]
   },
   "conclusion": {
-    "summary": "The O(A log N / N) convergence rate from OQ-02 is NOT sharp: by Walfisz's 1963 theorem, the true rate is the strictly smaller O(A (log N)^(2/3) (log log N)^(4/3) / N) = o(A log N / N). This is proved via IsBigO.trans_isLittleO from four axioms and six theorems (4 sorries remain for rpow manipulations, all Aristotle candidates). The diophantine approximation rate is thus fully governed by the Vinogradov–Korobov zero-free region for ζ(s), not merely by the elementary Mertens bound.",
+    "summary": "The O(A log N / N) convergence rate from OQ-02 is NOT sharp: by Walfisz's 1963 theorem, the true rate is the strictly smaller O(A (log N)^(2/3) (log log N)^(4/3) / N) = o(A log N / N). This is proved via IsBigO.trans_isLittleO from two load-bearing axioms (rangeTotientSum_walfisz_error and est_reduction_to_rangeTotientSum) and eight theorems, with 0 sorries; the key intermediate convergence_rate_sharp is now itself a theorem derived from those two axioms. The diophantine approximation rate is thus fully governed by the Vinogradov–Korobov zero-free region for ζ(s), not merely by the elementary Mertens bound.",
     "implications": "This result connects the convergence rate of a diophantine approximation density to the zero-free region of the Riemann zeta function — a deep link between Diophantine analysis and analytic number theory. The exponent 2/3 in the Walfisz error bound equals the Vinogradov–Korobov zero-free exponent, so any improvement to the zero-free region (e.g., under RH: exponent → 1/2) would sharpen the diophantine approximation rate. The gap between the unconditional Walfisz bound and the RH-conditional O(√N log N) bound is one of the central open problems in analytic number theory.",
     "openQuestions": [
       "Under the Riemann Hypothesis, the totient error E(N) = O(√N log N²), giving convergence rate O(A log²N/√N). Can this conditional improvement be formalized with RH as an axiom?",
       "Is the current Walfisz bound E(N) = O(N(logN)^(2/3)(loglogN)^(4/3)) the best unconditional bound, or can the exponent 2/3 be improved? The best known lower bound is E(N) = Ω(√N).",
-      "Can the Abel summation step (rangeTotientSum_walfisz_error) be proved in Lean using Mathlib's summation-by-parts? This would remove one of the four axioms."
+      "Can the Abel summation step (rangeTotientSum_walfisz_error) be proved in Lean using Mathlib's summation-by-parts (Mathlib.NumberTheory.AbelSummation), starting from Walfisz's totient partial-sum bound? This would remove one of the two remaining load-bearing axioms."
     ]
   },
   "crossReferences": [
@@ -101,9 +100,9 @@
     "path": "Proofs/Erdos1001OQ02OQ01.lean",
     "namespace": "Erdos1001OQ02OQ01",
     "sorries": 0,
-    "axiomCount": 4,
-    "lineCount": 360,
-    "theoremCount": 7,
+    "axiomCount": 2,
+    "lineCount": 413,
+    "theoremCount": 8,
     "definitionCount": 7,
     "additionalFiles": [
       "Proofs/Erdos1001OQ02OQ01Aristotle.lean"
@@ -127,65 +126,65 @@
       "id": "header",
       "title": "Module Header and Problem Statement",
       "startLine": 1,
-      "endLine": 54,
+      "endLine": 56,
       "summary": "States Erdős #1001 OQ-02-OQ-01: whether the $O(\\log N/N)$ convergence rate for the totient-sum density is sharp. Overview of the Mertens vs. Walfisz comparison.",
       "mathContext": "Sharpness of the $O(\\log N/N)$ totient-sum convergence rate."
     },
     {
       "id": "part1",
       "title": "Core Definitions (from Erdos1001OQ02)",
-      "startLine": 55,
-      "endLine": 89,
+      "startLine": 58,
+      "endLine": 108,
       "summary": "Defines `isApproximable`, `S`, `f`, `inESTRegime`, `densityConst` ($6/\\pi^2$), `rangeTotientSum`, `partialTotientSum`.",
       "mathContext": "Totient-sum density constant $6/\\pi^2$; range/partial sums."
     },
     {
       "id": "part2",
-      "title": "The Elementary vs. Walfisz Error Bounds",
-      "startLine": 90,
-      "endLine": 123,
-      "summary": "States the AXIOMS `totient_sum_mertens_error` (elementary Mertens error) and `totient_sum_walfisz_error` (Walfisz's sharper error).",
-      "mathContext": "Axioms: Mertens vs. Walfisz error terms for $\\sum\\varphi$."
+      "title": "The Mertens and Walfisz Totient-Sum Bounds (commentary, not axioms)",
+      "startLine": 110,
+      "endLine": 132,
+      "summary": "Commentary only (NOT axioms): the Mertens $O(N\\log N)$ and Walfisz $O(N(\\log N)^{2/3}(\\log\\log N)^{4/3})$ totient partial-sum bounds, kept as prose exactly as the parent OQ-02 keeps Mertens. The only number-theoretic assumption is their Abel-summation consequence, the axiom `rangeTotientSum_walfisz_error` below.",
+      "mathContext": "Mertens vs. Walfisz error terms for $\\sum\\varphi$ (commentary, not axioms)."
     },
     {
       "id": "part3",
       "title": "Comparison: Walfisz rate vs. Mertens rate",
-      "startLine": 124,
-      "endLine": 164,
-      "summary": "Proves `walfisz_rate_isLittleO_mertens_rate` and `walfisz_full_rate_isLittleO_mertens_rate` (2 `sorry`): the Walfisz rate is $o(\\cdot)$ of Mertens.",
-      "mathContext": "Walfisz error $=o(\\text{Mertens error})$ (2 sorries)."
+      "startLine": 134,
+      "endLine": 211,
+      "summary": "Proves `log_rpow_two_thirds_isLittleO_log`, `walfisz_rate_isLittleO_mertens_rate`, and `walfisz_full_rate_isLittleO_mertens_rate` (0 sorries, 0 axioms): the Walfisz rate is $o(\\cdot)$ of Mertens.",
+      "mathContext": "Walfisz error $=o(\\text{Mertens error})$ (fully proved)."
     },
     {
       "id": "part4",
       "title": "Sharp Range Totient Sum Error via Abel Summation",
-      "startLine": 165,
-      "endLine": 198,
-      "summary": "States the AXIOM `rangeTotientSum_walfisz_error`: the improved range-sum error obtained by Abel summation.",
+      "startLine": 213,
+      "endLine": 245,
+      "summary": "States the AXIOM `rangeTotientSum_walfisz_error`: the improved range-sum error obtained by Abel summation. This is the sole number-theoretic assumption and is load-bearing for the main result.",
       "mathContext": "Axiom: improved range-sum error via Abel summation."
     },
     {
       "id": "part5",
       "title": "Main Result: O(log N / N) Is NOT the Tight Rate",
-      "startLine": 199,
-      "endLine": 264,
-      "summary": "States the AXIOM `convergence_rate_sharp` and proves `sharp_rate_isLittleO_oq02_rate` and `oq02_rate_not_sharp` (1 `sorry`): the OQ-02 rate is not sharp.",
-      "mathContext": "$O(\\log N/N)$ is not the tight rate (1 sorry)."
+      "startLine": 247,
+      "endLine": 358,
+      "summary": "States the AXIOM `est_reduction_to_rangeTotientSum` (the pure measure-theoretic EST reduction), then DERIVES `convergence_rate_sharp` as a theorem from it together with `rangeTotientSum_walfisz_error`, and proves `sharp_rate_isLittleO_oq02_rate` and `oq02_rate_not_sharp` (0 sorries): the OQ-02 rate is not sharp.",
+      "mathContext": "$O(\\log N/N)$ is not the tight rate (0 sorries; convergence_rate_sharp now a theorem)."
     },
     {
       "id": "part6",
       "title": "Quantitative Comparison: How Much Better?",
-      "startLine": 265,
-      "endLine": 282,
-      "summary": "Proves `improvement_factor_tends_to_zero` (1 `sorry`): the improvement factor $\\to0$.",
-      "mathContext": "Improvement factor $\\to0$ (1 sorry)."
+      "startLine": 360,
+      "endLine": 380,
+      "summary": "Proves `improvement_factor_tends_to_zero` (0 sorries): the improvement factor $\\to0$.",
+      "mathContext": "Improvement factor $\\to0$ (fully proved)."
     },
     {
       "id": "part7",
       "title": "Historical Context and Summary",
-      "startLine": 283,
-      "endLine": 313,
+      "startLine": 382,
+      "endLine": 413,
       "summary": "Gives historical context and proves `erdos_1001_oq02_oq01_summary` packaging the result.",
-      "mathContext": "Summary: OQ-02 rate improvable; 4 axioms, 4 sorries remain."
+      "mathContext": "Summary: OQ-02 rate improvable; 2 load-bearing axioms, 0 sorries."
     }
   ],
   "sorries": 0
