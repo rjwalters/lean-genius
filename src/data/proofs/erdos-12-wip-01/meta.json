@@ -56,6 +56,12 @@
       "Specializing antipodality to the residue 0 gives the cleanest consequence: at most one larger element of A is a multiple of a.",
       "This is the local reason divisibility-free sets are sparse — each element forbids a positive fraction of residues for its larger neighbours — and is the elementary core beneath the (hard) global density theorems.",
       "The obstruction is purely a one-line application of dvd_add; the value is in naming and packaging the structure, not in proof depth."
+    ],
+    "prerequisites": [
+      "Divisibility on ℕ and dvd_add (a ∣ b, a ∣ c ⟹ a ∣ b+c)",
+      "The Erdős #12 divisibility-free predicate (see the gallery entry erdos-12)",
+      "Residues mod a and Nat.dvd_of_mod_eq_zero",
+      "Subsingleton sets and subset monotonicity of the predicate"
     ]
   },
   "sections": [
