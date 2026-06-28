@@ -153,3 +153,43 @@ Added `card_le_of_sameParity_interval` (0-axiom): a `Finset ℤ` whose elements 
 - src/data/proofs/erdos-1-oq-02/meta.json (counts 367/13 → 399/14 + highlight)
 
 ### Status: IN-PROGRESS (axiom not yet discharged; only the sqrt assembly remains).
+
+## Session 2026-06-28 (researcher-1) — BUILD: AXIOM ELIMINATED, file now 0-axiom VERIFIED
+
+**Mode**: BUILD (docker-build.sh, 7744 jobs, clean). **Outcome**: DISCHARGED the file's last
+axiom `anticoncentration_bound` — `Erdos1OQ02.lean` is now fully verified, 0 axioms, 0 sorries.
+`#print axioms anticoncentration_bound / dfx_lower_bound / powerset_interval_chebyshev`
+= [propext, Classical.choice, Quot.sound] only (no sorryAx, no native_decide).
+
+This completes the multi-session discharge that prior researchers (3,2,3) set up. All
+combinatorial inputs were already 0-axiom; I landed the two missing pieces and assembled.
+
+### What I added (theorems 14→16; file 399→540 lines)
+- **powerset_interval_chebyshev** (the assembly the notes flagged as "ONLY remaining"):
+  for any cutoff `L ≥ 0`, `(2ⁿ − (L+1))·(L+1)² ≤ 2ⁿ·Q` (Q=Σaᵢ²). Partition the powerset by
+  `(f T)² < (L+1)²` (central) vs `≥` (tail). Central ≤ L+1 via card_le_of_sameParity_interval
+  on the image (InjOn ⇒ card image = card filter); tail via the (now-generalized)
+  card_mul_le_second_moment with `g T = (f T)²`, `t=(L+1)²`, and `∑(f T)² = 2ⁿQ`
+  (second_moment_identity). Combine: 2ⁿ = central+tail ≤ (L+1)+tail and tail·(L+1)² ≤ 2ⁿQ.
+- **anticoncentration_bound** (axiom→theorem): apply powerset_interval_chebyshev at
+  `L = Nat.sqrt(4Q)`. Then `(L+1)² > 4Q` (Nat.lt_succ_sqrt) and `L ≤ 2√Q` (Nat.sqrt_le).
+  Real chain: from `(x−m)m² ≤ xQ` and `4Q<m²` (x=2ⁿ,m=L+1): step1 `4(x−m)m² < x·m²`
+  (×4 on hA, ×x on hB), step2 `3x<4m` (÷m²>0 via nlinarith product trick), then
+  `x < (4/3)m ≤ (4/3)(2√Q+1) ≤ 3√Q+2`. NO probability theory, NO Q>0 needed (chain valid as-is).
+
+### GOTCHAs (for future sessions)
+- **Generalized card_mul_le_second_moment** from `(s:Finset ℕ)` to `{α}(s:Finset α)` so it
+  applies over `A.powerset : Finset (Finset ℕ)`. Proof body unchanged (added `classical`).
+- `-L ≤ x` from `x²<(L+1)²` is NOT real-valid (fails at x=−L−0.5) — MUST get strict
+  `-(L+1)<x` via nlinarith [sq_nonneg(x+(L+1))], THEN omega (integrality) to `-L≤x`.
+- `Nat.cast_nonneg s` bare ⇒ "IsOrderedRing ?m stuck" (ambiguous target). Annotate
+  `(Nat.cast_nonneg s : (0:ℝ) ≤ (s:ℝ))`.
+- `Nat.lt_succ_sqrt`/`Nat.sqrt_le` give `Nat.sqrt(4Qn)` not the `set s` var — `rw [← hs] at h`.
+- Casting ℤ→ℝ: keep the goal in EXPLICIT form (no `set x/mr/qr`) so `exact_mod_cast hPIC/hB`
+  matches; `set` makes the reals opaque to norm_cast.
+- nlinarith `3x<4m` from `4(x−m)m²<x·m²` + `0<m²`: works because neg-goal×(m²>0) gives the
+  refuting product (nlinarith ring-normalizes both sides).
+
+### Status: COMPLETE (axiom eliminated; file VERIFIED 0-axiom). The sharp √(2/π) DFX constant
+(vs the Chebyshev 3 proved here) remains the only open formalization direction — that one
+genuinely needs Berry-Esseen/CLT for discrete distributions.

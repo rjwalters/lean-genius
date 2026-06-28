@@ -30,8 +30,8 @@ The proof uses a variance argument:
 - **Variance lower bound**: Σaᵢ² ≥ (Σaᵢ)²/n (Cauchy–Schwarz)
 - **Sum-max relationship**: max(A) ≥ Σaᵢ/n for finite sets
 - **DFX bound deduction**: 2ⁿ ≤ 3·√n·N + 2 (i.e. N = Ω(2ⁿ/√n)) from the
-  axiomatized Chebyshev anticoncentration bound (order-correct; the sharp √(2/π)
-  constant is the Berry–Esseen literature result, not formalized here)
+  fully proved (0-axiom) Chebyshev anticoncentration bound (order-correct; the sharp
+  √(2/π) constant is the Berry–Esseen literature result, not formalized here)
 
 ## Connection to Prior Work
 
@@ -106,38 +106,33 @@ The core of the DFX proof is an anticoncentration inequality: the number of
 distinct values of a sum of independent bounded random variables is limited
 by the ratio of range to standard deviation.
 
-This step requires probability theory (Berry–Esseen theorem or direct
-anticoncentration bounds) which is axiomatized here.
+The probability-theory route (Berry–Esseen / Chebyshev on the random subset sum) is
+*replaced* here by an elementary, probability-free discrete second-moment argument, so
+the Chebyshev form `2ⁿ ≤ 3√Q + 2` is proved outright (0 axioms) rather than assumed.
 -/
 
-/-- **Chebyshev anticoncentration bound** [Axiom]: If A has n elements with
-    distinct subset sums and Q = Σaᵢ², then:
-      2ⁿ ≤ 3·√Q + 2
+/-! ### The anticoncentration bound `2ⁿ ≤ 3√Q + 2` — now a theorem, not an axiom
 
-    This is the rigorous (Chebyshev) form of the Dubroff–Fox–Xu anticoncentration
-    step. View the 2ⁿ subset sums as the values of the random variable
-    X = Σᵢ εᵢ aᵢ with εᵢ ∈ {0,1} i.i.d. Bernoulli(1/2); then
-      E[X] = S/2,    Var[X] = Σaᵢ²/4 = Q/4,    σ = √Q/2.
-    Chebyshev's inequality gives, for any k > 0,
-      P(|X − S/2| < k) ≥ 1 − Q/(4k²).
-    The distinct-subset-sums hypothesis forces the sums to be *distinct integers*,
-    so the values with |x − S/2| < k are distinct integer points of an open
-    interval of length 2k, of which there are at most 2k + 1. Each such value
-    carries probability 2⁻ⁿ, hence
-      1 − Q/(4k²) ≤ P(|X − S/2| < k) ≤ (2k + 1)·2⁻ⁿ.
-    Taking k = √Q (so Q/(4k²) = 1/4) yields
-      (3/4)·2ⁿ ≤ 2√Q + 1,   i.e.   2ⁿ ≤ (8√Q + 4)/3 ≤ 3√Q + 2.
+This estimate was previously *axiomatized* (the probability-theory route via Chebyshev
+on the random subset sum). It is now **fully proved below** (`anticoncentration_bound`,
+0 axioms) by the elementary, probability-free discrete second-moment argument whose
+ingredients are assembled in this section. The proof is:
 
-    Unlike the sharp √(2/π) constant from Berry–Esseen (the literature bound), the
-    constant 3 here comes only from Chebyshev and is *unconditionally true* — it can
-    in principle be discharged from `ProbabilityTheory.meas_ge_le_variance_div_sq`
-    (Chebyshev) plus the variance computation for the {0,aᵢ} sum. The earlier
-    formulation `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE (e.g. A = {1,2} gives 4 ≤ 2.85);
-    this corrected statement holds for every distinct-subset-sums set, including
-    the asymptotic extremal (powers of two). -/
-axiom anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
-    (hpos : 0 < A.card) :
-    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2
+* the exact discrete variance identity `∑_{T⊆A}(2Σ_T − S)² = 2ⁿ·Q`
+  (`second_moment_identity`);
+* the `2ⁿ` doubled deviations are `2ⁿ` distinct same-parity integers
+  (`card_doubledDrop_image_of_distinct`, `doubledDrop_injOn_of_distinct`);
+* a central-interval count (`card_le_of_sameParity_interval`) and a discrete
+  Chebyshev/Markov tail (`card_mul_le_second_moment`), combined into the
+  parameter-free integer inequality `(2ⁿ − (L+1))·(L+1)² ≤ 2ⁿ·Q`
+  (`powerset_interval_chebyshev`);
+* a real `Nat.sqrt`-based optimisation of the cutoff `L ≈ 2√Q` recovering
+  `2ⁿ ≤ (8√Q + 4)/3 ≤ 3√Q + 2` — the sharp Chebyshev constant `3`.
+
+Unlike the sharp √(2/π) constant from Berry–Esseen (the literature bound), the constant
+`3` here comes only from Chebyshev. The earlier formulation `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was
+mathematically FALSE (e.g. A = {1,2} gives 4 ≤ 2.85); the proved statement
+`2ⁿ ≤ 3√Q + 2` holds for every distinct-subset-sums set. -/
 
 /-! ## Verified ingredients toward discharging `anticoncentration_bound`
 
@@ -208,9 +203,10 @@ weight `g` and a positive threshold `t`, the number of indices with `g i ≥ t`,
 times `t`, is at most the total weight `∑ g i`.  Specialised to
 `g T = (2·Σ_{i∈T} i − S)²` this is the tail count feeding the anticoncentration
 estimate. -/
-theorem card_mul_le_second_moment (s : Finset ℕ) (g : ℕ → ℤ)
+theorem card_mul_le_second_moment {α : Type*} (s : Finset α) (g : α → ℤ)
     (hg : ∀ i ∈ s, 0 ≤ g i) (t : ℤ) :
     ((s.filter (fun i => t ≤ g i)).card : ℤ) * t ≤ ∑ i ∈ s, g i := by
+  classical
   calc ((s.filter (fun i => t ≤ g i)).card : ℤ) * t
       = ∑ _i ∈ s.filter (fun i => t ≤ g i), t := by
         rw [Finset.sum_const, nsmul_eq_mul]
@@ -293,6 +289,149 @@ theorem card_le_of_sameParity_interval (V : Finset ℤ) (p L : ℤ) (hL : 0 ≤ 
   rw [Int.toNat_of_nonneg (by omega)] at this
   exact this
 
+/-- **Central-interval + Chebyshev tail, combined (0 axioms).**  For a
+distinct-subset-sums set `A` and any cutoff `L ≥ 0`, the `2^{|A|}` doubled deviations
+`2·Σ_T − S` split into a central band `|·| ≤ L` (at most `L + 1` of them, since they are
+distinct same-parity integers — `card_le_of_sameParity_interval`) and a tail `|·| ≥ L+1`
+whose count is bounded by the discrete Chebyshev/Markov inequality
+(`card_mul_le_second_moment`) against the second moment `2^{|A|}·Q`
+(`second_moment_identity`).  Eliminating the two counts gives the parameter-free integer
+inequality
+  `(2^{|A|} − (L+1))·(L+1)² ≤ 2^{|A|}·Q`,    `Q = Σ_{i∈A} i²`,
+valid for every `L ≥ 0`.  Optimising `L ≈ 2√Q` turns this into `anticoncentration_bound`. -/
+theorem powerset_interval_chebyshev {A : Finset ℕ} (hDSS : hasDistinctSubsetSums A)
+    (L : ℤ) (hL : 0 ≤ L) :
+    ((2 : ℤ) ^ A.card - (L + 1)) * (L + 1) ^ 2
+      ≤ 2 ^ A.card * ∑ i ∈ A, (i : ℤ) ^ 2 := by
+  classical
+  set f : Finset ℕ → ℤ := fun T => 2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ A, (i : ℤ) with hf
+  -- second moment over the powerset
+  have hsm : ∑ T ∈ A.powerset, f T ^ 2 = 2 ^ A.card * ∑ i ∈ A, (i : ℤ) ^ 2 := by
+    simp only [hf]; exact second_moment_identity A
+  -- injectivity of f on the powerset
+  have hinj : Set.InjOn f (A.powerset : Set (Finset ℕ)) := by
+    simp only [hf]; exact doubledDrop_injOn_of_distinct hDSS
+  -- |x| < L+1 ⇒ −L ≤ x ≤ L (integrality)
+  have habs : ∀ x : ℤ, x ^ 2 < (L + 1) ^ 2 → -L ≤ x ∧ x ≤ L := by
+    intro x hx
+    have hlo : -(L + 1) < x := by nlinarith [hx, hL, sq_nonneg (x + (L + 1))]
+    have hhi : x < L + 1 := by nlinarith [hx, hL, sq_nonneg (x - (L + 1))]
+    omega
+  -- partition the powerset into central band and tail
+  have hpart :
+      (A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).card
+        + (A.powerset.filter (fun T => ¬ (f T ^ 2 < (L + 1) ^ 2))).card
+        = A.powerset.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  -- central band: at most L+1 elements
+  have hcentral :
+      ((A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).card : ℤ) ≤ L + 1 := by
+    have hsub : A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2) ⊆ A.powerset :=
+      Finset.filter_subset _ _
+    have hinj' : Set.InjOn f
+        ((A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)) : Set (Finset ℕ)) :=
+      hinj.mono (by exact_mod_cast hsub)
+    have hpar : ∀ v ∈ (A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).image f,
+        v % 2 = (∑ i ∈ A, (i : ℤ)) % 2 := by
+      intro v hv
+      rw [Finset.mem_image] at hv
+      obtain ⟨T, _, rfl⟩ := hv
+      simp only [hf]; omega
+    have hbd : ∀ v ∈ (A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).image f,
+        -L ≤ v ∧ v ≤ L := by
+      intro v hv
+      rw [Finset.mem_image] at hv
+      obtain ⟨T, hT, rfl⟩ := hv
+      rw [Finset.mem_filter] at hT
+      exact habs (f T) hT.2
+    have himg := card_le_of_sameParity_interval
+      ((A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).image f)
+      (∑ i ∈ A, (i : ℤ)) L hL hpar hbd
+    rwa [Finset.card_image_of_injOn hinj'] at himg
+  -- tail: Chebyshev/Markov against the second moment
+  have hcheb := card_mul_le_second_moment A.powerset (fun T => f T ^ 2)
+    (fun T _ => sq_nonneg _) ((L + 1) ^ 2)
+  rw [hsm] at hcheb
+  have hfilter_eq :
+      A.powerset.filter (fun T => (L + 1) ^ 2 ≤ f T ^ 2)
+        = A.powerset.filter (fun T => ¬ (f T ^ 2 < (L + 1) ^ 2)) :=
+    Finset.filter_congr (fun T _ => by rw [not_lt])
+  rw [hfilter_eq] at hcheb
+  -- card of the powerset is 2^|A|
+  have hPc : (A.powerset.card : ℤ) = 2 ^ A.card := by
+    rw [Finset.card_powerset]; push_cast; ring
+  have hsum :
+      ((A.powerset.filter (fun T => f T ^ 2 < (L + 1) ^ 2)).card : ℤ)
+        + ((A.powerset.filter (fun T => ¬ (f T ^ 2 < (L + 1) ^ 2))).card : ℤ)
+        = 2 ^ A.card := by
+    have h := congrArg (Nat.cast : ℕ → ℤ) hpart
+    push_cast at h
+    rw [h]; exact hPc
+  -- combine: 2^n − (L+1) ≤ tail.card, then multiply by (L+1)² and use Chebyshev
+  have ht_ge :
+      (2 : ℤ) ^ A.card - (L + 1)
+        ≤ ((A.powerset.filter (fun T => ¬ (f T ^ 2 < (L + 1) ^ 2))).card : ℤ) := by
+    linarith [hcentral, hsum]
+  calc ((2 : ℤ) ^ A.card - (L + 1)) * (L + 1) ^ 2
+      ≤ ((A.powerset.filter (fun T => ¬ (f T ^ 2 < (L + 1) ^ 2))).card : ℤ) * (L + 1) ^ 2 := by
+        apply mul_le_mul_of_nonneg_right ht_ge; positivity
+    _ ≤ 2 ^ A.card * ∑ i ∈ A, (i : ℤ) ^ 2 := hcheb
+
+/-- **Chebyshev anticoncentration bound (0 axioms).**  If `A` has `n ≥ 1` elements with
+distinct subset sums and `Q = Σaᵢ²`, then `2ⁿ ≤ 3·√Q + 2`.  This is the discharge of the
+former `anticoncentration_bound` axiom: combine the parameter-free integer inequality
+`powerset_interval_chebyshev` at the cutoff `L = ⌊√(4Q)⌋ = Nat.sqrt(4Q)` (so
+`(L+1)² > 4Q ≥ (L)²`, i.e. `L ≤ 2√Q < L+1`) with the real estimate.  Writing
+`x = 2ⁿ`, `m = L+1`, the integer inequality gives `(x − m)·m² ≤ x·Q`; since `m² > 4Q`
+this forces `3x < 4m ≤ 4(2√Q + 1)`, i.e. `x ≤ (8√Q + 4)/3 ≤ 3√Q + 2`. -/
+theorem anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
+    (hpos : 0 < A.card) :
+    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2 := by
+  classical
+  set Qn : ℕ := A.sum (fun a => a ^ 2) with hQn
+  -- cast Q to ℤ matching the powerset second moment
+  have hQcast : ((Qn : ℕ) : ℤ) = ∑ i ∈ A, (i : ℤ) ^ 2 := by
+    rw [hQn, Nat.cast_sum]
+    exact Finset.sum_congr rfl (fun i _ => by push_cast; ring)
+  -- cutoff L = ⌊√(4Q)⌋
+  set s : ℕ := Nat.sqrt (4 * Qn) with hs
+  set L : ℤ := (s : ℤ) with hLdef
+  have hL : 0 ≤ L := by rw [hLdef]; positivity
+  -- the integer inequality at this cutoff
+  have hPIC := powerset_interval_chebyshev hDSS L hL
+  rw [← hQcast] at hPIC
+  -- (L+1)² > 4Q  (from Nat.lt_succ_sqrt)
+  have hB : (4 * (Qn : ℤ)) < (L + 1) ^ 2 := by
+    have h := Nat.lt_succ_sqrt (4 * Qn)
+    rw [← hs] at h                       -- h : 4*Qn < (s+1)*(s+1)
+    have hcast : (4 * (Qn : ℤ)) < ((s : ℤ) + 1) * ((s : ℤ) + 1) := by exact_mod_cast h
+    rw [hLdef]; nlinarith [hcast]
+  -- s ≤ 2√Q  (from Nat.sqrt_le)
+  have hsr : ((s : ℝ)) ^ 2 ≤ 4 * (Qn : ℝ) := by
+    have h := Nat.sqrt_le (4 * Qn)       -- sqrt(4Qn)*sqrt(4Qn) ≤ 4Qn
+    rw [← hs] at h                        -- h : s*s ≤ 4*Qn
+    have hcast : ((s * s : ℕ) : ℝ) ≤ ((4 * Qn : ℕ) : ℝ) := by exact_mod_cast h
+    push_cast at hcast; nlinarith [hcast]
+  have hr0 : (0 : ℝ) ≤ Real.sqrt (Qn : ℝ) := Real.sqrt_nonneg _
+  have hsqq : Real.sqrt (Qn : ℝ) ^ 2 = (Qn : ℝ) := Real.sq_sqrt (by positivity)
+  have hsle : (s : ℝ) ≤ 2 * Real.sqrt (Qn : ℝ) := by
+    nlinarith [hsr, hsqq, hr0, (Nat.cast_nonneg s : (0 : ℝ) ≤ (s : ℝ)),
+      (by positivity : (0 : ℝ) ≤ (s : ℝ) + 2 * Real.sqrt (Qn : ℝ))]
+  have hLsqrt : (L : ℝ) ≤ 2 * Real.sqrt (Qn : ℝ) := by rw [hLdef]; push_cast; exact hsle
+  -- move the integer facts to ℝ
+  have hxpos : (0 : ℝ) < (2 : ℝ) ^ A.card := by positivity
+  have hA : ((2 : ℝ) ^ A.card - ((L : ℝ) + 1)) * ((L : ℝ) + 1) ^ 2
+      ≤ (2 : ℝ) ^ A.card * (Qn : ℝ) := by exact_mod_cast hPIC
+  have hBr : 4 * (Qn : ℝ) < ((L : ℝ) + 1) ^ 2 := by exact_mod_cast hB
+  -- the optimisation: 3·2ⁿ < 4(L+1) ≤ 8√Q + 4
+  have hm2pos : (0 : ℝ) < ((L : ℝ) + 1) ^ 2 := by positivity
+  have step1 : 4 * ((2 : ℝ) ^ A.card - ((L : ℝ) + 1)) * ((L : ℝ) + 1) ^ 2
+      < (2 : ℝ) ^ A.card * ((L : ℝ) + 1) ^ 2 := by nlinarith [hA, hBr, hxpos]
+  have step2 : 3 * (2 : ℝ) ^ A.card < 4 * ((L : ℝ) + 1) := by nlinarith [step1, hm2pos]
+  have hfin : (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (Qn : ℝ) + 2 := by
+    nlinarith [step2, hLsqrt, hr0]
+  exact hfin
+
 /-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
     elements with distinct subset sums, then:
       2ⁿ ≤ 3·√n·N + 2,    equivalently    N ≥ (2ⁿ − 2) / (3·√n).
@@ -374,26 +513,28 @@ theorem f_two_max : ∃ (A : Finset ℕ), A.card = 2 ∧ A.sup id = 2 := by
 /-! ## Conclusion
 
 The DFX framework is formalized with:
-- 1 axiom (Chebyshev anticoncentration bound `2ⁿ ≤ 3√Q + 2`, true and in
-  principle dischargeable from Mathlib's Chebyshev inequality)
-- 0 sorries (dfx_lower_bound fully proved)
+- **0 axioms** — the Chebyshev anticoncentration bound `2ⁿ ≤ 3√Q + 2`
+  (`anticoncentration_bound`) is now a fully proved theorem, not an axiom
+- 0 sorries (`dfx_lower_bound` fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
 - Small case verifications (proved)
-- The probability-free CORE of the axiom's discharge now proved in-file
-  (`second_moment_identity` and `card_mul_le_second_moment`, both 0-axiom); only
-  the same-parity distinct-integer interval count remains to fully eliminate the
-  axiom. See the "Verified ingredients toward discharging" section above.
 
-The axiom isolates the probability theory (the variance computation plus
-Chebyshev's inequality) that requires Mathlib probability infrastructure to
-formalize directly. The algebraic framework (variance bounds, Cauchy–Schwarz,
-sqrt manipulation) is fully proved.
+The anticoncentration step is discharged by an elementary, probability-free discrete
+second-moment argument (no `MeasureTheory`/`ProbabilityTheory`):
+`second_moment_identity` (the exact variance identity over the powerset),
+`card_doubledDrop_image_of_distinct` (the `2ⁿ` subset sums are `2ⁿ` distinct
+same-parity integers), `card_le_of_sameParity_interval` (central-interval count) and
+`card_mul_le_second_moment` (discrete Chebyshev/Markov tail), combined in
+`powerset_interval_chebyshev` into the parameter-free integer inequality
+`(2ⁿ − (L+1))·(L+1)² ≤ 2ⁿ·Q`, then optimised at the cutoff `L = ⌊√(4Q)⌋` via
+`Nat.sqrt`/`Real.sqrt` to recover the Chebyshev constant `3`.
 
 NOTE (2026-06-27 integrity fix): the previous `anticoncentration_bound` axiom
 `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was mathematically FALSE (it fails already for
 A = {1,2}: it asserts 4 ≤ 2.85), which made the file logically unsound. It was
-replaced with the true Chebyshev bound `2ⁿ ≤ 3√Q + 2`; `dfx_lower_bound` was
-re-derived with the honest (order-correct) constant.
+replaced with the true Chebyshev bound `2ⁿ ≤ 3√Q + 2` (2026-06-28: now proved,
+eliminating the last axiom); `dfx_lower_bound` uses the honest (order-correct)
+constant.
 -/
 
 end Erdos1OQ02
