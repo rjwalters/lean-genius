@@ -30,8 +30,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-27",
-    "iteration": 1,
-    "focus": "Created Proofs/InverseGaloisOQ06OQ02.lean (0-axiom, 0-sorry): cubicMod7 irreducible + linear factors irreducible + pairwise non-associated + squarefree product => packaged Dedekind input q_mod7_factor_type. Complementary to sibling Frobenius track (inverse-galois-a5-oq-01); no overlap.",
+    "iteration": 2,
+    "focus": "Iteration 2: added Proofs/InverseGaloisOQ06OQ02P11.lean (0-axiom, 0-sorry) corroborating the mod-7 (1,1,3) factor type at a second unramified prime p=11 — q mod 11 = (X-4)(X-3)(X^3+2X^2+X-5) into distinct irreducibles, squarefree, with the full coefficient-by-coefficient factorization identity. Iteration 1 created Proofs/InverseGaloisOQ06OQ02.lean (mod-7 packaged Dedekind input q_mod7_factor_type).",
     "blockers": [
       "Dedekind's theorem is not in Mathlib 4.26; the (1,1,3) => 3-cycle => 3 | |Gal| implication stays axiomatized (sibling track)."
     ],
@@ -43,12 +43,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: shipped 0-axiom file upgrading the sibling's no-roots fact to full irreducibility + squarefreeness, packaged as the Dedekind input for the mod-7 route.",
+    "progressSummary": "ACT: shipped 0-axiom mod-7 Dedekind input (q_mod7_factor_type), then corroborated at a second unramified prime p=11 (q_mod11_factor_type, with full factorization identity) — two independent (1,1,3) witnesses, both 0-axiom/0-sorry.",
     "builtItems": [
       "cubicMod7_irreducible via irreducible_of_degree_le_three_of_not_isRoot",
       "pairwise non-association of the three factors (eq_of_monic_of_associated + degree bounds)",
       "q_mod7_squarefree via squarefree_mul_iff and pairwise coprimality",
-      "q_mod7_factor_type packaged Dedekind input"
+      "q_mod7_factor_type packaged Dedekind input",
+      "[p=11 corroboration] InverseGaloisOQ06OQ02P11.lean (0-axiom, 0-sorry): q mod 11 = (X-4)(X-3)(X^3+2X^2+X-5), cubicMod11 irreducible (no roots in F_11), pairwise non-associated, squarefree, AND the full coefficient-by-coefficient factorization identity q_ℤ.map = (X-4)(X-3)*cubicMod11 — an independent (1,1,3) witness at a second unramified prime"
     ],
     "insights": [
       "A degree-3 poly over a field with no root is irreducible: irreducible_of_degree_le_three_of_not_isRoot.",
@@ -61,8 +62,9 @@
       "Frobenius element / inertia degree machinery for number field extensions."
     ],
     "nextSteps": [
-      "Plug q_mod7_factor_type into Dedekind's theorem once available to eliminate three_dvd_gal_card.",
-      "Optionally corroborate at a second unramified prime (e.g. p=11) for an independent (1,1,3) witness."
+      "Plug q_mod7_factor_type (or q_mod11_factor_type) into Dedekind's theorem once available to eliminate three_dvd_gal_card.",
+      "DONE: corroborated at the second unramified prime p=11 (q_mod11_factor_type, independent (1,1,3) witness) in InverseGaloisOQ06OQ02P11.lean.",
+      "Optionally add a third unramified prime, or pursue the sibling Frobenius bridge to actually discharge the axiom."
     ],
     "markdown": "See research/problems/inverse-galois-oq-06-oq-02/knowledge.md"
   },
@@ -87,6 +89,17 @@
   "started": "2026-06-27",
   "lastUpdate": "2026-06-27",
   "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisOQ06OQ02P11.lean",
+      "filename": "InverseGaloisOQ06OQ02P11.lean",
+      "lineCount": 244,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ06OQ02P11.lean"
+    },
     {
       "path": "Proofs/InverseGaloisOQ06OQ02.lean",
       "filename": "InverseGaloisOQ06OQ02.lean",
