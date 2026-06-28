@@ -22,7 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 196,
+    "lineCount": 235,
     "assumptions": "0 literal `axiom` declarations, 0 sorries, and — the point of the file — NO `native_decide`. `#print axioms` reports only the ordinary foundational axioms (propext, Classical.choice, Quot.sound) for every declaration, including the concrete `16` witness; in particular `Lean.ofReduceBool` is absent. Imports the verified Erdos10WIP01 file (and through it Erdos10OQ02 / Erdos10OQ02Popcount) and reuses `popcount`, `isPrimePlusKPowers_iff_popcount`, `Nat.bitIndices`, `Nat.twoPowSum_bitIndices`, and `Nat.bitIndices_two_pow`.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -43,7 +43,7 @@
       }
     ],
     "dateAdded": "2026-06-28",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "parentDependencies": [
       "Erdos10WIP01"
@@ -102,7 +102,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Resolves the parent's open question by supplying the missing decision architecture: re-index the Erdős #10 predicate by the offset m = n−p so that refuting a witness becomes a finite, kernel-decidable ∀ over offsets of bounded popcount, and certify each compositeness obligation by a single small divisor. The smallest concrete witness — 16 is not a prime plus ≤ 1 power of two — is proved axiom-free (no native_decide, no Lean.ofReduceBool), the first member of the Erdős #10 witness family with that status.",
+    "summary": "Resolves the parent's open question by supplying the missing decision architecture: re-index the Erdős #10 predicate by the offset m = n−p so that refuting a witness becomes a finite, kernel-decidable ∀ over offsets of bounded popcount, and certify each compositeness obligation by a single small divisor. Two concrete witnesses are proved axiom-free (no native_decide, no Lean.ofReduceBool): 16, the smallest witness overall (even, closed by kernel decide on its <16 complements), and 905 = 5·181, the smallest ODD witness — every de Polignac number below it is prime, hence representable with zero powers, so 905 is the first odd integer genuinely neither prime nor prime-plus-a-power-of-two. The 905 complements are ~900-sized, overflowing kernel decide, so their compositeness is supplied by norm_num's factor-exhibiting extension — the lightweight analogue of the small-divisor certificate the ~10⁹ witnesses require.",
     "implications": "The offset reformulation is the practical engine for native_decide-free witness certification at any scale: for Grechuk's 1117175146 it reduces the claim to ≈ 5000 compositeness obligations, each dischargeable by not_prime_of_proper_divisor once the covering-congruence factor table (a finite (offset, small prime) data set) is supplied. The proof obligations are all in place; only the data table remains, moving the 10⁹ witness from a native_decide black box to an auditable, axiom-free certificate.",
     "openQuestions": [
       "Assemble the covering-congruence factor table for 1117175146 (≈ 5000 (offset, small prime divisor) pairs) and feed it to not_isPrimePlusKPowers_iff + not_prime_of_proper_divisor for a fully axiom-free certificate of Grechuk's witness.",
@@ -129,9 +129,9 @@
       "Erdos10OQ02"
     ],
     "namespace": "Erdos10WIP01",
-    "lineCount": 196,
+    "lineCount": 235,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "mainTheorems": [
       {
@@ -157,6 +157,12 @@
         "type": "key",
         "description": "Compositeness certificate: a single small proper divisor refutes primality in the kernel",
         "leanType": "{d q : ℕ} → 1 < d → d < q → d ∣ q → ¬ q.Prime"
+      },
+      {
+        "name": "not_isPrimePlusKPowers_one_905",
+        "type": "key",
+        "description": "Smallest ODD witness, axiom-free: 905 = 5·181 is not a prime plus ≤ 1 power of two. The de Polignac numbers below it are all prime (representable with zero powers), so 905 is the first odd integer genuinely neither prime nor prime-plus-a-power-of-two; ~900-sized complements overflow kernel decide so compositeness is via norm_num (no native_decide)",
+        "leanType": "¬ IsPrimePlusKPowers 1 905"
       }
     ],
     "path": "Proofs/Erdos10WIP01OQ01.lean",

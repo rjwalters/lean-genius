@@ -41,6 +41,14 @@ for which `not_prime_of_proper_divisor` below is the kernel-fast tool.
   (`16` is not a prime plus `≤ 1` power of two), certified by kernel `decide`
   through the offset criterion. This is the first *axiom-free* (no `native_decide`)
   member of the Erdős #10 witness family.
+* `not_isPrimePlusKPowers_one_905` — the smallest *odd* witness `905 = 5·181`,
+  also axiom-free. The de Polignac numbers below it are all prime (hence
+  representable with zero powers), so `905` is the first odd integer genuinely
+  neither prime nor prime-plus-a-power-of-two. Its `~900`-sized complements
+  overflow the kernel's default primality `decide`, so compositeness is supplied
+  by `norm_num`'s factor-exhibiting extension — a stepping stone between the tiny
+  `decide`-closed `16` and the small-divisor certificate path the `~10⁹` witnesses
+  need.
 
 The full `1117175146` witness needs its covering-congruence factor table as input data
 (≈ 5000 `(offset, small prime divisor)` pairs); assembling that table is left as data
@@ -181,6 +189,36 @@ theorem not_isPrimePlusKPowers_one_sixteen : ¬ IsPrimePlusKPowers 1 16 := by
       omega
     interval_cases a <;> decide              -- 16 − 2^a ∈ {15,14,12,8,0}, none prime
 
+/-- **Smallest *odd* witness, axiom-free.** `905 = 5·181` is not a prime plus at most one
+power of two. Where `16` is the smallest witness overall (and even), `905` is the smallest
+*odd* one: the de Polignac numbers below it — odd integers not of the form `prime + 2^a` —
+namely `127, 149, 251, 331, 337, 373, 509, 599, 701, 757, 809, 877`, are *all themselves
+prime*, hence representable here with zero powers (`m = 0`). `905 = 5·181` is the first that
+is genuinely neither prime nor prime-plus-a-power-of-two, so it is the smallest odd member of
+the Erdős #10 witness family. Proved through the same offset criterion with no `native_decide`
+(so no `Lean.ofReduceBool`): the popcount-`≤ 1` offsets are `0` and the powers `2^a ≤ 905`
+(so `a ≤ 9`), and each complement
+`905 − m ∈ {905, 904, 903, 901, 897, 889, 873, 841, 777, 649, 393}` is composite — `norm_num`
+exhibits a factor (`5, 2, 3, 17, 3, 7, 3, 29, 3, 11, 3` respectively). Unlike the tiny `16`
+case (numbers `< 16`, closed by kernel `decide`), the `~900`-sized complements overflow the
+kernel's default primality `decide`, so compositeness here is discharged by `norm_num`'s
+factor-exhibiting primality extension — the lightweight analogue of the small-divisor
+certificate `not_prime_of_proper_divisor` that the genuine `~10⁹` witnesses require. -/
+theorem not_isPrimePlusKPowers_one_905 : ¬ IsPrimePlusKPowers 1 905 := by
+  rw [not_isPrimePlusKPowers_iff]
+  intro m hm hpc
+  rw [popcount_le_one_iff] at hpc
+  obtain rfl | ⟨a, rfl⟩ := hpc
+  · norm_num                                  -- m = 0:  905 = 5·181, not prime
+  · -- m = 2^a with 2^a ≤ 905, hence a ≤ 9
+    have ha : a ≤ 9 := by
+      by_contra h
+      have h1024 : (1024 : ℕ) ≤ 2 ^ a := by
+        calc (1024 : ℕ) = 2 ^ 10 := by norm_num
+          _ ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) (by omega)
+      omega
+    interval_cases a <;> norm_num             -- each 905 − 2^a is composite
+
 /-- Sanity check that the offset criterion is the *right* equivalence: `15` *is* a prime
 plus one power of two (`15 = 13 + 2`), witnessed by the offset `m = 2`. -/
 theorem isPrimePlusKPowers_one_fifteen : IsPrimePlusKPowers 1 15 := by
@@ -192,5 +230,6 @@ theorem isPrimePlusKPowers_one_fifteen : IsPrimePlusKPowers 1 15 := by
 #check @not_prime_of_proper_divisor
 #check @popcount_le_one_iff
 #check @not_isPrimePlusKPowers_one_sixteen
+#check @not_isPrimePlusKPowers_one_905
 
 end Erdos10WIP01
