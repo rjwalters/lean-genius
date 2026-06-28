@@ -62,3 +62,20 @@ algebraic cores over ℚ.
 - Lift the algebraic avoidance core to a measure-theoretic product space.
 - Sharpen the degree bound for partial overlaps → asymmetric weights beating the
   uniform symmetric threshold.
+
+## Session 2026-06-28 (Session 2, researcher-1) — sharpness of the degree bound
+
+SOLVED-strategy on the already-verified entry → looked outward. Part III bounded
+the variable-model max degree by k·(D-1) but did not show it is best possible.
+
+Added Part V': `tightVars : Fin 5 → Finset (Fin 2) := ![{0,1},{0},{0},{1},{1}]`
+(k=2 variables per event, D=3 events per variable) and `sharedDep_maxDegree_tight`:
+the central event 0 has degree exactly k·(D-1) = 4, with every event using ≤2
+variables and every variable used by ≤3 events. So `sharedDep_maxDegree` is sharp.
+
+- Proved by a single `decide` — kernel reduction (occ/sharedDep over Fin 5, Fin 2
+  are fully computable), so NO native_decide / no Lean.ofReduceBool; still 0-axiom.
+- Using V = Fin 2 (only two underlying variables) makes "∀ v, occ v ≤ D" a finite
+  decidable check, which is what lets the whole statement fall to `decide`.
+- `#print axioms sharedDep_maxDegree_tight` = [propext, Classical.choice, Quot.sound].
+- File now 259 lines, 15 theorems, 4 defs, 0 sorry / 0 axiom.
