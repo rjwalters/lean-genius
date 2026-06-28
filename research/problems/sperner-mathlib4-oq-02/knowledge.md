@@ -318,3 +318,55 @@ invariant for n≥2), and complements PR #30917's `count_parity_not_invariant`
   graph, degree ≤ 2, and `Odd #{boundary ends}` via inductive (n−1)-Tucker
   (NOT raw ring parity).
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-27 (researcher-3) — ACT: exact door-counting identity (parity → equation)
+
+**Mode**: REVISIT (RICH; n=1 line + abstract n≥2 engines already verified). 
+**Outcome**: progress (ACT) — strengthened `SpernerTuckerDoorIncidenceParity.lean`,
+0 sorries, 0 axioms (propext/Classical.choice/Quot.sound; plain `decide`/`omega`, no
+`native_decide`/`ofReduceBool`). Offline `LAKE_UNSAFE=1 ./bin/lake env lean` EXIT 0.
+
+### What I Did
+The incidence engine proved only the **mod-2** bridge
+`#{odd-door cells} ≡ #{boundary doors}`. Upgraded it to the **exact integer identity**
+underneath:
+- `IsInteriorDoor d := cellCount d = 2` (+ Decidable instance).
+- `sum_doorCount_eq_boundary_add_two_interior` : when every door touches one or two
+  cells (`1 ≤ cellCount d ≤ 2`),
+  `∑_c doorCount c = #{boundary doors} + 2·#{interior doors}` — each boundary door
+  counted once (its single cell), each interior door twice (both cells). Reducing
+  mod 2 kills the `2·…` term and recovers `card_odd_doorCount_modEq_card_boundaryDoor`.
+- `card_interior_eq` : solving for interior doors,
+  `2·#{interior} = ∑ doorCount − #{boundary}`.
+
+### Key Findings / why it's the right strengthening
+- The pre-existing results were all *parity* (`% 2` / `Odd` / `Even`) shadows of one
+  exact count. The identity is the door-complex analogue of the handshaking *equation*
+  `∑ deg = 2·#edges` generalised to allow degree-1 (boundary) doors: boundary doors are
+  precisely the "odd" defect that the pure handshaking lemma cannot see.
+- Makes the interior-door count a derived quantity, useful for the n≥2 Euler-type
+  bookkeeping (boundary doors come from inductive (n−1)-Tucker; interior doors are then
+  pinned by this equation).
+
+### GOTCHAs
+- `Finset.sum_ite` after rewriting the summand as `if IsBoundaryDoor … then 1 else 2`
+  yields the boundary card via the *eta-expanded* predicate `fun d => IsBoundaryDoor inc d`
+  whereas the goal's RHS uses `IsBoundaryDoor inc`; `ring` (not `omega`) closes the final
+  `A + B*2 = A + 2*B` because it unifies the eta-differing card atoms up to defeq.
+- The `¬ IsBoundaryDoor` filter equals the `IsInteriorDoor` filter only under
+  `1 ≤ cellCount ≤ 2` (`Finset.filter_congr` + `omega`).
+
+### Honest status
+- Infrastructure / sharpening, NOT new Tucker mathematics: the n≥2 geometric
+  instantiation (building the almost-complementary door complex and getting
+  `Odd #{boundary doors}` from inductive (n−1)-Tucker) remains the genuine open lever,
+  as flagged by every prior session. Value: turns the engine's parity output into an exact
+  count and exposes the interior-door quantity.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerDoorIncidenceParity.lean (+2 theorems 8→10, +1 def 3→4, 217→280 lines; 0 axioms, 0 sorries)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (registered the file in leanFiles + currentState)
+
+### Next Steps (unchanged genuine lever)
+- n≥2 geometric door complex + `Odd #{boundary doors}` via inductive (n−1)-Tucker, then
+  feed `exists_odd_doorCount_of_odd_boundary` → `SpernerTuckerPathFollowing`.
