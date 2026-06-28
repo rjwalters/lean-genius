@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-04",
   "title": "Feuerbach's Theorem in Non-Euclidean Geometry",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -19,16 +19,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-22T12:51:58.293Z",
-    "iteration": 2,
-    "focus": "Spherical model chosen; metric foundations formalized (chord-cosine bridge + spherical distance well-definedness).",
+    "phase": "ACT",
+    "since": "2026-06-28T10:40:00.000Z",
+    "iteration": 3,
+    "focus": "Spherical circles (level sets of scos) + internal/external tangency relations formalized on top of the metric layer; level-set circle identified with the metric circle (mem_sCircle_iff_sdist).",
     "blockers": [],
-    "nextAction": "Construct spherical circle / incircle / nine-point primitives on top of scos/sdist; state and attempt the spherical tangency criterion sdist O1 O2 = |rho1 - rho2|.",
+    "nextAction": "Tangent-point existence: exhibit the unique common point on the geodesic between centres for tangent circles (spherical slerp) and verify it lies on both sCircles; then build spherical incircle / nine-point circle and attempt the spherical Feuerbach tangency.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -90,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-06-28T00:00:00.000Z",
+  "lastUpdate": "2026-06-28T10:40:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
