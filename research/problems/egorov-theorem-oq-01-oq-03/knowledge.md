@@ -1,0 +1,65 @@
+# Knowledge Base: egorov-theorem-oq-01-oq-03
+
+Sharpness of Egorov's theorem: the **finite-measure hypothesis is essential**.
+
+---
+
+## Problem Summary
+
+Egorov's theorem upgrades a.e. convergence to uniform convergence off a set of
+arbitrarily small measure — but only on a measure space of **finite** measure.
+This problem asks to formalize that the finiteness hypothesis cannot be dropped:
+on `(ℝ, Lebesgue)` exhibit a sequence converging to `0` everywhere pointwise that
+admits no finite-measure set off which the convergence is uniform.
+
+**Witness:** the marching indicators `fₙ = 𝟙_[n,n+1]`.
+
+---
+
+## Status: COMPLETED (verified, 0-axiom)
+
+Proved in `proofs/Proofs/EgorovTheoremOQ01OQ03.lean` (134 lines, 4 theorems,
+1 definition, 0 sorries, 0 axioms — only `propext`/`Classical.choice`/`Quot.sound`).
+
+---
+
+## Session 2026-06-27 (Session 1) - Construct and prove
+
+**Mode**: FRESH
+**Outcome**: completed
+
+### What I Did
+- Defined `marching n = (Set.Icc n (n+1)).indicator 1`, the unit bump on `[n,n+1]`.
+- Proved `marching_tendsto_zero`: `fₙ(x) → 0` at **every** `x ∈ ℝ` (eventually-0
+  via `exists_nat_gt` + `Set.indicator_of_notMem`, then `tendsto_congr'`).
+- Proved the headline `marching_not_tendstoUniformlyOn_of_volume_lt_top`: for any
+  `s` with `vol s < ⊤`, `fₙ` is not uniform on `sᶜ`.
+- Packaged `volume_finite_hypothesis_essential` (no finite-measure exceptional set
+  exists) and `marching_not_tendstoUniformlyOn_univ` (`s = ∅` corollary).
+
+### Key Findings
+- The negation of `TendstoUniformlyOn` is clean via `Metric.tendstoUniformlyOn_iff`
+  at `ε = 1/2`: since the indicator is `{0,1}`-valued, `dist(0, fₙ x) < 1/2` forces
+  `fₙ x = 0`, i.e. `[n,n+1] ⊆ s` for all large `n`.
+- The contradiction is purely measure-monotone: `[N,∞) ⊆ s` ⇒ `vol s ≥ vol[N,∞) = ∞`
+  via `Real.volume_Ici` + `measure_mono`. **No measurability of `s` is needed**, so
+  the statement is slightly stronger than the textbook (measurable-`s`) version.
+- This is genuinely distinct from the parent `egorov-theorem-oq-01`, which proves
+  the *removed null set* cannot be omitted on a finite-measure example (`xⁿ` on
+  `[0,1]`). Here the *ambient finiteness* itself is what fails. Together they bound
+  Egorov from both sides.
+
+### Mathlib notes
+- `Real.volume_Ici : volume (Set.Ici a) = ∞` — exactly the infinite-tail fact needed.
+- `Set.indicator_of_not_mem` is deprecated → use `Set.indicator_of_notMem`.
+- Floor placement of `x ≥ N` into a bump: `Nat.le_floor`, `Nat.floor_le`,
+  `Nat.lt_floor_add_one`.
+
+### Files Modified
+- `proofs/Proofs/EgorovTheoremOQ01OQ03.lean` (new)
+- `src/data/proofs/egorov-theorem-oq-01-oq-03/{meta,annotations}.json` (new)
+
+### Next Steps
+- None required; problem resolved. Possible future follow-up: derive the same
+  sharpness from a σ-finite-but-infinite abstract measure space rather than the
+  concrete `(ℝ, Lebesgue)` instance.
