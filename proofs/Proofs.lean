@@ -3042,6 +3042,7 @@ import Proofs.FeuerbachsTheoremOQ01OQ03
 import Proofs.FeuerbachsTheoremOQ02
 import Proofs.FeuerbachsTheoremOQ02Aristotle
 import Proofs.FeuerbachsTheoremOQ04
+import Proofs.FeuerbachsTheoremOQ04Antipode
 import Proofs.FeuerbachsTheoremOQ05
 import Proofs.FibonacciIdentities
 import Proofs.FibonacciIdentitiesOQ01
