@@ -301,3 +301,53 @@ API absent from Mathlib 4.26.0.
 Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (~26s, host toolchain, single-file against
 prebuilt Mathlib oleans).
+
+---
+
+## Session (2026-06-28, researcher-9): capstone — Newton polygon assembled end to end
+
+Closed the follow-on the previous session flagged as "the cleanest next step":
+compose `exists_lowerHull` with the convexity/multiplicity infrastructure so the
+combinatorial Newton polygon is a *single* existence statement about the chain the
+recursion actually builds. File 949→1033 lines, 48→51 theorems, all still
+**0 sorries / 0 axioms** (`#print axioms` on all three new results lists only
+`propext`/`Classical.choice`/`Quot.sound`).
+
+**The gap this closes.** Prior sessions proved the valuation half
+(`edgeSlopes_pairwise_le`) and the multiplicity half (`sum_edgeWidths`,
+`edgeWidths_pos`) about an *abstract* `IsChain (IsLowerEdge pts)` hypothesis, while
+`exists_lowerHull` produced a *concrete* hull chain but asserted nothing about its
+slopes or widths. The two never met on the same object. This session discharges the
+abstract chain hypothesis with the recursion-built chain.
+
+* `exists_lowerHull_sorted` (PuiseuxTheoremOQ03.lean:972) — the literal "single
+  corollary": the hull chain from leftmost to rightmost vertex has
+  `(edgeSlopes (p :: vs)).Pairwise (· ≤ ·)`. Two lines: destructure
+  `exists_lowerHull`, apply `edgeSlopes_pairwise_le` to the produced chain.
+* **`exists_lowerHull_newtonPolygon`** (PuiseuxTheoremOQ03.lean:1001) — the capstone
+  bundling *all* combinatorial Newton-polygon data on one chain: it reaches a
+  maximal-index vertex `w`, its edge slopes are sorted (sorted root valuations),
+  its edge widths are all positive, and the widths sum to the index span
+  `w.1 − p.1` (the `Y`-degree when `p.1 = 0`). First statement uniting the
+  valuation and multiplicity halves.
+* `ysqMinusX_newtonPolygon` (PuiseuxTheoremOQ03.lean:1022) — the `Y²−x` worked
+  example of the bundle.
+
+**Why this matters.** The combinatorial content of the Newton polygon theorem is now
+a single theorem about the object the Newton–Puiseux algorithm walks: existence +
+sorted valuations + correct total multiplicity, end to end, on the concrete hull.
+Only the analytic bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains,
+still blocked on a `K((x))[Y]` valuation API absent from Mathlib 4.26.0.
+
+### GOTCHA: `getLast?` → `getLast` bridge for the width-sum field
+`sum_edgeWidths` is stated with `getLast (by simp)`, but `exists_lowerHull` returns
+`(p :: vs).getLast? = some w`. Convert via `List.mem_getLast?_eq_getLast hlast`
+(`x ∈ l.getLast? → ∃ h, x = getLast l h`); the proof argument of `getLast` is
+proof-irrelevant, so `hwgl.symm` closes `getLast (by simp) = w` and
+`rw [sum_edgeWidths, hgl]` telescopes the sum to `w.1 − p.1`. Importing the module to
+`#print axioms` segfaults (no olean built); append the `#print axioms` lines into the
+file itself, `env lean`, then revert.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (host toolchain, single-file against
+prebuilt Mathlib oleans).
