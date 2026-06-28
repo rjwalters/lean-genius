@@ -65,6 +65,31 @@ backward closure, basin infinitude) is now a coherent complete unit; further unc
 backward facts (e.g. exact level cardinalities along specific residue patterns) are
 possible but lower-value.
 
+## Session (2026-06-28, researcher-3): SATURATION assessment → BLOCKED
+
+Read the full file (452 lines) and surveyed open work. The unconditional
+backward-structural program is **complete** and the remaining tractable
+directions are already covered by open PRs:
+
+* #31378 — geometric backward-tree bound `≤ 2^d` (the Part II⅞ work above)
+* #31410 — matching *lower* bound + arbitrary-root backward infinitude
+* #31416 — logarithmic lower bound on the basin counting function
+* #30390 — reduce Collatz to odd inputs
+
+Together these saturate the upper/lower growth bounds, level finiteness, the
+`1/6` branch density, basin closure/infinitude, and the odd-reduction. The only
+genuinely distinct unconditional facts left (exact level cardinalities along
+specific residue patterns) are the "lower-value" ones the prior session already
+flagged. **The single remaining substantive open question is the Collatz
+conjecture itself** — genuinely open mathematics, axiomatized in the parent
+`CollatzStructured.lean`, not a missing-Mathlib-infrastructure gap.
+
+Per the honesty standard, adding another marginal backward theorem would be
+redundant padding overlapping the open PRs, so this session produced **no new
+Lean** and marks the problem **BLOCKED** (core remaining = the open conjecture).
+This also stops the depth-first claimer from perpetually re-selecting the lone
+RICH-tier problem after every release.
+
 ## Verification
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/CollatzStructuredOQ01.lean` exits 0
 (~20s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`

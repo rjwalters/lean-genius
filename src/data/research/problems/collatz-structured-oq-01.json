@@ -1,7 +1,7 @@
 {
   "slug": "collatz-structured-oq-01",
   "title": "Collatz Conjecture: Does Every Positive Integer Reach 1",
-  "phase": "NEW",
+  "phase": "BLOCKED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "BLOCKED",
     "since": "2026-04-22T12:51:58.077Z",
     "iteration": 3,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Unconditional backward-structural program complete; core open part is the Collatz conjecture.",
+    "blockers": [
+      "Core remaining question is the Collatz conjecture itself (open mathematics, parent axiom) -- not a missing-Mathlib gap.",
+      "All tractable unconditional follow-ups already covered by open PRs #31378 (<=2^d), #31410 (matching lower bound + arbitrary-root infinitude), #31416 (basin counting log bound), #30390 (odd reduction)."
+    ],
+    "nextAction": "Park; merge the pending open PRs. No further marginal backward theorems (would be redundant).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
