@@ -39,7 +39,8 @@
       "The trace/principal-minor/determinant Cayley–Hamilton identity is NOT what Mathlib's `Matrix.aeval_self_charpoly` provides — that theorem is phrased via the abstract `charpoly` polynomial — so the bare 3×3 identity must be proved from scratch, exactly as in the parent's 2×2 case.",
       "The middle coefficient c₂ is the sum of the three 2×2 principal minors, i.e. the second elementary symmetric function of the eigenvalues; naming it as a definition makes the identity read like the textbook characteristic polynomial X³ − (tr A)X² + c₂X − det A.",
       "Once reduced to entries by `fin_cases` over Fin 3, each of the nine matrix-entry equations is a polynomial identity of degree 3 in the nine entries that `ring` closes, keeping the file self-contained down to the ring axioms.",
-      "The cube reduction A³ = (tr A)·A² − c₂·A + (det A)·1 is the degree-3 linear recurrence underlying closed forms for Aⁿ, matrix exponentials, and resolvents of 3×3 matrices."
+      "The cube reduction A³ = (tr A)·A² − c₂·A + (det A)·1 is the degree-3 linear recurrence underlying closed forms for Aⁿ, matrix exponentials, and resolvents of 3×3 matrices.",
+      "The identity is a polynomial identity over an ARBITRARY commutative ring — no field, no division, no actual eigenvalues are required. The eigenvalue language (tr, c₂, det as e₁, e₂, e₃ of the spectrum) is only heuristic motivation; the entrywise `ring` proof certifies the far more general ring-theoretic statement, which is precisely why it holds for integer, modular, or polynomial-entry matrices that may have no eigenvalues in the base ring at all."
     ],
     "prerequisites": [
       "3×3 matrix arithmetic: trace, determinant, matrix multiplication",
@@ -74,6 +75,22 @@
       "targetId": "cayley-hamilton",
       "relationship": "extends",
       "description": "The 3×3 case of the Cayley–Hamilton theorem, proved explicitly in trace/principal-minor/determinant form."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cayley, A.",
+      "title": "A Memoir on the Theory of Matrices",
+      "year": "1858",
+      "venue": "Philosophical Transactions of the Royal Society of London, vol. 148, pp. 17–37",
+      "note": "Introduces the theorem now called Cayley–Hamilton and verifies it explicitly for 2×2 and 3×3 matrices by direct computation, declining 'the labour of a formal proof' in general — exactly the 3×3 computation this file formalizes."
+    },
+    {
+      "authors": "Horn, R. A. and Johnson, C. R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "§2.4 (the Cayley–Hamilton theorem) and §1.2 (characteristic polynomial, trace, and the elementary symmetric functions of the eigenvalues as its coefficients)."
     }
   ],
   "sections": [
