@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 322,
+    "lineCount": 367,
     "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -211,13 +211,16 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 322,
+    "lineCount": 367,
     "axiomCount": 1,
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
     "sorries": 0
   },
   "sorries": 0,
-  "assumptions": "One axiom: anticoncentration_bound — the Chebyshev anticoncentration bound 2ⁿ ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sum sets. It is unconditionally true (Chebyshev's inequality applied to X = Σ εᵢaᵢ, plus the distinctness counting argument) and in principle dischargeable from Mathlib's `ProbabilityTheory` Chebyshev lemmas. dfx_lower_bound and the variance/Cauchy–Schwarz lemmas are fully proved (0 sorries). NOTE: the earlier axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE and has been corrected. Progress (2026-06-28): the probability-free core of the axiom's discharge is now proved in-file with 0 axioms — second_moment_identity (∑_{T⊆A}(2·ΣT−S)² = 2^|A|·Σaᵢ²) and card_mul_le_second_moment (discrete Chebyshev tail count). The only remaining step to eliminate the axiom is the same-parity distinct-integer central-interval count."
+  "assumptions": "One axiom: anticoncentration_bound — the Chebyshev anticoncentration bound 2ⁿ ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sum sets. It is unconditionally true (Chebyshev's inequality applied to X = Σ εᵢaᵢ, plus the distinctness counting argument) and in principle dischargeable from Mathlib's `ProbabilityTheory` Chebyshev lemmas. dfx_lower_bound and the variance/Cauchy–Schwarz lemmas are fully proved (0 sorries). NOTE: the earlier axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE and has been corrected. Progress (2026-06-28): the probability-free core of the axiom's discharge is now proved in-file with 0 axioms — second_moment_identity (∑_{T⊆A}(2·ΣT−S)² = 2^|A|·Σaᵢ²) and card_mul_le_second_moment (discrete Chebyshev tail count). The only remaining step to eliminate the axiom is the same-parity distinct-integer central-interval count.",
+  "highlights": [
+    "Verified inputs toward discharging the anticoncentration axiom (0-axiom): subset sums are injective on the powerset for a distinct-subset-sums set (subsetSum_injOn_of_distinct), hence the 2^|A| doubled deviations 2*Sum_T - S are 2^|A| DISTINCT integers (card_doubledDrop_image_of_distinct) -- the precise 'distinct integers' input to the central-interval count that recovers the sharp constant 3. Joins second_moment_identity + card_mul_le_second_moment; only the parity-aware interval count + real-sqrt combine remain."
+  ]
 }

@@ -87,3 +87,39 @@ NOT the (M³−M)/12 spread.
 `Finset.card_insert_of_not_mem` is deprecated → `Finset.card_insert_of_notMem`.
 Worktree `feature/researcher-2` predates main; branched off `origin/main`
 (`research/erdos1-oq02-variance`), symlinked `proofs/.lake`, verified `lake env lean`.
+
+## Session 2026-06-28 (researcher-3, cycle 2) — BUILD: distinct-integers input landed (0-axiom)
+
+**Mode**: BUILD (Docker down; offline `LAKE_UNSAFE=1 ./bin/lake env lean`, REAL_EXIT 0, clean).
+**Outcome**: progress — landed the "2ⁿ distinct integers" input that researcher-2's CORRECTION
+flagged as the remaining BUILD step. Axiom still present (full discharge is multi-step).
+
+### What I Did
+Added 3 verified (0-axiom) lemmas after `card_mul_le_second_moment`:
+- `subsetSum_injOn_of_distinct` : `Set.InjOn (T ↦ ∑_{i∈T}(i:ℤ)) ↑A.powerset` for a
+  distinct-subset-sums `A`. Definitional content of `hasDistinctSubsetSums` transported to ℤ
+  via `Nat.cast_sum` (`((U.sum id:ℕ):ℤ) = ∑_{i∈U}(i:ℤ)`).
+- `doubledDrop_injOn_of_distinct` : same InjOn for `T ↦ 2·∑_{i∈T} − S` (affine reparam; `omega`
+  after a `show` to beta-reduce the InjOn goal).
+- `card_doubledDrop_image_of_distinct` : `(A.powerset.image (T ↦ 2·∑_T − S)).card = 2^|A|`
+  via `Finset.card_image_of_injOn` + `card_powerset`. This is the precise **2ⁿ distinct
+  integers** input to the central-interval count.
+
+### GOTCHAs
+- A lambda `fun T => ∑ i ∈ T, (i:ℤ)` defaults `T : Finset ℤ` (the `(i:ℤ)` types `i` as ℤ).
+  MUST annotate `fun T : Finset ℕ => …` or InjOn/image typecheck against `Finset ℤ`.
+- `Set.InjOn` goals leave β-redexes `(fun T => …) S`; `omega`/atoms don't see through them —
+  add `show <beta-reduced eq>` first.
+
+### Remaining to discharge `anticoncentration_bound` (now isolated to 2 steps)
+1. **Parity-aware central-interval count**: the `card_doubledDrop_image` integers are all
+   `≡ S (mod 2)`; distinct same-parity integers in `(−r, r)` number `≤ r+1`. (Pure ℤ/Finset.)
+2. **Combine over ℝ**: Chebyshev tail (`card_mul_le_second_moment` with `g T = (2∑_T−S)²`,
+   `t = 4Q`) ⟹ `#{|·|≥2√Q} ≤ 2ⁿ/4`, so `(3/4)2ⁿ ≤ 2√Q+1 ⟹ 2ⁿ ≤ (8√Q+4)/3 ≤ 3√Q+2`.
+   The only analysis is `Real.sqrt` monotonicity / `Real.sq_sqrt`.
+
+### Files Modified
+- proofs/Proofs/Erdos1OQ02.lean (+3 theorems 10→13, 322→367 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/erdos-1-oq-02/meta.json (counts 322/10 → 367/13 + highlight)
+
+### Status: IN-PROGRESS (axiom not yet discharged).
