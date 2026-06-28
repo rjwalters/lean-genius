@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T19:00:00-07:00
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 ACT — completed de-risk **component (1)**: the residue-drop engine now AUTO-DERIVES the
