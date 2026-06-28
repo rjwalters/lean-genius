@@ -139,6 +139,87 @@ axiom anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
     (hpos : 0 < A.card) :
     (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2
 
+/-! ## Verified ingredients toward discharging `anticoncentration_bound`
+
+The axiom above isolates the anticoncentration estimate `2ⁿ ≤ 3√Q + 2`
+(`Q = Σaᵢ²`).  Its standard proofs go through probability theory (Chebyshev on the
+random subset sum).  The two lemmas below are the *probability-free* core of an
+elementary discharge, both fully verified (0 axioms):
+
+* `second_moment_identity` — the exact second-moment identity over the powerset,
+  `∑_{T ⊆ A} (2·(Σ_{i∈T} i) − Σ_{i∈A} i)² = 2^{|A|} · Σ_{i∈A} i²`.  This is the
+  discrete variance computation (`Var = Q/4` rescaled by `2ⁿ`, doubled to stay in
+  `ℤ`), proved by induction on `A`: inserting a new element `a` doubles the
+  powerset and replaces each drop `d` by the pair `d ± a`, and
+  `(d−a)² + (d+a)² = 2d² + 2a²` gives the `f(A∪{a}) = 2 f(A) + 2^{|A|+1} a²`
+  recurrence that matches `2^{|A|} Q`.
+* `card_mul_le_second_moment` — the elementary discrete Chebyshev/Markov count:
+  for nonnegative `g`, `#{i : t ≤ g i} · t ≤ ∑ g i`.  Applied to
+  `g T = (2·(Σ_{i∈T} i) − S)²` this bounds how many subset sums lie far from the
+  mean.
+
+**Remaining step (and a constant correction).** To finish the discharge one combines
+these with the fact that the `2ⁿ` subset sums of a distinct-subset-sums set are
+*distinct integers* of one fixed parity (`2·(Σ_T) − S ≡ S mod 2`).  Counting the
+distinct same-parity integers inside the central interval `|2·Σ_T − S| < t` gives
+`≤ t + 1`, and with `t = 2√Q` the Chebyshev tail removes a `2ⁿ/4` fraction, leaving
+`(3/4)·2ⁿ ≤ 2√Q + 1`, i.e. `2ⁿ ≤ (8√Q + 4)/3 ≤ 3√Q + 2` — the axiom's constant.
+NOTE: the *pure* second-moment route (lower-bounding `∑(2Σ_T − S)² ≥ (M³−M)/12`
+for `M = 2ⁿ` distinct integers) only yields `2ⁿ ≤ √(12Q + 1) ≈ 3.46√Q`, which is
+**weaker** than `3√Q + 2`; the central-interval-count step (using parity) is what
+recovers the sharper constant `3`. -/
+
+/-- **Second-moment identity over the powerset (0 axioms).**  For any finite set
+`A` of naturals, the doubled deviations `2·(Σ_{i∈T} i) − S` (where `S = Σ_{i∈A} i`)
+have second moment exactly `2^{|A|} · Σ_{i∈A} i²` when summed over all subsets `T`.
+This is the discrete variance computation at the heart of the DFX anticoncentration
+bound, kept in `ℤ` via doubling to avoid the half-integer mean. -/
+theorem second_moment_identity (A : Finset ℕ) :
+    ∑ T ∈ A.powerset, (2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ A, (i : ℤ)) ^ 2
+      = 2 ^ A.card * ∑ i ∈ A, (i : ℤ) ^ 2 := by
+  induction A using Finset.induction with
+  | empty => simp
+  | @insert a s ha ih =>
+    rw [Finset.sum_powerset_insert ha]
+    have hS : (∑ i ∈ insert a s, (i : ℤ)) = (a : ℤ) + ∑ i ∈ s, (i : ℤ) := by
+      rw [Finset.sum_insert ha]
+    have h1 : ∑ T ∈ s.powerset, (2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ insert a s, (i : ℤ)) ^ 2
+        = ∑ T ∈ s.powerset, ((2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ s, (i : ℤ)) - a) ^ 2 := by
+      refine Finset.sum_congr rfl (fun T _ => ?_)
+      rw [hS]; ring
+    have h2 : ∑ T ∈ s.powerset, (2 * (∑ i ∈ insert a T, (i : ℤ)) - ∑ i ∈ insert a s, (i : ℤ)) ^ 2
+        = ∑ T ∈ s.powerset, ((2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ s, (i : ℤ)) + a) ^ 2 := by
+      refine Finset.sum_congr rfl (fun T hT => ?_)
+      have haT : a ∉ T := fun h => ha (Finset.mem_powerset.mp hT h)
+      rw [hS, Finset.sum_insert haT]; ring
+    rw [h1, h2, ← Finset.sum_add_distrib]
+    have hcomb : ∀ T : Finset ℕ,
+        ((2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ s, (i : ℤ)) - a) ^ 2
+          + ((2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ s, (i : ℤ)) + a) ^ 2
+        = 2 * (2 * (∑ i ∈ T, (i : ℤ)) - ∑ i ∈ s, (i : ℤ)) ^ 2 + 2 * (a : ℤ) ^ 2 :=
+      fun T => by ring
+    rw [Finset.sum_congr rfl (fun T _ => hcomb T), Finset.sum_add_distrib,
+      ← Finset.mul_sum, ih, Finset.sum_const, Finset.card_powerset,
+      Finset.card_insert_of_notMem ha, Finset.sum_insert ha]
+    ring
+
+/-- **Discrete Chebyshev/Markov count (0 axioms).**  For a nonnegative integer
+weight `g` and a positive threshold `t`, the number of indices with `g i ≥ t`,
+times `t`, is at most the total weight `∑ g i`.  Specialised to
+`g T = (2·Σ_{i∈T} i − S)²` this is the tail count feeding the anticoncentration
+estimate. -/
+theorem card_mul_le_second_moment (s : Finset ℕ) (g : ℕ → ℤ)
+    (hg : ∀ i ∈ s, 0 ≤ g i) (t : ℤ) :
+    ((s.filter (fun i => t ≤ g i)).card : ℤ) * t ≤ ∑ i ∈ s, g i := by
+  calc ((s.filter (fun i => t ≤ g i)).card : ℤ) * t
+      = ∑ _i ∈ s.filter (fun i => t ≤ g i), t := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ∑ i ∈ s.filter (fun i => t ≤ g i), g i :=
+        Finset.sum_le_sum (fun i hi => (Finset.mem_filter.mp hi).2)
+    _ ≤ ∑ i ∈ s, g i :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+          (fun i hi _ => hg i hi)
+
 /-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
     elements with distinct subset sums, then:
       2ⁿ ≤ 3·√n·N + 2,    equivalently    N ≥ (2ⁿ − 2) / (3·√n).
@@ -225,6 +306,10 @@ The DFX framework is formalized with:
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
 - Small case verifications (proved)
+- The probability-free CORE of the axiom's discharge now proved in-file
+  (`second_moment_identity` and `card_mul_le_second_moment`, both 0-axiom); only
+  the same-parity distinct-integer interval count remains to fully eliminate the
+  axiom. See the "Verified ingredients toward discharging" section above.
 
 The axiom isolates the probability theory (the variance computation plus
 Chebyshev's inequality) that requires Mathlib probability infrastructure to
