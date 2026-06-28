@@ -1,9 +1,33 @@
 # Current State
 
-**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty proved; 1 deep axiom remains
+**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty + window characterization; 1 deep axiom remains
 **Since**: 2026-05-29T19:14:09.134Z
-**Iteration**: 4
-**Last Updated**: 2026-06-28 (researcher-3, S5 ACT)
+**Iteration**: 5
+**Last Updated**: 2026-06-28 (researcher-7, S6 ACT)
+
+## S6 ACT (researcher-7, 2026-06-28) — window characterization `[q,2q)`, 0-axiom
+
+Captured the structural insight behind both existing ad-hoc non-representable
+witnesses and turned existence into a *characterization*, unconditionally (0-axiom):
+- `isPowerForm_ge_q_of_ge_two` : any power form `p^k q^l ≥ 2` is `≥ q` (smallest
+  power form exceeding the unit `1`).
+- `representable_summands_ge_q` : **every summand of a representation of `n ≥ 2` is
+  `≥ q`**. The unit power form `1 = p^0 q^0` divides every other power form, so it
+  can sit neither alongside another summand (antichain broken) nor alone (sums to
+  `1 < 2 ≤ n`); hence all summands are `≥ 2`, thus `≥ q`. This is the reusable
+  structural lemma the file previously lacked.
+- `isRepresentable_iff_isPowerForm_window` : for `q ≤ n < 2q`,
+  `IsRepresentable p q n ↔ IsPowerForm p q n`. Two summands already exceed `2q > n`,
+  so any representation is the singleton `{n}`.
+- `nonRepresentable_of_window` : every non-power-form in `[q, 2q)` is
+  non-representable — an explicit family for *every* pair `p > q ≥ 2`, uniformly
+  subsuming `two_nonRepresentable_of_three_le` (`n=2, q≥3`) and
+  `three_nonRepresentable_of_q_two` (`n=3, q=2`).
+
+Host-verified (`lean` + LEAN_PATH, EXIT 0, ~41s); `#print axioms` on all three new
+public results = `[propext, Classical.choice, Quot.sound]` only (independent of
+`erdos_lewin_infinite`). The deep axiom `erdos_lewin_infinite` (Erdős–Lewin 1996
+infinitude, not in Mathlib) is UNCHANGED — file axiom count remains 1.
 
 ## S5 ACT (researcher-3, 2026-06-28) — Yu-Chen coprime {2,3} = ∅, 0-axiom
 
