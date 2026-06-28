@@ -320,6 +320,112 @@ example : (8 : ℕ) % 6 ≠ 4 := by decide
 example : collatz 16 = 8 := by decide
 
 /-!
+## Part VI: Geometric Growth of the Backward Tree
+
+The in-degree bound `indegree_le_two` (every vertex has at most two predecessors)
+controls how fast the *backward* Collatz tree can grow. We turn it into an explicit
+size bound: the preimage of any finite set grows by at most a factor of `2` per
+Collatz step, so the set of `d`-step ancestors of a single vertex `m` has at most
+`2 ^ d` elements.
+
+The engine is a uniform Finset over-approximation of the predecessor set: every
+predecessor of `m` lies in the pair `candPred m = {2m, (m−1)/3}` (the even one and
+the only possible odd one), so `|collatz⁻¹' {m}| ≤ 2` *covered by a concrete Finset*.
+Summing this pair-cover over a finite set `S` gives `|collatz⁻¹' S| ≤ 2 |S|`, and a
+clean induction on `d` (using `collatz^[d+1] = collatz^[d] ∘ collatz`) yields the
+geometric `≤ 2 ^ d` bound. Everything is unconditional.
+-/
+
+/-- The two **candidate predecessors** of `m`: the always-present even predecessor
+`2m` and the only possible odd predecessor `(m−1)/3`. The actual preimage of `{m}`
+is always a subset of this pair — a uniform Finset cover of the in-degree-≤-2 fact. -/
+def candPred (m : ℕ) : Finset ℕ := {2 * m, (m - 1) / 3}
+
+/-- The candidate-predecessor pair has at most two elements. -/
+theorem candPred_card_le (m : ℕ) : (candPred m).card ≤ 2 := by
+  unfold candPred
+  calc ({2 * m, (m - 1) / 3} : Finset ℕ).card
+      ≤ ({(m - 1) / 3} : Finset ℕ).card + 1 := Finset.card_insert_le _ _
+    _ = 2 := by simp
+
+/-- Every predecessor of `m` is one of the two candidates `{2m, (m−1)/3}`. -/
+theorem preimage_subset_candPred (m : ℕ) : collatz ⁻¹' {m} ⊆ ↑(candPred m) := by
+  intro a ha
+  rw [Set.mem_preimage, Set.mem_singleton_iff, collatz_eq_iff] at ha
+  unfold candPred
+  rw [Finset.mem_coe, Finset.mem_insert, Finset.mem_singleton]
+  rcases ha with h | ⟨_, h3⟩
+  · exact Or.inl h
+  · exact Or.inr (by omega)
+
+/-- The preimage of a finite set `S` is covered by the finite union of candidate
+pairs `⋃_{m ∈ S} {2m, (m−1)/3}`. -/
+theorem preimage_subset_biUnion (S : Finset ℕ) :
+    collatz ⁻¹' ↑S ⊆ ↑(S.biUnion candPred) := by
+  intro a ha
+  rw [Set.mem_preimage, Finset.mem_coe] at ha
+  rw [Finset.mem_coe, Finset.mem_biUnion]
+  refine ⟨collatz a, ha, ?_⟩
+  have ha' : a ∈ collatz ⁻¹' {collatz a} := rfl
+  have h := preimage_subset_candPred (collatz a) ha'
+  rwa [Finset.mem_coe] at h
+
+/-- The Collatz preimage of a finite set is finite (covered by a finite pair-union). -/
+theorem preimage_finset_finite (S : Finset ℕ) : (collatz ⁻¹' ↑S).Finite :=
+  (S.biUnion candPred).finite_toSet.subset (preimage_subset_biUnion S)
+
+/-- **Single-step backward growth (Finset form).** The Collatz preimage of a finite
+set `S` has at most `2 |S|` elements: each `m ∈ S` contributes at most its two
+predecessors. -/
+theorem preimage_finset_ncard_le (S : Finset ℕ) :
+    (collatz ⁻¹' ↑S).ncard ≤ 2 * S.card := by
+  calc (collatz ⁻¹' ↑S).ncard
+      ≤ (↑(S.biUnion candPred) : Set ℕ).ncard :=
+        Set.ncard_le_ncard (preimage_subset_biUnion S) (S.biUnion candPred).finite_toSet
+    _ = (S.biUnion candPred).card := Set.ncard_coe_finset _
+    _ ≤ ∑ m ∈ S, (candPred m).card := Finset.card_biUnion_le
+    _ ≤ ∑ _m ∈ S, 2 := Finset.sum_le_sum (fun m _ => candPred_card_le m)
+    _ = 2 * S.card := by rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+
+/-- The Collatz preimage of any finite set of vertices is finite. -/
+theorem preimage_set_finite {T : Set ℕ} (hT : T.Finite) : (collatz ⁻¹' T).Finite := by
+  have h := preimage_finset_finite hT.toFinset
+  rwa [hT.coe_toFinset] at h
+
+/-- **Single-step backward growth (Set form).** For any finite set of vertices `T`,
+`|collatz⁻¹' T| ≤ 2 |T|`. -/
+theorem preimage_set_ncard_le {T : Set ℕ} (hT : T.Finite) :
+    (collatz ⁻¹' T).ncard ≤ 2 * T.ncard := by
+  have h := preimage_finset_ncard_le hT.toFinset
+  have hcard : hT.toFinset.card = T.ncard := by rw [← Set.ncard_coe_finset, hT.coe_toFinset]
+  rwa [hT.coe_toFinset, hcard] at h
+
+/-- The set of `d`-step Collatz ancestors of `m` (preimage of `{m}` under
+`collatz^[d]`) is finite. -/
+theorem ancestors_finite (m d : ℕ) : (collatz^[d] ⁻¹' {m}).Finite := by
+  induction d with
+  | zero => simp only [Function.iterate_zero, Set.preimage_id]; exact Set.finite_singleton m
+  | succ d ih =>
+    rw [Function.iterate_succ, Set.preimage_comp]
+    exact preimage_set_finite ih
+
+/-- **Geometric backward-tree bound.** The set of `d`-step Collatz ancestors of any
+vertex `m` — the preimage of `{m}` under `collatz^[d]` — has at most `2 ^ d`
+elements. The backward tree grows by a factor of at most `2` per level. This is the
+quantitative form of the in-degree-≤-2 dichotomy, and it is unconditional: it does
+not assume the Collatz conjecture. -/
+theorem ancestors_ncard_le (m d : ℕ) : (collatz^[d] ⁻¹' {m}).ncard ≤ 2 ^ d := by
+  induction d with
+  | zero => simp
+  | succ d ih =>
+    have hfin : (collatz^[d] ⁻¹' {m}).Finite := ancestors_finite m d
+    rw [Function.iterate_succ, Set.preimage_comp]
+    calc (collatz ⁻¹' (collatz^[d] ⁻¹' {m})).ncard
+        ≤ 2 * (collatz^[d] ⁻¹' {m}).ncard := preimage_set_ncard_le hfin
+      _ ≤ 2 * 2 ^ d := by omega
+      _ = 2 ^ (d + 1) := by rw [pow_succ]; ring
+
+/-!
 ## Summary
 
 **Proved (no axioms, no `sorry`)**:
@@ -335,6 +441,9 @@ example : collatz 16 = 8 := by decide
    vertices below `6k`, so density exactly `1/6`), `branch_vertices_infinite`
 6. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
 7. ✓ The basin of 1 is infinite `basin_infinite`
+8. ✓ Geometric growth of the backward tree: `preimage_finset_ncard_le` /
+   `preimage_set_ncard_le` (`|collatz⁻¹' T| ≤ 2|T|` for finite `T`, via the candidate
+   pair-cover `candPred`), iterated to `ancestors_ncard_le` (`|collatz^[d]⁻¹' {m}| ≤ 2^d`)
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
