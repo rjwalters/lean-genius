@@ -22,6 +22,10 @@
                        "addition formula" of the problem statement.
   - `cassini_matrix` : `F(n+2)F(n) − F(n+1)² = (−1)^(n+1)`  — from `det (Q^(n+1))`, the
                        Cassini identity recovered through the *same* factorisation.
+  - `fib_two_mul_add_one` : `F(2n+1) = F(n+1)² + F(n)²`  — the `m = n` diagonal of
+                       `fib_add_matrix` (odd-index duplication).
+  - `fib_two_mul_add_two` : `F(2n+2) = F(n+2)F(n+1) + F(n+1)F(n)`  — the `m = n` diagonal
+                       of `fib_add_offdiag` (even-index duplication).
 
   Worked over `ℤ` (entries `(Nat.fib k : ℤ)`), 0 sorries, 0 axioms. Mathlib has no
   Fibonacci Q-matrix of its own, so the closed form `Q_pow_succ` is a genuinely new
@@ -117,5 +121,31 @@ theorem cassini_matrix (n : ℕ) :
   -- hdet : F(n+2)·F(n) − F(n+1)·F(n+1) = (1·0 − 1·1)^(n+1)
   rw [sq, hdet]
   norm_num
+
+/-!
+## Duplication formulas (the diagonal `m = n` of the factorisation)
+
+Setting `m = n` in the addition formulas — i.e. reading the entries of the *square*
+`Q^{n+1} · Q^{n+1} = Q^{2n+2}` — collapses them to the classical Fibonacci *duplication*
+identities. No new induction is needed: these are immediate corollaries of
+`fib_add_matrix` / `fib_add_offdiag` at `m = n`.
+-/
+
+/-- **Odd-index duplication.** `F(2n+1) = F(n+1)² + F(n)²` — the `m = n` case of
+`fib_add_matrix`, the `(2,2)` entry of `Q^{n+1} · Q^{n+1}`. The classical fact that
+`F_{2n+1}` is a sum of two consecutive Fibonacci squares. -/
+theorem fib_two_mul_add_one (n : ℕ) :
+    Nat.fib (2 * n + 1) = Nat.fib (n + 1) ^ 2 + Nat.fib n ^ 2 := by
+  have h := fib_add_matrix n n
+  rw [show 2 * n + 1 = n + n + 1 from by ring, sq, sq, h]
+
+/-- **Even-index duplication.** `F(2n+2) = F(n+2)F(n+1) + F(n+1)F(n)` — the `m = n` case of
+`fib_add_offdiag`, the `(1,2)` entry of `Q^{n+1} · Q^{n+1}`. Equivalently
+`F(2n+2) = F(n+1)·(F(n+2) + F(n))`. -/
+theorem fib_two_mul_add_two (n : ℕ) :
+    Nat.fib (2 * n + 2)
+      = Nat.fib (n + 2) * Nat.fib (n + 1) + Nat.fib (n + 1) * Nat.fib n := by
+  have h := fib_add_offdiag n n
+  rw [show 2 * n + 2 = n + n + 2 from by ring, h]
 
 end CassiniIdentityOQ01OQ02

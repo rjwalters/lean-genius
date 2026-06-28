@@ -53,14 +53,15 @@
       "Resolves the parent entry's open question: the Fibonacci addition formula is obtained by reading off a single entry of the matrix factorisation Q^{m+n} = Q^m Q^n, not by a dedicated induction",
       "The closed Q-matrix power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n] over ℤ proved by one induction on the Fibonacci recurrence — Mathlib records no Fibonacci companion matrix",
       "Three classical identities packaged as corollaries of one factorisation: the (2,2) entry F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Nat.fib_add), the (1,2) entry F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n, and Cassini's identity F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} via the determinant",
-      "Demonstrates the 'one matrix identity, many corollaries' pattern: a family of bilinear Fibonacci identities becomes entry-reading on a single associativity equation"
+      "Demonstrates the 'one matrix identity, many corollaries' pattern: a family of bilinear Fibonacci identities becomes entry-reading on a single associativity equation",
+      "Adds the duplication formulas F_{2n+1} = F_{n+1}² + F_n² and F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n as the m = n diagonal of the addition formulas (the entries of the square Q^{n+1}·Q^{n+1}), extending the corollary list with no extra induction"
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 121,
+    "lineCount": 151,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only structural Mathlib lemmas (Matrix.mul_fin_two, Matrix.det_pow, Matrix.det_fin_two_of, pow_add, Nat.fib_add_two) with induction, push_cast, ring, and exact_mod_cast; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext, Classical.choice, Quot.sound, none of which count as assumptions.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "sections": [
@@ -95,9 +96,16 @@
     {
       "id": "cassini",
       "title": "Cassini's Identity from the Same Matrix",
-      "startLine": 112,
-      "endLine": 120,
+      "startLine": 116,
+      "endLine": 123,
       "summary": "F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} from det(Q^{n+1}) = (det Q)^{n+1} = (−1)^{n+1}, recovering the parent entry's identity through the same Q used for the addition formulas."
+    },
+    {
+      "id": "duplication",
+      "title": "Duplication Formulas (the m = n diagonal)",
+      "startLine": 125,
+      "endLine": 150,
+      "summary": "Setting m = n in the addition formulas — reading the entries of the square Q^{n+1}·Q^{n+1} = Q^{2n+2} — yields the classical duplication identities with no new induction: F_{2n+1} = F_{n+1}² + F_n² (the (2,2) entry, fib_two_mul_add_one) and F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n (the (1,2) entry, fib_two_mul_add_two)."
     }
   ],
   "overview": {
