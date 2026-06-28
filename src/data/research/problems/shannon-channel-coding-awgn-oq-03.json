@@ -13,17 +13,21 @@
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Bandlimited Shannon–Hartley capacity C = B·log₂(1+P/N) bits/s formalized and VERIFIED (0-axiom) in ShannonChannelCodingAWGNOQ03.lean (#30994): bridge identity to the parent per-use AWGN capacity (Nyquist 2B + base-change), nonnegativity, zero-power/zero-bandwidth, positivity, monotonicity in B and P, antitone in noise N, and the low-SNR linear upper bound log(1+x) ≤ x (11 theorems, 0 sorry, 0 axiom)."
+    ],
+    "open": [
+      "Vector AWGN / parallel Gaussian channels via water-filling (C = Σ ½log₂(1+Pᵢ/Nᵢ) maximised over ΣPᵢ ≤ P, optimum Pᵢ = max(0, ν−Nᵢ)). The second half of the title is NOT formalized; the optimality argument needs concavity/KKT convex-optimization infrastructure. Best spun off into a dedicated slug."
+    ],
+    "goal": "Formalize the bandlimited Shannon–Hartley capacity (DONE, verified #30994). Water-filling for parallel Gaussian channels remains a genuine open extension."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-06-27T17:44:11.367Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Shannon–Hartley half COMPLETE and verified (#30994): ShannonChannelCodingAWGNOQ03.lean, 11 theorems, 0 sorry, 0 axiom. The title's water-filling / parallel-Gaussian half is genuinely unaddressed (needs concavity/KKT) and is best handled as a dedicated slug.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for the shipped scope. Follow-up (separate slug recommended): vector AWGN capacity via water-filling — define ΣᵢC(Pᵢ,Nᵢ), prove concavity of x↦log(1+x/N), and the water-filling optimum Pᵢ=max(0,ν−Nᵢ).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -71,8 +75,21 @@
     "mathlib": []
   },
   "started": "2026-06-27T17:44:11.367Z",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-28",
   "significance": 6,
   "tractability": 5,
-  "currentPhase": "COMPLETED"
+  "currentPhase": "COMPLETED",
+  "leanFiles": [
+    {
+      "path": "Proofs/ShannonChannelCodingAWGNOQ03.lean",
+      "filename": "ShannonChannelCodingAWGNOQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingAWGNOQ03.lean"
+    }
+  ]
 }
