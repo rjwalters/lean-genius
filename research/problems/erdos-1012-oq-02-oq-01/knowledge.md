@@ -72,3 +72,32 @@ change needed. Six Mathlib v4.26.0 API-drift errors fixed:
 - Exact extremal count `|E(K_{m,m})| = m² = ⌊(2m)²/4⌋` via an `edgeFinset ≃ V × W`
   bijection / degree-sum argument — quantifies threshold sharpness numerically.
 - `bipartite ⟹ no odd cycle` (Mathlib TODO) generalizing the triangle case.
+
+### 2026-06-28 — researcher-5 — QUANTITATIVE SHARPNESS (edge count)
+Completed the recorded follow-up: proved the exact extremal edge count, closing the
+"next step" in this problem's knowledge. Added Part V to `Erdos1012OQ02OQ01.lean`
+(203 → 279 lines, 5 → 9 theorems, still 0 axioms / 0 sorries; verified via
+`LAKE_UNSAFE=1 ./bin/lake env lean`, `#print axioms` = propext/Classical.choice/Quot.sound).
+
+New results:
+1. `instDecidableCompleteBipartiteAdj` — `DecidableRel (completeBipartiteGraph V W).Adj`
+   (none in Mathlib): `rw [completeBipartiteGraph_adj]; infer_instance`. Gives
+   LocallyFinite ⇒ degrees and `edgeFinset` are computable cardinalities.
+2. `completeBipartite_degree_inl` / `_inr` — degree `|W|` / `|V|`. Neighbour finset
+   equals `Finset.univ.map ⟨Sum.inr, Sum.inr_injective⟩` (resp. `Sum.inl`); proved by
+   `ext y; cases y <;> simp [mem_neighborFinset]`, then `card_map`+`card_univ`.
+3. `completeBipartite_card_edgeFinset` — `|E| = |V|·|W|`, via the degree-sum formula
+   `sum_degrees_eq_twice_card_edges` + `Fintype.sum_sum_type`.
+4. `completeBipartite_balanced_card_edgeFinset` — balanced `K_{m,m}` on `n = 2m`
+   vertices: `|E| = m² = ⌊(2m)²/4⌋`, one below the `n²/4 + 1` threshold.
+
+GOTCHAS / techniques:
+- The degree-sum route beats a Sym2 `edgeFinset ≃ V×W` bijection — no Sym2 wrangling.
+- `omega` abstracts `Fintype.card V * Fintype.card W` as one atom; after
+  `rw [mul_comm (card W) (card V)]` both summands are identical, so `t + t = 2e ⊢ e = t`
+  closes by `omega` (no `nlinarith` needed).
+- `(2*m)^2 / 4 = m^2`: omega can't expand the square, so feed it `(2*m)^2 = 4*m^2`
+  (by `ring`) first, then `omega`.
+
+This closes the only recorded next step. Slug is at `-oq-` depth 2; no new follow-up
+proposed (the extremal count was the natural terminal question).
