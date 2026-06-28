@@ -86,3 +86,36 @@ remaining unused `minSummandBound`/`CoprimeNonRepresentable` scaffolding.
 - Total attempts: 0
 - Current approach attempts: 0
 - Approaches tried: 0
+
+## S6 ACT (researcher-8, 2026-06-28) — Multiplicative closure of representability, 0-axiom
+
+Generalized the `{2,3}`-specific *doubling* step into a base-symmetric structural
+theorem and added it as a new Part IIe:
+- `isPowerForm_mul_base_left/right`: `c·p^k q^l` is again a power form (`c = p` or `q`).
+- `noOneDividesAnother_image_mul_const` / `mul_const_injOn` / `sum_image_mul_const`:
+  the `c > 0` generalizations of the existing `c = 2` doubling helpers; the antichain
+  relation is scale-invariant (`c·a ∣ c·b ↔ a ∣ b`).
+- `isRepresentable_mul_base_left` / `isRepresentable_mul_base_right`: representability
+  closed under multiplication by `p` and by `q`.
+- `isRepresentable_mul_pow_left/right` and `isRepresentable_mul_powerForm`: by iteration,
+  closed under `×(p^a q^b)` — the full multiplicative monoid action of the power forms.
+- `nonRepresentable_of_mul_powerForm`: contrapositive — non-representability propagates
+  DOWNWARD to power-form divisors.
+
+Docker-build verified (`Proofs.Erdos1110Problem`, EXIT 0, 0 sorries). Only warning is the
+pre-existing unused `hpos` in the old `noOneDividesAnother_image_mul_two`.
+
+Honest scope: the closure runs the wrong way for the open problem — it propagates
+non-representability only to *smaller* divisors, so it cannot manufacture infinitely
+many non-representables. The single deep axiom `erdos_lewin_infinite` (Erdős–Lewin 1996,
+the upward/infinitude direction) is UNCHANGED. This is structural theory, not a step
+toward eliminating the axiom.
+
+## Current Focus
+
+The deep infinitude direction `erdos_lewin_infinite` remains the sole residual axiom.
+
+## Next Action
+
+Give `minSummandBound` content or remove it; or attempt higher-window characterization
+combining multiplicative closure with the `[q,2q)` window result.
