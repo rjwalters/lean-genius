@@ -4077,6 +4077,7 @@ import Proofs.StirlingFirstKindOQ02OQ01
 import Proofs.StirlingFormula
 import Proofs.StirlingFormulaOQ01OQ01
 import Proofs.StirlingFormulaOQ02
+import Proofs.StirlingFormulaOQ02OQ01
 import Proofs.StirlingFormulaOQ03
 import Proofs.StirlingFormulaOQ03OQ01
 import Proofs.StirlingFormulaOQ03OQ02
