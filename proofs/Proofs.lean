@@ -1251,6 +1251,7 @@ import Proofs.Erdos1008Problem
 import Proofs.Erdos1008ProblemProvable
 import Proofs.Erdos1009OQ01
 import Proofs.Erdos1009OQ02Problem
+import Proofs.Erdos1009OQ03
 import Proofs.Erdos1009Problem
 import Proofs.Erdos100OQ01
 import Proofs.Erdos100OQ01WIP01
