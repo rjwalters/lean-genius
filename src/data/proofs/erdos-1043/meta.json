@@ -176,7 +176,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1043 on polynomial level set projections. The answer is NO: Pommerenke showed that some polynomials have all projections ≥ 2.386. However, every monic polynomial has some projection ≤ 3.3.",
+    "summary": "This formalization captures Erdős Problem #1043 on polynomial level set projections. The answer is NO: Pommerenke showed that some polynomials have all projections ≥ 2.386. However, every monic polynomial has some projection ≤ 3.3. COMPLETION (2026-06-28): both sorries eliminated. `levelSet_compact` proved (the unit lemniscate {‖f‖≤1} is closed + bounded via polynomial growth on cocompact ℂ, Heine–Borel). The other sorry, `levelSet_connected_iff`, was a FALSE statement (its RHS — every root lies in the level set — is vacuously true, so it claimed every lemniscate is connected, which fails for X²−4); replaced by the true `roots_mem_levelSet`. File now 0 sorries; 2 intentional Pommerenke axioms remain.",
     "implications": "The problem connects complex analysis (polynomials, potential theory) with geometric measure theory (projections, widths). The Pommerenke constant—the supremum of minimum projection measures—lies between 2.386 and 3.3, but its exact value is unknown.",
     "openQuestions": [
       "What is the exact value of the Pommerenke constant?",
@@ -262,11 +262,11 @@
     "axiomCount": 2,
     "theoremCount": 12,
     "definitionCount": 15,
-    "sorries": 2,
+    "sorries": 0,
     "path": "Proofs/Erdos1043Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos1043Aristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }

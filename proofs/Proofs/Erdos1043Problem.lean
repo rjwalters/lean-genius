@@ -198,15 +198,47 @@ theorem min_projection_bounded (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f
 /- For a degree-n monic polynomial, the level set {|f(z)| ≤ 1} has
     logarithmic capacity 1. This follows from the fact that the Green's
     function with pole at infinity has leading term log|z| - (1/n)log|f(z)|. -/
-/-- The level set is connected if and only if all roots lie in the level set. -/
-theorem levelSet_connected_iff (f : Polynomial ℂ) (hMonic : f.Monic) :
-    IsConnected (unitLevelSet f) ↔ ∀ z, f.eval z = 0 → z ∈ unitLevelSet f := by
-  sorry
+/-- Every root of `f` lies in its unit level set: at a root `f.eval z = 0`, so
+    `‖f.eval z‖ = 0 ≤ 1`.
 
-/-- The level set is always compact (closed and bounded). -/
+    NOTE: the previous statement
+    `IsConnected (unitLevelSet f) ↔ ∀ z, f.eval z = 0 → z ∈ unitLevelSet f`
+    was FALSE. Its right-hand side is *vacuously true* (every root is automatically
+    in the level set, as proved here), so the `↔` claimed that every unit lemniscate
+    `{z : ‖f z‖ ≤ 1}` is connected — which fails already for `f = X² - 4`, whose
+    level set is two disjoint components around `±2`. It is replaced by this true
+    containment fact. -/
+theorem roots_mem_levelSet (f : Polynomial ℂ) (z : ℂ) (hz : f.eval z = 0) :
+    z ∈ unitLevelSet f := by
+  simp only [unitLevelSet, levelSet, Set.mem_setOf_eq, hz, norm_zero]
+  norm_num
+
+/-- The unit level set `{z : ‖f.eval z‖ ≤ 1}` is compact: it is closed (a sublevel
+    set of the continuous map `z ↦ ‖f.eval z‖`) and bounded (for `deg f ≥ 1` the
+    norm `‖f.eval z‖ → ∞` as `z → ∞`, so the sublevel set is contained in a compact
+    set), hence compact by Heine–Borel in `ℂ`. -/
 theorem levelSet_compact (f : Polynomial ℂ) (hMonic : f.Monic) (hDeg : f.natDegree ≥ 1) :
     IsCompact (unitLevelSet f) := by
-  sorry
+  have hdeg : 0 < f.degree := Polynomial.natDegree_pos_iff_degree_pos.mp (by omega)
+  -- ‖f.eval z‖ → ∞ along the cocompact filter
+  have htend : Filter.Tendsto (fun z => ‖f.eval z‖) (Filter.cocompact ℂ) Filter.atTop :=
+    f.tendsto_norm_atTop hdeg tendsto_norm_cocompact_atTop
+  -- so `{z | 1 < ‖f.eval z‖}` is in the cocompact filter
+  have hmem : {z : ℂ | (1 : ℝ) < ‖f.eval z‖} ∈ Filter.cocompact ℂ :=
+    htend.eventually (Filter.eventually_gt_atTop 1)
+  obtain ⟨t, ht_compact, hsub⟩ := Filter.mem_cocompact'.mp hmem
+  -- hsub : tᶜ ⊆ {z | 1 < ‖f.eval z‖}
+  -- the level set is closed
+  have hcl : IsClosed (unitLevelSet f) := by
+    simp only [unitLevelSet, levelSet]
+    exact isClosed_le (by fun_prop) (by fun_prop)
+  -- and bounded: it sits inside the compact `t`
+  have hbd : Bornology.IsBounded (unitLevelSet f) := by
+    refine ht_compact.isBounded.subset (fun z hz => hsub ?_)
+    simp only [unitLevelSet, levelSet, Set.mem_setOf_eq] at hz
+    simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt]
+    exact hz
+  exact Metric.isCompact_of_isClosed_isBounded hcl hbd
 
 /- ## Part VIII: The Width Function -/
 
