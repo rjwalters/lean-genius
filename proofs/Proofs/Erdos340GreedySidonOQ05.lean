@@ -920,4 +920,103 @@ theorem IsBh.card_forbidden_le' {h : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
               rw [Finset.card_product, Finset.card_product]; ring
     _ = 2 * h * Tlo.card * Thi.card := by ring
 
+/-! ## Part 8: An explicit closed-form polynomial bound
+
+`card_forbidden_le'` bounds the forbidden set by `2 · h · T₋ · T₊`, where `T₋, T₊`
+are *cardinalities of multiset pools* over `A`.  The docstrings advertise these as
+"degree `h - 1`" and "degree `h`" in `|A|`, but the pools themselves are never bounded
+by an explicit `|A|`-polynomial.  This part closes that gap with two reusable
+combinatorial lemmas:
+
+* `card_sym_le_pow` — the `Finset.sym` cardinality bound `|A.sym i| ≤ |A|^i` (every
+  multiset of size `i` over `A` is the image of an `i`-tuple; no `multichoose`
+  identity is needed, and Mathlib has no `Finset.sym` cardinality lemma at all).
+* `geom_sum_le_pow` — the geometric-sum bound `∑_{i ≤ k} n^i ≤ (n + 1)^k` (each term
+  is dominated by a binomial summand of `(n+1)^k`).
+
+Combining them with `card_forbidden_le'` yields the headline **closed form**: for a
+`B_h` set `A` with `h ≥ 1`, the number of forbidden values below `h · max A` is at most
+`2 · h · (|A| + 1)^{2h - 1}` — an explicit degree-`(2h - 1)` polynomial in `|A|`.  This
+is the form the greedy lower bound consumes directly: a `B_h` set inside `{1, …, N}`
+extends whenever `2 · h · (|A| + 1)^{2h - 1} < N`, giving the (still-open in its sharp
+constant) `|A| = Ω(N^{1/(2h - 1)})` rate. -/
+
+/-- **The `Finset.sym` cardinality bound.**  The number of size-`n` multisets drawn
+from a finite set `A` is at most `|A|^n`.  (Each such multiset is the image of an
+`n`-tuple of elements of `A` under "forget the order", and there are `|A|^n` tuples;
+equivalently `multichoose(|A|, n) ≤ |A|^n`.)  Mathlib proves the exact Fintype-level
+`Sym.card_sym_eq_multichoose`, but has no bound for the `Finset.sym` family. -/
+theorem card_sym_le_pow (A : Finset ℕ) (n : ℕ) : (A.sym n).card ≤ A.card ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [Finset.sym_succ, Finset.sup_eq_biUnion]
+      calc (A.biUnion (fun a => (A.sym n).image (Sym.cons a))).card
+          ≤ ∑ a ∈ A, ((A.sym n).image (Sym.cons a)).card := Finset.card_biUnion_le
+        _ ≤ ∑ _a ∈ A, A.card ^ n := by
+            apply Finset.sum_le_sum
+            intro a _
+            exact (Finset.card_image_le).trans ih
+        _ = A.card * A.card ^ n := by rw [Finset.sum_const, smul_eq_mul]
+        _ = A.card ^ (n + 1) := by ring
+
+/-- **A geometric-sum bound.**  `∑_{i ≤ k} n^i ≤ (n + 1)^k`.  Each summand `n^i`
+(`i ≤ k`) is dominated by the binomial summand `C(k, i) · n^i` of `(n + 1)^k`; we give
+the equivalent short induction `(n+1)^{k+1} = (n+1)^k + n·(n+1)^k ≥ (n+1)^k + n^{k+1}`. -/
+theorem geom_sum_le_pow (n : ℕ) : ∀ k, ∑ i ∈ Finset.range (k + 1), n ^ i ≤ (n + 1) ^ k
+  | 0 => by simp
+  | k + 1 => by
+      rw [Finset.sum_range_succ]
+      calc ∑ i ∈ Finset.range (k + 1), n ^ i + n ^ (k + 1)
+          ≤ (n + 1) ^ k + n ^ (k + 1) := by gcongr; exact geom_sum_le_pow n k
+        _ ≤ (n + 1) ^ k + n * (n + 1) ^ k := by
+            gcongr
+            calc n ^ (k + 1) = n * n ^ k := by ring
+              _ ≤ n * (n + 1) ^ k := by gcongr; omega
+        _ = (n + 1) ^ (k + 1) := by ring
+
+/-- **The multiset-pool bound.**  The pool of all multisets over `A` of size `≤ k`
+(the `Finset` appearing in `card_forbidden_le`/`card_forbidden_le'`) has cardinality at
+most `(|A| + 1)^k`. -/
+theorem card_pool_le (A : Finset ℕ) (k : ℕ) :
+    ((Finset.range (k + 1)).biUnion (fun i => (A.sym i).image Subtype.val)).card
+      ≤ (A.card + 1) ^ k := by
+  calc ((Finset.range (k + 1)).biUnion (fun i => (A.sym i).image Subtype.val)).card
+      ≤ ∑ i ∈ Finset.range (k + 1), ((A.sym i).image Subtype.val).card :=
+        Finset.card_biUnion_le
+    _ ≤ ∑ i ∈ Finset.range (k + 1), A.card ^ i := by
+        apply Finset.sum_le_sum
+        intro i _
+        exact (Finset.card_image_le).trans (card_sym_le_pow A i)
+    _ ≤ (A.card + 1) ^ k := geom_sum_le_pow A.card k
+
+open scoped Classical in
+/-- **The explicit closed-form forbidden-set bound.**  For a `B_h` set `A` with `h ≥ 1`,
+the number of values `m` below the ceiling `h · max A` whose insertion breaks `B_h` is at
+most `2 · h · (|A| + 1)^{2h - 1}` — an explicit polynomial in `|A|` of degree exactly
+`2h - 1`.
+
+This turns the abstract pool bound `card_forbidden_le'` (`≤ 2 · h · T₋ · T₊`) into a
+concrete `|A|`-polynomial via `card_pool_le`, and is the form fed to the greedy lower
+bound: a `B_h` set inside `{1, …, N}` admits a fresh small element as long as
+`2 · h · (|A| + 1)^{2h - 1} < N`, yielding the (sharp-exponent) `N^{1/(2h - 1)}` greedy
+rate for `B_h` sets — the open quantitative core of #340's generalisation. -/
+theorem IsBh.card_forbidden_poly {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA : IsBh h A) :
+    ((Finset.range (h * A.sup id + 1)).filter
+        (fun m => ¬ IsBh h (insert m A))).card
+      ≤ 2 * h * (A.card + 1) ^ (2 * h - 1) := by
+  obtain ⟨h', rfl⟩ : ∃ h', h = h' + 1 := ⟨h - 1, by omega⟩
+  have hlo := card_pool_le A h'
+  have hhi := card_pool_le A (h' + 1)
+  calc ((Finset.range ((h' + 1) * A.sup id + 1)).filter
+            (fun m => ¬ IsBh (h' + 1) (insert m A))).card
+      ≤ 2 * (h' + 1)
+          * ((Finset.range (h' + 1)).biUnion (fun i => (A.sym i).image Subtype.val)).card
+          * ((Finset.range (h' + 1 + 1)).biUnion
+              (fun i => (A.sym i).image Subtype.val)).card := hA.card_forbidden_le'
+    _ ≤ 2 * (h' + 1) * (A.card + 1) ^ h' * (A.card + 1) ^ (h' + 1) := by gcongr
+    _ = 2 * (h' + 1) * (A.card + 1) ^ (2 * (h' + 1) - 1) := by
+        rw [mul_assoc (2 * (h' + 1)), ← pow_add,
+          show h' + (h' + 1) = 2 * (h' + 1) - 1 from by omega]
+
 end Erdos340Bh

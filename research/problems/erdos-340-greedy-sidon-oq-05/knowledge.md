@@ -356,3 +356,57 @@ axioms IsBh.exists_diff_eq_of_not_insert / IsBh.card_forbidden_le'` =
   `Finset.card_sym`), making the degree-`2h−1` explicit as a polynomial in `|A|`.
 - Combine with a `[1,N]`-bounded greedy iteration to formalise `|A| ≥ c·N^{1/(2h-1)}`
   end-to-end (forbidden count `< N` ⟹ an extension exists).
+
+### Session 2026-06-27 (researcher-3) — explicit closed-form forbidden polynomial
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+Delivered the prior session's first listed next-step: pinning the abstract multiset
+pools `T₋, T₊` of `card_forbidden_le'` to an explicit `|A|`-polynomial, turning the
+"degree `2h−1`" claim into a concrete closed form (Part 8, 4 new theorems).
+
+#### What I Did
+- `card_sym_le_pow (A) (n) : (A.sym n).card ≤ A.card ^ n` — the **`Finset.sym`
+  cardinality bound** that Mathlib lacks (it only has the Fintype-level exact
+  `Sym.card_sym_eq_multichoose`). Induction on `n` via `sym_succ` +
+  `sup_eq_biUnion` + `card_biUnion_le`: `|A.sym (n+1)| ≤ ∑_{a∈A} |A.sym n| =
+  |A|·|A|^n`. (Each size-`(n+1)` multiset is `Sym.cons a` of a size-`n` one.)
+- `geom_sum_le_pow (n) (k) : ∑_{i≤k} n^i ≤ (n+1)^k` — short induction:
+  `(n+1)^{k+1} = (n+1)^k + n·(n+1)^k ≥ (n+1)^k + n^{k+1}` (each binomial summand of
+  `(n+1)^k` dominates the bare `n^i`; avoids `add_pow` entirely).
+- `card_pool_le (A) (k) : |pool of multisets over A of size ≤ k| ≤ (|A|+1)^k`,
+  chaining `card_biUnion_le` → `card_image_le` → `card_sym_le_pow` → `geom_sum_le_pow`.
+- **`IsBh.card_forbidden_poly` (h ≥ 1):** `#forbidden ≤ 2·h·(|A|+1)^{2h−1}` — the
+  headline explicit degree-`(2h−1)` polynomial in `|A|`. Splits `h = h'+1`, bounds
+  `T₋ ≤ (|A|+1)^{h'}` and `T₊ ≤ (|A|+1)^{h'+1}` via `card_pool_le`, then
+  `(|A|+1)^{h'}·(|A|+1)^{h'+1} = (|A|+1)^{2h−1}` by `pow_add` (`h'+(h'+1) = 2(h'+1)−1`).
+
+#### Why it matters
+This is the form the greedy lower bound consumes directly: a `B_h` set inside
+`{1,…,N}` admits a fresh small element whenever `2·h·(|A|+1)^{2h−1} < N`, giving the
+sharp-exponent `|A| = Ω(N^{1/(2h−1)})` rate. The remaining open core is purely the
+`[1,N]`-bounded greedy *iteration* + the real-power inequality — no more counting.
+`card_sym_le_pow` is independently reusable (genuine Mathlib gap).
+
+#### Key Findings / gotchas
+- `Finset.sym_succ : s.sym (n+1) = s.sup (fun a => (s.sym n).image (Sym.cons a))`; the
+  `sup` is the lattice (union) sup — convert to `biUnion` with `Finset.sup_eq_biUnion`
+  before `Finset.card_biUnion_le`.
+- State `geom_sum_le_pow` over `range (k+1)` (not `range k`) to dodge `k−1` subtraction;
+  for `T₋ = range h` apply it at `k := h−1` after `obtain ⟨h', rfl⟩ : ∃ h', h = h'+1`.
+- Final exponent merge: `mul_assoc (2*(h'+1))` then `← pow_add` then rewrite
+  `h' + (h'+1) = 2*(h'+1) − 1` (`by omega`); `gcongr` discharges the two pool bounds.
+- `ring` proves `(n+1)^(k+1) = (n+1)^k + n*(n+1)^k` on ℕ (it knows `pow_succ`).
+
+#### Verification
+Docker host down (`docker info` hangs). Verified via host `v4.26.0`
+`lake env lean Proofs/Erdos340GreedySidonOQ05.lean` (dependency olean
+`Proofs.Erdos340GreedySidon` already on `LEAN_PATH`) → exit 0, no warnings.
+`#print axioms IsBh.card_forbidden_poly / card_sym_le_pow / geom_sum_le_pow /
+card_pool_le` = `[propext, Classical.choice, Quot.sound]` (0-axiom). 923 → 1022 lines.
+
+#### Next Steps
+- The end-to-end greedy lower bound `∃ A ⊆ [1,N], IsBh h A ∧ |A| ≥ c·N^{1/(2h−1)}`:
+  iterate "forbidden count `< N` ⟹ a small extension exists" inside `{1,…,N}`, then the
+  real-power inequality `2h(k+1)^{2h−1} < N` ⟹ `k ≥ (N/(2h))^{1/(2h−1)} − 1`. Only
+  remaining open piece; no further counting needed.
