@@ -3613,6 +3613,7 @@ import Proofs.LovaszLocalLemma
 import Proofs.LovaszLocalLemmaOQ02
 import Proofs.LovaszLocalLemmaOQ02Aristotle
 import Proofs.LucasLehmerTestOQ01
+import Proofs.LucasSequenceDegree2Identities
 import Proofs.LucasTheoremOQ01
 import Proofs.LucasTheoremOQ01OQ01
 import Proofs.LucasTheoremOQ01OQ01OQ01
