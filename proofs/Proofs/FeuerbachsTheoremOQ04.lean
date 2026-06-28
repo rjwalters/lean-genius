@@ -109,4 +109,74 @@ theorem sdist_le_pi (P Q : E) : sdist P Q ≤ Real.pi := Real.arccos_le_pi _
 theorem sdist_eq_zero_of_eq {P Q : E} (hP : OnSphere P) (h : P = Q) : sdist P Q = 0 := by
   subst h; exact sdist_self P hP
 
+/-- Spherical distance is symmetric (the inner product commutes). -/
+theorem sdist_comm (P Q : E) : sdist P Q = sdist Q P := by
+  unfold sdist; rw [real_inner_comm]
+
+/-- **Cosine of the spherical distance is the spherical cosine.**  Since
+`sdist P Q = arccos (scos P Q)` and the spherical cosine lies in `[-1, 1]` for unit
+vectors, applying `cos` recovers it.  This is the everyday bridge `cos (sdist) = scos`
+used to move between the metric (`sdist`) and algebraic (`scos`, hence inner product)
+descriptions of a configuration. -/
+theorem cos_sdist (P Q : E) (hP : OnSphere P) (hQ : OnSphere Q) :
+    Real.cos (sdist P Q) = scos P Q := by
+  rw [sdist, scos]
+  exact Real.cos_arccos (neg_one_le_scos P Q hP hQ) (scos_le_one P Q hP hQ)
+
+/-! ## Spherical circles and tangency
+
+With the metric layer in place we can define the basic objects a spherical Feuerbach
+argument manipulates: spherical circles as level sets of `scos`, and the spherical
+internal/external tangency relations on their centres and angular radii.  The key lemma
+`mem_sCircle_iff_sdist` shows the algebraic level-set definition coincides with the
+metric "set of points at spherical distance `ρ` from the centre", so the two views are
+interchangeable in tangency calculations. -/
+
+/-- A **spherical circle** with centre `O` (a model point) and angular radius `ρ`:
+the level set of the spherical cosine, `{P : OnSphere P ∧ scos P O = cos ρ}`.  For
+`ρ ∈ [0, π]` this is exactly the set of model points at spherical distance `ρ` from `O`
+(`mem_sCircle_iff_sdist`). -/
+def sCircle (O : E) (ρ : ℝ) : Set E := {P | OnSphere P ∧ scos P O = Real.cos ρ}
+
+/-- **The level-set circle is the metric circle.**  For a centre `O` on the sphere and
+an angular radius `ρ ∈ [0, π]`, a model point `P` lies on `sCircle O ρ` exactly when its
+spherical distance to `O` is `ρ`.  This identifies the algebraic definition (a level set
+of the inner product) with the geometric one (a sphere of fixed spherical radius). -/
+theorem mem_sCircle_iff_sdist {O : E} (hO : OnSphere O) {ρ : ℝ}
+    (hρ0 : 0 ≤ ρ) (hρπ : ρ ≤ Real.pi) (P : E) :
+    P ∈ sCircle O ρ ↔ (OnSphere P ∧ sdist P O = ρ) := by
+  simp only [sCircle, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨hP, hcos⟩
+    refine ⟨hP, ?_⟩
+    have hs : sdist P O = Real.arccos (scos P O) := rfl
+    rw [hs, hcos]
+    exact Real.arccos_cos hρ0 hρπ
+  · rintro ⟨hP, hd⟩
+    exact ⟨hP, by rw [← cos_sdist P O hP hO, hd]⟩
+
+/-- Two spherical circles `(O₁, ρ₁)` and `(O₂, ρ₂)` are **internally tangent** when the
+spherical distance between their centres equals the absolute difference of their angular
+radii — the non-Euclidean analogue of the Euclidean `d = |r₁ − r₂|`. -/
+def InternallyTangent (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ) : Prop :=
+  sdist O₁ O₂ = |ρ₁ - ρ₂|
+
+/-- Two spherical circles `(O₁, ρ₁)` and `(O₂, ρ₂)` are **externally tangent** when the
+spherical distance between their centres equals the sum of their angular radii — the
+non-Euclidean analogue of the Euclidean `d = r₁ + r₂`. -/
+def ExternallyTangent (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ) : Prop :=
+  sdist O₁ O₂ = ρ₁ + ρ₂
+
+/-- Internal tangency is symmetric in the two circles. -/
+theorem internallyTangent_comm (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ) :
+    InternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ InternallyTangent O₂ ρ₂ O₁ ρ₁ := by
+  unfold InternallyTangent
+  rw [sdist_comm, abs_sub_comm]
+
+/-- External tangency is symmetric in the two circles. -/
+theorem externallyTangent_comm (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ) :
+    ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ ExternallyTangent O₂ ρ₂ O₁ ρ₁ := by
+  unfold ExternallyTangent
+  rw [sdist_comm, add_comm]
+
 end FeuerbachsTheoremOQ04

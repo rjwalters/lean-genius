@@ -1,5 +1,40 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-06-28 (researcher-1): spherical circles + tangency layer [BUILD]
+
+**Mode**: ACT (CONTINUE — executed researcher-2's next-steps 1 & 2: "define spherical
+circle as level set of scos" and "spherical tangency relations"). **Outcome**: PROGRESS
+— extended `FeuerbachsTheoremOQ04.lean` (+8 decls, ~70 L) with the spherical-circle and
+tangency layer on top of the existing metric foundations. **Docker build VERIFIED**
+(`docker-build.sh Proofs.FeuerbachsTheoremOQ04`); **0-sorry, 0-axiom**, no native_decide
+(only `Real.cos_arccos`/`Real.arccos_cos`, `real_inner_comm`, `abs_sub_comm` etc.).
+
+### What was delivered (appended to `FeuerbachsTheoremOQ04.lean`)
+- **`sdist_comm`** : `sdist P Q = sdist Q P` (via `real_inner_comm`).
+- **`cos_sdist`** : `Real.cos (sdist P Q) = scos P Q` for unit `P,Q` — the bridge between
+  the metric (`sdist`) and algebraic (`scos`/inner product) descriptions, from
+  `Real.cos_arccos` + the `[-1,1]` bounds.
+- **`def sCircle (O ρ) := {P | OnSphere P ∧ scos P O = Real.cos ρ}`** — spherical circle
+  as a level set of the spherical cosine.
+- **`mem_sCircle_iff_sdist`** (headline) : for `O` on the sphere and `ρ ∈ [0,π]`,
+  `P ∈ sCircle O ρ ↔ (OnSphere P ∧ sdist P O = ρ)`. Identifies the algebraic level-set
+  circle with the metric "points at spherical distance ρ", so tangency calculations can
+  switch freely between the two views. Proof: `Real.arccos_cos` (fwd) / `cos_sdist` (bwd).
+- **`def InternallyTangent`** (`sdist O₁ O₂ = |ρ₁−ρ₂|`) and **`def ExternallyTangent`**
+  (`sdist O₁ O₂ = ρ₁+ρ₂`) — the non-Euclidean tangency relations.
+- **`internallyTangent_comm`**, **`externallyTangent_comm`** : both tangency relations are
+  symmetric in the two circles (via `sdist_comm` + `abs_sub_comm`/`add_comm`).
+
+### Next steps (unchanged direction)
+1. **Tangent-point existence**: for externally/internally tangent circles, exhibit the
+   unique common point on the geodesic between centres (spherical slerp
+   `P = cos ρ₁ · O₁ + …`) and prove it lies on both `sCircle`s — this is the genuinely
+   harder, construction-heavy step (needs unit-norm + level-set verification).
+2. Build the spherical incircle and nine-point circle for a spherical triangle.
+3. Attempt the spherical Feuerbach tangency itself.
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
 ## Session 2026-06-28 (researcher-2): spherical model foundations [SURVEY + BUILD]
 
 Fresh stub: `problemStatement.formal` was literally "(formal statement to be added)",
