@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "The {2,3} case is fully solved 0-axiom (representability + NonRepresentable={0}). Iter 2 proved the EASY Erdos-Lewin direction unconditionally, weakening the axiom to the deep hard direction only (erdos_lewin_infinite). Iter 3 (S4): proved the {2,3} Yu-Chen density-zero instance 0-axiom (HasDensity (NonRepresentable 2 3) 0). Iter 4 (researcher-10): proved the unconditional EXISTENCE shadow of the deep infinitude axiom 0-axiom — every coprime pair {p,q}!={2,3} has at least one POSITIVE non-representable number (exists_positive_nonRepresentable_of_ne_two_three), with universal witnesses 2 (q>=3) and 3 (q=2). Iter 4 (S5, researcher-3): settled the {2,3} Yu-Chen COPRIME case 0-axiom — CoprimeNonRepresentable {2,3} = empty (the only non-representable 0 is not coprime to 6), with density-zero corollaries via hasDensity_empty; first content for the previously-unused CoprimeNonRepresentable def. Residual assumption unchanged: the single deep axiom erdos_lewin_infinite (existence=>infinitude jump, not in Mathlib).",
+    "progressSummary": "PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
     "builtItems": [
       "add_one_nonRepresentable_iff (iter 5, researcher-8, 0-axiom): sharp criterion for the canonical candidate q+1. For every p>q>=2, q+1 (always in the window [q,2q)) is non-representable EXACTLY when q+1 is not a power of p: (q+1) in NonRepresentable p q <-> not exists k, q+1 = p^k. Forced via the window characterization isRepresentable_iff_isPowerForm_window: the only power form q+1 can be is a pure power of p, since a q^l factor with l>=1 gives q | q+1 hence q | 1. For q=2 this isolates {2,3} as the unique q=2 exception (3 = 3^1 is a power form exactly when p=3).",
       "add_one_nonRepresentable_of_lt (iter 5, researcher-8, 0-axiom): if q>=2 and q+1 < p (i.e. p >= q+2) then q+1 is non-representable, because q+1 can be no power p^k (p^0=1<q+1, p^k>=p>q+1 for k>=1). Trivially-checkable explicit witness for every pair with p>=q+2; verified instance 3 in NonRepresentable 5 2.",
@@ -50,7 +50,11 @@
       "hasDensity_singleton_zero (0-axiom): a single point has natural density 0 (count=1, ratio 1/n -> 0).",
       "nonRepresentable_two_three_density_zero / _three_two_density_zero (0-axiom): the {2,3} non-representable set {0} has density zero — the sharpest Yu-Chen density-zero instance, giving content to the previously def-only HasDensity scaffolding.",
       "coprimeNonRepresentable_two_three_eq_empty / _three_two_eq_empty (iter 4/S5, 0-axiom): the {2,3} Yu-Chen COPRIME non-representable set is EMPTY — NonRepresentable 2 3 = {0} and 0 is not coprime to 2*3=6 (Nat.coprime_zero_left: Coprime 0 6 iff 6=1, false). Sharpens Yu-Chen's '{2,3}-excluded' coprime infinitude: zero coprime non-representables, not merely finitely many. First content for the previously-unused CoprimeNonRepresentable def.",
-      "hasDensity_empty (0-axiom): the empty set has natural density 0 (numerator always 0) — feeds coprimeNonRepresentable_two_three_density_zero / _three_two_density_zero."
+      "hasDensity_empty (0-axiom): the empty set has natural density 0 (numerator always 0) — feeds coprimeNonRepresentable_two_three_density_zero / _three_two_density_zero.",
+      "isRepresentable_mul_base_left/right: representability closed under ×p and ×q (Erdos1110Problem.lean) — scale antichain by a base, 0-axiom",
+      "isRepresentable_mul_powerForm: representable set closed under ×(p^a q^b), the full power-form monoid action generalizing the {2,3} doubling step, 0-axiom",
+      "nonRepresentable_of_mul_powerForm: non-representability propagates DOWNWARD to power-form divisors (contrapositive of closure), 0-axiom",
+      "Helpers noOneDividesAnother_image_mul_const / mul_const_injOn / sum_image_mul_const: c>0 generalizations of the c=2 doubling helpers"
     ],
     "insights": [
       "The deep infinitude axiom has an elementary EXISTENCE shadow: every non-{2,3} coprime pair has a SMALL universal non-representable witness — 2 when q>=3, 3 when q=2. The witness is forced purely by which power forms lie below it: below 2 only 1 exists (both bases>=3), below 3 only {1,2} (q=2, p>=4), and neither lets an antichain hit the target. The (3,2) pair is exactly the exception because there 3=3^1 IS a power form.",
@@ -61,16 +65,18 @@
       "omega cannot see through an un-beta-reduced lambda ((fun x=>x*2) a) nor multiply two unknowns (3^k * c); dsimp/explicit c=1 substitution fixes both. ring fails on Nat truncated subtraction; rw [pow_succ] then omega works.",
       "A subst is blocked when a `let`-bound local (k := Nat.log 3 n) depends on the variable; rewrite the goal with the equation instead of subst.",
       "The {2,3} case realizes Yu-Chen density-zero exactly: NonRepresentable={0} has density 0 (not just below some bound). Provable 0-axiom by reducing HasDensity {0} 0 to 1/n->0 via Finset.filter_eq' on the singleton.",
-      "Mathlib-4.26 gotcha: div_lt_iff renamed to div_lt_iff₀ (a/c<b iff a<b*c for 0<c); Finset.filter_eq' evaluates filter(.=a) to (if a in s then {a} else empty), sidestepping the Set-vs-Classical Decidable-instance mismatch that blocks rw on a hand-stated card lemma."
+      "Mathlib-4.26 gotcha: div_lt_iff renamed to div_lt_iff₀ (a/c<b iff a<b*c for 0<c); Finset.filter_eq' evaluates filter(.=a) to (if a in s then {a} else empty), sidestepping the Set-vs-Classical Decidable-instance mismatch that blocks rw on a hand-stated card lemma.",
+      "The {2,3} doubling step is the c=2 instance of a general structural fact: the antichain relation is scale-invariant (c·a | c·b iff a | b for c>0), so multiplying a representation by p or q is again a representation. Representables form a monoid-action-closed set under the power forms.",
+      "Multiplicative closure runs the WRONG way for infinitude: non-rep propagates only to (smaller) power-form divisors, so it cannot manufacture infinitely many non-representables from one witness. Confirms the deep axiom is genuinely needed for the upward/infinitude direction."
     ],
     "mathlibGaps": [
       "Erdos-Lewin deep direction: {p,q}!={2,3} (p>q>=2 coprime) => infinitely many non-representable numbers. Not in Mathlib 4.26.",
       "Yu-Chen density-zero and coprime-non-representable results (2022). Not in Mathlib."
     ],
     "nextSteps": [
-      "Attempt the deep direction erdos_lewin_infinite (or a concrete special case, e.g. a single (p,q)) to reduce/eliminate the last axiom — genuinely hard (Erdos-Lewin 1996, not in Mathlib).",
-      "CoprimeNonRepresentable {2,3} is now settled (= empty, S5). Remaining scaffolding gap: minSummandBound is still unused (no theorem exercises it) — give it content (a bound for the {2,3} case) or remove it.",
-      "Yu-Chen coprime INFINITUDE for non-{2,3} pairs (q>3, or q=3 p!=5, or q=2 p not in {3,5,9}) — a deeper companion to erdos_lewin_infinite, also not in Mathlib."
+      "Deep direction erdos_lewin_infinite (Erdos-Lewin 1996) remains the sole axiom; confirmed across 6 sessions as not session-sized and genuinely upward (closure cannot help).",
+      "minSummandBound is still unused scaffolding — give it content (e.g. minSummandBound 1 = 1 via sSup of Iio 1) or remove it.",
+      "Consider whether multiplicative closure + window characterization combine to characterize representability on higher windows [q·p^j, ...)."
     ]
   },
   "tags": [

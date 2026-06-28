@@ -647,6 +647,145 @@ example : (3 : ℕ) ∈ NonRepresentable 5 2 :=
   add_one_nonRepresentable_of_lt (by norm_num) (by norm_num)
 
 /-
+## Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)
+
+The `{2,3}` induction (`case_2_3_all_representable`) rested on a *doubling* step:
+multiplying a representing antichain by `2` keeps it a representing antichain
+(`isPowerForm_mul_two`, `noOneDividesAnother_image_mul_two`, …). That doubling is
+the `c = 2` instance of a single structural fact valid for **either base**: scaling
+a representation by `p` (or `q`) is again a representation. We record the general
+statement here.
+
+The key algebraic point is that the antichain ("no element divides another")
+relation is *invariant under scaling by a fixed positive constant*: `c·a ∣ c·b ↔
+a ∣ b`. Combined with the fact that `c · p^k q^l` is still a power form (with the
+exponent of the relevant base raised by one), this yields:
+
+* `IsRepresentable p q n ⟹ IsRepresentable p q (p·n)` and `(q·n)`;
+* by iteration, `IsRepresentable p q n ⟹ IsRepresentable p q (p^a q^b · n)` — the
+  set of representable numbers is closed under multiplication by every power form;
+* contrapositively, **non-representability propagates to power-form divisors**: if
+  `p^a q^b · n` is non-representable, then so is `n`.
+
+This is genuine structural theory (a `ℕ`-action of the multiplicative monoid of
+power forms on the representable set), 0-axiom, and it subsumes the ad-hoc doubling
+machinery. It does **not** resolve the open infinitude direction: the propagation
+goes *downward* (to divisors), so it cannot manufacture infinitely many
+non-representables from a single witness — the deep axiom `erdos_lewin_infinite`
+remains untouched.
+-/
+
+/-- Multiplying a power form by `p` stays a power form: `p · p^k q^l = p^{k+1} q^l`. -/
+lemma isPowerForm_mul_base_left {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * p) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k + 1, l, by ring⟩
+
+/-- Multiplying a power form by `q` stays a power form: `q · p^k q^l = p^k q^{l+1}`. -/
+lemma isPowerForm_mul_base_right {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * q) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k, l + 1, by ring⟩
+
+/-- Scaling every element of an antichain by a fixed positive `c` preserves the
+antichain property, since `c·a ∣ c·b ↔ a ∣ b`. (Generalises
+`noOneDividesAnother_image_mul_two`, the `c = 2` case.) -/
+lemma noOneDividesAnother_image_mul_const {S : Finset ℕ} {c : ℕ} (hc : 0 < c)
+    (hS : NoOneDividesAnother S) :
+    NoOneDividesAnother (S.image (· * c)) := by
+  intro a ha b hb hab
+  rw [Finset.mem_image] at ha hb
+  obtain ⟨a', ha', rfl⟩ := ha
+  obtain ⟨b', hb', rfl⟩ := hb
+  have hne : a' ≠ b' := by intro heq; subst heq; exact hab rfl
+  intro hdvd
+  exact hS a' ha' b' hb' hne ((Nat.mul_dvd_mul_iff_right hc).mp hdvd)
+
+/-- Multiplication by a positive constant is injective on a `Finset` of naturals. -/
+lemma mul_const_injOn (S : Finset ℕ) {c : ℕ} (hc : 0 < c) :
+    Set.InjOn (· * c) (↑S) := by
+  intro a _ b _ h
+  exact Nat.eq_of_mul_eq_mul_right hc h
+
+/-- Scaling the antichain by `c` scales its sum by `c`. -/
+lemma sum_image_mul_const {S : Finset ℕ} {c : ℕ} (hinj : Set.InjOn (· * c) (↑S)) :
+    (S.image (· * c)).sum id = c * S.sum id := by
+  rw [Finset.sum_image (fun a ha b hb => hinj ha hb)]
+  simp [Finset.mul_sum, mul_comm]
+
+/-- **Representability is closed under multiplication by `p`** (unconditional,
+0-axiom). Scale a representing antichain of `n` by `p`: each summand `p^k q^l`
+becomes `p^{k+1} q^l` (still a power form), the antichain property is preserved
+(`noOneDividesAnother_image_mul_const`), and the sum scales to `p·n`. -/
+theorem isRepresentable_mul_base_left {p q n : ℕ} (hp : 0 < p)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * p), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_left (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hp hac
+  · rw [sum_image_mul_const (mul_const_injOn S hp), hsum]
+
+/-- **Representability is closed under multiplication by `q`** (unconditional,
+0-axiom). Same argument scaling by `q`; each summand `p^k q^l` becomes
+`p^k q^{l+1}`. -/
+theorem isRepresentable_mul_base_right {p q n : ℕ} (hq : 0 < q)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * q), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_right (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hq hac
+  · rw [sum_image_mul_const (mul_const_injOn S hq), hsum]
+
+/-- Closure under multiplication by `p^a` (iterating `isRepresentable_mul_base_left`). -/
+theorem isRepresentable_mul_pow_left {p q n : ℕ} (hp : 0 < p) (a : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p ^ a * n) := by
+  induction a with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_left hp ih
+    have heq : p ^ (k + 1) * n = p * (p ^ k * n) := by ring
+    rwa [heq]
+
+/-- Closure under multiplication by `q^b` (iterating `isRepresentable_mul_base_right`). -/
+theorem isRepresentable_mul_pow_right {p q n : ℕ} (hq : 0 < q) (b : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q ^ b * n) := by
+  induction b with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_right hq ih
+    have heq : q ^ (k + 1) * n = q * (q ^ k * n) := by ring
+    rwa [heq]
+
+/-- **Representability is closed under multiplication by every power form**
+(unconditional, 0-axiom). If `n` is representable then so is `p^a q^b · n`: the
+representable set is invariant under the multiplicative monoid action of the power
+forms. This is the full structural generalisation of the `{2,3}` doubling step. -/
+theorem isRepresentable_mul_powerForm {p q n : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (a b : ℕ) (h : IsRepresentable p q n) :
+    IsRepresentable p q (p ^ a * q ^ b * n) := by
+  have h1 := isRepresentable_mul_pow_left hp a h
+  have h2 := isRepresentable_mul_pow_right hq b h1
+  have heq : p ^ a * q ^ b * n = q ^ b * (p ^ a * n) := by ring
+  rwa [heq]
+
+/-- **Non-representability propagates to power-form divisors** (unconditional,
+0-axiom). Contrapositive of `isRepresentable_mul_powerForm`: if `p^a q^b · n` is
+non-representable, then `n` itself is non-representable. (The implication runs
+*downward* to smaller divisors, so it does not generate new non-representables —
+the open infinitude direction is unaffected.) -/
+theorem nonRepresentable_of_mul_powerForm {p q n a b : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (h : (p ^ a * q ^ b * n) ∈ NonRepresentable p q) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq] at h ⊢
+  exact fun hrep => h (isRepresentable_mul_powerForm hp hq a b hrep)
+
+/-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
