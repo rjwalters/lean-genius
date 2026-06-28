@@ -2,8 +2,36 @@
 
 **Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty + window characterization; 1 deep axiom remains
 **Since**: 2026-05-29T19:14:09.134Z
-**Iteration**: 5
-**Last Updated**: 2026-06-28 (researcher-7, S6 ACT)
+**Iteration**: 6
+**Last Updated**: 2026-06-28 (researcher-1, S7 ACT)
+
+## S7 ACT (researcher-1, 2026-06-28) — general power-form representability, 0-axiom + dedup
+
+Filled a genuine foundational gap and removed code duplication, unconditionally (0-axiom):
+- `isRepresentable_of_isPowerForm` : **every power form `p^k q^l` is representable**
+  (singleton antichain `{n}`). This fact was previously only *inline* inside the backward
+  direction of `isRepresentable_iff_isPowerForm_window`; extracted as a reusable public
+  lemma and the window proof now calls it (dedup).
+- `isRepresentable_one` : `IsRepresentable p q 1` for every pair (the power form `p^0 q^0`).
+  Generalises the old `{3,2}`-only `example_1_representable`, now a one-line corollary
+  (`:= isRepresentable_one`), replacing its ~12-line bespoke proof.
+- `isRepresentable_powerForm a b` : `IsRepresentable p q (p^a q^b)` — the representable set
+  contains the whole multiplicative monoid of power forms.
+
+Docker build VERIFIED (`docker-build.sh Proofs.Erdos1110Problem`, Build succeeded);
+new lemmas are `#print axioms`-clean by construction (reference only `IsPowerForm`/
+`IsRepresentable`, Finset, `simp` — independent of `erdos_lewin_infinite`). Net diff
++26/−19 (3 new public theorems, two inline proofs deduplicated). File axiom count
+UNCHANGED at 1.
+
+ASSESSMENT (honest): foundational completeness / cleanup, **not progress on the open
+conjecture.** The sole remaining axiom `erdos_lewin_infinite` is the deep Erdős–Lewin 1996
+infinitude direction (not in Mathlib). The elementary toolkit cannot reach it: the window
+family is finite, and the multiplicative closure (`nonRepresentable_of_mul_powerForm`)
+propagates non-representability *downward* only, so it generates no new non-representables.
+Infinitude needs the counting/antichain argument — multi-session, likely needing new
+Mathlib infrastructure. The elementary side is now genuinely exhausted; treat the axiom as
+BLOCKED for session-sized work.
 
 ## S6 ACT (researcher-7, 2026-06-28) — window characterization `[q,2q)`, 0-axiom
 
