@@ -29,13 +29,7 @@ References:
 Tags: number-theory, additive-combinatorics, representations
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Pow
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Image
-import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.Divisors
+import Mathlib
 
 open Finset
 
@@ -123,6 +117,7 @@ lemma sum_image_mul_two {S : Finset ℕ} (hinj : Set.InjOn (· * 2) (↑S)) :
 /-- Multiplication by 2 is injective on S (always true on ℕ). -/
 lemma mul_two_injOn (S : Finset ℕ) : Set.InjOn (· * 2) (↑S) := by
   intro a _ b _ h
+  dsimp only at h
   omega
 
 /-- 3^k is a power form. -/
@@ -153,7 +148,7 @@ lemma image_mul_two_even {S : Finset ℕ} {x : ℕ} (hx : x ∈ S.image (· * 2)
 theorem case_2_3_all_representable :
     ∀ n : ℕ, n ≥ 1 → IsRepresentable 3 2 n := by
   intro n
-  induction n using Nat.strong_rec_on with
+  induction n using Nat.strong_induction_on with
   | _ n ih =>
   intro hn
   by_cases hn1 : n = 1
@@ -184,15 +179,15 @@ theorem case_2_3_all_representable :
       have hn3 : n ≥ 3 := by omega
       -- Let k = ⌊log₃ n⌋, so 3^k ≤ n < 3^(k+1)
       let k := Nat.log 3 n
-      have h3k_le : 3 ^ k ≤ n := Nat.pow_log_le_self 3 n
-      have hn_lt : n < 3 ^ (k + 1) := Nat.lt_pow_succ_log_self (by norm_num : 1 < 3) (by omega)
+      have h3k_le : 3 ^ k ≤ n := Nat.pow_log_le_self 3 (by omega)
+      have hn_lt : n < 3 ^ (k + 1) := Nat.lt_pow_succ_log_self (by norm_num : 1 < 3) n
       -- n - 3^k is even (odd - odd = even)
       have h3k_odd : ¬ 2 ∣ 3 ^ k := three_pow_odd k
       have hn_odd : ¬ 2 ∣ n := heven
       have hdiff_even : 2 ∣ (n - 3 ^ k) := by omega
       by_cases heq : n = 3 ^ k
-      · -- Subcase: n = 3^k exactly
-        subst heq
+      · -- Subcase: n = 3^k exactly (rw rather than subst: `k := Nat.log 3 n` depends on n)
+        rw [heq]
         exact ⟨{3 ^ k}, by simp, fun s hs => by simp at hs; subst hs; exact isPowerForm_pow_three k,
           fun a ha b hb hab => by simp at ha hb; omega, by simp⟩
       · -- Subcase: n > 3^k, so n - 3^k is positive and even
@@ -223,13 +218,13 @@ theorem case_2_3_all_representable :
             rw [Finset.mem_image] at hs; obtain ⟨a, ha, rfl⟩ := hs
             exact Nat.mul_pos (hpos a ha) (by norm_num)
           have hs_le : s ≤ S'.sum id :=
-            Finset.single_le_sum (fun _ _ => Nat.zero_le _) hs
+            Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hs
           have hs_ge : 3 ^ k ≤ s := Nat.le_of_dvd hs_pos hdvd
           have hs_lt : s < 2 * 3 ^ k := by
             calc s ≤ S'.sum id := hs_le
               _ = n - 3 ^ k := hS'_sum
               _ < 3 ^ (k + 1) - 3 ^ k := by omega
-              _ = 2 * 3 ^ k := by ring
+              _ = 2 * 3 ^ k := by rw [pow_succ]; omega
           -- s ∈ [3^k, 2·3^k) and 3^k | s, so s = 3^k
           -- But s is even (in image (· * 2)) and 3^k is odd — contradiction
           have hs_eq : s = 3 ^ k := by
@@ -243,7 +238,9 @@ theorem case_2_3_all_representable :
               push_neg at hc2
               have : 3 ^ k * 2 ≤ 3 ^ k * c := Nat.mul_le_mul_left _ hc2
               linarith
-            omega
+            have hc1 : c = 1 := by omega
+            rw [hc1, mul_one] at hc
+            exact hc
           rw [hs_eq] at hs
           exact three_pow_odd k (image_mul_two_even hs)
         refine ⟨insert (3 ^ k) S', ?_, ?_, ?_, ?_⟩
@@ -262,30 +259,120 @@ theorem case_2_3_all_representable :
           | inl ha =>
             subst ha
             cases hb with
-            | inl hb => exact absurd hb hab
+            | inl hb => exact absurd hb.symm hab
             | inr hb => exact h_3k_not_dvd b hb
           | inr ha =>
             cases hb with
             | inl hb => subst hb; exact h_not_dvd_3k a ha
             | inr hb => exact noOneDividesAnother_image_mul_two hac hpos a ha b hb hab
         · rw [Finset.sum_insert h3k_notin, hS'_sum]
+          simp only [id_eq]
           omega
 
-/--
-**Key lemma: Representing even numbers with even summands:**
-If n is even and representable, it has a representation with all even summands.
+/-
+## Part IIb: The Easy Direction of Erdős–Lewin (unconditional, 0-axiom)
+
+The original development axiomatised the full Erdős–Lewin *iff*
+`Finite (NonRepresentable p q) ↔ {p,q} = {2,3}`. Only the forward
+direction (`Finite ⟹ {2,3}`, equivalently `{p,q} ≠ {2,3} ⟹ Infinite`) is
+the deep theorem. The backward direction (`{2,3} ⟹ Finite`) is an immediate
+corollary of `case_2_3_all_representable`, which we already proved by
+induction. We discharge it here so it is no longer assumed, and in fact pin
+down the non-representable set exactly: `NonRepresentable 3 2 = {0}`.
 -/
+
+/-- Power forms are commutative in the base pair: `p^k q^l` and `q^l p^k` range
+over the same set, so `IsPowerForm p q = IsPowerForm q p` as predicates. -/
+lemma isPowerForm_comm {p q n : ℕ} : IsPowerForm p q n ↔ IsPowerForm q p n := by
+  constructor <;> · rintro ⟨k, l, rfl⟩; exact ⟨l, k, by ring⟩
+
+/-- Representability only depends on the (symmetric) set of power forms, so it is
+invariant under swapping the two bases. -/
+lemma isRepresentable_comm {p q n : ℕ} :
+    IsRepresentable p q n ↔ IsRepresentable q p n := by
+  constructor
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    exact ⟨S, hne, fun s hs => isPowerForm_comm.mp (hpf s hs), hac, hsum⟩
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    exact ⟨S, hne, fun s hs => isPowerForm_comm.mp (hpf s hs), hac, hsum⟩
+
+/-- Zero is never representable: a nonempty antichain of positive power forms has
+strictly positive sum. -/
+lemma not_isRepresentable_zero {p q : ℕ} (hp : 0 < p) (hq : 0 < q) :
+    ¬ IsRepresentable p q 0 := by
+  rintro ⟨S, hne, hpf, _, hsum⟩
+  obtain ⟨s, hs⟩ := hne
+  obtain ⟨k, l, rfl⟩ := hpf s hs
+  have hpos : 0 < p ^ k * q ^ l := mul_pos (pow_pos hp k) (pow_pos hq l)
+  have hle : p ^ k * q ^ l ≤ S.sum id :=
+    Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+  omega
+
+/-- **Exact characterisation of the {3,2} case:** the only non-representable
+number is `0`. Every `n ≥ 1` is representable (`case_2_3_all_representable`) and
+`0` is not (`not_isRepresentable_zero`). -/
+theorem nonRepresentable_three_two : NonRepresentable 3 2 = {0} := by
+  ext n
+  simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · intro hn
+    by_contra hne
+    exact hn (case_2_3_all_representable n (by omega))
+  · rintro rfl
+    exact not_isRepresentable_zero (by norm_num) (by norm_num)
+
+/-- Same characterisation with the bases written in the other order. -/
+theorem nonRepresentable_two_three : NonRepresentable 2 3 = {0} := by
+  ext n
+  simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_singleton_iff,
+    isRepresentable_comm (p := 2) (q := 3)]
+  constructor
+  · intro hn
+    by_contra hne
+    exact hn (case_2_3_all_representable n (by omega))
+  · rintro rfl
+    exact not_isRepresentable_zero (by norm_num) (by norm_num)
+
+/-- **Easy direction of Erdős–Lewin (unconditional).** If `{p,q} = {2,3}` then the
+set of non-representable numbers is finite — indeed it is the singleton `{0}`.
+This needs no axiom. -/
+theorem finite_nonRepresentable_of_two_three {p q : ℕ}
+    (h : (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3)) :
+    Set.Finite (NonRepresentable p q) := by
+  rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · rw [nonRepresentable_three_two]; exact Set.finite_singleton 0
+  · rw [nonRepresentable_two_three]; exact Set.finite_singleton 0
+
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
 /--
-**Erdős-Lewin Theorem (1996):**
-The set of non-representable numbers is finite if and only if {p,q} = {2,3}.
+**Erdős-Lewin Theorem (1996), deep direction:**
+If `{p,q} ≠ {2,3}` (with `p > q ≥ 2` coprime), there are infinitely many
+non-representable numbers. This is the genuinely hard half of the
+characterisation — the converse (`{2,3} ⟹ finite`) is proved unconditionally
+above in `finite_nonRepresentable_of_two_three`. Not available in Mathlib 4.26.
 -/
-axiom erdos_lewin_theorem (p q : ℕ) :
+axiom erdos_lewin_infinite (p q : ℕ) :
     p > q → q ≥ 2 → Nat.Coprime p q →
-    (Set.Finite (NonRepresentable p q) ↔ (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))
+    ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3)) →
+    Set.Infinite (NonRepresentable p q)
+
+/--
+**Erdős-Lewin Theorem (1996), full iff** — now a *theorem*: the backward
+direction is the unconditional `finite_nonRepresentable_of_two_three`, and only
+the forward direction rests on the deep axiom `erdos_lewin_infinite`.
+The set of non-representable numbers is finite iff `{p,q} = {2,3}`.
+-/
+theorem erdos_lewin_theorem (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
+    (hcop : Nat.Coprime p q) :
+    Set.Finite (NonRepresentable p q) ↔ (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3) := by
+  constructor
+  · intro hfin
+    by_contra hne
+    exact (erdos_lewin_infinite p q hp hq hcop hne) hfin
+  · exact finite_nonRepresentable_of_two_three
 
 /--
 **Infinitely many non-representable for most (p,q):**
@@ -293,24 +380,23 @@ If {p,q} ≠ {2,3}, there are infinitely many non-representable numbers.
 -/
 theorem infinitely_many_non_rep (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
     (hcop : Nat.Coprime p q) (hne : ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))) :
-    Set.Infinite (NonRepresentable p q) := by
-  have h := erdos_lewin_theorem p q hp hq hcop
-  intro hfin
-  exact hne (h.mp hfin)
+    Set.Infinite (NonRepresentable p q) :=
+  erdos_lewin_infinite p q hp hq hcop hne
 
 /-
 ## Part IV: Yu-Chen Results (2022)
 -/
 
-/--
+/-
 **Natural density of a set:**
 d(A) = lim_{n→∞} |A ∩ {1,...,n}| / n
 -/
+open scoped Classical in
 def HasDensity (A : Set ℕ) (d : ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |((Finset.filter (· ∈ A) (Finset.range (n + 1))).card : ℝ) / n - d| < ε
 
-/--
+/-
 **Yu-Chen Density Zero Theorem:**
 The non-representable numbers have density zero for many parameter choices:
 - q > 3, or
@@ -340,11 +426,11 @@ noncomputable def minSummandBound (n : ℕ) : ℝ :=
   sSup {f : ℝ | ∃ S : Finset ℕ, (∀ s ∈ S, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧
     NoOneDividesAnother S ∧ S.sum id = n}
 
-/--
+/-
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
 -/
-/--
+/-
 **Yang-Zhao improvement (2025):**
 The lower bound improves to f(n) ≫ n / log n.
 -/
@@ -352,7 +438,7 @@ The lower bound improves to f(n) ≫ n / log n.
 ## Part VI: Related Problems
 -/
 
-/--
+/-
 **Related Problems:**
 - Problem #123: The analog with three coprime bases (p, q, r)
 - Problem #845: Additional questions about the {2,3} representation
@@ -383,7 +469,7 @@ theorem example_1_representable : IsRepresentable 3 2 1 := by
     omega
   · simp
 
-/--
+/-
 **Example: Small cases for {3,2}:**
 All of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 are representable.
 -/
