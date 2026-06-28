@@ -135,6 +135,9 @@ theorem expectedCrossings_partition (γ : ℝ → ℝ × ℝ) (d : ℝ) (pts : �
     expectedCrossings γ (pts m) (pts n) d
       = ∑ k ∈ Finset.Ico m n, expectedCrossings γ (pts k) (pts (k + 1)) d := by
   simp only [expectedCrossings]
-  rw [← sum_integral_adjacent_intervals_Ico hmn hint, Finset.mul_sum]
+  -- `sum_integral_adjacent_intervals_Ico` quantifies its integrability hypothesis
+  -- over `Set.Ico m n`; convert from the `Finset.Ico` membership used here.
+  rw [← sum_integral_adjacent_intervals_Ico hmn
+        (fun k hk => hint k (Finset.mem_Ico.mpr (Set.mem_Ico.mp hk))), Finset.mul_sum]
 
 end BuffonsNeedleConcatenation
