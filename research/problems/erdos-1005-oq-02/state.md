@@ -2,7 +2,7 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 14
+**Iteration**: 16
 
 ## Current Focus
 
@@ -275,3 +275,62 @@ constant remains open.
   windows' sign structure.
 - **Continuant reversal symmetry** `Continuant ks.reverse = Continuant ks` (true;
   verified by hand at rungs 2,3) — the palindrome structure a density count exploits.
+
+## Iteration 16 addition (verified, 0-axiom — researcher-1, `lake env lean`, Docker down)
+
+Added **§17 (continuant positivity & growth in the large-quotient regime)**,
+0-sorry / 0-axiom (verified by host `lean v4.26.0` over the shared main-repo
+Mathlib `.olean` cache; `#print axioms` reports only propext / Classical.choice /
+Quot.sound on the four inductive theorems, and the two `decide` witnesses depend
+on **no axioms at all** — `decide`, not `native_decide`, so no `Lean.ofReduceBool`).
+Six theorems, no new def. This addresses the density side — Iteration-14's
+"break forced by a large quotient" Next Action — **independently of** the parallel
+§16 continuant-matrix/Cassini work (researcher-2, PR #31083, still OPEN at the time
+of writing): §17 depends only on the §14 `Continuant`/`secondCont` recurrences
+(`continuant_cons`), so it composes with §16 without depending on it.
+
+- `secondCont_lt_continuant` (**core invariant**) — for every quotient list `ks`
+  with all entries `≥ 2`, `0 ≤ secondCont ks < Continuant ks`. Proof: induction on
+  the pair map `(s, K) ↦ (K, k·K − s)`, which preserves `0 ≤ s < K` whenever `k ≥ 2`
+  (`k·K − s ≥ 2K − s > K`, and `K ≥ s + 1 > 0`). This strict domination is the seed
+  of every positivity/growth statement.
+- `continuant_pos` / `secondCont_nonneg` — strict positivity `0 < Continuant ks` and
+  `0 ≤ secondCont ks` on the all-`≥2` regime: the §14 windows never degenerate
+  through a vanishing continuant there.
+- `continuant_strict_mono` — `Continuant ks < Continuant (k :: ks)` for `k ≥ 2`: the
+  continuant is strictly increasing along a large-quotient run.
+- `continuant_ge_length` — **linear growth** `|ks| + 1 ≤ Continuant ks`. With the §14
+  closed form `stepSeq a c ks = K·c − secondCont·a`, the run endpoints inherit this
+  growth, so long large-quotient runs are metrically expensive under the order-`n`
+  Farey cap.
+- `continuant_ones_two` / `continuant_ones_three` (**axiom-free**, `decide`) — the
+  contrasting balanced extreme: `K([1,1]) = 0`, `K([1,1,1]) = −1`, sitting on the
+  period-6 orbit `1,1,0,−1,−1,0,…`. **This is the concrete refutation of
+  Iteration-14's blanket positivity target `K(ks) ≥ 1`** (already flagged false in
+  Iteration 15): positivity is a phenomenon of *large* quotients, the regime opposite
+  to the balanced extreme — so the `≥ 2` hypothesis in §17 is essential, not cosmetic.
+
+File: 1391 → 1509 lines, 75 → 82 theorems, 6 defs (no new def).
+
+**Honest boundary (unchanged).** §17 bounds the continuant's sign and size in ONE
+quotient regime (all entries `≥ 2`); it does **not** count the density of admissible
+quotient lists keeping every non-adjacent window nonnegative — that count is the open
+`1/12`–`1/4` step. What §17 buys is that the large-quotient regime's windows have a
+*decided* sign (controlled by the seed, not by continuant cancellation), and that the
+continuant grows at least linearly with run length there.
+
+## Next Action (after §17)
+
+- **The intermediate / mixed regime.** §17 (all `≥ 2`) and the all-`1` period-6 orbit
+  bracket the two extremes; the open optimization lives in mixed quotient lists. Target:
+  characterize, via `continuant_cons`, exactly which quotient lists keep `Continuant ks ≥ 1`
+  (the boundary between the positive large-quotient cone and the oscillating balanced
+  orbit), e.g. "between any two consecutive `1`s the accumulated quotient mass must
+  exceed a threshold".
+- **All-ones period-6 closed form.** Promote `continuant_ones_two/_three` to the full
+  `Continuant (List.replicate n 1)` periodicity (period 6), making the balanced extreme
+  a single theorem rather than two witnesses.
+- **Density aggregation.** Combine `continuant_ge_length` with the order-`n` denominator
+  cap (`stepSeq b d ks = K·d − secondCont·b ≤ n`) to bound the run length of a
+  large-quotient run by `O(n / d)` — the first genuine run-length *upper* bound in the
+  all-`≥2` regime, a sanity check against the `n/4 + 5` global upper bound.
