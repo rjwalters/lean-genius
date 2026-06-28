@@ -421,6 +421,67 @@ example : (8 : ℕ) % 6 ≠ 4 := by decide
 example : collatz 16 = 8 := by decide
 
 /-!
+## Part VI: A logarithmic lower bound on the basin counting function
+
+`basin_infinite` (Part IV) is qualitative. Here we make it **quantitative**: at
+least `Nat.log 2 N + 1` of the numbers in `[0, N]` reach 1. The reason is
+elementary — the `Nat.log 2 N + 1` distinct powers of two
+`2^0, 2^1, …, 2^(Nat.log 2 N)` all lie in `[1, N]` and all reach 1 — but it turns
+`basin_infinite` into an explicit growth rate for the counting function
+`N ↦ #{n ≤ N : ReachesOne n}`.
+
+This is the *achievable* (lower-bound) half of nextStep 4's "two-sided bound". A
+matching **nontrivial upper bound** `#{n ≤ N : ReachesOne n} < N + 1` would require
+exhibiting some `n ≤ N` that never reaches 1 — which is exactly the open Collatz
+question. So only the lower bound is unconditional.
+-/
+
+/-- Every power of two reaches 1: `one_reaches_one` handles the exponent `0`
+(`2^0 = 1`) and `pow_two_reaches_one` the positive exponents. -/
+theorem pow_two_reaches_one' (k : ℕ) : ReachesOne (2 ^ k) := by
+  cases k with
+  | zero => simpa using one_reaches_one
+  | succ k => exact pow_two_reaches_one (k + 1) (by omega)
+
+/-- The basin elements not exceeding `N` form a finite set (a subset of `[0, N]`). -/
+theorem basin_below_finite (N : ℕ) : {n : ℕ | n ≤ N ∧ ReachesOne n}.Finite :=
+  (Set.finite_Iic N).subset (fun _ hn => Set.mem_Iic.mpr hn.1)
+
+/-- **Logarithmic lower bound on the basin counting function.** At least
+`Nat.log 2 N + 1` of the integers in `[0, N]` reach 1 — the `Nat.log 2 N + 1`
+distinct powers of two below `N` are a witness set. Unconditional: this is a lower
+bound on how *many* numbers reach 1, independent of the Collatz conjecture. -/
+theorem basin_count_lower (N : ℕ) (hN : 1 ≤ N) :
+    Nat.log 2 N + 1 ≤ {n : ℕ | n ≤ N ∧ ReachesOne n}.ncard := by
+  set L := Nat.log 2 N with hL
+  -- The powers of two `2^0, …, 2^L` sit inside the basin below `N`.
+  have hsub : ↑((Finset.range (L + 1)).image (fun k => 2 ^ k))
+      ⊆ {n : ℕ | n ≤ N ∧ ReachesOne n} := by
+    intro n hn
+    simp only [Finset.coe_image, Finset.coe_range, Set.mem_image, Set.mem_Iio] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    refine ⟨?_, pow_two_reaches_one' k⟩
+    calc 2 ^ k ≤ 2 ^ L := Nat.pow_le_pow_right (by norm_num) (by omega)
+      _ ≤ N := Nat.pow_log_le_self 2 (by omega)
+  -- That witness set has exactly `L + 1` elements (powers of two are distinct).
+  have hcard : ((Finset.range (L + 1)).image (fun k => 2 ^ k)).card = L + 1 := by
+    rw [Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+      Finset.card_range]
+  calc L + 1
+      = ((Finset.range (L + 1)).image (fun k => 2 ^ k)).card := hcard.symm
+    _ = (↑((Finset.range (L + 1)).image (fun k => 2 ^ k)) : Set ℕ).ncard :=
+        (Set.ncard_coe_finset _).symm
+    _ ≤ {n : ℕ | n ≤ N ∧ ReachesOne n}.ncard :=
+        Set.ncard_le_ncard hsub (basin_below_finite N)
+
+-- N = 8: `Nat.log 2 8 = 3`, so at least 4 numbers in `[0, 8]` reach 1
+-- (indeed 1, 2, 4, 8 — the powers of two ≤ 8).
+example : 4 ≤ {n : ℕ | n ≤ 8 ∧ ReachesOne n}.ncard := by
+  have := basin_count_lower 8 (by norm_num)
+  norm_num [Nat.log] at this ⊢
+  omega
+
+/-!
 ## Summary
 
 **Proved (no axioms, no `sorry`)**:
@@ -441,6 +502,10 @@ example : collatz 16 = 8 := by decide
    `iter_preimage_finite` (every backward level is finite)
 7. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
 8. ✓ The basin of 1 is infinite `basin_infinite`
+9. ✓ Logarithmic lower bound on the basin counting function: `pow_two_reaches_one'`
+   (every power of two reaches 1), `basin_below_finite`, `basin_count_lower`
+   (`#{n ≤ N : ReachesOne n} ≥ Nat.log 2 N + 1`) — the unconditional lower-bound half
+   of a two-sided basin count; a nontrivial upper bound is exactly the open problem
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
