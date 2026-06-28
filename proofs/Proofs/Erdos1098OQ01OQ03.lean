@@ -28,6 +28,13 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   `[G : Z(G)]`. This is the easy direction, with an explicit, sharp bound.
 * `bounded_cliques_of_finite_index` — **(fully proved)** if `[G:Z(G)]` is finite then
   ω(Γ(G)) is finite, witnessed by the bound `[G:Z(G)]`.
+* `exists_clique_centralizer_cover` — **(fully proved, new)** the first step of Neumann's
+  hard direction: if ω(Γ(G)) is finite then a single maximal clique `S` has the property
+  that the centralizers `{C_G(a) : a ∈ S}` cover `G`.
+* `exists_finiteIndex_centralizer_of_boundedCliques` — **(fully proved, new)** combining the
+  cover with B. H. Neumann's coset-covering theorem (Mathlib's `CosetCover`): if ω(Γ(G)) is
+  finite then *some* centralizer `C_G(a)` has finite index. This is a genuine partial
+  result toward (still strictly weaker than) the hard direction.
 * `neumann_hard_direction` — **(axiom, Neumann 1976)** if ω(Γ(G)) is finite then
   `[G:Z(G)]` is finite. This is the deep content of Erdős #1098.
 * `neumann_full_theorem` — the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite.
@@ -35,8 +42,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
 ## Honesty
 
 The forward (bounding) direction is fully machine-checked with the explicit and sharp
-bound `ω ≤ [G:Z(G)]`. The converse is B. H. Neumann's theorem, whose proof is a
-genuinely non-trivial covering / BFC-group argument not available in Mathlib; it is
+bound `ω ≤ [G:Z(G)]`. For the converse we now machine-check the *first two steps* of
+Neumann's argument — the reduction to a finite centralizer cover and the extraction of a
+single finite-index centralizer via Mathlib's `CosetCover` — leaving only the final BFC
+step (from one finite-index centralizer to finite-index *centre*) as the axiom
+`neumann_hard_direction`, a genuinely non-trivial result not available in Mathlib. It is
 stated as a single, clearly-labelled axiom with citation. Status: axiomatized.
 
 ## Sorries
@@ -49,12 +59,15 @@ Erdős, non-commuting-graph, clique-number, center, index, Neumann, group-theory
 -/
 
 import Mathlib.GroupTheory.Subgroup.Center
+import Mathlib.GroupTheory.Subgroup.Centralizer
 import Mathlib.GroupTheory.Index
+import Mathlib.GroupTheory.CosetCover
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
 open Subgroup
+open scoped Pointwise
 
 namespace Erdos1098OQ01OQ03
 
@@ -136,6 +149,89 @@ theorem clique_card_le_index {S : Finset G} (hS : IsClique S)
 theorem bounded_cliques_of_finite_index
     (hfin : (Subgroup.center G).index ≠ 0) : BoundedCliques G :=
   ⟨(Subgroup.center G).index, fun _ hS => clique_card_le_index hS hfin⟩
+
+-- ============================================================
+-- SECTION III.5: First step of the hard direction — the centralizer cover
+-- ============================================================
+
+/-- **(New, fully proved — the first genuine step of Neumann's hard direction.)**
+    If ω(Γ(G)) is finite, then there is a *single clique* `S` — a finite set of
+    pairwise non-commuting elements — whose members' centralizers cover `G`:
+    every `g ∈ G` commutes with some `a ∈ S`.
+
+    *Proof.* Among all cliques pick one, `S`, of maximum cardinality. The clique
+    cardinalities form a nonempty set of naturals bounded above by the clique bound,
+    so a maximum is attained (`Nat.sSup_mem`). For any `g`, if `g` commuted with no
+    element of `S` then `g ∉ S` and `insert g S` would be a clique of strictly
+    larger cardinality, contradicting maximality. Hence `g` commutes with some
+    `a ∈ S`.
+
+    This is exactly the reduction Neumann uses to turn the clique bound into a
+    finite cover of `G` by centralizers. The remaining (deep) step — that such a
+    cover forces `[G:Z(G)]` to be finite — is `neumann_hard_direction`. -/
+theorem exists_clique_centralizer_cover (h : BoundedCliques G) :
+    ∃ S : Finset G, IsClique S ∧ ∀ g : G, ∃ a ∈ S, a * g = g * a := by
+  classical
+  obtain ⟨B, hB⟩ := h
+  -- The set of attainable clique cardinalities is nonempty (∅ is a clique) and
+  -- bounded above by `B`.
+  set A : Set ℕ := {n | ∃ S : Finset G, IsClique S ∧ S.card = n} with hA
+  have hEmpty : IsClique (∅ : Finset G) := by
+    intro g hg; exact absurd hg (Finset.notMem_empty g)
+  have hne : A.Nonempty := ⟨0, ∅, hEmpty, Finset.card_empty⟩
+  have hbdd : BddAbove A := ⟨B, by rintro n ⟨S, hS, rfl⟩; exact hB S hS⟩
+  -- A maximum cardinality is attained, by a clique `S`.
+  obtain ⟨S, hSclique, hScard⟩ := Nat.sSup_mem hne hbdd
+  refine ⟨S, hSclique, fun g => ?_⟩
+  by_contra hcon
+  push_neg at hcon
+  -- `g` commutes with no element of `S`; in particular `g ∉ S`.
+  have hgnotin : g ∉ S := fun hg => hcon g hg rfl
+  -- `insert g S` is then a strictly larger clique.
+  have hbig : IsClique (insert g S) := by
+    intro x hx y hy hxy
+    rcases Finset.mem_insert.mp hx with rfl | hxS
+    · rcases Finset.mem_insert.mp hy with rfl | hyS
+      · exact absurd rfl hxy
+      · exact fun hcomm => hcon y hyS hcomm.symm
+    · rcases Finset.mem_insert.mp hy with rfl | hyS
+      · exact hcon x hxS
+      · exact hSclique x hxS y hyS hxy
+  have hcardins : (insert g S).card = S.card + 1 :=
+    Finset.card_insert_of_notMem hgnotin
+  have hle : (insert g S).card ≤ sSup A :=
+    le_csSup hbdd ⟨insert g S, hbig, rfl⟩
+  rw [hcardins, hScard] at hle
+  omega
+
+/-- **(New, fully proved — Neumann's covering step via Mathlib's `CosetCover`.)**
+    If ω(Γ(G)) is finite, then *some* element `a` has a centralizer `C_G(a)` of
+    finite index in `G`.
+
+    *Proof.* By `exists_clique_centralizer_cover`, the centralizers `C_G(a)`
+    (`a` ranging over a finite clique `S`) cover `G`. These are subgroups, i.e.
+    cosets `1 · C_G(a)`, so B. H. Neumann's coset-covering theorem
+    (`Subgroup.exists_finiteIndex_of_leftCoset_cover`) yields one of finite index.
+
+    This is a genuine, machine-checked consequence of bounded clique number — a
+    strict step beyond the cover itself. It is still strictly weaker than the full
+    `neumann_hard_direction`, which requires *all of* `Z(G) = ⋂ₐ C_G(a)` to have
+    finite index; bridging from "one finite-index centralizer" to "finite-index
+    centre" is the remaining deep BFC content. -/
+theorem exists_finiteIndex_centralizer_of_boundedCliques (h : BoundedCliques G) :
+    ∃ a : G, (Subgroup.centralizer {a}).index ≠ 0 := by
+  obtain ⟨S, _, hcover⟩ := exists_clique_centralizer_cover h
+  -- Reformulate the cover as a left-coset cover with trivial representatives.
+  have hcovers :
+      ⋃ a ∈ S, (1 : G) • ((Subgroup.centralizer {a} : Subgroup G) : Set G)
+        = Set.univ := by
+    rw [Set.eq_univ_iff_forall]
+    intro x
+    obtain ⟨a, haS, hax⟩ := hcover x
+    rw [Set.mem_iUnion₂]
+    exact ⟨a, haS, by rw [one_smul]; exact Subgroup.mem_centralizer_singleton_iff.mpr hax.symm⟩
+  obtain ⟨k, _, hk⟩ := Subgroup.exists_finiteIndex_of_leftCoset_cover hcovers
+  exact ⟨k, hk.index_ne_zero⟩
 
 -- ============================================================
 -- SECTION IV: Hard direction — Neumann's theorem (axiom)
