@@ -280,5 +280,19 @@
       "relationship": "related",
       "description": "Sibling Sₙ solvable iff n ≤ 4 (Fin n). perm_solvable_iff_card is the arbitrary-finite-type form."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Both classical solvability classifications — IsSolvable (Perm α) ↔ Fintype.card α ≤ 4 and IsSolvable (alternatingGroup α) ↔ Fintype.card α ≤ 4 — are established for an arbitrary finite type α, not just the indexed model Fin n. The mechanism is a single transport: any bijection e : α ≃ β induces the conjugation isomorphism permCongrHom e : Perm α ≃* Perm β, which preserves sign (sign_permCongr) and therefore restricts to a canonical isomorphism alternatingCongr : alternatingGroup α ≃* alternatingGroup β. Since solvability is a MulEquiv invariant (isSolvable_congr), specialising e to Fintype.equivFin α : α ≃ Fin (card α) collapses each arbitrary-type statement onto the parent's already-proved Fin n verdict by one rewrite. The result is a 0-axiom Mathlib bridge — no native_decide, no sorries — that answers the parent's first future direction and exposes Fintype.card α as the sole invariant governing solvability.",
+    "implications": [
+      "The Abel–Ruffini obstruction is coordinate-free: any 5-element set, however presented (roots of a quintic, vertices of a graph, a chosen basis), has non-solvable symmetric and alternating groups, with no enumeration required.",
+      "Equinumerous finite types receive a canonical — not merely abstract-existence — isomorphism of alternating groups via alternatingCongr, so the cardinality-invariance comes with an explicit witness usable in further constructions.",
+      "isSolvable_congr is a small reusable lemma: it makes solvability transparent to any group isomorphism, so any future relabelling or coordinate change in the gallery's group-theory entries is automatically invisible to the solvability verdict.",
+      "The reduction pattern (transport along Fintype.equivFin to inherit a Fin n classification) is a template for lifting any isomorphism-invariant property of permutation groups off the indexed model onto arbitrary finite types."
+    ],
+    "openQuestions": [
+      "Can the same permCongrHom transport carry finer invariants than solvability — e.g. the derived length, nilpotency class, or the full subgroup lattice — from Fin n to an arbitrary finite type with equally short proofs?",
+      "Does alternatingCongr assemble into a functor on the groupoid of finite types and bijections, making 'alternating group of a finite set' a genuinely natural construction rather than a per-bijection isomorphism?",
+      "What is the analogous intrinsic (Fin-free) statement and transport for solvability of other naturally-indexed group families, such as the classical Weyl groups or wreath products on a finite ground set?"
+    ]
+  }
 }
