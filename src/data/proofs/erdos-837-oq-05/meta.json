@@ -16,9 +16,9 @@
     ],
     "proofRepoPath": "Proofs/Erdos837ProblemOQ05.lean",
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom (erdos_stone_simonovits): A_2 = {1-1/m : m ≥ 1}. 1 sorry (zero_is_jump): 0 ∈ A_k requires supersaturation argument.",
+    "assumptions": "1 axiom (erdos_stone_simonovits): the deep Erdős-Stone-Simonovits characterization A_2 = {1-1/m : m ≥ 1}. 0 sorries: zero_is_jump (0 ∈ A_k for k ≥ 2) is now fully proved in the counting model via a Nat.findGreatest density-1 extraction, depending only on propext/Classical.choice/Quot.sound.",
     "axioms": [
       "erdos_stone_simonovits: densityJumpSetLiminf 2 = {1-1/m : m ≥ 1} (Erdős-Stone-Simonovits theorem)"
     ],
@@ -26,11 +26,14 @@
       "IsDensityJumpLiminf: proper formulation using Filter.liminf",
       "Relationship to parent's placeholder definition",
       "Turán density definition and basic properties",
-      "Formal statement of A_2 characterization"
+      "Formal statement of A_2 characterization",
+      "zero_is_jump: complete sorry-free proof that 0 is a density jump for k ≥ 2 (counting-model supersaturation), witnessed by β = 1 via a Nat.findGreatest density-1 subhypergraph extraction",
+      "choose_tendsto_atTop: C(m,k) → ∞ as m → ∞ for fixed k ≥ 1, the quantitative engine for supersaturation",
+      "Fixed a parse error in the parent Erdos837Problem.lean (floating /-- doc comments) that prevented the entry from compiling"
     ],
     "dateAdded": "2026-04-13",
-    "lineCount": 149,
-    "theoremCount": 5,
+    "lineCount": 294,
+    "theoremCount": 7,
     "definitionCount": 3,
     "mathlib_version": "4.26.0"
   },
@@ -74,10 +77,10 @@
     },
     {
       "id": "properties",
-      "title": "Section IV: Properties",
-      "startLine": 106,
-      "endLine": 122,
-      "summary": "States 0 ∈ A_k (sorry: needs supersaturation) and A_k ⊆ [0,1)."
+      "title": "Section IV: Supersaturation infrastructure and Properties",
+      "startLine": 119,
+      "endLine": 245,
+      "summary": "Proves choose_tendsto_atTop (C(m,k) → ∞) and edgeDensity_nonneg, then proves 0 ∈ A_k for k ≥ 2 fully (no sorry) and A_k ⊆ [0,1)."
     },
     {
       "id": "open-problem",
@@ -91,7 +94,7 @@
   "conclusion": {
     "summary": "Answers OQ-05 affirmatively: IsDensityJump can be strengthened using Filter.liminf to encode the full sequence-based formulation from the combinatorics literature.",
     "openQuestions": [
-      "Prove zero_is_jump using a supersaturation argument — requires formalizing the Kruskal-Katona theorem or Erdős-Simonovits supersaturation in Mathlib",
+      "Replace the counting model with typed hypergraph structures (e.g., extending Mathlib's SimpleGraph) so that zero_is_jump reflects genuine combinatorial supersaturation rather than the count-only model",
       "Formalize the subhypergraph relation properly using typed hypergraph structures (e.g., extending Mathlib's SimpleGraph)",
       "What is A_3? Is A_3 countable? Does A_3 contain non-Turán values? (Erdős #837, open since 1974)",
       "Does the Frankl-Füredi non-jump result (A_3 ∩ (0, 2/9) = ∅) have a Lean formalization?"
@@ -107,19 +110,16 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Order.LiminfLimsup",
-      "Mathlib.Topology.Instances.Real",
-      "Mathlib.Data.Nat.Choose.Basic",
-      "Mathlib.Tactic",
+      "Mathlib",
       "Proofs.Erdos837Problem"
     ],
     "namespace": "Erdos837OQ05",
-    "lineCount": 149,
+    "lineCount": 294,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 3,
     "path": "Proofs/Erdos837ProblemOQ05.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }
