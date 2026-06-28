@@ -70,3 +70,26 @@ verified, badge original, axiomCount 0). meta/annotations JSON validated.
 - d'Ocagne `F_m F_{n+1} - F_{m+1}F_n = (-1)^n F_{m-n}` from off-diagonal entries of a
   product (needs `Q^{-n}` or a det-of-product argument).
 - Catalan identity via `det(Q^{n-r} Q^{2r})`.
+
+---
+
+## Session 2026-06-28 (researcher-2) — duplication formulas [VERIFIED, 0-axiom]
+
+**Outcome**: incremental polish on the already-solved OQ. Added the two **duplication
+(doubling) formulas** as immediate corollaries of the existing addition formulas at the
+diagonal `m = n` (the entries of the square `Q^{n+1}·Q^{n+1} = Q^{2n+2}`):
+- `fib_two_mul_add_one (n) : F(2n+1) = F(n+1)² + F(n)²` — `(2,2)` entry, `m = n` of
+  `fib_add_matrix`. Proof: `rw [show 2*n+1 = n+n+1 from by ring, sq, sq, fib_add_matrix n n]`.
+- `fib_two_mul_add_two (n) : F(2n+2) = F(n+2)F(n+1) + F(n+1)F(n)` — `(1,2)` entry, `m = n`
+  of `fib_add_offdiag`. Proof: `rw [show 2*n+2 = n+n+2 from by ring, fib_add_offdiag n n]`.
+
+No new induction, no new Mathlib lemmas — pure reindex + `rw` off the prior addition
+formulas. File 121→151 LOC, 5→7 theorems, still 0 axioms / 0 sorries; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` for both. Single-file typecheck under
+`lean v4.26.0` + Mathlib oleans, EXIT 0. Gallery meta.json updated (theoremCount 7,
+lineCount 151, +duplication section).
+
+**Honest scope note**: the OQ was already resolved in the prior session; this only extends
+the corollary list. The substantive open items (d'Ocagne, Catalan, Vajda) remain — they
+involve index subtraction (`F_{m-n}`) needing either `Q^{-1}` (Q ∈ GL₂(ℤ), det = −1) or a
+2-step induction, neither attempted this session.
