@@ -2031,4 +2031,81 @@ theorem continuant_replicate_one_abs_le_one (n : ℕ) :
     |Continuant (List.replicate n 1)| ≤ 1 := by
   rcases continuant_replicate_one_bounded n with h | h | h <;> rw [h] <;> decide
 
+/-! ## §22: The boundary of the positive cone — leading `1`s in a large-quotient run
+
+§20/§21 nailed the two pure extremes (all-`2` linear `K = n + 1`, all-`1` period-6 with
+`|K| ≤ 1`).  This section characterises the **boundary** between them: starting from a
+large-quotient (all-`≥ 2`) tail — where §17 `continuant_pos` gives `0 < K` — how many
+leading quotients may drop to `1` before positivity is lost?
+
+The answer is **exactly one**.  Two closed-form identities collapse a leading-`1` prefix
+onto the tail's two continuants:
+
+* `K(1 :: ks) = K(ks) − secondCont ks`   (one leading `1`),
+* `K(1 :: 1 :: ks) = − secondCont ks`     (two leading `1`s).
+
+The §17 core invariant `0 ≤ secondCont ks < Continuant ks` (`secondCont_lt_continuant`)
+then reads off the sign immediately: with a single leading `1` the continuant stays
+`> 0` (the strict domination `secondCont < K`), but a *second* consecutive `1` flips it to
+`− secondCont ks ≤ 0` — strictly negative as soon as the tail is nonempty.  This is the
+precise crossing point from §17's positive cone into the §21 period-6 orbit; the
+empty-tail edge `K(1 :: 1 :: []) = 0` recovers the §21 witness `continuant_ones_two`.
+
+Depends only on the §14 recurrence `continuant_cons` and the §17 invariant
+`secondCont_lt_continuant` / `secondCont_nonneg` / `continuant_pos`. -/
+
+/-- **One leading `1` (closed form).**  Prepending a single `1` subtracts the trailing
+continuant: `K(1 :: ks) = K(ks) − secondCont ks`.  A pure instance of `continuant_cons`
+with `k = 1`. -/
+theorem continuant_one_cons (ks : List ℤ) :
+    Continuant (1 :: ks) = Continuant ks - secondCont ks := by
+  rw [continuant_cons]; ring
+
+/-- **Two leading `1`s (closed form).**  A second consecutive `1` cancels the leading
+continuant entirely: `K(1 :: 1 :: ks) = − secondCont ks`.  Indeed
+`K(1::1::ks) = K(1::ks) − secondCont (1::ks) = (K(ks) − secondCont ks) − K(ks)`, using
+`secondCont (1 :: ks) = Continuant ks`. -/
+theorem continuant_one_one_cons (ks : List ℤ) :
+    Continuant (1 :: 1 :: ks) = - secondCont ks := by
+  rw [continuant_one_cons (1 :: ks), continuant_one_cons ks]
+  simp only [secondCont]
+  ring
+
+/-- **A single leading `1` preserves positivity.**  On a large-quotient tail
+(`∀ k ∈ ks, 2 ≤ k`, so §17 gives `secondCont ks < Continuant ks`), one leading `1`
+keeps the continuant strictly positive: `0 < K(1 :: ks)`.  By `continuant_one_cons`,
+`K(1::ks) = K(ks) − secondCont ks > 0` by the strict domination. -/
+theorem continuant_one_cons_pos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant (1 :: ks) := by
+  rw [continuant_one_cons]
+  have hd := secondCont_lt_continuant ks h
+  linarith [hd.2]
+
+/-- **A second consecutive `1` destroys positivity.**  On the same large-quotient tail,
+`K(1 :: 1 :: ks) = − secondCont ks ≤ 0` (`continuant_one_one_cons` plus
+`secondCont_nonneg`).  So at most one leading quotient may drop to `1` while staying in
+§17's positive cone — the sharp boundary into the §21 period-6 orbit. -/
+theorem continuant_one_one_cons_nonpos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) ≤ 0 := by
+  rw [continuant_one_one_cons]
+  have := secondCont_nonneg ks h
+  linarith
+
+/-- **Strict crossing (nonempty tail).**  When the large-quotient tail is nonempty the
+second leading `1` makes the continuant *strictly* negative: `K(1 :: 1 :: ks) < 0`.  The
+trailing continuant of a nonempty all-`≥ 2` list is positive
+(`secondCont (k :: rest) = Continuant rest > 0` by `continuant_pos`), so
+`− secondCont ks < 0`.  The empty-tail edge `K([1,1]) = 0` (§21 `continuant_ones_two`) is
+thus the *only* place the two-leading-`1` value touches zero; any large-quotient tail
+pushes it strictly below. -/
+theorem continuant_one_one_cons_neg (ks : List ℤ) (hne : ks ≠ [])
+    (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant (1 :: 1 :: ks) < 0 := by
+  rw [continuant_one_one_cons]
+  obtain ⟨k, rest, rfl⟩ := List.exists_cons_of_ne_nil hne
+  simp only [secondCont]
+  have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+  have := continuant_pos rest hrest
+  linarith
+
 end Erdos1005OQ02
