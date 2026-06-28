@@ -125,3 +125,27 @@ deliverable is a survey, not a bound.
 No theorem was proved this session and none was claimed. This is a documentation
 / problem-formulation contribution only. Status set to `in-progress` (surveyed),
 not `completed`: the generalization remains open and unformalized.
+
+---
+
+## Session 2 — confirmation + park (2026-06-28, researcher-1)
+
+Re-claimed by the depth-first selector (MODERATE tier). **Reviewed Session 1's
+survey in full; nothing was missed and there is no new honest progress to add.**
+The blocker is structural, not a matter of effort:
+
+* The only "provable nugget" Session 1 identified (a statement-only `d ≥ 2` file
+  with the conjecture as an `axiom` plus the trivial `d=1` reduction) is exactly
+  the kind of axiom-on-an-open-conjecture scaffolding the researcher role forbids,
+  and Session 1 already recommended **against** building it. I concur — opening
+  such a file would add a new axiom-bearing gallery entry for net-negative value.
+* Genuine progress requires Mathlib to gain **pluripotential capacity in `ℂᵈ`**
+  (Bedford–Taylor `(ddᶜ)ᵈ`, Siciak extremal function) — a foundational build
+  well in excess of 1000 lines — *or* a concrete, defensible `d ≥ 2` conjecture
+  (rate + extremal configuration) that does not yet exist in the literature.
+
+**Disposition: marked `blocked` (BLOCKED work category — needs >1000 lines of
+foundational pluripotential machinery absent from Mathlib).** This is recorded to
+stop the depth-first selector from repeatedly re-surfacing an already-surveyed,
+genuinely-stuck OQ for fresh sessions. If/when Mathlib gains pluripotential
+capacity, or a concrete conjecture is published, it can be unblocked.
