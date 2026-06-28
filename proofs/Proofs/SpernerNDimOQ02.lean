@@ -1626,4 +1626,79 @@ theorem miss_not_boundary_face (s : SpernerGrid.GridSimplex d N) (hd : 2 ≤ d) 
     have := h 0 hne
     omega
 
+/-!
+## Per-vertex evaluation of the reduced boundary-coordinate condition
+
+The previous section reduced `boundary_face` at a `none` facet `k` to the
+barycentric statement `∀ j ≠ k, (s.verts j).coords k = 0`
+(`boundary_face_iff_coords_zero`) but did **not** evaluate that coordinate
+condition.  This section does, vertex by vertex, exploiting the fact that
+`incDir : Fin d → Fin (d+1)` is a bijection onto the complement of `miss`
+(`incDir_surj_complement`): every barycentric coordinate is *either* the `miss`
+direction or exactly one increase direction `incDir k`.  So each
+`(s.verts m).coords c = 0` test resolves into one of two closed forms:
+
+  * **increase direction** `c = incDir k`: zero iff it starts at zero and step
+    `k` has not yet occurred (`m.val ≤ k.val`) — `coord_incDir_eq_zero_iff`;
+  * **miss direction** `c = miss`: zero iff `m` has reached the base value
+    `(s.verts 0).coords miss` — `miss_coord_eq_zero_iff` — which, since that base
+    value is `≥ d`, forces `m = Fin.last d` (`onFace_miss_imp_last`).
+
+These are the evaluation lemmas a total `adj` will feed into
+`boundary_face_iff_coords_zero`; they sharpen `miss_not_boundary_face` from a mere
+existence witness into a full localization of *which* vertices fail.  All
+0-sorry, 0-axiom.
+-/
+
+/-- **Vanishing of a non-miss coordinate, per vertex.**  The increase-direction
+coordinate `incDir k` is zero at chain vertex `m` exactly when it starts at zero
+(`(verts 0).coords (incDir k) = 0`) and step `k` has not yet been taken
+(`m.val ≤ k.val`).  Direct consequence of the per-vertex formula
+`coord_incDir_at`, which makes this coordinate `base + (1 if k < m else 0)`.
+Complements `boundary_face_iff_coords_zero`: it evaluates the reduced coordinate
+condition at every increase-direction facet. -/
+theorem coord_incDir_eq_zero_iff (s : SpernerGrid.GridSimplex d N) (k : Fin d)
+    (m : Fin (d + 1)) :
+    (s.verts m).coords (s.incDir k) = 0 ↔
+      (s.verts 0).coords (s.incDir k) = 0 ∧ m.val ≤ k.val := by
+  rw [s.coord_incDir_at k m]
+  by_cases h : k.val < m.val
+  · rw [if_pos h]; omega
+  · rw [if_neg h]; omega
+
+/-- **Vanishing of the miss coordinate, per vertex.**  The `miss` coordinate is
+zero at chain vertex `m` exactly when `m` has reached the base value:
+`(verts 0).coords miss ≤ m.val`.  Direct consequence of `miss_coord_at`
+(`miss` coordinate `= base - m`, truncated subtraction). -/
+theorem miss_coord_eq_zero_iff (s : SpernerGrid.GridSimplex d N)
+    (m : Fin (d + 1)) :
+    (s.verts m).coords s.miss = 0 ↔ (s.verts 0).coords s.miss ≤ m.val := by
+  rw [s.miss_coord_at m]; omega
+
+/-- **The miss coordinate is positive away from the last vertex.**  Because the
+base `miss` value is at least `d` and the coordinate only drops by one per step,
+every chain vertex `m ≠ Fin.last d` still has a strictly positive `miss`
+coordinate.  Sharpens `miss_not_boundary_face`: not merely *some* vertex but
+*every* non-last vertex violates the `miss`-facet boundary condition. -/
+theorem miss_coord_pos_of_ne_last (s : SpernerGrid.GridSimplex d N)
+    (m : Fin (d + 1)) (hm : m ≠ Fin.last d) :
+    0 < (s.verts m).coords s.miss := by
+  have hge := s.miss_coord_ge m
+  have hmd : m.val < d := by
+    have hle : m.val ≤ d := Nat.lt_succ_iff.mp m.isLt
+    rcases hle.lt_or_eq with h | h
+    · exact h
+    · exact absurd (Fin.ext (h.trans (Fin.val_last d).symm)) hm
+  omega
+
+/-- **The miss-face is reached only by the last vertex.**  If grid vertex `m` lies
+on the geometric `miss`-face (`(s.verts m).coords miss = 0`) then `m = Fin.last d`.
+The pointwise localization behind `miss_not_boundary_face`: the geometric
+`miss`-boundary touches a Freudenthal cell only at the extreme end of its chain
+(and only in the extremal cell whose base `miss = d`). -/
+theorem onFace_miss_imp_last (s : SpernerGrid.GridSimplex d N) (m : Fin (d + 1))
+    (h : (s.verts m).coords s.miss = 0) : m = Fin.last d := by
+  by_contra hm
+  exact absurd h (Nat.pos_iff_ne_zero.mp (miss_coord_pos_of_ne_last s m hm))
+
 end SpernerNDimOQ02
