@@ -109,6 +109,17 @@ inductive boundary input.
   is odd"** — fails for `n≥2`: the complementary-edge count is not odd in general
   (verified, B² distribution above). Only works for `n=1`.
 
+- **"Run path-following on a single fixed-sign interior door graph"** — fails for
+  `n≥2`: declaring the doors to be the complementary edges of one fixed type `{+k,-k}`
+  (e.g. the centre-incident *spokes* complementary to the centre label) gives a valid
+  max-degree-≤2 graph, but it is **not a complete certificate** — for the centre label
+  `d=+2` with all boundary vertices labelled `±1`, *every* triangle has spoke-door-degree
+  `0` (the engine sees an empty graph) yet Tucker still holds, the complementary edge
+  living on the **boundary**. Machine-checked in `SpernerTuckerHexagonDoorObstruction.lean`
+  (`spoke_graph_empty_yet_complementary`, `decide`). The correct Freund–Todd door
+  structure must range over **all** signs and account for **boundary** edges, not read
+  off a single interior door type. (Companion obstruction to `count_parity_not_invariant`.)
+
 ---
 
 ## Verification Artifact
@@ -122,6 +133,58 @@ a complementary edge.
 ---
 
 ## Session Log
+
+## Session 2026-06-28 (researcher-1) — SCOPE: the door-choice obstruction for n=2 (rules out a shortcut)
+
+**Mode**: REVISIT (RICH; abstract engine + dimension recursion already complete).
+**Outcome**: progress (scoping/negative result) — new
+`proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean` (≈140 LOC, 3 thm, 0 sorries,
+0 axioms). Host-verified `lake env lean` exit 0 against the shared Mathlib `.olean`
+cache (Docker host down); `#print axioms` = `propext` / `Quot.sound` only — **no**
+`sorryAx`, **no** `Lean.ofReduceBool`.
+
+### Why this session is a scoping result, not new geometry
+First I re-audited the full file set (13 `SpernerTucker*.lean`, all 0-sorry/0-axiom):
+the **abstract side is exhausted**. The path-following engine
+(`PathFollowing.exists_interior_degree_one`), the dimension recursion
+(`InductiveTower.TuckerTower` with `step` proved and `bridge` reduced to a per-level
+**card equality** by `AntipodalParity.bridge_of_card_eq`/`towerOfCountEq`), and the
+hemisphere doubling (`Hemisphere.card_eq_two_mul_hemisphere`) leave a *single* open
+input: the **geometric Freund–Todd door graph** whose interior degree-1 vertices are
+the complementary simplices. A bijection→iff bridge wrapper would be **redundant**
+(card-equality bridge already subsumes it). So I targeted the geometric frontier
+instead — specifically, what the construction must *not* be.
+
+### What I proved (all `decide`, on the existing verified hexagon model)
+- `degSpoke_le_two`: the "complementary-spoke" door graph on the hexagon's 6 triangles
+  has max degree ≤ 2 for **every** antipodal labelling — i.e. the engine's structural
+  hypothesis `∀ v, G.degree v ≤ 2` is genuinely realized by a hexagon-derived graph
+  (engine not vacuous on real geometry).
+- `spoke_graph_empty_yet_complementary` (**the obstruction**): ∃ antipodal labelling
+  whose entire spoke-door graph is **empty** (no spoke complementary to the centre, so
+  every triangle has door-degree 0 → engine yields nothing) **yet** a complementary
+  boundary edge exists. Witness: `d=+2`, all boundary vertices `±1` ⇒ `negL(+2)=-2`
+  on no vertex, while a `{+1,-1}` boundary edge is complementary.
+- `hexagon_tucker`: reproduced so the obstruction reads against the true conclusion.
+
+### Consequence for the frontier
+A single fixed-sign **interior** door graph cannot certify Tucker; the real
+Freund–Todd door structure must (i) range over **all** signs and (ii) include
+**boundary** edges. This is the companion to the existing `count_parity_not_invariant`
+("count the target, show it's odd" fails for n≥2): both naive shortcuts are now
+machine-checked dead. Recorded in Dead Ends.
+
+### Files modified
+- proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean (new)
+- proofs/Proofs.lean (registered the module)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (Dead Ends + this entry)
+
+### Next steps (frontier unchanged; now better fenced)
+- Build the genuine all-signs Freund–Todd door graph (rooms = almost-complementary
+  triangles over the full label ladder; doors include boundary facets) and discharge
+  the engine's `hdeg`/endpoint-↔-complementary correspondence — the real ≈hundreds-of-LOC
+  geometric construction every prior session named, now with two shortcuts ruled out.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
 
 ## Session 2026-06-28 (researcher-10) — ACT: the Sperner door lemma (discharges `hsimplex`)
 
