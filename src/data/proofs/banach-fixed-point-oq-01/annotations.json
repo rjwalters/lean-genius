@@ -1,8 +1,27 @@
 [
   {
+    "title": "Textbook statement and place among fixed-point theorems",
+    "mathContext": "Hypotheses: `(α,d)` a nonempty complete metric space, `f : α → α` with `K < 1` and `d(f x, f y) ≤ K·d(x,y)`. Conclusions: a unique fixed point `p`, Picard convergence `fⁿx → p`, the a-priori bound `d(fⁿx,p) ≤ d(x,fx)·Kⁿ/(1−K)`, and the a-posteriori bound `d(x,p) ≤ d(x,fx)/(1−K)`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Brouwer fixed-point theorem (topological, existence only)",
+      "Schauder fixed-point theorem (compact convex sets in Banach spaces)",
+      "completeness and the Cauchy criterion"
+    ],
+    "prerequisites": [
+      "metric spaces and completeness",
+      "the contrast between existential and constructive fixed-point theorems"
+    ],
+    "proofId": "banach-fixed-point-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "id": "ann-banach-oq01-header",
+    "type": "concept",
+    "content": "The docstring states the contraction mapping principle in full quantitative form and locates it relative to the gallery's other fixed-point entries. Brouwer's theorem gives existence from continuity alone on a ball (topological, no uniqueness, non-constructive); Schauder extends existence to compact convex sets in Banach spaces (still no uniqueness). Banach's principle trades that generality for a far stronger conclusion under a stronger hypothesis: with a genuine contraction (K < 1) on a complete metric space one gets existence AND uniqueness AND a constructive algorithm (Picard iteration) AND an explicit geometric error rate. The metric contraction principle with a quantitative rate was previously absent from the gallery, which this entry fills using Mathlib's `ContractingWith` API."
+  },
+  {
     "title": "From 'a fixed point exists' to a quantitative theorem",
     "mathContext": "Mathlib's `ContractingWith K f` bundles `K < 1` with `LipschitzWith K f`. Over a nonempty complete metric space, `ContractingWith.fixedPoint f hf` is THE fixed point, `fixedPoint_isFixedPt` proves `f p = p`, and `fixedPoint_unique'` proves any two fixed points coincide. The uniqueness lemma `fixedPoint_unique_of_isFixedPt` carries `omit [CompleteSpace α] [Nonempty α]` because uniqueness is a pure consequence of the contraction inequality — two fixed points x,y satisfy d(x,y) = d(fx,fy) ≤ K·d(x,y) with K<1, forcing d(x,y)=0.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "ContractingWith.fixedPoint and fixedPoint_isFixedPt in Mathlib",
       "ContractingWith.fixedPoint_unique'",
@@ -22,7 +41,7 @@
   {
     "title": "Constructive convergence with a geometric rate",
     "mathContext": "`tendsto_iterate_fixedPoint` states f^[n] x → p in the neighborhood filter 𝓝 p. The a-priori estimate `apriori_dist_iterate_fixedPoint_le` gives dist (f^[n] x) p ≤ dist x (f x) · Kⁿ / (1 − K): the right-hand side is computable from the very first step x, f x and decays geometrically. The a-posteriori estimate `dist_fixedPoint_le` is the n = 0 specialization, dist x p ≤ dist x (f x)/(1 − K). The denominator 1 − K is the sum of the geometric tail Σ_{k≥0} Kᵏ.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "ContractingWith.tendsto_iterate_fixedPoint",
       "ContractingWith.apriori_dist_iterate_fixedPoint_le",
@@ -58,7 +77,26 @@
     "proofId": "banach-fixed-point-oq-01",
     "range": { "startLine": 77, "endLine": 121 },
     "id": "ann-banach-oq01-concrete",
-    "type": "example",
+    "type": "concept",
     "content": "The abstract theorem is only useful once you can recognize contractions in the wild, so the file closes with a fully worked instance: the affine map f(x) = x/2 + c on ℝ. `contractAffine_contracting` verifies it is (1/2)-Lipschitz — distances scale by exactly 1/2 — which combined with 1/2 < 1 gives `ContractingWith (1/2) f`. `contractAffine_fixedPoint` then computes the fixed point in closed form: solving x = x/2 + c gives x = 2c, and uniqueness from the contraction property guarantees there is no other. Finally `contractAffine_tendsto` and `contractAffine_apriori` specialize the abstract Picard convergence and geometric error bound to this map, so from any real starting point the iterates x, x/2+c, x/4+3c/2, … converge to 2c at rate (1/2)ⁿ. This is the simplest nontrivial contraction and makes every part of the abstract theorem concrete and checkable."
+  },
+  {
+    "title": "Discharging the Lipschitz bound: NNReal coercion and abs_div",
+    "mathContext": "Goal: `LipschitzWith (1/2 : ℝ≥0) (contractAffine c)`. `LipschitzWith.of_dist_le_mul` reduces it to `dist (f x) (f y) ≤ ((1/2 : ℝ≥0) : ℝ) · dist x y`. The cast `((1/2 : ℝ≥0) : ℝ) = 1/2` is discharged by `push_cast; ring`; then `Real.dist_eq` rewrites both distances to absolute values, `(f x − f y) = (x − y)/2`, and `abs_div` with `|2| = 2` turns the goal into `|x−y|/2 ≤ (1/2)·|x−y|`, closed by `linarith [abs_nonneg (x − y)]`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LipschitzWith.of_dist_le_mul",
+      "ℝ≥0 → ℝ coercion and push_cast",
+      "Real.dist_eq, abs_div, abs_nonneg"
+    ],
+    "prerequisites": [
+      "the NNReal type ℝ≥0 and its coercion to ℝ",
+      "rewriting metric distances on ℝ as absolute values"
+    ],
+    "proofId": "banach-fixed-point-oq-01",
+    "range": { "startLine": 85, "endLine": 94 },
+    "id": "ann-banach-oq01-lipschitz-mechanics",
+    "type": "tactic",
+    "content": "The one genuinely fiddly part of applying the abstract theorem is verifying the Lipschitz constant in Mathlib's typed form, where the ratio lives in ℝ≥0 (NNReal) but the distance inequality is over ℝ. `contractAffine_contracting` shows the pattern: `refine ⟨by norm_num, LipschitzWith.of_dist_le_mul fun x y => ?_⟩` splits `ContractingWith` into the `K < 1` side and the Lipschitz side; the coercion `((1/2 : ℝ≥0) : ℝ) = 1/2` is normalised with `push_cast; ring`; `Real.dist_eq` converts both distances to `|·|`; the algebraic simplification `f x − f y = (x − y)/2` plus `abs_div` and `|2| = 2` reduce the goal to `|x−y|/2 ≤ (1/2)·|x−y|`, finished by `linarith [abs_nonneg (x − y)]`. This NNReal-coercion-then-reduce-to-absolute-value recipe is the reusable template for certifying any concrete real contraction."
   }
 ]

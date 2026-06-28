@@ -109,5 +109,25 @@
     "path": "Proofs/BanachFixedPointOQ01.lean",
     "sorries": 0
   },
+  "references": [
+    {
+      "authors": "Banach, S.",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "note": "Fundamenta Mathematicae 3, 133–181. The original contraction mapping principle, from Banach's doctoral thesis."
+    },
+    {
+      "authors": "Granas, A. and Dugundji, J.",
+      "title": "Fixed Point Theory",
+      "year": "2003",
+      "note": "Springer Monographs in Mathematics. Comprehensive treatment situating the Banach principle alongside the Brouwer and Schauder theorems."
+    },
+    {
+      "authors": "mathlib community",
+      "title": "Mathlib4: Mathlib.Topology.MetricSpace.Contracting (ContractingWith API)",
+      "year": "2024",
+      "note": "Source of fixedPoint, tendsto_iterate_fixedPoint, apriori_dist_iterate_fixedPoint_le, and dist_fixedPoint_le used here."
+    }
+  ],
   "sorries": 0
 }
