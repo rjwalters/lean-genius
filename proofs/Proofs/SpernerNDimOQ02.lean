@@ -772,4 +772,101 @@ theorem facet_unique_neighbor {s t : CanonSimplex d N}
   apply canon_eq_of_vertices_range
   rw [← coe_image_univ_vertices s, ← coe_image_univ_vertices t, heq]
 
+-- ============================================================
+-- SECTION: The canonical base of a cell (canonicalization target)
+-- ============================================================
+-- Every previous section established *uniqueness* of the canonical
+-- representative of a geometry (`canon_eq_of_vertices_range`,
+-- `IsCanon.geometry_unique`).  The dual *existence* direction —
+-- recanonicalizing an arbitrary `GridSimplex` (e.g. the interior
+-- Freudenthal pivot `pivotSimplex`, which need not be canonical) into the
+-- `CanonSimplex` carrier — starts by selecting the new base: the lex-minimal
+-- vertex of the cell.  Last session closed the order theory making this
+-- well-posed (`exists_lex_min` + the lex linear order).  This section names
+-- that base as a *function of the geometry* and proves the two properties the
+-- recanonicalization map needs:
+--
+--   * it is determined by the vertex set alone (`baseOf_eq_of_range_eq`), so
+--     the canonicalization map is well-defined; and
+--   * on an already-canonical cell it is the recorded base `verts 0`
+--     (`isCanon_baseOf_eq`), so canonicalization is the identity on the
+--     carrier — a prerequisite for `adj` returning into `CanonSimplex`.
+--
+-- Everything here is order-theoretic bookkeeping over `exists_lex_min`; it adds
+-- no axioms (only `Classical.choice`, via `Exists.choose`) and no sorries.
+
+open SpernerGrid in
+/-- The vertex set of a grid simplex, as a `Finset` of barycentric points. -/
+def vertexSet (s : GridSimplex d N) : Finset (SpernerGrid.BaryPoint d N) :=
+  Finset.univ.image s.verts
+
+theorem mem_vertexSet (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    s.verts k ∈ vertexSet s := by
+  simp only [vertexSet, Finset.mem_image, Finset.mem_univ, true_and]
+  exact ⟨k, rfl⟩
+
+theorem vertexSet_nonempty (s : SpernerGrid.GridSimplex d N) :
+    (vertexSet s).Nonempty :=
+  ⟨s.verts 0, mem_vertexSet s 0⟩
+
+/-- The lex-minimal base of a cell's vertex set.  Noncomputable choice from the
+existence lemma `exists_lex_min`; it is well-defined *as a function of the
+geometry* by `baseOf_eq_of_range_eq` below. -/
+noncomputable def baseOf (s : SpernerGrid.GridSimplex d N) :
+    SpernerGrid.BaryPoint d N :=
+  (SpernerGrid.BaryPoint.exists_lex_min (vertexSet s) (vertexSet_nonempty s)).choose
+
+theorem baseOf_mem (s : SpernerGrid.GridSimplex d N) :
+    baseOf s ∈ vertexSet s :=
+  (SpernerGrid.BaryPoint.exists_lex_min (vertexSet s) (vertexSet_nonempty s)).choose_spec.1
+
+theorem baseOf_lexLE (s : SpernerGrid.GridSimplex d N) :
+    ∀ x ∈ vertexSet s, (baseOf s).lexLE x :=
+  (SpernerGrid.BaryPoint.exists_lex_min (vertexSet s) (vertexSet_nonempty s)).choose_spec.2
+
+/-- **Uniqueness of the lex-min base.**  Any vertex of the cell that is
+lex-`≤` every vertex equals `baseOf s` (the lex order has a unique minimum,
+`lexLE_antisymm`).  This is what makes `baseOf` characterizable without
+unfolding the noncomputable choice. -/
+theorem baseOf_unique (s : SpernerGrid.GridSimplex d N)
+    {b : SpernerGrid.BaryPoint d N} (hb : b ∈ vertexSet s)
+    (hmin : ∀ x ∈ vertexSet s, b.lexLE x) : b = baseOf s :=
+  SpernerGrid.BaryPoint.lexLE_antisymm (hmin _ (baseOf_mem s)) (baseOf_lexLE s _ hb)
+
+/-- **The canonical base is determined by the vertex `Finset`.**  Two cells with
+the same vertex set share the same lex-min base. -/
+theorem baseOf_eq_of_vertexSet_eq {s t : SpernerGrid.GridSimplex d N}
+    (h : vertexSet s = vertexSet t) : baseOf s = baseOf t := by
+  apply baseOf_unique t
+  · rw [← h]; exact baseOf_mem s
+  · rw [← h]; exact baseOf_lexLE s
+
+/-- **The canonical base is geometry-determined.**  Phrased over `Set.range`
+to match `IsCanon.geometry_unique`: cells with the same vertex *range* have the
+same lex-min base.  This is the well-definedness the recanonicalization map
+requires — the base of the canonical representative depends only on the cell's
+point set, not on the (arbitrary) chain ordering of `s`. -/
+theorem baseOf_eq_of_range_eq {s t : SpernerGrid.GridSimplex d N}
+    (h : Set.range s.verts = Set.range t.verts) : baseOf s = baseOf t := by
+  apply baseOf_eq_of_vertexSet_eq
+  apply Finset.coe_injective
+  simp only [vertexSet, Finset.coe_image, Finset.coe_univ, Set.image_univ]
+  exact h
+
+/-- **On a canonical cell the lex-min base is the recorded base `verts 0`.**
+Hence `baseOf` recovers the canonical base, and the recanonicalization map is the
+identity on cells that are already canonical — exactly what is needed for the
+`adj` neighbour to land back inside the `CanonSimplex` carrier. -/
+theorem isCanon_baseOf_eq {s : SpernerGrid.GridSimplex d N}
+    (hs : SpernerGrid.IsCanon s) : baseOf s = s.verts 0 := by
+  symm
+  apply baseOf_unique s (mem_vertexSet s 0)
+  intro x hx
+  obtain ⟨k, _, rfl⟩ := Finset.mem_image.mp hx
+  exact hs k
+
+/-- The lex-min base of a `CanonSimplex` is its base vertex. -/
+theorem baseOf_canon (s : CanonSimplex d N) : baseOf s.1 = s.1.verts 0 :=
+  isCanon_baseOf_eq s.2
+
 end SpernerNDimOQ02
