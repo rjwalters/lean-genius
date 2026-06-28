@@ -418,3 +418,64 @@ underneath:
 ### Next Steps (unchanged genuine lever)
 - n≥2 geometric door complex + `Odd #{boundary doors}` via inductive (n−1)-Tucker, then
   feed `exists_odd_doorCount_of_odd_boundary` → `SpernerTuckerPathFollowing`.
+
+## Session 2026-06-27 (researcher-1) — ACT: the dimension recursion as an abstract induction
+
+**Mode**: REVISIT (RICH; every single-level parity piece already verified).
+**Outcome**: progress (ACT) — new `proofs/Proofs/SpernerTuckerInductiveTower.lean`
+(231 LOC, 9 thm + 3 def + 1 structure, 0 sorry, 0 axiom). Verified offline via
+`LAKE_UNSAFE=1 ./bin/lake env lean` against the main-repo Mathlib `.olean` cache
+(Docker image still down). `#print axioms`: `odd_boundary_iff_odd_interior` and the
+tower theorems depend only on propext/Classical.choice/Quot.sound — **no `sorryAx`,
+no `Lean.ofReduceBool`**.
+
+### What I Did
+Every prior session named the same frontier in prose — "supply `Odd #{boundary
+doors}` from inductive (n−1)-Tucker" — but the **induction on dimension itself** was
+never formalized; the engine files are all single-level. This session writes that
+recursion down and proves it closes.
+
+- **`odd_boundary_iff_odd_interior` (engine, count form).** The path-following file's
+  `exists_interior_degree_one` only extracted *one* interior endpoint. Here: in a
+  max-degree-≤2 door graph, `Odd #{boundary endpoints} ↔ Odd #{interior endpoints}`,
+  because the two classes **partition** the degree-1 vertices, whose total is even
+  (`even_card_degree_one`). This is the quantitative statement the induction needs —
+  an *odd interior count* that can propagate upward, not just a witness.
+- **`TuckerTower` + `tower_interior_odd`.** A structure bundling per-level
+  `boundary, interior : ℕ → ℕ` with three fields: `step` (the engine, discharged by
+  the lemma above), `bridge` (`Odd (boundary (n+1)) ↔ Odd (interior n)` — the
+  geometric boundary bijection, the SOLE open input), and `base` (`Odd (interior 0)`,
+  the already-verified 1-D Tucker). Then `tower_interior_odd : ∀ n, Odd (interior n)`
+  by a one-line induction (`Odd interior(n+1) ↔ Odd boundary(n+1) ↔ Odd interior(n)`
+  via step/bridge/IH), and `tower_exists_interior : ∀ n, 0 < interior n` gives a
+  complementary simplex in EVERY dimension.
+- **`trivialTower`** — an inhabited tower (all counts 1) witnessing non-vacuity and
+  showing the recursion computes.
+
+### Why this matters
+This pins down precisely what is left: **once the geometric `bridge` is supplied,
+full-dimensional Tucker is a two-hypothesis induction** with both other inputs
+already verified. It converts the recurring prose "next step" into a machine-checked
+skeleton and tells the next session exactly one obligation to discharge geometrically
+(`bridge`), rather than re-deriving the parity bookkeeping.
+
+### Honest status
+Infrastructure / organizing skeleton, NOT new Tucker mathematics. `step` is proved,
+`base` is proved (n=1), and `bridge` — the geometric identification of level-`n`
+boundary doors with level-`(n−1)` interior simplices — remains the genuine open
+lever, exactly as every prior session flagged. Value: the dimension induction is now
+explicit and verified, so the remaining work is a single, sharply-stated geometric
+input.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerInductiveTower.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + currentState)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps (frontier now a single geometric obligation)
+- Construct the concrete door complex for a triangulation of `Bⁿ` and supply
+  `TuckerTower.bridge`: a parity-preserving bijection between level-`n` boundary
+  doors and level-`(n−1)` interior complementary simplices. With `step` and `base`
+  already verified, this alone yields full-dimensional Tucker via `tower_interior_odd`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
