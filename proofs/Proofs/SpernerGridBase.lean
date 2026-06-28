@@ -601,6 +601,101 @@ theorem BaryPoint.lexLE_antisymm {d N : ℕ} {a b : BaryPoint d N}
     · exact h'.symm
     · exact (BaryPoint.lexLT_asymm h h').elim
 
+/-- **Transitivity of the strict lex order.**  If `a < b` at first-differing
+coordinate `i` and `b < c` at first-differing coordinate `j`, then `a < c`,
+with the witness being `min i j`. -/
+theorem BaryPoint.lexLT_trans {d N : ℕ} {a b c : BaryPoint d N}
+    (hab : a.lexLT b) (hbc : b.lexLT c) : a.lexLT c := by
+  obtain ⟨i, hi_eq, hi_lt⟩ := hab
+  obtain ⟨j, hj_eq, hj_lt⟩ := hbc
+  rcases lt_trichotomy i j with h | h | h
+  · -- i < j: the cells still differ first at `i` (where `b i = c i`).
+    refine ⟨i, fun k hk => ?_, ?_⟩
+    · rw [hi_eq k hk, hj_eq k (hk.trans h)]
+    · rw [← hj_eq i h]; exact hi_lt
+  · -- i = j: a i < b i < c i at the common index.
+    subst h
+    exact ⟨i, fun k hk => (hi_eq k hk).trans (hj_eq k hk), hi_lt.trans hj_lt⟩
+  · -- j < i: the cells differ first at `j` (where `a j = b j`).
+    refine ⟨j, fun k hk => ?_, ?_⟩
+    · rw [hi_eq k (hk.trans h), hj_eq k hk]
+    · rw [hi_eq j h]; exact hj_lt
+
+/-- **Transitivity of the non-strict lex order.** -/
+theorem BaryPoint.lexLE_trans {d N : ℕ} {a b c : BaryPoint d N}
+    (hab : a.lexLE b) (hbc : b.lexLE c) : a.lexLE c := by
+  rcases hab with rfl | hab
+  · exact hbc
+  · rcases hbc with rfl | hbc
+    · exact Or.inr hab
+    · exact Or.inr (BaryPoint.lexLT_trans hab hbc)
+
+/-- **Trichotomy (totality) of the lex order.**  Any two barycentric points are
+lex-comparable: either `a < b`, `a = b`, or `b < a`.  The witness is the
+lex-minimal coordinate at which they differ (the minimum of the nonempty finset
+of differing coordinates); below it the two points agree. -/
+theorem BaryPoint.lexLT_trichotomy {d N : ℕ} (a b : BaryPoint d N) :
+    a.lexLT b ∨ a = b ∨ b.lexLT a := by
+  classical
+  by_cases hab : a = b
+  · exact Or.inr (Or.inl hab)
+  · -- The set of differing coordinates is nonempty (else `a = b` by `ext`).
+    have hne : (Finset.univ.filter (fun i => a.coords i ≠ b.coords i)).Nonempty := by
+      rw [Finset.filter_nonempty_iff]
+      by_contra h
+      push_neg at h
+      exact hab (BaryPoint.ext (funext fun i => h i (Finset.mem_univ i)))
+    obtain ⟨i, hiS, hi_min⟩ :
+        ∃ i ∈ Finset.univ.filter (fun i => a.coords i ≠ b.coords i),
+          ∀ j ∈ Finset.univ.filter (fun i => a.coords i ≠ b.coords i), i ≤ j :=
+      ⟨_, (Finset.univ.filter _).min'_mem hne, fun j hj => (Finset.univ.filter _).min'_le j hj⟩
+    have hdiff : a.coords i ≠ b.coords i := (Finset.mem_filter.mp hiS).2
+    have hbefore : ∀ j : Fin (d + 1), j < i → a.coords j = b.coords j := by
+      intro j hj
+      by_contra hjne
+      exact absurd (hi_min j (Finset.mem_filter.mpr ⟨Finset.mem_univ j, hjne⟩)) (not_le.mpr hj)
+    rcases lt_trichotomy (a.coords i) (b.coords i) with h | h | h
+    · exact Or.inl ⟨i, hbefore, h⟩
+    · exact absurd h hdiff
+    · exact Or.inr (Or.inr ⟨i, fun j hj => (hbefore j hj).symm, h⟩)
+
+/-- **Totality of the non-strict lex order.** -/
+theorem BaryPoint.lexLE_total {d N : ℕ} (a b : BaryPoint d N) :
+    a.lexLE b ∨ b.lexLE a := by
+  rcases BaryPoint.lexLT_trichotomy a b with h | h | h
+  · exact Or.inl (Or.inr h)
+  · exact Or.inl (Or.inl h)
+  · exact Or.inr (Or.inr h)
+
+/-- **Lex-minimum of a nonempty finite vertex set.**  Any nonempty finite set of
+barycentric points has an element that is lex-`≤` every element of the set.  This
+is the order-theoretic core of canonicalization: it is what lets a
+recanonicalization step select the (unique, by `lexLE_antisymm`) lex-minimal base
+of a given geometric cell.  Proved by induction on the set, using totality and
+transitivity to fold in each new point. -/
+theorem BaryPoint.exists_lex_min {d N : ℕ} (S : Finset (BaryPoint d N)) :
+    S.Nonempty → ∃ m ∈ S, ∀ x ∈ S, m.lexLE x := by
+  classical
+  induction S using Finset.induction_on with
+  | empty => intro h; exact absurd h Finset.not_nonempty_empty
+  | insert a s ha ih =>
+    intro _
+    rcases s.eq_empty_or_nonempty with rfl | hs
+    · refine ⟨a, Finset.mem_insert_self a ∅, fun x hx => ?_⟩
+      rcases Finset.mem_insert.mp hx with hxa | hx
+      · rw [hxa]; exact BaryPoint.lexLE_refl a
+      · exact absurd hx (Finset.notMem_empty x)
+    · obtain ⟨m, hm, hmin⟩ := ih hs
+      rcases BaryPoint.lexLE_total a m with hle | hle
+      · refine ⟨a, Finset.mem_insert_self a s, fun x hx => ?_⟩
+        rcases Finset.mem_insert.mp hx with hxa | hx
+        · rw [hxa]; exact BaryPoint.lexLE_refl a
+        · exact BaryPoint.lexLE_trans hle (hmin x hx)
+      · refine ⟨m, Finset.mem_insert_of_mem hm, fun x hx => ?_⟩
+        rcases Finset.mem_insert.mp hx with hxa | hx
+        · rw [hxa]; exact hle
+        · exact hmin x hx
+
 /-- A `GridSimplex` is *canonical* when its base vertex `verts 0`
 is lexicographically minimal among its `d+1` vertices. Each
 geometric Freudenthal cell has exactly one canonical encoding (the
