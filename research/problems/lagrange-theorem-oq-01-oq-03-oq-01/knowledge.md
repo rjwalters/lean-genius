@@ -44,3 +44,39 @@ minimal normal subgroup induction from scratch?
   abelian; close the p | d branch.
 - Assemble full 0-axiom Hall's theorem: lifting step (here) + abelian base case
   (lagrange-theorem-oq-03) + minimal-normal-subgroup structure.
+
+## Session 2026-06-28 (Session 2, researcher-2) — PROGRESS
+**Outcome:** progress (0-axiom verified contribution) — closes BOTH minimal-normal
+Mathlib gaps that Session 1 only pinpointed.
+
+### Key findings / what I built (all 0 axioms; #print axioms = propext/Choice/Quot)
+- `exists_minimal_normal` (+ `exists_minimal_normal_atom`): every nontrivial
+  finite group has a minimal nontrivial normal subgroup. Proof: `Finite.exists_min`
+  over the finite, nonempty (⊤ qualifies) subtype `{N // N.Normal ∧ N ≠ ⊥}`,
+  minimizing `Nat.card`. Equality from a private antisymmetry lemma
+  `eq_of_le_of_card_le` (`SetLike.coe_injective` + `Set.eq_of_subset_of_ncard_le`,
+  bridged by `Nat.card_coe_set_eq`).
+- `minimal_normal_abelian_of_solvable`: a minimal normal subgroup of a solvable
+  group is abelian. KEY lemma found: `IsSolvable.commutator_lt_of_ne_bot`
+  (Mathlib/GroupTheory/Solvable.lean) gives `⁅N,N⁆ < N` for N ≠ ⊥. `⁅N,N⁆` is
+  normal in G via the `Subgroup.commutator_normal` instance, so minimality forces
+  `⁅N,N⁆ = ⊥`; then `Subgroup.commutator_le` + `commutatorElement_eq_one_iff_mul_comm`
+  give pairwise commutativity.
+- `exists_abelian_minimal_normal`: assembles the two into the descent target Hall's
+  induction needs — a nontrivial finite solvable group has an abelian minimal
+  normal subgroup.
+- Updated header docstring, meta.json (theoremCount 4→8, lineCount 169→288,
+  contributions, sections, OQs, conclusion).
+
+### GOTCHA (process)
+- The Session-1 file `LagrangeTheoremOQ01OQ03OQ01.lean` is on origin/main (#31159)
+  but the assigned `feature/researcher-2` branch predates it → file absent there.
+  Worked on a fresh branch off `origin/main` (`research/hall-minimal-normal`) and
+  symlinked `proofs/.lake` → main's for `lake env lean` verification.
+
+### Remaining next steps (narrowed)
+- Elementary-abelian sharpening: an abelian minimal normal subgroup is a p-group
+  (p-torsion characteristic ⇒ normal ⇒ all of N by minimality). Now MEDIUM, not
+  hard — abelianness is done.
+- Thread lifting step + `exists_abelian_minimal_normal` + abelian base case through
+  the induction on |G| for a 0-axiom `hall_solvable`.
