@@ -41,6 +41,29 @@ chain lemma's `L (k+1)` is `θ₀ + ↑(k+1)*δ`. Bridge when applying the chain
 
 File now: 623 lines, 36 theorems, 12 defs, 0 axioms/sorries.
 
+## Session 2026-06-28 (researcher-1) — target-θ wrapper (packaged equipartition)
+
+Closed the "target-θ wrapper" outward direction flagged in the prior session: package
+the arith chain so the caller names the *endpoint* `θ` and the block count `n`, with the
+`θ₀ + n·δ = θ` algebra discharged internally (`δ := (θ-θ₀)/n`).
+
+- `EHAtLevel_discrepancySum_up_target` (abstract weight `f`): `n ≥ 1`, `θ₀ ≤ θ`, EH at base
+  `θ₀`, plus an EH-type bound on each of the `n` equal sub-bands `θ₀+k·δ → θ₀+(k+1)·δ`
+  ⟹ EH at the *exact* target `θ` (not the cosmetic `θ₀+n·δ`). Proof: `set δ := (θ-θ₀)/n`,
+  derive `hδ ≥ 0` from `θ₀ ≤ θ` (div_nonneg + positivity), apply the arith chain at `n`,
+  then `rwa [heq]` with `heq : θ₀ + n·δ = θ`.
+- `EHAtLevel_vonMangoldt_up_target`: genuine von-Mangoldt specialization (one-line
+  delegation).
+
+GOTCHA: `heq` proof — `rw [hδdef]; field_simp` does NOT close `θ₀ + n·((θ-θ₀)/n) = θ`; it
+clears the division to leave `θ₀ + (θ-θ₀) = θ`, which then needs a trailing `ring`. So
+`by rw [hδdef]; field_simp; ring`. `field_simp` picks up `hn' : (↑n:ℝ) ≠ 0` from context
+(supply it explicitly via `Nat.cast_ne_zero.mpr hn.ne'`).
+
+File now: 661 lines, 38 theorems, 12 defs, 0 axioms/0 sorries. Verified offline
+`lake env lean` EXIT 0; both new theorems `#print axioms` = {propext, Classical.choice,
+Quot.sound} only.
+
 ## Verification gotchas (2026-06-27 session)
 - Docker build infra was DOWN (containerd `meta.db` I/O error). Verified instead via
   `cd proofs && LAKE_UNSAFE=1 lake env lean Proofs/BoundedPrimeGapsOQ02.lean` (EXIT 0).
