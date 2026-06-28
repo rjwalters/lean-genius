@@ -1909,4 +1909,65 @@ theorem continuant_head_mono {k k' : ℤ} {ks : List ℤ}
   have hpos : 0 < Continuant ks := continuant_pos ks h
   nlinarith [mul_nonneg (sub_nonneg.mpr hkk) (le_of_lt hpos)]
 
+/-! ## §21: Product upper bound — bracketing the continuant
+
+§17 (`continuant_ge_length`) bounds the continuant from *below* by `|ks| + 1` in the
+large-quotient regime, and §20 shows that linear bound is sharp (the all-`2` ladder is
+its minimiser).  This section supplies the complementary *upper* bound `K(ks) ≤ ∏ kᵢ`,
+the standard "a continuant never exceeds the product of its partial quotients" estimate.
+Each step `K(k::ks) = k·K(ks) − secondCont ks` only ever *subtracts* the nonnegative
+trailing continuant (§17 `secondCont_nonneg`), so dropping it gives `K(k::ks) ≤ k·K(ks)`,
+and the product bound follows by induction.  Assembled with §17 this brackets the
+continuant in the large-quotient regime: `|ks| + 1 ≤ K(ks) ≤ ∏ kᵢ`.
+
+Equality with the product holds exactly at lengths `≤ 1` (`K([k]) = k`); from length `2`
+on the subtracted `secondCont ks ≥ 1` makes the bound strict.  Depends only on the §14
+recurrence and the §17 nonnegativity facts. -/
+
+/-- **Product upper bound (headline).**  In the large-quotient regime the continuant
+never exceeds the product of its entries: `K(ks) ≤ ∏ kᵢ`.  Each `continuant_cons` step
+subtracts the nonnegative `secondCont`, so `K(k::ks) ≤ k·K(ks)`; induction gives the
+product.  Complements §17's linear lower bound `continuant_ge_length`. -/
+theorem continuant_le_prod (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    Continuant ks ≤ ks.prod := by
+  induction ks with
+  | nil => simp [Continuant]
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      rw [continuant_cons, List.prod_cons]
+      have hsc : 0 ≤ secondCont rest := secondCont_nonneg rest hrest
+      have hKle : Continuant rest ≤ rest.prod := ih hrest
+      nlinarith [mul_le_mul_of_nonneg_left hKle (show (0 : ℤ) ≤ k by linarith), hsc]
+
+/-- **The product bound is attained at length one.**  `K([k]) = k = ([k]).prod`, so the
+`continuant_le_prod` estimate is sharp for single-quotient runs. -/
+theorem continuant_prod_eq_singleton (k : ℤ) :
+    Continuant [k] = ([k] : List ℤ).prod := by
+  simp [continuant_one]
+
+/-- **Strictness from length two on.**  For a run of length `≥ 2` the subtracted trailing
+continuant is `≥ 1`, so the product bound is strict: `K(k::j::rest) < (k::j::rest).prod`.
+Combined with `continuant_prod_eq_singleton` this pins the equality locus of
+`continuant_le_prod` at lengths `≤ 1`. -/
+theorem continuant_lt_prod {k j : ℤ} {rest : List ℤ}
+    (hk : (2 : ℤ) ≤ k) (h : ∀ i ∈ (j :: rest), (2 : ℤ) ≤ i) :
+    Continuant (k :: j :: rest) < (k :: j :: rest).prod := by
+  rw [continuant_cons, List.prod_cons]
+  have hKle : Continuant (j :: rest) ≤ (j :: rest).prod := continuant_le_prod _ h
+  have hrest : ∀ i ∈ rest, (2 : ℤ) ≤ i := fun i hi => h i (List.mem_cons_of_mem j hi)
+  have hsc : (1 : ℤ) ≤ secondCont (j :: rest) := by
+    have hp : 0 < Continuant rest := continuant_pos rest hrest
+    show (1 : ℤ) ≤ Continuant rest
+    omega
+  nlinarith [mul_le_mul_of_nonneg_left hKle (show (0 : ℤ) ≤ k by linarith), hsc]
+
+/-- **Continuant bracket.**  Assembling §17's lower bound and §21's upper bound, in the
+large-quotient regime the continuant is squeezed between its length and the product of
+its entries: `|ks| + 1 ≤ K(ks) ≤ ∏ kᵢ`.  The lower bound is sharp at the all-`2` ladder
+(§20), the upper bound at length-`≤ 1` runs. -/
+theorem continuant_bracket (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    (ks.length : ℤ) + 1 ≤ Continuant ks ∧ Continuant ks ≤ ks.prod :=
+  ⟨continuant_ge_length ks h, continuant_le_prod ks h⟩
+
 end Erdos1005OQ02

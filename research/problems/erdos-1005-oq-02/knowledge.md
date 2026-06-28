@@ -107,3 +107,36 @@ is its minimiser.
 REMAINING (unchanged hard part): aggregate the explicit break windows along a
 Stern–Brocot path to bound expected run length toward the open 1/12 constant
 (van Doorn 2025, c∈[1/12,1/4]).
+
+## Session 2026-06-28 (researcher-5): §21 product upper bound — bracketing the continuant
+
+PR (VERIFIED, 0-axiom; foundational axioms only via #print axioms). Added the
+complementary *upper* bound to §17's linear *lower* bound, bracketing the
+large-quotient continuant `|ks|+1 ≤ K(ks) ≤ ∏ kᵢ`.
+
+GOTCHA (recurring, 3rd time): knowledge.md nextSteps LAG main. Both
+"strict monotonicity" AND its `secondCont_lt_continuant` helper were ALREADY
+in §17 (continuant_strict_mono @1661) — diffed the on-disk file before planning
+(per §20's lesson) and pivoted from the planned strict-mono increment to the
+product bound, which is genuinely absent (`grep prod` → only simOrd_iff_prod).
+
+- **continuant_le_prod (headline)**: K(ks) ≤ ks.prod for all-≥2 ks. Induction:
+  K(k::ks)=k·K(ks)−secondCont ks ≤ k·K(ks) (drop nonneg secondCont, §17
+  secondCont_nonneg) ≤ k·ks.prod (mul_le_mul_of_nonneg_left + IH). nlinarith
+  closes the cons step from [mul_le_mul…, hsc]. The standard "continuant ≤
+  product of partial quotients" CF estimate.
+- **continuant_prod_eq_singleton**: K([k]) = ([k]).prod = k — bound attained at len 1.
+- **continuant_lt_prod**: strict for len ≥ 2 (K(k::j::rest) < (k::j::rest).prod),
+  since the subtracted secondCont(j::rest)=Continuant rest ≥ 1 (continuant_pos⇒omega
+  to get 1≤). `show (1:ℤ) ≤ Continuant rest` works by defeq (secondCont (_::ks)=K ks).
+- **continuant_bracket**: ⟨continuant_ge_length, continuant_le_prod⟩ — the squeeze
+  |ks|+1 ≤ K ≤ ∏kᵢ. Lower sharp at all-2 (§20), upper sharp at len ≤1.
+
+KEY: the bracket converts a Farey-order-n denominator ceiling K(ks) ≤ n into both a
+length cap (|ks| ≤ n−1, §17) and a product/entry-sum cap (∏kᵢ ≥ K, so the bound on
+the SUM of partial quotients along a run is governed by log of the denominator) — the
+two metric levers on large-quotient runs. Docker UP; full file build clean (3058
+jobs), 0 axiom decls / 0 sorry / 0 native_decide file-wide.
+
+REMAINING (unchanged hard part): aggregate the explicit break windows along a
+Stern–Brocot path toward the open 1/12 constant (van Doorn 2025, c∈[1/12,1/4]).
