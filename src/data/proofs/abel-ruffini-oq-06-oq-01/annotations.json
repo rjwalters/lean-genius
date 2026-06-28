@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "abel-ruffini-oq-06-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "context",
+    "title": "Closing the threshold at the last open case S₄",
+    "content": "The Abel–Ruffini dichotomy 'Sₙ solvable ⟺ n ≤ 4' has its negative half (n ≥ 5) in Mathlib, via the simplicity of A₅. The parent entry supplied the easy solvable cases S₂, S₃ (their alternating groups A₂, A₃ have prime order, so are cyclic and abelian). The hard remaining case is S₄: its alternating group A₄ has order 12 — neither prime-order nor simple — so a new argument is needed. This file proves A₄ solvable via its metabelian structure, lifts that to S₄, and packages the complete equivalence."
+  },
+  {
+    "id": "ann-v4-solvable",
+    "proofId": "abel-ruffini-oq-06-oq-01",
+    "range": { "startLine": 58, "endLine": 67 },
+    "type": "key-step",
+    "title": "The Klein-four commutator subgroup V₄ is abelian, hence solvable",
+    "content": "The commutator subgroup of A₄ is the Klein-four group V₄ = alternatingGroup.kleinFour (Fin 4). Its defining feature is exponent two — every non-identity element is an involution — so for any a, b: ab = (ab)⁻¹ = b⁻¹a⁻¹ = ba. Mathlib packages this as mul_comm_of_exponent_two, turning Monoid.exponent V₄ = 2 into commutativity, and isSolvable_of_comm then makes V₄ solvable. This is the bottom step of the derived series A₄ ⊳ V₄ ⊳ 1."
+  },
+  {
+    "id": "ann-quotient-abelian",
+    "proofId": "abel-ruffini-oq-06-oq-01",
+    "range": { "startLine": 68, "endLine": 76 },
+    "type": "key-step",
+    "title": "A₄/V₄ is abelian because V₄ IS the commutator subgroup",
+    "content": "The same subgroup that serves as the solvable kernel also certifies the quotient is abelian: since V₄ = commutator A₄ (kleinFour_eq_commutator), the criterion quotient_commutative_iff_commutator_le gives that A₄/V₄ (≅ ℤ/3) is commutative, hence solvable. The short exact sequence 1 → V₄ → A₄ → A₄/V₄ → 1 — with ker(quotient map) = V₄ = range(inclusion) — then yields IsSolvable A₄ through solvable_of_ker_le_range. This is the metabelian core: solvable kernel + solvable quotient ⟹ solvable extension."
+  },
+  {
+    "id": "ann-s4",
+    "proofId": "abel-ruffini-oq-06-oq-01",
+    "range": { "startLine": 82, "endLine": 89 },
+    "type": "result",
+    "title": "S₄ is solvable",
+    "content": "Feeding the new IsSolvable A₄ instance into the parent reduction permSolvable_of_alternatingSolvable 4 (the short exact sequence 1 → A₄ → S₄ → ℤˣ with abelian quotient ℤˣ ≅ ℤ/2) yields permFinFour_isSolvable: IsSolvable (Equiv.Perm (Fin 4)). This closes the final open case of the solvable side of the threshold."
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "abel-ruffini-oq-06-oq-01",
+    "range": { "startLine": 90, "endLine": 105 },
+    "type": "result",
+    "title": "The packaged threshold: Sₙ solvable ⟺ n ≤ 4",
+    "content": "isSolvable_perm_fin_iff packages the whole Abel–Ruffini dichotomy. Forward (solvable ⟹ n ≤ 4): contraposition — for n ≥ 5, Equiv.Perm.not_solvable (using #(Fin n) = n ≥ 5) shows Sₙ is non-solvable. Backward (n ≤ 4 ⟹ solvable): interval_cases on n discharges S₀, S₁ as subsingletons (infer_instance), S₂, S₃ from the parent theorems, and S₄ from permFinFour_isSolvable. This single biconditional is the exact group-theoretic boundary between radical-solvable degrees (n ≤ 4) and the rest."
+  }
+]
