@@ -4018,6 +4018,7 @@ import Proofs.SpernerSimplicialInstanceOQ03Tower
 import Proofs.SpernerSimplicialInstanceOQ04
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
+import Proofs.SpernerTuckerAntipodalParity
 import Proofs.SpernerTuckerBorsukUlamOneDim
 import Proofs.SpernerTuckerBoundaryParity
 import Proofs.SpernerTuckerDoorGraph

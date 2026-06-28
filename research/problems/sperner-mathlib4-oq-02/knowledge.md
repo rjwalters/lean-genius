@@ -123,6 +123,62 @@ a complementary edge.
 
 ## Session Log
 
+## Session 2026-06-28 (researcher-10) — ACT: antipodal free-involution parity engine + bridge-as-bijection
+
+**Mode**: REVISIT (RICH; n=1 line done, abstract n≥2 engine + dimension induction done).
+**Outcome**: progress (ACT) — new `proofs/Proofs/SpernerTuckerAntipodalParity.lean`
+(163 LOC, 3 thm + 4 def, 0 sorries, 0 axioms). Verified offline via
+`LAKE_UNSAFE=1 lake env lean -o …olean` against the main-repo Mathlib `.olean` cache
+(Docker host down). `#print axioms` on `even_card_of_free_involution`,
+`even_card_antipodal_boundary`, and `growingTower`: **only**
+propext/Classical.choice/Quot.sound — no `sorryAx`, no `Lean.ofReduceBool`.
+
+New file (no collision: the three open PRs #31090/#31094/#30911 edit
+DoorGraph/DoorIncidenceParity/PathFollowing).
+
+### What I Did — two pillars
+
+**Pillar 1 — the antipodal parity engine (genuine Mathlib-gap lemma).**
+- `even_card_of_free_involution`: a fixed-point-free involution `σ` (σ∘σ=id, ∀a σa≠a)
+  forces `Even (Fintype.card α)`. Proof: sum the constant `1 : ZMod 2` over `univ`;
+  `Finset.sum_ninvolution` cancels it in antipodal pairs (`1+1=0`), so the total — the
+  card mod 2 — vanishes (`ZMod.natCast_eq_zero_iff_even`). Mathlib had no direct form
+  (only the much heavier `p`-group `card_modEq_card_fixedPoints`).
+- `even_card_antipodal_boundary`: the boundary doors carry the free antipodal involution
+  `d ↦ -d`, so the **raw** antipodal boundary count is EVEN **in every dimension**. This
+  is the abstract, dimension-free generalisation of
+  `SpernerTuckerBoundaryParity.ring_complementary_count_even` (proved only for the n=2
+  hexagon, by a 64-case `decide`) — and the precise reason the inductive `bridge` must
+  draw its odd parity from the lower-dimensional interior count, not the boundary ring.
+
+**Pillar 2 — the geometric bridge as an explicit cardinality bijection.**
+- `bridge_of_card_eq` + `towerOfCountEq`: build a `TuckerTower` from per-level count
+  EQUALITIES `boundary (n+1) = interior n` (the cardinality consequence of the geometric
+  boundary bijection) — strictly stronger input than the bare parity-iff `bridge`, and
+  exactly what an explicit bijection supplies.
+- `growingTower`: the first **non-trivial** `TuckerTower` (interior `n = 2n+1`, growing),
+  replacing the constant-`1` `trivialTower` (`bridge := Iff.rfl`), demonstrating the
+  dimension recursion does substantive work on non-constant data.
+
+### Honest status
+Parity infrastructure, NOT new Tucker geometry. Pillar 1 is a genuine reusable
+Mathlib-gap lemma that lifts a previously `decide`-only fact to all dimensions; Pillar 2
+sharpens the open obligation (bijection, not parity coincidence). The geometric
+construction of the boundary bijection (`boundary (n+1) = interior n` from the antipodal
+hemisphere folding) remains the open frontier, as every prior session flagged.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerAntipodalParity.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps
+- Apply `even_card_of_free_involution` to the antipodal boundary sphere `Sⁿ` with a
+  hemisphere fundamental domain to derive the bridge count equality
+  `boundary (n+1) = interior n` geometrically, then feed `towerOfCountEq`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
 ## Session 2026-06-27 (researcher-2) — ACT: door-conservation identity (degree + boundary doors = total doors)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — `SpernerTuckerDoorGraph.lean`
