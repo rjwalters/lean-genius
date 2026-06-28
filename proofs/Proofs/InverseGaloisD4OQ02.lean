@@ -25,6 +25,16 @@ divisibilities directly generalize the base entry's `four_dvd_x4_sub_2_gal_card`
 new `(ℤ/nℤ)ˣ`-quotient witness `φ(n) ∣ |Gal|`.  For `n = 4` they read
 `4 ∣ |Gal|`, `|Gal| ∣ 24`, `φ(4)=2 ∣ |Gal|`, consistent with the known `|Gal| = 8`.
 
+Because the kernel order `n` and quotient order `φ(n)` divide `|Gal|` *simultaneously*,
+their least common multiple does too (`lcm_dvd_gal_card`):
+
+      lcm(n, φ(n))  ∣  |Gal(Xⁿ-p/ℚ)|.
+
+When the two are coprime (`gcd(n, φ(n)) = 1`) this sharpens to the *full* generic
+metacyclic order `n·φ(n) ∣ |Gal|` (`mul_totient_dvd_gal_card_of_coprime`), which is the
+exact group order for the smallest such cases: `n = 3` gives `6 = |S₃|` and `n = 5` gives
+`20 = |F₂₀|`.  (The base `n = 4` is excluded since `gcd(4, 2) = 2`, matching `lcm = 4 < 8`.)
+
 Irreducibility of `Xⁿ - p` over `ℚ` is Eisenstein at `p` (valid for every `n ≥ 1`,
 prime `p`), reusing `NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime`.  The two outer
 bounds reuse the base entry's `irred_monic_degree_dvd_splitting_finrank` and the
@@ -181,5 +191,50 @@ theorem totient_dvd_gal_card (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) :
   have htower := Module.finrank_mul_finrank ℚ F q.SplittingField
   rw [hF_finrank] at htower
   exact ⟨_, htower.symm⟩
+
+-- ============================================================================
+-- Part V: Combining the two lower factors — lcm(n, φ(n)) ∣ |Gal|
+-- ============================================================================
+
+/-- **`lcm(n, φ(n)) ∣ |Gal(Xⁿ-p/ℚ)|`.** The two lower factors `n` (kernel `Cₙ`) and
+`φ(n)` (quotient `(ℤ/nℤ)ˣ`) divide `|Gal|` *simultaneously*, so their least common
+multiple does too.  This is the sharpest lower bound on `|Gal|` obtainable from the
+metacyclic kernel/quotient pair alone, strictly improving on each factor separately
+whenever `gcd(n, φ(n)) > 1`.
+
+For `n = 4`: `lcm(4, φ(4)) = lcm(4, 2) = 4 ∣ 8 = |Gal(X⁴-2)|` (here the two factors
+share the prime `2`, so the lcm `4` is below the true order `8 = 4·φ(4)`). -/
+theorem lcm_dvd_gal_card (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) :
+    Nat.lcm n n.totient ∣ Fintype.card (X ^ n - C (p : ℚ) : ℚ[X]).Gal :=
+  Nat.lcm_dvd (n_dvd_gal_card n p hn hp) (totient_dvd_gal_card n p hn hp)
+
+/-- **`n·φ(n) ∣ |Gal(Xⁿ-p/ℚ)|` when `gcd(n, φ(n)) = 1`.** If the kernel order `n` and
+the quotient order `φ(n)` are coprime, the two divisibilities combine into the *full*
+generic metacyclic order `n·φ(n)` as a lower bound — pinning `|Gal|` from below by the
+conjectured exact value.  Combined with the embedding `|Gal| ∣ n!` this squeezes the
+order tightly for all such `n`.
+
+This is exact for the smallest coprime cases:
+* `n = 3`: `gcd(3, 2) = 1`, lower bound `6 = |S₃| = |Gal(X³-p)|`;
+* `n = 5`: `gcd(5, 4) = 1`, lower bound `20 = |F₂₀| = |Gal(X⁵-p)|` (the Frobenius group).
+(The base entry `n = 4` is *excluded*: `gcd(4, 2) = 2 ≠ 1`, consistent with `lcm = 4 < 8`.) -/
+theorem mul_totient_dvd_gal_card_of_coprime (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime)
+    (hcop : Nat.Coprime n n.totient) :
+    n * n.totient ∣ Fintype.card (X ^ n - C (p : ℚ) : ℚ[X]).Gal :=
+  hcop.mul_dvd_of_dvd_of_dvd (n_dvd_gal_card n p hn hp) (totient_dvd_gal_card n p hn hp)
+
+/-- `6 ∣ |Gal(X³-p/ℚ)|` for every prime `p`, matching the known `Gal(X³-p) ≅ S₃`. -/
+example (p : ℕ) (hp : p.Prime) :
+    (6 : ℕ) ∣ Fintype.card (X ^ 3 - C (p : ℚ) : ℚ[X]).Gal := by
+  have ht : (3 : ℕ).totient = 2 := by decide
+  have h := mul_totient_dvd_gal_card_of_coprime 3 p (by norm_num) hp (by decide)
+  simpa [ht] using h
+
+/-- `20 ∣ |Gal(X⁵-p/ℚ)|` for every prime `p`, matching the known `Gal(X⁵-p) ≅ F₂₀`. -/
+example (p : ℕ) (hp : p.Prime) :
+    (20 : ℕ) ∣ Fintype.card (X ^ 5 - C (p : ℚ) : ℚ[X]).Gal := by
+  have ht : (5 : ℕ).totient = 4 := by decide
+  have h := mul_totient_dvd_gal_card_of_coprime 5 p (by norm_num) hp (by decide)
+  simpa [ht] using h
 
 end InverseGaloisExtensions
