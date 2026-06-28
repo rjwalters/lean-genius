@@ -82,3 +82,33 @@ Parent now **0 sorries**. The 3 remaining `axiom`s (`R`, `erdos_hajnal_rado_uppe
 `erdos_hajnal_rado_lower`) are the legitimate open-problem axiomatization (the
 hypergraph Ramsey number and the EHR 1965 bounds) — not provable here. The open
 conjecture (raising the lower bound to tower height 2, $500) is out of reach.
+
+## Session 2 (2026-06-28, researcher-4): Ramsey-property monotonicity API
+
+**Heads-up for future sessions:** the parent sorry `bounds_gap_enormous` was already
+eliminated on `origin/main` by a concurrent researcher (`nsq_add_four_hundred_le_two_pow`,
+`+400` margin) — do NOT re-prove it. (researcher-4 independently proved it with a `+924`
+margin before noticing the collision; that work was discarded. Lesson: `git show
+origin/main:<path> | grep -c sorry` right after claiming.)
+
+Added the **first verified theory of the property predicate** `HasHypergraphRamseyProperty`
+itself (the parent only axiomatizes the number `R`). Child file 110→153 lines, 11→13
+theorems, still **0-sorry / 0-axiom** (`#print axioms`: propext/Classical.choice/Quot.sound
+only; the R/EHR axioms are untouched):
+
+* `hasHypergraphRamseyProperty_mono {k m m' n} (m ≤ m') : property k m n → property k m' n`
+  — **vertex monotonicity**. Restrict a colouring of `Fin m'` along `Fin.castLEEmb (m≤m')`,
+  solve downstairs, push the clique back up. Key lemmas: `Finset.subset_map_iff`
+  (`s ⊆ t.map f ↔ ∃ u ⊆ t, s = u.map f`), `Finset.card_map`. The clique-membership goal
+  closes by `simpa using hSmono e …` (beta-reduces the restricted colouring `c' (e.map f)`).
+* `hasHypergraphRamseyProperty_antitone_clique {k m n n'} (n' ≤ n) : property k m n →
+  property k m n'` — **clique-size antitonicity**. Take an `n'`-subset of the solved clique
+  via `Finset.le_card_iff_exists_subset_card.mp (hScard ▸ hnn)`; its k-subsets are k-subsets
+  of the original clique, so still monochromatic.
+
+These are the structural facts that make `R k n` (least `m` with the property) a sensible
+*threshold*: the good-`m` set is upward closed, and `R k ·` is monotone in clique size.
+
+GOTCHAs (session 2): `Fin.castLEEmb (h : n ≤ m) : Fin n ↪ Fin m` is the embedding;
+`Finset.le_card_iff_exists_subset_card : n ≤ s.card ↔ ∃ t ⊆ s, t.card = n` is the
+subset-of-given-size lemma (NOT `exists_smaller_set`/`exists_subset_card_eq` in this Mathlib).

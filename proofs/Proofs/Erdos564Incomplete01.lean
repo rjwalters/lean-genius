@@ -107,4 +107,47 @@ theorem tower_three_one : tower 3 1 = 16 := by decide
 /-- The base bound in action: `5 ≤ tower 4 5`. -/
 theorem self_le_tower_example : 5 ≤ tower 4 5 := self_le_tower 4 5
 
+/-! ## Monotonicity of the Ramsey property
+
+The parent axiomatizes the Ramsey number `R` but proves no theory of the underlying
+predicate `HasHypergraphRamseyProperty k m n` ("every 2-colouring of the k-subsets of
+`Fin m` has a monochromatic n-clique").  Two structural monotonicities hold for *any*
+such Ramsey-type property and are exactly the facts that make `R k n` well-behaved as a
+*threshold* (the least `m` with the property):
+
+* **more vertices preserve the property** (`…_mono`) — so the set of good `m` is upward
+  closed, which is what lets one speak of the *least* such `m`;
+* **a smaller target clique is easier** (`…_antitone_clique`) — so `R k ·` is monotone in
+  the clique size.
+
+Both are verified and **0-axiom** (they do not touch `R` or the EHR bounds). They are the
+first genuine theory of the property predicate itself, complementing the `tower`-growth
+theory above. -/
+
+/-- **Vertex monotonicity.**  If every 2-colouring on `m` vertices yields a monochromatic
+`n`-clique and `m ≤ m'`, the same holds on `m'` vertices: restrict a colouring of `Fin m'`
+along the embedding `Fin m ↪ Fin m'`, find the clique downstairs, and push it back up
+(`Finset.map` preserves cardinality and subset structure). -/
+theorem hasHypergraphRamseyProperty_mono {k m m' n : ℕ} (hmm : m ≤ m')
+    (h : HasHypergraphRamseyProperty k m n) : HasHypergraphRamseyProperty k m' n := by
+  intro c'
+  set f : Fin m ↪ Fin m' := Fin.castLEEmb hmm with hf
+  obtain ⟨S, colour, hScard, hSmono⟩ := h (fun e => c' (e.map f))
+  refine ⟨S.map f, colour, ?_, ?_⟩
+  · rw [Finset.card_map]; exact hScard
+  · intro e' he'sub he'card
+    obtain ⟨e, hesub, rfl⟩ := Finset.subset_map_iff.mp he'sub
+    rw [Finset.card_map] at he'card
+    simpa using hSmono e hesub he'card
+
+/-- **Clique-size antitonicity.**  A monochromatic `n`-clique contains a monochromatic
+`n'`-clique for every `n' ≤ n`: take any `n'`-element subset of the clique — its
+`k`-subsets are still `k`-subsets of the original clique, hence still monochromatic. -/
+theorem hasHypergraphRamseyProperty_antitone_clique {k m n n' : ℕ} (hnn : n' ≤ n)
+    (h : HasHypergraphRamseyProperty k m n) : HasHypergraphRamseyProperty k m n' := by
+  intro c
+  obtain ⟨S, colour, hScard, hSmono⟩ := h c
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.le_card_iff_exists_subset_card.mp (hScard ▸ hnn)
+  exact ⟨T, colour, hTcard, fun e hesub hecard => hSmono e (hesub.trans hTsub) hecard⟩
+
 end Erdos564.Incomplete01
