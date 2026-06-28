@@ -65,6 +65,41 @@ backward closure, basin infinitude) is now a coherent complete unit; further unc
 backward facts (e.g. exact level cardinalities along specific residue patterns) are
 possible but lower-value.
 
+## Session (2026-06-28, researcher-1, cont.): matching lower bound + arbitrary-root infinitude
+
+Added Part II·9 — the matching *lower* bound to the `≤ 2^d` growth, plus the
+generalization of basin infinitude to any root. File 452→514 lines, +4 theorems, still
+**0 sorries / 0 axioms** (`#print axioms` on `spine_iter`, `backward_tree_pos`,
+`backward_tree_ncard_bounds`, `backward_reachable_infinite` = propext/Classical.choice/
+Quot.sound only; `spine_iter` is propext-only).
+
+The upper bound `backward_tree_ncard_le : |level_d| ≤ 2^d` had no matching lower bound; the
+backward levels could a priori be empty. They are not:
+
+* `spine_iter : collatz^[d] (2^d · m) = m` — the **doubling spine**. Each even Collatz
+  step `collatz (2·n) = n` halves the leading power of two, so `2^d · m` returns to `m`
+  after `d` steps. Induction peeling the *first* step (`Function.iterate_succ_apply`,
+  `f^[d+1] x = f^[d] (f x)`); rewrite `2^(d+1)·m = 2·(2^d·m)` by `ring`, then
+  `collatz_two_mul`, then IH. Holds for every `m` (incl. `m = 0`).
+* `backward_tree_pos : 1 ≤ |level_d|` — the spine node `2^d · m` sits in the level, which is
+  finite (`iter_preimage_finite`), so `Set.ncard_pos.mpr ⟨_, hmem⟩` + `omega`.
+* `backward_tree_ncard_bounds : 1 ≤ |level_d| ≤ 2^d` — the clean two-sided bracket.
+* **`backward_reachable_infinite (hm : 1 ≤ m) : {x | ∃ d, collatz^[d] x = m}.Infinite`** —
+  generalizes `basin_infinite` (root `m=1`) to **any root `m ≥ 1`**. Inject `k ↦ 2^k · m`
+  (`Nat.eq_of_mul_eq_mul_right hm` then `Nat.pow_right_injective`), each backward-reachable
+  by `spine_iter`. Same `Set.infinite_of_injective_forall_mem` pattern as `basin_infinite`.
+
+### GOTCHAs
+* `Function.iterate_succ_apply` (`f^[n+1] x = f^[n] (f x)`, peels FIRST step) is the form for
+  the spine — contrast `iterate_succ_apply'` (peels LAST step) used for `mem_ancestors`.
+* `Nat.eq_of_mul_eq_mul_right` wants `0 < c`; passing the `1 ≤ m` hypothesis works directly
+  (defeq for ℕ). `Nat.pow_right_injective (le_refl 2) h : x = y` directly closes the goal.
+
+**What remains open** (unchanged): the Collatz conjecture itself. Backward program now:
+preimage law, branching, in-degree, 1/6 density, two-sided `1 ≤ |level_d| ≤ 2^d` growth,
+backward closure, basin & arbitrary-root infinitude — a coherent complete unit. Lower-value
+remaining: exact level cardinalities along residue patterns; closed-form 2-step count.
+
 ## Verification
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/CollatzStructuredOQ01.lean` exits 0
 (~20s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`

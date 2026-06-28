@@ -24,6 +24,11 @@ We prove, with **no axioms and no `sorry`**:
 
 4. **The basin of 1 is infinite** — it contains every power of two.
 
+5. **Geometric backward-tree bounds.** The depth-`d` backward level of any `m` has
+   between `1` and `2^d` nodes: `≤ 2^d` from the in-degree-`≤ 2` dichotomy iterated,
+   and `≥ 1` from the doubling spine `2^d · m`. Iterating the spine shows the full
+   backward-reachable set of *any* root `m ≥ 1` is infinite.
+
 These are *unconditional* structural facts about the Collatz graph: they do not
 assume the Collatz conjecture, but describe the shape of the component containing
 1, independently of whether that component is all of `ℕ`.
@@ -353,6 +358,59 @@ theorem backward_tree_depth_one (m : ℕ) : ((collatz^[1]) ⁻¹' {m}).ncard ≤
   simpa using backward_tree_ncard_le 1 m
 
 /-!
+## Part II·9: Matching lower bound — every backward level is nonempty
+
+The `≤ 2^d` bound caps how *fast* the backward tree can grow.  Here is the matching
+*lower* bound: every backward level is nonempty, so `1 ≤ |level_d| ≤ 2^d`.  The witness is
+the **doubling spine** `m, 2m, 4m, …, 2^d m`: since `collatz (2·n) = n`, iterating `d`
+times sends `2^d · m` back to `m`.  This needs no residue analysis and holds for every `m`
+(including `m = 0`).  Iterating the spine to all depths shows the full backward-reachable
+set of *any* root `m ≥ 1` is infinite — generalizing `basin_infinite` (the `m = 1` case)
+to an arbitrary root.
+-/
+
+/-- **The doubling spine.** Iterating `collatz` `d` times from `2^d · m` returns to `m`,
+because each even step `collatz (2·n) = n` halves the leading power of two. -/
+theorem spine_iter (d m : ℕ) : collatz^[d] (2 ^ d * m) = m := by
+  induction d with
+  | zero => simp
+  | succ d ih =>
+    have h : (2 : ℕ) ^ (d + 1) * m = 2 * (2 ^ d * m) := by ring
+    rw [Function.iterate_succ_apply, h, collatz_two_mul]
+    exact ih
+
+/-- **Backward levels are nonempty.** Every depth-`d` backward level of `m` contains the
+spine node `2^d · m`, so it has at least one element. -/
+theorem backward_tree_pos (d m : ℕ) : 1 ≤ ((collatz^[d]) ⁻¹' {m}).ncard := by
+  have hmem : (2 ^ d * m) ∈ (collatz^[d]) ⁻¹' {m} := by
+    simp only [Set.mem_preimage, Set.mem_singleton_iff]
+    exact spine_iter d m
+  have hpos := (Set.ncard_pos (iter_preimage_finite d m)).mpr ⟨_, hmem⟩
+  omega
+
+/-- **Two-sided backward-level bound:** `1 ≤ |collatz^[d] ⁻¹' {m}| ≤ 2^d`.  The backward
+Collatz tree has between one and `2^d` nodes at each depth — never empty, never more than
+binary.  Both bounds are unconditional. -/
+theorem backward_tree_ncard_bounds (d m : ℕ) :
+    1 ≤ ((collatz^[d]) ⁻¹' {m}).ncard ∧ ((collatz^[d]) ⁻¹' {m}).ncard ≤ 2 ^ d :=
+  ⟨backward_tree_pos d m, backward_tree_ncard_le d m⟩
+
+/-- **The backward-reachable set of any root `m ≥ 1` is infinite.** The doubling spine
+`k ↦ 2^k · m` injects `ℕ` into the set of numbers that reach `m` under iteration, so that
+set is infinite for every `m ≥ 1`.  This generalizes `basin_infinite` (the root `m = 1`)
+to an arbitrary root, and is again unconditional — it describes the backward dynamics, not
+forward convergence. -/
+theorem backward_reachable_infinite {m : ℕ} (hm : 1 ≤ m) :
+    {x : ℕ | ∃ d, collatz^[d] x = m}.Infinite := by
+  apply Set.infinite_of_injective_forall_mem (f := fun k : ℕ => 2 ^ k * m)
+  · intro x y hxy
+    have hxy' : 2 ^ x * m = 2 ^ y * m := hxy
+    exact Nat.pow_right_injective (le_refl 2) (Nat.eq_of_mul_eq_mul_right hm hxy')
+  · intro k
+    simp only [Set.mem_setOf_eq]
+    exact ⟨k, spine_iter k m⟩
+
+/-!
 ## Part III: Backward Closure of the Basin
 
 If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
@@ -439,8 +497,12 @@ example : collatz 16 = 8 := by decide
    depth-`d` ancestor set = `(collatz^[d]) ⁻¹' {m}`), `ancestors_card_le` /
    `backward_tree_ncard_le` (depth-`d` backward level has `≤ 2^d` nodes),
    `iter_preimage_finite` (every backward level is finite)
-7. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
-8. ✓ The basin of 1 is infinite `basin_infinite`
+7. ✓ Matching lower bound via the doubling spine: `spine_iter`
+   (`collatz^[d] (2^d · m) = m`), `backward_tree_pos` (every backward level is
+   nonempty), `backward_tree_ncard_bounds` (two-sided `1 ≤ |level_d| ≤ 2^d`),
+   `backward_reachable_infinite` (backward-reachable set of any root `m ≥ 1` is infinite)
+8. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
+9. ✓ The basin of 1 is infinite `basin_infinite`
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
