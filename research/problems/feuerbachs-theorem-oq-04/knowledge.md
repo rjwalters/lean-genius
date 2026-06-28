@@ -154,3 +154,17 @@ propext/Classical.choice/Quot.sound only; no native_decide). Verified single-fil
 1. Internal-tangency common point (d = |ρ₁−ρ₂|; analogous slerp, sign care).
 2. Uniqueness of the tangent point (it is the ONLY common point).
 3. Spherical incircle / nine-point circle constructions, then the Feuerbach tangency.
+
+### Addendum (same session): refactor to shared core + internal-tangency case
+Refactored the construction into a single engine **`sphere_slerp_common_point`**
+(parameterized by d = sdist O₁ O₂ with the spherical angle relation
+`cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d` as a hypothesis), then derived BOTH:
+- `externallyTangent_has_common_point` (d = ρ₁+ρ₂; angle relation via cos(ρ₁-(ρ₁+ρ₂))=cos(-ρ₂)).
+- `internallyTangent_has_common_point` (d = |ρ₁-ρ₂|, smaller circle inside; angle relation
+  via cos(ρ₁-(ρ₁-ρ₂))=cos ρ₂).
+File 267→293 lines, all three 0-axiom (verified). EXTRA GOTCHA: a `set c := ⟪O₁,O₂⟫`
+(inner product) does NOT let `ring`/`linear_combination` equate a *freshly* rewrite-produced
+`⟪O₁,O₂⟫` with `c` (atom mismatch). Fix: set `c := Real.cos d` (a plain real) and rewrite
+every inner product to it via an explicit `hcio : ⟪O₁,O₂⟫ = c` (one `rw [hcio]` rewrites all
+occurrences). Then the spherical angle hypothesis `hangle`, stated in `cos d`/`sin d`, is
+auto-folded to `c`/`s` by `set` and closes hPO₂ with `linear_combination -hangle`.
