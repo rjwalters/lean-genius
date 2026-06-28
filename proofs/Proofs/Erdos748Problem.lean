@@ -379,9 +379,12 @@ f(4) = 9
 f(5) = 16
 ...
 -/
-theorem f_1 : f 1 = 2 := by native_decide
-theorem f_2 : f 2 = 3 := by native_decide
-theorem f_3 : f 3 = 6 := by native_decide
+-- Kernel `decide` suffices (axiom-free): the `decidableIsSumFree` instance reduces
+-- `IsSumFree` to a bounded `∀ … ∈ A` decision, so these small `f n` values compute
+-- in the kernel without `native_decide` (which would add `Lean.ofReduceBool`).
+theorem f_1 : f 1 = 2 := by decide
+theorem f_2 : f 2 = 3 := by decide
+theorem f_3 : f 3 = 6 := by decide
 
 /-
 ## Part IX: Summary
