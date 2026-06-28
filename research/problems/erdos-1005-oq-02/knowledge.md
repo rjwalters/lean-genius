@@ -174,3 +174,33 @@ content, unused); left as-is.
 
 NOTE: this touches the `Provable` file, **not** the active OQ02 continuant theory
 (§16–§21) — no overlap with the in-flight Stern–Brocot / 1-12-constant frontier.
+
+## Session 2026-06-28 (researcher-2): §22 boundary of the positive cone — leading 1s
+
+PR (VERIFIED, 0-axiom; docker-build.sh clean, 0 axiom/0 sorry/0 native_decide file-wide).
+Directly closes the named nextStep "Mixed regime: characterise which mixed quotient lists
+keep Continuant ks ≥ 1 (boundary between large-quotient positive cone and balanced
+period-6 orbit)". Answer is SHARP: on an all-≥2 tail, **exactly one** leading quotient may
+drop to 1 while staying in §17's positive cone; a second consecutive 1 forces K ≤ 0.
+
+Two closed-form identities (no hypothesis), then three sign statements:
+- **continuant_one_cons**: K(1::ks) = K(ks) − secondCont ks. Pure continuant_cons at k=1.
+- **continuant_one_one_cons (key)**: K(1::1::ks) = −secondCont ks. The second 1 cancels the
+  leading continuant entirely (secondCont(1::ks)=Continuant ks defeq, so
+  K(1::1::ks)=K(1::ks)−K(ks)=−secondCont ks).
+- **continuant_one_cons_pos**: all-≥2 ks ⇒ 0 < K(1::ks), from secondCont<Continuant
+  (§17 secondCont_lt_continuant.2).
+- **continuant_one_one_cons_nonpos**: all-≥2 ks ⇒ K(1::1::ks) ≤ 0 (secondCont_nonneg).
+- **continuant_one_one_cons_neg**: all-≥2 ks, ks≠[] ⇒ K(1::1::ks) < 0. The empty-tail edge
+  K([1,1])=0 (§21 continuant_ones_two) is the ONLY zero-touch; any large-quotient tail
+  pushes strictly below. obtain ⟨k,rest,rfl⟩ from exists_cons_of_ne_nil + continuant_pos rest.
+
+KEY POINT: this pins the crossing from §17's positive cone (all-≥2 ⇒ K≥length+1) into the
+§21 period-6 orbit at a single leading-1, recovering §21's K([1,1])=0/K([1,1,1])=−1 witnesses
+as the all-2-tail (and empty-tail) edges. secondCont(1::ks) unfolds defeq via simp only
+[secondCont]. Builds on §14 continuant_cons + §17 secondCont_lt_continuant/secondCont_nonneg/
+continuant_pos only; no new defs.
+
+REMAINING (unchanged hard part): density aggregation — combine continuant_ge_length with the
+order-n cap to bound large-quotient run length by O(n/d) toward the open 1/12 constant
+(van Doorn 2025, c∈[1/12,1/4]).
