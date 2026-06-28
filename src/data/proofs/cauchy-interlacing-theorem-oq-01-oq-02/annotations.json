@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup-imports-seam",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "context",
+    "title": "Setup: Joining the Two Gallery Files Across a Deliberate Seam",
+    "content": "The two imports are the load-bearing ones: `Proofs.CauchyInterlacingPoincare` supplies the abstract codimension-m separation inequality `poincare_separation` (which takes the compression and its Rayleigh-agreement hypothesis as inputs), and `Proofs.CauchyInterlacingCompression` supplies the explicit orthogonal compression `compress T H := P_H ∘ T ∘ ι_H` together with `isSymmetric_compress` and `rayleigh_compress_eq` (which discharge that hypothesis). Opening both namespaces brings every ingredient into scope so the join is a single application with no new spectral lemmas. The `variable` block fixes an arbitrary finite-dimensional inner product space `V` over `𝕜 : RCLike` (real or complex); the dimension split `finrank V = n + m` and `finrank H = n` is introduced per-theorem rather than globally, since the codimension `m` is what varies across the three results.",
+    "mathContext": "Abstract Poincaré (compression abstracted away) + explicit compression (codimension abstracted away) ⟹ both the Rayleigh hypothesis and the codimension restriction vanish.",
+    "significance": "context",
+    "relatedConcepts": ["module imports", "namespace composition", "RCLike inner product space", "abstraction boundary"],
+    "prerequisites": ["finite-dimensional inner product spaces", "the abstract Poincaré separation file", "the orthogonal compression file"]
+  },
+  {
     "id": "ann-poincare-separation-compression",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02",
     "range": { "startLine": 73, "endLine": 104 },
