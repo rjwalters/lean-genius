@@ -34,6 +34,53 @@
     ],
     "proofStrategy": "Existence: for finite G the lattice Subgroup G is finite (SetLike injects into the finite Set G), so the set {K | K.Normal ∧ K ≠ ⊥} is a finite, nonempty (⊤ belongs since G is nontrivial) subset of the partial order Subgroup G and therefore has a minimal element by Set.Finite.exists_minimal. Minimality in the order restricted to that set is exactly minimality among nontrivial normal subgroups, extracted by le_antisymm. Abelianness: for a minimal normal N of solvable G, the commutator ⁅N, N⁆ is normal in G (Subgroup.commutator_normal), is ≤ N (Subgroup.commutator_le_self), and is strictly below N (IsSolvable.commutator_lt_of_ne_bot, the solvable-group descent). A normal subgroup strictly below the minimal N cannot be nontrivial, so ⁅N, N⁆ = ⊥; by Subgroup.commutator_eq_bot_iff_le_centralizer this means N ≤ centralizer N, i.e. every two elements of N commute."
   },
+  "overview": {
+    "historicalContext": "The notion of a minimal normal subgroup is a cornerstone of finite group theory, central to the local analysis that culminated in the classification of finite simple groups. A minimal normal subgroup of a finite group is always a direct product of isomorphic simple groups (it is characteristically simple), and in the solvable world it specializes all the way down: it is elementary abelian, a vector space over a prime field. This last fact powers the inductive proofs of Philip Hall's 1928 theorems on solvable groups — the existence of Hall π-subgroups and their conjugacy — by furnishing an abelian normal kernel on which to induct. Mathlib 4.26 has a rich solvable-group and commutator API but, surprisingly, no minimal-normal-subgroup machinery; the sibling entry that formalized Hall's Schur–Zassenhaus lifting step identified exactly this as the gap blocking a fully axiom-free Hall theorem. This entry builds the missing layer from primitives: the finiteness of the subgroup lattice for existence, and the solvable-group commutator descent for abelianness.",
+    "problemStatement": "Formalize, with 0 axioms, the two structural facts about minimal normal subgroups that Hall's induction requires: (1) every nontrivial finite group $G$ has a minimal normal subgroup $N$ (normal, $N \\neq \\bot$, with no nontrivial normal subgroup strictly below it), and (2) if $G$ is solvable then such an $N$ is abelian. Package these into: every nontrivial finite solvable group has an abelian minimal normal subgroup.",
+    "proofStrategy": "Existence is a finiteness argument: the set $s = \\{K \\trianglelefteq G : K \\neq \\bot\\}$ is nonempty ($\\top \\in s$ since $G$ is nontrivial) and finite (because Subgroup $G$ injects into the finite power set of $G$), so Set.Finite.exists_minimal returns a minimal element, and le_antisymm shows order-minimality within $s$ coincides with the IsMinimalNormal predicate. Abelianness is a commutator-descent argument: $\\lbrack N, N\\rbrack$ is normal in $G$, lies in $N$, and — because $G$ is solvable — is strictly below $N$ (IsSolvable.commutator_lt_of_ne_bot). Minimality of $N$ then forces $\\lbrack N, N\\rbrack = \\bot$, which by commutator_eq_bot_iff_le_centralizer says $N$ centralizes itself, i.e. $N$ is abelian.",
+    "keyInsights": [
+      "Existence of a minimal normal subgroup is not a transfinite or Zorn-style argument here but a plain finite-poset descent: the subgroup lattice of a finite group is finite, so any nonempty family of subgroups has a minimal member. This keeps the proof within the foundational axioms (no extra choice).",
+      "Finite (Subgroup G) does not follow automatically from [Finite G] in Lean — it must be constructed from the injectivity of the SetLike coercion into the finite power set. This is the one non-obvious instance the existence proof has to supply by hand.",
+      "Solvability enters the abelianness proof at a single, sharp point: IsSolvable.commutator_lt_of_ne_bot, the statement that a nontrivial subgroup of a solvable group strictly contains its own derived subgroup. Everything else (normality and containment of the commutator) holds in any group.",
+      "Minimality is the lever that converts 'strictly smaller and normal' into 'trivial': a normal subgroup properly below a minimal normal N cannot be nontrivial, so the strictly-smaller commutator ⁅N,N⁆ must be ⊥. This is the recurring shape of minimal-normal-subgroup arguments.",
+      "A vanishing self-commutator is exactly abelianness, mediated by commutator_eq_bot_iff_le_centralizer: ⁅N,N⁆ = ⊥ ⟺ N ≤ centralizer N. The proof closes by unpacking centralizer membership into the elementwise commuting law.",
+      "The packaged theorem exists_abelian_minimal_normal_subgroup is deliberately shaped to be the exact hypothesis Hall's induction consumes — abelianness, not just existence, is what lets the induction descend to a quotient by an abelian normal subgroup."
+    ]
+  },
+  "sections": [
+    {
+      "id": "isminimalnormal-def",
+      "title": "The Minimal-Normal-Subgroup Predicate",
+      "startLine": 66,
+      "endLine": 70,
+      "summary": "Defines IsMinimalNormal N — normal, nontrivial, and minimal among nontrivial normal subgroups — the API Mathlib 4.26 lacks and the rest of the file is built on.",
+      "mathContext": "$\\mathrm{IsMinimalNormal}(N) :\\equiv N \\trianglelefteq G \\wedge N \\neq \\bot \\wedge (\\forall M \\trianglelefteq G,\\ M \\le N \\wedge M \\neq \\bot \\Rightarrow M = N).$"
+    },
+    {
+      "id": "existence",
+      "title": "Part I — Existence of a Minimal Normal Subgroup",
+      "startLine": 72,
+      "endLine": 94,
+      "summary": "Proves exists_minimal_normal_subgroup: a nontrivial finite group has a minimal normal subgroup, via finiteness of the subgroup lattice and Set.Finite.exists_minimal, with le_antisymm matching order-minimality to the predicate.",
+      "mathContext": "$s = \\{K \\trianglelefteq G : K \\neq \\bot\\}\\ \\text{nonempty, finite} \\Rightarrow \\exists N \\in s\\ \\text{minimal}.$"
+    },
+    {
+      "id": "abelianness",
+      "title": "Part II — Minimal Normal Subgroups of Solvable Groups Are Abelian",
+      "startLine": 96,
+      "endLine": 123,
+      "summary": "Proves minimal_normal_abelian_of_solvable: the commutator ⁅N,N⁆ is normal, ≤ N, and (by solvability) strictly below N, so minimality forces it to ⊥, i.e. N centralizes itself.",
+      "mathContext": "$\\lbrack N, N\\rbrack \\lneq N\\ (\\text{solvable}) \\Rightarrow \\lbrack N, N\\rbrack = \\bot \\Rightarrow N \\le C_G(N).$"
+    },
+    {
+      "id": "packaged",
+      "title": "Packaged Existence of an Abelian Minimal Normal Subgroup",
+      "startLine": 125,
+      "endLine": 135,
+      "summary": "Combines Parts I and II into exists_abelian_minimal_normal_subgroup — the exact structural input Hall's induction on solvable groups requires.",
+      "mathContext": "$G\\ \\text{finite, nontrivial, solvable} \\Rightarrow \\exists N\\ \\text{minimal normal, abelian}.$"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ01OQ03OQ02.lean",
     "imports": [

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "lagrange-oq010302-isminimalnormal-def",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 66, "endLine": 70 },
+    "type": "definition",
+    "title": "The Minimal-Normal-Subgroup Predicate",
+    "content": "IsMinimalNormal N packages three conditions: N is normal, N is nontrivial (N ≠ ⊥), and N is minimal among nontrivial normal subgroups (any normal M ≤ N with M ≠ ⊥ must equal N). Mathlib 4.26 ships no minimal-normal-subgroup API, so this predicate — and the two existence/structure theorems built on it — are original gallery contributions. Note the minimality is phrased positively (every nontrivial normal subgroup below N is all of N) rather than via the order-theoretic Minimal, which keeps later proofs working directly with subgroup containments.",
+    "mathContext": "$\\mathrm{IsMinimalNormal}(N) \\;:\\equiv\\; N \\trianglelefteq G \\;\\wedge\\; N \\neq \\bot \\;\\wedge\\; \\bigl(\\forall M \\trianglelefteq G,\\; M \\le N \\wedge M \\neq \\bot \\Rightarrow M = N\\bigr).$",
+    "significance": "key",
+    "relatedConcepts": ["minimal normal subgroup", "normal subgroup", "subgroup lattice", "characteristically simple group"],
+    "prerequisites": ["normal subgroup", "subgroup order (≤, ⊥)"]
+  },
+  {
+    "id": "lagrange-oq010302-finite-lattice",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 86, "endLine": 87 },
+    "type": "technique",
+    "title": "Finiteness of the Subgroup Lattice",
+    "content": "The existence argument needs the lattice Subgroup G to be finite. This is not automatic from [Finite G]: it is derived by observing that SetLike.coe : Subgroup G → Set G is injective, so Subgroup G injects into the finite power set Set G. The instance haveI : Finite (Subgroup G) := Finite.of_injective _ SetLike.coe_injective must be supplied by hand before Set.toFinite can see that the candidate set of nontrivial normal subgroups is finite. A subtle Lean gotcha: Finite (Subgroup G) is not synthesized just from [Finite G].",
+    "mathContext": "$\\text{SetLike.coe}: \\mathrm{Subgroup}\\,G \\hookrightarrow \\mathcal{P}(G),\\quad |G| < \\infty \\Rightarrow |\\mathrm{Subgroup}\\,G| \\le 2^{|G|} < \\infty.$",
+    "significance": "technical",
+    "relatedConcepts": ["subgroup lattice", "finiteness", "injective coercion", "SetLike"],
+    "prerequisites": ["finite types", "power set", "injective functions"]
+  },
+  {
+    "id": "lagrange-oq010302-exists-minimal",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 79, "endLine": 94 },
+    "type": "insight",
+    "title": "Existence via a Minimal Element of a Finite Poset",
+    "content": "Existence of a minimal normal subgroup reduces to a finiteness principle: the set s = {K | K.Normal ∧ K ≠ ⊥} is nonempty (⊤ is normal and ≠ ⊥ because G is nontrivial) and finite (it sits in the finite lattice), so Set.Finite.exists_minimal hands back a minimal element N of the order restricted to s. The final step shows minimality within s is exactly the minimality demanded by IsMinimalNormal: any nontrivial normal M ≤ N is in s and ≤ N, so minimality gives N ≤ M, and le_antisymm closes M = N. No well-ordering or choice beyond the foundational axioms is needed — the descent terminates because the lattice is finite.",
+    "mathContext": "$s = \\{K \\trianglelefteq G : K \\neq \\bot\\},\\quad \\top \\in s,\\ |s| < \\infty \\;\\Rightarrow\\; \\exists N \\in s\\ \\text{minimal};\\quad M \\in s,\\ M \\le N \\Rightarrow N \\le M \\Rightarrow M = N.$",
+    "significance": "key",
+    "relatedConcepts": ["minimal element", "finite poset", "well-foundedness", "le_antisymm"],
+    "prerequisites": ["partial order", "minimal element of a finite set", "nontrivial group"]
+  },
+  {
+    "id": "lagrange-oq010302-commutator-descent",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 109, "endLine": 116 },
+    "type": "insight",
+    "title": "Strict Commutator Descent Forces ⁅N,N⁆ = ⊥",
+    "content": "The heart of the abelianness proof. For a minimal normal N of a solvable group, the commutator ⁅N, N⁆ is (a) normal in G — Subgroup.commutator_normal, (b) contained in N — Subgroup.commutator_le_self, and crucially (c) strictly smaller than N — IsSolvable.commutator_lt_of_ne_bot, the solvable-group descent lemma stating that a nontrivial subgroup of a solvable group properly contains its own commutator subgroup. A normal subgroup strictly below the minimal N cannot itself be nontrivial (minimality would force equality, contradicting strictness), so ⁅N, N⁆ = ⊥. Solvability is used exactly once, precisely here, to get the strict inequality.",
+    "mathContext": "$\\lbrack N, N\\rbrack \\trianglelefteq G,\\quad \\lbrack N, N\\rbrack \\le N,\\quad \\lbrack N, N\\rbrack \\lneq N \\ (\\text{solvable}) \\;\\Rightarrow\\; \\lbrack N, N\\rbrack = \\bot.$",
+    "significance": "key",
+    "relatedConcepts": ["commutator subgroup", "solvable group", "derived series", "minimality"],
+    "prerequisites": ["commutator subgroup", "solvable group", "strict order"]
+  },
+  {
+    "id": "lagrange-oq010302-centralizer-abelian",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 117, "endLine": 123 },
+    "type": "technique",
+    "title": "⁅N,N⁆ = ⊥ Means N Centralizes Itself",
+    "content": "Translating the vanishing commutator into a commuting law: Subgroup.commutator_eq_bot_iff_le_centralizer turns ⁅N, N⁆ = ⊥ into N ≤ centralizer N, i.e. every element of N commutes with every element of N. Unpacking the centralizer membership via mem_centralizer_iff gives b * a = a * b for elements a, b of N (note the order — the lemma yields the equation with the factors swapped, so Subtype.ext h.symm is needed to land on a * b = b * a in the subtype). This is the definition of N being abelian.",
+    "mathContext": "$\\lbrack N, N\\rbrack = \\bot \\iff N \\le C_G(N) \\;\\Rightarrow\\; \\forall a, b \\in N,\\ ab = ba.$",
+    "significance": "supporting",
+    "relatedConcepts": ["centralizer", "abelian group", "commutator", "Subtype.ext"],
+    "prerequisites": ["centralizer of a set", "abelian groups", "subtype equality"]
+  },
+  {
+    "id": "lagrange-oq010302-packaged-existence",
+    "proofId": "lagrange-theorem-oq-01-oq-03-oq-02",
+    "range": { "startLine": 125, "endLine": 133 },
+    "type": "context",
+    "title": "Packaging the Structural Input for Hall's Induction",
+    "content": "exists_abelian_minimal_normal_subgroup combines existence (Part I) with abelianness (Part II) into the single statement Hall's induction actually consumes: every nontrivial finite solvable group has an abelian minimal normal subgroup N. This is the structural starting point for the induction in Hall's theorem on solvable groups — it provides the abelian normal kernel on which the induction splits. Together with the Schur–Zassenhaus lifting step (sibling entry oq-01) and the abelian base case (oq-03), the only remaining gap toward a fully 0-axiom Hall's theorem is upgrading 'abelian' to 'elementary abelian' (exponent p), pinning |N| = pᵃ.",
+    "mathContext": "$G \\ \\text{finite, nontrivial, solvable} \\;\\Rightarrow\\; \\exists N \\trianglelefteq G\\ \\text{minimal with}\\ \\forall a, b \\in N,\\ ab = ba.$",
+    "significance": "key",
+    "relatedConcepts": ["Hall's theorem", "solvable group induction", "elementary abelian group", "minimal normal subgroup"],
+    "prerequisites": ["solvable group", "minimal normal subgroup", "mathematical induction"]
+  }
+]
