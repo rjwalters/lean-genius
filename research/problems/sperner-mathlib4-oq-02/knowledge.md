@@ -653,3 +653,52 @@ reduces the projection definitionally (ofGraphs is semireducible).
 This narrows the open surface from {step, bridge, base} to {bridge} (base verified at
 n=1). Frontier for next session is STILL the single geometric `bridge` construction —
 unchanged; this is organizing infrastructure, not new Tucker mathematics.
+
+## Session 2026-06-28 (researcher-10) — discharge `hpair` (pairwise door lemma)
+
+**Mode**: REVISIT (RICH). Frontier = the geometric `bridge` + the two remaining
+*incidence* hypotheses of the abstract engine (`SpernerTuckerDoorGraph`).
+**Outcome**: progress (ACT) — new `proofs/Proofs/SpernerTuckerSimplexFacetPair.lean`
+(143 LOC, 4 thm + 1 def + 1 instance + 1 wiring example, 0 sorry, 0 axiom). Verified
+offline via host `LAKE_UNSAFE=1 ./bin/lake env lean` against the Mathlib `.olean` cache
+(Docker down). `#print axioms` of `facets_pairwise` and `subset_incidence_hpair`:
+`[propext, Classical.choice, Quot.sound]` only — no `sorryAx`, no `Lean.ofReduceBool`.
+
+### What I Did
+The engine carries three black-box geometric hypotheses on the incidence
+`inc : V → D → Prop`: `hdoor` (each door borders ≤2 simplices), `hsimplex` (each simplex
+has ≤2 doors), `hpair` (two distinct simplices share ≤1 door). Last session
+(`SpernerTuckerDoorLemma`) turned `hsimplex` into a theorem for the canonical Sperner
+colouring. **This session discharges `hpair`** for the *subset incidence* — the incidence
+any simplicial complex actually carries (`inc n v d := v.card = n+1 ∧ d.card = n ∧ d ⊆ v`):
+
+- `card_inter_le_of_ne` — two distinct `(n+1)`-simplices meet in ≤ `n` vertices (else the
+  intersection, a same-card subset of each, equals both, forcing `v = w`).
+- `facet_eq_inter` — an `n`-facet shared by two distinct simplices is *exactly* `v ∩ w`
+  (it lies in the intersection, which already has ≤ `n` elements, so the inclusion fills).
+- `facets_pairwise` — the pairwise door lemma: both shared facets equal `v ∩ w`, hence
+  each other. Dimension-free, pure finset combinatorics.
+- `subset_incidence_hpair` — `facets_pairwise` packaged in the *exact* logical shape of the
+  engine's `hpair`. A `#check`-verified wiring `example` feeds it into
+  `doorGraph_degree_eq_shared`, leaving `hdoor` as that lemma's sole incidence input.
+
+### Why this matters / honest status
+Genuine, reusable, dimension-free combinatorics — the classical "two top-cells of a
+complex share ≤1 codim-1 face" fact underlying every pseudomanifold/door argument, which
+Mathlib lacks in reusable form. It converts the **second** of the engine's three abstract
+door hypotheses into a proof. Crucially, `hdoor` (each facet borders ≤2 simplices) is the
+*pseudomanifold* property — genuinely FALSE for arbitrary complexes — so it cannot be
+proved abstractly and remains the geometric input, alongside the still-open geometric
+`bridge` and the analytic mesh→0 phase. This is infrastructure/sharpening, NOT new Tucker
+geometry.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerSimplexFacetPair.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+
+### Next Steps
+- `hdoor` is now the only remaining engine incidence hypothesis. Discharging it requires a
+  concrete triangulation model (the pseudomanifold structure), which is essentially the
+  geometric `bridge` construction — the genuine open lever every prior session flagged.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
