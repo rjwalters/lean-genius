@@ -1,13 +1,33 @@
 [
   {
+    "id": "ann-sylnil-overview",
+    "proofId": "sylow-theorem-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Lifting the Local Sylow Count to a Global Structure Theorem",
+    "content": "The module docstring records the conceptual move of this follow-up: the parent entry `sylow-theorem-oq-02` worked one prime at a time, enumerating the Sylow p-subgroups by their conjugation orbit to get `n_p = [G : N_G(P)]` and the per-prime criterion `n_p = 1 ↔ P ◁ G`. Here that *local* picture is lifted to a *global* characterization of the whole finite group: nilpotency is exactly the simultaneous holding of all those local uniqueness conditions. The three equivalent faces stated up front — `IsNilpotent G`, `∀ p P, (P : Subgroup G).Normal`, and `∀ p, n_p = 1` — are the (1), (4), and counting forms the file proves. The setup fixes `variable {G : Type*} [Group G] [Finite G]`, so finiteness (needed for the TFAE and for Sylow uniqueness) is ambient throughout.",
+    "mathContext": "Parent (local): for each prime $p$, $n_p = [G : N_G(P)]$ and $n_p = 1 \\iff P \\trianglelefteq G$. This file (global): $G$ nilpotent $\\iff \\forall p,\\ P \\trianglelefteq G \\iff \\forall p,\\ n_p = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nilpotent group",
+      "Sylow subgroup",
+      "local-to-global principle",
+      "finite group structure"
+    ],
+    "prerequisites": [
+      "sylow-theorem-oq-02 (parent entry)",
+      "Group.IsNilpotent"
+    ]
+  },
+  {
     "id": "ann-sylnil-headline",
     "proofId": "sylow-theorem-oq-02-oq-01",
     "range": { "startLine": 51, "endLine": 56 },
-    "type": "technique",
+    "type": "theorem",
     "title": "Extracting a Two-Way Slice from a TFAE",
     "content": "nilpotent_iff_forall_sylow_normal is the (1) ⟺ (4) slice of Mathlib's five-way isNilpotent_of_finite_tfae, obtained in one line by TFAE.out 0 3. The TFAE lists [IsNilpotent, NormalizerCondition, all maximal subgroups normal, all Sylow normal, internal direct product of Sylow]; .out i j returns the bi-implication between entries i and j, here nilpotency and all-Sylow-normality. The explicit (_hp : Fact p.Prime) binder matches the TFAE's statement verbatim and is definitionally the instance-implicit form.",
     "mathContext": "$$G \\text{ nilpotent} \\iff \\forall p,\\ P \\in \\mathrm{Syl}_p(G) \\Rightarrow P \\trianglelefteq G.$$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "nilpotent group",
       "Sylow subgroup",
@@ -17,6 +37,25 @@
     "prerequisites": [
       "Group.IsNilpotent",
       "isNilpotent_of_finite_tfae"
+    ]
+  },
+  {
+    "id": "ann-sylnil-forward",
+    "proofId": "sylow-theorem-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "lemma",
+    "title": "Packaging the Forward Direction with Instance-Implicit Primality",
+    "content": "sylow_normal_of_nilpotent repackages the `.mp` direction of the headline into a directly usable lemma: given `IsNilpotent G`, a prime `p`, and a Sylow p-subgroup `P`, it concludes `(P : Subgroup G).Normal`. The point of the wrapper is ergonomic — it swaps the headline's explicit `(_hp : Fact p.Prime)` binder for the idiomatic instance-implicit `[hp : Fact p.Prime]`, so downstream callers (such as normalizer_eq_top_of_nilpotent) get typeclass resolution to supply primality automatically rather than threading the hypothesis by hand.",
+    "mathContext": "$$G \\text{ nilpotent} \\ \\Rightarrow\\ \\forall p\\ \\forall P \\in \\mathrm{Syl}_p(G),\\ P \\trianglelefteq G.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "instance implicit argument",
+      "Fact typeclass",
+      "Sylow subgroup",
+      "normal subgroup"
+    ],
+    "prerequisites": [
+      "nilpotent_iff_forall_sylow_normal"
     ]
   },
   {
@@ -42,11 +81,11 @@
     "id": "ann-sylnil-counting",
     "proofId": "sylow-theorem-oq-02-oq-01",
     "range": { "startLine": 76, "endLine": 94 },
-    "type": "technique",
+    "type": "theorem",
     "title": "Normality ⟺ Uniqueness Turns Structure into Counting",
     "content": "nilpotent_iff_forall_card_sylow_eq_one fuses the headline with the fact that a Sylow p-subgroup is normal iff it is the unique one. Forward: from normality, Sylow.unique_of_normal yields Unique (Sylow p G), so Nat.card_unique gives n_p = 1. Backward: from n_p = 1, Nat.card_eq_one_iff_unique recovers Subsingleton (Sylow p G), and Sylow.normal_of_subsingleton (via characteristicity) returns normality. Quantifying over all primes converts 'all Sylow normal' into the arithmetic statement 'all n_p = 1', the global counterpart of the parent's per-prime n_p = 1 ⟺ P ◁ G.",
     "mathContext": "$$G \\text{ nilpotent} \\iff \\forall p,\\ n_p = \\#\\,\\mathrm{Syl}_p(G) = 1.$$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Sylow uniqueness",
       "subsingleton",
