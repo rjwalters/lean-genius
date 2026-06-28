@@ -63,3 +63,16 @@ GOTCHA: List.dropLast_reverse takes its list IMPLICITLY — use @List.dropLast_r
 Verified host `lake env lean` (Docker down), 0 axioms / 0 sorry / 0 native_decide;
 #print axioms of all 5 new thms = [propext, Classical.choice, Quot.sound] only.
 Next: aggregate Cassini windows along a Stern–Brocot path toward the open 1/12 constant.
+
+### §19 (researcher-2, same PR #31106 as §18): coprimality of consecutive continuants
+The §16 Cassini det P(ks)=1, read as a Bézout identity, IS coprimality:
+- **continuant_isCoprime**: IsCoprime (Continuant ks) (secondCont ks) — witnesses
+  ⟨(contMat ks).d, secondCont ks.reverse⟩, `by linear_combination continuant_cassini ks`.
+- **continuant_tail_isCoprime**: IsCoprime (Continuant (k::ks)) (Continuant ks) —
+  consecutive continuants coprime ⇒ Stern–Brocot/Farey mediants in lowest terms.
+- **continuant_isCoprime_reverse**: IsCoprime (Continuant ks) (secondCont ks.reverse)
+  — the other Farey neighbor (= K(ks.dropLast)); witnesses ⟨(contMat ks).d, secondCont ks⟩.
+GOTCHA: IsCoprime a b = ∃ u v, u*a+v*b=1 — match witness order to the Cassini grouping
+(Continuant·d + secondCont(rev)·secondCont), linear_combination handles commutativity.
+0-axiom (foundational only), host `lake env lean` clean. Arithmetic counterpart of
+§16's geometric det=1: unimodularity ⇒ coprimality ⇒ reduced fractions.

@@ -1804,4 +1804,45 @@ theorem continuant_cassini_classical (k j : ℤ) (rest : List ℤ) :
   -- and `(k::j::rest).tail.dropLast = (j::rest).dropLast`, both definitional.
   simpa using h
 
+/-! ## §19: Coprimality of consecutive continuants (reduced Farey fractions)
+
+The Cassini determinant `det P(ks) = 1` of §16 is, read as a Bézout identity, exactly
+the statement that the continuant pair `(Continuant ks, secondCont ks)` is *coprime*:
+`Continuant ks · (P ks).d + secondCont ks.reverse · secondCont ks = 1` exhibits an
+integer combination of `Continuant ks` and `secondCont ks` equal to `1`.  Since the
+§9 Farey successor is the fraction with numerator/denominator continuants and
+`secondCont (k :: ks) = Continuant ks` (the trailing continuant is the leading
+continuant of the tail), this says **consecutive continuants are coprime** — the
+mediants along a Stern–Brocot / Farey path are automatically in lowest terms, with no
+common factor to cancel.  This is the arithmetic counterpart of §16's geometric
+`det = 1`: unimodularity ⇒ coprimality ⇒ reduced fractions.
+
+This section is a direct corollary of §16 `continuant_cassini`; it adds the Mathlib
+`IsCoprime` API connection and no new axioms. -/
+
+/-- **Consecutive continuants are coprime.**  `IsCoprime (Continuant ks) (secondCont ks)`:
+the §16 Cassini `Continuant ks · (P ks).d + secondCont ks.reverse · secondCont ks = 1`
+is precisely a Bézout witness for coprimality of the continuant pair. -/
+theorem continuant_isCoprime (ks : List ℤ) :
+    IsCoprime (Continuant ks) (secondCont ks) :=
+  ⟨(contMat ks).d, secondCont ks.reverse, by linear_combination continuant_cassini ks⟩
+
+/-- **Reduced Farey fraction (consecutive-continuant form).**  The leading and
+trailing continuants of a nonempty quotient list are coprime:
+`IsCoprime (Continuant (k :: ks)) (Continuant ks)`.  Because the §9 Farey successor
+of a consecutive pair has these two continuants as denominator and numerator, the
+mediant produced along any Stern–Brocot path is automatically in lowest terms. -/
+theorem continuant_tail_isCoprime (k : ℤ) (ks : List ℤ) :
+    IsCoprime (Continuant (k :: ks)) (Continuant ks) := by
+  have h := continuant_isCoprime (k :: ks)
+  rwa [show secondCont (k :: ks) = Continuant ks from rfl] at h
+
+/-- **Coprimality is reversal-symmetric.**  Pairing §16's `continuant_reverse` with
+coprimality: the continuant of a quotient list is coprime to the trailing continuant
+of the reversed list as well — `IsCoprime (Continuant ks) (secondCont ks.reverse)`.
+(The two Bézout cofactors swap roles relative to `continuant_isCoprime`.) -/
+theorem continuant_isCoprime_reverse (ks : List ℤ) :
+    IsCoprime (Continuant ks) (secondCont ks.reverse) :=
+  ⟨(contMat ks).d, secondCont ks, by linear_combination continuant_cassini ks⟩
+
 end Erdos1005OQ02
