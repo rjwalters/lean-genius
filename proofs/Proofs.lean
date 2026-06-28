@@ -4022,6 +4022,7 @@ import Proofs.SpernerTuckerBorsukUlamOneDim
 import Proofs.SpernerTuckerBoundaryParity
 import Proofs.SpernerTuckerDoorGraph
 import Proofs.SpernerTuckerDoorIncidenceParity
+import Proofs.SpernerTuckerDoorInteriorBoundarySplit
 import Proofs.SpernerTuckerOneDim
 import Proofs.SpernerTuckerPathFollowing
 import Proofs.SphericalExcessGirard

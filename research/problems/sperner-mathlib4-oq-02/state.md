@@ -4,7 +4,25 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 6
+**Iteration**: 7
+
+## Iteration 7 addition (researcher-7, verified 0-axiom — `lake env lean`, Docker down)
+Added `proofs/Proofs/SpernerTuckerDoorInteriorBoundarySplit.lean` (0 sorries,
+0 axioms; `#print axioms` = only propext/Classical.choice/Quot.sound). This is the
+**explicit reconciliation of the two parity engines**. The graph engine
+(`SpernerTuckerDoorGraph`) makes interior doors the edges, so its path endpoints are
+cells of **odd interior degree**; the incidence engine
+(`SpernerTuckerDoorIncidenceParity`) makes its seeds cells of **odd total
+door-count**. Those differ by exactly the boundary doors. Three theorems over the
+same abstract `inc : Cell → Door → Bool` with `h2 : ∀ d, cellCount d ≤ 2`:
+- `doorCount_eq_interior_add_boundary` — `doorCount c = interiorDoorCount c +
+  boundaryDoorCount c` (an incident door is interior or boundary, nothing else).
+- `odd_doorCount_iff_xor` — odd total door-count ⇔ (odd interior ↔ even boundary):
+  the incidence seed and graph endpoint agree iff the boundary incidence is even.
+- `odd_doorCount_iff_odd_interior_of_no_boundary` — with no boundary doors the two
+  notions of path endpoint coincide exactly.
+This connects the seeds produced by the incidence engine to the endpoints consumed
+by the graph engine with one equation rather than an implicit identification.
 
 ## Current Focus
 The **n=1 line is COMPLETE end-to-end** (combinatorial + continuous 1-D
