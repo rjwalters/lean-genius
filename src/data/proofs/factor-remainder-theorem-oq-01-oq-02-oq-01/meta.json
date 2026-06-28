@@ -106,6 +106,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Separability as the Absence of a Repeated Linear Factor",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Imports and module docstring. Recalls the parent (factor-remainder-theorem-oq-01-oq-02), which proves the characteristic-free Hasse multiplicity factor theorem and its k=2 instance double_root_iff via the ordinary derivative. Mathlib defines Separable p :↔ IsCoprime p (derivative p), again through the ordinary derivative — raising the worry that in positive characteristic (where the ordinary derivative of X² vanishes) the criterion might miss repeated roots. The docstring explains why it does not: squarefreeness is a multiplicity-≤-1 condition, and double roots are detected by the ordinary derivative in every characteristic (the divided-power correction is only needed at multiplicity ≥ p). Lists the main results — the (X−a)²-divisibility characterization of separability and explicit char-2 witnesses — and sets up the namespace.",
+      "mathContext": "$p\\text{ Separable} \\iff \\forall a,\\ \\neg\\,(X-a)^2 \\mid p$ (for nonzero split $p$ over a field), in every characteristic; squarefreeness is detected by the ordinary derivative."
+    },
+    {
       "id": "repeated-root",
       "title": "Section I: Repeated Linear Factor via the Ordinary Derivative",
       "startLine": 69,
