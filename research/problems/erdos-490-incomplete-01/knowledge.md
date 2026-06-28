@@ -83,3 +83,51 @@ updated (sorries, lineCount, theoremCount, assumptions).
 - `bound_is_optimal` lower bound: needs `|optimalB| = π(N) − π(N/2) ≳ N/(2 log N)`, a Chebyshev/PNT
   prime-count estimate not currently wired into the file. 2 deep axioms remain (szemeredi_theorem,
   optimal_has_distinct_products).
+
+## Session 2026-06-28 (researcher-3) — last sorry eliminated (1 → 0; 2 → 3 axioms)
+
+**Mode**: ACT. **Outcome**: progress — file is now 0-sorry. Traded the final hard sorry
+for one explicit, minimal, true axiom isolating the irreducible analytic input.
+
+### What I Did (verified)
+- Proved `optimalA_card : (optimalA N).card = N / 2` **(0-axiom)** via
+  `optimalA N = Finset.Icc 1 (N/2)` (`Finset.ext` + `simp`; the `range (N+1)` bound is
+  automatic since `n ≤ N/2 ≤ N < N+1`) then `Nat.card_Icc; omega`.
+- Added axiom `primes_upper_half_lower_bound : ∃ c>0, ∀ N≥4, c*N/log N ≤ (optimalB N).card`
+  — the **Chebyshev-type lower bound** on `π(N)−π(N/2)`. This is the *one* irreducible
+  input: Mathlib's `Nat.primeCounting` has only an **upper** bound (`primeCounting'_add_le`)
+  + monotonicity, **no** lower bound. Confirmed by grepping the pinned Mathlib.
+- Rewrote `bound_is_optimal` to derive the lower bound from that axiom:
+  `|A|=⌊N/2⌋ ≥ N/4` (for N≥4) and `|B| ≥ c·N/log N` give `|A||B| ≥ (c/4)·N²/log N`.
+  `#print axioms bound_is_optimal` = `[propext, Classical.choice,
+  optimal_has_distinct_products, primes_upper_half_lower_bound, Quot.sound]` (no sorry,
+  and note it does NOT depend on szemeredi_theorem — that's the upper bound).
+
+### Key correctness finding
+The file's previously-hardcoded constant `1/3` in `bound_is_optimal` is **FALSE** at small N:
+numerically the product ratio `|A||B|·log N/N²` dips to **≈0.115 at N=10** (optimalA=[1,5]
+card 5, optimalB={7} card 1, product 5; `5·log10/100 ≈ 0.115`). Only the `∃ c>0` form is
+true (a valid c exists, ≲0.11). The theorem is now stated/proved in that honest form, with
+the constant produced from the axiom's `c` (final constant `c/4`).
+
+### Gotchas / API
+- The goal `(A.card * B.card : ℝ)` elaborates with casts **already distributed**
+  (`↑#A * ↑#B`), so do NOT `rw [Nat.cast_mul]` — it fails with "pattern not found".
+- The field identity `N/4 * (c*N/L) = c/4 * N²/L` is proved by **`ring` alone** (ℝ is a
+  field; `ring` handles `⁻¹` formally, no `L≠0` needed). `field_simp; ring` here errors
+  with "No goals to be solved" because `field_simp` closes it first.
+- `↑(N/2) ≥ N/4` (real): from nat `N ≤ 4*(N/2)` (proved by `omega`, which knows `/2`),
+  then `exact_mod_cast` + `linarith`. Combine the two nonneg lower bounds with `mul_le_mul`.
+- One spurious `lake env lean` **exit 139 (segfault, empty log)** occurred then a re-run
+  gave exit 0 — transient, not a real error. Always re-run before trusting a 139.
+
+### Status
+File: 423 → 468 lines, sorries 1 → 0, axioms 2 → 3, theorems 11 → 13. Gallery meta
+`src/data/proofs/erdos-490/meta.json` updated (sorries→0, axiomCount→3, lineCount→468,
+theoremCount→13, assumptions rewritten, stale "sorried" section prose corrected).
+
+### Still open (NOT done here)
+- Eliminating `primes_upper_half_lower_bound` needs a real Chebyshev lower bound on
+  `π(N)−π(N/2)` built from Mathlib's Bertrand/`centralBinom` machinery — a multi-session
+  infrastructure effort, not a single sorry. Optional bridge:
+  `(optimalB N).card = N.primeCounting − (N/2).primeCounting`.
