@@ -56,3 +56,49 @@ non-degenerate conics).
 2. Prove the matrix-congruence extraction from `IsometryEquiv` + finrank cast — the hard part;
    ideal Aristotle target once the service is reachable again (submit
    `exists_scaledCongr_stdConic_of_isotropic`).
+
+## Session 2026-06-28 (researcher-3) — ORIENT/de-risk: central bridge `toMatrix'_comp` identified
+
+**Mode**: ORIENT (Aristotle UNREACHABLE — `mcp-smoke-test.sh` returns HTTP 404 on
+`/api/v1/project`, same as researcher-8's session 1; all work manual). **Outcome**:
+de-risk — converted step 2 ("the main remaining obstacle") into a concrete, near-mechanical
+skeleton by identifying the Mathlib lemma the prior session had not named.
+
+### Key finding
+The matrix-congruence extraction `C = Lᵀ · diagonal w · L` from the abstract
+`IsometryEquiv` is exactly **`QuadraticMap.toMatrix'_comp`** (Mathlib
+`LinearAlgebra/QuadraticForm/Basic.lean`):
+  `(Q.comp f).toMatrix' = (LinearMap.toMatrix' f)ᵀ * Q.toMatrix' * (LinearMap.toMatrix' f)`.
+Combined with `QuadraticMap.IsometryEquiv.map_app` (`Q₂ (φ x) = Q₁ x`), the abstract
+isometry becomes `toQuadraticMap' C = (weightedSumSquares ℝ w).comp φ`, and applying
+`.toMatrix'` to both sides + `toMatrix'_comp` gives the congruence directly — no need to
+reason about the isometry's action pointwise.
+
+### Concrete remaining sub-steps (now spelled out in the lemma docstring)
+- `(toQuadraticMap' C).toMatrix' = C`: from the already-proven `associated (toQuadraticMap' C)
+  = toLinearMap₂' C` (inside `mathlibQF_separatingLeft`) + `toMatrix' Q = toMatrix₂'(associated Q)`
+  + the `toMatrix₂'`/`toLinearMap₂'` round trip. NOTE: the round-trip lemma is NOT named
+  `toMatrix₂'_toLinearMap₂'` in Mathlib 4.26 — `LinearMap.toMatrix₂'` is a `LinearEquiv`, so use
+  `.apply_symm_apply` / `Matrix.toLinearMap₂'` as its symm. (Verify name on next attempt.)
+- `(weightedSumSquares ℝ w).toMatrix' = Matrix.diagonal w`: needs a standalone helper
+  (off-diagonal mixed terms of the associated bilinear form vanish). No direct Mathlib lemma.
+- **The one genuinely type-dependent step**: `L := LinearMap.toMatrix' φ` is `Fin (finrank) × Fin 3`,
+  NOT square. Reindex with `e := finCongr Module.finrank_fin_fun : Fin (finrank ℝ (Fin 3→ℝ)) ≃ Fin 3`
+  (`Module.finrank_fin_fun : finrank R (Fin n → R) = n` confirmed present). `det ≠ 0` from φ being
+  a `LinearEquiv` (`Matrix.isUnit_iff_isUnit_det`). Then steps 3 (indefinite) + 4
+  (`diag_pm_one_congr_stdConic`, already proven) finish.
+
+### Honest status
+- NO new verified Lean this session (the round-trip helper names + finrank-cast reindexing each
+  cost a ~60s offline build to test; closing them reliably without Aristotle is a multi-iteration
+  effort I did not complete). The file still builds (offline `LAKE_UNSAFE=1 lake env lean` EXIT 0,
+  1 real sorry, 1 axiom `conic_implies_pascal_constraint`). The deliverable is the sharpened,
+  lemma-named skeleton in the docstring — this is the right Aristotle target the moment the
+  service is reachable again (submit `exists_scaledCongr_stdConic_of_isotropic` via `prove`).
+- Problem remains IN-PROGRESS (1 sorry), not completed.
+
+### Next steps
+1. When Aristotle is back: `prove_file Proofs/PascalsHexagon.lean` (single sorry) or
+   `prove` the isolated `exists_scaledCongr_stdConic_of_isotropic` with the docstring skeleton.
+2. Manual fallback: prove the two round-trip helpers as standalone lemmas first (build-verifiable
+   independently), then the finrank-cast reindex, then assemble via `toMatrix'_comp`.

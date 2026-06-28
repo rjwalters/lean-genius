@@ -1333,7 +1333,37 @@ private lemma diag_pm_one_congr_stdConic (w : Fin 3 → ℝ)
        **Step 4 is now discharged by `diag_pm_one_congr_stdConic` (proved above, 0-axiom).**
        The sole remaining obstacle is step 2: extracting the matrix congruence
        `C = Lᵀ * diagonal w * L` from the abstract `IsometryEquiv` across the
-       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast. -/
+       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast.
+
+    CONCRETE SKELETON for step 2 (researcher-3, 2026-06-28 — the central bridge lemma
+    `QuadraticMap.toMatrix'_comp` was not previously identified; it removes the need to
+    reason about the abstract isometry directly):
+
+      Let `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)` from step 1.
+      a. `IsometryEquiv.map_app φ : ∀ x, weightedSumSquares ℝ w (φ x) = toQuadraticMap' C x`,
+         i.e. `toQuadraticMap' C = (weightedSumSquares ℝ w).comp φ.toLinearEquiv.toLinearMap`
+         (by `QuadraticMap.ext`).
+      b. Apply `QuadraticMap.toMatrix'` to both sides and rewrite the RHS with
+         `QuadraticMap.toMatrix'_comp` :
+           `(toQuadraticMap' C).toMatrix' = (LinearMap.toMatrix' φ)ᵀ
+                                              * (weightedSumSquares ℝ w).toMatrix'
+                                              * (LinearMap.toMatrix' φ)`.
+      c. Two round-trip rewrites collapse the endpoints to plain matrices:
+           - `(toQuadraticMap' C).toMatrix' = C`  — because `mathlibQF_separatingLeft`'s
+             internal computation already shows `associated (toQuadraticMap' C)
+             = toLinearMap₂' C`, and `toMatrix' Q = toMatrix₂' (associated Q)`, so this is
+             the `toMatrix₂'`/`toLinearMap₂'` round trip on the symmetric `C`.
+           - `(weightedSumSquares ℝ w).toMatrix' = Matrix.diagonal w`  — prove a standalone
+             helper from `weightedSumSquares_apply` + `QuadraticMap.associated`'s diagonal
+             form (the off-diagonal mixed terms vanish).
+      d. The ONLY genuinely type-dependent step is making `L := LinearMap.toMatrix' φ`
+         **square**: its column index is `Fin 3` but its row index is `Fin (finrank …)`.
+         Reindex via `e := finCongr Module.finrank_fin_fun : Fin (finrank ℝ (Fin 3 → ℝ)) ≃ Fin 3`
+         (so `diagonal w` becomes `diagonal (w ∘ e.symm)` and `L` becomes `L.submatrix e id`),
+         after which `L'.det ≠ 0` follows from `LinearMap.toMatrix'` of the equiv `φ` being a
+         unit (`Matrix.isUnit_iff_isUnit_det`, `LinearEquiv.toMatrix'`-style). Then step 3
+         gives indefiniteness of `w ∘ e.symm` and step 4 (`diag_pm_one_congr_stdConic`)
+         finishes. This is the right Aristotle target once the service is reachable. -/
 private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
     (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
     (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
