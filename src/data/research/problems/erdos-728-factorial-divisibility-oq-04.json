@@ -37,7 +37,9 @@
       "Erdős's argument is elementary because Legendre's (p−1)·v_p(m!) = m − s_p(m) has the (p−1) factor equal to 1 at p = 2.",
       "The barrier is prime-uniform: a + b + s_p(n) ≤ n + s_p(a) + s_p(b) for every prime p (log_barrier_prime), strictly stronger than the classical p=2 statement (adds s_p(n), holds for all p).",
       "p = 2 is optimal for the asymptotic O(log n) rate because the binary digit sum s₂ grows slowest; the inequality itself is prime-independent.",
-      "omega atomizes the nonlinear (p−1)·v_p(·!) subterms, so the final linear arithmetic discharges even with a variable prime p (scale hmono by (p−1) via Nat.mul_le_mul + Nat.mul_add first)."
+      "omega atomizes the nonlinear (p−1)·v_p(·!) subterms, so the final linear arithmetic discharges even with a variable prime p (scale hmono by (p−1) via Nat.mul_le_mul + Nat.mul_add first).",
+      "The multinomial generalization needs no new mathematics beyond the two-factorial case: v_p additivity over the product (padicValNat.mul lifted by multiset induction) plus the term-by-term summed Legendre identity reduce it to the same (p-1)-scaled valuation inequality, closed by omega.",
+      "Multiset (not Finset) is the right primitive for the proof: repeats are allowed (central multinomial a_i = n/k), Multiset.induction gives clean cons-step recursion, and the Finset form follows by reindexing through s.val.map a."
     ],
     "builtItems": [
       "factorial_val_add_digitsum: Legendre at p=2, m = v₂(m!)+s₂(m) (Erdos728FactorialDivisibilityOQ04.lean:46)",
@@ -46,16 +48,20 @@
       "factorial_pval_add_digitsum: Legendre at general prime p (Erdos728FactorialDivisibilityOQ04.lean:112)",
       "log_barrier_prime: prime-uniform sharp barrier (Erdos728FactorialDivisibilityOQ04.lean:123)",
       "log_barrier_of_prime: recovers classical barrier at p=2 (Erdos728FactorialDivisibilityOQ04.lean:141)",
-      "Gallery integration: added to Proofs.lean, created meta.json + annotations.json"
+      "Gallery integration: added to Proofs.lean, created meta.json + annotations.json",
+      "padicValNat_prod_factorials (Erdos728FactorialDivisibilityOQ04.lean:167): v_p of a product of factorials = sum of factorial valuations, by Multiset.induction off padicValNat.mul.",
+      "legendre_sum_multiset (Erdos728FactorialDivisibilityOQ04.lean:184): summed Legendre identity (sum) a_i = (p-1)*(sum) v_p(a_i!) + (sum) s_p(a_i).",
+      "log_barrier_prime_multiset (Erdos728FactorialDivisibilityOQ04.lean:203): PROVEN multinomial barrier, prod a_i! | n! implies (sum) a_i + s_p(n) <= n + (sum) s_p(a_i) for every prime p; recovers log_barrier_prime at s={a,b}. 0-axiom.",
+      "log_barrier_prime_finset (Erdos728FactorialDivisibilityOQ04.lean:221): indexed Finset form matching multinomial coefficient n!/(prod (a i)!). 0-axiom."
     ],
     "mathlibGaps": [
       "No Mathlib-level statement of the factorial-divisibility / Kummer-carry barrier; this file supplies the elementary Legendre baseline."
     ],
     "nextSteps": [
-      "Exhibit infinite families achieving equality in log_barrier_prime at p=2 (central binomial / multinomial cases) to show sharpness.",
-      "Multinomial barrier: a₁!·…·a_k! ∣ n! ⇒ ∑aᵢ + s_p(n) ≤ n + ∑s_p(aᵢ)."
+      "Sharpness of the multinomial barrier: characterize families achieving equality (sum) a_i + s_p(n) = n + (sum) s_p(a_i) (central-multinomial extremal case).",
+      "Exhibit explicit infinite equality families for the two-term barrier at p=2 (central binomial)."
     ],
-    "progressSummary": "COMPLETED 2026-06-28 (researcher-8): integrated the previously un-integrated #728→#729 barrier file into the gallery and sharpened the barrier to a prime-uniform form (every prime p), recovering the classical p=2 statement. 0-axiom, 0-sorry, 7 theorems."
+    "progressSummary": "PROGRESS 2026-06-28 (researcher-10): resolved the multi-factorial / multinomial open question for this entry. Added log_barrier_prime_multiset and log_barrier_prime_finset (prod a_i! | n! implies (sum) a_i + s_p(n) <= n + (sum) s_p(a_i) for every prime p), with helpers padicValNat_prod_factorials and legendre_sum_multiset. File now 11 theorems, 0-axiom, 0-sorry; verified via lake env lean against Mathlib 4.26.0 (#print axioms: propext/Classical.choice/Quot.sound only)."
   },
   "knownResults": {
     "established": [

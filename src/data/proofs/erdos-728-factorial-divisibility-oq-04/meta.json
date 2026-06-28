@@ -24,7 +24,9 @@
       "factorial_pval_add_digitsum: m = (p−1)·v_p(m!) + s_p(m) (Legendre at general prime p)",
       "log_barrier: a!·b! ∣ n! ⇒ a + b ≤ n + s₂(a) + s₂(b)",
       "log_barrier_prime: a!·b! ∣ n! ⇒ a + b + s_p(n) ≤ n + s_p(a) + s_p(b) for every prime p (sharp, prime-uniform)",
-      "log_barrier_length: a!·b! ∣ n! ⇒ a + b ≤ n + len₂(a) + len₂(b) (explicit O(log) form)"
+      "log_barrier_length: a!·b! ∣ n! ⇒ a + b ≤ n + len₂(a) + len₂(b) (explicit O(log) form)",
+      "log_barrier_prime_multiset: prod of a_i! divides n! implies (sum) a_i + s_p(n) <= n + (sum) s_p(a_i) for every prime p (multinomial barrier, multiset form)",
+      "log_barrier_prime_finset: indexed Finset form of the multinomial barrier, matching the multinomial coefficient n!/(prod a_i!)"
     ],
     "references": [
       "Erdős problem #728: https://www.erdosproblems.com/728",
@@ -33,13 +35,13 @@
       "Legendre, A.-M. *Théorie des nombres* (1830) — the formula v_p(m!) = (m − s_p(m))/(p − 1)."
     ]
   },
-  "description": "Verified (0-axiom, 0-sorry) formalization of the elementary logarithmic barrier underlying Erdős #728/#729: a!·b! ∣ n! ⇒ a + b ≤ n + O(log n), proved from Legendre's formula using only the prime 2. This research session integrates the file into the gallery (it was previously committed un-integrated: not in the aggregator, no gallery metadata) and adds a prime-uniform sharpening — log_barrier_prime: a + b + s_p(n) ≤ n + s_p(a) + s_p(b) for every prime p — strictly stronger than the classical p = 2 statement, from which log_barrier is recovered. 7 theorems, 0 definitions, 0 axioms, 0 sorries.",
+  "description": "Verified (0-axiom, 0-sorry) formalization of the elementary logarithmic barrier underlying Erdős #728/#729: a!·b! ∣ n! ⇒ a + b ≤ n + O(log n), proved from Legendre's formula using only the prime 2. This research session integrates the file into the gallery (it was previously committed un-integrated: not in the aggregator, no gallery metadata) and adds a prime-uniform sharpening — log_barrier_prime: a + b + s_p(n) ≤ n + s_p(a) + s_p(b) for every prime p — strictly stronger than the classical p = 2 statement, from which log_barrier is recovered. 11 theorems, 0 definitions, 0 axioms, 0 sorries (this session adds the multinomial / multi-factorial generalization).",
   "conclusion": {
-    "summary": "Formalizes Erdős's elementary O(log n) barrier for factorial divisibility in exact Legendre/popcount form, and generalizes it to a prime-uniform bound holding for every prime p. All 7 theorems are machine-checked with only the foundational axioms (propext, Classical.choice, Quot.sound). This is foundational infrastructure — the lower bound that the #728/#729 resolutions surpass — not a resolution of #729 itself.",
-    "implications": "Provides a verified, reusable statement of the barrier in the same padicValNat/Legendre vocabulary used by the #728 resolution file, so future work on #729 (the large-prime carry analysis) can cite it directly. The prime-uniform form clarifies exactly why the prime 2 is the optimal elementary choice for the asymptotic rate while the inequality itself is prime-independent.",
+    "summary": "Formalizes Erdős's elementary O(log n) barrier for factorial divisibility in exact Legendre/popcount form, and generalizes it to a prime-uniform bound holding for every prime p. All 11 theorems are machine-checked with only the foundational axioms (propext, Classical.choice, Quot.sound). This is foundational infrastructure — the lower bound that the #728/#729 resolutions surpass — not a resolution of #729 itself.",
+    "implications": "Provides a verified, reusable statement of the barrier in the same padicValNat/Legendre vocabulary used by the #728 resolution file, so future work on #729 (the large-prime carry analysis) can cite it directly. The prime-uniform form clarifies exactly why the prime 2 is the optimal elementary choice for the asymptotic rate while the inequality itself is prime-independent. This session also generalizes the barrier from two factorials to an arbitrary product (the multinomial setting n!/(a_1!...a_k!)), via two self-contained multiset-induction helpers; the multiset and Finset forms resolve the multi-factorial open question previously listed for this entry.",
     "openQuestions": [
-      "Sharpness of the barrier: construct explicit infinite families of triples (a, b, n) with a!·b! ∣ n! achieving a + b = n + s₂(a) + s₂(b) − s₂(n) (equality in log_barrier_prime at p = 2), e.g. via the central binomial / multinomial cases, to show the popcount bound is attained.",
-      "Multi-factorial / multinomial barrier: extend to a₁!·…·a_k! ∣ n! ⇒ ∑ aᵢ + s_p(n) ≤ n + ∑ s_p(aᵢ), the natural generalization to multinomial coefficients, via the same Legendre argument."
+      "Sharpness of the barrier: construct explicit infinite families of triples (a, b, n) with a!*b! dividing n! achieving equality in log_barrier_prime at p = 2 (e.g. central binomial / multinomial cases), to show the popcount bound is attained.",
+      "Sharpness of the multinomial barrier: characterize the families (a_1,...,a_k; n) achieving equality (sum) a_i + s_p(n) = n + (sum) s_p(a_i), generalizing the central-multinomial extremal case."
     ]
   },
   "crossReferences": [
@@ -49,12 +51,16 @@
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Nat"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "Erdos728FactorialDivisibilityOQ04",
-    "lineCount": 163,
+    "lineCount": 257,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/Erdos728FactorialDivisibilityOQ04.lean",
     "sorries": 0
@@ -82,12 +88,14 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 163,
-    "theoremCount": 7,
+    "lineCount": 257,
+    "theoremCount": 11,
     "definitionCount": 0,
-    "assumptions": "None. All 7 theorems are machine-checked; #print axioms reports only propext, Classical.choice, Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool). This file proves the elementary barrier that Erdős #728/#729 surpass; it is not a resolution of #729.",
+    "assumptions": "None. All 11 theorems are machine-checked; #print axioms reports only propext, Classical.choice, Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool). This file proves the elementary barrier that Erdős #728/#729 surpass; it is not a resolution of #729.",
     "mathlib_version": "4.26.0",
-    "relatedProblems": ["erdos-728-factorial-divisibility"],
+    "relatedProblems": [
+      "erdos-728-factorial-divisibility"
+    ],
     "originalContributions": [
       "factorial_val_add_digitsum: Legendre's formula at p = 2 in additive ℕ form m = v₂(m!) + s₂(m), avoiding truncated subtraction.",
       "log_barrier: PROVEN formalization of Erdős's elementary barrier a!·b! ∣ n! ⇒ a + b ≤ n + s₂(a) + s₂(b) using only the prime 2.",
@@ -95,7 +103,11 @@
       "factorial_pval_add_digitsum (this session): Legendre at a general prime p, m = (p−1)·v_p(m!) + s_p(m).",
       "log_barrier_prime (this session): PROVEN prime-uniform sharp barrier a + b + s_p(n) ≤ n + s_p(a) + s_p(b) for every prime p — strictly stronger than the classical p = 2 statement (adds the s_p(n) term, holds for all primes).",
       "log_barrier_of_prime (this session): recovers the classical log_barrier as the p = 2 specialization of the sharp prime-uniform form.",
-      "Gallery integration (this session): added the previously un-integrated file to Proofs.lean and created gallery metadata + annotations."
+      "Gallery integration (this session): added the previously un-integrated file to Proofs.lean and created gallery metadata + annotations.",
+      "padicValNat_prod_factorials (this session): v_p of a product of factorials equals the sum of the factorial valuations, by multiset induction off padicValNat.mul.",
+      "legendre_sum_multiset (this session): the summed Legendre identity (sum) a_i = (p-1)*(sum) v_p(a_i!) + (sum) s_p(a_i).",
+      "log_barrier_prime_multiset (this session): PROVEN multinomial barrier — prod of a_i! divides n! implies (sum) a_i + s_p(n) <= n + (sum) s_p(a_i) for every prime p; the multinomial generalization of log_barrier_prime (recovered at s = {a,b}).",
+      "log_barrier_prime_finset (this session): the indexed Finset form of the multinomial barrier, matching multinomial coefficients n!/(prod (a i)!)."
     ],
     "mathlibDependencies": [
       {
@@ -165,6 +177,14 @@
       "endLine": 163,
       "summary": "#check and #print axioms for all theorems: each depends only on propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool).",
       "mathContext": "0-axiom, 0-sorry verification."
+    },
+    {
+      "id": "multinomial",
+      "title": "Multinomial / multi-factorial barrier",
+      "startLine": 147,
+      "endLine": 233,
+      "summary": "padicValNat_prod_factorials (v_p of a product of factorials = sum of valuations) and legendre_sum_multiset (summed Legendre identity), then log_barrier_prime_multiset (prod a_i! | n! implies (sum) a_i + s_p(n) <= n + (sum) s_p(a_i)) and its Finset reindexing log_barrier_prime_finset. Generalizes log_barrier_prime from two factorials to an arbitrary product; multiset induction + omega; 0-axiom.",
+      "mathContext": "For every prime $p$: $\\sum_i a_i + s_p(n) \\le n + \\sum_i s_p(a_i)$ when $\\prod_i a_i! \\mid n!$."
     }
   ]
 }
