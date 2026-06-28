@@ -18,7 +18,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/FrobeniusEndomorphismOQ01OQ03.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide, so no Lean.ofReduceBool is introduced. The automorphism frobeniusEquiv is noncomputable only because RingEquiv.ofBijective uses choice to extract the inverse — this introduces no extra axioms beyond the standard triple.",
