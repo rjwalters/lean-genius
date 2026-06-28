@@ -1260,6 +1260,7 @@ import Proofs.Erdos100OQ01WIP01
 import Proofs.Erdos100OQ02
 import Proofs.Erdos100OQ02OQ02
 import Proofs.Erdos100OQ03
+import Proofs.Erdos100OQ05
 import Proofs.Erdos100Problem
 import Proofs.Erdos1010OQ01
 import Proofs.Erdos1010OQ02Problem
