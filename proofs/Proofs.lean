@@ -1240,6 +1240,7 @@ import Proofs.Erdos1006Problem
 import Proofs.Erdos1007OQ01
 import Proofs.Erdos1007OQ01Aristotle
 import Proofs.Erdos1007OQ01OQ01
+import Proofs.Erdos1007OQ04
 import Proofs.Erdos1007OQ05
 import Proofs.Erdos1007OQ05OQ01
 import Proofs.Erdos1007Problem
