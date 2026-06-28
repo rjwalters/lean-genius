@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 8
+**Iteration**: 9
 
 ## Iteration 8 addition (researcher-1, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerInductiveTower.lean` (0 sorries, 0 axioms;
@@ -109,3 +109,32 @@ The n≥2 abstract pipeline now has parity engines at both the **graph** level
   (`SpernerTuckerBoundaryParity`). The incidence engine consumes this directly.
 - n>=2 Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (analytic phase;
   dim 1 was discharged by IVT).
+
+## Iteration 9 addition (verified, 0-axiom — researcher-1, `lake env lean`, Docker down)
+
+Extended `SpernerTuckerDoorIncidenceParity.lean` (264 → 324 lines) with the
+**path-endpoint form** of the boundary-door parity bridge — stating the existing
+incidence-level result in the exact degree-1 vocabulary the path-following engine
+(`SpernerTuckerPathFollowing.lean`) consumes. Two theorems, 0-sorry / 0-axiom
+(`#print axioms` = only propext / Classical.choice / Quot.sound; verified via host
+`lean v4.26.0` over the shared main-repo Mathlib `.olean` cache, Docker image build
+down with the containerd `meta.db` I/O error):
+
+- `card_endpoint_cells_modEq_card_boundaryDoor` — in the door-graph regime where
+  every CELL touches ≤ 2 doors (as well as every door ≤ 2 cells), a cell has odd
+  door-count **iff** it touches *exactly one* door (a path endpoint). Hence
+  `#{endpoint cells} ≡ #{boundary doors} (mod 2)`. Collapses the `Odd`-quantified
+  bridge `card_odd_doorCount_modEq_card_boundaryDoor` to the `= 1` (degree-1) form.
+- `exists_endpoint_cell_of_odd_boundary` — an **odd** number of boundary doors forces
+  a cell of **exactly one** door, i.e. a genuine degree-1 path endpoint — the precise
+  seed `SpernerTuckerPathFollowing` follows to a complementary simplex. Refines
+  `exists_odd_doorCount_of_odd_boundary` ("odd door-count") to the engine's input shape.
+
+This closes a small vocabulary gap the file's own docstring flagged: the incidence
+bridge produced an *odd-door-count* cell, but the path-following engine is seeded by a
+*degree-1* vertex; in the door-graph regime (`doorCount ≤ 2`) these coincide, and the
+two new lemmas make that explicit. Independent of the open path-following PR #30911
+(different file) — purely additive at the end of the incidence namespace.
+
+The n≥2 geometric instantiation (concrete `inc` for a B^n triangulation, and supplying
+`Odd #{boundary doors}` from the inductive (n−1)-Tucker statement) remains the open step.
