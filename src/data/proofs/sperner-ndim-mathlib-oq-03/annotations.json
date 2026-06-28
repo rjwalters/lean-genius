@@ -26,6 +26,30 @@
     ]
   },
   {
+    "id": "ann-sperner-ndim-mathlib-oq03-signchanges",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 79,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "The Complementary-Edge Count and Its Recurrence",
+    "content": "`signChanges g n` is the cardinality of `{ i ∈ range n : g i ≠ g (i+1) }` — the number of *complementary edges* (sign changes) along the path `0 — 1 — ⋯ — n`. This is the discrete object the whole entry is about: the 1-D analogue of Sperner's panchromatic-cell count. `signChanges_zero` records the empty-path base case, and `signChanges_succ` is the workhorse recurrence: extending the path by one vertex adds exactly `1` if the new last edge is a sign change and `0` otherwise. It is proved by `Finset.range_add_one` + `Finset.filter_insert` and a `by_cases` on whether `g n ≠ g (n+1)` (using `card_insert_of_notMem` in the change case). This `+ [g n ≠ g (n+1)]` increment is precisely the local 'derivative' that `signChanges_odd_iff` telescopes to the boundary term — without this clean recurrence the parity induction would have no handle to peel.",
+    "mathContext": "$\\operatorname{signChanges}(g,n) = \\bigl|\\{\\,i < n : g\\,i \\neq g\\,(i{+}1)\\,\\}\\bigr|$, with $\\operatorname{signChanges}(g,n{+}1) = \\operatorname{signChanges}(g,n) + [\\,g\\,n \\neq g\\,(n{+}1)\\,]$. The bracket $[\\cdot]$ is the discrete derivative whose telescoped sum is the boundary mismatch.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter / Finset.card",
+      "range_add_one recurrence",
+      "discrete derivative",
+      "complementary edge"
+    ],
+    "prerequisites": [
+      "Finset.range and Finset.filter",
+      "Finset.card_insert_of_notMem",
+      "by_cases on Boolean inequality"
+    ]
+  },
+  {
     "id": "ann-sperner-ndim-mathlib-oq03-parity-engine",
     "proofId": "sperner-ndim-mathlib-oq-03",
     "range": {
@@ -70,6 +94,30 @@
     "prerequisites": [
       "SpernerNDimMathlib CellComplex structure",
       "antipodal map on the boundary sphere"
+    ]
+  },
+  {
+    "id": "ann-sperner-ndim-mathlib-oq03-extraction",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 156
+    },
+    "type": "technique",
+    "title": "From Parity to an Actual Edge, and to ±1 Labels",
+    "content": "Parity gives existence for free. `tucker_one_dim` turns the *odd* count of `complementary_edges_odd` into a concrete witness: an odd number is positive (`omega`), so the filtered Finset is nonempty (`Finset.card_pos`), and unpacking membership (`Finset.mem_filter`, `mem_range`) yields an explicit edge `i < n` with `g i ≠ g (i+1)`. `tucker_one_dim_antipodal` is the cosmetic restatement for genuine antipodes `g 0 = ! g n` (a bit and its negation always disagree). `tucker_one_dim_int` is the substantive corollary: it transports the Boolean result to `{±1}`-integer labels by encoding each label as the sign bit `decide (lbl i = 1)`. The bridge lemma `key` proves, for `a, b ∈ {±1}`, that `(decide (a=1) ≠ decide (b=1)) ↔ a = −b` (a four-case `decide`), so complementary edges of the bit-encoding are exactly the opposite-sign edges of the integer labelling — and the antipodal boundary `lbl 0 = − lbl n` becomes Boolean negation. This `work-in-ℤ/2, read the answer back` packaging is what makes signed parity arguments tractable.",
+    "mathContext": "Encoding $b(i) = [\\,\\mathrm{lbl}(i) = 1\\,] \\in \\{0,1\\}$, for $\\mathrm{lbl}(i),\\mathrm{lbl}(j) \\in \\{\\pm 1\\}$ one has $b(i) \\neq b(j) \\iff \\mathrm{lbl}(i) = -\\mathrm{lbl}(j)$, so $\\mathrm{lbl}(0) = -\\mathrm{lbl}(n)$ ⟺ $b(0) \\neq b(n)$ and a sign-change edge of $b$ is a complementary edge of $\\mathrm{lbl}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_pos (odd ⟹ nonempty)",
+      "existence from parity",
+      "±1 ↔ Bool sign encoding",
+      "decide case analysis"
+    ],
+    "prerequisites": [
+      "Finset.card_pos and Finset.mem_filter",
+      "Nat.odd_iff / omega",
+      "decidable integer equality"
     ]
   }
 ]
