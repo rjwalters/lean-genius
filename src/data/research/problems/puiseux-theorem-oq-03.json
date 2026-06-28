@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S6 coupling: added the slope×width=drop layer (sum_slope_mul_width / neg_sum_slope_mul_width) linking the previously-disjoint valuation half (edgeSlopes_pairwise_le) and multiplicity half (sum_edgeWidths_eq_degree). Σ(valuation·multiplicity) = v(constant)−v(leading), the valuation of the root product. File 684 lines / 39 theorems / 8 defs, verified 0-sorry 0-axiom. Combinatorial Newton-polygon bookkeeping now complete; remaining: hull-construction recursion (chain assembly) and the analytic Newton polygon theorem (blocked on K((x))[Y] valuation API).",
+    "progressSummary": "PROGRESS (2026-06-28, researcher-5): hull-construction recursion STEP verified 0-axiom. isLowerEdge_of_right (global-support transfer) + chain_transfer + isLowerEdge_chain_extend supply the inductive step of Newton-polygon hull construction — the principal combinatorial input previously missing. Full exists_hull existence and the analytic Newton polygon theorem remain open.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -42,7 +42,11 @@
       "edgeSlope_mul_width in PuiseuxTheoremOQ03.lean (per-edge slope×width=drop)",
       "edgeDrops + sum_edgeDrops in PuiseuxTheoremOQ03.lean (vertical-drop list telescoping)",
       "zipWith_edgeSlopes_edgeWidths in PuiseuxTheoremOQ03.lean (list-level coupling)",
-      "sum_slope_mul_width + neg_sum_slope_mul_width in PuiseuxTheoremOQ03.lean (capstone identities)"
+      "sum_slope_mul_width + neg_sum_slope_mul_width in PuiseuxTheoremOQ03.lean (capstone identities)",
+      "isLowerEdge_of_right (PuiseuxTheoremOQ03.lean): lower edge of right restriction with slope ≥ dominant slope ⇒ lower edge of full support",
+      "chain_transfer (PuiseuxTheoremOQ03.lean): propagates dominant-slope bound along a whole right sub-hull via edgeSlope_mono; upgrades every edge to full-support edge",
+      "isLowerEdge_chain_extend (PuiseuxTheoremOQ03.lean): one verified peel of Newton-Puiseux recursion — prepend dominant edge to right sub-hull chain ⇒ IsChain (IsLowerEdge pts) over full support",
+      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -53,7 +57,8 @@
       "Edge WIDTHS carry root multiplicities, complementing edge SLOPES (valuations): the polygon assigns (q.1-p.1) roots of valuation -edgeSlope p q to each edge. sum_edgeWidths + edgeSlopes_pairwise_le together are the full combinatorial bookkeeping of the Newton polygon theorem.",
       "slope × width = vertical drop: edgeSlope p q · (q.1−p.1) = q.2−p.2 because the slope denominator IS the width — the per-edge bridge coupling valuations (slopes) to multiplicities (widths)",
       "Capstone bookkeeping: Σ (slopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2; equivalently Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading), the valuation of the product of all roots",
-      "The polygon now reads off ALL combinatorial Newton-polygon data from one vertex chain: sorted valuations (edgeSlopes_pairwise_le), total multiplicity (sum_edgeWidths_eq_degree), AND sum-of-valuations-with-multiplicity (neg_sum_slope_mul_width)"
+      "The polygon now reads off ALL combinatorial Newton-polygon data from one vertex chain: sorted valuations (edgeSlopes_pairwise_le), total multiplicity (sum_edgeWidths_eq_degree), AND sum-of-valuations-with-multiplicity (neg_sum_slope_mul_width)",
+      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -61,10 +66,10 @@
       "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
     ],
     "nextSteps": [
-      "Iterate hull construction: from exists_isLowerEdge_of_leftmost, peel the first edge and recurse on the sub-support to the right of its right endpoint (building the ordered vertex/edge list).",
-      "S2-B: define a polynomial Newton-Puiseux reduction step and prove the Y-degree strictly decreases (needs Laurent-series polynomial modeling).",
-      "Newton polygon theorem: negatives of lower-edge slopes = root valuations (blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0).",
-      "Hull construction recursion: from exists_isLowerEdge_of_leftmost peel the first edge and recurse on the sub-support right of its right endpoint, producing a List.IsChain (IsLowerEdge pts) vertex list to feed edgeSlopes/edgeWidths."
+      "Assemble exists_hull: complete lower-hull vertex chain (head=leftmost, last=rightmost) via well-founded recursion on the right-restriction length, using isLowerEdge_chain_extend as the inductive step (now available). Remaining bookkeeping: monotone-index-along-chain + filter-narrowing from cut q.1 to next cut.",
+      "Newton polygon theorem proper (negated edge slopes = root valuations): blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0.",
+      "S2-B termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases).",
+      "Quasi-linear complexity bound (Poteaux-Weimann Õ(d·δ)): blocked on absence of arithmetic-complexity model in Mathlib."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [
