@@ -108,5 +108,89 @@
       "The count of a B_h set is unbounded for free (greedy extension builds every cardinality); the entire difficulty is the size of the largest element. Counting the forbidden values as an explicit degree-(2h-1) polynomial turns the lower bound into a single root-extraction.",
       "Pairing exists_isBh_rpow_lower with the companion IsBh.card_le_rpow brackets σ_h(N) in [C₁·N^{1/(2h-1)}, C₂·N^{1/h}]; the exponent gap is precisely the open core of Erdős #340 (1/3 vs 1/2 at h=2) and is deliberately left open — only the two endpoints are formalized."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "header-open-question",
+      "title": "Header: the open question and what is formalized",
+      "startLine": 1,
+      "endLine": 93,
+      "summary": "Module docstring framing OQ-05 — whether the parent Sidon (B_2) theory extends to B_h sequences — and listing what the file delivers: the B_h foundations, the sharp counting bound, affine invariance, the greedy construction, the forbidden-value count, and the headline analytic greedy lower bound. Includes the mathematical note on the 1/(2h−1) vs 1/h exponent gap and the Erdős/Bose–Chowla/Singer references."
+    },
+    {
+      "id": "bh-property-sidon-bridge",
+      "title": "Part 1–1c: the B_h property and the Sidon bridge",
+      "startLine": 95,
+      "endLine": 266,
+      "summary": "def IsBh as injectivity of the multiset-sum map s ↦ (s : Multiset ℕ).sum on A.sym h, with downward closure in the set (IsBh.subset) and in the order (IsBh.of_le, Part 1b). Part 1c proves isBh_two_iff_isSidon: IsBh 2 ↔ Erdos340.IsSidon, anchoring the new layer to the parent gallery's classical Sidon definition."
+    },
+    {
+      "id": "counting-upper-bound",
+      "title": "Part 2–3: the combinatorial counting bound C(|A|,h) ≤ h·N",
+      "startLine": 267,
+      "endLine": 370,
+      "summary": "Part 2 (IsBh.sum_injOn_powersetCard) shows the C(|A|,h) h-subset sums of a B_h set are distinct; Part 3 confines them to [1, h·N] and concludes IsBh.choose_card_le: C(|A|,h) ≤ |Icc 1 (h·N)| = h·N. This recovers the classical Sidon bound at h=2 and |A| = O(N^{1/h}) in general — the analytic form is the companion entry's IsBh.card_le_rpow."
+    },
+    {
+      "id": "translation-invariance",
+      "title": "Part 4: translation invariance",
+      "startLine": 371,
+      "endLine": 441,
+      "summary": "Each h-fold sum shifts by a uniform h·d under translation x ↦ x + d, so IsBh is preserved. The first installment of the affine-symmetry group of the B_h property, completed by the dilation/affine results in Part 6."
+    },
+    {
+      "id": "greedy-extension-forbidden",
+      "title": "Part 5–5b: greedy extension and the structure of forbidden values",
+      "startLine": 442,
+      "endLine": 652,
+      "summary": "Part 5: inserting any m > h·max(A) preserves the B_h property (the greedy extension). Part 5b characterizes the forbidden values — those that would collide an h-fold sum if inserted — as the structured set whose cardinality the lower-bound count later bounds by an explicit polynomial."
+    },
+    {
+      "id": "greedy-family-affine",
+      "title": "Part 6: an explicit greedy family; dilation and affine invariance",
+      "startLine": 653,
+      "endLine": 786,
+      "summary": "greedyBhSet / exists_isBh_card build an explicit B_h set of every cardinality, isolating that only the largest element (not the count) is hard. The dilation x ↦ c·x and full affine map x ↦ c·x + d (c ≥ 1) are shown to preserve B_h (IsBh.map_affine), identifying the symmetry group of the upper bound."
+    },
+    {
+      "id": "forbidden-count-polynomial",
+      "title": "Part 7–8: counting forbidden values and the closed-form polynomial bound",
+      "startLine": 787,
+      "endLine": 1021,
+      "summary": "Part 7 counts the values forbidden by greedy extension; Part 8 packages the count as the explicit degree-(2h−1) polynomial IsBh.card_forbidden_poly = 2h(|A|+1)^{2h-1}. This closed form is the combinatorial engine that turns the lower bound into a single root extraction."
+    },
+    {
+      "id": "greedy-lower-bound-rate",
+      "title": "Part 9–10: the end-to-end greedy lower bound and the N^{1/(2h-1)} rate",
+      "startLine": 1022,
+      "endLine": 1224,
+      "summary": "Part 9 assembles the end-to-end greedy lower bound inside {1,…,N}: the room condition (2h+1)(k+1)^{2h-1} ≤ N guarantees a size-k B_h set. Part 10 inverts the (2h−1)-th power via Real.pow_rpow_inv_natCast and Real.rpow_le_rpow to extract the headline exists_isBh_rpow_lower: |A| ≥ C·N^{1/(2h-1)} with the explicit C = 2⁻¹·(2h+1)^{-1/(2h-1)}."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 1225-line, axiom-free Lean development (31 theorems, 1 definition) that lifts the parent Sidon entry to general B_h sequences: it defines IsBh via multiset-sum injectivity, bridges it to the classical Sidon property at h=2, proves the sharp counting upper bound C(|A|,h) ≤ h·N, establishes full affine invariance, constructs an explicit greedy family of every cardinality, counts the forbidden values as the closed-form polynomial 2h(|A|+1)^{2h-1}, and inverts it to the headline analytic greedy lower bound exists_isBh_rpow_lower (|A| ≥ C·N^{1/(2h-1)}).",
+    "implications": "This file is the lower-bound half of the σ_h(N) bracket whose upper-bound half (IsBh.card_le_rpow, |A| ≤ C₂·N^{1/h}) is the companion entry erdos-340-greedy-sidon-oq-05-oq-01; together they pin the maximal B_h size into [C₁·N^{1/(2h-1)}, C₂·N^{1/h}]. It also supplies the first Mathlib-native B_h theory — a reusable definition plus affine-invariance, counting, and greedy-construction lemmas — that downstream additive-combinatorics formalizations can build on. The deliberate exponent gap 1/(2h−1) vs 1/h makes precise exactly how far the open quantitative core of Erdős #340 still has to travel.",
+    "openQuestions": [
+      "Can the greedy lower exponent 1/(2h−1) be improved toward the counting ceiling 1/h? At h=2 this is the classical Sidon question (greedy 1/3 vs counting 1/2), still open; algebraic constructions (Singer, Bose–Chowla) reach N^{1/h} but are not greedy.",
+      "Can the explicit greedy constant C = 2⁻¹·(2h+1)^{-1/(2h-1)} be sharpened, or the forbidden-value polynomial 2h(|A|+1)^{2h-1} lowered in degree or leading coefficient, to push the lower bound closer to the ceiling?",
+      "Does the B_h framework (IsBh, the counting bound, affine invariance) transfer to B_h^± sets or to B_h sets in finite abelian groups, where the extremal sizes and the relevant counting bounds differ?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-340-greedy-sidon-oq-05-oq-01",
+      "relationship": "Companion upper bound",
+      "description": "Supplies the matching analytic upper bound IsBh.card_le_rpow (|A| ≤ C₂·N^{1/h}) by taking h-th roots of this file's counting bound IsBh.choose_card_le. The two entries together bracket σ_h(N)."
+    },
+    {
+      "proofId": "erdos-340-greedy-sidon",
+      "relationship": "Parent Sidon theory",
+      "description": "The classical Sidon (B_2) infrastructure — Erdos340.IsSidon and the greedy Sidon construction — that this file generalizes; isBh_two_iff_isSidon is the explicit bridge at h=2."
+    },
+    {
+      "proofId": "erdos-340",
+      "relationship": "Parent problem",
+      "description": "The gallery's top-level Erdős #340 entry on the growth of the greedy Sidon sequence; the B_h development here is its general-h extension."
+    }
+  ]
 }
