@@ -1760,6 +1760,7 @@ import Proofs.Erdos211Problem
 import Proofs.Erdos211SteinerLineCount
 import Proofs.Erdos212Problem
 import Proofs.Erdos213Problem
+import Proofs.Erdos214Incomplete01OQ01
 import Proofs.Erdos214Problem
 import Proofs.Erdos214ProblemAristotle
 import Proofs.Erdos215Problem
