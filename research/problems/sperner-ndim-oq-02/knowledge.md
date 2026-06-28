@@ -1770,3 +1770,50 @@ no warnings (dep oleans SpernerNDim/SpernerGridBase in symlinked `.lake`).
    `GridGlued_symm`, `gridFacet_unique_neighbor`, `gridFacet_card`; supply `boundary_face` from
    `not_isInteriorFacet_zero/last`. Handle `d ≤ 1` base cases separately (orientation doubling).
 3. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-28 (researcher-3) — total door-graph neighbour map
+
+**Mode**: ACT (CONTINUE — executed next-step #1 "Define a total neighbour map on
+GridSimplex: interior facets → exists_neighbor_of_isInteriorFacet, boundary → none").
+**Outcome**: verified increment, no extra axioms. `SpernerNDimOQ02.lean` 1704→1772 L,
++1 noncomputable def +4 theorems. Single-file `LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/SpernerNDimOQ02.lean` → exit 0, no warnings. `#print axioms` on all four new
+theorems = `[propext, Classical.choice, Quot.sound]` (Classical.choice already pervades the
+file; no sorryAx, no Lean.ofReduceBool).
+
+### Delivered
+- **`gridNeighbor (s) (k) : Option (GridSimplex d N)`** — `if IsInteriorFacet k then
+  some (Classical.choose (exists_neighbor_of_isInteriorFacet s hk)) else none`. The concrete
+  `adj`-shaped within-chain neighbour datum.
+- **`gridNeighbor_eq_none_iff`** — the `none` fibre is *exactly* `{0, Fin.last d}` (via
+  `not_isInteriorFacet_iff` / `IsBoundaryFacet`). This is the index-level `boundary_face`
+  bookkeeping the door count needs.
+- **`gridNeighbor_spec`** — on an interior facet it returns `some t` with
+  `GridGlued s t ∧ t ≠ s ∧ gridFacet t k = gridFacet s k` (genuine distinct facet-sharing
+  partner), reusing `Classical.choose_spec`.
+- **`gridNeighbor_boundary`**, **`gridNeighbor_isSome_iff`** (defined ↔ interior).
+
+### Gotchas
+- In `gridNeighbor_eq_none_iff`, after `simp only [dif_neg hk]` the LHS `none = none`
+  defeq-reduces to `True`, so `iff_of_true rfl …` fails ("rfl has type ?=? expected True").
+  Use `iff_of_true trivial …` (robust to either `none = none` or `True`).
+- For `gridNeighbor_isSome_iff`, rewriting through `gridNeighbor_eq_none_iff` leaves
+  `¬ IsBoundaryFacet k ↔ IsInteriorFacet k`, NOT `¬ IsInteriorFacet k`, so a further
+  `rw [not_isInteriorFacet_iff]` can't fire. Discharge directly with the dichotomy:
+  `(isInteriorFacet_or_boundary k).resolve_right h` (→) and
+  `fun h hb => not_isInteriorFacet_of_boundary hb h` (←).
+- `gridNeighbor` must be `noncomputable` (uses `Classical.choose`).
+
+### Scope honesty
+This packages the **within-chain (pivot)** neighbour structure only. The genuine remaining
+frontier — a chain-boundary facet `k ∈ {0, Fin.last d}` that is interior to `Δ_N` is glued
+*across* Kuhn chains, which `pivotSimplex` does not produce — is unchanged (flagged in the
+module header). `gridNeighbor` sends every boundary facet to `none`; turning that into the
+true `adj` still needs the cross-chain gluing (or a proof such facets lie on `∂Δ_N`).
+
+### Next steps
+1. **(crux, unchanged)** Cross-chain gluing for boundary facets interior to `Δ_N`, OR prove
+   such facets lie on `∂Δ_N`; then `boundary_face` via `boundary_face_iff_coords_zero`.
+2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` using `gridNeighbor_spec` +
+   `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
+3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.

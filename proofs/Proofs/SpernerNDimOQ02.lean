@@ -1701,4 +1701,72 @@ theorem onFace_miss_imp_last (s : SpernerGrid.GridSimplex d N) (m : Fin (d + 1))
   by_contra hm
   exact absurd h (Nat.pos_iff_ne_zero.mp (miss_coord_pos_of_ne_last s m hm))
 
+/-!
+## The total door-graph neighbour map
+
+The interior/boundary dichotomy (`isInteriorFacet_or_boundary`,
+`not_isInteriorFacet_iff`) and the interior-facet existence datum
+(`exists_neighbor_of_isInteriorFacet`) are assembled here into a single
+`Option`-valued neighbour function on Freudenthal cells: an interior Kuhn facet `k`
+is sent to its glued pivot partner, and the two geometric boundary facets
+`0`, `Fin.last d` are sent to `none`.
+
+This is the concrete `adj`-shaped datum the abstract door-counting argument
+consumes.  Its `= none` fibre is *exactly* `{0, Fin.last d}`
+(`gridNeighbor_eq_none_iff`), so the index-level `boundary_face` bookkeeping reads
+off the facet index directly; on every interior facet it returns a genuine glued,
+distinct, facet-sharing neighbour (`gridNeighbor_spec`).  (The remaining content
+of `adj` — that a chain-boundary facet interior to `Δ_N` is glued *across* Kuhn
+chains — is the cross-chain frontier flagged in the module header and is not
+produced by `pivotSimplex`; this map records the within-chain pivot structure.)
+All 0-sorry; only the standard `Classical.choice` is used (to select the partner).
+-/
+
+/-- **Total neighbour map of the Freudenthal door graph.**  An interior facet `k`
+is sent to its glued pivot partner (chosen via `exists_neighbor_of_isInteriorFacet`);
+a boundary facet (`0` or `Fin.last d`) is sent to `none`. -/
+noncomputable def gridNeighbor (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    Option (SpernerGrid.GridSimplex d N) :=
+  if hk : IsInteriorFacet k then
+    some (Classical.choose (exists_neighbor_of_isInteriorFacet s hk))
+  else none
+
+/-- **The `none` fibre is exactly the geometric boundary.**  `gridNeighbor s k`
+returns `none` precisely at the two boundary facets `k ∈ {0, Fin.last d}`. -/
+theorem gridNeighbor_eq_none_iff (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    gridNeighbor s k = none ↔ IsBoundaryFacet k := by
+  unfold gridNeighbor
+  by_cases hk : IsInteriorFacet k
+  · simp only [dif_pos hk]
+    constructor
+    · intro h; exact absurd h (by simp)
+    · intro h; exact absurd hk (not_isInteriorFacet_of_boundary h)
+  · simp only [dif_neg hk]
+    exact iff_of_true trivial ((not_isInteriorFacet_iff k).mp hk)
+
+/-- **Interior facets get a genuine glued partner.**  On an interior facet `k` the
+neighbour map returns `some t` where `t` is a distinct cell glued to `s` and
+sharing the facet `k`. -/
+theorem gridNeighbor_spec (s : SpernerGrid.GridSimplex d N) {k : Fin (d + 1)}
+    (hk : IsInteriorFacet k) :
+    ∃ t : SpernerGrid.GridSimplex d N, gridNeighbor s k = some t ∧
+      GridGlued s t ∧ t ≠ s ∧ gridFacet t k = gridFacet s k := by
+  refine ⟨Classical.choose (exists_neighbor_of_isInteriorFacet s hk), ?_,
+    Classical.choose_spec (exists_neighbor_of_isInteriorFacet s hk)⟩
+  unfold gridNeighbor; rw [dif_pos hk]
+
+/-- A boundary facet is sent to `none` (the convenient direction of
+`gridNeighbor_eq_none_iff`). -/
+theorem gridNeighbor_boundary (s : SpernerGrid.GridSimplex d N) {k : Fin (d + 1)}
+    (hk : IsBoundaryFacet k) : gridNeighbor s k = none :=
+  (gridNeighbor_eq_none_iff s k).mpr hk
+
+/-- The neighbour map is defined (returns `some`) at exactly the interior facets. -/
+theorem gridNeighbor_isSome_iff (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    (gridNeighbor s k).isSome ↔ IsInteriorFacet k := by
+  rw [Option.isSome_iff_ne_none, ne_eq, gridNeighbor_eq_none_iff]
+  constructor
+  · intro h; exact (isInteriorFacet_or_boundary k).resolve_right h
+  · intro h hb; exact not_isInteriorFacet_of_boundary hb h
+
 end SpernerNDimOQ02
