@@ -38,6 +38,7 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Combinatorics.Additive.Energy
 
 open Finset Real
@@ -81,13 +82,13 @@ def hasSmallSumset (A : Finset ℤ) (K : ℝ) : Prop :=
 ## Part II: The Trivial Bounds
 -/
 
-/--
+/-
 **Lower bound on sumset:**
 |A + A| ≥ 2|A| - 1 for any nonempty set A.
 (Take a + min A and a + max A for each a.)
 -/
 
-/--
+/-
 **Lower bound on product set:**
 |A · A| ≥ |A| for A ⊆ ℤ⁺ (roughly, since products spread out).
 -/
@@ -99,7 +100,7 @@ def hasSmallSumset (A : Finset ℤ) (K : ℝ) : Prop :=
 theorem productSet_upper_bound (A : Finset ℤ) :
     (productSet A).card ≤ A.card ^ 2 := by
   unfold productSet
-  calc (A ×ˢ A).image (fun p => p.1 * p.2) |>.card
+  calc ((A ×ˢ A).image (fun p => p.1 * p.2)).card
       ≤ (A ×ˢ A).card := Finset.card_image_le
     _ = A.card * A.card := Finset.card_product A A
     _ = A.card ^ 2 := by ring
@@ -179,7 +180,7 @@ def additiveEnergy (A : Finset ℤ) : ℕ :=
   ((A ×ˢ A) ×ˢ (A ×ˢ A)).filter
     (fun x => x.1.1 + x.1.2 = x.2.1 + x.2.2) |>.card
 
-/--
+/-
 **Energy-cardinality relationship:**
 E×(A) ≥ |A|⁴ / |AA| (by pigeonhole on products).
 -/
@@ -220,7 +221,7 @@ theorem cauchy_schwarz_energy (A : Finset ℤ) :
   calc A.card ^ 4 = A.card ^ 2 * A.card ^ 2 := by ring
     _ ≤ (A * A).card * Finset.mulEnergy A A := Finset.le_card_mul_mul_mulEnergy A A
 
-/--
+/-
 **Solymosi's key lemma:**
 Bounds multiplicative energy in terms of sumset size.
 -/
@@ -229,7 +230,7 @@ Bounds multiplicative energy in terms of sumset size.
 ## Part VI: Proof Sketch
 -/
 
-/--
+/-
 **Proof strategy:**
 1. By Cauchy-Schwarz: E×(A) ≥ |A|⁴ / |AA|
 2. Solymosi shows: E×(A) ≤ |A|² · |A+A| · log|A|
@@ -258,7 +259,7 @@ theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
       (A.card : ℝ)^2 / (K * log A.card) := by
   sorry
 
-/--
+/-
 **The log factor is necessary:**
 There exist sets A with small sumset where |AA| = O(|A|² / log|A|).
 So the log factor cannot be removed entirely.
@@ -269,7 +270,7 @@ So the log factor cannot be removed entirely.
 ## Part VII: Connection to Sum-Product Conjecture
 -/
 
-/--
+/-
 **Sum-Product Dichotomy:**
 For any finite A ⊂ ℤ, max(|A+A|, |AA|) is large.
 
@@ -277,7 +278,7 @@ This problem (818) explores what happens when we force |A+A| to be small:
 the product set must compensate and be large.
 -/
 
-/--
+/-
 **Connection to Problem 52:**
 Problem 52 asks: max(|A+A|, |AA|) ≥ |A|^{2-ε}?
 
@@ -291,7 +292,7 @@ The latter is a conditional result: GIVEN small sumset, product set is large.
 ## Part VIII: Examples
 -/
 
-/--
+/-
 **Example: Arithmetic progression**
 If A = {1, 2, ..., n}, then:
 - |A + A| = 2n - 1 (small, additive doubling ~2)
@@ -299,7 +300,7 @@ If A = {1, 2, ..., n}, then:
 -/
 /- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n. -/
 
-/--
+/-
 **Example: Geometric progression**
 If A = {1, r, r², ..., r^{n-1}}, then:
 - |A + A| ≈ n² (large, no additive structure)
@@ -312,7 +313,7 @@ This shows the opposite extreme.
 ## Part IX: Summary
 -/
 
-/--
+/-
 **Erdős Problem #818: SOLVED**
 
 QUESTION: If |A+A| ≪ |A|, is |AA| ≫ |A|²/(log|A|)^C for some C?
