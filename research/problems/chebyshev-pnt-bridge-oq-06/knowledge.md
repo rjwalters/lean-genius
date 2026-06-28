@@ -44,3 +44,37 @@ GOTCHAs / reusable facts:
 * Tighter constants (Chebyshev's 0.921/1.106) need sharper primorial/central-binomial
   estimates — deferred.
 * Full PNT π(x) ~ x/log x needs analytic ζ machinery — out of reach here.
+
+## Session 2 (2026-06-28, researcher-6): invert upper density → n·log n lower bound on pₙ
+
+**Mode:** FRESH (problem was SOLVED — deliverable + sandwich OQ-06-OQ-01 already merged).
+**Outcome:** new verified follow-up entry `ChebyshevPNTBridgeOQ06OQ02.lean` (158 lines,
+3 theorems, **0-sorry 0-axiom**), PR #31282. Marked parent problem `completed`.
+
+Read OQ-06's upper density at the primes themselves to bound the n-th prime
+`pₙ = Nat.nth Nat.Prime n` from below:
+
+* `primeCounting_nth_prime`: **π(nth Prime n) = n + 1** — the bridge. `π'(nth Prime n)=n`
+  (`Nat.primeCounting'_nth_eq`) and one `Nat.count_succ` increment (justified by
+  `Nat.prime_nth_prime`) bump the inclusive count by 1.
+* `log_natSqrt_ge`: reproved self-contained (mirrors OQ-06-OQ-01) so the file depends
+  ONLY on parent OQ-06, not on OQ-05/OQ-06-OQ-01 (whose oleans weren't built locally).
+* `nth_prime_lower_bound`: **pₙ ≥ (n+1)·(½·log(n+2) − log 2)/(2·log 4) ~ n·log n/(4·log 4)**
+  for n ≥ 2 — strictly sharper than Mathlib's linear `Nat.add_two_le_nth_prime` (pₙ ≥ n+2).
+
+Key steps: instantiate `primeCounting_mul_log_sqrt_le` at m=pₙ, sub π(pₙ)=n+1, absorb the
+`√pₙ·log√pₙ ≤ pₙ·log4` tail (via `log√pₙ ≤ √pₙ` and `log4 ≥ 1`), collapse to
+`(n+1)·log√pₙ ≤ 2·pₙ·log4`, then bracket + `pₙ ≥ n+2`.
+
+GOTCHAs / reusable:
+* `log 4 ≥ 1` cleanly: `1 = log(exp 1) ≤ log 4` via `Real.exp_one_lt_d9` (exp 1 < 2.72 < 4),
+  in `Mathlib.Analysis.Complex.ExponentialBounds` (NOT Log.Basic — needs explicit import).
+  `Real.log_two_gt_d9` exists but is `Real.`-namespaced in that same module too.
+* `Nat.sqrt_le' p : (Nat.sqrt p)^2 ≤ p` (the `^2` form, not `*`).
+* Verify in-worktree: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/ChebyshevPNTBridgeOQ06OQ02.lean`
+  (parent OQ-06 olean present in symlinked main `.lake`; OQ-05/OQ-06-OQ-01 oleans were NOT).
+
+## Open follow-up (next session)
+* Invert OQ-05's LOWER density to get `pₙ ≤ C·n·log n`, completing the elementary
+  `pₙ ≍ n·log n` sandwich. (Upper bound on pₙ is the harder direction — OQ-05 bound has
+  the ⌊m/2⌋ and log(m+1) correction terms.)
