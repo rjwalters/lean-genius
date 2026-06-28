@@ -1143,4 +1143,139 @@ theorem simOrd_quint {a b c d e f g h i j k₁ k₂ k₃ : ℕ}
            (simOrd_long_iff hg hhd hi hjf).mpr c5,
            (simOrd_long3_iff he hfb hg hhd hi hjf).mpr c6⟩
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 14: The continuant and the general run-length criterion
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 11/§12/§13 produced, one run-length at a time, an explicit window controlling
+the endpoints of a run: the length-3 outer window `(2a − k·c)(2b − k·d)`, the
+length-4 long window in `k₁·k₂ − 1`, and the length-5 continuant window in
+`k₁·k₂·k₃ − k₁ − k₃`.  Reading off the coefficients shows a single object behind
+all three — the **continuant** `K(k₁,…,kₙ)`, the order-side shadow of the Farey
+recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁` that generates the numerators and denominators.
+
+This section gives the general statement.  The continuant `cont` of a list of
+quotients is defined by the (palindromic) front recurrence
+`K(k₁,k₂,…) = k₁·K(k₂,…) − K(…)`, reproducing the ladder
+`K() = 1, K(k) = k, K(k₁,k₂) = k₁k₂−1, K(k₁,k₂,k₃) = k₁k₂k₃−k₁−k₃`.  Applying the
+§9 successor recurrence once per quotient (`runFinal`) advances a run from its
+first pair `a/b, c/d` to the endpoint `I/J`; the closed form
+`I = K(ks)·c − K(ks.tail)·a` (`runFinal_closed`) — proved by one induction on the
+quotient list using the recurrence `cont_cons` — turns the per-length lemmas into
+**one** statement: the endpoints `a/b, I/J` of a run are similarly ordered **iff**
+`((1 + K(ks.tail))·a − K(ks)·c)·((1 + K(ks.tail))·b − K(ks)·d) ≥ 0`
+(`simOrd_run_iff`).  The run-length obstruction for the endpoints of a run is
+exactly a **continuant positivity** condition on all of its intervening quotients
+— the structural form §11/§12/§13 were special cases of, and the shape a bound on
+the `1/12` run-length density would have to control.  (Aggregating the endpoint
+windows over all sub-runs into such a bound remains the open step.)
+
+`runFinal_triple` / `run_window_triple` check the specialisation: on a 3-quotient
+list the general closed form and window reduce exactly to the §13
+`simOrd_long3_iff` data.
+-/
+
+/-- **The continuant** `K(k₁,…,kₙ)` of a list of quotients, by the (palindromic)
+front recurrence `K(k₁,k₂,…) = k₁·K(k₂,…) − K(…)`.  Reproduces the §11/§12/§13
+ladder `K() = 1, K(k) = k, K(k₁,k₂) = k₁k₂−1, K(k₁,k₂,k₃) = k₁k₂k₃−k₁−k₃`. -/
+def cont : List ℕ → ℤ
+  | [] => 1
+  | [k] => (k : ℤ)
+  | k₁ :: k₂ :: ks => (k₁ : ℤ) * cont (k₂ :: ks) - cont ks
+
+/-- **The trailing continuant** `K(k₂,…,kₙ)` of `k₁ :: k₂ :: …` — the continuant
+of the tail, with the empty list sent to `0` (so the closed form below has the
+correct base case). -/
+def contTail : List ℕ → ℤ
+  | [] => 0
+  | _ :: rest => cont rest
+
+@[simp] theorem cont_nil : cont [] = 1 := rfl
+@[simp] theorem cont_single (k : ℕ) : cont [k] = (k : ℤ) := rfl
+@[simp] theorem contTail_nil : contTail [] = 0 := rfl
+@[simp] theorem contTail_cons (k : ℕ) (ks : List ℕ) :
+    contTail (k :: ks) = cont ks := rfl
+
+/-- **The continuant recurrence**, uniformly across all base cases:
+`K(k :: ks) = k·K(ks) − K(ks.tail)` where `K(ks.tail)` is `contTail ks`.  This is
+the single algebraic fact that drives the closed form. -/
+theorem cont_cons (k : ℕ) (ks : List ℕ) :
+    cont (k :: ks) = (k : ℤ) * cont ks - contTail ks := by
+  cases ks with
+  | nil => simp [cont, contTail]
+  | cons k₂ ks' => simp [cont, contTail]
+
+/-- The continuant ladder at length 2: `K(k₁,k₂) = k₁·k₂ − 1` (the §12 quantity). -/
+theorem cont_pair (k₁ k₂ : ℕ) : cont [k₁, k₂] = (k₁ : ℤ) * k₂ - 1 := by
+  rw [cont_cons]; simp
+
+/-- The continuant ladder at length 3: `K(k₁,k₂,k₃) = k₁·k₂·k₃ − k₁ − k₃` (the §13
+quantity). -/
+theorem cont_triple (k₁ k₂ k₃ : ℕ) :
+    cont [k₁, k₂, k₃] = (k₁ : ℤ) * k₂ * k₃ - k₁ - k₃ := by
+  rw [cont_cons, cont_pair]; simp [contTail]; ring
+
+/-- **The run advance**: starting from two terms `t0, t1`, apply the §9 Farey
+successor recurrence `tₛ₊₁ = kₛ·tₛ − tₛ₋₁` once per quotient in `ks` and return the
+final term.  `runFinal t0 t1 [] = t1` (zero steps); each `k :: ks` performs one
+step `(t0, t1) ↦ (t1, k·t1 − t0)`. -/
+def runFinal (t0 t1 : ℤ) : List ℕ → ℤ
+  | [] => t1
+  | k :: ks => runFinal t1 ((k : ℤ) * t1 - t0) ks
+
+/-- **Closed form of the run.**  After applying the quotient list `ks`, the final
+term is `K(ks)·t1 − K(ks.tail)·t0` — the continuant of all intervening quotients
+times the second term, minus the trailing continuant times the first.  This is the
+order-side form of the standard continuant matrix product, proved by a single
+induction on `ks` using `cont_cons`. -/
+theorem runFinal_closed (t0 t1 : ℤ) (ks : List ℕ) :
+    runFinal t0 t1 ks = cont ks * t1 - contTail ks * t0 := by
+  induction ks generalizing t0 t1 with
+  | nil => simp [runFinal]
+  | cons k ks ih =>
+    rw [runFinal, ih, cont_cons, contTail_cons]; ring
+
+/-- **General run-length similar-ordering criterion (headline).**  Let
+`a/b, c/d` start a run of consecutive Farey neighbours and let `I/J` be the
+endpoint reached after applying the quotient list `ks` via the §9 successor
+recurrence (`I = runFinal a c ks`, `J = runFinal b d ks`).  Then the endpoints
+`a/b` and `I/J` are **similarly ordered iff**
+
+  `((1 + K(ks.tail))·a − K(ks)·c)·((1 + K(ks.tail))·b − K(ks)·d) ≥ 0`,
+
+with `K = cont` the continuant of the intervening quotients and `K(ks.tail) =
+contTail ks`.  This is the single statement that subsumes §11 (`ks` length 1,
+window `(2a−k·c)(2b−k·d)`), §12 (length 2, `k₁k₂−1`) and §13 (length 3,
+`k₁k₂k₃−k₁−k₃`): the run-length obstruction for the endpoints of a run is exactly
+the **continuant positivity** condition on all of its quotients. -/
+theorem simOrd_run_iff {a b c d : ℕ} (ks : List ℕ)
+    {I J : ℕ} (hI : (I : ℤ) = runFinal a c ks) (hJ : (J : ℤ) = runFinal b d ks) :
+    SimOrd a b I J ↔
+      ((1 + contTail ks) * a - cont ks * c) * ((1 + contTail ks) * b - cont ks * d) ≥ 0 := by
+  rw [simOrd_iff_prod]
+  have key : ((a : ℤ) - I) * ((b : ℤ) - J)
+      = ((1 + contTail ks) * a - cont ks * c) * ((1 + contTail ks) * b - cont ks * d) := by
+    rw [hI, hJ, runFinal_closed, runFinal_closed]; ring
+  rw [key]
+
+/-- **Sanity / consistency check (length-3 ⇒ §13).**  Unfolding `runFinal` on a
+3-element quotient list reproduces the §13 closed form for the fifth term:
+`runFinal a c [k₁,k₂,k₃] = (k₁k₂k₃−k₁−k₃)·c − (k₂k₃−1)·a`, matching
+`simOrd_long3_iff`. -/
+theorem runFinal_triple (a c : ℤ) (k₁ k₂ k₃ : ℕ) :
+    runFinal a c [k₁, k₂, k₃]
+      = ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * c - ((k₂ : ℤ) * k₃ - 1) * a := by
+  rw [runFinal_closed, cont_triple, contTail_cons, cont_pair]
+
+/-- **The general window specialises to §13** (length-3).  For a 3-quotient run,
+the general continuant window of `simOrd_run_iff` is exactly the §13 long-range
+window `(k₂k₃·a − (k₁k₂k₃−k₁−k₃)·c)·(k₂k₃·b − (k₁k₂k₃−k₁−k₃)·d) ≥ 0`. -/
+theorem run_window_triple (a b c d : ℤ) (k₁ k₂ k₃ : ℕ) :
+    ((1 + contTail [k₁, k₂, k₃]) * a - cont [k₁, k₂, k₃] * c)
+        * ((1 + contTail [k₁, k₂, k₃]) * b - cont [k₁, k₂, k₃] * d)
+      = (((k₂ : ℤ) * k₃) * a - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * c)
+          * (((k₂ : ℤ) * k₃) * b - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * d) := by
+  rw [contTail_cons, cont_pair, cont_triple]; ring
+
 end Erdos1005OQ02

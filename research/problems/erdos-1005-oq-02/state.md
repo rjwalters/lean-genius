@@ -2,7 +2,7 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 7
+**Iteration**: 14
 
 ## Current Focus
 
@@ -165,19 +165,51 @@ worktree Mathlib `.olean` cache — Docker `docker info` hangs). Two theorems:
 
 File: 1017 → 1146 lines, 55 → 57 theorems, 2 defs (no new def).
 
+## Iteration 14 addition (verified, 0-axiom — `lake env lean`, Docker down)
+
+Added **§14 (the continuant and the general run-length criterion)**, 0-sorry /
+0-axiom (`#print axioms` reports only propext / Classical.choice / Quot.sound on
+`simOrd_run_iff`, `runFinal_closed`, `cont_cons`; verified by `lake env lean`
+against the worktree Mathlib `.olean` cache — Docker `docker info` hangs). This
+**executes the Iteration-13 Next Action**: it converts the per-length §11/§12/§13
+windows into ONE statement over an arbitrary quotient list.
+
+- `cont : List ℕ → ℤ` — the **continuant** `K(k₁,…,kₙ)` by the palindromic front
+  recurrence `K(k₁::k₂::ks) = k₁·K(k₂::ks) − K(ks)`; `contTail` the trailing
+  continuant (`K` of the tail, `0` on `[]`). `cont_cons` proves the uniform
+  recurrence `K(k::ks) = k·K(ks) − K(ks.tail)` across all base cases by one case
+  split. `cont_pair`/`cont_triple` confirm the ladder values `k₁k₂−1`,
+  `k₁k₂k₃−k₁−k₃` **are** this continuant.
+- `runFinal` applies the §9 successor recurrence once per quotient;
+  `runFinal_closed` proves the **endpoint closed form**
+  `runFinal t0 t1 ks = K(ks)·t1 − K(ks.tail)·t0` by a *single induction* on the
+  quotient list — the order-side form of the continuant matrix product, replacing
+  the §11/§12/§13 hand substitutions.
+- `simOrd_run_iff` (**headline**) — the endpoints `a/b, I/J` of a run of **any
+  length** are similarly ordered **iff**
+  `((1+K(ks.tail))·a − K(ks)·c)·((1+K(ks.tail))·b − K(ks)·d) ≥ 0`. This single
+  continuant-positivity window subsumes §11 (`|ks|=1`), §12 (`|ks|=2`), §13
+  (`|ks|=3`). `runFinal_triple`/`run_window_triple` verify the `|ks|=3` case
+  reproduces `simOrd_long3_iff` exactly.
+
+File: 1146 → 1281 lines, 57 → 64 `^theorem` (+4 `@[simp]` accessor lemmas, 68
+theorem-declarations total), 2 → 5 defs (`cont`, `contTail`, `runFinal`).
+
 ## Next Action
 
-Generalize the continuant pattern to arbitrary run length by induction over a
-list of quotients `[k₁,…,kₘ]`: the §11/§12/§13 ladder shows the m-th term is
-`tₘ = K(k₁,…,k_{m−1})·c − K(k₂,…,k_{m−1})·a` (continuant coefficients), so the
-endpoint window is `((1+K(k₂..))·a − K(k₁..)·c)·(…) ≥ 0`. A Lean `Continuant`
-definition with the recurrence `K(k :: ks) = k·K(ks) − K(ks.tail)` plus the
-matrix-product identity would convert the per-length explicit lemmas into ONE
-general statement — the run-length criterion as a continuant positivity
-condition, the structural form needed before bounding the `1/12` density.
+The structural criterion is now general; the remaining open step is
+**aggregation**. `simOrd_run_iff` gives the endpoint window of *one* run, but
+`f(n)` is the longest run where *all* pairwise windows hold simultaneously. Two
+concrete targets: (1) a `List`-indexed `simOrd_run_all_iff` characterising when
+**every** sub-run window of `[k₁,…,kₘ]` is nonnegative (the full pairwise-run
+predicate, not just the endpoints), via the continuant of each contiguous
+sub-block; (2) bound the *measure* of quotient-tuples `(k₁,…,kₘ)` admissible at
+order `n` whose every continuant window stays `≥ 0`, the counting input to the
+`1/12` density. The continuant `cont` defined here is the object both targets are
+phrased in.
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 4
+- Total attempts: 5
+- Current approach attempts: 5
 - Approaches tried: 1
