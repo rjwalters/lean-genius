@@ -545,6 +545,30 @@ lemma representable_summands_ge_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
   have hs2 : 2 ≤ s := by omega
   exact isPowerForm_ge_q_of_ge_two hp hq (hpf s hs) hs2
 
+/-- **Every power form is representable** (unconditional, 0-axiom). A power form
+`n = p^k q^l` is represented by the singleton antichain `{n}`: a one-element set is
+vacuously an antichain (`NoOneDividesAnother`), its sole element is a power form, and it
+sums to `n`. This is the base fact underlying the backward direction of the window
+characterisation, and generalises `example_1_representable` (the `{3,2}` unit) to every
+pair and every power form. -/
+theorem isRepresentable_of_isPowerForm {p q n : ℕ} (h : IsPowerForm p q n) :
+    IsRepresentable p q n :=
+  ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
+    by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
+       exact absurd (ha.trans hb.symm) hab,
+    by simp⟩
+
+/-- **The unit `1` is representable for every pair** — it is the power form `p^0 q^0`.
+Generalises `example_1_representable` from `{3,2}` to all `p, q`. -/
+theorem isRepresentable_one {p q : ℕ} : IsRepresentable p q 1 :=
+  isRepresentable_of_isPowerForm ⟨0, 0, by simp⟩
+
+/-- **Every power form `p^a q^b` is representable.** The representable set contains the
+whole multiplicative monoid of power forms — immediate from `isRepresentable_of_isPowerForm`. -/
+theorem isRepresentable_powerForm {p q : ℕ} (a b : ℕ) :
+    IsRepresentable p q (p ^ a * q ^ b) :=
+  isRepresentable_of_isPowerForm ⟨a, b, rfl⟩
+
 /-- **Representability window characterization (unconditional, 0-axiom).**
 For `q ≤ n < 2q`, the number `n` is representable iff it is itself a single power
 form `p^k q^l`. Forward: every summand is `≥ q` (`representable_summands_ge_q`),
@@ -579,10 +603,7 @@ theorem isRepresentable_iff_isPowerForm_window {p q n : ℕ} (hp : p > q) (hq : 
     rw [← hsum]
     exact hpf x (Finset.mem_singleton_self x)
   · intro h
-    exact ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
-      by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
-         exact absurd (ha.trans hb.symm) hab,
-      by simp⟩
+    exact isRepresentable_of_isPowerForm h
 
 /-- **Non-power-forms in the window `[q, 2q)` are non-representable
 (unconditional, 0-axiom).** Contrapositive of the window characterization. This
@@ -1020,21 +1041,7 @@ The lower bound improves to f(n) ≫ n / log n.
 **Example: 1 = 2^0 · 3^0:**
 The number 1 is trivially representable (single summand).
 -/
-theorem example_1_representable : IsRepresentable 3 2 1 := by
-  use {1}
-  constructor
-  · simp
-  constructor
-  · intro s hs
-    simp at hs
-    subst hs
-    use 0, 0
-    simp
-  constructor
-  · intro a ha b hb hab
-    simp at ha hb
-    omega
-  · simp
+theorem example_1_representable : IsRepresentable 3 2 1 := isRepresentable_one
 
 /-
 **Example: Small cases for {3,2}:**

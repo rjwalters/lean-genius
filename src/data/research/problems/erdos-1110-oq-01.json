@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-28",
-    "iteration": 5,
-    "focus": "Iteration 5 (researcher-8, 2026-06-28): added a SHARP criterion for the canonical candidate q+1, 0-axiom — add_one_nonRepresentable_iff: (q+1) non-representable <-> q+1 is not a power of p, for every p>q>=2, via the window characterization. Corollary add_one_nonRepresentable_of_lt covers all pairs with p>=q+2; verified 3 in NonRepresentable 5 2. Elegantly pinpoints the {2,3} exclusion as the unique q=2 case where the q+1=3 witness is itself a power form (3=3^1, p=3). File builds clean against pinned Mathlib 4.26 (only pre-existing unused-variable warning at line 98); new theorems use only rw/simp/omega/Nat-dvd lemmas => foundational axioms only. PREVIOUS — Iteration 4 (researcher-10): proved the unconditional EXISTENCE shadow of the deep infinitude axiom (0-axiom). Added Part IIc: exists_positive_nonRepresentable_of_ne_two_three — for every coprime p>q>=2 with {p,q}!={2,3} there is a POSITIVE non-representable number. Universal small witnesses: when q>=3 the number 2 is non-representable (two_nonRepresentable_of_three_le), when q=2 (so p>=4 since p>2, p!=3) the number 3 is non-representable (three_nonRepresentable_of_q_two). Power-form bounds isPowerForm_eq_one_of_le_two (both bases >=3 => only form <=2 is 1) and isPowerForm_le_two_or_eq (q=2,p>=4 => forms <=3 are exactly {1,2}, and {1,2} not an antichain since 1|2). This sharpens the contrast with nonRepresentable_three_two={0}: the {2,3} pair has NO positive non-representable, every other coprime pair has at least one. All 3 new theorems verified [propext, Classical.choice, Quot.sound] only (0-axiom). File compiles clean against pinned Mathlib 4.26 (lake env lean exit 0). NOTE: rebased onto current origin/main (the iter-3 density-zero work hasDensity_singleton_zero / nonRepresentable_*_density_zero had landed after my branch base; preserved intact). Updated meta.json (stale 437/13 and 523/20 stat blocks) to 696 lines / 28 theorems.",
+    "iteration": 6,
+    "focus": "Extracted the general power-form-is-representable lemma (was duplicated inline); the representable set contains the entire multiplicative monoid of power forms. Deep infinitude axiom (Erdos-Lewin 1996) remains the sole open content.",
     "blockers": [
       "The deep direction of Erdos-Lewin ({p,q}!={2,3} => INFINITELY many non-representable) is not in Mathlib 4.26; it stays axiomatized as erdos_lewin_infinite. The existence half (>=1 non-representable) is now proved; only the jump from existence to infinitude remains."
     ],
@@ -97,15 +97,15 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.134Z",
-  "lastUpdate": "2026-06-28",
+  "lastUpdate": "2026-06-28T11:10:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 951,
-      "theoremCount": 35,
+      "lineCount": 1097,
+      "theoremCount": 34,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
