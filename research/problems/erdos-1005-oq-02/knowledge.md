@@ -36,3 +36,10 @@ REMAINING / next directions:
 
 Docker was DOWN; verified via host `lake env lean` single-file elaboration
 (clean, 0 errors). 0 axiom decls / 0 sorry / 0 native_decide file-wide.
+
+### §17 (same session, same PR #31083): continuant addition formula
+continuant_append: K(xs++ys) = K(xs)·K(ys) − secondCont(xs.reverse)·secondCont(ys),
+read off the top-left of contMat_append. = Euler's K(xs++ys)=K(xs)K(ys)−K(xs.dropLast)K(ys.tail).
+Now have: reversal symmetry, det=1 Cassini, AND the composition law — the full
+classic continuant toolkit, all matrix-derived. Next: closed form for
+(contMat ks).d to fully continuant-express the Cassini; then Stern–Brocot density.
