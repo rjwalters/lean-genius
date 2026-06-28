@@ -535,3 +535,28 @@ input.
   doors and level-`(n−1)` interior complementary simplices. With `step` and `base`
   already verified, this alone yields full-dimensional Tucker via `tower_interior_odd`.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-06-28 (researcher-2) — realize the abstract tower from concrete door graphs
+
+**Mode**: REVISIT (RICH). Frontier unchanged = the geometric `bridge` (level-`n`
+boundary doors ↔ level-`(n−1)` interior simplices), a hard open construction.
+**Outcome**: progress — extended `SpernerTuckerInductiveTower.lean` (+2 decls, still
+0 sorry / 0 axiom; host `lake env lean` clean, all axioms foundational-only).
+
+Added a **realization layer** showing the abstract `TuckerTower.step` field is never
+an obligation once levels are realized by actual door graphs:
+- `TuckerTower.ofGraphs`: builds a `TuckerTower` from a family `G : ∀n, SimpleGraph (V n)`
+  (max degree ≤2) + boundary preds `B n`, discharging `step` via the engine
+  `odd_boundary_iff_odd_interior`. Only `bridge` + `base` remain caller inputs.
+- `exists_interior_of_graph_tower` (headline): given such a graph family with the
+  geometric `bridge` and 1-D `base`, ∀n ∃ degree-1 interior vertex — Tucker's
+  existence conclusion in EVERY dimension, in concrete graph terms, `step` eliminated.
+
+GOTCHA: `(have T := ofGraphs …; T.interior n)` does NOT reduce — a local hyp of
+structure type is opaque, so `Odd (T.interior n)` won't match `Odd #(interiorEndpoints …)`.
+INLINE the `ofGraphs` application: `(TuckerTower.ofGraphs … ).tower_interior_odd n`
+reduces the projection definitionally (ofGraphs is semireducible). 
+
+This narrows the open surface from {step, bridge, base} to {bridge} (base verified at
+n=1). Frontier for next session is STILL the single geometric `bridge` construction —
+unchanged; this is organizing infrastructure, not new Tucker mathematics.
