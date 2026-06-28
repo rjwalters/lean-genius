@@ -1465,4 +1465,104 @@ theorem attainsBelow_density_lower_16_general (N : ℕ) :
     N
   rwa [hcard] at key
 
+/-! ## Part VII: Fully auto-derived certificates — supply only the modulus and residue
+
+The decidable certificate `dropCert` of Part V still asks the caller for the parity
+vector `v`; only the *validity check* is automatic.  But for a power-of-two modulus
+`M = 2^b` the parity vector is itself residue-determined and so can be **computed**
+from `(b, r)` alone: starting the affine pair at `(2^b, r)`, the leading coefficient
+`c` stays even until exactly `b` halvings have happened, and while `c` is even the
+parity of `c·m + d` is just `d mod 2` — independent of `m`.  So each step's parity is
+forced, and `deriveVec` reads it straight off the running constant.
+
+`deriveVec` terminates by a fuel argument: two odd steps can never be consecutive (an
+odd step sends `d ↦ 3d+1`, which is even), and each even step strips one factor of two
+from `c`, so the residue-determined window closes after at most `2b` steps once `c`
+becomes odd.  Crucially `affValidB (deriveVec fuel c d) c d = true` holds
+**unconditionally** — the recursion branches on exactly the validity conditions — so no
+divisibility hypothesis is needed and soundness never depends on the fuel being large
+enough (an exhausted or non-dropping window simply fails the decidable drop check, it
+never produces a false `AttainsBelow`).
+
+This closes the last gap to a turnkey engine: a new residue family `r (mod 2^b)` is now
+literally `autoDropCert_attainsBelow (b := …) (r := …) (by decide) h` — the caller
+supplies neither a trajectory chase nor a hand-built parity vector, only the modulus
+exponent and residue.  Axiom-free (`decide`, not `native_decide`). -/
+
+/-- Auto-derive the residue-determined parity vector of the affine class `c·m + d`,
+reading each forced parity off the constant `d` (valid while the leading coefficient
+`c` stays even).  Stops when `c` becomes odd — at which point the window is closed and
+the leading coefficient `c` is final — or when the `fuel` is exhausted.  For a
+power-of-two start `c = 2^b` the closure always happens within `2b` steps. -/
+def deriveVec : ℕ → ℕ → ℕ → List Bool
+  | 0,         _, _ => []
+  | fuel + 1,  c, d =>
+      if c % 2 = 1 then []
+      else if d % 2 = 1 then true  :: deriveVec fuel (3 * c) (3 * d + 1)
+      else false :: deriveVec fuel (c / 2) (d / 2)
+
+/-- The auto-derived parity vector is always a valid `AffValid` certificate for its
+own starting pair, **with no hypothesis on `c, d`**: `deriveVec` branches on exactly the
+parity conditions `affValidB` checks, so every recorded bit is sound by construction. -/
+theorem affValidB_deriveVec :
+    ∀ (fuel c d : ℕ), affValidB (deriveVec fuel c d) c d = true := by
+  intro fuel
+  induction fuel with
+  | zero => intro c d; rfl
+  | succ fuel ih =>
+    intro c d
+    rw [deriveVec]
+    split_ifs with hc hd
+    · rfl
+    · have hce : c % 2 = 0 := by omega
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq]
+      exact ⟨⟨hce, hd⟩, ih (3 * c) (3 * d + 1)⟩
+    · have hce : c % 2 = 0 := by omega
+      have hde : d % 2 = 0 := by omega
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq]
+      exact ⟨⟨hce, hde⟩, ih (c / 2) (d / 2)⟩
+
+/-- A single decidable certificate for the residue class `r (mod 2^b)` that derives its
+own parity vector: non-empty derived window whose realized affine iterate drops
+(`c_k < 2^b`, `d_k < r`).  Each conjunct is a finite computation, so this evaluates by
+`decide`.  Unlike `dropCert`, the caller supplies **no** parity vector. -/
+def autoDropCert (b r : ℕ) : Bool :=
+  decide (0 < (deriveVec (2 * b + 1) (2 ^ b) r).length) &&
+    decide ((affOrbit (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b, r)).1 < 2 ^ b) &&
+    decide ((affOrbit (deriveVec (2 * b + 1) (2 ^ b) r) (2 ^ b, r)).2 < r)
+
+/-- **Fully auto-derived residue-drop engine.**  A `true` `autoDropCert b r` makes every
+`n ≡ r (mod 2^b)` attain a value below itself — the parity vector is derived internally
+from `(b, r)`, so a new residue family is one line:
+`autoDropCert_attainsBelow (b := …) (r := …) (by decide) h`. -/
+theorem autoDropCert_attainsBelow {b r : ℕ} (h : autoDropCert b r = true)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n := by
+  simp only [autoDropCert, Bool.and_eq_true, decide_eq_true_eq] at h
+  obtain ⟨⟨hk, hc⟩, hd⟩ := h
+  exact parityVector_attainsBelow _ hk
+    (affValidB_sound (affValidB_deriveVec _ _ _)) hc hd hn
+
+/-! ### Validation: the auto-derived engine reproduces the gallery families
+
+Each call below supplies only the modulus exponent `b` and the residue `r`; the parity
+vector that the Part II/V lemmas wrote out by hand is now computed by `deriveVec` and
+certified by a single `by decide`. -/
+
+/-- `n ≡ 3 (mod 16 = 2^4)` drops below itself — derived end-to-end from `(b, r) = (4, 3)`,
+no parity vector supplied. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 4) (r := 3) (by decide)
+    (by rw [show (2 : ℕ) ^ 4 = 16 by norm_num]; exact h)
+
+/-- `n ≡ 11 (mod 32 = 2^5)` drops below itself — derived from `(b, r) = (5, 11)`. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 5) (r := 11) (by decide)
+    (by rw [show (2 : ℕ) ^ 5 = 32 by norm_num]; exact h)
+
+/-- `n ≡ 7 (mod 128 = 2^7)` drops below itself — derived from `(b, r) = (7, 7)`, an
+eleven-step residue-determined window, the *same* one `by decide`. -/
+example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  autoDropCert_attainsBelow (b := 7) (r := 7) (by decide)
+    (by rw [show (2 : ℕ) ^ 7 = 128 by norm_num]; exact h)
+
 end CollatzStructuredOQ02OQ03
