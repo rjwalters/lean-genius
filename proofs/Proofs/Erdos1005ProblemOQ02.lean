@@ -1579,5 +1579,122 @@ theorem continuant_append (xs ys : List ℤ) :
   have h := congrArg Mat2.a (contMat_append xs ys)
   simp only [contMat_a, Mat2.mul, contMat_b, contMat_c] at h
   linear_combination h
+/-! ## §17: Continuant positivity and growth in the large-quotient regime
+
+The run-length criterion `simOrd_run_iff` (§14) controls a length-`(|ks|+1)` run
+through the continuant window
+`((1+secondCont ks)·a − K·c)·((1+secondCont ks)·b − K·d) ≥ 0` with
+`K = Continuant ks`.  To bound the *density* side of the open `1/12`–`1/4` problem
+one must understand the sign and size of `K` and `secondCont` as the quotient list
+varies.  Iteration 14's proposed blanket bound `K(ks) ≥ 1` for all-`≥1` lists is
+**false**: the minus-sign continuant of an all-`1` (balanced/Fibonacci) list is the
+period-6 sequence `1, 1, 0, −1, −1, 0, …` — e.g. `K([1,1]) = 0`, `K([1,1,1]) = −1`
+(witnesses `continuant_ones_two`, `continuant_ones_three` below).  Positivity is a
+phenomenon of *large* quotients, the regime opposite to the balanced extreme.
+
+This section proves that on the **large-quotient regime** `ks` with every entry
+`≥ 2`, the continuant pair is controlled: the trailing continuant is dominated by
+the leading one (`0 ≤ secondCont ks < Continuant ks`), the continuant is strictly
+positive, strictly increasing under prepending another quotient `≥ 2`, and grows at
+least linearly (`Continuant ks ≥ |ks| + 1`).  This is the "break forced by a large
+quotient" structural handle the parent state called for: it certifies that in the
+all-`≥ 2` regime the continuant has a *definite sign* (so the windows' sign
+structure is decided by the seed alone, not by continuant cancellation), and that
+the continuant — and hence by the §14 closed form the run endpoints — grow with the
+run length, making long large-quotient runs metrically expensive.
+
+This section is logically independent of the parallel §16 continuant-matrix /
+Cassini work (PR #31083): it depends only on the §14 `Continuant` / `secondCont`
+recurrences (`continuant_cons`).
+
+**Honest boundary (unchanged).** This bounds the continuant's sign and size in one
+quotient regime; it does *not* count the density of admissible quotient lists keeping
+every non-adjacent window nonnegative — that count is the open `1/12`–`1/4` step. -/
+
+/-- **Core invariant (large-quotient regime).**  For a quotient list with every
+entry `≥ 2`, the trailing continuant is nonnegative and *strictly* dominated by the
+leading continuant: `0 ≤ secondCont ks < Continuant ks`.  Proved by induction on the
+single-step recurrences `secondCont (k::ks) = K(ks)` and
+`K(k::ks) = k·K(ks) − secondCont ks` (`continuant_cons`): the map on the pair
+`(s, K) ↦ (K, k·K − s)` preserves `0 ≤ s < K` whenever `k ≥ 2`, since then
+`k·K − s ≥ 2K − s > K` and `K ≥ s + 1 > 0`.  The strict domination `s < K` is the
+seed of every positivity and growth statement below. -/
+theorem secondCont_lt_continuant (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 ≤ secondCont ks ∧ secondCont ks < Continuant ks := by
+  induction ks with
+  | nil =>
+      refine ⟨?_, ?_⟩
+      · show (0 : ℤ) ≤ 0; exact le_refl 0
+      · show (0 : ℤ) < 1; norm_num
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      obtain ⟨hs0, hsK⟩ := ih hrest
+      refine ⟨?_, ?_⟩
+      · -- `secondCont (k :: rest)` is defeq `Continuant rest`, which exceeds `secondCont rest ≥ 0`.
+        show (0 : ℤ) ≤ Continuant rest
+        linarith [hs0, hsK]
+      · rw [continuant_cons]
+        -- `secondCont (k :: rest)` is defeq `Continuant rest`; goal: `K < k·K − s`.
+        show Continuant rest < k * Continuant rest - secondCont rest
+        nlinarith [hs0, hsK, hk,
+          mul_nonneg (show (0 : ℤ) ≤ k - 2 by linarith)
+            (show (0 : ℤ) ≤ Continuant rest by linarith)]
+
+/-- **Strict positivity (large-quotient regime).**  Every all-`≥ 2` continuant is
+`≥ 1`.  In this regime the §14 windows therefore never degenerate through a vanishing
+continuant — the cancellation that makes the all-`1` extreme oscillate cannot occur. -/
+theorem continuant_pos (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 < Continuant ks :=
+  lt_of_le_of_lt (secondCont_lt_continuant ks h).1 (secondCont_lt_continuant ks h).2
+
+/-- The trailing continuant is nonnegative on the large-quotient regime. -/
+theorem secondCont_nonneg (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    0 ≤ secondCont ks :=
+  (secondCont_lt_continuant ks h).1
+
+/-- **Strict monotonicity under prepending.**  In the large-quotient regime,
+prepending another quotient `k ≥ 2` strictly increases the continuant:
+`Continuant ks < Continuant (k :: ks)`.  Since `K(k::ks) = k·K − secondCont ks` and
+`k ≥ 2` with `0 ≤ secondCont ks < K`, we have `k·K − secondCont ks ≥ 2K − secondCont ks > K`.
+The continuant is therefore strictly increasing along the run. -/
+theorem continuant_strict_mono {k : ℤ} {ks : List ℤ}
+    (hk : (2 : ℤ) ≤ k) (h : ∀ j ∈ ks, (2 : ℤ) ≤ j) :
+    Continuant ks < Continuant (k :: ks) := by
+  rw [continuant_cons]
+  obtain ⟨hs0, hsK⟩ := secondCont_lt_continuant ks h
+  nlinarith [hs0, hsK, hk,
+    mul_nonneg (show (0 : ℤ) ≤ k - 2 by linarith)
+      (show (0 : ℤ) ≤ Continuant ks by linarith)]
+
+/-- **Linear growth lower bound.**  In the large-quotient regime the continuant is at
+least `|ks| + 1`: each prepended quotient `≥ 2` adds at least `1`
+(`K(k::ks) ≥ K(ks) + 1`, from strict monotonicity over `ℤ`), starting from
+`K([]) = 1`.  So a depth-`m` large-quotient run carries a continuant `≥ m + 1`, and by
+the §14 closed form `stepSeq a c ks = K·c − secondCont·a` the run endpoints inherit
+this growth — long large-quotient runs are metrically expensive, capped by the
+order-`n` Farey ceiling. -/
+theorem continuant_ge_length (ks : List ℤ) (h : ∀ k ∈ ks, (2 : ℤ) ≤ k) :
+    (ks.length : ℤ) + 1 ≤ Continuant ks := by
+  induction ks with
+  | nil => simp [Continuant]
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : (2 : ℤ) ≤ k := h k (by simp)
+      have hmono := continuant_strict_mono hk hrest
+      have hlen := ih hrest
+      simp only [List.length_cons]
+      omega
+
+/-- **Why `k ≥ 2` is essential (balanced extreme, witness 1).**  The all-`1`
+continuant vanishes already at length two: `K([1,1]) = 1·1 − 1 = 0`.  Blanket
+positivity `K(ks) ≥ 1` therefore fails the moment a quotient drops to `1`. -/
+theorem continuant_ones_two : Continuant [1, 1] = 0 := by decide
+
+/-- **Why `k ≥ 2` is essential (balanced extreme, witness 2).**  One step further the
+all-`1` continuant turns *negative*: `K([1,1,1]) = 1 − 1 − 1 = −1`.  Together with
+`continuant_ones_two` these exhibit the period-6 orbit `1,1,0,−1,−1,0,…` of the
+balanced extreme, the regime where §17's positivity provably does not hold. -/
+theorem continuant_ones_three : Continuant [1, 1, 1] = -1 := by decide
 
 end Erdos1005OQ02
