@@ -681,4 +681,154 @@ theorem threeVertex_sum_slope_mul_width :
   rw [threeVertex_edgeSlopes, threeVertex_edgeWidths]
   norm_num [List.zipWith_cons_cons]
 
+/-! ### Hull construction: splicing a dominant edge onto the right sub-hull
+
+The results so far identify vertices and edges and prove the polygon convex *given*
+a chain of lower edges, but they never *build* the chain.  `exists_isLowerEdge_of_leftmost`
+produces the dominant (least-slope) first edge `p → q` from the left endpoint; the
+Newton–Puiseux recursion then continues on the support to the right of `q`.
+
+The mathematical subtlety the recursion hides is this: a lower edge of the *right
+restriction* `pts.filter (q.1 ≤ ·.1)` need not be a lower edge of the *full* `pts`,
+because its supporting line — pinned only by the right points — could dip below a
+point left of `q`.  The **transfer lemma** `isLowerEdge_of_right` shows this never
+happens *provided the edge's slope is at least the dominant slope*: convexity forces
+the right edge's line to sit above the dominant line on the left half, where the
+dominant line already lies below every point.  This is the exact reason the
+divide-and-conquer hull recursion is correct, and it is the principal combinatorial
+input that was missing from this file.
+
+`chain_transfer` then propagates the bound along an entire right sub-hull (each edge
+slope dominates the previous one by `edgeSlope_mono`, so all of them clear the
+dominant slope), and `isLowerEdge_chain_extend` packages the whole step: prepend the
+dominant edge to a right sub-hull chain and obtain a genuine lower-edge chain of the
+full support — one peel of the Newton–Puiseux recursion, verified. -/
+
+/-- **Global-support transfer across a dominant split.**  Let `(m₀, b₀)` be the line
+of a *dominant* edge: it passes through the cut point `q` and lies weakly below every
+support point of `pts`.  If `a → c` is a lower edge of the right restriction
+`pts.filter (q.1 ≤ ·.1)` whose slope is at least the dominant slope `m₀`, then
+`a → c` is a lower edge of the *full* `pts`.
+
+The only nontrivial check is that the `a → c` line stays below the points left of the
+cut.  There its slope `m ≥ m₀` makes it sit below the dominant line (the two lines
+cross at the cut, where `a → c` is already below `q`), and the dominant line is below
+everything — so `a → c` clears the left points too. -/
+theorem isLowerEdge_of_right {pts : List SupportPoint} {q a c : SupportPoint}
+    {m₀ b₀ : ℚ} (hq_mem : q ∈ pts) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2)
+    (hac : IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1))) a c)
+    (hslope : m₀ ≤ edgeSlope a c) :
+    IsLowerEdge pts a c := by
+  obtain ⟨ha_filt, hc_filt, hac_lt, m, b, ha_line, hc_line, hsupp_filt⟩ := hac
+  have ha_pts : a ∈ pts := (List.mem_filter.mp ha_filt).1
+  have hc_pts : c ∈ pts := (List.mem_filter.mp hc_filt).1
+  have hm : m = edgeSlope a c := slope_eq_edgeSlope ha_line hc_line (ne_of_lt hac_lt)
+  have hmge : m₀ ≤ m := by rw [hm]; exact hslope
+  -- the cut point `q` lies in the right restriction, so the `a → c` line is below it
+  have hq_filt : q ∈ pts.filter (fun r => decide (q.1 ≤ r.1)) :=
+    List.mem_filter.mpr ⟨hq_mem, by simp⟩
+  have hqcmp : m * (q.1 : ℚ) + b ≤ m₀ * (q.1 : ℚ) + b₀ := by
+    rw [← hq_line]; exact hsupp_filt q hq_filt
+  refine ⟨ha_pts, hc_pts, hac_lt, m, b, ha_line, hc_line, fun r hr => ?_⟩
+  by_cases hr_cut : q.1 ≤ r.1
+  · exact hsupp_filt r (List.mem_filter.mpr ⟨hr, by simpa using hr_cut⟩)
+  · push_neg at hr_cut
+    have hr_lt : (r.1 : ℚ) < (q.1 : ℚ) := by exact_mod_cast hr_cut
+    have hsupp0r : m₀ * (r.1 : ℚ) + b₀ ≤ r.2 := hsupp0 r hr
+    nlinarith [mul_nonneg (sub_nonneg.mpr hmge) (sub_nonneg.mpr (le_of_lt hr_lt)),
+      hqcmp, hsupp0r]
+
+/-- **Propagating the dominant bound along a right sub-hull.**  Given a dominant line
+`(m₀, b₀)` through the cut `q` lying below all of `pts`, any chain of lower edges of
+the right restriction whose first edge clears the dominant slope is, edge for edge, a
+chain of lower edges of the full `pts`.  Each successive edge slope dominates the
+previous one (`edgeSlope_mono`), so the bound carries to the whole chain and
+`isLowerEdge_of_right` upgrades every edge. -/
+theorem chain_transfer {pts : List SupportPoint} {q : SupportPoint} {m₀ b₀ : ℚ}
+    (hq_mem : q ∈ pts) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2) :
+    ∀ (a : SupportPoint) (rest : List SupportPoint),
+      List.IsChain (IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1)))) (a :: rest) →
+      (∀ c, rest.head? = some c → m₀ ≤ edgeSlope a c) →
+      List.IsChain (IsLowerEdge pts) (a :: rest)
+  | _, [], _, _ => List.isChain_singleton _
+  | a, c :: rest', hchain, hbound => by
+      obtain ⟨hac, hchain'⟩ := List.isChain_cons_cons.mp hchain
+      have hac_slope : m₀ ≤ edgeSlope a c := hbound c rfl
+      have hi : IsLowerEdge pts a c :=
+        isLowerEdge_of_right hq_mem hq_line hsupp0 hac hac_slope
+      refine List.isChain_cons_cons.mpr ⟨hi, ?_⟩
+      refine chain_transfer hq_mem hq_line hsupp0 c rest' hchain' ?_
+      intro d hd
+      cases rest' with
+      | nil => simp at hd
+      | cons e rest'' =>
+        simp only [List.head?_cons, Option.some.injEq] at hd
+        subst hd
+        obtain ⟨hce, _⟩ := List.isChain_cons_cons.mp hchain'
+        exact le_trans hac_slope (edgeSlope_mono hac hce)
+
+/-- **One peel of the Newton–Puiseux recursion, verified.**  Prepend the dominant
+edge `p → q` (least-slope edge leaving the left endpoint, whose line `(m₀, b₀)`
+supports all of `pts`) to a chain of lower edges of the right restriction
+`pts.filter (q.1 ≤ ·.1)`, and obtain a genuine chain of lower edges of the full
+`pts`.  This is the inductive step of hull construction: the leftmost dominant edge
+followed by the recursively-built right sub-hull is the complete Newton polygon. -/
+theorem isLowerEdge_chain_extend {pts : List SupportPoint} {p q : SupportPoint}
+    {m₀ b₀ : ℚ} {rest : List SupportPoint}
+    (hp_mem : p ∈ pts) (hq_mem : q ∈ pts) (hpq_lt : p.1 < q.1)
+    (hp_line : p.2 = m₀ * (p.1 : ℚ) + b₀) (hq_line : q.2 = m₀ * (q.1 : ℚ) + b₀)
+    (hsupp0 : ∀ r ∈ pts, m₀ * (r.1 : ℚ) + b₀ ≤ r.2)
+    (hchain : List.IsChain (IsLowerEdge (pts.filter (fun r => decide (q.1 ≤ r.1))))
+      (q :: rest)) :
+    List.IsChain (IsLowerEdge pts) (p :: q :: rest) := by
+  refine List.isChain_cons_cons.mpr
+    ⟨⟨hp_mem, hq_mem, hpq_lt, m₀, b₀, hp_line, hq_line, hsupp0⟩, ?_⟩
+  refine chain_transfer hq_mem hq_line hsupp0 q rest hchain ?_
+  intro c hc
+  cases rest with
+  | nil => simp at hc
+  | cons d rest'' =>
+    simp only [List.head?_cons, Option.some.injEq] at hc
+    subst hc
+    obtain ⟨hqd, _⟩ := List.isChain_cons_cons.mp hchain
+    have hd_pts : d ∈ pts := (List.mem_filter.mp hqd.2.1).1
+    have hqd_lt : (q.1 : ℚ) < (d.1 : ℚ) := by exact_mod_cast hqd.2.2.1
+    exact edgeSlope_ge_of_supportingLine hq_line hd_pts hsupp0 hqd_lt
+
+/-! ### Worked example: building the two-edge polygon by splicing
+
+We rebuild `threeVertex_chain` — the chain `(0,2) → (1,0) → (3,1)` — *constructively*
+via `isLowerEdge_chain_extend`, supplying only the dominant edge `(0,2) → (1,0)` and
+the right sub-hull `(1,0) → (3,1)` over the restriction `{(1,0), (3,1)}`.  The transfer
+machinery promotes the right edge — whose hand-built supporting line ignores `(0,2)` —
+to a genuine lower edge of the full support. -/
+
+/-- The right restriction of `threeVertex` at the cut index `1` is `[(1,0), (3,1)]`. -/
+theorem threeVertex_filter :
+    threeVertex.filter (fun r => decide ((1 : ℕ) ≤ r.1)) = [((1, 0) : SupportPoint), (3, 1)] := by
+  decide
+
+/-- The right sub-hull is a single lower edge of the restriction. -/
+theorem threeVertex_rightHull :
+    List.IsChain (IsLowerEdge (threeVertex.filter (fun r => decide ((1 : ℕ) ≤ r.1))))
+      [((1, 0) : SupportPoint), (3, 1)] := by
+  rw [threeVertex_filter]
+  refine List.isChain_cons_cons.mpr ⟨?_, List.isChain_singleton _⟩
+  refine ⟨by simp, by simp, by norm_num, 1 / 2, -1 / 2, by norm_num, by norm_num, fun r hr => ?_⟩
+  fin_cases hr <;> norm_num
+
+/-- `threeVertex_chain` rebuilt by splicing the dominant edge onto the right sub-hull,
+exercising `isLowerEdge_chain_extend`.  The right edge `(1,0) → (3,1)` becomes a lower
+edge of the *full* `threeVertex` only because its slope `1/2` clears the dominant slope
+`-2` — exactly the transfer hypothesis. -/
+theorem threeVertex_chain_via_extend :
+    List.IsChain (IsLowerEdge threeVertex) threeVertex :=
+  isLowerEdge_chain_extend (p := (0, 2)) (q := (1, 0)) (m₀ := -2) (b₀ := 2)
+    (by simp [threeVertex]) (by simp [threeVertex]) (by norm_num)
+    (by norm_num) (by norm_num)
+    (fun r hr => by fin_cases hr <;> norm_num)
+    threeVertex_rightHull
+
 end PuiseuxTheoremOQ03
