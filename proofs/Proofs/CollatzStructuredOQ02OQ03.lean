@@ -1357,6 +1357,105 @@ example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
   dropCert_attainsBelow
     [true, false, true, false, false, true, false, false] (by decide) h
 
+/-! ### Deriving the parity vector: the engine from `(M, r)` alone
+
+The decidable certificate above still requires the caller to *supply* the parity
+vector `v` by hand (e.g. `[true, false, true, false, false, false]` for `mod 16`).
+Hand-computing that vector is exactly the error-prone step that produced the broken
+mod-128 commit (#30735, a wrong trajectory that referenced theorems never written).
+
+`deriveVector b (M, r)` removes the hand step entirely: it simulates `b` affine
+steps starting from `(M, r)`, reading each parity bit off the constant component
+`d` (the value `M·m + r` has the same parity as `r` precisely while the leading
+coefficient stays even — the residue-determined window).  The headline fact
+`deriveVector_of_affValid` shows the derivation is *canonical*: it recovers **the**
+valid parity vector of any length whenever one exists, so it is a complete
+replacement for the hand-supplied vector — not a heuristic.  A residue family is then
+certified from `(M, r, b)` plus a single `by decide`, with no parity vector ever
+written or computed by the author. -/
+
+/-- Derive the parity vector of a residue class by simulating `b` affine steps from
+the coefficient pair `p = (c, d)`, reading each bit off the constant's parity
+(`d % 2 = 1` ⇒ odd step).  Structural recursion on the step budget `b`, so it always
+terminates; the budget plays the role the modulus exponent does for `M = 2^b`. -/
+def deriveVector : ℕ → ℕ × ℕ → List Bool
+  | 0,     _ => []
+  | b + 1, p => decide (p.2 % 2 = 1) :: deriveVector b (affStep (decide (p.2 % 2 = 1)) p)
+
+/-- The derived vector has exactly the requested length. -/
+theorem deriveVector_length : ∀ (b : ℕ) (p : ℕ × ℕ), (deriveVector b p).length = b := by
+  intro b
+  induction b with
+  | zero => intro p; rfl
+  | succ b ih => intro p; simp [deriveVector, ih]
+
+/-- **Canonicity of the derivation.**  Every valid parity vector is exactly the one
+the simulator derives: `deriveVector` reads bits off the constant `d`, and validity
+forces the chosen bit (odd step ⇒ `d` odd, even step ⇒ `d` even).  So the derivation
+is not a heuristic — it recovers *the* valid vector of any length whenever one
+exists, making `deriveVector b (M, r)` a complete stand-in for a hand-written
+certificate. -/
+theorem deriveVector_of_affValid : ∀ {v : List Bool} {c d : ℕ},
+    AffValid v c d → deriveVector v.length (c, d) = v := by
+  intro v c d hv
+  induction hv with
+  | nil => rfl
+  | @odd v c d _ hd _ ih =>
+    have hb : decide (d % 2 = 1) = true := by simp [hd]
+    show deriveVector (v.length + 1) (c, d) = true :: v
+    simp only [deriveVector, hb, affStep]
+    rw [ih]
+  | @even v c d _ hd _ ih =>
+    have hb : decide (d % 2 = 1) = false := by simp [hd]
+    show deriveVector (v.length + 1) (c, d) = false :: v
+    simp only [deriveVector, hb, affStep]
+    rw [ih]
+
+/-- **One-shot residue-drop engine with derived vector.**  The caller supplies only the
+modulus `M`, residue `r`, and step budget `b`; the parity vector is derived and the whole
+drop-certificate (validity, the two drop bounds, non-emptiness) is discharged by `decide`.
+A new residue family becomes `deriveDropCert_attainsBelow (b := …) (by decide) h` — no
+parity vector written or computed by hand. -/
+theorem deriveDropCert_attainsBelow {M r b : ℕ}
+    (h : dropCert M r (deriveVector b (M, r)) = true) {n : ℕ} (hn : n % M = r) :
+    AttainsBelow n :=
+  dropCert_attainsBelow (deriveVector b (M, r)) h hn
+
+/-! ### Validation: every gallery family re-derived from `(M, r, b)` only
+
+Each drop below is now certified by the modulus, residue, and a step budget — the
+parity vectors `[true, false, …]` of Part II are gone.  `decide` evaluates
+`deriveVector`, checks validity, and verifies `c_k < M`, `d_k < r` in one shot. -/
+
+/-- `n ≡ 3 (mod 16)`: derived 6-step window, no hand-written vector. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 6) (by decide) h
+
+/-- `n ≡ 11 (mod 32)`: derived 8-step window. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 8) (by decide) h
+
+/-- `n ≡ 23 (mod 32)`: derived 8-step window. -/
+example {n : ℕ} (h : n % 32 = 23) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 8) (by decide) h
+
+/-- `n ≡ 7 (mod 128)`: derived 11-step window (`3^4 = 81 < 128`). -/
+example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- `n ≡ 15 (mod 128)`: derived 11-step window. -/
+example {n : ℕ} (h : n % 128 = 15) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- `n ≡ 59 (mod 128)`: derived 11-step window. -/
+example {n : ℕ} (h : n % 128 = 59) : AttainsBelow n :=
+  deriveDropCert_attainsBelow (b := 11) (by decide) h
+
+/-- The canonicity theorem in action: the derived `mod 16` vector is *literally* the
+hand-written one of Part II — `deriveVector` is a drop-in replacement, not an
+approximation. -/
+example : deriveVector 6 (16, 3) = [true, false, true, false, false, false] := by decide
+
 /-! ## Part VI: A general residue-class density floor
 
 The four explicit density bounds of Part II.5 (`attainsBelow_density_lower`,
