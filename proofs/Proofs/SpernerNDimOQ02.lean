@@ -1008,4 +1008,130 @@ theorem baseOf_pivot_of_not_canon (s : SpernerGrid.GridSimplex d N) (a b : Fin d
       rw [hxj]
       exact SpernerGrid.BaryPoint.lexLE_trans hple0 (hs j)
 
+-- ============================================================
+-- SECTION: The orientation ambiguity is a `d ≤ 1` phenomenon
+-- ============================================================
+-- `IsCanon.geometry_unique` (in `SpernerGridBase`) shows two *canonical*
+-- `GridSimplex`es with the same vertex set are equal — it must assume
+-- `IsCanon` on both because, in general, a geometric cell admits several
+-- chain encodings (the Session-1 `d = 1` reversal counterexample: an edge
+-- `{a, b}` is encoded both as `a → b` and `b → a`, with opposite `miss`).
+--
+-- This section pins down *exactly* where that ambiguity lives.  For `d ≥ 2`
+-- the `miss` direction is **geometry-intrinsic**: it is the unique
+-- coordinate that takes all `d + 1` distinct values across the cell (every
+-- *non*-`miss` coordinate is incremented exactly once, so it takes only the
+-- two values `c, c + 1`).  Hence for `d ≥ 2` the whole encoding is forced by
+-- the vertex set alone — `eq_of_range_eq` gives per-geometry uniqueness with
+-- **no `IsCanon` hypothesis**, so recanonicalization is the identity on every
+-- cell and the orientation doubling is confined to the inductive base cases
+-- `d ≤ 1`.  The three steps mirror the canonical proof but drop the base-
+-- sharing assumption that `IsCanon.base_unique` used to supply:
+--
+--   1. `miss_intrinsic`     — `miss` recovered from the vertex *range* alone
+--      (counting distinct coordinate values, needs `d ≥ 2`);
+--   2. `base_eq_of_miss`    — with `miss` shared, the base is the unique
+--      maximal-`miss`-coordinate vertex of the (shared) cell;
+--   3. `eq_of_range_eq`     — feed the recovered base/`miss` to the existing
+--      `verts_eq` / `incDir_eq` / `eq_of_base_miss_incDir`.
+--
+-- Everything is `GridSimplex` arithmetic over the already-proven recovery
+-- lemmas; it adds no axioms (only `Classical.choice`, transitively) and no
+-- sorries.
+
+open SpernerGrid in
+/-- **The `miss` direction is geometry-intrinsic for `d ≥ 2`.**  Two
+`GridSimplex`es with the same vertex *range* share their `miss` direction —
+*without* assuming a shared base (contrast `GridSimplex.miss_unique`, which
+needs `hbase`).  Proof: along the chain the `miss` coordinate takes the `d + 1`
+distinct values `base, base − 1, …, base − d` (`miss_coord_at`, injective since
+`base ≥ d`), whereas every non-`miss` coordinate is incremented exactly once
+and so takes only the two values `c, c + 1` (`coord_incDir_at`).  If the two
+cells had different `miss`, the coordinate `t.miss` would be some `s.incDir k`
+on the `s`-side; computed over the shared vertex set it would then have both
+`d + 1` and `≤ 2` distinct values — impossible once `d + 1 > 2`. -/
+theorem miss_intrinsic (hd : 2 ≤ d) {s t : SpernerGrid.GridSimplex d N}
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s.miss = t.miss := by
+  by_contra hne
+  -- On the `s`-side the coordinate `t.miss` is some increment direction.
+  obtain ⟨k, hk⟩ := s.incDir_surj_complement t.miss (fun h => hne h.symm)
+  -- The two cells share their vertex `Finset`.
+  have hVS : Finset.univ.image s.verts = Finset.univ.image t.verts := by
+    apply Finset.coe_injective
+    simpa only [Finset.coe_image, Finset.coe_univ, Set.image_univ] using hset
+  -- The `Finset` of values taken by coordinate `t.miss` over the shared cell.
+  set F : Finset ℕ :=
+    (Finset.univ.image t.verts).image (fun v => v.coords t.miss) with hF
+  -- Over the `t`-vertices this has exactly `d + 1` distinct values.
+  have hinj : Function.Injective ((fun v => v.coords t.miss) ∘ t.verts) := by
+    intro a b hab
+    simp only [Function.comp] at hab
+    rw [t.miss_coord_at a, t.miss_coord_at b] at hab
+    have hbge := t.base_miss_ge_d
+    have ha := a.isLt; have hb := b.isLt
+    exact Fin.ext (by omega)
+  have hcardF : F.card = d + 1 := by
+    rw [hF, Finset.image_image, Finset.card_image_of_injective _ hinj,
+      Finset.card_univ, Fintype.card_fin]
+  -- Over the `s`-vertices the same coordinate is `s.incDir k`, taking `≤ 2` values.
+  have hsub : F ⊆ {(s.verts 0).coords (s.incDir k),
+      (s.verts 0).coords (s.incDir k) + 1} := by
+    rw [hF, ← hVS, Finset.image_image]
+    intro x hx
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp] at hx
+    obtain ⟨m, rfl⟩ := hx
+    rw [← hk, s.coord_incDir_at k m]
+    by_cases h : k.val < m.val
+    · rw [if_pos h]
+      exact Finset.mem_insert_of_mem (Finset.mem_singleton_self _)
+    · rw [if_neg h]
+      exact Finset.mem_insert_self _ _
+  have hcardF2 : F.card ≤ 2 := by
+    refine (Finset.card_le_card hsub).trans ?_
+    exact (Finset.card_insert_le _ _).trans (by simp)
+  rw [hcardF] at hcardF2
+  omega
+
+open SpernerGrid in
+/-- **Base recovery without canonicality.**  Two `GridSimplex`es sharing their
+`miss` direction and vertex range share their base vertex.  The base is the
+unique vertex whose `miss` coordinate is maximal (`miss_coord_at`: it is
+`base − m` at chain index `m`), and that is determined by the shared geometry.
+This drops the `IsCanon` assumption of `IsCanon.base_unique`. -/
+theorem base_eq_of_miss {s t : SpernerGrid.GridSimplex d N}
+    (hmiss : s.miss = t.miss)
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s.verts 0 = t.verts 0 := by
+  -- `s.verts 0 = t.verts m` and `t.verts 0 = s.verts m'` (shared range).
+  obtain ⟨m, hm⟩ : s.verts 0 ∈ Set.range t.verts := by rw [← hset]; exact ⟨0, rfl⟩
+  obtain ⟨m', hm'⟩ : t.verts 0 ∈ Set.range s.verts := by rw [hset]; exact ⟨0, rfl⟩
+  -- Compare the (shared) `miss` coordinate at the two bases.
+  have e1 : (s.verts 0).coords s.miss
+      = (t.verts 0).coords t.miss - m.val := by rw [hmiss, ← hm]; exact t.miss_coord_at m
+  have e2 : (t.verts 0).coords t.miss
+      = (s.verts 0).coords s.miss - m'.val := by rw [← hmiss, ← hm']; exact s.miss_coord_at m'
+  have hbs := s.base_miss_ge_d
+  have hbt := t.base_miss_ge_d
+  have hmd := m.isLt; have hm'd := m'.isLt
+  have hm0 : m.val = 0 := by omega
+  rw [← hm, show (m : Fin (d + 1)) = 0 from Fin.ext hm0]
+
+open SpernerGrid in
+/-- **Per-geometry uniqueness for `d ≥ 2`, with no canonicality hypothesis.**
+Two `GridSimplex`es with the same vertex range are *equal* once `d ≥ 2`.  So
+the `GridSimplex` encoding is already one-representative-per-geometry above
+dimension 1: the orientation doubling that motivates `IsCanon` only occurs in
+the inductive base cases `d ≤ 1`.  Proof: recover `miss` (`miss_intrinsic`) and
+the base (`base_eq_of_miss`), then reuse the canonical reconstruction chain
+`verts_eq` → `incDir_eq` → `eq_of_base_miss_incDir`. -/
+theorem eq_of_range_eq (hd : 2 ≤ d) {s t : SpernerGrid.GridSimplex d N}
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s = t := by
+  have hmiss := miss_intrinsic hd hset
+  have hbase := base_eq_of_miss hmiss hset
+  have hverts := SpernerGrid.GridSimplex.verts_eq hbase hmiss hset
+  have hinc := SpernerGrid.GridSimplex.incDir_eq hverts
+  exact s.eq_of_base_miss_incDir t hbase hmiss hinc
+
 end SpernerNDimOQ02
