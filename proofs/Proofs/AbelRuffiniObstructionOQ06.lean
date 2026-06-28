@@ -69,17 +69,38 @@ theorem perm_fin_two_solvable : IsSolvable (Equiv.Perm (Fin 2)) :=
   isSolvable_of_comm (by decide)
 
 /--
+**Solvability of `S₃`.**
+
+`S₃` is solvable: the alternating subgroup `A₃ = ker(sign)` has order `3!/2 = 3`, a
+prime, so it is cyclic, hence abelian, hence solvable; and the quotient `S₃/A₃ ↪ ℤˣ`
+(through `sign`) is abelian. Solvability is closed under such extensions
+(`solvable_of_ker_le_range`), so `S₃` is solvable. This is the next step of the
+positive side of the threshold above `S₂`. -/
+theorem perm_fin_three_solvable : IsSolvable (Equiv.Perm (Fin 3)) := by
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  have hcard : Nat.card (alternatingGroup (Fin 3)) = 3 := by
+    rw [nat_card_alternatingGroup, Nat.card_eq_fintype_card, Fintype.card_fin]; decide
+  haveI : IsCyclic (alternatingGroup (Fin 3)) := isCyclic_of_prime_card hcard
+  haveI : IsSolvable (alternatingGroup (Fin 3)) :=
+    isSolvable_of_comm (fun a b => IsCyclic.commutative.comm a b)
+  refine solvable_of_ker_le_range
+    (alternatingGroup (Fin 3)).subtype Equiv.Perm.sign ?_
+  rw [Subgroup.range_subtype]
+  exact le_of_eq alternatingGroup_eq_sign_ker.symm
+
+/--
 **The symmetric threshold, both endpoints.**
 
-`S₂` is solvable while `Sₙ` is not solvable for any `n ≥ 5`. This is the
+`S₂` and `S₃` are solvable while `Sₙ` is not solvable for any `n ≥ 5`. This is the
 group-theoretic skeleton of Abel–Ruffini: solvability of the symmetric group is
 exactly what separates the radically-solvable low degrees from the
 radically-unsolvable high degrees.
 -/
 theorem symmetric_threshold :
-    IsSolvable (Equiv.Perm (Fin 2)) ∧
+    IsSolvable (Equiv.Perm (Fin 2)) ∧ IsSolvable (Equiv.Perm (Fin 3)) ∧
     (∀ n : ℕ, 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))) :=
-  ⟨perm_fin_two_solvable, fun _ hn => symmetricGroup_not_solvable hn⟩
+  ⟨perm_fin_two_solvable, perm_fin_three_solvable,
+    fun _ hn => symmetricGroup_not_solvable hn⟩
 
 /-!
 ## Part II: The radical-solvability criterion

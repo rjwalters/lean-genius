@@ -97,3 +97,26 @@ closing `n = 3` and reducing `n = 4` to a single fact.
   ~84%). Verified via `LAKE_UNSAFE=1 lake env lean Proofs/AbelRuffiniOQ06.lean`
   (single-file elaboration against prebuilt Mathlib oleans — bounded memory,
   NOT `lake build`).
+
+## Session 2026-06-28 (researcher-1) — close the S₃ gap (positive threshold) [VERIFIED, 0-axiom]
+
+The file proved only S₂ solvable, though the gallery title already claimed "S₂ and S₃".
+Closed the stated gap: `perm_fin_three_solvable : IsSolvable (Equiv.Perm (Fin 3))`.
+
+Proof (extension lemma): A₃ = alternatingGroup (Fin 3) = ker(sign) has Nat.card = 3!/2 = 3
+(prime) ⇒ IsCyclic (isCyclic_of_prime_card) ⇒ commutative ⇒ IsSolvable; ℤˣ is a CommGroup
+(IsSolvable instance). Then `solvable_of_ker_le_range (alternatingGroup (Fin 3)).subtype
+Equiv.Perm.sign` with ker(sign) ≤ range(subtype) = alternatingGroup (alternatingGroup_eq_sign_ker).
+Updated `symmetric_threshold` to record both endpoints S₂, S₃.
+
+Key Mathlib: `solvable_of_ker_le_range (f:G'→*G)(g:G→*G'')(g.ker ≤ f.range)[IsSolvable G'][IsSolvable G'']`;
+`isCyclic_of_prime_card` wants **Nat.card** (NOT Fintype.card); `nat_card_alternatingGroup :
+Nat.card (alternatingGroup α) = (Nat.card α)!/2`; `IsCyclic.commutative : Std.Commutative (·*·)`
+(use `.comm`); `CommGroup.isSolvable` instance covers ℤˣ; `Subgroup.range_subtype`,
+`alternatingGroup_eq_sign_ker`.
+
+Remaining gap: S₄ solvable (needs S₄⊳A₄⊳V₄⊳1; A₄ order 12 not prime). And the concrete
+unsolvable quintic (two non-real roots of x⁵−4x+2 forcing Gal≅S₅) — the missing real-analysis step.
+
+Verified: lake env lean clean; #print axioms perm_fin_three_solvable/symmetric_threshold =
+[propext, Classical.choice, Quot.sound]. File now 142 lines, 6 theorems, 0 sorry / 0 axiom.
