@@ -14,9 +14,9 @@
       "Topology"
     ],
     "namespace": "EgorovTheoremOQ01OQ03",
-    "lineCount": 163,
+    "lineCount": 210,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/EgorovTheoremOQ01OQ03.lean",
     "sorries": 0
@@ -39,8 +39,8 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 163,
-    "theoremCount": 6,
+    "lineCount": 210,
+    "theoremCount": 7,
     "definitionCount": 1,
     "badge": "verified",
     "originalContributions": [
@@ -50,7 +50,8 @@
       "marching_not_tendstoUniformlyOn_univ: the s = ∅ corollary — fₙ does not converge uniformly to 0 on all of ℝ, the cleanest one-line statement of non-uniformity on the infinite-measure space.",
       "marching: the marching-indicator construction 𝟙_[n,n+1] on ℝ as a Set.indicator, the unit bump that marches to +∞.",
       "marching_integral_eq_one: each marching indicator integrates to exactly 1 (∫ 𝟙_[n,n+1] = vol[n,n+1] = 1) — the unit of mass is conserved for every n even as the bump escapes to +∞.",
-      "marching_integral_not_tendsto_zero: the SAME counterexample breaks the limit–integral interchange — although fₙ → 0 everywhere, ∫ fₙ = 1 ↛ 0 = ∫(lim fₙ). This exhibits the integral-side face of the infinite-measure pathology (mass escaping to infinity): on a finite-measure space Egorov would force uniform convergence off a small set and hence control the integrals."
+      "marching_integral_not_tendsto_zero: the SAME counterexample breaks the limit–integral interchange — although fₙ → 0 everywhere, ∫ fₙ = 1 ↛ 0 = ∫(lim fₙ). This exhibits the integral-side face of the infinite-measure pathology (mass escaping to infinity): on a finite-measure space Egorov would force uniform convergence off a small set and hence control the integrals.",
+      "marching_not_tendstoInMeasure: the convergence-in-measure face — the marching indicators converge to 0 everywhere yet do NOT converge to 0 in measure on (ℝ, vol), since {x : 1/2 ≤ ‖fₙ(x)‖} = [n,n+1] has constant measure 1. On a finite-measure space a.e. convergence would force convergence in measure; this exhibits the infinite-measure failure."
     ],
     "prerequisites": [
       "Metric.tendstoUniformlyOn_iff: the ε-characterization of uniform convergence on a set, used to refute uniformity at ε = 1/2",
@@ -165,11 +166,16 @@
       "endLine": 133,
       "summary": "marching_not_tendstoUniformlyOn_of_volume_lt_top: for any s with vol s < ∞, fₙ is not uniform on sᶜ. Uniformity at ε = 1/2 forces [n,n+1] ⊆ s for all n ≥ N, hence [N,∞) ⊆ s (via floor bounds), so vol s ≥ vol[N,∞) = ∞ — contradiction. Packaged as volume_finite_hypothesis_essential and specialized to s = ∅ in marching_not_tendstoUniformlyOn_univ.",
       "mathContext": "Uniform 1/2-control off s past index N ⇒ the tail [N,∞) ⊆ s ⇒ vol s = ∞, contradicting finiteness. Only monotonicity of measure is used; s need not be measurable."
+    },
+    {
+      "id": "conv-in-measure",
+      "title": "No Convergence in Measure",
+      "summary": "marching_not_tendstoInMeasure: fₙ → 0 everywhere but not in measure on (ℝ, vol). For ε = 1/2 the bad set {x : 1/2 ≤ edist (fₙ x) 0} equals [n,n+1] (volume 1, constant), so it cannot tend to 0 — the infinite-measure failure of the a.e. ⇒ in-measure implication that holds on finite-measure spaces."
     }
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "The finite-measure hypothesis in Egorov's theorem is essential. On (ℝ, Lebesgue) the marching indicators fₙ = 𝟙_[n,n+1] converge to 0 at every point (marching_tendsto_zero), yet for any set s of finite Lebesgue measure they fail to converge uniformly to 0 on sᶜ (marching_not_tendstoUniformlyOn_of_volume_lt_top): uniform 1/2-control off s would force the infinite-measure tail [N,∞) into s. Packaged as volume_finite_hypothesis_essential (no finite-measure exceptional set exists) and marching_not_tendstoUniformlyOn_univ (non-uniformity on all of ℝ). The same construction is read through integrals: each fₙ has integral 1 (marching_integral_eq_one), so ∫ fₙ = 1 ↛ 0 = ∫(lim fₙ) (marching_integral_not_tendsto_zero) — the mass-escaping-to-infinity, integral-side face of the infinite-measure pathology. 163 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "summary": "The finite-measure hypothesis in Egorov's theorem is essential. On (ℝ, Lebesgue) the marching indicators fₙ = 𝟙_[n,n+1] converge to 0 at every point (marching_tendsto_zero), yet for any set s of finite Lebesgue measure they fail to converge uniformly to 0 on sᶜ (marching_not_tendstoUniformlyOn_of_volume_lt_top): uniform 1/2-control off s would force the infinite-measure tail [N,∞) into s. Packaged as volume_finite_hypothesis_essential (no finite-measure exceptional set exists) and marching_not_tendstoUniformlyOn_univ (non-uniformity on all of ℝ). The same construction is read through integrals: each fₙ has integral 1 (marching_integral_eq_one), so ∫ fₙ = 1 ↛ 0 = ∫(lim fₙ) (marching_integral_not_tendsto_zero) — the mass-escaping-to-infinity, integral-side face of the infinite-measure pathology. 163 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries. A convergence-in-measure face is also added: fₙ → 0 everywhere yet not in measure, the infinite-measure failure of the a.e. ⇒ in-measure implication.",
     "implications": "Together with the parent entry — which shows the removed exceptional set cannot be taken null on a finite-measure example — this delimits Egorov's theorem from both sides: the conclusion needs a genuinely positive exceptional set, and the hypothesis needs genuinely finite total measure. The integral view links the failure to the failure of the limit–integral interchange (and dominated/bounded convergence) on infinite-measure spaces: a single escaping unit of mass defeats both. The counterexample is original to the gallery; Mathlib has the theorem but not the sharpness witness.",
     "openQuestions": []
   }

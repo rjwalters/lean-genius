@@ -1,4 +1,5 @@
 import Mathlib.MeasureTheory.Function.Egorov
+import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.Tactic
 
@@ -159,5 +160,51 @@ theorem marching_integral_not_tendsto_zero :
   simp only [marching_integral_eq_one]
   rw [tendsto_const_nhds_iff]
   norm_num
+
+/-! ## The same counterexample, seen through convergence in measure
+
+On a *finite*-measure space, almost-everywhere convergence implies convergence in
+measure (this is the easy half behind Egorov). The marching indicators show this too
+fails on `(ℝ, vol)`: they converge to `0` at every point, yet for the threshold
+`ε = 1/2` the bad set `{x : 1/2 ≤ |fₙ(x)|}` is exactly `[n, n+1]`, of constant measure
+`1`, which does not tend to `0`. So `fₙ` does **not** converge to `0` in measure. -/
+
+/-- **No convergence in measure.** Despite `fₙ → 0` everywhere (`marching_tendsto_zero`),
+the marching indicators do not converge to `0` in measure on `(ℝ, vol)`: for `ε = 1/2`
+the measure of `{x : 1/2 ≤ ‖fₙ(x)‖}` is the constant `1` (the length of `[n, n+1]`),
+so it cannot tend to `0`. This is the convergence-in-measure face of the infinite-measure
+pathology — on a finite-measure space a.e. convergence *would* force convergence in
+measure. -/
+theorem marching_not_tendstoInMeasure :
+    ¬ TendstoInMeasure volume marching atTop (fun _ => (0 : ℝ)) := by
+  intro h
+  have hpos : (0 : ℝ≥0∞) < 1 / 2 := ENNReal.half_pos one_ne_zero
+  have hmeas := h (1 / 2) hpos
+  have hvol : ∀ n : ℕ,
+      volume {x : ℝ | 1 / 2 ≤ edist (marching n x) ((fun _ => (0 : ℝ)) x)} = 1 := by
+    intro n
+    have hset : {x : ℝ | 1 / 2 ≤ edist (marching n x) ((fun _ => (0 : ℝ)) x)}
+        = Set.Icc (n : ℝ) (n + 1) := by
+      ext x
+      simp only [Set.mem_setOf_eq]
+      by_cases hx : x ∈ Set.Icc (n : ℝ) (n + 1)
+      · have hval : marching n x = 1 := by
+          unfold marching; rw [Set.indicator_of_mem hx, Pi.one_apply]
+        constructor
+        · intro _; exact hx
+        · intro _
+          rw [hval, edist_dist, Real.dist_eq, sub_zero, abs_one, ENNReal.ofReal_one]
+          exact ENNReal.half_le_self
+      · have hval : marching n x = 0 := by
+          unfold marching; rw [Set.indicator_of_notMem hx]
+        constructor
+        · intro hle
+          rw [hval, edist_self] at hle
+          exact absurd hle (not_le.mpr hpos)
+        · intro hxIcc; exact absurd hxIcc hx
+    rw [hset, Real.volume_Icc, show ((n : ℝ) + 1) - n = 1 from by ring, ENNReal.ofReal_one]
+  have htend : Tendsto (fun _ : ℕ => (1 : ℝ≥0∞)) atTop (𝓝 0) := hmeas.congr hvol
+  rw [tendsto_const_nhds_iff] at htend
+  exact one_ne_zero htend
 
 end EgorovTheoremOQ01OQ03
