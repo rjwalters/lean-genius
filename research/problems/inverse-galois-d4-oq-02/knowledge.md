@@ -99,3 +99,34 @@ entry oq-03 ("characterize all n with n·φ(n) = n!"):
 **Upshot**: the elementary bracket pins |Gal(Xⁿ−p)| exactly at n = 2 (→ 2 = |C₂|) and n = 3 (→ 6 = |S₃|),
 and nowhere else; n ≥ 4 (starting with the base entry's n = 4, where 4·φ(4) = 8 ≠ 24) has genuine slack.
 Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03-oq-01/`. Same single-file `lake env lean` recipe.
+
+## Session 2026-06-28 (researcher-2) — de-risking the exact-order upper bound
+
+Surveyed Mathlib for the missing piece (`|Gal| = n·φ(n)`). The infrastructure exists in
+**`Mathlib.FieldTheory.KummerExtension`** and the path is more tractable than the prior
+"hard `splittingField = ℚ(ζₙ,ⁿ√p)`" framing suggested. Key findings:
+
+- **`autEquivRootsOfUnity (hζ : (primitiveRoots n K).Nonempty) (H : Irreducible (X^n - C a)) L`**
+  `: Gal(L/K) ≃* rootsOfUnity n K` when `L` is the splitting field of `Xⁿ−a` over a base `K`
+  that **already contains** a primitive `n`-th root of unity. This is exactly the TOP of the
+  tower with `K = ℚ(ζₙ)`: it gives `[L : ℚ(ζₙ)] = n` under genericity (= irreducibility of
+  `Xⁿ−p` over `ℚ(ζₙ)`).
+- **The upper bound `[SF:ℚ] ≤ n·φ(n)` is UNCONDITIONAL** (no genericity needed):
+  `[SF:ℚ(ζₙ)] ≤ n` because `SF = ℚ(ζₙ)(α)` for any root `α` and `minpoly ℚ(ζₙ) α ∣ Xⁿ−p`
+  (degree `≤ n`); `[ℚ(ζₙ):ℚ] = φ(n)`; multiply via **`Module.finrank_mul_finrank`**
+  (`Mathlib.LinearAlgebra.Dimension.Free`). Genericity upgrades the `≤ n` to `= n`, giving
+  the exact `n·φ(n)`.
+- The φ(n)|Gal direction (session 1) already constructs a primitive `n`-th root **inside SF**
+  from root ratios `β/α` (`HasEnoughRootsOfUnity.of_card_le`, `rootsOfUnity.mkOfPowEq`); that
+  same `ζ ∈ SF` is what realizes `ℚ(ζₙ)` as an intermediate field of `SF/ℚ` — reuse it rather
+  than re-adjoining cyclotomically.
+
+**Concrete remaining formalization** (estimated 120–200 lines, single session if the tower
+plumbing cooperates): (1) package `ζ ∈ SF` as `IntermediateField ℚ SF` equal to `ℚ(ζₙ)`;
+(2) `[SF : ℚ(ζₙ)] ≤ n` via `IntermediateField.adjoin` of one root + `minpoly` degree bound;
+(3) `[ℚ(ζₙ):ℚ] = φ(n)` (reuse the sibling's cyclotomic recipe);
+(4) `Module.finrank_mul_finrank` + `IsGalois.card_aut_eq_finrank` ⟹ `|Gal| ≤ n·φ(n)`;
+(5) combine with the existing `lcm_dvd_gal_card` lower bound, and with genericity for equality.
+The fiddly step is (2): keeping the `NeZero n` / intermediate-field coercions aligned (cf. the
+`rootsOfUnity` motive gotcha already logged above). NOT a `>1000`-line blocker — re-tier from
+"hard infra" to **DEEP DIVE, tractable**.
