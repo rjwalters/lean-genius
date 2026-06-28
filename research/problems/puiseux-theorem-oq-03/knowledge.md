@@ -249,3 +249,55 @@ session-4 file, missing session 5's edgeWidths). Fix: created a *separate* workt
 symlinked its `proofs/.lake` → main repo `.lake` for prebuilt oleans, edited +
 committed there. Verify recipe unchanged otherwise:
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`.
+
+## Session (2026-06-28, researcher-4): complete lower hull — recursion runs to completion
+
+Closed the capstone the previous sessions were building toward. Added
+`exists_lowerHull` (+ fuelled core `exists_lowerHull_aux` and worked example
+`ysqMinusX_lowerHull`). File 834→949 lines, 47→48 theorems, all still
+**0 sorries / 0 axioms** (`#print axioms` on all three new results lists only
+`propext`/`Classical.choice`/`Quot.sound`).
+
+**Statement.** For a distinct-index support `pts` with a strictly-leftmost point
+`p`, there is a chain of lower edges `p :: vs` of `pts` whose final vertex `w` has
+maximal index over all of `pts`:
+
+```
+∃ vs w, List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+        (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1
+```
+
+This is the **existence half of the Newton polygon construction** — the object the
+Newton–Puiseux algorithm walks edge by edge. Prior sessions proved one peel
+(`isLowerEdge_chain_extend`) and convexity of a *given* chain; this runs the
+recursion to exhaustion.
+
+**Proof architecture.** Fuelled strong induction on `pts.length` (an explicit
+`∀ n, pts.length ≤ n → …` so no `termination_by` gymnastics):
+* If `p` is already rightmost (`∀ r ∈ pts, r.1 ≤ p.1`) return the singleton `[p]`.
+* Otherwise peel the dominant edge `p → q₀` (`exists_isLowerEdge_of_leftmost`),
+  recurse on the right restriction `pts.filter (q₀.1 ≤ ·.1)`, and splice with
+  `isLowerEdge_chain_extend`.
+
+**Termination key.** The restriction strictly shrinks because the leftmost `p` is
+dropped (`p.1 < q₀.1` so `decide (q₀.1 ≤ p.1) = false`):
+`List.length_filter_eq_length_iff` + `List.length_filter_le` give
+`(filter).length < pts.length`, hence `≤ n`.
+
+**Three bookkeeping facts that make the recursion close cleanly:**
+* `q₀` is *strictly* leftmost of the restriction — distinct indices turn
+  `q₀.1 ≤ r.1` into `q₀.1 < r.1` for `r ≠ q₀` (`hdist`).
+* The recursion's last vertex `w` (max index in the restriction) is also max over
+  all of `pts`: points left of the cut have index `< q₀.1 ≤ w.1`.
+* `(p :: q₀ :: vs').getLast? = (q₀ :: vs').getLast?` is `rfl`, so the last vertex
+  is preserved by prepending the dominant edge.
+
+**Next.** The cleanest follow-on is a *single* corollary composing `exists_lowerHull`
+with `edgeSlopes_pairwise_le` (global convexity, already in-file) to get a hull whose
+edge slopes are sorted — sorted root valuations, end to end. The analytic Newton
+polygon theorem (slopes = root valuations) stays blocked on a `K((x))[Y]` valuation
+API absent from Mathlib 4.26.0.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (~26s, host toolchain, single-file against
+prebuilt Mathlib oleans).

@@ -831,4 +831,119 @@ theorem threeVertex_chain_via_extend :
     (fun r hr => by fin_cases hr <;> norm_num)
     threeVertex_rightHull
 
+/-! ### The complete lower hull: a verified Newton–Puiseux peel-down
+
+Everything above builds *one* peel of the recursion (`isLowerEdge_chain_extend`) and
+proves a given chain convex.  The capstone is to run the recursion to completion: from
+the left endpoint, repeatedly splice the dominant edge onto the right sub-hull until the
+support is exhausted, and obtain a *single* chain of lower edges that starts at the
+leftmost vertex and ends at the rightmost.  This is the existence half of the Newton
+polygon construction — the object the Newton–Puiseux algorithm walks edge by edge.
+
+The recursion measure is `pts.length`: each peel removes the leftmost point from the
+right-restriction `pts.filter (q.1 ≤ ·.1)` (the dominant cut sits strictly to its right),
+so the restriction is strictly shorter and the fuelled strong induction below terminates.
+The only mathematical inputs are the existence of a dominant edge from the left endpoint
+(`exists_isLowerEdge_of_leftmost`) and the transfer step that promotes the recursively
+built right sub-hull to a chain of the full support (`isLowerEdge_chain_extend`). -/
+
+/-- **Fuelled strong-induction core of the hull construction.**  With `pts.length ≤ n`
+as the well-founded measure, a strictly-leftmost point `p` of a distinct-index support
+spawns a chain of lower edges `p :: vs` of `pts` ending at a vertex `w` of maximal index.
+Each recursion peels the dominant edge `p → q₀` and recurses on the right restriction,
+which is strictly shorter (so its length is `≤ n`). -/
+theorem exists_lowerHull_aux : ∀ (n : ℕ) (pts : List SupportPoint) (p : SupportPoint),
+    pts.length ≤ n → p ∈ pts →
+    (∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b) →
+    (∀ q ∈ pts, q ≠ p → p.1 < q.1) →
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1 := by
+  intro n
+  induction n with
+  | zero =>
+    intro pts p hlen hp _ _
+    rw [List.eq_nil_iff_length_eq_zero.mpr (Nat.le_zero.mp hlen)] at hp
+    simp at hp
+  | succ n ih =>
+    intro pts p hlen hp hdist hleft
+    by_cases hmax : ∀ r ∈ pts, r.1 ≤ p.1
+    · -- `p` is already the rightmost vertex: the hull is the single point `[p]`.
+      exact ⟨[], p, List.isChain_singleton _, rfl, hp, hmax⟩
+    · -- some support point lies strictly to the right of `p`; peel the dominant edge.
+      push_neg at hmax
+      obtain ⟨r₀, hr₀, hr₀lt⟩ := hmax
+      have hother : ∃ q ∈ pts, q ≠ p :=
+        ⟨r₀, hr₀, fun h => by rw [h] at hr₀lt; exact lt_irrefl _ hr₀lt⟩
+      obtain ⟨q₀, hedge⟩ := exists_isLowerEdge_of_leftmost hp hother hleft
+      obtain ⟨hp_mem, hq₀_mem, hpq_lt, m₀, b₀, hp_line, hq₀_line, hsupp0⟩ := hedge
+      -- the right restriction at the dominant cut `q₀`
+      have hq₀' : q₀ ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)) :=
+        List.mem_filter.mpr ⟨hq₀_mem, by simp⟩
+      -- the restriction is strictly shorter (it drops `p`), so its length is `≤ n`
+      have hlen' : (pts.filter (fun r => decide (q₀.1 ≤ r.1))).length ≤ n := by
+        have hle := List.length_filter_le (fun r => decide (q₀.1 ≤ r.1)) pts
+        rcases lt_or_eq_of_le hle with h | h
+        · omega
+        · exfalso
+          rw [List.length_filter_eq_length_iff] at h
+          have hpp := h p hp
+          simp only [decide_eq_true_eq] at hpp
+          omega
+      -- distinctness passes to the sublist
+      have hdist' : ∀ a ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)),
+          ∀ b ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)), a.1 = b.1 → a = b :=
+        fun a ha b hb hab =>
+          hdist a (List.mem_filter.mp ha).1 b (List.mem_filter.mp hb).1 hab
+      -- `q₀` is strictly leftmost in the restriction
+      have hleft' : ∀ q ∈ pts.filter (fun r => decide (q₀.1 ≤ r.1)), q ≠ q₀ → q₀.1 < q.1 := by
+        intro q hq hqne
+        obtain ⟨hq_pts, hq_dec⟩ := List.mem_filter.mp hq
+        have hge : q₀.1 ≤ q.1 := by simpa using hq_dec
+        rcases lt_or_eq_of_le hge with h | h
+        · exact h
+        · exact absurd (hdist q hq_pts q₀ hq₀_mem h.symm) hqne
+      -- recurse on the strictly shorter restriction
+      obtain ⟨vs', w, hchain', hlast', hw_pts', hwmax'⟩ :=
+        ih (pts.filter (fun r => decide (q₀.1 ≤ r.1))) q₀ hlen' hq₀' hdist' hleft'
+      refine ⟨q₀ :: vs', w, ?_, ?_, (List.mem_filter.mp hw_pts').1, ?_⟩
+      · -- splice the dominant edge onto the recursively built right sub-hull
+        exact isLowerEdge_chain_extend hp_mem hq₀_mem hpq_lt hp_line hq₀_line hsupp0 hchain'
+      · -- the last vertex is unchanged by prepending `p`
+        rw [show (p :: q₀ :: vs').getLast? = (q₀ :: vs').getLast? from rfl]; exact hlast'
+      · -- `w` has maximal index over all of `pts`, not just the restriction
+        intro r hr
+        by_cases hcut : q₀.1 ≤ r.1
+        · exact hwmax' r (List.mem_filter.mpr ⟨hr, by simpa using hcut⟩)
+        · push_neg at hcut
+          have hq₀w : q₀.1 ≤ w.1 := hwmax' q₀ hq₀'
+          omega
+
+/-- **Existence of the complete lower hull (Newton polygon chain).**  For any
+distinct-index support with a strictly-leftmost point `p`, there is a chain of lower
+edges `p :: vs` of `pts` whose final vertex `w` has the maximal index over the whole
+support.  Equivalently: the dominant edges from the left endpoint splice into one
+connected lower hull reaching the right endpoint.  This is the existence statement the
+Newton–Puiseux recursion realizes; combined with `edgeSlopes_pairwise_le` (global
+convexity) the resulting chain has sorted edge slopes — sorted root valuations. -/
+theorem exists_lowerHull {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ ∀ r ∈ pts, r.1 ≤ w.1 :=
+  exists_lowerHull_aux pts.length pts p le_rfl hp hdist hleft
+
+/-- The worked example `Y² − x`: the complete lower hull from the leftmost vertex
+`(0,1)` is the single edge to `(2,0)`, and `(2,0)` has maximal index — the constructive
+end-to-end Newton polygon of the support `{(0,1), (2,0)}`. -/
+theorem ysqMinusX_lowerHull :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge YsqMinusX) ((0, 1) :: vs) ∧
+      ((0, 1) :: vs).getLast? = some w ∧ w ∈ YsqMinusX ∧ ∀ r ∈ YsqMinusX, r.1 ≤ w.1 :=
+  exists_lowerHull (0, 1) (by simp [YsqMinusX])
+    (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
+    (by intro q hq hne; fin_cases hq <;> simp_all)
+
 end PuiseuxTheoremOQ03

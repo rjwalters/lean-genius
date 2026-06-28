@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-06-28, researcher-5): hull-construction recursion STEP verified 0-axiom. isLowerEdge_of_right (global-support transfer) + chain_transfer + isLowerEdge_chain_extend supply the inductive step of Newton-polygon hull construction — the principal combinatorial input previously missing. Full exists_hull existence and the analytic Newton polygon theorem remain open.",
+    "progressSummary": "PROGRESS (2026-06-28, researcher-4): hull-construction recursion COMPLETED. exists_lowerHull assembles the full lower-hull chain (leftmost→rightmost vertex) by fuelled strong induction over pts.length, splicing one dominant edge per peel via isLowerEdge_chain_extend; verified 0-axiom. The combinatorial Newton-polygon existence is now closed end-to-end. The analytic Newton polygon theorem (slopes = root valuations) remains open, blocked on a Mathlib valuation API.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -46,7 +46,8 @@
       "isLowerEdge_of_right (PuiseuxTheoremOQ03.lean): lower edge of right restriction with slope ≥ dominant slope ⇒ lower edge of full support",
       "chain_transfer (PuiseuxTheoremOQ03.lean): propagates dominant-slope bound along a whole right sub-hull via edgeSlope_mono; upgrades every edge to full-support edge",
       "isLowerEdge_chain_extend (PuiseuxTheoremOQ03.lean): one verified peel of Newton-Puiseux recursion — prepend dominant edge to right sub-hull chain ⇒ IsChain (IsLowerEdge pts) over full support",
-      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator"
+      "threeVertex_chain_via_extend + threeVertex_rightHull + threeVertex_filter: worked example rebuilt constructively through the splice combinator",
+      "exists_lowerHull_aux + exists_lowerHull in PuiseuxTheoremOQ03.lean: complete lower-hull existence (chain from leftmost vertex to max-index vertex) for distinct-index support; ysqMinusX_lowerHull worked example. 0 sorries / 0 axioms (#print axioms: propext/Classical.choice/Quot.sound only)."
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -58,7 +59,8 @@
       "slope × width = vertical drop: edgeSlope p q · (q.1−p.1) = q.2−p.2 because the slope denominator IS the width — the per-edge bridge coupling valuations (slopes) to multiplicities (widths)",
       "Capstone bookkeeping: Σ (slopeᵢ · widthᵢ) telescopes to the total vertical drop (last).2 − (first).2; equivalently Σ (root valuationᵢ · multiplicityᵢ) = v(constant) − v(leading), the valuation of the product of all roots",
       "The polygon now reads off ALL combinatorial Newton-polygon data from one vertex chain: sorted valuations (edgeSlopes_pairwise_le), total multiplicity (sum_edgeWidths_eq_degree), AND sum-of-valuations-with-multiplicity (neg_sum_slope_mul_width)",
-      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound."
+      "S2-A hull correctness (researcher-5, 2026-06-28): the obstruction to the documented \"peel-and-recurse\" hull construction is that a lower edge of the right restriction pts.filter(q.1 ≤ ·.1) can dip below a left point. RESOLVED: isLowerEdge_of_right proves it cannot, provided the edge slope clears the dominant slope m₀ — convexity forces the right edge line above the dominant line on the left half. This is the precise reason divide-and-conquer Newton-polygon construction is sound.",
+      "exists_lowerHull (2026-06-28, researcher-4): the hull-construction recursion now runs to completion. Fuelled strong induction on pts.length (exists_lowerHull_aux) peels the dominant edge p→q₀ (exists_isLowerEdge_of_leftmost) and recurses on the right restriction pts.filter (q₀.1 ≤ ·.1), which strictly shrinks because the leftmost p is dropped (List.length_filter_eq_length_iff). isLowerEdge_chain_extend splices each peel. Result: a single chain of lower edges p::vs ending at a maximal-index vertex w — the existence half of the Newton polygon, VERIFIED 0-axiom."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -66,9 +68,9 @@
       "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
     ],
     "nextSteps": [
-      "Assemble exists_hull: complete lower-hull vertex chain (head=leftmost, last=rightmost) via well-founded recursion on the right-restriction length, using isLowerEdge_chain_extend as the inductive step (now available). Remaining bookkeeping: monotone-index-along-chain + filter-narrowing from cut q.1 to next cut.",
+      "Strengthen exists_lowerHull: prove the produced chain edge-slopes are sorted by composing with edgeSlopes_pairwise_le (global convexity) — gives sorted root valuations end-to-end as a single corollary.",
       "Newton polygon theorem proper (negated edge slopes = root valuations): blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0.",
-      "S2-B termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases).",
+      "S2-B termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases) — edgeWidths sum-to-degree machinery is the combinatorial half.",
       "Quasi-linear complexity bound (Poteaux-Weimann Õ(d·δ)): blocked on absence of arithmetic-complexity model in Mathlib."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
