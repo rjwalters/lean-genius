@@ -89,6 +89,57 @@
       "The #128 chain's homFree / clique framework"
     ]
   },
+  "sections": [
+    {
+      "id": "framework-overview",
+      "title": "Overview: unifying hereditarity with the forbidden-subgraph framework",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring framing the entry: the #128 chain separately built a forbidden-subgraph framework (homFree, blowup, C₅) and a hereditary-triangle-freeness result (Graph.induce). This file connects them by observing that the inclusion of an induced subgraph is a graph homomorphism, making the entire homFree relation hereditary."
+    },
+    {
+      "id": "graphs-and-induce",
+      "title": "Graphs and induced subgraphs",
+      "startLine": 59,
+      "endLine": 71,
+      "summary": "Re-derives the small framework: a finite simple Graph on Fin n (symmetric, irreflexive adjacency) and Graph.induce S, the induced subgraph keeping only edges with both endpoints in the vertex subset S."
+    },
+    {
+      "id": "homomorphisms-homfree",
+      "title": "Homomorphisms and forbidden-subgraph freeness",
+      "startLine": 72,
+      "endLine": 96,
+      "summary": "IsHom (edge-preserving maps), hasHomCopy / homFree (F-freeness as the absence of a homomorphic copy), and the two structural lemmas: homFree_of_hom (F-freeness pulls back along homomorphisms) and hasHomCopy_mono (copies are monotone along homomorphisms into F)."
+    },
+    {
+      "id": "cliques-Kr-case",
+      "title": "Cliques as the F = Kᵣ case",
+      "startLine": 98,
+      "endLine": 141,
+      "summary": "hasClique / cliqueFree, the complete graph Kᵣ, the bridge cliqueFree_iff_homFree_completeGraph (over an irreflexive target a homomorphic copy of Kᵣ is exactly an r-clique), and cliqueFree_of_hom as the F = Kᵣ corollary of homFree_of_hom."
+    },
+    {
+      "id": "hereditarity",
+      "title": "Hereditarity: the identity inclusion is a homomorphism",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "The heart of the entry. induce_isHom: the identity is a homomorphism G.induce S → G (induction only deletes edges). homFree_induce and cliqueFree_induce then pull F-freeness / Kᵣ-freeness back along that inclusion — hereditarity with no new machinery."
+    },
+    {
+      "id": "blowups-c5",
+      "title": "Blow-ups and the C₅ witness",
+      "startLine": 162,
+      "endLine": 209,
+      "summary": "The blow-up construction and blowup_homFree (every blow-up of an F-free graph is F-free), the 5-cycle C₅, C5_homFree_three (no homomorphic K₃, by ordinary decide), lifting to all r ≥ 3, and the resulting Kᵣ-freeness of every C₅ blow-up."
+    },
+    {
+      "id": "extremal-hereditary",
+      "title": "The extremal family is hereditarily clique-free",
+      "startLine": 211,
+      "endLine": 227,
+      "summary": "blowup_C5_induce_homFree / blowup_C5_induce_cliqueFree: composing hereditarity with the C₅-blow-up results, every induced subgraph of every C₅ blow-up is Kᵣ-free for r ≥ 3 (triangle-free at r = 3) — exactly the robustness #128's ⌊n/2⌋-subgraph hypothesis demands of a sharp construction."
+    }
+  ],
   "conclusion": {
     "summary": "Forbidden-subgraph freeness homFree F G is hereditary (closed under induced subgraphs), because the identity inclusion G.induce S → G is a graph homomorphism and the parent's homFree_of_hom pulls homFree back along it. Specialising to F = K_r gives hereditary clique-freeness, and chaining with the C₅-blow-up results shows every induced subgraph of every C₅ blow-up is K_r-free for r ≥ 3 (triangle-free at r = 3). Fully verified, 0 axioms, 0 sorries; C₅'s K₃-freeness uses ordinary decide.",
     "implications": "This connects the two halves of the #128 formalization — induced-subgraph hereditarity and the C₅-blow-up forbidden-subgraph framework — and certifies the structural robustness any candidate extremal construction for #128 must possess: triangle-/clique-freeness is preserved on every vertex subset, in particular every ⌊n/2⌋-subgraph. It is the qualitative half of the optimality argument; the quantitative half (that the balanced C₅ blow-up still spans > n²/50 edges on every ⌊n/2⌋-subgraph) remains open.",
