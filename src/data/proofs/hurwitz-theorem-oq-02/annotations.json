@@ -1,0 +1,205 @@
+[
+  {
+    "id": "ann-hurwitz-oq02-module-doc",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 67
+    },
+    "type": "context",
+    "title": "Module Overview: Four Algebras, Four Forces",
+    "content": "The module docstring frames the open question — how the four normed division algebras relate to the four fundamental forces — and lays out the canonical dictionary table matching each force's gauge-group dimension to a dimension of the corresponding algebra. Crucially, it is explicit about the boundary between mathematics and interpretation: the physics narrative (which algebra 'is' which force, and why) lives in prose, while only the numerical and group-theoretic skeleton is machine-checked. This honesty is what makes the formalization defensible: it does not claim to derive the Standard Model from algebra, only to make the much-cited 'four ↔ four' coincidence well-posed.",
+    "mathContext": "The dictionary: $\\mathbb{R}\\,(1)\\leftrightarrow$ gravity, $\\mathbb{C}\\,(2)\\leftrightarrow$ EM with $\\dim U(1)=1=\\operatorname{Im}\\mathbb{C}$, $\\mathbb{H}\\,(4)\\leftrightarrow$ weak with $\\dim SU(2)=3=\\operatorname{Im}\\mathbb{H}$, $\\mathbb{O}\\,(8)\\leftrightarrow$ strong with $\\dim SU(3)=8=\\dim\\mathbb{O}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hurwitz's theorem",
+      "normed division algebras",
+      "Standard Model gauge group",
+      "Dixon-Furey-Baez-Huerta programme"
+    ],
+    "prerequisites": [
+      "normed division algebras",
+      "gauge theory basics"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-nda-def",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "The Four Normed Division Algebras as a Fintype",
+    "content": "NDA is an inductive type with exactly four constructors — real, complex, quaternion, octonion — deriving DecidableEq, Fintype, and Repr. Three functions equip it with numerical data: dim (1, 2, 4, 8), imagDim (0, 1, 3, 7), and level (0, 1, 2, 3, the exponent in dim = 2^level). Encoding Hurwitz's classification as a finite type rather than as a predicate on ℝ-algebras is the key modelling choice: it makes 'there are exactly four' a decidable statement (Fintype.card NDA = 4 by decide) and lets the entire dictionary be checked by case analysis.",
+    "mathContext": "Hurwitz (1898): the only finite-dimensional ℝ-algebras with a multiplicative norm $\\|xy\\| = \\|x\\|\\,\\|y\\|$ are $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$, of dimensions $1, 2, 4, 8 = 2^0, 2^1, 2^2, 2^3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "composition algebra",
+      "Cayley-Dickson construction",
+      "Fintype cardinality"
+    ],
+    "prerequisites": [
+      "inductive types",
+      "Fintype"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-dim-facts",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "technique",
+    "title": "Dimensional Identities by Case Analysis",
+    "content": "Four theorems pin down the arithmetic of the dimensions: dim_eq_imagDim_succ (dim a = imagDim a + 1, the algebra is its imaginary subspace plus a real unit), dim_eq_two_pow (dim a = 2^level a), dim_mem (every dimension lies in {1,2,4,8}), and card_eq_four. Each is dispatched by 'cases a <;> rfl/simp/decide' — once the type is finite, these structural facts reduce to checking four cases, and Lean's kernel does the rest. The dim = imagDim + 1 relation foreshadows why the gauge-dimension match uses imaginary dimensions for ℝ, ℂ, ℍ.",
+    "mathContext": "For each $a$: $\\dim a = \\operatorname{Im}\\dim a + 1$ (one real axis) and $\\dim a = 2^{\\operatorname{level} a}$. The powers-of-two ceiling is exactly why a 16-dimensional 'algebra' (the sedenions) fails to be a division algebra.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "powers of two",
+      "imaginary subspace",
+      "sedenions"
+    ],
+    "prerequisites": [
+      "case analysis",
+      "decide tactic"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-force-def",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "The Four Fundamental Forces and Their Gauge Dimensions",
+    "content": "Force is the dual four-element type — gravity, electromagnetic, weak, strong — carrying gaugeDim, the dimension of each interaction's internal gauge group: gravity 0 (general covariance, no internal gauge group), EM 1 (U(1)), weak 3 (SU(2)), strong 8 (SU(3)). The theorem standard_model_gauge_dim records that the Standard-Model gauge group U(1)×SU(2)×SU(3) has total dimension 1+3+8 = 12. Modelling the forces as a finite type mirrors NDA exactly, so that the dictionary between them can be a plain function whose bijectivity is decidable.",
+    "mathContext": "$\\dim SU(N) = N^2 - 1$: $\\dim SU(2) = 3$, $\\dim SU(3) = 8$; $\\dim U(1) = 1$. Total $\\dim(U(1)\\times SU(2)\\times SU(3)) = 1+3+8 = 12$ gauge bosons (1 photon, 3 weak, 8 gluons).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lie group dimension",
+      "gauge bosons",
+      "special unitary group"
+    ],
+    "prerequisites": [
+      "Lie groups",
+      "Standard Model"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-forceOf",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "The Dictionary as a Bijection",
+    "content": "forceOf : NDA → Force is the canonical correspondence ℝ↦gravity, ℂ↦EM, ℍ↦weak, 𝕆↦strong, and forceOf_bijective proves it is a bijection — by decide, since bijectivity of a function between Fintypes is decidable. This is the precise content of the open question: 'how do the four connect to the four' is answered by exhibiting a genuine equivalence, packaged as forceEquiv : NDA ≃ Force via Equiv.ofBijective. The bijection is the load-bearing claim; everything downstream (dimension matches) is structure transported along it.",
+    "mathContext": "$\\text{forceOf} : \\mathrm{NDA} \\xrightarrow{\\sim} \\mathrm{Force}$ is a bijection of 4-element sets, hence an element of $\\mathrm{Sym}(4)$; the specific one fixes the ordering by dimension $1<2<4<8 \\leftrightarrow 0<1<3<8$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijection",
+      "Equiv.ofBijective",
+      "decidability over Fintypes"
+    ],
+    "prerequisites": [
+      "functions and bijections",
+      "Equiv"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-gauge-match",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 161
+    },
+    "type": "insight",
+    "title": "Gauge Dimensions Match Algebra Dimensions",
+    "content": "Two theorems verify the numerical heart of the dictionary. gauge_dim_matches_imag shows that for gravity, EM, and the weak force the gauge-group dimension equals the *imaginary* dimension of the matched algebra: 0 = Im ℝ, 1 = Im ℂ, 3 = Im ℍ. strong_gauge_dim shows the strong force is the exception — its gauge dimension 8 equals the *full* dimension of 𝕆, not its imaginary dimension 7. This asymmetry is meaningful: SU(3) sits inside G₂ = Aut(𝕆) as the stabiliser of an imaginary unit, and its dimension tracks the whole octonion algebra. All four facts are proved by rfl.",
+    "mathContext": "$\\dim U(1)=1=\\operatorname{Im}\\mathbb{C}$, $\\dim SU(2)=3=\\operatorname{Im}\\mathbb{H}$, but $\\dim SU(3)=8=\\dim\\mathbb{O}$ (not $\\operatorname{Im}\\mathbb{O}=7$). The strong case reflects $SU(3)\\subset G_2 = \\operatorname{Aut}(\\mathbb{O})$, $\\dim G_2 = 14$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "imaginary dimension",
+      "octonion automorphisms",
+      "G2 exceptional group"
+    ],
+    "prerequisites": [
+      "definitional equality",
+      "automorphism group"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-unit-quat",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 163,
+      "endLine": 198
+    },
+    "type": "technique",
+    "title": "Weak Force: Unit Quaternions Form a Subgroup of ℍˣ",
+    "content": "The genuinely group-theoretic core. Quaternion.normSq is a MonoidWithZeroHom ℍ[ℝ] →*₀ ℝ, so its multiplicativity (map_mul, map_one, map_inv₀) makes the norm-one set closed under product, identity, and inverse. unitQuat_mul_closed, unitQuat_one, unitQuat_inv_closed establish these, and they assemble into unitQuaternions : Subgroup (Quaternion ℝ)ˣ. The inverse step is the subtle one: rather than invoke map_inv₀ on the units, the proof uses Units.mul_inv a to get ↑a · ↑a⁻¹ = 1, applies normSq, and reads off |a⁻¹| = 1 from map_mul + ha. This subgroup is Sp(1) ≅ SU(2), the weak gauge group.",
+    "mathContext": "$\\operatorname{normSq} : \\mathbb{H}[\\mathbb{R}] \\to^{*}_0 \\mathbb{R}$ satisfies $N(pq)=N(p)N(q)$, $N(1)=1$. So $\\{q : N(q)=1\\}$ is closed under multiplication and inversion: $Sp(1) = \\{q\\in\\mathbb{H} : |q|=1\\} \\cong SU(2)$, the unit-quaternion 3-sphere $S^3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sp(1)",
+      "SU(2)",
+      "MonoidWithZeroHom",
+      "norm-one subgroup",
+      "3-sphere"
+    ],
+    "prerequisites": [
+      "subgroups",
+      "group of units",
+      "quaternion norm"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-unit-complex",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 200,
+      "endLine": 212
+    },
+    "type": "technique",
+    "title": "Electromagnetism: Unit Complex Numbers U(1)",
+    "content": "The same multiplicativity argument, one dimension down. Complex.normSq is a MonoidWithZeroHom ℂ →*₀ ℝ, so unitComplex_mul_closed shows the unit circle is closed under multiplication and unitComplex_one records that 1 lies on it. This set is Mathlib's Circle, the abelian U(1) gauge group of electromagnetism — literally the unit complex numbers. The parallel with the quaternion case is deliberate: both the weak and EM links come from the multiplicativity of a composition-algebra norm, the cleanest concrete part of the whole dictionary.",
+    "mathContext": "$\\operatorname{normSq} : \\mathbb{C}\\to^{*}_0\\mathbb{R}$, $N(zw)=N(z)N(w)$, so $U(1)=\\{z : |z|=1\\}$ is the unit circle $S^1$, an abelian Lie group of dimension 1 — the EM gauge group.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "U(1)",
+      "unit circle",
+      "Circle",
+      "abelian gauge group"
+    ],
+    "prerequisites": [
+      "complex norm",
+      "subgroups"
+    ]
+  },
+  {
+    "id": "ann-hurwitz-oq02-summary",
+    "proofId": "hurwitz-theorem-oq-02",
+    "range": {
+      "startLine": 214,
+      "endLine": 232
+    },
+    "type": "insight",
+    "title": "The Assembled Four-to-Four Dictionary",
+    "content": "four_to_four_dictionary collects the backbone into one statement: |NDA| = |Force| = 4, forceOf is a bijection, and along it every gauge dimension matches an algebra dimension — the imaginary dimension for the non-octonionic forces (∀ a ≠ octonion, gaugeDim = imagDim) and the full dimension for the strong force. The proof refines into the already-proved card and bijectivity lemmas, then handles the dimension match by 'cases a <;> first | rfl | exact absurd rfl ha', using the hypothesis a ≠ octonion to discharge the one excluded case. This single theorem is the precise, machine-checked answer to the open question.",
+    "mathContext": "$|\\mathrm{NDA}|=|\\mathrm{Force}|=4$, $\\text{forceOf}$ bijective, $\\forall a\\neq\\mathbb{O}:\\ \\text{gaugeDim}(\\text{forceOf}\\,a)=\\operatorname{Im}\\dim a$, and $\\text{gaugeDim}(\\text{forceOf}\\,\\mathbb{O})=\\dim\\mathbb{O}=8$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijection",
+      "gauge dimension",
+      "Hurwitz classification"
+    ],
+    "prerequisites": [
+      "case analysis",
+      "conjunction proofs"
+    ]
+  }
+]
