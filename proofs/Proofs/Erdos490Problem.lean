@@ -28,10 +28,12 @@
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.Primorial
 
 open Finset Real
+open scoped Classical
 
 namespace Erdos490
 
@@ -56,7 +58,7 @@ def ProductMapInjective (A B : Finset ℕ) : Prop :=
   ∀ a₁ a₂ b₁ b₂, a₁ ∈ A → a₂ ∈ A → b₁ ∈ B → b₂ ∈ B →
     a₁ * b₁ = a₂ * b₂ → (a₁ = a₂ ∧ b₁ = b₂)
 
-/-- The two definitions are equivalent. -/
+/- The two definitions `HasDistinctProducts` and `ProductMapInjective` are equivalent. -/
 /-
 ## Part II: The Erdős Question
 -/
@@ -75,13 +77,13 @@ where
       have hsub : A ⊆ Finset.Icc 1 N :=
         fun a ha => Finset.mem_Icc.mpr (hA a ha)
       calc A.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
-        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N + 1 - 1 := by rw [Nat.card_Icc]
         _ = N := by omega
     have hBcard : B.card ≤ N := by
       have hsub : B ⊆ Finset.Icc 1 N :=
         fun b hb => Finset.mem_Icc.mpr (hB b hb)
       calc B.card ≤ (Finset.Icc 1 N).card := Finset.card_le_card hsub
-        _ = N + 1 - 1 := by simp [Finset.card_Icc]
+        _ = N + 1 - 1 := by rw [Nat.card_Icc]
         _ = N := by omega
     calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAcard hBcard
       _ = N ^ 2 := by ring
@@ -126,17 +128,34 @@ def optimalB (N : ℕ) : Finset ℕ :=
 axiom optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
   HasDistinctProducts (optimalA N) (optimalB N)
 
-/-- The optimal example achieves |A||B| ~ N²/(2 log N). -/
-/-- Why it works: products a·p are distinct because primes are coprime to smaller numbers. -/
+/- The optimal example achieves |A||B| ~ N²/(2 log N). -/
+/-- Why it works: products `a·p` are distinct because each prime `p > N/2` exceeds
+every `a ≤ N/2`, so `p` cannot divide a nonzero `a`.  Positivity `1 ≤ aᵢ` (which holds
+for the elements of `optimalA`) is needed: without it `a₁ = a₂ = 0` gives `0 = 0` for
+any distinct primes. -/
 theorem optimal_works_because_primes (a₁ a₂ : ℕ) (p₁ p₂ : ℕ)
+    (ha₁_pos : 1 ≤ a₁) (ha₂_pos : 1 ≤ a₂)
     (ha₁ : a₁ ≤ N / 2) (ha₂ : a₂ ≤ N / 2)
     (hp₁ : Nat.Prime p₁) (hp₂ : Nat.Prime p₂)
     (hp₁_large : N / 2 < p₁) (hp₂_large : N / 2 < p₂)
     (heq : a₁ * p₁ = a₂ * p₂) : a₁ = a₂ ∧ p₁ = p₂ := by
-  -- If a₁p₁ = a₂p₂ with p₁, p₂ > N/2 and a₁, a₂ ≤ N/2, then p₁ | a₂p₂ = a₁p₁
-  -- Since p₁ > a₂, we must have p₁ | p₂, so p₁ = p₂ (both prime)
-  -- Then a₁ = a₂.
-  sorry
+  -- `p₁ ∣ a₂ * p₂ = a₁ * p₁`.  As `p₁` is prime, `p₁ ∣ a₂` or `p₁ ∣ p₂`.
+  -- `p₁ > N/2 ≥ a₂ ≥ 1`, so `p₁ ∣ a₂` is impossible (a positive multiple of `p₁`
+  -- is `≥ p₁ > a₂`).  Hence `p₁ ∣ p₂`, and both prime gives `p₁ = p₂`; cancelling
+  -- the nonzero `p₁` yields `a₁ = a₂`.
+  have ha₂_lt : a₂ < p₁ := lt_of_le_of_lt ha₂ hp₁_large
+  have hdvd : p₁ ∣ a₂ * p₂ := ⟨a₁, by rw [← heq]; ring⟩
+  have hp₁p₂ : p₁ = p₂ := by
+    rcases (hp₁.prime.dvd_mul.mp hdvd) with hda | hdp
+    · -- p₁ ∣ a₂ with 0 < a₂ < p₁ is impossible
+      have : p₁ ≤ a₂ := Nat.le_of_dvd (by omega) hda
+      omega
+    · exact (Nat.prime_dvd_prime_iff_eq hp₁ hp₂).mp hdp
+  refine ⟨?_, hp₁p₂⟩
+  -- cancel p₁ = p₂ (nonzero) from a₁ * p₁ = a₂ * p₂
+  have hp₁_pos : 0 < p₁ := hp₁.pos
+  have : a₁ * p₁ = a₂ * p₁ := by rw [heq, hp₁p₂]
+  exact Nat.eq_of_mul_eq_mul_right hp₁_pos this
 
 /-
 ## Part V: The Limit Question (Open)
@@ -150,7 +169,7 @@ noncomputable def productRatio (N : ℕ) : ℝ :=
 def LimitQuestion : Prop :=
   ∃ L : ℝ, Filter.Tendsto productRatio Filter.atTop (nhds L)
 
-/-- Van Doorn observed: If the limit exists, it must be ≥ 1. -/
+/- Van Doorn observed: If the limit exists, it must be ≥ 1. -/
 /-- The limit question is OPEN. -/
 def LimitQuestionOpen : Prop :=
   -- We don't know if the limit exists
@@ -164,14 +183,31 @@ def LimitQuestionOpen : Prop :=
 def IsMultiplicativeSidon (A : Finset ℕ) : Prop :=
   HasDistinctProducts A A
 
-/-- For A = B, the bound is |A|² ≪ N²/log N, so |A| ≪ N/√(log N). -/
-/-- Primes are a multiplicative Sidon set. -/
-theorem primes_sidon (N : ℕ) :
-    let P := Finset.filter Nat.Prime (Finset.range (N + 1))
-    IsMultiplicativeSidon P := by
-  intro P
-  unfold IsMultiplicativeSidon HasDistinctProducts
-  sorry -- Unique factorization implies distinct products
+/- For A = B, the bound is |A|² ≪ N²/log N, so |A| ≪ N/√(log N). -/
+/-- The genuine multiplicative-Sidon property of the primes.  Note that the *ordered*
+notion `IsMultiplicativeSidon P = HasDistinctProducts P P` (`(productSet P P).card =
+|P|²`) is **false** for `|P| ≥ 2`, because commutativity collapses `p·q` and `q·p` to a
+single element of the product set (e.g. `P = {2,3}` gives `productSet = {4,6,9}` of card
+`3 ≠ 4 = |P|²`).  The correct statement is that a product of two primes determines the
+unordered pair: if `p₁·q₁ = p₂·q₂` with all four prime then `{p₁,q₁} = {p₂,q₂}`.  This is
+the honest "multiplicative Sidon" content, a direct consequence of prime divisibility. -/
+theorem primes_products_determine_pair {p₁ q₁ p₂ q₂ : ℕ}
+    (hp₁ : Nat.Prime p₁) (hq₁ : Nat.Prime q₁) (hp₂ : Nat.Prime p₂) (hq₂ : Nat.Prime q₂)
+    (h : p₁ * q₁ = p₂ * q₂) :
+    (p₁ = p₂ ∧ q₁ = q₂) ∨ (p₁ = q₂ ∧ q₁ = p₂) := by
+  -- `p₁ ∣ p₂ * q₂`, and `p₁` prime, so `p₁ = p₂` or `p₁ = q₂`; cancel and finish.
+  have hdvd : p₁ ∣ p₂ * q₂ := ⟨q₁, by rw [← h]⟩
+  rcases (hp₁.prime.dvd_mul.mp hdvd) with hd | hd
+  · -- p₁ = p₂
+    have hp₁p₂ : p₁ = p₂ := (Nat.prime_dvd_prime_iff_eq hp₁ hp₂).mp hd
+    refine Or.inl ⟨hp₁p₂, ?_⟩
+    rw [← hp₁p₂] at h
+    exact Nat.eq_of_mul_eq_mul_left hp₁.pos h
+  · -- p₁ = q₂
+    have hp₁q₂ : p₁ = q₂ := (Nat.prime_dvd_prime_iff_eq hp₁ hq₂).mp hd
+    refine Or.inr ⟨hp₁q₂, ?_⟩
+    rw [← hp₁q₂, Nat.mul_comm p₂ p₁] at h
+    exact Nat.eq_of_mul_eq_mul_left hp₁.pos h
 
 /-
 ## Part VII: Related Problems
@@ -193,7 +229,14 @@ noncomputable def multiplicativeEnergy (A B : Finset ℕ) : ℕ :=
     (fun ((a₁, a₂), (b₁, b₂)) => a₁ * b₁ = a₂ * b₂)
     |>.card
 
-/-- Distinct products means minimal energy. -/
+/-- Distinct products means minimal energy.  DEFERRED (genuine fiber-counting
+combinatorics, ~50–80 lines): the multiplicative energy is `∑_{p} r(p)²` where
+`r(p) = #{(a,b) ∈ A×B : ab = p}`, while `|A||B| = ∑_p r(p)` and
+`(productSet A B).card = #{p : r(p) > 0}`.  The diagonal already contributes `|A||B|`
+to the energy, so `energy = |A||B| ↔ every fiber has size ≤ 1 ↔ the product map is
+injective ↔ HasDistinctProducts`.  Formalizing requires `Finset.card_eq_sum_card_fiberwise`
+on the product map and a per-fiber `r(p)² = r(p) ↔ r(p) ≤ 1` argument; left for a
+follow-up session. -/
 theorem distinct_minimal_energy (A B : Finset ℕ) :
     HasDistinctProducts A B ↔ multiplicativeEnergy A B = A.card * B.card := by
   sorry
@@ -208,10 +251,10 @@ theorem trivial_bound (N : ℕ) (A B : Finset ℕ)
     A.card * B.card ≤ N^2 := by
   have hAN : A.card ≤ N :=
     (Finset.card_le_card (fun a ha => Finset.mem_Icc.mpr (hA a ha))).trans
-      (by simp [Finset.card_Icc]; omega)
+      (by rw [Nat.card_Icc]; omega)
   have hBN : B.card ≤ N :=
     (Finset.card_le_card (fun b hb => Finset.mem_Icc.mpr (hB b hb))).trans
-      (by simp [Finset.card_Icc]; omega)
+      (by rw [Nat.card_Icc]; omega)
   calc A.card * B.card ≤ N * N := Nat.mul_le_mul hAN hBN
     _ = N ^ 2 := (sq N).symm
 
@@ -272,11 +315,25 @@ theorem bound_is_optimal :
   · intro N hN
     use optimalA N, optimalB N
     constructor
-    · sorry  -- IsSubsetUpTo (optimalA N) N
+    · -- IsSubsetUpTo (optimalA N) N : elements satisfy 1 ≤ n ≤ N/2 ≤ N
+      intro a ha
+      simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha
+      obtain ⟨_, ha1, ha2⟩ := ha
+      exact ⟨ha1, le_trans ha2 (Nat.div_le_self N 2)⟩
     constructor
-    · sorry  -- IsSubsetUpTo (optimalB N) N
+    · -- IsSubsetUpTo (optimalB N) N : primes p with N/2 < p ≤ N satisfy 1 ≤ p ≤ N
+      intro b hb
+      simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hb
+      obtain ⟨_, hbprime, _, hbN⟩ := hb
+      exact ⟨hbprime.one_lt.le, hbN⟩
     constructor
     · exact optimal_has_distinct_products N (by linarith)
-    · sorry  -- Lower bound
+    · -- Lower bound. DEFERRED (requires prime-counting / PNT-level input): one needs
+      -- |optimalA N| = ⌊N/2⌋ and |optimalB N| = π(N) − π(N/2) ~ N/(2 log N), so the
+      -- product is ~ N²/(4 log N).  The lower bound on π(N) − π(N/2) is a Chebyshev /
+      -- Bertrand-type estimate not yet wired in here; left for a follow-up session.
+      -- (Note: the constant 1/3 chosen above is only attainable asymptotically and
+      -- with the sharper N²/(4 log N) main term would need adjusting to ≤ 1/4.)
+      sorry
 
 end Erdos490
