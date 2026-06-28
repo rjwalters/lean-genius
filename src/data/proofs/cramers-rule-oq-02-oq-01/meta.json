@@ -108,7 +108,15 @@
       "mathContext": "Since gaussExactOps n ≤ n³ = gaussMuls n and the parent proved gaussMuls n < cramersRuleMuls n for n ≥ 4, the tighter model beats Cramer's rule a fortiori — tightening the winner's cost cannot overturn the comparison."
     }
   ],
-  "conclusion": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian beats Cramer for n ≥ 4 — carries over to the exact model for free. The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
+  "conclusion": {
+    "summary": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
+    "implications": "Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian elimination beats Cramer's rule for n ≥ 4 — carries over to the exact model for free, with no re-proof needed. More broadly, the entry demonstrates a reusable pattern for formalizing exact flop counts: state the polynomial identity in subtraction-free additive form (k·sum + remainder = closed form) so the induction stays in the ℕ semiring and closes by ring, then recover the conventional division form as a one-line corollary. The same template applies to the ~2n³/3 LU-factorization count, the n²/2 back-substitution count, and other textbook complexity figures that are usually quoted asymptotically but rarely formalized exactly.",
+    "openQuestions": [
+      "Can the back-substitution phase (≈ n²/2 operations) and the full solve cost (forward elimination + back-substitution) be formalized with the same subtraction-free closed-form technique and composed with this result?",
+      "Does the exact count extend to blocked/partial-pivoting LU factorization, where row interchanges add a lower-order term but the leading (n³ − n)/3 multiplication count is unchanged?",
+      "Can a matching lower bound be formalized — that no elimination-based dense solver uses asymptotically fewer than n³/3 multiplications — to complement this exact upper count?"
+    ]
+  },
   "relatedProblems": [
     "cramers-rule-oq-02",
     "cramers-rule"
