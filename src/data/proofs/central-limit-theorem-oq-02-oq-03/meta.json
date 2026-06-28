@@ -36,7 +36,7 @@
       "Doukhan, P. *Mixing: Properties and Examples*. Lecture Notes in Statistics 85, Springer, 1994."
     ]
   },
-  "description": "Fully verified (0-axiom, 0-sorry) formalization of the finite-range dependence case of the dependent-variable CLT. Defines MDependent μ σ_k m (events separated by gap > m are independent) and proves the headline mDependent_alpha_zero: the parent file's α-mixing coefficient vanishes at every lag n > m. The m = 0 case recovers the parent's independent_implies_zero_mixing. Two structural consequences make Ibragimov's mixing CLT apply for free: mixing decay α(n) → 0 holds trivially (coefficients eventually zero), and the Ibragimov series ∑ₙ α(n)^θ converges for every exponent θ > 0 (finite sum). Includes the reusable analytic lemma summable_rpow_of_eventually_zero. 6 theorems, 1 definition, 0 axioms, 0 sorries; reuses alphaMixingCoeff from the parent.",
+  "description": "Fully verified (0-axiom, 0-sorry) formalization of the finite-range dependence case of the dependent-variable CLT. Defines MDependent μ σ_k m (events separated by gap > m are independent) and proves the headline mDependent_alpha_zero: the parent file's α-mixing coefficient vanishes at every lag n > m. The m = 0 case recovers the parent's independent_implies_zero_mixing. Two structural consequences make Ibragimov's mixing CLT apply for free: mixing decay α(n) → 0 holds trivially (coefficients eventually zero), and the Ibragimov series ∑ₙ α(n)^θ converges for every exponent θ > 0 (finite sum). Includes the reusable analytic lemma summable_rpow_of_eventually_zero. 6 theorems, 1 definition, 0 axioms, 0 sorries; reuses alphaMixingCoeff from the parent. Also adds alphaMixingCoeff_le_one (the α-mixing coefficient is ≤ 1 on a probability space — the upper bound the parent file explicitly omits) and mDependent_mono (m-dependence is monotone in m, so the finite-range dependence classes nest upward).",
   "conclusion": {
     "summary": "This file generalizes the parent's independence endpoint to the full finite-range (m-dependent) family. The headline mDependent_alpha_zero proves the α-mixing coefficient vanishes at every lag n > m; independence is recovered as m = 0. Two consequences — eventual mixing decay and summability of the Ibragimov series for every exponent — show that any m-dependent stationary sequence with finite variance satisfies Ibragimov's mixing CLT (OQ-02-OQ-04) with no constraint on the mixing rate. All 6 theorems are machine-checked with only the foundational axioms (propext, Classical.choice, Quot.sound).",
     "implications": "m-dependence is the canonical first step beyond independence in the dependent-CLT hierarchy and the natural model for finite-order moving averages (MA(q) is q-dependent) and one-step functions of finite-state Markov chains. Establishing α(n) = 0 for n > m in Lean gives a reusable, axiom-free bridge from finite-range dependence directly into the parent's α-mixing API: it discharges every rate/moment hypothesis of the mixing CLT trivially. The analytic helper summable_rpow_of_eventually_zero is generic and could support other eventually-zero-rate arguments.",
@@ -96,12 +96,12 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 208,
+    "lineCount": 252,
     "assumptions": "None. All 6 theorems are machine-checked; #print axioms reports only the foundational axioms propext, Classical.choice, Quot.sound (no sorryAx, no custom axioms, no Lean.ofReduceBool). The file reuses the definition alphaMixingCoeff from the parent CentralLimitTheoremOQ02.lean; that parent definition is axiom-free (the parent's single axiom martingale_clt is unrelated and not referenced here).",
     "mathlib_version": "4.26.0",
     "historicalContext": "m-dependence was introduced by Hoeffding and Robbins (1948) as the first tractable dependence structure beyond independence admitting a CLT. It is the finite-range special case of Rosenblatt's (1956) α-mixing, with α(n) = 0 for n > m. Finite-order moving averages MA(q) are exactly q-dependent, and one-step functions of finite-state Markov chains are 1-dependent.",
     "proofStrategy": "Reuse the parent's nested-supremum-collapse: at lag n > m, m-dependence forces each term of the defining ⨆ to 0 (ENNReal.toReal_mul), and the Prop-indexed all-zero nested supremum over ℝ collapses via a Nonempty/IsEmpty case split. Derive the m = 0 (independence) recovery, eventual mixing decay (tendsto_atTop_of_eventually_const), and Ibragimov-series summability for every exponent (summable_of_ne_finset_zero + Real.zero_rpow).",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
       "MDependent: definition of m-dependence for a family of σ-algebras (events separated by gap > m are independent), generalizing the parent's independence hypothesis.",
@@ -201,6 +201,11 @@
       "endLine": 208,
       "summary": "Places m-dependence strictly between independence and general α-mixing: Independent (= 0-dependent) ⊊ m-dependent ⊊ α-mixing with summable rate ⊊ α-mixing. Notes the strictness witnesses (MA(1) is 1-dependent but not independent; long-memory α-mixing is not m-dependent) and the necessity of θ ≠ 0.",
       "mathContext": "Independent $\\subsetneq$ $m$-dependent $\\subsetneq$ summable-rate $\\alpha$-mixing $\\subsetneq$ $\\alpha$-mixing."
+    },
+    {
+      "id": "bounds-mono",
+      "title": "Coefficient Bound and m-Monotonicity",
+      "summary": "alphaMixingCoeff_le_one: on a probability space the α-mixing coefficient is ≤ 1 (every term |x−yz| with x,y,z∈[0,1]; proved via Real.iSup_le whose 0≤a side-condition absorbs the empty-index sup) — the upper bound the parent omits. mDependent_mono: m-dependence is monotone in m, nesting the finite-range classes upward."
     }
   ]
 }

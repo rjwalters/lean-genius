@@ -37,8 +37,12 @@ This file proves, fully and axiom-free (reusing the parent's
    zero nonneg sequence has summable rpow powers.
 5. `mDependent_summable_mixing_rpow` — Ibragimov's series ∑ α(n)^θ converges for
    every θ > 0.
+6. `alphaMixingCoeff_le_one` — the α-mixing coefficient is always ≤ 1 on a
+   probability space (the upper bound the parent file leaves out).
+7. `mDependent_mono` — m-dependence is monotone in m, so the finite-range classes
+   nest upward (independent = 0-dependent ⊆ 1-dependent ⊆ …).
 
-Proved theorems: 6, Axioms: 0, Sorries: 0
+Proved theorems: 7, Axioms: 0, Sorries: 0
 -/
 
 import Mathlib
@@ -204,5 +208,49 @@ The `θ ≠ 0` hypothesis of `mDependent_summable_mixing_rpow` is necessary: at
 `θ = 0` each summand is `α(n)^0 = 1`, and `∑ₙ 1` diverges regardless of the
 mixing structure.
 -/
+
+/-
+## Part VII: The α-mixing coefficient is bounded by 1, and m-dependence is monotone
+
+Two structural facts. First, a reusable bound the parent file explicitly leaves
+out (its note: "`alphaMixingCoeff_nonneg` omitted due to nested ciSup elaboration
+complexity"): on a probability space `0 ≤ α ≤ 1` always, because every term of the
+defining supremum is `|x − y·z|` with `x, y, z ∈ [0,1]`. We supply the upper bound,
+which `Real.iSup_le` handles cleanly (its `0 ≤ a` side-condition absorbs the
+empty-index sup). Second, m-dependence is monotone in `m`: a stronger finite range
+of dependence implies every weaker one, so the chain
+`independent = 0-dependent ⊆ 1-dependent ⊆ 2-dependent ⊆ …` is genuine.
+-/
+
+/-- **The α-mixing coefficient is at most `1`.** On a probability space every term
+`|μ(A∩B).toReal − μA.toReal · μB.toReal|` of the defining supremum lies in `[0,1]`
+(all three measures are `≤ 1`), so the supremum is `≤ 1`. This supplies the upper
+bound the parent file omits (stated for the lag-indexed σ-algebras `σ_k`). -/
+theorem alphaMixingCoeff_le_one {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σ_k : ℕ → MeasurableSpace Ω) (k n : ℕ) :
+    alphaMixingCoeff μ (σ_k k) (σ_k (k + n)) ≤ 1 := by
+  simp only [alphaMixingCoeff]
+  refine Real.iSup_le (fun A => ?_) (by norm_num)
+  refine Real.iSup_le (fun _ => ?_) (by norm_num)
+  refine Real.iSup_le (fun B => ?_) (by norm_num)
+  refine Real.iSup_le (fun _ => ?_) (by norm_num)
+  have hx : (μ (A ∩ B)).toReal ≤ 1 := measureReal_le_one
+  have hy : (μ A).toReal ≤ 1 := measureReal_le_one
+  have hz : (μ B).toReal ≤ 1 := measureReal_le_one
+  have hx0 : 0 ≤ (μ (A ∩ B)).toReal := ENNReal.toReal_nonneg
+  have hy0 : 0 ≤ (μ A).toReal := ENNReal.toReal_nonneg
+  have hz0 : 0 ≤ (μ B).toReal := ENNReal.toReal_nonneg
+  rw [abs_le]
+  constructor <;>
+    nlinarith [hx, hx0, hy, hy0, hz, hz0, mul_nonneg hy0 hz0,
+      mul_nonneg (sub_nonneg.mpr hy) hz0]
+
+/-- **m-dependence is monotone in `m`.** If a family is `m`-dependent and `m ≤ m'`,
+it is `m'`-dependent: any gap `n > m'` already exceeds `m`. Hence the finite-range
+dependence classes are nested upward (`independent = 0-dependent ⊆ m-dependent ⊆ …`). -/
+theorem mDependent_mono {μ : Measure Ω} {σ_k : ℕ → MeasurableSpace Ω} {m m' : ℕ}
+    (hmm : m ≤ m') (hMdep : MDependent μ σ_k m) : MDependent μ σ_k m' := by
+  intro k n A B hn hA hB
+  exact hMdep k n A B (lt_of_le_of_lt hmm hn) hA hB
 
 end CentralLimitTheoremOQ02OQ03
