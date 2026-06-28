@@ -144,11 +144,101 @@ theorem log_barrier_of_prime {a b n : ℕ} (h : a ! * b ! ∣ n !) :
   have := log_barrier_prime 2 h
   omega
 
+/-!
+## Multinomial / multi-factorial form of the barrier
+
+The two-factorial barrier `log_barrier_prime` generalizes verbatim to an arbitrary
+product of factorials `a₁! · … · a_k! ∣ n!` — the natural setting of multinomial
+coefficients `n! / (a₁! ⋯ a_k!)`.  The valuation step is identical: `v_p` of a product
+of (nonzero) factorials is the sum of the `v_p(aᵢ!)`, so the divisibility forces
+`∑ᵢ v_p(aᵢ!) ≤ v_p(n!)`; scaling by `(p − 1)` and substituting Legendre
+`m = (p − 1)·v_p(m!) + s_p(m)` term-by-term yields
+
+  `∑ᵢ aᵢ + s_p(n) ≤ n + ∑ᵢ s_p(aᵢ)`   for every prime `p`.
+
+We phrase the family as a `Multiset ℕ` (so repeated values — e.g. the central
+multinomial `aᵢ = n/k` — are allowed), and give the indexed `Finset` form as a
+corollary.  Specializing the multiset to `{a, b}` recovers `log_barrier_prime`.
+-/
+
+/-- **`v_p` of a product of factorials is the sum of the factorial valuations.**
+`v_p(∏ᵢ aᵢ!) = ∑ᵢ v_p(aᵢ!)`.  Multiset induction off `padicValNat.mul`, using that
+every factorial is nonzero so the product is too. -/
+theorem padicValNat_prod_factorials (p : ℕ) [Fact p.Prime] (s : Multiset ℕ) :
+    padicValNat p ((s.map (fun a => a !)).prod)
+      = (s.map (fun a => padicValNat p (a !))).sum := by
+  induction s using Multiset.induction with
+  | empty => simp
+  | cons a t ih =>
+    have hne : (t.map (fun a => a !)).prod ≠ 0 := by
+      apply Multiset.prod_ne_zero
+      intro hmem
+      obtain ⟨b, -, hb⟩ := Multiset.mem_map.mp hmem
+      exact absurd hb (Nat.factorial_ne_zero b)
+    simp only [Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons]
+    rw [padicValNat.mul (Nat.factorial_ne_zero a) hne, ih]
+
+/-- **Legendre's additive identity, summed over a multiset.**
+`∑ᵢ aᵢ = (p − 1)·∑ᵢ v_p(aᵢ!) + ∑ᵢ s_p(aᵢ)`, the term-by-term lift of
+`factorial_pval_add_digitsum`. -/
+theorem legendre_sum_multiset (p : ℕ) [Fact p.Prime] (s : Multiset ℕ) :
+    s.sum = (p - 1) * (s.map (fun a => padicValNat p (a !))).sum
+            + (s.map (fun a => (Nat.digits p a).sum)).sum := by
+  induction s using Multiset.induction with
+  | empty => simp
+  | cons a t ih =>
+    simp only [Multiset.sum_cons, Multiset.map_cons]
+    have ha := factorial_pval_add_digitsum p a
+    rw [Nat.mul_add]
+    omega
+
+/-- **The multinomial barrier (sharp, prime-uniform).**  For any finite family of
+naturals presented as a multiset `s` (repeats allowed) with `∏ᵢ aᵢ! ∣ n!`,
+`∑ᵢ aᵢ + s_p(n) ≤ n + ∑ᵢ s_p(aᵢ)` for every prime `p`.  This is the multinomial
+generalization of `log_barrier_prime`; the two-factorial case is `s = {a, b}`.
+Proof: the divisibility gives `∑ᵢ v_p(aᵢ!) ≤ v_p(n!)` (`padicValNat_prod_factorials`
++ `padicValNat_dvd_iff_le`); scaling by `(p − 1)` and substituting the summed Legendre
+identity (`legendre_sum_multiset`) and Legendre for `n` lets `omega` finish, atomizing
+the shared `(p − 1)·v_p(·!)` products. -/
+theorem log_barrier_prime_multiset {p : ℕ} [Fact p.Prime] {s : Multiset ℕ} {n : ℕ}
+    (h : (s.map (fun a => a !)).prod ∣ n !) :
+    s.sum + (Nat.digits p n).sum
+      ≤ n + (s.map (fun a => (Nat.digits p a).sum)).sum := by
+  have hmono : padicValNat p ((s.map (fun a => a !)).prod) ≤ padicValNat p (n !) :=
+    (padicValNat_dvd_iff_le (Nat.factorial_ne_zero n)).mp
+      (dvd_trans (pow_padicValNat_dvd (p := p) (n := (s.map (fun a => a !)).prod)) h)
+  rw [padicValNat_prod_factorials p s] at hmono
+  have hscaled := mul_le_mul_left' hmono (p - 1)
+  have hleg := legendre_sum_multiset p s
+  have hn := factorial_pval_add_digitsum p n
+  omega
+
+/-- **The multinomial barrier, indexed `Finset` form.**  For a finite family
+`a : ι → ℕ` over `s : Finset ι` with `∏ i ∈ s, (a i)! ∣ n!`,
+`(∑ i ∈ s, a i) + s_p(n) ≤ n + ∑ i ∈ s, s_p(a i)` for every prime `p`.  This is the
+form matching the multinomial coefficient `n! / ∏ᵢ (a i)!`; it is the multiset barrier
+applied to `s.val.map a`. -/
+theorem log_barrier_prime_finset {ι : Type*} {p : ℕ} [Fact p.Prime]
+    {s : Finset ι} {a : ι → ℕ} {n : ℕ} (h : (∏ i ∈ s, (a i)!) ∣ n !) :
+    (∑ i ∈ s, a i) + (Nat.digits p n).sum
+      ≤ n + ∑ i ∈ s, (Nat.digits p (a i)).sum := by
+  have h' : ((s.val.map a).map (fun x => x !)).prod ∣ n ! := by
+    rw [Multiset.map_map]; exact h
+  have key := log_barrier_prime_multiset (p := p) (s := s.val.map a) (n := n) h'
+  rw [Multiset.map_map] at key
+  have e1 : (∑ i ∈ s, a i) = (s.val.map a).sum := rfl
+  have e2 : (∑ i ∈ s, (Nat.digits p (a i)).sum)
+      = (s.val.map (fun i => (Nat.digits p (a i)).sum)).sum := rfl
+  rw [e1, e2]
+  simpa [Function.comp] using key
+
 #check @factorial_val_add_digitsum
 #check @factorial_pval_add_digitsum
 #check @log_barrier
 #check @log_barrier_prime
 #check @log_barrier_length
+#check @log_barrier_prime_multiset
+#check @log_barrier_prime_finset
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no sorryAx, no Lean.ofReduceBool.
@@ -159,5 +249,9 @@ theorem log_barrier_of_prime {a b n : ℕ} (h : a ! * b ! ∣ n !) :
 #print axioms log_barrier_of_prime
 #print axioms digitsum_two_le_length
 #print axioms log_barrier_length
+#print axioms padicValNat_prod_factorials
+#print axioms legendre_sum_multiset
+#print axioms log_barrier_prime_multiset
+#print axioms log_barrier_prime_finset
 
 end Erdos728FactorialDivisibilityOQ04

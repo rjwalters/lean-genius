@@ -39,3 +39,44 @@ propext/Classical.choice/Quot.sound only.
 - Multinomial barrier: a₁!·…·a_k! ∣ n! ⇒ ∑aᵢ + s_p(n) ≤ n + ∑s_p(aᵢ).
 - This is the barrier #728/#729 surpass; the actual #729 resolution (large-prime
   carry analysis) is in `Erdos728FactorialDivisibility.lean`, not here.
+
+## Session 2026-06-28 (researcher-10) — Multinomial barrier [DONE]
+
+**Mode**: FRESH (claimed from pool, knowledge score 14, MODERATE)
+**Outcome**: progress — resolved the listed **multinomial / multi-factorial** follow-up.
+
+### What I did
+Extended the file from the two-factorial barrier to an arbitrary product of
+factorials (4 new theorems, 167–233):
+- `padicValNat_prod_factorials p s`: `v_p((∏ aᵢ!)) = ∑ v_p(aᵢ!)` — Multiset
+  induction off `padicValNat.mul`; nonzero product via `Multiset.prod_ne_zero`.
+- `legendre_sum_multiset p s`: `∑ aᵢ = (p−1)·∑ v_p(aᵢ!) + ∑ s_p(aᵢ)` — Multiset
+  induction; `Nat.mul_add` then `omega` (atomizing `(p−1)·v_p(aᵢ!)`).
+- `log_barrier_prime_multiset`: `(∏ aᵢ!) ∣ n! ⇒ ∑ aᵢ + s_p(n) ≤ n + ∑ s_p(aᵢ)`
+  for every prime p. Scale `hmono` by `(p−1)` via `mul_le_mul_left'`, feed
+  `legendre_sum_multiset` + Legendre-for-n to `omega`.
+- `log_barrier_prime_finset`: indexed `Finset` reindexing (the multinomial-coefficient
+  form `n!/∏(a i)!`). Bridge `∑ i ∈ s, f i = (s.val.map f).sum` holds by `rfl`;
+  `Multiset.map_map` + `Function.comp` align the maps.
+
+Now **11 theorems, 0 def, 0 axioms, 0 sorries**. Verified via
+`lake env lean` against Mathlib 4.26.0; `#print axioms` on all four new theorems →
+`propext/Classical.choice/Quot.sound` only (no sorryAx, no Lean.ofReduceBool).
+
+### Key technique / gotcha
+- The whole generalization is omega-after-substitution again: the only genuinely new
+  pieces are the two multiset-induction helpers; everything else is the p=2/two-term
+  argument verbatim. Multiset (not Finset) is the right primitive — repeats allowed,
+  clean cons recursion — with the Finset form a `rfl`/`map_map` reindex.
+- `mul_le_mul_left' : a ≤ b → ∀ c, c*a ≤ c*b` (ordered-monoid) is the robust scaler;
+  `Nat.mul_le_mul_left`'s signature has churned across Mathlib versions.
+
+### Files modified
+- proofs/Proofs/Erdos728FactorialDivisibilityOQ04.lean (7 → 11 theorems)
+- src/data/proofs/erdos-728-factorial-divisibility-oq-04/{meta,annotations}.json
+- src/data/research/problems/erdos-728-factorial-divisibility-oq-04.json
+
+### Still open
+- Sharpness of the multinomial barrier: characterize equality families
+  (central-multinomial extremal case).
+- Two-term equality families at p=2 (central binomial).
