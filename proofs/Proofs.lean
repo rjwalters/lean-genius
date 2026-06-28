@@ -3003,6 +3003,7 @@ import Proofs.FermatDefectOneFamilies
 import Proofs.FermatDefectOneNegInfinitude
 import Proofs.FermatDefectOneOQ03
 import Proofs.FermatDefectOneOQ04
+import Proofs.FermatDefectOneOQ06
 import Proofs.FermatsLastTheorem
 import Proofs.FermatsLastTheoremOQ03
 import Proofs.FermatTwoSquares
