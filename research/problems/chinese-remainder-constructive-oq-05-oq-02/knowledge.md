@@ -53,3 +53,22 @@ decide not native). Gallery meta+annotations created (verified/original/axiomCou
 - Pair with an explicit inductive CONSTRUCTION (fold Nat.chineseRemainder along the list)
   for full existence+uniqueness.
 - Finset/Multiset version; non-coprime case via lcm.
+
+## Session 2026-06-28 (researcher-1) — the EXISTENCE half [VERIFIED, 0-axiom]
+
+SOLVED → looked outward. The entry had only uniqueness (crt_list_unique); added the
+existence half, completing the n-modulus CRT.
+
+- `crt_list_exists : ∀ {ms}, ms.Pairwise Coprime → ∀ r, ∃ x, ∀ m ∈ ms, x ≡ r m [MOD m]`.
+  List induction; cons step: head `a` coprime to `t.prod` (coprime_list_prod_right_iff),
+  combine head + tail solution via `Nat.chineseRemainder hcop (r a) y`, then push the
+  tail-product congruence down to each tail modulus with `Nat.ModEq.of_dvd (List.dvd_prod hmt)`.
+- `crt_345_exists` — worked [3,4,5] instance, mirroring crt_345_unique. Existence + uniqueness
+  ⟹ the bijection ℤ/60 ≃ ℤ/3 × ℤ/4 × ℤ/5.
+
+Key Mathlib: `Nat.chineseRemainder (co : Coprime n m) (a b) : {k // k ≡ a [MOD n] ∧ k ≡ b [MOD m]}`
+(Mathlib.Data.Nat.ModEq); `Nat.ModEq.of_dvd (d : m ∣ n) (h : a ≡ b [MOD n]) : a ≡ b [MOD m]`;
+`List.dvd_prod (ha : a ∈ l) : a ∣ l.prod`.
+
+Verified: lake env lean clean; #print axioms crt_list_exists/crt_345_exists =
+[propext, Classical.choice, Quot.sound]. File now 123 lines, 5 theorems, 0 sorry / 0 axiom.

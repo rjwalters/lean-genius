@@ -86,4 +86,38 @@ theorem crt_345_unique {a b : ℕ} (ha : a < 60) (hb : b < 60)
   · intro m hm
     fin_cases hm <;> assumption
 
+/-- **n-modulus CRT existence.** For a list `ms` of pairwise-coprime moduli and any target
+residues `r : ℕ → ℕ`, there is a single `x` simultaneously congruent to `r m` modulo every
+`m ∈ ms`. The inductive cons step combines the head modulus `a` (coprime to the tail
+product) with the tail solution via `Nat.chineseRemainder`, then restricts the
+tail-product congruence down to each individual tail modulus by `Nat.ModEq.of_dvd`.
+Together with `crt_list_unique` this is the **full** Chinese Remainder Theorem for an
+arbitrary list of pairwise-coprime moduli: a simultaneous solution exists, and it is unique
+below `ms.prod`. -/
+theorem crt_list_exists : ∀ {ms : List ℕ}, ms.Pairwise Nat.Coprime →
+    ∀ r : ℕ → ℕ, ∃ x : ℕ, ∀ m ∈ ms, x ≡ r m [MOD m] := by
+  intro ms
+  induction ms with
+  | nil => intro _ r; exact ⟨0, by simp⟩
+  | cons a t ih =>
+      intro hpw r
+      rw [List.pairwise_cons] at hpw
+      obtain ⟨ha, htail⟩ := hpw
+      have hcop : Nat.Coprime a t.prod := Nat.coprime_list_prod_right_iff.mpr ha
+      obtain ⟨y, hy⟩ := ih htail r
+      obtain ⟨x, hxa, hxt⟩ := Nat.chineseRemainder hcop (r a) y
+      refine ⟨x, fun m hm => ?_⟩
+      rcases List.mem_cons.mp hm with rfl | hmt
+      · exact hxa
+      · exact (hxt.of_dvd (List.dvd_prod hmt)).trans (hy m hmt)
+
+/-- **Worked existence instance** over `[3, 4, 5]`: every choice of residues mod `3`, `4`,
+`5` is realised by some `x`, mirroring `crt_345_unique`. Existence here plus the uniqueness
+of `crt_345_unique` give the full CRT bijection `ℤ/60 ≃ ℤ/3 × ℤ/4 × ℤ/5`. -/
+theorem crt_345_exists (r : ℕ → ℕ) :
+    ∃ x : ℕ, x ≡ r 3 [MOD 3] ∧ x ≡ r 4 [MOD 4] ∧ x ≡ r 5 [MOD 5] := by
+  have hpw : ([3, 4, 5] : List ℕ).Pairwise Nat.Coprime := by decide
+  obtain ⟨x, hx⟩ := crt_list_exists hpw r
+  exact ⟨x, hx 3 (by decide), hx 4 (by decide), hx 5 (by decide)⟩
+
 end ChineseRemainderConstructiveOQ05OQ02
