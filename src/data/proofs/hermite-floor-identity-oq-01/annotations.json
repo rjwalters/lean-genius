@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-statement-docstring",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "The Companion Sawtooth Identity",
+    "content": "The module docstring states the goal and the one-line strategy. Where Hermite's classical identity sums the floors ⌊x + k/n⌋ over k = 0,…,n−1 to ⌊nx⌋, this companion sums the fractional parts {x + k/n} = x + k/n − ⌊x + k/n⌋ instead. Subtracting the floor identity from the exact (un-floored) sum collapses the problem to a single arithmetic series. The displayed derivation makes clear that the only non-elementary input is Hermite's identity itself; the additive constant (n−1)/2 is the average of the sampled offsets.",
+    "mathContext": "$\\sum_{k=0}^{n-1}\\left\\{x+\\frac{k}{n}\\right\\} = \\{nx\\} + \\frac{n-1}{2}$, with $\\{y\\}=y-\\lfloor y\\rfloor$.",
+    "significance": "context",
+    "relatedConcepts": ["sawtooth function", "fractional part", "Hermite's identity", "uniform sampling of a period"],
+    "prerequisites": ["floor and fractional-part functions", "finite sums"]
+  },
+  {
+    "id": "ann-int-hermite-sum",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 50, "endLine": 88 },
+    "type": "technique",
+    "title": "Integer Hermite Sum (parent helper)",
+    "content": "Reproduced from the parent entry: for n ≥ 1 and any integer a, the Euclidean quotients ⌊(a+k)/n⌋ over k = 0,…,n−1 sum to a. The proof uses a shift recurrence — replacing a by a+1 raises exactly one quotient by 1 (the wrap-around at k = n−1) — packaged via Finset.sum_range_succ' and Finset.sum_range_succ, then Int.induction_on extends from the base case a = 0 (every quotient is 0 since 0 ≤ k < n) to all integers, both positive and negative. The integer-division identity Int.add_mul_ediv_right supplies the unit increment.",
+    "mathContext": "$\\sum_{k=0}^{n-1}\\left\\lfloor\\frac{a+k}{n}\\right\\rfloor = a$ for $a\\in\\mathbb{Z}$, $n\\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean division", "integer induction", "telescoping recurrence"],
+    "prerequisites": ["integer division (Int.ediv)", "induction over ℤ", "Finset.range sums"]
+  },
+  {
+    "id": "ann-hermite-floor-identity",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 90, "endLine": 100 },
+    "type": "technique",
+    "title": "Hermite's Floor Identity (parent helper)",
+    "content": "Reproduced from the parent entry: the real-valued floor identity that this companion subtracts off. Each real summand is rewritten as a single quotient, x + k/n = (n·x + k)/n, then Int.floor_div_natCast and Int.floor_add_natCast reduce the real floor to the integer floor ⌊nx⌋ shifted by k. Summing via the integer Hermite sum above with a = ⌊nx⌋ yields ⌊nx⌋. This is the floor part of the value = exact − floor decomposition.",
+    "mathContext": "$\\sum_{k=0}^{n-1}\\left\\lfloor x+\\frac{k}{n}\\right\\rfloor = \\lfloor nx\\rfloor$, the real-to-integer reduction of int_hermite_sum.",
+    "significance": "key",
+    "relatedConcepts": ["floor function", "Hermite's identity", "casting integer floors to reals"],
+    "prerequisites": ["Int.floor API", "real-to-integer reduction"]
+  },
+  {
+    "id": "ann-sum-div-eq",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 104, "endLine": 116 },
+    "type": "insight",
+    "title": "The Gauss Sum over ℝ: ∑ k/n = (n−1)/2",
+    "content": "The sole genuinely new arithmetic input. The sum of the offsets k/n over k = 0,…,n−1 equals (n−1)/2 — the discrete average value 1/2 of the sawtooth across its n−1 nonzero samples, which is exactly why the additive constant in the identity is (n−1)/2. Crucially, the auxiliary Gauss sum ∑_{k<m} k = m(m−1)/2 is proved directly over ℝ by induction (Finset.sum_range_succ then ring at each step). A naive cast of Mathlib's Finset.sum_range_id would introduce the natural-number quotient m(m−1)/2, and ℕ-division is not a ring operation, so ring/field_simp would stall. Proving over ℝ from the start sidesteps the obstruction.",
+    "mathContext": "$\\sum_{k=0}^{n-1}\\frac{k}{n} = \\frac{1}{n}\\cdot\\frac{n(n-1)}{2} = \\frac{n-1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["triangular numbers", "Gauss summation", "arithmetic series", "average value of the sawtooth"],
+    "prerequisites": ["induction over ℕ", "ring normalization", "why ℕ-division blocks ring"]
+  },
+  {
+    "id": "ann-fract-expand",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 121, "endLine": 129 },
+    "type": "technique",
+    "title": "Expanding the Fractional Part",
+    "content": "The headline theorem opens by unfolding each summand with the definition Int.fract y = y − ⌊y⌋, then splitting the sum into an exact part and a floor part via Finset.sum_sub_distrib. This is the formal incarnation of the 'value = exact − floor' idea: the linearity of finite summation lets the single sawtooth sum be analyzed as two independent, simpler sums.",
+    "mathContext": "$\\sum_k\\{x+\\tfrac{k}{n}\\} = \\sum_k\\bigl(x+\\tfrac{k}{n}\\bigr) - \\sum_k\\lfloor x+\\tfrac{k}{n}\\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.fract", "linearity of summation", "sum_sub_distrib"],
+    "prerequisites": ["definition of fractional part", "additivity of Finset sums"]
+  },
+  {
+    "id": "ann-exact-part",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 130, "endLine": 134 },
+    "type": "definition",
+    "title": "Evaluating the Exact Part",
+    "content": "The exact (un-floored) part splits once more via Finset.sum_add_distrib into a constant sum ∑_{k<n} x = n·x (Finset.sum_const, card_range, nsmul_eq_mul) and the Gauss sum ∑_{k<n} k/n = (n−1)/2 from sum_div_eq. Together these give n·x + (n−1)/2 — the entire (n−1)/2 constant of the final identity originates here.",
+    "mathContext": "$\\sum_{k=0}^{n-1}\\bigl(x+\\tfrac{k}{n}\\bigr) = nx + \\frac{n-1}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["constant sum", "nsmul", "arithmetic series"],
+    "prerequisites": ["Finset.sum_const", "scalar multiplication as multiplication"]
+  },
+  {
+    "id": "ann-floor-part-and-close",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": { "startLine": 135, "endLine": 140 },
+    "type": "insight",
+    "title": "Floor Part and Closing the Identity",
+    "content": "The floor part ∑_{k<n} ⌊x + k/n⌋, pulled out of the real cast with Int.cast_sum, equals ⌊nx⌋ by Hermite's identity. Substituting the exact part (n·x + (n−1)/2) and the floor part ⌊nx⌋, then unfolding {nx} = n·x − ⌊nx⌋, leaves (n·x + (n−1)/2) − ⌊nx⌋ = (n·x − ⌊nx⌋) + (n−1)/2, a pure algebraic rearrangement closed by ring. The fractional-part identity thus drops out of Hermite's floor identity with no further number theory.",
+    "mathContext": "$\\bigl(nx+\\tfrac{n-1}{2}\\bigr)-\\lfloor nx\\rfloor = (nx-\\lfloor nx\\rfloor)+\\tfrac{n-1}{2} = \\{nx\\}+\\tfrac{n-1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.cast_sum", "Hermite's identity", "ring normalization", "fractional part"],
+    "prerequisites": ["casting sums of integers to reals", "ring tactic"]
+  }
+]
