@@ -18,7 +18,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/FrobeniusEndomorphismOQ01OQ03.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide, so no Lean.ofReduceBool is introduced. The automorphism frobeniusEquiv is noncomputable only because RingEquiv.ofBijective uses choice to extract the inverse — this introduces no extra axioms beyond the standard triple.",
@@ -84,6 +84,21 @@
       "proofId": "frobenius-endomorphism-oq-01",
       "relationship": "extends",
       "description": "The parent packages the Frobenius x ↦ x^p as a ring homomorphism in prime characteristic and characterizes it as the identity on ZMod p and on finite fields. This entry answers its lead open question, supplying the two structural facts the parent left open: injectivity on a domain (monomorphism) and bijectivity on a finite field (automorphism)."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Takes the automorphism frobeniusEquiv : K ≃+* K built here and exhibits it as the generator of the cyclic Galois group Gal(𝔽_{p^n} / 𝔽_p) of order n — answering this entry's first open question."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
+      "relationship": "contrasts",
+      "description": "The exact counterpoint to the finite-field automorphism: on the infinite field 𝔽_p(X) the Frobenius is injective but NOT surjective (X has no p-th root), an explicit imperfect field — answering this entry's second open question about where surjectivity fails."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Identifies the fixed field of the Frobenius automorphism as the prime subfield 𝔽_p — the complementary structural fact: this entry shows the Frobenius is an automorphism, that entry pins down exactly which elements it fixes."
     }
   ],
   "leanFile": {
