@@ -2,7 +2,7 @@
   "id": "erdos-818",
   "title": "Product Set Lower Bound for Small Sumsets",
   "slug": "erdos-818",
-  "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c·|A|²/log|A|.",
+  "description": "If |A+A| ≤ K|A| (small sumset), is |AA| ≥ |A|²/(log|A|)^C for some C? Answer: YES. Solymosi (2009) proved the stronger bound |AA| ≥ c(K)·|A|²/log|A|. This file reduces the problem to Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A| (the single axiom) and proves everything else, including the corrected (K-dependent) quantifiers.",
   "meta": {
     "author": "Solymosi (2009)",
     "sourceUrl": "https://erdosproblems.com/818",
@@ -17,7 +17,7 @@
       "product-set"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 818,
     "erdosUrl": "https://erdosproblems.com/818",
     "erdosProblemStatus": "solved",
@@ -45,12 +45,12 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of sumset and product set",
-      "Small sumset condition: |A+A| ≤ K·|A|",
-      "Additive and multiplicative energy definitions",
-      "Solymosi's theorem: |AA| ≥ c·|A|²/log|A| when sumset small",
-      "Cauchy–Schwarz multiplicative-energy lower bound |A|⁴ ≤ |A·A|·E×(A), proved axiom-free via Mathlib's Finset.le_card_mul_mul_mulEnergy (step 1 of Solymosi's strategy)",
-      "Proof sketch via energy bounds",
+      "Formal definitions of sumset, product set, additive/multiplicative energy, and the small-sumset condition |A+A| ≤ K·|A|",
+      "Reduction of Erdős #818 to a single honest axiom: Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A| (the genuine deep input, not in Mathlib)",
+      "Cauchy–Schwarz multiplicative-energy lower bound |A|⁴ ≤ |A·A|·E×(A), proved axiom-free via Mathlib's Finset.le_card_mul_mul_mulEnergy",
+      "Full machine-checked derivation of the product-set estimate |A·A| ≥ |A|²/(C·K²·log|A|) from the two energy bounds (productSet_lower_bound_of_smallSumset) — eliminating the previous sorry",
+      "Correctness fix: the earlier ∃c,∀K quantifier order made solymosi_theorem and ErdosConjecture818 false (geometric progressions); restated with the faithful ∀K,∃c(K) order and proved",
+      "Correctness fix: the earlier sketch used the dimensionally-inconsistent bound E×≤|A|²·|A+A|·log and target |A|²/(K·log); replaced with Solymosi's actual E×≤C·|A+A|²·log giving |A|²/(C·K²·log)",
       "Connection to Problem 52 (original sum-product conjecture)"
     ],
     "dateAdded": "2026-01-19",
@@ -62,9 +62,9 @@
       "Logarithmic functions and asymptotic notation",
       "Basic number theory (arithmetic and geometric progressions)"
     ],
-    "lineCount": 353,
-    "assumptions": "1 axiom(s) and 1 sorry(s). See the Lean source for details.",
-    "theoremCount": 8,
+    "lineCount": 418,
+    "assumptions": "1 axiom (Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, not in Mathlib) and 0 sorries. All headline theorems are proved from this single axiom plus the axiom-free Cauchy–Schwarz lower bound. See the Lean source for details.",
+    "theoremCount": 10,
     "definitionCount": 7,
     "additionalFiles": [
       "Proofs/Erdos818Aristotle.lean"
@@ -72,15 +72,16 @@
   },
   "overview": {
     "historicalContext": "This problem is part of the sum-product phenomenon, a central topic in additive combinatorics. Erdős-Szemerédi conjectured that finite sets cannot have both small sumsets AND small product sets. This problem explores a conditional version: if the sumset is small, how large must the product set be? Solymosi's 2009 paper resolved this completely. The sum-product conjecture (1983) was proved in quantitative forms by Elekes (1997) using the Szemerédi-Trotter incidence theorem, and by Solymosi and others achieving exponent 4/3. The conditional question asks whether small additive structure forces large multiplicative structure, refining the unconditional sum-product estimates.",
-    "problemStatement": "Let A be a finite set of integers such that |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0?",
-    "text": "This formalization captures Erdős Problem #818, a conditional form of the sum-product phenomenon in additive combinatorics. The Lean file defines sumsets, product sets, additive and multiplicative energy, and the small sumset condition |A+A| ≤ K|A|, then states both the original conjecture (product set at least |A|²/(log|A|)^C for some C) and Solymosi's 2009 resolution, which proves the stronger bound |AA| ≥ c|A|²/log|A| with C = 1. The conjecture is stated with an explicit absolute constant c > 0 (faithful to the original ≫), which is necessary: without it the bound fails on small sets such as A = {1,2}. The proof architecture formalizes the energy sandwich argument: a Cauchy-Schwarz lower bound on multiplicative energy (E×(A) ≥ |A|⁴/|AA|) combined with Solymosi's upper bound (E×(A) ≤ |A|²·|A+A|·log|A|) yields the product set estimate. The file also formalizes the tightness of the logarithmic factor via arithmetic progression examples, connects the result to Erdős Problem #52 (the unconditional sum-product conjecture), and states the sum-product dichotomy. The formalization has 7 definitions, 8 theorems, and 1 axiom (Solymosi's theorem) with 1 remaining sorry (the K-dependent energy argument in proof_outline). Step 1 of Solymosi's strategy — the Cauchy–Schwarz multiplicative-energy lower bound |A|⁴ ≤ |A·A|·E×(A) — is now proved axiom-free as cauchy_schwarz_energy, by connecting the local productSet and multiplicativeEnergy definitions to Mathlib's pointwise product and Finset.mulEnergy and invoking Finset.le_card_mul_mul_mulEnergy. The two former sorries in erdos_818_proved and key_insight were eliminated once the conjecture carried the absolute constant, making both provable directly from Solymosi's axiom. (A prior version of this file did not compile: it was missing the Real.rpow import and several narrative paragraphs were written as doc-comments not attached to a declaration, which desynchronised the parser; both issues have been repaired, so all 8 theorems are now machine-checked.)",
-    "proofStrategy": "The formalization defines sumsets, product sets, and the small sumset condition. Solymosi's theorem is stated as the main result, with the proof strategy outlined: bound multiplicative energy from below (Cauchy-Schwarz) and above (Solymosi's lemma), then combine to get the product set bound.",
+    "problemStatement": "Let A be a finite set of integers with |A+A| ≤ K·|A| for some constant K. Is it true that |A·A| ≥ |A|²/(log|A|)^C for some constant C > 0? (The implied constant in the conclusion necessarily depends on K.)",
+    "text": "This formalization captures Erdős Problem #818, a conditional form of the sum-product phenomenon. The Lean file defines sumsets, product sets, additive and multiplicative energy, and the small-sumset condition |A+A| ≤ K|A|. Its architecture isolates the single deep input — Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A+A|²·log|A|, which is a true theorem of additive combinatorics not yet in Mathlib — as the file's one axiom (solymosi_energy_bound). Everything else is proved from it. The Cauchy–Schwarz lower bound |A|⁴ ≤ |A·A|·E×(A) is proved axiom-free (cauchy_schwarz_energy) via Mathlib's Finset.le_card_mul_mul_mulEnergy. Combining the two energy bounds and squaring |A+A| ≤ K|A| yields the product-set estimate |A·A| ≥ |A|²/(C·K²·log|A|) (productSet_lower_bound_of_smallSumset), from which Solymosi's theorem, the Erdős conjecture (C=1), key_insight and proof_outline follow. A prior version of this file axiomatized the entire conclusion with the quantifier order ∃c,∀K; that statement is in fact FALSE — fixing c before K and taking K large makes the small-sumset hypothesis vacuous, forcing |AA| ≥ c|A|²/log|A| for every set, which geometric progressions (|AA|=2|A|−1) violate. The honest statement makes c depend on K (∀K,∃c), which is what is now proved. The earlier proof sketch also used the dimensionally-inconsistent energy bound E×≤|A|²·|A+A|·log and target |A|²/(K·log); the correct Solymosi bound is E×≤C·|A+A|²·log, giving the |A|²/(C·K²·log) estimate with K². The formalization has 7 definitions, 10 theorems, and 1 axiom, with 0 sorries; #print axioms confirms every headline theorem depends only on solymosi_energy_bound (plus the standard foundational axioms).",
+    "proofStrategy": "Sandwich the multiplicative energy: a Cauchy–Schwarz lower bound E×(A) ≥ |A|⁴/|A·A| (proved) and Solymosi's upper bound E×(A) ≤ C·|A+A|²·log|A| (axiom). With |A+A| ≤ K|A| this gives |A|⁴/|A·A| ≤ C·K²·|A|²·log|A|, i.e. |A·A| ≥ |A|²/(C·K²·log|A|). Setting c(K)=1/(C·K²) recovers Solymosi's |A·A| ≥ c·|A|²/log|A| and (with C=1) the Erdős conjecture.",
     "keyInsights": [
       "Sets cannot have both strong additive AND multiplicative structure",
       "Small additive doubling forces large multiplicative expansion",
-      "The log factor in the denominator is tight (arithmetic progressions show this)",
-      "Multiplicative energy is the key intermediate quantity",
-      "Solymosi proved C = 1 works, stronger than the original conjecture"
+      "Multiplicative energy is the key intermediate quantity, sandwiched between two bounds",
+      "Solymosi's bound contributes K² (not K) because it controls energy by |A+A|²",
+      "The implied constant c necessarily depends on the doubling threshold K (∀K,∃c, not ∃c,∀K)",
+      "The log factor is tight (arithmetic progressions, via the Erdős multiplication-table problem)"
     ],
     "prerequisites": [
       "Finite set operations (union, image, cartesian product)",
@@ -94,83 +95,83 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 46,
-      "endLine": 77,
+      "startLine": 64,
+      "endLine": 97,
       "summary": "Sumset, product set, additive doubling, small sumset condition",
       "mathContext": "Mathematical content: Sumset, product set, additive doubling, small sumset condition"
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
-      "startLine": 78,
-      "endLine": 105,
+      "startLine": 98,
+      "endLine": 124,
       "summary": "Elementary bounds on sumset and product set sizes",
       "mathContext": "Bound: Elementary bounds on sumset and product set sizes"
     },
     {
-      "id": "original-conjecture",
-      "title": "The Original Conjecture",
-      "startLine": 106,
-      "endLine": 121,
-      "summary": "Erdős's question about product sets under small sumset hypothesis",
-      "mathContext": "Mathematical content: Erdős's question about product sets under small sumset hypothesis"
+      "id": "energy-definitions",
+      "title": "Multiplicative and Additive Energy",
+      "startLine": 125,
+      "endLine": 145,
+      "summary": "Multiplicative and additive energy definitions",
+      "mathContext": "Formal definition: multiplicative and additive energy"
     },
     {
-      "id": "solymosi-theorem",
-      "title": "Solymosi's Theorem",
-      "startLine": 122,
-      "endLine": 155,
-      "summary": "The main result: |AA| ≥ c·|A|²/log|A|",
-      "mathContext": "The main result: |AA| $\\geq$ c·|A|²/log|A|"
+      "id": "cauchy-schwarz",
+      "title": "Cauchy–Schwarz Energy Lower Bound (proved)",
+      "startLine": 146,
+      "endLine": 181,
+      "summary": "Axiom-free |A|⁴ ≤ |A·A|·E×(A) via Finset.le_card_mul_mul_mulEnergy",
+      "mathContext": "Verified: |A|⁴ ≤ |A·A|·E×(A)"
     },
     {
-      "id": "multiplicative-energy",
-      "title": "Multiplicative Energy",
-      "startLine": 156,
-      "endLine": 190,
-      "summary": "Energy definitions and key bounds",
-      "mathContext": "Formal definition: Energy definitions and key bounds"
+      "id": "energy-bound-and-estimate",
+      "title": "Solymosi Energy Bound and Product-Set Estimate",
+      "startLine": 182,
+      "endLine": 279,
+      "summary": "The one axiom (E×≤C·|A+A|²·log) and the proved estimate |A·A| ≥ |A|²/(C·K²·log)",
+      "mathContext": "The deep axiom plus the derived product-set lower bound"
     },
     {
-      "id": "proof-sketch",
-      "title": "Proof Sketch",
-      "startLine": 191,
-      "endLine": 229,
-      "summary": "How energy bounds combine to prove the theorem, log tightness",
-      "mathContext": "Verified: How energy bounds combine to prove the theorem, log tightness"
+      "id": "conjecture-and-solymosi",
+      "title": "Conjecture and Solymosi's Theorem",
+      "startLine": 280,
+      "endLine": 345,
+      "summary": "Corrected (∀K,∃c) conjecture and Solymosi theorem, both proved",
+      "mathContext": "The main results: |AA| ≥ c(K)·|A|²/log|A|"
+    },
+    {
+      "id": "proof-recap",
+      "title": "Proof Recap",
+      "startLine": 346,
+      "endLine": 374,
+      "summary": "Five-step strategy recap and the proved proof_outline corollary",
+      "mathContext": "Verified: how the energy bounds combine"
     },
     {
       "id": "sum-product-connection",
       "title": "Connection to Sum-Product",
-      "startLine": 230,
-      "endLine": 260,
-      "summary": "Relation to Problem 52 and sum-product dichotomy",
-      "mathContext": "Mathematical content: Relation to Problem 52 and sum-product dichotomy"
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 261,
-      "endLine": 291,
-      "summary": "Arithmetic and geometric progressions as extremes",
-      "mathContext": "Mathematical content: Arithmetic and geometric progressions as extremes"
+      "startLine": 375,
+      "endLine": 392,
+      "summary": "Relation to Problem 52, dichotomy, AP/GP examples",
+      "mathContext": "Mathematical content: sum-product dichotomy and extremal examples"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 292,
-      "endLine": 294,
-      "summary": "Main results and key insight",
-      "mathContext": "Mathematical content: Main results and key insight"
+      "startLine": 393,
+      "endLine": 418,
+      "summary": "Summary theorem and key insight",
+      "mathContext": "Mathematical content: main results and key insight"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| ≤ K|A|, then |AA| ≥ c·|A|²/log|A|. This is a quantitative form of the sum-product dichotomy.",
-    "implications": "Solymosi's resolution of Erdős Problem #818 demonstrates the power of energy methods as a bridge between additive and multiplicative structure. The proof technique -- sandwiching multiplicative energy between a Cauchy-Schwarz lower bound and a sumset-dependent upper bound -- has become a paradigmatic argument in additive combinatorics. This 'energy method' reduces a difficult structural question (how large is the product set?) to a tractable counting problem (how many quadruples have equal products?).\n\nThe result has deep connections to the broader Erdős-Szemerédi sum-product conjecture (Problem #52), which asserts that max(|A+A|, |AA|) ≥ |A|^{2-ε} for any ε > 0. Problem #818 can be viewed as the conditional version: once one side (the sumset) is constrained, the other (the product set) must compensate almost quadratically. Solymosi's bound implies that if |A+A| ≤ K|A|, then |AA| ≥ c|A|²/log|A|, which is nearly quadratic and much stronger than the unconditional sum-product lower bound of |A|^{4/3}.\n\nThe tightness of the logarithmic factor is itself a notable result. The set {1, 2, ..., n} has |A+A| = 2n-1 (small sumset with K = 2) but |AA| is asymptotic to n²/log n by the Erdős multiplication table problem. This means no improvement beyond C = 1 is possible in general, and Solymosi's bound is essentially best possible.\n\nFrom a formalization perspective, the Lean file illustrates how axiomatized deep results (Solymosi's theorem, energy bounds, extremal constructions) can be composed to derive consequences in a machine-checked framework. The 1 axiom (Solymosi's theorem) encodes a result that is mathematically established but would require substantial Mathlib infrastructure to prove from scratch. The 1 remaining sorry (proof_outline) is the genuine energy argument: it is not derivable from the absolute-constant Solymosi axiom (which would require c·K ≥ 1). Its first ingredient — the Cauchy–Schwarz lower bound |A|⁴ ≤ |A·A|·E×(A) — is now formalized axiom-free (cauchy_schwarz_energy, via Mathlib's Finset.le_card_mul_mul_mulEnergy), so the remaining gap is exactly Solymosi's multiplicative-energy upper bound E×(A) ≤ C·|A|²·|A+A|·log|A|, which is not yet in Mathlib.\n\nThe energy method pioneered here has influenced subsequent work across combinatorics, including applications to incidence geometry (via the Szemerédi-Trotter theorem), exponential sum estimates in analytic number theory, and sum-product phenomena over finite fields (Bourgain-Katz-Tao). The formalization thus captures not just one solved problem but a cornerstone technique of modern combinatorial number theory.",
+    "summary": "Erdős Problem #818 asked whether small sumsets force large product sets. Solymosi (2009) proved YES: if |A+A| ≤ K|A|, then |A·A| ≥ c(K)·|A|²/log|A|. This file reduces the result to Solymosi's multiplicative-energy bound E×(A) ≤ C·|A+A|²·log|A| (its one axiom) and proves the product-set estimate |A·A| ≥ |A|²/(C·K²·log|A|), the Solymosi theorem, and the (corrected) Erdős conjecture from it — with 0 sorries.",
+    "implications": "Solymosi's resolution of Erdős #818 demonstrates the energy method as a bridge between additive and multiplicative structure: sandwich the multiplicative energy E×(A) between a Cauchy–Schwarz lower bound |A|⁴/|A·A| and a sumset-dependent upper bound, then read off the product-set estimate.\n\nThe deep, irreducible input is Solymosi's bound E×(A) ≤ C·|A+A|²·log|A| (Advances in Mathematics, 2009), proved by a dyadic decomposition of slopes that Mathlib does not yet contain; this file isolates it as its single axiom (solymosi_energy_bound) rather than axiomatizing the conclusion. The Cauchy–Schwarz lower bound is proved axiom-free (cauchy_schwarz_energy) via Mathlib's Finset.le_card_mul_mul_mulEnergy, and the quantitative estimate |A·A| ≥ |A|²/(C·K²·log|A|) is then a machine-checked derivation (productSet_lower_bound_of_smallSumset) — the former proof_outline sorry is gone.\n\nTwo correctness issues in the earlier version were fixed. First, the quantifier order: the statement ∃c,∀K,∀A (|A+A|≤K|A| → |AA|≥c|A|²/log|A|) is false, because a fixed c cannot survive taking K large (which makes the hypothesis hold for all sets, including geometric progressions with |AA|=2|A|−1). The faithful statement ∀K,∃c(K) is now proved. Second, the energy bound and target were dimensionally inconsistent (E×≤|A|²·|A+A|·log and |A|²/(K·log)); Solymosi's genuine bound is E×≤C·|A+A|²·log, which yields the |A|²/(C·K²·log) estimate with the correct K² dependence.\n\nThe result connects to the broader Erdős–Szemerédi sum-product conjecture (Problem #52): once the sumset is constrained, the product set must compensate almost quadratically. The tightness of the logarithmic factor follows from the Erdős multiplication-table problem ({1,…,n} has |A+A|=2n−1 but |AA|≍n²/log n), so C=1 is best possible. The energy method formalized here underlies incidence-geometry, exponential-sum, and finite-field sum-product results across modern combinatorial number theory.",
     "openQuestions": [
-      "Can the log factor be improved to log^{1-ε}?",
-      "What is the optimal constant c in Solymosi's bound?",
-      "Do analogous results hold in other groups or rings?"
+      "Can Solymosi's multiplicative-energy bound E×(A) ≤ C·|A+A|²·log|A| itself be formalized in Lean/Mathlib, removing the last axiom?",
+      "What is the optimal constant c(K) in |A·A| ≥ c(K)·|A|²/log|A|, and is the K² dependence sharp?",
+      "Do analogous energy bounds and sum-product estimates hold over other rings (e.g. finite fields, function fields)?"
     ]
   },
   "references": [
@@ -267,22 +268,24 @@
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Card",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Combinatorics.Additive.Energy"
     ],
     "opens": [
       "Finset",
       "Real"
     ],
     "namespace": "Erdos818",
-    "lineCount": 294,
+    "lineCount": 418,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 10,
     "definitionCount": 7,
     "path": "Proofs/Erdos818Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos818Aristotle.lean"
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }

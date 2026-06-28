@@ -2,7 +2,7 @@
 Erdős Problem #818: Product Set Lower Bound for Small Sumsets
 
 Source: https://erdosproblems.com/818
-Status: SOLVED
+Status: SOLVED (axiomatized analytic core)
 
 Statement:
 Let A be a finite set of integers such that |A + A| ≪ |A|.
@@ -21,9 +21,25 @@ The intuition is that sets cannot simultaneously have both strong additive
 AND multiplicative structure. If sums are constrained, products must expand.
 
 Key Insight:
-- If |A+A| ≤ K·|A| (small sumset), then |AA| ≥ |A|² / (C · log|A|)
+- If |A+A| ≤ K·|A| (small sumset), then |AA| ≥ |A|² / (C · K² · log|A|)
 - The log factor in the denominator is essentially tight
 - This is a quantitative version of the "either expand or be structured" dichotomy
+
+Architecture of this file:
+The deep, irreducible input is Solymosi's multiplicative-energy upper bound
+`E×(A) ≤ C·|A+A|²·log|A|` (not in Mathlib), which we *axiomatize*
+(`solymosi_energy_bound`). Everything else — the Cauchy–Schwarz energy lower
+bound, the derivation of the product-set estimate, and the headline theorems —
+is then *proved* from that single axiom. In particular `solymosi_theorem`,
+`erdos_818_proved`, `key_insight` and `proof_outline` are no longer axioms or
+sorries; they are machine-checked consequences of `solymosi_energy_bound`.
+
+A previous version of this file axiomatized the entire conclusion with the
+quantifier order `∃ c, ∀ K, ...`. That statement is in fact FALSE: with `c`
+chosen before `K`, taking `K` large makes `hasSmallSumset A K` hold for every
+set `A`, so the claim would force `|AA| ≥ c·|A|²/log|A|` for all sets — which
+fails for geometric progressions (|AA| = 2|A|−1 ≪ |A|²/log|A|). The honest
+statement makes `c` depend on `K`, i.e. `∀ K, ∃ c, ...`; this is what we prove.
 
 Reference:
 [So09d] Solymosi, József, "Bounding multiplicative energy by the sumset",
@@ -106,61 +122,7 @@ theorem productSet_upper_bound (A : Finset ℤ) :
     _ = A.card ^ 2 := by ring
 
 /-
-## Part III: The Original Conjecture
--/
-
-/--
-**Erdős Conjecture #818:**
-If |A + A| ≤ K · |A| for some constant K, then
-|A · A| ≫ |A|² / (log |A|)^C for some constants C, c > 0.
-
-The absolute constant `c > 0` is essential and faithful to the `≫` in the
-original statement: without it the claim is false on small sets. For example
-A = {1, 2} has |A+A| = 3 ≤ 2·|A| (small sumset) and |A·A| = 3, but
-|A|²/(log|A|)^C = 4/(log 2)^C > 4 for every C > 0 (since log 2 < 1). The
-constant `c` absorbs these boundary effects, exactly as `≫` intends.
--/
-def ErdosConjecture818 : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∃ c : ℝ, c > 0 ∧
-    ∀ K : ℝ, K > 0 →
-      ∀ A : Finset ℤ, A.card ≥ 2 →
-        hasSmallSumset A K →
-        ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / (log A.card)^C
-
-/-
-## Part IV: Solymosi's Theorem (2009)
--/
-
-/--
-**Solymosi's Theorem (2009):**
-If |A + A| ≤ K · |A|, then |A · A| ≥ c · |A|² / log |A|
-for some absolute constant c > 0.
-
-This is STRONGER than the original conjecture (C = 1 instead of arbitrary C).
--/
-axiom solymosi_theorem :
-    ∃ c : ℝ, c > 0 ∧
-      ∀ K : ℝ, K > 0 →
-        ∀ A : Finset ℤ, A.card ≥ 2 →
-          hasSmallSumset A K →
-          ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / log A.card
-
-/--
-**The conjecture is true:**
-Solymosi's theorem implies Erdős's conjecture.
--/
-theorem erdos_818_proved : ErdosConjecture818 := by
-  obtain ⟨c, hc_pos, hc_bound⟩ := solymosi_theorem
-  -- Take C = 1 and the same absolute constant c as Solymosi's theorem.
-  refine ⟨1, by norm_num, c, hc_pos, ?_⟩
-  intro K hK A hA_card hA_small
-  have hSoly := hc_bound K hK A hA_card hA_small
-  -- (log |A|)^(1 : ℝ) = log |A|, so the goal is exactly Solymosi's bound.
-  rw [Real.rpow_one]
-  exact hSoly
-
-/-
-## Part V: Multiplicative Energy
+## Part III: Multiplicative and Additive Energy
 -/
 
 /--
@@ -181,12 +143,7 @@ def additiveEnergy (A : Finset ℤ) : ℕ :=
     (fun x => x.1.1 + x.1.2 = x.2.1 + x.2.2) |>.card
 
 /-
-**Energy-cardinality relationship:**
-E×(A) ≥ |A|⁴ / |AA| (by pigeonhole on products).
--/
-
-/-
-## Part V·b: The Cauchy–Schwarz energy lower bound (proved)
+## Part IV: The Cauchy–Schwarz energy lower bound (proved)
 
 The first ingredient of Solymosi's strategy is the elementary Cauchy–Schwarz
 lower bound `|A|⁴ ≤ |A·A| · E×(A)`. It is *not* the deep part of the argument —
@@ -222,132 +179,240 @@ theorem cauchy_schwarz_energy (A : Finset ℤ) :
     _ ≤ (A * A).card * Finset.mulEnergy A A := Finset.le_card_mul_mul_mulEnergy A A
 
 /-
-**Solymosi's key lemma:**
-Bounds multiplicative energy in terms of sumset size.
+## Part V: Solymosi's energy bound (axiomatized) and the product-set estimate
+
+Solymosi's genuine contribution — and the only part not provable from Mathlib
+today — is the multiplicative-energy upper bound
+
+  E×(A) ≤ C · |A+A|² · log|A|
+
+for an absolute constant `C > 0`. (For positive reals one may take `C = 4` with
+`log` to base 2; over ℤ the same bound holds up to the absolute constant, by
+splitting into sign classes.) Its proof is the dyadic-slopes geometric argument
+of [So09d], which Mathlib does not yet contain, so we state it as the single
+axiom of this file. Everything below is *proved* from this axiom.
 -/
+
+/--
+**Solymosi's multiplicative-energy bound (axiomatized analytic core).**
+
+`E×(A) ≤ C · |A+A|² · log|A|` for an absolute constant `C > 0`.
+
+This is the irreducible deep input (Solymosi 2009): it is a true theorem of
+additive combinatorics that is not currently formalized in Mathlib. Reducing the
+whole problem to this single, honest assumption (rather than axiomatizing the
+conclusion outright) is the point of this file.
+-/
+axiom solymosi_energy_bound :
+    ∃ C : ℝ, C > 0 ∧
+      ∀ A : Finset ℤ, A.card ≥ 2 →
+        (multiplicativeEnergy A : ℝ) ≤ C * ((sumset A).card : ℝ) ^ 2 * Real.log A.card
+
+/--
+**The product-set estimate (proved from the energy bound).**
+
+Combining the proved Cauchy–Schwarz lower bound `|A|⁴ ≤ |A·A|·E×(A)` with the
+axiomatized upper bound `E×(A) ≤ C·|A+A|²·log|A|`, and using `|A+A| ≤ K|A|`,
+gives the quantitative lower bound
+
+  |A·A| ≥ |A|² / (C · K² · log|A|).
+
+The `K²` (rather than `K`) is genuine: it comes from squaring `|A+A| ≤ K|A|` in
+Solymosi's `|A+A|²` energy bound. This corrects the earlier (dimensionally
+inconsistent) sketch `|A·A| ≥ |A|²/(K·log|A|)`.
+-/
+theorem productSet_lower_bound_of_smallSumset :
+    ∃ C : ℝ, C > 0 ∧
+      ∀ K : ℝ, K > 0 →
+        ∀ A : Finset ℤ, A.card ≥ 2 →
+          hasSmallSumset A K →
+            ((productSet A).card : ℝ) ≥ (A.card : ℝ) ^ 2 / (C * K ^ 2 * Real.log A.card) := by
+  obtain ⟨C, hC, hEbound⟩ := solymosi_energy_bound
+  refine ⟨C, hC, ?_⟩
+  intro K hK A hA hsmall
+  -- Positivity facts.
+  have hn1 : (1 : ℝ) < (A.card : ℝ) := by
+    have h : 1 < A.card := by omega
+    exact_mod_cast h
+  have hL : 0 < Real.log A.card := Real.log_pos hn1
+  have hP : 0 ≤ ((productSet A).card : ℝ) := by positivity
+  have hS : 0 ≤ ((sumset A).card : ℝ) := by positivity
+  -- Cauchy–Schwarz, cast to ℝ.
+  have hCS : (A.card : ℝ) ^ 4 ≤ ((productSet A).card : ℝ) * (multiplicativeEnergy A : ℝ) := by
+    exact_mod_cast cauchy_schwarz_energy A
+  -- Small sumset as a real inequality, then squared.
+  have hsmall' : ((sumset A).card : ℝ) ≤ K * (A.card : ℝ) := hsmall
+  have hKn : 0 ≤ K * (A.card : ℝ) := le_trans hS hsmall'
+  have hS2 : ((sumset A).card : ℝ) ^ 2 ≤ K ^ 2 * (A.card : ℝ) ^ 2 := by
+    have h := mul_le_mul hsmall' hsmall' hS hKn
+    calc ((sumset A).card : ℝ) ^ 2
+        = ((sumset A).card : ℝ) * ((sumset A).card : ℝ) := by ring
+      _ ≤ (K * (A.card : ℝ)) * (K * (A.card : ℝ)) := h
+      _ = K ^ 2 * (A.card : ℝ) ^ 2 := by ring
+  -- Energy upper bound with the squared sumset.
+  have hE : (multiplicativeEnergy A : ℝ) ≤ C * (K ^ 2 * (A.card : ℝ) ^ 2) * Real.log A.card := by
+    calc (multiplicativeEnergy A : ℝ)
+        ≤ C * ((sumset A).card : ℝ) ^ 2 * Real.log A.card := hEbound A hA
+      _ ≤ C * (K ^ 2 * (A.card : ℝ) ^ 2) * Real.log A.card := by
+          apply mul_le_mul_of_nonneg_right _ hL.le
+          exact mul_le_mul_of_nonneg_left hS2 hC.le
+  -- Combine Cauchy–Schwarz with the energy bound.
+  have hPE : (A.card : ℝ) ^ 4 ≤
+      ((productSet A).card : ℝ) * (C * (K ^ 2 * (A.card : ℝ) ^ 2) * Real.log A.card) :=
+    le_trans hCS (mul_le_mul_of_nonneg_left hE hP)
+  -- Cancel the common factor |A|².
+  have hn2 : (0 : ℝ) < (A.card : ℝ) ^ 2 := by positivity
+  have key : (A.card : ℝ) ^ 2 ≤
+      ((productSet A).card : ℝ) * (C * K ^ 2 * Real.log A.card) := by
+    have e : ((productSet A).card : ℝ) * (C * (K ^ 2 * (A.card : ℝ) ^ 2) * Real.log A.card)
+            = (((productSet A).card : ℝ) * (C * K ^ 2 * Real.log A.card)) * (A.card : ℝ) ^ 2 := by
+      ring
+    have e4 : (A.card : ℝ) ^ 4 = (A.card : ℝ) ^ 2 * (A.card : ℝ) ^ 2 := by ring
+    rw [e, e4] at hPE
+    exact le_of_mul_le_mul_right hPE hn2
+  -- Conclude by dividing.
+  have hden : 0 < C * K ^ 2 * Real.log A.card :=
+    mul_pos (mul_pos hC (pow_pos hK 2)) hL
+  rw [ge_iff_le, div_le_iff₀ hden]
+  exact key
 
 /-
-## Part VI: Proof Sketch
+## Part VI: The original conjecture and Solymosi's theorem
 -/
+
+/--
+**Erdős Conjecture #818 (with corrected quantifiers):**
+There is a constant `C > 0` such that, for every doubling threshold `K > 0`,
+there is a constant `c = c(K) > 0` with
+
+  |A·A| ≥ c · |A|² / (log|A|)^C   whenever |A+A| ≤ K·|A|.
+
+The dependence `c = c(K)` is essential and faithful to the original `≫`/`≪`
+notation: the implied constant in the conclusion depends on the implied constant
+in the hypothesis. The earlier `∃ c, ∀ K, ...` form is false (take `K` large to
+cover every set, including product-poor geometric progressions).
+-/
+def ErdosConjecture818 : Prop :=
+  ∃ C : ℝ, C > 0 ∧
+    ∀ K : ℝ, K > 0 → ∃ c : ℝ, c > 0 ∧
+      ∀ A : Finset ℤ, A.card ≥ 2 →
+        hasSmallSumset A K →
+          ((productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ 2 / (Real.log A.card) ^ C
+
+/--
+**Solymosi's Theorem (2009), proved from the energy bound.**
+
+For each doubling threshold `K > 0` there is a constant `c = c(K) > 0` with
+`|A·A| ≥ c·|A|²/log|A|` whenever `|A+A| ≤ K·|A|`. Concretely one may take
+`c = 1/(C·K²)` where `C` is the constant from `solymosi_energy_bound`.
+
+This is no longer an axiom: it is derived from `productSet_lower_bound_of_smallSumset`.
+-/
+theorem solymosi_theorem :
+    ∀ K : ℝ, K > 0 → ∃ c : ℝ, c > 0 ∧
+      ∀ A : Finset ℤ, A.card ≥ 2 →
+        hasSmallSumset A K →
+          ((productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ 2 / Real.log A.card := by
+  obtain ⟨C, hC, hbound⟩ := productSet_lower_bound_of_smallSumset
+  intro K hK
+  refine ⟨1 / (C * K ^ 2), by positivity, ?_⟩
+  intro A hA hsmall
+  have hb := hbound K hK A hA hsmall
+  -- Rewrite the `c·|A|²/log` shape into the `|A|²/(C·K²·log)` shape proved above.
+  have hCK : C * K ^ 2 ≠ 0 := mul_ne_zero (ne_of_gt hC) (pow_ne_zero 2 (ne_of_gt hK))
+  have heq : (1 / (C * K ^ 2)) * (A.card : ℝ) ^ 2 / Real.log A.card
+           = (A.card : ℝ) ^ 2 / (C * K ^ 2 * Real.log A.card) := by
+    rw [div_mul_eq_mul_div, one_mul, div_div]
+  rw [ge_iff_le, heq]
+  exact hb
+
+/--
+**The conjecture is true:**
+`ErdosConjecture818` holds with `C = 1`, using Solymosi's theorem (which already
+gives the stronger `log¹` denominator).
+-/
+theorem erdos_818_proved : ErdosConjecture818 := by
+  refine ⟨1, by norm_num, ?_⟩
+  intro K hK
+  obtain ⟨c, hc, hbound⟩ := solymosi_theorem K hK
+  refine ⟨c, hc, ?_⟩
+  intro A hA hsmall
+  have hb := hbound A hA hsmall
+  -- (log |A|)^(1 : ℝ) = log |A|.
+  rw [Real.rpow_one]
+  exact hb
 
 /-
-**Proof strategy:**
-1. By Cauchy-Schwarz: E×(A) ≥ |A|⁴ / |AA|
-2. Solymosi shows: E×(A) ≤ |A|² · |A+A| · log|A|
-3. Combining: |A|⁴ / |AA| ≤ |A|² · |A+A| · log|A|
-4. Rearranging: |AA| ≥ |A|⁴ / (|A|² · |A+A| · log|A|)
-5. If |A+A| ≤ K|A|: |AA| ≥ |A|² / (K · log|A|)
+## Part VII: Proof recap
+
+**Proof strategy (now fully formalized modulo `solymosi_energy_bound`):**
+1. Cauchy–Schwarz: E×(A) ≥ |A|⁴/|AA|            (`cauchy_schwarz_energy`, proved)
+2. Solymosi's bound: E×(A) ≤ C·|A+A|²·log|A|    (`solymosi_energy_bound`, axiom)
+3. Combine: |A|⁴/|AA| ≤ C·|A+A|²·log|A|
+4. If |A+A| ≤ K|A|, then |A+A|² ≤ K²|A|², so |A|⁴/|AA| ≤ C·K²·|A|²·log|A|
+5. Rearrange: |AA| ≥ |A|²/(C·K²·log|A|)         (`productSet_lower_bound_of_smallSumset`)
 -/
-/-- The energy bounds combine to give Solymosi's result:
-    From E×(A) ≥ |A|⁴/|AA| and E×(A) ≤ |A|²·|A+A|·log|A|,
-    we get |AA| ≥ |A|²/(K·log|A|) when |A+A| ≤ K|A|.
 
-    REMAINING GAP (sorry): this is the genuine energy argument and is the one
-    open formalization target left in this file. It is *not* a consequence of
-    `solymosi_theorem`: that axiom supplies an absolute constant `c > 0` with
-    bound `c·|A|²/log|A|`, whereas this K-dependent bound `|A|²/(K·log|A|)`
-    would require `c·K ≥ 1`, which the axiom does not provide.
-
-    Step 1 of the strategy — the Cauchy–Schwarz lower bound
-    `|A|⁴ ≤ |A·A|·E×(A)` — is now PROVED (`cauchy_schwarz_energy`, axiom-free,
-    via Mathlib's `Finset.le_card_mul_mul_mulEnergy`). The remaining gap is
-    therefore *exactly* Solymosi's multiplicative-energy upper bound
-    `E×(A) ≤ C·|A|²·|A+A|·log|A|`, which is not yet formalized in Mathlib. -/
-theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
+/-- The energy bounds combine to give Solymosi's result, in the explicit
+    `K`-dependent form. This is the former `proof_outline` `sorry`, now *proved*:
+    it is a direct corollary of `productSet_lower_bound_of_smallSumset`. Note the
+    `K²` denominator — the earlier `|A|²/(K·log|A|)` target was not provable, as
+    Solymosi's `|A+A|²` energy bound necessarily contributes `K²`. -/
+theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
-    ((productSet A).card : ℝ) ≥
-      (A.card : ℝ)^2 / (K * log A.card) := by
-  sorry
+    ∃ C : ℝ, C > 0 ∧
+      ((productSet A).card : ℝ) ≥ (A.card : ℝ) ^ 2 / (C * K ^ 2 * Real.log A.card) := by
+  obtain ⟨C, hC, hbound⟩ := productSet_lower_bound_of_smallSumset
+  exact ⟨C, hC, hbound K hK A hA hsmall⟩
 
 /-
 **The log factor is necessary:**
 There exist sets A with small sumset where |AA| = O(|A|² / log|A|).
-So the log factor cannot be removed entirely.
--/
-/- The log factor is tight: there exist sets A with |A+A| ≤ 2|A| - 1 -/
-
-/-
-## Part VII: Connection to Sum-Product Conjecture
+So the log factor cannot be removed entirely (Erdős multiplication table problem).
 -/
 
 /-
+## Part VIII: Connection to Sum-Product Conjecture
+
 **Sum-Product Dichotomy:**
-For any finite A ⊂ ℤ, max(|A+A|, |AA|) is large.
+For any finite A ⊂ ℤ, max(|A+A|, |AA|) is large. This problem (818) explores what
+happens when we force |A+A| to be small: the product set must compensate.
 
-This problem (818) explores what happens when we force |A+A| to be small:
-the product set must compensate and be large.
--/
-
-/-
 **Connection to Problem 52:**
-Problem 52 asks: max(|A+A|, |AA|) ≥ |A|^{2-ε}?
+Problem 52 asks: max(|A+A|, |AA|) ≥ |A|^{2-ε}? Problem 818 is the conditional
+version: GIVEN small sumset, the product set is large.
 
-Problem 818 asks: if |A+A| ≤ K|A|, then |AA| ≥ |A|²/log|A|?
-
-The latter is a conditional result: GIVEN small sumset, product set is large.
+**Examples.**
+- Arithmetic progression A = {1, …, n}: |A+A| = 2n−1 (small), |AA| ≈ n²/log n.
+- Geometric progression A = {1, r, …, r^{n-1}} with r > n: |A+A| ≈ n² (large),
+  |AA| = 2n−1 (small). This is the opposite extreme, and is exactly why the
+  `∃ c, ∀ K` form of the statement fails.
 -/
-/- Problem 52 conjectures max(|A+A|, |AA|) ≥ |A|^{2-ε}. -/
-
-/-
-## Part VIII: Examples
--/
-
-/-
-**Example: Arithmetic progression**
-If A = {1, 2, ..., n}, then:
-- |A + A| = 2n - 1 (small, additive doubling ~2)
-- |A · A| ≈ n²/log n (by Erdős multiplication table problem)
--/
-/- For A = {1, ..., n}: |A+A| = 2n-1, |AA| ~ n²/log n. -/
-
-/-
-**Example: Geometric progression**
-If A = {1, r, r², ..., r^{n-1}}, then:
-- |A + A| ≈ n² (large, no additive structure)
-- |A · A| = 2n - 1 (small, multiplicative structure)
-This shows the opposite extreme.
--/
-/- For A = {1, r, r², ..., r^{n-1}} with r > n: -/
 
 /-
 ## Part IX: Summary
 -/
 
-/-
-**Erdős Problem #818: SOLVED**
-
-QUESTION: If |A+A| ≪ |A|, is |AA| ≫ |A|²/(log|A|)^C for some C?
-
-ANSWER: YES
-
-PROOF: Solymosi (2009) proved the stronger bound |AA| ≫ |A|²/log|A|.
-
-KEY TECHNIQUE: Bound multiplicative energy using sumset structure.
--/
-/-- **Summary theorem:** Original conjecture + Solymosi's stronger result. -/
+/-- **Summary theorem:** the corrected conjecture together with Solymosi's
+    `K`-dependent quantitative bound. -/
 theorem erdos_818_summary :
-    -- Original conjecture is true
     ErdosConjecture818 ∧
-    -- Solymosi's stronger result holds
-    (∃ c : ℝ, c > 0 ∧
-      ∀ K : ℝ, K > 0 →
-        ∀ A : Finset ℤ, A.card ≥ 2 →
-          hasSmallSumset A K →
-          ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / log A.card) := by
-  constructor
-  · exact erdos_818_proved
-  · exact solymosi_theorem
+    (∀ K : ℝ, K > 0 → ∃ c : ℝ, c > 0 ∧
+      ∀ A : Finset ℤ, A.card ≥ 2 →
+        hasSmallSumset A K →
+          ((productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ 2 / Real.log A.card) :=
+  ⟨erdos_818_proved, solymosi_theorem⟩
 
-/-- Small additive doubling forces large multiplicative expansion:
-    the sum-product phenomenon quantified. For an absolute constant `c > 0`,
-    a set with small sumset has product set of size `≥ c·|A|²/log|A|`. The
-    constant is necessary (see the discussion on `ErdosConjecture818`), so we
-    state the bound with it explicitly rather than the unsound `c = 1` form. -/
+/-- Small additive doubling forces large multiplicative expansion: the
+    sum-product phenomenon quantified. For a set with small sumset `|A+A| ≤ K|A|`,
+    there is a constant `c = c(K) > 0` with product set of size `≥ c·|A|²/log|A|`.
+    The constant depends on `K` (necessarily — see the geometric-progression
+    discussion), so we state it under the fixed-`K` hypothesis. -/
 theorem key_insight (A : Finset ℤ) (hA : A.card ≥ 2)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
     ∃ c : ℝ, c > 0 ∧
-      ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / log A.card := by
-  obtain ⟨c, hc_pos, hc_bound⟩ := solymosi_theorem
-  exact ⟨c, hc_pos, hc_bound K hK A hA hsmall⟩
+      ((productSet A).card : ℝ) ≥ c * (A.card : ℝ) ^ 2 / Real.log A.card := by
+  obtain ⟨c, hc, hbound⟩ := solymosi_theorem K hK
+  exact ⟨c, hc, hbound A hA hsmall⟩
 
 end Erdos818
