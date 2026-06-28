@@ -1,5 +1,17 @@
 [
   {
+    "id": "anoq03-ann-lineage",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 57 },
+    "type": "context",
+    "title": "Lineage: from countable subset to abstract closure",
+    "content": "The module docstring records a four-step arc. The grandparent (AlgebraicNumbersCountable) shows the algebraic numbers form a countable subset of ℂ with #{z : ℂ | IsAlgebraic ℚ z} = ℵ₀. The parent (OQ01) shows the algebraic elements of L/K are closed under +, −, ×, ⁻¹, hence a subfield. The sibling (OQ01OQ01) upgrades that subfield to algebraicNumbersField : IntermediateField ℚ ℂ, proves it algebraically closed, and identifies it with Mathlib's relative closure algebraicClosure ℚ ℂ — an object still living inside ℂ. This entry takes the final step: identify it with the intrinsic AlgebraicClosure ℚ built from ℚ alone. The file imports the sibling (Proofs.AlgebraicNumbersCountableOQ01OQ01) and opens its namespace to reuse algebraicNumbersField and its instances.",
+    "mathContext": "Each entry climbs one rung: countable subset $\\to$ subfield $\\to$ algebraically closed intermediate field $\\to$ abstract closure $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$.",
+    "significance": "context",
+    "relatedConcepts": ["algebraic numbers", "intermediate field", "relative algebraic closure", "proof lineage"],
+    "prerequisites": ["field extensions", "subfields"]
+  },
+  {
     "id": "anoq03-ann-isalgclosure",
     "proofId": "algebraic-numbers-countable-oq-01-oq-03",
     "range": { "startLine": 73, "endLine": 88 },
@@ -34,5 +46,29 @@
     "significance": "core",
     "relatedConcepts": ["cardinality", "countable", "aleph-null", "isomorphism invariant"],
     "prerequisites": ["cardinal arithmetic", "countable sets"]
+  },
+  {
+    "id": "anoq03-ann-commutes",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 97, "endLine": 102 },
+    "type": "technique",
+    "title": "The identification fixes ℚ pointwise",
+    "content": "algebraicNumbersEquivAlgebraicClosure_commutes is the AlgEquiv.commutes field exposed as a @[simp] lemma: the isomorphism sends algebraMap ℚ algebraicNumbersField q to algebraMap ℚ (AlgebraicClosure ℚ) q for every rational q. This is what 'isomorphism over ℚ' means concretely — the two presentations of ℚ̄ agree on the common base ℚ, not merely as abstract fields. Marking it @[simp] lets the rewriter discharge the rational-compatibility side conditions that arise when reasoning through the identification downstream.",
+    "mathContext": "A $\\mathbb{Q}$-algebra map commutes with the structure maps: $\\varphi(\\iota_{\\overline{\\mathbb{Q}}}(q)) = \\iota_{\\mathrm{AC}(\\mathbb{Q})}(q)$ for all $q \\in \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["algebra homomorphism", "algebraMap", "simp lemma", "base field compatibility"],
+    "prerequisites": ["algebra maps over a base ring"]
+  },
+  {
+    "id": "anoq03-ann-examples",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 141, "endLine": 151 },
+    "type": "insight",
+    "title": "Sanity-check examples",
+    "content": "The Examples section records the payload as type-checked #check-style facts: the identification is Function.Bijective (it is an AlgEquiv, hence a bijection of carriers), and AlgebraicClosure ℚ is simultaneously Countable and Infinite. Together the last two say the abstract closure is countably infinite — the precise sense in which 'the field of algebraic numbers is countable' holds for the intrinsically-defined closure. These examples carry no new proof obligation; they document, in the kernel, exactly what the file delivers.",
+    "mathContext": "Countable $\\wedge$ Infinite $\\equiv$ countably infinite: $\\#(\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}) = \\aleph_0$.",
+    "significance": "technical",
+    "relatedConcepts": ["bijection", "countably infinite", "AlgEquiv.bijective", "worked examples"],
+    "prerequisites": ["bijections", "countable and infinite types"]
   }
 ]
