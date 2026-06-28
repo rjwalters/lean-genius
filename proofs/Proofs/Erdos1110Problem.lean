@@ -344,6 +344,146 @@ theorem finite_nonRepresentable_of_two_three {p q : ℕ}
   · rw [nonRepresentable_two_three]; exact Set.finite_singleton 0
 
 /-
+## Part IIc: Existence of a positive non-representable (unconditional, 0-axiom)
+
+The deep direction `erdos_lewin_infinite` (axiomatised below) asserts that every
+coprime pair `{p,q} ≠ {2,3}` leaves *infinitely many* non-representable numbers.
+Its existence shadow — that there is *at least one positive* non-representable
+number — is far more elementary and can be proved unconditionally. We exhibit a
+universal small witness:
+
+* if both bases are `≥ 3`, then `2` is non-representable (the only power form
+  `≤ 2` is `1`, and a distinct-element antichain of `1`s sums to at most `1`);
+* if `q = 2` (so `p ≥ 4`, since `p > 2` and `p ≠ 3`), then `3` is
+  non-representable (power forms `≤ 3` are exactly `{1,2}`, and `{1,2}` is not an
+  antichain because `1 ∣ 2`).
+
+This sharpens the contrast with `nonRepresentable_three_two = {0}`: the `{2,3}`
+pair has **no** positive non-representable number, while **every** other coprime
+pair has one. It is the (unconditional) existence version of the open infinitude
+statement, and needs no axiom.
+-/
+
+/-- When both bases are `≥ 3`, the only power form that is `≤ 2` is `1`:
+any positive exponent on a base `≥ 3` already pushes the value to `≥ 3`. -/
+lemma isPowerForm_eq_one_of_le_two {p q n : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q)
+    (h : IsPowerForm p q n) (hle : n ≤ 2) : n = 1 := by
+  obtain ⟨k, l, rfl⟩ := h
+  have hpk : 1 ≤ p ^ k := Nat.one_le_pow _ _ (by omega)
+  have hql : 1 ≤ q ^ l := Nat.one_le_pow _ _ (by omega)
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · rcases Nat.eq_zero_or_pos l with hl | hl
+    · simp [hk, hl]
+    · have hqge : 3 ≤ q ^ l := le_trans hq (Nat.le_self_pow (by omega) q)
+      have : 3 ≤ p ^ k * q ^ l :=
+        le_trans hqge (Nat.le_mul_of_pos_left (q ^ l) hpk)
+      omega
+  · have hpge : 3 ≤ p ^ k := le_trans hp (Nat.le_self_pow (by omega) p)
+    have : 3 ≤ p ^ k * q ^ l :=
+      le_trans hpge (Nat.le_mul_of_pos_right (p ^ k) hql)
+    omega
+
+/-- **`2` is non-representable when both bases are `≥ 3`.** Every summand is a
+power form `≤ 2`, hence equal to `1`; a `Finset` of distinct `1`s is at most the
+singleton `{1}`, whose sum is `1`, never `2`. -/
+theorem two_nonRepresentable_of_three_le {p q : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) :
+    ¬ IsRepresentable p q 2 := by
+  rintro ⟨S, hne, hpf, _, hsum⟩
+  have hle : ∀ s ∈ S, s ≤ 2 := by
+    intro s hs
+    have hb := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+    rw [hsum] at hb
+    exact hb
+  have hone : ∀ s ∈ S, s = 1 := fun s hs =>
+    isPowerForm_eq_one_of_le_two hp hq (hpf s hs) (hle s hs)
+  have hsub : S ⊆ {1} := fun s hs => Finset.mem_singleton.mpr (hone s hs)
+  rcases Finset.subset_singleton_iff.mp hsub with h0 | h1
+  · exact (Finset.nonempty_iff_ne_empty.mp hne) h0
+  · rw [h1] at hsum; simp at hsum
+
+/-- When `q = 2` and `p ≥ 4`, the only power forms that are `≤ 3` are `1` and
+`2`: a positive exponent on `p ≥ 4` gives a value `≥ 4`, so the form is a pure
+power of `2`, and `2 ^ l ≤ 3` forces `l ≤ 1`. -/
+lemma isPowerForm_le_two_or_eq {p n : ℕ} (hp : 4 ≤ p)
+    (h : IsPowerForm p 2 n) (hle : n ≤ 3) : n = 1 ∨ n = 2 := by
+  obtain ⟨k, l, rfl⟩ := h
+  have hk0 : k = 0 := by
+    by_contra hk
+    have hpge : 4 ≤ p ^ k := le_trans hp (Nat.le_self_pow hk p)
+    have hql : 1 ≤ 2 ^ l := Nat.one_le_pow _ _ (by omega)
+    have : 4 ≤ p ^ k * 2 ^ l :=
+      le_trans hpge (Nat.le_mul_of_pos_right (p ^ k) hql)
+    omega
+  subst hk0
+  simp only [pow_zero, one_mul] at hle ⊢
+  match l with
+  | 0 => left; simp
+  | 1 => right; simp
+  | (m + 2) =>
+    exfalso
+    have h4 : (4 : ℕ) ≤ 2 ^ (m + 2) := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+        _ ≤ 2 ^ (m + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+
+/-- **`3` is non-representable when `q = 2` and `p ≥ 4`.** Each summand is a
+power form `≤ 3`, hence `1` or `2`. To reach the sum `3` the antichain would have
+to contain both `1` and `2`, but `1 ∣ 2` violates the antichain condition; a set
+of `1`s alone sums to `≤ 1` and a set of `2`s alone to `≤ 2`. -/
+theorem three_nonRepresentable_of_q_two {p : ℕ} (hp : 4 ≤ p) :
+    ¬ IsRepresentable p 2 3 := by
+  rintro ⟨S, _, hpf, hac, hsum⟩
+  have hle : ∀ s ∈ S, s ≤ 3 := by
+    intro s hs
+    have hb := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+    rw [hsum] at hb
+    exact hb
+  have hmem : ∀ s ∈ S, s = 1 ∨ s = 2 := fun s hs =>
+    isPowerForm_le_two_or_eq hp (hpf s hs) (hle s hs)
+  by_cases h1 : (1 : ℕ) ∈ S
+  · by_cases h2 : (2 : ℕ) ∈ S
+    · exact hac 1 h1 2 h2 (by norm_num) (by norm_num)
+    · -- no `2`s: `S ⊆ {1}`, sum `≤ 1`
+      have hsub : S ⊆ {1} := by
+        intro s hs
+        rcases hmem s hs with h | h
+        · exact Finset.mem_singleton.mpr h
+        · exact absurd (h ▸ hs) h2
+      have hb : S.sum id ≤ ({1} : Finset ℕ).sum id := Finset.sum_le_sum_of_subset hsub
+      rw [hsum] at hb
+      simp at hb
+  · -- no `1`s: `S ⊆ {2}`, sum `≤ 2`
+    have hsub : S ⊆ {2} := by
+      intro s hs
+      rcases hmem s hs with h | h
+      · exact absurd (h ▸ hs) h1
+      · exact Finset.mem_singleton.mpr h
+    have hb : S.sum id ≤ ({2} : Finset ℕ).sum id := Finset.sum_le_sum_of_subset hsub
+    rw [hsum] at hb
+    simp at hb
+
+/-- **Unconditional existence of a positive non-representable number** for every
+coprime pair `p > q ≥ 2` with `{p,q} ≠ {2,3}`. This is the existence shadow of
+the deep infinitude statement `erdos_lewin_infinite`, proved here with **no
+axiom**. Contrast with `nonRepresentable_three_two`: the `{2,3}` pair has the
+non-representable set `{0}` (no *positive* witness), whereas here every other
+coprime pair admits one — the universal witness `2` (when `q ≥ 3`) or `3`
+(when `q = 2`). -/
+theorem exists_positive_nonRepresentable_of_ne_two_three
+    {p q : ℕ} (hp : p > q) (hq : q ≥ 2) (_hcop : Nat.Coprime p q)
+    (hne : ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))) :
+    ∃ n, 1 ≤ n ∧ n ∈ NonRepresentable p q := by
+  rcases Nat.lt_or_ge q 3 with hq2 | hq3
+  · -- `q = 2`; then `p > 2` and `p ≠ 3`, so `p ≥ 4`
+    have hq2' : q = 2 := by omega
+    subst hq2'
+    have hp3 : p ≠ 3 := fun h => hne (Or.inl ⟨h, rfl⟩)
+    have hp4 : 4 ≤ p := by omega
+    exact ⟨3, by norm_num, three_nonRepresentable_of_q_two hp4⟩
+  · -- `q ≥ 3`, so `p > q ≥ 3` and both bases are `≥ 3`
+    exact ⟨2, by norm_num, two_nonRepresentable_of_three_le (by omega) hq3⟩
+
+/-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
