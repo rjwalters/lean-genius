@@ -5,7 +5,11 @@
     "range": { "startLine": 8, "endLine": 81 },
     "type": "concept",
     "title": "Replacing homology with analysis: Milnor's measure-theoretic route",
-    "content": "The companion file proves No-Retraction via singular homology with three homology axioms. This file pursues Milnor's 1978 argument, which never mentions homology: a smooth retraction r : B^n → S^{n-1} would map the positive-volume ball onto the measure-zero sphere, while a Jacobian/degree computation forces it to preserve volume — a contradiction. The header lays out exactly which ingredients Mathlib already supports and which single analytic fact remains, then commits to honesty: the file proves the scaffolding and the reduction, not no-retraction itself."
+    "content": "The companion file proves No-Retraction via singular homology with three homology axioms. This file pursues Milnor's 1978 argument, which never mentions homology: a smooth retraction r : B^n → S^{n-1} would map the positive-volume ball onto the measure-zero sphere, while a Jacobian/degree computation forces it to preserve volume — a contradiction. The header lays out exactly which ingredients Mathlib already supports and which single analytic fact remains, then commits to honesty: the file proves the scaffolding and the reduction, not no-retraction itself.",
+    "mathContext": "A retraction is a continuous $r : B^n \\to S^{n-1}$ with $r|_{S^{n-1}} = \\mathrm{id}$. Milnor's contradiction pits $\\mathrm{vol}(B^n) > 0 = \\mathrm{vol}(S^{n-1})$ against the degree-forced equality $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(B^n)$.",
+    "significance": "key",
+    "relatedConcepts": ["singular homology", "Lebesgue measure", "no-retraction theorem", "Brouwer fixed-point theorem", "degree theory"],
+    "prerequisites": ["measure theory", "algebraic topology", "real analysis"]
   },
   {
     "id": "ann-defs",
@@ -13,7 +17,11 @@
     "range": { "startLine": 92, "endLine": 113 },
     "type": "definition",
     "title": "Ball, sphere, retraction (interoperable with the homology companion)",
-    "content": "ClosedBall and UnitSphere are defined as Metric.closedBall 0 1 and Metric.sphere 0 1 in EuclideanSpace ℝ (Fin n), matching the homology file so results can be cross-applied. The Retraction structure bundles continuity, mapping the ball into the sphere, and fixing the sphere pointwise. unitSphere_subset_closedBall records S^{n-1} ⊆ B^n, used to show a retraction's image hits every sphere point."
+    "content": "ClosedBall and UnitSphere are defined as Metric.closedBall 0 1 and Metric.sphere 0 1 in EuclideanSpace ℝ (Fin n), matching the homology file so results can be cross-applied. The Retraction structure bundles continuity, mapping the ball into the sphere, and fixing the sphere pointwise. unitSphere_subset_closedBall records S^{n-1} ⊆ B^n, used to show a retraction's image hits every sphere point.",
+    "mathContext": "$B^n = \\overline{B}(0,1)$ and $S^{n-1} = \\{x : \\lVert x\\rVert = 1\\}$ in $\\mathrm{EuclideanSpace}\\ \\mathbb{R}\\ (\\mathrm{Fin}\\ n)$; the $\\mathtt{Retraction}$ structure encodes $r(B^n) \\subseteq S^{n-1}$ together with $r|_{S^{n-1}} = \\mathrm{id}$, and $S^{n-1} \\subseteq B^n$ since $\\lVert x\\rVert = 1 \\le 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["retraction", "closed ball", "unit sphere", "Euclidean space"],
+    "prerequisites": ["metric spaces", "continuity"]
   },
   {
     "id": "ann-nontrivial",
@@ -21,7 +29,11 @@
     "range": { "startLine": 120, "endLine": 125 },
     "type": "technique",
     "title": "Nontriviality from positive finrank",
-    "content": "Measure.addHaar_sphere requires the ambient space to be Nontrivial. For n ≥ 1 this follows from finrank ℝ (EuclideanSpace ℝ (Fin n)) = n > 0 via Module.nontrivial_of_finrank_pos and finrank_euclideanSpace_fin — a clean way to discharge the typeclass without hand-constructing distinct points."
+    "content": "Measure.addHaar_sphere requires the ambient space to be Nontrivial. For n ≥ 1 this follows from finrank ℝ (EuclideanSpace ℝ (Fin n)) = n > 0 via Module.nontrivial_of_finrank_pos and finrank_euclideanSpace_fin — a clean way to discharge the typeclass without hand-constructing distinct points.",
+    "mathContext": "$\\dim_{\\mathbb{R}} \\mathbb{R}^n = n \\ge 1 \\Rightarrow \\mathbb{R}^n$ is nontrivial. Formally $\\mathrm{finrank}\\ \\mathbb{R}\\ (\\mathrm{EuclideanSpace}\\ \\mathbb{R}\\ (\\mathrm{Fin}\\ n)) = n > 0$, and positive rank implies a nontrivial module.",
+    "significance": "technical",
+    "relatedConcepts": ["finite-dimensional vector space", "rank", "typeclass inference"],
+    "prerequisites": ["linear algebra"]
   },
   {
     "id": "ann-sphere-null",
@@ -29,7 +41,11 @@
     "range": { "startLine": 129, "endLine": 137 },
     "type": "theorem",
     "title": "The sphere is Lebesgue-null (analytic replacement for sphere_singularHomology_nonzero)",
-    "content": "unitSphere_volume_zero: vol(S^{n-1}) = 0 for n ≥ 1, directly from Mathlib's Measure.addHaar_sphere (spheres have zero additive-Haar measure). Where the homology route asserts the sphere is 'detected' by a nonzero homology group, the analytic route captures the sphere's thinness as measure zero — and this is already a theorem in Mathlib, not an axiom."
+    "content": "unitSphere_volume_zero: vol(S^{n-1}) = 0 for n ≥ 1, directly from Mathlib's Measure.addHaar_sphere (spheres have zero additive-Haar measure). Where the homology route asserts the sphere is 'detected' by a nonzero homology group, the analytic route captures the sphere's thinness as measure zero — and this is already a theorem in Mathlib, not an axiom.",
+    "mathContext": "$\\mathrm{vol}(S^{n-1}) = 0$: the sphere is an $(n-1)$-dimensional hypersurface, hence Lebesgue-null in $\\mathbb{R}^n$. Mathlib's $\\mathtt{Measure.addHaar\\_sphere}$ gives this for the additive Haar measure, which coincides with volume.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue measure", "Haar measure", "null set", "hypersurface"],
+    "prerequisites": ["measure theory"]
   },
   {
     "id": "ann-ball-pos",
@@ -37,7 +53,11 @@
     "range": { "startLine": 139, "endLine": 150 },
     "type": "theorem",
     "title": "The ball has positive (and finite) volume",
-    "content": "closedBall_volume_pos: 0 < vol(B^n) via measure_closedBall_pos; closedBall_volume_lt_top: vol(B^n) < ∞ via measure_closedBall_lt_top. Together with the sphere being null, these are the two opposing poles of Milnor's contradiction — the analytic counterpart of 'the ball is contractible, its homology vanishes'."
+    "content": "closedBall_volume_pos: 0 < vol(B^n) via measure_closedBall_pos; closedBall_volume_lt_top: vol(B^n) < ∞ via measure_closedBall_lt_top. Together with the sphere being null, these are the two opposing poles of Milnor's contradiction — the analytic counterpart of 'the ball is contractible, its homology vanishes'.",
+    "mathContext": "$0 < \\mathrm{vol}(B^n) < \\infty$: a nondegenerate closed ball (radius $1 > 0$) carries positive measure, and is bounded/compact hence of finite measure. Provided by $\\mathtt{measure\\_closedBall\\_pos}$ and $\\mathtt{measure\\_closedBall\\_lt\\_top}$.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue measure", "positive measure", "finite measure", "compactness"],
+    "prerequisites": ["measure theory"]
   },
   {
     "id": "ann-image-sphere",
@@ -45,7 +65,11 @@
     "range": { "startLine": 152, "endLine": 168 },
     "type": "theorem",
     "title": "A retraction surjects the ball onto the sphere, collapsing its volume",
-    "content": "retraction_image_eq_sphere shows r '' B^n = S^{n-1} exactly: ⊆ is maps_to_sphere, ⊇ holds because r fixes the sphere (which lies in the ball). retraction_image_volume_zero then gives vol(r '' B^n) = 0. So a retraction sends a positive-volume set onto a null set — the geometric heart of the obstruction."
+    "content": "retraction_image_eq_sphere shows r '' B^n = S^{n-1} exactly: ⊆ is maps_to_sphere, ⊇ holds because r fixes the sphere (which lies in the ball). retraction_image_volume_zero then gives vol(r '' B^n) = 0. So a retraction sends a positive-volume set onto a null set — the geometric heart of the obstruction.",
+    "mathContext": "$r(B^n) = S^{n-1}$: $\\subseteq$ is the mapping property, $\\supseteq$ holds because for $y \\in S^{n-1} \\subseteq B^n$ we have $r(y) = y$. Hence $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(S^{n-1}) = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["image of a set", "surjection", "null set"],
+    "prerequisites": ["set theory", "measure theory"]
   },
   {
     "id": "ann-reduction",
@@ -53,7 +77,11 @@
     "range": { "startLine": 170, "endLine": 196 },
     "type": "insight",
     "title": "The reduction: the only gap is volume-preservation",
-    "content": "retraction_collapses_volume packages 'ball positive, image null'. By itself this is NOT a contradiction — a continuous map can collapse volume. no_retraction_of_volume_preserved makes the frontier precise: a retraction is impossible the moment one supplies vol(r '' B^n) = vol(B^n). That hypothesis is exactly what Milnor's smooth degree/Jacobian computation yields, and it is an explicit hypothesis rather than an axiom — so the whole file is genuinely 0-axiom while isolating the entire remaining analytic content into one statement."
+    "content": "retraction_collapses_volume packages 'ball positive, image null'. By itself this is NOT a contradiction — a continuous map can collapse volume. no_retraction_of_volume_preserved makes the frontier precise: a retraction is impossible the moment one supplies vol(r '' B^n) = vol(B^n). That hypothesis is exactly what Milnor's smooth degree/Jacobian computation yields, and it is an explicit hypothesis rather than an axiom — so the whole file is genuinely 0-axiom while isolating the entire remaining analytic content into one statement.",
+    "mathContext": "From the gap $h_{\\mathrm{vol}} : \\mathrm{vol}(r(B^n)) = \\mathrm{vol}(B^n)$ together with $\\mathrm{vol}(r(B^n)) = 0$ and $\\mathrm{vol}(B^n) > 0$ one derives $0 = \\mathrm{vol}(B^n) > 0$, a contradiction. The reduction makes $h_{\\mathrm{vol}}$ an explicit hypothesis, not an axiom.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "degree theory", "change of variables", "Jacobian determinant"],
+    "prerequisites": ["measure theory", "differential topology"]
   },
   {
     "id": "ann-homotopy",
@@ -61,6 +89,10 @@
     "range": { "startLine": 198, "endLine": 224 },
     "type": "concept",
     "title": "Milnor's straight-line homotopy f_t = (1-t)·id + t·r",
-    "content": "straightLine records the family Milnor integrates: continuous for each t (straightLine_continuous), with f_0 = id and f_1 = r (straightLine_zero/one), and fixing the sphere for all t (straightLine_fixes_sphere). The remaining analytic work is to show t ↦ vol(f_t(B^n)) is polynomial in t (the integral of the polynomial determinant det Df_t), forcing vol(f_1(B^n)) = vol(B^n) — the hypothesis discharged above. Mathlib's MeasureTheory.Function.Jacobian supplies the change-of-variables engine for this step."
+    "content": "straightLine records the family Milnor integrates: continuous for each t (straightLine_continuous), with f_0 = id and f_1 = r (straightLine_zero/one), and fixing the sphere for all t (straightLine_fixes_sphere). The remaining analytic work is to show t ↦ vol(f_t(B^n)) is polynomial in t (the integral of the polynomial determinant det Df_t), forcing vol(f_1(B^n)) = vol(B^n) — the hypothesis discharged above. Mathlib's MeasureTheory.Function.Jacobian supplies the change-of-variables engine for this step.",
+    "mathContext": "$f_t = (1-t)\\,\\mathrm{id} + t\\,r$ with $f_0 = \\mathrm{id}$, $f_1 = r$, and $f_t|_{S^{n-1}} = \\mathrm{id}$ for all $t$ (since $(1-t)x + tx = x$). Milnor shows $t \\mapsto \\mathrm{vol}(f_t(B^n)) = \\int_{B^n} \\det Df_t$ is polynomial in $t$, hence constant, forcing $\\mathrm{vol}(f_1(B^n)) = \\mathrm{vol}(B^n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["homotopy", "affine combination", "polynomial in t", "change of variables", "Jacobian determinant"],
+    "prerequisites": ["real analysis", "multivariable calculus"]
   }
 ]

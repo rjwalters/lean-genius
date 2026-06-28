@@ -24,42 +24,67 @@
   },
   "overview": {
     "historicalContext": "The companion entry brouwer-fixed-point-oq-01-oq-02 proves the No-Retraction Theorem via singular homology, but at the cost of three homology axioms standing in for Mathlib gaps (H_{n-1}(S^{n-1}) ≅ ℤ and the contractibility/prism vanishing). John Milnor's 1978 note *Analytic proof of the 'hairy ball' theorem and the Brouwer fixed-point theorem* (Amer. Math. Monthly 85, 521–524) gives a proof that never mentions homology: it is pure real analysis and measure theory. The contradiction is that a smooth retraction r : B^n → S^{n-1} would map the positive-volume ball onto the measure-zero sphere, while a Jacobian/degree (change-of-variables) computation forces such a map to preserve the ball's volume. This entry transcribes that route into Lean and pins down exactly which ingredients Mathlib already supports.",
-    "keyInsight": "Mathlib *already* has the two measure-theoretic poles of Milnor's contradiction: spheres are Lebesgue-null (Measure.addHaar_sphere) and balls have positive finite volume (measure_closedBall_pos). A retraction's image is exactly the sphere, so it collapses positive volume to zero. The single missing ingredient — that a retraction nonetheless preserves the ball's volume — is captured here as an explicit hypothesis (not an axiom), making the file 0-axiom while precisely locating the analytic frontier."
+    "problemStatement": "Can the three singular-homology axioms used by the companion No-Retraction proof be discharged using only Mathlib's analysis library? Concretely: formalize Milnor's measure-theoretic obstruction to a retraction $r : B^n \\to S^{n-1}$ — that $\\mathrm{vol}(B^n) > 0$ while $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(S^{n-1}) = 0$ — and pin down the single analytic fact $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(B^n)$ that completes the contradiction.",
+    "proofStrategy": "Define the ball, sphere, and a Retraction structure interoperable with the homology companion. Prove the two poles of Milnor's contradiction directly from Mathlib: the sphere is Lebesgue-null (Measure.addHaar_sphere) and the ball has positive finite volume (measure_closedBall_pos, measure_closedBall_lt_top). Show a retraction's image is exactly the sphere, so it collapses positive volume to zero. Then reduce no-retraction to a single explicit hypothesis hvol : vol(r '' B^n) = vol(B^n), which Milnor's degree/Jacobian change-of-variables supplies for smooth maps. Finally record the straight-line homotopy f_t = (1-t)·id + t·r whose volume-polynomiality discharges hvol, laying out the analytic program end to end.",
+    "keyInsights": [
+      "Mathlib *already* has the two measure-theoretic poles of Milnor's contradiction: spheres are Lebesgue-null (Measure.addHaar_sphere) and balls have positive finite volume (measure_closedBall_pos). A retraction's image is exactly the sphere, so it collapses positive volume to zero. The single missing ingredient — that a retraction nonetheless preserves the ball's volume — is captured here as an explicit hypothesis (not an axiom), making the file 0-axiom while precisely locating the analytic frontier.",
+      "The sphere being 'detected' by a nonzero homology group in the topological proof is replaced, in the analytic proof, by the sphere being Lebesgue-null: thinness measured by dimension becomes thinness measured by volume. This is the conceptual translation that lets Mathlib's measure theory stand in for its missing homology.",
+      "Where the homology route needs three axioms diffusely standing in for Mathlib gaps, the analytic route needs exactly one explicit hypothesis, $\\mathrm{vol}(r(B^n)) = \\mathrm{vol}(B^n)$. The missing mathematics becomes precise and quantifiable — a single named statement — rather than a cluster of opaque topological facts.",
+      "Continuity alone cannot manufacture the contradiction: a continuous surjection $B^n \\twoheadrightarrow S^{n-1}$ that collapses volume is not forbidden. The essential extra input is smoothness, entering through the Jacobian/degree computation. The file is scrupulously honest that this is the true frontier, and does not overclaim a no-retraction proof.",
+      "Milnor's straight-line homotopy $f_t = (1-t)\\,\\mathrm{id} + t\\,r$ converts the qualitative obstruction into a quantitative one: the volume $t \\mapsto \\mathrm{vol}(f_t(B^n))$ is a polynomial in $t$ that is simultaneously forced to be constant near $0$ (it is a diffeomorphism there) and to drop to $0$ at $t = 1$ (the image is the null sphere) — impossible for a nonzero polynomial."
+    ]
   },
   "sections": [
     {
       "id": "geometry",
       "title": "Geometry: ball, sphere, and retractions",
+      "startLine": 90,
+      "endLine": 113,
       "summary": "Defines the closed unit ball and unit sphere in EuclideanSpace ℝ (Fin n) (matching the homology companion for interoperability), the Retraction structure, and the inclusion S^{n-1} ⊆ B^n.",
       "mathContext": "The Retraction structure bundles continuity, mapping the ball into the sphere, and fixing the sphere pointwise — a definition, not an assumption that any claimed result depends on."
     },
     {
       "id": "nontriviality",
       "title": "Nontriviality of ℝⁿ for n ≥ 1",
+      "startLine": 115,
+      "endLine": 125,
       "summary": "nontrivial_euclidean: for n ≥ 1, EuclideanSpace ℝ (Fin n) is Nontrivial, via finrank = n > 0. Needed to invoke Measure.addHaar_sphere.",
       "mathContext": "Module.nontrivial_of_finrank_pos composed with finrank_euclideanSpace_fin."
     },
     {
       "id": "measure-obstruction",
       "title": "The measure-theoretic obstruction",
+      "startLine": 127,
+      "endLine": 175,
       "summary": "unitSphere_volume_zero (sphere is null), closedBall_volume_pos / closedBall_volume_lt_top (ball positive and finite), retraction_image_eq_sphere (a retraction surjects B^n onto S^{n-1}), retraction_image_volume_zero and retraction_collapses_volume (hence it maps positive volume onto a null set).",
       "mathContext": "These are the analytic replacements for the homology axioms sphere_singularHomology_nonzero and contractible_singularHomology_zero."
     },
     {
       "id": "reduction",
       "title": "The reduction: one analytic gap",
+      "startLine": 177,
+      "endLine": 188,
       "summary": "no_retraction_of_volume_preserved: a retraction cannot exist once one supplies vol(r '' B^n) = vol(B^n). This isolates the whole remaining content of the analytic route into a single explicit hypothesis — exactly what Milnor's degree/Jacobian computation provides for smooth maps. The hypothesis is not an axiom, so the file remains 0-axiom.",
       "mathContext": "Continuity alone does not forbid a volume-collapsing surjection; the contradiction genuinely needs the smooth volume-preservation input. The file is honest that it does not prove no-retraction outright."
     },
     {
       "id": "homotopy",
       "title": "Milnor's straight-line homotopy",
+      "startLine": 190,
+      "endLine": 225,
       "summary": "straightLine f_t = (1-t)·id + t·r with continuous endpoints (f_0 = id, f_1 = r) and the fact that f_t fixes the sphere for every t. This is the family whose volume t ↦ vol(f_t(B^n)) Milnor proves is polynomial in t.",
       "mathContext": "Lays out the analytic program end to end; the polynomiality/degree bookkeeping is the remaining gap named in no_retraction_of_volume_preserved."
     }
   ],
   "conclusion": {
-    "summary": "The homology axioms of the No-Retraction Theorem can be replaced by Mathlib analysis tools along Milnor's measure-theoretic route. This entry proves, 0-axiom and 0-sorry, the sphere-is-null and ball-has-positive-volume poles of the contradiction and the fact that a retraction collapses positive volume to zero, then reduces the entire remaining argument to one explicit analytic hypothesis: that a retraction preserves the ball's volume. Discharging that hypothesis is precisely Milnor's smooth degree/Jacobian computation, for which Mathlib already has the change-of-variables engine (MeasureTheory.Function.Jacobian); the open work is the polynomiality/degree bookkeeping plus a smoothing step. The file does not claim to prove no-retraction — it maps out and machine-checks the analytic scaffolding and the precise frontier."
+    "summary": "The homology axioms of the No-Retraction Theorem can be replaced by Mathlib analysis tools along Milnor's measure-theoretic route. This entry proves, 0-axiom and 0-sorry, the sphere-is-null and ball-has-positive-volume poles of the contradiction and the fact that a retraction collapses positive volume to zero, then reduces the entire remaining argument to one explicit analytic hypothesis: that a retraction preserves the ball's volume. Discharging that hypothesis is precisely Milnor's smooth degree/Jacobian computation, for which Mathlib already has the change-of-variables engine (MeasureTheory.Function.Jacobian); the open work is the polynomiality/degree bookkeeping plus a smoothing step. The file does not claim to prove no-retraction — it maps out and machine-checks the analytic scaffolding and the precise frontier.",
+    "implications": "The result reframes a celebrated topological theorem in purely analytic terms, showing the obstruction to a retraction is a *volume* phenomenon, not merely a *homotopy* one. It demonstrates that Mathlib's measure theory already carries most of Milnor's argument, and it quantifies exactly what is missing — a polynomiality/degree computation plus a smoothing step — turning a vague 'Mathlib gap' into a concrete, well-defined formalization target. More broadly it illustrates a recurring theme in formalization: invariants from algebraic topology (here, that $S^{n-1}$ is not a retract of $B^n$) often admit analytic shadows (measure, degree, integration) that are more amenable to a library whose strengths lie in analysis rather than homological algebra.",
+    "openQuestions": [
+      "Can the volume-preservation hypothesis hvol be discharged in Lean by formalizing the polynomiality of $t \\mapsto \\mathrm{vol}(f_t(B^n))$ via Mathlib's MeasureTheory.Function.Jacobian change-of-variables theorem?",
+      "What is the cleanest smoothing step $r \\mapsto r_{\\mathrm{smooth}}$ that reduces the continuous no-retraction statement to the smooth case Milnor's degree argument handles?",
+      "Does the same measure-theoretic scaffolding extend to formalize the hairy-ball theorem (the companion result in Milnor's 1978 note), and how much of it does Mathlib already support?",
+      "Can the full Brouwer fixed-point theorem be obtained 0-axiom in Mathlib by combining this analytic no-retraction route with the standard 'a fixed-point-free self-map yields a retraction' reduction?"
+    ]
   },
   "crossReferences": [
     {
