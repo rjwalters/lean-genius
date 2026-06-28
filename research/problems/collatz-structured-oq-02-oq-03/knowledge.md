@@ -357,3 +357,65 @@ reflection layer:
   decrease v2(c)); this is the same difficulty as the drop-below conjecture itself for the
   m-dependent classes. The decidable certificate here is the right primitive to build that on.
 - Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
+
+## Session 2026-06-27 (researcher-8) — ACT: parity vector AUTO-DERIVED from (b, r) — de-risk component (1)
+
+**Mode**: BUILD (Docker unresponsive — `docker info` hangs; built offline
+`LAKE_UNSAFE=1 ./bin/lake env lean Proofs/CollatzStructuredOQ02OQ03.lean` against the
+worktree's cached Mathlib oleans, REAL_EXIT=0, no errors/warnings).
+**Outcome**: progress — completes the long-documented "component (1)" lever; axiom-free.
+
+### What I Did
+Closed the last manual input in the residue-drop engine. Previously `dropCert M r v`
+auto-checked validity but the caller still hand-supplied the parity vector `v`. Added
+**Part VII**: `deriveVec` COMPUTES the residue-determined parity vector from `(b, r)`
+alone for a power-of-two modulus `2^b`.
+- `deriveVec : ℕ → ℕ → ℕ → List Bool` — fuel-bounded simulation starting the affine
+  pair at `(2^b, r)`; while the leading coefficient `c` is even the parity of `c·m+d`
+  is `d mod 2` (independent of `m`), so each step is forced and read off `d`. Stops when
+  `c` becomes odd (window closed) or fuel exhausted.
+- `affValidB_deriveVec : ∀ fuel c d, affValidB (deriveVec fuel c d) c d = true` —
+  **unconditional** (no divisibility hypothesis): the recursion branches on exactly the
+  conditions `affValidB` checks, so every derived bit is valid by construction.
+- `autoDropCert (b r : ℕ) : Bool` and `autoDropCert_attainsBelow` — a new residue family
+  `r (mod 2^b)` is now `autoDropCert_attainsBelow (b:=…) (r:=…) (by decide) h`, supplying
+  NO parity vector. Validated end-to-end by re-deriving `n≡3 (mod 16)`, `n≡11 (mod 32)`,
+  `n≡7 (mod 128)` — each a single `by decide`.
+
+### Key Findings
+- The termination/soundness split is the crux: **fuel bounds completeness, never
+  soundness.** An exhausted or non-dropping window just fails the decidable drop check
+  (`c_k < 2^b` / `d_k < r`); it can never emit a false `AttainsBelow`. So the messy
+  "simulate while c even" termination concern (flagged as equivalent to the drop-below
+  conjecture for m-dependent classes) is sidestepped: pick any fuel `≥ 2b` and the
+  determined classes certify; the rest correctly fail.
+- Two odd steps are never consecutive (odd sends `d ↦ 3d+1`, even), and each even step
+  strips one factor of two from `c = 2^b`, so the determined window closes within `2b`
+  steps — `fuel = 2b+1` always suffices for the determined classes.
+- `#print axioms autoDropCert_attainsBelow` / `affValidB_deriveVec` → `[propext,
+  Quot.sound]` only. Kernel `decide`, NOT `native_decide` — no `Lean.ofReduceBool`.
+
+### Honest status
+- This is **engine completion / usability**, not new Collatz mathematics: the density
+  floor is unchanged (115/128) and the Tao axiom remains BLOCKED. Value: the engine is
+  now genuinely turnkey for power-of-two moduli — caller supplies only `(b, r)`. This is
+  exactly de-risk **component (1)** documented by researcher-1/researcher-2 as the last
+  remaining lever (auto-DERIVE the vector from the modulus+residue).
+
+### GOTCHA / process note
+- **The worktree was hard-reset mid-session** (`git reflog` → `reset: moving to HEAD`),
+  silently wiping uncommitted edits — and an early "EXIT 0" build had actually run on the
+  *original* file. Lesson: in this worktree, **commit immediately after editing** (a
+  committed change survives `reset --hard HEAD`) and re-grep the file for your new
+  identifiers before trusting a build's exit code.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+2 thm 52→54, +2 def 10→12, 1468→1568 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts 1360/50/10 → 1568/54/12)
+
+### Next Steps
+- The remaining direction is unchanged and genuinely hard: a *uniform* drop theorem
+  (one inductive statement covering all determined classes via the `3^a < 2^b` criterion),
+  then Terras/Korec natural-density-1 stopping time. Tao axiom stays BLOCKED. Further
+  density-floor dyadic levels (mod 256+) remain diminishing returns.
