@@ -1369,4 +1369,87 @@ theorem gridFacet_vertex_injective (hd : 2 ≤ d) :
   obtain rfl : k = l := gridFacet_injective s hface
   rfl
 
+-- ============================================================
+-- SECTION: The interior neighbour (face-gluing) relation (`d ≥ 2`)
+-- ============================================================
+-- The pivot machinery (`pivotSimplex`, `pivot_facet_eq`, `pivot_ne`,
+-- `pivot_involutive`) and the sound Kuhn-carrier facet combinatorics
+-- (`gridFacet`, `gridFacet_unique_neighbor`) are now both available.  This
+-- section ties them together into the constructive neighbour relation the
+-- door-counting `adj` records at chain-interior facets: `GridGlued s t` holds
+-- when `t` is the Freudenthal pivot of `s` across the facet opposite a vertex
+-- `a.succ` (for a consecutive Kuhn step pair `a.succ = b.castSucc`).  Each fact
+-- below is proved on the sound `GridSimplex`/`gridFacet` carrier and feeds a
+-- distinct `adj` obligation:
+--   * `pivot_gridFacet_eq` / `GridGlued.shares_facet` — glued cells share a Kuhn
+--     facet (the `adj` common-face datum);
+--   * `GridGlued.ne` — a glued neighbour is a *different* cell (no self-loops);
+--   * `GridGlued_symm` — the relation is symmetric (`adj_symm`), each facet-flip
+--     its own reverse, via the pivot involution `pivot_involutive`;
+--   * `exists_gridFacet_neighbor` — every chain-interior facet HAS such a
+--     neighbour (existence; uniqueness is the separate
+--     `gridFacet_unique_neighbor`, the only place `d ≥ 2` is needed).
+-- All 0-sorry, 0-axiom.  `d ≤ 1` orientation doubling is handled separately.
+
+/-- **The interior pivot preserves the shared Kuhn facet.**  Transports
+`pivot_facet_eq` — stated on the raw barycentric vertices — to the sound Kuhn
+carrier: `s` and its pivot across the facet opposite `a.succ` have the *same*
+`gridFacet · a.succ`.  Both Kuhn facets are the `toVertex`-image of one and the
+same barycentric facet `(univ.erase a.succ).image ·.verts`, equal by
+`pivot_facet_eq`.  This is the bridge that lets the door-counting `adj` cite the
+pivot neighbour directly on the `gridFacet` carrier it actually uses. -/
+theorem pivot_gridFacet_eq (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    gridFacet (pivotSimplex s a b hb) a.succ = gridFacet s a.succ := by
+  have key : ∀ u : SpernerGrid.GridSimplex d N,
+      gridFacet u a.succ
+        = ((Finset.univ.erase a.succ).image u.verts).image toVertex := by
+    intro u
+    have hgv : gridVertices u = toVertex ∘ u.verts := rfl
+    rw [gridFacet, hgv, ← Finset.image_image]
+  rw [key, key, pivot_facet_eq]
+
+/-- The constructive **interior face-gluing relation**: `t` is the Freudenthal
+pivot of `s` across the chain-interior facet opposite vertex `a.succ`, for a
+consecutive Kuhn step pair `a.succ = b.castSucc`.  This is the neighbour the
+door-counting `adj` records at every interior facet (the `d ≤ 1` orientation
+doubling is handled separately). -/
+def GridGlued (s t : SpernerGrid.GridSimplex d N) : Prop :=
+  ∃ (a b : Fin d) (hb : a.succ = b.castSucc), t = pivotSimplex s a b hb
+
+/-- **Every chain-interior facet has a glued neighbour.**  Given consecutive Kuhn
+steps `a.succ = b.castSucc`, the pivot is a cell distinct from `s` that shares the
+facet `gridFacet s a.succ`.  This is the existence half the `adj` discharge needs
+at interior facets — `pivotSimplex` supplies it; uniqueness is the separate
+`gridFacet_unique_neighbor`. -/
+theorem exists_gridFacet_neighbor (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    ∃ t : SpernerGrid.GridSimplex d N,
+      GridGlued s t ∧ t ≠ s ∧ gridFacet t a.succ = gridFacet s a.succ :=
+  ⟨pivotSimplex s a b hb, ⟨a, b, hb, rfl⟩, pivot_ne s a b hb,
+    pivot_gridFacet_eq s a b hb⟩
+
+/-- A glued neighbour is a **different cell** (no self-loops in `adj`). -/
+theorem GridGlued.ne {s t : SpernerGrid.GridSimplex d N} (h : GridGlued s t) :
+    s ≠ t := by
+  obtain ⟨a, b, hb, rfl⟩ := h
+  exact (pivot_ne s a b hb).symm
+
+/-- **Glued cells share a Kuhn facet** (the `adj` common-face datum): if
+`GridGlued s t` then some facet of `t` equals some facet of `s`. -/
+theorem GridGlued.shares_facet {s t : SpernerGrid.GridSimplex d N}
+    (h : GridGlued s t) :
+    ∃ k : Fin (d + 1), gridFacet t k = gridFacet s k := by
+  obtain ⟨a, b, hb, rfl⟩ := h
+  exact ⟨a.succ, pivot_gridFacet_eq s a b hb⟩
+
+/-- **The interior face-gluing relation is symmetric** (`adj_symm`).  Each
+facet-flip is its own reverse: if `t` is the pivot of `s` across the facet
+opposite `a.succ`, then `s` is the pivot of `t` across the *same* facet, by the
+pivot involution `pivot_involutive`. -/
+theorem GridGlued_symm {s t : SpernerGrid.GridSimplex d N} (h : GridGlued s t) :
+    GridGlued t s := by
+  obtain ⟨a, b, hb, rfl⟩ := h
+  exact ⟨a, b, hb, (pivot_involutive s a b hb).symm⟩
+
 end SpernerNDimOQ02
