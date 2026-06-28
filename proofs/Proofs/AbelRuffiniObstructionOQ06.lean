@@ -89,6 +89,60 @@ theorem perm_fin_three_solvable : IsSolvable (Equiv.Perm (Fin 3)) := by
   exact le_of_eq alternatingGroup_eq_sign_ker.symm
 
 /--
+**Solvability of `A₄` (the alternating group on four symbols).**
+
+`A₄` is solvable via its own one-step extension
+`1 → V₄ → A₄ → A₄/V₄ → 1`, where the normal Klein four-subgroup
+`V₄ = alternatingGroup.kleinFour (Fin 4)` has exponent two (hence is abelian,
+hence solvable) and the quotient `A₄/V₄` has order `|A₄|/|V₄| = 12/4 = 3`, so it
+is cyclic of prime order, hence abelian, hence solvable. (`V₄` is in fact the
+commutator subgroup of `A₄`, so this is exactly the derived series
+`A₄ ⊳ V₄ ⊳ 1`.) This is the crucial non-abelian-but-solvable case that makes the
+general quartic solvable by radicals (Ferrari's resolvent cubic).
+-/
+theorem alt_fin_four_solvable : IsSolvable (alternatingGroup (Fin 4)) := by
+  have hcard : Nat.card (Fin 4) = 4 := by simp
+  haveI hnorm : (alternatingGroup.kleinFour (Fin 4)).Normal :=
+    alternatingGroup.normal_kleinFour hcard
+  -- The kernel V₄ has exponent two, hence is abelian, hence solvable.
+  haveI hkSolv : IsSolvable (alternatingGroup.kleinFour (Fin 4)) :=
+    isSolvable_of_comm
+      (mul_comm_of_exponent_two (alternatingGroup.exponent_kleinFour_of_card_eq_four hcard))
+  -- The quotient A₄/V₄ has order 3, hence is cyclic, hence solvable.
+  have hcard3 : Nat.card (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) = 3 := by
+    rw [← Nat.mul_left_inj (a := Nat.card (alternatingGroup.kleinFour (Fin 4)))]
+    · rw [← Subgroup.card_eq_card_quotient_mul_card_subgroup]
+      rw [alternatingGroup.card_of_card_eq_four hcard,
+        alternatingGroup.kleinFour_card_of_card_eq_four hcard]
+    rw [alternatingGroup.kleinFour_card_of_card_eq_four hcard]; simp
+  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
+  haveI hcyc : IsCyclic (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) :=
+    isCyclic_of_prime_card hcard3
+  haveI hqSolv : IsSolvable (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) :=
+    isSolvable_of_comm (fun a b => IsCyclic.commutative.comm a b)
+  refine solvable_of_ker_le_range
+    (alternatingGroup.kleinFour (Fin 4)).subtype
+    (QuotientGroup.mk' (alternatingGroup.kleinFour (Fin 4))) ?_
+  exact (QuotientGroup.ker_mk' _).le.trans (Subgroup.range_subtype _).ge
+
+/--
+**Solvability of `S₄`.**
+
+`S₄` is solvable: the sign sequence `1 → A₄ → S₄ →^{sign} ℤˣ → 1` has solvable
+kernel `A₄` (`alt_fin_four_solvable`) and abelian image `ℤˣ`, so
+`solvable_of_ker_le_range` applies. This is the top of the solvable range: `S₄`
+is the largest symmetric group solvable by radicals, which is why the general
+quartic has a radical formula but the quintic does not.
+-/
+theorem perm_fin_four_solvable : IsSolvable (Equiv.Perm (Fin 4)) := by
+  haveI : IsSolvable (alternatingGroup (Fin 4)) := alt_fin_four_solvable
+  exact solvable_of_ker_le_range
+    (alternatingGroup (Fin 4)).subtype
+    (Equiv.Perm.sign (α := Fin 4))
+    ((le_of_eq (alternatingGroup_eq_sign_ker (α := Fin 4)).symm).trans
+      (Subgroup.range_subtype _).ge)
+
+/--
 **The symmetric threshold, both endpoints.**
 
 `S₂` and `S₃` are solvable while `Sₙ` is not solvable for any `n ≥ 5`. This is the
@@ -100,6 +154,25 @@ theorem symmetric_threshold :
     IsSolvable (Equiv.Perm (Fin 2)) ∧ IsSolvable (Equiv.Perm (Fin 3)) ∧
     (∀ n : ℕ, 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))) :=
   ⟨perm_fin_two_solvable, perm_fin_three_solvable,
+    fun _ hn => symmetricGroup_not_solvable hn⟩
+
+/--
+**The full symmetric threshold `Sₙ` solvable ⟺ `n ≤ 4`, all cases discharged.**
+
+The complete classification at the level of the concrete small groups: `S₂`,
+`S₃`, and `S₄` are each solvable (the solvable side, now proved for *every*
+`n ≤ 4` with `n ≥ 2` — the cases `n ≤ 1` are trivial), while `Sₙ` is not solvable
+for any `n ≥ 5` (`symmetricGroup_not_solvable`). This is the sharp group-theoretic
+dividing line behind Abel–Ruffini: degrees `≤ 4` have radical formulas (quadratic,
+Cardano, Ferrari) exactly because `S₂, S₃, S₄` are solvable, and degree `≥ 5` does
+not because `Sₙ` is not.
+-/
+theorem symmetric_threshold_full :
+    IsSolvable (Equiv.Perm (Fin 2)) ∧
+    IsSolvable (Equiv.Perm (Fin 3)) ∧
+    IsSolvable (Equiv.Perm (Fin 4)) ∧
+    (∀ n : ℕ, 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))) :=
+  ⟨perm_fin_two_solvable, perm_fin_three_solvable, perm_fin_four_solvable,
     fun _ hn => symmetricGroup_not_solvable hn⟩
 
 /-!
