@@ -1291,6 +1291,31 @@ theorem terras_attainsBelow {b r : ℕ} (v : List Bool) (hk : 0 < v.length)
   rw [affOrbit_fst, ← hcount, leadCoeff_two_pow, hcount]
   exact hlt
 
+/-- **Sharpness of the Terras criterion.**  For a power-of-two modulus `2^b` whose
+window performs exactly its `b` halvings (`v.count false = b`), the engine's
+leading-coefficient drop check `c_k < M` is *equivalent* to `3^a < 2^b` — not merely
+implied by it.  The realized leading coefficient is *forced* to `3^a` (`leadCoeff_two_pow`),
+so `3^a < 2^b` is the **exact** reach of the residue-determined method: a window with
+`3^a ≥ 2^b` (too many triplings for its halvings) can never satisfy the coefficient drop
+condition, whatever the residue `r`.  This is the necessity companion to
+`terras_attainsBelow`, and it pins down why the residue-determined density floor
+plateaus — enlarging the dyadic modulus `2^b` only ever certifies residues whose
+determined window already carries strictly more halvings than `(log₂ 3)·(triplings)`,
+so no purely residue-determined window certifies a class once `3^a ≥ 2^b`. -/
+theorem terras_drop_iff {b r : ℕ} (v : List Bool) (hcount : v.count false = b) :
+    (affOrbit v (2 ^ b, r)).1 < 2 ^ b ↔ 3 ^ v.count true < 2 ^ b := by
+  rw [affOrbit_fst, ← hcount]; exact leadCoeff_two_pow_lt_iff v
+
+/-- Concrete witness of the sharp boundary: the *realizable alternating* window
+`[odd, even, odd, even, odd, even]` (three triplings, three halvings) lands at leading
+coefficient `3^3 = 27`, which is **not** below its modulus `2^3 = 8`.  Three triplings
+need at least `⌈3·log₂ 3⌉ = 5` halvings to drop; three halvings are not enough, so this
+window — however its residue is chosen — cannot certify a drop.  (Contrast the gallery
+families, where the halvings always outnumber the triplings: e.g. `3 (mod 16)` uses
+`3^2 = 9 < 16 = 2^4`.) -/
+example : ¬ (leadCoeff [true, false, true, false, true, false] (2 ^ 3) < 2 ^ 3) := by
+  decide
+
 /-! ### Decidable certificates: the engine as a one-shot `by decide`
 
 `AffValid` is a `Prop`-valued inductive, so supplying a certificate still means writing
