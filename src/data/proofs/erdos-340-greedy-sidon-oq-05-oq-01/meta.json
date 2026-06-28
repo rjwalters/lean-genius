@@ -82,7 +82,78 @@
     "keyInsights": [
       "The upper bound is a clean h-th-root of the combinatorial counting bound: Nat.pow_le_choose turns C(k,h) ≤ h·N into (k+1−h)^h ≤ h!·h·N, and rpow monotonicity does the rest — no further B_h structure is needed.",
       "The additive defect h−1 from the binomial lower bound is harmless: since N ≥ 1 forces N^{1/h} ≥ 1, it is absorbed into the constant, giving a single clean coefficient C₂ = (h−1) + (h·h!)^{1/h}.",
-      "Pairing IsBh.card_le_rpow with exists_isBh_rpow_lower brackets σ_h(N) in [C₁·N^{1/(2h-1)}, C₂·N^{1/h}]; the exponent gap is precisely the open core of Erdős #340 (1/3 vs 1/2 at h=2) and is deliberately left open."
+      "Pairing IsBh.card_le_rpow with exists_isBh_rpow_lower brackets σ_h(N) in [C₁·N^{1/(2h-1)}, C₂·N^{1/h}]; the exponent gap is precisely the open core of Erdős #340 (1/3 vs 1/2 at h=2) and is deliberately left open.",
+      "The asymmetry of the bracket is the whole story: by Bose–Chowla the counting ceiling N^{1/h} is attained up to a (1−o(1)) factor, so the upper bound is essentially sharp and not where progress is needed — all the open difficulty lives in lifting the greedy lower exponent 1/(2h−1). Formalizing the easy-but-explicit side anchors exactly how far the hard side has to travel."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "docstring-overview",
+      "title": "Docstring: the bracket and the open gap",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring recalling the OQ-05 companion results (the greedy lower bound exists_isBh_rpow_lower and the counting bound IsBh.choose_card_le), stating the analytic upper bound |A| ≤ C₂·N^{1/h} this file supplies, and framing the exponent gap 1/(2h−1) vs 1/h as the open quantitative core of Erdős #340 (the 1/3 vs 1/2 Sidon gap at h=2)."
+    },
+    {
+      "id": "statement-and-constant",
+      "title": "Theorem statement and the explicit constant",
+      "startLine": 50,
+      "endLine": 80,
+      "summary": "Declaration of IsBh.card_le_rpow and construction of the witness constant C = (h−1) + C₂coef with C₂coef = (h·h!)^{1/h}. Positivity of C₂coef comes from Real.rpow_pos_of_pos on the positive base h!·h, and linarith establishes 0 < C from 0 < C₂coef and 1 ≤ h."
+    },
+    {
+      "id": "edge-case-n-zero",
+      "title": "The N = 0 edge case",
+      "startLine": 81,
+      "endLine": 87,
+      "summary": "Dispatches N = 0: the interval Icc 1 0 is empty, forcing A = ∅, and Real.zero_rpow (using 1/h ≠ 0) makes the right-hand side 0, so the bound is 0 ≤ 0. This frees the main case to assume N ≥ 1."
+    },
+    {
+      "id": "counting-to-polynomial",
+      "title": "From the counting bound to a polynomial inequality",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "Combines IsBh.choose_card_le (C(k,h) ≤ h·N) with Mathlib's reverse binomial bound Nat.pow_le_choose ((k+1−h)^h/h! ≤ C(k,h)), clearing the h! denominator (div_le_iff₀) and scaling (mul_le_mul_of_nonneg_left), to reach (k+1−h)^h ≤ h!·(h·N) over ℝ."
+    },
+    {
+      "id": "take-roots",
+      "title": "Taking h-th roots via rpow monotonicity",
+      "startLine": 102,
+      "endLine": 114,
+      "summary": "Applies x ↦ x^{1/h} to the polynomial inequality. Real.pow_rpow_inv_natCast recovers q = k+1−h on the left, Real.rpow_le_rpow gives monotonicity on the right, and Real.mul_rpow factors the constant, yielding q ≤ C₂coef·N^{1/h}."
+    },
+    {
+      "id": "absorb-defect",
+      "title": "Absorbing the additive defect and finishing",
+      "startLine": 115,
+      "endLine": 137,
+      "summary": "Recovers k from q via the ℕ inequality k ≤ (k+1−h)+(h−1) (omega, valid even when k < h). Using N^{1/h} ≥ 1 (from 1 ≤ N) absorbs h−1 into (h−1)·N^{1/h} (le_mul_of_one_le_right), and a final linarith assembles k ≤ ((h−1)+C₂coef)·N^{1/h}."
+    }
+  ],
+  "conclusion": {
+    "summary": "IsBh.card_le_rpow gives, for every h ≥ 1, an explicit constant C = (h−1) + (h·h!)^{1/h} > 0 such that every B_h set A ⊆ {1,…,N} satisfies |A| ≤ C·N^{1/h}, proved 0-axiom by taking h-th roots of the combinatorial counting bound C(|A|,h) ≤ h·N. Paired with the OQ-05 greedy lower bound exists_isBh_rpow_lower, it pins the maximal B_h size σ_h(N) inside the bracket C₁·N^{1/(2h−1)} ≤ σ_h(N) ≤ C₂·N^{1/h}.",
+    "implications": "The result completes the analytic bracket that the Erdős #340 literature states for B_h growth and makes the constant on the upper side fully explicit rather than asymptotic. Because the Bose–Chowla construction shows the N^{1/h} ceiling is achieved up to (1−o(1)), the upper bound is essentially tight: it certifies that the entire open quantitative content of the problem lives in the lower bound's exponent 1/(2h−1), not the upper one. The proof also illustrates a reusable pattern — converting a combinatorial counting inequality into a sharp size bound by a single application of rpow monotonicity, with truncated-subtraction defects absorbed into the leading constant.",
+    "openQuestions": [
+      "Can the greedy/probabilistic lower exponent 1/(2h−1) be improved toward the counting ceiling 1/h? For h = 2 this is whether dense Sidon sets in {1,…,N} can exceed the greedy N^{1/3} order — the classical 1/3 vs 1/2 gap that remains open.",
+      "What is the true second-order behavior of σ_h(N) just below the N^{1/h} ceiling — i.e. can the explicit constant C₂ = (h−1)+(h·h!)^{1/h} be sharpened toward the Bose–Chowla optimal leading coefficient?",
+      "Does the upper-bound argument transfer verbatim to B_h^+ sets (distinct sums without the ordering convention) or to B_h sets in higher-dimensional or group settings, where the counting bound takes a different form?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-340-greedy-sidon",
+      "relationship": "Foundational infrastructure",
+      "description": "Defines IsBh and proves the OQ-05 results this entry builds on: the counting bound IsBh.choose_card_le (C(|A|,h) ≤ h·N) that is the sole combinatorial input here, and the greedy lower bound exists_isBh_rpow_lower that pairs with this upper bound to bracket σ_h(N)."
+    },
+    {
+      "proofId": "erdos-340",
+      "relationship": "Parent problem",
+      "description": "The gallery's top-level Erdős #340 entry on the growth of the greedy Sidon sequence; this entry supplies the matching analytic upper bound for the general B_h (h ≥ 2) version of that growth question."
+    },
+    {
+      "proofId": "erdos-28-additive-bases",
+      "relationship": "Adjacent additive-combinatorics theme",
+      "description": "Another Erdős additive-combinatorics entry concerning the sizes of sumset-constrained sequences; shares the counting-bound-versus-construction tension that governs B_h and additive-basis growth rates."
+    }
+  ]
 }
