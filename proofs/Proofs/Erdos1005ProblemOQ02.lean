@@ -1697,4 +1697,111 @@ all-`1` continuant turns *negative*: `K([1,1,1]) = 1 − 1 − 1 = −1`.  Toget
 balanced extreme, the regime where §17's positivity provably does not hold. -/
 theorem continuant_ones_three : Continuant [1, 1, 1] = -1 := by decide
 
+/-! ## §18: The bottom-right entry and the pure-continuant Cassini
+
+§16 identified three of the four entries of the step-matrix product `P(ks)` —
+`.a = Continuant ks`, `.c = secondCont ks`, `.b = −secondCont ks.reverse` — but left
+the bottom-right entry `.d`, the coefficient carrying the Cassini determinant, as an
+opaque matrix entry; the §16 note named "identify `(contMat ks).d` in closed
+continuant form" as the next direction.  This section closes that thread.
+
+Prepending a quotient shifts the matrix down-right, so `.d` of `P(k :: ks)` is just
+the *old* top-right entry `.b` of `P(ks)`: `(P(k::ks)).d = −secondCont ks.reverse`.
+With §16's `.a/.b/.c` this identifies **every** entry of the continuant matrix as a
+signed continuant of a sublist (`contMat_cons_eq`), and turns the §16 determinant
+Cassini into the classical three-term continuant Cassini
+
+`K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1`   (`continuant_cassini_classical`)
+
+relating three consecutive continuants of a length-`≥ 2` quotient list `L` — the
+recognizable textbook form of the §16 `det P = 1` invariant, now fully expressed in
+the §14 continuant ladder with no residual matrix entry.
+
+This section is downstream of §16 only (the matrix entries and reversal symmetry);
+it adds no new axioms and introduces no `Continuant`/`secondCont` machinery beyond
+the §14 definitions and the §16 reversal bridge. -/
+
+/-- **The fourth entry.**  Prepending `k` shifts the bottom-right entry to the old
+top-right entry: `(P(k::ks)).d = (P ks).b = −secondCont ks.reverse`.  (Bottom-right
+of `M(k)·X` is `1·X.b + 0·X.d = X.b`, since `M(k) = [[k,−1],[1,0]]`.)  Together with
+§16's `contMat_a/_b/_c` this identifies all four entries of the continuant matrix. -/
+theorem contMat_d (k : ℤ) (ks : List ℤ) :
+    (contMat (k :: ks)).d = - secondCont ks.reverse := by
+  have e : (contMat (k :: ks)).d = (contMat ks).b := by
+    show (Mat2.mul (stepMat k) (contMat ks)).d = (contMat ks).b
+    simp only [Mat2.mul, stepMat]; ring
+  rw [e, contMat_b]
+
+/-- **Full continuant-matrix identification.**  Every entry of the step-matrix
+product is a signed continuant of a sublist:
+`P(k::ks) = [[K(k::ks), −secondCont (k::ks).reverse], [secondCont (k::ks), −secondCont ks.reverse]]`.
+The complete entry-level reading of §16's `contMat`, now including the bottom-right
+corner. -/
+theorem contMat_cons_eq (k : ℤ) (ks : List ℤ) :
+    contMat (k :: ks) =
+      ⟨Continuant (k :: ks), - secondCont (k :: ks).reverse,
+       secondCont (k :: ks), - secondCont ks.reverse⟩ := by
+  ext
+  · exact contMat_a _
+  · exact contMat_b _
+  · exact contMat_c _
+  · exact contMat_d k ks
+
+/-- **Pure-continuant Cassini (no residual matrix entry).**  Spelling out
+`det P(k::ks) = 1` with all four entries now in continuant form gives
+`secondCont (k::ks).reverse · secondCont (k::ks) − Continuant (k::ks) · secondCont ks.reverse = 1`.
+Unlike §16's `continuant_cassini`, every term here is a §14 continuant-ladder value;
+the opaque `(P ks).d` has been eliminated. -/
+theorem continuant_cassini_full (k : ℤ) (ks : List ℤ) :
+    secondCont (k :: ks).reverse * secondCont (k :: ks)
+      - Continuant (k :: ks) * secondCont ks.reverse = 1 := by
+  have h := det_contMat (k :: ks)
+  rw [Mat2.det, contMat_a, contMat_b, contMat_c, contMat_d k ks] at h
+  linear_combination h
+
+/-- `(l.dropLast).reverse = l.reverse.tail` — reversing then dropping the last is
+reversing the tail (a pure `List` rearrangement, via `List.dropLast_reverse`). -/
+theorem dropLast_reverse_eq (l : List ℤ) : (l.dropLast).reverse = l.reverse.tail := by
+  have h := @List.dropLast_reverse ℤ l.reverse
+  rw [List.reverse_reverse] at h
+  rw [h, List.reverse_reverse]
+
+/-- For a nonempty list `m`, `secondCont m = Continuant m.tail` (the defining
+recurrence `secondCont (x :: xs) = Continuant xs`, stated tail-first). -/
+theorem secondCont_eq_continuant_tail {m : List ℤ} (hm : m ≠ []) :
+    secondCont m = Continuant m.tail := by
+  cases m with
+  | nil => exact absurd rfl hm
+  | cons x xs => rfl
+
+/-- **Trailing-of-reverse is the leading continuant.**  For nonempty `l`,
+`secondCont l.reverse = Continuant l.dropLast`: the trailing continuant of the
+reversed list is the *leading* continuant of the original.  (`secondCont` reads the
+tail of the reverse, which is the reverse of the dropLast, and `Continuant` is
+reversal-invariant by §16.)  This is the bridge prose in §16 (`secondCont xs.reverse
+= K(xs.dropLast)`), now a lemma. -/
+theorem secondCont_reverse_eq {l : List ℤ} (hl : l ≠ []) :
+    secondCont l.reverse = Continuant l.dropLast := by
+  have hrev : l.reverse ≠ [] := by simpa using hl
+  rw [secondCont_eq_continuant_tail hrev, ← dropLast_reverse_eq, continuant_reverse]
+
+/-- **Continuant Cassini, classical three-term form (headline).**  For a quotient
+list `L = k :: j :: rest` of length `≥ 2`,
+`K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1`.
+This is the textbook continuant Cassini identity — the determinant `det P(L) = 1` of
+§16 rewritten entirely in the §14 continuant ladder, relating the three consecutive
+continuants `K(L.dropLast)`, `K(L)`, `K(L.tail)` and the interior `K(L.tail.dropLast)`.
+It specializes `continuant_cassini_full` through `secondCont_reverse_eq`, completing
+the program of expressing the run-length windows' determinant invariant purely in
+continuants. -/
+theorem continuant_cassini_classical (k j : ℤ) (rest : List ℤ) :
+    Continuant (k :: j :: rest).dropLast * Continuant (k :: j :: rest).tail
+      - Continuant (k :: j :: rest) * Continuant (k :: j :: rest).tail.dropLast = 1 := by
+  have h := continuant_cassini_full k (j :: rest)
+  rw [secondCont_reverse_eq (l := k :: j :: rest) (by simp),
+      secondCont_reverse_eq (l := j :: rest) (by simp)] at h
+  -- `secondCont (k :: j :: rest) = Continuant (j :: rest) = Continuant (k::j::rest).tail`
+  -- and `(k::j::rest).tail.dropLast = (j::rest).dropLast`, both definitional.
+  simpa using h
+
 end Erdos1005OQ02

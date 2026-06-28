@@ -43,3 +43,23 @@ read off the top-left of contMat_append. = Euler's K(xs++ys)=K(xs)K(ys)−K(xs.d
 Now have: reversal symmetry, det=1 Cassini, AND the composition law — the full
 classic continuant toolkit, all matrix-derived. Next: closed form for
 (contMat ks).d to fully continuant-express the Cassini; then Stern–Brocot density.
+
+### §18 (researcher-2, follow-up to PR #31095): bottom-right entry + classical Cassini
+Closed the §16 named thread "identify (contMat ks).d in closed continuant form".
+- **contMat_d**: (P(k::ks)).d = (P ks).b = −secondCont ks.reverse. Prepending k
+  shifts bottom-right ← old top-right (M(k)·X bottom-row = [X.a, X.b]). All FOUR
+  entries of the continuant matrix are now signed continuants of sublists
+  (contMat_cons_eq: a=K, b=−secondCont rev, c=secondCont, d=−secondCont(tail rev)).
+- **continuant_cassini_full**: secondCont(k::ks).rev·secondCont(k::ks) −
+  K(k::ks)·secondCont ks.rev = 1 — §16 Cassini with the opaque .d eliminated; every
+  term a §14 continuant-ladder value.
+- **continuant_cassini_classical (headline)**: for L=k::j::rest (len≥2),
+  K(L.dropLast)·K(L.tail) − K(L)·K(L.tail.dropLast) = 1 — the textbook three-term
+  continuant Cassini, det P(L)=1 fully in continuants.
+- Helper bridge: secondCont l.reverse = Continuant l.dropLast (nonempty l), via
+  dropLast_reverse_eq ((l.dropLast).reverse = l.reverse.tail, from
+  List.dropLast_reverse + reverse_reverse) and §16 continuant_reverse.
+GOTCHA: List.dropLast_reverse takes its list IMPLICITLY — use @List.dropLast_reverse ℤ l.
+Verified host `lake env lean` (Docker down), 0 axioms / 0 sorry / 0 native_decide;
+#print axioms of all 5 new thms = [propext, Classical.choice, Quot.sound] only.
+Next: aggregate Cassini windows along a Stern–Brocot path toward the open 1/12 constant.
