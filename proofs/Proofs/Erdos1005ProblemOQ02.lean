@@ -1563,4 +1563,21 @@ theorem continuant_cassini (ks : List ℤ) :
   simp only [Mat2.det, contMat_a, contMat_c, contMat_b] at h
   linear_combination h
 
+/-- **Continuant addition formula (Euler's composition law).**  Reading the
+top-left entry of the matrix product `contMat (xs ++ ys) = contMat xs · contMat ys`
+gives the classic continuant composition identity
+`K(xs ++ ys) = K(xs)·K(ys) − secondCont(xs.reverse)·secondCont(ys)`.
+Since `secondCont(xs.reverse) = K(xs.dropLast)` (the *leading* continuant, by
+`continuant_reverse`) and `secondCont(ys) = K(ys.tail)`, this is exactly Euler's
+`K(xs ++ ys) = K(xs)·K(ys) − K(xs.dropLast)·K(ys.tail)`.  It splits the §14
+run-length window of a concatenated quotient list into the product of the two
+sub-walk continuants minus a single junction term — the algebraic engine behind
+both the reversal symmetry and any density count over a Stern–Brocot path. -/
+theorem continuant_append (xs ys : List ℤ) :
+    Continuant (xs ++ ys)
+      = Continuant xs * Continuant ys - secondCont xs.reverse * secondCont ys := by
+  have h := congrArg Mat2.a (contMat_append xs ys)
+  simp only [contMat_a, Mat2.mul, contMat_b, contMat_c] at h
+  linear_combination h
+
 end Erdos1005OQ02
