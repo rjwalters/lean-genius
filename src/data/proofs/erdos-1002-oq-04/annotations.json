@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-helpers",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 49, "endLine": 69 },
+    "type": "lemma",
+    "title": "Elementary helpers",
+    "content": "fract_natDiv gives Int.fract(a/q) = (a mod q)/q for naturals (mirrored from OQ-03), the bridge from the real fractional part of (p/q)·j to modular arithmetic — it caps {(p/q)j} at (q−1)/q. sum_range_add_one is the Gauss sum Σ_{k<m}(k+1) = m(m+1)/2, which measures the total linear drift the perturbation accumulates over n ≤ Nq terms."
+  },
+  {
+    "id": "ann-floor-eq",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 73, "endLine": 118 },
+    "type": "insight",
+    "title": "No wrap-around: ⌊α·j⌋ = ⌊(p/q)·j⌋",
+    "content": "The geometric heart. Writing α·j = (p/q)·j + (α − p/q)·j, the floor stays put as long as the drift (α − p/q)·j does not spend the gap to the next integer. That gap is at least 1/q because {(p/q)j} = ((p·j) mod q)/q ≤ (q−1)/q. So {(p/q)j} + (α − p/q)·j < (q−1)/q + 1/q = 1 keeps α·j inside the same unit interval as (p/q)·j: their integer parts agree. The lower bound ⌊(p/q)j⌋ ≤ ⌊αj⌋ is just monotonicity since α ≥ p/q."
+  },
+  {
+    "id": "ann-perturb-statement",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 122, "endLine": 137 },
+    "type": "theorem",
+    "title": "Perturbation lemma: S(α, Nq) pinned to N/2",
+    "content": "Main result. For a reduced fraction p/q and N ≥ 1, the single calibrated hypothesis 0 < α − p/q < 1/(Nq)² forces N/2 − 1 < S(α, Nq) < N/2. The inner sum at n = Nq tracks OQ-03's exact rational value N/2 to within less than one full unit. The budget 1/(Nq)² is sharp enough that the accumulated drift over the whole range n ≤ Nq stays below 1, yet the floor never wraps."
+  },
+  {
+    "id": "ann-perturb-proof",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 150, "endLine": 194 },
+    "type": "proof",
+    "title": "Summation: S(α, Nq) = N/2 − (α−p/q)·Nq(Nq+1)/2",
+    "content": "Every index j = k+1 ≤ Nq satisfies the gap condition, since (α−p/q)·Nq < 1/(Nq) ≤ 1/q. Floor agreement makes deviation(α·j) = deviation((p/q)·j) − (α−p/q)·j termwise. Summing, with Erdos1002OQ03.innerSum_linear (S(p/q, Nq) = N/2) and the Gauss sum, gives S(α, Nq) = N/2 − (α−p/q)·Nq(Nq+1)/2. The correction is positive (α > p/q) and below (Nq+1)/(2Nq) ≤ 1, pinning S(α, Nq) into (N/2 − 1, N/2)."
+  },
+  {
+    "id": "ann-unbounded",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 196, "endLine": 232 },
+    "type": "theorem",
+    "title": "Inner sum unbounded near every rational",
+    "content": "For every reduced fraction p/q and height M, there is an irrational α > p/q with S(α, n) > M. Pick N with N/2 − 1 > M; the interval (p/q, p/q + 1/(Nq)²) is non-empty, so exists_irrational_btwn yields an irrational α inside it, and the perturbation lemma gives S(α, Nq) > N/2 − 1 > M. The spikes accumulate at every rational — the defining super-approximation (Liouville) phenomenon, and the structural opposite of the O(log n) boundedness for quadratic irrationals."
+  },
+  {
+    "id": "ann-unbounded-spec",
+    "proofId": "erdos-1002-oq-04",
+    "range": { "startLine": 234, "endLine": 239 },
+    "type": "insight",
+    "title": "Concrete specialization at p/q = 0",
+    "content": "Taking p = 0, q = 1 records the clean concrete corollary: for every M there is an irrational α ∈ (0,1) with S(α, n) > M. The inner sum has no uniform bound over the irrationals."
+  }
+]
