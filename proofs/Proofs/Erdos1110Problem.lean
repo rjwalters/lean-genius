@@ -597,6 +597,55 @@ theorem nonRepresentable_of_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
     isRepresentable_iff_isPowerForm_window hp hq hlo hhi]
   exact hnp
 
+/-- **Sharp criterion for the canonical candidate `q + 1` (unconditional, 0-axiom).**
+For every pair `p > q ≥ 2` the number `q + 1` always lies in the window `[q, 2q)`,
+so by the window characterization it is non-representable *exactly* when it is not
+a power of `p`:
+
+    `q + 1 ∈ NonRepresentable p q  ↔  ¬ ∃ k, q + 1 = p ^ k`.
+
+The only power form `q + 1` could be is a pure power of `p`: a factor `q ^ l` with
+`l ≥ 1` would force `q ∣ q + 1`, hence `q ∣ 1`, impossible for `q ≥ 2`. For `q = 2`
+this says `q + 1 = 3` is non-representable unless `3 = p ^ k`, i.e. unless `p = 3` —
+pinpointing the excluded `{2,3}` pair as the *unique* `q = 2` exception, the case
+where the canonical witness `3` happens to be the power form `3 = 3 ^ 1`. -/
+theorem add_one_nonRepresentable_iff {p q : ℕ} (hp : p > q) (hq : q ≥ 2) :
+    (q + 1) ∈ NonRepresentable p q ↔ ¬ ∃ k : ℕ, q + 1 = p ^ k := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_window hp hq (by omega) (by omega)]
+  simp only [IsPowerForm]
+  refine not_congr ⟨?_, ?_⟩
+  · rintro ⟨k, l, hkl⟩
+    refine ⟨k, ?_⟩
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; simpa using hkl
+    · exfalso
+      have hqdvd : q ∣ q + 1 := by
+        rw [hkl]; exact (dvd_pow_self q hl.ne').mul_left (p ^ k)
+      have h1 : q ∣ 1 := (Nat.dvd_add_right (dvd_refl q)).mp hqdvd
+      have := Nat.le_of_dvd one_pos h1
+      omega
+  · rintro ⟨k, hk⟩
+    exact ⟨k, 0, by simpa using hk⟩
+
+/-- **Easy sufficient condition: `q + 1` is non-representable whenever `p > q + 1`
+(unconditional, 0-axiom).** If `p` overshoots `q + 1` then `q + 1` cannot be any
+power `p ^ k` (`p ^ 0 = 1 < q + 1` and `p ^ k ≥ p > q + 1` for `k ≥ 1`), so the
+criterion `add_one_nonRepresentable_iff` fires. This hands every pair with
+`p ≥ q + 2` an explicit, trivially checkable non-representable number. -/
+theorem add_one_nonRepresentable_of_lt {p q : ℕ} (hq : q ≥ 2) (hp : q + 1 < p) :
+    (q + 1) ∈ NonRepresentable p q := by
+  rw [add_one_nonRepresentable_iff (by omega) hq]
+  rintro ⟨k, hk⟩
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0; simp at hk; omega
+  · have hple : p ≤ p ^ k := Nat.le_self_pow hk0.ne' p
+    omega
+
+/-- The pair `(5, 2)`: `3 = q + 1` is non-representable (3 is not a power of 5). -/
+example : (3 : ℕ) ∈ NonRepresentable 5 2 :=
+  add_one_nonRepresentable_of_lt (by norm_num) (by norm_num)
+
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
