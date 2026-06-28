@@ -38,9 +38,11 @@ available cleanly from [oq-01] is the tautological reading
 
 Identifying those `μⱼ` with `λᵢ ᵏ` (the multiset spectral mapping for the full characteristic
 polynomial) is the remaining content. The closing sections below establish this mapping
-unconditionally for **diagonal** and **upper-triangular** matrices — the computational core — and
-isolate the single classical ingredient (Schur triangularisation over an algebraically closed
-field) needed to extend it to every matrix.
+unconditionally for **diagonal** and **upper-triangular** matrices — the computational core — then
+show, via similarity-invariance of the eigenvalue multiset and the trace, that it transfers to every
+matrix **similar to an upper-triangular one**. This isolates the single classical ingredient (Schur
+triangularisation over an algebraically closed field) to one explicit, machine-checked hypothesis
+(`trace_pow_eq_sum_pow_eigenvalues_of_triangularizable`).
 
 All results below are fully machine-checked with no `sorry` and no extra axioms.
 -/
@@ -269,6 +271,73 @@ theorem trace_pow_eq_sum_pow_eigenvalues_blockTriangular [IsAlgClosed K] {M : Ma
     (M ^ k).trace = ((eigenvalues M).map (· ^ k)).sum :=
   trace_pow_of_eigenvalues_pow M k (eigenvalues_pow_blockTriangular hM k)
 
+/-! #### General matrices via similarity: the Schur reduction made precise
+
+Both the eigenvalue multiset and the trace power sum are **similarity invariants**: conjugating a
+matrix by an invertible matrix leaves its characteristic polynomial — hence its eigenvalue multiset
+(`Matrix.charpoly_units_conj`) — unchanged, and conjugation commutes with taking powers
+(`units_conj_pow`). Consequently the multiset spectral mapping, and with it the power sum
+`tr(Aᵏ) = Σ λᵢᵏ`, transfers from any matrix `T` for which it is already known to **every** conjugate
+`U T U⁻¹`. Feeding the upper-triangular case above into this transfer collapses the *entire* general
+statement down to the single hypothesis that `A` is **similar to an upper-triangular matrix** —
+`A = U T U⁻¹` with `T` upper-triangular. Over an algebraically closed field that hypothesis is
+exactly the conclusion of the classical **Schur triangularisation theorem**, the one ingredient not
+yet available at the matrix level in Mathlib. The closing theorem below makes the reduction a single
+explicit, machine-checked hypothesis rather than an informal remark. -/
+
+omit [LinearOrder N] in
+/-- **Conjugation by a unit commutes with matrix powers:** `(U A U⁻¹)ᵏ = U Aᵏ U⁻¹`. The
+off-diagonal `U⁻¹ U` factors telescope away inside the power. -/
+theorem units_conj_pow (U : (Matrix N N K)ˣ) (A : Matrix N N K) (k : ℕ) :
+    (U.val * A * U⁻¹.val) ^ k = U.val * A ^ k * U⁻¹.val := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+      rw [pow_succ, ih, pow_succ]
+      simp only [Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc U⁻¹.val U.val, U.inv_mul, Matrix.one_mul]
+
+omit [LinearOrder N] in
+/-- **Eigenvalue multiset is a similarity invariant:** conjugation by a unit preserves it, since it
+preserves the characteristic polynomial. -/
+theorem eigenvalues_units_conj (U : (Matrix N N K)ˣ) (A : Matrix N N K) :
+    eigenvalues (U.val * A * U⁻¹.val) = eigenvalues A := by
+  unfold eigenvalues; rw [charpoly_units_conj]
+
+/-- **Multiset spectral mapping for matrices similar to an upper-triangular one** (any field, all
+`k`): if `A = U T U⁻¹` with `T` upper-triangular, then
+`eigenvalues (Aᵏ) = (eigenvalues A).map (· ^ k)`. The spectral mapping transfers from `T` to its
+conjugate `A` by conjugation-invariance of the eigenvalue multiset together with
+`(U T U⁻¹)ᵏ = U Tᵏ U⁻¹`. -/
+theorem eigenvalues_pow_of_units_conj_blockTriangular {A T : Matrix N N K}
+    (U : (Matrix N N K)ˣ) (hA : A = U.val * T * U⁻¹.val) (hT : T.BlockTriangular id) (k : ℕ) :
+    eigenvalues (A ^ k) = (eigenvalues A).map (· ^ k) := by
+  subst hA
+  rw [units_conj_pow, eigenvalues_units_conj, eigenvalues_units_conj,
+    eigenvalues_pow_blockTriangular hT]
+
+/-- **Eigenvalue power sum for matrices similar to an upper-triangular one** (all `k`):
+`tr (Aᵏ) = Σ λᵢᵏ` whenever `A = U T U⁻¹` with `T` upper-triangular. -/
+theorem trace_pow_eq_sum_pow_eigenvalues_of_units_conj_blockTriangular [IsAlgClosed K]
+    {A T : Matrix N N K} (U : (Matrix N N K)ˣ) (hA : A = U.val * T * U⁻¹.val)
+    (hT : T.BlockTriangular id) (k : ℕ) :
+    (A ^ k).trace = ((eigenvalues A).map (· ^ k)).sum :=
+  trace_pow_of_eigenvalues_pow A k
+    (eigenvalues_pow_of_units_conj_blockTriangular U hA hT k)
+
+/-- **The general trace power sum, modulo Schur triangularisation.** Over an algebraically closed
+field, *if* `A` is similar to an upper-triangular matrix — the conclusion of the classical Schur
+triangularisation theorem, the sole ingredient not yet available at the matrix level in Mathlib —
+then the full eigenvalue power sum identity `tr (Aᵏ) = Σ λᵢᵏ` holds in every dimension. This isolates
+the remaining gap to a single explicit, machine-checked hypothesis. -/
+theorem trace_pow_eq_sum_pow_eigenvalues_of_triangularizable [IsAlgClosed K] {A : Matrix N N K}
+    (k : ℕ)
+    (h : ∃ (U : (Matrix N N K)ˣ) (T : Matrix N N K),
+      A = U.val * T * U⁻¹.val ∧ T.BlockTriangular id) :
+    (A ^ k).trace = ((eigenvalues A).map (· ^ k)).sum := by
+  obtain ⟨U, T, hA, hT⟩ := h
+  exact trace_pow_eq_sum_pow_eigenvalues_of_units_conj_blockTriangular U hA hT k
+
 end Triangular
 
 end SpectralTraceDetEigenvaluesOQ01OQ01
@@ -280,3 +349,6 @@ end SpectralTraceDetEigenvaluesOQ01OQ01
 #print axioms SpectralTraceDetEigenvaluesOQ01OQ01.eigenvalues_pow_diagonal
 #print axioms SpectralTraceDetEigenvaluesOQ01OQ01.eigenvalues_pow_blockTriangular
 #print axioms SpectralTraceDetEigenvaluesOQ01OQ01.trace_pow_eq_sum_pow_eigenvalues_blockTriangular
+#print axioms SpectralTraceDetEigenvaluesOQ01OQ01.units_conj_pow
+#print axioms SpectralTraceDetEigenvaluesOQ01OQ01.eigenvalues_pow_of_units_conj_blockTriangular
+#print axioms SpectralTraceDetEigenvaluesOQ01OQ01.trace_pow_eq_sum_pow_eigenvalues_of_triangularizable
