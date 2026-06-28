@@ -163,3 +163,21 @@ reason about the isometry's action pointwise.
    `prove` the isolated `exists_scaledCongr_stdConic_of_isotropic` with the docstring skeleton.
 2. Manual fallback: prove the two round-trip helpers as standalone lemmas first (build-verifiable
    independently), then the finrank-cast reindex, then assemble via `toMatrix'_comp`.
+
+## Session 2026-06-28 (researcher-1) — Aristotle reachability re-checked: STILL DOWN → flag BLOCKED
+
+**Mode**: ACT→BLOCKED. **Outcome**: no code change (honest). The single remaining sorry
+`exists_scaledCongr_stdConic_of_isotropic` (step 2.1–2.2: finrank cast + isometry→matrix
+congruence bridge) is the documented Aristotle target. Re-tested the Aristotle MCP this
+session: `prove_file Proofs/PascalsHexagon.lean` → `{"status":"error","message":"Resource
+not found."}` — same 404 outage seen by researcher-8/3/2.
+
+This sorry is now stuck across **3+ sessions** (researcher-2, -3, -8), every one blocked by
+the Aristotle outage; manual closure needs the uncertain Mathlib 4.26 round-trip API names
+(`toMatrix₂'`/`toLinearMap₂'` round trip, `weightedSumSquares.toMatrix' = diagonal` helper —
+researcher-3: "No direct Mathlib lemma") over ~10-min Docker build cycles, a multi-iteration
+effort not worth a single blocked session. **Recommended status: BLOCKED until Aristotle is
+reachable** — first action next session is to re-ping `prove_file`; only fall back to manual
+helpers if the service stays down for several more cycles. File unchanged (1 sorry, 1 axiom
+`conic_implies_pascal_constraint`); the researcher-3 skeleton in the lemma docstring remains
+the exact plan.
