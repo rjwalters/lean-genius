@@ -301,3 +301,58 @@ just `card_le_card` + `card_image_le` + `card_product`.
 `N^{1/2h}` greedy rate. The sharp `N^{1/(2h-1)}` needs the finer count exploiting the
 orientation of the `d·m` block (the `d` and `(sA,tA)` are not independent). Still open.
 Verified 0-axiom (`lake env lean`, exit 0; `#print axioms` = propext/Classical.choice/Quot.sound).
+
+### Session 2026-06-27 (researcher-3, Session 8) — orientation bound ⇒ sharp count
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+Closed the explicitly-flagged "remaining open core": the **degree-`2h-1`** forbidden-set
+count, realising the sharp `N^{1/(2h-1)}` greedy rate.  Two changes:
+
+1. **Strengthened `IsBh.exists_diff_eq_of_not_insert`** with the *orientation bound*
+   `Multiset.card sA + Multiset.card tA + d ≤ 2 * h`.  The multiplicity gap
+   `d = |j − k|` is paid out of the `2h` total slots of the two colliding `h`-multisets,
+   so the `A`-parts together carry `≤ 2h − d ≤ 2h − 1` elements.  Both `refine` branches
+   discharge it by `omega` from `hcardS : card sA = h − j`, `hcardT : card tA = h − k`
+   (combined `+ d = 2h − 2·min(j,k) ≤ 2h`).
+
+2. **Added `IsBh.card_forbidden_le'`**: the forbidden set below `h·max A` has size
+   `≤ 2 · h · T₋ · T₊`, where `T₋ = #{multisets over A of size < h}` (degree `h−1`) and
+   `T₊ = #{size ≤ h}` (degree `h`).  Total degree `1 + (h−1) + h = 2h − 1` in `|A|` —
+   one below the prior trivial `T²` (`card_forbidden_le`, degree `2h`).
+
+#### Why it matters
+The trivial `T²` count gives only `N^{1/2h}`; the sharp `B_h` greedy lower bound is
+`N^{1/(2h-1)}`.  The whole gap is exactly the orientation observation that the gap `d`
+consumes slots, dropping the combined `A`-part size from `2h` to `2h − 1`.  This is the
+quantitative open core of #340's `B_h` generalisation, now formalised.
+
+#### Proof technique (no bijection needed)
+The combined size `≤ 2h − 1` with each part `≤ h` forces **at least one** of `sA`, `tA`
+to have size `< h` (else combined `≥ 2h`; `omega`).  So the pair `(sA, tA)` lies in
+`(T₋ ×ˢ T₊) ∪ (T₊ ×ˢ T₋)` — a clean case-split, *not* a parity/tagging bijection over
+`A ⊎ A`.  Then forbidden ⊆ image of `Icc 1 h ×ˢ ((T₋ ×ˢ T₊) ∪ (T₊ ×ˢ T₋))` under the
+determining map `(d, sA, tA) ↦ (tA.sum − sA.sum)/d`; `card_le_card`, `card_image_le`,
+`card_union_le`, `card_product`, `Nat.card_Icc` finish.
+
+#### Gotchas
+- Use `range h` (not `range ((h−1)+1)`) for the size-`<h` pool `T₋` to dodge `ℕ`
+  truncation of `h − 1`; membership is `card u < h → card u ∈ range h`.
+- The "at least one side short" disjunction is proved by `omega` *as a goal* — omega
+  closes `card sA < h ∨ card tA < h` directly from `hcsA, hctA ≤ h` and the new
+  combined bound (`+ d ≤ 2h`, `d ≥ 1`).
+- `Nat.mul_le_mul_left` to pull `h ·` through the `X.card ≤ 2·T₋·T₊` step; the union
+  bound is `Finset.card_union_le _ _` then `card_product` + `ring`.
+
+#### Verification
+`~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lake env lean
+Proofs/Erdos340GreedySidonOQ05.lean` → exit 0, no warnings (single-file over the
+worktree's symlinked main `.lake`; `Erdos340GreedySidon.olean` prebuilt).  `#print
+axioms IsBh.exists_diff_eq_of_not_insert / IsBh.card_forbidden_le'` =
+`[propext, Classical.choice, Quot.sound]` (0-axiom).  835 → 923 lines, 28 → 30 theorems.
+
+#### Next Steps
+- Pin `T₋, T₊` to closed `∑ multichoose(|A|, i)` polynomials (`card_biUnion_le` +
+  `Finset.card_sym`), making the degree-`2h−1` explicit as a polynomial in `|A|`.
+- Combine with a `[1,N]`-bounded greedy iteration to formalise `|A| ≥ c·N^{1/(2h-1)}`
+  end-to-end (forbidden count `< N` ⟹ an extension exists).

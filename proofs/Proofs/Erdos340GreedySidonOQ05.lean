@@ -588,19 +588,28 @@ fails to be `B_h`, then there is a nonzero multiplicity gap `d` (`1 ≤ d ≤ h`
 multisets `sA, tA` drawn from `A`, each of size at most `h`, with
 `d · m + sA.sum = tA.sum`.
 
+The crucial *orientation* refinement is the combined-size bound
+`card sA + card tA + d ≤ 2 · h`: because the multiplicity gap `d = |j - k|` is paid out
+of the `2h` total slots of the two `h`-multisets, the `A`-parts together carry at most
+`2h - d ≤ 2h - 1` elements.  This is precisely what upgrades the trivial `N^{1/2h}`
+greedy count to the sharp `N^{1/(2h-1)}` rate (`card_forbidden_le'`).
+
 *Proof.*  A failure of injectivity gives two distinct `h`-multisets `s ≠ t` over
 `insert m A` with equal sums.  Split each by its multiplicity of `m`
-(`bh_split`): `s = j·{m} + sA`, `t = k·{m} + tA` with `sA, tA ⊆ A`.  Equal sums read
-`j·m + sA.sum = k·m + tA.sum`.  If `j = k` the `A`-parts have equal sums and equal size
-`h - j`, so the `B_{h-j}` property (downward closure) forces `sA = tA` and hence
-`s = t`, a contradiction.  Thus `j ≠ k`; taking `d = |j - k|` and orienting the
-equation so the larger multiplicity is on the right yields `d · m + sA.sum = tA.sum`. ∎ -/
+(`bh_split`): `s = j·{m} + sA`, `t = k·{m} + tA` with `sA, tA ⊆ A`, `card sA = h - j`,
+`card tA = h - k`.  Equal sums read `j·m + sA.sum = k·m + tA.sum`.  If `j = k` the
+`A`-parts have equal sums and equal size `h - j`, so the `B_{h-j}` property (downward
+closure) forces `sA = tA` and hence `s = t`, a contradiction.  Thus `j ≠ k`; taking
+`d = |j - k|` and orienting the equation so the larger multiplicity is on the right
+yields `d · m + sA.sum = tA.sum`, and the combined size is
+`(h - j) + (h - k) = 2h - (j + k) ≤ 2h - |j - k| = 2h - d`. ∎ -/
 theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
     (hA : IsBh h A) (hbad : ¬ IsBh h (insert m A)) :
     ∃ (d : ℕ) (sA tA : Multiset ℕ),
       1 ≤ d ∧ d ≤ h ∧
       (∀ x ∈ sA, x ∈ A) ∧ (∀ x ∈ tA, x ∈ A) ∧
       Multiset.card sA ≤ h ∧ Multiset.card tA ≤ h ∧
+      Multiset.card sA + Multiset.card tA + d ≤ 2 * h ∧
       d * m + sA.sum = tA.sum := by
   classical
   -- A failure of `B_h` injectivity yields a colliding pair `s ≠ t`.
@@ -616,7 +625,8 @@ theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
   rw [hsumS, hsumT] at hsum0  -- `j * m + sA.sum = k * m + tA.sum`
   rcases lt_trichotomy j k with hlt | heq | hgt
   · -- `j < k`: gap `d = k - j`, with the roles of `sA`, `tA` swapped.
-    refine ⟨k - j, tA, sA, by omega, by omega, hmemT, hmemS, by omega, by omega, ?_⟩
+    refine ⟨k - j, tA, sA, by omega, by omega, hmemT, hmemS, by omega, by omega,
+      by omega, ?_⟩
     have hkm : (k - j) * m + j * m = k * m := by rw [← Nat.add_mul]; congr 1; omega
     omega
   · -- `j = k`: the `A`-parts coincide by `B_{h-j}`, forcing `s = t` — impossible.
@@ -635,7 +645,8 @@ theorem IsBh.exists_diff_eq_of_not_insert {h m : ℕ} {A : Finset ℕ}
     apply Sym.coe_injective
     rw [hsplitS, hsplitT, hAB]
   · -- `j > k`: gap `d = j - k`, equation as stated.
-    refine ⟨j - k, sA, tA, by omega, by omega, hmemS, hmemT, by omega, by omega, ?_⟩
+    refine ⟨j - k, sA, tA, by omega, by omega, hmemS, hmemT, by omega, by omega,
+      by omega, ?_⟩
     have hjm : (j - k) * m + k * m = j * m := by rw [← Nat.add_mul]; congr 1; omega
     omega
 
@@ -831,5 +842,82 @@ theorem IsBh.card_forbidden_le {h : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
         rw [hP, Finset.card_product, Finset.card_product, Nat.card_Icc,
             Nat.add_sub_cancel]
         ring
+
+open scoped Classical in
+/-- **The sharp forbidden-set count.**  Exploiting the orientation bound
+`card sA + card tA + d ≤ 2 · h` of `exists_diff_eq_of_not_insert`, the number of
+forbidden values below `h · max A` is at most `2 · h · T₋ · T₊`, where
+
+* `T₋` is the number of multisets over `A` of size `< h` (degree `h - 1` in `|A|`), and
+* `T₊` is the number of multisets over `A` of size `≤ h` (degree `h` in `|A|`).
+
+Hence the bound has degree `1 + (h - 1) + h = 2h - 1` in `|A|` — one degree better than
+the trivial `T²` bound of `card_forbidden_le`.  This is the count realising the
+**sharp `N^{1/(2h-1)}` greedy lower bound** for `B_h` sets, the open quantitative core
+of #340's `B_h` generalisation.
+
+*Proof.*  Each forbidden `m` is determined by a triple `(d, sA, tA)` with `1 ≤ d ≤ h`,
+`card sA, card tA ≤ h`, and `card sA + card tA ≤ 2h - 1`.  The last inequality forces at
+least one of `sA, tA` to have size `< h`, so the pair `(sA, tA)` lies in
+`(T₋ ×ˢ T₊) ∪ (T₊ ×ˢ T₋)`.  The forbidden set is therefore the image of the finite index
+set `Icc 1 h ×ˢ ((T₋ ×ˢ T₊) ∪ (T₊ ×ˢ T₋))` under `(d, sA, tA) ↦ (tA.sum − sA.sum) / d`,
+and `card_le_card`, `card_image_le`, `card_union_le`, `card_product` finish. ∎ -/
+theorem IsBh.card_forbidden_le' {h : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
+    ((Finset.range (h * A.sup id + 1)).filter
+        (fun m => ¬ IsBh h (insert m A))).card
+      ≤ 2 * h
+          * ((Finset.range h).biUnion (fun i => (A.sym i).image Subtype.val)).card
+          * ((Finset.range (h + 1)).biUnion (fun i => (A.sym i).image Subtype.val)).card := by
+  -- `Tlo` = multisets over `A` of size `< h`; `Thi` = size `≤ h`.
+  set Tlo : Finset (Multiset ℕ) :=
+    (Finset.range h).biUnion (fun i => (A.sym i).image Subtype.val) with hTlo
+  set Thi : Finset (Multiset ℕ) :=
+    (Finset.range (h + 1)).biUnion (fun i => (A.sym i).image Subtype.val) with hThi
+  set F := (Finset.range (h * A.sup id + 1)).filter
+      (fun m => ¬ IsBh h (insert m A)) with hF
+  -- Membership in the two multiset pools.
+  have hmemLo : ∀ u : Multiset ℕ, (∀ x ∈ u, x ∈ A) → Multiset.card u < h → u ∈ Tlo := by
+    intro u hu hcard
+    rw [hTlo, Finset.mem_biUnion]
+    exact ⟨Multiset.card u, Finset.mem_range.mpr hcard,
+      Finset.mem_image.mpr ⟨⟨u, rfl⟩, Finset.mem_sym_iff.mpr hu, rfl⟩⟩
+  have hmemHi : ∀ u : Multiset ℕ, (∀ x ∈ u, x ∈ A) → Multiset.card u ≤ h → u ∈ Thi := by
+    intro u hu hcard
+    rw [hThi, Finset.mem_biUnion]
+    exact ⟨Multiset.card u, Finset.mem_range.mpr (by omega),
+      Finset.mem_image.mpr ⟨⟨u, rfl⟩, Finset.mem_sym_iff.mpr hu, rfl⟩⟩
+  -- The index set of admissible triples.
+  set X : Finset (Multiset ℕ × Multiset ℕ) := (Tlo ×ˢ Thi) ∪ (Thi ×ˢ Tlo) with hX
+  set P : Finset (ℕ × Multiset ℕ × Multiset ℕ) := (Finset.Icc 1 h) ×ˢ X with hP
+  -- Every forbidden value is the image of its determining triple.
+  have hsub : F ⊆ P.image (fun p => (p.2.2.sum - p.2.1.sum) / p.1) := by
+    intro m hm
+    rw [hF, Finset.mem_filter, Finset.mem_range] at hm
+    obtain ⟨_, hbad⟩ := hm
+    obtain ⟨d, sA, tA, hd1, hdh, hsA, htA, hcsA, hctA, hcomb, heq⟩ :=
+      hA.exists_diff_eq_of_not_insert hbad
+    rw [Finset.mem_image]
+    refine ⟨(d, sA, tA), ?_, ?_⟩
+    · rw [hP, Finset.mem_product]
+      refine ⟨Finset.mem_Icc.mpr ⟨hd1, hdh⟩, ?_⟩
+      rw [hX, Finset.mem_union, Finset.mem_product, Finset.mem_product]
+      -- At least one part is short (`< h`): the gap `d ≥ 1` is paid out of `2h`.
+      rcases (by omega : Multiset.card sA < h ∨ Multiset.card tA < h) with hlt | hlt
+      · exact Or.inl ⟨hmemLo sA hsA hlt, hmemHi tA htA hctA⟩
+      · exact Or.inr ⟨hmemHi sA hsA hcsA, hmemLo tA htA hlt⟩
+    · show (tA.sum - sA.sum) / d = m
+      rw [show tA.sum - sA.sum = d * m from by omega]
+      exact Nat.mul_div_cancel_left m (by omega)
+  calc F.card ≤ (P.image (fun p => (p.2.2.sum - p.2.1.sum) / p.1)).card :=
+        Finset.card_le_card hsub
+    _ ≤ P.card := Finset.card_image_le
+    _ = h * X.card := by
+        rw [hP, Finset.card_product, Nat.card_Icc, Nat.add_sub_cancel]
+    _ ≤ h * (2 * Tlo.card * Thi.card) := by
+        apply Nat.mul_le_mul_left
+        calc X.card ≤ (Tlo ×ˢ Thi).card + (Thi ×ˢ Tlo).card := Finset.card_union_le _ _
+          _ = 2 * Tlo.card * Thi.card := by
+              rw [Finset.card_product, Finset.card_product]; ring
+    _ = 2 * h * Tlo.card * Thi.card := by ring
 
 end Erdos340Bh
