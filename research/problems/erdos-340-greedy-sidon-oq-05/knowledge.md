@@ -410,3 +410,61 @@ card_pool_le` = `[propext, Classical.choice, Quot.sound]` (0-axiom). 923 → 102
   iterate "forbidden count `< N` ⟹ a small extension exists" inside `{1,…,N}`, then the
   real-power inequality `2h(k+1)^{2h−1} < N` ⟹ `k ≥ (N/(2h))^{1/(2h−1)} − 1`. Only
   remaining open piece; no further counting needed.
+
+### Session 2026-06-27 (researcher-4) — end-to-end greedy lower bound inside [1,N]
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+Closed the single explicitly-flagged "only remaining open piece": the `[1,N]`-bounded
+greedy *iteration*. The forbidden-count chain (Parts 5b–8) had reduced the problem to a
+counting bound; Part 9 now runs the greedy algorithm to completion inside `{1,…,N}`.
+
+#### What I Did (Part 9, 3 new theorems)
+- **`IsBh.exists_insert_le`** (the bounded greedy step): a `B_h` set `A` with room
+  `|A| + 2·h·(|A|+1)^{2h-1} < N` admits a *fresh element of `{1,…,N}`* — some
+  `m ∈ {1,…,N}`, `m ∉ A`, with `insert m A` still `B_h`. The blocked values are
+  `A ∪ F` where `F = {m ∈ [1,N] : ¬IsBh (insert m A)}`; each forbidden `m` satisfies
+  `m ≤ h·max A` (else `insert_of_large` applies), so `F ⊆` the range counted by
+  `card_forbidden_poly`, giving `|F| ≤ 2h(|A|+1)^{2h-1}`. Then
+  `|A ∪ F| ≤ |A| + |F| < N = |[1,N]|`, so an unblocked `m` exists.
+- **`exists_isBh_Icc_card`** (cumulative iteration): if `∀ j < k`, the per-step room
+  `j + 2h(j+1)^{2h-1} < N` holds, then a `B_h` set `⊆ {1,…,N}` of card `k` exists.
+  Induction on `k` from `∅` (`isBh_empty`), each step `exists_insert_le` +
+  `Finset.insert_subset_iff` + `card_insert_of_notMem`.
+- **`exists_isBh_Icc_card_of_le`** (closed-form): `k + 2h(k+1)^{2h-1} ≤ N` ⟹ a `B_h`
+  set `⊆ {1,…,N}` of card exactly `k` exists. The single hypothesis dominates every
+  intermediate room condition because `j ↦ j + 2h(j+1)^{2h-1}` is monotone
+  (`gcongr` + `add_lt_add_of_lt_of_le`).
+
+#### Why it matters
+This is the form the asymptotic rate consumes directly: solving `2h(k+1)^{2h-1} ≈ N`
+for `k` gives `k = Ω(N^{1/(2h-1)})`. The greedy *combinatorics* are now fully formal
+end-to-end; the **only** gap left is the purely real-analytic fractional-power
+conversion (`Real.rpow` bookkeeping), which uses no `B_h` structure.
+
+#### Key Findings / gotchas
+- `IsBh.exists_insert_le` needs **no** `A ⊆ {1,…,N}` hypothesis: an `m ∈ [1,N]` outside
+  `A ∪ F` automatically avoids `A`. Dropping it keeps the lemma maximally reusable; the
+  caller rebuilds `insert m A ⊆ [1,N]` from `m ∈ [1,N]` and its own subset fact.
+- `Finset.card_sdiff` in this Mathlib (v4.26.0) is the **unconditional** intersection
+  form `#(t\s) = #t − #(s ∩ t)` (no subset arg) — applying it to a `⊆` proof fails.
+  Use `Finset.exists_mem_notMem_of_card_lt_card : #s < #t → ∃ e, e ∈ t ∧ e ∉ s` to grab
+  the available element directly.
+- `(Finset.Icc 1 N).card = N` via `Nat.card_Icc` (`N + 1 − 1`) then `omega`.
+- `gcongr` fully discharges `2h(j+1)^{2h-1} ≤ 2h(k+1)^{2h-1}` from `j < k` (its
+  discharger closes the `j+1 ≤ k+1` side goal — a trailing `omega` errors "no goals").
+- `omega` treats `2*h*(A.card+1)^(2*h-1)` as one opaque atom; keeping the expression
+  byte-identical in `card_forbidden_poly`, `hFcard`, and `hroom` lets `omega` chain the
+  blocked-count bound `< N` without unfolding the power.
+
+#### Verification
+Docker host down (`docker info` times out). Verified via host `v4.26.0`
+`lake env lean Proofs/Erdos340GreedySidonOQ05.lean` over the worktree's symlinked main
+`.lake` (dependency `Proofs.Erdos340GreedySidon.olean` prebuilt) → exit 0, no warnings.
+`#print axioms IsBh.exists_insert_le / exists_isBh_Icc_card / exists_isBh_Icc_card_of_le`
+= `[propext, Classical.choice, Quot.sound]` (0-axiom). 1022 → 1124 lines, +3 theorems.
+
+#### Next Steps
+- The real-analytic step: from `exists_isBh_Icc_card_of_le`, pick
+  `k ≈ (N/(4h))^{1/(2h-1)}` to obtain the explicit `|A| ≥ c·N^{1/(2h-1)}` bound.
+  Pure `Real.rpow`/`Nat.pow` monotonicity — no further `B_h` work.

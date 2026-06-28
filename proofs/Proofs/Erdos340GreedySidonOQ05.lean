@@ -1019,4 +1019,106 @@ theorem IsBh.card_forbidden_poly {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA :
         rw [mul_assoc (2 * (h' + 1)), ← pow_add,
           show h' + (h' + 1) = 2 * (h' + 1) - 1 from by omega]
 
+/-! ## Part 9: The end-to-end greedy lower bound inside `{1,…,N}`
+
+Parts 5b–8 reduced the open `N^{1/(2h-1)}` rate to a single counting bound: a `B_h`
+set `A` has at most `2·h·(|A|+1)^{2h-1}` *forbidden* small values
+(`card_forbidden_poly`).  This part runs the greedy algorithm to completion: as long
+as there is room, a `B_h` set inside `{1,…,N}` admits a *fresh element of `{1,…,N}`*,
+and iterating yields `B_h` sets of size `k` inside `{1,…,N}` for every `k` small enough
+that the cumulative room condition holds.
+
+The headline is `exists_isBh_Icc_card_of_le`: if `k + 2·h·(k+1)^{2h-1} ≤ N` then there
+is a `B_h` set `A ⊆ {1,…,N}` with `|A| = k`.  Solving `2·h·(k+1)^{2h-1} ≈ N` for `k`
+gives the (sharp-exponent) `k = Ω(N^{1/(2h-1)})` rate — the only remaining gap is the
+purely real-analytic conversion of the polynomial bound into a fractional power, which
+needs no further `B_h` structure. -/
+
+/-- **The bounded greedy step.**  A `B_h` set `A ⊆ {1,…,N}` with enough room
+(`|A| + 2·h·(|A|+1)^{2h-1} < N`) can be extended by a *fresh element of `{1,…,N}`*:
+some `m ∈ {1,…,N}`, `m ∉ A`, keeps `insert m A` a `B_h` subset of `{1,…,N}`.
+
+*Proof.*  A value `m ∈ {1,…,N}` is unusable only if `m ∈ A` (at most `|A|` of them) or
+its insertion breaks `B_h`.  The latter values are *forbidden*, and every forbidden `m`
+satisfies `m ≤ h·max A` (else `insert_of_large` applies), so they are counted by
+`card_forbidden_poly`: at most `2·h·(|A|+1)^{2h-1}`.  The room hypothesis makes the
+unusable values number fewer than `N = |{1,…,N}|`, so a usable `m` remains.  (No
+hypothesis `A ⊆ {1,…,N}` is needed here: any `m ∈ {1,…,N}` outside the blocked set
+`A ∪ {forbidden}` automatically avoids `A`.) ∎ -/
+theorem IsBh.exists_insert_le {h N : ℕ} {A : Finset ℕ}
+    (hh : 1 ≤ h) (hA : IsBh h A)
+    (hroom : A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) < N) :
+    ∃ m, m ∈ Finset.Icc 1 N ∧ m ∉ A ∧ IsBh h (insert m A) := by
+  classical
+  -- The values in `{1,…,N}` whose insertion breaks `B_h`.
+  set F : Finset ℕ := (Finset.Icc 1 N).filter (fun m => ¬ IsBh h (insert m A)) with hFdef
+  -- Each such value lies below the ceiling `h · max A`, so it is counted by
+  -- `card_forbidden_poly`.
+  have hFsub : F ⊆ (Finset.range (h * A.sup id + 1)).filter
+      (fun m => ¬ IsBh h (insert m A)) := by
+    intro m hm
+    rw [hFdef, Finset.mem_filter] at hm
+    obtain ⟨_, hbad⟩ := hm
+    rw [Finset.mem_filter, Finset.mem_range]
+    refine ⟨?_, hbad⟩
+    by_contra hge
+    push_neg at hge   -- `h * A.sup id + 1 ≤ m`
+    exact hbad (hA.insert_of_large (by omega))
+  have hFcard : F.card ≤ 2 * h * (A.card + 1) ^ (2 * h - 1) :=
+    (Finset.card_le_card hFsub).trans (hA.card_forbidden_poly hh)
+  -- The "blocked" set: already in `A`, or forbidden.
+  set Bad : Finset ℕ := A ∪ F with hBaddef
+  have hBadcard : Bad.card < (Finset.Icc 1 N).card := by
+    have h1 : Bad.card ≤ A.card + F.card := Finset.card_union_le _ _
+    have h2 : (Finset.Icc 1 N).card = N := by rw [Nat.card_Icc]; omega
+    omega
+  -- A point of `{1,…,N}` avoiding the blocked set exists (fewer blocked than total).
+  obtain ⟨m, hmIcc, hmBad⟩ := Finset.exists_mem_notMem_of_card_lt_card hBadcard
+  rw [hBaddef, Finset.mem_union] at hmBad
+  push_neg at hmBad
+  obtain ⟨hmA, hmF⟩ := hmBad
+  refine ⟨m, hmIcc, hmA, ?_⟩
+  -- `m ∉ F` together with `m ∈ {1,…,N}` says insertion keeps `B_h`.
+  by_contra hbad
+  exact hmF (by rw [hFdef, Finset.mem_filter]; exact ⟨hmIcc, hbad⟩)
+
+/-- **The greedy lower bound (cumulative form).**  If for every intermediate size
+`j < k` there is room to extend (`j + 2·h·(j+1)^{2h-1} < N`), then there is a `B_h` set
+`A ⊆ {1,…,N}` with exactly `k` elements.  Proved by iterating `exists_insert_le` from
+the empty set. -/
+theorem exists_isBh_Icc_card {h N : ℕ} (hh : 1 ≤ h) :
+    ∀ k, (∀ j, j < k → j + 2 * h * (j + 1) ^ (2 * h - 1) < N) →
+      ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  intro k
+  induction k with
+  | zero =>
+      intro _
+      exact ⟨∅, Finset.empty_subset _, isBh_empty, Finset.card_empty⟩
+  | succ k ih =>
+      intro hroom
+      obtain ⟨A, hAsub, hAbh, hAcard⟩ := ih (fun j hj => hroom j (by omega))
+      have hstep : A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) < N := by
+        rw [hAcard]; exact hroom k (by omega)
+      obtain ⟨m, hmIcc, hmA, hmbh⟩ := hAbh.exists_insert_le hh hstep
+      refine ⟨insert m A, Finset.insert_subset_iff.mpr ⟨hmIcc, hAsub⟩, hmbh, ?_⟩
+      rw [Finset.card_insert_of_notMem hmA, hAcard]
+
+/-- **The greedy lower bound (closed-form hypothesis).**  If `k + 2·h·(k+1)^{2h-1} ≤ N`
+then there is a `B_h` set `A ⊆ {1,…,N}` with `|A| = k`.  This is the form solved for the
+asymptotic rate: it shows the greedy algorithm reaches size `k` whenever the explicit
+degree-`(2h-1)` polynomial in `k` stays below `N`, so `k` can be taken of order
+`N^{1/(2h-1)}` — the (sharp-exponent) `B_h` analogue of #340's greedy lower bound.
+
+The single hypothesis dominates every intermediate room condition because
+`j ↦ j + 2·h·(j+1)^{2h-1}` is monotone in `j`. -/
+theorem exists_isBh_Icc_card_of_le {h N k : ℕ} (hh : 1 ≤ h)
+    (hk : k + 2 * h * (k + 1) ^ (2 * h - 1) ≤ N) :
+    ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  refine exists_isBh_Icc_card hh k (fun j hj => ?_)
+  have hpow : 2 * h * (j + 1) ^ (2 * h - 1) ≤ 2 * h * (k + 1) ^ (2 * h - 1) := by
+    gcongr
+  calc j + 2 * h * (j + 1) ^ (2 * h - 1)
+      < k + 2 * h * (k + 1) ^ (2 * h - 1) := add_lt_add_of_lt_of_le hj hpow
+    _ ≤ N := hk
+
 end Erdos340Bh
