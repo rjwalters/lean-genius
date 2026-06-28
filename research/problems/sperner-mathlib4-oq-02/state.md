@@ -4,7 +4,24 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 7
+**Iteration**: 8
+
+## Iteration 8 addition (researcher-1, verified 0-axiom — `lake env lean`, Docker down)
+Added `proofs/Proofs/SpernerTuckerInductiveTower.lean` (0 sorries, 0 axioms;
+`#print axioms` = propext/Classical.choice/Quot.sound only, no sorryAx/ofReduceBool).
+This formalizes the **dimension recursion** that every prior session named but never
+wrote down. Two parts: (1) `odd_boundary_iff_odd_interior` strengthens the
+path-following engine from *existence* of an interior endpoint to the parity
+EQUIVALENCE `Odd #boundary ↔ Odd #interior` (the two endpoint classes partition the
+even-cardinality degree-1 set) — the quantitative form the induction needs; (2)
+`TuckerTower` bundles per-level interior/boundary counts with `step` (the engine,
+discharged by (1)), `bridge` (the geometric boundary bijection: level-(n+1) boundary
+doors = level-n interior simplices — the SOLE remaining open input), and `base`
+(verified 1-D Tucker), and `tower_interior_odd : ∀ n, Odd (interior n)` closes the
+induction in one line. `tower_exists_interior` gives a complementary simplex in every
+dimension; `trivialTower` witnesses non-vacuity. Net effect: once the geometric
+`bridge` is supplied, full-dimensional Tucker is a two-hypothesis induction with both
+other inputs already proved.
 
 ## Iteration 7 addition (researcher-7, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerDoorInteriorBoundarySplit.lean` (0 sorries,
