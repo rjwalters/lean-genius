@@ -103,6 +103,126 @@ lemma radical_ge
   rw [hprodList] at hdom
   exact hdom
 
+/-- The product of the eight smallest primes `≥ 5`:
+`5·7·11·13·17·19·23·29 = 1078282205`. -/
+lemma canon8_prod : ([5, 7, 11, 13, 17, 19, 23, 29] : List ℕ).prod = 1078282205 := by decide
+
+/-- **The 8-prime radical lower bound.**  If an odd abundant number coprime to 3 has at
+least 8 distinct prime factors, its radical `∏_{p∣n} p` is at least
+`1078282205 = 5·7·11·13·17·19·23·29` (the product of the eight smallest primes `≥ 5`).
+This is the 8-prime analogue of `radical_ge`, using the gap list `[5,7,11,13,17,19,23,29]`
+(`gapList8`) instead of the 7-element one. -/
+lemma radical_ge_8
+    {n : ℕ} (hodd : Odd n) (h3 : ¬ (3 ∣ n)) (h8 : 8 ≤ n.primeFactors.card) :
+    1078282205 ≤ ∏ p ∈ n.primeFactors, p := by
+  set S := n.primeFactors with hS
+  have hge5 : ∀ p ∈ S, 5 ≤ p := primeFactor_ge_five hodd h3
+  have hLpair : (S.sort (· ≤ ·)).Pairwise (· < ·) := by
+    have hsorted : List.Pairwise (· ≤ ·) (S.sort (· ≤ ·)) := Finset.pairwise_sort S (· ≤ ·)
+    have hnodup : (S.sort (· ≤ ·)).Nodup := Finset.sort_nodup S (· ≤ ·)
+    exact (hsorted.and hnodup).imp (fun h => lt_of_le_of_ne h.1 h.2)
+  have hLprime : ∀ x ∈ S.sort (· ≤ ·), x.Prime := by
+    intro x hx
+    rw [Finset.mem_sort] at hx
+    exact Nat.prime_of_mem_primeFactors (hS ▸ hx)
+  have hLfloor : ∀ x ∈ S.sort (· ≤ ·),
+      ∀ c0 ∈ ([5, 7, 11, 13, 17, 19, 23, 29] : List ℕ).head?, c0 ≤ x := by
+    intro x hx c0 hc0
+    simp only [List.head?_cons, Option.mem_some_iff] at hc0
+    subst hc0
+    rw [Finset.mem_sort] at hx
+    exact hge5 x hx
+  have hLlen : ([5, 7, 11, 13, 17, 19, 23, 29] : List ℕ).length ≤ (S.sort (· ≤ ·)).length := by
+    rw [Finset.length_sort]
+    simpa using h8
+  have hdom : ([5, 7, 11, 13, 17, 19, 23, 29] : List ℕ).prod ≤ (S.sort (· ≤ ·)).prod :=
+    domProd [5, 7, 11, 13, 17, 19, 23, 29] (S.sort (· ≤ ·)) hLpair hLprime hLfloor hLlen gapList8
+  rw [canon8_prod] at hdom
+  have hprodList : (S.sort (· ≤ ·)).prod = ∏ p ∈ S, p := by
+    have h1 : (S.sort (· ≤ ·)).prod = S.toList.prod :=
+      List.Perm.prod_eq (Finset.sort_perm_toList S (· ≤ ·))
+    have h2 : S.toList.prod = ∏ p ∈ S, p := by
+      simpa using Finset.prod_map_toList S (fun p => p)
+    rw [h1]; exact h2
+  rw [hprodList] at hdom
+  exact hdom
+
+/-- **Eight distinct prime factors force the conjectured minimum.**  An odd abundant number
+coprime to 3 with at least 8 distinct prime factors is already `≥ 5391411025`, the
+conjectured least odd abundant number coprime to 3.  The bound is *sharp* in this subcase:
+the witness `5391411025 = 5² · 7 · 11 · 13 · 17 · 19 · 23 · 29` attains it.
+
+Proof: a squarefree such number is `≥ 33426748355` (`squarefree_..._ge`); a non-squarefree
+one carries a repeated prime `p ≥ 5`, so `p · radical ∣ n`, and `radical ≥ 1078282205`
+(`radical_ge_8`) gives `n ≥ 5 · 1078282205 = 5391411025`. -/
+theorem odd_abundant_coprime_three_eight_primeFactors_ge
+    {n : ℕ} (hodd : Odd n) (h3 : ¬ (3 ∣ n)) (habund : Nat.Abundant n)
+    (h8 : 8 ≤ n.primeFactors.card) :
+    5391411025 ≤ n := by
+  have hn0 : n ≠ 0 := by
+    rintro rfl
+    simp only [Nat.primeFactors_zero, Finset.card_empty] at h8
+    omega
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn0
+  by_cases hsf : Squarefree n
+  · -- Squarefree: already ≥ 33426748355 > 5391411025.
+    have := squarefree_odd_abundant_coprime_three_ge hsf hodd h3 habund
+    omega
+  · -- Non-squarefree: a repeated prime `p ≥ 5` gives `p · radical ∣ n`, radical ≥ 1078282205.
+    set S := n.primeFactors with hS
+    rw [Nat.squarefree_iff_prime_squarefree] at hsf
+    push_neg at hsf
+    obtain ⟨p, hp_prime, hp_sq⟩ := hsf
+    have hpp : p.Prime := hp_prime
+    have hpn : p ∣ n := dvd_trans (dvd_mul_right p p) hp_sq
+    have hpS : p ∈ S := Nat.mem_primeFactors.mpr ⟨hpp, hpn, hn0⟩
+    have hp5 : 5 ≤ p := primeFactor_ge_five hodd h3 p hpS
+    have hRsplit : (∏ q ∈ S, q) = p * ∏ q ∈ S.erase p, q :=
+      (Finset.mul_prod_erase S (fun q => q) hpS).symm
+    have hR'_dvd_R : (∏ q ∈ S.erase p, q) ∣ ∏ q ∈ S, q :=
+      Finset.prod_dvd_prod_of_subset _ _ (fun q => q) (Finset.erase_subset p S)
+    have hR_dvd_n : (∏ q ∈ S, q) ∣ n := hS ▸ Nat.prod_primeFactors_dvd n
+    have hR'_dvd_n : (∏ q ∈ S.erase p, q) ∣ n := dvd_trans hR'_dvd_R hR_dvd_n
+    have hcop : Nat.Coprime (p * p) (∏ q ∈ S.erase p, q) := by
+      refine Nat.Coprime.prod_right ?_
+      intro q hq
+      have hqS : q ∈ S := Finset.mem_of_mem_erase hq
+      have hqp : q ≠ p := Finset.ne_of_mem_erase hq
+      have hqprime : q.Prime := Nat.prime_of_mem_primeFactors (hS ▸ hqS)
+      have hcoprime_pq : Nat.Coprime p q :=
+        (Nat.coprime_primes hpp hqprime).mpr (fun h => hqp h.symm)
+      exact hcoprime_pq.mul_left hcoprime_pq
+    have hdvd : (p * p) * (∏ q ∈ S.erase p, q) ∣ n :=
+      Nat.Coprime.mul_dvd_of_dvd_of_dvd hcop hp_sq hR'_dvd_n
+    have hpR_dvd : p * (∏ q ∈ S, q) ∣ n := by
+      rw [hRsplit, show p * (p * ∏ q ∈ S.erase p, q) = (p * p) * ∏ q ∈ S.erase p, q by ring]
+      exact hdvd
+    have hle : p * (∏ q ∈ S, q) ≤ n := Nat.le_of_dvd hnpos hpR_dvd
+    have hRge : 1078282205 ≤ ∏ q ∈ S, q := hS ▸ radical_ge_8 hodd h3 h8
+    have hmul : 5 * 1078282205 ≤ p * (∏ q ∈ S, q) := Nat.mul_le_mul hp5 hRge
+    omega
+
+/-- **Structure of any putative counterexample below the conjectured minimum.**  Every odd
+abundant number coprime to 3 that is *strictly below* `5391411025` must be **non-squarefree
+with exactly 7 distinct prime factors**.  This sharply narrows the still-open exact
+minimality problem: the squarefree case is `≥ 33426748355` and the `≥ 8`-distinct-prime
+case is `≥ 5391411025` (`odd_abundant_coprime_three_eight_primeFactors_ge`), so the only
+family that could conceivably undercut the witness `5391411025` is a non-squarefree number
+with precisely 7 distinct primes (and necessarily some prime power `≥ 2` to compensate). -/
+theorem odd_abundant_coprime_three_below_min_structure
+    {n : ℕ} (hodd : Odd n) (h3 : ¬ (3 ∣ n)) (habund : Nat.Abundant n)
+    (hlt : n < 5391411025) :
+    ¬ Squarefree n ∧ n.primeFactors.card = 7 := by
+  have h7 := odd_abundant_coprime_three_seven_primeFactors hodd h3 habund
+  refine ⟨?_, ?_⟩
+  · intro hsf
+    have := squarefree_odd_abundant_coprime_three_ge hsf hodd h3 habund
+    omega
+  · by_contra hne
+    have h8 : 8 ≤ n.primeFactors.card := by omega
+    have := odd_abundant_coprime_three_eight_primeFactors_ge hodd h3 habund h8
+    omega
+
 /-- **Improved general lower bound.**  Every odd abundant number coprime to 3 is at least
 `185910725 = 5 · 37182145`, a factor of `5` above the bare radical bound.  The extra
 factor comes for free from squarefreeness analysis: a squarefree witness is already past
@@ -169,5 +289,7 @@ theorem odd_abundant_coprime_three_ge_185M
 -- Axiom audit: only the foundational axioms (`propext`, `Classical.choice`, `Quot.sound`);
 -- in particular NO `Lean.ofReduceBool` (no `native_decide`) and NO `sorryAx`.
 #print axioms odd_abundant_coprime_three_ge_185M
+#print axioms odd_abundant_coprime_three_eight_primeFactors_ge
+#print axioms odd_abundant_coprime_three_below_min_structure
 
 end AbundantNumberOQ02OQ01GeneralBound
