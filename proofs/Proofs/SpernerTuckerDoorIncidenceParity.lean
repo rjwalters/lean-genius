@@ -261,12 +261,54 @@ theorem card_interior_eq
   rw [sum_doorCount_eq_boundary_add_two_interior inc h1 h2]
   omega
 
+/-! ## Path-endpoint form: stating the bridge in the degree-1 vocabulary
+
+The parity bridge above produces a cell of *odd* door-count.  The path-following
+engine (`SpernerTuckerPathFollowing`) consumes its seed as a **degree-1** vertex —
+a cell touching *exactly one* door, the endpoint of a path.  In the door-graph
+regime where every cell, like every door, touches at most two of the other kind,
+"odd door-count" collapses to "exactly one door", so the parity bridge can be stated
+directly in the vocabulary the engine expects, without an intervening `Odd`. -/
+
+/-- In the door-graph regime (every cell touches at most two doors), a cell has an
+odd door-count iff it touches *exactly one* door — a path endpoint.  Hence the number
+of path-endpoint cells is congruent mod 2 to the number of boundary doors. -/
+theorem card_endpoint_cells_modEq_card_boundaryDoor
+    (hc2 : ∀ c, doorCount inc c ≤ 2) (h2 : ∀ d, cellCount inc d ≤ 2) :
+    (univ.filter (fun c => doorCount inc c = 1)).card % 2
+      = (univ.filter (IsBoundaryDoor inc)).card % 2 := by
+  have hfilt : (univ.filter (fun c => doorCount inc c = 1))
+      = univ.filter (fun c => Odd (doorCount inc c)) := by
+    apply Finset.filter_congr
+    intro c _
+    rw [Nat.odd_iff]
+    have := hc2 c
+    omega
+  rw [hfilt, card_odd_doorCount_modEq_card_boundaryDoor inc h2]
+
+/-- **Odd boundary doors force a path-endpoint cell.**  In the door-graph regime
+(cells and doors of incidence ≤ 2), an odd number of boundary doors forces a cell
+touching *exactly one* door — a degree-1 path endpoint, the precise seed the
+path-following engine follows to a complementary simplex.  This refines
+`exists_odd_doorCount_of_odd_boundary` from "odd door-count" to "exactly one door". -/
+theorem exists_endpoint_cell_of_odd_boundary
+    (hc2 : ∀ c, doorCount inc c ≤ 2) (h2 : ∀ d, cellCount inc d ≤ 2)
+    (hbdry : Odd (univ.filter (IsBoundaryDoor inc)).card) :
+    ∃ c, doorCount inc c = 1 := by
+  obtain ⟨c, hc⟩ := exists_odd_doorCount_of_odd_boundary inc h2 hbdry
+  refine ⟨c, ?_⟩
+  rw [Nat.odd_iff] at hc
+  have := hc2 c
+  omega
+
 #check @incidence_parity_duality
 #check @card_odd_doorCount_modEq_card_boundaryDoor
 #check @exists_odd_doorCount_of_odd_boundary
 #check @even_card_odd_doorCount_of_all_interior
 #check @sum_doorCount_eq_boundary_add_two_interior
 #check @card_interior_eq
+#check @card_endpoint_cells_modEq_card_boundaryDoor
+#check @exists_endpoint_cell_of_odd_boundary
 
 -- Axiom audit: the results depend only on the foundational axioms
 -- (propext / Classical.choice / Quot.sound); no `sorryAx`, no `Lean.ofReduceBool`.
@@ -276,5 +318,7 @@ theorem card_interior_eq
 #print axioms even_card_odd_doorCount_of_all_interior
 #print axioms sum_doorCount_eq_boundary_add_two_interior
 #print axioms card_interior_eq
+#print axioms card_endpoint_cells_modEq_card_boundaryDoor
+#print axioms exists_endpoint_cell_of_odd_boundary
 
 end SpernerTuckerDoorIncidenceParity
