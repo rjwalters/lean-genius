@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED (build repair): Erdos1090Problem.lean was completely non-compiling on pinned Mathlib v4.26.0 (orphan `/-- -/` docstrings, invalid `∀ p q r ∈ A` binders, missing DecidablePred). Fixed all; file now compiles cleanly (host lake env lean), 0 sorries, 2 intentional axioms; no sorryAx.",
+    "builtItems": [
+      "Erdos1090Problem.lean: repaired Mathlib-4.26 build breaks (orphan docstrings, multi-binder ∀∈, DecidablePred via open Classical) — file now compiles 0-sorry"
+    ],
+    "insights": [
+      "erdos-1090 (monochromatic collinear points, SOLVED affirmative): the 'incomplete' sorry was already filled on main, but the file DID NOT COMPILE on pinned Mathlib v4.26.0 — it had hard parse errors.",
+      "Repairs: (1) ~7 orphaned `/-- -/` docstrings (documentation blocks with no following declaration) → converted to `/- -/` block comments; (2) invalid multi-binder `∀ p q r ∈ A,` / `∀ p q ∈ S,` → expanded to `∀ p ∈ A, ∀ q ∈ A, ∀ r ∈ A,`; (3) `A.filter (OnLine l)` needed DecidablePred for an undecidable real-line predicate → `open Classical in` before the def (placed BEFORE the docstring, else it breaks docstring→decl attachment).",
+      "After repair: compiles clean, 0 sorries, 2 intentional axioms (graham_selfridge for k=3, hunter_observation via Hales-Jewett); #print axioms shows no sorryAx."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional: formalize hunter_observation (generic projection of [k]ⁿ to ℝ² via Hales-Jewett) — substantial; or leave axiomatized."
+    ]
   },
   "tags": [
     "seeker-selected",

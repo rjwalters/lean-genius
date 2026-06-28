@@ -105,7 +105,7 @@
     "theoremCount": 5,
     "definitionCount": 17,
     "path": "Proofs/Erdos1090Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -210,7 +210,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1090 is completely solved. The formalization captures 10 axioms (Graham-Selfridge, Hales-Jewett, generic projection, Hunter's observation, and supporting results), 5 theorems (including the main result and summary), and 17 definitions across 358 lines. The core argument: Hales-Jewett guarantees monochromatic combinatorial lines in [k]ⁿ, and generic projection to ℝ² preserves collinearity. One sorry remains (ramsey_lower_bound).",
+    "summary": "Erdős Problem #1090 is completely solved. The formalization captures 10 axioms (Graham-Selfridge, Hales-Jewett, generic projection, Hunter's observation, and supporting results), 5 theorems (including the main result and summary), and 17 definitions across 358 lines. The core argument: Hales-Jewett guarantees monochromatic combinatorial lines in [k]ⁿ, and generic projection to ℝ² preserves collinearity. One sorry remains (ramsey_lower_bound). BUILD REPAIR (2026-06-28): the file did not compile on pinned Mathlib v4.26.0 (orphaned `/-- -/` docstrings with no following declaration; invalid multi-binder `∀ p q r ∈ A,` syntax; a missing DecidablePred for Finset.filter on an undecidable line predicate). Fixed; file now compiles, 0 sorries, 2 intentional axioms (graham_selfridge, hunter_observation).",
     "implications": "**Theoretical Significance**: **Connections to Combinatorics and Geometry**\n\n1. **Hales-Jewett Theorem:** The solution relies on this fundamental theorem about combinatorial lines in high-dimensional grids, demonstrating the power of combinatorial Ramsey theory in geometric settings.\n\n2. **Euclidean Ramsey Theory:** This is part of the broader program asking which geometric configurations are unavoidable under colorings — a deep connection between combinatorics and geometry.\n\n**3. Sylvester-Gallai:** The related classical result about ordinary lines provides structural constraints on point configurations that complement the Ramsey-theoretic approach.\n\n4. **Projective Geometry:** Finite projective planes provide candidate constructions for optimal sets, connecting the problem to algebraic combinatorics.\n\n5. **Transfer Principle:** The solution exemplifies projecting high-dimensional combinatorial structure to low-dimensional geometric structure, a technique with broad applicability.",
     "openQuestions": [
       "What is the minimum size of A for each k? (R(3) ≤ 9 is axiomatized)",
