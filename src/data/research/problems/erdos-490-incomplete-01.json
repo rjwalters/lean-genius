@@ -1,0 +1,83 @@
+{
+  "slug": "erdos-490-incomplete-01",
+  "title": "Erdős #490 (distinct products): build repair + sorry reduction",
+  "status": "progress",
+  "phase": "ACT",
+  "path": "fast",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "started": "2026-06-28T00:00:00.000Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
+  "tags": [
+    "number-theory",
+    "combinatorics",
+    "erdos",
+    "multiplicative-energy",
+    "szemeredi",
+    "completion"
+  ],
+  "problemStatement": {
+    "formal": "A,B \\subseteq \\{1,\\dots,N\\} \\text{ with all products } ab \\text{ distinct} \\Rightarrow |A||B| \\ll N^2/\\log N \\text{ (Szemerédi 1976).}",
+    "plain": "Erdős #490: if A, B ⊆ {1,...,N} have all products ab distinct, then |A||B| ≪ N²/log N. The Lean file formalizes the statement, the optimal example, and supporting lemmas; Szemerédi's theorem itself and the optimal-example distinct-products fact are axiomatized. This task repairs the build and discharges tractable sorries.",
+    "whyMatters": [
+      "Keeps a committed gallery file building against the current Mathlib pin.",
+      "Eliminates sorries that were tractable (and corrects two mis-stated lemmas), improving the file's integrity."
+    ]
+  },
+  "currentState": {
+    "summary": "IN PROGRESS. Repaired the build (orphan doc-comments, Finset.card_Icc → Nat.card_Icc, DecidablePred via open scoped Classical) and reduced sorries 6 → 2 with 0-axiom proofs (optimal_works_because_primes fixed+proved, two IsSubsetUpTo subgoals, false primes_sidon replaced by correct primes_products_determine_pair). 2 deep axioms and 2 hard sorries remain.",
+    "outcome": "progress"
+  },
+  "knowledge": {
+    "insights": [
+      "optimal_works_because_primes was false without positivity (a₁=a₂=0 ⇒ 0=0 for distinct primes); fixed by requiring 1 ≤ aᵢ.",
+      "primes_sidon was false: ordered HasDistinctProducts P P (card = |P|²) fails because p·q = q·p collapses in the product set; the correct statement is primes_products_determine_pair.",
+      "distinct_minimal_energy is a real iff but needs fiber-counting (energy = ∑ r(p)², |A||B| = ∑ r(p)); deferred.",
+      "the lower bound in bound_is_optimal needs π(N) − π(N/2) ~ N/(2 log N), a Chebyshev/PNT estimate; deferred."
+    ],
+    "builtItems": [
+      "Build repair: Nat.card_Icc, open scoped Classical, orphan-comment fixes (Erdos490Problem.lean)",
+      "optimal_works_because_primes: proved (Erdos490Problem.lean)",
+      "two IsSubsetUpTo subgoals in bound_is_optimal: proved",
+      "primes_products_determine_pair: new correct lemma replacing false primes_sidon"
+    ],
+    "mathlibGaps": [
+      "No prime-counting lower bound (π(N) − π(N/2)) readily available for the optimal-example lower bound."
+    ],
+    "nextSteps": [
+      "Prove distinct_minimal_energy via Finset.card_eq_sum_card_fiberwise on the product map.",
+      "Prove the bound_is_optimal lower bound using a Chebyshev-type prime count."
+    ],
+    "progressSummary": "PROGRESS 2026-06-28 (researcher-8): repaired build + reduced Erdos490Problem.lean sorries 6 → 2 (all eliminations 0-axiom), corrected two false lemma statements. 2 deep axioms + 2 hard sorries remain."
+  },
+  "knownResults": {
+    "established": [
+      "Szemerédi (1976): |A||B| ≪ N²/log N for distinct-product sets.",
+      "Optimal example A = [1,N/2], B = primes in (N/2,N] achieves ~ N²/(2 log N)."
+    ]
+  },
+  "references": {
+    "papers": [
+      "Erdős problem #490: https://www.erdosproblems.com/490",
+      "Szemerédi, On a problem of P. Erdős, J. Number Theory (1976)."
+    ]
+  },
+  "relatedProofs": [
+    "erdos-490",
+    "erdos-490-oq-01"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos490Problem.lean",
+      "filename": "Erdos490Problem.lean",
+      "lineCount": 339,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 15,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos490Problem.lean"
+    }
+  ]
+}
