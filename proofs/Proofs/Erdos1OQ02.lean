@@ -29,7 +29,9 @@ The proof uses a variance argument:
 - **Variance formula**: Σaᵢ² ≤ n · max(A)² (crude bound)
 - **Variance lower bound**: Σaᵢ² ≥ (Σaᵢ)²/n (Cauchy–Schwarz)
 - **Sum-max relationship**: max(A) ≥ Σaᵢ/n for finite sets
-- **DFX bound deduction**: N ≥ √(2/π) · 2ⁿ/√n from axiomatized anticoncentration
+- **DFX bound deduction**: 2ⁿ ≤ 3·√n·N + 2 (i.e. N = Ω(2ⁿ/√n)) from the
+  axiomatized Chebyshev anticoncentration bound (order-correct; the sharp √(2/π)
+  constant is the Berry–Esseen literature result, not formalized here)
 
 ## Connection to Prior Work
 
@@ -60,7 +62,7 @@ theorem sum_sq_le_card_mul_max_sq (A : Finset ℕ) (N : ℕ) (hA : ∀ a ∈ A, 
         apply Finset.sum_le_sum
         intro a ha
         exact Nat.pow_le_pow_left (hA a ha) 2
-    _ = A.card * N ^ 2 := by simp [Finset.sum_const, Finset.card_eq_sum_ones]
+    _ = A.card * N ^ 2 := by rw [Finset.sum_const, smul_eq_mul]
 
 /-- **QM-AM inequality (discrete)**: (Σaᵢ)² ≤ n · Σaᵢ² for a set of n numbers.
     Equivalently: Σaᵢ²/n ≥ (Σaᵢ/n)². This is Cauchy–Schwarz for 1 and aᵢ. -/
@@ -72,7 +74,10 @@ theorem sum_sq_cauchy_schwarz (A : Finset ℕ) :
   | empty => simp
   | @insert a s ha ih =>
     simp only [Finset.sum_insert ha, Finset.card_insert_of_notMem ha, id_eq]
-    push_cast
+    -- Normalize casts in BOTH the goal and the inductive hypothesis so that
+    -- `↑(s.sum id)` / `↑(∑ b ∈ s, b^2)` become `∑ b ∈ s, ↑b` / `∑ b ∈ s, ↑b^2`,
+    -- matching the atoms produced below (otherwise nlinarith cannot connect them).
+    push_cast [id_eq] at ih ⊢
     -- Key: ∑_{b ∈ s} (a - b)² ≥ 0, which expands to give the Cauchy-Schwarz bound
     have hsq : (0 : ℤ) ≤ s.sum fun b => ((a : ℤ) - ↑b) ^ 2 :=
       Finset.sum_nonneg fun b _ => sq_nonneg _
@@ -82,7 +87,7 @@ theorem sum_sq_cauchy_schwarz (A : Finset ℕ) :
       simp only [sub_sq, Finset.sum_sub_distrib, Finset.sum_add_distrib,
                   Finset.mul_sum, Finset.sum_const, smul_eq_mul]
       ring
-    nlinarith
+    nlinarith [hsq, hexpand, ih]
 
 /-- The maximum element is at least the average: max(A) ≥ sum(A)/card(A).
     Equivalently: sum(A) ≤ card(A) · max(A). -/
@@ -105,114 +110,74 @@ This step requires probability theory (Berry–Esseen theorem or direct
 anticoncentration bounds) which is axiomatized here.
 -/
 
-/-- **Anticoncentration principle** [Axiom]: If A has n elements with distinct
-    subset sums, and S = Σaᵢ, then:
-      2ⁿ ≤ √(2/π) · (S+1) / √(Σaᵢ²/4) + 1
+/-- **Chebyshev anticoncentration bound** [Axiom]: If A has n elements with
+    distinct subset sums and Q = Σaᵢ², then:
+      2ⁿ ≤ 3·√Q + 2
 
-    This follows from the Berry–Esseen theorem applied to the random variable
-    X = Σᵢ Xᵢ where Xᵢ ∈ {0, aᵢ} independently with P = 1/2.
-    The 2ⁿ distinct values of X lie in [0, S], and the anticoncentration
-    bound limits how many values can fit in an interval of length S+1
-    for a distribution with variance Σaᵢ²/4.
+    This is the rigorous (Chebyshev) form of the Dubroff–Fox–Xu anticoncentration
+    step. View the 2ⁿ subset sums as the values of the random variable
+    X = Σᵢ εᵢ aᵢ with εᵢ ∈ {0,1} i.i.d. Bernoulli(1/2); then
+      E[X] = S/2,    Var[X] = Σaᵢ²/4 = Q/4,    σ = √Q/2.
+    Chebyshev's inequality gives, for any k > 0,
+      P(|X − S/2| < k) ≥ 1 − Q/(4k²).
+    The distinct-subset-sums hypothesis forces the sums to be *distinct integers*,
+    so the values with |x − S/2| < k are distinct integer points of an open
+    interval of length 2k, of which there are at most 2k + 1. Each such value
+    carries probability 2⁻ⁿ, hence
+      1 − Q/(4k²) ≤ P(|X − S/2| < k) ≤ (2k + 1)·2⁻ⁿ.
+    Taking k = √Q (so Q/(4k²) = 1/4) yields
+      (3/4)·2ⁿ ≤ 2√Q + 1,   i.e.   2ⁿ ≤ (8√Q + 4)/3 ≤ 3√Q + 2.
 
-    The Berry–Esseen theorem gives:
-      sup_x P(X = x) ≤ C/σ where σ² = Σaᵢ²/4
-    Summing over all possible values in [0, S]:
-      2ⁿ ≤ (S+1) · C/σ ≈ (S+1) · √(2/π) · 2/√(Σaᵢ²) -/
+    Unlike the sharp √(2/π) constant from Berry–Esseen (the literature bound), the
+    constant 3 here comes only from Chebyshev and is *unconditionally true* — it can
+    in principle be discharged from `ProbabilityTheory.meas_ge_le_variance_div_sq`
+    (Chebyshev) plus the variance computation for the {0,aᵢ} sum. The earlier
+    formulation `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE (e.g. A = {1,2} gives 4 ≤ 2.85);
+    this corrected statement holds for every distinct-subset-sums set, including
+    the asymptotic extremal (powers of two). -/
 axiom anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
     (hpos : 0 < A.card) :
-    (2 : ℝ) ^ A.card ≤
-      Real.sqrt (2 / π) * (↑(A.sum id) + 1) * 2 / Real.sqrt ↑(A.sum (fun a => a ^ 2))
+    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2
 
-/-- **DFX Lower Bound Statement**: If A ⊆ {1,...,N} has n ≥ 1 positive elements with
-    distinct subset sums and N ≥ 2, then:
-      N ≥ 2ⁿ / (√(2/π) · 2 · √n)
+/-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
+    elements with distinct subset sums, then:
+      2ⁿ ≤ 3·√n·N + 2,    equivalently    N ≥ (2ⁿ − 2) / (3·√n).
 
-    Which simplifies to: N ≥ √(π/8) · 2ⁿ/√n (constant ≈ 0.6267).
-    The full DFX result is N ≥ √(2/π) · 2ⁿ/√n ≈ 0.7979 · 2ⁿ/√n.
+    This is the rigorous, order-correct form of the Dubroff–Fox–Xu lower bound
+    N = Ω(2ⁿ/√n), improving the basic counting bound N ≥ (2ⁿ−1)/n by a factor √n.
+    The sharp DFX constant √(2/π) (from Berry–Esseen) is the literature result; the
+    constant 3 here is what the unconditionally-true Chebyshev anticoncentration
+    bound delivers, and it is enough to capture the √n improvement.
 
-    **Hypotheses**: `hA_pos` (all elements positive) and `hN` (N ≥ 2) are required.
-    The statement is FALSE for n=1, N=1: LHS = 2 but RHS = 2√(2/π) ≈ 1.596.
-    With N ≥ 2 and positive elements, sum ≥ n ≥ 1, so (sum+1)/sum ≤ 2 ≤ N,
-    enabling the key step `(sum+1)/sqrt(sum_sq) ≤ sqrt(n)*N`.
+    Note no positivity (`hA_pos`) or `N ≥ 2` hypothesis is needed: the additive
+    `+2` slack makes the statement true for all n ≥ 1 (e.g. n=1, A={1}, N=1:
+    2 ≤ 3·1·1 + 2 = 5).
 
     **Proof strategy**:
-    1. `anticoncentration_bound`: 2^n ≤ √(2/π)·(sum+1)·2/√sum_sq
-    2. Cauchy-Schwarz: sum² ≤ n·sum_sq, so √sum_sq ≥ sum/√n
-    3. Hence: (sum+1)/√sum_sq ≤ (sum+1)·√n/sum
-    4. Key: (sum+1)/sum = 1 + 1/sum ≤ 2 ≤ N (since sum ≥ n ≥ 1, N ≥ 2)
-    5. Therefore: 2^n ≤ √(2/π)·2·√n·N = √(2/π)·2·n·N/√n -/
+    1. `anticoncentration_bound`: 2ⁿ ≤ 3·√Q + 2 where Q = Σaᵢ².
+    2. Crude variance bound (`sum_sq_le_card_mul_max_sq`): Q ≤ n·N².
+    3. Hence √Q ≤ √n·N, so 2ⁿ ≤ 3·√n·N + 2. -/
 theorem dfx_lower_bound (A : Finset ℕ) (N : ℕ)
     (hDSS : hasDistinctSubsetSums A) (hA : ∀ a ∈ A, a ≤ N)
-    (hpos : 0 < A.card) (hN : 2 ≤ N)
-    (hA_pos : ∀ a ∈ A, 0 < a) :
-    (2 : ℝ) ^ A.card ≤ Real.sqrt (2 / π) * 2 * ↑(A.card) * ↑N / Real.sqrt ↑(A.card) := by
-  -- Abbreviate key quantities
-  set n := (A.card : ℝ)
-  set S := (A.sum id : ℝ)
-  set Q := (A.sum (fun a => a ^ 2) : ℝ)
-  -- Step 1: anticoncentration bound
-  have h_ac : (2 : ℝ) ^ A.card ≤ Real.sqrt (2 / π) * (S + 1) * 2 / Real.sqrt Q :=
+    (hpos : 0 < A.card) :
+    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt ↑A.card * ↑N + 2 := by
+  -- Step 1: anticoncentration bound 2ⁿ ≤ 3·√Q + 2  (Q = Σaᵢ²)
+  have h_ac : (2 : ℝ) ^ A.card ≤
+      3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2 :=
     anticoncentration_bound A hDSS hpos
-  -- Step 2: Q > 0 (at least one positive element squared)
-  have hQ_pos : 0 < Q := by
-    apply Finset.sum_pos
-    · intro a ha; exact_mod_cast Nat.pos_pow_of_pos 2 (hA_pos a ha)
-    · exact Finset.card_pos.mp hpos
-  have hQ_sqrt_pos : 0 < Real.sqrt Q := Real.sqrt_pos.mpr hQ_pos
-  -- Step 3: S ≥ n (each element ≥ 1, so S = sum(A) ≥ card(A) = n)
-  have hS_ge_n : n ≤ S := by
-    have : A.card ≤ A.sum id := by
-      calc A.card = A.sum (fun _ => 1) := by simp [Finset.sum_const]
-        _ ≤ A.sum id := Finset.sum_le_sum (fun a ha => hA_pos a ha)
-    exact_mod_cast this
-  -- Step 4: Cauchy-Schwarz: S² ≤ n * Q (cast from Nat)
-  have h_cauchy_nat := sum_sq_cauchy_schwarz A
-  have h_cauchy : S ^ 2 ≤ n * Q := by exact_mod_cast h_cauchy_nat
-  -- Step 5: n > 0 and sqrt(n) > 0
-  have hn_pos : 0 < n := by exact_mod_cast hpos
-  have hn_sqrt_pos : 0 < Real.sqrt n := Real.sqrt_pos.mpr hn_pos
-  -- n ≥ 1 and S ≥ 1 (since S ≥ n ≥ 1)
-  have hn_ge1 : (1 : ℝ) ≤ n := by
-    have h : 1 ≤ A.card := hpos
-    exact_mod_cast h
-  have hS_pos : (0 : ℝ) < S := lt_of_lt_of_le hn_pos hS_ge_n
-  have hS_ge1 : (1 : ℝ) ≤ S := le_trans hn_ge1 hS_ge_n
-  have hNr_ge2 : (2 : ℝ) ≤ ↑N := by exact_mod_cast hN
-  -- S ≤ √n * √Q (from S² ≤ n*Q by Cauchy-Schwarz)
-  have hS_le : S ≤ Real.sqrt n * Real.sqrt Q := by
-    rw [← Real.sqrt_mul hn_pos.le Q, ← Real.sqrt_sq hS_pos.le]
-    exact Real.sqrt_le_sqrt h_cauchy
-  -- Key bound: S + 1 ≤ √n * ↑N * √Q
-  -- Proof: S + 1 ≤ N * S ≤ N * (√n * √Q) = √n * N * √Q
-  have hS1_bound : S + 1 ≤ Real.sqrt n * ↑N * Real.sqrt Q := by
-    have hNS : S + 1 ≤ (N : ℝ) * S := by nlinarith
-    calc S + 1 ≤ (N : ℝ) * S := hNS
-      _ ≤ (N : ℝ) * (Real.sqrt n * Real.sqrt Q) :=
-            mul_le_mul_of_nonneg_left hS_le (by positivity)
-      _ = Real.sqrt n * ↑N * Real.sqrt Q := by ring
-  -- √(2/π) * 2 > 0
-  have hpi2_pos : (0 : ℝ) < Real.sqrt (2 / π) * 2 := by positivity
-  -- Rewrite RHS: √(2/π) * 2 * n * N / √n = √(2/π) * 2 * √n * N
-  -- (using n = √n * √n, so n / √n = √n)
-  have hRHS : Real.sqrt (2 / π) * 2 * n * ↑N / Real.sqrt n =
-              Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N := by
-    rw [show n = Real.sqrt n * Real.sqrt n from (Real.mul_self_sqrt hn_pos.le).symm]
-    field_simp [hn_sqrt_pos.ne']
-    ring
-  rw [hRHS]
-  -- Chain: 2^A.card ≤ √(2/π)*(S+1)*2/√Q ≤ √(2/π)*2*√n*N
+  -- Step 2: Σaᵢ² ≤ n · N²  (each aᵢ ≤ N), cast to ℝ
+  have h_QnN : (↑(A.sum (fun a => a ^ 2)) : ℝ) ≤ (↑A.card : ℝ) * (↑N : ℝ) ^ 2 := by
+    exact_mod_cast sum_sq_le_card_mul_max_sq A N hA
+  -- Step 3: √Q ≤ √n · N
+  have hsqrtQ : Real.sqrt (↑(A.sum (fun a => a ^ 2))) ≤ Real.sqrt ↑A.card * ↑N := by
+    have h1 : Real.sqrt (↑(A.sum (fun a => a ^ 2)) : ℝ)
+        ≤ Real.sqrt ((↑A.card : ℝ) * (↑N : ℝ) ^ 2) := Real.sqrt_le_sqrt h_QnN
+    rwa [Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)] at h1
+  -- Step 4: chain
   calc (2 : ℝ) ^ A.card
-      ≤ Real.sqrt (2 / π) * (S + 1) * 2 / Real.sqrt Q := h_ac
-    _ ≤ Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N := by
-        rw [div_le_iff hQ_sqrt_pos]
-        -- Goal: √(2/π) * (S+1) * 2 ≤ √(2/π) * 2 * √n * N * √Q
-        -- Factor out √(2/π)*2, use hS1_bound: S+1 ≤ √n*N*√Q
-        calc Real.sqrt (2 / π) * (S + 1) * 2
-            = Real.sqrt (2 / π) * 2 * (S + 1) := by ring
-          _ ≤ Real.sqrt (2 / π) * 2 * (Real.sqrt n * ↑N * Real.sqrt Q) :=
-                mul_le_mul_of_nonneg_left hS1_bound hpi2_pos.le
-          _ = Real.sqrt (2 / π) * 2 * Real.sqrt n * ↑N * Real.sqrt Q := by ring
+      ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2 := h_ac
+    _ ≤ 3 * (Real.sqrt ↑A.card * ↑N) + 2 := by linarith [hsqrtQ]
+    _ = 3 * Real.sqrt ↑A.card * ↑N + 2 := by ring
 
 /-! ## Part III: Comparison with Basic Bound
 
@@ -231,7 +196,7 @@ theorem dfx_improves_counting (n : ℕ) (hn : 2 ≤ n) :
 
 /-- The DFX improvement factor: n < n² for n ≥ 2, so √n > 1.
     The DFX bound N ≥ c·2ⁿ/√n vs counting N ≥ c'·2ⁿ/n is better by √n. -/
-theorem improvement_factor (n : ℕ) (hn : 2 ≤ n) : n < n * n := by omega
+theorem improvement_factor (n : ℕ) (hn : 2 ≤ n) : n < n * n := by nlinarith [hn]
 
 /-! ## Part IV: Small Cases
 
@@ -255,14 +220,22 @@ theorem f_two_max : ∃ (A : Finset ℕ), A.card = 2 ∧ A.sup id = 2 := by
 /-! ## Conclusion
 
 The DFX framework is formalized with:
-- 1 axiom (anticoncentration bound from Berry–Esseen)
+- 1 axiom (Chebyshev anticoncentration bound `2ⁿ ≤ 3√Q + 2`, true and in
+  principle dischargeable from Mathlib's Chebyshev inequality)
 - 0 sorries (dfx_lower_bound fully proved)
 - Variance bounds and Cauchy–Schwarz (proved)
 - Small case verifications (proved)
 
-The axiom isolates the probability theory (Berry–Esseen theorem) that
-requires Mathlib probability infrastructure. The algebraic framework
-(variance bounds, Cauchy–Schwarz, sqrt manipulation) is fully proved.
+The axiom isolates the probability theory (the variance computation plus
+Chebyshev's inequality) that requires Mathlib probability infrastructure to
+formalize directly. The algebraic framework (variance bounds, Cauchy–Schwarz,
+sqrt manipulation) is fully proved.
+
+NOTE (2026-06-27 integrity fix): the previous `anticoncentration_bound` axiom
+`2ⁿ ≤ √(2/π)·2(S+1)/√Q` was mathematically FALSE (it fails already for
+A = {1,2}: it asserts 4 ≤ 2.85), which made the file logically unsound. It was
+replaced with the true Chebyshev bound `2ⁿ ≤ 3√Q + 2`; `dfx_lower_bound` was
+re-derived with the honest (order-correct) constant.
 -/
 
 end Erdos1OQ02

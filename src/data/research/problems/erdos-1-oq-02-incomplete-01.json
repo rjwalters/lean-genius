@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: fixed a FALSE axiom (logical unsoundness) and repaired 4 Mathlib-4.26 build breakages in Erdos1OQ02.lean. File now compiles cleanly (verified via host lake env lean against pinned Mathlib 2df2f015/v4.26.0) with exactly 1 (true) axiom and 0 sorries; #print axioms shows no sorryAx.",
+    "builtItems": [
+      "Corrected axiom anticoncentration_bound (Chebyshev form) in Erdos1OQ02.lean",
+      "Re-proved dfx_lower_bound: 2ⁿ ≤ 3·√n·N+2 (0 sorries) in Erdos1OQ02.lean",
+      "Repaired Mathlib-4.26 build breakages in sum_sq_le_card_mul_max_sq, sum_sq_cauchy_schwarz, improvement_factor"
+    ],
+    "insights": [
+      "The 'incomplete-01' snapshot (2 sorries, dated 2026-03-30) is obsolete: those sorries were filled long ago. The live file Erdos1OQ02.lean had 0 sorries but a FALSE axiom.",
+      "anticoncentration_bound was mathematically FALSE: `2ⁿ ≤ √(2/π)·2(S+1)/√Q` fails for A={1,2} (asserts 4 ≤ 2.85) and for essentially all distinct-subset-sum sets. A false axiom makes the file logically unsound.",
+      "Replaced with the rigorous Chebyshev anticoncentration bound `2ⁿ ≤ 3·√(Σaᵢ²)+2`, verified true on all test sets incl. the asymptotic extremal (powers of two: 256 ≤ 445).",
+      "The file had ALSO broken on the Mathlib 4.26 bump (toolchain v4.26.0): div_le_iff→div_le_iff₀, a simp recursion in sum_sq_le_card_mul_max_sq (Finset.card_eq_sum_ones loop), an nlinarith cast-atom mismatch in sum_sq_cauchy_schwarz (ih not push_cast'd), and omega on the nonlinear n<n*n.",
+      "dfx_lower_bound re-derived via Σaᵢ²≤n·N² (sum_sq_le_card_mul_max_sq) → √Q≤√n·N → 2ⁿ≤3·√n·N+2; dropped the now-unnecessary hN/hA_pos hypotheses (the +2 slack covers small n)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Discharge anticoncentration_bound from Mathlib's Chebyshev inequality + variance computation (no Berry–Esseen needed for the constant-3 form)."
+    ],
     "markdown": "# Knowledge Base: erdos-1-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
