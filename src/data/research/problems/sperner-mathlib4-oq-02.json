@@ -15,7 +15,7 @@
     "open": [],
     "goal": ""
   },
-  "currentState": "n=1 Tucker line COMPLETE end-to-end: discrete combinatorial core (SpernerTuckerOneDim, merged) + continuous capstone (SpernerTuckerBorsukUlamOneDim, this session) deriving the genuine 1-D Borsuk-Ulam theorem from IVT. A continuous 1-periodic f:R->R takes equal values at some antipodal pair c, c+1/2. n>=2 Tucker still needs the Freund-Todd / Prescott-Su path-following engine (complementary-edge count is not a parity invariant for n>=2).",
+  "currentState": "ACT: strengthened the door-incidence engine from the mod-2 parity bridge to the EXACT door-counting identity sum_doorCount = #boundary_doors + 2*#interior_doors (sum_doorCount_eq_boundary_add_two_interior) plus the interior-door count corollary card_interior_eq. 0-axiom (propext/Classical.choice/Quot.sound), offline EXIT 0. The n>=2 geometric instantiation (inductive (n-1)-Tucker -> odd boundary doors) remains the open lever.",
   "knowledge": {
     "progressSummary": "PROGRESS: n=1 line complete (combinatorial + continuous 1-D Borsuk-Ulam, merged). For n>=2 the abstract path-following engine (degree<=2 => even endpoints => interior endpoint) and the door-counting bridge are done. This session SHARPENS the degree bound to an EQUALITY: doorGraph_degree_eq_shared (under hdoor: each door joins <=2 simplices, and the new hpair: two distinct simplices share <=1 door) gives degree v = #{shared doors of v}, so a path endpoint (degree 1) <=> a simplex with exactly one shared door — the local interface the geometric inc construction needs. VERIFIED 0-axiom (lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound]). Remaining open: the geometric inc construction (discharge hdoor/hsimplex/hpair) + Odd #{boundary endpoints} from inductive (n-1)-Tucker + the continuous mesh->0 analytic phase.",
     "builtItems": [
@@ -132,6 +132,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorGraph.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerDoorIncidenceParity.lean",
+      "filename": "SpernerTuckerDoorIncidenceParity.lean",
+      "lineCount": 280,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorIncidenceParity.lean"
     }
   ],
   "lastVerified": "2026-06-27"

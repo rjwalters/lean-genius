@@ -202,10 +202,71 @@ theorem even_card_odd_doorCount_of_all_interior
   rw [hbdry] at hmod
   rw [Nat.even_iff, hmod]
 
+/-! ## The exact door-counting identity
+
+The parity bridge above is a mod-2 shadow of an exact integer identity.  In a door
+complex where every door touches one or two cells, summing the door-count over the
+cells counts each boundary door **once** and each interior door **twice**.  This
+upgrades the congruence to an equation and exposes the interior-door count. -/
+
+/-- An **interior door** is incident to exactly two cells — a facet shared by two
+cells (geometrically, in the interior of the region). -/
+def IsInteriorDoor (d : Door) : Prop := cellCount inc d = 2
+
+instance : DecidablePred (IsInteriorDoor inc) := fun d => by
+  unfold IsInteriorDoor; infer_instance
+
+/-- **Exact door-counting identity.**  When every door is incident to one or two
+cells, the total door-count (summed over cells) equals the number of boundary doors
+plus *twice* the number of interior doors: a boundary door is counted by its single
+cell, an interior door by both of its cells.  Reducing mod 2 (the `2 * …` term
+vanishes) gives the parity bridge `card_odd_doorCount_modEq_card_boundaryDoor`. -/
+theorem sum_doorCount_eq_boundary_add_two_interior
+    (h1 : ∀ d, 1 ≤ cellCount inc d) (h2 : ∀ d, cellCount inc d ≤ 2) :
+    (∑ c, doorCount inc c)
+      = (univ.filter (IsBoundaryDoor inc)).card
+        + 2 * (univ.filter (IsInteriorDoor inc)).card := by
+  rw [sum_doorCount_eq_sum_cellCount]
+  -- Each door's `cellCount` is `1` (boundary) or `2` (interior); rewrite the
+  -- summand as that case split, then sum the two constant pieces.
+  have hcong : ∀ d ∈ univ, cellCount inc d
+      = (if IsBoundaryDoor inc d then 1 else 2) := by
+    intro d _
+    by_cases hb : IsBoundaryDoor inc d
+    · rw [if_pos hb]; exact hb
+    · rw [if_neg hb]
+      have := h1 d; have := h2 d
+      unfold IsBoundaryDoor at hb
+      omega
+  rw [Finset.sum_congr rfl hcong, Finset.sum_ite, Finset.sum_const, Finset.sum_const,
+      smul_eq_mul, smul_eq_mul, mul_one]
+  -- the `¬ IsBoundaryDoor` doors are exactly the interior doors
+  have hfilt : univ.filter (fun d => ¬ IsBoundaryDoor inc d)
+      = univ.filter (IsInteriorDoor inc) := by
+    apply Finset.filter_congr
+    intro d _
+    have := h1 d; have := h2 d
+    unfold IsBoundaryDoor IsInteriorDoor
+    omega
+  rw [hfilt]
+  ring
+
+/-- **Interior-door count.**  Solving the exact identity for the interior doors:
+the number of interior doors is half the surplus of the total door-count over the
+boundary doors. -/
+theorem card_interior_eq
+    (h1 : ∀ d, 1 ≤ cellCount inc d) (h2 : ∀ d, cellCount inc d ≤ 2) :
+    2 * (univ.filter (IsInteriorDoor inc)).card
+      = (∑ c, doorCount inc c) - (univ.filter (IsBoundaryDoor inc)).card := by
+  rw [sum_doorCount_eq_boundary_add_two_interior inc h1 h2]
+  omega
+
 #check @incidence_parity_duality
 #check @card_odd_doorCount_modEq_card_boundaryDoor
 #check @exists_odd_doorCount_of_odd_boundary
 #check @even_card_odd_doorCount_of_all_interior
+#check @sum_doorCount_eq_boundary_add_two_interior
+#check @card_interior_eq
 
 -- Axiom audit: the results depend only on the foundational axioms
 -- (propext / Classical.choice / Quot.sound); no `sorryAx`, no `Lean.ofReduceBool`.
@@ -213,5 +274,7 @@ theorem even_card_odd_doorCount_of_all_interior
 #print axioms card_odd_doorCount_modEq_card_boundaryDoor
 #print axioms exists_odd_doorCount_of_odd_boundary
 #print axioms even_card_odd_doorCount_of_all_interior
+#print axioms sum_doorCount_eq_boundary_add_two_interior
+#print axioms card_interior_eq
 
 end SpernerTuckerDoorIncidenceParity
