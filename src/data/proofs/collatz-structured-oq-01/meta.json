@@ -19,8 +19,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 195,
-    "theoremCount": 10,
+    "lineCount": 249,
+    "theoremCount": 15,
     "definitionCount": 0,
     "assumptions": "None. All theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound); none use sorry, native_decide, or any added axiom. The results are unconditional — they do not assume the Collatz conjecture.",
     "dateAdded": "2026-06-27",
@@ -42,12 +42,18 @@
         "theorem": "Function.iterate_succ_apply",
         "description": "f^[k+1] a = f^[k] (f a) — used in the backward-closure step to peel one Collatz iteration.",
         "module": "Mathlib.Logic.Function.Iterate"
+      },
+      {
+        "theorem": "Set.ncard_pair",
+        "description": "For a ≠ b, the two-element set {a,b} has ncard 2 — used to read off the exact in-degree 2 of a branching vertex from its predecessor set {2m, (m-1)/3}.",
+        "module": "Mathlib.Data.Set.Card"
       }
     ],
     "originalContributions": [
       "collatz_eq_iff: an exact characterization of the Collatz preimage — collatz a = m ↔ a = 2m ∨ (a odd ∧ 3a+1 = m) — proved by parity case split and omega, with no division artifacts.",
       "odd_pred_exists_iff: the mod-6 branching law — m has an odd predecessor iff m ≡ 4 (mod 6) — with an explicit witness 2·(m/6)+1.",
       "two_preds_of_mod / unique_pred_of_not_mod: the in-degree dichotomy of the Collatz graph (in-degree 2 exactly on residue 4 mod 6, otherwise 1).",
+      "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one: the EXACT predecessor sets and precise in-degree — the odd predecessor of m ≡ 4 (mod 6) is exactly (m-1)/3, so the full Collatz preimage is {2m, (m-1)/3} (in-degree exactly 2 via Set.ncard_pair) and otherwise {2m} (in-degree exactly 1). Sharpens the qualitative 'at least two'/'unique' dichotomy to exact set equalities and a numeric in-degree.",
       "reaches_one_of_collatz: backward closure of the basin of 1 — predecessors of basin elements are basin elements — and the set-level corollary basin_closed_under_pred.",
       "basin_infinite: an unconditional proof that the set of numbers reaching 1 is infinite, via the injection k ↦ 2^(k+1)."
     ]
@@ -228,9 +234,9 @@
       "Collatz"
     ],
     "namespace": "CollatzBackward",
-    "lineCount": 195,
+    "lineCount": 249,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 15,
     "definitionCount": 0,
     "sorries": 0
   },

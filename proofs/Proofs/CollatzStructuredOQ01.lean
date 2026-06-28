@@ -108,6 +108,60 @@ theorem unique_pred_of_not_mod {m : ℕ} (hm : m % 6 ≠ 4) {a : ℕ}
   · exact absurd ((odd_pred_exists_iff m).mp ⟨a, hodd, h3⟩) hm
 
 /-!
+## Part II½: Exact predecessor sets and the precise in-degree
+
+`two_preds_of_mod` / `unique_pred_of_not_mod` give the in-degree *dichotomy*
+qualitatively ("at least two" / "the only one"). Here we sharpen it to the **exact**
+preimage set, and read off the precise in-degree as a number. The odd predecessor of an
+`m ≡ 4 (mod 6)` has the closed form `(m-1)/3`, so the full predecessor set is
+`{2m, (m-1)/3}` (in-degree exactly `2`); for every other `m` it is `{2m}` (in-degree
+exactly `1`).
+-/
+
+/-- The **odd predecessor in closed form**: when `m ≡ 4 (mod 6)`, the number `(m-1)/3`
+is odd and maps to `m` under the Collatz step. -/
+theorem odd_pred_eq {m : ℕ} (hm : m % 6 = 4) :
+    ((m - 1) / 3) % 2 = 1 ∧ 3 * ((m - 1) / 3) + 1 = m := by
+  omega
+
+/-- **Exact predecessor set, branching case.** For `m ≡ 4 (mod 6)` the full Collatz
+preimage of `m` is exactly the pair `{2m, (m-1)/3}`. -/
+theorem preimage_collatz_eq_pair {m : ℕ} (hm : m % 6 = 4) :
+    collatz ⁻¹' {m} = {2 * m, (m - 1) / 3} := by
+  rw [preimage_collatz]
+  ext a
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | ⟨_, h3⟩)
+    · exact Or.inl h
+    · exact Or.inr (by omega)
+  · rintro (rfl | rfl)
+    · exact Or.inl rfl
+    · exact Or.inr (odd_pred_eq hm)
+
+/-- **Exact predecessor set, non-branching case.** For `m ≢ 4 (mod 6)` the full Collatz
+preimage of `m` is exactly the singleton `{2m}`. -/
+theorem preimage_collatz_eq_singleton {m : ℕ} (hm : m % 6 ≠ 4) :
+    collatz ⁻¹' {m} = {2 * m} := by
+  ext a
+  simp only [Set.mem_preimage, Set.mem_singleton_iff]
+  exact ⟨unique_pred_of_not_mod hm, by rintro rfl; exact even_pred m⟩
+
+/-- **Precise in-degree, branching case.** Every vertex `m ≡ 4 (mod 6)` has in-degree
+exactly `2` in the Collatz graph. -/
+theorem indegree_eq_two {m : ℕ} (hm : m % 6 = 4) :
+    (collatz ⁻¹' {m}).ncard = 2 := by
+  rw [preimage_collatz_eq_pair hm]
+  exact Set.ncard_pair (by omega)
+
+/-- **Precise in-degree, non-branching case.** Every vertex `m ≢ 4 (mod 6)` has in-degree
+exactly `1` (its sole predecessor being the even one, `2m`). -/
+theorem indegree_eq_one {m : ℕ} (hm : m % 6 ≠ 4) :
+    (collatz ⁻¹' {m}).ncard = 1 := by
+  rw [preimage_collatz_eq_singleton hm]
+  exact Set.ncard_singleton _
+
+/-!
 ## Part III: Backward Closure of the Basin
 
 If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
@@ -182,8 +236,12 @@ example : collatz 16 = 8 := by decide
 1. ✓ Exact preimage characterization `collatz_eq_iff`
 2. ✓ Branching law `odd_pred_exists_iff` (odd predecessor ⟺ `m ≡ 4 mod 6`)
 3. ✓ In-degree dichotomy: `two_preds_of_mod` / `unique_pred_of_not_mod`
-4. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
-5. ✓ The basin of 1 is infinite `basin_infinite`
+4. ✓ Exact predecessor sets and precise in-degree: `odd_pred_eq` (odd predecessor
+   `= (m-1)/3`), `preimage_collatz_eq_pair` / `preimage_collatz_eq_singleton`
+   (full preimage `= {2m, (m-1)/3}` / `= {2m}`), `indegree_eq_two` / `indegree_eq_one`
+   (in-degree `= 2` / `= 1` exactly, via `Set.ncard`)
+5. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
+6. ✓ The basin of 1 is infinite `basin_infinite`
 
 **Unconditional**: none of these assume the Collatz conjecture. They describe the
 backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
