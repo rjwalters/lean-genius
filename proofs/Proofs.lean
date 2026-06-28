@@ -3279,6 +3279,8 @@ import Proofs.HarmonicDivergenceOQ05
 import Proofs.HarmonicDivergenceOQ05OQ01
 import Proofs.HarmonicDivergenceOQ05OQ02
 import Proofs.HermiteFloorIdentity
+import Proofs.HermiteLegendreFactorial
+import Proofs.HermiteLegendreFactorialOQ01
 import Proofs.HermiteLindemann
 import Proofs.HermiteSawtoothIdentity
 import Proofs.HeronsFormula
