@@ -934,4 +934,78 @@ theorem isCanon_baseOf_eq {s : SpernerGrid.GridSimplex d N}
 theorem baseOf_canon (s : CanonSimplex d N) : baseOf s.1 = s.1.verts 0 :=
   isCanon_baseOf_eq s.2
 
+-- ============================================================
+-- The recanonicalization base of the interior pivot
+-- ============================================================
+-- `baseOf` names the lex-min base a recanonicalization step selects.
+-- For the interior pivot (`pivotSimplex`, the neighbour the `adj`
+-- search produces at a chain-interior facet) we can now pin that base
+-- down in *both* outcomes of the single canonicality test
+-- `pivot_isCanon_iff`:
+--
+--   * already canonical → `baseOf` is the untouched base `s.verts 0`
+--     (`pivot_base_eq`), so recanonicalization is the identity;
+--   * not canonical → the one moved vertex, the `pivotPoint`, has
+--     dropped lex-below `s.verts 0` and so becomes the new lex-min
+--     base of the neighbour's vertex set.
+--
+-- Together these say *exactly which vertex* the recanonicalization map
+-- must promote to the base in every interior-pivot case — the remaining
+-- input that step needs beyond the already-proven well-definedness
+-- (`baseOf_eq_of_range_eq`) and identity-on-canonical
+-- (`isCanon_baseOf_eq`) facts.
+
+/-- **Recanonicalization base of a canonical interior pivot.**  When the
+interior pivot already lands on the canonical representative, its lex-min
+base is the untouched base `s.verts 0` (the pivot fixes vertex `0`,
+`pivot_base_eq`).  So the recanonicalization map is the identity here. -/
+theorem baseOf_pivot_of_canon (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc)
+    (hcanon : SpernerGrid.IsCanon (pivotSimplex s a b hb)) :
+    baseOf (pivotSimplex s a b hb) = s.verts 0 := by
+  rw [isCanon_baseOf_eq hcanon, pivot_base_eq]
+
+/-- **Recanonicalization base of a non-canonical interior pivot.**  When the
+single lex test of `pivot_isCanon_iff` fails — i.e. the moved vertex
+`pivotPoint` is *not* lex-dominated by the base `s.verts 0` — the pivot is
+non-canonical, and the `pivotPoint` is precisely its new lex-min base.
+
+The pivot's vertices are the moved `pivotPoint` together with the `d`
+untouched vertices `s.verts j` (`j ≠ a.succ`).  Failure of the test makes
+`pivotPoint` lex-`≤` the old base `s.verts 0` (lex totality), which in turn
+is lex-`≤` every `s.verts j` (`s` is canonical); so `pivotPoint` dominates
+all vertices and, lying in the cell, is the unique lex-min base
+(`baseOf_unique`).  This identifies the vertex the recanonicalization map
+must promote to the base whenever the interior pivot leaves the carrier. -/
+theorem baseOf_pivot_of_not_canon (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) (hs : SpernerGrid.IsCanon s)
+    (hp : ¬ (s.verts 0).lexLE (pivotPoint s a b (pivot_ab_ne hb))) :
+    baseOf (pivotSimplex s a b hb) = pivotPoint s a b (pivot_ab_ne hb) := by
+  -- The moved vertex `a.succ` is the `pivotPoint`.
+  have hpiv : (pivotSimplex s a b hb).verts a.succ
+      = pivotPoint s a b (pivot_ab_ne hb) := by
+    show Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb)) a.succ = _
+    rw [Function.update_self]
+  -- Test failure + lex totality: `pivotPoint` lex-≤ the old base.
+  have hple0 : (pivotPoint s a b (pivot_ab_ne hb)).lexLE (s.verts 0) := by
+    rcases SpernerGrid.BaryPoint.lexLE_total (s.verts 0)
+        (pivotPoint s a b (pivot_ab_ne hb)) with h | h
+    · exact absurd h hp
+    · exact h
+  symm
+  apply baseOf_unique (pivotSimplex s a b hb)
+  · -- `pivotPoint` is a vertex of the pivoted cell.
+    rw [← hpiv]; exact mem_vertexSet (pivotSimplex s a b hb) a.succ
+  · -- `pivotPoint` lex-dominates every vertex of the pivoted cell.
+    intro x hx
+    obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hx
+    by_cases hj : j = a.succ
+    · subst hj; rw [hpiv]; exact SpernerGrid.BaryPoint.lexLE_refl _
+    · have hxj : (pivotSimplex s a b hb).verts j = s.verts j := by
+        show Function.update s.verts a.succ
+          (pivotPoint s a b (pivot_ab_ne hb)) j = s.verts j
+        rw [Function.update_of_ne hj]
+      rw [hxj]
+      exact SpernerGrid.BaryPoint.lexLE_trans hple0 (hs j)
+
 end SpernerNDimOQ02
