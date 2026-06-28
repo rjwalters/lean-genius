@@ -1452,4 +1452,61 @@ theorem GridGlued_symm {s t : SpernerGrid.GridSimplex d N} (h : GridGlued s t) :
   obtain ⟨a, b, hb, rfl⟩ := h
   exact ⟨a, b, hb, (pivot_involutive s a b hb).symm⟩
 
+/-
+## Interior / boundary facet predicate
+
+The door-counting `adj` must split the `d+1` Kuhn facets of each cell into the
+chain-*interior* facets — those across which the Freudenthal pivot is defined and
+which therefore carry a glued neighbour — and the two geometric *boundary* facets
+(`k = 0` and `k = Fin.last d`), which have no interior partner.  The interior
+facets are exactly those opposite a vertex `a.succ` for a consecutive Kuhn step
+pair `a.succ = b.castSucc`; numerically these are the indices `0 < k < d`.
+All 0-sorry, 0-axiom.
+-/
+
+/-- A Kuhn facet index `k : Fin (d+1)` is **chain-interior** when it is the facet
+opposite an interior vertex `a.succ` for a consecutive Kuhn step pair
+`a.succ = b.castSucc`.  These are precisely the facets across which the
+Freudenthal pivot (`pivotSimplex`) is defined. -/
+def IsInteriorFacet (k : Fin (d + 1)) : Prop :=
+  ∃ a b : Fin d, a.succ = b.castSucc ∧ k = a.succ
+
+/-- **Numeric characterization of interior facets**: facet `k` is chain-interior
+iff `0 < k < d`, i.e. `k` is neither the bottom facet `0` nor the top facet
+`Fin.last d`.  (For `d ≤ 1` there are no interior facets, matching the fact that
+the orientation doubling there is handled separately.) -/
+theorem isInteriorFacet_iff (k : Fin (d + 1)) :
+    IsInteriorFacet k ↔ 0 < (k : ℕ) ∧ (k : ℕ) < d := by
+  constructor
+  · rintro ⟨a, b, hb, rfl⟩
+    have hb' : (a : ℕ) + 1 = (b : ℕ) := by
+      have h := congrArg Fin.val hb
+      rwa [Fin.val_succ, Fin.coe_castSucc] at h
+    have hbd : (b : ℕ) < d := b.isLt
+    rw [Fin.val_succ]; omega
+  · rintro ⟨hk0, hkd⟩
+    refine ⟨⟨(k : ℕ) - 1, by omega⟩, ⟨(k : ℕ), hkd⟩, ?_, ?_⟩
+    · apply Fin.ext; show (k : ℕ) - 1 + 1 = (k : ℕ); omega
+    · apply Fin.ext; show (k : ℕ) = (k : ℕ) - 1 + 1; omega
+
+/-- The bottom Kuhn facet (`k = 0`) is a geometric boundary facet, not interior. -/
+theorem not_isInteriorFacet_zero : ¬ IsInteriorFacet (0 : Fin (d + 1)) := by
+  rw [isInteriorFacet_iff, Fin.val_zero]; omega
+
+/-- The top Kuhn facet (`k = Fin.last d`) is a geometric boundary facet, not
+interior. -/
+theorem not_isInteriorFacet_last : ¬ IsInteriorFacet (Fin.last d) := by
+  rw [isInteriorFacet_iff, Fin.val_last]; omega
+
+/-- **Every interior facet carries a glued neighbour.**  Combining the predicate
+with `exists_gridFacet_neighbor`: if facet `k` is chain-interior, the Freudenthal
+pivot across it is a distinct cell sharing exactly that facet.  This is the total
+existence datum the door-counting `adj` records at every interior facet. -/
+theorem exists_neighbor_of_isInteriorFacet (s : SpernerGrid.GridSimplex d N)
+    {k : Fin (d + 1)} (hk : IsInteriorFacet k) :
+    ∃ t : SpernerGrid.GridSimplex d N,
+      GridGlued s t ∧ t ≠ s ∧ gridFacet t k = gridFacet s k := by
+  obtain ⟨a, b, hb, rfl⟩ := hk
+  exact exists_gridFacet_neighbor s a b hb
+
 end SpernerNDimOQ02
