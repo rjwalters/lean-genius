@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 268,
+    "lineCount": 322,
     "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
@@ -55,7 +55,7 @@
       "dfx_improves_counting: DFX bound is asymptotically better than counting bound (n < n² for n ≥ 2)",
       "Concrete cases: f(1)=1 via Finset.subset_singleton_iff, f(2)=2 via simp"
     ],
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 0
   },
   "overview": {
@@ -122,7 +122,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The DFX 2021 framework is formalized: variance bounds (Σaᵢ²≤n·N² and Cauchy–Schwarz) and a single anticoncentration axiom. The main lower bound 2ⁿ ≤ 3·√n·N + 2 (i.e. N = Ω(2ⁿ/√n)) is fully proved with 0 sorries. INTEGRITY FIX (2026-06-28): the previous anticoncentration axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was mathematically FALSE (e.g. A={1,2} makes it assert 4 ≤ 2.85), which rendered the file logically unsound; it was replaced with the true Chebyshev bound `2ⁿ ≤ 3·√Q + 2`. The file (which had also broken on the Mathlib 4.26 toolchain bump: div_le_iff→div_le_iff₀, a simp recursion, an nlinarith cast mismatch, and omega on a nonlinear goal) now compiles cleanly with 1 axiom.",
+    "summary": "The DFX 2021 framework is formalized: variance bounds (Σaᵢ²≤n·N² and Cauchy–Schwarz) and a single anticoncentration axiom. The main lower bound 2ⁿ ≤ 3·√n·N + 2 (i.e. N = Ω(2ⁿ/√n)) is fully proved with 0 sorries. INTEGRITY FIX (2026-06-28): the previous anticoncentration axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was mathematically FALSE (e.g. A={1,2} makes it assert 4 ≤ 2.85), which rendered the file logically unsound; it was replaced with the true Chebyshev bound `2ⁿ ≤ 3·√Q + 2`. The file (which had also broken on the Mathlib 4.26 toolchain bump: div_le_iff→div_le_iff₀, a simp recursion, an nlinarith cast mismatch, and omega on a nonlinear goal) now compiles cleanly with 1 axiom. Progress (2026-06-28): the probability-free core of the axiom's discharge is now proved in-file with 0 axioms — second_moment_identity (∑_{T⊆A}(2·ΣT−S)² = 2^|A|·Σaᵢ²) and card_mul_le_second_moment (discrete Chebyshev tail count). The only remaining step to eliminate the axiom is the same-parity distinct-integer central-interval count.",
     "implications": "The Dubroff-Fox-Xu result is currently the best known lower bound for Erdős's distinct subset sums problem (Problem #1, $500 prize). The gap between the lower bound ~2ⁿ/√n and the upper bound ~2ⁿ (from the Conway-Guy sequence) is a factor of √n. Closing this gap requires either a new construction (improving the upper bound) or a new anticoncentration argument (improving the lower bound). Formalizing the full Berry-Esseen step would complete the proof in Lean.",
     "openQuestions": [
       "Can the `anticoncentration_bound` axiom be proved in Lean? This requires: (1) formalizing the Bernoulli random walk on $\\{0, a_1, \\ldots, a_1 + a_2, \\ldots\\}$, (2) proving Berry-Esseen bounds for discrete distributions, (3) counting distinct sum values via the normal approximation. Mathlib's `ProbabilityTheory.ConditionalExpectation` and `CLT` developments are the entry points.",
@@ -211,13 +211,13 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 268,
+    "lineCount": 322,
     "axiomCount": 1,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
     "sorries": 0
   },
   "sorries": 0,
-  "assumptions": "One axiom: anticoncentration_bound — the Chebyshev anticoncentration bound 2ⁿ ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sum sets. It is unconditionally true (Chebyshev's inequality applied to X = Σ εᵢaᵢ, plus the distinctness counting argument) and in principle dischargeable from Mathlib's `ProbabilityTheory` Chebyshev lemmas. dfx_lower_bound and the variance/Cauchy–Schwarz lemmas are fully proved (0 sorries). NOTE: the earlier axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE and has been corrected."
+  "assumptions": "One axiom: anticoncentration_bound — the Chebyshev anticoncentration bound 2ⁿ ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sum sets. It is unconditionally true (Chebyshev's inequality applied to X = Σ εᵢaᵢ, plus the distinctness counting argument) and in principle dischargeable from Mathlib's `ProbabilityTheory` Chebyshev lemmas. dfx_lower_bound and the variance/Cauchy–Schwarz lemmas are fully proved (0 sorries). NOTE: the earlier axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE and has been corrected. Progress (2026-06-28): the probability-free core of the axiom's discharge is now proved in-file with 0 axioms — second_moment_identity (∑_{T⊆A}(2·ΣT−S)² = 2^|A|·Σaᵢ²) and card_mul_le_second_moment (discrete Chebyshev tail count). The only remaining step to eliminate the axiom is the same-parity distinct-integer central-interval count."
 }

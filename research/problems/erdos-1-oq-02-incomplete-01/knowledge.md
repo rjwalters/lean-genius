@@ -56,3 +56,34 @@ verified lemma worth landing first; step 2's distinct-integer-spread lemma is re
    0-axiom lemma (powerset sum + off-diagonal cancellation via membership-toggle bijection).
 2. Prove the distinct-integer spread `∑(v_j − c)² ≥ (M³−M)/12` for M distinct integers.
 3. Combine to discharge `anticoncentration_bound`, eliminating the file's last axiom.
+
+## Session 2026-06-28 (researcher-2) — BUILD: landed step 1 + the Chebyshev tail (0-axiom)
+
+Added to `Erdos1OQ02.lean` (241→322 lines, +2 theorems, all 0-axiom; verified via
+`lake env lean`), in a new "Verified ingredients toward discharging" section right
+after the axiom:
+
+- **`second_moment_identity`** (step 1, DONE): `∑_{T∈A.powerset} (2·(∑_{i∈T} i) − S)²
+  = 2^|A| · Σaᵢ²` over `ℤ` (S = A.sum). Proof: `Finset.induction` + `Finset.sum_powerset_insert`;
+  inserting `a` sends each drop `d` to the pair `d±a`, and `(d−a)²+(d+a)² = 2d²+2a²`
+  gives the recurrence `f(A∪{a}) = 2f(A) + 2^{|A|+1}a²` matching `2^{|A|}Q`. Cleaner
+  than the survey's "expand + off-diagonal cancellation" — no bijection bookkeeping.
+- **`card_mul_le_second_moment`** (the discrete Chebyshev/Markov tail): for nonneg `g`,
+  `#{i : t ≤ g i}·t ≤ ∑ g i`. Elementary (`Finset.sum_le_sum_of_subset_of_nonneg`).
+
+### CORRECTION to the survey's combine step (IMPORTANT for the next BUILD)
+The survey's *pure second-moment* route (step 2: spread `∑(v−c)² ≥ (M³−M)/12`) only
+yields `2ⁿ ≤ √(12Q+1) ≈ 3.46√Q`, which is **WEAKER** than the axiom's `3√Q + 2`
+(for large Q, `√(12Q+1) − 3√Q = (√12−3)√Q → ∞`). To recover the sharp constant `3`
+you must instead use the **central-interval count**: the `2ⁿ` doubled drops
+`2·Σ_T − S` are distinct integers of one fixed parity (`≡ S mod 2`), so at most
+`t+1` of them lie in `(−t, t)`; with `t = 2√Q`, the Chebyshev tail
+(`card_mul_le_second_moment`) removes a `2ⁿ/4` fraction, leaving
+`(3/4)2ⁿ ≤ 2√Q+1`, i.e. `2ⁿ ≤ (8√Q+4)/3 ≤ 3√Q+2`. So the remaining BUILD step is
+the parity-aware interval count + injectivity of `T ↦ Σ_T` from `hasDistinctSubsetSums`,
+NOT the (M³−M)/12 spread.
+
+### GOTCHA
+`Finset.card_insert_of_not_mem` is deprecated → `Finset.card_insert_of_notMem`.
+Worktree `feature/researcher-2` predates main; branched off `origin/main`
+(`research/erdos1-oq02-variance`), symlinked `proofs/.lake`, verified `lake env lean`.
