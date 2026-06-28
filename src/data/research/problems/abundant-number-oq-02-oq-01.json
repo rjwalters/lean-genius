@@ -29,24 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: witness half VERIFIED (0-axiom); minimality reduced structurally to a finite primorial inequality, giving >=7 distinct prime factors (no 5.4e9 enumeration).",
+    "progressSummary": "PROGRESS (unconditional): the extremal/monotonicity follow-up is now CLOSED. odd_abundant_coprime_three_seven_primeFactors proves UNCONDITIONALLY that any odd abundant number coprime to 3 has >=7 distinct prime factors, fully verified 0-axiom (no native_decide, no enumeration of the 5.4e9 range).",
     "builtItems": [
       "geomSum_mul_pred_lt (per-prime-power Euler bound) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "sigma_mul_prod_sub_one_lt (Euler abundancy bound, N form) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "abundant_imp_two_mul_prod_sub_one_lt (abundance => primorial inequality) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "six_primes_below_two / seven_primes_above_two (numeric boundary anchors) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
-      "Fixed two norm_num gaps in the witness file Proofs/AbundantNumberOQ02OQ01.lean (sigma_N, abundant_N) which previously left sorryAx; now 0-axiom."
+      "Fixed two norm_num gaps in the witness file Proofs/AbundantNumberOQ02OQ01.lean (sigma_N, abundant_N) which previously left sorryAx; now 0-axiom.",
+      "dom (domination lemma): for a strictly increasing list of primes whose i-th entry dominates a gap-list floor, the weighted product prod p/(p-1) is bounded by the product over the gap list. Proof by list recursion with f antitone. In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
+      "GapList predicate + gapList_canon: [5,7,11,13,17,19] is a primorial gap list (consecutive entries forced apart by primality via gap5/gap7/gap11/gap13/gap17). In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
+      "canon_prod_lt_two: (5/4)(7/6)(11/10)(13/12)(17/16)(19/18) = 1616615/829440 < 2 (norm_num). In Proofs/AbundantNumberOQ02OQ01Unconditional.lean",
+      "odd_abundant_coprime_three_seven_primeFactors (MAIN, unconditional, 0-axiom): Odd n -> not 3|n -> Abundant n -> 7 <= n.primeFactors.card. In Proofs/AbundantNumberOQ02OQ01Unconditional.lean"
     ],
     "insights": [
       "Euler abundancy bound holds purely over N: for n>1, sigma(n)*prod_{p|n}(p-1) < n*prod_{p|n} p. Proved multiplicatively from (sum_{i<=a} p^i)*(p-1)=p^{a+1}-1 (Mathlib geom_sum_mul_add, valid in any semiring). No native_decide.",
       "Abundance reduces to a primorial inequality independent of the size of n: n abundant => 2*prod_{p|n}(p-1) < prod_{p|n} p. This eliminates any need to enumerate the ~5.4e9 range claimed unavoidable in the witness file header.",
-      "For odd n coprime to 3 all prime factors are >=5; the six smallest such primes give prod p/(p-1) = 1.949 < 2 and seven give 2.038 > 2, so the smallest odd abundant number coprime to 3 must have >=7 distinct prime factors (witness 5391411025 has exactly 8)."
+      "For odd n coprime to 3 all prime factors are >=5; the six smallest such primes give prod p/(p-1) = 1.949 < 2 and seven give 2.038 > 2, so the smallest odd abundant number coprime to 3 must have >=7 distinct prime factors (witness 5391411025 has exactly 8).",
+      "The extremal step is cleanest as a list recursion in Q (not a Finset optimization): sort the prime factors, peel the head, advance a per-rank floor along a gap list. f(p)=p/(p-1) antitone + per-term domination + product monotonicity. The gap list [5,7,11,13,17,19] encodes the only nontrivial number theory (no prime strictly between consecutive entries), each gap discharged by interval_cases+decide.",
+      "Crude bounds fail: (5/4)^6 ~= 3.81 > 2, and 6 distinct INTEGERS >=5 can telescope to 2.5 > 2 (e.g. 5..10). Primality (coprimality to 6) is essential: it forces the i-th smallest prime factor >= the i-th prime >=5, which is exactly the gap-list domination.",
+      "Linking the Q ratio product to the N Euler bound: prod_{p in S} p/(p-1) = (prod p)/(prod (p-1)) over Q (Finset.prod_div_distrib), and 2*prod(p-1) < prod p in N casts up; cancel the positive denominator with lt_of_mul_lt_mul_right. No division-inequality lemma needed."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize: for a finite set S of distinct primes all >=5, prod_{p in S} p/(p-1) is maximised by taking the |S| smallest such primes (uses monotonicity of p/(p-1) and p_i >= i-th smallest prime >=5, the latter by decide on prime-counting below small thresholds).",
-      "Combine with abundant_imp_two_mul_prod_sub_one_lt to get unconditional: odd abundant n coprime to 3 => n.primeFactors.card >= 7.",
-      "Consider submitting the extremal step to Aristotle as a HARD sorry if the Finset extremal argument proves tedious."
+      "Optional: extend the gap-list method to bound omega(n) for odd abundant n with other small-prime exclusions (e.g. coprime to 15) — same dom lemma, different canonical gap list.",
+      "Optional gallery: the unconditional >=7 result could anchor a short gallery entry on Euler abundancy bounds, pairing the witness (oq-02) with this minimality lower bound.",
+      "The full minimality claim (smallest is exactly 5391411025) still needs the matching upper structure; >=7 prime factors is the proven lower bound on omega, not the full numeric minimality."
     ],
     "markdown": "# Knowledge Base: abundant-number-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

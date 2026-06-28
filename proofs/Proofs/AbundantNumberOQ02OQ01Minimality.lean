@@ -30,8 +30,14 @@
   the six smallest already give `∏ p/(p−1) < 2` while seven exceed 2.  Hence **any odd
   abundant number coprime to 3 has at least 7 distinct prime factors** — the witness
   5391411025 has exactly 8.  The only remaining ingredient is the extremal/monotonicity
-  step (`∏ p/(p−1)` maximised by the smallest primes), recorded as the open follow-up;
-  the brute-force enumeration is *not* needed.
+  step (`∏ p/(p−1)` maximised by the smallest primes); the brute-force enumeration is
+  *not* needed.
+
+  UPDATE (follow-up resolved): the extremal/monotonicity step is now formalised in
+  `AbundantNumberOQ02OQ01Unconditional.lean`, which proves the **unconditional** theorem
+  `odd_abundant_coprime_three_seven_primeFactors :
+       Odd n → ¬ 3 ∣ n → Nat.Abundant n → 7 ≤ n.primeFactors.card` (also 0-axiom),
+  upgrading the conditional reduction below to a complete lower bound on `ω(n)`.
 
   Everything below is axiom-free (only `propext`/`Classical.choice`/`Quot.sound`; no
   `Lean.ofReduceBool`, no `sorry`).

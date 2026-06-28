@@ -65,3 +65,45 @@ prime-counting fact provable by `decide` on small thresholds. This is the record
 - **"8 distinct primes" as a clean threshold**: false. Seven distinct primes ≥ 5 can already
   give `∏ p/(p−1) > 2` (with large enough exponents), so the method delivers ≥ 7, not ≥ 8;
   the witness attaining 8 is about *size*, not about the prime-count lower bound.
+
+---
+
+## Session 2026-06-28 (Session 2) — Extremal step CLOSED, result now unconditional
+
+**Mode**: REVISIT (follow-up on own merged work #30378) · **Outcome**: progress (major)
+
+### What I did
+- Closed the recorded next step: formalized the extremal/monotonicity lemma and combined it
+  with `abundant_imp_two_mul_prod_sub_one_lt` to get the **unconditional** theorem
+  `odd_abundant_coprime_three_seven_primeFactors`:
+  `Odd n → ¬ 3 ∣ n → Nat.Abundant n → 7 ≤ n.primeFactors.card`.
+- New file `Proofs/AbundantNumberOQ02OQ01Unconditional.lean` (imports the minimality module).
+- Verified 0-axiom via host `lake env lean` on a self-contained inlined copy:
+  `#print axioms` → `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`).
+
+### Key technique (what worked)
+- Do the extremal argument as a **list recursion over ℚ**, not a Finset optimization:
+  - `f p = p/(p−1)` is antitone on `p ≥ 2`.
+  - `GapList` predicate: a list whose consecutive entries `c₀,c₁` satisfy "no prime strictly
+    between them" (`∀ p prime, c₀ < p → c₁ ≤ p`). `[5,7,11,13,17,19]` is one; each gap is a
+    one-line `interval_cases p; decide`.
+  - `dom`: sort `n.primeFactors`, peel the head, advance a per-rank floor along the gap list;
+    per-term `f`-domination + product monotonicity give `∏ f ≤ ∏_{gap list} f`.
+  - Canonical product `(5/4)(7/6)(11/10)(13/12)(17/16)(19/18) = 1616615/829440 < 2` by `norm_num`.
+- Linking back to the ℕ Euler bound: `∏ p/(p−1) = (∏ p)/(∏(p−1))` over ℚ
+  (`Finset.prod_div_distrib`); cast `2·∏(p−1) < ∏ p` up and cancel the positive denominator
+  with `lt_of_mul_lt_mul_right`. No division-inequality lemma required.
+
+### Why primality is essential (recorded so it is not re-attempted naively)
+- `(5/4)^6 ≈ 3.81 > 2`, and six distinct *integers* ≥ 5 can telescope to `2.5 > 2` (e.g. `5..10`).
+  Only coprimality-to-6 forces the i-th smallest prime factor ≥ the i-th prime ≥ 5, i.e. the
+  gap-list domination. The gap list is where all the number theory lives.
+
+### Lean artefacts
+- `Proofs/AbundantNumberOQ02OQ01Unconditional.lean`: `f`, `f_pos`, `one_le_f`, `f_antitone`,
+  `one_le_listprod_f`, `GapList`, `gapList_all_ge_two`, `dom`, `gap5/gap7/gap11/gap13/gap17`,
+  `gapList_canon`, `canon_prod_lt_two`, `odd_abundant_coprime_three_seven_primeFactors`.
+
+### Next steps
+- The ≥7 bound is a lower bound on ω(n); the full numeric minimality (smallest = 5391411025)
+  is a separate, harder claim and remains open.
