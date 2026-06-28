@@ -2,7 +2,7 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 7
+**Iteration**: 14
 
 ## Current Focus
 
@@ -165,19 +165,65 @@ worktree Mathlib `.olean` cache — Docker `docker info` hangs). Two theorems:
 
 File: 1017 → 1146 lines, 55 → 57 theorems, 2 defs (no new def).
 
+## Iteration 14 addition (verified, 0-axiom — `lake env lean`, Docker down)
+
+Added **§14 (the continuant — the run-length criterion for *every* length)**,
+0-sorry / 0-axiom (verified by `lake env lean` against the shared main-repo
+Mathlib `.olean` cache — the worktree `proofs/.lake` symlinks to it; `#print
+axioms` reports only propext / Classical.choice / Quot.sound on every new
+theorem). **This delivers the §13 "Next Action" exactly: the per-length §11/§12/
+§13 windows are now ONE statement valid for arbitrary run length.** Three defs +
+ten theorems:
+
+- `Continuant : List ℤ → ℤ` — the minus-sign continuant with the head-two-element
+  recurrence `K(k₁ :: k₂ :: ks) = k₁·K(k₂ :: ks) − K(ks)`, bases `K([])=1`,
+  `K([k])=k`. `secondCont : List ℤ → ℤ` — the trailing continuant (coefficient of
+  `a`), `secondCont (k::ks)=K(ks)`, `secondCont []=0`. The `0`-base is the precise
+  fix for the one-element continuant edge case.
+- `continuant_cons` — the UNIFIED single-step recurrence
+  `K(k::ks) = k·K(ks) − secondCont ks`, holding in *every* case (the naive "two
+  shorter tails" form wrongly gives `k−1` at `ks=[]`; `secondCont []=0` repairs it).
+- `stepSeq a c ks` — the iterated §9 successor, applying `tₘ₊₁=kₘ·tₘ−tₘ₋₁` once
+  per quotient in `ks`.
+- `stepSeq_eq_continuant` (**headline**) — the closed form
+  `stepSeq a c ks = K(ks)·c − secondCont(ks)·a`, proved by induction on `ks`
+  (the §13-targeted general term formula). Collapses `e=k·c−a`,
+  `g=(k₁k₂−1)·c−k₂·a`, `i=(k₁k₂k₃−k₁−k₃)·c−(k₂k₃−1)·a` into one line.
+- `endpoint_window` — the general endpoint product factors as
+  `(a−pₘ)(b−qₘ) = ((1+secondCont ks)a − K·c)·((1+secondCont ks)b − K·d)`.
+- `simOrd_run_iff` (**headline**) — a length-`(|ks|+1)` run's endpoints `a/b, p/q`
+  (`p=stepSeq a c ks`, `q=stepSeq b d ks`) are similarly ordered **iff** that one
+  continuant-controlled window is `≥ 0`. The run-length criterion as a continuant
+  positivity condition — the structural form the §13 Next Action called for.
+- Ladder/subsumption checks: `continuant_two/_three`, `secondCont_one/_two/_three`
+  reproduce the §11/§12/§13 constants `1,k,k₁k₂−1,k₁k₂k₃−k₁−k₃` and coefficients
+  `1,k₂,k₂k₃−1`; `endpoint_window_one/_two/_three` prove the general window
+  *literally specializes* to the §11 `(2a−kc)`, §12 `((k₂+1)a−(k₁k₂−1)c)`, §13
+  `(k₂k₃·a−(k₁k₂k₃−k₁−k₃)c)` windows at `|ks|=1,2,3`.
+
+File: 1146 → 1317 lines, 57 → 71 theorems, 2 → 5 defs.
+
+**Honest boundary (unchanged).** This is the structural run criterion; it does
+*not* bound the density of `k`-values for which the windows hold, which is the
+actual `1/12`–`1/4` optimization. What §14 buys is that the optimization is now a
+single quantified statement (continuant positivity over a quotient list) rather
+than an unbounded family of per-length inequalities.
+
 ## Next Action
 
-Generalize the continuant pattern to arbitrary run length by induction over a
-list of quotients `[k₁,…,kₘ]`: the §11/§12/§13 ladder shows the m-th term is
-`tₘ = K(k₁,…,k_{m−1})·c − K(k₂,…,k_{m−1})·a` (continuant coefficients), so the
-endpoint window is `((1+K(k₂..))·a − K(k₁..)·c)·(…) ≥ 0`. A Lean `Continuant`
-definition with the recurrence `K(k :: ks) = k·K(ks) − K(ks.tail)` plus the
-matrix-product identity would convert the per-length explicit lemmas into ONE
-general statement — the run-length criterion as a continuant positivity
-condition, the structural form needed before bounding the `1/12` density.
+Bound the *density* side. With `simOrd_run_iff` the run-length criterion is a
+continuant positivity condition `((1+secondCont ks)a − K(ks)c)·(…) ≥ 0` over a
+quotient list `ks`. Two concrete next Lean targets: (1) **continuant positivity /
+monotonicity** — prove `K(ks) ≥ 1` (and `secondCont ks ≥ 0`) for all-`≥1`
+quotient lists by induction on `continuant_cons`, certifying the windows' sign
+structure; (2) **a "no long all-`k=1` run" or "break forced by a large quotient"
+lemma** — characterize, via the continuant, which quotient lists keep ALL
+non-adjacent windows nonnegative, isolating the extremal configurations that a
+density count toward `1/12` must sum over. The continuant matrix identity
+`[[k,−1],[1,0]]` product would give `K` a determinant/Cassini handle.
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 4
+- Total attempts: 5
+- Current approach attempts: 5
 - Approaches tried: 1

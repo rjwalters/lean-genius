@@ -1143,4 +1143,175 @@ theorem simOrd_quint {a b c d e f g h i j k₁ k₂ k₃ : ℕ}
            (simOrd_long_iff hg hhd hi hjf).mpr c5,
            (simOrd_long3_iff he hfb hg hhd hi hjf).mpr c6⟩
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 14: The continuant — the run-length criterion for *every* length
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 11–§ 13 computed the long-range obstruction of runs of length 3, 4, 5 one at a
+time, and each was governed by a rung of the same ladder of polynomials in the
+successor quotients:
+
+  `K() = 1`,  `K(k) = k`,  `K(k₁,k₂) = k₁k₂ − 1`,  `K(k₁,k₂,k₃) = k₁k₂k₃ − k₁ − k₃`.
+
+These are the **continuant** polynomials — the order-side shadow of the §9
+numerator/denominator recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁` (`x` runs over the Farey
+numerators or denominators).  This section replaces the per-length lemmas by ONE
+statement valid for runs of arbitrary length, by
+
+1. defining `Continuant : List ℤ → ℤ` with the head-recurrence
+   `K(k₁ :: k₂ :: ks) = k₁·K(k₂ :: ks) − K(ks)`;
+2. defining the iterated successor `stepSeq a c ks`, which applies the §9
+   recurrence once per quotient in `ks` to the consecutive pair `(a, c)`;
+3. proving the **closed form** `stepSeq a c ks = K(ks)·c − secondCont(ks)·a`
+   (`stepSeq_eq_continuant`) by induction on `ks`; and
+4. reading off the general endpoint window
+   `(a − pₘ)·(b − qₘ) = ((1+secondCont ks)·a − K·c)·((1+secondCont ks)·b − K·d)`
+   (`endpoint_window`), so a run's endpoints are similarly ordered iff that
+   single continuant-controlled product is `≥ 0` (`simOrd_run_iff`).
+
+The §11/§12/§13 windows `(2a−kc)`, `((k₂+1)a−(k₁k₂−1)c)`,
+`(k₂k₃·a−(k₁k₂k₃−k₁−k₃)c)` are exactly the cases `|ks| = 1, 2, 3` — verified by
+`continuant_two`, `continuant_three` and `secondCont_*` below.  This is the
+structural form (run-length criterion as a continuant positivity condition) that
+a density argument toward the `1/12` constant would have to control; the constant
+itself remains open.
+-/
+
+/-- The (minus-sign) **continuant** of a list of quotients, with the
+head-two-element recurrence `K(k₁ :: k₂ :: ks) = k₁·K(k₂ :: ks) − K(ks)` and
+bases `K([]) = 1`, `K([k]) = k`.  This is the polynomial governing the §9
+recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁`; its first rungs are the §11/§12/§13 controlling
+constants `1, k, k₁k₂−1, k₁k₂k₃−k₁−k₃`. -/
+def Continuant : List ℤ → ℤ
+  | [] => 1
+  | [k] => k
+  | k₁ :: k₂ :: ks => k₁ * Continuant (k₂ :: ks) - Continuant ks
+
+/-- The **trailing continuant** — the coefficient of `a` in the closed form for
+the iterated successor.  `secondCont (k :: ks) = K(ks)`, and `secondCont [] = 0`
+(the empty list is the base term `c`, carrying no `a`-contribution).  This
+`0`-base is what fixes the one-element edge case of the continuant recurrence. -/
+def secondCont : List ℤ → ℤ
+  | [] => 0
+  | _ :: ks => Continuant ks
+
+/-- `Continuant` obeys the single-step recurrence
+`K(k :: ks) = k·K(ks) − secondCont ks` in *every* case.  For `ks = []` this reads
+`K([k]) = k·1 − 0 = k`; the `secondCont [] = 0` convention is exactly what makes
+the one-element case agree with the general recurrence (a naive "two shorter
+tails" form would wrongly give `k − 1`). -/
+theorem continuant_cons (k : ℤ) (ks : List ℤ) :
+    Continuant (k :: ks) = k * Continuant ks - secondCont ks := by
+  cases ks with
+  | nil => simp [Continuant, secondCont]
+  | cons r rs => simp [Continuant, secondCont]
+
+/-- The **iterated successor term**.  Starting from consecutive numerators (or
+denominators) `t₀ = a`, `t₁ = c`, `stepSeq a c ks` applies the §9 recurrence
+`tₘ₊₁ = kₘ·tₘ − tₘ₋₁` once per quotient in `ks`, returning the final term
+`t_{|ks|+1}`.  (E.g. `stepSeq a c [k] = k·c − a` is the §9/§11 successor `e`.) -/
+def stepSeq (a c : ℤ) : List ℤ → ℤ
+  | [] => c
+  | k :: ks => stepSeq c (k * c - a) ks
+
+/-- **Continuant closed form for the iterated successor (headline).**  The term
+reached after applying the quotient list `ks` to a consecutive pair `(a, c)` is
+`stepSeq a c ks = K(ks)·c − secondCont(ks)·a`.  This collapses the per-length
+explicit formulas of §11/§12/§13 — `e = k·c − a`, `g = (k₁k₂−1)·c − k₂·a`,
+`i = (k₁k₂k₃−k₁−k₃)·c − (k₂k₃−1)·a` — into a single statement, valid for runs of
+*every* length, with the controlling coefficients reading off the continuant
+ladder. -/
+theorem stepSeq_eq_continuant (ks : List ℤ) (a c : ℤ) :
+    stepSeq a c ks = Continuant ks * c - secondCont ks * a := by
+  induction ks generalizing a c with
+  | nil => simp [stepSeq, Continuant, secondCont]
+  | cons k rest ih =>
+    rw [stepSeq, ih c (k * c - a), continuant_cons k rest]
+    simp only [secondCont]
+    ring
+
+/-- **General endpoint window (run of arbitrary length).**  Running `|ks|`
+successor steps from the consecutive numerator pair `(a, c)` and denominator pair
+`(b, d)` reaches endpoint numerator `pₘ = stepSeq a c ks` and denominator
+`qₘ = stepSeq b d ks`, and the §10/§11 product `(a − pₘ)·(b − qₘ)` factors as
+`((1+secondCont ks)·a − K·c)·((1+secondCont ks)·b − K·d)` with `K = Continuant ks`.
+So the endpoints of a length-`(|ks|+1)` run are similarly ordered iff this one
+continuant-controlled product is nonnegative — the §11/§12/§13 windows being
+`|ks| = 1, 2, 3`. -/
+theorem endpoint_window (ks : List ℤ) (a b c d : ℤ) :
+    (a - stepSeq a c ks) * (b - stepSeq b d ks)
+      = ((1 + secondCont ks) * a - Continuant ks * c)
+        * ((1 + secondCont ks) * b - Continuant ks * d) := by
+  rw [stepSeq_eq_continuant, stepSeq_eq_continuant]; ring
+
+/-- **General run endpoint criterion.**  If a `|ks|`-step run from `a/b, c/d`
+reaches endpoint `p/q` with `(p : ℤ) = stepSeq a c ks` and `(q : ℤ) = stepSeq b d ks`,
+then the endpoints `a/b, p/q` are similarly ordered **iff** the continuant window
+`((1+secondCont ks)·a − K·c)·((1+secondCont ks)·b − K·d) ≥ 0` holds, where
+`K = Continuant ks`.  Specializing `ks = [k]`, `[k₁,k₂]`, `[k₁,k₂,k₃]` recovers
+`simOrd_outer_iff`, `simOrd_long_iff`, `simOrd_long3_iff` respectively. -/
+theorem simOrd_run_iff {a b c d p q : ℕ} {ks : List ℤ}
+    (hp : (p : ℤ) = stepSeq (a : ℤ) (c : ℤ) ks)
+    (hq : (q : ℤ) = stepSeq (b : ℤ) (d : ℤ) ks) :
+    SimOrd a b p q ↔
+      ((1 + secondCont ks) * (a : ℤ) - Continuant ks * (c : ℤ))
+        * ((1 + secondCont ks) * (b : ℤ) - Continuant ks * (d : ℤ)) ≥ 0 := by
+  rw [simOrd_iff_prod, hp, hq, endpoint_window]
+
+-- The continuant ladder: rungs 0–3 are the §11/§12/§13 controlling constants.
+
+/-- Rung 0: `K([]) = 1`. -/
+theorem continuant_nil : Continuant [] = 1 := rfl
+
+/-- Rung 1: `K([k]) = k` — the §11 single-step depth. -/
+theorem continuant_one (k : ℤ) : Continuant [k] = k := rfl
+
+/-- Rung 2: `K([k₁,k₂]) = k₁k₂ − 1` — the §12 Stern–Brocot product. -/
+theorem continuant_two (k₁ k₂ : ℤ) : Continuant [k₁, k₂] = k₁ * k₂ - 1 := by
+  simp [continuant_cons, continuant_nil, secondCont]
+
+/-- Rung 3: `K([k₁,k₂,k₃]) = k₁k₂k₃ − k₁ − k₃` — the §13 continuant. -/
+theorem continuant_three (k₁ k₂ k₃ : ℤ) :
+    Continuant [k₁, k₂, k₃] = k₁ * k₂ * k₃ - k₁ - k₃ := by
+  rw [continuant_cons, continuant_two]; simp [secondCont, continuant_one]; ring
+
+/-- Trailing continuant, rung 1: `secondCont [k] = 1` — the §11 coefficient of `a`
+(`e = k·c − 1·a`). -/
+theorem secondCont_one (k : ℤ) : secondCont [k] = 1 := rfl
+
+/-- Trailing continuant, rung 2: `secondCont [k₁,k₂] = k₂` — the §12 coefficient of
+`a` (`g = (k₁k₂−1)·c − k₂·a`). -/
+theorem secondCont_two (k₁ k₂ : ℤ) : secondCont [k₁, k₂] = k₂ := rfl
+
+/-- Trailing continuant, rung 3: `secondCont [k₁,k₂,k₃] = k₂k₃ − 1` — the §13
+coefficient of `a` (`i = (k₁k₂k₃−k₁−k₃)·c − (k₂k₃−1)·a`). -/
+theorem secondCont_three (k₁ k₂ k₃ : ℤ) : secondCont [k₁, k₂, k₃] = k₂ * k₃ - 1 := by
+  simp [secondCont, continuant_two]
+
+/-- **Subsumption check (length-3 / §11).**  The general endpoint window at
+`ks = [k]` is exactly the §11 outer window `(2a − k·c)·(2b − k·d)`: with one step
+`p = stepSeq a c [k] = k·c − a`, so `a − p = 2a − k·c`. -/
+theorem endpoint_window_one (k a b c d : ℤ) :
+    (a - stepSeq a c [k]) * (b - stepSeq b d [k])
+      = (2 * a - k * c) * (2 * b - k * d) := by
+  rw [endpoint_window, secondCont_one, continuant_one]; ring
+
+/-- **Subsumption check (length-4 / §12).**  At `ks = [k₁,k₂]` the general window
+is the §12 long window `((k₂+1)a − (k₁k₂−1)c)·((k₂+1)b − (k₁k₂−1)d)`. -/
+theorem endpoint_window_two (k₁ k₂ a b c d : ℤ) :
+    (a - stepSeq a c [k₁, k₂]) * (b - stepSeq b d [k₁, k₂])
+      = ((k₂ + 1) * a - (k₁ * k₂ - 1) * c)
+        * ((k₂ + 1) * b - (k₁ * k₂ - 1) * d) := by
+  rw [endpoint_window, secondCont_two, continuant_two]; ring
+
+/-- **Subsumption check (length-5 / §13).**  At `ks = [k₁,k₂,k₃]` the general
+window is the §13 continuant window
+`(k₂k₃·a − (k₁k₂k₃−k₁−k₃)c)·(k₂k₃·b − (k₁k₂k₃−k₁−k₃)d)`. -/
+theorem endpoint_window_three (k₁ k₂ k₃ a b c d : ℤ) :
+    (a - stepSeq a c [k₁, k₂, k₃]) * (b - stepSeq b d [k₁, k₂, k₃])
+      = ((k₂ * k₃) * a - (k₁ * k₂ * k₃ - k₁ - k₃) * c)
+        * ((k₂ * k₃) * b - (k₁ * k₂ * k₃ - k₁ - k₃) * d) := by
+  rw [endpoint_window, secondCont_three, continuant_three]; ring
+
 end Erdos1005OQ02
