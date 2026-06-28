@@ -41,18 +41,30 @@ what `hall_lift_of_coprime` below proves.
 | `hall_lift_of_coprime` | If `N ⊴ G`, `gcd(\|N\|, d) = 1`, and `G/N` has a subgroup of order `d`, then so does `G` | Proved (0 axioms) |
 | `hall_lift_of_coprime_subgroup` | The lifted subgroup can be taken inside the preimage of the quotient subgroup | Proved (0 axioms) |
 | `schur_zassenhaus_available` | Restatement of Mathlib's Schur–Zassenhaus, witnessing it exists | Proved (0 axioms) |
+| `exists_minimal_normal` | Every nontrivial finite group has a minimal nontrivial normal subgroup | Proved (0 axioms) |
+| `exists_minimal_normal_atom` | …stated as an atom in the normal-subgroup lattice | Proved (0 axioms) |
+| `minimal_normal_abelian_of_solvable` | A minimal normal subgroup of a solvable group is abelian | Proved (0 axioms) |
+| `exists_abelian_minimal_normal` | A nontrivial finite solvable group has an abelian minimal normal subgroup | Proved (0 axioms) |
 
-## The remaining gap (for a full 0-axiom Hall theorem)
+## Status of the remaining gap (for a full 0-axiom Hall theorem)
 
-The induction also has a branch where `p ∣ d` (the prime dividing the minimal
-normal subgroup `N` also divides `d`). Closing that branch needs:
-* existence of a *minimal* normal subgroup of a nontrivial finite group, and
-* the fact that in a *solvable* group such a subgroup is elementary abelian.
+The induction has a branch where `p ∣ d` (the prime dividing the minimal normal
+subgroup `N` also divides `d`). The parent entry flagged two missing Mathlib
+ingredients for it; **both are now supplied in this file with 0 axioms**:
 
-Neither is in Mathlib 4.26. With those, `hall_lift_of_coprime` (this file) plus
-the abelian base case (`lagrange-theorem-oq-03`'s `abelian_hall_exists`) and the
-cyclic/prime cases (the parent) would assemble into a 0-axiom proof of
-`hall_solvable`.
+* existence of a *minimal* normal subgroup of a nontrivial finite group
+  (`exists_minimal_normal` / `exists_minimal_normal_atom`, Part II), and
+* the fact that in a *solvable* group such a subgroup is **abelian**
+  (`minimal_normal_abelian_of_solvable`, Part III), assembled as
+  `exists_abelian_minimal_normal`.
+
+What is left for the *elementary*-abelian sharpening is only that an abelian
+minimal normal subgroup is a `p`-group — its `p`-torsion is characteristic, hence
+normal, hence (by minimality) all of `N`. That is a refinement of the abelian
+result above, not a new obstruction. With Part I (the lifting step), the abelian
+base case (`lagrange-theorem-oq-03`'s `abelian_hall_exists`), and these descent
+ingredients, the pieces of a 0-axiom `hall_solvable` are in place; what remains is
+the bookkeeping of the induction itself.
 
 ## References
 - Hall, P. (1928), "A note on soluble groups", J. London Math. Soc.
@@ -154,7 +166,114 @@ theorem hall_lift_of_coprime [Finite G] (N : Subgroup G) [N.Normal]
   exact ⟨K, hK⟩
 
 -- ============================================================
--- Part II: Sanity specializations
+-- Part II: Existence of a minimal normal subgroup
+-- ============================================================
+--
+-- This is the first of the two structural inputs the parent entry flagged as
+-- missing from Mathlib (the other being "minimal normal ⇒ elementary abelian in
+-- the solvable case", handled in Part III). Hall's induction, in the branch where
+-- the relevant prime divides the target order `d`, needs a *minimal* normal
+-- subgroup to descend along. Mathlib 4.26 has no such existence theorem; we supply
+-- it with 0 axioms.
+
+/-- In a finite group, a subgroup contained in another of no-smaller cardinality
+must equal it. (Antisymmetry of `≤` forced by finite cardinality.) -/
+private theorem eq_of_le_of_card_le [Finite G] {M N : Subgroup G}
+    (hle : M ≤ N) (hcard : Nat.card N ≤ Nat.card M) : M = N := by
+  apply SetLike.coe_injective
+  refine Set.eq_of_subset_of_ncard_le hle ?_ (Set.toFinite _)
+  simpa only [Nat.card_coe_set_eq] using hcard
+
+/-- **Existence of a minimal normal subgroup.** Every nontrivial finite group `G`
+has a normal subgroup `N ≠ ⊥` that is minimal among nontrivial normal subgroups:
+any normal `M` with `M ≤ N` and `M ≠ ⊥` already equals `N`. This is the
+structural ingredient (beyond the Schur–Zassenhaus lifting step of Part I) that
+Hall's induction uses to handle the branch where the prime dividing the chosen
+minimal normal subgroup also divides the target order. Mathlib 4.26 has no such
+theorem; proved here with 0 axioms by minimizing `Nat.card` over the finite,
+nonempty (`⊤` qualifies) collection of nontrivial normal subgroups. -/
+theorem exists_minimal_normal [Finite G] [Nontrivial G] :
+    ∃ N : Subgroup G, N.Normal ∧ N ≠ ⊥ ∧
+      ∀ M : Subgroup G, M.Normal → M ≤ N → M ≠ ⊥ → M = N := by
+  haveI : Nontrivial (Subgroup G) := Subgroup.nontrivial_iff.mpr inferInstance
+  -- The subtype of nontrivial normal subgroups is finite and nonempty (`⊤`).
+  haveI : Nonempty {N : Subgroup G // N.Normal ∧ N ≠ ⊥} :=
+    ⟨⟨⊤, inferInstance, top_ne_bot⟩⟩
+  -- Pick one of minimal order.
+  obtain ⟨⟨N, hNnorm, hNne⟩, hmin⟩ :=
+    Finite.exists_min
+      (fun s : {N : Subgroup G // N.Normal ∧ N ≠ ⊥} => Nat.card (s.1 : Subgroup G))
+  refine ⟨N, hNnorm, hNne, ?_⟩
+  intro M hMnorm hMle hMne
+  -- `M` is itself a nontrivial normal subgroup, so minimality gives `|N| ≤ |M|`.
+  have hge : Nat.card N ≤ Nat.card M := hmin ⟨M, hMnorm, hMne⟩
+  -- Combined with `M ≤ N`, finite cardinality forces `M = N`.
+  exact eq_of_le_of_card_le hMle hge
+
+/-- Restatement of `exists_minimal_normal` as an *atom* in the lattice of normal
+subgroups: a minimal normal subgroup `N` has, below it, no normal subgroup other
+than `⊥` and `N` itself. -/
+theorem exists_minimal_normal_atom [Finite G] [Nontrivial G] :
+    ∃ N : Subgroup G, N.Normal ∧ N ≠ ⊥ ∧
+      ∀ M : Subgroup G, M.Normal → M ≤ N → M = ⊥ ∨ M = N := by
+  obtain ⟨N, hNnorm, hNne, hmin⟩ := exists_minimal_normal (G := G)
+  refine ⟨N, hNnorm, hNne, fun M hMnorm hMle => ?_⟩
+  by_cases hM : M = ⊥
+  · exact Or.inl hM
+  · exact Or.inr (hmin M hMnorm hMle hM)
+
+-- ============================================================
+-- Part III: A minimal normal subgroup of a solvable group is abelian
+-- ============================================================
+--
+-- This closes the *second* structural gap the parent entry flagged. Together with
+-- Part II it gives the full descent target for Hall's induction: a nontrivial
+-- finite solvable group has an abelian minimal normal subgroup to factor out.
+
+/-- **A minimal normal subgroup of a solvable group is abelian.** If `N ⊴ G` is
+nontrivial and minimal among normal subgroups (every normal `M ≤ N` is `⊥` or
+`N`), and `G` is solvable, then `N` is abelian: any two of its elements commute.
+
+Proof: the commutator subgroup `⁅N, N⁆` is normal in `G` (commutator of normal
+subgroups) and, since `G` is solvable and `N ≠ ⊥`, strictly smaller than `N`
+(`IsSolvable.commutator_lt_of_ne_bot`). Minimality then forces `⁅N, N⁆ = ⊥`,
+i.e. every commutator of elements of `N` is trivial. Mathlib 4.26 has the
+solvable-commutator descent but not this minimal-normal consequence. -/
+theorem minimal_normal_abelian_of_solvable [IsSolvable G]
+    (N : Subgroup G) [N.Normal] (hNne : N ≠ ⊥)
+    (hmin : ∀ M : Subgroup G, M.Normal → M ≤ N → M = ⊥ ∨ M = N) :
+    ∀ a ∈ N, ∀ b ∈ N, a * b = b * a := by
+  -- `⁅N, N⁆` is normal in `G` and strictly below `N` (solvable, `N ≠ ⊥`).
+  have hlt : ⁅N, N⁆ < N := IsSolvable.commutator_lt_of_ne_bot hNne
+  -- Minimality: the only normal subgroup strictly below `N` is `⊥`.
+  have hbot : ⁅N, N⁆ = ⊥ := by
+    rcases hmin ⁅N, N⁆ inferInstance hlt.le with h | h
+    · exact h
+    · exact absurd h hlt.ne
+  -- `⁅N, N⁆ = ⊥` says every commutator of elements of `N` is trivial.
+  intro a ha b hb
+  have hmem : ⁅a, b⁆ ∈ (⊥ : Subgroup G) :=
+    Subgroup.commutator_le.mp hbot.le a ha b hb
+  rw [Subgroup.mem_bot, commutatorElement_eq_one_iff_mul_comm] at hmem
+  exact hmem
+
+/-- **A nontrivial finite solvable group has an abelian minimal normal subgroup.**
+The combined descent target for Hall's induction: a normal `N ≠ ⊥` that is an atom
+in the normal-subgroup lattice (Part II) and is abelian (Part III). This is the
+ingredient the parent entry axiomatized away; it is now assembled with 0 axioms.
+What remains for a full elementary-abelian conclusion is only that an abelian
+minimal normal subgroup is a `p`-group (its `p`-torsion is characteristic, hence
+normal, hence all of `N` by minimality) — a refinement, not a new obstruction. -/
+theorem exists_abelian_minimal_normal [Finite G] [Nontrivial G] [IsSolvable G] :
+    ∃ N : Subgroup G, N.Normal ∧ N ≠ ⊥ ∧
+      (∀ M : Subgroup G, M.Normal → M ≤ N → M = ⊥ ∨ M = N) ∧
+      (∀ a ∈ N, ∀ b ∈ N, a * b = b * a) := by
+  obtain ⟨N, hNnorm, hNne, hatom⟩ := exists_minimal_normal_atom (G := G)
+  haveI := hNnorm
+  exact ⟨N, hNnorm, hNne, hatom, minimal_normal_abelian_of_solvable N hNne hatom⟩
+
+-- ============================================================
+-- Part IV: Sanity specializations
 -- ============================================================
 
 /-- Degenerate check: when `N` is trivial, the lift is the identity — a subgroup
