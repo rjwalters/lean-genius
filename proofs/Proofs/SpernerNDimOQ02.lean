@@ -1218,4 +1218,155 @@ theorem gridVertices_finset_injective (hd : 2 ≤ d) :
       = ↑(Finset.univ.image (gridVertices t)) := by rw [h']
   simpa only [Finset.coe_image, Finset.coe_univ, Set.image_univ] using hcoe
 
+-- ============================================================
+-- SECTION: GridSimplex-direct facet combinatorics (`d ≥ 2`)
+-- ============================================================
+-- The facet section above (`facet`, `facet_injective`,
+-- `canon_eq_of_facet_and_vertex`, `facet_unique_neighbor`, …) is stated
+-- over the `CanonSimplex` carrier, whose existence failure for `d ≥ 2`
+-- (`SpernerNDimOQ02Obstruction.sBad_no_canon_rep`) makes it unsound as the
+-- door-counting carrier.  This section re-points the same combinatorics at the
+-- repaired `GridSimplex`-direct carrier, citing `gridVertices`,
+-- `gridVertices_injective`, and `grid_eq_of_vertices_range hd` in place of
+-- `vertices`, `vertices_injective`, and `canon_eq_of_vertices_range`.  The
+-- proofs are otherwise identical to the `CanonSimplex` versions — the carrier
+-- swap is the whole content.  The crux is `gridFacet_unique_neighbor` (the
+-- `adj_unique_facet` obligation: a neighbour is glued across at most one facet),
+-- now sound because no cell is omitted.  All 0-sorry; the `d ≥ 2` hypothesis
+-- enters only through `grid_eq_of_vertices_range`.
+
+/-- The `k`-th **facet** of a grid simplex on the `GridSimplex`-direct carrier:
+delete vertex `k`, push the rest through the Kuhn bridge.  GridSimplex analogue
+of `facet`. -/
+def gridFacet (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    Finset (SpernerNDim.Vertex d N) :=
+  (Finset.univ.erase k).image (gridVertices s)
+
+/-- Membership in a grid facet: a Kuhn vertex lies on `gridFacet s k` exactly
+when it is the image of some vertex `j ≠ k`. -/
+theorem mem_gridFacet_iff (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1))
+    (v : SpernerNDim.Vertex d N) :
+    v ∈ gridFacet s k ↔ ∃ j : Fin (d + 1), j ≠ k ∧ gridVertices s j = v := by
+  simp only [gridFacet, Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true]
+
+/-- The deleted vertex is absent from its own grid facet. -/
+theorem gridVertices_not_mem_gridFacet (s : SpernerGrid.GridSimplex d N)
+    (k : Fin (d + 1)) : gridVertices s k ∉ gridFacet s k := by
+  rw [mem_gridFacet_iff]
+  rintro ⟨j, hjk, hj⟩
+  exact hjk (gridVertices_injective s hj)
+
+/-- Each grid facet carries exactly `d` vertices. -/
+theorem gridFacet_card (s : SpernerGrid.GridSimplex d N) (k : Fin (d + 1)) :
+    (gridFacet s k).card = d := by
+  rw [gridFacet, Finset.card_image_of_injective _ (gridVertices_injective s),
+    Finset.card_erase_of_mem (Finset.mem_univ k), Finset.card_univ, Fintype.card_fin]
+  omega
+
+/-- **The `d + 1` grid facets of a single cell are distinct.**  GridSimplex
+analogue of `facet_injective`; the within-cell half of `adj_unique_facet`. -/
+theorem gridFacet_injective (s : SpernerGrid.GridSimplex d N) :
+    Function.Injective (gridFacet s) := by
+  intro k₁ k₂ h
+  by_contra hne
+  have hmem : gridVertices s k₁ ∈ gridFacet s k₂ :=
+    (mem_gridFacet_iff s k₂ _).mpr ⟨k₁, hne, rfl⟩
+  rw [← h] at hmem
+  exact gridVertices_not_mem_gridFacet s k₁ hmem
+
+/-- The full vertex set of a grid cell is its `k`-th grid facet plus the deleted
+vertex `gridVertices s k`.  GridSimplex analogue of
+`image_univ_eq_insert_facet`. -/
+theorem gridImage_univ_eq_insert_gridFacet (s : SpernerGrid.GridSimplex d N)
+    (k : Fin (d + 1)) :
+    Finset.univ.image (gridVertices s) = insert (gridVertices s k) (gridFacet s k) := by
+  rw [gridFacet, ← Finset.image_insert, Finset.insert_erase (Finset.mem_univ k)]
+
+/-- The grid cell's Finset vertex set coerces to the range of its vertex map.
+GridSimplex analogue of `coe_image_univ_vertices`. -/
+theorem gridCoe_image_univ_vertices (s : SpernerGrid.GridSimplex d N) :
+    (↑(Finset.univ.image (gridVertices s)) : Set (SpernerNDim.Vertex d N))
+      = Set.range (gridVertices s) := by
+  rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]
+
+/-- **A grid cell is determined by one facet and its opposite vertex (`d ≥ 2`).**
+GridSimplex analogue of `canon_eq_of_facet_and_vertex`, sound because no cell is
+omitted: both cells share the same full vertex set (facet ∪ {opposite vertex}),
+and `grid_eq_of_vertices_range hd` collapses that to cell equality. -/
+theorem grid_eq_of_facet_and_vertex (hd : 2 ≤ d) {s t : SpernerGrid.GridSimplex d N}
+    {k l : Fin (d + 1)}
+    (hface : gridFacet s k = gridFacet t l)
+    (hvert : gridVertices s k = gridVertices t l) : s = t := by
+  apply grid_eq_of_vertices_range hd
+  rw [← gridCoe_image_univ_vertices s, ← gridCoe_image_univ_vertices t,
+    gridImage_univ_eq_insert_gridFacet s k, gridImage_univ_eq_insert_gridFacet t l,
+    hface, hvert]
+
+/-- Two distinct grid facets of a cell union to all its vertices.  GridSimplex
+analogue of `facet_union_facet`. -/
+theorem gridFacet_union_gridFacet (s : SpernerGrid.GridSimplex d N)
+    {k₁ k₂ : Fin (d + 1)} (h : k₁ ≠ k₂) :
+    gridFacet s k₁ ∪ gridFacet s k₂ = Finset.univ.image (gridVertices s) := by
+  rw [gridFacet, gridFacet, ← Finset.image_union]
+  congr 1
+  apply Finset.eq_univ_of_forall
+  intro a
+  rw [Finset.mem_union, Finset.mem_erase, Finset.mem_erase]
+  by_cases ha : a = k₁
+  · exact Or.inr ⟨ha ▸ h, Finset.mem_univ _⟩
+  · exact Or.inl ⟨ha, Finset.mem_univ _⟩
+
+/-- A grid cell has exactly `d + 1` distinct Kuhn vertices.  GridSimplex
+analogue of `image_univ_card`. -/
+theorem gridImage_univ_card (s : SpernerGrid.GridSimplex d N) :
+    (Finset.univ.image (gridVertices s)).card = d + 1 := by
+  rw [Finset.card_image_of_injective _ (gridVertices_injective s), Finset.card_univ,
+    Fintype.card_fin]
+
+/-- **At most one neighbour across a grid facet (`adj_unique_facet`, `d ≥ 2`).**
+If a cell `s` shares two facets with the same other cell `t` (`s ≠ t`), then the
+two facet indices coincide.  GridSimplex analogue of `facet_unique_neighbor`,
+sound on the repaired carrier: the two distinct facets of `s` union to all of
+`s`'s vertices while both lie in `t`'s vertex set; equal cardinalities force
+equal vertex sets, and `grid_eq_of_vertices_range hd` gives `s = t`,
+contradicting `s ≠ t`. -/
+theorem gridFacet_unique_neighbor (hd : 2 ≤ d) {s t : SpernerGrid.GridSimplex d N}
+    {k₁ k₂ l₁ l₂ : Fin (d + 1)} (hne : s ≠ t)
+    (h₁ : gridFacet s k₁ = gridFacet t l₁) (h₂ : gridFacet s k₂ = gridFacet t l₂) :
+    k₁ = k₂ := by
+  by_contra hk
+  have hs : Finset.univ.image (gridVertices s) = gridFacet s k₁ ∪ gridFacet s k₂ :=
+    (gridFacet_union_gridFacet s hk).symm
+  have hsub : Finset.univ.image (gridVertices s) ⊆ Finset.univ.image (gridVertices t) := by
+    rw [hs, h₁, h₂]
+    apply Finset.union_subset
+    · rw [gridFacet]; exact Finset.image_subset_image (Finset.erase_subset _ _)
+    · rw [gridFacet]; exact Finset.image_subset_image (Finset.erase_subset _ _)
+  have hcard :
+      (Finset.univ.image (gridVertices t)).card ≤ (Finset.univ.image (gridVertices s)).card := by
+    rw [gridImage_univ_card, gridImage_univ_card]
+  have heq : Finset.univ.image (gridVertices s) = Finset.univ.image (gridVertices t) :=
+    Finset.eq_of_subset_of_card_le hsub hcard
+  apply hne
+  apply grid_eq_of_vertices_range hd
+  rw [← gridCoe_image_univ_vertices s, ← gridCoe_image_univ_vertices t, heq]
+
+/-- **Global facet/opposite-vertex coherence (`d ≥ 2`).**  The pair
+`(gridFacet s k, gridVertices s k)` identifies both the cell `s` and the index
+`k` across the entire `GridSimplex` carrier.  GridSimplex analogue of
+`facet_vertex_injective`: the cross-cell direction (`grid_eq_of_facet_and_vertex`)
+collapses the cell, then the within-cell direction (`gridFacet_injective`)
+collapses the index.  The `(facet, opposite-vertex)` payload of an `adj` entry
+names at most one `(cell, facet)` slot. -/
+theorem gridFacet_vertex_injective (hd : 2 ≤ d) :
+    Function.Injective
+      (fun p : SpernerGrid.GridSimplex d N × Fin (d + 1) =>
+        (gridFacet p.1 p.2, gridVertices p.1 p.2)) := by
+  rintro ⟨s, k⟩ ⟨t, l⟩ h
+  simp only [Prod.mk.injEq] at h
+  obtain ⟨hface, hvert⟩ := h
+  obtain rfl : s = t := grid_eq_of_facet_and_vertex hd hface hvert
+  obtain rfl : k = l := gridFacet_injective s hface
+  rfl
+
 end SpernerNDimOQ02
