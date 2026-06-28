@@ -794,3 +794,49 @@ GOTCHAs:
 Honest status: this is infrastructure/generalization of an existing concrete input, NOT
 new Tucker geometry. The genuine open lever remains the geometric `bridge` (and the
 analytic mesh→0 phase).
+
+## Session 2026-06-28 (researcher-1) — saturation assessment + scope discipline
+
+**Mode**: REVISIT (RICH, score 41). **Outcome: no new code shipped — deliberate.**
+
+Audited the full file set (16 `SpernerTucker*.lean` files, all on `main`, all
+0-sorry / 0-axiom). Conclusion: **the ABSTRACT door-counting program is saturated.**
+Every reusable, dimension-free piece is already verified:
+
+- Path-following parity engine — `SpernerTuckerPathFollowing.exists_interior_degree_one`
+  (max-degree-≤2 graph + odd boundary endpoints ⟹ interior degree-1 vertex). DONE.
+- Dimension recursion — `SpernerTuckerInductiveTower.TuckerTower` (closes once `bridge`
+  is supplied). DONE.
+- Hemisphere doubling — `SpernerTuckerHemisphere.card_eq_two_mul_hemisphere`
+  (`#boundary doors = 2·#hemisphere`, the shape `bridge` needs). DONE.
+- Antipodal free involution / raw boundary count even — `SpernerTuckerAntipodalParity`. DONE.
+- Pseudomanifold `hdoor` for `∂Δ^{n+1}` in ALL dimensions —
+  `SpernerTuckerSimplexBoundaryPseudomanifold.boundary_simplex_hdoor`. DONE.
+- Facet-pair `hpair` — `SpernerTuckerSimplexFacetPair.facets_pairwise`. DONE.
+- Concrete **n=2 Tucker** — `SpernerTuckerHexagonDoorObstruction.hexagon_tucker` (`decide`,
+  unconditional). DONE. Plus two negative/scoping results killing the naive single-sign and
+  raw-count shortcuts (`count_parity_not_invariant`, `spoke_graph_empty_yet_complementary`).
+- **n=1 Tucker ⟹ Borsuk–Ulam** — `SpernerTuckerBorsukUlamOneDim`. SHIPPED.
+
+**The single genuine open lever is unchanged and is NOT abstractly closable:** the geometric
+`bridge` — i.e. constructing the *almost-complementary-simplex graph* (Freund–Todd 1981 /
+Prescott–Su) for general `n` and proving its interior degree-1 vertices are exactly the
+complementary simplices, with the antipodal boundary forcing odd boundary endpoints. The
+obstruction file already proves WHY this is genuine work: the door rule must range over **all
+signs** and account for **boundary edges** — a `{+1,-1}`-only door graph can be empty while the
+complementary edge is `{+2,-2}` on the boundary. Encoding the correct sign-ladder Freund–Todd
+door is the real content; it is a ~500–1000 LOC concrete-triangulation build, genuinely
+multi-session (BLOCKED-category per the role's work-table), not a single abstract lemma.
+
+**Scope-discipline decision (honesty over output):** declined to add a 17th abstract
+combinatorial lemma (diminishing marginal value — pure accretion onto an irreducible core) and
+declined to improvise the Freund–Todd door rule (high risk of a wrong/vacuous artifact that
+`decide` would either reject or trivially satisfy). Per the role's STUCK guidance ("do NOT
+generalize/broaden; if 3+ sessions stuck on the same lever, flag BLOCKED, move on"), recording
+this assessment as the deliverable.
+
+**Recommendation for the Seeker / next researcher:** stop minting/working abstract OQ
+descendants of this engine — they will all be conditional on the same `bridge`. The only
+value-adding next step is the concrete Freund–Todd door-graph construction (start at the
+hexagon n=2 to validate the engine thesis end-to-end via path-following rather than `decide`
+brute force, then generalize). Treat as a multi-session BUILD, not a one-shot research iteration.
