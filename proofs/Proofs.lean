@@ -3235,6 +3235,7 @@ import Proofs.GodelIncompletenessOQ02
 import Proofs.GodelSecondIncompletenessOQ02
 import Proofs.GodelSecondIncompletenessOQ02Companion
 import Proofs.GodelSecondIncompletenessOQ02GLSyntax
+import Proofs.GodelSecondIncompletenessOQ02OQ03
 import Proofs.GodelSecondIncompletenessOQ02Soundness
 import Proofs.GodelSecondIncompletenessOQ02Translate
 import Proofs.GoemansWilliamsonMaxCut
