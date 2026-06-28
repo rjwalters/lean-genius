@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-neighbour",
+    "proofId": "catalan-numbers-oq-05-oq-01",
+    "range": { "startLine": 41, "endLine": 57 },
+    "type": "theorem",
+    "title": "The Neighbour Coefficient C(2n,n+1) = n·catalan n",
+    "content": "`choose_two_mul_succ`: $\\binom{2n}{n+1} = n\\,C_n$. The Pascal step `choose_succ_right_eq` gives $\\binom{2n}{n+1}(n+1) = \\binom{2n}{n}(2n-n) = \\binom{2n}{n}\\,n$; substituting $\\binom{2n}{n} = (n+1)C_n$ (`succ_mul_catalan_eq_centralBinom`) and cancelling the common factor $(n+1)$ via `Nat.eq_of_mul_eq_mul_right` yields the result.",
+    "mathContext": "$\\binom{2n}{n+1} = n\\,C_n$.",
+    "significance": "critical",
+    "prerequisites": ["Nat.choose_succ_right_eq", "succ_mul_catalan_eq_centralBinom", "Cancellation"],
+    "relatedConcepts": ["Pascal's recurrence", "Central binomial coefficient"]
+  },
+  {
+    "id": "ann-difference",
+    "proofId": "catalan-numbers-oq-05-oq-01",
+    "range": { "startLine": 59, "endLine": 70 },
+    "type": "theorem",
+    "title": "Catalan as a Difference of Central Binomial Coefficients",
+    "content": "`catalan_eq_choose_sub`: $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, the base ballot number. With $\\binom{2n}{n} = (n+1)C_n$ and $\\binom{2n}{n+1} = nC_n$, the difference is $(n+1)C_n - nC_n = C_n$ — a genuine ℕ subtraction (the minuend dominates), discharged by `omega` given the ring identity $(n+1)C_n = nC_n + C_n$.",
+    "mathContext": "$C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$.",
+    "significance": "critical",
+    "prerequisites": ["choose_two_mul_succ", "succ_mul_catalan_eq_centralBinom", "omega"],
+    "relatedConcepts": ["Ballot numbers", "Catalan triangle", "Natural-number subtraction"]
+  },
+  {
+    "id": "ann-reflected",
+    "proofId": "catalan-numbers-oq-05-oq-01",
+    "range": { "startLine": 72, "endLine": 87 },
+    "type": "theorem",
+    "title": "The Reflected (Ballot-Number) Form",
+    "content": "`catalan_eq_choose_sub_symm`: $C_{n+1} = \\binom{2(n+1)}{n+1} - \\binom{2(n+1)}{n}$, using the binomial symmetry $\\binom{2(n+1)}{n+2} = \\binom{2(n+1)}{n}$ (`choose_symm`). This is the row-difference reading of the Catalan triangle. The statement is indexed at $n+1$ because the unshifted form with $n-1$ is false at $n=0$, where $n-1$ truncates to $0$ in ℕ.",
+    "mathContext": "$C_{n+1} = \\binom{2(n+1)}{n+1} - \\binom{2(n+1)}{n}$.",
+    "significance": "key",
+    "prerequisites": ["Nat.choose_symm", "catalan_eq_choose_sub"],
+    "relatedConcepts": ["Binomial symmetry", "Ballot numbers", "ℕ truncation"]
+  }
+]
