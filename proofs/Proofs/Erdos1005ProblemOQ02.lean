@@ -2031,4 +2031,129 @@ theorem continuant_replicate_one_abs_le_one (n : ℕ) :
     |Continuant (List.replicate n 1)| ≤ 1 := by
   rcases continuant_replicate_one_bounded n with h | h | h <;> rw [h] <;> decide
 
+/-! ## §22: The constant-quotient continuant — one recurrence, three growth regimes
+
+§20 and §21 computed the continuant of the two *extreme* constant lists: the
+all-`2` ladder grows **linearly** (`continuant_replicate_two`: `K = n + 1`) and the
+all-`1` orbit stays **bounded** (`continuant_replicate_one_abs_le_one`: `|K| ≤ 1`,
+period `6`).  Both are instances of a single statement: the continuant of the
+constant list `[k, k, …, k]` obeys the second-order linear recurrence
+
+  `K([k]^(n+2)) = k · K([k]^(n+1)) − K([k]^n)`,    `K([k]^0) = 1`,  `K([k]^1) = k`,
+
+the Chebyshev/Dickson recurrence with characteristic equation `x² − k x + 1 = 0`
+and roots `(k ± √(k² − 4)) / 2`.  The discriminant `k² − 4` fixes the regime:
+
+* `k = 1` — roots `e^{±iπ/3}` on the unit circle ⇒ **bounded, period `6`** (§21);
+* `k = 2` — double root `1` ⇒ **linear** `K = n + 1` (§20);
+* `k ≥ 3` — real roots, the larger `> 1` ⇒ **exponential** growth.
+
+This section proves the unifying recurrence and closes the missing third regime:
+for `k ≥ 2` the constant continuant is bounded below by `(k − 1)^n`, so for
+`k ≥ 3` it grows at least like `2^n` — the constant list is *not* metrically cheap
+once the common quotient exceeds `2`.  Together with §20/§21 this gives the full
+trichotomy of the constant-quotient continuant.
+
+Depends only on the §14 `continuant_cons` recurrence, §17 `continuant_pos`, and the
+§20-style `continuant_strict_mono`. -/
+
+/-- **The constant-quotient recurrence (headline).**  The continuant of the constant
+list `[k]^(n+2)` satisfies the second-order linear recurrence
+`K([k]^(n+2)) = k · K([k]^(n+1)) − K([k]^n)` — the order-side Chebyshev/Dickson
+recurrence `x² = k x − 1`.  Both §20 (`k = 2`, linear) and §21 (`k = 1`, period-`6`)
+are the discriminant-`0` and discriminant-`(−3)` instances of this single law. -/
+theorem continuant_replicate_recurrence (k : ℤ) (n : ℕ) :
+    Continuant (List.replicate (n + 2) k)
+      = k * Continuant (List.replicate (n + 1) k) - Continuant (List.replicate n k) := by
+  have e2 : List.replicate (n + 2) k = k :: k :: List.replicate n k := by
+    rw [List.replicate_succ, List.replicate_succ]
+  have e1 : List.replicate (n + 1) k = k :: List.replicate n k := by
+    rw [List.replicate_succ]
+  rw [e2, e1, continuant_cons]
+  simp only [secondCont]
+
+/-- **Strict monotonicity of the constant-quotient ladder (`k ≥ 2`).**  Appending one
+more quotient `k ≥ 2` strictly increases the constant continuant:
+`K([k]^n) < K([k]^(n+1))`.  Immediate from §20-style `continuant_strict_mono`, since
+every entry of `[k]^n` equals `k ≥ 2`. -/
+theorem continuant_replicate_mono {k : ℤ} (hk : (2 : ℤ) ≤ k) (n : ℕ) :
+    Continuant (List.replicate n k) < Continuant (List.replicate (n + 1) k) := by
+  rw [List.replicate_succ]
+  exact continuant_strict_mono hk
+    (fun j hj => by rw [List.eq_of_mem_replicate hj]; exact hk)
+
+/-- **Geometric step (`k ≥ 2`).**  Each step of the constant-quotient continuant
+multiplies by at least `k − 1`: `(k − 1) · K([k]^(n+1)) ≤ K([k]^(n+2))`.  From the
+recurrence `K([k]^(n+2)) = k·K([k]^(n+1)) − K([k]^n)`, this is exactly the
+monotonicity `K([k]^n) ≤ K([k]^(n+1))`.  For `k ≥ 3` the multiplier `k − 1 ≥ 2`
+forces genuine exponential growth. -/
+theorem continuant_replicate_geometric_step {k : ℤ} (hk : (2 : ℤ) ≤ k) (n : ℕ) :
+    (k - 1) * Continuant (List.replicate (n + 1) k)
+      ≤ Continuant (List.replicate (n + 2) k) := by
+  rw [continuant_replicate_recurrence]
+  have hm := continuant_replicate_mono hk n
+  have hexp : (k - 1) * Continuant (List.replicate (n + 1) k)
+      = k * Continuant (List.replicate (n + 1) k)
+        - Continuant (List.replicate (n + 1) k) := by ring
+  rw [hexp]
+  linarith [hm]
+
+/-- **Power lower bound (`k ≥ 2`).**  The constant-quotient continuant dominates the
+geometric sequence `(k − 1)^n`: `(k − 1)^n ≤ K([k]^(n+1))`.  By induction on the
+geometric step, starting from `K([k]^1) = k ≥ 1 = (k − 1)^0`.  This brackets the
+constant continuant from below to match the `K([k]^n) ≤ k^n` product ceiling. -/
+theorem continuant_replicate_pow_le {k : ℤ} (hk : (2 : ℤ) ≤ k) (n : ℕ) :
+    (k - 1) ^ n ≤ Continuant (List.replicate (n + 1) k) := by
+  induction n with
+  | zero =>
+    rw [pow_zero]
+    have h1 : List.replicate (0 + 1) k = [k] := rfl
+    rw [h1, continuant_one]; linarith
+  | succ m ih =>
+    have hk1 : (0 : ℤ) ≤ k - 1 := by linarith
+    calc (k - 1) ^ (m + 1)
+        = (k - 1) * (k - 1) ^ m := by ring
+      _ ≤ (k - 1) * Continuant (List.replicate (m + 1) k) :=
+            mul_le_mul_of_nonneg_left ih hk1
+      _ ≤ Continuant (List.replicate (m + 2) k) :=
+            continuant_replicate_geometric_step hk m
+
+/-- **The third regime — exponential growth (`k ≥ 3`, headline).**  Completing the
+constant-quotient trichotomy beyond §20 (linear, `k = 2`) and §21 (bounded, `k = 1`):
+for every common quotient `k ≥ 3` the continuant of `[k]^(n+1)` is at least `2^n`, so
+the constant-quotient run grows exponentially.  Hence the metric "cheapness" of long
+constant runs is special to `k ≤ 2`; raising the common quotient to `3` already makes
+the continuant — and therefore (via the §14 closed form) the Farey run endpoints —
+exponentially expensive. -/
+theorem continuant_replicate_exp_ge_two {k : ℤ} (hk : (3 : ℤ) ≤ k) (n : ℕ) :
+    (2 : ℤ) ^ n ≤ Continuant (List.replicate (n + 1) k) := by
+  have hk2 : (2 : ℤ) ≤ k := by linarith
+  induction n with
+  | zero =>
+    rw [pow_zero]
+    have h1 : List.replicate (0 + 1) k = [k] := rfl
+    rw [h1, continuant_one]; linarith
+  | succ m ih =>
+    have hstep := continuant_replicate_geometric_step hk2 m
+    have hpos : (0 : ℤ) ≤ Continuant (List.replicate (m + 1) k) :=
+      le_trans (by positivity) ih
+    calc (2 : ℤ) ^ (m + 1)
+        = 2 * (2 : ℤ) ^ m := by ring
+      _ ≤ 2 * Continuant (List.replicate (m + 1) k) :=
+            mul_le_mul_of_nonneg_left ih (by norm_num)
+      _ ≤ (k - 1) * Continuant (List.replicate (m + 1) k) :=
+            mul_le_mul_of_nonneg_right (by linarith) hpos
+      _ ≤ Continuant (List.replicate (m + 2) k) := hstep
+
+/-- **Recovering §20 from the recurrence (`k = 2`, sanity check).**  The all-`2`
+specialisation of `continuant_replicate_recurrence` is `K([2]^(n+2)) =
+2·K([2]^(n+1)) − K([2]^n)`, the constant-difference recurrence whose solution is the
+arithmetic ladder `n + 1` (`continuant_replicate_two`).  Stated as a consistency
+check that the §22 recurrence specialises correctly. -/
+theorem continuant_replicate_recurrence_two (n : ℕ) :
+    Continuant (List.replicate (n + 2) (2 : ℤ))
+      = 2 * Continuant (List.replicate (n + 1) (2 : ℤ))
+        - Continuant (List.replicate n (2 : ℤ)) :=
+  continuant_replicate_recurrence 2 n
+
 end Erdos1005OQ02

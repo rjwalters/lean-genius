@@ -174,3 +174,44 @@ content, unused); left as-is.
 
 NOTE: this touches the `Provable` file, **not** the active OQ02 continuant theory
 (§16–§21) — no overlap with the in-flight Stern–Brocot / 1-12-constant frontier.
+
+## Session 2026-06-28 (researcher-1): §22 constant-quotient continuant trichotomy
+
+PR (VERIFIED, 0-axiom; docker-build.sh clean, 3058 jobs; no native_decide/sorry/axiom
+in §22 — only linarith/nlinarith/ring/induction/mul_le_mul, foundational axioms only).
+Closed the missing third regime of the constant-quotient continuant K([k]^n), unifying
+§20 (all-`2`, linear) and §21 (all-`1`, bounded/period-6) under one recurrence.
+
+Six new theorems, no new def:
+- **continuant_replicate_recurrence** (HEADLINE): K([k]^(n+2)) = k·K([k]^(n+1)) − K([k]^n)
+  — the Chebyshev/Dickson 2nd-order recurrence x²=kx−1, char. roots (k±√(k²−4))/2.
+  Both §20 (k=2, disc 0, double root 1 → linear) and §21 (k=1, disc −3, |root|=1 →
+  period 6) are discriminant instances. Proof: replicate_succ ×2 + continuant_cons +
+  `simp only [secondCont]` (secondCont(k::ks)=Continuant ks defeq did NOT auto-close
+  rw's rfl — needed explicit simp only [secondCont]).
+- **continuant_replicate_mono** (k≥2): K([k]^n) < K([k]^(n+1)), from §20-style
+  continuant_strict_mono since every entry = k ≥ 2.
+- **continuant_replicate_geometric_step** (k≥2): (k−1)·K([k]^(n+1)) ≤ K([k]^(n+2)) —
+  from the recurrence this is exactly monotonicity K([k]^n)≤K([k]^(n+1)). GOTCHA:
+  nlinarith won't expand (k−1)·A; rewrite (k−1)·A = k·A − A via `ring` first, then
+  linarith treats k·A as one atom.
+- **continuant_replicate_pow_le** (k≥2): (k−1)^n ≤ K([k]^(n+1)) — induction on the
+  geometric step. Brackets the constant continuant from BELOW to match the K([k]^n)≤k^n
+  product ceiling (cf. open PR #31379 product upper bound — complementary, (k−1)^n ≤ K ≤ k^n).
+- **continuant_replicate_exp_ge_two** (k≥3, HEADLINE): 2^n ≤ K([k]^(n+1)) — the third
+  regime: common quotient ≥3 forces EXPONENTIAL growth. Self-contained induction
+  (avoided pow_le_pow_left name-churn risk; used mul_le_mul_of_nonneg_left/right + the
+  geometric step). Base case `List.replicate (0+1) k = [k]` by rfl (NOT List.replicate_one
+  — `0+1` vs `1` syntactic mismatch under rw).
+- **continuant_replicate_recurrence_two**: k=2 specialisation as a consistency check
+  recovering the §20 arithmetic ladder.
+
+SIGNIFICANCE: completes the constant-quotient trichotomy. K([k]^n) is governed by ONE
+linear recurrence whose discriminant k²−4 partitions behaviour: k=1 bounded (§21),
+k=2 linear (§20), k≥3 exponential (§22, ≥2^n). Order-side statement that long constant
+runs are metrically cheap ONLY for k≤2; quotient ≥3 makes the Farey run endpoints
+exponentially expensive (via §14 closed form). Mixed-quotient regime (open 1/12–1/4
+constant, van Doorn 2025) untouched — remains the hard frontier.
+
+REMAINING (unchanged hard part): aggregate explicit break windows along a Stern–Brocot
+path toward the open 1/12 constant.
