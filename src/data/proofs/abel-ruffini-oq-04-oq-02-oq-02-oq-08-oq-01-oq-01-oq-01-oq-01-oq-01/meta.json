@@ -208,6 +208,15 @@
       "mathContext": "The multiplicative boundary lies strictly above the additive one: the Abel–Ruffini threshold is crossed at additive degree 5 but only at multiplicative degree 6."
     }
   ],
+  "conclusion": {
+    "summary": "Re-auditing the parent's claimed ⊕-vs-× asymmetry shows the original pairing compared two different implications. Once reflection (composite solvable ⇒ piece solvable) and preservation (pieces solvable ⇒ composite solvable) are separated, the accounting is symmetric: BOTH disjoint union and Cartesian product reflect IsSolvable (Perm −) to each piece — a summand and a factor each inject into the composite carrier — and NEITHER preserves it, since solvable 2- and 3-point systems combine into unsolvable 5- and 6-point composites. The genuine distinction between ⊕ and × is arithmetic: the additive range first escapes the solvable band {0,1,2,3,4} at 2+3 = 5, but no product of two solvable cardinalities equals 5 (5 is prime, so a factor would have to exceed 4), so the minimal multiplicative escape is 2·3 = 6. Hence the multiplicative Abel–Ruffini boundary lies strictly above the additive one (5 < 6).",
+    "implications": "The result reframes a vague directional 'asymmetry' as a precise statement about where each monoidal structure on finite types first pushes a cardinality past the Sₙ-solvability threshold card ≤ 4. The reusable lesson: when contrasting two operations through a thresholded numerical invariant, distinguish reflection from preservation before claiming asymmetry, then measure the escape cost — and note that the primality of threshold + 1 (here 5) is exactly what forces the multiplicative boundary to jump above the additive one. Mathematically the correction is pure arithmetic bookkeeping layered on established Abel–Ruffini inputs (the parent's perm_solvable_iff_card and the grandparent's not_solvable_perm_card_eq_ge_five), so no new group theory is needed to settle the comparison.",
+    "openQuestions": [
+      "Does the same reflect-but-not-preserve dichotomy, and a corresponding escape-cost, hold for other monoidal structures on finite types — e.g. the function space α → β with card = (card β)^(card α) — and what is the minimal escape from {0,…,4} there?",
+      "For a general solvable band {0,…,t}, characterise the minimal additive escape (always t+1) versus the minimal multiplicative escape as a function of the prime factorisations of the integers just above t; here t = 4 yields additive 5 and multiplicative 6 precisely because 5 is prime.",
+      "Can the escape-cost asymmetry be phrased functorially, as a comparison of the two monoidal products restricted to the full subcategory of finite types whose permutation groups are solvable?"
+    ]
+  },
   "sorries": [],
   "references": [
     {
