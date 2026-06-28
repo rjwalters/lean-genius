@@ -57,3 +57,28 @@ GOTCHAs (session 1):
 * Parent's `bounds_gap_enormous` (rpow inequality 2^{2^n}/2^{n²} > 10^100, n≥10)
   left as the parent's sorry — provable via `2^n ≥ n²+924` induction + `rpow_sub`
   + monotonicity + `norm_num` on `2^924 > 10^100`, but messy over rpow; deferred.
+
+---
+
+## Iteration 2 (researcher-1, 2026-06-28): parent sorry discharged
+
+Discharged the only `sorry` in the parent `Erdos564Problem.lean`
+(`bounds_gap_enormous`, line 205): for `n ≥ 10`,
+`2^(2ⁿ) / 2^(n²) > 10¹⁰⁰`.
+
+Proof outline (axiom-free — `#print axioms` = `propext/Classical.choice/Quot.sound`):
+- `Real.rpow_sub (0 < 2)` collapses `2^a / 2^b` to the single power `2^(a−b)`.
+- Auxiliary `nsq_add_four_hundred_le_two_pow`: `n² + 400 ≤ 2ⁿ` for `n ≥ 10`, by
+  `Nat.le_induction` (base `norm_num`; step `2·2^m ≥ 2(m²+400) ≥ (m+1)²+400`,
+  closed by `nlinarith [ih, 2m ≤ m²]`). Cast to ℝ ⇒ `2ⁿ − n² ≥ 400`.
+- `Real.rpow_le_rpow_of_exponent_le` lifts that to `2^400 ≤ 2^(2ⁿ−n²)`.
+- `10¹⁰⁰ < 16¹⁰⁰ = 2⁴⁰⁰` via `Nat.pow_lt_pow_left` + cast (NOT by evaluating
+  100-digit literals), then `← pow_mul` for `16^100 = 2^400`.
+
+Gotchas: `pow_lt_pow_left` is gone in Mathlib 4.26 → use `Nat.pow_lt_pow_left`.
+`linarith` choked on the `rpow` atoms → finish with `lt_of_lt_of_le`.
+
+Parent now **0 sorries**. The 3 remaining `axiom`s (`R`, `erdos_hajnal_rado_upper`,
+`erdos_hajnal_rado_lower`) are the legitimate open-problem axiomatization (the
+hypergraph Ramsey number and the EHR 1965 bounds) — not provable here. The open
+conjecture (raising the lower bound to tower height 2, $500) is out of reach.

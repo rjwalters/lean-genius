@@ -199,9 +199,49 @@ The question is whether the true value is closer to the lower or upper bound
 in terms of "tower height".
 -/
 
-/-- The bounds gap: for large n, the ratio of upper to lower bound is enormous. -/
+/-- Auxiliary growth bound: for `n ≥ 10`, `n² + 400 ≤ 2ⁿ`. The `+400` margin is
+    exactly what pushes the upper/lower Ramsey-bound ratio past `10¹⁰⁰`. -/
+private theorem nsq_add_four_hundred_le_two_pow (n : ℕ) (hn : 10 ≤ n) :
+    n ^ 2 + 400 ≤ 2 ^ n := by
+  induction n, hn using Nat.le_induction with
+  | base => norm_num
+  | succ m hm ih =>
+    have hm2 : 2 * m ≤ m ^ 2 := by
+      have h := Nat.mul_le_mul_right m (show 2 ≤ m by omega)
+      simpa [pow_two] using h
+    have hpow : 2 ^ (m + 1) = 2 * 2 ^ m := by rw [pow_succ]; ring
+    rw [hpow]
+    nlinarith [ih, hm2]
+
+/-- The bounds gap: for large n, the ratio of upper to lower bound is enormous.
+
+    A self-contained real-arithmetic fact (independent of the Ramsey axioms `R`,
+    `erdos_hajnal_rado_*`): writing the ratio as the single power
+    `2^(2ⁿ − n²)`, the auxiliary bound `n² + 400 ≤ 2ⁿ` (for `n ≥ 10`) makes the
+    exponent at least `400`, and `2^400 = 16^100 > 10^100`. -/
 theorem bounds_gap_enormous :
     ∀ n : ℕ, n ≥ 10 → (2 : ℝ)^((2 : ℝ)^n) / (2 : ℝ)^((n : ℝ)^2) > 10^100 := by
-  sorry
+  intro n hn
+  -- Combine the two real powers of `2` into a single exponent `2ⁿ − n²`.
+  rw [gt_iff_lt, ← Real.rpow_sub (by norm_num : (0:ℝ) < 2)]
+  -- The exponent is at least `400`, from the nat growth bound cast to `ℝ`.
+  have hbound : (400 : ℝ) ≤ (2 : ℝ) ^ n - (n : ℝ) ^ 2 := by
+    have hnat := nsq_add_four_hundred_le_two_pow n hn
+    have hcast : ((n ^ 2 + 400 : ℕ) : ℝ) ≤ ((2 ^ n : ℕ) : ℝ) := by exact_mod_cast hnat
+    push_cast at hcast
+    linarith
+  -- Monotonicity of `t ↦ 2ᵗ` lifts the exponent bound to the power.
+  have hmono : (2 : ℝ) ^ (400 : ℝ) ≤ (2 : ℝ) ^ ((2 : ℝ) ^ n - (n : ℝ) ^ 2) :=
+    Real.rpow_le_rpow_of_exponent_le (by norm_num) hbound
+  -- `10¹⁰⁰ < 16¹⁰⁰ = 2⁴⁰⁰`.
+  have hnum : (10 : ℝ) ^ (100 : ℕ) < (2 : ℝ) ^ (400 : ℝ) := by
+    have hrw : (2 : ℝ) ^ (400 : ℝ) = (16 : ℝ) ^ (100 : ℕ) := by
+      rw [show (400 : ℝ) = ((400 : ℕ) : ℝ) by norm_num, Real.rpow_natCast,
+          show (16 : ℝ) = 2 ^ 4 by norm_num, ← pow_mul]
+    rw [hrw]
+    have hnat : (10 : ℕ) ^ 100 < (16 : ℕ) ^ 100 :=
+      Nat.pow_lt_pow_left (by norm_num) (by norm_num)
+    exact_mod_cast hnat
+  exact lt_of_lt_of_le hnum hmono
 
 end Erdos564
