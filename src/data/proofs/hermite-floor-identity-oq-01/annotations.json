@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-hermitefract-setup",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Setup: The Sawtooth Companion and the value − floor Plan",
+    "content": "The file resolves the open question posed by the parent Hermite floor-identity entry: the fractional-part companion ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n−1)/2 for every real x and integer n ≥ 1, where {y} = y − ⌊y⌋ is the sawtooth (Mathlib's `Int.fract`). The docstring lays out the entire strategy in five lines: the companion is a one-line consequence of the floor version, obtained by subtracting the floor sum from the *exact* un-floored sum. So the proof never reasons about fractional parts directly — it decomposes each {y} into value minus floor, sums the two halves separately, and recombines. To keep the file kernel-checkable on its own (single-file `lake env lean`), the parent's two lemmas are reproduced verbatim below as `private` helpers; the single `import Mathlib` supplies the `Int.fract` and `Finset` APIs.",
+    "mathContext": "For real $x$ and $n \\ge 1$: $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{nx\\} + \\frac{n-1}{2}$, with $\\{y\\} = y - \\lfloor y\\rfloor$. The $n$ shifts $x, x+\\tfrac1n, \\dots, x+\\tfrac{n-1}{n}$ sample one period of the sawtooth uniformly, whose mean value $\\tfrac12$ produces the constant $\\tfrac{n-1}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.fract",
+      "sawtooth function",
+      "Hermite's floor identity",
+      "Finset.range"
+    ],
+    "prerequisites": [
+      "the fractional-part function {y} = y − ⌊y⌋ = Int.fract y",
+      "finite sums over Finset.range",
+      "Hermite's floor identity (parent entry)"
+    ]
+  },
+  {
+    "id": "ann-hermitefract-parent-helpers",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": {
+      "startLine": 45,
+      "endLine": 100
+    },
+    "type": "context",
+    "title": "Parent Helpers Reproduced for Self-Containment",
+    "content": "Two `private` theorems are copied verbatim from the parent entry so this file elaborates standalone. `int_hermite_sum` proves the purely integer identity ∑_{k<n}(a+k)/n = a for every integer a (a is the Euclidean-division version), via a shift recurrence — bumping a by 1 adds 1 to the sum — assembled by two-sided `Int.induction_on` so it holds for negative a as well. `hermite_floor_identity` is Hermite's classical floor identity ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋, obtained by rewriting each real floor x + k/n = (n·x + k)/n and applying `Int.floor_div_natCast` and `Int.floor_add_natCast` to reduce to the integer lemma. Only the second of these — Hermite's identity — feeds the companion proof below; it is the floor sum that gets subtracted off. Reproducing rather than importing keeps the entry's axiom footprint and elaboration entirely local.",
+    "mathContext": "$\\sum_{k<n}\\lfloor x + k/n\\rfloor = \\lfloor nx\\rfloor$, reduced termwise to the integer Euclidean identity $\\sum_{k<n}(a+k)/n = a$ with $a = \\lfloor nx\\rfloor$. This floor sum is the quantity subtracted from the exact sum in the companion identity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.induction_on",
+      "Int.floor_div_natCast",
+      "Int.floor_add_natCast",
+      "Euclidean division on ℤ"
+    ],
+    "prerequisites": [
+      "the floor/division interchange ⌊a/n⌋ = ⌊a⌋/n",
+      "two-sided induction over ℤ"
+    ]
+  },
+  {
+    "id": "ann-hermitefract-gauss-sum",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 116
+    },
+    "type": "technique",
+    "title": "The Gauss Sum Over ℝ: Avoiding ℕ-Division Under the Cast",
+    "content": "`sum_div_eq` is the only genuinely new arithmetic input: ∑_{k<n} k/n = (n−1)/2, the discrete average ½ of the sawtooth over its n−1 nonzero offsets, which is exactly where the additive constant (n−1)/2 comes from. The natural move — cast Mathlib's `Finset.sum_range_id` (∑_{k<n} k = n(n−1)/2 over ℕ) into ℝ — fails because the ℕ-quotient n(n−1)/2 uses truncating natural-number division, which is not a ring operation, so `ring`/`field_simp` cannot normalize it. The fix is to prove the Gauss sum directly over ℝ by an inner induction `hsum : ∑_{k<m} (k:ℝ) = m(m−1)/2` (each `succ` step is `Finset.sum_range_succ` then `ring`), pull the 1/n out with `Finset.sum_div`, and finish with `field_simp`. Working over ℝ from the start sidesteps the division obstruction entirely.",
+    "mathContext": "$\\sum_{k=0}^{n-1} \\frac{k}{n} = \\frac{1}{n}\\sum_{k=0}^{n-1} k = \\frac{1}{n}\\cdot\\frac{n(n-1)}{2} = \\frac{n-1}{2}$. Proved with the real-valued Gauss sum $\\sum_{k<m}(k:\\mathbb{R}) = \\tfrac{m(m-1)}{2}$ to keep every quantity a genuine field element.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_id",
+      "Finset.sum_div",
+      "Gauss's triangular-number sum",
+      "ℕ-division vs field division"
+    ],
+    "prerequisites": [
+      "Gauss's sum ∑_{k<n} k = n(n−1)/2",
+      "why truncating ℕ-division blocks `ring`/`field_simp` after casting"
+    ]
+  },
+  {
+    "id": "ann-hermitefract-main-decomposition",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "The value − floor Decomposition of the Sawtooth Sum",
+    "content": "The headline `hermite_fract_sum` opens by unfolding the definition of `Int.fract`: for each k, {x + k/n} = (x + k/n) − ⌊x + k/n⌋ (lemma `hterm`, just `rw [Int.fract]`). Rewriting every summand this way and applying `Finset.sum_sub_distrib` splits the whole sawtooth sum into an *exact* part ∑_{k<n}(x + k/n) and a *floor* part ∑_{k<n} ⌊x + k/n⌋. This is the crux move that makes the companion identity follow from the floor identity: the two parts are each elementary or already proved, and the fractional part — which is awkward to manipulate directly — never appears again until the final recombination. It is the discrete analogue of writing the sawtooth as identity minus floor.",
+    "mathContext": "$\\sum_{k<n}\\{x+k/n\\} = \\underbrace{\\sum_{k<n}\\left(x+\\tfrac{k}{n}\\right)}_{\\text{exact}} - \\underbrace{\\sum_{k<n}\\lfloor x+\\tfrac{k}{n}\\rfloor}_{\\text{floor}}$, using $\\{y\\} = y - \\lfloor y\\rfloor$ termwise and additivity of the finite sum.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Int.fract",
+      "Finset.sum_sub_distrib",
+      "linearity of finite sums"
+    ],
+    "prerequisites": [
+      "{y} = y − ⌊y⌋",
+      "splitting a sum of differences (sum_sub_distrib)"
+    ]
+  },
+  {
+    "id": "ann-hermitefract-recombination",
+    "proofId": "hermite-floor-identity-oq-01",
+    "range": {
+      "startLine": 130,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Evaluating the Two Parts and Recombining",
+    "content": "Each half is now evaluated. The exact part `hexact`: ∑_{k<n}(x + k/n) splits with `Finset.sum_add_distrib` into ∑_{k<n} x = n·x (via `Finset.sum_const`, `card_range`, `nsmul_eq_mul`) plus ∑_{k<n} k/n = (n−1)/2 (the Gauss lemma `sum_div_eq`), giving n·x + (n−1)/2. The floor part `hfloor`: cast the integer sum into ℝ with `Int.cast_sum`, then `hermite_floor_identity` collapses it to ⌊n·x⌋. Substituting both and unfolding {n·x} = n·x − ⌊n·x⌋ one last time (`Int.fract`) leaves (n·x + (n−1)/2) − ⌊n·x⌋ = (n·x − ⌊n·x⌋) + (n−1)/2, a pure rearrangement closed by `ring`. The proof is genuinely one line of mathematics — value minus floor, with the floor supplied by Hermite — wrapped in the bookkeeping needed to satisfy the kernel.",
+    "mathContext": "$\\sum_{k<n}\\{x+k/n\\} = \\left(nx + \\tfrac{n-1}{2}\\right) - \\lfloor nx\\rfloor = (nx - \\lfloor nx\\rfloor) + \\tfrac{n-1}{2} = \\{nx\\} + \\tfrac{n-1}{2}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_add_distrib",
+      "Finset.sum_const",
+      "Int.cast_sum",
+      "nsmul_eq_mul",
+      "hermite_floor_identity"
+    ],
+    "prerequisites": [
+      "evaluating ∑ of a constant over Finset.range",
+      "casting an integer-valued sum into ℝ",
+      "the floor identity ∑ ⌊x + k/n⌋ = ⌊n·x⌋"
+    ]
+  }
+]
