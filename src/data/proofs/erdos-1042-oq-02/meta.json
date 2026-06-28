@@ -2,7 +2,7 @@
   "id": "erdos-1042-oq-02",
   "title": "Polynomial Lemniscate Confinement Fails in Higher Dimensions",
   "slug": "erdos-1042-oq-02",
-  "description": "Addresses open question oq-02 of Erdős Problem #1042 (can the component-count results be extended to higher dimensions?) by isolating exactly what survives and what fails when one passes from one complex variable ℂ to several, ℂⁿ. Using the natural multivariate analogue of a monic factored polynomial, f(z) = ∏ⱼ(z(coordⱼ) - rootⱼ) on ℂⁿ — which reduces to the one-variable monic polynomial of sibling oq-03 when n = 1 — the entry proves that openness, continuity, and root-containment generalise verbatim to ℂⁿ, but the geometric heart of #1042 does not. Concretely, in ℂ² the lemniscate of f(z₀,z₁) = z₀ is open and connected yet UNBOUNDED: the free second coordinate turns each would-be isolated island into an infinite tube. This is the precise obstruction — oq-03's confinement-to-unit-balls and the resulting 'at most n components' bound have no naive higher-dimensional analogue, so the #1042 answer is a genuinely one-complex-variable phenomenon. Fully axiom-free, 0 sorries.",
+  "description": "Addresses open question oq-02 of Erdős Problem #1042 (can the component-count results be extended to higher dimensions?) by isolating exactly what survives and what fails when one passes from one complex variable ℂ to several, ℂⁿ. Using the natural multivariate analogue of a monic factored polynomial, f(z) = ∏ⱼ(z(coordⱼ) - rootⱼ) on ℂⁿ — which reduces to the one-variable monic polynomial of sibling oq-03 when n = 1 — the entry proves that openness, continuity, and root-containment generalise verbatim to ℂⁿ, but the geometric heart of #1042 does not. Concretely, in ℂ² the lemniscate of f(z₀,z₁) = z₀ is open and connected yet UNBOUNDED: the free second coordinate turns each would-be isolated island into an infinite tube. This is the precise obstruction — oq-03's confinement-to-unit-balls and the resulting 'at most n components' bound have no naive higher-dimensional analogue, so the #1042 answer is a genuinely one-complex-variable phenomenon. A structural dichotomy then pins down exactly when this failure occurs: calling a coordinate 'free' when no factor reads it, the entry proves eval is independent of any free coordinate (eval_indep_free_coord), a single free coordinate forces an unbounded lemniscate (free_coord_unbounded — the ℂ² cylinder is the case n=2), and consequently surjectivity of the coordinate map is NECESSARY for a nonempty lemniscate to be bounded (bounded_imp_surjective_coord). Fully axiom-free, 0 sorries.",
   "meta": {
     "author": "Lean Genius Researcher",
     "date": "2026",
@@ -21,8 +21,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 185,
-    "assumptions": "None. All eleven theorems are axiom-free and self-contained: the multivariate polynomial/lemniscate structures are re-declared locally so that nothing depends on the parent entry's axioms (transfiniteDiameter, ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples) nor on sibling oq-03. No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms higher_dim_confinement_fails` reports only `[propext, Classical.choice, Quot.sound]`. Mathlib lemmas used: continuous_finset_prod, continuous_apply, Finset.prod_eq_zero, sub_eq_zero, Continuous.norm, Fin.prod_univ_one, norm_le_pi_norm, isBounded_iff_forall_norm_le, Complex.norm_of_nonneg, Matrix.cons_val_zero/cons_val_one, LinearMap.proj, convex_ball, Convex.linear_preimage, Convex.isConnected. Uses the modern norm ‖·‖ throughout (Complex.abs was removed in v4.26.0).",
+    "lineCount": 241,
+    "assumptions": "None. All fourteen theorems are axiom-free and self-contained: the multivariate polynomial/lemniscate structures are re-declared locally so that nothing depends on the parent entry's axioms (transfiniteDiameter, ghosh_ramachandran_small_diameter, ghosh_ramachandran_diameter_one_examples) nor on sibling oq-03. No native_decide is used. Kernel-verified against Mathlib v4.26.0 (`lake env lean`, exit 0); `#print axioms` on higher_dim_confinement_fails, eval_indep_free_coord, free_coord_unbounded, and bounded_imp_surjective_coord each reports only `[propext, Classical.choice, Quot.sound]`. Mathlib lemmas used: continuous_finset_prod, continuous_apply, Finset.prod_eq_zero, Finset.prod_congr, sub_eq_zero, Continuous.norm, Fin.prod_univ_one, norm_le_pi_norm, isBounded_iff_forall_norm_le, Complex.norm_of_nonneg, Matrix.cons_val_zero/cons_val_one, Function.update_of_ne, Function.update_self, Set.mem_range, LinearMap.proj, convex_ball, Convex.linear_preimage, Convex.isConnected. Uses the modern norm ‖·‖ throughout (Complex.abs was removed in v4.26.0).",
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -36,9 +36,12 @@
       "cyl_unbounded: THE NEW PHENOMENON — in ℂ² this lemniscate is UNBOUNDED (points (0,t) lie in it for all real t with norm ≥ |t| → ∞), in direct contrast to oq-03's isBounded_lem which holds for every one-variable lemniscate",
       "convex_cyl: the cylinder is convex (preimage of the open unit ball under the ℝ-linear first-coordinate projection)",
       "isConnected_cyl: COMPONENTS MERGE — the same ℂ² lemniscate is connected; the n disjoint islands of the one-variable picture fuse into one set",
-      "higher_dim_confinement_fails: capstone — open + connected + unbounded, so the #1042 confinement/component-count results do not extend naively to ℂⁿ"
+      "higher_dim_confinement_fails: capstone — open + connected + unbounded, so the #1042 confinement/component-count results do not extend naively to ℂⁿ",
+      "eval_indep_free_coord: STRUCTURAL DICHOTOMY (general ℂⁿ) — if a coordinate i is 'free' (read by no factor, i ∉ range coord) then eval is independent of it: overwriting the i-th coordinate leaves f unchanged",
+      "free_coord_unbounded: a single free coordinate forces the lemniscate to be UNBOUNDED whenever it is nonempty (slide the free coordinate to infinity while staying inside {|f|<1}); the ℂ² cylinder cyl_unbounded is exactly the case n=2, i=1, generalising the one example into the precise mechanism",
+      "bounded_imp_surjective_coord: NECESSITY — for a nonempty lemniscate, boundedness forces the coordinate map to be surjective (every coordinate must be read by some factor). The sharp converse direction isolating 'no free coordinate' as a necessary condition. (It is NOT sufficient: f(z₀,z₁)=z₀z₁ reads both coordinates yet {|z₀z₁|<1} is unbounded, so ℂⁿ boundedness is strictly more fragile than in ℂ¹.)"
     ],
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 3
   },
   "overview": {
@@ -83,18 +86,35 @@
       "mathContext": "$(0, t) \\in \\{|z_0| < 1\\}$ for every $t \\in \\mathbb{R}$, yet $\\|(0,t)\\| \\geq |t| \\to \\infty$, so the lemniscate is unbounded."
     },
     {
-      "id": "capstone",
-      "title": "§IV: Connectedness and Capstone",
+      "id": "connected",
+      "title": "§IV: Connectedness — Components Merge",
       "startLine": 159,
-      "endLine": 183,
-      "summary": "The cylinder is convex, hence connected: the would-be separate components merge. The capstone packages open + connected + unbounded.",
+      "endLine": 173,
+      "summary": "The cylinder is convex, hence connected: the would-be separate components merge into a single unbounded set.",
       "mathContext": "$\\{|z_0| < 1\\}$ is the preimage of the convex ball $B(0,1)$ under the $\\mathbb{R}$-linear projection $z \\mapsto z_0$, so it is convex and connected."
+    },
+    {
+      "id": "dichotomy",
+      "title": "§V: The Structural Dichotomy in General ℂⁿ",
+      "startLine": 175,
+      "endLine": 227,
+      "summary": "Generalises the single ℂ² example into the precise mechanism: eval is independent of any free coordinate (eval_indep_free_coord); a free coordinate forces an unbounded lemniscate (free_coord_unbounded); hence surjectivity of the coordinate map is necessary for a nonempty bounded lemniscate (bounded_imp_surjective_coord). Surjectivity is necessary but not sufficient.",
+      "mathContext": "If $i \\notin \\operatorname{range}(\\mathrm{coord})$ then $f$ is constant in $z_i$, so any point of the lemniscate slides to $\\infty$ along $z_i$ inside $\\{|f|<1\\}$. Thus bounded $\\Rightarrow$ $\\mathrm{coord}$ surjective; the converse fails (e.g. $f=z_0 z_1$)."
+    },
+    {
+      "id": "capstone",
+      "title": "§VI: Capstone",
+      "startLine": 229,
+      "endLine": 239,
+      "summary": "The capstone packages the ℂ² witness as open + connected + unbounded.",
+      "mathContext": "Open + connected + unbounded together show the #1042 confinement/component-count results have no naive $\\mathbb{C}^n$ analogue."
     }
   ],
   "conclusion": {
     "summary": "The answer to oq-02 is made precise and proved axiom-free: passing from one complex variable to several, the 'soft' facts of a polynomial lemniscate (continuity of f, openness, containment of the zero locus) generalise verbatim to ℂⁿ, but the geometric mechanism behind Erdős #1042 does not. In ℂ² the lemniscate of f(z₀,z₁) = z₀ is open and connected yet unbounded, in direct contrast to sibling oq-03's confinement of every one-variable lemniscate to a finite union of unit balls. The component-count results of #1042 are therefore a genuinely one-complex-variable phenomenon. 0 sorries, 0 axioms.",
     "openQuestions": [
       "Is there a correct higher-dimensional substitute for the component count — e.g. counting unbounded components, or bounding components of {|f| < 1} ∩ K for a fixed compact K ⊆ ℂⁿ — that does generalise the #1042 bounds?",
+      "bounded_imp_surjective_coord shows 'coord surjective' is NECESSARY for a bounded coordinate-factored lemniscate but not sufficient (f = z₀z₁). What is the exact sufficient-and-necessary condition on a general multivariate polynomial f for {|f| < 1} to be bounded? (For coordinate-factored f the obstruction beyond free coordinates is a product of two factors sharing no bound on their joint growth.)",
       "For a multivariate polynomial whose zero locus is a compact (rather than affine) variety, is the lemniscate bounded, and does a confinement-to-tubular-neighbourhood analogue of oq-03 hold?"
     ],
     "implications": "Pins down exactly where the one-variable theory of polynomial lemniscates is special: the finiteness of the root set. This guides any genuine higher-dimensional extension of #1042 toward pluripotential-theoretic or compactness hypotheses that restore confinement, rather than a naive transcription of the planar component count."
@@ -135,9 +155,9 @@
       "Mathlib"
     ],
     "namespace": "Erdos1042OQ02",
-    "lineCount": 185,
+    "lineCount": 241,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 3,
     "path": "Proofs/Erdos1042OQ02.lean",
     "sorries": 0
