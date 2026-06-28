@@ -1,6 +1,6 @@
 {
   "id": "brouwer-fixed-point-oq-01-oq-02-oq-01",
-  "title": "No-Retraction via the Analytic (Measure-Theoretic) Route",
+  "title": "No-Retraction (Analytic Route): Measure-Theoretic Scaffolding + Reduction to Volume-Preservation",
   "slug": "brouwer-fixed-point-oq-01-oq-02-oq-01",
   "description": "Replaces the singular-homology axioms of the No-Retraction Theorem with Mathlib analysis tools, following Milnor's measure-theoretic argument. Proves, with 0 axioms and 0 sorries, every ingredient of the obstruction that Mathlib already supports — the sphere S^{n-1} is Lebesgue-null, the ball B^n has positive finite volume, a retraction surjects B^n onto S^{n-1} and so collapses positive volume to zero — and isolates the entire remaining content into a single explicit analytic hypothesis (volume-preservation), reducing the homology apparatus to one statement Milnor's Jacobian/degree computation supplies.",
   "meta": {
@@ -18,7 +18,7 @@
       "analysis"
     ],
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02OQ01.lean",
-    "badge": "verified",
+    "badge": "infrastructure",
     "sorries": 0,
     "axiomCount": 0
   },
