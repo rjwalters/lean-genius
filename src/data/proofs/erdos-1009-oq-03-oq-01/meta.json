@@ -69,6 +69,73 @@
     "theoremCount": 11,
     "definitionCount": 7
   },
+  "overview": {
+    "historicalContext": "Erdős problem #1009 asks how many pairwise edge-disjoint triangles a graph on $n$ vertices must contain once it has more than the Turán number of edges — the question affirmatively settled by Ervin Győri (1988), who showed that beyond the extremal threshold one is guaranteed a near-optimal family of edge-disjoint triangles. The *computational* shadow of this question is the maximum edge-disjoint triangle packing problem, which is NP-hard in general. The standard polynomial-time relaxation replaces the 0/1 choice of each triangle by a nonnegative rational weight, yielding a linear program whose optimum $\\nu^*$ upper-bounds the integer optimum $\\nu$; the worst-case ratio between them is the *integrality gap*. The complete graph $K_4$ is the canonical small witness that this gap is nontrivial: only one triangle can be chosen integrally (any two of $K_4$'s four triangles share an edge), yet the fractional relaxation does strictly better. The dual of triangle packing is fractional triangle *covering* — putting weight on edges so that every triangle is covered — and the relationship between covering and packing of triangles is the subject of the still-open Tuza conjecture (1981), which posits $\\tau(G) \\le 2\\,\\nu(G)$ for the integer cover and packing numbers. On $K_4$ the fractional versions coincide exactly, by LP strong duality.",
+    "problemStatement": "Model $K_4$ on the vertex set $\\mathrm{Fin}\\,4$ with its four triangles (3-element subsets) and six edges (2-element subsets). A *fractional triangle packing* is a weight $w \\ge 0$ on triangles with edge-load $\\sum_{T \\ni e} w_T \\le 1$ for every edge $e$; its value is $\\sum_T w_T$. A *fractional triangle cover* is a weight $y \\ge 0$ on edges with $\\sum_{e \\in T} y_e \\ge 1$ for every triangle $T$; its value is $\\sum_e y_e$. Determine the exact optima $\\nu^*(K_4) = \\max \\text{value}(w)$ and $\\tau^*(K_4) = \\min \\text{value}(y)$, and relate them to the integer packing optimum $\\nu(K_4) = 1$.",
+    "proofStrategy": "The argument is pure finite LP duality, requiring no general LP machinery. First the model is made fully decidable on $\\mathrm{Fin}\\,4$ so the combinatorial facts — four triangles, six edges, each triangle has three edges, each edge lies in at most two triangles — fall to kernel-checked `decide`. The reusable core is `weak_duality`: for *any* feasible packing $w$ and *any* feasible cover $y$, $\\mathrm{fracValue}\\,w \\le \\mathrm{coverValue}\\,y$, proved by a finite Fubini double-count over triangle/edge incidence (absorb each triangle's weight into the cover it must pay for, swap the summation order via `Finset.sum_comm`, then apply the packing constraint at each edge). Two explicit half-integral certificates then meet weak duality with equality: the uniform $\\tfrac12$-weight on triangles (value $4 \\cdot \\tfrac12 = 2$, feasible since each edge is in $\\le 2$ triangles) and the uniform $\\tfrac13$-weight on edges (value $6 \\cdot \\tfrac13 = 2$, feasible since each triangle has 3 edges). Because both achieve 2 and weak duality forbids the packing from exceeding the cover, `IsGreatest` pins $\\nu^*(K_4) = 2$ and `IsLeast` pins $\\tau^*(K_4) = 2$.",
+    "keyInsights": [
+      "Weak duality alone — without any strong-duality theorem — suffices to pin both optima exactly here, because two explicit certificates already achieve the common value 2 and weak duality squeezes everything between them.",
+      "The whole argument reduces to one Fubini swap (`Finset.sum_comm`) sandwiched between the two feasibility constraints: the cover inequality is used on the left, the packing inequality on the right.",
+      "Finiteness and decidability replace analytic optimization: every structural fact about $K_4$ (cardinalities, the at-most-2 edge incidence) is discharged by kernel `decide`, so no `native_decide` and no compiler trust enter the proof.",
+      "The optimal certificates are uniform and half-integral ($\\tfrac12$ on triangles, $\\tfrac13$ on edges); their values coincide ($4\\cdot\\tfrac12 = 6\\cdot\\tfrac13 = 2$), which is the combinatorial fingerprint of LP strong duality on this instance.",
+      "Adding the LP *dual* (the fractional cover, absent from the parent file) is exactly what upgrades the parent's one-sided $\\nu^* \\ge 2$ to the exact value $\\nu^* = 2$ — the missing upper bound is weak duality against the explicit cover.",
+      "The integrality gap of edge-disjoint triangle packing on $K_4$ is now pinned to the exact factor 2: $\\nu(K_4) = 1$ while $\\nu^*(K_4) = \\tau^*(K_4) = 2$, the textbook separation of the NP-hard integer problem from its polynomial relaxation.",
+      "Encoding the optima as `IsGreatest`/`IsLeast` rather than bare inequalities makes the optimality machine-checkable as a single order-theoretic statement, bundling the achievability and bound directions."
+    ]
+  },
+  "sections": [
+    {
+      "id": "model",
+      "title": "Decidable K₄ Model",
+      "startLine": 54,
+      "endLine": 64,
+      "summary": "Models $K_4$ concretely on $\\mathrm{Fin}\\,4$: `triangles` are the four 3-element vertex subsets, `allEdges` the six 2-element subsets, and `edgesOf T` a triangle's three edges. The finite, decidable encoding lets the structural facts be checked by the kernel."
+    },
+    {
+      "id": "model-facts",
+      "title": "Model Facts",
+      "startLine": 66,
+      "endLine": 86,
+      "summary": "Discharges by `decide` the combinatorics needed downstream: $K_4$ has 4 triangles and 6 edges, each triangle's edges are genuine edges, each triangle has exactly 3 edges, and each edge lies in at most 2 triangles."
+    },
+    {
+      "id": "lp-definitions",
+      "title": "LP Primal and Dual",
+      "startLine": 88,
+      "endLine": 106,
+      "summary": "Defines the fractional triangle packing `IsFracPacking` with objective `fracValue` (LP primal) and its dual the fractional triangle cover `IsFracCover` with objective `coverValue` (LP dual)."
+    },
+    {
+      "id": "weak-duality",
+      "title": "Weak Duality",
+      "startLine": 108,
+      "endLine": 155,
+      "summary": "Proves `weak_duality`: for every feasible packing and cover, $\\mathrm{fracValue}\\,w \\le \\mathrm{coverValue}\\,y$, via a finite double-count — absorb each triangle's weight into its cover, swap summation order (`Finset.sum_comm`), then bound each edge's load by the packing constraint."
+    },
+    {
+      "id": "certificates",
+      "title": "Explicit Optimal Certificates",
+      "startLine": 157,
+      "endLine": 195,
+      "summary": "Introduces the uniform $\\tfrac12$-packing `wHalf` and $\\tfrac13$-cover `yThird`, proves both feasible, and computes both objective values to be exactly 2."
+    },
+    {
+      "id": "exact-optima",
+      "title": "Exact LP Optima",
+      "startLine": 197,
+      "endLine": 233,
+      "summary": "Packages `frac_optimum` ($\\nu^*(K_4) = 2$, `IsGreatest`), `cover_optimum` ($\\tau^*(K_4) = 2$, `IsLeast`), and `lp_no_gap` (both together), certifying LP strong duality with no relaxation gap and pinning the integrality gap to the exact factor 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "By formalizing the LP dual (the fractional triangle cover) and the weak-duality inequality, the file pins the fractional triangle-packing and triangle-cover optima of $K_4$ to the exact common value $\\nu^*(K_4) = \\tau^*(K_4) = 2$ — sharpening the parent file's one-sided $\\nu^* \\ge 2$ to equality. Two uniform half-integral certificates (weight $\\tfrac12$ per triangle, $\\tfrac13$ per edge) achieve the bound and, against weak duality, force optimality. The entire proof is finite and kernel-checked: 0 sorries, 0 axioms, no `native_decide`.",
+    "implications": "Against the integer optimum $\\nu(K_4) = 1$, the integrality gap of edge-disjoint triangle packing on $K_4$ is now certified to be the exact factor 2 rather than merely at least 2 — a clean, fully formal instance of the separation between an NP-hard integer program and its polynomial-time LP relaxation. The `weak_duality` lemma is stated for arbitrary packing/cover pairs, so it is a reusable bridge for analyzing the relaxation on other graphs, and the explicit dual certificate `yThird` is the textbook fractional triangle cover.",
+    "openQuestions": [
+      "Does the exact integrality-gap factor 2 persist for the family $K_n$, or for which graphs is the fractional-to-integer triangle-packing ratio strictly below 2?",
+      "Can the finite LP-duality template here be generalized to a graph-agnostic statement of weak (and strong) duality for fractional triangle packing/covering in Lean?",
+      "How does this fractional separation interact with Tuza's conjecture $\\tau(G) \\le 2\\,\\nu(G)$ for the *integer* cover and packing numbers, of which $K_4$ is a tight extremal case?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "erdos-1009-oq-02",
