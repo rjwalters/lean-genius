@@ -2,7 +2,7 @@
   "id": "erdos-1004-oq-02",
   "title": "Erdős #1004: Why Totient Fibers Are Finite — the Elementary Bound φ(n)² ≥ n/2",
   "slug": "erdos-1004-oq-02",
-  "description": "Companion to the Erdős #1004 entry (distinct consecutive totient values). For the question 'how long a run φ(n+1),…,φ(n+K) of pairwise-distinct totient values can be' to be meaningful, each totient value must be attained by only finitely many integers; otherwise distinctness of values carries no arithmetic information. This entry supplies that structural fact with an explicit, fully verified, 0-axiom bound: n ≤ 2·φ(n)² for every n (totient_sq_two_ge), equivalently φ(n) ≥ √(n/2) (totient_ge_sqrt_half), with the sharp odd refinement n ≤ φ(n)² for odd n (totient_sq_ge_of_odd). From it, φ(n)=v ⟹ n ≤ 2v² (totient_fiber_bound), so every totient value has a finite fiber contained in an explicit initial segment (totient_fiber_finite) — the reason runs of distinct totient values are a well-posed object. The proof is a multiplicative-invariant argument: factoring n into coprime prime powers, the inequality is tight only at the single prime power 2¹ (φ(2)=1); the strengthened conjunction (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²) is closed under coprime multiplication because in a coprime product at most one factor is even, so the lone factor-of-2 deficit is never spent twice. Proved by Nat.recOnPosPrimePosCoprime with per-prime-power one-variable polynomial inequalities (nlinarith). The bound is SHARP at n=2 (2·φ(2)²=2). Fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
+  "description": "Companion to the Erdős #1004 entry (distinct consecutive totient values). For the question 'how long a run φ(n+1),…,φ(n+K) of pairwise-distinct totient values can be' to be meaningful, each totient value must be attained by only finitely many integers; otherwise distinctness of values carries no arithmetic information. This entry supplies that structural fact with an explicit, fully verified, 0-axiom bound: n ≤ 2·φ(n)² for every n (totient_sq_two_ge), equivalently φ(n) ≥ √(n/2) (totient_ge_sqrt_half), with the sharp odd refinement n ≤ φ(n)² for odd n (totient_sq_ge_of_odd). From it, φ(n)=v ⟹ n ≤ 2v² (totient_fiber_bound), so every totient value has a finite fiber contained in an explicit initial segment (totient_fiber_finite) — the reason runs of distinct totient values are a well-posed object. The proof is a multiplicative-invariant argument: factoring n into coprime prime powers, the inequality is tight only at the single prime power 2¹ (φ(2)=1); the strengthened conjunction (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²) is closed under coprime multiplication because in a coprime product at most one factor is even, so the lone factor-of-2 deficit is never spent twice. Proved by Nat.recOnPosPrimePosCoprime with per-prime-power one-variable polynomial inequalities (nlinarith). The bound is SHARP at n=2 (2·φ(2)²=2). The finiteness is moreover made EFFECTIVE: the fiber over v is the coercion of an explicit, computable Finset obtained by searching the segment Iic(2v²) (totient_fiber_eq_filter), yielding the explicit cardinality bound #{n:φ(n)=v} ≤ 2v²+1 (totient_fiber_ncard_le), which is sharp at v=0. Fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
   "meta": {
     "author": "lean-genius researcher",
     "sourceUrl": "https://erdosproblems.com/1004",
@@ -53,6 +53,7 @@
       "totient_sq_ge_of_odd: PROVED the sharp odd refinement n ≤ φ(n)² for odd n (the factor of 2 is needed only at the prime 2)",
       "totient_invariant: PROVED the strengthened conjunction (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²) is a multiplicative invariant, the key device making the recursion close",
       "totient_fiber_bound / totient_fiber_finite: DERIVED the explicit fiber bound φ(n)=v ⟹ n ≤ 2v² and finiteness of every totient fiber — the structural reason distinct totient runs are well-posed",
+      "totient_fiber_eq_filter / totient_fiber_ncard_le: UPGRADED finiteness to an EFFECTIVE form — the fiber equals an explicit Finset searched over Iic(2v²) (decidable enumeration domain) and #{n:φ(n)=v} ≤ 2v²+1, sharp at v=0 (witnessed by totient_fiber_zero: the only solution of φ(n)=0 is n=0)",
       "totient_ge_sqrt_half: PROVED the real-analytic restatement √(n/2) ≤ φ(n)",
       "primePow_odd_bound / primePow_two_bound: PROVED the per-prime-power cores p^k ≤ φ(p^k)² (odd p) and p^k ≤ 2φ(p^k)² (any p) by elementary polynomial inequalities"
     ],
@@ -62,7 +63,7 @@
       "Euler totient as a multiplicative function; φ(p^k) = p^(k-1)(p-1)",
       "Multiplicative induction over coprime factorizations"
     ],
-    "lineCount": 173,
+    "lineCount": 230,
     "relatedProblems": [
       {
         "id": "erdos-1004",
@@ -74,14 +75,14 @@
       }
     ],
     "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound; the single sharpness witness at n=2 uses kernel `decide`, NOT `native_decide`, so no `Lean.ofReduceBool` is introduced). The bound n ≤ 2φ(n)² is a classical elementary fact; the contribution is a clean, fully verified, 0-axiom formalization via a multiplicative invariant, together with the explicit totient-fiber finiteness that underpins Erdős #1004.",
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 0,
     "structureCount": 0
   },
   "overview": {
     "historicalContext": "Erdős Problem #1004 asks, for c > 0 and large x, whether some n ≤ x has φ(n+1),…,φ(n+⌊(log x)^c⌋) all distinct — how long a run of consecutive integers can carry pairwise-distinct Euler totients. Implicit in even posing the question is that φ is finite-to-one: each value is attained by only finitely many integers, so that 'distinct values' is a genuine constraint. The quantitative form of this is the classical lower bound φ(n) ≥ √(n/2): the totient cannot be too small relative to n, hence cannot repeat a given value indefinitely. This bound is elementary but, like most multiplicative-function estimates, is cleanest when organized as a multiplicative invariant.",
     "problemStatement": "Prove, unconditionally and axiom-free, an explicit lower bound on the Euler totient (φ(n) ≥ √(n/2)) and derive from it that every totient value has a finite fiber inside an explicit initial segment — the structural fact that makes distinct-totient-run questions well-posed.",
-    "text": "A 173-line self-contained file proving n ≤ 2·φ(n)² for all n (with the sharp odd refinement n ≤ φ(n)²), the real restatement √(n/2) ≤ φ(n), the explicit fiber bound φ(n)=v ⟹ n ≤ 2v², and finiteness of every totient fiber — all 0 sorries, 0 axioms, no native_decide.",
+    "text": "A 230-line self-contained file proving n ≤ 2·φ(n)² for all n (with the sharp odd refinement n ≤ φ(n)²), the real restatement √(n/2) ≤ φ(n), the explicit fiber bound φ(n)=v ⟹ n ≤ 2v², finiteness of every totient fiber, and its effective refinement (explicit Finset enumeration domain plus the cardinality bound #{n:φ(n)=v} ≤ 2v²+1, sharp at v=0) — all 0 sorries, 0 axioms, no native_decide.",
     "proofStrategy": "The bound is a multiplicative invariant. Per prime power, φ(p^(k+1)) = p^k(p−1), and the inequality p^k ≤ φ(p^k)² (for odd p) / p^k ≤ 2φ(p^k)² (any p) reduces, after factoring p^k, to the one-variable polynomial fact p ≤ (p−1)² / p ≤ 2(p−1)², dispatched by nlinarith. To combine prime powers one must control the single deficient factor φ(2)=1, so the statement is strengthened to the conjunction P(n): (Odd n → n ≤ φ(n)²) ∧ (n ≤ 2φ(n)²). In a coprime product a·b at most one factor is even, so the 'factor of 2' is spent on that one even factor and the bare bound n ≤ φ(n)² covers the odd one — making P closed under coprime multiplication. Nat.recOnPosPrimePosCoprime assembles the prime-power and coprime cases into a proof for all n. The fiber statements follow by substitution; the real form by monotonicity of √ and Real.sqrt_sq.",
     "keyInsights": [
       "**Finite fibers make the question meaningful.** φ(n) ≥ √(n/2) gives φ(n)=v ⟹ n ≤ 2v², so each totient value is attained finitely often — without this, 'distinct consecutive totient values' would impose no constraint.",
@@ -145,6 +146,13 @@
       "startLine": 164,
       "endLine": 172,
       "summary": "totient_ge_sqrt_half: √(n/2) ≤ φ(n), obtained from the integer bound by casting to ℝ and applying monotonicity of √ with Real.sqrt_sq."
+    },
+    {
+      "id": "effective",
+      "title": "Effective finite-to-one: enumeration and cardinality",
+      "startLine": 174,
+      "endLine": 230,
+      "summary": "totient_fiber_eq_filter expresses the (a priori infinite) fiber {n : φ(n)=v} as the coercion of the explicit Finset (Iic (2v²)).filter (φ · = v) — a decidable enumeration domain; totient_fiber_ncard_le bounds its cardinality by 2v²+1 (via Set.ncard_le_ncard into Iic and Nat.card_Iic); totient_fiber_zero pins the v=0 fiber to {0}, witnessing sharpness 1 = 2·0²+1."
     }
   ],
   "crossReferences": [
@@ -160,13 +168,13 @@
     }
   ],
   "leanFile": {
-    "lineCount": 173,
+    "lineCount": 230,
     "namespace": "Erdos1004OQ02",
     "opens": ["Nat"],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 8,
     "computationalVerifications": 1,
     "lemmaCount": 2,
     "imports": ["Mathlib"],
@@ -176,7 +184,7 @@
   },
   "conclusion": {
     "summary": "A fully machine-checked (0 sorries, 0 axioms) elementary lower bound on the Euler totient: n ≤ 2·φ(n)² for every n (φ(n) ≥ √(n/2)), with the sharp odd refinement n ≤ φ(n)², proved as a multiplicative invariant via Nat.recOnPosPrimePosCoprime. From it follows the explicit fiber bound φ(n)=v ⟹ n ≤ 2v² and finiteness of every totient fiber.",
-    "implications": "Makes precise the finite-to-one property of φ that underlies Erdős #1004: each totient value is attained by only finitely many integers, lying in an explicit initial segment {0,…,2v²}. Complements the sibling oq-03 (which bounds run length from above) by bounding totient values from below, and isolates the single source of slack (the prime 2) in the classical √(n/2) estimate.",
+    "implications": "Makes precise the finite-to-one property of φ that underlies Erdős #1004: each totient value is attained by only finitely many integers, lying in an explicit initial segment {0,…,2v²}. Complements the sibling oq-03 (which bounds run length from above) by bounding totient values from below, and isolates the single source of slack (the prime 2) in the classical √(n/2) estimate. The finiteness is moreover effective: the fiber over v is recovered by a finite, decidable search of Iic(2v²) and has at most 2v²+1 elements (sharp at v=0), turning 'finite-to-one' into a computable enumeration with an explicit cardinality bound.",
     "openQuestions": [
       "Sharpen the constant by tracking the 2-adic valuation: integers with many distinct odd prime factors have φ much larger than √(n/2), so a refined bound φ(n) ≥ c·√(n·ω(n)) or similar may be provable elementarily.",
       "Combine the fiber bound n ≤ 2v² with oq-03's run-length bound to give an explicit, axiom-free count of how many distinct totient values appear among {φ(1),…,φ(N)}.",
@@ -213,6 +221,18 @@
       "type": "supporting",
       "description": "Real-analytic restatement √(n/2) ≤ φ(n) (PROVED, 0 axioms)",
       "leanType": "∀ (n : ℕ), Real.sqrt ((n : ℝ) / 2) ≤ (Nat.totient n : ℝ)"
+    },
+    {
+      "name": "totient_fiber_ncard_le",
+      "type": "core",
+      "description": "Effective finite-to-one: each totient value v is attained by at most 2v²+1 integers; sharp at v=0 (PROVED, 0 axioms)",
+      "leanType": "∀ (v : ℕ), {n : ℕ | Nat.totient n = v}.ncard ≤ 2 * v ^ 2 + 1"
+    },
+    {
+      "name": "totient_fiber_eq_filter",
+      "type": "supporting",
+      "description": "Effective enumeration domain: {n : φ(n)=v} equals the coercion of the explicit Finset (Iic (2v²)).filter (φ·=v) (PROVED, 0 axioms)",
+      "leanType": "∀ (v : ℕ), {n : ℕ | Nat.totient n = v} = ↑((Finset.Iic (2 * v ^ 2)).filter (fun n => Nat.totient n = v))"
     }
   ],
   "sections": [
@@ -263,6 +283,14 @@
       "endLine": 172,
       "summary": "totient_ge_sqrt_half recasts the integer bound over ℝ as √(n/2) ≤ φ(n) via Real.sqrt_le_sqrt and Real.sqrt_sq — the only analytic step in an otherwise elementary file.",
       "mathContext": "$\\sqrt{n/2}\\le\\varphi(n)$, the classical analytic form of the totient lower bound."
+    },
+    {
+      "id": "effective",
+      "title": "Effective finite-to-one: enumeration and cardinality",
+      "startLine": 174,
+      "endLine": 230,
+      "summary": "Upgrades the qualitative finiteness to an effective form: totient_fiber_eq_filter writes the fiber as an explicit decidable Finset search over Iic (2v²); totient_fiber_ncard_le gives #{n : φ(n)=v} ≤ 2v²+1; totient_fiber_zero shows the v=0 fiber is {0}, so the bound is sharp at v=0.",
+      "mathContext": "$\\#\\{n:\\varphi(n)=v\\}\\le 2v^2+1$, attained at $v=0$ where the fiber is $\\{0\\}$."
     }
   ],
   "sorries": 0
