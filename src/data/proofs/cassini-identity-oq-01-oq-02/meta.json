@@ -2,7 +2,7 @@
   "id": "cassini-identity-oq-01-oq-02",
   "title": "Fibonacci Addition Formula from the Q-Matrix Factorisation Q^{m+n} = Q^m Q^n",
   "slug": "cassini-identity-oq-01-oq-02",
-  "description": "Answers the open question of the parent entry (cassini-identity-oq-01): the Fibonacci addition formula is read off directly from the entries of the matrix law Q^{m+n} = Q^m Q^n, with Q = !![1,1;1,0] the Fibonacci companion matrix. A single induction establishes the closed power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n]; every identity is then a corollary obtained by reading off one entry of Q^{(m+1)+(n+1)} = Q^{m+1}·Q^{n+1} or by taking a determinant. The (2,2) entry gives F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Mathlib's Nat.fib_add), the (1,2) entry gives the addition formula F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n, and the determinant gives Cassini's identity F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} — all packaged as corollaries of the one factorisation. Mathlib records no Fibonacci companion matrix, so the closed power form is a genuinely new artifact.",
+  "description": "Answers the open question of the parent entry (cassini-identity-oq-01): the Fibonacci addition formula is read off directly from the entries of the matrix law Q^{m+n} = Q^m Q^n, with Q = !![1,1;1,0] the Fibonacci companion matrix. A single induction establishes the closed power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n]; every identity is then a corollary obtained by reading off one entry of Q^{(m+1)+(n+1)} = Q^{m+1}·Q^{n+1} or by taking a determinant. The (2,2) entry gives F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Mathlib's Nat.fib_add), the (1,2) entry gives the addition formula F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n, and the determinant gives Cassini's identity F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} — all packaged as corollaries of the one factorisation. The same pattern extends to the subtraction family: replacing the second power by its adjugate gives Q^{m+n+1}·adjugate(Q^{n+1}) = (−1)^{n+1}•Q^m, whose (2,1) entry is d'Ocagne's identity F_{m+n+1}F_n − F_{m+n}F_{n+1} = (−1)^{n+1}F_m (the difference index realised as a bare power, no F_{−1} convention). Mathlib records no Fibonacci companion matrix and none of d'Ocagne/Catalan/Vajda, so the closed power form and the adjugate factorisation are genuinely new artifacts.",
   "meta": {
     "author": "Fibonacci addition formula (classical); Q-matrix factorisation proof formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Matrix_form",
@@ -47,6 +47,16 @@
         "theorem": "pow_add",
         "description": "a^(m+n) = a^m · a^n in a monoid. Instantiated at the matrix Q it is the factorisation Q^{(m+1)+(n+1)} = Q^{m+1}·Q^{n+1} whose entries are the addition formulas — the associativity content the open question asks to exploit.",
         "module": "Mathlib.Algebra.Group.Defs"
+      },
+      {
+        "theorem": "Matrix.mul_adjugate",
+        "description": "A · adjugate A = (det A) • 1. With A = Q^{n+1} and Q^{m+n+1} = Q^m·Q^{n+1} (pow_add) it gives the adjugate factorisation Q^{m+n+1}·adjugate(Q^{n+1}) = det(Q^{n+1})•Q^m without any matrix inverse — the negative-index analogue of pow_add that powers d'Ocagne's subtraction identity.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.adjugate_fin_two_of",
+        "description": "adjugate !![a,b;c,d] = !![d,-b;-c,a]. Evaluates adjugate(Q^{n+1}) = !![F_n,-F_{n+1};-F_{n+1},F_{n+2}] in closed form so the (2,1) entry of the adjugate factorisation reads off as d'Ocagne's identity.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
       }
     ],
     "originalContributions": [
@@ -54,14 +64,15 @@
       "The closed Q-matrix power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n] over ℤ proved by one induction on the Fibonacci recurrence — Mathlib records no Fibonacci companion matrix",
       "Three classical identities packaged as corollaries of one factorisation: the (2,2) entry F_{m+n+1} = F_{m+1}F_{n+1} + F_m F_n (recovering Nat.fib_add), the (1,2) entry F_{m+n+2} = F_{m+2}F_{n+1} + F_{m+1}F_n, and Cassini's identity F_{n+2}F_n − F_{n+1}² = (−1)^{n+1} via the determinant",
       "Demonstrates the 'one matrix identity, many corollaries' pattern: a family of bilinear Fibonacci identities becomes entry-reading on a single associativity equation",
-      "Adds the duplication formulas F_{2n+1} = F_{n+1}² + F_n² and F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n as the m = n diagonal of the addition formulas (the entries of the square Q^{n+1}·Q^{n+1}), extending the corollary list with no extra induction"
+      "Adds the duplication formulas F_{2n+1} = F_{n+1}² + F_n² and F_{2n+2} = F_{n+2}F_{n+1} + F_{n+1}F_n as the m = n diagonal of the addition formulas (the entries of the square Q^{n+1}·Q^{n+1}), extending the corollary list with no extra induction",
+      "Extends the 'one matrix, many corollaries' pattern from the product (addition) identities to the subtraction family via the adjugate: the factorisation Q^{m+n+1}·adjugate(Q^{n+1}) = det(Q^{n+1})•Q^m = (−1)^{n+1}•Q^m (Matrix.mul_adjugate, no inverse and no negative index) yields d'Ocagne's identity F_{m+n+1}F_n − F_{m+n}F_{n+1} = (−1)^{n+1}F_m by reading its (2,1) entry — the difference index m = (m+n)−n is materialised as the bare power Q^m, sidestepping the F_{−1} convention; neither d'Ocagne, Catalan, nor Vajda appear anywhere in Mathlib"
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 151,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only structural Mathlib lemmas (Matrix.mul_fin_two, Matrix.det_pow, Matrix.det_fin_two_of, pow_add, Nat.fib_add_two) with induction, push_cast, ring, and exact_mod_cast; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext, Classical.choice, Quot.sound, none of which count as assumptions.",
+    "lineCount": 221,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only structural Mathlib lemmas (Matrix.mul_fin_two, Matrix.det_pow, Matrix.det_fin_two_of, pow_add, Nat.fib_add_two, Matrix.mul_adjugate, Matrix.adjugate_fin_two_of) with induction, push_cast, ring, linear_combination, and exact_mod_cast; no native_decide and no structure-encoded hypotheses. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for every theorem (including the d'Ocagne identity fib_dOcagne), none of which count as assumptions.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 11,
     "definitionCount": 1
   },
   "sections": [

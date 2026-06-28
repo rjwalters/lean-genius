@@ -26,10 +26,17 @@
                        `fib_add_matrix` (odd-index duplication).
   - `fib_two_mul_add_two` : `F(2n+2) = F(n+2)F(n+1) + F(n+1)F(n)`  — the `m = n` diagonal
                        of `fib_add_offdiag` (even-index duplication).
+  - `fib_dOcagne`    : `F(m+n+1)F(n) − F(m+n)F(n+1) = (−1)^(n+1)F(m)`  — d'Ocagne's
+                       *subtraction*-type identity, read off an entry of the **adjugate**
+                       factorisation `Q^{m+n+1}·adjugate(Q^{n+1}) = (−1)^{n+1}•Q^m`
+                       (`Matrix.mul_adjugate`). The adjugate stands in for the inverse
+                       power `Q^{−n}`, realising the difference index `m = (m+n)−n` without
+                       leaving `ℕ` or invoking the `F_{−1}` convention.
 
   Worked over `ℤ` (entries `(Nat.fib k : ℤ)`), 0 sorries, 0 axioms. Mathlib has no
   Fibonacci Q-matrix of its own, so the closed form `Q_pow_succ` is a genuinely new
-  artifact.
+  artifact; the adjugate factorisation extends the same "one matrix, many corollaries"
+  pattern from the addition (product) identities to the subtraction (d'Ocagne) family.
 -/
 
 import Mathlib
@@ -147,5 +154,68 @@ theorem fib_two_mul_add_two (n : ℕ) :
       = Nat.fib (n + 2) * Nat.fib (n + 1) + Nat.fib (n + 1) * Nat.fib n := by
   have h := fib_add_offdiag n n
   rw [show 2 * n + 2 = n + n + 2 from by ring, h]
+
+/-!
+## Subtraction-type identities via the adjugate (d'Ocagne)
+
+The addition formulas above read entries of the *product* `Q^a · Q^b = Q^{a+b}`. The
+classical *subtraction*-type identities (d'Ocagne, Catalan, Vajda) instead need a
+difference index `F_{a−b}`, i.e. an *inverse* power `Q^{a−b} = Q^a (Q^b)^{-1}`. Over `ℤ`
+we avoid `(Q^b)^{-1}` (and the `F_{-1}` convention) by using the **adjugate**: since
+`A · adjugate A = (det A) • 1` (`Matrix.mul_adjugate`) and `det (Q^{n+1}) = (−1)^{n+1}`,
+
+`Q^{m+n+1} · adjugate (Q^{n+1}) = (det Q^{n+1}) • Q^m = (−1)^{n+1} • Q^m`,
+
+a factorisation in the *same* spirit as `Q_factor` but with an adjugate in place of the
+second power. Reading off an entry now yields d'Ocagne's identity with all indices kept
+`≥ 0` (the difference `m = (m+n) − n` is materialised as the bare exponent `m`).
+-/
+
+/-- Entry `(2,1)` of `Q^m` is `F(m)`, for *every* `m` — including `m = 0`, where `Q^0 = 1`
+gives the `(2,1)` entry `0 = F(0)`. (For `m = k+1` this is the off-diagonal of
+`Q_pow_succ`.) Needed because the adjugate factorisation lands on a bare power `Q^m`. -/
+theorem Q_pow_entry_10 (m : ℕ) : (Q ^ m) 1 0 = (Nat.fib m : ℤ) := by
+  cases m with
+  | zero => simp
+  | succ k =>
+      rw [Q_pow_succ]
+      simp
+
+/-- `det (Q^{n+1}) = (−1)^{n+1}` (the scalar of the adjugate factorisation), from
+`det (Q^k) = (det Q)^k` and `det Q = −1`. -/
+theorem Q_pow_succ_det (n : ℕ) : (Q ^ (n + 1)).det = (-1 : ℤ) ^ (n + 1) := by
+  rw [Matrix.det_pow, show Q = !![(1 : ℤ), 1; 1, 0] from rfl, Matrix.det_fin_two_of]
+  norm_num
+
+/-- **Adjugate factorisation** (subtraction companion of `Q_factor`):
+`Q^{m+n+1} · adjugate (Q^{n+1}) = det (Q^{n+1}) • Q^m`. Pure `Matrix.mul_adjugate` +
+`pow_add` — no inverse, no negative index. -/
+private theorem Q_adj_factor (m n : ℕ) :
+    Q ^ (m + n + 1) * (Q ^ (n + 1)).adjugate = (Q ^ (n + 1)).det • Q ^ m := by
+  have hexp : m + n + 1 = m + (n + 1) := by ring
+  rw [hexp, pow_add, Matrix.mul_assoc, Matrix.mul_adjugate, mul_smul_comm, Matrix.mul_one]
+
+/-- **d'Ocagne's identity** (reindexed to keep every Fibonacci index `≥ 0`):
+`F(m+n+1)·F(n) − F(m+n)·F(n+1) = (−1)^{n+1}·F(m)`.
+
+Read off the `(2,1)` entry of the adjugate factorisation
+`Q^{m+n+1}·adjugate (Q^{n+1}) = (−1)^{n+1}•Q^m`. The standard form
+`F_a F_{b+1} − F_{a+1} F_b = (−1)^b F_{a−b}` is the case `a = m+n`, `b = n`; the difference
+`a − b = m` appears here as the exponent of the bare power `Q^m`, so no `F_{m−n}` /
+negative-index convention is required. This is the subtraction analogue of the addition
+formulas, obtained from the *same* Q-matrix by replacing the second factor with its
+adjugate. -/
+theorem fib_dOcagne (m n : ℕ) :
+    (Nat.fib (m + n + 1) : ℤ) * Nat.fib n - (Nat.fib (m + n) : ℤ) * Nat.fib (n + 1)
+      = (-1 : ℤ) ^ (n + 1) * Nat.fib m := by
+  have h := Q_adj_factor m n
+  rw [show m + n + 1 = (m + n) + 1 from rfl, Q_pow_succ_det, Q_pow_succ (m + n),
+    Q_pow_succ n, Matrix.adjugate_fin_two_of] at h
+  have h10 := congrFun (congrFun h 1) 0
+  rw [Matrix.mul_apply, Fin.sum_univ_two, Matrix.smul_apply, Q_pow_entry_10,
+    smul_eq_mul] at h10
+  simp only [Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.cons_val_fin_one, Matrix.of_apply, Matrix.empty_val'] at h10
+  linear_combination h10
 
 end CassiniIdentityOQ01OQ02
