@@ -1,0 +1,38 @@
+[
+  {
+    "id": "anoq03-ann-isalgclosure",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 73, "endLine": 88 },
+    "type": "definition",
+    "title": "The algebraic numbers are an algebraic closure of ℚ",
+    "content": "instIsAlgClosure certifies IsAlgClosure ℚ algebraicNumbersField. Mathlib's IsAlgClosure ℚ K class bundles two facts: K is algebraically closed and K/ℚ is an algebraic extension. The sibling entry already supplies the first as an instance (IsAlgClosed algebraicNumbersField); the parent's construction supplies the second (every algebraic number is, by definition, algebraic over ℚ). So the instance is the one-line assembly ⟨inferInstance, inferInstance⟩ — recognizing the concrete algebraic numbers as a formal algebraic closure.",
+    "mathContext": "An algebraic closure of $K$ is an algebraically closed field that is algebraic over $K$. Recognizing $\\overline{\\mathbb{Q}}$ as one is the prerequisite for invoking Steinitz uniqueness.",
+    "significance": "core",
+    "relatedConcepts": ["algebraic closure", "IsAlgClosure", "algebraically closed field", "algebraic extension"],
+    "prerequisites": ["field extensions", "algebraically closed fields"]
+  },
+  {
+    "id": "anoq03-ann-equiv",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 90, "endLine": 116 },
+    "type": "theorem",
+    "title": "Identification with the abstract AlgebraicClosure ℚ",
+    "content": "algebraicNumbersEquivAlgebraicClosure is the main result: a ℚ-algebra isomorphism algebraicNumbersField ≃ₐ[ℚ] AlgebraicClosure ℚ. It comes from IsAlgClosure.equiv ℚ _ _, the formalization of Steinitz's theorem that any two algebraic closures of a field are isomorphic over it. The concrete closure lives inside ℂ; the abstract AlgebraicClosure ℚ is built from ℚ alone, with no ambient field — the isomorphism is exactly what a formal library needs to identify them. Being a ℚ-algebra map, it fixes ℚ pointwise (algebraicNumbersEquivAlgebraicClosure_commutes).",
+    "mathContext": "Steinitz uniqueness: algebraic closures are unique up to (non-canonical) isomorphism over the base. The isomorphism is noncomputable — it depends on a choice of lift.",
+    "significance": "core",
+    "relatedConcepts": ["Steinitz uniqueness", "IsAlgClosure.equiv", "AlgEquiv", "AlgebraicClosure"],
+    "prerequisites": ["algebraic closures", "algebra isomorphisms"]
+  },
+  {
+    "id": "anoq03-ann-cardinality",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-03",
+    "range": { "startLine": 118, "endLine": 153 },
+    "type": "theorem",
+    "title": "Cardinality transport — AlgebraicClosure ℚ is countably infinite",
+    "content": "cardinalMk_algebraicNumbersField reads off #algebraicNumbersField = ℵ₀ from Mathlib's Algebraic.cardinalMk_of_countable_of_charZero, using that the field's carrier is definitionally {z : ℂ // IsAlgebraic ℚ z} (membership is Iff.rfl). Because cardinality is an isomorphism invariant, Cardinal.mk_congr applied to the equiv transports this to cardinalMk_algebraicClosure_rat : #(AlgebraicClosure ℚ) = ℵ₀. Cardinal.mk_le_aleph0_iff and Cardinal.infinite_iff then give countable_algebraicClosure_rat and infinite_algebraicClosure_rat — the abstract closure is countably infinite, the classical countability of the algebraic numbers freed of any embedding into ℂ.",
+    "mathContext": "Cantor (1874): the algebraic numbers are countable. Transporting across the $\\mathbb{Q}$-algebra isomorphism shows the intrinsic $\\mathrm{AlgebraicClosure}\\,\\mathbb{Q}$ — uncoupled from $\\mathbb{C}$ — is itself countably infinite.",
+    "significance": "core",
+    "relatedConcepts": ["cardinality", "countable", "aleph-null", "isomorphism invariant"],
+    "prerequisites": ["cardinal arithmetic", "countable sets"]
+  }
+]
