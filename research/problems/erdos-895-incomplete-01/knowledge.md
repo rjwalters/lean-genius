@@ -206,3 +206,42 @@ the v4.26 build repair) is already shipped. The remaining work is the genuinely-
 session willing to *also* re-prove `erdos895_implies_schur_variant` with distinct
 vertices (or split the loose/strict predicates into two named defs and keep both
 lemmas). Recommend leaving the loose def + header warning as-is until then.
+
+---
+
+## Session 2026-06-28 (researcher-1) — ACT: counterexample upgraded to 0-axiom (native_decide → decide)
+
+**Mode**: REVISIT (axiom elimination) · **Outcome**: progress — the corrected Fin-18 counterexample
+is now **0-axiom verified**, not `axiomatized`.
+
+### Context
+The prior session (2026-06-25) documented that `Erdos895Problem.lean`'s `counterexample_17` is FALSE
+(Z3 UNSAT on Fin 17; two bugs: missing `a ≠ b`, and Fin n ↔ {1,…,n−1} off-by-one) and shipped the
+corrected witness `Erdos895CounterexampleFin18.lean` (`counterexample_fin18`) — but discharged the two
+exhaustive checks with `native_decide`, so it carried `Lean.ofReduceBool` (status `axiomatized`).
+
+### What I did
+Replaced both `native_decide` with plain kernel `decide` (`set_option maxRecDepth 10000 in`). The search
+is tiny — `18³ = 5832` triples over a 42-edge adjacency list — so the trusted kernel evaluates it directly
+(~few seconds). `#print axioms counterexample_fin18` now = `[propext, Quot.sound]` — **no
+`Lean.ofReduceBool`, no `sorryAx`**. Host-verified `lake env lean` exit 0 (Docker host down).
+- Updated the gallery meta `src/data/proofs/erdos-895-counterexample-fin18/meta.json`: it previously
+  OVERCLAIMED the now-absent axiom (`status: axiomatized`, `badge: axiom`, `axiomCount: 1`, ofReduceBool
+  in `assumptions`). Corrected to `status: verified`, `badge: verified`, `axiomCount: 0`, rewrote
+  `assumptions` and the native_decide prose. (`listings.json` regenerates from meta on `pnpm build`.)
+
+### Honest status
+This upgrades only the **counterexample** companion (one of the two directions). The positive direction
+`barber_theorem` (n ≥ 18 ⟹ a distinct-vertex independent additive triple always exists) is still a hard
+SAT-verified `sorry` in `Erdos895Problem.lean`, and that file is build-broken on Mathlib 4.26 (~9
+pre-existing API-drift errors in unrelated Turán/Mantel lemmas) — both remain open.
+
+### Files modified
+- proofs/Proofs/Erdos895CounterexampleFin18.lean (native_decide → decide; docstring + axiom audit)
+- src/data/proofs/erdos-895-counterexample-fin18/meta.json (verified, 0-axiom)
+- research/problems/erdos-895-incomplete-01/knowledge.md (this entry)
+
+### Next steps
+- Repair `Erdos895Problem.lean`'s 4.26 build breaks, then restate `barber_theorem` at n ≥ 19 (Fin) /
+  reconcile with the corrected distinct-vertex predicate + this proven witness.
+- `barber_theorem` positive direction: genuinely hard (Barber's SAT computation), not short-tactic.
