@@ -229,17 +229,101 @@ noncomputable def multiplicativeEnergy (A B : Finset ℕ) : ℕ :=
     (fun ((a₁, a₂), (b₁, b₂)) => a₁ * b₁ = a₂ * b₂)
     |>.card
 
-/-- Distinct products means minimal energy.  DEFERRED (genuine fiber-counting
-combinatorics, ~50–80 lines): the multiplicative energy is `∑_{p} r(p)²` where
-`r(p) = #{(a,b) ∈ A×B : ab = p}`, while `|A||B| = ∑_p r(p)` and
-`(productSet A B).card = #{p : r(p) > 0}`.  The diagonal already contributes `|A||B|`
-to the energy, so `energy = |A||B| ↔ every fiber has size ≤ 1 ↔ the product map is
-injective ↔ HasDistinctProducts`.  Formalizing requires `Finset.card_eq_sum_card_fiberwise`
-on the product map and a per-fiber `r(p)² = r(p) ↔ r(p) ≤ 1` argument; left for a
-follow-up session. -/
+/-- **Distinct products means minimal energy.**  PROVED via the diagonal-subset
+argument (cleaner than the fiber-sum route): the multiplicative-energy set `E`
+always contains the diagonal `Δ = {((a,a),(b,b))}`, whose size is exactly
+`|A||B|`.  The product map is injective on `A ×ˢ B` iff `E = Δ` (no off-diagonal
+coincidences), and since `Δ ⊆ E` that is equivalent to `|E| = |Δ| = |A||B|`.
+The injectivity is in turn equivalent to `HasDistinctProducts` via
+`Finset.card_image_iff` (the product set is the image of the product map). -/
 theorem distinct_minimal_energy (A B : Finset ℕ) :
     HasDistinctProducts A B ↔ multiplicativeEnergy A B = A.card * B.card := by
-  sorry
+  classical
+  set s : Finset (ℕ × ℕ) := A ×ˢ B with hsdef
+  set f : ℕ × ℕ → ℕ := fun p => p.1 * p.2 with hfdef
+  have hcard : s.card = A.card * B.card := Finset.card_product A B
+  -- HasDistinctProducts ⇔ the product map is injective on `A ×ˢ B`.
+  have hps : productSet A B = s.image f := by
+    ext n
+    simp only [productSet, hsdef, hfdef, Finset.mem_biUnion, Finset.mem_image,
+      Finset.mem_product]
+    constructor
+    · rintro ⟨a, ha, b, hb, rfl⟩; exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
+    · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩; exact ⟨a, ha, b, hb, rfl⟩
+  have hHD : HasDistinctProducts A B ↔ Set.InjOn f ↑s := by
+    rw [HasDistinctProducts, hps, ← hcard, Finset.card_image_iff]
+  -- The energy filter `E` and its diagonal `Δ` inside `S = (A×A)×(B×B)`.
+  set S : Finset ((ℕ × ℕ) × (ℕ × ℕ)) := (A ×ˢ A) ×ˢ (B ×ˢ B) with hSdef
+  set E : Finset ((ℕ × ℕ) × (ℕ × ℕ)) :=
+    S.filter (fun q => q.1.1 * q.2.1 = q.1.2 * q.2.2) with hEdef
+  set Δ : Finset ((ℕ × ℕ) × (ℕ × ℕ)) :=
+    S.filter (fun q => q.1.1 = q.1.2 ∧ q.2.1 = q.2.2) with hΔdef
+  have henergy : multiplicativeEnergy A B = E.card := rfl
+  -- Δ ⊆ E.
+  have hsub : Δ ⊆ E := by
+    intro q hq
+    rw [hΔdef, Finset.mem_filter] at hq
+    rw [hEdef, Finset.mem_filter]
+    exact ⟨hq.1, by rw [hq.2.1, hq.2.2]⟩
+  -- |Δ| = |A||B|, via the bijection ((a,a),(b,b)) ↔ (a,b).
+  have hΔcard : Δ.card = A.card * B.card := by
+    rw [← hcard]
+    refine Finset.card_bij' (fun q _ => (q.1.1, q.2.1))
+      (fun p _ => ((p.1, p.1), (p.2, p.2))) ?hi ?hj ?left ?right
+    case hi =>
+      rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+      rw [hΔdef, Finset.mem_filter] at hq
+      simp only [hSdef, Finset.mem_product] at hq
+      rw [hsdef, Finset.mem_product]
+      exact ⟨hq.1.1.1, hq.1.2.1⟩
+    case hj =>
+      rintro ⟨a, b⟩ hp
+      rw [hsdef, Finset.mem_product] at hp
+      rw [hΔdef, Finset.mem_filter]
+      simp only [hSdef, Finset.mem_product]
+      exact ⟨⟨⟨hp.1, hp.1⟩, hp.2, hp.2⟩, trivial, trivial⟩
+    case left =>
+      rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+      rw [hΔdef, Finset.mem_filter] at hq
+      obtain ⟨_, h1, h2⟩ := hq
+      simp only at h1 h2
+      subst h1; subst h2; rfl
+    case right =>
+      rintro ⟨a, b⟩ _; rfl
+  -- InjOn ⇔ E = Δ.
+  have hED : Set.InjOn f ↑s ↔ E = Δ := by
+    constructor
+    · intro hinj
+      refine Finset.Subset.antisymm ?_ hsub
+      rintro ⟨⟨a₁, a₂⟩, ⟨b₁, b₂⟩⟩ hq
+      rw [hEdef, Finset.mem_filter] at hq
+      simp only [hSdef, Finset.mem_product] at hq
+      obtain ⟨⟨⟨ha1, ha2⟩, hb1, hb2⟩, hprod⟩ := hq
+      have hx : (a₁, b₁) ∈ s := by rw [hsdef, Finset.mem_product]; exact ⟨ha1, hb1⟩
+      have hy : (a₂, b₂) ∈ s := by rw [hsdef, Finset.mem_product]; exact ⟨ha2, hb2⟩
+      have heq := hinj hx hy hprod
+      rw [Prod.mk.injEq] at heq
+      rw [hΔdef, Finset.mem_filter]
+      simp only [hSdef, Finset.mem_product]
+      exact ⟨⟨⟨ha1, ha2⟩, hb1, hb2⟩, heq.1, heq.2⟩
+    · intro hEΔ
+      rintro ⟨a₁, b₁⟩ hx ⟨a₂, b₂⟩ hy hfxy
+      rw [Finset.mem_coe, hsdef, Finset.mem_product] at hx hy
+      have hqE : (((a₁, a₂), (b₁, b₂)) : (ℕ × ℕ) × (ℕ × ℕ)) ∈ E := by
+        rw [hEdef, Finset.mem_filter]
+        simp only [hSdef, Finset.mem_product]
+        exact ⟨⟨⟨hx.1, hy.1⟩, hx.2, hy.2⟩, hfxy⟩
+      rw [hEΔ, hΔdef, Finset.mem_filter] at hqE
+      obtain ⟨_, h1, h2⟩ := hqE
+      simp only at h1 h2
+      rw [Prod.mk.injEq]
+      exact ⟨h1, h2⟩
+  -- Assemble.
+  rw [hHD, henergy, hED]
+  constructor
+  · intro h; rw [h, hΔcard]
+  · intro h
+    exact (Finset.eq_of_subset_of_card_le hsub (by rw [h, hΔcard])).symm
 
 /-
 ## Part VIII: Bounds History
