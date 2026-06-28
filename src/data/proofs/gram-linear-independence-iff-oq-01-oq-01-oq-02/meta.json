@@ -22,6 +22,7 @@
     "sorries": 0
   },
   "title": "Hadamard's Inequality, Matrix Form: |det A| ≤ ∏ ‖column‖",
+  "description": "Answers the second open question of gram-linear-independence-iff-oq-01-oq-01 by specialising the abstract Gramian Hadamard bound back to the classical matrix statement. For a square matrix A over an RCLike field 𝕜 (ℝ or ℂ), Hadamard's 1893 inequality ‖det A‖ ≤ ∏_j ‖col A j‖ — the determinant is bounded by the product of the Euclidean column norms, with equality iff the columns are pairwise orthogonal — is derived as a corollary, not re-proved. The bridge: the Gram matrix of the columns (as vectors of EuclideanSpace 𝕜 (Fin n)) is the Hermitian product Aᴴ·A (gram_col_eq), so det(gram(col A)) = conj(det A)·det A = ‖det A‖² (gram_col_det); feeding the columns into the parent's hadamard_inequality_euclidean gives ‖det A‖² ≤ ∏_j ‖col A j‖², and one monotone square root yields the norm form. The explicit version ‖det A‖ ≤ ∏_j √(∑_i ‖A i j‖²) recovers Hadamard's original statement. Verified: 96 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
