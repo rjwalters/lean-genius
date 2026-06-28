@@ -226,4 +226,86 @@ theorem triangle_few_mono :
   · decide
   · decide
 
+-- ═══════════════════════════════════════════════════
+-- Deletion (alteration) method: a 2-colorable subfamily after removing few edges
+-- ═══════════════════════════════════════════════════
+
+/-
+  The quantitative first moment above secures a coloring with *few* monochromatic
+  edges; the deletion method turns that into a genuine 2-colorable hypergraph by
+  *removing* those few bad edges. This is the elementary, integer sibling of the
+  Radhakrishnan–Srinivasan *recoloring* alteration: RS repairs the bad edges by
+  flipping vertices (gaining the `√(k/log k)` factor); the deletion method simply
+  discards them (gaining nothing asymptotically, but giving a clean, fully finite
+  2-colorability statement — "every family has a 2-colorable subfamily missing at
+  most `t = ⌈incidence / 2^n⌉` edges"). It is the standard "delete one edge per
+  monochromatic edge" argument, and it is the conceptual bridge from the counting
+  lemmas to a real alteration.
+-/
+
+/-- Helper: a coloring `c` leaving `≤ t` monochromatic edges of `E` exhibits a
+2-colorable subfamily `E \ D` obtained by deleting the `≤ t` monochromatic edges
+`D = {e ∈ E | Mono e c}`. The *same* coloring `c` properly 2-colors `E \ D`, because
+every retained edge is, by construction, not monochromatic under `c`. -/
+private theorem subfamily_of_few_mono
+    (E : Finset (Finset V)) (c : V → Bool) (t : ℕ)
+    (hc : (E.filter (fun e => Mono e c)).card ≤ t) :
+    ∃ D ⊆ E, D.card ≤ t ∧ ∃ c' : V → Bool, ∀ e ∈ E \ D, ¬ Mono e c' := by
+  refine ⟨E.filter (fun e => Mono e c), Finset.filter_subset _ _, hc, c, ?_⟩
+  intro e he
+  rw [Finset.mem_sdiff] at he
+  obtain ⟨heE, heD⟩ := he
+  rw [Finset.mem_filter] at heD
+  push_neg at heD
+  exact heD heE
+
+/-- **Deletion method for Property B.** Every finite family `E` of nonempty edges
+has a 2-colorable subfamily obtained by deleting at most `t` edges, whenever the
+incidence total `∑_{e} 2·2^(n-|e|)` is at most `2^n · t`. (Take the coloring with
+`≤ t` monochromatic edges from `exists_coloring_few_mono` and delete exactly those.)
+
+The strict criterion `property_b_of_weighted_first_moment` is the `t = 0` boundary:
+incidence `< 2^n` deletes nothing. For `t ≥ 1` this stays informative past that
+threshold — the family need not be 2-colorable, yet all but `≤ t` of its edges are
+simultaneously 2-colorable. This is the deletion (alteration) form, the elementary
+sibling of the Radhakrishnan–Srinivasan recoloring repair. -/
+theorem exists_two_colorable_subfamily
+    (E : Finset (Finset V)) (hne : ∀ e ∈ E, e.Nonempty) (t : ℕ)
+    (hbound : (∑ e ∈ E, 2 * 2 ^ (Fintype.card V - e.card)) ≤ 2 ^ Fintype.card V * t) :
+    ∃ D ⊆ E, D.card ≤ t ∧ ∃ c : V → Bool, ∀ e ∈ E \ D, ¬ Mono e c := by
+  obtain ⟨c, hc⟩ := exists_coloring_few_mono E hne t hbound
+  exact subfamily_of_few_mono E c t hc
+
+/-- **Uniform deletion bound.** A `k`-uniform family of `|E|` edges has a 2-colorable
+subfamily after deleting at most `t` edges whenever `|E| ≤ 2^(k-1) · t`. Equivalently,
+a `k`-uniform hypergraph on `m` edges always retains a 2-colorable subfamily of at least
+`m - ⌈m / 2^(k-1)⌉` edges — the standard deletion-method consequence of the first moment
+`m · 2^(1-k)` expected monochromatic edges. -/
+theorem exists_two_colorable_subfamily_uniform
+    (E : Finset (Finset V)) (k t : ℕ) (hk : 1 ≤ k)
+    (huniform : ∀ e ∈ E, e.card = k) (hne : ∀ e ∈ E, e.Nonempty)
+    (hkn : k ≤ Fintype.card V)
+    (hcard : E.card ≤ 2 ^ (k - 1) * t) :
+    ∃ D ⊆ E, D.card ≤ t ∧ ∃ c : V → Bool, ∀ e ∈ E \ D, ¬ Mono e c := by
+  obtain ⟨c, hc⟩ := exists_coloring_few_mono_uniform E k t hk huniform hne hkn hcard
+  exact subfamily_of_few_mono E c t hc
+
+/-- **Worked example: bipartite subgraph of `K₄` by deletion.** The complete graph
+`K₄ = {{0,1},{0,2},{0,3},{1,2},{1,3},{2,3}}` (a 2-uniform family over `Fin 4`) is not
+bipartite — it contains triangles, so it has no Property B. Its incidence total is
+`6 · 2·2^(4-2) = 48 = 2^4 · 3`, so the deletion bound (`t = 3`) produces a 2-coloring
+(a vertex bipartition) under which at most `3` of the `6` edges are removed, i.e. a
+bipartite subgraph on `≥ 3` edges — a finite Max-Cut-flavored instance of the method.
+(The first moment is loose here: deleting `2` edges already yields the bipartite `K_{2,2}`;
+the averaging certifies only `≤ 3`.) -/
+theorem k4_bipartite_subfamily :
+    ∃ D ⊆ ({{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}} :
+        Finset (Finset (Fin 4))),
+      D.card ≤ 3 ∧ ∃ c : Fin 4 → Bool,
+        ∀ e ∈ ({{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}} :
+            Finset (Finset (Fin 4))) \ D, ¬ Mono e c := by
+  apply exists_two_colorable_subfamily _ _ 3
+  · decide
+  · decide
+
 end ProbMethod.PropertyB
