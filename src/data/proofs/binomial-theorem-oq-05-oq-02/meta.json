@@ -1,0 +1,160 @@
+{
+  "id": "binomial-theorem-oq-05-oq-02",
+  "title": "Weighted AM–GM from Bernoulli: the First-Order-Truncation Route",
+  "slug": "binomial-theorem-oq-05-oq-02",
+  "description": "The parent entry proved Bernoulli's inequality 1 + n·a ≤ (1+a)ⁿ as the first-order truncation of the binomial expansion. This follow-up shows that the same elementary inequality — and nothing analytic beyond it — proves AM–GM. A single list induction whose cons-step is pure Bernoulli gives the unweighted ∏ xᵢ ≤ (mean)ⁿ; the classical repeat-with-multiplicity reduction then promotes it to the natural-weighted ∏ xᵢ^{kᵢ} ≤ (weighted mean)^{∑kᵢ}. No logarithms, no convexity of exp, no Jensen — in contrast to Mathlib's Real.geom_mean_le_arith_mean_weighted, which routes through convexOn_exp.",
+  "meta": {
+    "author": "Classical (AM–GM via Bernoulli, attributed to the Cauchy/Bernoulli tradition); formalized atop Mathlib's one_add_mul_sub_le_pow",
+    "sourceUrl": "https://en.wikipedia.org/wiki/AM%E2%80%93GM_inequality",
+    "date": "1821",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ05OQ02.lean",
+    "tags": [
+      "analysis",
+      "inequality",
+      "binomial-theorem",
+      "bernoulli-inequality",
+      "am-gm-inequality",
+      "induction",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "one_add_mul_sub_le_pow",
+        "description": "Bernoulli's inequality in tangent-line form: for r ≥ -1, 1 + n·(r−1) ≤ rⁿ. The single analytic ingredient of the whole development — every AM–GM result below reduces to this.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "List.prod_replicate",
+        "description": "(replicate n a).prod = aⁿ. Used (with its additive sum_replicate) to evaluate the product/sum/length of the repetition list in the weighted reduction.",
+        "module": "Mathlib.Algebra.BigOperators.Group.List.Defs"
+      },
+      {
+        "theorem": "Finset.prod_map_toList",
+        "description": "(s.toList.map f).prod = ∏ i ∈ s, f i. Transports the list-form AM–GM to the Finset form, both unweighted and weighted.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      }
+    ],
+    "originalContributions": [
+      "amgm_step: the inductive heart — x · Aₜⁿ ≤ A^{n+1} whenever (n+1)·A = x + n·Aₜ, proved by rescaling by r = A/Aₜ and applying Bernoulli. This is the one nontrivial step and it is pure Bernoulli.",
+      "amgm_list: unweighted AM–GM for a list of nonnegative reals, ∏ l ≤ (l.sum / l.length)^l.length, by a single induction with amgm_step as the cons-step — no logarithms, no exp-convexity, no Jensen",
+      "amgm_prod_le: the Finset packaging ∏ z ≤ (∑ z / card)^card",
+      "repList and repList_{prod,sum,length,nonneg}: the repeat-with-multiplicity bookkeeping (each (value,weight) pair contributes weight copies of value), realising the classical reduction of weighted to unweighted AM–GM",
+      "amgm_weighted_list / amgm_weighted_nat: the natural-weighted AM–GM ∏ xᵢ^{kᵢ} ≤ ((∑ kᵢ·xᵢ)/(∑ kᵢ))^{∑ kᵢ} (list and Finset forms) — the inequality the open question names, obtained from the Bernoulli route with no further analytic input",
+      "Numeric witnesses: two- and three-variable AM–GM, the concrete 2·4·8 ≤ (14/3)³, and the weighted a²·b ≤ ((2a+b)/3)³"
+    ],
+    "dateAdded": "2026-06-27",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 294,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound). The sole analytic input is Mathlib's Bernoulli inequality one_add_mul_sub_le_pow; the AM–GM development — unweighted list and Finset forms, the repetition reduction, and the natural-weighted inequality — is the original content and does not re-export Mathlib's logarithm/convexity-based geom_mean_le_arith_mean_weighted.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The arithmetic–geometric mean inequality is one of the oldest in analysis, with Cauchy's celebrated 1821 forward–backward induction proof among the most famous. Less often emphasised is that AM–GM is, at heart, *Bernoulli's inequality applied termwise*: the single tangent-line bound 1 + n·(r−1) ≤ rⁿ, iterated, forces the geometric mean below the arithmetic mean. Mathlib's general weighted AM–GM (Real.geom_mean_le_arith_mean_weighted) instead routes through the convexity of exp and Jensen's inequality — analytically heavier machinery. This entry follows the elementary Bernoulli route end to end, taking the gallery's parent Bernoulli entry as its only analytic input.",
+    "problemStatement": "**Open Question (binomial-theorem-oq-05-oq-02):** The parent entry binomial-theorem-oq-05 proved Bernoulli's inequality as the first-order truncation of the binomial expansion. Does that same viewpoint give a clean Lean proof of the (weighted) AM–GM inequality, which classically follows from Bernoulli applied termwise?\n\n**Answer: yes.** A single list induction whose only analytic input is the tangent-line Bernoulli inequality proves the unweighted AM–GM ∏ xᵢ ≤ (mean)ⁿ. The classical repeat-with-multiplicity reduction — replace each xᵢ by kᵢ copies — then promotes it to the natural-weighted AM–GM ∏ xᵢ^{kᵢ} ≤ ((∑ kᵢ·xᵢ)/(∑ kᵢ))^{∑ kᵢ} with no further analytic ingredient.",
+    "text": "The geometric mean of nonnegative reals never exceeds their arithmetic mean. Proved here by induction on the sample: splicing one new term into a sample of mean Aₜ to form the new mean A satisfies x·Aₜⁿ ≤ A^{n+1}, which after dividing by Aₜ^{n+1} is exactly Bernoulli for r = A/Aₜ. Iterating gives the unweighted inequality; replacing each value by an integer number of copies gives the weighted one.",
+    "proofStrategy": "1. **Bernoulli kernel** (`bernoulli_pow`): re-export the parent's tangent-line Bernoulli 1 + n·(r−1) ≤ rⁿ from Mathlib's one_add_mul_sub_le_pow.\n2. **Inductive step** (`amgm_step`): show x·Aₜⁿ ≤ A^{n+1} under the bookkeeping (n+1)·A = x + n·Aₜ. With Aₜ > 0, set r = A/Aₜ; the claim becomes ((n+1)·r − n)·Aₜ^{n+1} ≤ r^{n+1}·Aₜ^{n+1}, i.e. Bernoulli rescaled. The Aₜ = 0 degenerate case is handled separately.\n3. **Unweighted AM–GM** (`amgm_list`): induct on the list; the cons-step is amgm_step with At = t.sum/n and A = (x+t.sum)/(n+1), whose bookkeeping identity (n+1)·A = x + n·At is pure arithmetic.\n4. **Finset form** (`amgm_prod_le`): transport amgm_list along s.toList.\n5. **Repetition reduction** (`repList` + `repList_{prod,sum,length,nonneg}`): for a list of (value, weight) pairs, the flat list with each value repeated by its weight has product ∏ vᵢ^{kᵢ}, sum ∑ kᵢ·vᵢ, and length ∑ kᵢ.\n6. **Weighted AM–GM** (`amgm_weighted_list`, `amgm_weighted_nat`): apply amgm_list to the repetition list and rewrite the three quantities — yielding the natural-weighted inequality the open question names.",
+    "keyInsights": [
+      "**AM–GM is Bernoulli, iterated.** The whole proof rests on the single tangent-line inequality 1 + n·(r−1) ≤ rⁿ. Dividing the inductive step x·Aₜⁿ ≤ A^{n+1} by Aₜ^{n+1} with r = A/Aₜ turns it verbatim into Bernoulli — no logarithm or exponential ever appears.",
+      "**The bookkeeping identity carries the induction.** Writing the new mean as A = (x + n·Aₜ)/(n+1) makes the cons-step's hypothesis (n+1)·A = x + n·Aₜ an arithmetic triviality, so the only inequality consumed per step is Bernoulli.",
+      "**Weighted = unweighted on a repeated sample.** Natural weights kᵢ are exactly multiplicities: the repetition list, with vᵢ appearing kᵢ times, has product ∏ vᵢ^{kᵢ}, sum ∑ kᵢ·vᵢ, and length ∑ kᵢ, so the weighted inequality falls out of the unweighted one with zero extra analytic content.",
+      "**A genuinely lighter route than Mathlib's.** Mathlib's weighted AM–GM goes through convexity of exp and Jensen; this development needs only Bernoulli, illustrating that the binomial first-order-truncation viewpoint reaches AM–GM by elementary means."
+    ],
+    "prerequisites": [
+      "Bernoulli's inequality in tangent-line form 1 + n·(r−1) ≤ rⁿ (the parent entry)",
+      "Arithmetic and geometric means of finite samples",
+      "Induction on lists; transport between lists and Finsets via s.toList",
+      "The repeat-with-multiplicity reduction of weighted to unweighted means"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kernel",
+      "title": "Bernoulli Kernel and the Inductive Step",
+      "startLine": 53,
+      "endLine": 107,
+      "summary": "Re-exports the tangent-line Bernoulli inequality (bernoulli_pow) and proves the inductive heart amgm_step: x·Aₜⁿ ≤ A^{n+1} whenever (n+1)·A = x + n·Aₜ, by rescaling to r = A/Aₜ and applying Bernoulli, with the Aₜ = 0 case handled separately.",
+      "mathContext": "The single analytic ingredient (Bernoulli) and the one nontrivial inequality step of the whole development."
+    },
+    {
+      "id": "unweighted",
+      "title": "Unweighted AM–GM (List and Finset Forms)",
+      "startLine": 109,
+      "endLine": 164,
+      "summary": "amgm_list: ∏ l ≤ (l.sum/l.length)^l.length for nonnegative reals, by induction with amgm_step as the cons-step. amgm_prod_le: the Finset packaging ∏ z ≤ (∑ z / card)^card, transported along s.toList.",
+      "mathContext": "Unweighted AM–GM with no logarithms or exp-convexity — pure Bernoulli induction."
+    },
+    {
+      "id": "weighted",
+      "title": "Natural-Weighted AM–GM via Repetition",
+      "startLine": 166,
+      "endLine": 255,
+      "summary": "The repetition list repList (each (value, weight) pair contributes weight copies) and its product/sum/length/nonneg lemmas, then amgm_weighted_list and amgm_weighted_nat: ∏ xᵢ^{kᵢ} ≤ ((∑ kᵢ·xᵢ)/(∑ kᵢ))^{∑ kᵢ}, the inequality the open question names.",
+      "mathContext": "Weighted AM–GM obtained from the unweighted form by the repeat-with-multiplicity reduction — no further analytic input."
+    },
+    {
+      "id": "numeric",
+      "title": "Numeric Witnesses",
+      "startLine": 257,
+      "endLine": 290,
+      "summary": "Two-variable ab ≤ ((a+b)/2)², three-variable abc ≤ ((a+b+c)/3)³, the concrete 2·4·8 = 64 ≤ (14/3)³, and the weighted witness a²·b ≤ ((2a+b)/3)³ from amgm_weighted_list [(a,2),(b,1)].",
+      "mathContext": "Concrete instances of the unweighted and weighted inequalities."
+    }
+  ],
+  "conclusion": {
+    "summary": "AM–GM is proved end to end from Bernoulli's inequality alone: a single list induction (cons-step amgm_step, which is Bernoulli rescaled) gives the unweighted ∏ xᵢ ≤ (mean)ⁿ, and the repeat-with-multiplicity reduction promotes it to the natural-weighted ∏ xᵢ^{kᵢ} ≤ ((∑ kᵢ·xᵢ)/(∑ kᵢ))^{∑ kᵢ}. Fully verified: 0 sorries, 0 axioms.",
+    "implications": "This answers the parent entry's open question affirmatively: the binomial first-order-truncation viewpoint does give a clean Lean proof of weighted AM–GM. The development is notably lighter than Mathlib's Real.geom_mean_le_arith_mean_weighted, which depends on convexity of exp and Jensen's inequality; here the only analytic input is Bernoulli. The repetition lemmas (repList and friends) are reusable bookkeeping for any 'weighted = unweighted on a repeated sample' argument.",
+    "openQuestions": [
+      "Does the same Bernoulli route reach the real-weighted AM–GM (arbitrary nonnegative real weights summing to 1) by a density/limit argument from the rational-weighted case, still avoiding exp-convexity?",
+      "Can the Bernoulli-only unweighted AM–GM amgm_list be sharpened to the equality-case characterisation (equality iff all entries equal) by tracking the strict Bernoulli inequality?"
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-05",
+      "relationship": "extends",
+      "description": "Answers OQ-05's open question: the parent proved Bernoulli as the first-order truncation of the binomial expansion; this entry uses exactly that inequality to prove (weighted) AM–GM termwise"
+    },
+    {
+      "targetId": "binomial-theorem-oq-05-oq-01",
+      "relationship": "sibling",
+      "description": "Both are follow-ups to the Bernoulli entry OQ-05; OQ-05-OQ-01 takes the multiplicative (Vandermonde) route, this entry the inequality (AM–GM) route"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "BinomialTheoremOQ05OQ02",
+    "lineCount": 294,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ05OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Paris",
+      "note": "Classic forward–backward induction proof of AM–GM; the inductive viewpoint underlies the Bernoulli route used here"
+    },
+    {
+      "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference deriving AM–GM and weighted AM–GM, including the reduction of weighted to unweighted means by multiplicities"
+    }
+  ],
+  "sorries": 0
+}

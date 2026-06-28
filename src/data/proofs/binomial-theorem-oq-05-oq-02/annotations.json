@@ -1,0 +1,96 @@
+[
+  {
+    "id": "amgm-bernoulli-context",
+    "proofId": "binomial-theorem-oq-05-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "AM–GM is Bernoulli, Applied Termwise",
+    "content": "The parent entry proved Bernoulli's inequality 1 + n·(r−1) ≤ rⁿ as the first-order truncation of the binomial expansion. This file shows that the same inequality — with no further analytic input — proves AM–GM. A single list induction whose cons-step is Bernoulli gives the unweighted geometric-mean ≤ arithmetic-mean bound; the classical repeat-with-multiplicity reduction promotes it to the natural-weighted form. Contrast Mathlib's Real.geom_mean_le_arith_mean_weighted, which goes through convexity of exp and Jensen.",
+    "mathContext": "The geometric mean $\\left(\\prod x_i\\right)^{1/n}$ is bounded by the arithmetic mean $\\frac1n\\sum x_i$; equivalently $\\prod x_i \\le \\left(\\frac{\\sum x_i}{n}\\right)^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli's inequality",
+      "AM–GM inequality",
+      "first-order truncation",
+      "convexity of exp (the route this proof avoids)"
+    ],
+    "prerequisites": [
+      "Bernoulli's inequality in tangent-line form",
+      "arithmetic and geometric means"
+    ]
+  },
+  {
+    "id": "amgm-step-insight",
+    "proofId": "binomial-theorem-oq-05-oq-02",
+    "range": { "startLine": 62, "endLine": 107 },
+    "type": "insight",
+    "title": "The Inductive Step is Bernoulli, Rescaled",
+    "content": "Splicing a new nonnegative term x into a sample of mean Aₜ to form the new mean A satisfies x·Aₜⁿ ≤ A^{n+1}, given the bookkeeping (n+1)·A = x + n·Aₜ. When Aₜ > 0, set r = A/Aₜ: the claim becomes ((n+1)·r − n)·Aₜ^{n+1} ≤ r^{n+1}·Aₜ^{n+1}, and dividing by Aₜ^{n+1} leaves exactly Bernoulli (n+1)·r − n ≤ r^{n+1}. This single step is the only place an inequality (other than nonnegativity) is consumed.",
+    "mathContext": "With $r = A/A_t$, $x = ((n+1)r - n)A_t$, so $x A_t^n = ((n+1)r-n)A_t^{n+1} \\le r^{n+1} A_t^{n+1} = A^{n+1}$ by Bernoulli $1 + (n+1)(r-1) \\le r^{n+1}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Bernoulli's inequality",
+      "induction on sample size",
+      "homogeneous rescaling"
+    ],
+    "prerequisites": [
+      "Bernoulli's inequality",
+      "manipulating powers and means"
+    ]
+  },
+  {
+    "id": "amgm-list-theorem",
+    "proofId": "binomial-theorem-oq-05-oq-02",
+    "range": { "startLine": 109, "endLine": 164 },
+    "type": "theorem",
+    "title": "Unweighted AM–GM by Bernoulli Induction",
+    "content": "amgm_list proves ∏ l ≤ (l.sum / l.length)^l.length for a list of nonnegative reals by a single induction, the cons-step being amgm_step. Choosing At = t.sum/n and A = (x + t.sum)/(n+1) makes the step's hypothesis (n+1)·A = x + n·At a pure arithmetic identity. amgm_prod_le repackages the result over a Finset as ∏ z ≤ (∑ z / card)^card by transporting along s.toList.",
+    "mathContext": "$\\prod_{i} x_i \\le \\left(\\frac{1}{n}\\sum_i x_i\\right)^n$ for $x_i \\ge 0$, with $n$ the sample size.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AM–GM inequality",
+      "list induction",
+      "Finset.toList transport"
+    ],
+    "prerequisites": [
+      "the inductive step amgm_step",
+      "sums and products over lists and Finsets"
+    ]
+  },
+  {
+    "id": "amgm-weighted-theorem",
+    "proofId": "binomial-theorem-oq-05-oq-02",
+    "range": { "startLine": 166, "endLine": 255 },
+    "type": "theorem",
+    "title": "Weighted AM–GM via Repeat-with-Multiplicity",
+    "content": "Natural weights are multiplicities. The repetition list repList sends a list of (value, weight) pairs to the flat list with each value repeated by its weight; repList_prod/sum/length compute its product ∏ vᵢ^{kᵢ}, sum ∑ kᵢ·vᵢ, and length ∑ kᵢ. Feeding it to amgm_list and rewriting gives amgm_weighted_list and its Finset form amgm_weighted_nat: ∏ xᵢ^{kᵢ} ≤ ((∑ kᵢ·xᵢ)/(∑ kᵢ))^{∑ kᵢ} — the inequality the open question names, with no analytic input beyond Bernoulli.",
+    "mathContext": "$\\prod_i x_i^{k_i} \\le \\left(\\frac{\\sum_i k_i x_i}{\\sum_i k_i}\\right)^{\\sum_i k_i}$ for $x_i \\ge 0$ and natural weights $k_i$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "weighted AM–GM inequality",
+      "repeat-with-multiplicity reduction",
+      "List.replicate / List.flatMap"
+    ],
+    "prerequisites": [
+      "unweighted AM–GM (amgm_list)",
+      "products and sums over replicated lists"
+    ]
+  },
+  {
+    "id": "amgm-numeric-witnesses",
+    "proofId": "binomial-theorem-oq-05-oq-02",
+    "range": { "startLine": 257, "endLine": 290 },
+    "type": "concept",
+    "title": "Numeric Witnesses",
+    "content": "Concrete instances anchor the abstract inequalities: the two-variable ab ≤ ((a+b)/2)² and three-variable abc ≤ ((a+b+c)/3)³ from amgm_list, the explicit 2·4·8 = 64 ≤ (14/3)³ ≈ 101.6, and the weighted a²·b ≤ ((2a+b)/3)³ from amgm_weighted_list [(a,2),(b,1)].",
+    "mathContext": "E.g. $2\\cdot 4\\cdot 8 = 64 \\le \\left(\\tfrac{14}{3}\\right)^3$ and the weighted $a^2 b \\le \\left(\\tfrac{2a+b}{3}\\right)^3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AM–GM inequality",
+      "weighted AM–GM inequality"
+    ],
+    "prerequisites": [
+      "the AM–GM theorems above"
+    ]
+  }
+]
