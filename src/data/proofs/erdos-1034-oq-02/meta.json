@@ -1,0 +1,78 @@
+{
+  "id": "erdos-1034-oq-02",
+  "title": "The Book-Lemma Lower-Bound Mechanism for Erdős #1034, Made Exact",
+  "slug": "erdos-1034-oq-02",
+  "description": "Addresses OQ-02 of Erdős Problem #1034 (triangle neighbours in dense graphs): can the lower bound h(n) ≥ (1/6 - o(1))n, which comes from the book lemma, be improved beyond the book method? This entry does not resolve that open question; instead it formalizes the engine of the lower bound exactly, axiom-free. The main structural theorem book_le_goodNeighborCount shows that if {a,b} is an edge and P is a set of common neighbours of a and b (a 'book' with spine {a,b} and pages P), then the spine triangle {a,b,p₀} has at least |P|-1 'good neighbours' (vertices adjacent to ≥2 of the triangle's vertices) — the precise mechanism translating 'edge in many triangles' into 'triangle with many good neighbours'. A matching sharpness result (book_goodNeighborCount_eq, book_goodNeighbors_eq) shows that for the pure book graph (spine plus pairwise-nonadjacent pages) the count is exactly |P|-1: the book method delivers neither more nor fewer good neighbours than its page count, verified on an explicit Fin 5 witness by decide (no native_decide). Fully machine-checked: 0 sorries, 0 axioms beyond the foundational propext / Classical.choice / Quot.sound.",
+  "meta": {
+    "author": "Research formalization 2026",
+    "sourceUrl": "https://erdosproblems.com/1034",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1034OQ02.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "triangles",
+      "extremal-combinatorics",
+      "book-lemma",
+      "good-neighbours",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 194,
+    "assumptions": "None. Every result is fully machine-checked and depends only on the standard foundational axioms propext / Classical.choice / Quot.sound. No `axiom` declarations, no structure-encoded assumptions, and no `native_decide` (the finite sharpness witness is discharged by ordinary `decide`, so `Lean.ofReduceBool` is not used).",
+    "dateAdded": "2026-06-28",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 10,
+    "erdosNumber": 1034,
+    "erdosUrl": "https://erdosproblems.com/1034",
+    "erdosProblemStatus": "open"
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1034",
+      "relationship": "extends",
+      "description": "The parent problem: a graph with > n²/4 edges need NOT contain a triangle with > (1/2 - o(1))n good neighbours (disproved by Ma–Tang). The known bounds are (1/6 - o(1))n ≤ h(n) ≤ (2 - √(5/2) + o(1))n. OQ-02 asks whether the n/6 lower bound — which comes from the book lemma — can be improved."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**The book lemma and the n/6 floor**\n\nErdős Problem #1034 asks, for a graph G on n vertices with more than n²/4 edges, whether there must exist a triangle T together with more than (1/2 - o(1))n vertices each adjacent to at least two vertices of T. Ma and Tang disproved this, constructing dense graphs in which the best triangle has at most (2 - √(5/2) + o(1))n ≈ 0.419n such 'good neighbours'. The resulting threshold function h(n) is squeezed into (1/6 - o(1))n ≤ h(n) ≤ (2 - √(5/2) + o(1))n.\n\nThe lower bound n/6 is produced by the **book lemma**: a graph with more than n²/4 edges contains an edge {a,b} lying in many common-neighbour triangles — a 'book' with spine {a,b} whose 'pages' are the common neighbours — and every page is automatically adjacent to a and b, hence to two vertices of any triangle on the spine. So a book of size k yields a triangle with at least k-1 good neighbours, and a Turán-type count guarantees a book of size ≥ n/6.\n\nOQ-02 asks whether this n/6 floor can be pushed higher using techniques beyond the book lemma (flag algebras, regularity, etc.). That question is genuinely open. This entry does not answer it; it instead pins down the book mechanism itself as an exact, verified statement, isolating precisely what the book argument can and cannot deliver.",
+    "problemStatement": "**Open Question OQ-02: Beyond the book lemma**\n\nThe lower bound $h(n) \\geq (1/6 - o(1))n$ is obtained from the book lemma. Can it be improved — is there a construction or argument giving $h(n) \\geq (1/6 + \\varepsilon)n$ for some fixed $\\varepsilon > 0$, or is $n/6$ a genuine barrier for book-style methods?\n\nThis formalization makes the book mechanism precise: a book with spine $\\{a,b\\}$ and page set $P$ forces a triangle with at least $|P|-1$ good neighbours (general lower bound), and for the pure book graph this is met with equality (sharpness). The book method therefore converts page count into good-neighbour count one-for-one — clarifying that any improvement past $n/6$ must come from outside the book argument.",
+    "proofStrategy": "**Formalization approach (axiom-free)**\n\n1. Define a `Triangle G` as three mutually adjacent distinct vertices, with `vertices`, `adjacentCount` (number of triangle vertices adjacent to a given y), `goodNeighbors` (vertices outside T adjacent to ≥2 of T's vertices), and `goodNeighborCount`.\n2. Prove the general bridge `book_le_goodNeighborCount`: given an edge {a,b} and a page set P of common neighbours (disjoint from {a,b}), construct the spine triangle {a,b,p₀} and show every page q ≠ p₀ is a good neighbour — q is adjacent to both a and b, so {a,b} ⊆ the adjacency filter, giving adjacentCount ≥ 2, while q lies outside the triangle. Hence `P.erase p₀ ⊆ goodNeighbors`, and `card_erase_of_mem` gives goodNeighborCount ≥ |P| - 1.\n3. Build an explicit pure book graph on `Fin 5` (spine {0,1}, pages {2,3,4}, pages pairwise non-adjacent) as a `SimpleGraph` from a symmetric edge list, with a `DecidableRel` instance.\n4. Prove sharpness by `decide` (not `native_decide`): the spine triangle {0,1,2} has good-neighbour set exactly {3,4}, so goodNeighborCount = |pages| - 1 = 2. This shows the general lower bound is attained with equality by books.\n5. Confirm via `#print axioms` that all results depend only on propext / Classical.choice / Quot.sound.",
+    "keyInsights": [
+      "**The book-to-good-neighbour bridge is a clean subset inclusion**: every page other than the chosen spine vertex p₀ lands in `goodNeighbors`, because a page is adjacent to both spine endpoints a and b — two of the triangle's three vertices. The lower bound |P|-1 is then just `card (P.erase p₀)`.",
+      "**The bound is sharp for pure books**: in the pure book graph (pages joined only to the spine, never to each other), the spine triangle {a,b,p₀} has good neighbours that are *exactly* the remaining pages — no vertex outside P∪{a,b} is adjacent to anything, and pages see only the spine. So goodNeighborCount = |P| - 1 with equality, not merely ≥.",
+      "**Equality is the point for OQ-02**: because the book method converts page count into good-neighbour count one-for-one, the n/6 floor is precisely the largest book the Turán count guarantees. Any improvement to h(n) beyond n/6 must therefore exploit structure the book lemma ignores — this is what makes the open question 'beyond the book lemma'.",
+      "**Axiom-free finite verification**: the sharpness witness is discharged by ordinary `decide` over `Fin 5`, so the entry avoids the `Lean.ofReduceBool` axiom that `native_decide` would introduce. The whole file is verified with only the three foundational axioms."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Triangles and Good Neighbours",
+      "startLine": 43,
+      "endLine": 80,
+      "summary": "Defines the Triangle structure (three mutually adjacent distinct vertices), its vertex set, adjacentCount (triangle vertices adjacent to y), goodNeighbors (vertices outside T adjacent to ≥2 of T's vertices), and goodNeighborCount.",
+      "mathContext": "A vertex y is a 'good neighbour' of triangle T when it is adjacent to at least two of T's three vertices: $|\\{v \\in T : y \\sim v\\}| \\geq 2$."
+    },
+    {
+      "id": "book-bridge",
+      "title": "The Book Bridge (General Lower Bound)",
+      "startLine": 81,
+      "endLine": 145,
+      "summary": "book_le_goodNeighborCount: if {a,b} is an edge and P is a set of common neighbours of a,b disjoint from {a,b}, the spine triangle {a,b,p₀} has at least |P|-1 good neighbours. Proven by showing P.erase p₀ ⊆ goodNeighbors.",
+      "mathContext": "A book of size $|P|$ with spine $\\{a,b\\}$ forces a triangle with $\\geq |P|-1$ good neighbours: every page $q \\neq p_0$ is adjacent to both $a$ and $b$, hence to two vertices of $\\{a,b,p_0\\}$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: The Pure Book Graph",
+      "startLine": 146,
+      "endLine": 194,
+      "summary": "An explicit pure book graph on Fin 5 (spine {0,1}, pages {2,3,4}). book_goodNeighbors_eq: the spine triangle {0,1,2} has good neighbours exactly {3,4}. book_goodNeighborCount_eq: goodNeighborCount = |pages| - 1 = 2. Both by decide (no native_decide).",
+      "mathContext": "For the pure book graph the lower bound is met with equality — the book method delivers exactly its page count, $|P|-1$ good neighbours, neither more nor fewer."
+    }
+  ]
+}
