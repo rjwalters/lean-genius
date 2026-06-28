@@ -3411,6 +3411,7 @@ import Proofs.InverseGaloisOQ03
 import Proofs.InverseGaloisOQ06OQ01
 import Proofs.InverseGaloisOQ06OQ02
 import Proofs.InverseGaloisOQ06OQ02P11
+import Proofs.InverseGaloisOQ06OQ02GalAction
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoperimetricTheoremOQ02

@@ -43,14 +43,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: shipped 0-axiom mod-7 Dedekind input (q_mod7_factor_type), corroborated at p=11 (q_mod11_factor_type), then isolated and verified the permutation-group consequence (part B: cycle type (1,1,3) => order-3 element => 3 | |Gal|) in InverseGaloisOQ06OQ02Cycle.lean — explicit 3-cycle witness + abstract bridges, all 0-axiom/0-sorry. Residual gap is now precisely part (A), Frobenius<->factorization (Dedekind's theorem).",
+    "progressSummary": "ACT: added InverseGaloisOQ06OQ02GalAction.lean — faithful permutation-representation bridge connecting the abstract (1,1,3) cycle-type consequence to the REAL q.Gal AlgEquiv type via galActionHom (injective), 0-axiom/0-sorry. Deterministic chain 3-cycle-on-roots ⟹ 3|card now holds for the genuine Galois group in the axiom. Sole residual: part (A), the Frobenius construction (sibling track).",
     "builtItems": [
       "cubicMod7_irreducible via irreducible_of_degree_le_three_of_not_isRoot",
       "pairwise non-association of the three factors (eq_of_monic_of_associated + degree bounds)",
       "q_mod7_squarefree via squarefree_mul_iff and pairwise coprimality",
       "q_mod7_factor_type packaged Dedekind input",
       "[p=11 corroboration] InverseGaloisOQ06OQ02P11.lean (0-axiom, 0-sorry): q mod 11 = (X-4)(X-3)(X^3+2X^2+X-5), cubicMod11 irreducible (no roots in F_11), pairwise non-associated, squarefree, AND the full coefficient-by-coefficient factorization identity q_ℤ.map = (X-4)(X-3)*cubicMod11 — an independent (1,1,3) witness at a second unramified prime",
-      "[part B: group-theory consequence] InverseGaloisOQ06OQ02Cycle.lean (0-axiom, 0-sorry): frob113 = swap 2 3 * swap 2 4 an explicit (1,1,3) permutation of the 5 roots (fixes 0,1 = the two linear-factor roots), frob113_isThreeCycle / frob113_cycleType={3} / frob113_orderOf=3; abstract bridges three_dvd_card_of_orderOf_three (finite group + order-3 elt => 3|card via orderOf_dvd_card), three_dvd_natCard_of_isThreeCycle_mem (subgroup of S(α) containing a 3-cycle => 3|Nat.card via Subgroup.orderOf_dvd_natCard), and dedekind_consequence_113. Verifies the deterministic half of Dedekind so the residual gap is exactly part (A)."
+      "[part B: group-theory consequence] InverseGaloisOQ06OQ02Cycle.lean (0-axiom, 0-sorry): frob113 = swap 2 3 * swap 2 4 an explicit (1,1,3) permutation of the 5 roots (fixes 0,1 = the two linear-factor roots), frob113_isThreeCycle / frob113_cycleType={3} / frob113_orderOf=3; abstract bridges three_dvd_card_of_orderOf_three (finite group + order-3 elt => 3|card via orderOf_dvd_card), three_dvd_natCard_of_isThreeCycle_mem (subgroup of S(α) containing a 3-cycle => 3|Nat.card via Subgroup.orderOf_dvd_natCard), and dedekind_consequence_113. Verifies the deterministic half of Dedekind so the residual gap is exactly part (A).",
+      "InverseGaloisOQ06OQ02GalAction.lean: faithful permutation-representation bridge for the REAL q.Gal (AlgEquiv) type — three_dvd_card_gal_of_isThreeCycle / _of_cycleType: if a Galois element acts on the roots as a 3-cycle (cycle type {3}), then 3 | Fintype.card p.Gal. 0-axiom (propext/Choice/Quot only).",
+      "orderOf_galActionHom: Polynomial.Gal.galActionHom is an injective monoid hom, so orderOf (galActionHom σ) = orderOf σ — root-permutation data controls the abstract AlgEquiv order."
     ],
     "insights": [
       "A degree-3 poly over a field with no root is irreducible: irreducible_of_degree_le_three_of_not_isRoot.",
@@ -59,7 +61,9 @@
       "isCoprime_of_irreducible_of_not_associated does not exist in Mathlib 4.26.",
       "Equiv.Perm.isThreeCycle_swap_mul_swap_same (ab ac bc) builds IsThreeCycle (swap a b * swap a c) — cleanest concrete 3-cycle; distinctness over Fin 5 by decide.",
       "Equiv.Perm.IsThreeCycle.orderOf : orderOf g = 3 (cycle type {3} => order 3 via lcm_cycleType).",
-      "Subgroup.orderOf_dvd_natCard (s) (hx : x ∈ s) : orderOf x ∣ Nat.card s — turns an element's order directly into a divisor of the subgroup order (no Fintype needed)."
+      "Subgroup.orderOf_dvd_natCard (s) (hx : x ∈ s) : orderOf x ∣ Nat.card s — turns an element's order directly into a divisor of the subgroup order (no Fintype needed).",
+      "The axiom three_dvd_gal_card is about q.Gal (an AlgEquiv type), NOT a literal Subgroup (Perm α); the abstract Cycle-file bridge needed the standard permutation representation galActionHom to apply to the real Gal. galActionHom_injective + orderOf_injective + IsThreeCycle.orderOf + orderOf_dvd_card chains 3-cycle-on-roots ⟹ 3|card.",
+      "Dedekind delivers a Frobenius whose ACTION ON ROOTS has cycle type = factorization degrees, not an abstract order. The cycle-type form (three_dvd_card_gal_of_cycleType) is the faithful interface; IsThreeCycle is definitionally cycleType={3}."
     ],
     "mathlibGaps": [
       "Dedekind's theorem: mod-p factorization type => Frobenius cycle type for number fields (not in Mathlib 4.26).",
@@ -69,7 +73,9 @@
       "Plug q_mod7_factor_type (or q_mod11_factor_type) into Dedekind's theorem once available to eliminate three_dvd_gal_card.",
       "DONE: corroborated at the second unramified prime p=11 (q_mod11_factor_type, independent (1,1,3) witness) in InverseGaloisOQ06OQ02P11.lean.",
       "DONE: isolated and verified part (B), the permutation-group consequence (cycle type (1,1,3) => order-3 element => 3 | |Gal|), in InverseGaloisOQ06OQ02Cycle.lean — 0-axiom/0-sorry.",
-      "Residual: part (A) only — the Frobenius<->factorization correspondence (Dedekind's theorem) in the sibling track inverse-galois-a5-oq-01 (exists_gal_order_three). Compose q_mod7_factor_type + dedekind_consequence_113 once part (A) lands."
+      "Residual: part (A) only — the Frobenius<->factorization correspondence (Dedekind's theorem) in the sibling track inverse-galois-a5-oq-01 (exists_gal_order_three). Compose q_mod7_factor_type + dedekind_consequence_113 once part (A) lands.",
+      "Residual gap is now exactly: produce σ : q.Gal with (galActionHom σ).cycleType = {3} (or orderOf σ = 3) for the actual mod-7 Frobenius — part (A), sibling track inverse-galois-a5-oq-01 exists_gal_order_three. Compose with three_dvd_card_gal_of_cycleType.",
+      "Toward part (A): tractable easy direction is inertiaDeg ∣ orderOf(arithFrobAt) via the residue-field homomorphism (Ideal.Quotient.stabilizerHom) + finite-field Frobenius order = degree; with inertiaDeg=3 from the cubic factor this gives 3 | orderOf(Frob) | |Gal| directly (no need for full equality)."
     ],
     "markdown": "See research/problems/inverse-galois-oq-06-oq-02/knowledge.md"
   },
