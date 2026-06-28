@@ -17,7 +17,7 @@
   },
   "currentState": "ACT: formalized the DIMENSION RECURSION of the Tucker door-counting proof (SpernerTuckerInductiveTower.lean, 0 sorries/0 axioms — propext/Classical.choice/Quot.sound only, no sorryAx/ofReduceBool). (1) odd_boundary_iff_odd_interior STRENGTHENS the path-following engine from mere existence of an interior endpoint to the parity EQUIVALENCE Odd #boundary <-> Odd #interior (the two endpoint classes partition the even-cardinality degree-1 set), the quantitative form the induction needs. (2) TuckerTower bundles per-level interior/boundary counts with step (the engine, discharged by (1)), bridge (the geometric boundary bijection: level-(n+1) boundary doors = level-n interior simplices — the SOLE remaining open input), and base (verified 1-D Tucker); tower_interior_odd : forall n, Odd (interior n) closes the induction in one line, and tower_exists_interior gives a complementary simplex in EVERY dimension. An inhabited trivialTower witnesses non-vacuity. This makes precise that, once the geometric bridge is supplied, full-dimensional Tucker is a two-hypothesis induction. Infrastructure/organizing-skeleton, not new Tucker mathematics; the geometric bridge remains the genuine frontier.",
   "knowledge": {
-    "progressSummary": "PROGRESS: hsimplex DISCHARGED. The abstract door-counting engine took three black-box geometric hypotheses (hdoor/hsimplex/hpair); SpernerTuckerDoorLemma now PROVES hsimplex (≤2 doors per simplex) for the canonical Sperner colouring — the classical door lemma, dimension-free, 0-axiom. Panchromatic⟹exactly 1 door also proved. Remaining open: hdoor + hpair (pseudomanifold facet-sharing of the global B^n complex), the geometric bridge (boundary(n+1)=interior(n)), and the analytic mesh→0 phase for n≥2.",
+    "progressSummary": "PROGRESS: hpair discharged. The abstract door-counting engine had 3 black-box incidence hypotheses (hdoor, hsimplex, hpair). hsimplex was proved last session (SpernerTuckerDoorLemma, canonical Sperner colouring); THIS session proves hpair (SpernerTuckerSimplexFacetPair, subset incidence) as clean dimension-free finset combinatorics — both shared facets equal v∩w. Only hdoor (the pseudomanifold property, genuinely geometric) + the geometric bridge + the analytic mesh→0 phase remain open. VERIFIED 0-axiom (lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound]).",
     "builtItems": [
       "proofs/Proofs/SpernerTuckerDoorGraph.lean (sharp degree formula, VERIFIED 0-axiom: lake env lean exit 0, #print axioms = [propext, Classical.choice, Quot.sound] only): doorGraph_degree_eq_shared — under hdoor (each door joins <=2 simplices) and hpair (two distinct simplices share <=1 door, the door-graph analogue of adj_unique_facet), (doorGraph inc).degree v = #{d | inc v d and exists w != v, inc w d} (the # of vs SHARED doors). Finset.card_bij with the neighbour->shared-door witness map: lands in shared doors, injective by hdoor (a door joining v to two neighbours touches 3 simplices), surjective by hpair (a shared doors other endpoint is a neighbour whose shared door is forced to be that door). Sharpens doorGraph_degree_le_two from a bound to an equality: a path endpoint (degree 1) is exactly a simplex with ONE shared door.",
       "proofs/Proofs/SpernerTuckerOneDim.lean — 1-D Tucker / combinatorial 1-D Borsuk–Ulam (verified, 0-axiom)",
@@ -32,7 +32,8 @@
       "even_card_antipodal_boundary: dimension-free generalization of the hexagon-only raw-boundary-even fact.",
       "towerOfCountEq + bridge_of_card_eq: build a TuckerTower from per-level count EQUALITIES boundary(n+1)=interior(n) (the cardinality shape of the geometric bijection), strictly stronger input than the bare parity-iff bridge.",
       "growingTower: first NON-TRIVIAL TuckerTower (interior n = 2n+1, growing) replacing the constant-1 trivialTower, demonstrating the recursion on substantive data.",
-      "proofs/Proofs/SpernerTuckerDoorLemma.lean (VERIFIED 0-axiom, lake env lean exit 0, #print axioms = propext/Classical.choice/Quot.sound only): card_doors_le_two (the hsimplex ≤2 bound, now a theorem), card_doors_eq_one_of_bijective, doors_same_color, door_image/door_no_top/door_injOn helpers."
+      "proofs/Proofs/SpernerTuckerDoorLemma.lean (VERIFIED 0-axiom, lake env lean exit 0, #print axioms = propext/Classical.choice/Quot.sound only): card_doors_le_two (the hsimplex ≤2 bound, now a theorem), card_doors_eq_one_of_bijective, doors_same_color, door_image/door_no_top/door_injOn helpers.",
+      "SpernerTuckerSimplexFacetPair.lean: card_inter_le_of_ne, facet_eq_inter, facets_pairwise (the pairwise door lemma), subset_incidence_hpair (engine-shaped hpair), + wiring example feeding it to doorGraph_degree_eq_shared. 0 sorries, 0 axioms (propext/Choice/Quot)."
     ],
     "insights": [
       "n=1 Tucker is provable directly as a discrete fundamental-theorem-of-calculus / sign-change-parity statement over ZMod 2 — cleaner than instantiating the abstract CellComplex (whose panchromatic conclusion genuinely diverges from the complementary-edge target, Insight 1).",
@@ -47,12 +48,15 @@
       "Insight 5 — sharp door-degree = #shared-doors (VERIFIED). doorGraph_degree_le_two only gave the path/cycle structure; under the EXTRA natural axiom hpair (distinct simplices share <=1 door) the degree is EXACTLY the number of shared doors of v. This localizes \"path endpoint\" to \"exactly one shared door\", giving the geometric inc construction a per-simplex target instead of a global-graph one. hpair is a third geometric obligation alongside the two <=2 incidence counts.",
       "The antipodal map is a FREE involution on the boundary doors, so the raw boundary-door count is EVEN in EVERY dimension (even_card_of_free_involution + even_card_antipodal_boundary). This generalizes SpernerTuckerBoundaryParity.ring_complementary_count_even (proved only for the n=2 hexagon by 64-case decide) to all n abstractly, and is the dimension-free reason the bridge must draw oddness from the lower-dim interior count, not the raw boundary ring.",
       "DOOR LEMMA (hsimplex discharged): for a Sperner colouring c:Fin(n+1)→Fin(n+1), a facet (drop vertex i) is a door iff its n other vertices realise all n low colours (≠ top = Fin.last n). Then #{doors} ≤ 2 ALWAYS — proved, not assumed. Key: a door facet is a BIJECTION of its n vertices onto the n low colours (door_image, via eq_of_subset_of_card_le on two n-element finsets); hence no other vertex is top-coloured (door_no_top) and c is injective off i (door_injOn). All doors share one colour (doors_same_color) realised by ≤2 vertices (card_color_le_two).",
-      "Panchromatic simplex (c bijective) has EXACTLY ONE door — the facet opposite the unique top-coloured vertex (card_doors_eq_one_of_bijective / isDoor_iff_eq_top_vertex). These are the cells the path-following engine treats as endpoints."
+      "Panchromatic simplex (c bijective) has EXACTLY ONE door — the facet opposite the unique top-coloured vertex (card_doors_eq_one_of_bijective / isDoor_iff_eq_top_vertex). These are the cells the path-following engine treats as endpoints.",
+      "hpair (two distinct simplices share <=1 facet) is provable as dimension-free finset combinatorics for SUBSET incidence: both shared facets equal v ∩ w (facet_eq_inter), hence are equal. Distinct equicardinal (n+1)-sets meet in <=n vertices (card_inter_le_of_ne). Discharges the 2nd of 3 abstract door hypotheses; with hsimplex (SpernerTuckerDoorLemma) only hdoor (pseudomanifold, genuinely geometric) + the bridge remain."
     ],
     "mathlibGaps": [
-      "Mathlib lacks a direct free-involution => even-cardinality lemma (only the p-group card_modEq_card_fixedPoints). Proved here from Finset.sum_ninvolution + ZMod.natCast_eq_zero_iff_even."
+      "Mathlib lacks a direct free-involution => even-cardinality lemma (only the p-group card_modEq_card_fixedPoints). Proved here from Finset.sum_ninvolution + ZMod.natCast_eq_zero_iff_even.",
+      "Mathlib lacks the reusable pseudomanifold fact: two distinct n-cells of a simplicial complex share at most one codimension-1 facet (facets_pairwise here proves it from scratch for the finset/subset model)."
     ],
     "nextSteps": [
+      "Discharge hdoor (each facet borders <=2 simplices) — the PSEUDOMANIFOLD property, genuinely geometric (false for arbitrary complexes), so it needs an actual triangulation model, not abstract combinatorics. This is now the SOLE remaining engine incidence hypothesis.",
       "Discharge hdoor (each door/facet shared by ≤2 simplices) — pseudomanifold property of the global B^n triangulation; and hpair (two distinct n-simplices share ≤1 facet — near-trivial for simplices). With hsimplex now PROVED (SpernerTuckerDoorLemma.card_doors_le_two), these two are the remaining door-incidence bounds before the abstract engine fires on a concrete inc.",
       "Supply Odd #{boundary doors} from the inductive (n-1)-Tucker statement (NOT the raw boundary ring, provably EVEN per SpernerTuckerAntipodalParity.even_card_antipodal_boundary).",
       "n>=2 Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (analytic phase; dim 1 done by IVT)."
@@ -175,6 +179,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerAntipodalParity.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerSimplexFacetPair.lean",
+      "filename": "SpernerTuckerSimplexFacetPair.lean",
+      "lineCount": 143,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexFacetPair.lean"
     }
   ],
   "lastVerified": "2026-06-27"
