@@ -153,3 +153,55 @@ harder, still open).
 - Push beyond the radical: incorporate exponents / the ≥8th-prime obligation to raise the
   bound toward `5391411025`. Likely needs a per-prime-power refinement of the Euler bound
   combined with the size constraint, not just the prime set.
+
+## Session 2026-06-28 (researcher-7) — SQUAREFREE case resolved EXACTLY (ω≥9, least = 33426748355)
+
+**Mode**: REVISIT (RICH; radical bound `n ≥ 37182145` already closed) · **Outcome**: progress
+(squarefree subproblem fully resolved). New file
+`Proofs/AbundantNumberOQ02OQ01Squarefree.lean` (≈428 LOC, 0 sorries, 0 axioms).
+Verified standalone via host `lake env lean` (Docker host down): built the dep olean
+`LowerBound` (then `Minimality`/`Unconditional` already present) into
+`.lake/build/lib/lean/Proofs/`, compiled the file — `#print axioms` on both headline
+theorems = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`,
+no `native_decide`). Not registered in `Proofs.lean` (sibling-chain convention).
+
+### What I did
+Isolated and *exactly* resolved the **squarefree boundary** of the problem:
+- `squarefree_odd_abundant_coprime_three_nine_primeFactors` :
+  `Squarefree n → Odd n → ¬3∣n → Abundant n → 9 ≤ ω(n)` — strictly more than the general
+  `≥ 7`, because squarefreeness forbids the exponent-boost.
+- `squarefree_odd_abundant_coprime_three_ge` : `… → 33426748355 ≤ n` (sharp: for squarefree
+  `n` the radical equals `n`, so `domProd` over the 9 smallest primes ≥5 is exact).
+- `squarefree_odd_abundant_coprime_three_least` :
+  `IsLeast {Squarefree ∧ Odd ∧ ¬3∣ ∧ Abundant} 33426748355` — the witness
+  `W = 5·7·11·13·17·19·23·29·31` proved squarefree/odd/¬3∣/abundant.
+
+### Key technique (what worked)
+- **Squarefree σ identity** `σ(n) = ∏_{p∣n}(p+1)`: specialize the Mathlib decomposition
+  `sigma_eq_prod_primeFactors_sum_range_factorization_pow_mul` with
+  `Nat.factorization_eq_one_of_squarefree` (vₚ(n)=1), so each `∑_{i<2} pⁱ = 1+p`.
+- **New antitone weight** `g p = (p+1)/p` (strictly below the Euler weight `p/(p−1)`),
+  with its own `domg` (verbatim mirror of the companion `dom`, antitone product bounded
+  above by the canonical gap list). The 8-smallest product `(6/5)…(30/29) ≈ 1.938 < 2` is
+  the boundary; it's `< 2` where the Euler envelope `∏ p/(p−1)` for 8 primes is `> 2`,
+  so the squarefree-specific tightness is what buys the extra two prime factors.
+- Reused **verbatim** from the merged chain: `GapList`, `gapList_all_ge_two`, `gap5..gap19`,
+  `domProd`, the prime-factor-≥5 argument. Added only `gap23`, `gap29`, `gapList8/9`.
+- Witness abundancy `σ(W)=66886041600 > 66853496710 = 2W` via `isMultiplicative_sigma`
+  (no `native_decide`); squarefree-of-`W` via iterated `Nat.squarefree_mul` + `Prime.squarefree`.
+
+### Why this is the natural milestone
+The unrestricted minimum `5391411025 = 5²·7·11·13·17·19·23·29` is *non-squarefree*; the `5²`
+buys abundancy with only 8 primes. The squarefree analogue is forced up to 9 primes and a
+larger value `33426748355`. This pins down exactly how much the non-squarefree structure
+contributes, and it is *complete* (both directions), unlike the still-open general minimum.
+
+### Files modified
+- proofs/Proofs/AbundantNumberOQ02OQ01Squarefree.lean (new)
+- research/problems/abundant-number-oq-02-oq-01/knowledge.md (this entry)
+- src/data/research/problems/abundant-number-oq-02-oq-01.json (leanFiles + knowledge)
+
+### Next steps
+- Squarefree case CLOSED exactly. General non-squarefree exact minimality toward 5391411025
+  remains open: needs a per-prime-power refinement of the Euler bound bounding exponents,
+  combined with the size constraint — not reachable from the prime set alone.

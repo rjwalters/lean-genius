@@ -484,6 +484,120 @@ theorem exists_positive_nonRepresentable_of_ne_two_three
     exact ⟨2, by norm_num, two_nonRepresentable_of_three_le (by omega) hq3⟩
 
 /-
+## Part IId: Window Characterization (unconditional, 0-axiom)
+
+The two ad-hoc witnesses above (`2` when `q ≥ 3`, `3` when `q = 2`) are special
+cases of a single structural fact: because the unit power form `1 = p^0 q^0`
+divides *every* other power form, it can never sit in a representing antichain
+alongside another summand. Hence for `n ≥ 2` **every summand is `≥ q`** (the
+smallest power form exceeding `1`). Two or more such summands already sum past
+`2q`, so on the window `[q, 2q)` a representation can only be the singleton `{n}`
+— i.e. `n` is representable iff it is itself a power form. This *characterises*
+representability on the whole window (not just exhibits one witness) and
+uniformly recovers both special cases above.
+-/
+
+/-- The smallest power form exceeding `1` is `q`: any `p^k q^l ≥ 2` (necessarily
+with a positive exponent, given `p > q ≥ 2`) is at least `q`. -/
+lemma isPowerForm_ge_q_of_ge_two {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (h : IsPowerForm p q n) (hn : 2 ≤ n) : q ≤ n := by
+  obtain ⟨k, l, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · subst hk
+    simp only [pow_zero, one_mul] at hn ⊢
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; simp only [pow_zero] at hn; omega
+    · calc q = q ^ 1 := (pow_one q).symm
+        _ ≤ q ^ l := Nat.pow_le_pow_right (by omega) hl
+  · have hpk : p ≤ p ^ k := Nat.le_self_pow (by omega) p
+    have hql : 1 ≤ q ^ l := Nat.one_le_pow _ _ (by omega)
+    calc q ≤ p := by omega
+      _ ≤ p ^ k := hpk
+      _ ≤ p ^ k * q ^ l := Nat.le_mul_of_pos_right (p ^ k) hql
+
+/-- **Every summand of a representation of `n ≥ 2` is at least `q`.** The unit
+power form `1` cannot appear alongside any other summand (it divides everything,
+breaking the antichain) nor on its own (it would sum to `1 < 2 ≤ n`); so every
+summand is `≥ 2`, hence `≥ q` by `isPowerForm_ge_q_of_ge_two`. -/
+lemma representable_summands_ge_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hn : 2 ≤ n) {S : Finset ℕ}
+    (hpf : ∀ s ∈ S, IsPowerForm p q s)
+    (hac : NoOneDividesAnother S) (hsum : S.sum id = n) :
+    ∀ s ∈ S, q ≤ s := by
+  have hpos : ∀ s ∈ S, 1 ≤ s := by
+    intro s hs
+    obtain ⟨k, l, rfl⟩ := hpf s hs
+    have : 0 < p ^ k * q ^ l := mul_pos (pow_pos (by omega) k) (pow_pos (by omega) l)
+    omega
+  -- `1 ∉ S`: it would divide a distinct second element, or be the lone summand.
+  have h1 : (1 : ℕ) ∉ S := by
+    intro h1mem
+    by_cases hcard : S = {1}
+    · rw [hcard] at hsum; simp at hsum; omega
+    · obtain ⟨b, hbmem, hbne⟩ : ∃ b ∈ S, b ≠ 1 := by
+        by_contra hcon
+        push_neg at hcon
+        exact hcard (Finset.eq_singleton_iff_unique_mem.mpr ⟨h1mem, hcon⟩)
+      exact hac 1 h1mem b hbmem (Ne.symm hbne) (one_dvd b)
+  intro s hs
+  have hsne1 : s ≠ 1 := by rintro rfl; exact h1 hs
+  have h1le := hpos s hs
+  have hs2 : 2 ≤ s := by omega
+  exact isPowerForm_ge_q_of_ge_two hp hq (hpf s hs) hs2
+
+/-- **Representability window characterization (unconditional, 0-axiom).**
+For `q ≤ n < 2q`, the number `n` is representable iff it is itself a single power
+form `p^k q^l`. Forward: every summand is `≥ q` (`representable_summands_ge_q`),
+so two or more summands already exceed `2q > n`; the representation must be the
+singleton `{n}`, forcing `n` to be a power form. Backward: a power form `n` is
+represented by `{n}`. -/
+theorem isRepresentable_iff_isPowerForm_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hlo : q ≤ n) (hhi : n < 2 * q) :
+    IsRepresentable p q n ↔ IsPowerForm p q n := by
+  constructor
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    have hn2 : 2 ≤ n := by omega
+    have hge : ∀ s ∈ S, q ≤ s := representable_summands_ge_q hp hq hn2 hpf hac hsum
+    have hcard1 : S.card = 1 := by
+      rcases Nat.lt_or_ge S.card 2 with hc | hc
+      · have : 1 ≤ S.card := Finset.card_pos.mpr hne
+        omega
+      · exfalso
+        obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp hc
+        have hsub : ({a, b} : Finset ℕ) ⊆ S := by
+          intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption
+        have hpair : ({a, b} : Finset ℕ).sum id ≤ S.sum id :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair hab, hsum] at hpair
+        simp only [id_eq] at hpair
+        have hqa := hge a ha
+        have hqb := hge b hb
+        omega
+    obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp hcard1
+    rw [Finset.sum_singleton, id_eq] at hsum
+    rw [← hsum]
+    exact hpf x (Finset.mem_singleton_self x)
+  · intro h
+    exact ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
+      by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
+         exact absurd (ha.trans hb.symm) hab,
+      by simp⟩
+
+/-- **Non-power-forms in the window `[q, 2q)` are non-representable
+(unconditional, 0-axiom).** Contrapositive of the window characterization. This
+furnishes, for *every* pair `p > q ≥ 2`, an explicit family of non-representable
+numbers (each non-power-form strictly between `q` and `2q`), uniformly subsuming
+the ad-hoc witnesses `two_nonRepresentable_of_three_le` (take `n = 2`, `q ≥ 3`)
+and `three_nonRepresentable_of_q_two` (take `n = 3`, `q = 2`). -/
+theorem nonRepresentable_of_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hlo : q ≤ n) (hhi : n < 2 * q) (hnp : ¬ IsPowerForm p q n) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_window hp hq hlo hhi]
+  exact hnp
+
+/-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
