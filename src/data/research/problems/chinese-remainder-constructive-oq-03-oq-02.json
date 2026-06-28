@@ -20,7 +20,10 @@
       "dynamicRange_formula: (2^n-1)*2^n*(2^n+1) = 2^(3n) - 2^n",
       "threeModuliBase n (n>=2): a genuine RNSBase with channels=3, dynamicRange=2^(3n)-2^n",
       "threeModuli_balanced (n>=2): 2^n+1 <= 2*(2^n-1)",
-      "threeModuli_crt_step: gcd((2^n-1)*2^n, 2^n+1) = 1 (two-step CRT reconstruction)"
+      "threeModuli_crt_step: gcd((2^n-1)*2^n, 2^n+1) = 1 (two-step CRT reconstruction)",
+      "fourModuli_pairwise_coprime_odd / _even: the parity-correct 4-moduli set is pairwise coprime",
+      "not_coprime_*_odd/even: the parity-wrong 4th modulus fails (gcd = 3)",
+      "fourModuli_base_exists: every n >= 2 admits a valid 4-channel RNS base"
     ],
     "open": [
       "Global optimality across ALL bases of a given width budget remains the open parent question (chinese-remainder-constructive-oq-03)."
@@ -30,40 +33,48 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-27T12:05:00.000Z",
-    "iteration": 1,
-    "focus": "Formalized the three-moduli set {2^n-1, 2^n, 2^n+1}: coprimality, exact dynamic range, balance, RNSBase instance, CRT step.",
+    "iteration": 2,
+    "focus": "Added Section VI: four-moduli parity dichotomy (sharp boundary at parity of n).",
     "blockers": [
       "None — verified. Earlier Docker/containerd outage resolved by compiling with `lake env lean` against the prebuilt Mathlib oleans."
     ],
-    "nextAction": "Done. Verified clean against Mathlib 4.26.0 (lake env lean; #print axioms = propext/Classical.choice/Quot.sound only). Gallery entry upgraded to status=verified, badge=original.",
+    "nextAction": "Done for this session. Verified clean. Optional: 5-moduli extension (Seeker follow-up).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
     },
-    "progressSummary": "VERIFIED: 20-theorem self-contained file (0 sorry/axiom) compiles clean against Mathlib 4.26.0 via `lake env lean`; #print axioms reports only the three standard foundational axioms. Fixed two pre-existing compile errors before verifying: Nat.dvd_sub' (removed upstream) -> Nat.dvd_sub, and an ambiguous `h2 ▸ hdl` rewrite -> explicit `rw [h2] at hdl`. Gallery entry verified/original."
+    "progressSummary": "VERIFIED + EXTENDED: core three-moduli set plus a new Section VI four-moduli parity dichotomy (admissible 4th modulus is 2^(n+1)+1 for odd n, 2^(n+1)-1 for even n; opposite choice shares factor 3). 540 lines, 42 theorems, 0 sorry/0 axiom; lake env lean clean, #print axioms foundational-only."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 20-theorem self-contained file complete (0 sorry/axiom), PR #30734 open. Manually reviewed sound but UNVERIFIED — Docker containerd corrupted (operator restart needed). Awaiting build host recovery to compile.",
+    "progressSummary": "VERIFIED + EXTENDED: core three-moduli set plus a new Section VI four-moduli parity dichotomy (admissible 4th modulus is 2^(n+1)+1 for odd n, 2^(n+1)-1 for even n; opposite choice shares factor 3). 540 lines, 42 theorems, 0 sorry/0 axiom; lake env lean clean, #print axioms foundational-only.",
     "builtItems": [
       "ChineseRemainderConstructiveOQ03OQ02.lean: coprime_consecutive, coprime_low_mid, coprime_mid_high, coprime_low_high",
       "dynamicRange_formula: (2^n-1)*2^n*(2^n+1) = 2^(3n) - 2^n",
       "RNSBase structure + threeModuliBase instance (n>=2), threeModuliBase_channels, threeModuliBase_dynamicRange",
       "threeModuli_balanced, threeModuli_crt_step",
-      "Concrete cross-checks for {3,4,5}, {7,8,9}, {15,16,17}"
+      "Concrete cross-checks for {3,4,5}, {7,8,9}, {15,16,17}",
+      "Section VI (4-moduli parity dichotomy): two_pow_mod_three_of_odd/even fix 2^n mod 3",
+      "gcd_lowMersenne_extHigh_dvd_three / gcd_high_extMersenne_dvd_three: obstruction gcd | 3",
+      "coprime_lowMersenne_extHigh_odd, coprime_mid_extHigh, coprime_high_extHigh (4th = 2^(n+1)+1, odd n)",
+      "coprime_lowMersenne_extMersenne, coprime_mid_extMersenne, coprime_high_extMersenne_even (4th = 2^(n+1)-1, even n)",
+      "not_coprime_high_extMersenne_odd / not_coprime_lowMersenne_extHigh_even (sharp boundary, gcd = 3)",
+      "fourModuliBaseOdd, fourModuliBaseEven (RNSBase, 4 channels); fourModuli_base_exists (every n>=2)"
     ],
     "insights": [
       "The three-moduli set is self-balancing: all three moduli lie within a factor 2 of each other, so the critical-path (widest) channel is nearly minimal for the dynamic range achieved.",
       "Coprimality decomposes cleanly: low-mid and mid-high are consecutive integers; low-high differ by 2 with both endpoints odd, so gcd | 2 and gcd is odd, forcing gcd = 1 (needs n >= 1).",
       "Dynamic range is the near-cube a^3 - a (a = 2^n); natural-number subtraction is handled by substituting a = k+1 to avoid truncated subtraction.",
       "threeModuli_crt_step (gcd((2^n-1)*2^n, 2^n+1) = 1) is exactly the coprimality enabling two-step iterated CRT reconstruction from the three residues.",
-      "Manual line-by-line review (researcher-1, build host down) found no math/tactic errors in ChineseRemainderConstructiveOQ03OQ02.lean; key non-obvious steps (coprime_low_high parity via in-scope hpow, dynamicRange_formula 2^n=k+1 substitution, Pairwise.cons shape) all check out. High confidence, still formally UNVERIFIED."
+      "Manual line-by-line review (researcher-1, build host down) found no math/tactic errors in ChineseRemainderConstructiveOQ03OQ02.lean; key non-obvious steps (coprime_low_high parity via in-scope hpow, dynamicRange_formula 2^n=k+1 substitution, Pairwise.cons shape) all check out. High confidence, still formally UNVERIFIED.",
+      "Parity dichotomy: the admissible fourth (n+1)-bit modulus is 2^(n+1)+1 for odd n and 2^(n+1)-1 for even n; the opposite candidate always shares the factor 3.",
+      "The single obstruction is divisibility by 3, controlled entirely by 2^n mod 3 (=2 odd, =1 even) since 2 ≡ -1 (mod 3).",
+      "Lean gotcha: rw [hpow: 2^(n+1)=2*2^n] also rewrites the 2^(n+1) inside a gcd argument; prove d ∣ 2*2^n then rwa [← hpow] to avoid the mismatch."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Machine-verify via docker-build once host disk/containerd recover.",
-      "If verified, add gallery meta.json (status verified, badge original, 0 axioms) and annotations.",
-      "Possible follow-up: extend to the 4-moduli restricted set {2^n-1, 2^n, 2^n+1, 2^(n+1)+1} and its coprimality constraints."
+      "5-moduli extensions {2^n-1,2^n,2^n+1,2^(n+1)±1,?}: which stay pairwise coprime; is the obstruction again small-prime residues of n?",
+      "Exact closed-form dynamic range of the 4-moduli set ((2^(3n)-2^n)*(2*2^n ± 1))."
     ]
   },
   "tags": [
@@ -88,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-06-27T12:05:00.000Z",
-  "lastUpdate": "2026-06-27T12:05:00.000Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
