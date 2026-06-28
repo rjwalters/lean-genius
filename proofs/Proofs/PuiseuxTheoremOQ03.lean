@@ -276,6 +276,68 @@ theorem IsLowerEdge.interior_slopes {pts : List SupportPoint} {p q r : SupportPo
   have h2 : edgeSlope r q ≤ m := edgeSlope_le_of_supportingLine hqe hr hsupp hrq
   linarith
 
+/-! ### Well-definedness of edge slopes (uniqueness)
+
+Every result above is about *existence* (`exists_lowerVertex`,
+`exists_isLowerEdge_of_leftmost`, `exists_lowerHull`) or *ordering*
+(`edgeSlope_mono`, `edgeSlopes_pairwise_le`).  None pins down that the polygon's
+data is *unique*.  The two theorems here close that gap directly from the
+supporting-slope bounds: through a fixed vertex the slope of a lower edge is
+forced, even though the opposite endpoint may not be — several support points can
+be collinear on one edge, so the *endpoint* is ambiguous while the *slope* (and
+hence the root valuation read off it) is not.  This is the well-definedness
+counterpart to the existence theorems and the reason the edge-slope list
+`edgeSlopes` of a hull is a genuine invariant of the support set. -/
+
+/-- **Uniqueness of the leaving edge-slope.**  If both `(p, q)` and `(p, q')` are
+lower edges sharing the left endpoint `p`, they have equal slope.  The right
+endpoint itself can differ when support points are collinear on the edge, but the
+slope is determined: each edge's supporting line, being weakly below all points,
+gives the *least* slope leaving `p`, so the two slopes bound each other. -/
+theorem IsLowerEdge.leaving_slope_unique {pts : List SupportPoint}
+    {p q q' : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    edgeSlope p q = edgeSlope p q' := by
+  obtain ⟨_, hq, hpq, m, b, hpe, hqe, hsup⟩ := h
+  obtain ⟨_, hq', hpq', m', b', hpe', hqe', hsup'⟩ := h'
+  have e1 : m = edgeSlope p q := slope_eq_edgeSlope hpe hqe (ne_of_lt hpq)
+  have e2 : m' = edgeSlope p q' := slope_eq_edgeSlope hpe' hqe' (ne_of_lt hpq')
+  have hlt : (p.1 : ℚ) < q'.1 := by exact_mod_cast hpq'
+  have hlt' : (p.1 : ℚ) < q.1 := by exact_mod_cast hpq
+  have h1 : m ≤ edgeSlope p q' := edgeSlope_ge_of_supportingLine hpe hq' hsup hlt
+  have h2 : m' ≤ edgeSlope p q := edgeSlope_ge_of_supportingLine hpe' hq hsup' hlt'
+  rw [← e2] at h1
+  rw [← e1] at h2
+  rw [← e1, ← e2]
+  linarith
+
+/-- **Uniqueness of the arriving edge-slope.**  Symmetrically, if `(p, q)` and
+`(p', q)` are lower edges sharing the right endpoint `q`, they have equal slope;
+each line gives the *greatest* slope arriving at `q`. -/
+theorem IsLowerEdge.arriving_slope_unique {pts : List SupportPoint}
+    {p p' q : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p' q) :
+    edgeSlope p q = edgeSlope p' q := by
+  obtain ⟨hp, _, hpq, m, b, hpe, hqe, hsup⟩ := h
+  obtain ⟨hp', _, hpq', m', b', hpe', hqe', hsup'⟩ := h'
+  have e1 : m = edgeSlope p q := slope_eq_edgeSlope hpe hqe (ne_of_lt hpq)
+  have e2 : m' = edgeSlope p' q := slope_eq_edgeSlope hpe' hqe' (ne_of_lt hpq')
+  have hlt : (p'.1 : ℚ) < q.1 := by exact_mod_cast hpq'
+  have hlt' : (p.1 : ℚ) < q.1 := by exact_mod_cast hpq
+  have h1 : edgeSlope p' q ≤ m := edgeSlope_le_of_supportingLine hqe hp' hsup hlt
+  have h2 : edgeSlope p q ≤ m' := edgeSlope_le_of_supportingLine hqe' hp hsup' hlt'
+  rw [← e2] at h1
+  rw [← e1] at h2
+  rw [← e1, ← e2]
+  linarith
+
+/-- The **root valuation** (`= −edgeSlope`) read off any lower edge leaving a
+fixed vertex `p` is therefore unique — the Newton–Puiseux algorithm reads a
+well-defined valuation at each vertex regardless of how collinear support points
+are resolved. -/
+theorem IsLowerEdge.leaving_rootValuation_unique {pts : List SupportPoint}
+    {p q q' : SupportPoint} (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    -edgeSlope p q = -edgeSlope p q' :=
+  congrArg Neg.neg (h.leaving_slope_unique h')
+
 /-! ### Endpoints of the Newton polygon
 
 `exists_lowerVertex` produces *a* vertex — the point of minimum *valuation*.  The
