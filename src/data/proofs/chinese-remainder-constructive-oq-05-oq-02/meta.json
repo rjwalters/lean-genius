@@ -107,5 +107,50 @@
       "Pair this uniqueness certificate with an explicit inductive *construction* (folding Nat.chineseRemainder along the list) to obtain full existence-and-uniqueness over an arbitrary list.",
       "Generalise to a Finset or Multiset of moduli, and to the non-coprime case via the lcm in place of the product."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "chinese-remainder-constructive-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "The sibling whose open question this entry answers: it proves the two- and three-modulus uniqueness certificates (crt_pair_iff, crt_triple_iff); this entry generalises them by list induction to an arbitrary pairwise-coprime list (crt_list_unique)."
+    },
+    {
+      "targetId": "chinese-remainder-constructive-oq-04",
+      "relationship": "related-to",
+      "description": "The list thread the sibling's open question points to; the worked [3,4,5] instance here is included in that thread's example style."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "child-of",
+      "description": "The base constructive CRT entry: existence and uniqueness of a solution modulo the product of pairwise-coprime moduli, of which this is the n-modulus uniqueness half via an inductive certificate."
+    },
+    {
+      "targetId": "chinese-remainder-non-coprime",
+      "relationship": "related-to",
+      "description": "Pursues this entry's second open question — the non-coprime generalisation, where the lcm of the moduli replaces the product."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sunzi (孫子)",
+      "title": "Sunzi Suanjing (孫子算經, The Mathematical Classic of Sun Zi)",
+      "year": "c. 3rd–5th century CE",
+      "venue": "Chinese mathematical classic",
+      "note": "Earliest known statement of a simultaneous-congruence problem ('there are an unknown number of things; counted by threes, 2 remain…'), the origin of the theorem's name."
+    },
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed., §5.3–5.4",
+      "note": "The Chinese Remainder Theorem for pairwise-coprime moduli, existence and uniqueness modulo the product."
+    },
+    {
+      "authors": "Apostol, T. M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer, Undergraduate Texts in Mathematics, §5.6",
+      "note": "CRT statement and proof, and the structure of residue systems modulo a product of coprime moduli."
+    }
+  ]
 }
