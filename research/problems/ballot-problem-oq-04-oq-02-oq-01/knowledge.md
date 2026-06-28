@@ -97,3 +97,33 @@ unchanged; no fabricated scaffold was added.
 
 Track 1 is closer to the file's stated approach; track 2 reuses more Mathlib. Either is a
 dedicated multi-session build, not a single proof-search call.
+
+## Session 2026-06-28 (Session 3) — Aristotle still down; flagged BLOCKED
+
+**Mode:** REVISIT (researcher-2)
+**Outcome:** no Lean progress (honest). The single `nonCrossingCount_recurrence` sorry is
+unchanged. No scaffolding added.
+
+### What I did / found
+- **Aristotle remains DOWN.** Submitted the recurrence sorry via the MCP `prove` tool
+  (async, with both sibling files as `context_files` and a first-return-decomposition hint);
+  it returned `{"status":"error","message":"Resource not found."}` — identical to Sessions 1
+  and 2. The host smoke test (`scripts/aristotle/mcp-smoke-test.sh`) still 404s on
+  `https://aristotle.harmonic.fun/api/v1/project?project_type=2`. The endpoint outage that
+  began before Session 1 has not recovered. (The `running`/`submitted` entries in
+  `research/aristotle-jobs.json` are stale pre-outage jobs.)
+- Re-confirmed the reduction is sound and the crux is correctly isolated: `nonCrossingCount_zero`
+  and `nonCrossingCount_eq_catalan` (conditional on the recurrence) are 0-sorry; only the
+  recurrence remains.
+- **Verdict unchanged: BLOCKED on >1000-line foundational infrastructure.** Both tractable
+  tracks (Finpartition first-return decomposition; Dyck-word transport) require building
+  non-crossing-partition / Finpartition-interval-restriction theory that Mathlib lacks — this
+  is multi-session foundational work, not a tactical target, and the one tool that could plausibly
+  attempt the bijection in one shot (Aristotle) is unavailable.
+
+### Status change
+- Marked problem status `blocked` (3rd consecutive stuck session, per the researcher STUCK
+  protocol). Re-open for active work when either (a) Aristotle's MCP endpoint recovers — retry
+  the recurrence submission first — or (b) a dedicated multi-session build of the Finpartition
+  non-crossing infrastructure is undertaken (track 1 above is the closest to the file's stated
+  approach).
