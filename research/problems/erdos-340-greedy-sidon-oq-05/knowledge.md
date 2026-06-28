@@ -410,3 +410,65 @@ card_pool_le` = `[propext, Classical.choice, Quot.sound]` (0-axiom). 923 → 102
   iterate "forbidden count `< N` ⟹ a small extension exists" inside `{1,…,N}`, then the
   real-power inequality `2h(k+1)^{2h−1} < N` ⟹ `k ≥ (N/(2h))^{1/(2h−1)} − 1`. Only
   remaining open piece; no further counting needed.
+
+### Session 2026-06-27 (Session N, researcher-3) — end-to-end greedy lower bound
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+Closed the file's last listed open piece (Part 9).
+
+#### What I Did
+Formalized the **end-to-end greedy lower bound inside `{1,…,N}`** (new Part 9), turning
+the abstract forbidden-count `card_forbidden_poly` into an actual existence statement:
+
+- `IsBh.exists_insert_Icc`: **one greedy step.** If `A` is `B_h` and
+  `|A| + 2·h·(|A|+1)^{2h−1} < N`, then `∃ m ∈ Icc 1 N`, `m ∉ A`, with `insert m A` still
+  `B_h`. Proof: the *unusable* values of `Icc 1 N` are those in `A` (`≤ |A|` via
+  `card_le_card` of the `(·∈A)` filter) plus the *forbidden* ones; every forbidden value
+  is `≤ h·max A` (else `insert_of_large` keeps `B_h`), so the `Icc`-forbidden set injects
+  into the `range (h·sup+1)`-forbidden set counted by `card_forbidden_poly`. Hence
+  `#unusable ≤ |A| + 2h(|A|+1)^{2h−1} < N = #(Icc 1 N)`, and
+  `Finset.exists_mem_notMem_of_card_lt_card` delivers a usable value. **No containment
+  hypothesis on `A` is needed** — only how many `Icc`-values lie in `A`.
+- `exists_isBh_subset_Icc`: **iterate.** Induction on `k`: a `B_h` set of card `k` inside
+  `{1,…,N}` exists whenever the stage condition `(k−1)+2h·k^{2h−1} < N` holds (monotone in
+  `k`). The insert step keeps the `Icc` invariant.
+- `exists_isBh_card_Icc`: **the headline lower bound (integer form).** For `h ≥ 1` and any
+  `k` with `4·h·k^{2h−1} ≤ N`, there is a `B_h` set `A ⊆ {1,…,N}` of card **exactly** `k`,
+  i.e. `|A| = Ω(N^{1/(2h−1)})` — the lower-bound counterpart of the upper bound
+  `choose_card_le` (`|A| = O(N^{1/h})`).
+
+#### Key Findings / gotchas
+- **omega + nonlinear `2*h*K`.** omega abstracts nonlinear products as atoms but does NOT
+  reliably relate `2*h*K` to `4*h*K`. Feed it the bridge facts explicitly as hypotheses:
+  `fact1 : k ≤ 2*h*k^(2*h-1)` and `fact2 : 2*h*k^(2*h-1) + 2*h*k^(2*h-1) = 4*h*k^(2*h-1)`
+  (`by ring`), then `omega` closes `(k-1)+2h*K < N` from `4h*K ≤ N`. Same trick in the
+  monotonicity step (`exists_isBh_subset_Icc` succ case): supply
+  `hpow : 2*h*n^.. ≤ 2*h*(n+1)^..` (`gcongr; omega`) then omega over the two opaque atoms.
+- `fact1` chain: `k = k^1 ≤ k^(2*h-1)` (`Nat.pow_le_pow_right hkpos (by omega)`), then
+  `≤ 2*h*k^(2*h-1)` (`Nat.le_mul_of_pos_left _ (by omega)`).
+- `Finset.card_sdiff` did NOT resolve to the subset-hypothesis form under `open Finset`
+  (picked the `#(s\t) = #s − #(t∩s)` variant, "function expected" error). Replaced the
+  whole `(C\Bad).Nonempty` route with `Finset.exists_mem_notMem_of_card_lt_card` — cleaner
+  and avoids the ambiguity.
+- `Finset.filter_or` splits `filter (p ∨ q) = filter p ∪ filter q`; then `card_union_le`
+  + `Nat.add_le_add`. `Finset.mem_filter` + `not_and` turns `m ∉ C.filter p` (with `m∈C`)
+  into `¬ p m`, then `push_neg`.
+- `k = 0` must be peeled in `exists_isBh_card_Icc` (the stage condition `0 < N` is not
+  implied by `4h·0^{2h−1} ≤ N`); return `∅` directly.
+
+#### Files Modified
+- `proofs/Proofs/Erdos340GreedySidonOQ05.lean` (1022 → 1147 lines, +3 theorems → 37)
+- `src/data/research/problems/erdos-340-greedy-sidon-oq-05.json`
+
+#### Verification
+Docker disk-thrash risk per prior sessions; verified via host `v4.26.0` `lean` directly
+on the single file with a hand-built `LEAN_PATH` over the existing package oleans (Lake's
+newer `…/.lake/build/lib/lean` layout) → **exit 0, no errors/warnings**.
+`#print axioms` on `IsBh.exists_insert_Icc` / `exists_isBh_subset_Icc` /
+`exists_isBh_card_Icc` = `[propext, Classical.choice, Quot.sound]` (**0-axiom**).
+
+#### Next Steps
+- Both bounds (`O(N^{1/h})` upper, `Ω(N^{1/(2h−1)})` lower) are now formalized. The only
+  remaining gap is the **sharp constant/exponent** between the greedy `1/(2h−1)` and the
+  Bose–Chowla `1/h` — the genuine open core of #340 itself, not greedily tractable. A
+  cosmetic `Real.rpow` restatement is possible but adds no content.

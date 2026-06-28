@@ -4,16 +4,16 @@
   "status": "in-progress",
   "phase": "ACT",
   "tier": "B",
-  "tractability": "medium — the foundational B_h theory and the sharp B_h counting upper bound are now formalized and verified (0-axiom). The deep open direction (improving the greedy B_h lower bound toward the N^{1/h} ceiling) remains open, exactly as for the parent #340.",
+  "tractability": "medium — both the B_h upper bound (choose(|A|,h) <= h*N, |A|=O(N^{1/h})) and the greedy lower bound (4h*k^(2h-1)<=N => B_h set of card k in {1,...,N}, |A|=Omega(N^{1/(2h-1)})) are now formalized and verified (0-axiom). Only the sharp constant/exponent gap between the greedy 1/(2h-1) exponent and the Bose-Chowla 1/h exponent remains — the genuine open core of #340 itself, not expected to be tractable greedily.",
   "started": "2026-06-27",
-  "lastUpdate": "2026-06-27T20:00:00.000Z",
+  "lastUpdate": "2026-06-27T21:30:00.000Z",
   "path": "research/problems/erdos-340-greedy-sidon-oq-05",
   "leanFiles": [
     {
       "path": "Proofs/Erdos340GreedySidonOQ05.lean",
       "filename": "Erdos340GreedySidonOQ05.lean",
-      "lineCount": 1022,
-      "theoremCount": 34,
+      "lineCount": 1147,
+      "theoremCount": 37,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
@@ -52,7 +52,10 @@
       "IsBh.exists_insert: every B_h set has SOME extension m∉A with insert m A still B_h; the explicit witness m = h·(max A) + 1 works (m∉A because any a∈A has a ≤ max A ≤ h·max A < m via Nat.le_mul_of_pos_left, needs h≥1). Iterating yields B_h sets of unbounded size — the constructive starting point for the B_h greedy lower bound. This is the B_h analogue of the parent's sidon_insert_of_large / sidon_exists_extension.",
       "EXPLICIT GREEDY FAMILY: iterating exists_insert gives, for every h≥1 and every n, a concrete B_h set of cardinality EXACTLY n (exists_isBh_card). Built via greedyBhAux : (n:ℕ) → {A : Finset ℕ // IsBh h A ∧ A.card = n} — a subtype-bundled structural recursion that carries the B_h proof alongside the set so that exists_insert's hypothesis is available at each definition step (Classical.choose the witness; choose_spec gives m∉A ∧ B_h(insert m A)). Projections greedyBhSet/_isBh/_card. Needs isBh_empty (∅ is B_h: h=0 domain is a Sym-subsingleton, h≥1 domain is empty). This SEPARATES the open question: a B_h set's COUNT is unbounded for free; the open core is how small its LARGEST ELEMENT can be (the N^{1/(2h-1)} bound). 0-axiom (Classical.choice only).",
       "ORIENTATION REFINEMENT closes the open forbidden-count gap. exists_diff_eq_of_not_insert now also yields card sA + card tA + d ≤ 2·h: the multiplicity gap d = |j−k| is paid out of the 2h slots of the two h-multisets, so the A-parts together carry ≤ 2h − d ≤ 2h − 1 elements. Hence at least one of sA, tA has size < h. card_forbidden_le' uses this to bound the forbidden set by 2·h·T₋·T₊ where T₋ = #multisets over A of size < h (degree h−1) and T₊ = #multisets of size ≤ h (degree h) — total degree 1+(h−1)+h = 2h−1 in |A|, one degree below the prior trivial T² bound. This is the count realising the SHARP N^{1/(2h-1)} greedy lower bound, the open quantitative core of #340's B_h generalisation. Proof: no parity/tagging bijection — just case-split on which side is short, union of two products, card_union_le + card_product. 0-axiom verified.",
-      "Part 8 (explicit closed form): card_forbidden_poly bounds the forbidden set by 2*h*(|A|+1)^(2h-1) — an explicit degree-(2h-1) polynomial in |A|, the form the greedy lower bound consumes. Built on card_sym_le_pow (|A.sym n| <= |A|^n, a Finset.sym cardinality bound Mathlib lacks) and geom_sum_le_pow (sum_{i<=k} n^i <= (n+1)^k)."
+      "Part 8 (explicit closed form): card_forbidden_poly bounds the forbidden set by 2*h*(|A|+1)^(2h-1) — an explicit degree-(2h-1) polynomial in |A|, the form the greedy lower bound consumes. Built on card_sym_le_pow (|A.sym n| <= |A|^n, a Finset.sym cardinality bound Mathlib lacks) and geom_sum_le_pow (sum_{i<=k} n^i <= (n+1)^k).",
+      "Part 9 CLOSES the last open piece — the end-to-end greedy lower bound inside {1,...,N}. IsBh.exists_insert_Icc: if A is B_h and |A| + 2h(|A|+1)^(2h-1) < N then some m in Icc 1 N with m not in A keeps insert m A B_h. Proof: the UNUSABLE values of Icc 1 N are those in A (<= |A| via filter subset) plus the FORBIDDEN ones; every forbidden value is <= h*max A (else insert_of_large keeps B_h), so the Icc-forbidden set injects into the range(h*sup+1)-forbidden set counted by card_forbidden_poly (<= 2h(|A|+1)^(2h-1)). Hence #unusable < N = #Icc, leaving a usable value (Finset.exists_mem_notMem_of_card_lt_card). NO containment hypothesis on A needed — only how many Icc-values lie in A matters. 0-axiom verified.",
+      "exists_isBh_subset_Icc: iterating exists_insert_Icc from the empty set gives a B_h set of card k contained in {1,...,N} whenever the stage condition (k-1)+2h*k^(2h-1) < N holds (monotone in k, so the top-stage instance suffices). Induction on k; the insert step keeps the Icc invariant since m in Icc 1 N and A subset Icc. Monotonicity gotcha: from the succ-stage hcond n+2h(n+1)^(2h-1)<N derive the prev-stage (n-1)+2h*n^(2h-1)<N via gcongr (n<=n+1 base of the power) then omega treating 2h*n^.. and 2h*(n+1)^.. as opaque atoms. 0-axiom.",
+      "exists_isBh_card_Icc (HEADLINE LOWER BOUND, integer form): for h>=1 and any k with 4*h*k^(2h-1) <= N, there is a B_h set A subset {1,...,N} of card EXACTLY k. This is the Omega(N^{1/(2h-1)}) greedy lower bound — solving 4h*k^(2h-1)<=N for k gives |A| >= (N/4h)^{1/(2h-1)}. It is the lower-bound counterpart of the upper bound choose_card_le (|A|=O(N^{1/h})). Arithmetic bridge from 4h*k^(2h-1)<=N to the stage condition (k-1)+2h*k^(2h-1)<N: k<=k^(2h-1) (pow_le_pow_right, 2h-1>=1) so k<=2h*k^(2h-1) (Nat.le_mul_of_pos_left), then (k-1)+2h*K < 2h*K+2h*K = 4h*K <= N via omega with fact1 (k<=2h*K) and fact2 (the ring doubling identity) as hyps so omega sees clean atoms. k=0 handled by the empty set. The conversion to the real power N^{1/(2h-1)} is purely cosmetic; the integer inequality IS the sharp-exponent statement. 0-axiom. This COMPLETES #340's B_h lower-bound formalization modulo the (still-open) sharp constant, exactly mirroring the parent's greedy sqrt(N) Sidon bound."
     ],
     "builtItems": [
       "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only).",
@@ -67,15 +70,19 @@
       "card_sym_le_pow: (A.sym n).card <= A.card^n (Finset.sym cardinality bound, missing from Mathlib)",
       "geom_sum_le_pow: sum_{i<=k} n^i <= (n+1)^k",
       "card_pool_le: multiset pool of size <=k over A has card <= (|A|+1)^k",
-      "IsBh.card_forbidden_poly (h>=1): #forbidden <= 2*h*(|A|+1)^(2h-1), explicit closed form"
+      "IsBh.card_forbidden_poly (h>=1): #forbidden <= 2*h*(|A|+1)^(2h-1), explicit closed form",
+      "IsBh.exists_insert_Icc: greedy step inside {1,...,N} — A B_h, |A|+2h(|A|+1)^(2h-1)<N => exists m in Icc 1 N, m not in A, insert m A B_h (count unusable=in-A+forbidden < N via card_forbidden_poly + exists_mem_notMem_of_card_lt_card). 0-axiom.",
+      "exists_isBh_subset_Icc: iterate exists_insert_Icc => B_h set of card k inside {1,...,N} when (k-1)+2h*k^(2h-1)<N (induction on k, monotone stage condition). 0-axiom.",
+      "exists_isBh_card_Icc (h>=1): the integer-form greedy LOWER BOUND 4h*k^(2h-1)<=N => exists B_h A subset {1,...,N} of card exactly k, i.e. |A|=Omega(N^{1/(2h-1)}). Counterpart of choose_card_le upper bound. Completes the open quantitative core of #340's B_h generalisation (modulo sharp constant). 0-axiom."
     ],
     "mathlibGaps": [
       "Mathlib has no B_h-set theory and no Sidon/B_h upper bound; the whole development is original relative to Mathlib.",
       "Finset.sym s n has no direct cardinality (multichoose) lemma in Mathlib — only the Fintype-level Sym.card_sym_eq_choose. This is why the counting bound is routed through h-subsets (powersetCard, which DOES have card_powersetCard) rather than the full multiset family."
     ],
     "nextSteps": [
-      "End-to-end greedy lower bound: iterate 'forbidden count < N => a small extension exists' inside {1,...,N}, then the real-power inequality 2h(k+1)^(2h-1) < N => k >= (N/(2h))^(1/(2h-1)) - 1. Only remaining open piece; no further counting needed."
+      "The greedy lower bound is now formalized in integer form (exists_isBh_card_Icc: 4h*k^(2h-1)<=N => exists B_h set of card k in {1,...,N}). The only remaining gap is the SHARP CONSTANT: the greedy exponent 1/(2h-1) is one factor of (roughly) 2 below the Bose-Chowla algebraic constructions' 1/h exponent; closing that constant/exponent gap is the genuine open core of #340 itself and is NOT expected to be tractable greedily. A purely cosmetic real-power restatement |A| >= (N/4h)^{1/(2h-1)} (via Real.rpow) could be added but adds no mathematical content.",
+      "Optional: a converse/sharpness note relating the greedy 1/(2h-1) exponent to the upper bound 1/h exponent, documenting the known gap."
     ],
-    "progressSummary": "Foundational B_h theory + sharp upper bound (choose(|A|,h) <= h*N), Sidon bridge (IsBh 2 <-> IsSidon), affine invariance, greedy extension + explicit greedy family, and the forbidden-set structure/counting chain: card_forbidden_le (trivial T^2), card_forbidden_le' (sharp orientation 2h*T-*T+), and now card_forbidden_poly (explicit closed form 2h*(|A|+1)^(2h-1), degree 2h-1 in |A|). Remaining open: the [1,N]-bounded greedy iteration realising |A| = Omega(N^{1/(2h-1)})."
+    "progressSummary": "Foundational B_h theory + sharp upper bound (choose(|A|,h) <= h*N => |A|=O(N^{1/h})), Sidon bridge (IsBh 2 <-> IsSidon), affine invariance, greedy extension + explicit greedy family, the forbidden-set counting chain (card_forbidden_le trivial T^2 -> card_forbidden_le' sharp 2h*T-*T+ -> card_forbidden_poly explicit 2h*(|A|+1)^(2h-1)), AND NOW the end-to-end greedy LOWER bound: exists_insert_Icc (one step in {1,...,N}) -> exists_isBh_subset_Icc (iterate) -> exists_isBh_card_Icc (4h*k^(2h-1)<=N => B_h set of card k in {1,...,N}, i.e. |A|=Omega(N^{1/(2h-1)})). Both directions O(N^{1/h}) upper / Omega(N^{1/(2h-1)}) lower are now formalized & 0-axiom. Only the sharp constant/exponent gap (the genuine #340 open problem) remains."
   }
 }

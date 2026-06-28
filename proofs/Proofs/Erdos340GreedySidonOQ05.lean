@@ -1019,4 +1019,129 @@ theorem IsBh.card_forbidden_poly {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA :
         rw [mul_assoc (2 * (h' + 1)), ← pow_add,
           show h' + (h' + 1) = 2 * (h' + 1) - 1 from by omega]
 
+/-! ## Part 9: The end-to-end greedy lower bound inside `{1, …, N}`
+
+Parts 5b–8 reduced the open `B_h` lower bound to a *counting* statement:
+`card_forbidden_poly` bounds the number of small values whose insertion breaks `B_h`
+by the explicit polynomial `2 · h · (|A| + 1)^{2h-1}`.  The greedy lower bound now
+follows mechanically.
+
+The greedy algorithm builds a `B_h` set inside `{1, …, N}` one element at a time.
+A value `m ∈ {1, …, N}` is *unusable* for the current set `A` only if it is already in
+`A` (at most `|A|` such values) or its insertion breaks `B_h` (a *forbidden* value).
+Every forbidden value is `≤ h · max A` (`insert_of_large`), so the forbidden values in
+`{1, …, N}` are bounded by `card_forbidden_poly`.  As long as the unusable values do not
+cover all of `{1, …, N}` — i.e. `|A| + 2·h·(|A|+1)^{2h-1} < N` — a fresh element can be
+adjoined.  Iterating yields a `B_h` set of cardinality `k` whenever
+`4 · h · k^{2h-1} ≤ N`, the integer form of the `|A| = Ω(N^{1/(2h-1)})` greedy bound. -/
+
+/-- **One greedy step inside `{1, …, N}`.**  If `A` is `B_h` and small enough that
+`|A| + 2·h·(|A|+1)^{2h-1} < N`, then there is a value `m ∈ {1, …, N}`, `m ∉ A`, with
+`insert m A` still `B_h`.  (No containment hypothesis on `A` is needed: the count below
+only uses how many values of `{1, …, N}` lie in `A`.)
+
+*Proof.*  The values of `{1, …, N}` that cannot be adjoined are those in `A` (at most
+`|A|`) together with the *forbidden* values whose insertion breaks `B_h`.  Every
+forbidden value is `≤ h · max A` (otherwise `insert_of_large` keeps it `B_h`), so the
+forbidden values are counted by `card_forbidden_poly`: at most `2·h·(|A|+1)^{2h-1}`.
+The unusable set therefore has fewer than `N = |{1, …, N}|` elements, leaving a usable
+value. ∎ -/
+theorem IsBh.exists_insert_Icc {h N : ℕ} {A : Finset ℕ} (hh : 1 ≤ h)
+    (hA : IsBh h A)
+    (hlt : A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) < N) :
+    ∃ m, m ∈ Finset.Icc 1 N ∧ m ∉ A ∧ IsBh h (insert m A) := by
+  classical
+  set C := Finset.Icc 1 N with hC
+  -- The "bad" values of `C`: already in `A`, or breaking `B_h`.
+  set Bad := C.filter (fun m => m ∈ A ∨ ¬ IsBh h (insert m A)) with hBad
+  -- `A` contributes at most `|A|` bad values.
+  have hAcard : (C.filter (fun m => m ∈ A)).card ≤ A.card := by
+    apply Finset.card_le_card
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    exact hx.2
+  -- The forbidden values of `C` inject into the `[0, h·max A]` forbidden set.
+  have hForb : (C.filter (fun m => ¬ IsBh h (insert m A))).card
+      ≤ 2 * h * (A.card + 1) ^ (2 * h - 1) := by
+    refine le_trans (Finset.card_le_card ?_) (hA.card_forbidden_poly hh)
+    intro m hm
+    rw [Finset.mem_filter] at hm
+    rw [Finset.mem_filter, Finset.mem_range]
+    obtain ⟨_, hmbad⟩ := hm
+    refine ⟨?_, hmbad⟩
+    by_contra hbig
+    push_neg at hbig
+    exact hmbad (hA.insert_of_large (by omega))
+  -- Hence the bad set is strictly smaller than `C` itself.
+  have hBadcard : Bad.card < C.card := by
+    have hb : Bad.card ≤ A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) := by
+      rw [hBad, Finset.filter_or]
+      exact le_trans (Finset.card_union_le _ _) (Nat.add_le_add hAcard hForb)
+    have hCcard : C.card = N := by rw [hC, Nat.card_Icc]; omega
+    omega
+  -- A good value exists in `C` but not in `Bad`.
+  obtain ⟨m, hmC, hmBad⟩ := Finset.exists_mem_notMem_of_card_lt_card hBadcard
+  rw [hBad, Finset.mem_filter, not_and] at hmBad
+  have hmprop := hmBad hmC
+  push_neg at hmprop
+  exact ⟨m, hmC, hmprop.1, hmprop.2⟩
+
+/-- **The greedy `B_h` family inside `{1, …, N}`.**  As long as each greedy step is
+admissible — `(k-1) + 2·h·k^{2h-1} < N` at stage `k` — a `B_h` set of cardinality `k`
+contained in `{1, …, N}` exists.  (The condition is monotone in `k`, so requiring it at
+the final stage suffices; see `exists_isBh_card_Icc`.) -/
+theorem exists_isBh_subset_Icc {h N : ℕ} (hh : 1 ≤ h) :
+    ∀ k, (k - 1) + 2 * h * k ^ (2 * h - 1) < N →
+      ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  intro k
+  induction k with
+  | zero =>
+      intro _
+      exact ⟨∅, Finset.empty_subset _, isBh_empty, Finset.card_empty⟩
+  | succ n ih =>
+      intro hcond
+      -- The stage-`n` condition is weaker (monotonicity in `k`).
+      have hprev : (n - 1) + 2 * h * n ^ (2 * h - 1) < N := by
+        have hpow : 2 * h * n ^ (2 * h - 1) ≤ 2 * h * (n + 1) ^ (2 * h - 1) := by
+          gcongr; omega
+        omega
+      obtain ⟨A, hAsub, hAbh, hAcard⟩ := ih hprev
+      have hlt : A.card + 2 * h * (A.card + 1) ^ (2 * h - 1) < N := by
+        rw [hAcard]; omega
+      obtain ⟨m, hmC, hmA, hmbh⟩ := hAbh.exists_insert_Icc hh hlt
+      refine ⟨insert m A, ?_, hmbh, ?_⟩
+      · intro x hx
+        rw [Finset.mem_insert] at hx
+        rcases hx with rfl | hx
+        · exact hmC
+        · exact hAsub hx
+      · rw [Finset.card_insert_of_notMem hmA, hAcard]
+
+/-- **The greedy `B_h` lower bound (integer form).**  For every `h ≥ 1` and every `k`
+with `4 · h · k^{2h-1} ≤ N`, there is a `B_h` set `A ⊆ {1, …, N}` of cardinality exactly
+`k`.
+
+This is the lower-bound counterpart of the upper bound `choose_card_le`
+(`Nat.choose |A| h ≤ h·N`, i.e. `|A| = O(N^{1/h})`).  Solving `4·h·k^{2h-1} ≤ N` for `k`
+gives `|A| ≥ (N / 4h)^{1/(2h-1)}`, i.e. `|A| = Ω(N^{1/(2h-1)})` — the greedy lower bound
+realising the forbidden-set count `card_forbidden_poly`.  The conversion to the real
+power `N^{1/(2h-1)}` is purely cosmetic; the integer inequality `4·h·k^{2h-1} ≤ N` is the
+sharp-exponent statement, completing the open quantitative core of #340's `B_h`
+generalisation. -/
+theorem exists_isBh_card_Icc {h N k : ℕ} (hh : 1 ≤ h)
+    (hk : 4 * h * k ^ (2 * h - 1) ≤ N) :
+    ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  rcases Nat.eq_zero_or_pos k with rfl | hkpos
+  · exact ⟨∅, Finset.empty_subset _, isBh_empty, Finset.card_empty⟩
+  · refine exists_isBh_subset_Icc hh k ?_
+    -- `(k-1) + 2h·k^{2h-1} < 4h·k^{2h-1} ≤ N`, since `k ≤ 2h·k^{2h-1}`.
+    have hQk : k ≤ k ^ (2 * h - 1) := by
+      calc k = k ^ 1 := (pow_one k).symm
+        _ ≤ k ^ (2 * h - 1) := Nat.pow_le_pow_right hkpos (by omega)
+    have fact1 : k ≤ 2 * h * k ^ (2 * h - 1) :=
+      le_trans hQk (Nat.le_mul_of_pos_left _ (by omega))
+    have fact2 : 2 * h * k ^ (2 * h - 1) + 2 * h * k ^ (2 * h - 1)
+        = 4 * h * k ^ (2 * h - 1) := by ring
+    omega
+
 end Erdos340Bh
