@@ -47,27 +47,73 @@
     ]
   },
   {
-    "id": "ann-ktoq03-inverse-injective",
+    "id": "ann-ktoq03-leftinverse",
     "proofId": "knights-tour-oblique-oq-03",
     "type": "theorem",
     "range": {
       "startLine": 73,
-      "endLine": 96
+      "endLine": 78
     },
-    "title": "Invertibility, faithfulness, and orbit action",
-    "content": "d4_reverse_leftInverse: the composite symmetry t ↦ reverseTour (applyD4Tour g t) is undone by t ↦ reverseTour (applyD4Tour (d4Inv g) t). The proof rewrites reverseTour (applyD4Tour (d4Inv g) (reverseTour (applyD4Tour g t))) by pulling the inner D₄ element through the reversal (reverseTour_applyD4Tour), collapsing the resulting double reversal (reverseTour_involutive), and cancelling the D₄ pair (applyD4Tour_inv_left) — three rewrites, no induction. d4_reverse_injective then gets injectivity from the left inverse via Function.LeftInverse.injective, establishing that D₄ together with reversal acts faithfully on the finite type ClosedTour (an order-16 D₄ × ℤ/2 symmetry). reverseTour_applyD4Tour_orbit records the orbit-level reading: reversal maps the D₄-orbit of t onto the D₄-orbit of reverseTour t (witnessed by the same group element g), which is the form relevant to the histogram's orbit-divisibility.",
-    "mathContext": "Composite $R \\circ \\sigma_g$ has inverse $R \\circ \\sigma_{g^{-1}}$ (commutation + involution + $D_4$ inverse), hence is injective; reversal permutes $D_4$-orbits.",
+    "title": "d4_reverse_leftInverse: an explicit inverse from commutation",
+    "content": "The composite symmetry t ↦ reverseTour (applyD4Tour g t) is undone by t ↦ reverseTour (applyD4Tour (d4Inv g) t). The whole proof is the single tactic line `rw [reverseTour_applyD4Tour, reverseTour_involutive, applyD4Tour_inv_left]`, three rewrites with no induction: (1) reverseTour_applyD4Tour pulls the inner D₄ element d4Inv g out through the reversal; (2) the two reversals now sit adjacent and reverseTour_involutive collapses them; (3) applyD4Tour_inv_left cancels applyD4Tour (d4Inv g) against applyD4Tour g, leaving t. This is the payoff of commutation: because the two actions commute, the inverse of a composite is obtained simply by inverting each factor — no bespoke bijection argument.",
+    "mathContext": "$R \\circ \\sigma_g$ is left-inverted by $R \\circ \\sigma_{g^{-1}}$: commutation moves $\\sigma_{g^{-1}}$ inward, $R^2 = \\mathrm{id}$ cancels the reversals, and $\\sigma_{g^{-1}}\\sigma_g = \\mathrm{id}$ cancels the board maps.",
     "significance": "key",
     "relatedConcepts": [
-      "left inverse implies injective",
-      "faithful group action",
-      "orbit permutation",
-      "involution"
+      "left inverse",
+      "commuting group actions",
+      "involution cancellation",
+      "d4Inv"
     ],
     "prerequisites": [
+      "reverseTour_applyD4Tour",
       "reverseTour_involutive",
-      "applyD4Tour_inv_left",
-      "Function.LeftInverse.injective"
+      "applyD4Tour_inv_left"
+    ]
+  },
+  {
+    "id": "ann-ktoq03-injective",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "title": "d4_reverse_injective: a faithful order-16 action",
+    "content": "Function.Injective (fun t => reverseTour (applyD4Tour g t)). Having an explicit left inverse, injectivity is immediate from Function.LeftInverse.injective — the proof passes d4_reverse_leftInverse g as the witnessing left inverse and needs nothing else. Since each composite reversal-and-D₄ map is injective on the finite type ClosedTour, an injective self-map of a finite type is a bijection, so reversal together with the board group D₄ generates a faithful action of D₄ × ℤ/2 (order 16) on closed tours. Faithfulness is what makes the order-16 group a genuine symmetry of the oblique-count histogram rather than a quotient.",
+    "mathContext": "A self-map of a finite set with a left inverse is a bijection; here it certifies that the order-16 group $D_4 \\times \\mathbb{Z}/2$ acts faithfully on $\\mathrm{ClosedTour}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.LeftInverse.injective",
+      "faithful group action",
+      "finite type bijection",
+      "D₄ × ℤ/2"
+    ],
+    "prerequisites": [
+      "d4_reverse_leftInverse",
+      "injective self-maps of finite types"
+    ]
+  },
+  {
+    "id": "ann-ktoq03-orbit",
+    "proofId": "knights-tour-oblique-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 89,
+      "endLine": 94
+    },
+    "title": "reverseTour_applyD4Tour_orbit: reversal permutes D₄-orbits",
+    "content": "∃ h, reverseTour (applyD4Tour g t) = applyD4Tour h (reverseTour t): the reverse of any board-symmetry image of t is itself a board-symmetry image of the reverse of t. The proof is the commutation theorem packaged as an existential, ⟨g, reverseTour_applyD4Tour g t⟩ — the witnessing group element is the same g (no new element is needed, a direct consequence of commutation rather than mere normality). Read at the level of orbits, this says reversal carries the D₄-orbit of t onto the D₄-orbit of reverseTour t. That is exactly the input the histogram's orbit-divisibility structure consumes: each oblique-count level set, already a union of D₄-orbits, is permuted by reversal, so it is closed under the full order-16 group.",
+    "mathContext": "$R(\\mathcal{O}_{D_4}(t)) = \\mathcal{O}_{D_4}(R\\,t)$: reversal sends a $D_4$-orbit bijectively onto a $D_4$-orbit, witnessed by the identity correspondence $g \\mapsto g$ on group elements.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "group orbits",
+      "orbit permutation",
+      "histogram orbit divisibility",
+      "existential witness"
+    ],
+    "prerequisites": [
+      "reverseTour_applyD4Tour",
+      "group orbits under D₄"
     ]
   }
 ]
