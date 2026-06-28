@@ -44,12 +44,18 @@
     vanishing (`n ≥ 4` / `n ≥ 5`).
   * `fourth_moment_defect_eq_zero` — **headline**: for `n ≥ 5`, `defect₄ = 0` for every
     parallelepiped, observer `X`, base `c`, and arbitrary (possibly skew) edges `u`.
+  * `defect4_eq_quartic_piece` — for `n ≥ 4` the defect collapses to its degree-`4` Gram-square
+    piece (the lower five pieces are annihilated by the signed powerset sum).
+  * `quartic_term_eval` — companion to `quartic_term_zero` valid for *every* `n`: the signed
+    powerset sum of a quadruple `∑_{∈t}` extracts exactly the full-support quadruples, each
+    weighted by `(-1)^n`.
+  * `fourth_moment_defect_n4` — **the first nonvanishing case**: for `n = 4`,
+        defect₄ = 8 · (⟪u₀,u₁⟫⟪u₂,u₃⟫ + ⟪u₀,u₂⟫⟪u₁,u₃⟫ + ⟪u₀,u₃⟫⟪u₁,u₂⟫),
+    the symmetric sum over the three ways of pairing the four edges.  It is independent of `X`
+    and `c`, and vanishes exactly when the three pairing products cancel (e.g. mutually
+    orthogonal edges — a box — recovering the `n ≥ 5` vanishing).
 
   Everything is `sorry`-free and axiom-free; the parent's lemmas are reused by import.
-
-  The first nonzero case `n = 4` carries an explicit top-degree "pairing" defect
-      8 · (⟪u₀,u₁⟫⟪u₂,u₃⟫ + ⟪u₀,u₂⟫⟪u₁,u₃⟫ + ⟪u₀,u₃⟫⟪u₁,u₂⟫),
-  which is left as a documented next step.
 -/
 
 import Mathlib
@@ -374,6 +380,232 @@ theorem fourth_moment_defect_eq_zero (hn : 5 ≤ n) (X c : V) (u : Fin n → V) 
   simp_rw [key]
   simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib]
   rw [h1, h2, h3, h4, h5, h6]
+  ring
+
+/-! ### The first nonvanishing case: `n = 4`
+
+For `n = 4` the degree-`0,1,2,3` pieces still vanish (their thresholds `1,2,3,4` are all
+met), but the degree-`4` piece survives, producing the **first nonzero** British-flag
+fourth-moment defect.  We evaluate it explicitly: it is the symmetric sum over the three
+ways of pairing the four edges,
+
+    defect₄ = 8 · (⟪u₀,u₁⟫⟪u₂,u₃⟫ + ⟪u₀,u₂⟫⟪u₁,u₃⟫ + ⟪u₀,u₃⟫⟪u₁,u₂⟫).
+
+It is independent of the observer `X` and base `c`, and vanishes precisely when the three
+pairing products cancel — e.g. mutually orthogonal edges (a box), recovering the `n ≥ 5`
+vanishing. -/
+
+/-- **The defect reduces to its degree-`4` piece for `n ≥ 4`.**  The constant, linear, two
+    quadratic, and cubic pieces are each annihilated by the signed powerset sum once
+    `n ≥ 4`, leaving only the quartic Gram-square piece. -/
+theorem defect4_eq_quartic_piece (hn : 4 ≤ n) (X c : V) (u : Fin n → V) :
+    defect4 X c u
+      = ∑ t ∈ (univ : Finset (Fin n)).powerset, (-1 : ℝ) ^ t.card *
+          ((∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫) * (∑ k ∈ t, ∑ l ∈ t, ⟪u k, u l⟫)) := by
+  have key : ∀ t : Finset (Fin n), (-1 : ℝ) ^ t.card * sqDist4 X c u t
+      = (-1 : ℝ) ^ t.card * (‖X - c‖ ^ 2) ^ 2
+        - (-1 : ℝ) ^ t.card * (4 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ⟪X - c, u i⟫))
+        + (-1 : ℝ) ^ t.card * (2 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫))
+        + (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ⟪X - c, u j⟫)))
+        - (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ∑ l ∈ t, ⟪u j, u l⟫)))
+        + (-1 : ℝ) ^ t.card * ((∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫) * (∑ k ∈ t, ∑ l ∈ t, ⟪u k, u l⟫)) := by
+    intro t
+    have hsq : sqDist4 X c u t = (sqDist X c u t) ^ 2 := by
+      simp only [sqDist4, sqDist]; ring
+    rw [hsq, sqDist_expand]
+    ring
+  have h1 : ∑ t ∈ (univ : Finset (Fin n)).powerset,
+      (-1 : ℝ) ^ t.card * (‖X - c‖ ^ 2) ^ 2 = 0 :=
+    const_term_zero (by omega) ((‖X - c‖ ^ 2) ^ 2)
+  have h2 : ∑ t ∈ (univ : Finset (Fin n)).powerset,
+      (-1 : ℝ) ^ t.card * (4 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ⟪X - c, u i⟫)) = 0 := by
+    have hpt : ∀ t : Finset (Fin n),
+        (-1 : ℝ) ^ t.card * (4 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ⟪X - c, u i⟫))
+          = 4 * ‖X - c‖ ^ 2 * ((-1 : ℝ) ^ t.card * (∑ i ∈ t, ⟪X - c, u i⟫)) := fun t => by ring
+    simp_rw [hpt]
+    rw [← Finset.mul_sum, linear_term_zero (by omega) (fun i => ⟪X - c, u i⟫), mul_zero]
+  have h3 : ∑ t ∈ (univ : Finset (Fin n)).powerset,
+      (-1 : ℝ) ^ t.card * (2 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫)) = 0 := by
+    have hpt : ∀ t : Finset (Fin n),
+        (-1 : ℝ) ^ t.card * (2 * ‖X - c‖ ^ 2 * (∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫))
+          = 2 * ‖X - c‖ ^ 2 * ((-1 : ℝ) ^ t.card * (∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫)) :=
+      fun t => by ring
+    simp_rw [hpt]
+    rw [← Finset.mul_sum, quadratic_term_zero (by omega) (fun i j => ⟪u i, u j⟫), mul_zero]
+  have h4 : ∑ t ∈ (univ : Finset (Fin n)).powerset,
+      (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ⟪X - c, u j⟫))) = 0 := by
+    have hconv : ∀ t : Finset (Fin n),
+        (∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ⟪X - c, u j⟫)
+          = ∑ i ∈ t, ∑ j ∈ t, ⟪X - c, u i⟫ * ⟪X - c, u j⟫ := by
+      intro t; rw [Finset.sum_mul_sum]
+    have hpt : ∀ t : Finset (Fin n),
+        (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ⟪X - c, u j⟫)))
+          = 4 * ((-1 : ℝ) ^ t.card * (∑ i ∈ t, ∑ j ∈ t, ⟪X - c, u i⟫ * ⟪X - c, u j⟫)) := by
+      intro t; rw [hconv t]; ring
+    simp_rw [hpt]
+    rw [← Finset.mul_sum,
+      quadratic_term_zero (by omega) (fun i j => ⟪X - c, u i⟫ * ⟪X - c, u j⟫), mul_zero]
+  have h5 : ∑ t ∈ (univ : Finset (Fin n)).powerset,
+      (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ∑ l ∈ t, ⟪u j, u l⟫))) = 0 := by
+    have hconv : ∀ t : Finset (Fin n),
+        (∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ∑ l ∈ t, ⟪u j, u l⟫)
+          = ∑ i ∈ t, ∑ j ∈ t, ∑ l ∈ t, ⟪X - c, u i⟫ * ⟪u j, u l⟫ := by
+      intro t
+      rw [Finset.sum_mul_sum]
+      apply Finset.sum_congr rfl; intro i _
+      apply Finset.sum_congr rfl; intro j _
+      rw [Finset.mul_sum]
+    have hpt : ∀ t : Finset (Fin n),
+        (-1 : ℝ) ^ t.card * (4 * ((∑ i ∈ t, ⟪X - c, u i⟫) * (∑ j ∈ t, ∑ l ∈ t, ⟪u j, u l⟫)))
+          = 4 * ((-1 : ℝ) ^ t.card * (∑ i ∈ t, ∑ j ∈ t, ∑ l ∈ t, ⟪X - c, u i⟫ * ⟪u j, u l⟫)) := by
+      intro t; rw [hconv t]; ring
+    simp_rw [hpt]
+    rw [← Finset.mul_sum,
+      cubic_term_zero (by omega) (fun i j l => ⟪X - c, u i⟫ * ⟪u j, u l⟫), mul_zero]
+  unfold defect4
+  simp_rw [key]
+  simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib]
+  rw [h1, h2, h3, h4, h5]
+  ring
+
+/-- **Full-support monomial.**  When `S = univ`, only `t = univ` satisfies `S ⊆ t`, so the
+    signed powerset sum collapses to the single surviving term `(-1)^n · a`. -/
+theorem monomial_term_univ (a : ℝ) :
+    ∑ t ∈ (univ : Finset (Fin n)).powerset,
+        (-1 : ℝ) ^ t.card * (if (univ : Finset (Fin n)) ⊆ t then a else 0)
+      = (-1 : ℝ) ^ n * a := by
+  classical
+  rw [Finset.sum_eq_single (univ : Finset (Fin n))]
+  · simp [Finset.card_univ, Fintype.card_fin]
+  · intro t _ hne
+    have hnsub : ¬ (univ : Finset (Fin n)) ⊆ t := fun hsub =>
+      hne (Finset.Subset.antisymm (Finset.subset_univ t) hsub)
+    simp [hnsub]
+  · intro h
+    exact absurd (Finset.mem_powerset.mpr (Finset.subset_univ _)) h
+
+/-- **Monomial evaluator.**  The signed powerset sum of the indicator `[S ⊆ t]` is `(-1)^n`
+    when `S = univ` and `0` otherwise: the finite-difference principle (`monomial_term_zero`)
+    together with its single surviving full-support term (`monomial_term_univ`). -/
+theorem monomial_term_eval (S : Finset (Fin n)) (a : ℝ) :
+    ∑ t ∈ (univ : Finset (Fin n)).powerset,
+        (-1 : ℝ) ^ t.card * (if S ⊆ t then a else 0)
+      = (if S = univ then (-1 : ℝ) ^ n else 0) * a := by
+  by_cases hS : S = univ
+  · subst hS; rw [if_pos rfl]; exact monomial_term_univ a
+  · rw [if_neg hS, zero_mul]; exact monomial_term_zero S hS a
+
+/-- **Quartic term evaluator** (companion to `quartic_term_zero`, valid for every `n`).  The
+    signed powerset sum of a quadruple `∑_{∈t}` picks out exactly the full-support quadruples
+    `{i,j,k,l} = univ`, each weighted by `(-1)^n`.  For `n ≥ 5` no quadruple is full-support
+    (recovering `quartic_term_zero`); for `n = 4` the surviving quadruples are the `4! = 24`
+    permutations of the coordinates. -/
+theorem quartic_term_eval (d : Fin n → Fin n → Fin n → Fin n → ℝ) :
+    ∑ t ∈ (univ : Finset (Fin n)).powerset,
+        (-1 : ℝ) ^ t.card * (∑ i ∈ t, ∑ j ∈ t, ∑ k ∈ t, ∑ l ∈ t, d i j k l)
+      = ∑ i, ∑ j, ∑ k, ∑ l,
+          (if ({i, j, k, l} : Finset (Fin n)) = univ then (-1 : ℝ) ^ n else 0) * d i j k l := by
+  classical
+  have hrw : ∀ t : Finset (Fin n),
+      (∑ i ∈ t, ∑ j ∈ t, ∑ k ∈ t, ∑ l ∈ t, d i j k l)
+        = ∑ i, ∑ j, ∑ k, ∑ l, if i ∈ t ∧ j ∈ t ∧ k ∈ t ∧ l ∈ t then d i j k l else 0 := by
+    intro t
+    have inner3 : ∀ i j k, (∑ l ∈ t, d i j k l) = ∑ l, if l ∈ t then d i j k l else 0 :=
+      fun i j k => (sum_ite_mem_eq' t (d i j k)).symm
+    simp_rw [inner3]
+    have inner2 : ∀ i j, (∑ k ∈ t, ∑ l, if l ∈ t then d i j k l else 0)
+        = ∑ k, if k ∈ t then (∑ l, if l ∈ t then d i j k l else 0) else 0 :=
+      fun i j => (sum_ite_mem_eq' t _).symm
+    simp_rw [inner2]
+    have inner1 : ∀ i, (∑ j ∈ t, ∑ k, if k ∈ t then (∑ l, if l ∈ t then d i j k l else 0) else 0)
+        = ∑ j, if j ∈ t then
+            (∑ k, if k ∈ t then (∑ l, if l ∈ t then d i j k l else 0) else 0) else 0 :=
+      fun i => (sum_ite_mem_eq' t _).symm
+    simp_rw [inner1]
+    rw [← sum_ite_mem_eq' t
+      (fun i => ∑ j, if j ∈ t then
+        (∑ k, if k ∈ t then (∑ l, if l ∈ t then d i j k l else 0) else 0) else 0)]
+    apply Finset.sum_congr rfl
+    intro i _
+    by_cases hi : i ∈ t
+    · rw [if_pos hi]
+      apply Finset.sum_congr rfl
+      intro j _
+      by_cases hj : j ∈ t
+      · rw [if_pos hj]
+        apply Finset.sum_congr rfl
+        intro k _
+        by_cases hk : k ∈ t
+        · rw [if_pos hk]
+          apply Finset.sum_congr rfl
+          intro l _
+          by_cases hl : l ∈ t
+          · rw [if_pos hl, if_pos ⟨hi, hj, hk, hl⟩]
+          · rw [if_neg hl, if_neg (by tauto)]
+        · rw [if_neg hk, eq_comm]
+          apply Finset.sum_eq_zero
+          intro l _
+          rw [if_neg (by tauto)]
+      · rw [if_neg hj, eq_comm]
+        apply Finset.sum_eq_zero
+        intro k _
+        apply Finset.sum_eq_zero
+        intro l _
+        rw [if_neg (by tauto)]
+    · rw [if_neg hi, eq_comm]
+      apply Finset.sum_eq_zero
+      intro j _
+      apply Finset.sum_eq_zero
+      intro k _
+      apply Finset.sum_eq_zero
+      intro l _
+      rw [if_neg (by tauto)]
+  simp_rw [hrw, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro i _
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro j _
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro k _
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl; intro l _
+  simp_rw [mem4_iff_subset i j k l]
+  exact monomial_term_eval _ _
+
+set_option maxHeartbeats 800000 in
+/-- **First nonvanishing British-flag fourth-moment defect (`n = 4`).**  For any
+    parallelepiped in a real inner product space with base `c`, edge vectors `u : Fin 4 → V`,
+    and observer `X`, the alternating fourth-power defect over the `16` vertices equals the
+    symmetric pairing sum of the edge Gram entries.  In particular it does not depend on `X`
+    or `c`, and vanishes exactly when the three pairing products cancel (e.g. mutually
+    orthogonal edges — a box — recovering the `n ≥ 5` vanishing). -/
+theorem fourth_moment_defect_n4 {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
+    (X c : V) (u : Fin 4 → V) :
+    defect4 X c u
+      = 8 * (⟪u 0, u 1⟫ * ⟪u 2, u 3⟫
+           + ⟪u 0, u 2⟫ * ⟪u 1, u 3⟫
+           + ⟪u 0, u 3⟫ * ⟪u 1, u 2⟫) := by
+  rw [defect4_eq_quartic_piece (by norm_num) X c u]
+  -- turn the product of the two double sums into a single quadruple `∑_{∈t}`
+  have hconv : ∀ t : Finset (Fin 4),
+      (∑ i ∈ t, ∑ j ∈ t, ⟪u i, u j⟫) * (∑ k ∈ t, ∑ l ∈ t, ⟪u k, u l⟫)
+        = ∑ i ∈ t, ∑ k ∈ t, ∑ j ∈ t, ∑ l ∈ t, ⟪u i, u j⟫ * ⟪u k, u l⟫ := by
+    intro t
+    rw [Finset.sum_mul_sum]
+    apply Finset.sum_congr rfl; intro i _
+    apply Finset.sum_congr rfl; intro k _
+    rw [Finset.sum_mul_sum]
+  simp_rw [hconv]
+  rw [quartic_term_eval (fun i k j l => ⟪u i, u j⟫ * ⟪u k, u l⟫)]
+  -- expand the four `Fin 4` sums into the 256 explicit terms; the surviving weight is `(-1)^4 = 1`
+  simp only [Fin.sum_univ_four, show ((-1 : ℝ) ^ 4) = 1 from by norm_num]
+  -- decide each full-support indicator `{i,k,j,l} = univ`; only the 24 permutations survive
+  simp (config := { decide := true }) only [if_true, if_false, one_mul, zero_mul,
+    add_zero, zero_add]
+  -- canonicalise the inner products by symmetry, then collect the 24 surviving terms
+  simp only [real_inner_comm (u 1) (u 0), real_inner_comm (u 2) (u 0),
+    real_inner_comm (u 3) (u 0), real_inner_comm (u 2) (u 1),
+    real_inner_comm (u 3) (u 1), real_inner_comm (u 3) (u 2)]
   ring
 
 end BritishFlagFourthMomentOQ010201
