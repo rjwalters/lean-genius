@@ -35,6 +35,52 @@
     ],
     "proofStrategy": "Hall's existence proof inducts on |G| using a (minimal) normal subgroup N. In the branch where the prime dividing N does not divide the target order d (equivalently gcd(|N|, d) = 1), one lifts the order-d subgroup of G/N to G. This file formalizes exactly that lift: set L = π⁻¹(Q) for the quotient map π : G → G/N and the order-d subgroup Q ≤ G/N. Then N ≤ L (kernel lands in the preimage), and a card computation via card_mul_index, index_eq_card, and index_comap_of_surjective gives |L| = |N|·d. Viewing N as N.subgroupOf L, its index in L is d and its order is |N|, so gcd(|N.subgroupOf L|, (N.subgroupOf L).index) = gcd(|N|, d) = 1. Schur–Zassenhaus (Subgroup.exists_right_complement'_of_coprime) applied inside ↥L yields a complement KL of order d; pushing KL forward along L.subtype gives the required subgroup of G. The construction mirrors the internal step1 recursion of Mathlib's own Schur–Zassenhaus proof."
   },
+  "overview": {
+    "historicalContext": "Philip Hall's theorem (1928) is the great extension of Sylow's theorems from prime powers to arbitrary coprime divisors, valid precisely for **solvable** groups: a finite solvable group of order $n$ contains a subgroup of every order $d \\mid n$ with $\\gcd(d, n/d) = 1$ — a *Hall subgroup*. (The solvability hypothesis is essential: $A_5$, of order $60$, has no subgroup of order $15$.) The classical proof inducts on $|G|$ through a minimal normal subgroup $N$, which in a solvable group is elementary abelian, and splits into two cases according to whether the prime dividing $|N|$ also divides the target order $d$. The coprime case is handled by the **Schur–Zassenhaus theorem** — Issai Schur (1904) for abelian kernels, Hans Zassenhaus (1937) in general — which says a normal subgroup whose order is coprime to its index always has a complement. This entry isolates exactly that Schur–Zassenhaus lifting step and verifies it with zero axioms, and in doing so corrects the parent gallery entry, which had axiomatized Hall's theorem citing a (false) claim that Schur–Zassenhaus was absent from Mathlib 4.26.",
+    "problemStatement": "Formalize, with no axioms, the inductive lifting step of Hall's theorem: given a finite group $G$, a normal subgroup $N \\trianglelefteq G$, and a subgroup $Q \\le G/N$ of order $d$ with $\\gcd(|N|, d) = 1$, produce a subgroup $K \\le G$ of order $d$ (lying inside the preimage $\\pi^{-1}(Q)$). This is the precise mechanism the parent entry `lagrange-theorem-oq-01-oq-03` axiomatized as `hall_solvable`; the open question is which parts of a fully axiom-free Hall's theorem are already reachable in Mathlib 4.26 and which genuinely are not.",
+    "proofStrategy": "Set $L = \\pi^{-1}(Q)$ for the quotient map $\\pi : G \\to G/N$. The kernel $N$ lands in every preimage, so $N \\le L$; surjectivity of $\\pi$ gives $[G:L] = [G/N : Q]$ via `index_comap_of_surjective`, and the multiplicativity identity `card_mul_index` then forces $|L| = |N| \\cdot d$. Transporting $N$ to $N.\\mathrm{subgroupOf}\\,L$ preserves cardinality ($|N|$) and yields index $d$ inside $L$, so $\\gcd\\bigl(|N.\\mathrm{subgroupOf}\\,L|, [L : N.\\mathrm{subgroupOf}\\,L]\\bigr) = \\gcd(|N|, d) = 1$. Schur–Zassenhaus (`Subgroup.exists_right_complement'_of_coprime`) applied **inside** $\\uparrow L$ produces a complement $K_L$, whose order is $|L|/|N| = d$; pushing it forward along `L.subtype` gives the required order-$d$ subgroup of $G$. The construction mirrors the `step1` recursion inside Mathlib's own Schur–Zassenhaus development.",
+    "keyInsights": [
+      "**The lift is Schur–Zassenhaus relativized to a preimage.** Rather than complementing $N$ in all of $G$, one complements the *relativized* copy $N.\\mathrm{subgroupOf}\\,L$ inside the preimage $L = \\pi^{-1}(Q)$. The complement automatically has order $|L|/|N| = d$, which is exactly the Hall subgroup being lifted.",
+      "**The whole step is bookkeeping on indices and orders.** Every nontrivial fact reduces to the single multiplicative identity $|H| \\cdot [G:H] = |G|$ (`card_mul_index`) applied to $N$, $Q$, $L$, and $N.\\mathrm{subgroupOf}\\,L$; coprimality is then inherited verbatim from $\\gcd(|N|,d)=1$.",
+      "**The coprime branch is the *easy* half of Hall's induction.** Because Schur–Zassenhaus is fully available in Mathlib, this branch needs no new theory. The genuine obstruction to a 0-axiom Hall's theorem is the other branch ($p \\mid d$), which requires minimal-normal-subgroup structure (elementary-abelianness) that Mathlib still lacks.",
+      "**A documentation correction is part of the mathematical content.** The parent entry axiomatized Hall's theorem on the false premise that Schur–Zassenhaus was missing from Mathlib 4.26; `schur_zassenhaus_available` exhibits `Subgroup.exists_right_complement'_of_coprime` directly, turning a believed axiom into a proved lemma.",
+      "**Solvability enters only through the missing branch.** Nothing in this lifting step uses solvability — it holds for any finite $G$, normal $N$, and coprime $d$. Solvability is what guarantees a minimal normal subgroup is elementary abelian, which is needed only to start and to close the $p \\mid d$ branch."
+    ]
+  },
+  "sections": [
+    {
+      "id": "schur-zassenhaus-available",
+      "title": "Schur–Zassenhaus Is Available in Mathlib",
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "schur_zassenhaus_available restates Mathlib's Subgroup.exists_right_complement'_of_coprime: a normal subgroup whose order is coprime to its index has a complement. This documents — against the parent entry's claim — that Schur–Zassenhaus needs no axiom.",
+      "mathContext": "$\\gcd(|N|, [G:N]) = 1 \\implies \\exists K,\\ N.\\mathrm{IsComplement'}\\,K.$"
+    },
+    {
+      "id": "lifting-step-subgroup",
+      "title": "The Lifting Step (Subgroup Form)",
+      "startLine": 85,
+      "endLine": 143,
+      "summary": "hall_lift_of_coprime_subgroup: with N ⊴ G normal and Q ≤ G/N of order d coprime to |N|, the preimage L = π⁻¹(Q) contains a subgroup of order d. Proven by computing |L| = |N|·d, relativizing N to N.subgroupOf L (index d), applying Schur–Zassenhaus inside ↥L, and pushing the complement forward along L.subtype.",
+      "mathContext": "$L = \\pi^{-1}(Q),\\quad |L| = |N|\\cdot d,\\quad [L : N.\\mathrm{subgroupOf}\\,L] = d.$"
+    },
+    {
+      "id": "lifting-step-existence",
+      "title": "The Lifting Step (Existence Form)",
+      "startLine": 145,
+      "endLine": 154,
+      "summary": "hall_lift_of_coprime: the clean existence statement — if N ⊴ G is normal with |N| coprime to d and G/N has a subgroup of order d, then so does G. Obtained by forgetting the containment in the subgroup form.",
+      "mathContext": "$N \\trianglelefteq G,\\ \\gcd(|N|,d)=1,\\ (\\exists Q \\le G/N,\\ |Q|=d) \\implies \\exists K \\le G,\\ |K| = d.$"
+    },
+    {
+      "id": "sanity-specialization",
+      "title": "Sanity Specialization: Trivial Kernel",
+      "startLine": 156,
+      "endLine": 168,
+      "summary": "hall_lift_trivial_coprime: the degenerate case N = ⊥. Since gcd(1, d) = 1 always holds, a subgroup of order d in G/⊥ ≅ G lifts to one in G — confirming the lifting step specializes correctly.",
+      "mathContext": "$N = \\bot:\\ \\gcd(1, d) = 1$, so the lift is essentially the identity $G/\\bot \\cong G$."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/LagrangeTheoremOQ01OQ03OQ01.lean",
     "imports": [
