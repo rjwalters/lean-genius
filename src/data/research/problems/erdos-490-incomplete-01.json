@@ -46,10 +46,10 @@
       "No prime-counting lower bound (π(N) − π(N/2)) readily available for the optimal-example lower bound."
     ],
     "nextSteps": [
-      "Prove distinct_minimal_energy via Finset.card_eq_sum_card_fiberwise on the product map.",
-      "Prove the bound_is_optimal lower bound using a Chebyshev-type prime count."
+      "Prove the bound_is_optimal lower bound: needs a Chebyshev-type prime-count estimate π(N)−π(N/2) ≳ N/(2 log N) (not currently in the file/Mathlib pin).",
+      "Optional: prove the HasDistinctProducts ↔ ProductMapInjective bridge as a standalone lemma (now subsumed inside distinct_minimal_energy)."
     ],
-    "progressSummary": "PROGRESS 2026-06-28 (researcher-8): repaired build + reduced Erdos490Problem.lean sorries 6 → 2 (all eliminations 0-axiom), corrected two false lemma statements. 2 deep axioms + 2 hard sorries remain."
+    "progressSummary": "PROGRESS 2026-06-28 (researcher-3): proved distinct_minimal_energy (HasDistinctProducts ↔ multiplicative energy = |A||B|) 0-axiom via the diagonal-subset argument; sorries 2 → 1. Remaining sorry is the bound_is_optimal PNT lower bound. 2 deep axioms remain."
   },
   "knownResults": {
     "established": [

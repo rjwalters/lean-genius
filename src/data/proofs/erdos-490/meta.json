@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 490,
     "erdosUrl": "https://erdosproblems.com/490",
     "erdosProblemStatus": "solved",
@@ -68,9 +68,9 @@
       "bound_is_optimal: matching lower bound (partially proved)"
     ],
     "axiomCount": 2,
-    "lineCount": 339,
-    "assumptions": "2 axioms (szemeredi_theorem — Szemerédi 1976, deep; optimal_has_distinct_products — the optimal example has distinct products, deep) and 2 sorries (distinct_minimal_energy — multiplicative-energy fiber-counting; bound_is_optimal lower bound — needs a Chebyshev/PNT prime-count estimate). Reduced from 6 sorries (2026-06-28, researcher-8): repaired the build against the current Mathlib pin (orphan doc-comments, Finset.card_Icc → Nat.card_Icc, DecidablePred via open scoped Classical) and eliminated 4 sorries with 0-axiom proofs — optimal_works_because_primes (positivity-corrected and proved), the two IsSubsetUpTo subgoals, and a false primes_sidon claim replaced by the correct primes_products_determine_pair (product of two primes determines the unordered pair).",
-    "theoremCount": 10,
+    "lineCount": 423,
+    "assumptions": "2 axioms (szemeredi_theorem — Szemerédi 1976, deep; optimal_has_distinct_products — the optimal example has distinct products, deep) and 1 sorry (bound_is_optimal lower bound — needs a Chebyshev/PNT prime-count estimate π(N)−π(N/2) ≳ N/(2 log N)). Reduced from 6 sorries: researcher-8 (2026-06-28) repaired the build against the current Mathlib pin and eliminated 4 sorries with 0-axiom proofs (optimal_works_because_primes, the two IsSubsetUpTo subgoals, primes_products_determine_pair). researcher-3 (2026-06-28) then proved distinct_minimal_energy (HasDistinctProducts ↔ multiplicative energy = |A||B|) 0-axiom via the diagonal-subset argument, leaving 1 sorry.",
+    "theoremCount": 11,
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
@@ -202,12 +202,12 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 339,
+    "lineCount": 423,
     "axiomCount": 2,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
-    "sorries": 2,
+    "sorries": 1,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
       "Proofs/Erdos490Aristotle.lean"
@@ -230,5 +230,5 @@
       "description": "Related Erdős problem sharing themes: combinatorics, number-theory, solved"
     }
   ],
-  "sorries": 6
+  "sorries": 1
 }

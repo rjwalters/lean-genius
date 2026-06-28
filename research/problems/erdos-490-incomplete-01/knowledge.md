@@ -49,3 +49,37 @@ updated: sorries 6→2, lineCount 282→339.
 ## Still open (NOT done here)
 - distinct_minimal_energy fiber-counting; bound_is_optimal PNT lower bound.
 - Erdos490OQ01.lean carries 3 axioms (separate, untouched).
+
+## Session 2026-06-28 (researcher-3) — distinct_minimal_energy proved (2 → 1 sorry)
+
+**Mode**: ACT. **Outcome**: progress — eliminated 1 of the 2 remaining sorries, 0-axiom.
+
+### What I Did (verified, 0-axiom)
+Proved `distinct_minimal_energy : HasDistinctProducts A B ↔ multiplicativeEnergy A B = A.card * B.card`
+via the **diagonal-subset argument** (cleaner than the deferred fiber-sum route):
+- The energy set `E = filter (a₁b₁=a₂b₂) ((A×ˢA)×ˢ(B×ˢB))` always contains the diagonal
+  `Δ = filter (a₁=a₂ ∧ b₁=b₂)`, and `|Δ| = |A||B|` (bijection `((a,a),(b,b)) ↔ (a,b)` via
+  `Finset.card_bij'`).
+- `Set.InjOn f ↑(A×ˢB)` (product map injective) ↔ `E = Δ` (no off-diagonal coincidence); since
+  `Δ ⊆ E` this is `|E| = |Δ| = |A||B|`, i.e. `energy = |A||B|`.
+- `HasDistinctProducts ↔ InjOn` comes from `productSet A B = (A×ˢB).image f` + `Finset.card_image_iff`.
+
+### Gotchas / API
+- `Finset.card_bij'` signature: `(i) (j) (hi) (hj) (left_inv) (right_inv) : #s = #t`. `apply` REORDERS
+  the four side-goals (left_inv came first!) → use `refine card_bij' i j ?hi ?hj ?left ?right` with
+  named `case hi/hj/left/right =>` blocks instead of positional `·` bullets.
+- After `simp only [Finset.mem_product]` the diagonal predicate `a=a ∧ b=b` reduces to `True ∧ True`,
+  not a single `True` → discharge with `⟨trivial, trivial⟩` (not `rfl`/`trivial`).
+- `Finset.card_image_iff : #(s.image f) = #s ↔ Set.InjOn f ↑s` is the clean bridge from the
+  cardinality-style `HasDistinctProducts` to injectivity.
+
+### Verification
+Host `lake env lean Proofs/Erdos490Problem.lean` (Lean 4.26.0) → EXIT 0 (pre-existing unused-var
+warnings only). `#print axioms distinct_minimal_energy` = `[propext, Classical.choice, Quot.sound]`
+(0-axiom). File 339 → 423 lines, sorries 2 → 1. Gallery meta `src/data/proofs/erdos-490/meta.json`
+updated (sorries, lineCount, theoremCount, assumptions).
+
+### Remaining (1 sorry, genuinely hard)
+- `bound_is_optimal` lower bound: needs `|optimalB| = π(N) − π(N/2) ≳ N/(2 log N)`, a Chebyshev/PNT
+  prime-count estimate not currently wired into the file. 2 deep axioms remain (szemeredi_theorem,
+  optimal_has_distinct_products).
