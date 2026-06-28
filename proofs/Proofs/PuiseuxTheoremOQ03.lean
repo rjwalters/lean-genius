@@ -1030,4 +1030,52 @@ theorem ysqMinusX_newtonPolygon :
     (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
     (by intro q hq hne; fin_cases hq <;> simp_all)
 
+/-! ### The third invariant on the concrete hull: valuation of the root product
+
+The capstone `exists_lowerHull_newtonPolygon` bundles the *valuation* half (sorted edge
+slopes) and the *multiplicity* half (positive widths summing to the index span) on the
+recursion-built hull.  It omits the third Newton-polygon bookkeeping identity — the
+slope-weighted-by-width drop `Σ (valuationᵢ · multiplicityᵢ) = v(constant) − v(leading)`
+(`neg_sum_slope_mul_width`) — which until now lived only on an *abstract* chain
+hypothesis, never on the chain the algorithm actually walks.  The corollary below lands
+it on the concrete hull, so all three combinatorial invariants of the Newton polygon now
+hold of the same object. -/
+
+/-- **Valuation of the root product, on the concrete recursion-built hull.**  For a
+distinct-index support with strictly-leftmost vertex `p`, the hull chain produced by
+`exists_lowerHull` satisfies the third Newton-polygon invariant: the sum of root
+valuations counted with multiplicity equals the vertical drop between the leftmost and
+rightmost vertices, `−Σ (valuationᵢ · multiplicityᵢ) = p.2 − w.2 = v(constant) −
+v(leading)`.  Combined with `exists_lowerHull_newtonPolygon` (sorted slopes + total
+multiplicity) this puts *all three* combinatorial Newton-polygon invariants on one chain. -/
+theorem exists_lowerHull_valuationProduct {pts : List SupportPoint} (p : SupportPoint)
+    (hp : p ∈ pts)
+    (hdist : ∀ a ∈ pts, ∀ b ∈ pts, a.1 = b.1 → a = b)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge pts) (p :: vs) ∧
+      (p :: vs).getLast? = some w ∧ w ∈ pts ∧ (∀ r ∈ pts, r.1 ≤ w.1) ∧
+      -(List.zipWith (· * ·) (edgeSlopes (p :: vs)) (edgeWidths (p :: vs))).sum
+        = p.2 - w.2 := by
+  obtain ⟨vs, w, hchain, hlast, hw, hwmax⟩ := exists_lowerHull p hp hdist hleft
+  have hgl : (p :: vs).getLast (by simp) = w := by
+    obtain ⟨_, hwgl⟩ := List.mem_getLast?_eq_getLast hlast
+    exact hwgl.symm
+  refine ⟨vs, w, hchain, hlast, hw, hwmax, ?_⟩
+  rw [neg_sum_slope_mul_width hchain, hgl]
+
+/-- `Y² − x`: the valuation of the root product read straight off the hull endpoints.
+`−Σ (valuationᵢ · multiplicityᵢ) = 1 − 0 = 1` — the constant coefficient `(0,1)` sits one
+unit above the leading coefficient `(2,0)`, so the single root has valuation `½` with
+multiplicity `2`, total `1`. -/
+theorem ysqMinusX_valuationProduct :
+    ∃ (vs : List SupportPoint) (w : SupportPoint),
+      List.IsChain (IsLowerEdge YsqMinusX) ((0, 1) :: vs) ∧
+      ((0, 1) :: vs).getLast? = some w ∧ w ∈ YsqMinusX ∧ (∀ r ∈ YsqMinusX, r.1 ≤ w.1) ∧
+      -(List.zipWith (· * ·) (edgeSlopes ((0, 1) :: vs)) (edgeWidths ((0, 1) :: vs))).sum
+        = (1 : ℚ) - w.2 :=
+  exists_lowerHull_valuationProduct (0, 1) (by simp [YsqMinusX])
+    (by intro a ha b hb hab; fin_cases ha <;> fin_cases hb <;> simp_all)
+    (by intro q hq hne; fin_cases hq <;> simp_all)
+
 end PuiseuxTheoremOQ03

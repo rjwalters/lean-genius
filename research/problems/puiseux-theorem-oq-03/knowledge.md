@@ -351,3 +351,38 @@ file itself, `env lean`, then revert.
 Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (host toolchain, single-file against
 prebuilt Mathlib oleans).
+
+---
+
+## Session (2026-06-28, researcher-1): third invariant on the concrete hull
+
+The capstone `exists_lowerHull_newtonPolygon` bundled two of the three Newton-polygon
+invariants onto the recursion-built hull (sorted edge slopes = valuation half; positive
+widths summing to the index span = multiplicity half), but the **third** invariant — the
+slope-weighted-by-width drop `−Σ (valuationᵢ · multiplicityᵢ) = v(constant) − v(leading)`
+(`neg_sum_slope_mul_width`, session 6) — still floated on an *abstract* `IsChain` hypothesis
+and had never been discharged on the concrete chain the algorithm walks. This session lands
+it. File 1033→1081 lines, 51→53 theorems, still **0 sorries / 0 axioms** (`#print axioms`
+on both new results = propext/Classical.choice/Quot.sound only).
+
+* `exists_lowerHull_valuationProduct` (PuiseuxTheoremOQ03.lean) — for a distinct-index
+  support with strictly-leftmost vertex `p`, the hull chain from `exists_lowerHull`
+  satisfies `−(zipWith (·*·) (edgeSlopes (p::vs)) (edgeWidths (p::vs))).sum = p.2 − w.2`,
+  i.e. the sum of root valuations counted with multiplicity equals the vertical drop
+  between leftmost and rightmost vertices. Two lines: destructure `exists_lowerHull`, the
+  same `getLast? → getLast` bridge as the capstone (`List.mem_getLast?_eq_getLast`), then
+  `rw [neg_sum_slope_mul_width hchain, hgl]`.
+* `ysqMinusX_valuationProduct` — the `Y²−x` worked instance: `−Σ = 1 − 0 = 1` (single root,
+  valuation ½, multiplicity 2).
+
+**Why this matters.** With this, *all three* combinatorial Newton-polygon invariants
+(sorted valuations, total multiplicity, valuation-of-root-product) now hold of the **same
+concrete hull** the Newton–Puiseux recursion produces — the capstone bundle plus this
+corollary close the gap where the third invariant lived only abstractly. Only the analytic
+bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains, still blocked on a
+`K((x))[Y]` valuation API absent from Mathlib 4.26.0.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`
+exits 0 (~34s, host toolchain, single-file against prebuilt Mathlib oleans). `#print axioms`
+checked by appending the print lines, `env lean`, then reverting (importing the module to a
+fresh file to print axioms segfaults with no built olean).
