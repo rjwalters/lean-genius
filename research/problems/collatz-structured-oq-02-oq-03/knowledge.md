@@ -419,3 +419,60 @@ alone for a power-of-two modulus `2^b`.
   (one inductive statement covering all determined classes via the `3^a < 2^b` criterion),
   then Terras/Korec natural-density-1 stopping time. Tao axiom stays BLOCKED. Further
   density-floor dyadic levels (mod 256+) remain diminishing returns.
+
+## Session 2026-06-28 (researcher-3) — ACT: uniform Terras drop criterion `3^a < 2^b`
+
+**Mode**: BUILD (Docker down; offline `LAKE_UNSAFE=1 ./bin/lake env lean`, REAL_EXIT 0,
+clean). **Outcome**: progress — the long-documented "uniform drop theorem" lever, axiom-free.
+
+### What I Did
+Added `terras_attainsBelow`: the residue-drop criterion stated as the **textbook
+inequality `3^a < 2^b`** instead of the opaque `(affOrbit v (M,r)).1 < M`. For a
+power-of-two modulus `2^b` and a valid window `v` with `v.count false = b` halvings and
+`a = v.count true` triplings, the realized leading coefficient is *forced* to `3^a` by
+the Terras law (`leadCoeff_two_pow` ∘ `affOrbit_fst`), so the leading-coefficient drop
+check collapses to `3^a < 2^b` — "enough halvings to overcome the triplings." Proof is
+4 lines: `refine parityVector_attainsBelow …; rw [affOrbit_fst, ← hcount,
+leadCoeff_two_pow, hcount]; exact hlt`. Added a worked `n ≡ 3 (mod 16)` example whose
+only genuine arithmetic content is `3^2 = 9 < 16 = 2^4` (validity / halving count /
+constant drop are `decide`). `#print axioms terras_attainsBelow` → `[propext,
+Classical.choice, Quot.sound]` only (no `tao_2019`, no `Lean.ofReduceBool`).
+
+### Key Findings (computed, Python, mirroring the Lean defs)
+- **The auto engine `autoDropCert` is genuinely WEAKER than the hand-picked density
+  floor, not stronger.** Counts of auto-certified residues mod `2^b`: b=3→3/8, b=4→8/16,
+  b=5→24/32 (0.75), b=6→39/64 (0.61), b=7→**97/128** (0.758), b=8→211/256 (0.824). It is
+  **not monotone** in b and at b=7 gives 97/128 < the hand-picked **115/128**. The 18
+  missing residues (0,1,9,41,54,55,62,78,82,83,94,97,105,107,121,124,125,126 mod 128) are
+  exactly the ones whose drop needs a *non-residue-determined* argument: even residues that
+  drop in one step (`even_attainsBelow`, captured by the hand floor but NOT by the
+  "wait for the window to close with c odd" auto loop, since `c = 2^b` only becomes odd
+  after all b halvings), plus boundary classes failing `d_k < r` (e.g. r=0,1). So
+  `autoDropCert` certifies precisely the *odd* residue-determined drop classes; it does
+  not subsume evens. Wiring the auto engine into the density floor would *lower* the
+  proven floor — correctly NOT done.
+- This sharpens the honest status: the auto engine's value is turnkey certification of
+  individual residue-determined (odd) classes, not a better density floor.
+
+### Honest status
+- This is the **uniform drop theorem** (prior sessions' documented next lever): the drop
+  criterion is now the classical `3^a < 2^b`, derived once from the parity counts rather
+  than recomputed per residue. It is a *restatement/uniformization* of existing
+  infrastructure (`leadCoeff_two_pow`, `parityVector_attainsBelow`), not new Collatz
+  mathematics: the density floor is unchanged (115/128) and `tao_2019` stays BLOCKED.
+  Value: the load-bearing drop condition is now human-legible number theory, and the
+  Terras `3^a/2^b` law is connected directly to `AttainsBelow`.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+1 theorem 57→58, +2 examples, 1667→1698
+  lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced 1568/54/12 →
+  1698/58/13 — meta was stale vs origin/main; + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts synced)
+
+### Next Steps
+- The genuinely remaining lever is unchanged and hard: a single inductive statement that
+  COUNTS how many residues mod `2^b` are determined-drop classes and shows that count/2^b
+  → 1 (Terras natural-density-1 stopping time). `tao_2019` stays BLOCKED. Dyadic density
+  levels (mod 256+) remain diminishing returns AND, per this session, the auto engine does
+  not even recover the hand floor, so they still need the even-class argument by hand.

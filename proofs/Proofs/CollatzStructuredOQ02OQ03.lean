@@ -1272,6 +1272,25 @@ theorem parityVector_attainsBelow {M r : ℕ} (v : List Bool)
     {n : ℕ} (hn : n % M = r) : AttainsBelow n :=
   affine_residue_attainsBelow hk hc hd (fun m => affOrbit_realize hval m) hn
 
+/-- **Terras drop criterion as the textbook inequality `3^a < 2^b`.**  For a
+power-of-two modulus `2^b` whose residue-determined window `v` performs exactly its
+`b` halvings (`v.count false = b`, with `a := v.count true` triplings), the realized
+leading coefficient is *automatically* `3^a` (the Terras law `leadCoeff_two_pow`), so
+the drop condition `c_k < M` collapses to the classical Collatz inequality
+`3^a < 2^b` — "enough halvings to overcome the triplings."  This is the uniform drop
+theorem: a residue class drops below itself as soon as one exhibits a valid window
+with `a` odd steps, `b` even steps, `3^a < 2^b`, and a constant that lands below `r`.
+No `affOrbit.1` computation is needed — the leading coefficient is forced by the
+parity counts alone. -/
+theorem terras_attainsBelow {b r : ℕ} (v : List Bool) (hk : 0 < v.length)
+    (hcount : v.count false = b) (hval : AffValid v (2 ^ b) r)
+    (hlt : 3 ^ v.count true < 2 ^ b)
+    (hd : (affOrbit v (2 ^ b, r)).2 < r)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n := by
+  refine parityVector_attainsBelow v hk hval ?_ hd hn
+  rw [affOrbit_fst, ← hcount, leadCoeff_two_pow, hcount]
+  exact hlt
+
 /-! ### Decidable certificates: the engine as a one-shot `by decide`
 
 `AffValid` is a `Prop`-valued inductive, so supplying a certificate still means writing
@@ -1349,6 +1368,18 @@ manual trajectory chase and no hand-built `AffValid` term.  The whole drop-certi
 (validity, `9 < 16`, `2 < 3`, non-emptiness) collapses to one decidable check. -/
 example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
   dropCert_attainsBelow [true, false, true, false, false, false] (by decide) h
+
+/-- Worked instance of the uniform Terras criterion `terras_attainsBelow`: `n ≡ 3
+(mod 16)` drops because its six-step window has `a = 2` triplings and `b = 4`
+halvings with `3^2 = 9 < 16 = 2^4`.  The only genuine arithmetic content is that
+single inequality `3^a < 2^b`; the validity, halving count `b`, and constant drop are
+kernel computations.  This is the textbook "enough halvings beat the triplings"
+made into a one-line drop certificate. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  terras_attainsBelow (b := 4) [true, false, true, false, false, false]
+    (by decide) (by decide) (affValidB_sound (by decide))
+    (by decide) (by decide)
+    (show n % 2 ^ 4 = 3 by rw [show (2 : ℕ) ^ 4 = 16 from by norm_num]; exact h)
 
 /-- The one-shot certificate scales to longer windows with no extra proof effort: the
 `n ≡ 11 (mod 32)` drop (eight steps, parity vector `[odd,even,odd,even,even,odd,even,even]`,
