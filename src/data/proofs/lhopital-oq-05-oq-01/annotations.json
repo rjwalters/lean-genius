@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup",
+    "proofId": "lhopital-oq-05-oq-01",
+    "range": { "startLine": 3, "endLine": 31 },
+    "type": "context",
+    "title": "Why the Ratio Tends to 1/2: A Second-Order 0/0",
+    "content": "Both numerator and denominator of (1 − cos x)/x² vanish to second order at 0: cos x = 1 − x²/2 + O(x⁴), so 1 − cos x = x²/2 + O(x⁴), and dividing by x² leaves 1/2 + O(x²). The classical evaluation applies L'Hôpital twice (differentiate 1 − cos x → sin x → cos x against x² → 2x → 2, giving cos 0 / 2 = 1/2) or rewrites 1 − cos x = 2 sin²(x/2) to reduce to (sin x/x)². This file deliberately avoids both: it reuses Mathlib's already-proved quadratic Taylor bound Real.cos_bound, so no derivative is ever computed. The header frames the entry as the even-order companion of the cubic sine limit (x − sin x)/x³ → 1/6 (lhopital-oq-05): same skeleton, sin_bound swapped for cos_bound, one fewer power of x divided out. The file imports only Mathlib and is self-contained.",
+    "mathContext": "$1-\\cos x = \\tfrac{x^2}{2} - \\tfrac{x^4}{24} + \\cdots \\;\\Rightarrow\\; \\dfrac{1-\\cos x}{x^2} = \\tfrac12 - \\tfrac{x^2}{24} + \\cdots \\to \\tfrac12.$",
+    "significance": "context",
+    "relatedConcepts": ["indeterminate forms", "L'Hôpital's rule", "half-angle identity", "Maclaurin series of cosine"],
+    "prerequisites": ["limits", "Taylor/Maclaurin expansion"]
+  },
+  {
     "id": "ann-deviation-bound",
     "proofId": "lhopital-oq-05-oq-01",
     "range": { "startLine": 38, "endLine": 52 },
@@ -22,6 +34,18 @@
     "significance": "key",
     "relatedConcepts": ["squeeze theorem", "punctured neighbourhood filter", "eventual bounds", "continuity"],
     "prerequisites": ["squeeze/sandwich theorem", "filters and neighbourhoods"]
+  },
+  {
+    "id": "ann-eventual-filter",
+    "proofId": "lhopital-oq-05-oq-01",
+    "range": { "startLine": 60, "endLine": 67 },
+    "type": "technique",
+    "title": "Turning |x| ≤ 1 into an Eventual Hypothesis",
+    "content": "abs_sub_le needs |x| ≤ 1, but the squeeze only requires the bound to hold *eventually* on 𝓝[≠] 0. This block discharges that. The closed unit ball is a neighbourhood of 0 (Metric.closedBall_mem_nhds 0 one_pos), and nhdsWithin_le_nhds pushes it into the punctured filter 𝓝[≠] 0, so it is a member there. filter_upwards [self_mem_nhdsWithin, hmem] then supplies, for the eventual point x, both x ≠ 0 (from the punctured filter) and |x| ≤ 1 (from membership in the ball, after unfolding Real.dist_eq and sub_zero). After rewriting the norm to an absolute value (Real.norm_eq_abs), the goal is exactly abs_sub_le x hx hxball. This filter-upwards-over-two-neighbourhood-facts pattern is the idiomatic Mathlib way to feed a 'valid near 0' pointwise bound into an eventual squeeze.",
+    "mathContext": "$\\{x : |x|\\le 1\\} \\in \\mathcal N_{\\neq}(0)$ and $\\{x\\neq 0\\}\\in\\mathcal N_{\\neq}(0)$, so $\\big|\\tfrac{1-\\cos x}{x^2}-\\tfrac12\\big|\\le \\tfrac{5}{96}|x|^2$ holds eventually.",
+    "significance": "technical",
+    "relatedConcepts": ["filter_upwards", "nhdsWithin", "closed ball as neighbourhood", "eventually true"],
+    "prerequisites": ["filters", "neighbourhood filters", "metric spaces"]
   },
   {
     "id": "ann-taylor-coefficient",
