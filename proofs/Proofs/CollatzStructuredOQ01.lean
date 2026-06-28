@@ -161,6 +161,35 @@ theorem indegree_eq_one {m : ℕ} (hm : m % 6 ≠ 4) :
   rw [preimage_collatz_eq_singleton hm]
   exact Set.ncard_singleton _
 
+/-- **Every in-degree set is finite.** The predecessor set of any `m` is either a
+singleton (`{2m}`) or a pair (`{2m, (m-1)/3}`); in both cases finite.  This is the
+prerequisite for counting nodes of the backward tree (an `ncard` argument needs the
+sets to be genuinely finite, not merely `ncard`-positive). -/
+theorem indegree_finite (m : ℕ) : (collatz ⁻¹' {m}).Finite := by
+  by_cases hm : m % 6 = 4
+  · rw [preimage_collatz_eq_pair hm]; exact Set.Finite.insert _ (Set.finite_singleton _)
+  · rw [preimage_collatz_eq_singleton hm]; exact Set.finite_singleton _
+
+/-- **Unconditional in-degree dichotomy.** Regardless of the residue of `m`, every
+Collatz vertex has in-degree exactly `1` or exactly `2` — the even predecessor `2m`
+always exists, and the second (odd) predecessor exists precisely when `m ≡ 4 (mod 6)`.
+This is the uniform fact underlying the geometric (`≤ 2^d`) growth of the backward
+tree; the residue-split lemmas `indegree_eq_one`/`indegree_eq_two` refine it. -/
+theorem indegree_eq_one_or_two (m : ℕ) :
+    (collatz ⁻¹' {m}).ncard = 1 ∨ (collatz ⁻¹' {m}).ncard = 2 := by
+  by_cases hm : m % 6 = 4
+  · exact Or.inr (indegree_eq_two hm)
+  · exact Or.inl (indegree_eq_one hm)
+
+/-- **Uniform in-degree upper bound:** the Collatz in-degree never exceeds `2`. -/
+theorem indegree_le_two (m : ℕ) : (collatz ⁻¹' {m}).ncard ≤ 2 := by
+  rcases indegree_eq_one_or_two m with h | h <;> omega
+
+/-- **In-degree is positive:** `2 * m` is always a predecessor of `m`, so the
+predecessor set is nonempty. -/
+theorem indegree_pos (m : ℕ) : 1 ≤ (collatz ⁻¹' {m}).ncard := by
+  rcases indegree_eq_one_or_two m with h | h <;> omega
+
 /-!
 ## Part II¾: Density of Branch Vertices
 
