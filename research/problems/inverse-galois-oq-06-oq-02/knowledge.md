@@ -96,3 +96,43 @@ half so the only remaining gap is the Frobenius ↔ factorization correspondence
   Use the `Irreducible.isRelPrime_iff_not_dvd` / `dvd_iff_isRoot` route instead.
 - `squarefree_mul_iff` is phrased with `IsRelPrime`, not `IsCoprime` — calling
   `IsCoprime.squarefree_mul_iff` fails; convert first.
+
+---
+
+## Gap characterization (iter 5 / GapChar file)
+
+`InverseGaloisOQ06OQ02GapChar.lean` records that the lone open axiom of the A₅
+entry has **no slack**: given the constraints `InverseGaloisA5` already proves
+(`5 ∣ |q.Gal|`, `|q.Gal| ∣ 60`, `≠ 15`, `≠ 30`),
+
+  `three_dvd_card_iff_card_eq_60 : 3 ∣ |q.Gal| ↔ |q.Gal| = 60`.
+
+So `three_dvd_gal_card` is *exactly* as strong as the A₅-realizability target
+`q_gal_card`, neither weaker nor stronger. Forward direction
+`card_eq_60_of_three_dvd` is the `q_gal_card` divisor argument
+(`Nat.Coprime.mul_dvd_of_dvd_of_dvd` to get `15 ∣ |Gal|`, then
+`gal_card_dvd_60_proved` bounds the cofactor `k ∣ 4`, `interval_cases k`) with
+the axiom replaced by an explicit hypothesis — so it is **independent of
+`three_dvd_gal_card`** (verified by `#print axioms`).
+
+Capstone `card_eq_60_of_exists_galAction_threeCycle` chains the inlined
+deterministic-half bridge (injective `galActionHom` ⟹ `orderOf σ = 3` ⟹
+`orderOf_dvd_card`) into the forward direction: a **single** Galois automorphism
+acting on the five roots as a 3-cycle (the Frobenius at 7) forces the full
+`|q.Gal| = 60`. This is the sharpest statement of the residual mod-7 input.
+
+### HONESTY CORRECTION (important)
+
+These GapChar theorems are **NOT** `0-axiom`/`propext-Classical-Quot only`.
+`#print axioms` shows they inherit **`Lean.ofReduceBool` + `Lean.trustCompiler`**
+from the A₅ constraint lemmas `gal_card_dvd_60_proved`, `gal_card_ne_15`,
+`gal_card_ne_30`, all of which are discharged by `native_decide`. The earlier
+sibling files (`Cycle`, `GalBridge`) avoided this only because they never pull in
+those constraint lemmas — they touch just `galActionHom` + `orderOf_dvd_card`.
+The honest claim is therefore narrower: GapChar removes dependence on the **open**
+axiom `three_dvd_gal_card`, replacing it with a hypothesis, while carrying the
+same `native_decide` trust base as the underlying A₅ entry. Do not call it
+axiom-free.
+
+(`five_dvd_gal_card` IS clean — propext/Classical.choice/Quot.sound only. The
+`native_decide` lives in the divisibility-bound and order-exclusion lemmas.)
