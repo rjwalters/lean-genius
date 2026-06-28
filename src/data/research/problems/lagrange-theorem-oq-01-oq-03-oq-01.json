@@ -1,0 +1,41 @@
+{
+  "slug": "lagrange-theorem-oq-01-oq-03-oq-01",
+  "title": "Hall's Theorem: the Schur–Zassenhaus lifting step",
+  "problemStatement": "OQ-01 of the parent Hall entry: can the full proof of Hall's theorem for solvable groups be formalized in Lean 4 without using Schur–Zassenhaus as a black box, building the minimal-normal-subgroup induction from scratch?",
+  "significance": "Hall's theorem is the strongest converse to Lagrange's theorem and characterizes solvability. The parent entry axiomatized the solvable case; this resolves which ingredient is actually missing and verifies the Schur–Zassenhaus inductive step with 0 axioms.",
+  "status": "completed",
+  "phase": "ACT",
+  "tier": "EMPTY",
+  "tractability": "partial",
+  "path": "Proofs/LagrangeTheoremOQ01OQ03OQ01.lean",
+  "started": "2026-06-28",
+  "lastUpdate": "2026-06-28",
+  "tags": ["group-theory", "hall-theorem", "schur-zassenhaus", "solvable-groups", "lagrange"],
+  "currentState": "Schur–Zassenhaus lifting step proved with 0 axioms (hall_lift_of_coprime). Parent's false 'SZ not in Mathlib' claim corrected. Remaining gap: minimal-normal-subgroup elementary-abelian structure (p|d branch).",
+  "knownResults": "Hall (1928). Schur–Zassenhaus is in Mathlib 4.26 as Subgroup.exists_right_complement'_of_coprime. Mathlib has solvable-group derived series but no minimal-normal-subgroup structure theory and no Hall's theorem for solvable groups.",
+  "knowledge": {
+    "insights": [
+      "Parent entry's axiom justification is factually wrong: Schur–Zassenhaus IS in Mathlib 4.26 (Subgroup.exists_right_complement'_of_coprime), already used by lagrange-theorem-oq-03 and sylow-theorem-oq-03.",
+      "The genuine remaining obstacle to a 0-axiom Hall's theorem is minimal-normal-subgroup machinery (existence + elementary-abelian structure in the solvable case), not Schur–Zassenhaus.",
+      "Mathlib has Hall's marriage theorem (Combinatorics) but NOT Hall's theorem for solvable groups.",
+      "The lifting step (case gcd(|N|,d)=1) reduces to Schur–Zassenhaus inside the preimage L=π⁻¹(Q), with the card bookkeeping |L|=|N|·d done via card_mul_index / index_eq_card / index_comap_of_surjective."
+    ],
+    "builtItems": [
+      "hall_lift_of_coprime (LagrangeTheoremOQ01OQ03OQ01.lean): 0-axiom Schur–Zassenhaus lifting step of Hall's theorem",
+      "hall_lift_of_coprime_subgroup: sharper form locating the lift inside π⁻¹(Q)",
+      "schur_zassenhaus_available: documents Mathlib's SZ",
+      "Correction of parent's false 'SZ not in Mathlib' claim (docstring + meta.json)"
+    ],
+    "mathlibGaps": [
+      "No existence theorem for a minimal normal subgroup of a nontrivial finite group",
+      "No theorem that a minimal normal subgroup of a finite solvable group is elementary abelian",
+      "No Hall's theorem for solvable groups"
+    ],
+    "nextSteps": [
+      "Formalize minimal-normal-subgroup existence for nontrivial finite groups",
+      "Prove minimal normal subgroup of finite solvable group is elementary abelian; close the p|d branch",
+      "Assemble full 0-axiom Hall's theorem from lifting step + abelian base case + minimal-normal structure"
+    ],
+    "progressSummary": "PROGRESS: Schur–Zassenhaus lifting step of Hall's theorem verified 0-axiom; parent false claim corrected; remaining gap pinpointed (minimal-normal-subgroup structure)."
+  }
+}
