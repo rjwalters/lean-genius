@@ -668,6 +668,71 @@ theorem pivot_ne (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
   intro h
   exact pivot_opposite_ne s a b hb (by rw [h])
 
+/-- `GridSimplex` extensionality on the three data fields (the structure carries no
+`@[ext]`; the proof fields are discharged by definitional proof irrelevance). -/
+private theorem gridSimplex_ext {s t : SpernerGrid.GridSimplex d N}
+    (hv : s.verts = t.verts) (hi : s.incDir = t.incDir) (hm : s.miss = t.miss) :
+    s = t := by
+  cases s; cases t; cases hv; cases hi; cases hm; rfl
+
+/-- **The interior pivot is an involution.**  Pivoting twice across the *same* facet
+(opposite `a.succ`, with the same consecutive step pair `a, b`) returns the original
+cell.  Two ingredients combine: the direction permutation `Equiv.swap a b` is its own
+inverse (`incDir` returns to `s.incDir`), and the second `pivotPoint` exactly undoes
+the first — in the pivoted cell `t` the roles of the two move directions are swapped
+(`t.incDir a = s.incDir b`, `t.incDir b = s.incDir a`), so the second pivot moves
+`incDir a` *up* and `incDir b` *down*, reversing the original move and restoring
+`s.verts a.succ`.  This is the geometric heart of the adjacency symmetry `adj_symm`
+for chain-interior facets: the neighbour relation built from `pivotSimplex` is
+symmetric, with each facet-flip its own reverse. -/
+theorem pivot_involutive (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    pivotSimplex (pivotSimplex s a b hb) a b hb = s := by
+  have hab : a ≠ b := pivot_ab_ne hb
+  set t := pivotSimplex s a b hb with ht
+  -- Roles of the move directions are swapped in `t`.
+  have hia : t.incDir a = s.incDir b := by
+    show (s.incDir ∘ ⇑(Equiv.swap a b)) a = s.incDir b
+    simp [Equiv.swap_apply_left]
+  have hib : t.incDir b = s.incDir a := by
+    show (s.incDir ∘ ⇑(Equiv.swap a b)) b = s.incDir a
+    simp [Equiv.swap_apply_right]
+  have hva : t.verts a.succ = pivotPoint s a b hab := by
+    show Function.update s.verts a.succ (pivotPoint s a b hab) a.succ = _
+    rw [Function.update_self]
+  have hne : s.incDir a ≠ s.incDir b := fun h => hab (s.inc_injective h)
+  have hpos : 1 ≤ (s.verts a.succ).coords (s.incDir a) := by
+    have := s.step_inc a; omega
+  -- The doubly-pivoted vertex returns to the original deleted vertex.
+  have hpt : pivotPoint t a b hab = s.verts a.succ := by
+    ext j
+    by_cases h1 : j = s.incDir a
+    · subst h1
+      have hL : (pivotPoint t a b hab).coords (s.incDir a)
+          = (t.verts a.succ).coords (t.incDir b) + 1 := by
+        rw [← hib]; exact pivotPoint_coords_eq_incB t a b hab
+      rw [hL, hva, hib, pivotPoint_coords_eq_incA s a b hab]
+      omega
+    · by_cases h2 : j = s.incDir b
+      · subst h2
+        have hL : (pivotPoint t a b hab).coords (s.incDir b)
+            = (t.verts a.succ).coords (t.incDir a) - 1 := by
+          rw [← hia]; exact pivotPoint_coords_eq_incA t a b hab
+        rw [hL, hva, hia, pivotPoint_coords_eq_incB s a b hab]
+        omega
+      · have hja : j ≠ t.incDir a := by rw [hia]; exact h2
+        have hjb : j ≠ t.incDir b := by rw [hib]; exact h1
+        rw [pivotPoint_coords_eq_other t a b hab j hja hjb, hva,
+          pivotPoint_coords_eq_other s a b hab j h1 h2]
+  -- Assemble the three field equalities.
+  refine gridSimplex_ext ?_ ?_ rfl
+  · show Function.update t.verts a.succ (pivotPoint t a b hab) = s.verts
+    have htv : t.verts = Function.update s.verts a.succ (pivotPoint s a b hab) := rfl
+    rw [hpt, htv, Function.update_idem, Function.update_eq_self]
+  · show (s.incDir ∘ ⇑(Equiv.swap a b)) ∘ ⇑(Equiv.swap a b) = s.incDir
+    funext k
+    simp [Equiv.swap_apply_self]
+
 /-- **The interior pivot fixes the base vertex.**  The pivot only updates the
 vertex `a.succ`, and `a.succ ≠ 0`, so the lex-base `verts 0` is untouched. -/
 theorem pivot_base_eq (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
