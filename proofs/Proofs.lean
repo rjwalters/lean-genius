@@ -3408,6 +3408,7 @@ import Proofs.InverseGaloisOQ02
 import Proofs.InverseGaloisOQ02Aristotle
 import Proofs.InverseGaloisOQ03
 import Proofs.InverseGaloisOQ06OQ01
+import Proofs.InverseGaloisOQ06OQ02
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoperimetricTheoremOQ02
