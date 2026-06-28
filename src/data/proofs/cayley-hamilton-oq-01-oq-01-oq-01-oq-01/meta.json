@@ -108,6 +108,36 @@
       "The parent/grandparent annihilator-ideal framework (vecAnnIdeal, IsCyclicVector)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: completing the cyclic-vector characterisation",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring. Recalls the parent (vecAnnIdeal / IsCyclicVector framework) and grandparent (reverse direction minpoly = charpoly ⟹ ∃ cyclic vector), states the four main results, and lays out the forward direction as a degree squeeze: deg(minpoly) ≤ n from Cayley–Hamilton, deg(minpoly) ≥ n from cyclicity."
+    },
+    {
+      "id": "forward-degree",
+      "title": "Part I — A cyclic vector forces full-degree minimal polynomial",
+      "startLine": 66,
+      "endLine": 91,
+      "summary": "minpoly_natDegree_eq_of_isCyclicVector: the degree squeeze. Upper bound deg(minpoly) ≤ n via minpoly ∣ charpoly (Cayley–Hamilton) and charpoly_natDegree_eq_dim; lower bound deg(minpoly) ≥ n because the nonzero minimal polynomial annihilates the cyclic vector, so degree < n would force minpoly = 0 (contradicting minpoly.ne_zero). le_antisymm closes equality."
+    },
+    {
+      "id": "forward-equality",
+      "title": "Part II — A cyclic vector forces minpoly = charpoly",
+      "startLine": 93,
+      "endLine": 107,
+      "summary": "minpoly_eq_charpoly_of_isCyclicVector: with deg(minpoly) = n from Part I, the two monic polynomials minpoly and charpoly satisfy minpoly ∣ charpoly and equal degree, so Polynomial.eq_of_monic_of_dvd_of_natDegree_le upgrades divisibility to equality."
+    },
+    {
+      "id": "equivalences",
+      "title": "Part III — The full equivalences",
+      "startLine": 109,
+      "endLine": 131,
+      "summary": "exists_cyclicVector_iff_minpoly_eq_charpoly and its degree form exists_cyclicVector_iff_minpoly_natDegree_eq: pair this entry's forward direction with the grandparent's reverse direction (exists_cyclicVector_of_minpoly_eq_charpoly / _of_minpoly_natDegree_eq) to close the biconditional."
+    }
+  ],
   "conclusion": {
     "summary": "A cyclic vector forces (minpoly K M).natDegree = n and hence minpoly K M = M.charpoly (forward direction), via a degree squeeze: minpoly ∣ charpoly gives deg ≤ n, and the minimal polynomial annihilating the cyclic vector gives deg ≥ n. Combined with the grandparent's reverse direction this yields the full equivalence (∃ v, IsCyclicVector M v) ↔ minpoly K M = M.charpoly (and its degree form). Fully verified, 0 axioms, 0 sorries.",
     "implications": "This completes the cyclic-vector characterisation of non-derogatory matrices: the existence of a cyclic vector is now established as exactly equivalent to minpoly = charpoly, in both directions and machine-checked. It is the single-companion-block case of the rational canonical form, and it isolates the structural content of being non-derogatory in a form (the iff) directly usable by downstream entries.",
