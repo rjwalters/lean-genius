@@ -1121,4 +1121,105 @@ theorem exists_isBh_Icc_card_of_le {h N k : ℕ} (hh : 1 ≤ h)
       < k + 2 * h * (k + 1) ^ (2 * h - 1) := add_lt_add_of_lt_of_le hj hpow
     _ ≤ N := hk
 
+/-! ### Part 10 — single-power achievability and the `N^{1/(2h-1)}` rate
+
+`exists_isBh_Icc_card_of_le` keeps the room condition as the mixed expression
+`k + 2·h·(k+1)^{2h-1}`.  For extracting the asymptotic rate it is cleaner to dominate
+that by a *single* power: since `k ≤ (k+1)^{2h-1}` (as `2h-1 ≥ 1`),
+
+  `k + 2·h·(k+1)^{2h-1} ≤ (2h+1)·(k+1)^{2h-1}`,
+
+so the hypothesis `(2h+1)·(k+1)^{2h-1} ≤ N` already guarantees a `B_h` set of size `k`.
+This single-power form inverts directly by `(2h-1)`-th roots. -/
+
+/-- **Single-power achievability.**  If `(2h+1)·(k+1)^{2h-1} ≤ N` then there is a `B_h`
+set `A ⊆ {1,…,N}` of card exactly `k`.  A clean, root-ready strengthening of
+`exists_isBh_Icc_card_of_le`: the mixed room expression is dominated by one power of
+`(k+1)`, using `k ≤ (k+1)^{2h-1}`. -/
+theorem exists_isBh_Icc_card_of_pow_le {h N k : ℕ} (hh : 1 ≤ h)
+    (hk : (2 * h + 1) * (k + 1) ^ (2 * h - 1) ≤ N) :
+    ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧ A.card = k := by
+  refine exists_isBh_Icc_card_of_le hh ?_
+  have hp : 2 * h - 1 ≠ 0 := by omega
+  have hkp : k + 1 ≤ (k + 1) ^ (2 * h - 1) := Nat.le_self_pow hp (k + 1)
+  have hk' : k ≤ (k + 1) ^ (2 * h - 1) := le_trans (Nat.le_succ k) hkp
+  calc k + 2 * h * (k + 1) ^ (2 * h - 1)
+      ≤ (k + 1) ^ (2 * h - 1) + 2 * h * (k + 1) ^ (2 * h - 1) := by omega
+    _ = (2 * h + 1) * (k + 1) ^ (2 * h - 1) := by ring
+    _ ≤ N := hk
+
+/-- **The greedy `B_h` lower bound, analytic `Ω(N^{1/(2h-1)})` form (headline).**
+There is an explicit constant `C > 0` such that for every `N` past the threshold
+`(2h+1)·4^{2h-1}`, the bounded greedy algorithm produces a `B_h` set `A ⊆ {1,…,N}` with
+`C · N^{1/(2h-1)} ≤ |A|`.  This is the sharp-exponent `B_h` analogue of #340's known
+greedy lower bound: solving the single-power room condition `(2h+1)(k+1)^{2h-1} ≤ N`
+for `k` by `(2h-1)`-th roots gives `k = Ω(N^{1/(2h-1)})`.  The constant is
+`C = 2⁻¹·(2h+1)^{-1/(2h-1)}`.
+
+This closes the last flagged gap of the `oq-05` greedy program: the combinatorial
+core (Parts 5–9) reduced the bound to the single counting inequality, and this is its
+purely real-analytic inversion (no `B_h` structure beyond `exists_isBh_Icc_card_of_pow_le`). -/
+theorem exists_isBh_rpow_lower {h : ℕ} (hh : 1 ≤ h) :
+    ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, (2 * h + 1) * 4 ^ (2 * h - 1) ≤ N →
+      ∃ A : Finset ℕ, A ⊆ Finset.Icc 1 N ∧ IsBh h A ∧
+        C * (N : ℝ) ^ (((2 * h - 1 : ℕ) : ℝ)⁻¹) ≤ (A.card : ℝ) := by
+  have hp : (2 * h - 1 : ℕ) ≠ 0 := by omega
+  have h2h1pos : (0 : ℝ) < ((2 * h + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos _
+  set e : ℝ := ((2 * h - 1 : ℕ) : ℝ)⁻¹ with hedef
+  have he0 : 0 ≤ e := by rw [hedef]; positivity
+  set D : ℝ := ((2 * h + 1 : ℕ) : ℝ) ^ e with hDdef
+  have hD0 : 0 < D := by rw [hDdef]; exact Real.rpow_pos_of_pos h2h1pos _
+  refine ⟨(1 / 2) / D, by positivity, ?_⟩
+  intro N hN
+  -- Real form of the threshold: (2h+1)·4^{2h-1} ≤ N.
+  have hNR : ((2 * h + 1 : ℕ) : ℝ) * (4 : ℝ) ^ (2 * h - 1) ≤ (N : ℝ) := by
+    exact_mod_cast hN
+  -- r = (N/(2h+1))^{1/(2h-1)}; show r ≥ 4.
+  set r : ℝ := ((N : ℝ) / ((2 * h + 1 : ℕ) : ℝ)) ^ e with hrdef
+  have hbase0 : 0 ≤ (N : ℝ) / ((2 * h + 1 : ℕ) : ℝ) := by positivity
+  have h4p_le : (4 : ℝ) ^ (2 * h - 1) ≤ (N : ℝ) / ((2 * h + 1 : ℕ) : ℝ) := by
+    rw [le_div_iff₀ h2h1pos]; linarith [hNR]
+  have hr4 : (4 : ℝ) ≤ r := by
+    have h44 : ((4 : ℝ) ^ (2 * h - 1)) ^ e = 4 := by
+      rw [hedef]; exact Real.pow_rpow_inv_natCast (by norm_num) hp
+    calc (4 : ℝ) = ((4 : ℝ) ^ (2 * h - 1)) ^ e := h44.symm
+      _ ≤ ((N : ℝ) / ((2 * h + 1 : ℕ) : ℝ)) ^ e :=
+          Real.rpow_le_rpow (by positivity) h4p_le he0
+      _ = r := rfl
+  have hrnn : 0 ≤ r := le_trans (by norm_num) hr4
+  -- m = ⌊r⌋₊ is the achievable size + 1.
+  set m : ℕ := ⌊r⌋₊ with hmdef
+  have hm_le : (m : ℝ) ≤ r := Nat.floor_le hrnn
+  have hm4 : 4 ≤ m := by
+    have : (4 : ℕ) ≤ ⌊r⌋₊ := Nat.le_floor (by exact_mod_cast hr4)
+    omega
+  -- r^{2h-1} = N/(2h+1), hence (2h+1)·m^{2h-1} ≤ N.
+  have hrp : r ^ (2 * h - 1) = (N : ℝ) / ((2 * h + 1 : ℕ) : ℝ) := by
+    rw [hrdef, hedef]; exact Real.rpow_inv_natCast_pow hbase0 hp
+  have hmp_real : (m : ℝ) ^ (2 * h - 1) ≤ (N : ℝ) / ((2 * h + 1 : ℕ) : ℝ) := by
+    rw [← hrp]; exact pow_le_pow_left₀ (by positivity) hm_le _
+  have hach : (2 * h + 1) * m ^ (2 * h - 1) ≤ N := by
+    have hR : ((2 * h + 1 : ℕ) : ℝ) * (m : ℝ) ^ (2 * h - 1) ≤ (N : ℝ) := by
+      calc ((2 * h + 1 : ℕ) : ℝ) * (m : ℝ) ^ (2 * h - 1)
+          ≤ ((2 * h + 1 : ℕ) : ℝ) * ((N : ℝ) / ((2 * h + 1 : ℕ) : ℝ)) :=
+            mul_le_mul_of_nonneg_left hmp_real (le_of_lt h2h1pos)
+        _ = (N : ℝ) := by field_simp
+    exact_mod_cast hR
+  -- Run the greedy algorithm to size m-1.
+  obtain ⟨A, hAsub, hAbh, hAcard⟩ :=
+    exists_isBh_Icc_card_of_pow_le (h := h) (N := N) (k := m - 1) hh (by
+      have hm1 : m - 1 + 1 = m := by omega
+      rw [hm1]; exact hach)
+  refine ⟨A, hAsub, hAbh, ?_⟩
+  rw [hAcard]
+  -- C·N^e = r/2 and m-1 ≥ r-2 ≥ r/2.
+  have hcast : ((m - 1 : ℕ) : ℝ) = (m : ℝ) - 1 := by
+    rw [Nat.cast_sub (by omega : 1 ≤ m), Nat.cast_one]
+  have hCNe : (1 / 2 / D) * (N : ℝ) ^ e = r / 2 := by
+    rw [hrdef, Real.div_rpow (by positivity) (by positivity), ← hDdef]
+    field_simp
+  have hfloor : r < (m : ℝ) + 1 := Nat.lt_floor_add_one r
+  rw [hcast, hCNe]
+  linarith [hr4, hfloor]
+
 end Erdos340Bh
