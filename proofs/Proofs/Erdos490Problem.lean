@@ -128,6 +128,31 @@ def optimalB (N : ℕ) : Finset ℕ :=
 axiom optimal_has_distinct_products (N : ℕ) (hN : N ≥ 4) :
   HasDistinctProducts (optimalA N) (optimalB N)
 
+/-- The first half is exactly `Icc 1 (N/2)`, so it has `⌊N/2⌋` elements. -/
+theorem optimalA_card (N : ℕ) : (optimalA N).card = N / 2 := by
+  have hset : optimalA N = Finset.Icc 1 (N / 2) := by
+    ext n
+    simp only [optimalA, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
+    constructor
+    · rintro ⟨_, h1, h2⟩; exact ⟨h1, h2⟩
+    · rintro ⟨h1, h2⟩
+      -- `n ≤ N/2 ≤ N < N+1`, so the `range (N+1)` membership is automatic.
+      exact ⟨by omega, h1, h2⟩
+  rw [hset, Nat.card_Icc]; omega
+
+/-- **Chebyshev-type prime-counting lower bound** (the one irreducible analytic input
+to the optimal-example *lower* bound).  The number of primes in `(N/2, N]` — i.e.
+`(optimalB N).card = π(N) − π(N/2)` — is `≳ N / log N`.  The true asymptotic is
+`~ N / (2 log N)` by the prime number theorem; the existence of *some* positive
+constant `c` valid for all `N ≥ 4` is Chebyshev-strength and elementary, but Mathlib's
+`Nat.primeCounting` API currently provides only an *upper* bound
+(`Nat.primeCounting'_add_le`) and monotonicity — no lower bound on `π(N) − π(N/2)`.
+We therefore isolate exactly this fact as an explicit axiom; the rest of the
+lower-bound derivation (`bound_is_optimal`) is fully verified from it. -/
+axiom primes_upper_half_lower_bound :
+  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
+    c * N / Real.log N ≤ ((optimalB N).card : ℝ)
+
 /- The optimal example achieves |A||B| ~ N²/(2 log N). -/
 /-- Why it works: products `a·p` are distinct because each prime `p > N/2` exceeds
 every `a ≤ N/2`, so `p` cannot divide a nonzero `a`.  Positivity `1 ≤ aᵢ` (which holds
@@ -385,7 +410,14 @@ theorem erdos_490_main :
           (A.card * B.card : ℝ) ≤ C * N^2 / Real.log N :=
   szemeredi_theorem
 
-/-- The bound is optimal up to a constant. -/
+/-- The bound is optimal up to a constant.
+
+The lower-bound constant is *not* hardcoded: a fixed `c` such as `1/3` is in fact
+**false** at small `N` (e.g. `N = 10`, where the product ratio dips to `≈ 0.115`),
+so the theorem is stated and proved in its honest `∃ c > 0` form.  The constant is
+produced from the Chebyshev-type input `primes_upper_half_lower_bound`: from
+`(optimalB N).card ≥ c·N/log N` and `(optimalA N).card = ⌊N/2⌋ ≥ N/4` (for `N ≥ 4`),
+the product is `≥ (c/4)·N²/log N`. -/
 theorem bound_is_optimal :
     ∃ c : ℝ, c > 0 ∧
       ∀ N : ℕ, N ≥ 4 →
@@ -393,31 +425,44 @@ theorem bound_is_optimal :
           IsSubsetUpTo A N ∧ IsSubsetUpTo B N ∧
           HasDistinctProducts A B ∧
           (A.card * B.card : ℝ) ≥ c * N^2 / Real.log N := by
-  use 1/3  -- lower bound constant
-  constructor
-  · norm_num
-  · intro N hN
-    use optimalA N, optimalB N
-    constructor
-    · -- IsSubsetUpTo (optimalA N) N : elements satisfy 1 ≤ n ≤ N/2 ≤ N
-      intro a ha
-      simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha
-      obtain ⟨_, ha1, ha2⟩ := ha
-      exact ⟨ha1, le_trans ha2 (Nat.div_le_self N 2)⟩
-    constructor
-    · -- IsSubsetUpTo (optimalB N) N : primes p with N/2 < p ≤ N satisfy 1 ≤ p ≤ N
-      intro b hb
-      simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hb
-      obtain ⟨_, hbprime, _, hbN⟩ := hb
-      exact ⟨hbprime.one_lt.le, hbN⟩
-    constructor
-    · exact optimal_has_distinct_products N (by linarith)
-    · -- Lower bound. DEFERRED (requires prime-counting / PNT-level input): one needs
-      -- |optimalA N| = ⌊N/2⌋ and |optimalB N| = π(N) − π(N/2) ~ N/(2 log N), so the
-      -- product is ~ N²/(4 log N).  The lower bound on π(N) − π(N/2) is a Chebyshev /
-      -- Bertrand-type estimate not yet wired in here; left for a follow-up session.
-      -- (Note: the constant 1/3 chosen above is only attainable asymptotically and
-      -- with the sharper N²/(4 log N) main term would need adjusting to ≤ 1/4.)
-      sorry
+  obtain ⟨c, hc, hcB⟩ := primes_upper_half_lower_bound
+  refine ⟨c / 4, by positivity, ?_⟩
+  intro N hN
+  use optimalA N, optimalB N
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- IsSubsetUpTo (optimalA N) N : elements satisfy 1 ≤ n ≤ N/2 ≤ N
+    intro a ha
+    simp only [optimalA, Finset.mem_filter, Finset.mem_range] at ha
+    obtain ⟨_, ha1, ha2⟩ := ha
+    exact ⟨ha1, le_trans ha2 (Nat.div_le_self N 2)⟩
+  · -- IsSubsetUpTo (optimalB N) N : primes p with N/2 < p ≤ N satisfy 1 ≤ p ≤ N
+    intro b hb
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hb
+    obtain ⟨_, hbprime, _, hbN⟩ := hb
+    exact ⟨hbprime.one_lt.le, hbN⟩
+  · exact optimal_has_distinct_products N (by linarith)
+  · -- Lower bound: combine |optimalA N| ≥ N/4 with the Chebyshev input on |optimalB N|.
+    have hNR : (4 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+    have hlogpos : 0 < Real.log N := Real.log_pos (by linarith)
+    -- |optimalA N| = ⌊N/2⌋, and `N ≤ 4·⌊N/2⌋` for `N ≥ 4` gives `↑⌊N/2⌋ ≥ N/4`.
+    have hAcard : (optimalA N).card = N / 2 := optimalA_card N
+    have hAnat : N ≤ 4 * (N / 2) := by omega
+    have hAR : (N : ℝ) / 4 ≤ ((optimalA N).card : ℝ) := by
+      rw [hAcard]
+      have : (N : ℝ) ≤ 4 * ((N / 2 : ℕ) : ℝ) := by exact_mod_cast hAnat
+      linarith
+    -- |optimalB N| ≥ c·N/log N from the axiom.
+    have hBR : c * N / Real.log N ≤ ((optimalB N).card : ℝ) := hcB N hN
+    -- Both lower bounds are nonnegative, so the products multiply.
+    have hA0 : (0 : ℝ) ≤ (N : ℝ) / 4 := by positivity
+    have hB0 : (0 : ℝ) ≤ c * N / Real.log N := by positivity
+    have hprod : ((N : ℝ) / 4) * (c * N / Real.log N) ≤
+        ((optimalA N).card : ℝ) * ((optimalB N).card : ℝ) :=
+      mul_le_mul hAR hBR hB0 (le_trans hA0 hAR)
+    -- The left-hand product equals (c/4)·N²/log N (a formal field identity).
+    have hsimp : ((N : ℝ) / 4) * (c * N / Real.log N) = c / 4 * (N : ℝ) ^ 2 / Real.log N := by
+      ring
+    rw [ge_iff_le]
+    linarith [hprod, hsimp]
 
 end Erdos490
