@@ -42,6 +42,10 @@ construction; this file establishes the metric layer underneath that constructio
   `[-1, 1]`, so `sdist` is a genuine angle.
 * `scos_self`, `sdist_self`, `sdist_nonneg`, `sdist_le_pi`, `sdist_eq_zero_of_eq` — `sdist`
   is a well-defined `[0, π]`-valued quantity vanishing on the diagonal.
+* `scos_eq_one_iff`, `sdist_eq_zero_iff`, `sdist_pos` — **point separation**: for unit
+  vectors `sdist P Q = 0 ↔ P = Q`, so together with symmetry and nonnegativity `sdist`
+  separates points and is a genuine metric on the spherical model (modulo the spherical
+  triangle inequality).
 -/
 import Mathlib
 
@@ -112,6 +116,42 @@ theorem sdist_eq_zero_of_eq {P Q : E} (hP : OnSphere P) (h : P = Q) : sdist P Q 
 /-- Spherical distance is symmetric (the inner product commutes). -/
 theorem sdist_comm (P Q : E) : sdist P Q = sdist Q P := by
   unfold sdist; rw [real_inner_comm]
+
+/-- **Spherical cosine `1` characterises equality.**  For unit vectors `P, Q`, the chord
+`‖P − Q‖² = 2 − 2·scos P Q` (`chord_sq`) vanishes exactly when `scos P Q = 1`, i.e. exactly
+when `P = Q`.  This is the algebraic heart of point separation. -/
+theorem scos_eq_one_iff {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
+    scos P Q = 1 ↔ P = Q := by
+  refine ⟨fun h => ?_, fun h => h ▸ scos_self P hP⟩
+  have hsq : ‖P - Q‖ ^ 2 = 0 := by rw [chord_sq P Q hP hQ, h]; ring
+  have hz : ‖P - Q‖ = 0 := by
+    have hnn := norm_nonneg (P - Q)
+    have hle : ‖P - Q‖ ≤ 0 := by nlinarith [hsq, hnn]
+    linarith
+  rw [norm_eq_zero, sub_eq_zero] at hz
+  exact hz
+
+/-- **Point separation.**  For unit vectors, spherical distance `0` characterises equality.
+Combined with `sdist_self` (vanishing on the diagonal), `sdist_nonneg`, and `sdist_comm`
+(symmetry), this shows `sdist` separates points, so it is a genuine metric on the spherical
+model — only the spherical triangle inequality remains to make `(Sⁿ, sdist)` a metric
+space.  Proof: `arccos` of the inner product is `0` iff that inner product is `≥ 1`, which
+for unit vectors forces `scos P Q = 1`, hence `P = Q` by `scos_eq_one_iff`. -/
+theorem sdist_eq_zero_iff {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) :
+    sdist P Q = 0 ↔ P = Q := by
+  rw [sdist, Real.arccos_eq_zero]
+  constructor
+  · intro h
+    exact (scos_eq_one_iff hP hQ).mp (le_antisymm (scos_le_one P Q hP hQ) h)
+  · intro h
+    have h1 : scos P Q = 1 := (scos_eq_one_iff hP hQ).mpr h
+    rw [scos] at h1
+    exact h1.ge
+
+/-- Distinct model points are at strictly positive spherical distance. -/
+theorem sdist_pos {P Q : E} (hP : OnSphere P) (hQ : OnSphere Q) (hPQ : P ≠ Q) :
+    0 < sdist P Q :=
+  lt_of_le_of_ne (sdist_nonneg P Q) fun h => hPQ ((sdist_eq_zero_iff hP hQ).mp h.symm)
 
 /-- **Cosine of the spherical distance is the spherical cosine.**  Since
 `sdist P Q = arccos (scos P Q)` and the spherical cosine lies in `[-1, 1]` for unit
