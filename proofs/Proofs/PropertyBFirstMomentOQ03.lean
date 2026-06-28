@@ -119,4 +119,111 @@ theorem mixed_example_two_colorable :
   · decide
   · decide
 
+-- ═══════════════════════════════════════════════════
+-- Quantitative first moment: a coloring with few monochromatic edges
+-- ═══════════════════════════════════════════════════
+
+/-
+  The parent's `exists_zero_of_sum_lt_card` is the *strict-threshold* form of the
+  first moment: when the incidence sum drops below the number of colorings, a
+  *perfect* coloring (zero monochromatic edges) exists. The averaging principle
+  below is its complementary, quantitative cousin: it bounds the *minimum* number
+  of monochromatic edges by the *average*, so it stays informative when the strict
+  criterion just fails. This is the genuine precursor to the Radhakrishnan–Srinivasan
+  alteration argument — that argument first secures a coloring with *few* bad edges,
+  then repairs them by recoloring; the lemmas here formalize the "few bad edges"
+  half, leaving only the (analytic, multi-session) recoloring half for RS.
+-/
+
+/-- **Averaging principle (minimum ≤ mean) over `ℕ`.** If a nonnegative integer
+statistic `f` on a nonempty finite set sums to at most `|s| · t`, some element
+takes value `≤ t`. The `t = 0` case is `exists_zero_of_sum_lt_card` strengthened
+to nonstrict; positive `t` is the surplus form the alteration method consumes. -/
+theorem exists_le_of_sum_le_card_mul {α : Type*} {s : Finset α} {f : α → ℕ} {t : ℕ}
+    (hne : s.Nonempty) (hle : (∑ a ∈ s, f a) ≤ s.card * t) : ∃ a ∈ s, f a ≤ t := by
+  by_contra h
+  push_neg at h
+  have h1 : ∀ a ∈ s, t + 1 ≤ f a := fun a ha => h a ha
+  have hge : s.card * (t + 1) ≤ ∑ a ∈ s, f a := by
+    calc s.card * (t + 1) = ∑ _a ∈ s, (t + 1) := by
+            rw [Finset.sum_const, smul_eq_mul]
+      _ ≤ ∑ a ∈ s, f a := Finset.sum_le_sum h1
+  have hpos : 1 ≤ s.card := Finset.card_pos.mpr hne
+  have hcomb : s.card * (t + 1) ≤ s.card * t := le_trans hge hle
+  rw [Nat.mul_succ] at hcomb
+  omega
+
+/-- **Quantitative first moment for Property B.** Some 2-coloring leaves at most `t`
+monochromatic edges, whenever the total `(coloring, monochromatic edge)` incidence
+`∑_{e} 2·2^(n-|e|)` is at most `2^n · t`. (Incidence `= ∑_c #{monochromatic edges
+under c}`, by `card_mono`, so its average over the `2^n` colorings is the displayed
+bound; the minimum is `≤` the average.)
+
+The `t = 0` regime recovers the existence of a *proper* coloring; the value of the
+statement is the regime where the strict criterion `property_b_of_weighted_first_moment`
+*fails* (incidence `≥ 2^n`) yet the family still admits a coloring with a controlled
+number `t ≥ 1` of defects — the input to a recoloring/alteration repair. -/
+theorem exists_coloring_few_mono
+    (E : Finset (Finset V)) (hne : ∀ e ∈ E, e.Nonempty) (t : ℕ)
+    (hbound : (∑ e ∈ E, 2 * 2 ^ (Fintype.card V - e.card)) ≤ 2 ^ Fintype.card V * t) :
+    ∃ c : V → Bool, (E.filter (fun e => Mono e c)).card ≤ t := by
+  -- ∑_c (#monochromatic edges under c) = ∑_e 2·2^(n-|e|)  (same count as the criterion)
+  have hsum :
+      (∑ c : V → Bool, (E.filter (fun e => Mono e c)).card)
+        = ∑ e ∈ E, 2 * 2 ^ (Fintype.card V - e.card) := by
+    simp_rw [Finset.card_filter]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl ?_
+    intro e he
+    rw [← Finset.card_filter, card_mono e (hne e he)]
+  have hcard : (univ : Finset (V → Bool)).card = 2 ^ Fintype.card V := by
+    rw [Finset.card_univ, Fintype.card_fun, Fintype.card_bool]
+  have hUne : (univ : Finset (V → Bool)).Nonempty := by
+    rw [← Finset.card_pos, hcard]; positivity
+  have hle :
+      (∑ c : V → Bool, (E.filter (fun e => Mono e c)).card)
+        ≤ (univ : Finset (V → Bool)).card * t := by
+    rw [hsum, hcard]; exact hbound
+  obtain ⟨c, -, hc⟩ := exists_le_of_sum_le_card_mul hUne hle
+  exact ⟨c, hc⟩
+
+/-- **Uniform quantitative bound.** A `k`-uniform family of `|E|` edges admits a
+2-coloring with at most `t` monochromatic edges whenever `|E| ≤ 2^(k-1) · t`. The
+strict criterion's threshold is the `t = 1` boundary `|E| < 2^(k-1) ⟹ 0`; this
+extends one notch past it: `|E| ≤ 2^(k-1) · t ⟹ ≤ t` defects. -/
+theorem exists_coloring_few_mono_uniform
+    (E : Finset (Finset V)) (k t : ℕ) (hk : 1 ≤ k)
+    (huniform : ∀ e ∈ E, e.card = k) (hne : ∀ e ∈ E, e.Nonempty)
+    (hkn : k ≤ Fintype.card V)
+    (hcard : E.card ≤ 2 ^ (k - 1) * t) :
+    ∃ c : V → Bool, (E.filter (fun e => Mono e c)).card ≤ t := by
+  apply exists_coloring_few_mono E hne t
+  -- ∑_e 2·2^(n-k) = 2·|E|·2^(n-k) ≤ 2^k·t·2^(n-k) = 2^n·t
+  have hsumc : (∑ e ∈ E, 2 * 2 ^ (Fintype.card V - e.card))
+      = 2 * E.card * 2 ^ (Fintype.card V - k) := by
+    rw [Finset.sum_congr rfl (fun e he => by rw [huniform e he]),
+      Finset.sum_const, smul_eq_mul]; ring
+  have e1 : (2 : ℕ) ^ Fintype.card V = 2 ^ k * 2 ^ (Fintype.card V - k) := by
+    rw [← pow_add]; congr 1; omega
+  have e2 : (2 : ℕ) ^ k = 2 * 2 ^ (k - 1) := by
+    conv_lhs => rw [show k = 1 + (k - 1) by omega]
+    rw [pow_add, pow_one]
+  rw [hsumc, e1]
+  calc 2 * E.card * 2 ^ (Fintype.card V - k)
+        ≤ 2 * (2 ^ (k - 1) * t) * 2 ^ (Fintype.card V - k) := by gcongr
+    _ = 2 ^ k * 2 ^ (Fintype.card V - k) * t := by rw [e2]; ring
+
+/-- **Worked example: bounded defect on a non-2-colorable family.** The triangle
+`K₃ = {{0,1}, {0,2}, {1,2}}` over `Fin 3` is *not* 2-colorable (it has no Property B),
+so the strict criterion certifies nothing. Yet incidence `= 3 · 2·2^(3-2) = 12 ≤ 16 = 2³·2`,
+so `exists_coloring_few_mono` (with `t = 2`) guarantees a 2-coloring leaving at most `2`
+monochromatic edges — quantitative control exactly where the criterion is silent. -/
+theorem triangle_few_mono :
+    ∃ c : Fin 3 → Bool,
+      (({{0, 1}, {0, 2}, {1, 2}} : Finset (Finset (Fin 3))).filter
+        (fun e => Mono e c)).card ≤ 2 := by
+  apply exists_coloring_few_mono _ _ 2
+  · decide
+  · decide
+
 end ProbMethod.PropertyB

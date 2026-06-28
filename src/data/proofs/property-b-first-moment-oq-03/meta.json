@@ -130,11 +130,11 @@
       "BigOperators"
     ],
     "namespace": "ProbMethod.PropertyB",
-    "lineCount": 122,
+    "lineCount": 229,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 3
+    "theoremCount": 7
   },
   "references": [
     {
@@ -173,5 +173,6 @@
       "leanType": "(1 ≤ k) → (∀ e ∈ E, e.card = k) → E.card < 2^(k-1) → ∃ c : V → Bool, ∀ e ∈ E, ¬ Mono e c"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "theoremCount": 7
 }
