@@ -55,6 +55,41 @@ factorization and that the cubic has no roots — not irreducibility/squarefree.
 
 ---
 
+## Part (B): the permutation-group consequence (iter 3 / Cycle file)
+
+Dedekind's conclusion at `p = 7` factors into two independent halves:
+
+- **(A) Frobenius ↔ factorization** — the genuine number-theory gap (Frobenius
+  at an unramified `𝔭 | 7` acts with cycle type equal to the factorization
+  degrees). Owned by sibling `inverse-galois-a5-oq-01`
+  (`InverseGaloisA5Dedekind.exists_gal_order_three`, still a sorry).
+- **(B) cycle type ⟹ order ⟹ divisibility** — pure group theory, now fully
+  machine-checked in `InverseGaloisOQ06OQ02Cycle.lean` (0-axiom/0-sorry).
+
+`InverseGaloisOQ06OQ02Cycle.lean` content:
+
+- `frob113 : Perm (Fin 5) := swap 2 3 * swap 2 4` — explicit `(1,1,3)`
+  permutation (3-cycles 2,3,4; fixes 0,1 = the two linear-factor roots).
+- `Equiv.Perm.isThreeCycle_swap_mul_swap_same (ab) (ac) (bc)` proves
+  `IsThreeCycle (swap a b * swap a c)`; the three distinctness args over
+  `Fin 5` close by `decide`. Fixed points `frob113 0 = 0`, `frob113 1 = 1`
+  also by `decide` (kernel `decide`, NOT `native_decide` — stays 0-axiom).
+- `Equiv.Perm.IsThreeCycle.orderOf : orderOf g = 3` (via `lcm_cycleType` +
+  `cycleType = {3}`).
+- Bridges:
+  - `three_dvd_card_of_orderOf_three` — finite group, order-3 elt ⟹ `3 ∣ card`
+    via `orderOf_dvd_card`.
+  - `three_dvd_natCard_of_isThreeCycle_mem` — `H ≤ Perm α` containing a 3-cycle
+    ⟹ `3 ∣ Nat.card H` via `Subgroup.orderOf_dvd_natCard` (no `Fintype` needed,
+    uses `Nat.card`).
+  - `dedekind_consequence_113` — the packaged part-(B) statement with the
+    cycle-type hypothesis explicit, making the residual gap (A) visible.
+
+This does **not** discharge `three_dvd_gal_card`; it verifies the deterministic
+half so the only remaining gap is the Frobenius ↔ factorization correspondence.
+
+---
+
 ## Dead Ends
 
 - `isCoprime_of_irreducible_of_not_associated` does NOT exist in Mathlib 4.26.
