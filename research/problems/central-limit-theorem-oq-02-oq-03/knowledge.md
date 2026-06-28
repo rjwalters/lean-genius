@@ -28,5 +28,39 @@ independent_implies_zero_mixing` → propext/Classical.choice/Quot.sound only.
 - `⨆ over ℝ` is conditionally-complete: `iSup` of unbounded/empty → junk(0);
   Prop-indexed `⨆(_:p),c` needs case split on p, no `iSup_const`.
 
-## Still open
-- The actual oq-02-oq-03 question (undefined) and parent's deep CLT axiom.
+## Session 2026-06-28 (researcher-8) — DEFINED + SOLVED the oq-02-oq-03 question
+The slug had no problem statement. Defined a genuinely new, distinct direction:
+**m-dependent (finite-range) sequences** and proved, fully (0-axiom, 0-sorry),
+that they are α-mixing with eventually-vanishing coefficients. New file
+`proofs/Proofs/CentralLimitTheoremOQ02OQ03.lean` (208 lines, 6 thms, 1 def),
+imports + reuses the parent's `alphaMixingCoeff`.
+
+- `MDependent μ σ_k m`: events measurable w.r.t. σ-algebras with index gap n > m
+  are independent (μ(A∩B)=μA·μB). The m=0 case is the parent's independence hyp.
+- `mDependent_alpha_zero` (HEADLINE): m-dependence ⇒ α(n)=0 for all n>m. Reuses
+  the parent's nested-supremum-collapse verbatim (every term 0 via
+  ENNReal.toReal_mul; Prop-indexed ⨆ of 0 over ℝ collapses by Nonempty/IsEmpty
+  case split — no CompleteLattice ℝ).
+- `mZeroDependent_recovers_independence`: m=0 (gap n≥1) re-derives the parent's
+  `independent_implies_zero_mixing`. Strict generalization to all finite ranges.
+- `mDependent_mixing_decay`: α(n)→0 free via `tendsto_atTop_of_eventually_const`.
+- `summable_rpow_of_eventually_zero` (reusable): eventually-0 seq ⇒ Summable
+  (f n)^θ for θ≠0 (`summable_of_ne_finset_zero` + `Real.zero_rpow`).
+- `mDependent_summable_mixing_rpow`: Ibragimov series ∑ α(n)^θ converges for
+  EVERY θ≠0 ⇒ the OQ-02-OQ-04 Ibragimov CLT applies to any m-dependent sequence
+  with NO rate constraint.
+
+Verified on host: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean <worktree file>`
+exit 0; `#print axioms` → propext/Classical.choice/Quot.sound only (0-axiom).
+Gallery: src/data/proofs/central-limit-theorem-oq-02-oq-03/{meta,annotations}.json,
+research json, added import to Proofs.lean. status=verified, badge=original.
+
+### Gotchas
+- `summable_of_ne_finset_zero` (NOT summable_of_finite_support) is the clean
+  finite-support summability lemma; use `(s := Finset.range (N+1))`.
+- `Real.zero_rpow` needs the exponent ≠ 0; θ=0 makes ∑ α^0=∑1 diverge.
+
+## Still open (follow-ups, NOT done here)
+- Berry–Esseen O(n^{-1/2}) rate for the m-dependent CLT (Stein's method).
+- Growing-range m_n-dependent arrays, m_n = o(n^{1/3}) (Romano–Wolf 2000).
+- Parent's deep CLT axiom martingale_clt (McLeish 1974) — unchanged.
