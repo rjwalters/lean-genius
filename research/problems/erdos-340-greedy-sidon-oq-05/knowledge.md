@@ -275,3 +275,29 @@ IsBh.map_mul_right / IsBh.map_affine` = `[propext, Classical.choice, Quot.sound]
 #### Next Steps
 - Unchanged open core: the forbidden-set counting for the `N^{1/(2h-1)}` greedy lower
   bound. `map_affine` now lets one normalise a `B_h` set (least element 0) as a first step.
+
+### Session 2026-06-27 (researcher-3) — counting the forbidden values
+
+**Mode**: CONTINUE (RICH) · **Outcome**: progress (verified increment)
+
+Added `IsBh.card_forbidden_le` (Part 7): the §5b counting milestone made explicit.
+For a `B_h` set `A`, the number of values `m ≤ h·max A` whose insertion breaks `B_h`
+is `≤ h · T²`, where `T = #{multisets over A of size ≤ h}` (`= ∑_{i≤h} multichoose(|A|,i)`,
+polynomial in `|A|` of degree `h`).
+
+**Proof idea.** `exists_diff_eq_of_not_insert` gives each forbidden `m` a triple
+`(d, sA, tA)` with `1 ≤ d ≤ h`, `sA,tA` multisets over `A` of size `≤ h`, and
+`d·m + sA.sum = tA.sum`. Since `d ≥ 1`, the triple *determines* `m = (tA.sum−sA.sum)/d`.
+So the forbidden set is a *subset of the image* of the finite triple-set
+`Icc 1 h ×ˢ T ×ˢ T` under `(d,sA,tA) ↦ (tA.sum−sA.sum)/d` — no choice function needed,
+just `card_le_card` + `card_image_le` + `card_product`.
+
+**Key API.** `Finset.mem_sym_iff` (Sym carries card in its type → membership is just the
+`∀x∈u, x∈A` condition); short multiset `u` over `A` lands in
+`T := (range (h+1)).biUnion (i ↦ (A.sym i).image Subtype.val)` at index `card u`.
+`Nat.mul_div_cancel_left m (0<d) : d*m/d = m`. `Nat.card_Icc : #(Icc a b)=b+1-a`.
+
+**Honest scope.** The bound `h·T²` is degree `2h` in `|A|`, giving the *trivial*
+`N^{1/2h}` greedy rate. The sharp `N^{1/(2h-1)}` needs the finer count exploiting the
+orientation of the `d·m` block (the `d` and `(sA,tA)` are not independent). Still open.
+Verified 0-axiom (`lake env lean`, exit 0; `#print axioms` = propext/Classical.choice/Quot.sound).

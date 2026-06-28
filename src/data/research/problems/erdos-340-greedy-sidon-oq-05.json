@@ -12,8 +12,8 @@
     {
       "path": "Proofs/Erdos340GreedySidonOQ05.lean",
       "filename": "Erdos340GreedySidonOQ05.lean",
-      "lineCount": 704,
-      "theoremCount": 27,
+      "lineCount": 835,
+      "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
@@ -71,6 +71,6 @@
       "Prove the maximal-set lower bound directly: if A ⊆ [1,N] is B_h and maximal (no n ∈ [1,N] extends it), then N ≤ |A| + (number of values blocked by a collision), and bound the blocked count by |A|^{2h-1}.",
       "With the bridge in hand, transport a concrete gallery Sidon result (e.g. sidon_upper_bound_weak or an explicit small Sidon set) through isBh_two_iff_isSidon as a sanity corollary."
     ],
-    "progressSummary": "PROGRESS: Foundational B_h theory + sharp upper bound Nat.choose |A| h ≤ h·N + downward closure (of_succ/of_le) + EXACT bridge IsBh 2 A ↔ Erdos340.IsSidon A + translation invariance + GREEDY EXTENSION (insert_of_large, exists_insert) + EXPLICIT GREEDY FAMILY (greedyBhAux/greedyBhSet; exists_isBh_card: a B_h set of every cardinality n exists for each h≥1), + full AFFINE invariance (dilation map_mul_right + composite map_affine, positive-slope affine group = symmetry group of the bound), all verified 0-axiom (Erdos340GreedySidonOQ05.lean, 704 lines, 27 theorems). The construction cleanly SEPARATES the open question: a B_h set's count is unbounded for free; the remaining open core is the forbidden-set counting bounding the LARGEST element, i.e. the N^{1/(2h-1)} growth rate inside {1,…,N} — matching the still-open parent #340."
+    "progressSummary": "PROGRESS: Foundational B_h theory + sharp upper bound Nat.choose |A| h ≤ h·N + downward closure (of_succ/of_le) + EXACT bridge IsBh 2 A ↔ Erdos340.IsSidon A + translation invariance + GREEDY EXTENSION (insert_of_large, exists_insert) + EXPLICIT GREEDY FAMILY (greedyBhAux/greedyBhSet; exists_isBh_card: a B_h set of every cardinality n exists for each h≥1), + full AFFINE invariance (dilation map_mul_right + composite map_affine, positive-slope affine group = symmetry group of the bound), + EXPLICIT FORBIDDEN-SET COUNT (IsBh.card_forbidden_le: #forbidden m ≤ h·T² where T=#{multisets over A of size ≤h}, polynomial in |A| — the §5b counting milestone made explicit, via forbidden m ↦ determining triple (d,sA,tA)), all verified 0-axiom (Erdos340GreedySidonOQ05.lean, 835 lines, 28 theorems). The construction cleanly SEPARATES the open question: a B_h set's count is unbounded for free; card_forbidden_le now gives the trivial N^{1/2h} greedy rate, but the sharp N^{1/(2h-1)} growth inside {1,…,N} (needing the finer d·m-orientation count) remains open — matching the still-open parent #340."
   }
 }

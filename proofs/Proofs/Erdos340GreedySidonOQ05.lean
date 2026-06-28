@@ -773,4 +773,63 @@ theorem IsBh.map_affine {h c d : ℕ} {A : Finset ℕ} (hc : 0 < c) (hA : IsBh h
   rw [hfun, ← Finset.image_image]
   exact (hA.map_mul_right hc).map_add_right
 
+/-! ## Part 7: Counting the forbidden values
+
+§5b reduced the open lower bound to a *counting* question: how many values are
+forbidden for greedy `B_h` extension?  `IsBh.exists_diff_eq_of_not_insert` shows
+every forbidden `m` solves `d · m + sA.sum = tA.sum` for a triple `(d, sA, tA)`
+with `1 ≤ d ≤ h` and `sA, tA` short multisets over `A`.  Crucially the triple
+**determines** `m` (since `d ≥ 1`), so the forbidden values are the image of the
+finite triple-set under `(d, sA, tA) ↦ (tA.sum − sA.sum) / d`.  Counting the
+triples gives an explicit cardinality bound, polynomial in `|A|`. -/
+
+open scoped Classical in
+/-- **The forbidden set is polynomially bounded.**  For a `B_h` set `A`, the number
+of values `m` below the trivial ceiling `h · max A` whose insertion breaks `B_h` is
+at most `h · T²`, where `T` is the number of multisets over `A` of size `≤ h`
+(`T = ∑_{i ≤ h} multichoose(|A|, i)`, polynomial in `|A|` of degree `h`).
+
+This is the explicit form of the §5b counting milestone: it turns the (open)
+`B_h` greedy lower bound into a concrete bound on the forbidden set.  The rate it
+yields is the trivial `N^{1/2h}`; the sharp `N^{1/(2h-1)}` needs the finer count
+that exploits the orientation of the `d · m` block. -/
+theorem IsBh.card_forbidden_le {h : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
+    ((Finset.range (h * A.sup id + 1)).filter
+        (fun m => ¬ IsBh h (insert m A))).card
+      ≤ h * (((Finset.range (h + 1)).biUnion
+              (fun i => (A.sym i).image Subtype.val)).card) ^ 2 := by
+  set T : Finset (Multiset ℕ) :=
+    (Finset.range (h + 1)).biUnion (fun i => (A.sym i).image Subtype.val) with hT
+  set F := (Finset.range (h * A.sup id + 1)).filter
+      (fun m => ¬ IsBh h (insert m A)) with hF
+  -- Every multiset over `A` of size `≤ h` lies in `T`.
+  have hmemT : ∀ u : Multiset ℕ, (∀ x ∈ u, x ∈ A) → Multiset.card u ≤ h → u ∈ T := by
+    intro u hu hcard
+    rw [hT, Finset.mem_biUnion]
+    refine ⟨Multiset.card u, Finset.mem_range.mpr (by omega), ?_⟩
+    rw [Finset.mem_image]
+    exact ⟨⟨u, rfl⟩, Finset.mem_sym_iff.mpr hu, rfl⟩
+  set P : Finset (ℕ × Multiset ℕ × Multiset ℕ) := (Finset.Icc 1 h) ×ˢ T ×ˢ T with hP
+  -- Every forbidden value is the image of its determining triple.
+  have hsub : F ⊆ P.image (fun p => (p.2.2.sum - p.2.1.sum) / p.1) := by
+    intro m hm
+    rw [hF, Finset.mem_filter, Finset.mem_range] at hm
+    obtain ⟨hmlt, hbad⟩ := hm
+    obtain ⟨d, sA, tA, hd1, hdh, hsA, htA, hcsA, hctA, heq⟩ :=
+      hA.exists_diff_eq_of_not_insert hbad
+    rw [Finset.mem_image]
+    refine ⟨(d, sA, tA), ?_, ?_⟩
+    · rw [hP, Finset.mem_product, Finset.mem_product]
+      exact ⟨Finset.mem_Icc.mpr ⟨hd1, hdh⟩, hmemT sA hsA hcsA, hmemT tA htA hctA⟩
+    · show (tA.sum - sA.sum) / d = m
+      rw [show tA.sum - sA.sum = d * m from by omega]
+      exact Nat.mul_div_cancel_left m (by omega)
+  calc F.card ≤ (P.image (fun p => (p.2.2.sum - p.2.1.sum) / p.1)).card :=
+        Finset.card_le_card hsub
+    _ ≤ P.card := Finset.card_image_le
+    _ = h * T.card ^ 2 := by
+        rw [hP, Finset.card_product, Finset.card_product, Nat.card_Icc,
+            Nat.add_sub_cancel]
+        ring
+
 end Erdos340Bh
