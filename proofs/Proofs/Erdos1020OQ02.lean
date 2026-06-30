@@ -346,4 +346,127 @@ example : construction2 8 4 2 = Nat.choose 7 3 := by decide
 /-- The top-summand bound, concretely at the crossover: `C(7, 3) = 35 ≤ construction2 8 4 2`. -/
 example : Nat.choose 7 3 ≤ construction2 8 4 2 := by decide
 
+/-! ### 9. The large-`n` regime exists for every `r ≥ 2`: an unconditional threshold.
+
+Sections 1–8 describe the *shape* of the transition, but for the actual *existence*
+of a crossover §6 handled only the worked instance `r = 4, k = 2`, by decidable
+evaluation. Here we prove the crossover exists for **every** `r ≥ 2`, `k ≥ 2`, with
+no case analysis — pinning down a single sharp threshold `n₀(r, k)`.
+
+The engine is a clean linear lower bound. The top-summand bound of §8
+(`construction2_ge_top_summand`) gives `C(n−1, r−1) ≤ construction2 n r k` for `k ≥ 2`,
+and a binomial grows at least linearly along its diagonal:
+`C(d + t, d) ≥ t + 1` for every `t` — each Pascal step
+`C(m+1, d) = C(m, d−1) + C(m, d)` adds the positive term `C(m, d−1) ≥ 1`. Chaining,
+
+  `construction2 n r k ≥ n − r + 1`   (`construction2_linear_lb`),
+
+which is unbounded in `n`. Since `construction1 r k` is *constant* in `n`,
+`construction2` must overtake it (`construction2_unbounded`,
+`construction2_eventually_dominant`) and — by the monotonicity of §1 — stay ahead.
+That yields a single threshold `n₀(r, k)` with
+
+  `construction1 r k ≤ construction2 n r k  ↔  n₀ ≤ n`   (for `n ≥ k`),
+
+the general form of `crossover_r4k2`. The hypothesis `r ≥ 2` is essential: for
+`r = 1`, `construction2 n 1 k = k − 1` is constant in `n` (`construction2_r1`), so the
+two constructions never strictly cross and no large-`n` regime exists. -/
+
+/-- A binomial coefficient grows at least linearly along its diagonal:
+    `C(d + t, d) ≥ t + 1` (here `d = c + 1 ≥ 1`). Each Pascal step
+    `C(m+1, d) = C(m, d−1) + C(m, d)` adds the positive term `C(m, d−1) ≥ 1`,
+    so the value climbs by at least one as `t` increases. -/
+theorem choose_diag_ge (c t : ℕ) : t + 1 ≤ Nat.choose (c + 1 + t) (c + 1) := by
+  induction t with
+  | zero => simp
+  | succ t ih =>
+    have h := Nat.choose_succ_succ (c + 1 + t) c
+    simp only [Nat.succ_eq_add_one] at h
+    have hpos : 1 ≤ Nat.choose (c + 1 + t) c := Nat.choose_pos (by omega)
+    have heq : c + 1 + (t + 1) = c + 1 + t + 1 := by omega
+    rw [heq, h]
+    omega
+
+/-- Linear lower bound: for `r ≥ 2`, `k ≥ 2` and `n` past both indices,
+    `construction2 n r k ≥ n − r + 1`. The §8 top-summand bound supplies
+    `C(n−1, r−1)`, and `choose_diag_ge` makes that binomial at least `n − r + 1`. -/
+theorem construction2_linear_lb (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2)
+    (hn : n ≥ r) (hnk : n ≥ k) :
+    n - r + 1 ≤ construction2 n r k := by
+  have htop : Nat.choose (n - 1) (r - 1) ≤ construction2 n r k :=
+    construction2_ge_top_summand n r k (by omega) hk hnk
+  have hdiag := choose_diag_ge (r - 2) (n - r)
+  have hidx : Nat.choose ((r - 2) + 1 + (n - r)) ((r - 2) + 1)
+      = Nat.choose (n - 1) (r - 1) := by
+    congr 1 <;> omega
+  rw [hidx] at hdiag
+  omega
+
+/-- `construction2` is unbounded in `n` (for `r ≥ 2`, `k ≥ 2`): it exceeds every `M`.
+    Immediate from the linear lower bound. -/
+theorem construction2_unbounded (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) (M : ℕ) :
+    ∃ n, M ≤ construction2 n r k := by
+  refine ⟨M + r + k, ?_⟩
+  have h := construction2_linear_lb (M + r + k) r k hr hk (by omega) (by omega)
+  omega
+
+/-- The large-`n` regime exists for every `r ≥ 2`, `k ≥ 2`: beyond some `N`,
+    `construction2` dominates the constant `construction1`. (Existence form;
+    `exists_threshold` upgrades this to a single sharp boundary.) -/
+theorem construction2_eventually_dominant (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ N, ∀ n, N ≤ n → construction1 r k ≤ construction2 n r k := by
+  refine ⟨construction1 r k + r + k, ?_⟩
+  intro n hn
+  have h := construction2_linear_lb n r k hr hk (by omega) (by omega)
+  omega
+
+/-- **General crossover threshold.** For every `r ≥ 2`, `k ≥ 2` there is a single
+    `n₀ ≥ k` such that, on the relevant range `n ≥ k`,
+    `construction1 r k ≤ construction2 n r k ↔ n₀ ≤ n`.
+    This is the general form of `crossover_r4k2` (which pins `n₀(4, 2) = 8`):
+    existence of the large-`n` regime (`construction2_eventually_dominant`) supplies
+    a least crossover point, and monotonicity (§1) makes the dominant region exactly
+    the up-set `[n₀, ∞)`. -/
+theorem exists_threshold (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) :
+    ∃ n₀, k ≤ n₀ ∧ ∀ n, k ≤ n →
+      (construction1 r k ≤ construction2 n r k ↔ n₀ ≤ n) := by
+  obtain ⟨N, hN⟩ := construction2_eventually_dominant r k hr hk
+  have hex : ∃ t, construction1 r k ≤ construction2 (k + t) r k :=
+    ⟨N, hN (k + N) (by omega)⟩
+  refine ⟨k + Nat.find hex, by omega, ?_⟩
+  intro n hn
+  obtain ⟨s, rfl⟩ : ∃ s, n = k + s := ⟨n - k, by omega⟩
+  constructor
+  · intro hP
+    have hfs : Nat.find hex ≤ s := Nat.find_min' hex hP
+    omega
+  · intro hle
+    have hfs : Nat.find hex ≤ s := by omega
+    have hspec : construction1 r k ≤ construction2 (k + Nat.find hex) r k :=
+      Nat.find_spec hex
+    have hmono : construction2 (k + Nat.find hex) r k ≤ construction2 (k + s) r k :=
+      construction2_mono (k + Nat.find hex) (k + s) r k (by omega) (by omega)
+        (by omega) (by omega)
+    exact le_trans hspec hmono
+
+/-! ### The `r = 1` boundary: no large-`n` regime.
+
+For `r = 1` the difference of binomials degenerates to a constant, so `construction2`
+never grows and the crossover analysis of §9 has no content — confirming that
+`r ≥ 2` is exactly the right hypothesis for the large-`n` regime. -/
+
+/-- For `r = 1`, `construction2 n 1 k = k − 1` is independent of `n`:
+    `C(n,1) − C(n−k+1,1) = n − (n−k+1) = k − 1`. -/
+theorem construction2_r1 (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ k) :
+    construction2 n 1 k = k - 1 := by
+  unfold construction2
+  simp only [Nat.choose_one_right]
+  omega
+
+/-- Concrete linear lower bound at the crossover: `n − r + 1 = 5 ≤ 35 = construction2 8 4 2`. -/
+example : 8 - 4 + 1 ≤ construction2 8 4 2 := by decide
+
+/-- The `r = 1` degeneracy, concretely: `construction2 10 1 3 = k − 1 = 2`, constant in `n`. -/
+example : construction2 10 1 3 = 2 := by decide
+
 end Erdos1020OQ02
