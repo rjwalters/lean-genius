@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "The multiplicative structure of the weak-composition generating function",
+    "content": "The header recalls OQ-01's identification of the enumerative generating function W k = ∑ₙ #{f : Fin k → ℕ // ∑ᵢ f(i) = n}·Xⁿ with Mathlib's algebraic series invOneSubPow S k = 1/(1−X)ᵏ, and announces this entry's content: the exponential law W(k₁)·W(k₂) = W(k₁+k₂) with unit W(0) = 1, and its coefficientwise reading, the Vandermonde convolution for negative-binomial coefficients. Combinatorially the law is the concatenation rule — gluing a weak composition of i into k₁ parts onto one of j into k₂ parts yields a weak composition of i+j into k₁+k₂ parts, uniquely. Mathlib supplies invOneSubPow_add but no weak compositions and no negative-binomial convolution; both are new here.",
+    "mathContext": "$W(k_1)\\cdot W(k_2) = W(k_1+k_2),\\quad W(0)=1$, with $W(k)=\\sum_n \\#\\{f:\\mathrm{Fin}\\,k\\to\\mathbb N\\mid \\sum_i f(i)=n\\}X^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "weak composition",
+      "generating function",
+      "negative-binomial coefficient",
+      "Vandermonde convolution"
+    ],
+    "prerequisites": [
+      "power series",
+      "geometric series 1/(1−x)"
+    ]
+  },
+  {
+    "id": "ann-unit",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 65,
+      "endLine": 80
+    },
+    "type": "lemma",
+    "title": "The empty composition is the unit: W(0) = 1",
+    "content": "weakCompositionGenFun_zero proves W(0) = 1 by coefficient extensionality. Through the parent card_weakComposition, coeff n (W 0) = ((n + 0 − 1).choose n : S), which equals 1 at n = 0 and 0 for n = m + 1 (since m.choose (m + 1) = 0 by Nat.choose_eq_zero_of_lt), matching coeff_one n = if n = 0 then 1 else 0. This closes the k = 0 boundary that OQ-01's 0 < k hypothesis had left open, so the concatenation law can be stated as a clean monoid identity for all k ≥ 0.",
+    "mathContext": "$\\mathrm{coeff}_n(W(0)) = \\binom{n-1}{n} = [n=0]$, so $W(0) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empty product",
+      "binomial coefficient vanishing"
+    ],
+    "prerequisites": [
+      "PowerSeries.coeff_one",
+      "Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 82,
+      "endLine": 90
+    },
+    "type": "lemma",
+    "title": "The generating-function bridge for all k",
+    "content": "weakCompositionGenFun_eq_invOneSubPow_val upgrades OQ-01's bridge (proved only for 0 < k) to every k via a zero/positive case split: at k = 0 it is W(0) = 1 = (invOneSubPow S 0).val using weakCompositionGenFun_zero, invOneSubPow_zero and Units.val_one; for k > 0 it is OQ-01's weakCompositionGenFun_eq_invOneSubPow. The total bridge is exactly what allows the multiplicativity below to drop all positivity hypotheses.",
+    "mathContext": "$W(k) = (\\mathrm{invOneSubPow}\\,S\\,k).\\mathrm{val} = 1/(1-X)^k$ for all $k \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "units of a power series ring",
+      "case split on positivity"
+    ],
+    "prerequisites": [
+      "invOneSubPow_zero",
+      "Units.val_one"
+    ]
+  },
+  {
+    "id": "ann-concatenation",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 92,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "The concatenation law W(k₁)·W(k₂) = W(k₁+k₂)",
+    "content": "weakCompositionGenFun_mul rewrites all three generating functions to their invOneSubPow values through the total bridge, then applies Mathlib's invOneSubPow_add — multiplicativity of the algebraic inverse in the units group S⟦X⟧ˣ — together with Units.val_mul. The multiplicative structure is inherited verbatim from the exponential law of 1/(1−X); no combinatorial bijection of tuples is constructed. This is the generating-function incarnation of 'concatenation adds both length and weight'.",
+    "mathContext": "$\\frac{1}{(1-X)^{k_1}}\\cdot\\frac{1}{(1-X)^{k_2}} = \\frac{1}{(1-X)^{k_1+k_2}}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "exponential law",
+      "concatenation of compositions",
+      "multiplicative generating function"
+    ],
+    "prerequisites": [
+      "invOneSubPow_add",
+      "Units.val_mul"
+    ]
+  },
+  {
+    "id": "ann-vandermonde",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 106,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "The negative-binomial Vandermonde convolution",
+    "content": "vandermonde_negBinomial extracts coefficient n of the concatenation law over ℤ. A local lemma hWcoeff rewrites coeff m (W k) to ((m + k − 1).choose m : ℤ) via coeff_weakCompositionGenFun and card_weakComposition. Applying congrArg (coeff n) to weakCompositionGenFun_mul ℤ k₁ k₂ and simplifying with PowerSeries.coeff_mul and hWcoeff yields the convolution as an identity of ℤ-casts over Finset.antidiagonal n; exact_mod_cast then transports it to ℕ. Stated without positivity hypotheses: for k₁, k₂ ≥ 1 it is the genuine negative-binomial Vandermonde identity, the closed-side analogue (under x ↦ 1/(1−x)) of ∑ᵢ C(a,i)·C(b,n−i) = C(a+b,n).",
+    "mathContext": "$\\sum_{i+j=n} \\binom{i+k_1-1}{i}\\binom{j+k_2-1}{j} = \\binom{n+k_1+k_2-1}{n}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cauchy product",
+      "Vandermonde convolution",
+      "negative binomial"
+    ],
+    "prerequisites": [
+      "PowerSeries.coeff_mul",
+      "exact_mod_cast",
+      "Finset.antidiagonal"
+    ]
+  }
+]
