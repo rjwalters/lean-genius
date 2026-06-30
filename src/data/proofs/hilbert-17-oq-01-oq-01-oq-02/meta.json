@@ -1,0 +1,205 @@
+{
+  "id": "hilbert-17-oq-01-oq-01-oq-02",
+  "title": "Strict Asymmetric Fejér–Riesz Normalization, Constructively: One Square of Degree Exactly ½·deg p, the Other Strictly Smaller",
+  "slug": "hilbert-17-oq-01-oq-01-oq-02",
+  "description": "The sibling entry hilbert-17-oq-01-oq-01 proves the symmetric Fejér–Riesz bound — every nonnegative real univariate polynomial p is p = u² + v² with both summands of degree at most ½·deg p — and leaves as its open question #1 the strict asymmetric normalization: one square of degree exactly n = ½·deg p, the other strictly smaller. This entry answers that question by a *constructive* route: rather than first producing a symmetric decomposition and then rotating it (the post-hoc 2×2 rotation argument of the concurrent sibling hilbert-17-oq-01-oq-01-oq-01, PR #31649), it strengthens the strong-induction engine itself so the asymmetry is threaded through the certificate as it is built. The invariant carried is 2·deg u = deg p together with v.degree < u.degree, using the WithBot ℕ-valued Polynomial.degree so the zero polynomial (degree ⊥) is uniformly the strictly-smaller summand and the degree-0 constant case needs no exception (the rotation form requires deg p ≥ 2). The genuinely new structural payload is leadingCoeff_pos_of_psd: a nonzero PSD univariate polynomial has strictly positive leading coefficient, because in the asymmetric normal form the top coefficient comes entirely from the leading square u² and equals (leadingCoeff u)² > 0 — a fact the symmetric bound leaves undetermined. Fully elementary, 0 axioms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-06-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17OQ01OQ01OQ02.lean",
+    "tags": [
+      "real-algebra",
+      "sum-of-squares",
+      "hilbert-17",
+      "fejer-riesz",
+      "degree-bound",
+      "univariate-polynomials",
+      "leading-coefficient",
+      "fundamental-theorem-of-algebra",
+      "inequalities"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.exists_root",
+        "description": "The fundamental theorem of algebra: a complex polynomial of positive degree has a root. Supplies, for deg p ≥ 1, a (possibly non-real) root z of p, the engine of the induction step.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Polynomials"
+      },
+      {
+        "theorem": "quadratic_dvd_of_aeval_eq_zero_im_ne_zero",
+        "description": "If a real polynomial has a non-real complex root z, the real quadratic (X − re z)² + (im z)² divides it. Pulls out the positive quadratic factor in the non-real-root branch.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "degree_add_eq_left_of_degree_lt",
+        "description": "If deg q < deg p then deg (p + q) = deg p. Pins the degree of the new leading square U = (X − C re)·u − (C im)·v to deg((X − C re)·u) = deg u + 1, since the correction term has strictly smaller degree.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Operations"
+      },
+      {
+        "theorem": "leadingCoeff_add_of_degree_lt",
+        "description": "If deg p < deg q then (p + q).leadingCoeff = q.leadingCoeff. Used to read the leading coefficient of p = u² + v² off the dominant square u², giving leadingCoeff p = (leadingCoeff u)².",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "Nat.strongRecOn",
+        "description": "Strong recursion on ℕ. The induction is on the degree d of p, with the smaller-degree quotient handled by the strong induction hypothesis.",
+        "module": "Mathlib.Init.Data.Nat.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "psd_asym_aux: the strict asymmetric strong-induction engine — every nonzero PSD polynomial of degree d is u² + v² with 2·deg u = deg p (so u² carries the full degree) and v.degree < u.degree, threading the asymmetry through the same real-root / non-real-root induction tree used by the parent.",
+      "univariate_psd_two_sos_asym: the public asymmetric normal form, with no degree restriction (the constructive WithBot-degree invariant covers the deg-0 constant case for free, where the rotation-based sibling requires deg p ≥ 2).",
+      "leadingCoeff_pos_of_psd: a nonzero PSD univariate polynomial has strictly positive leading coefficient — a structural corollary not implied by the symmetric Fejér–Riesz bound, obtained because the asymmetric form forces the top coefficient to equal (leadingCoeff u)² > 0.",
+      "natDegree_even_of_psd: the degree of a nonzero PSD univariate polynomial is even (2·deg u = deg p), recovered directly from the asymmetric engine.",
+      "leading_square_full_degree: repackaging of the normal form at the level of the squares themselves — (u²).natDegree = deg p while (v²).degree < (u²).degree.",
+      "wb_add_lt / wb_one_add_le: two small WithBot ℕ order lemmas isolating the only subtlety in the construction — ⊥ absorbs addition, so strict monotonicity of degree under multiplication by (X − C r) must be argued by hand rather than via a generic AddLeftStrictMono instance."
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "The symmetric Fejér–Riesz degree bound (sibling entry hilbert-17-oq-01-oq-01) and the parent existence theorem (Hilbert17UnivariatePSDSOS.lean).",
+      "The fundamental theorem of algebra and conjugate-pair factorization of real polynomials.",
+      "Even multiplicity of real roots of a nonnegative polynomial (the parent's analytic crux sq_dvd_of_psd_root).",
+      "The Brahmagupta–Fibonacci identity (a·c − b·d)² + (a·d + b·c)² = (a² + b²)(c² + d²).",
+      "Polynomial.degree as a WithBot ℕ value, with degree 0 = ⊥ and degree_mul over the integral domain ℝ[X]."
+    ],
+    "lineCount": 284,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17-oq-01-oq-01",
+        "relationship": "Parent: proves the symmetric Fejér–Riesz bound 2·deg u ≤ deg p, 2·deg v ≤ deg p and poses the strict asymmetric normalization as its open question #1. This entry answers that question constructively and adds the leading-coefficient sign corollary."
+      },
+      {
+        "id": "hilbert-17-oq-01-oq-01-oq-01",
+        "relationship": "Sibling (concurrent, PR #31649): obtains the same asymmetric normal form by a post-hoc constant 2×2 rotation of an existing two-squares pair, for deg p ≥ 2. This entry gives an independent constructive derivation that threads the asymmetry through the induction (no degree restriction) and contributes the distinct leadingCoeff_pos_of_psd structural corollary."
+      },
+      {
+        "id": "hilbert-17",
+        "relationship": "Grandparent: states Hilbert's 17th and Artin's theorem. Its univariate strand is discharged by Hilbert17UnivariatePSDSOS.lean; this entry pins down the exact degree split and the sign of the leading coefficient of the certificate."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms univariate_psd_two_sos_asym / natDegree_even_of_psd / leading_square_full_degree / leadingCoeff_pos_of_psd reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. Reuses only 0-axiom theorems from the parent file Hilbert17UnivariatePSDSOS.lean.",
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 284,
+    "namespace": "Hilbert17OQ01OQ01OQ02",
+    "opens": [
+      "Polynomial",
+      "Filter",
+      "Topology"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 0,
+    "lemmaCount": 2,
+    "imports": [
+      "Mathlib",
+      "Proofs.Hilbert17UnivariatePSDSOS"
+    ],
+    "path": "Proofs/Hilbert17OQ01OQ01OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "psd_asym_aux",
+      "type": "theorem",
+      "description": "Strict asymmetric strong-induction engine: every nonzero PSD polynomial of degree d is u² + v² with 2·deg u = deg p and v.degree < u.degree.",
+      "leanType": "∀ (d : ℕ) (p : ℝ[X]), p.natDegree = d → p ≠ 0 → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ 2 * u.natDegree = p.natDegree ∧ v.degree < u.degree"
+    },
+    {
+      "name": "univariate_psd_two_sos_asym",
+      "type": "theorem",
+      "description": "Univariate Hilbert 17, strict asymmetric Fejér–Riesz normalization: every nonzero PSD polynomial is u² + v² with the leading square u² of degree exactly deg p (so deg p is even) and v² strictly smaller.",
+      "leanType": "(p : ℝ[X]) → p ≠ 0 → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ 2 * u.natDegree = p.natDegree ∧ v.degree < u.degree"
+    },
+    {
+      "name": "leadingCoeff_pos_of_psd",
+      "type": "theorem",
+      "description": "A nonzero PSD univariate polynomial has strictly positive leading coefficient, equal to (leadingCoeff u)² in the asymmetric normal form.",
+      "leanType": "(p : ℝ[X]) → p ≠ 0 → IsPSD p → 0 < p.leadingCoeff"
+    },
+    {
+      "name": "natDegree_even_of_psd",
+      "type": "theorem",
+      "description": "The degree of a nonzero PSD univariate polynomial is even (it equals 2·deg u for the leading square u²).",
+      "leanType": "(p : ℝ[X]) → p ≠ 0 → IsPSD p → Even p.natDegree"
+    },
+    {
+      "name": "leading_square_full_degree",
+      "type": "theorem",
+      "description": "Square-level form of the normalization: (u²).natDegree = deg p while (v²).degree < (u²).degree.",
+      "leanType": "(p : ℝ[X]) → p ≠ 0 → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ (u ^ 2).natDegree = p.natDegree ∧ (v ^ 2).degree < (u ^ 2).degree"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Hilbert classified in 1888 the cases where a nonnegative real polynomial is already a sum of polynomial squares; the univariate case is the most classical and is the algebraic shadow of the Fejér–Riesz theorem (1916). Over ℂ a real polynomial p ≥ 0 of degree 2n factors through one root of each conjugate pair as p = q·q̄ for a complex polynomial q of degree n with real leading coefficient; writing q = u + i·v gives p = u² + v² with deg u = n and deg v < n — the leading coefficient of q, being real, contributes only to u, so the imaginary part is strictly lower degree. This strict asymmetric form is what a complex spectral factorization actually returns, and it is the natural normalization that the symmetric ½·deg p bound stops just short of. The sign of the leading coefficient — necessarily positive, since p cannot tend to −∞ — is the most elementary structural invariant of a PSD polynomial and falls straight out of the asymmetric form.",
+    "problemStatement": "Answer open question #1 of the sibling entry: for p ∈ ℝ[x] nonzero with p(x) ≥ 0 for all real x, produce u, v with p = u² + v², 2·deg u = deg p (the leading square attains the full half-degree, forcing deg p even), and v.degree < u.degree (the auxiliary square is strictly smaller). Do so constructively, by strengthening the strong-induction certificate rather than rotating a finished decomposition, and read off the leading-coefficient sign of a PSD polynomial as a corollary.",
+    "proofStrategy": "Strong induction on d = deg p carrying the invariant 2·deg u = deg p ∧ v.degree < u.degree, with degree taken in WithBot ℕ so the zero polynomial (degree ⊥) is uniformly the strictly-smaller summand. Constant base case: u = C√c (c = p(0) > 0), v = 0, and ⊥ < 0. Real-root branch: even multiplicity gives p = (X − C r)²·q; multiplying the IH pair (u', v') by the same degree-1 factor (X − C r) preserves strictness (deg v' < deg u' ⟹ deg((X − C r)v') < deg((X − C r)u')) and raises 2·deg u by 2. Non-real-root branch: the positive quadratic Q = (X − C re)² + (C im)² divides p; Brahmagupta gives U = (X − C re)·u' − (C im)·v', V = (X − C re)·v' + (C im)·u'. The correction (C im)·v' has degree deg v' < deg u' + 1, so deg U = deg u' + 1 (via degree_add_eq_left_of_degree_lt); and since deg v' < deg u' forces deg((X − C re)·v') ≤ deg u', both summands of V stay ≤ deg u' < deg u' + 1 = deg U, preserving strictness. The WithBot order steps are isolated into two helper lemmas because ⊥ absorbs addition. The leading-coefficient corollary reads leadingCoeff p off the dominant square u² (leadingCoeff_add_of_degree_lt), giving (leadingCoeff u)² > 0.",
+    "keyInsights": [
+      "Strictness is preserved by the induction because both branches multiply the asymmetric pair by a common factor whose square root has degree 1: deg v < deg u is stable under (u, v) ↦ ((X − C r)·u, (X − C r)·v), and in the Brahmagupta branch the imaginary correction is always strictly below the dominant real term.",
+      "Using WithBot ℕ degree rather than natDegree with a v = 0 disjunction makes the deg-0 constant case (where v = 0 has degree ⊥) uniform — this is exactly why the constructive form needs no deg p ≥ 2 hypothesis, unlike the rotation form.",
+      "The only friction is that WithBot ℕ is not an AddLeftStrictMono structure (⊥ + x = ⊥ absorbs), so '1 + a < 1 + b from a < b' must be proved by a case split on ⊥; isolating this into wb_add_lt / wb_one_add_le keeps the main induction clean.",
+      "Leading-coefficient positivity is a genuine consequence of the asymmetry, not of mere decomposability: only once v² is known to be strictly lower degree does leadingCoeff p collapse to (leadingCoeff u)², which is a nonzero real square and hence positive.",
+      "This is an independent, constructive proof of a normal form also obtained concurrently by a 2×2 coefficient rotation (sibling oq-01-oq-01-oq-01); the two derivations are complementary — rotation post-processes any decomposition, induction builds the normalized one directly."
+    ]
+  },
+  "conclusion": {
+    "summary": "A 284-line, 0-sorry, 0-axiom answer to open question #1 of hilbert-17-oq-01-oq-01: a constructive strict asymmetric Fejér–Riesz normalization in which the leading square u² has degree exactly deg p (forcing deg p even) and the auxiliary square v² is strictly smaller, valid with no degree restriction. The genuinely new structural payload is that a nonzero PSD univariate polynomial has strictly positive leading coefficient.",
+    "implications": "The asymmetric form is the normalization a complex spectral factorization returns, and proving it constructively shows the parent's elementary real induction is strong enough to produce it without any complex factorization in the proof. The leading-coefficient sign theorem is a reusable structural fact about PSD polynomials that the symmetric degree bound alone cannot supply.",
+    "openQuestions": [
+      "Bound the bit-size / height of the coefficients of u and v in the asymmetric normal form in terms of p, toward a complexity-aware univariate certificate.",
+      "Characterize the freedom in the normalization: the asymmetric pair is unique only up to the choice of one root per conjugate pair (a finite 2^k ambiguity); make that ambiguity precise at the level of u, v.",
+      "Transport the leading-coefficient positivity statement to the multivariate setting as a necessary condition feeding back into SOS-certificate search."
+    ]
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "Fejér–Riesz theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fej%C3%A9r%E2%80%93Riesz_theorem"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    }
+  ],
+  "crossReferences": [],
+  "sections": [
+    {
+      "id": "withbot-helpers",
+      "title": "WithBot ℕ order lemmas for degree bookkeeping",
+      "startLine": 51,
+      "endLine": 86,
+      "summary": "wb_add_lt and wb_one_add_le isolate the only subtlety of the construction: in WithBot ℕ the bottom element ⊥ absorbs addition, so the strict monotonicity 'a < b ⟹ 1 + a ≤ b' and 'a + c < b + d' needed to compare degrees through multiplication by (X − C r) are proved by explicit case splits on ⊥ rather than via a generic ordered-monoid instance."
+    },
+    {
+      "id": "engine",
+      "title": "The strict asymmetric induction engine",
+      "startLine": 88,
+      "endLine": 237,
+      "summary": "psd_asym_aux: strong induction on deg p carrying 2·deg u = deg p ∧ v.degree < u.degree. The constant base case gives u = C√c, v = 0; the real-root branch multiplies the IH pair by (X − C r); the non-real-root branch combines them by Brahmagupta, using degree_add_eq_left_of_degree_lt to pin deg U = deg u + 1 and the helper lemmas to keep deg V strictly below."
+    },
+    {
+      "id": "public",
+      "title": "Public normal form, even degree, and leading-coefficient sign",
+      "startLine": 239,
+      "endLine": 284,
+      "summary": "univariate_psd_two_sos_asym instantiates the engine; natDegree_even_of_psd and leading_square_full_degree repackage it; leadingCoeff_pos_of_psd reads the leading coefficient of p off the dominant square u² via leadingCoeff_add_of_degree_lt, giving (leadingCoeff u)² > 0."
+    }
+  ]
+}

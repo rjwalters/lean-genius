@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-h17-oq010102-helpers",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 51,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "WithBot ℕ order lemmas: working around ⊥-absorption",
+    "content": "Polynomial.degree is valued in WithBot ℕ, with degree 0 = ⊥. This is exactly the right home for the asymmetric invariant v.degree < u.degree, because the auxiliary square may be the zero polynomial (degree ⊥), and ⊥ is genuinely below every finite degree — no v = 0 case exception is needed. The price is that WithBot ℕ is not strictly monotone under addition: ⊥ + x = ⊥ absorbs, so the generic 'add_lt_add_left' instance does not fire. The two helper lemmas wb_add_lt (a ≤ b, c < d, b ≠ ⊥ ⟹ a + c < b + d) and wb_one_add_le (a < b ⟹ 1 + a ≤ b) discharge precisely the degree comparisons that arise when multiplying a polynomial by the degree-1 factor (X − C r), via explicit case splits on whether each operand is ⊥."
+  },
+  {
+    "id": "ann-h17-oq010102-realroot",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 158
+    },
+    "type": "technique",
+    "title": "Real-root branch: strictness is preserved by a common factor",
+    "content": "When the FTA root r is real, even multiplicity (sq_dvd_of_psd_root, reused verbatim from the parent) gives p = (X − C r)²·q with q PSD of degree deg p − 2. The induction hypothesis yields q = u'² + v'² with 2·deg u' = deg q and v'.degree < u'.degree. The new pair is (X − C r)·u', (X − C r)·v' — both summands multiplied by the SAME degree-1 factor. Strictness is preserved automatically: degree_mul turns v'.degree < u'.degree into ((X − C r)·v').degree < ((X − C r)·u').degree (this is exactly wb_add_lt with the common left summand degree (X − C r) = 1), and 2·deg u jumps from deg q to deg q + 2 = deg p."
+  },
+  {
+    "id": "ann-h17-oq010102-nonreal",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 159,
+      "endLine": 237
+    },
+    "type": "technique",
+    "title": "Non-real-root branch: Brahmagupta keeps the imaginary part strictly lower",
+    "content": "For a non-real root the positive quadratic Q = (X − C re)² + (C im)² divides p, with quotient q PSD of degree deg p − 2. The Brahmagupta–Fibonacci identity turns Q·(u'² + v'²) into U² + V² with U = (X − C re)·u' − (C im)·v' and V = (X − C re)·v' + (C im)·u'. The key is that the correction (C im)·v' has degree v'.degree < u'.degree + 1, so degree_add_eq_left_of_degree_lt pins deg U = deg u' + 1 exactly. For V, both (X − C re)·v' (degree ≤ deg u', since deg v' < deg u') and (C im)·u' (degree deg u') stay ≤ deg u' < deg u' + 1 = deg U, so V.degree < U.degree. Strictness survives the combination even though V mixes u' and v'."
+  },
+  {
+    "id": "ann-h17-oq010102-leadingcoeff",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 270,
+      "endLine": 284
+    },
+    "type": "insight",
+    "title": "Leading-coefficient positivity falls out of the asymmetry",
+    "content": "leadingCoeff_pos_of_psd is the genuinely new structural statement of this entry. Once the normal form gives p = u² + v² with v² strictly lower degree than u², the leading coefficient of the sum collapses (leadingCoeff_add_of_degree_lt) to that of the dominant square: leadingCoeff p = (u²).leadingCoeff = (u.leadingCoeff)². Since u ≠ 0, its leading coefficient is a nonzero real, and its square is strictly positive. This recovers the elementary fact that a nonnegative real polynomial cannot have negative leading coefficient (it cannot tend to −∞) — but as a clean algebraic corollary of the certificate's shape, something the symmetric ½·deg p bound, which says nothing about which square dominates, cannot deliver."
+  }
+]
