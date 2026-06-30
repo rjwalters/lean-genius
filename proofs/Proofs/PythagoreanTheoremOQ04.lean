@@ -42,6 +42,7 @@ transporting Mathlib's classification through the identity `gaussianInt_sq`.
 - [x] 0 `axiom` declarations, no structure-encoded assumptions
 - [x] Soundness derived from norm multiplicativity (`Zsqrtd.norm_mul`)
 - [x] Completeness: primitive triples are Gaussian squares
+- [x] Uniqueness: the generator is canonical up to the sign subgroup `{±1}`
 -/
 
 namespace PythagoreanTheoremOQ04
@@ -122,6 +123,56 @@ theorem gaussian_completeness {x y z : ℤ} (h : PythagoreanTriple x y z)
     · simp [hy]
   · -- z = N(m + ni)
     rw [gaussianInt_norm, hz]; ring
+
+/-! ## Uniqueness of the generator up to sign
+
+`gaussian_completeness` produces *a* generator `g = m + ni` for each primitive triple.
+How unique is it? Squaring in `ℤ[i]` is two-to-one: `g²` determines `g` only up to the
+sign `±1`. Among the four units `{±1, ±i}` of `ℤ[i]`, only `±1` fix squares — multiplying
+by `i` sends `g²` to `-g²` (`mul_I_sq` below). So the generator of a primitive triple is
+canonical exactly up to sign, no finer. -/
+
+/-- In the integral domain `ℤ[i]`, two Gaussian integers have equal squares iff they are
+equal or negatives. This is `sq_eq_sq_iff_eq_or_eq_neg` specialized to `ℤ[i]`, whose
+`EuclideanDomain` structure supplies `NoZeroDivisors`. -/
+theorem gaussianInt_sq_eq_iff (g h : ℤ[i]) :
+    g ^ 2 = h ^ 2 ↔ g = h ∨ g = -h :=
+  sq_eq_sq_iff_eq_or_eq_neg
+
+/-- **Uniqueness up to sign.** If two Gaussian integers both square to the same value
+`x + yi` (e.g. two generators of the same primitive triple obtained from
+`gaussian_completeness`), they differ only by `±1`. -/
+theorem generator_unique_up_to_sign {x y : ℤ} {g h : ℤ[i]}
+    (hg : (⟨x, y⟩ : ℤ[i]) = g ^ 2) (hh : (⟨x, y⟩ : ℤ[i]) = h ^ 2) :
+    g = h ∨ g = -h := by
+  apply (gaussianInt_sq_eq_iff g h).mp
+  rw [← hg, ← hh]
+
+/-- In coordinates: a primitive triple determines its generating pair `(m, n)` up to a
+simultaneous sign flip. If `(⟨m, n⟩)² = (⟨m', n'⟩)²` then `(m, n) = (m', n')` or
+`(m, n) = (-m', -n')`. -/
+theorem generator_coords_unique_up_to_sign {m n m' n' : ℤ}
+    (h : (⟨m, n⟩ : ℤ[i]) ^ 2 = (⟨m', n'⟩ : ℤ[i]) ^ 2) :
+    (m = m' ∧ n = n') ∨ (m = -m' ∧ n = -n') := by
+  rcases (gaussianInt_sq_eq_iff _ _).mp h with heq | hneg
+  · left
+    exact ⟨congrArg Zsqrtd.re heq, congrArg Zsqrtd.im heq⟩
+  · right
+    have hre := congrArg Zsqrtd.re hneg
+    have him := congrArg Zsqrtd.im hneg
+    simp only [Zsqrtd.re_neg, Zsqrtd.im_neg] at hre him
+    exact ⟨hre, him⟩
+
+/-- The imaginary unit `i = ⟨0, 1⟩` squares to `-1` in `ℤ[i]`. -/
+theorem I_sq : (⟨0, 1⟩ : ℤ[i]) ^ 2 = -1 := by
+  rw [gaussianInt_sq]
+  apply Zsqrtd.ext <;> simp
+
+/-- Multiplying a generator by the unit `i` negates its square: `(i·g)² = -g²`. Hence `i`
+does *not* preserve squares, which is precisely why the generator is unique only up to the
+sign subgroup `{±1}` and not up to the full unit group `{±1, ±i}`. -/
+theorem mul_I_sq (g : ℤ[i]) : ((⟨0, 1⟩ : ℤ[i]) * g) ^ 2 = -(g ^ 2) := by
+  rw [mul_pow, I_sq, neg_one_mul]
 
 /-! ## Worked examples -/
 
