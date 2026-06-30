@@ -62,4 +62,38 @@ theorem sCircle_neg_centre (O : E) (ρ : ℝ) :
   ext P
   simp only [sCircle, Set.mem_setOf_eq, scos_neg_right, Real.cos_pi_sub, neg_inj]
 
+/-! ## Tangency under the antipodal map
+
+The two-pole identity propagates to the tangency relations: replacing a circle's centre by
+its antipodal pole (`O ↦ −O`, `ρ ↦ π − ρ`) leaves the *circle* unchanged but **swaps the two
+tangency types**.  This is a purely spherical phenomenon — in the Euclidean plane a circle has
+a single centre, so there is no antipodal twin and external/internal tangency are not related
+by any centre swap. -/
+
+/-- **Spherical distance under the antipodal map.**  Sending the second point to its antipode
+complements the spherical distance: `sdist P (−Q) = π − sdist P Q`.  The metric counterpart of
+`scos_neg_right`, via `arccos (−x) = π − arccos x`. -/
+theorem sdist_neg_right (P Q : E) : sdist P (-Q) = Real.pi - sdist P Q := by
+  unfold sdist
+  rw [inner_neg_right, Real.arccos_neg]
+
+/-- **External tangency is internal tangency to the antipodal twin.**  Two spherical circles
+`(O₁, ρ₁)`, `(O₂, ρ₂)` whose angular radii satisfy `ρ₁ + ρ₂ ≤ π` are externally tangent iff
+the first is *internally* tangent to the antipodal description `(−O₂, π − ρ₂)` of the second
+circle (which, by `sCircle_neg_centre`, is the very same circle).  The sum bound `ρ₁ + ρ₂ ≤ π`
+fixes the sign of `ρ₁ − (π − ρ₂) = ρ₁ + ρ₂ − π` so the internal `|ρ₁ − ρ₂'|` opens up to
+`π − (ρ₁ + ρ₂)`, which the distance complement `sdist O₁ (−O₂) = π − sdist O₁ O₂` matches
+exactly against `sdist O₁ O₂ = ρ₁ + ρ₂`.
+
+There is no Euclidean analogue: a plane circle has one centre, so external and internal
+tangency are genuinely distinct relations with no centre-swap bridge between them. -/
+theorem externallyTangent_iff_internallyTangent_antipode
+    (O₁ O₂ : E) {ρ₁ ρ₂ : ℝ} (hsum : ρ₁ + ρ₂ ≤ Real.pi) :
+    ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ InternallyTangent O₁ ρ₁ (-O₂) (Real.pi - ρ₂) := by
+  unfold ExternallyTangent InternallyTangent
+  rw [sdist_neg_right, abs_of_nonpos (by linarith : ρ₁ - (Real.pi - ρ₂) ≤ 0)]
+  constructor
+  · intro h; rw [h]; ring
+  · intro h; linarith
+
 end FeuerbachsTheoremOQ04

@@ -1,5 +1,36 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-06-30 (researcher-1): tangency under the antipodal map [ACT, VERIFIED 0-axiom]
+
+**Mode**: ACT (CONTINUE). The internal-tangency tangent-point track on the *shared* main file
+`FeuerbachsTheoremOQ04.lean` is owned by an OPEN PR (#31620, researcher-2:
+`internallyTangent_tangent_point_spec` + `internallyTangent_has/unique_common_point`), so to
+avoid clobbering it this session extends only the **collision-free companion**
+`FeuerbachsTheoremOQ04Antipode.lean`, building on the merged two-pole identity.
+
+**Outcome**: PROGRESS — added the antipodal-map propagation of the tangency relations (+2 thm,
+~30 L). Verified **0-axiom / 0-sorry** (host `bin/lake env lean`, Docker down; `#print axioms`
+= propext/Classical.choice/Quot.sound only). Compiled the parent olean first (`-o
+.lake/build/lib/lean/Proofs/FeuerbachsTheoremOQ04.olean`) since the shared cache lacked it.
+
+### Delivered (appended to `FeuerbachsTheoremOQ04Antipode.lean`)
+- **`sdist_neg_right`** : `sdist P (−Q) = π − sdist P Q` — the metric counterpart of
+  `scos_neg_right`, via `Real.arccos_neg` (`arccos(−x) = π − arccos x`, unconditional).
+- **`externallyTangent_iff_internallyTangent_antipode`** (headline) : for `ρ₁ + ρ₂ ≤ π`,
+  `ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ InternallyTangent O₁ ρ₁ (−O₂) (π − ρ₂)`. **External
+  tangency is internal tangency to the antipodal twin** — a purely spherical phenomenon (a
+  plane circle has one centre, so no centre-swap bridges the two relations). The sum bound
+  fixes the sign of `ρ₁ − (π − ρ₂) = ρ₁ + ρ₂ − π ≤ 0`, so `|ρ₁ − ρ₂'|` opens to `π − (ρ₁+ρ₂)`,
+  matched by the distance complement against `sdist O₁ O₂ = ρ₁ + ρ₂` (`abs_of_nonpos` + a
+  two-line `constructor`/`linarith`).
+
+### Next steps (unchanged direction)
+1. Spherical incircle / nine-point circle constructions for a spherical triangle (construction-
+   heavy), then the spherical Feuerbach tangency itself.
+2. Spherical triangle inequality to upgrade `(Sⁿ, sdist)` to a full `MetricSpace`.
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
 ## Session 2026-06-28 (researcher-4): antipodal-pole layer — two-pole description of a spherical circle [BUILD-PENDING: Docker outage]
 
 **Mode**: ACT (CONTINUE). The metric layer (`sdist_isMetric`, point separation, triangle
