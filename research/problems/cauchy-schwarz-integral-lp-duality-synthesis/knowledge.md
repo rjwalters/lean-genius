@@ -552,3 +552,71 @@ eliminated and the synthesis is blocked on a prerequisite repair.
    plan), then the maximality construction, then swap the parent axiom.
 4. Correct the two gallery metas (`verified` → honest status) once the chain is green
    again, or as part of the integrity-issue repair.
+
+### 2026-06-30 (Session 11, researcher-8) — PROGRESS: foundation now COMPILES (S10 premise stale); verified ingredient lemmas extracted to a buildable file + 2 new gap lemmas
+
+**Mode:** REVISIT. **Outcome:** verified progress + decisive re-survey overturning S10's blocker.
+
+**Headline — Session 10's central finding is now stale.** S10 (2026-06-24) declared the
+strand "blocked on a 58-error foundation file
+`CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`". A real host build this session
+(`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean <file>`, toolchain v4.26.0, positive
+control `BaselProblem.lean` → EXIT 0) shows that file now **compiles cleanly: EXIT 0, 0
+errors, 0 sorries** — its olean is present (built 2026-06-25). The repair landed via
+commit #29799 ("Fix 2 unknownIdentifier errors missed by error: grep (#28788)") and the
+broader #28788 effort. So `riesz_lp_surjective_from_rn`, `integrationCLM`,
+`integral_representation`, and the (private) Hölder extremizer
+`holder_extremizer_lq_bound` are all genuinely verified again.
+
+**The blocker moved up one level.** Building the next file in the chain,
+`…OQ01OQ01Incomplete01.lean` (imports only the foundation, whose olean exists), gives
+**70 errors** spread across ALL 13 declarations (error lines 75…939 of 965). These are
+*not* mechanical renames — the histogram is 12 "Application type mismatch", 10 "failed to
+synthesize", 8 "Type mismatch", 8 "rewrite pattern not found", 7 "unsolved goals", etc.
+Representative drift: `mul_lt_top` now takes `<` not `≠`; `‖·‖ₑ` vs `↑‖·‖₊` enorm/nnnorm
+coercion changes; `c • f` coe-rewrite-pattern drift. This is a multi-session repair, and a
+file is all-or-nothing for verification (no partial green). `Incomplete01` is now the
+critical-path blocker, NOT the foundation. The synthesis file imports `Incomplete01`, so
+it (and `riesz_representer_on_sigmaFinite_set`) still cannot build.
+
+**What I shipped (VERIFIED, 0-axiom):** new Mathlib-only file
+`proofs/Proofs/CauchySchwarzIntegralLpDualityIngredients.lean` (namespace
+`RieszLpDualityIngredients`), built green via host lean (EXIT 0, 0 warnings; `#print
+axioms` → `[propext, Classical.choice, Quot.sound]` only). It is picked up automatically
+by the `["Proofs","Proofs.*"]` glob in `lakefile.toml` (no `Proofs.lean` edit needed), so
+CI now guards it. Contents:
+- The four ingredient lemmas previously written *inside the synthesis file* — which does
+  **not compile** because it imports the broken `Incomplete01`, so those lemmas were
+  effectively quarantined/unverifiable in place. Re-homed here (Mathlib-only) they are
+  genuinely build-checked: `memLp_exists_sigmaFinite_support`,
+  `sigmaFinite_restrict_iUnion`, `eLpNorm_rpow_restrict_union`,
+  `eLpNorm_rpow_restrict_iUnion`. (All survive current Mathlib v4.26.0 unchanged.)
+- **NEW** `eLpNorm_rpow_restrict_diff` — `q`-power Lᵠ-seminorm additivity over a set
+  difference `B = A ⊔ (B\A)` (`A ⊆ B`), the exact decomposition the maximality *gluing*
+  uses (`U = T ⊔ (U\T)`). Specialization of `…_union` via `Set.union_diff_cancel` +
+  `disjoint_sdiff_self_right`.
+- **NEW** `eLpNorm_rpow_restrict_mono` — monotonicity of the `q`-power seminorm under
+  `A ⊆ B` (maximizing-sequence norms grow with the set). One line from `…_diff` +
+  `le_self_add`.
+
+**KEY discovery for the next session — the converse-Hölder dual-norm gap is reachable.**
+Prior sessions (S9) flagged the missing norm bound `‖g_S‖_q ≤ ‖φ‖` as a
+"converse-Hölder dual-norm" gap absent from Mathlib (Mathlib has only forward
+`norm_holderL_le`). It is **already proved inside the now-compiling foundation** as the
+private `holder_extremizer_lq_bound` (the full extremizer `h = sgn(g)|g|^{q-1}`
+construction, ~110 lines, verified). Concrete next target: on top of the foundation
+(import `Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01` — its olean exists, so this is
+host-buildable WITHOUT the broken Incomplete01), state and prove the **dual-norm
+equality** `‖integrationCLM p q … g hg‖ = (eLpNorm g q μ).toReal` for finite σ-finite μ:
+the `≤` is `LinearMap.mkContinuous_norm_le` (baked into `integrationCLM`), the `≥` is the
+extremizer (de-`private` `holder_extremizer_lq_bound` or re-derive for the generic
+pairing functional). That is a self-contained verified result that does not wait on the
+Incomplete01 repair.
+
+**Next session — corrected dependency order:**
+1. (Self-contained, NOT chain-gated) Prove the converse-Hölder dual-norm equality on the
+   compiling foundation as above — a genuine standalone verified contribution.
+2. Repair `Incomplete01.lean`'s 70 Mathlib-drift errors (multi-session, all-or-nothing).
+3. Then `…OQ01OQ01.lean` (σ-finite) → surface `hg_norm` → maximality construction (now
+   has ALL ingredients: this file's lemmas + the dual-norm bound) → swap the parent axiom.
+4. Correct the two `verified` gallery metas flagged in #28788 once the chain is green.
