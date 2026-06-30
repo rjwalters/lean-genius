@@ -1,0 +1,133 @@
+{
+  "id": "van-der-waerden-first-moment-oq-01-oq-01",
+  "title": "The Triangular AP Count is Exact: Injectivity of the (a, d) Parameterisation",
+  "slug": "van-der-waerden-first-moment-oq-01-oq-01",
+  "description": "The parent entry van-der-waerden-first-moment-oq-01 computes the number of length-k arithmetic progressions fitting in [n] up to an INEQUALITY: card_vdwFamily_le_sum bounds (vdwFamily n k).card ≤ ∑_{d=1}^{n} (n - (k-1)d) via Finset.card_image_le, which silently permits two distinct parameter pairs (a, d) to collapse onto the same AP. Its first open question oq-01 (here oq-01-oq-01) asks whether that bound is in fact an equality. This entry closes the gap: for k ≥ 2 the map (a, d) ↦ vdwAP n a d k is INJECTIVE on the fitting box, so the triangular sum is the EXACT count, card_vdwFamily_eq_sum : (vdwFamily n k).card = ∑_{d=1}^{n} (n - (k-1)d). The injectivity is proved by pure membership with no min'/order machinery: the first two terms a (index i=0) and a+d (index i=1) of one progression both lie in the equal progression, and matching them against the other parameterisation forces a = a' (the index-0 cross terms must vanish in ℕ) and then d = d' (each step is a positive-integer multiple of the other). The k ≥ 2 hypothesis is necessary and sharp — for k=0 every pair maps to ∅ and for k=1 every (a,d) maps to the singleton {a}, both losing the step d. Combined with the parent's telescoping bound 2(k-1)·(∑ …) ≤ n², the count is now pinned exactly between the two sides: the parent's ≤ n²/(2(k-1)) is an exact value of the parameter family, not merely an estimate. HONESTY: this is elementary membership combinatorics on top of the parent's verified vdwAP/vdwFamily definitions; it tightens an internal ≤ to = and does not change the van der Waerden lower-bound threshold (the union bound only needs the upper bound the parent already had). The value is the exactness statement itself and the clean order-free injectivity argument. #print axioms reports only propext, Classical.choice, Quot.sound for card_vdwFamily_eq_sum and vdwAP_injOn; 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Lean Genius researcher-4",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VanDerWaerdenFirstMomentOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 160,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The hypothesis k ≥ 2 is an input to the injectivity and exact-count statements, not a standing assumption, and it is sharp (injectivity genuinely fails for k ≤ 1). #print axioms reports only propext, Classical.choice, Quot.sound for card_vdwFamily_eq_sum and vdwAP_injOn. The vdwAP/vdwFamily definitions and the triangular sum identity vdwFilter_card_eq_sum are consumed from the parent entry van-der-waerden-first-moment-oq-01; this entry contributes the injectivity of the parameterisation and the resulting equality. Badged 'original' because the exactness upgrade and the order-free injectivity proof are new content layered on a verified base, not a Mathlib headline theorem.",
+    "tags": [
+      "combinatorics",
+      "probabilistic-method",
+      "first-moment-method",
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "lattice-point-counting",
+      "injectivity",
+      "exact-count",
+      "open-question"
+    ],
+    "dateAdded": "2026-06-30",
+    "originalContributions": [
+      "card_vdwFamily_eq_sum: for k ≥ 2 the number of length-k positive-step arithmetic progressions fitting in [n] is EXACTLY the triangular sum ∑_{d=1}^{n} (n - (k-1)d) — upgrading the parent's card_vdwFamily_le_sum (an ≤ from Finset.card_image_le) to an equality by injectivity of the (a,d) parameterisation",
+      "vdwAP_injOn: the map (a, d) ↦ vdwAP n a d k is injective on the fitting box {(a,d) : a + (k-1)d < n} for k ≥ 2 — distinct fitting parameter pairs yield distinct APs; proved by membership only, with no min'/order extraction",
+      "term_eq_of_vdwAP_eq: cross-membership equation — if two fitting APs are equal then the i-th term of one equals the j-th term of the other for some j < k, the bridge that turns AP-equality into ℕ-equations on the parameters",
+      "val_of_mem_vdwAP: membership extraction — every member of a fitting AP has underlying value a + i·d for some index i < k (using Fin.val_cast_of_lt under the fitting bound), the converse of the term-membership lemma",
+      "mem_vdwAP_term: the i-th term a + i·d (as a Fin n element) lies in vdwAP n a d k for every index i < k, immediate from the image definition and needing no fitting hypothesis"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "the cardinality of an image equals the cardinality of the domain when the map is injective on it — the lever that turns vdwAP_injOn into the exact count card_vdwFamily_eq_sum.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.mem_image",
+        "description": "unfolds membership in vdwAP n a d k = (range k).image (i ↦ a + i·d) to the existence of an index, used in both directions (term-membership and value-extraction).",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Fin.val_cast_of_lt",
+        "description": "recovers the underlying natural a + i·d from its Fin n cast under the fitting bound a + i·d < n, so AP-equality in Fin n descends to ℕ-equations on the parameters.",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Nat.mul_eq_zero",
+        "description": "splits i·d = 0 into i = 0 ∨ d = 0, forcing the index-0 cross terms to vanish so that a = a' before extracting d = d'.",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/VanDerWaerdenFirstMomentOQ01OQ01.lean",
+    "namespace": "ProbMethod.VanDerWaerden",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 160,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The first-moment lower bound on van der Waerden numbers counts the length-k arithmetic progressions in [n] and asks for that count to fall below 2^(k-1). The base entry van-der-waerden-first-moment uses the loose count n², and the parent oq-01 sharpens it to the triangular sum ∑_{d=1}^{n}(n - (k-1)d) — but only as an UPPER bound, because it counts the parameter box and maps it onto the AP family by an image whose cardinality could in principle drop if two parameter pairs coincided. Whether the parameterisation actually loses points is the natural next question: is the triangular count exact, or a strict overcount?",
+    "problemStatement": "Determine whether the parent's bound (vdwFamily n k).card ≤ ∑_{d=1}^{n}(n - (k-1)d) is an equality, i.e. whether the map (a, d) ↦ vdwAP n a d k is injective on the fitting box, and identify the range of k for which this holds.",
+    "proofStrategy": "Show the (a,d) ↦ vdwAP parameterisation is injective on the fitting box for k ≥ 2, then apply Finset.card_image_of_injOn. Injectivity is established without any order/min' machinery. First, mem_vdwAP_term: each term a + i·d (i < k) is a member of the AP, straight from the image definition. Second, val_of_mem_vdwAP: under the fitting bound, every member's underlying value is a + i·d for some i < k, recovered via Fin.val_cast_of_lt. Composing these (term_eq_of_vdwAP_eq) shows that when two fitting APs are equal, each term of one equals some term of the other. Now suppose vdwAP n a d k = vdwAP n a' d' k with both fitting and k ≥ 2. The index-0 terms give a = a' + i₁·d' and a' = a + i₂·d; in ℕ this forces both cross-multiples to vanish (Nat.mul_eq_zero) and hence a = a'. The index-1 terms then give a+d = a' + i₃·d' and a'+d' = a + i₄·d; substituting a = a' yields d = i₃·d' and d' = i₄·d, so each of d, d' is a positive-integer multiple of the other, forcing d = d'. Therefore (a, d) = (a', d'). Finally card_vdwFamily_eq_sum rewrites (vdwFamily n k).card = card of the box via the injectivity and closes with the parent's vdwFilter_card_eq_sum.",
+    "keyInsights": [
+      "Injectivity needs only the FIRST TWO terms of the progression: a (index 0) pins the first term and a+d (index 1) pins the step. This is exactly why k ≥ 2 is required and sufficient — two points determine an arithmetic progression's start and gap.",
+      "The argument stays entirely inside membership and ℕ-arithmetic: no min'/max' extraction, no ordering of the AP. AP-equality is converted to a finite set of ℕ-equations a + i·d = a' + j·d' via term-membership in both directions, then closed by omega and Nat.mul_eq_zero.",
+      "ℕ-subtraction does the bookkeeping for free: a = a' + i₁·d' together with a' = a + i₂·d means i₂·d = 0 and i₁·d' = 0 in ℕ, so with d, d' ≥ 1 the indices collapse and a = a' without any case split on signs.",
+      "Sharpness is genuine: at k = 1 every (a, d) maps to {a}, an honest non-injectivity (the whole d-fiber collapses), so the equality fails and the parent's ≤ is strict there. The exact-count theorem and the k ≥ 2 hypothesis are matched.",
+      "The upgrade is internal: the van der Waerden lower bound itself only consumes the UPPER bound on the count, so exactness does not move the threshold. Its value is pinning the triangular sum as the true value of the parameter family, completing the parent's count from estimate to identity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Scope",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "States the goal: upgrade the parent's upper bound card_vdwFamily_le_sum (from Finset.card_image_le) to the exact equality card_vdwFamily_eq_sum by proving the (a,d) parameterisation injective for k ≥ 2, and explains why k ≥ 2 is necessary and sharp."
+    },
+    {
+      "id": "membership",
+      "title": "Term Membership and Value Extraction",
+      "startLine": 43,
+      "endLine": 74,
+      "summary": "mem_vdwAP_term: the i-th term a + i·d lies in the AP for i < k, immediate from the image definition. val_of_mem_vdwAP: under the fitting bound, every member's value is a + i·d for some i < k (via Fin.val_cast_of_lt). term_eq_of_vdwAP_eq: equal fitting APs share terms, turning AP-equality into ℕ-equations."
+    },
+    {
+      "id": "injectivity",
+      "title": "Injectivity of the Parameterisation",
+      "startLine": 76,
+      "endLine": 148,
+      "summary": "vdwAP_injOn: for k ≥ 2, distinct fitting (a,d) pairs give distinct APs. The index-0 cross terms force a = a' (Nat.mul_eq_zero collapses the vanishing multiples), and the index-1 cross terms force d = d' (each step is a positive multiple of the other). No order/min' machinery."
+    },
+    {
+      "id": "exact-count",
+      "title": "The Exact Triangular Count",
+      "startLine": 150,
+      "endLine": 160,
+      "summary": "card_vdwFamily_eq_sum: rewriting the family as an image and applying Finset.card_image_of_injOn with vdwAP_injOn, then the parent's vdwFilter_card_eq_sum, gives (vdwFamily n k).card = ∑_{d=1}^{n}(n - (k-1)d) exactly for k ≥ 2."
+    }
+  ],
+  "conclusion": {
+    "summary": "5 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. For k ≥ 2 the map (a, d) ↦ vdwAP n a d k is injective on the fitting box (vdwAP_injOn), so the number of length-k arithmetic progressions fitting in [n] equals the triangular sum ∑_{d=1}^{n}(n - (k-1)d) EXACTLY (card_vdwFamily_eq_sum), upgrading the parent entry's upper bound to an equality. The injectivity is proved by pure membership of the first two AP terms, with no order/min' machinery, and the k ≥ 2 hypothesis is sharp.",
+    "implications": "Answers the parent entry's open question oq-01-oq-01: the triangular count is the exact size of the fitting AP family, not merely an upper bound. Combined with the parent's telescoping bound 2(k-1)·(∑ …) ≤ n², the count is pinned exactly, so the parent's ≤ n²/(2(k-1)) is the true value of the parameter family. Demonstrates that the image overcount latent in Finset.card_image_le is, for this parameterisation, vacuous once k ≥ 2.",
+    "openQuestions": [
+      "State the closed form of the exact count by evaluating ∑_{d=1}^{⌊(n-1)/(k-1)⌋} (n - (k-1)d) as a function of n and k (a Gauss sum truncated at the fitting cutoff), pinning the count to a single arithmetic expression rather than a sum.",
+      "Extend the exact count to length-k APs in [n]^2 or [n]^d, where the parameterisation is by a base point and a vector step and injectivity must rule out collinear-step coincidences — a genuinely higher-dimensional Ehrhart-type count."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "van-der-waerden-first-moment-oq-01",
+      "relationship": "parent — this entry upgrades that entry's upper bound card_vdwFamily_le_sum (an ≤ from Finset.card_image_le) to the exact equality card_vdwFamily_eq_sum by injectivity of the (a,d) parameterisation, and reuses its vdwFilter_card_eq_sum triangular-sum identity"
+    },
+    {
+      "targetId": "van-der-waerden-first-moment",
+      "relationship": "grandparent — supplies the vdwAP/vdwFamily definitions whose parameterisation is shown injective here"
+    },
+    {
+      "targetId": "property-b-first-moment",
+      "relationship": "engine — the probabilistic core consumed (as a black box) by the parent chain; unaffected by this exactness upgrade, since the van der Waerden bound only needs the upper bound on the count"
+    }
+  ],
+  "sorries": 0
+}

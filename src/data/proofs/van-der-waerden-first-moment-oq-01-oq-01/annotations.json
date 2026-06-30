@@ -1,0 +1,62 @@
+[
+  {
+    "id": "vdw-oq01oq01-ann-header",
+    "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "Goal: Upgrade the AP Count from ≤ to =",
+    "content": "The parent entry van-der-waerden-first-moment-oq-01 proves only an UPPER bound, card_vdwFamily_le_sum : |family| ≤ ∑_{d=1}^{n}(n - (k-1)d), via Finset.card_image_le — which silently allows two distinct parameter pairs (a, d) to collapse onto the same AP. This file closes that gap: for k ≥ 2 the parameterisation (a, d) ↦ vdwAP n a d k is INJECTIVE on the fitting box, so the triangular sum is the EXACT count, not just a ceiling. The argument is pure membership of the first two AP terms with no min'/order machinery.",
+    "mathContext": "Parent: $|\\mathrm{family}| \\le \\sum_{d=1}^{n}(n - (k-1)d)$. This entry (for $k \\ge 2$): $|\\mathrm{family}| = \\sum_{d=1}^{n}(n - (k-1)d)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["injectivity", "image cardinality", "exact count", "AP parameterisation"],
+    "prerequisites": ["the parent entry van-der-waerden-first-moment-oq-01", "Finset.card_image_of_injOn"]
+  },
+  {
+    "id": "vdw-oq01oq01-ann-memterm",
+    "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "tactic",
+    "title": "The i-th Term Lies in the AP",
+    "content": "mem_vdwAP_term is the easy direction of membership. Since vdwAP n a d k = (range k).image (i ↦ (a + i·d : Fin n)), unfolding with Finset.mem_image reduces the goal to exhibiting the index i itself: ⟨i, mem_range.mpr hi, rfl⟩. No fitting hypothesis is needed — the cast term is a member purely by construction. This supplies the witnesses (i = 0 and i = 1) that drive the injectivity proof.",
+    "mathContext": "For $i < k$, $\\overline{a + i d} \\in \\mathrm{vdwAP}(n,a,d,k)$ (bar = cast to $\\mathrm{Fin}\\,n$), with no hypothesis on the fit.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.mem_image", "Finset.range", "image membership"],
+    "prerequisites": ["images of Finsets"]
+  },
+  {
+    "id": "vdw-oq01oq01-ann-valmem",
+    "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 74 },
+    "type": "tactic",
+    "title": "Value Extraction and the Cross-Membership Equation",
+    "content": "val_of_mem_vdwAP is the hard direction: given that the AP fits (a + (k-1)d < n), any member z has underlying value (z : ℕ) = a + i·d for some i < k. The index i comes from Finset.mem_image; the value is recovered with Fin.val_cast_of_lt, which needs the term bound a + i·d < n — supplied because i ≤ k-1 makes i·d ≤ (k-1)d and the fit gives the rest (omega). Composing the two directions, term_eq_of_vdwAP_eq turns an AP-equality into a concrete ℕ-equation: the i-th term of one AP equals the j-th term of the other for some j < k. This is the bridge from set-equality to parameter-equations.",
+    "mathContext": "If $a + (k-1)d < n$ and $z \\in \\mathrm{vdwAP}(n,a,d,k)$ then $(z : \\mathbb{N}) = a + i d$ for some $i < k$. Hence equal fitting APs satisfy $a' + j d' = a + i d$ for matching indices.",
+    "significance": "key",
+    "relatedConcepts": ["Fin.val_cast_of_lt", "Finset.mem_image", "term matching", "omega"],
+    "prerequisites": ["casting ℕ to Fin n", "bounding AP terms by the fit"]
+  },
+  {
+    "id": "vdw-oq01oq01-ann-injon",
+    "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 148 },
+    "type": "tactic",
+    "title": "Injectivity: Two Points Determine the AP",
+    "content": "vdwAP_injOn is the core. Suppose two fitting APs are equal with k ≥ 2. Apply term_eq_of_vdwAP_eq at the first two indices in both directions. The index-0 terms give a = a' + i₁·d' and a' = a + i₂·d; over ℕ this forces i₂·d = 0 and i₁·d' = 0, and since d, d' ≥ 1, Nat.mul_eq_zero collapses i₁ = i₂ = 0, hence a = a'. The index-1 terms then give a+d = a' + i₃·d' and a'+d' = a + i₄·d; substituting a = a' yields d = i₃·d' and d' = i₄·d, so each step is a positive-integer multiple of the other (i₃, i₄ ≥ 1), giving d ≥ d' and d' ≥ d, hence d = d'. So (a, d) = (a', d'). No min'/max', no ordering of the AP — only membership and ℕ-arithmetic.",
+    "mathContext": "$k \\ge 2$: from $a = a' + i_1 d'$ and $a' = a + i_2 d$ over $\\mathbb{N}$, $a = a'$; from $a+d = a' + i_3 d'$ and $a'+d' = a + i_4 d$, $d = i_3 d'$ and $d' = i_4 d$ with $i_3, i_4 \\ge 1$ force $d = d'$.",
+    "significance": "key",
+    "relatedConcepts": ["Set.InjOn", "Nat.mul_eq_zero", "two points determine an AP", "omega"],
+    "prerequisites": ["the cross-membership equation", "ℕ multiplication is zero iff a factor is"]
+  },
+  {
+    "id": "vdw-oq01oq01-ann-exact",
+    "proofId": "van-der-waerden-first-moment-oq-01-oq-01",
+    "range": { "startLine": 150, "endLine": 160 },
+    "type": "concept",
+    "title": "The Exact Triangular Count",
+    "content": "card_vdwFamily_eq_sum delivers the payoff. Since vdwFamily n k is the image of the fitting box under the parameterisation, Finset.card_image_of_injOn with vdwAP_injOn turns its cardinality into the box's cardinality exactly (no drop), and the parent's vdwFilter_card_eq_sum evaluates that to the triangular sum. The result upgrades the parent's ≤ to =, so the count ∑_{d=1}^{n}(n - (k-1)d) is the true size of the fitting AP family for k ≥ 2. The k ≥ 2 hypothesis is sharp: at k = 1 the whole d-fiber collapses to {a} and injectivity genuinely fails.",
+    "mathContext": "$|\\mathrm{vdwFamily}(n,k)| = \\sum_{d=1}^{n}(n - (k-1)d)$ for $k \\ge 2$; sharp, since $k = 1$ collapses every step to the singleton $\\{a\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_image_of_injOn", "exact count", "sharp hypothesis"],
+    "prerequisites": ["injectivity of the parameterisation", "the parent's triangular-sum identity"]
+  }
+]
