@@ -182,6 +182,14 @@
   "crossReferences": [],
   "sections": [
     {
+      "id": "setup",
+      "title": "Module framing, imports, and setup",
+      "startLine": 1,
+      "endLine": 89,
+      "summary": "Docstring framing the goal: realize Artin/Hilbert-17 for the Motzkin polynomial with the MINIMAL classical denominator x²+y²+1 (the sibling hilbert-17-oq-03-oq-01 used the inflated 4·(x²+y²+1)). Imports and setup for working in ℝ[x,y] and the rational-function field ℝ(x,y).",
+      "mathContext": "Goal: $M = \\sum_{i,j}\\big(q_i d_j/(2(x^2+y^2+1))\\big)^2$ with minimal denominator $x^2+y^2+1$."
+    },
+    {
       "id": "definitions",
       "title": "Motzkin, the minimal denominator, and the SOS predicates",
       "startLine": 90,
