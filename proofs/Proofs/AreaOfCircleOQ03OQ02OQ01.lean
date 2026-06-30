@@ -254,6 +254,59 @@ theorem pi_sub_halfPerimeter_le {m : ℕ} (hm : 4 ≤ m) :
   rw [← hx, hgoal_rw]
   linarith [hstep]
 
+/-- **Sharp `1/6` leading-constant convergence rate** (answers the second open
+question). The earlier `7/32` bound is lossy because it absorbs the quartic Taylor
+remainder `x⁴ ≤ x³` into the cubic term. Keeping the quartic remainder *separate*
+recovers the error with its **exact** second-order coefficient `1/6`:
+`π - p(m) ≤ π³/(6 m²) + (5/96)·π⁴/m³` for `m ≥ 4`.
+
+The leading term `π³/(6 m²)` matches the true Taylor coefficient `1/6` of
+`π - m·sin(π/m) = m(π/m)³/6 + O(m⁻³)`; the trailing `O(1/m³)` term carries the rest.
+(For `m ≥ 4` one has `π/m ≤ 1`, so `(5/96)π⁴/m³ ≤ (5/96)π³/m²` and the bound collapses
+back to `(1/6 + 5/96)π³/m² = (7/32)π³/m²`, recovering `pi_sub_halfPerimeter_le`.) -/
+theorem pi_sub_halfPerimeter_le_sharp {m : ℕ} (hm : 4 ≤ m) :
+    Real.pi - halfPerimeter m
+      ≤ Real.pi ^ 3 / (6 * (m : ℝ) ^ 2) + 5 / 96 * Real.pi ^ 4 / (m : ℝ) ^ 3 := by
+  have hπ := Real.pi_pos
+  have hm' : (4 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  have hmpos : (0 : ℝ) < (m : ℝ) := by linarith
+  have hmne : (m : ℝ) ≠ 0 := ne_of_gt hmpos
+  set x := Real.pi / (m : ℝ) with hx
+  have hxpos : 0 < x := by rw [hx]; positivity
+  have hπlt : Real.pi < 4 := Real.pi_lt_four
+  have hx1 : x ≤ 1 := by rw [hx, div_le_one hmpos]; linarith
+  -- Taylor lower bound on sin from Real.sin_bound, keeping the quartic term
+  have hbound := Real.sin_bound (x := x) (by rw [abs_of_pos hxpos]; exact hx1)
+  rw [abs_of_pos hxpos] at hbound
+  have hlow : x - x ^ 3 / 6 - x ^ 4 * (5 / 96) ≤ Real.sin x := by
+    have := (abs_le.mp hbound).1; linarith
+  -- scale by m, using m·x = π, m·x³ = π³/m², m·x⁴ = π⁴/m³ (all in one ring step)
+  have key : (m : ℝ) * (x - x ^ 3 / 6 - x ^ 4 * (5 / 96))
+      = Real.pi - Real.pi ^ 3 / (6 * (m : ℝ) ^ 2) - 5 / 96 * Real.pi ^ 4 / (m : ℝ) ^ 3 := by
+    rw [hx]; field_simp
+  have hscaled : (m : ℝ) * (x - x ^ 3 / 6 - x ^ 4 * (5 / 96)) ≤ (m : ℝ) * Real.sin x :=
+    mul_le_mul_of_nonneg_left hlow hmpos.le
+  rw [key] at hscaled
+  simp only [halfPerimeter]
+  rw [← hx]
+  linarith [hscaled]
+
+/-- The sharp bound in factored "`1/6 + o(1)`" form:
+`π - p(m) ≤ (π³/(6 m²))·(1 + 5π/(16 m))`, exhibiting the leading constant `1/6`
+with a relative correction `5π/(16 m) → 0`. As `m → ∞` the bracket tends to `1`,
+so the second-order coefficient is exactly `1/6` (the true Taylor value), not `7/32`. -/
+theorem pi_sub_halfPerimeter_le_sharp_factored {m : ℕ} (hm : 4 ≤ m) :
+    Real.pi - halfPerimeter m
+      ≤ Real.pi ^ 3 / (6 * (m : ℝ) ^ 2) * (1 + 5 * Real.pi / (16 * (m : ℝ))) := by
+  have hm' : (4 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  have hmpos : (0 : ℝ) < (m : ℝ) := by linarith
+  have hmne : (m : ℝ) ≠ 0 := ne_of_gt hmpos
+  have h := pi_sub_halfPerimeter_le_sharp hm
+  have heq : Real.pi ^ 3 / (6 * (m : ℝ) ^ 2) + 5 / 96 * Real.pi ^ 4 / (m : ℝ) ^ 3
+      = Real.pi ^ 3 / (6 * (m : ℝ) ^ 2) * (1 + 5 * Real.pi / (16 * (m : ℝ))) := by
+    field_simp; ring
+  exact h.trans_eq heq
+
 -- ============================================================
 -- PART VI: Summary
 -- ============================================================
