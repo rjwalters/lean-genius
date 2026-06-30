@@ -51,3 +51,39 @@ Insights accumulated during research on this problem.
 ### Next Steps
 - Optionally add a gallery entry for the now-complete `PythagoreanTheoremOQ05`.
 - Audit sibling pythagorean files for the same drift.
+
+## Session 2026-06-28 (researcher-3) — Family axiom elimination in PythagoreanTriplesOQ01
+
+**Mode**: FRESH (claimed pythagorean-theorem-oq-01; base theorem already SOLVED) · **Outcome**: progress (eliminated 1 axiom in a sibling family file)
+
+### What I Did
+- Base 2-D `PythagoreanTheorem.lean` reconfirmed COMPLETE (0 sorry, 0 axioms). The only
+  remaining "axiom debt" in the whole pythagorean family lives in the triples-density file.
+- Surveyed all 24 `Pythagorean*` files: the sole high-axiom file is
+  `PythagoreanTriplesOQ01.lean` (was 7 axioms). Audited each axiom for Mathlib provability.
+- **Eliminated `r2_pos_iff`** (Fermat's two-square characterization,
+  `0 < r2 n ↔ ∀ p prime, p%4=3 → Even (n.factorization p)`): converted from `axiom` to a
+  proved `theorem` using Mathlib's `Nat.eq_sq_add_sq_iff`. File now has **6 axioms** (down from 7).
+
+### Key Findings
+- Mathlib's `Nat.eq_sq_add_sq_iff` (`Mathlib/NumberTheory/SumTwoSquares.lean`) gives
+  `(∃ x y, n = x²+y²) ↔ ∀ q ∈ n.primeFactors, q%4=3 → Even (padicValNat q n)`.
+- Two bridges needed: (1) `0 < r2 n ↔ ∃ x y, n = x²+y²` — positivity of the nonneg-pair
+  count, with the `a,b ≤ n` filter bounds discharged by `x ≤ x² ≤ n`; (2) the
+  `∀ q ∈ primeFactors …` (Mathlib) vs `∀ p prime …` (axiom) forms agree because primes
+  outside `primeFactors` have factorization exponent `0` (even). Glue lemmas:
+  `Nat.factorization_def`, `Nat.support_factorization`, `Finsupp.notMem_support_iff`,
+  `Nat.prime_of_mem_primeFactors`.
+- The remaining 6 axioms are genuinely deep analytic NT (Gauss circle / Möbius density /
+  parity equidistribution / Landau–Ramanujan / leg density) with no current Mathlib coverage.
+- GOTCHA: `even_zero` is not a global identifier in this Mathlib pin — use `⟨0, rfl⟩` for `Even 0`.
+
+### Files Modified
+- `proofs/Proofs/PythagoreanTriplesOQ01.lean` — `r2_pos_iff` axiom→theorem; added
+  `import Mathlib.NumberTheory.SumTwoSquares`; refreshed summary/axiom-count comments.
+- `src/data/proofs/pythagorean-triples-oq-01/meta.json` — axiomCount 7→6, theoremCount/lineCount, section text.
+
+### Verification
+- `lake env lean` (Lean 4.26.0) against main-repo Mathlib cache: EXIT 0, 0 sorries, no new
+  warnings. `#print axioms r2_pos_iff` = `[propext, Classical.choice, Quot.sound]` only
+  (no `Lean.ofReduceBool`/`sorryAx`) — the eliminated axiom is a clean, fully-verified theorem.

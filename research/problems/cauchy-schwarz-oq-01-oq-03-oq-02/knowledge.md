@@ -77,3 +77,39 @@ Only after that does Deutsch/Maassen–Uffink become approachable.
 - Either: upstream/await Hausdorff–Young in Mathlib, then formalize sharp Maassen–Uffink.
 - Or: a future session builds the finite-dim `shannonEntropy` + max-entropy bound
   (provable now) as a sibling gallery entry, then attempts Deutsch's bound.
+
+## Session 2026-06-27 (Session 3, researcher-9) — Gibbs ⇒ max-entropy bridge [VERIFIED, 0-axiom]
+
+**Outcome**: BUILD. Added two theorems unifying the file's two halves (entropy ceiling
+and Gibbs positivity), making the "Gibbs is the engine" docstring claim an actual proof.
+
+### Built (added to `Proofs/CauchySchwarzOQ01OQ03OQ02.lean`, now 250L, 8 theorems)
+- `klDivergence_uniform {p} (hsum : ∑ p i = 1) : D(p ‖ uniform) = log n − H(p)`.
+  Pure algebra (no positivity needed): each KL summand
+  `pᵢ(log pᵢ − log(1/n)) = pᵢ·log n − negMulLog pᵢ` (`Real.log_inv` + `Real.negMulLog`,
+  `ring`); sum via `Finset.sum_sub_distrib`, `← Finset.sum_mul`, `hsum`, then `rfl`
+  recognizes `∑ negMulLog (p i) = shannonEntropy p`.
+- `shannonEntropy_le_log_card_of_gibbs [Nonempty ι] {p} (h0) (hsum)` : H(p) ≤ log n,
+  **re-derived from Gibbs**: instantiate `klDivergence_nonneg` with `q = uniform`
+  (hac trivial since `1/n > 0`), `rw [klDivergence_uniform hsum]`, `linarith`.
+  Independent of the Jensen-based `shannonEntropy_le_log_card` — same bound, two routes.
+
+### Verification
+`lake env lean` on the worktree file: EXIT 0, no errors. `#print axioms` on both new
+theorems = `[propext, Classical.choice, Quot.sound]` only (0 counting-axioms, no
+`sorryAx`/`Lean.ofReduceBool`). meta.json bumped theoremCount 6→8, lineCount 211→250,
+added `gibbs-bridge` section (211–249). status stays `verified`/`mathlib`/axiomCount 0.
+
+### GOTCHA (cost me several build cycles)
+Build commands MUST `cd` into the **worktree** proofs dir
+(`.loom/worktrees/researcher-9/proofs`), NOT `/Users/rwalters/GitHub/lean-genius/proofs`
+(the MAIN repo). I mistakenly built/`cp`-restored the main copy — which other agents were
+concurrently editing — so my edits appeared to "vanish" and `#print axioms` reported the
+new constants as *unknown* (it was checking a stale 211-line main file). The worktree
+`proofs/.lake` is a symlink to main's `.lake`, so oleans resolve fine from the worktree.
+Use a uniquely-named throwaway check file (`R9CSGibbsCheck.lean`) for `#print axioms`
+rather than append/restore on the real file (avoids races with concurrent agents).
+
+### Next Steps (unchanged)
+- Deutsch's interpolation-free bound `H(p)+H(q) ≥ −2 ln((1+c)/2)` on top of this infra.
+- Await Mathlib Hausdorff–Young/Riesz–Thorin for sharp Maassen–Uffink.

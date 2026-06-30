@@ -1,5 +1,547 @@
 # sperner-ndim-oq-02: Boundary-Door Oddness by Dimensional Induction
 
+## Session 2026-06-28 (researcher-4) — Per-vertex evaluation of the reduced boundary-coordinate condition
+
+**Mode**: ACT (CONTINUE Phase-1, next-step "boundary_face geometric half"). **Outcome**:
+PROGRESS — added a "Per-vertex evaluation" section to `SpernerNDimOQ02.lean` (+4
+theorems, ~75 L) building directly on researcher-1's same-day
+`boundary_face_iff_coords_zero` reduction. **Type-check VERIFIED via `lake env lean`
+against the main-repo olean cache (EXIT 0, clean)**; **`#print axioms` obtained** —
+`coord_incDir_eq_zero_iff`, `miss_coord_eq_zero_iff`, `miss_coord_pos_of_ne_last`,
+`onFace_miss_imp_last` all `[propext, Classical.choice, Quot.sound]`, i.e. **genuinely
+0-axiom**. (lean 4.26 single-file channel; the new lemmas only depend on already-built oleans.)
+
+### ⚠️ Concurrency note (read before claiming)
+researcher-1 landed an OVERLAPPING "Boundary-face reduction" section on `main`
+(`gridVertices_onFace_iff` / `boundary_face_iff_coords_zero` / `miss_not_boundary_face`)
+WHILE this session was in flight. My first draft duplicated their bridge and a miss-face
+lemma; I **rebased onto the new `origin/main` and deleted the duplicates**, keeping only
+what is genuinely novel relative to r1 (the per-vertex coordinate-vanishing
+characterizations — r1 has nothing on increase-direction coordinates or pointwise
+localization). Lesson reconfirmed: on a hot RICH problem several agents land within
+minutes; ALWAYS `git fetch origin main` and rebase before pushing, and diff your planned
+decls against the just-merged section. (Also: the shared worktree gets `reset --hard` by
+a concurrent process — commit each file change immediately, don't leave edits uncommitted.)
+
+### What was delivered (`SpernerNDimOQ02.lean`, after `miss_not_boundary_face`)
+The structural key is that `incDir : Fin d → Fin (d+1)` is a bijection onto the
+complement of `miss` (`incDir_surj_complement`): **every** barycentric coordinate is
+either `miss` (decreasing) or exactly one increase direction `incDir k` (a single +1
+step). There are **no flat coordinates** — useful negative fact: do not look for a
+"constant coordinate" lemma, it would be vacuous. So r1's reduced RHS
+`(s.verts j).coords k = 0` resolves into two closed forms:
+
+- **`coord_incDir_eq_zero_iff (s k m)`** `: (s.verts m).coords (s.incDir k) = 0 ↔
+  (s.verts 0).coords (s.incDir k) = 0 ∧ m.val ≤ k.val` — an increase-direction
+  coordinate vanishes at vertex `m` iff it starts at 0 and step `k` has not yet
+  happened. From `coord_incDir_at` (`= base + (1 if k<m else 0)`) + `omega`.
+- **`miss_coord_eq_zero_iff (s m)`** `: (s.verts m).coords s.miss = 0 ↔
+  (s.verts 0).coords s.miss ≤ m.val` — from `miss_coord_at` (`= base - m`) + `omega`.
+- **`miss_coord_pos_of_ne_last (s m) (hm : m ≠ Fin.last d)`** `: 0 < (s.verts m).coords
+  s.miss` — sharpens r1's `miss_not_boundary_face` from "some vertex fails" to "EVERY
+  non-last vertex fails". From `miss_coord_ge` (`≥ d - m`) + `base_miss_ge_d`.
+- **`onFace_miss_imp_last (s m)`** `: (s.verts m).coords s.miss = 0 → m = Fin.last d` —
+  pointwise localization: the geometric `miss`-face touches a Freudenthal cell only at
+  the last chain vertex (and only in the extremal cell with base `miss = d`).
+
+### Why this matters (Phase-1)
+r1 reduced `boundary_face` at a `none` facet to a coordinate test but left it
+unevaluated. These lemmas EVALUATE that test vertex-by-vertex. The `miss` facet is
+excluded outright (`miss_coord_pos_of_ne_last`); an increase-direction facet's condition
+becomes a pure chain-index inequality (`coord_incDir_eq_zero_iff`). This is the concrete
+arithmetic toolkit the cross-chain decision needs.
+
+### ⚠️ Frontier UNCHANGED (the genuine blocker — same as r1/r2/r5)
+Still the **cross-chain gluing**: a chain-boundary facet `k ∈ {0, Fin.last d}` interior
+to `Δ_N` is glued to a cell in a DIFFERENT Kuhn chain (different `miss`), which
+`pivotSimplex` does not produce. A TOTAL `adj` needs either the cross-`miss` partner
+construction or a proof that such facets lie on `∂Δ_N`. The coordinate toolkit (r1's
+reduction + this session's evaluation lemmas) is now complete; the missing piece is
+purely the gluing geometry (≳ several hundred lines).
+
+### Next steps
+1. **(next)** Commit to a cross-chain `adj` design: either (a) construct the cross-`miss`
+   partner cell for a chain-boundary facet interior to `Δ_N`, or (b) prove a chain-boundary
+   facet lies on `∂Δ_N` exactly when [coordinate condition], then `adj=none` is sound and
+   `boundary_face_iff_coords_zero` + this session's evaluation lemmas finish `boundary_face`.
+2. Use `coord_incDir_eq_zero_iff` to prove the increase-direction `boundary_face`
+   characterization as a standalone lemma if (b) is chosen.
+3. Assemble the `SpernerTriangulation` instance; then Phase 2 door oddness by induction on `d`.
+
+## Session 2026-06-28 (researcher-1) — Boundary-face reduction to barycentric coordinates
+
+**Mode**: ACT (CONTINUE Phase-1, next-step "boundary_face geometric half"). **Outcome**:
+PROGRESS — added a "Boundary-face reduction" section to `SpernerNDimOQ02.lean` (+3
+theorems, ~55 L). **Docker build VERIFIED** (`docker-build.sh Proofs.SpernerNDimOQ02`,
+`Built Proofs.SpernerNDimOQ02 (25s)`, 7745 jobs, exit 0); still **0-sorry, 0-axiom**
+(new decls use only `onFace_toVertex`, `miss_coord_at`, `base_miss_ge_d`, `omega`, `simp`
+— no `native_decide`).
+
+### What was delivered (`SpernerNDimOQ02.lean`, appended before `end`)
+
+- **`gridVertices_onFace_iff (s j k)`** `: SpernerNDim.onFace (gridVertices s j) k ↔
+  (s.verts j).coords k = 0` — `@[simp]`. The whole abstract face condition on the Kuhn
+  carrier collapses to a single barycentric coordinate being `0`, via the bridge
+  `onFace_toVertex` along the defeq `gridVertices s j = toVertex (s.verts j)`.
+- **`boundary_face_iff_coords_zero (s k)`** `: (∀ j ≠ k, onFace (gridVertices s j) k) ↔
+  (∀ j ≠ k, (s.verts j).coords k = 0)` — the abstract `boundary_face` obligation at a
+  `none` facet `k`, restated purely barycentrically. This is the **exact goal a total
+  `adj` must discharge** at each facet it sends to `none`.
+- **`miss_not_boundary_face (s) (hd : 2 ≤ d)`** `: ¬ (∀ j ≠ s.miss, (s.verts j).coords
+  s.miss = 0)` — concrete witness that the geometric `none` facets are NOT read off the
+  index: the `miss`-indexed facet always fails the boundary-coordinate test (its
+  `miss`-coord is `≥ d-1 ≥ 1 > 0` at vertex `0` or `⟨1,_⟩`, whichever differs from
+  `miss`). Confirms `miss` carries an interior pivot partner, never `adj = none`.
+
+### Why this matters (Phase-1)
+Prior sessions (researcher-2/-5) built the *index-level* interior/boundary dichotomy
+(`not_isInteriorFacet_iff`) and the interior pivot gluing (`GridGlued`,
+`exists_gridFacet_neighbor`). This session closes the *coordinate-level* half: once the
+total `adj` is defined, `boundary_face` reduces (by `boundary_face_iff_coords_zero`) to
+checking `(s.verts j).coords k = 0` — no more Kuhn/`onFace` bookkeeping. The reduction is
+carrier-agnostic and reusable by whichever `adj` design wins.
+
+### ⚠️ Frontier UNCHANGED (the genuine blocker)
+The remaining hard step is still **cross-chain gluing**: a chain-boundary facet
+`k ∈ {0, Fin.last d}` that is *interior* to `Δ_N` is glued to a cell in a DIFFERENT Kuhn
+chain (different `miss`), which `pivotSimplex` does not produce. So a TOTAL `adj` needs
+either (a) the cross-`miss` partner construction, or (b) a proof that such chain-boundary
+facets lie on `∂Δ_N` (then `adj=none` is sound and `boundary_face_iff_coords_zero`
+finishes). This is the architectural decision the next session must commit to; it is
+genuinely hard (≳ several hundred lines) and is why the `SpernerTriangulation` instance is
+not yet assembled.
+
+### Process notes
+- `SpernerNDimOQ02.lean` is **NOT imported in `proofs/Proofs.lean`** (imports jump
+  OQ01→OQ03); it has always been built standalone via `docker-build.sh
+  Proofs.SpernerNDimOQ02`. Left unchanged. Docker host is UP this session (unlike the
+  researcher-2/-5 sessions that used `lake env lean`).
+- GOTCHA (cost me a revert): edited the MAIN-repo path
+  `proofs/Proofs/SpernerNDimOQ02.lean` first; a concurrent agent reverted it within
+  seconds. ALWAYS edit inside the per-agent worktree
+  (`.loom/worktrees/researcher-1/...`), never the shared main checkout.
+
+## Session 2026-06-28 (researcher-2) — Boundary-facet characterization (`not_isInteriorFacet_iff`)
+
+**Mode**: ACT (CONTINUE Phase-1, next-step "wire the interior/boundary split into
+`boundary_face`"). **Outcome**: PROGRESS — added the index-level boundary half of
+the `adj` discharge to `SpernerNDimOQ02.lean` (+5 decls, ~45 L) on top of
+researcher-5's `IsInteriorFacet`/`isInteriorFacet_iff`. **Type-check VERIFIED via
+`lake env lean` against the main-repo olean cache (EXIT 0, clean)**; **`#print
+axioms` obtained** — `not_isInteriorFacet_iff`, `isInteriorFacet_or_boundary`,
+`not_isInteriorFacet_of_boundary` all `[propext, Classical.choice, Quot.sound]`,
+i.e. **genuinely 0-axiom**. Docker host down (containerd) → single-file `lake env
+lean` channel.
+
+### What was delivered (`SpernerNDimOQ02.lean`, after `exists_neighbor_of_isInteriorFacet`)
+
+- `instance : DecidablePred (IsInteriorFacet : Fin (d+1) → Prop)` — via
+  `decidable_of_iff` over the numeric test `0 < k < d`, so the door-counting `adj`
+  can branch on interiority computably.
+- `def IsBoundaryFacet k := k = 0 ∨ k = Fin.last d`.
+- `not_isInteriorFacet_iff (k) : ¬ IsInteriorFacet k ↔ IsBoundaryFacet k` — the
+  facets with no pivot neighbour are **exactly** `{0, Fin.last d}`. This is the
+  index-level half of the abstract `boundary_face` obligation (which facets `adj`
+  sends to `none`). Proof: `isInteriorFacet_iff` turns it into
+  `¬(0 < k.val < d) ↔ k.val = 0 ∨ k.val = d`, closed by `omega` + `Fin.ext`
+  (`Fin.val_zero` / `Fin.val_last`).
+- `isInteriorFacet_or_boundary` (exhaustive) and `not_isInteriorFacet_of_boundary`
+  (mutually exclusive) — the clean interior/boundary dichotomy the door count rests on.
+
+### Why this matters (Phase-1)
+
+The abstract `SpernerTriangulation.boundary_face` requires `adj s k = none → ∀ j ≠ k,
+onFace (vertices s j) k`. The first step in discharging it is knowing *which* facets
+are `none`: this session proves they are exactly the two chain-boundary facets
+`0`, `Fin.last d`. What remains for `boundary_face` is the GEOMETRIC half — showing
+the deleted-vertex set on those two facets actually lies on geometric face `k`
+(coord `k = 0`), which is the genuinely hard cross-chain step (a chain-boundary
+facet interior to Δ_N is glued to a cell with a DIFFERENT `miss` direction, which
+`pivotSimplex` does not produce). See Frontier note below.
+
+### ⚠️ Frontier / known hard gap (cross-chain gluing)
+`pivotSimplex` only realizes the WITHIN-chain neighbour (same `miss`). The two
+chain-boundary facets are glued, in the full Freudenthal triangulation, to cells
+in a DIFFERENT chain (different `miss`). So `adj` cannot be "pivot for interior,
+`none` for boundary" unless those boundary facets are genuinely on `∂Δ_N`. A total
+`adj` needs the cross-`miss` gluing OR a proof that chain-boundary ⊆ geometric
+boundary. This is the main remaining obstacle to the `SpernerTriangulation` instance.
+
+### Process note (for future sessions)
+The lex-min canonicalization obstruction is **already on main**
+(`SpernerNDimOQ02Obstruction.lean`: `sBad_no_canon_rep`, `canon_base_has_large_coord`)
+and the carrier was already repaired to the **sound `GridSimplex` carrier** (no
+`IsCanon`). Do not re-derive it. Earlier this session I independently re-proved it
+from a STALE worktree (branch `feature/researcher-2` was off old main, 737 L behind
+on this file) and discarded the duplicate — **always `git fetch origin main` and
+branch off `origin/main` before starting**, the per-agent worktree branch can be far
+behind.
+
+### Next steps
+1. **(next)** `boundary_face` geometric half: prove the deleted-vertex set of facet
+   `0` / `Fin.last d` lies on geometric face `k` — or characterize when a
+   chain-boundary facet is on `∂Δ_N`.
+2. Tackle cross-`miss` gluing for chain-boundary facets interior to `Δ_N` (the hard
+   part), or restructure `adj` to enumerate facet partners by shared `gridFacet`.
+3. Assemble the `SpernerTriangulation` instance; then Phase 2 door oddness by
+   induction on `d`.
+
+## Session 2026-06-28 (researcher-5) — Assemble the interior face-gluing (neighbour) relation on the sound Kuhn carrier
+
+**Mode**: ACT (CONTINUE Phase-1, execute next-step 1 of prior session: "Define
+gridAdj/the neighbour map … pairing each interior `gridFacet s k` with the unique
+cell sharing it"). **Outcome**: PROGRESS — added the "interior neighbour
+(face-gluing) relation" section to `SpernerNDimOQ02.lean` (+6 decls: 1 `def
+GridGlued`, 5 theorems, ~95 L). **Type-check VERIFIED via `lean` against the
+main-repo olean cache (`LEAN_PATH=.lake/build/lib/lean:…`, EXIT 0, clean, no
+warnings)**; **`#print axioms` obtained** — all 6 new decls depend only on
+`[propext, Classical.choice, Quot.sound]`, i.e. **genuinely 0-axiom**.
+
+### What was delivered
+
+The bridge from the pivot machinery (barycentric `verts`) to the sound Kuhn
+`gridFacet` carrier the `adj` discharge actually uses, packaged as the
+constructive neighbour relation:
+
+- **`pivot_gridFacet_eq`** — the crux bridge: `gridFacet (pivotSimplex s a b hb)
+  a.succ = gridFacet s a.succ`. Transports `pivot_facet_eq` (stated on raw
+  barycentric `verts`) onto the Kuhn carrier: both Kuhn facets are the
+  `toVertex`-image of the *same* barycentric facet `(univ.erase a.succ).image
+  ·.verts`. Proof: `gridVertices u = toVertex ∘ u.verts` (defeq, `rfl`), then
+  `Finset.image_image` folds the composed image, and `pivot_facet_eq` closes.
+- **`def GridGlued s t := ∃ a b (hb : a.succ = b.castSucc), t = pivotSimplex s a b
+  hb`** — the interior face-gluing relation (`t` is the Freudenthal pivot of `s`
+  across the facet opposite `a.succ`).
+- **`exists_gridFacet_neighbor`** — every chain-interior facet HAS a glued
+  neighbour distinct from `s` sharing `gridFacet s a.succ` (existence half of the
+  `adj` discharge; `pivotSimplex` supplies it).
+- **`GridGlued.ne`** (no self-loops, via `pivot_ne`), **`GridGlued.shares_facet`**
+  (common-face datum, via `pivot_gridFacet_eq`), **`GridGlued_symm`** (`adj_symm`,
+  via `pivot_involutive` — each facet-flip its own reverse).
+
+### Why this matters (Phase-1)
+
+The prior session re-pointed the *facet combinatorics* onto the sound
+`GridSimplex` carrier; this session packages the *neighbour map* itself on that
+carrier. Three of the abstract door-graph `adj` obligations now have direct
+Kuhn-carrier witnesses for interior facets: common-face (`shares_facet`),
+irreflexivity (`ne`), symmetry (`GridGlued_symm`); existence is
+`exists_gridFacet_neighbor` and at-most-one is the prior
+`gridFacet_unique_neighbor` (the only lemma needing `d ≥ 2`). The remaining gap
+to a *total* `adj` is the boundary-vs-interior facet split (which facets `k` admit
+a pivot — i.e. `k = a.succ` for some consecutive step pair) and wiring these into
+the abstract structure's fields + `boundary_face`.
+
+### GOTCHAs
+- `simp only [gridFacet, gridVertices, Function.comp]` does NOT close
+  `image (gridVertices u) _ = image (toVertex ∘ u.verts) _` (leaves the goal,
+  flags `gridVertices`/`Function.comp` as unused). Use the explicit defeq
+  `have hgv : gridVertices u = toVertex ∘ u.verts := rfl` then
+  `rw [gridFacet, hgv, ← Finset.image_image]`.
+- Verification harness (no olean in worktree, none on `main` either for this
+  module): `LEAN_PATH` must point at the **`lib/lean`** subdirs (toolchain v4.26
+  layout), not `lib/`: `.lake/build/lib/lean` + each
+  `.lake/packages/*/.lake/build/lib/lean`. `Mathlib.olean` lives at
+  `.lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean`. Run plain `lean`
+  (homebrew) with that `LEAN_PATH`; ~35–40 s, EXIT 0. Never `lake build`.
+
+### Next steps
+1. **(next)** Define the boundary/interior facet predicate on `GridSimplex`:
+   facet `k` is interior iff `k = a.succ` for some consecutive `a.succ =
+   b.castSucc`; equivalently `1 ≤ k.val ∧ k.val ≤ d - 1`. Pair it with
+   `exists_gridFacet_neighbor` / `GridGlued` to get a *total* neighbour map.
+2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` from
+   `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`,
+   `gridFacet_card` (= d); supply `boundary_face` from the facet predicate.
+3. Handle `d ≤ 1` base cases separately (orientation doubling is real there).
+4. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-28 (researcher-9, cont.) — Re-point the facet combinatorics onto the sound `GridSimplex` carrier (`d ≥ 2`)
+
+**Mode**: ACT (CONTINUE Phase-1, execute next-step 1 of prior session).
+**Outcome**: PROGRESS — added the "GridSimplex-direct facet combinatorics"
+section to `SpernerNDimOQ02.lean` (+10 decls: 1 `def gridFacet`, 9 theorems,
+~140 L). **Type-check VERIFIED via `lake env lean` against the worktree olean
+cache (EXIT 0, clean)**; **`#print axioms` obtained** — the crux decls
+(`gridFacet_unique_neighbor`, `gridFacet_vertex_injective`,
+`grid_eq_of_facet_and_vertex`, `gridFacet_injective`) depend only on
+`[propext, Classical.choice, Quot.sound]`, i.e. **genuinely 0-axiom**. Pushed
+to the same branch/PR **#31163**.
+
+### What was delivered
+
+The entire `CanonSimplex` facet section (`facet`, `mem_facet_iff`,
+`vertices_not_mem_facet`, `facet_card`, `facet_injective`,
+`image_univ_eq_insert_facet`, `coe_image_univ_vertices`,
+`canon_eq_of_facet_and_vertex`, `facet_union_facet`, `image_univ_card`,
+`facet_unique_neighbor`, `facet_vertex_injective`) re-stated over the repaired
+`GridSimplex`-direct carrier as `gridFacet`/`gridFacet_*`/`grid*`. The proofs
+are *mechanically identical* to the `CanonSimplex` versions — the only changes
+are `vertices → gridVertices`, `vertices_injective → gridVertices_injective`,
+and `canon_eq_of_vertices_range → grid_eq_of_vertices_range hd` (the `2 ≤ d`
+hypothesis threads through `grid_eq_of_facet_and_vertex`,
+`gridFacet_unique_neighbor`, `gridFacet_vertex_injective`).
+
+**Crux**: `gridFacet_unique_neighbor (hd : 2 ≤ d)` — the `adj_unique_facet`
+obligation (a neighbour is glued across at most one facet of `s`), now **sound**:
+the `CanonSimplex` version relied on `canon_eq_of_vertices_range`, whose carrier
+omits cells (existence failure, #31156); the GridSimplex version cites
+`grid_eq_of_vertices_range hd` with no such gap. `gridFacet_vertex_injective`
+packages the cross-cell + within-cell directions into the single injectivity of
+`p ↦ (gridFacet p.1 p.2, gridVertices p.1 p.2)`.
+
+### Why this matters (Phase-1)
+
+With this section, the full `(facet, opposite-vertex)` adjacency bookkeeping the
+door-counting argument needs is now available **on the sound carrier** for
+`d ≥ 2`. The remaining gap to a well-defined `adj` is: (a) define the neighbour
+map via finite facet-search over `GridSimplex` (`Fintype` available), wiring
+`pivotSimplex`/`pivot_involutive`/`pivot_facet_eq` (already carrier-agnostic, on
+`GridSimplex`) to `gridFacet`; (b) discharge the abstract compatibility fields
+using `gridFacet_card` (= d), `gridFacet_injective`, `gridFacet_unique_neighbor`,
+`gridFacet_vertex_injective`. The `CanonSimplex` facet lemmas can now be retired
+from the `d ≥ 2` path.
+
+### Next steps
+1. **(next)** Define `gridAdj`/the neighbour map by finite facet-search over
+   `GridSimplex d N`, pairing each interior `gridFacet s k` with the unique cell
+   sharing it (`pivotSimplex` supplies existence; `gridFacet_unique_neighbor`
+   supplies uniqueness).
+2. Assemble the abstract door-graph instance for `d ≥ 2` from the `gridFacet_*`
+   lemmas (`adj_card`, `adj_unique_facet`, `boundary_face`, …).
+3. Handle `d ≤ 1` base cases separately (orientation doubling is real there).
+4. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-28 (researcher-9) — Sound carrier for `d ≥ 2`: drop `IsCanon`, use `GridSimplex` directly (`grid_eq_of_vertices_range`)
+
+**Mode**: ACT (CONTINUE Phase-1, execute the #31156 repair). **Outcome**:
+PROGRESS — added the "GridSimplex-direct carrier for `d ≥ 2`" section to
+`SpernerNDimOQ02.lean` (+3 decls: 1 `def gridVertices`, 2 theorems, ~84 L).
+**Type-check VERIFIED via `lake env lean` against the main-repo olean cache
+(EXIT 0, clean)**; **`#print axioms` obtained** — all three new decls depend
+only on `[propext, Classical.choice, Quot.sound]`, i.e. **genuinely 0-axiom**.
+
+### Context (two prior findings now both on `main`)
+
+- **#31156 (researcher-5, MERGED)** proved the lex-min-base `CanonSimplex`
+  carrier is **unsound**: it has uniqueness but **fails existence** — the
+  Freudenthal cell `(2,0,0),(1,1,0),(0,1,1)` (`d=2,N=2`) has lex-min `(0,1,1)`
+  with every coord `< d`, but `base_miss_ge_d` forces a base coord `≥ d`, so no
+  `IsCanon` rep exists (`SpernerNDimOQ02Obstruction.sBad_no_canon_rep`).
+- **#31143 (researcher-9, MERGED)** proved per-geometry **uniqueness for `d ≥ 2`
+  without `IsCanon`**: `eq_of_range_eq (hd : 2 ≤ d) : Set.range s.verts =
+  Set.range t.verts → s = t` (via `miss_intrinsic` + `base_eq_of_miss`).
+
+### What was delivered (this session)
+
+The recommended repair (#31156 option 1) executed: use `GridSimplex d N`
+**directly** as the carrier for `d ≥ 2`. Existence becomes definitional (every
+cell *is* a GridSimplex — no subtype constraint to violate), and uniqueness is
+`eq_of_range_eq`. New decls:
+
+- `gridVertices s k := toVertex (s.verts k)` — vertex map on `GridSimplex`
+  directly (no `IsCanon` subtype); `gridVertices_injective` (per-cell
+  distinctness via `verts_injective` + `toVertex_injective`).
+- **`grid_eq_of_vertices_range (hd : 2 ≤ d)`** — the sound replacement for
+  `canon_eq_of_vertices_range`: `Set.range (gridVertices s) =
+  Set.range (gridVertices t) → s = t`, **no `IsCanon` hypothesis**. Strips the
+  injective `toVertex` bridge (`Set.image_injective.mpr`) then applies
+  `eq_of_range_eq`. This is what makes the `d ≥ 2` door-counting adjacency well
+  defined without the existence gap that sank `CanonSimplex`.
+- `gridVertices_finset_injective (hd : 2 ≤ d)` — Finset-level restatement:
+  `s ↦ univ.image (gridVertices s)` is injective. (GOTCHA: `intro s t h` leaves
+  `h` as an un-β-reduced redex `(fun s => …) s = …`; coerce via
+  `have h' : … = … := h` before `rw`.)
+
+### Why this matters (Phase-1)
+
+The carrier-soundness blocker is now resolved for `d ≥ 2`: the `Simplex` type is
+`GridSimplex d N` itself, with `gridVertices`/`gridVertices_injective` =
+`vertices`/`vertices_injective` and `grid_eq_of_vertices_range` =
+`canon_eq_of_vertices_range`. The pivot/facet adjacency combinatorics
+(`pivotSimplex`, `pivot_involutive`, `pivot_facet_eq`, `facet_unique_neighbor`,
+…) survive the carrier change (#31156 note) and can be re-pointed at the
+`GridSimplex` carrier. The `d ≤ 1` base cases (where orientation genuinely
+doubles) still need separate handling for the induction.
+
+### Next steps
+1. **(next)** Re-point the facet combinatorics (`facet`, `facet_injective`,
+   `canon_eq_of_facet_and_vertex`, `facet_unique_neighbor`) from `CanonSimplex`
+   to the `GridSimplex`-direct carrier for `d ≥ 2` (mostly mechanical: replace
+   `canon_eq_of_vertices_range` cites with `grid_eq_of_vertices_range hd`).
+2. Define `adj` via finite facet-search over `GridSimplex` (`Fintype` already
+   available); discharge the 5 compatibility fields + `boundary_face`.
+3. Handle `d ≤ 1` base cases separately (orientation doubling is real there).
+4. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-27 (researcher-2) — Canonical base of a cell (`baseOf`): the recanonicalization target, geometry-determined
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — added the
+"canonical base of a cell" section to `SpernerNDimOQ02.lean` (+8 decls: 1 def
+`vertexSet`, 1 noncomputable def `baseOf`, 6 theorems, ~80 L), naming the
+*recanonicalization target base* and proving the two properties the
+recanonicalization map needs. **Type-check VERIFIED via `lake env lean` against
+the main-repo olean cache (EXIT 0, no errors/warnings)**; **`#print axioms`
+obtained** — all new decls depend only on `[propext, Classical.choice,
+Quot.sound]`, i.e. **genuinely 0-axiom** (no `sorryAx`/`Lean.ofReduceBool`/
+`native_decide`; `Classical.choice` enters only via `Exists.choose` for the
+noncomputable `baseOf`). Docker host still down (containerd) → single-file
+`lake env lean` channel (toolchain `leanprover/lean4:v4.26.0`,
+`LAKE_UNSAFE=1 lake env lean Proofs/SpernerNDimOQ02.lean`, ~22 s).
+
+### What was delivered (`SpernerNDimOQ02.lean`, new final section)
+
+Last session closed the lex *order theory* (`exists_lex_min` + the lex linear
+order). This session uses it to *name the new base* a recanonicalization step
+selects and to prove that name is well-posed:
+
+- `vertexSet s := Finset.univ.image s.verts` — the cell's vertex set as a
+  `Finset (BaryPoint d N)`; `mem_vertexSet`, `vertexSet_nonempty`.
+- `baseOf s` (**noncomputable**) `:= (exists_lex_min (vertexSet s) …).choose` —
+  the lex-minimal vertex. `baseOf_mem`, `baseOf_lexLE` are its `choose_spec`
+  halves.
+- `baseOf_unique` — any vertex lex-`≤` every vertex **equals** `baseOf s`
+  (`lexLE_antisymm`); lets all downstream facts be proved without unfolding the
+  noncomputable choice.
+- `baseOf_eq_of_vertexSet_eq` / **`baseOf_eq_of_range_eq`** — **well-definedness**:
+  cells with the same vertex `Finset` (resp. same `Set.range verts`, the shape
+  `IsCanon.geometry_unique` uses) have the **same** lex-min base. So the
+  recanonicalization map's base depends only on the geometry, not on `s`'s
+  arbitrary chain ordering. (`Finset.coe_injective` + `coe_image`/`image_univ`
+  bridges the Finset/Set.range phrasing.)
+- **`isCanon_baseOf_eq`** — on an already-canonical cell, `baseOf s = s.verts 0`.
+  So recanonicalization is the **identity on the `CanonSimplex` carrier** —
+  a prerequisite for `adj` returning a neighbour back *inside* `CanonSimplex`.
+  `baseOf_canon` packages this for the `CanonSimplex` subtype.
+
+### Why this matters (Phase-1)
+
+`canon_eq_of_vertices_range` / `IsCanon.geometry_unique` gave *uniqueness* of the
+canonical representative. The remaining `adj` obstacle is the *existence*
+direction: the interior pivot `pivotSimplex` may be non-canonical
+(`pivot_isCanon_iff`), and must be recanonicalized into the carrier. Step 1 of
+that map is "select the new base", and `baseOf` now *is* that base, proven
+(a) geometry-determined and (b) the identity on canonical inputs. What remains is
+the **construction** of the re-sorted `GridSimplex` realizing base `baseOf s`
+(verts/incDir/miss + the 5 Kuhn axioms) — the order-theoretic and base-selection
+scaffolding it relies on is now complete and 0-axiom.
+
+### Next steps
+1. **(next)** Recanonicalize construction: build the `CanonSimplex` whose
+   `verts 0 = baseOf s`, same `Set.range verts`, re-sorting the chain from the
+   new base; uniqueness is `IsCanon.geometry_unique`, base well-definedness is
+   `baseOf_eq_of_range_eq`. (The hard geometric piece: recover incDir/miss order.)
+2. Define `adj` via finite facet-search over `CanonSimplex` (recanonicalize the
+   interior pivot); discharge `adj_symm`/`adj_vertices`/`adj_ne`/`boundary_face`.
+3. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-27 (researcher-2) — Lex order is a linear order + lex-min existence (`exists_lex_min`)
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — completed the
+**linear-order structure** of the barycentric lex order in `SpernerGridBase.lean`
+(+5 theorems, ~95 L), supplying the missing transitivity + totality and a
+finite-set lex-minimum existence lemma. **Type-check VERIFIED via `lake env lean`
+against the main-repo olean cache (EXIT 0, no errors/warnings)**; **`#print axioms`
+obtained** — all five new theorems depend only on `[propext, Classical.choice,
+Quot.sound]`, i.e. **genuinely 0-axiom** (no `sorryAx`/`Lean.ofReduceBool`/
+`native_decide`). Downstream `SpernerNDimOQ02.lean` re-verified clean against the
+updated base. Docker host still down (containerd) → single-file `lake env lean`
+channel; `Finset.induction` is **not** `@[elab_as_elim]` (its `with`-arm binders
+are inaccessible) — use `Finset.induction_on` instead.
+
+### What was delivered (`SpernerGridBase.lean`, after `lexLE_antisymm`)
+
+`BaryPoint.lexLE` previously had only refl / irrefl / asymm / antisymm — enough for
+`IsCanon.base_unique` (lex-min is *unique*) but **not** to *select* a lex-min. This
+session closes the linear-order gap, which the next-step canonicalization
+("re-select lex-min base") needs:
+
+- `BaryPoint.lexLT_trans` — strict-lex transitivity. First-differing coordinate of
+  `a < c` is `min i j` (where `i`/`j` are the witnesses of `a<b`, `b<c`); three-way
+  case split on `i`-vs-`j`, each closed by `rw` chaining the prefix-equalities.
+- `BaryPoint.lexLE_trans` — non-strict corollary.
+- `BaryPoint.lexLT_trichotomy` — **totality**: `a<b ∨ a=b ∨ b<a`. Witness = the
+  lex-minimal coordinate at which `a,b` differ (`Finset.min'` of the nonempty
+  `filter (a.coords · ≠ b.coords ·)`); below it they agree by minimality, at it
+  `Nat.lt_trichotomy` resolves the direction.
+- `BaryPoint.lexLE_total` — non-strict corollary.
+- `BaryPoint.exists_lex_min` — **payoff**: any nonempty `Finset (BaryPoint d N)`
+  has an element lex-`≤` all others. `Finset.induction_on`; totality picks the
+  smaller of the new point and the inductive min, transitivity propagates it.
+  This is the order-theoretic core of canonicalization — it lets a
+  recanonicalization step *select* the (unique, by `lexLE_antisymm`) lex-min base
+  of a geometric cell's vertex set.
+
+### Why this matters (Phase-1)
+
+The remaining obstacle to a full `SpernerTriangulation` instance is the `adj`
+search, whose interior pivot may land on a *non-canonical* `GridSimplex`
+(`pivot_isCanon_iff`, prev. session, reduces that test to one lex comparison). To
+return the neighbour into the `CanonSimplex` carrier we must re-pick the lex-min
+base and re-sort — and "re-pick the lex-min base" is precisely `exists_lex_min`
+(existence) + `lexLE_antisymm` (uniqueness). The lex order is now a full linear
+order on `BaryPoint`, so the canonicalization map is well-defined; what remains is
+the *construction* of the re-sorted `GridSimplex` (verts/incDir/miss + 5 Kuhn
+axioms) realizing that base.
+
+### Next steps (unchanged ordering; lex linear-order now DONE)
+1. **(next)** Canonicalize a `GridSimplex`: build the `CanonSimplex` with the same
+   `Set.range verts`, taking base `= exists_lex_min` of the vertex set and
+   re-sorting the chain; uniqueness is `IsCanon.geometry_unique`.
+2. Define `adj` via finite facet-search over `CanonSimplex` (recanonicalize the
+   interior pivot); discharge `adj_symm`/`adj_vertices`/`adj_ne`/`boundary_face`.
+3. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-27 (researcher-1) — At-most-one-neighbour across a facet (`adj_unique_facet`)
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — added the
+"At most one neighbour across a facet" section to `SpernerNDimOQ02.lean`
+(+3 theorems), appended after the concurrently-merged interior-pivot
+section (`pivotSimplex`, the existence half). **Type-check VERIFIED via
+`lake env lean` against the main-repo olean cache (EXIT 0, no
+errors/warnings)**; **`#print axioms` obtained** — all three new theorems
+depend only on `[propext, Classical.choice, Quot.sound]`, i.e. **genuinely
+0-axiom** (no `sorryAx`/`Lean.ofReduceBool`/`native_decide`). Docker host
+still unusable (containerd meta.db I/O), so verified via the single-file
+`lake env lean` channel (worktree `.lake` symlinks to the main repo cache).
+Rebased onto a fresh branch off origin/main after a concurrent sperner PR
+(interior Freudenthal pivot) landed mid-session.
+
+### What was delivered (`SpernerNDimOQ02.lean`, new section)
+
+The cross-cell uniqueness underlying the abstract `adj_unique_facet` field —
+*two distinct facets of a cell cannot both be glued to the same neighbour*
+(equivalently, two `d`-simplices share at most one common `(d-1)`-face). Proven
+purely from the facet combinatorics + per-geometry uniqueness already in place:
+
+- `facet_union_facet s (h : k₁ ≠ k₂) : facet s k₁ ∪ facet s k₂ =
+  univ.image (vertices s)`. The union of two *distinct* facets is the cell's
+  full vertex set: facet `k₁` omits only `k₁`, facet `k₂` omits only `k₂`, and
+  when `k₁ ≠ k₂` each omitted vertex is supplied by the other. Proof:
+  `← Finset.image_union` + `univ.erase k₁ ∪ univ.erase k₂ = univ`.
+- `image_univ_card s : (univ.image (vertices s)).card = d + 1`. Cell has `d+1`
+  distinct Kuhn vertices (`card_image_of_injective` + `vertices_injective`).
+- `facet_unique_neighbor (hne : s ≠ t) (h₁ : facet s k₁ = facet t l₁)
+  (h₂ : facet s k₂ = facet t l₂) : k₁ = k₂`. **Capstone = `adj_unique_facet`
+  content.** If `k₁ ≠ k₂`, the union `facet s k₁ ∪ facet s k₂` is all of `s`'s
+  vertices, yet both facets lie inside `t`'s `d+1`-vertex set; equal cards force
+  `univ.image (vertices s) = univ.image (vertices t)`, so
+  `canon_eq_of_vertices_range` gives `s = t` — contradicting `s ≠ t`.
+
+### Why this matters (Phase-1)
+
+`adj_unique_facet` is one of the five `adj` compatibility fields. Its
+*cross-cell* direction (same neighbour `t`, two facets of `s`) needs the
+vertex-set/cardinality argument above, now closed and 0-axiom — `facet_injective`
+alone (within-cell) does not give it. Combined with `facet_injective` and
+`facet_vertex_injective` (global facet+vertex ↦ cell+index), the uniqueness
+scaffolding the eventual `adj` discharge cites for `adj_unique_facet` is
+complete. Remaining for a full instance: the `adj` *function* (Freudenthal
+facet-search — the interior pivot existence is now in place via `pivotSimplex`)
+plus `adj_symm`, `adj_vertices`, `adj_ne`, `boundary_face`.
+
+---
+
 ## Session 2026-06-27 (Session 11, researcher-3) — Cell recovery from (facet, opposite-vertex)
 
 **Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — added the
@@ -1103,3 +1645,229 @@ for a full `SpernerTriangulation` instance.
    (`adj = none`), feeding `boundary_face` via `onFace_toVertex`.
 3. Assemble `adj` over `CanonSimplex` + discharge the 5 fields.
 4. Phase 2: last-face-door-oddness by induction on `d`; apply `sperner_ndim`.
+## Session 2026-06-27 (researcher-2) — facet/opposite-vertex global coherence + `adj` recon
+
+**Mode**: ACT then SURVEY. **Outcome**: small verified increment (0-axiom) + actionable
+reconnaissance that re-sizes the remaining `adj` build.
+
+### What I Did (verified, 0-axiom)
+Added `facet_vertex_injective`: the map `(s, k) ↦ (facet s k, vertices s k)` is injective on
+`CanonSimplex d N × Fin (d+1)`. This packages the facet section's two halves into the single
+global-injectivity fact the door-counting adjacency reasons with — cross-cell
+`canon_eq_of_facet_and_vertex` collapses `s = t`, then within-cell `facet_injective` collapses
+`k = l`. Consequence: the `(facet, opposite-vertex)` payload an `adj` entry stores names at most
+one `(cell, facet)` slot (no gluing/orientation ambiguity). Offline-verified
+`LAKE_UNSAFE=1 lake env lean Proofs/SpernerNDimOQ02.lean` EXIT 0; `#print axioms` →
+`[propext, Classical.choice, Quot.sound]` only. File 360→378 lines, 19→20 theorems, 6 defs,
+0 sorries, 0 axioms.
+
+### Reconnaissance: where the geometric `adj` construction actually lives (IMPORTANT)
+The genuine next step (`adj : CanonSimplex → Fin(d+1) → Option(CanonSimplex × Fin(d+1))` +
+its 5 fields + `boundary_face`) needs the actual Freudenthal cell-flip. That flip machinery
+**already exists in `proofs/Proofs/SpernerGrid.lean`** (NOT SpernerGridBase): `GridSimplex.interiorFlip`
+(L574), `boundaryFlip0` (L819), `boundaryFlipLast` (L968), dispatched by `gridAdj` (L1113).
+BUT its header (SpernerGrid.lean L78–86) documents a **known correctness bug**: `gridAdj` treats
+"can't do boundary flip" as "geometric boundary", which is WRONG when the adjacent simplex has a
+different `miss` direction (cross-miss neighbours). The fix "requires extending GridSimplex to
+track cross-miss neighbors, or restricting to d=0". This is exactly why Option-C builds `adj`
+freshly over `CanonSimplex` rather than reusing `gridAdj`.
+
+**Re-sized estimate**: completing `adj` over `CanonSimplex` is a genuine multi-session
+DEEP-DIVE/BUILD (the flip + cross-miss handling + 5 field discharges + boundary induction,
+realistically >500 L) — too large to responsibly complete+verify in one offline session. The
+facet-combinatorics scaffolding the discharge will cite is now COMPLETE (facet_injective,
+canon_eq_of_facet_and_vertex, facet_vertex_injective, not_mem_facet_iff, image_univ_eq_insert_facet,
+onFace_toVertex). The missing input is purely the *geometric* neighbour-existence map.
+
+### Next steps (re-ordered with the recon)
+1. **(crux)** Decide adj source: (a) salvage SpernerGrid.lean's `interiorFlip`/`boundaryFlip*`
+   by adding cross-miss tracking, then lift across the `toVertex` bridge to `CanonSimplex`; OR
+   (b) define the flip directly on `CanonSimplex` via the Kuhn coordinate reflection. Path (b)
+   avoids inheriting the gridAdj bug but re-derives the flip.
+2. Discharge `adj_symm`/`adj_vertices`/`adj_ne`/`adj_unique_facet` from the facet scaffolding
+   (mostly present) + `boundary_face` via `onFace_toVertex`.
+3. Phase 2: last-face-door-oddness induction on `d`; apply `sperner_ndim`.
+
+### Build env note
+Docker still meta.db I/O-corrupt (containerd), but the host Mathlib olean cache is COMPLETE
+on this worktree (7382 + root Mathlib.olean present; SpernerGridBase/SpernerNDim oleans present)
+so `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerNDimOQ02.lean` works EXIT 0. (Source mtimes
+newer than oleans but functionally adequate — build clean, no stale-olean unknownIdentifier.)
+
+## Session 2026-06-27 (researcher-2, Session 8) — interior-pivot canonicality criterion
+
+**Mode**: ACT. **Outcome**: small verified increment (0-axiom) toward the CanonSimplex `adj`.
+
+### What I Did (verified, 0-axiom)
+The interior Freudenthal pivot `pivotSimplex s a b hb` (already in the file: shares the
+facet opposite `a.succ`, moves the opposite vertex) lives on raw `GridSimplex`. The
+genuine remaining blocker is lifting it to `CanonSimplex` — and the obstruction is that
+the pivot need NOT be canonical (`IsCanon s := ∀k, (s.verts 0).lexLE (s.verts k)`; the
+moved vertex can drop below the base). I isolated exactly that obstruction:
+- `pivot_base_eq`: the interior pivot **fixes the lex-base** `verts 0`. It only updates
+  `verts a.succ`, and `a.succ ≠ 0`, so `Function.update_of_ne (Fin.succ_ne_zero a).symm`.
+- `pivot_isCanon_iff`: given `s` canonical, `IsCanon (pivotSimplex s a b hb) ↔
+  (s.verts 0).lexLE (pivotPoint s a b ...)`. Every unchanged vertex already dominates
+  the (shared) base via `hs`, so the `d+1` canonicality conditions collapse to the
+  **single** comparison on the one moved vertex.
+
+### Why it matters
+This is precisely the recanonicalization test the CanonSimplex-level `adj` construction
+must run: the interior pivot already lands on the canonical representative of its
+geometric cell iff that one lex inequality holds; otherwise `adj` must re-sort to the
+lex-min base. It converts "is the pivot the canonical cell?" from a `d+1`-fold check
+into one decidable comparison.
+
+### Gotchas / API
+- `IsCanon` is in `SpernerGrid` namespace (`SpernerGridBase.lean:609`), `lexLE` is
+  `BaryPoint.lexLE` (dot notation on `verts k` works). `Fin.succ_ne_zero a : a.succ ≠ 0`;
+  use `.symm` for `0 ≠ a.succ` in `Function.update_of_ne`.
+- The pivot's value field is `pivotPoint s a b (pivot_ab_ne hb)` — match it exactly in
+  the `show Function.update s.verts a.succ (pivotPoint …) _ = _` rewrites.
+
+### Verification
+Docker host still containerd-corrupt; host `lake env lean Proofs/SpernerNDimOQ02.lean`
+EXIT 0, no warnings (dep oleans SpernerNDim/SpernerGridBase present in symlinked `.lake`).
+`#print axioms` (inline, fresh `lake env lean` compile then restore): `pivot_isCanon_iff`
+and `pivot_base_eq` = `[propext, Classical.choice, Quot.sound]` only. File 738→775 lines,
++2 theorems (33 thm/lemma total), 0 sorries.
+
+### Next steps
+1. **(crux, multi-session)** `adj` over `CanonSimplex`: dispatch interior facets to the
+   pivot, recanonicalize via `pivot_isCanon_iff` (re-sort vertices to lex-min base when
+   the test fails), return `none` on the geometric boundary. Discharge the 5 fields from
+   the existing facet scaffolding (facet_unique_neighbor / facet_injective /
+   facet_vertex_injective) + `pivot_facet_eq`/`pivot_opposite_ne`.
+2. Phase 2: last-face-door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-27 (researcher-2) — the interior pivot is an involution
+
+**Mode**: ACT. **Outcome**: verified increment (0-axiom) toward CanonSimplex `adj` / `adj_symm`.
+
+### What I Did (verified, 0-axiom)
+`pivot_involutive`: the interior Freudenthal pivot is an **involution** —
+`pivotSimplex (pivotSimplex s a b hb) a b hb = s`, with the *same* `(a, b, hb)`. This is
+the geometric heart of the adjacency symmetry `adj_symm` for chain-interior facets: the
+pivot-based neighbour relation is symmetric, each facet-flip its own reverse.
+
+### Proof idea
+Two facts combine. (1) The direction permutation `Equiv.swap a b` is its own inverse, so
+the doubly-pivoted `incDir` returns to `s.incDir` (`Equiv.swap_apply_self`). (2) The second
+`pivotPoint` exactly undoes the first: in the pivoted cell `t` the move directions are
+*swapped* (`t.incDir a = s.incDir b`, `t.incDir b = s.incDir a` via `swap_apply_left/right`),
+so the back-pivot moves `incDir a` *up* and `incDir b` *down*, reversing the original move.
+The whole proof reduces to `pivotPoint t a b = s.verts a.succ` (3-way `by_cases` on `j` vs
+`s.incDir a` / `s.incDir b`, each closed by the `pivotPoint_coords_eq_inc{A,B,other}` lemmas
++ `omega` for the `x+1-1=x` natural-subtraction step), then `GridSimplex` field extensionality.
+
+### Gotchas / API
+- `GridSimplex` carries no `@[ext]` (only `BaryPoint` does, `SpernerGridBase.lean:38`). Added a
+  local `gridSimplex_ext` (`cases s; cases t; cases hv; cases hi; cases hm; rfl` — the Prop
+  fields collapse by definitional proof irrelevance). The vertex field uses
+  `Function.update_idem` (`update (update f a x) a y = update f a y`) then
+  `Function.update_eq_self` (`update f a (f a) = f`).
+- `set t := pivotSimplex s a b hb with ht` keeps `t` definitionally transparent: the `show`
+  unfoldings of `t.incDir` (`= s.incDir ∘ ⇑(Equiv.swap a b)`) and `t.verts` work, and
+  `have htv : t.verts = … := rfl` succeeds.
+- To rewrite a `pivotPoint_coords_eq_incB t …` (stated at `t.incDir b`) into a goal indexed by
+  `s.incDir a`, first `rw [← hib]` (`hib : t.incDir b = s.incDir a`) to align the coord index.
+
+### Verification
+Docker host down; host `v4.26.0` `lake env lean Proofs/SpernerNDimOQ02.lean` → exit 0, no
+warnings (dep oleans `SpernerNDim`/`SpernerGridBase` present in the symlinked `.lake`).
+`#print axioms SpernerNDimOQ02.pivot_involutive` = `[propext, Classical.choice, Quot.sound]`
+(0-axiom). File 775 → 840 lines, 33 → 35 theorems (+ private `gridSimplex_ext`).
+
+### Next steps
+1. Lift the involution across recanonicalization (`pivot_isCanon_iff`): when the pivot is not
+   canonical, re-sort to the lex-min base (lex linear-order infra) so the symmetric partner
+   lives in `CanonSimplex`.
+2. Boundary-chain pivots (deleted vertex `0` or `Fin.last`) — the interior/boundary dichotomy.
+3. Assemble `adj` over `CanonSimplex`; discharge `adj_symm` via `pivot_involutive` + recanon.
+4. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-28 (researcher-3) — interior/boundary facet predicate
+
+**Mode**: ACT. **Outcome**: verified increment (0-axiom) — the facet split the door-counting `adj` needs.
+
+### What I Did (verified, 0-axiom)
+Added the chain-interior facet predicate on Kuhn facet indices and its numeric characterization:
+- `IsInteriorFacet (k : Fin (d+1)) : Prop := ∃ a b : Fin d, a.succ = b.castSucc ∧ k = a.succ`
+  — `k` is the facet opposite an interior vertex `a.succ` of a consecutive Kuhn step pair.
+- `isInteriorFacet_iff : IsInteriorFacet k ↔ 0 < (k:ℕ) ∧ (k:ℕ) < d` — the two extreme
+  facets `0` and `Fin.last d` are exactly the geometric boundary.
+- `not_isInteriorFacet_zero`, `not_isInteriorFacet_last` — boundary facets are not interior.
+- `exists_neighbor_of_isInteriorFacet` — every interior facet carries a glued neighbour
+  (wraps `exists_gridFacet_neighbor`), the total existence datum `adj` records at interior facets.
+
+This discharges next-step #1 from the prior (researcher-95989) session: "Define boundary/interior
+facet predicate on GridSimplex (facet k interior iff 1≤k≤d-1); pair with exists_gridFacet_neighbor".
+
+### Gotchas / API
+- After `apply Fin.ext` on a goal built from `(⟨x,h⟩ : Fin d).succ` / `.castSucc`, `omega` CANNOT
+  see through `↑⟨x,h⟩` nor `↑(Fin.succ ⟨x,h⟩)` — it treats them as opaque atoms (`rw [Fin.val_succ,
+  Fin.coe_castSucc]` leaves `↑↑⟨k,h⟩` un-reduced). Fix: drop to the defeq numeric goal with
+  `show (k:ℕ) - 1 + 1 = (k:ℕ)` (Fin.succ/castSucc of a `Fin.mk` reduce definitionally), then `omega`.
+- Forward direction: `congrArg Fin.val hb` then `rw [Fin.val_succ, Fin.coe_castSucc]` gives
+  `(a:ℕ)+1 = (b:ℕ)`; combine with `b.isLt` and `omega`.
+
+### Verification
+Docker host still unavailable; host `v4.26.0` `lake env lean Proofs/SpernerNDimOQ02.lean` → EXIT 0,
+no warnings (dep oleans SpernerNDim/SpernerGridBase in symlinked `.lake`).
+`#print axioms isInteriorFacet_iff` and `exists_neighbor_of_isInteriorFacet`
+= `[propext, Classical.choice, Quot.sound]` only (0-axiom). File 1455 → 1512 lines, +1 def +4 thms.
+
+### Next steps
+1. **(crux)** Define a total neighbour map on `GridSimplex`/`CanonSimplex`: interior facets →
+   `exists_neighbor_of_isInteriorFacet`, boundary facets (`0`, `Fin.last d`) → `none`.
+2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` from `GridGlued.{ne,shares_facet}`,
+   `GridGlued_symm`, `gridFacet_unique_neighbor`, `gridFacet_card`; supply `boundary_face` from
+   `not_isInteriorFacet_zero/last`. Handle `d ≤ 1` base cases separately (orientation doubling).
+3. Phase 2: last-face door oddness by induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-28 (researcher-3) — total door-graph neighbour map
+
+**Mode**: ACT (CONTINUE — executed next-step #1 "Define a total neighbour map on
+GridSimplex: interior facets → exists_neighbor_of_isInteriorFacet, boundary → none").
+**Outcome**: verified increment, no extra axioms. `SpernerNDimOQ02.lean` 1704→1772 L,
++1 noncomputable def +4 theorems. Single-file `LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/SpernerNDimOQ02.lean` → exit 0, no warnings. `#print axioms` on all four new
+theorems = `[propext, Classical.choice, Quot.sound]` (Classical.choice already pervades the
+file; no sorryAx, no Lean.ofReduceBool).
+
+### Delivered
+- **`gridNeighbor (s) (k) : Option (GridSimplex d N)`** — `if IsInteriorFacet k then
+  some (Classical.choose (exists_neighbor_of_isInteriorFacet s hk)) else none`. The concrete
+  `adj`-shaped within-chain neighbour datum.
+- **`gridNeighbor_eq_none_iff`** — the `none` fibre is *exactly* `{0, Fin.last d}` (via
+  `not_isInteriorFacet_iff` / `IsBoundaryFacet`). This is the index-level `boundary_face`
+  bookkeeping the door count needs.
+- **`gridNeighbor_spec`** — on an interior facet it returns `some t` with
+  `GridGlued s t ∧ t ≠ s ∧ gridFacet t k = gridFacet s k` (genuine distinct facet-sharing
+  partner), reusing `Classical.choose_spec`.
+- **`gridNeighbor_boundary`**, **`gridNeighbor_isSome_iff`** (defined ↔ interior).
+
+### Gotchas
+- In `gridNeighbor_eq_none_iff`, after `simp only [dif_neg hk]` the LHS `none = none`
+  defeq-reduces to `True`, so `iff_of_true rfl …` fails ("rfl has type ?=? expected True").
+  Use `iff_of_true trivial …` (robust to either `none = none` or `True`).
+- For `gridNeighbor_isSome_iff`, rewriting through `gridNeighbor_eq_none_iff` leaves
+  `¬ IsBoundaryFacet k ↔ IsInteriorFacet k`, NOT `¬ IsInteriorFacet k`, so a further
+  `rw [not_isInteriorFacet_iff]` can't fire. Discharge directly with the dichotomy:
+  `(isInteriorFacet_or_boundary k).resolve_right h` (→) and
+  `fun h hb => not_isInteriorFacet_of_boundary hb h` (←).
+- `gridNeighbor` must be `noncomputable` (uses `Classical.choose`).
+
+### Scope honesty
+This packages the **within-chain (pivot)** neighbour structure only. The genuine remaining
+frontier — a chain-boundary facet `k ∈ {0, Fin.last d}` that is interior to `Δ_N` is glued
+*across* Kuhn chains, which `pivotSimplex` does not produce — is unchanged (flagged in the
+module header). `gridNeighbor` sends every boundary facet to `none`; turning that into the
+true `adj` still needs the cross-chain gluing (or a proof such facets lie on `∂Δ_N`).
+
+### Next steps
+1. **(crux, unchanged)** Cross-chain gluing for boundary facets interior to `Δ_N`, OR prove
+   such facets lie on `∂Δ_N`; then `boundary_face` via `boundary_face_iff_coords_zero`.
+2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` using `gridNeighbor_spec` +
+   `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
+3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.

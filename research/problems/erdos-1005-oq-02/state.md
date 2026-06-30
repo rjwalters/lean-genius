@@ -2,7 +2,7 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 7
+**Iteration**: 16
 
 ## Current Focus
 
@@ -132,22 +132,236 @@ theorems:
 
 File: 638 → 745 lines, 39 → 45 theorems, 2 defs (no new def).
 
+## Iterations 8–12 (verified, 0-axiom — `lake env lean`)
+
+§10–§12 advanced the run criterion from single steps to length-4 blocks:
+- **§10** `unimodular_simOrd` — EVERY Farey-adjacent pair is similarly ordered
+  (the §9 controlling product is *unconditionally* ≥ 0). So a single step never
+  breaks a run; the obstruction is entirely NON-ADJACENT.
+- **§11** `simOrd_triple` — a length-3 run breaks iff the outer window
+  `(2a−k·c)(2b−k·d) ≥ 0` fails (break interval width `2/(c·d)`).
+- **§12** `simOrd_long_iff` / `simOrd_quad` — a length-4 run's long-range pair
+  is governed by the Stern–Brocot product `k₁·k₂−1`; the full run criterion is
+  the conjunction of two §11 windows and this one.
+
+## Iteration 13 addition (verified, 0-axiom — `lake env lean`, Docker down)
+
+Added **§13 (length-5 runs — three quotients and the continuant Kₘ)**,
+0-sorry / 0-axiom (`#print axioms` reports only propext / Classical.choice /
+Quot.sound on both new theorems; verified by `lake env lean` against the
+worktree Mathlib `.olean` cache — Docker `docker info` hangs). Two theorems:
+
+- `simOrd_long3_iff` — iterating the §9 successor *three* times collapses the
+  fifth term to `i = (k₁k₂k₃−k₁−k₃)·c − (k₂k₃−1)·a` (and parallel for `j`), so
+  the endpoints `a/b, i/j` are similarly ordered **iff**
+  `(k₂k₃·a − (k₁k₂k₃−k₁−k₃)·c)·(k₂k₃·b − (k₁k₂k₃−k₁−k₃)·d) ≥ 0`. The controlling
+  quantity is the **continuant** `K(k₁,k₂,k₃) = k₁k₂k₃−k₁−k₃` — the order-side
+  shadow of the very recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁` that generates Farey
+  numerators/denominators. The §11/§12/§13 windows are exactly the continuant
+  ladder `K()=1, K(k)=k, K(k₁,k₂)=k₁k₂−1, K(k₁,k₂,k₃)=k₁k₂k₃−k₁−k₃`.
+- `simOrd_quint` (headline) — a length-5 run is pairwise similarly ordered iff
+  all SIX non-adjacent windows hold: three §11 (triples) + two §12 (quadruples)
+  + the new §13 continuant window. Four adjacent pairs free (§10).
+
+File: 1017 → 1146 lines, 55 → 57 theorems, 2 defs (no new def).
+
+## Iteration 14 addition (verified, 0-axiom — `lake env lean`, Docker down)
+
+Added **§14 (the continuant — the run-length criterion for *every* length)**,
+0-sorry / 0-axiom (verified by `lake env lean` against the shared main-repo
+Mathlib `.olean` cache — the worktree `proofs/.lake` symlinks to it; `#print
+axioms` reports only propext / Classical.choice / Quot.sound on every new
+theorem). **This delivers the §13 "Next Action" exactly: the per-length §11/§12/
+§13 windows are now ONE statement valid for arbitrary run length.** Three defs +
+ten theorems:
+
+- `Continuant : List ℤ → ℤ` — the minus-sign continuant with the head-two-element
+  recurrence `K(k₁ :: k₂ :: ks) = k₁·K(k₂ :: ks) − K(ks)`, bases `K([])=1`,
+  `K([k])=k`. `secondCont : List ℤ → ℤ` — the trailing continuant (coefficient of
+  `a`), `secondCont (k::ks)=K(ks)`, `secondCont []=0`. The `0`-base is the precise
+  fix for the one-element continuant edge case.
+- `continuant_cons` — the UNIFIED single-step recurrence
+  `K(k::ks) = k·K(ks) − secondCont ks`, holding in *every* case (the naive "two
+  shorter tails" form wrongly gives `k−1` at `ks=[]`; `secondCont []=0` repairs it).
+- `stepSeq a c ks` — the iterated §9 successor, applying `tₘ₊₁=kₘ·tₘ−tₘ₋₁` once
+  per quotient in `ks`.
+- `stepSeq_eq_continuant` (**headline**) — the closed form
+  `stepSeq a c ks = K(ks)·c − secondCont(ks)·a`, proved by induction on `ks`
+  (the §13-targeted general term formula). Collapses `e=k·c−a`,
+  `g=(k₁k₂−1)·c−k₂·a`, `i=(k₁k₂k₃−k₁−k₃)·c−(k₂k₃−1)·a` into one line.
+- `endpoint_window` — the general endpoint product factors as
+  `(a−pₘ)(b−qₘ) = ((1+secondCont ks)a − K·c)·((1+secondCont ks)b − K·d)`.
+- `simOrd_run_iff` (**headline**) — a length-`(|ks|+1)` run's endpoints `a/b, p/q`
+  (`p=stepSeq a c ks`, `q=stepSeq b d ks`) are similarly ordered **iff** that one
+  continuant-controlled window is `≥ 0`. The run-length criterion as a continuant
+  positivity condition — the structural form the §13 Next Action called for.
+- Ladder/subsumption checks: `continuant_two/_three`, `secondCont_one/_two/_three`
+  reproduce the §11/§12/§13 constants `1,k,k₁k₂−1,k₁k₂k₃−k₁−k₃` and coefficients
+  `1,k₂,k₂k₃−1`; `endpoint_window_one/_two/_three` prove the general window
+  *literally specializes* to the §11 `(2a−kc)`, §12 `((k₂+1)a−(k₁k₂−1)c)`, §13
+  `(k₂k₃·a−(k₁k₂k₃−k₁−k₃)c)` windows at `|ks|=1,2,3`.
+
+File: 1146 → 1317 lines, 57 → 71 theorems, 2 → 5 defs.
+
+**Honest boundary (unchanged).** This is the structural run criterion; it does
+*not* bound the density of `k`-values for which the windows hold, which is the
+actual `1/12`–`1/4` optimization. What §14 buys is that the optimization is now a
+single quantified statement (continuant positivity over a quotient list) rather
+than an unbounded family of per-length inequalities.
+
 ## Next Action
 
-Aggregate the per-step criterion over a *consecutive block*. With the successive
-quotients `k₁, k₂, …` (the continued-fraction-like data of the Farey walk),
-`simOrd_succ_controlling` makes each step's similar ordering the inequality
-`(aᵢ+cᵢ−kᵢ·cᵢ)(bᵢ+dᵢ−kᵢ·dᵢ) ≥ 0`. The lower bound `f(n) ≥ (1/12−o(1))n`
-is a statement that a *positive density* of consecutive steps can be kept
-`k=1` (hence automatically similarly ordered, by `simOrd_succ_k_eq_one`).
-Concrete Lean target: a **chained successor lemma** — given a finite list of
-quotients all equal to `1`, the resulting consecutive Farey block of that length
-is step-wise similarly ordered, with denominators bounded `≤ n` via
-`farey_succ_denom_le_iff`. That converts §9's single-step criterion into a
-*run-length* statement, the last formal step before a constant.
+Bound the *density* side. With `simOrd_run_iff` the run-length criterion is a
+continuant positivity condition `((1+secondCont ks)a − K(ks)c)·(…) ≥ 0` over a
+quotient list `ks`. Two concrete next Lean targets: (1) **continuant positivity /
+monotonicity** — prove `K(ks) ≥ 1` (and `secondCont ks ≥ 0`) for all-`≥1`
+quotient lists by induction on `continuant_cons`, certifying the windows' sign
+structure; (2) **a "no long all-`k=1` run" or "break forced by a large quotient"
+lemma** — characterize, via the continuant, which quotient lists keep ALL
+non-adjacent windows nonnegative, isolating the extremal configurations that a
+density count toward `1/12` must sum over. The continuant matrix identity
+`[[k,−1],[1,0]]` product would give `K` a determinant/Cassini handle.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 3
+- Total attempts: 5
+- Current approach attempts: 5
 - Approaches tried: 1
+
+## Iteration 15 addition (verified, 0-axiom — researcher-3, `lake env lean`)
+
+Added **§15 (depth-`m` unimodularity of the iterated Farey walk)**, 0-sorry /
+0-axiom (verified by host `lean v4.26.0` over the shared main-repo Mathlib
+`.olean` cache; `#print axioms` reports only propext / Quot.sound — `stepPair_snd`
+is axiom-free). One def + four theorems:
+
+- `stepPair a c ks` — the iterated §9/§14 successor returning the final
+  *consecutive pair* `(t_{|ks|}, t_{|ks|+1})`; `stepPair_snd`: its second
+  component is exactly `stepSeq a c ks`.
+- `stepPair_cross` (**headline**) — the walk's cross-determinant
+  `nₘ·dₘ₊₁ − nₘ₊₁·dₘ = a·d − b·c` is **invariant under every step**. Proof: list
+  induction threading the seed pair `(a,c) ↦ (c, k·c−a)`; each step's matrix
+  `[[k,−1],[1,0]]` has determinant 1. The arbitrary-depth generalisation of §9's
+  single-step `farey_succ_unimodular`.
+- `stepPair_cross_unimodular` — a unimodular seed (`b·c = a·d + 1`) stays
+  unimodular (cross `= −1`) at *every* depth: the depth-uniform consecutiveness
+  §9 supplied one step at a time.
+- `stepPair_cross_one` — §9 subsumption at `ks = [k]`.
+
+**IMPORTANT CORRECTION to Iteration 14's "Next Action (1)".** The proposed target
+`K(ks) ≥ 1` for all-`≥1` quotient lists is **mathematically false** for the
+minus-sign continuant: `K([1,1]) = 0`, `K([1,1,1]) = −1` (all-1's continuant is
+period-6 `1,1,0,−1,−1,0,…`, the rotation-by-60° orbit of `[[1,−1],[1,0]]`). Blanket
+continuant positivity is therefore unavailable. The correct sign handle is the
+**determinant (Cassini) invariant**, which §15 establishes: each step matrix has
+det 1, so the walk's cross-determinant is invariant. A future Cassini/continuant
+determinant identity `K(ks)·sc(ks') − K(ks')·sc(ks) = ±1` (for `ks = ks' ++ [k]`)
+follows the same det-1 reasoning and would let `stepPair_cross` be re-expressed
+purely in continuant terms.
+
+File: 1317 → 1391 lines, 71 → 75 theorems, 5 → 6 defs.
+
+**Honest boundary (unchanged).** This is the structural consecutiveness invariant,
+not a bound on the density of admissible quotient lists — the open `1/12`–`1/4`
+constant remains open.
+
+## Next Action (revised)
+
+- **Continuant Cassini identity** (replaces the false positivity target): prove
+  `Continuant ks · m11 − m01 · secondCont ks = 1` where `(m01, m11)` is the
+  companion second column of the step-matrix product (base `(0,1)`), or the
+  equivalent consecutive-list form `K(ks ++ [k])·sc(ks) − K(ks)·sc(ks ++ [k]) = ±1`.
+  This re-expresses `stepPair_cross` purely in continuant terms and certifies the
+  windows' sign structure.
+- **Continuant reversal symmetry** `Continuant ks.reverse = Continuant ks` (true;
+  verified by hand at rungs 2,3) — the palindrome structure a density count exploits.
+
+## Iteration 16 addition (verified, 0-axiom — researcher-1, `lake env lean`, Docker down)
+
+Added **§17 (continuant positivity & growth in the large-quotient regime)**,
+0-sorry / 0-axiom (verified by host `lean v4.26.0` over the shared main-repo
+Mathlib `.olean` cache; `#print axioms` reports only propext / Classical.choice /
+Quot.sound on the four inductive theorems, and the two `decide` witnesses depend
+on **no axioms at all** — `decide`, not `native_decide`, so no `Lean.ofReduceBool`).
+Six theorems, no new def. This addresses the density side — Iteration-14's
+"break forced by a large quotient" Next Action — **independently of** the parallel
+§16 continuant-matrix/Cassini work (researcher-2, PR #31083, still OPEN at the time
+of writing): §17 depends only on the §14 `Continuant`/`secondCont` recurrences
+(`continuant_cons`), so it composes with §16 without depending on it.
+
+- `secondCont_lt_continuant` (**core invariant**) — for every quotient list `ks`
+  with all entries `≥ 2`, `0 ≤ secondCont ks < Continuant ks`. Proof: induction on
+  the pair map `(s, K) ↦ (K, k·K − s)`, which preserves `0 ≤ s < K` whenever `k ≥ 2`
+  (`k·K − s ≥ 2K − s > K`, and `K ≥ s + 1 > 0`). This strict domination is the seed
+  of every positivity/growth statement.
+- `continuant_pos` / `secondCont_nonneg` — strict positivity `0 < Continuant ks` and
+  `0 ≤ secondCont ks` on the all-`≥2` regime: the §14 windows never degenerate
+  through a vanishing continuant there.
+- `continuant_strict_mono` — `Continuant ks < Continuant (k :: ks)` for `k ≥ 2`: the
+  continuant is strictly increasing along a large-quotient run.
+- `continuant_ge_length` — **linear growth** `|ks| + 1 ≤ Continuant ks`. With the §14
+  closed form `stepSeq a c ks = K·c − secondCont·a`, the run endpoints inherit this
+  growth, so long large-quotient runs are metrically expensive under the order-`n`
+  Farey cap.
+- `continuant_ones_two` / `continuant_ones_three` (**axiom-free**, `decide`) — the
+  contrasting balanced extreme: `K([1,1]) = 0`, `K([1,1,1]) = −1`, sitting on the
+  period-6 orbit `1,1,0,−1,−1,0,…`. **This is the concrete refutation of
+  Iteration-14's blanket positivity target `K(ks) ≥ 1`** (already flagged false in
+  Iteration 15): positivity is a phenomenon of *large* quotients, the regime opposite
+  to the balanced extreme — so the `≥ 2` hypothesis in §17 is essential, not cosmetic.
+
+File: 1391 → 1509 lines, 75 → 82 theorems, 6 defs (no new def).
+
+**Honest boundary (unchanged).** §17 bounds the continuant's sign and size in ONE
+quotient regime (all entries `≥ 2`); it does **not** count the density of admissible
+quotient lists keeping every non-adjacent window nonnegative — that count is the open
+`1/12`–`1/4` step. What §17 buys is that the large-quotient regime's windows have a
+*decided* sign (controlled by the seed, not by continuant cancellation), and that the
+continuant grows at least linearly with run length there.
+
+## Next Action (after §17)
+
+- **The intermediate / mixed regime.** §17 (all `≥ 2`) and the all-`1` period-6 orbit
+  bracket the two extremes; the open optimization lives in mixed quotient lists. Target:
+  characterize, via `continuant_cons`, exactly which quotient lists keep `Continuant ks ≥ 1`
+  (the boundary between the positive large-quotient cone and the oscillating balanced
+  orbit), e.g. "between any two consecutive `1`s the accumulated quotient mass must
+  exceed a threshold".
+- **All-ones period-6 closed form.** Promote `continuant_ones_two/_three` to the full
+  `Continuant (List.replicate n 1)` periodicity (period 6), making the balanced extreme
+  a single theorem rather than two witnesses.
+- **Density aggregation.** Combine `continuant_ge_length` with the order-`n` denominator
+  cap (`stepSeq b d ks = K·d − secondCont·b ≤ n`) to bound the run length of a
+  large-quotient run by `O(n / d)` — the first genuine run-length *upper* bound in the
+  all-`≥2` regime, a sanity check against the `n/4 + 5` global upper bound.
+
+## Iteration 17 addition (verified, 0-axiom — researcher-6, docker-build.sh)
+
+Added **§21 (the balanced extreme — all-ones continuant is period-6 and bounded)**,
+0-sorry / 0-axiom (`docker-build.sh Proofs.Erdos1005ProblemOQ02` clean; `#print
+axioms` = propext / Classical.choice / Quot.sound only on all 8 new theorems —
+`decide`, not `native_decide`, so NO `Lean.ofReduceBool`). Delivers §17's named
+Next Action "All-ones period-6 closed form": the two §17 witnesses
+`continuant_ones_two` (K[1,1]=0), `continuant_ones_three` (K[1,1,1]=−1) promoted
+to the complete closed form.
+
+- `secondCont_replicate_one`, `continuant_replicate_one_succ` — all-`1`
+  specialisation of `continuant_cons`: `aₙ₊₁=aₙ−sₙ`, `sₙ₊₁=aₙ` (order-6 rotation).
+- `continuant_secondCont_replicate_one` (headline) — joint period-6; 6 unfolded steps + omega.
+- `continuant_replicate_one_period` / `_six_mul` / `_mod` — `K(1ⁿ)=K(1^(n%6))`.
+- `continuant_replicate_one_bounded` (`K(1ⁿ)∈{1,0,−1}`), `_abs_le_one` (`|K(1ⁿ)|≤1`).
+
+File: 1912 → 2034 lines, 82 → 90 theorems (file-internal count).
+
+**Quantitative dichotomy, both extremes closed.** all-`2`: K=n+1 (linear); all-`1`:
+|K|≤1 (bounded, period 6). Mixed regime (open 1/12–1/4 constant) remains open.
+
+## Next Action (after §21)
+
+- **Mixed regime.** Characterise via `continuant_cons` which mixed quotient lists keep
+  `Continuant ks ≥ 1` (boundary between the large-quotient positive cone and the
+  balanced period-6 orbit) — e.g. a threshold on accumulated quotient mass between
+  consecutive `1`s.
+- **Density aggregation.** Combine `continuant_ge_length` (all-`≥2`) with the order-`n`
+  cap `stepSeq b d ks = K·d − sc·b ≤ n` to bound large-quotient run length by `O(n/d)`
+  — first genuine run-length upper bound, sanity check vs `n/4+5`.

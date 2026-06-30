@@ -14,7 +14,9 @@
   "currentState": {
     "goal": "A verified classification of Bézout-coefficient ambiguity via the extended Euclidean algorithm.",
     "focus": "Proved coprime_homogeneous (a·u+b·v=0 ⟹ (u,v)=(k·b,−k·a)), coprime_bezout_unique, coprime_bezout_param, and gcdA_gcdB_unique; worked instances for (3,5).",
-    "blockers": ["None — verified."],
+    "blockers": [
+      "None — verified."
+    ],
     "nextAction": "Done. Compiles clean against Mathlib 4.26.0 (lake env lean); #print axioms on all five results = [propext, Classical.choice, Quot.sound] only. Gallery entry added (status=verified, badge=original).",
     "progressSummary": "VERIFIED: 9-theorem self-contained file (0 sorry/axiom) classifying Bézout-coefficient uniqueness as a single coset of the rank-1 lattice ℤ·(b,−a). Core lemma coprime_homogeneous via IsCoprime.dvd_of_dvd_mul_left; uniqueness by differencing; converse by a ring identity; specialization to Nat.gcdA/Nat.gcdB. Gallery entry + Lean import added."
   },
@@ -29,25 +31,47 @@
       "Reduce uniqueness to the homogeneous equation by differencing two solutions.",
       "Discharge each divisibility/cancellation obligation with a single linear_combination.",
       "Coprime case (gcd=1) carries all content; general case rescales by g."
-    ]
+    ],
+    "progressSummary": "VERIFIED (extended): coprime-case classification (existence + homogeneous + uniqueness + parametrization of a*x+b*y=c) completed to the GENERAL non-coprime case, fulfilling the docstring claim that the solution set is one coset of Z*(b/g,-a/g). Section VI adds general_homogeneous/general_bezout_unique/general_bezout_param/general_solvable (parametrized by the reduced pair a=g*ar, b=g*br with ar,br coprime, g!=0), each reducing to its coprime counterpart by cancelling g. 0-axiom.",
+    "builtItems": [
+      "general_homogeneous (BezoutIdentityOQ02OQ01OQ03.lean Section VI): a=g*ar, b=g*br coprime reduced, g!=0,br!=0 => every solution of a*u+b*v=0 is k*(b/g,-a/g); cancel g then coprime_homogeneous",
+      "general_bezout_unique (Section VI): two solutions of a*x+b*y=c differ by one lattice step k*(b/g,-a/g) in the general case",
+      "general_bezout_param (Section VI): converse, every lattice step is again a solution (ring)",
+      "general_solvable (Section VI): existence, g|c => a*x+b*y=c solvable with witness (cr*s,cr*t) from a coprime Bezout pair; completes the iff-g|c classification",
+      "ex69_a/ex69_step/ex69_family: non-coprime worked instance 6x+9y=3 (g=3, lattice (3,-2))"
+    ],
+    "insights": [
+      "General (non-coprime) Bezout classification reduces to the coprime case by factoring out g=gcd: a=g*ar, b=g*br with ar,br coprime, then cancelling the nonzero g. No new number theory beyond the coprime lemmas already in the file.",
+      "Solvability of a*x+b*y=c is exactly g|c, and the solution set (when nonempty) is one coset of the rank-1 lattice Z*(b/g,-a/g) - the full structure the docstring promised but had proved only for g=1."
+    ],
+    "nextSteps": []
   },
-  "tags": ["number-theory", "bezout", "euclidean-algorithm", "diophantine", "classical"],
-  "relatedProofs": ["bezout-identity-oq-02-oq-01", "bezout-identity"],
+  "tags": [
+    "number-theory",
+    "bezout",
+    "euclidean-algorithm",
+    "diophantine",
+    "classical"
+  ],
+  "relatedProofs": [
+    "bezout-identity-oq-02-oq-01",
+    "bezout-identity"
+  ],
   "references": [
     "Bézout, Théorie générale des équations algébriques (1779)",
     "Knuth, TAOCP Vol. 2, §4.5.2 (extended Euclidean algorithm)"
   ],
   "started": "2026-06-27",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 5,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/BezoutIdentityOQ02OQ01OQ03.lean",
-      "lineCount": 122,
+      "lineCount": 189,
       "axiomCount": 0,
       "sorries": 0,
-      "theoremCount": 9,
+      "theoremCount": 19,
       "definitionCount": 0
     }
   ]

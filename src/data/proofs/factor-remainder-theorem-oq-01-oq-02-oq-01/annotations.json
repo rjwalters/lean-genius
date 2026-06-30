@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "factor-remainder-theorem-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 68
+    },
+    "type": "context",
+    "title": "Does the Ordinary Derivative Still Detect Repeated Roots in Characteristic p?",
+    "content": "Mathlib defines separability through the ordinary derivative — Separable p :↔ IsCoprime p (derivative p). The parent entry's hasseDeriv_detects_char_p shows the ordinary derivative can be deceptive in positive characteristic: over 𝔽₂ the derivative of X² is identically 0, so the naive 'p and p′ share a root' test looks blind. This leaf resolves the worry. The key distinction is multiplicity: separability is a squarefreeness (multiplicity ≤ 1) condition, and double roots — multiplicity exactly 2 — ARE detected by the ordinary derivative in every characteristic, because hasseDeriv 1 = derivative and the divided-power correction only matters at multiplicity ≥ p. Building on the parent's characteristic-free double_root_iff, the file makes the link explicit and computable: for a nonzero split polynomial over a field, p.Separable ↔ ∀ a, ¬(X−a)² ∣ p — separability is exactly the absence of a repeated linear factor — and confirms it with explicit char-2 witnesses (X²+X separable, X² not).",
+    "mathContext": "Worry: $\\operatorname{char} = 2 \\Rightarrow (X^2)' = 0$. Resolution: double roots (mult. $2$) are caught by the ordinary derivative in all characteristics; only mult. $\\ge p$ needs the Hasse/divided-power correction.",
+    "significance": "context",
+    "relatedConcepts": [
+      "separability",
+      "ordinary vs Hasse derivative",
+      "squarefree polynomials",
+      "characteristic p",
+      "repeated roots and multiplicity"
+    ],
+    "prerequisites": [
+      "parent: factor-remainder-theorem-oq-01-oq-02 (Hasse multiplicity factor theorem)",
+      "Polynomial.Separable and IsCoprime",
+      "the ordinary derivative on polynomials"
+    ]
+  },
+  {
     "id": "ann-repeated-root",
     "proofId": "factor-remainder-theorem-oq-01-oq-02-oq-01",
     "range": {

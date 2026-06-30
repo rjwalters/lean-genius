@@ -40,12 +40,7 @@ Reference: https://erdosproblems.com/574
 Source: [ErSi82] Erdős–Simonovits
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Algebra.Ring.Parity
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Logic.Function.Iterate
-import Mathlib.Tactic
+import Mathlib
 
 /- ## Definitions -/
 
@@ -70,13 +65,13 @@ def HasCycle {n : ℕ} (G : SimpleGraph' n) (ℓ : ℕ) : Prop :=
 def IsConsecutiveCycleFree {n : ℕ} (G : SimpleGraph' n) (k : ℕ) : Prop :=
   ¬HasCycle G (2 * k - 1) ∧ ¬HasCycle G (2 * k)
 
-/-- ex(n; {C_{2k−1}, C_{2k}}): the maximum number of edges in a
-    {C_{2k−1}, C_{2k}}-free graph on n vertices. -/
+/-- `ex(n; {C_{2k−1}, C_{2k}})`: the maximum number of edges in a
+    `{C_{2k−1}, C_{2k}}`-free graph on `n` vertices, as the supremum of the
+    achievable edge counts. The defining set is bounded above by `n * n`
+    (`edgeCount'_le`) and nonempty (the empty graph is cycle-free), so the
+    supremum is attained. -/
 noncomputable def exConsecutiveCycles (n k : ℕ) : ℕ :=
-  Finset.sup (Finset.filter
-    (fun _ => True)  -- axiomatized
-    (Finset.range 1))
-    id
+  sSup {m : ℕ | ∃ G : SimpleGraph' n, IsConsecutiveCycleFree G k ∧ edgeCount' G = m}
 
 /-- A graph is **bipartite**: its vertices admit a 2-colouring with no
     monochromatic edge. -/
@@ -164,6 +159,43 @@ theorem bipartite_evenFree_consecutiveFree {n : ℕ} (G : SimpleGraph' n)
     (hG : IsBipartite G) (k : ℕ) (hk : 1 ≤ k)
     (hev : ¬ HasCycle G (2 * k)) : IsConsecutiveCycleFree G k :=
   ⟨bipartite_no_odd_consecutive G hG k hk, hev⟩
+
+/- ## The lower-bound transfer at the level of the extremal function -/
+
+/-- Every graph on `Fin n` has at most `n * n` edges (the edge set is a subset
+    of `Fin n × Fin n`). A crude bound, but enough to make the supremum
+    defining `exConsecutiveCycles` well-behaved. -/
+lemma edgeCount'_le {n : ℕ} (G : SimpleGraph' n) : edgeCount' G ≤ n * n := by
+  classical
+  calc edgeCount' G
+      ≤ (Finset.univ : Finset (Fin n × Fin n)).card := Finset.card_filter_le _ _
+    _ = n * n := by rw [Finset.card_univ, Fintype.card_prod, Fintype.card_fin]
+
+/-- The set of edge counts achievable by `{C_{2k−1}, C_{2k}}`-free graphs is
+    bounded above (by `n * n`), so `exConsecutiveCycles` is a genuine maximum. -/
+lemma bddAbove_consecutiveFree_edgeCounts (n k : ℕ) :
+    BddAbove {m : ℕ | ∃ G : SimpleGraph' n, IsConsecutiveCycleFree G k ∧ edgeCount' G = m} := by
+  refine ⟨n * n, ?_⟩
+  rintro m ⟨G, _, rfl⟩
+  exact edgeCount'_le G
+
+/-- **The extremal function dominates every admissible graph.** Any
+    `{C_{2k−1}, C_{2k}}`-free graph's edge count is at most
+    `exConsecutiveCycles n k`. -/
+theorem edgeCount_le_exConsecutive {n k : ℕ} (G : SimpleGraph' n)
+    (h : IsConsecutiveCycleFree G k) : edgeCount' G ≤ exConsecutiveCycles n k :=
+  le_csSup (bddAbove_consecutiveFree_edgeCounts n k) ⟨G, h, rfl⟩
+
+/-- **Numeric form of the lower-bound transfer.** A bipartite, `C_{2k}`-free
+    graph contributes its full edge count to the extremal number
+    `exConsecutiveCycles n k` — forbidding the odd cycle `C_{2k−1}` costs nothing
+    even at the level of the extremal *function*, not merely cycle-freeness.
+    This is the formal bridge from `ex(n; C_{2k})` lower bounds (realised by
+    bipartite incidence graphs) to `ex(n; {C_{2k−1}, C_{2k}})`. -/
+theorem bipartite_evenFree_le_ex {n k : ℕ} (G : SimpleGraph' n)
+    (hG : IsBipartite G) (hk : 1 ≤ k) (hev : ¬ HasCycle G (2 * k)) :
+    edgeCount' G ≤ exConsecutiveCycles n k :=
+  edgeCount_le_exConsecutive G (bipartite_evenFree_consecutiveFree G hG k hk hev)
 
 /- ## Main Conjecture (OPEN) -/
 

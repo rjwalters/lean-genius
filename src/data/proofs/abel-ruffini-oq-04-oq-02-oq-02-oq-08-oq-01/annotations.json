@@ -41,6 +41,23 @@
     "prerequisites": ["solvable groups", "group homomorphisms", "Lean typeclass resolution"]
   },
   {
+    "id": "ann-perm-solvable-congr",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
+    "range": { "startLine": 65, "endLine": 77 },
+    "type": "key-step",
+    "title": "Conjugation by a relabelling: permCongrHom",
+    "content": "A bijection $e : \\alpha \\simeq \\beta$ of the underlying sets does not just match points — it conjugates whole permutations. Mathlib packages this as `Equiv.permCongrHom e : Perm α ≃* Perm β`, the *multiplicative* isomorphism sending $\\sigma \\mapsto e \\circ \\sigma \\circ e^{-1}$ (i.e. `e.permCongr σ`). That it is multiplicative is the content of conjugation being a group homomorphism: $(e\\sigma e^{-1})(e\\tau e^{-1}) = e(\\sigma\\tau)e^{-1}$.\n\nFeeding this `MulEquiv` to `isSolvable_congr` from §1 gives `perm_solvable_congr` in a single line:\n$$\\mathrm{IsSolvable}(\\mathrm{Perm}\\,\\alpha) \\iff \\mathrm{IsSolvable}(\\mathrm{Perm}\\,\\beta).$$\nNo hypothesis on $\\alpha$ or $\\beta$ beyond the bijection is needed; the symmetric group of a finite set is determined up to isomorphism by the set's size alone, so its solvability is too. Note the section variables fix `[DecidableEq α] [Fintype α]` (and likewise for $\\beta$) — these instances are what let `Perm α` carry a `sign` and a `Fintype` structure downstream.",
+    "mathContext": "permCongrHom is the unindexed form of the standard isomorphism $S_n \\cong S_m$ when $n = m$: relabelling the ground set is an isomorphism of the full symmetric group, here realized functorially as a single `MulEquiv` rather than chosen by hand.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Equiv.permCongrHom",
+      "conjugation as a group homomorphism",
+      "MulEquiv",
+      "symmetric group functoriality"
+    ],
+    "prerequisites": ["permutation groups", "conjugation", "group isomorphism"]
+  },
+  {
     "id": "ann-map-permCongrHom-alternating",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01",
     "range": { "startLine": 78, "endLine": 112 },
