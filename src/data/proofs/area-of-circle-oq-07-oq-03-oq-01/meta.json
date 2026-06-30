@@ -94,6 +94,50 @@
       "The entry is honestly scoped: the ladder formula itself is Mathlib's (badge reflects the new content is the moment identification and the odd-moment vanishing, assembled from library lemmas)."
     ]
   },
+  "sections": [
+    {
+      "id": "framing",
+      "title": "The ladder and its moment reading",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating the open question: extend the parent's bottom rung Γ(1/2) = √π to the whole half-integer ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ and identify each rung with the even Gaussian moment ∫_ℝ x^{2n}e^{−x²}. Outlines the bridge: half-line evaluation via integral_rpow_mul_exp_neg_rpow, then evenness folding via integral_comp_abs."
+    },
+    {
+      "id": "half-line",
+      "title": "Half-line even moment = ½·Γ(n+1/2)",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "halfLine_evenMoment evaluates ∫_{x>0} x^{2n}e^{−x²} = ½·Γ(n+1/2). A setIntegral_congr_fun on Ioi 0 converts each natural power xᵏ to the real power x^(k:ℝ) via Real.rpow_natCast (valid for x > 0) so Mathlib's integral_rpow_mul_exp_neg_rpow applies at p = 2, q = 2n, giving (1/2)·Γ((2n+1)/2) = ½·Γ(n+1/2)."
+    },
+    {
+      "id": "even-moment",
+      "title": "Even moment IS a half-integer Gamma value",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "evenGaussianMoment_eq_gamma — the headline ∫_ℝ x^{2n}e^{−x²} = Γ(n+1/2). The integrand is even (Even.pow_abs and sq_abs give f(|x|) for f(t)=t^{2n}e^{−t²}), so integral_comp_abs doubles the half-line value, and 2·½·Γ(n+1/2) = Γ(n+1/2)."
+    },
+    {
+      "id": "double-factorial",
+      "title": "Double-factorial closed form",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "evenGaussianMoment_eq_doubleFactorial composes with Mathlib's Real.Gamma_nat_add_half to write each even moment as (2n−1)‼·√π/2ⁿ. gammaLadder re-exports the underlying half-integer ladder formula Γ(n+1/2) = (2n−1)‼·√π/2ⁿ — the analytic backbone supplied by Mathlib."
+    },
+    {
+      "id": "odd-moment",
+      "title": "Odd moments vanish",
+      "startLine": 98,
+      "endLine": 108,
+      "summary": "oddGaussianMoment_eq_zero proves ∫_ℝ x^{2n+1}e^{−x²} = 0. The integrand is odd (Odd.neg_pow) and Lebesgue measure on ℝ is negation-invariant (Measure.measurePreserving_neg), so the integral equals its own negative and must vanish. Together with the even case the whole moment sequence is determined."
+    },
+    {
+      "id": "bottom-rung",
+      "title": "n = 0 recovers the parent",
+      "startLine": 110,
+      "endLine": 119,
+      "summary": "evenGaussianMoment_zero specializes the even-moment formula at n = 0 to recover ∫_ℝ e^{−x²} = √π = Γ(1/2), the parent entry's value, via Real.Gamma_one_half_eq. The infinite moment tower is a genuine extension of the parent's single number."
+    }
+  ],
   "openQuestions": [],
   "crossReferences": [
     {
@@ -129,6 +173,10 @@
   "conclusion": {
     "summary": "The even Gaussian moments are exactly the half-integer Gamma values: ∫_ℝ x^{2n}e^{−x²} dx = Γ(n+1/2) = (2n−1)‼·√π/2ⁿ (evenGaussianMoment_eq_gamma, evenGaussianMoment_eq_doubleFactorial), the odd moments vanish (oddGaussianMoment_eq_zero), and the n=0 rung recovers the parent's ∫_ℝ e^{−x²} = √π (evenGaussianMoment_zero). The half-integer ladder itself is re-exported from Mathlib (gammaLadder). 119 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The contribution is the identification of the entire even-moment sequence of the Gaussian weight with the half-integer Gamma ladder, plus the vanishing of the odd moments — turning the parent's single √π into the base rung of a fully-determined moment tower. The analytic ladder formula is Mathlib's; the moment bridge (half-line evaluation + evenness folding) and the odd-moment vanishing are assembled here from library lemmas.",
-    "openQuestions": []
+    "openQuestions": [
+      "Rescale to the standard normal: prove the normalized even moments ∫_ℝ x^{2n} e^{−x²/2}/√(2π) dx = (2n−1)‼, i.e. the moments of N(0,1), recovering the double factorial without the √π — the form used in Wick/Isserlis pairing.",
+      "Generalize the weight to e^{−axᵖ} for p > 0: state ∫_ℝ |x|^q e^{−a|x|^p} dx = (2/(p·a^{(q+1)/p}))·Γ((q+1)/p) as the master moment formula, with the Gaussian p = 2 case as the specialization proved here.",
+      "Establish moment determinacy: verify the Gaussian satisfies Carleman's condition ∑ m_{2n}^{−1/(2n)} = ∞, so the half-integer Gamma ladder uniquely determines the Gaussian measure among all measures with the same moments."
+    ]
   }
 }
