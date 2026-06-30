@@ -46,6 +46,20 @@
   The canonical taxicab witness `(9,10,12)` is `Ψ` applied to the negative-defect
   point `negTriple (−1) = (12,−10,9)` (`taxicab_is_signflip_of_neg`).
 
+  ## The symmetry is an all-odd-`n` phenomenon, not a cubic accident
+
+  The defect-negation is the `n = 3` case of a fact holding at *every odd
+  exponent*: since `(-b)^n = -b^n` for odd `n`, the same `Ψ` negates the
+  exponent-`n` defect `a^n + b^n - c^n` for all odd `n`
+  (`signFlip_negates_defect_odd`), hence exchanges negative- and positive-defect
+  solutions at every odd `n` (`signFlip_neg_to_pos_odd`,
+  `signFlip_pos_to_neg_odd`, packaged in `sign_symmetry_odd`).  This ties OQ-06
+  directly to the headline "for all `n ≥ 3`" conjecture: at any odd `n` the two
+  defect signs are never independent — one witness yields the other under one
+  fixed involution.  (Oddness is essential: at even `n`, `(-b)^n = +b^n`, so `Ψ`
+  sends the defect `a^n+b^n-c^n` to `c^n+b^n-a^n` — an `a ↔ c` swap, not a sign
+  flip — so this exchange is genuinely a feature of the odd exponents.)
+
   Everything here is a polynomial identity over `ℤ`, closed by `ring` /
   `linear_combination` / `norm_num`.  No `axiom`, no `sorry`, no `native_decide`:
   this is a fully verified, 0-axiom result.
@@ -175,6 +189,56 @@ theorem taxicab_is_signflip_of_neg :
 theorem negTriple_neg_one : negTriple (-1) = (12, -10, 9) := by
   simp only [negTriple]; norm_num
 
+/-! ## The sign-flip is an all-odd-`n` phenomenon
+
+The cubic defect-negation above is the `n = 3` instance of a structural fact that
+holds at **every odd exponent**: because `(-b)^n = -b^n` for odd `n`
+(`Odd.neg_pow`), the *same* involution `Ψ(a,b,c) = (c,-b,a)` negates the
+exponent-`n` defect `a^n + b^n - c^n` for all odd `n`.  This ties the OQ-06 sign
+symmetry directly to the headline conjecture "for all `n ≥ 3`": whatever the truth
+of defect-one existence at an odd exponent `n`, the two signs are interchanged by
+one fixed involution, so a negative-defect witness at odd `n` is automatically a
+positive-defect witness at the same `n` and vice versa. -/
+
+/-- **Headline (general odd `n`).** For every odd `n`, the involution `Ψ` negates
+the exponent-`n` defect: `a'^n + b'^n - c'^n = -(a^n + b^n - c^n)`.  The cubic
+case `signFlip_negates_defect` is `n = 3`. -/
+theorem signFlip_negates_defect_odd {n : ℕ} (hn : Odd n) (a b c : ℤ) :
+    (signFlip (a, b, c)).1 ^ n + (signFlip (a, b, c)).2.1 ^ n
+        - (signFlip (a, b, c)).2.2 ^ n
+      = -(a ^ n + b ^ n - c ^ n) := by
+  simp only [signFlip]
+  rw [hn.neg_pow]
+  ring
+
+/-- For every odd `n`, `Ψ` carries a **negative-defect** solution
+`a^n + b^n + 1 = c^n` to a **positive-defect** solution `a'^n + b'^n = c'^n + 1`. -/
+theorem signFlip_neg_to_pos_odd {n : ℕ} (hn : Odd n) {a b c : ℤ}
+    (h : a ^ n + b ^ n + 1 = c ^ n) :
+    (signFlip (a, b, c)).1 ^ n + (signFlip (a, b, c)).2.1 ^ n
+      = (signFlip (a, b, c)).2.2 ^ n + 1 := by
+  simp only [signFlip]
+  rw [hn.neg_pow]
+  linear_combination -h
+
+/-- For every odd `n`, `Ψ` carries a **positive-defect** solution
+`a^n + b^n = c^n + 1` to a **negative-defect** solution `a'^n + b'^n + 1 = c'^n`. -/
+theorem signFlip_pos_to_neg_odd {n : ℕ} (hn : Odd n) {a b c : ℤ}
+    (h : a ^ n + b ^ n = c ^ n + 1) :
+    (signFlip (a, b, c)).1 ^ n + (signFlip (a, b, c)).2.1 ^ n + 1
+      = (signFlip (a, b, c)).2.2 ^ n := by
+  simp only [signFlip]
+  rw [hn.neg_pow]
+  linear_combination -h
+
+/-- The cubic headline `signFlip_negates_defect` is exactly the odd-`n` theorem at
+`n = 3` (sanity check that the generalization subsumes the merged result). -/
+theorem signFlip_negates_defect_three (a b c : ℤ) :
+    (signFlip (a, b, c)).1 ^ 3 + (signFlip (a, b, c)).2.1 ^ 3
+        - (signFlip (a, b, c)).2.2 ^ 3
+      = -(a ^ 3 + b ^ 3 - c ^ 3) :=
+  signFlip_negates_defect_odd (by decide) a b c
+
 /-! ## Summary statement
 
 Both signs at `n = 3` are the two branches of one identity under `t ↦ -t`. -/
@@ -190,5 +254,23 @@ theorem sign_symmetry (t : ℤ) :
     (signFlip (negTriple t) = posTriple (-t)) ∧
     (signFlip (posTriple t) = negTriple (-t)) :=
   ⟨negTriple_defect t, posTriple_defect t, signFlip_negTriple t, signFlip_posTriple t⟩
+
+/-- **Sign symmetry at every odd exponent (OQ-06, general form).** For odd `n`,
+the single involution `Ψ(a,b,c) = (c,-b,a)` is its own inverse and exchanges the
+two defect signs: it sends each negative-defect solution `a^n + b^n + 1 = c^n` to
+a positive-defect solution and back.  This is the structural reason the two signs
+of the defect-one problem are never independent — at any odd `n` a witness of one
+sign yields a witness of the other under one fixed map. -/
+theorem sign_symmetry_odd {n : ℕ} (hn : Odd n) :
+    (∀ T : ℤ × ℤ × ℤ, signFlip (signFlip T) = T) ∧
+    (∀ a b c : ℤ, a ^ n + b ^ n + 1 = c ^ n →
+      (signFlip (a, b, c)).1 ^ n + (signFlip (a, b, c)).2.1 ^ n
+        = (signFlip (a, b, c)).2.2 ^ n + 1) ∧
+    (∀ a b c : ℤ, a ^ n + b ^ n = c ^ n + 1 →
+      (signFlip (a, b, c)).1 ^ n + (signFlip (a, b, c)).2.1 ^ n + 1
+        = (signFlip (a, b, c)).2.2 ^ n) :=
+  ⟨signFlip_involutive,
+   fun _ _ _ h => signFlip_neg_to_pos_odd hn h,
+   fun _ _ _ h => signFlip_pos_to_neg_odd hn h⟩
 
 end FermatDefectOneOQ06
