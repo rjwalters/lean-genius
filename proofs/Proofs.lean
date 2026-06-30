@@ -3898,6 +3898,7 @@ import Proofs.QuadraticReciprocityOQ03OQ03
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseyFirstMoment
 import Proofs.RamseyFirstMomentOQ01
+import Proofs.RamseyFirstMomentOffDiagonal
 import Proofs.RamseyHypergraph
 import Proofs.RamseyR4k
 import Proofs.RamseyR4kExtensions
