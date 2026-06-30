@@ -69,6 +69,22 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Target, scope, and status",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Import Mathlibs Banach-Steinhaus; docstring framing the target (a continuous 2pi-periodic function whose Fourier series diverges at a point) and the scope: this file isolates and verifies the FUNCTIONAL-ANALYSIS CORE (the resonance principle), ready to apply once the analytic input the Lebesgue constant tends to infinity is available; honest status note that the full Fourier-divergence theorem is not claimed.",
+      "mathContext": "Partial-sum functionals $S_n f = (S_n f)(0) = \\int f\\,D_n$, $\\|S_n\\| = \\|D_n\\|_{L^1}$ (Lebesgue constants) $\\to \\infty$; uniform boundedness forces a resonance point."
+    },
+    {
+      "id": "setup",
+      "title": "Opens, namespace, and Banach-space variables",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "Open Filter/Topology/Set; namespace; declare a complete normed space E over a nontrivially normed field and a normed space F - the abstract setting for the resonance principle.",
+      "mathContext": "$E$ Banach over $\\mathbb{K}$, $F$ normed; $g_i : E \\to_{L} F$ continuous linear maps."
+    },
+    {
       "id": "resonance-core",
       "title": "Resonance principle (contrapositive of uniform boundedness)",
       "startLine": 60,
