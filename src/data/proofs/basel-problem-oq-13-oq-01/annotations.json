@@ -1,30 +1,5 @@
 [
   {
-    "id": "eta-overview",
-    "proofId": "basel-problem-oq-13-oq-01",
-    "range": {
-      "startLine": 1,
-      "endLine": 33
-    },
-    "type": "concept",
-    "title": "η(4) by Parity Decomposition — No New Analytic Input",
-    "content": "The header states the open question (derive the Dirichlet eta value η(4) = 7π⁴/720 by combining λ(4) = π⁴/96 with the even-fourth-power sum π⁴/1440) and its resolution strategy. The Dirichlet eta η(s) = ∑ (-1)^(n+1)/nˢ is the alternating companion of ζ(s). Splitting by parity, odd indices carry +, even indices carry −, so η(4) = λ(4) − (even sum) = π⁴/96 − π⁴/1440 = 14π⁴/1440 = 7π⁴/720. Both ingredients are already proved axiom-free in the parent `BaselProblemOQ13` (`hasSum_even_zeta_four`, `hasSum_odd_zeta_four`); the only genuinely new ingredient is the alternating sign, threaded through `HasSum.even_add_odd`. There is no new analytic content — this is a sign-bookkeeping recombination of established sums.",
-    "mathContext": "$\\eta(4) = \\sum_{n\\ge1}\\frac{(-1)^{n+1}}{n^4} = \\lambda(4) - \\sum_{k\\ge1}\\frac{1}{(2k)^4} = \\frac{\\pi^4}{96} - \\frac{\\pi^4}{1440} = \\frac{14\\pi^4}{1440} = \\frac{7\\pi^4}{720}$.",
-    "significance": "context",
-    "relatedConcepts": [
-      "Dirichlet eta function η(s)",
-      "Dirichlet lambda λ(s) (odd zeta)",
-      "parity decomposition of a series",
-      "HasSum.even_add_odd",
-      "alternating zeta values"
-    ],
-    "prerequisites": [
-      "the parent BaselProblemOQ13 even/odd fourth-power sums",
-      "ζ, η, λ Dirichlet series at s = 4",
-      "summability and HasSum"
-    ]
-  },
-  {
     "id": "eta-even",
     "proofId": "basel-problem-oq-13-oq-01",
     "range": {

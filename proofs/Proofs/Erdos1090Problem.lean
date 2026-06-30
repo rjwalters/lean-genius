@@ -375,32 +375,6 @@ theorem hasRamseyProperty_card_ge (A : Finset Point) (k : ℕ)
   exact le_trans hSk (Finset.card_le_card hSA)
 
 /--
-**Monotonicity in the configuration:**
-Enlarging the point set preserves the Ramsey property: if `A ⊆ B` and `A` has the
-Ramsey property for `k`, then so does `B`.  For any 2-coloring, a monochromatic
-`k`-collinear subset of `A` is *a fortiori* a subset of `B`.  This makes
-`ramseyNumber k` a genuine threshold and is the structural basis for "minimum set
-size" being well-defined.
--/
-theorem hasRamseyProperty_mono {A B : Finset Point} (hAB : A ⊆ B) {k : ℕ}
-    (hA : HasRamseyProperty A k) : HasRamseyProperty B k := by
-  intro c
-  obtain ⟨S, hSA, hScol, hSmono⟩ := hA c
-  exact ⟨S, hSA.trans hAB, hScol, hSmono⟩
-
-/--
-**Monotonicity in `k` (downward):**
-Requiring fewer monochromatic collinear points is easier.  If `A` has the Ramsey
-property for `k` and `k' ≤ k`, then `A` has it for `k'`: the same monochromatic
-`k`-collinear subset already has `≥ k ≥ k'` points on a common line.
--/
-theorem hasRamseyProperty_antitone {A : Finset Point} {k k' : ℕ} (hk : k' ≤ k)
-    (hA : HasRamseyProperty A k) : HasRamseyProperty A k' := by
-  intro c
-  obtain ⟨S, hSA, ⟨hSk, hline⟩, hSmono⟩ := hA c
-  exact ⟨S, hSA, ⟨le_trans hk hSk, hline⟩, hSmono⟩
-
-/--
 **Trivial Lower Bound:**
 R(k) ≥ k since we need at least k points to have k collinear.
 

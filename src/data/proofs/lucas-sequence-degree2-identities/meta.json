@@ -4,7 +4,7 @@
   "title": "The Master Degree-2 Identity for General Lucas Sequences: Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ",
   "status": "verified",
   "badge": "original",
-  "description": "The single quadratic identity governing every Lucas-sequence pair. For integer parameters P, Q the fundamental and companion Lucas sequences Uₙ(P,Q) (U₀=0, U₁=1) and Vₙ(P,Q) (V₀=2, V₁=P) both obey xₙ₊₂ = P·xₙ₊₁ − Q·xₙ; with discriminant D = P²−4Q they satisfy Vₙ² − D·Uₙ² = 4·Qⁿ. The gallery previously held only the (P,Q) = (1,−1) instance (Lₙ² − 5·Fₙ² = 4·(−1)ⁿ) for the specific Fibonacci/Lucas pair; this entry proves the two-parameter master identity over ℤ, with Fibonacci/Lucas and Pell as corollaries. Elementary and closed-form-free: the proof rests on V_eq (Vₙ = 2·Uₙ₊₁ − P·Uₙ, two-step induction) and U_quad (the invariant quadratic form Uₙ₊₁² − P·Uₙ·Uₙ₊₁ + Q·Uₙ² = Qⁿ, single induction), after which linear_combination collapses the identity to 4·U_quad. Includes the Lucas-sequence Cassini identity Uₙ₊₁² − Uₙ₊₂·Uₙ = Qⁿ and the (1,−1) and (2,−1) specializations. Fully verified: 12 theorems, 2 definitions, 0 sorries, 0 axioms, kernel decide only (no native_decide).",
+  "description": "The single quadratic identity governing every Lucas-sequence pair. For integer parameters P, Q the fundamental and companion Lucas sequences Uₙ(P,Q) (U₀=0, U₁=1) and Vₙ(P,Q) (V₀=2, V₁=P) both obey xₙ₊₂ = P·xₙ₊₁ − Q·xₙ; with discriminant D = P²−4Q they satisfy Vₙ² − D·Uₙ² = 4·Qⁿ. The gallery previously held only the (P,Q) = (1,−1) instance (Lₙ² − 5·Fₙ² = 4·(−1)ⁿ) for the specific Fibonacci/Lucas pair; this entry proves the two-parameter master identity over ℤ, with Fibonacci/Lucas and Pell as corollaries. Elementary and closed-form-free: the proof rests on V_eq (Vₙ = 2·Uₙ₊₁ − P·Uₙ, two-step induction) and U_quad (the invariant quadratic form Uₙ₊₁² − P·Uₙ·Uₙ₊₁ + Q·Uₙ² = Qⁿ, single induction), after which linear_combination collapses the identity to 4·U_quad. Includes the Lucas-sequence Cassini identity Uₙ₊₁² − Uₙ₊₂·Uₙ = Qⁿ and the (1,−1) and (2,−1) specializations. The entry now also proves the two doubling companions of (★) — the cross identity U₂ₙ = Uₙ·Vₙ and the sum identity Vₙ² + D·Uₙ² = 2·V₂ₙ — via a single simultaneous induction (U_doubling_pair) giving U₂ₙ and U₂ₙ₊₁ together, completing the degree-2 algebra (difference / sum / cross). Fully verified: 17 theorems, 2 definitions, 0 sorries, 0 axioms, kernel decide only (no native_decide).",
   "overview": {
     "historicalContext": "Lucas sequences U_n(P,Q) and V_n(P,Q), introduced by Édouard Lucas in the 1870s, unify the Fibonacci/Lucas numbers (P=1, Q=−1), the Pell/Pell-Lucas numbers (P=2, Q=−1), the Jacobsthal numbers (P=1, Q=−2), the Mersenne-type 2ⁿ∓1 family (P=3, Q=2), and many others as a single two-parameter family obeying x_{n+2} = P·x_{n+1} − Q·x_n. Their arithmetic underlies the Lucas–Lehmer primality test and Lucas pseudoprimes. The discriminant D = P²−4Q plays the role that 5 plays for the Fibonacci numbers, and the quadratic relation V_n² − D·U_n² = 4·Q^n is the source identity from which the whole degree-2 algebra (doubling formulas, addition laws, gcd bounds) descends.",
     "problemStatement": "Define the fundamental and companion Lucas sequences U_n(P,Q), V_n(P,Q) over ℤ for arbitrary parameters P, Q, and prove the master degree-2 identity V_n² − (P²−4Q)·U_n² = 4·Q^n for all n, without leaving the integers (no Binet closed form, no √D). Recover the gallery's specific Fibonacci/Lucas identity L_n² − 5·F_n² = 4·(−1)ⁿ and the Pell identity as instances.",
@@ -50,19 +50,26 @@
     },
     {
       "id": "master-identity",
-      "title": "Section IV: The Master Identity and Instances",
+      "title": "Section IV: The Master Identity (★) and Instances",
       "startLine": 136,
-      "endLine": 174,
-      "summary": "V_sq_sub_D_U_sq: V_n² − (P²−4Q)·U_n² = 4·Q^n; specializations fib_lucas_instance (1,−1) → 4·(−1)ⁿ with D=5, and pell_instance (2,−1) → 4·(−1)ⁿ with D=8, plus numeric sanity checks via kernel decide.",
+      "endLine": 173,
+      "summary": "V_sq_sub_D_U_sq: V_n² − (P²−4Q)·U_n² = 4·Q^n; specializations fib_lucas_instance (1,−1) → 4·(−1)ⁿ with D=5, and pell_instance (2,−1) → 4·(−1)ⁿ with D=8.",
       "mathContext": "rw [V_eq] then linear_combination (4 · U_quad) collapses the identity; the (1,−1) instance reproduces the gallery's L_n² − 5·F_n² = 4·(−1)ⁿ, validating the generalization."
+    },
+    {
+      "id": "doubling-identities",
+      "title": "Section V: The Two Doubling Companions of (★)",
+      "startLine": 176,
+      "endLine": 244,
+      "summary": "U_doubling_pair: the even/odd index-doubling pair U₂ₙ = 2·U_n·U_{n+1} − P·U_n² and U₂ₙ₊₁ = U_{n+1}² − Q·U_n² by one simultaneous induction; U_two_mul: the cross identity U₂ₙ = U_n·V_n; V_sq_add_D_U_sq: the sum identity V_n² + (P²−4Q)·U_n² = 2·V₂ₙ; with Fibonacci instances fib_double_instance (F₂ₙ = F_n·L_n) and lucas_sum_double_instance (L_n² + 5·F_n² = 2·L₂ₙ).",
+      "mathContext": "The recurrence x_{n+2}=P·x_{n+1}−Q·x_n couples the even index 2n with the odd index 2n+1, so the two doubling formulas must be advanced together as a conjunction; eliminating V via V_eq then yields the cross identity (from the even half) and the sum identity (from both halves). Together with (★) these are the difference/sum/cross degree-2 algebra: V²−D·U² = 4·Q^n, V²+D·U² = 2·V₂ₙ, U·V = U₂ₙ."
     }
   ],
   "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms, kernel decide only — no native_decide) 174-line file with 12 theorems and 2 definitions establishing the master degree-2 identity V_n² − (P²−4Q)·U_n² = 4·Q^n for the general two-parameter Lucas sequences U_n(P,Q), V_n(P,Q) over ℤ. The proof is elementary and closed-form-free, resting on the companion relation V_n = 2·U_{n+1} − P·U_n and the invariant quadratic form U_{n+1}² − P·U_n·U_{n+1} + Q·U_n² = Q^n. The Fibonacci/Lucas identity L_n² − 5·F_n² = 4·(−1)ⁿ (gallery entry fibonacci-identities-oq-02-oq-01-oq-01) and the Pell identity are corollaries. #print axioms reports only [propext, Classical.choice, Quot.sound].",
-    "implications": "Generalizes the gallery's specific Fibonacci/Lucas degree-2 algebra to the entire Lucas-sequence family in one identity, with the Lucas-sequence Cassini relation as a byproduct. The definitions U, V and the two structural lemmas (V_eq, U_quad) are reusable infrastructure for further degree-2 work over arbitrary (P,Q): doubling formulas U_{2n}=U_n·V_n, V_{2n}=V_n²−2Q^n, addition laws, and gcd/divisibility results all reduce to these. The result itself is classical; the contribution is the clean, parameter-general, axiom-free formalization where the gallery previously had only the (1,−1) instance.",
+    "summary": "A fully verified (0 sorries, 0 axioms, kernel decide only — no native_decide) 265-line file with 17 theorems and 2 definitions establishing the full degree-2 algebra of the general two-parameter Lucas sequences U_n(P,Q), V_n(P,Q) over ℤ: the master identity V_n² − (P²−4Q)·U_n² = 4·Q^n and its two doubling companions U_{2n} = U_n·V_n (cross) and V_n² + (P²−4Q)·U_n² = 2·V_{2n} (sum). The proof is elementary and closed-form-free, resting on the companion relation V_n = 2·U_{n+1} − P·U_n, the invariant quadratic form U_{n+1}² − P·U_n·U_{n+1} + Q·U_n² = Q^n, and the simultaneous doubling induction U_doubling_pair. The Fibonacci/Lucas identities L_n² − 5·F_n² = 4·(−1)ⁿ, F_{2n} = F_n·L_n, L_n² + 5·F_n² = 2·L_{2n} (gallery entry fibonacci-identities-oq-02-oq-01-oq-01) and the Pell identity are corollaries. #print axioms reports only [propext, Classical.choice, Quot.sound].",
+    "implications": "Generalizes the gallery's specific Fibonacci/Lucas degree-2 algebra to the entire Lucas-sequence family, with the Lucas-sequence Cassini relation as a byproduct. The difference, sum, and cross identities together constitute the complete set of degree-2 relations between U_n and V_n. The definitions U, V and the structural lemmas (V_eq, U_quad, U_doubling_pair) are reusable infrastructure for further work over arbitrary (P,Q): the bilinear addition laws and gcd/divisibility results reduce to these. The results are classical; the contribution is the clean, parameter-general, axiom-free formalization. The sibling entry fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01 proves the same three identities via the bilinear addition laws and a pair-valued sequence definition — this entry derives the doubling identities directly from a self-contained simultaneous induction on the structurally-recursive U, V.",
     "openQuestions": [
-      "Prove the general doubling formulas U_{2n} = U_n·V_n and V_{2n} = V_n² − 2·Q^n over arbitrary (P,Q), generalizing the gallery's Fibonacci/Lucas doubling identities.",
-      "Establish the bilinear addition laws 2·U_{m+n} = U_m·V_n + U_n·V_m and 2·V_{m+n} = V_m·V_n + D·U_m·U_n for general Lucas sequences, and derive the gcd bound gcd(U_n, V_n) ∣ 2 from V_n² − D·U_n² = 4·Q^n when Q is a unit."
+      "Establish the bilinear addition laws 2·U_{m+n} = U_m·V_n + U_n·V_m and 2·V_{m+n} = V_m·V_n + D·U_m·U_n for general Lucas sequences (already available in the sibling fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01 entry), and derive the gcd bound gcd(U_n, V_n) ∣ 2 from V_n² − D·U_n² = 4·Q^n when Q is a unit."
     ]
   },
   "references": [
@@ -88,6 +95,10 @@
       "relation": "Specializes at (P,Q) = (1,−1) to that entry's L_n² − 5·F_n² = 4·(−1)ⁿ; this entry is its two-parameter generalization."
     },
     {
+      "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01",
+      "relation": "That sibling entry proves the same three general degree-2 identities (difference V²−D·U²=4Qⁿ, sum V²+D·U²=2V₂ₙ, cross U·V=U₂ₙ) via bilinear addition laws on a pair-valued sequence; this entry derives the two doubling companions directly from a self-contained simultaneous induction U_doubling_pair on the structurally-recursive U, V."
+    },
+    {
       "proofId": "lucas-sum-oq-01",
       "relation": "Shares the self-contained Lucas-sequence theme; that entry treats the specific Lucas numbers, this one the general U_n(P,Q), V_n(P,Q) family."
     },
@@ -102,9 +113,9 @@
     ],
     "opens": [],
     "namespace": "LucasSequenceDegree2Identities",
-    "lineCount": 174,
+    "lineCount": 265,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 17,
     "definitionCount": 2,
     "path": "Proofs/LucasSequenceDegree2Identities.lean",
     "sorries": 0
@@ -149,12 +160,14 @@
       "U_quad: the invariant quadratic form U_{n+1}² − P·U_n·U_{n+1} + Q·U_n² = Q^n (the proof engine)",
       "U_cassini: the Lucas-sequence Cassini identity U_{n+1}² − U_{n+2}·U_n = Q^n",
       "V_sq_sub_D_U_sq: the master degree-2 identity V_n² − (P²−4Q)·U_n² = 4·Q^n, generalizing the gallery's (1,−1) Fibonacci/Lucas instance",
-      "fib_lucas_instance, pell_instance: the (1,−1) and (2,−1) specializations recovering L_n²−5F_n²=4(−1)ⁿ and the Pell relation V_n²−8U_n²=4(−1)ⁿ"
+      "U_doubling_pair: the simultaneous even/odd doubling induction U_{2n} = 2·U_n·U_{n+1} − P·U_n² and U_{2n+1} = U_{n+1}² − Q·U_n²",
+      "U_two_mul: the doubling cross identity U_{2n} = U_n·V_n, and V_sq_add_D_U_sq: the doubling sum identity V_n² + (P²−4Q)·U_n² = 2·V_{2n}, completing the difference/sum/cross degree-2 algebra",
+      "fib_lucas_instance, pell_instance, fib_double_instance, lucas_sum_double_instance: the (1,−1) and (2,−1) specializations recovering L_n²−5F_n²=4(−1)ⁿ, the Pell relation V_n²−8U_n²=4(−1)ⁿ, F_{2n}=F_n·L_n, and L_n²+5F_n²=2L_{2n}"
     ],
     "axiomCount": 0,
-    "lineCount": 174,
-    "assumptions": "0 axioms, 0 sorries, no native_decide. The four numeric checks use kernel `decide` (not `native_decide`), so #print axioms reports only [propext, Classical.choice, Quot.sound]. Compiled against Mathlib v4.26.0. The identity is classical (Lucas, 1878); the contribution is the parameter-general, axiom-free formalization where the gallery previously had only the (P,Q) = (1,−1) Fibonacci/Lucas instance.",
-    "theoremCount": 12,
+    "lineCount": 265,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The five numeric checks use kernel `decide` (not `native_decide`), so #print axioms reports only [propext, Classical.choice, Quot.sound]. Compiled against Mathlib v4.26.0. The identities are classical (Lucas, 1878); the contribution is the parameter-general, axiom-free formalization. The same three degree-2 identities are also proved in the sibling entry fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01 via bilinear addition laws; this entry derives the doubling pair directly from a self-contained simultaneous induction.",
+    "theoremCount": 17,
     "definitionCount": 2,
     "prerequisites": [
       "Second-order linear recurrences and the two canonical Lucas-sequence initial data",

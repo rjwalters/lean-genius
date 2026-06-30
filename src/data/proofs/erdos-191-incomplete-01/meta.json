@@ -55,28 +55,12 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Imports, motivation, and namespace",
-      "startLine": 1,
-      "endLine": 35,
-      "summary": "Import Mathlib; docstring explaining that the parent erdos-191 entry carries tripleLog_unbounded as one of four axioms, that this fact is elementary (not deep), and that this file retires it by proving log(log(log n)) → ∞ axiom-free. Open Filter/Real, declare the namespace.",
-      "mathContext": "Goal: eliminate the parents axiom $\\texttt{tripleLog\\_unbounded}: \\forall M,\\exists N,\\forall n\\ge N,\\ \\log\\log\\log n > M$ by proving it."
-    },
-    {
-      "id": "definition",
-      "title": "The tripleLog scale",
-      "startLine": 37,
-      "endLine": 39,
-      "summary": "tripleLog n := log(log(log n)), the natural scale of Erdős #191, restated to match the parent definition.",
-      "mathContext": "$\\mathrm{tripleLog}(n) = \\log(\\log(\\log n))$."
-    },
-    {
       "id": "divergence",
       "title": "Triple-log divergence and the ε–N form",
-      "startLine": 41,
+      "startLine": 39,
       "endLine": 62,
-      "summary": "tripleLog_tendsto_atTop: the cast ℕ→ℝ tends to atTop and Real.log preserves atTop, so the threefold composition tends to atTop. tripleLog_unbounded then re-expresses Tendsto … atTop as the ∀M ∃N ∀n≥N, tripleLog n > M form matching the parents axiom.",
-      "mathContext": "$\\log\\log\\log n \\to \\infty$, hence $\\forall M,\\exists N,\\forall n\\ge N,\\ \\mathrm{tripleLog}(n) > M$."
+      "summary": "tripleLog n := log(log(log n)). tripleLog_tendsto_atTop: Tendsto (fun n => tripleLog n) atTop atTop, via Real.tendsto_log_atTop composed three times over tendsto_natCast_atTop_atTop. tripleLog_unbounded: the ∀ M ∃ N ∀ n ≥ N form, matching the parent's axiom.",
+      "mathContext": "$\\log\\log\\log n \\to \\infty$, hence $\\forall M\\, \\exists N\\, \\forall n \\geq N,\\ \\log\\log\\log n > M$."
     }
   ],
   "conclusion": {

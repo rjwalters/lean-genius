@@ -45,6 +45,11 @@ Binet closed form.  Two lemmas carry the whole argument:
 Substituting `Vₙ = 2Uₙ₊₁ − P Uₙ` into `Vₙ² − D Uₙ²` collapses it to
 `4·(Uₙ₊₁² − P Uₙ Uₙ₊₁ + Q Uₙ²) = 4·Qⁿ`, which is `(★)`.
 
+The two **doubling** identities are then obtained from a single simultaneous induction
+`U_doubling_pair` giving `U₂ₙ` and `U₂ₙ₊₁` together (they are coupled by the recurrence),
+after which `U_two_mul` (`U₂ₙ = Uₙ·Vₙ`) and `V_sq_add_D_U_sq` (`Vₙ² + D·Uₙ² = 2·V₂ₙ`)
+follow by eliminating `V` with `V_eq`.
+
 ## Results
 
 * `U`, `V`                  — the two Lucas sequences over `ℤ`, parametrized by `P, Q`.
@@ -52,8 +57,23 @@ Substituting `Vₙ = 2Uₙ₊₁ − P Uₙ` into `Vₙ² − D Uₙ²` collapse
 * `U_quad`                  — `Uₙ₊₁² − P·Uₙ·Uₙ₊₁ + Q·Uₙ² = Qⁿ` (invariant quadratic form).
 * `U_cassini`               — `Uₙ₊₁² − Uₙ₊₂·Uₙ = Qⁿ` (Lucas-sequence Cassini).
 * `V_sq_sub_D_U_sq`         — **(★)** `Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ`, the master identity.
+* `U_doubling_pair`         — even/odd index-doubling pair for `U` (one joint induction).
+* `U_two_mul`               — **doubling cross identity** `U₂ₙ = Uₙ·Vₙ`.
+* `V_sq_add_D_U_sq`         — **doubling sum identity** `Vₙ² + (P²−4Q)·Uₙ² = 2·V₂ₙ`.
 * `fib_lucas_instance`      — `(★)` at `(1,−1)`: `Vₙ² − 5·Uₙ² = 4·(−1)ⁿ`.
 * `pell_instance`           — `(★)` at `(2,−1)`: `Vₙ² − 8·Uₙ² = 4·(−1)ⁿ`.
+* `fib_double_instance`     — `F₂ₙ = Fₙ·Lₙ`; `lucas_sum_double_instance` — `Lₙ² + 5·Fₙ² = 2·L₂ₙ`.
+
+## The three master degree-2 identities
+
+Together `(★)` and its two doubling companions form the complete degree-2 algebra of a
+general Lucas pair (each recovers a classical Fibonacci/Lucas relation at `(P,Q)=(1,−1)`):
+
+| identity                        | value    | Fibonacci/Lucas case          |
+|---------------------------------|----------|-------------------------------|
+| `Vₙ² − D·Uₙ²`                    | `4·Qⁿ`   | `Lₙ² − 5·Fₙ² = 4·(−1)ⁿ`        |
+| `Vₙ² + D·Uₙ²`                    | `2·V₂ₙ`  | `Lₙ² + 5·Fₙ² = 2·L₂ₙ`         |
+| `Uₙ·Vₙ`                         | `U₂ₙ`    | `Fₙ·Lₙ = F₂ₙ`                 |
 
 ## Axioms: 0 | Sorries: 0
 -/
@@ -143,6 +163,56 @@ theorem V_sq_sub_D_U_sq (P Q : ℤ) (n : ℕ) :
   rw [V_eq]
   linear_combination 4 * U_quad P Q n
 
+/-- **Index-doubling pair for the fundamental sequence.**  Both halves of the doubling
+formula, proved by a *single* simultaneous induction: the recurrence
+`xₙ₊₂ = P·xₙ₊₁ − Q·xₙ` couples the even index `n+n` with the odd index `n+n+1`, so neither
+formula closes on its own — they must be advanced together.
+
+* even: `U₂ₙ   = 2·Uₙ·Uₙ₊₁ − P·Uₙ²`
+* odd:  `U₂ₙ₊₁ = Uₙ₊₁² − Q·Uₙ²`
+
+(The odd half is the `m = n` case of d'Ocagne's identity
+`U_{m+n+1} = U_{m+1}U_{n+1} − Q·U_m U_n`.) -/
+theorem U_doubling_pair (P Q : ℤ) (n : ℕ) :
+    U P Q (n + n) = 2 * U P Q n * U P Q (n + 1) - P * (U P Q n) ^ 2 ∧
+      U P Q (n + n + 1) = (U P Q (n + 1)) ^ 2 - Q * (U P Q n) ^ 2 := by
+  induction n with
+  | zero => refine ⟨?_, ?_⟩ <;> simp
+  | succ k ih =>
+    obtain ⟨hA, hB⟩ := ih
+    -- Recurrence at the three indices the step touches.
+    have rUk : U P Q (k + 1 + 1) = P * U P Q (k + 1) - Q * U P Q k := U_add_two P Q k
+    have rEven : U P Q (k + k + 2) = P * U P Q (k + k + 1) - Q * U P Q (k + k) :=
+      U_add_two P Q (k + k)
+    have rOdd : U P Q (k + k + 1 + 2) = P * U P Q (k + k + 2) - Q * U P Q (k + k + 1) :=
+      U_add_two P Q (k + k + 1)
+    -- Normalise the doubled successor indices.
+    have eEven : k + 1 + (k + 1) = k + k + 2 := by omega
+    have eOdd : k + 1 + (k + 1) + 1 = k + k + 1 + 2 := by omega
+    refine ⟨?_, ?_⟩
+    · rw [eEven, rEven, hB, hA, rUk]; ring
+    · rw [eOdd, rOdd, rEven, hB, hA, rUk]; ring
+
+/-- **Doubling cross identity.** `U₂ₙ = Uₙ·Vₙ` (equivalently `Uₙ·Vₙ = U₂ₙ`).
+
+The first generalized Fibonacci doubling formula `F₂ₙ = Fₙ·Lₙ`: eliminate `V` with `V_eq`
+and the even half of `U_doubling_pair` closes it. -/
+theorem U_two_mul (P Q : ℤ) (n : ℕ) :
+    U P Q (n + n) = U P Q n * V P Q n := by
+  rw [V_eq]
+  linear_combination (U_doubling_pair P Q n).1
+
+/-- **Doubling sum identity.** `Vₙ² + (P²−4Q)·Uₙ² = 2·V₂ₙ`.
+
+The companion of `(★)`: where the *difference* `Vₙ² − D·Uₙ²` measures `4·Qⁿ`, the *sum*
+`Vₙ² + D·Uₙ²` measures `2·V₂ₙ`.  Expand both `Vₙ` and `V₂ₙ` via `V_eq`, then both halves of
+`U_doubling_pair` reduce it to a polynomial identity in `Uₙ, Uₙ₊₁`. -/
+theorem V_sq_add_D_U_sq (P Q : ℤ) (n : ℕ) :
+    (V P Q n) ^ 2 + (P ^ 2 - 4 * Q) * (U P Q n) ^ 2 = 2 * V P Q (n + n) := by
+  obtain ⟨hA, hB⟩ := U_doubling_pair P Q n
+  rw [V_eq P Q n, V_eq P Q (n + n), hA, hB]
+  ring
+
 /-- Instantiation at `(P, Q) = (1, −1)` recovers the gallery's Fibonacci/Lucas identity
 `Lₙ² − 5·Fₙ² = 4·(−1)ⁿ`: here `U = Fibonacci`, `V = Lucas`, and `D = 1² − 4·(−1) = 5`. -/
 theorem fib_lucas_instance (n : ℕ) :
@@ -159,6 +229,21 @@ theorem pell_instance (n : ℕ) :
   norm_num at h
   linarith [h]
 
+/-- Fibonacci doubling at `(P,Q) = (1,−1)`: `F₂ₙ = Fₙ·Lₙ`, the classical identity
+expressing the even-index Fibonacci number as a product of the matching Fibonacci and
+Lucas numbers. -/
+theorem fib_double_instance (n : ℕ) :
+    U 1 (-1) (n + n) = U 1 (-1) n * V 1 (-1) n :=
+  U_two_mul 1 (-1) n
+
+/-- Lucas doubling at `(P,Q) = (1,−1)`: `Lₙ² + 5·Fₙ² = 2·L₂ₙ`, the sum companion of the
+gallery's difference identity `Lₙ² − 5·Fₙ² = 4·(−1)ⁿ`. -/
+theorem lucas_sum_double_instance (n : ℕ) :
+    (V 1 (-1) n) ^ 2 + 5 * (U 1 (-1) n) ^ 2 = 2 * V 1 (-1) (n + n) := by
+  have h := V_sq_add_D_U_sq 1 (-1) n
+  norm_num at h
+  linarith [h]
+
 /-- Numeric sanity check of the definitions and `(★)` at `(1,−1)`, `n = 5`:
 `U₅ = F₅ = 5`, `V₅ = L₅ = 11`, and `11² − 5·5² = 121 − 125 = −4 = 4·(−1)⁵`. -/
 example : U 1 (-1) 5 = 5 ∧ V 1 (-1) 5 = 11 ∧
@@ -170,5 +255,11 @@ example : U 1 (-1) 5 = 5 ∧ V 1 (-1) 5 = 11 ∧
 example : U 2 (-1) 4 = 12 ∧ V 2 (-1) 4 = 34 ∧
     (V 2 (-1) 4) ^ 2 - 8 * (U 2 (-1) 4) ^ 2 = 4 * (-1 : ℤ) ^ 4 := by
   refine ⟨by decide, by decide, by decide⟩
+
+/-- Numeric sanity check of both doubling identities at `(1,−1)`, `n = 3`:
+`F₆ = 8 = F₃·L₃ = 2·4`, and `L₃² + 5·F₃² = 16 + 20 = 36 = 2·L₆ = 2·18`. -/
+example : U 1 (-1) (3 + 3) = U 1 (-1) 3 * V 1 (-1) 3 ∧
+    (V 1 (-1) 3) ^ 2 + 5 * (U 1 (-1) 3) ^ 2 = 2 * V 1 (-1) (3 + 3) := by
+  refine ⟨by decide, by decide⟩
 
 end LucasSequenceDegree2Identities

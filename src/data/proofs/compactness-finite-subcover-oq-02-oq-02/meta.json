@@ -91,14 +91,6 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Imports, statement, and construction overview",
-      "startLine": 1,
-      "endLine": 60,
-      "summary": "Import Mathlib; docstring laying out the goal (a continuous partition of unity ψ_i subordinate to a finite open cover), the distance-to-complement bump construction, and why compactness is not needed once the cover is finite. Open Set/Metric, BigOperators/Classical; declare the MetricSpace X and Fintype ι variables.",
-      "mathContext": "For a finite open cover $U:\\iota\\to\\mathrm{Set}\\,X$ with $\\bigcup_i U_i = X$: build $\\psi_i$ continuous, $\\psi_i \\ge 0$, $\\psi_i(x)\\ne 0 \\Rightarrow x\\in U_i$, $\\sum_i \\psi_i(x) = 1$."
-    },
-    {
       "id": "bump-construction",
       "title": "The Distance-to-Complement Bump",
       "startLine": 61,

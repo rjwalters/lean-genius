@@ -89,14 +89,6 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Statement, imports, and namespace",
-      "startLine": 1,
-      "endLine": 41,
-      "summary": "Docstring: this file extracts the one clean, self-contained classical ingredient of Pólya–Vinogradov — the bound |∑ e^{2πiθn}| ≤ 1/|sin(πθ)| on a partial geometric exponential sum with unit-modulus ratio — and proves it fully machine-checked (the companion BoundedPrimeGapsOQ04OQ01 has analytic sorries and stale syntax). Import Mathlib; open Finset/Complex/Real; namespace.",
-      "mathContext": "Headline: $\\left|\\sum_{n=M+1}^{M+N} e^{2\\pi i\\theta n}\\right| \\le \\dfrac{1}{|\\sin(\\pi\\theta)|}$ for $\\theta\\notin\\mathbb{Z}$."
-    },
-    {
       "id": "helpers",
       "title": "Helper lemmas",
       "startLine": 43,
