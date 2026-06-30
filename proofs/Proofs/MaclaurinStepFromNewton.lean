@@ -17,10 +17,19 @@
   `newton_log_concavity` (which needs the real-rootedness / Rolle machinery)
   must stay axiomatized for now.  But `maclaurin_step` should be a THEOREM.
 
-  This file does exactly that for strictly positive inputs: it proves the
-  Maclaurin step inequality `Mₖ₊₁ ≤ Mₖ` taking `newton_log_concavity` as the
-  ONLY assumption.  `#print axioms maclaurin_step_pos` lists `newton_log_concavity`
-  and the standard foundational axioms — but NOT a separate Maclaurin axiom.
+  This file does exactly that, for the FULL non-negative case: it proves the
+  Maclaurin step inequality `Mₖ₊₁ ≤ Mₖ` for all inputs `xᵢ ≥ 0` (`maclaurin_step`,
+  matching the exact statement of the gallery's `maclaurin_step` axiom) taking
+  `newton_log_concavity` as the ONLY assumption.  `#print axioms maclaurin_step`
+  lists `newton_log_concavity` and the standard foundational axioms — but NOT a
+  separate Maclaurin axiom.
+
+  The strictly-positive case `maclaurin_step_pos` is the clean core; the general
+  non-negative `maclaurin_step` adds a short case split on `e_{k+1}`:
+    * `e_{k+1} = 0`  ⟹  `Mₖ₊₁ = 0 ≤ Mₖ`;
+    * `e_{k+1} > 0`  ⟹  the elementary symmetric polynomials `e_j` are positive for
+      all `j ≤ k+1` ("zeros form a suffix", `elemSymm_pos_of_top_pos`), so the same
+      core induction applies.
 
   Key idea (avoids logarithms and infinite products).  Write
   pₖ = eₖ/C(n,k) for the normalized symmetric mean, so Mₖ = pₖ^(1/k).
@@ -74,6 +83,56 @@ theorem elemSymm_pos {n : ℕ} (k : ℕ) (hk : k ≤ n) (x : Fin n → ℝ)
         Fintype.card_fin]
     exact Nat.choose_pos hk
 
+/-- For non-negative inputs, every elementary symmetric polynomial is non-negative
+    (a sum of products of non-negative terms). -/
+theorem elemSymm_nonneg {n : ℕ} (k : ℕ) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    0 ≤ elemSymm k x :=
+  Finset.sum_nonneg (fun _ _ => Finset.prod_nonneg (fun i _ => hx i))
+
+/-- **Zeros form a suffix (single step).** For non-negative inputs, if the
+    `(j+1)`-st elementary symmetric polynomial is positive, then so is the `j`-th.
+
+    A positive `e_{j+1}` means some `(j+1)`-subset `S` has all-positive product, hence
+    all its entries are positive; any `j`-subset `T ⊆ S` then has positive product and
+    is one of the (non-negative) summands of `e_j`, forcing `e_j > 0`. -/
+theorem elemSymm_pred_pos {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i)
+    {j : ℕ} (hjn : j + 1 ≤ n) (h : 0 < elemSymm (j + 1) x) : 0 < elemSymm j x := by
+  rw [elemSymm] at h
+  obtain ⟨S, hS, hSne⟩ := Finset.exists_ne_zero_of_sum_ne_zero h.ne'
+  have hSpos : 0 < ∏ i ∈ S, x i :=
+    lt_of_le_of_ne (Finset.prod_nonneg (fun i _ => hx i)) (Ne.symm hSne)
+  have hSx : ∀ i ∈ S, 0 < x i := by
+    intro i hi
+    rcases (hx i).lt_or_eq with h' | h'
+    · exact h'
+    · exact absurd (Finset.prod_eq_zero hi h'.symm) hSpos.ne'
+  have hScard : S.card = j + 1 := (Finset.mem_powersetCard.1 hS).2
+  obtain ⟨T, hTS, hTcard⟩ := Finset.exists_subset_card_eq (show j ≤ S.card by omega)
+  have hTmem : T ∈ (univ : Finset (Fin n)).powersetCard j :=
+    Finset.mem_powersetCard.2 ⟨Finset.subset_univ T, hTcard⟩
+  have hTpos : 0 < ∏ i ∈ T, x i := Finset.prod_pos (fun i hi => hSx i (hTS hi))
+  calc 0 < ∏ i ∈ T, x i := hTpos
+    _ ≤ elemSymm j x := by
+        rw [elemSymm]
+        exact Finset.single_le_sum (f := fun s => ∏ i ∈ s, x i)
+          (fun s _ => Finset.prod_nonneg (fun i _ => hx i)) hTmem
+
+/-- **Zeros form a suffix (prefix form).** For non-negative inputs, if `e_K > 0` then
+    `e_j > 0` for every `j ≤ K`. Iterates `elemSymm_pred_pos` down from `K`. -/
+theorem elemSymm_pos_of_top_pos {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    ∀ K, K ≤ n → 0 < elemSymm K x → ∀ j, j ≤ K → 0 < elemSymm j x := by
+  intro K
+  induction K with
+  | zero =>
+    intro _ _ j hj
+    rw [Nat.le_zero.1 hj, elemSymm_zero]; exact one_pos
+  | succ m ih =>
+    intro hK hpos j hj
+    have hmpos : 0 < elemSymm m x := elemSymm_pred_pos x hx hK hpos
+    rcases Nat.eq_or_lt_of_le hj with h | h
+    · rw [h]; exact hpos
+    · exact ih (by omega) hmpos j (by omega)
+
 /-- The normalized symmetric mean pₖ = eₖ / C(n,k). -/
 noncomputable def normElemSymm {n : ℕ} (k : ℕ) (x : Fin n → ℝ) : ℝ :=
   elemSymm k x / (n.choose k : ℝ)
@@ -107,29 +166,31 @@ noncomputable def maclaurinMean {n : ℕ} (k : ℕ) (x : Fin n → ℝ) : ℝ :=
 
 /-! ## Core induction (natural-number powers only) -/
 
-/-- The multiplicative Maclaurin core: `p_{k+1}^k ≤ p_k^{k+1}`, proved from
-    Newton's log-concavity by induction on `k`, using ONLY `ℕ`-powers. -/
-theorem maclaurin_core {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 < x i) :
-    ∀ k : ℕ, k + 1 ≤ n →
+/-- The multiplicative Maclaurin core, **from positivity of the normalized means**:
+    `p_{k+1}^k ≤ p_k^{k+1}`, proved from Newton's log-concavity by induction on `k`,
+    using ONLY `ℕ`-powers. The positivity hypothesis is on the `pⱼ` (not on the inputs
+    `xᵢ`), so this version applies to the non-negative case once the prefix lemma
+    `elemSymm_pos_of_top_pos` supplies `0 < pⱼ` for `j ≤ k+1` from `e_{k+1} > 0`. -/
+theorem maclaurin_core_of_pos {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    ∀ k : ℕ, k + 1 ≤ n → (∀ j, j ≤ k + 1 → 0 < normElemSymm j x) →
       normElemSymm (k + 1) x ^ k ≤ normElemSymm k x ^ (k + 1) := by
   intro k
   induction k with
   | zero =>
-    intro _
+    intro _ _
     simp [normElemSymm_zero]
   | succ m ih =>
-    intro hk
+    intro hk hpos
     have hm : m + 1 ≤ n := by omega
-    have IH := ih hm
-    -- positivity of the three relevant normalized means
-    have hA : 0 < normElemSymm m x := normElemSymm_pos m (by omega) x hx
-    have hB : 0 < normElemSymm (m + 1) x := normElemSymm_pos (m + 1) (by omega) x hx
-    have hC : 0 < normElemSymm (m + 2) x := normElemSymm_pos (m + 2) (by omega) x hx
+    have IH := ih hm (fun j hj => hpos j (by omega))
+    -- positivity of the three relevant normalized means (from the hypothesis)
+    have hA : 0 < normElemSymm m x := hpos m (by omega)
+    have hB : 0 < normElemSymm (m + 1) x := hpos (m + 1) (by omega)
+    have hC : 0 < normElemSymm (m + 2) x := hpos (m + 2) (by omega)
     -- Newton at j = m+1 :  p_m · p_{m+2} ≤ p_{m+1}²
     have hNewton : normElemSymm m x * normElemSymm (m + 2) x
         ≤ normElemSymm (m + 1) x ^ 2 := by
-      have h := newton_log_concavity (m + 1) (by omega) (by omega) x
-        (fun i => (hx i).le)
+      have h := newton_log_concavity (m + 1) (by omega) (by omega) x hx
       simp only [Nat.add_sub_cancel] at h
       exact h
     -- raise Newton to the m+1 power
@@ -154,6 +215,15 @@ theorem maclaurin_core {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 < x i) :
         _ ≤ normElemSymm m x ^ (m + 1) * normElemSymm (m + 1) x ^ (m + 2) := hIH2
     -- cancel p_m^{m+1} > 0
     exact le_of_mul_le_mul_left hcomb (pow_pos hA _)
+
+/-- The multiplicative Maclaurin core for **strictly positive inputs**:
+    `p_{k+1}^k ≤ p_k^{k+1}`. A specialization of `maclaurin_core_of_pos`, since
+    strictly positive inputs make every `pⱼ` positive (`normElemSymm_pos`). -/
+theorem maclaurin_core {n : ℕ} (x : Fin n → ℝ) (hx : ∀ i, 0 < x i) :
+    ∀ k : ℕ, k + 1 ≤ n →
+      normElemSymm (k + 1) x ^ k ≤ normElemSymm k x ^ (k + 1) := fun k hk =>
+  maclaurin_core_of_pos x (fun i => (hx i).le) k hk
+    (fun j hj => normElemSymm_pos j (le_trans hj hk) x hx)
 
 /-! ## Root extraction: from ℕ-powers back to the means -/
 
@@ -190,5 +260,40 @@ theorem maclaurin_step_pos {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
   have hq : 0 < normElemSymm (k + 1) x := normElemSymm_pos (k + 1) (by omega) x hx
   have hstep := rpow_cross hp hq hk (Nat.succ_pos k) hcore
   simpa only [maclaurinMean, normElemSymm] using hstep
+
+/-- **Maclaurin's step inequality, full non-negative case** — `Mₖ₊₁ ≤ Mₖ` for all
+    non-negative inputs, derived from `newton_log_concavity` alone. This is exactly the
+    statement of the `maclaurin_step` axiom in `AmgmInequalityOQ02.lean`, so it
+    discharges that axiom.
+
+    Two cases on `e_{k+1}`:
+    * `e_{k+1} = 0`: then `Mₖ₊₁ = 0^{1/(k+1)} = 0 ≤ Mₖ` (Maclaurin means are
+      non-negative for non-negative inputs).
+    * `e_{k+1} > 0`: the prefix lemma `elemSymm_pos_of_top_pos` gives `pⱼ > 0` for all
+      `j ≤ k+1`, so `maclaurin_core_of_pos` applies and `rpow_cross` finishes — exactly
+      as in `maclaurin_step_pos`, but with positivity sourced from `e_{k+1} > 0` rather
+      than from strict positivity of the inputs. -/
+theorem maclaurin_step {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    maclaurinMean (k + 1) x ≤ maclaurinMean k x := by
+  by_cases hek1 : 0 < elemSymm (k + 1) x
+  · -- positive case: every pⱼ (j ≤ k+1) is positive by the prefix lemma
+    have hpos : ∀ j, j ≤ k + 1 → 0 < normElemSymm j x := by
+      intro j hj
+      have hej : 0 < elemSymm j x :=
+        elemSymm_pos_of_top_pos x hx (k + 1) hkn hek1 j hj
+      exact div_pos hej (by exact_mod_cast Nat.choose_pos (le_trans hj hkn))
+    have hcore := maclaurin_core_of_pos x hx k hkn hpos
+    have hp : 0 < normElemSymm k x := hpos k (by omega)
+    have hq : 0 < normElemSymm (k + 1) x := hpos (k + 1) (le_refl _)
+    have hstep := rpow_cross hp hq hk (Nat.succ_pos k) hcore
+    simpa only [maclaurinMean, normElemSymm] using hstep
+  · -- e_{k+1} = 0  ⟹  Mₖ₊₁ = 0 ≤ Mₖ
+    have hzero : elemSymm (k + 1) x = 0 :=
+      le_antisymm (not_lt.1 hek1) (elemSymm_nonneg (k + 1) x hx)
+    have hMk1 : maclaurinMean (k + 1) x = 0 := by
+      rw [maclaurinMean, hzero, zero_div, Real.zero_rpow (by positivity)]
+    rw [hMk1, maclaurinMean]
+    exact Real.rpow_nonneg (div_nonneg (elemSymm_nonneg k x hx) (by positivity)) _
 
 end MaclaurinStepFromNewton
