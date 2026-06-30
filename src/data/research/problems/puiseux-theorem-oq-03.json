@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S09): generalized the single Y²−x slope↔root-valuation instance to the whole Yⁿ−x family — edgeSlope = −v(root) now proven for every n≥1. Combinatorial polygon (edge slope −1/n) meets analytic root valuation (v(x^{1/n})=1/n) on the same n. Still open: ramified embedding K⸨x⸩↪HahnSeries ℚ K and the bridge for ARBITRARY P∈K⸨x⸩[Y].",
+    "progressSummary": "PROGRESS (S10): proved edgeSlope=−v(root) for the most general SINGLE lower edge Yⁿ−xᵐ (arbitrary non-positive rational slope), strictly generalizing §9. Open: multi-edge gluing + ramified embedding.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -53,7 +53,8 @@
       "exists_lowerHull_sorted (PuiseuxTheoremOQ03.lean:972): the literal single corollary — exists_lowerHull composed with edgeSlopes_pairwise_le; the constructively-built hull chain has sorted edge slopes",
       "exists_lowerHull_newtonPolygon (PuiseuxTheoremOQ03.lean:1001): capstone bundling existence + sorted slopes + positive widths + widths-sum-to-span on ONE concrete hull chain — first theorem uniting the valuation and multiplicity halves on the object the recursion builds",
       "ysqMinusX_newtonPolygon (PuiseuxTheoremOQ03.lean:1022): Y^2-x worked example of the bundled Newton polygon capstone",
-      "YnMinusX/ynMinusX_edge_slope/ynMinusX_leading_exponent/ynMinusX_isLowerEdge/ynMinusX_slope_eq_root_valuation in PuiseuxTheoremOQ03.lean (1260→1329 lines, +1 def +5 thm, 0 sorry/0 axiom host-verified)"
+      "YnMinusX/ynMinusX_edge_slope/ynMinusX_leading_exponent/ynMinusX_isLowerEdge/ynMinusX_slope_eq_root_valuation in PuiseuxTheoremOQ03.lean (1260→1329 lines, +1 def +5 thm, 0 sorry/0 axiom host-verified)",
+      "YnMinusXm + ynMinusXm_slope_eq_root_valuation capstone (∃t, tⁿ=xᵐ ∧ v(t)=−edgeSlope) in PuiseuxTheoremOQ03.lean; nthRoot_xm, ynMinusXm_isLowerEdge, ynMinusXm_edge_slope/_leading_exponent, y3MinusX2_root_valuation (Y³−x² ⟹ v=2/3, non-unit-fraction). VERIFIED 0-axiom, file 1329→1444 lines."
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -71,7 +72,8 @@
       "getLast?->getLast bridge: from (p::vs).getLast? = some w use List.mem_getLast?_eq_getLast to get ∃ h, w = getLast (p::vs) h; proof-irrelevance makes getLast _ (by simp) defeq, so the .symm closes getLast (by simp) = w and rw [sum_edgeWidths, hgl] telescopes the width sum to w.1 - p.1.",
       "Mathlib drift (2026-06-28): K((x)) is now a valued field upstream (Valuation K((x)) -> Z^m0, LaurentSeries.lean), but the Puiseux extension K((x^(1/n))) and its Q-valued valuation are still absent. The blocker is therefore a type-level mismatch (Q-valued polygon slopes vs Z-valued base valuation), not merely a missing lemma: the analytic correspondence cannot be stated until a ramified, Q-valued Puiseux field is constructed.",
       "Session 2026-06-30 (researcher-2, S07): the S05 'ℚ-valuation absent' blocker was partly mis-stated. Mathlib's `HahnSeries.addVal Γ R : AddValuation R⟦Γ⟧ (WithTop Γ)` works for ANY linearly ordered Γ, so `HahnSeries ℚ K` is a ready-made ℚ-valued Puiseux field. Added (PuiseuxTheoremOQ03.lean, 0-axiom, docker-verified): `puiseuxMonomial`, `puiseuxVal_monomial` (v(x^q)=q), `sqrt_x_sq` ((x^{1/2})²=x), and the worked `ysqMinusX_root_valuation` realizing the polygon edge slope ½ as an actual ramified-root valuation — the first concrete slope↔root-valuation bridge. Still open (>1000 lines): the ramified embedding K⸨x⸩↪HahnSeries ℚ K and the general edgeSlope=−v(root) correspondence.",
-      "S09: the slope ↔ root-valuation bridge edgeSlope = −v(root), open in general, is now PROVEN for the entire family Yⁿ−x (n≥1): its Newton polygon is the single edge (0,1)→(n,0) of slope −1/n (ynMinusX_edge_slope), and x^{1/n} is a genuine root (tⁿ=x) with valuation 1/n = −(edge slope) (ynMinusX_slope_eq_root_valuation). First infinite-family realization; n=2 recovers ysqMinusX."
+      "S09: the slope ↔ root-valuation bridge edgeSlope = −v(root), open in general, is now PROVEN for the entire family Yⁿ−x (n≥1): its Newton polygon is the single edge (0,1)→(n,0) of slope −1/n (ynMinusX_edge_slope), and x^{1/n} is a genuine root (tⁿ=x) with valuation 1/n = −(edge slope) (ynMinusX_slope_eq_root_valuation). First infinite-family realization; n=2 recovers ysqMinusX.",
+      "S10: Yⁿ−xᵐ is the general single lower edge — slope −m/n is an arbitrary non-positive rational (vs §9 unit fractions −1/n); root x^{m/n}, tⁿ=xᵐ, v=m/n=−slope. The exact local model of one lower edge (width w=n, height h=m) of an arbitrary P∈K⸨x⸩[Y]."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -81,7 +83,8 @@
     "nextSteps": [
       "Analytic Newton polygon theorem (edge slopes = root valuations of P in K((x))[Y]): still blocked on a valuation API for K((x))[Y] absent from Mathlib 4.26.0 — the principal remaining gap.",
       "Optional: a fully-reduced ysqMinusX_newtonPolygon stating the concrete witness vs=[] and w=(2,0) so the slopes/widths lists evaluate (edgeSlopes [(0,1),(2,0)] = [-1/2], edgeWidths = [2]).",
-      "S2-B termination measure and S2-C quasi-linear complexity bound remain open (S2-C blocked on lack of an arithmetic-complexity model in Mathlib)."
+      "S2-B termination measure and S2-C quasi-linear complexity bound remain open (S2-C blocked on lack of an arithmetic-complexity model in Mathlib).",
+      "Glue several lower edges of ONE honest P∈K⸨x⸩[Y]: sum root valuations across the multi-edge polygon (single-edge case now fully general via Yⁿ−xᵐ). Still needs the ramified embedding K⸨x⸩↪HahnSeries ℚ K for a genuine polynomial source."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [

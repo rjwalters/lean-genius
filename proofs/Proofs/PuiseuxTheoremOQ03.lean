@@ -1326,4 +1326,119 @@ theorem ynMinusX_slope_eq_root_valuation (n : ℕ) (hn : 0 < n) :
 #print axioms ynMinusX_slope_eq_root_valuation
 #print axioms ynMinusX_isLowerEdge
 
+/-! ### The `Yⁿ − xᵐ` family: the general single lower edge, end to end
+
+The `Yⁿ − x` family above pins the *constant* term to `−x` (valuation `1`), so its single
+Newton edge always lands on `(0, 1)` and the realized slopes are exactly the unit fractions
+`−1/n`.  The genuinely general *single lower edge* allows **both** endpoints to move: a binomial
+`Yⁿ − xᵐ` (`n ≥ 1`, `m ≥ 0`) has support `{(0, m), (n, 0)}` and a single edge of slope
+`−m/n` — an arbitrary non-positive rational, no longer just a unit fraction.  Its ramified root
+is `t = x^{m/n}`, with `tⁿ = xᵐ` and valuation `m/n = −(edge slope)`.
+
+This is the most general two-term Newton polygon, and it is exactly the local model of *one*
+lower edge of an arbitrary `P ∈ K⸨x⸩[Y]`: an edge from `(i₀, h)` to `(i₁, 0)` of horizontal
+width `w = i₁ − i₀` and height `h` contributes roots of valuation `h/w`, which is the `n = w`,
+`m = h` instance here.  The `Yⁿ − x` family is the `m = 1` slice; `Y² − x` is `n = 2, m = 1`. -/
+
+/-- Support points of `Yⁿ − xᵐ`: `(0, m)` from the constant term `−xᵐ` (valuation `m`) and
+`(n, 0)` from the leading term `Yⁿ` (valuation `0`).  The intermediate coefficients vanish. -/
+def YnMinusXm (n m : ℕ) : List SupportPoint := [(0, (m : ℚ)), (n, 0)]
+
+/-- For `m = 1` the binomial family specializes to the `Yⁿ − x` family of §9. -/
+theorem ynMinusXm_one (n : ℕ) : YnMinusXm n 1 = YnMinusX n := by
+  simp [YnMinusXm, YnMinusX]
+
+/-- For `n = 2, m = 1` it specializes to the original worked example `Y² − x`. -/
+theorem ynMinusXm_two_one : YnMinusXm 2 1 = YsqMinusX := by
+  simp [YnMinusXm, YsqMinusX]
+
+/-- The single Newton-polygon edge of `Yⁿ − xᵐ` has slope `−m/n`.  Unlike the `Yⁿ − x` family
+(whose slopes are the unit fractions `−1/n`), letting `m` vary realizes an **arbitrary**
+non-positive rational slope. -/
+theorem ynMinusXm_edge_slope (n m : ℕ) :
+    edgeSlope (0, (m : ℚ)) (n, 0) = -(m : ℚ) / (n : ℚ) := by
+  simp only [edgeSlope, Nat.cast_zero, sub_zero, zero_sub]
+
+/-- For `m = 1` the slope `−m/n` recovers the `Yⁿ − x` edge slope `−1/n`. -/
+theorem ynMinusXm_edge_slope_one (n : ℕ) :
+    edgeSlope (0, ((1 : ℕ) : ℚ)) (n, 0) = -1 / (n : ℚ) := by
+  rw [ynMinusXm_edge_slope]; norm_num
+
+/-- **The Newton polygon recovers the leading exponent of the root.**  The negative of the
+edge slope `−m/n` equals the parent's `leadingExponentFromSlope m n = m/n`, the leading
+exponent of the ramified root `x^{m/n}` of `Yⁿ − xᵐ`.  Generalizes `ynMinusX_leading_exponent`
+from `m = 1` to every `m`. -/
+theorem ynMinusXm_leading_exponent (n m : ℕ) (hn : 0 < n) :
+    -edgeSlope (0, (m : ℚ)) (n, 0) = PuiseuxTheorem.leadingExponentFromSlope m n hn := by
+  rw [ynMinusXm_edge_slope, PuiseuxTheorem.leadingExponentFromSlope]
+  ring
+
+/-- The single segment of `Yⁿ − xᵐ` is a genuine lower edge for every `n ≥ 1`, witnessed by the
+supporting line `y = −(m/n)·i + m` through both `(0, m)` and `(n, 0)`.  Generalizes
+`ynMinusX_isLowerEdge`. -/
+theorem ynMinusXm_isLowerEdge (n m : ℕ) (hn : 0 < n) :
+    IsLowerEdge (YnMinusXm n m) (0, (m : ℚ)) (n, 0) := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  have hc : (-(m : ℚ) / (n : ℚ)) * (n : ℚ) = -(m : ℚ) := by
+    rw [div_mul_eq_mul_div, mul_div_assoc, div_self hn', mul_one]
+  refine ⟨by simp [YnMinusXm], by simp [YnMinusXm], hn, -(m : ℚ) / (n : ℚ), (m : ℚ),
+    by norm_num, ?_, ?_⟩
+  · show (0 : ℚ) = -(m : ℚ) / (n : ℚ) * (n : ℚ) + (m : ℚ)
+    rw [hc]; ring
+  · intro r hr
+    fin_cases hr
+    · norm_num
+    · show -(m : ℚ) / (n : ℚ) * (n : ℚ) + (m : ℚ) ≤ (0 : ℚ)
+      rw [hc]; linarith
+
+/-- The Puiseux element `x^{m/n}` is an `n`-th root of `xᵐ`: `(x^{m/n})ⁿ = xᵐ`.  Generalizes
+`nthRoot_x` (the `m = 1` case `(x^{1/n})ⁿ = x`). -/
+theorem nthRoot_xm (n m : ℕ) (hn : 0 < n) :
+    (puiseuxMonomial (K := K) ((m : ℚ) / (n : ℚ))) ^ n
+      = (puiseuxMonomial (K := K) 1) ^ m := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  rw [puiseuxMonomial_pow, puiseuxMonomial_pow]
+  congr 1
+  rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn', nsmul_eq_mul, mul_one]
+
+/-- The root `x^{m/n}` of `Yⁿ − xᵐ` carries valuation `m/n`. -/
+theorem nthRoot_xm_valuation (n m : ℕ) :
+    HahnSeries.addVal ℚ K (puiseuxMonomial (K := K) ((m : ℚ) / (n : ℚ)))
+      = (((m : ℚ) / (n : ℚ)) : WithTop ℚ) :=
+  puiseuxVal_monomial ((m : ℚ) / (n : ℚ))
+
+/-- **The general slope ↔ root-valuation bridge for `Yⁿ − xᵐ`.**  For every `n ≥ 1` and every
+`m` the Puiseux element `t = x^{m/n}` is a genuine root of `Yⁿ − xᵐ` (`tⁿ = xᵐ`) whose
+ℚ-valued valuation equals the **negative of the Newton-polygon edge slope**:
+`v(t) = m/n = −edgeSlope (0, m) (n, 0)`.  This proves the correspondence `edgeSlope = −v(root)`
+for the most general *two-term* Newton polygon — an arbitrary single lower edge with both
+endpoints free — strengthening §9 (which fixed the constant-term endpoint at `(0, 1)`).  The
+`m = 1` instance recovers `ynMinusX_slope_eq_root_valuation`. -/
+theorem ynMinusXm_slope_eq_root_valuation (n m : ℕ) (hn : 0 < n) :
+    ∃ t : PuiseuxSeries K,
+      t ^ n = (puiseuxMonomial (K := K) 1) ^ m ∧
+      HahnSeries.addVal ℚ K t = ((-edgeSlope (0, (m : ℚ)) (n, 0) : ℚ) : WithTop ℚ) := by
+  refine ⟨puiseuxMonomial ((m : ℚ) / (n : ℚ)), nthRoot_xm n m hn, ?_⟩
+  rw [nthRoot_xm_valuation, ynMinusXm_edge_slope]
+  congr 1
+  ring
+
+/-- **A non-unit-fraction valuation, realized.**  `Y³ − x²` has Newton slope `−2/3`, and its
+ramified root `x^{2/3}` carries valuation `2/3` — a value the entire `Yⁿ − x` family of §9 can
+never attain (its valuations are exactly the unit fractions `1/n`).  Concrete witness that the
+two-parameter family `Yⁿ − xᵐ` genuinely enlarges the realized value set. -/
+theorem y3MinusX2_root_valuation :
+    ∃ t : PuiseuxSeries K,
+      t ^ 3 = (puiseuxMonomial (K := K) 1) ^ 2 ∧
+      HahnSeries.addVal ℚ K t = ((2 / 3 : ℚ) : WithTop ℚ) := by
+  obtain ⟨t, ht, hv⟩ := ynMinusXm_slope_eq_root_valuation (K := K) 3 2 (by norm_num)
+  refine ⟨t, ht, ?_⟩
+  rw [hv, ynMinusXm_edge_slope]
+  norm_num
+
+#print axioms ynMinusXm_slope_eq_root_valuation
+#print axioms ynMinusXm_isLowerEdge
+#print axioms nthRoot_xm
+#print axioms y3MinusX2_root_valuation
+
 end PuiseuxTheoremOQ03

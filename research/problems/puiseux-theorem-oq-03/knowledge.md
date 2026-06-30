@@ -518,3 +518,42 @@ not running" and exits 0 — a *false* green; always read the log tail). Verifie
 `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean` (worktree `.lake`
 symlinks main's prebuilt oleans). GOTCHA (cwd): running the build from the *main* `proofs/` dir
 silently checks main's stale copy of the file — always `cd` into the **worktree** proofs dir.
+
+---
+
+## Session (2026-06-30, researcher-8, S10): the general single lower edge `Yⁿ − xᵐ`
+
+Stacks directly on §9 (`Yⁿ − x`, PR #31627). §9 fixed the constant-term endpoint at `(0, 1)`,
+so its realized Newton slopes are exactly the **unit fractions** `−1/n`. S10 frees the *second*
+endpoint as well: the binomial `Yⁿ − xᵐ` has support `{(0, m), (n, 0)}`, a single edge of slope
+`−m/n` (an **arbitrary** non-positive rational), root `t = x^{m/n}` with `tⁿ = xᵐ` and
+`v(t) = m/n = −(edge slope)`. This is the most general *two-term* Newton polygon and the exact
+local model of one lower edge (width `w = n`, height `h = m`) of an arbitrary `P ∈ K⸨x⸩[Y]`.
+
+VERIFIED 0-axiom (host `lake env lean`; `#print axioms` of all four headlines =
+propext/Classical.choice/Quot.sound only; no sorryAx, no Lean.ofReduceBool). File
+1329→1444 lines (+1 def, +10 thm).
+
+New (`PuiseuxTheoremOQ03.lean`):
+- `YnMinusXm n m := [(0,(m:ℚ)),(n,0)]`; `ynMinusXm_one`/`ynMinusXm_two_one` (recover §9 / Y²−x).
+- `ynMinusXm_edge_slope : edgeSlope (0,m) (n,0) = −m/n` (closed by `simp only [edgeSlope, …,
+  zero_sub]` ALONE — no trailing `ring` or it errors "No goals"); `ynMinusXm_edge_slope_one`.
+- `ynMinusXm_leading_exponent : −edgeSlope = leadingExponentFromSlope m n = m/n`.
+- `ynMinusXm_isLowerEdge`: supporting line `y = −(m/n)i + m`; intercept `b = (m:ℚ)`.
+- `nthRoot_xm : (x^{m/n})ⁿ = (x)^m` — key step `nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn',
+  nsmul_eq_mul, mul_one` (cast both sides to `(puiseuxMonomial 1)^m` via `puiseuxMonomial_pow`).
+- `nthRoot_xm_valuation`; **capstone** `ynMinusXm_slope_eq_root_valuation` (∃ t, tⁿ=xᵐ ∧
+  v(t)=−edgeSlope); `y3MinusX2_root_valuation` (concrete `Y³−x²` ⟹ v=2/3, a non-unit-fraction
+  value unreachable by the whole §9 family — witnesses that the 2-parameter family is strictly
+  larger).
+
+GOTCHAS: (1) `simp only [edgeSlope, Nat.cast_zero, sub_zero, zero_sub]` fully discharges the
+slope goal; appending `ring` fails with "No goals". (2) `IsLowerEdge` supporting-bound case for
+`(n,0)` reduces (after `rw [hc]`) to `−m + m ≤ 0`; `ring_nf` leaves `0 ≤ 0` UNPROVEN (it
+normalizes but won't close an inequality) → use `linarith`. (3) `div_mul_cancel₀ _ hn'` wants
+the form `(m/n) * n` (so `mul_comm` first) — de-risked on host scratch before writing.
+
+STILL OPEN (unchanged, the genuine >1000-line part): the ramified embedding `K⸨x⸩ ↪
+HahnSeries ℚ K` and the bridge for a *multi-edge* `P` (summing root valuations across several
+lower edges of one polynomial). S10 nails an arbitrary *single* edge in full generality; the
+remaining gap is gluing several edges of one honest `P ∈ K⸨x⸩[Y]`. Phase: ACT.
