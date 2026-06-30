@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-e1011oq1-overview",
+    "proofId": "erdos-1011-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "Discharging the Parent's Turán Axiom for the Triangle Case",
+    "content": "This file is an open-question descendant of Erdos1011Problem.lean, which studies f_r(n) — the minimal edge count forcing a triangle in an n-vertex graph of chromatic number ≥ r — and axiomatizes the known small cases, including the triangle base case as `axiom turan_theorem`. That base case is Mantel's theorem (1907), the r = 2 instance of Turán. Because Mathlib 4.26.0 now contains the full Turán machinery (Combinatorics.SimpleGraph.Extremal.Turan), this file converts that one axiom into a 0-axiom, 0-sorry theorem, derived from CliqueFree.card_edgeFinset_le and card_edgeFinset_turanGraph. The docstring is honest about scope: the hard work (Turán itself) lives in Mathlib; the contribution is to connect it to the exact triangle statement the Erdős #1011 development needs — specializing to r = 2, simplifying the modular correction terms, and exhibiting the matching extremal graph.",
+    "mathContext": "Parent axiom: the extremal edge count for triangle-free graphs. Here proved as the $r=2$ Turán case: $K_3$-free $\\Rightarrow \\#E \\le \\lfloor n^2/4 \\rfloor$, sharp via the Turán graph $\\mathrm{turanGraph}\\,n\\,2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Turán's theorem",
+      "Mantel's theorem",
+      "axiom elimination",
+      "Erdős #1011",
+      "chromatic number"
+    ],
+    "prerequisites": [
+      "extremal graph theory",
+      "the Erdős #1011 parent entry"
+    ]
+  },
+  {
     "id": "ann-e1011oq1-dictionary",
     "proofId": "erdos-1011-oq-01",
     "range": {
@@ -44,6 +68,29 @@
     "prerequisites": [
       "Nat division and modulo",
       "Nat.choose"
+    ]
+  },
+  {
+    "id": "ann-e1011oq1-cleared-denominator",
+    "proofId": "erdos-1011-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "The Cleared-Denominator Form 4·#edges ≤ n²",
+    "content": "four_mul_card_edgeFinset_le restates Mantel's bound without the floor division: 4·#edges ≤ n². It follows from the floored bound #edges ≤ n²/4 by multiplying through by 4 (Nat.mul_le_mul_left) and using Nat.mul_div_le (4·(n²/4) ≤ n²) to absorb the truncation. This integer-clean form is the shape downstream arithmetic in the Erdős #1011 development prefers — it avoids reasoning about ⌊·⌋ and lets later steps compare edge counts by a single multiplication.",
+    "mathContext": "$\\#E \\le \\lfloor n^2/4 \\rfloor \\Rightarrow 4\\,\\#E \\le 4\\lfloor n^2/4 \\rfloor \\le n^2$; the second inequality is $\\mathtt{Nat.mul\\_div\\_le}$, exact when $4 \\mid n^2$ (i.e. $n$ even).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.mul_div_le",
+      "Nat.mul_le_mul_left",
+      "floor division",
+      "denominator clearing"
+    ],
+    "prerequisites": [
+      "Nat division",
+      "Mantel's bound"
     ]
   },
   {

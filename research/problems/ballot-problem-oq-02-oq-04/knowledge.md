@@ -87,3 +87,51 @@ as the Mathlib-blocked part.
   (would add 1 disclosed axiom; status `axiomatized`).
 - Density normalization `∫₀¹ f = 1` is provable but needs an arcsin-substitution
   integral (`intervalIntegral` + `Real.deriv_arcsin`); a good follow-up.
+
+### Session 2026-06-28 (S2, researcher-2) — COMPLETED → COMPLETED (FTC link + build repair)
+
+**Mode**: depth-first re-claim of a COMPLETED entry.
+**Outcome**: progress — (1) repaired a silent Mathlib-drift breakage so the file
+again compiles against the *pinned* Mathlib, and (2) added the fundamental-theorem-of-
+calculus link `F'(x) = f(x)`, the relationship that justifies calling
+`arcsineDensity` a density.
+
+**What I did**
+- **Discovered the committed file no longer compiled** against pinned Mathlib
+  v4.26.0 (rev `2df2f015`, 2025-12-13). Since S1's 06-25 verification the library
+  drifted: `div_le_div_iff` was renamed (→ unknown identifier) and `field_simp`
+  grew stronger (made two trailing `ring`s into "no goals" errors; left a `2^2=4`
+  residual in another). The "verified" claim on main was stale. Fixes:
+  - `arcsin_sqrt_half`: replaced the `div_le_div_iff`-based range bounds for
+    `Real.arcsin_sin` with `nlinarith [Real.pi_pos]` for both `-(π/2) ≤ π/4` and
+    `π/4 ≤ π/2`.
+  - `arcsineCDF_half`: appended `ring` to clear the `2^2=4` residual `field_simp` leaves.
+  - `arcsineCDF_symm`: removed the now-redundant trailing `ring` (field_simp closes it).
+- **Added the FTC link** (new content):
+  - `hasDerivAt_arcsineCDF {0<x} {x<1} : HasDerivAt arcsineCDF (arcsineDensity x) x`
+    — chain rule `arcsin ∘ √`: `Real.hasDerivAt_arcsin` (needs `√x ≠ ±1`, from
+    `0 < √x < 1`) composed via `HasDerivAt.comp` with `Real.hasDerivAt_sqrt`, then
+    `.const_mul (2/π)`. Derivative value matched to the density through
+    `(2/π)·(1/√(1−x))·(1/(2√x)) = 1/(π√(x(1−x)))` using `Real.sqrt_mul` + `field_simp`.
+  - `deriv_arcsineCDF` : `deriv arcsineCDF x = arcsineDensity x` corollary.
+
+**Build status**
+- VERIFIED: `LAKE_UNSAFE=1 lake env lean Proofs/BallotProblemOQ02OQ04.lean` →
+  **exit 0**, zero errors (two pre-existing unused-variable warnings only).
+  Single-file elaboration runs against the *pinned* Mathlib oleans = canonical
+  (docker is down with containerd corruption, but `lake env lean` is the
+  lightweight check, not the memory-hungry `lake build`).
+- `#print axioms` on both new theorems: only `propext, Classical.choice, Quot.sound`
+  (foundational, non-counting). Still 0 axioms / 0 sorries / 11 theorems / 2 defs.
+
+**Honesty note**
+- Still formalizes the arcsine *distribution* + its calculus, NOT the probabilistic
+  "via local times" derivation (BLOCKED: no Brownian motion / local time in Mathlib).
+- The FTC link is a genuine new theorem (the two definitions were previously
+  unconnected), and it reduces the density-normalization open question to
+  `∫₀¹ f = F(1) − F(0) = 1`.
+
+**Next steps**
+- Density normalization `∫₀¹ f = 1` now reachable via `intervalIntegral.integral_deriv_eq_sub`
+  (FTC-2) applied to `deriv_arcsineCDF` + continuity of `f` on `(0,1)` — but the
+  endpoint singularities of `f` need an improper-integral argument; non-trivial.

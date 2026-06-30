@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-27T15:29:18-07:00",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Verified the witness half and proved a structural reduction of the minimality half (>=7 distinct prime factors) via the Euler abundancy bound.",
     "blockers": [],
-    "nextAction": "Formalize the extremal/monotonicity step: product over k distinct primes >=5 of p/(p-1) is maximised by the k smallest, closing >=7 prime factors unconditionally.",
+    "nextAction": "Bound exponents in the omega=7 non-squarefree family to reach exact minimality 5391411025.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: squarefree subproblem fully resolved (exact least element 33426748355, omega>=9), 0-axiom. General non-squarefree exact minimality still open.",
+    "progressSummary": "PROGRESS: squarefree subproblem fully resolved (exact least 33426748355, omega>=9), 0-axiom. NEW: omega(n)>=8 => n>=5391411025 (sharp), so any n below the conjectured minimum 5391411025 is non-squarefree with EXACTLY 7 distinct primes (odd_abundant_coprime_three_below_min_structure). Exact non-squarefree minimality now reduced to the single omega=7 non-squarefree family; that family needs exponent-size analysis (open).",
     "builtItems": [
       "geomSum_mul_pred_lt (per-prime-power Euler bound) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "sigma_mul_prod_sub_one_lt (Euler abundancy bound, N form) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
@@ -43,7 +43,10 @@
       "Proofs/AbundantNumberOQ02OQ01Squarefree.lean: sigma_one_squarefree (sigma(n)=prod(p+1) for squarefree via factorization_eq_one_of_squarefree), antitone weight g p=(p+1)/p with domg domination lemma, gap23/gap29, gapList8/gapList9, canon8_g_prod_lt_two, canon9_prod=33426748355.",
       "squarefree_odd_abundant_coprime_three_nine_primeFactors : Squarefree n -> Odd n -> not 3|n -> Abundant n -> 9 <= omega(n) [VERIFIED 0-axiom].",
       "squarefree_odd_abundant_coprime_three_ge : ... -> 33426748355 <= n (sharp; radical=n for squarefree, via domProd) [VERIFIED 0-axiom].",
-      "squarefree_odd_abundant_coprime_three_least : IsLeast {Squarefree & Odd & not3| & Abundant} 33426748355, with witness W=33426748355 proved Squarefree/Odd/not3|/Abundant (sigma_W=66886041600>2W via multiplicativity, no native_decide) [VERIFIED 0-axiom]."
+      "squarefree_odd_abundant_coprime_three_least : IsLeast {Squarefree & Odd & not3| & Abundant} 33426748355, with witness W=33426748355 proved Squarefree/Odd/not3|/Abundant (sigma_W=66886041600>2W via multiplicativity, no native_decide) [VERIFIED 0-axiom].",
+      "radical_ge_8 (8-prime radical bound): omega(n)>=8 => radical >= 1078282205 = 5*7*11*13*17*19*23*29, via domProd + gapList8. In Proofs/AbundantNumberOQ02OQ01GeneralBound.lean [VERIFIED 0-axiom].",
+      "odd_abundant_coprime_three_eight_primeFactors_ge (MAIN new): Odd n -> not 3|n -> Abundant n -> omega(n)>=8 => 5391411025 <= n. SHARP — the witness 5^2*7*11*13*17*19*23*29 attains it. Squarefree branch >=33426748355; non-squarefree branch 5*radical_8 = 5391411025. In GeneralBound.lean [VERIFIED 0-axiom].",
+      "odd_abundant_coprime_three_below_min_structure (STRUCTURE): any odd abundant coprime-to-3 number n < 5391411025 must be NON-squarefree with EXACTLY 7 distinct prime factors. Narrows exact-minimality to a single subcase. In GeneralBound.lean [VERIFIED 0-axiom]."
     ],
     "insights": [
       "Euler abundancy bound holds purely over N: for n>1, sigma(n)*prod_{p|n}(p-1) < n*prod_{p|n} p. Proved multiplicatively from (sum_{i<=a} p^i)*(p-1)=p^{a+1}-1 (Mathlib geom_sum_mul_add, valid in any semiring). No native_decide.",
@@ -53,14 +56,15 @@
       "Crude bounds fail: (5/4)^6 ~= 3.81 > 2, and 6 distinct INTEGERS >=5 can telescope to 2.5 > 2 (e.g. 5..10). Primality (coprimality to 6) is essential: it forces the i-th smallest prime factor >= the i-th prime >=5, which is exactly the gap-list domination.",
       "Linking the Q ratio product to the N Euler bound: prod_{p in S} p/(p-1) = (prod p)/(prod (p-1)) over Q (Finset.prod_div_distrib), and 2*prod(p-1) < prod p in N casts up; cancel the positive denominator with lt_of_mul_lt_mul_right. No division-inequality lemma needed.",
       "SHARP squarefree boundary: a squarefree odd abundant number coprime to 3 has >=9 distinct prime factors (vs >=7 general). Squarefreeness removes exponent-boosting, so the abundancy index is the strictly smaller product prod (p+1)/p; the 8 smallest primes >=5 give (6/5)(8/7)(12/11)(14/13)(18/17)(20/19)(24/23)(30/29)=2090188800/1078282205~1.938<2, the 9th (31) pushes it >2.",
-      "EXACT squarefree minimum: smallest squarefree odd abundant coprime-to-3 number is 5*7*11*13*17*19*23*29*31 = 33426748355 (IsLeast). Larger than the general min 5391411025 precisely because the latter is non-squarefree (5^2 buys abundancy with only 8 primes)."
+      "EXACT squarefree minimum: smallest squarefree odd abundant coprime-to-3 number is 5*7*11*13*17*19*23*29*31 = 33426748355 (IsLeast). Larger than the general min 5391411025 precisely because the latter is non-squarefree (5^2 buys abundancy with only 8 primes).",
+      "Exact-minimality narrowing: the conjectured least odd abundant coprime-to-3 number 5391411025 = 5^2*7*11*13*17*19*23*29 equals 5*radical_8 where radical_8 = product of the 8 smallest primes >=5. Hence omega(n)>=8 (non-squarefree) already forces n>=5391411025, and squarefree forces n>=33426748355. So ANY counterexample below 5391411025 is non-squarefree with EXACTLY 7 distinct primes — the only remaining open family. The general lower bound 185910725 is non-sharp precisely because 5^2*(7 smallest primes) = 1.937-abundancy < 2 is not abundant; abundancy with 7 primes needs raising several exponents (=> larger n) or an 8th prime (=> the witness).",
+      "The 8-prime radical bound reuses the existing domProd/gapList8 machinery verbatim — only the gap list length and the canon product change (canon8_prod = 1078282205). No new number theory; the reduction is purely structural (squarefree split + repeated-prime divisibility p*radical | n)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional: extend the gap-list method to bound omega(n) for odd abundant n with other small-prime exclusions (e.g. coprime to 15) — same dom lemma, different canonical gap list.",
-      "Optional gallery: the unconditional >=7 result could anchor a short gallery entry on Euler abundancy bounds, pairing the witness (oq-02) with this minimality lower bound.",
-      "The full minimality claim (smallest is exactly 5391411025) still needs the matching upper structure; >=7 prime factors is the proven lower bound on omega, not the full numeric minimality.",
-      "Squarefree case is now CLOSED exactly. For the general (non-squarefree) minimality toward 5391411025, the remaining obstruction is bounding exponents: a per-prime-power refinement combining the Euler bound with the size constraint."
+      "Close the remaining open subcase: an odd abundant coprime-to-3 number with EXACTLY 7 distinct prime factors (necessarily non-squarefree) is >= 5391411025. Requires bounding prime-power exponents: with the 7 smallest primes {5,7,11,13,17,19,23}, abundancy (sigma/n>2) needs the exponent product to approach the sup prod p/(p-1)=2.038; quantify the minimal n achieving sigma/n>2 and show it is >= 5391411025 (or that no such number is < 5391411025).",
+      "Optional: extend the gap-list method to coprime-to-15 (primes >=7) — same domProd, longer canonical gap list (~16 primes to exceed 2).",
+      "Optional gallery: the unconditional >=7 bound + the sharp omega>=8 narrowing could anchor a short gallery entry on Euler abundancy bounds."
     ],
     "markdown": "# Knowledge Base: abundant-number-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

@@ -3580,10 +3580,10 @@
       "result": "clean"
     },
     "erdos-1066-oq-04": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:24Z",
-      "result": "clean"
+      "lastAudited": "2026-06-28T19:20:24Z",
+      "result": "issues-fixed"
     },
     "erdos-1067": {
       "auditCount": 4,
@@ -25743,6 +25743,84 @@
     "stars-and-bars-weak-compositions-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T17:38:16Z",
+      "result": "clean",
+      "issues": []
+    },
+    "area-of-circle-oq-03-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "brouwer-fixed-point-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fibonacci-identities-oq-02-oq-01-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "erdos-1002-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1003-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1018-oq-04-incomplete-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1100-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "picks-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "property-b-first-moment-oq-03-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T18:46:29Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "factor-remainder-hasse-derivative-fq": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:21:35Z",
+      "result": "clean",
+      "issues": []
+    },
+    "godel-second-incompleteness-oq02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:23:24Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lucas-sequence-degree2-identities": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:07Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pythagorean-theorem-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-28T19:24:43Z",
       "result": "clean",
       "issues": []
     }

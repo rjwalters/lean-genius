@@ -66,7 +66,9 @@
       "Jacobi's modified σ* is not a new arithmetic function to be studied from scratch: it is the classical multiplicative σ minus a single correction term 4·σ(n/4) that fires only when 4∣n. This pins σ* entirely to the well-developed divisor-sum theory.",
       "The correction term is exact and structural — the multiples-of-4 divisors of n are in perfect bijection with all divisors of n/4 via e ↦ 4e — so no estimate or congruence bookkeeping is needed, just a Finset reindexing.",
       "The odd-part dependence σ*(2ᵃ·m) = 3·σ(m) for a ≥ 1 makes the even case of Jacobi's count manifestly independent of the power of two: r₄(2ᵃ·m) = 24·σ(m) is constant in a. This is the precise reason the parent's native_decide table repeats 24 at n = 2, 4, 8 (m = 1).",
-      "Because σ* is reduced to σ, which Mathlib already knows is multiplicative (Nat.Coprime.sum_divisors_mul), the entire computation is native_decide-free and depends only on Lean's foundational axioms."
+      "Because σ* is reduced to σ, which Mathlib already knows is multiplicative (Nat.Coprime.sum_divisors_mul), the entire computation is native_decide-free and depends only on Lean's foundational axioms.",
+      "σ* itself is NOT multiplicative — the −4·σ(n/4) correction breaks it at multiples of 4 — yet the identity recovers a clean multiplicative description of the even case (σ*(2ᵃ·m) = 3·σ(m)) by quarantining the non-multiplicative behavior into the single 2-adic factor. The '3' is exactly σ*(2ᵃ) for any a ≥ 1, the constant value of the modified divisor sum on powers of two.",
+      "The reduction is sharp at the boundary: the dividing line is 4∤n versus 4∣n, not odd versus even. This corrects the naive parity reading — σ*(n) = σ(n) already holds for n ≡ 2 (mod 4) (e.g. n = 2, 6, 10), where n is even but 4∤n — and is why the proof generalizes the parent's 'odd ⇒ σ* = σ' to the strictly weaker hypothesis 4∤n."
     ],
     "prerequisites": [
       "Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d and the prediction jacobiR4 = 8·σ* (restated from the sibling OQ-01)",
@@ -151,7 +153,13 @@
   ],
   "conclusion": {
     "summary": "A complete, native_decide-free reduction of Jacobi's modified divisor sum to the classical multiplicative σ: σ*(n) = σ(n) for 4∤n and σ*(n) = σ(n) − 4·σ(n/4) for 4∣n, with the odd-part capstone σ*(2ᵃ·m) = 3·σ(m). Restated for the count, r₄(n) = 8·σ(n) (n with 4∤n) and r₄(2ᵃ·m) = 24·σ(m), the standard textbook parity split. Zero sorries, zero axioms beyond the foundational ones, no Lean.ofReduceBool.",
-    "implications": "Generalizes the parent OQ-06 from prime powers to all n by anchoring σ* to the divisor-sum function σ, whose multiplicativity Mathlib already provides. The full geometric identity r₄(n) = 8·σ*(n) (needing the q-expansion of jacobiTheta⁴) remains the open target of OQ-01 and is not claimed here — this entry settles the arithmetic side in closed form."
+    "implications": "Generalizes the parent OQ-06 from prime powers to all n by anchoring σ* to the divisor-sum function σ, whose multiplicativity Mathlib already provides. The full geometric identity r₄(n) = 8·σ*(n) (needing the q-expansion of jacobiTheta⁴) remains the open target of OQ-01 and is not claimed here — this entry settles the arithmetic side in closed form.",
+    "openQuestions": [
+      "Can the residual axiom jacobi_r4_formula of the ancestor OQ-01 (jacobiR4 n = r₄ n) now be discharged by combining this closed form for σ* with a Lean proof of Jacobi's theorem r₄(n) = 8·σ*(n) from the q-expansion of jacobiTheta⁴?",
+      "Does the same divisor-sum-minus-correction pattern generalize to the sum-of-squares counts r₂, r₆, r₈ (which also have σ-type closed forms with character or power weights), and can each correction term be realized as an analogous explicit Finset bijection?",
+      "Is there a uniform statement covering every residue of n mod 4 — for instance a single formula σ*(n) = σ(n) − 4·σ(n/4) with the convention σ(n/4) = 0 when 4∤n — that removes the case split, and does it formalize more cleanly than the two-branch version?",
+      "What is the precise generating-function or Dirichlet-series identity behind σ*(n) = σ(n) − 4·σ(n/4) (i.e. ∑ σ*(n) n^{−s} = (1 − 4^{1−s})·ζ(s)·ζ(s−1)), and could verifying it give an alternative analytic route to Jacobi's count?"
+    ]
   },
   "crossReferences": [
     {
