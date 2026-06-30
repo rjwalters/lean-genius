@@ -9,14 +9,18 @@
   "difficulty": "intermediate",
   "leanFile": {
     "path": "Proofs/IsoperimetricFourierOQ0101.lean",
-    "imports": ["Mathlib"],
-    "opens": ["Finset"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
     "namespace": "IsoperimetricFourier",
-    "lineCount": 221,
+    "lineCount": 272,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 7
+    "theoremCount": 9
   },
   "lineCount": 221,
   "theoremCount": 7,

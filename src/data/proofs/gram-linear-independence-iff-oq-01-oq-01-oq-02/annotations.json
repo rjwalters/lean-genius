@@ -1,5 +1,17 @@
 [
   {
+    "id": "gram-hadamard-overview",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 40 },
+    "type": "context",
+    "title": "Hadamard's Matrix Inequality as a Corollary of the Gramian Bound",
+    "content": "The module docstring frames the result as the classical matrix form of **Hadamard's inequality** (Hadamard, 1893): for a square matrix A over 𝕜 = ℝ or ℂ, ‖det A‖ ≤ ∏_j ‖col A j‖ — the determinant is bounded by the product of the Euclidean norms of the columns. Geometrically, the volume of the parallelepiped spanned by the columns never exceeds the product of the edge lengths, with equality exactly when the columns are pairwise orthogonal (a box of fixed edge lengths is largest when rectangular). Crucially, this entry does **not** reprove the inequality from scratch: it answers the second open question of the parent `gram-linear-independence-iff-oq-01-oq-01` by transporting that entry's abstract Gramian bound `det(gram 𝕜 v) ≤ ∏ ‖v i‖²` back to the concrete matrix statement via the column identification `gram(col A) = Aᴴ A`. The file delivers three flavours — the norm form, the squared form, and the explicit `‖det A‖ ≤ ∏_j √(∑_i ‖A i j‖²)` — all machine-checked with no sorry and no extra axioms.",
+    "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\lVert a_j\\rVert$, with equality iff the columns $a_j$ are pairwise orthogonal; geometrically $\\mathrm{vol}(\\text{parallelepiped}) \\le \\prod_j \\lVert a_j\\rVert$.",
+    "significance": "context",
+    "relatedConcepts": ["Hadamard's inequality (1893)", "Gram determinant", "parallelepiped volume", "orthogonality equality case", "RCLike field"],
+    "prerequisites": ["determinants", "Euclidean norm", "parent Gramian Hadamard bound"]
+  },
+  {
     "id": "gram-col-eq-bridge",
     "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
     "range": { "startLine": 41, "endLine": 58 },

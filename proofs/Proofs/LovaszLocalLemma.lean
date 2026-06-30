@@ -361,4 +361,111 @@ theorem symmetric_lll_complete (n d : ℕ) (hd : 0 < d)
   ⟨threshold_satisfies_lll n d hd prob adj hdeg hprob,
    symmetric_lll_avoidance n d hd⟩
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART XI: THRESHOLD MONOTONICITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Bridge identity: (d+1)·T(d) = (d/(d+1))ᵈ, the symmetric avoidance
+    factor for the assignment xᵢ = 1/(d+1). This rescales the threshold
+    into the textbook avoidance-product form and is an immediate
+    consequence of `lllThreshold_eq_product`. -/
+theorem lllThreshold_mul_succ (d : ℕ) (hd : 0 < d) :
+    (↑d + 1) * lllThreshold d = (↑d / (↑d + 1 : ℚ)) ^ d := by
+  rw [lllThreshold_eq_product d hd]
+  have h : (↑d + 1 : ℚ) ≠ 0 := by positivity
+  field_simp
+
+/-- The arithmetic kernel of threshold monotonicity, written after
+    cross-multiplication: for `a = d ≥ 1`,
+    `(a+1)^{d+1}·(a+1)^{d+1} ≤ aᵈ·(a+2)^{d+2}`.
+
+    Proof idea: factor both sides as `((a+1)²)ᵈ·(a+1)²` and
+    `(a(a+2))ᵈ·(a+2)²`. Bernoulli's inequality applied to
+    `(1 - 1/(a+1)²)ᵈ ≥ 1 - d/(a+1)²` (note `a(a+2) = (a+1)² - 1`) gives
+    `(a(a+2))ᵈ·(a+1)² ≥ ((a+1)²)ᵈ·(a²+a+1)`, and the residual polynomial
+    inequality `(a²+a+1)(a+2)² ≥ (a+1)⁴` closes the gap. -/
+private theorem threshold_mono_key (d : ℕ) (hd : 1 ≤ d) :
+    ((↑d : ℚ) + 1) ^ (d + 1) * ((↑d : ℚ) + 1) ^ (d + 1) ≤
+      (↑d : ℚ) ^ d * ((↑d : ℚ) + 2) ^ (d + 2) := by
+  set a : ℚ := (↑d : ℚ) with ha
+  have ha1 : (1 : ℚ) ≤ a := by rw [ha]; exact_mod_cast hd
+  have ha0 : (0 : ℚ) < a := by linarith
+  have hane : (a + 1 : ℚ) ≠ 0 := by positivity
+  have hA : (0 : ℚ) < (a + 1) ^ 2 := by positivity
+  have hYnn : (0 : ℚ) ≤ ((a + 1) ^ 2) ^ d := by positivity
+  have hXnn : (0 : ℚ) ≤ (a * (a + 2)) ^ d := by positivity
+  -- Bernoulli: (1 - 1/(a+1)²)ᵈ ≥ 1 - a/(a+1)², with base = a(a+2)/(a+1)².
+  have hx : (-1 : ℚ) ≤ -(1 / (a + 1) ^ 2) := by
+    have h1 : (1 : ℚ) / (a + 1) ^ 2 ≤ 1 := by
+      rw [div_le_one hA]; nlinarith [ha1]
+    linarith
+  have hbern : 1 - a / (a + 1) ^ 2 ≤ (a * (a + 2) / (a + 1) ^ 2) ^ d := by
+    have hb := bernoulli_ineq d hx
+    rw [← ha] at hb
+    have hbase : (1 : ℚ) + -(1 / (a + 1) ^ 2) = a * (a + 2) / (a + 1) ^ 2 := by
+      field_simp; ring
+    rw [hbase] at hb
+    have hlhs : (1 : ℚ) + a * -(1 / (a + 1) ^ 2) = 1 - a / (a + 1) ^ 2 := by ring
+    rw [hlhs] at hb
+    exact hb
+  -- Clear the d-th power: ((a+1)²)ᵈ·(a²+a+1) ≤ (a(a+2))ᵈ·(a+1)².
+  have hYpos : (0 : ℚ) < ((a + 1) ^ 2) ^ d := by positivity
+  have ediv : (a * (a + 2) / (a + 1) ^ 2) ^ d
+      = (a * (a + 2)) ^ d / ((a + 1) ^ 2) ^ d := by rw [div_pow]
+  rw [ediv, le_div_iff₀ hYpos] at hbern
+  have h2 := mul_le_mul_of_nonneg_right hbern (le_of_lt hA)
+  have hsimp : (1 - a / (a + 1) ^ 2) * ((a + 1) ^ 2) ^ d * (a + 1) ^ 2
+      = ((a + 1) ^ 2) ^ d * (a ^ 2 + a + 1) := by
+    field_simp; ring
+  rw [hsimp] at h2
+  -- h2 : ((a+1)²)ᵈ·(a²+a+1) ≤ (a(a+2))ᵈ·(a+1)²
+  -- Residual polynomial inequality.
+  have hpoly : (a + 1) ^ 4 ≤ (a ^ 2 + a + 1) * (a + 2) ^ 2 := by
+    nlinarith [ha0, mul_pos ha0 ha0, mul_pos (mul_pos ha0 ha0) ha0]
+  -- Combine into the factored target ((a+1)²)ᵈ·(a+1)² ≤ (a(a+2))ᵈ·(a+2)².
+  have hgoal : ((a + 1) ^ 2) ^ d * (a + 1) ^ 2
+      ≤ (a * (a + 2)) ^ d * (a + 2) ^ 2 := by
+    have hbig : (((a + 1) ^ 2) ^ d * (a + 1) ^ 2) * (a + 1) ^ 2
+        ≤ ((a * (a + 2)) ^ d * (a + 2) ^ 2) * (a + 1) ^ 2 := by
+      nlinarith [mul_le_mul_of_nonneg_right h2 (sq_nonneg (a + 2)),
+                 mul_le_mul_of_nonneg_left hpoly hYnn, hXnn, hYnn]
+    exact le_of_mul_le_mul_right hbig hA
+  -- Refold the factored forms back to the original power expressions.
+  have hL : (a + 1) ^ (d + 1) * (a + 1) ^ (d + 1)
+      = ((a + 1) ^ 2) ^ d * (a + 1) ^ 2 := by
+    rw [← pow_add, ← pow_mul, ← pow_add]; congr 1; ring
+  have hR : a ^ d * (a + 2) ^ (d + 2)
+      = (a * (a + 2)) ^ d * (a + 2) ^ 2 := by
+    rw [pow_add, ← mul_assoc, ← mul_pow]
+  rw [hL, hR]
+  exact hgoal
+
+/-- **Threshold monotonicity**: the symmetric LLL threshold
+    `T(d) = dᵈ/(d+1)^{d+1}` is decreasing in the dependency degree —
+    `T(d+1) ≤ T(d)` for every `d ≥ 1`. Higher-degree dependency graphs
+    admit a smaller per-event probability budget. This subsumes
+    `lllThreshold_le_quarter`, since iterating from `T(1) = 1/4` bounds
+    every `T(d) ≤ 1/4`. -/
+theorem lllThreshold_succ_le (d : ℕ) (hd : 1 ≤ d) :
+    lllThreshold (d + 1) ≤ lllThreshold d := by
+  have hd0 : d ≠ 0 := by omega
+  have hd1 : d + 1 ≠ 0 := by omega
+  simp only [lllThreshold, if_neg hd0, if_neg hd1]
+  have e : (↑(d + 1) : ℚ) = ↑d + 1 := by push_cast; ring
+  rw [e, div_le_div_iff₀ (by positivity) (by positivity)]
+  have e2 : (↑d + 1 + 1 : ℚ) = ↑d + 2 := by ring
+  rw [e2]
+  exact threshold_mono_key d hd
+
+/-- Threshold monotonicity in `≤`-chain form for arbitrary degrees
+    `1 ≤ c ≤ d`: `T(d) ≤ T(c)`. Proved by induction on the gap using
+    `lllThreshold_succ_le`. -/
+theorem lllThreshold_antitone {c d : ℕ} (hc : 1 ≤ c) (hcd : c ≤ d) :
+    lllThreshold d ≤ lllThreshold c := by
+  induction d, hcd using Nat.le_induction with
+  | base => exact le_refl _
+  | succ n hn ih =>
+    have hn1 : 1 ≤ n := le_trans hc hn
+    exact le_trans (lllThreshold_succ_le n hn1) ih
+
 end ProbMethod.LovaszLocal

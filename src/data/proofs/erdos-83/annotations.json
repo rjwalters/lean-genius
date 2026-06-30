@@ -169,7 +169,7 @@
     },
     "type": "definition",
     "title": "EKR Star Family and Tightness",
-    "content": "`ekrStarFamily n k x` constructs all $k$-subsets of $[n]$ containing a fixed element $x$. This 'star' or 'dictator' family is the unique (up to isomorphism) extremal family for the EKR theorem when $n > 2k$. The axiom `ekr_achieved` confirms it achieves $\\binom{n-1}{k-1}$. When $n = 2k$, there are additional extremal families (complementary pairs), but the star is always optimal.",
+    "content": "`ekrStarFamily n k x` constructs all $k$-subsets of $[n]$ containing a fixed element $x$. This 'star' or 'dictator' family is the unique (up to isomorphism) extremal family for the EKR theorem when $n > 2k$. The **theorem** `ekr_achieved` (proved from Mathlib, formerly an axiom) confirms it achieves $\\binom{n-1}{k-1}$, via the `insert x` bijection with the $(k-1)$-subsets of the remaining $n-1$ points. When $n = 2k$, there are additional extremal families (complementary pairs), but the star is always optimal.",
     "mathContext": "$\\mathcal{S}_x = \\{A \\in \\binom{[n]}{k} : x \\in A\\}$, $|\\mathcal{S}_x| = \\binom{n-1}{k-1}$",
     "significance": "supporting",
     "relatedConcepts": [

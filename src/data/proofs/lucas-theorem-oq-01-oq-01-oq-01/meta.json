@@ -15,7 +15,15 @@
     "sorries": 0
   },
   "overview": {
-    "text": "Fine's theorem gives a per-row count of binomial coefficients not divisible by p as a product over base-p digits. Because the count is built from a multiplicative recursion in the row index, summing it over a full base-p block telescopes: each of the m digit positions contributes an independent factor ∑_{d<p}(d+1) = p(p+1)/2, so the block total is (p(p+1)/2)ᵐ. The formalization routes this through the recursion fineCount p (p·j+r) = (r+1)·fineCount p j rather than the digit-product form, partitioning the block by the last base-p digit and inducting on the number of digits m."
+    "text": "Fine's theorem gives a per-row count of binomial coefficients not divisible by p as a product over base-p digits. Because the count is built from a multiplicative recursion in the row index, summing it over a full base-p block telescopes: each of the m digit positions contributes an independent factor ∑_{d<p}(d+1) = p(p+1)/2, so the block total is (p(p+1)/2)ᵐ. The formalization routes this through the recursion fineCount p (p·j+r) = (r+1)·fineCount p j rather than the digit-product form, partitioning the block by the last base-p digit and inducting on the number of digits m.",
+    "keyInsights": [
+      "**Summation linearises the digit product.** Fine's per-row count is a product over base-p digits ∏(nᵢ+1), but summing it over a full pᵐ-block makes the digit positions independent, so the multiplicative-over-digits structure becomes a clean product of m identical per-digit factors (p(p+1)/2)ᵐ — a discrete Fubini over base-p expansions.",
+      "**The recursion, not the digit-product form, is the right engine.** Routing the proof through fineCount p (p·j+r) = (r+1)·fineCount p j (partition by last digit) rather than the closed digit product turns the whole argument into a single induction on the digit count m, avoiding any manipulation of variable-length base-p expansions.",
+      "**The per-digit factor is exactly Gauss's triangular number.** Summing the recursion's (r+1) over the last digit r < p yields ∑_{r<p}(r+1) = p(p+1)/2 — the same 1+2+⋯+p Gauss summed as a schoolboy. Its appearance per digit is what produces the m-th power.",
+      "**A division-free doubled identity dodges ℕ-truncation.** Because p(p+1)/2 involves natural-number division, the triangular sum is proved first in doubled form 2·∑(r+1) = p(p+1) (a pure polynomial identity closed by ring/induction) and then halved by omega — a robust pattern for division-laden ℕ identities.",
+      "**The growth rate is a fractal dimension.** The block total (p(p+1)/2)ᵐ over pᵐ rows has exponential rate log_p(p(p+1)/2), the box-counting dimension of the self-similar mod-p Pascal triangle; at p = 2 this is the Sierpiński total 3ᵐ and dimension log₂3 ≈ 1.585.",
+      "**The block-reindexing lemma is reusable infrastructure.** sum_range_mul_split (∑_{n<pM} f n = ∑_{j<M}∑_{r<p} f(pj+r)) is proved for an arbitrary f, decoupled from the binomial content, so it serves any base-p block computation, not just this one."
+    ]
   },
   "meta": {
     "author": "Classical (consequence of Fine 1947; the row-sum/box-dimension reading is folklore in the study of Pascal's triangle mod p). Lean formalization original",

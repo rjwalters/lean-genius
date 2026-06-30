@@ -43,24 +43,39 @@
   },
   "sections": [
     {
+      "id": "mul-perm-units",
       "title": "The multiplication permutation on the units (self-contained)",
-      "content": "mulPerm a is the permutation x ↦ a·x of (ℤ/p)ˣ, assembled into a homomorphism mulPermHom, with mulPerm_no_fixed_point for a ≠ 1. Re-established here because the grandparent file no longer compiles."
+      "startLine": 63,
+      "endLine": 105,
+      "summary": "mulPerm a is the permutation x ↦ a·x of (ℤ/p)ˣ, assembled into a homomorphism mulPermHom, with mulPerm_no_fixed_point for a ≠ 1. Re-established here because the grandparent file no longer compiles against Mathlib 4.26.0."
     },
     {
+      "id": "fixed-point-bridge",
       "title": "The fixed-point / units-restriction bridge",
-      "content": "ringMulPerm_ne_zero_iff and ringMulPerm_fixes_zero show 0 is the only fixed-point obstruction; sign_ringMulPerm_eq_sign_mulPerm then proves sign(ringMulPerm a) = sign(mulPerm a) via sign_subtypePerm and unitsEquivNeZero. This is the new mathematical content."
+      "startLine": 107,
+      "endLine": 138,
+      "summary": "ringMulPerm_ne_zero_iff and ringMulPerm_fixes_zero show 0 is the only fixed-point obstruction; sign_ringMulPerm_eq_sign_mulPerm then proves sign(ringMulPerm a) = sign(mulPerm a) via sign_subtypePerm and unitsEquivNeZero. This is the new mathematical content."
     },
     {
+      "id": "zolotarev-units",
       "title": "Zolotarev's lemma on the units (re-established)",
-      "content": "generator_not_isSquare (a generator is a non-square) and sign_mulPerm_generator (a single (p-1)-cycle has sign -1) drive sign_mulPerm_eq_quadraticChar: sign(mulPerm a) = quadraticChar (ℤ/p) a for all units a, by evaluation at a generator."
+      "startLine": 140,
+      "endLine": 260,
+      "summary": "generator_not_isSquare (a generator is a non-square) and sign_mulPerm_generator (a single (p-1)-cycle has sign -1) drive sign_mulPerm_eq_quadraticChar: sign(mulPerm a) = quadraticChar (ℤ/p) a for all units a, by evaluation at a generator; legendreSym_unit_eq bridges to the Legendre symbol."
     },
     {
+      "id": "base-case",
       "title": "The base case",
-      "content": "sign_ringMulPerm_eq_legendre: sign(ringMulPerm a on ℤ/p) = legendreSym p a, the exact glue the parent left open, obtained by chaining the bridge, the units-level lemma, and legendreSym_unit_eq."
+      "startLine": 262,
+      "endLine": 281,
+      "summary": "sign_ringMulPerm_eq_legendre: sign(ringMulPerm a on ℤ/p) = legendreSym p a, the exact glue the parent left open, obtained by chaining the bridge, the units-level lemma, and legendreSym_unit_eq."
     },
     {
+      "id": "closing-the-loop",
       "title": "Closing the loop — Jacobi values for a two-prime odd modulus",
-      "content": "sign_ringMulPerm_eq_legendre_mul: for distinct odd primes p, q, sign(ringMulPerm a on ℤ/pq) is the product of the Legendre symbols of the two CRT components, combining the base case with the parent's CRT multiplicativity."
+      "startLine": 283,
+      "endLine": 340,
+      "summary": "sign_ringMulPerm_eq_legendre_mul: for distinct odd primes p, q, sign(ringMulPerm a on ℤ/pq) is the product of the Legendre symbols of the two CRT components, combining the base case with the parent's CRT multiplicativity."
     }
   ],
   "meta": {

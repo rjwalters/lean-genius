@@ -105,7 +105,15 @@
       "summary": "The n=2 instance assembles two explicit Werner steps and cancels the intermediate sin(3x/2) by linear_combination, exhibiting the telescoping concretely. The numeric instance evaluates cos π + cos 2π = 0 via Real.cos_pi and Real.sin_pi — the n=2 cosine sum at x=π, matching the telescoped right-hand side sin(5π/2) − sin(π/2) = 0."
     }
   ],
-  "conclusion": "The four Werner product-to-sum identities and the finite Dirichlet kernel are formalised sorry-free and axiom-free. The mathematical content beyond Mathlib is the finite telescoped trigonometric sums — 2·sin(x/2)·∑_{k=1}^{n} cos(kx) = sin((n+½)x) − sin(x/2) and its sine companion, and the Dirichlet kernel ½ + ∑_{k=1}^{n} cos(kx) = sin((n+½)x)/(2·sin(x/2)) for sin(x/2) ≠ 0 — which Mathlib does not record (it has the Werner and sum-to-product algebra and the infinite cosine series, but not the finite partial sum). The proof reduces the whole telescoping to a single Werner identity per term (step_cos), after which a one-line induction collapses the sum to its endpoints. A natural follow-up is the Fejér kernel (the Cesàro average of the Dirichlet kernels, K_n = (1/(n+1))·(sin((n+1)x/2)/sin(x/2))²), or the conjugate Dirichlet sum ∑_{k=1}^{n} sin(kx) packaged as the conjugate kernel.",
+  "conclusion": {
+    "summary": "The four Werner product-to-sum identities and the finite Dirichlet kernel are formalised sorry-free and axiom-free. The proof reduces the whole telescoping to a single Werner identity per term (step_cos), after which a one-line induction collapses the sum to its endpoints.",
+    "implications": "The mathematical content beyond Mathlib is the finite telescoped trigonometric sums — 2·sin(x/2)·∑_{k=1}^{n} cos(kx) = sin((n+½)x) − sin(x/2) and its sine companion, and the Dirichlet kernel ½ + ∑_{k=1}^{n} cos(kx) = sin((n+½)x)/(2·sin(x/2)) for sin(x/2) ≠ 0 — which Mathlib does not record (it has the Werner and sum-to-product algebra and the infinite cosine series, but not the finite partial sum). The Dirichlet kernel is the convolution kernel of the partial sums of a Fourier series, so this finite closed form is the original content of the entry.",
+    "openQuestions": [
+      "Can the Fejér kernel — the Cesàro average of the Dirichlet kernels, K_n = (1/(n+1))·(sin((n+1)x/2)/sin(x/2))² — be formalised by averaging or telescoping the Dirichlet sums established here?",
+      "Can the conjugate Dirichlet sum ∑_{k=1}^{n} sin(kx) be packaged as the conjugate kernel, paralleling the cosine Dirichlet kernel proved here?",
+      "Should the finite telescoped trigonometric sums and the Dirichlet kernel closed form be contributed upstream to Mathlib, which currently records only the infinite cosine power series Real.cos_eq_tsum?"
+    ]
+  },
   "crossReferences": [
     "triangle-angle-sum-oq-05"
   ]

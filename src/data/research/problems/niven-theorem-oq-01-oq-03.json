@@ -13,7 +13,50 @@
   ],
   "path": "Proofs/NivenTheoremOQ01OQ03.lean",
   "leanFiles": [
-    "Proofs/NivenTheoremOQ01OQ03.lean"
+    {
+      "path": "Proofs/NivenTheorem.lean",
+      "filename": "NivenTheorem.lean",
+      "lineCount": 105,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheorem.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ01OQ03.lean",
+      "filename": "NivenTheoremOQ01OQ03.lean",
+      "lineCount": 211,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ02.lean",
+      "filename": "NivenTheoremOQ02.lean",
+      "lineCount": 96,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/NivenTheoremOQ03.lean",
+      "filename": "NivenTheoremOQ03.lean",
+      "lineCount": 144,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NivenTheoremOQ03.lean"
+    }
   ],
   "problemStatement": "Characterize the positive integers n for which sin(2π/n) is rational. Answer: exactly n ∈ {1, 2, 4, 12}, the sine analogue of the cosine crystallographic-restriction set {1, 2, 3, 4, 6}.",
   "started": "2026-06-24",
@@ -49,7 +92,9 @@
   ],
   "relatedProofs": [
     "niven-theorem-oq-01",
+    "niven-theorem-oq-01-oq-03",
     "niven-theorem-oq-02",
+    "niven-theorem-oq-03",
     "nth-root-irrational-oq-01-oq-01"
   ],
   "currentState": "SOLVED — verified, 0-axiom, gallery entry created."

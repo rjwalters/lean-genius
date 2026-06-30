@@ -153,4 +153,41 @@ theorem no_cyclic_vector :
   simp only [eval_mul, eval_ofNat, eval_X, mul_one, eval_zero] at hc
   exact absurd hc (by decide)
 
+/-- **Degree-form nonderogatory predicate.** A matrix is nonderogatory in
+degree form if its minimal and characteristic polynomials have the same
+`natDegree`. This is the `ZMod 4`-provable surrogate for
+`GeneralCyclicVectorRing.IsNonderogatory` (`minpoly R M = M.charpoly`):
+the polynomial-equality form is Lean-unprovable over `ZMod 4` because
+`Classical.choose` may pick `X^2 + 2*X` over `X^2` (see file header),
+whereas both have `natDegree = 2`, so the degree form is well-defined. -/
+def IsNonderogatoryDeg {R : Type*} [CommRing R] {n : ℕ}
+    (M : Matrix (Fin n) (Fin n) R) : Prop :=
+  (minpoly R M).natDegree = M.charpoly.natDegree
+
+/-- The polynomial-equality form `IsNonderogatory` is **stronger** than the
+degree form: equal polynomials have equal `natDegree`. Hence the backward
+direction `cyclic_implies_nonderogatory_commring` (which proves the
+poly-equality form over any nontrivial `CommRing`) downgrades to the degree
+form, making the studied biconditional coherently statable in degree form. -/
+theorem isNonderogatory_imp_deg {R : Type*} [CommRing R] [Nontrivial R] {n : ℕ}
+    (M : Matrix (Fin n) (Fin n) R) :
+    IsNonderogatory M → IsNonderogatoryDeg M :=
+  fun h => congrArg Polynomial.natDegree h
+
+/-- **The forward direction fails over `ZMod 4`** (negative answer to the OQ
+extension of the cyclic-vector ↔ nonderogatory biconditional from `[Field K]`
+to `[CommRing R]`): the matrix `M = !![0, 2; 0, 0]` over `ZMod 4` is
+nonderogatory in degree form yet has **no cyclic vector**.
+
+This packages `minpoly_natDegree_eq_two`, `charpoly_eq_X_sq`, and
+`no_cyclic_vector` into a single stated theorem `IsNonderogatoryDeg M ∧
+¬ ∃ v, IsCyclicVector M v`, witnessing that `IsNonderogatoryDeg M →
+∃ v, IsCyclicVector M v` is **false** over the non-domain ring `ZMod 4`. -/
+theorem nonderogatory_deg_and_no_cyclic_vector :
+    IsNonderogatoryDeg M ∧ ¬ ∃ v : Fin 2 → ZMod 4, IsCyclicVector M v := by
+  haveI : Nontrivial (ZMod 4) := nontrivial_zmod_four
+  refine ⟨?_, no_cyclic_vector⟩
+  show (minpoly (ZMod 4) M).natDegree = M.charpoly.natDegree
+  rw [minpoly_natDegree_eq_two, charpoly_eq_X_sq, natDegree_X_pow]
+
 end CayleyHamiltonCyclicVectorZMod4Counterexample

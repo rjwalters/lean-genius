@@ -135,8 +135,19 @@
   ],
   "crossReferences": [
     {
-      "slug": "erdos-1029",
-      "relevance": "Parent entry: states the open conjecture R(k)/(k·2^{k/2}) → ∞ and assumes the lower bound as the axiom spencer_lower_bound. This entry discharges the elementary version of that lower bound with 0 axioms."
+      "proofId": "erdos-1029",
+      "relationship": "parent",
+      "description": "Parent entry: states the open conjecture R(k)/(k·2^{k/2}) → ∞ and assumes the lower bound as the axiom spencer_lower_bound. This entry discharges the elementary version of that lower bound with 0 axioms."
+    },
+    {
+      "proofId": "lovasz-local-lemma",
+      "relationship": "strengthened-by",
+      "description": "Spencer's √2/e refinement of this elementary √2-base bound is obtained via the Lovász Local Lemma; the parent's assumed spencer_lower_bound is the LLL-strengthened form of the counting bound proved here."
+    },
+    {
+      "proofId": "property-b-first-moment",
+      "relationship": "related-technique",
+      "description": "Property B (Erdős 1963) uses the same first-moment counting argument — bound the number of 'bad' colorings by a union bound over candidate sets and show it is below the total — to prove small k-uniform hypergraphs are 2-colorable."
     }
   ],
   "conclusion": {

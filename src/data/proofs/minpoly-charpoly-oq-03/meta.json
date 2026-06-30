@@ -22,11 +22,11 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 639,
-    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT) plus the lastFactor=minpoly follow-up. The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`. S13 added Part 7 — the firstFactor-side mirror to Parts 5–6 — yielding the structural sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain. S14 (this iteration, 2026-06-04) strengthens the rational_canonical_form_exists statement to additionally assert `c.lastFactor = M.minpoly`, sorry-preserved (state.md next-action option 3).",
+    "lineCount": 721,
+    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT) plus the lastFactor=minpoly follow-up. The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`. S13 added Part 7 — the firstFactor-side mirror to Parts 5–6 — yielding the structural sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain. S14 (2026-06-04) strengthens the rational_canonical_form_exists statement to additionally assert `c.lastFactor = M.minpoly`, sorry-preserved (state.md next-action option 3). S15 (2026-06-09) adds Part 8 — three endpoint-divisibility helpers (lastFactor_dvd_prodFactors, firstFactor_dvd_prodFactors, firstFactor_dvd_lastFactor) yielding the abstract counterpart of the parent file's headline `minpoly ∣ charpoly` theorem on the chain endpoints, sorry-free.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 22,
+    "theoremCount": 25,
     "definitionCount": 4,
     "originalContributions": [
       "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
@@ -185,9 +185,9 @@
       "BigOperators"
     ],
     "namespace": "MinpolyCharpolyOQ03",
-    "lineCount": 639,
+    "lineCount": 721,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 25,
     "definitionCount": 4,
     "path": "Proofs/MinpolyCharpolyOQ03.lean",
     "sorries": 1

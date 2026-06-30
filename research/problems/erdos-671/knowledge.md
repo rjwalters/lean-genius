@@ -15,6 +15,63 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-06-28 (Session 7) — orphan BUILD-VERIFIED; pointwise sorry decomposed into a pure arithmetic core
+
+**Mode**: REVISIT (researcher-2). **Outcome**: real verified progress on the *orphan*
+(`Erdos671EquidistantOrphan.lean`); the registered gallery file is unchanged
+(still axiomatized: 3 axioms + 7 sorries).
+
+- **The session-6 orphan never compiled.** This was the first session to actually
+  build it (Docker up, load ≈ 11, Mathlib oleans cached → fast incremental build).
+  Two genuine errors surfaced: (1) `div_le_iff` was REMOVED in Mathlib v4.26.0
+  (→ `div_le_iff₀`); (2) a `linarith` in `midPoint_mem` lacked the real cast
+  `(2:ℝ) ≤ n` of `hn : n ≥ 2`. Both fixed → file now BUILD-VERIFIED.
+- **Decomposed the single monolithic pointwise sorry into proved lemmas** (all
+  build-verified) + ONE residual sorry:
+  - `lagrangeBasis_eval` : `p_i(x) = ∏_{j≠i} (x-a_j)/(a_i-a_j)` — eval via
+    `Polynomial.eval_prod` + `eval_mul/eval_C/eval_sub/eval_X` + `ring`.
+  - `abs_lagrangeBasis_eval` : abs distributes via `Finset.abs_prod` + `abs_div`.
+  - `lebesgueFunction_ge_single` : `λ_n(x) ≥ |p_i(x)|` via `Finset.single_le_sum`
+    (must pass `f := ...` explicitly — inference fails otherwise).
+  - `midPoint_sub_node` : `x* - x_j = (1-2j)/(n-1)` (rfl on the projection + `ring`).
+  - `node_sub_node` : `x_i - x_j = 2(i-j)/(n-1)`.
+- **Residual sorry is now pure finite real arithmetic**:
+  `∃ m : Fin n, 2^(n-1)/n^2 ≤ |p_m(x*)|`, equivalently the factorial inequality
+  `(2n-3)!! / (|2m-1| · 2^(n-1) · m! · (n-1-m)!) ≥ 2^(n-1)/n^2` at central
+  `m ≈ ⌊(n-2)/2⌋`. No polynomials/analysis remain — ideal for Aristotle
+  `prove_file` or a manual double-factorial induction.
+- **Aristotle still DOWN** (smoke test → HTTP 404 on `/api/v1/project`), so the
+  residual sorry could not be submitted this session.
+
+### Lean gotchas recorded
+- `div_le_iff` → `div_le_iff₀` (removed, not just deprecated, in v4.26.0).
+  `div_le_one` still works.
+- `Finset.single_le_sum` needs `(f := fun k => ...)` when the summand is `|g k|`;
+  otherwise the nonneg side condition can't unify `f`.
+- Structure-field projection `(equidistantNodes n hn).points j` reduces by `rfl`
+  to its definitional lambda value — handy for `midPoint_sub_node`/`node_sub_node`.
+
+## Session 2026-06-26 (Session 6) — orphan scaffold for the pointwise core; Aristotle backend down
+
+**Mode**: REVISIT. **Outcome**: no sorries eliminated; one piece of reusable groundwork.
+
+- **Aristotle DOWN**: `prove_file` and the MCP smoke test both return HTTP 404
+  (`aristotle.harmonic.fun/api/v1/project`). The sanctioned `prove_file` route for
+  `equidistant_diverges` is unavailable this session.
+- **Build declined**: load avg ≈ 47, many concurrent peer builds — would contend.
+- Created `proofs/Proofs/Erdos671EquidistantOrphan.lean` (UNREGISTERED, not imported
+  by the `Proofs.lean` aggregator → zero gallery/build risk). It isolates the
+  **pointwise** core of `equidistant_diverges` as one sorry:
+  `lebesgueFunction (equidistantNodes n hn) (-1 + 1/(n-1)) ≥ 2^(n-1)/n^2`.
+  This deliberately drops the supremum/`BddAbove` step (handled separately by
+  lower-bounding the constant at any admissible point) so the residual goal is a
+  pure finite product/factorial inequality — the cleanest target for `prove_file`
+  or a manual factorial induction. Numerics already confirm the bound for n=2..25
+  with dominant central index m ≈ ⌊(n-2)/2⌋ (see verify-equidistant-bound.py).
+- Exact closed form recorded for the induction: at x* = -1 + 1/(n-1),
+  `|p_i(x*)| = (∏_{k≠i}|2k-1|) / (2^(n-1) · i! · (n-1-i)!)`, with
+  `∏_{k=0}^{n-1}|2k-1| = (2n-3)!!`; pick i = m to clear the bound.
+
 ## Session 2026-06-25 (Session 5) — numerical confirmation of `equidistant_diverges` + dominant-index refinement
 
 **Mode**: REVISIT (no Lean changes; local build unavailable — Docker down + olean header mismatch vs prebuilt cache, so NO Lean verification possible this session).

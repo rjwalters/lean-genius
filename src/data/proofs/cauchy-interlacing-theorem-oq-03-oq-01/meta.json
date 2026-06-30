@@ -117,12 +117,14 @@
   },
   "crossReferences": [
     {
-      "slug": "cauchy-interlacing-theorem-oq-03",
-      "relation": "Parent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, and lists this operator-norm stability bound as its lead open question. This entry closes that question, reusing weyl_monotone verbatim via the Loewner sandwich."
+      "proofId": "cauchy-interlacing-theorem-oq-03",
+      "relationship": "child-of",
+      "description": "Parent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, and lists this operator-norm stability bound as its lead open question. This entry closes that question, reusing weyl_monotone verbatim via the Loewner sandwich."
     },
     {
-      "slug": "cauchy-interlacing-theorem",
-      "relation": "Grandparent entry — proves the Courant–Fischer max–min keystone (eigenvalue_maxmin_lower / eigenvalue_maxmin_upper) on which Weyl monotonicity, and hence this stability bound, ultimately rest."
+      "proofId": "cauchy-interlacing-theorem",
+      "relationship": "builds-on",
+      "description": "Grandparent entry — proves the Courant–Fischer max–min keystone (eigenvalue_maxmin_lower / eigenvalue_maxmin_upper) on which Weyl monotonicity, and hence this stability bound, ultimately rest."
     }
   ],
   "references": [

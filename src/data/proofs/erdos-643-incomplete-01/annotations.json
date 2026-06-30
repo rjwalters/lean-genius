@@ -10,7 +10,7 @@
     "title": "Why the Extremal Function f(n,t) Is Well-Defined",
     "content": "f(n,t) is `Nat.find` of the predicate 'every family with ≥ m edges has a crossed pair'. For `Nat.find` to make sense the predicate must hold somewhere, and the witness is m = C(n,t) + 1: any t-uniform family H on Fin n is a set of t-subsets, hence H ⊆ powersetCard t univ, whose ncard is exactly C(n,t) (`Finset.card_powersetCard` + `Fintype.card_fin`). So a crossed-pair-free family can have at most C(n,t) edges, and beyond that the threshold is forced. This mirrors the parent's definition exactly, so the f proved about here is the same extremal function.",
     "mathContext": "There are exactly C(n,t) t-subsets of an n-set, so edgeCount H ≤ C(n,t) for every t-uniform H — the upper cap that makes Nat.find non-vacuous.",
-    "significance": "high",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.find",
       "Finset.powersetCard",
@@ -52,7 +52,7 @@
     "title": "Counting the Star: the Link Bijection e ↦ e \\ {0}",
     "content": "The star St₀ = { e : |e|=t, 0∈e } is put in bijection with the (t-1)-subsets of the remaining n-1 vertices: St₀ = image (insert 0) (powersetCard (t-1) (univ.erase 0)). Injectivity of `insert 0` on sets avoiding 0 is `erase_insert`; surjectivity onto St₀ is `insert_erase` (e = insert 0 (e.erase 0) when 0 ∈ e). `Finset.card_image_of_injOn` then reduces |St₀| to |powersetCard (t-1) (univ.erase 0)| = C(n-1, t-1) via `Finset.card_powersetCard` and `card_erase_of_mem`. This generalizes the parent's t=3 `Star_card` (which gave C(n-1,2)) to arbitrary t.",
     "mathContext": "t-subsets of [n] containing a fixed vertex ↔ (t-1)-subsets of the other n-1 vertices, hence |St₀| = C(n-1,t-1) — the link of vertex 0.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.card_image_of_injOn",
       "Finset.card_powersetCard",
@@ -95,7 +95,7 @@
     "title": "Asymptotic Optimality: C(n-1,t-1)/C(n,t-1) → 1",
     "content": "The star's edge count C(n-1,t-1) is the conjectured main term C(n,t-1) up to a factor that vanishes: the exact column identity (n-k)·C(n,k) = n·C(n-1,k) (`choose_pred_identity`, from `Nat.add_one_mul_choose_eq` and `Nat.choose_succ_right_eq`) gives, for n ≥ t, the ratio C(n-1,t-1)/C(n,t-1) = (n-t+1)/n. Since (t-1)/n → 0 (`Tendsto.div_atTop`), this ratio tends to 1 (`star_ratio_tendsto`), so f(n,t) ≥ (1+o(1))·C(n,t-1): the star realizes the full first-order constant of Erdős' conjectured lower bound. Only the second-order term ⌊(n-1)/t⌋ and the matching upper bounds lie outside this axiom-free island.",
     "mathContext": "C(n-1,t-1)/C(n,t-1) = (n-t+1)/n → 1, so the single-star lower bound is asymptotically optimal for the conjecture's main term.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.add_one_mul_choose_eq",
       "Nat.choose_succ_right_eq",

@@ -5,7 +5,7 @@
     "range": { "startLine": 1, "endLine": 57 },
     "type": "concept",
     "title": "Sign Symmetry and Jacobi's Factor of 8",
-    "content": "The header frames the contribution: the parent file decomposes r₄(n) by type t (a sorted tuple of absolute values) and assigns each type a symmetry multiplier `contribution(t) = permutations(t)·signFactor(t)`, where `signFactor(t) = 2^(nonzeroCount t)` counts the sign choices on the nonzero coordinates. This file isolates the 2-adic, sign-change half of the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄: the subgroup (ℤ/2)^(nonzeroCount) of order 2^(nonzeroCount) always divides the contribution. The honest-scope note records that the full `8 ∣ r₄(n)` additionally needs the permutation parity in the one- and two-nonzero cases, which is deliberately out of scope.",
+    "content": "The header frames the contribution: the parent file decomposes r₄(n) by type t (a sorted tuple of absolute values) and assigns each type a symmetry multiplier `contribution(t) = permutations(t)·signFactor(t)`, where `signFactor(t) = 2^(nonzeroCount t)` counts the sign choices on the nonzero coordinates. This file isolates the 2-adic, sign-change half of the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄: the subgroup (ℤ/2)^(nonzeroCount) of order 2^(nonzeroCount) always divides the contribution. It then closes the per-type factor of 8 in full: the later section supplies the permutation parity in the one- and two-nonzero cases, yielding `8 ∣ contribution t` for every type with ≥ 1 nonzero entry. The honest-scope note records that deriving the global `8 ∣ r₄(n)` additionally needs the parent's summation `r₄(n) = Σ contribution t`, which lives upstream.",
     "mathContext": "$\\mathrm{contribution}(t) = \\mathrm{permutations}(t)\\cdot 2^{\\mathrm{nonzeroCount}(t)}, \\qquad B_4 = (\\mathbb{Z}/2)^4 \\rtimes S_4, \\quad |B_4| = 2^4\\cdot 4! = 384.$",
     "significance": "key",
     "relatedConcepts": ["hyperoctahedral group", "Jacobi four-square theorem", "sign-change symmetry", "orbit-stabilizer"],
@@ -70,5 +70,41 @@
     "significance": "key",
     "relatedConcepts": ["factor of 8", "specialization", "simp normalization of numerals"],
     "prerequisites": ["two_pow_dvd_contribution_of_le", "simpa"]
+  },
+  {
+    "id": "fsd-oq05-ann-zero-pattern",
+    "proofId": "four-square-distribution-oq-05",
+    "range": { "startLine": 125, "endLine": 146 },
+    "type": "lemma",
+    "title": "Sortedness Pins the Zero Pattern",
+    "content": "The sign part alone delivers `8 ∣ contribution` only for `nonzeroCount ≥ 3`; the remaining `nonzeroCount ∈ {1,2}` cases need the permutation count, which first requires knowing *where* the zeros sit. Because a `RepType` is sorted (`a₁ ≤ a₂ ≤ a₃ ≤ a₄`), the nonzero entries must be the *largest* ones: `zero_pattern_one` forces shape `(0,0,0,a₄)` and `zero_pattern_two` forces `(0,0,a₃,a₄)`. Each is dispatched by splitting on whether each coordinate vanishes (`by_cases … <;> simp_all`), with sortedness ruling out the impossible interleavings (e.g. a nonzero entry below a zero).",
+    "mathContext": "$\\mathrm{nonzeroCount}(t)=1 \\implies t=(0,0,0,a_4),\\ a_4\\neq 0; \\qquad \\mathrm{nonzeroCount}(t)=2 \\implies t=(0,0,a_3,a_4),\\ a_3,a_4\\neq 0.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sorted tuples", "case analysis", "structural normal form"],
+    "prerequisites": ["RepType.sorted", "by_cases", "simp_all"]
+  },
+  {
+    "id": "fsd-oq05-ann-perm-counts",
+    "proofId": "four-square-distribution-oq-05",
+    "range": { "startLine": 148, "endLine": 189 },
+    "type": "technique",
+    "title": "Multinomial Permutation Counts for Low-Nonzero Types",
+    "content": "With the zero pattern fixed, the permutation count is computed explicitly as the multinomial coefficient 4!/(∏ multiplicities!). `permutations_one_nonzero` shows `(0,0,0,a₄)` has exactly `4 = 4!/3!` distinct orderings (three equal zeros). `two_dvd_permutations_two_nonzero` shows `(0,0,a₃,a₄)` has an *even* count — `6 = 4!/(2!·2!)` when a₃ = a₄ and `12 = 4!/2!` when a₃ ≠ a₄ — by casing on `he : a₃ = a₄`. Both unfold `RepType.permutations`, normalize the underlying multiset via `List.dedup`/`List.count` rewrites, and finish with `decide`. The evenness (not the exact value) is all that is needed downstream.",
+    "mathContext": "$\\binom{4}{3,1}=4,\\quad \\binom{4}{2,2}=6,\\quad \\binom{4}{2,1,1}=12; \\qquad 2 \\mid \\mathrm{permutations}(t)\\ \\text{when}\\ \\mathrm{nonzeroCount}(t)=2.$",
+    "significance": "key",
+    "relatedConcepts": ["multinomial coefficient", "permutations with repetition", "multiset deduplication", "decide"],
+    "prerequisites": ["List.dedup", "List.count", "RepType.permutations"]
+  },
+  {
+    "id": "fsd-oq05-ann-eight-pos",
+    "proofId": "four-square-distribution-oq-05",
+    "range": { "startLine": 191, "endLine": 212 },
+    "type": "theorem",
+    "title": "The Full Type-Level Factor of 8",
+    "content": "`eight_dvd_contribution_of_pos` is the file's culminating result: every type with at least one nonzero entry contributes a multiple of 8. It splits `nonzeroCount` into `1 | 2 | ≥3` (via `omega`, using `nonzeroCount_le_four`). For one nonzero, `permutations = 4` and `signFactor = 2^1 = 2` give exactly `4·2 = 8` (`decide`). For two nonzero, the even permutation count `perm = 2m` times `signFactor = 2^2 = 4` gives `2m·4 = 8m` (explicit witness `⟨m, by ring⟩`). For `≥3`, the sign part `eight_dvd_contribution_of_three_le` already suffices. This is the per-summand divisibility behind Jacobi's `8 ∣ r₄(n)`: combined with the parent's `r₄(n) = Σ contribution t`, every summand — and hence the total — is a multiple of 8.",
+    "mathContext": "$1 \\le \\mathrm{nonzeroCount}(t) \\implies 8 \\mid \\mathrm{contribution}(t); \\qquad r_4(n) = \\sum_t \\mathrm{contribution}(t) \\implies 8 \\mid r_4(n).$",
+    "significance": "critical",
+    "relatedConcepts": ["Jacobi four-square theorem", "factor of 8", "case exhaustion", "per-summand divisibility"],
+    "prerequisites": ["zero_pattern_one", "zero_pattern_two", "permutations_one_nonzero", "two_dvd_permutations_two_nonzero", "omega"]
   }
 ]

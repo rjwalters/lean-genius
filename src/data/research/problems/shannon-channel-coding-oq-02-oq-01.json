@@ -72,6 +72,7 @@
   "relatedProofs": [
     "shannon-channel-coding",
     "shannon-channel-coding-awgn",
+    "shannon-channel-coding-awgn-oq-02",
     "shannon-channel-coding-bec",
     "shannon-channel-coding-bec-oq-01",
     "shannon-channel-coding-oq-01",
@@ -113,6 +114,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingAWGN.lean"
+    },
+    {
+      "path": "Proofs/ShannonChannelCodingAWGNOQ02.lean",
+      "filename": "ShannonChannelCodingAWGNOQ02.lean",
+      "lineCount": 97,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShannonChannelCodingAWGNOQ02.lean"
     },
     {
       "path": "Proofs/ShannonChannelCodingBEC.lean",

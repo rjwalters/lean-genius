@@ -55,12 +55,14 @@
       "Removed the mathematically invalid artin_implies_erdos_985 (qualitative Artin does NOT imply the pointwise conclusion); replaced with an honest caveat and the genuine Heath-Brown consequence",
       "heath_brown_theorem axiom: {2,3,5} covers infinitely many primes",
       "erdos_985_conjecture axiom: main open conjecture",
-      "erdos_985_iff_all_odd_primes equivalence theorem"
+      "erdos_985_iff_all_odd_primes equivalence theorem",
+      "card_primitiveRoots_units: the number of primitive roots modulo p equals φ(p-1) exactly (verified, 0-axiom) — formalizes the previously-informal count underlying the density heuristic, via IsCyclic.card_orderOf_eq_totient on the cyclic group (ZMod p)ˣ of order p-1",
+      "exists_primitiveRoot_units: φ(p-1) > 0 gives a primitive root in (ZMod p)ˣ (verified, 0-axiom) — recovers existence from the exact count"
     ],
     "axiomCount": 2,
-    "lineCount": 298,
-    "assumptions": "2 axioms: heath_brown_theorem (Heath-Brown 1986, unconditional) and erdos_985_conjecture (the open problem itself). 0 sorries. All non-axiom results are machine-checked over [propext, Classical.choice, Quot.sound] only — no native_decide / Lean.ofReduceBool (concrete orders use kernel `decide` via `orderOf_eq_iff`).",
-    "theoremCount": 20,
+    "lineCount": 330,
+    "assumptions": "2 axioms: heath_brown_theorem (Heath-Brown 1986, unconditional) and erdos_985_conjecture (the open problem itself). 0 sorries. All non-axiom results are machine-checked over [propext, Classical.choice, Quot.sound] only — no native_decide / Lean.ofReduceBool (concrete orders use kernel `decide` via `orderOf_eq_iff`; the primitive-root count uses IsCyclic.card_orderOf_eq_totient).",
+    "theoremCount": 22,
     "definitionCount": 3
   },
   "overview": {
@@ -176,9 +178,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 298,
+    "lineCount": 330,
     "axiomCount": 2,
-    "theoremCount": 20,
+    "theoremCount": 22,
     "definitionCount": 3,
     "path": "Proofs/Erdos985Problem.lean",
     "sorries": 0

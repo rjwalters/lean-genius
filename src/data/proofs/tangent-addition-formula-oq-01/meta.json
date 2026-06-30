@@ -121,7 +121,15 @@
       "summary": "A worked instance of the centerpiece: with all three angles π/3 (cos π/3 = 1/2 ≠ 0), tan_sum_eq_tan_prod gives tan(π/3)·3 = tan(π/3)³, i.e. 3√3 = (√3)³. Confirms the triple identity on a concrete triangle."
     }
   ],
-  "conclusion": "The tangent addition law is repackaged in the directly usable cos≠0 form and pushed to its two classical triangle specializations — tan A + tan B + tan C = tan A tan B tan C and cot A cot B + cot B cot C + cot C cot A = 1 for A+B+C = π — neither of which is in Mathlib. Both rest on a single symmetric polynomial identity in the sines and cosines of the three angles, proved by eliminating one angle and expanding the two-argument laws. The development is sorry-free and axiom-free (only propext / Classical.choice / Quot.sound), with the rational-tangent corollary arctan(1/2)+arctan(1/3) = π/4 and an equilateral check anchoring the abstract identities to concrete numbers.",
+  "conclusion": {
+    "summary": "The tangent addition law is repackaged in the directly usable cos≠0 form and pushed to its two classical triangle specializations — tan A + tan B + tan C = tan A tan B tan C and cot A cot B + cot B cot C + cot C cot A = 1 for A+B+C = π. Both rest on a single symmetric polynomial identity in the sines and cosines of the three angles, proved by eliminating one angle and expanding the two-argument laws. The development is sorry-free and axiom-free (only propext / Classical.choice / Quot.sound), with the rational-tangent corollary arctan(1/2)+arctan(1/3) = π/4 and an equilateral check anchoring the abstract identities to concrete numbers.",
+    "implications": "Neither triangle identity is in Mathlib, so this entry fills a genuine gap by deriving them from the bare two-argument laws via a single reusable heart lemma. The triple tangent identity is the striking case where a sum equals a product, with no analogue for sine or cosine; the cotangent identity is its companion obtained by dividing the same polynomial heart by the product of sines. The cos≠0 restatements turn Mathlib's integer-multiple-of-π/2 hypotheses into directly checkable side-conditions, and the arctan(1/2)+arctan(1/3) = π/4 corollary connects the tangent law to Machin-style π computation from the tangent side.",
+    "openQuestions": [
+      "Does the symmetric-heart approach generalize to n angles summing to π, yielding analogous tangent/cotangent identities for polygon angle systems?",
+      "Are the cos≠0 restatements and the two triangle identities suitable for upstreaming to Mathlib, where the three-angle specializations are currently absent?",
+      "Can the same rational-tangent technique systematically reproduce the broader family of Machin-style arctangent identities for π?"
+    ]
+  },
   "crossReferences": [
     "triangle-angle-sum-oq-06"
   ]
