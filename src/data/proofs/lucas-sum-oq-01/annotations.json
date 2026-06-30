@@ -76,7 +76,7 @@
       "startLine": 77,
       "endLine": 83
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Headline Subtraction Form",
     "content": "lucas_sum is the identity as usually quoted: ∑_{k=1}^{n} L_k = L_{n+2} − 3. It is read straight off the engine: from (∑)+3 = L_{n+2} with L_{n+2} ≥ 3, omega discharges the ℕ truncated subtraction exactly. Proving the additive form first is the standard ℕ trick that keeps the subtraction honest, avoiding any case split on whether the sum exceeds the boundary.",
     "mathContext": "$\\sum_{k=1}^{n} L_k = L_{n+2} - 3$, exact over ℕ since $L_{n+2} \\ge 3$.",
@@ -121,11 +121,11 @@
       "startLine": 108,
       "endLine": 112
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Sanity Checks",
     "content": "Two decide-checked examples confirm the identity numerically: ∑_{k=1}^{3} L_k = 1 + 3 + 4 = 8 (= L_5 − 3 = 11 − 3), and at n = 4 the sum 1 + 3 + 4 + 7 = 15 equals lucas 6 − 3 = 18 − 3. Using kernel decide (not native_decide) keeps the file axiom-free while exhibiting the formula on small cases.",
     "mathContext": "$\\sum_{k=1}^{3} L_k = 8 = L_5 - 3$; $\\sum_{k=1}^{4} L_k = 15 = L_6 - 3$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked numerical examples",
       "kernel decide (axiom-free)",

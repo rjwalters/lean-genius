@@ -7,7 +7,7 @@
     "title": "Isolating the Axiom-Free Lower-Bound Half of Erdős #1023",
     "content": "Erdős Problem #1023 asks for F(n), the maximum size of a union-free family of subsets of {1,…,n} (no member equal to the union of two or more others). The answer is F(n) = C(n, ⌊n/2⌋) ~ √(2/π)·2ⁿ/√n. The parent file proves this but routes the harder matching UPPER bound through Problem 447 (5 axioms). This entry isolates the LOWER-bound half, which needs no axioms, and makes three points: every layer (not just the middle one) is an antichain hence union-free; the central binomial controls the whole row 2ⁿ ≤ (n+1)·C(n,⌊n/2⌋); combining gives the explicit exponential certificate 2ⁿ ≤ (n+1)·F(n). The lower-bound infrastructure is re-declared verbatim so nothing depends on the axiom-carrying asymptotic section.",
     "mathContext": "$F(n) = $ max union-free family size $ = C(n,\\lfloor n/2\\rfloor)$; this file proves $F(n) \\ge 2^n/(n+1)$ axiom-free.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "union-free families",
       "extremal set theory",
@@ -65,7 +65,7 @@
     "id": "erdos1023oq03-ann-rowbound",
     "proofId": "erdos-1023-oq-03",
     "range": { "startLine": 160, "endLine": 169 },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Central Binomial Controls the Whole Row",
     "content": "two_pow_le_succ_mul_central: 2ⁿ ≤ (n+1)·C(n, ⌊n/2⌋). The binomial coefficients in row n sum to 2ⁿ (Nat.sum_range_choose), and each of the n+1 terms is at most the central coefficient (Nat.choose_le_middle), so the sum is at most (n+1) copies of it (Finset.sum_le_sum + sum_const). Thus a single middle layer already captures at least a 1/(n+1) fraction of all 2ⁿ subsets — the pigeonhole that turns the layer bound into an exponential one.",
     "mathContext": "$2^n = \\sum_{k} C(n,k) \\le (n+1)\\,C(n,\\lfloor n/2\\rfloor).$",

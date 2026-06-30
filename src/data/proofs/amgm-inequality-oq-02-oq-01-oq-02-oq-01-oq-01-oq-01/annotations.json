@@ -35,7 +35,7 @@
     "title": "The General Recurrence and Why It Answers the Open Question",
     "content": "`psum_recurrence` proves, for every $k \\ge 1$,\n$$p_k = \\sum_{i=1}^{k-1} (-1)^{i+1}\\, e_i\\, p_{k-i} \\;+\\; (-1)^{k+1}\\, k\\, e_k.$$\nThis is the textbook closed form of Newton's identity. The parent entry proved only the fixed degrees $k=4,5$ and listed, as its first open question, proving the recurrence for arbitrary $k$ 'without case-by-case antidiagonal computation', noting the obstacle: expressing the general filter $\\{(a,b) \\mid a+b=k,\\ 0<a<k\\}$ as a Finset that `ring` can close.\n\nThe resolution is a uniform reindexing rather than a per-degree expansion:\n1. **filter = interval** — `(range (k+1)).filter (· ∈ Ioo 0 k) = Ico 1 k`, proved by `ext` + `omega`;\n2. **reindex** — `Finset.sum_filter` turns Mathlib's filtered antidiagonal into an indicator sum, then `Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk` sends `a ↦ (i, k-i)`, after which step 1 collapses the indicator to a clean `Ico 1 k` sum of `(-1)^i e_i p_{k-i}` (the projections `(i,k-i).1 = i`, `.2 = k-i` reduce definitionally, so this is one `rw` chain).\n\nWith the sum in interval form, the whole identity becomes uniform in $k$ — no degree-specific bookkeeping survives.",
     "mathContext": "Mathlib's `psum_eq_mul_esymm_sub_sum` states $p_k = (-1)^{k+1} k e_k - \\sum_{a \\in \\mathrm{antidiag}\\,k,\\ 0<a_1<k} (-1)^{a_1} e_{a_1} p_{a_2}$. The reindexing identifies the filtered antidiagonal with the interval $[1,k)$ under $i \\mapsto (i, k-i)$, giving $\\sum_{i=1}^{k-1} (-1)^i e_i p_{k-i}$.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": [
       "Newton-Girard identity",
       "filtered antidiagonal",
@@ -56,7 +56,7 @@
       "startLine": 92,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Folding the Outer Minus into the Alternating Sign",
     "content": "Mathlib's statement carries an outer minus sign in front of the antidiagonal sum, whereas the textbook form carries an internal alternating sign $(-1)^{i+1}$. Bridging them needs $-\\sum_i (-1)^i e_i p_{k-i} = \\sum_i (-1)^{i+1} e_i p_{k-i}$, i.e. the two sums are negatives of one another.\n\nRather than invoke a named 'negate-the-sum' lemma (whose exact name is brittle across Mathlib versions), the proof states the equivalent fact that the two sums **add to zero**:\n$$\\sum_{i \\in \\mathrm{Ico}\\,1\\,k}\\big((-1)^{i+1} + (-1)^{i}\\big) e_i p_{k-i} = 0,$$\nwhich is `Finset.sum_add_distrib` backwards, then `Finset.sum_eq_zero` with a termwise `pow_succ` + `ring` (since $(-1)^{i+1} + (-1)^i = 0$). The main goal then follows by `linear_combination -hTU`, letting `ring` treat each sum as an opaque atom.\n\nThis is a small but reusable robustness trick: proving `T + U = 0` is often cleaner and more version-stable than rewriting `T = -U` through a specific distributivity lemma.",
     "mathContext": "$(-1)^{i+1} = (-1)\\cdot(-1)^i = -(-1)^i$, so each term of $T+U$ is $\\big((-1)^{i+1}+(-1)^i\\big)e_i p_{k-i} = 0$. Hence $T = -U$, converting the external minus of Mathlib's form into the internal alternating sign.",
@@ -102,7 +102,7 @@
       "startLine": 126,
       "endLine": 152
     },
-    "type": "example",
+    "type": "concept",
     "title": "Machine-Checked Subsumption of k=4 and k=5",
     "content": "Two `example`s specialise the general theorem to $k=4$ and $k=5$ and prove the resulting statements match the parent entry's `psum_four_eq` and `psum_five_eq` **verbatim**:\n$$p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4 e_4, \\qquad p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1 + 5 e_5.$$\nEach proof expands the interval (`Ico 1 4 = {1,2,3}`, `Ico 1 5 = {1,2,3,4}`, both by `decide`), unfolds the sum via `sum_insert`/`sum_singleton`, and closes with `norm_num; ring` to evaluate the powers $(-1)^{i+1}$ and the natural-number subtractions $k-i$.\n\nThis is the formal content of 'subsumption': the fixed-degree corollaries of the ancestor entries are now *instances* of one theorem, verified by deriving them from it inside the same file. The `decide` calls are kernel-level Finset facts on small literals — no `native_decide`, so the file remains genuinely axiom-free.",
     "mathContext": "Specialising $p_k = \\sum_{i=1}^{k-1}(-1)^{i+1} e_i p_{k-i} + (-1)^{k+1} k e_k$ at $k=4$ gives signs $+,-,+$ on $e_1 p_3, e_2 p_2, e_3 p_1$ and $-4e_4$; at $k=5$ the pattern continues to $+5e_5$.",

@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "Signed/Unsigned Menelaus and the External-Segment Parity",
     "content": "Menelaus's theorem is classically stated in two superficially different forms: a SIGNED version (product of signed side ratios = −1) and an UNSIGNED version (product of unsigned ratios = 1, with a side condition fixing the parity of external divisions). This entry, building on the parent's affine formalization, reconciles the two and makes precise the folklore noted by 19th-century projective geometers: a straight transversal must cut an ODD number of a triangle's three sides externally, whereas three concurrent cevians (Ceva, product +1) cut an EVEN number. The sign of the product is exactly the parity of the number of external division points.",
     "mathContext": "Signed: $\\frac{t}{1-t}\\frac{u}{1-u}\\frac{v}{1-v} = -1$; unsigned: $\\bigl|\\frac{t}{1-t}\\bigr|\\bigl|\\frac{u}{1-u}\\bigr|\\bigl|\\frac{v}{1-v}\\bigr| = 1$; $\\mathrm{sign}(\\text{product}) = (-1)^{\\#\\text{external}}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Menelaus's theorem",
       "Ceva's theorem",
@@ -101,7 +101,7 @@
     "title": "The external-segment parity dichotomy (Menelaus odd / Ceva even)",
     "content": "The headline parity results follow from the sign rule for products of nonzero reals. external_parity_odd: since the Menelaus product is −1 < 0, an ODD number of the three signed ratios are negative — so the transversal crosses an odd number of sides externally (all three, or exactly one). external_parity_even: the Ceva concurrency value +1 > 0 forces an EVEN number of external points (none, or exactly two). Each ratio is nonzero (the product is ±1 ≠ 0), so each splits into < 0 or > 0 via lt_or_gt_of_ne; across the eight sign patterns the proof either selects the matching parity disjunct or refutes the inconsistent ones via nlinarith with an explicit signed-product witness. This is the quantitative form of the classical Menelaus/Ceva contrast.",
     "mathContext": "$r_X r_Y r_Z = -1 < 0 \\Rightarrow$ odd # of negative factors; $= +1 > 0 \\Rightarrow$ even #. Eight-case sign enumeration.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": [
       "parity of negative factors",
       "Menelaus vs Ceva",
@@ -121,11 +121,11 @@
       "startLine": 180,
       "endLine": 191
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete all-external witness",
     "content": "example_all_external grounds the general theory in the parent's collinear instance: the triangle (0,0), (1,0), (0,1) with t = u = 2, v = −1/3 realizes the all-three-external case. All three signed ratios are negative (rX = rY = −2, rZ = −1/4), their product is (−2)(−2)(−1/4) = −1 (signed Menelaus), and the unsigned product |−2|·|−2|·|−1/4| = 1. This is the simplest concrete configuration in which a transversal crosses all three sides externally — the 'odd parity = 3' extreme.",
     "mathContext": "$t=u=2,\\ v=-\\tfrac13$: $r_X=r_Y=-2,\\ r_Z=-\\tfrac14$, product $=-1$, unsigned $=1$ — all three external.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "concrete witness",
       "all-external case",

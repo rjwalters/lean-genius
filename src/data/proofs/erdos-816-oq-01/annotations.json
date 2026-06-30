@@ -7,7 +7,7 @@
     "title": "The Two Structural Pillars Behind Erdős #816",
     "content": "Erdős Problem #816 asks whether every graph with 2n+1 vertices and n²+n+1 edges has two equal-degree vertices joined by a path of length 3; the answer is YES (Chen–Ma 2025), who also show n²+n edges suffice for n ≥ 600 with the unique exception K_{n,n+1}. The parent entry axiomatizes the Chen–Ma theorem and leaves two supporting facts as prose: WHY K_{n,n+1} is the extremal counterexample (Part V) and the degree pigeonhole guaranteeing equal-degree pairs exist (Part VII). This file proves both, axiom-free and self-contained (the parent file does not compile on v4.26.0, so its few definitions are inlined).",
     "mathContext": "$K_{n,n+1}$: $2n+1$ vertices, $n^2+n$ edges, part degrees $n+1 \\ne n$ — the extremal example at the threshold.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Erdős Problem #816",
       "Chen–Ma theorem",
@@ -44,7 +44,7 @@
     "id": "erdos816oq01-ann-parity",
     "proofId": "erdos-816-oq-01",
     "range": { "startLine": 63, "endLine": 72 },
-    "type": "key-step",
+    "type": "insight",
     "title": "Parity: a Length-3 Path Joins Opposite Parts",
     "content": "hasPath3_opposite_color is the single fact behind the counterexample: in a bipartite graph a path of length 3 (an odd path) joins vertices of opposite colour, because the three edges flip the Boolean colour three times. The proof extracts the three adjacencies u–a, a–b, b–v, applies the bipartition (each flips the colour), and discharges the parity by a finite Boolean check (cases on c u, c a, c b, c v). Odd-length paths reverse colour; even-length paths preserve it.",
     "mathContext": "$c\\,u \\ne c\\,a \\ne c\\,b \\ne c\\,v \\Rightarrow c\\,u \\ne c\\,v$ (three flips = one flip).",

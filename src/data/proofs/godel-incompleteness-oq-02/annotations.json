@@ -3,11 +3,11 @@
     "id": "ann-godel-turing-header",
     "proofId": "godel-incompleteness-oq-02",
     "range": { "startLine": 1, "endLine": 52 },
-    "type": "context",
+    "type": "concept",
     "title": "Two faces of one diagonal argument",
     "content": "The module docstring states the file's thesis: Gödel's 1931 incompleteness theorem and Turing's 1936 undecidability of the halting problem are the same diagonal argument seen from two angles. The parent `GodelIncompleteness` builds a self-referential sentence syntactically via the diagonal lemma; this file instead derives incompleteness as a *corollary* of undecidability — the recursion-theoretic route. The headline payoff is that no Gödel sentence need be constructed by hand: diagonalizing against the theory's own provability decider hands you an explicit independent sentence for free.",
     "mathContext": "The bridge: a complete, sound, effectively axiomatized theory would yield a decision procedure for the (undecidable) diagonal predicate $D$, so no such theory can be complete. Symbolically, $\\text{undecidable}(D) \\Rightarrow \\neg\\,\\text{Complete}(T)$ for every sound effective $T$ representing $D$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gödel's first incompleteness theorem", "halting problem", "diagonalization", "recursion theory", "Church–Turing thesis"],
     "prerequisites": ["propositional logic", "the notion of a formal theory", "computability informally"]
   },

@@ -51,7 +51,7 @@
       "startLine": 106,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Lifting an Evaluation Identity to a Polynomial Identity",
     "content": "The parent proved generalCubicEval_shift as an equality of functions ℂ → ℂ. To talk about root multisets and factorizations we need an equality of actual polynomials: generalCubicPoly.comp (X - C (b/3a)) = C a · depressedCubic. Polynomial.funext supplies the bridge — over an infinite field, two polynomials agreeing at every point are equal — so the polynomial identity follows by checking eval at an arbitrary x and invoking the parent's evaluation identity. This 'evaluate, then funext' pattern is the clean way to reuse pointwise algebra at the level of polynomials.",
     "mathContext": "$\\text{generalCubicPoly}\\circ(X - \\tfrac{b}{3a}) = C_a \\cdot \\text{depressedCubic}$ in $\\mathbb{C}[X]$, obtained from the pointwise identity because $\\mathbb{C}$ is infinite.",

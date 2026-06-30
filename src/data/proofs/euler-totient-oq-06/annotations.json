@@ -31,7 +31,7 @@
     "title": "Convenience Form: 3 ≤ n ⇒ Even φ(n)",
     "content": "A trivial restatement using `3 ≤ n` (definitionally `2 < n` on the naturals) so callers phrasing their bound as `3 ≤ n` need not convert. Pure ergonomics — the mathematical content is identical to `totient_even_of_two_lt`.",
     "mathContext": "$3 \\le n \\iff 2 < n$ over $\\mathbb{N}$, so $3 \\le n \\implies \\mathrm{Even}\\,\\varphi(n)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["natural number ordering", "Euler's totient"],
     "prerequisites": ["natural number inequalities"]
   },

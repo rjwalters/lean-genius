@@ -53,7 +53,7 @@
     "title": "The Composition-Factor Bijection",
     "content": "exists_factor_bijection unfolds the Equivalent predicate into its concrete data: a bijection f : Fin s₁.length ≃ Fin s₂.length together with, for each index i, a JordanHolderLattice isomorphism between the i-th factor of s₁ and the f(i)-th factor of s₂. Under the Submodule instance this Iso is a linear equivalence of the successive quotients, so the multiset of composition factors is permutation-invariant. jordanHolder_module_symm records that the equivalence is symmetric.",
     "mathContext": "$\\mathrm{Equivalent}(s_1,s_2) = \\exists f: \\mathrm{Fin}\\,s_1.\\mathrm{length} \\simeq \\mathrm{Fin}\\,s_2.\\mathrm{length},\\ \\forall i,\\ \\mathrm{Iso}\\,(s_1\\,i, s_1\\,i^+)\\,(s_2\\,(f i), s_2\\,(f i)^+).$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "factor bijection",
       "linear equivalence of quotients",
@@ -74,7 +74,7 @@
     "title": "The Canonical Series of a Simple Module",
     "content": "simpleSeries is the length-1 composition series ⊥ ⋖ ⊤ of a simple module, with toFun = ![⊥, ⊤]. Its single step is bot_covBy_top, available because IsSimpleModule R M unfolds to IsSimpleOrder (Submodule R M). The @[simp] lemmas simpleSeries_head, simpleSeries_last, simpleSeries_length record head = ⊥, last = ⊤, length = 1 by rfl, so it can be compared definitionally against any other series.",
     "mathContext": "$\\mathrm{simpleSeries} : \\bot \\lessdot \\top$, the unique-up-to-equivalence composition series of a simple module, of length $1$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "simple module",
       "covering relation",

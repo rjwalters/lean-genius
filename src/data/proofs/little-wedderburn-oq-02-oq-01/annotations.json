@@ -56,7 +56,7 @@
     "title": "The Subfield Lattice is Ordered by Divisibility",
     "content": "subfieldFix_mono proves a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b. The single ingredient is dvd_pow_pow_sub_self_of_dvd: in any commutative ring a ∣ b gives r^(p^a) - r ∣ r^(p^b) - r. Applied with r = x, a fixed point x^(p^a) = x makes x^(p^a) - x = 0, which then forces x^(p^b) - x = 0, i.e. x^(p^b) = x — no Galois machinery required.",
     "mathContext": "$a \\mid b \\Rightarrow \\{x : x^{p^a} = x\\} \\subseteq \\{x : x^{p^b} = x\\}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "subfield lattice",
       "divisibility",
@@ -99,7 +99,7 @@
       "startLine": 130,
       "endLine": 141
     },
-    "type": "example",
+    "type": "concept",
     "title": "GF(4) ↪ GF(64) but GF(4) ⋪ GF(8)",
     "content": "gf4_embeds_gf64 exhibits an embedding GF(2^2) → GF(2^6) because 2 ∣ 6, while gf4_not_embeds_gf8 shows there is no embedding GF(2^2) → GF(2^3) because 2 ∤ 3 (closed by decide after embeds_iff_dvd). Together they make the divisor obstruction concrete: GF(4) sits inside GF(64) but not inside the larger-by-cardinality-incompatible GF(8).",
     "mathContext": "$\\mathrm{GF}(4) \\hookrightarrow \\mathrm{GF}(64)$, $\\mathrm{GF}(4) \\not\\hookrightarrow \\mathrm{GF}(8)$.",

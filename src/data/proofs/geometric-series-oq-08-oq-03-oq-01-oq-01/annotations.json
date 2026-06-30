@@ -3,11 +3,11 @@
     "id": "ann-overview-capstone",
     "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
     "range": { "startLine": 4, "endLine": 51 },
-    "type": "context",
+    "type": "concept",
     "title": "The Capstone of the Cauchy-Criterion Lineage",
     "content": "The lineage oq-08-oq-03 → …-oq-01 → …-oq-01-oq-01 rebuilds the geometric series' convergence theory from the Cauchy criterion upward: first the ε–N block estimate, then the abstract CauchySeq/Summable predicates (deliberately avoiding the closed form), and now the limit VALUE. Completeness of ℝ supplies the existence of a limit knowing only that the partial sums are Cauchy; the truncation defect supplies its identity. Together they reproduce Mathlib's hasSum_geometric_of_lt_one and tsum_geometric_of_lt_one along a path that never assumes the closed form it concludes.",
     "mathContext": "Block estimate $\\to$ $\\mathrm{CauchySeq}$/$\\mathrm{Summable}$ $\\to$ limit $(1-r)^{-1}$; the sum is earned, not quoted.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["completeness", "Cauchy criterion", "limit identification", "first principles"],
     "prerequisites": ["completeness", "series convergence"]
   },
@@ -63,11 +63,11 @@
     "id": "ann-concrete",
     "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
     "range": { "startLine": 113, "endLine": 124 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Instance r = 1/2",
     "content": "Two examples at r = 1/2 anchor the abstract results: the partial sums converge to (1−1/2)⁻¹ = 2, and ∑' n, (1/2)ⁿ = 2. They instantiate geometric_partialSum_tendsto and geometric_tsum on the canonical example, confirming the symbolic limit against the familiar value.",
     "mathContext": "$\\sum_{k<n}(1/2)^k\\to 2$ and $\\sum'_n(1/2)^n=2$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["concrete instance", "numerical verification"],
     "prerequisites": ["arithmetic"]
   }

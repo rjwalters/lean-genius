@@ -7,7 +7,7 @@
     "title": "Existence from the Extended Euclidean Algorithm",
     "content": "`bezout_identity a b : (Nat.gcd a b : ℤ) = a * Nat.gcdA a b + b * Nat.gcdB a b` is a direct repackaging of Mathlib's `Nat.gcd_eq_gcd_ab`. `Nat.gcdA` and `Nat.gcdB` are the coefficients computed by the extended Euclidean algorithm (`Nat.xgcd`), so this is a *constructive* witness, not a mere existence proof. It supplies the concrete pair whose uniqueness the rest of the file characterizes.",
     "mathContext": "Bézout's identity: for $a,b\\in\\mathbb{N}$ there exist $s,t\\in\\mathbb{Z}$ with $as+bt=\\gcd(a,b)$. The extended Euclidean algorithm produces one such $(s,t)=(\\mathrm{gcdA}\\,a\\,b,\\ \\mathrm{gcdB}\\,a\\,b)$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": ["Nat.gcd_eq_gcd_ab", "Nat.gcdA", "Nat.gcdB", "Nat.xgcd"],
     "prerequisites": ["Extended Euclidean algorithm", "Mathlib.Data.Int.GCD"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-examples",
     "proofId": "bezout-identity-oq-02-oq-01-oq-03",
     "range": { "startLine": 100, "endLine": 122 },
-    "type": "example",
+    "type": "concept",
     "title": "The Family for (3, 5) Made Explicit",
     "content": "For the coprime pair `(3,5)`, both `(2,-1)` and `(-3,2)` solve `3x + 5y = 1`, and they differ by the single lattice step `k = -1`: `(-3,2) = (2 + (-1)·5, -1 - (-1)·3)`. `ex35_family` exhibits the whole one-parameter family `3·(2 + k·5) + 5·(-1 - k·3) = 1`, closed by `ring`. These concretize the abstract coset description.",
     "mathContext": "All integer solutions of $3x+5y=1$ are $(2+5k,\\ -1-3k)$, $k\\in\\mathbb{Z}$.",

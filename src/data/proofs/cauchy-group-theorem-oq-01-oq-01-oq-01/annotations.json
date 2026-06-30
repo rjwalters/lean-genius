@@ -7,7 +7,7 @@
     "title": "Coprime ⟹ Bijection (Easy Direction)",
     "content": "`pow_left_bijective_of_coprime` records the easy half, supplied directly by Mathlib's `Nat.Coprime.pow_left_bijective`. If gcd(n, |G|) = 1, Bézout produces integers a, b with a·n + b·|G| = 1, and then x ↦ xᵃ inverts x ↦ xⁿ using x^|G| = 1 (Lagrange). The inverse is itself a power map, so this direction holds for every finite group — abelian or not.",
     "mathContext": "If $\\gcd(n,|G|)=1$, choose $a,b$ with $an+b|G|=1$. Then $(x^n)^a = x^{an} = x^{1-b|G|} = x\\cdot (x^{|G|})^{-b} = x$, so $x\\mapsto x^a$ is a two-sided inverse of $x\\mapsto x^n$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Bézout's identity", "Lagrange's theorem", "coprime exponents", "power map"],
     "prerequisites": ["finite group theory", "greatest common divisor"]
   },
@@ -43,7 +43,7 @@
     "title": "Injective and Surjective Forms Coincide",
     "content": "`pow_injective_iff_coprime` and `pow_surjective_iff_coprime` show that on a finite group injectivity, surjectivity and bijectivity of the power map are all equivalent to coprimality. The collapse uses `Finite.injective_iff_surjective`: a self-map of a finite type is injective iff surjective, so the seemingly weaker hypotheses already force gcd(n, |G|) = 1.",
     "mathContext": "On a finite group: $\\operatorname{Injective}(\\cdot^n)\\iff\\operatorname{Surjective}(\\cdot^n)\\iff\\operatorname{Bijective}(\\cdot^n)\\iff\\gcd(n,|G|)=1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["pigeonhole principle", "finite self-maps", "injectivity", "surjectivity"],
     "prerequisites": ["finite group theory"]
   },
@@ -55,7 +55,7 @@
     "title": "Recovering the Parent (n = 2)",
     "content": "`sq_bijective_iff_odd_card` is the n = 2 slice: squaring is a bijection iff |G| is odd, obtained from the headline iff via `Nat.coprime_two_right` (n coprime to 2 ⟺ n odd). This recovers exactly the parent entry CauchyGroupTheoremOQ01OQ01, exhibiting the odd-order squaring boundary as one slice of the uniform threshold.",
     "mathContext": "Taking $n=2$: $\\operatorname{Bijective}(x\\mapsto x^2)\\iff\\gcd(2,|G|)=1\\iff |G|\\text{ odd}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["squaring map", "odd order", "specialization", "involutions"],
     "prerequisites": ["finite group theory"]
   },

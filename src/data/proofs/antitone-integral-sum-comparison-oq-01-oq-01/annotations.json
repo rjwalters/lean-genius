@@ -19,7 +19,7 @@
     "title": "The Exact Integral of log",
     "content": "log_integral evaluates ∫₁^{1+n} log x dx = (1+n)log(1+n) − n. The antiderivative x log x − x is supplied by Mathlib's integral_log (b log b − a log a − b + a); at a = 1 the log term vanishes (log 1 = 0) and the constant terms collapse to −n. This exact value is what the monotone sandwich traps between the two log-factorial Riemann sums.",
     "mathContext": "\\int_1^{1+n} \\log x \\, dx = (1+n)\\log(1+n) - n",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["interval integral", "logarithm", "antiderivative"],
     "prerequisites": []
   },

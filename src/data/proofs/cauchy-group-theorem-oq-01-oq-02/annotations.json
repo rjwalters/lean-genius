@@ -19,7 +19,7 @@
     "title": "Recovering Cauchy as the n = 1 Slice",
     "content": "`cauchy_subgroup`: if p ∣ |G| then G has a subgroup of order exactly p. The proof simply instantiates the tower at n = 1 and rewrites p¹ = p (`pow_one`). This makes precise the textbook slogan that Cauchy's theorem is the base case of Sylow's: the parent's `CauchyGroupTheoremOQ01.cauchy_subgroup` is not a separate result but a literal specialization of the prime-power tower.",
     "mathContext": "$p \\mid |G| \\implies \\exists H \\le G,\\ |H| = p$ — the $n=1$ rung of the tower $p^n \\mid |G| \\implies \\exists H, |H|=p^n$.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": ["Cauchy's theorem", "subgroup of prime order", "specialization"],
     "prerequisites": ["finite group theory"]
   },
@@ -55,7 +55,7 @@
     "title": "Nontriviality Boundary",
     "content": "`sylow_nontrivial_iff_dvd`: the Sylow p-subgroup is nontrivial (1 < p^k) if and only if p ∣ |G|. The forward direction observes 1 < p^k forces k ≠ 0, hence p ∣ |G| via `Nat.dvd_of_factorization_pos`; the backward direction uses `Prime.factorization_pos_of_dvd` to get k > 0, so p^k > p^0 = 1. The whole Sylow tower therefore fires under exactly the divisibility hypothesis that triggers Cauchy.",
     "mathContext": "$1 < p^{v_p(|G|)} \\iff v_p(|G|) > 0 \\iff p \\mid |G|$ — a single divisibility condition governs the whole Cauchy–Sylow arc.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": ["p-adic valuation", "divisibility", "trivial subgroup", "Cauchy's theorem"],
     "prerequisites": ["finite group theory", "prime factorization"]
   },
@@ -67,7 +67,7 @@
     "title": "Concrete Sylow Subgroups in S₃",
     "content": "On the symmetric group S₃ (order 6 = 2·3): `card_perm_fin3` computes |S₃| = 6; `factorization_six_two` and `factorization_six_three` pin the 2- and 3-adic multiplicities of 6 to 1 by the squeeze p ∣ 6 and p² ∤ 6 (`pow_dvd_iff_le_factorization`) — needed because `Nat.factorization` is not kernel-reducible, so `decide` cannot close these; `sylow2_perm_fin3` and `sylow3_perm_fin3` produce the order-2 (a transposition) and order-3 (the alternating group A₃) Sylow subgroups by applying the tower at p = 2 and p = 3. Using the factorization squeeze instead of `native_decide` keeps the file free of `Lean.ofReduceBool`, genuinely 0-axiom.",
     "mathContext": "$|S_3| = 6 = 2\\cdot 3$, so the Sylow $2$-subgroup has order $2$ and the Sylow $3$-subgroup has order $3 = |A_3|$; both multiplicities equal $1$.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": ["symmetric group", "Sylow subgroup", "p-adic valuation", "axiom hygiene", "decidability"],
     "prerequisites": ["finite group theory", "permutation groups"]
   }

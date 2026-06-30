@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "The multiplicative view of the Catalan recurrence",
     "content": "This entry sits in a chain of follow-ups to Erdős #396. The grandparent (Erdos396OQ04OQ01) reads the two-term Catalan recurrence through its ratio $r_n = (4n+2)/(n+2) = 4 - 6/(n+2)$, with $\\mathrm{catalan}(n+1) = r_n\\cdot\\mathrm{catalan}\\,n$; the parent (OQ-01→OQ-01) studies the *additive* running total $\\sum_{k<n} r_k = 4n - 6(H_{n+1}-1)$. This file answers the grandparent's first open question by taking the **multiplicative** view: because each recurrence step is a multiplication by $r_k$, the recurrence telescopes into a closed product. Everything is derived from the grandparent's ratio identities — no Stirling estimate, no central-binomial bound.",
     "mathContext": "$\\mathrm{catalan}\\,n = \\frac{1}{n+1}\\binom{2n}{n}$, with $\\mathrm{catalan}(n+1) = r_n\\cdot\\mathrm{catalan}\\,n$ and $r_n = \\frac{4n+2}{n+2}$. Asymptotically $\\mathrm{catalan}\\,n \\sim \\frac{4^n}{n^{3/2}\\sqrt\\pi}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Catalan numbers", "two-term recurrence", "telescoping product", "additive vs multiplicative views", "Erdős problem #396"],
     "prerequisites": ["Catalan numbers", "recurrence relations", "finite products"]
   },
@@ -21,7 +21,7 @@
       "startLine": 55,
       "endLine": 75
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The recurrence telescopes into a closed product",
     "content": "`catalan_eq_prod_ratio` proves $(\\mathrm{catalan}\\,n : \\mathbb{R}) = \\prod_{k<n} r_k$ where $r_k = (4k+2)/(k+2)$. The proof is a one-line induction: `Finset.prod_range_succ` peels off the top factor $r_m$, and the grandparent's quotient identity $\\mathrm{catalan}(m+1) = r_m\\cdot\\mathrm{catalan}\\,m$ matches it, closed by `ring`. Because every step of the recurrence is exactly a multiplication by $r_k$, iterating it collapses to a finite product — the multiplicative companion of the parent's additive identity $\\sum_{k<n} r_k = 4n - 6(H_{n+1}-1)$. `prod_ratio_pos` records that the product is strictly positive (`Finset.prod_pos` over `ratio_pos`), the fact every later step relies on.",
     "mathContext": "$(\\mathrm{catalan}\\,n : \\mathbb{R}) = \\prod_{k<n}\\frac{4k+2}{k+2}$",
@@ -51,7 +51,7 @@
       "startLine": 90,
       "endLine": 124
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The normalized sequence catalan n / 4^n is strictly decreasing",
     "content": "`catalan_div_four_pow_eq_prod` writes $\\mathrm{catalan}\\,n / 4^n = \\prod_{k<n}(r_k/4)$ by distributing the division over the product (`Finset.prod_div_distrib`, with $\\prod_{k<n} 4 = 4^n$). Every factor satisfies $r_k/4 < 1$ (`ratio_div_four_lt_one`, from the grandparent's $r_k < 4$). Factoring out one step (`catalan_div_four_pow_succ`) gives $\\mathrm{catalan}(n+1)/4^{n+1} = (r_n/4)\\cdot(\\mathrm{catalan}\\,n/4^n)$, so `catalan_div_four_pow_strictAnti` concludes strict decrease via `mul_lt_mul_of_pos_right`: multiplying a positive quantity by a factor below 1 strictly shrinks it. This is the multiplicative, recurrence-level shadow of the polynomial correction $1/(n^{3/2}\\sqrt\\pi)$ below the bare exponential $4^n$.",
     "mathContext": "$\\frac{\\mathrm{catalan}(n+1)}{4^{n+1}} = \\frac{r_n}{4}\\cdot\\frac{\\mathrm{catalan}\\,n}{4^n} < \\frac{\\mathrm{catalan}\\,n}{4^n}$",
@@ -66,7 +66,7 @@
       "startLine": 125,
       "endLine": 144
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The 4^n growth bound as a strict product inequality",
     "content": "`prod_ratio_lt_four_pow` proves $\\prod_{k<n} r_k < 4^n$ for $n\\ge 1$ using `Finset.prod_lt_prod_of_nonempty`: every factor is positive (`ratio_pos`) and strictly below 4 (`ratio_lt_four`), and the range is nonempty. Combined with the telescoping identity, `catalan_lt_four_pow_of_prod` recovers the grandparent's bound $\\mathrm{catalan}\\,n < 4^n$ — now multiplicatively, as a strict factor-by-factor product comparison rather than by induction. The $n\\ge 1$ hypothesis is essential: at $n=0$ both sides equal 1, so strictness fails.",
     "mathContext": "$\\prod_{k<n} r_k < \\prod_{k<n} 4 = 4^n,\\quad n\\ge 1$",
@@ -81,11 +81,11 @@
       "startLine": 146,
       "endLine": 160
     },
-    "type": "context",
+    "type": "concept",
     "title": "Numerical sanity checks",
     "content": "Two worked `example`s pin the identities to concrete numbers, expanding the product symbolically with repeated `Finset.prod_range_succ` and unfolding `catalanRatio`. The first confirms $\\prod_{k<3} r_k = r_0\\cdot r_1\\cdot r_2 = 1\\cdot 2\\cdot\\tfrac52 = 5 = \\mathrm{catalan}\\,3$; the second confirms the normalized value $\\mathrm{catalan}\\,3 / 4^3 = 5/64$. These guard against off-by-one and indexing errors in the telescoping definitions and make the abstract product identity tangible.",
     "mathContext": "$r_0\\cdot r_1\\cdot r_2 = 1\\cdot 2\\cdot\\tfrac52 = 5,\\qquad \\frac{\\mathrm{catalan}\\,3}{4^3} = \\frac{5}{64}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "regression test", "catalanRatio", "Finset.prod_range_succ"],
     "prerequisites": ["evaluation of finite products"]
   }

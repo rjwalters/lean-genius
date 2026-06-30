@@ -23,11 +23,11 @@
     "id": "ann-sqrt2357-oq04-squaring-chain",
     "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04",
     "range": { "startLine": 67, "endLine": 89 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Successive-Squaring Chain via linear_combination",
     "content": "conjugate_root derives p(α) = 0 (where α = u+v+w) by three squarings that eliminate one radical at a time. Step 1: α² − 2αu − 6 = 2vw, a direct linear combination of u²=2, v²=3, w²=5. Step 2: squaring and using u²=2 gives A² + 8α² − 60 = 4αu·A with A = α² − 6 (the odd-in-u term is isolated on the right). Step 3: squaring again and using u²=2 once more gives (A² + 8α² − 60)² = 32α²A², which expands as a pure polynomial in α to exactly p(α) = 0. Each equation is closed by `linear_combination` over the square relations, so the entire proof is a chain of polynomial identities verified by `ring` — no minimal-polynomial search, no numerical certificate, and no native_decide. The explicit cofactors keep every step low-degree, avoiding the unwieldy degree-6 cofactors a single-shot linear_combination would require.",
     "mathContext": "Constructing the minimal polynomial of a sum of square roots by repeated squaring is classical (it realizes the resultant / norm form). Casting each squaring as a `linear_combination` of the defining relations uᵢ² = dᵢ turns the algebra into machine-checkable ring identities and sidesteps the large Gröbner-basis cofactors of a direct ideal-membership certificate.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "resultant",
       "iterated squaring",

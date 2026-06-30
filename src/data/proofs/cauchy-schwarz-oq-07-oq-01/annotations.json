@@ -10,7 +10,7 @@
     "title": "Module Header: the Converse Direction",
     "content": "The parent entry (cauchy-schwarz-oq-07) proved that every inner-product norm satisfies the parallelogram law $\\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$. This file formalizes the harder **converse**: a norm satisfying the parallelogram law is itself induced by an inner product (Jordan–von Neumann, 1935), recovered from the norm via the polarization identity. The two directions together give the exact characterization of inner-product norms among all normed-space norms.",
     "mathContext": "Hypothesis: the parallelogram law for $\\|\\cdot\\|$. Conclusion: existence of a compatible inner product with $\\|x\\|^2 = \\operatorname{re}\\langle x,x\\rangle$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jordan–von Neumann theorem", "polarization identity", "parallelogram law", "inner-product space", "Hilbert space"],
     "prerequisites": ["normed spaces", "inner-product spaces", "the parallelogram law (parent entry)"]
   },

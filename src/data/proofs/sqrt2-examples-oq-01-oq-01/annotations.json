@@ -57,7 +57,7 @@
       "startLine": 75,
       "endLine": 93
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Counterexample: I² = -1 < 0",
     "content": "The imaginary unit refutes non-negativity of squares: `Complex.I_sq` gives I² = -1, and -1 < 0 follows from `neg_lt_zero.mpr zero_lt_one`. Because ℂ is only a `PartialOrder`, the usual `not_le` (which needs a linear order) is unavailable; the contradiction is instead derived by chaining `lt_of_le_of_lt` with `lt_irrefl 0`. The theorems `sq_nonneg_fails_on_complex` and `mul_self_nonneg_fails_on_complex` conclude that ¬ ∀ z, 0 ≤ z² over ℂ — sq_nonneg is genuinely false once `LinearOrder` is dropped.",
     "mathContext": "I² = -1 and -1 < 0 in ℂ, so 0 ≤ z² fails at z = I. The proof avoids `not_le` (a `LinearOrder` lemma) by using only `Preorder` transitivity: 0 ≤ I² together with I² < 0 yields 0 < 0.",

@@ -29,7 +29,7 @@
       "startLine": 73,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Unfolding the Euclidean Norm to Pythagorean Coordinates",
     "content": "```lean\ntheorem dist_eq_coords (p q : Plane) :\n    dist p q = Real.sqrt ((p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2) := by\n  unfold dist\n  rw [← dist_eq_norm, EuclideanSpace.dist_eq, Fin.sum_univ_two]\n  simp only [Real.dist_eq, sq_abs]\n```\n\nThe `EuclideanSpace ℝ (Fin 2)` distance is defined abstractly as a root-sum-of-squares over the index type. `EuclideanSpace.dist_eq` exposes that sum, `Fin.sum_univ_two` expands it to the two explicit coordinates, and `sq_abs` ($|x|^2 = x^2$) removes the absolute values, yielding the familiar planar formula. This reusable helper mirrors the parent's `dist_coords` and is the bridge from abstract Mathlib geometry to a hands-on algebraic computation.",
     "mathContext": "On $\\mathbb{R}^2$, $\\operatorname{dist}(p, q) = \\sqrt{\\sum_{i} |p_i - q_i|^2} = \\sqrt{(p_0 - q_0)^2 + (p_1 - q_1)^2}$. The squared absolute value equals the square, so $|p_i - q_i|^2 = (p_i - q_i)^2$.",
@@ -75,7 +75,7 @@
       "startLine": 89,
       "endLine": 116
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Main Lemma: Squaring Away the Square Root via (√2)² = 2",
     "content": "```lean\ntheorem scaledLattice_dist_ne_one {p q : Plane}\n    (hp : p ∈ ScaledLattice) (hq : q ∈ ScaledLattice) : dist p q ≠ 1\n```\n\nThe proof substitutes the lattice coordinates $p_0 = \\sqrt2\\,a$, etc., and uses the key identity $(\\sqrt2\\,a - \\sqrt2\\,a')^2 = (\\sqrt 2)^2 (a-a')^2 = 2(a-a')^2$ (`Real.sq_sqrt` gives $(\\sqrt2)^2 = 2$) to collapse the radicand to $2((a-a')^2 + (b-b')^2)$. Assuming the distance equals $1$, squaring both sides — again via `Real.sq_sqrt`, which needs the radicand non-negative (`positivity`) — produces $2((a-a')^2 + (b-b')^2) = 1$ over $\\mathbb{R}$, pushed to $\\mathbb{Z}$ and killed by the parity lemma. **No `p ≠ q` hypothesis is required**: equal points give distance $0$, distinct points give $\\sqrt{\\text{even} \\ge 2} > 1$.",
     "mathContext": "Squared distance $= 2(a-a')^2 + 2(b-b')^2 = 2\\big((a-a')^2 + (b-b')^2\\big)$. If $\\sqrt{\\,\\cdot\\,} = 1$ then $(\\cdot) = 1$, i.e. $2((a-a')^2+(b-b')^2) = 1$ with $a-a', b-b' \\in \\mathbb{Z}$ — contradicting `two_mul_sq_add_sq_ne_one`.",

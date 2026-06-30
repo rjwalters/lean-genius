@@ -98,11 +98,11 @@
       "startLine": 137,
       "endLine": 151
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked round-trips on n = 33, including a non-coprime message",
     "content": "Three concrete decryptions on n = 33 = 3·11 with e = 7, d = 3 (since 7·3 = 21 ≡ 1 mod φ(33) = 20): m = 5 (a unit), m = 6 (divisible by p = 3, so NOT coprime to 33 — the case the parent's rsa_correctness cannot reach), and m = 0 (the extreme non-unit). All three use kernel decide, keeping the entry free of Lean.ofReduceBool.",
     "mathContext": "$(6^7)^3 \\equiv 6 \\pmod{33}$ with $\\gcd(6,33)=3\\neq 1$.",
-    "significance": "illustrative",
+    "significance": "supporting",
     "relatedConcepts": [
       "RSA",
       "worked example",

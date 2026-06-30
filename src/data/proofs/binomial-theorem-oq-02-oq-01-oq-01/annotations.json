@@ -76,7 +76,7 @@
     "title": "Multinomial Theorem = PMF Normalization",
     "content": "`multinomialPMF_sum_eq_one` proves $\\sum_k \\mathrm{multinomialPMFVal}(k)=1$ when $\\sum_i p_i=1$. The Composition-indexed sum is transported to a `piAntidiag` sum (via the sibling file's bridge), folded into a power by `Finset.sum_pow_eq_sum_piAntidiag`, and closed with `∑p=1`, `1^n=1`. This is the heart of the PMF construction.",
     "mathContext": "The same identity $(\\sum_i p_i)^n=\\sum_k\\binom{n}{k}\\prod_i p_i^{k_i}$ is simultaneously the multinomial theorem and the normalization $\\sum_k P(X=k)=1$ — the bridge between combinatorics and probability.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.sum_pow_eq_sum_piAntidiag",
       "Fintype.sum_equiv"
@@ -137,7 +137,7 @@
     "title": "The Marginal of Xᵢ is Binomial(n, pᵢ)",
     "content": "`multinomial_marginal_binomial` proves that summing the multinomial weight over all compositions with `k i = m` gives the binomial PMF `C(n,m)·pᵢᵐ·(1−pᵢ)ⁿ⁻ᵐ`. The proof is a reindexing bijection (`Finset.sum_nbij'`) that zeroes the i-th coordinate, identifying compositions of n with kᵢ=m on s with compositions of n−m on s∖{i}; `Nat.multinomial_insert` splits off the factor `C(n,m)`, and `Finset.sum_pow_eq_sum_piAntidiag` on s∖{i} contributes `(∑_{j≠i} pⱼ)ⁿ⁻ᵐ = (1−pᵢ)ⁿ⁻ᵐ`.",
     "mathContext": "Marginalising the multinomial over one coordinate collapses the other categories into a single 'failure' outcome of probability $1-p_i$, recovering $X_i\\sim\\mathrm{Binomial}(n,p_i)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.sum_nbij'",
       "Nat.multinomial_insert",
@@ -159,7 +159,7 @@
     "title": "The Absorption Identity — the Combinatorial Engine",
     "content": "`multinomial_absorb` proves the key recurrence `kᵢ·multinomial(s,k) = n·multinomial(s, update k i (kᵢ−1))` for a composition k of n with kᵢ≥1. The proof avoids ℕ-division: it cancels the common positive factor `(kᵢ−1)!·∏_{j≠i}(kⱼ!)` after applying `Nat.multinomial_spec` to both sides and `Nat.mul_factorial_pred`. Both the mean and the cross moment are reductions to the multinomial theorem driven by this single identity.",
     "mathContext": "From $\\binom{n}{k}=n!/\\prod_j k_j!$ one gets $k_i\\binom{n}{k}=n\\binom{n-1}{k-e_i}$ — lowering $k_i$ by one absorbs the factor $k_i$ into $n$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.multinomial_spec",
       "Nat.mul_factorial_pred",
@@ -181,7 +181,7 @@
     "title": "Mean E[Xᵢ] = n·pᵢ via the Absorption Bijection",
     "content": "`multinomial_mean` proves `∑_k kᵢ·multinomial(s,k)·∏pⱼ^kⱼ = n·pᵢ`. After discarding the kᵢ=0 terms, `Finset.sum_nbij'` lowers kᵢ by one (the weighted absorption identity `multinomial_absorb_weighted` turns the summand into `n·pᵢ` times the (n−1)-trial weight), and the remaining sum is the total mass `(∑p)ⁿ⁻¹ = 1`.",
     "mathContext": "$E[X_i]=\\sum_k k_i P(X=k)=n p_i\\sum_{k'}P_{n-1}(X=k')=n p_i$ — the absorption identity makes this a one-line reduction to normalization at $n-1$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.sum_nbij'",
       "multinomial_absorb",
@@ -202,7 +202,7 @@
     "title": "Cross Moment and Covariance Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ",
     "content": "`multinomial_cross_moment` proves `E[XᵢXⱼ] = n(n−1)pᵢpⱼ` for i≠j by lowering Xᵢ via one absorption bijection — the surviving kⱼ factor rides along unchanged (since j≠i) and the reduced sum is exactly `n·pᵢ` times the mean of Xⱼ over n−1 trials, i.e. `n·pᵢ·(n−1)·pⱼ`. `multinomial_covariance` then expands `Cov = E[XᵢXⱼ] − E[Xᵢ]E[Xⱼ] = n(n−1)pᵢpⱼ − n²pᵢpⱼ = −n·pᵢ·pⱼ`, the total mass `∑w=1` supplying the subtracted term.",
     "mathContext": "The negative correlation is forced by the simplex constraint $\\sum_i X_i=n$: more of one outcome means less of another. The cross moment reuses the mean, so the whole moment structure rests on the single absorption identity.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": [
       "multinomial_cross_moment",
       "multinomial_mean",

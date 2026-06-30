@@ -51,7 +51,7 @@
     "id": "three-not-two-pow",
     "proofId": "cube-root-3-irrational-oq-03-oq-02",
     "range": { "startLine": 113, "endLine": 119 },
-    "type": "technique",
+    "type": "tactic",
     "title": "3 Is Not a Power of 2",
     "content": "`three_ne_two_pow`: 3 ≠ 2ⁿ for all n. If 3 = 2ⁿ then 3 ∣ 2ⁿ, and since 3 is prime, Nat.Prime.dvd_of_dvd_pow forces 3 ∣ 2 — false. This is the arithmetic core of the impossibility: the obstruction is purely that 3 and 2 are distinct primes.",
     "mathContext": "$3=2^n$ would give $3\\mid 2^n$, hence $3\\mid 2$ (3 prime), contradiction.",

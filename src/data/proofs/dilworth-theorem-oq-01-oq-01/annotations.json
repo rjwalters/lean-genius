@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "Mirsky's Theorem: the Hard (Attainment) Direction",
     "content": "The docstring scopes the file to the deep half of Mirsky's theorem (1971), the order-theoretic dual of Dilworth's: the minimum number of antichains covering a finite poset equals the maximum length of a chain. The companion file proved the easy direction $\\mathrm{maxChainLen} \\le |\\mathcal{A}|$ for any antichain cover; this file constructs a cover of size exactly $\\mathrm{maxChainLen}$, attaining the bound. The method is the height/level decomposition. A notable contrast: Dilworth's hard direction needs König/matching machinery, while Mirsky's follows from a single clean counting idea — partition by the longest-chain-ending-here depth. Classical decidability is registered as a local instance so Finset operations resolve uniformly.",
     "mathContext": "Mirsky: $\\min(\\text{antichain cover}) = \\max(\\text{chain length})$. This file proves the attainment ($\\ge$) half over an arbitrary finite $[\\mathrm{PartialOrder}\\,\\alpha]\\,[\\mathrm{Fintype}\\,\\alpha]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mirsky's theorem",
       "Dilworth's theorem",
@@ -51,7 +51,7 @@
       "startLine": 69,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Height Bounds and Attainment: 1 ≤ height x ≤ maxChainLen",
     "content": "These lemmas pin down the height function. singleton_mem_chainsTo shows $\\{x\\}$ is a chain ending at x, giving chainsTo_nonempty and the lower bound one_le_height ($1\\le\\mathrm{height}\\,x$). exists_chainsTo_card_eq_height uses Finset.exists_mem_eq_sup to extract a *concrete* longest chain ending at x realizing the sup — the witness the key lemma will extend. height_le_maxChainLen bounds height above by maxChainLen (Finset.sup_mono, since every chain-ending-at-x is a chain of the whole poset). Together: $1\\le\\mathrm{height}(x)\\le\\mathrm{maxChainLen}$, the range the levels live in.",
     "mathContext": "$1 \\le \\mathrm{height}(x) \\le \\mathrm{maxChainLen}$, with the height realized by a concrete chain ending at $x$ (exists_mem_eq_sup).",

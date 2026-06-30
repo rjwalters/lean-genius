@@ -31,7 +31,7 @@
       "startLine": 34,
       "endLine": 101
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Unimodular invariance: det = ±1 preserves the GCD",
     "content": "The headline gcd_unimodular states gcd(a·u+b·v, c·u+d·v) = gcd(u,v) whenever ad−bc = ±1. The proof is a two-sided divisibility argument (Nat.dvd_antisymm). Forward: gcd(u,v) divides every integer combination, so it divides both images — this is gcd_dvd_comb and needs no determinant hypothesis. Reverse: this is where unimodularity is essential. The inverse of [[a,b],[c,d]] is [[d,−b],[−c,a]]/det; when det = ±1 its entries are integers, giving u and v back as integer combinations of the two images (u = d·X − b·Y, v = −c·X + a·Y for det = 1, with signs flipped for det = −1, verified by linear_combination). Hence gcd(image) divides u and v, so it divides gcd(u,v). The two cases det = +1 and det = −1 are proved as gcd_unimodular_one and gcd_unimodular_neg_one and combined by rcases.",
     "mathContext": "Reverse inclusion uses the integer inverse: $\\begin{pmatrix}u\\\\v\\end{pmatrix}=\\det^{-1}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}\\begin{pmatrix}a u+b v\\\\c u+d v\\end{pmatrix}$, integral iff $\\det=\\pm1$.",
@@ -56,7 +56,7 @@
       "startLine": 102,
       "endLine": 121
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Determinants multiply, so batching stays unimodular",
     "content": "det_mul is the 2×2 Cauchy–Binet identity det(MN) = det(M)·det(N), proved in one line by ring. Its consequence det_mul_unimodular (case-split on the two ±1 signs) says a product of unimodular matrices is unimodular. This is the algebraic justification for Lehmer batching: the matrix Lehmer assembles is a product of single Euclidean-step matrices, so even though it accumulates many steps, its determinant remains ±1 and the headline invariant continues to apply. Without this multiplicativity one could not safely fold multiple steps into one matrix.",
     "mathContext": "$\\det(MN)=\\det M\\,\\det N$; if $\\det M,\\det N\\in\\{\\pm1\\}$ then $\\det(MN)\\in\\{\\pm1\\}$.",
@@ -102,7 +102,7 @@
       "startLine": 139,
       "endLine": 169
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Lehmer safety net: any quotient list preserves the GCD",
     "content": "applyQuotients folds a list of integers, used as partial quotients, into successive Euclidean steps over the exact multi-precision pair. applyQuotients_gcd proves by induction on the list that the GCD of the resulting pair equals gcd(u,v) for ANY list — each cons step is discharged by gcd_euclid_step. This is the crux of Lehmer correctness: because the statement quantifies over all quotient lists, it does not matter that Lehmer obtains the quotients approximately from single-precision leading words. A poorly chosen list only does less reduction per matrix (hurting efficiency); it can never change the GCD that the full computation returns.",
     "mathContext": "For every $qs\\in\\mathrm{List}\\,\\mathbb{Z}$: $\\gcd(\\mathrm{applyQuotients}\\,qs\\,(u,v)) = \\gcd(u,v)$, independent of the quotients chosen.",
@@ -127,7 +127,7 @@
       "startLine": 170,
       "endLine": 184
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked example: two quotients fold into [[1,−3],[−2,7]]",
     "content": "A concrete instance of the batching: partial quotients 2 then 3 compose into the unimodular matrix [[1,−3],[−2,7]] with determinant 1·7 − (−3)·(−2) = 1. Applying it to (1071, 462) preserves the GCD, and decide confirms gcd(1071, 462) = 21. This shows in miniature what Lehmer does at scale: several Euclidean steps' worth of reduction delivered by one matrix multiplication, with the GCD provably unchanged.",
     "mathContext": "Quotients $2,3 \\Rightarrow \\begin{pmatrix}1&-3\\\\-2&7\\end{pmatrix}$, $\\det=1$; $\\gcd(1071,462)=21$ preserved.",

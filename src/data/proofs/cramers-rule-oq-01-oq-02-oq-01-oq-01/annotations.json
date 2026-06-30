@@ -135,7 +135,7 @@
     "id": "ann-aux-insert-row-sign",
     "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 251, "endLine": 321 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The combinatorial sign lemma aux_insert_row_sign",
     "content": "The single genuinely non-trivial ingredient of the bordered-determinant crux. Two ways of selecting the same `(m+1)`-element row set `Fin (m+2) \\ {i.succAbove p}` are compared: the 'insert row i at slot p' selection `fun r => if r = p then i else i.succAbove r`, and the sorted selection `(i.succAbove p).succAbove`. Their determinants (same columns) differ by `(-1)^(i + i.succAbove p + 1)`. The proof expands BOTH determinants along the row carrying `i` — via `Matrix.det_succ_row` at slot `p` on the left and at slot `p.predAbove i` on the right. The two resulting cofactor minors are literally equal by `Fin.succAbove_succAbove_succAbove_predAbove` (the Mathlib lemma equating `i.succAbove ∘ p.succAbove` with `(i.succAbove p).succAbove ∘ (p.predAbove i).succAbove`), and `Fin.succAbove_succAbove_predAbove` certifies that `i` does sit at slot `p.predAbove i`. The residual sign reduces to a parity identity on `Fin` indices, discharged by `omega` after a case split on `castSucc p < i` and `neg_one_pow_eq_pow_mod_two`.",
     "mathContext": "Both `i.succAbove ∘ p.succAbove` and `(i.succAbove p).succAbove ∘ (p.predAbove i).succAbove` are the order embedding `Fin m → Fin (m+2)` with holes at `{i, i.succAbove p}`, so the cofactor minors agree termwise; the determinants then differ only by the position of `i` in each enumeration, giving the sign `(-1)^{i + i.succAbove p + 1}`.",

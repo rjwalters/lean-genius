@@ -77,11 +77,11 @@
       "startLine": 112,
       "endLine": 123
     },
-    "type": "example",
+    "type": "concept",
     "title": "Numeric Sanity Checks",
     "content": "`totient_two_pow_ten`: φ(2¹⁰) = 512 = 2⁹·(2−1), confirming the geometric form on the prime 2. `totient_three_pow_four`: φ(3⁴) = 54 = 3³·(3−1); since 54² = 2916 ≥ 81 = 3⁴ this also illustrates the square-root floor. Each proof rewrites the literal exponent as n+1, applies `Nat.totient_prime_pow_succ`, and finishes with `norm_num`.",
     "mathContext": "$\\varphi(2^{10}) = 512, \\qquad \\varphi(3^4) = 54.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "numeric verification",
       "prime-power totient value"

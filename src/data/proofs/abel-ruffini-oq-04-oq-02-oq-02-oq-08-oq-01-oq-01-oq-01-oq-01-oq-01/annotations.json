@@ -39,7 +39,7 @@
     "id": "ann-no-product-five",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 137, "endLine": 156 },
-    "type": "technique",
+    "type": "tactic",
     "title": "5 is multiplicatively unreachable: a primality argument",
     "content": "`no_solvable_product_equals_five` is `interval_cases m <;> interval_cases n <;> omega` — a finite check over $m, n \\le 4$. The mathematical content is that $5$ is prime: $m\\cdot n = 5$ forces $\\{m,n\\} = \\{1,5\\}$, but $5 > 4$. `no_nontrivial_product_equals_five` makes the same point without an upper bound: if $m \\ge 3$ then $m\\cdot n \\ge 3\\cdot 2 = 6 > 5$ (`Nat.mul_le_mul`), and the remaining case $m = 2$ gives $2n = 5$, impossible by parity (`omega`).",
     "mathContext": "$5$ prime $\\Rightarrow$ $m\\cdot n = 5 \\Rightarrow \\min(m,n) = 1,\\ \\max(m,n) = 5 > 4$. Nontrivial form: $m,n \\ge 2 \\Rightarrow m\\cdot n \\ge 4$ and $m\\cdot n \\ne 5$ (parity/$\\ge 6$).",

@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 40
     },
-    "type": "context",
+    "type": "concept",
     "title": "Regular bipartite graphs have perfect matchings",
     "content": "The docstring frames the classical fact: a k-regular bipartite graph (k ≥ 1) always has a perfect matching. Encoded family-theoretically, t : ι → Finset α is k-regular when every index has exactly k neighbours and every occurring element is hit by exactly k indices. The strategy is a single double-count of incidence pairs to derive Hall's condition, after which Mathlib's Hall theorem and the parent entry's deficiency calculus supply the matching and its maximality. The double-counting derivation needs no marriage-theorem machinery — Hall's theorem enters only to convert the condition into an actual transversal.",
     "mathContext": "A $k$-regular bipartite graph $G=(I\\sqcup A,E)$ with $k\\ge 1$ has a perfect matching. As a family, $t_i=\\{a : (i,a)\\in E\\}$ with $\\#t_i=k$ and $\\#\\{i : a\\in t_i\\}=k$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Hall's marriage theorem",
       "perfect matching",
@@ -77,7 +77,7 @@
       "startLine": 68,
       "endLine": 77
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Left count: bipartiteAbove collapses to t i",
     "content": "For each index i ∈ s, the neighbourhood of i inside the target set s.biUnion t — Mathlib's `(s.biUnion t).bipartiteAbove r i` — is shown by `ext` + `mem_bipartiteAbove` to equal t i exactly. The ⊇ direction is the only content: a ∈ t i implies a ∈ s.biUnion t via `mem_biUnion` (witnessed by i ∈ s), so membership in t i already certifies the bipartite-above condition. Then left-regularity hL rewrites its cardinality to k, giving the exact left contribution k per index.",
     "mathContext": "For $i\\in s$: $(s.\\mathrm{biUnion}\\,t).\\mathrm{bipartiteAbove}_r\\,i = t_i$ since $t_i\\subseteq s.\\mathrm{biUnion}\\,t$, hence $\\#(\\cdots)=\\#t_i=k$.",
@@ -100,7 +100,7 @@
       "startLine": 78,
       "endLine": 93
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Right count: restriction to s only shrinks the degree",
     "content": "For each element a ∈ s.biUnion t, the indices in s meeting a — `s.bipartiteBelow r a` — inject into the full set of indices meeting a, `univ.filter (· ∈ t i)`, by `card_le_card` + `mem_bipartiteBelow`. That global filter has cardinality k by right-regularity hR (applicable because a occurs in the family: a ∈ s.biUnion t ⊆ univ.biUnion t). So each element contributes *at most* k — an inequality, not an equality, because s may omit some of a's k incident indices. Finally `Nat.le_of_mul_le_mul_right` cancels the common factor k, which is legitimate exactly because k > 0; this is where the hypothesis hk is consumed.",
     "mathContext": "For $a\\in s.\\mathrm{biUnion}\\,t$: $\\#\\{i\\in s : a\\in t_i\\} \\le \\#\\{i : a\\in t_i\\}=k$. Then $k\\cdot\\#s\\le k\\cdot\\#B \\Rightarrow \\#s\\le\\#B$ by cancelling $k>0$.",

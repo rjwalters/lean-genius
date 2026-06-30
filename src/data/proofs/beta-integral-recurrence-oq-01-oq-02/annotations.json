@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Half-Integer Beta Values from the Beta–Gamma Relation",
     "content": "The π-driven companion to the parent's integer factorial closed form B(m,n) = (m−1)!(n−1)!/(m+n−1)!. Here the headline is the half-integer value B(1/2,1/2) = π, plus the next value B(3/2,3/2) = π/8. Mathlib provides the ingredients SEPARATELY — the Beta–Gamma relation B(u,v) = Γ(u)Γ(v)/Γ(u+v), the Gauss value Γ(1/2) = π^(1/2), the functional equation Γ(s+1) = s·Γ(s), and Γ(n+1) = n! — but never assembles them into these evaluations. The strategy is cpow recombination: multiply the two half-powers π^(1/2)·π^(1/2) back to π.",
     "mathContext": "$B(u,v) = \\dfrac{\\Gamma(u)\\Gamma(v)}{\\Gamma(u+v)}$; goal $B(\\tfrac12,\\tfrac12)=\\pi$, $B(\\tfrac32,\\tfrac32)=\\tfrac{\\pi}{8}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euler Beta function",
       "Beta–Gamma relation",
@@ -30,7 +30,7 @@
       "startLine": 54,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Squared Gauss Value Γ(1/2)² = π",
     "content": "Builds the key recombination. piC_ne_zero records (π:ℂ) ≠ 0 (the base nonvanishing needed to combine cpow powers), and piC_half_sq proves π^(1/2)·π^(1/2) = π via Complex.cpow_add and cpow_one (½+½ = 1). gamma_half_sq then substitutes the Gauss value Γ(1/2) = π^(1/2) into Γ(1/2)·Γ(1/2) and recombines the two half-powers to π. This squared value is exactly what the Beta–Gamma relation needs at u = v = 1/2.",
     "mathContext": "$\\pi^{1/2}\\cdot\\pi^{1/2} = \\pi^{1/2+1/2} = \\pi$, so $\\Gamma(\\tfrac12)^2 = \\pi$.",

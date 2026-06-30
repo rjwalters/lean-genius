@@ -29,7 +29,7 @@
       "startLine": 59,
       "endLine": 91
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Dual Dyadic Block Estimate: Each Block Sums to ≤ 1",
     "content": "block_le_one is the only genuinely new lemma, and it mirrors the parent's block_ge_half with the inequality reversed. The block over k ∈ Ico(2ⁿ, 2ⁿ⁺¹) has exactly 2ⁿ terms (Nat.card_Ico: 2ⁿ⁺¹ − 2ⁿ = 2ⁿ). For each such k, since k ≥ 2ⁿ we have k+1 ≥ 2ⁿ, hence 1/(k+1) ≤ 1/2ⁿ (one_div_le_one_div_of_le). Summing the constant upper bound 1/2ⁿ over the 2ⁿ terms gives 2ⁿ·(1/2ⁿ) = 1 (Finset.sum_const, then push_cast to turn ↑(2ⁿ) into the real (2:ℝ)ⁿ before field_simp). Finset.sum_le_sum lifts the termwise bound to the block, and the calc chains the actual block sum below the constant sum (= 1). Where the lower bound uses the smallest term 1/2ⁿ⁺¹, this uses the largest term 1/2ⁿ.",
     "mathContext": "$\\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{k+1} \\le \\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{2^{n}} = 2^n \\cdot \\frac{1}{2^{n}} = 1$. Every term is at most the largest one $1/2^{n}$, and there are $2^{n+1}-2^n = 2^n$ of them.",
@@ -53,7 +53,7 @@
       "startLine": 93,
       "endLine": 110
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "The Dyadic Upper Bound H_{2ⁿ} ≤ 1 + n",
     "content": "harmonic_two_pow_le inducts on n. The base case n=0 is H_1 = 1 = 1 + 0 (simp on the definition of H). The step rewrites H_{2ⁿ⁺¹} via the parent's H_two_pow_succ, then adds the inductive hypothesis H_{2ⁿ} ≤ 1 + n to the block bound block_le_one (≤ 1) using add_le_add, giving H_{2ⁿ⁺¹} ≤ (1 + n) + 1 = 1 + (n+1). The structure is the exact mirror of the parent's harmonic_two_pow_ge, with 1/2 replaced by 1 and ≥ replaced by ≤.",
     "mathContext": "$H_{2^n} \\le 1 + n$ by induction: $H_{2^{n+1}} = H_{2^n} + \\text{block} \\le (1+n) + 1 = 1 + (n+1)$.",

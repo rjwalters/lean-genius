@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 24
     },
-    "type": "context",
+    "type": "concept",
     "title": "Purpose: Remove the Parent's native_decide (Axiom Elimination)",
     "content": "The parent entry chinese-remainder-constructive proves the structural CRT axiom-free, but discharges its worked examples (Sunzi x=23 mod 105, the four-moduli x=53 mod 210) with native_decide — which trusts the compiler's kernel reduction and pulls in the Lean.ofReduceBool axiom, making the parent 'axiomatized'. This file re-establishes each example WITHOUT native_decide, via a short Chinese-Remainder argument, so #print axioms lists only propext/Classical.choice/Quot.sound. The residue checks use kernel `decide`/`omega`, which do not introduce Lean.ofReduceBool.",
     "mathContext": "native_decide ⟹ depends on $\\mathsf{Lean.ofReduceBool}$ (axiomatized); kernel `decide`/`omega` ⟹ only the foundational axioms. Goal: the worked examples become genuinely axiom-free.",

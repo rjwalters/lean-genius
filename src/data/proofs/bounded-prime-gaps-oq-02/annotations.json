@@ -10,7 +10,7 @@
     "title": "The Level-θ Elliott–Halberstam Bound and Level-Monotonicity",
     "content": "`EHAtLevel D θ` abstracts the level-of-distribution statement: for every exponent `A > 0` there is a constant `C > 0` with `D θ x ≤ C·x/(log x)^A` for all `x ≥ 2`. Here `D θ x` is an abstract discrepancy functional modelling `Σ_{q ≤ x^θ} max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|`. `LevelMonotone D` records the one structural fact the hierarchy needs: a larger level `θ` sums over more moduli `q ≤ x^θ`, so `θ₁ ≤ θ₂ ⟹ D θ₁ x ≤ D θ₂ x`. Keeping `D` abstract means every downstream theorem is a logical consequence of these hypotheses, never an assumption about primes.",
     "mathContext": "$\\mathrm{EHAtLevel}(D,\\theta) := \\forall A>0,\\ \\exists C>0,\\ \\forall x\\ge 2,\\ D\\,\\theta\\,x \\le \\dfrac{Cx}{(\\log x)^A}$. The exponent uses real `rpow`. Level-monotonicity: $\\theta_1 \\le \\theta_2 \\Rightarrow D\\,\\theta_1\\,x \\le D\\,\\theta_2\\,x$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "level of distribution",
       "Elliott–Halberstam conjecture",
@@ -33,7 +33,7 @@
     "title": "The Level Hierarchy (le_trans in one line)",
     "content": "`EHAtLevel_of_le` is the heart of the file: for a level-monotone `D`, the EH bound at a higher level `θ₂` implies the bound at every lower level `θ₁ ≤ θ₂`, and the SAME constant `C` works verbatim. The proof is a single `le_trans (hD h x) (hbound x hx)`: `D θ₁ x ≤ D θ₂ x ≤ C·x/(log x)^A`. `EHAtLevel_of_le_functional` is the companion monotonicity in the functional argument — if `D' θ x ≤ D θ x` pointwise and `D` meets the bound, so does `D'`.",
     "mathContext": "If $D\\,\\theta_1\\,x \\le D\\,\\theta_2\\,x$ and $D\\,\\theta_2\\,x \\le Cx/(\\log x)^A$, then $D\\,\\theta_1\\,x \\le Cx/(\\log x)^A$ — transitivity of $\\le$ with no change of constant.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "transitivity",
       "monotonicity",
@@ -54,7 +54,7 @@
     "title": "Bombieri–Vinogradov, Elliott–Halberstam, and EH ⟹ BV",
     "content": "`BombieriVinogradov D := EHAtLevel D (1/2)` (the level proved unconditionally) and `ElliottHalberstam D := ∀ θ, 0<θ → θ<1 → EHAtLevel D θ` (the open conjecture). `bombieriVinogradov_of_elliottHalberstam` derives BV from EH as the `θ = 1/2` instance. `bombieriVinogradov_of_EHAtLevel` strengthens this: for level-monotone `D`, ANY bound at level `θ ≥ 1/2` already gives BV via the hierarchy. `elliottHalberstam_iff_levels_near_one` shows EH is equivalent to its restriction to `θ ∈ [1/2, 1)` — the sub-1/2 range descends from the BV-strength bound.",
     "mathContext": "$\\mathrm{BV}(D) := \\mathrm{EHAtLevel}(D,\\tfrac12)$, $\\mathrm{EH}(D) := \\forall\\theta\\in(0,1),\\,\\mathrm{EHAtLevel}(D,\\theta)$. Then $\\mathrm{EH}\\Rightarrow\\mathrm{BV}$, and $\\mathrm{EH}(D) \\iff \\big(\\forall\\theta\\in[\\tfrac12,1),\\,\\mathrm{EHAtLevel}(D,\\theta)\\big)$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Bombieri–Vinogradov theorem",
       "Elliott–Halberstam conjecture",

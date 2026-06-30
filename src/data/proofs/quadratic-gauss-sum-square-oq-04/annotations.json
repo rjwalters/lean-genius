@@ -7,7 +7,7 @@
     "title": "From the square identity to a quadratic field",
     "content": "The parent entry proves the algebraic square identity g² = p* := (−1)^((p−1)/2)·p for the quadratic Gauss sum g. This file reads that identity field-theoretically: since |p*| = p is prime, p* is not a rational square, so g is a quadratic irrational. The new results are its minimal polynomial over ℚ (X² − p*), the degree [ℚ(g):ℚ] = 2, and irrationality g ∉ ℚ. Equivalently the Gauss sum generates the unique quadratic subfield ℚ(√p*) of the cyclotomic field ℚ(ζ_p) — the field-theoretic foundation of the Gauss-sum proof of quadratic reciprocity.",
     "mathContext": "$g^2 = p^* = (-1)^{(p-1)/2}p$, $|p^*| = p$ prime $\\Rightarrow$ $p^*$ not a square $\\Rightarrow$ $\\operatorname{minpoly}_\\mathbb{Q}(g) = X^2 - p^*$, $[\\mathbb{Q}(g):\\mathbb{Q}] = 2$, $g = \\sqrt{p^*}$ generating $\\mathbb{Q}(\\zeta_p)$'s quadratic subfield.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gauss sum", "quadratic field", "cyclotomic field", "quadratic reciprocity", "minimal polynomial"],
     "prerequisites": ["Gauss sums", "field extensions", "quadratic characters"]
   },
@@ -27,7 +27,7 @@
     "id": "ann-qgss-oq04-square",
     "proofId": "quadratic-gauss-sum-square-oq-04",
     "range": { "startLine": 65, "endLine": 76 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The square formula g² = p*, re-derived self-containedly",
     "content": "pstar p := (−1)^((p−1)/2)·p packages the target value as an integer. gaussSum_sq_eq re-derives the parent's identity g² = (p* : ℂ) from Mathlib's generic gaussSum_sq, which gives g² = χ(−1)·#(ZMod p); substituting chiC_neg_one and ZMod.card and pushing casts yields exactly (pstar p : ℂ). Re-deriving it here (rather than importing the parent) keeps the file self-contained.",
     "mathContext": "$g^2 = \\chi(-1)\\cdot|\\mathbb{Z}/p| = (-1)^{(p-1)/2}\\cdot p = p^*$.",

@@ -31,7 +31,7 @@
     "title": "ω is Integral over ℚ via Xⁿ − 1",
     "content": "Exhibits the explicit monic witness Xⁿ − 1 ∈ ℚ[X] that ω satisfies: `monic_X_pow_sub_C` gives monicity (n ≠ 0) and `omega_pow_n` gives the root condition ωⁿ − 1 = 0. Integrality is the prerequisite that makes the minimal polynomial well-defined and lets `IntermediateField.adjoin.finrank` compute the field degree downstream.",
     "mathContext": "$\\omega$ is a root of the monic $X^n - 1 \\in \\mathbb{Q}[X]$, hence integral over $\\mathbb{Q}$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["integral element", "monic polynomial", "Xⁿ − 1"],
     "prerequisites": ["integral elements", "monic polynomials"]
   },
@@ -67,7 +67,7 @@
     "title": "ω is a Root of Φₙ",
     "content": "Records explicitly that aeval ω Φₙ = 0, obtained by rewriting Φₙ as the minimal polynomial and invoking `minpoly.aeval`. This is the root half of the two-fact characterisation, made available as a standalone statement.",
     "mathContext": "$\\Phi_n(\\omega) = 0$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["root of a polynomial", "aeval", "cyclotomic polynomial"],
     "prerequisites": ["polynomial evaluation"]
   },
@@ -99,11 +99,11 @@
     "id": "ann-examples",
     "proofId": "de-moivre-oq-04-oq-03",
     "range": { "startLine": 119, "endLine": 135 },
-    "type": "example",
+    "type": "concept",
     "title": "Verified Small Cases (n = 1, 4, 5, 6)",
     "content": "Concrete instantiations confirming the general theorems: deg minpoly for n=1 is 1 (Φ₁ = X − 1), for n=4 is 2 (Φ₄ = X² + 1, ω = i), for n=5 is 4 (Φ₅ = X⁴+X³+X²+X+1); and field dimensions [ℚ(ω):ℚ] = 2 for n=6 (Φ₆ = X² − X + 1) and 4 for n=5. The φ(n) values 1, 2, 2, 4 are recovered by `rfl` after rewriting with the general degree/finrank theorems.",
     "mathContext": "$\\varphi(1)=1$, $\\varphi(4)=2$, $\\varphi(6)=2$, $\\varphi(5)=4$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["small cases", "Euler's totient", "cyclotomic polynomials"],
     "prerequisites": ["Euler's totient function"]
   },

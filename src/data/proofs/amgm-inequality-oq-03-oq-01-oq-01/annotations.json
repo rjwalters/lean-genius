@@ -30,11 +30,11 @@
       "startLine": 105,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Positive Side: GM ≤ M_s via order-preserving 1/s power",
     "content": "geomMean_le_powerMean_pos takes the core estimate at exponent s > 0, namely GM^s ≤ ∑ wᵢzᵢ^s, and raises both sides to the nonnegative power 1/s using Real.rpow_le_rpow (which requires 0 ≤ 1/s, discharged by positivity). The left side collapses: (GM^s)^(1/s) = GM^(s·(1/s)) = GM^1 = GM, via ← Real.rpow_mul, mul_one_div_cancel, and Real.rpow_one. The right side is exactly M_s = (∑ wᵢzᵢ^s)^(1/s). Positivity of GM (needed for the rpow base) comes from Finset.prod_pos over the strictly positive zᵢ^{wᵢ}.",
     "mathContext": "$s>0 \\Rightarrow 1/s>0$: applying the increasing map $t\\mapsto t^{1/s}$ to $\\mathrm{GM}^s \\leq \\sum w_i z_i^s$ gives $\\mathrm{GM} \\leq M_s$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Real.rpow_le_rpow",
       "Real.rpow_mul",
@@ -53,7 +53,7 @@
       "startLine": 126,
       "endLine": 149
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Negative Side: M_r ≤ GM — the sign flip of 1/r",
     "content": "powerMean_le_geomMean_neg is where crossing zero earns its keep. The core estimate at r < 0 gives GM^r ≤ ∑ wᵢzᵢ^r, but now the exponent 1/r is NEGATIVE (div_neg_of_pos_of_neg). Raising to a nonpositive power is antitone, so Real.rpow_le_rpow_of_nonpos REVERSES the inequality: (∑ wᵢzᵢ^r)^(1/r) ≤ (GM^r)^(1/r). The left side is M_r and the right collapses to GM exactly as in the positive case. Because the rewrite ← Real.rpow_mul is specialized to the base GM (via hGM_pos.le), it touches only the (GM^r)^(1/r) term and leaves M_r untouched. This single direction reversal is the entire substance of the mixed-sign case.",
     "mathContext": "$r<0 \\Rightarrow 1/r<0$: applying the decreasing map $t\\mapsto t^{1/r}$ to $\\mathrm{GM}^r \\leq \\sum w_i z_i^r$ reverses it to $M_r \\leq \\mathrm{GM}$.",

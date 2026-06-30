@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "Wallis Is the Whole Story",
     "content": "The header sets out the plan: rather than extract the central binomial asymptotic from the full Stirling sequence (which would force manipulation of (n/e)ⁿ and √(2n) as real powers), the proof routes through Mathlib's exact factorial form of the Wallis sequence W n = 2^{4n}(n!)⁴/((2n)!²(2n+1)). The elementary factorization (2n)! = C(2n,n)·(n!)² collapses this to the clean identity (4ⁿ/C(2n,n))² = W n·(2n+1). Everything downstream is limit algebra on top of the single analytic input W n → π/2 — so the √π in the asymptotic is literally Wallis' 1656 constant. Mathlib has central-binomial bounds (Bertrand) but not this asymptotic.",
     "mathContext": "$\\binom{2n}{n} \\sim \\dfrac{4^n}{\\sqrt{\\pi n}}$, with $\\sqrt\\pi$ inherited from Wallis' product $W_n \\to \\pi/2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Wallis product", "Stirling's formula", "asymptotic equivalence", "central binomial coefficient"],
     "prerequisites": ["asymptotic notation ~", "Wallis' product for π", "sequence limits"]
   },
@@ -36,7 +36,7 @@
       "startLine": 55,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Factorization Bridge: (2n)! = C(2n,n)·(n!)²",
     "content": "factorial_two_mul is the identity that lets Wallis' factorial ratio and the central binomial coefficient meet. It starts from Mathlib's Nat.choose_mul_factorial_mul_factorial — (2n).choose n · n! · (2n−n)! = (2n)! — simplifies 2n−n = n (omega) and rewrites choose into centralBinom, giving C(2n,n)·n!·n! = (2n)! over ℕ. Casting to ℝ (push_cast) and rearranging (linear_combination) yields (2n)! = C(2n,n)·(n!)². Without this, the (n!)⁴/(2n)!² in Wallis' formula never simplifies to a power of 4ⁿ/C.",
     "mathContext": "$\\binom{2n}{n}\\,n!\\,(2n-n)! = (2n)!$ with $2n-n=n \\;\\Rightarrow\\; (2n)! = \\binom{2n}{n}(n!)^2$.",

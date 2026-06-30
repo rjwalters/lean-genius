@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 68
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Missing Non-Crossing Side of the Catalan Bijection",
     "content": "Ballot sequences (Dyck words) and non-crossing partitions of an n-element ordered set are both counted by the Catalan numbers, and OQ-04 asks for the bijection between them. Mathlib supplies the ballot/Dyck side in full (DyckWord, card_dyckWord_semilength_eq_catalan) but has NO non-crossing partitions. This file introduces that missing combinatorial object: a partition of Fin n is modelled by its 'same block' equivalence relation (a Setoid), setting up the codomain of the bijection.",
     "mathContext": "Both sides are Catalan-counted: $\\#\\{$Dyck words of semilength $n\\} = \\#\\{$non-crossing partitions of $[n]\\} = C_n$. This file builds the non-crossing-partition side.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Catalan numbers",
       "Dyck words / ballot sequences",
@@ -76,7 +76,7 @@
       "startLine": 157,
       "endLine": 192
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Ballot/Dyck Side Is Catalan-Counted",
     "content": "dyck_side_card re-exposes Mathlib's card_dyckWord_semilength_eq_catalan: the number of Dyck words of semilength n is catalan n. This is the domain of the OQ-04 bijection, now paired with the freshly-formalized non-crossing-partition codomain — both sides Catalan-counted, setting up the bijection whose construction is the remaining open work.",
     "mathContext": "$\\#\\{$Dyck words of semilength $n\\} = C_n$ (Mathlib), the Catalan-counted domain matched to the non-crossing-partition codomain built here.",

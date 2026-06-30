@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "hall-marriage-theorem-oq-01-oq-02",
     "range": { "startLine": 4, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "König–Egerváry from Defect Hall",
     "content": "The docstring sets up the König–Egerváry min–max theorem in the set-system idiom. A bipartite graph is encoded by its left-neighbourhood family $t : \\iota \\to \\mathrm{Finset}\\,\\alpha$: left vertices $\\iota$, right vertices $\\alpha$, edges $(i,a)$ with $a \\in t\\,i$. The goal is the duality $\\max\\,\\#\\text{matching} = \\min\\,\\#\\text{vertex cover}$, derived directly from the defect (Ore) form of Hall's theorem proved in the companion entry. This answers an open question posed there.",
     "mathContext": "Maximum matching size $=$ minimum vertex cover size for a bipartite set system.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["König–Egerváry theorem", "LP duality", "defect Hall theorem", "bipartite matching"],
     "prerequisites": ["Hall's marriage theorem", "matchings and vertex covers", "finite cardinality"]
   },

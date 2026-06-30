@@ -30,7 +30,7 @@
       "startLine": 65,
       "endLine": 84
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Re-deriving the EKR Bound Axiom-Free",
     "content": "`ekr_bound` re-establishes |A| ≤ C(n-1,k-1) for the bespoke `IsIntersectingFamily` predicate, exactly as OQ-02 does: it bridges the predicate to Mathlib's `Set.Sized k` and `Set.Intersecting` (the latter via `not_disjoint_iff_nonempty_inter`), checks the side condition `k ≤ n/2` from `2k ≤ n` with `omega`, and invokes `Finset.erdos_ko_rado` (proved through the Kruskal–Katona shadow inequality). No cyclic intervals, no axioms. Here its purpose is to CERTIFY MAXIMALITY of the counterexample: combined with the explicit cardinality, it shows the triangle is a true maximizer, not merely a large family.",
     "mathContext": "n \\ge 2k \\Rightarrow |A| \\le \\binom{n-1}{k-1}, \\text{ via } \\texttt{Finset.erdos\\_ko\\_rado}",

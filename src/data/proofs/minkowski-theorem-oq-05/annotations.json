@@ -23,7 +23,7 @@
     "id": "ann-bound",
     "proofId": "minkowski-theorem-oq-05",
     "range": { "startLine": 56, "endLine": 74 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Real-valued bound via ℝ≥0 transport",
     "content": "The real-valued nonnegative form is obtained by lifting a, b to ℝ≥0 (using their nonnegativity), applying Mathlib's NNReal.rpow_add_le_mul_rpow_add_rpow, and carrying the inequality back to ℝ with exact_mod_cast. The norm_cast lemma NNReal.coe_rpow bridges (↑(x^p)) and (↑x)^p, so the whole inequality transports across the order-embedding coercion in one step.",
     "mathContext": "$\\mathbb{R}_{\\ge 0} \\hookrightarrow \\mathbb{R}$ is an order embedding, so a $\\ge 0$ inequality lifts verbatim.",

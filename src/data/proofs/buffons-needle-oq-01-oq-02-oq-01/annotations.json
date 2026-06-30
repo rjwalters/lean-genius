@@ -34,7 +34,7 @@
     "title": "The Buffon Constant and its Positivity",
     "content": "buffonConstant is re-declared locally (so the file imports only Mathlib and stays self-contained). buffonConstant_pos establishes c_n > 0 for n ≥ 2 from the positivity of the Gamma function — this is what licenses cancelling c_{n+1} in the monotonicity and recurrence proofs.",
     "mathContext": "$c_n = \\frac{2\\Gamma(n/2)}{(n-1)\\sqrt{\\pi}\\,\\Gamma((n-1)/2)} > 0$ for $n \\ge 2$, since $\\Gamma > 0$ on the positive reals.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gamma function positivity"
     ],
@@ -74,7 +74,7 @@
     "title": "Monotonicity and the Recurrence as Corollaries",
     "content": "buffonConstant_two_step_strictAnti derives c_{n+2} < c_n from the invariant: since 2/((n+1)π) < 2/(nπ) and c_{n+1} > 0, cancelling c_{n+1} gives the decay (concentration of measure) with no Gamma estimates. buffonConstant_recurrence_from_invariant recovers the parent's recurrence c_{n+2} = (n/(n+1))·c_n by dividing the invariant at dimension n by the invariant at dimension n+1 — showing the invariant is the more primitive statement.",
     "mathContext": "From $c_{n+1}c_n = \\tfrac{2}{n\\pi}$ and $c_{n+2}c_{n+1} = \\tfrac{2}{(n+1)\\pi}$: ratio $\\Rightarrow c_{n+2}/c_n = n/(n+1)$; comparison $\\Rightarrow c_{n+2} < c_n$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "concentration of measure",
       "recurrence relations"
@@ -88,11 +88,11 @@
       "startLine": 192,
       "endLine": 213
     },
-    "type": "example",
+    "type": "concept",
     "title": "Numerical Consistency Checks",
     "content": "product_three_two, product_four_three, product_five_four instantiate the invariant at n = 2, 3, 4, recovering c₃c₂ = 1/π, c₄c₃ = 2/(3π), and c₅c₄ = 1/(2π) — consistent with the parent's closed forms c₂ = 2/π, c₃ = 1/2, c₄ = 4/(3π), c₅ = 3/8.",
     "mathContext": "$c_3 c_2 = \\tfrac12\\cdot\\tfrac2\\pi = \\tfrac1\\pi$; $c_4 c_3 = \\tfrac{4}{3\\pi}\\cdot\\tfrac12 = \\tfrac{2}{3\\pi}$; $c_5 c_4 = \\tfrac38\\cdot\\tfrac{4}{3\\pi} = \\tfrac{1}{2\\pi}$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Buffon constants"
     ],

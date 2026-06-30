@@ -40,7 +40,7 @@
     "title": "Two-Sided Bracketing of γ",
     "content": "harmonic_sub_log_add_one_lt_gamma and gamma_lt_harmonic_sub_log show the two parent-style sequences trap γ: Hₙ − log(n+1) < γ < Hₙ − log n for every n ≥ 1. The lower sequence increases to γ, the upper decreases to γ. The proofs unfold Mathlib's eulerMascheroniSeq and eulerMascheroniSeq' (the latter on its n ≠ 0 branch) inside the strict bound lemmas eulerMascheroniSeq_lt_eulerMascheroniConstant and eulerMascheroniConstant_lt_eulerMascheroniSeq'.",
     "mathContext": "H_n - \\log(n+1) < \\gamma < H_n - \\log n \\qquad (n \\ge 1)",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "nested intervals",
       "monotone sequences",
@@ -56,7 +56,7 @@
     "title": "Bracket Width → 0 Pins Down γ",
     "content": "bracket_width identifies the gap between the upper and lower brackets as exactly log(n+1) − log n, and tendsto_bracket_width shows it tends to 0. The latter is proved by subtracting the two convergent bracket sequences (both → γ), so their difference tends to γ − γ = 0, then matching the resulting function pointwise. Consequently the nested intervals (Hₙ − log(n+1), Hₙ − log n) shrink to the single point γ — a constructive enclosure to arbitrary precision.",
     "mathContext": "\\big(H_n-\\log n\\big)-\\big(H_n-\\log(n+1)\\big) = \\log(n+1)-\\log n \\to 0",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "nested interval theorem",
       "rate of convergence",

@@ -77,7 +77,7 @@
       "startLine": 109,
       "endLine": 115
     },
-    "type": "corollary",
+    "type": "theorem",
     "title": "Positivity and Concrete Checks",
     "content": "stirlingFirst_row_sum_pos rewrites by the row-sum identity and applies Nat.factorial_pos: the row sum is strictly positive because every finite set admits at least one permutation. Two concrete checks close the file by kernel decide: the fourth row sums to 4! = 24, and c(4,2) = 11 (permutations of a 4-set with exactly two cycles).",
     "mathContext": "$\\sum_k c(n,k) = n! > 0$ (Nat.factorial_pos); checks: row 4 sums to $4! = 24$, $c(4,2) = 11$.",

@@ -13,7 +13,7 @@
       "The sup norm on C([a,b],ℝ) and topological closure of a subalgebra"
     ],
     "relatedConcepts": ["uniform approximation", "density", "subalgebra closure", "Stone–Weierstrass"],
-    "significance": "The two equivalent faces of the theorem: the analyst's ε-form one actually applies, and the algebraist's density form that generalizes to Stone–Weierstrass."
+    "significance": "supporting"
   },
   {
     "id": "ann-sequence-form",
@@ -30,7 +30,7 @@
       "abs_sub_comm, nlinarith"
     ],
     "relatedConcepts": ["uniform convergence", "TendstoUniformlyOn", "Archimedean estimate", "axiom of choice (choose)"],
-    "significance": "The centerpiece: it turns Mathlib's per-ε existence into the single uniformly convergent sequence of polynomials that is the standard statement of Weierstrass's theorem."
+    "significance": "supporting"
   },
   {
     "id": "ann-bernstein",
@@ -46,7 +46,7 @@
       "Convergence in 𝓝 f within the space of continuous maps"
     ],
     "relatedConcepts": ["Bernstein polynomials", "constructive approximation", "law of large numbers", "binomial distribution"],
-    "significance": "The effective form: an explicit, computable sequence of approximating polynomials, in contrast to the existence-only ε- and sequence-forms."
+    "significance": "supporting"
   },
   {
     "id": "ann-abs-witness",
@@ -62,6 +62,6 @@
       "Set.Icc (-1) 1"
     ],
     "relatedConcepts": ["absolute value", "non-differentiable function", "concrete instance", "uniform approximation"],
-    "significance": "The concrete payoff: Weierstrass's own non-smooth example, shown uniformly approximable by polynomials in both the ε-form and as a convergent sequence."
+    "significance": "supporting"
   }
 ]

@@ -52,7 +52,7 @@
       "startLine": 83,
       "endLine": 99
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Row Sum as the Value at X = 1",
     "content": "stirlingFirst_row_sum derives ∑ₖ c(n,k) = n! from the generating identity. Mathlib's ascPochhammer_eval_one gives (ascPochhammer ℤ n).eval 1 = n!. Expanding the evaluation with Polynomial.eval_eq_sum_range writes it as ∑_{k < natDegree+1} coeff k · 1ᵏ; ascPochhammer_natDegree fixes natDegree = n (over the domain ℤ), so the range is range (n+1) and the 1ᵏ factors vanish. Substituting coeff k = (c(n,k):ℤ) from the generating identity yields ∑ₖ (c(n,k):ℤ) = n!, which descends to ℕ via Nat.cast_sum. This is a generating-function proof of the row sum, complementary to the direct induction in oq-01.",
     "mathContext": "$\\sum_k c(n,k) = \\left.\\sum_k c(n,k)X^k\\right|_{X=1} = (\\text{ascPochhammer}\\,\\mathbb{Z}\\,n)(1) = n!$.",
@@ -75,7 +75,7 @@
       "startLine": 101,
       "endLine": 107
     },
-    "type": "observation",
+    "type": "concept",
     "title": "Numeric Sanity Check: Row 4",
     "content": "stirlingFirst_row_four verifies row 4 of the triangle, (c(4,0),…,c(4,4)) = (0,6,11,6,1), sums to 24 = 4!, a concrete instance of stirlingFirst_row_sum. It is closed by simp unfolding the recursive definition (kernel reduction, no native_decide).",
     "mathContext": "$0+6+11+6+1 = 24 = 4!$.",

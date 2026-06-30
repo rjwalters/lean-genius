@@ -103,7 +103,7 @@
       "startLine": 116,
       "endLine": 132
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Sanity Checks: the Composite-Base Regime Mathlib Cannot Reach",
     "content": "Four `example` declarations exercise the new theorems as direct specializations (no computation): φ(3²) = 3·φ(3) and φ(6²) = 6·φ(6) instantiate totient_sq — the second at a *composite* base 6, exactly where Mathlib's prime-power lemma `Nat.totient_prime_pow` does not apply; φ(3·5) = φ(3)·φ(5) is the coprime collapse; φ(2·6) = 2·φ(6) (since 2 ∣ 6) is the divisibility collapse. Because each is a term-mode application of the corresponding theorem rather than a `decide`/`native_decide` evaluation, they double as type-checked usage examples and keep the file axiom-free.",
     "mathContext": "$\\varphi(6^2)=6\\,\\varphi(6)$ (composite base, outside `Nat.totient_prime_pow`); $\\varphi(15)=\\varphi(3)\\varphi(5)$ (coprime); $\\varphi(12)=2\\,\\varphi(6)$ (divisibility).",

@@ -68,7 +68,7 @@
       "startLine": 106,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Fractions Lie in (0, 1)",
     "content": "ratio_lt_one is immediate from ratio = 1 - mass i/total with mass i/total > 0. ratio_pos needs at least two vertices: for n ≥ 1 the set univ.erase i is nonempty (card = (n+1) - 1 = n > 0), so the erased sum is positive (Finset.sum_pos). At n = 0 (a single vertex) the erased sum is empty and the fraction is 0, so positivity genuinely requires the hypothesis.",
     "mathContext": "ratio i < 1 always; 0 < ratio i for n ≥ 1.",
@@ -89,7 +89,7 @@
       "startLine": 125,
       "endLine": 159
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The n-Dimensional Ceva Identity Σ ratio i = n",
     "content": "sum_mass_div_total first shows the normalized masses sum to 1 (factor the common denominator with Finset.sum_div, then div_self). The headline sum_ratio_eq then proves Σ ratio i = n: rewrite each ratio as 1 - mass i/total (Finset.sum_congr), split the sum with Finset.sum_sub_distrib into (Σ 1) - (Σ mass i/total) = (n+1) - 1, and finish with ring. The n+1 ones minus the single unit of total normalized mass leave exactly n.",
     "mathContext": "Σ ratio i = Σ(1 - mass i/total) = (n+1) - 1 = n.",

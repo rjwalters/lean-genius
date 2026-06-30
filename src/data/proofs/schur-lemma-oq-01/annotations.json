@@ -3,11 +3,11 @@
     "id": "schur-oq01-header",
     "proofId": "schur-lemma-oq-01",
     "range": { "startLine": 6, "endLine": 48 },
-    "type": "context",
+    "type": "concept",
     "title": "Three layers of Schur's Lemma, and the gap this fills",
     "content": "Schur's Lemma (Schur, 1905) is the rigidity cornerstone of representation theory, in three classical layers: (1) the **dichotomy** — a homomorphism between simple modules is an isomorphism or zero; (2) the **division ring** structure on a simple module's endomorphism ring; and (3) the **scalar form** — over an algebraically closed field, every endomorphism of a finite-dimensional irreducible representation is multiplication by a scalar. Mathlib has (1) and (2) (`LinearMap.bijective_or_eq_zero`, `Module.End.instDivisionRing`) and proves (3) only abstractly in the 𝕜-linear category setting and for `FDRep`. This entry derives the concrete module-language scalar form used in character theory, assembled from Mathlib's eigenvalue theory plus the dichotomy.",
     "mathContext": "$f \\in \\mathrm{End}_A(M),\\ k \\text{ alg. closed} \\implies \\exists c \\in k,\\ f = c\\cdot\\mathrm{id}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Schur's Lemma", "irreducible representations", "simple modules", "character theory"],
     "prerequisites": ["modules and simple modules", "algebraically closed fields", "eigenvalues"]
   },

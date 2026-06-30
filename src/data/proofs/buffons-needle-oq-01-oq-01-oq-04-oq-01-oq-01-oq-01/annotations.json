@@ -75,7 +75,7 @@
     "id": "ann-crosscheck-example",
     "proofId": "buffons-needle-oq-01-oq-01-oq-04-oq-01-oq-01-oq-01",
     "range": { "startLine": 106, "endLine": 112 },
-    "type": "context",
+    "type": "concept",
     "title": "Cross-Check: Reflection Reproves the Parent Value",
     "content": "A closing example feeds the reflection identity back the other way, rewriting the parent integral ∫_0^{π/2} cos θ · sinᵐ θ via integral_sin_mul_cos_pow_eq_reflect and then closing with the direct FTC lemma integral_sin_mul_cos_pow. This independently reproduces the parent's value 1/(m+1) through the companion's machinery, cross-validating that the reflection bridge and the two FTC computations are mutually consistent rather than circular.",
     "mathContext": "$\\int_0^{\\pi/2}\\cos\\theta\\cdot\\sin^{m}\\theta\\,d\\theta \\xrightarrow{\\text{reflect}} \\int_0^{\\pi/2}\\sin\\theta\\cdot\\cos^{m}\\theta\\,d\\theta = \\frac{1}{m+1}.$",

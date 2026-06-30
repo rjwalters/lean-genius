@@ -6,7 +6,7 @@
       "startLine": 52,
       "endLine": 79
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A Prime Is Never a Perfect Square: Both Legs Positive",
     "content": "pos_of_prime_eq_sq_add_sq establishes 0 < a ∧ 0 < b for a prime p = a²+b² (reproduced from the sibling so the entry is self-contained). The auxiliary not_sq shows p ≠ n² for every n: a divisor n of a perfect-square prime would have to be 1 or p, both contradicting primality. Hence neither leg can be zero — positivity that the later ordering and distinctness arguments rely on (e.g. |ac−bd| < ac+bd needs ac, bd > 0).",
     "mathContext": "$p$ prime, $p = a^2+b^2 \\Rightarrow a, b > 0$ (else $p$ would be a perfect square $a^2$ or $b^2$).",
@@ -118,11 +118,11 @@
       "startLine": 205,
       "endLine": 214
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Canonical Witness: 65 = 5·13",
     "content": "sixtyfive_two_ways grounds the general theorem in the smallest classical example: 65 = 5·13 = 1²+8² = 4²+7², with {1,8} ≠ {4,7}. Built from 5 = 1²+2² and 13 = 2²+3² via the two sign variants. Both representations and their distinctness are discharged by norm_num and decide — a fully decidable check that the abstract statement holds concretely.",
     "mathContext": "$65 = 5\\cdot 13 = 1^2 + 8^2 = 4^2 + 7^2$, $\\{1,8\\} \\ne \\{4,7\\}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "concrete witness",
       "decidability",

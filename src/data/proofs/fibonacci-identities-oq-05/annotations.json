@@ -3,11 +3,11 @@
     "id": "ann-fiboq05-1",
     "proofId": "fibonacci-identities-oq-05",
     "range": { "startLine": 3, "endLine": 26 },
-    "type": "context",
+    "type": "concept",
     "title": "The Product Analogue of the Sum of Squares",
     "content": "**Module framing.** The parent entry proves the telescoping identity $F_0^2 + F_1^2 + \\cdots + F_n^2 = F_n F_{n+1}$. This file supplies the *product* companion: the partial sums of consecutive products $F_k F_{k+1}$. The crucial difference is **parity**. The sum of squares lands exactly on a single product; the product sum instead oscillates by one about the perfect square $F_{n+1}^2$ — landing on $F_{n+1}^2$ for odd $n$ and $F_{n+1}^2 - 1$ for even $n$. That oscillation is Cassini's alternating sign $(-1)^n$, which is why the proof needs Cassini's identity rather than a clean telescope.",
     "mathContext": "$F_{n+1}^2 = (F_0F_1 + F_1F_2 + \\cdots + F_nF_{n+1}) + [n\\text{ even}]$, using 0-indexed $\\mathtt{Nat.fib}$ ($F_0 = 0$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Sum of squares of Fibonacci numbers (parent entry)",
       "Cassini's identity and the alternating sign",
@@ -47,7 +47,7 @@
     "title": "Quarantining the Sign by Parity",
     "content": "**`cassini_nat_even` / `cassini_nat_odd`** turn the signed integer Cassini into two *sign-free* natural-number relations. For even $k$ the exponent $k+1$ is odd, so `Odd.neg_one_pow` rewrites $(-1)^{k+1}$ to $-1$, giving $F_{k+1}F_{k+3} = F_{k+2}^2 + 1$; for odd $k$ the index $k+1$ is even, giving $F_{k+2}^2 = F_{k+1}F_{k+3} + 1$. Each closes by `zify; linarith`. Separating the two parities here is what lets the main induction stay entirely in $\\mathbb{N}$ — no subtraction, no casting in the step.",
     "mathContext": "Even $k$: $F_{k+1}F_{k+3} = F_{k+2}^2 + 1$. Odd $k$: $F_{k+2}^2 = F_{k+1}F_{k+3} + 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Even.neg_one_pow / Odd.neg_one_pow",
       "zify and linarith",
@@ -87,7 +87,7 @@
     "title": "Reading Off the Two Closed Forms",
     "content": "**`fib_prod_sum_even` / `fib_prod_sum_odd`** present the human-facing answers. Specializing the unified identity by evaluating the parity bracket and rearranging with `omega` gives $\\sum_{i=0}^{n} F_iF_{i+1} = F_{n+1}^2 - 1$ for even $n$ and $= F_{n+1}^2$ for odd $n$. The truncated subtraction in the even branch is harmless precisely because the unified form was stated additively, so $F_{n+1}^2 \\ge 1$ is automatic.",
     "mathContext": "$\\sum_{i=0}^{n} F_iF_{i+1} = F_{n+1}^2 - 1$ (even $n$), $\\;= F_{n+1}^2$ (odd $n$).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Truncated subtraction in ℕ",
       "Specialization by parity",

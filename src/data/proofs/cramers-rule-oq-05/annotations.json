@@ -7,7 +7,7 @@
     "title": "Setup: Imports and the Commutative-Ring Setting",
     "content": "The file imports Mathlib's determinant, trace, and characteristic-polynomial libraries and fixes a finite decidable index type n and a commutative ring R. The choice of CommRing (rather than a field) is deliberate: the similarity invariants require only conjugation by a *unit* matrix, so they remain valid over ℤ and polynomial rings where invertible scalars are scarce. This makes the results applicable in commutative algebra and representation theory, not just over fields.",
     "mathContext": "Work over a commutative ring $R$ and finite index type $n$, with matrices $M \\in \\mathrm{Mat}_n(R)$ and units $U \\in \\mathrm{GL}_n(R) = (\\mathrm{Mat}_n(R))^\\times$. CommRing (not a field) suffices because only $U$ need be invertible.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["commutative ring", "general linear group GLₙ(R)", "matrix algebra", "representation theory"],
     "prerequisites": ["matrices over a ring", "units and invertibility", "determinant and trace"]
   },
@@ -27,7 +27,7 @@
     "id": "ann-cro05-invariants",
     "proofId": "cramers-rule-oq-05",
     "range": { "startLine": 56, "endLine": 75 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Three Similarity Invariants",
     "content": "det_conj, trace_conj, and charpoly_conj re-express Mathlib's det_units_conj, trace_units_conj, and charpoly_units_conj through conj. Determinant invariance follows from multiplicativity (det U · det N · det U⁻¹ = det N); trace invariance from cyclic invariance trace(AB) = trace(BA); characteristic-polynomial invariance because conjugation commutes with forming X·I − N over R[X]. Each is a one-line wrapper, but together they constitute the basis-independent data of the operator.",
     "mathContext": "$\\det(UNU^{-1}) = \\det N$ (multiplicativity), $\\operatorname{tr}(UNU^{-1}) = \\operatorname{tr}(N)$ (cyclicity $\\operatorname{tr}(AB)=\\operatorname{tr}(BA)$), and $\\chi_{UNU^{-1}}(X) = \\chi_N(X)$ (conjugation commutes with $XI - N$).",
@@ -51,7 +51,7 @@
     "id": "ann-cro05-similarity",
     "proofId": "cramers-rule-oq-05",
     "range": { "startLine": 93, "endLine": 118 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Similarity Relation and Its Corollaries",
     "content": "IsSimilar M N := ∃ U, N = conj U M is the textbook similarity relation. After proving reflexivity (conjugate by the identity unit), the corollaries IsSimilar.det_eq, trace_eq, and charpoly_eq are discharged by destructuring the witness U and applying the corresponding invariance. This yields the familiar statement 'similar matrices have the same determinant, trace, and characteristic polynomial' directly in the ∃-quantified form used in linear-algebra texts.",
     "mathContext": "$M \\sim N :\\iff \\exists U,\\ N = UMU^{-1}$. An equivalence relation; here reflexivity is shown (conjugate by $1$), and similar matrices share $\\det$, $\\operatorname{tr}$, and $\\chi$.",
@@ -67,7 +67,7 @@
     "title": "Summary: Coherence of the Invariants",
     "content": "The closing table pairs each invariant with its Mathlib backing and records the structural observation that determinant and trace invariance descend from characteristic-polynomial invariance, because both quantities are coefficients of the characteristic polynomial. The IsSimilar relation packaged here is the natural launching point for formalizing canonical forms and the invariance of the minimal polynomial.",
     "mathContext": "All three invariants flow from $\\chi$-invariance. Next steps build on $M\\sim N$: invariance of the minimal polynomial, and canonical forms (Jordan, rational/Frobenius).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["minimal polynomial", "Jordan canonical form", "rational canonical form", "conjugacy invariants"],
     "prerequisites": ["the three invariance lemmas", "similarity relation"]
   }

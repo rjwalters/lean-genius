@@ -110,7 +110,7 @@
     "id": "ann-summary",
     "proofId": "greens-theorem-oq-01-oq-02",
     "range": { "startLine": 223, "endLine": 225 },
-    "type": "axiom",
+    "type": "definition",
     "title": "Summary corollary: smooth-curve framework recovers rectangular case",
     "content": "`oq02_summary` restates the bridge identity as the headline result: `rectBoundaryPathIntegral = rectLineIntegral`. This is the OQ-02 answer in one line — the smooth-curve framework strictly extends OQ-01's rectangular formulation, with the four-edge parametrization recovering the rectangular case exactly. Combined with OQ-01's `greens_theorem_concrete`, this gives a complete proof of Green's theorem on rectangles via the smooth-curve definition: the rectangle boundary (parametrized as four smooth segments) integrates to the same value `rectDoubleIntegral` of the curl.",
     "mathContext": "The framework defined here is a true extension: every result OQ-01 proves about `rectLineIntegral` lifts to `rectBoundaryPathIntegral`, and the framework additionally accepts arbitrary smooth and piecewise-smooth boundaries (with the general identity captured by `greens_theorem_smooth_boundary`).",

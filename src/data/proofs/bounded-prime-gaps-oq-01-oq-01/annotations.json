@@ -19,7 +19,7 @@
     "title": "Definitions mirrored from the parent file",
     "content": "IsAdmissible, nthPrime, primeGap, and MaynardTaoDensity are reproduced verbatim from Proofs.BoundedPrimeGaps. Keeping the file dependent only on Mathlib lets it verify without rebuilding the native_decide-heavy parent, while the verbatim definitions make the redundancy claim literal: the theorems below discharge the exact conclusion shape of the parent's axioms.",
     "mathContext": "$\\mathrm{primeGap}(n) = p_{n+1} - p_n$ where $p_k = \\mathrm{nthPrime}(k) = $ Nat.nth Nat.Prime $k$. $\\mathrm{MaynardTaoDensity}\\ H\\ m := \\forall N,\\ \\exists n \\geq N,\\ m \\leq |\\{h \\in H : n + h \\text{ prime}\\}|$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.nth", "prime-counting function", "import-light formalization", "verbatim definitional correspondence"],
     "prerequisites": ["Nat.nth / Nat.count", "Finset filtering", "the parent's definitions"]
   },

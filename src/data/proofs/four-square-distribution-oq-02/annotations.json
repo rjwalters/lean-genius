@@ -3,11 +3,11 @@
     "id": "fsq-oq02-header",
     "proofId": "four-square-distribution-oq-02",
     "range": { "startLine": 1, "endLine": 47 },
-    "type": "context",
+    "type": "concept",
     "title": "Bounding four-square representation types by orbit counting",
     "content": "The header frames the question: Jacobi's theorem gives the exact count r₄(n) = 8·∑_{d|n, 4∤d} d of ordered, signed four-square representations, and the natural symmetry group acting on solution vectors is the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄ of order 2⁴·4! = 384 (sign flips then permutations). A 'representation type' is a B₄-orbit, so the number of types t(n) is squeezed r₄(n)/384 ≤ t(n) ≤ r₄(n). The honest-scope note is important: the file proves a general orbit-counting double bound from Mathlib's MulAction API and specializes it to an arbitrary finite group of order 384 — it does not rebuild B₄'s semidirect-product action on ℤ⁴ or re-derive Jacobi's r₄(n). Because the bound depends only on |G|, taking the action abstractly loses nothing while keeping the file genuinely 0-axiom.",
     "mathContext": "$\\frac{r_4(n)}{384} \\le t(n) \\le r_4(n),\\quad |B_4| = 2^4\\cdot 4! = 384$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi four-square theorem", "hyperoctahedral group", "orbit counting", "representation types", "Burnside's lemma"],
     "prerequisites": ["group actions and orbits", "Jacobi's r₄(n)"]
   },

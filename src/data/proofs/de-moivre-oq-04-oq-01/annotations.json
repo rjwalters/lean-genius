@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 46
     },
-    "type": "context",
+    "type": "concept",
     "title": "Which Vertices of the n-gon Generate It",
     "content": "The docstring frames the follow-up to the parent: the parent isolated $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ as a primitive root whose powers enumerate all $n$-th roots of unity; this file asks which powers $\\omega^k$ are *themselves* primitive. The answer — $\\gcd(k,n) = 1$ — is the gateway to cyclotomy, raised by Gauss in the Disquisitiones (1801). Since the order of $\\omega^k$ is $n/\\gcd(k,n)$, it has order $n$ (is primitive) exactly when $\\gcd(k,n) = 1$, and counting those exponents is the definition of Euler's totient, so there are $\\varphi(n)$ primitive $n$-th roots — recovered concretely through the explicit generator.",
     "mathContext": "$\\omega^k$ primitive $\\iff \\gcd(k,n) = 1$; there are $\\varphi(n)$ such $k\\in[0,n)$, so $\\#\\,(\\text{primitive }n\\text{-th roots}) = \\varphi(n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "primitive roots of unity",
       "Euler's totient",

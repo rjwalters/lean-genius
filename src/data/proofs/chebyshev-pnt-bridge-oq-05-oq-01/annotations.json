@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 62
     },
-    "type": "context",
+    "type": "concept",
     "title": "Packaging the Two Halves of Chebyshev's Estimate",
     "content": "Chebyshev (1852) proved that π(x) has the right order of magnitude — squeezed between constant multiples of x/log x — decades before the sharp Prime Number Theorem. In the formalized bridge the two halves live in separate files: the lower density π(m)·log m ≥ m·log 2 − o(1) (parent OQ-05) and the upper density π(N) ≤ 2N·log 4/log N + √N + 1 (exported, via the repaired Erdos31PrimesDensity, through ChebyshevPNTBridgeOQ02). This entry consolidates them into single citable theorems: an exact two-sided bound for all m ≥ 2 and a clean order form for m ≥ 65. 0 axioms, 0 sorries.",
     "mathContext": "$\\log 2 - o(1) \\le \\dfrac{\\pi(x)\\log x}{x} \\le 2\\log 4 + o(1)$, packaged as one lemma.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "prime-counting function π",
       "Chebyshev's theorem",

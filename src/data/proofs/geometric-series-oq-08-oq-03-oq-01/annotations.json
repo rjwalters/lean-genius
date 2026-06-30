@@ -3,11 +3,11 @@
     "id": "ann-overview-translation",
     "proofId": "geometric-series-oq-08-oq-03-oq-01",
     "range": { "startLine": 7, "endLine": 57 },
-    "type": "context",
+    "type": "concept",
     "title": "Translating to Mathlib's Convergence Vocabulary",
     "content": "The sibling geometric-series-oq-08-oq-03 produced the geometric series' Cauchy property as a bespoke ε–N inequality on tail blocks. Mathlib speaks in abstract predicates — CauchySeq, Summable, cauchySeq over finsets — and only such phrasings plug into its general theorems. This entry is the translation layer, with a point of conceptual honesty: it exhibits the series as Cauchy and summable from FIRST PRINCIPLES (bounded blocks, bounded monotone partial sums) rather than quoting hasSum_geometric. The closed form (1−r)⁻¹ appears only as a ceiling on the partial sums, never as an input to the convergence argument.",
     "mathContext": "Bespoke $\\varepsilon$–$N$ block bound $\\to$ $\\mathrm{CauchySeq}$, $\\mathrm{Summable}$, finset-net $\\mathrm{CauchySeq}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["CauchySeq", "Summable", "completeness", "abstraction layer"],
     "prerequisites": ["metric spaces", "series convergence"]
   },

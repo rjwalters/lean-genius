@@ -30,11 +30,11 @@
       "startLine": 69,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cauchy-Schwarz from a Nonnegative Quadratic's Discriminant",
     "content": "`energy_cauchy_schwarz` re-derives the positive-operator Cauchy-Schwarz inequality ⟪T x, y⟫² ≤ ⟪T x, x⟫·⟪T y, y⟫ self-contained (so the file imports only Mathlib, not the parent). The mechanism is the classical discriminant trick: positivity gives 0 ≤ ⟪T(x + t•y), x + t•y⟫ for every real t, which sesquilinearity plus symmetry (⟪T y, x⟫ = ⟪T x, y⟫) expands into the quadratic ⟪T y, y⟫·t² + 2⟪T x, y⟫·t + ⟪T x, x⟫ ≥ 0. A quadratic that is nonnegative for all t has discriminant ≤ 0 (`discrim_le_zero`), and (2⟪T x, y⟫)² − 4⟪T y, y⟫⟪T x, x⟫ ≤ 0 is exactly the Cauchy-Schwarz inequality.",
     "mathContext": "$0 \\le \\langle T(x+ty), x+ty\\rangle = \\langle T y, y\\rangle\\,t^2 + 2\\langle T x, y\\rangle\\,t + \\langle T x, x\\rangle \\;\\Rightarrow\\; (2\\langle T x, y\\rangle)^2 \\le 4\\langle T y, y\\rangle\\langle T x, x\\rangle.$",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "quadratic discriminant criterion",
       "positive semidefinite form",
@@ -81,7 +81,7 @@
     "title": "The Parallelogram Law Needs No Positivity Beyond the Square Identity",
     "content": "`energyNorm_parallelogram` shows ‖x+y‖_T² + ‖x−y‖_T² = 2‖x‖_T² + 2‖y‖_T². Unlike the triangle inequality, this is a pure bilinear identity: once each ‖·‖_T² is replaced by its diagonal form ⟪T ·, ·⟫ (the only place positivity is used, via energyNorm_sq), sesquilinearity expands both ⟪T(x+y), x+y⟫ and ⟪T(x−y), x−y⟫ and the cross terms ±(⟪T x, y⟫ + ⟪T y, x⟫) cancel exactly — `ring` closes it with no symmetry hypothesis at all. This is the operator-form shadow of the usual parallelogram law ‖x+y‖² + ‖x−y‖² = 2‖x‖² + 2‖y‖², recovered when T = id.",
     "mathContext": "$\\langle T(x+y), x+y\\rangle + \\langle T(x-y), x-y\\rangle = 2\\langle T x, x\\rangle + 2\\langle T y, y\\rangle.$",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "parallelogram law",
       "bilinearity",

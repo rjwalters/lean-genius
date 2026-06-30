@@ -27,7 +27,7 @@
     "id": "symmetry",
     "proofId": "beta-integral-recurrence-oq-01",
     "range": { "startLine": 79, "endLine": 85 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Symmetry on the Integer Lattice",
     "content": "betaIntegral_nat_nat_symm reads off B(m+1, n+1) = B(n+1, m+1) directly from the closed form, whose right-hand side m!·n!/(m+n+1)! is manifestly symmetric under m ↔ n (using Nat.add_comm in the denominator). The Beta function's general symmetry B(u,v) = B(v,u) reflects the substitution t ↦ 1−t in the defining integral; here it becomes the visible algebraic symmetry of a factorial quotient.",
     "mathContext": "$B(m+1, n+1) = B(n+1, m+1)$, the $m \\leftrightarrow n$ symmetry of $m!\\,n!/(m+n+1)!$.",
@@ -39,11 +39,11 @@
     "id": "concrete-values",
     "proofId": "beta-integral-recurrence-oq-01",
     "range": { "startLine": 87, "endLine": 103 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Evaluations",
     "content": "betaIntegral_one_one, betaIntegral_two_three, betaIntegral_three_three machine-check B(1,1) = 1, B(2,3) = 1/12, B(3,3) = 1/30 by instantiating the closed form at m,n ∈ {0,1,2} and simplifying with norm_num [Nat.factorial] + linear_combination. B(1,1) = 1 is the integral of the constant 1 over [0,1]; the others are exact rational areas under tᵐ(1−t)ⁿ. These ground the abstract closed form in checkable arithmetic.",
     "mathContext": "$B(1,1) = 1$, $B(2,3) = 1/12$, $B(3,3) = 1/30$ — instances of $m!\\,n!/(m+n+1)!$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["definite integrals", "rational areas", "norm_num"],
     "prerequisites": ["the integer closed form"]
   }

@@ -3,11 +3,11 @@
     "id": "ann-liouoq05-1",
     "proofId": "liouville-theorem-oq-05",
     "range": { "startLine": 1, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "The Measure–Category Duality of Liouville Numbers",
     "content": "**Module framing.** The parent Liouville family established that Liouville numbers are transcendental and *residual* (comeagre — topologically 'large'). This entry formalizes the measure-theoretic counterpoint that the gallery previously carried only as prose: **Borel's theorem** (1909) that the Liouville set has Lebesgue measure **zero**, and the resulting **measure–category duality**. The real line splits into two complementary pieces, each large in one sense and small in the other: the Liouville numbers are residual yet null; their complement is meagre yet of full measure. So 'topologically generic' and 'measure-typical' are genuinely different — the Liouville set is the textbook witness (cf. Erdős–Sierpiński duality).",
     "mathContext": "$\\mathrm{vol}\\{x : \\mathrm{Liouville}\\,x\\} = 0$ yet the set is comeagre; the filters $\\mathrm{residual}\\,\\mathbb{R}$ and $\\mathrm{ae\\ volume}$ are disjoint.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Measure–category duality",
       "Liouville numbers",

@@ -6,11 +6,11 @@
       "startLine": 58,
       "endLine": 66
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Boundary Fact n·c(n,0) = 0",
     "content": "A small but essential lemma that lets the generating recursion collapse cleanly. The product (n:R)·c(n,0) vanishes for two complementary reasons: at n = 0 the prefactor n is zero, and for n ≥ 1 the Stirling number c(n,0) is itself zero (no permutation of a nonempty set has zero cycles). The case split on n handles both with simp and Nat.stirlingFirst_succ_zero. Without this, the n = 0 column term would obstruct folding the recursion into the rising-factorial form (x+n)·F(n).",
     "mathContext": "$(n) \\cdot c(n,0) = 0$ for all $n$: either $n = 0$, or $c(n,0) = 0$ since a nonempty set's permutation has $\\ge 1$ cycle.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Stirling numbers boundary values",
       "case analysis on n",

@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "order-one-add-mul-prime-oq-01",
     "range": { "startLine": 3, "endLine": 32 },
-    "type": "context",
+    "type": "concept",
     "title": "Principal Units and the Structure of (ℤ/pⁿℤ)ˣ",
     "content": "For an odd prime p and p ∤ a, the element 1 + p·a has multiplicative order exactly pⁿ in ZMod(p^(n+1)). This is the arithmetic engine behind the cyclicity of (ℤ/pᵏℤ)ˣ: the principal units 1 + p·ℤ form a cyclic p-group of order pⁿ, which combines with the order-(p−1) cyclic group from reduction mod p to make the full unit group cyclic for odd prime powers. Mathlib has the order computation but not the structural corollaries this file packages.",
     "mathContext": "$\\mathrm{ord}_{(\\mathbb{Z}/p^{n+1})^\\times}(1+pa) = p^n$ for odd prime $p$, $p\\nmid a$. The principal units $1+p\\mathbb{Z}$ are a cyclic $p$-group of order $p^n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["multiplicative order", "unit group of ℤ/pⁿℤ", "principal units", "cyclic p-group"],
     "prerequisites": ["modular arithmetic", "order of a group element", "prime powers"]
   },

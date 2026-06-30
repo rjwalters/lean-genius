@@ -3,17 +3,17 @@
     "id": "ann-lh-oq0101-wrapper",
     "proofId": "lhopital-oq-01-oq-01",
     "range": { "startLine": 57, "endLine": 65 },
-    "type": "context",
+    "type": "concept",
     "title": "The sole analytic input: forward L'Hôpital",
     "content": "lhopital_atTop is a thin, readable repackaging of Mathlib's HasDerivAt.lhopital_zero_atTop_on_Ioi for the 0/0 indeterminate form at infinity. Everything else in the file is purely logical: it consumes the existence of lim f'/g' and uniqueness of limits. Crucially, this rule says the existence of c = lim f'/g' is enough to conclude lim f/g = c — there is no order or monotonicity premise anywhere in its statement.",
     "mathContext": "$f, g \\to 0$ on $(a,\\infty),\\ g' \\ne 0,\\ f'/g' \\to c \\ \\Rightarrow\\ f/g \\to c.$",
-    "significance": "context"
+    "significance": "supporting"
   },
   {
     "id": "ann-lh-oq0101-main",
     "proofId": "lhopital-oq-01-oq-01",
     "range": { "startLine": 77, "endLine": 89 },
-    "type": "key-step",
+    "type": "insight",
     "title": "Both limits existing forces them equal — no monotonicity",
     "content": "This is the headline answer. The hypothesis list contains NO monotonicity assumption. The two-line proof is the whole argument: forward L'Hôpital turns the assumed limit L = lim f'/g' into Tendsto (f/g) atTop (𝓝 L); then tendsto_nhds_unique pits this against the assumed Tendsto (f/g) atTop (𝓝 l) to force l = L. So the open question's 'whenever both limits exist' qualifier already settles equality, independently of how f/g behaves order-wise.",
     "mathContext": "$\\lim f'/g' = L \\Rightarrow \\lim f/g = L$ (forward rule); with $\\lim f/g = l$, uniqueness gives $l = L$.",
@@ -27,7 +27,7 @@
     "title": "The monotonicity hypothesis, certified inert",
     "content": "monotone_quotient_converse states the open question verbatim — it explicitly assumes MonotoneOn (fun x => f x / g x) (Ioi a). The proof is converse_holds_when_both_limits_exist applied with exactly the other hypotheses; the monotonicity argument is bound to the name `_hmono` and never appears in the proof term. The leading underscore is a machine-checkable certificate that the hypothesis is discharged without use: monotonicity is a tempting but completely inert addition.",
     "mathContext": "Assuming $f/g$ monotone on $(a,\\infty)$ leaves the conclusion $l = L$ untouched; the hypothesis is logically idle.",
-    "significance": "high"
+    "significance": "key"
   },
   {
     "id": "ann-lh-oq0101-contrapositive",
@@ -37,16 +37,16 @@
     "title": "Non-existence is the only failure mode",
     "content": "converse_failure_only_via_nonexistence re-presents the forward rule as a transfer principle: if f'/g' converges to L, then f/g converges to the same L. Read contrapositively, two existing limits can never disagree, so the converse of L'Hôpital can break in exactly one way — lim f'/g' failing to exist. This is precisely what happens in the parent entry, where f'/g' = 1 + cos x oscillates between 0 and 2 with no limit.",
     "mathContext": "$f'/g' \\to L \\Rightarrow f/g \\to L$; the parent's $f'/g' = 1 + \\cos x$ has no limit, the sole obstruction.",
-    "significance": "high"
+    "significance": "key"
   },
   {
     "id": "ann-lh-oq0101-axioms",
     "proofId": "lhopital-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 46 },
-    "type": "context",
+    "type": "concept",
     "title": "Verified, zero axioms",
     "content": "All four theorems depend only on Lean's foundational axioms propext, Classical.choice, and Quot.sound (confirmed by #print axioms). There is no sorryAx and no native_decide / Lean.ofReduceBool, so per the project's axiom-integrity policy the entry is a genuine 0-axiom, fully machine-verified result. The only mathematical assumption is Mathlib's forward L'Hôpital rule, used as a lemma, not an axiom.",
     "mathContext": "Foundational axioms (propext, Classical.choice, Quot.sound) do not count as assumptions under the project policy.",
-    "significance": "context"
+    "significance": "supporting"
   }
 ]

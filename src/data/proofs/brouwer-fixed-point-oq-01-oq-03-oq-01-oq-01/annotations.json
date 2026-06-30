@@ -6,11 +6,11 @@
       "startLine": 10,
       "endLine": 82
     },
-    "type": "context",
+    "type": "concept",
     "title": "From Global to On-Sphere Continuity — Closing the Honest-Hypothesis Gap",
     "content": "The parent (OQ-01-OQ-03-OQ-01) reduced the Ham Sandwich theorem to a single analytic input — continuity of the parameterized slice-volume map — but its Part 9 proved that continuity is FALSE globally and only true on the sphere Sⁿ, flagging 'reformulate the chain to ContinuousOn (Sphere n)' as the real remaining work. The catch: the whole Borsuk-Ulam pipeline (SphereFun, no_continuous_odd_nonzero_on_sphere) is phrased with GLOBAL continuity, so the honest on-sphere hypothesis might be unusable. This entry removes the worry via radial extension, then re-derives the entire Ham Sandwich chain with the continuity hypothesis stated exactly as Part 9 demanded.",
     "mathContext": "Goal: replace global $\\mathrm{Continuous}$ by the honest $\\mathrm{ContinuousOn}\\,(S^n)$ throughout the Borsuk-Ulam → Ham Sandwich chain.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Ham Sandwich theorem",
       "Borsuk-Ulam",
@@ -77,7 +77,7 @@
       "startLine": 200,
       "endLine": 333
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Ham Sandwich Chain with On-Sphere Continuity",
     "content": "Re-runs the parent's reduction on top of the on-sphere Borsuk-Ulam, replacing global Continuous by ContinuousOn (Sphere n) at every link: ham_sandwich_reduction_on (topological core), ham_sandwich_of_discrepancy_on (from a continuous-on-sphere discrepancy map), ham_sandwich_of_scalar_continuity_on (from scalar slice-volume continuity), and the headline ham_sandwich_standard_of_scalar_continuity_on (standard linear cut). The chain now uses the continuity hypothesis exactly as Part 9 of the parent demanded — the residual analytic input is finally stated honestly.",
     "mathContext": "The full chain: on-sphere Borsuk-Ulam ⇒ reduction ⇒ discrepancy ⇒ scalar continuity ⇒ standard Ham Sandwich, all under $\\mathrm{ContinuousOn}\\,(S^n)$.",

@@ -36,11 +36,11 @@
       "startLine": 56,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Casting the Series Down to ℝ",
     "content": "real_cos_eq_tsum and real_sin_eq_tsum give the real-variable forms cos r = Σ (−1)ⁿ r²ⁿ/(2n)! and sin r = Σ (−1)ⁿ r²ⁿ⁺¹/(2n+1)!. They are not re-proved from scratch: in Mathlib the real functions are the restriction of the complex ones to the real axis (Real.cos r = (Complex.cos r).re), so Real.cos_eq_tsum follows from the complex series by pushing the real-part/coercion through the absolutely convergent sum. This is the standard pattern for transporting an analytic identity from ℂ to ℝ.",
     "mathContext": "$\\cos r = \\sum_{n=0}^{\\infty}\\frac{(-1)^n r^{2n}}{(2n)!},\\quad \\sin r = \\sum_{n=0}^{\\infty}\\frac{(-1)^n r^{2n+1}}{(2n+1)!}\\quad (r\\in\\mathbb{R})$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["real and complex trigonometric functions", "coercion ℝ ↪ ℂ", "real part of a holomorphic function", "continuity of tsum"],
     "prerequisites": ["real/complex coercions", "power series over ℝ"]
   },

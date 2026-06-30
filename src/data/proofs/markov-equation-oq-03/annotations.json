@@ -143,7 +143,7 @@
     "id": "markov-oq03-ann-bridges",
     "proofId": "markov-equation-oq-03",
     "range": { "startLine": 223, "endLine": 263 },
-    "type": "context",
+    "type": "concept",
     "title": "Bridges to the Classical Equation and Concrete Witnesses",
     "content": "The final section identifies the generalizations' classical member and records concrete instances. isMH_three_iff writes out the three-variable equation coordinatewise via Fin.sum_univ_three / Fin.prod_univ_three, and isMH_three_markov specializes a = 3 to the classical Markov equation. Witnesses: isMH_ones (the singular triple (1,1,1) at a = 3), isMH_threes (the Hurwitz triple (3,3,3) of x²+y²+z² = xyz at a = 1), isMH_ones_four (an all-ones four-variable solution at a = 4), and vietaVal_ones_two, a worked jump showing (1,1,1) ↦ (1,1,2). These anchor the abstract Fin n machinery to checkable small cases.",
     "mathContext": "$\\mathrm{IsMH}\\,3\\,(x,y,z)\\iff x^2+y^2+z^2 = 3xyz;\\quad (1,1,1)\\xrightarrow{\\text{jump } i=2}(1,1,2).$",

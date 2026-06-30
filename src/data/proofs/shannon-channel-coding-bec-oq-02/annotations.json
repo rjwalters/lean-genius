@@ -10,7 +10,7 @@
         "title": "Operational Achievability for the BEC",
         "content": "States and proves that every nat-rate 0 < R < (1 - p) · log 2 is achievable on the binary erasure channel: for each target error ε > 0, all sufficiently long block lengths n admit a block code of rate ≥ R together with a decoder whose average error probability is below ε. The proof is a one-step specialisation of the framework's abstract channel_coding_achievability to ch := bec p; its capacity hypothesis R < channelCapacity (bec p) is rewritten by bec_capacity to the explicit threshold R < (1 - p) · log 2, which is exactly the stated hypothesis. The 'for all sufficiently long n' is the Filter.atTop eventually-quantifier inherited verbatim from the abstract theorem.",
         "mathContext": "$0 < R < (1-p)\\log 2 \\ \\Rightarrow\\ \\forall \\varepsilon>0,\\ \\exists\\text{ codes of rate} \\ge R \\text{ with } P_e < \\varepsilon \\text{ for all large } n$",
-        "significance": "core",
+        "significance": "critical",
         "relatedConcepts": [
             "channel coding theorem",
             "achievability",
@@ -34,7 +34,7 @@
         "title": "Operational Converse for the BEC",
         "content": "States and proves that every nat-rate R > (1 - p) · log 2 is unachievable: there is a fixed δ > 0 such that every block code of rate ≥ R, at every length, has average error probability at least δ. The proof specialises the framework's abstract channel_coding_converse to bec p and discharges its capacity hypothesis channelCapacity (bec p) < R with bec_capacity. Together with the achievability theorem this pins the BEC's operational capacity to exactly its information-theoretic capacity (1 - p) log 2.",
         "mathContext": "$R > (1-p)\\log 2 \\ \\Rightarrow\\ \\exists\\,\\delta>0,\\ \\forall\\text{ codes of rate}\\ge R,\\ P_e \\ge \\delta$",
-        "significance": "core",
+        "significance": "critical",
         "relatedConcepts": [
             "channel coding theorem",
             "converse",

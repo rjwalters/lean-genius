@@ -10,7 +10,7 @@
     "title": "From the medial base case to the full k-reptiling",
     "content": "The base entry erdos-634-medial-congruence proves the k = 2 case: the medial subdivision cuts a triangle into 4 = 2^2 congruent half-copies. This open question asks for the full square reptiling for every k: dividing each side of triangle A B C into k equal parts and drawing the grid of parallels produces k^2 congruent 1/k-scale copies. This entry settles the congruence and scaling for all k, and proves the k^2 count.",
     "mathContext": "Place a triangular grid $P_{ij} = A + \\tfrac{i}{k}(B-A) + \\tfrac{j}{k}(C-A)$. The cells split into upward triangles (same orientation as $ABC$, indexed by $i+j \\le k-1$) and downward triangles (reversed orientation, $i+j \\le k-2$); there are $\\tfrac{k(k+1)}{2} + \\tfrac{k(k-1)}{2} = k^2$ of them.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "square reptiling",
       "rep-tile dissection",

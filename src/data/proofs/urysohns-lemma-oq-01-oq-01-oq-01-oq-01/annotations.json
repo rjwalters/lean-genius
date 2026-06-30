@@ -3,11 +3,11 @@
     "id": "ann-docstring",
     "proofId": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 4, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "Sharpening Tietze to the Norm-Preserving Form",
     "content": "The parent entry builds the Tietze extension G of a bounded continuous f on a closed set s ⊆ X (X normal) as an explicit absolutely-convergent series of Urysohn corrections, proving only the sup-bound |G| ≤ M for any M ≥ |f|. The open question asks to sharpen this to ‖G‖ = ‖f‖ — the standard norm-preserving form of the Tietze theorem. This entry settles it in two elementary halves: an upper bound from instantiating the parent's free bound at the exact norm, and a construction-free universal lower bound valid for every extension. Together they also show G is norm-minimal.",
     "mathContext": "Tietze (sharp): a bounded continuous $f$ on closed $s \\subseteq X$ extends to $G$ on $X$ with $\\|G\\| = \\|f\\|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Tietze extension theorem", "normal space", "sup-norm", "bounded continuous function"],
     "prerequisites": ["Tietze/Urysohn extension", "the parent series construction"]
   },

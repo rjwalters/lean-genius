@@ -143,7 +143,7 @@
       "startLine": 117,
       "endLine": 123
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Discriminant Computations",
     "content": "Three sanity checks over ℚ: `x² − 5x + 6` (roots 2, 3) has Δ = 25 − 24 = 1 = 1²(3 − 2)²; the perfect square `x² − 4x + 4 = (x − 2)²` has Δ = 0 (repeated root); and `x² + 1` (no real roots) has Δ = −4 < 0. Each is dispatched by `norm_num`.",
     "mathContext": "Δ > 0, Δ = 0, Δ < 0 illustrate the three regimes: distinct real roots, a repeated root, and no real roots.",

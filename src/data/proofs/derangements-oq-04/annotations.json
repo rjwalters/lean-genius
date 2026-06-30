@@ -10,7 +10,7 @@
     "title": "Truncated Exponential of e⁻¹",
     "content": "**Definition** `truncExpNegOne 𝕜 n`:\n```\ntruncExpNegOne 𝕜 n = ∑ k ∈ range n, (-1)^k / k!\n```\n\nThe order-`n` truncation of the exponential series of $e^{-1} = \\sum_{k\\ge 0}(-1)^k/k!$, taken in a field `𝕜`. The `range n` (rather than `range (n+1)`) convention is chosen so that `truncExpNegOne 𝕜 (n+1)` is the partial sum through the `(-1)^n/n!` term, matching the closed form for `D(n)`.",
     "mathContext": "\\sum_{k=0}^{n-1} \\frac{(-1)^k}{k!}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "exponential series",
       "partial sum",
@@ -97,11 +97,11 @@
       "startLine": 112,
       "endLine": 116
     },
-    "type": "example",
+    "type": "concept",
     "title": "Sanity Check: D(4) = 9",
     "content": "**Example**: the general closed form reproduces the small known value\n$$ D_4 = 9 = 4!\\left(1 - 1 + \\tfrac12 - \\tfrac16 + \\tfrac1{24}\\right) = 24\\cdot\\tfrac38. $$\nThe `example` instantiates `numDerangements_closed_form_rat 4`, confirming over ℚ that the abstract field theorem agrees with the concrete derangement count.",
     "mathContext": "D_4 = 9 = 24\\cdot\\tfrac{3}{8}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "numDerangements_closed_form_rat",
       "small derangement values"

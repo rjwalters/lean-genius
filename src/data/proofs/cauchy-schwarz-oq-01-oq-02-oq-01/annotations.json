@@ -24,7 +24,7 @@
   {
     "id": "ann-field-explicit",
     "title": "Why 𝕜 is an Explicit Argument",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 40,
     "endLine": 56,
     "mathContext": "InnerProductSpace 𝕜 E does not have 𝕜 as an outParam, so a term like orthProj v u : E cannot determine 𝕜 from E alone. The projector statements (orthProj v (orthProj v u) = orthProj v u, etc.) do not mention 𝕜, so leaving it implicit makes typeclass resolution stuck. Making 𝕜 an explicit argument of orthProj/projCoeff/gsStep keeps every statement unambiguous.",
@@ -44,7 +44,7 @@
   {
     "id": "ann-idempotency",
     "title": "Idempotency P² = P",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 71,
     "endLine": 85,
     "mathContext": "orthProj_smul_self: orthProj v (c•v) = c•v, because ⟪v, c•v⟫/⟪v,v⟫ = c·⟪v,v⟫/⟪v,v⟫ = c (inner_smul_right, div_self). Since orthProj v u = projCoeff v u • v lies in span{v}, orthProj v (orthProj v u) = orthProj v u.",
@@ -64,7 +64,7 @@
   {
     "id": "ann-kernel",
     "title": "Kernel: the projector kills the residual",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 86,
     "endLine": 106,
     "mathContext": "Since ⟪v, gsStep v u⟫ = 0 (residual orthogonality), orthProj v (gsStep v u) = (0/⟪v,v⟫)•v = 0. Hence the complement gsStep v = 1 − P satisfies gsStep v (gsStep v u) = gsStep v u − 0 = gsStep v u: (1−P)² = 1−P.",
@@ -84,7 +84,7 @@
   {
     "id": "ann-exact-norm",
     "title": "Cauchy-Schwarz as an Equality",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 117,
     "endLine": 140,
     "mathContext": "orthProj_norm_eq: ‖orthProj v u‖ = ‖⟪v,u⟫/⟪v,v⟫‖·‖v‖ = (‖⟪v,u⟫‖/‖v‖²)·‖v‖ = ‖⟪v,u⟫‖/‖v‖ (norm_smul, norm_div, inner_self_eq_norm_sq_to_K). The parent's bound ‖orthProj v u‖ ≤ ‖u‖ is then exactly ‖⟪v,u⟫‖/‖v‖ ≤ ‖u‖, i.e. norm_inner_le_norm.",

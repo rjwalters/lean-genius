@@ -29,7 +29,7 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From bernoulli' to the Signed bernoulli",
     "content": "Euler's zeta formula in Mathlib is stated with the signed Bernoulli numbers `bernoulli`, whereas the recurrence computes the unsigned `bernoulli'`. The two conventions differ only at index 1 (bernoulli 1 = −1/2 vs bernoulli' 1 = +1/2), so bernoulli_eq_bernoulli'_of_ne_one transports B₆ = 1/42 to the signed convention with a one-line `decide` discharging 6 ≠ 1. This small bridge is what lets the value feed directly into hasSum_zeta_nat.",
     "mathContext": "$B_n = B_n'$ for $n \\neq 1$, so $\\texttt{bernoulli}\\,6 = \\texttt{bernoulli'}\\,6 = \\tfrac{1}{42}$.",
@@ -73,11 +73,11 @@
       "startLine": 69,
       "endLine": 75
     },
-    "type": "observation",
+    "type": "concept",
     "title": "Summability and tsum Corollaries",
     "content": "summable_zeta_six and tsum_zeta_six repackage the HasSum result in the Summable and tsum forms for downstream reuse. Summability is also independently a p-series fact (p = 6 > 1), but here it is read off the HasSum directly. The tsum form ∑' n, 1/n⁶ = π⁶/945 is the citation-friendly statement.",
     "mathContext": "$\\displaystyle\\sum_{n=1}^{\\infty}\\frac{1}{n^6} = \\frac{\\pi^6}{945}$, convergent as a $p$-series with $p = 6 > 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "p-series",
       "tsum",

@@ -75,7 +75,7 @@
       "startLine": 110,
       "endLine": 218
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Counting Distinct Distances from a Collinear Point",
     "content": "The technical heart of the ⌈n/2⌉ bound. `euclidDist_collinearPoint` verifies that the Euclidean distance between the i-th and j-th x-axis points is |i-j|. Then `absDiff_image_eq` and `maxCount_image_card` show that the set of distances {|i-j| : j ≠ i} from the i-th point has cardinality max(i, n-1-i) — the farther of the two endpoints determines how many distinct gaps appear. `distinctDistCount_collinearConfig` packages this as R(xᵢ) = max(i, n-1-i) for the collinear configuration.",
     "mathContext": "For collinear points, $\\mathrm{dist}(x_i, x_j) = |i-j|$ and $R(x_i) = \\#\\{|i-j| : j \\ne i\\} = \\max(i,\\, n-1-i)$.",

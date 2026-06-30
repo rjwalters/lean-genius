@@ -21,7 +21,7 @@
       "startLine": 100,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Finset.sdiff distributivity step the parent flagged",
     "content": "The parent file recorded its `sorry` as 'blocked on a Finset.sdiff distributivity step'. That step is `filter_sdiff`: `(E \\ S).filter p = E.filter p \\ S.filter p`, proved in three lines by `ext` + `tauto` on memberships. With it, `outDeg_sdiff` rewrites the out-degree of `E \\ S` as a set-difference of filtered sets; since the S-filter is a subset of the E-filter, `Finset.card_sdiff_of_subset` gives the clean subtraction `outDeg (E \\ S) v = outDeg E v − outDeg S v` (and symmetrically for in-degree).",
     "mathContext": "$(E\\setminus S).\\mathrm{filter}\\,p = E.\\mathrm{filter}\\,p \\setminus S.\\mathrm{filter}\\,p$, hence $\\mathrm{outDeg}_{E\\setminus S}(v) = \\mathrm{outDeg}_E(v) - \\mathrm{outDeg}_S(v)$ (truncated ℕ subtraction, valid as $S$-filter ⊆ $E$-filter).",
@@ -51,7 +51,7 @@
       "startLine": 163,
       "endLine": 178
     },
-    "type": "application",
+    "type": "concept",
     "title": "A real circuit satisfies the abstract hypothesis",
     "content": "`triangle_circuitBalanced` checks by `decide` that the directed 3-cycle 0→1→2→0 has in-degree = out-degree = 1 at every vertex, i.e. it is `CircuitBalanced`. `triangle_remove_self_balanced` then instantiates the corrected theorem to recover Hierholzer's base case: deleting the whole circuit from itself leaves the empty (vacuously balanced) graph.",
     "mathContext": "The 3-cycle $0\\to1\\to2\\to0$ has $\\mathrm{inDeg} = \\mathrm{outDeg} = 1$ at each vertex (CircuitBalanced); removing it from itself yields $\\emptyset$, vacuously balanced.",

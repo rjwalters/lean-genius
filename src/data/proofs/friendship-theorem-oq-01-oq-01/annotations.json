@@ -87,7 +87,7 @@
     "id": "friendship-oq0101-ann-petersen",
     "proofId": "friendship-theorem-oq-01-oq-01",
     "range": { "startLine": 223, "endLine": 239 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Example: the Petersen Graph srg(10, 3, 0, 1)",
     "content": "The Petersen graph is strongly regular with (n, k, λ, μ) = (10, 3, 0, 1), restricted eigenvalues r = 1 (multiplicity 5) and s = −2 (multiplicity 4). The hypotheses check out: r + s = −1 = λ − μ, r·s = −2 = −(k − μ), f + g = 9 = n − 1, and the trace 3 + 5·1 + 4·(−2) = 0. The discriminant is (0−1)² + 4(3−1) = 9 = 3², so the Petersen graph lands on the integer-eigenvalue branch — confirmed concretely in the file.",
     "mathContext": "Petersen: discriminant $= 9 = 3^2$; eigenvalues $1^{(5)}, (-2)^{(4)}$.",

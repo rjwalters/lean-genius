@@ -3,11 +3,11 @@
     "id": "godel-oq04-context",
     "proofId": "godel-incompleteness-oq-04",
     "range": { "startLine": 1, "endLine": 75 },
-    "type": "context",
+    "type": "concept",
     "title": "Large cardinals as the engine of arithmetic independence",
     "content": "The docstring frames the whole file. Gödel's second incompleteness theorem (1931) says no consistent effective theory extending arithmetic proves its own consistency. Zermelo (1930) showed that if κ is strongly inaccessible then the rank-initial segment V_κ models ZFC; hence 'an inaccessible exists' proves Con(ZFC) and is, by Gödel 2, independent of ZFC. The file deliberately formalizes only the *cardinal-arithmetic core* of 'V_κ ⊨ ZFC' — closure of the sub-κ cardinal universe under the ZFC set-builders — and an explicit honesty note (lines 59–66) delimits what it does NOT do: it does not arithmetize provability, build a satisfaction predicate, or prove the unprovability statement itself.",
     "mathContext": "At the level of cardinals, the ZFC set-builders become closure conditions on $\\{\\lambda : \\lambda < \\kappa\\}$: powerset $\\mapsto (a<\\kappa \\Rightarrow 2^a<\\kappa)$ (strong limit), and replacement/union $\\mapsto$ ($\\sup$ of ${<}\\kappa$-many ${<}\\kappa$ cardinals stays ${<}\\kappa$) (regular). Strong-limit $\\wedge$ regular $\\wedge$ uncountable $=$ strongly inaccessible.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gödel's second incompleteness theorem",
       "Zermelo's theorem (V_κ ⊨ ZFC)",

@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Negative/Positive Dichotomy",
     "content": "The module docstring frames the whole file as the path-connected analogue of the parent entry's closure-stability theorems. Because path-connectedness is strictly stronger than connectedness, closure cannot in general preserve it — the topologist's sine curve is the canonical witness. The split is therefore into a negative half (every parent theorem weakens by exactly one notch: the conclusion drops from path-connected to merely connected) and a positive half (local path-connectedness, which makes path components clopen, is precisely the extra hypothesis that restores closure-stability).",
     "mathContext": "Path-connected $\\Rightarrow$ connected, but not conversely; closure $\\overline{(\\cdot)}$ preserves connectedness yet can destroy path-connectedness.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["path-connectedness", "connectedness", "closure", "topologist's sine curve", "local path-connectedness"],
     "prerequisites": ["topological spaces", "closure and dense subsets"]
   },
@@ -70,7 +70,7 @@
     "title": "Local Path-Connectedness: the Pivotal Hypothesis",
     "content": "Adding the instance hypothesis [LocPathConnectedSpace α] is what turns every remaining result positive. In a locally path-connected space each point has a neighbourhood basis of path-connected open sets, which forces path components to be open — and since their complements are unions of other (open) path components, they are also closed, hence clopen. Clopenness is the exact ingredient missing in the negative half: a clopen set equals its own closure.",
     "mathContext": "$\\alpha$ locally path-connected $\\Rightarrow$ each path component is clopen $\\Rightarrow$ each path component equals its closure.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["locally path-connected space", "neighbourhood basis", "clopen set", "path components"],
     "prerequisites": ["local path-connectedness", "clopen sets"]
   },
@@ -81,7 +81,7 @@
       "startLine": 91,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A Path Component Is Its Own Closure",
     "content": "closure_pathComponent is the one-line crux of the positive half: IsClosed.pathComponent gives that the path component is closed in a locally path-connected space, and IsClosed.closure_eq turns closedness into closure (pathComponent x) = pathComponent x. This is precisely the setting where closure preserves path-connectedness, because it leaves the set unchanged.",
     "mathContext": "In a locally path-connected space, $\\overline{\\mathrm{pathComponent}(x)} = \\mathrm{pathComponent}(x)$.",
@@ -126,7 +126,7 @@
       "startLine": 112,
       "endLine": 118
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Connected Open Sets Are Path-Connected",
     "content": "isPathConnected_of_isConnected_of_isOpen records the standard local-to-global recovery: restricting to open sets, IsOpen.isConnected_iff_isPathConnected makes connectedness and path-connectedness equivalent. This does not contradict the negative half because the closure of an open connected set need not stay open, so the equivalence is not preserved by closure.",
     "mathContext": "$U$ open and connected (in a locally path-connected space) $\\Rightarrow$ $U$ is path-connected.",

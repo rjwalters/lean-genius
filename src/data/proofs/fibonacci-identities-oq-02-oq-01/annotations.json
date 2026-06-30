@@ -3,11 +3,11 @@
     "id": "ann-fiboq0201-1",
     "proofId": "fibonacci-identities-oq-02-oq-01",
     "range": { "startLine": 3, "endLine": 60 },
-    "type": "context",
+    "type": "concept",
     "title": "The Lucas Analogue: Strong Divisibility Fails",
     "content": "**Module framing.** The parent entry showed the Fibonacci numbers are a *strong divisibility sequence*: $\\gcd(F_m,F_n)=F_{\\gcd(m,n)}$, equivalently $F_m\\mid F_n\\iff m\\mid n$ for $m\\ge 3$. The companion **Lucas numbers** $L_n$ ($L_0=2,L_1=1,L_{n+2}=L_n+L_{n+1}$: $2,1,3,4,7,11,18,29,47,76,\\dots$) share the recurrence but **not** the divisibility structure. This module proves the contrast: $\\gcd(L_2,L_4)=\\gcd(3,7)=1\\neq 3=L_{\\gcd(2,4)}$, so the strong law fails; and $2\\mid 4$ but $L_2=3\\nmid 7=L_4$, so the Fibonacci transfer law $m\\mid n\\Rightarrow F_m\\mid F_n$ has no Lucas analogue. The correct law is the *odd-quotient rule* $L_m\\mid L_n\\iff m\\mid n\\wedge n/m\\text{ odd}$ (for $m\\ge 2$).",
     "mathContext": "$L_0=2,\\ L_1=1,\\ L_{n+2}=L_n+L_{n+1}$; strong divisibility is $\\gcd(a_m,a_n)=a_{\\gcd(m,n)}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lucas numbers",
       "Strong divisibility sequence",

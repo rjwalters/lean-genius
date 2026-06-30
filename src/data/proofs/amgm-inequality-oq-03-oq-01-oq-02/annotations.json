@@ -29,11 +29,11 @@
       "startLine": 124,
       "endLine": 159
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Case 1: Positive Exponents via Jensen",
     "content": "pmean_mono_pos handles 0 < p ≤ q. With q/p ≥ 1 the map t ↦ t^(q/p) is convex, so Real.rpow_arith_mean_le_arith_mean_rpow (Jensen) applied to the values aᵢ = zᵢ^p gives (∑ wᵢzᵢ^p)^(q/p) ≤ ∑ wᵢ(zᵢ^p)^(q/p). The summand (zᵢ^p)^(q/p) = zᵢ^q simplifies via Real.rpow_mul + field_simp. Raising both sides to 1/q (monotone since q>0) and collapsing ((·)^(q/p))^(1/q) = (·)^(1/p) yields M_p ≤ M_q.",
     "mathContext": "$\\left(\\sum w_i z_i^p\\right)^{q/p} \\le \\sum w_i (z_i^p)^{q/p} = \\sum w_i z_i^q$, then $(\\cdot)^{1/q}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Jensen's inequality",
       "convexity of t ↦ t^a",
@@ -51,7 +51,7 @@
       "startLine": 107,
       "endLine": 174
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Duality Reduces the Negative Case to the Positive Case",
     "content": "pmean_neg_inv proves the involution M_p(z) = M_{-p}(z⁻¹)⁻¹: the summand identity (zᵢ⁻¹)^(-p) = zᵢ^p comes from Real.inv_rpow + Real.rpow_neg + inv_inv, and the outer power uses 1/(-p) = -(1/p) with Real.rpow_neg. Case 2 (pmean_mono_neg) then needs no new analysis: for p ≤ q < 0 we have 0 < -q ≤ -p, so Case 1 on the inverted values gives M_{-q}(z⁻¹) ≤ M_{-p}(z⁻¹), and inv_anti_of_le (a ≤ b, 0<a ⟹ b⁻¹ ≤ a⁻¹) flips it through the duality identity to M_p(z) ≤ M_q(z). The involution means the entire negative-exponent theory is a mechanical mirror of the positive one.",
     "mathContext": "$M_p(z) = M_{-p}(z^{-1})^{-1}$; for $p \\le q < 0$, $\\ 0 < -q \\le -p \\Rightarrow M_{-q}(z^{-1}) \\le M_{-p}(z^{-1}) \\Rightarrow M_p(z) \\le M_q(z).$",

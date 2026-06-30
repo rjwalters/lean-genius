@@ -7,7 +7,7 @@
     "title": "d'Ocagne's Identity and the Gap-Parameterisation Idea",
     "content": "The docstring states d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ over ℤ (for m ≥ n) and frames it as the two-index companion of Cassini's identity (fibonacci-identities-oq-01), recovered as the m = n + 1 slice. The single obstruction to a fully two-sided statement is the natural-number subtraction m − n, so the file works through a subtraction-free engine: writing the index gap as an additive parameter k = m − n ≥ 0 gives F_{n+k}·Fₙ₊₁ − F_{n+k+1}·Fₙ = (−1)ⁿ·F_k, a clean statement in n and k. Worked numeric examples ((m,n) = (3,1), (5,2), (4,1)) anchor the sign and gap behaviour.",
     "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$, engine $F_{n+k} F_{n+1} - F_{n+k+1} F_n = (-1)^n F_k$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["d'Ocagne's identity", "Cassini's identity", "Fibonacci recurrence", "index arithmetic", "alternating sign"],
     "prerequisites": ["Fibonacci numbers", "natural-number subtraction", "casting ℕ → ℤ"]
   },

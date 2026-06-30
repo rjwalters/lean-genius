@@ -55,7 +55,7 @@
       "startLine": 105,
       "endLine": 130
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Antipodal Parity Engine (signChanges_odd_iff)",
     "content": "`signChanges_odd_iff` proves, by induction on the path length, that `Odd (signChanges g n) ↔ g 0 ≠ g n`. The inductive step uses the recurrence `signChanges_succ` (peeling the last edge) and a three-Boolean case split on `g 0`, `g n`, `g (n+1)`: the logical equivalence `(g 0 ≠ g (n+1)) ↔ ¬(g 0 ≠ g n)` under `g n ≠ g (n+1)` is discharged by `decide`, while the mod-2 bookkeeping `(s+1) % 2` is handled by `omega` after `Nat.odd_iff`. Adding a complementary edge flips the parity and the endpoint-disagreement predicate *in lockstep* — the heart of the argument. `complementary_edges_odd` then specializes to genuine antipodes (`g 0 = ! g n`), where a Boolean and its negation always disagree. This is the Tucker counterpart of `SpernerAbstract.sperner_parity`: a global count pinned mod 2 to pure boundary data.",
     "mathContext": "The statement is a $\\mathbb{Z}/2$ telescoping identity: $\\sum_{i<n} [g\\,i \\neq g\\,(i+1)] \\equiv [g\\,0 \\neq g\\,n] \\pmod 2$, the discrete analogue of $\\int_0^n g' = g(n) - g(0)$. Proving the *parity* (count is odd), not merely existence, is what generalizes: in higher dimensions the analogous invariant counts boundary complementary simplices governed by an antipodal involution.",
@@ -83,7 +83,7 @@
     "title": "The Honest Higher-Dimensional Obstruction",
     "content": "The full $n$-dimensional Tucker lemma does **not** follow from the parent `CellComplex` as-is. That structure has adjacency (`adj`) but **no antipodal map** $\\alpha : \\text{Simplex} \\to \\text{Simplex}$ with $\\alpha \\circ \\alpha = \\text{id}$ compatible with `vertices` and `adj` — the discrete analogue of the antipodal map on $S^{n-1}$, which is exactly what Tucker requires. Extending the framework needs an `AntipodalCellComplex` refinement (a free $\\mathbb{Z}/2$-action on the boundary subcomplex) plus the Freund–Todd 'special simplices' labelling argument. Crucially, the parity *engine* `even_card_fpf_invol` is reusable **verbatim**; the genuine obstruction is the equivariant boundary bookkeeping, not the involution machinery. This is the precise next step the OQ has been sharpened into.",
     "mathContext": "Constructive proofs of Tucker (Freund–Todd, 1981) follow a path of 'almost-complementary' simplices through the triangulation, using the antipodal symmetry on the boundary to pin the path's parity — the higher-dimensional incarnation of the endpoint-disagreement argument proved here in 1-D.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "free ℤ/2-action",
       "equivariant boundary subcomplex",
@@ -102,7 +102,7 @@
       "startLine": 139,
       "endLine": 154
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From Bool Signs to ±1 Integer Labels",
     "content": "`tucker_one_dim_int` recovers the textbook `{±1}`-integer phrasing of 1-D Tucker: given `lbl : ℕ → ℤ` with every label `±1` and antipodal boundary `lbl 0 = − lbl n`, some edge is complementary, `lbl i = − lbl (i+1)`. The bridge to the Boolean engine is the sign-bit encoding `b i := decide (lbl i = 1)`. The `key` lemma certifies, for `a, b ∈ {±1}`, that the encodings disagree iff `a = −b` (a four-case `decide`), so integer complementary edges are *exactly* the Bool sign changes of the encoded path. Applying `tucker_one_dim` to that path and decoding `key` in both directions transports the result — making explicit that the `Bool` parity engine and the classical signed-label Tucker statement are one and the same theorem.",
     "mathContext": "Encoding $\\mathbb{Z}\\supset\\{\\pm1\\}\\to\\mathrm{Bool}$ by $[\\,\\mathrm{lbl}=1\\,]$; for $a,b\\in\\{\\pm1\\}$, $[\\,a=1\\,]\\neq[\\,b=1\\,]\\iff a=-b$, so $\\{\\pm1\\}$-complementary edges correspond bijectively to Boolean sign changes.",

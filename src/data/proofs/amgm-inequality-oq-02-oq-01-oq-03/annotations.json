@@ -30,7 +30,7 @@
       "startLine": 43,
       "endLine": 59
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "psum_three_closed: Substitute-and-Ring over Any CommRing",
     "content": "The universal identity is proved in four lines: pull in the recurrence (psum_three_eq) and the two closed forms (psum_two_eq, psum_one_eq_esymm_one) as hypotheses, rewrite the recurrence with them, and close with ring. Because the statement lives in MvPolynomial σ R for an arbitrary [CommRing R] [Fintype σ], the resulting identity is a polynomial identity with integer coefficients and specializes to every concrete finite family of values in any commutative ring by evaluation.",
     "mathContext": "In $\\text{MvPolynomial}(\\sigma, R)$: rewriting $p_3 = e_1 p_2 - e_2 p_1 + 3 e_3$ via $p_2 = e_1^2 - 2e_2$, $p_1 = e_1$ gives $p_3 = e_1(e_1^2 - 2e_2) - e_2 e_1 + 3 e_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$, closed by `ring`.",
@@ -72,7 +72,7 @@
       "startLine": 1,
       "endLine": 26
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "The aeval Bridge and the Characteristic-2 Obstruction (companion file)",
     "content": "The companion AmgmInequalityOQ02OQ01OQ03Finset.lean defines e₁, e₂, e₃, p₂, p₃ directly over a Finset via powersetCard, and proves the same closed form over an arbitrary CommRing. The crux is an aeval transport: aeval_esymm_subtype and aeval_psum_subtype identify the concrete powersetCard / power-sum definitions over s with the aeval of MvPolynomial.esymm / MvPolynomial.psum on the membership subtype {x // x ∈ s} (using aeval_esymm_eq_multiset_esymm, Finset.esymm_map_val, and Multiset.attach_map_val'). Transporting the universal psum_three_closed across this bridge gives the concrete closed form WITHOUT any characteristic hypothesis. This matters: the direct ordered-triple coincidence partition only proves 2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃), which fails to determine p₃ when 2 is a zero-divisor. The aeval route — operating at the level of polynomial coefficients, before evaluation — avoids the doubled factor, so cube_partition and two_e2_eq_offPairs become algebraic corollaries valid even in characteristic 2.",
     "mathContext": "Bridge: $\\text{aeval}(f|_s)\\,(\\text{esymm}\\,\\{x \\in s\\}\\,R\\,n) = \\sum_{t \\subseteq s,\\,|t|=n} \\prod_{i \\in t} f_i$ and likewise for psum. Char-2 obstruction: the direct partition gives $e_1^3 = p_3 + 3 D_{\\text{off}} + 6 e_3$ and $D_{\\text{off}} = e_1 p_2 - p_3$, combining to $2 p_3 = 2(e_1^3 - 3 e_1 e_2 + 3 e_3)$; cancelling 2 needs 2 to be a non-zero-divisor.",

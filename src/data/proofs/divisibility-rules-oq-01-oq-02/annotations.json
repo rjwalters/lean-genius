@@ -32,7 +32,7 @@
     "title": "Main theorem: existence for every coprime modulus",
     "content": "exists_pow_ten_digitSum_rule is the resolution of the parent's open question: for every d ≥ 2 coprime to 10 there is a positive exponent k such that 10^k is a valid digit-sum base. The witness is k = φ(d), supplied by the Fermat–Euler theorem Nat.ModEq.pow_totient, with positivity from Nat.totient_pos. digitSum_rule_pow_totient records the explicit base 10^{φ(d)}.",
     "mathContext": "Euler's theorem states $a^{\\varphi(d)} \\equiv 1 \\pmod d$ whenever $\\gcd(a,d)=1$. Taking $a = 10$ gives $10^{\\varphi(d)} \\equiv 1 \\pmod d$, so $B = 10^{\\varphi(d)}$ always works. This proves existence for the whole class of moduli coprime to 10 in one stroke, subsuming the parent's individually proved rules.",
-    "significance": "fundamental",
+    "significance": "critical",
     "relatedConcepts": [
       "Fermat–Euler theorem",
       "Nat.ModEq.pow_totient",
@@ -95,11 +95,11 @@
       "startLine": 123,
       "endLine": 157
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete instances, including new base-10^6 rules for 7 and 13",
     "content": "Five corollaries of digitSum_rule_of_modEq_one: 3 (base 10), 7 and 13 (base 10^6), 27 and 37 (base 10^3). Each discharges its congruence 10^k ≡ 1 (mod d) by kernel decide over ℕ-arithmetic. The rules for 7 and 13 are new relative to the parent, which obtained 7 and 13 only via truncation methods rather than a genuine base-10 digit-sum rule.",
     "mathContext": "$\\mathrm{ord}_7(10)=6$ because $10^6 = 1000000 \\equiv 1 \\pmod 7$ and no smaller positive power of $10$ is $\\equiv 1$; likewise $\\mathrm{ord}_{13}(10)=6$. So summing the six-digit blocks of $n$ detects divisibility by $7$ and by $13$ — a uniform digit-sum rule replacing the ad hoc truncation tricks.",
-    "significance": "useful",
+    "significance": "supporting",
     "relatedConcepts": [
       "decide",
       "digit-grouping rules",

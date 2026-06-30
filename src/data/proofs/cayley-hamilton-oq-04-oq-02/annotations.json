@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "cayley-hamilton-oq-04-oq-02",
     "range": { "startLine": 9, "endLine": 63 },
-    "type": "context",
+    "type": "concept",
     "title": "Closed Form, Putzer ODEs, and the Integrating-Factor Plan",
     "content": "The docstring states the goal and the method. For a 2×2 real matrix A with tr A = τ and det A = δ, the explicit Cayley–Hamilton relation A² = τ•A − δ•1 collapses every power Aᵏ into the 2-dimensional span {1, A}; pushing this through the matrix exponential gives exp(t•A) = α(t)•1 + β(t)•A. The headline theorem holds for ANY scalar pair α, β solving the Putzer ODE system α' = −δ·β, β' = α + τ·β with α(0)=1, β(0)=0 — the only analytic input. The proof strategy is an integrating-factor uniqueness argument: φ(t) = exp(−t•A)·(α•1+β•A) has identically-zero derivative, hence equals φ(0)=1, which rearranges to the closed form. Mathlib has Matrix.exp and its derivative but no reduction of the 2×2 exponential to the finite span {1,A}; this is the new analytic completion of the algebraic parent CayleyHamiltonOQ04 (E. J. Putzer, Amer. Math. Monthly 73, 1966).",
     "mathContext": "$\\exp(tA) = \\alpha(t)\\,\\mathbf{1} + \\beta(t)\\,A$ where $\\alpha' = -\\delta\\beta$, $\\beta' = \\alpha + \\tau\\beta$, $\\alpha(0)=1$, $\\beta(0)=0$, with $\\tau = \\operatorname{tr}A$, $\\delta = \\det A$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cayley–Hamilton theorem", "Putzer's method", "Lagrange–Sylvester functional calculus", "matrix exponential", "planar linear ODE systems"],
     "prerequisites": ["the matrix exponential", "first-order linear ODE systems", "trace and determinant of a 2×2 matrix"]
   },

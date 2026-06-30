@@ -26,7 +26,7 @@
       "startLine": 61,
       "endLine": 105
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Self-Contained Base Identity",
     "content": "The base Gaussian Fourier identity ∫ e^{itx} e^{-x²/2} = e^{-t²/2}·√(2π) is reproved verbatim from the parent (three short lemmas: complete the square over ℂ via Complex.I_sq, identify the contour constant (π/(1/2))^{1/2} = √(2π), and evaluate via Mathlib's vertical-strip lemma integral_cexp_neg_mul_sq_add_real_mul_I). Reproving it keeps the file independent of the parent module.",
     "mathContext": "∫ e^{itx} e^{-x²/2} dx = e^{-t²/2}·√(2π), the parent self-duality identity.",
@@ -44,7 +44,7 @@
       "startLine": 106,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Translation ↦ Modulation via Lebesgue Translation-Invariance",
     "content": "To compute ∫ e^{itx} e^{-(x-a)²/2} dx, factor e^{itx} = e^{ita}·e^{it(x-a)}, pull the constant phase e^{ita} out with integral_const_mul, and observe the remaining integrand is the parent integrand evaluated at x-a. A cast-bridging integral_congr_ae rewrites (x:ℂ)-a as ↑(x-a) so MeasureTheory.integral_sub_right_eq_self fires and removes the shift, returning the parent value times e^{ita}. The practical subtlety: the ℝ→ℂ coercion must be normalised (↑(x-a) vs ↑x-↑a) before the translation-invariance lemma will match.",
     "mathContext": "∫ e^{itx} e^{-(x-a)²/2} dx = e^{ita}·(e^{-t²/2}·√(2π)).",
@@ -63,7 +63,7 @@
       "startLine": 147,
       "endLine": 175
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Modulation ↦ Translation by Merging Phases",
     "content": "Modulation is the easy dual: e^{itx}·e^{iax} = e^{i(t+a)x} (Complex.exp_add together with a push_cast/ring exponent identity), so ∫ e^{itx}·(e^{iax} e^{-x²/2}) dx is just the parent identity at frequency t+a. The transform is translated t ↦ t+a.",
     "mathContext": "∫ e^{itx}·(e^{iax} e^{-x²/2}) dx = e^{-(t+a)²/2}·√(2π).",

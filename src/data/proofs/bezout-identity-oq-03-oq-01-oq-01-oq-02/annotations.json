@@ -28,7 +28,7 @@
       "startLine": 49,
       "endLine": 65
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Cardinality of the Nested Product Type",
     "content": "card_CRTProd proves Nat.card (CRTProd ns) = ∏ᵢ Nat.card (ZMod nᵢ) by induction on the modulus list. The base case unfolds CRTProd [] = PUnit and closes with Nat.card_unique (Nat.card PUnit = 1). The inductive step unfolds CRTProd (n :: ns) = ZMod n × CRTProd ns and splits the count with Nat.card_prod before applying the inductive hypothesis.",
     "mathContext": "Nat.card_prod gives $|\\alpha \\times \\beta| = |\\alpha| \\cdot |\\beta|$ with no finiteness hypothesis, so the count of the right-associated product factors cleanly as $\\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}|$.",
@@ -50,7 +50,7 @@
       "startLine": 66,
       "endLine": 79
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Transport of the Count Along the CRT Isomorphism",
     "content": "card_zmod_prod_eq_card_CRTProd proves Nat.card (ZMod ns.prod) = Nat.card (CRTProd ns) by Nat.card_congr (crtKFold ns h).toEquiv. The ring isomorphism is in particular an equivalence of underlying sets, and Nat.card is invariant under equivalence.",
     "mathContext": "An isomorphism of rings is a bijection, hence source and target are equinumerous: $|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = |\\text{CRTProd}\\,ns|$. This is the formal sense in which the CRT preserves cardinality.",
@@ -72,7 +72,7 @@
       "startLine": 80,
       "endLine": 93
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Cardinality Preservation (Left Equality)",
     "content": "card_preservation composes the transport step with card_CRTProd to give |ℤ/(∏nᵢ)ℤ| = ∏ᵢ|ℤ/nᵢℤ|. This is the substantive half of the open question: the count of the quotient ring equals the product of the per-modulus counts because of the CRT decomposition, not by independent evaluation of the two sides.",
     "mathContext": "$|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = |\\text{CRTProd}\\,ns| = \\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}|$. The middle equality is the CRT isomorphism; the right is the product-type count.",
@@ -93,7 +93,7 @@
       "startLine": 94,
       "endLine": 110
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Termwise Evaluation (Right Equality)",
     "content": "map_card_zmod_prod proves ∏ᵢ|ℤ/nᵢℤ| = ∏ᵢnᵢ by induction, rewriting each factor with Nat.card_zmod. Crucially Nat.card_zmod n = n holds for every n — including n = 0, where ℤ/0ℤ = ℤ is infinite and Nat.card ℤ = 0 — so no positivity hypothesis is needed.",
     "mathContext": "$|\\mathbb{Z}/n_i\\mathbb{Z}| = n_i$ termwise gives $\\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}| = \\prod_i n_i$. The identity $\\text{Nat.card}(\\mathbb{Z}/0\\mathbb{Z}) = 0$ makes the degenerate modulus harmless.",
@@ -135,7 +135,7 @@
       "startLine": 136,
       "endLine": 148
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Examples",
     "content": "card_30 derives |ℤ/30ℤ| = 30 = 2·3·5 from the chain on the pairwise coprime list [2, 3, 5]. card_preservation_2_3_5 instantiates the preservation equality at [2, 3, 5].",
     "mathContext": "For $30 = 2 \\cdot 3 \\cdot 5$: $|\\mathbb{Z}/30\\mathbb{Z}| = |\\mathbb{Z}/2\\mathbb{Z}| \\cdot |\\mathbb{Z}/3\\mathbb{Z}| \\cdot |\\mathbb{Z}/5\\mathbb{Z}| = 2 \\cdot 3 \\cdot 5 = 30$.",

@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "brouwer-fixed-point-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 37 },
-    "type": "context",
+    "type": "concept",
     "title": "1D Sperner Lemma: Scope and the Sperner → Brouwer Program",
     "content": "Sperner's lemma is the combinatorial counterpart of Brouwer's fixed point theorem, proved by induction on dimension; its base case is this 1-dimensional parity statement. The module docstring is honest about scope: full 2D Brouwer via Sperner needs simplicial complexes, triangulations and vertex labelings that Mathlib lacks (its Combinatorics.SetFamily 'Sperner' is the unrelated antichain theorem). This file formalizes only the 1D heart — color a path 0,…,n by c : ℕ → Bool, call an edge {i,i+1} bichromatic when c i ≠ c(i+1) — and does NOT claim the 2D theorem.",
     "mathContext": "An edge $\\{i, i+1\\}$ is bichromatic when $c(i) \\ne c(i+1)$; the 1D Sperner lemma is the discrete IVT: a $\\mathit{false}\\to\\mathit{true}$ path has a bichromatic edge.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Sperner's lemma", "Brouwer fixed point theorem", "discrete IVT", "combinatorial topology"],
     "prerequisites": ["graph paths", "two-colorings", "Brouwer's theorem"]
   },
@@ -51,11 +51,11 @@
     "id": "ann-toward-2d",
     "proofId": "brouwer-fixed-point-oq-01-oq-01",
     "range": { "startLine": 101, "endLine": 136 },
-    "type": "context",
+    "type": "concept",
     "title": "Why This Is Genuine Progress Toward 2D Brouwer",
     "content": "This base case is non-cosmetic: the inductive step of the full Sperner lemma counts bichromatic edges on the boundary of a 2D triangulation and feeds exactly this 1D parity argument across that boundary. Establishing it honestly (0 axioms, 0 sorries, no native_decide) supplies the combinatorial engine — boundary parity counting — on which the Sperner → Brouwer program runs, without overclaiming the 2D theorem. The remaining blockers are the missing triangulation/labeling infrastructure and the 2D Sperner lemma itself.",
     "mathContext": "2D Sperner: a Sperner coloring of a triangulation of a triangle has an odd number of fully-colored cells, proved by inducting this 1D boundary parity over the triangulation's edges.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["dimension induction", "triangulations", "Sperner coloring", "mesh refinement"],
     "prerequisites": ["simplicial complexes", "Sperner's lemma in higher dimension"]
   }

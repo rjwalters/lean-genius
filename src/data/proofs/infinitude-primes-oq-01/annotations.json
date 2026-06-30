@@ -39,7 +39,7 @@
     "id": "ann-finite-union-closed",
     "proofId": "infinitude-primes-oq-01",
     "range": { "startLine": 128, "endLine": 149 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Finite Unions of Closed Sets Are Closed",
     "content": "`isClosedAP_union` proves a binary union closed via De Morgan: (C ∪ D)ᶜ = Cᶜ ∩ Dᶜ, an intersection of opens (isOpenAP_inter). `isClosedAP_biUnion` then extends this to any finite (Finset-indexed) union by induction on the Finset, with isClosedAP_empty as the base. This is what makes 'finitely many primes' bite: a finite union of the clopen residue classes R 0 p is closed, so its complement is open.",
     "mathContext": "$$(C \\cup D)^c = C^c \\cap D^c;\\qquad \\bigcup_{i \\in s} C_i \\text{ closed by induction on the Finset } s$$",

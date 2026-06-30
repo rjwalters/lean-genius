@@ -51,11 +51,11 @@
       "startLine": 41,
       "endLine": 77
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Sharp Lower Bound: A Singleton Shatters iff Its Point Is Non-Maximal",
     "content": "`threshold_shatters_singleton_iff` proves `Shatters thresholdClassifiers {a} ↔ ∃ b, a < b`. Forward: if `{a}` is shattered, applying the definition to the labeling `T = {a}` yields a threshold `{x | x < t}` containing `a`, which by definition means `a < t` — a strict upper bound. Backward: given `a < b`, the threshold `t = b` includes `a` (since `a < b`) and the threshold `t = a` excludes `a` (since `¬ a < a`), so both subsets `{a}` and `∅` are realized. This biconditional is the genuinely new content: it pinpoints exactly which singletons are shatterable, namely the non-maxima.",
     "mathContext": "$\\text{Shatters}(H_{thr}, \\{a\\}) \\iff \\exists b,\\ a < b \\iff a \\text{ is not a maximum of } \\alpha$. Over ℕ the right side always holds ($b = a+1$), recovering the parent's unconditional singleton shattering.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "lower bound",
       "maximal element",
@@ -73,7 +73,7 @@
       "startLine": 79,
       "endLine": 82
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Convenient Direction: a < b ⟹ {a} Shattered",
     "content": "`threshold_shatters_singleton` is the `mpr` of the biconditional packaged for downstream use: from `a < b` conclude `Shatters thresholdClassifiers {a}`. This is the form consumed by the combined-bounds theorem.",
     "mathContext": "$a < b \\Rightarrow \\text{Shatters}(H_{thr}, \\{a\\})$.",
@@ -92,11 +92,11 @@
       "startLine": 84,
       "endLine": 112
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Upper Bound: The Monotonicity Obstruction (Order-Only)",
     "content": "`threshold_not_shatters_pair` shows no 2-element set `{a, b}` (with `a < b`) is shattered. The obstructing labeling is `T = {b}`: realizing it needs a threshold `t` that excludes `a` (so `¬ a < t`, i.e. `t ≤ a` by `le_of_not_gt`) yet includes `b` (so `b < t`). Then `b < t ≤ a` gives `b < a` via `lt_of_lt_of_le`, contradicting `a < b` via `lt_asymm`. The parent discharged this with `omega`; here it is pure order reasoning — transitivity and asymmetry only. This obstruction is exactly the statement that a down-set cannot exclude a smaller point while including a larger one.",
     "mathContext": "If $t \\le a$ and $b < t$ then $b < a$, contradicting $a < b$. The one-parameter analogue of the convexity obstruction that caps interval classifiers at VC dim 2.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "upper bound",
       "monotonicity / down-set",
@@ -114,11 +114,11 @@
       "startLine": 114,
       "endLine": 138
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Combined Bound: VC dim = 1 over a Nontrivial Linear Order",
     "content": "`threshold_vcdim_bounds` assumes `[Nontrivial α]` and concludes (1) some singleton is shattered and (2) no two-element set is shattered. For (1), `exists_pair_ne` gives distinct `a, b`; `lt_or_gt_of_ne` orders them, and the smaller element — having a strict upper bound — is shattered by `threshold_shatters_singleton`. For (2), `lt_or_gt_of_ne` reduces any unequal pair to the `a < b` case of `threshold_not_shatters_pair`, with the `{a,b} = {b,a}` symmetry handled by `ext; simp [Or.comm]`. Nontriviality is necessary: on a one-point order nothing is shattered and the VC dimension is 0.",
     "mathContext": "$\\text{VCdim}(H_{thr}) = 1$ over any nontrivial linear order: lower bound from a non-maximal point (guaranteed by nontriviality), upper bound unconditional.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "VC dimension",
       "Nontrivial typeclass",

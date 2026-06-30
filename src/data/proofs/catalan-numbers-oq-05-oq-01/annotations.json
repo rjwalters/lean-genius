@@ -15,7 +15,7 @@
     "id": "ann-centralbinom-bridge",
     "proofId": "catalan-numbers-oq-05-oq-01",
     "range": { "startLine": 12, "endLine": 33 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Central-Binomial–Catalan Bridge",
     "content": "The load-bearing sublemma reused by both `choose_two_mul_succ` and `catalan_eq_choose_sub` is the bridge $\\binom{2n}{n} = (n+1)\\,C_n$, assembled from Mathlib's `succ_mul_catalan_eq_centralBinom` and `Nat.centralBinom_eq_two_mul_choose`. With the Pascal step it pins down both central-row entries — $\\binom{2n}{n} = (n+1)C_n$ and $\\binom{2n}{n+1} = n\\,C_n$ — so their difference collapses to $C_n$. This division-free packaging complements the only form Mathlib stores, $C_n = \\binom{2n}{n}/(n+1)$ (`Nat.catalan_eq_centralBinom_div`), trading an exact division for an honest ℕ subtraction.",
     "mathContext": "Bridge: $\\binom{2n}{n} = (n+1)\\,C_n$, versus Mathlib's $C_n = \\binom{2n}{n}/(n+1)$.",

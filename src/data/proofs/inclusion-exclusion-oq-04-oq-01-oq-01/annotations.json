@@ -51,7 +51,7 @@
     "id": "ann-concrete-check",
     "proofId": "inclusion-exclusion-oq-04-oq-01-oq-01",
     "range": { "startLine": 159, "endLine": 177 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Axiom-Free Concrete Check: 6 Surjections [3] ↠ [2]",
     "content": "The general formula is specialised to n = 3, k = 2 (via card_surjective_eq_sieve_sum 3 2) and the sieve sum is evaluated: Σ_{j=0}^2 (-1)^j C(2,j)(2-j)^3 = 8 − 2 + 0 = 6, matching the 2³ − 2 = 6 surjections of a 3-set onto a 2-set. The evaluation uses `decide` (kernel reduction), NOT `native_decide`, so the worked example introduces no Lean.ofReduceBool axiom and the file remains genuinely axiom-free (only propext, Classical.choice, Quot.sound).",
     "mathContext": "$\\sum_{j=0}^2(-1)^j\\binom{2}{j}(2-j)^3=8-2+0=6=2^3-2$.",

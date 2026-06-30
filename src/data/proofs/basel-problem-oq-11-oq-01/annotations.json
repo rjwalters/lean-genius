@@ -23,7 +23,7 @@
     "title": "Even subseries: ∑ 1/(2k)ᵉ = (1/2ᵉ)·Z",
     "content": "Given ζ(e) = Z as a HasSum, the even-indexed terms 1/(2k)ᵉ are a (1/2ᵉ)-scaled copy of ζ(e): since (2k)ᵉ = 2ᵉ·kᵉ (a push_cast + mul_pow rewrite), 1/(2k)ᵉ = (1/2ᵉ)(1/kᵉ), and scaling the sum by 1/2ᵉ (HasSum.mul_left) gives (1/2ᵉ)Z. The rewrite is valid even at k = 0, where both sides are 0 in ℝ (because eᵉ ≥ 1 forces 0ᵉ = 0).",
     "mathContext": "$\\sum_{k} \\dfrac{1}{(2k)^{e}} = \\dfrac{1}{2^{e}}\\,\\zeta(e)$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["reindexing", "HasSum.mul_left", "geometric scaling"],
     "prerequisites": ["HasSum API", "mul_pow"]
   },
@@ -35,7 +35,7 @@
     "title": "Odd subseries: ∑ 1/(2k+1)ᵉ = (1 − 1/2ᵉ)·Z",
     "content": "The odd-indexed subseries is summable (Summable.comp_injective along k ↦ 2k+1, injectivity by omega). Reassembling ζ(e) from its even and odd halves with HasSum.even_add_odd and applying HasSum.unique against the hypothesis ζ(e) = Z forces the odd sum to be Z − (1/2ᵉ)Z = (1 − 1/2ᵉ)Z. This is the exponent-generic version of the parent's ∑ 1/(2k+1)² = π²/8 step.",
     "mathContext": "$\\sum_{k} \\dfrac{1}{(2k+1)^{e}} = \\left(1 - \\dfrac{1}{2^{e}}\\right)\\zeta(e)$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["HasSum.even_add_odd", "HasSum.unique", "Summable.comp_injective"],
     "prerequisites": ["even/odd splitting", "uniqueness of sums"]
   },

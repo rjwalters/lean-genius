@@ -7,7 +7,7 @@
     "title": "From Euclidean Domain to PID, UFD, and Prime Norms",
     "content": "The docstring sets the agenda. The parent file made ℤ[√d] a Euclidean domain uniformly for every −2 ≤ d < 0 (a single nearest-lattice-point division). This file harvests the two standard structural consequences — principal ideal ring and unique factorization monoid — via the chain EuclideanDomain ⟹ PID ⟹ UFD, specialising to the Gaussian integers ℤ[√-1] and to ℤ[√-2]. It then adds the one piece of genuine arithmetic the norm contributes: an element of prime norm is irreducible (for ANY d), hence prime in the UFD range. The structural part is pure Mathlib typeclass plumbing; the prime-norm criterion is the new mathematical substance.",
     "mathContext": "$\\text{EuclideanDomain} \\Rightarrow \\text{PID} \\Rightarrow \\text{UFD}; \\quad |N(z)| \\text{ prime} \\Rightarrow z \\text{ irreducible}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Euclidean domain", "principal ideal ring", "unique factorization", "quadratic integers", "Gaussian integers"],
     "prerequisites": ["ring theory", "algebraic number theory"]
   },
@@ -15,7 +15,7 @@
     "id": "ann-zsqrtd-pidufd-structure",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02",
     "range": { "startLine": 48, "endLine": 63 },
-    "type": "technique",
+    "type": "tactic",
     "title": "PID and UFD by Typeclass Inference",
     "content": "isPrincipalIdealRing and uniqueFactorizationMonoid show ℤ[√d] is a PID and a UFD for every −2 ≤ d < 0. The mechanism is elegant: the parent's euclideanDomain d value is introduced as a local instance via letI, and then inferInstance lets Lean's typeclass resolution build IsPrincipalIdealRing (through EuclideanDomain.to_principal_ideal_domain) and UniqueFactorizationMonoid (through PrincipalIdealRing.to_uniqueFactorizationMonoid) automatically. The UFD statement must carry the letI instance in its very type, because UniqueFactorizationMonoid (ℤ√d) requires the CancelCommMonoidWithZero structure that the EuclideanDomain instance supplies. One derivation covers the whole family.",
     "mathContext": "$-2 \\le d < 0 \\Rightarrow \\mathbb{Z}[\\sqrt d] \\text{ is a PID and a UFD}.$",

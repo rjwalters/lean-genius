@@ -6,11 +6,11 @@
       "startLine": 6,
       "endLine": 37
     },
-    "type": "context",
+    "type": "concept",
     "title": "Honest Scope: Algebraic Core, Not the Field Degree",
     "content": "This entry deliberately proves the algebraic ingredients of [ℚ(cos 2π/n):ℚ] = φ(n)/2 — the index-2 quadratic and the Chebyshev root — over ℂ and ℝ, where they are elementary and 0-axiom. It does NOT prove the field-degree equality itself: that needs [ℚ(ζ_n):ℚ(cos 2π/n)] = 2 (complex conjugation as the order-2 automorphism with the real subfield as fixed field) and, for a uniform classification, Kronecker–Weber — neither of which is in Mathlib 4.26. Isolating the provable core both advances the OQ and makes the precise remaining gap explicit.",
     "mathContext": "Target: $[\\mathbb{Q}(\\cos 2\\pi/n):\\mathbb{Q}] = \\varphi(n)/2$. Provable now: the $\\le 2$ index relation and the Chebyshev witness; blocked: the field-degree equality (needs the maximal-real-subfield degree + Kronecker–Weber).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["maximal real subfield ℚ(ζ_n)⁺", "Kronecker–Weber theorem", "scope of a formalization", "Mathlib coverage gaps"],
     "prerequisites": ["cyclotomic fields", "Galois theory of abelian extensions"]
   },
@@ -21,7 +21,7 @@
       "startLine": 43,
       "endLine": 48
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Bridge: 2cos x = e^{ix} + e^{−ix}",
     "content": "two_cos_eq_exp_add_inv restates Mathlib's Complex.two_cos: the cosine is the average of the two conjugate exponentials. This is the small but essential bridge that turns a trigonometric quantity (cos x) into an algebraic relation among roots of unity (ζ = e^{ix} and ζ⁻¹ = e^{-ix}), which is what lets the rest of the file talk about field degrees rather than analysis.",
     "mathContext": "$2\\cos x = e^{ix} + e^{-ix}$; with $\\zeta = e^{ix}$ this reads $2\\cos x = \\zeta + \\zeta^{-1}$.",

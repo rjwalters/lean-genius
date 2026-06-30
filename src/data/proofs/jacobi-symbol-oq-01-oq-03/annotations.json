@@ -10,7 +10,7 @@
     "title": "Module Header: J(a|n) = 1 as a Parity Count",
     "content": "Answers the parent entry's open question: characterize exactly when $J(a\\mid n) = 1$ even though $a$ is a non-residue. For coprime $a, n$ the Jacobi symbol is a pure sign $(-1)^k$, where $k = \\#\\{p \\mid n : (a\\mid p) = -1\\}$ counts the prime factors of $n$ **with multiplicity** at which $a$ is a non-residue. So $J(a\\mid n) = 1 \\iff k$ is even — the $-1$'s cancel in pairs. The parent's puzzle $J(2\\mid 15) = 1$ is the case $k = 2$ (both $3$ and $5$ are non-residue witnesses); $J(2\\mid 45) = -1$ is the case $k = 3$ (the list $[3,3,5]$), showing multiplicity is essential.",
     "mathContext": "$J(a\\mid n) = \\prod_{p\\mid n}(a\\mid p) = (-1)^k,\\quad k = \\#\\{p\\mid n\\text{ (with mult.)} : (a\\mid p) = -1\\};\\quad J(a\\mid n)=1 \\iff k \\text{ even}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi symbol", "Legendre symbol", "quadratic residue", "Solovay–Strassen test", "false witness"],
     "prerequisites": ["quadratic reciprocity", "prime factorization with multiplicity"]
   },

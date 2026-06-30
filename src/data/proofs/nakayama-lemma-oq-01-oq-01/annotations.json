@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "nakayama-lemma-oq-01-oq-01",
     "range": { "startLine": 10, "endLine": 62 },
-    "type": "context",
+    "type": "concept",
     "title": "Minimal Generators = dim of the Residue Space M/𝔪M",
     "content": "Over a local ring (R, 𝔪) with residue field k = R/𝔪, a finitely generated module M has a minimal generator count μ(M), and it equals a single linear-algebra invariant: dim_k(M/𝔪M). Mathlib has Nakayama, the residue field, the k-vector-space structure on M/𝔪M, and the cotangent specialization 𝔪/𝔪², but states μ(M) = dim_k(M/𝔪M) for no module. This entry builds the two-sided count on the parent's lifting lemma.",
     "mathContext": "$\\mu(M) = \\dim_k (M/\\mathfrak{m}M)$ for a finitely generated module $M$ over a local ring $(R,\\mathfrak{m})$, $k = R/\\mathfrak{m}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Nakayama's lemma", "local ring", "residue field", "minimal generators", "cotangent space"],
     "prerequisites": ["local rings", "modules over a ring", "vector space dimension"]
   },

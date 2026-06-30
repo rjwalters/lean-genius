@@ -15,7 +15,7 @@
     "id": "ann-y-grows",
     "proofId": "pell-equation-oq-06-oq-04",
     "range": { "startLine": 55, "endLine": 78 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The denominators grow without bound",
     "content": "`negPellSeq_snd_strictMono` shows the second coordinates strictly increase: `yₙ₊₁ = 2xₙ + 3yₙ > yₙ` since `xₙ, yₙ ≥ 1` (via the parent's `negPellSeq_succ` and positivity, closed by `linarith`). `negPellSeq_snd_lower` upgrades this to the linear lower bound `n + 1 ≤ yₙ` by induction. This is exactly what is needed downstream: the Diophantine error is `< 1/yₙ²`, so driving `yₙ → ∞` forces the error to `0` and hence convergence. Monotonicity of the denominators is the analytic engine that turns a per-index error bound into a convergence statement.",
     "mathContext": "$y_{n+1} = 2x_n + 3y_n > y_n$ and $n+1 \\le y_n$, so $y_n \\to \\infty$.",
@@ -63,11 +63,11 @@
     "id": "ann-sanity",
     "proofId": "pell-equation-oq-06-oq-04",
     "range": { "startLine": 201, "endLine": 209 },
-    "type": "context",
+    "type": "concept",
     "title": "Sanity checks: the first ratios below √2",
     "content": "The closing examples confirm the first ratios lie below `√2`: `x₁/y₁ = 7/5 = 1.4` and `x₂/y₂ = 41/29 ≈ 1.4138`, both `< √2 ≈ 1.41421356…`, instances of `negPellSeq_ratio_lt_sqrt2`. They make concrete the abstract 'approximation from below' claim and illustrate the rapid (quadratic) convergence: each step roughly doubles the number of correct digits, consistent with the `1/yₙ²` error bound and the denominators `1, 5, 29, 169, …` growing geometrically.",
     "mathContext": "$\\tfrac{7}{5}=1.4,\\;\\tfrac{41}{29}\\approx1.4138 < \\sqrt2\\approx1.41421356$; denominators $1,5,29,169,\\dots$ grow geometrically.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["concrete verification", "quadratic convergence", "geometric growth of denominators"],
     "prerequisites": ["arithmetic verification"]
   }

@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Axiom Profile Confirmed",
     "content": "#print axioms on all five theorems (crt_17_mod_20, crt_135_mod_143, crt_8_mod_15, crt_triple_iff, crt_11_mod_60) lists only propext, Classical.choice, Quot.sound. No Lean.ofReduceBool (which native_decide would inject), no sorryAx, no axiom declarations. The entry demonstrates that even composite-modulus residue and coprimality checks need no native_decide: kernel decide suffices and stays within the ordinary foundational axioms.",
     "mathContext": "Every theorem's axiom set $= \\{\\mathsf{propext}, \\mathsf{Classical.choice}, \\mathsf{Quot.sound}\\}$; in particular $\\mathsf{Lean.ofReduceBool} \\notin$ the set, so the worked examples are genuinely axiom-free.",

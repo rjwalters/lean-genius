@@ -29,7 +29,7 @@
       "startLine": 68,
       "endLine": 72
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Norm Multiplicativity as the Engine",
     "content": "norm_gaussianInt_sq proves N(g²) = N(g)² in one line via Zsqrtd.norm_mul, the multiplicativity of the Gaussian norm. This single fact is the whole mechanism: it is the Brahmagupta–Fibonacci two-square identity in disguise. Specializing N(zw) = N(z)N(w) to w = z and reading both sides off coordinates is what produces Pythagoras. No expansion of squares is needed — the identity is structural.",
     "mathContext": "$N(g^2) = N(g)^2$, an instance of $N(zw) = N(z)N(w)$ (Zsqrtd.norm_mul). For $g = m+ni$ this is $(m^2+n^2)^2$.",
@@ -98,11 +98,11 @@
       "startLine": 129,
       "endLine": 147
     },
-    "type": "example",
+    "type": "concept",
     "title": "The 3-4-5 and 5-12-13 Triples as Gaussian Squares",
     "content": "Concrete anchors for the abstract machinery. The triple (3,4,5) comes from m=2, n=1: (2 + i)² = 3 + 4i and N(2+i) = 5, so the hypotenuse is the norm of the generating Gaussian integer. The triple (5,12,13) comes from m=3, n=2: (3 + 2i)² = 5 + 12i and N(3+2i) = 13. The final example derives PythagoreanTriple 3 4 5 through param_is_triple at m=2, n=1, exercising the soundness pathway end to end on a familiar case.",
     "mathContext": "$(2+i)^2 = 3+4i,\\ N(2+i)=5$; $(3+2i)^2 = 5+12i,\\ N(3+2i)=13$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "3-4-5 triple",
       "5-12-13 triple",

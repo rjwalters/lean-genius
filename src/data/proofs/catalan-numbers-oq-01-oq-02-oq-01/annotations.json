@@ -7,7 +7,7 @@
     "title": "From the 2-adic special case to an arbitrary prime",
     "content": "The sibling entry computed the 2-adic valuation v₂(Cₙ) = s₂(n+1) − 1, relying on the doubling-invariance of the binary digit sum (s₂(2n) = s₂(n)). At an odd prime that collapse fails, and the genuine quantity 2·s_p(n) − s_p(2n) — exactly (p−1) times Kummer's carry count for n + n in base p — must be carried. This file removes the restriction using only two general-in-p ingredients: Legendre's formula (p−1)·v_p(m!) = m − s_p(m) and the factorisation (2n)! = C(2n,n)·(n!)², bridged to the Catalan numbers by (n+1)·Cₙ = C(2n,n).",
     "mathContext": "Kummer: $v_p\\binom{2n}{n} = \\dfrac{2s_p(n) - s_p(2n)}{p-1}$ (carry count of $n+n$ base $p$). The Catalan denominator $n+1$ subtracts $v_p(n+1)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Kummer's theorem", "Legendre's formula", "p-adic valuation", "digit sum", "Catalan numbers"],
     "prerequisites": ["p-adic valuation", "base-p digit representation", "binomial coefficients"]
   },
@@ -15,7 +15,7 @@
     "id": "ann-catalan-padic-nonzero",
     "proofId": "catalan-numbers-oq-01-oq-02-oq-01",
     "range": { "startLine": 44, "endLine": 49 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Catalan numbers are nonzero",
     "content": "catalan_ne_zero records that catalan n ≠ 0, proved from (n+1)·catalan n = centralBinom n: if catalan n were 0 the right side centralBinom n would vanish, contradicting Nat.centralBinom_pos. This nonvanishing is the side condition required to split the p-adic valuation across products via padicValNat.mul (the valuation is only additive on nonzero factors).",
     "mathContext": "$C_n \\neq 0$ for all $n$; needed so that $v_p$ is additive across $(n+1)\\cdot C_n$ and across $(2n)! = \\binom{2n}{n}(n!)^2$.",
@@ -63,11 +63,11 @@
     "id": "ann-catalan-padic-example",
     "proofId": "catalan-numbers-oq-01-oq-02-oq-01",
     "range": { "startLine": 131, "endLine": 135 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete witness at p = 3",
     "content": "The example 3 ∤ catalan 2 (C₂ = 2) is discharged by kernel decide after rewriting catalan_two — no native_decide, so the proof stays axiom-free (no Lean.ofReduceBool). It matches the criterion's right side: (3−1)·v₃(3) + s₃(4) = 2·1 + 2 = 4 = 2·s₃(2) = 2·2, confirming 3 ∤ C₂.",
     "mathContext": "$C_2 = 2$, $3\\nmid 2$. Criterion: $(3-1)v_3(3) + s_3(4) = 2\\cdot 1 + 2 = 4 = 2 s_3(2)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["kernel decide", "axiom-free verification", "worked example"],
     "prerequisites": ["base-3 digit sums"]
   }

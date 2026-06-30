@@ -19,7 +19,7 @@
     "title": "The Tail Bound in the Limit",
     "content": "pseries_tail_tsum_le passes the uniform partial-sum bound to the limit. Real.tsum_le_of_sum_range_le states that if every partial sum of a nonnegative series is ≤ c, then the tsum is ≤ c. Feeding it pseries_tail_partial_le yields ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1) for the full infinite tail.",
     "mathContext": "\\sum_{i=0}^{\\infty} \\frac{1}{(N+1+i)^p} \\;\\le\\; \\frac{N^{1-p}}{p-1}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["tsum", "infinite series", "monotone convergence"],
     "prerequisites": []
   },
@@ -43,7 +43,7 @@
     "title": "The Textbook Form and the Basel Rate",
     "content": "pseries_tail_explicit rewrites N^{1−p}/(p−1) as 1/((p−1)·N^{p−1}) using Real.rpow_neg (N^{1−p} = 1/N^{p−1}), exhibiting the O(N^{1−p}) decay of the remainder. The worked witness specializes to the Basel exponent p=2, where the bound collapses to the clean ∑_{n>N} 1/n² ≤ 1/N — the standard rate for truncating ζ(2).",
     "mathContext": "\\sum_{n>N}\\frac{1}{n^p} \\le \\frac{1}{(p-1)\\,N^{p-1}}, \\qquad \\sum_{n>N}\\frac{1}{n^2} \\le \\frac{1}{N}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["rate of convergence", "rpow", "Basel problem", "zeta function"],
     "prerequisites": []
   }

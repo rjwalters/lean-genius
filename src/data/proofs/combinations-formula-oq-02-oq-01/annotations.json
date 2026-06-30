@@ -39,7 +39,7 @@
     "id": "ann-cfoq0201-coeff-mul-bridge",
     "proofId": "combinations-formula-oq-02-oq-01",
     "range": { "startLine": 61, "endLine": 66 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Coefficient Comparison via coeff_mul and catalan_succ'",
     "content": "The engine of the functional-equation proof: coeff_mul turns [X^n](C²) into a sum over the antidiagonal {(i,j) : i+j=n} of catalan_i·catalan_j, which is precisely the right-hand side of Mathlib's catalan_succ'. Because the two sums are definitionally the same shape, no reindexing is needed — push_cast handles the N→Q coercion and the goal closes by rfl. This illustrates the general principle that multiplication of generating functions is convolution of coefficient sequences.",
     "mathContext": "$[X^n](C^2) = \\sum_{i+j=n}\\mathrm{catalan}_i\\,\\mathrm{catalan}_j$",

@@ -19,7 +19,7 @@
       "product-to-sum formulas",
       "Fourier analysis building blocks"
     ],
-    "significance": "The classical Werner formulas that turn products into sums; the half-angle specialization 2·sin(x/2)·cos((k+1)x) of the sin·cos identity is precisely the per-term telescoping engine of the Dirichlet kernel."
+    "significance": "supporting"
   },
   {
     "id": "ann-telescoping-steps",
@@ -41,7 +41,7 @@
       "half-angle factor",
       "consecutive-difference cancellation"
     ],
-    "significance": "The per-term heart of the proof: the half-angle factor sin(x/2) is exactly what makes the Werner output land on consecutive half-integer multiples of x, turning the finite sum into a telescope."
+    "significance": "supporting"
   },
   {
     "id": "ann-dirichlet-sums",
@@ -65,7 +65,7 @@
       "telescoping induction",
       "Lagrange trigonometric identity"
     ],
-    "significance": "The original content beyond Mathlib: the finite partial sums ∑_{k=1}^{n} cos(kx) and ∑_{k=1}^{n} sin(kx) in closed form, and the Dirichlet kernel D_n that is the convolution kernel of the partial sums of a Fourier series."
+    "significance": "supporting"
   },
   {
     "id": "ann-worked-instances",
@@ -74,7 +74,7 @@
       "startLine": 152,
       "endLine": 176
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Instances (n = 2 telescoped identity and the numeric check at x = π)",
     "content": "The n=2 instance proves 2·sin(x/2)·(cos x + cos 2x) = sin(5x/2) − sin(x/2) by assembling two explicit Werner steps — e1 : 2·sin(x/2)·cos x = sin(3x/2) − sin(x/2) and e2 : 2·sin(x/2)·cos 2x = sin(5x/2) − sin(3x/2) — and cancelling the intermediate sin(3x/2) with linear_combination e1 + e2, exhibiting the telescoping concretely. The numeric instance evaluates cos π + cos 2π = 0 using Real.cos_pi (cos π = −1) and the expansion of cos(2π) = cos(π+π) via Real.cos_add, Real.sin_pi; this is the n=2 cosine sum specialized at x = π, matching the telescoped right-hand side sin(5π/2) − sin(π/2) = 1 − 1 = 0.",
     "mathContext": "$2\\sin\\tfrac{x}{2}(\\cos x + \\cos 2x) = \\sin\\tfrac{5x}{2} - \\sin\\tfrac{x}{2}$ and $\\cos\\pi + \\cos 2\\pi = 0$.",
@@ -88,6 +88,6 @@
       "concrete specialization",
       "Fourier sum sanity check"
     ],
-    "significance": "Concrete confirmation that the telescoping works: the intermediate term sin(3x/2) cancels exactly, and the numeric value matches the closed form at a special angle."
+    "significance": "supporting"
   }
 ]

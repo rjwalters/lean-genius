@@ -54,7 +54,7 @@
       "startLine": 75,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "κ → 0 Becomes √κ → 0, the Slope Increment",
     "content": "The √κ normalization that makes sin_κ a genuine geometric interpolant is precisely what turns the curvature limit into a difference-quotient limit. sqrt_tendsto_nhdsGT shows √κ → 0⁺ as κ → 0⁺ (continuity of √ plus √κ > 0), and sqrt_neg_tendsto_nhdsLT shows √(−κ) → 0⁺ as κ → 0⁻. Composing these with the kernels transports the limit in the slope increment t to a limit in the curvature κ. The right-punctured filter feeds the kernel's punctured-neighbourhood hypothesis via nhdsGT_le_nhdsNE.",
     "mathContext": "$\\sqrt{\\cdot} : \\mathcal{N}[>]0 \\to \\mathcal{N}[>]0$ and $\\kappa \\mapsto \\sqrt{-\\kappa} : \\mathcal{N}[<]0 \\to \\mathcal{N}[>]0$; compose with the kernel.",

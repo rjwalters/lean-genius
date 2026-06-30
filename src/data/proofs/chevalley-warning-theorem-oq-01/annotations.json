@@ -7,7 +7,7 @@
     "title": "What Mathlib Proves and What It Omits",
     "content": "The docstring states the Chevalley–Warning theorem (Chevalley & Warning, 1935): over a finite field K of characteristic p, a low-degree polynomial system — one whose total degrees sum to less than the number of variables — has a number of common zeros divisible by p. Mathlib formalizes the four divisibility forms but uses them only to prove Erdős–Ginzburg–Ziv; it never records the existence corollary Chevalley originally drew. That corollary — a low-degree system vanishing at the origin has a NONZERO common zero — is the genuinely new content here, together with two explicit 𝔽₂ witnesses. The corollary is the form actually invoked in applications (EGZ, Warning's second theorem, Ax–Katz).",
     "mathContext": "$\\sum_i \\deg f_i < n \\Rightarrow p \\mid \\#\\{x : \\forall i,\\ f_i(x) = 0\\}$ over a finite field of characteristic $p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Chevalley–Warning theorem", "finite fields", "characteristic", "Erdős–Ginzburg–Ziv", "combinatorial nullstellensatz"],
     "prerequisites": ["finite fields", "multivariate polynomials"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-cw-concrete",
     "proofId": "chevalley-warning-theorem-oq-01",
     "range": { "startLine": 150, "endLine": 172 },
-    "type": "context",
+    "type": "concept",
     "title": "Explicit 𝔽₂ Witnesses",
     "content": "Two concrete instances confirm the corollary numerically over ZMod 2. chevalley_linear_F2: the linear form X₀+X₁ (degree 1 < 2 variables) vanishes at (1,1) since 1+1=0 in 𝔽₂. chevalley_quadratic_F2: the quadratic form X₀·X₁+X₂² (total degree 2 < 3 variables) vanishes at (1,0,0) since 1·0+0²=0 — a genuine degree-2 witness, the typical shape Chevalley–Warning is applied in. Each proof discharges the nonzero-ness by evaluating a coordinate and the vanishing by simp + kernel decide. Note: this is kernel decide, not native_decide, so it introduces no Lean.ofReduceBool and the file remains axiom-free.",
     "mathContext": "$X_0+X_1$ at $(1,1) = 0$; $X_0 X_1 + X_2^2$ at $(1,0,0) = 0$ over $\\mathbb{F}_2$.",

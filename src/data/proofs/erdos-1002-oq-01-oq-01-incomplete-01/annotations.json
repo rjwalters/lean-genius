@@ -7,7 +7,7 @@
     "title": "The Unconditional Backbone of an Open Problem",
     "content": "The docstring states Erdős Problem #1002 (OPEN): for 0 < α < 1 and the midpoint deviation deviation x = 1/2 − {x}, does f(α,n) = (1/log n)·∑_{k=1}^n deviation(α·k) have an asymptotic distribution function? Kesten (1960) settled the two-parameter variant (Cauchy limit); the one-parameter case is open. This file deliberately proves only the unconditional elementary facts the analysis rests on — the pointwise size of the deviation, the a priori control of the weighted sum, and the zero mean of the deviation over a period — and does NOT depend on the analytic Stone–Weierstrass sorry carried by the sibling equidistribution file. It is also self-contained because the base Erdos1002Problem.lean no longer builds on the pinned Mathlib (it imports the removed modules Topology.Instances.Real.Basic and Data.Int.Floor), so the three definitions are re-declared verbatim.",
     "mathContext": "$f(\\alpha,n) = \\frac{1}{\\log n}\\sum_{k=1}^n\\left(\\tfrac12 - \\{\\alpha k\\}\\right)$; this file proves $|\\mathrm{deviation}| \\le \\tfrac12$, a priori bounds, and $\\int_0^1\\mathrm{deviation} = 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problems", "equidistribution", "Weyl's theorem", "fractional parts", "asymptotic distribution"],
     "prerequisites": ["fractional parts", "number theory", "measure theory"]
   },

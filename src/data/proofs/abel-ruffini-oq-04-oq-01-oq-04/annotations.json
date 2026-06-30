@@ -30,7 +30,7 @@
       "startLine": 44,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Transitivity ⟹ p Divides |G|",
     "content": "The first ingredient. Because the cardinality of α is a prime p ≥ 2, α is nonempty; pick a point a. Transitivity means the orbit of a is all of α, so |orbit a| = p. The orbit–stabilizer theorem (card_orbit_mul_card_stabilizer_eq_card_group) gives |orbit a|·|stab a| = |G|, hence p = |orbit a| divides |G|. This divisibility is what lets Cauchy's theorem produce an element of order exactly p in the next step.",
     "mathContext": "$|G| = |G\\cdot a|\\cdot|G_a| = p\\cdot|G_a| \\implies p \\mid |G|.$",
@@ -52,7 +52,7 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Cauchy's Theorem: an Element of Order p",
     "content": "With p | |G| established, Cauchy's theorem (exists_prime_orderOf_dvd_card) yields an element g ∈ G whose order is exactly p. The cast lemma orderOf_coe transfers the order from the subgroup element to the underlying permutation, giving orderOf (g : Perm α) = p. Cauchy's theorem is the converse of Lagrange's divisibility for the prime case, and is precisely what is needed to manufacture a p-cycle out of nothing but the divisibility fact.",
     "mathContext": "$p \\mid |G| \\implies \\exists\\, g \\in G,\\ \\operatorname{ord}(g) = p.$",
@@ -97,7 +97,7 @@
       "startLine": 69,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Generation: a p-Cycle and a Transposition Generate S_p",
     "content": "The final ingredient and the conclusion. The classical fact that a p-cycle together with any transposition generates the full symmetric group when p is prime is supplied by Mathlib as closure_prime_cycle_swap — primality is essential, since for composite n a single n-cycle and a single transposition need not generate S_n. Applying it to the full-support p-cycle g and the given transposition τ shows ⟨g, τ⟩ = ⊤. Both generators lie in G (g by construction, τ by hypothesis), so ⊤ = closure{g,τ} ≤ G, forcing G = ⊤. The proof closes by the antisymmetry eq_top_iff together with closure_le and a two-case membership check.",
     "mathContext": "$\\langle g, \\tau\\rangle = S_\\alpha$ and $g,\\tau \\in G \\implies S_\\alpha = \\langle g,\\tau\\rangle \\le G \\implies G = S_\\alpha.$",

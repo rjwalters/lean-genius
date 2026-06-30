@@ -52,11 +52,11 @@
       "startLine": 48,
       "endLine": 62
     },
-    "type": "observation",
+    "type": "concept",
     "title": "The Reusable Parity Template Across Powers",
     "content": "This proof is the verbatim fourth-power instance of the template introduced for ζ(2): (i) even part = (1/2^s)·ζ(s) by mul_left, (ii) odd summability by injective reindexing, (iii) odd value by even_add_odd + unique + linarith. The only changes from the second-power case are the exponent (4 vs 2) and the scaling constant (1/16 vs 1/4). This demonstrates that the entire family of odd-index lambda values λ(2m) is mechanically derivable from the corresponding ζ(2m) with no fresh analytic input — exactly the generalization flagged in the open question.",
     "mathContext": "$\\lambda(2m) = (1 - 2^{-2m})\\,\\zeta(2m)$ for all $m$, via the same even/odd split.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dirichlet lambda function",
       "even zeta values",
@@ -74,7 +74,7 @@
       "startLine": 64,
       "endLine": 67
     },
-    "type": "observation",
+    "type": "concept",
     "title": "The tsum Form",
     "content": "tsum_odd_zeta_four repackages the result as ∑' k, 1/(2k+1)⁴ = π⁴/96 via HasSum.tsum_eq, the citation-friendly statement. Convergence is never in doubt — the terms are a subseries of the absolutely convergent ζ(4) (p = 4 > 1) — so the tsum value is well-defined and the rearrangement into even/odd halves is justified.",
     "mathContext": "$\\displaystyle\\sum_{k=0}^{\\infty}\\frac{1}{(2k+1)^4} = \\frac{\\pi^4}{96}.$",

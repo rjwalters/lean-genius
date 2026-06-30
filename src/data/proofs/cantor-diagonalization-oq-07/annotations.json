@@ -10,7 +10,7 @@
     "title": "Module Header and Problem Setup",
     "content": "The open question asks for $\\#(\\mathbb{R} \\times \\mathbb{R}) = \\#\\mathbb{R}$, equivalently $\\mathfrak{c} \\cdot \\mathfrak{c} = \\mathfrak{c}$. Where Cantor's 1874 diagonal argument (cantor-diagonalization-oq-06) shows ℝ is *strictly* larger than ℕ, his surprising 1878 result shows the continuum is *stable* under products: the line and the plane are in bijection, so dimension does not change cardinality.",
     "mathContext": "$\\#(\\mathbb{R}\\times\\mathbb{R}) = \\#\\mathbb{R}$, i.e. $\\mathfrak{c}\\cdot\\mathfrak{c} = \\mathfrak{c}$ where $\\mathfrak{c} = 2^{\\aleph_0} = \\#\\mathbb{R}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["cardinality of the continuum 𝔠", "Cantor 1878 line≅plane", "cardinal arithmetic", "dimension vs cardinality"],
     "prerequisites": ["cardinal numbers", "the diagonal argument (#ℕ < #ℝ)"]
   },

@@ -74,11 +74,11 @@
       "startLine": 91,
       "endLine": 99
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Excluding Reflections: ofAdd 1 ≠ 1 in ℤ/2",
     "content": "The substance of `parity_ker_eq_rotation_range` is the reflection case. To show no reflection lies in `ker(parity)`, one must rule out `parity (sr i) = 1`, i.e. `Multiplicative.ofAdd 1 = 1`. The lemma `ofAdd_eq_one` translates this multiplicative equation back to the additive statement `(1 : ZMod 2) = 0`, which `decide` refutes by finite computation on `ZMod 2`. Symmetrically, no reflection is in `range(rotation)` because `r _ = sr _` is impossible (the constructors of `DihedralGroup` are distinct), closed by `simp`. The rotation case is the easy direction: every `r i` is parity-trivial and visibly equals `rotation (ofAdd i)`. This decide call is *kernel* `decide` on `ZMod 2`, not `native_decide`, so it introduces no `Lean.ofReduceBool` axiom.",
     "mathContext": "$\\text{ofAdd}(1)=1 \\iff (1:\\mathbb Z/2)=0$, false; and $r_i\\neq s r_j$ for all $i,j$. Hence the reflections form the non-trivial coset and $\\ker(\\text{parity})$ is exactly $\\{r_i\\}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "ofAdd_eq_one",
       "decide vs native_decide",

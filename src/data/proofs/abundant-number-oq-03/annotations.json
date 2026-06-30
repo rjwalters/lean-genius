@@ -48,7 +48,7 @@
     "title": "The Family Is Injective",
     "content": "To conclude infinitude we need the witness family to be injective. `odd_mul_succ_injective` proves $k \\mapsto 945\\cdot(2k+1)$ is injective: from $945\\cdot(2a+1) = 945\\cdot(2b+1)$, **left-cancel** the nonzero factor $945$ (`Nat.eq_of_mul_eq_mul_left`, since $945 > 0$) to obtain $2a+1 = 2b+1$, then `omega` gives $a = b$. Multiplication by the nonzero constant $945$ is cancellative, and the affine map $k \\mapsto 2k+1$ is itself injective, so the composite separates distinct indices into distinct witnesses.",
     "mathContext": "`Nat.eq_of_mul_eq_mul_left : 0 < a → a*b = a*c → b = c`. Distinct k give distinct 945·(2k+1).",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "left-cancellation of multiplication on ℕ",
       "`Function.Injective`",

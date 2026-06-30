@@ -6,7 +6,7 @@
       "startLine": 49,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From the Generator to Every Power (frob_pow_fixed)",
     "content": "frob_pow_fixed is the induction engine: if frob x = x then (frob^k) x = x for all k. The base case k = 0 is the identity automorphism (simp via AlgEquiv.one_apply); the step rewrites frob^(k+1) = frob^k · frob (pow_succ), evaluates the composite with AlgEquiv.mul_apply to (frob^k)(frob x), then collapses frob x = x by the hypothesis and (frob^k) x = x by the inductive hypothesis. This three-rewrite induction is what promotes 'fixed by the single generator' to 'fixed by the entire cyclic group ⟨frob⟩' — the step that makes a statement about one automorphism into a statement about the whole Galois group.",
     "mathContext": "$\\mathrm{frob}\\,x = x \\Rightarrow (\\mathrm{frob}^k)\\,x = x$, by induction with $\\mathrm{frob}^{k+1} = \\mathrm{frob}^k\\cdot\\mathrm{frob}$.",

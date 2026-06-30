@@ -73,7 +73,7 @@
     "title": "Monotonicity",
     "content": "Any subset of an isosceles-free set is isosceles-free. This subset-closure is exactly what makes 'the largest isosceles-free subset' a well-posed optimization, and hence what makes P_d(n) meaningful.",
     "mathContext": "IsoscelesFree.mono : IsoscelesFree T → S ⊆ T → IsoscelesFree S",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "monotonicity",
       "hereditary property"
@@ -152,7 +152,7 @@
       "startLine": 128,
       "endLine": 150
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Sanity Checks",
     "content": "{0,1,2} is not isosceles-free — the point 1 is equidistant from 0 and 2. {0,1,3} is isosceles-free, proved through the bridge by exhausting the finite midpoint check. Together they confirm the definitions have teeth and the bridge is usable in practice.",
     "mathContext": "not_isoscelesFree_zero_one_two and isoscelesFree_zero_one_three (the latter via isoscelesFree_iff_midpointFree + norm_num).",

@@ -74,7 +74,7 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Literal ∑_{k=1}^{n} Form",
     "content": "sum_Icc_eq_sum_range proves that the literal lower-limit-1 sum over Finset.Icc 1 n equals the range (n+1) sum, by an induction whose step matches Finset.sum_Icc_succ_top against Finset.sum_range_succ term by term; the only extra index, k = 0, contributes 0·0! = 0. sum_Icc_mul_factorial then states the identity with the customary lower limit k = 1, showing that limit is purely cosmetic.",
     "mathContext": "$\\sum_{k\\in[1,n]} k\\cdot k! = \\sum_{k\\in[0,n]} k\\cdot k!$ (the $k=0$ term is $0$), hence $= (n+1)! - 1$.",
@@ -120,11 +120,11 @@
       "startLine": 84,
       "endLine": 85
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Sanity Checks",
     "content": "Two decide-checked examples pin the identity to numbers: ∑_{k=0}^{3} k·k! = 0 + 1 + 4 + 18 = 23 = 4! − 1, and ∑_{k=1}^{5} k·k! = 719 = 6! − 1. Using kernel decide (not native_decide) keeps the file axiom-free — no Lean.ofReduceBool is introduced — while still exhibiting the formula on small cases.",
     "mathContext": "$\\sum_{k=0}^{3} k\\cdot k! = 23 = 4!-1$; $\\sum_{k=1}^{5} k\\cdot k! = 719 = 6!-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked numerical examples",
       "kernel decide (axiom-free)",

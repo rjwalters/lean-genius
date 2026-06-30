@@ -39,7 +39,7 @@
     "id": "ann-sandwich",
     "proofId": "gcd-algorithm-oq-01-oq-01",
     "range": { "startLine": 64, "endLine": 73 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Explicit Sandwich and the Lamé Bound",
     "content": "The two one-sided bounds φⁿ/√5 − ½ < fib(n) < φⁿ/√5 + ½ unpack the absolute-value estimate (abs_lt) into a linear sandwich, each half closed by linarith. This makes the geometric growth of Fibonacci numbers explicit and is the engine behind the logarithmic Euclidean worst case: Lamé's theorem says an n-step gcd computation needs inputs b ≥ fib(n+1) ≈ φⁿ⁺¹/√5, so the number of steps is O(log b) — the n-step worst-case inputs have size ≈ φⁿ.",
     "mathContext": "$\\tfrac{\\varphi^n}{\\sqrt5} - \\tfrac12 < \\mathrm{fib}(n) < \\tfrac{\\varphi^n}{\\sqrt5} + \\tfrac12;\\quad \\text{Lamé: } b \\ge \\mathrm{fib}(\\text{steps}+1) \\Rightarrow \\text{steps} = O(\\log_\\varphi b).$",

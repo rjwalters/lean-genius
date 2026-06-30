@@ -34,7 +34,7 @@
     "title": "Forward Direction and Full ⟹ Bounded",
     "content": "`hasBoundedTietzeExtensionProperty_of_normalSpace` proves normal ⟹ bounded without any interval-valued Tietze instance: take an ordinary unrestricted extension F of f via Mathlib's `ContinuousMap.exists_restrict_eq`, then post-compose with the clamp. The result lands in [a,b] everywhere (clamp_mem_Icc) and equals f on s because f is already in [a,b] there, where the clamp is the identity (clamp_eq_self). `hasBoundedTietzeExtensionProperty_of_hasTietzeExtensionProperty` runs the identical clamp on the parent's unrestricted extension, showing the full Tietze property implies the bounded one — so the bounded property is the strictly weaker hypothesis.",
     "mathContext": "Clamp an unrestricted extension $F$: $\\max(a,\\min(b,F))\\in[a,b]$ and restricts to $f$ on $s$ since $f\\in[a,b]$ there. Hence $\\mathrm{Normal}\\Rightarrow\\mathrm{BddTietze}$ and $\\mathrm{Tietze}\\Rightarrow\\mathrm{BddTietze}$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "clamping / retraction",
       "ContinuousMap.exists_restrict_eq",

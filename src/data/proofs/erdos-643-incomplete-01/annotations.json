@@ -27,7 +27,7 @@
       "startLine": 103,
       "endLine": 110
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Star Has No Crossed Pair — One t-Independent Line",
     "content": "A crossed pair requires two of its four edges, A and B, to satisfy A ∩ B = ∅. But every edge of the star St₀ contains the fixed vertex 0, so for any two star edges 0 ∈ A and 0 ∈ B, giving 0 ∈ A ∩ B and A ∩ B ≠ ∅ — a direct contradiction. The argument never mentions t, which is precisely why the bound generalizes from the parent's hardcoded t=3 `Star_noCrossedPair` to all t at once. (Implementation note: `open scoped Classical` makes the ∩ in `IsCrossedPair` use the classical DecidableEq instance, distinct from `Fin n`'s concrete one, so the proof uses `simp_all [Finset.ext_iff]` rather than a direct rewrite to dodge the instance diamond.)",
     "mathContext": "Two sets sharing a common element are never disjoint; all star edges share vertex 0; a crossed pair needs a disjoint pair of edges.",
@@ -48,7 +48,7 @@
       "startLine": 112,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Counting the Star: the Link Bijection e ↦ e \\ {0}",
     "content": "The star St₀ = { e : |e|=t, 0∈e } is put in bijection with the (t-1)-subsets of the remaining n-1 vertices: St₀ = image (insert 0) (powersetCard (t-1) (univ.erase 0)). Injectivity of `insert 0` on sets avoiding 0 is `erase_insert`; surjectivity onto St₀ is `insert_erase` (e = insert 0 (e.erase 0) when 0 ∈ e). `Finset.card_image_of_injOn` then reduces |St₀| to |powersetCard (t-1) (univ.erase 0)| = C(n-1, t-1) via `Finset.card_powersetCard` and `card_erase_of_mem`. This generalizes the parent's t=3 `Star_card` (which gave C(n-1,2)) to arbitrary t.",
     "mathContext": "t-subsets of [n] containing a fixed vertex ↔ (t-1)-subsets of the other n-1 vertices, hence |St₀| = C(n-1,t-1) — the link of vertex 0.",
@@ -91,7 +91,7 @@
       "startLine": 177,
       "endLine": 223
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Asymptotic Optimality: C(n-1,t-1)/C(n,t-1) → 1",
     "content": "The star's edge count C(n-1,t-1) is the conjectured main term C(n,t-1) up to a factor that vanishes: the exact column identity (n-k)·C(n,k) = n·C(n-1,k) (`choose_pred_identity`, from `Nat.add_one_mul_choose_eq` and `Nat.choose_succ_right_eq`) gives, for n ≥ t, the ratio C(n-1,t-1)/C(n,t-1) = (n-t+1)/n. Since (t-1)/n → 0 (`Tendsto.div_atTop`), this ratio tends to 1 (`star_ratio_tendsto`), so f(n,t) ≥ (1+o(1))·C(n,t-1): the star realizes the full first-order constant of Erdős' conjectured lower bound. Only the second-order term ⌊(n-1)/t⌋ and the matching upper bounds lie outside this axiom-free island.",
     "mathContext": "C(n-1,t-1)/C(n,t-1) = (n-t+1)/n → 1, so the single-star lower bound is asymptotically optimal for the conjecture's main term.",

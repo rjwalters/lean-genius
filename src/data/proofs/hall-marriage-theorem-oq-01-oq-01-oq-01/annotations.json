@@ -7,7 +7,7 @@
     "title": "Module Header: From the Defect Biconditional to a Closed Form",
     "content": "The companion entry proves the **defect (Ore) form** of Hall's theorem: a matching saturating all but $d$ indices exists **iff** every sub-family $s$ satisfies $\\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + d$. This file pins the sharp $d$ to the **deficiency**\n$$\\delta(t) = \\max_{s}\\ \\bigl(\\#s - \\#(s.\\mathrm{biUnion}\\ t)\\bigr),$$\nturning the parametrised biconditional into a single optimum: **maximum partial-transversal size $= \\#\\iota - \\delta(t)$**. Attainability comes from the parent's $\\mathrm{exists\\_matching\\_of\\_deficiency\\_le}$, optimality from $\\mathrm{deficiency\\_le\\_of\\_matching}$; $\\delta = 0$ recovers Hall's full system of distinct representatives.",
     "mathContext": "$\\delta(t)=\\max_s\\bigl(\\#s-\\#(s.\\mathrm{biUnion}\\,t)\\bigr)$, max partial-transversal size $=\\#\\iota-\\delta(t)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Hall's marriage theorem", "Ore defect form", "deficiency version of Hall", "min-max duality", "König–Egerváry theorem"],
     "prerequisites": ["systems of distinct representatives", "bipartite matching"]
   },

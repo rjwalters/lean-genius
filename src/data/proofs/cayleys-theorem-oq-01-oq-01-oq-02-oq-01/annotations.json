@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Converse to Cayley: Closing the Loop",
     "content": "**Module framing.** The parent showed the *image* of the finite Cayley embedding is a regular (sharply transitive) subgroup of $S_n$. This file proves the **converse**: *any* subgroup $H \\le S_n = \\mathrm{Perm}(\\alpha)$ (with $\\alpha$ finite nonempty) that acts **freely** and **transitively** is regular of order $n$.\n\nTwo structural payoffs pin such an $H$ down:\n- **Order $n$**: $\\mathrm{Nat.card}\\,H = |\\alpha|$, via the orbit map $\\sigma \\mapsto \\sigma\\bullet a$ being a bijection $H \\simeq \\alpha$;\n- **Sharp transitivity**: a unique $\\sigma \\in H$ with $\\sigma i = j$.\n\nCombined with the parent, this closes the loop: *the regular subgroups of $S_n$ are exactly the free transitive ones, and they all have order $n$.* The argument is orbit–stabiliser specialised to a free action — no dependence on the Cayley construction.",
     "mathContext": "For a transitive action, orbit–stabiliser gives $|H| = |\\alpha|\\cdot|H_a|$; freeness makes the stabiliser $H_a$ trivial, so $|H| = |\\alpha|$. This is the abstract characterisation of a regular (simply transitive) action as a torsor.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Regular permutation group",
       "Orbit–stabiliser theorem",

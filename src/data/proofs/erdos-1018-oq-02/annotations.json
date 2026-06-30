@@ -7,7 +7,7 @@
     "title": "Generalized Euler Edge Bound E ≤ 3V − 3χ",
     "content": "The core result. For any V, E, F : ℕ satisfying Euler's polyhedral relation V − E + F = χ (over ℤ, since χ may be ≤ 0 for higher genus) and the face-degree inequality 3F ≤ 2E, the number of edges is bounded by 3V − 3χ. The proof is a single `omega` call: substitute F = χ − V + E into 3F ≤ 2E to get 3(χ − V + E) ≤ 2E, i.e. E ≤ 3V − 3χ. This is the surface-uniform form of the bound that the parent file #1018 takes as the axiom `planar_linear_bound`. The hypotheses encode the geometric input of a genuine 2-cell embedding; the implication is what is machine-checked.",
     "mathContext": "$V - E + F = \\chi$ and $3F \\le 2E$ give $2E \\ge 3F = 3(\\chi - V + E)$, hence $E \\le 3V - 3\\chi$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Euler characteristic",
       "Euler's polyhedral formula",
@@ -27,7 +27,7 @@
     "title": "Torus Edge Bound E ≤ 3V (χ = 0)",
     "content": "Specializing the Euler characteristic to χ = 0 (the torus and the Klein bottle) gives E ≤ 3V. The bound is sharp: K₇ embeds on the torus with V = 7 and E = 21 = 3·7. Crucially the bound is still linear in V, exactly like the planar bound 3V − 6, which is why the Kostochka–Pyber density argument transfers to the torus unchanged. The sibling corollaries cover the projective plane (χ = 1 → 3V − 3) and the orientable genus-g surface (χ = 2 − 2g → 3V − 6 + 6g).",
     "mathContext": "$\\chi = 0 \\Rightarrow E \\le 3V$; attained by $K_7$ on the torus ($V=7, E=21$).",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "torus",
       "K₇ on the torus",
@@ -84,7 +84,7 @@
     "title": "Surface-Independence of the Density Threshold",
     "content": "The capstone answering OQ-02. Encode a surface by the slope c of its linear edge bound E ≤ c·n. For every c and every ε > 0, all sufficiently large dense graphs (n^(1+ε) ≤ E) violate E ≤ c·n, hence cannot embed in the surface — they must contain a non-embeddable subgraph. Because the conclusion holds for every c, it holds for every surface: only the threshold constant C_ε (which scales with the genus) depends on the surface, never the threshold exponent 1. This is the affirmative answer to 'can similar results be proved for other surfaces?' at the level of the structural mechanism.",
     "mathContext": "$n^{1+\\varepsilon} \\le E$ and $c\\,n < n^{1+\\varepsilon}$ give $c\\,n < E$, for all large $n$, for every surface-slope $c$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Kostochka–Pyber threshold",
       "surface-independence",

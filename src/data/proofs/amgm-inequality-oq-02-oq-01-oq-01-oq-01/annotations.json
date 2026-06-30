@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "Moment Determinacy: the Injectivity Half of Newton's Identities",
     "content": "Newton's identities link the power sums pⱼ = Σᵢ vᵢʲ to the elementary symmetric functions eₖ. The parent packaged the forward recurrence k·eₖ = (−1)^{k+1} Σ_{i+j=k, i<k} (−1)ⁱ eᵢ pⱼ over MvPolynomial σ ℤ; a sibling (…-oq-02) used the inverted recurrence to show power sums and elementary symmetric polynomials generate the same ℚ-subalgebra. This entry answers the determinacy question: the first |σ| power sums are a COMPLETE INVARIANT — equal power sums force equal elementary symmetric functions, hence the same monic polynomial ∏ᵢ(X + vᵢ), hence the same multiset {vᵢ} up to order. Symmetric polynomials are taken over ℤ; evaluation lands in any characteristic-zero domain K (ℚ, ℝ, ℂ, ℤ), where the division by k happens.",
     "mathContext": "Equal moments $p_j(v)=p_j(w)$ for $1\\le j\\le|\\sigma|$ $\\Rightarrow$ $\\prod_i(X+v_i)=\\prod_i(X+w_i)$ — a finite-multiset moment problem.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's identities", "power sums", "elementary symmetric polynomials", "moment problem", "complete invariant"],
     "prerequisites": ["symmetric polynomials", "characteristic zero", "Vieta's formulas"]
   },
@@ -21,7 +21,7 @@
       "startLine": 46,
       "endLine": 51
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Elementary Symmetric Functions Vanish Above Degree |σ|",
     "content": "esymm_eval_eq_zero records that aeval v (esymm σ ℤ k) = 0 whenever k > |σ|: there are no squarefree monomials of degree exceeding the number of variables, so esymm σ ℤ k is literally the empty sum (powersetCard_eq_empty.mpr after rewriting card_univ). This degree cutoff is what lets the determinacy result be promoted from 'all eₖ with k ≤ |σ|' to 'all eₖ whatsoever' — beyond |σ| both sides are 0 for free.",
     "mathContext": "$e_k(v)=0$ for $k>|\\sigma|$, since $\\binom{[\\sigma]}{k}=\\varnothing$.",

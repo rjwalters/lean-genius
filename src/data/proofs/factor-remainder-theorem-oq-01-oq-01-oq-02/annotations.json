@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 56
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two Coordinate Systems on the Shifted Line",
     "content": "The module docstring frames the open question: a degree-$N$ polynomial $p$ sampled along the line $a + r$ carries two natural coordinate systems. The **Taylor (monomial) coefficients** $t_j = (\\text{taylor } a\\, p).\\text{coeff } j$ are the coordinates of $p(a+r)$ in the basis $\\{r^j\\}$; the **Newton (forward-difference) coefficients** $c_m = \\Delta^m[r \\mapsto p(a+r)](0)$ are the coordinates in the binomial basis $\\{\\binom{r}{m}\\}$, equivalently the iterated finite differences of the samples $p(a), p(a+1), p(a+2), \\ldots$. The bridge is the finite-difference-of-monomials kernel $K(j,m) = \\Delta^m(r \\mapsto r^j)(0) = m! \\cdot S(j,m)$, where $S(j,m)$ is the Stirling number of the second kind. The imports pull in Mathlib's forward-difference operator, Taylor expansion, and binomial-ring machinery; everything is over $\\mathbb{Q}$, with 0 axioms.",
     "mathContext": "Taylor: $p(a+r) = \\sum_j t_j r^j$. Newton: $p(a+r) = \\sum_m c_m \\binom{r}{m}$. Change of basis: $c_m = \\sum_j t_j K(j,m)$, $K(j,m) = m! \\, S(j,m)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["finite differences", "Newton interpolation", "Taylor expansion", "Stirling numbers of the second kind", "binomial basis"],
     "prerequisites": ["polynomial Taylor coefficients", "the forward difference operator", "change of basis"]
   },

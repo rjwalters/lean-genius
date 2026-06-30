@@ -3,11 +3,11 @@
     "id": "ann-abelruffini-oq11-docstring",
     "proofId": "abel-ruffini-galois-extensions-oq-11",
     "range": { "startLine": 1, "endLine": 52 },
-    "type": "context",
+    "type": "concept",
     "title": "Noether's Problem and the Universally Positive Sₙ Core",
     "content": "Noether (1918) asked whether the fixed field K(x₁,…,xₙ)^G of a finite group G ≤ Sₙ permuting variables is purely transcendental over K — a positive answer turning abstract inverse-Galois existence into an explicit parametric family of G-extensions of K. For arbitrary G the answer is negative in general (Swan's ℤ/47ℤ, 1969; the precise obstruction is Bogomolov's multiplier B₀(G)). But for the FULL symmetric group G = Sₙ it is positive for every n, independently of solvability: the fundamental theorem of symmetric functions makes the invariant ring the polynomial ring K[e₁,…,eₙ], whose fraction field K(e₁,…,eₙ) is purely transcendental of transcendence degree n. This file formalizes that core: algebraic independence of the eᵢ, the Noether-rationality witness, and the contrast with the parent's solvability threshold.",
     "mathContext": "$K(x_1,\\ldots,x_n)^{S_n} \\cong K(e_1,\\ldots,e_n)$ is purely transcendental of transcendence degree $n$, for every $n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Noether's rationality problem", "purely transcendental extension", "Bogomolov multiplier", "inverse Galois problem"],
     "prerequisites": ["field extensions", "Galois theory", "symmetric polynomials"]
   },

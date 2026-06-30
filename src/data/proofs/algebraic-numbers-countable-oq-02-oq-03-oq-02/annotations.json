@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
     "range": { "startLine": 10, "endLine": 51 },
-    "type": "context",
+    "type": "concept",
     "title": "Transcendentals Are a Dense Gδ; Algebraic Reals Are Not Gδ",
     "content": "The companion entry proves the transcendentals are residual (comeagre), but residuality (`mem_residual`) only says a set contains a dense Gδ. This entry sharpens to the Borel-hierarchy level: the transcendentals ARE a dense Gδ, and the algebraic reals are NOT Gδ. So the algebraic reals are Fσ but not Gδ, the transcendentals Gδ but not Fσ — strictly finer than 'meagre vs comeagre', which both sides' bare statements leave ambiguous.",
     "mathContext": "Algebraic reals: $F_\\sigma$ (countable union of points) but not $G_\\delta$. Transcendentals: $G_\\delta$ but not $F_\\sigma$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Gδ and Fσ sets", "Borel hierarchy", "Baire category", "residual sets", "descriptive set theory"],
     "prerequisites": ["Gδ/Fσ sets", "Baire spaces", "algebraic vs transcendental reals"]
   },

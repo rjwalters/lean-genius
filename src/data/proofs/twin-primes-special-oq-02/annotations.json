@@ -19,7 +19,7 @@
     "title": "Concrete Values by decide",
     "content": "piTwo_zero, piTwo_five, piTwo_thirteen pin down π₂(0)=0, π₂(5)=2, π₂(13)=3 by decide. Crucially these use decide (kernel reduction), not native_decide, so they introduce no Lean.ofReduceBool — they remain genuinely machine-checked and the only assumption in the file is the Hardy–Littlewood axiom.",
     "mathContext": "\\pi_2(5)=2,\\quad \\pi_2(13)=3",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["decide", "kernel reduction", "worked example"],
     "prerequisites": []
   },
@@ -31,7 +31,7 @@
     "title": "Monotonicity and the Trivial Bound",
     "content": "piTwo_mono shows π₂ is non-decreasing: a larger range gives a superset filter, so Finset.card_le_card (via Finset.range_mono) bounds the cardinalities. piTwo_le gives π₂(N) ≤ N+1 from Finset.card_filter_le and card_range. Both are unconditional.",
     "mathContext": "M \\le N \\Rightarrow \\pi_2(M) \\le \\pi_2(N) \\le N+1",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["monotonicity", "Finset.card_le_card", "card_filter_le"],
     "prerequisites": []
   },
@@ -51,7 +51,7 @@
     "id": "ann-tps-oq02-axiom",
     "proofId": "twin-primes-special-oq-02",
     "range": { "startLine": 127, "endLine": 130 },
-    "type": "remark",
+    "type": "warning",
     "title": "Hardy–Littlewood Conjecture B (Axiomatized)",
     "content": "hardy_littlewood_conjecture_B is the single declared axiom: π₂(N)/(N/(log N)²) → 2C for some positive C, i.e. π₂(N) ~ 2C₂N/(log N)². This open prediction is stated, not proved; the existential constant records the conjectured 2C₂ without formalizing the infinite product for C₂. Status: axiomatized (axiomCount 1, badge axiom).",
     "mathContext": "\\pi_2(N) \\sim \\frac{2C_2\\,N}{(\\log N)^2},\\qquad C_2 = \\prod_{p\\ge 3}\\frac{p(p-2)}{(p-1)^2} \\approx 0.6601",

@@ -39,7 +39,7 @@
     "id": "ann-aut-normalizes",
     "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
     "range": { "startLine": 106, "endLine": 125 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Automorphisms Normalize L(G)",
     "content": "autPerm_mem_normalizer feeds the conjugation lemma into Mathlib's Subgroup.mem_normalizer_iff. To show φ ∈ N(L(G)) one checks h ∈ L(G) ⟺ φ h φ⁻¹ ∈ L(G) for all h. The forward direction is immediate from autPerm_conj_leftReg; the backward direction conjugates by the inverse automorphism φ.symm, using map_mul and MulEquiv.symm_apply_apply. Since φ is a bijection of generators, the whole image subgroup L(G) is preserved set-wise.",
     "mathContext": "$\\varphi \\in N_{\\mathrm{Sym}(G)}(L(G)) \\iff \\forall h,\\ h \\in L(G) \\Leftrightarrow \\varphi h \\varphi^{-1} \\in L(G)$. Each direction is supplied by $\\varphi L_g \\varphi^{-1} = L_{\\varphi g}$ (resp. with $\\varphi^{-1}$).",
@@ -75,11 +75,11 @@
     "id": "ann-context-holomorph",
     "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 52 },
-    "type": "context",
+    "type": "concept",
     "title": "The Holomorph and Its Place in Group Theory",
     "content": "The holomorph Hol(G) = N_{Sym(G)}(L(G)) is the largest permutation group in which G (as L(G)) is normal and acted on by its full automorphism group. It packages G and Aut(G) into a single permutation group G ⋊ Aut(G). This file is a self-generated follow-up to the parent entry, which proved the companion fact that the centralizer of L(G) is the right-regular image R(G). Centralizer = R(G) and normalizer = L(G)·Aut(G) together give the complete picture of the symmetries of the regular representation. For the cyclic group Z/n the holomorph is the affine group {x ↦ a·x + b : a ∈ (Z/n)*, b ∈ Z/n}.",
     "mathContext": "$\\mathrm{Hol}(G) = N_{\\mathrm{Sym}(G)}(L(G)) \\cong G \\rtimes \\mathrm{Aut}(G)$, while $C_{\\mathrm{Sym}(G)}(L(G)) = R(G)$. For $G = \\mathbb{Z}/n$: $\\mathrm{Hol}(\\mathbb{Z}/n) \\cong (\\mathbb{Z}/n) \\rtimes (\\mathbb{Z}/n)^\\times$, the affine maps $x \\mapsto ax+b$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["holomorph", "automorphism group", "regular representation", "centralizer", "affine group", "Burnside", "Miller"],
     "prerequisites": ["group theory", "semidirect products", "permutation groups"]
   }

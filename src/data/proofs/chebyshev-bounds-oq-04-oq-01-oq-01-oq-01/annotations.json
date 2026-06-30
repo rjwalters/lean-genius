@@ -31,11 +31,11 @@
       "startLine": 46,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Möbius–Floor Identity by the Hyperbola Method",
     "content": "`card_multiples_Icc`, `sum_moebius_divisors`, and `sum_moebius_mul_floor` together prove $\\sum_{d\\in[1,N]} \\mu(d)\\lfloor N/d\\rfloor = 1$. The floor $\\lfloor N/d\\rfloor$ is realised as the count of multiples of $d$ in $\\{1,\\dots,N\\}$ (`Nat.Ioc_filter_dvd_card_eq_div`), each term becomes an indicator sum $\\sum_{k\\le N}[d\\mid k]\\mu(d)$, the order of summation is swapped (`Finset.sum_comm` — the hyperbola swap), and the inner sum collapses via $\\sum_{d\\mid k}\\mu(d) = [k=1]$ (the Dirichlet identity $\\mu * \\zeta = \\delta$).",
     "mathContext": "∑_d ∑_k [d∣k] μ(d) = ∑_k ∑_{d∣k} μ(d) = ∑_k [k=1] = 1. The double sum ranges over Dirichlet's hyperbola d·m ≤ N, weighted by μ(d).",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "Nat.Ioc_filter_dvd_card_eq_div",
       "Finset.sum_comm",
@@ -54,11 +54,11 @@
       "startLine": 109,
       "endLine": 143
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Splitting the Floor: ⌊N/d⌋ = N/d − {N/d}",
     "content": "`mul_mertensRecip_eq` turns the integer identity into the real form $N\\,M_1(N) = 1 + \\sum \\mu(d)\\{N/d\\}$. The key per-term step writes $(N{:}\\mathbb{R})/d = \\lfloor N/d\\rfloor + \\{N/d\\}$, using $\\lfloor (N{:}\\mathbb{R})/(d{:}\\mathbb{R})\\rfloor = (N/d : \\mathbb{N})$ (`Int.floor_div_natCast`, `Int.floor_natCast`, `Int.natCast_div`) and `Int.self_sub_floor`. The integer floor identity is then transported into ℝ by an explicit cast (`Int.cast_sum`, `Int.cast_mul`, `Int.cast_natCast`) rather than `push_cast`, which would split the nat-division cast.",
     "mathContext": "N·M₁(N) = ∑ μ(d)·(N/d) = ∑ μ(d)·⌊N/d⌋ + ∑ μ(d)·{N/d} = 1 + ∑ μ(d)·{N/d}.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "Int.floor_div_natCast",
       "Int.self_sub_floor",
@@ -77,11 +77,11 @@
       "startLine": 145,
       "endLine": 189
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bounding the Fractional Sum by N − 1",
     "content": "`fract_sum_abs_le` proves $|\\sum \\mu(d)\\{N/d\\}| \\le N-1$. The $d=1$ term is $\\mu(1)\\{N/1\\} = \\mu(1)\\{N\\} = 0$ since $N$ is an integer (`Int.fract_natCast`), so it is dropped (`Finset.add_sum_erase`). Each remaining term satisfies $|\\mu(d)\\{N/d\\}| \\le |\\mu(d)|\\,|\\{N/d\\}| \\le 1\\cdot 1 = 1$ (`abs_moebius_le_one`, `Int.fract_nonneg`, `Int.fract_lt_one`), and there are exactly $\\#((\\mathrm{Icc}\\,1\\,N)\\setminus\\{1\\}) = N-1$ of them.",
     "mathContext": "The vanishing of the d=1 term is what sharpens the trivial ≤ N bound to ≤ N − 1 — exactly enough to reach |M₁(N)| ≤ 1.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "Int.fract_natCast, Int.fract_lt_one",
       "ArithmeticFunction.abs_moebius_le_one",

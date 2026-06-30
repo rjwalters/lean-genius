@@ -73,7 +73,7 @@
       "startLine": 100,
       "endLine": 107
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Existence for Free via List.argmin",
     "content": "`exists_lowerVertex` turns the seed lemma into an existence guarantee: every nonempty support list has a lower vertex. The proof case-splits on `pts.argmin (·.2)` (the minimum-valuation element). The `none` branch is impossible — `List.argmin_eq_none` says the list would be empty, contradicting the hypothesis — and the `some m` branch feeds `List.argmin_mem` (membership) and `List.le_of_mem_argmin` (minimality over all elements) directly into `isLowerVertex_of_minimal`. Reusing Mathlib's argmin API means no bespoke induction on lists is needed; the existence theorem any hull construction must satisfy comes essentially for free.",
     "mathContext": "$\\text{pts}\\neq[]\\Rightarrow\\exists p,\\ \\text{IsLowerVertex}(\\text{pts},p)$, via $p=\\arg\\min_{q\\in\\text{pts}} v_q$.",
@@ -96,11 +96,11 @@
       "startLine": 109,
       "endLine": 130
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Example: Both Endpoints of Y²−x Are Vertices",
     "content": "The canonical test case is `Y² − x` over `K((x))`: its coefficients are `a₀ = −x` (valuation 1), `a₁ = 0` (omitted), `a₂ = 1` (valuation 0), so the support is `YsqMinusX = [(0,1), (2,0)]`. Both `ysqMinusX_vertex_const` and `ysqMinusX_vertex_lead` exhibit the *same* edge line `y = −½·i + 1` (here `m = −1/2`, `b = 1`) as the supporting line through each endpoint. The membership obligation is closed by `simp [YsqMinusX]` and the supporting inequalities by `fin_cases hq <;> norm_num`, which checks the line against each of the two points: it passes through both with equality, so the single edge from (0,1) to (2,0) IS the entire Newton polygon.",
     "mathContext": "$Y^2-x$: support $\\{(0,1),(2,0)\\}$; the line $y=-\\tfrac12 i+1$ gives $-\\tfrac12\\cdot0+1=1$ and $-\\tfrac12\\cdot2+1=0$, touching both points — both are lower vertices.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "fin_cases",
       "norm_num",

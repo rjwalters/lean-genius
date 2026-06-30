@@ -57,7 +57,7 @@
     "title": "Absolute Convergence in a Complete Space",
     "content": "`summable_geo` is the convergent geometric majorant ∑ (2/3)ⁿ·(M/3). `summable_norm_gbcf` compares the correction norms against it (`Summable.of_nonneg_of_le`), and `summable_gbcf` concludes `Summable gbcf` by `Summable.of_norm` — absolute convergence implies convergence because `BoundedContinuousFunction X ℝ` is complete (ℝ is complete). This is the abstract fact that replaces Mathlib's TietzeExtension limit construction: where the parent entry delegated the assembly of the uniform limit to `exists_restrict_eq`, here the limit is produced purely from completeness and a geometric comparison.",
     "mathContext": "$\\sum_n \\|g_n\\|<\\infty\\ \\Rightarrow\\ \\sum_n g_n\\ \\text{converges in the Banach space}.$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "absolute convergence",
       "completeness",

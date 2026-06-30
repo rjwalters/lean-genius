@@ -66,11 +66,11 @@
       "startLine": 133,
       "endLine": 152
     },
-    "type": "context",
+    "type": "concept",
     "title": "Sanity Checks: Monic Specialization and a Worked Root",
     "content": "Four examples confirm the abstract reduction matches familiar cases: depressedP/depressedQ at a = 1 give the textbook monic formulas p = c - b²/3 and q = 2b³/27 - bc/3 + d; the shift kills the quadratic term of x³ - 3x² + ... (here x = t + 1); and generalCubicEval 1 0 (-6) (-40) 4 = 0 recovers the parent's x³ - 6x - 40 example with root x = 4. These ground the general identity in concrete arithmetic discharged by ring and norm_num.",
     "mathContext": "Monic case: $p = c - \\tfrac{b^2}{3},\\; q = \\tfrac{2b^3}{27} - \\tfrac{bc}{3} + d$. Worked example: $x^3 - 6x - 40 = 0$ has root $x = 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked examples", "monic normalization", "norm_num / ring decision procedures", "regression checks against the parent"],
     "prerequisites": ["substitution arithmetic", "evaluating polynomials at integers"]
   }

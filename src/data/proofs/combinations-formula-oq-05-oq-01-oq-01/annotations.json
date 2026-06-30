@@ -50,7 +50,7 @@
     "title": "Literal C(n-2,j-1) Form",
     "content": "weighted_partial_alternating_sum_sub: for n ≥ 2, ∑_{k=0}^{j+1} (-1)^k k C(n,k) = n (-1)^{j+1} C(n-2,j). This is the headline form (★) with the cut-off written as j+1 so the single coefficient appears as a binomial of row n-2. It is obtained from the subtraction-free statement by writing n = m+2 (so n-2 = m) and simplifying.",
     "mathContext": "Substituting $n = m+2$ turns $(m+2)(-1)^{j+1}\\binom{m}{j}$ into $n(-1)^{j+1}\\binom{n-2}{j}$, the literal closed form $n(-1)^{J}\\binom{n-2}{J-1}$ at $J = j+1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "natural-number subtraction",
       "specialisation of a subtraction-free identity"
@@ -68,7 +68,7 @@
     "title": "Stabilisation and Full-Row Recovery",
     "content": "weighted_partial_alternating_sum_stabilizes: for n ≥ 2 and j ≥ n, the weighted partial sum ∑_{k=0}^{j} (-1)^k k C(n,k) = 0, because the closed-form coefficient C(n-2,j-1) vanishes once j-1 > n-2. weighted_full_row_eq_zero: the full weighted row sum ∑_{k=0}^{n} (-1)^k k C(n,k) = 0 for n ≥ 2, recovered as the special case j = n — exactly the grandparent (CombinationsFormulaOQ05) anchor, so this entry is strictly stronger.",
     "mathContext": "$\\binom{n-2}{j-1} = 0$ for $j - 1 \\ge n - 1 > n - 2$, so every partial sum from $j = n$ onward is $0$. At $j = n$ this reproduces the derivative-at-$x=1$ vanishing $\\sum_{k} (-1)^k k \\binom{n}{k} = 0$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.choose_eq_zero_of_lt",
       "support of a binomial row",
@@ -83,7 +83,7 @@
     "id": "worked-verifications",
     "proofId": "combinations-formula-oq-05-oq-01-oq-01",
     "range": { "startLine": 133, "endLine": 135 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Verifications",
     "content": "Two kernel-checked instances of the closed form. Row 4 cut at j=2: 0·1 − 1·C(4,1) + 2·C(4,2) = 0 − 4 + 12 = 8 = 4·C(2,1). Row 5 cut at j=3: 0 − 1·C(5,1) + 2·C(5,2) − 3·C(5,3) = 0 − 5 + 20 − 30 = −15 = 5·(−1)^3·C(3,2). Both are discharged by decide.",
     "mathContext": "These confirm $n(-1)^j\\binom{n-2}{j-1}$ at $(n,j) = (4,2)$ giving $+8$ and at $(n,j) = (5,3)$ giving $-15$.",

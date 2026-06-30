@@ -3,11 +3,11 @@
     "id": "ann-header-overview",
     "proofId": "shannon-source-coding-oq-01-oq-03",
     "range": { "startLine": 4, "endLine": 39 },
-    "type": "context",
+    "type": "concept",
     "title": "What This File Discharges: Open Question #3 of the Parent Entry",
     "content": "The header docstring explains the file's purpose. The parent entry `shannon-source-coding-oq-01` records the binary rate–distortion function only as a comment; its open question #3 asks whether Lean can turn that commented formula into a concrete, connected object. This file does so, building directly on Mathlib's `Real.binEntropy`. It also fixes the working regime — `0 ≤ D ≤ p ≤ 1/2`, so that `min(p, 1−p) = p` — and notes the symmetry `binEntropy (1 − p) = binEntropy p` that extends every result to `p ≥ 1/2`. A unit caveat is recorded: Mathlib's `binEntropy` uses the natural logarithm, so entropy is in nats, but the formula `R = h(p) − h(D)` is base-independent (a change of log base scales both terms equally).",
     "mathContext": "$R(D) = h(p) - h(D)$ for $0 \\le D \\le \\min(p, 1-p)$; here the regime is $0 \\le D \\le p \\le \\tfrac12$. Base-independence: $h_b(x) = h_e(x)/\\ln b$, so $R$ scales uniformly.",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": [
       "rate–distortion theory (Shannon 1959)",
       "binary entropy function",

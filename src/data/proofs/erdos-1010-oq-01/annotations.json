@@ -51,7 +51,7 @@
     "id": "ann-witness-counts",
     "proofId": "erdos-1010-oq-01",
     "range": { "startLine": 140, "endLine": 145 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Edge and triangle counts by plain decide",
     "content": "`witness_edge_count` certifies Gw has exactly turanThreshold 6 + 3 = 12 edges (8 from K_{2,4}, 4 from the cycle), placing it at t = 3 = ⌊n/2⌋ past the Turán threshold. `witness_triangle_count` certifies exactly 8 triangles: each of the 4 cycle-edges in B pairs with each of the 2 vertices of S (4·2 = 8), and there are no others (S has no internal edge, the C₄ has no triangle). Both close by plain `decide` on the concrete finite graph — crucially NOT `native_decide`, so no `Lean.ofReduceBool` axiom is incurred; `#print axioms` reports only the foundational three.",
     "mathContext": "$|E(G_w)| = \\lfloor 6^2/4 \\rfloor + 3 = 12$ and $\\mathrm{triangleCount}(G_w) = 4 \\cdot 2 = 8$.",

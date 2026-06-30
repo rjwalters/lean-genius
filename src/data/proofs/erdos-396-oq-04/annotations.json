@@ -6,7 +6,7 @@
       "startLine": 50,
       "endLine": 58
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Closed form: C(2(n+1),n+1) = 2(2n+1)·catalan n",
     "content": "Mathlib's `Nat.succ_mul_centralBinom_succ` states $(n+1)\\,C(2(n+1),n+1) = 2(2n+1)\\,C(2n,n)$. Rewriting $C(2n,n) = (n+1)\\,\\mathrm{catalan}\\,n$ via `succ_mul_catalan_eq_centralBinom` and cancelling the nonzero factor $n+1$ with `Nat.eq_of_mul_eq_mul_left` yields $C(2(n+1),n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$. This exposes the Catalan number as the exact cofactor of $2(2n+1)$ — a form Mathlib does not record, since it proves Catalan integrality through a Gosper telescoping instead.",
     "mathContext": "$C(2(n+1),n+1) = 2(2n+1)\\,C_n$ where $C_n = \\mathrm{catalan}\\,n$.",
@@ -36,7 +36,7 @@
       "startLine": 92,
       "endLine": 116
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Two-term Catalan recurrence",
     "content": "Applying `succ_mul_catalan_eq_centralBinom` at index $n+1$ gives $(n+2)\\,\\mathrm{catalan}(n+1) = C(2(n+1),n+1)$; substituting the closed form yields the elementary recurrence $(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$ — the standard computational recurrence for Catalan numbers, here obtained without binomial coefficients.",
     "mathContext": "$(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, i.e. $C_{n+1} = \\frac{2(2n+1)}{n+2} C_n$.",

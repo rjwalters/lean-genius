@@ -15,7 +15,7 @@
     "id": "ann-equivalence-relation",
     "proofId": "matrix-similarity-invariants-oq-01",
     "range": { "startLine": 33, "endLine": 54 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Similarity Is an Equivalence Relation",
     "content": "Reflexivity uses P = 1 (conjugation by the identity); symmetry conjugates back by P⁻¹; transitivity composes the conjugators as Q·P (with (QP)⁻¹ = P⁻¹Q⁻¹). These bundle into `similar_equivalence : Equivalence Similar` and the `similarSetoid`, so 'up to similarity' is a genuine quotient. Working in the unit group makes each step a one-line `simp` with associativity and `mul_inv_rev`.",
     "mathContext": "Refl: $A = 1\\,A\\,1^{-1}$. Symm: $B=PAP^{-1} \\Rightarrow A = P^{-1}B(P^{-1})^{-1}$. Trans: $(P,Q) \\mapsto QP$ with $(QP)^{-1}=P^{-1}Q^{-1}$.",

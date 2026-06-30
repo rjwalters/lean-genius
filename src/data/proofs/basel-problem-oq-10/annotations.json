@@ -31,7 +31,7 @@
     "title": "Reducing Summability to the Absolute-Value Series",
     "content": "The non-summability proof opens by rewriting with ← summable_abs_iff, which for real-valued families converts Summable f into Summable |f| — the bridge from the conditional-convergence question to a question about a series of nonnegative terms. The absolute value is then simplified pointwise: |(-1)^k/(2k+1)| = 1/(2k+1), discharged by abs_div, abs_pow, abs_neg, abs_one, one_pow, and abs_of_pos (the denominator is positive by positivity). After this rewrite the goal is the non-summability of the clean harmonic-type series 1/(2k+1).",
     "mathContext": "$\\left|\\frac{(-1)^k}{2k+1}\\right| = \\frac{|(-1)^k|}{|2k+1|} = \\frac{1}{2k+1}$; over $\\mathbb{R}$, $\\mathrm{Summable}\\,f \\iff \\mathrm{Summable}\\,|f|$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["summable_abs_iff", "absolute value simplification", "absolute convergence"],
     "prerequisites": ["absolute value identities", "summability over ℝ"]
   },

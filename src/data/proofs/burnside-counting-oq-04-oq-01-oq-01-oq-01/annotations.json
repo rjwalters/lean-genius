@@ -7,7 +7,7 @@
     "title": "From per-n decide to a uniform closed form",
     "content": "The parent entry computed binary bracelet counts $b(5)=8$, $b(6)=13$ by evaluating the Burnside fixed-point sum $\\sum_{g\\in D_n}|\\mathrm{Fix}(g)|$ with kernel `decide` — one length at a time. Its open question asked for a **closed form** for the individual fixed-point counts. This file proves the generic rotation term with no computation and uniformly in $n$: the binary colourings of the $n$-cycle fixed by the rotation $x\\mapsto x+i$ number exactly $2^{\\gcd(n,\\,i.\\mathrm{val})}$. The principle is Burnside-flavoured: a colouring is fixed by the rotation iff it is constant on the rotation's orbits, and the rotation $x\\mapsto x+i$ has exactly $\\gcd(n,i)$ orbits (the index of the cyclic subgroup $\\langle i\\rangle\\le\\mathbb{Z}/n$), so the count is $2$ to the number of orbits. Honest scope: only the rotation half is closed-form here; the reflection contribution is left to future work.",
     "mathContext": "$\\#\\{c:\\mathbb{Z}/n\\to\\mathbb{F}_2 \\mid c(p+i)=c(p)\\ \\forall p\\} = 2^{\\gcd(n,\\,i)}.$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Burnside's lemma", "necklace/bracelet counting", "cyclic group action", "orbit counting", "fixed points"],
     "prerequisites": ["group actions", "ZMod n", "greatest common divisor"]
   },
@@ -19,7 +19,7 @@
     "title": "Colourings, rotation-invariance, and the fixed subtype",
     "content": "`Coloring n := ZMod n → Fin 2` is a binary colouring of the $n$ vertices (there are $2^n$). `IsRotInvariant i c` is the predicate $\\forall p,\\ c(p+i)=c(p)$ — the colouring is unchanged by the rotation $x\\mapsto x+i$. `RotFixed n i` packages the fixed colourings as a subtype $\\{c\\mid \\texttt{IsRotInvariant } i\\ c\\}$. The `DecidablePred` and `Fintype` instances (needing `[NeZero n]`) make `Fintype.card (RotFixed n i)` and the finite cross-checks meaningful.",
     "mathContext": "$\\mathrm{Coloring}(n)=\\mathbb{F}_2^{\\,\\mathbb{Z}/n},\\qquad \\mathrm{RotFixed}(n,i)=\\{c \\mid c(p+i)=c(p)\\ \\forall p\\}.$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["binary colouring", "fixed-point subtype", "DecidablePred", "Fintype.card"],
     "prerequisites": ["ZMod n", "Fin 2", "subtypes in Lean"]
   },
@@ -27,7 +27,7 @@
     "id": "burnside-oq04010101-ann-zsmul",
     "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
     "range": { "startLine": 73, "endLine": 93 },
-    "type": "technique",
+    "type": "tactic",
     "title": "invariant_zsmul — single shift extends to the whole cyclic subgroup",
     "content": "`invariant_zsmul` upgrades invariance under one shift $+i$ to invariance under $+k\\cdot i$ for every *integer* $k$, by `Int.induction_on`. The successor branch rewrites $p+(k{+}1)i = (p+ki)+i$ and applies `h` then the inductive hypothesis; the predecessor branch uses the 'subtract $i$' form $c(p-i)=c(p)$ (obtained by substituting $p\\mapsto p-i$ in `h`). The content is geometric: an invariant colouring is **constant on each coset** of the additive cyclic subgroup $\\langle i\\rangle = \\texttt{zmultiples } i$ — the orbits of the rotation. This is the bridge from a one-step symmetry to a subgroup-wide one.",
     "mathContext": "$c(p+i)=c(p)\\ \\forall p \\;\\Longrightarrow\\; c(p+k\\cdot i)=c(p)\\ \\forall k\\in\\mathbb{Z},\\ p\\in\\mathbb{Z}/n.$",

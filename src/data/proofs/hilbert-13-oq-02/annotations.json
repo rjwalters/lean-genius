@@ -3,11 +3,11 @@
     "id": "ann-framing",
     "proofId": "hilbert-13-oq-02",
     "range": { "startLine": 1, "endLine": 35 },
-    "type": "context",
+    "type": "concept",
     "title": "What OQ-02 Asks and What This File Actually Proves",
     "content": "The header draws the precise line between the open question and the provable kernel. Hilbert #13 / OQ-02 asks how hard it is to *compute* a Kolmogorov–Arnold (KA) superposition representation of a continuous function on a compactly-presented space; that computational question is genuinely open, because the classical existence proof (Kolmogorov–Arnold 1957, sharpened by Sternfeld 1985) is non-constructive (Baire category). This file deliberately does NOT resolve it. Instead it isolates the well-posedness kernel: Sternfeld's minimal superposition term count is 2·dim(X)+1 where dim is Lebesgue covering dimension, and covering dimension is a topological invariant. Therefore the 'complexity of the presented space' depends only on the homeomorphism type — not on which finite approximation, metric, or embedding presents it. Securing that invariance unconditionally (0 axioms, 0 sorries) is exactly what makes OQ-02 a meaningful question to ask.",
     "mathContext": "Minimal KA superposition term count $= 2\\dim(X)+1$ (Sternfeld); the file proves $\\dim$ is a homeomorphism invariant, leaving the *computational* cost of producing a representation open.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Hilbert's 13th problem", "Kolmogorov–Arnold superposition theorem", "Sternfeld's dimension bound", "well-posedness vs computability", "non-constructive existence"],
     "prerequisites": ["the KA representation theorem (background)", "Lebesgue covering dimension", "the idea of a presentation-invariant of a space"]
   },

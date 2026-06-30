@@ -3,11 +3,11 @@
     "id": "ann-header-background",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 39 },
-    "type": "context",
+    "type": "concept",
     "title": "The Gap This Entry Closes",
     "content": "The module docstring frames the contribution. Both the Cauchy-interlacing keystone and the principal-submatrix identification (#27917) flag the same missing step: bridging Mathlib's abstract operator eigenvalues `LinearMap.IsSymmetric.eigenvalues` to the concrete `Matrix.IsHermitian.eigenvalues₀`. The enabling fact — absent from Mathlib — is that a self-adjoint operator's SORTED eigenvalue list is determined by the operator alone (equivalently, invariant under unitary/isometric conjugation). This file proves it via the characteristic polynomial. The result holds over any RCLike field 𝕜 (so ℝ and ℂ), with 0 sorries and 0 axioms; it is a research file intentionally not registered in Proofs.lean.",
     "mathContext": "Goal: $h_T.\\mathrm{eigenvalues} = f$ for any orthonormal eigenbasis $(b, f)$ with $f$ antitone — making the sorted spectrum a basis-independent invariant.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["spectral theorem", "Cauchy interlacing", "Hermitian eigenvalues", "unitary invariance"],
     "prerequisites": ["inner product spaces", "self-adjoint operators", "eigenvalues"]
   },
@@ -19,7 +19,7 @@
     "title": "An Eigenbasis Diagonalizes the Matrix",
     "content": "`toMatrix_diagonal_of_eigenbasis`: if `T (b i) = f i • b i` on an orthonormal basis `b`, then `LinearMap.toMatrix b b T = diagonal f`. The `(i, l)` entry is `b.repr (T (b l)) i = f l · b.repr (b l) i = f l · δ_{il}`, which is `diagonal f` by definition. This is the matrix-level shadow of the spectral theorem: an eigenbasis turns the operator into a diagonal matrix of eigenvalues.",
     "mathContext": "(toMatrix b b T)_{il} = ⟪coordinates of T(b l) in b⟫_i = f l · [i = l].",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["spectral theorem", "diagonalization", "change of basis"],
     "prerequisites": ["LinearMap.toMatrix", "Basis.repr_self"]
   },
@@ -51,11 +51,11 @@
     "id": "ann-isometry-conj",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01",
     "range": { "startLine": 74, "endLine": 77 },
-    "type": "context",
+    "type": "concept",
     "title": "Corollary: Unitary Conjugation Invariance (documented follow-up)",
     "content": "The docstring records the immediate corollary of the bridge: if `S (e x) = e (T x)` for a linear isometry equivalence `e : E ≃ₗᵢ F`, then `S` and `T` have the same sorted eigenvalues. The argument is a one-liner in principle — transport `T`'s canonical eigenbasis through `e` (`OrthonormalBasis.map`) to get an orthonormal eigenbasis of `S` with the SAME antitone eigenvalue tuple, then apply `eigenvalues_eq_of_eigenbasis`. NOTE: this corollary `eigenvalues_isometryConj` is described here but is NOT yet a standalone theorem in the file — it is the lead open question (the one-line proof currently triggers a heavy elaboration). It is exactly the tool the principal-submatrix interlacing needs: the compression to a coordinate hyperplane is the isometric conjugate of the principal-submatrix operator, so once packaged their spectra coincide and the abstract interlacing becomes the textbook λ_{k+1}(A) ≤ λ_k(A⁽ʲ⁾) ≤ λ_k(A).",
     "mathContext": "Conjugation by a unitary maps eigenbasis to eigenbasis with identical eigenvalues; the sorted enumeration therefore agrees. (Stated in the docstring; formalization deferred — see open questions.)",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["unitary conjugation", "similar operators", "Cauchy interlacing", "principal submatrix"],
     "prerequisites": ["linear isometry equivalence", "OrthonormalBasis.map"]
   }

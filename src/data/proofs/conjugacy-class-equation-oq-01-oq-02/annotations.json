@@ -66,7 +66,7 @@
     "id": "example-zmod4",
     "proofId": "conjugacy-class-equation-oq-01-oq-02",
     "range": { "startLine": 115, "endLine": 123 },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete 2-group instance",
     "content": "The closing example applies the theorem to Multiplicative (ZMod 4), the cyclic 2-group of order 4, exhibiting a nontrivial center. It supplies the Fact (Nat.Prime 2), Nontrivial, and IsPGroup 2 instances (the last via IsPGroup.of_card with |G| = 2²) and fires the main theorem.",
     "mathContext": "$Z(\\mathrm{Mult}(\\mathbb{Z}/4))$ is nontrivial",

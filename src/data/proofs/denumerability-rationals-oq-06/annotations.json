@@ -6,7 +6,7 @@
       "startLine": 31,
       "endLine": 32
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Engine Lemma #ℚ = ℵ₀",
     "content": "mk_rat records that the rationals have cardinality exactly ℵ₀. It is a one-line application of Cardinal.mk_eq_aleph0, which states that any type that is simultaneously Countable and Infinite has cardinality ℵ₀; ℚ carries both instances. This single fact is what the polynomial-ring cardinality collapses against — every other result in the file feeds #ℚ = ℵ₀ (or its ℤ analogue) into Mathlib's max formula.",
     "mathContext": "$\\#\\mathbb{Q} = \\aleph_0$ since $\\mathbb{Q}$ is countable and infinite (Cantor's enumeration of the rationals).",
@@ -75,7 +75,7 @@
       "startLine": 3,
       "endLine": 25
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Polynomial Ring: From Countable ℚ to Countable Algebraic Numbers",
     "content": "The base denumerability entry and OQ-05 push countability of ℚ through finite products, lists, and finite subsets (#(ℚ×ℚ), #(List ℚ), #(Finset ℚ) all stay ℵ₀), while the function space ℕ → ℚ already jumps to the continuum 𝔠. None of those reach the object that governs *algebraic* countability: the polynomial ring. This entry isolates #(ℚ[X]) = #(ℤ[X]) = ℵ₀ precisely because it is the cardinal fact behind the countability of the algebraic numbers — every algebraic number is a root of some polynomial in ℚ[X], and each polynomial has only finitely many roots, so the algebraic numbers form a countable union of finite sets, hence are countable. OQ-07 pursues that consequence explicitly.",
     "mathContext": "$\\#(\\mathbb{Q}[X]) = \\aleph_0$, and each $p \\in \\mathbb{Q}[X]$ has finitely many roots, so $\\overline{\\mathbb{Q}} = \\bigcup_{p \\in \\mathbb{Q}[X]} \\{\\text{roots of } p\\}$ is a countable union of finite sets, hence countable.",

@@ -3,11 +3,11 @@
     "id": "young-oq0101-header",
     "proofId": "jensen-inequality-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 28 },
-    "type": "context",
+    "type": "concept",
     "title": "Young's inequality is weighted AM–GM in disguise",
     "content": "The header frames the contribution. Young's inequality a·b ≤ aᵖ/p + bᵍ/q (Hölder-conjugate p, q, so 1/p + 1/q = 1, p,q > 1) is in Mathlib (`Real.young_inequality_of_nonneg`), but its *equality case* — equality iff aᵖ = bᵍ — is not. This file supplies it by recognizing the whole statement as the two-term weighted AM–GM inequality: with weights wₓ = 1/p, w_y = 1/q (which sum to 1) and data x = aᵖ, y = bᵍ, the weighted geometric mean (aᵖ)^{1/p}·(bᵍ)^{1/q} collapses to a·b and the weighted arithmetic mean is aᵖ/p + bᵍ/q. So both the inequality and its equality case descend from the parent's weighted AM–GM equality characterization.",
     "mathContext": "$ab \\le \\frac{a^p}{p} + \\frac{b^q}{q},\\quad \\tfrac1p + \\tfrac1q = 1,\\quad (a^p)^{1/p}(b^q)^{1/q} = ab$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Young's inequality", "weighted AM–GM", "Hölder conjugate exponents", "equality case"],
     "prerequisites": ["Hölder-conjugate exponents", "weighted arithmetic and geometric means"]
   },
@@ -31,7 +31,7 @@
     "title": "young_le: Young's inequality (re-export)",
     "content": "`young_le` records Young's inequality a·b ≤ aᵖ/p + bᵍ/q itself as a named companion, a thin re-export of Mathlib's `Real.young_inequality_of_nonneg`. Keeping the bare inequality alongside the new equality case lets the strict form be assembled cleanly as `lt_of_le_of_ne`.",
     "mathContext": "$ab \\le \\frac{a^p}{p} + \\frac{b^q}{q}$",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["Real.young_inequality_of_nonneg", "re-export"],
     "prerequisites": ["Young's inequality (the bound)"]
   },

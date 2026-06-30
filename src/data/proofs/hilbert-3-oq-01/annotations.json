@@ -7,7 +7,7 @@
     "title": "The Single-Stratum Dehn Target ℝ ⊗_ℤ (ℝ/πℚ)",
     "content": "`dehnTerm l θ = l ⊗ angleClass θ` lives in `DehnGroup = ℝ ⊗[ℤ] (ℝ/πℚ)`, the genuine group of the 3D Dehn invariant. Angles are taken modulo `πℚ` (the range of `piRatHom : ℚ →+ ℝ, q ↦ qπ`), so a rational-angle term vanishes (`QuotientAddGroup.eq_zero_iff`), the term is additive in the angle (`TensorProduct.tmul_add`), and supplementary angles cancel because `θ + (π − θ) = π ≡ 0`. These are the term-level facts that the graded layer lifts componentwise.",
     "mathContext": "The Dehn invariant of a 3-polytope is $\\sum_e \\ell(e)\\otimes[\\theta(e)]\\in\\mathbb{R}\\otimes_{\\mathbb{Z}}(\\mathbb{R}/\\pi\\mathbb{Q})$, where edges contribute length tensored with dihedral angle mod $\\pi\\mathbb{Q}$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": ["TensorProduct", "QuotientAddGroup.eq_zero_iff", "TensorProduct.tmul_add"],
     "prerequisites": ["Tensor products over ℤ", "Quotient additive groups"]
   },

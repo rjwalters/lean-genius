@@ -67,7 +67,7 @@
     "title": "Variance, algebraic form: E[X²] − E[X]² = r/(1−r)²",
     "content": "`geometric_variance_identity` records the bookkeeping cancellation $\\dfrac{r(1+r)}{(1-r)^2} - \\Big(\\dfrac{r}{1-r}\\Big)^2 = \\dfrac{r}{(1-r)^2}$, i.e. $E[X^2] - E[X]^2 = \\dfrac{r}{(1-r)^2}$. The numerator simplifies as $r(1+r) - r^2 = r$, so the variance is $\\dfrac{r}{(1-r)^2}$ — with $p=1-r$ the textbook $\\mathrm{Var}(X)=\\dfrac{1-p}{p^2}$. A pure field identity, discharged by `field_simp; ring` using $1-r\\neq 0$.",
     "mathContext": "$\\dfrac{r(1+r)}{(1-r)^2}-\\dfrac{r^2}{(1-r)^2}=\\dfrac{r(1+r)-r^2}{(1-r)^2}=\\dfrac{r}{(1-r)^2}=\\dfrac{1-p}{p^2}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "König–Huygens identity Var = E[X²]−E[X]²",
       "field_simp; ring",

@@ -51,7 +51,7 @@
       "startLine": 115,
       "endLine": 124
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bridging the Gallery's ψ to Mathlib's Chebyshev API",
     "content": "The parent built a self-contained ℕ-indexed ψ as ∑ over [1,n]; Mathlib's Chebyshev.psi is an ℝ-argument sum over (0, ⌊x⌋]. At an integer argument these coincide: Nat.floor_natCast turns ⌊(n:ℝ)⌋₊ into n, and Icc 1 n = Ioc 0 n identifies the index sets, so a one-line Finset.sum_congr proves chebyshevPsi n = Chebyshev.psi n (and likewise for θ). This small bridge is what unlocks Mathlib's entire Chebyshev development for the gallery's elementary functions.",
     "mathContext": "$\\text{chebyshevPsi}\\,n = \\mathrm{Chebyshev.psi}\\,n, \\qquad \\lfloor (n:\\mathbb{R}) \\rfloor_+ = n, \\qquad \\mathrm{Icc}\\,1\\,n = \\mathrm{Ioc}\\,0\\,n$",

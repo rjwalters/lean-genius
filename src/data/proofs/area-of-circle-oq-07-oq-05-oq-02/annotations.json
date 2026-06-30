@@ -29,7 +29,7 @@
     "title": "gamma_three_half — Γ(3/2) = √π/2",
     "content": "The first non-trivial half-integer Gamma value. Writing $\\tfrac32 = \\tfrac12 + 1$ and applying the functional equation $\\Gamma(s+1) = s\\,\\Gamma(s)$ at $s = \\tfrac12$ gives $\\Gamma(\\tfrac32) = \\tfrac12\\,\\Gamma(\\tfrac12)$; the Gaussian special value $\\Gamma(\\tfrac12) = \\sqrt\\pi$ then yields $\\Gamma(\\tfrac32) = \\tfrac{\\sqrt\\pi}{2}$.",
     "mathContext": "Both ingredients are Mathlib: `Real.Gamma_add_one` (the functional equation, requiring $s \\ne 0$) and `Real.Gamma_one_half_eq` ($\\Gamma(1/2) = \\sqrt\\pi$, itself proved in Mathlib from the Gaussian integral via the same $u = x^2$ substitution used in Part II).",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Gamma functional equation",
       "half-integer Gamma values",
@@ -69,7 +69,7 @@
     "title": "gaussian_second_moment_eq_gamma — Full-Line Moment = Γ(3/2)",
     "content": "The parent value as a Gamma value: $\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\Gamma(\\tfrac32)$, obtained by rewriting the parent's $\\tfrac{\\sqrt\\pi}{2}$ (`AreaOfCircleOQ07OQ05.gaussian_second_moment`) against `gamma_three_half`. The companion `gaussian_second_moment_Ioi_eq` records the explicit half-line value $\\int_0^\\infty x^2 e^{-x^2} = \\tfrac{\\sqrt\\pi}{4} = \\tfrac12\\Gamma(\\tfrac32)$.",
     "mathContext": "Two routes to $\\tfrac{\\sqrt\\pi}{2}$ cross-check each other: the parent reaches it by integration by parts on the whole line, this entry as the special value $\\Gamma(\\tfrac32)$. Their agreement links an elementary analytic computation to a special-function evaluation, and confirms the half-line/full-line factor of two.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "even symmetry",
       "special-function value",

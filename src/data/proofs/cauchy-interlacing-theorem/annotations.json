@@ -55,7 +55,7 @@
     "title": "Upper Bound: Transport Through Rayleigh-Agreement",
     "content": "For `mu k ≤ lam k.castSucc`, take the optimal (k+1)-dimensional eigenspan SH for TH (keystone lower half on H), push it into V via `H.subtype` (dimension preserved by `Submodule.finrank_map_subtype_eq`), and apply the keystone upper half `eigenvalue_maxmin_upper` for T: every (k+1)-dim subspace contains a nonzero vector with R_T ≤ lam k.castSucc. That vector is the image of some y ∈ SH, where SH's lower bound gives mu k ≤ R_TH(y); Rayleigh-agreement turns this into mu k ≤ R_T = R_T(x) ≤ lam k.castSucc.",
     "mathContext": "Here the optimal subspace already lives inside H, so no dimension drop is needed — the bound transports directly across the compression.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Courant–Fischer max–min",
       "subspace pushforward",

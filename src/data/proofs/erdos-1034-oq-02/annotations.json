@@ -31,7 +31,7 @@
     "title": "The Book Bridge: |P| Pages Give |P|−1 Good Neighbours",
     "content": "This is the engine of the n/6 lower bound. A 'book' has a spine edge {a,b} and pages P — vertices each adjacent to both a and b. For the spine triangle {a,b,p₀}, every other page q is adjacent to both a and b, which are two of the triangle's three vertices, so q is a good neighbour. Thus P.erase p₀ ⊆ goodNeighbors, and card_erase_of_mem gives goodNeighborCount ≥ |P| − 1. A book of size k therefore guarantees a triangle with k−1 good neighbours, and the Turán count guaranteeing a book of size ≥ n/6 yields h(n) ≥ n/6.",
     "mathContext": "$$\\text{book of size } |P| \\implies \\text{goodNeighborCount} \\geq |P| - 1.$$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["book lemma", "common neighbours", "Turán threshold", "lower bound"],
     "prerequisites": ["Finset.card_le_card", "Finset.card_erase_of_mem", "SimpleGraph.Adj.symm"]
   },
@@ -55,7 +55,7 @@
     "title": "Sharpness: The Bound Is Met With Equality",
     "content": "For the pure book graph the spine triangle {0,1,2} has good neighbours exactly {3,4}, so goodNeighborCount = |pages| − 1 = 2. The general lower bound is therefore attained with equality: the book method delivers neither more nor fewer good neighbours than its page count. This is the precise sense in which improving h(n) beyond n/6 requires techniques *beyond* the book lemma — verified axiom-free by `decide` (not `native_decide`).",
     "mathContext": "$$\\text{goodNeighborCount}(\\text{book}) = |P| - 1 \\quad (\\text{equality}).$$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["sharpness", "barrier", "equality case", "axiom-free decide"],
     "prerequisites": ["Finset equality by decide"]
   }

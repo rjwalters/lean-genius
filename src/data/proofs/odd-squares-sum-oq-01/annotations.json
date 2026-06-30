@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "odd-squares-sum-oq-01",
     "range": { "startLine": 4, "endLine": 34 },
-    "type": "context",
+    "type": "concept",
     "title": "The odd-indexed companion of the square-pyramidal sum",
     "content": "The header states open question OQ-01: the squares of the first $n$ odd numbers $1^2+3^2+\\cdots+(2n-1)^2$ sum to $n(2n-1)(2n+1)/3$. Indexing the $k$-th odd number as $2k+1$ for $k=0,\\dots,n-1$ gives $\\sum_{k<n}(2k+1)^2$. This is the odd-indexed sibling of the *square-pyramidal* identity $\\sum_{k\\le n}k^2 = n(n+1)(2n+1)/6$, recoverable as $\\sum_{j<2n}j^2 - 4\\sum_{k<n}k^2$. Mathlib provides the square-pyramidal sum but not this odd variant, so the file supplies both an exact $\\mathbb{N}$ form (`three_mul_sum_odd_squares`) and the rational closed form (`sum_odd_squares_rat`), each by a short induction.",
     "mathContext": "$\\sum_{k<n}(2k+1)^2 = \\dfrac{n(2n-1)(2n+1)}{3} \\;=\\; \\sum_{j<2n} j^2 \\;-\\; 4\\sum_{k<n} k^2.$",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": ["Mathematical induction", "Finite sums over Finset.range", "Figurate / square-pyramidal numbers"],
     "relatedConcepts": ["Square-pyramidal number", "Odd numbers 2k+1", "Power sums", "Closed-form summation"]
   },

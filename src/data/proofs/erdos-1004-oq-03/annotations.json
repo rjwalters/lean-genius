@@ -27,11 +27,11 @@
     "id": "ann-erdos-1004-oq-03-03",
     "proofId": "erdos-1004-oq-03",
     "range": { "startLine": 68, "endLine": 110 },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Halving as an Injective Count",
     "content": "Encode 'K distinct even values in [2, n+K−1]' as the injective map m ↦ φ(m)/2 from the run block {n+1,…,n+K} into [1,(n+K−1)/2]: equal halves of even numbers force equal totients, then injectivity of φ on the run gives equal arguments. Comparing cardinalities (Finset.card_le_card_of_injOn, Nat.card_Icc) yields K ≤ (n+K−1)/2, and omega finishes K ≤ n−1.",
     "mathContext": "$K = |\\{n+1,\\dots,n+K\\}| \\le |\\{1,\\dots,\\lfloor (n+K-1)/2\\rfloor\\}| \\Rightarrow K \\le n-1.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["pigeonhole", "injective counting", "Finset cardinality"],
     "prerequisites": ["Finset.card_le_card_of_injOn", "Nat division"]
   },

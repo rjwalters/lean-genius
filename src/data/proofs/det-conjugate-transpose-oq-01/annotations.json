@@ -19,7 +19,7 @@
       "determinant",
       "star ring"
     ],
-    "significance": "The single scalar equation from which both the Hermitian (real determinant) and unitary (unit-circle determinant) corollaries are read off, with no further matrix computation."
+    "significance": "supporting"
   },
   {
     "id": "ann-hermitian-real-det",
@@ -42,7 +42,7 @@
       "self-adjoint element",
       "real spectrum"
     ],
-    "significance": "Shows that the determinant of a Hermitian matrix is real — the scalar shadow of the spectral theorem — derived purely from how the determinant transforms under the adjoint."
+    "significance": "supporting"
   },
   {
     "id": "ann-unitary-unit-circle",
@@ -65,7 +65,7 @@
       "unit circle / U(1)",
       "special unitary group SU(n)"
     ],
-    "significance": "Establishes the determinant homomorphism det : U(n) → U(1) in one line, the structural fact underlying the SU(n) ⊂ U(n) decomposition."
+    "significance": "supporting"
   },
   {
     "id": "ann-worked-instances",
@@ -74,7 +74,7 @@
       "startLine": 101,
       "endLine": 112
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Instances at the Identity Matrix",
     "content": "The identity matrix 1 is both Hermitian (Matrix.isHermitian_one) and unitary (1ᴴ * 1 = 1 by simp), so both corollaries apply to it. The first example obtains (det 1).im = 0 from isHermitian_det_im_zero and the second obtains ‖det 1‖ = 1 from unitary_det_norm_one — concrete witnesses that det 1 = 1 is real and lies on the unit circle.",
     "mathContext": "$(\\det \\mathbf 1).\\operatorname{Im} = 0$ and $\\lVert\\det \\mathbf 1\\rVert = 1$.",
@@ -86,6 +86,6 @@
       "identity matrix",
       "worked example"
     ],
-    "significance": "Grounds both abstract corollaries in the simplest concrete matrix, where the determinant is visibly 1."
+    "significance": "supporting"
   }
 ]

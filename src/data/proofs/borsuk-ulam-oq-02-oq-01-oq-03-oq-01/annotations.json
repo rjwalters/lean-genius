@@ -10,7 +10,7 @@
     "title": "Tightness of the Dihedral Lower Bound: Strategy",
     "content": "The parent file proved the dihedral lower bound only for individual small cases (D_p, D_5, D_6). Its first open question asks whether that bound is the exact value: is dihedralBUDim n d = max(buDim 2 d, max over odd primes p|n of buDim p d)? The exact value needs an upper bound from RO(D_n)-graded equivariant cohomology (Fadell-Husseini), which is beyond current Mathlib. This file does three honest things without that machinery: (1) packages the conjectured value uniformly in n as a single Finset.sup expression; (2) proves the lower-bound direction for every n using ONLY the parent's existing axioms — adding 0 new axioms; (3) proves tightness is logically equivalent to one matching upper bound, so the entire open question collapses to supplying that single inequality.",
     "mathContext": "The lower bound is unconditional; the upper bound is the open input. `le_antisymm` turns 'lower + upper' into the conjectured equality.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Borsuk-Ulam theorem", "dihedral group D_n", "equivariant cohomology (Fadell-Husseini)", "reducing an open question to one inequality", "RO(G)-graded cohomology"],
     "prerequisites": ["the Borsuk-Ulam dimension invariant buDim", "lower vs upper bound and le_antisymm", "what the parent file axiomatizes"]
   },
@@ -66,7 +66,7 @@
       "startLine": 132,
       "endLine": 162
     },
-    "type": "example",
+    "type": "concept",
     "title": "Recovering the parent's D_6 and D_p bounds",
     "content": "dihedralBUDim_six_ge_buDim_three obtains buDim 3 d ≤ dihedralBUDim 6 d from 3 ∈ (6).primeFactors (via Nat.mem_primeFactors) — no symbolic factorization needed. Rewriting with buDim_prime then gives the parent's Yang-Borsuk bound 2n-1 ≤ dihedralBUDim 6 (2n) (dihedralBUDim_six_yang_borsuk). dihedralBUDim_odd_prime_ge re-derives the parent's D_p bound max(buDim 2 d, buDim p d) ≤ dihedralBUDim p d. The anonymous examples (D_12, D_15 with no factor of 2, and the D_6 tightness reduction) act as regression checks that the uniform machinery specializes correctly.",
     "mathContext": "$D_{15} \\supseteq \\mathbb{Z}/5$ even though $2 \\nmid 15$: the all-primes sup picks up every prime divisor.",

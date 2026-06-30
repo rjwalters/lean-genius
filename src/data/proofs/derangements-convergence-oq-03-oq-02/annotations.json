@@ -28,7 +28,7 @@
     "title": "numDerangements_succ_alt: the requested sign convention",
     "content": "Proves D(n+1) = (n+1)·D(n) + (-1)^(n+1). The proof rewrites Mathlib's numDerangements_succ (which gives -(-1)^n) and pow_succ (which expands (-1)^(n+1) = (-1)^n·(-1)), then ring reconciles the two. Mathematically this is a pure restatement — its purpose is to match the open question's stated convention.",
     "mathContext": "$(-1)^{n+1} = (-1)^n \\cdot (-1) = -(-1)^n$, so $+(-1)^{n+1}$ and $-(-1)^n$ are interchangeable. The recurrence itself carries no new content beyond numDerangements_succ.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["numDerangements_succ", "pow_succ", "ring"],
     "prerequisites": ["Mathlib numDerangements_succ"]
   },

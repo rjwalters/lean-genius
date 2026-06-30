@@ -31,7 +31,7 @@
     "title": "Explicit Lower Bound, Textbook Form",
     "content": "pseries_tail_ge_explicit rewrites the floor (N+1)^{1−p}/(p−1) as 1/((p−1)·(N+1)^{p−1}) using Real.rpow_neg ((N+1)^{1−p} = 1/(N+1)^{p−1}) and field_simp, exhibiting the matching O(N^{1−p}) order from below.",
     "mathContext": "\\frac{1}{(p-1)\\,(N+1)^{p-1}} \\;\\le\\; \\sum_{i=0}^{\\infty} \\frac{1}{(N+1+i)^p}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["rate of convergence", "Real.rpow_neg", "asymptotic order"],
     "prerequisites": []
   },
@@ -51,11 +51,11 @@
     "id": "ann-isc-oq01010201-basel",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 169, "endLine": 185 },
-    "type": "example",
+    "type": "concept",
     "title": "Basel-Exponent Sandwich",
     "content": "For p = 2 the sandwich collapses to the textbook estimate 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N: both (N+1)^{1−2}/(2−1) and N^{1−2}/(2−1) simplify to 1/(N+1) and 1/N via Real.rpow_neg and Real.rpow_one.",
     "mathContext": "\\frac{1}{N+1} \\;\\le\\; \\sum_{n>N} \\frac{1}{n^2} \\;\\le\\; \\frac{1}{N}",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Basel problem", "worked example", "rate of convergence"],
     "prerequisites": []
   }

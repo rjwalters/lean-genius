@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 47
     },
-    "type": "context",
+    "type": "concept",
     "title": "Packaging the Eisenstein route: from irreducibility to exact degree",
     "content": "The docstring frames the entry against the parent fourth-root-2-irrational (⁴√2 has degree 4 via Eisenstein on X⁴ − 2) and its open question OQ-02: package the route reusably for X^{2^k} − 2 / X^{p^k} − p, the even-exponent / prime-power cases Mathlib's Kummer API marks TODO. The irreducibility half already exists (CubeRoot3IrrationalOQ01 proves Xⁿ − p irreducible for all primes p and n ≥ 1); NthRootIrrationalOQ01 uses it for irrationality. The remaining gap — which this file closes — is the SHARP consequence for the real radical: its minimal polynomial and exact field degree, where irrationality only gives degree ≥ 2.",
     "mathContext": "Eisenstein's criterion at a prime p is insensitive to the exponent's parity, so it covers exactly the cases the Kummer-theory lemmas leave open.",
@@ -19,7 +19,7 @@
       "Kummer theory",
       "algebraic degree"
     ],
-    "significance": "context"
+    "significance": "supporting"
   },
   {
     "id": "ann-radical-power",

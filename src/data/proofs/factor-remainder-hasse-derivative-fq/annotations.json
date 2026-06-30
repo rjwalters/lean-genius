@@ -7,7 +7,7 @@
     "title": "The ordinary-derivative multiplicity test and its characteristic-p breakdown",
     "content": "Over a characteristic-0 field, (X − a)^k ∣ p iff p and its first k−1 ordinary derivatives vanish at a. In positive characteristic this fails: derivative(X^p) = 0 over 𝔽_p, so all ordinary derivatives can vanish while the multiplicity is large. Hasse's divided-power derivative repairs the test. This file pins down the FULL failure profile — the exact order at which the ordinary test goes blind, and the X^{p^e} family that overcounts without bound — over any characteristic-p field, hence every finite field 𝔽_q.",
     "mathContext": "Characteristic 0: $(X-a)^k \\mid p \\iff p(a) = p'(a) = \\cdots = p^{(k-1)}(a) = 0$. The whole analysis rests on Mathlib's $\\mathrm{derivative}^{[k]} f = k!\\cdot \\mathrm{hasseDeriv}\\,k\\,f$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["factor theorem", "root multiplicity", "Hasse derivative", "positive characteristic", "finite fields"],
     "prerequisites": ["polynomial derivatives", "characteristic of a ring", "root multiplicity"]
   },
@@ -75,7 +75,7 @@
     "id": "ann-deriv-vanish",
     "proofId": "factor-remainder-hasse-derivative-fq",
     "range": { "startLine": 123, "endLine": 139 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Every positive-order ordinary derivative of X^{p^e} vanishes",
     "content": "derivative_X_pow_char shows already the FIRST ordinary derivative of X^{p^e} (e ≥ 1) is zero: derivative(X^{p^e}) = C(p^e : F)·X^{p^e−1}, and (p^e : F) = 0 because p ∣ p^e. iterate_derivative_X_pow_char_eq_zero then bootstraps to all positive orders j ≥ 1 by writing j = m+1 and applying the first-derivative fact followed by iterate_derivative_zero. So the entire ordinary jet of X^{p^e} above order 0 is identically zero.",
     "mathContext": "$\\mathrm{derivative}(X^{p^e}) = (p^e : F)\\,X^{p^e-1} = 0$ since $p \\mid p^e \\Rightarrow (p^e : F) = 0$. Then $\\mathrm{derivative}^{[m+1]} = \\mathrm{derivative}^{[m]} \\circ \\mathrm{derivative}$ kills all $j \\ge 1$.",

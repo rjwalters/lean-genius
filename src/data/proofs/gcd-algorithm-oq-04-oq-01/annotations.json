@@ -75,7 +75,7 @@
     "id": "ann-gcd-oq0401-examples",
     "proofId": "gcd-algorithm-oq-04-oq-01",
     "range": { "startLine": 169, "endLine": 175 },
-    "type": "example",
+    "type": "concept",
     "title": "Part VI: Worked Examples over ℚ",
     "content": "Two concrete checks over ℚ. First, a monic polynomial X + C 1 is its own normalization (via Monic.normalize_eq_self with monic_X_add_C). Second, C 2 * X normalizes to the monic X: the headline identity gives C 2⁻¹ * (C 2 * X), and computing the leading coefficient (2 · 1 = 2) and simplifying the constant (2⁻¹ · 2 = 1) collapses it to X. These illustrate both the monic fixed-point case and a genuine rescaling.",
     "mathContext": "$\\operatorname{normalize}(X + 1) = X + 1$ (already monic); $\\operatorname{normalize}(2X) = X$ (rescale by $\\tfrac12$).",

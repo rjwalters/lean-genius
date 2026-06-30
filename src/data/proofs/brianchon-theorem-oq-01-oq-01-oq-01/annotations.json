@@ -30,7 +30,7 @@
       "startLine": 100,
       "endLine": 117
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Cross-Product Covariance",
     "content": "`cross_applyM` proves the classical identity (m u) × (m v) = cof(m)·(u × v), where cof(m) is the cofactor matrix (equivalently adj(m)ᵀ): the join/meet of two transformed projective points is the transformed join/meet. The proof is component-wise — `funext i; fin_cases i` splits into the three coordinates, `simp only` unfolds cross, applyM, and cof, and `ring` closes each polynomial identity. This is the engine of the whole transfer: it is what lets a linear map be pushed through the cross products that define the Pascal points.",
     "mathContext": "(m\\,u) \\times (m\\,v) = \\mathrm{cof}(m)\\,(u \\times v) = \\mathrm{adj}(m)^{\\mathsf T}(u \\times v)",
@@ -76,7 +76,7 @@
       "startLine": 139,
       "endLine": 168
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Transformed Pascal Points Share One Matrix",
     "content": "The Pascal points X = (AB)∧(DE), Y = (BC)∧(EF), Z = (CD)∧(FA) are each a doubly-nested cross product. Applying cross_applyM three times — twice on the inner joins, once on the outer meet — `pascalX_applyM` (and Y, Z) shows each transformed Pascal point equals cof(cof m) applied to the original. The crucial point is that this is the SAME matrix K = cof(cof m) for all three Pascal points, so the next step can scale all three uniformly. (For 3×3, cof(cof m) = det(m)·m, though the proof does not need to simplify it.)",
     "mathContext": "\\text{pascalX}(m\\cdot) = \\mathrm{cof}(\\mathrm{cof}\\,m)\\cdot \\text{pascalX}(\\cdot), \\text{ likewise Y, Z}",

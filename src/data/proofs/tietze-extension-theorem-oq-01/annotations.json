@@ -51,11 +51,11 @@
     "id": "ann-recover-restriction",
     "proofId": "tietze-extension-theorem-oq-01",
     "range": { "startLine": 148, "endLine": 162 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Recovering the Boundary Values From the Restriction",
     "content": "The Tietze extension only guarantees g.restrict (s ∪ t) equals the boundary function as bundled continuous maps; the Urysohn statement needs the pointwise facts g = 0 on s and g = 1 on t. These are recovered by `DFunLike.congr_fun` applied to the restriction equality at the subtype points ⟨x, Or.inl hx⟩ and ⟨x, Or.inr hx⟩, then `ContinuousMap.restrict_apply_mk` to evaluate, giving g x = if x ∈ t then 1 else 0. On s the if-condition is false by disjointness (if_neg via Set.disjoint_left), yielding 0; on t it is true (if_pos), yielding 1. This is the routine but necessary bridge from the extension's defining equality to the separating-function specification.",
     "mathContext": "$g|_{s\\cup t}=$ boundary $\\Rightarrow g(x)=[\\,x\\in t\\,]$ pointwise; $=0$ on $s$ (disjoint), $=1$ on $t$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["DFunLike.congr_fun", "restriction of continuous maps", "if-then-else evaluation", "disjointness"],
     "prerequisites": ["bundled continuous maps", "subtype evaluation"]
   },

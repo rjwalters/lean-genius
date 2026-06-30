@@ -72,7 +72,7 @@
       "startLine": 156,
       "endLine": 171
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Uniqueness of the foot on its side line",
     "content": "`foot_a_unique`: $H_a$ is the *only* point on line $BC$ whose join to $A$ is perpendicular to $BC$. Parametrizing the line as $P = B + s(C-B)$, the perpendicularity constraint $(P - A)\\cdot(C-B) = 0$ pins the parameter to a single value $s = \\frac{(A-B)\\cdot(C-B)}{\\|C-B\\|^2}$ (extracted by `field_simp`/`nlinarith`), which is exactly the projection formula for $H_a$. This confirms the explicit foot formula is forced, not just consistent.",
     "mathContext": "$P = B + s(C-B),\\ (P-A)\\cdot(C-B)=0 \\;\\Rightarrow\\; s = \\frac{(A-B)\\cdot(C-B)}{\\|C-B\\|^2},\\ P = H_a.$",
@@ -116,11 +116,11 @@
       "startLine": 200,
       "endLine": 204
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked example: the 3-4-5 triangle",
     "content": "`triangle_345_foot_a` evaluates the foot of the altitude from $A$ onto $BC$ for the right triangle $A=(0,0), B=(3,0), C=(0,4)$, getting $H_a = (48/25, 36/25)$ by `norm_num`. A concrete sanity check that the abstract projection formula produces the expected rational coordinates.",
     "mathContext": "$A=(0,0),\\ B=(3,0),\\ C=(0,4) \\;\\Rightarrow\\; H_a = (48/25,\\ 36/25).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked example",
       "3-4-5 triangle"

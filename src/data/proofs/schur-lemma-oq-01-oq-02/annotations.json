@@ -6,11 +6,11 @@
       "startLine": 77,
       "endLine": 81
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The k- and A-Actions Commute (smul_k_comm)",
     "content": "smul_k_comm establishes the compatibility a • (t • w) = t • (a • w) for a ∈ A, t ∈ k, w ∈ M — the scalar-tower bookkeeping that lets the proof slide a base-field scalar t past an algebra element a. It routes both base-field scalars through algebraMap (t • w = (algebraMap k A t) • w, by algebraMap_smul under IsScalarTower k A M), turning two A-action multiplications into one, then commutes the algebra product with mul_comm — the single place where this lemma uses that A is commutative. It is marked private and omits the [IsAlgClosed k], [IsSimpleModule A M], [FiniteDimensional k M] instances since none are needed: pure scalar-tower algebra, valid for any commutative algebra over k.",
     "mathContext": "$a \\cdot (t \\cdot w) = (\\mathrm{algebraMap}\\,t \\cdot a)\\cdot w = (a \\cdot \\mathrm{algebraMap}\\,t)\\cdot w = t\\cdot(a\\cdot w)$.",
-    "significance": "technical",
+    "significance": "supporting",
     "prerequisites": [
       "Scalar towers IsScalarTower k A M and algebraMap_smul",
       "Commutativity of the algebra A (mul_comm on algebra products)"

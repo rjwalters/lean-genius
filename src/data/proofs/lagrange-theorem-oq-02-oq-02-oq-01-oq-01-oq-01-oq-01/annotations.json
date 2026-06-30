@@ -31,7 +31,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Orbit-Stabilizer Product (Restated)",
     "content": "`card_orbit_mul_card_stabilizer` restates the parent's product identity `Nat.card (orbit G x) * Nat.card (stabilizer G x) = Nat.card G` locally, so this file stands alone. The proof is the same two rewrites: `← Nat.card_prod` folds the product into `Nat.card (orbit × stabilizer)`, then `Nat.card_congr (orbitProdStabilizerEquivGroup G x)` rewrites along Mathlib's finiteness-free bijection. No `Finite`/`Fintype` instance appears.",
     "mathContext": "This is one of the two products that get equated in the cancellation argument. It is itself unconditional, exactly because the bijection $\\mathrm{orbit}(x)\\times\\mathrm{Stab}(x)\\cong G$ requires no finiteness.",
@@ -53,7 +53,7 @@
       "startLine": 80,
       "endLine": 91
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Unconditional Index Identity",
     "content": "`card_orbit_eq_index_stabilizer` proves `Nat.card (orbit G x) = (stabilizer G x).index` directly: `Subgroup.index_eq_card` unfolds the index to `Nat.card (G ⧸ stabilizer G x)`, and `Nat.card_congr (orbitEquivQuotientStabilizer G x)` finishes via the orbit/coset bijection. No finiteness hypothesis is used — this is the strongest form of the result.",
     "mathContext": "Reading the bijection $\\mathrm{orbit}(x) \\cong G/\\mathrm{Stab}(x)$ as an equality of cardinals gives $|\\mathrm{orbit}(x)| = [G : \\mathrm{Stab}(x)]$. Because `Subgroup.index` is *defined* as `Nat.card (G ⧸ H)`, the index notation and the quotient cardinal are interchangeable, and the identity holds for any group action whatsoever.",
@@ -76,7 +76,7 @@
       "startLine": 93,
       "endLine": 98
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Positivity of the Stabilizer Card — Where Finiteness Enters",
     "content": "`card_stabilizer_pos` records `0 < Nat.card (stabilizer G x)` under `Finite G`, discharged by `Nat.card_pos` (the stabilizer is a finite, nonempty subgroup). This single lemma isolates exactly the hypothesis the cancellation route depends on: it is the `c > 0` side condition of ℕ right-cancellation.",
     "mathContext": "`Nat.card_pos` needs `[Nonempty α]` and `[Finite α]`. The stabilizer contains the identity (Nonempty) and is finite as a subtype of a finite group, so its cardinal is at least $1$. Without finiteness `Nat.card` could be $0$, and the cancellation below would be unjustified.",
@@ -98,7 +98,7 @@
       "startLine": 100,
       "endLine": 120
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Combine-and-Cancel Derivation (the OQ's Literal Route)",
     "content": "`card_orbit_eq_index_stabilizer_via_cancellation` is the derivation the open question describes. It pairs the orbit-stabilizer product `Nat.card (orbit G x) * s = Nat.card G` with Lagrange's `Subgroup.index_mul_card`, `[G : stabilizer G x] * s = Nat.card G` (here `s = Nat.card (stabilizer G x)`), rewrites both to expose `Nat.card (orbit G x) * s = [G : stabilizer G x] * s`, and concludes by `Nat.eq_of_mul_eq_mul_right (card_stabilizer_pos …)`. The `Finite G` hypothesis is exactly what powers the positivity feeding that cancellation.",
     "mathContext": "Right-cancellation $a c = b c \\Rightarrow a = b$ in $\\mathbb{N}$ holds iff $c > 0$. Both products equal $|G|$, so equating them and cancelling $|\\mathrm{Stab}(x)|$ yields $|\\mathrm{orbit}(x)| = [G:\\mathrm{Stab}(x)]$ — but only once $|\\mathrm{Stab}(x)| > 0$ is known. Contrast this with the bijection-based proof above, which needs no such hypothesis: the cancellation, not the statement, is what introduces finiteness.",

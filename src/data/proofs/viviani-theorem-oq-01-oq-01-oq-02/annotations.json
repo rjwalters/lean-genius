@@ -34,7 +34,7 @@
     "title": "The Open Interior via Strictly-Positive Barycentric Coordinates",
     "content": "`IsInterior A B C P` holds when `P = α•A + β•B + γ•C` for some real weights `α, β, γ > 0` with `α + β + γ = 1`. This is precisely the open interior of the triangle: the relatively-interior points of the simplex spanned by the three vertices. It is the region on which the signed distance-sum `sumDist` coincides with the genuine perpendicular-distance sum of the classical Viviani statement, and the domain in which the witnesses must lie for the result to be geometrically meaningful.",
     "mathContext": "$P = \\alpha A + \\beta B + \\gamma C$ with $\\alpha,\\beta,\\gamma > 0$, $\\alpha+\\beta+\\gamma = 1$; the centroid is the symmetric point $\\alpha=\\beta=\\gamma=\\tfrac13$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "barycentric coordinates",
       "open interior of a triangle",
@@ -56,7 +56,7 @@
     "title": "Interior Witnesses: Reducing to a Non-Orthogonal Gradient",
     "content": "`viviani_interior_witnesses` states that a non-degenerate, non-equilateral triangle has two interior points P, Q with `sumDist A B C P ≠ sumDist A B C Q`. This first half is the reduction. It rewrites the parent's non-degeneracy determinant into the (B−A, C−A) basis (a pure `ring` identity), then derives that the gradient g = nA+nB+nC is non-zero from non-equilaterality (via the parent's `viviani_converse` composed with `const_iff_normalSum_zero`). A 2×2 Cramer argument — two `linear_combination` identities that isolate g.re and g.im against the non-vanishing determinant — shows g cannot be rdot-orthogonal to both spanning edges, giving the dichotomy `⟪g, B−A⟫ ≠ 0 ∨ ⟪g, C−A⟫ ≠ 0` that selects which edge to perturb along.",
     "mathContext": "If $\\langle g, B-A\\rangle = \\langle g, C-A\\rangle = 0$ then, since the edges span $\\mathbb{C}$ (determinant $\\neq 0$), Cramer forces $g = 0$ — a contradiction. E.g. $g_{\\mathrm{re}}\\cdot\\det = (C{-}A)_{\\mathrm{im}}\\langle g,B{-}A\\rangle - (B{-}A)_{\\mathrm{im}}\\langle g,C{-}A\\rangle$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Cramer's rule",
       "2×2 determinant",
@@ -76,7 +76,7 @@
       "startLine": 95,
       "endLine": 137
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ±1/6 Centroid Perturbation",
     "content": "With the non-orthogonal edge selected (`rcases` on the dichotomy), the two witnesses are explicit barycentric points: (1/6, 1/2, 1/3) and (1/2, 1/6, 1/3) for edge B−A, with the mirror-image triple for edge C−A. All weights are strictly positive and sum to 1, so both points are interior — the four `norm_num` plus `rfl` obligations discharge `IsInterior`. Their difference is exactly ⅓(B−A), so by the parent's affine law `sumDist_sub` the distance-sum gap equals `rdot g (P−Q) = ⅓·⟪g, B−A⟫`, nonzero on the chosen branch; `linarith` then refutes equality. The two `rcases` branches are mirror images of each other.",
     "mathContext": "$P - Q = (\\tfrac16-\\tfrac12)A + (\\tfrac12-\\tfrac16)B = \\tfrac13(B-A)$, hence $\\mathrm{sumDist}(P)-\\mathrm{sumDist}(Q) = \\langle g, P-Q\\rangle = \\tfrac13\\langle g, B-A\\rangle \\neq 0$.",

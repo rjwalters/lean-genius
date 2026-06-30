@@ -12,7 +12,7 @@
       "Real.cos_eq_zero_iff (cos θ = 0 ↔ ∃ k, θ = (2k+1)π/2)"
     ],
     "relatedConcepts": ["angle addition formula", "tangent", "right angle / odd multiple of π/2"],
-    "significance": "Usability building blocks: they expose the addition and subtraction laws under the single hypothesis one actually verifies for a concrete angle, namely cos ≠ 0."
+    "significance": "supporting"
   },
   {
     "id": "ann-trig-heart",
@@ -28,7 +28,7 @@
       "linarith, ring"
     ],
     "relatedConcepts": ["symmetric polynomial identity", "angle-sum constraint", "supplementary angle"],
-    "significance": "The load-bearing lemma: both the triple tangent and triple cotangent identities are this single fact divided by a product of cosines or of sines."
+    "significance": "supporting"
   },
   {
     "id": "ann-triple-tangent",
@@ -44,7 +44,7 @@
       "sin_cos_triangle_identity (this file)"
     ],
     "relatedConcepts": ["triangle identity", "sum equals product", "tangent"],
-    "significance": "The centerpiece: a memorable triangle identity, absent from Mathlib, obtained by dividing the symmetric heart identity by the product of cosines."
+    "significance": "supporting"
   },
   {
     "id": "ann-triple-cotangent",
@@ -60,7 +60,7 @@
       "linear_combination with sin_cos_triangle_identity (this file)"
     ],
     "relatedConcepts": ["triangle identity", "cotangent", "symmetric function"],
-    "significance": "Shows the heart identity is genuinely two-sided: the same polynomial, divided by the product of sines instead of cosines, gives the cotangent identity."
+    "significance": "supporting"
   },
   {
     "id": "ann-arctan-application",
@@ -76,13 +76,13 @@
       "norm_num"
     ],
     "relatedConcepts": ["arctangent addition", "Machin-like formula", "π identities"],
-    "significance": "Anchors the abstract addition law to concrete rational tangents and to the gallery's Machin material."
+    "significance": "supporting"
   },
   {
     "id": "ann-equilateral-check",
     "proofId": "tangent-addition-formula-oq-01",
     "range": { "startLine": 120, "endLine": 128 },
-    "type": "example",
+    "type": "concept",
     "title": "Equilateral Check of the Triple Tangent Identity",
     "content": "A worked instance of the centerpiece on the equilateral triangle: with A = B = C = π/3 (so A+B+C = π and cos(π/3) = 1/2 ≠ 0), tan_sum_eq_tan_prod yields tan(π/3) + tan(π/3) + tan(π/3) = tan(π/3)³, i.e. 3√3 = (√3)³ = 3√3. Demonstrates the main theorem reused on concrete data.",
     "mathContext": "$A=B=C=\\tfrac{\\pi}{3}$: both sides equal $3\\sqrt3$.",
@@ -91,6 +91,6 @@
       "Real.cos_pi_div_three (cos(π/3) = 1/2)"
     ],
     "relatedConcepts": ["equilateral triangle", "concrete instance", "sanity check"],
-    "significance": "Confirms the triple tangent identity is not vacuous and applies on a familiar triangle."
+    "significance": "supporting"
   }
 ]

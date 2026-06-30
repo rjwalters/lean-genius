@@ -31,7 +31,7 @@
     "title": "inter_isUnbounded: Interleaving Two Clubs into One ω-Chain",
     "content": "This is the heart of the file. Given $\\alpha_0 < \\kappa.\\text{ord}$ we must find a point of $C \\cap D$ above $\\alpha_0$. The construction builds **one** increasing $\\omega$-chain that visits both clubs alternately:\n\n$$\\alpha_0 < c_0 < d_0 < c_1 < d_1 < \\cdots, \\qquad c_n \\in C,\\ d_n \\in D.$$\n\nConcretely `cElt` uses unboundedness of $C$ to step strictly above the current point into $C$, and `dElt` then steps above that $c$ into $D$. The recursion `seq` records the $d$-values as the main sequence $s$, carrying along the proof that each term is $< \\kappa.\\text{ord}$ (a subtype `{α // α < κ.ord}`), and `cElt (seq n)` is the intermediate $C$-point with $s_n < c_n < s_{n+1}$.\n\nRegularity is used **once**, decisively: `iSup_lt_ord_lift_of_isRegular` bounds the supremum $\\gamma = \\bigsqcup_n s_n$ strictly below $\\kappa.\\text{ord}$ — an $\\omega$-indexed sup of ordinals below a regular uncountable $\\kappa.\\text{ord}$ stays below it.\n\nThe payoff: $\\gamma$ is approached cofinally from inside $C$ (by the $c_n$) **and** from inside $D$ (by the $d_n = s_{n+1}$). Closedness of $C$ forces $\\gamma \\in C$; closedness of $D$ forces $\\gamma \\in D$. Hence $\\gamma \\in C \\cap D$ and $\\gamma > \\alpha_0$.",
     "mathContext": "For clubs $C, D$ and any $\\alpha_0 < \\kappa.\\text{ord}$ there is $\\gamma \\in C \\cap D$ with $\\alpha_0 < \\gamma < \\kappa.\\text{ord}$; the supremum of the interleaved chain is the witness (Jech, Set Theory, Theorem 8.3)",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["club intersection", "cofinal sequence", "regular cardinal", "supremum of ordinals", "diagonal intersection (binary case)"],
     "prerequisites": ["iSup_lt_ord_lift_of_isRegular", "Classical.choice", "IsClosedBelow", "Ordinal.le_iSup"]
   },
@@ -55,7 +55,7 @@
     "title": "inter_isClub: Binary Intersection Closure",
     "content": "Combining `inter_isUnbounded` and `inter_isClosedBelow` gives the headline result: the intersection of two clubs is a club. In filter language, $\\text{Club}(\\kappa)$ is closed under binary intersection — the defining property of a filter base.",
     "mathContext": "$\\text{club}(C) \\wedge \\text{club}(D) \\Rightarrow \\text{club}(C \\cap D)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["club filter", "filter base", "finite intersection property"],
     "prerequisites": ["IsClub", "inter_isUnbounded", "inter_isClosedBelow"]
   },
@@ -67,7 +67,7 @@
     "title": "isClub_biInter: Finite Intersection of Clubs",
     "content": "By induction on a `Finset` of indices, $\\bigcap_{i \\in t} C_i$ is a club whenever each $C_i$ is. The empty case is `isClub_univ` (the empty intersection is the whole space); the `insert` case rewrites $\\bigcap_{i \\in \\text{insert } a\\, s} C_i = C_a \\cap \\bigcap_{i \\in s} C_i$ via `Finset.set_biInter_insert` and applies `inter_isClub`.\n\nThis is the precise statement that the clubs are closed under **finite** intersection — i.e. they form a filter base generating the proper filter $\\text{Club}(\\kappa)$.",
     "mathContext": "For a finite index set $t$, $(\\forall i \\in t,\\ \\text{club}(C_i)) \\Rightarrow \\text{club}\\big(\\bigcap_{i \\in t} C_i\\big)$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["finite intersection", "Finset induction", "filter base", "club filter"],
     "prerequisites": ["Finset.induction", "Finset.set_biInter_insert", "inter_isClub"]
   },
@@ -79,7 +79,7 @@
     "title": "IsNonStationary: The Dual Ideal NS(κ)",
     "content": "A set $S$ is **nonstationary** if it is disjoint from some club: $\\exists C,\\ \\text{club}(C) \\wedge S \\cap C = \\varnothing$. The nonstationary sets are exactly the members of the dual ideal $\\text{NS}(\\kappa)$ of the club filter — the 'small' or 'negligible' sets from the club filter's point of view.\n\nThe definition packages 'disjoint from some club' as $\\forall \\alpha \\in S,\\ \\alpha \\notin C$, which is the form most convenient for the ideal-closure proofs.",
     "mathContext": "$S \\in \\text{NS}(\\kappa) \\iff \\exists C \\in \\text{Club}(\\kappa),\\ S \\cap C = \\varnothing$; $\\text{NS}(\\kappa)$ is the ideal dual to the club filter",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["nonstationary ideal", "dual ideal", "club filter", "negligible set"],
     "prerequisites": ["IsClub", "ideals and filters"]
   },
@@ -91,7 +91,7 @@
     "title": "isStationary_iff_not_isNonStationary: The Duality",
     "content": "The exact sense in which 'stationary = not in the dual ideal': $\\text{IsStationary}\\,\\kappa\\,S \\iff \\neg\\,\\text{IsNonStationary}\\,\\kappa\\,S$.\n\nThis is a De Morgan / double-negation identity rather than new mathematics. 'Stationary' means *meets every club* ($\\forall C,\\ S \\cap C \\neq \\varnothing$); 'nonstationary' means *misses some club* ($\\exists C,\\ S \\cap C = \\varnothing$). These are literal negations of one another, and the parent's `not_isStationary_iff` supplies the bridge. The genuine content of the filter/ideal theory therefore lives in the closure theorems (`inter_isClub`, `isNonStationary_union`), not in this restatement.",
     "mathContext": "$S$ stationary $\\iff S \\notin \\text{NS}(\\kappa)$; the stationary sets are the $\\text{Club}(\\kappa)$-positive sets, the complement of the dual ideal",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["stationary set", "nonstationary ideal", "duality", "De Morgan"],
     "prerequisites": ["IsStationary", "not_isStationary_iff", "IsNonStationary"]
   },
@@ -103,7 +103,7 @@
     "title": "isNonStationary_union: Where the Filter Meets the Ideal",
     "content": "The nonstationary ideal is closed under binary union — and this is the one ideal axiom whose proof genuinely uses the club-filter structure. If $S$ avoids the club $C$ and $T$ avoids the club $D$, then $S \\cup T$ avoids the club $C \\cap D$ (a club by `inter_isClub`): any $\\alpha \\in S \\cup T$ landing in $C \\cap D$ would, if in $S$, contradict $S \\cap C = \\varnothing$, and if in $T$, contradict $T \\cap D = \\varnothing$.\n\nThis is the precise dual of finite-intersection closure for the filter: $\\bigcap$ on the filter side ↔ $\\bigcup$ on the ideal side. Together with downward closure (`isNonStationary_subset`) and $\\varnothing \\in \\text{NS}(\\kappa)$ (`isNonStationary_empty`), it certifies that $\\text{NS}(\\kappa)$ is a genuine ideal.",
     "mathContext": "$S, T \\in \\text{NS}(\\kappa) \\Rightarrow S \\cup T \\in \\text{NS}(\\kappa)$, witnessed by the club $C \\cap D$; dual to $\\text{Club}(\\kappa)$ being closed under $\\cap$",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": ["ideal closure", "finite union", "filter-ideal duality", "club intersection"],
     "prerequisites": ["IsNonStationary", "inter_isClub"]
   },

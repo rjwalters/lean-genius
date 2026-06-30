@@ -14,6 +14,8 @@
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true",
     "annotations:build": "tsx scripts/annotations/build.ts",
     "annotations:validate": "tsx scripts/annotations/build.ts --strict",
+    "annotations:normalize": "tsx scripts/annotations/normalize-enums.ts",
+    "annotations:normalize-check": "tsx scripts/annotations/normalize-enums.ts --check",
     "annotations:migrate": "tsx scripts/annotations/resolver.ts migrate",
     "annotations:parse": "tsx scripts/annotations/resolver.ts parse",
     "research:sync": "tsx scripts/research/sync-data.ts",

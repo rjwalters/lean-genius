@@ -29,7 +29,7 @@
       "startLine": 44,
       "endLine": 59
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "The Half-Angle Doubling Radical (Sine)",
     "content": "The core constructive step: $\\sin(\\pi/(2n)) = \\sqrt{(1-\\cos(\\pi/n))/2}$ for all $n \\ge 1$. This is Mathlib's `Real.sin_half_eq_sqrt` specialized at $x = \\pi/n$; the side conditions $0 \\le \\pi/n \\le 2\\pi$ are discharged by `positivity` and `nlinarith` (using $n \\ge 1$). This single radical is the entire computational content of each doubling step in Archimedes' method.",
     "mathContext": "$\\sin\\!\\left(\\frac{\\pi}{2n}\\right) = \\sqrt{\\frac{1-\\cos(\\pi/n)}{2}}$",
@@ -51,7 +51,7 @@
       "startLine": 61,
       "endLine": 77
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "The Companion Cosine Radical",
     "content": "The dual identity $\\cos(\\pi/(2n)) = \\sqrt{(1+\\cos(\\pi/n))/2}$ (Mathlib's `Real.cos_half` at $x = \\pi/n$, with $-\\pi \\le \\pi/n \\le \\pi$). Archimedes used the cosine companion to propagate the apothem and the circumscribed side at each doubling.",
     "mathContext": "$\\cos\\!\\left(\\frac{\\pi}{2n}\\right) = \\sqrt{\\frac{1+\\cos(\\pi/n)}{2}}$",
@@ -117,7 +117,7 @@
       "startLine": 121,
       "endLine": 149
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Strict Monotonicity Under Doubling",
     "content": "Doubling strictly increases the inscribed half-perimeter: $p(n) < p(2n)$ for $n \\ge 1$. Writing $x = \\pi/(2n)$, the double-angle identity $\\sin(\\pi/n) = 2\\sin x\\cos x$ gives $p(n) = p(2n)\\cos x$; since $0 < \\cos x < 1$ (from `strictAntiOn_cos`) and $p(2n) > 0$, the perimeter grows. `nlinarith` closes the final inequality. This is precisely why each doubling sharpens Archimedes' lower bound for π.",
     "mathContext": "$p(n) = p(2n)\\cos(\\pi/2n) < p(2n)$",

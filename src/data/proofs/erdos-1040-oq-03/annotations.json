@@ -7,7 +7,7 @@
     "title": "Framing the EHP-to-Convex-Sets Question",
     "content": "The docstring frames open question oq-03 of Erdős #1040. The EHP quantity is μ(F) = inf over monic polynomials f with roots in a closed infinite F ⊆ ℂ of the planar Lebesgue measure of the lemniscatic sublevel set {z : |f(z)| < 1}; the open conjecture asks whether μ(F) is governed by the transfinite diameter of F. Erdős–Herzog–Piranian (1958) answered YES for line segments and discs; oq-03 asks about general convex F. This file does not resolve that — it isolates two elementary fully-verified facts any extension must reckon with: (1) the degree-1 base case, where the linear sublevel set is the unit disc (convex, measure π, giving μ(F) ≤ π); and (2) the degree-2 obstruction, where even roots in the convex segment [−1,1] produce a non-convex sublevel set. The two facts are the easy upper side and the first nonlinear obstacle of the program.",
     "mathContext": "$\\mu(F) = \\inf_f \\mathrm{vol}\\{z : |f(z)| < 1\\}$; degree-1 gives $\\mu(F) \\le \\pi$, degree-2 breaks sublevel-set convexity.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős–Herzog–Piranian", "lemniscates", "transfinite diameter", "convexity", "logarithmic capacity"],
     "prerequisites": ["complex analysis", "Lebesgue measure", "convex sets"]
   },

@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "sum-of-divisors-oq-04-oq-01",
     "range": { "startLine": 1, "endLine": 30 },
-    "type": "context",
+    "type": "concept",
     "title": "Prime Powers Are Always Deficient — A Qualitative Classification",
     "content": "Where OQ-04 gave the structural identity σ(pⁱ)(p−1) = pⁱ⁺¹−1 and the base entry classified specific numbers by native_decide, this entry proves the qualitative classification of every prime power, axiom-free and uniformly in p and k: prime powers are strictly deficient (never perfect or abundant); powers of two are 'almost perfect' (deficient by exactly 1); and the abundancy index σ(pᵏ)/pᵏ is bounded by p/(p−1) ≤ 2. Everything reduces to the integer identity scaled by the positive factor p−1.",
     "mathContext": "$\\sigma(p^k) < 2p^k$ always; $\\sigma(2^k)+1 = 2\\cdot 2^k$; $\\dfrac{\\sigma(p^k)}{p^k} < \\dfrac{p}{p-1} \\le 2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["deficient numbers", "perfect numbers", "abundancy index", "almost perfect numbers"],
     "prerequisites": ["divisor-sum σ on prime powers", "perfect/deficient/abundant classification"]
   },

@@ -6,7 +6,7 @@
       "startLine": 65,
       "endLine": 117
     },
-    "type": "context",
+    "type": "concept",
     "title": "Circumcenter equidistance (local)",
     "content": "The proof reproves the two perpendicular-bisector relations $|B-O|^2 = |A-O|^2$ and $|C-O|^2 = |A-O|^2$ (the parent's are `private`). Each bisector identity is *linear* in the circumcenter $O$, so substituting the explicit formula closes it by `field_simp; ring`, then `nlinarith` upgrades it to the squared-distance equality. These three equal radii $|A-O| = |B-O| = |C-O| = R$ are exactly what collapses the incenter expansion in Part III.",
     "mathContext": "$|A-O| = |B-O| = |C-O| = R.$",
@@ -27,7 +27,7 @@
       "startLine": 123,
       "endLine": 183
     },
-    "type": "context",
+    "type": "concept",
     "title": "Positivity of side lengths, area, and perimeter",
     "content": "Bookkeeping that makes the later square-root and division steps legitimate: each side length $a, b, c$ is strictly positive (a degenerate side would contradict `T.nondegenerate`), the area is positive, and hence the perimeter $a+b+c > 0$ — needed to cancel the common denominator in the incenter formula. The squared-side lemmas ($a^2 = |BC|^2$, etc.) let the coordinate algebra run without `sqrt`.",
     "mathContext": "$a, b, c > 0,\\ \\mathrm{Area} > 0,\\ a+b+c > 0;\\quad a^2 = |BC|^2.$",
@@ -72,7 +72,7 @@
       "startLine": 260,
       "endLine": 332
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The law-of-sines bridge: 4·R·Area = abc",
     "content": "To turn the affine core's $\\frac{abc}{a+b+c}$ into $2Rr$ one needs the law of sines in area form. `sixteen_R2_area_sq` proves the *squared* coordinate identity $16R^2\\,\\mathrm{Area}^2 = a^2b^2c^2$; taking positive square roots (justified by the Part II positivity lemmas) gives `four_R_area_eq_abc`: $4R\\,\\mathrm{Area} = abc$. The squared form is what keeps the derivation polynomial — square roots enter only at the final extraction.",
     "mathContext": "$16R^2\\,\\mathrm{Area}^2 = a^2b^2c^2 \\;\\Rightarrow\\; 4R\\,\\mathrm{Area} = abc.$",
@@ -117,11 +117,11 @@
       "startLine": 371,
       "endLine": 385
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked example: the 3-4-5 triangle",
     "content": "`triangle_345_OI_sq`: for the 3-4-5 right triangle, $\\mathrm{dist}^2(O,I) = 5/4$, matching $R^2 - 2Rr = (5/2)^2 - 2\\cdot(5/2)\\cdot1 = 25/4 - 5 = 5/4$ (`triangle_345_euler`). Here $R = 5/2$ (half the hypotenuse) and $r = 1$, a clean numeric confirmation of Euler's formula.",
     "mathContext": "$R = 5/2,\\ r = 1:\\quad R^2 - 2Rr = 25/4 - 5 = 5/4 = \\mathrm{dist}^2(O,I).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked example",
       "right triangle"

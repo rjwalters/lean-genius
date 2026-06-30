@@ -20,7 +20,7 @@
       "stars and bars",
       "powers of two"
     ],
-    "significance": "The headline enumerative identity: the number of ordered compositions of n is 2^(n−1), one of the foundational counts of enumerative combinatorics."
+    "significance": "supporting"
   },
   {
     "id": "ann-bijective-content",
@@ -42,7 +42,7 @@
       "subset-of-gaps model",
       "cardinality of equivalent types"
     ],
-    "significance": "Makes the proof bijective rather than merely numeric: the 2^(n−1) count is the number of subsets of the n−1 internal gaps, surfaced explicitly at the level of cardinalities."
+    "significance": "supporting"
   },
   {
     "id": "ann-doubling-recurrence",
@@ -65,7 +65,7 @@
       "dynamic-programming counting",
       "truncated subtraction edge case"
     ],
-    "significance": "The doubling recurrence is the combinatorial engine of 2^(n−1): each additional unit of n either opens a new singleton part or extends the last, the two choices producing the factor of two. Its genuine dependence on n ≥ 1 (the n = 0 edge case under truncated subtraction) is made explicit."
+    "significance": "supporting"
   },
   {
     "id": "ann-numeric-instances",
@@ -74,7 +74,7 @@
       "startLine": 112,
       "endLine": 132
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Numeric Instances (n = 1, …, 5)",
     "content": "The examples specialise card_composition_eq to n = 1,…,5 and compute 2^(n−1) = 1, 2, 4, 8, 16 by norm_num: one composition of 1 ([1]); two of 2 ([2], [1,1]); four of 3 ([3], [1,2], [2,1], [1,1,1]); eight of 4; sixteen of 5. A final example checks the doubling recurrence at a concrete value, card (Composition 5) = 2 · card (Composition 4) i.e. 16 = 2·8, by invoking card_composition_two_mul 3 directly.",
     "mathContext": "$1,2,4,8,16$ for $n=1,\\dots,5$.",
@@ -87,6 +87,6 @@
       "sanity checks",
       "powers of two"
     ],
-    "significance": "Grounds the abstract count in concrete cardinalities and verifies the doubling recurrence numerically, confirming the formula and recurrence agree on small cases."
+    "significance": "supporting"
   }
 ]

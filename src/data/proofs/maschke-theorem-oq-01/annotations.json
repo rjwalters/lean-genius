@@ -51,7 +51,7 @@
     "id": "ses-splits",
     "proofId": "maschke-theorem-oq-01",
     "range": { "startLine": 105, "endLine": 118 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Short Exact Sequences Split Both Ways",
     "content": "`surjection_splits` gives every surjective k[G]-map a section (f ∘ s = id) — projectivity, the lifting form of complete reducibility (IsSemisimpleModule.lifting_property). `injection_splits` gives every injective k[G]-map a retraction (r ∘ f = id) — the extension/injective form (IsSemisimpleModule.extension_property), which re-proves the earlier `splitting` through the semisimplicity API. Together they say every short exact sequence of representations splits, the categorical heart of why representation theory in this setting is 'as easy as linear algebra'.",
     "mathContext": "Surjective $f$: $\\exists s,\\ f\\circ s = \\mathrm{id}$. Injective $f$: $\\exists r,\\ r\\circ f = \\mathrm{id}$. Every SES splits.",

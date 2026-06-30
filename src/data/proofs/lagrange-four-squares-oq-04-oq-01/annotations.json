@@ -57,7 +57,7 @@
     "title": "Contrast: Four Squares ARE Closed (Euler's Identity)",
     "content": "The positive counterpart. Euler's four-square identity (`euler_four_squares`, a pure `ring` fact over any CommRing) expresses (a²+b²+c²+d²)(x²+y²+z²+w²) as a sum of four squares whose components carry subtractions. To land back in ℕ, the four integer components are passed through `Int.natAbs` using (↑|a|)² = a² (`natAbs_sq_cast`), giving `isSumOfFourSquares_mul` and hence `MulClosed IsSumOfFourSquares`. The very products 15 and 63 that fail for three squares are then exhibited as sums of four squares — representability recovered one dimension up.",
     "mathContext": "Euler: $(a^2{+}b^2{+}c^2{+}d^2)(x^2{+}y^2{+}z^2{+}w^2) = (ax{-}by{-}cz{-}dw)^2 + (ay{+}bx{+}cw{-}dz)^2 + (az{-}bw{+}cx{+}dy)^2 + (aw{+}bz{-}cy{+}dx)^2$. Recovery: $15 = 1^2{+}1^2{+}2^2{+}3^2$, $63 = 1^2{+}1^2{+}5^2{+}6^2$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Euler four-square identity",
       "quaternion norm multiplicativity",

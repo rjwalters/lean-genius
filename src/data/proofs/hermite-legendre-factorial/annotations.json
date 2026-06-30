@@ -10,7 +10,7 @@
     "title": "Setup: Routing Legendre's Formula through Hermite's Identity",
     "content": "The module docstring fixes the goal precisely. Legendre's formula (de Polignac, 1808) gives the exact prime-power content of a factorial, v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋, and Mathlib already has it as `padicValNat_factorial` over the finite window Ico 1 b for any b > log_p n (the tail vanishes because ⌊n/p^i⌋ = 0 once p^i > n). The new content is a *refinement layer*: each Legendre quotient ⌊n/p^i⌋ is rewritten through Hermite's floor-summation identity ∑_{k=0}^{m-1} ⌊x + k/m⌋ = ⌊m·x⌋, imported from the gallery as `HermiteFloorIdentity.hermite_floor_identity`. The plan announced in the docstring has three movements: (1) identify the real floor ⌊(n:ℝ)/m^j⌋ with the natural Euclidean quotient, (2) specialise Hermite at x = n/m^{j+1} to split a single summand, (3) feed the split term-by-term into Mathlib's Legendre core. The single `import Mathlib` pulls in the p-adic valuation, floor, and Euclidean-division APIs; `import Proofs.HermiteFloorIdentity` supplies the engine.",
     "mathContext": "$v_p(n!) = \\sum_{i\\ge 1}\\lfloor n/p^i\\rfloor$ (Legendre) is rewritten via $\\sum_{k=0}^{m-1}\\lfloor x + k/m\\rfloor = \\lfloor m x\\rfloor$ (Hermite) specialised at $x = n/m^{j+1}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Legendre's formula",
       "Hermite's floor identity",
@@ -31,7 +31,7 @@
       "startLine": 43,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Bridge Lemma: Real Floor Equals Euclidean Quotient",
     "content": "`floor_natCast_div_pow` is the small but load-bearing lemma that lets Hermite's real-valued identity meet Legendre's natural-number quotients without any error term. It proves ⌊(n:ℝ)/m^j⌋ = ↑(n/m^j), i.e. the real floor of a ratio of naturals is exactly their Euclidean quotient cast to ℤ. The proof first rewrites the real power (m:ℝ)^j as the cast of the natural power ((m^j:ℕ):ℝ) via `push_cast; ring`, so that the divisor is visibly a cast of a natural. Then `Int.floor_div_natCast` applies the division-floor law ⌊a/d⌋ = ⌊a⌋/d (valid because flooring commutes with division by a positive natural), `Int.floor_natCast` collapses ⌊(n:ℝ)⌋ to n, and `Int.natCast_div` matches the integer Euclidean quotient (n:ℤ)/(m^j) with the cast of the natural quotient ↑(n/m^j). This is the only place the real/natural boundary is crossed, and it crosses it cleanly.",
     "mathContext": "$\\lfloor (n:\\mathbb{R})/m^j\\rfloor = \\lfloor n/m^j\\rfloor_{\\mathbb{N}}$. The key law is $\\lfloor a/d\\rfloor = \\lfloor a\\rfloor / d$ for a positive integer divisor $d$, so floor and division by $m^j$ commute.",
@@ -106,11 +106,11 @@
       "startLine": 71,
       "endLine": 78
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Finite Window Ico 1 b Suffices",
     "content": "Both the statement and proof of `legendre_factorial_hermite` use the finite window Ico 1 b under the hypothesis hb : Nat.log p n < b rather than the infinite sum ∑_{i≥1}. This is not a loss of generality: Legendre's true sum is infinite only nominally, since ⌊n/p^i⌋ = 0 as soon as p^i > n, i.e. for all i > log_p n. Any bound b strictly above log_p n therefore captures every nonzero term, and Mathlib's `padicValNat_factorial` is stated in exactly this truncated form. The Hermite refinement preserves this: the inner sum ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ reconstructs ⌊n/p^i⌋ at each level i, so the doubly-indexed sum has the same finite support. The reader should read 'b > log_p n' as 'far enough out that nothing is dropped'.",
     "mathContext": "$\\lfloor n/p^i\\rfloor = 0$ for $p^i > n$, i.e. $i > \\log_p n$; so $\\sum_{i\\ge 1} = \\sum_{i=1}^{b-1}$ whenever $b > \\log_p n$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Nat.log",
       "Finset.Ico",

@@ -6,7 +6,7 @@
       "startLine": 64,
       "endLine": 68
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cyclic Isomorphism via zmodCyclicMulEquiv",
     "content": "**`cyclicMulEquiv`**: a cyclic group of order `p²` is `G ≃* Multiplicative (ZMod (p²))`.\n\nMathlib's `zmodCyclicMulEquiv` provides, for any cyclic group, the canonical isomorphism\n```\nMultiplicative (ZMod (Nat.card G)) ≃* G.\n```\nThe entire proof is to rewrite `Nat.card G = p²` inside this equivalence and invert it. Note that **primality is not used** — only the cardinality *value* `p²` matters — so the hypothesis is stated as `Nat.card G = p ^ 2` with no `p.Prime`. This is the easy half of the structure theorem; all the work is in the elementary-abelian case.",
     "mathContext": "$G$ cyclic of order $p^2 \\Rightarrow G \\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/p^2)$, via $\\mathrm{Multiplicative}(\\mathbb{Z}/\\mathrm{Nat.card}\\,G) \\simeq^* G$ with $\\mathrm{Nat.card}\\,G = p^2$.",
@@ -55,11 +55,11 @@
       "startLine": 97,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Threading the Module Instance Explicitly",
     "content": "A formalization subtlety: `AddCommMonoid.zmodModule` is a *reducible non-instance* (it is an `abbrev`, deliberately not registered as a global instance to avoid runaway search). Consequently the local `Module (ZMod p) (Additive G)` it produces cannot be rediscovered by typeclass resolution when downstream lemmas (`Module.Finite`, `Module.Free`, `Module.natCard_eq_pow_finrank`, `Module.finBasisOfFinrankEq`) demand it — search gets *stuck on metavariables*.\n\nThe fix is to **name the instance** (`letI inst := …`) and pass it (together with the derived `hmf : Module.Finite` and `hfree : Module.Free`) explicitly via `@`. This is the difference between a stuck proof and a clean one.",
     "mathContext": "$\\mathrm{Module}\\,(\\mathbb{Z}/p)\\,(\\mathrm{Additive}\\,G)$ from a reducible non-instance (`abbrev`) must be named with `letI` and passed via `@` to `Module.Finite`/`Module.Free`/`finBasisOfFinrankEq`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "typeclass resolution",
       "reducible non-instance",
@@ -103,7 +103,7 @@
       "startLine": 116,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Basis, finTwoArrow, and the Additive/Multiplicative Transport",
     "content": "With `finrank = 2`, `Module.finBasisOfFinrankEq` yields a `Basis (Fin 2) (ZMod p) (Additive G)`. Its coordinate equivalence `b.equivFun : Additive G ≃ₗ (Fin 2 → ZMod p)` composes with `LinearEquiv.finTwoArrow : (Fin 2 → ZMod p) ≃ₗ ZMod p × ZMod p` to give an additive identification `Additive G ≃+ ZMod p × ZMod p`.\n\nThe final step carries this back to the multiplicative world: `AddEquiv.toMultiplicativeRight` turns `Additive G ≃+ H` into `G ≃* Multiplicative H`, and `MulEquiv.prodMultiplicative` splits `Multiplicative (ZMod p × ZMod p)` into `Multiplicative (ZMod p) × Multiplicative (ZMod p)`. Working additively to use module theory and then transporting back is what keeps the multiplicative argument free of hand computation.",
     "mathContext": "$\\mathrm{finrank}=2 \\Rightarrow \\mathrm{Additive}\\,G \\simeq^+ (\\mathbb{Z}/p)^2$ via a basis; then $G \\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/p)\\times\\mathrm{Multiplicative}(\\mathbb{Z}/p)$.",

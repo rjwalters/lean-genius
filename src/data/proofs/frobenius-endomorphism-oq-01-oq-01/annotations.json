@@ -10,7 +10,7 @@
     "title": "Module Header: Frobenius Generates the Galois Group",
     "content": "For the canonical finite field $\\mathbb{F}_{p^n} = \\mathrm{GaloisField}\\,p\\,n$ over its prime field $\\mathbb{F}_p = \\mathbb{Z}/p$, the **Frobenius automorphism** $\\mathrm{frob} : x \\mapsto x^p$ is the canonical generator of the Galois group $\\mathrm{Gal}(\\mathbb{F}_{p^n}/\\mathbb{F}_p)$. This file answers the parent's first open question: $\\mathrm{frob}$ has order **exactly** $n$ ($\\mathrm{frob}^n = 1$ but $\\mathrm{frob}^k \\neq 1$ for $0 < k < n$), **generates** the whole group ($\\langle\\mathrm{frob}\\rangle = \\top$, every $\\sigma$ a power of $\\mathrm{frob}$), and the group is cyclic of order $n$. The core machinery is Mathlib's `frobeniusAlgEquivOfAlgebraic`; the contribution is the specialisation to $\\mathbb{F}_{p^n}/\\mathbb{F}_p$ where the degree is literally $n$.",
     "mathContext": "$\\mathrm{Gal}(\\mathbb{F}_{p^n}/\\mathbb{F}_p) = \\langle \\mathrm{frob}\\rangle \\cong \\mathbb{Z}/n\\mathbb{Z},\\quad \\mathrm{frob}(x) = x^p$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Galois group", "finite field", "Frobenius automorphism", "cyclic group"],
     "prerequisites": ["Galois theory", "finite fields", "group theory"]
   },

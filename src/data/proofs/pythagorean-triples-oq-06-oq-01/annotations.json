@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "pythagorean-triples-oq-06-oq-01",
     "range": { "startLine": 1, "endLine": 26 },
-    "type": "context",
+    "type": "concept",
     "title": "Parity Dichotomy and the mod-4 Refinements",
     "content": "In a primitive Pythagorean triple (gcd(x,y) = 1) exactly one leg is even and the other odd. Mathlib already proves this as PythagoreanTriple.even_odd_of_coprime — if both legs were odd then x² + y² ≡ 2 (mod 4), which is never a square. This file restates that dichotomy in idiomatic Even/Odd form and then proves the three classical sharpenings that go strictly beyond it and are NOT in Mathlib: the hypotenuse z is odd; the even leg is divisible by 4; and the hypotenuse satisfies z ≡ 1 (mod 4). The latter two read structural information off the Euclid parametrization y = 2mn, z = m² + n² with m, n of opposite parity.",
     "mathContext": "Even leg $\\equiv 0\\pmod 4$, hypotenuse $z\\equiv 1\\pmod 4$, both odd-square + even-square facts.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pythagorean triples", "parity", "modular arithmetic", "sums of two squares"],
     "prerequisites": ["number theory", "coprimality", "parity"]
   },
@@ -63,11 +63,11 @@
     "id": "ann-examples",
     "proofId": "pythagorean-triples-oq-06-oq-01",
     "range": { "startLine": 94, "endLine": 107 },
-    "type": "context",
+    "type": "concept",
     "title": "example_3_4_5 / example_8_15_17: Concrete Instances",
     "content": "example_3_4_5 records the refinements at the base triple (3,4,5): 4 ∣ 4 and 5 ≡ 1 (mod 4). example_8_15_17 applies the GENERAL theorems even_leg_div_four and hyp_one_mod_four to the non-base triple (15, 8, 17) — with x = 15 the odd leg, y = 8 the even leg, z = 17 — obtaining 4 ∣ 8 and 17 ≡ 1 (mod 4). The second example exercises the abstract machinery rather than just asserting a numeric fact, confirming the hypotheses (15 odd, gcd(15,8)=1, 17 > 0) feed the classification correctly.",
     "mathContext": "$(15,8,17)$: $4 \\mid 8$, $17 \\equiv 1 \\pmod 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["3-4-5 triple", "8-15-17 triple", "decide"],
     "prerequisites": ["Pythagorean triples"]
   }

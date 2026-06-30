@@ -26,7 +26,7 @@
       "startLine": 61,
       "endLine": 82
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Division-Free Completing the Square",
     "content": "The eventual shift c=−tσ² and pull-out constant σ²t²/2 both involve division by σ², which would force field_simp inside the delicate exponential identity. The trick (complete_square_param) keeps c abstract and imposes only the single relation 2bc=−t: then e^{itx}·e^{-bx²} = e^{-b(x+ci)²}·e^{-bc²} holds with NO division, so it closes by linear_combination ((I·x)·hc + (b·c²)·Complex.I_sq) — the only non-ring fact being i²=−1. All division is then confined to a separate, purely real bridge (b=1/(2σ²), bc²=σ²t²/2) handled by field_simp away from the complex exponentials.",
     "mathContext": "Completing the square i t x − b x² = −b(x+ci)² − bc² under 2bc=−t, isolating i²=−1 as the sole analytic input.",
@@ -44,11 +44,11 @@
       "startLine": 83,
       "endLine": 117
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Contour Constant and the Coefficient-Form Master Identity",
     "content": "cpow_half_eq_sqrt converts the complex contour value (π/b)^{1/2} into the real √(π/b) (Real.sqrt_eq_rpow, Complex.ofReal_cpow). gaussian_fourier_param then assembles the b-coefficient master identity ∫ e^{itx} e^{-bx²} dx = e^{-bc²}·√(π/b) with c=−t/(2b): simp_rw the complete-the-square factoring, pull the constant out with integral_mul_const, and evaluate the remaining vertical-strip Gaussian by Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I. Every width-form result is a specialization b=1/(2σ²) of this one identity.",
     "mathContext": "The shifted Gaussian ∫ e^{-b(x+ci)²} dx = (π/b)^{1/2} (Cauchy vertical-strip), packaged by Mathlib and reduced to a real square root.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "contour integral",
       "Gaussian integral",

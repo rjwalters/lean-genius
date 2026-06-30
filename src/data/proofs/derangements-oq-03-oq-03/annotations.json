@@ -10,7 +10,7 @@
     "title": "Header: The 2D Permutation-Matrix View of Derangements",
     "content": "The module realises the 'random n×n permutation matrix' framing of the derangement 1/e law. A uniformly random permutation matrix is P_σ for a uniformly random σ ∈ Sym(n); it is a derangement matrix — has a zero diagonal — exactly when σ has no fixed point. The four Mathlib imports supply the permutation-matrix API (LinearAlgebra.Matrix.Permutation: Equiv.Perm.permMatrix and trace_permutation), the derangement counting (Combinatorics.Derangements.Finite: numDerangements), the derangement definition (Combinatorics.Derangements.Basic), and tactics. The file is deliberately self-contained on Mathlib — it does not import the parent analytic entry, so the bridge stands on its own.",
     "mathContext": "$P_\\sigma$ a derangement matrix $\\iff \\mathrm{diag}(P_\\sigma) = 0 \\iff \\sigma \\in \\mathrm{derangements}(\\mathrm{Fin}\\,n)$; $P(\\text{derangement matrix}) = D_n/n!$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["permutation matrix", "derangement", "fixed-point-free permutation", "1/e law", "trace"],
     "prerequisites": ["permutations Sym(n)", "permutation matrices", "derangements"]
   },

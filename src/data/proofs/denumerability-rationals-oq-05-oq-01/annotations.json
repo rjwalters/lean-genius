@@ -7,7 +7,7 @@
     "title": "The ℵ₀/𝔠 Boundary Is Structural, Not About ℚ",
     "content": "The docstring frames the generalization. The parent OQ-05 located, for ℚ, where ℵ₀-closure breaks: finite products, finite subsets, and finite sequences stay denumerable, but the countably infinite power ℕ → ℚ already reaches the continuum 𝔠. This child shows ℚ was incidental — the dichotomy holds over ANY countably infinite commutative ring R. The polynomial ring R[X], a countable colimit ⋃_d {deg ≤ d} of finite-rank free modules, never leaves ℵ₀ (#(R[X]) = ℵ₀ = #R, with an explicit bijection R[X] ≃ R), while the countable power ℕ → R always lands on 𝔠. The whole file is driven by a single engine, #R = ℵ₀, plus two cardinal facts: a countable colimit stays ℵ₀, but a countable power escapes.",
     "mathContext": "$\\#(R[X]) = \\aleph_0 = \\#R$ but $\\#(\\mathbb{N} \\to R) = \\mathfrak{c}$ for countably infinite $R$; the gap is $\\aleph_0 < \\mathfrak{c}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["denumerability", "continuum", "Cantor's gap", "polynomial ring", "countable ring"],
     "prerequisites": ["cardinal arithmetic", "countable/uncountable sets"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-denum-instances",
     "proofId": "denumerability-rationals-oq-05-oq-01",
     "range": { "startLine": 94, "endLine": 109 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Instances: ℚ and ℤ",
     "content": "Three instances specialize the general theorems by direct application (the typeclass resolution supplies Countable and Infinite for ℚ and ℤ): mk_polynomial_rat (#(ℚ[X]) = ℵ₀), mk_polynomial_int (#(ℤ[X]) = ℵ₀), and mk_seq_int (#(ℕ → ℤ) = 𝔠). They confirm the abstract dichotomy holds verbatim for the rationals it was generalized from and for the integers, each proof a one-liner invoking the general result.",
     "mathContext": "$\\#(\\mathbb{Q}[X]) = \\#(\\mathbb{Z}[X]) = \\aleph_0$, $\\#(\\mathbb{N} \\to \\mathbb{Z}) = \\mathfrak{c}$.",

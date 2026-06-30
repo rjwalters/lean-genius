@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 45
     },
-    "type": "context",
+    "type": "concept",
     "title": "What this entry verifies — and the dividing line it draws",
     "content": "The parent entry abel-ruffini-galois-extensions-oq-05 records Shafarevich's theorem (every finite solvable group is Gal(L/ℚ)) as an axiom, because its proof needs class field theory, embedding problems and Brauer groups. This file isolates the genuinely elementary part of the inverse Galois story — Artin's fixed-field theorem — and proves it with zero axioms. The framing is the contribution: realizing a finite group as a Galois group is unconditional and easy over an AUXILIARY base field built from the group itself (the fixed field of a faithful action), and the entire difficulty of Shafarevich and the open inverse Galois problem is the demand that the base be ℚ. This is the first axiom-free realizability result in the abel-ruffini-galois family; all sibling corollaries are derived from the Shafarevich axiom.",
     "mathContext": "Inverse Galois problem: which finite $G$ arise as $\\mathrm{Gal}(L/\\mathbb{Q})$? Artin answers the auxiliary-base version completely; the $\\mathbb{Q}$-version is Shafarevich (solvable case) and open in general.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["inverse Galois problem", "Shafarevich's theorem", "Artin's fixed-field theorem", "axiom-free vs axiomatized realizability"],
     "prerequisites": ["Galois theory", "finite group actions on fields"]
   },

@@ -27,7 +27,7 @@
     "id": "ann-kc0402-carry",
     "proofId": "kummer-theorem-oq-04-oq-02",
     "range": { "startLine": 145, "endLine": 168 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The binary carry identity (the crux)",
     "content": "digit_sum_succ_carry is the only genuinely new analytic ingredient: s₂(n) + 1 = s₂(n+1) + v₂(n+1). Rather than reasoning about bit patterns directly, it applies Legendre's formula v₂(m!) = m − s₂(m) at m = n and m = n+1, combines them with the factorial step v₂((n+1)!) = v₂(n+1) + v₂(n!) (from (n+1)! = (n+1)·n! and padicValNat.mul), adds the bounds s₂ ≤ m so the ℕ subtractions behave, and discharges the whole thing with omega over five atoms. Combinatorially: incrementing n clears its v₂(n+1) trailing 1-bits and sets one new bit, so the popcount changes by 1 − v₂(n+1).",
     "mathContext": "$s_2(n) + 1 = s_2(n+1) + v_2(n+1)$, from $v_2(m!) = m - s_2(m)$ at $m = n, n+1$ and $(n+1)! = (n+1)\\cdot n!$.",
@@ -75,11 +75,11 @@
     "id": "ann-kc0402-witnesses",
     "proofId": "kummer-theorem-oq-04-oq-02",
     "range": { "startLine": 251, "endLine": 280 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked numeric witnesses",
     "content": "Concrete checks of the oddness pattern: C₂ = 2 (even, catalan_two), C₃ = 5 odd (3 = 2²−1), C₇ odd (7 = 2³−1, the next odd index), and C₄ not odd (4+1 = 5 is not a power of two, proved by casing on k). Values come from Mathlib's catalan_two/catalan_three and the characterisation rather than decide, because catalan is strong-recursive and the kernel cannot reduce it — so these examples remain 0-axiom (no Lean.ofReduceBool).",
     "mathContext": "$C_2 = 2$, $C_3 = 5$ (odd, $3 = 2^2-1$), $C_7$ odd ($7 = 2^3-1$), $C_4$ even ($5$ not a power of two).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["catalan_two", "catalan_three", "worked examples", "strong recursion vs decide"],
     "prerequisites": ["the oddness characterisation"]
   }

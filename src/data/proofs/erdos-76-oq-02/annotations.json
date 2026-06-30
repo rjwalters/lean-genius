@@ -26,11 +26,11 @@
       "startLine": 53,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Cross Class as a Complete Multipartite SimpleGraph",
     "content": "multipartiteGraph part is defined directly as a Mathlib SimpleGraph on V with adjacency part u ≠ part v; symmetry and looplessness are immediate (Ne.symm and h rfl). This re-declaration is self-contained — it depends on none of the parent entry's axioms (gruslys_letzter, balanced_achieves_bound, extremal_uniqueness) or its open sorry — and lets the proof reuse Mathlib's CliqueFree / IsNClique API so that 'triangle-free' means literally 'no 3-clique'.",
     "mathContext": "$\\mathit{part}\\,u \\neq \\mathit{part}\\,v$ already forces $u \\neq v$, so the relation is automatically irreflexive and symmetric — a genuine simple graph.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "SimpleGraph",
       "complete multipartite graph",
@@ -45,7 +45,7 @@
       "startLine": 71,
       "endLine": 143
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Triangle ⟺ Three Parts: the Core Dichotomy",
     "content": "not_cliqueFree_three_iff proves ¬ CliqueFree 3 ↔ 3 ≤ (univ.image part).card. Forward: in any 3-clique s, pairwise adjacency means the part-values are pairwise distinct, so part is injective on s; Finset.card_image_of_injOn then gives |image part over s| = 3, a subset of univ.image part, so the latter has ≥ 3 values. Backward: Finset.two_lt_card_iff extracts three distinct part-values, each with a preimage vertex via Finset.mem_image; the three representatives lie in distinct parts, hence are pairwise adjacent, forming a transversal triangle. cliqueFree_three_iff repackages this as triangle-free ⟺ at most two parts.",
     "mathContext": "A $3$-clique is three vertices in three pairwise distinct parts; $\\mathit{part}$ injective on a clique $\\Rightarrow$ a triangle exists $\\iff |\\mathrm{image}\\;\\mathit{part}| \\geq 3$.",
@@ -65,11 +65,11 @@
       "startLine": 144,
       "endLine": 168
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Two Colors Work, Three Colors Break",
     "content": "bipartite_cliqueFree: any 2-partition (β = Fin 2) has at most two part-values (Finset.card_le_univ over Fin 2), so its cross class is triangle-free — exactly the property the Erdős #76 balanced bipartition exploits. K3_not_cliqueFree: the discrete 3-partition id : Fin 3 → Fin 3 has image of size 3, so by the dichotomy its cross class contains a triangle — it is literally K₃. The capstone extremal_crossclass_is_two_color_phenomenon packages both: triangle-freeness of the sacrificial color class is a strictly two-color phenomenon, so devoting one color to the cross edges of a k-partition cannot work for k ≥ 3.",
     "mathContext": "$K_{n/2,n/2}$ is triangle-free for all $n$; the discrete $3$-partition is $K_3$. The threshold on the number of parts is sharp at $2$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.card_le_univ",
       "complete bipartite triangle-free",

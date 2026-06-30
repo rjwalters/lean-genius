@@ -7,7 +7,7 @@
     "title": "Module Header: Euler's Criterion",
     "content": "For an odd prime $p$ and $a \\not\\equiv 0$, **Euler's criterion** decides quadratic residuosity by a single exponentiation:\n$$a \\text{ is a square} \\iff a^{(p-1)/2} \\equiv 1, \\qquad a \\text{ is a non-residue} \\iff a^{(p-1)/2} \\equiv -1.$$\nThe value is always $\\pm 1$ because it squares to $a^{p-1} = 1$ (Fermat) and $\\mathbb{Z}/p$ is a field. The **Legendre symbol** $(a \\mid p) \\equiv a^{(p-1)/2}$ packages this, and is completely multiplicative. Mathlib's `ZMod.euler_criterion` uses the exponent $p/2 = (p-1)/2$ (for odd $p$); this file states the textbook $(p-1)/2$ forms and confirms them modulo 7.",
     "mathContext": "$a^{(p-1)/2}\\equiv\\left(\\tfrac{a}{p}\\right)\\pmod p$: $+1$ for residues, $-1$ for non-residues; $\\bigl(a^{(p-1)/2}\\bigr)^2 = a^{p-1} = 1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["quadratic residue", "Legendre symbol", "Fermat's little theorem", "quadratic reciprocity"],
     "prerequisites": ["modular arithmetic", "the field Z/p", "odd primes"]
   },
@@ -50,7 +50,7 @@
   {
     "id": "euler-criterion-squares-oq-01-mod7",
     "proofId": "euler-criterion-squares-oq-01",
-    "type": "technique",
+    "type": "tactic",
     "range": { "startLine": 92, "endLine": 103 },
     "title": "Concrete Checks Modulo 7",
     "content": "Euler's criterion in action on $p = 7$, with $(7-1)/2 = 3$:\n\n- `isSquare_two_mod_seven`: $2$ is a residue, witnessed by $3^2 = 9 \\equiv 2$; and `two_pow_three_mod_seven`: $2^3 = 1$.\n- `not_isSquare_three_mod_seven`: $3$ is a non-residue; and `three_pow_three_mod_seven`: $3^3 = -1$.\n\nEach is checked by `decide` — kernel reduction over the finite type $\\mathbb{Z}/7$ — so no `native_decide` and no extra axioms are introduced.",

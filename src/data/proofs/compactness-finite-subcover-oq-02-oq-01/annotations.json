@@ -30,7 +30,7 @@
       "startLine": 78,
       "endLine": 84
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ε/2 Triangle-Inequality Close",
     "content": "Given dist x y < δ, both x and y lie in ball x δ (x trivially, y because dist y x = dist x y < δ), hence both in the same U z witnessing subordination. So dist (f x) (f z) < ε/2 AND dist (f y) (f z) < ε/2 — each image is close to ONE common center value f z, not to a fixed reference. The triangle inequality dist (f x) (f y) ≤ dist (f x) (f z) + dist (f z) (f y) then closes < ε/2 + ε/2 = ε. Sharing the center f z is what makes a single δ work uniformly.",
     "mathContext": "$d(fx,fy)\\le d(fx,fz)+d(fz,fy)<\\tfrac{\\varepsilon}{2}+\\tfrac{\\varepsilon}{2}=\\varepsilon.$",
@@ -56,7 +56,7 @@
     "title": "Heine–Cantor as UniformContinuous",
     "content": "heine_cantor repackages the ε–δ engine through Metric.uniformContinuous_iff to state the classical theorem as UniformContinuous f. This is deliberately proved WITHOUT calling Mathlib's packaged CompactSpace.uniformContinuous_of_continuous — the whole point of the parent chain is to derive uniform continuity from the Lebesgue-number/subordinate-net machinery directly.",
     "mathContext": "$f\\ \\text{continuous},\\ X\\ \\text{compact metric}\\ \\Longrightarrow\\ f\\ \\text{uniformly continuous}.$",
-    "significance": "primary",
+    "significance": "key",
     "relatedConcepts": [
       "Heine–Cantor theorem",
       "uniform continuity",

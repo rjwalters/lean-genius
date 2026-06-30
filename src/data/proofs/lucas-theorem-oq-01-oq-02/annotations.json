@@ -3,11 +3,11 @@
     "id": "ann-context",
     "proofId": "lucas-theorem-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 37 },
-    "type": "context",
+    "type": "concept",
     "title": "Pascal mod 2 and the Sierpiński Gasket",
     "content": "Reducing Pascal's triangle modulo 2 — colouring each odd binomial coefficient black — produces the Sierpiński triangle (gasket, Sierpiński 1915; the connection to Pascal's triangle was popularised by Wolfram). The parent entry proves Glaisher's per-row population oddCount n = 2^(s₂ n). This entry sums that over a power-of-two block of rows and gets the clean total 3^m. The 3-versus-2 ratio (the odd-count triples while the row range doubles) is exactly the self-similarity that gives the gasket its Hausdorff dimension log₂ 3 ≈ 1.585.",
     "mathContext": "$\\sum_{n<2^m}\\mathrm{oddCount}(n) = 3^m$; the gasket dimension is $\\log_2 3 \\approx 1.585$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Sierpiński gasket", "Pascal's triangle mod 2", "fractal dimension", "Glaisher's formula", "binary digit sum"],
     "prerequisites": ["binomial coefficients", "binary representations"]
   },

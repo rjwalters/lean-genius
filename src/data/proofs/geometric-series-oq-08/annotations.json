@@ -27,7 +27,7 @@
     "id": "bounds",
     "proofId": "geometric-series-oq-08",
     "range": { "startLine": 74, "endLine": 93 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Strict vs Non-Strict Bounds from the Defect's Sign",
     "content": "`geometric_sum_le_inv` (S n ≤ 1/(1−r) for 0 ≤ r < 1, all n) and `geometric_sum_lt_inv` (strict, for 0 < r < 1) both read off the sign of the defect rⁿ/(1−r): `div_nonneg` gives ≥ 0 (hence ≤), `div_pos` gives > 0 (hence <). Each rewrites the tail identity into the goal and closes with `linarith`. The strict/non-strict split is exactly the r > 0 versus r = 0 (or n = 0) distinction — whether the missing tail can vanish — making the bound's strictness a transparent consequence of one positivity fact.",
     "mathContext": "$0\\le r<1 \\Rightarrow S_n \\le \\tfrac{1}{1-r}$; $0<r<1 \\Rightarrow S_n < \\tfrac{1}{1-r}$.",

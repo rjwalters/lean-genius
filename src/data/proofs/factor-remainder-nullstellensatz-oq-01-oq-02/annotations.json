@@ -3,7 +3,7 @@
     "id": "ann-nss0102-overview",
     "proofId": "factor-remainder-nullstellensatz-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 27 },
-    "type": "context",
+    "type": "concept",
     "title": "Algebraic closure is necessary: the Nullstellensatz fails over ℝ",
     "content": "The docstring frames the entry as a counterexample answering the parent's open questions (can the IsAlgClosed hypothesis be dropped?). The parent proves the strong form vanishingIdeal(zeroLocus I) = √I and weak form (I ≠ ⊤ ⟹ zeroLocus nonempty) over an algebraically closed field. This file exhibits the single ideal J = (X² + 1) in ℝ[X] that is proper yet has empty real zero locus — so both forms fail — while the same ideal over ℂ has a nonempty zero locus (witness i). The contrast pinpoints algebraic closure as exactly the hypothesis the Nullstellensatz requires: no more, no less.",
     "mathContext": "Weak Nullstellensatz over alg. closed $k$: $I\\neq\\top\\Rightarrow V(I)\\neq\\emptyset$. Over $\\mathbb{R}$, $J=(X^2+1)$ is proper but $V_{\\mathbb{R}}(J)=\\emptyset$; over $\\mathbb{C}$, $i\\in V_{\\mathbb{C}}(J)$.",

@@ -27,7 +27,7 @@
   "id": "ann-e378-examples",
   "proofId": "erdos-378",
   "range": { "startLine": 67, "endLine": 92 },
-  "type": "example",
+  "type": "concept",
   "title": "Concrete Examples",
   "content": "Fully verified small cases: C(2,1) = 2 and C(4,2) = 6 = 2·3 are squarefree, while C(6,3) = 20 = 2²·5 is not. The non-example is proved by exhibiting 2·2 ∣ 20, which would force 2 to be a unit.",
   "mathContext": "Squarefree does not kernel-reduce well under `decide`, so these are proved from Mathlib lemmas (Prime.squarefree, squarefree_mul_iff, isUnit_iff) instead.",
@@ -43,7 +43,7 @@
   "title": "Symmetry under k ↦ n − k",
   "content": "`binomialSquarefree_symm`: since C(n,k) = C(n, n−k), the squarefreeness of C(n,k) is symmetric under k ↦ n−k. Fully machine-checked (0 axioms).",
   "mathContext": "This pairing of interior indices is the structural engine behind the parity theorem below.",
-  "significance": "important",
+  "significance": "key",
   "relatedConcepts": ["Nat.choose_symm"],
   "prerequisites": ["binomial symmetry"]
  },
@@ -79,7 +79,7 @@
   "title": "Complementation of Density",
   "content": "`natDensity_compl`: if S has density d, then its complement Sᶜ has density 1 − d. Fully verified (0 axioms). Proof: S ∩ [0,N) and Sᶜ ∩ [0,N) partition [0,N), so their cardinalities sum to N, and the ratio identity (N − c)/N = 1 − c/N gives the result.",
   "mathContext": "This elementary lemma is what turns the Granville–Ramaré statement about the complementary set into the answer for the original question.",
-  "significance": "important",
+  "significance": "key",
   "relatedConcepts": ["Set.ncard_union_eq", "complementation"],
   "prerequisites": ["finite partitions"]
  },

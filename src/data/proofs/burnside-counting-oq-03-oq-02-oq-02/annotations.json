@@ -27,7 +27,7 @@
     "id": "ann-bc030202-k2-count",
     "proofId": "burnside-counting-oq-03-oq-02-oq-02",
     "range": { "startLine": 102, "endLine": 115 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Section III — The k = 2 Count via Involution-Orbit Counting",
     "content": "`card_fixed_two_colorings` computes #(2-colorings fixed by reflPerm i) = 2^((n + reflFix i)/2). Via `fixedBy_reflPerm_iff` it transports the fixed-coloring set to the subtype of refl i-symmetric colorings (using `Equiv.subtypeEquivRight`), then applies the sibling's `card_invariant_colorings_involutive`: the orbits of an involution are its fixed points (singletons) and its transposed pairs, so a symmetric coloring is determined by a free choice on each of the (|positions| + |fixed points|)/2 orbits, giving 2^((n + reflFix i)/2). The `ZMod.card` rewrite supplies |positions| = n. This concrete k = 2 evaluation is the anchor from which the abstract cycle count is reverse-engineered in Section IV.",
     "mathContext": "$\\#\\{2\\text{-colorings fixed by }\\mathrm{reflPerm}\\,i\\} = 2^{(n + \\mathrm{reflFix}\\,i)/2}$; an involution has $(n + |\\mathrm{Fix}|)/2$ orbits.",

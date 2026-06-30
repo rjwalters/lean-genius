@@ -29,7 +29,7 @@
       "startLine": 38,
       "endLine": 43
     },
-    "type": "proof_technique",
+    "type": "tactic",
     "title": "Explicit Factorisation D(n) = (n−1)·(D(n−2)+D(n−1))",
     "content": "The lemma numDerangements_eq_sub_one_mul reindexes the additive recurrence so that n − 1 appears explicitly. Writing n = m + 2 (legitimate since n ≥ 2, discharged by omega), the goal becomes D(m+2) = (m+1)·(D(m)+D(m+1)), which is exactly numDerangements_add_two up to the Nat subtractions n−1 = m+1 and n−2 = m; `simpa` closes the gap. This factorisation is the single source of the divisibility witness used in the main theorem.",
     "mathContext": "$D(n) = (n-1)\\,(D(n-2)+D(n-1))$. The combinatorial content: place element $n$ into one of the $n-1$ non-fixed positions, then either the resulting transposition is reciprocated (leaving a derangement of the other $n-2$ elements) or not (leaving a derangement-like structure on $n-1$ elements).",
@@ -52,7 +52,7 @@
       "startLine": 45,
       "endLine": 55
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Main Theorem: (n − 1) ∣ D(n)",
     "content": "sub_one_dvd_numDerangements is proved by supplying the explicit quotient: the divisibility (n−1) ∣ D(n) unfolds to ∃ c, D(n) = (n−1)·c, and the factorisation lemma provides c = D(n−2) + D(n−1) together with the required equation. The proof is therefore `refine ⟨_, ?_⟩; exact numDerangements_eq_sub_one_mul n hn`. The hypothesis n ≥ 2 ensures n − 1 is a meaningful modulus and that the reindexing in the factorisation lemma applies.",
     "mathContext": "$(n-1)\\mid D(n)$ with explicit quotient $D(n)/(n-1) = D(n-2)+D(n-1)$. Verified at small values: $D(2)=1$ (n−1=1), $D(4)=9=3\\cdot 3$, $D(5)=44=4\\cdot 11$, $D(6)=265=5\\cdot 53$.",
@@ -74,7 +74,7 @@
       "startLine": 57,
       "endLine": 92
     },
-    "type": "key_step",
+    "type": "insight",
     "title": "Companion Congruence: D(n) ≡ (−1)^n (mod n)",
     "content": "numDerangements_congr_neg_one_pow proves (n : ℤ) ∣ (D(n) − (−1)^n) for all n. The n = 0 case is 0 ∣ 0 (simp). For n = k + 1, the witness is D(k); substituting numDerangements_succ (D(k+1) = (k+1)·D(k) − (−1)^k) and expanding (−1)^{k+1} = (−1)^k·(−1) via pow_succ, the identity D(k+1) − (−1)^{k+1} = (k+1)·D(k) is closed by push_cast and ring. The follow-on numDerangements_zmod_eq restates this in ZMod n as (D(n) : ZMod n) = (−1)^n, bridging via ZMod.intCast_zmod_eq_zero_iff_dvd. Three closing examples sanity-check the main divisibility on n = 2, 4, 5.",
     "mathContext": "$D(n+1) - (-1)^{n+1} = (n+1)D(n)$ because $(-1)^{n+1} = -(-1)^n$, so the $-(-1)^n$ in the recurrence cancels the $-(-1)^{n+1}$. Hence $n \\mid D(n) - (-1)^n$, equivalently $D(n) \\equiv (-1)^n \\pmod n$. This holds for every $n$, including the degenerate $n = 0$.",

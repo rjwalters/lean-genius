@@ -15,7 +15,7 @@
     "id": "det-norm-sq",
     "proofId": "gram-linear-independence-iff-oq-01-oq-01",
     "range": { "startLine": 72, "endLine": 87 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Gramian is ‖det B‖²",
     "content": "From gram = BᴴB, multiplicativity gives det(gram) = det(Bᴴ)·det(B) = conj(det B)·det B = ‖det B‖² (Matrix.det_conjTranspose and RCLike.conj_mul). Because the coordinate matrix B is upper-triangular in the Gram–Schmidt basis, Mathlib's gramSchmidtOrthonormalBasis_det evaluates det B = ∏ i, ⟪e i, v i⟫. Hence gram_det_eq: det(gram 𝕜 v) = ‖∏ i, ⟪e i, v i⟫‖², a manifestly nonnegative real — the determinant has been reduced to a product of diagonal coordinates.",
     "mathContext": "$\\det\\mathrm{Gram}(v) = \\lVert\\det B\\rVert^2 = \\bigl\\lVert\\prod_i \\langle e_i, v_i\\rangle\\bigr\\rVert^2$.",

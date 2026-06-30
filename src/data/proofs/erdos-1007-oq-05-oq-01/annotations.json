@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 29
     },
-    "type": "context",
+    "type": "concept",
     "title": "Foundations for a Computational Graph-Dimension Check",
     "content": "The Euclidean dimension of a graph is the least n admitting a unit-distance embedding in ℝⁿ — vertices placed so adjacent ones are at distance exactly 1 (Erdős–Harary–Tutte, 1965). The parent's first open question asks whether House's bound 'a 4-dimensional graph has ≥ 9 edges' can be reached computationally, by enumerating small graphs and checking each one's dimension. This file supplies two structural facts any such procedure silently needs but the parent never proved: monotonicity of embeddability and the dimension-0 base case. The UnitDistanceEmbedding structure and hasUnitEmbedding predicate are reproduced locally because Erdos1007Problem.lean is bit-rotted under toolchain 4.26.0 (Nat.find DecidablePred / LT V synthesis failures) and cannot be imported.",
     "mathContext": "Graph dimension $\\dim(G) = \\min\\{n : G \\hookrightarrow \\mathbb{R}^n \\text{ as unit distances}\\}$. House (2013): $\\dim(G)=4 \\Rightarrow |E(G)| \\ge 9$, with $K_{3,3}$ the unique minimizer.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["graph dimension", "unit-distance graph", "extremal graph theory", "Erdős problem #1007", "K₃,₃"],
     "prerequisites": ["Euclidean embeddings of graphs", "metric geometry"]
   },
@@ -66,7 +66,7 @@
       "startLine": 76,
       "endLine": 89
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Both Directions of the Edgeless Base Case",
     "content": "hasUnitEmbedding_zero_of_edgeless: an edgeless graph embeds in ℝ⁰ via the trivial map (fun _ _ => 0); the unit_edges obligation is discharged vacuously since adj u v is impossible (absurd huv (h u v)). Conversely no_edge_of_hasUnitEmbedding_zero: from an embedding in ℝ⁰, an edge would give √(∑ over Fin 0) = √0 = 0; simp reduces univ over Fin 0 to ∅ (univ_eq_empty), the empty sum to 0, and Real.sqrt_zero to 0, so the unit constraint becomes 0 = 1, refuted by norm_num. These are the two halves combined in the iff below.",
     "mathContext": "Edgeless $\\Rightarrow$ embeds in $\\mathbb{R}^0$ (vacuous); embeds in $\\mathbb{R}^0 \\Rightarrow$ an edge forces $\\sqrt{0}=1$, contradiction.",

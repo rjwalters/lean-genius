@@ -7,7 +7,7 @@
     "title": "Module Header: The Jacobi Symbol",
     "content": "The **Jacobi symbol** $J(a \\mid n) = \\prod_{p \\mid n} (a \\mid p)$ extends the Legendre symbol to all odd moduli by multiplying over the prime factors of $n$ (with multiplicity). It is **bimultiplicative**, satisfies the **trichotomy** $J(a\\mid n) \\in \\{-1,0,1\\}$ (with $0$ exactly when $\\gcd(a,n) \\ne 1$), and gives a **one-sided obstruction**: $J(a\\mid n) = -1 \\Rightarrow a$ is a non-residue. But the converse FAILS for composite $n$: $J(2 \\mid 15) = 1$ while $2$ is a non-residue mod $15$. This one-sidedness is the price of computing the symbol fast (by reciprocity, without factoring).",
     "mathContext": "$J(a\\mid n) = \\prod_{p^e \\| n} \\left(\\tfrac{a}{p}\\right)^e$; $J(a\\mid n) = -1 \\Rightarrow a$ non-residue, but $J(a\\mid n)=1 \\not\\Rightarrow$ residue.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Legendre symbol", "quadratic residue", "quadratic reciprocity", "primality testing (Solovay–Strassen)"],
     "prerequisites": ["Legendre symbol", "odd moduli", "prime factorization"]
   },

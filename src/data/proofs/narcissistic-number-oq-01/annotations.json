@@ -48,7 +48,7 @@
       "startLine": 49,
       "endLine": 70
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bounding the Digit-Power-Sum",
     "content": "digitPowSum_le bounds the digit-power-sum of m by numDigits m * 9^(numDigits m). Each summand d^n has d ≤ 9, so d^n ≤ 9^n (Nat.pow_le_pow_left); with numDigits m terms, List.sum_le_card_nsmul gives the sum ≤ (length)·9^n = n·9^n. This is the upper half of the race.",
     "mathContext": "Σ d^n ≤ (number of digits) · 9^n = n · 9^n.",
@@ -69,7 +69,7 @@
       "startLine": 72,
       "endLine": 92
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Crossover Inequality n·9ⁿ < 10ⁿ⁻¹ for n ≥ 61",
     "content": "crossover is the arithmetic heart: for all n ≥ 61, n*9^n < 10^(n-1), by Nat.le_induction from n = 61. The base case 61*9^61 < 10^60 is closed by norm_num (which evaluates both large numbers exactly — kernel-checked, no native_decide). The step uses 9^(n+1) = 9·9^n and 10^n = 10·10^(n-1) together with 9·(n+1) ≤ 10·n (valid for n ≥ 9): (n+1)·9^(n+1) = 9(n+1)·9^n ≤ 10n·9^n = 10·(n·9^n) < 10·10^(n-1) = 10^n. The factor-10 vs factor-9 gap absorbs the linear digit growth.",
     "mathContext": "n ≥ 61 ⟹ n·9^n < 10^(n-1); step: 9(n+1) ≤ 10n bridges the powers.",
@@ -91,7 +91,7 @@
       "startLine": 94,
       "endLine": 103
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The n-Digit Lower Bound",
     "content": "pow_pred_length_le gives the lower half of the race: a nonzero m is at least 10^(numDigits m - 1). It starts from Nat.base_pow_length_digits_le (10^(digit length) ≤ 10·m for m ≠ 0) and cancels one factor of 10, using that the digit length is positive.",
     "mathContext": "m ≠ 0 ⟹ 10^(numDigits m - 1) ≤ m.",
@@ -110,7 +110,7 @@
       "startLine": 105,
       "endLine": 136
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Digit Cap and Finiteness",
     "content": "numDigits_lt_61 combines the three bounds: for a narcissistic m with n = numDigits m ≥ 61, m = digit-power-sum ≤ n*9^n (digitPowSum_le) while m ≥ 10^(n-1) (pow_pred_length_le) and n*9^n < 10^(n-1) (crossover) — an omega contradiction. So every narcissistic number has fewer than 61 digits. narcissistic_finite then exhibits the set as a subset of the finite interval Set.Iio (10^61): m < 10^(numDigits m) ≤ 10^61, and a subset of a finite set is finite.",
     "mathContext": "narcissistic m ⟹ numDigits m < 61 ⟹ m < 10^61; subset of Iio(10^61) is finite.",

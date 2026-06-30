@@ -28,7 +28,7 @@
     "title": "Sufficiency: Base 2 Is Always 0/1",
     "content": "`zeroOne_base_two` is the positive half: every natural number is 0/1-representable in base 2, because each binary digit is `< 2` (`Nat.digits_lt_base` with `2 ≤ 2`). This is the `k = 1, d = 2` instance of the parent's completeness theorem and supplies the reverse direction of the characterisation.",
     "mathContext": "Binary representation: every $n$ has digits in $\\{0,1\\}$ in base $2$, equivalently $n$ is a sum of distinct powers of $2$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "binary representation",
       "Nat.digits_lt_base"
@@ -45,7 +45,7 @@
     "title": "The Explicit Obstruction: the Number 2",
     "content": "`digits_two_of_three_le` computes `Nat.digits d 2 = [2]` for every `d ≥ 3` (via `Nat.digits_def'`, since `2 % d = 2` and `2 / d = 0`). Then `not_zeroOne_two_of_three_le` concludes `¬ ZeroOne d 2`: the only digit of `2` is `2 ∉ {0,1}`. A single smallest non-trivial number already breaks completeness the moment the base exceeds 2 — no asymptotics required.",
     "mathContext": "For $0 < a < d$ the base-$d$ representation of $a$ is the single digit $[a]$. With $a = 2$ and $d \\ge 3$ this digit is $2$, which is forbidden in a $\\{0,1\\}$ system.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Nat.digits_def'",
       "explicit counterexample",
@@ -63,7 +63,7 @@
     "title": "Completeness ⇔ d = 2",
     "content": "`zeroOne_all_iff_two`: for a single base `d ≥ 2`, every natural number is 0/1-representable in base `d` iff `d = 2`. Forward is the contrapositive using the `n = 2` obstruction (any `d ≥ 3` fails); reverse is base-2 completeness. This isolates `d = 2` as the unique complete single base.",
     "mathContext": "Among all bases, base $2$ is the unique one whose digit alphabet is already $\\{0,1\\}$, so it is the only single base for which the $0/1$ restriction is vacuous.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "characterisation",
       "uniqueness of base 2"
@@ -98,7 +98,7 @@
     "title": "Sharpness: Necessary and Sufficient at the Boundary",
     "content": "`single_base_complete_iff_sum_cond` chains the two equivalences: for `d ≥ 2`, completeness `(∀ n, ZeroOne d n)` holds iff `1 ≤ 1/(d−1)`. So the parent's condition, proved only *sufficient* there, is at the single-base boundary *necessary and sufficient*. This is the converse the parent leaves open in the `k = 1` case, and the headline result of the entry.",
     "mathContext": "A sufficient condition is sharp at a boundary when its failure provably destroys the conclusion. Here the boundary is $k = 1$, where the Erdős inequality is exactly the dividing line $d = 2$ vs $d \\ge 3$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "necessary and sufficient",
       "sharp threshold",

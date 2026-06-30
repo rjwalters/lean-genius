@@ -34,7 +34,7 @@
     "title": "The spherical excess",
     "content": "`sphericalExcess A B C := A + B + C - π`, noncomputable because it references `Real.pi`. The `@[simp]` unfolding lemma and the symmetry lemma (the labelling of vertices is arbitrary) are recorded. Girard's theorem is the assertion that this quantity equals the triangle's area.",
     "mathContext": "$S(A,B,C) = A + B + C - \\pi$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "angle excess",
       "area in steradians"
@@ -142,11 +142,11 @@
       "startLine": 180,
       "endLine": 203
     },
-    "type": "note",
+    "type": "concept",
     "title": "Summary and honest scoping",
     "content": "1 definition, 11 theorems, 0 sorries, 0 axioms (`#print axioms` lists only propext/Classical.choice/Quot.sound). The geometric inputs of Girard's theorem appear as hypotheses, so the file proves the arithmetic backbone and lune reduction rather than a self-contained measure-theoretic proof — the missing piece (a Mathlib spherical-area measure with the lune-area lemma) is recorded as the principal open question.",
     "mathContext": "Status: verified, badge original.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "honest scoping",
       "open infrastructure gap"

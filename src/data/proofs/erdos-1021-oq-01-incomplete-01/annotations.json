@@ -24,7 +24,7 @@
   {
     "id": "ann-littleo-collapse",
     "title": "o(g) ⟹ O(g): Take ε = 1",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 61,
     "endLine": 67,
     "mathContext": "isLittleO f g := ∀ ε>0, ∃N, ∀n≥N, f n ≤ ε·g n. isAsympBounded f g := ∃C>0, ∃N, ∀n≥N, f n ≤ C·g n. Instantiating the little-o definition at ε = 1 yields C = 1 with the same N. This is the n=0-free core of the parent's `oq01_strictly_beyond_kst` placeholder.",
@@ -44,7 +44,7 @@
   {
     "id": "ann-converse-fails",
     "title": "O(g) ⇏ o(g): The Separation",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 69,
     "endLine": 86,
     "mathContext": "With f = g = n^{3/2}, f is trivially O(g) (constant 1) but f/g = 1 ↛ 0, so f is not o(g). Concretely, the o-hypothesis at ε = 1/2 forces n^{3/2} ≤ (1/2)·n^{3/2} for large n, impossible once n^{3/2} > 0.",
@@ -84,7 +84,7 @@
   {
     "id": "ann-tendsto",
     "title": "gap → 0 and lowerExp → 3/2",
-    "type": "proof_technique",
+    "type": "tactic",
     "startLine": 119,
     "endLine": 134,
     "mathContext": "gap_tendsto_zero: (k:ℝ)-1 → atTop (natCast atTop shifted by -1), then Filter.Tendsto.inv_tendsto_atTop gives 1/(k-1) → 0. lowerExp_tendsto: subtract from the constant 3/2 via Tendsto.const_sub, so 3/2 - 1/(k-1) → 3/2. This discharges the parent's `lower_bound_exponent_tendsto` sorry.",

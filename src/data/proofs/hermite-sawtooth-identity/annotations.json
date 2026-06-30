@@ -30,11 +30,11 @@
       "startLine": 37,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Exact Sampled Sum n·x + (n-1)/2",
     "content": "sum_sample proves ∑_{k<n}(x + k/n) = n·x + (n-1)/2 — the exact, floor-free value of the uniformly sampled points. The summand is split with Finset.sum_add_distrib: the constant term contributes ∑_{k<n} x = n·x (via Finset.sum_const, Finset.card_range, nsmul_eq_mul), and the linear term contributes (∑_{k<n} k)/n. The Gauss sum ∑_{k<n} k = n(n−1)/2 over ℝ is the only non-trivial ingredient: it is obtained by casting the ℕ lemma Finset.sum_range_id_mul_two (which states (∑_{k<n} k)·2 = n·(n−1)) to ℝ with push_cast and Nat.cast_sub hn (so ↑(n−1) becomes ↑n − 1), then closed by linear_combination hc / 2 to avoid any nonlinear-atom mismatch. A final field_simp clears the 1/n and finishes (n·(n−1)/2)/n = (n-1)/2.",
     "mathContext": "$\\sum_{k=0}^{n-1}(x + k/n) = nx + \\tfrac1n\\sum_{k<n}k = nx + \\tfrac1n\\cdot\\tfrac{n(n-1)}{2} = nx + \\tfrac{n-1}{2}$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Finset.sum_range_id_mul_two",
       "Finset.sum_add_distrib",
@@ -54,7 +54,7 @@
       "startLine": 55,
       "endLine": 72
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Subtracting Hermite from the Exact Sum",
     "content": "hermite_sawtooth_identity is the headline result, proved as a one-line subtraction once the pieces are in place. Each Int.fract (x + k/n) is rewritten to (x + k/n) − ⌊x + k/n⌋ using the definitional unfolding rw [Int.fract]. Finset.sum_sub_distrib then separates the sum into the exact sampled sum minus the floor sum. The floor sum's integer casts are collected with ← Int.cast_sum, after which the parent theorem HermiteFloorIdentity.hermite_floor_identity rewrites ∑_{k<n} ⌊x + k/n⌋ to ⌊n·x⌋. Substituting sum_sample for the exact sum leaves n·x + (n-1)/2 − ⌊n·x⌋; unfolding Int.fract on n·x once more and ring concludes (n·x − ⌊n·x⌋) + (n-1)/2 = {n·x} + (n-1)/2. No fractional-part periodicity or residue counting is needed — the parent identity does all the analytic work.",
     "mathContext": "$\\sum_{k<n}\\{x+k/n\\} = \\sum_{k<n}(x+k/n) - \\sum_{k<n}\\lfloor x+k/n\\rfloor = (nx + \\tfrac{n-1}{2}) - \\lfloor nx\\rfloor = \\{nx\\} + \\tfrac{n-1}{2}$.",

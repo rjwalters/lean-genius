@@ -3,11 +3,11 @@
     "id": "waringg2-ann-header",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
     "range": { "startLine": 1, "endLine": 37 },
-    "type": "context",
+    "type": "concept",
     "title": "Waring's g(2) = 4 as a Sharp, Axiom-Free Least Element",
     "content": "The header contrasts this entry with its parent umbrella, which stated Waring's theorem for squares only as the conjunction '4 suffices and 7 needs 4' and was tagged `axiomatized` because it evaluated worked examples with `native_decide` (trusting `Lean.ofReduceBool`). Here the result is stated sharply: defining `Sufficient k` = 'every natural is a sum of k squares', the *least* such k — Waring's g(2) — is exactly 4, packaged as both `IsLeast` and `sInf = 4`. The upper bound is Lagrange's four-square theorem; the lower bound is the mod-8 obstruction at 7. Everything stays inside `decide`/`omega`, so the file is genuinely 0-axiom. Single import `Mathlib` brings `Nat.sum_four_squares`, `ZMod`, `Fin.snoc`, and `IsLeast`/`sInf`.",
     "mathContext": "$g(2) = \\min\\{k : \\forall n,\\ n = \\textstyle\\sum_{i<k} x_i^2\\} = 4.$ The lower bound is witnessed by $7$, and more generally by the forms $4^a(8b+7)$ (Legendre/Gauss three-square theorem).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Waring's problem", "Lagrange four-square theorem", "three-square theorem", "native_decide vs decide"],
     "prerequisites": ["sums of squares", "least element / infimum"]
   },

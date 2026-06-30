@@ -27,7 +27,7 @@
     "id": "ann-ng-unit-k",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-02",
     "range": { "startLine": 86, "endLine": 93 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Why a ℚ-Algebra: Inverting k",
     "content": "The crux of the inversion: hcancel proves algebraMap ℚ (...) (k⁻¹) · (k : MvPolynomial) = 1 by pushing k⁻¹·k = 1 through the algebra map (map_natCast, map_mul, inv_mul_cancel₀, map_one). This makes the integer k a unit so the recurrence k·eₖ = ... can be solved for eₖ. Over a general commutative ring this step fails — which is why only the explicit low-degree formulae (cleared of denominators) survive there.",
     "mathContext": "$k^{-1} \\in \\mathbb{Q} \\hookrightarrow \\mathrm{MvPolynomial}\\,\\sigma\\,R$ makes $k$ a unit; $k^{-1}\\cdot k = 1$.",

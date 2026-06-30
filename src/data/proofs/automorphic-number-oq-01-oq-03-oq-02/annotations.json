@@ -10,7 +10,7 @@
     "title": "Modelling the 10-adic integers as ℤ₂ × ℤ₅",
     "content": "Because 10 = 2·5 is composite, ℤ₁₀ is not a single PadicInt — Mathlib's ℤ_[p] requires p prime. The correct object is the product ℤ_[2] × ℤ_[5], here named TenAdic. This is legitimate: for each k the Chinese Remainder Theorem gives ZMod (10ᵏ) ≅ ZMod (2ᵏ) × ZMod (5ᵏ), so the inverse limit of the left side is the product of the inverse limits ℤ₂ × ℤ₅. The two Fact (Nat.Prime _) instances unlock the entire p-adic API (toZModPow, the norm, completeness) for the two factors.",
     "mathContext": "$\\mathbb{Z}_{10}\\;\\cong\\;\\varprojlim_k \\mathbb{Z}/10^k\\;\\cong\\;\\mathbb{Z}_2\\times\\mathbb{Z}_5$, the special case $n=10$ of $\\widehat{\\mathbb{Z}}_n\\cong\\prod_{p\\mid n}\\mathbb{Z}_p$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["p-adic integers", "inverse limit", "Chinese Remainder Theorem", "10-adic integers", "profinite completion"],
     "prerequisites": ["p-adic integers", "Chinese Remainder Theorem", "direct products of rings"]
   },
@@ -21,7 +21,7 @@
       "startLine": 50,
       "endLine": 56
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Idempotents of a p-adic domain are only 0 and 1",
     "content": "An idempotent satisfies e·e = e, equivalently e·(e−1) = 0. Since ℤ_[p] is an integral domain (it has no zero divisors), a product is zero only if a factor is, so e = 0 or e = 1. The Lean proof rearranges e·e = e into e·(e−1) = 0 with ring_nf/linear_combination, then splits on mul_eq_zero. This per-factor fact is the engine behind the whole idempotent count of the 10-adic integers.",
     "mathContext": "In a domain, $e^2=e\\iff e(e-1)=0\\iff e\\in\\{0,1\\}$. The only idempotents are the trivial ones.",
@@ -81,7 +81,7 @@
       "startLine": 109,
       "endLine": 131
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The CRT bridge ρₖ : ℤ₁₀ →+* ZMod (10ᵏ)",
     "content": "To connect the abstract 10-adic limit back to concrete k-digit residues, the proof builds the reduction ρₖ in two steps. digit k = (toZModPow k).prodMap (toZModPow k) reduces a 10-adic integer to its CRT components in ZMod (2ᵏ) × ZMod (5ᵏ). crt k is the CRT isomorphism ZMod (10ᵏ) ≅ ZMod (2ᵏ) × ZMod (5ᵏ), assembled from ZMod.ringEquivCongr (transporting along 10ᵏ = 2ᵏ·5ᵏ, ten_pow_eq) and ZMod.chineseRemainder (using coprime_two_five_pow). Composing the inverse of crt k with digit k gives red10 k = ρₖ, a genuine ring homomorphism. digit_e5 computes that e5 reduces to (1,0) in every CRT factor.",
     "mathContext": "$\\rho_k=\\mathrm{crt}_k^{-1}\\circ(\\mathrm{toZModPow}_k\\times\\mathrm{toZModPow}_k):\\;\\mathbb{Z}_2\\times\\mathbb{Z}_5\\to \\mathbb{Z}/10^k$, with $\\gcd(2^k,5^k)=1$ so CRT applies.",
@@ -111,7 +111,7 @@
       "startLine": 161,
       "endLine": 183
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The norm bound p^(−k) → 0 driving metric convergence",
     "content": "The metric half of convergence rests on two private lemmas. tendsto_inv_pow: for b > 1, the sequence b^(−k) → 0 (reindexed from the geometric tendsto_pow_atTop_nhds_zero_of_lt_one on b⁻¹). tendsto_padic_of_dvd: an integer sequence f with pᵏ ∣ (f k − a) converges to a in ℤ_[p]. The proof uses tendsto_iff_norm_sub_tendsto_zero, then squeeze_zero against p^(−k): the key inequality ‖(f k − a : ℤ_[p])‖ ≤ p^(−k) is exactly PadicInt.norm_int_le_pow_iff_dvd applied to the divisibility hypothesis. The p-adic norm turns the arithmetic congruence pᵏ ∣ (f k − a) directly into geometric decay.",
     "mathContext": "$p^k\\mid(f_k-a)\\iff\\lVert f_k-a\\rVert_p\\le p^{-k}\\to0$, hence $f_k\\to a$ in $\\mathbb{Z}_p$. Divisibility IS smallness in the p-adic metric.",

@@ -15,7 +15,7 @@
     "id": "ann-intertwine",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
     "range": { "startLine": 70, "endLine": 79 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Intertwining Identities",
     "content": "From `B = P·A·P⁻¹` two intertwining identities are extracted by a single unit cancellation each: `A·P⁻¹ = P⁻¹·B` (`conj_intertwine_left`) and `B·P = P·A` (`conj_intertwine_right`). Conceptually they say `A` and `B` are the same operator read through `P`; algebraically each is one application of `Units.inv_mul`/`Units.mul_inv` after re-associating the triple product. They are the engine that turns the static equation `B = P·A·P⁻¹` into a transport of solution spaces.",
     "mathContext": "$A P^{-1} = P^{-1} B$ and $B P = P A$. Equivalently $P^{-1} B P = A$: conjugation intertwines the two matrices, the defining relation of an intertwiner in representation theory.",
@@ -87,11 +87,11 @@
     "id": "ann-similar-existence",
     "proofId": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
     "range": { "startLine": 153, "endLine": 162 },
-    "type": "context",
+    "type": "concept",
     "title": "Basis-Free Existence Form",
     "content": "`Similar.nonempty_kerEquiv` packages the construction for the bare `Similar A B` relation, which only asserts that *some* conjugator exists. Destructuring the witness `P` and feeding it to `kerEquiv` yields `Nonempty (ker B ≃ₗ[K] ker A)`. This is the form most useful downstream where one knows two matrices are similar but has no distinguished conjugator in hand.",
     "mathContext": "$\\operatorname{Similar} A\\,B \\Rightarrow \\operatorname{Nonempty}(\\ker B \\simeq_{\\ell} \\ker A)$ — existence of an isomorphism from existence of a conjugator.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["existential packaging", "Nonempty", "similarity relation"],
     "prerequisites": ["existential elimination", "the Similar definition"]
   }

@@ -3,11 +3,11 @@
     "id": "ann-erdos191inc-overview",
     "proofId": "erdos-191-incomplete-01",
     "range": { "startLine": 3, "endLine": 31 },
-    "type": "context",
+    "type": "concept",
     "title": "Retiring a non-deep axiom from Erdős #191",
     "content": "The docstring explains the surgical goal: the parent erdos-191 entry formalizes a solved Ramsey-type problem and carries four axioms, but one of them — tripleLog_unbounded, that log(log(log n)) → ∞ — is elementary, not research-level. This file proves it axiom-free so the assumption count drops from 4 to 3. It is built standalone because Erdos191Problem.lean does not currently compile under the present Mathlib (missing rpow / Real.log_two_gt_d9 imports), so tripleLog is re-stated here, ready to drop in once that file is repaired.",
     "mathContext": "Erdős #191: any 2-colouring of edges of $K_{\\{2,\\dots,n\\}}$ yields a monochromatic $X$ with $\\sum_{x\\in X}1/\\log x$ large; the tight scale is $\\Theta(\\log\\log\\log n)$ (Rödl 2003; Conlon–Fox–Sudakov 2013).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["axiom elimination", "Ramsey theory", "Erdős problems", "asymptotic divergence"],
     "prerequisites": ["filters / limits at infinity", "Erdős problem context"]
   },

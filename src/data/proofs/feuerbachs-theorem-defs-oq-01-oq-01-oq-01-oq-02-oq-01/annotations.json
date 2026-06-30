@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 61
     },
-    "type": "context",
+    "type": "concept",
     "title": "AH = 2·OM_a: A Vertex–Orthocenter Segment is Twice O to the Opposite Midpoint",
     "content": "This file gives the geometric companion to the parent's metric identity $AH^2 = 4R^2 - a^2$: the distance from a vertex to the orthocenter equals *twice* the distance from the circumcenter $O$ to the midpoint $M_a$ of the opposite side. The deep point is that the vector form $A - H = 2(O - M_a)$ is **purely affine** — it holds for any triangle with no circle/equidistance hypothesis, because both sides equal $2O - B - C$ once $H = A+B+C-2O$ and $M_a = \\tfrac{B+C}{2}$ are substituted. The metric content $OM_a = R\\cos A$ (hence $2\\,OM_a = 2R\\cos A = AH$) only enters when relating $OM_a$ to $R$ and $a$.",
     "mathContext": "$A - H = 2(O - M_a)$, so $AH = 2\\,OM_a = 2R\\cos A$. The right triangle $O M_a B$ gives $OM_a^2 = R^2 - (a/2)^2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "orthocenter",
       "nine-point circle",
@@ -30,7 +30,7 @@
       "startLine": 82,
       "endLine": 111
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Perpendicular-Bisector Identities (Linear in O)",
     "content": "`perp_bisector_AB` and `perp_bisector_AC` state that the circumcenter lies on the perpendicular bisectors of $AB$ and $AC$, written $(B-A)\\cdot(B+A-2O)=0$. The identity is *linear* in $O$, so substituting the closed-form circumcenter (with nonzero denominator $d$ from `circumcenter_denom_ne_zero`) reduces to a `ring` identity after `field_simp`. The parent declares its equidistance facts `private`, so they are reproved locally for an independent build; a raised `maxHeartbeats` absorbs the large rational expansion.",
     "mathContext": "$(B-A)\\cdot\\big((B+A)-2O\\big)=0$ — the chord $AB$ is perpendicular to the line from its midpoint to $O$.",
@@ -76,7 +76,7 @@
       "startLine": 133,
       "endLine": 136
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The sq_dist2 Bridge",
     "content": "`sq_dist2` proves $(\\operatorname{dist2} P Q)^2 = \\operatorname{dist2\\_sq} P Q$ via `Real.sq_sqrt` on the manifestly nonnegative `dist2_sq`. It is the sole point where `Real.sqrt` appears: all algebra runs in the polynomial `dist2_sq`, and only the final textbook restatements and the genuine distance identity $AH = 2\\,OM_a$ pass through this bridge.",
     "mathContext": "$\\operatorname{dist2} P Q = \\sqrt{\\operatorname{dist2\\_sq} P Q}$, $\\operatorname{dist2\\_sq} \\ge 0$, so $(\\sqrt{\\cdot})^2 = \\operatorname{dist2\\_sq}$.",
@@ -235,7 +235,7 @@
       "startLine": 319,
       "endLine": 345
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Example: the 3-4-5 Right Triangle",
     "content": "The 3-4-5 right triangle makes the identity concrete. Its circumcenter $O = (3/2, 2)$ is the midpoint of the hypotenuse (Thales), which coincides with $M_a$, so $OM_a = 0 = AH/2$ — consistent with the orthocenter being the right-angle vertex $A$. For the other sides $OM_b^2 = 9/4$ (so $2\\,OM_b = 3 = BH$) and $OM_c^2 = 4$ (so $2\\,OM_c = 4 = CH$). `triangle_345_vertexB_eq_four_OMb` checks $BH^2 = 4\\,OM_b^2$ numerically ($9 = 4\\cdot\\tfrac94$).",
     "mathContext": "$O = M_a = (3/2,2)$: $OM_a=0$, $OM_b^2=9/4 \\Rightarrow 2OM_b=3=BH$, $OM_c^2=4 \\Rightarrow 2OM_c=4=CH$.",

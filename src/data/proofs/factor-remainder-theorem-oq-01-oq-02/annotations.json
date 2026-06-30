@@ -6,11 +6,11 @@
       "startLine": 7,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Parent's Char-0 Criterion Breaks, and the Hasse Fix",
     "content": "The docstring frames the entry against its parent (factor-remainder-theorem-oq-01), which proves (X−a)ᵏ ∣ p ↔ p(a)=p′(a)=⋯=p^{(k−1)}(a)=0 only over a characteristic-zero field, because it divides by the factorials m! produced by ordinary iterated derivatives. In positive characteristic this collapses: over ZMod p the polynomial Xᵖ has every ordinary derivative identically zero, so the char-0 criterion would certify arbitrarily high multiplicity at 0. The fix is Hasse's divided-power derivative hasseDeriv m, whose value is the Taylor coefficient (taylor a p).coeff m WITHOUT dividing by m!, yielding a criterion valid over an arbitrary commutative ring (every characteristic, no p ≠ 0 hypothesis). The file works in CommRing R.",
     "mathContext": "Parent (char 0): $(X-a)^k \\mid p \\iff \\forall m<k,\\ p^{(m)}(a)=0$. This entry (any ring): $(X-a)^k \\mid p \\iff \\forall m<k,\\ (\\mathrm{hasseDeriv}_m p)(a) = 0$, since $\\mathrm{hasseDeriv}_m p\\,(a) = (\\mathrm{taylor}_a p).\\mathrm{coeff}\\,m$ has no $m!$ denominator.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["root multiplicity", "Hasse derivative", "positive characteristic", "Taylor coefficient", "Factor Theorem"],
     "prerequisites": ["polynomial rings over a commutative ring", "characteristic of a ring", "Lean 4 / Mathlib basics"]
   },

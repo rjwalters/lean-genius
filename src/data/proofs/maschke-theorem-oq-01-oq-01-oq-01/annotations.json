@@ -7,7 +7,7 @@
     "title": "Group Algebra, Generator, and the Augmentation Map",
     "content": "The cyclic group ℤ/p is written multiplicatively as `G = Multiplicative (ZMod p)` so its group algebra `A = MonoidAlgebra (ZMod p) (G p)` is a `MonoidAlgebra`. The generator `g = single (ofAdd 1) 1` is the basis element indexed by the additive generator 1 ∈ ℤ/p. The augmentation `ε : A →ₐ[𝔽_p] 𝔽_p` is realised as `MonoidAlgebra.lift 1`, the algebra hom determined by sending every group element to 1; on a basis element it returns its coefficient, ε(∑ a_h h) = ∑ a_h.",
     "mathContext": "$A = \\mathbb{F}_p[\\mathbb{Z}/p]$, $g = [1]$, and $\\varepsilon : A \\to \\mathbb{F}_p$, $\\sum_h a_h h \\mapsto \\sum_h a_h$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["group algebra", "MonoidAlgebra", "augmentation map", "MonoidAlgebra.lift", "trivial representation"],
     "prerequisites": ["group algebras", "algebra homomorphisms", "finite cyclic groups"]
   },
@@ -15,7 +15,7 @@
     "id": "ann-augmentation-sum",
     "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
     "range": { "startLine": 71, "endLine": 88 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Augmentation as a Sum of Coefficients",
     "content": "`ε_single` and `ε_g` evaluate ε on basis elements: ε(single a b) = b and ε g = 1, via `lift_single` (and `lift`'s defining formula). `ε_eq_sum` is the workhorse: unfolding `lift_apply` gives ε y = y.sum (fun _ b => b • 1) = y.sum (fun _ b => b), and `Finsupp.sum_fintype` converts this support-sum into the finite sum ∑_{h : G} y h over the whole group. `mem_ker_iff` records that membership in the augmentation ideal ker ε is exactly having ε-image 0.",
     "mathContext": "$\\varepsilon\\, y = \\sum_{h \\in \\mathbb{Z}/p} y_h$, so $\\ker\\varepsilon = \\{ y : \\sum_h y_h = 0 \\}$.",

@@ -6,11 +6,11 @@
       "startLine": 25,
       "endLine": 30
     },
-    "type": "context",
+    "type": "concept",
     "title": "Universe-Polymorphic K-Algebra Setting",
     "content": "**Setup**: `{K : Type*} [Field K]` and `{A : Type*} [Ring A] [Algebra K A]`.\n\nThe entire development is stated for an arbitrary $K$-algebra $A$, not just matrices. This is deliberate: the inner-conjugation argument never touches matrix entries, only the ring multiplication and the unit $u$. The matrix theorem is recovered for free at the end by instantiating $A = \\mathrm{Matrix}\\ n\\ n\\ K$.\n\nNote that $A$ is only required to be a (possibly noncommutative) ring — conjugation is interesting precisely when $A$ is noncommutative, since in a commutative ring $u x u^{-1} = x$ trivially.",
     "mathContext": "A $K$-algebra is a ring $A$ together with a ring homomorphism $K \\to A$ landing in the center of $A$. Working at this generality means the result simultaneously covers matrix algebras, group algebras $K[G]$, division algebras, and endomorphism rings.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "K-algebra",
       "Noncommutative ring",
@@ -61,7 +61,7 @@
       "startLine": 42,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The commutes' Field: Centrality of the Scalars",
     "content": "**`commutes' r`**: an `AlgEquiv` must fix the image of the structure map, i.e. $\\iota_u(\\mathrm{algebraMap}_K\\,r) = \\mathrm{algebraMap}_K\\,r$.\n\nThe proof is `rw [← Algebra.commutes r (u : A), mul_assoc, Units.mul_inv, mul_one]`:\n$$ u \\cdot (\\kappa\\,r) \\cdot u^{-1} = (\\kappa\\,r) \\cdot u \\cdot u^{-1} = (\\kappa\\,r) \\cdot 1 = \\kappa\\,r, $$\nwhere $\\kappa = \\mathrm{algebraMap}_K$. The first step uses `Algebra.commutes`: scalars are *central*, so they slide past $u$. This is exactly the property that makes inner conjugation a $K$-algebra map (over $K$) and not merely a ring map.",
     "mathContext": "Centrality $\\kappa(r)\\,a = a\\,\\kappa(r)$ for all $a$ is part of the definition of a $K$-algebra. It is what guarantees inner automorphisms are $K$-linear: they fix $K$ pointwise even while permuting the rest of $A$.",
@@ -115,7 +115,7 @@
       "startLine": 56,
       "endLine": 61
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The u⁻¹ x u Presentation by Symmetry",
     "content": "**`minpoly_units_conj'`**: $\\mu_K(u^{-1} x u) = \\mu_K(x)$.\n\nRather than re-prove anything, this applies `minpoly_units_conj` with the unit $u^{-1}$ in place of $u$: conjugation by $u^{-1}$ is $x \\mapsto u^{-1} x (u^{-1})^{-1} = u^{-1} x u$ after `simpa` simplifies $(u^{-1})^{-1} = u$ via `inv_inv`.\n\nProviding both presentations matters because the standard textbook form of matrix similarity is $N = U^{-1} M U$, while the cleanest abstract statement is $u x u^{-1}$. Exposing both spares downstream users a manual `inv_inv` rewrite.",
     "mathContext": "Inner automorphisms form a group: $\\iota_u \\circ \\iota_v = \\iota_{uv}$ and $\\iota_u^{-1} = \\iota_{u^{-1}}$. So conjugating by $u^{-1}$ is the inverse automorphism, and since automorphisms preserve $\\mu_K$, both directions give the same invariance.",

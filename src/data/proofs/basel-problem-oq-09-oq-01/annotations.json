@@ -33,7 +33,7 @@
     "title": "hasSum_lambda_nat — λ(2m) = (1 − 2^{−2m})·ζ(2m)",
     "content": "The general even-exponent value, obtained by feeding Mathlib's hasSum_zeta_nat (the explicit Bernoulli closed form for ζ(2m)) into hasSum_odd_pow. No work beyond the specialization: the parity fraction 1 − 2^{−2m} multiplies whatever value ζ(2m) takes. This is the full Dirichlet lambda formula at even integers, stated for arbitrary m ≥ 1.",
     "mathContext": "$\\lambda(2m) = \\left(1 - 2^{-2m}\\right)\\zeta(2m)$, with $\\zeta(2m)$ the Bernoulli closed form.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": [
       "Bernoulli numbers",
       "zeta values at even integers",
@@ -76,7 +76,7 @@
     "title": "hasSum_lambda_two — λ(2) = π²/8 (recovers the parent)",
     "content": "A consistency check: specializing the general lemma to hasSum_zeta_two through the fraction 1 − 2^{−2} = 3/4 reproduces the parent entry's odd-square value π²/8. That the exponent-uniform lemma reproduces the hand-built parent result confirms the abstraction is faithful.",
     "mathContext": "$\\sum_{k=0}^{\\infty} \\dfrac{1}{(2k+1)^2} = \\dfrac{3}{4}\\cdot\\dfrac{\\pi^2}{6} = \\dfrac{\\pi^2}{8}$.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "Basel problem",
       "odd-square series"
@@ -96,7 +96,7 @@
     "title": "parity_fraction_mono — The Odd Share Grows with the Exponent",
     "content": "Records the structural fact behind the values: the parity fraction 1 − 2^{−s} increases in s, so a larger share of ζ(s) concentrates on the odd indices as the exponent grows — three quarters at s = 2, fifteen sixteenths at s = 4. Paired with lambda_four_gt_even_part (the odd part exceeds the even part at s = 4) and the ζ(4) decomposition.",
     "mathContext": "$1 - 2^{-2} = \\tfrac34 < \\tfrac{15}{16} = 1 - 2^{-4}$.",
-    "significance": "medium",
+    "significance": "supporting",
     "relatedConcepts": [
       "monotonicity",
       "even/odd mass distribution"

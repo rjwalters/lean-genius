@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Tube Lemma, By Hand from Finite Subcovers",
     "content": "The docstring states the tube lemma and its purpose. If $K\\subseteq Y$ is compact and $N\\subseteq X\\times Y$ is open containing the whole slice $\\{x_0\\}\\times K$, then some open neighbourhood $W$ of $x_0$ has its entire tube $W\\times K$ inside $N$ — the open set, a priori only fat near each slice point, is uniformly fat in a neighbourhood of $x_0$. Mathlib already has a generalized_tube_lemma via the filter/uniformity machinery, but this file deliberately does NOT cite it: it runs the original finite-subcover argument by hand, in the parent entry's spirit of re-deriving compactness results directly from Heine–Borel. The 'original' badge reflects that the derivation, not the result, is the contribution.",
     "mathContext": "Compact $K\\subseteq Y$, open $N\\supseteq\\{x_0\\}\\times K$ $\\Rightarrow$ open $W\\ni x_0$ with $W\\times K\\subseteq N$. The tube lemma underlies closed-projection and Tychonoff for finite products.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "tube lemma",
       "compactness",
@@ -116,11 +116,11 @@
       "startLine": 129,
       "endLine": 137
     },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Instance over ℝ",
     "content": "isOpen_tube_Icc instantiates the abstract lemma at the compact interval $[0,1] = \\text{Icc}\\,0\\,1$: any open $N\\subseteq\\mathbb{R}^2$ containing the vertical segment $\\{0\\}\\times[0,1]$ contains a genuine tube $W\\times[0,1]$ around it, with $W$ an open neighbourhood of 0. It follows from tube_lemma_of_finite_subcover with $K = [0,1]$, compact by isCompact_Icc. This grounds the general statement in the familiar Euclidean picture — and tacitly illustrates why compactness of the fibre is essential (the lemma fails for a non-compact fibre like $\\mathbb{R}$, where $\\{(x,y):|xy|<1\\}$ contains no tube around $\\{0\\}\\times\\mathbb{R}$).",
     "mathContext": "$\\{0\\}\\times[0,1]\\subseteq N$ open $\\Rightarrow W\\times[0,1]\\subseteq N$ in $\\mathbb{R}^2$, via isCompact_Icc.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "isCompact_Icc",
       "Euclidean plane",

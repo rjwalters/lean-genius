@@ -7,7 +7,7 @@
     "title": "Jacobi's σ* and the Eisenstein decomposition",
     "content": "Jacobi's four-square formula is r4(n) = 8·σ*(n), where σ*(n) = Σ_{d|n, 4∤d} d drops every divisor divisible by 4. The modern proof identifies θ^4 with a weight-2 Eisenstein series on Γ0(4); the parent entry states the formula as an axiom. This file resolves the arithmetic component axiom-free: an exact closed-form relation between σ* and the ordinary divisor sum σ(n) = Σ_{d|n} d.",
     "mathContext": "The weight-2 Eisenstein space on $\\Gamma_0(4)$ is spanned by $E_2(\\tau) - 2E_2(2\\tau)$ and $E_2(\\tau) - 4E_2(4\\tau)$, whose $q$-coefficients are divisor sums with the $4 \\mid d$ terms removed — exactly $\\sigma^*$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Jacobi four-square theorem", "theta series", "Eisenstein series", "Γ0(4) modular forms", "axiom reduction"],
     "prerequisites": ["sums of squares", "modular forms (for context)"]
   },
@@ -51,7 +51,7 @@
     "id": "sanity",
     "proofId": "four-square-distribution-oq-01-oq-01",
     "range": { "startLine": 108, "endLine": 114 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Kernel-decide sanity checks (axiom integrity)",
     "content": "Three example checks confirm the formulas at small n: σ*(12) = 1+2+3+6 = 12, σ(12) = 28, σ*(8) = 3 (divisors 1,2,4,8 keep only 1,2). These use kernel `decide`, NOT native_decide, so they introduce no Lean.ofReduceBool axiom — the entry remains genuinely axiom-free. The n = 12 case illustrates the correction concretely: σ*(12) = 12 = 28 − 16 = σ(12) − (4+8+12+... 4-divisible divisors).",
     "mathContext": "$\\sigma^*(12) = 1+2+3+6 = 12 = \\sigma(12) - 16 = 28 - 16$; $\\sigma^*(8) = 1+2 = 3$.",

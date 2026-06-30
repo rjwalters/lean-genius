@@ -53,7 +53,7 @@
       "startLine": 34,
       "endLine": 45
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Collapsing the Power via Complex.cpow_add",
     "content": "`gaussian_integral_complex_sq` rewrites the integral to `(π/b)^{1/2}` (Mathlib's `integral_gaussian_complex`), expands the square with `pow_two` to `(π/b)^{1/2} · (π/b)^{1/2}`, then applies `Complex.cpow_add` in reverse to fuse the exponents into `(π/b)^{1/2 + 1/2}`. The side condition of `cpow_add` is `π/b ≠ 0`, supplied by `div_ne_zero` from `Real.pi_ne_zero` and `b ≠ 0` (which follows from `0 < re b`). A final `norm_num` evaluates `1/2 + 1/2 = 1` and discharges `(π/b)^1 = π/b`.",
     "mathContext": "The additive law $x^{y+z} = x^y\\,x^z$ for complex principal powers holds precisely when $x \\neq 0$; this is the single hypothesis that the right half-plane guarantees. Without it (e.g. crossing to $b$ with $\\pi/b$ a negative real) the half-powers would not add and the square would pick up a sign from the branch cut.",
@@ -76,7 +76,7 @@
       "startLine": 47,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Recovering π as the b = 1 Case",
     "content": "`gaussian_integral_sq_eq_pi` derives the parent's real value `(∫_ℝ e^{-x²} dx)² = π` from the complex result specialized at `b = 1`. Because the squared statement evaluates to `π` (not `√π`), recovering it at `b = 1` makes this entry the faithful complex lift of the parent's *central* computation — the one the parent then takes a square root of. The hypothesis `0 < re 1` is discharged by `simp` and `π/1` simplifies to `π` via `div_one`.",
     "mathContext": "The squared statement is what the parent `area-of-circle-oq-07` actually computes en route to `√π`: the two-dimensional Gaussian integral equals `π` directly, and the square root is extracted afterward.",
@@ -97,7 +97,7 @@
       "startLine": 50,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Real-to-Complex Cast",
     "content": "The recovery's substance is the `hLcast` step identifying the real integral with its complex image: since the integrand is real-valued, `integral_complex_ofReal` moves the `ℂ`-coercion outside the integral, and pointwise `↑(e^{-x²}) = e^{-1·(↑x)²}` follows from `Complex.ofReal_exp` plus `push_cast; ring` on the exponent. After `div_one` simplifies `π/1` to `π`, rewriting the specialized hypothesis with `← hLcast` and `exact_mod_cast` transfers the complex equality back to ℝ. This is the same coercion-pushing pattern as the sibling oq-07-oq-01, minus the principal-power collapse (already handled by the squaring).",
     "mathContext": "Coercion-pushing: $\\big(\\!\\int_{\\mathbb R} e^{-x^2}\\big)_{\\mathbb C} = \\int_{\\mathbb R}\\big(e^{-x^2}\\big)_{\\mathbb C}$ via `integral_complex_ofReal`, then $\\exact\\_mod\\_cast$ on $(\\,\\cdot\\,)^2 = \\pi$.",

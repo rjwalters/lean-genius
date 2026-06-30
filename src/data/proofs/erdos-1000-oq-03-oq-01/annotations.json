@@ -15,7 +15,7 @@
     "id": "jc-gcd-scaling",
     "proofId": "erdos-1000-oq-03-oq-01",
     "range": { "startLine": 49, "endLine": 61 },
-    "type": "technique",
+    "type": "tactic",
     "title": "How the coordinate-gcd scales",
     "content": "Two helper lemmas capture the arithmetic that powers the bijection. `gcd_smul` says scaling every coordinate by $d$ multiplies the coordinate-gcd by $d$: $\\gcd(d a_0,\\dots,d a_{k-1}) = d\\gcd(a_0,\\dots,a_{k-1})$, via Mathlib's `Finset.gcd_mul_left` (with `normalize_eq` to discharge ℕ-normalization). `gcd_div` is the inverse: when $d$ divides every coordinate, dividing through by $d$ divides the gcd by $d$. These are exactly the forward/backward content-tracking facts the fiber bijection needs.",
     "mathContext": "$\\gcd(d a_i) = d\\,\\gcd(a_i)$; and if $d \\mid a_i$ for all $i$, then $\\gcd(a_i/d) = \\gcd(a_i)/d$.",

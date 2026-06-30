@@ -3,11 +3,11 @@
     "id": "dilworth-hard-header",
     "proofId": "dilworth-theorem-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 65 },
-    "type": "context",
+    "type": "concept",
     "title": "The hard direction of Dilworth's theorem — not in Mathlib",
     "content": "The companion files supply the easy direction (an antichain is no larger than any chain cover, width ≤ min chain cover) and the hard direction of Mirsky's theorem. The hard direction of Dilworth's theorem — that a chain cover whose size equals the maximum antichain width actually exists — is the genuinely deep combinatorial content and is not available in Mathlib. This file proves it in full via the Galvin/Perles down-set/up-set decomposition, organised around a maximum antichain.",
     "mathContext": "Dilworth (1950): in a finite poset, $\\min(\\text{chain cover}) = \\max(\\text{antichain})$. This file proves the hard $\\ge$ inequality.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Dilworth's theorem", "Galvin–Perles proof", "chain cover", "antichain width", "min–max duality"],
     "prerequisites": ["partial orders", "chains and antichains"]
   },

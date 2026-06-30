@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "ballot-problem-oq-02-oq-04",
     "range": { "startLine": 3, "endLine": 58 },
-    "type": "context",
+    "type": "concept",
     "title": "Lévy's Arcsine Law and the Scope of this Formalization",
     "content": "The docstring states the research problem (the arcsine law 'via Brownian motion local times') and the honest scope. Lévy's Arcsine Law (1939) says three a priori different statistics of a standard Brownian motion on [0,1] — the occupation time of the positive half-line A⁺, the time of the maximum θ, and the time of the last zero L — all share the arcsine distribution with CDF F(x) = (2/π)·arcsin(√x) and density 1/(π√(x(1−x))). The 'via local times' derivation runs through the occupation density of W at level 0. Mathlib v4.26.0 has no Brownian motion, no stochastic local time, and no arcsine-distribution object, so that derivation cannot be carried out from primitives; the parent ballot-problem-oq-02 axiomatizes the Brownian facts. This entry instead proves, axiom-free, the verifiable real-analytic core — the CDF F and density f and their defining properties.",
     "mathContext": "$F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$, $f(x) = \\dfrac{1}{\\pi\\sqrt{x(1-x)}}$, $x \\in [0,1]$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Lévy's arcsine law", "Brownian motion occupation time", "local time", "ballot problem", "fluctuation theory"],
     "prerequisites": ["the statement of the arcsine law", "cumulative distribution functions"]
   },

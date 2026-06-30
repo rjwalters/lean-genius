@@ -7,7 +7,7 @@
     "title": "Setup: Extending the Beth Tower over ℝ to ℶ₃",
     "content": "This file resolves open question #4 of cantors-theorem-oq-01, which had established |𝒫(ℝ)| = ℶ₂: the follow-up asks whether the next iterated power set lands on the next beth number, |𝒫(𝒫(ℝ))| = ℶ₃. It does, and provably in ZFC. The conceptual payoff is the contrast drawn in the docstring: the BETH-index of an iterated power set of ℝ is fixed by definition (the beth function is ℶ_{α+1} = 2^{ℶ_α}, exactly the power-set operation), whereas the ALEPH-index of the same cardinal is independent of ZFC (Easton's theorem). Mathlib has all the cardinal-arithmetic pieces but not this identity.",
     "mathContext": "Beth function: $\\beth_0 = \\aleph_0$, $\\beth_{\\alpha+1} = 2^{\\beth_\\alpha}$. Goal: $|\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| = \\beth_3 = 2^{2^{2^{\\aleph_0}}}$. The beth-index is pinned by ZFC; the aleph-index of $2^{\\aleph_0}$ is not (Easton).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["beth numbers", "aleph numbers", "continuum hypothesis", "Easton's theorem", "iterated power set", "ZFC independence"],
     "prerequisites": ["cardinal arithmetic", "ordinals", "power set cardinality 2^κ"]
   },
@@ -67,7 +67,7 @@
     "title": "§5 — Summary",
     "content": "cantors_theorem_oq01oq04_summary packages the three ZFC-provable facts as one conjunction: the main identity |𝒫(𝒫(ℝ))| = ℶ₃, the strict Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))|, and the strict beth tower ℶ₁ < ℶ₂ < ℶ₃. #print axioms confirms only the foundational propext, Classical.choice, Quot.sound.",
     "mathContext": "Conjunction: $|\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| = \\beth_3$ ∧ $\\#\\mathbb{R} < |\\mathcal{P}(\\mathbb{R})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))|$ ∧ $\\beth_1 < \\beth_2 < \\beth_3$, all in ZFC (only propext, Classical.choice, Quot.sound).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["axiom auditing", "ZFC provability", "#print axioms", "result packaging"],
     "prerequisites": ["the four preceding sections"]
   }

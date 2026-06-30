@@ -7,7 +7,7 @@
     "title": "Reifying a Cardinality into an Explicit Finite Set",
     "content": "The docstring frames this third-generation entry: the parents establish the Chevalley–Warning divisibility and its cardinality consequences (0-or-≥-p, no-unique-solution, one second zero), but those all live at the level of cardinals and existence. Downstream pigeonhole arguments — above all the Erdős–Ginzburg–Ziv proof — need to iterate over an explicit Finset of common zeros, not just know how many there are. This file supplies that reification: an explicit Finset of ≥ p common zeros, an explicit Finset of ≥ p−1 zeros avoiding any given x₀, and (origin-vanishing case) an explicit Finset of ≥ p−1 nonzero common zeros — answering the parent's open question of an effective count of p−1 additional zeros. All by reifying char_le_card_of_exists through Finset.map / Finset.erase.",
     "mathContext": "From the abstract bound $p \\le \\#\\{x // \\dots\\}$ to a concrete $T : \\mathrm{Finset}(\\sigma\\to K)$ with $|T| \\ge p$ of common zeros.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["reification", "Erdős–Ginzburg–Ziv", "pigeonhole", "Finset", "Chevalley–Warning"],
     "prerequisites": ["finite fields", "Finset operations"]
   },

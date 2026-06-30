@@ -96,11 +96,11 @@
       "startLine": 39,
       "endLine": 40
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Re s > 1 Hypothesis: Boundary of Absolute Convergence",
     "content": "Every theorem in this file is unlocked by a single trivial-looking hypothesis: 1 < (s : ℂ).re, discharged by norm_num in the private lemmas one_lt_re_two and one_lt_re_four. This bound is not a technicality — it is the exact half-plane in which the Dirichlet series ∑ₙ n⁻ˢ (and hence the Euler product) converges absolutely, so that the FTA rearrangement of sum into product is legitimate. At s=2 and s=4 the bound holds comfortably (Re s = 2, 4 > 1). The interest lies at the boundary: as s → 1⁺ the product ∏ₚ(1-p⁻ˢ)⁻¹ diverges to +∞, because ∑ 1/p diverges — and this divergence is Euler's analytic proof that there are infinitely many primes. The same Re s > 1 condition is what powers riemannZeta_ne_zero_of_one_lt_re used in the non-vanishing results; extending non-vanishing to the line Re s = 1 is the deep analytic step behind the prime number theorem.",
     "mathContext": "The series $\\sum_n n^{-s}$ converges absolutely iff $\\mathrm{Re}\\,s > 1$, since $|n^{-s}| = n^{-\\mathrm{Re}\\,s}$. On that half-plane the Euler product $\\prod_p (1-p^{-s})^{-1}$ converges and equals $\\zeta(s)$. At the boundary $s=1$ the product behaves like $\\prod_{p\\le x}(1-1/p)^{-1} \\sim e^\\gamma \\log x \\to \\infty$ (Mertens), recovering the infinitude of primes and $\\sum_p 1/p = \\infty$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "abscissa of absolute convergence",
       "Mertens' theorems",

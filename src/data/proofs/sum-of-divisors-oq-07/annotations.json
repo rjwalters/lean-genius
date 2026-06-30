@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "sum-of-divisors-oq-07",
     "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Closed Geometric-Product Form of σₖ for Every Exponent k",
     "content": "Mathlib evaluates σₖ only in open form: a geometric sum on prime powers and a product-of-sums over a factorization. OQ-04 collapsed the inner series into closed form but only for k = 1. This entry proves the closed geometric-product form for arbitrary k, reducing everything to `geom_sum_mul` with base x = pᵏ: it collapses each inner sum ∑ p^{jk} into (p^{k(i+1)}−1)/(pᵏ−1) and assembles across the whole factorization.",
     "mathContext": "$\\sigma_k(n) = \\prod_{p\\mid n}\\dfrac{p^{k(v_p(n)+1)}-1}{p^k-1}$, the closed form of Mathlib's $\\prod_{p\\mid n}\\sum_{j\\le v_p(n)} p^{jk}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["divisor-power sum σₖ", "geometric series", "multiplicativity", "prime factorization"],
     "prerequisites": ["σₖ on prime powers", "geometric sums", "multiplicative functions"]
   },

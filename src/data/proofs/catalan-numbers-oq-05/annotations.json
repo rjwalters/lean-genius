@@ -10,7 +10,7 @@
     "title": "The subtractive (reflection) form of the Catalan numbers",
     "content": "The Catalan number Cₙ has three standard closed forms: the quotient C(2n,n)/(n+1), the cleared multiplication (n+1)·Cₙ = C(2n,n), and the difference C(2n,n) − C(2n,n+1). Mathlib records the first two; this entry adds the third. The difference form is the oldest: André's reflection principle counts the Dyck paths to (n,n) staying weakly below the diagonal as all C(2n,n) central paths minus the C(2n,n+1) 'bad' paths that cross the line y = x+1 (a bad path reflects bijectively to an arbitrary path landing at the reflected endpoint). It is the same expression that solves Bertrand's ballot problem.",
     "mathContext": "Target: $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, equivalently $C_n = \\binom{2n}{n}/(n+1)$ since $\\binom{2n}{n+1} = \\frac{n}{n+1}\\binom{2n}{n}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Catalan numbers",
       "reflection principle",
@@ -30,7 +30,7 @@
       "startLine": 50,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Off-diagonal central coefficient C(2n,n+1) = n·catalan n",
     "content": "choose_succ_eq_mul_catalan is the workhorse. Mathlib's bridge succ_mul_catalan_eq_centralBinom gives C(2n,n) = (n+1)·catalan n. Mathlib's choose_succ_right_eq, instantiated at (2n, n), reads C(2n,n+1)·(n+1) = C(2n,n)·(2n − n); since 2n − n = n (discharged by omega) this is C(2n,n+1)·(n+1) = C(2n,n)·n = (n+1)·catalan n·n. Cancelling the positive factor n+1 with Nat.eq_of_mul_eq_mul_right and finishing with ring gives C(2n,n+1) = n·catalan n. Passing the positivity as 0 < n+1 (not Nat.succ_pos) keeps the factor written n+1 so ring can normalize it.",
     "mathContext": "$\\binom{2n}{n+1}(n+1) = \\binom{2n}{n}(2n-n) = \\binom{2n}{n}\\,n = (n+1)C_n\\,n \\Rightarrow \\binom{2n}{n+1} = nC_n$.",
@@ -53,7 +53,7 @@
       "startLine": 67,
       "endLine": 74
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The difference collapses without needing b ≤ a",
     "content": "catalan_eq_centralBinom_sub rewrites both coefficients in terms of c = catalan n: a = C(2n,n) = (n+1)·c (bridge) and b = C(2n,n+1) = n·c (workhorse). The goal a − b = c becomes (n+1)·c − n·c = c. Nat.add_one_mul turns (n+1)·c into n·c + c, and Nat.add_sub_cancel_left (n + m − n = m, with n := n·c, m := c) closes it. Notably the proof never invokes the inequality b ≤ a (that C(2n,n) is the row maximum): the truncated ℕ subtraction resolves purely algebraically because both sides are written as the same n·c plus a remainder.",
     "mathContext": "$a - b = (n+1)C_n - nC_n = (nC_n + C_n) - nC_n = C_n$.",

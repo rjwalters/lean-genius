@@ -82,7 +82,7 @@
       "startLine": 150,
       "endLine": 163
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Bernoulli's Inequality",
     "content": "The classical Bernoulli inequality $(1+x)^n \\geq 1 + nx$ for $x \\geq -1$ is proved by induction. This elementary result becomes surprisingly powerful when applied to backward-time energy growth, establishing that solutions cannot remain bounded while growing at a positive rate.",
     "mathContext": "**Bernoulli's inequality**: For $x \\geq -1$ and $n \\in \\mathbb{N}$, $(1+x)^n \\geq 1 + nx$. Proof by induction: base $n=0$ trivial; step uses $(1+x)^{n+1} = (1+x)^n(1+x) \\geq (1+nx)(1+x) = 1+(n+1)x+nx^2 \\geq 1+(n+1)x$. In the enstrophy argument: starting from $E_0 > 0$ with discrete growth step $h = 1/(\\lambda_1)$, after $n$ steps $E_n = E_0(1+\\lambda_1 h)^n = E_0 \\cdot 2^n$. Bernoulli gives $E_n \\geq E_0(1+n)$, providing the linear lower bound needed to show $E_n \\to \\infty$.",

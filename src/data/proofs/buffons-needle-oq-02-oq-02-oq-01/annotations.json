@@ -3,7 +3,7 @@
     "id": "buffon-oq020201-ann-header",
     "proofId": "buffons-needle-oq-02-oq-02-oq-01",
     "range": { "startLine": 3, "endLine": 39 },
-    "type": "context",
+    "type": "concept",
     "title": "Monotonicity of the n-Dimensional Crossing Factor",
     "content": "The n-dimensional Buffon noodle formula E[crossings] = αₙ·L/d is governed by the crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|], the expected absolute first coordinate of a uniform random direction. It satisfies the recurrence α_{n+2} = (n/(n+1))·αₙ with base values α₂ = 2/π, α₃ = 1/2. The companion file records individual values and positivity but leaves open the global monotone behaviour. This entry proves the structural monotonicity: αₙ strictly decreases in two-dimension steps, is maximized at α₂ = 2/π, and is therefore uniformly below 1 in every dimension. (The recurrence is re-declared verbatim because the companion fails to build on the pinned Mathlib — a Filter.Tendsto.div API drift.)",
     "mathContext": "$\\alpha_n = E_{S^{n-1}}[|u_1|],\\quad \\alpha_{n+2} = \\frac{n}{n+1}\\alpha_n,\\quad \\alpha_2 = \\frac{2}{\\pi},\\ \\alpha_3 = \\frac12$",

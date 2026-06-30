@@ -51,7 +51,7 @@
       "startLine": 41,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Conjugation Fixes the Mapped Polynomial",
     "content": "map_conj_real establishes the technical lemma that pushing complex conjugation through p.map(algebraMap ℝ ℂ) leaves it unchanged. The proof composes the two coefficient maps via Polynomial.map_map (conj ∘ (ℝ↪ℂ)) and then shows that this composite ring hom equals ℝ↪ℂ by extensionality (RingHom.ext / ext r), since Complex.conj_ofReal says conjugation fixes every real number conj(↑r) = ↑r. This is the precise sense in which 'a real polynomial has real coefficients': as an element of ℂ[X], it is a fixed point of the conjugation action. It is the bridge that lets the invariance lemma apply conjugation as a root-preserving automorphism.",
     "mathContext": "$\\overline{p^{\\mathbb{C}}} = p^{\\mathbb{C}}$ because each coefficient $\\overline{\\,\\overline{a_k}^{\\,\\mathbb{R}\\to\\mathbb{C}}} = a_k$, i.e. $\\mathrm{conj} \\circ (\\mathbb{R}\\hookrightarrow\\mathbb{C}) = (\\mathbb{R}\\hookrightarrow\\mathbb{C})$.",
@@ -81,7 +81,7 @@
       "startLine": 59,
       "endLine": 64
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Conjugate Roots Have Equal Multiplicity",
     "content": "count_complexRoots_conj sharpens invariance from set membership to exact multiplicity: z and z̄ occur the same number of times. Rewriting the left side with the invariance lemma (so the count is taken inside the conjugated multiset) and applying Multiset.count_map_eq_count' for the injective conj gives count(z̄) = count(z). This upgrade from 'is a root' to 'is a root of the same order' is what guarantees the conjugate-pair packaging is balanced — a triple root z forces a triple root z̄ — and so the contribution of each non-real conjugate pair to the total degree is even.",
     "mathContext": "$\\mathrm{mult}_{\\bar z}(p) = \\mathrm{mult}_{z}(p)$, i.e. $(\\mathrm{complexRoots}\\,p).\\mathrm{count}(\\bar z) = (\\mathrm{complexRoots}\\,p).\\mathrm{count}(z)$.",

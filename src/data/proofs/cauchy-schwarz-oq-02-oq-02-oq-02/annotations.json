@@ -3,7 +3,7 @@
     "id": "ann-overview",
     "proofId": "cauchy-schwarz-oq-02-oq-02-oq-02",
     "range": { "startLine": 6, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "From Bessel's inequality to convergence rates",
     "content": "The parent entry (cauchy-schwarz-oq-02-oq-02) proves Bessel's inequality $\\sum_i \\|\\langle v_i,x\\rangle\\|^2 \\le \\|x\\|^2$ and that the coefficient series is summable. This file asks the quantitative question: how fast does the orthonormal partial sum $S\\,s = \\sum_{i\\in s} \\langle v_i,x\\rangle\\, v_i$ — the abstract Fourier/Legendre partial sum, equal to the orthogonal projection of $x$ onto $\\mathrm{span}\\{v_i : i \\in s\\}$ — converge to $x$? Every later result is a consequence of one identity that Mathlib proves but never exports.",
     "mathContext": "$S\\,s = \\sum_{i\\in s}\\langle v_i,x\\rangle\\, v_i = \\mathrm{proj}_{\\,\\mathrm{span}\\{v_i\\}}\\,x$; goal: control $\\|x - S\\,s\\|$ as $s$ grows.",

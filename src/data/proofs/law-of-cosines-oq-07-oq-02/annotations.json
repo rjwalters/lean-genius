@@ -6,11 +6,11 @@
       "startLine": 39,
       "endLine": 44
     },
-    "type": "context",
+    "type": "concept",
     "title": "Coordinate-Free Setup: an Inner-Product Affine Space",
     "content": "The vertices a, b, c live in an arbitrary real inner-product affine space — a NormedAddTorsor P over an InnerProductSpace ℝ V — not in coordinatized ℝ². Medians are genuine dist's to honest midpoint ℝ's, and no scalar side-length parameterization is introduced. As a result the identity holds verbatim in every Euclidean affine space of any dimension, inheriting the parent's coordinate-free framing.",
     "mathContext": "$P$ a NormedAddTorsor over a real inner-product space $V$; $m_a = \\mathrm{dist}(a, \\mathrm{midpoint}_{\\mathbb{R}}(b,c))$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "inner-product affine space",
       "NormedAddTorsor",
@@ -50,7 +50,7 @@
       "startLine": 63,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Folding dist-Symmetry to Close with linear_combination",
     "content": "The proof instantiates median_length at the three vertex orderings (a b c), (b a c), (c a b), then normalizes the metric symmetries dist b a = dist a b, dist a c = dist c a, dist c b = dist b c with a single simp only [dist_comm …]. This folding is essential: without it dist a b and dist b a would be distinct ring atoms and the three squared sides would not cancel. Once unified, linear_combination ha + hb + hc closes the goal in one line over the reals — no decision procedure, keeping the proof axiom-clean.",
     "mathContext": "After $\\mathrm{dist}\\,b\\,a = \\mathrm{dist}\\,a\\,b$ etc., the three Apollonius instances combine linearly: $\\mathrm{linear\\_combination}\\ h_a + h_b + h_c$.",
@@ -93,11 +93,11 @@
       "startLine": 79,
       "endLine": 86
     },
-    "type": "context",
+    "type": "concept",
     "title": "Instantiation in the Euclidean Plane",
     "content": "A worked specialization confirms the abstract identity holds in the standard model of plane geometry, EuclideanSpace ℝ (Fin 2). Because the theorem is stated over an arbitrary inner-product affine space, the plane instance is literally sum_sq_medians a b c with no extra work — demonstrating that the coordinate-free statement subsumes the concrete planar one.",
     "mathContext": "The identity in $\\mathrm{EuclideanSpace}\\ \\mathbb{R}\\ (\\mathrm{Fin}\\ 2)$ is the abstract theorem applied directly.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "EuclideanSpace",
       "specialization",

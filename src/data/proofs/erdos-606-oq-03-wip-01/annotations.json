@@ -6,7 +6,7 @@
       "startLine": 3,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Correcting the Attribution: de Bruijn–Erdős, Not Sylvester–Gallai",
     "content": "The central conceptual contribution of this entry lives in the docstring. The parent entry recorded 'n non-collinear points determine at least n lines' in prose and labeled it Sylvester–Gallai — but that is a *different* theorem (Sylvester–Gallai asserts the existence of an ordinary line, one through exactly two points). The 'at least n lines' bound is the de Bruijn–Erdős theorem (1948). The honest-scope note is equally important: the file formalizes only the combinatorial incidence content; the genuinely open questions (Sylvester–Gallai, Green–Tao's ≥ n/2 ordinary lines, the achievable line-count set) need projective-geometry / polynomial-method machinery and are deliberately left open. The setup abstracts away the plane: P and L are arbitrary types with a membership relation, and HasLines supplies the single axiom 'two points determine a unique line'.",
     "mathContext": "de Bruijn–Erdős: $n$ points $\\Rightarrow \\ge n$ lines. Sylvester–Gallai (distinct): $\\exists$ a line through exactly two points.",

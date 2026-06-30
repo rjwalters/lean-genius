@@ -27,7 +27,7 @@
     "id": "ann-anc-oq01-back-substitution",
     "proofId": "algebraic-numbers-countable-oq-01",
     "range": { "startLine": 114, "endLine": 119 },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Back-Substitution Contradiction",
     "content": "The engine behind every transcendence-preservation theorem. To show t + a is transcendental, assume it is algebraic; then t = (t + a) − a is a difference of two algebraic numbers, algebraic by isAlgebraic_sub, contradicting Transcendental K t. The proof is literally `intro h; exact ht (by simpa using isAlgebraic_sub h ha)`. Every other operation is the same move with a different inverse identity: a⁻¹·(a·t) for products, etc.",
     "mathContext": "$t = (t+a) - a$; if $t+a$ and $a$ are algebraic so is $t$ — contradiction. Transcendence is the contrapositive of subfield closure.",

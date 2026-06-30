@@ -29,7 +29,7 @@
       "startLine": 50,
       "endLine": 53
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Propagating Strictness Through the n-th Power",
     "content": "Both sides of the tangent bound are nonnegative (positivity proves 0 ≤ 1 + x/n), so raising them to the n-th power preserves the strict order: pow_lt_pow_left₀ takes the strict base inequality, the nonnegativity of the smaller base, and n ≠ 0 (discharged by omega) and concludes (1 + x/n)^n < (exp(x/n))^n. Strictness is not automatic for monotone maps — x ↦ x^n is only strictly increasing on the nonnegatives and only for n ≥ 1, which is exactly why both side conditions are required here.",
     "mathContext": "pow_lt_pow_left₀: $0 \\le a < b$ and $n \\ne 0 \\Rightarrow a^{n} < b^{n}$. Note the name is `pow_lt_pow_left₀` in Mathlib 4.26 (renamed from `pow_lt_pow_left`).",
@@ -51,11 +51,11 @@
       "startLine": 54,
       "endLine": 57
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Collapsing (exp(x/n))^n = exp(x)",
     "content": "The right-hand side (exp(x/n))^n is rewritten using Real.exp_nat_mul, which states exp(n·t) = (exp t)^n; reading it backwards turns (exp(x/n))^n into exp(n·(x/n)). The exponent n·(x/n) then simplifies to x via field_simp (legal since n ≠ 0), and rwa finishes by rewriting the hypothesis into the goal. This is the step that converts the per-term bound into the clean statement (1 + x/n)^n < exp(x).",
     "mathContext": "Real.exp_nat_mul: $e^{n t} = (e^{t})^{n}$. Here $n \\cdot (x/n) = x$, so $(e^{x/n})^{n} = e^{x}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "exponential of a product",
       "field_simp",

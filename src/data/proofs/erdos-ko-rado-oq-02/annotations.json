@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 48
     },
-    "type": "context",
+    "type": "concept",
     "title": "Goal and the Verbatim Definitions",
     "content": "The docstring states the task: the parent entry ErdosKoRado formalizes EKR via Katona's cyclic-permutation proof but leaves the upper bound |𝒜| ≤ C(n-1,k-1) as an axiom (double_counting_bound), because Katona's cyclic-interval lemma (sibling OQ-01) resisted Lean. This file discharges that axiom with zero axioms via Mathlib's Kruskal–Katona route, then proves sharpness. The definitions IsIntersectingFamily (every member has card k; every two members meet) and Star x k (all k-subsets containing x) are reproduced verbatim from the parent — importing the parent directly would pull in its nine axioms.",
     "mathContext": "EKR: an intersecting family $\\mathcal{A}$ of $k$-subsets of $[n]$ with $n \\ge 2k$ satisfies $|\\mathcal{A}| \\le \\binom{n-1}{k-1}$, with equality for the star (all $k$-sets through a fixed point).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős–Ko–Rado theorem", "intersecting family", "star family", "axiom elimination"],
     "prerequisites": ["extremal set theory", "Finset (Fin n)", "Lean 4 / Mathlib basics"]
   },

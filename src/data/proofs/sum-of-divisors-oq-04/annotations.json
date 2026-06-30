@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "sum-of-divisors-oq-04",
     "range": { "startLine": 1, "endLine": 24 },
-    "type": "context",
+    "type": "concept",
     "title": "General Structural Laws of the Divisor-Sum Function σₖ",
     "content": "Where the base entry verified σ(p) = p + 1 for specific primes and classified particular perfect/abundant/amicable numbers, this entry proves the general structural identities once and for all: σ on an arbitrary prime, the closed geometric form on prime powers, multiplicativity on a product of distinct primes, and the σ-form of perfection. All are read off Mathlib's `ArithmeticFunction.sigma` API. These are the foundational identities underlying the base entry's numerical classifications.",
     "mathContext": "$\\sigma_k(n) = \\sum_{d\\mid n} d^k$. Multiplicative with $\\sigma_1(p^i) = \\tfrac{p^{i+1}-1}{p-1}$; $\\sigma_1(n)=2n \\iff n$ perfect.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["divisor-sum function σ", "arithmetic functions", "multiplicativity", "perfect numbers"],
     "prerequisites": ["divisors of n", "prime factorization", "multiplicative functions"]
   },

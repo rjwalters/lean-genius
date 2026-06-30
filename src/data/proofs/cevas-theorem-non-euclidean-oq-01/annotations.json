@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 32
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: One Curvature Parameter for Ceva",
     "content": "The parent entry (cevas-theorem-non-euclidean) proves Ceva's theorem in Euclidean, spherical, and hyperbolic geometry, unified through an abstract distance function ρ in ceva_unified_principle, and asks whether the framework extends to arbitrary curvature κ via the curvature sine sin_κ. This file answers yes: defining sin_κ and instantiating the parent's principle at ρ = sin_κ collapses the three classical theorems into a single curvature-parametrised statement, with κ = 1, −1, 0 recovering the spherical, hyperbolic, and Euclidean cases.",
     "mathContext": "$\\sin_\\kappa(x) = \\begin{cases} \\sin(\\sqrt{\\kappa}\\,x)/\\sqrt{\\kappa} & \\kappa>0 \\\\ x & \\kappa=0 \\\\ \\sinh(\\sqrt{-\\kappa}\\,x)/\\sqrt{-\\kappa} & \\kappa<0 \\end{cases}$; one Ceva theorem $\\forall\\kappa$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["constant-curvature geometry", "Ceva's theorem", "unified distance function ρ", "curvature parameter κ"],
     "prerequisites": ["Ceva's theorem (Euclidean)", "spherical and hyperbolic geometry", "the parent's ceva_unified_principle"]
   },

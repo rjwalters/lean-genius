@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Tower Law for Subgroup Indices",
     "content": "For a tower of subgroups $K \\le H \\le G$, the index is multiplicative: $[G:K] = [G:H]\\cdot[H:K]$, where $[H:K]$ is the *relative index* `K.relIndex H`. This is the index-theoretic refinement of Lagrange's theorem. Crucially it is stronger than the finite divisibility statement $|H| \\mid |G|$: by interpreting $[G:K] = \\mathrm{Nat.card}(G/K)$ as $0$ when the quotient is infinite, the identity holds in an **arbitrary, possibly infinite group**. Taking $K = \\bot$ recovers the classical $|G| = [G:H]\\cdot|H|$. The coset-bijection analytic content is delegated to Mathlib (`relIndex_mul_index`, `relIndex_mul_relIndex`); the contribution is packaging the law in standard index notation with its divisibility corollaries, a three-step chain rule, and the Lagrange specialisation.",
     "mathContext": "$[G:K] = [G:H]\\cdot[H:K]$ for $K \\le H \\le G$, with $[G:K] = \\mathrm{Nat.card}(G/K)$ ($=0$ if infinite). $K=\\bot$ gives $|G| = [G:H]\\,|H|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Lagrange's theorem",
       "subgroup index",
@@ -75,7 +75,7 @@
       "startLine": 73,
       "endLine": 78
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Three-Step Chain Rule",
     "content": "`index_tower_three` iterates the law over a three-step tower $K_1 \\le K_2 \\le K_3 \\le G$: $[G:K_1] = [G:K_3]\\cdot[K_3:K_2]\\cdot[K_2:K_1]$. The proof applies `index_tower` to split off $[G:K_3]$ from $[K_3:K_1]$, then `relIndex_tower` to split the latter into $[K_3:K_2]\\cdot[K_2:K_1]$. This telescoping pattern extends to towers of any length and is the index analogue of the field-extension tower law $[E:F] = [E:K][K:F]$.",
     "mathContext": "$[G:K_1] = [G:K_3]\\cdot[K_3:K_2]\\cdot[K_2:K_1]$ for $K_1 \\le K_2 \\le K_3 \\le G$.",
@@ -120,7 +120,7 @@
       "startLine": 103,
       "endLine": 111
     },
-    "type": "context",
+    "type": "concept",
     "title": "Degenerate Endpoints",
     "content": "Two consistency checks at the boundary. `relIndex_top_eq_index`: taking $H = \\top$ (the whole group) gives $[\\top:K] = [G:K]$, so the relative index over the top group is just the absolute index. `tower_self`: at $K = H$ the self-index $[H:H] = 1$ makes the tower law degenerate correctly to $[G:H] = [G:H]\\cdot 1$. These confirm the law behaves sensibly at both ends of a tower.",
     "mathContext": "$[\\top:K] = [G:K]$; $[H:H] = 1$ so $[G:H] = [G:H]\\cdot[H:H]$.",

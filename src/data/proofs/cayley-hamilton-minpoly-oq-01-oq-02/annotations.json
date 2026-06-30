@@ -3,7 +3,7 @@
     "id": "ann-jcd-oq0102-commute-adjoin",
     "proofId": "cayley-hamilton-minpoly-oq-01-oq-02",
     "range": { "startLine": 51, "endLine": 58 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Polynomials in f Commute",
     "content": "commute_of_mem_adjoin_singleton shows any two elements of the subalgebra K[f] = adjoin K {f} commute: each is some aeval f p, aeval f q, and these commute because polynomial evaluation is an algebra map (map_mul) and K[X] is commutative (mul_comm). This single fact silently supplies the commutation clause [s, n] = 0 of the whole decomposition — once both parts are produced inside K[f], their commuting is automatic, never separately argued.",
     "mathContext": "$$a = p(f),\\ b = q(f) \\;\\Rightarrow\\; ab = (pq)(f) = (qp)(f) = ba.$$ The subalgebra $K[f]$ is commutative.",

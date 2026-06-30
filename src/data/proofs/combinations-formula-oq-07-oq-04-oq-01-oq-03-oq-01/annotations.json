@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 68
     },
-    "type": "context",
+    "type": "concept",
     "title": "From the Squared Diagonal to a Rectangular Product",
     "content": "The docstring frames the off-diagonal generalization. The parent computed the two-sided moment of the *square* $C(n,k)\\cdot C(n,k)$ — both factors from the same row. This file replaces it by a product of two *different* rows $C(m,k)\\cdot C(n,k)$, the rectangular Vandermonde product whose unweighted sum is the classical convolution $\\sum C(m,k)C(n,k) = C(m+n,n)$. The headline reveals that the two row sizes enter independently: the left weight of order $r$ pushes the left row $m$ down to $m-r$, the right weight of order $s$ pushes the right row $n$ down to $n-s$, and the surviving Vandermonde entry sits at $C((m-r)+(n-s),\\,(n-s)-r) = C(m+n-r-s,\\,n-r-s)$. The square was the artificial coincidence $m=n$; the parent itself flagged this rectangular version as its first open question.",
     "mathContext": "$\\sum_{k=0}^{n}(k)_r(n-k)_s\\,C(m,k)C(n,k) = (m)_r(n)_s\\,C(m+n-r-s,\\,n-r-s)$ for $r+s\\le n\\le m$. Faces: $m{=}n$ → parent's squared moment; $s{=}0$ → one-sided; $r{=}s{=}0$ → Vandermonde.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Vandermonde convolution",
       "falling factorial",
@@ -114,11 +114,11 @@
       "startLine": 171,
       "endLine": 181
     },
-    "type": "context",
+    "type": "concept",
     "title": "Kernel-decide Sanity Checks",
     "content": "Two numeric examples certify the formulas by kernel `decide` (not native_decide, so no Lean.ofReduceBool). The rectangular two-sided moment is checked at $(r,s,m,n) = (1,1,4,3)$: $\\sum_k k(3-k)C(4,k)C(3,k) = (4)_1(3)_1 C(5,1) = 4\\cdot 3\\cdot 5 = 60$. The Vandermonde face is checked at $(m,n) = (5,3)$: $\\sum_k C(5,k)C(3,k) = C(8,3) = 56$. Both ground the abstract identities at concrete small values, exercising the asymmetric $m\\ne n$ regime that distinguishes this file from the parent's square.",
     "mathContext": "$(1,1,4,3)$: $4\\cdot 3\\cdot 5 = 60$. $(m,n)=(5,3)$: $C(8,3) = 56$. Both verified by kernel reduction.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
       "kernel decide",

@@ -54,11 +54,11 @@
       "startLine": 92,
       "endLine": 123
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Forward Direction by Lowest-Bit Peeling",
     "content": "`sum_digits_two_eq_one_imp` uses `Nat.strongRecOn` and `Nat.digits_def'` to rewrite s₂(n) = (n%2) + s₂(n/2). On even n the low bit is 0, so s₂(n/2) = 1 and the induction hypothesis (applicable since n/2 < n) gives n/2 = 2^j, hence n = 2·2^j = 2^{j+1}. On odd n the low bit is 1, so s₂(n/2) = 0; since a positive number has positive digit sum (`sum_digits_two_pos`), n/2 = 0, forcing n = 1 = 2^0. `omega` discharges the arithmetic in each branch.",
     "mathContext": "The recursion $s_2(n) = (n \\bmod 2) + s_2(\\lfloor n/2 \\rfloor)$ is the binary analogue of digit extraction; descending on $\\lfloor n/2 \\rfloor$ tracks the bits one at a time.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "strong induction",
       "Nat.digits_def'",
@@ -83,7 +83,7 @@
     "title": "Digit Sum of a Pure Power of Two is One",
     "content": "`sum_digits_two_pow` proves s₂(2^k) = 1 with no case analysis: rewriting 2^k = 2^k · 1 and applying `Nat.digits_base_pow_mul one_lt_two one_pos` expresses the binary expansion as `replicate k 0 ++ digits 2 1`, whose sum `simp` collapses to 1. This is the converse half of the popcount characterisation.",
     "mathContext": "$2^k$ in binary is $1\\underbrace{0\\cdots0}_{k}$, a single nonzero digit.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "Nat.digits_base_pow_mul",
       "powers of two",

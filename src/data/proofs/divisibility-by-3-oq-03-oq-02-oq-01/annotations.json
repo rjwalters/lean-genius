@@ -3,7 +3,7 @@
     "id": "ann-digitsum-lt",
     "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
     "range": { "startLine": 54, "endLine": 66 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Strict Digit-Sum Drop (Termination Measure)",
     "content": "For $2 \\le b \\le n$, the base-$b$ digit sum strictly decreases: $(\\text{digits}_b\\,n).\\text{sum} < n$. The proof uses the one-step recursion $(\\text{digits}_b\\,n).\\text{sum} = n \\bmod b + (\\text{digits}_b\\,\\lfloor n/b\\rfloor).\\text{sum}$, bounds the tail by Mathlib's `Nat.digit_sum_le`, and finishes with `omega` once it knows $2\\cdot\\lfloor n/b\\rfloor \\le b\\cdot\\lfloor n/b\\rfloor$ and $\\lfloor n/b\\rfloor \\ge 1$. This single inequality is reused twice: as the well-founded measure for the iterative definition and as the descent step in the equivalence proof.",
     "mathContext": "$(\\text{digits}_b\\,n).\\text{sum} \\le n\\bmod b + \\lfloor n/b\\rfloor < n$ because $n = b\\lfloor n/b\\rfloor + n\\bmod b$ and $(b-1)\\lfloor n/b\\rfloor \\ge 1$ when $b \\ge 2$ and $\\lfloor n/b\\rfloor \\ge 1$.",

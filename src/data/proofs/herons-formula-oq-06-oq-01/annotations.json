@@ -3,11 +3,11 @@
     "id": "ann-setup",
     "proofId": "herons-formula-oq-06-oq-01",
     "range": { "startLine": 50, "endLine": 55 },
-    "type": "context",
+    "type": "concept",
     "title": "Abstract inner-product setting",
     "content": "Works over an arbitrary real inner-product space F (NormedAddCommGroup + InnerProductSpace ℝ F), not just the Euclidean plane, and opens the parent EulerInequalityHeronOQ06 namespace to reuse its circumradius, inradius, area and semiperimeter definitions. The genuine geometry — points and Euclidean distances — lives in F, distinguishing this entry from the parent's pure side-length model.",
     "mathContext": "$F$ is any real inner-product space; $\\langle\\cdot,\\cdot\\rangle_{\\mathbb R}$ denotes its real inner product and $\\|x\\|=\\sqrt{\\langle x,x\\rangle}$. The vertices $A,B,C$ and centres $O,I$ are honest points of $F$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["real inner-product space", "Euclidean distance", "barycentric coordinates"],
     "prerequisites": ["inner-product spaces", "normed groups"]
   },

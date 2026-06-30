@@ -52,7 +52,7 @@
       "startLine": 94,
       "endLine": 109
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Alternating Row Sum = Value at X = −1",
     "content": "alternating_row_sum_eq_eval shows ∑ₖ (−1)ᵏ c(n,k) = (ascPochhammer ℤ n).eval (−1). Polynomial.eval_eq_sum_range expands the evaluation as ∑_{k < natDegree+1} coeff k · (−1)ᵏ; ascPochhammer_natDegree fixes natDegree = n, so the range is range (n+1). Substituting coeff k = (c(n,k):ℤ) from the generating identity gives the alternating row sum. This is the exact X=−1 analogue of the parent's X=1 reduction of the evaluation to a coefficient sum.",
     "mathContext": "$\\sum_k (-1)^k c(n,k) = \\sum_{k<n+1} \\mathrm{coeff}\\,k\\cdot(-1)^k = (\\text{ascPochhammer}\\,\\mathbb{Z}\\,n)(-1)$.",

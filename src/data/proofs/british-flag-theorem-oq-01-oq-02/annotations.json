@@ -30,7 +30,7 @@
       "startLine": 58,
       "endLine": 67
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Real Alternating Powerset Sum",
     "content": "`real_alt_powerset_zero` proves ∑_{u ⊆ s} (−1)^{|u|} = 0 for nonempty s, over ℝ. Mathlib provides this over ℤ (Finset.sum_powerset_neg_one_pow_card_of_nonempty); the proof casts that integer identity to the reals with a `push_cast` calc step. This is the single combinatorial fact on which the entire geometric result rests.",
     "mathContext": "This is inclusion–exclusion: ∑_{u ⊆ s} (−1)^{|u|} = ∏_{x ∈ s}(1 − 1), which is 0 as soon as s has at least one element.",
@@ -53,7 +53,7 @@
       "startLine": 69,
       "endLine": 115
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Per-Coordinate Vanishing via Powerset Splitting",
     "content": "`alt_sum_ite_eq_zero` shows that for a coordinate i with univ∖{i} nonempty, ∑_{t ⊆ univ} (−1)^{|t|}·(if i ∈ t then β else α) = 0. The proof writes univ = insert i (univ∖{i}) and uses `Finset.powerset_insert` to split the powerset into the subsets avoiding i and their `insert i` images — two disjoint pieces. On the first piece i ∉ t (the ite is α) and the sum is α·∑(−1)^{|t|} = 0; on the second, reindexing by `insert i` (injective since i ∉ u) gives (−1)^{|u|+1} = −(−1)^{|u|}, so the sum is −β·∑(−1)^{|u|} = 0.",
     "mathContext": "Because the summand depends on t only through the predicate i ∈ t, the alternating sum factors and both pieces reduce to the nonempty-powerset vanishing. The nonempty-erase hypothesis is exactly box non-degeneracy (n ≥ 2).",
@@ -77,7 +77,7 @@
       "startLine": 117,
       "endLine": 137
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Structural Heart: Coordinate-Wise Reduction",
     "content": "`alternating_sqDist_zero` proves ∑_t (−1)^{|t|}·sqDist(t) = 0 for n ≥ 2. After unfolding sqDist into ∑ i, (P i − …)², it distributes the sign into the coordinate sum (`Finset.mul_sum`) and swaps the order of summation (`Finset.sum_comm`), turning the goal into ∑_i (∑_t (−1)^{|t|}·(P i − vertexᵢ(t))²). Rewriting (P i − ite)² as an ite of squares reduces each inner sum to `alt_sum_ite_eq_zero`; the nonempty-erase fact follows from n ≥ 2 via card_erase_of_mem.",
     "mathContext": "The double sum over (vertex, coordinate) is reorganized coordinate-outer; every coordinate's contribution vanishes independently, so the whole signed sum is zero.",
@@ -100,7 +100,7 @@
       "startLine": 139,
       "endLine": 170
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Main Theorem: Even-Parity equals Odd-Parity",
     "content": "`british_flag_orthotope` converts the signed identity into the even-vs-odd equality. Splitting the powerset on the parity of the card (`Finset.sum_filter_add_sum_filter_not`), the even part keeps sign (−1)^{even} = 1 (`Even.neg_one_pow`) and the odd part contributes (−1)^{odd} = −1 (`Odd.neg_one_pow`), turning ∑_t (−1)^{|t|}·sqDist = 0 into ∑_{even} sqDist − ∑_{odd} sqDist = 0; `linarith` finishes. For n = 2 this is exactly the British Flag Theorem |PA|²+|PC|² = |PB|²+|PD|².",
     "mathContext": "The alternating sign is the indicator of the parity split: it is +1 on one diagonal-class and −1 on the other, so the signed identity is precisely the equality of the two parity sums.",

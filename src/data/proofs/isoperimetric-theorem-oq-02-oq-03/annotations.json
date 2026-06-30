@@ -50,7 +50,7 @@
       "startLine": 77,
       "endLine": 109
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "Reverse Direction: Intervals Have Boundary {a−1, b+1}",
     "content": "edgeBoundary_Icc computes the boundary of an interval exactly: ∂(Icc a b) = {a−1, b+1}, via a four-way case analysis on the membership characterization (whether x+1 or x−1 lands in [a,b], and whether x itself does), with linarith dispatching every branch. edgeBoundary_Icc_card then reads off |∂(Icc a b)| = 2 since a−1 ≠ b+1. This is the easy ('⟸') half of the rigidity equivalence.",
     "mathContext": "$\\partial([a,b]) = \\{a-1, b+1\\}$, and $a-1 \\ne b+1$ whenever $a \\le b$, so $|\\partial([a,b])| = 2$.",
@@ -70,7 +70,7 @@
       "startLine": 111,
       "endLine": 129
     },
-    "type": "proof-step",
+    "type": "insight",
     "title": "The Two Always-Present Boundary Witnesses",
     "content": "min_sub_one_mem_edgeBoundary and max_add_one_mem_edgeBoundary isolate the fact (used in the parent's lower bound too) that min S − 1 and max S + 1 always lie in ∂S: each is adjacent to the corresponding endpoint of S yet lies strictly outside S (below the minimum / above the maximum), so omega closes the 'not in S' obligation. These are the two boundary points an interval already exhausts; the rigidity argument adds a third whenever a gap exists.",
     "mathContext": "$\\min S - 1 \\in \\partial S$ since $(\\min S - 1) + 1 = \\min S \\in S$ and $\\min S - 1 < \\min S$ so $\\min S - 1 \\notin S$; symmetrically for $\\max S + 1$.",
@@ -90,11 +90,11 @@
       "startLine": 131,
       "endLine": 168
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Gap Lemma: A Non-Interval Has an Interior Boundary Point",
     "content": "This is the crux. If S ≠ Icc(min S, max S), then since S ⊆ Icc(min S, max S), the difference Icc(min S, max S) \\ S is nonempty (Finset.sdiff_nonempty). Let g be its *least* element. Because min S, max S ∈ S but g ∉ S, we get min S < g < max S. The choice of g as the smallest missing point is what forces g − 1 ∈ S: if g − 1 were also missing it would be a smaller element of the gap set, contradicting minimality (and g − 1 still lies in [min S, max S] since g > min S). Hence g ∈ ∂S. This single witness replaces the diameter induction the parent entry anticipated.",
     "mathContext": "$g = \\min'(\\mathrm{Icc}(\\min S, \\max S) \\setminus S)$ satisfies $\\min S < g < \\max S$, $g \\notin S$, and $g - 1 \\in S$, hence $g \\in \\partial S$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "minimality argument",
       "Finset.sdiff_nonempty",
@@ -112,11 +112,11 @@
       "startLine": 170,
       "endLine": 212
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Main Theorem: |∂S| = 2 ⟺ S Is an Interval",
     "content": "edgeBoundary_card_eq_two_iff assembles the pieces. Forward direction by contraposition: assuming |∂S| = 2 but S ≠ Icc(min S, max S), the gap lemma yields an interior g ∈ ∂S distinct from both extreme witnesses min S − 1 and max S + 1 (it sits strictly between min S and max S). The three-element set {min S − 1, max S + 1, g} therefore injects into ∂S, so card_le_card gives |∂S| ≥ 3, contradicting 2. The reverse direction is edgeBoundary_Icc_card. discrete_isoperimetric_1d_rigidity repackages the equivalence in a quantified form mirroring the parent's discrete_isoperimetric_1d.",
     "mathContext": "If $S$ is not an interval, $\\{\\min S - 1, \\max S + 1, g\\} \\subseteq \\partial S$ are three distinct points, so $|\\partial S| \\ge 3$; contrapositively $|\\partial S| = 2 \\Rightarrow S = [\\min S, \\max S]$. The converse is the interval computation.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "rigidity",
       "contraposition",

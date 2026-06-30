@@ -7,7 +7,7 @@
     "title": "Newton–Girard k=6: the sixth rung, first with a cube and a square",
     "content": "The module docstring states the target identity p₆ = e₁⁶ − 6e₁⁴e₂ + 9e₁²e₂² − 2e₂³ + 6e₁³e₃ − 12e₁e₂e₃ + 3e₃² − 6e₁²e₄ + 6e₂e₄ + 6e₁e₅ − 6e₆ and situates it in a lineage (k=2 → recurrence → k=3 → k=4 → k=5 → k=6). Newton's identities relate the power sums pₖ = Σxᵢᵏ to the elementary symmetric polynomials eₖ; the k=6 rung is the first whose reduced expression carries a pure cube (−2e₂³) and a pure square (+3e₃²), alongside the new e₆ term. The file delivers two complementary forms — a universal MvPolynomial statement and a concrete Finset statement over an arbitrary CommRing — each 0-sorry, 0-axiom.",
     "mathContext": "$p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$",
-    "significance": "context",
+    "significance": "supporting",
     "prerequisites": ["elementary symmetric polynomials", "power sums", "the lower closed forms p₁..p₅"],
     "relatedConcepts": ["Newton–Girard identities", "symmetric function theory", "Vieta's formulas"]
   },

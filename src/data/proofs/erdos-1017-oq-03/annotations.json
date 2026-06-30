@@ -7,7 +7,7 @@
     "title": "The Turán Bound T(n) = ⌊n²/4⌋ as the Quarter-Square Sequence",
     "content": "Erdős Problem #1017 (Erdős–Goodman–Pósa, 1966) has extremal value T(n) = ⌊n²/4⌋ — both the worst-case number of complete subgraphs needed to edge-partition an n-vertex graph and the edge count of the balanced complete bipartite extremal graph K_{⌊n/2⌋,⌈n/2⌉}. The companion file gives T's product form and non-strict monotonicity; this sibling supplies the explicit even/odd closed forms, exact increment, strict growth, and real envelope. turanBound n := n²/4 is re-declared so the file is self-contained (the parent's two axioms are not imported). T(n) is the quarter-square sequence 0,0,1,2,4,6,9,12,… central to extremal graph theory.",
     "mathContext": "$T(n) = \\lfloor n^2/4 \\rfloor$, the quarter-square sequence; $K_{\\lfloor n/2\\rfloor,\\lceil n/2\\rceil}$ has $T(n)$ edges.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Turán bound",
       "quarter-square sequence",
@@ -43,7 +43,7 @@
     "id": "erdos1017oq03-ann-increment",
     "proofId": "erdos-1017-oq-03",
     "range": { "startLine": 53, "endLine": 67 },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Exact One-Step Increment",
     "content": "turanBound_succ_diff: T(n+1) − T(n) = ⌊(n+1)/2⌋ = ⌈n/2⌉ — exactly the number of edges a new vertex adds to the balanced complete bipartite graph (it joins to the larger side). The proof splits on parity of n (Nat.even_or_odd) and reduces each case to the closed forms plus a ring identity (m(m+1) = m²+m for even n, (m+1)² = m(m+1)+(m+1) for odd n) fed to omega. This increment is the unit of 'edge surplus' the parametric Erdős #1017 question measures against.",
     "mathContext": "$T(n+1) - T(n) = \\lfloor (n+1)/2 \\rfloor = \\lceil n/2 \\rceil.$",

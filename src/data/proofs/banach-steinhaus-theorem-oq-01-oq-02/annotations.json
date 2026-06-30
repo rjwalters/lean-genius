@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 34 },
-    "type": "context",
+    "type": "concept",
     "title": "From One Resonance Point to a Comeagre Set",
     "content": "The parent entry's `resonance` (condensation of singularities) only asserts the resonance set is nonempty: a single point where a family of operators with unbounded norms blows up. The Baire-category proof actually gives more — the resonance set R = {x | ⨆ᵢ ‖gᵢx‖ = ∞} is comeagre (residual), hence dense. Resonance points are topologically generic. This entry answers the open question posed by the parent entry.",
     "mathContext": "If $\\sup_i\\|g_i\\| = \\infty$ for continuous linear maps out of a Banach space, then $R = \\{x : \\sup_i\\|g_i x\\| = \\infty\\}$ is comeagre.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["condensation of singularities", "comeagre set", "residual set", "Baire category theorem", "Banach–Steinhaus theorem"],
     "prerequisites": ["Banach spaces", "continuous linear maps", "meagre and residual sets"]
   },
@@ -31,7 +31,7 @@
     "title": "Sublevel Sets Are Closed",
     "content": "The sublevel set {x | ∀i ‖gᵢx‖ ≤ n} is an intersection ⋂ᵢ {x | ‖gᵢx‖ ≤ n} of closed sets, each a sublevel set of the continuous map x ↦ ‖gᵢx‖. Closedness is what lets us identify these sets as nowhere dense (closed + empty interior) later.",
     "mathContext": "$\\{x : \\forall i,\\ \\|g_i x\\| \\le n\\} = \\bigcap_i \\{x : \\|g_i x\\| \\le n\\}$ is closed.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["closed set", "sublevel set", "continuity of operator evaluation"],
     "prerequisites": ["continuous functions", "intersections of closed sets"]
   },

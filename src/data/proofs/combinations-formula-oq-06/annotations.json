@@ -86,7 +86,7 @@
     "id": "verification-examples",
     "proofId": "combinations-formula-oq-06",
     "range": { "startLine": 110, "endLine": 116 },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Verifications",
     "content": "Three concrete checks via kernel decide: 1+2+3+4 = 10 = C(5,2) (triangular); C(2,2)+C(3,2)+C(4,2) = 1+3+6 = 10 = C(5,3) (tetrahedral as running totals); and T_0+⋯+T_4 = 0+1+3+6+10 = 20 = C(6,3) (the figurate tower). Using decide rather than native_decide keeps the verification kernel-checked and free of the Lean.ofReduceBool axiom.",
     "mathContext": "These instantiate the general theorems at small $n$, confirming the figurate identities numerically against Pascal's triangle.",

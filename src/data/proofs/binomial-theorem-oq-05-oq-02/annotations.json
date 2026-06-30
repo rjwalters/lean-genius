@@ -94,7 +94,7 @@
     "id": "numeric-witnesses",
     "proofId": "binomial-theorem-oq-05-oq-02",
     "range": { "startLine": 149, "endLine": 175 },
-    "type": "example",
+    "type": "concept",
     "title": "Two- and Three-Variable Corollaries",
     "content": "The two-variable ab ≤ ((a+b)/2)² and three-variable abc ≤ ((a+b+c)/3)³ inequalities are instant specializations of amgm_list to [a,b] and [a,b,c], plus the concrete witness 2·4·8 = 64 ≤ (14/3)³ ≈ 101.6.",
     "mathContext": "These recover the familiar low-arity AM–GM inequalities as corollaries of the general list statement, illustrating that the Bernoulli induction subsumes the classical cases.",

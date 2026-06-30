@@ -63,11 +63,11 @@
     "id": "ann-worked-examples",
     "proofId": "euler-totient-oq-07",
     "range": { "startLine": 86, "endLine": 104 },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Examples: φ 9, φ 15 Not Coprime Though 9, 15 Are Coprime",
     "content": "Concrete witnesses validate the theory by kernel `decide`: φ 1 = φ 2 = 1 (the odd-totient escape hatch), φ 2 coprime to φ 100 (the m = 2 branch), φ 3 = φ 4 = 2 with gcd 2, and the striking case φ 9 = 6, φ 15 = 8 — not coprime (gcd 2) even though 9 and 15 are coprime. The last example dramatizes the key insight: φ destroys coprimality of its arguments because parity is a uniform obstruction independent of the factorizations.",
     "mathContext": "$\\varphi(9)=6,\\ \\varphi(15)=8,\\ \\gcd(6,8)=2$: the totients are not coprime even though $9,15$ are coprime — the shared factor is forced by parity, not by the arguments' gcd.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["worked example", "kernel decide", "coprimality", "Euler's totient"],
     "prerequisites": ["evaluating φ on small inputs", "gcd"]
   }

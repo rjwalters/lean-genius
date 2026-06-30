@@ -53,7 +53,7 @@
       "startLine": 67,
       "endLine": 96
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Recovering the Decimal Predicate",
     "content": "`lsdDigitsB 10` and the parent's `lsdDigits` are different recursive definitions, so their agreement is *proved*, not assumed: $\\texttt{lsdDigitsB\\_ten}$ shows $\\texttt{lsdDigitsB}\\ 10\\ \\textit{fuel}\\ n = \\texttt{lsdDigits}\\ \\textit{fuel}\\ n$ by induction on $\\textit{fuel}$. Lifting through the reverse gives $\\texttt{msdDigitsB\\_ten}$ and then the bridge $\\texttt{isKeithBase\\_ten} : \\texttt{IsKeithBase}\\ 10\\ n \\leftrightarrow \\texttt{IsKeith}\\ n$. The set equality $\\{n \\mid \\texttt{IsKeithBase}\\ 10\\ n\\} = \\{n \\mid \\texttt{IsKeith}\\ n\\}$ then transports the parent's theorem to $\\texttt{smallest\\_keithBase10} : \\texttt{IsLeast}\\ \\{n \\mid \\texttt{IsKeithBase}\\ 10\\ n\\}\\ 14$.",
     "mathContext": "Confirms the generalization specializes correctly: the base-10 instance is exactly the classical Keith predicate.",

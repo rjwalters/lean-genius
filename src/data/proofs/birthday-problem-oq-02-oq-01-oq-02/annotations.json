@@ -6,7 +6,7 @@
       "startLine": 62,
       "endLine": 79
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Variance Identity: ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)²",
     "content": "sum_sq_sub_one_div_card is the engine of the whole file. Each squared deviation is expanded by ring to pᵢ² − (2/d)pᵢ + (1/d)², then the sum is split with Finset.sum_add_distrib and Finset.sum_sub_distrib. The cross-term (2/d)∑ pᵢ collapses to 2/d using the probability constraint ∑ pᵢ = 1 (via Finset.mul_sum and hsum), and the constant term ∑ (1/d)² over Fin d evaluates to d·(1/d)² = 1/d via Finset.sum_const / Fintype.card_fin. A final field_simp; ring closes the algebra.",
     "mathContext": "For real numbers with mean μ = (1/d)∑pᵢ, the identity ∑(pᵢ − μ)² = ∑pᵢ² − d·μ² is the discrete analogue of Var(X) = E[X²] − E[X]². Here the constraint ∑pᵢ = 1 fixes μ = 1/d, so d·μ² = 1/d and the identity reads ∑pᵢ² − 1/d = ∑(pᵢ − 1/d)². This is the algebraic core that converts the extremal optimization into a sum-of-squares nonnegativity statement.",
@@ -55,7 +55,7 @@
       "startLine": 94,
       "endLine": 111
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Equality Characterization: ∑ pᵢ² = 1/d ⟺ Uniform",
     "content": "sum_sq_eq_one_div_card_iff pins down exactly when the minimum is attained. Rewriting the equality as ∑ pᵢ² − 1/d = 0 and substituting the variance identity reduces the goal to ∑ (pᵢ − 1/d)² = 0. Finset.sum_eq_zero_iff_of_nonneg (each term a square, hence nonnegative) then forces every (pᵢ − 1/d)² = 0, and pow_eq_zero_iff extracts pᵢ − 1/d = 0, i.e. pᵢ = 1/d. The converse direction substitutes pᵢ = 1/d and closes by ring.",
     "mathContext": "The deviation-form proof yields the uniqueness of the minimizer essentially for free: a sum of squares vanishes iff every summand does. A bound obtained via Cauchy–Schwarz would establish C(p) ≥ 1/d but would require a separate equality-condition analysis; here both come from the single identity.",

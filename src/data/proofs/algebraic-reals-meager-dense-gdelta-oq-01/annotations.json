@@ -39,7 +39,7 @@
     "id": "ann-armdg-oq01-explicit-decomp",
     "proofId": "algebraic-reals-meager-dense-gdelta-oq-01",
     "range": { "startLine": 105, "endLine": 110 },
-    "type": "observation",
+    "type": "concept",
     "title": "The algebraic reals as the union of their singletons",
     "content": "Before packaging into IsFσ, the explicit decomposition is displayed: {x | IsAlgebraic ℚ x} = ⋃_{a algebraic} {a}. Trivial as a set identity (Set.biUnion_of_singleton), but it is precisely the concrete witness the open question requests — the algebraic reals written out as the countable union of closed singletons.",
     "mathContext": "$\\{x \\in \\mathbb{R} : x\\ \\text{algebraic}/\\mathbb{Q}\\} = \\bigcup_{a\\ \\text{algebraic}} \\{a\\}$.",

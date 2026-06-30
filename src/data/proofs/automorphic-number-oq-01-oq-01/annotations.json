@@ -10,7 +10,7 @@
     "title": "Why exactly four? Counting automorphic residues mod n",
     "content": "An automorphic number is one whose square ends in itself: 5²=25, 6²=36, 25²=625, 76²=5776. Reducing mod 10^k, an automorphic residue is precisely an idempotent of ZMod (10^k): an element with e²=e. The parent entry proves there are exactly four of them for every k≥1 (namely 0, 1, and the two nontrivial residues ending in …5 and …6). But why four? The answer is structural: 4 = 2², and the exponent 2 is the number of distinct primes dividing 10 (i.e. 2 and 5). This file proves the general law — for every n≥1, the number of idempotents of ZMod n equals 2^ω(n), where ω(n) counts the distinct prime factors of n — and recovers the decimal '4' as the case ω(10^k)=2.",
     "mathContext": "Automorphic residue mod n ⟺ idempotent of ZMod n; the count is $2^{\\omega(n)}$, with $\\omega(10^k)=2$ giving the classical four.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "automorphic numbers",
       "idempotents",
@@ -101,7 +101,7 @@
       "startLine": 118,
       "endLine": 135
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Recovering 'exactly four' — and the parent regression fix",
     "content": "primeFactors_ten_pow computes ω(10^k)=2: Nat.primeFactors_pow strips the exponent, then 10 = 2·5 splits as a coprime product (Nat.primeFactors_mul, Nat.Prime.primeFactors) into {2}∪{5}, whose card 2 is checked by kernel `decide` on concrete finite data. Substituting into idempotent_count yields automorphic_count_ten_pow: Nat.card {e : ZMod (10^k) // e²=e} = 2² = 4 — the classical four automorphic residues 0, 1, …5, …6. The same theorem gives 2 for any prime power and 8 for a modulus with three distinct primes. This session also repaired a build-rot in the parent file against Mathlib 4.26.0: idemCongr/idemProd were stated for a RingEquiv that requires an additive structure absent from the bare [Mul R] hypotheses (corrected to MulEquiv, the right notion for idempotency), and the renamed Nat.dvd_sub' → Nat.dvd_sub was updated.",
     "mathContext": "$\\#\\{e\\in\\mathbb{Z}/10^k : e^2=e\\}=2^{\\omega(10^k)}=2^2=4$; the count grows as $2^{\\#\\text{distinct primes}}$, not with the size of the modulus.",

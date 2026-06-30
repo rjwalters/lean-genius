@@ -3,11 +3,11 @@
     "id": "ann-overview-limit",
     "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02",
     "range": { "startLine": 5, "endLine": 73 },
-    "type": "context",
+    "type": "concept",
     "title": "From the Finite Algebra to the Infinite Analysis",
     "content": "The parent (geometric-series-oq-08-oq-01-oq-01-oq-01) proved a uniform FINITE recurrence (★) for the partial sums momentSum m n x over any commutative ring. This entry passes it to the analytic limit |x| < 1: the partial sums converge to the infinite moment infMoment m x = ∑'_{k} kᵐ·xᵏ, and the finite recurrence's boundary term nᵐ·xⁿ — the general term of a convergent series — washes out, leaving the clean infinite convolution recurrence (★∞). It is the cleanest bridge from the finite theory to the gallery's two one-shot closed forms (Stirling and Frobenius/Eulerian).",
     "mathContext": "$(1-x)\\,\\mathrm{infMoment}\\,m\\,x = 0^m + x\\sum_{i<m}\\binom{m}{i}\\mathrm{infMoment}\\,i\\,x$, the $n\\to\\infty$ limit of (★).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["infinite series", "limit of identities", "moments", "Eulerian polynomial"],
     "prerequisites": ["infinite series", "convergence"]
   },

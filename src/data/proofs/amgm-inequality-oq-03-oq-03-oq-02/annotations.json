@@ -77,7 +77,7 @@
       "startLine": 84,
       "endLine": 91
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "GM ≤ AM via the Squaring Strategy",
     "content": "`sqrt_mul_le_add_div_two` proves $\\sqrt{ab} \\le (a+b)/2$. The key move: rewrite the arithmetic mean $(a+b)/2$ — which is nonnegative — as $\\sqrt{((a+b)/2)^2}$ using `Real.sqrt_sq`. Now both sides are square roots, so `Real.sqrt_le_sqrt` reduces the goal to comparing the radicands $ab \\le ((a+b)/2)^2$, which `nlinarith [sq_nonneg (a - b)]` discharges since the difference is exactly $\\frac{1}{4}(a-b)^2 \\ge 0$. This is the canonical two-variable AM-GM, the $M_0 \\le M_1$ link of the chain.",
     "mathContext": "$\\sqrt{ab} \\le \\frac{a+b}{2} \\iff ab \\le \\frac{(a+b)^2}{4} \\iff 0 \\le (a-b)^2$",
@@ -101,7 +101,7 @@
       "startLine": 93,
       "endLine": 101
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "HM ≤ GM via the Same Squaring Strategy",
     "content": "`hm_le_sqrt_mul` proves $2ab/(a+b) \\le \\sqrt{ab}$ by the same trick: write the harmonic mean as $\\sqrt{(2ab/(a+b))^2}$ via `Real.sqrt_sq`, then `Real.sqrt_le_sqrt` reduces to $(2ab/(a+b))^2 \\le ab$. After `div_pow` and `div_le_iff₀`, the goal becomes $(2ab)^2 \\le ab \\cdot (a+b)^2$, which `nlinarith [mul_nonneg (mul_pos ha hb).le (sq_nonneg (a - b))]` closes — the witnessing nonnegative quantity is $ab \\cdot (a-b)^2 \\ge 0$. This is the $M_{-1} \\le M_0$ link.",
     "mathContext": "$\\frac{2ab}{a+b} \\le \\sqrt{ab} \\iff (2ab)^2 \\le ab(a+b)^2 \\iff 0 \\le ab(a-b)^2$",

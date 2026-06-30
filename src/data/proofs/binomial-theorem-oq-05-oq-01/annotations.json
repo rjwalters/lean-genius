@@ -79,7 +79,7 @@
     "id": "numeric-witnesses",
     "proofId": "binomial-theorem-oq-05-oq-01",
     "range": { "startLine": 101, "endLine": 117 },
-    "type": "example",
+    "type": "concept",
     "title": "Numeric Witnesses",
     "content": "Concrete instances pin down the identities: C(4,2)=6 as the range convolution 1·1+2·2+1·1, the sum of squares Σ C(3,k)²=1+9+9+1=20=C(6,3), the d=1 diagonal Σ C(4,k)C(4,k+1)=C(8,5)=56, and the explicit value Σ C(4,k)²=70=C(8,4) checked by decide.",
     "mathContext": "These evaluate the general theorems at small parameters, confirming both the convolution structure and the central-coefficient closed forms.",

@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
     "range": { "startLine": 1, "endLine": 43 },
-    "type": "context",
+    "type": "concept",
     "title": "Why the cosecant→distance conversion matters",
     "content": "The module docstring frames the file as one self-contained ingredient of Pólya–Vinogradov. The sibling WIP01 bounds the geometric exponential sum |∑ e^{2πiθn}| by 1/|sin(πθ)|; analytic number theory needs the geometry-free form 1/(2‖θ‖) with ‖θ‖ the distance to the nearest integer. This file proves the bridge |sin(πθ)| ≥ 2‖θ‖. The engine is Mathlib's Jordan inequality plus π·ℤ-periodicity of |sin|.",
     "mathContext": "$\\|\\theta\\| = |\\theta - \\operatorname{round}\\theta| \\in [0,\\tfrac12]$; goal $|\\sin(\\pi\\theta)| \\ge 2\\|\\theta\\|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Pólya–Vinogradov inequality", "character sums", "exponential sums", "distance to nearest integer"],
     "prerequisites": ["analytic number theory", "trigonometric inequalities"]
   },

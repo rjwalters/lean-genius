@@ -54,7 +54,7 @@
       "startLine": 70,
       "endLine": 91
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Geometric Decay of the Stage Measures",
     "content": "`volume_preCantorSet_le` proves `volume (preCantorSet n) ≤ (2/3)^n` by induction on `n`. The base case is `volume [0,1] = 1 = (2/3)^0` (`Real.volume_Icc`). The successor step rewrites the stage as the union of the two homothety images, bounds the union's measure by the sum of the parts (`measure_union_le`), and applies the two homothety computations to get `ENNReal.ofReal (1/3) · v + ENNReal.ofReal (1/3) · v`, where `v = volume (preCantorSet n)`. A short `calc` collapses the two `1/3` factors into `2/3` (`← add_mul`, `← ENNReal.ofReal_add`), multiplies the inductive bound through (`mul_le_mul'`), and folds `(2/3)·(2/3)^n` into `(2/3)^(n+1)` (`← ENNReal.ofReal_mul`, `pow_succ`). The ENNReal arithmetic is handled carefully because subtraction and multiplication on `ℝ≥0∞` are not cancellative — every step works with non-negative reals lifted by `ENNReal.ofReal`.",
     "mathContext": "Each construction stage keeps two-thirds of the previous length: $\\mathrm{volume}\\,C_{n+1} \\le \\tfrac13\\mathrm{volume}\\,C_n + \\tfrac13\\mathrm{volume}\\,C_n = \\tfrac23\\mathrm{volume}\\,C_n$, so $\\mathrm{volume}\\,C_n \\le (2/3)^n$. The inequality (rather than equality) suffices and avoids having to prove the removed middle thirds are disjoint.",
@@ -78,7 +78,7 @@
       "startLine": 93,
       "endLine": 107
     },
-    "type": "key-result",
+    "type": "theorem",
     "title": "volume cantorSet = 0",
     "content": "`volume_cantorSet` is the first headline result. The argument is a squeeze: for every `n`, `cantorSet ⊆ preCantorSet n` (the Cantor set is the intersection of the stages, `Set.iInter_subset`), so by monotonicity of measure and the stage bound, `volume cantorSet ≤ ENNReal.ofReal ((2/3)^n)`. Since `(2/3)^n → 0` (`tendsto_pow_atTop_nhds_zero_of_lt_one`, lifted to `ℝ≥0∞` by continuity of `ENNReal.ofReal`), the constant `volume cantorSet` is bounded above by a sequence tending to 0; `le_of_tendsto_of_tendsto'` against the constant sequence forces `volume cantorSet ≤ 0`, and `le_antisymm` with `zero_le` finishes.",
     "mathContext": "$C \\subseteq C_n$ and $\\mathrm{volume}\\,C_n \\le (2/3)^n \\to 0$ give $\\mathrm{volume}\\,C \\le \\inf_n (2/3)^n = 0$. Thus $C$ is a Lebesgue-null set: it can be ignored in any almost-everywhere statement, despite being uncountable.",
@@ -126,7 +126,7 @@
       "startLine": 120,
       "endLine": 138
     },
-    "type": "key-result",
+    "type": "theorem",
     "title": "The Cantor Set Is Uncountable — and the Paradox",
     "content": "`uncountable_cantorSet` transfers uncountability from `ℕ → Bool` to the subtype `cantorSet` along Mathlib's bijection `cantorSetEquivNatToBool`. Concretely, the inverse equivalence `cantorSetEquivNatToBool.symm : (ℕ → Bool) → cantorSet` is injective, and `Function.Injective.uncountable` carries the `Uncountable (ℕ → Bool)` instance to its codomain. `not_countable_cantorSet` then repackages this as `¬ cantorSet.Countable` via `Set.countable_coe_iff` and `not_countable_iff`. Finally `cantorSet_null_and_uncountable` bundles `volume_cantorSet` and `not_countable_cantorSet` into the single statement that exhibits the paradox: one set, simultaneously of Lebesgue measure zero and uncountable.",
     "mathContext": "The bijection $C \\simeq (\\mathbb{N} \\to \\mathrm{Bool})$ — each point's address in the infinite binary tree of removals — shows $\\#C = \\mathfrak{c}$, so $C$ is uncountable. Together with $\\mathrm{volume}\\,C = 0$ this is the canonical separation of cardinality from measure: $C$ has as many points as all of $[0,1]$ yet occupies none of its length.",

@@ -58,7 +58,7 @@
     "title": "factorial_half_sq_eq_one: The Non-Residue Case",
     "content": "For p ≡ 3 (mod 4), the half-factorial (p/2)! squares to 1 in ZMod p. Here m = p/2 is odd, so the bridge identity (m!)² = (-1)^(m+1) evaluates to (-1)^(even) = 1, meaning (p/2)! ≡ ±1 and -1 is a quadratic non-residue. The proof mirrors the residue case, casing on parity and using pow_mul to evaluate the even power of -1.",
     "mathContext": "$p \\equiv 3 \\pmod 4 \\implies \\left(\\left(\\tfrac{p-1}{2}\\right)!\\right)^2 \\equiv 1 \\pmod p$, so $-1$ is a non-residue and the half-factorial is $\\pm 1$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "quadratic non-residue",
       "p ≡ 3 mod 4"

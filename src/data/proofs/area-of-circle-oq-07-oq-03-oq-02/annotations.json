@@ -30,7 +30,7 @@
       "startLine": 89,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Integrability Borrowed from the Complex Beta Convergence",
     "content": "The density x^{−1/2}(1−x)^{−1/2} has endpoint singularities at 0 and 1, so integrability needs care. intervalIntegrable_arcsineDensity sidesteps a direct estimate: the real density equals, a.e. on (0,1), the NORM of Mathlib's convergent complex Beta integrand, so interval-integrability is inherited from Complex.betaIntegral_convergent. Reusing Mathlib's convergence result avoids re-proving the (improper) integrability of a singular integrand from scratch.",
     "mathContext": "$x^{-1/2}(1-x)^{-1/2} = \\|x^{1/2-1}(1-x)^{1/2-1}\\|$ a.e. on $(0,1)$; integrable via Complex.betaIntegral_convergent.",
@@ -76,7 +76,7 @@
       "startLine": 132,
       "endLine": 152
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From the Real Integral to the Complex Beta Value",
     "content": "betaIntegral_half_half lifts the real computation to B(1/2,1/2) = π. Complex.ofReal_cpow (valid because on (0,1) both bases x and 1−x are nonnegative reals) rewrites the complex cpow Beta integrand as ofReal of the real rpow density; pushing ofReal through the interval integral reduces Complex.betaIntegral (1/2) (1/2) to ↑(∫₀¹ density) = ↑π. Crucially this does NOT invoke any Mathlib Beta special value — the value is computed from the arcsine FTC.",
     "mathContext": "$B(\\tfrac12,\\tfrac12) = \\int_0^1 x^{-1/2}(1-x)^{-1/2}\\,dx = \\pi$ (complex integrand reduced to $\\mathrm{ofReal}$ of the real density).",

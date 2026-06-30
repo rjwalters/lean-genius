@@ -3,11 +3,11 @@
     "id": "ann-galois-normal-overview",
     "proofId": "abel-ruffini-galois-extensions-oq-02-oq-01",
     "range": { "startLine": 1, "endLine": 53 },
-    "type": "context",
+    "type": "concept",
     "title": "Completing Part (ii) of the Fundamental Theorem",
     "content": "Part (i) of the Fundamental Theorem of Galois Theory (packaged in the parent OQ-02) is the order-reversing bijection between intermediate fields of E/F and subgroups of Gal(E/F). Part (ii) singles out which of those subextensions are themselves Galois over the base: exactly the ones whose corresponding subgroup is normal. OQ-02 proved only the one-way refinement (a normal subgroup gives a Galois fixed field). This file completes it into a biconditional, a restricted bijection, and a counting corollary, then instantiates it on the Abel–Ruffini quintic X⁵ − 4X + 2. Mathlib has the two implications as separate type-class instances but states neither the iff nor the bijection.",
     "mathContext": "FTGT part (ii): $K$ is Galois over $F$ $\\iff$ $\\mathrm{Gal}(E/K) = K.\\mathrm{fixingSubgroup}$ is normal in $\\mathrm{Gal}(E/F)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Fundamental Theorem of Galois Theory",
       "normal subgroup",

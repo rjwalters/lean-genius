@@ -3,11 +3,11 @@
     "id": "ann-overview",
     "proofId": "minkowski-theorem-oq-06",
     "range": { "startLine": 6, "endLine": 54 },
-    "type": "context",
+    "type": "concept",
     "title": "Geometry of numbers vs. pigeonhole",
     "content": "The docstring frames the contribution: Mathlib already proves Dirichlet's theorem by the pigeonhole principle, but this file gives the geometry-of-numbers proof, deriving it from the gallery's integer-lattice Minkowski theorem. The region R = {|x| ≤ N+½, |αx−y| ≤ 1/N} has area 4+2/N > 4, so the strict form of Minkowski applies with no boundary/compactness case. Honesty notes: the Minkowski-route bound is 1/N (not the sharper pigeonhole 1/(N+1)), and N=1 is trivial.",
     "mathContext": "$R = \\{(x,y) : |x| \\le N+\\tfrac12,\\ |\\alpha x - y| \\le \\tfrac1N\\}$, $\\;\\text{area} = 4 + \\tfrac2N > 4$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["geometry of numbers", "Minkowski's theorem", "Dirichlet approximation", "pigeonhole principle"],
     "prerequisites": ["lattices", "convex bodies", "Diophantine approximation"]
   },

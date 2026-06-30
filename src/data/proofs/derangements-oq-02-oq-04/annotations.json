@@ -3,11 +3,11 @@
     "id": "ann-der0204-setup",
     "proofId": "derangements-oq-02-oq-04",
     "range": { "startLine": 4, "endLine": 31 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Continuing the Rencontres Table Toward the Identity",
     "content": "The file imports Mathlib and the parent module DerangementsOQ02. The docstring recalls the parent's main count S(n,k) = C(n,k)·D(n−k) — permutations of Fin n with exactly k fixed points — and its two extreme 'high-codimension' cases S(n,n) = 1 (the identity, permsWithAllFixed_card_eq_one) and S(n,n−1) = 0 (impossible: you cannot move exactly one point, permsWithNMinus1Fixed_eq_zero). The plan is to continue the table downward by specialising the formula at the small derangement values D(2) = 1 and D(3) = 2, producing S(n,n−2) = C(n,2) and S(n,n−3) = 2·C(n,3). The `open` line brings Finset, Nat, and the parent's PartialDerangements namespace into scope so card_perms_with_kfixed resolves unqualified. The two `decide`s below are kernel reductions (not native_decide), keeping the file axiom-free.",
     "mathContext": "$S(n,k) = \\binom{n}{k}D(n-k)$; the table of counts for $k = n, n{-}1, n{-}2, n{-}3,\\dots$ is $1,\\,0,\\,\\binom{n}{2},\\,2\\binom{n}{3},\\dots$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["rencontres numbers", "partial derangements", "fixed points of permutations", "derangement number D(n)"],
     "prerequisites": ["the parent formula S(n,k) = C(n,k)·D(n−k)", "derangement numbers and fixed-point sets", "permutations of Fin n"]
   },

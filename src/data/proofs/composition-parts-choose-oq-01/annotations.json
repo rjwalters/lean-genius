@@ -21,7 +21,7 @@
       "boundary-set model of a composition",
       "injective-image cardinality count"
     ],
-    "significance": "The combinatorial bridge Mathlib omits: the cut-set attached to a composition has cardinality length − 1, the bookkeeping fact that turns the subset-count into a count by number of parts."
+    "significance": "supporting"
   },
   {
     "id": "ann-part-graded-count",
@@ -45,7 +45,7 @@
       "graded enumeration",
       "subsets of fixed size"
     ],
-    "significance": "The finer enumerative information: the count of compositions split by number of parts, of which the total 2^(n−1) is the sum — content not present in Mathlib."
+    "significance": "supporting"
   },
   {
     "id": "ann-consistency-with-total",
@@ -69,7 +69,7 @@
       "hockey-stick / row-sum identity",
       "powers of two"
     ],
-    "significance": "The consistency check that makes the refinement honest: the graded counts are exactly a decomposition of the total 2^(n−1) by number of parts."
+    "significance": "supporting"
   },
   {
     "id": "ann-numeric-instances",
@@ -78,7 +78,7 @@
       "startLine": 170,
       "endLine": 185
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Numeric Instances",
     "content": "Three specialisations of card_composition_length make the count concrete. Compositions of 4 into 2 parts number C(3,1) = 3 — namely 1+3, 2+2, 3+1. Compositions of 5 into 3 parts number C(4,2) = 6. And there is a unique composition of n into 1 part — the trivial composition [n] — matching C(n−1, 0) = 1. The first two close the residual Nat.choose computation with the kernel's decide (no native_decide, hence no Lean.ofReduceBool axiom); the third uses simp on C(n−1, 0) = 1.",
     "mathContext": "$\\binom{3}{1} = 3$, $\\binom{4}{2} = 6$, $\\binom{n-1}{0} = 1$.",
@@ -90,6 +90,6 @@
       "worked examples",
       "compositions of small integers"
     ],
-    "significance": "Concrete confirmation that the closed form C(n−1, k−1) produces the right counts on small cases, including the boundary case of a single part."
+    "significance": "supporting"
   }
 ]

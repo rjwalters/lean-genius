@@ -19,7 +19,7 @@
       "ring of integers ℤ[φ]",
       "Vieta's formulas"
     ],
-    "significance": "Reduces a Diophantine lower bound to the behaviour of a single integer-valued quadratic form — the conjugate trick that makes the whole argument elementary."
+    "significance": "supporting"
   },
   {
     "id": "ann-non-vanishing",
@@ -40,7 +40,7 @@
       "irrationality",
       "rational vs algebraic numbers"
     ],
-    "significance": "Turns the lower bound into the triviality that a nonzero integer is at least 1 in magnitude — the crux that converts irrationality into an explicit gap."
+    "significance": "supporting"
   },
   {
     "id": "ann-product-lower-bound",
@@ -49,7 +49,7 @@
       "startLine": 95,
       "endLine": 114
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "From |norm| ≥ 1 to the Product Bound |φ − p/q|·|ψ − p/q| ≥ 1/q²",
     "content": "Combining the norm-form identity with non-vanishing: |p² − pq − q²| ≥ 1, so taking absolute values in the identity gives |p/q − φ|·|p/q − ψ| = |p² − pq − q²|/q² ≥ 1/q². In Lean this is packaged as A·B·q² ≥ 1, where A = |p/q − φ| and B = |p/q − ψ|, by rewriting the product through `abs_mul`, `abs_div`, and cancelling q². This product bound is the symmetric heart of the argument: it controls the target factor A together with its conjugate companion B.",
     "mathContext": "$\\left|\\varphi - \\tfrac pq\\right|\\cdot\\left|\\psi - \\tfrac pq\\right| = \\dfrac{|p^2 - pq - q^2|}{q^2} \\ge \\dfrac1{q^2}.$",
@@ -61,7 +61,7 @@
       "absolute value",
       "Diophantine approximation"
     ],
-    "significance": "The single inequality from which the badly-approximable bound is extracted by controlling the conjugate factor."
+    "significance": "supporting"
   },
   {
     "id": "ann-badly-approximable",
@@ -85,6 +85,6 @@
       "Hurwitz's theorem",
       "irrationality measure"
     ],
-    "significance": "The gallery's first Diophantine lower bound — the sharpness dual to Dirichlet's existence theorem, showing the exponent 2 cannot be beaten for the golden ratio, the worst-approximable real number."
+    "significance": "supporting"
   }
 ]

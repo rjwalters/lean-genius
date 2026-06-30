@@ -100,7 +100,7 @@
       "startLine": 113,
       "endLine": 132
     },
-    "type": "example",
+    "type": "concept",
     "title": "Showcase: the Fibonacci Matrix",
     "content": "For fibMatrix = !![1,1;1,0] the trace is 1 and the determinant is −1, so the Lucas recursion u(k+2)=u(k+1)+u(k) is exactly the Fibonacci recurrence — the closed form becomes Mⁿ⁺¹ = F(n+1)·M + F(n)·I, the matrix encoding of the Fibonacci numbers. fibMatrix_sq instantiates the closed form at n=1 and checks M² = !![2,1;1,1], i.e. !![F₃,F₂;F₂,F₁]. The numeric witness is closed by kernel `decide` (not native_decide), so the entry remains axiom-free.",
     "mathContext": "$\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}^n=\\begin{pmatrix}F_{n+1}&F_n\\\\F_n&F_{n-1}\\end{pmatrix}$; taking determinants gives Cassini's identity $F_{n+1}F_{n-1}-F_n^2=(-1)^n$.",

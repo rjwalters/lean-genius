@@ -3,11 +3,11 @@
     "id": "ann-cayley-overview",
     "proofId": "cayleys-theorem-oq-01",
     "range": { "startLine": 6, "endLine": 49 },
-    "type": "context",
+    "type": "concept",
     "title": "Cayley's Theorem: Every Group Is a Permutation Group",
     "content": "The module docstring frames the theorem. Cayley's theorem (Cayley, 1854) says every abstract group G is 'concrete' — it can be realised as a group of permutations. The vehicle is the left-regular representation λ : G → Equiv.Perm G, λ(g) = (x ↦ g·x): each element g acts on the underlying set of G by left multiplication, a bijection with inverse left-multiplication by g⁻¹. The map respects the group law (λ(g·h) = λ(g) ∘ λ(h)) and is injective because λ(g) = λ(h) evaluated at the identity gives g·1 = h·1, i.e. g = h. Hence G is isomorphic to its image, a subgroup of the symmetric group Sym(G) = Equiv.Perm G. The docstring also flags the common confusion: this is NOT Cayley–Hamilton (the matrix identity); the group-theoretic Cayley theorem was absent from the gallery.",
     "mathContext": "$\\lambda : G \\to \\operatorname{Sym}(G),\\ \\lambda(g)(x) = g x$ is an injective group homomorphism, so $G \\cong \\operatorname{im}(\\lambda) \\le \\operatorname{Sym}(G)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "group action",
       "symmetric group",

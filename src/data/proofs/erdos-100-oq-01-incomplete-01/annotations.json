@@ -3,7 +3,7 @@
     "id": "erdos100-oq01inc01-ann-header",
     "proofId": "erdos-100-oq-01-incomplete-01",
     "range": { "startLine": 3, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "Erdős #100 and the Integer-Distance Bridge",
     "content": "Erdős Problem #100 (open) asks whether an n-point planar set with all pairwise distances positive integers must have diameter ≫ n. The current best lower bound, diam ≥ c·n/log n, combines the Guth–Katz distinct-distances theorem with an elementary observation linking #100 to Erdős #89: integer distances confine the distinct distances to {1,…,⌊diam⌋}. This file proves exactly that bridge — #distinct distances ≤ diameter — cleanly and unconditionally, leaving the parent scaffold's hard Piepmeyer explicit-witness sorry untouched.",
     "mathContext": "Integer distances $\\Rightarrow$ distinct distances $\\subseteq \\{1,\\dots,\\lfloor\\mathrm{diam}\\rfloor\\}\\Rightarrow \\#\\text{distinct} \\le \\mathrm{diam}$",
@@ -51,11 +51,11 @@
     "id": "erdos100-oq01inc01-ann-significance",
     "proofId": "erdos-100-oq-01-incomplete-01",
     "range": { "startLine": 100, "endLine": 118 },
-    "type": "context",
+    "type": "concept",
     "title": "Scope and Significance",
     "content": "The closing commentary frames what is and is not proved. The bridge isolates the exact combinatorial step that transfers a distinct-distances lower bound to a diameter lower bound; the counting lemma (|S| ≤ ⌊D⌋₊ for a bounded set of positive integers) is a reusable discrete-geometry primitive. The hard, open parts — discharging the parent's Piepmeyer 9-point witness, formalizing Guth–Katz, and the diameter conjecture diam ≫ n itself — remain untouched and are flagged honestly.",
     "mathContext": "Honest scope: the bridge is unconditional; the open conjecture $\\mathrm{diam} \\gg n$ is not claimed.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["honest scope", "reusable primitive", "open conjecture"],
     "prerequisites": []
   }

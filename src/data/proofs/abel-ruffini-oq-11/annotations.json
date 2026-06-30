@@ -3,11 +3,11 @@
     "id": "ann-setup",
     "proofId": "abel-ruffini-oq-11",
     "range": { "startLine": 3, "endLine": 38 },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: The Two Faces of Abel–Ruffini",
     "content": "The docstring frames the entry against the negative face of Abel–Ruffini — Sₙ unsolvable for n ≥ 5, hence the general quintic is not solvable by radicals — which is formalized elsewhere in this project (AbelRuffini.lean, and AbelRuffiniOQ07 for the concrete X⁵ − X − 1 ≅ S₅). The positive face addressed here is Galois' answer to 'why do radicals work for the cases they do': by Galois' criterion an equation is solvable by radicals iff its Galois group is solvable, and the polynomials one can write with radicals (pure powers Xⁿ = a and their finite combinations) always have solvable groups. Mathlib provides the single-equation facts and an abstract multiset product but neither a usable finite-product form nor the side-by-side dichotomy; both are supplied below. The file imports only Mathlib and opens Polynomial over a field F.",
     "mathContext": "Galois' criterion: solvable by radicals $\\iff$ solvable Galois group. Positive face: pure powers and their products have solvable groups.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Abel–Ruffini theorem", "Galois' criterion", "solvable group", "solvability by radicals", "symmetric group obstruction"],
     "prerequisites": ["Galois theory and the Galois group of a polynomial", "solvable groups", "the unsolvability of Sₙ for n ≥ 5"]
   },

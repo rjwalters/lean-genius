@@ -7,7 +7,7 @@
     "title": "Circular Difference on ℤ/8ℤ",
     "content": "`cdiff i j` computes the cyclic distance label `(i - j) mod 8`. The vertices of K₈ are identified with the cyclic group ℤ/8ℤ, and the entire coloring depends only on this difference, making the graph a circulant. The expression `(i.val + 8 - j.val) % 8` adds 8 before subtracting to avoid natural-number underflow, since `Fin 8` arithmetic on raw `.val` would otherwise truncate `i.val - j.val` to 0 whenever `j > i`.",
     "mathContext": "$\\mathrm{cdiff}(i,j) = (i - j) \\bmod 8 \\in \\{0,1,\\dots,7\\}$, the canonical label of the chord between $i$ and $j$ in the circulant graph on $\\mathbb{Z}/8\\mathbb{Z}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["circulant graph", "cyclic group ℤ/nℤ", "modular arithmetic", "Cayley graph"],
     "prerequisites": ["modular arithmetic", "Fin n in Lean 4"]
   },
@@ -27,7 +27,7 @@
     "id": "ann-symm-irrefl",
     "proofId": "ramsey-r4k-oq-02",
     "range": { "startLine": 64, "endLine": 68 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Symmetry and Irreflexivity by Decision",
     "content": "The two well-formedness conditions for an undirected edge coloring — symmetry `f x y = f y x` and irreflexivity `f x x = false` — are bounded statements over the 64 (resp. 8) vertex pairs of `Fin 8`. Each is `Decidable`, so `decide` discharges it by exhaustive kernel evaluation. These two facts are exactly the structural hypotheses the parent's `RamseyProp` demands of any candidate coloring, so proving them here lets `wagnerColor` be fed into `RamseyProp 8 4 3`.",
     "mathContext": "Symmetry follows because $(i-j)\\bmod 8$ and $(j-i)\\bmod 8$ are both in $\\{1,4,7\\}$ together (the set is closed under negation mod 8: $-1\\equiv 7,\\ -4\\equiv 4$). Irreflexivity holds because $\\mathrm{cdiff}(i,i)=0$ is in the blue set.",

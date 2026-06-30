@@ -75,7 +75,7 @@
       "startLine": 70,
       "endLine": 78
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Even Indices Carry the Minus Sign",
     "content": "On even indices n = 2k the exponent n+1 = 2k+1 is odd, so (-1)^(2k+1) = −1 and etaSummand(2k) = −1/(2k)⁴. The sign is collapsed by Odd.neg_one_pow with witness ⟨k, by ring⟩ : Odd (2k+1), and the even part of η(4) is the negative of the even fourth-power sum: −π⁴/1440. This is where the alternation enters.",
     "mathContext": "$(-1)^{2k+1} = -1 \\Rightarrow \\eta\\text{-summand}(2k) = -\\dfrac{1}{(2k)^4}$, even part $= -\\dfrac{\\pi^4}{1440}$.",
@@ -98,7 +98,7 @@
       "startLine": 79,
       "endLine": 86
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Odd Indices Keep the Plus Sign",
     "content": "On odd indices n = 2k+1 the exponent n+1 = 2k+2 is even, so (-1)^(2k+2) = +1 and etaSummand(2k+1) = 1/(2k+1)⁴. The sign is collapsed by Even.neg_one_pow with witness ⟨k+1, by ring⟩ : Even (2k+2), and the odd part of η(4) is the positive λ(4) = π⁴/96, unchanged from the non-alternating case.",
     "mathContext": "$(-1)^{2k+2} = +1 \\Rightarrow \\eta\\text{-summand}(2k+1) = \\dfrac{1}{(2k+1)^4}$, odd part $= +\\dfrac{\\pi^4}{96}$.",

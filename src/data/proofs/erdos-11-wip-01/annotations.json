@@ -7,7 +7,7 @@
     "title": "A Bounded, Decidable Characterization for Erdős #11",
     "content": "The docstring states Erdős Problem #11 (OPEN): is every odd n > 1 the sum of a squarefree number and a power of two? The gallery parent Erdos11Problem set up the predicates and checked 3,5,7,9 by hand but bit-rotted against the current Mathlib. This file re-establishes that content self-contained and adds the key reusable tool — a bounded characterization isSquarefreePlusPow2_iff that reduces the unbounded existential over (squarefree, power-of-two) pairs to a finite search ∃ k ∈ range (n+1), using the bound k < 2^k ≤ n. It also proves the easy construction direction and verifies the odd cases 3..17 with explicit squarefree witnesses. An honest decidability caveat: a kernel decide over a whole range is unavailable because the Squarefree instance routes through Nat.minSqFac, which the kernel does not reduce — so the worked cases use explicit witnesses, separating 'decidable in principle' from 'kernel-reducible'.",
     "mathContext": "Erdős #11: $\\forall$ odd $n > 1,\\ n = s + 2^k$ with $s$ squarefree? This file proves the bounded equivalence $\\exists k \\le n,\\ 2^k \\le n \\wedge \\mathrm{Squarefree}(n - 2^k)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Erdős problems", "squarefree numbers", "powers of two", "additive number theory", "decidability"],
     "prerequisites": ["squarefree integers", "number theory"]
   },
@@ -51,7 +51,7 @@
     "id": "ann-erdos11-examples",
     "proofId": "erdos-11-wip-01",
     "range": { "startLine": 65, "endLine": 96 },
-    "type": "context",
+    "type": "concept",
     "title": "Verified Odd Cases 3 Through 17",
     "content": "Eight theorems (three_works … seventeen_works) verify that 3, 5, 7, 9, 11, 13, 15, 17 are each a sum of a squarefree number and a power of two, by exhibiting explicit witnesses: e.g. 3 = 1 + 2 (squarefree_one), 7 = 5 + 2 ((Nat.Prime 5).squarefree), 17 = 1 + 16. Explicit witnesses are used rather than a kernel decide over a range because the Squarefree decidability instance routes through Nat.minSqFac, which the kernel cannot reduce — an honest separation of 'decidable in principle' from 'kernel-reducible'. These are concrete instances of the still-open conjecture.",
     "mathContext": "$3 = 1 + 2,\\ 5 = 1 + 4,\\ 7 = 5 + 2,\\ 9 = 1 + 8,\\ 11 = 3 + 8,\\ 13 = 5 + 8,\\ 15 = 7 + 8,\\ 17 = 1 + 16$.",

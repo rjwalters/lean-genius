@@ -74,7 +74,7 @@
     "title": "Doubly-Exponential Primorial Sandwich",
     "content": "2^(n+1) ≤ primorial p_n ≤ 4^(2^(n+1)). The upper bound combines Mathlib's primorial m ≤ 4^m with the exponential prime bound p_n ≤ 2^(n+1): primorial p_n ≤ 4^(p_n) ≤ 4^(2^(n+1)). The lower bound is the previous count argument. Both sides are in ℕ.",
     "mathContext": "primorial_le_4_pow, then Nat.pow_le_pow_right on the exponent.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "primorial growth",
       "doubly-exponential bound"

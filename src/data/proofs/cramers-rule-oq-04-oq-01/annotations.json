@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "cramers-rule-oq-04-oq-01",
     "range": { "startLine": 1, "endLine": 36 },
-    "type": "context",
+    "type": "concept",
     "title": "Cramer's Rule and Cayley–Hamilton Share One Identity",
     "content": "The unifying theme of the file: the single universal adjugate identity adjugate B · B = (det B)·I specializes to both classical theorems. Feed it the scalar matrix B = A and it becomes A·(adj A · b) = (det A)·b — the determinant form of Cramer's rule, solving Ax = b up to a factor of det A. Feed it instead the characteristic matrix B = xI − A over the polynomial ring R[X], where det(xI − A) = χ_A(x), and it becomes adj(xI − A)·(xI − A) = χ_A(x)·I; evaluating this polynomial-matrix identity at A makes the right side χ_A(A) and the left side vanish, yielding the Cayley–Hamilton theorem χ_A(A) = 0. (This is why Cayley–Hamilton is NOT the naive 'substitute A for x in det(xI − A)' — that substitution is ill-typed; the rigorous route goes through the adjugate identity and an algebra evaluation.) A corollary is that the minimal polynomial divides the characteristic polynomial. Mathlib proves Cayley–Hamilton this way (aeval_self_charpoly); this entry packages the underlying adjugate identities and ties both theorems to their common source.",
     "mathContext": "$\\operatorname{adj}(B)\\,B = (\\det B)\\,I$: scalar $B=A$ gives Cramer; characteristic $B = xI-A$ over $R[X]$ gives $\\operatorname{adj}(xI-A)(xI-A) = \\chi_A(x)I$, then $x \\mapsto A$ gives $\\chi_A(A)=0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "adjugate / classical adjoint",
       "Cramer's rule",

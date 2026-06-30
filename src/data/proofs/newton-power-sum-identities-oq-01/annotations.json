@@ -3,11 +3,11 @@
     "id": "newton-ps-oq01-header",
     "proofId": "newton-power-sum-identities-oq-01",
     "range": { "startLine": 3, "endLine": 30 },
-    "type": "context",
+    "type": "concept",
     "title": "Unrolling Newton's recurrence in low degree",
     "content": "Newton's identities (Newton–Girard, 1707/1629) relate the two fundamental bases of symmetric functions: the power sums pₖ = ∑ᵢ Xᵢᵏ and the elementary symmetric polynomials eⱼ. Mathlib proves the general recurrence `MvPolynomial.psum_eq_mul_esymm_sub_sum`, pₖ = (−1)^{k+1}·k·eₖ − ∑_{0<i<k}(−1)^i·eᵢ·p_{k−i}, but records no explicit closed forms. This entry unrolls it for k = 1, 2, 3 to obtain p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁³ − 3e₁e₂ + 3e₃, valid in MvPolynomial σ R for any finite σ and commutative ring R (higher eⱼ vanish when card σ < k). These are the cases that appear constantly — expressing ∑xᵢ², ∑xᵢ³ of a polynomial's roots in its coefficients (traces of matrix powers ↔ characteristic-polynomial coefficients).",
     "mathContext": "$p_k = (-1)^{k+1} k\\,e_k - \\sum_{0<i<k} (-1)^i e_i\\, p_{k-i}$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Newton's identities", "power sums", "elementary symmetric polynomials", "symmetric functions"],
     "prerequisites": ["MvPolynomial.psum and esymm", "the Newton recurrence", "commutative rings"]
   },

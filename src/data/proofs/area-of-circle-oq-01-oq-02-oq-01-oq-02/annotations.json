@@ -47,7 +47,7 @@
       "startLine": 79,
       "endLine": 92
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Positivity of ω_n, the Constant, and V_n(r)",
     "content": "Proves $\\omega_n > 0$ (positive numerator $\\pi^{n/2}$ over positive $\\Gamma(n/2+1)$), $c_n > 0$ for $n \\ge 1$, and $V_n(r) > 0$ for $r > 0$. The last is what lets us divide by $V_n(r)^{n-1}$ to form the quotient.",
     "mathContext": "$\\Gamma(x) > 0$ for $x > 0$ via `Gamma_pos_of_pos`; $\\pi^{n/2} > 0$ via `rpow_pos_of_pos`.",
@@ -117,7 +117,7 @@
       "startLine": 141,
       "endLine": 178
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Evaluating ω_1, ω_2, ω_3 via the Gamma Function",
     "content": "Computes $\\omega_1 = 2$, $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$ from the Gamma recurrence $\\Gamma(z+1) = z\\Gamma(z)$ and $\\Gamma(1/2) = \\sqrt{\\pi}$. These feed the low-dimensional isoperimetric constants.",
     "mathContext": "$\\Gamma(3/2) = \\sqrt{\\pi}/2$, $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$, $\\Gamma(2) = 1$.",

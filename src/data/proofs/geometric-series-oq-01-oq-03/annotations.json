@@ -3,11 +3,11 @@
     "id": "ann-gsoq03-eventually",
     "proofId": "geometric-series-oq-01-oq-03",
     "range": { "startLine": 47, "endLine": 63 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Filter setup: near 1 from below, |x| < 1",
     "content": "The helper abs_lt_one_eventually packages the basic fact driving every closed-form step: as x → 1⁻, eventually |x| < 1, so each geometric Abel function ∑ aₙ xⁿ converges. It combines x < 1 (from self_mem_nhdsWithin on the left-neighborhood filter 𝓝[<] 1) with −1 < x (an open condition pulled back through nhdsWithin_le_nhds). Working with the filter 𝓝[<] 1 rather than a sequence is what lets the proof speak of the radial limit x → 1⁻ directly.",
     "mathContext": "$\\forall^f x \\in \\mathcal{N}^{<}(1),\\ |x| < 1$ — the eventual hypothesis for $\\sum a_n x^n$ to converge.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": ["filter", "neighborhood within", "left limit", "eventually"],
     "prerequisites": ["filters", "topology of ℝ"]
   },

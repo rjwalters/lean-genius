@@ -7,7 +7,7 @@
     "title": "Module Header: From Generators to the Full Order Distribution",
     "content": "The base Primitive-Roots entry counts only the **generators** of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ — the elements of the single order $p-1$, of which there are $\\varphi(p-1)$.\n\nThis file gives the **full order distribution**: for *every* divisor $d$ of $p-1$,\n$$\\#\\{g \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times : \\mathrm{ord}(g) = d\\} = \\varphi(d).$$\n\nSumming over all divisors tiles the group, and since the orders partition the $p-1$ units, this recovers **Gauss's identity** $\\sum_{d \\mid p-1} \\varphi(d) = p-1$ from the group-theoretic side. The engine is Mathlib's `IsCyclic.card_orderOf_eq_totient`, specialized to the cyclic group $(\\mathbb{Z}/p\\mathbb{Z})^\\times$.",
     "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = d\\} = \\varphi(d)$ for each $d \\mid p-1$, and $\\sum_{d \\mid p-1}\\varphi(d) = p-1$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["primitive roots modulo p", "order distribution of a cyclic group", "Euler totient φ", "Gauss's divisor-sum identity", "IsCyclic.card_orderOf_eq_totient"],
     "prerequisites": ["multiplicative order in a finite group", "(ℤ/pℤ)ˣ is cyclic of order p−1", "Euler's totient and divisor sums"]
   },

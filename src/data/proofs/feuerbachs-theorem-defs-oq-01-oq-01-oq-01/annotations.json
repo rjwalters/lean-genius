@@ -6,7 +6,7 @@
       "startLine": 69,
       "endLine": 114
     },
-    "type": "context",
+    "type": "concept",
     "title": "Circumcenter equidistance (self-contained)",
     "content": "The file reproves the two equidistance relations $|B-O|^2 = |A-O|^2$ and $|C-O|^2 = |A-O|^2$ as `private` lemmas (so it builds independently of the parent). Each comes from the perpendicular-bisector identity, which is *linear* in the circumcenter $O$ — so after substituting the explicit circumcenter formula, `field_simp; ring` closes it, and `nlinarith` converts the bisector identity into the squared-distance equality. These two relations are the only facts about $O$ the whole argument needs.",
     "mathContext": "$|B-O|^2 = |A-O|^2,\\quad |C-O|^2 = |A-O|^2.$",
@@ -50,7 +50,7 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The core polynomial identity",
     "content": "`reflect_core` is the algebraic engine: after clearing the projection denominator $\\|Q-P\\|^2$, the squared distance from $O$ to the reflected orthocenter (numerator $N_1^2 + N_2^2$) equals $|V-O|^2 \\cdot \\|Q-P\\|^4$ — *modulo* the two equidistance relations $h_P, h_Q$. The cofactors were found by ideal membership over the equidistance generators, and the gigantic identity is discharged by a single explicit `linear_combination` (closed by `ring`, with heartbeats raised 4096×). All the geometry is compressed into this one polynomial fact.",
     "mathContext": "$N_1^2 + N_2^2 \\equiv |V-O|^2\\,\\|Q-P\\|^4 \\pmod{\\langle h_P, h_Q\\rangle}.$",
@@ -139,11 +139,11 @@
       "startLine": 285,
       "endLine": 294
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked example: the 3-4-5 triangle",
     "content": "`triangle_345_reflectOrthoMidBC`: for the right triangle the orthocenter is $A=(0,0)$, and its reflection over the midpoint of $BC$ is $(3,4)$ — the antipode of $A$ on the circumcircle of radius $5/2$ centred at $(3/2, 2)$. Since $A$ is the right-angle vertex, $BC$ is a diameter, so $(3,4)$ being the antipode is geometrically transparent.",
     "mathContext": "$H = (0,0),\\ \\mathrm{refl}_{\\mathrm{mid}(BC)}(H) = (3,4),\\ \\text{antipode on circle } ((3/2,2), 5/2).$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "worked example",
       "Thales' theorem",

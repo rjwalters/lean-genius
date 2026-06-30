@@ -21,7 +21,7 @@
       "Degen eight-square identity",
       "Hurwitz's 1-2-4-8 theorem"
     ],
-    "significance": "The algebraic certificate behind Lagrange's four-square theorem: it shows that the product of two sums of four squares is again such, reducing the theorem to the prime case."
+    "significance": "supporting"
   },
   {
     "id": "ann-issumfoursq-mul",
@@ -44,7 +44,7 @@
       "Lagrange four-square theorem",
       "norm-multiplicative sets"
     ],
-    "significance": "The mathematically load-bearing statement of the entry: the sums of four squares are closed under multiplication, the exact step by which Euler reduced Lagrange's theorem to primes — and the four-square sibling of Mathlib's two-square sq_add_sq_mul."
+    "significance": "supporting"
   },
   {
     "id": "ann-monoid-structure",
@@ -66,7 +66,7 @@
       "finite products",
       "closure properties"
     ],
-    "significance": "Packages the closure as genuine algebraic structure: the sums of four squares form a multiplicative submonoid, so any finite product of them — e.g. a product of primes each a sum of four squares — is again a sum of four squares."
+    "significance": "supporting"
   },
   {
     "id": "ann-embedding-and-examples",
@@ -75,7 +75,7 @@
       "startLine": 115,
       "endLine": 143
     },
-    "type": "example",
+    "type": "concept",
     "title": "Two-Square Embedding and Worked Closure Examples",
     "content": "isSumFourSq_of_isSumTwoSq embeds a sum of two squares into the four-square world by padding with two zeros. The worked examples certify 3 = 1²+1²+1²+0² and 7 = 2²+1²+1²+1², then obtain a four-square representation of 21 = 3·7 by applying IsSumFourSq.mul — the witnesses are produced mechanically by the closure theorem, not guessed — and a final numeric check confirms the resulting bilinear forms (0,4,2,1) indeed satisfy 0²+4²+2²+1² = 21.",
     "mathContext": "$21 = 3\\cdot 7 = 0^2+4^2+2^2+1^2$ via IsSumFourSq.mul.",
@@ -88,6 +88,6 @@
       "two-square vs four-square sums",
       "worked representation"
     ],
-    "significance": "Demonstrates the closure constructively: products of sums of four squares get an explicit representation with no search, illustrating the constructive nature of Euler's reduction."
+    "significance": "supporting"
   }
 ]

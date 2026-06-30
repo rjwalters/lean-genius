@@ -3,11 +3,11 @@
     "id": "ann-ptoq05-header",
     "proofId": "ptolemys-theorem-oq-05",
     "range": { "startLine": 1, "endLine": 53 },
-    "type": "context",
+    "type": "concept",
     "title": "Why inversion, and what the plane proof cannot reach",
     "content": "The gallery already proves Ptolemy's inequality in the plane (`PtolemysComplexProof.lean`) from the complex algebraic identity (z₁−z₃)(z₂−z₄) = (z₁−z₂)(z₃−z₄) + (z₁−z₄)(z₂−z₃) plus |z+w| ≤ |z|+|w|. That identity lives in the commutative ring ℂ and so is **intrinsically two-dimensional** — it has no analogue in ℝⁿ. Mathlib, separately, proves only the *equality* case for cospherical points. This file closes the gap: Ptolemy's inequality is really a metric statement, true for four arbitrary points of any real inner product space in any dimension. The dimension-free engine is the classical proof by **spherical inversion** x ↦ (‖x‖²)⁻¹•x, which scales the distance between u and w by exactly 1/(‖u‖‖w‖); the triangle inequality among three inverted points, after clearing denominators, becomes Ptolemy. The setup fixes a real inner product space V (`NormedAddCommGroup` + `InnerProductSpace ℝ V`) and opens `RealInnerProductSpace` for the ⟪·,·⟫ notation.",
     "mathContext": "Inversion in the unit sphere at the origin, $x \\mapsto \\frac{x}{\\|x\\|^2}$, has the distance law $\\left\\|\\frac{u}{\\|u\\|^2}-\\frac{w}{\\|w\\|^2}\\right\\| = \\frac{\\|u-w\\|}{\\|u\\|\\,\\|w\\|}$. Triangle inequality for the three images $\\Rightarrow$ Ptolemy $\\|x-z\\|\\|y\\| \\le \\|x-y\\|\\|z\\| + \\|y-z\\|\\|x\\|$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["spherical inversion", "real inner product space", "dimension-free geometry", "triangle inequality", "complex-number proof (planar)"],
     "prerequisites": ["inner product spaces", "the norm and distance on a normed space", "geometric inversion"]
   },
@@ -43,7 +43,7 @@
     "title": "Dimension-free four-point form and a 3D witness",
     "content": "ptolemy_dist transports the origin form to an arbitrary NormedAddTorsor over a real inner product space by translating the fourth point d to the origin (x = a−ᵥd, y = b−ᵥd, z = c−ᵥd): dist_eq_norm_vsub rewrites distances as norms of vsub differences and vsub_sub_vsub_cancel_right cancels the common d, after which ptolemy_origin closes it. The concrete instantiation in EuclideanSpace ℝ (Fin 3) exhibits Ptolemy's inequality in three dimensions — a configuration the gallery's complex-number proof, tied to the plane, cannot reach.",
     "mathContext": "$\\operatorname{dist}(a,c)\\operatorname{dist}(b,d) \\le \\operatorname{dist}(a,b)\\operatorname{dist}(c,d) + \\operatorname{dist}(b,c)\\operatorname{dist}(a,d)$ for $a,b,c,d$ in any inner-product affine space.",
-    "significance": "high",
+    "significance": "key",
     "relatedConcepts": ["NormedAddTorsor", "inner-product affine space", "EuclideanSpace"],
     "prerequisites": ["affine spaces and torsors", "vsub and dist"]
   }

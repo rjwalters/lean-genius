@@ -6,7 +6,7 @@
       "startLine": 58,
       "endLine": 66
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The central binomial coefficient as a quotient of factorials",
     "content": "`centralBinom_eq_factorial_div` proves $(C(2n,n):\\mathbb{R}) = (2n)!/(n!\\cdot n!)$ from `Nat.choose_mul_factorial_mul_factorial` with $2n-n=n$. This puts $C(2n,n)$ in the quotient-of-factorials form that lets Stirling's equivalence act on numerator and denominator independently.",
     "mathContext": "$\\displaystyle C(2n,n) = \\frac{(2n)!}{(n!)^2}$",
@@ -21,7 +21,7 @@
       "startLine": 72,
       "endLine": 100
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Closed-form simplification of the Stirling quotient",
     "content": "`stirlingFn_quotient` proves the pointwise identity $\\mathrm{stirlingFn}(2n)/(\\mathrm{stirlingFn}\\,n)^2 = 4^n/\\sqrt{\\pi n}$ for $n \\ge 1$, where $\\mathrm{stirlingFn}\\,n = \\sqrt{2n\\pi}(n/e)^n$. The $(n/e)$ powers contribute $4^n$ (since $(2n/e)^{2n} = 4^n(n/e)^{2n}$), $\\sqrt{2\\cdot 2n\\cdot\\pi} = 2\\sqrt{n\\pi}$ and $(\\sqrt{2n\\pi})^2 = 2n\\pi$ collapse $\\sqrt{4n\\pi}/(2n\\pi)$ to $1/\\sqrt{\\pi n}$. This is the only hand computation in the entry; everything else is `IsEquivalent` algebra.",
     "mathContext": "$\\dfrac{\\mathrm{stirlingFn}(2n)}{(\\mathrm{stirlingFn}\\,n)^2} = \\dfrac{4^n}{\\sqrt{\\pi n}}$",
@@ -36,7 +36,7 @@
       "startLine": 107,
       "endLine": 126
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The sharp central-binomial growth law",
     "content": "`centralBinom_isEquivalent` proves $(C(2n,n):\\mathbb{R}) \\sim_{atTop} 4^n/\\sqrt{\\pi n}$. Mathlib's Stirling equivalence $n! \\sim \\mathrm{stirlingFn}\\,n$ is composed with $n \\mapsto 2n$ (`IsEquivalent.comp_tendsto`) for the numerator $(2n)!$ and squared (`IsEquivalent.mul`) for $(n!)^2$, then divided (`IsEquivalent.div`); the resulting Stirling quotient is replaced by $4^n/\\sqrt{\\pi n}$ via `stirlingFn_quotient` (`EventuallyEq.isEquivalent`, `trans`). This is the analytic half of the parent's open question that the elementary telescoping-product sibling left open.",
     "mathContext": "$C(2n,n) \\sim_{n\\to\\infty} \\dfrac{4^n}{\\sqrt{\\pi n}}$",
@@ -66,7 +66,7 @@
       "startLine": 170,
       "endLine": 188
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "The Catalan growth law the parent only asserted",
     "content": "`catalan_isEquivalent` proves $(\\mathrm{catalan}\\,n:\\mathbb{R}) \\sim_{atTop} 4^n/(n\\sqrt{\\pi n}) = 4^n/(\\sqrt{\\pi}\\,n^{3/2})$. Using $\\mathrm{catalan}\\,n = C(2n,n)/(n+1)$, the central-binomial asymptotic, and $(n+1)\\sim n$ (`nat_succ_isEquivalent`, from $1+1/n \\to 1$), divided through `IsEquivalent.div`. This is the $n^{3/2}$ polynomial correction the parent's docstring asserts ($\\mathrm{catalan}\\,n \\sim 4^n/(n^{3/2}\\sqrt\\pi)$) but never proves.",
     "mathContext": "$\\mathrm{catalan}\\,n \\sim_{n\\to\\infty} \\dfrac{4^n}{\\sqrt{\\pi}\\,n^{3/2}}$",

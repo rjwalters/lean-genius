@@ -6,7 +6,7 @@
       "startLine": 155,
       "endLine": 241
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Strict Triangle Inequalities Keep the Excenter Denominators Positive",
     "content": "The excenter coordinates carry the denominators pₐ = −a+b+c, p_b = a−b+c, p_c = a+b−c, which must be nonzero (in fact positive) for the Heron product to clear cleanly. These are exactly the strict triangle inequalities a < b+c (cyclically), reproved locally because the parent file declares them private. The proof routes through the law of cosines a² = b²+c²+2P and the Lagrange identity b²c² − P² = D² with D the non-degeneracy determinant: since D ≠ 0, P < bc, hence a² < (b+c)², hence a < b+c. The positivity lemmas pa_pos/pb_pos/pc_pos then guarantee the Heron product prodP > 0.",
     "mathContext": "$a < b+c$ etc. via $a^2 = b^2+c^2+2P$ and $b^2c^2 - P^2 = D^2$ ($D \\ne 0 \\Rightarrow P < bc$). Hence $p_a, p_b, p_c > 0$.",
@@ -144,7 +144,7 @@
       "startLine": 416,
       "endLine": 447
     },
-    "type": "context",
+    "type": "concept",
     "title": "Worked Example: the 3-4-5 Triangle",
     "content": "A concrete instantiation grounds the identity. For the parent's 3-4-5 triangle (A=(0,0), B=(3,0), C=(0,4); sides a=5, b=4, c=3), the excenters evaluate to Iₐ=(6,6), I_b=(−3,3), I_c=(2,−2) and the incenter is (1,1). Their sum (6,8) equals 4·(3/2,2) = 4·O, confirming the general theorem at a fully explicit triangle. norm_num evaluates the weighted barycentric coordinates from the known side lengths.",
     "mathContext": "$I=(1,1),\\ I_a=(6,6),\\ I_b=(-3,3),\\ I_c=(2,-2)$; sum $=(6,8)=4\\cdot(3/2,2)=4O$.",

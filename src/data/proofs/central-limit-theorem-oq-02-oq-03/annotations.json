@@ -19,7 +19,7 @@
     "title": "The MDependent Predicate",
     "content": "MDependent μ σ_k m asserts that any two events A, B that are measurable with respect to σ-algebras σ_k k and σ_k (k+n) with index gap n > m are independent: μ(A ∩ B) = μ(A)·μ(B). This is the σ-algebra-level formulation of m-dependence. Crucially, setting m = 0 turns the gap condition n > 0 into n ≥ 1, which is exactly the independence hypothesis used by the parent's independent_implies_zero_mixing — so MDependent strictly generalizes that hypothesis to all finite ranges.",
     "mathContext": "$\\forall k,n,A,B:\\; n>m \\Rightarrow \\mu(A\\cap B)=\\mu(A)\\,\\mu(B)$, for $A\\in\\sigma_k(k)$, $B\\in\\sigma_k(k+n)$.",
-    "significance": "essential",
+    "significance": "critical",
     "relatedConcepts": ["independence", "σ-algebra", "finite-range dependence"],
     "prerequisites": ["measurable sets", "product rule for independent events"]
   },
@@ -31,7 +31,7 @@
     "title": "Headline: α(n) = 0 for n > m",
     "content": "mDependent_alpha_zero proves the α-mixing coefficient vanishes at every lag beyond the dependence range. The α-mixing coefficient is a nested supremum sup_{A,B} |μ(A∩B).toReal − μA.toReal·μB.toReal|. At lag n > m, m-dependence forces μ(A∩B) = μA·μB, so after ENNReal.toReal_mul each term is |x − x| = 0. The remaining difficulty is purely order-theoretic: ℝ is only a conditionally-complete lattice, so the proof rewrites the whole nested supremum as a supremum of the constant 0 (via iSup_congr at each layer) and collapses it using a Prop-indexed-supremum-of-0 helper that case-splits on whether the index Prop is inhabited or empty. This reuses the parent's exact technique, now at arbitrary range m.",
     "mathContext": "$\\alpha(\\sigma_k(k),\\sigma_k(k+n)) = \\sup_{A,B}\\,|\\mu(A\\cap B)-\\mu(A)\\mu(B)| = 0$ whenever $n>m$.",
-    "significance": "essential",
+    "significance": "critical",
     "relatedConcepts": ["α-mixing coefficient", "nested supremum", "conditionally complete lattice", "ENNReal.toReal"],
     "prerequisites": ["supremum over ℝ", "independence", "iSup_congr"]
   },
@@ -79,7 +79,7 @@
     "title": "Ibragimov's Series Converges for Every Exponent",
     "content": "mDependent_summable_mixing_rpow combines the headline with the eventually-zero summability lemma: for an m-dependent family and any θ ≠ 0, the series ∑ₙ α(n)^θ converges, because α(n) = 0 for n > m makes it a finite sum. In particular Ibragimov's CLT hypothesis ∑ₙ α(n)^{δ/(2+δ)} < ∞ holds for every δ > 0 — the strongest possible polynomial-mixing condition. Hence every m-dependent stationary sequence with finite variance satisfies the Ibragimov mixing CLT (sibling OQ-02-OQ-04) with no constraint on the mixing rate. The exponent θ = 0 is genuinely excluded: there each summand is 1 and ∑ₙ 1 diverges.",
     "mathContext": "$\\sum_n \\alpha(n)^\\theta < \\infty$ for every $\\theta>0$; in particular for $\\theta=\\delta/(2+\\delta)$, all $\\delta>0$.",
-    "significance": "essential",
+    "significance": "critical",
     "relatedConcepts": ["Ibragimov CLT", "polynomial mixing", "mixing rate condition", "Davydov exponent"],
     "prerequisites": ["mDependent_alpha_zero", "summable_rpow_of_eventually_zero"]
   },

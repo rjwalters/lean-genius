@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 49
     },
-    "type": "context",
+    "type": "concept",
     "title": "The composition boundary: why n = 3 has no square identity",
     "content": "The docstring situates the result in the Cayley–Dickson / Hurwitz picture. Multiplicative n-square identities exist exactly in dimensions 1, 2, 4, 8 — the dimensions of the normed composition algebras ℝ, ℂ, ℍ, 𝕆 (Hurwitz's theorem): n=1 (x²·y²=(xy)²), n=2 (Brahmagupta–Fibonacci), n=4 (Euler), n=8 (Degen). This file pins the sharp boundary at the first dimension NOT on the list, n=3: the naturals representable as a sum of three squares are not multiplicatively closed, with smallest witness 3·5 = 15. The obstruction is the easy mod-8 half of Legendre's three-square theorem. Honest scope: only that easy modular direction is formalized, not the full Legendre 'iff' nor Hurwitz's theorem.",
     "mathContext": "Composition identities exist iff $n\\in\\{1,2,4,8\\}$ (Hurwitz). Here: sums of three squares are not closed under $\\times$; $3,5$ qualify but $15\\equiv7\\pmod8$ does not.",

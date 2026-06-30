@@ -6,11 +6,11 @@
       "startLine": 5,
       "endLine": 57
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: a Division-Free Multiplicity Criterion",
     "content": "The docstring frames the entry against its ancestors: the grandparent proves the Factor Theorem (X−a) ∣ p ↔ p(a)=0, and OQ-01 gives the multiplicity version over a characteristic-zero field via iterated derivatives p(a)=p′(a)=⋯=p^{(k−1)}(a)=0. This entry answers OQ-01's first open question: phrase multiplicity through Taylor coefficients. Because Mathlib defines (taylor a p).coeff m via Hasse derivatives — with NO division by m! — the resulting criterion holds over an arbitrary commutative ring, strictly generalizing the parent and remaining valid in positive characteristic. The file works in `section CommRing` with `variable {R} [CommRing R]`.",
     "mathContext": "$(X-a)^k \\mid p \\iff \\forall m < k,\\ (\\mathrm{taylor}_a\\,p).\\mathrm{coeff}\\,m = 0$, where $(\\mathrm{taylor}_a\\,p).\\mathrm{coeff}\\,m = (\\mathrm{hasseDeriv}_m\\,p)(a)$ — no factorial denominators.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Factor Theorem", "root multiplicity", "Taylor expansion of a polynomial", "Hasse derivative"],
     "prerequisites": ["polynomial rings over a commutative ring", "divisibility of polynomials", "Lean 4 / Mathlib basics"]
   },

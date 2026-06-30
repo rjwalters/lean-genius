@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "From rational-root to Eisenstein: the open question answered",
     "content": "The docstring frames the entry against its parent **cube-root-3-irrational**, which proves ∛3 ∉ ℚ by the rational root theorem and asks for a cleaner Eisenstein-based proof. This file delivers the general theorem the rational-root approach cannot reach: for every prime p and every n ≥ 1, Xⁿ − p is irreducible over ℤ (and, after Gauss, over ℚ). The file imports only Mathlib and works inside `namespace CubeRoot3IrrationalOQ01` with `open Polynomial` for the `X`, `C`, and ideal/coefficient lemmas.",
     "mathContext": "Goal: $X^n - p$ irreducible over $\\mathbb{Z}$ and $\\mathbb{Q}$ for prime $p$, $n \\ge 1$. Since $X^n - p$ is the minimal polynomial of $p^{1/n}$, irreducibility pins $[\\mathbb{Q}(p^{1/n}):\\mathbb{Q}] = n$ — strictly stronger than mere irrationality ($n > 1$).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["minimal polynomial", "algebraic degree", "rational root theorem", "Eisenstein's criterion"],
     "prerequisites": ["polynomial rings ℤ[X], ℚ[X]", "field extensions", "Lean 4 / Mathlib basics"]
   },

@@ -3,7 +3,7 @@
     "id": "ann-bu-oq020102-coprime-core",
     "proofId": "borsuk-ulam-oq-02-oq-01-oq-02",
     "range": { "startLine": 50, "endLine": 65 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Prime localization of coprimality",
     "content": "The number-theoretic heart of the file: a natural number $a$ is coprime to $n$ iff no prime divisor of $n$ divides $a$. The forward direction observes that a common prime $p$ would divide $\\gcd(a,n)=1$, contradicting $p>1$ (via Nat.dvd_gcd). The reverse direction is the contrapositive: if $\\gcd(a,n)\\neq 1$, then Nat.exists_prime_and_dvd extracts a prime $p \\mid \\gcd(a,n)$, which divides both $a$ and $n$, exhibiting the forbidden common prime divisor.",
     "mathContext": "$\\gcd(a,n)=1 \\iff \\forall p\\text{ prime},\\ p \\mid n \\Rightarrow p \\nmid a$",
@@ -91,7 +91,7 @@
     "title": "The standard faithful representation is free",
     "content": "The representation with all weights equal to $1$ is free for every $n$, since $\\gcd(1,n)=1$ always. This is the standard faithful rotation representation realising the classical Yang–Borsuk equivariant lower bound, and it is simultaneously free over every prime subgroup — the canonical positive example complementing the witness below.",
     "mathContext": "$\\mathrm{IsFreeRep}(n, (1,\\dots,1))$ for all $n$, since $\\gcd(1,n)=1$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["faithful representation", "Yang–Borsuk bound", "regular representation"],
     "prerequisites": ["coprime_one_left"]
   },

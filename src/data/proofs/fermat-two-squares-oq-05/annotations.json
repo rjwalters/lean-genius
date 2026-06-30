@@ -30,7 +30,7 @@
       "startLine": 51,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Transporting Congruences into ZMod via Casts",
     "content": "To use the finite ZMod 4 check on an integer congruence, `ZMod.intCast_eq_intCast_iff` rewrites `a² + b² ≡ 3 [ZMOD 4]` as the equality `(↑(a²+b²) : ZMod 4) = ↑3`, and `push_cast` distributes the ring homomorphism over `+` and `^` to expose `(↑a)² + (↑b)²`. The only friction is that the modulus literal is a Nat in `ZMod 4` but an Int in `[ZMOD 4]`; `exact_mod_cast` bridges the two. The statement `int_sq_add_sq_not_three_mod_four` is phrased purely about the equation, making clear that nothing about a target n is used beyond its residue.",
     "mathContext": "$a^2+b^2 \\equiv 3 \\pmod 4 \\iff (\\bar a)^2 + (\\bar b)^2 = \\bar 3$ in $\\mathbb{Z}/4$, via `ZMod.intCast_eq_intCast_iff` and `push_cast`.",
@@ -99,11 +99,11 @@
       "startLine": 137,
       "endLine": 152
     },
-    "type": "example",
+    "type": "concept",
     "title": "Concrete Witnesses",
     "content": "The smallest obstruction is 3; 7 and the prime 11 are further examples ≡ 3 (mod 4). By contrast 5 = 1² + 2² and 13 = 2² + 3² are ≡ 1 (mod 4) and decompose, witnessing both directions of the biconditional on small inputs.",
     "mathContext": "$3, 7, 11 \\equiv 3 \\pmod 4$ are non-representable; $5 = 1^2 + 2^2$ and $13 = 2^2 + 3^2$ are $\\equiv 1 \\pmod 4$ — both directions on small inputs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "sum of two squares",
       "worked examples",

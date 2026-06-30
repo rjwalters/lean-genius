@@ -56,7 +56,7 @@
     "title": "regular_or_witness: The Certification Dichotomy",
     "content": "Every ordered pair of vertex sets is either ε-regular or admits an explicit irregularity witness. The proof is by_cases on IsEpsilonRegular: in the regular branch return the certificate; otherwise apply irregular_pair_witness.\n\nThis dichotomy is the decision the ADLRY procedure makes for each pair of parts in a refinement round. A pair certified regular contributes nothing; a pair returning a witness is refined along the witness, which is what drives the energy up. The classical regularity lemma needs this only existentially; the algorithmic version needs it to be carried out efficiently for each pair — but the combinatorial shape of the decision is exactly this Prop-level dichotomy.",
     "mathContext": "For all $A,B$: $\\mathrm{IsEpsilonRegular}\\,G\\,\\varepsilon\\,A\\,B \\;\\lor\\; (\\exists\\text{ witness sub-pair with deviation} > \\varepsilon)$.",
-    "significance": "standard",
+    "significance": "supporting",
     "prerequisites": [
       "excluded middle (Classical)",
       "irregular_pair_witness"
@@ -77,7 +77,7 @@
     "title": "potential_growth: Telescoping the Energy Increments",
     "content": "If a potential Φ : ℕ → ℚ gains at least δ on each of the first T steps, then after m ≤ T steps it has risen by at least m·δ: Φ 0 + m·δ ≤ Φ m.\n\nThe proof is induction on m. Base case m = 0 is reflexivity (Φ 0 + 0 ≤ Φ 0). Inductive step at m = k+1: from k < T the hypothesis gives Φ k + δ ≤ Φ (k+1); the induction hypothesis (applicable since k ≤ T) gives Φ 0 + k·δ ≤ Φ k; expanding (k+1)·δ = k·δ + δ and chaining with linarith yields Φ 0 + (k+1)·δ ≤ Φ (k+1).\n\nThis is the discrete telescoping sum Σ (Φ(i+1) − Φ(i)) ≥ T·δ underlying every energy-increment termination argument.",
     "mathContext": "$\\forall m \\le T,\\quad \\Phi(0) + m\\delta \\le \\Phi(m)$, proved by induction; the engine of the round bound.",
-    "significance": "standard",
+    "significance": "supporting",
     "prerequisites": [
       "induction on ℕ",
       "linarith"

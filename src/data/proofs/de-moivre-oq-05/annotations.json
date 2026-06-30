@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 43
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Roots of Unity Sum to Zero",
     "content": "The docstring states the classical fact: for $n>1$ the $n$ complex $n$-th roots of unity sum to zero, with the standard one-line geometric-series argument $\\sum_{i=0}^{n-1}\\zeta^i = (\\zeta^n-1)/(\\zeta-1) = 0$ for a primitive root $\\zeta$. It pinpoints the gap in Mathlib: the library records the geometric-series form (geom_sum_eq_zero, summing the powers $\\zeta^0,\\ldots,\\zeta^{n-1}$ as an indexed list) but NOT the coordinate-free set form (summing the underlying roots without privileging a generator). The two are connected by the also-absent structural identity that the roots ARE the powers of one primitive root; this file supplies that bridge and the de Moivre / discrete-Fourier form $\\sum_k e^{2\\pi ik/n} = 0$.",
     "mathContext": "$\\sum_{x\\in\\mu_n} x = 0$ for $n>1$. Geometric series: $\\sum_{i=0}^{n-1}\\zeta^i = \\frac{\\zeta^n-1}{\\zeta-1} = 0$ since $\\zeta^n=1$, $\\zeta\\ne 1$. Also the Vieta relation for $z^n-1$ (no $z^{n-1}$ term).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "roots of unity",
       "geometric series",

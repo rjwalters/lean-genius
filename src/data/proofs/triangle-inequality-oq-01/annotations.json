@@ -10,7 +10,7 @@
     "title": "Minkowski's Inequality: The Triangle Inequality for L^p",
     "content": "The header frames Minkowski's inequality $\\|f + g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ as the genuinely infinite-dimensional generalization of the elementary triangle inequality. It is the single fact that makes $L^p$ a normed space: without it the L^p functional is only a quasi-norm with a non-convex unit ball. The entry is organized to expose the inequality at three levels — the eLpNorm seminorm (the analytic heart, on the extended reals), the MemLp closure (L^p is a vector space), and the bundled Banach space Lp E p μ — plus the p < 1 boundary where subadditivity fails.",
     "mathContext": "$\\|f+g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$ for $1 \\leq p \\leq \\infty$; the L^p norm on $L^p(\\mu;E)$.",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "Minkowski inequality",
       "Lp spaces",
@@ -30,11 +30,11 @@
       "startLine": 57,
       "endLine": 79
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "The eLpNorm Seminorm and the Analytic Heart",
     "content": "The core estimate `eLpNorm_add_le` lives on ℝ≥0∞ (the extended nonnegative reals), so the L^p seminorm is always defined — possibly ∞ — with no finiteness hypothesis. This is exactly why the proof works at this level first: one need only assume a.e.-strong-measurability and 1 ≤ p. Mathlib derives it from `ENNReal.lintegral_Lp_add_le`, a measure-theoretic Hölder inequality, seeded by the pointwise bound ‖(f+g) a‖ ≤ ‖f a‖ + ‖g a‖. The subtractive form follows since negation preserves the seminorm, and the finite-sum form `eLpNorm_sum_le` is the n-fold iteration via subadditivity over a Finset.",
     "mathContext": "$\\left(\\int \\|f+g\\|^p\\right)^{1/p} \\leq \\left(\\int\\|f\\|^p\\right)^{1/p} + \\left(\\int\\|g\\|^p\\right)^{1/p}$",
-    "significance": "foundational",
+    "significance": "critical",
     "relatedConcepts": [
       "eLpNorm seminorm",
       "Hölder's inequality",
@@ -54,11 +54,11 @@
       "startLine": 92,
       "endLine": 102
     },
-    "type": "key-insight",
+    "type": "insight",
     "title": "Why 1 ≤ p: The Convexity Threshold",
     "content": "The quasi-triangle inequality `eLpNorm_add_le'` holds for EVERY exponent p, but with a constant LpAddConst p = 2^(1/p − 1). The theorem `LpAddConst_eq_one` shows this constant equals 1 exactly when 1 ≤ p — and is strictly greater than 1 for 0 < p < 1. This pinpoints 1 ≤ p as the precise range on which Minkowski (constant = 1) holds and L^p is a normed space. The mechanism: the proof routes through Hölder with conjugate exponent q = p/(p−1); for p < 1 this exponent is negative, Hölder reverses, and only the weaker constant survives. Thus L^p for p < 1 is a complete metric space but its unit ball is non-convex.",
     "mathContext": "$\\mathrm{LpAddConst}\\,p = 2^{1/p - 1}$ on $(0,1)$, and $= 1$ for $p \\geq 1$; the dual exponent $p/(p-1)$ is admissible iff $p \\geq 1$.",
-    "significance": "key-insight",
+    "significance": "key",
     "relatedConcepts": [
       "convexity",
       "quasi-norm",

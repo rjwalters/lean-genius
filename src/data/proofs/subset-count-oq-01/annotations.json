@@ -3,11 +3,11 @@
     "id": "ann-context",
     "proofId": "subset-count-oq-01",
     "range": { "startLine": 1, "endLine": 35 },
-    "type": "context",
+    "type": "concept",
     "title": "From Finite Subset Counting to Cantor's Theorem",
     "content": "The parent entry counts the subsets of a finite set: an n-element set has exactly 2^n subsets. This file makes explicit the two facts hidden inside that formula: 2^n already strictly exceeds n (a finite set has strictly more subsets than elements), and this strict gap is not a finiteness artifact — it holds at every cardinality. That universal strict gap is Cantor's theorem (1891), the infinite analogue of subset counting and the source of the transfinite hierarchy of infinities.",
     "mathContext": "Parent: $|\\mathcal P(S)| = 2^n$ for $|S| = n$. This entry: $|S| < |\\mathcal P(S)|$ for every set $S$ — Cantor's theorem.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Cantor's theorem", "power set", "cardinality", "diagonal argument", "transfinite hierarchy"],
     "prerequisites": ["set theory", "cardinality"]
   },

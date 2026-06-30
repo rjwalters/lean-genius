@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "euler-totient-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 30 },
-    "type": "context",
+    "type": "concept",
     "title": "Why λ Can Be Strictly Smaller Than φ",
     "content": "Euler's theorem says a^φ(n) ≡ 1 (mod n) for every unit a, but φ(n) need not be the SMALLEST such exponent. The Carmichael function λ(n) — the exponent of the unit group (ℤ/nℤ)ˣ — is: a^k ≡ 1 (mod n) for all units a iff λ(n) ∣ k. The gap between λ and φ is governed entirely by the group structure. When (ℤ/nℤ)ˣ is cyclic its exponent equals its order, so λ(n) = φ(n) — this is the case for odd prime powers pᵏ. When it is not cyclic, λ is a proper divisor of φ. The headline example is the 2-power case: for k ≥ 3 the group (ℤ/2ᵏℤ)ˣ ≅ ℤ/2 × ℤ/2ᵏ⁻² has exponent lcm(2, 2ᵏ⁻²) = 2ᵏ⁻², exactly half of φ(2ᵏ) = 2ᵏ⁻¹. So λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2. The file packages these from Mathlib's ArithmeticFunction.Carmichael, answering the parent's request for λ(2ᵏ) = 2ᵏ⁻² and the odd-prime-power identity, with concrete values λ(8) = 2, λ(16) = 4.",
     "mathContext": "$\\lambda \\mid \\varphi$ always; $\\lambda = \\varphi \\iff (\\mathbb{Z}/n)^\\times$ cyclic. Non-cyclic $2^k$ ($k\\ge3$): $(\\mathbb{Z}/2^k)^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$, exponent $2^{k-2} = \\varphi/2$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Carmichael function (reduced totient)",
       "Euler's totient φ",
@@ -58,7 +58,7 @@
       "startLine": 68,
       "endLine": 73
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Concrete Values λ(8) = 2, λ(16) = 4",
     "content": "carmichael_eight and carmichael_sixteen instantiate the formula at k = 3, 4: λ(8) = 2³⁻² = 2 and λ(16) = 2⁴⁻² = 4. Note φ(8) = 4 and φ(16) = 8, so in each case λ is exactly half of φ — the non-cyclic doubling is visible numerically. They are obtained by specializing carmichael_two_pow and simplifying the exponent with norm_num (no native_decide), so they remain kernel-checked and axiom-free.",
     "mathContext": "$\\lambda(8) = 2^{3-2} = 2 = \\tfrac{1}{2}\\varphi(8), \\qquad \\lambda(16) = 2^{4-2} = 4 = \\tfrac{1}{2}\\varphi(16)$",

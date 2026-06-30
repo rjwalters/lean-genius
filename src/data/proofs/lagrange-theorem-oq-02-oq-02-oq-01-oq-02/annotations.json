@@ -3,7 +3,7 @@
     "id": "ann-lg020201-congruence",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
     "range": { "startLine": 53, "endLine": 59 },
-    "type": "technique",
+    "type": "tactic",
     "title": "Burnside's Fixed-Point Congruence",
     "content": "card_modEq_card_fixedPoints is the engine: when a p-group G acts on a finite set α, orbit–stabilizer plus Lagrange force every orbit to have p-power size, so orbits of size > 1 contribute multiples of p. Hence |α| ≡ (number of singleton orbits) = |fixed points| (mod p). It wraps Mathlib's IsPGroup.card_modEq_card_fixedPoints over the hypothesis hG : IsPGroup p G.",
     "mathContext": "$|\\alpha| \\equiv |\\alpha^G| \\pmod p$, since every non-singleton orbit has size $p^k$ with $k \\ge 1$.",
@@ -51,11 +51,11 @@
     "id": "ann-lg020201-summary",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
     "range": { "startLine": 91, "endLine": 120 },
-    "type": "context",
+    "type": "concept",
     "title": "Summary: One Congruence, Many Theorems",
     "content": "The closing table pairs each step with its Mathlib backing. The single fixed-point congruence — itself a corollary of Lagrange and orbit–stabilizer — is the common source of center nontriviality (here), the nilpotency of p-groups (induct by quotienting out Z(G)), Cauchy's theorem, and the Sylow theorems. This entry isolates the first link, the one that makes the inductive structure theory of p-groups possible.",
     "mathContext": "Fixed-point congruence $\\Rightarrow$ {center nontrivial, $p$-groups nilpotent, Cauchy, Sylow}.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["nilpotent groups", "Sylow theorems", "Cauchy's theorem", "structure theory of p-groups"],
     "prerequisites": ["the preceding theorems"]
   }

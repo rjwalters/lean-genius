@@ -87,7 +87,7 @@
     "id": "tetrahedron-specializations",
     "proofId": "cevas-theorem-oq-02-oq-04",
     "range": { "startLine": 255, "endLine": 280 },
-    "type": "example",
+    "type": "concept",
     "title": "Tetrahedron (3-simplex) specializations",
     "content": "Instantiating ι = Fin 4 makes the higher-dimensional content concrete. tetrahedron_face_ceva and tetrahedron_other_face_ceva give the Ceva product = 1 on two independent triangular faces (vertices {0,1,2} and {0,1,3}), and tetrahedron_full_cycle gives product 1 around the 4-vertex closed walk 0 -> 1 -> 2 -> 3 -> 0. The shared reconstructed weights tie all faces to one concurrency point.",
     "mathContext": "r(0,1)r(1,2)r(2,3)r(3,0) = 1 \\text{ on } \\mathrm{Fin}\\,4",

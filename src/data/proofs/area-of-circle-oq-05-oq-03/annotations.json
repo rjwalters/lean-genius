@@ -25,7 +25,7 @@
       "startLine": 56,
       "endLine": 71
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Completing the Square over ℂ — only i² = −1 is Needed",
     "content": "The whole computation rests on the exponent identity i t x − x²/2 = −½(x − it)² − t²/2. Both products of exponentials are first collapsed to single exponentials with Complex.exp_add; the resulting exponent equality is then closed by `push_cast` followed by `linear_combination (t²/2)·Complex.I_sq`. The difference of the two sides is exactly (t²/2)(i²+1), so feeding the single fact i² = −1 (Complex.I_sq) to linear_combination discharges it. After this step the t-dependence lives entirely in the constant e^{-t²/2}.",
     "mathContext": "i t x − x²/2 = −½(x − it)² − t²/2; LHS − RHS = (t²/2)(i² + 1) = 0.",
@@ -43,7 +43,7 @@
       "startLine": 79,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The Shifted Gaussian Integral and its Constant √(2π)",
     "content": "After completing the square, the remaining x-integral is ∫ e^{-½(x-it)²} dx — a Gaussian along a line shifted into the complex plane. Mathlib's GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I evaluates exactly this (it is a Cauchy vertical-strip argument that the shifted integral equals the real Gaussian integral), returning the complex value (π/b)^{1/2}. Specialised at b = 1/2 this is (π/(1/2))^{1/2} = (2π)^{1/2}, and cpow_half_eq_sqrt_two_pi bridges it to the real √(2π) via Complex.ofReal_cpow and Real.sqrt_eq_rpow.",
     "mathContext": "∫ e^{-½(x-it)²} dx = (π/(1/2))^{1/2} = √(2π), independent of t.",

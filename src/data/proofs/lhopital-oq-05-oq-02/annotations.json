@@ -6,11 +6,11 @@
       "startLine": 3,
       "endLine": 50
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Open Question: an Order-n Engine from Remainder Bounds Alone",
     "content": "The docstring states OQ-05-OQ-02's request: a single order-n lemma that, from an explicit Taylor remainder bound alone, produces the indeterminate limit (f(x) − T_{n−1}(x))/xⁿ → f^{(n)}(0)/n! — generalising the parent L'Hôpital entry's sine-specific deviation lemma abs_sub_le to arbitrary order and arbitrary functions. The engine tendsto_of_remainder_bound consumes only a higher-degree bound |e(x)| ≤ C·|x|^m (n < m, |x| ≤ 1) and squeezes; no differentiation, L'Hôpital, or Mean Value Theorem. Two instances follow (cosine n=2, sine n=3), each with target L the leading Taylor coefficient. The file imports only Mathlib and works in `open Filter Topology`.",
     "mathContext": "$\\dfrac{f(x) - T_{n-1}(x)}{x^n} \\to \\dfrac{f^{(n)}(0)}{n!}$ given $|e(x)| \\le C|x|^m$ with $n<m$ on $|x|\\le 1$; the proof squeezes $\\dfrac{|e(x)|}{|x|^n} \\le C|x|^{m-n} \\le C|x| \\to 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["L'Hôpital's rule", "Taylor remainder", "indeterminate forms", "squeeze theorem"],
     "prerequisites": ["limits and the nhds filter", "Taylor/Maclaurin expansion", "Lean 4 / Mathlib basics"]
   },

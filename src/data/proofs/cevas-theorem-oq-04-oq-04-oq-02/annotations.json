@@ -19,7 +19,7 @@
     "title": "Cevian feet on side BC",
     "content": "Each centre's A-cevian meets BC at the point obtained by dropping the apex (A) barycentric coordinate. footBisectorA = (0 : b : c) = (0 : z+x : x+y) is the internal A-bisector foot, shared by the incenter and the A-excenter. extouchA = (0 : y : z) is the A-extouch point (Nagel foot), dividing BC as BD:DC = z:y. contactA = (0 : z : y) is the incircle contact point (Gergonne foot), the midpoint-reflection of extouchA, dividing BC as BD:DC = y:z.",
     "mathContext": "$$\\text{extouch }BD=s-c=z,\\quad \\text{contact }BD=s-b=y;\\quad \\text{the two feet are reflections in the midpoint of }BC$$",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["cevian foot", "extouch point", "contact triangle", "incircle"],
     "prerequisites": ["barycentric restriction to a side"]
   },

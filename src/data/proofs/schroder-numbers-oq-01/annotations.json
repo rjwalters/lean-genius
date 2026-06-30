@@ -3,11 +3,11 @@
     "id": "ann-header",
     "proofId": "schroder-numbers-oq-01",
     "range": { "startLine": 1, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "The Missing Growth Theory of the Large Schröder Numbers",
     "content": "The large Schröder numbers L(n) = 1, 2, 6, 22, 90, 394, … (OEIS A006318) count Schröder paths from (0,0) to (n,n) using steps (1,0), (0,1), (1,1) that never rise above the diagonal. Mathlib defines them by the convolution recurrence L(n+1) = L(n) + ∑_{i≤n} L(i)·L(n−i) and records base values, the recurrence, parity (even_largeSchroder), and the small/large bridge — but NO order information. This entry supplies the founding growth theory: positivity, the doubling step 2·L(n) ≤ L(n+1), strict monotonicity, and the exponential lower bound 2ⁿ ≤ L(n). The crux is that the lone i=0 term of the convolution already equals L(n).",
     "mathContext": "$L(n+1) = L(n) + \\sum_{i\\le n} L(i)L(n-i)$; the $i=0$ term $L(0)L(n) = L(n)$ forces $L(n+1)\\ge 2L(n)$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Schröder numbers", "convolution recurrence", "lattice paths", "growth bound"],
     "prerequisites": ["recurrence relations", "enumerative combinatorics", "induction"]
   },
@@ -63,11 +63,11 @@
     "id": "ann-concrete",
     "proofId": "schroder-numbers-oq-01",
     "range": { "startLine": 102, "endLine": 123 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Values L(3)=22, L(4)=90 (kernel decide, no native_decide)",
     "content": "largeSchroder_three (=22) and largeSchroder_four (=90) are proved FROM the recurrence by expanding the Iic sum explicitly: rewrite Iic 2 = {0,1,2} (kernel decide on the finite-set equality only), split with Finset.sum_insert/sum_singleton, and norm_num on the base values. A final example checks the doubling bound at a concrete value, 2·L(3) = 44 ≤ 90 = L(4). Crucially these use kernel `decide` only on a finite-set equality, NOT native_decide — so the axiom profile stays clean (no Lean.ofReduceBool).",
     "mathContext": "$L(3)=22,\\ L(4)=90$; $2\\cdot22 = 44 \\le 90$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["Finset.sum_insert", "decide vs native_decide", "axiom integrity", "A006318"],
     "prerequisites": ["finite sums", "recurrence evaluation"]
   }

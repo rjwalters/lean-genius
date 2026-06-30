@@ -6,11 +6,11 @@
       "startLine": 4,
       "endLine": 38
     },
-    "type": "context",
+    "type": "concept",
     "title": "The duality and what it adds over the parent",
     "content": "The header fixes the two objects — weak compositions f : Fin k → ℕ with ∑ f = m (zero parts allowed) and positive compositions g with every g(i) ≥ 1 and ∑ g = n — and states the duality between them as the per-coordinate shift g(i) = f(i) + 1. Adding 1 to each of the k parts of a weak composition of m gives a positive composition of m + k; subtracting 1 (legal because parts are ≥ 1) inverts it. The parent stars-and-bars-weak-compositions counts the weak side as C(n+k−1, n) and explicitly poses this duality as an open question; this entry resolves it with the explicit bijection positiveCompositionEquivWeak and reads off the positive-parts count C(n−1, k−1). Mathlib has neither the positive tuple count nor the shift equivalence.",
     "mathContext": "$\\{g \\mid (\\forall i,\\,g(i)\\ge1)\\wedge\\sum_i g(i)=n\\} \\simeq \\{f \\mid \\sum_i f(i)=n-k\\}$ via $g(i)\\mapsto g(i)-1$, for $k \\le n$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "weak composition",
       "positive composition",
@@ -29,7 +29,7 @@
       "startLine": 44,
       "endLine": 62
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Exactness of the per-part shift",
     "content": "sum_sub_one is the arithmetic core: when every part satisfies g(i) ≥ 1, subtracting 1 from each of the k parts lowers the total by exactly k, so ∑ᵢ (g(i) − 1) = (∑ᵢ g(i)) − k. The proof avoids reasoning directly about truncated subtraction inside a sum: it proves the additive form ∑ᵢ (g(i) − 1) + k = ∑ᵢ g(i) instead. Here k is rewritten as ∑ᵢ 1 over Fin k (Finset.sum_const + Fintype.card_fin), the two sums merge under Finset.sum_add_distrib into ∑ᵢ ((g(i) − 1) + 1), and Nat.sub_add_cancel applied with the part bound collapses each summand back to g(i); omega then discharges the subtraction. This 'clear the truncated subtraction additively' move is the standard way to keep ℕ-subtraction honest.",
     "mathContext": "$\\sum_i (g(i)-1) + k = \\sum_i g(i)$, hence $\\sum_i (g(i)-1) = \\left(\\sum_i g(i)\\right) - k$ when $\\forall i,\\ g(i)\\ge 1$.",
@@ -51,7 +51,7 @@
       "startLine": 64,
       "endLine": 86
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "The ±1 bijection, built by hand",
     "content": "positiveCompositionEquivWeak is the explicit Equiv. Forward: g ↦ (i ↦ g(i) − 1), which sums to n − k by sum_sub_one together with ∑ g = n. Inverse: f ↦ (i ↦ f(i) + 1), positive by Nat.le_add_left and summing to (n − k) + k = n via Finset.sum_add_distrib and the hypothesis k ≤ n (this is precisely where k ≤ n is needed — it makes the truncated (n − k) + k equal n on the nose). The two round-trips are pointwise identities: (g(i) − 1) + 1 = g(i) by Nat.sub_add_cancel using the part bound, and (f(i) + 1) − 1 = f(i) by omega. Each is preceded by a `show` that beta-reduces the subtype coercions so the bare arithmetic lemma unifies with the goal — without it the goal is stuck on an unreduced `↑(toFun (invFun …))` redex.",
     "mathContext": "$\\mathrm{toFun}\\,g = (i\\mapsto g(i)-1)$, $\\mathrm{invFun}\\,f = (i\\mapsto f(i)+1)$, mutually inverse on the subtypes.",
@@ -73,7 +73,7 @@
       "startLine": 88,
       "endLine": 106
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "A total finiteness instance by dependent case split",
     "content": "instFintypePositiveComposition makes the positive-composition subtype finite for every k, n via a dependent `if hkn : k ≤ n`. When k ≤ n the bijection supplies Fintype.ofEquiv from the manifestly finite weak side. When k > n the subtype is empty — a positive composition would force ∑ᵢ g(i) ≥ ∑ᵢ 1 = k > n (Finset.sum_le_sum against the constant 1), contradicting ∑ = n — so an IsEmpty witness gives Fintype.ofIsEmpty. A dependent `if` (dite, which eliminates via Decidable into Type) is essential: a plain `rcases`/`cases` on the Prop-valued `k ≤ n ∨ n < k` cannot eliminate into the Type-valued Fintype goal.",
     "mathContext": "Total $\\mathrm{Fintype}$ on $\\{g \\mid (\\forall i,\\,g(i)\\ge1)\\wedge\\sum_i g(i)=n\\}$: bijection when $k\\le n$, $\\mathrm{IsEmpty}$ when $k>n$.",

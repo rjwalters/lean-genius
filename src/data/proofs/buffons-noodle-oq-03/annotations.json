@@ -32,11 +32,11 @@
       "startLine": 130,
       "endLine": 136
     },
-    "type": "proof-technique",
+    "type": "tactic",
     "title": "Linearity of Expectation, Dimension-General",
     "content": "noodle_highdim is proved exactly as in the planar parent: the expected total crossings ∑ᵢ α·Lᵢ/d factor as (α/d)·∑ᵢ Lᵢ = α·L/d via Finset.mul_sum. Because the orientation has already been integrated into the single constant α, the segments need not be independent and their angles never appear — only the total length L survives. This is the algebraic heart of Barbier's shape-independence principle, and it is identical in form in every dimension.",
     "mathContext": "$\\sum_i \\dfrac{\\alpha L_i}{d} = \\dfrac{\\alpha}{d}\\sum_i L_i = \\dfrac{\\alpha L}{d}$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "linearity of expectation",
       "Finset.mul_sum",

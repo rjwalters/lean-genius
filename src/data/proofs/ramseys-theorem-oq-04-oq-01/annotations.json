@@ -51,7 +51,7 @@
     "id": "ann-ramsey0401-max-xor",
     "proofId": "ramseys-theorem-oq-04-oq-01",
     "range": { "startLine": 130, "endLine": 146 },
-    "type": "technique",
+    "type": "tactic",
     "title": "MSB of a XOR with Distinct Top Bits",
     "content": "isMSB_xor_of_ne is the technical heart of the max law: if N₁ has MSB i and N₂ has MSB i' with i ≠ i', then N₁ XOR N₂ has MSB max(i,i'). At max(i,i') exactly one operand is set (the other is clear there, being below its own MSB), so the xor bit is 1; above max(i,i') both are clear, so the xor is 0. The case split on i < i' vs i > i' is handled by max_eq_right/left and decide on the Bool xor.",
     "mathContext": "$\\mathrm{MSB}(N_1)=i \\ne i'=\\mathrm{MSB}(N_2) \\implies \\mathrm{MSB}(N_1 \\oplus N_2) = \\max(i,i')$.",

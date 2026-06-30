@@ -7,7 +7,7 @@
     "title": "The exponent-indexed eta summand etaSummand m n = (-1)^(n+1)/n^(2m)",
     "content": "Unlike the parent entry, whose summand is fixed at exponent 4, etaSummand carries the exponent parameter m. Defining it as a top-level named function (rather than an inline lambda) is what later lets HasSum.even_add_odd infer f := etaSummand m from the pattern f (2*k); an anonymous lambda would block that higher-order unification. At n = 0 the value is ±1/0 = 0 in ℝ, so the series effectively starts at n = 1.",
     "mathContext": "$\\displaystyle\\eta(2m) = \\sum_{n\\ge 1}\\frac{(-1)^{n+1}}{n^{2m}}.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["Dirichlet eta function", "alternating series", "parameterization over exponent"],
     "prerequisites": ["infinite series", "real powers"]
   },
@@ -43,7 +43,7 @@
     "title": "eta_coeff_eq — 1 − 2·(1/2)^(2m) = 1 − 2^(1−2m)",
     "content": "Certifies that the coefficient produced by the proof equals the textbook eta-zeta factor. The real integer power 2^(1−2m) is reduced via zpow_sub₀ (2 ≠ 0), zpow_one and zpow_natCast to 2/2^(2m), which div_eq_mul_inv matches against 2·(2^(2m))⁻¹ = 2·(1/2)^(2m). This makes the recognizable form 1 − 2^(1−2m) itself machine-checked rather than merely asserted in prose.",
     "mathContext": "$\\displaystyle 1 - 2\\left(\\tfrac12\\right)^{2m} = 1 - 2^{\\,1-2m}.$",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": ["zpow_sub₀", "zpow_natCast", "real integer powers"],
     "prerequisites": ["real zpow", "power arithmetic"]
   },
