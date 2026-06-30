@@ -50,8 +50,8 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
-    "lineCount": 128,
-    "theoremCount": 6,
+    "lineCount": 180,
+    "theoremCount": 10,
     "definitionCount": 2
   },
   "overview": {
@@ -62,7 +62,8 @@
       "Boole summation is exact and finite: no convergence is needed — the asymptotic 'remainder ≈ half first term' is a corollary of an algebraic identity that holds for every window [n, m)",
       "The identity is discrete summation by parts: pairing (-1)^j against the antidifference of the sign sequence turns ∑(-1)^j a_j into endpoint terms minus ½∑(-1)^j Δa_j",
       "Each iteration lowers the order: the residual is the same operation applied to Δa, so one step yields the Δ²a (≈ a'') correction with coefficient 1/4 — the start of the Euler-number expansion",
-      "The half-endpoint model has a clean error control: |altSum − model| ≤ ½ total-variation(a), telescoping to ½(a_n − a_m) for monotone a, which → ½ a_n as the upper terms vanish"
+      "The half-endpoint model has a clean error control: |altSum − model| ≤ ½ total-variation(a), telescoping to ½(a_n − a_m) for monotone a, which → ½ a_n as the upper terms vanish",
+      "The iteration closes to a single order-K identity (boole_general): ∑_{k<K} ((-1)^k/2^{k+1})·endpoint(Δᵏa) plus an exact alternating-sum remainder of Δᴷa, proved by induction on K and recovering boole_first/boole_second at K=1,2"
     ],
     "prerequisites": [
       "Finite sums over half-open integer intervals Finset.Ico and Finset.sum_Ico_succ_top",
@@ -121,19 +122,19 @@
       "Finset"
     ],
     "namespace": "AlternatingSeriesBooleSummation",
-    "lineCount": 128,
+    "lineCount": 180,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 2,
     "path": "Proofs/AlternatingSeriesBooleSummation.lean",
     "sorries": 0
   },
   "conclusion": {
-    "summary": "The 'remainder ≈ half the first omitted term' heuristic for alternating series is grounded in an exact, axiom-free finite identity: altSum a n m = ½·((-1)^n a_n − (-1)^m a_m) − ½·altSum (Δa) n m. Its iterate exposes the Δ²a correction, and the difference from the half-endpoint model is controlled by ½ the total variation, telescoping to ½(a_n − a_m) for a decreasing sequence.",
-    "implications": "Provides the reusable Boole summation engine — discrete summation by parts specialised to the alternating sign — that Mathlib does not package, complementing its alternating series test. The finite identity yields the leading half-term estimate without any convergence hypothesis, and the second-order form is the first step of the full Euler-number asymptotic expansion.",
+    "summary": "The \"remainder ≈ half the first omitted term\" heuristic for alternating series is grounded in an exact, axiom-free finite identity: altSum a n m = ½·((-1)^n a_n − (-1)^m a_m) − ½·altSum (Δa) n m. Iterating it to all orders gives the general order-K Boole formula boole_general — the first K weights (-1)^k/2^{k+1} times the endpoint differences of Δᵏa, plus an exact remainder that is an alternating sum of Δᴷa — with a matching error bound (1/2^K)·∑|Δᴷa_j|. For a decreasing sequence the K=1 case telescopes to ½(a_n − a_m).",
+    "implications": "Provides the reusable Boole summation engine — discrete summation by parts specialised to the alternating sign — that Mathlib does not package, complementing its alternating series test. The finite identity yields the leading half-term estimate without any convergence hypothesis, and boole_general gives the full finite Euler-number expansion to arbitrary order K as a single closed form with an explicit (1/2^K)-shrinking remainder bound.",
     "openQuestions": [
-      "Can the iterated formula be packaged as a single closed form ∑_{k} (Euler-number coefficient)·Δ^k a over the window, proving the full Boole asymptotic expansion to arbitrary order?",
-      "Does taking m → ∞ for a convergent alternating series (a → 0) give a clean tsum-level statement R_n = ½(-1)^n a_n − ½·(tail alternating sum of Δa), tying the finite engine to Mathlib's limit?"
+      "Does taking m → ∞ for a convergent alternating series (a → 0) give a clean tsum-level statement R_n = ½(-1)^n a_n − ½·(tail alternating sum of Δa), tying the finite engine to Mathlib’s limit?",
+      "Do the Boole weights (-1)^k/2^{k+1} of boole_general match the Euler numbers / Euler polynomials evaluated at a fixed point, and can that be proved as an exact rational identity within the gallery?"
     ]
   },
   "crossReferences": [
