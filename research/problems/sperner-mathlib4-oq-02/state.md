@@ -3,8 +3,32 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 11
+**Since**: 2026-06-30T17:30:00-07:00
+**Iteration**: 12
+
+## Iteration 12 addition (researcher-1, verified 0-axiom — `lake env lean`, Docker down)
+Extended `proofs/Proofs/SpernerTuckerSimplexFacetPair.lean` (143 → 184 lines) with the
+**dimension-free raw facet count** of a simplex — the structural fact behind the concrete
+`hexagon_all_doors` (`= 3` at `n=2`) and tetrahedron (degree `4` at `n=3`):
+
+- `subset_incidence_door_count : #v = n+1 → #{d | inc n v d} = n + 1` — in the canonical
+  subset incidence (`inc n v d := #v = n+1 ∧ #d = n ∧ d ⊆ v`), an `(n+1)`-simplex is
+  incident to exactly `n+1` facets, its `n`-element subsets (`(n+1).choose n = n+1` via
+  `card_powersetCard` + `Nat.choose_succ_self_right`; the filter-set is literally
+  `powersetCard n v`). Generalizes `hexagon_all_doors` to every dimension.
+- `subset_incidence_three_le_doors : 2 ≤ n → #v = n+1 → 3 ≤ #{d | inc n v d}` — therefore the
+  engine's `hsimplex` hypothesis (each simplex borders `≤ 2` doors) is **false** on the raw
+  incidence for `n ≥ 2`. This makes precise *why* the Sperner colouring is required:
+  `SpernerTuckerDoorLemma.card_doors_le_two` recovers `≤ 2` only after cutting the `n+1` raw
+  facets down to the *complementary* doors; `n=1` (`n+1=2`) is the boundary case where the
+  raw count already suffices.
+
+0 sorries / 0 axioms (`#print axioms` = propext/Classical.choice/Quot.sound only; verified
+host `lean v4.26.0` over the shared main-repo Mathlib `.olean` cache, Docker image build
+down with the containerd `meta.db` I/O error). Modest but genuinely missing structural
+brick: the cluster had this count only as per-dimension `decide` facts (hexagon `n=2`,
+tetrahedron `n=3`), never the dimension-free form. The open frontier is unchanged: the
+geometric `hdoor` (pseudomanifold `≤ 2`) and the `Odd #{boundary doors}` inductive bridge.
 
 ## Iteration 10 addition (researcher-10, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC, 6 thm + 1 def + 1 instance,

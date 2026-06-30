@@ -132,12 +132,47 @@ example [Fintype α] (n : ℕ)
   SpernerTuckerDoorGraph.doorGraph_degree_eq_shared (inc n) hdoor
     (subset_incidence_hpair n) v
 
+/-! ## The raw facet count of a simplex (dimension-free `hexagon_all_doors`)
+
+The concrete hexagon model proves each triangle carries exactly **3** doors
+(`SpernerTuckerHexagonPseudomanifold.hexagon_all_doors`, the `n = 2` case) and the
+tetrahedron model gives door-graph degree `4` (`n = 3`).  The clean dimension-free fact
+behind both is that an `(n+1)`-simplex has exactly `n+1` facets: its `n`-element subsets
+number `(n+1).choose n = n+1`.  For the canonical subset incidence this is the *raw*
+door-count of every simplex, in every dimension. -/
+
+/-- **Raw door count of a simplex.**  In the subset incidence, an `(n+1)`-vertex simplex
+`v` is incident to exactly `n + 1` facets — its `n`-element subsets, of which there are
+`(n+1).choose n = n+1`.  This is the dimension-free generalization of the hexagon's
+`hexagon_all_doors` (`= 3` at `n = 2`). -/
+theorem subset_incidence_door_count [Fintype α] (n : ℕ) {v : Finset α}
+    (hv : v.card = n + 1) :
+    #{d | inc n v d} = n + 1 := by
+  have hset : ({d | inc n v d} : Finset (Finset α)) = powersetCard n v := by
+    ext d
+    simp only [mem_filter, Finset.mem_univ, true_and, mem_powersetCard, inc, hv]
+    tauto
+  rw [hset, card_powersetCard, hv, Nat.choose_succ_self_right]
+
+/-- **The raw subset incidence violates `hsimplex` for `n ≥ 2`.**  Since an
+`(n+1)`-simplex has `n + 1 ≥ 3` facets, the engine's `hsimplex` hypothesis (each simplex
+borders `≤ 2` doors) is *false* on the raw incidence in dimension `≥ 2`.  This is exactly
+why the canonical Sperner colouring is needed: `SpernerTuckerDoorLemma.card_doors_le_two`
+recovers `≤ 2` only after cutting the `n+1` raw facets down to the *complementary* doors.
+The `n = 1` line (`n + 1 = 2`) is the boundary case where the raw count already suffices. -/
+theorem subset_incidence_three_le_doors [Fintype α] {n : ℕ} (hn : 2 ≤ n) {v : Finset α}
+    (hv : v.card = n + 1) :
+    3 ≤ #{d | inc n v d} := by
+  rw [subset_incidence_door_count n hv]; omega
+
 #check @facets_pairwise
 #check @subset_incidence_hpair
+#check @subset_incidence_door_count
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`.
 #print axioms facets_pairwise
 #print axioms subset_incidence_hpair
+#print axioms subset_incidence_door_count
 
 end SpernerTuckerSimplexFacetPair
