@@ -51,15 +51,37 @@
     "proofId": "erdos-660-oq-01",
     "range": {
       "startLine": 55,
-      "endLine": 70
+      "endLine": 61
     },
     "type": "concept",
-    "title": "Set-indexed corollaries and the Erdős #660 use",
-    "content": "Two restatements make the lemma directly applicable. `convexIndependent_of_affineIndependent_set` specializes the main theorem to the coercion family $(\\uparrow) : s \\to E$ of an affinely independent **set** $s$. `notMem_convexHull_diff_of_affineIndependent_set` unfolds this to the concrete form: for $x \\in s$, $x \\notin \\operatorname{convexHull}_{\\Bbbk}(s \\setminus \\{x\\})$.\n\nThat last form is exactly what certifies a simplex as a convex polyhedron: the four vertices of a regular tetrahedron are affinely independent, so every vertex fails to lie in the convex hull of the other three, i.e. each is an extreme point — `IsConvexPolyhedronVertices` holds. This is the certification the Platonic-solid constructions of Erdős #660 require for their simplex case.",
-    "mathContext": "`notMem_convexHull_diff_of_affineIndependent_set : AffineIndependent 𝕜 ((↑) : s → E) → x ∈ s → x ∉ convexHull 𝕜 (s \\ {x})` — extremality of each vertex of an affinely independent set.",
-    "significance": "standard",
+    "title": "Set-Indexed Corollary",
+    "content": "`convexIndependent_of_affineIndependent_set` specializes the main theorem from an indexed family $p : \\iota \\to E$ to the coercion family $(\\uparrow) : s \\to E$ of an affinely independent **set** $s \\subseteq E$. This is the form most callers actually want — convex independence stated directly about a set of points rather than about an index map — obtained by applying `AffineIndependent.convexIndependent` to the subtype coercion of $s$.",
+    "mathContext": "`convexIndependent_of_affineIndependent_set : AffineIndependent 𝕜 ((↑) : s → E) → ConvexIndependent 𝕜 ((↑) : s → E)`.",
+    "significance": "supporting",
     "prerequisites": [
       "set coercion families in Mathlib",
+      "a subtype as an index type"
+    ],
+    "relatedConcepts": [
+      "convex independence",
+      "set versus indexed family",
+      "subtype coercion"
+    ]
+  },
+  {
+    "id": "erdos-660-oq-01-ann-tetrahedron",
+    "proofId": "erdos-660-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "Certifying Simplex Vertices (the Erdős #660 Use)",
+    "content": "`notMem_convexHull_diff_of_affineIndependent_set` unfolds the set corollary into the concrete extremality statement: for $x \\in s$, $x \\notin \\operatorname{convexHull}_{\\Bbbk}(s \\setminus \\{x\\})$. This is exactly what certifies a simplex as a convex polyhedron — the four vertices of a regular tetrahedron are affinely independent, so each fails to lie in the convex hull of the other three, i.e. each is an extreme point, giving `IsConvexPolyhedronVertices`. It is the certification the Platonic-solid constructions of Erdős #660 require for their simplex case.",
+    "mathContext": "`notMem_convexHull_diff_of_affineIndependent_set : AffineIndependent 𝕜 ((↑) : s → E) → x ∈ s → x ∉ convexHull 𝕜 (s \\ {x})` — each vertex of an affinely independent set is extreme.",
+    "significance": "key",
+    "prerequisites": [
+      "extreme points and convex hulls",
       "IsConvexPolyhedronVertices (Erdős #660)"
     ],
     "relatedConcepts": [

@@ -47,7 +47,9 @@
     "set-systems"
   ],
   "relatedProofs": [
-    "erdos-ko-rado"
+    "erdos-ko-rado",
+    "erdos-ko-rado-oq-01",
+    "erdos-ko-rado-oq-02"
   ],
   "references": {
     "papers": [],
@@ -70,6 +72,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosKoRado.lean"
+    },
+    {
+      "path": "Proofs/ErdosKoRadoOQ01.lean",
+      "filename": "ErdosKoRadoOQ01.lean",
+      "lineCount": 245,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosKoRadoOQ01.lean"
+    },
+    {
+      "path": "Proofs/ErdosKoRadoOQ02.lean",
+      "filename": "ErdosKoRadoOQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosKoRadoOQ02.lean"
     }
   ]
 }

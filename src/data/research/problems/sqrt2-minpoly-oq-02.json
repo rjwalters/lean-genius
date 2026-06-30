@@ -46,6 +46,9 @@
   "relatedProofs": [
     "sqrt2-minpoly",
     "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02",
+    "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02-oq-02",
     "sqrt2-minpoly-oq-02"
   ],
   "references": {
@@ -81,6 +84,50 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
     },
     {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "lineCount": 133,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean"
+    },
+    {
       "path": "Proofs/Sqrt2MinpolyOQ02.lean",
       "filename": "Sqrt2MinpolyOQ02.lean",
       "lineCount": 203,
@@ -90,6 +137,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ03.lean",
+      "filename": "Sqrt2MinpolyOQ03.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ03.lean"
     }
   ]
 }

@@ -54,9 +54,51 @@
   },
   "crossReferences": [
     {
-      "proofId": "integral-root-theorem-oq-01",
+      "targetId": "integral-root-theorem-oq-01",
       "relationship": "related",
       "description": "Both constrain polynomials by their roots: the rational root theorem restricts the rational roots of an integer polynomial, while the finite identity theorem says a degree-< n polynomial with n roots must vanish. Together they reflect the principle that a low-degree polynomial cannot have too many roots."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Vandermonde and Interpolation",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Docstring: distinct nodes make the Vandermonde determinant nonzero, so evaluation is injective on degree-<n polynomials — yielding the finite identity theorem and interpolation uniqueness. Notes the eval-bridge Mathlib lacks.",
+      "mathContext": "det V = ∏_{i<j}(v_j − v_i) ≠ 0 for distinct nodes."
+    },
+    {
+      "id": "setup",
+      "title": "Setup: Field, Nodes, Distinctness",
+      "startLine": 26,
+      "endLine": 29,
+      "summary": "Namespace and variables: a field F, count n, nodes v : Fin n → F, with distinctness encoded as Function.Injective v — the single driving hypothesis, valid over any field.",
+      "mathContext": "F a field, v : Fin n → F, Injective v."
+    },
+    {
+      "id": "det",
+      "title": "Vandermonde Nonvanishing",
+      "startLine": 30,
+      "endLine": 36,
+      "summary": "vandermonde_det_ne_zero: distinct nodes ⟹ det(vandermonde v) ≠ 0, the invertibility making evaluation-at-nodes a bijection on degree-<n polynomials.",
+      "mathContext": "det(vandermonde v) ≠ 0 ⟺ v injective."
+    },
+    {
+      "id": "identity",
+      "title": "The Finite Identity Theorem",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "eq_zero_of_eval_eq_zero: a degree-<n polynomial vanishing at n distinct nodes is 0, via the eval→coefficient bridge (eval_eq_sum_range' + eq_zero_of_forall_index_sum_mul_pow_eq_zero) — the content Mathlib lacks.",
+      "mathContext": "deg p < n and p(v_j)=0 ∀j ⟹ p = 0."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Interpolation Uniqueness",
+      "startLine": 56,
+      "endLine": 65,
+      "summary": "eq_of_eval_eq: degree-<n polynomials agreeing at n distinct points are equal, since their difference has degree <n and vanishes at every node — at most one interpolant.",
+      "mathContext": "deg p, deg q < n and p(v_j)=q(v_j) ∀j ⟹ p = q."
     }
   ],
   "leanFile": {

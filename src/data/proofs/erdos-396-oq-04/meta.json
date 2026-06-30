@@ -51,6 +51,48 @@
       "Which composite divisors d ∣ C(2(n+1),n+1) are forced beyond 2(2n+1) and n+2, and how do they relate to the descending-factorial products in the #396 conjecture?"
     ]
   },
+  "sections": [
+    {
+      "id": "closed-form",
+      "title": "The closed form",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "centralBinom_succ_eq: substituting C(2n,n) = (n+1)·catalan n into Mathlib's recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) and cancelling n+1 gives the closed form C(2(n+1),n+1) = 2(2n+1)·catalan n — exposing the Catalan number as the exact cofactor of 2(2n+1).",
+      "mathContext": "$C(2(n+1),n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$"
+    },
+    {
+      "id": "divisibility-refinements",
+      "title": "Divisibility refinements",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "Reading the closed form as a product yields four divisibilities of the next central binomial coefficient: by catalan n (catalan_dvd_centralBinom_succ), by 2(2n+1) (two_mul_succ_dvd_centralBinom_succ), by the odd factor 2n+1 (odd_factor_dvd_centralBinom_succ, stronger than Mathlib's even-only fact), and by 2 (two_dvd_centralBinom_succ, re-derived as a corollary).",
+      "mathContext": "$\\mathrm{catalan}\\,n \\mid C(2(n+1),n+1)$, $\\ (2n+1) \\mid C(2(n+1),n+1)$"
+    },
+    {
+      "id": "catalan-recurrence",
+      "title": "The two-term Catalan recurrence",
+      "startLine": 84,
+      "endLine": 104,
+      "summary": "catalan_recurrence: applying succ_mul_catalan_eq_centralBinom at index n+1 and substituting the closed form gives the elementary recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n — the standard computational recurrence for Catalan numbers without binomial coefficients. succ_succ_dvd records the divisibility (n+2) ∣ 2(2n+1)·catalan n it implies.",
+      "mathContext": "$(n+2)\\,\\mathrm{catalan}(n+1) = 2(2n+1)\\,\\mathrm{catalan}\\,n$"
+    },
+    {
+      "id": "coprimality",
+      "title": "Coprimality of the two divisors",
+      "startLine": 106,
+      "endLine": 116,
+      "summary": "coprime_succ_two_mul_succ: the divisors n+1 and 2n+1 are coprime, by peeling 2n+1 = n + 1·(n+1) to reduce gcd(n+1, 2n+1) to gcd(n+1, n) = gcd(n, 1) = 1 — explaining why the two divisibility constraints act independently.",
+      "mathContext": "$\\gcd(n+1,\\,2n+1) = 1$"
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity checks against explicit Catalan values",
+      "startLine": 118,
+      "endLine": 130,
+      "summary": "Three example checks confirm the formulas on concrete values: C(2,1) = 2 = 2(2·0+1)·catalan 0, C(6,3) = 20 = 2·5·catalan 2, and the recurrence at n=2 (4·catalan 3 = 2·5·catalan 2, i.e. 4·5 = 20).",
+      "mathContext": "$C(6,3) = 20 = 2\\cdot 5\\cdot\\mathrm{catalan}\\,2$"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

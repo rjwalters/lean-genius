@@ -1,0 +1,116 @@
+{
+  "slug": "zsqrtd-neg-two-oq-01",
+  "title": "Can the complete characterization of primes p = x²+2y² (i",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-18T15:52:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read `problem.md`, survey parent proof (`src/data/proofs/zsqrtd-neg-two/`), and probe Mathlib for adjacent coverage.",
+    "blockers": [],
+    "nextAction": "Fast path: Quick Mathlib search for adjacent theorems, then either S1 OBSERVE doc (if pristine territory) or S2 PREP session note (if Mathlib already covers the bulk).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "When Docker/Aristotle recover: `./proofs/scripts/docker-build.sh Proofs.ZsqrtdNegTwoOQ01`.",
+      "If green, register in `proofs/Proofs.lean` and add gallery meta under",
+      "Risk points to watch on first build: the `decide`/`simp` cast-back closers in"
+    ],
+    "markdown": "# zsqrtd-neg-two-oq-01 — single bi-conditional for primes p = x² + 2y²\n\n## Problem\nUnify the complete characterization of primes representable as `x² + 2y²` into a\nsingle `↔` in Lean. Parent: `zsqrtd-neg-two` (ℤ[√−2] Euclidean domain).\n\n## Status: ACT (proof written, build-pending)\n\nBoth verification backends were down this session (host Docker containerd blob\nI/O corruption, fleet-wide; Aristotle MCP returning 404 \"Resource not found\").\nThe proof is verify-by-construction: every Mathlib lemma name was confirmed to\nexist by direct inspection of `proofs/.lake/packages/mathlib` (pin v4.26.0).\nNOT yet machine-checked → not registered in `Proofs.lean`.\n\n## Session 2026-06-18 (s01) — FRESH\n\n### Key mathematical content\nThe parent file already proves the two FORWARD implications (`p % 8 = 1` and\n`p % 8 = 3` ⟹ representable) via `-2` being a QR mod p. It never assembled them\ninto an iff and never proved the CONVERSE.\n\n- **Converse (new, elementary):** odd `p = a² + 2b²` ⟹ `p ≡ 1` or `3 (mod 8)`.\n  `p` odd ⟹ `a` odd ⟹ `a² ≡ 1 (mod 8)`; `2b² ≡ 0` or `2 (mod 8)`. In `ZMod 8`\n  the achievable values of `x²+2y²` are `{0,1,2,3,4,6}` (a 64-case `decide`),\n  never `5` or `7`; intersect with odd residues `{1,3,5,7}` ⟹ `{1,3}`.\n- **Unified iff:** for prime `p`,\n  `(∃ a b : ℤ, a²+2b² = p) ↔ (p = 2 ∨ p % 8 = 1 ∨ p % 8 = 3)`.\n  `←`: even case `2 = 0²+2·1²` + parent's two forward theorems.\n  `→`: even case + converse.\n\n### Built items\n- `ZsqrtdNegTwoOQ01.repr_mod_eight` (converse) — proofs/Proofs/ZsqrtdNegTwoOQ01.lean\n- `ZsqrtdNegTwoOQ01.prime_sq_add_two_sq_iff` (the open-question iff) — same file\n\n### Lemmas relied on (all confirmed present in pin v4.26.0)\n`ZMod.natCast_mod`, `ZMod.val_natCast`, `Nat.Prime.eq_two_or_odd`,\n`SqAddTwoSq.sq_add_two_sq_of_prime_{one,three}_mod_eight` (parent).\n\n### Next steps\n1. When Docker/Aristotle recover: `./proofs/scripts/docker-build.sh Proofs.ZsqrtdNegTwoOQ01`.\n2. If green, register in `proofs/Proofs.lean` and add gallery meta under\n   `src/data/proofs/zsqrtd-neg-two/` (or OQ-01 entry).\n3. Risk points to watch on first build: the `decide`/`simp` cast-back closers in\n   `repr_mod_eight` step (C), and `exact_mod_cast` after `push_cast` in step (A).\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "zsqrtd-neg-two",
+    "zsqrtd-neg-two-oq-01",
+    "zsqrtd-neg-two-oq-02",
+    "zsqrtd-neg-two-oq-03",
+    "zsqrtd-neg-two-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T21:42:27.143Z",
+  "lastUpdate": "2026-06-19T02:40:57.669Z",
+  "completed": "2026-06-19T02:40:57.663Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ZsqrtdNegTwo.lean",
+      "filename": "ZsqrtdNegTwo.lean",
+      "lineCount": 477,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwo.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ01.lean",
+      "lineCount": 108,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ01.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ02.lean",
+      "filename": "ZsqrtdNegTwoOQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ02.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
+      "filename": "ZsqrtdNegTwoOQ03.lean",
+      "lineCount": 560,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03OQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ03OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03OQ01.lean"
+    }
+  ]
+}

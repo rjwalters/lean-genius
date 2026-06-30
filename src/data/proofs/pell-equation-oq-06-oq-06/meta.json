@@ -74,6 +74,62 @@
       "On the parent chain, negPellSeq m ⊛ negPellSeq n = ζ^(2m+1)·ζ^(2n+1) = ζ^(2(m+n)+2) — an even power, hence a positive-Pell solution. This generalizes the diagonal squaring m = n recorded by the oq-01 sibling to an arbitrary off-diagonal composition, all from one identity."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "brahmagupta",
+      "type": "main",
+      "description": "THE HEADLINE — the Brahmagupta–Fibonacci identity for x² − 2y²: (x²−2y²)(u²−2v²) = (xu+2yv)² − 2(xv+yu)², a self-contained one-line ring identity (Mathlib has it only abstractly as Zsqrtd.norm_mul).",
+      "leanType": "(x y u v : ℤ) : (x^2 - 2*y^2) * (u^2 - 2*v^2) = (x*u + 2*y*v)^2 - 2*(x*v + y*u)^2"
+    },
+    {
+      "name": "pellNorm_compose",
+      "type": "core",
+      "description": "Multiplicativity of the Pell form under composition: N(p ⊛ q) = N(p)·N(q) — pellNorm is a monoid homomorphism (ℤ×ℤ, ⊛) → (ℤ, ·).",
+      "leanType": "(p q : ℤ × ℤ) : pellNorm (compose p q) = pellNorm p * pellNorm q"
+    },
+    {
+      "name": "compose_eq_mul",
+      "type": "core",
+      "description": "Composition IS multiplication in ℤ[√2]: ⟨(p ⊛ q).1, (p ⊛ q).2⟩ = ⟨p⟩ · ⟨q⟩ — the bridge making the monoid laws free, proved by matching re/im via Zsqrtd.re_mul / im_mul.",
+      "leanType": "(p q : ℤ × ℤ) : (⟨(compose p q).1, (compose p q).2⟩ : ℤ√2) = ⟨p.1, p.2⟩ * ⟨q.1, q.2⟩"
+    },
+    {
+      "name": "compose_unit_closed",
+      "type": "main",
+      "description": "Closure of the unit group: if |N(p)| = |N(q)| = 1 then |N(p ⊛ q)| = 1, so the solutions of x² − 2y² = ±1 form a group under Brahmagupta composition.",
+      "leanType": "(p q : ℤ × ℤ) (hp : pellNorm p ^ 2 = 1) (hq : pellNorm q ^ 2 = 1) : pellNorm (compose p q) ^ 2 = 1"
+    },
+    {
+      "name": "compose_neg_neg",
+      "type": "main",
+      "description": "The SIGN LAW: composing two negative-Pell solutions (N = −1) yields a positive-Pell solution (N = +1), since (−1)(−1) = +1 — the structural reason the negative chain occupies only the odd powers of ζ.",
+      "leanType": "(p q : ℤ × ℤ) (hp : pellNorm p = -1) (hq : pellNorm q = -1) : pellNorm (compose p q) = 1"
+    },
+    {
+      "name": "compose_negPellSeq_norm",
+      "type": "main",
+      "description": "Applied to the parent chain: negPellSeq m ⊛ negPellSeq n solves the positive Pell equation (norm +1), being ζ^(2(m+n)+2) — generalizing the m = n squaring of the oq-01 sibling to an arbitrary composition.",
+      "leanType": "(m n : ℕ) : pellNorm (compose (negPellSeq m) (negPellSeq n)) = 1"
+    },
+    {
+      "name": "pellNorm_eq_zsqrtd_norm",
+      "type": "lemma",
+      "description": "The Pell form is the ℤ[√2]-norm: N(x,y) = x² − 2y² = Zsqrtd.norm ⟨x,y⟩, identifying the elementary two-integer statements with the abstract quadratic-integer norm.",
+      "leanType": "(p : ℤ × ℤ) : pellNorm p = Zsqrtd.norm ⟨p.1, p.2⟩"
+    }
+  ],
+  "conclusion": {
+    "summary": "Every structural feature of the Pell lineage — recurrence, √2-approximation, Cassini determinant, the negative chain as odd powers of ζ — descends from one algebraic fact: the solutions of x² − 2y² = ±1 are closed under Brahmagupta composition (x,y) ⊛ (u,v) = (xu + 2yv, xv + yu), which is exactly multiplication in ℤ[√2]. This entry proves the Brahmagupta–Fibonacci identity for the form x² − 2y², derives the commutative-monoid and unit-group structure, and the sign law negative ⊛ negative = positive, then applies it to the parent chain (negPellSeq m ⊛ negPellSeq n = ζ^(2(m+n)+2), a positive-Pell solution). Fully verified: 0 axioms, 0 sorries.",
+    "implications": [
+      "Brahmagupta composition is not an ad-hoc rule but the multiplication of quadratic integers ⟨x,y⟩, ⟨u,v⟩ in ℤ[√2] (compose_eq_mul). Once that bridge is established, associativity, commutativity, the identity (1,0), and norm multiplicativity are all inherited from the ring for free.",
+      "Restricting the norm homomorphism N : (ℤ×ℤ, ⊛) → (ℤ, ·) to N = ±1 (the units of ℤ[√2]) yields a group — the solution set of x² − 2y² = ±1 is closed under composition. This is the elementary, both-signs statement of what makes Mathlib's Pell.Solution₁ a group, including the norm −1 case Solution₁ does not cover.",
+      "The sign law (−1)(−1) = +1 explains the parity structure of the negative-Pell chain: it occupies only the odd powers of ζ, and composing two of them (adding two odd exponents) lands on an even power — a positive-Pell solution. The off-diagonal compose_negPellSeq_norm generalizes the oq-01 diagonal squaring."
+    ],
+    "openQuestions": [
+      "Promote the unit-group closure to a full Lean `Group` (or `CommGroup`) instance on the solution set {(x,y) : x² − 2y² = ±1}, exhibiting inverses (the conjugate (x, −y) up to sign) and recovering the cyclic-times-{±1} structure of the units of ℤ[√2].",
+      "Generalize compose and the Brahmagupta identity to arbitrary squarefree D, recovering x² − Dy² = ±1 and identifying when the fundamental unit has norm −1 (the negative-Pell solvability question) versus +1."
+    ]
+  },
   "sections": [
     {
       "id": "header",

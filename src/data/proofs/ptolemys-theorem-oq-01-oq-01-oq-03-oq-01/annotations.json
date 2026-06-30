@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 3, "endLine": 51 },
+    "type": "context",
+    "title": "Inversion Maps a Circle Through Its Centre to a Line",
+    "content": "Inversive geometry rests on one structural fact: inversion centred at a interchanges spheres-through-a with hyperplanes-not-through-a. This is the engine of the classical proof of Ptolemy's inequality — invert at a vertex and the circumcircle becomes a straight line, so Ptolemy becomes the triangle inequality among the images. Mathlib formalizes inversion and Ptolemy's inequality but explicitly lacks the circle↦line correspondence and any cyclic-polygon concept. This file supplies that correspondence in coordinate-free, axiom-free form, answering the first open question of the parent equality-case entry. Set up in an arbitrary real inner-product space presented as a NormedAddTorsor.",
+    "mathContext": "Inversion at $a$, radius $1$: spheres through $a \\leftrightarrow$ hyperplanes $H_o = \\{p : \\langle p -ᵥ a,\\ o -ᵥ a\\rangle = \\tfrac12\\}$ not through $a$.",
+    "significance": "context",
+    "relatedConcepts": ["inversive geometry", "Ptolemy's theorem", "conformal involution", "Möbius geometry", "EuclideanGeometry.inversion"],
+    "prerequisites": ["Euclidean inversion", "inner-product spaces", "affine hyperplanes"]
+  },
+  {
+    "id": "ann-helper",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 60, "endLine": 67 },
+    "type": "technique",
+    "title": "Squaring Helper for Nonnegative Reals",
+    "content": "nonneg_sq_iff: for nonnegative p, q, p = q ↔ p² = q². This lets the distance condition dist x o = dist a o (an equality of nonnegative norms) be replaced by an equality of their squares, where the polarisation identity norm_sub_sq_real can expand them into inner products. The backward direction uses Real.sqrt_sq (Mathlib v4.26 lacks pow_left_inj / sq_eq_sq in the needed form).",
+    "mathContext": "$p = q \\iff p^2 = q^2$ for $p, q \\ge 0$ — turns a norm equality into an inner-product computation.",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sqrt_sq", "squaring equivalence", "norm equality"],
+    "prerequisites": ["nonnegative reals", "square roots"]
+  },
+  {
+    "id": "ann-core",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 69, "endLine": 101 },
+    "type": "theorem",
+    "title": "The Core Equivalence: Sphere-Through-Centre ⇔ Image-on-Hyperplane",
+    "content": "inversion_inner_eq_half_iff is the single computational heart: for x ≠ a and any o, dist x o = dist a o ↔ ⟪inversion a 1 x −ᵥ a, o −ᵥ a⟫ = 1/2. Writing y = x −ᵥ a, m = o −ᵥ a: the image inner product is ⟪y,m⟫/‖y‖² (inversion_vsub_center + real_inner_smul_left); the sphere-through-a condition ‖y − m‖ = ‖m‖ expands via norm_sub_sq_real to ‖y‖² − 2⟪y,m⟫ + ‖m‖² = ‖m‖², where the ‖m‖² terms CANCEL leaving the affine-linear ‖y‖² = 2⟪y,m⟫. Dividing by the positive ‖y‖² (div_eq_div_iff) gives exactly ⟪y,m⟫/‖y‖² = 1/2. Both directions are the same algebra, so the iff is honest.",
+    "mathContext": "$\\mathrm{dist}\\,x\\,o = \\mathrm{dist}\\,a\\,o \\iff \\langle \\mathrm{inv}_a x -ᵥ a,\\ o -ᵥ a\\rangle = \\tfrac12$; the cancelling $\\|m\\|^2$ is why through-the-centre flattens to affine-linear.",
+    "significance": "key",
+    "relatedConcepts": ["inversion_vsub_center", "norm_sub_sq_real", "polarisation identity", "affine-linear condition"],
+    "prerequisites": ["inner-product algebra", "Euclidean inversion", "vsub arithmetic"]
+  },
+  {
+    "id": "ann-circle-to-line",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 103, "endLine": 114 },
+    "type": "insight",
+    "title": "Circle → Line: One Common Hyperplane",
+    "content": "cospherical_imp_inversion_image_inner_eq_half is the forward half: if ps is cospherical and contains a, destructure the witness to a centre o and radius r; the common normal is n = o −ᵥ a, and each other point's hyperplane membership is the forward direction of the core iff (with dist p o = dist a o = r). So the inversion images of the whole circle through a land on a single affine hyperplane — a line in the plane. The constant 1/2 is x-independent, which is precisely why a whole sphere collapses onto one fixed hyperplane.",
+    "mathContext": "$ps$ cospherical, $a \\in ps \\Rightarrow \\exists n,\\ \\forall p \\in ps \\setminus \\{a\\},\\ \\langle \\mathrm{inv}_a p -ᵥ a,\\ n\\rangle = \\tfrac12$.",
+    "significance": "key",
+    "relatedConcepts": ["Cospherical", "common normal", "hyperplane", "image of a circle"],
+    "prerequisites": ["the core equivalence", "cospherical sets"]
+  },
+  {
+    "id": "ann-line-to-circle",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 116, "endLine": 135 },
+    "type": "insight",
+    "title": "Line → Circle via the Inversion Involution",
+    "content": "inner_eq_half_imp_inversion_image_cospherical is the converse: if every point of qs differs from a and lies on the hyperplane ⟪· −ᵥ a, n⟫ = 1/2, then the inversion images of qs together with a are cospherical with centre n +ᵥ a. No new computation is needed — because inversion a 1 is an involution (inversion_inversion), a hyperplane point q is the image of its own image, so this is just the BACKWARD direction of the core iff applied to inversion a 1 q (after inversion_inversion and vadd_vsub), with the centre read straight off the normal n.",
+    "mathContext": "Points on $H = \\{\\langle \\cdot -ᵥ a, n\\rangle = \\tfrac12\\} \\Rightarrow$ their inversion images $\\cup \\{a\\}$ cospherical, centre $n +ᵥ a$; converse is free via the involution.",
+    "significance": "key",
+    "relatedConcepts": ["inversion_inversion", "involution", "Cospherical", "centre recovery"],
+    "prerequisites": ["the core equivalence", "inversion as involution"]
+  },
+  {
+    "id": "ann-four-point",
+    "proofId": "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 137, "endLine": 161 },
+    "type": "concept",
+    "title": "Four-Point Form: The Ptolemy Shape",
+    "content": "cospherical_four_imp_inversion_images_collinear_witness specializes to four points: if a, b, c, d are cospherical (concyclic), the three images b', c', d' share one hyperplane normal n, each at level 1/2 — the unordered 'the circle through a, b, c, d becomes the line through b', c', d''. This is the SOURCE-side companion (genuine concyclicity of the original points) to the parent equality-case entry's IMAGE-side Collinear-of-images certificate, and like the parent it avoids the trigonometric ordering axiom positive_ratio_implies_cyclic_order of the unit-circle leaf. A closing example re-derives the forward image condition from the sphere condition as a sanity check.",
+    "mathContext": "$a,b,c,d$ cospherical $\\Rightarrow \\exists n,\\ \\langle b' -ᵥ a, n\\rangle = \\langle c' -ᵥ a, n\\rangle = \\langle d' -ᵥ a, n\\rangle = \\tfrac12$ — the circle becomes the line through $b', c', d'$.",
+    "significance": "supporting",
+    "relatedConcepts": ["concyclicity", "Ptolemy's theorem", "collinearity of images", "axiom-free duality"],
+    "prerequisites": ["the circle→line direction", "Ptolemy's inequality"]
+  }
+]

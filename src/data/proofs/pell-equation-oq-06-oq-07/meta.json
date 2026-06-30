@@ -130,5 +130,15 @@
       "summary": "Concrete values X₂=17, Y₂=12, X₃=99, Y₃=70 and instances of the divisibility sequence Y₂ ∣ Y₆, Y₃ ∣ Y₉.",
       "mathContext": "$Y_2=12\\mid Y_6$ and $Y_3=70\\mid Y_9$ — explicit witnesses from $6=2\\cdot3$, $9=3\\cdot3$."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Building the positive-Pell chain γⁿ = Xₙ + Yₙ√2 directly from the fundamental unit γ = 3 + 2√2 ∈ ℤ[√2], the entry establishes the norm +1 Pell relation Xₙ² − 2Yₙ² = 1, the addition formulas Y_{m+n} = Xₘ·Yₙ + Yₘ·Xₙ and X_{m+n} = Xₘ·Xₙ + 2·Yₘ·Yₙ (multiplication in ℤ[√2] read through Zsqrtd.re_mul / im_mul), the step recurrences Xₙ₊₁ = 3Xₙ + 4Yₙ, Yₙ₊₁ = 2Xₙ + 3Yₙ, and coprimality of Xₙ and Yₙ. From the addition formula alone it derives the headline divisibility sequence m ∣ n ⟹ Yₘ ∣ Yₙ via the inductive core Yₘ ∣ Y_{k·m}, with the corollary that every Yₙ is even. All results are sorry-free and axiom-free (no native_decide).",
+    "implications": "The entry isolates the arithmetic core of the Pell chain that its analytic, algebraic, and determinantal siblings leave untouched, and frames it as the exact Pell analogue of the classical Fibonacci/Lucas divisibility-sequence theorem (Lucas 1878): in both settings the divisibility structure is a shadow of the addition law, not of any closed form. It also pins down the parent lineage's defining automorphism (x,y) ↦ (3x+4y, 2x+3y) as the n+1 case of the addition formula — i.e. multiplication by γ — unifying the recurrence, the composition law, and the divisibility structure under a single ring operation in ℤ[√2]. The explicit Bézout certificate behind coprimality is precisely the lever needed to upgrade to the strong (gcd) form.",
+    "openQuestions": [
+      "Strong divisibility sequence: does gcd(Yₘ, Yₙ) = Y_{gcd(m,n)} hold, and can it be formalized via Nat.gcd.induction using the coprimality isCoprime_X_Y proved here? (Left as future work in the source.)",
+      "What is the rank of apparition — the least index n with d ∣ Yₙ for a given divisor d — and does it satisfy the Lucas-sequence law that d ∣ Yₙ iff (rank of d) ∣ n?",
+      "Do the analogous divisibility-sequence and strong-divisibility results hold for the coordinate sequences of the general Pell equation x² − Dy² = 1 over ℤ[√D] for arbitrary non-square D, with the same addition-formula proof?",
+      "Which primes p divide some Yₙ, and how does the 2-adic (and p-adic) valuation of Yₙ grow with n — i.e. the analogue of the lifting-the-exponent / Carmichael theory for Lucas sequences?"
+    ]
+  }
 }

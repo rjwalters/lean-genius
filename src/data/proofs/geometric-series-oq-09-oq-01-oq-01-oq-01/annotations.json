@@ -1,0 +1,207 @@
+[
+  {
+    "id": "ann-overview-multisection",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 56 },
+    "type": "context",
+    "title": "From Geometric Closed Forms to a Property of Summability",
+    "content": "The parent geometric-series-oq-09-oq-01-oq-01 obtained the q-fold splitting of the geometric series ∑_m r^m as a reindexing along ℕ ≃ ℕ × Fin q (Nat.divModEquiv), but still over a normed field where the closed forms r^a/(1−r^q) are available. Its open question asked whether the reindexing viewpoint is intrinsic to summability rather than to those closed forms. This file answers yes: ℕ = ⨆_{a<q} {q·n+a : n} is literally the bijection ℕ ≃ ℕ × Fin q, so ANY HasSum f S transports along it, and both the block regrouping and the residue multisection fall out of fiberwise (discrete-Fubini) summation. The geometric formulas play no role; only the counting bijection q·(m/q)+m%q = m and the injectivity of n ↦ q·n+a are used.",
+    "mathContext": "$\\mathbb{N}=\\bigsqcup_{a<q}\\{qn+a:n\\in\\mathbb{N}\\}\\;\\cong\\;\\mathbb{N}\\times\\mathrm{Fin}\\,q$; transport an arbitrary $\\mathrm{HasSum}\\,f\\,S$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "multisection",
+      "reindexing",
+      "discrete Fubini",
+      "Nat.divModEquiv",
+      "unconditional convergence"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "equivalences",
+      "topological groups"
+    ]
+  },
+  {
+    "id": "ann-typeclass-setting",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 63 },
+    "type": "concept",
+    "title": "The Minimal Ambient Structure: a Complete Hausdorff Uniform Abelian Group",
+    "content": "The variable block fixes M to be an additive abelian group with a uniform structure compatible with the group operation (IsUniformAddGroup), that is complete (CompleteSpace) and Hausdorff (T2Space). This is exactly the structure each ingredient needs: completeness so that each residue subseries actually converges (Summable.comp_injective lives in the complete-uniform-group section), Hausdorffness so that sums are unique (HasSum.unique requires T2Space), and the topological-group structure to supply the RegularSpace instance that HasSum.prod_fiberwise consumes. Crucially there is no norm, no Banach space, and no absolute convergence beyond plain Summable — the result is strictly more general than the normed-field parent.",
+    "mathContext": "$M$ complete Hausdorff uniform abelian group; no norm, no $\\ell^1$ hypothesis, only $\\mathrm{Summable}\\,f$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform space",
+      "topological group",
+      "completeness",
+      "Hausdorff space",
+      "unconditional summability"
+    ],
+    "prerequisites": [
+      "uniform spaces",
+      "topological groups",
+      "completeness and separation axioms"
+    ]
+  },
+  {
+    "id": "ann-residue-injective",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "technique",
+    "title": "Injectivity of the Residue Map n ↦ q·n + a",
+    "content": "For q ≠ 0 the map n ↦ q·n + a is injective on ℕ. From q·n + a = q·m + a, additive cancellation (Nat.add_right_cancel) strips the +a, leaving q·n = q·m, and left-cancellation of the nonzero factor q (Nat.eq_of_mul_eq_mul_left, given q > 0 from Nat.pos_of_ne_zero) gives n = m. This is the single combinatorial fact underpinning the whole multisection: it is what lets summability descend to each residue subseries. Note the hypothesis is only q ≠ 0; the map need not be surjective (its image is the residue class a mod q), but injectivity is all that summability descent requires.",
+    "mathContext": "$qn+a=qm+a\\Rightarrow qn=qm\\Rightarrow n=m$ for $q\\neq 0$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "injective function",
+      "cancellation",
+      "residue classes",
+      "arithmetic progression"
+    ],
+    "prerequisites": [
+      "natural number arithmetic",
+      "injectivity"
+    ]
+  },
+  {
+    "id": "ann-summable-residue",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 74, "endLine": 79 },
+    "type": "insight",
+    "title": "Each Residue Subseries Inherits Summability via comp_injective",
+    "content": "This is the only place summability is consumed, and it is consumed minimally. Because n ↦ q·n + a is injective (residue_injective), Summable.comp_injective transports summability of f to summability of f ∘ (the residue map), i.e. n ↦ f(q·n + a) is summable whenever f is. No estimate, tail bound, or comparison test is needed — summability of an unconditionally convergent family is preserved under any injective reindexing, since the partial-sum net over finite subsets simply restricts to the image. The single arithmetic lemma residue_injective therefore powers the entire convergence side of the multisection.",
+    "mathContext": "$\\mathrm{Summable}\\,f\\wedge i\\text{ injective}\\Rightarrow\\mathrm{Summable}(f\\circ i)$; here $i(n)=qn+a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summable.comp_injective",
+      "unconditional convergence",
+      "subseries",
+      "reindexing"
+    ],
+    "prerequisites": [
+      "summability",
+      "injective reindexing"
+    ]
+  },
+  {
+    "id": "ann-hasSum-reindex",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 94 },
+    "type": "definition",
+    "title": "The Reindexing Theorem: Transport HasSum along ℕ ≃ ℕ × Fin q",
+    "content": "The central result. Applying (Nat.divModEquiv q).symm.hasSum_iff.mpr to HasSum f S transports the one-dimensional series onto ℕ × Fin q. Since (Nat.divModEquiv q).symm sends (n, a) ↦ n·q + a, simplifying with Nat.divModEquiv_symm_apply and Function.comp_def yields HasSum (fun p => f(p.1·q + p.2)) S; a single mul_comm normalises p.1·q to q·p.1, giving the displayed term f(q·p.1 + p.2). The sum is unchanged at S — reindexing a HasSum along a bijection preserves its value (Equiv.hasSum_iff). This is the abstract analogue of the Nat.divModEquiv 2 move Mathlib uses to split the cos/sin Taylor series into even and odd parts.",
+    "mathContext": "$\\mathrm{HasSum}\\,(p\\mapsto f(q\\,p_1+p_2))\\,S$ on $\\mathbb{N}\\times\\mathrm{Fin}\\,q$, transported from $\\mathrm{HasSum}\\,f\\,S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.hasSum_iff",
+      "Nat.divModEquiv",
+      "reindexing",
+      "bijection of index sets"
+    ],
+    "prerequisites": [
+      "HasSum",
+      "equivalences",
+      "Euclidean division"
+    ]
+  },
+  {
+    "id": "ann-reindex-corollaries",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 104 },
+    "type": "technique",
+    "title": "tsum and Summability Corollaries of the Reindexing",
+    "content": "Two routine corollaries package the reindexing for downstream use. tsum_reindex equates the two-dimensional tsum ∑_{(n,a)} f(q·n+a) with the original ∑_m f m by evaluating both HasSums (HasSum.tsum_eq). summable_reindex records that the reindexed family is itself summable (HasSum.summable). These let later proofs work with tsum/Summable freely without re-deriving the transport, and they confirm that no information is lost in passing to the two-dimensional picture.",
+    "mathContext": "$\\sum_{(n,a)} f(qn+a)=\\sum_m f(m)$ and the LHS family is summable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tsum",
+      "HasSum.tsum_eq",
+      "summability"
+    ],
+    "prerequisites": [
+      "HasSum",
+      "tsum"
+    ]
+  },
+  {
+    "id": "ann-hasSum-block",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "insight",
+    "title": "Block Regrouping Needs No Hypothesis Beyond HasSum f S",
+    "content": "Grouping the reindexed series by the block index n collects, for each n, the finite inner sum ∑_{a:Fin q} f(q·n+a). This regrouping HasSum (fun n => ∑_{a<q} f(q·n+a)) S follows from HasSum.prod_fiberwise where each fiber {n}×Fin q is finite, so its fiber-sum is supplied by hasSum_fintype with no convergence side-condition. The contrast with the residue multisection is the conceptual heart of the entry: a finite inner sum never raises a convergence question, so the block decomposition is hypothesis-free; only the infinite-fiber residue decomposition will need the comp_injective summability step.",
+    "mathContext": "$\\mathrm{HasSum}\\,\\bigl(n\\mapsto\\sum_{a<q} f(qn+a)\\bigr)\\,S$; finite fibers, no extra hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasSum.prod_fiberwise",
+      "hasSum_fintype",
+      "finite sums",
+      "regrouping"
+    ],
+    "prerequisites": [
+      "HasSum",
+      "finite sums over Fin q"
+    ]
+  },
+  {
+    "id": "ann-hasSum-multisection",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 127 },
+    "type": "insight",
+    "title": "The Residue Multisection as a Discrete-Fubini Consequence",
+    "content": "Grouping instead by the residue a : Fin q collects the infinite subseries ∑'_n f(q·n+a) and recovers S. The proof first swaps coordinates to Fin q × ℕ via Equiv.prodComm (so the fibers to be summed are the infinite ℕ blocks), then applies HasSum.prod_fiberwise, feeding it each fiber-sum from summable_residue — the only point where the convergence input is used. This is the genuine multisection: the family is split into q residue subseries indexed by a, each summed over its own block index n. It holds for EVERY summable f, the unconditional characterisation the parent's open question requested.",
+    "mathContext": "$\\mathrm{HasSum}\\,\\bigl(a\\mapsto\\sum'_n f(qn+a)\\bigr)\\,S$ via $\\mathrm{prod\\_fiberwise}$ over infinite $\\mathbb{N}$ fibers.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.prod_fiberwise",
+      "Equiv.prodComm",
+      "multisection",
+      "discrete Fubini"
+    ],
+    "prerequisites": [
+      "HasSum",
+      "Fubini for unconditional sums",
+      "summability of subseries"
+    ]
+  },
+  {
+    "id": "ann-tsum-multisection",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 129, "endLine": 137 },
+    "type": "insight",
+    "title": "The Unconditional Multisection Identity",
+    "content": "The scalar form of the answer: ∑_{a∈range q} ∑'_n f(q·n+a) = ∑'_m f m for every summable f. The finite outer sum over Fin q is itself a HasSum (hasSum_fintype), and HasSum.unique against hasSum_multisection pins its value to ∑'_m f m; Fin.sum_univ_eq_sum_range converts the Fin q index to the Finset.range q displayed in the statement. There is no convergence side-condition to impose beyond plain Summable f — this is precisely the characterisation the open question asked for, and it is as strong as possible: the identity is universal over summable families.",
+    "mathContext": "$\\displaystyle\\sum_{a<q}\\sum'_n f(qn+a)=\\sum'_m f(m)$ for all summable $f$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.unique",
+      "Fin.sum_univ_eq_sum_range",
+      "multisection identity"
+    ],
+    "prerequisites": [
+      "tsum",
+      "uniqueness of sums",
+      "finite vs infinite index sets"
+    ]
+  },
+  {
+    "id": "ann-specialisations",
+    "proofId": "geometric-series-oq-09-oq-01-oq-01-oq-01",
+    "range": { "startLine": 139, "endLine": 161 },
+    "type": "context",
+    "title": "Even/Odd Specialisation and a Geometric Sanity Check",
+    "content": "Setting q = 2 recovers the familiar even/odd splitting: hasSum_multisection_two gives HasSum (fun a : Fin 2 => ∑'_n f(2·n+a)) S, and tsum_even_add_odd unfolds the two-term Finset.range 2 sum to ∑'_n f(2n) + ∑'_n f(2n+1) = ∑'_m f m for any summable family. The closing example exhibits the abstract theorem on the geometric family of the ancestors: for f(n) = (1/2)^n the even and odd parts recombine to the total ∑'_m (1/2)^m = 2, with summability supplied by summable_geometric_of_lt_one. This grounds the general result in the concrete series the lineage began with.",
+    "mathContext": "$\\sum'_n f(2n)+\\sum'_n f(2n+1)=\\sum'_m f(m)$; check on $f(n)=(1/2)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "even/odd decomposition",
+      "geometric series",
+      "Finset.sum_range_succ",
+      "specialisation"
+    ],
+    "prerequisites": [
+      "geometric series convergence",
+      "summable families"
+    ]
+  }
+]

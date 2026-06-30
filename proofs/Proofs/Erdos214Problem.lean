@@ -97,13 +97,42 @@ def JuhaszStrongerTheorem : Prop :=
 /-- Juhász proved the stronger result -/
 axiom juhasz_stronger : JuhaszStrongerTheorem
 
-/-- Unit square is a special case of 4-point configurations -/
+/-- Distance between two explicit points of the plane, in coordinates:
+    `dist (a,b) (c,d) = √((a-c)² + (b-d)²)`.  Lets the concrete unit square
+    below be checked by `norm_num`. -/
+theorem dist_coords (a b c d : ℝ) :
+    Erdos214.dist (!₂[a, b] : Plane) (!₂[c, d] : Plane)
+      = Real.sqrt ((a - c) ^ 2 + (b - d) ^ 2) := by
+  unfold Erdos214.dist
+  rw [← dist_eq_norm, EuclideanSpace.dist_eq, Fin.sum_univ_two]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Real.dist_eq, sq_abs]
+
+/-- The standard unit square `(0,0),(1,0),(1,1),(0,1)` really is a unit square. -/
+theorem isUnitSquare_standard :
+    IsUnitSquare (!₂[0, 0] : Plane) (!₂[1, 0]) (!₂[1, 1]) (!₂[0, 1]) := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rw [dist_coords] <;> norm_num [Real.sqrt_one]
+
+/-- Unit square is a special case of 4-point configurations.  Apply Juhász's
+stronger theorem to the standard unit square `P`; the resulting congruent copy
+in `Sᶜ` is again a unit square because the witnessing map is an isometry
+(distance-preserving), so it carries `P`'s edge/diagonal lengths verbatim. -/
 theorem unit_square_from_stronger :
     JuhaszStrongerTheorem → Erdos214Statement := by
   intro hStrong S hFree
-  -- A unit square is a particular 4-point configuration
-  -- Apply Juhász's stronger theorem
-  sorry
+  -- The standard unit square as a 4-point configuration.
+  set P : PointSet 4 := ![!₂[0, 0], !₂[1, 0], !₂[1, 1], !₂[0, 1]] with hP
+  -- Juhász's stronger theorem gives a congruent copy of `P` inside `Sᶜ`.
+  obtain ⟨f, hf_isom, hf_mem⟩ := hStrong S hFree P
+  -- Its edge/diagonal lengths equal those of `P` (isometry), so it is a unit square.
+  obtain ⟨h01, h12, h23, h30, h02, h13⟩ := isUnitSquare_standard
+  refine ⟨f (P 0), f (P 1), f (P 2), f (P 3), hf_mem 0, hf_mem 1, hf_mem 2, hf_mem 3,
+    ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [hf_isom, hP]; exact h01
+  · rw [hf_isom, hP]; exact h12
+  · rw [hf_isom, hP]; exact h23
+  · rw [hf_isom, hP]; exact h30
+  · rw [hf_isom, hP]; exact h02
+  · rw [hf_isom, hP]; exact h13
 
 /-
 ## Part 4: Limitations for Larger Sets
@@ -122,7 +151,7 @@ def HoldsFor5Points : Prop :=
 
 /-- The unit distance graph: vertices are points, edges connect distance-1 pairs -/
 def UnitDistanceGraph (S : Set Plane) : Set (Plane × Plane) :=
-  {(p, q) | p ∈ S ∧ q ∈ S ∧ p ≠ q ∧ dist p q = 1}
+  {pq | pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2 ∧ dist pq.1 pq.2 = 1}
 
 /-- S is unit-distance-free iff its unit distance graph has no edges -/
 theorem unit_distance_free_iff_no_edges (S : Set Plane) :

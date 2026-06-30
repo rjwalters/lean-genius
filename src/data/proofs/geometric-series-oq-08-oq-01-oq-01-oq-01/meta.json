@@ -18,6 +18,45 @@
     "sorries": 0
   },
   "title": "Unifying the Weight Family: a Recurrence for the Finite m-th Moment ∑ kᵐ·xᵏ",
+  "description": "A single division-free master recurrence, uniform in the exponent m and valid over any commutative ring, for the finite m-th moment weighted geometric sum momentSum m n x = ∑_{k<n} kᵐ·xᵏ: (1−x)·momentSum m n x = 0ᵐ − nᵐ·xⁿ + x·∑_{i<m} C(m,i)·momentSum i n x. It reduces the m-th finite moment to ALL lower moments in one step; iterating clears the denominator (1−x)^{m+1}, and its interior part is the Eulerian-polynomial recurrence in the n → ∞ limit. The m = 0, 1, 2 specialisations recover the gallery's (1−x), (1−x)², (1−x)³ closed forms. The honest scope of a fully general single statement is a recurrence — the finite sum's n-dependent boundary term nᵐ·xⁿ has no m-independent closed form.",
+  "overview": {
+    "historicalContext": "Weighted geometric sums ∑ kᵐ·xᵏ — the arithmetico-geometric family — are classical, with the perturbation and generating-function methods catalogued in Graham–Knuth–Patashnik's Concrete Mathematics and their numerators governed by the Eulerian numbers. The gallery had built the family one moment at a time: m = 0 (plain finite geometric sum, geometric-series-oq-08), m = 1 (linear, geometric-series-oq-08-oq-01), and m = 2 (the parent, geometric-series-oq-08-oq-01-oq-01), each with its own explicit closed form over (1−x)^{m+1}. The open question those entries left was whether the whole family could be captured uniformly. This entry answers it: a single recurrence valid for every m over every commutative ring. Mathlib records the infinite linear and binomial-weighted geometric series and the plain finite geometric sum geom_sum_eq, but no finite m-th moment sum and no recurrence linking the finite moments across m.",
+    "problemStatement": "Unify the finite weighted-geometric family ∑_{k<n} kᵐ·xᵏ into a single statement uniform in m. Define momentSum m n x = ∑_{k<n} kᵐ·xᵏ and prove the master recurrence (★) (1−x)·momentSum m n x = 0ᵐ − nᵐ·xⁿ + x·∑_{i<m} C(m,i)·momentSum i n x over an arbitrary commutative ring, then recover the m = 0, 1, 2 closed forms of the ancestors as specialisations.",
+    "proofStrategy": "Three ingredients. (1) The binomial helper sum_choose_mul_pow: ∑_{i<m} C(m,i)·aⁱ = (a+1)ᵐ − aᵐ, from the binomial theorem add_pow at y = 1 with the top term C(m,m)·aᵐ = aᵐ peeled off by Finset.sum_range_succ. (2) momentSum_succ: peel the top term, momentSum m (n+1) x = momentSum m n x + nᵐ·xⁿ. (3) The recurrence (★) itself, by induction on n: the base case n = 0 is 0 = 0; the step rewrites every momentSum at n+1 via momentSum_succ, collapses the resulting ∑_{i<m} C(m,i)·nⁱ to (n+1)ᵐ − nᵐ using the helper, and closes with linear_combination against the hypothesis. All index bases are kept as ring casts so n = 0 is well-defined (no ℕ truncated subtraction). Specialisations instantiate m = 0, 1, 2 and simplify the short binomial sums.",
+    "keyInsights": [
+      "The single recurrence (★) reduces the m-th moment to ALL lower moments at once — not just the next one down — because the binomial expansion (k+1)ᵐ couples moment m to every moment i < m through the coefficient C(m,i). This is what makes one statement cover the entire family.",
+      "Iterating (★) clears exactly the denominator (1−x)^{m+1}: each application contributes one factor of (1−x), and the m nested moments unwind to the ancestors' known closed forms — recovering (1−x), (1−x)², (1−x)³ for m = 0, 1, 2.",
+      "The honest scope of a fully uniform statement is a recurrence, not one explicit Eulerian formula: the finite sum carries an n-dependent boundary term nᵐ·xⁿ whose expansion in n has no m-independent closed form, so (★) is the sharpest division-free identity that holds for all m simultaneously.",
+      "The interior part of (★) is precisely the Eulerian recurrence in the n → ∞ limit: as each momentSum i n x → Aᵢ(x)/(1−x)^{i+1}, the boundary term nᵐ·xⁿ vanishes and (★) becomes the recurrence for the infinite moment's Eulerian numerator (geometric-series-oq-07-oq-01).",
+      "The binomial helper ∑_{i<m} C(m,i)·aⁱ = (a+1)ᵐ − aᵐ is the algebraic pivot: it is the binomial theorem with its top term removed, and it is exactly the shape needed to turn the telescoped (n+1)ᵐ − nᵐ increment into the coupling across lower moments."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition-helper",
+      "title": "The Moment Sum and the Binomial Helper",
+      "startLine": 77,
+      "endLine": 90,
+      "summary": "Defines momentSum m n x = ∑_{k<n} kᵐ·xᵏ, the finite m-th moment weighted geometric sum over any commutative ring. Proves the binomial helper sum_choose_mul_pow: ∑_{i<m} C(m,i)·aⁱ = (a+1)ᵐ − aᵐ, derived from add_pow at y = 1 by peeling the top term C(m,m)·aᵐ = aᵐ with Finset.sum_range_succ — the algebraic engine of the recurrence.",
+      "mathContext": "$\\mathrm{momentSum}\\,m\\,n\\,x=\\sum_{k<n}k^m x^k$; $\\sum_{i<m}\\binom{m}{i}a^i=(a+1)^m-a^m$."
+    },
+    {
+      "id": "master-recurrence",
+      "title": "The Master Recurrence (★)",
+      "startLine": 92,
+      "endLine": 129,
+      "summary": "momentSum_succ peels the top term (momentSum m (n+1) x = momentSum m n x + nᵐ·xⁿ). The headline momentSum_recurrence proves (★) (1−x)·momentSum m n x = 0ᵐ − nᵐ·xⁿ + x·∑_{i<m} C(m,i)·momentSum i n x by induction on n: the step expands the interior sum at n+1, collapses ∑_{i<m} C(m,i)·nⁱ to (n+1)ᵐ − nᵐ via the helper, and closes with linear_combination.",
+      "mathContext": "$(1-x)\\,\\mathrm{momentSum}\\,m\\,n\\,x = 0^m - n^m x^n + x\\sum_{i<m}\\binom{m}{i}\\mathrm{momentSum}\\,i\\,n\\,x$."
+    },
+    {
+      "id": "specialisations",
+      "title": "Specialisations m = 0, 1, 2 and a Numeric Check",
+      "startLine": 131,
+      "endLine": 161,
+      "summary": "momentSum_recurrence_zero: (1−x)·∑_{k<n} xᵏ = 1 − xⁿ. momentSum_recurrence_one: (1−x)·∑_{k<n} k·xᵏ = −n·xⁿ + x·∑_{k<n} xᵏ. momentSum_recurrence_two: (1−x)·∑_{k<n} k²·xᵏ = −n²·xⁿ + x·(∑_{k<n} xᵏ + 2·∑_{k<n} k·xᵏ). Each instantiates (★) and simplifies the short binomial sum. A numeric example over ℤ confirms ∑_{k<3} k·2ᵏ = 10.",
+      "mathContext": "$m{=}0{:}\\,1{-}x^n$; $m{=}1{:}\\,-nx^n{+}x\\!\\sum x^k$; $m{=}2{:}\\,-n^2x^n{+}x(\\sum x^k{+}2\\!\\sum kx^k)$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

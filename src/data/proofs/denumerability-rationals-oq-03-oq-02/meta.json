@@ -1,0 +1,214 @@
+{
+  "id": "denumerability-rationals-oq-03-oq-02",
+  "title": "Surjectivity of the Stern-Brocot Encoding — the ℚ⁺ Bijection",
+  "slug": "denumerability-rationals-oq-03-oq-02",
+  "description": "Completes the open follow-up to the Stern-Brocot entry (OQ-03): proves surjectivity (every positive rational is reached by some left/right path) via the subtractive Euclidean algorithm, sharpens injectivity from states to rational values, and assembles the full bijection between binary paths and ℚ⁺. A constructive, duplicate-free enumeration of the positive rationals in lowest terms, with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Robb Walters (formalization); Stern (1858), Brocot (1861)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Stern%E2%80%93Brocot_tree",
+    "date": "1858",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ03OQ02.lean",
+    "tags": [
+      "set-theory",
+      "number-theory",
+      "denumerability",
+      "stern-brocot",
+      "continued-fractions",
+      "mediants",
+      "euclidean-algorithm",
+      "bijection",
+      "surjectivity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "The Stern-Brocot state machine and its determinant invariant (OQ-03)",
+      "The subtractive Euclidean algorithm and coprimality",
+      "Strong induction on a numeric measure",
+      "Rational arithmetic: numerator, denominator, lowest terms"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.coprime_add_self_left / Nat.coprime_add_self_right",
+        "description": "gcd-invariance of the subtractive Euclid step, used to keep the target coordinates coprime through the descent",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.dvd_of_dvd_mul_right / Nat.dvd_antisymm",
+        "description": "Two reduced fractions that are equal have equal numerators and denominators — the core of value-map injectivity",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Rat.num_pos / Rat.num_div_den / Rat.reduced",
+        "description": "Bridging an arbitrary positive rational to its coprime (numerator, denominator) pair for the surjectivity statement",
+        "module": "Mathlib.Data.Rat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "reach_aux: the reachability engine — from any det=1 state, every positive coprime coordinate pair (a,b) is reached by some path, proved by strong induction on a+b (the subtractive Euclidean algorithm)",
+      "The coordinate trick: writing a target node as a·(left ancestor) + b·(right ancestor), so that stepping left/right is exactly (a,b) ↦ (a−b,b) / (a,b−a) and a+b is the Euclidean descent measure",
+      "reach_root: surjectivity onto coprime pairs — every (p,q) coprime with p,q ≥ 1 is a Stern-Brocot node",
+      "toRat_surjective: every positive rational equals toRat of some path",
+      "left_lt_mediant / mediant_lt_right: clean ℕ cross-multiplied BST bounds derived from the parent's value_between_ancestors",
+      "mediant_inj / toRat_injective: sharpening the parent's state injectivity to injectivity of the rational value, via per-node coprimality",
+      "sternBrocot_bijection: toRat is injective with range exactly {x : ℚ | 0 < x} — a constructive bijection paths ≃ ℚ⁺ with no Cantor pairing and no choice",
+      "3 concrete surjectivity witnesses (2/3, 3/2, 22/7)"
+    ],
+    "lineCount": 332,
+    "assumptions": "0 axioms. 0 sorries. Fully verified on the Lean 4 kernel (v4.26.0); #print axioms reports only [propext, Classical.choice, Quot.sound]. Builds on the parent module DenumerabilityRationalsOQ03 (itself 0-axiom) and Mathlib's rational/gcd basics. No Stern-Brocot or Calkin-Wilf machinery exists in Mathlib; the surjectivity engine and bijection are original.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Stern-Brocot tree (Stern 1858, Brocot 1861) is a binary tree containing every positive rational exactly once, already in lowest terms. The parent entry (OQ-03) formalized it as a state machine and proved coprimality, positivity, the BST ordering, and injectivity of the path-to-node map, explicitly leaving surjectivity — that every positive rational actually appears — as the open follow-up. Surjectivity is the half that turns the tree into a genuine enumeration of ℚ⁺, and it is classically obtained from the Euclidean algorithm: to locate p/q, repeatedly compare with the current mediant and descend left (smaller) or right (larger). Graham, Knuth, and Patashnik's 'Concrete Mathematics' presents exactly this search.",
+    "problemStatement": "**Surjectivity of the Stern-Brocot Encoding (OQ-03-OQ-02)**\n\nProve that the Stern-Brocot tree reaches every positive rational, and combine with the parent's injectivity to obtain a bijection between binary left/right paths and ℚ⁺:\n\n1. Surjectivity onto coprime pairs: every coprime (p,q) with p,q ≥ 1 is some node's (numerator, denominator)\n2. Surjectivity onto ℚ⁺: every positive rational equals toRat of some path\n3. Value injectivity: distinct paths give distinct rationals (sharpening state injectivity)\n4. The bijection: range(toRat) = {x : ℚ | 0 < x} and toRat is injective",
+    "text": "Completes the Stern-Brocot enumeration of the positive rationals by proving surjectivity via the subtractive Euclidean algorithm and assembling the full bijection paths ≃ ℚ⁺. The reachability engine reach_aux expresses a target node in ancestor coordinates (a,b), so that the tree descent is exactly subtractive Euclid on (a,b) with a+b as the strictly decreasing measure.",
+    "proofStrategy": "**Formalization Approach** (332 lines, 9 theorems, 0 sorries, 0 axioms)\n\n1. **The coordinate trick.** A det=1 state s = ⟨la,lb,ra,rb⟩ has left ancestor la/lb, right ancestor ra/rb, and mediant (la+ra)/(lb+rb). Any target node can be written uniquely as (num,den) = a·(la,lb) + b·(ra,rb) with a,b ≥ 1; the node itself is a = b = 1.\n\n2. **reach_aux (surjectivity engine).** Strong induction on a+b. When a = b, coprimality forces a = b = 1 and the empty path works. When a > b, step left and recurse on (a−b,b); when a < b, step right and recurse on (a,b−a). This is exactly the subtractive Euclidean algorithm, and gcd(a,b) is preserved (so a = b never recurs except at 1).\n\n3. **reach_root / toRat_surjective.** From the root init = ⟨0,1,1,0⟩ the target p/q has coordinates (q,p), so a+b = p+q. Specializing reach_aux gives every coprime pair; bridging an arbitrary positive rational to its reduced (num,den) gives every positive rational.\n\n4. **Value injectivity.** The parent proved injectivity of the full 4-tuple state. Here two ℕ BST bounds (left_lt_mediant, mediant_lt_right), distilled from the parent's value_between_ancestors, show a left-subtree node is strictly below the parent mediant and a right-subtree node strictly above it. Equal values cannot straddle the mediant, giving mediant injectivity; coprimality of every node lifts this to toRat injectivity.\n\n5. **The bijection.** toRat is injective and its range is exactly {x : ℚ | 0 < x}.",
+    "keyInsights": [
+      "**Ancestor coordinates linearize the descent.** Tracking the target as (a,b) with (num,den) = a·(la,lb) + b·(ra,rb) turns the geometric tree search into pure subtractive Euclid: left is (a,b) ↦ (a−b,b), right is (a,b) ↦ (a,b−a). The measure a+b strictly decreases, and from the root it equals p+q — the familiar Euclidean quantity.",
+      "**Coprimality is exactly the termination certificate.** The subtractive step preserves gcd(a,b), which starts at 1 for a reduced target. So the only way to reach a = b is a = b = 1 — the node itself. Without coprimality the descent could stall at a = b = k > 1, which is precisely a non-reduced fraction k·(mediant).",
+      "**Surjectivity needs no determinant hypothesis.** reach_aux holds from ANY state, with no det = 1 assumption — the coordinate identities are purely formal. The determinant only re-enters when one wants the reached node to be in lowest terms (inherited from the parent).",
+      "**State injectivity vs value injectivity.** The parent proved different paths give different 4-tuple states; for a bijection of rationals one needs different paths give different VALUES. The gap is bridged by the BST ordering (a left node is below the mediant, a right node above) plus per-node coprimality recovering (num,den) from the rational.",
+      "**A choice-free, pairing-free ℚ⁺ enumeration.** Cantor's pairing enumerates ℚ but produces unreduced fractions and needs a skipping/reduction step. The Stern-Brocot bijection hits each positive rational exactly once, already in lowest terms, with the proof using only propext / Classical.choice / Quot.sound — the ordinary foundational axioms."
+    ],
+    "prerequisites": [
+      "The Stern-Brocot state machine and its determinant invariant (OQ-03)",
+      "The subtractive Euclidean algorithm and coprimality",
+      "Strong induction on a numeric measure",
+      "Rational arithmetic: numerator, denominator, lowest terms"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals-oq-03",
+      "relationship": "parent",
+      "description": "The parent formalizes the Stern-Brocot state machine and proves coprimality, positivity, ordering, and path injectivity, explicitly leaving surjectivity as the open follow-up. This entry supplies surjectivity and the full bijection, reusing the parent's value_between_ancestors BST lemma."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "related",
+      "description": "The base entry that the rationals are countable. This entry gives the sharpest constructive form for the positive rationals: an explicit bijection with binary paths, each rational in lowest terms."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "Surjectivity IS the Euclidean algorithm: the tree descent to p/q is subtractive Euclid on the ancestor coordinates (a,b), and gcd-invariance of the subtractive step is exactly what makes the descent terminate at the reduced target."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "contrasts",
+      "description": "Cantor's pairing enumerates ℚ but yields unreduced fractions; the Stern-Brocot bijection proved here hits every positive rational exactly once in lowest terms, constructively and without choice beyond the foundational axioms."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Imports (including the parent module Proofs.DenumerabilityRationalsOQ03) and the module docstring: states the five deliverables (reach_aux, reach_root, toRat_surjective, value injectivity, the bijection), explains the coordinate trick, and records that Mathlib has no Stern-Brocot machinery.",
+      "mathContext": "Target node = a·(la,lb) + b·(ra,rb); left step (a,b) ↦ (a−b,b), right step (a,b) ↦ (a,b−a); from the root p/q has coordinates (q,p), so a+b = p+q."
+    },
+    {
+      "id": "part-1-reachability",
+      "title": "PART I: The Reachability Lemma (Surjectivity Engine)",
+      "startLine": 76,
+      "endLine": 124,
+      "summary": "reach_aux: from any state s and positive coprime coordinates (a,b), some path reaches the node a·(la,lb)+b·(ra,rb). Strong induction on a+b: a=b forces 1 (coprimality, empty path); a>b steps left; a<b steps right. reach_root specializes to the root, giving surjectivity onto coprime pairs.",
+      "mathContext": "Subtractive Euclid: gcd(a,b) preserved, a+b strictly decreases, base case a=b=1 = the mediant. Root coordinates of p/q are (q,p)."
+    },
+    {
+      "id": "part-2-surjectivity",
+      "title": "PART II: Surjectivity onto the Positive Rationals",
+      "startLine": 125,
+      "endLine": 143,
+      "summary": "toRat_surjective: every positive rational equals toRat of some path. Bridges an arbitrary 0 < x to its reduced pair (x.num.natAbs, x.den) using Rat.num_pos, Rat.reduced, and Rat.num_div_den, then applies reach_root.",
+      "mathContext": "x > 0 ⟹ x = x.num/x.den with x.num.natAbs, x.den coprime and positive; reach_root produces the path."
+    },
+    {
+      "id": "part-3-injectivity",
+      "title": "PART III: Injectivity of the Rational Value",
+      "startLine": 144,
+      "endLine": 294,
+      "summary": "left_lt_mediant and mediant_lt_right give ℕ cross-multiplied BST bounds (left subtree below mediant, right subtree above), distilled from the parent's value_between_ancestors. mediant_inj_gen proves value injectivity from any det=1 state by induction; same-direction recurses, opposite directions and nil-vs-cons contradict via the BST bounds. mediant_inj and toRat_injective lift to the root and to toRat, using per-node coprimality.",
+      "mathContext": "A left-subtree node n/d satisfies n·(lb+rb) < (la+ra)·d < right side; equal values cannot straddle the mediant. Equal reduced fractions ⟹ equal (num,den)."
+    },
+    {
+      "id": "part-4-bijection",
+      "title": "PART IV: The Stern-Brocot Bijection",
+      "startLine": 295,
+      "endLine": 308,
+      "summary": "sternBrocot_bijection: toRat is injective and Set.range toRat = {x : ℚ | 0 < x}. Combines toRat_injective with toRat_surjective (and the parent's toRat_pos for the range inclusion).",
+      "mathContext": "toRat : Path → ℚ is a bijection onto ℚ⁺ — a constructive, duplicate-free, lowest-terms enumeration."
+    },
+    {
+      "id": "part-5-witnesses",
+      "title": "PART V: Concrete Witnesses",
+      "startLine": 309,
+      "endLine": 324,
+      "summary": "Three existence witnesses from reach_root: paths encoding 2/3, 3/2, and the larger coprime pair 22/7 all exist, with coprimality discharged by decide.",
+      "mathContext": "2/3 → [L,R], 3/2 → [R,L]; 22/7 is reached by a longer path matching its continued fraction [3;7]."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 325,
+      "endLine": 332,
+      "summary": "#check commands confirming reach_aux, reach_root, toRat_surjective, mediant_inj, toRat_injective, and sternBrocot_bijection type-check, then the SternBrocot namespace close.",
+      "mathContext": "Sanity checks that the surjectivity engine, both surjectivity statements, value injectivity, and the bijection are all available at their stated types."
+    }
+  ],
+  "conclusion": {
+    "summary": "Surjectivity of the Stern-Brocot tree is formalized (every positive rational is reached) via the subtractive Euclidean algorithm, value-map injectivity is established (sharpening the parent's state injectivity), and the two are combined into a bijection between binary left/right paths and the positive rationals — all with 0 sorries and 0 axioms. This completes the open follow-up posed by the parent entry and delivers a constructive, choice-free, lowest-terms enumeration of ℚ⁺.",
+    "implications": "**1. A constructive ℚ⁺ enumeration.** range(toRat) = {x : ℚ | 0 < x} with toRat injective means the positive rationals are in explicit bijection with finite binary words, each rational appearing once and already reduced — no Cantor pairing, no reduction step, no choice beyond the foundational axioms.\n\n**2. The Euclidean algorithm as a tree search.** reach_aux makes precise that locating p/q is subtractive Euclid on the ancestor coordinates; the path length is the sum of the continued-fraction coefficients of p/q.\n\n**3. Toward the full bijection with ℕ.** Composing the path bijection with a breadth-first (or binary) enumeration of finite L/R words would give an explicit ℕ ≃ ℚ⁺, and hence ℕ ≃ ℚ, with strong structural guarantees.",
+    "openQuestions": [
+      "Promote the surjective + injective pair to a bundled Equiv between {x : ℚ // 0 < x} and Path (or to ℕ via a BFS enumeration of paths).",
+      "Formalize the continued-fraction correspondence: the run-length encoding of the reach_aux path equals the continued-fraction coefficients of the target.",
+      "Extend from ℚ⁺ to all of ℚ by adjoining 0 and the negatives, yielding a constructive ℕ ≃ ℚ to compare with the Cantor-pairing entry."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic",
+      "Proofs.DenumerabilityRationalsOQ03"
+    ],
+    "opens": [],
+    "namespace": "SternBrocot",
+    "lineCount": 332,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/DenumerabilityRationalsOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd edition, Section 4.5",
+      "note": "Presents the Stern-Brocot tree, the mediant search for a given rational, and its identity with the Euclidean algorithm and continued fractions"
+    },
+    {
+      "authors": "Stern, Moritz Abraham",
+      "title": "Über eine zahlentheoretische Funktion",
+      "year": "1858",
+      "venue": "Journal für die reine und angewandte Mathematik 55, pp. 193-220",
+      "note": "Original diatomic series enumerating the rationals via a binary tree"
+    },
+    {
+      "authors": "Brocot, Achille",
+      "title": "Calcul des rouages par approximation, nouvelle méthode",
+      "year": "1861",
+      "venue": "Revue Chronométrique 3, pp. 186-194",
+      "note": "Independent discovery of the tree for gear-ratio approximation"
+    }
+  ],
+  "sorries": 0
+}

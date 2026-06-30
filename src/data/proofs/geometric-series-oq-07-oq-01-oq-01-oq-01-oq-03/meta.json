@@ -19,6 +19,77 @@
     "sorries": 0
   },
   "title": "Worpitzky's Identity: nᵐ = ∑ⱼ ⟨m,j⟩·C(n+j, m)",
+  "description": "Proves Worpitzky's identity — the most celebrated identity satisfied by the Eulerian numbers — for the combinatorial ⟨m,j⟩ built in the parent entry, as an identity of natural numbers: nᵐ = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j, m). It expresses the power basis nᵐ in the shifted-binomial basis C(n+j,m) with the Eulerian numbers as the nonnegative integer connection coefficients. The proof is an induction on m driven by a single binomial absorption identity worpitzky_term, (k+1)·C(x+k,m+1) + (m−k)·C(x+k+1,m+1) = x·C(x+k,m); reindexing the order-(m+1) Eulerian row through its triangle recurrence (the off-diagonal ⟨m,m+1⟩ = 0 killing the boundary term) turns the order-(m+1) Worpitzky sum into n times the order-m sum, closing n^{m+1} = n·n^m. Verifies the order-2/3 instances n² = C(n,2)+C(n+1,2) and n³ = C(n,3)+4·C(n+1,3)+C(n+2,3). 192 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "Worpitzky's identity, published by Julius Worpitzky in 1883, expresses any power xⁿ as a nonnegative-integer combination of the shifted binomial coefficients C(x+k,n), with the Eulerian numbers ⟨n,k⟩ as coefficients. It is the most famous identity satisfied by the Eulerian numbers — introduced by Euler in 1755 to count permutations by descents — and is a cornerstone of the finite-difference calculus and the theory of the descent statistic (Concrete Mathematics, Graham–Knuth–Patashnik). The identity is the combinatorial dual of the Eulerian-polynomial generating function ∑_{j≥0} jⁿ xʲ = A_n(x)/(1−x)^{n+1}: summing Worpitzky's expansion against a geometric series reproduces that numerator, tying the combinatorial Eulerian numbers back to the geometric-moment lineage this entry descends from. Mathlib formalizes neither the Eulerian numbers nor Worpitzky's identity, so both are built from scratch here on top of the parent's triangle.",
+    "problemStatement": "Given the combinatorial Eulerian numbers ⟨m,j⟩ defined by the triangle recurrence in the parent entry, prove Worpitzky's identity nᵐ = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j, m) for all m,n, as an identity of natural numbers, with 0 axioms and 0 sorries.",
+    "proofStrategy": "Define the Worpitzky sum W_m(n) = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j,m) and prove W_m(n) = nᵐ by induction on m. The inductive step rests on the per-term absorption identity worpitzky_term, (k+1)·C(x+k,m+1) + (m−k)·C(x+k+1,m+1) = x·C(x+k,m) for k ≤ m, obtained from Pascal's rule and the binomial absorption C(a,m+1)(m+1) = C(a,m)(a−m) (transferred once to ℤ and closed by linear_combination). The structural lemma worpitzkySum_succ_eq reindexes the order-(m+1) Eulerian row through the triangle recurrence ⟨m+1,k+1⟩ = (k+2)⟨m,k+1⟩ + (m−k)⟨m,k⟩, the off-diagonal vanishing ⟨m,m+1⟩ = 0 killing the boundary term. Applying worpitzky_term termwise then collapses W_{m+1}(n) to n·W_m(n), so n^{m+1} = n·nᵐ closes the induction. The corollary worpitzky_succ drops the vanishing top term.",
+    "keyInsights": [
+      "Worpitzky's identity is the change of basis from the power basis nᵐ to the shifted-binomial basis C(n+j,m), and it makes manifest that the connection coefficients are exactly the nonnegative integer Eulerian numbers ⟨m,j⟩.",
+      "The entire induction is powered by one absorption identity, worpitzky_term, which encodes both Pascal's rule and the binomial absorption C(a,m+1)(m+1) = C(a,m)(a−m) in a single per-term equation closed by linear_combination over ℤ.",
+      "Reindexing the order-(m+1) Eulerian row through its own triangle recurrence is what converts W_{m+1}(n) into n·W_m(n); the off-diagonal vanishing ⟨m,m+1⟩ = 0 is precisely what makes the boundary term of the shifted sum disappear.",
+      "Working over ℤ for the absorption step (then casting back to ℕ) sidesteps truncated natural subtraction, which would otherwise break the (m−k) and (a−m) factors.",
+      "Summed against a geometric series, Worpitzky's identity reproduces the Eulerian-polynomial numerator E_m(r)/(1−r)^{m+1} of the geometric moment up the lineage — closing the loop between the combinatorial Eulerian numbers and the analytic generating function."
+    ]
+  },
+  "sections": [
+    {
+      "id": "context-docstring",
+      "title": "Context and method",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring stating Worpitzky's identity, the low-order examples, and the induction-via-absorption method; notes the file is 0-axiom and sorry-free."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and namespace",
+      "startLine": 32,
+      "endLine": 37,
+      "summary": "Imports Mathlib and the parent module, opens Finset and the parent namespace to reuse the eulerian triangle and its recurrence/vanishing lemmas."
+    },
+    {
+      "id": "worpitzky-term",
+      "title": "The per-term absorption identity (worpitzky_term)",
+      "startLine": 39,
+      "endLine": 73,
+      "summary": "Proves (k+1)·C(x+k,m+1) + (m−k)·C(x+k+1,m+1) = x·C(x+k,m) for k ≤ m, by case split on x+k vs m, Pascal's rule, and absorption over ℤ closed by linear_combination."
+    },
+    {
+      "id": "worpitzky-sum",
+      "title": "The Worpitzky sum (worpitzkySum, eulerian_zero_left)",
+      "startLine": 75,
+      "endLine": 85,
+      "summary": "Defines W_m(n) = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j,m) and records ⟨m,0⟩ = 1 for the boundary term."
+    },
+    {
+      "id": "reindex",
+      "title": "Triangle-recurrence reindexing (worpitzkySum_succ_eq)",
+      "startLine": 87,
+      "endLine": 132,
+      "summary": "Rewrites W_{m+1}(n) via the Eulerian triangle recurrence and ⟨m,m+1⟩ = 0, expressing it as ∑_k ⟨m,k⟩·[(k+1)C(n+k,m+1) + (m−k)C(n+k+1,m+1)]."
+    },
+    {
+      "id": "main-identity",
+      "title": "Worpitzky's identity (worpitzkySum_eq_pow, worpitzky)",
+      "startLine": 134,
+      "endLine": 161,
+      "summary": "Induction W_m(n) = nᵐ: applying worpitzky_term termwise collapses the reindexed sum to n·W_m(n); worpitzky restates it as nᵐ = ∑_{j} ⟨m,j⟩·C(n+j,m)."
+    },
+    {
+      "id": "worpitzky-succ",
+      "title": "Dropping the top term (worpitzky_succ)",
+      "startLine": 163,
+      "endLine": 168,
+      "summary": "Uses ⟨m+1,m+1⟩ = 0 to drop the vanishing top term, giving the descent index running only to m."
+    },
+    {
+      "id": "instances",
+      "title": "Low-order instances",
+      "startLine": 170,
+      "endLine": 190,
+      "summary": "Verifies n² = C(n,2)+C(n+1,2), n³ = C(n,3)+4C(n+1,3)+C(n+2,3) (Eulerian rows 1,1 and 1,4,1), and 4³ = 64 = 4+40+20, with Eulerian values by kernel decide."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -127,5 +198,52 @@
       "Deduce the row-sum ∑_j ⟨m,j⟩ = m! from Worpitzky's identity via the m-th forward difference of nᵐ.",
       "Prove ∑_{n≥0} nᵐ·xⁿ = Eₘ(x)/(1−x)^{m+1} from Worpitzky's identity by summing the binomial series, reconnecting to the geometric moment of geometric-series-oq-07."
     ]
-  }
+  },
+  "description": "Proves Worpitzky's identity nᵐ = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j,m) for the parent's combinatorial Eulerian numbers — the change of basis expressing the power basis in the shifted-binomial basis with the Eulerian numbers as connection coefficients. An induction on m driven by a single ℕ binomial absorption identity; Mathlib has neither the Eulerian numbers nor Worpitzky's identity, so both are built from scratch here.",
+  "overview": {
+    "historicalContext": "Worpitzky's identity, xⁿ = ∑ₖ ⟨n,k⟩·C(x+k, n), is named after Julius Daniel Theodor Worpitzky, who published it in 1883. It expresses every power xⁿ as a nonnegative-integer combination of the shifted binomial coefficients C(x+k, n), with the Eulerian numbers ⟨n,k⟩ — Euler's 1755 descent-counting triangle — as the exact connection coefficients. The identity is the bridge between two classical pictures of the Eulerian numbers: the combinatorial (counting permutations by descents) and the analytic (the numerator Eₙ(x) of the geometric moment ∑ₖ kⁿ xᵏ = Eₙ(x)/(1−x)^{n+1}). Standard modern treatments appear in Graham–Knuth–Patashnik's Concrete Mathematics and in Comtet's Advanced Combinatorics. Mathlib4 contains neither the Eulerian numbers nor Worpitzky's identity, so this entry — third in the Frobenius → Eulerian triangle → Worpitzky tower of gallery proofs — supplies both the statement and a from-scratch proof using only Pascal's rule and binomial absorption from Mathlib's Nat.choose.",
+    "problemStatement": "For the combinatorial Eulerian numbers ⟨m,j⟩ defined by the parent via the triangle recurrence ⟨m+1,k+1⟩ = (k+2)⟨m,k+1⟩ + (m−k)⟨m,k⟩, prove Worpitzky's identity nᵐ = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j,m) as an identity of natural numbers, valid for all m and n. Equivalently, exhibit the Eulerian numbers as the connection coefficients writing the power basis {nᵐ} in the shifted-binomial basis {C(n+j,m)}.",
+    "proofStrategy": "Induction on m, with all the work concentrated in one binomial lemma. (1) The PER-TERM identity `worpitzky_term`: for k ≤ m, (k+1)·C(x+k,m+1) + (m−k)·C(x+k+1,m+1) = x·C(x+k,m). It is proved by case-splitting on x+k vs m (the small case kills every binomial), then transferring to ℤ — where there is no truncated subtraction — and combining Pascal's rule with the absorption identity C(a,m+1)·(m+1) = C(a,m)·(a−m) via `linear_combination`. (2) The REINDEXING `worpitzkySum_succ_eq`: expand each Eulerian entry of the order-(m+1) sum through the triangle recurrence; peeling the j=0 term and using the off-diagonal vanishing ⟨m,m+1⟩ = 0 leaves exactly the shape `worpitzky_term` consumes. (3) The INDUCTION `worpitzkySum_eq_pow`: rewriting every summand by `worpitzky_term` exposes a common factor n, so the order-(m+1) sum equals n times the order-m sum, and n^{m+1} = n·n^m closes it. The whole argument uses only the parent's recurrence and Mathlib's Nat.choose; it is 0-axiom.",
+    "keyInsights": [
+      "Worpitzky's identity is fundamentally a change of basis: it writes the power basis {nᵐ} in the shifted-binomial basis {C(n+j,m)}, and the Eulerian numbers are precisely the (nonnegative integer) connection coefficients — a conceptually cleaner statement than 'an identity that happens to hold'.",
+      "The entire induction is powered by one binomial absorption identity (worpitzky_term); once it is in hand, the order-(m+1) sum mechanically factors as n times the order-m sum. Isolating that single lemma is what keeps a famous identity short.",
+      "ℕ's truncated subtraction (m−k) would obstruct algebraic manipulation, so the per-term identity is transferred once to ℤ — where Pascal's rule and absorption combine cleanly under linear_combination — and only the final equality is cast back to ℕ. This 'prove over ℤ, conclude over ℕ' pattern recurs throughout the Eulerian tower.",
+      "The off-diagonal vanishing ⟨m,m+1⟩ = 0 is the structural fact that makes the triangle-recurrence reindexing produce no boundary leftover: the term that would spoil the telescoping is identically zero, so W_{m+1}(n) lands exactly in the form worpitzky_term expects.",
+      "Because the proof needs only the triangle recurrence and elementary Nat.choose lemmas (no generating functions, no analytic input), it is a self-contained, Mathlib-free addition: summed against a geometric series it reproduces the analytic Eₘ(r)/(1−r)^{m+1} of the grandparent, closing the loop between the combinatorial and analytic Eulerian numbers."
+    ]
+  },
+  "sections": [
+    {
+      "id": "absorption",
+      "title": "The Key Absorption Identity",
+      "startLine": 39,
+      "endLine": 73,
+      "summary": "Proves the per-term identity worpitzky_term: (k+1)·C(x+k,m+1) + (m−k)·C(x+k+1,m+1) = x·C(x+k,m) for k ≤ m, by case-splitting on x+k vs m and, in the main case, transferring to ℤ to combine Pascal's rule with binomial absorption via linear_combination.",
+      "mathContext": "$(k{+}1)\\binom{x+k}{m+1}+(m{-}k)\\binom{x+k+1}{m+1}=x\\binom{x+k}{m}$."
+    },
+    {
+      "id": "reindex",
+      "title": "The Worpitzky Sum and Triangle-Recurrence Reindexing",
+      "startLine": 75,
+      "endLine": 132,
+      "summary": "Defines worpitzkySum Wₘ(n) = ∑ⱼ ⟨m,j⟩·C(n+j,m) and proves worpitzkySum_succ_eq, expanding each Eulerian entry of the order-(m+1) sum through the triangle recurrence; the j=0 peel and the off-diagonal vanishing ⟨m,m+1⟩ = 0 leave the shape worpitzky_term consumes.",
+      "mathContext": "$W_{m+1}(n)=\\sum_k\\langle m,k\\rangle[(k{+}1)\\binom{n+k}{m+1}+(m{-}k)\\binom{n+k+1}{m+1}]$."
+    },
+    {
+      "id": "main",
+      "title": "Worpitzky's Identity",
+      "startLine": 134,
+      "endLine": 168,
+      "summary": "worpitzkySum_eq_pow proves Wₘ(n) = nᵐ by induction (each summand rewritten by worpitzky_term factors out n, giving n·Wₘ(n) and n^{m+1} = n·n^m); worpitzky restates it as nᵐ = ∑ⱼ ⟨m,j⟩·C(n+j,m), and worpitzky_succ trims the range using ⟨m+1,m+1⟩ = 0.",
+      "mathContext": "$n^m=\\sum_{j=0}^{m}\\langle m,j\\rangle\\binom{n+j}{m}$."
+    },
+    {
+      "id": "low-order",
+      "title": "Low-Order Instances",
+      "startLine": 170,
+      "endLine": 191,
+      "summary": "Specialisations exhibiting the Eulerian rows: n² = C(n,2)+C(n+1,2) (row 1,1) and n³ = C(n,3)+4·C(n+1,3)+C(n+2,3) (row 1,4,1), the coefficients discharged by kernel decide, plus the numeric check 4³ = 64 = 4+40+20.",
+      "mathContext": "$n^3=\\binom{n}{3}+4\\binom{n+1}{3}+\\binom{n+2}{3}$ from row $1,4,1$."
+    }
+  ]
 }

@@ -1,0 +1,187 @@
+{
+  "id": "hilbert-23-oq-01",
+  "title": "First-Order Characterization of Minimizers for Convex Variational Problems",
+  "slug": "hilbert-23-oq-01",
+  "description": "A fully machine-checked slice of regularity/sufficiency theory for the calculus of variations: for a convex functional the Euler-Lagrange / first-variation condition is necessary AND sufficient for a global minimizer, and strict convexity forces the minimizer to be unique.",
+  "parentId": "hilbert-23",
+  "meta": {
+    "proofRepoPath": "Proofs/Hilbert23CalculusVariationsOQ01.lean",
+    "author": "Lean Genius Researcher",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "optimization",
+      "calculus-of-variations",
+      "convex-analysis",
+      "hilbert-problems",
+      "intermediate"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ConvexOn",
+        "description": "Convex functions on a real vector space; the defining slope inequality is the engine of the sufficiency direction",
+        "module": "Analysis.Convex.Function"
+      },
+      {
+        "theorem": "ConvexOn.slope_mono",
+        "description": "Monotonicity of difference quotients of a convex function, which makes the one-sided directional derivative well-behaved",
+        "module": "Analysis.Convex.Deriv"
+      },
+      {
+        "theorem": "hasDerivWithinAt_iff_tendsto_slope",
+        "description": "Characterizes the one-sided derivative as the limit of slopes, used to pass the convexity bound to the first variation",
+        "module": "Analysis.Calculus.Deriv.Slope"
+      },
+      {
+        "theorem": "Even.strictConvexOn_pow",
+        "description": "Strict convexity of even powers, used for the concrete energy example J(y) = y^2",
+        "module": "Analysis.Convex.SpecificFunctions.Deriv"
+      }
+    ],
+    "originalContributions": [
+      "Abstract first-variation (Gateaux directional derivative) of a functional along admissible directions, over an arbitrary real vector space with no norm or measure theory",
+      "Necessity: at a global minimizer every first variation is nonnegative (Euler-Lagrange necessary condition)",
+      "Sufficiency: for convex functionals a nonnegative first variation already forces a global minimizer (the converse that fails without convexity)",
+      "The resulting necessary-and-sufficient first-order characterization isMinOn_iff_firstVariation_nonneg",
+      "Uniqueness of the minimizer for strictly convex functionals (well-posedness), with a concrete worked instance on J(y) = y^2"
+    ],
+    "dateAdded": "2026-06-24",
+    "hilbertNumber": 23,
+    "axiomCount": 0,
+    "lineCount": 166,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms. #print axioms reports only propext, Classical.choice, Quot.sound for the main theorems (no sorryAx, no Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Hilbert's twenty-third problem is a research program: 'further development of the methods of the calculus of variations.' Its first open question in our gallery — 'What is the regularity theory for general variational problems?' — is too broad to settle in one stroke, but the classical first-order theory answers a clean, self-contained slice of it.\n\nThe Euler-Lagrange equation provides a *necessary* condition for a function to extremize an action functional: the first variation must vanish. The deep companion fact is that under **convexity** this condition becomes *sufficient* — a critical point is automatically a global minimizer — and under **strict convexity** the minimizer is *unique*. This convex first-order theory is the backbone of the direct method and of modern variational regularity and well-posedness results.",
+    "problemStatement": "Let J be a real-valued functional on a real vector space E. The first variation of J at a point y0 in the direction toward y is the right-hand derivative at t = 0 of the path t |-> J(y0 + t*(y - y0)). We ask: when does a vanishing (or nonnegative) first variation in every admissible direction certify that y0 globally minimizes J?",
+    "text": "For a convex functional the Euler-Lagrange / first-variation condition is necessary and sufficient for a global minimizer; strict convexity makes the minimizer unique. The whole package is formalized with zero axioms over an arbitrary real vector space.",
+    "proofStrategy": "1. **Path and first variation.** Define segPath J y0 y t = J(y0 + t*(y - y0)) and identify the path point with the convex combination (1-t)*y0 + t*y. The first variation is the right derivative of segPath at 0.\n\n2. **Convexity engine (firstVariation_le_sub).** Convexity gives, for every t in (0,1], the slope bound (segPath t - J y0)/t <= J y - J y0. Passing to the limit t -> 0+ via hasDerivWithinAt_iff_tendsto_slope, the first variation d satisfies d <= J y - J y0.\n\n3. **Necessity (firstVariation_nonneg_of_isMinOn).** If y0 is a minimizer, each slope is >= 0, so the limiting first variation is >= 0.\n\n4. **Sufficiency (isMinOn_of_firstVariation_nonneg).** Combining the engine with d >= 0 yields 0 <= d <= J y - J y0, i.e. J y0 <= J y for all y.\n\n5. **Characterization and uniqueness.** Packaging 3 and 4 gives the iff; strict convexity plus the midpoint inequality yields subsingleton_minimizers_of_strictConvex. A concrete instance closes the entry on J(y) = y^2.",
+    "keyInsights": [
+      "The one-sided directional (Gateaux) derivative needs no norm: it lives on any real vector space.",
+      "Convexity is exactly what turns the necessary first-order condition into a sufficient one — the tangent line of a convex function lies below the graph.",
+      "Strict convexity upgrades existence of a minimizer to uniqueness, the well-posedness half of regularity theory.",
+      "Mathlib's slope-monotonicity machinery (ConvexOn.slope_mono, hasDerivWithinAt_iff_tendsto_slope) is enough to make the limit argument fully rigorous and axiom-free."
+    ],
+    "prerequisites": [
+      "Convex analysis (convex and strictly convex functions, slope monotonicity)",
+      "One-variable differentiation (one-sided derivatives as limits of slopes)",
+      "Basic calculus of variations (first variation, Euler-Lagrange condition)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "path",
+      "title": "The Variational Path and First Variation",
+      "startLine": 41,
+      "endLine": 58,
+      "summary": "segPath J y0 y t = J(y0 + t*(y - y0)) and its identification with the convex combination (1-t)*y0 + t*y.",
+      "mathContext": "The first variation of $J$ at $y_0$ toward $y$ is the right derivative at $t=0$ of $\\varphi(t) = J(y_0 + t(y-y_0))$, where $y_0 + t(y-y_0) = (1-t)y_0 + ty$ lies on the segment from $y_0$ to $y$."
+    },
+    {
+      "id": "engine",
+      "title": "Convexity Engine: First Variation Bounds the Value Change",
+      "startLine": 59,
+      "endLine": 86,
+      "summary": "For convex J, the first variation d toward y satisfies d <= J y - J y0.",
+      "mathContext": "Convexity gives $\\varphi(t) - \\varphi(0) \\le t\\,(J y - J y_0)$ for $t \\in (0,1]$, hence the right derivative $d = \\lim_{t\\to 0^+} \\frac{\\varphi(t)-\\varphi(0)}{t} \\le J y - J y_0$. This is the quantitative 'tangent below graph' inequality."
+    },
+    {
+      "id": "necessary",
+      "title": "Necessity: Minimizers Have Nonnegative First Variation",
+      "startLine": 87,
+      "endLine": 102,
+      "summary": "If y0 minimizes J then every first variation at y0 is >= 0 (Euler-Lagrange necessary condition).",
+      "mathContext": "If $J y_0 \\le J z$ for all $z$, the slopes $\\frac{\\varphi(t)-\\varphi(0)}{t}$ are nonnegative for $t>0$, so their limit, the first variation, is nonnegative."
+    },
+    {
+      "id": "sufficient",
+      "title": "Sufficiency and the First-Order Characterization",
+      "startLine": 103,
+      "endLine": 131,
+      "summary": "For convex J a nonnegative first variation forces a global minimizer; combined with necessity this is the iff.",
+      "mathContext": "For convex $J$, $0 \\le d \\le J y - J y_0$ gives $J y_0 \\le J y$. Hence $y_0$ minimizes $J$ iff every first variation at $y_0$ is nonnegative — the necessary-and-sufficient Euler-Lagrange condition for convex problems."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness from Strict Convexity",
+      "startLine": 132,
+      "endLine": 147,
+      "summary": "A strictly convex functional has at most one global minimizer (well-posedness).",
+      "mathContext": "If $a \\ne b$ both minimize a strictly convex $J$, the midpoint satisfies $J(\\tfrac{a+b}{2}) < \\tfrac{1}{2}J a + \\tfrac{1}{2}J b = J a$, contradicting minimality. So the minimizer is unique."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Instance: the Energy J(y) = y^2",
+      "startLine": 148,
+      "endLine": 164,
+      "summary": "y^2 is strictly convex with unique minimizer 0, illustrating the abstract theorems.",
+      "mathContext": "The Dirichlet-type energy $J(y) = y^2$ on $\\mathbb{R}$ is strictly convex; its unique global minimizer is $0$, recovered from subsingleton_minimizers_of_strictConvex."
+    }
+  ],
+  "conclusion": {
+    "summary": "We isolate and fully verify the convex first-order theory at the heart of variational regularity: the Euler-Lagrange / first-variation condition is necessary for any minimizer and, under convexity, also sufficient; strict convexity makes the minimizer unique. The development works over an arbitrary real vector space, uses no axioms beyond Lean's foundations, and is grounded in a concrete energy example.",
+    "implications": "This is the well-posedness core of regularity theory for variational problems (Hilbert's 23rd): convex problems are solved exactly by their Euler-Lagrange equations, and strictly convex problems have a single solution. It underlies the direct method, optimal control sufficiency conditions, and the variational formulation of elliptic PDEs.",
+    "openQuestions": [
+      "Can the first-variation framework be extended to constrained admissible sets (variational inequalities / KKT conditions)?",
+      "How does the sufficiency theorem combine with coercivity to give existence (the full direct method) in infinite-dimensional spaces?",
+      "What quantitative (strong-convexity) version yields rates of convergence toward the unique minimizer?"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/Hilbert23CalculusVariationsOQ01.lean",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 11,
+    "definitionCount": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-23",
+      "relationship": "parent",
+      "description": "Answers a self-contained slice of the parent's first open question, 'What is the regularity theory for general variational problems?', by formalizing the convex first-order (Euler-Lagrange) sufficiency and uniqueness theory."
+    },
+    {
+      "targetId": "hilbert-19",
+      "relationship": "related",
+      "description": "Hilbert's 19th problem concerns regularity (analyticity) of minimizers of regular variational integrals; convexity of the integrand is the standing hypothesis there, and the sufficiency/uniqueness results here are the elementary first-order counterpart."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Giaquinta, Mariano; Hildebrandt, Stefan",
+      "title": "Calculus of Variations I & II",
+      "year": "1996",
+      "venue": "Springer, Grundlehren der mathematischen Wissenschaften 310-311",
+      "note": "Convexity, the direct method, and first-order sufficiency conditions for variational problems"
+    },
+    {
+      "authors": "Ekeland, Ivar; Temam, Roger",
+      "title": "Convex Analysis and Variational Problems",
+      "year": "1976",
+      "venue": "North-Holland",
+      "note": "Standard reference for the convex first-order theory: first variation, sufficiency, and uniqueness of minimizers"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isMinOn_iff_firstVariation_nonneg",
+      "type": "core",
+      "description": "For a convex Gateaux-differentiable functional, y0 is a global minimizer iff every first variation at y0 is nonnegative.",
+      "leanType": "ConvexOn ℝ univ J → (∀ y, ∃ d, HasDerivWithinAt (segPath J y0 y) d (Ici 0) 0) → ((∀ y, J y0 ≤ J y) ↔ ∀ y d, HasDerivWithinAt (segPath J y0 y) d (Ici 0) 0 → 0 ≤ d)"
+    },
+    {
+      "name": "subsingleton_minimizers_of_strictConvex",
+      "type": "core",
+      "description": "A strictly convex functional has at most one global minimizer.",
+      "leanType": "StrictConvexOn ℝ univ J → (∀ z, J a ≤ J z) → (∀ z, J b ≤ J z) → a = b"
+    }
+  ],
+  "sorries": 0
+}

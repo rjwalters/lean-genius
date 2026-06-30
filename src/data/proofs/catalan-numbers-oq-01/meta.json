@@ -103,7 +103,23 @@
       "mathContext": "$C_{n+1} = 2(2n+1)\\,C_n / (n+2)$."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling: the reflection (ballot-problem) form catalan n = C(2n,n) − C(2n,n+1). Both entries exploit the same Catalan/central-binomial bridge succ_mul_catalan_eq_centralBinom that drives this linear recurrence."
+    },
+    {
+      "targetId": "catalan-numbers-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling: the 2-adic valuation v₂(Cₙ) = s₂(n+1) − 1 and the characterisation of odd Catalan numbers. A finer arithmetic study of the same sequence whose recursion is established here."
+    },
+    {
+      "targetId": "catalan-numbers-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Sibling: large Schröder numbers — another holonomic combinatorial sequence, relevant to the open question of which sequences (Motzkin, Delannoy, Schröder) are holonomic of order one versus two."
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the first-order linear recurrence for the Catalan numbers: (n + 2)·C(n+1) = 2·(2n+1)·C(n), together with its exact-division corollary C(n+1) = 2·(2n+1)·C(n)/(n+2).",
     "implications": "Supplies the O(1) computational recurrence for Catalan numbers, which Mathlib previously offered only as the O(n) Segner convolution or the central-binomial closed form. It exhibits the Catalan sequence as holonomic of order one and makes single-step generation and induction on consecutive Catalan numbers straightforward.",

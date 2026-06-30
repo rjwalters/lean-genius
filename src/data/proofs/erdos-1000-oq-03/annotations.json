@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-module-overview",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Generalized totients with a multiplicative denominator condition",
+    "content": "The docstring frames OQ-03 of Erdős #1000. The parent studies Cassels' generalized totient φ_A(k), whose master decomposition counts m by the reduced denominator e = n/gcd(m,n) of m/n, turning φ_A into a restricted Gauss sum Σ_{e|n, e admissible} φ(e). This file answers 'does it extend to other denominator conditions?' by replacing the sequence-dependent admissibility with a fixed multiplicative arithmetic condition (coprime to p, odd, divisible by p) and evaluating the restricted Gauss sums in closed form. The key phenomenon: a multiplicative condition carves the divisor lattice of n into the divisor lattice of a sub-number.",
+    "mathContext": "$\\sum_{d \\mid n,\\ p \\nmid d} \\varphi(d) = \\mathrm{ordCompl}_p(n),\\quad \\sum_{d \\mid n,\\ d \\text{ odd}} \\varphi(d) = \\text{odd part of } n$",
+    "significance": "context",
+    "relatedConcepts": ["generalized totient", "Cassels φ_A", "Gauss divisor-sum identity", "reduced denominator"],
+    "prerequisites": ["Euler totient", "Gauss' identity", "divisor lattice"]
+  },
+  {
+    "id": "ann-engine",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 55, "endLine": 65 },
+    "type": "insight",
+    "title": "The restricted Gauss-sum engine",
+    "content": "sum_totient_filter_eq_of_divisors_eq is the reusable engine: if the divisors of n satisfying a predicate P are exactly the divisors of some m, then Σ_{d|n, P d} φ(d) = Σ_{d|m} φ(d) = m, a one-line consequence of Gauss' identity Nat.sum_totient. Every closed form in the file reduces to this by identifying the sub-number m | n whose divisor lattice the condition carves out. The conceptual content is that a multiplicative condition collapses a restricted sum back to a full Gauss sum over a smaller number.",
+    "mathContext": "$\\{d \\mid n : P(d)\\} = m.\\mathrm{divisors} \\implies \\sum_{d \\mid n,\\ P(d)} \\varphi(d) = \\sum_{d \\mid m} \\varphi(d) = m$",
+    "significance": "key",
+    "relatedConcepts": ["Gauss' identity", "Nat.sum_totient", "divisor lattice collapse"],
+    "prerequisites": ["Gauss divisor-sum identity", "Finset.filter"]
+  },
+  {
+    "id": "ann-coprime-iff-ordcompl",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 67, "endLine": 86 },
+    "type": "technique",
+    "title": "p ∤ d ⟺ d divides the p-free part",
+    "content": "not_dvd_iff_dvd_ordCompl supplies the divisor-set identification for the prime-free condition: for d | n, p ∤ d ⟺ d ∣ ordCompl[p] n. Forward uses the factorization n = ordProj[p] n · ordCompl[p] n with d coprime to the p-power ordProj (since p ∤ d), so Coprime.dvd_of_dvd_mul_left extracts d ∣ ordCompl. Backward uses Nat.not_dvd_ordCompl: if d ∣ ordCompl and p ∤ ordCompl then p ∤ d. This is the multiplicative heart that lets the engine fire.",
+    "mathContext": "$n = \\mathrm{ordProj}_p(n) \\cdot \\mathrm{ordCompl}_p(n),\\quad \\gcd(d, p^a) = 1 \\Rightarrow d \\mid \\mathrm{ordCompl}_p(n)$",
+    "significance": "supporting",
+    "relatedConcepts": ["p-adic valuation", "ordProj/ordCompl", "coprime divisibility", "factorization split"],
+    "prerequisites": ["p-adic valuation", "coprimality", "Nat.Coprime.dvd_of_dvd_mul_left"]
+  },
+  {
+    "id": "ann-prime-free-and-odd",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 88, "endLine": 115 },
+    "type": "concept",
+    "title": "The p-free and odd headline sums",
+    "content": "sum_totient_filter_not_dvd is the headline: Σ_{d|n, p∤d} φ(d) = ordCompl[p] n, the largest divisor of n coprime to p. The proof rewrites the filtered divisor set as (ordCompl[p] n).divisors via Finset.filter_congr + Nat.divisors_filter_dvd_of_dvd, then fires the engine. sum_totient_filter_odd is the p=2 specialization: rewriting 'Odd d' to '¬ 2 ∣ d' (Nat.odd_iff + two_dvd_ne_zero) gives Σ_{d|n, d odd} φ(d) = ordCompl[2] n, the odd part of n — the count of m<n whose reduced fraction has odd denominator.",
+    "mathContext": "$\\sum_{d \\mid n,\\ p \\nmid d} \\varphi(d) = \\mathrm{ordCompl}_p(n);\\quad \\sum_{d \\mid n,\\ d \\text{ odd}} \\varphi(d) = n / 2^{v_2(n)}$",
+    "significance": "key",
+    "relatedConcepts": ["p-free part", "odd part", "ordCompl", "restricted Gauss sum"],
+    "prerequisites": ["the engine", "ordCompl divisibility"]
+  },
+  {
+    "id": "ann-complement-and-bounds",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 117, "endLine": 151 },
+    "type": "technique",
+    "title": "The complement and the universal bound",
+    "content": "sum_totient_filter_dvd gives the complementary condition for free: Finset.sum_filter_add_sum_filter_not partitions Gauss' identity Σ_{d|n} φ(d) = n into the p∣d and p∤d parts; subtracting the p-free part (ordCompl[p] n) and closing with omega gives Σ_{d|n, p∣d} φ(d) = n − ordCompl[p] n. Two sanity checks accompany: sum_totient_filter_true recovers the classical Gauss identity for a vacuous condition, and sum_totient_filter_le bounds every restricted sum by n, since it is a sub-sum of the complete divisor-lattice sum.",
+    "mathContext": "$\\sum_{d \\mid n,\\ p \\mid d} \\varphi(d) = n - \\mathrm{ordCompl}_p(n);\\quad \\sum_{d \\mid n,\\ P(d)} \\varphi(d) \\leq n$",
+    "significance": "supporting",
+    "relatedConcepts": ["complementary count", "partition of a sum", "sub-sum bound"],
+    "prerequisites": ["Finset.sum_filter_add_sum_filter_not", "the p-free sum"]
+  },
+  {
+    "id": "ann-fiber-count",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 153, "endLine": 192 },
+    "type": "concept",
+    "title": "The reduced-denominator fibration",
+    "content": "reducedDenom m n = n/gcd(n,m) is the reduced denominator of m/n, the same quantity driving the parent's φ_A. card_reducedDenom_eq_totient proves the fibration underlying Gauss' identity: exactly φ(e) of the integers m ∈ {0,…,n−1} have reduced denominator e, for each divisor e | n. It reframes Mathlib's Nat.totient_div_of_dvd (#{m<n : gcd(n,m) = n/e} = φ(e)) through the division identity n/g = e ⟺ g = n/e, packaged in the private lemma div_eq_iff_eq_div (both sides say g·e = n).",
+    "mathContext": "$\\#\\{m < n : \\mathrm{reducedDenom}(m,n) = e\\} = \\varphi(e) \\quad (e \\mid n)$",
+    "significance": "key",
+    "relatedConcepts": ["reduced fraction", "gcd fibers", "Nat.totient_div_of_dvd", "Gauss bijection"],
+    "prerequisites": ["reduced denominator", "gcd and division identities"]
+  },
+  {
+    "id": "ann-master-count-bridge",
+    "proofId": "erdos-1000-oq-03",
+    "range": { "startLine": 194, "endLine": 239 },
+    "type": "insight",
+    "title": "The counting bridge: from divisor sums to counts of fractions",
+    "content": "card_reducedDenom_filter is the master identity and the exact analogue of the parent's phiA_decomposition: for any denominator condition P, #{m<n : P(reducedDenom m n)} = Σ_{e|n, P e} φ(e). The proof partitions range n over the reduced-denominator fibers (Finset.card_eq_sum_card_fiberwise), identifies each fiber with {m<n : reducedDenom = e}, and applies the fiber count. The two corollaries card_reducedDenom_not_dvd and card_reducedDenom_odd then read the closed forms as counts: #{m<n : denominator coprime to p} = ordCompl[p] n, and #{m<n : odd denominator} = odd part of n.",
+    "mathContext": "$\\#\\{m < n : P(\\mathrm{reducedDenom}(m,n))\\} = \\sum_{e \\mid n,\\ P(e)} \\varphi(e)$",
+    "significance": "key",
+    "relatedConcepts": ["fiberwise counting", "phiA_decomposition", "counting fractions", "Finset.card_eq_sum_card_fiberwise"],
+    "prerequisites": ["the fibration", "the restricted Gauss sums"]
+  }
+]

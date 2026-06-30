@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Generalizing the Denumerable Side of the ℵ₀/𝔠 Dichotomy",
+    "content": "The parent entry proved that over any countably infinite commutative ring $R$ the univariate polynomial ring stays denumerable, $\\#(R[X]) = \\aleph_0$, while the full sequence space reaches the continuum, $\\#(\\mathbb{N} \\to R) = \\mathfrak{c}$. Its first open question asks whether the small side survives richer algebra. This file answers yes for two generalizations: countably many commuting variables (`MvPolynomial σ R`) and arbitrary monoid algebras (`MonoidAlgebra R M`). The header records the key structural insight — both are, by definition, finitely supported families over countable index sets, so countability is automatic and only the cardinality bookkeeping remains.",
+    "mathContext": "$\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\#(\\mathrm{MonoidAlgebra}\\,R\\,M) = \\aleph_0$ for countable $R, \\sigma, M$.",
+    "significance": "context",
+    "relatedConcepts": ["cardinality", "denumerability", "aleph-null", "continuum", "Finsupp"],
+    "prerequisites": ["cardinal arithmetic", "Mathlib", "polynomial rings"]
+  },
+  {
+    "id": "ann-countable-mvpoly",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 56 },
+    "type": "technique",
+    "title": "Countability via Doubly-Nested Finsupp",
+    "content": "The crux of the multivariate case. By definition $\\mathrm{MvPolynomial}\\,\\sigma\\,R = \\mathrm{AddMonoidAlgebra}\\,R\\,(\\sigma \\to_0 \\mathbb{N}) = ((\\sigma \\to_0 \\mathbb{N}) \\to_0 R)$: a polynomial is a finitely supported map from monomials (themselves finitely supported exponent vectors $\\sigma \\to_0 \\mathbb{N}$) to coefficients in $R$. Mathlib's `Finsupp.instCountable` says a Finsupp of countable types over a countable codomain is countable, and here it fires *twice* — first making the exponent space $\\sigma \\to_0 \\mathbb{N}$ countable (from countable $\\sigma$ and countable $\\mathbb{N}$), then the coefficient family. The whole proof is a single `inferInstanceAs`, because the definitional unfolding lines up exactly with the instance.",
+    "mathContext": "$\\mathrm{MvPolynomial}\\,\\sigma\\,R = ((\\sigma \\to_0 \\mathbb{N}) \\to_0 R)$; $[\\text{Countable }\\alpha]\\,[\\text{Countable }\\beta]\\,[\\text{Zero }\\beta] \\Rightarrow \\text{Countable}\\,(\\alpha \\to_0 \\beta)$ applied twice.",
+    "significance": "key",
+    "relatedConcepts": ["Finsupp", "instance resolution", "AddMonoidAlgebra", "monomials", "countability"],
+    "prerequisites": ["finitely supported functions", "typeclass inference"]
+  },
+  {
+    "id": "ann-infinite-mvpoly",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "technique",
+    "title": "Infinitude from the Constant Embedding",
+    "content": "Infinitude is established the cheapest possible way: the constant-polynomial map $\\mathrm{C} : R \\to \\mathrm{MvPolynomial}\\,\\sigma\\,R$ is injective (`MvPolynomial.C_injective`), so `Infinite.of_injective` transports `Infinite R` straight to the algebra. No monomials need to be counted — a single injected copy of the infinite ring $R$ suffices. Note this holds for *any* variable set $\\sigma$, even empty, since the constant polynomials alone are already infinite.",
+    "mathContext": "$\\mathrm{C} : R \\hookrightarrow \\mathrm{MvPolynomial}\\,\\sigma\\,R$ injective, so $\\mathrm{Infinite}\\,R \\Rightarrow \\mathrm{Infinite}\\,(\\mathrm{MvPolynomial}\\,\\sigma\\,R)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["injective embedding", "constant polynomial", "Infinite.of_injective"],
+    "prerequisites": ["injections", "infinite types"]
+  },
+  {
+    "id": "ann-mk-mvpoly",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 82 },
+    "type": "concept",
+    "title": "Pinning the Cardinality at Exactly ℵ₀",
+    "content": "With countability and infinitude in hand, `Cardinal.mk_eq_aleph0` collapses the cardinality to exactly $\\aleph_0$ — a countable infinite type has cardinality precisely $\\aleph_0$, neither finite nor continuum. `mk_mvPolynomial_eq_mk` then sharpens this to $\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\#R$: adjoining countably many commuting indeterminates produces a strictly larger ring but the same-size underlying set. This is the multivariate generalization of the parent's $\\#(R[X]) = \\aleph_0$.",
+    "mathContext": "$[\\text{Countable}]\\,[\\text{Infinite}] \\Rightarrow \\#X = \\aleph_0$; hence $\\#(\\mathrm{MvPolynomial}\\,\\sigma\\,R) = \\aleph_0 = \\#R$.",
+    "significance": "key",
+    "relatedConcepts": ["mk_eq_aleph0", "cardinal arithmetic", "cardinality invariance"],
+    "prerequisites": ["cardinality of countable sets"]
+  },
+  {
+    "id": "ann-countable-monoidalg",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 92 },
+    "type": "technique",
+    "title": "Monoid Algebras: One Layer of Finsupp",
+    "content": "The monoid-algebra case is the single-layer analogue. By definition $\\mathrm{MonoidAlgebra}\\,R\\,M = (M \\to_0 R)$ — finitely supported coefficient functions indexed by the monoid $M$. The same `Finsupp.instCountable` engine applies once. Notably, only the *type* structure of $M$ is used; no multiplicative or associativity hypotheses are required for countability, which is why the statement assumes merely `[Countable M]`.",
+    "mathContext": "$\\mathrm{MonoidAlgebra}\\,R\\,M = (M \\to_0 R)$ is countable when $R$ and $M$ are.",
+    "significance": "supporting",
+    "relatedConcepts": ["MonoidAlgebra", "Finsupp", "group algebra"],
+    "prerequisites": ["monoid algebras", "finitely supported functions"]
+  },
+  {
+    "id": "ann-infinite-monoidalg",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 103 },
+    "type": "technique",
+    "title": "Infinitude via a Single-Support Embedding",
+    "content": "Infinitude here needs `[Nonempty M]`: fix a point $m_0 : M$, and the map $r \\mapsto \\mathrm{single}\\,m_0\\,r$ injects $R$ into $\\mathrm{MonoidAlgebra}\\,R\\,M$. Injectivity is verified by evaluating at $m_0$ via `DFunLike.congr_fun ... m₀` and `Finsupp.single_eq_same` (which gives $(\\mathrm{single}\\,m_0\\,r)\\,m_0 = r$). This mirrors the constant embedding of the polynomial case — one injected coefficient line is enough.",
+    "mathContext": "$r \\mapsto \\mathrm{single}\\,m_0\\,r : R \\hookrightarrow (M \\to_0 R)$; injective since $(\\mathrm{single}\\,m_0\\,r)\\,m_0 = r$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finsupp.single", "Finsupp.single_eq_same", "DFunLike.congr_fun", "nonempty index"],
+    "prerequisites": ["injections", "Finsupp.single"]
+  },
+  {
+    "id": "ann-mk-monoidalg",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 119 },
+    "type": "concept",
+    "title": "Monoid-Algebra Cardinality is ℵ₀, Recovering ℚ[X]",
+    "content": "Combining countability and infinitude, `mk_eq_aleph0` gives $\\#(\\mathrm{MonoidAlgebra}\\,R\\,M) = \\aleph_0$, and `mk_monoidAlgebra_eq_mk` rewrites it as $\\#R$. The conceptual payoff: setting $M = (\\mathbb{N}, +)$ recovers $\\mathrm{MonoidAlgebra}\\,R\\,\\mathbb{N} = R[X]$, so the parent's univariate result is the special case of this theorem — the generalization is faithful, not a detour.",
+    "mathContext": "$\\#(\\mathrm{MonoidAlgebra}\\,R\\,M) = \\aleph_0 = \\#R$; at $M = (\\mathbb{N},+)$ this is $\\#(R[X]) = \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": ["mk_eq_aleph0", "group algebra", "polynomial ring as monoid algebra"],
+    "prerequisites": ["cardinality", "monoid algebras"]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "denumerability-rationals-oq-05-oq-01-oq-01",
+    "range": { "startLine": 121, "endLine": 139 },
+    "type": "insight",
+    "title": "Concrete Instances over ℚ and ℤ",
+    "content": "Three specializations make the abstract result tangible: $\\#(\\mathrm{MvPolynomial}\\,\\mathbb{N}\\,\\mathbb{Q}) = \\aleph_0$ (rational polynomials in countably many variables), $\\#(\\mathrm{MvPolynomial}\\,(\\mathrm{Fin}\\,3)\\,\\mathbb{Z}) = \\aleph_0$ (integer polynomials in three variables), and $\\#(\\mathrm{MonoidAlgebra}\\,\\mathbb{Q}\\,\\mathbb{N}) = \\aleph_0$ — the last being $\\mathbb{Q}[X]$, closing the loop back to the parent. Each follows by typeclass inference alone, since $\\mathbb{Q}, \\mathbb{Z}, \\mathbb{N}, \\mathrm{Fin}\\,3$ all satisfy the countable/infinite/nonempty hypotheses automatically.",
+    "mathContext": "$\\#(\\mathrm{MvPolynomial}\\,\\mathbb{N}\\,\\mathbb{Q}) = \\#(\\mathrm{MvPolynomial}\\,(\\mathrm{Fin}\\,3)\\,\\mathbb{Z}) = \\#(\\mathrm{MonoidAlgebra}\\,\\mathbb{Q}\\,\\mathbb{N}) = \\aleph_0$.",
+    "significance": "context",
+    "relatedConcepts": ["instance specialization", "ℚ[X]", "concrete cardinality"],
+    "prerequisites": ["typeclass inference"]
+  }
+]

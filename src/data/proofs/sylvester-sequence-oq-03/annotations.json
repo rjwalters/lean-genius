@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Sylvester's Sequence and the Greedy Expansion of 1",
+    "content": "Sylvester's sequence 2, 3, 7, 43, 1807, … (a₀=2, a_{n+1}=aₙ²−aₙ+1) is the greedy Egyptian-fraction expansion of 1: each aₙ is the smallest integer keeping ∑ 1/aₖ below 1. The parent file SylvesterSequenceOQ01 supplies everything this file builds on — the definition syl, the exact partial-sum identity ∑_{k≤n} 1/aₖ = 1 − 1/(a_{n+1}−1), and the cast recurrence syl_cast_succ over ℤ. This entry adds the quantitative layer: exactly how fast the partial sums approach 1.",
+    "mathContext": "$a_0=2,\\ a_{n+1}=a_n^2-a_n+1$; OEIS A000058. Exact partial sum: $\\sum_{k=0}^{n} \\tfrac1{a_k} = 1 - \\tfrac1{a_{n+1}-1}$.",
+    "significance": "context",
+    "relatedConcepts": ["Egyptian fractions", "greedy algorithm", "Sylvester's sequence", "OEIS A000058", "reciprocal series"],
+    "prerequisites": ["recurrence relations", "Egyptian fractions"]
+  },
+  {
+    "id": "ann-gap-recurrence",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 40, "endLine": 44 },
+    "type": "insight",
+    "title": "The Gap Substitution: bₙ = aₙ − 1 Linearises the Constant Term",
+    "content": "This one-line lemma is the conceptual key to the whole file. Writing the recurrence in terms of the gap to 1, bₙ := aₙ − 1, the awkward aₙ²−aₙ+1 collapses to the pure quadratic map b_{n+1} = bₙ(bₙ+1) = bₙ²+bₙ. The +1 constant in the original recurrence is exactly absorbed by the shift, leaving a recurrence with no additive constant — which is what makes the squaring estimate b_{n+1} ≥ bₙ² clean. The Lean proof is just syl_cast_succ then ring over ℤ.",
+    "mathContext": "$a_{n+1}-1 = a_n(a_n-1)$, i.e. $b_{n+1} = b_n^2 + b_n$ with $b_n := a_n - 1$. Since $b_n \\ge 0$, $b_{n+1} \\ge b_n^2$.",
+    "significance": "key",
+    "relatedConcepts": ["change of variable", "quadratic map", "recurrence relations", "telescoping"],
+    "prerequisites": ["recurrence relations", "ring arithmetic"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 46, "endLine": 71 },
+    "type": "technique",
+    "title": "Doubly-Exponential Lower Bound by Iterated Squaring",
+    "content": "two_pow_two_pow_le_syl_sub_one proves 2^(2ⁿ) ≤ a_{n+1}−1 by induction. The mechanism is iterated squaring: from b_{n+1} = bₙ(bₙ+1) ≥ bₙ² and the base value b₁ = 2, each step at least squares the previous bound, producing the tower 2, 4, 16, 256, …. The Lean proof abbreviates t = 2^(2^m), records t ≥ 2, lifts the inductive hypothesis to a_{m+1} ≥ t+1, rewrites via the gap recurrence, handles the exponent bookkeeping 2^(2^{m+1}) = (2^(2^m))² = t², and closes with nlinarith fed the product structure t·(t+1) ≥ t² = 2^(2^{m+1}).",
+    "mathContext": "$b_{n+1} \\ge b_n^2$ with $b_1 = 2 \\Rightarrow b_{n+1} \\ge 2^{2^n}$. Exponent step: $2^{2^{m+1}} = (2^{2^m})^2$.",
+    "significance": "key",
+    "relatedConcepts": ["iterated squaring", "doubly-exponential growth", "induction", "nlinarith"],
+    "prerequisites": ["mathematical induction", "exponent laws"]
+  },
+  {
+    "id": "ann-upper-bound",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 73, "endLine": 85 },
+    "type": "technique",
+    "title": "Matching Doubly-Exponential Upper Bound",
+    "content": "syl_le_two_pow_two_pow gives the other side of the sandwich, aₙ ≤ 2^(2ⁿ), by induction. The estimate a_{n+1} = aₙ²−aₙ+1 ≤ aₙ² (valid since aₙ ≥ 1) means each term is at most the square of the previous, and squaring the inductive bound 2^(2ⁿ) yields (2^(2ⁿ))² = 2^(2^{n+1}). Together with the lower bound this pins the growth rate to doubly-exponential from both sides, with no transcendental constant in sight.",
+    "mathContext": "$a_{n+1} = a_n^2 - a_n + 1 \\le a_n^2 \\le (2^{2^n})^2 = 2^{2^{n+1}}$, using $a_n \\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["doubly-exponential growth", "induction", "two-sided bounds", "quadratic recurrence"],
+    "prerequisites": ["mathematical induction", "exponent laws"]
+  },
+  {
+    "id": "ann-convergence-rate",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 87, "endLine": 122 },
+    "type": "concept",
+    "title": "Sharp Convergence Rate and Strict Positivity of the Error",
+    "content": "Here the growth bound is converted into a convergence rate for the reciprocal series. The parent's exact identity rewrites the truncation error as 1 − Sₙ = 1/(a_{n+1}−1); feeding the doubly-exponential lower bound through one_div_le_one_div_of_le (with a cast from ℤ to ℚ) bounds it above by 1/2^(2ⁿ) (syl_error_le). Separately, positivity of the gap a_{n+1}−1 gives 1 − Sₙ > 0 (syl_error_pos), so every finite partial sum is strictly below 1. Growth and convergence are thus two readings of the same inequality.",
+    "mathContext": "$1 - S_n = \\dfrac{1}{a_{n+1}-1} \\le \\dfrac{1}{2^{2^n}}$, and $0 < 1 - S_n$ since $a_{n+1}-1 > 0$. Doubly-exponential decay of the error.",
+    "significance": "key",
+    "relatedConcepts": ["convergence rate", "truncation error", "reciprocal monotonicity", "Egyptian fractions"],
+    "prerequisites": ["telescoping sums", "rational inequalities", "limits"]
+  },
+  {
+    "id": "ann-capstone",
+    "proofId": "sylvester-sequence-oq-03",
+    "range": { "startLine": 124, "endLine": 137 },
+    "type": "concept",
+    "title": "Capstone: the Two-Sided Sandwich and Decay Rate",
+    "content": "sylvester_doubly_exponential packages the four results into a single conjunction: the lower bound 2^(2ⁿ) ≤ a_{n+1}−1, the upper bound aₙ ≤ 2^(2ⁿ), strict positivity 0 < 1−Sₙ, and the decay 1−Sₙ ≤ 1/2^(2ⁿ). This is the elementary, fully axiom-free shadow of the classical asymptotic aₙ ≈ E^(2^{n+1}) for Sylvester's constant E ≈ 1.2640… — the doubly-exponential shape captured without invoking E itself.",
+    "mathContext": "$2^{2^n} \\le a_{n+1}-1,\\quad a_n \\le 2^{2^n},\\quad 0 < 1-S_n \\le 2^{-2^n}$. Classical: $a_n \\approx E^{2^{n+1}}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sylvester's constant", "doubly-exponential asymptotics", "two-sided bounds", "Egyptian fractions"],
+    "prerequisites": ["asymptotic analysis", "limits"]
+  }
+]

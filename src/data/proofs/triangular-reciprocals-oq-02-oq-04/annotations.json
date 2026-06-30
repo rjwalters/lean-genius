@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Rate of Convergence for the Generalized Triangular Reciprocals",
+    "content": "The parent entry proves ∑_{n=1}^∞ 1/(n(n+k)) = H_k/k for every k ≥ 1. This file answers its fourth open question: how fast do the N-term partial sums approach the limit? The partial-fraction telescoping makes the truncation error exactly (1/k)(H_{N+k} - H_N). Bounding the harmonic tail by k/(N+1) — each of its k consecutive reciprocals being at most 1/(N+1) — and dividing by k cancels the gap parameter entirely, leaving the uniform ceiling 1/(N+1).",
+    "mathContext": "$\\left|\\frac{H_k}{k} - \\sum_{n=1}^{N}\\frac{1}{n(n+k)}\\right| = \\frac{1}{k}(H_{N+k} - H_N) \\le \\frac{1}{N+1}$, uniformly in $k \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "harmonic numbers",
+      "truncation error",
+      "rate of convergence",
+      "telescoping series",
+      "uniform bounds"
+    ],
+    "prerequisites": [
+      "real analysis (series partial sums)",
+      "harmonic numbers",
+      "induction in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-harmonic-diff-le",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 74, "endLine": 92 },
+    "type": "technique",
+    "title": "Uniform Tail Bound H_{N+k} - H_N ≤ k/(N+1)",
+    "content": "The core new lemma, proved by induction on the gap parameter k. The k=0 base case is 0 ≤ 0. The successor step uses `harmonic_succ` to write H_{N+(k+1)} = H_{N+k} + 1/(N+k+1); the new term is bounded by 1/(N+1) via `one_div_le_one_div_of_le` (since N+1 ≤ N+k+1), and adding it to the inductive hypothesis k/(N+1) gives (k+1)/(N+1) after `add_div`. No Finset reindexing is needed — the induction does all the bookkeeping.",
+    "mathContext": "$H_{N+k} - H_N = \\sum_{i=N+1}^{N+k}\\frac{1}{i} \\le k\\cdot\\frac{1}{N+1} = \\frac{k}{N+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["harmonic_succ", "induction on the gap", "reciprocal antitonicity", "tail estimate"],
+    "prerequisites": ["harmonic recurrence", "monotone reciprocals"]
+  },
+  {
+    "id": "ann-truncation-eq",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "insight",
+    "title": "Exact Truncation Error from the Parent's Closed Form",
+    "content": "Subtracting the parent's partial-sum closed form S_N(k) = (1/k)(H_k - (H_{N+k} - H_N)) from the limit H_k/k leaves exactly (1/k)(H_{N+k} - H_N). Because the manipulation is purely formal in the field inverse k⁻¹ (the H_k/k terms cancel symbolically), a single `ring` closes it — no hypothesis k ≠ 0 is even required at this step.",
+    "mathContext": "$\\frac{H_k}{k} - S_N(k) = \\frac{H_k}{k} - \\frac{1}{k}\\bigl(H_k - (H_{N+k}-H_N)\\bigr) = \\frac{1}{k}(H_{N+k}-H_N).$",
+    "significance": "supporting",
+    "relatedConcepts": ["partial_sum_closed_form", "ring tactic", "field inverse"],
+    "prerequisites": ["partial fractions", "the parent closed form"]
+  },
+  {
+    "id": "ann-truncation-le",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 121, "endLine": 132 },
+    "type": "technique",
+    "title": "Cancelling k: the Bound Becomes k-Independent",
+    "content": "With the error rewritten as (1/k)(H_{N+k} - H_N), `one_div_mul_eq_div` and `div_le_iff₀ hk0` clear the positive denominator k, reducing the goal to H_{N+k} - H_N ≤ (1/(N+1))·k. The tail lemma gives H_{N+k} - H_N ≤ k/(N+1) = (1/(N+1))·k, so the k on both sides cancels and the final ceiling 1/(N+1) carries no dependence on the gap parameter — the crux of the open question.",
+    "mathContext": "$\\frac{1}{k}(H_{N+k}-H_N) \\le \\frac{1}{k}\\cdot\\frac{k}{N+1} = \\frac{1}{N+1}.$",
+    "significance": "key",
+    "relatedConcepts": ["div_le_iff₀", "one_div_mul_eq_div", "uniform bound"],
+    "prerequisites": ["ordered field inequalities"]
+  },
+  {
+    "id": "ann-truncation-tsum",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 157, "endLine": 181 },
+    "type": "insight",
+    "title": "Bounding the Genuine Infinite-Series Truncation",
+    "content": "To phrase the error against the actual ∑' value rather than the abstract closed form, `range_sum_eq_Icc` reindexes the range-N partial sum (the parent's HasSum convention, indexed by n+1) into the Icc 1 N form, and `generalized_triangular_reciprocals_tsum` replaces the tsum by H_k/k. The composite `truncation_error_tsum_abs` then delivers |∑' value - partial sum| ≤ 1/(N+1) directly from `truncation_error_abs`.",
+    "mathContext": "$\\left|\\sum_{n=1}^{\\infty}\\frac{1}{n(n+k)} - \\sum_{n=1}^{N}\\frac{1}{n(n+k)}\\right| \\le \\frac{1}{N+1}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["tsum", "range↔Icc reindex", "Finset.sum_Ico_add'", "generalized_triangular_reciprocals_tsum"],
+    "prerequisites": ["infinite sums", "Finset reindexing"]
+  }
+]

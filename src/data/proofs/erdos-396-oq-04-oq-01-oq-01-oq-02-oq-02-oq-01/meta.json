@@ -47,6 +47,43 @@
       "Strict monotonicity of natural-indexed sequences (strictAnti_nat_of_succ_lt) and the logarithm of a finite product (Real.log_prod)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview & Scope",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring: the multiplicative twin of the parent's additive 1/2-exponent route. Keeping the product (not its log), the central-binomial recurrence collapses to a telescoping product whose normalisation is the Wallis partial product C(2n,n)/4^n = (2n−1)!!/(2n)!!, recovering C(2n,n) < 4^n with no row-sum estimate and no Stirling."
+    },
+    {
+      "id": "ratio-telescope",
+      "title": "The Recurrence Ratio and Telescoping Product",
+      "startLine": 48,
+      "endLine": 92,
+      "summary": "The ratio s n = (4n+2)/(n+1) read off Mathlib's recurrence; the normalised one-step lemma C(2(n+1),n+1) = s n · C(2n,n); the telescoping product C(2n,n) = ∏_{k<n} s k; and the log bridge log C(2n,n) = ∑_{k<n} log(s k) back to the parent's additive view."
+    },
+    {
+      "id": "wallis-product",
+      "title": "The Wallis Partial Product",
+      "startLine": 96,
+      "endLine": 138,
+      "summary": "The normalised factor s k/4 = (2k+1)/(2k+2) ∈ (0,1), and the headline identity C(2n,n)/4^n = ∏_{k<n} (2k+1)/(2k+2) = (2n−1)!!/(2n)!!, the truncation of Wallis' product for 2/π, distributed factor-by-factor from the telescoping product."
+    },
+    {
+      "id": "monotone-bound",
+      "title": "Strict Decrease and the 4ⁿ Bound",
+      "startLine": 140,
+      "endLine": 184,
+      "summary": "The normalised sequence C(2n,n)/4^n is strictly decreasing (each step multiplies by the Wallis factor < 1), so starting from 1 it stays below 1 for n ≥ 1, giving C(2n,n) < 4^n purely from the product — no appeal to (2n choose n) ≤ 2^{2n}."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 186,
+      "endLine": 206,
+      "summary": "Worked small cases: the empty product equals C(0,0)=1, the k=0 Wallis factor is 1/2, C(2,1)/4 = 1/2, the first strict drop, and C(4,2)=6 < 16."
+    }
+  ],
   "conclusion": {
     "summary": "The central-binomial recurrence collapses to the telescoping product C(2n,n) = ∏_{k<n} (4k+2)/(k+1), whose normalisation by 4^n is the Wallis partial product C(2n,n)/4^n = ∏_{k<n} (2k+1)/(2k+2) = (2n−1)!!/(2n)!!. Each Wallis factor lies strictly in (0,1), so the normalised sequence is strictly decreasing and, starting at 1, stays below 1 — recovering C(2n,n) < 4^n for n ≥ 1 from the product alone. All 13 theorems are fully machine-checked with no axioms or sorries.",
     "implications": "Together with the parent's additive 1/2-exponent bound, this gives the two classical readings of the same recurrence: the logarithm telescopes to a harmonic sum (additive, exponent 1/2), while the product telescopes to the Wallis partial product (multiplicative, closed form). The Wallis form is the natural bridge to the analytic identity ∏_{k≥1} (2k)(2k)/((2k−1)(2k+1)) = π/2, and the strict-monotonicity / 4^n bound are obtained without any factorial asymptotics.",

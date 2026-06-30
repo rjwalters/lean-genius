@@ -37,7 +37,7 @@ theorem prime_pow_dvd_choose {p k j : ℕ} (hp : p.Prime) (hk : 1 ≤ k)
   have hjle : j ≤ p ^ k := le_of_lt hjn
   -- Kummer: v_p(C(p^k, j)) = k - v_p(j)
   have hfact : ((p ^ k).choose j).factorization p = k - j.factorization p :=
-    Nat.factorization_choose_prime_pow hp.prime hjle hj0
+    Nat.factorization_choose_prime_pow hp hjle hj0
   -- v_p(j) < k, otherwise p^k ∣ j would contradict j < p^k
   have hjfact_lt : j.factorization p < k := by
     by_contra h
