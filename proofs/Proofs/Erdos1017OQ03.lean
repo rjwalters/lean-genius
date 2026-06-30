@@ -27,6 +27,10 @@ rely on. (Self-contained: `T` is re-declared, depending only on Mathlib.)
 4. `turanBound_strictMono` — `T` is **strictly increasing** for `n ≥ 1`
    (`T(n) < T(n+1)`), sharpening the file's non-strict monotonicity.
 5. `turanBound_le_sq_div_four` — the real-valued envelope `T(n) ≤ n²/4`.
+6. `turanBound_four_mul` — the exact integer identity `4·T(n) = n² − (n mod 2)`
+   (equivalently `n² mod 4 = n mod 2`).
+7. `turanBound_ge_sq_sub_one_div_four` — the matching lower real envelope
+   `(n² − 1)/4 ≤ T(n)`, sandwiching `T` as `(n² − 1)/4 ≤ T(n) ≤ n²/4`.
 
 ## Summary: 0 sorries, 0 axioms, no `native_decide`. Self-contained over Mathlib.
 -/
@@ -84,6 +88,37 @@ theorem turanBound_le_sq_div_four (n : ℕ) :
   calc ((n ^ 2 / 4 : ℕ) : ℝ) ≤ ((n ^ 2 : ℕ) : ℝ) / 4 := h
     _ = (n : ℝ) ^ 2 / 4 := by push_cast; ring
 
+/-- **Exact integer identity:** `4·T(n) = n² − (n mod 2)`. The quarter-square loses
+    exactly the parity bit: nothing for even `n`, one unit for odd `n`. Equivalently
+    `n² mod 4 = n mod 2`, so the floor `⌊n²/4⌋` is `n²/4` rounded down by `0` or `¼`. -/
+theorem turanBound_four_mul (n : ℕ) : 4 * turanBound n = n ^ 2 - n % 2 := by
+  unfold turanBound
+  have hmod : n ^ 2 % 4 = n % 2 := by
+    rcases Nat.even_or_odd n with ⟨m, rfl⟩ | ⟨m, rfl⟩
+    · rw [show (m + m) ^ 2 = 4 * m ^ 2 by ring]; omega
+    · rw [show (2 * m + 1) ^ 2 = 4 * (m ^ 2 + m) + 1 by ring]; omega
+  have hsplit := Nat.div_add_mod (n ^ 2) 4
+  omega
+
+/-- **Lower real envelope:** `(n² − 1)/4 ≤ T(n)` over `ℝ`. Together with
+    `turanBound_le_sq_div_four` this sandwiches the Turán bound,
+    `(n² − 1)/4 ≤ T(n) ≤ n²/4`, with equality on the right for even `n` and on the
+    left for odd `n` (the floor discards at most `¼`). -/
+theorem turanBound_ge_sq_sub_one_div_four (n : ℕ) :
+    ((n : ℝ) ^ 2 - 1) / 4 ≤ (turanBound n : ℝ) := by
+  unfold turanBound
+  have hmod : n ^ 2 % 4 ≤ 1 := by
+    rcases Nat.even_or_odd n with ⟨m, rfl⟩ | ⟨m, rfl⟩
+    · rw [show (m + m) ^ 2 = 4 * m ^ 2 by ring]; omega
+    · rw [show (2 * m + 1) ^ 2 = 4 * (m ^ 2 + m) + 1 by ring]; omega
+  have hsplit := Nat.div_add_mod (n ^ 2) 4
+  have hint : (n : ℝ) ^ 2 ≤ 4 * ((n ^ 2 / 4 : ℕ) : ℝ) + 1 := by
+    have hnat : n ^ 2 ≤ 4 * (n ^ 2 / 4) + 1 := by omega
+    have hcast := (Nat.cast_le (α := ℝ)).mpr hnat
+    push_cast at hcast
+    linarith
+  linarith
+
 /-
 ## Significance
 
@@ -93,7 +128,10 @@ of complete subgraphs needed and the edge count of the extremal complete
 bipartite graph. The companion file records its product form and monotonicity;
 this entry adds the explicit parity-split closed forms `T(2m) = m²`,
 `T(2m+1) = m(m+1)`, the exact one-step increment `⌊(n+1)/2⌋`, the strict growth
-for `n ≥ 1`, and the real envelope `T(n) ≤ n²/4`.
+for `n ≥ 1`, the exact integer identity `4·T(n) = n² − (n mod 2)`, and the
+two-sided real envelope `(n² − 1)/4 ≤ T(n) ≤ n²/4`. The sandwich pins `T(n)`
+within `¼` of the exact quarter-square `n²/4`, making the asymptotics
+`T(n) ∼ n²/4` immediate.
 
 The closed forms make the extremal edge counts (`K_{m,m}` has `m²`, `K_{m,m+1}`
 has `m(m+1)`) explicit, and the increment formula is exactly the quantity the
