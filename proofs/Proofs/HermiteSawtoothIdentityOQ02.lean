@@ -98,4 +98,38 @@ theorem sum_fract_mul_div_coprime (p q : ℕ) (hq : 0 < q) (hpq : Nat.Coprime p 
   field_simp
   linear_combination hgauss
 
+/-- **Eisenstein lattice-point count.** For coprime `p, q` with `q ≥ 1`,
+$$\sum_{k=0}^{q-1} \left\lfloor \frac{k p}{q} \right\rfloor = \frac{(p-1)(q-1)}{2}.$$
+This is the floor twin of `sum_fract_mul_div_coprime`: writing
+`⌊kp/q⌋ = kp/q − {kp/q}` and summing, the linear part contributes
+`(p/q)·∑_{k<q} k = p(q-1)/2` and the sawtooth part contributes `(q-1)/2`
+(the previous theorem), so the difference is `(p-1)(q-1)/2`.
+
+Geometrically the left side counts the lattice points `(k, j)` with
+`1 ≤ k ≤ q-1` and `1 ≤ j ≤ ⌊kp/q⌋`, i.e. the integer points strictly below
+the diagonal of the `q × p` rectangle. The closed form `(p-1)(q-1)/2` is
+exactly half the `(p-1)(q-1)` interior points (no lattice point lies *on* the
+open diagonal because `gcd(p,q)=1`), which is the symmetry that drives
+Eisenstein's lattice-point proof of quadratic reciprocity. -/
+theorem sum_floor_mul_div_coprime (p q : ℕ) (hq : 0 < q) (hpq : Nat.Coprime p q) :
+    ∑ k ∈ range q, (⌊(k : ℝ) * (p : ℝ) / (q : ℝ)⌋ : ℝ)
+      = ((p : ℝ) - 1) * ((q : ℝ) - 1) / 2 := by
+  have hq0 : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq.ne'
+  -- `⌊y⌋ = y − {y}` term by term.
+  have hfloor : ∀ k ∈ range q,
+      (⌊(k : ℝ) * (p : ℝ) / (q : ℝ)⌋ : ℝ)
+        = (k : ℝ) * (p : ℝ) / (q : ℝ) - Int.fract ((k : ℝ) * (p : ℝ) / (q : ℝ)) := by
+    intro k _; rw [Int.fract]; ring
+  -- Linear part: `∑_{k<q} kp/q = p(q-1)/2`, via the Gauss sum.
+  have hlin : ∑ k ∈ range q, (k : ℝ) * (p : ℝ) / (q : ℝ) = (p : ℝ) * ((q : ℝ) - 1) / 2 := by
+    have hgauss : ∑ k ∈ range q, (k : ℝ) = (q : ℝ) * ((q : ℝ) - 1) / 2 := by
+      have hc := congrArg (fun m : ℕ => (m : ℝ)) (Finset.sum_range_id_mul_two q)
+      push_cast [Nat.cast_sub hq] at hc
+      linear_combination hc / 2
+    rw [← Finset.sum_div, ← Finset.sum_mul, hgauss]
+    field_simp
+  rw [Finset.sum_congr rfl hfloor, Finset.sum_sub_distrib, hlin,
+    sum_fract_mul_div_coprime p q hq hpq]
+  ring
+
 end HermiteSawtoothIdentity
