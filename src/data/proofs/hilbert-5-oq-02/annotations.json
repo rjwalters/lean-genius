@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-h5oq02-context",
+    "proofId": "hilbert-5-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "What is axiomatized in the parent, and what is genuinely verified here",
+    "content": "This file answers the parent entry's open question: 'extend the formalization with actual Lie infrastructure to state the exponential map properties.' The parent `hilbert-5` states the Gleason–Montgomery–Zippin solution at the level of *axiomatized* deep theorems (no-small-subgroups, Montgomery–Zippin, von Neumann) that are out of reach of current Mathlib. This file deliberately does NOT axiomatize: it works entirely inside the analytic/algebraic content that already lives in Mathlib — the Lie bracket of an associative algebra and the Banach-algebra exponential `NormedSpace.exp ℝ` — and proves everything with 0 axioms. The conceptual payload: the exponential is the concrete bridge from the Lie algebra (an element `X` as an infinitesimal generator/tangent vector at the identity) to the Lie group (the one-parameter subgroup `t ↦ exp(t•X)`). Everything holds in any real Banach algebra, which includes bounded operators/matrices over ℝ — the setting of matrix Lie groups.",
+    "mathContext": "Setting: $\\mathbb{A}$ a real Banach algebra ($[\\mathrm{NormedRing}\\,\\mathbb{A}]\\,[\\mathrm{NormedAlgebra}\\,\\mathbb{R}\\,\\mathbb{A}]\\,[\\mathrm{CompleteSpace}\\,\\mathbb{A}]$); the exponential $\\exp_{\\mathbb{R}}:\\mathbb{A}\\to\\mathbb{A}$ converges on all of $\\mathbb{A}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's fifth problem",
+      "Lie correspondence (algebra ↔ group)",
+      "axiomatized vs verified results",
+      "matrix Lie groups",
+      "Banach algebra"
+    ],
+    "prerequisites": [
+      "the parent hilbert-5 entry and its open questions",
+      "Lie groups and Lie algebras at a high level",
+      "the exponential map of a Banach algebra"
+    ]
+  },
+  {
     "id": "ann-h5oq02-bracket",
     "proofId": "hilbert-5-oq-02",
     "range": {
@@ -70,6 +95,29 @@
       "the Banach-algebra exponential",
       "scalar multiplication in an algebra",
       "one-parameter subgroups"
+    ]
+  },
+  {
+    "id": "ann-h5oq02-omit",
+    "proofId": "hilbert-5-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 73
+    },
+    "type": "technique",
+    "title": "omit: stating the bracket lemmas at maximal generality",
+    "content": "The `variable` line fixes a full real Banach algebra `[NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]`, which the exponential results genuinely need. But the bracket↔commutator lemmas (`commute_of_lie_eq_zero`, `lie_eq_zero_of_commute`, `lie_eq_zero_iff_commute`) are *purely algebraic* — they hold in any (non-normed, incomplete) associative ring. Each is therefore prefixed with `omit [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] in`, which drops the unused instance arguments for that single declaration. This keeps each theorem's hypotheses as weak as its proof allows — honest about what is actually used — without splitting the file into separate sections with different `variable` contexts. The same `omit` appears on `oneParam_zero`, which needs the exponential but not completeness.",
+    "mathContext": "Generality discipline: the bracket identity $\\lbrack X,Y\\rbrack = 0 \\iff XY = YX$ requires only a (Lie-)ring structure, so the normed/complete instances are omitted.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "omit command",
+      "typeclass instance hypotheses",
+      "minimal hypotheses / generality",
+      "variable scoping in Lean"
+    ],
+    "prerequisites": [
+      "Lean variable and instance-implicit arguments",
+      "the omit command"
     ]
   }
 ]
