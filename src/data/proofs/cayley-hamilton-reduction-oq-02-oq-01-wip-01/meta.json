@@ -1,0 +1,180 @@
+{
+  "id": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+  "title": "Rational Canonical Form: Block-Diagonal Companion Assembly",
+  "slug": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+  "description": "The assembly invariants of the rational canonical form: for a block-diagonal of companion matrices C(p) ⊕ C(q), the characteristic polynomial is the product p·q and the minimal polynomial is the lcm(p, q).",
+  "meta": {
+    "author": "Ferdinand Georg Frobenius (1878)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Frobenius_normal_form",
+    "date": "1878",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ02OQ01WIP01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "companion-matrix",
+      "rational-canonical-form",
+      "block-matrix",
+      "minimal-polynomial"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly_fromBlocks_zero₂₁",
+        "description": "Characteristic polynomial of a block-triangular matrix factors as the product of the diagonal blocks' charpolys",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.fromBlocks_diagonal_pow",
+        "description": "Powers of a block-diagonal matrix act blockwise: (A ⊕ D)^k = A^k ⊕ D^k",
+        "module": "Mathlib.Data.Matrix.Block"
+      },
+      {
+        "theorem": "Polynomial.aeval_eq_sum_range",
+        "description": "aeval expands as a finite sum over coefficients and powers",
+        "module": "Mathlib.Algebra.Polynomial.AlgebraMap"
+      },
+      {
+        "theorem": "Polynomial.eq_of_monic_of_associated",
+        "description": "Two monic associated polynomials are equal (monic uniqueness)",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "normalize_lcm",
+        "description": "The lcm in a normalized GCD monoid is normalized (hence monic for polynomials over a field)",
+        "module": "Mathlib.Algebra.GCDMonoid.Basic"
+      }
+    ],
+    "originalContributions": [
+      "aeval_fromBlocks_diag: polynomial evaluation respects block-diagonal direct sums, aeval (A ⊕ D) f = (aeval A f) ⊕ (aeval D f)",
+      "charpoly_companion_block: charpoly(C(p) ⊕ C(q)) = p · q (the characteristic-polynomial side of RCF)",
+      "charpoly_companion_block_natDegree: the assembled charpoly has degree dp + dq (matches the block dimension)",
+      "aeval_companion_block_mul: the block-diagonal companion form is annihilated by the product p · q",
+      "minpoly_companion_block: minpoly(C(p) ⊕ C(q)) = lcm(p, q) (the minimal-polynomial side of RCF), via two-sided divisibility plus monic uniqueness"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 182,
+    "assumptions": "0 axioms, 0 sorries. All five public theorems are fully machine-checked; #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no sorryAx, no Lean.ofReduceBool. minpoly_companion_block additionally assumes [DecidableEq F] (required to form the lcm of polynomials over the field F via the Euclidean-domain GCD structure).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "The rational canonical form (Frobenius, 1878) decomposes any matrix over a field as a block diagonal of companion matrices C(p₁), …, C(pₖ) indexed by the invariant factors p₁ ∣ p₂ ∣ … ∣ pₖ. The parent file (cayley-hamilton-reduction-oq-02-oq-01) established the single-block theory: C(p) is non-derogatory with charpoly(C(p)) = minpoly(C(p)) = p. The parent's roadmap flagged the block-diagonal assembly step (~300 lines) as 'not started'. This file proves the two invariants that justify calling the block-diagonal of companion matrices the rational canonical form: the characteristic polynomial is the product of the blocks' polynomials, and the minimal polynomial is their least common multiple. The contrast between these two — product versus lcm — is the structural heart of RCF: a direct sum of companion blocks is non-derogatory (minpoly = charpoly) precisely when the polynomials are pairwise coprime; in general lcm(p, q) ∣ p·q strictly.",
+    "problemStatement": "For monic p (degree dp ≥ 1) and monic q (degree dq ≥ 1), let B = C(p) ⊕ C(q) = fromBlocks C(p) 0 0 C(q). Prove (1) charpoly(B) = p·q; (2) (p·q)(B) = 0; (3) minpoly(B) = lcm(p, q).",
+    "proofStrategy": "The engine is aeval_fromBlocks_diag: since powers of a block-diagonal matrix act blockwise (Mathlib's fromBlocks_diagonal_pow) and aeval is a finite coefficient-weighted sum of powers, polynomial evaluation distributes over the block-diagonal direct sum. Charpoly follows immediately from Mathlib's block-triangular charpoly factorization plus the parent's charpoly(C(p)) = p. Annihilation by p·q is blockwise: p kills the C(p) block, q kills the C(q) block. The minimal polynomial is computed by two divisibilities — minpoly(B) ∣ lcm(p,q) because lcm annihilates both blocks, and lcm(p,q) ∣ minpoly(B) because minpoly(B) restricted to each block forces p ∣ minpoly(B) and q ∣ minpoly(B) — closed by monic uniqueness (mutual divisibility of monic polynomials forces equality).",
+    "keyInsights": [
+      "Polynomial evaluation respects block-diagonal direct sums (aeval_fromBlocks_diag): this single lemma drives both the annihilation and the minimal-polynomial computation.",
+      "The characteristic polynomial of a block-diagonal companion form is the PRODUCT of the invariant-factor polynomials — this is the charpoly side of the rational canonical form.",
+      "The minimal polynomial is the LEAST COMMON MULTIPLE of the blocks' minimal polynomials, not the product: a direct sum of companion blocks is non-derogatory iff the factors are coprime.",
+      "The minpoly computation is a textbook two-sided divisibility argument made fully formal: annihilation gives minpoly ∣ lcm, block projection gives lcm ∣ minpoly, monic uniqueness closes the gap.",
+      "This is the genuine 'block assembly' step of the RCF roadmap: with these invariants, only the SIMILARITY step (every matrix is similar to its RCF) remains, which still needs Smith Normal Form for F[X]-matrices."
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-imports",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (Mathlib charpoly/block-matrix/field-division/minpoly machinery and the parent companion-matrix file), the docstring framing the three RCF assembly invariants, and the namespace/opens setup with variable {F : Type*} [Field F].",
+      "mathContext": "Works over an arbitrary field F. Reuses companionMatrix and the proven facts charpoly_companionMatrix, minpoly_companionMatrix, aeval_companionMatrix from the parent file. The block-matrix infrastructure (Matrix.fromBlocks, fromBlocks_diagonal_pow, charpoly_fromBlocks_zero₂₁) comes from Mathlib."
+    },
+    {
+      "id": "aeval-block",
+      "title": "Part 1: aeval Respects Block-Diagonal Direct Sums",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "fromBlocks_diag_sum (a finite sum of block-diagonal matrices is the block-diagonal of componentwise sums, by induction) and aeval_fromBlocks_diag: aeval (A ⊕ D) f = (aeval A f) ⊕ (aeval D f).",
+      "mathContext": "aeval M f = ∑_{k ≤ deg f} (coeff f k) • M^k. For M = A ⊕ D, fromBlocks_diagonal_pow gives M^k = A^k ⊕ D^k, and scalar multiplication and addition act blockwise, so the whole sum is (∑ coeff k • A^k) ⊕ (∑ coeff k • D^k) = aeval A f ⊕ aeval D f. This is the algebraic engine of the file."
+    },
+    {
+      "id": "charpoly-block",
+      "title": "Part 2: Characteristic Polynomial Multiplies",
+      "startLine": 96,
+      "endLine": 124,
+      "summary": "charpoly_companion_block: charpoly(C(p) ⊕ C(q)) = p·q, and charpoly_companion_block_natDegree: the assembled charpoly has degree dp + dq.",
+      "mathContext": "Mathlib's charpoly_fromBlocks_zero₂₁ factors the charpoly of a block-triangular matrix into the product of the diagonal blocks' charpolys; the parent's charpoly_companionMatrix turns each factor into p and q. The degree dp + dq matches the dimension of the (Fin dp ⊕ Fin dq)-indexed block matrix, as every characteristic polynomial must."
+    },
+    {
+      "id": "annihilation-minpoly",
+      "title": "Part 3: Annihilation and Minimal Polynomial",
+      "startLine": 125,
+      "endLine": 182,
+      "summary": "aeval_companion_block_mul (the block form is killed by p·q) and the capstone minpoly_companion_block: minpoly(C(p) ⊕ C(q)) = lcm(p, q).",
+      "mathContext": "Annihilation: via aeval_fromBlocks_diag and the ring-hom property of aeval, (p·q)(B) = (p·q)(C(p)) ⊕ (p·q)(C(q)) = (0 · …) ⊕ (… · 0) = 0. Minimal polynomial: minpoly(B) ∣ lcm(p,q) because lcm annihilates each block (p ∣ lcm, q ∣ lcm); lcm(p,q) ∣ minpoly(B) because aeval(B, minpoly B) = 0 forces aeval over each block to vanish, so p = minpoly(C(p)) and q = minpoly(C(q)) both divide minpoly(B). Both polynomials are monic (lcm is normalized over a field), so mutual divisibility yields equality."
+    }
+  ],
+  "conclusion": {
+    "summary": "For a block-diagonal of companion matrices B = C(p) ⊕ C(q) with p, q monic, the characteristic polynomial is the product p·q and the minimal polynomial is the lcm(p, q), both fully machine-checked with 0 axioms and 0 sorries. The driver is aeval_fromBlocks_diag, the blockwise behaviour of polynomial evaluation on direct sums.",
+    "implications": "These are exactly the two invariants that make the block-diagonal of companion matrices the rational canonical form. The product/lcm contrast captures the structural content of RCF: the matrix is non-derogatory (minpoly = charpoly) iff the invariant factors are pairwise coprime, and in general the minimal polynomial is strictly smaller than the characteristic polynomial. Combined with the parent's single-block theory, the only remaining ingredient for a full Lean RCF theorem is the SIMILARITY step — that every matrix over a field is similar to such a block-diagonal form — which reduces to Smith Normal Form for F[X]-matrices.",
+    "openQuestions": [
+      "Does the assembly generalize cleanly to k blocks (charpoly = ∏ pᵢ, minpoly = lcm of the pᵢ) by induction on Matrix.fromBlocks, or is a Σ-indexed Matrix.blockDiagonal' formulation cleaner for heterogeneous block sizes?",
+      "Can the similarity direction (every A is similar to its RCF block form) now be attacked, given that the block invariants are established? This still requires Smith Normal Form for F[X]-matrices (~800 lines).",
+      "Is minpoly(C(p) ⊕ C(q)) = p·q exactly when gcd(p,q) = 1 a clean corollary worth stating (the coprime / non-derogatory case)?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "aeval_fromBlocks_diag",
+      "type": "supporting",
+      "description": "Polynomial evaluation respects block-diagonal direct sums: aeval (fromBlocks A 0 0 D) f = fromBlocks (aeval A f) 0 0 (aeval D f). The algebraic engine for the annihilation and minimal-polynomial results."
+    },
+    {
+      "name": "charpoly_companion_block",
+      "type": "core",
+      "description": "The characteristic polynomial of the block-diagonal companion form C(p) ⊕ C(q) equals the product p·q — the characteristic-polynomial side of the rational canonical form."
+    },
+    {
+      "name": "aeval_companion_block_mul",
+      "type": "core",
+      "description": "The block-diagonal companion form C(p) ⊕ C(q) is annihilated by the product p·q, since p kills the C(p) block and q kills the C(q) block."
+    },
+    {
+      "name": "minpoly_companion_block",
+      "type": "core",
+      "description": "The minimal polynomial of C(p) ⊕ C(q) equals lcm(p, q) — the minimal-polynomial side of the rational canonical form — proved by two-sided divisibility and monic uniqueness."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Builds directly on the parent's companion-matrix theory (charpoly_companionMatrix, minpoly_companionMatrix, aeval_companionMatrix), assembling single companion blocks into the rational canonical form's block-diagonal invariants — the parent roadmap's 'block diagonal assembly' step."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The Cayley-Hamilton theorem (every matrix is annihilated by its characteristic polynomial) is the global statement that the rational canonical form makes structural; here the block form is annihilated by its charpoly p·q (a special case visible directly)."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Data.Matrix.Block",
+      "Mathlib.Algebra.Polynomial.FieldDivision",
+      "Mathlib.FieldTheory.Minpoly.Field",
+      "Mathlib.Tactic",
+      "Proofs.CayleyHamiltonReductionOQ02OQ01"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators",
+      "CayleyHamiltonReductionOQ02OQ01"
+    ],
+    "namespace": "CayleyHamiltonReductionOQ02OQ01WIP01",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CayleyHamiltonReductionOQ02OQ01WIP01.lean",
+    "additionalFiles": []
+  }
+}

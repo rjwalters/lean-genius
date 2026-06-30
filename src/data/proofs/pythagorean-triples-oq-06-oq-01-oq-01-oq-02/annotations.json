@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-pyth60sharp-overview",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 45 },
+    "type": "context",
+    "title": "Sharpness: is 60 the best possible constant?",
+    "content": "The sibling entry proves 60 ∣ x·y·z for every Pythagorean triple. This raises the dual question: could some constant larger than 60 also divide the product of every triple? This entry answers no, and does so exactly. Call C a universal divisor if C ∣ xyz for all triples. The answer is governed by a single triple, (3,4,5), whose product is exactly 60 = 2²·3·5: any universal divisor must divide 60, and conversely every divisor of 60 is universal because 60 itself is. So the universal divisors are precisely the divisors of 60, and 60 is the greatest. This is the order-theoretic sharp complement to the divisibility package.",
+    "mathContext": "$\\text{UniversalDivisor}(C) :\\iff \\forall (x,y,z),\\ x^2+y^2=z^2 \\to C\\mid xyz$; greatest value $60$.",
+    "significance": "context",
+    "relatedConcepts": ["sharp constant", "universal divisor", "divisibility lattice", "Pythagorean triples"],
+    "prerequisites": ["integer solutions of x²+y²=z²", "divisibility"]
+  },
+  {
+    "id": "ann-pyth60sharp-engine",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+    "range": { "startLine": 47, "endLine": 99 },
+    "type": "technique",
+    "title": "The 60 ∣ xyz engine, reproduced self-contained",
+    "content": "To stand alone (the sibling's compiled artifact is not imported), the divisibility package is reproduced verbatim: zmod_rel casts x²+y²=z² into ZMod n; dvd_prod_of_zmod turns a decidable congruence obstruction (over all residues, every solution of a²+b²=c² has product 0) into integer divisibility via ZMod.intCast_zmod_eq_zero_iff_dvd; three_dvd_prod and five_dvd_prod discharge their hypotheses by `decide` over ZMod 3 and ZMod 5; four_dvd_prod lifts to ZMod 8 (the factor 4 is invisible mod 4) and reads the obstruction down through the ring map ZMod 8 → ZMod 4; sixty_dvd_prod assembles the three by pairwise coprimality. This half is supporting infrastructure for the new sharpness content.",
+    "mathContext": "$3,5$ direct; $4$ via $\\mathbb{Z}/8\\to\\mathbb{Z}/4$; assemble by $3\\perp 4\\perp 5$ to get $60\\mid xyz$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite congruence obstruction", "decide tactic", "IsCoprime.mul_dvd", "ZMod ring maps"],
+    "prerequisites": ["modular arithmetic", "ZMod ring structure"]
+  },
+  {
+    "id": "ann-pyth60sharp-universal",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 115 },
+    "type": "concept",
+    "title": "Universal divisors and the single witness",
+    "content": "UniversalDivisor C is defined as 'C ∣ xyz for every Pythagorean triple'. sixty_universal records that 60 qualifies (the reproduced package). The crux of necessity is one line: triple_345 verifies (3,4,5) is a triple with product exactly 60, and universal_dvd_sixty simply feeds (3,4,5) to the universal hypothesis to obtain C ∣ 3·4·5 = 60. The entire upper bound on universal constants is thus carried by this one explicit triple — no infinite family is needed, because (3,4,5) already realizes the minimum product 60.",
+    "mathContext": "$C\\text{ universal} \\Rightarrow C \\mid 3\\cdot4\\cdot5 = 60$.",
+    "significance": "key",
+    "relatedConcepts": ["explicit witness", "minimal certificate", "universal quantification"],
+    "prerequisites": ["divisibility", "Pythagorean triple (3,4,5)"]
+  },
+  {
+    "id": "ann-pyth60sharp-characterization",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+    "range": { "startLine": 117, "endLine": 133 },
+    "type": "concept",
+    "title": "Exact characterization and IsGreatest",
+    "content": "universal_iff_dvd_sixty proves the universal divisors are *exactly* the divisors of 60: the forward direction is the new necessity (apply to (3,4,5)), the reverse chains C ∣ 60 with the package 60 ∣ xyz by transitivity. This is a complete description of the divisibility lattice, not just a numerical bound. sixty_isGreatest then packages the headline sharpness: 60 belongs to the set of positive universal divisors and bounds it above, since any positive C ∣ 60 satisfies C ≤ 60 by Int.le_of_dvd. So 60 is the greatest constant dividing the product of every Pythagorean triple.",
+    "mathContext": "$\\text{UniversalDivisor}(C) \\iff C\\mid 60$; $\\ \\mathrm{IsGreatest}\\,\\{C>0 : \\text{universal}\\}\\ 60$.",
+    "significance": "key",
+    "relatedConcepts": ["IsGreatest", "Int.le_of_dvd", "divisibility lattice", "sharp constant"],
+    "prerequisites": ["greatest element of a set", "divisor bounds on positive integers"]
+  },
+  {
+    "id": "ann-pyth60sharp-primepower",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+    "range": { "startLine": 134, "endLine": 158 },
+    "type": "concept",
+    "title": "Each prime power in 60 is individually maximal",
+    "content": "Because (3,4,5) has product 60 = 2²·3·5, none of 8 = 2³, 9 = 3², 25 = 5² divides 60, so not_universal_eight / _nine / _twentyfive each fail to be universal (and not_universal_onehundredtwenty rules out doubling 60). This shows the package 60 ∣ xyz is sharp prime-by-prime: the 2-adic content stops at 4, the 3-adic at 3, the 5-adic at 5 — exactly the structural refinement asked for. The closing sixty_dvd_prod_of_pythagoreanTriple restates the package through Mathlib's PythagoreanTriple structure.",
+    "mathContext": "$8,9,25,120 \\nmid 60 \\Rightarrow$ none is universal; prime-power content of $60=2^2\\cdot3\\cdot5$ is maximal.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime-power valuation", "sharpness", "PythagoreanTriple structure"],
+    "prerequisites": ["prime factorization of 60", "divisibility"]
+  }
+]

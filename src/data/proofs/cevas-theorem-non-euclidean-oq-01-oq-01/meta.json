@@ -1,0 +1,159 @@
+{
+  "id": "cevas-theorem-non-euclidean-oq-01-oq-01",
+  "title": "The Flat (Zero-Curvature) Limit of the Curvature Sine sin_κ",
+  "slug": "cevas-theorem-non-euclidean-oq-01-oq-01",
+  "description": "The parent (cevas-theorem-non-euclidean-oq-01) packages Ceva's theorem at an arbitrary curvature κ through the curvature sine sin_κ(x) = sin(√κ·x)/√κ (κ>0), x (κ=0), sinh(√(−κ)·x)/√(−κ) (κ<0), and lists as its OQ-01 whether the curved Ceva statement degenerates continuously to the Euclidean one as κ → 0. This entry answers it: it proves the flat limit sin_κ(x) → x as κ → 0, two-sidedly. The spherical branch (κ → 0⁺) and hyperbolic branch (κ → 0⁻) are each obtained by recognising sin(√κ·x)/√κ and sinh(√(−κ)·x)/√(−κ) as difference quotients (slopes at 0) of t ↦ sin(x·t) and t ↦ sinh(x·t), whose derivatives at 0 are both x; a change of variables √κ → 0⁺ transports these to limits in κ, and the two one-sided limits are glued with the exact value sin_0(x) = x into a full two-sided limit. As a consequence, every curvature-κ Ceva ratio converges to its Euclidean counterpart, so the curved theorem is a genuine deformation of the flat one.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ceva%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremNonEuclideanOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "non-euclidean-geometry",
+      "ceva",
+      "curvature",
+      "limits",
+      "real-analysis",
+      "spherical-geometry",
+      "hyperbolic-geometry",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasDerivAt_iff_tendsto_slope",
+        "description": "A function has derivative f' at x iff its slope at x tends to f' along 𝓝[≠] x — turns the difference quotient into a limit",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Slope"
+      },
+      {
+        "theorem": "Real.hasDerivAt_sin / Real.hasDerivAt_sinh",
+        "description": "Derivatives of sin and sinh (cos and cosh), giving derivative x for t ↦ sin(x·t) and t ↦ sinh(x·t) at 0 since cos 0 = cosh 0 = 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv / DerivHyp"
+      },
+      {
+        "theorem": "Real.continuous_sqrt / Real.sqrt_pos / Real.sqrt_zero",
+        "description": "Continuity and positivity of √, used for the change of variables √κ → 0⁺ (and √(−κ) → 0⁺)",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "nhdsLT_sup_nhdsGT / nhdsNE_sup_pure / tendsto_pure_nhds",
+        "description": "Filter decompositions 𝓝[<] a ⊔ 𝓝[>] a = 𝓝[≠] a and 𝓝[≠] a ⊔ pure a = 𝓝 a, used to glue the one-sided and at-point limits into a full two-sided limit",
+        "module": "Mathlib.Topology.Order.LeftRight / Mathlib.Topology.NhdsWithin"
+      },
+      {
+        "theorem": "sinKappa / sinKappa_zero (parent)",
+        "description": "The curvature sine sin_κ and its value x at κ = 0, supplied by the parent entry",
+        "module": "Proofs.CevasTheoremNonEuclideanOQ01"
+      }
+    ],
+    "originalContributions": [
+      "tendsto_sin_mul_div / tendsto_sinh_mul_div: the spherical and hyperbolic kernels sin(x·t)/t → x and sinh(x·t)/t → x as t → 0, derived uniformly in x (including x = 0) as slopes of t ↦ sin(x·t) and t ↦ sinh(x·t)",
+      "sqrt_tendsto_nhdsGT / sqrt_neg_tendsto_nhdsLT: the change-of-variables limits √κ → 0⁺ as κ → 0⁺ and √(−κ) → 0⁺ as κ → 0⁻",
+      "tendsto_sinKappa_nhdsGT / tendsto_sinKappa_nhdsLT: the one-sided flat limits sin_κ(x) → x as κ → 0⁺ (spherical) and κ → 0⁻ (hyperbolic)",
+      "tendsto_sinKappa_punctured: the punctured two-sided flat limit, gluing the spherical and hyperbolic branches via 𝓝[<] 0 ⊔ 𝓝[>] 0 = 𝓝[≠] 0",
+      "tendsto_sinKappa_flat: the full two-sided flat limit sin_κ(x) → x as κ → 0, combining the punctured limit with the exact value sin_0(x) = x — the formal answer to the parent's OQ-01",
+      "sinKappa_ceva_ratio_tendsto: each curvature-sine ratio sin_κ(p)/sin_κ(q) tends to the Euclidean ratio p/q as κ → 0, so the curvature-κ Ceva product degenerates to the flat one"
+    ],
+    "axiomCount": 0,
+    "lineCount": 151,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. The proof builds on the parent's verified sinKappa definition and sinKappa_zero.",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "prerequisites": [
+      "The curvature/Jacobi sine sin_κ and its definition by cases on the sign of κ (parent entry)",
+      "Derivatives of sin and sinh, and the difference-quotient (slope) characterization of the derivative",
+      "Limits along one-sided and punctured neighbourhood filters (𝓝[>], 𝓝[<], 𝓝[≠]) and how they glue to 𝓝",
+      "Continuity and positivity of the real square root"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cevas-theorem-non-euclidean-oq-01",
+        "relationship": "Parent: the curvature-κ Ceva framework via sin_κ. This entry answers its OQ-01, the flat (zero-curvature) limit sin_κ(x) → x."
+      },
+      {
+        "id": "cevas-theorem-non-euclidean",
+        "relationship": "Grandparent: unified Ceva via an arbitrary distance function ρ; the κ = 0 case recovered in this limit is its Euclidean theorem."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Constant-curvature geometries form a one-parameter family indexed by the curvature κ: spherical (κ > 0), Euclidean (κ = 0), and hyperbolic (κ < 0). The natural 'length' in the curvature-κ geometry is the curvature sine sin_κ, equal to sin(√κ·x)/√κ, x, or sinh(√(−κ)·x)/√(−κ) according to the sign of κ. A basic sanity check on this family is that it varies continuously through κ = 0: as the curvature is sent to zero, the curved geometry should degenerate to the flat one. At the level of the curvature sine this is the statement sin_κ(x) → x as κ → 0 — the spherical and hyperbolic 'lengths' both collapse to the ordinary Euclidean length. The parent gallery entry built the curvature-κ Ceva theorem on sin_κ and listed exactly this flat-limit convergence as its first open question.",
+    "problemStatement": "Prove the flat-limit convergence sin_κ(x) → x as κ → 0 (two-sidedly), and conclude that the curvature-κ Ceva ratio sin_κ(p)/sin_κ(q) tends to the Euclidean ratio p/q, so the curvature-κ Ceva condition degenerates continuously to the Euclidean one.",
+    "proofStrategy": "The key observation is that on the spherical branch sin_κ(x) = sin(√κ·x)/√κ is, after the substitution s = √κ, the difference quotient sin(s·x)/s of the map t ↦ sin(x·t) at the point 0 — and the limit of that slope is exactly the derivative there, namely x·cos 0 = x. This is captured by hasDerivAt_iff_tendsto_slope applied to Real.hasDerivAt_sin (and Real.hasDerivAt_sinh for the hyperbolic branch). Crucially, working with the slope of t ↦ sin(x·t) handles every x — including x = 0 — uniformly, with no special case. The change of variables √κ → 0⁺ (and √(−κ) → 0⁺) is a continuity-plus-positivity argument about the real square root, composed with the kernel limit. The two one-sided limits κ → 0⁺ and κ → 0⁻ are glued into a punctured two-sided limit via 𝓝[<] 0 ⊔ 𝓝[>] 0 = 𝓝[≠] 0, and the punctured limit is upgraded to a full 𝓝 0 limit by adjoining the exact value sin_0(x) = x via 𝓝[≠] 0 ⊔ pure 0 = 𝓝 0. The Ceva-ratio corollary is then a quotient of two flat limits.",
+    "keyInsights": [
+      "The curvature sine sin_κ(x) = sin(√κ·x)/√κ is, up to the substitution s = √κ, the slope of t ↦ sin(x·t) at 0 — so its flat limit is not a delicate ε–δ computation but simply the value of a derivative, x·cos 0 = x.",
+      "Phrasing the kernel as the slope of t ↦ sin(x·t) (rather than as x·(sin u / u)) makes the limit uniform in x and removes the apparent 0/0 difficulty at x = 0.",
+      "The √κ normalization that makes sin_κ a genuine interpolant is exactly what turns the curvature limit into a difference-quotient limit: κ → 0 becomes √κ → 0, the increment of the slope.",
+      "The two geometries meet at κ = 0 from opposite sides — spherical from 𝓝[>] 0 and hyperbolic from 𝓝[<] 0 — and the standard filter identities 𝓝[<] ⊔ 𝓝[>] = 𝓝[≠] and 𝓝[≠] ⊔ pure = 𝓝 assemble them, plus the exact value at 0, into a single continuous limit.",
+      "Continuity at κ = 0 of the curvature sine is what makes the curvature-κ Ceva theorem a deformation of the Euclidean one: each ratio sin_κ(p)/sin_κ(q) → p/q, so the whole concurrency criterion limits to the flat criterion."
+    ]
+  },
+  "sections": [
+    {
+      "id": "kernels",
+      "title": "Difference-quotient kernels for sin and sinh",
+      "startLine": 47,
+      "endLine": 73,
+      "summary": "tendsto_sin_mul_div and tendsto_sinh_mul_div: the slopes sin(x·t)/t and sinh(x·t)/t tend to x as t → 0, obtained from hasDerivAt_iff_tendsto_slope applied to t ↦ sin(x·t) and t ↦ sinh(x·t) (derivative x at 0, since cos 0 = cosh 0 = 1).",
+      "mathContext": "These are the analytic cores; everything else is change of variables and gluing."
+    },
+    {
+      "id": "sqrt-change-of-variables",
+      "title": "The square-root change of variables",
+      "startLine": 75,
+      "endLine": 100,
+      "summary": "sqrt_tendsto_nhdsGT and sqrt_neg_tendsto_nhdsLT: √κ → 0⁺ as κ → 0⁺ and √(−κ) → 0⁺ as κ → 0⁻, via continuity and positivity of √; nhdsGT_le_nhdsNE relates the right-punctured filter to the punctured one for composition with the kernels.",
+      "mathContext": "Transports the kernel limits (in the increment t) to limits in the curvature κ."
+    },
+    {
+      "id": "flat-limit",
+      "title": "One-sided, punctured, and full flat limits, and the Ceva ratio",
+      "startLine": 102,
+      "endLine": 149,
+      "summary": "tendsto_sinKappa_nhdsGT/nhdsLT (one-sided), tendsto_sinKappa_punctured (glue via 𝓝[<] ⊔ 𝓝[>] = 𝓝[≠]), tendsto_sinKappa_flat (full 𝓝 0 limit, adjoining sin_0(x) = x via 𝓝[≠] ⊔ pure = 𝓝), and sinKappa_ceva_ratio_tendsto (sin_κ(p)/sin_κ(q) → p/q).",
+      "mathContext": "Assembles the answer to the parent's OQ-01 and its Ceva-degeneration consequence."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ce1678",
+      "citation": "Ceva, G., De lineis rectis se invicem secantibus statica constructio (1678).",
+      "type": "book"
+    },
+    {
+      "key": "Gre93",
+      "citation": "Greenberg, M.J., Euclidean and Non-Euclidean Geometries: Development and History, 3rd ed., W. H. Freeman (1993).",
+      "type": "book"
+    },
+    {
+      "key": "Th97",
+      "citation": "Thurston, W.P., Three-Dimensional Geometry and Topology, Vol. 1, Princeton University Press (1997).",
+      "type": "book"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) proof, in 151 lines with 8 theorems, that the curvature sine sin_κ(x) tends to x as the curvature κ → 0, two-sidedly. The spherical and hyperbolic branches are handled uniformly as difference quotients (slopes at 0) of t ↦ sin(x·t) and t ↦ sinh(x·t) — whose derivatives at 0 are x — transported by the change of variables √κ → 0⁺, glued across κ = 0 by standard neighbourhood-filter identities, and completed with the exact value sin_0(x) = x. The Ceva-ratio corollary shows each curvature-sine ratio limits to its Euclidean counterpart.",
+    "implications": "This answers the parent's OQ-01: the curvature-κ geometry degenerates continuously to the Euclidean one at κ = 0, so the curvature-κ Ceva theorem is a genuine deformation of the flat Ceva theorem rather than a separate statement. The slope-based kernels and the √κ change of variables are reusable for other flat-limit statements about constant-curvature geometry (e.g. a curvature-κ Menelaus or law of cosines tending to its Euclidean form).",
+    "openQuestions": [
+      "Quantify the flat limit: give an explicit O(κ) (equivalently O(√κ · x³)) error bound for sin_κ(x) − x, exhibiting the rate at which the curved geometry approaches the flat one.",
+      "Prove the corresponding flat limit for the curvature cosine cos_κ and combine with this result to show the full curvature-κ law of cosines tends to the Euclidean Pythagorean/cosine law as κ → 0."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-non-euclidean-oq-01",
+      "relationship": "extends",
+      "description": "Parent: defines the curvature sine sin_κ and the curvature-κ Ceva theorem, and lists the flat limit sin_κ(x) → x as κ → 0 as its OQ-01. This entry proves that limit and derives the Ceva-ratio degeneration."
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "relatedTo",
+      "description": "Grandparent: unified Ceva via an arbitrary distance function ρ. The Euclidean (κ = 0) limit recovered here corresponds to its Euclidean Ceva theorem."
+    }
+  ]
+}

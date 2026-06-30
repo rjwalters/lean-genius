@@ -1,0 +1,99 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "banach-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 29 },
+    "type": "context",
+    "title": "Picard–Lindelöf as a Fixed-Point Theorem",
+    "content": "The Picard–Lindelöf (Cauchy–Lipschitz) theorem is the prototypical application of the **Banach contraction mapping principle**. The autonomous initial value problem $y'(t) = f(y(t))$, $y(t_0) = x_0$ is recast as the fixed-point equation $y = Py$ for the **Picard integral operator**\n$$(Py)(t) = x_0 + \\int_{t_0}^{t} f(y(s))\\,ds.$$\nWhen $f$ is Lipschitz, $P$ is a contraction on a complete space of continuous curves over a short time interval, so Banach's theorem produces a unique fixed point — the local solution. Mathlib performs this construction internally (`IsPicardLindelof`, the `FunSpace` contraction, `ODE_solution_unique` via Grönwall) but exposes no clean autonomous existence-and-uniqueness statement; this entry packages exactly that.",
+    "mathContext": "$y = Py$, $(Py)(t) = x_0 + \\int_{t_0}^{t} f(y(s))\\,ds$ — a contraction whose unique fixed point solves $y' = f(y)$, $y(t_0)=x_0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Banach fixed-point theorem",
+      "Picard iteration",
+      "contraction mapping",
+      "initial value problem"
+    ],
+    "prerequisites": [
+      "ordinary differential equations",
+      "the contraction mapping principle",
+      "complete metric spaces"
+    ]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "banach-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 35 },
+    "type": "definition",
+    "title": "Setup: An Autonomous Field on a Normed Space",
+    "content": "The development works over a general real normed vector space $E$ (`NormedAddCommGroup E`, `NormedSpace ℝ E`), with completeness `CompleteSpace E` added where existence requires it. The vector field $f : E \\to E$ is **autonomous** — time-independent — which is the case where the Mathlib uniqueness lemma collapses most cleanly (see the uniqueness theorem). Opening `Set` and `Metric` brings the open interval `Ioo`, `closedBall`, and `EqOn` notation into scope.",
+    "mathContext": "$E$ a real Banach space (when complete); $f : E \\to E$ time-independent, $y' = f(y)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normed vector space",
+      "autonomous ODE",
+      "complete space"
+    ],
+    "prerequisites": [
+      "normed and Banach spaces"
+    ]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "banach-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 53 },
+    "type": "insight",
+    "title": "Existence From the Contraction Fixed Point",
+    "content": "`exists_local_solution`: a $C^1$ vector field near $x_0$ yields a solution $\\alpha$ on a genuine open interval $(t_0-\\varepsilon, t_0+\\varepsilon)$ with $\\alpha(t_0) = x_0$. The work is delegated to Mathlib's `ContDiffAt.exists_forall_mem_closedBall_exists_eq_forall_mem_Ioo_hasDerivAt`, which internally manufactures the `IsPicardLindelof` data from the $C^1$ hypothesis (via `IsPicardLindelof.of_contDiffAt_one`) and solves it by the `FunSpace` contraction — i.e. this is exactly where the Banach fixed point lives. The proof then instantiates the family of curves at the centre $x_0$, which lies in the closed ball since $r > 0$ (`mem_closedBall_self`).",
+    "mathContext": "$f \\in C^1$ near $x_0 \\Rightarrow \\exists\\,\\varepsilon>0,\\ \\alpha$ with $\\alpha(t_0)=x_0$ and $\\alpha'(t) = f(\\alpha(t))$ on $(t_0-\\varepsilon, t_0+\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsPicardLindelof",
+      "FunSpace contraction",
+      "C¹ vector field",
+      "local flow"
+    ],
+    "prerequisites": [
+      "continuous differentiability",
+      "the contraction mapping principle"
+    ]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "banach-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 71 },
+    "type": "insight",
+    "title": "Uniqueness From Grönwall's Inequality",
+    "content": "`solution_unique`: for a Lipschitz field, any two solutions on $(a,b)$ agreeing at one interior point $t_0$ coincide on all of $(a,b)$. Unlike existence, uniqueness does **not** come from the contraction — it comes from **Grönwall's inequality** (`ODE_solution_unique_of_mem_Ioo`), a comparison estimate bounding the growth of the gap between two solutions. The autonomous case is obtained by specializing the general lemma's time-dependent field to $v(t) := f$ and its constraint set to $s(t) := \\mathrm{univ}$; the Lipschitz-on-`univ` hypothesis comes from `LipschitzWith.lipschitzOnWith` and membership in `univ` is trivial.",
+    "mathContext": "$f$ Lipschitz, $\\alpha(t_0)=\\beta(t_0)$, both solving $y'=f(y)$ on $(a,b)$ $\\Rightarrow \\alpha = \\beta$ on $(a,b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Grönwall's inequality",
+      "Lipschitz continuity",
+      "ODE_solution_unique_of_mem_Ioo",
+      "comparison estimate"
+    ],
+    "prerequisites": [
+      "Lipschitz functions",
+      "Grönwall's inequality"
+    ]
+  },
+  {
+    "id": "ann-combined",
+    "proofId": "banach-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 73, "endLine": 89 },
+    "type": "concept",
+    "title": "The Combined Cauchy–Lipschitz Theorem",
+    "content": "`exists_unique_local_solution` assembles the two halves into the single statement the contraction mapping principle is famous for: a $C^1$, globally Lipschitz field admits a local solution that is unique among all solutions on that interval sharing the initial value. The proof takes the solution from `exists_local_solution`, observes $t_0 \\in (t_0-\\varepsilon, t_0+\\varepsilon)$ (a one-line `linarith`), and feeds any competitor $\\beta$ with $\\beta(t_0)=x_0$ into `solution_unique`. The two distinct hypotheses — $C^1$ for existence, Lipschitz for uniqueness — are exactly the two engines combined.",
+    "mathContext": "$f \\in C^1$ near $x_0$ and Lipschitz $\\Rightarrow \\exists!$ local solution of $y'=f(y)$, $y(t_0)=x_0$ on $(t_0-\\varepsilon, t_0+\\varepsilon)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy–Lipschitz theorem",
+      "existence and uniqueness",
+      "well-posedness"
+    ],
+    "prerequisites": [
+      "the existence and uniqueness halves above"
+    ]
+  }
+]

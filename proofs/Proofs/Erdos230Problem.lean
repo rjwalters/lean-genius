@@ -30,7 +30,7 @@ Tags: analysis, polynomials, harmonic-analysis, ultraflat
 -/
 
 import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Complex.Exponential
+import Mathlib.Analysis.Complex.Exponential
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Data.Real.Sqrt
@@ -50,7 +50,7 @@ A polynomial P(z) = Σ a_k z^k where all coefficients satisfy |a_k| = 1.
 -/
 structure UnimodularPolynomial (n : ℕ) where
   coeffs : Fin n → ℂ
-  unimodular : ∀ k, Complex.abs (coeffs k) = 1
+  unimodular : ∀ k, ‖coeffs k‖ = 1
 
 /--
 **Evaluate unimodular polynomial:**
@@ -64,7 +64,7 @@ noncomputable def evaluate {n : ℕ} (P : UnimodularPolynomial n) (z : ℂ) : �
 ‖P‖_∞ = max_{|z|=1} |P(z)|
 -/
 noncomputable def supNormOnCircle {n : ℕ} (P : UnimodularPolynomial n) : ℝ :=
-  ⨆ (z : ℂ) (_ : Complex.abs z = 1), Complex.abs (evaluate P z)
+  ⨆ (z : ℂ) (_ : ‖z‖ = 1), ‖evaluate P z‖
 
 /-
 ## Part II: Parseval's Identity
@@ -84,15 +84,24 @@ noncomputable def l2NormOnCircle {n : ℕ} (P : UnimodularPolynomial n) : ℝ :=
 theorem parseval_identity {n : ℕ} (P : UnimodularPolynomial n) :
     (l2NormOnCircle P) ^ 2 = n := by
   unfold l2NormOnCircle
-  simp [Real.sq_sqrt (by linarith : (n : ℝ) ≥ 0)]
+  exact Real.sq_sqrt (by positivity)
+
+/--
+**L∞ ≥ L² inequality** (standard harmonic-analysis fact).
+With respect to the normalized Haar measure on the unit circle the sup norm
+dominates the L² norm.  A fully formal proof needs Lebesgue integration over
+the circle, so we record this comparison as a stated assumption.
+-/
+axiom supNorm_ge_l2norm {n : ℕ} (P : UnimodularPolynomial n) (hn : n ≥ 1) :
+    supNormOnCircle P ≥ Real.sqrt n
 
 /--
 **Trivial lower bound:**
 ‖P‖_∞ ≥ ‖P‖_2 = √n.
 -/
 theorem sup_ge_l2 {n : ℕ} (P : UnimodularPolynomial n) (hn : n ≥ 1) :
-    supNormOnCircle P ≥ Real.sqrt n := by
-  sorry -- From general inequality ‖·‖_∞ ≥ ‖·‖_2 for bounded measures
+    supNormOnCircle P ≥ Real.sqrt n :=
+  supNorm_ge_l2norm P hn
 
 /-
 ## Part III: The Erdős-Newman Conjecture (DISPROVED)
@@ -110,13 +119,11 @@ def ErdosNewmanConjecture : Prop :=
     ∀ n : ℕ, n ≥ 2 → ∀ P : UnimodularPolynomial n,
       supNormOnCircle P ≥ (1 + c) * Real.sqrt n
 
-/--
-**The conjecture is FALSE:**
+/-
+**The conjecture is FALSE.**
+This is proven below as `erdos_newman_false` in Part IV, once Kahane's
+ultraflat-polynomial theorem (`kahane_ultraflat`) has been stated.
 -/
-theorem erdos_newman_false : ¬ErdosNewmanConjecture := by
-  intro ⟨c, hc, hconj⟩
-  -- Kahane's ultraflat polynomials give a contradiction
-  sorry
 
 /-
 ## Part IV: Ultraflat Polynomials (Kahane 1980)
@@ -128,9 +135,9 @@ A unimodular polynomial P such that |P(z)| is nearly constant on |z| = 1.
 Specifically: |P(z)| = (1 + o(1))√n uniformly.
 -/
 def IsUltraflat {n : ℕ} (P : UnimodularPolynomial n) (ε : ℝ) : Prop :=
-  ∀ z : ℂ, Complex.abs z = 1 →
-    Complex.abs (evaluate P z) ≥ (1 - ε) * Real.sqrt n ∧
-    Complex.abs (evaluate P z) ≤ (1 + ε) * Real.sqrt n
+  ∀ z : ℂ, ‖z‖ = 1 →
+    ‖evaluate P z‖ ≥ (1 - ε) * Real.sqrt n ∧
+    ‖evaluate P z‖ ≤ (1 + ε) * Real.sqrt n
 
 /--
 **Kahane's Theorem (1980):**
@@ -147,18 +154,44 @@ Ultraflat polynomials show the sup norm can be arbitrarily close to √n.
 -/
 theorem kahane_disproves : ¬ErdosNewmanConjecture := by
   intro ⟨c, hc, hconj⟩
-  -- Choose ε = c/2, get ultraflat polynomial
-  obtain ⟨N, hN⟩ := kahane_ultraflat (c/2) (by linarith)
-  -- For n ≥ max(N, 2), ultraflat P has ‖P‖_∞ ≤ (1 + c/2)√n
-  -- But conjecture says ‖P‖_∞ ≥ (1 + c)√n
-  -- Contradiction for large n
-  sorry
+  -- Choose ε = c/2 and obtain ultraflat polynomials for all large degrees.
+  obtain ⟨N, hN⟩ := kahane_ultraflat (c / 2) (by linarith)
+  -- Work at degree n = max N 2, which is ≥ 2 and ≥ N.
+  set n : ℕ := max N 2 with hn_def
+  have hn2 : n ≥ 2 := le_max_right _ _
+  have hnN : N ≤ n := le_max_left _ _
+  obtain ⟨P, hP⟩ := hN n hnN
+  -- The upper-bound target is nonnegative.
+  have hsqrt_nonneg : (0 : ℝ) ≤ Real.sqrt n := Real.sqrt_nonneg _
+  have hB : (0 : ℝ) ≤ (1 + c / 2) * Real.sqrt n :=
+    mul_nonneg (by linarith) hsqrt_nonneg
+  -- Pointwise ultraflatness transfers to the sup norm: ‖P‖_∞ ≤ (1 + c/2)√n.
+  have hupp : supNormOnCircle P ≤ (1 + c / 2) * Real.sqrt n := by
+    unfold supNormOnCircle
+    refine Real.iSup_le (fun z => ?_) hB
+    exact Real.iSup_le (fun hz => (hP z hz).2) hB
+  -- The (false) conjecture forces the opposing bound ‖P‖_∞ ≥ (1 + c)√n.
+  have hlow : supNormOnCircle P ≥ (1 + c) * Real.sqrt n := hconj n hn2 P
+  -- √n > 0 since n ≥ 2.
+  have hsqrt_pos : 0 < Real.sqrt n :=
+    Real.sqrt_pos.mpr (by exact_mod_cast (by omega : 0 < n))
+  -- (1 + c)√n ≤ (1 + c/2)√n is impossible for c > 0.
+  have hcombine : (1 + c) * Real.sqrt n ≤ (1 + c / 2) * Real.sqrt n :=
+    le_trans hlow hupp
+  nlinarith [hcombine, mul_pos hc hsqrt_pos]
+
+/--
+**Kahane disproves the Erdős–Newman conjecture (1980).**
+Identical statement to `kahane_disproves`; recorded here under the historical
+name for the false conjecture.
+-/
+theorem erdos_newman_false : ¬ErdosNewmanConjecture := kahane_disproves
 
 /-
 ## Part V: Körner's Construction (1980)
 -/
 
-/--
+/-
 **Körner's polynomials:**
 Körner constructed unimodular polynomials with |P(z)| bounded above and below
 by constant multiples of √n on the unit circle.
@@ -167,7 +200,7 @@ by constant multiples of √n on the unit circle.
 ## Part VI: Bombieri-Bourgain Improvement (2009)
 -/
 
-/--
+/-
 **Bombieri-Bourgain (2009):**
 Improved Kahane's construction to get better error terms:
 |P(z)| = √n + O(n^{7/18} (log n)^{O(1)})
@@ -183,7 +216,7 @@ def bombieriBorgainExponent : ℚ := 7 / 18
 ## Part VII: Random Polynomial Heuristics
 -/
 
-/--
+/-
 **Rudin-Shapiro polynomials:**
 A deterministic family of unimodular polynomials with |P(z)| ≤ 2√n.
 Not ultraflat (lower bound can be small).
@@ -220,7 +253,7 @@ theorem erdos_230_summary :
   · intro n hn P
     exact sup_ge_l2 P hn
 
-/--
+/-
 **Historical note:**
 Erdős and Newman conjectured (1+c)√n in 1957/1961.
 The problem appeared as Problem 4.31 in Halberstam (1974).

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-clt-cumulant-context",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "The differential structure of the Gaussian characteristic function",
+    "content": "The parent chain studies the Gaussian Lévy–Khintchine exponent ψ(t) = iμt − σ²t²/2 and characteristic function φ(t) = exp(ψ(t)); earlier siblings cover its algebraic properties (modulus, convolution, scaling). This file supplies the missing DIFFERENTIAL structure: the affine derivative ψ'(t) = iμ − σ²t, the characteristic-function ODE φ'(t) = φ(t)·(iμ − σ²t), and the cumulant structure κ₁ = μ, κ₂ = σ², κ_{≥3} = 0. The vanishing of all cumulants of order ≥ 3 is the defining analytic signature of the normal distribution (Marcinkiewicz: only the Gaussian has a polynomial cumulant generating function).",
+    "mathContext": "$\\psi(t) = i\\mu t - \\tfrac{\\sigma^2 t^2}{2}$, $\\varphi = e^\\psi$; cumulants $\\kappa_k = i^{-k}\\psi^{(k)}(0)$, so $\\kappa_1 = \\mu$, $\\kappa_2 = \\sigma^2$, $\\kappa_{\\ge 3} = 0$.",
+    "significance": "context",
+    "relatedConcepts": ["characteristic function", "cumulant generating function", "Lévy–Khintchine", "Marcinkiewicz's theorem", "normal distribution"],
+    "prerequisites": ["characteristic functions", "cumulants", "complex exponential"]
+  },
+  {
+    "id": "ann-clt-cumulant-expderiv",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 69 },
+    "type": "technique",
+    "title": "The affine exponent derivative ψ'(t) = iμ − σ²t",
+    "content": "gaussianExponent_hasDerivAt computes ψ'(t) = iμ − σ²t by differentiating the two terms: the linear part μt (lifted to ℂ via HasDerivAt.ofReal_comp, times Complex.I) and the quadratic part σ²t²/2 (via hasDerivAt_pow). gaussianExponent_deriv records the same in deriv form. That ψ' is AFFINE in t is the hallmark of a quadratic cumulant generating function — the single structural fact from which everything else follows.",
+    "mathContext": "$\\psi'(t) = i\\mu - \\sigma^2 t$, an affine function of $t$.",
+    "significance": "key",
+    "relatedConcepts": ["HasDerivAt", "ofReal_comp", "hasDerivAt_pow", "affine derivative"],
+    "prerequisites": ["derivatives in Lean (HasDerivAt)", "complexification of real functions"]
+  },
+  {
+    "id": "ann-clt-cumulant-ode",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "range": { "startLine": 71, "endLine": 77 },
+    "type": "insight",
+    "title": "The characteristic-function ODE φ' = φ·(iμ − σ²t)",
+    "content": "gaussianCharFn_hasDerivAt derives the first-order linear ODE φ'(t) = φ(t)·(iμ − σ²t) by the chain rule (HasDerivAt.cexp on the exponent). The Gaussian characteristic function is the unique solution with φ(0) = 1 of this ODE whose coefficient is affine in t — and that affine logarithmic derivative is exactly what singles out the Gaussian among all characteristic functions.",
+    "mathContext": "$\\varphi'(t) = \\varphi(t)\\,(i\\mu - \\sigma^2 t)$, $\\varphi(0) = 1$; the affine coefficient characterises the Gaussian.",
+    "significance": "key",
+    "relatedConcepts": ["first-order linear ODE", "logarithmic derivative", "HasDerivAt.cexp", "uniqueness of the Gaussian"],
+    "prerequisites": ["chain rule for exp", "ordinary differential equations"]
+  },
+  {
+    "id": "ann-clt-cumulant-k1k2",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "range": { "startLine": 79, "endLine": 99 },
+    "type": "concept",
+    "title": "First and second cumulants: κ₁ = μ, κ₂ = σ²",
+    "content": "gaussianExponent_deriv_zero gives ψ'(0) = iμ, so κ₁ = i^{-1}·ψ'(0) = μ — the mean. gaussianExponent_deriv2 shows ψ''(t) = −σ² is the constant second derivative (differentiating the affine ψ'), and gaussianExponent_deriv2_zero reads ψ''(0) = −σ², so κ₂ = i^{-2}·ψ''(0) = −(−σ²) = σ² — the variance. The first two cumulants recover exactly the two parameters of the Gaussian.",
+    "mathContext": "$\\kappa_1 = i^{-1}\\psi'(0) = \\mu$; $\\psi''(t) \\equiv -\\sigma^2$, so $\\kappa_2 = i^{-2}\\psi''(0) = \\sigma^2$.",
+    "significance": "key",
+    "relatedConcepts": ["mean and variance", "cumulants", "constant second derivative", "HasDerivAt.deriv"],
+    "prerequisites": ["cumulants as derivatives at 0", "second derivatives"]
+  },
+  {
+    "id": "ann-clt-cumulant-vanish",
+    "proofId": "central-limit-theorem-oq-01-oq-02-oq-01-oq-03",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "insight",
+    "title": "All cumulants of order ≥ 3 vanish",
+    "content": "gaussianExponent_deriv3 shows ψ'''(t) = 0: the second derivative −σ² is constant (hasDerivAt_const), so its derivative is zero everywhere, and hence every higher derivative vanishes. Therefore κ_k = i^{-k}·ψ^{(k)}(0) = 0 for all k ≥ 3. This polynomial (degree-2) cumulant generating function is the analytic signature of the normal distribution — by Marcinkiewicz's theorem, no other distribution has a CGF that is a polynomial.",
+    "mathContext": "$\\psi'''\\equiv 0 \\Rightarrow \\kappa_k = 0$ for all $k\\ge 3$; the CGF is exactly degree 2 (Marcinkiewicz).",
+    "significance": "key",
+    "relatedConcepts": ["vanishing higher cumulants", "Marcinkiewicz's theorem", "polynomial CGF", "hasDerivAt_const"],
+    "prerequisites": ["higher derivatives of a constant", "cumulant generating function"]
+  }
+]

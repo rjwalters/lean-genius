@@ -111,9 +111,9 @@ theorem congruent_symm (n : ℕ) (P Q : PointConfig n) :
   refine ⟨⟨g, fun p q => ?_, ?_⟩, fun i => ?_⟩
   · have := σ.preserves_dist (g p) (g q)
     rw [hg_right, hg_right] at this; exact this.symm
-  · exact ⟨fun p q h => by rwa [← hg_right p, ← hg_right q, h],
+  · exact ⟨fun p q h => by rw [← hg_right p, ← hg_right q, h],
            fun p => ⟨σ.toFun p, hg_left p⟩⟩
-  · rw [hσ i, hg_left]
+  · rw [hσ i]; exact (hg_left (P i)).symm
 
 theorem congruent_trans (n : ℕ) (P Q R : PointConfig n) :
     AreCongruent n P Q → AreCongruent n Q R → AreCongruent n P R := by

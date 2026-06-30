@@ -1,13 +1,13 @@
 {
-  "id": "erdos-1022-oq-02",
+  "id": "erdos-1022-oq-04",
   "title": "The 2-Colorability Threshold for Complete Uniform Hypergraphs",
-  "slug": "erdos-1022-oq-02",
+  "slug": "erdos-1022-oq-04",
   "description": "An exact threshold for Property B of the complete t-uniform hypergraph K_n^(t): it is 2-colorable if and only if n ≤ 2t − 2, failing first at n = 2t − 1 by pigeonhole. This is the lower-bound companion to the parent's first-moment upper bound, yielding m(t) ≤ C(2t−1, t).",
   "meta": {
     "author": "Erdős (research extension)",
     "sourceUrl": "https://erdosproblems.com/1022",
     "status": "verified",
-    "proofRepoPath": "Proofs/Erdos1022OQ02.lean",
+    "proofRepoPath": "Proofs/Erdos1022OQ04.lean",
     "tags": [
       "erdos",
       "combinatorics",
@@ -34,6 +34,10 @@
       {
         "id": "erdos-1022-oq-01",
         "relationship": "Sibling: Property B_k (k-colorability)"
+      },
+      {
+        "id": "erdos-1022-oq-02",
+        "relationship": "Sibling: growth rate of the Property-B sparseness threshold c_t"
       },
       {
         "id": "erdos-1022-oq-03",
@@ -123,6 +127,11 @@
       "description": "Property B_k: the k-colorability generalization"
     },
     {
+      "targetId": "erdos-1022-oq-02",
+      "relationship": "sibling",
+      "description": "Growth rate of the Property-B sparseness threshold c_t"
+    },
+    {
       "targetId": "erdos-1022-oq-03",
       "relationship": "sibling",
       "description": "Lovász Local Lemma bound improving on the first-moment threshold"
@@ -141,7 +150,7 @@
       "Finset"
     ],
     "namespace": "Erdos1022OQ02",
-    "path": "Proofs/Erdos1022OQ02.lean",
+    "path": "Proofs/Erdos1022OQ04.lean",
     "sorries": 0,
     "definitionCount": 3
   },

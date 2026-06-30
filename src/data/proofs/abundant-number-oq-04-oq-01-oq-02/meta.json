@@ -1,0 +1,192 @@
+{
+  "id": "abundant-number-oq-04-oq-01-oq-02",
+  "title": "Propagation of Abundance and Primitive Abundant Numbers: 20 Is the Least, via the Strict Abundancy Gap",
+  "slug": "abundant-number-oq-04-oq-01-oq-02",
+  "description": "The parent entry abundant-number-oq-04-oq-01 proves the strict, lower-bounded abundancy gap: for d ∣ n with d < n, n·σ(d) + d ≤ d·σ(n) (sigma_dvd_strict_mono), i.e. the abundancy index σ(·)/(·) jumps by at least 1/n at a proper multiple. This entry turns that quantitative gap into two structural theorems about the divisor lattice of abundant numbers. (1) Propagation of abundance: a proper multiple of an abundant OR perfect number is strictly abundant. The single inequality 2·d ≤ σ(d) — strict for abundant d, an equality for perfect d — feeds the parent strict gap to give 2·n < σ(n). (2) Primitive abundant numbers: defining IsPrimitiveAbundant n as 'n is abundant and every proper divisor is deficient', we prove the characterisation that these are exactly the abundant numbers none of whose proper divisors is abundant or perfect (immediate from the deficient/abundant/perfect trichotomy on positive divisors), deduce that no proper multiple of a primitive abundant number is itself primitive abundant, and certify that 20 is the LEAST primitive abundant number (σ(20)=42>40, proper divisors 1,2,4,5,10 all deficient; the smaller abundant numbers 12 and 18 are disqualified because their proper divisor 6 is perfect). Mathlib defines Nat.Abundant / Nat.Deficient / Nat.Perfect but records no closure-under-multiples law and no notion of primitive abundant number. Fully machine-checked with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abundant_number",
+    "date": "Classical; OEIS A091191 (primitive abundant numbers), A005101 (abundant), A000396 (perfect)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbundantPrimitiveOQ040102.lean",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "divisor-sum",
+      "abundant-numbers",
+      "deficient-numbers",
+      "perfect-numbers",
+      "primitive-abundant",
+      "divisibility",
+      "intermediate"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 128,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries. `#print axioms` on abundant_of_proper_dvd_abundant_or_perfect, isPrimitiveAbundant_iff, not_isPrimitiveAbundant_of_proper_multiple, isPrimitiveAbundant_twenty, and twenty_least_isPrimitiveAbundant reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). The numerical witnesses (20 is primitive abundant; 20 is least; 12 is not) are discharged by kernel `decide` (NOT native_decide), so no Lean.ofReduceBool is involved. Local Decidable instances for Nat.Abundant / Nat.Deficient / Nat.Perfect (each reducing to a decidable inequality/equality on a computable divisor sum) make the `decide` calls available.",
+    "originalContributions": [
+      "Proves `abundant_of_proper_dvd_abundant_or_perfect : d ∣ n → d < n → (d.Abundant ∨ d.Perfect) → n.Abundant` — abundance propagates upward to every proper multiple of an abundant or perfect number. A single uniform inequality 2·d ≤ σ(d) (strict for abundant, equality for perfect) combines with the parent strict gap n·σ(d) + d ≤ d·σ(n) to force d·(2n) < d·σ(n), hence 2n < σ(n). Directly answers open question index 1 of the parent abundant-number-oq-04-oq-01.",
+      "Defines `IsPrimitiveAbundant n := n.Abundant ∧ ∀ d ∈ n.properDivisors, d.Deficient` — the notion of a primitive abundant number (a minimal abundant number under divisibility), absent from Mathlib.",
+      "Proves the characterisation `isPrimitiveAbundant_iff : IsPrimitiveAbundant n ↔ n.Abundant ∧ ∀ d ∈ n.properDivisors, ¬d.Abundant ∧ ¬d.Perfect`, obtained by applying the deficient/abundant/perfect trichotomy (Nat.deficient_iff_not_abundant_and_not_perfect) to each positive proper divisor.",
+      "Proves `not_isPrimitiveAbundant_of_proper_multiple : IsPrimitiveAbundant d → d ∣ n → d < n → ¬IsPrimitiveAbundant n` — the contrapositive structural consequence of propagation: a primitive abundant number, being abundant hence non-deficient, can never be a proper divisor of another primitive abundant number.",
+      "Certifies the extremal witness: `isPrimitiveAbundant_twenty : IsPrimitiveAbundant 20` and `twenty_least_isPrimitiveAbundant : ∀ m, m < 20 → ¬IsPrimitiveAbundant m` (with the sanity check `twelve_not_isPrimitiveAbundant`), establishing 20 = A091191(1) as the smallest primitive abundant number — the smaller abundant numbers 12 and 18 fail precisely because their proper divisor 6 is perfect."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Every abundant number is a multiple of a primitive abundant number — an abundant number all of whose proper divisors are deficient — so the primitive abundant numbers (OEIS A091191: 20, 70, 88, 104, ...) are the multiplicative building blocks that control the density and structure of the abundant numbers. The parent chain (abundant-number-oq-04 → oq-04-oq-01) formalized the abundancy index σ(n)/n and sharpened its monotonicity along divisibility to a strict, lower-bounded gap of size 1/n. The natural structural payoff of that gap is exactly the present pair of results: abundance is contagious upward, and the minimal abundant numbers are the primitive ones.",
+    "problemStatement": "Use the parent's strict abundancy gap to prove (1) that a proper multiple of an abundant or perfect number is abundant, and (2) the characterisation and least-element facts for primitive abundant numbers: IsPrimitiveAbundant n ↔ n.Abundant ∧ (no proper divisor is abundant or perfect), no proper multiple of a primitive abundant number is primitive abundant, and 20 is the smallest primitive abundant number — all axiom-free.",
+    "text": "A self-contained Lean 4 / Mathlib formalization (128 lines, 0 sorries, 0 axioms) that converts the parent's quantitative abundancy gap into structural theorems about the divisor lattice of abundant numbers. The propagation law abundant_of_proper_dvd_abundant_or_perfect handles abundant and perfect divisors uniformly through the single bound 2·d ≤ σ(d), which is strict in the abundant case and an equality in the perfect case; feeding it to the parent's sigma_dvd_strict_mono yields strict abundance of the multiple. The notion IsPrimitiveAbundant is then defined and characterised via the deficient/abundant/perfect trichotomy, the no-proper-multiple corollary is read off as the contrapositive of propagation, and 20 is certified as the least primitive abundant number by kernel decide over the local Decidable instances for the three factorisation predicates.",
+    "proofStrategy": "1. **Decidability instances.** Nat.Abundant, Nat.Deficient, Nat.Perfect are plain defs, so their Decidable instances are not found by typeclass search; we expose them by `unfold; infer_instance` (each reduces to a decidable inequality/equality on a computable divisor sum), enabling kernel `decide` on concrete numbers.\n\n2. **Uniform bound (two_mul_le_sigma_of_abundant_or_perfect).** For abundant d, 2d < σ(d) (abundant_iff_two_mul_lt_sigma); for perfect d, σ(d) = 2d (properDivisors definition + Nat.sum_divisors_eq_sum_properDivisors_add_self). Either way 2d ≤ σ(d).\n\n3. **Propagation (abundant_of_proper_dvd_abundant_or_perfect).** With hge : 2d ≤ σ(d) and the parent gap hkey : n·σ(d) + d ≤ d·σ(n), monotonicity gives n·(2d) ≤ n·σ(d) (gcongr), so d·σ(n) ≥ n·σ(d) + d ≥ 2nd + d > 2nd = d·(2n); cancel d (> 0) to get 2n < σ(n), i.e. n.Abundant (abundant_iff_two_mul_lt_sigma). nlinarith closes the arithmetic.\n\n4. **Characterisation (isPrimitiveAbundant_iff).** and_congr_right reduces to a pointwise equivalence over proper divisors; each proper divisor d is positive (Nat.pos_of_mem_properDivisors), so Nat.deficient_iff_not_abundant_and_not_perfect turns 'd deficient' into '¬d abundant ∧ ¬d perfect'.\n\n5. **No proper multiple (not_isPrimitiveAbundant_of_proper_multiple).** If n were primitive abundant, its proper divisor d (a primitive abundant number) would be deficient, hence not abundant — contradicting that d is abundant.\n\n6. **Extremal witness.** isPrimitiveAbundant_twenty and twenty_least_isPrimitiveAbundant are kernel `decide` (Nat.decidableBallLT handles the bounded ∀ m < 20).",
+    "keyInsights": [
+      "**One inequality unifies the abundant and perfect cases.** Both 'd abundant' (2d < σ(d)) and 'd perfect' (σ(d) = 2d) are captured by the single bound 2d ≤ σ(d), so propagation needs no case split downstream: the parent's strict +d gap then upgrades the non-strict 2nd ≤ d·σ(n) to the strict 2nd < d·σ(n) automatically.",
+      "**Primitive abundance is the trichotomy in disguise.** Defining primitivity by 'every proper divisor is deficient' and characterising it by 'no proper divisor is abundant or perfect' is exactly the deficient/abundant/perfect trichotomy applied divisor-by-divisor — no new machinery, just Nat.deficient_iff_not_abundant_and_not_perfect on each positive proper divisor.",
+      "**Minimality of 20 is a finite, decidable fact — and 6 is the obstruction.** The smaller abundant numbers are 12 and 18; both contain the perfect number 6 as a proper divisor, so by propagation they are non-primitive. Everything below 20 is settled by kernel decide over Nat.decidableBallLT, with no native_decide and hence no Lean.ofReduceBool dependency.",
+      "**Structural closure from a quantitative gap.** The parent recorded only the size of the abundancy jump; here that jump is spent to prove a qualitative closure law (abundance propagates upward) and to pin down the minimal generators (primitive abundant numbers) of the abundant-number divisibility order."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ(n) = ∑_{e ∣ n} e and the abundant / deficient / perfect classification (Nat.Abundant, Nat.Deficient, Nat.Perfect) with the trichotomy lemma Nat.deficient_iff_not_abundant_and_not_perfect",
+      "The parent strict gap sigma_dvd_strict_mono (n·σ(d) + d ≤ d·σ(n) for d ∣ n, d < n) and the bridge abundant_iff_two_mul_lt_sigma (abundant-number-oq-04 / oq-04-oq-01)",
+      "Finset proper-divisor facts: Nat.mem_properDivisors, Nat.pos_of_mem_properDivisors, Nat.sum_divisors_eq_sum_properDivisors_add_self",
+      "Kernel decidability for bounded quantifiers over ℕ (Nat.decidableBallLT) and the monotonicity tactic gcongr / nlinarith for the ℕ arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and Strategy",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring: extends the parent strict abundancy gap to (1) propagation of abundance to proper multiples of abundant or perfect numbers and (2) the characterisation, no-proper-multiple law, and least element (20) for primitive abundant numbers.",
+      "mathContext": "A quantitative gap of size 1/n is spent to obtain qualitative closure and minimality results."
+    },
+    {
+      "id": "decidability",
+      "title": "Decidability of the Factorisation Predicates",
+      "startLine": 32,
+      "endLine": 48,
+      "summary": "Local Decidable instances for Nat.Abundant, Nat.Deficient, Nat.Perfect (each `unfold; infer_instance` to a decidable inequality/equality on a computable divisor sum), enabling kernel `decide` on concrete numbers.",
+      "mathContext": "The Mathlib predicates are plain defs; exposing their Decidable instances lets numerical witnesses be checked by the kernel."
+    },
+    {
+      "id": "propagation",
+      "title": "Propagation of Abundance",
+      "startLine": 49,
+      "endLine": 76,
+      "summary": "`two_mul_le_sigma_of_abundant_or_perfect`: 2d ≤ σ(d) for abundant or perfect d. `abundant_of_proper_dvd_abundant_or_perfect`: feeding this to the parent strict gap gives d·(2n) < d·σ(n), hence n abundant.",
+      "mathContext": "Abundance is contagious upward: every proper multiple of an abundant or perfect number is abundant."
+    },
+    {
+      "id": "primitive",
+      "title": "Primitive Abundant Numbers",
+      "startLine": 77,
+      "endLine": 111,
+      "summary": "`IsPrimitiveAbundant n := n.Abundant ∧ ∀ d ∈ properDivisors n, d.Deficient`; `isPrimitiveAbundant_iff` characterises these as abundant numbers with no abundant-or-perfect proper divisor; `not_isPrimitiveAbundant_of_proper_multiple` rules out primitive abundant proper multiples.",
+      "mathContext": "Primitive abundant numbers are the minimal generators of the abundant numbers under divisibility."
+    },
+    {
+      "id": "least",
+      "title": "20 Is the Least Primitive Abundant Number",
+      "startLine": 112,
+      "endLine": 128,
+      "summary": "`isPrimitiveAbundant_twenty`, `twenty_least_isPrimitiveAbundant` (∀ m < 20), and the sanity check `twelve_not_isPrimitiveAbundant` — all by kernel `decide`. 12 and 18 fail because their proper divisor 6 is perfect.",
+      "mathContext": "20 = A091191(1); the obstruction below it is the perfect number 6 sitting inside 12 and 18."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "abundant_of_proper_dvd_abundant_or_perfect",
+      "type": "core",
+      "description": "d ∣ n → d < n → (d.Abundant ∨ d.Perfect) → n.Abundant: abundance propagates upward to every proper multiple of an abundant or perfect number. Answers open question index 1 of abundant-number-oq-04-oq-01.",
+      "leanType": "d ∣ n → d < n → (d.Abundant ∨ d.Perfect) → n.Abundant"
+    },
+    {
+      "name": "isPrimitiveAbundant_iff",
+      "type": "core",
+      "description": "IsPrimitiveAbundant n ↔ n.Abundant ∧ ∀ d ∈ n.properDivisors, ¬d.Abundant ∧ ¬d.Perfect: a primitive abundant number is an abundant number none of whose proper divisors is abundant or perfect.",
+      "leanType": "IsPrimitiveAbundant n ↔ n.Abundant ∧ ∀ d ∈ n.properDivisors, ¬ d.Abundant ∧ ¬ d.Perfect"
+    },
+    {
+      "name": "not_isPrimitiveAbundant_of_proper_multiple",
+      "type": "core",
+      "description": "IsPrimitiveAbundant d → d ∣ n → d < n → ¬IsPrimitiveAbundant n: no proper multiple of a primitive abundant number is itself primitive abundant (contrapositive of propagation).",
+      "leanType": "IsPrimitiveAbundant d → d ∣ n → d < n → ¬ IsPrimitiveAbundant n"
+    },
+    {
+      "name": "twenty_least_isPrimitiveAbundant",
+      "type": "core",
+      "description": "∀ m, m < 20 → ¬IsPrimitiveAbundant m, together with isPrimitiveAbundant_twenty : IsPrimitiveAbundant 20, certifies 20 as the least primitive abundant number (A091191(1)). Kernel decide; no native_decide.",
+      "leanType": "∀ m, m < 20 → ¬ IsPrimitiveAbundant m"
+    },
+    {
+      "name": "two_mul_le_sigma_of_abundant_or_perfect",
+      "type": "supporting",
+      "description": "(d.Abundant ∨ d.Perfect) → 2·d ≤ σ(d): the uniform bound (strict for abundant, equality for perfect) that drives propagation.",
+      "leanType": "d.Abundant ∨ d.Perfect → 2 * d ≤ ∑ e ∈ d.divisors, e"
+    },
+    {
+      "name": "isPrimitiveAbundant_twenty",
+      "type": "supporting",
+      "description": "IsPrimitiveAbundant 20: σ(20)=42>40 and proper divisors 1,2,4,5,10 are all deficient. Kernel decide.",
+      "leanType": "IsPrimitiveAbundant 20"
+    }
+  ],
+  "conclusion": {
+    "summary": "Turns the parent's strict abundancy gap into structural theorems about abundant numbers: (1) a proper multiple of an abundant or perfect number is abundant (abundant_of_proper_dvd_abundant_or_perfect), via the uniform bound 2d ≤ σ(d); (2) primitive abundant numbers — abundant numbers all of whose proper divisors are deficient — are exactly the abundant numbers with no abundant-or-perfect proper divisor (isPrimitiveAbundant_iff), no proper multiple of one is primitive abundant (not_isPrimitiveAbundant_of_proper_multiple), and 20 is the least primitive abundant number (twenty_least_isPrimitiveAbundant, isPrimitiveAbundant_twenty). Fully machine-checked, 0 axioms and 0 sorries.",
+    "implications": "Mathlib has the abundant/deficient/perfect predicates but no closure-under-multiples law and no primitive abundant number; this entry supplies the first formal propagation theorem and primitive-abundant characterisation, plus the certified least element 20. The no-proper-multiple corollary realises the standard fact that the primitive abundant numbers are the minimal generators of the abundant numbers under divisibility, giving a reusable handle for density and structure results on abundant numbers.",
+    "openQuestions": [
+      "Prove that every abundant number has a primitive abundant divisor (well-founded descent on the divisor order), making 'primitive abundant numbers generate the abundant numbers' a theorem rather than a slogan.",
+      "Characterise or enumerate the next primitive abundant numbers (70, 88, 104, ...) and show there are infinitely many — e.g. via the odd primitive abundant numbers — using the propagation law to exclude proper multiples."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Nicomachus of Gerasa",
+      "title": "Introduction to Arithmetic",
+      "year": "~100 CE",
+      "venue": "—",
+      "note": "Earliest classification of numbers as deficient, perfect, and abundant."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A091191: Primitive abundant numbers (abundant numbers with no abundant proper divisor)",
+      "year": "—",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "Begins 20, 70, 88, 104, 272, ...; this entry certifies 20 as the least and characterises the sequence."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abundant-number-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent. abundant-number-oq-04-oq-01 proves the strict, lower-bounded abundancy gap sigma_dvd_strict_mono (n·σ(d) + d ≤ d·σ(n) for d ∣ n, d < n). This entry uses that gap to prove propagation of abundance (its open question index 1) and to develop primitive abundant numbers, including the least element 20."
+    },
+    {
+      "targetId": "abundant-number-oq-04",
+      "relationship": "related",
+      "description": "Grandparent. Supplies the divisor-sum bridge deficient_iff_sigma_lt_two_mul / abundant_iff_two_mul_lt_sigma and the non-strict monotonicity that the parent sharpened; these bridges are reused here to read abundance off the strict gap."
+    },
+    {
+      "targetId": "abundant-number-oq-01",
+      "relationship": "related",
+      "description": "Establishes the abundant-side closure lemmas (abundant_mul_right, abundant_of_perfect_mul) via the same scaled-divisor injection; this entry gives the unified abundant-or-perfect propagation directly from the strict gap and adds the primitive abundant theory."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/AbundantPrimitiveOQ040102.lean",
+    "namespace": "AbundantPrimitiveOQ040102",
+    "imports": [
+      "Mathlib",
+      "Proofs.AbundantStrictAbundancyOQ0401"
+    ],
+    "lineCount": 128,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 6,
+    "definitionCount": 1
+  }
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sumkth-oq0501-ann-header",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "The power-sum dichotomy as an ℕ-congruence",
+    "content": "The parent `SumOfKthPowersOQ05` proves the field-valued dichotomy $\\sum_{x:\\mathbb{Z}/p} x^k = -1$ if $k\\ne 0$ and $(p-1)\\mid k$, else $0$. This file casts it to a congruence between honest natural numbers: $\\sum_{i<p} i^k \\equiv (p-1$ or $0)\\pmod p$. The only new content is the bookkeeping bridge between the field sum and the ℕ sum: `Nat.cast` is a ring hom, the residue map is a bijection $\\mathrm{range}\\,p \\to \\mathbb{Z}/p$, and $\\overline{p-1} = -1$.",
+    "mathContext": "$\\sum_{i<p} i^k \\equiv \\begin{cases} p-1 & k\\ne 0,\\ (p-1)\\mid k \\\\ 0 & \\text{else}\\end{cases} \\pmod p$",
+    "significance": "key",
+    "relatedConcepts": ["power sums", "finite fields", "Fermat's little theorem", "ring homomorphism casts"],
+    "prerequisites": ["modular arithmetic", "ZMod p"]
+  },
+  {
+    "id": "sumkth-oq0501-ann-reindex",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 36, "endLine": 46 },
+    "type": "technique",
+    "title": "Residue-cast reindexing",
+    "content": "`sum_range_cast_pow`: the ℕ-indexed sum $\\sum_{i<p}(\\overline i)^k$ over `range p` equals the field-indexed sum $\\sum_{x:\\mathbb{Z}/p} x^k$. The proof is `Finset.sum_nbij'` with the bijection $i \\mapsto \\overline i$ and inverse `ZMod.val`, discharging the four roundtrip/membership conditions (`ZMod.val_lt`, `ZMod.val_natCast_of_lt`, `ZMod.natCast_zmod_val`). This is the change-of-index that lets the parent's field result be reused verbatim.",
+    "mathContext": "$\\sum_{i<p}(\\overline i)^k = \\sum_{x:\\mathbb{Z}/p} x^k$ via $i \\leftrightarrow \\overline i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum reindexing", "bijection", "ZMod.val"],
+    "prerequisites": ["Finset.sum_nbij'", "residue representatives"]
+  },
+  {
+    "id": "sumkth-oq0501-ann-main",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 48, "endLine": 65 },
+    "type": "insight",
+    "title": "The ℕ-valued dichotomy congruence",
+    "content": "`sum_pow_modEq` is the headline: $\\sum_{i<p} i^k \\equiv (\\text{if } k\\ne 0 \\wedge (p-1)\\mid k \\text{ then } p-1 \\text{ else } 0)\\pmod p$. The proof rewrites the congruence as equality of casts (`ZMod.natCast_eq_natCast_iff`), pushes `Nat.cast` through the sum and powers, applies the reindexing and the parent's `sum_pow_zmod`, then matches the two branches — crucially $\\overline{p-1} = -1$ via `Nat.cast_pred` and `ZMod.natCast_self`. This is the ℕ face of the field-valued parent.",
+    "mathContext": "$\\overline{\\textstyle\\sum_{i<p} i^k} = \\sum_{x} x^k$ in $\\mathbb{Z}/p$, with $\\overline{p-1} = -1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.ModEq", "cast through sums", "natCast_self"],
+    "prerequisites": ["the reindexing lemma", "the parent's field dichotomy"]
+  },
+  {
+    "id": "sumkth-oq0501-ann-corollaries",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 67, "endLine": 99 },
+    "type": "technique",
+    "title": "Branch corollaries and the divisibility criterion",
+    "content": "`sum_pow_modEq_pred` and `sum_pow_modEq_zero` extract the two branches by `if_pos`/`if_neg`. `p_dvd_sum_pow_iff` then characterises divisibility: $p \\mid \\sum_{i<p} i^k \\iff \\neg(k\\ne 0 \\wedge (p-1)\\mid k)$. The forward direction argues by contradiction — if both $\\sum \\equiv 0$ and $\\sum \\equiv p-1$ held, then $p \\mid p-1$, impossible since $0 < p-1 < p$ for a prime. A clean iff making the dichotomy a decidable divisibility test.",
+    "mathContext": "$p \\mid \\textstyle\\sum_{i<p} i^k \\iff \\neg\\big(k\\ne 0 \\wedge (p-1)\\mid k\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["divisibility criterion", "proof by contradiction", "Nat.modEq_zero_iff_dvd"],
+    "prerequisites": ["the dichotomy congruence"]
+  },
+  {
+    "id": "sumkth-oq0501-ann-residues",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 101, "endLine": 110 },
+    "type": "concept",
+    "title": "Sum of residues for an odd prime",
+    "content": "`sum_residues_modEq`: for an odd prime $p$, $\\sum_{i<p} i \\equiv 0 \\pmod p$ — the $k=1$ case, since $(p-1)\\nmid 1$ once $p>2$. This recovers the classical fact that $0+1+\\cdots+(p-1) = \\tfrac{p(p-1)}{2}$ is a multiple of $p$ for odd $p$, here as a corollary of the general dichotomy rather than by the Gauss summation formula.",
+    "mathContext": "$p > 2$ prime $\\Rightarrow \\sum_{i<p} i \\equiv 0 \\pmod p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of residues", "Gauss summation", "odd primes"],
+    "prerequisites": ["the zero-branch corollary"]
+  },
+  {
+    "id": "sumkth-oq0501-ann-examples",
+    "proofId": "sum-of-kth-powers-oq-05-oq-01",
+    "range": { "startLine": 111, "endLine": 125 },
+    "type": "context",
+    "title": "Concrete kernel-checked instances",
+    "content": "Four `decide`-verified examples illustrate both branches: $\\sum_{i<5} i^4 \\equiv 4$ and $\\sum_{i<7} i^6 \\equiv 6$ (where $(p-1)\\mid k$, giving $p-1$), versus $\\sum_{i<5} i^2 \\equiv 0$ and $\\sum_{i<5} i \\equiv 0$ (where $(p-1)\\nmid k$). Using kernel `decide` (not `native_decide`) keeps them axiom-free.",
+    "mathContext": "$\\sum_{i<5} i^4 = 354 \\equiv 4,\\ \\sum_{i<7} i^6 = 67171 \\equiv 6,\\ \\sum_{i<5} i^2 = 30 \\equiv 0.$",
+    "significance": "context",
+    "relatedConcepts": ["worked examples", "kernel decide"],
+    "prerequisites": ["decidable congruences"]
+  }
+]

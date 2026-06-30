@@ -1,0 +1,108 @@
+{
+  "id": "binomial-theorem-oq-04-oq-01-oq-03",
+  "title": "The Full q-Vandermonde Convolution for Gaussian Binomial Coefficients",
+  "slug": "binomial-theorem-oq-04-oq-01-oq-03",
+  "description": "Proves the full q-Vandermonde (q-Chu-Vandermonde) convolution identity for Gaussian binomial coefficients: C_q(m+n,r) = Σ_k q^{(m-k)(r-k)} C_q(m,k) C_q(n,r-k), for all m, n, r over any commutative ring. Closes 'Open future work #1' of the parent q-binomial file, which had established only the m=0 and n=0 base cases. The proof goes by induction on n; the inductive step is reduced term-by-term to a new q-binomial absorption identity (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k). Specializes at q=1 to the classical Vandermonde identity. 3 theorems, 0 definitions, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analog",
+      "gaussian-binomial",
+      "vandermonde-identity",
+      "quantum-calculus",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified over an arbitrary CommRing using Mathlib's finite-sum API and the gallery's own qBinomial development. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (these do not count as assumptions).",
+    "lineCount": 275,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "qBinomial_absorption: the q-binomial absorption/symmetry identity (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k), proved by induction on m — new q-binomial infrastructure not previously in the gallery",
+      "qVandermonde: the full q-Vandermonde convolution C_q(m+n,r) = Σ_k q^{(m-k)(r-k)} C_q(m,k) C_q(n,r-k), proved by induction on n with the inductive step reconciled via the absorption identity",
+      "vandermonde_classical: the q=1 specialization recovering the classical Vandermonde identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gaussian binomial coefficient (q-binomial) C_q(n,k) is the q-analog of the ordinary binomial coefficient: it is a polynomial in q that counts the number of k-dimensional subspaces of an n-dimensional vector space over the finite field GF(q), and it reduces to C(n,k) at q=1. The q-Vandermonde (or q-Chu-Vandermonde) identity is the q-analog of Vandermonde's convolution and is one of the foundational summation identities of quantum calculus, appearing throughout the theory of basic hypergeometric series, partition theory, and the combinatorics of finite vector spaces.\n\nThe parent entry (binomial-theorem-oq-04-oq-01) proved the *classical* Vandermonde identity combinatorially via an explicit bijection, and its sibling (binomial-theorem-oq-02-oq-02-oq-01) built the Gaussian binomial coefficient from scratch — Mathlib has no Gaussian binomial API as of v4.26 — establishing the q-Pascal recurrence and the two base cases (m=0, n=0) of the q-Vandermonde identity. The full inductive identity was explicitly left as open future work. This entry closes it.\n\nThe convention used here is the standard one fixed by the recurrence C_q(n+1,k+1) = q^{k+1}·C_q(n,k+1) + C_q(n,k). Under this convention the correct power weight in the convolution is q^{(m-k)(r-k)} (verified directly against the proven base cases), with natural-number truncated subtraction making every out-of-range term vanish automatically.",
+    "problemStatement": "Prove the full q-Vandermonde convolution C_q(m+n,r) = Σ_{k=0}^r q^{(m-k)(r-k)} C_q(m,k) C_q(n,r-k) for all m, n, r, extending the m=0 and n=0 base cases already in the gallery.",
+    "text": "The identity is proved by induction on n. The base case n=0 is the parent's qVandermonde_zero_right. For the inductive step (n → n+1, r = s+1): expand C_q(m+n+1, s+1) by the q-Pascal recurrence, rewrite both resulting q-binomials with the induction hypothesis at r=s+1 and r=s, and on the target side expand each inner C_q(n+1, s+1-k) by q-Pascal. After peeling boundary terms, the equality reduces to a finite-sum reconciliation in which the 'high' (B_n(s+1-k)) and 'low' (B_n(s-k)) sums are aligned by a single index shift; each aligned term then cancels by the absorption identity, and the leftover boundary term is exactly the absorption identity at k=s.",
+    "proofStrategy": "Build the q-binomial absorption identity first (induction on m, using the q-Pascal recurrence and the geometric-sum closed form C_q(n,1) = 1 + q + ... + q^{n-1}). Then prove q-Vandermonde by induction on n, reducing the step to absorption applied term-by-term. Finally specialize q=1.",
+    "keyInsights": [
+      "**The absorption identity is the crux.** The entire inductive step of q-Vandermonde collapses onto the single relation (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k), the q-analog of (k+1)·C(m,k+1) = (m-k)·C(m,k). Isolating this lemma turns an intimidating double-sum manipulation into a one-line termwise cancellation.",
+      "**Power-weight convention matters.** Different sources state q-Vandermonde with different exponents (e.g. q^{k(m-k)} vs q^{(m-k)(r-k)}); only one is correct for a given q-Pascal convention. The weight q^{(m-k)(r-k)} was pinned down by matching the proven base cases, and verified to telescope correctly via the absorption reduction.",
+      "**Natural-number subtraction does the bookkeeping for free.** Because C_q(m,k) = 0 whenever k > m and the truncated subtraction m-k collapses to 0 exactly there, no explicit range guards are needed: every out-of-range summand vanishes, and the same proof handles the degenerate (k ≥ m) and generic (k < m) cases with only a small case split in the termwise lemma.",
+      "**Index alignment by a single shift.** The reconciliation never needs a full reflection or bijection on Finset: the 'high' sum's k=0 term vanishes (allowing a shift to range s) and the 'low' sum's k=s term is peeled off, after which both sums run over range s with a common B_n(s-k) factor and cancel termwise — the leftover boundary is absorbed by the absorption identity at k=s."
+    ],
+    "prerequisites": [
+      "Gaussian binomial coefficients and the q-Pascal recurrence (parent file binomial-theorem-oq-02-oq-02-oq-01)",
+      "Finite sums over Finset.range: sum_range_succ, sum_range_succ', sum_add_distrib, sum_congr",
+      "Geometric sum identity (∑ q^i)(q-1) = q^n - 1",
+      "Proof by induction with a reduction to a key algebraic identity (linear_combination)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The full q-Vandermonde convolution C_q(m+n,r) = Σ_k q^{(m-k)(r-k)} C_q(m,k) C_q(n,r-k) is proved for all m, n, r over an arbitrary commutative ring, closing the parent file's open future work. The proof introduces the q-binomial absorption identity as reusable infrastructure and specializes at q=1 to classical Vandermonde. 3 theorems, 275 lines, 0 axioms, 0 sorries.",
+    "implications": "The absorption identity (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k) is a reusable building block for further Gaussian-binomial identities (reflection symmetry, the q-binomial theorem, the dual q-Pascal rule). The reduction strategy — isolate a single key identity and reconcile a double sum term-by-term after one index shift — is a transferable pattern for q-analog convolution identities.",
+    "openQuestions": [
+      "Prove q-binomial reflection symmetry C_q(n,k) = C_q(n,n-k) for k ≤ n, e.g. via the dual q-Pascal recurrence C_q(n+1,k+1) = C_q(n,k+1) + q^{n-k} C_q(n,k), which the absorption identity helps establish",
+      "Prove the Cauchy/Gauss q-binomial theorem ∏_{i=0}^{n-1}(1 + q^i x) = Σ_k q^{k(k-1)/2} C_q(n,k) x^k, and derive q-Vandermonde from it as a coefficient comparison"
+    ]
+  },
+  "leanFile": {
+    "namespace": "BinomialTheoremOQ04OQ01OQ03",
+    "lineCount": 275,
+    "theoremCount": 3,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ04OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the combinatorial bijection proof of the classical Vandermonde identity. This file proves the q-analog and recovers the classical identity at q=1."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-02-oq-01",
+      "relationship": "depends-on",
+      "description": "Builds directly on the gallery's Gaussian binomial development (qBinomial, the q-Pascal recurrence, the geometric-sum closed form, and the m=0/n=0 q-Vandermonde base cases)."
+    },
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "answers",
+      "description": "Answers the q-Vandermonde open question raised under OQ-04: the full Gaussian-binomial convolution, not just the classical case."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-absorption",
+      "title": "Part 1: The q-Binomial Absorption Identity",
+      "startLine": 50,
+      "endLine": 100,
+      "summary": "Proves qBinomial_absorption: (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k), by induction on m. The k=0 case uses the geometric-sum closed form C_q(m+1,1) = ∑ q^i and geom_sum_mul; the generic case combines the q-Pascal recurrence with the induction hypothesis via linear_combination, splitting on whether the relevant q-binomials vanish."
+    },
+    {
+      "id": "sec-qvandermonde",
+      "title": "Part 2: The Full q-Vandermonde Convolution",
+      "startLine": 101,
+      "endLine": 242,
+      "summary": "Proves qVandermonde by induction on n. The base case is the parent's n=0 result. The inductive step expands C_q(m+n+1,r) and the inner C_q(n+1,r-k) by q-Pascal, peels boundary terms, aligns the high and low sums by an index shift, and cancels termwise using the absorption identity (the boundary term being absorption at k=s)."
+    },
+    {
+      "id": "sec-classical",
+      "title": "Part 3: Classical Vandermonde at q=1",
+      "startLine": 243,
+      "endLine": 252,
+      "summary": "vandermonde_classical: specializing q=1 (where every power weight becomes 1 and C_1(n,k) = C(n,k)) recovers the classical Vandermonde identity C(m+n,r) = Σ_k C(m,k)·C(n,r-k)."
+    }
+  ]
+}

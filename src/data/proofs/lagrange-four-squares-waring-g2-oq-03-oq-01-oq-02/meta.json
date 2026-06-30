@@ -1,0 +1,147 @@
+{
+  "id": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+  "slug": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "TriangularSingle",
+    "lineCount": 117,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/TriangularSingleEightMulAddOneSquare.lean",
+    "sorries": 0
+  },
+  "title": "Triangular Numbers and the 8n+1 Perfect-Square Test",
+  "description": "The one-summand base case of the triangular-rank hierarchy. For every natural number n, n is itself a triangular number T(k)=k(k+1)/2 if and only if 8n+1 is a perfect square — proved unconditionally and axiom-free via the single defining identity (2k+1)² = 8·T(k)+1. The triangular index is recovered exactly and is unique (T is strictly monotone), and since 'is a perfect square' is decidable the characterization upgrades the triangular-number predicate to a DecidablePred, a constant-cost membership test.",
+  "overview": {
+    "historicalContext": "Triangular numbers T(k)=k(k+1)/2 are the oldest figurate numbers, studied by the Pythagoreans and central to Gauss's 1796 diary entry 'EΥΡΗΚΑ! num = Δ+Δ+Δ'. The elementary fact that n is triangular exactly when 8n+1 is a perfect square — equivalently, the inverse map k = (√(8n+1)−1)/2 — is the standard schoolbook 'triangular-number test', folklore since at least Diophantus and made routine by the identity 8·T(k)+1 = (2k+1)². It is the d=1 floor of the polygonal-number tower whose higher rungs are already in the gallery: two triangular numbers correspond to the 4n+1 two-square slice, and three triangular numbers always suffice (Gauss's Eureka theorem, the 8n+3 three-square slice).",
+    "problemStatement": "Characterize the natural numbers that are themselves triangular, T(k)=k(k+1)/2. Show n is triangular iff 8n+1 is a perfect square, recover the index k exactly, and conclude that the triangular-number predicate is decidable.",
+    "proofStrategy": "Everything rests on the single identity (2k+1)² = 8·T(k)+1 (sq_two_mul_add_one), itself a consequence of the exact halving 2·T(k)=k(k+1) (two_mul_tri). Forward: if n=T(k) then 8n+1=(2k+1)² is a perfect square. Backward: 8n+1 is odd, so any r with r²=8n+1 is odd, r=2k+1, and the identity run in reverse gives 8·T(k)+1 = 8n+1, hence n=T(k) by cancellation. Strict monotonicity of T (tri_strictMono) makes the index unique, and decidability of IsSquare transports across the equivalence to a DecidablePred instance.",
+    "keyInsights": [
+      "Triangular numbers are exactly the 8n+1 perfect-square slice — the d=1 base case mirroring two triangular ⟺ 4n+1 two squares and three triangular ⟺ 8n+3 three squares.",
+      "The whole equivalence is the single identity (2k+1)² = 8·T(k)+1 read in two directions; parity (8n+1 is odd) is what forces the square root to have the shape 2k+1 and pins the index.",
+      "The index k is recovered exactly (eq_tri_of_eight_mul_add_one) and is unique because T is strictly monotone, so the representation, when it exists, is one-of-a-kind.",
+      "Because 'perfect square' is decidable, the characterization makes the triangular-number predicate a DecidablePred — a constant-cost test n ↦ 'is 8n+1 a square', strictly more than an existential statement."
+    ]
+  },
+  "sections": [
+    {
+      "id": "triangular-setup",
+      "title": "Triangular Numbers and the Defining Identity",
+      "startLine": 44,
+      "endLine": 73,
+      "summary": "Defines tri k = k(k+1)/2 and IsTriangular; establishes the exact halving 2·T(k)=k(k+1) (two_mul_tri) and the keystone identity (2k+1)² = 8·T(k)+1 (sq_two_mul_add_one), plus strict monotonicity of T (tri_strictMono) for index uniqueness.",
+      "mathContext": "T(k)=k(k+1)/2 with 2T(k)=k(k+1) exact and (2k+1)²=8T(k)+1."
+    },
+    {
+      "id": "characterization",
+      "title": "The 8n+1 Square Characterization and Decidability",
+      "startLine": 75,
+      "endLine": 116,
+      "summary": "The headline equivalence isTriangular_iff_isSquare (n triangular ⟺ 8n+1 a perfect square), the exact index recovery eq_tri_of_eight_mul_add_one, and the DecidablePred instance obtained by transporting decidability of IsSquare across the equivalence; closes with worked sanity checks.",
+      "mathContext": "n = T(k) ⟺ IsSquare (8n+1); k recovered from r=√(8n+1)=2k+1."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TriangularSingleEightMulAddOneSquare.lean",
+    "tags": [
+      "number-theory",
+      "triangular-numbers",
+      "figurate-numbers",
+      "perfect-squares",
+      "additive-number-theory",
+      "decidability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 117,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "isTriangular_iff_isSquare: the headline equivalence — for every natural number n, n is a triangular number T(k)=k(k+1)/2 IF AND ONLY IF 8n+1 is a perfect square. This is the one-summand base case of the gallery's triangular-rank hierarchy (two triangular ⟺ 4n+1 two squares; three triangular always, Gauss Eureka), proved unconditionally and axiom-free from the single identity (2k+1)²=8·T(k)+1.",
+      "sq_two_mul_add_one: the defining identity (2k+1)² = 8·T(k)+1 that drives both directions of the characterization, derived from the exact halving 2·T(k)=k(k+1).",
+      "eq_tri_of_eight_mul_add_one: exact index recovery — from 8n+1 = (2k+1)² one reads off n = T(k); combined with strict monotonicity this makes the triangular representation unique when it exists.",
+      "tri_strictMono: strict monotonicity of T, established through 2·T(k)=k(k+1), giving uniqueness of the triangular index.",
+      "DecidablePred IsTriangular instance: transporting decidability of 'is a perfect square' across the equivalence makes the triangular-number predicate decidable, i.e. a constant-cost test n ↦ IsSquare (8n+1)."
+    ],
+    "prerequisites": [
+      "Nat.mul_div_cancel' and Nat.even_mul_succ_self: exactness of the triangular-number halving 2·T(k)=k(k+1).",
+      "Nat.odd_mul: an odd product forces odd factors, used to extract r=2k+1 from r²=8n+1 odd.",
+      "decidable_of_iff and the decidability of IsSquare on ℕ: transports the perfect-square test to the triangular-number predicate."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.mul_div_cancel'",
+        "description": "Exact division a ∣ b → a · (b / a) = b; gives 2 · (k(k+1)/2) = k(k+1) so triangular numbers behave as exact halves.",
+        "module": "Mathlib.Algebra.Order.Group.Nat"
+      },
+      {
+        "theorem": "Nat.even_mul_succ_self",
+        "description": "k(k+1) is always even, supplying the divisibility 2 ∣ k(k+1) needed for the exact halving.",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.odd_mul",
+        "description": "Odd (m·n) ↔ Odd m ∧ Odd n; since 8n+1 is odd, any r with r²=8n+1 is odd, forcing r=2k+1.",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "decidable_of_iff",
+        "description": "Decidability transports across logical equivalence; combined with the decidability of IsSquare on ℕ it yields the DecidablePred IsTriangular instance.",
+        "module": "Mathlib.Logic.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02-oq-01",
+      "question": "Square triangular numbers: characterize the n that are simultaneously triangular AND square (T(k)=m²). This is the Pell equation x²−2y²=1 via 8n+1 a square of an odd square; formalize the bijection between square-triangular numbers and solutions of the Pell equation and the resulting recurrence (0,1,36,1225,…).",
+      "significance": "high"
+    },
+    {
+      "id": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02-oq-02",
+      "question": "Triangular rank function: define rank(n) = least number of triangular summands and prove rank(n) ≤ 3 always (Eureka), with the exact tiers rank(n)=1 ⟺ 8n+1 square (this entry), rank(n)=2 ⟺ 4n+1 a sum of two squares but 8n+1 not square. Identify the n of rank exactly 3.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The one-summand base case of the Gauss Eureka companion (three triangular ⟺ 8n+3 three squares). Where that entry concerns when three triangular numbers suffice, this entry pins exactly when a single triangular number does: n is triangular iff 8n+1 is a perfect square."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
+      "relationship": "relatedTo",
+      "description": "The two-summand sibling (two triangular ⟺ 4n+1 a sum of two squares). Together with Gauss Eureka these three entries give the full d=1,2,3 triangular-rank hierarchy: 8n+1 square, 4n+1 two squares, always."
+    }
+  ],
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae",
+      "author": "Carl Friedrich Gauss",
+      "year": "1801",
+      "venue": "Articles 291–293",
+      "description": "Gauss's theory of triangular and polygonal numbers; the elementary 8n+1 perfect-square test for triangularity sits at the base of this circle of ideas."
+    },
+    {
+      "title": "Arithmetica",
+      "author": "Diophantus of Alexandria",
+      "year": "c. 250",
+      "venue": "Classical figurate-number identities",
+      "description": "Early study of triangular numbers and the relation 8·T(k)+1 = (2k+1)² underlying the perfect-square test formalized here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For every natural number n, n is a triangular number T(k)=k(k+1)/2 if and only if 8n+1 is a perfect square (isTriangular_iff_isSquare). The entire argument rests on the identity (2k+1)² = 8·T(k)+1: forward, n=T(k) makes 8n+1 an odd square; backward, 8n+1 odd forces its root to be 2k+1, and the identity in reverse pins n=T(k). The index k is recovered exactly (eq_tri_of_eight_mul_add_one) and is unique since T is strictly monotone (tri_strictMono), and decidability of IsSquare transports to a DecidablePred IsTriangular instance — a constant-cost triangular-number test. 117 lines, 8 theorems/lemmas, 2 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This is the one-summand floor of the gallery's triangular-rank hierarchy, completing the d=1,2,3 picture alongside the two-triangular entry (4n+1 two squares) and Gauss Eureka (8n+3 three squares, three always). Being purely elementary it is unconditional and even decidable, and it opens directly onto the Pell-equation theory of square triangular numbers and a clean triangular-rank function whose tiers are exactly the three perfect-square / sum-of-squares conditions."
+  }
+}

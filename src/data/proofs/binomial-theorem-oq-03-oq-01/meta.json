@@ -76,17 +76,27 @@
     "definitionCount": 0
   },
   "sorries": 0,
-  "overview": [
-    "The parent entry, *Binomial Distribution from the Binomial Theorem*, derives the probabilistic moments of the binomial law over ℝ: weighting each coefficient C(n,k) by pᵏ(1-p)ⁿ⁻ᵏ gives the mean E[X] = np and the variance np(1-p). This follow-up asks the purely combinatorial question hiding inside that derivation: what are the *unweighted* sums Σ k·C(n,k), Σ k(k-1)·C(n,k), and Σ k²·C(n,k)?",
-    "These are the p = 1 (counting) analogues of the probabilistic moments, and — unlike the zeroth moment Σ C(n,k) = 2ⁿ, which Mathlib supplies as `Nat.sum_range_choose` — none of them are in Mathlib. The answers are the clean closed forms n·2ⁿ⁻¹, n(n-1)·2ⁿ⁻², and n(n+1)·2ⁿ⁻².",
-    "Every one of them is the value at x = 1 of a derivative of the generating function (1+x)ⁿ = Σ C(n,k)xᵏ: differentiating once gives Σ k·C(n,k)xᵏ⁻¹ = n(1+x)ⁿ⁻¹, and so on. Here that analytic picture is carried out entirely over ℕ, with no analysis and no casts, using the single absorption identity (k+1)·C(n+1,k+1) = (n+1)·C(n,k) borrowed from the parent.",
-    "The mechanism is uniform: peel the low-index terms that vanish, shift the summation index so absorption rewrites each term as a constant times a smaller binomial coefficient, pull the constant out, and finish with the zeroth moment Σ C(n,k) = 2ⁿ. Subtraction-free 'successor' forms are proved first to keep everything inside ℕ; the headline forms with 2ⁿ⁻¹ and 2ⁿ⁻² then follow by case analysis."
-  ],
-  "conclusion": [
-    "The three combinatorial moments Σ k·C(n,k) = n·2ⁿ⁻¹, Σ k(k-1)·C(n,k) = n(n-1)·2ⁿ⁻², and Σ k²·C(n,k) = n(n+1)·2ⁿ⁻² are exactly the integer skeletons of the parent's probabilistic mean and variance, recovered without any reference to probability, real numbers, or the analytic notion of a derivative.",
-    "A single absorption step (k+1)·C(n+1,k+1) = (n+1)·C(n,k) is doing all the work; iterating it gives the factorial moments, and the elementary identity k² = k(k-1) + k assembles the ordinary second moment from them. The same scheme produces every higher moment Σ kʳ·C(n,k) as a 2ⁿ⁻ʳ multiple of a polynomial in n (an Eulerian-number expansion), so this entry is the base of an open-ended ladder.",
-    "Because these closed forms fill a genuine gap in Mathlib's `Nat.Choose.Sum` — which stops at the zeroth moment — they are natural upstream contributions sitting one absorption identity away from material Mathlib already has."
-  ],
+  "overview": {
+    "historicalContext": "The binomial coefficients' moments sit at the meeting point of combinatorics and probability. The parent entry, *Binomial Distribution from the Binomial Theorem*, derives the binomial law's mean E[X] = np and variance np(1-p) over ℝ by weighting each coefficient C(n,k) with pᵏ(1-p)ⁿ⁻ᵏ. Hidden inside that derivation are the purely combinatorial (unweighted, p = 1) sums Σ k·C(n,k), Σ k(k-1)·C(n,k), and Σ k²·C(n,k). Classically these are read off the generating function (1+x)ⁿ = Σ C(n,k)xᵏ: differentiating r times and evaluating at x = 1 produces the r-th (factorial) moment as a 2ⁿ⁻ʳ multiple of a falling factorial in n — the discrete shadow of the analytic moment calculation that dates back to the umbral and finite-difference calculus of the 18th–19th centuries. Mathlib records only the zeroth moment Σ C(n,k) = 2ⁿ (`Nat.sum_range_choose`); the first and second moments formalized here fill a genuine gap in Mathlib's `Nat.Choose.Sum`, each sitting one absorption identity away from material already present.",
+    "problemStatement": "Determine the unweighted (p = 1) combinatorial moments of the binomial coefficients — Σ k·C(n,k), Σ k(k-1)·C(n,k), and Σ k²·C(n,k) — entirely over ℕ, and exhibit them as the integer skeletons of the parent's probabilistic mean and variance. The answers are the clean closed forms n·2ⁿ⁻¹, n(n-1)·2ⁿ⁻², and n(n+1)·2ⁿ⁻² (the last for n ≥ 2).",
+    "proofStrategy": "Every moment is the value at x = 1 of a derivative of the generating function (1+x)ⁿ, but the computation is carried out entirely over ℕ with no analysis and no casts, using only the absorption identity (k+1)·C(n+1,k+1) = (n+1)·C(n,k) borrowed from the parent. The mechanism is uniform: peel the low-index terms that vanish under the k, k(k-1), or k² weight; shift the summation index so absorption (or double absorption) rewrites each term as a constant times a smaller binomial coefficient; pull the constant out; and finish with the zeroth moment Σ C(n,k) = 2ⁿ. Subtraction-free 'successor' forms are proved first to keep everything inside ℕ; the headline forms with 2ⁿ⁻¹ and 2ⁿ⁻² then follow by case analysis on n. The ordinary second moment is assembled from the factorial moments via the ℕ-valid splitting k² = k(k-1) + k.",
+    "keyInsights": [
+      "A single absorption identity (k+1)·C(n+1,k+1) = (n+1)·C(n,k) — the combinatorial form of differentiating (1+x)ⁿ and evaluating at x = 1 — drives every moment; iterating it (double absorption) produces the higher factorial moments.",
+      "Factorial-moment weights k(k-1)⋯(k-r+1) are the 'right' basis: they make exactly the r lowest-index terms vanish, so peeling and reindexing collapse the sum cleanly onto Σ C(n,k) = 2ⁿ, whereas the ordinary power kʳ does not.",
+      "The ordinary second moment is recovered from factorial moments via k² = k(k-1) + k — the r = 2 case of the Stirling expansion kʳ = Σⱼ S(r,j)·k(k-1)⋯(k-j+1) that converts power moments into factorial moments.",
+      "Truncated natural subtraction creates a genuine n = 1 edge case for Σ k²·C(n,k): over ℕ, 2¹⁻² = 2⁰ = 1, so the closed form n(n+1)·2ⁿ⁻² evaluates to 2 instead of the true value 1 — the same boundary that forces the parent's variance to assume n ≥ 2.",
+      "These closed forms are the integer skeletons of the parent's probabilistic mean (np) and variance (np(1-p)) at p = 1, and the base of an open-ended ladder Σ kʳ·C(n,k) = (polynomial in n)·2ⁿ⁻ʳ governed by Stirling/Eulerian numbers — a natural upstream Mathlib contribution."
+    ]
+  },
+  "conclusion": {
+    "summary": "The three combinatorial moments Σ k·C(n,k) = n·2ⁿ⁻¹, Σ k(k-1)·C(n,k) = n(n-1)·2ⁿ⁻², and Σ k²·C(n,k) = n(n+1)·2ⁿ⁻² (n ≥ 2) are exactly the integer skeletons of the parent's probabilistic mean and variance, recovered without any reference to probability, real numbers, or the analytic notion of a derivative. Subtraction-free successor forms hold for all n; the headline forms follow by case analysis.",
+    "implications": "A single absorption step (k+1)·C(n+1,k+1) = (n+1)·C(n,k) does all the work; iterating it gives the factorial moments, and the elementary identity k² = k(k-1) + k assembles the ordinary second moment from them. The same scheme produces every higher moment Σ kʳ·C(n,k) as a 2ⁿ⁻ʳ multiple of a polynomial in n (a Stirling/Eulerian expansion), so this entry is the base of an open-ended ladder. Because these closed forms fill a genuine gap in Mathlib's `Nat.Choose.Sum` — which stops at the zeroth moment — they are natural upstream contributions sitting one absorption identity away from material Mathlib already has.",
+    "openQuestions": [
+      "Formalize the general r-th moment Σ kʳ·C(n,k) = (Stirling/Eulerian polynomial in n)·2ⁿ⁻ʳ, completing the ladder above the first and second moments proved here.",
+      "Upstream the first and second moments into Mathlib's `Nat.Choose.Sum`, alongside the existing zeroth moment `Nat.sum_range_choose`.",
+      "Characterize the exact set of small-n edge cases introduced by truncated ℕ subtraction across the whole moment ladder, isolating where a ℤ- or ℝ-valued statement avoids them."
+    ]
+  },
   "sections": [
     {
       "id": "header-imports",

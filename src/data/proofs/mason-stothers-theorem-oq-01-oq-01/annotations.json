@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mason-oq0101-ann-header",
+    "proofId": "mason-stothers-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "The Radical Degree as a Distinct-Root Count",
+    "content": "The Mason–Stothers theorem bounds a coprime polynomial relation a + b = c by the degree of the radical of abc — the product of its distinct irreducible factors. Over an algebraically closed field every irreducible is a linear factor X − α, so deg(rad p) is simply the number of distinct roots of p. This file proves (radical p).natDegree = p.roots.toFinset.card and uses it to recast the parent's bound as deg c < #{distinct roots of a·b·c}, the form behind the polynomial Fermat theorem. The proof separates two field-agnostic facts (same root set, distinct roots) from the single step that needs algebraic closure (degree = root count).",
+    "mathContext": "$\\deg(\\mathrm{rad}\\,p) = |\\{\\alpha \\in k : p(\\alpha) = 0\\}| = |p.\\mathrm{roots}.\\mathrm{toFinset}|$",
+    "significance": "key",
+    "relatedConcepts": ["Mason–Stothers theorem", "abc conjecture", "radical (squarefree part)", "distinct roots", "algebraically closed field"],
+    "prerequisites": ["polynomial degree", "roots of a polynomial", "radical of a polynomial"]
+  },
+  {
+    "id": "mason-oq0101-ann-same-roots",
+    "proofId": "mason-stothers-theorem-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 71 },
+    "type": "theorem",
+    "title": "Same Root Set: rad p and p Have Identical Roots",
+    "content": "mem_roots_radical and roots_toFinset_radical establish that radical p and p have the same set of roots — over ANY field, no closure needed. The key is dvd_radical_iff_of_irreducible: an irreducible element divides the radical exactly when it divides the original. With the irreducible X − C a and dvd_iff_isRoot, root membership a ∈ (radical p).roots becomes X − C a ∣ radical p ↔ X − C a ∣ p ↔ a ∈ p.roots. The radical strips multiplicities but keeps every distinct root.",
+    "mathContext": "$(\\mathrm{rad}\\,p).\\mathrm{roots}.\\mathrm{toFinset} = p.\\mathrm{roots}.\\mathrm{toFinset}$ via $X - C\\,a \\mid \\mathrm{rad}\\,p \\iff X - C\\,a \\mid p$",
+    "significance": "key",
+    "relatedConcepts": ["dvd_radical_iff_of_irreducible", "dvd_iff_isRoot", "irreducible_X_sub_C", "root set"],
+    "prerequisites": ["unique factorization", "divisibility by linear factors"]
+  },
+  {
+    "id": "mason-oq0101-ann-distinct-roots",
+    "proofId": "mason-stothers-theorem-oq-01-oq-01",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "theorem",
+    "title": "Distinct Roots from Squarefreeness",
+    "content": "nodup_roots_radical shows the roots of radical p carry no multiplicity — again over any field. Since radical p is squarefree (squarefree_radical), the square (X − C a)² cannot divide it (X − C a is not a unit, not_isUnit_X_sub_C), so by rootMultiplicity_le_iff the multiplicity of every root is at most one. Via count_roots and nodup_iff_count_le_one this makes the root multiset Nodup, so its cardinality equals the size of the underlying finset.",
+    "mathContext": "$(\\mathrm{rad}\\,p).\\mathrm{roots}$ is $\\mathrm{Nodup}$: $(X - C\\,a)^2 \\nmid \\mathrm{rad}\\,p \\Rightarrow \\mathrm{rootMultiplicity}\\,a\\,(\\mathrm{rad}\\,p) \\le 1$",
+    "significance": "key",
+    "relatedConcepts": ["squarefree_radical", "rootMultiplicity_le_iff", "count_roots", "Multiset.Nodup"],
+    "prerequisites": ["squarefree elements", "root multiplicity"]
+  },
+  {
+    "id": "mason-oq0101-ann-degree-count",
+    "proofId": "mason-stothers-theorem-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 97 },
+    "type": "insight",
+    "title": "Where Algebraic Closure Enters: Degree = Root Count",
+    "content": "natDegree_radical_eq_card_roots is the headline identity, and the ONLY step needing an algebraically closed field. IsAlgClosed.splits gives (radical p).Splits, so by Splits.natDegree_eq_card_roots the degree equals the size of the root multiset. Combined with the same-root-set lemma (← roots_toFinset_radical) and Nodup (Multiset.toFinset_card_of_nodup) this yields deg(rad p) = |p.roots.toFinset|. Over a non-closed field the radical can keep irreducible factors of degree > 1 (e.g. X² + 1 over ℝ), so the identity genuinely fails there.",
+    "mathContext": "$\\deg(\\mathrm{rad}\\,p) = \\#(\\mathrm{rad}\\,p).\\mathrm{roots} = |p.\\mathrm{roots}.\\mathrm{toFinset}|$ over an algebraically closed field",
+    "significance": "key",
+    "relatedConcepts": ["IsAlgClosed.splits", "Splits.natDegree_eq_card_roots", "Multiset.toFinset_card_of_nodup", "splitting field"],
+    "prerequisites": ["algebraically closed field", "splitting of polynomials"]
+  },
+  {
+    "id": "mason-oq0101-ann-distinct-roots-form",
+    "proofId": "mason-stothers-theorem-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 118 },
+    "type": "theorem",
+    "title": "Mason–Stothers as a Distinct-Root Inequality",
+    "content": "natDegree_lt_card_roots_charZero feeds the degree identity back into the parent bound: over an algebraically closed field of characteristic zero, a coprime triple a + b = c with c non-constant satisfies deg c < #{distinct roots of a·b·c}. This is the workable form of the polynomial abc inequality — the right-hand side is a finite, visibly countable quantity — and is exactly what makes the one-line proof of Fermat's Last Theorem for polynomials and Davenport's inequality go through.",
+    "mathContext": "$\\deg c < |\\{\\alpha : (a b c)(\\alpha) = 0\\}|$",
+    "significance": "key",
+    "relatedConcepts": ["natDegree_lt_radical_charZero", "polynomial Fermat", "abc inequality", "characteristic zero"],
+    "prerequisites": ["Mason–Stothers degree bound", "coprime polynomials"]
+  }
+]

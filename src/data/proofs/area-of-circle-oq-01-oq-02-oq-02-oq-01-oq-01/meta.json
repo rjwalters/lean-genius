@@ -80,6 +80,62 @@
       "Periodic functions and integration over a period"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "arclength_reparam_invariant",
+      "type": "main",
+      "description": "Arc-length invariance: for C¹ coordinates x, y and a C¹ increasing reparametrization φ that commutes with the period (φ(2π)=φ(0)+2π), the circumference ∫₀²π √((x∘φ)'²+(y∘φ)'²) of γ∘φ equals ∫₀²π √(x'²+y'²), the circumference of γ. The φ'≥0 hypothesis is used to drop the absolute value √(φ'²)=φ' under the square root.",
+      "leanType": "(hx : ContDiff ℝ 1 x) (hy : ContDiff ℝ 1 y) (hφ : ContDiff ℝ 1 φ) (hmono : ∀ t, 0 ≤ deriv φ t) (hxper : Function.Periodic x (2*π)) (hyper : Function.Periodic y (2*π)) (hshift : φ (2*π) = φ 0 + 2*π) : (∫ t in (0:ℝ)..(2*π), speedFn (x∘φ) (y∘φ) t) = ∫ t in (0:ℝ)..(2*π), speedFn x y t"
+    },
+    {
+      "name": "signed_area_reparam_invariant",
+      "type": "main",
+      "description": "Signed-area invariance: for C¹ coordinates x, y and a C¹ period-commuting reparametrization φ, the Green's-theorem integral ∫₀²π ((x∘φ)·(y∘φ)'−(y∘φ)·(x∘φ)') equals ∫₀²π (x·y'−y·x'). No monotonicity hypothesis is needed: φ' enters linearly so the algebra survives for any C¹ φ.",
+      "leanType": "(hx : ContDiff ℝ 1 x) (hy : ContDiff ℝ 1 y) (hφ : ContDiff ℝ 1 φ) (hxper : Function.Periodic x (2*π)) (hyper : Function.Periodic y (2*π)) (hshift : φ (2*π) = φ 0 + 2*π) : (∫ t in (0:ℝ)..(2*π), areaFn (x∘φ) (y∘φ) t) = ∫ t in (0:ℝ)..(2*π), areaFn x y t"
+    },
+    {
+      "name": "periodic_deriv",
+      "type": "lemma",
+      "description": "The derivative of a T-periodic function is T-periodic, proved from deriv_comp_add_const and the period identity alone — no differentiability hypothesis required (the Mathlib convention deriv f = 0 off the differentiability set makes the equality unconditional).",
+      "leanType": "{f : ℝ → ℝ} {T : ℝ} (hf : Function.Periodic f T) : Function.Periodic (deriv f) T"
+    },
+    {
+      "name": "deriv_coord_comp",
+      "type": "lemma",
+      "description": "Chain rule packaged for C¹ coordinate compositions: (x∘φ)'(t) = x'(φ t)·φ'(t). Surfaces the Jacobian factor φ' that change of variables integrates against in both main theorems.",
+      "leanType": "{x φ : ℝ → ℝ} (hx : ContDiff ℝ 1 x) (hφ : ContDiff ℝ 1 φ) (t : ℝ) : deriv (x∘φ) t = deriv x (φ t) * deriv φ t"
+    },
+    {
+      "name": "speedFn_periodic",
+      "type": "lemma",
+      "description": "The speed integrand √(x'²+y'²) is 2π-periodic when the coordinates are, via periodic_deriv applied to x' and y'.",
+      "leanType": "{x y : ℝ → ℝ} (hx : Function.Periodic x (2*π)) (hy : Function.Periodic y (2*π)) : Function.Periodic (speedFn x y) (2*π)"
+    },
+    {
+      "name": "areaFn_periodic",
+      "type": "lemma",
+      "description": "The Green's-theorem integrand x·y'−y·x' is 2π-periodic when the coordinates are.",
+      "leanType": "{x y : ℝ → ℝ} (hx : Function.Periodic x (2*π)) (hy : Function.Periodic y (2*π)) : Function.Periodic (areaFn x y) (2*π)"
+    }
+  ],
+  "conclusion": {
+    "summary": "Arc length ∫₀²π √(x'²+y'²) and signed area ½∫₀²π (x·y'−y·x') are invariant under a C¹ period-commuting reparametrization φ: the same chain-rule / change-of-variables / period-collapse argument proves both, with arc length additionally requiring φ'≥0 to drop the absolute value under the square root. These are the circumference- and area-preservation clauses that the parent Hurwitz isoperimetric proof currently assumes inside the `exists_nice_reparam` axiom, now established as standalone 0-axiom theorems on the coordinate functions.",
+    "implications": [
+      "Converts the geometric heart of the `exists_nice_reparam` axiom — that a reparametrized curve keeps its circumference and area — from an assumption into a change-of-variables theorem, removing the circularity the survey flagged (the axiom only required the witness to *share* γ's invariants, not to *be* γ∘φ).",
+      "Cleanly separates the analytic core (these invariance lemmas, fully reusable) from the remaining program: a regularity field on the curve structure plus the inverse function theorem to build the constant-speed φ, and a restatement of the axiom so the witness is literally γ∘φ.",
+      "The arc-length / signed-area asymmetry is made precise: area needs no monotonicity of φ (the Jacobian φ' enters linearly), while length does (the norm introduces √(φ'²)=|φ'|), reflecting that area transforms as a 2-form and length through a norm."
+    ],
+    "openQuestions": [
+      "Add a regularity (e.g. positive-speed) field to the curve structure and apply the Mathlib inverse function theorem to construct the constant-speed reparametrization φ explicitly, then restate `exists_nice_reparam` so its witness is γ∘φ — at which point these invariance lemmas discharge the circumference/area clauses directly.",
+      "Generalize from the fixed period 2π to an arbitrary period T, and relax C¹ to piecewise-C¹ to cover curves with corners while keeping the change-of-variables argument valid on each smooth piece."
+    ]
+  },
+  "crossReferences": [
+    { "slug": "area-of-circle-oq-01-oq-02-oq-02-oq-01", "relation": "parent", "description": "The open question this entry answers: discharge the circumference/area-preservation part of the `exists_nice_reparam` axiom. These invariance lemmas are the axiom-free change-of-variables core that program needs." },
+    { "slug": "area-of-circle-oq-01-oq-02-oq-02", "relation": "ancestor", "description": "The Hurwitz Fourier-analytic proof of the isoperimetric inequality C² ≥ 4πA that introduces and depends on the `exists_nice_reparam` axiom." },
+    { "slug": "greens-theorem", "relation": "related", "description": "Supplies the signed-area integral ½∫(x·y'−y·x') whose reparametrization invariance is proved here as `signed_area_reparam_invariant`." },
+    { "slug": "area-of-circle", "relation": "ancestor", "description": "Root entry of the area-of-circle family; the isoperimetric inequality is the extremal statement of which the circle's area is the equality case." }
+  ],
   "sections": [
     {
       "id": "integrands",

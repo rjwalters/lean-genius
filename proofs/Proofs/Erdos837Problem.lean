@@ -47,19 +47,19 @@ def densityJumpSet (k : ℕ) : Set ℝ :=
 
 /- ## Known Results -/
 
-/-- **Erdős–Stone–Simonovits (graphs)**: For k = 2,
+/- **Erdős–Stone–Simonovits (graphs)**: For k = 2,
     A_2 = {1 − 1/m : m ≥ 1} = {0, 1/2, 2/3, 3/4, ...}.
     Each jump value corresponds to a Turán density. -/
 
-/-- **Turán connection**: The jumps in A_2 correspond exactly to
+/- **Turán connection**: The jumps in A_2 correspond exactly to
     the Turán densities π(K_{m+1}) = 1 − 1/m. -/
 
 /- ## Main Question -/
 
-/-- **Erdős Problem #837**: What is A_3? Determine the set of
+/- **Erdős Problem #837**: What is A_3? Determine the set of
     density jump values for 3-uniform hypergraphs. -/
 
-/-- **Is 0 a jump for 3-uniform hypergraphs?** This is related
+/- **Is 0 a jump for 3-uniform hypergraphs?** This is related
     to the hypergraph Turán problem. -/
 
 /- ## Observations -/

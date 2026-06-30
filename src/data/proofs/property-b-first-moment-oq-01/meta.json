@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Scope",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "$2^{k-1} \\le m(k) \\le \\binom{2k-1}{k}$; sharp at $k=3$: $4 \\le m(3) \\le 7$.",
+      "summary": "Frames the upper-bound companion to the first-moment lower bound m(k) ≥ 2^(k-1): two explicit non-2-colorable witnesses (complete hypergraph on 2k−1 vertices, and the Fano plane at k=3), with an honest note that C(2k-1,k) is exponentially weaker than the Erdős–Lovász O(k²·2^k)."
+    },
+    {
       "id": "header",
       "title": "Definitions: Mono and NotTwoColorable",
       "startLine": 33,

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "erdos1023oq03-ann-header",
+    "proofId": "erdos-1023-oq-03",
+    "range": { "startLine": 1, "endLine": 61 },
+    "type": "concept",
+    "title": "Isolating the Axiom-Free Lower-Bound Half of Erdős #1023",
+    "content": "Erdős Problem #1023 asks for F(n), the maximum size of a union-free family of subsets of {1,…,n} (no member equal to the union of two or more others). The answer is F(n) = C(n, ⌊n/2⌋) ~ √(2/π)·2ⁿ/√n. The parent file proves this but routes the harder matching UPPER bound through Problem 447 (5 axioms). This entry isolates the LOWER-bound half, which needs no axioms, and makes three points: every layer (not just the middle one) is an antichain hence union-free; the central binomial controls the whole row 2ⁿ ≤ (n+1)·C(n,⌊n/2⌋); combining gives the explicit exponential certificate 2ⁿ ≤ (n+1)·F(n). The lower-bound infrastructure is re-declared verbatim so nothing depends on the axiom-carrying asymptotic section.",
+    "mathContext": "$F(n) = $ max union-free family size $ = C(n,\\lfloor n/2\\rfloor)$; this file proves $F(n) \\ge 2^n/(n+1)$ axiom-free.",
+    "significance": "context",
+    "relatedConcepts": [
+      "union-free families",
+      "extremal set theory",
+      "Sperner's theorem",
+      "antichains"
+    ],
+    "prerequisites": [
+      "finite set families",
+      "binomial coefficients",
+      "antichains and Sperner theory"
+    ]
+  },
+  {
+    "id": "erdos1023oq03-ann-infrastructure",
+    "proofId": "erdos-1023-oq-03",
+    "range": { "startLine": 63, "endLine": 126 },
+    "type": "definition",
+    "title": "Self-Contained Lower-Bound Infrastructure",
+    "content": "The definitions re-declared from the parent: SetFamily n (a Finset of subsets of Fin n), familyUnion (the sup), isUnionOf / isUnionFree (no member is the union of ≥ 2 others), and isAntichain. The key bridge antichain_unionFree proves antichains are union-free: if A were the union of a subfamily G ⊆ F.erase A with |G| ≥ 2, then every B ∈ G satisfies B ⊆ A (it contributes to the union), hence B = A by the antichain property, forcing |G| ≤ 1 — contradiction. unionFreeMax n := sSup of achievable sizes (bounded by 2ⁿ via unionFree_sizes_bddAbove), and layer n k (all k-subsets) with layer_card = C(n,k).",
+    "mathContext": "Antichain $\\Rightarrow$ union-free: a union of an antichain's members would contain, hence equal, each of them.",
+    "significance": "key",
+    "relatedConcepts": [
+      "set family",
+      "Finset.sup",
+      "conditional sSup",
+      "BddAbove"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "supremum of a set of naturals",
+      "subfamily unions"
+    ]
+  },
+  {
+    "id": "erdos1023oq03-ann-layers",
+    "proofId": "erdos-1023-oq-03",
+    "range": { "startLine": 128, "endLine": 158 },
+    "type": "theorem",
+    "title": "Every Layer is an Antichain ⟹ F(n) ≥ C(n,k)",
+    "content": "layer_antichain: the family of all k-subsets of Fin n is an antichain — if A ⊆ B and both have cardinality k, then A = B (Finset.eq_of_subset_of_card_le). This generalises the parent's middleLayer_antichain (the k = n/2 case). layer_unionFree follows from antichain_unionFree. unionFreeMax_ge_choose then gives F(n) ≥ C(n,k) for EVERY k, via le_csSup against the boundedness of achievable sizes with witness the k-th layer. The parent's middle-layer bound unionFreeMax_ge_middle is recovered as the k = ⌊n/2⌋ instance, confirming the strict generalisation.",
+    "mathContext": "$A \\subseteq B,\\ |A| = |B| = k \\Rightarrow A = B$; hence $F(n) \\ge C(n,k)$ for every $k$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "antichain",
+      "Finset.eq_of_subset_of_card_le",
+      "le_csSup",
+      "generalised lower bound"
+    ],
+    "prerequisites": [
+      "the union-free infrastructure",
+      "supremum lower bounds"
+    ]
+  },
+  {
+    "id": "erdos1023oq03-ann-rowbound",
+    "proofId": "erdos-1023-oq-03",
+    "range": { "startLine": 160, "endLine": 169 },
+    "type": "key-step",
+    "title": "The Central Binomial Controls the Whole Row",
+    "content": "two_pow_le_succ_mul_central: 2ⁿ ≤ (n+1)·C(n, ⌊n/2⌋). The binomial coefficients in row n sum to 2ⁿ (Nat.sum_range_choose), and each of the n+1 terms is at most the central coefficient (Nat.choose_le_middle), so the sum is at most (n+1) copies of it (Finset.sum_le_sum + sum_const). Thus a single middle layer already captures at least a 1/(n+1) fraction of all 2ⁿ subsets — the pigeonhole that turns the layer bound into an exponential one.",
+    "mathContext": "$2^n = \\sum_{k} C(n,k) \\le (n+1)\\,C(n,\\lfloor n/2\\rfloor).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial row sum",
+      "Nat.choose_le_middle",
+      "central binomial coefficient",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "Nat.sum_range_choose",
+      "Finset.sum_le_sum"
+    ]
+  },
+  {
+    "id": "erdos1023oq03-ann-expbound",
+    "proofId": "erdos-1023-oq-03",
+    "range": { "startLine": 171, "endLine": 196 },
+    "type": "insight",
+    "title": "The Explicit Axiom-Free Exponential Lower Bound",
+    "content": "unionFreeMax_exponential_lower_bound: 2ⁿ ≤ (n+1)·F(n), chaining the row bound with the k = ⌊n/2⌋ layer bound (gcongr). unionFreeMax_ge_two_pow_div restates it as F(n) ≥ 2ⁿ/(n+1) (Nat.div_le_div_right + Nat.mul_div_cancel_left). This certifies exponential growth of F(n) using NONE of the parent's axiomatised upper-bound machinery — verified 0-axiom. The crude pigeonhole 2ⁿ/(n+1) differs from the sharp √(2/π)·2ⁿ/√n only by the polynomial factor √n/(n+1), so it already pins down the exponential order; only the polynomial refinement needs the harder Erdős–Kleitman direction.",
+    "mathContext": "$2^n \\le (n+1)\\,F(n) \\iff F(n) \\ge \\dfrac{2^n}{n+1}$; sharp value $\\sim \\sqrt{2/\\pi}\\,2^n/\\sqrt n$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "exponential lower bound",
+      "axiom-free certificate",
+      "gcongr",
+      "Erdős–Kleitman upper bound"
+    ],
+    "prerequisites": [
+      "the layer bound and row bound",
+      "natural-number division lemmas"
+    ]
+  }
+]
