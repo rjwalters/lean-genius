@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-h5oq02-overview",
+    "proofId": "hilbert-5-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "The Exponential Bridge from Lie Algebra to Lie Group",
+    "content": "Hilbert's 5th problem asks when a merely topological group secretly carries a smooth (Lie) structure; the Gleason–Montgomery–Zippin solution is far out of present-day Mathlib's reach, so the parent entry only axiomatizes its deep theorems. This file instead formalizes the genuine analytic/algebraic content that sits UNDERNEATH the Lie correspondence and IS in Mathlib: the Lie bracket of an associative algebra (⁅X,Y⁆ = X·Y − Y·X) and the Banach-algebra exponential map exp ℝ : 𝔸 → 𝔸. The exponential is the concrete bridge — an algebra element X is an infinitesimal generator (tangent vector at the identity) and t ↦ exp(t•X) is the one-parameter subgroup it generates. Everything holds in any real Banach algebra (NormedRing + NormedAlgebra ℝ + CompleteSpace), which includes bounded operators / real matrices — the setting of matrix Lie groups. Fully verified: 0 sorries, 0 axioms, no native_decide.",
+    "mathContext": "Generator $X \\in \\mathfrak{g}$, one-parameter subgroup $t \\mapsto \\exp(tX)$; the exponential map realizes the (local) Lie-algebra-to-Lie-group correspondence in any real Banach algebra.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hilbert's fifth problem", "Lie correspondence", "exponential map", "Banach algebra", "matrix Lie groups"],
+    "prerequisites": ["the parent hilbert-5 entry", "Lie algebras and Lie groups", "Banach algebras"]
+  },
+  {
     "id": "ann-h5oq02-bracket",
     "proofId": "hilbert-5-oq-02",
     "range": {
