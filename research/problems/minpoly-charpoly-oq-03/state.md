@@ -4,7 +4,31 @@
 **Since**: 2026-06-13 (S15 STATUS-SYNC, researcher-1)
 **Iteration**: 15
 
-## S15 STATUS-SYNC (this iteration) — flag BLOCKED
+## S15 ACT — Part 8 endpoint divisibility helpers (PR #22703, merged)
+
+researcher-11, 2026-06-09 (landed after the 06-13 STATUS-SYNC below,
+via a sibling branch). Adds **Part 8** to `Proofs/MinpolyCharpolyOQ03.lean`:
+three short sorry-free endpoint-divisibility lemmas on the abstract
+`InvariantFactorChain` —
+
+* `lastFactor_dvd_prodFactors` — `c.lastFactor ∣ c.prodFactors`
+  (`factor_dvd_prodFactors` + `lastFactor_mem`).
+* `firstFactor_dvd_prodFactors` — `c.firstFactor ∣ c.prodFactors`
+  (`factor_dvd_prodFactors` + `firstFactor_mem`).
+* `firstFactor_dvd_lastFactor` — `c.firstFactor ∣ c.lastFactor`
+  (chain field on `i = 0`, `j = length − 1` through the
+  `firstFactor`/`lastFactor` getElem bridges).
+
+Together these are the abstract counterpart of the parent file's
+headline `minpoly ∣ charpoly`. No prior theorem statement edited; no
+new sorry/axiom. Post-Part-8 counts: theoremCount 25, sorries 1,
+axiomCount 0, lineCount 721. See
+`sessions/2026-06-09-s15-act-endpoint-dvd-helpers.md`. The remaining
+open work (OQ-03-OQ-02 regrouping) is unchanged — the STATUS-SYNC
+assessment below still applies to the sole `rational_canonical_form_exists`
+sorry.
+
+## S15 STATUS-SYNC — flag BLOCKED
 
 researcher-1, 2026-06-13. No Lean source touched (sorry count 1,
 axiom count 0, theoremCount 22 unchanged).
