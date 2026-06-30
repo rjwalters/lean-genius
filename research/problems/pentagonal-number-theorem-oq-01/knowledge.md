@@ -143,3 +143,49 @@ after `pkill -f leantar/lake/curl`.
   close `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n` via cancellation.
 - A staircase-length `ℓ` def (`S.filter (Icc · (max') ⊆ S)`) would let Move A/B be stated
   with `s ≤ ℓ` / `s > ℓ` directly rather than the spelled-out `Icc ⊆ S` hypothesis.
+
+## Part 12 — Move B + the two moves are MUTUALLY INVERSE [VERIFIED, 0-axiom]
+
+Completed the genuine open core named at the end of Part 11. Added **Move B** (the
+`s > ℓ` complement of Move A) and the two **closed-form composition identities** that
+exhibit Franklin's map as an involution. `PentagonalNumberTheoremOQ01.lean` now ~1313
+lines, **0 sorry / 0 axiom / no native_decide** (host `lake env lean` exit 0;
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` only — docker daemon was down
+this session, verified via the host-lean fallback).
+
+`franklinMoveB S ℓ m = insert ℓ (insert (m-ℓ) (S.erase m))` — delete old top `m`, create
+run bottom `m-ℓ`, insert new smallest part `ℓ`. New theorems (+1 def, +8 thm):
+
+- `insert_pair_erase_pair` — re-inserting two distinct existing parts after erasing both
+  recovers the set (`ext` + nested `by_cases`); the algebraic backbone of the inverse pair.
+- `franklinMoveB_sum` — `∑(Move B) = ∑S` (`-m + (m-ℓ) + ℓ = 0` via `add_sum_erase` + `omega`).
+- `franklinMoveB_card` — `card(Move B) = card S + 1` (one part out, two distinct in).
+- `franklinMoveB_sign` — `(-1)^{card(Move B)} = -(-1)^{card S}`: sign-REVERSING (opposite
+  parity shift from Move A, same cancellation effect).
+- `franklinMoveB_pos` — image stays positive distinct parts (`ℓ≥1`, `m-ℓ≥1` from `ℓ<m`).
+- **`franklinMoveB_franklinMoveA`** — `franklinMoveB (franklinMoveA S s m) s (m+1) = S`
+  (Move B undoes Move A). Key: `Finset.erase_insert` of the fresh top `m+1` (not in the
+  double-erased set, by `max`), `harith : m+1-s = m-s+1`, then `insert_pair_erase_pair`.
+- **`franklinMoveA_franklinMoveB`** — `franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S`
+  (Move A undoes Move B). Key: `h1 : m-1+1=m`, `h2 : m-1-ℓ+1 = m-ℓ`, then `erase_insert`
+  ×2 + `insert_erase`.
+- `franklinMoveB_headline` — all four preservation laws packaged for a non-fixed `S` in
+  the `ℓ < s = min'` regime, reading `m` off `max'`.
+
+The parameter threading is the crux: the part Move A *removes* (`s`) is exactly the
+smallest part Move B *creates*; the top `m+1` Move A *creates* is the top Move B *removes*.
+Together with the four preservation laws this is a sign-reversing involution pairing each
+non-fixed distinct-part partition of `n` with one of opposite sign — the cancellation that
+collapses Euler's product to the pentagonal terms.
+
+GOTCHA: docker daemon down all session → used the host-lean fallback
+`cd proofs && bin/lake env lean Proofs/<File>.lean` (the safety wrapper passes `lake env`
+through; only `lake build` is blocked). Confirmed 0-axiom by injecting `#print axioms`
+before the final `end` and compiling the whole file (no olean import needed since none was
+built for the worktree).
+
+### Next Steps
+- Part 13: introduce a staircase-length `ℓ` definition so Move A/B dispatch on `s ≤ ℓ` vs
+  `s > ℓ` directly, then glue the two headlines into a single `franklinInvolution` on the
+  non-fixed domain and a `card`-parity sign-reversal — the last structural step before the
+  cancellation sum `∑_{distincts n}(-1)^{#parts} = pentSeriesCoeff n`.

@@ -1157,4 +1157,157 @@ theorem franklinMoveA_headline (S : Finset ℕ) (H : S.Nonempty)
          franklinMoveA_sign S s m hsS hb hnf hmax,
          franklinMoveA_pos S s m hpos⟩
 
+/-! ## Part 12: Franklin's involution — the companion "Move B", and the two moves are
+**mutually inverse**
+
+Part 11 formalized Franklin's **Move A** (the `s ≤ ℓ` case: absorb the smallest part
+into the top staircase, dropping the part count by one).  Here we add its companion
+**Move B** (the `s > ℓ` case) and — the genuine open core named at the end of Part 11 —
+prove the two are **mutually inverse**, completing Franklin's involution on the
+non-fixed distinct-part partitions.
+
+**Move B** takes a distinct-part set `S` with largest part `m = max S` and top
+staircase length `ℓ` (so `{m-ℓ+1, …, m} ⊆ S` while `m-ℓ ∉ S`), and *subtracts `1` from
+each of the top `ℓ` parts, then adds a new smallest part of size `ℓ`*.  Subtracting `1`
+from `{m-ℓ+1, …, m}` gives `{m-ℓ, …, m-1}`, which overlaps the original run in
+`{m-ℓ+1, …, m-1}`; the net effect on the set is therefore the closed form
+
+    `franklinMoveB S ℓ m = insert ℓ (insert (m-ℓ) (S.erase m))`
+
+— delete the old top part `m`, create the new run bottom `m-ℓ`, and insert the new
+smallest part `ℓ`.  Like Move A it is **weight-preserving** (`-m + (m-ℓ) + ℓ = 0`),
+but it *increases* the part count by one and so is equally **sign-reversing**.
+
+The decisive new facts are the two closed-form composition identities
+
+    `franklinMoveB (franklinMoveA S s m) s (m+1) = S`   (Move B undoes Move A)
+    `franklinMoveA (franklinMoveB S ℓ m) ℓ (m-1) = S`   (Move A undoes Move B)
+
+with the parameters threaded explicitly: the part Move A *removes* (`s`) reappears as
+the smallest part Move B *creates*, and the new top `m+1` Move A *creates* is the top
+Move B *removes*.  Together with the four preservation laws this exhibits Franklin's
+map as a genuine **involution** that pairs each non-fixed partition of `n` with one of
+opposite sign — exactly the cancellation that collapses Euler's product to the
+pentagonal terms. -/
+
+/-- **Franklin's Move B**, in closed form on the part-set (the `s > ℓ` case).  Removes
+the old largest part `m`, creates the run bottom `m-ℓ`, and inserts the new smallest
+part `ℓ`.  This is "subtract `1` from the top `ℓ` parts; add a new smallest part `ℓ`"
+once the overlap is cancelled.  It is the inverse of `franklinMoveA`. -/
+def franklinMoveB (S : Finset ℕ) (ℓ m : ℕ) : Finset ℕ :=
+  insert ℓ (insert (m - ℓ) (S.erase m))
+
+/-- Re-inserting two distinct existing parts after erasing both recovers the set. -/
+theorem insert_pair_erase_pair (S : Finset ℕ) (a b : ℕ) (ha : a ∈ S) (hb : b ∈ S) :
+    insert a (insert b ((S.erase a).erase b)) = S := by
+  ext x
+  simp only [Finset.mem_insert, Finset.mem_erase]
+  constructor
+  · rintro (rfl | rfl | ⟨-, -, hx⟩) <;> assumption
+  · intro hx
+    by_cases hxa : x = a
+    · exact Or.inl hxa
+    · by_cases hxb : x = b
+      · exact Or.inr (Or.inl hxb)
+      · exact Or.inr (Or.inr ⟨hxb, hxa, hx⟩)
+
+/-- **Move B preserves the weight.**  Deleting the top part `m` removes `m`, while the
+new parts `m-ℓ` and `ℓ` add `(m-ℓ)+ℓ = m` back; so `∑ (Move B) = ∑ S`. -/
+theorem franklinMoveB_sum (S : Finset ℕ) (ℓ m : ℕ)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ) (hlm : ℓ ≤ m) :
+    ∑ x ∈ franklinMoveB S ℓ m, x = ∑ x ∈ S, x := by
+  have hmℓ_notin : m - ℓ ∉ S.erase m := fun h => hml (Finset.erase_subset _ _ h)
+  have hℓ_notin : ℓ ∉ insert (m - ℓ) (S.erase m) := by
+    rw [Finset.mem_insert]; push_neg
+    exact ⟨hne, fun h => hlS (Finset.erase_subset _ _ h)⟩
+  have e0 : ∑ x ∈ franklinMoveB S ℓ m, x = ℓ + ((m - ℓ) + ∑ x ∈ S.erase m, x) := by
+    rw [franklinMoveB, Finset.sum_insert hℓ_notin, Finset.sum_insert hmℓ_notin]
+  have e1 : m + ∑ x ∈ S.erase m, x = ∑ x ∈ S, x :=
+    Finset.add_sum_erase S (fun x => x) hmS
+  omega
+
+/-- **Move B increases the number of parts by exactly one.**  One existing part (`m`)
+is removed and two new distinct parts (`m-ℓ` and `ℓ`) are added. -/
+theorem franklinMoveB_card (S : Finset ℕ) (ℓ m : ℕ)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ) :
+    (franklinMoveB S ℓ m).card = S.card + 1 := by
+  have hmℓ_notin : m - ℓ ∉ S.erase m := fun h => hml (Finset.erase_subset _ _ h)
+  have hℓ_notin : ℓ ∉ insert (m - ℓ) (S.erase m) := by
+    rw [Finset.mem_insert]; push_neg
+    exact ⟨hne, fun h => hlS (Finset.erase_subset _ _ h)⟩
+  have c0 : (franklinMoveB S ℓ m).card = ((S.erase m).card + 1) + 1 := by
+    rw [franklinMoveB, Finset.card_insert_of_notMem hℓ_notin,
+      Finset.card_insert_of_notMem hmℓ_notin]
+  have c1 : (S.erase m).card = S.card - 1 := Finset.card_erase_of_mem hmS
+  have hpos : 1 ≤ S.card := Finset.card_pos.mpr ⟨m, hmS⟩
+  omega
+
+/-- **Move B reverses the sign.**  Since the part count rises by one, `(-1)^{#parts}`
+flips — the same sign cancellation Move A effects, on the complementary `s > ℓ` case. -/
+theorem franklinMoveB_sign (S : Finset ℕ) (ℓ m : ℕ)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ) :
+    (-1 : ℤ) ^ (franklinMoveB S ℓ m).card = -(-1 : ℤ) ^ S.card := by
+  rw [franklinMoveB_card S ℓ m hmS hml hlS hne, pow_succ]; ring
+
+/-- **Move B stays valid.**  Every part of the image is positive: `ℓ ≥ 1`, the new run
+bottom `m-ℓ ≥ 1` (as `ℓ < m`), the rest inherited from `S`. -/
+theorem franklinMoveB_pos (S : Finset ℕ) (ℓ m : ℕ)
+    (hpos : ∀ x ∈ S, 0 < x) (hl1 : 1 ≤ ℓ) (hlm : ℓ < m) :
+    ∀ x ∈ franklinMoveB S ℓ m, 0 < x := by
+  intro x hx
+  rw [franklinMoveB, Finset.mem_insert, Finset.mem_insert] at hx
+  rcases hx with h | h | h
+  · omega
+  · omega
+  · exact hpos x (Finset.erase_subset _ _ h)
+
+/-- **Move B undoes Move A.**  Applied to `Move A S` with the *removed* smallest part
+`s` as its new smallest part and the *created* top `m+1` as its top, Move B returns `S`
+exactly.  This is one half of the mutual-inverse pair. -/
+theorem franklinMoveB_franklinMoveA (S : Finset ℕ) (s m : ℕ)
+    (hsS : s ∈ S) (hb : m - s + 1 ∈ S) (hmax : ∀ x ∈ S, x ≤ m) (hsm : s ≤ m) :
+    franklinMoveB (franklinMoveA S s m) s (m + 1) = S := by
+  have hm1notin : m + 1 ∉ (S.erase s).erase (m - s + 1) := fun h => by
+    have := hmax _ (Finset.erase_subset _ _ (Finset.erase_subset _ _ h)); omega
+  have harith : m + 1 - s = m - s + 1 := by omega
+  rw [franklinMoveB, franklinMoveA, Finset.erase_insert hm1notin, harith]
+  exact insert_pair_erase_pair S s (m - s + 1) hsS hb
+
+/-- **Move A undoes Move B.**  Applied to `Move B S` with the *created* smallest part
+`ℓ` as its smallest part and the *exposed* top `m-1` as its top, Move A returns `S`
+exactly.  This is the other half of the mutual-inverse pair. -/
+theorem franklinMoveA_franklinMoveB (S : Finset ℕ) (ℓ m : ℕ)
+    (hmS : m ∈ S) (hml : m - ℓ ∉ S) (hlS : ℓ ∉ S) (hne : ℓ ≠ m - ℓ) (hlm : ℓ < m) :
+    franklinMoveA (franklinMoveB S ℓ m) ℓ (m - 1) = S := by
+  have hmℓ_notin : m - ℓ ∉ S.erase m := fun h => hml (Finset.erase_subset _ _ h)
+  have hℓ_notin : ℓ ∉ insert (m - ℓ) (S.erase m) := by
+    rw [Finset.mem_insert]; push_neg
+    exact ⟨hne, fun h => hlS (Finset.erase_subset _ _ h)⟩
+  have h1 : m - 1 + 1 = m := by omega
+  have h2 : m - 1 - ℓ + 1 = m - ℓ := by omega
+  rw [franklinMoveA, franklinMoveB, h1, h2, Finset.erase_insert hℓ_notin,
+    Finset.erase_insert hmℓ_notin, Finset.insert_erase hmS]
+
+/-- **Headline (Part 12).**  For a non-fixed distinct-part partition `S` whose top
+staircase is *shorter* than its smallest part (`ℓ < s = min S`, the `s > ℓ` regime),
+Franklin's Move B is a sum-preserving, part-count–increasing, **sign-reversing** map
+back into positive distinct parts — the complement of Part 11's Move A.  Hypotheses:
+`hℓs` says `ℓ` is below the current smallest part (so `ℓ ∉ S`), `hrun` that the top run
+stops at `m-ℓ`, and `hne` excludes the degenerate `ℓ = m-ℓ`. -/
+theorem franklinMoveB_headline (S : Finset ℕ) (H : S.Nonempty) (ℓ : ℕ)
+    (hpos : ∀ x ∈ S, 0 < x) (hl1 : 1 ≤ ℓ)
+    (hℓs : ℓ < S.min' H) (hrun : S.max' H - ℓ ∉ S)
+    (hne : ℓ ≠ S.max' H - ℓ) (hlm : ℓ < S.max' H) :
+    (∑ x ∈ franklinMoveB S ℓ (S.max' H), x = ∑ x ∈ S, x) ∧
+    (franklinMoveB S ℓ (S.max' H)).card = S.card + 1 ∧
+    (-1 : ℤ) ^ (franklinMoveB S ℓ (S.max' H)).card = -(-1 : ℤ) ^ S.card ∧
+    (∀ x ∈ franklinMoveB S ℓ (S.max' H), 0 < x) := by
+  set m := S.max' H with hmdef
+  have hmS : m ∈ S := S.max'_mem H
+  have hlS : ℓ ∉ S := fun h => absurd (lt_of_lt_of_le hℓs (Finset.min'_le S ℓ h)) (lt_irrefl ℓ)
+  exact ⟨franklinMoveB_sum S ℓ m hmS hrun hlS hne (le_of_lt hlm),
+         franklinMoveB_card S ℓ m hmS hrun hlS hne,
+         franklinMoveB_sign S ℓ m hmS hrun hlS hne,
+         franklinMoveB_pos S ℓ m hpos hl1 hlm⟩
+
 end PentagonalNumberTheoremOQ01
