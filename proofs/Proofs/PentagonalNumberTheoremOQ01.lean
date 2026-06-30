@@ -1009,4 +1009,152 @@ theorem franklin_fixed_point_partition_shape (k : ℕ) (hk : 1 ≤ k) :
     simp only [Finset.coe_Ico, Set.mem_Ico] at hx
     omega
 
+/-! ## Part 11: Franklin's involution — the "Move A" operation itself (sum- and
+sign-preserving), the first step beyond the fixed points
+
+Parts 7–10 pinned down only the *fixed points* of Franklin's involution.  Here we
+formalize, for the first time in this file, one of the involution's two actual
+**moves** — the heart of the cancellation that makes all non-pentagonal coefficients
+vanish.
+
+Represent a partition into distinct parts as a `Finset ℕ` `S` of (positive) parts,
+with smallest part `s = min S` and largest `m = max S`.  Let `ℓ` be the length of the
+top *staircase* — the maximal descending run `m, m-1, …` of consecutive parts.  The
+condition `s ≤ ℓ` says the top `s` parts are exactly the consecutive block
+`{m-s+1, …, m} ⊆ S`.  Franklin's **Move A** then *removes the smallest part `s` and
+adds `1` to each of those top `s` parts*.  Adding `1` to `{m-s+1, …, m}` yields
+`{m-s+2, …, m+1}`, which overlaps the original block in `{m-s+2, …, m}`; so the net
+effect is the closed form
+
+    `franklinMoveA S s m = insert (m+1) ((S.erase s).erase (m-s+1))`
+
+— delete the smallest part `s`, delete the bottom `m-s+1` of the top run, and create
+the new largest part `m+1`.  We prove this map is:
+
+* **weight-preserving**  `∑ (Move A) = ∑ S`   (so it stays within partitions of `n`);
+* **part-count–decreasing by one**  `card (Move A) = card S - 1`;
+* **sign-reversing**  `(-1)^{card(Move A)} = -(-1)^{card S}`  — the cancellation;
+* **valid**  it lands back in positive distinct parts.
+
+The boundary `s = m-s+1` (equivalently `m = 2s-1`, i.e. `S` is the positive staircase
+`{s, …, 2s-1}` of Parts 7–10) is exactly where Move A degenerates — the fixed point.
+The hypothesis `hnf : s ≠ m-s+1` excludes precisely that staircase.  The companion
+"Move B" (case `s > ℓ`) and the proof that the two moves are mutually inverse remain
+the open core. -/
+
+/-- **Franklin's Move A**, in closed form on the part-set.  Removes the smallest part
+`s`, removes the bottom `m-s+1` of the top staircase, and inserts the new largest part
+`m+1`.  This is "delete `s`; add `1` to the top `s` parts" once the overlap is
+cancelled. -/
+def franklinMoveA (S : Finset ℕ) (s m : ℕ) : Finset ℕ :=
+  insert (m + 1) ((S.erase s).erase (m - s + 1))
+
+/-- Under `s ≤ ℓ` (the top `s` parts `{m-s+1, …, m}` are all present) the bottom of the
+top run, `m-s+1`, is a genuine part. -/
+theorem franklinMoveA_top_mem (S : Finset ℕ) (s m : ℕ) (hsm : s ≤ m) (hs1 : 1 ≤ s)
+    (htop : Finset.Icc (m - s + 1) m ⊆ S) : m - s + 1 ∈ S := by
+  apply htop
+  rw [Finset.mem_Icc]; omega
+
+/-- **Move A preserves the weight.**  Deleting the smallest part `s` removes `s` from
+the sum, while raising the top `s` parts by one adds `s` back; the closed form makes
+this `∑ (Move A) = ∑ S`.  So Move A maps a distinct-part partition of `n` to another. -/
+theorem franklinMoveA_sum (S : Finset ℕ) (s m : ℕ)
+    (hsS : s ∈ S) (hb : m - s + 1 ∈ S) (hsb : s ≠ m - s + 1)
+    (hmax : ∀ x ∈ S, x ≤ m) (hsm : s ≤ m) :
+    ∑ x ∈ franklinMoveA S s m, x = ∑ x ∈ S, x := by
+  have hbe : m - s + 1 ∈ S.erase s := Finset.mem_erase.mpr ⟨hsb.symm, hb⟩
+  have hm1S : m + 1 ∉ S := fun h => by have := hmax _ h; omega
+  have hmins : m + 1 ∉ (S.erase s).erase (m - s + 1) := fun h =>
+    hm1S (Finset.erase_subset _ _ (Finset.erase_subset _ _ h))
+  have e1 : (m - s + 1) + ∑ x ∈ (S.erase s).erase (m - s + 1), x = ∑ x ∈ S.erase s, x :=
+    Finset.add_sum_erase (S.erase s) (fun x => x) hbe
+  have e2 : s + ∑ x ∈ S.erase s, x = ∑ x ∈ S, x :=
+    Finset.add_sum_erase S (fun x => x) hsS
+  have e0 : ∑ x ∈ franklinMoveA S s m, x
+      = (m + 1) + ∑ x ∈ (S.erase s).erase (m - s + 1), x := by
+    rw [franklinMoveA, Finset.sum_insert hmins]
+  omega
+
+/-- **Move A decreases the number of parts by exactly one.**  Two distinct existing
+parts (`s` and `m-s+1`) are removed and one new part (`m+1`) is added. -/
+theorem franklinMoveA_card (S : Finset ℕ) (s m : ℕ)
+    (hsS : s ∈ S) (hb : m - s + 1 ∈ S) (hsb : s ≠ m - s + 1)
+    (hmax : ∀ x ∈ S, x ≤ m) :
+    (franklinMoveA S s m).card = S.card - 1 := by
+  have hbe : m - s + 1 ∈ S.erase s := Finset.mem_erase.mpr ⟨hsb.symm, hb⟩
+  have hm1S : m + 1 ∉ S := fun h => by have := hmax _ h; omega
+  have hmins : m + 1 ∉ (S.erase s).erase (m - s + 1) := fun h =>
+    hm1S (Finset.erase_subset _ _ (Finset.erase_subset _ _ h))
+  have c1 : (S.erase s).card = S.card - 1 := Finset.card_erase_of_mem hsS
+  have c2 : ((S.erase s).erase (m - s + 1)).card = (S.erase s).card - 1 :=
+    Finset.card_erase_of_mem hbe
+  have c0 : (franklinMoveA S s m).card
+      = ((S.erase s).erase (m - s + 1)).card + 1 := by
+    rw [franklinMoveA, Finset.card_insert_of_notMem hmins]
+  have hpair : ({s, m - s + 1} : Finset ℕ) ⊆ S := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with h | h
+    · rw [h]; exact hsS
+    · rw [Finset.mem_singleton.mp h]; exact hb
+  have hcard2 : 2 ≤ S.card := by
+    have h2 : ({s, m - s + 1} : Finset ℕ).card = 2 := by
+      rw [Finset.card_insert_of_notMem (Finset.notMem_singleton.mpr hsb),
+        Finset.card_singleton]
+    calc 2 = ({s, m - s + 1} : Finset ℕ).card := h2.symm
+      _ ≤ S.card := Finset.card_le_card hpair
+  omega
+
+/-- **Move A reverses the sign.**  Since the part count drops by one,
+`(-1)^{#parts}` flips — this is the sign cancellation Franklin's involution effects on
+every non-fixed distinct-part partition. -/
+theorem franklinMoveA_sign (S : Finset ℕ) (s m : ℕ)
+    (hsS : s ∈ S) (hb : m - s + 1 ∈ S) (hsb : s ≠ m - s + 1)
+    (hmax : ∀ x ∈ S, x ≤ m) :
+    (-1 : ℤ) ^ (franklinMoveA S s m).card = -(-1 : ℤ) ^ S.card := by
+  have hc := franklinMoveA_card S s m hsS hb hsb hmax
+  have hpos : 0 < S.card := Finset.card_pos.mpr ⟨s, hsS⟩
+  obtain ⟨j, hj⟩ : ∃ j, S.card = j + 1 := ⟨S.card - 1, by omega⟩
+  rw [hc, hj]
+  simp only [Nat.add_sub_cancel]
+  rw [pow_succ]; ring
+
+/-- **Move A stays valid.**  Every part of the image is positive: new parts are
+`m+1 > 0`, the rest are inherited from `S`. -/
+theorem franklinMoveA_pos (S : Finset ℕ) (s m : ℕ)
+    (hpos : ∀ x ∈ S, 0 < x) : ∀ x ∈ franklinMoveA S s m, 0 < x := by
+  intro x hx
+  rw [franklinMoveA, Finset.mem_insert] at hx
+  rcases hx with h | h
+  · omega
+  · exact hpos x (Finset.erase_subset _ _ (Finset.erase_subset _ _ h))
+
+/-- **Headline (Part 11).**  For any non-fixed distinct-part partition `S` whose top
+staircase is at least as long as its smallest part (`s ≤ ℓ`, stated as
+`Icc (m-s+1) m ⊆ S`), Franklin's Move A is a sum-preserving, part-count–decreasing,
+**sign-reversing** map back into positive distinct parts.  This is the genuine
+involution step on the non-fixed terms — the mechanism behind the cancellation of all
+non-pentagonal coefficients (the fixed staircases `s = m-s+1`, excluded by `hnf`,
+being the residual pentagonal terms of Parts 7–10). -/
+theorem franklinMoveA_headline (S : Finset ℕ) (H : S.Nonempty)
+    (hpos : ∀ x ∈ S, 0 < x)
+    (hs1 : 1 ≤ S.min' H)
+    (htop : Finset.Icc (S.max' H - S.min' H + 1) (S.max' H) ⊆ S)
+    (hnf : S.min' H ≠ S.max' H - S.min' H + 1) :
+    (∑ x ∈ franklinMoveA S (S.min' H) (S.max' H), x = ∑ x ∈ S, x) ∧
+    (franklinMoveA S (S.min' H) (S.max' H)).card = S.card - 1 ∧
+    (-1 : ℤ) ^ (franklinMoveA S (S.min' H) (S.max' H)).card = -(-1 : ℤ) ^ S.card ∧
+    (∀ x ∈ franklinMoveA S (S.min' H) (S.max' H), 0 < x) := by
+  set s := S.min' H with hsdef
+  set m := S.max' H with hmdef
+  have hsS : s ∈ S := S.min'_mem H
+  have hmS : m ∈ S := S.max'_mem H
+  have hsm : s ≤ m := Finset.min'_le S m hmS
+  have hmax : ∀ x ∈ S, x ≤ m := fun x hx => Finset.le_max' S x hx
+  have hb : m - s + 1 ∈ S := franklinMoveA_top_mem S s m hsm hs1 htop
+  exact ⟨franklinMoveA_sum S s m hsS hb hnf hmax hsm,
+         franklinMoveA_card S s m hsS hb hnf hmax,
+         franklinMoveA_sign S s m hsS hb hnf hmax,
+         franklinMoveA_pos S s m hpos⟩
+
 end PentagonalNumberTheoremOQ01
