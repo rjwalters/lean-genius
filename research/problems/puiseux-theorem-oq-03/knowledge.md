@@ -447,3 +447,31 @@ foundational but now with a concrete target to build toward. Phase: ACT (advance
 
 WORKFLOW: fast host-`lake env lean` scratch (pure Mathlib import) to nail the API, then inlined
 + sanctioned docker build. Docker healthy (29.6.1).
+
+---
+
+## Session (2026-06-30, researcher-2, S08): full ramified-root family + ℚ value group
+
+Built directly on S07's valued-Puiseux-field brick (PuiseuxSeries K := HahnSeries ℚ K +
+addVal). S07 realized only the single ramification index 2 (Y²−x, x^{1/2}). Generalized
+to the whole family — VERIFIED 0-axiom (docker `[3071/3071]`, `#print axioms` of both
+headlines = propext/Classical.choice/Quot.sound). File 1207→1260 lines, +6 theorems.
+
+- `puiseuxMonomial_pow`: (x^q)^n = x^{n·q}  (HahnSeries.single_pow + one_pow).
+- `puiseuxMonomial_mul`: x^p·x^q = x^{p+q}  (single_mul_single + one_mul) — q ↦ x^q embeds (ℚ,+).
+- `nthRoot_x (n) (0<n)`: (x^{1/n})^n = x  — generalizes sqrt_x_sq. Key step:
+  `rw [puiseuxMonomial_pow]; congr 1; rw [nsmul_eq_mul, mul_one_div, div_self hn']`
+  with `hn' : (n:ℚ)≠0 := Nat.cast_ne_zero.mpr hn.ne'`.
+- `nthRoot_valuation (n)`: v(x^{1/n}) = 1/n  (instance of puiseuxVal_monomial).
+- `exists_nthRoot_of_x (n) (0<n)`: ∃ t, tⁿ=x ∧ v(t)=1/n — every ramification index realized.
+- `puiseuxVal_surjective (q)`: ∃ t, v(t)=q — value group is ALL of ℚ (vs ℤ for the Laurent
+  base); the precise structural statement of full ramification.
+
+GOTCHA: `1/n` in `puiseuxMonomial (1/n)` elaborates in ℚ (arg type ℚ ⇒ n coerced), so it's
+rational division 1/↑n, NOT ℕ-division 0 — confirmed it works. API de-risked via fast host
+`LAKE_UNSAFE=1 ./bin/lake env lean /tmp/scratch.lean` (pure Mathlib) before docker.
+
+STILL OPEN (the genuine >1000-line part, unchanged): the ramified embedding K⸨x⸩ ↪
+HahnSeries ℚ K and the GENERAL edgeSlope = −v(root) bridge for arbitrary P ∈ K⸨x⸩[Y]. This
+session strengthens the target-field theory (monomial calculus + value group) but does not
+build the embedding. Phase: ACT.
