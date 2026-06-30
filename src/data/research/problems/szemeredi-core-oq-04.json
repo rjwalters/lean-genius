@@ -31,12 +31,12 @@
     "goal": "Replace `Classical.choice` at `SzemerediRegularity.lean:436` with a constructive `findRegularPartition` built on a decidable surrogate for `IsEpsilonRegular`."
   },
   "currentState": {
-    "phase": "ACT-shipped",
-    "since": "2026-06-12T00:00:00.000Z",
+    "phase": "ACT",
+    "since": "2026-06-12T01:30:00.000Z",
     "iteration": 21,
-    "focus": "Iter 21 ACT (researcher-2, 2026-06-12, claim researcher-69205): shipped Part 9 first-moment skeleton to Proofs/SzemerediCoreOQ04.lean (1054 -> 1123 LOC, +69). Two new lemmas: `vertexBias_sum_le` (line 1085, first-moment bound `∑_{a∈A} vertexBias G a A B ≤ 2·eps·#A` under IsWitnessRegular_symmetric; aggregation tail PROVED via Finset.sum_le_sum/sum_const/nsmul_eq_mul/ring; 1 transient sorry = per-`a` triangle envelope `hper`) and `A_bad_card_first_moment_markov` (line 1112, Markov corollary `|A_bad|·eps ≤ 2·eps·#A`; 1 transient sorry). Sorry count 2 -> 4 (line 291 archival + line 831 deferred carry forward; +2 new transient). 0 axioms; 0 assumption-encoding structure fields. Build VERIFIED: docker-build.sh Proofs.SzemerediCoreOQ04 succeeded 7744 jobs, exit 0, zero errors (only pre-existing unusedSectionVars warnings). Pre-flight disk re-probe 80 Gi free / 92% (>=10 Gi threshold held). DEVIATION from Iter 19 §3 / Iter 20 §3 plan: dropped Route A `G.interedges_filter_add_filter_neg` helper -- gallery edgeDensity (SzemerediCore.lean:31) is product-filter based ((A.product B).filter ...).card, NOT Mathlib interedges; helper as specified targets wrong API and has no caller until the sorried triangle step is discharged. Deferred to the wiring cycle, to be restated in product-filter idiom. Net: 2 transient sorries (not 3-5), aggregation proved outright.",
+    "focus": "Iter 21 ACT (researcher-2, 2026-06-12): shipped Part 8b sorry-free lemma `three_quarters_good_of_markov` discharging the combinatorial heart of step 3 of the small-eps ADLRY route. Given the analytic Markov bound `|A_bad| <= eps*|A|` (still open) and a slack-4-large subset `A' subset A` (`4*eps*|A| <= |A'|`), the unbiased bulk `A' cap A_good` carries >= 3/4 of |A'| -- by counting alone (biased part injects into A_bad; complement-in-A' bound; cast + nlinarith). No graph structure beyond the A_bad/A_good partition. Docker-verified clean (7744 jobs, 58 Gi free pre-flight). Sorry inventory steady at 2 (line 291 archival-unprovable one-sided + line 831 deferred-provable symmetric); 0 axioms; file 1054 -> ~1108 LOC. Remaining open content of the route: the Markov averaging bound itself (step 2) and the final density transfer (step 4).",
     "blockers": [],
-    "nextAction": "Iter 22+ ACT: (1) Discharge `hper` (per-`a` triangle, ~25-35 LOC) -- needs a product-filter density-decomposition helper `((A.product (B.filter p)).filter (G.Adj ·.1 ·.2)).card + (...¬·p...) = ((A.product B).filter ...).card` (derivable from Finset.filter_card_add_filter_neg_card_eq_card after a Finset.product/filter rearrangement), combined with the eps-bounds from `htoB := IsWitnessRegular_symmetric.toB G hreg` applied at `mem_witnessFamilyB_nhd ha` / `mem_witnessFamilyB_compl ha`. (2) Discharge `A_bad_card_first_moment_markov` (~10-15 LOC) via Finset.sum_le_sum_of_subset_of_nonneg (A_bad ⊆ A via A_bad_subset, vertexBias_nonneg) + the A_bad membership lower bound. (3) The deep slack-4 ADLRY content at `witness_regular_symmetric_implies_epsilon_regular_small_eps` (line ~831) remains the dominant obligation, independent of moment-input shape (Iter 17 §5 caveat). Pre-flight: re-probe `df -h /System/Volumes/Data` >=10 Gi before invoking docker-build.sh.",
+    "nextAction": "Iter 22+: prove the step-2 Markov averaging bound `(A_bad G eps A B).card <= eps * A.card` from `IsWitnessRegular` via the per-vertex vertexBias grid-family argument (mem_witnessFamilyB_nhd/_compl), then assemble step 4 density transfer feeding `three_quarters_good_of_markov` into `witness_regular_symmetric_implies_epsilon_regular_small_eps` (line 831).",
     "attemptCounts": {
       "total": 21,
       "currentApproach": 6,
@@ -226,11 +226,11 @@
     {
       "path": "Proofs/SzemerediCoreOQ04.lean",
       "filename": "SzemerediCoreOQ04.lean",
-      "lineCount": 1124,
-      "theoremCount": 62,
+      "lineCount": 1112,
+      "theoremCount": 61,
       "axiomCount": 0,
       "defCount": 11,
-      "sorryCount": 24,
+      "sorryCount": 21,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ04.lean"
     }
