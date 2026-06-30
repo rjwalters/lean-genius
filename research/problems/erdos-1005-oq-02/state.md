@@ -1,7 +1,7 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-30T12:42:13-07:00
+**Since**: 2026-06-30T13:02:43-07:00
 **Iteration**: 16
 
 ## Current Focus
@@ -365,3 +365,47 @@ File: 1912 → 2034 lines, 82 → 90 theorems (file-internal count).
 - **Density aggregation.** Combine `continuant_ge_length` (all-`≥2`) with the order-`n`
   cap `stepSeq b d ks = K·d − sc·b ≤ n` to bound large-quotient run length by `O(n/d)`
   — first genuine run-length upper bound, sanity check vs `n/4+5`.
+
+## Iteration 18 addition (verified, 0-axiom — researcher-8, `lake env lean`, Docker up)
+
+Added **§25 (interior `1`-runs — the period-6 law at a Stern–Brocot junction)**,
+0-sorry / 0-axiom (`#print axioms` reports only propext / Classical.choice / Quot.sound on
+all six new theorems — the half-turn helper needs only propext / Quot.sound; no
+`native_decide`, so no `Lean.ofReduceBool`). §23/§24 handled a small-quotient run at either
+*end* of a list; §25 handles the **interior junction** `as ++ 1ʲ ++ bs` — the configuration
+a density count toward `1/12` actually sums over. Six theorems, no new def:
+
+- `continuant_secondCont_replicate_one_append_half` — the joint leading-`1` half-turn
+  `(aⱼ₊₃, sⱼ₊₃) = (−aⱼ, −sⱼ)`, three steps of the order-6 rotation `[[1,−1],[1,0]]³ = −I`.
+- `continuant_interior_replicate_one_period` (**headline**) — **unconditional** period-6:
+  for *every* pair of blocks `as`, `bs`, `K(as ++ 1ʲ⁺⁶ ++ bs) = K(as ++ 1ʲ ++ bs)`. Engine:
+  Euler composition `continuant_append` peels `as`, then §23's joint period-6 of
+  `(K, secondCont)(1ʲ ++ bs)` propagates through the fixed linear combination
+  `K(as)·K(1ʲ++bs) − sc(as.reverse)·sc(1ʲ++bs)`.
+- `continuant_interior_replicate_one_six_mul` / `_mod` — period across `6q+r`, residue form.
+- `continuant_interior_replicate_one_half` — interior negation `K(as ++ 1ʲ⁺³ ++ bs) = −K(as ++ 1ʲ ++ bs)`.
+- `continuant_interior_replicate_one_orbit` (**headline**) — the orbit collapses to three
+  magnitudes and their negations: `K(as ++ 1ʲ ++ bs)` runs through `v₀, v₁, v₂, −v₀, −v₁, −v₂`
+  by `j % 6`, with `vᵢ = K(as ++ 1ⁱ ++ bs)` and `v₀ = K(as ++ bs)` the *direct* junction.
+- `continuant_interior_replicate_one_ne_zero` — if the three base junctions are nonzero then
+  `K(as ++ 1ʲ ++ bs) ≠ 0` for *every* `j`: a vanishing window can't be created purely by
+  lengthening an interior `1`-run.
+
+File: 2390 → 2548 lines, 146 → 153 theorems, 14 defs (no new def).
+
+**Honest boundary (unchanged).** §25 reduces the interior `1`-run degree of freedom to a
+finite (period-6, three-magnitude) set — in any density count an interior `1`-run may be taken
+of length `≤ 2` up to sign without changing the continuant's sign. It does **not** bound the
+density of admissible quotient lists keeping every non-adjacent window nonnegative — the open
+`1/12`–`1/4` constant.
+
+## Next Action (after §25)
+
+- **Junction sign on large-quotient blocks.** With §25 the interior `1`-run is finite; the
+  remaining freedom is the two surrounding all-`≥2` blocks `as`, `bs`. Target: a sign/positivity
+  criterion for the *direct* junction `K(as ++ bs)` in terms of `K(as)`, `secondCont(as.reverse)`,
+  `K(bs)`, `secondCont(bs)` via `continuant_append`, isolating when concatenating two positive
+  large-quotient runs keeps the window positive — the genuine mixed-regime boundary.
+- **Density aggregation (unchanged target).** Combine `continuant_ge_length` (all-`≥2`) with the
+  order-`n` cap to bound large-quotient run length by `O(n/d)`, summing the finitely-many junction
+  types §25 leaves toward a run-length count.
