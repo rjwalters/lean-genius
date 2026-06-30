@@ -148,3 +148,50 @@ checked by appending the print lines, `env lean`, then reverting. The researcher
 file `PropertyBFirstMomentAsymmetric.lean` was built clean via
 `./proofs/scripts/docker-build.sh Proofs.PropertyBFirstMomentAsymmetric` and axiom-checked
 the same way.
+
+## Session (2026-06-30, researcher-9): conditional-recoloring gain + convex flip-rate optimum (POSITIVE)
+
+Addressed the **analytic optimization engine** the prior three sessions explicitly deferred
+(researcher-1 decomposition step 3). Where oq-03-oq-01 and oq-03-oq-03 settled the *negative*
+half (asymmetry and product-space recoloring are inert) and oq-03-oq-02 gave the deterministic
+recoloring core, this session supplies the first **positive quantitative** content of the
+conditional recoloring. Published as new gallery entry `property-b-first-moment-oq-03-oq-04`.
+
+New file `PropertyBFirstMomentConditionalOpt.lean` (179 lines, `ProbMethod.PropertyB.ConditionalOpt`,
+**0 sorries / 0 axioms**, `#print axioms` = propext/Classical.choice/Quot.sound only; no
+`native_decide`, no `Lean.ofReduceBool`):
+
+* `survivesOrig p k := (1-p)^k` — survival probability (in its original colour) of a *dangerous*
+  monochromatic k-edge: each of its k vertices flips independently w.p. p, it survives iff none
+  flips.
+* `survivesOrig_lt_one` — **the positive gain**: (1-p)^k < 1 for every p ∈ (0,1], k ≥ 1
+  (`pow_lt_one₀`). Strictly better than the product model's inert factor 1 (oq-03-oq-03).
+* `expSurvivors_cond_lt_baseline` — strictly lowers the expected survivor count
+  m·2^(1-k)·(1-p)^k below the Erdős baseline m·2^(1-k) (`mul_lt_mul_of_pos_left`).
+* `survivesOrig_le_exp` — linearises the gain: (1-p)^k ≤ e^{-kp}, from 1-p ≤ e^{-p}
+  (`Real.add_one_le_exp` at -p) raised to the k-th power (`pow_le_pow_left₀`, `Real.exp_nat_mul`).
+* `tradeoff c k p := e^{-kp} + c·k·p` with **`tradeoff_ge_optimum`**: G(p) ≥ c·(1 - log c) for
+  all p, and `tradeoff_eq_at_optimum`: equality at k·p = -log c. So min_p G = c·(1 - log c),
+  attained at the *small* flip rate **p* = -(log c)/k = log(1/c)/k** — the optimizer scaling
+  behind the RS √(k/log k) gain.
+
+**Key proof technique (reusable convex-optimum recipe)**: the entire optimization collapses,
+after the substitution s = kp + log c and `exp(-(x+log c)) = e^{-x}/c` (`Real.exp_sub` +
+`Real.exp_log`), to the single tangent-line inequality `1 - s ≤ e^{-s}` (`Real.add_one_le_exp`).
+Clear the denominator with `le_div_iff₀ hc`, finish with `nlinarith`. This `e^{-kp}+c·k·p`
+closed-form minimum `c(1-log c)` is a self-contained, reusable lemma for any gain/loss balance.
+
+### Honest scope (unchanged moonshot remainder)
+The loss is a **linear placeholder** `c·k·p`, not derived from the conditional model. Still open
+(roadmap steps 1–3): (1) the genuine loss coefficient c from the order-dependent recoloring
+(rate at which a flip creates a new monochromatic edge); (2) the union bound over m edges;
+(3) substituting p* into a real √(k/log k) asymptotic. A measure-theoretic conditional
+probability model (PMF / conditioned product measures) remains the structural lift. This entry
+is the analytic centrepiece those steps will plug into.
+
+### Verification
+Built single-file clean via `LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PropertyBFirstMomentConditionalOpt.lean` (host toolchain, exit 0) and
+`./proofs/scripts/docker-build.sh Proofs.PropertyBFirstMomentConditionalOpt` (Docker wrapper).
+`#print axioms` on `tradeoff_ge_optimum`, `survivesOrig_lt_one`, `tradeoff_eq_at_optimum` reports
+only [propext, Classical.choice, Quot.sound].
