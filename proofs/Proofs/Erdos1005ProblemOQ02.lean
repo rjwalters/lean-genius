@@ -2617,4 +2617,99 @@ theorem continuant_ge_length_eq_weighted_two (ks : List ℤ) (h : ∀ k ∈ ks, 
   have := continuant_ge_length_weighted 2 (le_refl 2) ks h
   simpa using this
 
+/-! ## §27: The interior `1`-blow-down — a single interior `1` decrements its neighbours
+
+§25 showed an interior `1`-*run* is period-6 in its length.  The complementary fact for a
+*single* interior `1` is sharper and unconditional: a lone `1` wedged between two entries
+`a, b` can be **removed**, at the cost of decrementing both neighbours.  At the step-matrix
+level this is the classical Hirzebruch–Jung / minus-continued-fraction reduction
+  `M(a)·M(1)·M(b) = M(a−1)·M(b−1)`,
+a pure `2×2` identity (`M(k) = [[k,−1],[1,0]]`, with the middle `M(1) = [[1,−1],[1,0]]`).
+Reading its top-left entry through Euler's composition `contMat_append` (§16) transports it
+to the continuant of any surrounding word:
+  `K(xs ++ [a, 1, b] ++ ys) = K(xs ++ [a−1, b−1] ++ ys)`.
+
+Two structural payoffs.  (i) **Word shortening.**  The blow-down strictly shortens the
+quotient list by one while keeping the continuant fixed; iterating, every interior `1`
+flanked by `≥ 2` entries can be eliminated, driving any word toward the §17 large-quotient
+normal form (all entries `≥ 2`) on which `K > 0`.  (ii) **The vanishing junction.**  It
+exhibits the elementary zero of the minus-continuant directly: `K[2,1,2] = K[1,1] = 0`, the
+`a = b = 2` blow-down — a single interior `1` between two `2`s annihilates the continuant.
+
+This is the single-`1` companion to §25's `1`-run period-6.  Where §25 records *how the
+sign and magnitude cycle* as a `1`-run lengthens, §27 records *what one interior `1` is* —
+a neighbour-decrementing contraction, not a fresh degree of freedom.  The two combine: the
+`v₁` magnitude of §25's period-6 orbit *is* the blow-down of the surrounding junction
+(`continuant_interior_one_eq_blowdown`). -/
+
+/-- **Step-matrix blow-down (the engine).**  `M(a)·M(1)·M(b) = M(a−1)·M(b−1)` for the
+§9 step matrix `M(k) = [[k,−1],[1,0]]`.  A pure `2×2` identity, each of the four entries
+closed by `ring` (top-left `ab − a − b = (a−1)(b−1) − 1`; bottom-right `−1` on both sides).
+Both sides carry determinant `1`, consistent with `det M(k) = 1` and multiplicativity. -/
+theorem stepMat_one_blowdown (a b : ℤ) :
+    Mat2.mul (stepMat a) (Mat2.mul (stepMat 1) (stepMat b))
+      = Mat2.mul (stepMat (a - 1)) (stepMat (b - 1)) := by
+  ext <;> simp only [Mat2.mul, stepMat] <;> ring
+
+/-- The blow-down at the level of the step-matrix product: `P[a,1,b] = P[a−1,b−1]`.
+Just `stepMat_one_blowdown` after unfolding the three- and two-element `contMat` products
+(the trailing `· one` factors collapse by `mul_one`). -/
+theorem contMat_one_blowdown (a b : ℤ) :
+    contMat [a, 1, b] = contMat [a - 1, b - 1] := by
+  simp only [contMat, Mat2.mul_one]
+  exact stepMat_one_blowdown a b
+
+/-- **Interior `1`-blow-down (headline).**  A single interior `1` between `a` and `b` is a
+neighbour-decrementing contraction of the continuant, for *any* surrounding blocks:
+`K(xs ++ [a, 1, b] ++ ys) = K(xs ++ [a−1, b−1] ++ ys)`.  Unconditional — no large-quotient
+hypothesis.  Reading the top-left entry of `contMat_one_blowdown` through Euler's
+composition `contMat_append`, which factors the product across the inserted junction. -/
+theorem continuant_interior_one_blowdown (xs ys : List ℤ) (a b : ℤ) :
+    Continuant (xs ++ [a, 1, b] ++ ys) = Continuant (xs ++ [a - 1, b - 1] ++ ys) := by
+  have e1 : xs ++ [a, 1, b] ++ ys = xs ++ ([a, 1, b] ++ ys) := List.append_assoc xs _ ys
+  have e2 : xs ++ [a - 1, b - 1] ++ ys = xs ++ ([a - 1, b - 1] ++ ys) :=
+    List.append_assoc xs _ ys
+  rw [e1, e2, ← contMat_a, ← contMat_a,
+      contMat_append, contMat_append, contMat_append, contMat_append,
+      contMat_one_blowdown]
+
+/-- The blow-down is a genuine *matrix* identity, so it transfers to every continuant entry,
+not just the top-left: `secondCont(xs ++ [a, 1, b] ++ ys) = secondCont(xs ++ [a−1, b−1] ++ ys)`.
+Reading the bottom-left entry `(P ·).c` of the same factored product. -/
+theorem secondCont_interior_one_blowdown (xs ys : List ℤ) (a b : ℤ) :
+    secondCont (xs ++ [a, 1, b] ++ ys) = secondCont (xs ++ [a - 1, b - 1] ++ ys) := by
+  have e1 : xs ++ [a, 1, b] ++ ys = xs ++ ([a, 1, b] ++ ys) := List.append_assoc xs _ ys
+  have e2 : xs ++ [a - 1, b - 1] ++ ys = xs ++ ([a - 1, b - 1] ++ ys) :=
+    List.append_assoc xs _ ys
+  rw [e1, e2, ← contMat_c, ← contMat_c,
+      contMat_append, contMat_append, contMat_append, contMat_append,
+      contMat_one_blowdown]
+
+/-- **Leading blow-down.**  The `xs = []` specialisation:
+`K(a :: 1 :: b :: ys) = K((a−1) :: (b−1) :: ys)`.  A `1` directly after the head decrements
+the head and its successor. -/
+theorem continuant_cons_one_blowdown (ys : List ℤ) (a b : ℤ) :
+    Continuant (a :: 1 :: b :: ys) = Continuant ((a - 1) :: (b - 1) :: ys) := by
+  simpa using continuant_interior_one_blowdown [] ys a b
+
+/-- **The simplest vanishing junction.**  `K[2, 1, 2] = 0`: the `a = b = 2` blow-down sends
+`[2,1,2]` to `[1,1]`, and `K[1,1] = 1·1 − 1 = 0`.  A single interior `1` between two `2`s
+annihilates the minus-continuant — the elementary zero underlying the §14 run-length
+windows, derived here purely from the §27 blow-down. -/
+theorem continuant_two_one_two : Continuant [2, 1, 2] = 0 := by
+  have h : Continuant [(2 : ℤ), 1, 2] = Continuant [(2 : ℤ) - 1, 2 - 1] :=
+    continuant_cons_one_blowdown [] 2 2
+  rw [h]; norm_num [Continuant]
+
+/-- **Bridge to §25.**  The single-`1` interior junction — the `v₁` magnitude of §25's
+period-6 orbit — *is* a blow-down: when the surrounding blocks meet at `a, b` (i.e. the
+leading block ends in `a`, the trailing block starts with `b`),
+`K((as ++ [a]) ++ [1] ++ (b :: bs)) = K(as ++ [a−1, b−1] ++ bs)`.  So `v₁` is the
+neighbour-decremented junction, not an independent quantity — §25's three magnitudes
+`v₀, v₁, v₂` are continuants of words differing only by such interior contractions. -/
+theorem continuant_interior_one_eq_blowdown (as bs : List ℤ) (a b : ℤ) :
+    Continuant ((as ++ [a]) ++ [1] ++ (b :: bs))
+      = Continuant (as ++ [a - 1, b - 1] ++ bs) := by
+  simpa using continuant_interior_one_blowdown as bs a b
+
 end Erdos1005OQ02
