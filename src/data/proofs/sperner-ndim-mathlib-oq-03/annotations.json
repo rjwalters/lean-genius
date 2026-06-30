@@ -26,6 +26,29 @@
     ]
   },
   {
+    "id": "ann-sperner-ndim-mathlib-oq03-signchanges-def",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 79,
+      "endLine": 93
+    },
+    "type": "definition",
+    "title": "signChanges: the Discrete Derivative and Its Peeling Recurrence",
+    "content": "`signChanges g n` is the count of complementary (sign-change) edges along the path `0 — 1 — ⋯ — n`: the cardinality of `(range n).filter (fun i => g i ≠ g (i+1))`. Two lemmas make it computable inductively. `signChanges_zero` is the empty-path base case (no edges, count 0). `signChanges_succ` peels the last edge: `signChanges g (n+1) = signChanges g n + (if g n ≠ g (n+1) then 1 else 0)`, proved by `range_add_one` + `filter_insert` and `card_insert_of_notMem` (the new index `n` is not already in `range n`). Each added edge contributes 0 or 1 — this is the discrete derivative whose telescoping yields the boundary law of `signChanges_odd_iff`.",
+    "mathContext": "$\\mathrm{signChanges}(g,n)=\\#\\{i<n : g\\,i \\neq g\\,(i{+}1)\\}$, and $\\mathrm{signChanges}(g,n{+}1)-\\mathrm{signChanges}(g,n)=[\\,g\\,n \\neq g\\,(n{+}1)\\,]\\in\\{0,1\\}$ — the discrete derivative of the running count.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter and card",
+      "range_add_one recurrence",
+      "discrete derivative",
+      "telescoping count"
+    ],
+    "prerequisites": [
+      "Finset.range, filter, card",
+      "Finset.card_insert_of_notMem"
+    ]
+  },
+  {
     "id": "ann-sperner-ndim-mathlib-oq03-parity-engine",
     "proofId": "sperner-ndim-mathlib-oq-03",
     "range": {
@@ -70,6 +93,29 @@
     "prerequisites": [
       "SpernerNDimMathlib CellComplex structure",
       "antipodal map on the boundary sphere"
+    ]
+  },
+  {
+    "id": "ann-sperner-ndim-mathlib-oq03-int-labels",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 139,
+      "endLine": 154
+    },
+    "type": "technique",
+    "title": "From Bool Signs to ±1 Integer Labels",
+    "content": "`tucker_one_dim_int` recovers the textbook `{±1}`-integer phrasing of 1-D Tucker: given `lbl : ℕ → ℤ` with every label `±1` and antipodal boundary `lbl 0 = − lbl n`, some edge is complementary, `lbl i = − lbl (i+1)`. The bridge to the Boolean engine is the sign-bit encoding `b i := decide (lbl i = 1)`. The `key` lemma certifies, for `a, b ∈ {±1}`, that the encodings disagree iff `a = −b` (a four-case `decide`), so integer complementary edges are *exactly* the Bool sign changes of the encoded path. Applying `tucker_one_dim` to that path and decoding `key` in both directions transports the result — making explicit that the `Bool` parity engine and the classical signed-label Tucker statement are one and the same theorem.",
+    "mathContext": "Encoding $\\mathbb{Z}\\supset\\{\\pm1\\}\\to\\mathrm{Bool}$ by $[\\,\\mathrm{lbl}=1\\,]$; for $a,b\\in\\{\\pm1\\}$, $[\\,a=1\\,]\\neq[\\,b=1\\,]\\iff a=-b$, so $\\{\\pm1\\}$-complementary edges correspond bijectively to Boolean sign changes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "±1 sign labelling",
+      "sign-bit encoding",
+      "decidable equality on ℤ",
+      "transport along an encoding"
+    ],
+    "prerequisites": [
+      "tucker_one_dim (Boolean form)",
+      "decide on integer (·= 1)"
     ]
   }
 ]

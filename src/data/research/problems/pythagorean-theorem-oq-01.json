@@ -39,11 +39,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETE: base 2-D Pythagorean theorem solved (PythagoreanTheorem.lean, 0 sorry). As family follow-up, closed the only open sorry in the flat-limit file (PythagoreanTheoremOQ05.lean spherical_flat_limit) and repaired pervasive Mathlib-cache drift across that file.",
+    "builtItems": [
+      "sin_eq_sinc_mul, tendsto_one_sub_cos_mul_div_sq, tendsto_cos_mul_one, tendsto_one_sub_cos_prod_div_sq, spherical_flat_limit in Proofs/PythagoreanTheoremOQ05.lean (0 sorry, 0 axioms, verified via lake env lean 4.26.0)"
+    ],
+    "insights": [
+      "Spherical flat limit: from cos(tc)=cos(ta)cos(tb) ∀t>0, c²=a²+b² follows by the exact identity (1-cos(tx))/t² = (x²/2)·sinc(tx/2)², using half-angle 1-cos(tx)=2sin(tx/2)² and sin u = sinc u · u; sinc continuity (sinc 0 = 1) gives the limit. No range restriction on a,b,c needed.",
+      "This sinc-identity route is cleaner than the hyperbolic squeeze: it avoids all monotonicity/second-derivative machinery and reduces the limit to continuity of Real.sinc at 0."
+    ],
+    "mathlibGaps": [
+      "Mathlib cache drift broke the existing hyperbolic section: le_div_iff→le_div_iff₀, div_le_div_iff→div_le_div_iff₀, Filter.eventually_nhdsWithin_of_forall→eventually_nhdsWithin_of_forall, Tendsto.congr! argument order (eventuallyEq first), pointwise squeeze tendsto_of_tendsto_of_tendsto_of_le_of_le→eventually variant (prime), HasDerivAt.sub of a const now yields x-0 (needs simpa/convert), and let-bound f 0 = 0 no longer closes by bare simp (needs show)."
+    ],
+    "nextSteps": [
+      "Optionally create a gallery entry (src/data/proofs/pythagorean-theorem-oq-05) for the now-complete flat-limit file.",
+      "Audit sibling pythagorean files (OQ03 etc.) for the same Mathlib drift."
+    ],
     "markdown": "# Knowledge Base: pythagorean-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -63,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-04-06T06:37:41.264Z",
-  "lastUpdate": "2026-04-12T21:07:23.998Z",
+  "lastUpdate": "2026-06-27T13:30:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
@@ -107,7 +117,7 @@
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ05.lean"
     }

@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-stability-oq0301-setup",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 44, "endLine": 50 },
+    "type": "context",
+    "title": "Setup: A Corollary File over the Weyl Keystone",
+    "content": "The single non-Mathlib import is `Proofs.CauchyInterlacingWeyl`, which supplies `weyl_monotone` (re⟪Tx,x⟫ ≤ re⟪Ux,x⟫ for all x ⟹ μ(k) ≤ ν(k)) — itself a 0-axiom/0-sorry corollary of the Courant–Fischer keystone. Opening `CauchyInterlacing.Weyl` brings that monotonicity theorem into scope so the whole stability bound is assembled from it without re-deriving any spectral theory. The `variable` block fixes an inner product space `E` over `𝕜 : RCLike` (real or complex); crucially the operators below are presented as CONTINUOUS linear maps `E →L[𝕜] E`, so that `‖T − U‖` is the genuine operator norm with the Lipschitz constant 1 the theorem claims — the eigen-presentation is carried to the bare `LinearMap` coercion only where `weyl_monotone` is applied.",
+    "mathContext": "Imports `weyl_monotone : (∀ x, \\mathrm{re}\\langle Tx,x\\rangle \\le \\mathrm{re}\\langle Ux,x\\rangle) \\Rightarrow \\mu_k \\le \\nu_k$; operators are continuous so $\\|T-U\\|$ is the true operator norm.",
+    "significance": "context",
+    "relatedConcepts": ["Weyl monotonicity", "operator norm", "continuous linear map", "module import"],
+    "prerequisites": ["the parent Weyl monotonicity entry", "operator norm on E →L[𝕜] E", "RCLike inner product spaces"]
+  },
+  {
     "id": "ann-stability-oq0301-rayleigh-bound",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
     "range": { "startLine": 59, "endLine": 71 },

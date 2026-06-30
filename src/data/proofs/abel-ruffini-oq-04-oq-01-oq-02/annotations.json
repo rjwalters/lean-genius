@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-setup-galaction",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-02",
+    "range": {
+      "startLine": 40,
+      "endLine": 45
+    },
+    "type": "context",
+    "title": "Setup: the Permutation Representation of the Galois Group",
+    "content": "The file works over an arbitrary base field F and an arbitrary extension E (not just the concrete quintic), with p : F[X] a polynomial. The central object, supplied by Mathlib, is galActionHom p E : p.Gal →* Equiv.Perm (rootSet p E) — the permutation representation that records how each field automorphism permutes the finite root set. Everything below studies this single homomorphism: its image is the 'subgroup of S_n', its injectivity makes that image a faithful copy of Gal p, and its transitivity (for irreducible p) is the property the abel-ruffini chain depends on. Opening MulAction brings the action API (IsPretransitive, exists_smul_eq) into scope; the scoped IntermediateField notation F⟮α⟯ is used in the divisibility proof.",
+    "mathContext": "$\\mathrm{galActionHom}\\,p\\,E : \\mathrm{Gal}\\,p \\to \\mathrm{Perm}(\\mathrm{rootSet}\\,p\\,E)$, the action of field automorphisms on the roots.",
+    "significance": "context",
+    "relatedConcepts": [
+      "permutation representation",
+      "Galois group action on roots",
+      "splitting field",
+      "root set"
+    ],
+    "prerequisites": [
+      "Polynomial.Gal",
+      "Polynomial.Gal.galActionHom",
+      "MulAction"
+    ]
+  },
+  {
     "id": "ann-transitive-subgroup",
     "proofId": "abel-ruffini-oq-04-oq-01-oq-02",
     "range": {

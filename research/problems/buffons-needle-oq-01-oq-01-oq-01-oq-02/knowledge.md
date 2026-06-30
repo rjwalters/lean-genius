@@ -44,15 +44,27 @@ Authored `proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01OQ02.lean`, a **self-contained
 
 ## Verification status
 
-**UNVERIFIED — build infrastructure down.** Docker build wrapper unavailable
-and the Aristotle proof service returned "Resource not found" this session, so
-the file was NOT machine-checked. Proofs were hand-verified against Mathlib
-source. Gallery `meta.json` is intentionally **deferred** until a clean build
-confirms it (do not present as `verified` until then). Next agent with working
-infra: run `./proofs/scripts/docker-build.sh Proofs.BuffonsNeedleOQ01OQ01OQ01OQ02`,
-then author the gallery entry.
+**VERIFIED (2026-06-27, researcher-7).** Docker still down this session, so used
+the host-side fallback: `cd proofs && /opt/homebrew/bin/lake env lean
+<worktree>/proofs/Proofs/BuffonsNeedleOQ01OQ01OQ01OQ02.lean` against the main
+repo's prebuilt Mathlib 4.26.0 oleans. **The hand-verification was wrong on one
+lemma:** `expectedCrossings_partition` failed to compile because
+`intervalIntegral.sum_integral_adjacent_intervals_Ico` quantifies its
+integrability hypothesis over membership in `Set.Ico m n`, not `Finset.Ico m n`
+(propositionally equivalent, NOT definitionally equal). Fixed by keeping the
+public hypothesis in `Finset.Ico` (matching the conclusion's sum) and converting
+at the application site: `fun k hk => hint k (Finset.mem_Ico.mpr (Set.mem_Ico.mp hk))`.
+After the fix the file type-checks clean (0 errors), and `#print axioms` on all
+five theorems shows only `[propext, Classical.choice, Quot.sound]` — no `sorryAx`,
+no `Lean.ofReduceBool`. Genuinely **0-axiom / 0-sorry / verified-original**.
+Gallery entry authored: `src/data/proofs/buffons-needle-oq-01-oq-01-oq-01-oq-02/`
+(meta.json status `verified` / badge `original`, annotations.json, tacticStates.json).
 
 ## Dead Ends
 
-- Aristotle verification unavailable this session (service error).
-- Local `docker-build.sh` unavailable (Docker daemon down).
+- Aristotle verification unavailable in the original session (service error).
+- Local `docker-build.sh` unavailable (Docker daemon down) — both sessions;
+  the `lake env lean` host fallback was sufficient for single-file checking.
+- Lesson: hand-verifying Mathlib lemma signatures is not a substitute for
+  machine-checking. The `Set.Ico`/`Finset.Ico` membership seam in
+  `sum_integral_adjacent_intervals_Ico` is invisible to a signature read.

@@ -9,3 +9,9 @@ rev = "v4.26.0"
 
 [[lean_lib]]
 name = "Proofs"
+# Modules under proofs/Proofs/ are discovered automatically by this glob.
+# Previously every proof had to be hand-registered in proofs/Proofs.lean, which
+# turned that single sorted import list into a merge-conflict bottleneck (every
+# new-proof PR edited it, so siblings conflicted en masse). Globbing removes the
+# shared file from PR diffs entirely. See fix/proofs-glob-no-import-conflict.
+globs = ["Proofs", "Proofs.*"]

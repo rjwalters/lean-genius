@@ -1051,73 +1051,62 @@ lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
   have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
   linarith
 
-/-! ## Part 9: First-moment bias bound (S7 ACT-α step 4, first-moment route)
+/-! ## Part 8b: Markov ⇒ good-bulk domination (combinatorial step 3)
 
-Per Iter 15 (PR #19350) §6 + Iter 17 (PR #19619) §5 surfacing: the
-genuinely useful step 4 for the slack-4 ADLRY discharge at
-`witness_regular_symmetric_implies_epsilon_regular_small_eps` is the
-first-moment bound
+Step 3 of the small-`eps` ADLRY route (see the `_small_eps` docstrings):
+once the analytic Markov averaging supplies the bound
+`|A_bad| ≤ eps · |A|`, any subset `A' ⊆ A` that is large in the slack-4
+sense (`|A'| ≥ 4·eps·|A|`) is dominated (`≥ 3/4`) by its unbiased part
+`A' ∩ A_good`. This lemma isolates the purely combinatorial content of
+that step: it consumes the Markov bound as a hypothesis and derives the
+domination by counting alone, using no graph structure beyond the
+`A_bad`/`A_good` partition. The remaining open content of the route is
+the Markov bound itself (averaging) and the final density transfer. -/
 
-  ∑_{a ∈ A} vertexBias G a A B ≤ 2 · eps · #A
+/-- **Good-bulk domination from the Markov bound** (A-side, combinatorial
+step 3). Given the biased-vertex Markov bound `|A_bad| ≤ eps · |A|` and a
+slack-4-large subset `A' ⊆ A` (`4·eps·|A| ≤ |A'|`), the unbiased part
+`A' ∩ A_good` carries at least `3/4` of `|A'|`.
 
-(under `IsWitnessRegular_symmetric eps A B`). The second-moment bound
-`∑ (vertexBias)^2 ≤ 4 · eps^2 · #A` follows from this by Cauchy–Schwarz
-and is filed as a downstream `_tight` companion.
-
-This skeleton lands the lemma statements (the API surface downstream
-proofs call) plus the proof shape. The aggregation steps
-(`Finset.sum_le_sum`, `Finset.sum_const`) are discharged here; the two
-remaining `sorry`s are the genuinely mathematical obligations: the
-per-`a` triangle envelope on the `witnessFamilyB` pair, and the first-
-moment Markov corollary. -/
-
-/-- **First-moment bias bound** (S7 ACT-α step 4 proper, first-moment route).
-
-Under the symmetric witness-regular antecedent `IsWitnessRegular_symmetric eps A B`,
-the per-vertex bias against `B` sums to at most `2 · eps · #A`.
-
-Proof shape (per Iter 17 PREP §5):
-1. For each `a ∈ A`, the members `B ∩ N(a)` and `B \ N(a)` of
-   `witnessFamilyB G A B` partition `B` (`witnessFamilyB_card_split`).
-   Apply `(hreg.toB G)` on each member to get density discrepancies ≤ `eps`.
-2. Triangle: `vertexBias G a A B ≤ 2 · eps` (the `hper` envelope).
-3. Aggregate via `Finset.sum_le_sum` + `Finset.sum_const`. -/
-lemma vertexBias_sum_le
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    {eps : ℚ} (heps : 0 < eps)
-    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
-    (∑ a ∈ A, vertexBias G a A B) ≤ 2 * eps * A.card := by
-  -- B-side projection used in the per-`a` triangle.
-  have htoB : IsWitnessRegular G eps A B := IsWitnessRegular_symmetric.toB G hreg
-  -- Per-`a` envelope: vertexBias a ≤ 2 · eps via triangle on the witnessFamilyB pair.
-  have hper : ∀ a ∈ A, vertexBias G a A B ≤ 2 * eps := by
-    intro a ha
-    -- Step a.1: the two grid members `B ∩ N(a)` and `B \ N(a)` lie in
-    -- `witnessFamilyB G A B` (`mem_witnessFamilyB_nhd`/`_compl (ha)`),
-    -- with cardinalities summing to `|B|` (`witnessFamilyB_card_split`).
-    -- Step a.2: apply `htoB` on each large member to get discrepancies ≤ `eps`.
-    -- Step a.3: triangle + density decomposition ⟹ vertexBias a ≤ 2·eps.
-    sorry  -- ~25-35 LOC: triangle assembly on the witnessFamilyB pair for {a}.
-  calc (∑ a ∈ A, vertexBias G a A B)
-      ≤ ∑ _a ∈ A, (2 * eps : ℚ) := Finset.sum_le_sum hper
-    _ = (A.card : ℚ) * (2 * eps) := by rw [Finset.sum_const, nsmul_eq_mul]
-    _ = 2 * eps * A.card := by ring
-
-/-- **First-moment Markov corollary**: `|A_bad| · eps ≤ 2 · eps · #A`.
-
-On its own this gives only the trivial bound `|A_bad| ≤ 2 · #A` (the
-genuine ADLRY discharge needs the two-sided averaging at `_small_eps`);
-it is filed as a sanity-check companion that chains the first-moment
-bound through the `A_bad` filter via `Finset.sum_le_sum_of_subset_of_nonneg`. -/
-lemma A_bad_card_first_moment_markov
-    (G : SimpleGraph V) [DecidableRel G.Adj]
-    {eps : ℚ} (heps : 0 < eps)
-    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
-    ((A_bad G eps A B).card : ℚ) * eps ≤ 2 * eps * A.card := by
-  have hsum := vertexBias_sum_le G heps A B hreg
-  -- `∑_{a ∈ A_bad} vertexBias a ≥ |A_bad| · eps` (definition of `A_bad`),
-  -- and `∑_{a ∈ A_bad} vertexBias a ≤ ∑_{a ∈ A} vertexBias a` via
-  -- `Finset.sum_le_sum_of_subset_of_nonneg` (vertexBias ≥ 0). Chain with `hsum`.
-  sorry  -- ~10-15 LOC.
+Proof: the biased part `A'.filter (eps < bias)` injects into `A_bad`, so
+its cardinality is `≤ eps·|A| ≤ (1/4)·|A'|` (the last step by slack-4
+largeness). The unbiased part is the complement of the biased part in
+`A'`, hence has cardinality `≥ |A'| − (1/4)·|A'| = (3/4)·|A'|`; it equals
+`A' ∩ A_good` because `A' ⊆ A`. No `eps > 0` hypothesis is needed — the
+bound is monotone and holds vacuously when the antecedents force the
+counts. -/
+lemma three_quarters_good_of_markov (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B A' : Finset V)
+    (hsub : A' ⊆ A)
+    (hcard : 4 * eps * (A.card : ℚ) ≤ (A'.card : ℚ))
+    (hmarkov : ((A_bad G eps A B).card : ℚ) ≤ eps * (A.card : ℚ)) :
+    (3 / 4 : ℚ) * (A'.card : ℚ) ≤ ((A' ∩ A_good G eps A B).card : ℚ) := by
+  -- `A' ∩ A_good` is exactly `A'` filtered by the unbiased predicate.
+  have hgood_eq : A' ∩ A_good G eps A B
+      = A'.filter (fun a => ¬ (eps < vertexBias G a A B)) := by
+    ext x
+    rw [Finset.mem_inter, Finset.mem_filter]
+    constructor
+    · rintro ⟨hxA', hxgood⟩
+      exact ⟨hxA', not_lt.mpr ((mem_A_good G eps A B x).mp hxgood).2⟩
+    · rintro ⟨hxA', hxp⟩
+      exact ⟨hxA', (mem_A_good G eps A B x).mpr ⟨hsub hxA', not_lt.mp hxp⟩⟩
+  -- The biased part of `A'` injects into `A_bad`.
+  have hbad_sub : A'.filter (fun a => eps < vertexBias G a A B)
+      ⊆ A_bad G eps A B := by
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    exact (mem_A_bad G eps A B x).mpr ⟨hsub hx.1, hx.2⟩
+  have hbad_le : ((A'.filter (fun a => eps < vertexBias G a A B)).card : ℚ)
+      ≤ ((A_bad G eps A B).card : ℚ) := by
+    exact_mod_cast Finset.card_le_card hbad_sub
+  -- Biased / unbiased parts of `A'` partition it.
+  have hsplit : ((A'.filter (fun a => eps < vertexBias G a A B)).card : ℚ)
+      + ((A'.filter (fun a => ¬ (eps < vertexBias G a A B))).card : ℚ)
+      = (A'.card : ℚ) := by
+    exact_mod_cast Finset.filter_card_add_filter_neg_card_eq_card
+      (s := A') (p := fun a => eps < vertexBias G a A B)
+  rw [hgood_eq]
+  nlinarith [hbad_le, hmarkov, hcard, hsplit]
 
 end Szemeredi.OQ04

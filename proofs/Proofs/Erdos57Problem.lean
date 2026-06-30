@@ -22,7 +22,7 @@
 
 import Mathlib
 
-open Set BigOperators
+open Set BigOperators SimpleGraph
 
 namespace Erdos57
 
@@ -157,15 +157,153 @@ lemma noOddCycles_of_boolColoring {G : SimpleGraph V} (c : G.Coloring Bool) :
   have hEven : Even p.length := (c.even_length_iff_congr p).mpr Iff.rfl
   exact (Nat.not_even_iff_odd.mpr hodd) hEven
 
+/-- Rotating a closed walk preserves its length (auxiliary for the crux lemma). -/
+theorem aux_length_rotate [DecidableEq V] {G : SimpleGraph V} {z y : V}
+    (c : G.Walk y y) (h : z ∈ c.support) : (c.rotate h).length = c.length := by
+  have hspec := congrArg Walk.length (c.take_spec h)
+  rw [Walk.length_append] at hspec
+  rw [show (c.rotate h) = (c.dropUntil z h).append (c.takeUntil z h) from rfl,
+    Walk.length_append]
+  omega
+
+/-- A path between two vertices that uses the edge directly joining its two endpoints
+must be the single-edge path (auxiliary for the crux lemma). -/
+theorem isPath_length_one_of_mem_edges {G : SimpleGraph V} {v u : V} (p : G.Walk v u)
+    (hp : p.IsPath) (he : s(u, v) ∈ p.edges) : p.length = 1 := by
+  cases p with
+  | nil => simp at he
+  | @cons _ w _ e q =>
+    rw [Walk.edges_cons, List.mem_cons] at he
+    rw [Walk.cons_isPath_iff] at hp
+    rcases he with heq | hmem
+    · rw [Sym2.eq_iff] at heq
+      have hvw : v ≠ w := e.ne
+      have huw : u = w := by
+        rcases heq with ⟨_, h2⟩ | ⟨h1, _⟩
+        · exact absurd h2 hvw
+        · exact h1
+      subst huw
+      rw [Walk.isPath_iff_eq_nil] at hp
+      have : q = Walk.nil := hp.1
+      subst this
+      simp
+    · exact absurd (Walk.snd_mem_support_of_mem_edges q hmem) hp.2
+
+/-- Strong-induction workhorse for `exists_odd_cycle_of_odd_closed_walk`: an odd-length
+closed walk of length `n` contains an odd cycle. -/
+theorem exists_odd_cycle_aux [DecidableEq V] {G : SimpleGraph V} (n : ℕ) :
+    ∀ {u : V} (w : G.Walk u u),
+      w.length = n → Odd n → ∃ (x : V) (c : G.Walk x x), c.IsCycle ∧ Odd c.length := by
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro u w hlen hodd
+    by_cases hcyc : w.IsCycle
+    · exact ⟨u, w, hcyc, by rw [hlen]; exact hodd⟩
+    · cases w with
+      | nil => rw [Walk.length_nil] at hlen; obtain ⟨k, hk⟩ := hodd; omega
+      | @cons _ v _ h p =>
+        -- `w = cons h p` with `h : G.Adj u v`, `p : G.Walk v u`
+        rw [Walk.cons_isCycle_iff] at hcyc
+        -- since `w` is odd it is not a cycle, hence `p` is not a path: it repeats a vertex
+        have hnp : ¬ p.IsPath := by
+          intro hpath
+          have hin : s(u, v) ∈ p.edges := by
+            by_contra hnin
+            exact hcyc ⟨hpath, hnin⟩
+          have h1 : p.length = 1 := isPath_length_one_of_mem_edges p hpath hin
+          rw [Walk.length_cons, h1] at hlen
+          obtain ⟨k, hk⟩ := hodd; omega
+        rw [Walk.isPath_def, List.nodup_iff_count_le_one] at hnp
+        push_neg at hnp
+        obtain ⟨z, hz2⟩ := hnp
+        have hzp : z ∈ p.support := List.count_pos_iff.mp (by omega)
+        have hzw : z ∈ (Walk.cons h p).support := by
+          rw [Walk.support_cons]; exact List.mem_cons_of_mem _ hzp
+        -- rotate the walk so it is based at the repeated vertex `z`
+        set r : G.Walk z z := (Walk.cons h p).rotate hzw with hrdef
+        have hlenr : r.length = n := by rw [hrdef, aux_length_rotate]; exact hlen
+        have hcount : r.support.tail.count z = p.support.count z := by
+          have hperm : r.support.tail ~r p.support := by
+            have h0 := Walk.support_rotate (Walk.cons h p) hzw
+            rw [← hrdef] at h0
+            simpa only [Walk.support_cons, List.tail_cons] using h0
+          exact hperm.perm.count_eq z
+        clear_value r
+        clear hrdef
+        cases r with
+        | nil => rw [Walk.length_nil] at hlenr; obtain ⟨k, hk⟩ := hodd; omega
+        | @cons _ m _ e r' =>
+          -- split the rotated walk `cons e r'` at the second occurrence of `z`
+          have hlenr' : r'.length + 1 = n := by rw [Walk.length_cons] at hlenr; exact hlenr
+          have hcz : 1 < r'.support.count z := by
+            rw [Walk.support_cons, List.tail_cons] at hcount
+            rw [hcount]; exact hz2
+          have hz' : z ∈ r'.support := List.count_pos_iff.mp (by omega)
+          have hts : (r'.takeUntil z hz').length + (r'.dropUntil z hz').length = r'.length := by
+            have := congrArg Walk.length (r'.take_spec hz')
+            rwa [Walk.length_append] at this
+          have htailcount : 1 ≤ (r'.dropUntil z hz').support.tail.count z := by
+            have hsplit : r'.support.count z
+                = (r'.takeUntil z hz').support.count z
+                  + (r'.dropUntil z hz').support.tail.count z := by
+              conv_lhs => rw [← r'.take_spec hz']
+              rw [Walk.support_append, List.count_append]
+            rw [Walk.count_support_takeUntil_eq_one] at hsplit
+            omega
+          have hdr1 : 1 ≤ (r'.dropUntil z hz').length := by
+            have hc1 : (r'.dropUntil z hz').support.tail.count z
+                ≤ (r'.dropUntil z hz').support.tail.length := List.count_le_length
+            rw [List.length_tail, Walk.length_support] at hc1
+            omega
+          have hra1 : 1 ≤ (Walk.cons e (r'.takeUntil z hz')).length := by
+            rw [Walk.length_cons]; omega
+          have hsum : (Walk.cons e (r'.takeUntil z hz')).length
+              + (r'.dropUntil z hz').length = n := by
+            rw [Walk.length_cons]; omega
+          -- the two pieces are closed walks at `z`, strictly shorter, summing to an odd length;
+          -- one of them is therefore odd, and the induction hypothesis applies
+          rcases Nat.even_or_odd (r'.dropUntil z hz').length with hev | hod
+          · have hraodd : Odd (Walk.cons e (r'.takeUntil z hz')).length := by
+              have hno : Odd ((Walk.cons e (r'.takeUntil z hz')).length
+                  + (r'.dropUntil z hz').length) := by rw [hsum]; exact hodd
+              rw [Nat.odd_add] at hno
+              exact hno.mpr hev
+            exact ih (Walk.cons e (r'.takeUntil z hz')).length (by omega)
+              (Walk.cons e (r'.takeUntil z hz')) rfl hraodd
+          · exact ih (r'.dropUntil z hz').length (by omega)
+              (r'.dropUntil z hz') rfl hod
+
+/--
+**Crux lemma (classical, Mathlib gap), now proved:** every odd closed walk contains an
+odd cycle.
+
+This is the only genuinely nonelementary ingredient of the bipartite characterization,
+and Mathlib lists this exact statement as future work
+(`Mathlib.Combinatorics.SimpleGraph.Bipartite`). The proof is strong induction on the walk
+length (`exists_odd_cycle_aux`): if the walk is already a cycle we are done; otherwise it is
+odd hence not a cycle, so by `cons_isCycle_iff` it repeats an interior vertex. Rotating to
+that vertex and splitting at its second occurrence (`Walk.takeUntil`/`Walk.dropUntil`) yields
+two strictly shorter closed walks whose lengths sum to the original odd length, so one of
+them is an odd closed walk of smaller length and the induction hypothesis applies.
+-/
+theorem exists_odd_cycle_of_odd_closed_walk {G : SimpleGraph V} {u : V}
+    (w : G.Walk u u) (hodd : Odd w.length) :
+    ∃ (x : V) (c : G.Walk x x), c.IsCycle ∧ Odd c.length := by
+  classical
+  exact exists_odd_cycle_aux w.length w rfl hodd
+
 /--
 A graph is bipartite iff it has no odd cycles.
 
-The forward direction is the elementary parity argument (a proper 2-coloring forces
-every closed walk to have even length). The reverse direction (no odd cycle ⟹
-2-colorable) is the hard classical direction; for arbitrary, possibly infinite, `V`
-it requires building a 2-coloring component-by-component from the parity of distances
-to chosen base vertices. Mathlib lists this exact characterization as future work
-(`Mathlib.Combinatorics.SimpleGraph.Bipartite`), so it is left as the sole open goal.
+The forward direction is the elementary parity argument (a proper 2-coloring forces every
+closed walk to have even length). The reverse direction is the classical direction. Rather
+than rebuild a component-wise distance-parity coloring by hand, we route through Mathlib's
+`two_colorable_iff_forall_loop_even` (which already supplies that construction): bipartite is
+equivalent to "every closed walk has even length", and the contrapositive of that is exactly
+`exists_odd_cycle_of_odd_closed_walk` — an odd loop would yield an odd cycle, contradicting
+`oddCycleLengths G = ∅`. The whole reverse direction is therefore reduced to the single
+classical walk lemma above (Mathlib lists this characterization as future work,
+`Mathlib.Combinatorics.SimpleGraph.Bipartite`).
 -/
 theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
     G.IsBipartite ↔ oddCycleLengths G = ∅ := by
@@ -173,8 +311,15 @@ theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
   · intro hbip
     obtain ⟨c⟩ := hbip
     exact noOddCycles_of_boolColoring (G.recolorOfEquiv finTwoEquiv c)
-  · intro _hno
-    sorry
+  · intro hno
+    refine SimpleGraph.two_colorable_iff_forall_loop_even.mpr ?_
+    intro x w
+    by_contra hne
+    rw [Nat.not_even_iff_odd] at hne
+    obtain ⟨y, c, hcyc, hcodd⟩ := exists_odd_cycle_of_odd_closed_walk w hne
+    have hmem : c.length ∈ oddCycleLengths G := ⟨⟨y, c, hcyc, rfl⟩, hcodd⟩
+    rw [hno] at hmem
+    exact hmem
 
 /-- 2-colorable graphs have no odd cycles. -/
 theorem colorable_two_no_odd_cycles (G : SimpleGraph V)

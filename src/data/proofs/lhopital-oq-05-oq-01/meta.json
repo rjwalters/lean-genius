@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "strategy-and-setup",
+      "title": "Strategy: Divide the Remainder",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "The header lays out the plan — exploit Mathlib's explicit quadratic Taylor bound Real.cos_bound rather than iterate L'Hôpital, dividing the degree-4 cosine error by the degree-2 denominator to control the deviation from 1/2 quadratically. Imports only Mathlib; opens Filter and Topology.",
+      "mathContext": "Both 1 − cos x and x² vanish to order 2 at 0; the leading Taylor term x²/2 forces the ratio to 1/2."
+    },
+    {
       "id": "deviation-bound",
       "title": "The Quadratic Deviation Bound",
       "startLine": 38,
