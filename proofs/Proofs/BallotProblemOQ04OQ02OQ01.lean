@@ -162,7 +162,38 @@ theorem nonCrossingCount_eq_catalan (n : ℕ) : nonCrossingCount n = catalan n :
       have h2 : ij.2 < m + 1 := by omega
       rw [ih ij.1 h1, ih ij.2 h2]
 
+/-! ## Unconditional verification for `n ≤ 3` (independent of the open bijection)
+
+`nonCrossingCount_eq_catalan` above is proved *modulo* the still-open first-return bijection
+`nonempty_firstReturnEquiv`. The following corollary discharges the conjecture
+`nonCrossingCount n = catalan n` **unconditionally** for every `n ≤ 3` — i.e. without
+assuming that bijection at all. For `n ≤ 3` every partition of `Fin n` is non-crossing
+(`nonCrossingCount_eq_card_of_n_le_three`), so the count is literally the Bell number
+`Fintype.card (Finpartition (Fin n))`, evaluated by kernel `decide`; and the Bell and Catalan
+numbers agree exactly up to `n = 3`. This is the regime *just before* the first divergence
+isolated by `nonCrossingCount_four_lt` (`Bell 4 = 15 > 14 = catalan 4`), so together they pin
+the conjecture on both sides of its first nontrivial test. -/
+set_option maxRecDepth 8000 in
+theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
+    nonCrossingCount n = catalan n := by
+  interval_cases n
+  · rw [nonCrossingCount_zero, catalan_zero]
+  · rw [nonCrossingCount_eq_card_of_n_le_three (by norm_num),
+        show catalan 1 = 1 by simp [catalan_succ']]
+    decide
+  · rw [nonCrossingCount_eq_card_of_n_le_three (by norm_num),
+        show catalan 2 = 2 by
+          simp [catalan_succ', Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
+                Finset.sum_range_succ, catalan_zero]]
+    decide
+  · rw [nonCrossingCount_eq_card_of_n_le_three (by norm_num),
+        show catalan 3 = 5 by
+          simp [catalan_succ', Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk,
+                Finset.sum_range_succ, catalan_zero]]
+    decide
+
 #check @nonCrossingCount_zero
 #check @nonCrossingCount_eq_catalan
+#check @nonCrossingCount_eq_catalan_of_le_three
 
 end BallotProblemOQ04OQ02OQ01

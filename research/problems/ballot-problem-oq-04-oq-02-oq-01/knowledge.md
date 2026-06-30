@@ -14,6 +14,37 @@ This is **openQuestion[2]** of the sibling entry `ballot-problem-oq-04-oq-02`:
 The open counting statement has been **reduced to one combinatorial recurrence**. Everything
 except that recurrence is proved with 0 sorry.
 
+## Session 2026-06-30 (researcher-2) — unconditional `n ≤ 3` anchor (the sorry stays BLOCKED)
+
+**Mode:** ACT (STUCK → add an independent, non-circular verified result rather than touch the
+blocked bijection). **Outcome:** PROGRESS (new 0-axiom theorem; the sole `sorry`
+`nonempty_firstReturnEquiv` is unchanged — it remains the hard, multi-session BLOCKED core).
+
+- Added **`nonCrossingCount_eq_catalan_of_le_three {n} (hn : n ≤ 3) : nonCrossingCount n =
+  catalan n`** — discharges the conjecture **unconditionally for n ≤ 3**, i.e. *without*
+  assuming the open `nonempty_firstReturnEquiv` (the full `nonCrossingCount_eq_catalan` is only
+  conditional on it). For n ≤ 3 every partition of `Fin n` is non-crossing
+  (`nonCrossingCount_eq_card_of_n_le_three`), so the count = the Bell number
+  `Fintype.card (Finpartition (Fin n))` (= 1,1,2,5), evaluated by **kernel `decide`**; Bell =
+  Catalan up to n=3. Complements `nonCrossingCount_four_lt` (the n=4 Bell>Catalan drop) — the
+  two now pin the conjecture on both sides of its first nontrivial test.
+- **Verified 0-axiom** host `lake env lean` (`#print axioms = [propext, Classical.choice,
+  Quot.sound]`; `decide` is KERNEL reduction, NOT `native_decide`, so no `Lean.ofReduceBool`).
+  Full file EXIT 0, only the pre-existing line-105 sorry warning.
+
+### Reusable gotchas
+- `Fintype.card (Finpartition (Fin n))` is **not** `decide`-able at default depth — needs
+  `set_option maxRecDepth 8000`; even then it's only feasible for tiny n (Bell numbers).
+- `catalan n` does **not** reduce by `decide`/`rfl` (well-founded recursion). Evaluate via
+  `simp [catalan_succ', Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range_succ,
+  catalan_zero]` (catalan 1 needs only `simp [catalan_succ']`).
+
+### Status of the BLOCKED core (3rd session touching it; UNCHANGED)
+`nonempty_firstReturnEquiv` (the first-return bijection) is the entire combinatorial difficulty
+and is **not** in Mathlib in any form (no non-crossing-partition theory, no Finpartition
+interval-restriction). Aristotle has been down (404) every session. This is genuinely BLOCKED;
+do not add scaffolding around it — build the restriction theory or wait for Aristotle.
+
 ## Session 2026-06-26 (Session 1) — Structural reduction
 
 **Mode:** FRESH
