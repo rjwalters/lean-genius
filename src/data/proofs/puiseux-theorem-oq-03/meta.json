@@ -54,11 +54,14 @@
       "Worked three-vertex example: zipWith products [-2,1] sum to -1 = drop from (0,2) to (3,1) (threeVertex_sum_slope_mul_width)",
       "Analytic-bridge layer (PuiseuxSeries K := HahnSeries ℚ K + addVal): puiseuxMonomial/puiseuxVal_monomial (v(x^q)=q), the Y²−x worked ramified root (ysqMinusX_root_valuation, v(x^{1/2})=½ matching the polygon edge slope), and puiseuxVal_not_integer (the ramification is real — ½ ∉ ℤ)",
       "Full ramified-root family: puiseuxMonomial_pow ((x^q)^n = x^{n·q}) and puiseuxMonomial_mul (x^p·x^q = x^{p+q}, so q ↦ x^q embeds (ℚ,+)); nthRoot_x + nthRoot_valuation + exists_nthRoot_of_x — for EVERY n ≥ 1, x^{1/n} is an n-th root of x with valuation 1/n, generalizing the n=2 instance to every ramification index",
-      "puiseuxVal_surjective: the value group is all of ℚ — every rational q is the valuation of the monomial x^q; the precise sense in which HahnSeries ℚ K is fully ramified over the Laurent base K⸨x⸩ (value group ℤ)"
+      "puiseuxVal_surjective: the value group is all of ℚ — every rational q is the valuation of the monomial x^q; the precise sense in which HahnSeries ℚ K is fully ramified over the Laurent base K⸨x⸩ (value group ℤ)",
+      "laurentToPuiseux: the unramified base inclusion K⸨x⸩=HahnSeries ℤ K ↪ PuiseuxSeries K (ring hom via the order embedding ℤ↪ℚ on value groups) — first brick of the open ramified embedding",
+      "laurentToPuiseux_addVal: the inclusion preserves valuation (v_ℚ of image = ℤ-valuation cast into ℚ), so the image is exactly the integer-valuation elements",
+      "puiseuxMonomial_half_not_in_range: x^{1/2} (valuation ½) is NOT in the image — structural witness that ramification lives strictly outside the Laurent subfield (converse companion to puiseuxVal_surjective)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 1260,
-    "theoremCount": 66,
+    "lineCount": 1323,
+    "theoremCount": 71,
     "definitionCount": 8,
     "mathlib_version": "4.26.0"
   },
