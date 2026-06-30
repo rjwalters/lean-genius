@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-pbfm-oq03oq03-defs",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "definition",
+    "title": "The Independent Two-Stage Recoloring Model",
+    "content": "Three real-valued functions encode the naive product-space recoloring. `vertexFinalProb p := (1/2)(1-p) + (1/2)·p` is the probability a fixed vertex ends on a fixed target color: with probability `1-p` it keeps its uniform first-round color (matching the target with probability `1/2`), and with probability `p` it is flipped (matching with the complementary probability `1/2`). `monoIndep k p := 2·(vertexFinalProb p)^k` is the probability a `k`-edge is monochromatic — by independence across its `k` vertices, raised to the `k`-th power, doubled for the two possible colors. `monoOneStage k := 2·(1/2)^k` is the baseline one-round Erdős value. Modeling probabilities as plain reals (not a measure space) is the standard first-moment idiom shared with the sibling entries; it suffices to settle the negative direction.",
+    "mathContext": "$\\mathrm{vertexFinalProb}(p) = \\tfrac12(1-p) + \\tfrac12 p$, $\\quad \\mathrm{monoIndep}(k,p) = 2\\,(\\mathrm{vertexFinalProb}\\,p)^k$, $\\quad \\mathrm{monoOneStage}(k) = 2\\,(\\tfrac12)^k = 2^{1-k}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product probability space", "independent vertex recoloring", "monochromatic edge", "first-moment idiom", "Bernoulli(p) flip"],
+    "prerequisites": ["independent events and product probabilities", "the symmetric first-moment bound 2^(1-k)"]
+  },
+  {
+    "id": "ann-pbfm-oq03oq03-uniform",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "theorem",
+    "title": "XOR with Uniform Stays Uniform (vertexFinalProb_eq_half)",
+    "content": "`vertexFinalProb_eq_half` is the single algebraic collapse the whole result rests on: for every flip rate `p`, `vertexFinalProb p = 1/2`. The proof is `unfold; ring` — the `(1-p)` and `p` weights cancel because the uniform first-round color contributes `1/2` to each branch: `(1/2)(1-p) + (1/2)p = (1/2)((1-p)+p) = 1/2`. Probabilistically this is the XOR-with-uniform principle: a uniformly random bit XOR-ed with *any* independent bit is again uniform, so the second stage carries no information about the final color. Marking it `@[simp]` lets later proofs rewrite it away automatically.",
+    "mathContext": "$\\mathrm{vertexFinalProb}(p) = \\tfrac12(1-p) + \\tfrac12 p = \\tfrac12\\big((1-p)+p\\big) = \\tfrac12$ for all $p$ — the flip rate cancels.",
+    "significance": "key",
+    "relatedConcepts": ["XOR with a uniform bit", "information-theoretic inertness", "uniform distribution invariance", "ring normalization"],
+    "prerequisites": ["uniform first-round coloring", "independence of the flip from the first-round color"]
+  },
+  {
+    "id": "ann-pbfm-oq03oq03-mono",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "theorem",
+    "title": "Independent Recoloring Is Worthless (monoIndep_eq_oneStage)",
+    "content": "`monoIndep_eq_oneStage` is the central negative result: for every edge size `k` and every flip rate `p`, `monoIndep k p = monoOneStage k`. Once `vertexFinalProb p` is rewritten to `1/2`, the edge probability becomes `2·(1/2)^k`, identical to the one-round Erdős value — so the second recoloring stage reproduces the first stage exactly, no matter how `p` is tuned. This is the formal content of 'the naive product-space repair leaves the first moment exactly where Erdős left it', and it is what forces the genuine Radhakrishnan–Srinivasan gain to come from the conditional, order-dependent recoloring rather than any independent flip.",
+    "mathContext": "$\\mathrm{monoIndep}(k,p) = 2\\,(\\mathrm{vertexFinalProb}\\,p)^k = 2\\,(\\tfrac12)^k = \\mathrm{monoOneStage}(k) = 2^{1-k}$, independent of $p$.",
+    "significance": "key",
+    "relatedConcepts": ["first-moment method", "monochromatic probability", "Radhakrishnan–Srinivasan recoloring", "product-space inertness"],
+    "prerequisites": ["vertexFinalProb_eq_half", "independence across the k vertices of an edge"]
+  },
+  {
+    "id": "ann-pbfm-oq03oq03-zpow",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 83, "endLine": 87 },
+    "type": "technique",
+    "title": "Closed Form as a Real Integer Power (monoOneStage_eq_zpow)",
+    "content": "`monoOneStage_eq_zpow` exhibits the baseline value explicitly as `monoOneStage k = 2^(1-k)` interpreted as a real `zpow` (integer exponent `1 - k : ℤ`, which may be negative). The rewrite chain `one_div, inv_pow, sub_eq_add_neg, zpow_add₀, zpow_one, zpow_neg, zpow_natCast` converts `2·(1/2)^k` step by step: `(1/2)^k = (2^k)⁻¹`, then `2·2^{-k} = 2^{1+(-k)} = 2^{1-k}`, using `2 ≠ 0` to license `zpow_add₀`. Writing the value as a single integer power makes the connection to Erdős's `2^(k-1)` threshold (`1/2^{1-k} = 2^{k-1}`) transparent.",
+    "mathContext": "$\\mathrm{monoOneStage}(k) = 2\\cdot(\\tfrac12)^k = 2\\cdot 2^{-k} = 2^{1-k}$ as a real $\\mathbb{Z}$-power; its reciprocal is the Erdős threshold $2^{k-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["real integer powers (zpow)", "negative exponents", "Erdős threshold 2^(k-1)", "exponent arithmetic"],
+    "prerequisites": ["zpow_add₀ / zpow_neg / zpow_natCast", "2 ≠ 0 to apply zpow_add₀"]
+  },
+  {
+    "id": "ann-pbfm-oq03oq03-const",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 89, "endLine": 97 },
+    "type": "theorem",
+    "title": "Constant in the Flip Rate (monoIndep_const, expMono_indep_const)",
+    "content": "Two immediate corollaries make the inertness explicit as constancy in `p`. `monoIndep_const`: `monoIndep k p = monoIndep k q` for any two flip rates `p, q`, since both equal `monoOneStage k`. `expMono_indep_const`: the expected number of monochromatic edges of an `m`-edge, `k`-uniform hypergraph, `m·monoIndep k p` (linearity of expectation over the `m` edges), is likewise independent of `p`. There is no flip rate that lowers the expected monochromatic-edge count — the entire degree of freedom introduced by recoloring is a no-op in the product model.",
+    "mathContext": "$\\mathrm{monoIndep}(k,p) = \\mathrm{monoIndep}(k,q)$ and $\\mathbb{E}[\\#\\text{mono}] = m\\cdot\\mathrm{monoIndep}(k,p)$ is constant in $p$ — by linearity of expectation over the $m$ edges.",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of expectation", "constant function", "degrees of freedom collapse", "expected monochromatic-edge count"],
+    "prerequisites": ["monoIndep_eq_oneStage", "linearity of expectation"]
+  },
+  {
+    "id": "ann-pbfm-oq03oq03-threshold",
+    "proofId": "property-b-first-moment-oq-03-oq-03",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "theorem",
+    "title": "The First-Moment Threshold Is Unmoved (threshold_indep)",
+    "content": "`threshold_indep` quantifies the inertness as a threshold equivalence: `m·monoIndep k p < 1 ↔ 2·m < 2^k`, for every flip rate `p`. After rewriting `monoIndep k p = 2·(1/2)^k = 2/2^k`, the criterion `m·(2/2^k) < 1` becomes `2m/2^k < 1`, and `div_lt_one` (valid since `2^k > 0` by `positivity`) turns it into `2m < 2^k` — exactly Erdős's `m < 2^(k-1)`. The flip rate `p` has vanished from the statement: independent recoloring cannot raise the Property B threshold above `2^(k-1)`. This is the formal endpoint isolating the conditional, order-dependent recoloring as the sole remaining lever for the Radhakrishnan–Srinivasan √(k/log k) gain.",
+    "mathContext": "$m\\cdot\\mathrm{monoIndep}(k,p) < 1 \\iff m\\cdot\\tfrac{2}{2^k} < 1 \\iff 2m < 2^k \\iff m < 2^{k-1}$, independent of $p$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős 2^(k-1) bound", "Property B threshold", "div_lt_one", "Radhakrishnan–Srinivasan recoloring"],
+    "prerequisites": ["monoIndep_eq_oneStage", "div_lt_one with 2^k > 0", "positivity"]
+  }
+]
