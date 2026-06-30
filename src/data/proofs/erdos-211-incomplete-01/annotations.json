@@ -52,5 +52,17 @@
     "significance": "critical",
     "relatedConcepts": ["Steiner triple system", "necessary divisibility condition", "Kirkman's condition", "Fano plane", "affine plane AG(2,3)"],
     "prerequisites": ["Nat.choose_two_right", "binomial coefficients"]
+  },
+  {
+    "id": "erdos211-inc01-ann-islinecover",
+    "proofId": "erdos-211-incomplete-01",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "definition",
+    "title": "IsLineCover: An Honest Antecedent, Not an Assumed Configuration",
+    "content": "The whole entry turns on what IsLineCover is — and is not. It is a three-part Prop bundling the axioms of a Steiner triple system S(2,3,n): every line has exactly three points (hcard), every line sits inside the point set V (hsub), and every 2-element subset of V lies on exactly one line (hcover, the ∃! cover condition). This is a *hypothesis*, quantified universally: every theorem below reads 'for all V and L, if IsLineCover V L then …'. Crucially it is **not** an axiom asserting such an L exists. That distinction is the 'incomplete-01' framing: the entry rigorously proves the combinatorial consequence (the n(n-1)/6 line count) of being such a system, while the geometric question — for which n and via which planar point sets such a system is *realised* — is deliberately left to the classical Kirkman/Steiner existence theory. Trading existence for an honest antecedent is exactly what keeps the file 0-axiom while still extracting the rigorous heart of Erdős's 1/6.",
+    "mathContext": "$\\mathrm{IsLineCover}\\,V\\,L \\;:=\\; \\bigl(\\forall l\\in L,\\,|l|=3\\bigr)\\;\\wedge\\;\\bigl(\\forall l\\in L,\\,l\\subseteq V\\bigr)\\;\\wedge\\;\\bigl(\\forall p\\in \\binom{V}{2},\\,\\exists!\\,l\\in L,\\ p\\subseteq l\\bigr)$. The $\\exists!$ ('exactly one') is the $\\lambda=1$ of a $2$-design $S(2,3,n)$; weakening it to $\\exists$ would break the per-pair fiber count of $1$ that the double count needs.",
+    "significance": "key",
+    "relatedConcepts": ["Steiner triple system S(2,3,n)", "2-design", "ExistsUnique", "honest antecedent vs. axiom", "conditional theorem", "design realizability"],
+    "prerequisites": ["Prop and predicates in Lean", "Finset.powersetCard", "ExistsUnique (∃!)"]
   }
 ]

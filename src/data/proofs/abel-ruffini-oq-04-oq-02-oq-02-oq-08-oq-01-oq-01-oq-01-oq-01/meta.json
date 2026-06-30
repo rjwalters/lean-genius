@@ -263,5 +263,19 @@
       "relationship": "related",
       "description": "Abel–Ruffini rests on S₅ non-solvable; abel_ruffini_is_additive_escape recovers 5 as the minimal additive escape of the solvable cardinalities, and perm_sum_solvability_not_preserved gives Fin 2 ⊕ Fin 3 as the smallest disjoint union manufacturing it."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Reading the intrinsic solvability threshold IsSolvable (Perm α) ↔ Fintype.card α ≤ 4 through the two monoidal structures on finite types turns each construction into an arithmetic side-condition — additive card α + card β ≤ 4 for the disjoint union ⊕, multiplicative card α · card β ≤ 4 for the product × (each one rewrite via Fintype.card_sum / Fintype.card_prod). The two operations then behave oppositely with respect to the boundary. Products REFLECT solvability downward: a nonempty complementary factor only grows the carrier (card α ≤ card α · card β), so every factor of a solvable Perm (α × β) is itself solvable. Disjoint unions do NOT preserve it: Perm (Fin 2) and Perm (Fin 3) are both solvable while Perm (Fin 2 ⊕ Fin 3) is not, the union having 5 points. That failure is the Abel–Ruffini obstruction read combinatorially — the solvable cardinalities {0,1,2,3,4} are not closed under addition, and the least escaping sum is exactly 2 + 3 = 5, the minimal unsolvable degree. A 0-axiom Mathlib bridge (no native_decide): the classification is Mathlib-backed, the boundary arithmetic and reflection/escape derivations are the new content.",
+    "implications": [
+      "The reflect/preserve dichotomy (product_reflects_sum_does_not) is genuine structure, not an artefact of encoding: solvability descends along Cartesian projections but is destroyed by disjoint union, so the two monoidal structures sit on opposite sides of the n = 5 boundary.",
+      "The two escapes have different minimal costs and the gap is explained by arithmetic: the additive escape 2 + 3 = 5 lands exactly on the Abel–Ruffini degree, while the multiplicative escape 2 · 3 = 6 overshoots — no product of two non-trivial factors can hit 5 because 5 is prime.",
+      "Abel–Ruffini acquires a purely combinatorial fingerprint: 'the general quintic is not solvable by radicals' becomes 'the solvable cardinalities first break additive closure at 5', recoverable without reference to polynomials or Galois groups.",
+      "The technique — rewrite an intrinsic cardinality threshold through Fintype.card_sum / Fintype.card_prod, then read off monotonicity — is a template for studying how any card-determined group property interacts with the algebra of finite types."
+    ],
+    "openQuestions": [
+      "Both pieces being solvable fails to preserve solvability under ⊕; is there a sharp characterization of which pairs (α, β) of solvable factors yield a solvable union beyond the raw condition card α + card β ≤ 4 — e.g. for more than two summands, or for iterated unions?",
+      "Products reflect solvability to factors; does the converse direction admit a clean statement — when does solvability of all factors imply solvability of the product, given that card α · card β ≤ 4 forces at least one factor trivial?",
+      "What is the analogous boundary arithmetic for other type operations (function types β → α with card α^(card β), or sigma/pi types over a finite index), and do any of them preserve rather than merely reflect or destroy solvability?"
+    ]
+  }
 }

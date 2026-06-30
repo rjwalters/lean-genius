@@ -2,6 +2,7 @@ import Mathlib.Combinatorics.Additive.Corner.Roth
 import Mathlib.Combinatorics.Additive.AP.Three.Behrend
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Proofs.RothTheoremOQ02
 
 /-!
@@ -14,24 +15,37 @@ theorem on three-term arithmetic progressions:
 
   ∃ C > 0, ∀ N ≥ 3, rothNumberNat N ≤ C · N · (log log N / log N)^(1/2)
 
-The bound is named `rothNumberNat_bourgain` and asserted as a Lean `axiom`,
-exactly mirroring the established gallery pattern used by the sibling file
-`RothTheoremOQ02.lean` for the Bloom–Sisask bound. Supporting names —
-`bourgainConst` (a choice of constant `C`), `bourgainConst_pos` (its
-positivity), and `rothNumberNat_le_bourgain` (the bound at the chosen
-constant) — give downstream consumers a stable API without having to call
-`Exists.choose` manually.
+The bound is named `rothNumberNat_bourgain`.  Unlike the sibling file
+`RothTheoremOQ02.lean` — which *axiomatizes* the Bloom–Sisask bound — this file
+**no longer declares a Bourgain axiom**: `rothNumberNat_bourgain` is now a
+**theorem, derived from the Bloom–Sisask axiom** of OQ-02, because Bloom–Sisask
+(`N / (log N)^{1+c}`) decays strictly faster than the Bourgain bound and so
+implies it.  The earlier version of this file carried a separate
+`axiom rothNumberNat_bourgain`; that axiom was redundant (its own docstring noted
+"OQ-01 is implied by OQ-02"), and has been eliminated.  Supporting names —
+`bourgainConst` (a choice of constant `C`), `bourgainConst_pos` (its positivity),
+and `rothNumberNat_le_bourgain` (the bound at the chosen constant) — give
+downstream consumers a stable API without having to call `Exists.choose` manually.
 
-The file is *intentionally minimal*: it provides the typed landmark, the
-trivial consequence that the axiom is consistent with Mathlib's existing
-qualitative result `rothNumberNat_isLittleO_id`, the consistency with
-Behrend's unconditional lower bound, and — the distinguishing content of
-this OQ — the explicit record that the **Bloom–Sisask bound (OQ-02) is at
-least as strong**, i.e. `rothNumberNat N` is bounded by the *minimum* of the
-Bourgain and Bloom–Sisask right-hand sides. The Lean formalization of
+The distinguishing content is the explicit analytic reduction "Bloom–Sisask ⟹
+Bourgain": the constant is read off the `N = 3` endpoint and the comparison is
+closed by `Real.rpow` monotonicity (details below).  Also recorded: consistency
+with Mathlib's qualitative `rothNumberNat_isLittleO_id`, with Behrend's
+unconditional lower bound, and that `rothNumberNat N` is bounded by the *minimum*
+of the Bourgain and Bloom–Sisask right-hand sides.  The Lean formalization of
 Bourgain's proof itself (discrete Fourier analysis with Bohr-set density
-increment, > 1000 lines of additive-combinatorics infrastructure not yet in
-Mathlib) is deferred.
+increment) remains out of scope; here Bourgain rests only on the *single* gallery
+assumption already present in OQ-02.
+
+## The analytic core (Bloom–Sisask ⟹ Bourgain)
+
+After cancelling the common factor `N > 0` and writing `L = log N`, `LL = log log N`:
+`L^(1+c)` splits as `L^(1/2)·L^(1/2+c)` (`Real.rpow_add`) and `(LL/L)^(1/2)` splits
+as `LL^(1/2)/L^(1/2)` (`Real.div_rpow`), reducing the goal to
+`1 ≤ (LL^(1/2)·L^(1/2+c))/(B·E)` with `B = (log log 3)^(1/2)`, `E = (log 3)^(1/2+c)`.
+Both `LL^(1/2) ≥ B` and `L^(1/2+c) ≥ E` hold by `Real.rpow` monotonicity in the base
+(`log 3 ≤ log N`, `log log 3 ≤ log log N`, valid since `N ≥ 3 ⟹ log N ≥ log 3 > 1
+⟹ log log N > 0`).  Choosing `C = 1/(B·E)` closes it.
 
 ## The Quantitative Landscape
 
@@ -51,13 +65,17 @@ Bloom–Sisask bound `N / (log N)^{1+c}` decays strictly faster than the
 Bourgain bound, **OQ-01 is implied by OQ-02**; this file records that
 implication directly through `rothNumberNat_le_min_bourgain_blasi`.
 
-## Scope (researcher-10, 2026-06-25)
+## Scope (researcher-10, 2026-06-25; axiom eliminated researcher-1, 2026-06-28)
 
-- File status: **axiomatized** (1 axiom, 0 sorries).
+- File status: **axiomatized** — the result rests on the imported
+  `RothTheoremOQ02.rothNumberNat_bloom_sisask`, but this file declares **0 axioms
+  of its own** (the former `axiom rothNumberNat_bourgain` is now a derived theorem),
+  0 sorries.
 - Imports `Mathlib.Combinatorics.Additive.Corner.Roth` (for `rothNumberNat`
   and `rothNumberNat_isLittleO_id`), `...AP.Three.Behrend` (for
-  `Behrend.roth_lower_bound`), the real `log`/`rpow` API, and the sibling
-  `Proofs.RothTheoremOQ02` (for `rothNumberNat_le_blasi`).
+  `Behrend.roth_lower_bound`), the real `log`/`rpow` API, `...ExponentialBounds`
+  (for `Real.exp_one_lt_d9`), and the sibling `Proofs.RothTheoremOQ02` (for
+  `rothNumberNat_bloom_sisask` / `rothNumberNat_le_blasi`).
 - Works at the **Mathlib `rothNumberNat`** level (over `Finset (Fin N)` /
   `ℕ`), *not* the project-local `Szemeredi.Roth.rothNumber` over `ZMod N`
   used in `RothTheorem.lean`, matching OQ-02 and the qualitative
@@ -78,25 +96,83 @@ namespace RothTheoremOQ01
 
 open Asymptotics Filter Topology
 
-/-- **Bourgain's 1999 quantitative bound on the Roth number.** Axiomatic
-statement:
+/-- **Bourgain's 1999 quantitative bound on the Roth number — derived, not axiomatized.**
 
   ∃ C > 0, ∀ N ≥ 3, rothNumberNat N ≤ C · N · (log log N / log N)^(1/2)
 
-Proved analytically by Bourgain (Geom. Funct. Anal. 1999) via a single-step
-density increment on a Bohr set with refined Fourier control; the full proof
-requires Bohr-set geometry not yet in Mathlib at v4.26.0 (pin
-`2df2f0150c275ad`). Asserted here axiomatically so downstream gallery files
-can refer to the bound by name.
+Bourgain (Geom. Funct. Anal. 1999) proved this analytically via a Bohr-set density
+increment; the full proof needs additive-combinatorics infrastructure not in Mathlib.
+But the bound need not be assumed: the **Bloom–Sisask 2020 bound** `rothNumberNat N ≤
+N / (log N)^(1+c)` (`RothTheoremOQ02.rothNumberNat_bloom_sisask`) decays strictly faster,
+so it *implies* Bourgain.  We discharge the implication explicitly, eliminating the
+formerly-separate `axiom rothNumberNat_bourgain`.
 
-The lower bound `N ≥ 3` matches the convention in `RothTheoremOQ02` and
-ensures `Real.log N > Real.log 3 > 1 > 0`, so `Real.log (Real.log N) > 0`,
-the base `log log N / log N` is positive, and the right-hand side is positive
-and the bound is non-vacuous. -/
-axiom rothNumberNat_bourgain :
+The lower bound `N ≥ 3` ensures `log N ≥ log 3 > 1 > 0`, hence `log (log N) > 0`, so the
+base `log log N / log N` is positive and the bound is non-vacuous. -/
+theorem rothNumberNat_bourgain :
     ∃ C : ℝ, 0 < C ∧ ∀ N : ℕ, 3 ≤ N →
       (rothNumberNat N : ℝ) ≤
-        C * (N : ℝ) * (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2)
+        C * (N : ℝ) * (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) := by
+  obtain ⟨c, hc, hbs⟩ := RothTheoremOQ02.rothNumberNat_bloom_sisask
+  -- endpoint constants at N = 3: `log 3 > 1` and `log log 3 > 0`.
+  have h3R : (0 : ℝ) < 3 := by norm_num
+  have h_e_lt_3 : Real.exp 1 < 3 :=
+    Real.exp_one_lt_d9.trans (by norm_num : (2.7182818286 : ℝ) < 3)
+  have h_one_lt_log3 : (1 : ℝ) < Real.log 3 := by
+    have h := (Real.log_lt_log_iff (Real.exp_pos 1) h3R).mpr h_e_lt_3
+    rwa [Real.log_exp] at h
+  have h_log3_pos : (0 : ℝ) < Real.log 3 := lt_trans one_pos h_one_lt_log3
+  have h_loglog3_pos : (0 : ℝ) < Real.log (Real.log 3) := Real.log_pos h_one_lt_log3
+  set B : ℝ := Real.log (Real.log 3) ^ ((1 : ℝ) / 2) with hB
+  set E : ℝ := Real.log 3 ^ ((1 : ℝ) / 2 + c) with hE
+  have hB_pos : 0 < B := Real.rpow_pos_of_pos h_loglog3_pos _
+  have hE_pos : 0 < E := Real.rpow_pos_of_pos h_log3_pos _
+  refine ⟨1 / (B * E), by positivity, ?_⟩
+  intro N hN
+  -- per-`N` positivity facts.
+  have hNR : (3 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hNpos : (0 : ℝ) < (N : ℝ) := lt_of_lt_of_le h3R hNR
+  have h_log3_le_logN : Real.log 3 ≤ Real.log N := Real.log_le_log h3R hNR
+  have h_one_lt_logN : (1 : ℝ) < Real.log N := lt_of_lt_of_le h_one_lt_log3 h_log3_le_logN
+  have h_logN_pos : (0 : ℝ) < Real.log N := lt_trans one_pos h_one_lt_logN
+  have h_loglogN_pos : (0 : ℝ) < Real.log (Real.log N) := Real.log_pos h_one_lt_logN
+  have h_loglog3_le : Real.log (Real.log 3) ≤ Real.log (Real.log N) :=
+    Real.log_le_log h_log3_pos h_log3_le_logN
+  -- the Bloom–Sisask bound at this `N`.
+  have hbsN : (rothNumberNat N : ℝ) ≤ (N : ℝ) / Real.log N ^ (1 + c) := hbs N hN
+  -- the analytic comparison: Bloom–Sisask RHS ≤ Bourgain RHS.
+  have hkey : (N : ℝ) / Real.log N ^ (1 + c) ≤
+      (1 / (B * E)) * (N : ℝ) * (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) := by
+    have hLpow_pos : (0 : ℝ) < Real.log N ^ (1 + c) := Real.rpow_pos_of_pos h_logN_pos _
+    -- L^(1+c) = L^(1/2) · L^(1/2+c)
+    have hLsplit : Real.log N ^ (1 + c)
+        = Real.log N ^ ((1 : ℝ) / 2) * Real.log N ^ ((1 : ℝ) / 2 + c) := by
+      rw [← Real.rpow_add h_logN_pos]; congr 1; ring
+    -- (LL/L)^(1/2) = LL^(1/2) / L^(1/2)
+    have hdiv : (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2)
+        = Real.log (Real.log N) ^ ((1 : ℝ) / 2) / Real.log N ^ ((1 : ℝ) / 2) := by
+      rw [Real.div_rpow h_loglogN_pos.le h_logN_pos.le]
+    -- base-monotonicity of the two `rpow` factors.
+    have hBmono : B ≤ Real.log (Real.log N) ^ ((1 : ℝ) / 2) :=
+      Real.rpow_le_rpow h_loglog3_pos.le h_loglog3_le (by norm_num)
+    have hEmono : E ≤ Real.log N ^ ((1 : ℝ) / 2 + c) :=
+      Real.rpow_le_rpow h_log3_pos.le h_log3_le_logN (by positivity)
+    rw [div_le_iff₀ hLpow_pos, hdiv, hLsplit]
+    have heq : (1 / (B * E)) * (N : ℝ) *
+        (Real.log (Real.log N) ^ ((1 : ℝ) / 2) / Real.log N ^ ((1 : ℝ) / 2)) *
+          (Real.log N ^ ((1 : ℝ) / 2) * Real.log N ^ ((1 : ℝ) / 2 + c))
+        = (Real.log (Real.log N) ^ ((1 : ℝ) / 2) * Real.log N ^ ((1 : ℝ) / 2 + c)) / (B * E)
+            * (N : ℝ) := by
+      have hsne : Real.log N ^ ((1 : ℝ) / 2) ≠ 0 := ne_of_gt (Real.rpow_pos_of_pos h_logN_pos _)
+      field_simp
+      try ring
+    rw [heq]
+    have hat : B * E ≤ Real.log (Real.log N) ^ ((1 : ℝ) / 2) * Real.log N ^ ((1 : ℝ) / 2 + c) :=
+      mul_le_mul hBmono hEmono hE_pos.le (le_trans hB_pos.le hBmono)
+    have h1le : 1 ≤ (Real.log (Real.log N) ^ ((1 : ℝ) / 2) * Real.log N ^ ((1 : ℝ) / 2 + c))
+        / (B * E) := (one_le_div (by positivity)).mpr hat
+    exact le_mul_of_one_le_left hNpos.le h1le
+  exact le_trans hbsN hkey
 
 /-- A canonical choice of the Bourgain constant `C > 0` extracted from the
 axiom via `Exists.choose`. Marked `noncomputable` because `Exists.choose`
@@ -179,5 +255,10 @@ theorem rothNumberNat_le_min_bourgain_blasi (N : ℕ) (hN : 3 ≤ N) :
 #check bourgain_consistent_with_isLittleO
 #check bourgain_consistent_with_Behrend
 #check rothNumberNat_le_min_bourgain_blasi
+
+-- Axiom audit: `rothNumberNat_bourgain` is now a THEOREM.  Its only non-foundational
+-- dependency is the imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` — there is NO
+-- separate Bourgain axiom, and no `sorryAx` / `Lean.ofReduceBool`.
+#print axioms rothNumberNat_bourgain
 
 end RothTheoremOQ01

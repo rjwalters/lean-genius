@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Docstring framing the open question — can the binomial recurrences be recovered by decomposing the powerset rather than unfolding Nat.choose? — and listing the two decompositions (fix an element → Pascal, fix the size → row sum) plus the 0-sorry/0-axiom status. Imports Mathlib and opens the Multiset and Finset namespaces.",
+      "mathContext": "Both $\\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$ and $\\sum_k \\binom{n}{k} = 2^n$ derived from powerset structure, not from $\\mathrm{Nat.rec}$."
+    },
+    {
       "id": "decomp-element",
       "title": "Part I: Fix an Element → Pascal's Recurrence",
       "startLine": 46,
@@ -66,5 +74,14 @@
       "summary": "Pascal triangle entries via the recurrence, the n=4 row sum by kernel decide, and the two boundary edges choose 0 (k+1) = 0 and choose m 0 = 1.",
       "mathContext": "$\\binom{4}{2} = 3+3$; $\\sum_{k} \\binom{4}{k} = 16$; boundary edges of the triangle"
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Both canonical binomial identities are obtained combinatorially, by counting one finite family of sets organized two ways. Fixing an element splits the (k+1)-subsets of a set into those omitting it and those using it, and taking cardinalities of Multiset.powersetCard_cons (resp. Finset.powersetCard_succ_insert) gives Pascal's recurrence (m+1).choose(k+1) = m.choose(k+1) + m.choose k. Fixing the size writes the powerset as the disjoint union of its cardinality layers, and counting Finset.powerset_card_disjiUnion gives the row sum ∑_k m.choose k = 2^m. All six theorems are fully machine-checked (0 sorries, 0 axioms, no native_decide), and crucially none touches the Nat.rec definition of choose — the proofs are bijective in both spirit and mechanism.",
+    "implications": "This answers the parent's open question affirmatively: the binomial recurrences, like the submultiset product formula, are recoverable purely from the structure of the powerset, not from the recursive definition of the coefficient. The Finset proof of Pascal is fully honest — it exhibits the disjointness (avoid x vs contain x) and the relabelling bijection (insert x, inverse erase x) explicitly, rather than hiding them inside an induction. The pattern 'decompose the indexing set, then take cardinalities' is the reusable lesson: it generalises to other coefficient identities (e.g. Vandermonde from a two-part split of the ground set, or the hockey-stick identity from a layered powerset) wherever a clean structural decomposition is available in Mathlib.",
+    "openQuestions": [
+      "Can Vandermonde's identity ∑_j (m.choose j)(n.choose (k−j)) = (m+n).choose k be derived the same way, by splitting an (m+n)-set into an m-part and an n-part and counting the k-subsets layer by layer?",
+      "Does the hockey-stick identity ∑_{i=r}^{n} i.choose r = (n+1).choose (r+1) admit a powerset-decomposition proof, classifying (r+1)-subsets by their largest element?",
+      "Can the explicit bijection in choose_succ_succ_finset (insert x / erase x) be packaged as a reusable Equiv between the (k+1)-subsets of insert x s and the disjoint union, so the cardinality identity becomes a corollary of an equivalence rather than a card computation?"
+    ]
+  }
 }

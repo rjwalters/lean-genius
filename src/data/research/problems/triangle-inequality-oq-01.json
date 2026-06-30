@@ -1,7 +1,7 @@
 {
   "slug": "triangle-inequality-oq-01",
   "title": "Triangle Inequality OQ-01: Minkowski Inequality in L^p",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -41,11 +41,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED: Formalized Minkowski's inequality in L^p as gallery entry triangle-inequality-oq-01 (Proofs/TriangleInequalityOQ01.lean, 14 theorems, 0 sorries, 0 axioms, VERIFIED). Inequality assembled at three levels — eLpNorm seminorm, MemLp closure, bundled Banach space Lp E p μ — plus the p<1 convexity-threshold failure via LpAddConst.",
+    "builtItems": [
+      "Proofs/TriangleInequalityOQ01.lean: eLpNorm_add_le (Minkowski for the L^p seminorm, 1≤p)",
+      "eLpNorm_sub_le, eLpNorm_sum_le (subtractive + iterated finite-sum Minkowski)",
+      "eLpNorm_add_le_const + LpAddConst_eq_one (quasi-triangle inequality with constant 2^(1/p-1); =1 iff 1≤p)",
+      "memLp_add, memLp_finset_sum (L^p closed under addition/finite sums)",
+      "lp_norm_add_le, lp_norm_def, lp_abs_norm_sub_norm_le, lp_dist_triangle, lp_norm_sum_le (bundled Lp E p μ)",
+      "l1_norm_add_le, l2_norm_add_le (named L^1 / L^2 instances)",
+      "src/data/proofs/triangle-inequality-oq-01/{meta.json,annotations.json} gallery entry"
+    ],
+    "insights": [
+      "Minkowski for L^p reduces entirely to MeasureTheory.eLpNorm_add_le on ℝ≥0∞; the bundled Banach norm version is a toReal corollary.",
+      "1≤p is the exact convexity threshold: Mathlib's LpAddConst p = 2^(1/p-1) equals 1 iff p≥1 (LpAddConst_of_one_le); for p<1 subadditivity genuinely fails.",
+      "The bundled NormedAddCommGroup (Lp E p μ) instance (needs Fact (1≤p)) yields the metric + reverse triangle inequalities for free via the generic normed-group API.",
+      "Minkowski is equivalent to closure of MemLp under addition (MemLp.add) — the vector-space structure of L^p."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Equality case: for 1<p<∞, equality in Minkowski iff f,g non-negatively proportional a.e.",
+      "Reverse Minkowski on 0<p<1.",
+      "L^p–L^q duality: ‖f‖_p = sup_{‖g‖_q≤1} ∫ f·g."
+    ],
     "markdown": "# Knowledge Base: triangle-inequality-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

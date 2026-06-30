@@ -24,7 +24,7 @@
     "lineCount": 211,
     "theoremCount": 14,
     "definitionCount": 2,
-    "assumptions": "hall_solvable: Hall's theorem for solvable groups (requires Schur–Zassenhaus + minimal normal subgroup theory not yet in Mathlib). hall_characterizes_solvability: Hall's converse (requires Feit–Thompson odd-order theorem).",
+    "assumptions": "hall_solvable: Hall's theorem for solvable groups. Schur–Zassenhaus IS available in Mathlib 4.26 (Subgroup.exists_right_complement'_of_coprime); the remaining gap is minimal-normal-subgroup theory (elementary-abelian structure). The Schur–Zassenhaus lifting step is proved with 0 axioms in lagrange-theorem-oq-01-oq-03-oq-01. hall_characterizes_solvability: Hall's converse (requires Feit–Thompson odd-order theorem).",
     "originalContributions": [
       "IsHallDivisor definition: d | n with gcd(d, n/d) = 1, the formal Hall divisor condition",
       "IsHallSubgroup definition: subgroup H with gcd(|H|, [G:H]) = 1",

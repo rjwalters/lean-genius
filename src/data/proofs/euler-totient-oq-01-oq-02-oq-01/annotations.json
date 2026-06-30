@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-context",
+    "proofId": "euler-totient-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 38
+    },
+    "type": "context",
+    "title": "What This Sibling Adds Over the Parent",
+    "content": "The parent entry euler-totient-oq-01-oq-02 records the Carmichael function λ on prime powers, but for odd primes it stops at the coincidence λ(pᵏ) = φ(pᵏ) — leaving the value implicit. This file supplies what that coincidence hides: the explicit closed form λ(pᵏ) = pᵏ⁻¹(p − 1), the structural reason (the unit group is cyclic, so its exponent equals its order), and a constructive primitive root (a unit of that exact order). The whole chain — (ℤ/pᵏℤ)ˣ cyclic ⟹ exponent = order ⟹ λ = φ = pᵏ⁻¹(p − 1) — is made explicit, and contrasted sharply with the 2-power case where the group is NOT cyclic and λ = φ/2.",
+    "mathContext": "$(\\mathbb{Z}/p^k\\mathbb{Z})^\\times \\text{ cyclic} \\Rightarrow \\exp = |\\cdot| \\Rightarrow \\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1)$",
+    "significance": "supporting",
+    "relatedConcepts": ["Carmichael function", "Euler totient", "cyclic unit group", "OQ chain (parent → sibling)", "2-power contrast"],
+    "prerequisites": ["the parent's λ(pᵏ) = φ(pᵏ) coincidence", "prime-power factorization of the totient"]
+  },
+  {
     "id": "ann-mechanism",
     "proofId": "euler-totient-oq-01-oq-02-oq-01",
     "range": {
@@ -19,15 +34,30 @@
     "proofId": "euler-totient-oq-01-oq-02-oq-01",
     "range": {
       "startLine": 59,
+      "endLine": 79
+    },
+    "type": "insight",
+    "title": "The Closed Form λ(pᵏ) = pᵏ⁻¹(p − 1)",
+    "content": "carmichael_eq_totient restates the parent's cyclic coincidence λ(pᵏ) = φ(pᵏ). carmichael_odd_prime_pow is the open question's target: it combines that coincidence with the totient prime-power formula φ(pᵏ) = pᵏ⁻¹(p − 1) (Nat.totient_prime_pow) to turn the implicit value φ(pᵏ) into an explicit polynomial in p and k. carmichael_odd_prime is the k = 1 corollary λ(p) = p − 1, where the full multiplicative group (ℤ/pℤ)ˣ is cyclic of order p − 1.",
+    "mathContext": "$\\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1), \\qquad \\lambda(p) = p - 1$",
+    "significance": "key",
+    "relatedConcepts": ["closed-form totient φ(pᵏ) = pᵏ⁻¹(p−1)", "Carmichael function", "prime-power totient", "k=1 specialization"],
+    "prerequisites": ["carmichael_eq_totient (cyclic coincidence)", "Nat.totient_prime_pow"]
+  },
+  {
+    "id": "ann-primitive-root",
+    "proofId": "euler-totient-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
       "endLine": 90
     },
     "type": "insight",
-    "title": "The Closed Form λ(pᵏ) = pᵏ⁻¹(p − 1) and a Primitive Root",
-    "content": "carmichael_odd_prime_pow is the open question's target: combine λ(pᵏ) = φ(pᵏ) (carmichael_eq_totient, the cyclic coincidence) with φ(pᵏ) = pᵏ⁻¹(p − 1) (Nat.totient_prime_pow) to turn the implicit value φ(pᵏ) into an explicit polynomial in p and k. carmichael_odd_prime is the k = 1 corollary λ(p) = p − 1. exists_primitiveRoot_odd_prime_pow makes cyclicity constructive: it names an actual unit of order exactly pᵏ⁻¹(p − 1) — a primitive root mod pᵏ — obtained from IsCyclic.exists_ofOrder_eq_natCard by transporting the generator's order through #(ℤ/pᵏℤ)ˣ = φ(pᵏ).",
-    "mathContext": "$\\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1), \\qquad \\lambda(p) = p - 1, \\qquad \\exists\\,g \\in (\\mathbb{Z}/p^k\\mathbb{Z})^\\times,\\ \\mathrm{ord}(g) = p^{k-1}(p-1)$",
+    "title": "A Constructive Primitive Root",
+    "content": "exists_primitiveRoot_odd_prime_pow makes cyclicity constructive: it names an actual unit g of order exactly pᵏ⁻¹(p − 1) = φ(pᵏ) — a primitive root modulo pᵏ, whose powers run through every unit. The witness comes from IsCyclic.exists_ofOrder_eq_natCard (a cyclic group has a generator whose order is the group's cardinality), and the generator's order is transported through Nat.card_eq_fintype_card, ZMod.card_units_eq_totient (#(ℤ/pᵏℤ)ˣ = φ(pᵏ)), and Nat.totient_prime_pow to land on the explicit pᵏ⁻¹(p − 1). This upgrades the abstract exponent statement to an existence-of-generator statement.",
+    "mathContext": "$\\exists\\,g \\in (\\mathbb{Z}/p^k\\mathbb{Z})^\\times,\\ \\mathrm{ord}(g) = p^{k-1}(p-1) = \\varphi(p^k)$",
     "significance": "key",
-    "relatedConcepts": ["closed-form totient φ(pᵏ) = pᵏ⁻¹(p−1)", "primitive root", "cyclic generator", "order of a unit", "multiplicative group of a finite field"],
-    "prerequisites": ["carmichael_pow_of_prime_ne_two", "Nat.totient_prime_pow", "IsCyclic.exists_ofOrder_eq_natCard", "ZMod.card_units_eq_totient"]
+    "relatedConcepts": ["primitive root", "cyclic generator", "order of a unit", "IsCyclic.exists_ofOrder_eq_natCard", "ZMod.card_units_eq_totient"],
+    "prerequisites": ["cyclicity of the unit group", "order of a generator equals group cardinality", "ZMod.card_units_eq_totient"]
   },
   {
     "id": "ann-concrete",

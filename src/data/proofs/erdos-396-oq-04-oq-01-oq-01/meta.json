@@ -46,6 +46,56 @@
       "Limits of real sequences (Filter.Tendsto, atTop) and finite-sum manipulation"
     ]
   },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions: the deficit and the harmonic number",
+      "startLine": 47,
+      "endLine": 52,
+      "summary": "catalanDeficit n = 4 − catalanRatio n (the shortfall of the n-th step from the limiting rate 4), and realHarmonic m = ∑_{i<m} 1/(i+1), the real m-th harmonic number whose partial sums the deficits will equal.",
+      "mathContext": "$\\delta\\,n = 4 - r\\,n$, $\\quad H\\,m = \\sum_{i<m} \\frac{1}{i+1}$."
+    },
+    {
+      "id": "deficit-identity",
+      "title": "The deficit identity and its vanishing",
+      "startLine": 54,
+      "endLine": 67,
+      "summary": "deficit_eq: δ n = 6/(n+2) by a one-line ring rewrite of the parent identity r n = 4 − 6/(n+2); deficit_pos: δ n > 0 by positivity; deficit_tendsto_zero: δ n → 0 from r n → 4. Each step's shortfall is a harmonic term that vanishes individually.",
+      "mathContext": "$\\delta\\,n = 4 - (4 - \\tfrac{6}{n+2}) = \\tfrac{6}{n+2} \\to 0$."
+    },
+    {
+      "id": "harmonic-recurrence",
+      "title": "Harmonic-number recurrence and base case",
+      "startLine": 69,
+      "endLine": 76,
+      "summary": "realHarmonic_succ: H(m+1) = H m + 1/(m+1) via Finset.sum_range_succ; realHarmonic_one: H 1 = 1. The two facts needed to run the induction for the cumulative-deficit identity.",
+      "mathContext": "$H_{m+1} = H_m + \\tfrac{1}{m+1}$, $\\quad H_1 = 1$."
+    },
+    {
+      "id": "cumulative-deficit",
+      "title": "Cumulative deficit is a harmonic partial sum",
+      "startLine": 78,
+      "endLine": 99,
+      "summary": "deficit_sum_eq: ∑_{k<n} δ k = 6·(H_{n+1} − 1) by induction (peel with sum_range_succ, expand the harmonic recurrence with push_cast, close by ring). ratio_sum_eq: splitting r k = 4 − δ k gives ∑_{k<n} r k = 4n − 6·(H_{n+1} − 1).",
+      "mathContext": "$\\sum_{k<n}\\delta\\,k = 6\\,(H_{n+1}-1)$, $\\quad \\sum_{k<n} r\\,k = 4n - 6\\,(H_{n+1}-1)$."
+    },
+    {
+      "id": "divergence",
+      "title": "The cumulative shortfall diverges",
+      "startLine": 101,
+      "endLine": 119,
+      "summary": "realHarmonic_tendsto_atTop: harmonic partial sums diverge (Mathlib's Real.tendsto_sum_range_one_div_nat_succ_atTop); deficit_sum_tendsto_atTop: ∑_{k<n} δ k → ∞ by transporting that divergence along the closed form (shift, subtract 1, scale by 6, Tendsto.congr). The sharp contrast with δ n → 0.",
+      "mathContext": "$\\sum_{k<n}\\delta\\,k = 6\\,(H_{n+1}-1)\\to\\infty$ since $H_m\\to\\infty$."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Numerical sanity checks",
+      "startLine": 121,
+      "endLine": 133,
+      "summary": "Worked examples: δ 0 = 3 (r 0 = 1 lags 4 by 3), and ∑_{k<2} δ k = 3 + 2 = 5 = 6·(H₃ − 1), confirming the closed form on small cases.",
+      "mathContext": "$\\delta\\,0 = 3$, $\\quad \\delta\\,0 + \\delta\\,1 = 5 = 6\\,(H_3 - 1)$."
+    }
+  ],
   "conclusion": {
     "summary": "The deficit δ n = 4 − r n of the Catalan recurrence ratio equals exactly 6/(n+2). Individually the deficits vanish (δ n → 0), but their running total is the harmonic partial sum ∑_{k<n} δ k = 6·(H_{n+1} − 1), which diverges to +∞. As a corollary the running sum of the ratios is ∑_{k<n} r k = 4n − 6·(H_{n+1} − 1). All nine theorems are fully machine-checked with no axioms or sorries.",
     "implications": "The result pinpoints, purely at the level of the integer recurrence, why the Catalan numbers grow strictly slower than 4^n by a polynomial factor: the multiplicative deficits from the rate 4 are harmonic and so do not sum to a finite constant. It exhibits a clean textbook instance of the distinction between a sequence tending to 0 and its series converging, arising naturally from a combinatorial recurrence.",

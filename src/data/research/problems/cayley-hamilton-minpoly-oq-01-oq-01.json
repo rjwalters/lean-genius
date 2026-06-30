@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-01-oq-01",
   "title": "Prove the JCF product formula in Lean when Mathlib adds Jordan block matrix d...",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T05:50:14-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Proved forward divisibility minpoly ∣ ∏(X-μ)^{e_μ} from generalized-eigenspace span; machine-verification pending host-disk relief.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Re-run Docker build to confirm 0-sorry/0-axiom once disk frees; then attempt reverse divisibility (∏ ∣ minpoly via chain-strictness exactness).",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "Forward divisibility of the JCF product formula proved without Jordan blocks: minpoly K f ∣ ∏_{μ eigenvalue}(X-μ)^{maxGenEigenspaceIndex f μ}, via iSup_maxGenEigenspace_eq_top + per-summand factorization in K[X]. New file CayleyHamiltonMinpolyOQ01OQ01.lean (0 sorries, 0 axioms by construction). Reduces parent axiom minpoly_product_formula to a one-sided gap. Build machine-verification pending: host disk full corrupted olean cache; first run confirmed only DecidableEq fix needed (applied via classical).",
+    "builtItems": [
+      "minpoly_dvd_maxGenEigenspace_product (forward divisibility)",
+      "maxGenEigenspace_eq_bot_of_not_hasEigenvalue",
+      "aeval_linear_factor_pow"
+    ],
+    "insights": [
+      "maxGenEigenspaceIndex = monotonicSequenceLimitIndex = sInf{n | chain constant from n}; strictness below it follows from Module.End.ker_pow_constant + Nat.sInf_le. Proven as genEigenspace_lt_succ_of_lt_maxGenEigenspaceIndex (PR #30664).",
+      "Exact nilpotency witness: exists_mem_maxGenEigenspace_pow_pred_ne_zero gives v in maxGenEigenspace with (f-μ)^{e-1} v ≠ 0."
+    ],
+    "mathlibGaps": [
+      "Explicit Jordan block matrix decomposition with labeled basis indexing (not in Mathlib 4.26.0); needed only for the exactness/reverse direction, not the forward divisibility."
+    ],
+    "nextSteps": [
+      "Assemble reverse divisibility ∏ (X-μ)^{e_μ} ∣ minpoly from the new exactness lemma: needs primary decomposition V = ⨁ maxGenEigenspace and coprime-factor invertibility on each summand",
+      "Combine forward + reverse to discharge the parent minpoly_product_formula axiom"
+    ],
     "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -477,5 +489,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ07OQ01.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-27T00:00:00.000Z"
 }

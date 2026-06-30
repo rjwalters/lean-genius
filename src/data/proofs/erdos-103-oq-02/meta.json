@@ -2,7 +2,7 @@
   "id": "erdos-103-oq-02",
   "title": "Erdos #103 OQ-02: Is h(n) ≥ 2 for all large n? (a formalization audit)",
   "slug": "erdos-103-oq-02",
-  "description": "Investigation of the 'weak conjecture' for Erdős Problem #103 — whether h(n) ≥ 2 for all sufficiently large n. The key finding is that the parent file's literal definition h(n) := Nat.card {P // IsOptimal n P} does NOT count incongruent configurations: because optimality is translation-invariant, the optimal set is either empty or infinite, so the raw cardinality is identically 0 for every n ≥ 1. Consequently the parent's literal WeakConjecture (and even h(n) ≥ 1) is false under its own definitions. This file proves the degeneracy, then supplies the corrected congruence-quotient count hCong(n) against which the open question is properly stated. The Erdős problem itself remains OPEN; this is a correction of the formalization, not a resolution.",
+  "description": "Investigation of the 'weak conjecture' for Erdős Problem #103 — whether h(n) ≥ 2 for all sufficiently large n. The key finding is that the parent file's literal definition h(n) := Nat.card {P // IsOptimal n P} does NOT count incongruent configurations: because optimality is translation-invariant, the optimal set is either empty or infinite, so the raw cardinality is identically 0 for every n ≥ 1. Consequently the parent's literal WeakConjecture (and even h(n) ≥ 1) is false under its own definitions. This file proves the degeneracy, then supplies the corrected congruence-quotient count hCong(n) against which the open question is properly stated. Companion files then compute hCong exactly in the small cases: Erdos103OQ02Finite.lean handles the degenerate cases n ≤ 1 (diameter ≡ 0), and Erdos103OQ02N2.lean handles the first NON-degenerate case n = 2, proving minDiameter 2 = 1 and that all optimal 2-point configurations are unit segments congruent to one another via an explicit planar isometry, hence hCong 2 = 1 — confirming with proof the parent's previously-unproven summary claim 'h(2) = 1'. The Erdős problem itself remains OPEN; this is a correction of the formalization plus exact small-case values, not a resolution.",
   "meta": {
     "author": "researcher-1",
     "sourceUrl": "https://erdosproblems.com/103",
@@ -40,7 +40,14 @@
       "optimalQuotient_nonempty_of_exists: the congruence-class quotient is nonempty whenever an optimal configuration exists (emptiness is never why hCong could vanish)",
       "hCong_pos_of_finite: given an optimal config and finitely many congruence classes, hCong(n) ≥ 1 — the corrected count is non-degenerate exactly where the raw count h ≡ 0 collapsed; only an infinite quotient could pull it to 0",
       "hCong_strictly_exceeds_raw: for n ≥ 1 with an optimal config and finitely many classes, h(n) = 0 < 1 ≤ hCong(n), making precise the sense in which the congruence count repairs the formalization",
-      "Repaired parent Erdos103Problem.lean: congruent_symm no longer compiled under Lean 4.26.0 (rwa auto-closing + rw target mismatch); fixed to restore the 0-axiom 0-sorry parent build"
+      "Repaired parent Erdos103Problem.lean: congruent_symm no longer compiled under Lean 4.26.0 (rwa auto-closing + rw target mismatch); fixed to restore the 0-axiom 0-sorry parent build",
+      "[companion Erdos103OQ02N2.lean] diameter_two: for a 2-point configuration the diameter (a double supremum over index pairs) equals the single pairwise distance pointDist (P 0) (P 1) — the first explicit evaluation of the diameter functional",
+      "[companion Erdos103OQ02N2.lean] minDiameter 2 = 1: two points with separation ≥ 1 cannot have diameter below 1, and the unit segment {(0,0),(1,0)} attains it (the first non-degenerate optimal value; for n ≤ 1 the diameter is identically 0)",
+      "[companion Erdos103OQ02N2.lean] optimal_two_gap: every optimal 2-point configuration realizes its two points at distance EXACTLY 1",
+      "[companion Erdos103OQ02N2.lean] cmul / cmul_preserves: complex multiplication on ℝ² and the fact that multiplication by a unit number (c.1²+c.2²=1) preserves pointDist — a reusable planar-isometry primitive",
+      "[companion Erdos103OQ02N2.lean] segIsom + optimal_two_congruent: an explicit isometry (translate, rotate by the unit number w·conj(u), translate) carrying any optimal unit segment onto any other, proving any two optimal 2-configurations are congruent",
+      "[companion Erdos103OQ02N2.lean] hCong_two_eq_one: hCong 2 = 1 (Subsingleton + nonempty optimal quotient), discharging the [Finite (Quotient (OptimalSetoid 2))] hypothesis unconditionally at the first non-degenerate case and confirming the parent's unproven 'h(2) = 1'",
+      "[companion Erdos103OQ02Finite.lean, prior session] hCong 0 = hCong 1 = 1: unconditional finiteness in the degenerate small cases n ≤ 1"
     ],
     "mathlibDependencies": [
       {
@@ -67,7 +74,7 @@
     "historicalContext": "Erdős Problem #103 (1994) asks whether h(n) → ∞, where h(n) counts incongruent sets of n points in ℝ² minimizing diameter with pairwise separation ≥ 1. Even the weak statement h(n) ≥ 2 for all large n is unknown. This investigation does not resolve the open question; instead it audits the existing formalization and discovers that the parent file's literal counting function is degenerate. Because optimality is preserved by the continuous translation group, the set of optimal configurations is closed under translation, hence either empty or infinite — so its Nat.card is 0. The intended quantity is the cardinality of the quotient by congruence, which this file defines as hCong. The fix relocates the open question onto the correct object.",
     "axiomCount": 0,
     "lineCount": 265,
-    "assumptions": "None. 0 axioms, 0 sorries. All results machine-checked from Mathlib and the (repaired) parent file. NOTE: this entry does NOT resolve the open Erdős #103 conjecture; it corrects the formalization so the open question is stated against the congruence count hCong.",
+    "assumptions": "None. 0 axioms, 0 sorries across the main file (Erdos103OQ02.lean) and both companion files (Erdos103OQ02Finite.lean, Erdos103OQ02N2.lean). All results machine-checked from Mathlib and the (repaired) parent file; #print axioms on hCong_two_eq_one, optimal_two_congruent, and minDiameter_two reports only [propext, Classical.choice, Quot.sound]. NOTE: this entry does NOT resolve the open Erdős #103 conjecture; it corrects the formalization so the open question is stated against the congruence count hCong, and computes hCong exactly for n ≤ 2 (hCong 0 = hCong 1 = hCong 2 = 1). The theoremCount/lineCount fields below describe the primary file Erdos103OQ02.lean; the companion files add further verified results.",
     "theoremCount": 13,
     "definitionCount": 4
   },
@@ -82,7 +89,8 @@
       "**The literal WeakConjecture is decidably false**: since h(max N 1) = 0 < 2, no threshold N can witness ∀ n ≥ N, h n ≥ 2.",
       "**The quotient repairs the count**: congruence collapses each translation-orbit to a single class, so hCong is finite/meaningful exactly where the raw count collapsed to 0.",
       "**Non-degeneracy is the right diagnostic**: the quotient is never empty when an optimal config exists, so the *only* way hCong could still read 0 is an infinite quotient. Hence finiteness of the congruence classes — precisely the content of the open question — is exactly what makes hCong well-behaved, and under it h(n) = 0 < 1 ≤ hCong(n).",
-      "**Audit, not resolution**: nothing here makes progress on whether hCong(n) ≥ 2 for large n — that remains the open Erdős question. The contribution is relocating the question onto a well-posed definition."
+      "**Audit, not resolution**: nothing here makes progress on whether hCong(n) ≥ 2 for large n — that remains the open Erdős question. The contribution is relocating the question onto a well-posed definition.",
+      "**n = 2 is the first honest case** (companion Erdos103OQ02N2.lean): below n = 2 the diameter is identically 0 and every configuration is trivially optimal, so finiteness of the congruence quotient is vacuous. At n = 2 the diameter becomes a genuine distance, minDiameter 2 = 1, and the optimal configurations are exactly the unit segments. Uniqueness up to congruence (hCong 2 = 1) is no longer automatic: it requires an actual planar isometry. The proof builds one as complex multiplication by the unit number w·conj(u) — preserving Euclidean distance because |c| = 1 turns the squared-norm identity into a single ring computation — sandwiched between two translations, carrying one unit segment onto the other."
     ],
     "prerequisites": [
       "Real analysis: Euclidean distance on ℝ²",

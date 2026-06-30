@@ -1,0 +1,76 @@
+{
+  "slug": "godel-second-incompleteness-oq02-oq-03",
+  "title": "godel-second-incompleteness-oq02-oq-03",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "GL_proves (□A → A) ↔ GL_proves A",
+    "plain": "Löb's theorem characterizes when F ⊢ A from F ⊢ (□A→A). Is there a similar 'Löb boundary' theorem: a precise characterization of which sentences about F's provability are provable in F itself?",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "iteration": 1,
+    "focus": "Solved: Löb boundary GL ⊢ (□A→A) ↔ GL ⊢ A formalized over the GL Hilbert system; Second Incompleteness as the A=⊥ instance. 0 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "Entry complete; PR opened.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Löb boundary theorem GL ⊢ (□A→A) ↔ GL ⊢ A proved purely syntactically on the existing GL_proves Hilbert system; Gödel's Second Incompleteness (GL ⊢ Con ↔ GL ⊢ ⊥) recovered as the A=⊥ instance. VERIFIED, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "lob_theorem: GL_proves(□A→A) → GL_proves A via nec+lob+mp (Proofs/GodelSecondIncompletenessOQ02OQ03.lean:49)",
+      "provable_imp_reflection: GL_proves A → GL_proves(□A→A) via taut(k1) (:58)",
+      "reflection_iff_provable: GL_proves(□A→A) ↔ GL_proves A — the Löb boundary (:66)",
+      "consistencyGL def = ¬□⊥ (:75)",
+      "consistency_boundary: GL_proves Con ↔ GL_proves ⊥ (:81)",
+      "second_incompleteness: ¬GL_proves ⊥ → ¬GL_proves Con (:90)",
+      "lob_boundary_verified: bundled summary (:101)"
+    ],
+    "insights": [
+      "In GL, Löb's theorem needs no modal fixed point: diagonalization is absorbed into the axiom □(□A→A)→□A, so the derived rule is nec+lob+mp+mp.",
+      "GL ⊢ (□A→A) ↔ GL ⊢ A is the sharp Löb boundary: a system proves a reflection sentence about its own provability exactly for its own theorems.",
+      "Gödel's Second Incompleteness is the A=⊥ instance, since Con=¬□⊥ is the reflection sentence for ⊥.",
+      "The GL Hilbert system is an axiom-free inductive predicate, so the whole development is 'verified' (0 axioms), unlike the PA-modelling parent which is 'axiomatized'."
+    ],
+    "mathlibGaps": [
+      "None — built entirely on the existing companion GodelSecondIncompletenessOQ02GLSyntax (GL_proves constructors taut/k/lob/mp/nec); no Mathlib needed."
+    ],
+    "nextSteps": [
+      "Follow-up: Kripke-semantic (S5 ACT) proof of the same boundary via forces_of_GL_proves.",
+      "Follow-up: characterize sentences A for which GL proves neither □A→A nor its negation (boundary width / undecidability)."
+    ],
+    "markdown": "# Knowledge Base: godel-second-incompleteness-oq02-oq-03\n\nSolved: the Löb boundary GL ⊢ (□A→A) ↔ GL ⊢ A, with Gödel's Second Incompleteness as the A=⊥ instance. Purely syntactic over the GL_proves Hilbert system; 0 axioms, 0 sorries. See Proofs/GodelSecondIncompletenessOQ02OQ03.lean.\n"
+  },
+  "tags": [
+    "logic",
+    "foundations",
+    "incompleteness",
+    "self-reference",
+    "provability-logic",
+    "modal-logic"
+  ],
+  "relatedProofs": [
+    "godel-second-incompleteness-oq02",
+    "godel-first-incompleteness-oq01"
+  ],
+  "leanFiles": [
+    "Proofs/GodelSecondIncompletenessOQ02OQ03.lean"
+  ],
+  "references": [],
+  "significance": "",
+  "tractability": "",
+  "started": "2026-06-28",
+  "lastUpdate": "2026-06-28"
+}

@@ -144,10 +144,10 @@
     {
       "id": "oeis",
       "title": "OEIS A007865",
-      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by `native_decide`, matching OEIS A007865. These are fully machine-checked results, not axioms.",
+      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by kernel `decide`, matching OEIS A007865. These are fully kernel-checked results (no `native_decide`, so no `Lean.ofReduceBool` dependency), not axioms.",
       "startLine": 274,
       "endLine": 289,
-      "mathContext": "Verified by `native_decide`: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
+      "mathContext": "Verified by kernel `decide` (axiom-free): $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. The `decidableIsSumFree` instance reduces sum-freeness to a bounded $\\forall \\in A$ decision, so these small values compute in the kernel without `native_decide`. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
     },
     {
       "id": "summary",
