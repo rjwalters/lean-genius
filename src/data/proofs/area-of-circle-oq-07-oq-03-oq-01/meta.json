@@ -7,7 +7,11 @@
       "Mathlib.MeasureTheory.Integral.Gamma",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real", "MeasureTheory", "Set"],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Set"
+    ],
     "namespace": "AreaOfCircleOQ07OQ03OQ01",
     "lineCount": 119,
     "axiomCount": 0,
@@ -130,5 +134,63 @@
     "summary": "The even Gaussian moments are exactly the half-integer Gamma values: ∫_ℝ x^{2n}e^{−x²} dx = Γ(n+1/2) = (2n−1)‼·√π/2ⁿ (evenGaussianMoment_eq_gamma, evenGaussianMoment_eq_doubleFactorial), the odd moments vanish (oddGaussianMoment_eq_zero), and the n=0 rung recovers the parent's ∫_ℝ e^{−x²} = √π (evenGaussianMoment_zero). The half-integer ladder itself is re-exported from Mathlib (gammaLadder). 119 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The contribution is the identification of the entire even-moment sequence of the Gaussian weight with the half-integer Gamma ladder, plus the vanishing of the odd moments — turning the parent's single √π into the base rung of a fully-determined moment tower. The analytic ladder formula is Mathlib's; the moment bridge (half-line evaluation + evenness folding) and the odd-moment vanishing are assembled here from library lemmas.",
     "openQuestions": []
-  }
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports, statement, and namespace",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Import the Gaussian/Gamma special-function machinery; docstring stating the open question (climb the half-integer Gamma ladder Γ(n+1/2)=(2n−1)‼·√π/2ⁿ and identify each rung with an even Gaussian moment) and its YES answer; open Real/MeasureTheory and the namespace.",
+      "mathContext": "Goal: $\\int_{\\mathbb{R}} x^{2n} e^{-x^2}\\,dx = \\Gamma(n+\\tfrac12) = (2n-1)!!\\,\\sqrt\\pi/2^n$, extending the parent rung $\\Gamma(\\tfrac12)=\\sqrt\\pi$."
+    },
+    {
+      "id": "half-line",
+      "title": "Half-line even moment = ½·Γ(n+1/2)",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "Private lemma halfLine_evenMoment: convert the natural-power integrand to real-power form and apply Mathlib integral_rpow_mul_exp_neg_rpow at p=2, q=2n.",
+      "mathContext": "$\\int_{x>0} x^{2n} e^{-x^2}\\,dx = \\tfrac1p\\Gamma\\!\\big(\\tfrac{q+1}{p}\\big)\\big|_{p=2,q=2n} = \\tfrac12\\,\\Gamma(n+\\tfrac12)$."
+    },
+    {
+      "id": "even-moment",
+      "title": "Even moment IS a half-integer Gamma value",
+      "startLine": 68,
+      "endLine": 82,
+      "summary": "evenGaussianMoment_eq_gamma: fold the full line onto the half-line by evenness (integral_comp_abs), doubling ½·Γ(n+1/2) to Γ(n+1/2).",
+      "mathContext": "$\\int_{\\mathbb{R}} x^{2n} e^{-x^2}\\,dx = 2\\cdot\\tfrac12\\Gamma(n+\\tfrac12) = \\Gamma(n+\\tfrac12)$."
+    },
+    {
+      "id": "double-factorial",
+      "title": "Closed form (2n−1)‼·√π/2ⁿ",
+      "startLine": 84,
+      "endLine": 89,
+      "summary": "evenGaussianMoment_eq_doubleFactorial: compose the Gamma identification with Mathlib closed form Real.Gamma_nat_add_half.",
+      "mathContext": "$\\int_{\\mathbb{R}} x^{2n} e^{-x^2}\\,dx = (2n-1)!!\\,\\sqrt\\pi/2^n$."
+    },
+    {
+      "id": "gamma-ladder",
+      "title": "The half-integer Gamma ladder",
+      "startLine": 91,
+      "endLine": 96,
+      "summary": "gammaLadder: re-export of Real.Gamma_nat_add_half — the whole tower above the parent rung Γ(1/2)=√π.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = (2n-1)!!\\,\\sqrt\\pi/2^n$."
+    },
+    {
+      "id": "odd-moment",
+      "title": "The odd moments vanish",
+      "startLine": 98,
+      "endLine": 108,
+      "summary": "oddGaussianMoment_eq_zero: the integrand x^{2n+1}e^{−x²} is odd and Lebesgue measure is negation-invariant, so the integral is 0.",
+      "mathContext": "$\\int_{\\mathbb{R}} x^{2n+1} e^{-x^2}\\,dx = 0$."
+    },
+    {
+      "id": "bottom-rung",
+      "title": "n = 0 recovers the parent Gaussian integral",
+      "startLine": 110,
+      "endLine": 119,
+      "summary": "evenGaussianMoment_zero: specializing n=0 recovers the parent ∫_ℝ e^{−x²}=√π via Real.Gamma_one_half_eq.",
+      "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2}\\,dx = \\Gamma(\\tfrac12) = \\sqrt\\pi$."
+    }
+  ]
 }
