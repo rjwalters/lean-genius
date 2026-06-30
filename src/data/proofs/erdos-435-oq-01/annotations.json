@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "erdos-435-oq-01",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "concept",
+    "title": "Why Erdős #435 Excludes Prime Powers",
+    "content": "Erdős Problem #435 asks for the largest integer not representable as a non-negative combination of the binomial coefficients $\\binom{n}{1}, \\ldots, \\binom{n}{n-1}$, and it is stated **only for $n$ that are not prime powers**. This file explains the exclusion. When $n = p^k$, every middle coefficient $\\binom{p^k}{j}$ ($1 \\le j < p^k$) is divisible by $p$, so all generators share the factor $p$: the numerical semigroup they generate lands inside $p\\mathbb{N}$, its complement is infinite, and no Frobenius number exists. The main `erdos-435` entry records this only as prose; here it becomes three machine-checked theorems.",
+    "mathContext": "The representable set $S_n = \\{\\sum c_i \\binom{n}{i} : c_i \\ge 0\\}$ has finite complement iff $\\gcd$ of its generators is $1$. For $n = p^k$ that gcd is divisible by $p$, so the complement is infinite.",
+    "significance": "key",
+    "prerequisites": [
+      "binomial coefficients",
+      "numerical semigroups",
+      "the Frobenius number"
+    ],
+    "relatedConcepts": [
+      "Erdős Problem #435",
+      "Hwang–Song formula",
+      "p-adic valuation",
+      "Kummer's theorem"
+    ]
+  },
+  {
+    "id": "ann-core-lemma",
+    "proofId": "erdos-435-oq-01",
+    "range": { "startLine": 28, "endLine": 56 },
+    "type": "theorem",
+    "title": "Core Lemma: p Divides Every Middle Coefficient",
+    "content": "`prime_pow_dvd_choose` proves $p \\mid \\binom{p^k}{j}$ for $1 \\le j < p^k$. The engine is Mathlib's Kummer-type identity `Nat.factorization_choose_prime_pow`, which gives\n$$v_p\\!\\binom{p^k}{j} = k - v_p(j).$$\nThe one fact needed is $v_p(j) < k$: if instead $v_p(j) \\ge k$ then $p^k \\mid j$ (via `pow_dvd_pow` and `Nat.ordProj_dvd`), forcing $p^k \\le j$ and contradicting $j < p^k$. Hence the valuation $k - v_p(j)$ is strictly positive, and `Nat.ordProj_dvd` with `dvd_pow_self` yields $p \\mid \\binom{p^k}{j}$.",
+    "mathContext": "Divisibility holds precisely on $0 < j < p^k$; at the endpoints $j = 0, p^k$ the coefficient is $1$ and $v_p = 0$.",
+    "significance": "key",
+    "prerequisites": [
+      "Kummer's theorem / Legendre's formula",
+      "p-adic valuation Nat.factorization",
+      "Nat.ordProj_dvd"
+    ],
+    "relatedConcepts": [
+      "binomial coefficient valuation",
+      "Kummer's theorem"
+    ]
+  },
+  {
+    "id": "ann-all-generators",
+    "proofId": "erdos-435-oq-01",
+    "range": { "startLine": 58, "endLine": 65 },
+    "type": "theorem",
+    "title": "Every Generator Is Divisible by p",
+    "content": "`prime_dvd_all_generators` specializes the core lemma to the exact index range of the semigroup generators: for $1 \\le j \\le p^k - 1$, $p \\mid \\binom{p^k}{j}$. This is the per-generator statement that feeds the gcd computation; the only bookkeeping is converting the bound $j \\le p^k - 1$ into the strict $j < p^k$ required by `prime_pow_dvd_choose`, using $1 \\le p^k$.",
+    "mathContext": "The generators of $S_n$ for $n = p^k$ are $\\binom{p^k}{1}, \\ldots, \\binom{p^k}{p^k-1}$, and each is a multiple of $p$.",
+    "significance": "key",
+    "prerequisites": [
+      "the core obstruction lemma"
+    ],
+    "relatedConcepts": [
+      "numerical semigroup generators"
+    ]
+  },
+  {
+    "id": "ann-gcd-obstruction",
+    "proofId": "erdos-435-oq-01",
+    "range": { "startLine": 67, "endLine": 83 },
+    "type": "theorem",
+    "title": "Generators Share a Common Factor > 1",
+    "content": "`generators_gcd_ne_one` is the headline: the gcd of all generators over `Finset.Icc 1 (p^k - 1)` is $\\neq 1$. The proof assumes the gcd equals $1$ for contradiction; `Finset.dvd_gcd` shows $p$ divides the gcd (since $p$ divides every term, by the previous lemma), so $p \\mid 1$ — impossible for a prime. Therefore the gcd is divisible by $p$ and in particular $\\neq 1$. This is the precise obstruction: a common prime factor of all generators confines $S_n$ to multiples of $p$, leaving infinitely many residues unrepresentable, so the Frobenius number is undefined and $n = p^k$ must be excluded from Erdős #435.",
+    "mathContext": "$\\gcd\\{\\binom{p^k}{j} : 1 \\le j \\le p^k - 1\\}$ is a multiple of $p$, hence $> 1$; the semigroup complement is infinite.",
+    "significance": "key",
+    "prerequisites": [
+      "Finset.gcd and Finset.dvd_gcd",
+      "the per-generator divisibility lemma"
+    ],
+    "relatedConcepts": [
+      "Frobenius number",
+      "cofinite numerical semigroup",
+      "gcd of generators"
+    ]
+  },
+  {
+    "id": "ann-context",
+    "proofId": "erdos-435-oq-01",
+    "range": { "startLine": 67, "endLine": 83 },
+    "type": "insight",
+    "title": "From a gcd to the Non-Existence of a Frobenius Number",
+    "content": "The chain `prime_pow_dvd_choose → prime_dvd_all_generators → generators_gcd_ne_one` converts a p-adic valuation fact into a structural statement about the numerical semigroup $S_{p^k}$. Because the generators have gcd $> 1$, $S_{p^k} \\subseteq p\\mathbb{N}$: no number coprime to $p$ is ever representable, so the complement $\\mathbb{N} \\setminus S_{p^k}$ is infinite and the 'largest non-representable integer' simply does not exist. This is the formal counterpart to the Hwang–Song dichotomy: the closed-form Frobenius number (formalized in `erdos-435`) is available exactly for non-prime-powers, and this companion certifies the other branch.",
+    "mathContext": "Finite complement $\\iff$ gcd of generators $= 1$. The obstruction realizes the $\\ne 1$ side for prime powers.",
+    "significance": "key",
+    "prerequisites": [
+      "numerical semigroup theory"
+    ],
+    "relatedConcepts": [
+      "Hwang–Song formula",
+      "Frobenius problem dichotomy"
+    ]
+  }
+]

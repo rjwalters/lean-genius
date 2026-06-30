@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AngleTrisectionOQ01.lean",
     "tags": [
       "galois-theory",
@@ -16,13 +16,13 @@
       "fermat-primes",
       "regular-polygons"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "axiomCount": 1,
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented Fermat-primality facts (`prime_257`, `prime_65537`) and the regular-n-gon constructibility theorems (`triangle_constructible`, `pentagon_constructible`, `heptadecagon_constructible`, and the non-constructibility witnesses) discharge their decidable cores by `native_decide`. Under the gallery convention (CLAUDE.md), a presented result discharged by `native_decide` depends on `Lean.ofReduceBool` (the kernel trusts the compiler's reduction), so the entry is `axiomatized` with `axiomCount` 1; `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "lineCount": 366,
-    "theoremCount": 44,
+    "theoremCount": 40,
     "definitionCount": 3,
     "originalContributions": [
       "prime_dvd_pow_two_eq_two: any prime dividing 2^n equals 2",
@@ -57,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The minimal polynomial degree criterion for non-constructibility is fully formalized: d has an odd prime factor ↔ d is not constructible. Regular polygon constructibility is classified for n=3..20 and all 5 known Fermat primes are verified. 44 theorems, 0 axioms, 0 sorries.",
+    "summary": "The minimal polynomial degree criterion for non-constructibility is fully formalized: d has an odd prime factor ↔ d is not constructible. Regular polygon constructibility is classified for n=3..20 and all 5 known Fermat primes are verified. 40 theorems, 0 axioms, 0 sorries.",
     "implications": "This formalization provides the theoretical foundation for understanding compass-and-straightedge impossibility beyond angle trisection: cube root doubling (degree 3), regular heptagon (degree 6 = 2·3), etc. The Fermat prime criterion is the gateway to understanding which classical problems are impossible. The proof technique — converting a geometric impossibility claim into an arithmetic divisibility contradiction — is widely reusable: any problem reducible to a field extension of degree with an odd prime factor is immediately non-constructible.",
     "openQuestions": [
       "Prove there are infinitely many (or finitely many) Fermat primes — a major open problem",
@@ -70,7 +70,7 @@
     "namespace": "AngleTrisectionOQ01",
     "lineCount": 366,
     "axiomCount": 0,
-    "theoremCount": 44,
+    "theoremCount": 40,
     "definitionCount": 3,
     "path": "Proofs/AngleTrisectionOQ01.lean",
     "sorries": 0

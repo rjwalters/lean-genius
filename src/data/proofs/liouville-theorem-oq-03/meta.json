@@ -1,0 +1,142 @@
+{
+  "id": "liouville-theorem-oq-03",
+  "title": "Hausdorff Dimension of Well-Approximable Sets (Jarník–Besicovitch)",
+  "slug": "liouville-theorem-oq-03",
+  "description": "Formalizes the Jarník–Besicovitch theorem dimH(W τ) = 2/τ (τ ≥ 2) for the τ-well-approximable sets W τ = {x | LiouvilleWith τ x}, and derives the classical corollary that the Liouville numbers have Hausdorff dimension zero despite being uncountable. The deep dimension formula — not yet in Mathlib (its upper bound needs a Borel–Cantelli covering, its lower bound a mass-distribution/Frostman construction) — is recorded as the single axiom dimH_wellApprox; everything else is machine-checked. The structural facts are genuine Mathlib derivations: the sets are antitone in the exponent (from LiouvilleWith.mono), every Liouville number lies in every W τ (from Liouville.liouvilleWith), so dimH{Liouville} ≤ dimH(W τ) for all τ, and the dimension-zero result is squeezed from dimH ≤ 2/n as n → ∞.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LiouvilleTheoremOQ03.lean",
+    "tags": [
+      "diophantine-approximation",
+      "hausdorff-dimension",
+      "liouville-numbers",
+      "irrationality-measure",
+      "jarnik-besicovitch",
+      "metric-number-theory",
+      "fractal-geometry",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 1,
+    "assumptions": "One axiom: `dimH_wellApprox` — the Jarník–Besicovitch dimension formula dimH(W τ) = ENNReal.ofReal(2/τ) for τ ≥ 2. This is the deep theorem of metric Diophantine approximation (Jarník 1931, Besicovitch 1934) and is not yet available in Mathlib (the upper bound requires a covering/Borel–Cantelli Hausdorff-measure estimate; the lower bound a mass-distribution principle / Frostman construction on a Cantor subset). `#print axioms` confirms: the structural lemmas (wellApprox_antitone, liouville_subset_wellApprox, dimH_liouville_le_wellApprox, and the jbDim exponent facts) depend on no axioms beyond the standard foundational trio; only the formula-dependent results (dimH_wellApprox_two, dimH_liouville_le, dimH_liouville_eq_zero, the summary) carry dimH_wellApprox.",
+    "lineCount": 210,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "originalContributions": [
+      "wellApprox τ := {x | LiouvilleWith τ x}: the τ-well-approximable sets, packaged on top of Mathlib's LiouvilleWith with the JB exponent in mind",
+      "wellApprox_antitone: σ ≤ τ → W τ ⊆ W σ, proved from LiouvilleWith.mono (genuine, 0-axiom)",
+      "liouville_subset_wellApprox: {x | Liouville x} ⊆ W τ for every τ, proved from Liouville.liouvilleWith (genuine, 0-axiom)",
+      "dimH_liouville_le_wellApprox and dimH_wellApprox_antitone: monotonicity of Hausdorff dimension transported through dimH_mono",
+      "dimH_liouville_eq_zero: the Liouville numbers have Hausdorff dimension 0, derived from the JB axiom by an explicit squeeze of dimH ≤ 2/n along n → ∞ (ge_of_tendsto with ENNReal.continuous_ofReal and tendsto_const_div_atTop_nhds_zero_nat)",
+      "jbDim τ := 2/τ with verified analytic properties (d(2)=1, positivity, ≤ 1 and < 1 above the threshold, antitone)"
+    ],
+    "openQuestions": [
+      "Discharge the dimH_wellApprox axiom: formalize the Jarník–Besicovitch upper bound via a Borel–Cantelli covering estimate on the approximating intervals using Mathlib's Hausdorff-measure API",
+      "Formalize the lower bound via the mass distribution principle (Frostman's lemma) on an explicit Cantor subset of W τ",
+      "Define the irrationality measure μ(x) = sSup {τ | LiouvilleWith τ x} and prove the level-set dimension dimH {x | μ(x) = τ} = 2/τ (the exact-measure refinement of JB)"
+    ],
+    "mathContext": "Sibling of the Liouville development: LiouvilleTheorem.lean (Liouville numbers are transcendental/uncountable), LiouvilleTheoremOQ05 (Liouville numbers have Lebesgue measure zero). This entry is the Hausdorff-dimension refinement: measure zero is sharpened to dimension zero. Self-contained on Mathlib; uses Mathlib's LiouvilleWith and dimH APIs directly.",
+    "proofStrategy": "Isolate the one deep input (the dimension formula) as an axiom and prove everything reachable from Mathlib unconditionally. Subset relations come from LiouvilleWith.mono and Liouville.liouvilleWith; dimension monotonicity from dimH_mono; the dimension-zero corollary from a tendsto squeeze of the per-exponent bound. The exponent function 2/τ is analyzed separately by elementary real inequalities.",
+    "historicalContext": "Jarník (1931) and independently Besicovitch (1934) proved that the set of reals approximable to order τ by rationals has Hausdorff dimension 2/τ for τ ≥ 2 — among the first computations of a non-trivial fractional dimension in number theory. The corollary that Liouville numbers form a dimension-zero (yet uncountable, comeagre) set is a standard illustration that Hausdorff dimension is a finer gauge of size than both cardinality and Lebesgue measure.",
+    "problemStatement": "Determine the Hausdorff dimension of the sets of real numbers with a prescribed irrationality measure / approximation exponent, and deduce the dimension of the Liouville set."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Scope",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports `Mathlib`, opens Filter/Set/Topology and ENNReal scope, declares namespace `LiouvilleTheoremOQ03`. The docstring states the Jarník–Besicovitch theorem, identifies the well-approximable set with Mathlib's `LiouvilleWith`, and explains which parts are machine-checked versus the single axiomatized dimension formula."
+    },
+    {
+      "id": "sec-sets",
+      "title": "The Well-Approximable Sets W τ",
+      "startLine": 64,
+      "endLine": 92,
+      "summary": "Defines `wellApprox τ := {x | LiouvilleWith τ x}` and proves the genuine (0-axiom) structural facts: `wellApprox_antitone` (σ ≤ τ → W τ ⊆ W σ via LiouvilleWith.mono), `wellApprox_le_one`/`wellApprox_one` (W τ = univ for τ ≤ 1), and `liouville_subset_wellApprox` ({Liouville} ⊆ W τ via Liouville.liouvilleWith)."
+    },
+    {
+      "id": "sec-dim-mono",
+      "title": "Monotonicity of the Hausdorff Dimension",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "`dimH_wellApprox_antitone` (σ ≤ τ → dimH(W τ) ≤ dimH(W σ)) and `dimH_liouville_le_wellApprox` (dimH{Liouville} ≤ dimH(W τ)), both transported through Mathlib's `dimH_mono`. Zero-axiom."
+    },
+    {
+      "id": "sec-exponent",
+      "title": "The Dimension Exponent 2/τ",
+      "startLine": 107,
+      "endLine": 136,
+      "summary": "`jbDim τ := 2/τ` with verified analytic properties: `jbDim_two` (d(2)=1), `jbDim_pos`, `jbDim_le_one` (τ ≥ 2), `jbDim_lt_one` (τ > 2), and `jbDim_antitone`. Elementary real inequalities, zero-axiom."
+    },
+    {
+      "id": "sec-jb-axiom",
+      "title": "The Jarník–Besicovitch Theorem (axiomatized)",
+      "startLine": 137,
+      "endLine": 160,
+      "summary": "The single axiom `dimH_wellApprox τ (hτ : 2 ≤ τ) : dimH(W τ) = ENNReal.ofReal(2/τ)`, with `dimH_wellApprox_two` (dimH(W 2) = 1) and `dimH_wellApprox_eq_jbDim` derived from it."
+    },
+    {
+      "id": "sec-liouville-zero",
+      "title": "Liouville Numbers Have Hausdorff Dimension Zero",
+      "startLine": 161,
+      "endLine": 196,
+      "summary": "`dimH_liouville_le` (dimH{Liouville} ≤ 2/τ for τ ≥ 2) and the capstone `dimH_liouville_eq_zero`, squeezed from the bound dimH ≤ 2/n along n → ∞ via `ge_of_tendsto`, `ENNReal.continuous_ofReal`, and `tendsto_const_div_atTop_nhds_zero_nat`."
+    },
+    {
+      "id": "sec-summary",
+      "title": "jarnik_besicovitch_summary",
+      "startLine": 197,
+      "endLine": 210,
+      "summary": "Bundles the set antitonicity, the Liouville-subset relation, the threshold dimension dimH(W 2)=1, and the dimension-zero result for the Liouville set."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Metric Diophantine approximation studies how well 'typical' or 'special' reals can be approximated by rationals. The well-approximable set W(τ) = {x : |x - p/q| < q^(-τ) for infinitely many p/q} captures reals of approximation exponent ≥ τ. Jarník (1931) and Besicovitch (1934) computed its Hausdorff dimension to be exactly 2/τ for τ ≥ 2 — one of the earliest fractional-dimension results in number theory and a template for the modern theory (Khinchin–Jarník, the Mass Transference Principle of Beresnevich–Velani). The Liouville numbers, approximable to every order, lie in the intersection of all W(τ); they are uncountable and topologically large (comeagre) yet, by Jarník–Besicovitch, have Hausdorff dimension 0 — a vivid demonstration that dimension is a strictly finer notion of size than cardinality or measure.",
+    "problemStatement": "Determine the Hausdorff dimension dimH(W τ) of the τ-well-approximable reals as a function of the approximation exponent τ, and deduce the Hausdorff dimension of the Liouville set.",
+    "proofStrategy": "Build on Mathlib's `LiouvilleWith` predicate and `dimH` Hausdorff-dimension API. The order structure of the sets (antitone in τ; Liouville ⊆ every W τ) and the resulting dimension monotonicity are proved outright from `LiouvilleWith.mono`, `Liouville.liouvilleWith`, and `dimH_mono`. The Jarník–Besicovitch dimension formula itself — whose proof needs Hausdorff-measure estimates absent from Mathlib — is taken as a single axiom, from which the dimension-zero corollary for Liouville numbers is genuinely derived by a tendsto squeeze.",
+    "keyInsights": [
+      "Mathlib's `LiouvilleWith τ x` is exactly membership in the τ-well-approximable set, and its `mono` lemma immediately gives antitonicity of the sets in the exponent — so the dimension is monotone before any measure theory is invoked.",
+      "`Liouville.liouvilleWith` places every Liouville number in every W τ, turning the dimension-zero claim into a one-parameter squeeze: dimH{Liouville} ≤ 2/τ for all τ, hence 0.",
+      "Only one genuinely deep fact — the value of dimH(W τ) — resists formalization today; isolating it as a single named axiom keeps the rest of the development fully machine-checked and makes precise exactly what Mathlib is still missing.",
+      "The dimension-zero corollary is a clean illustration that Hausdorff dimension refines Lebesgue measure: the sibling entry shows the Liouville set has measure zero; here that is sharpened to dimension zero, the strongest 'smallness' statement of metric type.",
+      "The squeeze uses natural-number exponents (tendsto_const_div_atTop_nhds_zero_nat) to avoid a real-parameter limit lemma, and ENNReal.continuous_ofReal to transport the real limit 2/n → 0 into ℝ≥0∞ where dimH lives."
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry formalizes the Jarník–Besicovitch picture for `liouville-theorem-oq-03`: the well-approximable sets W τ = {x | LiouvilleWith τ x} are antitone in the exponent with antitone Hausdorff dimension, the dimension at the threshold τ = 2 is 1, and the Jarník–Besicovitch formula dimH(W τ) = 2/τ (the one axiom) yields the classical corollary that the uncountable Liouville set has Hausdorff dimension 0. Structural lemmas are genuine 0-axiom Mathlib derivations; the dimension-zero result is squeezed from the formula.",
+    "implications": "The framework reduces the open problem to formalizing a single Hausdorff-measure estimate. Discharging the dimH_wellApprox axiom — via a Borel–Cantelli covering for the upper bound and a Frostman mass distribution for the lower bound — would turn dimH_liouville_eq_zero and the dimension formula into fully unconditional theorems and seed a Mathlib library for metric Diophantine approximation (Khinchin–Jarník, mass transference).",
+    "openQuestions": [
+      "Prove the Jarník–Besicovitch upper bound dimH(W τ) ≤ 2/τ via an explicit Borel–Cantelli covering of the approximating intervals in Mathlib's Hausdorff-measure framework.",
+      "Prove the lower bound dimH(W τ) ≥ 2/τ via the mass distribution principle (Frostman) on a Cantor subset of W τ.",
+      "Introduce the irrationality measure μ(x) and prove the exact-level dimension dimH{x | μ(x) = τ} = 2/τ, refining the inequality form proved here."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "Parent development: Liouville numbers are transcendental and uncountable. This entry adds the metric/fractal refinement — those same numbers have Hausdorff dimension 0."
+    },
+    {
+      "targetId": "liouville-theorem-oq-05",
+      "relationship": "Sibling proving the Liouville set has Lebesgue measure zero; the present entry sharpens 'measure zero' to 'dimension zero', a strictly stronger smallness statement."
+    },
+    {
+      "targetId": "liouville-theorem-oq-04",
+      "relationship": "Sibling extending Liouville's theorem to p-adic and function-field settings; together the OQ leaves explore the qualitative (transcendence), metric (dimension/measure), and arithmetic (other fields) facets of Liouville approximation."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/LiouvilleTheoremOQ03.lean",
+    "sorries": 0,
+    "axiomCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "lineCount": 210
+  },
+  "sorries": 0
+}

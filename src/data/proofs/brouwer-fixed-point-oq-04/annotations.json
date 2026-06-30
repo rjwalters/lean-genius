@@ -3,8 +3,8 @@
     "id": "ann-correspondence-structure",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 64,
-      "endLine": 70
+      "startLine": 69,
+      "endLine": 74
     },
     "type": "definition",
     "title": "Correspondence (Set-Valued Map)",
@@ -26,8 +26,8 @@
     "id": "ann-fixed-point-def",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 72,
-      "endLine": 80
+      "startLine": 76,
+      "endLine": 84
     },
     "type": "definition",
     "title": "Set-Valued Fixed Points",
@@ -48,8 +48,8 @@
     "id": "ann-convex-valued",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 82,
-      "endLine": 86
+      "startLine": 86,
+      "endLine": 98
     },
     "type": "definition",
     "title": "Convex-Valued Correspondences",
@@ -70,8 +70,8 @@
     "id": "ann-uhc-definition",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 92,
-      "endLine": 100
+      "startLine": 100,
+      "endLine": 105
     },
     "type": "definition",
     "title": "Upper Hemicontinuity (Berge 1959)",
@@ -93,8 +93,8 @@
     "id": "ann-continuous-singleton-uhc",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 103,
-      "endLine": 111
+      "startLine": 107,
+      "endLine": 121
     },
     "type": "concept",
     "title": "Continuous Functions Induce UHC Correspondences",
@@ -115,18 +115,19 @@
     "id": "ann-brouwer-axiom",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 132,
-      "endLine": 141
+      "startLine": 123,
+      "endLine": 168
     },
     "type": "concept",
-    "title": "Brouwer FPT for Compact Convex Sets (Axiom)",
-    "content": "Axiomatizes the Brouwer Fixed Point Theorem for compact convex subsets of $\\mathbb{R}^n$: every continuous self-map of a nonempty compact convex set has a fixed point. This is stated as an axiom because the standard proof requires the Brouwer degree or the no-retraction theorem, which involves algebraic topology not yet in Mathlib for finite-dimensional spaces.",
-    "mathContext": "If $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, and convex, and $f: S \\to S$ is continuous, then $\\exists x^* \\in S$ with $f(x^*) = x^*$.",
+    "title": "Brouwer FPT for Compact Convex Sets (Proved)",
+    "content": "States and **proves** the Brouwer Fixed Point Theorem for the closed unit ball in $\\mathbb{R}^n$: every continuous self-map of $\\text{ClosedBall}(n)$ has a fixed point (`brouwer_compact_convex`). This was *previously axiomatized*; it is now derived from the parent Brouwer FPT in `BrouwerFixedPoint.lean` (proved there via the no-retraction theorem) by wrapping the map in a `Brouwer.SelfMap` and applying that result. The section first sets up `ClosedBall n` together with the supporting lemmas `closedBall_compact`, `closedBall_nonempty`, and `closedBall_convex`, which supply the compact-convex hypotheses the fixed-point theorem needs.",
+    "mathContext": "If $S \\subseteq \\mathbb{R}^n$ is nonempty, compact, and convex and $f: S \\to S$ is continuous, then $\\exists x^* \\in S,\\ f(x^*) = x^*$. Here $S = \\text{ClosedBall}(n)$ and the result is obtained from the parent no-retraction proof, not assumed.",
     "significance": "key",
     "relatedConcepts": [
       "Brouwer fixed point theorem",
       "no-retraction theorem",
-      "degree theory"
+      "closed ball",
+      "compact convex set"
     ],
     "prerequisites": [
       "compact sets",
@@ -138,8 +139,8 @@
     "id": "ann-kakutani-axiom",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 143,
-      "endLine": 166
+      "startLine": 170,
+      "endLine": 189
     },
     "type": "insight",
     "title": "Kakutani FPT — Axiom with Classical Proof Sketch",
@@ -162,8 +163,8 @@
     "id": "ann-singleton-correspondence",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 183,
-      "endLine": 199
+      "startLine": 191,
+      "endLine": 209
     },
     "type": "definition",
     "title": "Singleton Correspondence Construction",
@@ -184,8 +185,8 @@
     "id": "ann-kakutani-iff-brouwer",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 201,
-      "endLine": 226
+      "startLine": 211,
+      "endLine": 240
     },
     "type": "insight",
     "title": "Kakutani Implies Brouwer (Constructive Proof)",
@@ -207,8 +208,8 @@
     "id": "ann-interval-correspondence",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 232,
-      "endLine": 247
+      "startLine": 243,
+      "endLine": 262
     },
     "type": "definition",
     "title": "Continuous Interval Correspondence",
@@ -229,8 +230,8 @@
     "id": "ann-kakutani-1d-ivt",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 249,
-      "endLine": 277
+      "startLine": 264,
+      "endLine": 297
     },
     "type": "concept",
     "title": "1D Kakutani via Intermediate Value Theorem (Fully Proved)",
@@ -252,8 +253,8 @@
     "id": "ann-correspondence-algebra",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 289,
-      "endLine": 317
+      "startLine": 299,
+      "endLine": 330
     },
     "type": "concept",
     "title": "Correspondence Algebra: Constant and Identity",
@@ -274,8 +275,8 @@
     "id": "ann-mixed-strategy-space",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 334,
-      "endLine": 379
+      "startLine": 332,
+      "endLine": 397
     },
     "type": "insight",
     "title": "Mixed Strategy Spaces: Compact, Convex, Closed",
@@ -297,8 +298,8 @@
     "id": "ann-nash-framework",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 381,
-      "endLine": 396
+      "startLine": 399,
+      "endLine": 435
     },
     "type": "insight",
     "title": "Nash Equilibrium Framework",
@@ -322,8 +323,8 @@
     "id": "ann-uhc-properties",
     "proofId": "brouwer-fixed-point-oq-04",
     "range": {
-      "startLine": 402,
-      "endLine": 425
+      "startLine": 437,
+      "endLine": 460
     },
     "type": "concept",
     "title": "UHC Closure Properties",

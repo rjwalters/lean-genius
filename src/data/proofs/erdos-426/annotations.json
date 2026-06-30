@@ -16,7 +16,11 @@
       "Graph enumeration",
       "Pólya enumeration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subgraph embeddings",
+      "unique subgraphs (exactly one copy)",
+      "counting graphs up to isomorphism"
+    ]
   },
   {
     "id": "ann-e426-subgraph-copy",
@@ -34,7 +38,10 @@
       "Injective maps"
     ],
     "mathContext": "See annotation content for formal details of subgraph copy",
-    "prerequisites": []
+    "prerequisites": [
+      "graph adjacency",
+      "injective edge-preserving maps"
+    ]
   },
   {
     "id": "ann-e426-count-copies",
@@ -52,7 +59,10 @@
       "Counting functions"
     ],
     "mathContext": "See annotation content for formal details of count subgraph copies",
-    "prerequisites": []
+    "prerequisites": [
+      "subgraph copies (embeddings)",
+      "counting injective edge-preserving maps"
+    ]
   },
   {
     "id": "ann-e426-unique",
@@ -70,7 +80,10 @@
       "Uniqueness",
       "Graph structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the count of subgraph copies",
+      "the count being exactly 1"
+    ]
   },
   {
     "id": "ann-e426-noniso",
@@ -88,7 +101,11 @@
       "Pólya enumeration",
       "Graph counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graphs up to isomorphism",
+      "Pólya's enumeration theorem",
+      "the count 2^(n choose 2)/n!"
+    ]
   },
   {
     "id": "ann-e426-max-unique",
@@ -106,7 +123,10 @@
       "Maximum"
     ],
     "mathContext": "See annotation content for formal details of maximum unique subgraphs",
-    "prerequisites": []
+    "prerequisites": [
+      "unique subgraphs",
+      "maximizing over all graphs on n vertices"
+    ]
   },
   {
     "id": "ann-e426-entringer",
@@ -124,7 +144,11 @@
       "Historical"
     ],
     "mathContext": "See annotation content for formal details of entringer-erdős (1972)",
-    "prerequisites": []
+    "prerequisites": [
+      "unique subgraphs",
+      "the 2^{(n choose 2) − O(n^{3/2+o(1)})} construction",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e426-brouwer",
@@ -142,7 +166,11 @@
       "Improved bound",
       "Best construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unique subgraphs",
+      "the improved 2^{(n choose 2) − O(n)}/n! construction",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e426-original-question",
@@ -160,7 +188,10 @@
       "Linear lower bound"
     ],
     "mathContext": "See annotation content for formal details of original question",
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum f(n)",
+      "a constant fraction of all non-isomorphic graphs"
+    ]
   },
   {
     "id": "ann-e426-prizes",
@@ -178,7 +209,10 @@
       "Erdős prizes",
       "Problem history"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the original question",
+      "Erdős prize problems"
+    ]
   },
   {
     "id": "ann-e426-bradac",
@@ -196,7 +230,12 @@
       "Resolution",
       "2024 paper"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum f(n)",
+      "o(2^(n choose 2)/n!) growth",
+      "the Bradač–Christoph 2024 result",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e426-quantitative",
@@ -214,7 +253,10 @@
       "Rate of decay"
     ],
     "mathContext": "See annotation content for formal details of quantitative bound",
-    "prerequisites": []
+    "prerequisites": [
+      "the o(1) factor",
+      "the explicit O(log log log n / log log n) bound"
+    ]
   },
   {
     "id": "ann-e426-resolved",
@@ -232,7 +274,11 @@
       "Impossibility"
     ],
     "mathContext": "See annotation content for formal details of problem resolved",
-    "prerequisites": []
+    "prerequisites": [
+      "the original question",
+      "its negation",
+      "the Bradač–Christoph resolution"
+    ]
   },
   {
     "id": "ann-e426-insight",
@@ -250,7 +296,10 @@
       "Automorphisms"
     ],
     "mathContext": "See annotation content for formal details of why unique subgraphs are rare",
-    "prerequisites": []
+    "prerequisites": [
+      "graph automorphisms creating multiple embeddings",
+      "structural regularity / repeated patterns"
+    ]
   },
   {
     "id": "ann-e426-automorphism",
@@ -268,7 +317,10 @@
       "Asymmetric graphs"
     ],
     "mathContext": "See annotation content for formal details of automorphisms and asymmetry",
-    "prerequisites": []
+    "prerequisites": [
+      "graph automorphisms (adjacency-preserving bijections)",
+      "asymmetric graphs (trivial automorphism group)"
+    ]
   },
   {
     "id": "ann-e426-summary",
@@ -286,6 +338,10 @@
       "Final answer"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the question f(n) = Ω(2^(n choose 2)/n!)",
+      "the NO answer (Bradač–Christoph)",
+      "why unique subgraphs are rare"
+    ]
   }
 ]

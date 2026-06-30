@@ -1,0 +1,74 @@
+[
+  {
+    "id": "excluded-def",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "definition",
+    "title": "The Excluded Family E = {4^a(8b+7)}",
+    "content": "`IsExcludedForm n` is the existential predicate n = 4^a(8b+7) for some a, b ≥ 0. By Legendre's three-square theorem, this is exactly the set of natural numbers that are NOT sums of three squares. As stated it is an unbounded existential search over the parameters (a,b); the whole point of the file is to replace it with an effective, read-off-from-n characterization.",
+    "mathContext": "$E=\\{4^a(8b+7): a,b\\ge 0\\}$ is the excluded family of Legendre's theorem: $n=x^2+y^2+z^2$ solvable $\\iff n\\notin E$.",
+    "significance": "key",
+    "relatedConcepts": ["Legendre three-square theorem", "excluded family", "existential predicate"],
+    "prerequisites": ["sums of three squares"]
+  },
+  {
+    "id": "valuation-engine",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "theorem",
+    "title": "The 2-Adic Valuation Engine: v₂(4^a(8b+7)) = 2a",
+    "content": "`factorization_two_of_excluded`: the 2-adic valuation of 4^a(8b+7) is exactly 2a. The odd factor 8b+7 contributes nothing (it is not divisible by 2, so `Nat.factorization_eq_zero_of_not_dvd` applies) and 4^a = 2^(2a) contributes 2a (via `Nat.factorization_pow` and `Nat.Prime.factorization_self`). This single computation is the engine behind both the normal form and the uniqueness of the parametrisation.",
+    "mathContext": "$v_2\\bigl(4^a(8b+7)\\bigr)=v_2(2^{2a})+v_2(8b+7)=2a+0=2a$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "Nat.factorization", "2-adic valuation"],
+    "prerequisites": ["prime factorization", "p-adic valuation"]
+  },
+  {
+    "id": "uniqueness",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 64, "endLine": 75 },
+    "type": "theorem",
+    "title": "Uniqueness of the Parametrisation",
+    "content": "`excludedForm_unique`: if 4^a(8b+7) = 4^a'(8b'+7) then a = a' and b = b'. Reading the 2-adic valuation off both sides gives 2a = 2a', hence a = a'; cancelling the common 4^a then forces 8b+7 = 8b'+7, hence b = b'. This well-definedness is what any counting or density statement about the excluded family must rest on — e.g. the natural density 1/6 of non-three-square integers (open question oq-04-oq-01).",
+    "mathContext": "The map $(a,b)\\mapsto 4^a(8b+7)$ is injective: $a$ is recovered as $v_2/2$, then $b$ by cancellation. Layers $4^a\\cdot(\\text{odd}\\equiv 7\\bmod 8)$ are disjoint.",
+    "significance": "key",
+    "relatedConcepts": ["injectivity", "well-definedness", "natural density", "disjoint layering"],
+    "prerequisites": ["p-adic valuation", "cancellation"]
+  },
+  {
+    "id": "normal-form",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 77, "endLine": 104 },
+    "type": "theorem",
+    "title": "The 2-Adic Normal Form (Headline)",
+    "content": "`isExcludedForm_iff`: a positive integer n lies in the excluded family iff its 2-adic valuation v₂(n) is EVEN and its odd part n / 2^(v₂ n) is ≡ 7 (mod 8). This is the canonical 'solved' description — it converts the unbounded existential search over (a,b) into two arithmetic conditions read directly off n. The reverse direction reconstructs n = 2^(v₂ n) · (odd part) via `Nat.ordProj_mul_ordCompl_eq_self`, writes the odd part as 8b+7, and identifies 2^(v₂ n) = 4^a using evenness of v₂.",
+    "mathContext": "$n\\in E \\iff 0<n \\wedge \\operatorname{Even}(v_2(n)) \\wedge \\bigl(n/2^{v_2(n)}\\bigr)\\bmod 8 = 7$. The obstruction is read off the 2-adic valuation and the odd part's residue mod 8.",
+    "significance": "critical",
+    "relatedConcepts": ["normal form", "ordProj/ordCompl decomposition", "odd part", "decidability"],
+    "prerequisites": ["p-adic valuation", "modular arithmetic"]
+  },
+  {
+    "id": "lower-bound",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 106, "endLine": 113 },
+    "type": "lemma",
+    "title": "Every Excluded Number Is At Least 7",
+    "content": "`excludedForm_ge_seven`: since 4^a ≥ 1 and 8b+7 ≥ 7, every element of the excluded family is ≥ 7. A clean elementary certificate that small numbers like 6 are not excluded (hence eligible to be sums of three squares) without computing any factorization.",
+    "mathContext": "$4^a(8b+7)\\ge 1\\cdot 7 = 7$, so $n<7 \\Rightarrow n\\notin E$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lower bound", "elementary certificate"],
+    "prerequisites": ["natural number inequalities"]
+  },
+  {
+    "id": "decision-procedure",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-04",
+    "range": { "startLine": 115, "endLine": 154 },
+    "type": "definition",
+    "title": "A Computable, Classical-Free Decision Procedure",
+    "content": "`isExcludedB n` is a Bool-valued test implementing the normal form (positivity ∧ v₂ even ∧ odd part ≡ 7 mod 8), proved equivalent to IsExcludedForm by `isExcludedForm_iff_isExcludedB`. This yields the `DecidablePred IsExcludedForm` instance `instExcluded` via `decidable_of_iff` — with NO Classical.choice, an effective replacement for the parent ThreeSquares.lean's noncomputable instance. Concrete witnesses (7, 15, 28, 112 excluded; 6 not; uniqueness of 28 = 4¹(8·0+7)) confirm the machinery.",
+    "mathContext": "Membership in $E$ becomes an effective Bool computation, giving a Classical-free Decidable instance that subsumes all future membership checks.",
+    "significance": "critical",
+    "relatedConcepts": ["decidability", "computability", "Classical.choice avoidance", "decidable_of_iff"],
+    "prerequisites": ["decidable propositions", "Bool predicates"]
+  }
+]

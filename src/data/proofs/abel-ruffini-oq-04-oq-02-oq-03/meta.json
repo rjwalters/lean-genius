@@ -2,11 +2,11 @@
   "id": "abel-ruffini-oq-04-oq-02-oq-03",
   "title": "Finite Groups of Order < 60 Are Solvable",
   "slug": "abel-ruffini-oq-04-oq-02-oq-03",
-  "description": "Formalizes the key building blocks for proving all finite groups of order < 60 are solvable. Proves the p-group chain: IsPGroup p G → IsNilpotent G → IsSolvable G, covering all prime-power orders below 60. Proves S₅ is not solvable (the threshold at 60 = |A₅|). Documents the classification: order 1 (trivial), prime (cyclic→abelian), prime power (p-group→nilpotent→solvable), two distinct primes (Burnside), three distinct primes (30 and 42 via direct argument). 4 theorems, 0 definitions, 0 axioms.",
+  "description": "Formalizes the key building blocks for proving all finite groups of order < 60 are solvable. Proves the p-group chain: IsPGroup p G → IsNilpotent G → IsSolvable G, covering all prime-power orders below 60. Proves S₅ is not solvable (the threshold at 60 = |A₅|). Documents the classification: order 1 (trivial), prime (cyclic→abelian), prime power (p-group→nilpotent→solvable), two distinct primes (Burnside), three distinct primes (30 and 42 via direct argument). 4 theorems, 0 definitions. The group-theory core is axiom-free; the advertised computational fact primes_below_60 is proved by `native_decide` (depends on Lean.ofReduceBool).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
     "tags": [
       "group-theory",
@@ -15,11 +15,11 @@
       "burnside-theorem",
       "abel-ruffini"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Core results obtained via Mathlib bridge: pGroup_isSolvable chains hG.isNilpotent + inferInstance; s5_not_solvable aliases Equiv.Perm.fin_5_not_solvable directly; abelian_isSolvable is inferInstance.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom (Lean.ofReduceBool), 0 sorries. The group-theory core results are axiom-free Mathlib bridges: pGroup_isSolvable chains hG.isNilpotent + inferInstance; s5_not_solvable aliases Equiv.Perm.fin_5_not_solvable directly; abelian_isSolvable is inferInstance. The advertised computational contribution primes_below_60 (17 primes below 60) is proved solely by `native_decide`, which trusts kernel reduction via the Lean.ofReduceBool axiom (not a symbolic proof). leanFile.axiomCount remains 0 because no literal `axiom` is declared.",
     "lineCount": 104,
     "theoremCount": 4,
     "definitionCount": 0,
@@ -72,7 +72,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This fully machine-verified file (0 axioms, 0 sorries) establishes the core building blocks for the theorem that all groups of order $< 60$ are solvable: the $p$-group $\\to$ solvable chain covers 26 of 59 orders, the $S_5$ non-solvability gives the sharp threshold, and the classification documents all 59 orders by proof method.",
+    "summary": "This machine-checked file (0 sorries) establishes the core building blocks for the theorem that all groups of order $< 60$ are solvable: the $p$-group $\\to$ solvable chain covers 26 of 59 orders, the $S_5$ non-solvability gives the sharp threshold, and the classification documents all 59 orders by proof method. The abstract group-theory results are axiom-free Mathlib bridges; the advertised computational fact primes_below_60 ($\\pi(59) = 17$) is established by `native_decide`, which depends on the Lean.ofReduceBool axiom.",
     "implications": "The threshold at 60 is sharp in two directions: every group of order $\\leq 59$ is solvable, but $A_5$ (the unique simple non-abelian group of order 60) is not. This explains the Abel-Ruffini theorem: the quintic polynomial $x^5 + ax + b$ has Galois group contained in $S_5$, which has $A_5$ as a composition factor, so $S_5$ is not solvable, so the quintic has no radical formula. The Mathlib typeclass chain (`IsPGroup` $\\to$ `IsNilpotent` $\\to$ `IsSolvable`) shows how abstract algebra infrastructure enables extremely concise formal proofs of non-trivial group theory. The remaining gap (Burnside's $p^a q^b$ theorem) represents a significant Mathlib contribution opportunity: once formalized, 31 additional orders would be resolved automatically.",
     "openQuestions": [
       "Formalize Burnside's $p^a q^b$ theorem in Lean using Mathlib's character theory (this would complete the $< 60$ classification for all 59 orders, needing only the 30 and 42 cases)",

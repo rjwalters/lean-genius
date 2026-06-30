@@ -16,7 +16,11 @@
       "Vertex cover",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "adjacency relation",
+      "vertex sets"
+    ]
   },
   {
     "id": "ann-e922-independence-number",
@@ -35,7 +39,11 @@
       "Perfect graphs"
     ],
     "mathContext": "See annotation content for formal details of independence number",
-    "prerequisites": []
+    "prerequisites": [
+      "independent set",
+      "graph coloring",
+      "extremal set sizes"
+    ]
   },
   {
     "id": "ann-e922-proper-coloring",
@@ -53,7 +61,11 @@
       "formal definition",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring",
+      "adjacency relation",
+      "color classes"
+    ]
   },
   {
     "id": "ann-e922-chromatic-number",
@@ -72,7 +84,11 @@
       "Chromatic polynomial",
       "Perfect graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper coloring",
+      "independence number",
+      "graph invariants"
+    ]
   },
   {
     "id": "ann-e922-folkman-property",
@@ -91,7 +107,11 @@
       "Induced subgraph",
       "Hereditary property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "independence number",
+      "induced subgraphs",
+      "hereditary graph properties"
+    ]
   },
   {
     "id": "ann-e922-k0-case",
@@ -109,7 +129,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Folkman property",
+      "independence number",
+      "bipartite graphs"
+    ]
   },
   {
     "id": "ann-e922-k0-bipartite",
@@ -127,7 +151,11 @@
       "proof technique",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bipartite graphs",
+      "odd cycles",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-e922-folkman-theorem",
@@ -145,7 +173,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Folkman property",
+      "chromatic number",
+      "Folkman's 1970 theorem"
+    ]
   },
   {
     "id": "ann-e922-erdos-922",
@@ -163,7 +195,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Folkman property",
+      "chromatic number bound",
+      "Erdős-Hajnal problem"
+    ]
   },
   {
     "id": "ann-e922-tightness",
@@ -181,7 +217,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "extremal graph constructions",
+      "Folkman property"
+    ]
   },
   {
     "id": "ann-e922-k1-case",
@@ -199,7 +239,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Folkman's theorem",
+      "chromatic number",
+      "Erdős-Hajnal problem"
+    ]
   },
   {
     "id": "ann-e922-independence-ratio",
@@ -217,7 +261,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "independence number",
+      "graph density",
+      "Folkman property"
+    ]
   },
   {
     "id": "ann-e922-greedy-bound",
@@ -235,7 +283,11 @@
       "ring theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy coloring",
+      "maximum degree",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-e922-erdos-hajnal",
@@ -253,7 +305,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Folkman property",
+      "induced subgraphs",
+      "Erdős-Hajnal problem"
+    ]
   },
   {
     "id": "ann-e922-ramsey",
@@ -271,7 +327,11 @@
       "Ramsey numbers"
     ],
     "mathContext": "See annotation content for formal details of ramsey connection",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "independent set",
+      "clique number"
+    ]
   },
   {
     "id": "ann-e922-brooks",
@@ -289,6 +349,10 @@
       "ring theory",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Brooks' theorem",
+      "maximum degree",
+      "chromatic number"
+    ]
   }
 ]

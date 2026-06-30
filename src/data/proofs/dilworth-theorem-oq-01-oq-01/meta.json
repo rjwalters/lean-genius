@@ -1,0 +1,177 @@
+{
+  "id": "dilworth-theorem-oq-01-oq-01",
+  "title": "Mirsky's Theorem: the hard direction (attainment) via height decomposition",
+  "slug": "dilworth-theorem-oq-01-oq-01",
+  "description": "The deep direction of Mirsky's theorem: a finite poset admits an antichain cover of size exactly maxChainLen (the longest-chain length). Built by the height/level decomposition — level sets of the longest-chain-ending-here function are antichains — and combined with the easy direction to prove the full min–max identity min(antichain cover) = max(chain).",
+  "meta": {
+    "author": "Leon Mirsky (1971); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mirsky%27s_theorem",
+    "date": "1971",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "order-theory",
+      "poset",
+      "mirsky",
+      "dilworth",
+      "antichain",
+      "min-max"
+    ],
+    "proofRepoPath": "Proofs/DilworthMirskyHardOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.exists_mem_eq_sup",
+        "description": "On a nonempty Finset, the supremum of a function over the Finset is attained at some member — used to extract an actual longest chain witnessing height x and maxChainLen",
+        "module": "Mathlib.Data.Finset.Lattice.Fold"
+      },
+      {
+        "theorem": "Finset.le_sup",
+        "description": "Each member's value is below the Finset supremum — the monotone half of the height/maxChainLen definitions",
+        "module": "Mathlib.Data.Finset.Lattice.Fold"
+      },
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "The image of a Finset under a function is no larger than the Finset — bounds the number of distinct nonempty levels by the number of distinct heights",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "height x := the size of a longest chain whose maximum element is x, defined as a Finset.sup over chainsTo x",
+      "Key lemma level_isAntichain: the set of elements of a fixed height is an antichain — if x < y had equal heights, appending y to a longest chain ending at x would strictly increase height y",
+      "mirsky_antichain_cover: the nonempty level sets form an antichain cover of cardinality ≤ maxChainLen, via image-card and the height bound 1 ≤ height x ≤ maxChainLen",
+      "exists_chain_card_eq_maxChainLen: the maximum chain length is attained by an actual chain (Finset.sup over a nonempty chain family)",
+      "mirsky_min_antichain_cover: combines the hard direction with the companion easy direction to prove the full min–max identity, including the minimality clause over all antichain covers"
+    ],
+    "dateAdded": "2026-06-20",
+    "axiomCount": 0,
+    "lineCount": 221,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries over an arbitrary finite PartialOrder ([PartialOrder α] [Fintype α]). Classical decidability is registered as a local instance for Finset operations; all definitions are noncomputable. The easy direction (chain_card_le_of_antichainCover) is imported from the companion file Proofs.DilworthTheoremOQ01.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "**Mirsky's theorem (1971)** is the order-theoretic dual of Dilworth's theorem (1950). Dilworth proved that the minimum number of chains covering a finite poset equals the maximum size of an antichain; Leon Mirsky proved the dual statement, that the minimum number of *antichains* covering the poset equals the maximum *length of a chain*. Mirsky's proof is notably more elementary than Dilworth's: where Dilworth's hard direction is classically equivalent to König's theorem and needs an augmenting-path or max-flow–min-cut argument, Mirsky's hard direction follows from a single clean idea — partition the poset by the length of the longest chain ending at each element. The companion file in this gallery proves the easy (≤) directions of both theorems; this file supplies the deep (attainment) direction of Mirsky's.",
+    "problemStatement": "**Mirsky duality, hard direction (OQ-01 follow-up).** The companion file proved maxChainLen ≤ |𝒜| for every antichain cover 𝒜 (the easy direction). It remains to show the bound is attained: construct an antichain cover of size exactly maxChainLen, so that min(antichain cover) = max(chain length) holds with the minimum achieved.",
+    "text": "The hard direction of Mirsky's theorem for a finite poset: the level sets of the height function (longest chain ending at each element) are antichains, and exactly maxChainLen of them cover the poset, attaining the easy-direction lower bound.",
+    "proofStrategy": "**Strategy (height / level decomposition).**\n\n1. For each element x, define `height x` = the size of a longest chain whose maximum element is x, as a `Finset.sup` over `chainsTo x` (chains with x on top). A singleton gives `1 ≤ height x`; any such chain is a chain of the whole poset, giving `height x ≤ maxChainLen`.\n2. Define `level k = {x : height x = k}`. **Key lemma:** each level is an antichain. If `x < y` had `height x = height y = k`, take a longest chain `C` ending at `x` (size k) and append `y`; since every member of `C` is `≤ x < y`, `insert y C` is a chain ending at `y` of size `k+1`, forcing `height y ≥ k+1` — contradiction.\n3. The nonempty levels are images of `height` under `level`; there are at most `maxChainLen` of them because every height lies in `Icc 1 maxChainLen`. They cover the poset (every x lies in `level (height x)`), giving `mirsky_antichain_cover` with cardinality ≤ maxChainLen.\n4. Combine with the imported easy direction `chain_card_le_of_antichainCover` (and the fact that maxChainLen is attained by an actual chain) to get `maxChainLen ≤ |cover|`, hence equality, and the minimality clause `mirsky_min_antichain_cover`.",
+    "keyInsights": [
+      "The entire hard direction reduces to one observation: elements at the same 'longest-chain-ending-here' depth are mutually incomparable, so each depth level is an antichain.",
+      "Unlike Dilworth's hard direction (which needs König/Hall matching machinery), Mirsky's hard direction is purely a counting-the-height argument — this is why it admits a short, self-contained Finset formalization.",
+      "Attainment is forced both ways: the levels give a cover of size ≤ maxChainLen, and the easy direction gives ≥ maxChainLen, so the constructed cover is exactly minimal.",
+      "Working with Finset.sup and Finset.exists_mem_eq_sup lets the proof extract a concrete witnessing chain for both height x and maxChainLen without invoking well-ordering by hand.",
+      "Bounding the number of distinct levels by |Icc 1 maxChainLen| via Finset.card_image_le is what converts the existence of a partition into the precise cardinality bound."
+    ],
+    "prerequisites": [
+      "Partial orders: comparability, chains, antichains",
+      "The height/level (longest-chain) decomposition of a poset",
+      "Finset.sup and the attainment lemma Finset.exists_mem_eq_sup",
+      "The easy direction of Mirsky's theorem (companion file)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring, Imports, and Classical Setup",
+      "summary": "The module docstring states Mirsky's theorem, scopes this file to the hard (attainment) direction, and sketches the height/level method. It imports the companion file Proofs.DilworthTheoremOQ01 (for IsChainOn, IsAntichainOn, and the easy direction), opens Classical, and registers Classical.propDecidable as a local instance so Finset operations over Finset α resolve uniformly. The context is an arbitrary finite poset [PartialOrder α] [Fintype α].",
+      "startLine": 1,
+      "endLine": 54,
+      "mathContext": "Mirsky: $\\min(\\text{antichain cover}) = \\max(\\text{chain length})$. This file proves the $\\ge$/attainment half: a cover of size exactly $\\mathrm{maxChainLen}$ exists."
+    },
+    {
+      "id": "definitions",
+      "title": "chainsTo, height, allChains, maxChainLen",
+      "summary": "Defines chainsTo x (chains whose maximum element is x), height x (the Finset.sup of their cardinalities), allChains (all chains of the poset), and maxChainLen (the sup of all chain cardinalities).",
+      "startLine": 54,
+      "endLine": 67,
+      "mathContext": "$\\mathrm{height}(x) = \\max\\{|C| : C \\text{ a chain with top } x\\}$, $\\mathrm{maxChainLen} = \\max\\{|C| : C \\text{ a chain}\\}$."
+    },
+    {
+      "id": "height-basics",
+      "title": "Height basics: membership, attainment, and bounds",
+      "summary": "mem_chainsTo, singleton_mem_chainsTo, chainsTo_nonempty, one_le_height, exists_chainsTo_card_eq_height (the sup is attained by an actual chain), and height_le_maxChainLen — establishing 1 ≤ height x ≤ maxChainLen.",
+      "startLine": 69,
+      "endLine": 107,
+      "mathContext": "$1 \\le \\mathrm{height}(x) \\le \\mathrm{maxChainLen}$, with the height realized by a concrete chain ending at $x$."
+    },
+    {
+      "id": "level-antichain",
+      "title": "The Key Lemma: each level is an antichain",
+      "summary": "Defines level k (elements of height exactly k) and proves level_isAntichain: if x < y with equal heights, appending y to a longest chain ending at x produces a longer chain ending at y, contradicting height y = height x.",
+      "startLine": 109,
+      "endLine": 148,
+      "mathContext": "If $x < y$ then $\\mathrm{height}(y) > \\mathrm{height}(x)$; hence elements of equal height are incomparable — each level is an antichain."
+    },
+    {
+      "id": "mirsky-cover",
+      "title": "Mirsky hard direction: the antichain cover",
+      "summary": "mirsky_antichain_cover: the nonempty level sets form an antichain cover of cardinality ≤ maxChainLen, bounding the number of distinct levels by |Icc 1 maxChainLen| = maxChainLen.",
+      "startLine": 150,
+      "endLine": 176,
+      "mathContext": "The $\\le \\mathrm{maxChainLen}$ nonempty levels cover the poset by antichains, attaining the easy-direction bound."
+    },
+    {
+      "id": "mirsky-minmax",
+      "title": "maxChainLen attainment and the full min–max identity",
+      "summary": "exists_chain_card_eq_maxChainLen (a concrete longest chain exists), maxChainLen_le_card_of_antichainCover (the easy direction re-stated using that chain), and mirsky_min_antichain_cover: an antichain cover of size exactly maxChainLen that is minimal among all antichain covers.",
+      "startLine": 178,
+      "endLine": 221,
+      "mathContext": "$\\min(\\text{antichain cover}) = \\mathrm{maxChainLen} = \\max(\\text{chain length})$, with the minimum attained."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file completes Mirsky's theorem for finite posets: the height/level decomposition produces an antichain cover of size exactly maxChainLen, which combined with the companion easy direction proves the full min–max identity min(antichain cover) = max(chain length), with minimality. Verified with 0 sorries and 0 axioms.",
+    "implications": "Together with the companion easy-direction file, the Mirsky min–max theorem is now fully formalized over an arbitrary finite partial order. The height-function technique used here is the standard constructive route to optimal antichain partitions and connects directly to the theory of poset dimension and to Mathlib's Set.chainHeight. The dual hard direction — Dilworth's attainment, equivalent to König's theorem — remains the natural next target and requires genuinely different (matching/flow) machinery.",
+    "openQuestions": [
+      "Formalize the hard direction of Dilworth's theorem (minimum chain cover = maximum antichain) via König's theorem or Hall's marriage theorem on a bipartite incidence structure.",
+      "Connect maxChainLen and the height function to Mathlib's Set.chainHeight and prove the equivalence for finite posets.",
+      "Derive Mirsky's theorem as a corollary of Dilworth's (or vice versa) through a common min–max framework, and obtain Erdős–Szekeres as an application."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "dilworth-theorem-oq-01",
+      "relationship": "Companion / easy direction",
+      "description": "The companion file proves the elementary (≤) directions of both Dilworth's and Mirsky's theorems and supplies IsChainOn, IsAntichainOn, and chain_card_le_of_antichainCover, which this file imports to close the min–max identity."
+    },
+    {
+      "proofId": "erdos-szekeres",
+      "relationship": "Application of chain/antichain duality",
+      "description": "The Erdős–Szekeres monotone-subsequence theorem is the canonical corollary of the Dilworth/Mirsky circle of ideas: a height/level decomposition of a dominance order yields the long monotone subsequence, the same trade-off between chain length and antichain partition formalized here."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.DilworthTheoremOQ01"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "DilworthTheoremOQ01",
+    "lineCount": 221,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "path": "Proofs/DilworthMirskyHardOQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "L. Mirsky",
+      "title": "A Dual of Dilworth's Decomposition Theorem",
+      "year": "1971",
+      "venue": "American Mathematical Monthly 78 (8): 876–877",
+      "note": "Original statement and proof of the antichain-cover / chain-length duality"
+    },
+    {
+      "authors": "R. P. Dilworth",
+      "title": "A Decomposition Theorem for Partially Ordered Sets",
+      "year": "1950",
+      "venue": "Annals of Mathematics 51 (1): 161–166",
+      "note": "The dual chain-cover / antichain theorem"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,188 @@
+{
+  "id": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01-oq-01",
+  "title": "Explicit Dilworth chain decomposition of {1,…,N} for arbitrary N",
+  "slug": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01-oq-01",
+  "description": "Answers the even-case sibling's first open question: generalize the explicit odd-part chain decomposition of the divisibility poset from {1,…,2n} to arbitrary N. The same fibers of the odd-part map o(m) = ordCompl[2] m partition {1,…,N} into exactly ⌈N/2⌉ = (N+1)/2 divisibility chains (card_chains), one per odd number ≤ N; each fiber is a genuine chain (fiber_chain, comparability dvd_or_dvd_of_oddPart_eq). The chain cover of size ⌈N/2⌉ forces every antichain to have ≤ ⌈N/2⌉ elements (antichain_card_le), and the top block {⌊N/2⌋+1,…,N} attains it (topHalf_antichain, card_topHalf), giving the Dilworth equality max_antichain_eq for every N. chain_cover_card_eq_max_antichain states the explicit min = max identity, and recovers_even_case specializes N = 2n back to the sibling's n-chain partition. This recovers the parent's max_antichainN_card (proved there by pigeonhole) as a chain-decomposition min–max consequence for all N, not only even N = 2n. Formalized over Mathlib with zero sorries and zero axioms (no native_decide).",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dilworth%27s_theorem",
+    "date": "folklore",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosDivisibilityPigeonholeOQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "number-theory",
+      "divisibility",
+      "antichain",
+      "chain-decomposition",
+      "dilworth",
+      "mirsky",
+      "primitive-set",
+      "extremal",
+      "erdos"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ordProj_mul_ordCompl_eq_self",
+        "description": "The factorization identity 2^(v₂ m) · ordCompl[2] m = m, expressing every m as a power of two times its odd part. Drives dvd_or_dvd_of_oddPart_eq: two numbers with equal odd parts differ only in their power of two, so the one with the smaller 2-adic valuation divides the other — this is exactly what makes each fiber a chain, for any N.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.not_dvd_ordCompl",
+        "description": "For a prime p and n ≠ 0, p does not divide ordCompl[p] n. With p = 2 this certifies that the odd part is odd, so the chain indices are exactly the odd numbers ≤ N, of which there are (N+1)/2.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "If f is injective on s then |s.image f| = |s|. Used to bound |A| = |A.image oddPart| for an antichain A on which oddPart is injective, and (with card_image_of_injective) to count the (N+1)/2 chain indices as the image of the injective i ↦ 2i+1.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.card_Icc",
+        "description": "|Icc a b| = b + 1 - a. Computes the size of the top block {⌊N/2⌋+1,…,N} as N - ⌊N/2⌋ = ⌈N/2⌉ = (N+1)/2, closed by omega including the floor/ceil division identity N - N/2 = (N+1)/2.",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      },
+      {
+        "theorem": "IsGreatest",
+        "description": "IsGreatest s a means a ∈ s ∧ a ∈ upperBounds s. Used to state the Dilworth min–max equality: (N+1)/2 is exactly the maximum achievable divisibility-antichain size in {1,…,N} — attained by the top half, bounded by the (N+1)/2-chain cover.",
+        "module": "Mathlib.Order.Bounds.Basic"
+      }
+    ],
+    "originalContributions": [
+      "card_chains (general N): the fibers of ordCompl[2] partition {1,…,N} into exactly ⌈N/2⌉ = (N+1)/2 classes — one per odd number ≤ N — an explicit cover by (N+1)/2 divisibility chains, for every N (not only even N = 2n). Proved by identifying the odd-part image with {2i+1 : i < (N+1)/2} (image_oddPart_Icc) and counting via the injective i ↦ 2i+1; the ceiling/floor arithmetic is discharged by omega's native handling of division by 2.",
+      "antichain_card_le (general N): |A| ≤ (N+1)/2 for any divisibility-antichain A ⊆ {1,…,N}, as the Mirsky/Dilworth min–max consequence of the (N+1)/2-chain cover — oddPart is injective on any antichain, so A injects into the (N+1)/2 chain indices. The chain-cover proof of the bound at full generality, structurally distinct from the parent's odd-part pigeonhole count.",
+      "topHalf_antichain and card_topHalf (general N): the block {⌊N/2⌋+1,…,N} is a divisibility-antichain (a proper multiple of a > N/2 is ≥ 2a > N) of size N - ⌊N/2⌋ = ⌈N/2⌉, attaining the bound for both even and odd N — the floor/ceil bookkeeping that the even case sidestepped.",
+      "max_antichain_eq (general N): packaging the (N+1)/2-chain cover (bound) and the top-block witness (attainment) into IsGreatest ((N+1)/2) — the Dilworth equality for the divisibility poset on {1,…,N} for arbitrary N.",
+      "chain_cover_card_eq_max_antichain: the explicit min = max identity, stating the odd-part chain-cover size equals the maximum divisibility-antichain size, both (N+1)/2, for every N — the Dilworth min–max made manifest as a single statement at full generality.",
+      "recovers_even_case: specializing N = 2n recovers the sibling even-case file's n-chain partition (card_chains (2*n) = n), exhibiting this entry as the strict generalization of erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01."
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+        "relationship": "Parent. This entry answers its first open question — generalize the explicit chain decomposition from {1,…,2n} to arbitrary N. The same odd-part fibers give a cover by ⌈N/2⌉ chains for every N, recovering the parent's even-case n-chain partition via recovers_even_case."
+      },
+      {
+        "id": "erdos-divisibility-pigeonhole-oq-01-oq-01",
+        "relationship": "Grandparent. Proves max_antichainN_card: the maximum divisibility-antichain in {1,…,N} has size (N+1)/2, via a pigeonhole count. This entry re-derives that exact bound for all N through the explicit ⌈N/2⌉-chain decomposition and the Dilworth min–max equality."
+      },
+      {
+        "id": "erdos-divisibility-pigeonhole",
+        "relationship": "Great-great-grandparent. Supplies the odd-part classification (every m is 2^k · odd) that underlies both the pigeonhole count and the chain decomposition generalized here."
+      }
+    ],
+    "lineCount": 195,
+    "assumptions": "0 axioms, 0 sorries (verified by #print axioms: depends only on propext, Classical.choice, Quot.sound — no sorryAx, no Lean.ofReduceBool). Self-contained over Mathlib: the odd-part / 2-adic decomposition (Nat.ordProj_mul_ordCompl_eq_self, Nat.ordCompl_dvd, Nat.ordCompl_le, Nat.ordCompl_pos, Nat.not_dvd_ordCompl), Finset image-cardinality lemmas (card_image_of_injOn, card_image_of_injective, card_le_card, image_subset_image), and order-theoretic packaging (IsGreatest, upperBounds). All arithmetic — counting the (N+1)/2 odd numbers, the top-block cardinality N - N/2 = (N+1)/2 via Nat.card_Icc, the comparability cofactor bound, and every floor/ceil division-by-2 identity — is discharged by omega and nlinarith. Badge is 'original' because the explicit ⌈N/2⌉-chain partition at arbitrary N and the comparability lemma making the fibers chains are formalized from first principles; the parent proves only the bound via a pigeonhole count and the immediate sibling only the even case.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 15,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Dilworth's theorem (1950) states that in any finite poset the maximum size of an antichain equals the minimum number of chains needed to cover the poset; Mirsky's theorem is its dual. For the divisibility poset on {1,…,N} this min–max value is ⌈N/2⌉, and the natural chain cover is by odd parts: the chain through an odd o is o, 2o, 4o, …, so there is one chain per odd number ≤ N, of which there are exactly ⌈N/2⌉. The Erdős divisibility pigeonhole (any ⌈N/2⌉+1 of {1,…,N} contain a ∣-pair) is precisely the statement that no antichain exceeds ⌈N/2⌉. The parent proves this bound by a pigeonhole count on odd parts and the immediate sibling realizes the chain decomposition only for the even interval {1,…,2n}; here that explicit chain decomposition is carried to arbitrary N, even and odd alike, realizing the Dilworth equality concretely for every N.",
+    "problemStatement": "Write each m ≥ 1 as m = 2^k · o(m) with odd part o(m) = ordCompl[2] m. Then for every N the fibers of o partition {1,…,N} into exactly ⌈N/2⌉ = (N+1)/2 divisibility chains (card_chains), each fiber is totally ordered by divisibility (fiber_chain), no divisibility-antichain in {1,…,N} exceeds ⌈N/2⌉ elements (antichain_card_le), and the top block {⌊N/2⌋+1,…,N} attains ⌈N/2⌉ — so the maximum antichain size equals the minimum chain-cover size, both (N+1)/2 (max_antichain_eq, chain_cover_card_eq_max_antichain).",
+    "text": "The odd-part map o(m) = ordCompl[2] m sends {1,…,N} onto the ⌈N/2⌉ odd numbers ≤ N, and its fibers are the divisibility chains {o, 2o, 4o, …} ∩ [1,N]. Two numbers with the same odd part differ only by a power of two, so the one with the smaller 2-adic valuation divides the other (fiber_chain) — the fibers are genuine chains. Any antichain meets each chain at most once, so o is injective on it and it injects into the ⌈N/2⌉ chain indices, giving |A| ≤ ⌈N/2⌉. The top half {⌊N/2⌋+1,…,N} is an antichain of size N - ⌊N/2⌋ = ⌈N/2⌉, so ⌈N/2⌉ is attained: the Dilworth min–max value of the divisibility poset on {1,…,N} is (N+1)/2, for every N.",
+    "proofStrategy": "Reuse the odd-part interface over ordCompl[2] (oddPart_dvd, oddPart_le, oddPart_pos, odd_oddPart, oddPart_eq_self) and the comparability lemma dvd_or_dvd_of_oddPart_eq (from 2^(v₂ a)·o(a) = a and le_total on 2-adic valuations). Identify the odd-part image with {2i+1 : i < (N+1)/2} (image_oddPart_Icc, with the ceiling bound handled by omega) and count it (card_chains) via the injective i ↦ 2i+1. Derive fiber_chain by restricting comparability to {1,…,N}. Show oddPart is injective on any antichain and compose with the chain count for antichain_card_le. Prove the top block {⌊N/2⌋+1,…,N} is an antichain (a proper multiple of a > N/2 exceeds N) of size N - N/2 = (N+1)/2 (card_topHalf), and package bound + attainment into IsGreatest (max_antichain_eq), the min = max identity (chain_cover_card_eq_max_antichain), and the even-case specialization (recovers_even_case).",
+    "keyInsights": [
+      "**One chain per odd number, ⌈N/2⌉ of them**: grouping {1,…,N} by odd part o(m) gives the geometric chains o, 2o, 4o, …; there is one per odd o ≤ N, and {1,…,N} contains exactly ⌈N/2⌉ = (N+1)/2 odd numbers — an explicit chain cover whose size is the ceiling, valid for even and odd N alike.",
+      "**Comparability is the structural heart, and it is N-independent**: two numbers with equal odd part m are 2^i·m and 2^j·m, hence ∣-comparable. dvd_or_dvd_of_oddPart_eq holds unconditionally, so the only thing that changes from the even case is the counting — the chain structure itself needs no re-proof.",
+      "**Floor meets ceiling**: the chain count is the ceiling ⌈N/2⌉ = (N+1)/2 while the witness block starts above the floor ⌊N/2⌋; the identity N - ⌊N/2⌋ = ⌈N/2⌉ — trivial for even N, the crux for odd N — ties the bound and its attainment together, all discharged by omega.",
+      "**Bound as min–max, not as counting**: the antichain bound follows because an antichain meets each of the ⌈N/2⌉ chains at most once, so the odd-part map is injective on it and |A| ≤ (number of chains) = ⌈N/2⌉ — the Mirsky/Dilworth direction, max antichain ≤ min chain cover, for arbitrary N.",
+      "**Strict generalization**: recovers_even_case shows card_chains (2n) = n, so this entry contains the sibling even-case file as the specialization N = 2n and the parent's max_antichainN_card as the bound it re-proves by chains."
+    ],
+    "prerequisites": [
+      "Dilworth's and Mirsky's theorems (max antichain = min chain cover)",
+      "The odd-part / 2-adic decomposition of natural numbers (ordCompl[2], ordProj[2])",
+      "Finset image-cardinality lemmas (card_image_of_injOn, card_le_card)",
+      "Natural-number floor/ceiling division identities (N - N/2 = (N+1)/2), handled by omega",
+      "Mathlib's IsGreatest / upperBounds for stating the extremal value"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Problem Statement & Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring stating the explicit Dilworth chain decomposition of {1,…,N} for arbitrary N: the fibers of the odd-part map partition the interval into ⌈N/2⌉ = (N+1)/2 divisibility chains, each fiber is a chain, no antichain exceeds ⌈N/2⌉, and the top block {⌊N/2⌋+1,…,N} attains it — the min–max equality. Contrasts with the parent's pigeonhole count and the sibling's even-only case. Imports Mathlib and opens Finset."
+    },
+    {
+      "id": "odd-part-interface",
+      "title": "The Odd-Part Interface",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "Defines oddPart m = ordCompl[2] m, the index of the divisibility chain containing m, with helper lemmas: oddPart_dvd (it divides m), oddPart_le (it is ≤ m), oddPart_pos (positive for m ≠ 0), odd_oddPart (it is odd, via Nat.not_dvd_ordCompl), and oddPart_eq_self (an odd number is its own odd part — the chain fixed points). Reused verbatim from the even-case sibling; N-independent."
+    },
+    {
+      "id": "comparability",
+      "title": "Chain Comparability",
+      "startLine": 87,
+      "endLine": 102,
+      "summary": "dvd_or_dvd_of_oddPart_eq: two positive numbers with the same odd part are ∣-comparable. Using 2^(v₂ a)·oddPart a = a (Nat.ordProj_mul_ordCompl_eq_self), the two numbers are 2^i·m and 2^j·m; le_total on the valuations and pow_dvd_pow orient the division. This is the lemma that makes each fiber a chain, unchanged from the even case."
+    },
+    {
+      "id": "chain-count",
+      "title": "The ⌈N/2⌉-Chain Partition",
+      "startLine": 104,
+      "endLine": 134,
+      "summary": "image_oddPart_Icc identifies the odd parts occurring in {1,…,N} with {2i+1 : i < (N+1)/2}, with the ceiling bound 2i+1 ≤ N ⟺ i < (N+1)/2 handled by omega in both directions; card_chains counts them (= (N+1)/2) via the injective i ↦ 2i+1, giving the explicit cover by ⌈N/2⌉ divisibility chains for arbitrary N. fiber_chain restricts comparability to {1,…,N}: each fiber is a chain."
+    },
+    {
+      "id": "antichain-bound",
+      "title": "Upper Bound via the Chain Cover",
+      "startLine": 136,
+      "endLine": 152,
+      "summary": "antichain_card_le: any divisibility-antichain in {1,…,N} has ≤ (N+1)/2 elements. oddPart is injective on the antichain (equal odd parts force comparability via fiber_chain, hence equality), so it injects into the ⌈N/2⌉ chain indices — the Mirsky/Dilworth direction max antichain ≤ min chain cover, now for every N."
+    },
+    {
+      "id": "sharpness-minmax",
+      "title": "Sharpness & the Dilworth Equality",
+      "startLine": 154,
+      "endLine": 195,
+      "summary": "topHalf_antichain shows the block {⌊N/2⌋+1,…,N} is a divisibility-antichain (a proper multiple of a > N/2 is ≥ 2a > N; the cofactor bound via nlinarith) and card_topHalf gives its size N - N/2 = (N+1)/2 via Nat.card_Icc and omega. max_antichain_eq packages bound and attainment into IsGreatest ((N+1)/2); chain_cover_card_eq_max_antichain states the min = max identity; recovers_even_case specializes N = 2n to the sibling's n-chain partition."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Dilworth/Mirsky chain decomposition of the divisibility poset on {1,…,N} is formalized explicitly for arbitrary N with zero sorries and zero axioms: the fibers of the odd-part map ordCompl[2] partition {1,…,N} into exactly ⌈N/2⌉ = (N+1)/2 divisibility chains (card_chains), each fiber is genuinely a chain (fiber_chain, via dvd_or_dvd_of_oddPart_eq), no antichain exceeds ⌈N/2⌉ (antichain_card_le), and the top half {⌊N/2⌋+1,…,N} attains it — together the min–max equality max_antichain_eq (IsGreatest ((N+1)/2)) and the explicit identity chain_cover_card_eq_max_antichain. recovers_even_case specializes N = 2n to the sibling's n-chain partition.",
+    "implications": "This answers the even-case sibling's first open question by carrying the explicit chain decomposition to arbitrary N — even and odd alike — and so recovers the grandparent's max_antichainN_card (proved there by pigeonhole) as a chain-decomposition min–max consequence for every N. The only new mathematical content over the even case is the floor/ceil bookkeeping that ties the ceiling chain count ⌈N/2⌉ to the floor-based witness block {⌊N/2⌋+1,…,N} via N - ⌊N/2⌋ = ⌈N/2⌉; the comparability lemma and chain structure transfer verbatim, demonstrating that the odd-part chains o, 2o, 4o, … are the canonical Dilworth cover at full generality. The min = max identity makes the finite Erdős statement an instance of the general structure theory of primitive sets for every interval {1,…,N}.",
+    "openQuestions": [
+      "Characterize all maximum divisibility-antichains of {1,…,N} for arbitrary N (the top half {⌊N/2⌋+1,…,N} is one but not the only one), describing the full set via swaps that slide each chosen element down its odd-part chain without creating a divisibility pair.",
+      "Formalize Dilworth's theorem abstractly and instantiate it at the divisibility poset on {1,…,N}, so that card_chains (a chain cover of size ⌈N/2⌉) plus the top-half antichain yields max_antichain_eq through the general min–max theorem rather than the bespoke injectivity argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers the even-case sibling's first open question: generalizes its explicit odd-part chain decomposition of {1,…,2n} (n chains) to arbitrary N (⌈N/2⌉ chains), recovering the n-chain partition as the N = 2n specialization (recovers_even_case)."
+    },
+    {
+      "targetId": "erdos-divisibility-pigeonhole-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Re-derives the grandparent's max_antichainN_card — the maximum divisibility-antichain in {1,…,N} has size (N+1)/2 — for all N through an explicit ⌈N/2⌉-chain decomposition and the Dilworth min–max equality, instead of the grandparent's odd-part pigeonhole count."
+    },
+    {
+      "targetId": "erdos-divisibility-pigeonhole",
+      "relationship": "uses-similar-technique",
+      "description": "Uses the ancestor's odd-part classification (every m is 2^k · odd) as the indexing of the chains, here promoted from a counting device to an explicit chain cover of size ⌈N/2⌉ with proven comparability, for arbitrary N."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/ErdosDivisibilityPigeonholeOQ01OQ01OQ01OQ01.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "ErdosPigeonholeChainDecompN",
+    "lineCount": 195,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 15
+  },
+  "sorries": []
+}

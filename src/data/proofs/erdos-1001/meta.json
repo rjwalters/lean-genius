@@ -94,76 +94,92 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Module docstring for Erdős Problem 1001 (limiting behavior of the counting function S(N,A,c) for Diophantine approximation by rationals with bounded denominator) and `namespace Erdos1001`.",
+      "mathContext": "Studies $\\lim_{N\\to\\infty} S(N,A,c)$, the density of reals approximable to order $A/y^c$ by fractions of denominator $\\le y$."
+    },
+    {
       "id": "approximation-set",
       "title": "The Approximation Set",
-      "summary": "Definition of isApproximable, approximationSet, and S(N,A,c)",
       "startLine": 32,
       "endLine": 50,
+      "summary": "Definition of isApproximable, approximationSet, and S(N,A,c)",
       "mathContext": "Formal definition: Definition of isApproximable, approximationSet, and S(N,A,c)"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "S bounds between 0 and 1, monotonicity in A and c",
       "startLine": 51,
-      "endLine": 71,
+      "endLine": 56,
+      "summary": "S bounds between 0 and 1, monotonicity in A and c",
       "mathContext": "Bound: S bounds between 0 and 1, monotonicity in A and c"
     },
     {
       "id": "limit-function",
       "title": "The Limit Function",
+      "startLine": 57,
+      "endLine": 96,
       "summary": "Definition of f(A,c) = 12A log(c)/π² and limitExists",
-      "startLine": 72,
-      "endLine": 85,
       "mathContext": "Formal definition: Definition of f(A,c) = 12A log(c)/π² and limitExists"
     },
     {
       "id": "est-result",
       "title": "Erdős-Szüsz-Turán Result (1958)",
+      "startLine": 97,
+      "endLine": 118,
       "summary": "Explicit formula in the EST regime",
-      "startLine": 86,
-      "endLine": 107,
       "mathContext": "Mathematical content: Explicit formula in the EST regime"
     },
     {
       "id": "boundedness",
       "title": "Boundedness Away from 0 and 1",
+      "startLine": 119,
+      "endLine": 124,
       "summary": "EST boundedness when min(A,c) > 10",
-      "startLine": 108,
-      "endLine": 117,
       "mathContext": "Bound: EST boundedness when min(A,c) > 10"
     },
     {
       "id": "kesten-sos",
       "title": "Kesten-Sós Result (1966)",
+      "startLine": 125,
+      "endLine": 147,
       "summary": "Limit exists for all valid A, c",
-      "startLine": 118,
-      "endLine": 140,
       "mathContext": "Mathematical content: Limit exists for all valid A, c"
     },
     {
       "id": "alternative-proofs",
       "title": "Alternative Proofs",
+      "startLine": 148,
+      "endLine": 162,
       "summary": "Boca (2008) and Xiong-Zaharescu (2006) approaches",
-      "startLine": 141,
-      "endLine": 158,
       "mathContext": "Mathematical content: Boca (2008) and Xiong-Zaharescu (2006) approaches"
     },
     {
       "id": "farey-connection",
       "title": "Connection to Farey Fractions",
-      "summary": "Why π² appears in the formula",
-      "startLine": 159,
+      "startLine": 163,
       "endLine": 177,
+      "summary": "Why π² appears in the formula",
       "mathContext": "Mathematical content: Why π² appears in the formula"
+    },
+    {
+      "id": "outside-est-regime",
+      "title": "Outside the EST Regime (Open Question oq-01)",
+      "startLine": 178,
+      "endLine": 219,
+      "summary": "The open-question content (oq-01): defines `estBoundary c = c/(1+c²)` with `estBoundary_pos`, the predicate `outsideESTRegime`, and `limit_in_est_regime` — characterizing where the Erdős-Szüsz-Turán explicit formula applies versus the regime that remains open.",
+      "mathContext": "Boundary $\\beta(c)=c/(1+c^2)$ separating the EST regime (explicit limit known) from the open regime for $\\lim S(N,A,c)$."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status and main theorem erdos_1001",
-      "startLine": 176,
-      "endLine": 205,
-      "mathContext": "Verified: Problem status and main theorem erdos_1001"
+      "startLine": 220,
+      "endLine": 249,
+      "summary": "Closing docstring on problem status and the main theorem `erdos_1001`, which packages the established results; closes `namespace Erdos1001`.",
+      "mathContext": "Main statement $erdos\\_1001$ assembling the EST/Kesten-Sós results; the general off-regime limit is open."
     }
   ],
   "conclusion": {

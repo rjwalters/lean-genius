@@ -70,8 +70,8 @@
     "id": "ann-tetra-angle",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 73,
-      "endLine": 84
+      "startLine": 186,
+      "endLine": 233
     },
     "type": "concept",
     "title": "Tetrahedron Dihedral Angle and Irrationality",
@@ -94,8 +94,8 @@
     "id": "ann-dehn-invariant-def",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 90,
-      "endLine": 97
+      "startLine": 239,
+      "endLine": 246
     },
     "type": "definition",
     "title": "Simplified Dehn Invariant",
@@ -118,8 +118,8 @@
     "id": "ann-cube-dehn-zero",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 99,
-      "endLine": 104
+      "startLine": 248,
+      "endLine": 253
     },
     "type": "definition",
     "title": "Cube Has Zero Dehn Invariant",
@@ -140,8 +140,8 @@
     "id": "ann-tetra-dehn-nonzero",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 106,
-      "endLine": 112
+      "startLine": 255,
+      "endLine": 261
     },
     "type": "concept",
     "title": "Tetrahedron Has Nonzero Dehn Invariant",
@@ -162,12 +162,12 @@
     "id": "ann-dehn-theorem",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 118,
-      "endLine": 126
+      "startLine": 267,
+      "endLine": 275
     },
     "type": "insight",
     "title": "Dehn's Theorem: Invariance Under Dissection",
-    "content": "States Dehn's fundamental theorem: scissors congruent polyhedra have equal Dehn invariant. This is the bridge between the algebraic invariant and the geometric equivalence relation. The proof (sorry) requires showing the Dehn invariant is additive: D(P₁ ∪ P₂) = D(P₁) + D(P₂) when P₁, P₂ share only boundary, and that it is preserved under rigid motions.",
+    "content": "States Dehn's fundamental theorem: scissors congruent polyhedra have equal Dehn invariant — the bridge between the algebraic invariant and the geometric equivalence relation. Here the preservation of the invariant is taken as an explicit hypothesis (`h_dehn_preserved`) rather than proved: `dehn_invariant_modus_ponens` applies modus ponens, deducing that if P has zero Dehn invariant and the invariant is preserved from P to Q, then Q also has zero Dehn invariant. As its docstring notes, this does not prove Dehn's theorem itself — a full proof would require showing the Dehn invariant is additive (D(P₁ ∪ P₂) = D(P₁) + D(P₂) when P₁, P₂ share only boundary) and invariant under rigid motions.",
     "mathContext": "If $P \\sim_{\\mathrm{sc}} Q$ then $D(P) = D(Q)$. Equivalently, $D$ descends to a well-defined function on scissors congruence classes: $D: \\mathcal{P}(\\mathbb{R}^3)/\\sim_{\\mathrm{sc}} \\to \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$.",
     "significance": "key",
     "relatedConcepts": [
@@ -185,8 +185,8 @@
     "id": "ann-dehn-obstruction",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 144,
-      "endLine": 149
+      "startLine": 297,
+      "endLine": 302
     },
     "type": "insight",
     "title": "Dehn Obstruction: The Core of Hilbert's Third Problem",
@@ -208,8 +208,8 @@
     "id": "ann-bolyai-gerwien",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 155,
-      "endLine": 175
+      "startLine": 308,
+      "endLine": 328
     },
     "type": "concept",
     "title": "2D Contrast: Bolyai-Gerwien Theorem",
@@ -231,8 +231,8 @@
     "id": "ann-dehn-sydler",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 181,
-      "endLine": 198
+      "startLine": 334,
+      "endLine": 349
     },
     "type": "concept",
     "title": "Dehn-Sydler Completeness Theorem",
@@ -255,8 +255,8 @@
     "id": "ann-other-polyhedra",
     "proofId": "dissection-of-cubes-oq-02",
     "range": {
-      "startLine": 204,
-      "endLine": 216
+      "startLine": 355,
+      "endLine": 367
     },
     "type": "concept",
     "title": "Dihedral Angles of Other Platonic Solids",

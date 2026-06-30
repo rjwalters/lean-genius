@@ -33,11 +33,11 @@
       "startLine": 1,
       "endLine": 6
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Mathlib Foundation for Cardinal Arithmetic",
     "content": "Three Mathlib modules supply the cardinal-arithmetic infrastructure: `Cardinal.Basic` for the cardinal type and basic operations; `Cardinal.Ordinal` for the aleph hierarchy and `Cardinal.cantor` (the lower bound κ < 2^κ); and `Cardinal.Cofinality` for the König theorem `Cardinal.lt_cof_power` and the regular-cardinal API (`IsRegular`, `isRegular_aleph_succ`). `Order.SuccPred.Basic` brings in `Order.succ`/`Order.lt_succ`, used pervasively in this file because the aleph hierarchy is most cleanly indexed via successor ordinals. `Mathlib.Tactic` covers the meta-tactics (`norm_num`, `linarith`, etc.).",
     "mathContext": "The Mathlib Cardinal API is built on top of Ordinal and uses `Cardinal.{0}` (universe-polymorphic with universe 0 chosen) as the canonical cardinal type. Cofinality is the function `Ordinal.cof : Ordinal → Cardinal`, and a cardinal is regular iff `κ.ord.cof = κ`.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib.SetTheory.Cardinal",
       "Order.SuccPred",
@@ -77,7 +77,7 @@
       "startLine": 83,
       "endLine": 90
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "permitted_satisfies_konig: Cofinality Constraint Free of Charge",
     "content": "The theorem `permitted_satisfies_konig` shows the König constraint cf(κ) > ℵ₀ falls out of the two-clause definition. The proof is two lines: rewrite cf(κ) = κ via `IsRegular.cof_eq` (regularity), then the second clause ℵ₀ < κ is the goal. This is the structural justification for the minimal definition: it correctly sits underneath the König constraint without redundancy. The lemma is itself a useful interface theorem for downstream proofs that need cf-bounds rather than regularity directly.",
     "mathContext": "$\\mathsf{IsPermittedValue}(\\kappa) \\Rightarrow \\mathrm{cf}(\\kappa) > \\aleph_0$. Proof: $\\mathrm{cf}(\\kappa) = \\kappa$ since $\\kappa$ is regular, and $\\kappa > \\aleph_0$ by hypothesis.",
@@ -99,7 +99,7 @@
       "startLine": 92,
       "endLine": 109
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Concrete Witnesses: ℵ₁ (CH) and ℵ₂ (PFA)",
     "content": "Two concrete permitted-value theorems anchor the abstract definition to landmark cardinals from independence theory. `aleph_one_permitted` certifies ℵ₁ (the value of 2^ℵ₀ under the Continuum Hypothesis) — proved by chaining `aleph_succ` with `aleph_zero` to reduce ℵ₁ = succ(ℵ₀), then `Order.lt_succ`. `aleph_two_permitted` certifies ℵ₂ (the value of 2^ℵ₀ under PFA, the Proper Forcing Axiom) — proved by an analogous double-successor chain. These two witnesses connect the abstract theory to specific axiom systems that mathematicians actually consider, and serve as a sanity check that the definition admits the expected examples.",
     "mathContext": "Under CH: $2^{\\aleph_0} = \\aleph_1$; under PFA (Baumgartner 1984, Foreman-Magidor-Shelah 1988): $2^{\\aleph_0} = \\aleph_2$. The proof technique unfolds $\\aleph_1 = \\aleph_{\\mathrm{succ}\\,0} = \\mathrm{succ}\\,\\aleph_0$ via `Cardinal.aleph_succ` then closes with $\\mathrm{succ}$-monotonicity.",
@@ -171,7 +171,7 @@
       "startLine": 140,
       "endLine": 159
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IsEastonFunction: Three Constraints in a Lean Structure",
     "content": "The structure `IsEastonFunction F` packages the three Easton constraints as fields: `succ_le` (F(κ) ≥ κ⁺, the Cantor-style strict bound), `monotone` (κ ≤ ν ⇒ F(κ) ≤ F(ν), monotonicity restricted to regular infinite cardinals), and `konig_pointwise` (κ < cf(F κ), the König constraint). All three are quantified over regular κ ≥ ℵ₀ — exactly the domain on which Easton's theorem governs the continuum function. Using a `structure` rather than a Π-type bundle gives named fields and dot-notation access (`hF.succ_le`, `hF.monotone`), which the downstream witness theorem exploits.",
     "mathContext": "$\\mathsf{IsEastonFunction}(F) \\iff $ for all regular $\\kappa, \\nu \\geq \\aleph_0$: (E1) $F(\\kappa) \\geq \\kappa^+$, (E2) $\\kappa \\leq \\nu \\Rightarrow F(\\kappa) \\leq F(\\nu)$, (E3) $\\mathrm{cf}(F(\\kappa)) > \\kappa$. Easton 1970: these conditions are exactly the necessary AND sufficient constraints for $F$ to be realizable as $\\kappa \\mapsto 2^\\kappa$ on regular cardinals in some forcing extension.",
@@ -195,7 +195,7 @@
       "startLine": 168,
       "endLine": 191
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "isEastonFunction_continuum: 2^· is the Canonical Witness",
     "content": "The actual continuum function κ ↦ 2^κ satisfies all three Easton constraints axiom-free, so the constraint set is non-vacuous. `succ_le` is `Order.succ_le_of_lt (Cardinal.cantor κ)` — Cantor's strict inequality 2^κ > κ becomes succ(κ) ≤ 2^κ. `konig_pointwise` is `Cardinal.lt_cof_power` applied with base 2 — directly König's theorem cf(2^κ) > κ. The `monotone` field is `Cardinal.power_le_power_left` (note the Mathlib naming convention: `power_le_power_left` varies the EXPONENT, while `power_le_power_right` varies the BASE — the opposite of what the names suggest), with the base-nonzero side condition `(2 : Cardinal) ≠ 0` discharged by `norm_num`. The witness theorem is structurally important: it confirms the constraint set is the right one (forced by the actual continuum function), making the realizability axioms in Phase3b non-vacuous. Companion theorem `isEastonFunction_nonempty` packages this as ∃ F, IsEastonFunction F.",
     "mathContext": "Witness: $F(\\kappa) = 2^\\kappa$. Cantor: $\\kappa < 2^\\kappa \\Rightarrow \\mathrm{succ}(\\kappa) \\leq 2^\\kappa$. König: $\\mathrm{cf}(2^\\kappa) > \\kappa$. Monotonicity: $\\kappa \\leq \\nu \\Rightarrow 2^\\kappa \\leq 2^\\nu$ via `power_le_power_left`. All three constraints discharged from Mathlib without forcing infrastructure.",
@@ -220,11 +220,11 @@
       "startLine": 193,
       "endLine": 213
     },
-    "type": "context",
+    "type": "concept",
     "title": "Part III: Pointer to Phase3b Companion (Post-S8 State)",
     "content": "Part III of the parent file is now pointer-only narrative. In S8 Lever A residual, the two vacuous `True`-codomain axioms (`easton_permitted_realizable`, `easton_consistency`) that previously lived here were RETIRED — they had no mathematical content beyond what their Phase3b `_strong` siblings now carry with non-trivial codomain. The genuine Easton 1970 realizability claim has migrated to the companion file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`, which axiomatizes (a) two abstract consistency predicates `ConsistencyOfContinuumValue : Cardinal → Prop` and `ConsistencyOfContinuumFunction : (Cardinal → Cardinal) → Prop` (2 axioms) and (b) two strong realizability claims `easton_permitted_realizable_strong` (pointwise) and `easton_consistency_strong` (function-level) with those predicates as codomains (2 axioms) — total slug-level axiom count: 4, all in Phase3b. Class-sized forcing (Easton 1970) remains the obstruction; the closest existing work is `flypitch` (Han, Van Doorn 2020) — Cohen *set* forcing for CH-independence in Lean 3. A future Phase-4 effort would port flypitch to Lean 4 and extend it to *class* forcing to discharge the strong axioms as theorems.",
     "mathContext": "$\\mathsf{Easton}\\,(1970)$: assuming $\\mathrm{Con}(\\mathsf{ZFC})$, for every Easton function $F$, $\\mathrm{Con}(\\mathsf{ZFC} + \\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa))$. The Phase3b strong-axiom encoding: $\\mathsf{IsEastonFunction}\\,F \\Rightarrow \\mathsf{ConsistencyOfContinuumFunction}\\,F$, and pointwise $\\mathsf{IsPermittedValue}\\,\\kappa \\Rightarrow \\mathsf{ConsistencyOfContinuumValue}\\,\\kappa$. Class-sized: the Easton-product forcing notion is itself a proper class, requiring the class-comprehension schema to even state.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "class forcing",
       "Easton product",
@@ -275,7 +275,7 @@
       "startLine": 86,
       "endLine": 108
     },
-    "type": "context",
+    "type": "concept",
     "title": "Phase3b: Strong Easton Axioms (Non-Trivial Codomain)",
     "content": "Two strong Easton axioms replace the parent's retired vacuous `True`-codomain placeholders with non-trivial codomains: `easton_permitted_realizable_strong : ∀ κ, IsPermittedValue κ → ConsistencyOfContinuumValue κ` (pointwise) and `easton_consistency_strong : ∀ F, IsEastonFunction F → ConsistencyOfContinuumFunction F` (function-level). Unlike the retired versions, these cannot be trivially discharged — producing a term of type `ConsistencyOfContinuumValue κ` requires the flypitch-port infrastructure plus Easton's forcing construction. The Phase3b file's docstring is explicit that this is 'deeper axiomatization, not axiom reduction': the trade is that callers built on the strong axioms produce non-trivial terms (e.g. `ConsistencyOfContinuumValue (Cardinal.aleph 1)` rather than `True`), and a future flypitch-style discharge has a clear target type to instantiate. NOTE: this annotation references the Phase3b companion file (lines 86-108).",
     "mathContext": "Strong axioms: $\\forall \\kappa : \\mathrm{Cardinal}_0,\\, \\mathsf{IsPermittedValue}\\,\\kappa \\Rightarrow \\mathsf{ConsistencyOfContinuumValue}\\,\\kappa$ and $\\forall F : \\mathrm{Cardinal}_0 \\to \\mathrm{Cardinal}_0,\\, \\mathsf{IsEastonFunction}\\,F \\Rightarrow \\mathsf{ConsistencyOfContinuumFunction}\\,F$. Discharge of either would require the flypitch-port Lean 4 forcing machinery extended to class-sized partial orders.",

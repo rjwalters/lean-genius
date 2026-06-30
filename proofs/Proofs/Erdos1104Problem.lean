@@ -69,7 +69,7 @@ theorem emptyGraph_chromaticNumber_pos {n : ℕ} (hn : 0 < n)
 1-chromatic. -/
 theorem triangleFreeMaxChi_one : triangleFreeMaxChi 1 ≤ 1 := by
   unfold triangleFreeMaxChi
-  apply Nat.sSup_le
+  apply csSup_le'
   intro k ⟨G, hDec, hTF, hChi⟩
   rw [← hChi]
   exact @SimpleGraph.chromaticNumber_le_card (Fin 1) _ G hDec
@@ -78,7 +78,7 @@ theorem triangleFreeMaxChi_one : triangleFreeMaxChi 1 ≤ 1 := by
 theorem triangleFreeMaxChi_zero : triangleFreeMaxChi 0 = 0 := by
   unfold triangleFreeMaxChi
   apply le_antisymm
-  · apply Nat.sSup_le
+  · apply csSup_le'
     intro k ⟨G, hDec, _, hChi⟩
     rw [← hChi]
     exact @SimpleGraph.chromaticNumber_le_card (Fin 0) _ G hDec
@@ -88,7 +88,7 @@ theorem triangleFreeMaxChi_zero : triangleFreeMaxChi 0 = 0 := by
 of vertices. -/
 theorem triangleFreeMaxChi_le (n : ℕ) : triangleFreeMaxChi n ≤ n := by
   unfold triangleFreeMaxChi
-  apply Nat.sSup_le
+  apply csSup_le'
   intro k ⟨G, hDec, _, hChi⟩
   rw [← hChi]
   exact @SimpleGraph.chromaticNumber_le_card (Fin n) _ G hDec

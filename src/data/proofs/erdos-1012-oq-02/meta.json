@@ -73,6 +73,16 @@
       "targetId": "erdos-1012-oq-01",
       "relationship": "extends",
       "description": "OQ-01 proves f(k) and pancyclicity; OQ-02 strengthens to vertex-pancyclicity"
+    },
+    {
+      "proofId": "erdos-1012",
+      "relationship": "ancestor",
+      "description": "Root problem (Erdős #1012). The parent establishes the edge threshold C(n-k-1,2)+C(k+2,2)+1 guaranteeing an (n-k)-cycle and Woodall's pancyclicity from 3 to n-k. OQ-02 is the strongest refinement in this branch: it upgrades the parent's graph-level 'contains a cycle of every length' to the vertex-level 'every vertex lies on a cycle of every length,' subject to the sole bipartite exception K_{n/2,n/2} that Bondy 1971 identified."
+    },
+    {
+      "proofId": "erdos-1012-oq-03",
+      "relationship": "complementary",
+      "description": "Directed-graph sibling. Where OQ-02 establishes vertex-pancyclicity for undirected dense graphs, OQ-03 develops the orientation-sensitive cycle theory (Ghouila-Houri, Moon–Moser, Rédei). The bipartite exception K_{n/2,n/2} that blocks vertex-pancyclicity here has no clean tournament analogue — Moon's theorem shows every strongly connected tournament is vertex-pancyclic with no exceptional family — so the two entries together delineate exactly where orientation removes the even-cycle obstruction."
     }
   ],
   "sections": [

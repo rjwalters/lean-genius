@@ -113,68 +113,108 @@
   ],
   "sections": [
     {
-      "id": "definitions",
-      "title": "Basic Definitions",
-      "startLine": 38,
-      "endLine": 95,
-      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four ℕ components), and the eval/evalPath navigation functions.",
+      "id": "header-overview",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Imports and module docstring: formalizes the Stern-Brocot tree as an alternative to Cantor's diagonal enumeration of the positive rationals. States what is proved (each positive rational appears once in lowest terms; paths encode continued fractions / the Euclidean algorithm), the mediant construction, the determinant invariant, extension relationships, and opens the SternBrocot namespace.",
+      "mathContext": "Tree built from mediants of sentinels $0/1$ and $1/0$: root $= 1/1$; at every node the left/right ancestors $(p/q, s/t)$ satisfy the adjacency condition $sq - pt = 1$, which forces the mediant $(p+s)/(q+t)$ to have $\\gcd = 1$."
+    },
+    {
+      "id": "part-1-definitions",
+      "title": "PART I: Basic Definitions",
+      "startLine": 41,
+      "endLine": 87,
+      "summary": "Defines Dir (L/R directions), Path (list of directions), State (navigation state with four ℕ components), State.init/left/right, and the eval/evalPath/pathNum/pathDen navigation functions.",
       "mathContext": "State = $(\\frac{la}{lb}, \\frac{ra}{rb})$, current node = mediant $\\frac{la+ra}{lb+rb}$. Left: $ra \\gets la+ra, rb \\gets lb+rb$. Right: $la \\gets la+ra, lb \\gets lb+rb$."
     },
     {
-      "id": "determinant",
-      "title": "The Determinant Invariant",
-      "startLine": 99,
-      "endLine": 147,
+      "id": "part-2-determinant",
+      "title": "PART II: The Determinant Invariant",
+      "startLine": 88,
+      "endLine": 125,
       "summary": "Defines State.det = ra*lb - la*rb and proves det_init, det_left, det_right, and det_eval/det_path showing the determinant is always 1.",
       "mathContext": "$\\det(s) = ra \\cdot lb - la \\cdot rb = 1$ is preserved by both $L$ and $R$ steps. Base: $\\det(0/1, 1/0) = 1 \\cdot 1 - 0 \\cdot 0 = 1$."
     },
     {
-      "id": "coprimality",
-      "title": "Coprimality of All Nodes",
-      "startLine": 151,
-      "endLine": 165,
+      "id": "part-3-coprimality",
+      "title": "PART III: Coprimality of All Nodes",
+      "startLine": 126,
+      "endLine": 164,
       "summary": "Proves coprime_of_det_one and coprime_path: every node in the tree is in lowest terms. Uses Bezout-like identity ra*(lb+rb) - rb*(la+ra) = 1.",
       "mathContext": "$\\gcd(la+ra, lb+rb) \\mid ra(lb+rb) - rb(la+ra) = 1$, so $\\gcd = 1$."
     },
     {
-      "id": "positivity",
-      "title": "Positivity of All Nodes",
-      "startLine": 169,
-      "endLine": 195,
-      "summary": "Proves num_pos_path and den_pos_path: every node has positive numerator and denominator, by structural induction tracking component bounds.",
+      "id": "part-4-positivity",
+      "title": "PART IV: Positivity of All Nodes",
+      "startLine": 165,
+      "endLine": 198,
+      "summary": "Proves num_pos_eval/den_pos_eval and num_pos_path/den_pos_path: every node has positive numerator and denominator, by structural induction tracking component bounds.",
       "mathContext": "By induction: $la + ra > 0$ and $lb + rb > 0$ at every reachable state from $(0/1, 1/0)$."
     },
     {
-      "id": "rational-value",
-      "title": "The Rational Value Function",
+      "id": "part-5-rational-value",
+      "title": "PART V: The Rational Value Function",
       "startLine": 199,
-      "endLine": 213,
+      "endLine": 214,
       "summary": "Defines toRat converting paths to positive rationals. Proves toRat_root = 1 and toRat_pos > 0.",
       "mathContext": "$\\text{toRat}(p) = \\frac{\\text{pathNum}(p)}{\\text{pathDen}(p)} > 0$."
     },
     {
-      "id": "ordering",
-      "title": "Ordering — The Tree is Sorted",
-      "startLine": 217,
+      "id": "part-6-ordering",
+      "title": "PART VI: Ordering — The Tree is Sorted",
+      "startLine": 215,
       "endLine": 227,
       "summary": "Proves mediant_strictly_between: the mediant lies strictly between the left and right ancestors, in cross-multiplication form.",
       "mathContext": "$la \\cdot (lb+rb) < (la+ra) \\cdot lb$ and $(la+ra) \\cdot rb < ra \\cdot (lb+rb)$, i.e., $\\frac{la}{lb} < \\frac{la+ra}{lb+rb} < \\frac{ra}{rb}$."
     },
     {
-      "id": "injectivity",
-      "title": "BST Infrastructure and Injectivity Proof",
+      "id": "part-7-injectivity",
+      "title": "PART VII: Injectivity Infrastructure",
       "startLine": 228,
-      "endLine": 488,
-      "summary": "BST ordering infrastructure (`value_between_ancestors`, `ra_pos_of_det`, `lb_pos_of_det`) and the injectivity theorem: `eval_injective_gen` proves by structural induction that different paths yield different rationals, using BST ordering to show disagreeing paths give separated values. `eval_injective` specializes to the root state.",
+      "endLine": 489,
+      "summary": "Monotonicity bounds for the state components (ra_ge_eval, lb_ge_eval, rb_ge_eval, la_ge_eval and the after-left/after-right corollaries), the BST-preservation lemmas (num_lt_den_preserved, num_gt_den_preserved), value_between_ancestors, and the injectivity theorems eval_injective_gen / eval_injective.",
       "mathContext": "$\\text{evalPath}(p_1) = \\text{evalPath}(p_2) \\implies p_1 = p_2$. Proved via BST ordering: if paths disagree at position $k$, the L-path value is strictly less than the mediant which is strictly less than the R-path value."
     },
     {
-      "id": "examples",
-      "title": "Concrete Examples",
+      "id": "part-8-examples",
+      "title": "PART VIII: Concrete Examples",
       "startLine": 490,
-      "endLine": 600,
+      "endLine": 521,
       "summary": "Seven verified examples confirming the first 3 levels: [] → 1/1, [L] → 1/2, [R] → 2/1, [L,L] → 1/3, [L,R] → 2/3, [R,L] → 3/2, [R,R] → 3/1.",
       "mathContext": "Level 0: $1/1$. Level 1: $1/2, 2/1$. Level 2: $1/3, 2/3, 3/2, 3/1$. All verified by computation."
+    },
+    {
+      "id": "part-9-first-three-levels",
+      "title": "PART IX: The First Three Levels",
+      "startLine": 522,
+      "endLine": 542,
+      "summary": "Documentation block drawing the first three levels of the Stern-Brocot tree and listing the in-order (sorted) sequence of rationals.",
+      "mathContext": "In-order traversal yields $1/3 < 1/2 < 2/3 < 1/1 < 3/2 < 2/1 < 3/1$, exhibiting the BST ordering of the tree."
+    },
+    {
+      "id": "part-10-euclidean-algorithm",
+      "title": "PART X: Connection to the Euclidean Algorithm",
+      "startLine": 543,
+      "endLine": 567,
+      "summary": "Documentation block explaining how to locate a given rational p/q by comparing with mediants (Left if smaller, Right if larger), why the search terminates, and how run-length encoding of the path gives the continued fraction expansion.",
+      "mathContext": "Locating $p/q$ mirrors the Euclidean algorithm on $(p,q)$: $p+q$ strictly decreases each step, so the path is finite; e.g. $3/2$ has path $[R, L]$."
+    },
+    {
+      "id": "part-11-cantor-comparison",
+      "title": "PART XI: Comparison with Cantor Pairing",
+      "startLine": 568,
+      "endLine": 587,
+      "summary": "Documentation block comparing the Stern-Brocot tree with Cantor's pairing across reduction, tree structure, continued-fraction encoding, and order preservation.",
+      "mathContext": "Cantor pairing gives $\\mathbb{N} \\simeq \\mathbb{Q}$ but needs reduction and is unordered; the Stern-Brocot tree maps paths to $\\mathbb{Q}^+$ in lowest terms, order-preserving, encoding continued fractions."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 588,
+      "endLine": 600,
+      "summary": "`#check` commands confirming the main results (det_path, coprime_path, num_pos_path, den_pos_path, mediant_strictly_between, toRat_pos, toRat_root) type-check, followed by the SternBrocot namespace close.",
+      "mathContext": "Sanity checks that the determinant invariant, coprimality, positivity, ordering, and value-positivity theorems are all available at their stated types."
     }
   ],
   "conclusion": {

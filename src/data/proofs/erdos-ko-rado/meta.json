@@ -126,41 +126,48 @@
       "id": "t-intersecting-frankl",
       "title": "Part II: t-Intersecting Families and Frankl's Theorem",
       "startLine": 392,
-      "endLine": 448,
+      "endLine": 505,
       "summary": "IsTIntersectingFamily A k t: every pair of sets in A shares ≥t elements. TStar T k: all k-sets containing a fixed t-set T — the t-star. tstar_is_t_intersecting: TStar T k is t-intersecting (proved: T ⊆ s∩t). one_intersecting_iff_intersecting: 1-intersecting ↔ intersecting. frankl_t_intersecting axiom (1977): for n≥(t+1)(k-t+1), |A| ≤ C(n-t,k-t). tstar_achieves_frankl_bound axiom: the t-star achieves C(n-t,k-t).",
       "mathContext": "Frankl (1977): n ≥ (t+1)(k-t+1) is the threshold for the t-intersecting Frankl bound. The t-star TStar T k = {s ∈ powersetCard k univ | T ⊆ s} has C(n-t,k-t) elements (bijection with (k-t)-subsets of univ\\T). one_intersecting_iff_intersecting: 1 ≤ (s∩t).card ↔ (s∩t).Nonempty, proved via Finset.card_pos and Finset.card_ne_zero."
     },
     {
       "id": "hilton-milner",
       "title": "Part III: Hilton-Milner Theorem (1967)",
-      "startLine": 450,
-      "endLine": 492,
+      "startLine": 507,
+      "endLine": 549,
       "summary": "IsStar A k: ∃ x, A = Star x k. hiltonMilnerBound n k := C(n-1,k-1) - C(n-k-1,k-1) + 1. hilton_milner axiom: if A is intersecting, not a star, and n≥2k, then |A| ≤ hiltonMilnerBound. hm_bound_n7_k3: hiltonMilnerBound 7 3 = 14 (verified by native_decide). hm_gap_positive: hiltonMilnerBound n k < C(n-1,k-1) when n>2k and k≥2 (since C(n-k-1,k-1) ≥ k ≥ 2 > 1).",
       "mathContext": "Hilton-Milner (1967) characterizes the 'second-largest' intersecting family: it consists of one set B plus all k-sets that meet B and contain a fixed core element not in B. The HM bound = C(n-1,k-1) - C(n-k-1,k-1) + 1 is strictly less than the EKR bound C(n-1,k-1) for n>2k, showing stars are significantly larger than non-star intersecting families."
     },
     {
       "id": "cross-intersecting-bollobas",
       "title": "Part IV: Cross-Intersecting Families and Bollobás (1965)",
-      "startLine": 494,
-      "endLine": 531,
+      "startLine": 551,
+      "endLine": 608,
       "summary": "IsCrossIntersecting A B a b: every s ∈ A and t ∈ B intersect. bollobas_set_pairs axiom (1965): m set-pairs with Aᵢ∩Bⱼ=∅ iff i=j satisfy m ≤ C(a+b,a). cross_intersecting_bound axiom: cross-intersecting a-uniform and b-uniform families have |A| ≤ C(n,a) and |B| ≤ C(n,b). pyber_cross_intersecting axiom (1986): |A|+|B| ≤ 1+C(n,k)-C(n-k,k) for cross-intersecting k-families.",
       "mathContext": "Bollobás set-pairs (1965): the constraint Aᵢ∩Bⱼ=∅ iff i=j is the 'cross-complementary' condition. The bound m ≤ C(a+b,a) follows from linear independence of indicator functions in a C(a+b,a)-dimensional space. This is one of the most powerful tools in extremal set theory, implying Turán-type results and the sunflower lemma in some forms."
     },
     {
       "id": "ekr-permutations",
       "title": "Part V: EKR for Permutations (Ellis-Friedgut-Pilpel 2011)",
-      "startLine": 533,
-      "endLine": 567,
+      "startLine": 610,
+      "endLine": 643,
       "summary": "PermIntersecting σ τ: ∃ i, σ i = τ i. IsIntersectingPermFamily: all pairs intersect. PermCoset i j: {σ : σ i = j} — all permutations mapping i to j. ekr_for_permutations axiom (Deza-Frankl 1977 conjecture, EFP 2011 proof): |A| ≤ (n-1)! for intersecting permutation families of Equiv.Perm (Fin n). coset_size axiom: (Finset.univ.filter (σ => σ i = j)).card = (n-1)! — the coset has exactly (n-1)! elements (replaces degenerate 1+1=2 stub).",
       "mathContext": "The Deza-Frankl conjecture (1977) asked if the EKR theorem extends to permutations: is the maximum intersecting family a 'coset' {σ : σ(i)=j}? Ellis-Friedgut-Pilpel (2011) proved this using the representation theory of Sₙ: eigenvectors of the Cayley graph of Sₙ on transpositions bound the Fourier expansion of the characteristic function of A. The proof is fundamentally spectral and does not use Katona's cyclic argument."
     },
     {
       "id": "sunflower-lemma",
       "title": "Part VI: Sunflower Lemma and ALZW 2020 Breakthrough",
-      "startLine": 569,
-      "endLine": 658,
+      "startLine": 645,
+      "endLine": 713,
       "summary": "IsSunflower F: ∃ core, all pairwise intersections equal core. HasSunflower A p: A contains a p-element sunflower subfamily. sunflower_lemma axiom (Erdős-Ko 1961): |A|>(p-1)^k·k! → HasSunflower A p. improved_sunflower_lemma axiom (ALZW 2020): ∃ C, |A|>C^k·p → HasSunflower A p (C=O(log k·log log k)). intersecting_no_empty_core_sunflower (proved): intersecting families cannot contain sunflowers with empty core. Verification #checks for all Parts II-VI.",
       "mathContext": "The ALZW 2020 improvement replaces the (p-1)^k·k! threshold with C^k·p for C = O(log k · log log k), breaking the exponential-in-k-factorial barrier. This implies improved bounds in communication complexity and circuit lower bounds. The Erdős sunflower conjecture C=O(p) remains open. intersecting_no_empty_core_sunflower: if F ⊆ A is a sunflower with |F|≥2, take s≠t ∈ F; s∩t=core by sunflower, s∩t≠∅ by intersecting, so core≠∅."
+    },
+    {
+      "id": "verification-roster",
+      "title": "Part VII: Verification Roster (#check Summary)",
+      "startLine": 715,
+      "endLine": 744,
+      "summary": "A closing block of `#check` commands, grouped by part, that elaborates the type of every named definition, axiom, and theorem across Parts II–VI. Acts as a lightweight compile-time regression guard documenting the file's public surface."
     }
   ],
   "sorries": 0

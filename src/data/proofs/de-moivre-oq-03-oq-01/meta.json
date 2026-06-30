@@ -109,29 +109,52 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "States De Moivre OQ-03-OQ-01: extending De Moivre's theorem $(\\cos\\theta+i\\sin\\theta)^n=\\cos n\\theta+i\\sin n\\theta$ to non-integer exponents. Integer $n$ standard; rational $p/q$ multi-valued ($q$-th roots); irrational $\\alpha$ gives a principal value $z^\\alpha=\\exp(\\alpha\\log z)$. Formalized via Mathlib's `Complex.cpow`. Imports Mathlib; opens `Complex`/`Real`.",
+      "mathContext": "$z^\\alpha=\\exp(\\alpha\\log z)$; integer $n$ standard, rational $p/q$ multi-valued, irrational $\\alpha$ single-valued."
+    },
+    {
       "id": "real-exponent",
-      "title": "De Moivre for Real Exponents",
-      "content": "Using Mathlib's `Complex.cpow` defined via the principal logarithm, the formula (e^{iθ})^α = e^{iαθ} holds for θ ∈ (-π, π]. The proof unfolds `cpow_def_of_ne_zero` and applies `Complex.log_exp` with the branch conditions, finishing with `push_cast; ring`. The principal branch restriction is necessary: at θ = 2π, exp(2πi) = 1 = exp(0), so the base equals 1 but the RHS gives exp(2παi) ≠ 1 for irrational α."
+      "title": "Part I: De Moivre for Real Exponents",
+      "startLine": 21,
+      "endLine": 36,
+      "summary": "PROVES `de_moivre_real_exponent`: for $z=e^{i\\theta}$ with $\\theta\\in(-\\pi,\\pi]$ and real $\\alpha$, $z^\\alpha=e^{i\\alpha\\theta}$ (via `cpow_def_of_ne_zero` and `Complex.log_exp`). The principal-branch restriction on $\\theta$ is necessary.",
+      "mathContext": "$\\theta\\in(-\\pi,\\pi]\\Rightarrow(e^{i\\theta})^\\alpha=e^{i\\alpha\\theta}$."
     },
     {
       "id": "rational-multivalued",
-      "title": "Multi-Valued Rational Roots",
-      "content": "For rational exponent p/q with q > 0, the theorem constructs q explicit values: roots(k) = exp(i(pθ + 2πk)/q) for k ∈ {0, …, q-1}. The proof is immediate by `rfl` since the function is defined to equal the explicit formula. These are the q-th roots of the integer-exponent result exp(ipθ)."
+      "title": "Part II: Multi-Valued Rational Roots",
+      "startLine": 37,
+      "endLine": 47,
+      "summary": "PROVES `rational_exponent_multivalued`: for rational $\\alpha=p/q$, $(\\cos\\theta+i\\sin\\theta)^{p/q}$ has $q$ distinct values $e^{i(p\\theta+2\\pi k)/q}$ ($k<q$), the $q$-th roots.",
+      "mathContext": "$(\\cos\\theta+i\\sin\\theta)^{p/q}$ has $q$ values $e^{i(p\\theta+2\\pi k)/q}$."
     },
     {
-      "id": "irrational-stub",
-      "title": "Irrational Exponents: Stub and Gap",
-      "content": "The theorem `irrational_exponent_single_valued` has statement `True` and proof `trivial` — a placeholder acknowledging that the actual single-valuedness claim was not formalized. The genuine claim follows from the definition of cpow: since cpow uses a fixed principal logarithm, z^α is uniquely determined. Formalizing this requires showing that the principal branch of log is single-valued."
+      "id": "irrational",
+      "title": "Part III: Irrational Exponents — Stub and Gap",
+      "startLine": 48,
+      "endLine": 58,
+      "summary": "States `irrational_exponent_single_valued` (a `True` stub recording that for irrational $\\alpha$ the principal branch gives a unique value — no $q$ to create periodicity).",
+      "mathContext": "Irrational $\\alpha$: principal branch single-valued (no periodicity)."
     },
     {
-      "id": "weyl-equidistribution",
+      "id": "weyl",
       "title": "Weyl Equidistribution (Axiom)",
-      "content": "The axiom `weyl_equidistribution` asserts that for irrational α, the set {exp(2πiαn) : n ∈ ℤ} is dense in ℂ. This is Weyl's equidistribution theorem (1916), proved via Weyl sums: for irrational α, the sum Σ_{n=1}^N exp(2πiαn) decays, forcing equidistribution. In Lean, this requires substantial harmonic analysis machinery not yet packaged in Mathlib."
+      "startLine": 59,
+      "endLine": 63,
+      "summary": "States the AXIOM `weyl_equidistribution`: for irrational $\\alpha$, $\\{e^{2\\pi i\\alpha n}:n\\in\\mathbb{Z}\\}$ is dense in the unit circle (Weyl's equidistribution theorem).",
+      "mathContext": "Axiom (Weyl): $\\{e^{2\\pi i\\alpha n}\\}$ dense in $S^1$ for irrational $\\alpha$."
     },
     {
-      "id": "continuous-homomorphism",
-      "title": "Continuous Group Homomorphism",
-      "content": "The map θ ↦ exp(iαθ) is a continuous group homomorphism from (ℝ, +) to (S¹, ×) for any fixed α ∈ ℝ. The Lean proof composes `Complex.continuous_exp` with the continuous map θ ↦ (αθ : ℂ) · I. This homomorphism property underpins all of De Moivre's theorem: De Moivre says the n-th power of exp(iθ) equals exp(inθ) because φ_n = (φ_1)^n as group homomorphisms."
+      "id": "continuous-hom",
+      "title": "Part IV: Continuous Group Homomorphism",
+      "startLine": 64,
+      "endLine": 74,
+      "summary": "PROVES `continuous_rotation`: $\\theta\\mapsto e^{i\\alpha\\theta}$ is continuous (a continuous group homomorphism $(\\mathbb{R},+)\\to(S^1,\\cdot)$ for any real $\\alpha$).",
+      "mathContext": "$\\theta\\mapsto e^{i\\alpha\\theta}$ continuous: $(\\mathbb{R},+)\\to(S^1,\\cdot)$ homomorphism."
     }
   ],
   "conclusion": {

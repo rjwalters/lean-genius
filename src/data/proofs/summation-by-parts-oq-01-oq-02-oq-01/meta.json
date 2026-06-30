@@ -1,0 +1,152 @@
+{
+  "id": "summation-by-parts-oq-01-oq-02-oq-01",
+  "slug": "summation-by-parts-oq-01-oq-02-oq-01",
+  "title": "Second-Moment Sum ∑ k²·rᵏ over Any Field: Falling Factorials and Abel Summation",
+  "description": "Strengthens the second-moment closed form ∑_{k<n} k²·rᵏ from ℝ to an arbitrary field, supplies the genuine Abel summation-by-parts derivation the sibling entry omitted (the weight k² has linear differences 2k+1), adds the second falling-factorial closed form ∑ k(k−1)·rᵏ (limit 2r²/(1−r)³), and realizes k²=k(k−1)+k as a term-by-term identity of finite sums. All over any field, for every r ≠ 1, verified with 0 axioms.",
+  "meta": {
+    "author": "Classical (Abel summation); formalized for the lean-genius gallery",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SummationByPartsOQ01OQ02OQ01.lean",
+    "tags": [
+      "algebra",
+      "finite-sums",
+      "arithmetico-geometric",
+      "second-moment",
+      "summation-by-parts",
+      "abel-summation",
+      "geometric-series",
+      "falling-factorial",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f i) + f n, the step driving the induction for both closed forms",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_by_parts",
+        "description": "Abel's summation by parts for ranges: ∑ i<n, f i • g i = f(n-1)•G n − ∑ i<n-1, (f(i+1)−f i)•G(i+1), where G is the partial sum of g",
+        "module": "Mathlib.Algebra.BigOperators.Module"
+      },
+      {
+        "theorem": "Finset.sum_add_distrib",
+        "description": "∑ (f i + g i) = ∑ f i + ∑ g i, used to split the second moment into the second falling moment plus the first moment term by term",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Generalizes the second-moment closed form ∑_{k<n} k²·rᵏ = (rⁿ·(n² + (1+2n−2n²)·r + (n−1)²·r²) − r − r²)/(r−1)³ from ℝ (the sibling entry summation-by-parts-oq-01-oq-02) to an arbitrary field — an algebraic, not analytic, identity valid for every r ≠ 1",
+      "Supplies the genuine Abel summation-by-parts derivation absent from the sibling: with weight f(k)=k² the forward differences f(k+1)−f(k)=2k+1 are linear (not constant, as for the first moment), so the correction term weights each nested geometric partial sum by 2i+1",
+      "The companion second falling-factorial closed form ∑_{k<n} k(k−1)·rᵏ = (rⁿ·(n(n−1) + (4n−2n²)·r + (n−1)(n−2)·r²) − 2r²)/(r−1)³, the discrete analogue of the second derivative of the geometric series (limit 2r²/(1−r)³)",
+      "The structural decomposition k² = k(k−1) + k realized at the level of finite sums (sum_sq_eq_falling_add_linear), exhibiting the second moment as the sum of the second falling moment and the first moment with no closed form needed"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 118,
+    "theoremCount": 4,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Module",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "SummationByPartsOQ01OQ02OQ01",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/SummationByPartsOQ01OQ02OQ01.lean"
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Weighting the geometric series $\\sum_k r^k$ by $k$ gives the **arithmetico-geometric** sum (entry summation-by-parts-oq-01), and by $k^2$ the **second-moment** sum. These are the discrete shadows of differentiating the geometric series once and twice; their $n\\to\\infty$ limits (for $|r|<1$) are $r/(1-r)^2$ and $r(1+r)/(1-r)^3$. The classical tool is **Abel's summation by parts**, the discrete analogue of integration by parts. The sibling entry summation-by-parts-oq-01-oq-02 evaluates the second moment over $\\mathbb{R}$ by bare induction; this entry returns the result to its natural algebraic generality and to the summation-by-parts method the family is named for.",
+    "problemStatement": "**Theorem.** For $r$ in an arbitrary field $K$ with $r \\neq 1$ and $n \\in \\mathbb{N}$,\n$$\\sum_{k=0}^{n-1} k^2\\,r^{k} = \\frac{r^{n}\\bigl(n^2 + (1+2n-2n^2)\\,r + (n-1)^2\\,r^2\\bigr) - r - r^2}{(r-1)^3}.$$\nDropping the $r^n$-block leaves $(-r-r^2)/(r-1)^3 = r(1+r)/(1-r)^3$, the textbook $\\sum_{k\\ge0} k^2 r^k$ for $|r|<1$.",
+    "proofStrategy": "**Induction (headline).** Base case $n=0$ is the empty sum, $0=0/(r-1)^3$. The step adds $m^2 r^m$ (via `Finset.sum_range_succ`) to the closed form at $m$; clearing $(r-1)^3$ with $r-1\\neq0$ reduces to a polynomial identity closed by `ring` after `push_cast`/`field_simp`. The same scheme proves $\\sum k(k-1)r^k$.\n\n**Decomposition.** Since $k^2=k(k-1)+k$, the second moment splits term by term (`sum_sq_eq_falling_add_linear`), via `Finset.sum_add_distrib` and `ring`.\n\n**Summation by parts.** Specializing `Finset.sum_range_by_parts` to $f(k)=k^2$ gives the boundary term $(n-1)^2 G_n$ minus a correction; the differences $f(k+1)-f(k)=2k+1$ are linear, so $G_{i+1}$ is weighted by $2i+1$.",
+    "keyInsights": [
+      "**Field, not analysis.** The sibling entry works over $\\mathbb{R}$; but the identity is a polynomial-over-$(r-1)^3$ statement needing no norm and no convergence — it holds over any field for every $r\\neq1$, with $r(1+r)/(1-r)^3$ merely its $n\\to\\infty$ shadow when $|r|<1$.",
+      "**Linear differences are the fingerprint of $k^2$.** Abel summation expresses the sum via the forward differences of the weight: constant ($1$) for the first moment, linear ($2k+1$) for the second. The order of the discrete derivative is read off directly from how the correction term is weighted.",
+      "**One consistent family.** The falling-factorial form, the second-moment form, and the sibling first-moment form are tied by $k^2=k(k-1)+k$ as a term-by-term identity of finite sums — the second moment is literally the sum of the other two."
+    ]
+  },
+  "sections": [
+    {
+      "title": "The Second-Moment Closed Form over Any Field",
+      "body": ""
+    },
+    {
+      "title": "The Falling-Factorial Companion ∑ k(k−1)·rᵏ",
+      "body": ""
+    },
+    {
+      "title": "The Decomposition k² = k(k−1) + k",
+      "body": ""
+    },
+    {
+      "title": "The Abel Summation-by-Parts Derivation",
+      "body": ""
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_range_sq_geom",
+      "type": "core",
+      "description": "Second-moment closed form over any field: ∑_{k<n} k²·rᵏ = (rⁿ·(n² + (1+2n−2n²)·r + (n−1)²·r²) − r − r²)/(r−1)³ for r ≠ 1",
+      "leanType": "∀ {K : Type*} [Field K] {r : K}, r ≠ 1 → ∀ (n : ℕ), ∑ k ∈ Finset.range n, (k : K) ^ 2 * r ^ k = (r ^ n * ((n : K) ^ 2 + (1 + 2 * (n : K) - 2 * (n : K) ^ 2) * r + ((n : K) - 1) ^ 2 * r ^ 2) - r - r ^ 2) / (r - 1) ^ 3"
+    },
+    {
+      "name": "sum_range_falling_geom",
+      "type": "core",
+      "description": "Second falling-factorial closed form: ∑_{k<n} k(k−1)·rᵏ = (rⁿ·(n(n−1) + (4n−2n²)·r + (n−1)(n−2)·r²) − 2r²)/(r−1)³ for r ≠ 1",
+      "leanType": "∀ {K : Type*} [Field K] {r : K}, r ≠ 1 → ∀ (n : ℕ), ∑ k ∈ Finset.range n, (k : K) * ((k : K) - 1) * r ^ k = (r ^ n * ((n : K) * ((n : K) - 1) + (4 * (n : K) - 2 * (n : K) ^ 2) * r + ((n : K) - 1) * ((n : K) - 2) * r ^ 2) - 2 * r ^ 2) / (r - 1) ^ 3"
+    },
+    {
+      "name": "sum_sq_eq_falling_add_linear",
+      "type": "supporting",
+      "description": "Term-by-term decomposition k² = k(k−1) + k: the second moment is the second falling moment plus the first moment",
+      "leanType": "∀ {K : Type*} [Field K] (r : K) (n : ℕ), ∑ k ∈ Finset.range n, (k : K) ^ 2 * r ^ k = (∑ k ∈ Finset.range n, (k : K) * ((k : K) - 1) * r ^ k) + ∑ k ∈ Finset.range n, (k : K) * r ^ k"
+    },
+    {
+      "name": "sum_range_sq_geom_eq_byParts",
+      "type": "supporting",
+      "description": "Abel summation-by-parts form: the weight k² has linear differences 2k+1, weighting each nested geometric partial sum by 2i+1",
+      "leanType": "∀ {K : Type*} [Field K] (r : K) (n : ℕ), ∑ k ∈ Finset.range n, (k : K) ^ 2 * r ^ k = (↑(n - 1) : K) ^ 2 * (∑ i ∈ Finset.range n, r ^ i) - ∑ i ∈ Finset.range (n - 1), (2 * (i : K) + 1) * (∑ j ∈ Finset.range (i + 1), r ^ j)"
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry returns the finite second-moment identity ∑_{k<n} k²·rᵏ to its natural algebraic generality (any field, not just ℝ) and supplies the genuine Abel summation-by-parts derivation its ℝ-only sibling omitted. It adds the second falling-factorial closed form ∑ k(k−1)·rᵏ and the term-by-term decomposition k²=k(k−1)+k, tying the degree-≤2 weighted geometric sums into one family.",
+    "implications": "Over any field the closed form is a polynomial-over-(r−1)³ identity with no analytic content. The summation-by-parts derivation makes explicit that the order of the discrete derivative (constant vs. linear forward differences) governs the shape of the correction term — the structural lever for the general ∑ P(k)·rᵏ.",
+    "openQuestions": [
+      "Does the same induction / by-parts scheme give the general ∑_{k<n} P(k)·rᵏ for a fixed polynomial P of degree d, with the closed form supported on r⁰…r^d in the constant block and a degree-d polynomial in n in the rⁿ-block? The falling-factorial basis k^(d) = k(k−1)⋯(k−d+1), whose Abel differences drop degree by one, suggests an induction on deg P.",
+      "Can the falling-factorial forms be packaged uniformly as ∑_{k<n} k^(d)·rᵏ in terms of the d-th finite difference of the geometric partial sum, making the discrete d-th derivative structure explicit?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "summation-by-parts-oq-01-oq-02",
+      "relationship": "strengthens",
+      "description": "The ℝ-only, induction-only second-moment closed form. This entry generalizes it to any field, adds the genuine Abel summation-by-parts derivation, the falling-factorial companion, and the k²=k(k−1)+k decomposition."
+    },
+    {
+      "targetId": "summation-by-parts-oq-01",
+      "relationship": "extends",
+      "description": "The first-moment closed form ∑ k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)². The decomposition k²=k(k−1)+k ties the second moment to this first moment."
+    },
+    {
+      "targetId": "geometric-series-oq-06",
+      "relationship": "refinement",
+      "description": "The infinite series ∑ k²·rⁿ = r(1+r)/(1−r)³ (‖r‖<1). This entry is its exact finite partial sum, valid over any field with no convergence hypothesis."
+    }
+  ]
+}

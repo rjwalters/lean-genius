@@ -74,7 +74,7 @@
       "startLine": 1,
       "endLine": 43,
       "summary": "Introduces the historical context, imports Mathlib's topology and intermediate value libraries, and opens the namespace.",
-      "mathContext": "Imports `Mathlib.Topology.Order.IntermediateValue` and `Mathlib.Analysis.SpecificLimits.Basic`. The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $c$ lies between $f(a)$ and $f(b)$, then $\\exists x \\in [a,b],\\, f(x) = c$. Wiedijk #60."
+      "mathContext": "Imports `Mathlib.Topology.Order.IntermediateValue` and `Mathlib.Analysis.SpecificLimits.Basic`. The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $c$ lies between $f(a)$ and $f(b)$, then $\\exists x \\in [a,b],\\, f(x) = c$. Wiedijk #79."
     },
     {
       "id": "classical-statement",

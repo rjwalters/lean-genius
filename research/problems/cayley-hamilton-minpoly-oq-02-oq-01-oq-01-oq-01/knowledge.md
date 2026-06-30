@@ -120,3 +120,36 @@ K-linear bijection). This is BLOCKED during the 2026-06-13 verification blackout
   (phase → BLOCKED, iteration 3)
 - `research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01/knowledge.md`
   (this entry)
+
+---
+
+## Session 2026-06-15 — concrete finite-field certificate of the conjugator torsor
+
+The REFINE deliverable pinned the conjugator set `S = {u ∈ Bˣ : g = u·f·u⁻¹}` as a
+**torsor** under `(C_B(f(A)))ˣ` (free + transitive coset), the abstract target for the
+Lean `MulAction` formalization. This session grounds that structure with an exact,
+exhaustive certificate on finite-field matrix instances — `K = 𝔽_q`, `A = M_m(𝔽_q) ↪
+B = M_n(𝔽_q)` (`n = m·k`) via `f(a) = a ⊗ I_k`, second embedding `g = c·f(·)·c⁻¹`.
+
+`verify_skolem_noether_torsor.py` (pure stdlib, exact GF(q), full enumeration) confirms:
+
+| instance | C_B(f(A)) dim | \|S\| | \|(C_B)ˣ\| | torsor `u₀⁻¹·S = (C_B)ˣ` |
+|----------|---------------|-------|------------|--------------------------|
+| A=M₂↪B=M₄ /𝔽₂ (genuine CSA) | 4 = k² | 6 | \|GL₂(𝔽₂)\|=6 | ✓ |
+| A=K↪B=M₂ /𝔽₂ (A central) | 4 | 6 | 6 | ✓ |
+| A=B=M₂ /𝔽₂ (A=B) | 1 | 1 | 1 | ✓ |
+| A=B=M₂ /𝔽₃ (A=B) | 1 | 2 | 2 | ✓ |
+
+All checks pass: (T1) `S` nonempty (Skolem–Noether), (T2) `dim C_B(f(A)) = k² =
+dim B / dim A` (double centralizer), (T3) `|S| = |(C_B(f(A)))ˣ| = |GL_k(𝔽_q)|`,
+(T4) `u₀⁻¹·S = (C_B(f(A)))ˣ` exactly (free + transitive coset), and (T5) the A=B case
+gives `|S| = q − 1`, recovering `Aut_K(M_m) ≅ M_m(𝔽_q)ˣ/𝔽_qˣ`.
+
+This is a concrete instance of the structure the build-gated Lean `MulAction` must
+encode (the free+transitive action is exactly the coset equality T4), de-risking the
+formalization while Docker is down. It does not discharge the open module-iso axiom
+(that needs Wedderburn–Artin / `IsSimpleRing.isIsotypic` in Lean), but it validates the
+torsor formulation that is independent of that axiom.
+
+### Files (this session)
+- `research/problems/.../verify_skolem_noether_torsor.py` (new)

@@ -272,7 +272,7 @@
       "startLine": 127,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Difference Operator",
     "content": "The difference operator Δ_h f(x) = f(x+h) - f(x) measures how f changes when translated by h. This is the central object in Erdős #907.",
     "mathContext": "The **forward difference operator** $\\Delta_h f(x) = f(x+h) - f(x)$ is a fundamental tool in analysis. It satisfies: $\\Delta_h(f + g) = \\Delta_h f + \\Delta_h g$ (linearity), $\\Delta_0 f = 0$ (trivial), and $\\Delta_{h_1} \\Delta_{h_2} f = \\Delta_{h_2} \\Delta_{h_1} f$ (commutativity). In the Lean formalization, `difference f h x = f (x + h) - f x` with notation `Δ[h] f`. The condition `hasContinuousDifferences f` asserts $\\Delta_h f \\in C(\\mathbb{R})$ for all $h > 0$.",
@@ -294,7 +294,7 @@
       "startLine": 132,
       "endLine": 134
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Continuous Differences Condition",
     "content": "The condition in Erdős #907: f has continuous differences if Δ_h f is continuous for every h > 0. This is weaker than f being continuous.",
     "mathContext": "The condition $\\forall h > 0,\\, \\Delta_h f \\in C(\\mathbb{R})$ is the central hypothesis. It's strictly weaker than continuity of $f$: if $\\varphi$ is a discontinuous additive function, then $f = \\varphi$ has continuous differences (since $\\Delta_h \\varphi = \\varphi(h)$ is constant, hence continuous) but $f$ itself is discontinuous. The restriction to $h > 0$ is without loss of generality since $\\Delta_{-h} f(x) = -\\Delta_h f(x-h)$.",

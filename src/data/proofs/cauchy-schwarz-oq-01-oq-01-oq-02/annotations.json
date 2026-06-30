@@ -6,7 +6,7 @@
       "startLine": 22,
       "endLine": 43
     },
-    "type": "technique",
+    "type": "insight",
     "title": "CS Antisymmetric Bound: Triangle Inequality + norm_conj",
     "content": "The core analytic lemma is `cs_antisymmetric_bound`: (1/2)|⟪u,v⟫ − ⟪v,u⟫| ≤ ‖u‖·‖v‖. The two-step proof first rewrites ⟪v,u⟫ = star(⟪u,v⟫) using `inner_conj_symm`, then applies the private helper `norm_sub_conj_le z : ‖z − star(z)‖ ≤ 2‖z‖` (proved by triangle inequality + `RCLike.norm_conj`), and finally divides by 2 and applies Cauchy-Schwarz `norm_inner_le_norm`. This gives a bound on the antisymmetric part purely from CS without any complex-number structure beyond ‖star(z)‖ = ‖z‖.",
     "mathContext": "Private: $\\|z - \\overline{z}\\| \\leq \\|z\\| + \\|\\overline{z}\\| = 2\\|z\\|$ (triangle + norm_conj). Public: $\\frac{1}{2}\\|\\langle u,v\\rangle - \\langle v,u\\rangle\\| \\leq \\frac{1}{2}\\cdot 2\\|\\langle u,v\\rangle\\| \\leq \\|u\\|\\cdot\\|v\\|$. The factor of $\\frac{1}{2}$ comes from the Robertson bound — the full antisymmetric norm gives a factor of 2 that cancels.",

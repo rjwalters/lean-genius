@@ -1,0 +1,204 @@
+{
+  "id": "cayley-hamilton-minpoly-oq-07-oq-01",
+  "title": "The Inverse is a Polynomial in A of Minimal Degree",
+  "slug": "cayley-hamilton-minpoly-oq-07-oq-01",
+  "description": "A sharpening of the parent inverse-as-polynomial result using the minimal polynomial in place of the characteristic polynomial: for an invertible matrix A over a field, A⁻¹ = (aeval A) s with deg s < deg(minpoly K A) ≤ n. Invertibility is exactly the condition that 0 is not a root of the minimal polynomial, i.e. (minpoly K A).coeff 0 ≠ 0. This is the minimal-degree polynomial representation of A⁻¹, strictly refining the parent's degree-< n bound.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ07OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "abstract-algebra",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "matrix-inverse",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.aeval",
+        "description": "A matrix is a root of its own minimal polynomial: aeval A (minpoly K A) = 0",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "Minimality as divisibility: aeval A p = 0 → minpoly K A ∣ p; used to derive the degree contradiction proving the constant term is nonzero",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "minpoly.ne_zero / minpoly.natDegree_pos",
+        "description": "Over a field the minimal polynomial of an integral element is nonzero of positive degree",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "Matrix.minpoly_dvd_charpoly",
+        "description": "The minimal polynomial divides the characteristic polynomial, giving deg(minpoly) ≤ deg(charpoly) = n",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly"
+      },
+      {
+        "theorem": "Algebra.IsIntegral.isIntegral",
+        "description": "Every element of a module-finite algebra is integral; the matrix algebra Mₙ(K) is finite over K, so minpoly is well-behaved",
+        "module": "Mathlib.RingTheory.IntegralClosure.Algebra.Basic"
+      },
+      {
+        "theorem": "Matrix.mul_nonsing_inv / Matrix.inv_eq_left_inv",
+        "description": "Cancellation by the unit A and promotion of a left inverse to the nonsingular inverse",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "Polynomial.divX_mul_X_add",
+        "description": "Splitting off the constant term: divX p * X + C (p.coeff 0) = p",
+        "module": "Mathlib.Algebra.Polynomial.Inductions"
+      }
+    ],
+    "originalContributions": [
+      "minInvPoly A: the minimal-polynomial inverse polynomial s = C (−(minpoly K A).coeff 0)⁻¹ · divX (minpoly K A), whose evaluation at A is A⁻¹",
+      "minpoly_coeff_zero_ne_zero: the arithmetic heart — det A ≠ 0 forces (minpoly K A).coeff 0 ≠ 0, proved by cancelling the unit A and invoking minpoly.dvd to derive a degree contradiction (0 is not a root of the minimal polynomial)",
+      "aeval_divX_mul_self: the additive form of the minimal-polynomial relation, (divX m)(A)·A + c₀•1 = 0",
+      "inv_eq_aeval_minInvPoly: the main result A⁻¹ = (aeval A) (minInvPoly A)",
+      "minInvPoly_natDegree_lt: the sharp degree bound deg(minInvPoly A) < deg(minpoly K A) — the minimal degree of any polynomial representation of A⁻¹",
+      "minpoly_natDegree_le_card: deg(minpoly K A) ≤ Fintype.card n via minpoly ∣ charpoly",
+      "exists_inv_eq_aeval_minpoly / exists_inv_eq_aeval_card: the sharp packaged existence and the recovery of the parent's degree-< n statement, now witnessed by the minimal-degree polynomial"
+    ],
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "Minimal polynomial of an element of an algebra (minpoly, IsIntegral)",
+      "Characteristic polynomial and minpoly ∣ charpoly",
+      "Polynomial division by X (divX) and degree bookkeeping",
+      "Nonsingular matrix inverse over a field"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cayley-hamilton-minpoly-oq-07",
+        "relationship": "Parent: expresses A⁻¹ as a polynomial of degree < n via the characteristic polynomial; this entry sharpens the degree bound to deg(minpoly K A)"
+      },
+      {
+        "id": "cayley-hamilton-minpoly-oq-06",
+        "relationship": "Sibling: similarity invariance of the minimal polynomial"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 184,
+    "assumptions": "0 axioms, 0 sorries. #print axioms reports only [propext, Classical.choice, Quot.sound]. The matrix is assumed invertible (det A ≠ 0) over a field; the degree-bound theorems additionally assume the index type is nonempty (a 0×0 matrix has minpoly of degree 0). Built on Mathlib's minimal-polynomial theory.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The parent result expresses the inverse of an invertible matrix as a polynomial in the matrix using the characteristic polynomial, of degree below n. But the characteristic polynomial is rarely the smallest polynomial annihilating a matrix: the minimal polynomial divides it and can be of far smaller degree (for A = I it is X − 1, independent of n). Running the same Cayley–Hamilton division trick with the minimal polynomial yields the inverse as a polynomial of degree below deg(minpoly), which is the minimal degree achievable for any polynomial expression of A⁻¹. The condition that makes the construction work — a nonzero constant term — is precisely the statement that 0 is not a root of the minimal polynomial, equivalent to invertibility.",
+    "problemStatement": "Sharpen the inverse-as-polynomial result by replacing the characteristic polynomial with the minimal polynomial: show that for an invertible matrix A over a field, A⁻¹ = (aeval A) s for an explicit s with deg s < deg(minpoly K A) ≤ n.",
+    "text": "Let m = minpoly K A. Invertibility gives m.coeff 0 ≠ 0 (else m = divX(m)·X and cancelling the unit A makes divX(m) a smaller-degree annihilator, contradicting minimality). Then evaluating m = divX(m)·X + C(m.coeff 0) at A and dividing by the unit −m.coeff 0 yields A⁻¹ = (aeval A)(C(−m.coeff 0)⁻¹·divX m), of degree < deg m ≤ n.",
+    "proofStrategy": "The crux is minpoly_coeff_zero_ne_zero: if (minpoly K A).coeff 0 = 0 then minpoly K A = divX(minpoly K A)·X, so evaluating at A and cancelling the unit A (A.det ≠ 0 ⟹ A is a unit, Matrix.mul_nonsing_inv) gives aeval A (divX (minpoly K A)) = 0; minpoly.dvd then forces minpoly K A ∣ divX (minpoly K A), impossible since divX strictly drops the degree. With a nonzero constant term the additive identity (divX m)(A)·A + c₀•1 = 0 is divided by the unit −c₀ to exhibit a left inverse that is a polynomial in A; Matrix.inv_eq_left_inv promotes it to A⁻¹. The sharp degree bound combines natDegree_C_mul_le with degree_divX_lt; the comparison deg m ≤ n uses Matrix.minpoly_dvd_charpoly and charpoly_natDegree_eq_dim.",
+    "keyInsights": [
+      "The minimal polynomial, not the characteristic polynomial, controls the minimal degree of a polynomial expression for A⁻¹",
+      "Invertibility ⟺ 0 is not a root of the minimal polynomial ⟺ (minpoly K A).coeff 0 ≠ 0",
+      "minpoly.dvd turns minimality into a clean degree contradiction: a smaller-degree annihilator cannot exist",
+      "Cancelling the unit A (rather than appealing to det = ±coeff 0 as in the parent) is the natural route once the characteristic polynomial is no longer in play",
+      "deg(minpoly K A) ≤ deg(charpoly A) = n, so the new bound strictly refines the parent's degree-< n statement and is recovered as a corollary"
+    ],
+    "prerequisites": [
+      "Minimal polynomial of an element of an algebra (minpoly, IsIntegral)",
+      "Characteristic polynomial and minpoly ∣ charpoly",
+      "Polynomial division by X (divX) and degree bookkeeping",
+      "Nonsingular matrix inverse over a field"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Documentation and Setup",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Header motivating the minimal-polynomial refinement, setup over a field K and finite index n, the integrality of matrices (isIntegral_matrix), and the definition minInvPoly A.",
+      "mathContext": "Every matrix over K is integral because Mₙ(K) is a finite-dimensional K-algebra, so minpoly K A is monic, nonzero, and of positive degree (for nonempty n)."
+    },
+    {
+      "id": "constant-term",
+      "title": "Invertibility Forces a Nonzero Constant Term",
+      "startLine": 65,
+      "endLine": 110,
+      "summary": "minpoly_coeff_zero_ne_zero: det A ≠ 0 implies (minpoly K A).coeff 0 ≠ 0, by cancelling the unit A and applying minpoly.dvd to reach a degree contradiction.",
+      "mathContext": "0 is a root of the minimal polynomial iff the matrix is singular; invertibility is exactly what makes the constant term a unit we may invert."
+    },
+    {
+      "id": "additive",
+      "title": "Minimal-Polynomial Relation in Additive Form",
+      "startLine": 111,
+      "endLine": 125,
+      "summary": "aeval_divX_mul_self: evaluating divX(m)·X + C c₀ = m at A gives (divX m)(A)·A + c₀•1 = 0.",
+      "mathContext": "Peeling off the constant term of the minimal polynomial isolates the relation (polynomial in A)·A = scalar that produces the inverse."
+    },
+    {
+      "id": "inverse",
+      "title": "The Inverse as the Minimal-Degree Polynomial",
+      "startLine": 126,
+      "endLine": 155,
+      "summary": "aeval_minInvPoly_mul_self, inv_eq_aeval_minInvPoly, self_mul_aeval_minInvPoly: (aeval A)(minInvPoly A) is the two-sided inverse of A.",
+      "mathContext": "Dividing the additive relation by the unit −c₀ yields a polynomial in A equal to A⁻¹; Matrix.inv_eq_left_inv and mul_eq_one_comm package both sides."
+    },
+    {
+      "id": "degree",
+      "title": "Sharp Degree Bound and Packaging",
+      "startLine": 156,
+      "endLine": 184,
+      "summary": "minInvPoly_natDegree_lt (deg < deg minpoly), minpoly_natDegree_le_card (deg minpoly ≤ n), and the packaged existence statements exists_inv_eq_aeval_minpoly / exists_inv_eq_aeval_card.",
+      "mathContext": "The minimal-degree representation has degree below deg(minpoly K A) ≤ n, strictly refining and recovering the parent's degree-< n bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "Replacing the characteristic polynomial by the minimal polynomial sharpens the inverse-as-polynomial corollary: the inverse of any invertible matrix over a field is the evaluation at A of an explicit polynomial of degree below deg(minpoly K A) ≤ n — the minimal-degree polynomial representation of A⁻¹. All 10 theorems and 1 definition are fully verified with 0 sorries and 0 axioms.",
+    "implications": "Because deg(minpoly) is typically much smaller than n, this gives the genuinely minimal polynomial expression for A⁻¹ and clarifies that invertibility is exactly the nonvanishing of the minimal polynomial at 0. It is the minimal-polynomial counterpart to the Faddeev–LeVerrier (characteristic-polynomial) inversion in the parent entry.",
+    "openQuestions": [
+      "Show the degree bound is sharp from below: A⁻¹ cannot be written as a polynomial in A of degree < deg(minpoly K A) − 1 in general, so deg(minpoly K A) − 1 is the exact minimal degree.",
+      "Relax Field K to a commutative ring with IsUnit (det A), matching the parent's open question, and identify the right nonvanishing condition on the minimal polynomial's constant term."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Matrix"
+    ],
+    "namespace": "CayleyHamiltonMinpolyOQ07OQ01",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/CayleyHamiltonMinpolyOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-07",
+      "relationship": "extends",
+      "description": "Sharpens the parent's inverse-as-polynomial result by using the minimal polynomial, lowering the degree bound from n to deg(minpoly K A)."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-06",
+      "relationship": "related",
+      "description": "Sibling in the cayley-hamilton-minpoly family on the structure of the minimal polynomial."
+    }
+  ],
+  "references": [
+    {
+      "key": "HJ13",
+      "citation": "Horn, R.A. and Johnson, C.R., Matrix Analysis, 2nd ed., Cambridge University Press (2013), Section 3.3: The minimal polynomial.",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), Section 12.2: The minimal and characteristic polynomials.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

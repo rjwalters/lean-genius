@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ann-fiboq0401-1",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 3, "endLine": 44 },
+    "type": "context",
+    "title": "From Fibonacci Vajda to the Gibonacci Discriminant",
+    "content": "**Module framing.** The parent (`fibonacci-identities-oq-04`) proved Vajda's identity for `Int.fib` with the sign constant $(-1)^{|x|}$. This entry answers two of its open questions: (1) *replace the sign by a discriminant* and generalise to **Gibonacci (Horadam) sequences** — any solution $G(n+2) = G(n+1) + G(n)$, with integer closed form $G(n) = a\\,F_n + b\\,F_{n-1}$ ($a = G_1$, $b = G_0$); and (3) the **Gelin–Cesàro identity** $F_{n-2}F_{n-1}F_{n+1}F_{n+2} - F_n^4 = -1$. The headline is the Gibonacci Vajda identity, where $(-1)^{|x|}$ is multiplied by the **characteristic** $\\mu = a^2 - ab - b^2$ — the discriminant: $\\mu = 1$ for Fibonacci ($G = \\mathrm{gib}\\,1\\,0$), $\\mu = -5$ for Lucas ($G = \\mathrm{gib}\\,1\\,2$).",
+    "mathContext": "$G(x+i)G(x+j) - G(x)G(x+i+j) = (-1)^{|x|}\\,\\mu\\,F_iF_j$, with $\\mu = a^2 - ab - b^2 = G_1^2 - G_0 G_1 - G_0^2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gibonacci / Horadam sequences",
+      "Vajda's identity",
+      "Discriminant / characteristic μ",
+      "Lucas numbers"
+    ],
+    "prerequisites": [
+      "Vajda's identity for Int.fib (parent)",
+      "Linear recurrence closed forms"
+    ],
+    "tags": ["module-header", "framing", "gibonacci", "discriminant"]
+  },
+  {
+    "id": "ann-fiboq0401-2",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 51, "endLine": 70 },
+    "type": "technique",
+    "title": "Fibonacci Vajda, Restated Locally",
+    "content": "**`fib_vajda`** reproduces the parent's verified headline so this file depends only on Mathlib (no cross-entry import). The proof is identical: five `Int.fib_add` expansions, substitute Cassini backwards for the sign, normalise indices, `ring`. It is the building block — the Gibonacci identity below is assembled from *four* instances of this lemma at shifted base points.",
+    "mathContext": "$F_{x+i}F_{x+j} - F_x F_{x+i+j} = (-1)^{|x|} F_i F_j$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vajda's identity",
+      "Self-contained restatement",
+      "Int.fib_add"
+    ],
+    "prerequisites": [
+      "The parent's fib_vajda proof"
+    ],
+    "tags": ["building-block", "vajda", "self-contained"]
+  },
+  {
+    "id": "ann-fiboq0401-3",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 72, "endLine": 81 },
+    "type": "technique",
+    "title": "The Parity Sign-Flip Lemma",
+    "content": "**`sign_flip`**: $(-1)^{|y-1|} = -(-1)^{|y|}$ — consecutive integers have opposite parity, and $|n|$ shares the parity of $n$. The proof splits on `Int.even_or_odd y`, transfers parity to `natAbs` (`Int.natAbs_even`/`natAbs_odd`), and rewrites both powers via `Even.neg_one_pow`/`Odd.neg_one_pow`. This is the key device for combining Vajda instances at base points $x$ and $x-1$: shifting the base flips the sign, and `sign_flip` makes that explicit so the four instances can be linearly combined with matching signs.",
+    "mathContext": "$(-1)^{|y-1|} = -(-1)^{|y|}$; parity of $|n|$ = parity of $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Parity of natAbs",
+      "Even.neg_one_pow / Odd.neg_one_pow",
+      "Base-point shifting"
+    ],
+    "prerequisites": [
+      "Int.even_or_odd and natAbs parity lemmas"
+    ],
+    "tags": ["sign-flip", "parity", "lemma"]
+  },
+  {
+    "id": "ann-fiboq0401-4",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 83, "endLine": 106 },
+    "type": "definition",
+    "title": "Gibonacci Sequences via the Closed Form",
+    "content": "**`gib a b n := a·F_n + b·F_{n-1}`** defines the Gibonacci sequence by its closed form rather than by recursion — so it is total over ℤ and immediately differentiable by `ring`. The supporting lemmas confirm it is a bona fide Gibonacci: `gib_one` ($G_1 = a$), `gib_two` ($G_2 = a+b$), `gib_zero` ($G_0 = b$), `gib_recurrence` (it satisfies $G(n+2) = G(n+1) + G(n)$), and `gib_one_zero` ($\\mathrm{gib}\\,1\\,0 = F$, the Fibonacci specialization). Parametrising by the two seeds $(a,b)$ is what lets one master proof cover every Gibonacci sequence at once.",
+    "mathContext": "$G(n) = a F_n + b F_{n-1}$, $G_0 = b$, $G_1 = a$, $G(n+2) = G(n+1)+G(n)$; Fibonacci $= \\mathrm{gib}\\,1\\,0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Closed form of a linear recurrence",
+      "Horadam sequence",
+      "Seed parametrization"
+    ],
+    "prerequisites": [
+      "Int.fib at integer indices",
+      "Fibonacci recurrence"
+    ],
+    "tags": ["definition", "gibonacci", "closed-form"]
+  },
+  {
+    "id": "ann-fiboq0401-5",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 108, "endLine": 130 },
+    "type": "insight",
+    "title": "The Gibonacci Vajda Master Identity",
+    "content": "**`gib_vajda`** is the headline: $G(x+i)G(x+j) - G(x)G(x+i+j) = (-1)^{|x|}\\,\\mu\\,F_iF_j$ with $\\mu = a^2 - ab - b^2$. The proof unfolds `gib` into Fibonacci atoms, making each product a quadratic in $a,b$ whose coefficients are Fibonacci-Vajda expressions. It assembles **four** `fib_vajda` instances — `V1` at $(x,i,j)$, `V2` at $(x-1,i,j)$ (sign-flipped via `sign_flip x`), `V3` at $(x,i,j-1)$, `V4` at $(x-1,i,j+1)$ (sign-flipped) — plus the recurrence `hj` for $F_{j+1}$, combined by a single `linear_combination` with coefficients $a^2, b^2, ab, ab$ (and a correction term). The $a^2$ term gives $\\mu$'s $a^2$, the $b^2$ term the $-b^2$, and the two $ab$ cross-terms the $-ab$ — exactly the characteristic.",
+    "mathContext": "$\\mu = a^2 - ab - b^2$ emerges as $a^2\\cdot V_1 + b^2\\cdot V_2 + ab\\cdot V_3 + ab\\cdot V_4 - (\\text{correction})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination",
+      "Quadratic-in-seeds decomposition",
+      "Base-point shifting + sign_flip"
+    ],
+    "prerequisites": [
+      "fib_vajda and sign_flip",
+      "Gibonacci closed form"
+    ],
+    "tags": ["main-theorem", "gibonacci-vajda", "linear-combination"]
+  },
+  {
+    "id": "ann-fiboq0401-6",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 132, "endLine": 148 },
+    "type": "concept",
+    "title": "Gibonacci Cassini and Catalan",
+    "content": "**`gib_cassini`** ($i=j=1$): $G(n+1)^2 - G(n)G(n+2) = (-1)^{|n|}\\mu$, and **`gib_catalan`** ($i=j=r$): $G(x+r)^2 - G(x)G(x+2r) = (-1)^{|x|}\\mu F_r^2$. Both are one-line specializations of `gib_vajda` (collapsing $F_1 = 1$, normalising $n+1+1 = n+2$ resp. $x+r+r = x+2r$, closing by `linear_combination`). They show the full classical hierarchy survives the generalization, now carrying the discriminant $\\mu$ in place of the bare Fibonacci sign.",
+    "mathContext": "$G(n+1)^2 - G(n)G(n+2) = (-1)^{|n|}\\mu$; $\\ G(x+r)^2 - G(x)G(x+2r) = (-1)^{|x|}\\mu F_r^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cassini / Catalan identities",
+      "Specialization of the master identity",
+      "Discriminant μ"
+    ],
+    "prerequisites": [
+      "gib_vajda"
+    ],
+    "tags": ["cassini", "catalan", "corollary"]
+  },
+  {
+    "id": "ann-fiboq0401-7",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 150, "endLine": 183 },
+    "type": "insight",
+    "title": "The Lucas Specialization: μ = −5",
+    "content": "**The Lucas numbers** are realised as `lucas n := gib 1 2 n` ($L_0 = 2$, $L_1 = 1$), with `lucas_recurrence`, `lucas_zero/one`, and `lucas_eq_fib` ($L_n = F_{n-1} + F_{n+1}$). **`lucas_vajda`** then specializes `gib_vajda 1 2`: the characteristic is $\\mu = 1^2 - 1\\cdot 2 - 2^2 = 1 - 2 - 4 = -5$, so $L(x+i)L(x+j) - L(x)L(x+i+j) = (-1)^{|x|}\\cdot(-5)\\cdot F_iF_j$ (extracted by `norm_num` + `simpa`). The Lucas discriminant $5$ — the same $5$ in $\\sqrt 5$ and the golden ratio — appears here with a sign, exactly the 'discriminant' the parent's open question called for.",
+    "mathContext": "$\\mu_{\\text{Lucas}} = 1 - 2 - 4 = -5$; $\\ L(x+i)L(x+j) - L(x)L(x+i+j) = (-1)^{|x|}(-5)F_iF_j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lucas numbers as gib 1 2",
+      "Discriminant 5 of the golden ratio",
+      "Specialization via norm_num"
+    ],
+    "prerequisites": [
+      "gib_vajda",
+      "Lucas-Fibonacci relation"
+    ],
+    "tags": ["lucas", "discriminant", "specialization"]
+  },
+  {
+    "id": "ann-fiboq0401-8",
+    "proofId": "fibonacci-identities-oq-04-oq-01",
+    "range": { "startLine": 185, "endLine": 212 },
+    "type": "insight",
+    "title": "Gelin–Cesàro: a Difference of Squares from Cassini × Catalan",
+    "content": "**`fib_gelin_cesaro`**: $F_{n-2}F_{n-1}F_{n+1}F_{n+2} - F_n^4 = -1$, answering the parent's third open question. The elegant idea: pair the four factors as $(F_{n-1}F_{n+1})(F_{n-2}F_{n+2})$. Cassini gives $F_{n-1}F_{n+1} = F_n^2 + (-1)^{|n|}$ (`hP`); the Catalan $r=2$ instance (via `fib_vajda (n-2) 2 2`, with the sign reconciled by `sign_flip` twice in `hs`) gives $F_{n-2}F_{n+2} = F_n^2 - (-1)^{|n|}$ (`hQ`). Their product is a **difference of squares** $(F_n^2)^2 - ((-1)^{|n|})^2 = F_n^4 - 1$ (using $((-1)^{|n|})^2 = 1$), so the whole expression is $-1$. A clean `calc` chain carries the algebra.",
+    "mathContext": "$(F_n^2 + (-1)^{|n|})(F_n^2 - (-1)^{|n|}) - F_n^4 = (F_n^2)^2 - 1 - F_n^4 = -1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gelin–Cesàro identity",
+      "Difference of squares",
+      "Cassini × Catalan",
+      "calc chains"
+    ],
+    "prerequisites": [
+      "Cassini and Catalan (r=2) instances",
+      "sign_flip for index reconciliation"
+    ],
+    "tags": ["gelin-cesaro", "difference-of-squares", "open-question-answered"]
+  }
+]

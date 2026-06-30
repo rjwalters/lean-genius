@@ -132,7 +132,7 @@
     {
       "id": "representability",
       "title": "Representability",
-      "startLine": 39,
+      "startLine": 1,
       "endLine": 77,
       "summary": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +).",
       "mathContext": "Defines IsRepresentableAs via existential over Multiset ℕ with membership and sum constraints. Proves three closure properties: zero_representable (empty multiset), mem_representable (singleton multiset), add_representable (multiset concatenation). The representable set forms a submonoid of (ℕ, +)."
@@ -157,71 +157,71 @@
       "id": "extremal",
       "title": "The Extremal Problem",
       "startLine": 106,
-      "endLine": 121,
+      "endLine": 123,
       "summary": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) ≤ nCardNonRepresentable(topK n k).",
       "mathContext": "topK n k = Set.Icc (n-k+1) n. topK_card (sorry): |topK| = k. ExtremalFrobeniusQuestion: ∀ A valid, nCardNonRepresentable(A) $\\leq$ nCardNonRepresentable(topK n k)."
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "startLine": 122,
-      "endLine": 157,
+      "startLine": 124,
+      "endLine": 193,
       "summary": "Three examples: example_2_3 (sorry: NonRepresentable {2,3} = {1}), example_3_5_frobenius (sorry: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega).",
       "mathContext": "Mathematical content: Three examples: example_2_3 (sorry: NonRepresentable {2,3} = {1}), example_3_5_frobenius (sorry: frobeniusNumber {3,5} = 7), topK_5_2 (proved: topK 5 2 = {4, 5} via ext + simp + omega)."
     },
     {
       "id": "kiss",
       "title": "Kiss's Theorem",
-      "startLine": 158,
-      "endLine": 176,
+      "startLine": 194,
+      "endLine": 212,
       "summary": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 ≤ k ≤ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002.",
       "mathContext": "kiss_2002 (axiom): ExtremalFrobeniusQuestion n k for all 1 $\\leq$ k $\\leq$ n. erdos_434_answer: direct corollary, proved by exact application of kiss_2002."
     },
     {
       "id": "intuition",
       "title": "Why topK is Optimal",
-      "startLine": 177,
-      "endLine": 192,
+      "startLine": 213,
+      "endLine": 241,
       "summary": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n ≥ 2. Illustrates that larger numbers create more gaps in representability.",
       "mathContext": "larger_numbers_fewer_reps (sorry): nCardNonRepresentable({n-1,n}) > nCardNonRepresentable({1,2}) for n $\\geq$ 2. Illustrates that larger numbers create more gaps in representability."
     },
     {
       "id": "sylvester",
       "title": "Sylvester-Frobenius Connection",
-      "startLine": 193,
-      "endLine": 209,
+      "startLine": 242,
+      "endLine": 263,
       "summary": "Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (sorry): specializes to {n-1,n} giving (n-2)(n-1)/2.",
       "mathContext": "Axiomatized: Two axioms: sylvester_frobenius (frobeniusNumber {a,b} = ab-a-b for coprime a,b) and sylvester_count (count = (a-1)(b-1)/2). consecutive_count (sorry): specializes to {n-1,n} giving (n-2)(n-1)/2."
     },
     {
       "id": "greedy",
       "title": "Greedy Construction",
-      "startLine": 210,
-      "endLine": 223,
+      "startLine": 264,
+      "endLine": 277,
       "summary": "greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal.",
       "mathContext": "Formal definition: greedyConstruct n k = Set.Icc (n-k+1) n, definitionally equal to topK (greedy_eq_topK proved by rfl). The greedy algorithm is provably optimal."
     },
     {
       "id": "bounds",
       "title": "Bounds on Non-Representables",
-      "startLine": 224,
-      "endLine": 238,
+      "startLine": 278,
+      "endLine": 292,
       "summary": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k ≥ 2.",
       "mathContext": "nonrep_finite (sorry): coprime elements imply finite NonRepresentable. topK_finite (sorry): NonRepresentable(topK n k) is finite for k $\\geq$ 2."
     },
     {
       "id": "problem433",
       "title": "Connection to Problem #433",
-      "startLine": 239,
-      "endLine": 254,
+      "startLine": 293,
+      "endLine": 308,
       "summary": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count).",
       "mathContext": "problem433Set n k = Set.Icc n (n+k-1) for consecutive integers. frobenius_consecutive (axiom): Frobenius number formula for consecutive integers. Contrasts #433 (maximize Frobenius number) with #434 (maximize count)."
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "startLine": 255,
-      "endLine": 310,
+      "startLine": 309,
+      "endLine": 372,
       "summary": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002.",
       "mathContext": "erdos_434_complete: proved by exact kiss_2002 application. topK_is_maximum (sorry): strongest formulation using IsGreatest, requires proving topK is valid and applying kiss_2002."
     }

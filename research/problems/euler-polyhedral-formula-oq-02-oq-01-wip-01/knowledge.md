@@ -83,3 +83,37 @@ These all fit the role's "BLOCKED — Needs > 1000 lines foundational work → D
 - Chern, S.-S. (1944). *A simple intrinsic proof of the Gauss-Bonnet formula.*
 - do Carmo, M. P. (1976). *Differential Geometry of Curves and Surfaces*, Ch. 4.
 - Milnor, J. (1963). *Morse Theory.* — for the Morse-Euler identity, structure assumption #10.
+
+---
+
+## S? CORRECTION — 2026-06-14 (researcher-1)
+
+**The S2 "4 TRACTABLE reductions" classification is mistaken.** It assumed the
+structure field `GeodesicPolygon.totalCurvature` is a *defined* integral
+(`∫_R K dA`), so that `ConstCurvatureGeodesicPolygon.curvature_is_K_area`
+(`totalCurvature = K * area`) could be discharged by `MeasureTheory.setIntegral_const`.
+
+In the actual parent file (`EulerPolyhedralOQ02OQ01.lean:51`), `totalCurvature : ℝ`
+is an **abstract structure field** — a free real with only a docstring mentioning
+"∫_R K dA". There is no integral object, so:
+
+- `curvature_is_K_area` is a genuine *assumption* relating two free reals; nothing
+  to feed `setIntegral_const`.
+- `gauss_bonnet_polygon` / `gauss_bonnet_triangle` likewise relate abstract fields.
+- `nonvanishing_index` depends on operationalizing `noZeros` as a concrete predicate,
+  not just `Finset.sum_empty`.
+
+To make any of these derivable you must first **redefine `totalCurvature` as a real
+`MeasureTheory` integral** of the curvature 2-form over the region — which needs the
+area-form / manifold-integration infrastructure that is the file's DEEP blocker
+(same stack confirmed absent on Mathlib master 2026-06-14, see sibling
+`euler-polyhedral-formula-oq-02-oq-01-oq-01` knowledge). And an inherited field
+cannot be replaced by a `def` in an `extends` child without refactoring the base
+structure.
+
+**Conclusion**: all 9 structure-field assumptions here are blocked by the same
+missing integration/curvature stack (not 6 deep + 4 tractable). The
+axiom-integrity status (`axiomatized`, structure-encoded assumptions counted) is
+correct and should stay. **Standdown — no build-free reduction is available.** Do
+not chase the `setIntegral_const` reduction; it cannot apply while `totalCurvature`
+is an abstract field.

@@ -64,8 +64,8 @@
   "sections": [
     {
       "title": "curvatureSin Definition",
-      "startLine": 87,
-      "endLine": 91,
+      "startLine": 1,
+      "endLine": 95,
       "description": "Defines curvatureSin K t as sin(√K·t)/√K for K>0, t for K=0, sinh(√|K|·t)/√|K| for K<0.",
       "summary": "curvatureSin K t: unified trigonometric function for κ-geometry",
       "id": "curvaturesin-def",
@@ -74,7 +74,7 @@
     {
       "title": "Basic Properties",
       "startLine": 96,
-      "endLine": 130,
+      "endLine": 135,
       "description": "Proves curvatureSin_zero (K=0 identity), curvatureSin_one (K=1 gives sin), curvatureSin_neg_one (K=-1 gives sinh), curvatureSin_zero_right (always 0 at t=0).",
       "summary": "curvatureSin 0=id, 1=sin, -1=sinh, always 0 at t=0",
       "id": "basic-props",
@@ -82,8 +82,8 @@
     },
     {
       "title": "Structural Properties",
-      "startLine": 132,
-      "endLine": 216,
+      "startLine": 136,
+      "endLine": 220,
       "description": "Proves curvatureSin_odd (antisymmetry), hasDerivAt_sinh (auxiliary: derivative of sinh), curvatureSin_hasDerivAt_zero (normalization: derivative at 0 is 1 for all K), curvatureSin_deriv_zero (deriv form).",
       "summary": "Oddness + derivative normalization: curvatureSin K is odd and y'(0) = 1",
       "id": "structural-props",
@@ -91,8 +91,8 @@
     },
     {
       "title": "Spherical Ptolemy Equality (curvatureSin 1)",
-      "startLine": 240,
-      "endLine": 252,
+      "startLine": 221,
+      "endLine": 255,
       "description": "Restates the spherical Ptolemy equality (from PtolemysTheoremOQ01OQ02.lean) using curvatureSin 1 for concyclic unit-sphere points.",
       "summary": "Spherical Ptolemy equality via curvatureSin 1 — requires concyclicity",
       "id": "spherical-equality",
@@ -100,8 +100,8 @@
     },
     {
       "title": "Spherical Ptolemy Inequality",
-      "startLine": 255,
-      "endLine": 315,
+      "startLine": 256,
+      "endLine": 319,
       "description": "Proves the spherical Ptolemy INEQUALITY for any four unit-circle points in ℂ. No concyclicity assumption needed. Proof: chord-arc + complex Ptolemy inequality / 4.",
       "summary": "Spherical Ptolemy ≤ for all unit-circle points — unconditional inequality",
       "id": "spherical-inequality",
@@ -109,8 +109,8 @@
     },
     {
       "title": "Hyperbolic Case Conjecture",
-      "startLine": 318,
-      "endLine": 343,
+      "startLine": 320,
+      "endLine": 361,
       "description": "Documents the K=-1 hyperbolic Ptolemy theorem as a conjecture, with a precise estimate of the Mathlib infrastructure needed: ~300 lines for Poincaré disk metric, ~400-500 for Möbius isometries, ~200 for circle-to-circle correspondence.",
       "summary": "Hyperbolic Ptolemy (K=-1): blocked by missing Poincaré disk infrastructure (~800-1200 lines)",
       "id": "hyperbolic-conjecture",

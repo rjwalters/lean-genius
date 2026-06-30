@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 73
+    },
+    "type": "context",
+    "title": "Two Independent Notions of Largeness on ℝ",
+    "content": "The docstring sets up the measure-theoretic counterpart to the parent's Baire-category result. A subset of $\\mathbb{R}$ can be 'large' in two independent senses: *comeagre* (residual — complement is meagre) is topological largeness; *conull* (complement is Lebesgue-null) is measure largeness. For the algebraic/transcendental split the two agree (algebraic = small, transcendental = large in both senses), but they diverge for the Liouville numbers: comeagre yet null. The honesty note is explicit — every ingredient is already in Mathlib; the contribution is the machine-checked *synthesis* of the measure/category contrast the parent records only in prose.",
+    "mathContext": "Comeagre (residual): complement meagre. Conull: complement Lebesgue-null. These are distinct $\\sigma$-ideals/filters on $\\mathbb{R}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Baire category",
+      "Lebesgue measure",
+      "Oxtoby duality",
+      "Liouville numbers",
+      "transcendental numbers"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Baire category",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-algebraic-null",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "The Algebraic Reals are Lebesgue-Null",
+    "content": "`algebraicReals_null`: the measure-side mirror of the parent's meagreness. The proof is a one-liner — the algebraic reals over $\\mathbb{Q}$ are countable (`Algebraic.countable`), and a countable set has measure zero under any atomless measure (`Set.Countable.measure_zero`, since Lebesgue `volume` has no atoms). Cantor's countability of the algebraic numbers thus yields their measure-theoretic smallness directly, parallel to their topological smallness.",
+    "mathContext": "$\\{x \\in \\mathbb{R} : \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,x\\}$ countable $\\Rightarrow \\mathrm{volume} = 0$ (atomless measure).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Algebraic.countable",
+      "atomless measure",
+      "NoAtoms",
+      "Cantor countability"
+    ],
+    "prerequisites": [
+      "countable sets",
+      "Lebesgue measure"
+    ]
+  },
+  {
+    "id": "ann-ae-transcendental",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Almost Every Real is Transcendental",
+    "content": "`ae_transcendental`: the conull (measure-large) form, complementary to `algebraicReals_null`. Via `compl_mem_ae_iff` ($s^c \\in \\mathrm{ae}\\,\\mu \\iff \\mu s = 0$), the nullity of the algebraic reals becomes 'the transcendentals are a full-measure set' — i.e. a randomly chosen real is transcendental with probability 1. This is the measure-theoretic echo of the parent's 'the transcendentals are comeagre': transcendence is generic in *both* senses.",
+    "mathContext": "$\\forall^m x : \\mathbb{R},\\ \\neg\\,\\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,x$ — the transcendentals are conull.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "almost everywhere",
+      "compl_mem_ae_iff",
+      "conull set",
+      "genericity"
+    ],
+    "prerequisites": [
+      "a.e. filter",
+      "complement of null set"
+    ]
+  },
+  {
+    "id": "ann-liouville",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 103,
+      "endLine": 113
+    },
+    "type": "concept",
+    "title": "The Liouville Numbers: Comeagre, Dense, Yet Null",
+    "content": "Three Mathlib facts about the Liouville numbers, repackaged as the separating witness. `liouville_residual` (= `eventually_residual_liouville`): they are comeagre — a dense $G_\\delta$ obtained from the approximation condition $|x - p/q| < 1/q^n$ for all $n$. `liouville_dense`: dense in $\\mathbb{R}$. `liouville_null` (= `volume_setOf_liouville`): Lebesgue measure zero — the rational approximations that define them form a vanishingly thin cover. These are precisely the explicit transcendentals that are topologically large but measure-small.",
+    "mathContext": "$\\{x : \\mathrm{Liouville}\\,x\\}$ is a dense $G_\\delta$ (hence comeagre) with $\\mathrm{volume} = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Liouville numbers",
+      "dense Gδ",
+      "Diophantine approximation",
+      "eventually_residual_liouville"
+    ],
+    "prerequisites": [
+      "Liouville numbers",
+      "Gδ sets"
+    ]
+  },
+  {
+    "id": "ann-sharp-boundary",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 133
+    },
+    "type": "insight",
+    "title": "The Headline: Comeagre ⇏ Conull, and Filter Orthogonality",
+    "content": "`exists_residual_dense_null` is the sharp-boundary headline: a dense comeagre set of measure zero exists (the Liouville numbers), so topological largeness does not entail measure largeness — comeagre $\\not\\Rightarrow$ conull. `residual_ae_disjoint` (= `Real.disjoint_residual_ae`) gives the abstract reason: the comeagre filter $\\mathrm{residual}\\,\\mathbb{R}$ and the a.e. filter $\\mathrm{ae}\\,\\mathrm{volume}$ are *disjoint* — no single set is detected as large by both. This filter-level orthogonality is exactly why a set can be comeagre while its complement is conull, the structural seed of the Oxtoby decomposition completed in sibling oq-03.",
+    "mathContext": "$\\exists S$ dense, comeagre, $\\mathrm{volume}\\,S = 0$; $\\mathrm{Disjoint}\\,(\\mathrm{residual}\\,\\mathbb{R})\\,(\\mathrm{ae}\\,\\mathrm{volume})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.disjoint_residual_ae",
+      "filter disjointness",
+      "comeagre vs conull",
+      "Oxtoby decomposition"
+    ],
+    "prerequisites": [
+      "filters",
+      "residual and ae filters"
+    ]
+  },
+  {
+    "id": "ann-resolution",
+    "proofId": "algebraic-reals-meager-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 175
+    },
+    "type": "concept",
+    "title": "OQ-02 Resolution and Results Summary",
+    "content": "`oq02_resolution` packages the two pillars — (1) the algebraic reals are null (transcendentals conull, mirroring the parent's comeagre result), and (2) comeagre and conull are independent (the dense comeagre null Liouville set). The closing `#check`s and the markdown results table document that all eight theorems are proved with 0 sorries and 0 declared axioms. This entry settles one direction of the independence (category-large $\\not\\Rightarrow$ measure-large); the dual (measure-large complement / meagre conull set) and the full Oxtoby decomposition are completed in sibling oq-03.",
+    "mathContext": "$\\mathrm{volume}\\{x : \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,x\\} = 0\\ \\wedge\\ \\exists S\\ \\text{dense comeagre with}\\ \\mathrm{volume}\\,S = 0.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "theorem packaging",
+      "measure-category independence",
+      "duality with oq-03"
+    ],
+    "prerequisites": [
+      "logical conjunction"
+    ]
+  }
+]

@@ -16,7 +16,11 @@
       "perfect-powers",
       "diophantine-equations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "elementary algebra"
+    ]
   },
   {
     "id": "ann-e672-definitions",
@@ -35,7 +39,11 @@
       "perfect-power",
       "arithmetic-progression"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e672-conjecture",
@@ -54,7 +62,11 @@
       "conjecture",
       "predicate-design"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "mathematical logic",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e672-euler",
@@ -73,7 +85,11 @@
       "infinite-descent",
       "perfect-square"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "proof by contradiction"
+    ]
   },
   {
     "id": "ann-e672-oblath",
@@ -92,7 +108,11 @@
       "descent",
       "higher-powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "algebraic number theory"
+    ]
   },
   {
     "id": "ann-e672-erdos-selfridge",
@@ -111,7 +131,11 @@
       "consecutive-integers",
       "landmark-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e672-examples",
@@ -130,7 +154,11 @@
       "factorization",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime factorization",
+      "arithmetic"
+    ]
   },
   {
     "id": "ann-e672-gcd",
@@ -149,7 +177,11 @@
       "primitive",
       "pairwise-coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "divisibility theory",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-e672-summary",
@@ -168,6 +200,9 @@
       "summary",
       "proof-status"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations"
+    ]
   }
 ]

@@ -101,54 +101,54 @@
       "id": "kst-theorem",
       "title": "Kővári-Sós-Turán Theorem",
       "startLine": 95,
-      "endLine": 109,
+      "endLine": 102,
       "summary": "KST bound `ex(n; C₄) ≤ (1/2)n^(3/2) + O(n)` documented in docstring commentary only; the bound is NOT declared as an axiom or theorem. This section also contains `axiom exC4C5 : ℕ → ℕ` (the extremal function for {C₄, C₅}-free graphs).",
       "mathContext": "KST bound (commentary only); `axiom exC4C5 : ℕ → ℕ` declared here"
     },
     {
       "id": "erdos-simonovits",
       "title": "Erdős-Simonovits Result",
-      "startLine": 110,
-      "endLine": 121,
+      "startLine": 103,
+      "endLine": 110,
       "summary": "The Erdős-Simonovits equality `ex(n; {C₄, C₅}) = (n/2)^(3/2) + O(n)` is documented in docstring commentary only; no axiom or theorem is declared in this section.",
       "mathContext": "Docstring commentary only; no Lean declaration in this section"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "startLine": 122,
-      "endLine": 132,
+      "startLine": 111,
+      "endLine": 121,
       "summary": "Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)",
       "mathContext": "Mathematical content: Formal statement: ex(n; {C₃, C₄}) ~ (n/2)^(3/2)"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "startLine": 133,
-      "endLine": 145,
+      "startLine": 122,
+      "endLine": 131,
       "summary": "Upper and lower bounds on ex(n; {C₃, C₄})",
       "mathContext": "Bound: Upper and lower bounds on ex(n; {C₃, C₄})"
     },
     {
       "id": "constructions",
       "title": "Special Constructions",
-      "startLine": 146,
-      "endLine": 161,
+      "startLine": 132,
+      "endLine": 143,
       "summary": "Polarity graphs and projective plane constructions",
       "mathContext": "Mathematical content: Polarity graphs and projective plane constructions"
     },
     {
       "id": "asymptotic-gap",
       "title": "The Asymptotic Gap",
-      "startLine": 162,
-      "endLine": 173,
+      "startLine": 144,
+      "endLine": 152,
       "summary": "Gap between C₄-free and {C₃,C₄}-free leading constants",
       "mathContext": "Mathematical content: Gap between C₄-free and {C₃,C₄}-free leading constants"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 168,
+      "startLine": 153,
       "endLine": 177,
       "summary": "Main theorems: erdos_573 and erdos_573_summary",
       "mathContext": "Verified: Main theorems: erdos_573 and erdos_573_summary"

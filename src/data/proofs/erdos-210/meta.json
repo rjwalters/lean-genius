@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "summary": "Module docstring for Erdős Problem #210 (ordinary lines): f(n) is minimal such that any n points in ℝ², not all collinear, determine at least f(n) ordinary lines (lines through exactly two points). SOLVED by Green-Tao (2013). Includes the statement and Mathlib imports.",
+      "startLine": 1,
+      "endLine": 41,
+      "mathContext": null
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "summary": "Point, PointSet, Collinear, InGeneralPosition, NotAllCollinear",
@@ -107,7 +115,7 @@
       "title": "Sylvester-Gallai Theorem",
       "summary": "f(n) ≥ 1 for any non-collinear configuration",
       "startLine": 89,
-      "endLine": 105,
+      "endLine": 103,
       "mathContext": "f(n) $\\geq$ 1 for any non-collinear configuration"
     },
     {

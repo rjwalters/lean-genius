@@ -42,23 +42,23 @@
       }
     ],
     "originalContributions": [
-      "signedUnitSum definition: ∑f(n)/n over finite set",
-      "IsSignFunction definition: f takes values ±1",
-      "IsNonConstant definition: f takes both values on A",
-      "HasPropertyP1 definition: Property P₁ for sets",
+      "signedUnitSum definition: ∑ f(n)/n over a finite set",
+      "IsSignFunction / IsNonConstant / HasPropertyP1 definitions (Property P₁)",
       "arithmeticProgression, positiveNaturals, oddNumbers definitions",
-      "erdos_straus_1975 axiom: ℕ has Property P₁",
-      "sattler_odd_1975 axiom: odd numbers have P₁",
-      "sattler_1982 axiom: arithmetic progressions have P₁",
-      "counterexampleSet: sets with one even fail P₁",
-      "positive_density_insufficient theorem",
-      "squaresExcludingOne definition and open conjecture",
+      "erdos_318_arithmetic_progression: AP case (from sattler_1982)",
+      "counterexampleSet and counterexample_positive_density (density ≥ 1/4)",
+      "odd_unit_sum_ne_even_unit: PARITY OBSTRUCTION — a finite sum of odd-denominator unit fractions can never equal 1/(2m); clearing denominators yields 'even integer = odd integer'",
+      "counterexample_fails_P1: now a THEOREM (was an axiom) — odds ∪ {2m} fails P₁, via the parity obstruction applied to the sign function +1 on odds / −1 on the lone even",
+      "positive_density_insufficient: positive density does NOT imply P₁ (fully proven, 0 problem-specific axioms)",
+      "sum_reciprocal_squares_less_than_one: ∑_{k≥2} 1/k² = π²/6 − 1 < 1 (Basel + π < 3.15)",
+      "zero_sum_integer_form: clearing denominators in a rational zero-sum",
+      "squaresExcludingOne definition; squares case left honestly open (no truth-value axiom)",
       "Connection to Egyptian fractions"
     ],
-    "axiomCount": 5,
-    "lineCount": 409,
-    "assumptions": "5 axioms: erdos_straus_1975, sattler_odd_1975, sattler_1982, counterexample_fails_P1, squares_case_open.",
-    "theoremCount": 6,
+    "axiomCount": 3,
+    "lineCount": 543,
+    "assumptions": "3 axioms, all published-but-not-yet-formalized literature results: erdos_straus_1975 (ℕ has P₁, Erdős–Straus 1975), sattler_odd_1975 (odd numbers have P₁, Sattler 1975), sattler_1982 (every arithmetic progression has P₁, Sattler 1982). The counterexample direction (counterexample_fails_P1) is now PROVEN from a parity obstruction (previously an axiom), and the mathematically-incorrect squares_case_open axiom was removed (the squares case is open, not false).",
+    "theoremCount": 8,
     "definitionCount": 14,
     "additionalFiles": [
       "Proofs/Erdos318Aristotle.lean"
@@ -84,76 +84,92 @@
   },
   "sections": [
     {
-      "id": "signed-fractions",
-      "title": "Signed Unit Fractions",
-      "summary": "Defines `signedUnitSum` computing $\\sum_{n \\in S} f(n)/n \\in \\mathbb{Q}$, `IsSignFunction` constraining $f(n) \\in \\{\\pm 1\\}$, and `IsNonConstant` requiring both values on $A$.  Uses $\\mathbb{Q}$ for exact arithmetic and Mathlib's `Finset.sum` for the summation.",
-      "startLine": 44,
-      "endLine": 71,
-      "mathContext": "Defines `signedUnitSum` computing $\\sum_{n \\in S} f(n)/n \\in \\mathbb{Q}$, `IsSignFunction` constraining $f(n) \\in \\{\\pm 1\\}$, and `IsNonConstant` requiring both values on $A$. Uses $\\mathbb{Q}$ for exact arithmetic and Mathlib's `Finset.sum` for the summation."
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States Erdős Problem #318 (signed unit fractions with zero sum, 'Property P₁'). For an infinite arithmetic progression $A$ and non-constant $f:A\\to\\{\\pm1\\}$, must some finite nonempty $S\\subseteq A$ have $\\sum_{n\\in S}f(n)/n=0$? Known: TRUE for $\\mathbb{N}$ (Erdős–Straus 1975), odds (Sattler 1975), all APs (Sattler 1982); FALSE for some positive-density sets; squares case OPEN. Imports Mathlib; opens `Finset`/`BigOperators`/`Real`.",
+      "mathContext": "Property P₁: non-constant $f:A\\to\\{\\pm1\\}$ admits finite nonempty $S$ with $\\sum_{n\\in S}f(n)/n=0$."
     },
     {
-      "id": "property-p1",
-      "title": "Property P₁",
-      "summary": "Formalizes `HasPropertyP1` as the $\\forall f \\, \\exists S$ statement: every non-constant sign function admits a non-empty finite zero-sum subset.  The `Finset ↑ Set` coercion bridges the finite witness with the (potentially infinite) target set $A$.",
-      "startLine": 72,
-      "endLine": 88,
-      "mathContext": "Formalizes `HasPropertyP1` as the $\\forall f \\, \\exists S$ statement: every non-constant sign function admits a non-empty finite zero-sum subset. The `Finset ↑ Set` coercion bridges the finite witness with the (potentially infinite) target set $A$."
+      "id": "part1",
+      "title": "Part I: Signed Unit Fractions",
+      "startLine": 39,
+      "endLine": 66,
+      "summary": "Defines `signedUnitSum S f` ($\\sum_{n\\in S}f(n)/n\\in\\mathbb{Q}$), `IsSignFunction` ($f$ takes values $\\pm1$), and `IsNonConstant` ($f$ takes both signs on $A$).",
+      "mathContext": "$\\text{signedUnitSum}(S,f)=\\sum_{n\\in S}f(n)/n$; sign function $\\pm1$; non-constant on $A$."
     },
     {
-      "id": "arithmetic-progressions",
-      "title": "Arithmetic Progressions",
-      "summary": "Defines `arithmeticProgression a d` as $\\{a + kd : k \\geq 0\\}$, `positiveNaturals` as $\\{n \\geq 1\\}$, and `oddNumbers` as $\\{n : n \\bmod 2 = 1\\}$.  Notes that $\\mathbb{N}^+$ and odds are special APs ($d=1$ and $d=2$ respectively).",
-      "startLine": 89,
-      "endLine": 111,
-      "mathContext": "Defines `arithmeticProgression a d` as $\\{a + kd : k \\geq 0\\}$, `positiveNaturals` as $\\{n \\geq 1\\}$, and `oddNumbers` as $\\{n : n \\bmod 2 = 1\\}$. Notes that $\\mathbb{N}^+$ and odds are special APs ($d=1$ and $d=2$ respectively)."
+      "id": "part2",
+      "title": "Part II: Property P₁",
+      "startLine": 67,
+      "endLine": 83,
+      "summary": "Defines `HasPropertyP1 A`: every non-constant sign function on $A$ admits a finite nonempty $S\\subseteq A$ with signed unit sum zero.",
+      "mathContext": "`HasPropertyP1 A`: $\\forall$ non-constant $f,\\ \\exists S\\subseteq A$ finite, $\\sum_{n\\in S}f(n)/n=0$."
     },
     {
-      "id": "known-results",
-      "title": "Known Results",
-      "summary": "Axiomatizes three landmark results: `erdos_straus_1975` ($\\mathbb{N}$ has $P_1$), `sattler_odd_1975` (odds have $P_1$), `sattler_1982` (all APs have $P_1$).  The main theorem `erdos_318_arithmetic_progression` is a direct application of Sattler's axiom via `exact sattler_1982 a d ha hd`.",
-      "startLine": 112,
-      "endLine": 149,
-      "mathContext": "Axiomatizes three landmark results: `erdos_straus_1975` ($\\mathbb{N}$ has $P_1$), `sattler_odd_1975` (odds have $P_1$), `sattler_1982` (all APs have $P_1$). The main theorem `erdos_318_arithmetic_progression` is a direct application of Sattler's axiom via `exact sattler_1982 a d ha hd`."
+      "id": "part3",
+      "title": "Part III: Arithmetic Progressions",
+      "startLine": 84,
+      "endLine": 106,
+      "summary": "Defines the sets `arithmeticProgression a d`, `positiveNaturals`, and `oddNumbers`.",
+      "mathContext": "$\\text{AP}(a,d)=\\{a+kd\\}$; $\\mathbb{N}^+$; odd numbers."
     },
     {
-      "id": "counterexamples",
-      "title": "Positive Density Counterexamples",
-      "summary": "Constructs `counterexampleSet m` = odds $\\cup \\{2m\\}$ with density $\\approx 1/2$.  Axiomatizes `counterexample_fails_P1` (the $2$-adic valuation obstruction) and derives `positive_density_insufficient` as a constructive witness.  The density lemma has `sorry` for the counting argument.",
-      "startLine": 150,
-      "endLine": 198,
-      "mathContext": "Constructs `counterexampleSet m` = odds $\\cup \\{2m\\}$ with density $\\approx 1/2$. Axiomatizes `counterexample_fails_P1` (the $2$-adic valuation obstruction) and derives `positive_density_insufficient` as a constructive witness. The density lemma has `sorry` for the counting argument."
+      "id": "part4",
+      "title": "Part IV: Known Results",
+      "startLine": 107,
+      "endLine": 129,
+      "summary": "The literature results as AXIOMS: `erdos_straus_1975` ($\\mathbb{N}$ has P₁), `sattler_odd_1975` (odds have P₁), and `sattler_1982` (every infinite AP has P₁).",
+      "mathContext": "Axioms: $\\mathbb{N}$, odds, and all APs have Property P₁."
     },
     {
-      "id": "squares",
-      "title": "The Squares Question (OPEN)",
-      "summary": "Defines `squaresExcludingOne` = $\\{k^2 : k \\geq 2\\}$ and `erdos_318_squares_conjecture` as the open $P_1$ question for this set.  Proves (with sorry) that $\\sum_{k \\geq 2} 1/k^2 < 1$ via the Basel bound, justifying the exclusion of $1$.  The axiom `squares_case_open` records the unresolved status.",
-      "startLine": 199,
-      "endLine": 232,
-      "mathContext": "Defines `squaresExcludingOne` = $\\{k^2 : k \\geq 2\\}$ and `erdos_318_squares_conjecture` as the open $P_1$ question for this set. Proves (with sorry) that $\\sum_{k \\geq 2} 1/k^2 < 1$ via the Basel bound, justifying the exclusion of $1$. The axiom `squares_case_open` records the unresolved status."
+      "id": "part5",
+      "title": "Part V: Main Theorem",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "PROVES `erdos_318_arithmetic_progression`: every infinite arithmetic progression has Property P₁ (the main question's YES answer, from `sattler_1982`).",
+      "mathContext": "Main result: every infinite AP has Property P₁."
     },
     {
-      "id": "techniques",
-      "title": "Key Techniques",
-      "summary": "Formalizes `zero_sum_integer_form` (clearing denominators: multiply $\\sum f(n)/n = 0$ by $\\prod m$ to get an integer equation) and `parityObstruction` (a prime $p$ creates an obstruction when $p$-adic valuations of elements are incompatible).  Both have sorry due to rational arithmetic complexity.",
-      "startLine": 233,
-      "endLine": 257,
-      "mathContext": "Formalizes `zero_sum_integer_form` (clearing denominators: multiply $\\sum f(n)/n = 0$ by $\\prod m$ to get an integer equation) and `parityObstruction` (a prime $p$ creates an obstruction when $p$-adic valuations of elements are incompatible)."
+      "id": "part6",
+      "title": "Part VI: Positive Density — Counterexamples",
+      "startLine": 145,
+      "endLine": 228,
+      "summary": "Defines `hasPositiveDensity` and the `counterexampleSet m` (odds plus one even $2m$). PROVES `counterexample_positive_density` (density $\\geq1/4$, via counting odds $=(n+1)/2$). States the AXIOM `counterexample_fails_P1` (these sets lack P₁ — the lone even cannot cancel). PROVES `positive_density_insufficient` (positive density alone does not give P₁).",
+      "mathContext": "Odds $\\cup\\{2m\\}$: density $\\geq1/4$ but no P₁ — positive density insufficient."
     },
     {
-      "id": "egyptian",
-      "title": "Egyptian Fractions Connection",
-      "summary": "Defines `isEgyptianRepresentation` (unsigned: $\\sum 1/n_i = q$) and `hasSignedZeroRepresentation` (signed: $\\sum f(n)/n = 0$).  Links Property $P_1$ to the broader Egyptian fraction tradition from the Rhind Papyrus through Erdős-Straus to Croot's $P_k$ theorem.",
-      "startLine": 258,
-      "endLine": 276,
-      "mathContext": "Defines `isEgyptianRepresentation` (unsigned: $\\sum 1/n_i = q$) and `hasSignedZeroRepresentation` (signed: $\\sum f(n)/n = 0$). Links Property $P_1$ to the broader Egyptian fraction tradition from the Rhind Papyrus through Erdős-Straus to Croot's $P_k$ theorem."
+      "id": "part7",
+      "title": "Part VII: The Squares Question (OPEN)",
+      "startLine": 229,
+      "endLine": 298,
+      "summary": "Defines `squaresExcludingOne` ($\\{k^2:k\\geq2\\}$). PROVES `sum_reciprocal_squares_less_than_one` ($\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$, via the Basel sum and $\\pi<3.15$) — the reason $1$ is excluded. Defines `erdos_318_squares_conjecture` and states the AXIOM `squares_case_open` (the squares case is unresolved; Sattler's announced proof never appeared).",
+      "mathContext": "$\\sum_{k\\geq2}1/k^2=\\pi^2/6-1<1$; squares-excluding-1 P₁ is OPEN."
     },
     {
-      "id": "summary",
-      "title": "Main Results Summary",
-      "summary": "The theorem `erdos_318_summary` packages all four resolved cases into a single conjunction, proved via `refine ⟨?_, ?_, ?_, ?_⟩`.  The axiom `erdos_318_status : True` serves as a documentation marker for the mixed (partially-solved) status of Problem #318.",
-      "startLine": 277,
-      "endLine": 317,
-      "mathContext": "The theorem `erdos_318_summary` packages all four resolved cases into a single conjunction, proved via `refine ⟨?_, ?_, ?_, ?_⟩`.  The axiom `erdos_318_status : True` serves as a documentation marker for the mixed (partially-solved) status of Problem #318."
+      "id": "part8",
+      "title": "Part VIII: Key Lemmas and Techniques",
+      "startLine": 299,
+      "endLine": 345,
+      "summary": "PROVES `zero_sum_integer_form` (clearing denominators: a zero signed unit sum becomes an integer equation $\\sum_{n\\in S}f(n)\\cdot(\\prod_{m\\in S}m)/n=0$, via exact division and ℤ→ℚ injectivity). Defines `parityObstruction` (the prime/parity obstruction explaining P₁ failures).",
+      "mathContext": "Common-denominator: $\\sum_{n\\in S}f(n)/n=0\\Rightarrow\\sum_n f(n)(\\prod_m m)/n=0$ in ℤ."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: Relationship to Egyptian Fractions",
+      "startLine": 346,
+      "endLine": 364,
+      "summary": "Defines `isEgyptianRepresentation` (a sum of unit fractions equals $q$) and `hasSignedZeroRepresentation` (a signed zero representation exists), relating P₁ to signed Egyptian-fraction decompositions.",
+      "mathContext": "P₁ $\\leftrightarrow$ existence of a signed Egyptian-fraction representation of $0$."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: Main Results Summary",
+      "startLine": 365,
+      "endLine": 409,
+      "summary": "PROVES `erdos_318_summary`: APs satisfy P₁, $\\mathbb{N}$ satisfies P₁, odds satisfy P₁, but positive density is insufficient (some set lacks P₁). A closing comment records the mixed status (APs/positive-density SOLVED, squares OPEN).",
+      "mathContext": "Summary: APs/$\\mathbb{N}$/odds have P₁; positive density insufficient; squares OPEN."
     }
   ],
   "conclusion": {
@@ -181,9 +197,9 @@
       "BigOperators"
     ],
     "namespace": "Erdos318",
-    "lineCount": 409,
-    "axiomCount": 5,
-    "theoremCount": 6,
+    "lineCount": 543,
+    "axiomCount": 3,
+    "theoremCount": 8,
     "definitionCount": 14,
     "path": "Proofs/Erdos318Problem.lean",
     "sorries": 0,

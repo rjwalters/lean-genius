@@ -517,21 +517,22 @@ theorem order_independent_3d_swap01 {a b : Fin 3 → ℝ}
 - `iteratedIntervalIntegral_order_independent`: Main theorem via swap_induction_on
   (uses iter_integral_swap_any for each transposition in the decomposition)
 
-**Remaining sorries** (2 total):
+**Remaining sorries**: 0. Both sorries noted in earlier drafts are now discharged:
 
-1. `continuous_param` (succ step, h_bound): Compact bound for dominated convergence.
-   Fix: Use hM (from IsCompact.bddAbove on compact K × uIcc) + hK_nhd filter_upwards
-   to show ∀ᶠ x in 𝓝 x₀, ∀ᵐ t₀, ‖H(x,t₀)‖ ≤ M.
-   Concretely: `filter_upwards [hK_nhd] with x hx; apply Filter.Eventually.of_forall;
-   intro t ht; exact hM (mem_image_of_mem _ (mk_mem_prod hx (uIoc_subset_uIcc ht)))`
+1. `continuous_param` (succ step, h_bound): Compact bound for dominated convergence,
+   closed via `IsCompact.bddAbove` on the compact `K × uIcc` together with a
+   `hK_nhd` `filter_upwards` giving `∀ᶠ x in 𝓝 x₀, ∀ᵐ t₀, ‖H(x,t₀)‖ ≤ M`.
 
-2. `iter_integral_swap_zero` (succ step, m'+2 case): Decompose swap(0,k) into
-   swap(k₀,k) * swap(0,k₀) * swap(k₀,k) using swap_mul_swap_mul_swap, then chain
-   three applications of the integral identity. The algebraic bookkeeping requires
-   careful type-checking of the composed permutations.
+2. `iter_integral_swap_zero` (succ step, m'+2 case): closed by decomposing
+   `swap(0,k)` into `swap(k₀,k) * swap(0,k₀) * swap(k₀,k)` via `swap_mul_swap_mul_swap`
+   and chaining three applications of the integral identity.
 
-**Impact**: Main theorem structure is now complete via `swap_induction_on`. Eliminates
-axiom once both remaining sorries are resolved.
+**Impact**: `iteratedIntervalIntegral_order_independent` is a real, sorry-free theorem
+via `swap_induction_on`. The `iteratedIntervalIntegral_order_independent` *axiom* that
+earlier drafts of the parent module `Proofs.GreensTheoremOQ01OQ01OQ01` used to defer the
+inductive proof has been removed there (it was unused locally once this real proof
+existed downstream), so the parent's `axiomCount` is 0. This resolves the open question
+`greens-theorem-oq-01-oq-01-oq-01-oq-01-oq-01` (axiom elimination).
 -/
 
 end GreensTheoremOQ01OQ01OQ01OQ01

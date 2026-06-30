@@ -23,7 +23,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorials n!",
+      "irrational and transcendental numbers",
+      "infinite series"
+    ]
   },
   {
     "id": "ann-68-factorialsum",
@@ -48,7 +52,11 @@
       "definition",
       "analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the infinite sum (tsum) notation",
+      "factorial growth",
+      "convergence of a series"
+    ]
   },
   {
     "id": "ann-68-summand",
@@ -72,7 +80,11 @@
       "factorial",
       "well-definedness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the general term of the series",
+      "positivity of terms",
+      "well-definedness"
+    ]
   },
   {
     "id": "ann-68-convergence",
@@ -97,7 +109,11 @@
       "analysis",
       "infinite-series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "summability of a series",
+      "the comparison test",
+      "terms tending to 0"
+    ]
   },
   {
     "id": "ann-68-weisenberg",
@@ -122,7 +138,11 @@
       "reformulation",
       "double-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric series",
+      "double sums and reindexing",
+      "reformulating a series identity"
+    ]
   },
   {
     "id": "ann-68-conjecture",
@@ -147,7 +167,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "irrational numbers",
+      "the value of the factorial sum",
+      "open irrationality conjectures"
+    ]
   },
   {
     "id": "ann-68-generalized",
@@ -172,7 +196,11 @@
       "parametric-family",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parametric families of series",
+      "transcendental numbers",
+      "generalizing the sum"
+    ]
   },
   {
     "id": "ann-68-special-case",
@@ -195,7 +223,11 @@
       "reduction",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the generalized factorial sum",
+      "reduction to a special case",
+      "known sub-results"
+    ]
   },
   {
     "id": "ann-68-explicit",
@@ -220,7 +252,11 @@
       "verification",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial sums of the series",
+      "numerical computation",
+      "verification of approximations"
+    ]
   },
   {
     "id": "ann-68-difficulty",
@@ -245,7 +281,11 @@
       "transcendence",
       "difficulty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the number e and its series",
+      "perturbation arguments",
+      "why irrationality proofs are hard"
+    ]
   },
   {
     "id": "ann-68-oeis",
@@ -270,7 +310,11 @@
       "constant",
       "reference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "numerical approximation of constants",
+      "the OEIS database",
+      "decimal expansions"
+    ]
   },
   {
     "id": "ann-68-transcendence",
@@ -295,7 +339,11 @@
       "number-hierarchy",
       "implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the rational/irrational/transcendental hierarchy",
+      "transcendence theory",
+      "irrationality vs transcendence"
+    ]
   },
   {
     "id": "ann-68-status",
@@ -320,6 +368,10 @@
       "status",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the factorial-sum irrationality conjecture",
+      "its formal statement",
+      "what remains open"
+    ]
   }
 ]

@@ -59,7 +59,7 @@
       "limitConstant definition: Erdos's follow-up question"
     ],
     "axiomCount": 2,
-    "lineCount": 274,
+    "lineCount": 286,
     "theoremCount": 6,
     "prerequisites": [
       "Combinatorial geometry: point-line incidences",
@@ -67,7 +67,7 @@
       "Counting arguments and exponential bounds",
       "Grid constructions in discrete geometry"
     ],
-    "assumptions": "2 axioms: lower_bound, upper_bound. 2 sorries.",
+    "assumptions": "2 axioms (lower_bound, upper_bound — the genuine Erdős exp(c√n) lower bound and Szemerédi–Trotter exp(C√n) upper bound) and 2 sorries (grid_gives_lower, limit_bounds). countLineCompatible is now defined as Nat.card of the line-compatible-sequence subtype (the real f(n)); the prior placeholder body (2^n−1) made upper_bound provably false, so the axiom set is now consistent.",
     "definitionCount": 6
   },
   "overview": {
@@ -186,7 +186,7 @@
       "Real"
     ],
     "namespace": "Erdos733",
-    "lineCount": 274,
+    "lineCount": 286,
     "axiomCount": 2,
     "theoremCount": 6,
     "definitionCount": 6,

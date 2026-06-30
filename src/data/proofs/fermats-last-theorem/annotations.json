@@ -21,7 +21,7 @@
     "proofId": "fermats-last-theorem",
     "range": {
       "startLine": 7,
-      "endLine": 44
+      "endLine": 45
     },
     "type": "insight",
     "title": "358 Years of History",
@@ -38,8 +38,8 @@
     "id": "ann-flt-statement",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 58,
-      "endLine": 61
+      "startLine": 59,
+      "endLine": 62
     },
     "type": "definition",
     "title": "FermatLastTheoremFor",
@@ -56,8 +56,8 @@
     "id": "ann-flt-frey",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 67,
-      "endLine": 77
+      "startLine": 68,
+      "endLine": 78
     },
     "type": "concept",
     "title": "The Frey Curve",
@@ -72,11 +72,32 @@
     ]
   },
   {
+    "id": "ann-flt-semistable",
+    "proofId": "fermats-last-theorem",
+    "range": {
+      "startLine": 85,
+      "endLine": 88
+    },
+    "type": "technique",
+    "title": "Semi-stability of Frey Curves",
+    "content": "An elliptic curve is **semi-stable** if at every prime of bad reduction, the reduction is multiplicative (nodes, not cusps). Frey curves are semi-stable, which is crucial because Wiles' modularity theorem applies specifically to semi-stable curves.",
+    "mathContext": "Semi-stability is a technical condition on how the curve reduces modulo primes. The Frey curve has multiplicative reduction at the primes dividing $abc$, and good reduction elsewhere.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-flt-frey"
+    ],
+    "relatedConcepts": [
+      "reduction",
+      "bad primes",
+      "Neron model"
+    ]
+  },
+  {
     "id": "ann-flt-modularity",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 89,
-      "endLine": 99
+      "startLine": 90,
+      "endLine": 100
     },
     "type": "insight",
     "title": "The Modularity Theorem",
@@ -91,11 +112,33 @@
     ]
   },
   {
+    "id": "ann-flt-ribet",
+    "proofId": "fermats-last-theorem",
+    "range": {
+      "startLine": 116,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Ribet's Theorem (The Epsilon Conjecture)",
+    "content": "**Ribet's Theorem (1986)**: If a Frey curve were modular, it would correspond to a cusp form of level 2. But there are no such forms! Therefore, Frey curves cannot be modular.",
+    "mathContext": "Ribet proved what Serre had conjectured: the \"level-lowering\" property of Galois representations forces the Frey curve's modular form to have impossibly low level. This was the missing link between Taniyama-Shimura and Fermat.",
+    "significance": "key",
+    "prerequisites": [
+      "ann-flt-frey",
+      "ann-flt-modularity"
+    ],
+    "relatedConcepts": [
+      "Galois representations",
+      "Serre",
+      "level lowering"
+    ]
+  },
+  {
     "id": "ann-flt-contradiction",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 135,
-      "endLine": 137
+      "startLine": 136,
+      "endLine": 138
     },
     "type": "insight",
     "title": "The Beautiful Contradiction",
@@ -115,8 +158,8 @@
     "id": "ann-flt-four",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 139,
-      "endLine": 142
+      "startLine": 140,
+      "endLine": 143
     },
     "type": "insight",
     "title": "Fermat's Case n = 4",
@@ -133,8 +176,8 @@
     "id": "ann-flt-three",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 151,
-      "endLine": 155
+      "startLine": 152,
+      "endLine": 156
     },
     "type": "insight",
     "title": "Euler's Case n = 3",
@@ -151,10 +194,10 @@
     "id": "ann-flt-reduction",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 157,
-      "endLine": 169
+      "startLine": 158,
+      "endLine": 170
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Reduction to Primes",
     "content": "If FLT holds for exponent $n$, it holds for all multiples of $n$. Why? If $a^{nm} + b^{nm} = c^{nm}$, then $(a^m)^n + (b^m)^n = (c^m)^n$, contradicting FLT for $n$.",
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
@@ -169,8 +212,8 @@
     "id": "ann-flt-full",
     "proofId": "fermats-last-theorem",
     "range": {
-      "startLine": 193,
-      "endLine": 195
+      "startLine": 194,
+      "endLine": 196
     },
     "type": "insight",
     "title": "The Full Theorem",

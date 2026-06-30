@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-11-wip-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "context",
+    "title": "Completing the Parent's Decidability Promise",
+    "content": "Erdős Problem #11 (open) asks whether every odd n > 1 is the sum of a squarefree number and a power of two. The parent file erdos-11-wip-01 built the bounded characterization isSquarefreePlusPow2_iff and called it 'decidable' but never registered the instance. This file closes that gap and records the two simplest structural consequences the characterization unlocks: an infinite sufficient family and the n = 1 boundary failure. Everything is machine-checked with 0 axioms — the trailing #print axioms commands confirm all three results depend only on the standard foundational axioms (propext, Classical.choice, Quot.sound), with no native_decide and no sorry, the conservative integrity reading for an entry attached to an open Erdős problem.",
+    "mathContext": "Erdős #11: is every odd $n>1$ of the form $s + 2^k$ with $s$ squarefree? (Open.)",
+    "significance": "context",
+    "relatedConcepts": ["Erdős Problem #11", "squarefree numbers", "powers of two", "decidability", "additive number theory"],
+    "prerequisites": ["squarefree integers", "the parent bounded characterization"]
+  },
+  {
+    "id": "ann-decidable-instance",
+    "proofId": "erdos-11-wip-01-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 41
+    },
+    "type": "technique",
+    "title": "Decidability via the Bounded Characterization",
+    "content": "decidableIsSquarefreePlusPow2 supplies the promised DecidablePred instance. The mechanism is decidable_of_iff applied to (isSquarefreePlusPow2_iff n).symm: an unbounded existential is in general undecidable, but the parent's equivalence rewrites it as a bounded search ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k) — a finite Finset.bExists whose body is the decidable Nat predicate Squarefree, so decidability transports across with no new computation. Honest caveat: kernel decide stays impractical because Squarefree routes through Nat.minSqFac, which the kernel does not reduce; the instance is logically valid and usable nonetheless — a clean separation of 'decidable in principle' from 'kernel-reducible'.",
+    "mathContext": "$\\text{IsSquarefreePlusPow2}\\,n \\iff \\exists k \\in [0,n],\\ 2^k \\le n \\wedge \\mathrm{Squarefree}(n - 2^k)$.",
+    "significance": "key",
+    "relatedConcepts": ["decidable_of_iff", "bounded existential", "DecidablePred", "kernel reduction"],
+    "prerequisites": ["decidability transport", "finite search", "Nat Squarefree instance"]
+  },
+  {
+    "id": "ann-sufficient-family",
+    "proofId": "erdos-11-wip-01-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 50
+    },
+    "type": "insight",
+    "title": "The k = 0 Sufficient Family",
+    "content": "works_of_pred_squarefree gives an infinite family of representable numbers with no search at all: if n ≥ 1 and n − 1 is squarefree, then n = (n − 1) + 2^0 already exhibits n as squarefree + a power of two. The proof instantiates the parent's squarefreePlusPow2_of_witness at the power of two 2^0 = 1, with 2^0 ≤ n from n ≥ 1 and n − 2^0 = n − 1 squarefree by hypothesis. Since squarefree numbers have positive density, this alone settles representability for a positive-density set of n.",
+    "mathContext": "$\\mathrm{Squarefree}(n-1) \\Rightarrow n = (n-1) + 2^0$ is squarefree $+$ a power of two.",
+    "significance": "key",
+    "relatedConcepts": ["squarefree density", "sufficient condition", "powers of two", "witness construction"],
+    "prerequisites": ["squarefree integers", "the parent witness lemma"]
+  },
+  {
+    "id": "ann-boundary",
+    "proofId": "erdos-11-wip-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 62
+    },
+    "type": "insight",
+    "title": "The n = 1 Boundary Fails — Why n > 1 Is Needed",
+    "content": "one_not_works proves 1 is NOT squarefree + a power of two, pinning down exactly why the conjecture restricts to n > 1. After rewriting by the iff, the only candidates are k ∈ {0, 1} (interval_cases on k ∈ range 2): k = 0 forces Squarefree (1 − 1) = Squarefree 0, excluded by not_squarefree_zero; k = 1 forces 2 ≤ 1, excluded by norm_num. The smallest power of two already exhausts the budget at n = 1 and drives the squarefree summand to the non-squarefree 0.",
+    "mathContext": "$k=0 \\Rightarrow \\mathrm{Squarefree}(0)$ (false); $k=1 \\Rightarrow 2 \\le 1$ (false); hence $1 \\neq s + 2^k$.",
+    "significance": "key",
+    "relatedConcepts": ["boundary case", "not_squarefree_zero", "interval_cases", "necessity of hypotheses"],
+    "prerequisites": ["case analysis on finite ranges", "Squarefree 0 is false"]
+  },
+  {
+    "id": "ann-roadmap",
+    "proofId": "erdos-11-wip-01-oq-01",
+    "range": {
+      "startLine": 11,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Three Contributions From One Characterization",
+    "content": "The docstring lays out the file's three deliverables, all flowing from the parent's bounded characterization: (1) the DecidablePred instance the parent only named; (2) works_of_pred_squarefree, the k = 0 sufficient family (n − 1 squarefree ⟹ n representable), infinitely many cases with no search; and (3) one_not_works, the n = 1 boundary failure showing the conjecture's n > 1 hypothesis is necessary. Together they convert a single equivalence into a usable decision procedure plus the first structural facts toward and around the open conjecture.",
+    "mathContext": "Decidability $\\;+\\;$ family $\\{n : \\mathrm{Squarefree}(n-1)\\}\\;+\\;$ boundary $n=1$ fails.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "sufficient family", "boundary case", "open conjecture"],
+    "prerequisites": ["the parent bounded characterization"]
+  }
+]

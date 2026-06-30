@@ -1,0 +1,205 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Incenter Is the Orthocenter of the Excentral Triangle",
+  "slug": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "description": "Direct proof of the dot-product fact cited but never proved by the circumradius-2R entry: the incenter I is the orthocenter of the excentral triangle IₐI_bI_c, so the four tritangent centers {I, Iₐ, I_b, I_c} form an orthocentric system. The three internal angle bisectors of ABC — the lines I Iₐ, I I_b, I I_c — are the three altitudes of the excentral triangle, i.e. each is perpendicular to the opposite excentral side: ⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0. Since all three altitudes pass through I, they concur there, which is exactly the orthocenter statement. The proof rests on a one-line vector identity: written over its common denominator, Iₐ−I = 2a·[b(B−A)+c(C−A)]/((−a+b+c)(a+b+c)) while the opposite side I_c−I_b = 2a·[b(B−A)−c(C−A)]/((a+b−c)(a−b+c)), so with u = b(B−A), v = c(C−A) the inner product is proportional to ⟨u+v, u−v⟩ = |u|² − |v|² = b²·|B−A|² − c²·|C−A|² = b²c² − c²b² = 0, using only the definitions |B−A|² = c² and |C−A|² = b². Answers the first open question of the circumradius-2R entry. 8 theorems (+ 13 supporting lemmas), 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01OQ01OQ01OQ01.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "incenter",
+      "excenter",
+      "excentral-triangle",
+      "orthocenter",
+      "orthocentric-system",
+      "angle-bisector",
+      "perpendicularity",
+      "nine-point-circle",
+      "barycentric",
+      "triangle-inequality",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, which do not count as assumptions). Uses only the coordinate API (Point, Triangle, incenter, excenter_a/b/c, side_a/b/c, area, triangle_345 with its side/incenter lemmas) from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom. The squared side lengths, side/area positivity and the strict triangle inequalities (declared private in the parent files) are reproved locally; everything else is closed by field_simp / ring / linear_combination / nlinarith and the real square-root lemma Real.sq_sqrt.",
+    "lineCount": 408,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "incenter_altitude_perp_a / _b / _c: the three perpendicularity identities ⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0 — each says the line from the incenter through one excenter is perpendicular to the opposite side of the excentral triangle, i.e. the internal angle bisectors of ABC are the altitudes of IₐI_bI_c",
+      "incenter_is_excentral_orthocenter: bundles the three perpendicularities — all three altitudes of the excentral triangle pass through I, so they concur there and I is the orthocenter of IₐI_bI_c; equivalently {I, Iₐ, I_b, I_c} is an orthocentric system",
+      "The clearing mechanism: ⟨Iₐ−I, I_c−I_b⟩ cleared over the four tritangent denominators collapses to 4a²(b²·|B−A|² − c²·|C−A|²), a pure rational identity, which then vanishes by the squared-side definitions |B−A|²=c², |C−A|²=b² — no deeper triangle geometry needed, the perpendicularity is forced by the side-length weights alone",
+      "triangle_345_excenter_a / _b / _c: the explicit excenter coordinates (6,6), (−3,3), (2,−2) of the 3-4-5 right triangle",
+      "triangle_345_orthocentric_system: worked example — with I=(1,1), Iₐ=(6,6), I_b=(−3,3), I_c=(2,−2), the three pairs of opposite connectors are mutually perpendicular, so I is the orthocenter of the excentral triangle"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The three excenters of a triangle — the centers of the circles tangent to one side and the extensions of the other two — are the vertices of the excentral triangle, and one of the most elegant classical facts about this configuration is that the original triangle's incenter I is its orthocenter. The reason is purely about angle bisectors: at each vertex the internal and external bisectors are perpendicular, and the line joining I to an excenter is an internal bisector while the opposite side of the excentral triangle lies along external bisectors. Hence the three lines I Iₐ, I I_b, I I_c are the altitudes of the excentral triangle, concurring at I. This makes {I, Iₐ, I_b, I_c} an orthocentric system: each of the four tritangent centers is the orthocenter of the triangle formed by the other three, and the four points share a single nine-point circle. The sibling circumradius-2R entry repeatedly asserts 'I is the orthocenter of the excentral triangle' to justify its nine-point-center identification but never proves it; this entry supplies the missing proof, directly answering that entry's first open question.",
+    "problemStatement": "For a non-degenerate triangle ABC with incenter I and excenters Iₐ, I_b, I_c, prove that the three lines joining I to the excenters are the altitudes of the excentral triangle IₐI_bI_c, i.e.\n$$\\langle I_a - I,\\ I_c - I_b\\rangle = \\langle I_b - I,\\ I_c - I_a\\rangle = \\langle I_c - I,\\ I_b - I_a\\rangle = 0,$$\nso all three altitudes concur at I and I is the orthocenter of the excentral triangle (and {I, Iₐ, I_b, I_c} is an orthocentric system).",
+    "text": "A 408-line companion file. It reproves the squared side lengths, the side/area positivity and the strict triangle inequalities (keeping the excenter denominators −a+b+c, a−b+c, a+b−c nonzero), then proves the three perpendicularity identities, bundles them into the orthocenter statement, and verifies the 3-4-5 worked example with explicit excenter coordinates.",
+    "proofStrategy": "Each perpendicularity is proved by clearing denominators to a clean weighted form and then collapsing it with the squared-side definitions.\n- **Clear the four tritangent denominators** (`hclear`): unfolding the incenter and excenter coordinate definitions and clearing the four denominators (−a+b+c)(a+b+c)(a+b−c)(a−b+c) turns the inner product ⟨Iₐ−I, I_c−I_b⟩·(denominator product) into 4a²(b²·|B−A|² − c²·|C−A|²). This is a pure rational identity (field_simp; ring) — no side-length facts are used yet.\n- **The one-line vector reason**: over its common denominator Iₐ−I is proportional to u+v and the opposite side I_c−I_b to u−v, with u = b(B−A), v = c(C−A); so the inner product is proportional to ⟨u+v, u−v⟩ = |u|² − |v|², which is the 4a²(b²|B−A|² − c²|C−A|²) above.\n- **Collapse with the squared sides** (`hzero`, `linear_combination`): substituting |B−A|² = c² and |C−A|² = b² (the definitions of the side lengths) makes b²|B−A|² − c²|C−A|² = b²c² − c²b² = 0.\n- **Cancel the nonzero denominator** (`mul_eq_zero` / `resolve_right`): the denominator product is nonzero by the strict triangle inequalities and positive perimeter, so the inner product itself is 0. The b- and c-altitudes are the cyclic images, using the side pairs (|A−B|²=c², |C−B|²=a²) and (|A−C|²=b², |B−C|²=a²).",
+    "keyInsights": [
+      "Perpendicularity is forced by the side-length weights alone: ⟨Iₐ−I, I_c−I_b⟩ collapses to 4a²(b²|B−A|² − c²|C−A|²), which is zero purely because the two cross terms are b²c² and c²b² — no angle-chasing, no circumcenter, just the definitions of the side lengths.",
+      "The internal/external-bisector picture made algebraic: Iₐ−I = 2a(u+v)/D₁ and I_c−I_b = 2a(u−v)/D₂ with u = b(B−A), v = c(C−A); the inner product ⟨u+v, u−v⟩ = |u|² − |v|² is the analytic shadow of the internal bisector being perpendicular to the opposite external-bisector chord.",
+      "Three perpendicularities, one orthocentric system: ⟨I−Iₐ, I_b−I_c⟩, ⟨I−I_b, Iₐ−I_c⟩, ⟨I−I_c, Iₐ−I_b⟩ are the three pairs of opposite connectors of the complete quadrangle {I, Iₐ, I_b, I_c}; their mutual perpendicularity is exactly the orthocentric-system condition, so every one of the four points is the orthocenter of the other three.",
+      "This is the dot-product fact underlying both halves of the tritangent picture — the affine centroid law I+Iₐ+I_b+I_c = 4O and the metric circumradius-2R law — and it is precisely the open question the circumradius-2R entry left unproved while relying on it to call O the excentral nine-point center.",
+      "The proof is self-contained on the bare coordinate definitions: no circumcenter, no master norm identity, no nine-point machinery — only the incenter/excenter weighted averages and |B−A|² = c²."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — the coordinate API (Point, Triangle, incenter, excenter_a/b/c, side_a/b/c, area) and the worked triangle_345 with its side and incenter lemmas",
+      "The squared side lengths a² = |BC|² etc. and the strict triangle inequalities a < b+c (keeping the excenter denominators nonzero), reproved here from the non-degeneracy determinant via a Lagrange identity",
+      "field_simp, ring, linear_combination, nlinarith and the real square-root lemma Real.sq_sqrt over ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 1,
+      "endLine": 113,
+      "summary": "Module docstring stating that the incenter is the orthocenter of the excentral triangle (the tritangent centers form an orthocentric system), with the one-line vector reason; imports only FeuerbachsTheoremDefs and opens FeuerbachsTheorem.",
+      "mathContext": "Self-contained on the base coordinate definitions: every analytic input is reproved locally, so the file depends only on FeuerbachsTheoremDefs."
+    },
+    {
+      "id": "positivity",
+      "title": "Part I: Squared Side Lengths and Positivity",
+      "startLine": 114,
+      "endLine": 178,
+      "summary": "Squared side lengths a² = |BC|² etc. (side_a_sq/b/c), positivity of each side, and positivity of the perimeter — the facts needed to use the side definitions and to keep the excenter denominators nonzero.",
+      "mathContext": "Each side is positive because the vertices are pairwise distinct (non-degeneracy); the squared-side identities drop the Real.sqrt via Real.sq_sqrt."
+    },
+    {
+      "id": "triangleineq",
+      "title": "Part II: The Strict Triangle Inequalities",
+      "startLine": 179,
+      "endLine": 268,
+      "summary": "strict_tri_ineq_a/b/c (a < b+c and cyclic) and pa_pos/pb_pos/pc_pos (positivity of the excenter denominators −a+b+c, a−b+c, a+b−c).",
+      "mathContext": "Via the law of cosines a² = b²+c²+2P and the Lagrange identity b²c² − P² = D² with D the non-degeneracy determinant; D ≠ 0 gives P < bc, hence a < b+c, so the excenter denominators are strictly positive."
+    },
+    {
+      "id": "altitudes",
+      "title": "Part III: The Three Altitudes Pass Through I",
+      "startLine": 269,
+      "endLine": 384,
+      "summary": "incenter_altitude_perp_a/b/c: ⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0. Each clears the four tritangent denominators into 4a²(b²|B−A|² − c²|C−A|²) (cyclically), then collapses it with the squared-side definitions and cancels the nonzero denominator product.",
+      "mathContext": "The line from the incenter through one excenter is an internal angle bisector; the opposite side of the excentral triangle lies along external bisectors; internal and external bisectors at a vertex are perpendicular, which the side-length weights enforce algebraically."
+    },
+    {
+      "id": "orthocenter",
+      "title": "Part IV: I Is the Orthocenter of the Excentral Triangle",
+      "startLine": 385,
+      "endLine": 399,
+      "summary": "incenter_is_excentral_orthocenter bundles the three perpendicularities: all three altitudes of the excentral triangle pass through the single point I, so they concur there and I is its orthocenter; equivalently {I, Iₐ, I_b, I_c} is an orthocentric system.",
+      "mathContext": "Concurrence of the three altitudes at one point is the definition of the orthocenter; that the common point is the incenter is exactly the orthocentric-system property of the four tritangent centers."
+    },
+    {
+      "id": "example",
+      "title": "Part V: Worked Example — the 3-4-5 Right Triangle",
+      "startLine": 400,
+      "endLine": 408,
+      "summary": "triangle_345_excenter_a/b/c give the excenter coordinates (6,6), (−3,3), (2,−2); triangle_345_orthocentric_system verifies the three perpendicularities for I=(1,1), confirming I is the orthocenter of the excentral triangle.",
+      "mathContext": "Instantiates the general perpendicularity at the integer-sided 3-4-5 triangle, where all side lengths and centers are rational so the dot products evaluate by norm_num."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves directly that the incenter I is the orthocenter of the excentral triangle IₐI_bI_c: the three lines joining I to the excenters are the altitudes of the excentral triangle, perpendicular to the opposite sides (⟨Iₐ−I, I_c−I_b⟩ = ⟨I_b−I, I_c−Iₐ⟩ = ⟨I_c−I, I_b−Iₐ⟩ = 0), so they concur at I and {I, Iₐ, I_b, I_c} is an orthocentric system. Answers the first open question of the circumradius-2R entry. 8 theorems (plus 13 supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**The dot-product foundation of the tritangent picture**: this perpendicularity fact is the geometric reason behind both the affine centroid law I+Iₐ+I_b+I_c = 4O and the metric circumradius-2R law O' = 2O−I; the sibling entries cite 'I is the excentral orthocenter' to call O the nine-point center, and this entry finally proves it.\n\n**Orthocentric system as gallery infrastructure**: the three perpendicularity identities (and their bundle) are reusable across the triangle-geometry strand wherever the orthocentric structure of the tritangent centers is needed — for instance to identify the excentral nine-point circle with the circumcircle of ABC.\n\n**A bisector-only proof technique**: the clearing-to-|u|²−|v|² mechanism shows that internal/external-bisector perpendicularity is forced by the side-length weights alone, a method that transfers to other angle-bisector configurations in the same coordinate framework.",
+    "openQuestions": [
+      "Show that each excenter is the orthocenter of the triangle formed by the incenter and the other two excenters (e.g. ⟨I−Iₐ, I_b−I_c⟩ = 0 read from Iₐ's vertex), making the full orthocentric-system symmetry of {I, Iₐ, I_b, I_c} explicit rather than implicit in the three shared perpendicularities.",
+      "Combine this orthocenter fact with the circumradius-2R entry to prove the excentral nine-point circle is the circumcircle of ABC as a circle-tangency statement, closing the loop toward the Feuerbach tangency of the nine-point circle to the incircle and excircles."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "the metric law that O' = 2O − I is the excentral circumcenter (circumradius 2R) and O = ½(I + O') the excentral nine-point center; this entry proves the dot-product fact 'I is the excentral orthocenter' that that entry asserts but leaves as its first open question"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "the affine centroid law I + Iₐ + I_b + I_c = 4O; together with the orthocentric-system perpendicularities proved here, the four tritangent centers share a common nine-point circle centered at O"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-02-oq-01",
+      "relationship": "related",
+      "description": "the excenter Euler law OIₐ² = R² + 2Rrₐ; the same excenters whose mutual perpendicular structure this entry establishes"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "uses the incenter, excenters, side lengths and area defined in FeuerbachsTheoremDefs.lean and the worked triangle_345 with its side and incenter lemmas"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers form the excentral triangle studied here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Proofs.FeuerbachsTheoremDefs"
+    ],
+    "opens": [
+      "FeuerbachsTheorem"
+    ],
+    "namespace": "FeuerbachExcentralOrthocenter",
+    "lineCount": 408,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "incenter_is_excentral_orthocenter",
+      "type": "core",
+      "description": "The incenter is the orthocenter of the excentral triangle: all three altitudes of IₐI_bI_c — each perpendicular from a vertex to the opposite side — pass through I, so they concur there and {I, Iₐ, I_b, I_c} is an orthocentric system.",
+      "leanType": "∀ T : Triangle, (T.excenter_a.1 - T.incenter.1) * (T.excenter_c.1 - T.excenter_b.1) + (T.excenter_a.2 - T.incenter.2) * (T.excenter_c.2 - T.excenter_b.2) = 0 ∧ (T.excenter_b.1 - T.incenter.1) * (T.excenter_c.1 - T.excenter_a.1) + (T.excenter_b.2 - T.incenter.2) * (T.excenter_c.2 - T.excenter_a.2) = 0 ∧ (T.excenter_c.1 - T.incenter.1) * (T.excenter_b.1 - T.excenter_a.1) + (T.excenter_c.2 - T.incenter.2) * (T.excenter_b.2 - T.excenter_a.2) = 0"
+    },
+    {
+      "name": "incenter_altitude_perp_a",
+      "type": "core",
+      "description": "The A-altitude of the excentral triangle passes through I: the line I Iₐ (internal bisector from A) is perpendicular to the opposite side I_b I_c, i.e. ⟨Iₐ − I, I_c − I_b⟩ = 0.",
+      "leanType": "∀ T : Triangle, (T.excenter_a.1 - T.incenter.1) * (T.excenter_c.1 - T.excenter_b.1) + (T.excenter_a.2 - T.incenter.2) * (T.excenter_c.2 - T.excenter_b.2) = 0"
+    },
+    {
+      "name": "incenter_altitude_perp_b",
+      "type": "core",
+      "description": "The B-altitude of the excentral triangle passes through I: the line I I_b is perpendicular to the opposite side Iₐ I_c, i.e. ⟨I_b − I, I_c − Iₐ⟩ = 0.",
+      "leanType": "∀ T : Triangle, (T.excenter_b.1 - T.incenter.1) * (T.excenter_c.1 - T.excenter_a.1) + (T.excenter_b.2 - T.incenter.2) * (T.excenter_c.2 - T.excenter_a.2) = 0"
+    },
+    {
+      "name": "incenter_altitude_perp_c",
+      "type": "core",
+      "description": "The C-altitude of the excentral triangle passes through I: the line I I_c is perpendicular to the opposite side Iₐ I_b, i.e. ⟨I_c − I, I_b − Iₐ⟩ = 0.",
+      "leanType": "∀ T : Triangle, (T.excenter_c.1 - T.incenter.1) * (T.excenter_b.1 - T.excenter_a.1) + (T.excenter_c.2 - T.incenter.2) * (T.excenter_b.2 - T.excenter_a.2) = 0"
+    },
+    {
+      "name": "triangle_345_orthocentric_system",
+      "type": "example",
+      "description": "Worked example: for the 3-4-5 right triangle with I=(1,1), Iₐ=(6,6), I_b=(−3,3), I_c=(2,−2), the three pairs of opposite connectors are mutually perpendicular, so I is the orthocenter of the excentral triangle.",
+      "leanType": "(triangle_345.excenter_a.1 - triangle_345.incenter.1) * (triangle_345.excenter_c.1 - triangle_345.excenter_b.1) + (triangle_345.excenter_a.2 - triangle_345.incenter.2) * (triangle_345.excenter_c.2 - triangle_345.excenter_b.2) = 0 ∧ … ∧ …"
+    },
+    {
+      "name": "triangle_345_excenter_a",
+      "type": "example",
+      "description": "The A-excenter of the 3-4-5 right triangle is (6, 6).",
+      "leanType": "triangle_345.excenter_a = (6, 6)"
+    }
+  ],
+  "sorries": 0
+}

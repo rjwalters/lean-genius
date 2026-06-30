@@ -15,6 +15,154 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-06-28 (Session 7) — orphan BUILD-VERIFIED; pointwise sorry decomposed into a pure arithmetic core
+
+**Mode**: REVISIT (researcher-2). **Outcome**: real verified progress on the *orphan*
+(`Erdos671EquidistantOrphan.lean`); the registered gallery file is unchanged
+(still axiomatized: 3 axioms + 7 sorries).
+
+- **The session-6 orphan never compiled.** This was the first session to actually
+  build it (Docker up, load ≈ 11, Mathlib oleans cached → fast incremental build).
+  Two genuine errors surfaced: (1) `div_le_iff` was REMOVED in Mathlib v4.26.0
+  (→ `div_le_iff₀`); (2) a `linarith` in `midPoint_mem` lacked the real cast
+  `(2:ℝ) ≤ n` of `hn : n ≥ 2`. Both fixed → file now BUILD-VERIFIED.
+- **Decomposed the single monolithic pointwise sorry into proved lemmas** (all
+  build-verified) + ONE residual sorry:
+  - `lagrangeBasis_eval` : `p_i(x) = ∏_{j≠i} (x-a_j)/(a_i-a_j)` — eval via
+    `Polynomial.eval_prod` + `eval_mul/eval_C/eval_sub/eval_X` + `ring`.
+  - `abs_lagrangeBasis_eval` : abs distributes via `Finset.abs_prod` + `abs_div`.
+  - `lebesgueFunction_ge_single` : `λ_n(x) ≥ |p_i(x)|` via `Finset.single_le_sum`
+    (must pass `f := ...` explicitly — inference fails otherwise).
+  - `midPoint_sub_node` : `x* - x_j = (1-2j)/(n-1)` (rfl on the projection + `ring`).
+  - `node_sub_node` : `x_i - x_j = 2(i-j)/(n-1)`.
+- **Residual sorry is now pure finite real arithmetic**:
+  `∃ m : Fin n, 2^(n-1)/n^2 ≤ |p_m(x*)|`, equivalently the factorial inequality
+  `(2n-3)!! / (|2m-1| · 2^(n-1) · m! · (n-1-m)!) ≥ 2^(n-1)/n^2` at central
+  `m ≈ ⌊(n-2)/2⌋`. No polynomials/analysis remain — ideal for Aristotle
+  `prove_file` or a manual double-factorial induction.
+- **Aristotle still DOWN** (smoke test → HTTP 404 on `/api/v1/project`), so the
+  residual sorry could not be submitted this session.
+
+### Lean gotchas recorded
+- `div_le_iff` → `div_le_iff₀` (removed, not just deprecated, in v4.26.0).
+  `div_le_one` still works.
+- `Finset.single_le_sum` needs `(f := fun k => ...)` when the summand is `|g k|`;
+  otherwise the nonneg side condition can't unify `f`.
+- Structure-field projection `(equidistantNodes n hn).points j` reduces by `rfl`
+  to its definitional lambda value — handy for `midPoint_sub_node`/`node_sub_node`.
+
+## Session 2026-06-26 (Session 6) — orphan scaffold for the pointwise core; Aristotle backend down
+
+**Mode**: REVISIT. **Outcome**: no sorries eliminated; one piece of reusable groundwork.
+
+- **Aristotle DOWN**: `prove_file` and the MCP smoke test both return HTTP 404
+  (`aristotle.harmonic.fun/api/v1/project`). The sanctioned `prove_file` route for
+  `equidistant_diverges` is unavailable this session.
+- **Build declined**: load avg ≈ 47, many concurrent peer builds — would contend.
+- Created `proofs/Proofs/Erdos671EquidistantOrphan.lean` (UNREGISTERED, not imported
+  by the `Proofs.lean` aggregator → zero gallery/build risk). It isolates the
+  **pointwise** core of `equidistant_diverges` as one sorry:
+  `lebesgueFunction (equidistantNodes n hn) (-1 + 1/(n-1)) ≥ 2^(n-1)/n^2`.
+  This deliberately drops the supremum/`BddAbove` step (handled separately by
+  lower-bounding the constant at any admissible point) so the residual goal is a
+  pure finite product/factorial inequality — the cleanest target for `prove_file`
+  or a manual factorial induction. Numerics already confirm the bound for n=2..25
+  with dominant central index m ≈ ⌊(n-2)/2⌋ (see verify-equidistant-bound.py).
+- Exact closed form recorded for the induction: at x* = -1 + 1/(n-1),
+  `|p_i(x*)| = (∏_{k≠i}|2k-1|) / (2^(n-1) · i! · (n-1-i)!)`, with
+  `∏_{k=0}^{n-1}|2k-1| = (2n-3)!!`; pick i = m to clear the bound.
+
+## Session 2026-06-25 (Session 5) — numerical confirmation of `equidistant_diverges` + dominant-index refinement
+
+**Mode**: REVISIT (no Lean changes; local build unavailable — Docker down + olean header mismatch vs prebuilt cache, so NO Lean verification possible this session).
+**Outcome**: no sorries eliminated, but the one tractable sorry is de-risked.
+
+Added `verify-equidistant-bound.py` (numpy). For equidistant nodes on [-1,1], computed
+the Lebesgue constant Λ_n by fine sampling and compared to the target `2^(n-1)/n²`:
+
+- **The bound HOLDS for all n = 2..25** — so `equidistant_diverges` is a TRUE statement
+  (worth confirming before investing ~300 lines proving it; cf. the erdos-895 case where
+  a sorry turned out FALSE).
+- At the roadmap point `x* = -1 + h/2` (h = 2/(n-1)), `λ_n(x*)` already exceeds
+  `2^(n-1)/n²` and grows exponentially, confirming step-3's single-point lower-bound plan.
+- **Refinement**: the dominant Lagrange basis index at `x*` is `≈ ⌊(n-2)/2⌋ = n/2 − 1`
+  (numerically: n=18→8, n=20→9, n=24→11), NOT `⌊n/2⌋` as written below. This matches the
+  earlier "crossing near i ≈ (n-2)/2" analysis; use `m = ⌊(n-2)/2⌋` (or `(n-1)/2` for odd n)
+  in the factorial lower bound. Picking the wrong m by one weakens the constant.
+
+Recommendation unchanged: implement step 3 in an UNREGISTERED orphan file and build it
+when Docker is available; do not push unverifiable edits to the registered file.
+
+## Session 2026-06-16 (Session 4) — Triage of remaining 7 sorries + concrete decomposition of `equidistant_diverges`
+
+**Mode**: REVISIT (assessment; no Lean changes pushed)
+**Outcome**: no sorries eliminated. The routine content was already harvested in sessions 1–3
+(23 → 7 sorries). This session classifies the remaining 7 and works out an accurate,
+verified-by-hand roadmap for the single tractable one.
+
+### Environment note
+- Docker daemon **up** but host heavily contended: load avg ≈ 26, 11 concurrent
+  `docker-build.sh Proofs.*` peers. A fresh build would contend / risk timeout.
+- Aristotle MCP (`prove`) reachable, but useless here: the open sorries are not
+  isolated lemmas — they need infrastructure absent from Mathlib (Baire category on
+  C[-1,1], extremal-polynomial integral estimates, a.e.-divergence measure theory).
+- No Mathlib source cached locally (no `proofs/.lake/packages`), so API names could
+  not be grep-verified — another reason no Lean was pushed to the registered file.
+
+### Classification of the 7 remaining sorries
+
+**INFRASTRUCTURE-BLOCKED (research-grade; each ≈ a paper to formalize, needs Mathlib that does not exist):**
+- `bernstein` (1931) — uniform boundedness / Baire category on C[-1,1].
+- `lebesgueConstant_growth` (Λ_n ≥ (2/π)ln n − 1) — integral estimate against an extremal polynomial.
+- `erdos_vertesi` (1980) — a.e. divergence; generic-divergence Baire argument + measure theory.
+- `faber` (1914) — Baire category (no node sequence works for all of C[-1,1]).
+- `positive_measure_divergence`, `full_measure_convergence` — measure theory on divergence/convergence sets.
+
+**TRACTABLE-BUT-LARGE (a hard *finite* computation, NOT missing infrastructure):**
+- `equidistant_diverges`: `lebesgueConstant (equidistantNodes n hn) ≥ 2^(n-1) / n^2`.
+
+### Concrete decomposition of `equidistant_diverges` (verified by hand)
+
+Equidistant nodes on [-1,1]: `x_k = -1 + 2k/(n-1)`, spacing `h = 2/(n-1)`.
+
+Two-step reduction (both steps are clean, the hard part is step 3):
+1. `lebesgueConstant pts ≥ lebesgueFunction pts x*` for any chosen `x* ∈ [-1,1]`
+   (sup lower bound; needs `BddAbove` of the image, from continuity of `lebesgueFunction`
+   on compact `Icc` — `IsCompact.bddAbove_image` + `le_ciSup`-style; NOT `le_iSup`, ℝ is
+   only conditionally complete).
+2. `lebesgueFunction pts x* = Σ_i |p_i(x*)| ≥ |p_{i₀}(x*)|` for any single index `i₀`.
+3. Pick `x* = -1 + h/2` (midpoint of the first subinterval). Then with fractional index t = ½:
+   `|p_i(x*)| = ∏_{k≠i} |½ - k| / |i - k| = P / ( |½ - i| · i! · (n-1-i)! )`,
+   where `P = ∏_{k=0}^{n-1} |½ - k| = ½ · (2n-3)!! / 2^{n-1}`.
+
+   **KEY (corrected) FACT — the dominant term is the CENTRAL node, not an endpoint one.**
+   The denominator `D_i = |½ - i| · i! · (n-1-i)!` is minimized at `i ≈ n/2`: the ratio
+   `D_{i+1}/D_i = ((i+½)/(i-½)) · (i+1)/(n-1-i)` crosses 1 near `i ≈ (n-2)/2`. So the
+   exponentially-growing basis polynomial is `p_{⌊n/2⌋}(x*)`, and `((n/2)!)²` in its
+   denominator against `(2n-3)!!` in `P` produces the `~2^n` growth.
+
+   Sanity check at n=4 (x*=-2/3): P=15/16, giving p₀=5/16, p₁=15/16, p₂=5/16, p₃=1/16,
+   λ₄≈1.625 ≥ 2³/4² = 0.5 ✓. (Exponential separation only shows for larger n; the
+   target 2^(n-1)/n² is a comfortably *weak* bound vs. the true ~2^n/(n log n).)
+
+   **DEAD END to avoid**: do NOT try to make an *endpoint*/index-0 or index-1 basis
+   polynomial carry the bound — those grow only polynomially (`p_1 ~ √(n/π)`). The bound
+   must be carried by the central index `⌊n/2⌋`.
+
+   Remaining Lean work for step 3: bound `(2n-3)!! / ( |½ - m| · m! · (n-1-m)! )` from
+   below by `2^(n-1)/n^2` (m = ⌊n/2⌋). Pure finite product/factorial inequality —
+   no analysis. Estimated 200–400 lines; candidate for `prove_file` once written, or a
+   careful manual induction. This is the highest-value next target on this entry.
+
+### Recommendation
+Entry is effectively BLOCKED for fully-autonomous progress: 6 of 7 sorries need
+Mathlib infrastructure that does not exist. `equidistant_diverges` is the only
+self-contained target and is a substantial finite estimate. Future sessions should
+either (a) implement step 3 above in an UNREGISTERED orphan file (zero gallery risk)
+and build it when Docker is uncontended, or (b) leave the entry as a well-documented
+axiomatized open problem. No Lean was changed this session to avoid pushing
+unverifiable edits to the gateless registered file under load.
+
 ## Session 2026-05-04 (Session 3) — Partition of unity + type refactoring
 
 **Mode**: REVISIT (continued from session 2)

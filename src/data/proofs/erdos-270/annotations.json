@@ -16,7 +16,11 @@
       "Series",
       "Number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational And Irrational Numbers",
+      "Infinite Series",
+      "Erdős Problems"
+    ]
   },
   {
     "id": "ann-e270-rising-product",
@@ -34,7 +38,11 @@
       "Pochhammer symbol"
     ],
     "mathContext": "See the content field for the mathematical context of this annotation.",
-    "prerequisites": []
+    "prerequisites": [
+      "Factorials",
+      "Finite Products",
+      "Pochhammer Symbol"
+    ]
   },
   {
     "id": "ann-e270-series",
@@ -52,7 +60,11 @@
       "Convergence"
     ],
     "mathContext": "See annotation content for formal details of the series",
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Series",
+      "Series Convergence",
+      "Reciprocal Terms"
+    ]
   },
   {
     "id": "ann-e270-tends-infinity",
@@ -70,7 +82,11 @@
       "Asymptotics"
     ],
     "mathContext": "See annotation content for formal details of limit condition",
-    "prerequisites": []
+    "prerequisites": [
+      "Limits Of Sequences",
+      "Divergence To Infinity",
+      "Eventually Properties"
+    ]
   },
   {
     "id": "ann-e270-conjecture",
@@ -88,7 +104,11 @@
       "Irrationality"
     ],
     "mathContext": "See annotation content for formal details of the original conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality",
+      "Monotone Functions",
+      "Mathematical Conjectures"
+    ]
   },
   {
     "id": "ann-e270-crmaric-kovac",
@@ -107,7 +127,11 @@
       "Construction",
       "Any value achievable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Constructive Existence Proof",
+      "Positive Real Numbers",
+      "Series Value"
+    ]
   },
   {
     "id": "ann-e270-disproved",
@@ -125,7 +149,11 @@
       "Contradiction"
     ],
     "mathContext": "See annotation content for formal details of conjecture disproved",
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Contradiction",
+      "Logical Negation",
+      "Counterexample"
+    ]
   },
   {
     "id": "ann-e270-central-binomial",
@@ -143,7 +171,11 @@
       "Special functions"
     ],
     "mathContext": "See annotation content for formal details of central binomial coefficients",
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Factorials",
+      "Closed-Form Expression"
+    ]
   },
   {
     "id": "ann-e270-hansen",
@@ -162,7 +194,11 @@
       "π",
       "Closed forms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Transcendental Numbers",
+      "Closed-Form Sum",
+      "The Constant Pi"
+    ]
   },
   {
     "id": "ann-e270-nondecreasing",
@@ -181,7 +217,11 @@
       "Measure theory"
     ],
     "mathContext": "See annotation content for formal details of non-decreasing case (open)",
-    "prerequisites": []
+    "prerequisites": [
+      "Monotone Functions",
+      "Lebesgue Measure Zero",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e270-convergence",
@@ -199,7 +239,11 @@
       "Comparison test"
     ],
     "mathContext": "See annotation content for formal details of convergence",
-    "prerequisites": []
+    "prerequisites": [
+      "Comparison Test",
+      "Basel Problem Series",
+      "Asymptotic Bounds"
+    ]
   },
   {
     "id": "ann-e270-summary",
@@ -218,6 +262,10 @@
       "Open problem"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Irrationality",
+      "Transcendental Numbers",
+      "Open Problems"
+    ]
   }
 ]

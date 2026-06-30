@@ -21,6 +21,7 @@ then A has lower density 0 (proved) and density 0 (conjectured), and Σ 1/aₙ c
 import Mathlib.Algebra.BigOperators.Group.Finset
 import Mathlib.Order.Filter.Basic
 import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Tactic
 
 open Filter Asymptotics Real
@@ -80,6 +81,31 @@ Since g(n) = Θ(n) (Hegyvári 1986), the strict monotonicity constraint is essen
 -/
 def Erdos357Conjecture : Prop :=
   (fun n ↦ (f n : ℝ)) =o[atTop] (fun n ↦ (n : ℝ))
+
+/--
+**Alternative formulation**: f(n)/n → 0 as n → ∞.
+
+The ratio formulation is often more convenient to work with than the little-o
+form, e.g. when transferring density statements.
+-/
+def Erdos357ConjectureAlt : Prop :=
+  Tendsto (fun n ↦ (f n : ℝ) / n) atTop (𝓝 0)
+
+/--
+The little-o formulation and the ratio-limit formulation of the main conjecture
+are equivalent.
+
+This is `Asymptotics.isLittleO_iff_tendsto'`: for `f =o[l] g`, the side condition
+`g x = 0 → f x = 0` only needs to hold eventually, and along `atTop` the
+denominator `n` is eventually nonzero, so the implication is vacuous there.
+-/
+theorem conjecture_equiv : Erdos357Conjecture ↔ Erdos357ConjectureAlt := by
+  unfold Erdos357Conjecture Erdos357ConjectureAlt
+  have hgf : ∀ᶠ n : ℕ in atTop, (n : ℝ) = 0 → (f n : ℝ) = 0 := by
+    filter_upwards [eventually_gt_atTop 0] with n hn h0
+    rw [Nat.cast_eq_zero] at h0
+    omega
+  exact isLittleO_iff_tendsto' hgf
 
 /- ## Known Results (Axiomatized) -/
 

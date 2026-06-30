@@ -16,7 +16,11 @@
       "quasi-progression",
       "combinatorial-cube"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "open problems in mathematics"
+    ]
   },
   {
     "id": "ann-782-squares",
@@ -34,7 +38,11 @@
       "perfect-square",
       "sparse-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "set theory notation",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-782-ap",
@@ -52,7 +60,11 @@
       "arithmetic-progression",
       "fermat"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Diophantine equations",
+      "infinite descent"
+    ]
   },
   {
     "id": "ann-782-quasi",
@@ -70,7 +82,11 @@
       "quasi-progression",
       "bounded-gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "additive combinatorics",
+      "sequences and bounded gaps"
+    ]
   },
   {
     "id": "ann-782-cubes",
@@ -79,7 +95,7 @@
       "startLine": 111,
       "endLine": 127
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Combinatorial Cubes",
     "content": "CubeVertices(k, a, b) := {a + sum_{i in I} b_i : I subset {1..k}}. ContainsCube(S, k) := S contains non-trivial k-cube.",
     "mathContext": "k-cube has 2^k vertices. Generalizes APs: a 1-cube is 2 points, like an AP of length 2.",
@@ -88,7 +104,11 @@
       "combinatorial-cube",
       "boolean-lattice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "Boolean lattice",
+      "set theory"
+    ]
   },
   {
     "id": "ann-782-question2",
@@ -97,7 +117,7 @@
       "startLine": 125,
       "endLine": 130
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Question 2",
     "content": "Question2 := for all k, squares contain a k-cube. 2-cube: {a, a+b1, a+b2, a+b1+b2} all squares.",
     "mathContext": "Harder than Q1 since Q1 implies Q2. Finding 4 squares forming a 2-cube is already constrained.",
@@ -106,7 +126,11 @@
       "cube-in-squares",
       "four-squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Diophantine equations",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-782-implication",
@@ -124,7 +148,11 @@
       "implication",
       "ramsey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Ramsey theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-782-solymosi",
@@ -142,7 +170,11 @@
       "solymosi",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "conjectures and open problems",
+      "logical negation"
+    ]
   },
   {
     "id": "ann-782-bombieri",
@@ -161,7 +193,11 @@
       "algebraic-geometry",
       "conditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "algebraic geometry",
+      "Diophantine geometry",
+      "number theory"
+    ]
   },
   {
     "id": "ann-782-small",
@@ -179,7 +215,11 @@
       "small-cases",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "finite computation",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-782-density",
@@ -198,7 +238,11 @@
       "counting",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "analytic number theory",
+      "counting arguments"
+    ]
   },
   {
     "id": "ann-782-status",
@@ -217,6 +261,10 @@
       "number-theory",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "algebraic geometry",
+      "open problems in mathematics"
+    ]
   }
 ]

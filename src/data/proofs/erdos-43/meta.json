@@ -113,11 +113,11 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Dependencies",
-      "startLine": 14,
+      "title": "Module Header and Imports",
+      "startLine": 1,
       "endLine": 21,
-      "summary": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation.",
-      "mathContext": "Imports `Finset` for finite set operations, `Int.Basic` for $\\mathbb{Z}$ (difference sets $A - A \\subseteq \\mathbb{Z}$), `Real.Sqrt` for the $f(N) \\sim \\sqrt{N}$ asymptotic, and `Tactic` for proof automation."
+      "summary": "Module docstring stating Erdős Problem #43 (\\$100 bounty, OPEN): for Sidon sets $A, B \\subseteq \\{1,\\ldots,N\\}$ with disjoint nonzero differences $(A-A)\\cap(B-B)=\\{0\\}$, must $\\binom{|A|}{2}+\\binom{|B|}{2} \\le \\binom{f(N)}{2}+O(1)$, where $f(N)$ is the maximum Sidon-set size? Notes Tao’s equal-size bound $|A| \\le (1/\\sqrt2+o(1))\\sqrt N$ and Barreto’s refutation of the $-c$ strengthening. Imports `Finset`, `Int.Basic` ($\\mathbb{Z}$ for difference sets), `Real.Sqrt` (for $f(N)\\sim\\sqrt N$), and `Tactic`.",
+      "mathContext": "Module docstring for Erdős #43 plus imports (`Finset`, `Int`, `Real.Sqrt`, `Tactic`)."
     },
     {
       "id": "sidon-sets",
@@ -163,25 +163,25 @@
       "id": "bounds",
       "title": "Structural Pair Bounds",
       "startLine": 77,
-      "endLine": 97,
+      "endLine": 189,
       "summary": "`sidon_pair_bound`: $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound`: $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts.",
       "mathContext": "`sidon_pair_bound`: $\\binom{|A|}{2} \\le N$ from counting $|A|(|A|-1)$ distinct differences in $\\{-(N-1),\\ldots,N-1\\}$. `disjoint_diff_combined_bound`: $\\binom{|A|}{2} + \\binom{|B|}{2} \\le N$ using disjointness to combine difference counts."
     },
     {
       "id": "tao",
       "title": "Tao's Equal-Size Bound",
-      "startLine": 98,
-      "endLine": 116,
+      "startLine": 190,
+      "endLine": 222,
       "summary": "`tao_equal_size_bound`: when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$.",
       "mathContext": "`tao_equal_size_bound`: when $|A| = |B| = m$ with disjoint differences, $m^2 \\le 2N + 1$, giving $m \\le (1/\\sqrt{2} + o(1))\\sqrt{N} \\approx 0.707\\sqrt{N}$. Derived from `disjoint_diff_combined_bound` via $2\\binom{m}{2} \\le N$."
     },
     {
       "id": "counting",
       "title": "Counting Arguments",
-      "startLine": 117,
-      "endLine": 129,
-      "summary": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences.",
-      "mathContext": "`sidon_diff_count` (sorry): $|A - A| = |A|^2 - |A| + 1$ for Sidon sets ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total` (sorry): inclusion-exclusion gives $|A-A \\cup B-B| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences."
+      "startLine": 223,
+      "endLine": 312,
+      "summary": "`sidon_diff_injective`: the nonzero-difference map is injective on a Sidon set (if $a_1 - b_1 = a_2 - b_2$ with $a_1 \\ne b_1$ then $a_1 = a_2$ and $b_1 = b_2$) — the workhorse used by the earlier bounds. `sidon_diff_count`: $|A - A| = |A|^2 - |A| + 1$ ($|A|(|A|-1)$ distinct nonzero differences plus $0$). `disjoint_diff_total`: inclusion–exclusion gives $|(A-A)\\cup(B-B)| \\ge |A|^2 + |B|^2 - |A| - |B| + 1$ under disjoint differences. All three are fully proved (no `sorry`).",
+      "mathContext": "`sidon_diff_injective`, `sidon_diff_count` ($|A-A| = |A|^2-|A|+1$), and `disjoint_diff_total` (inclusion–exclusion lower bound), all proved."
     }
   ],
   "conclusion": {

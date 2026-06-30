@@ -7,14 +7,14 @@
       "endLine": 60
     },
     "type": "concept",
-    "title": "Module Overview: 3→1 Sorry Reduction for Sigma-Finite Lp Riesz",
-    "content": "The module preamble was written at Session 1, when only Step C had been proved (reducing 3 sorries to 2). Session 2 subsequently proved Step B (lp_truncation_tendsto_zero via Vitali's theorem), reducing the total to 1 sorry. The current state is: Step A (localization_existence, ~150 lines) is the sole remaining sorry; Steps B and C are both fully proved. The key architectural claim in the preamble remains valid: IsFiniteMeasure was superfluous for Step C because Lp.induction and Hölder's inequality both hold for SigmaFinite μ. The preamble's 2-sorry count is stale but its mathematical substance is correct.",
+    "title": "Module Overview: Sigma-Finite Lp Riesz (All Three Steps Proved)",
+    "content": "The sigma-finite Riesz theorem is established here with all three steps proved and no remaining sorries. The development reached this state incrementally: Session 1 proved Step C, Session 2 proved Step B (lp_truncation_tendsto_zero), and Step A (localization_existence) was completed in PR #15581 — closing the final gap. The key architectural claim is confirmed: IsFiniteMeasure was superfluous for Step C because Lp.induction and Hölder's inequality both hold for SigmaFinite μ. The module is now sorry-free and axiom-free.",
     "mathContext": "The three steps of the sigma-finite Riesz theorem: (A) localize via sigma-finite exhaustion to construct $g \\in L^q$; (B) prove $\\|f \\cdot \\mathbf{1}_{S_n} - f\\|_{L^p} \\to 0$; (C) extend indicator agreement to all $f \\in L^p$ via density.",
     "significance": "supporting",
     "relatedConcepts": [
       "Riesz representation theorem",
       "sigma-finite measures",
-      "3→1 sorry reduction",
+      "incremental sorry elimination",
       "IsFiniteMeasure vs SigmaFinite"
     ],
     "prerequisites": [
@@ -151,8 +151,8 @@
       "endLine": 305
     },
     "type": "concept",
-    "title": "Step A (HARD sorry): Localization — Constructing g ∈ Lq via Spanning Sets",
-    "content": "localization_existence is the deepest sorry (≈150 lines): given a CLM φ on Lp(μ) for sigma-finite μ, construct g ∈ Lq(μ) such that φ(1_E) = ∫_E g for all measurable E with μ(E) < ∞. The classical proof (Folland §6.2, Theorem 6.15) restricts μ to each spanning set Sₙ, applies the finite-measure Riesz theorem to get gₙ ∈ Lq(μ.restrict Sₙ), then glues via monotone convergence. This requires an Lp restriction map Lp(μ) → Lp(μ.restrict S) — a genuine Lean infrastructure gap. The construction must be careful: gₙ must agree on overlapping sets, requiring gₙ₊₁|_{Sₙ} = gₙ.",
+    "title": "Step A (Proved): Localization — Constructing g ∈ Lq via Spanning Sets",
+    "content": "localization_existence is the deepest step (≈150 lines), proved in PR #15581: given a CLM φ on Lp(μ) for sigma-finite μ, it constructs g ∈ Lq(μ) such that φ(1_E) = ∫_E g for all measurable E with μ(E) < ∞. The classical proof (Folland §6.2, Theorem 6.15) restricts μ to each spanning set Sₙ, applies the finite-measure Riesz theorem to get gₙ ∈ Lq(μ.restrict Sₙ), then glues via monotone convergence. The Lp restriction map Lp(μ) → Lp(μ.restrict S) — earlier a Lean infrastructure gap — was supplied via extByZeroCLM together with a Hölder-extremizer norm bound and cross-level consistency. The construction is careful: gₙ agree on overlapping sets, with gₙ₊₁|_{Sₙ} = gₙ.",
     "mathContext": "\\varphi|_{L^p(\\mu|_{S_n})} = \\Lambda_{g_n} \\text{ for each } n \\implies \\exists g \\in L^q(\\mu): \\varphi(\\mathbf{1}_E) = \\int_E g \\, d\\mu \\; \\forall \\mu(E) < \\infty.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -175,18 +175,18 @@
       "endLine": 345
     },
     "type": "insight",
-    "title": "riesz_lp_surjective_sigma_finite: Full Assembly — Only Step A Remains",
-    "content": "The main theorem riesz_lp_surjective_sigma_finite assembles all steps: Step A (sorry: localization_existence) produces g ∈ Lq with indicator agreement; Step C (proved: integral_representation_sf) extends indicator agreement to all of Lp via density. Note: Step B (lp_truncation_tendsto_zero) is called implicitly through the assembly structure. The theorem structure is complete — only localization (Step A) remains as a sorry. The 3→1 sorry reduction (Step C in Session 1, Step B in Session 2) confirms the parent entry was architecturally sound: the two density/convergence steps did not require IsFiniteMeasure, only the harder localization does.",
+    "title": "riesz_lp_surjective_sigma_finite: Full Assembly — All Steps Proved",
+    "content": "The main theorem riesz_lp_surjective_sigma_finite assembles all steps: Step A (proved: localization_existence) produces g ∈ Lq with indicator agreement; Step C (proved: integral_representation_sf) extends indicator agreement to all of Lp via density. Note: Step B (lp_truncation_tendsto_zero) is called implicitly through the assembly structure. The theorem is complete with no remaining sorries — all three steps are proved. The incremental elimination (Step C in Session 1, Step B in Session 2, Step A in PR #15581) confirms the parent entry was architecturally sound: the two density/convergence steps did not require IsFiniteMeasure, and the harder localization step was ultimately discharged for SigmaFinite μ as well.",
     "mathContext": "\\forall \\varphi \\in (L^p(\\mu))^*, \\; \\exists g \\in L^q(\\mu): \\varphi(f) = \\int f g \\, d\\mu \\quad \\forall f \\in L^p(\\mu). \\quad (1 < p < \\infty, \\; \\mu \\text{ sigma-finite})",
     "significance": "key",
     "relatedConcepts": [
       "Riesz representation theorem",
       "ContinuousLinearEquiv",
       "sigma-finite measure theory",
-      "3→1 sorry reduction"
+      "incremental sorry elimination"
     ],
     "prerequisites": [
-      "Steps A (sorry), B (proved), C (proved)",
+      "Steps A, B, C (all proved)",
       "localization_existence",
       "integral_representation_sf"
     ]
@@ -199,12 +199,12 @@
       "endLine": 386
     },
     "type": "concept",
-    "title": "Closing Summary Block: Session 1 State — Stale Sorry Count",
-    "content": "The closing summary comment (lines 369-386) lists 'Sorries remaining (2)' and names both lp_truncation_tendsto_zero (Step B) and localization_existence (Step A). This count is stale: lp_truncation_tendsto_zero was proved in Session 2 (via `tendsto_lintegral_of_dominated_convergence`), reducing the actual sorry count to 1. The code at lines 346-368 (the main theorem body) is correct and uses only localization_existence as a sorry. The stale summary is a documentation gap only — the `#check @riesz_lp_surjective_sigma_finite` axioms confirm 1 sorry, matching meta.json's `sorries: 1` field. The oq-02 answer field in meta.json correctly notes that Step B was answered YES.",
-    "mathContext": "Current state: $1$ sorry remaining ($\\text{localization\\_existence}$, Step A). Steps B and C are fully proved. The closing summary's '2 sorries' was accurate at Session 1 end but not at Session 2 end.",
+    "title": "Final State: All Sorries Closed — Sigma-Finite Riesz Complete",
+    "content": "Development of this module proceeded in stages: Step C was proved first (Session 1), then Step B (lp_truncation_tendsto_zero via `tendsto_lintegral_of_dominated_convergence`, Session 2), and finally Step A (localization_existence) in PR #15581. The current source header records 'Sorries Remaining (0)', and the main theorem riesz_lp_surjective_sigma_finite is assembled entirely from proved lemmas. A `#check @riesz_lp_surjective_sigma_finite` shows no sorryAx, matching meta.json's `sorries: 0` field. The oq-02 answer field in meta.json correctly notes that Step B was answered YES.",
+    "mathContext": "Final state: $0$ sorries remaining — Steps A, B, and C are all fully proved, establishing the sigma-finite Riesz representation theorem $L^p(\\mu)^* \\cong L^q(\\mu)$ for $1 < p < \\infty$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "documentation staleness",
+      "sigma-finite Riesz theorem",
       "sorry tracking",
       "session-based development"
     ],

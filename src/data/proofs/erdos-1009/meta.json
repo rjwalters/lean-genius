@@ -46,13 +46,15 @@
       "edgeDisjoint, pairwiseEdgeDisjoint: edge-disjointness for triangle families",
       "maxEdgeDisjointTriangles: maximum packing size via sSup",
       "excessEdges: excess above Turán threshold",
-      "gyori_theorem axiom: main theorem with f(c) function",
+      "gyori_theorem_statement: main theorem with f(c) function, stated as Prop (not asserted)",
+      "boundFunction axiom: opaque bound function f(c)",
       "gyori_bound axiom: f(c) << c² bound",
-      "erdos_small_c axiom: f(c)=0 for c < 1/2",
-      "gyori_odd_n, gyori_even_n: refined parity-dependent bounds",
+      "erdos_small_c_theorem: f(c)=0 for c < 1/2, stated as Prop",
+      "gyori_odd_n_theorem, gyori_even_n_theorem: refined parity-dependent bounds, stated as Props",
       "completeTripartite: explicit K_{a,b,c} construction",
-      "sauer_counterexample axiom: K_{1,m,m} shows f(2) >= 1",
-      "exceeds_turan_has_triangle: corollary of Turán's theorem"
+      "sauer_counterexample_theorem: K_{1,m,m} shows f(2) >= 1, stated as Prop",
+      "turan_extremal: Turán bound proved from Mathlib's CliqueFree.card_edgeFinset_le",
+      "exceeds_turan_has_triangle: corollary of turan_extremal by contraposition"
     ],
     "axiomCount": 2,
     "lineCount": 239,
@@ -105,7 +107,7 @@
     {
       "id": "sec-1009-main",
       "title": "Györi's Main Theorem",
-      "summary": "Defines `excessEdges G = |E(G)| - \\lfloor n^2/4 \\rfloor` and axiomatizes Györi's result: $\\nu_3(G) \\geq k - f(c)$ when $k < cn$, with $f(c) \\leq Cc^2$.",
+      "summary": "Defines `excessEdges G = |E(G)| - \\lfloor n^2/4 \\rfloor` and states Györi's result as a Prop (`gyori_theorem_statement`, not asserted): $\\nu_3(G) \\geq k - f(c)$ when $k < cn$, with $f(c) \\leq Cc^2$ (the $C$-bound is the `gyori_bound` axiom on the opaque `boundFunction`).",
       "startLine": 87,
       "endLine": 113,
       "mathContext": "Györi (1988): if $|E(G)| = \\lfloor n^2/4 \\rfloor + k$ with $k < cn$, then $\\nu_3(G) \\geq k - f(c)$ where $f(c) = O(c^2)$. The 'excess edges' $k$ count edges beyond Turán; nearly all of them can be assigned to edge-disjoint triangles, with at most $f(c)$ 'wasted'."
@@ -113,7 +115,7 @@
     {
       "id": "sec-1009-partial",
       "title": "Erdős's Partial Result and Refinements",
-      "summary": "Axiomatizes $f(c) = 0$ for $c < 1/2$ (Erdős), $c < 2$ for odd $n$, and $c < 3/2$ for even $n$ (Györi). The parity refinements reflect the structure of the Turán graph.",
+      "summary": "States as Props $f(c) = 0$ for $c < 1/2$ (Erdős), $c < 2$ for odd $n$, and $c < 3/2$ for even $n$ (Györi) — `erdos_small_c_theorem`, `gyori_odd_n_theorem`, `gyori_even_n_theorem`, none asserted. The parity refinements reflect the structure of the Turán graph.",
       "startLine": 114,
       "endLine": 146,
       "mathContext": "For small $c$: if $k < n/2$, every excess edge participates in a distinct edge-disjoint triangle ($f = 0$). The parity refinement: $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ has parts of equal size iff $n$ is even, affecting how many excess edges can be packed into disjoint triangles before interference occurs."
@@ -121,7 +123,7 @@
     {
       "id": "sec-1009-sauer",
       "title": "Sauer's Counterexample",
-      "summary": "Defines `completeTripartite a b c` on `Fin a ⊕ Fin b ⊕ Fin c`. Axiomatizes Sauer's result: $K_{1,m,m}$ has $2m$ excess edges but $\\nu_3 = 2m - 1$, proving $f(2) \\geq 1$.",
+      "summary": "Defines `completeTripartite a b c` on `Fin a ⊕ Fin b ⊕ Fin c`. States Sauer's result as a Prop (`sauer_counterexample_theorem`, not asserted): $K_{1,m,m}$ has $2m$ excess edges but $\\nu_3 = 2m - 1$, witnessing $f(2) \\geq 1$.",
       "startLine": 147,
       "endLine": 173,
       "mathContext": "$K_{1,m,m}$ has $n = 2m+1$ vertices, $|E| = 2m^2 + m$ edges. The Turán threshold is $\\lfloor (2m+1)^2/4 \\rfloor = m^2 + m$, so excess = $m^2 = 2m \\cdot m / (2m) \\approx cn/2$ edges. But the $m$ triangles through the degree-1 part share edges, giving $\\nu_3 = 2m - 1$, one short of $k = 2m$."
@@ -129,10 +131,10 @@
     {
       "id": "sec-1009-corollaries",
       "title": "Turán's Theorem and Corollaries",
-      "summary": "Axiomatizes Turán's theorem ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) and proves `exceeds_turan_has_triangle` by contraposition—the only fully verified theorem in the file.",
+      "summary": "Proves `turan_extremal` ($G$ triangle-free $\\implies |E| \\leq \\lfloor n^2/4 \\rfloor$) from Mathlib's `CliqueFree.card_edgeFinset_le`, then derives `exceeds_turan_has_triangle` by contraposition. Both are fully proved (all 7 theorems in the file are proof-complete; the axiomatized content is the opaque `boundFunction` and `gyori_bound`).",
       "startLine": 174,
       "endLine": 194,
-      "mathContext": "`exceeds_turan_has_triangle`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\exists$ triangle in $G$. Proved by contraposition: if no triangle exists, Turán's axiom gives $|E| \\leq \\lfloor n^2/4 \\rfloor$, contradicting the hypothesis."
+      "mathContext": "`exceeds_turan_has_triangle`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\exists$ triangle in $G$. Proved by contraposition: if no triangle exists, `turan_extremal` (a bridge to Mathlib's `CliqueFree.card_edgeFinset_le` Turán bound) gives $|E| \\leq \\lfloor n^2/4 \\rfloor$, contradicting the hypothesis."
     }
   ],
   "conclusion": {

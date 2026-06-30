@@ -135,8 +135,8 @@
     },
     {
       "id": "noncomputable",
-      "title": "Non-Computability",
-      "summary": "Shows no algorithm can decide if a sequence is an irrationality sequence (requires checking all perturbations). Any finite prefix is insufficient: $\\forall N,\\; \\exists$ two sequences agreeing on $N$ terms with opposite irrationality status.",
+      "title": "Infinitary Nature (Truncation Insufficiency)",
+      "summary": "The irrationality-sequence property is genuinely infinitary: no finite prefix determines it ($\\forall N,\\; \\exists$ two sequences agreeing on $N$ terms with opposite irrationality status). A note records that the originally-attempted 'non-computability' theorem was removed because, under classical logic, decidability is not the correct formalization.",
       "startLine": 491,
       "endLine": 504,
       "mathContext": "Undecidable: $\\forall N,\\, \\exists (a_n), (a_n')$ agreeing on $N$ terms with opposite irrationality status."

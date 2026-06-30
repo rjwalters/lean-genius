@@ -145,23 +145,19 @@
   },
   "crossReferences": [
     {
-      "id": "elementary-quadratic-reciprocity-oq-01-oq-01",
-      "title": "Gauss Sum QR Pathway (Four-Step Outline)",
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01",
       "relationship": "parent — outlines the full four-step Gauss sum pathway for QR; this entry discharges Step 3 (τ^q = χ(q)·τ)."
     },
     {
-      "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-      "title": "Gauss Sum Squared: τ² = χ(-1)·p",
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
       "relationship": "sibling — proves Step 2 (τ² = χ(-1)·p) which this file's qr_via_frobenius takes as a hypothesis."
     },
     {
-      "id": "elementary-quadratic-reciprocity",
-      "title": "Quadratic Reciprocity (Eisenstein Lattice-Point Proof)",
+      "targetId": "elementary-quadratic-reciprocity",
       "relationship": "root — the Eisenstein lattice-point proof of QR; semantically distinct path that the Gauss-sum argument formalized here can replace once Step 4 is assembled."
     },
     {
-      "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-      "title": "Higher-Power Reciprocity via Jacobi Sums",
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
       "relationship": "sibling — extends to higher-power reciprocity using Jacobi sums; the analogue τ^q = J(χ,χ)·τ for cubic χ is the natural successor."
     }
   ],

@@ -80,7 +80,7 @@
       "startLine": 102,
       "endLine": 141
     },
-    "type": "technique",
+    "type": "insight",
     "title": "The Truncation Argument Behind M-Z",
     "content": "The Marcinkiewicz-Zygmund proof uses a truncation argument: split Xₖ into a truncated part |Xₖ| ≤ n^{1/r} and a tail part |Xₖ| > n^{1/r}. The truncated part is handled by Kolmogorov's 3-series theorem; the tail part vanishes because E[|X|^r] < ∞ implies Σₙ P(|X| > n^{1/r}) < ∞ by Markov's inequality. The full argument requires careful API navigation through Mathlib's probability infrastructure — hence the axiom. Reference: Feller (1971), Vol. II, Theorem IX.4.1.",
     "mathContext": "The tail series: by Markov's inequality, $\\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] / n$. Summing: $\\sum_{n=1}^\\infty \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum_{n=1}^\\infty n^{-1}$, which diverges. The sharper bound uses $\\mathbb{P}(|X| > t) \\leq \\mathbb{E}[|X|^r] t^{-r}$, giving $\\sum \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum n^{-1}$ — still needing the 3-series structure to handle the truncated part via Kronecker's lemma.",
@@ -130,7 +130,7 @@
       "startLine": 168,
       "endLine": 186
     },
-    "type": "technique",
+    "type": "insight",
     "title": "More Moments = Faster Rate",
     "content": "Two dual monotonicity results: (1) higher_moment_tighter_rate shows L^{r₂} ⊆ L^{r₁} for r₁ ≤ r₂ — distributions with more moment conditions are in more Lʳ spaces; (2) rate_normalization_ordering shows n^{1/r₂} < n^{1/r₁} for r₁ < r₂ — so the M-Z bound for r₂ is strictly tighter. Together they make precise: 'the more moment conditions a distribution satisfies, the sharper the convergence rate guarantee'.",
     "mathContext": "The normalization ordering uses `Real.rpow_lt_rpow_of_exponent_lt`: for base $n > 1$, $y < z \\Rightarrow n^y < n^z$. Applied with $y = 1/r_2 < 1/r_1 = z$ (since $r_1 < r_2$ reverses reciprocal order). The inequality $1/r_2 < 1/r_1$ is verified by `div_lt_div_of_pos_left` with numerator 1. Combined: $r_1 < r_2 \\Rightarrow 1/r_2 < 1/r_1 \\Rightarrow n^{1/r_2} < n^{1/r_1}$.",
@@ -180,7 +180,7 @@
       "startLine": 206,
       "endLine": 255
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Why Pareto(α)^r Integrates iff r < α",
     "content": "For Pareto(α) with x_m=1: E[X^r] = ∫_1^∞ α·x^{r-α-1} dx. When r < α the exponent r-α-1 < -1, so x^{r-α} → 0 and the integral converges to α/(α-r). When r ≥ α the integral diverges. The iff form makes `pareto_in_lr_iff` usable in both directions: pareto_finite_mean picks r=1 < α for the forward direction; pareto_not_l2 uses the contrapositive with r=2 ≥ α.",
     "mathContext": "The moment integral: $\\mathbb{E}[X^r] = \\int_1^\\infty \\alpha x^{r-\\alpha-1}\\, dx$. When $r < \\alpha$: exponent $r-\\alpha < 0$, so $\\left[\\frac{\\alpha}{r-\\alpha} x^{r-\\alpha}\\right]_1^\\infty = 0 - \\frac{\\alpha}{r-\\alpha} = \\frac{\\alpha}{\\alpha-r}$. When $r = \\alpha$: integral becomes $\\alpha \\int_1^\\infty x^{-1}\\, dx = \\infty$. When $r > \\alpha$: exponent $r-\\alpha > 0$, integrand grows, so integral $= \\infty$. This is classical analysis not yet automated in Mathlib 4.26.",

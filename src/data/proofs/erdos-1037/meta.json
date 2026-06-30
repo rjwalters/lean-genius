@@ -98,103 +98,103 @@
       "title": "Imports and Problem Overview",
       "summary": "Module documentation on Problem 1037 (Chen-Erdős conjecture, Cambie-Chan-Hunter disproof), imports for SimpleGraph, Finset, Fintype, and real number arithmetic",
       "startLine": 1,
-      "endLine": 22,
+      "endLine": 23,
       "mathContext": "Problem #1037: if degree multiplicities are $\\\\leq 2$ and distinct degrees $> (1/2+\\\\varepsilon)n$, must $G$ have large trivial subgraphs?"
     },
     {
       "id": "graph-setup",
       "title": "Graph Setup",
       "summary": "vertexCount definition: cardinality of the finite vertex set",
-      "startLine": 23,
-      "endLine": 35,
+      "startLine": 24,
+      "endLine": 37,
       "mathContext": "$n = |V(G)|$. Vertex degrees $d(v) = |N(v)|$. Degree sequence determines graph structure up to isomorphism (nearly)."
     },
     {
       "id": "degree-sequences",
       "title": "Degree Sequences",
       "summary": "degreeMultiset (multiset of all vertex degrees), distinctDegrees (number of distinct values), degreeMultiplicity (count of each degree value)",
-      "startLine": 36,
-      "endLine": 54,
+      "startLine": 38,
+      "endLine": 56,
       "mathContext": "Degree multiset: multiset of all vertex degrees. Distinct degrees: $|\\\\{d(v) : v \\\\in V\\\\}|$. Limited multiplicity: each degree value appears $\\\\leq 2$ times."
     },
     {
       "id": "degree-constraints",
       "title": "Degree Constraints",
       "summary": "hasLimitedMultiplicity (each degree at most twice), hasManyDistinctDegrees (distinct degrees > (1/2 + ε)n), isChenErdosGraph (both conditions)",
-      "startLine": 55,
-      "endLine": 70,
+      "startLine": 57,
+      "endLine": 72,
       "mathContext": "Has limited multiplicity ($\\\\leq 2$) and many distinct degrees ($> (1/2+\\\\varepsilon)n$). Forces diverse vertex degrees with low repetition."
     },
     {
       "id": "trivial-subgraphs",
       "title": "Trivial Subgraphs",
       "summary": "isIndependentSet, isClique, isTrivialSet (independent or clique), maxTrivialSize (maximum over all trivial subsets)",
-      "startLine": 71,
-      "endLine": 90,
+      "startLine": 73,
+      "endLine": 97,
       "mathContext": "Trivial set: independent set or clique. $\\\\max(\\\\alpha(G), \\\\omega(G)) = $ max trivial subgraph. Ramsey: this is $\\\\geq (1/2)\\\\log_2 n$."
     },
     {
       "id": "conjecture",
       "title": "The Chen-Erdős Conjecture",
       "summary": "chenErdosConjecture (degree diversity forces trivial subgraphs ≫ log n) and chenErdos_false establishing the conjecture is false",
-      "startLine": 91,
-      "endLine": 105,
+      "startLine": 98,
+      "endLine": 112,
       "mathContext": "Chen-Erdos conjecture: degree diversity forces large trivial subgraphs ($\\\\gg \\\\log n$). DISPROVED."
     },
     {
       "id": "counterexample",
       "title": "Cambie-Chan-Hunter Counterexample",
       "summary": "cambieConstant (3/4), cambieChanHunter_construction axiomatizing the existence of counterexample graphs with ≥ 3n/4 distinct degrees and O(log n) trivial size, counterexample_works proving the construction satisfies all requirements",
-      "startLine": 106,
-      "endLine": 135,
+      "startLine": 113,
+      "endLine": 156,
       "mathContext": "cambieConstant (3/4), cambieChanHunter_construction axiomatizing the existence of counterexample graphs with ≥ 3n/4 distinct degrees and O(log n) trivial size, counterexample_works proving the construction satisfies all requirements"
     },
     {
       "id": "ramsey",
       "title": "Ramsey Connection",
       "summary": "ramseyNumber definition, ramsey_theorem (every graph has trivial subgraph ≥ (1/2) log₂ n), degree_diversity_no_ramsey_help (degree diversity does not improve the Ramsey bound)",
-      "startLine": 136,
-      "endLine": 162,
+      "startLine": 157,
+      "endLine": 187,
       "mathContext": "Ramsey: $R(k,k) \\\\leq 4^k$, so every $n$-vertex graph has $\\\\max(\\\\alpha, \\\\omega) \\\\geq (1/2)\\\\log_2 n$."
     },
     {
       "id": "degree-properties",
       "title": "Degree Sequence Properties",
       "summary": "degree_sum_eq_twice_edges (handshaking lemma), limited_multiplicity_bound (multiplicity ≤ 2 constrains distinct degrees ≤ n), degree_bound (each degree < n)",
-      "startLine": 163,
-      "endLine": 184,
+      "startLine": 188,
+      "endLine": 242,
       "mathContext": "Handshaking: $\\\\sum d(v) = 2|E|$. With multiplicity $\\\\leq 2$ and $> n/2$ distinct values: most degrees are 1 or 2-fold."
     },
     {
       "id": "stronger-bounds",
       "title": "Stronger Bounds",
       "summary": "optimalDistinctBound (3n/4), max_distinct_with_limited_mult (distinct degrees ≤ 3n/4 when multiplicity ≤ 2), cambie_is_optimal (the counterexample achieves this bound)",
-      "startLine": 185,
-      "endLine": 207,
+      "startLine": 243,
+      "endLine": 280,
       "mathContext": "Optimal distinct bound: $(3/4)n$ distinct degrees possible with multiplicity $\\\\leq 2$."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "summary": "hasMultiplicityAtMost (generalized multiplicity ≤ k), generalMultiplicityBound (max distinct degrees with multiplicity ≤ k is (1-1/(2k))n), multiplicity_two_bound (special case k=2 recovers 3n/4)",
-      "startLine": 208,
-      "endLine": 238,
+      "startLine": 281,
+      "endLine": 352,
       "mathContext": "General multiplicity $\\\\leq k$: how does the forced trivial subgraph size depend on $k$?"
     },
     {
       "id": "resolved",
       "title": "The Resolved Question",
       "summary": "erdos_1037_disproved (the conjecture is false via counterexample) and erdos_1037_answer (degree diversity does not force large trivial subgraphs)",
-      "startLine": 291,
-      "endLine": 306,
+      "startLine": 353,
+      "endLine": 368,
       "mathContext": "DISPROVED (Cambie-Chudnovsky 2023): counterexample exists. The degree diversity does NOT force super-logarithmic trivial subgraphs."
     },
     {
       "id": "summary",
       "title": "Summary and Closing",
       "summary": "Prose summary recapping the Chen-Erdős conjecture (degree diversity forces large trivial subgraphs), the Cambie-Chan-Hunter disproof (≥3n/4 distinct degrees with O(log n) trivial size), and the main conclusion: degree diversity and Ramsey structure are independent properties.",
-      "startLine": 307,
-      "endLine": 324,
+      "startLine": 369,
+      "endLine": 397,
       "mathContext": "Conclusion: for multiplicity-2 degree sequences, Chen-Erdős conjecture is FALSE. Degree diversity $\\geq 3n/4$ distinct values is compatible with max trivial subgraph $O(\\log n)$."
     }
   ],

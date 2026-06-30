@@ -17,7 +17,11 @@
       "Value distribution",
       "Counting function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1116-entire",
@@ -36,7 +40,12 @@
       "Taylor series",
       "Meromorphic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "complex differentiability",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1116-counting",
@@ -55,7 +64,12 @@
       "Zeros",
       "Multiplicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "set theory",
+      "finiteness and cardinality",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-unbounded-ratio",
@@ -64,7 +78,7 @@
       "startLine": 113,
       "endLine": 123
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Unbounded Ratio Property",
     "content": "**HasUnboundedRatio f a b:**\n\nThe ratio n(r, a)/n(r, b) is unbounded as r → ∞.\n\n**Definition:**\n```lean\ndef HasUnboundedRatio (f : ℂ → ℂ) (a b : ℂ) : Prop :=\n  ∀ M : ℝ, M > 0 → ∀ R : ℝ, R > 0 →\n    ∃ r > R, n(f, r, a) > M * n(f, r, b)\n```\n\nThis means: for any M, there exist arbitrarily large r with n(r,a)/n(r,b) > M.",
     "mathContext": "This captures lim sup = ∞ in a constructive way: we can always find r making the ratio arbitrarily large.",
@@ -74,7 +88,12 @@
       "Asymptotic behavior",
       "Ratio comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and limsup",
+      "logical quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-extreme",
@@ -93,7 +112,12 @@
       "Oscillation",
       "Equidistribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "value distribution theory",
+      "logical quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-goldberg-toppila",
@@ -112,7 +136,11 @@
       "Weierstrass products",
       "Constructive proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "value distribution theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e1116-main",
@@ -130,7 +158,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1116-deficiency",
@@ -149,7 +181,12 @@
       "Second main theorem",
       "Exceptional values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "real analysis",
+      "integration"
+    ]
   },
   {
     "id": "ann-e1116-surprise",
@@ -168,7 +205,12 @@
       "Smoothing",
       "Oscillations vs averages"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "real analysis",
+      "integration"
+    ]
   },
   {
     "id": "ann-e1116-lacunary",
@@ -177,7 +219,7 @@
       "startLine": 244,
       "endLine": 257
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Lacunary Series",
     "content": "**IsLacunarySeries:**\n\nA power series with large gaps between nonzero terms:\nf(z) = Σ_{n ∈ S} a_n z^n where n_{k+1}/n_k → ∞.\n\n**Definition:**\n```lean\ndef IsLacunarySeries (coeffs : ℕ → ℂ) (support : Set ℕ) : Prop :=\n  (∀ n ∉ support, coeffs n = 0) ∧\n  (∀ m n ∈ support, m < n → gaps grow)\n```\n\nLacunary series have special properties that make them useful for constructions.",
     "mathContext": "Lacunary series (like Σz^(2^n)) have gaps that grow geometrically, giving better control over value distribution.",
@@ -187,7 +229,12 @@
       "Hadamard gaps",
       "Power series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "power series",
+      "sequences and series",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-exp-not-extreme",
@@ -206,7 +253,11 @@
       "Picard's theorem",
       "Deficiency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "entire functions",
+      "Nevanlinna theory"
+    ]
   },
   {
     "id": "ann-e1116-summary",
@@ -224,6 +275,10 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   }
 ]

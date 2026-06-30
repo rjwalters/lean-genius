@@ -207,6 +207,16 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "related",
       "description": "Both are existence theorems with deep applications in mathematical economics. Brouwer's theorem proves Nash equilibrium existence; Shapley-Folkman justifies convex relaxation in general equilibrium theory"
+    },
+    {
+      "targetId": "shapley-folkman-oq-03",
+      "relationship": "related",
+      "description": "The quantitative Shapley-Folkman-Starr refinement: it converts this combinatorial bound (at most d excess summands) into a metric bound on the Hausdorff distance between a Minkowski sum and its convex hull — directly answering this entry's open question about formalizing the Starr distance version"
+    },
+    {
+      "targetId": "brouwer-fixed-point-oq-04",
+      "relationship": "related",
+      "description": "Kakutani's fixed-point theorem is the existence engine behind Arrow-Debreu general equilibrium; the Shapley-Folkman lemma is its companion in non-convex economies, supplying the near-convexity of aggregate demand that makes the fixed-point argument applicable when individual preferences are non-convex"
     }
   ],
   "leanFile": {

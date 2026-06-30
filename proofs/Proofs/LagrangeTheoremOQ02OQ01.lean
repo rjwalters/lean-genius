@@ -43,6 +43,10 @@ Verified: 0 sorries, 0 axioms. All theorems machine-checked.
 -/
 
 open MulAction Finset BigOperators
+-- Decidability of orbit/stabilizer membership (finite sets) is classical; this
+-- supplies the `Fintype (orbit G x)` / `Fintype (stabilizer G x)` instances the
+-- statements below need under Mathlib v4.26.0.
+open scoped Classical
 
 namespace LagrangeTheoremOQ02OQ01
 
@@ -219,7 +223,7 @@ theorem lagrange_orbitstab_burnside_chain
     -- Burnside: Σ_g |Fix(g)| = |X/G| × |G|
     ∧ ∑ g : G, Fintype.card (MulAction.fixedBy X g) =
         Fintype.card (MulAction.orbitRel.Quotient G X) * Fintype.card G :=
-  ⟨Subgroup.card_subgroup_dvd_card H,
+  ⟨by simpa only [Nat.card_eq_fintype_card] using Subgroup.card_subgroup_dvd_card H,
    MulAction.card_orbit_mul_card_stabilizer_eq_card_group G x,
    burnside_from_orbit_stabilizer⟩
 

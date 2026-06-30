@@ -1,0 +1,142 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
+  "id": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
+  "title": "Sign Variations over an Arbitrary Ordered Field, Invariant under Order Embeddings",
+  "description": "Answers the parent's open question: generalize the computable sign-variation count signVarList from ℚ to any LinearOrderedField with decidable order (ℚ, computable algebraic reals, …), keeping the rfl bridge to Mathlib's abstract signVariations. The substantive new infrastructure is a theorem absent from Mathlib — signVariations is invariant under any strictly monotone ring homomorphism (signVariations_map) — because the count reads only the signs of the coefficient list, and a strict-mono ring hom preserves both signs and (being injective) the list length. As payoff this bridges ℚ to ℝ: the kernel-reducible ℚ-coefficient count equals the sign-variation count of the real polynomial, so it bounds the number of positive REAL roots (the genuine Descartes statement), not merely the rational ones the parent could reach.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "Descartes rule",
+      "constructive",
+      "computability",
+      "ordered fields",
+      "ring homomorphisms"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 202,
+    "assumptions": "None. All results proved from Mathlib. The worked examples are discharged by kernel `decide` (not `native_decide`), so the only axioms are the foundational propext / Classical.choice / Quot.sound (confirmed by #print axioms on signVariations_map, signVarList_eq_signVariations_ratCast, realRoots_countP_pos_le_signVarList).",
+    "theoremCount": 8,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.signVariations",
+        "description": "The abstract sign-variation count, defined for any [Semiring R] [LinearOrder R]; the generalized signVarList mirrors it over an arbitrary ordered field"
+      },
+      {
+        "theorem": "Polynomial.coeffList",
+        "description": "The coefficient list; coeffList_map_of_injective shows it commutes with an injective ring hom (degree preserved, entries mapped pointwise)"
+      },
+      {
+        "theorem": "Polynomial.degree_map_eq_of_injective",
+        "description": "Injective ring homs preserve degree — the reason the coefficient list keeps its length under map"
+      },
+      {
+        "theorem": "Polynomial.coeff_map",
+        "description": "coeff (P.map f) n = f (P.coeff n); the pointwise action of the hom on coefficients"
+      },
+      {
+        "theorem": "SignType.sign",
+        "description": "The three-valued sign map; sign_map_of_strictMono proves it is preserved by a strictly monotone ring hom (sign (φ x) = sign x)"
+      },
+      {
+        "theorem": "Polynomial.roots_countP_pos_le_signVariations",
+        "description": "Mathlib's Descartes upper bound; combined with the ℚ→ℝ bridge it yields a bound on positive REAL roots computed from rational coefficients"
+      },
+      {
+        "theorem": "Rat.cast_strictMono",
+        "description": "ℚ → ℝ is strictly monotone — the instance of an order embedding used in the bridge"
+      }
+    ],
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DescartesConstructiveGeneral",
+    "lineCount": 202,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "problemStatement": "Can the constructive sign-variation count signVarList be generalized from ℚ to an arbitrary computable LinearOrderedField while keeping the rfl bridge to the abstract count — and does the resulting count actually see the real-root behaviour Descartes' Rule is about, rather than just the roots living in the coefficient field?",
+    "historicalContext": "Descartes' Rule (La Géométrie, 1637) bounds the number of positive REAL roots of a polynomial by the number of sign changes in its coefficient sequence. The parent file built a computable mirror signVarList : List ℚ → ℕ of Mathlib's noncomputable Polynomial.signVariations and certified it by rfl. But it left two threads: the construction was pinned to ℚ, and — more subtly — for P : ℚ[X] the multiset P.roots lives in ℚ, so the parent's bound only constrained the RATIONAL positive roots. That is strictly weaker than Descartes' Rule: X² − 2 has one sign variation but no rational positive root at all (its positive root √2 is irrational). To recover the genuine statement one must transport the count along ℚ ↪ ℝ, which requires knowing the count is invariant under that embedding.",
+    "keyInsights": [
+      "Nothing in signVarList is special to ℚ. Polynomial.signVariations is defined for any [Semiring R] [LinearOrder R], and the sign map is computable whenever the order is decidable. A LinearOrderedField (now spelled [Field F] [LinearOrder F] [IsStrictOrderedRing F]) supplies exactly this, so the definition and the rfl bridge signVarList P.coeffList = P.signVariations lift verbatim.",
+      "The sign-variation count reads only the SIGNS of the coefficient list. So it should be unchanged by any map that preserves signs and the list length — namely a strictly monotone (hence injective) ring homomorphism. This is the conceptual core.",
+      "signVariations_map: (P.map φ).signVariations = P.signVariations for any StrictMono ring hom φ. Proof = coeffList_map_of_injective (the list commutes with φ) + sign_map_of_strictMono (φ preserves signs) ⟹ the map-sign lists coincide ⟹ everything downstream is identical. This invariance theorem is not in Mathlib.",
+      "The count is genuinely ℝ-valued, not ℚ-valued: the bridge signVarList P.coeffList = (P.map (algebraMap ℚ ℝ)).signVariations shows the kernel-reducible rational count equals the count of the real polynomial. Hence realRoots_countP_pos_le_signVarList bounds the positive REAL roots — the actual content of Descartes — using only the rational coefficient list.",
+      "Computability is a property of the field's instances, not of the abstract definition: signVarList : List F → ℕ type-checks for any ordered field, and reduces in the kernel exactly when F's order is computable (true for ℚ; false for ℝ with its classical instances)."
+    ],
+    "proofStrategy": "(1) Re-state signVarList and the rfl bridge over a generic [Field F] [LinearOrder F] [IsStrictOrderedRing F]; transport Mathlib's bound and the no-positive-roots certificate. (2) Prove coeffList_map_of_injective via degree_map_eq_of_injective + coeff_map + List.map_congr_left. (3) Prove sign_map_of_strictMono by trichotomy on x using sign_pos/sign_neg/sign_zero and map_zero. (4) Combine into signVariations_map by rewriting the map-sign list. (5) Specialize φ = algebraMap ℚ ℝ (strictly monotone via Rat.cast_strictMono) to get the ℚ→ℝ bridge and the real-root bound. (6) Recover the parent's ℚ examples as instances of the generic definition, by kernel decide.",
+    "prerequisites": [
+      "Polynomial.signVariations and its pipeline (coeffList, SignType.sign, List.filter, List.destutter)",
+      "Polynomial.degree_map_eq_of_injective and Polynomial.coeff_map",
+      "SignType.sign and the lemmas sign_pos / sign_neg / sign_zero",
+      "Rat.cast_strictMono and eq_ratCast (algebraMap ℚ ℝ is the rational cast)",
+      "Polynomial.roots_countP_pos_le_signVariations (Mathlib's Descartes bound)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module: Genericity and Map-Invariance",
+      "summary": "Frames the two loose threads of the parent — the ℚ-pinned coefficient field and the merely-rational root bound — and states the hinge result: signVariations is invariant under strictly monotone ring homs."
+    },
+    {
+      "id": "generic-count",
+      "title": "Part I: The Computable Count over an Arbitrary Ordered Field",
+      "summary": "signVarList : List F → ℕ for [Field F] [LinearOrder F] [IsStrictOrderedRing F], the rfl bridge signVarList_coeffList, the transported bound posRoots_le_signVarList, and the no-positive-roots certificate — all field-generic."
+    },
+    {
+      "id": "map-invariance",
+      "title": "Part II: Invariance under a Strictly Monotone Ring Homomorphism",
+      "summary": "coeffList_map_of_injective (the coefficient list commutes with an injective hom), sign_map_of_strictMono (signs are preserved), and the headline signVariations_map combining them: (P.map φ).signVariations = P.signVariations."
+    },
+    {
+      "id": "rat-real-bridge",
+      "title": "Part III: The ℚ → ℝ Bridge — Seeing the Real Roots",
+      "summary": "signVarList_eq_signVariations_ratCast: the computable ℚ count equals the real polynomial's sign-variation count. realRoots_countP_pos_le_signVarList: Descartes' bound for positive REAL roots, computed from rational coefficients."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Part IV: Worked Computable Examples",
+      "summary": "The parent's ℚ examples recovered as instances of the now field-generic definition, discharged by kernel decide (no native_decide)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Answers the parent's third open question: generalize signVarList from ℚ to an arbitrary computable LinearOrderedField while keeping the rfl bridge — and additionally upgrades the bound from rational to real roots via map-invariance."
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "foundational",
+      "description": "Supplies the ℝ-side Descartes bound and parity infrastructure that motivate connecting the computable count to real roots."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "The classical Descartes rule of signs — root of the OQ chain studied here."
+    }
+  ],
+  "conclusion": {
+    "summary": "YES: the computable sign-variation count generalizes verbatim to any ordered field with decidable order, with the rfl bridge intact, because Mathlib's signVariations already lives at that generality and the count is purely combinatorial on signs. The substantive new result is that signVariations is invariant under any strictly monotone ring homomorphism (signVariations_map) — a fact not in Mathlib. Specializing to ℚ ↪ ℝ shows the kernel-reducible rational count equals the real polynomial's count, so it bounds the positive REAL roots, repairing the gap left by the parent (whose bound only constrained rational roots). All with 0 axioms; examples by kernel decide.",
+    "implications": "Map-invariance of signVariations is reusable infrastructure: it lets any computable subfield (ℚ, computable algebraic reals) certify sign-variation facts about polynomials over a larger ordered field by pushing forward along an order embedding. It is also exactly the lemma needed to make the constructive Descartes bound a statement about real roots rather than coefficient-field roots. The trichotomy proof that a strict-mono ring hom preserves SignType.sign is a small lemma of independent use for any sign-driven polynomial invariant.",
+    "openQuestions": [
+      "Can map-invariance be strengthened to an order-reflecting equivalence, characterizing exactly which (not-necessarily-injective) ring homs preserve signVariations?",
+      "Combined with a formalization of Sturm's theorem over ℚ, does the real-root bound realRoots_countP_pos_le_signVarList upgrade to an exact computable count of positive real roots?"
+    ]
+  },
+  "sorries": 0
+}

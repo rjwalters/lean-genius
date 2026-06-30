@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ann-fiboq020101-1",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 48 },
+    "type": "context",
+    "title": "The Quadratic Companion of the Product Identity",
+    "content": "**Module framing.** The parent entry isolated the *product* identity $F_{2n}=F_n\\cdot L_n$ as the engine of Lucas divisibility. This module supplies the *quadratic* companion as a universally quantified theorem over $\\mathbb{Z}$: $L_n^2-5F_n^2=4(-1)^n$. The two are the fundamental degree-2 relations between the companion sequences. The quadratic identity is the integer residue of Binet's formulas $F_n=(\\varphi^n-\\psi^n)/\\sqrt5$, $L_n=\\varphi^n+\\psi^n$: since $\\varphi\\psi=-1$, eliminating $\\varphi,\\psi$ makes $\\sqrt5$ vanish and leaves $L_n^2-5F_n^2=4(\\varphi\\psi)^n=4(-1)^n$. Two consequences are drawn: $L_n^2=5F_n^2\\pm4$ (sign by parity) and $\\gcd(F_n,L_n)\\mid 2$.",
+    "mathContext": "$L_n^2-5F_n^2=4(-1)^n$; $\\varphi+\\psi=1,\\ \\varphi\\psi=-1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Binet's formulas",
+      "Lucas sequences Uₙ, Vₙ",
+      "Cassini's identity",
+      "Pell-type quadratic forms"
+    ],
+    "prerequisites": [
+      "The Fibonacci/Lucas recurrence and base values",
+      "gcd and divisibility on ℕ"
+    ],
+    "tags": ["module-header", "framing", "quadratic-identity", "binet"]
+  },
+  {
+    "id": "ann-fiboq020101-2",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 94 },
+    "type": "concept",
+    "title": "Lucas Numbers and the Subtraction-Free Bridge",
+    "content": "Mathlib has `Nat.fib` but not the Lucas numbers, so we reuse the parent's structural pair recursion `lucasPair n = (L_n, L_{n+1})`, giving `lucas n` that reduces by `rfl`/`decide`. The link to Fibonacci is the subtraction-free bridge $2F_{n+1}=L_n+F_n$ (`two_mul_fib_succ`, a two-step induction), which over $\\mathbb{Z}$ becomes the closed form $L_n=2F_{n+1}-F_n$ (`lucas_eq_int`). This single substitution is what converts every Lucas statement below into a pure Fibonacci statement.",
+    "mathContext": "$2F_{n+1}=L_n+F_n\\ \\Rightarrow\\ L_n=2F_{n+1}-F_n$ over $\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Structural recursion",
+      "Definitional reduction (rfl/decide)",
+      "Lucas–Fibonacci bridge"
+    ],
+    "prerequisites": [
+      "Two-step induction Nat.twoStepInduction",
+      "Pair-accumulator recursion"
+    ],
+    "tags": ["definition", "lucas-numbers", "bridge"]
+  },
+  {
+    "id": "ann-fiboq020101-3",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
+    "range": { "startLine": 96, "endLine": 113 },
+    "type": "insight",
+    "title": "The Sign-Clean Cassini Relative (the whole engine)",
+    "content": "The entire result rests on one Fibonacci identity: $F_{n+1}^2-F_{n+1}F_n-F_n^2=(-1)^n$ (`fib_sq_sub`). Unlike the index-shifted Cassini identity $F_{n+1}F_{n-1}-F_n^2=(-1)^n$ (which needs $n\\ge1$), this form is valid at $n=0$ and — crucially — closes under a *single-step* induction: substituting $F_{n+2}=F_n+F_{n+1}$ turns the $(n{+}1)$-form into the exact negation of the $n$-form (lemma `key`, closed by `ring`). So the quadratic form simply flips sign at each step, starting from $(-1)^0=1$. No coupled invariant or two-step scheme is needed.",
+    "mathContext": "$F_{n+1}^2-F_{n+1}F_n-F_n^2=(-1)^n$; the $(n{+}1)$-form $=-$ the $n$-form.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "Sign-alternating invariants",
+      "One-step induction"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two",
+      "Polynomial normalisation (ring)"
+    ],
+    "tags": ["core-lemma", "cassini", "induction"]
+  },
+  {
+    "id": "ann-fiboq020101-4",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
+    "range": { "startLine": 115, "endLine": 144 },
+    "type": "insight",
+    "title": "The Quadratic Identity and Its Parity Specialisations",
+    "content": "Substituting the bridge $L_n=2F_{n+1}-F_n$ into $L_n^2-5F_n^2$ and expanding shows it equals $4\\,(F_{n+1}^2-F_{n+1}F_n-F_n^2)$, which is $4(-1)^n$ by the core lemma — a single `linear_combination 4 * fib_sq_sub n` (`lucas_sq_sub_five_fib_sq`). Rearranging gives $L_n^2=5F_n^2+4(-1)^n$ (`lucas_sq_eq`); collapsing $(-1)^n$ with `Even/Odd.neg_one_pow` gives the clean parity forms $L_{2k}^2=5F_{2k}^2+4$ and $L_{2k+1}^2=5F_{2k+1}^2-4$. So $L_n$ is the nearest integer to $\\sqrt5\\,F_n$, with the parity of $n$ choosing the side.",
+    "mathContext": "$L_n^2=5F_n^2+4(-1)^n$; $L_{2k}^2=5F_{2k}^2+4$, $L_{2k+1}^2=5F_{2k+1}^2-4$.",
+    "significance": "primary",
+    "relatedConcepts": [
+      "Quadratic Fibonacci–Lucas identity",
+      "Binet √5-elimination",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "The bridge lucas_eq_int and the core lemma fib_sq_sub",
+      "Even.neg_one_pow / Odd.neg_one_pow"
+    ],
+    "tags": ["main-theorem", "quadratic-identity", "parity"]
+  },
+  {
+    "id": "ann-fiboq020101-5",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01",
+    "range": { "startLine": 146, "endLine": 187 },
+    "type": "insight",
+    "title": "Same-Index Coprimality: gcd(Fₙ, Lₙ) ∈ {1, 2}",
+    "content": "A structural payoff: $\\gcd(F_n,L_n)\\mid 2$ (`gcd_fib_lucas_dvd_two`). Any common divisor $d$ of $F_n$ and $L_n$ divides $L_n+F_n=2F_{n+1}$; since consecutive Fibonacci numbers are coprime (`Nat.fib_coprime_fib_succ`), $d$ is coprime to $F_{n+1}$ and therefore divides $2$. With $2$ prime, `Nat.dvd_prime` yields $\\gcd(F_n,L_n)\\in\\{1,2\\}$ (`gcd_fib_lucas_eq_one_or_two`). Both values occur: $\\gcd(F_5,L_5)=\\gcd(5,11)=1$ and $\\gcd(F_6,L_6)=\\gcd(8,18)=2$. This is the single-index counterpart of the parent's cross-index link $L_n\\mid F_{2n}$: at a fixed index the companion sequences barely share factors.",
+    "mathContext": "$d\\mid F_n,\\ d\\mid L_n\\Rightarrow d\\mid 2F_{n+1}$ and $\\gcd(d,F_{n+1})=1\\Rightarrow d\\mid 2$.",
+    "significance": "primary",
+    "relatedConcepts": [
+      "Coprimality of consecutive Fibonacci numbers",
+      "gcd and Bézout-style descent",
+      "Nat.dvd_prime"
+    ],
+    "prerequisites": [
+      "The quadratic identity / the bridge",
+      "Nat.fib_coprime_fib_succ"
+    ],
+    "tags": ["corollary", "gcd", "coprimality"]
+  }
+]

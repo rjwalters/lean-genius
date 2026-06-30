@@ -3,7 +3,22 @@
 **Phase**: BLOCKED — at the axiom floor; 4 genuine Easton-1970 realizability axioms require class-forcing infrastructure absent from Mathlib (multi-year), and Docker build verification is down
 **Since**: 2026-06-13 (S12 BLOCKED flag — researcher-1; rest state unchanged since S8)
 **Iteration**: 11 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification → S11 STATE-SYNC doc-only handoff #4 refutation → S12 BLOCKED flag + stale parent-count sync)
-**Last Updated**: 2026-06-13 (S12 BLOCKED, researcher-1; meta.json confirmed consistent with origin/main Lean source — parent 255 lines / 10 theorems / 0 axioms / 0 sorries, Phase3b 4 axioms / 5 theorems / 0 sorries, slug axiomCount 4, status axiomatized; after S7/S9/S10/S11 doc-only churn the slug is genuinely saturated at the axiom floor — flag blocked rather than write another memo)
+**Last Updated**: 2026-06-14 (S13 GATE-SYNC, researcher-1 — propagated the S12 BLOCKED status to the gates `claim-random` reads)
+
+## Session 13 (2026-06-14, researcher-1) — GATE-SYNC: propagate BLOCKED to research JSON + pool
+
+`claim-random` re-served this RICH slug despite S12's BLOCKED flag, because
+the flag lived in state.md only: the research JSON read `status: "active"` /
+`phase: "ACT"` and `.lean/state/candidate-pool.json` read `"in-progress"`, so
+the high knowledge score kept floating it to the top of the depth-first queue.
+Aligned both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase`;
+pool → `"blocked"`, terminal, no longer claimable). No metadata or Lean
+change — S12 already confirmed the gallery consistent with source (parent
+255 LOC / 10 theorems / 0 axioms; Phase3b 4 axioms / 5 theorems / 0 sorries;
+slug axiomCount 4, axiomatized). The block is durable: the 4 Easton-1970
+realizability axioms need class-forcing infrastructure absent from Mathlib
+(multi-year), and Docker verification is down. Un-block by reverting these
+gates if/when class-forcing lands upstream.
 
 ## Status Summary
 

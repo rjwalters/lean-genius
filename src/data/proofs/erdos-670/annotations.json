@@ -23,7 +23,11 @@
       "open-problem",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean space",
+      "Pairwise distances",
+      "Diameter of a set"
+    ]
   },
   {
     "id": "ann-e670-definitions",
@@ -48,7 +52,11 @@
       "finset",
       "formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean distance",
+      "Finset.sup'",
+      "Predicates in Lean"
+    ]
   },
   {
     "id": "ann-e670-bounds",
@@ -73,7 +81,11 @@
       "conjecture",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial coefficients",
+      "Asymptotic analysis",
+      "Little-o notation"
+    ]
   },
   {
     "id": "ann-e670-d1",
@@ -98,7 +110,11 @@
       "ordering-argument",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ordering on ℝ",
+      "Real line",
+      "Telescoping argument"
+    ]
   },
   {
     "id": "ann-e670-constructions",
@@ -122,7 +138,11 @@
       "arithmetic-progression",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic progressions",
+      "Extremal constructions",
+      "Tightness"
+    ]
   },
   {
     "id": "ann-e670-connections",
@@ -147,6 +167,10 @@
       "distinct-distances",
       "connections"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct distances problem",
+      "Guth–Katz theorem",
+      "Pigeonhole principle"
+    ]
   }
 ]

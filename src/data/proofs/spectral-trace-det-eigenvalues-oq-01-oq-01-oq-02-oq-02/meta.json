@@ -1,0 +1,185 @@
+{
+  "id": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+  "title": "Spectral Trace Power Sum tr(Aᵏ) = Σλᵢᵏ in All Dimensions (Diagonalizable Case)",
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+  "description": "Takes up the standing open question of the spectral-trace line — prove the trace power sum tr(Aᵏ) = Σλᵢᵏ uniformly in the power k and the dimension n, rather than one fixed (k, n) at a time via Vieta. For DIAGONALIZABLE matrices A = M·diag(d)·M⁻¹ this is settled completely by the dimension-free spectral-mapping mechanism: since Aᵏ = M·diag(d)ᵏ·M⁻¹ = M·diag(dᵏ)·M⁻¹, conjugation invariance of the trace reads the answer off the diagonal, tr(Aᵏ) = tr(diag(d)ᵏ) = Σᵢ(dᵢ)ᵏ, while the eigenvalue multiset (roots of the characteristic polynomial) is exactly {dᵢ} with multiplicity because charpoly(diag d) = ∏ᵢ(X − dᵢ). The headline trace_pow_eq_sum_pow_eigenvalues gives tr(Aᵏ) = ((eigenvalues A).map(·^k)).sum for every k and every dimension over ANY field — no algebraic closure is needed, since the characteristic polynomial of a diagonalizable matrix already splits. Supporting results, all reusable: trace_diagonal_pow (tr(diag(d)ᵏ) = Σ(dᵢ)ᵏ over any commutative ring), units_conj_pow and trace_pow_units_conj (conjugation by a unit commutes with powers, so the power-trace is conjugation-invariant), roots_charpoly_diagonal (the eigenvalue multiset of a diagonal matrix is its diagonal with multiplicity), and card_eigenvalues_diagonalizable (a diagonalizable matrix has exactly Fintype.card n eigenvalues over any field). This replaces the parent line's per-dimension ring computations (which proved only k=2,3 in fixed dimensions 2,3) by a single uniform argument. Fully verified, 0 axioms, 0 sorries, no decide/native_decide. SCOPE: the diagonalizable case; the fully general non-diagonalizable case additionally needs matrix triangularization, absent from the Mathlib snapshot.",
+  "meta": {
+    "author": "Classical (spectral mapping theorem; conjugation invariance of the trace); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Spectral_theorem",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "eigenvalues",
+      "characteristic-polynomial",
+      "trace",
+      "power-sums",
+      "spectral-mapping",
+      "diagonalizable",
+      "conjugation-invariance",
+      "all-dimensions",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.diagonal_pow",
+        "description": "diag(d)ᵏ = diag(dᵏ): a power of a diagonal matrix is the diagonal of the entrywise power. With trace_diagonal this gives the diagonal power sum tr(diag(d)ᵏ) = Σ(dᵢ)ᵏ.",
+        "module": "Mathlib.Data.Matrix.Basic"
+      },
+      {
+        "theorem": "Matrix.trace_units_conj",
+        "description": "tr(M·N·M⁻¹) = tr(N) for a unit M: cyclic invariance of the trace under conjugation. Combined with units_conj_pow it yields the conjugation invariance of the power-trace tr((M·N·M⁻¹)ᵏ) = tr(Nᵏ).",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      },
+      {
+        "theorem": "Matrix.charpoly_units_conj",
+        "description": "(M·N·M⁻¹).charpoly = N.charpoly: the characteristic polynomial is invariant under conjugation by a unit. This carries the eigenvalue multiset of A = M·diag(d)·M⁻¹ back to that of diag(d).",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_diagonal",
+        "description": "charpoly(diag d) = ∏ᵢ(X − C(dᵢ)): the characteristic polynomial of a diagonal matrix factors over its diagonal entries. The starting point for identifying the eigenvalue multiset as the diagonal.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.roots_multiset_prod_X_sub_C",
+        "description": "the roots of ∏(X − aᵢ) over a multiset are exactly that multiset; the MULTISET form preserves multiplicity, so repeated diagonal entries give repeated eigenvalues. Turns charpoly_diagonal into roots_charpoly_diagonal: (diag d).charpoly.roots = univ.val.map d.",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      }
+    ],
+    "originalContributions": [
+      "trace_pow_eq_sum_pow_eigenvalues: the headline spectral trace power sum tr(Aᵏ) = ((eigenvalues A).map(·^k)).sum for a diagonalizable matrix A = M·diag(d)·M⁻¹, UNIFORMLY in the power k and the dimension n, over any field — the first entry in the line to be dimension-free and power-free, replacing the parent's fixed-(k,n) Vieta computations",
+      "trace_diagonal_pow: tr(diag(d)ᵏ) = Σᵢ(dᵢ)ᵏ over any commutative ring, the diagonal power sum behind the whole argument (diag(d)ᵏ = diag(dᵏ) plus trace = sum of diagonal)",
+      "units_conj_pow: conjugation by a unit commutes with powers, (M·N·M⁻¹)ᵏ = M·Nᵏ·M⁻¹, proved by induction with M⁻¹·M = 1 telescoping the interior",
+      "trace_pow_units_conj: the power-trace is conjugation-invariant, tr((M·N·M⁻¹)ᵏ) = tr(Nᵏ), the trace half of similarity invariance of the spectrum",
+      "roots_charpoly_diagonal: the eigenvalue multiset of a diagonal matrix is its diagonal counted with multiplicity, (diag d).charpoly.roots = univ.val.map d, using the multiset (not Finset) form of roots ∏(X − aᵢ) to keep repeated eigenvalues",
+      "card_eigenvalues_diagonalizable: a diagonalizable matrix has exactly Fintype.card n eigenvalues counted with multiplicity over ANY field, with no algebraic closure assumption because its characteristic polynomial already splits",
+      "trace_pow_diagonal_example / sum_pow_eigenvalues_example: for diag(2,3) both sides read tr(A³) = 2³ + 3³ = 35, the trace power sum and the eigenvalue cube sum agreeing concretely"
+    ],
+    "dateAdded": "2026-06-25",
+    "lineCount": 177,
+    "assumptions": "None beyond a diagonalizable hypothesis on the matrix. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count); #print axioms confirms the headline theorems depend on no Lean.ofReduceBool or sorryAx, and no decide/native_decide is used. The headline trace_pow_eq_sum_pow_eigenvalues, roots_charpoly_diagonal, and card_eigenvalues_diagonalizable hold over ANY field — no algebraic closure is required, because the characteristic polynomial of a diagonalizable matrix splits by construction. trace_diagonal_pow and the conjugation lemmas hold over any commutative ring. SCOPE: the theorem is stated for diagonalizable matrices A = M·diag(d)·M⁻¹ (the dense/generic case). The fully general statement for every matrix over an algebraically closed field additionally requires triangularization — similarity to an upper-triangular matrix with the eigenvalues on the diagonal — which the Mathlib snapshot used here does not expose at the matrix level (only the endomorphism generalized-eigenspace decomposition). That extension is recorded as the standing open follow-up.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The trace power sums tr(Aᵏ) = Σλᵢᵏ are the trace half of the spectral mapping theorem spec(p(A)) = p(spec(A)): the eigenvalues of a polynomial in A are the polynomial evaluated at the eigenvalues of A, and for p(X) = Xᵏ this gives the k-th power sum of the spectrum. The parent spectral-trace-det-eigenvalues-oq-01 fixed the two extreme symmetric functions (trace = Σλ, determinant = Πλ); its descendants oq-01-oq-01 and oq-01-oq-01-oq-02 proved p₂ and p₃ in dimensions 2 and 3 by matching a dimension-specific matrix Newton identity (closed by ring on the entries) against the corresponding multiset identity via Vieta. That route is intrinsically bounded — the ring identity must be rewritten for each new (k, n). The diagonalizable case removes both limits at once: for a diagonalizable matrix the spectral mapping is elementary, since powers act entrywise on the diagonal and conjugation leaves the trace and the characteristic polynomial unchanged.",
+    "problemStatement": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02, openQuestions[1])**: Prove the general trace power sum tr(Aᵏ) = Σλᵢᵏ for all dimensions n and all powers k, equivalently the multiset spectral mapping (Aᵏ).charpoly.roots = A.charpoly.roots.map(·^k).\n\n**Result (this entry)**: For diagonalizable matrices A = M·diag(d)·M⁻¹, trace_pow_eq_sum_pow_eigenvalues establishes tr(Aᵏ) = ((eigenvalues A).map(·^k)).sum uniformly in k and n over any field. The proof is the spectral-mapping mechanism itself — conjugation invariance plus the diagonal power sum — rather than a per-dimension symmetric-function computation. The remaining non-diagonalizable case is isolated to the missing triangularization infrastructure.",
+    "text": "Let A be an n×n matrix over a field K, and suppose A is diagonalizable: A = M·diag(d)·M⁻¹ for a unit M and a diagonal d : n → K. Because powers commute with conjugation, Aᵏ = M·diag(d)ᵏ·M⁻¹ = M·diag(dᵏ)·M⁻¹, and the trace is conjugation-invariant, so tr(Aᵏ) = tr(diag(d)ᵏ) = Σᵢ(dᵢ)ᵏ. The characteristic polynomial is likewise conjugation-invariant, charpoly(A) = charpoly(diag d) = ∏ᵢ(X − dᵢ), so the eigenvalue multiset A.charpoly.roots equals the diagonal {dᵢ} counted with multiplicity. Therefore tr(Aᵏ) = Σ over the eigenvalue multiset of λᵏ, for every k and every dimension, with no algebraic closure required since the characteristic polynomial already splits.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Diagonal power sum (any commutative ring): diag(d)ᵏ = diag(dᵏ) by diagonal_pow, and the trace of a diagonal matrix is the sum of its entries by trace_diagonal; with (dᵏ)ᵢ = (dᵢ)ᵏ this gives trace_diagonal_pow: tr(diag(d)ᵏ) = Σᵢ(dᵢ)ᵏ.\n\n2. Conjugation invariance of the power-trace (any commutative ring): units_conj_pow proves (M·N·M⁻¹)ᵏ = M·Nᵏ·M⁻¹ by induction on k, telescoping the interior M⁻¹·M = 1; trace_units_conj then gives trace_pow_units_conj: tr((M·N·M⁻¹)ᵏ) = tr(Nᵏ).\n\n3. Eigenvalues of a diagonal matrix (any field): charpoly_diagonal factors charpoly(diag d) = ∏ᵢ(X − dᵢ); rewriting this product as a multiset product and applying roots_multiset_prod_X_sub_C (the MULTISET form, to keep multiplicity) yields roots_charpoly_diagonal: (diag d).charpoly.roots = univ.val.map d.\n\n4. Assembly: for A = M·diag(d)·M⁻¹, the trace side is trace_pow_units_conj + trace_diagonal_pow = Σᵢ(dᵢ)ᵏ; the eigenvalue side is charpoly_units_conj + roots_charpoly_diagonal, giving eigenvalues A = univ.val.map d, so ((eigenvalues A).map(·^k)).sum = Σᵢ(dᵢ)ᵏ as well. The two agree definitionally as Finset sums (Multiset.map_map), proving trace_pow_eq_sum_pow_eigenvalues.\n\n5. Count and examples: card_eigenvalues_diagonalizable reads Multiset.card off univ.val.map d = Fintype.card n; diag(2,3) illustrates both sides equalling 35 at k=3.",
+    "keyInsights": [
+      "**Spectral mapping for diagonalizable matrices is just conjugation invariance plus entrywise powers.** Where the parent had to rewrite a different ring identity for each (k, n), diagonalizability makes the power Aᵏ = M·diag(dᵏ)·M⁻¹ transparent: the trace reads off the diagonal and is unchanged by conjugation, so a single proof covers every power and every dimension.",
+      "**No algebraic closure is needed.** The parent's spectral readings required an algebraically closed field so the characteristic polynomial splits. A diagonalizable matrix's characteristic polynomial already splits — it equals ∏(X − dᵢ) — so the eigenvalue multiset has full cardinality over ANY field, and card_eigenvalues_diagonalizable holds without the IsAlgClosed hypothesis the parent line carried.",
+      "**Multiplicity is preserved by using the multiset form of the roots.** Repeated diagonal entries must produce repeated eigenvalues. roots_charpoly_diagonal uses roots_multiset_prod_X_sub_C (over the multiset univ.val.map d) rather than the Finset form roots_prod_X_sub_C, so a diagonal like diag(2,2,3) correctly yields the eigenvalue multiset {2,2,3} and the power sum 2·2ᵏ + 3ᵏ.",
+      "**The hard residue is exactly triangularization.** The only gap between this diagonalizable result and the fully general theorem is the step 'every matrix over an algebraically closed field is similar to an upper-triangular matrix with its eigenvalues on the diagonal'. Mathlib has the endomorphism generalized-eigenspace decomposition but not this matrix-level Schur form, which pinpoints precisely what the all-cases theorem still needs."
+    ],
+    "prerequisites": [
+      "The characteristic polynomial and its roots as eigenvalues with algebraic multiplicity (spectral-trace-det-eigenvalues-oq-01)",
+      "The fixed-dimension trace power sums tr(A²) = Σλ² and tr(A³) = Σλ³ via Newton's identities and Vieta (spectral-trace-det-eigenvalues-oq-01-oq-01, oq-01-oq-01-oq-02)",
+      "Conjugation (similarity) invariance of the trace and characteristic polynomial; diagonalization A = M·diag(d)·M⁻¹"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and the Open Question",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring contrasting the parent line's per-dimension Vieta computations (only k=2,3 in dimensions 2,3) with the dimension-free spectral-mapping mechanism for diagonalizable matrices, stating the headline tr(Aᵏ) = Σλᵢᵏ uniformly in k and n, and the honesty note that the fully general case still needs triangularization; imports Mathlib and the grandparent file, opens Matrix/Polynomial, reuses the eigenvalues abbreviation.",
+      "mathContext": "$A = M\\,\\operatorname{diag}(d)\\,M^{-1}\\ \\Rightarrow\\ \\operatorname{tr}(A^k) = \\sum_i (d_i)^k$."
+    },
+    {
+      "id": "diagonal-conj",
+      "title": "Diagonal Power Sum and Conjugation Invariance",
+      "startLine": 65,
+      "endLine": 104,
+      "summary": "trace_diagonal_pow (tr(diag(d)ᵏ) = Σ(dᵢ)ᵏ over any commutative ring, from diagonal_pow and trace_diagonal), units_conj_pow ((M·N·M⁻¹)ᵏ = M·Nᵏ·M⁻¹ by induction telescoping M⁻¹·M = 1), and trace_pow_units_conj (the power-trace is conjugation-invariant).",
+      "mathContext": "$(M N M^{-1})^k = M N^k M^{-1}$,\\quad $\\operatorname{tr}((MNM^{-1})^k) = \\operatorname{tr}(N^k)$."
+    },
+    {
+      "id": "eigenvalues-diagonal",
+      "title": "Eigenvalues of a Diagonal Matrix, With Multiplicity",
+      "startLine": 105,
+      "endLine": 122,
+      "summary": "roots_charpoly_diagonal: (diag d).charpoly.roots = univ.val.map d, obtained from charpoly_diagonal (charpoly = ∏(X − dᵢ)) and the multiset form roots_multiset_prod_X_sub_C, which keeps repeated diagonal entries as repeated eigenvalues.",
+      "mathContext": "$(\\operatorname{diag} d).\\chi.\\mathrm{roots} = \\{d_i\\}_{i}$ (with multiplicity)."
+    },
+    {
+      "id": "main",
+      "title": "The Spectral Trace Power Sum in All Dimensions and Powers",
+      "startLine": 123,
+      "endLine": 152,
+      "summary": "trace_pow_eq_sum_pow_eigenvalues (tr(Aᵏ) = ((eigenvalues A).map(·^k)).sum for A = M·diag(d)·M⁻¹, uniformly in k and n over any field) and card_eigenvalues_diagonalizable (such an A has exactly Fintype.card n eigenvalues with multiplicity, no algebraic closure needed).",
+      "mathContext": "$\\operatorname{tr}(A^k) = \\sum_{\\lambda \\in \\mathrm{eig}(A)} \\lambda^k$."
+    },
+    {
+      "id": "example",
+      "title": "Concrete Illustrations",
+      "startLine": 153,
+      "endLine": 177,
+      "summary": "trace_pow_diagonal_example and sum_pow_eigenvalues_example: for diag(2,3) the trace cube and the eigenvalue cube sum both equal 2³ + 3³ = 35; #print axioms audit confirms only the foundational axioms.",
+      "mathContext": "$\\operatorname{tr}(\\operatorname{diag}(2,3)^3) = 2^3 + 3^3 = 35$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+      "relationship": "Direct parent: proved tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices via a dimension-specific Newton identity and Vieta, and posed (openQuestions[1]) the general trace power sum tr(Aᵏ) = Σλᵢᵏ for all dimensions and powers — which this entry settles for diagonalizable matrices by the dimension-free spectral-mapping argument."
+    },
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "relationship": "Grandparent (imported): establishes the eigenvalues abbreviation A.charpoly.roots, trace = Σλ and determinant = Πλ, and the eigenvalue count; the k=1 case of this entry's headline recovers its trace = Σλ."
+    },
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-02",
+      "relationship": "Sibling on cyclic/similarity invariance of the trace and the eigenvalue multiset — exactly the conjugation invariance (trace_pow_units_conj, charpoly_units_conj) that drives the diagonalizable spectral mapping here."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the trace power sum tr(Aᵏ) = Σλᵢᵏ for diagonalizable matrices, uniformly in the power k and the dimension n, over any field. The proof is the spectral-mapping mechanism itself — conjugation invariance of the trace and characteristic polynomial (trace_pow_units_conj, charpoly_units_conj) plus the diagonal power sum (trace_diagonal_pow) and the diagonal eigenvalue multiset with multiplicity (roots_charpoly_diagonal) — replacing the parent line's fixed-(k,n) symmetric-function computations by a single argument.",
+    "implications": "Advances the spectral-trace line from one fixed (power, dimension) pair at a time to all powers and all dimensions at once for the dense/generic diagonalizable case, and removes the algebraic-closure hypothesis the parent line carried (a diagonalizable matrix's characteristic polynomial already splits). The supporting lemmas — diagonal power sum, conjugation invariance of the power-trace, and the diagonal eigenvalue multiset with multiplicity — are reusable building blocks for any subsequent spectral-mapping work. The result also isolates the exact residue of the fully general theorem: it differs from 'every matrix over an algebraically closed field' only by triangularization (Schur form), which Mathlib does not yet expose at the matrix level.",
+    "openQuestions": [
+      "Remove the diagonalizable hypothesis: prove tr(Aᵏ) = Σλᵢᵏ for EVERY matrix over an algebraically closed field by building matrix triangularization (similarity to an upper-triangular matrix with the eigenvalues on the diagonal), then extending trace_diagonal_pow to the upper-triangular power-trace (the diagonal of Tᵏ is dᵏ).",
+      "Prove the multiset spectral mapping for an arbitrary polynomial p, (p(A)).charpoly.roots = A.charpoly.roots.map(p.eval) for diagonalizable A, generalizing roots_charpoly_diagonal from p = Xᵏ to all p and giving tr(p(A)) = Σ p(λᵢ)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SpectralTraceDetEigenvaluesOQ01"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2012",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for the spectral mapping theorem, similarity invariance of the trace and characteristic polynomial, and the trace power sums tr(Aᵏ) as power sums of the eigenvalues."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.LinearAlgebra.Matrix.Trace, Mathlib.LinearAlgebra.Matrix.Charpoly.Basic, and Mathlib.Algebra.Polynomial.Roots",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of diagonal_pow, trace_diagonal, trace_units_conj, charpoly_units_conj, charpoly_diagonal, and roots_multiset_prod_X_sub_C used to assemble the diagonalizable spectral trace power sum."
+    }
+  ],
+  "sorries": 0
+}

@@ -88,10 +88,10 @@
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "ConsecutiveInterval, DisjointIntervalCollection structures",
-      "startLine": 30,
+      "summary": "File header (problem statement and history) and Part I: ConsecutiveInterval and DisjointIntervalCollection structures with element/product/size helpers.",
+      "startLine": 1,
       "endLine": 70,
-      "mathContext": "Disjoint intervals $I_1,\\\\ldots,I_n \\\\subset \\\\mathbb{R}$ with $|I_k| = n/k$ (length proportional to $1/k$)."
+      "mathContext": "Formal definition: File header (problem statement and history) and Part I: ConsecutiveInterval and DisjointIntervalCollection structures with element/product/size helpers."
     },
     {
       "id": "perfect-squares",
@@ -130,14 +130,14 @@
       "title": "Bauer-Bennett Theorem (2007)",
       "summary": "Infinitely many solutions for n=3 or n=5",
       "startLine": 141,
-      "endLine": 156,
+      "endLine": 149,
       "mathContext": "Infinitely many solutions for n=3 or n=5"
     },
     {
       "id": "bennett-van-luijk",
       "title": "Bennett-Van Luijk Theorem (2012)",
       "summary": "Statement of Bennett-Van Luijk theorem in docstring (not axiomatized)",
-      "startLine": 151,
+      "startLine": 150,
       "endLine": 158,
       "mathContext": "Infinitely many solutions with size-5 intervals"
     },
@@ -145,32 +145,40 @@
       "id": "disproof",
       "title": "The Conjecture is FALSE",
       "summary": "Combining results to disprove the conjecture",
-      "startLine": 160,
+      "startLine": 159,
       "endLine": 192,
       "mathContext": "Combining results to disprove the conjecture"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "summary": "The erdos_363 main theorem restating that Erdős #363's finiteness conjecture is FALSE (via erdosConjecture363_false).",
+      "startLine": 193,
+      "endLine": 203,
+      "mathContext": "Verified: The erdos_363 main theorem restating that Erdős #363's finiteness conjecture is FALSE (via erdosConjecture363_false)."
     },
     {
       "id": "ulas-conjecture",
       "title": "Ulas's Conjecture",
       "summary": "Generalization to arbitrary interval sizes",
-      "startLine": 205,
-      "endLine": 219,
+      "startLine": 204,
+      "endLine": 220,
       "mathContext": "Generalization to arbitrary interval sizes"
     },
     {
       "id": "erdos-selfridge",
       "title": "Connection to Erdős-Selfridge",
       "summary": "Single blocks vs disjoint blocks",
-      "startLine": 222,
-      "endLine": 272,
+      "startLine": 221,
+      "endLine": 273,
       "mathContext": "Single blocks vs disjoint blocks"
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Complete summary of results",
-      "startLine": 275,
-      "endLine": 292,
+      "startLine": 274,
+      "endLine": 293,
       "mathContext": "OPEN: whether only finitely many valid collections exist. A curious geometric-number-theoretic question."
     }
   ],

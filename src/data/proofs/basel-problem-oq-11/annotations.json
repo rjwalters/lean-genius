@@ -1,0 +1,163 @@
+[
+  {
+    "id": "eta-summand",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
+    "type": "definition",
+    "title": "The Eta Summand (-1)^(n+1)/n²",
+    "content": "etaSummand n = (-1)^(n+1)/n² is the alternating Basel term. The sign (-1)^(n+1) is +1 on odd n and -1 on even n, so the series 1 - 1/4 + 1/9 - 1/16 + ⋯ is the alternating companion of ζ(2). As with the non-alternating Basel summand, the n = 0 term is harmless: 1/0² = 0 in ℝ by Lean's junk-value convention, so the series effectively starts at n = 1. The whole proof reduces this alternating series to two non-alternating Basel subseries by analyzing the sign on even vs. odd indices.",
+    "mathContext": "$\\eta\\text{-summand}(n) = \\dfrac{(-1)^{n+1}}{n^2}$, giving $\\eta(2) = 1 - \\tfrac14 + \\tfrac19 - \\tfrac1{16} + \\cdots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "alternating series",
+      "Basel problem",
+      "junk-value convention"
+    ],
+    "prerequisites": [
+      "alternating series",
+      "Lean definitions"
+    ]
+  },
+  {
+    "id": "even-basel",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 39,
+      "endLine": 48
+    },
+    "type": "theorem",
+    "title": "Even-Indexed Basel Sum: ∑ 1/(2k)² = π²/24",
+    "content": "hasSum_even_zeta_two computes the even part as a quarter-scaled ζ(2). The summand identity 1/(2k)² = (1/4)·(1/k²) is established by `funext; push_cast; ring`, then HasSum.mul_left scales Mathlib's hasSum_zeta_two by 1/4. The `convert ... using 1; ring` closes the residual value goal (1/4)·(π²/6) = π²/24. This is the same quarter-scaling that appears in the odd-square entry; here it is one of two non-alternating building blocks.",
+    "mathContext": "$\\displaystyle\\sum_{k\\ge 1} \\frac{1}{(2k)^2} = \\frac14\\sum_{k\\ge 1}\\frac{1}{k^2} = \\frac{\\pi^2}{24}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasSum.mul_left",
+      "even-indexed subseries",
+      "series rescaling",
+      "Basel problem"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "scaling of convergent sums"
+    ]
+  },
+  {
+    "id": "odd-basel",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 50,
+      "endLine": 67
+    },
+    "type": "theorem",
+    "title": "Odd-Indexed Basel Sum: ∑ 1/(2k+1)² = π²/8",
+    "content": "hasSum_odd_zeta_two recovers the odd-square value via the even/odd-then-uniqueness idiom: the odd subseries is summable (injective reindexing k ↦ 2k+1, dispatched by `omega`), HasSum.even_add_odd reassembles ζ(2) = π²/24 + (∑ odd), and HasSum.unique against hasSum_zeta_two forces ∑ odd = π²/6 − π²/24 = π²/8 (a one-line `linarith`). This is exactly the result formalized standalone in basel-problem-oq-09; here it is reused as the positive half of the eta sum.",
+    "mathContext": "$\\displaystyle\\sum_{k\\ge 0}\\frac{1}{(2k+1)^2} = \\frac{\\pi^2}{6} - \\frac{\\pi^2}{24} = \\frac{\\pi^2}{8}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.even_add_odd",
+      "HasSum.unique",
+      "odd-square series",
+      "Summable.comp_injective"
+    ],
+    "prerequisites": [
+      "uniqueness of sums",
+      "summability"
+    ]
+  },
+  {
+    "id": "eta-even-sign",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 71,
+      "endLine": 79
+    },
+    "type": "key-step",
+    "title": "Even Indices Carry the Minus Sign",
+    "content": "On even indices n = 2k the exponent is 2k+1 (odd), so (-1)^(2k+1) = -1 and etaSummand(2k) = -1/(2k)². The sign is collapsed by Odd.neg_one_pow with the explicit witness ⟨k, by ring⟩ : Odd (2k+1). The even part of η(2) is therefore the negative of the even Basel sum: -π²/24. This is where the alternation actually enters — the even-indexed terms are precisely the ones that get flipped.",
+    "mathContext": "$(-1)^{2k+1} = -1 \\Rightarrow \\eta\\text{-summand}(2k) = -\\dfrac{1}{(2k)^2}$, so the even part is $-\\dfrac{\\pi^2}{24}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Odd.neg_one_pow",
+      "parity of exponents",
+      "alternating series",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "parity",
+      "powers of -1"
+    ]
+  },
+  {
+    "id": "eta-odd-sign",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 80,
+      "endLine": 87
+    },
+    "type": "key-step",
+    "title": "Odd Indices Keep the Plus Sign",
+    "content": "On odd indices n = 2k+1 the exponent is 2k+2 (even), so (-1)^(2k+2) = +1 and etaSummand(2k+1) = 1/(2k+1)². The sign is collapsed by Even.neg_one_pow with witness ⟨k+1, by ring⟩ : Even (2k+2). The odd part of η(2) is thus the positive odd-square Basel sum π²/8, unchanged from the non-alternating case.",
+    "mathContext": "$(-1)^{2k+2} = +1 \\Rightarrow \\eta\\text{-summand}(2k+1) = \\dfrac{1}{(2k+1)^2}$, so the odd part is $+\\dfrac{\\pi^2}{8}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Even.neg_one_pow",
+      "parity of exponents",
+      "odd-square series",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "parity",
+      "powers of -1"
+    ]
+  },
+  {
+    "id": "eta-assembly",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 69,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Assembling η(2) = π²/12 = (1/2)ζ(2)",
+    "content": "hasSum_eta_two recombines the two halves with HasSum.even_add_odd: -π²/24 (even) + π²/8 (odd), and `ring` evaluates this to π²/12. The value confirms the classical functional relation η(s) = (1 − 2^{1−s})ζ(s) at s = 2, where 1 − 2^{−1} = 1/2 gives η(2) = (1/2)ζ(2) = (1/2)(π²/6) = π²/12. The whole alternating sum was thus reduced to non-alternating Basel data plus elementary sign bookkeeping.",
+    "mathContext": "$\\eta(2) = -\\dfrac{\\pi^2}{24} + \\dfrac{\\pi^2}{8} = \\dfrac{\\pi^2}{12} = \\tfrac12\\,\\zeta(2) = (1 - 2^{1-2})\\zeta(2).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet eta function",
+      "eta-zeta functional relation",
+      "HasSum.even_add_odd",
+      "alternating series"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "Basel problem"
+    ]
+  },
+  {
+    "id": "eta-tsum",
+    "proofId": "basel-problem-oq-11",
+    "range": {
+      "startLine": 93,
+      "endLine": 95
+    },
+    "type": "observation",
+    "title": "The tsum Form of the Eta Value",
+    "content": "tsum_eta_two restates the result as ∑' n, (-1)^(n+1)/n² = π²/12 via HasSum.tsum_eq, the form most convenient for downstream citation. Note this is a *conditional* convergence statement at the value level (the alternating series converges and equals π²/12); summability of |etaSummand| coincides with ζ(2)'s, so the rearrangement into even/odd halves is justified absolutely.",
+    "mathContext": "$\\displaystyle\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n^2} = \\frac{\\pi^2}{12}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "tsum",
+      "HasSum.tsum_eq",
+      "absolute convergence",
+      "Dirichlet eta function"
+    ],
+    "prerequisites": [
+      "tsum notation",
+      "convergence of series"
+    ]
+  }
+]

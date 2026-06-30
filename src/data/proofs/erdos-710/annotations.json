@@ -16,7 +16,11 @@
       "Asymptotic analysis",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "asymptotic analysis",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e710-valid-selection",
@@ -35,7 +39,11 @@
       "Injective functions",
       "Interval constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e710-minimal-length",
@@ -54,7 +62,11 @@
       "Existence theorems",
       "Minimal elements"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "well-ordering principle"
+    ]
   },
   {
     "id": "ann-e710-multiples",
@@ -73,7 +85,11 @@
       "Counting multiples",
       "Pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "discrete counting",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e710-lower-bound",
@@ -92,7 +108,11 @@
       "Probabilistic method",
       "Counting arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e710-upper-bound",
@@ -111,7 +131,11 @@
       "Greedy algorithms",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial constructions",
+      "asymptotic analysis",
+      "algorithm design"
+    ]
   },
   {
     "id": "ann-e710-bounds-gap",
@@ -130,7 +154,11 @@
       "Slow-growing functions",
       "Gap analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "logarithmic growth rates"
+    ]
   },
   {
     "id": "ann-e710-open-problem",
@@ -148,7 +176,11 @@
       "asymptotics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "number theory",
+      "open problems in combinatorics"
+    ]
   },
   {
     "id": "ann-e710-example-n1",
@@ -166,7 +198,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e710-example-n2",
@@ -184,7 +220,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e710-example-n3",
@@ -202,7 +242,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e710-constraint-density",
@@ -221,7 +265,11 @@
       "Sparsity",
       "Bottleneck analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "discrete counting",
+      "asymptotic heuristics"
+    ]
   },
   {
     "id": "ann-e710-greedy",
@@ -240,7 +288,11 @@
       "Constructive proofs",
       "Upper bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "algorithm design",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e710-summary",
@@ -259,6 +311,10 @@
       "asymptotics",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal combinatorics",
+      "Lean 4 syntax"
+    ]
   }
 ]

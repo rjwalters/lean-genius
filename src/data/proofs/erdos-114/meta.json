@@ -150,6 +150,16 @@
       "targetId": "isoperimetric-theorem",
       "relationship": "isoperimetric-analogy",
       "description": "The classical isoperimetric theorem (circle maximizes area for fixed perimeter) provides the philosophical template for #114. Both problems find a symmetric extremizer—circle for the classical case, z^n-1 (with D_n symmetry) for the polynomial lemniscate case."
+    },
+    {
+      "proofId": "erdos-114-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 attacks the quantitative residue left open by Tao (2025): Tao proved z^n-1 uniquely maximizes lemniscate length for all n above some threshold N₀, but the proof gives no explicit value. OQ-01 formalizes the threshold via `Nat.find` and proves the finite-reduction principle — that the full conjecture for all n reduces to verifying the remaining finitely many cases n < N₀ — turning the open problem into a (still hard but) finite computation."
+    },
+    {
+      "proofId": "erdos-114-oq-04",
+      "relationship": "extended-by",
+      "description": "OQ-04 is the foundational/de-axiomatization companion: it audits which axioms used in this parent formalization can be discharged using Mathlib's complex-analysis library, redefining lemniscate sets rigorously via `Polynomial.eval` and the complex norm ‖·‖ and proving the basic set-theoretic properties from first principles. Where OQ-01 sharpens the mathematical statement, OQ-04 strengthens the formal foundation beneath it."
     }
   ],
   "references": [

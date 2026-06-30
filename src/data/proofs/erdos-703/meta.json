@@ -17,7 +17,7 @@
       "intersection-problems"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 703,
     "erdosUrl": "https://erdosproblems.com/703",
     "erdosProblemStatus": "solved",
@@ -42,13 +42,16 @@
       "franklFurediOdd/Even: explicit optimal constructions",
       "avoidsLIntersections: generalization to L-avoiding families",
       "zero_avoiding_is_intersecting: proved connection to classical intersecting families",
-      "erdos_703_solved: combined resolution theorem"
+      "erdos_703_solved: combined resolution theorem",
+      "card_le_of_avoids_zero: complement-pairing upper bound |F| ≤ 2^{n-1} for 0-avoiding (intersecting) families",
+      "star_family_card: the fixed-point star family has exactly 2^{n-1} members (sharpness witness)",
+      "T_n_0: fully machine-checked proof that T(n,0) = 2^{n-1} (previously a sorry)"
     ],
-    "axiomCount": 2,
-    "lineCount": 259,
-    "assumptions": "2 axioms: frankl_rodl_1987, chromaticNumber. 1 sorry.",
+    "axiomCount": 1,
+    "lineCount": 348,
+    "assumptions": "1 axiom: frankl_rodl_1987 (the deep Frankl–Rödl 1987 exponential bound — the affirmative answer to the main question). 0 sorries: the trivial case T(n,0)=2^{n-1} is fully machine-checked (#print axioms T_n_0 = [propext, Classical.choice, Quot.sound]) via a complement-pairing upper bound and a star-family witness. The unused opaque chromaticNumber axiom was removed; the geometric chromatic-number consequence is recorded as prose only since infinite unit-distance chromatic numbers are not yet in Mathlib.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 7
   },
   "crossReferences": [
@@ -67,39 +70,39 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 31,
-      "endLine": 39,
+      "startLine": 1,
+      "endLine": 40,
       "summary": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace.",
       "mathContext": "Mathematical content: Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace."
     },
     {
       "id": "r-intersection",
       "title": "Forbidden r-Intersection Families",
-      "startLine": 49,
-      "endLine": 66,
+      "startLine": 41,
+      "endLine": 67,
       "summary": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset.",
       "mathContext": "Formal definition: Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset."
     },
     {
       "id": "trivial-case",
       "title": "The Trivial Case T(n,0)",
-      "startLine": 78,
-      "endLine": 88,
+      "startLine": 68,
+      "endLine": 89,
       "summary": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry.",
       "mathContext": "$T(n,0) = $$2^{{n-1}$}$$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry."
     },
     {
       "id": "frankl-1977",
       "title": "Frankl's Result for r = 1",
-      "startLine": 100,
-      "endLine": 117,
+      "startLine": 90,
+      "endLine": 118,
       "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection.",
       "mathContext": "Mathematical content: Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
     },
     {
       "id": "frankl-furedi",
       "title": "Frankl-Füredi Optimal Families",
-      "startLine": 122,
+      "startLine": 119,
       "endLine": 142,
       "summary": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$.",
       "mathContext": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$."
@@ -107,15 +110,15 @@
     {
       "id": "main-question",
       "title": "The Main Question — Exponential Bound",
-      "startLine": 153,
-      "endLine": 165,
+      "startLine": 143,
+      "endLine": 171,
       "summary": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize.",
       "mathContext": "Formal $\\varepsilon$-$\\$\\delta$$ statement: $T(n,r) < (2-\\$\\delta$)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize."
     },
     {
       "id": "chromatic-connection",
       "title": "Connection to Chromatic Numbers",
-      "startLine": 181,
+      "startLine": 172,
       "endLine": 195,
       "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods.",
       "mathContext": "Bound: The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
@@ -129,9 +132,17 @@
       "mathContext": "Verified: Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
     },
     {
+      "id": "part-viii-related-702",
+      "title": "Related Problem #702",
+      "startLine": 213,
+      "endLine": 222,
+      "summary": "Poses the companion open question Erdős #702 (the $k$-uniform case): what is the maximum size of a $k$-uniform family (all sets of size exactly $k$) avoiding $r$-intersection? Stated as prose only; no formal declaration.",
+      "mathContext": "The $k$-uniform restriction connects to the Frankl-Wilson and Ray-Chaudhuri-Wilson theorems on $L$-intersecting uniform families, which give $\\binom{n}{s}$-type bounds via the linear algebra method."
+    },
+    {
       "id": "summary",
       "title": "Summary and Resolution",
-      "startLine": 227,
+      "startLine": 223,
       "endLine": 259,
       "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
       "mathContext": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = $$2^{{n-1}$}$`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
@@ -141,7 +152,7 @@
     "historicalContext": "Intersection problems for set families are fundamental in extremal combinatorics, originating with the Erdős-Ko-Rado theorem (1961) on intersecting families. Erdős extended this to forbidden r-intersection, asking how large a family can be if no two sets share exactly r elements. For r = 0, the answer T(n,0) = 2^{n-1} is classical. Frankl (1977) solved the r = 1 case. Frankl-Füredi (1984) determined T(n,r) exactly for fixed r and large n, showing the optimal families consist of very large and very small sets. The key open question — whether T(n,r) < (2-δ)^n for r in the 'middle range' εn < r < (1/2-ε)n — carried a $250 Erdős prize. Frankl and Rödl (1987) resolved this affirmatively using the 'nibble method', now a fundamental technique in probabilistic combinatorics. The result connects to geometry: it implies exponential chromatic number for the unit distance graph in ℝ^n, also proved independently by Frankl-Wilson (1981) via modular algebraic methods.",
     "problemStatement": "Let T(n,r) be the maximum size of a family F of subsets of {1,...,n} such that |A ∩ B| ≠ r for all A, B in F. Estimate T(n,r). In particular, for every ε > 0, is there δ > 0 such that T(n,r) < (2 - δ)^n for εn < r < (1/2 - ε)n?",
     "text": "Define T(n,r) as the maximum family size avoiding r-intersection. Is T(n,r) < (2-δ)^n for εn < r < (1/2-ε)n? SOLVED: YES (Frankl-Rödl 1987). Exact values known for small r (Frankl-Füredi 1984).",
-    "proofStrategy": "The formalization builds up from basic definitions (r-intersection, r-avoiding families, T(n,r)) through known results (T(n,0) = 2^{n-1}, Frankl 1977, Frankl-Füredi 1984) to the main Frankl-Rödl theorem. Deep results are axiomatized; the connections to chromatic numbers and the Frankl-Wilson theorem are also formalized.",
+    "proofStrategy": "The formalization builds up from basic definitions (r-intersection, r-avoiding families, T(n,r)) through known results (T(n,0) = 2^{n-1}, Frankl 1977, Frankl-Füredi 1984) to the main Frankl-Rödl theorem. Deep results are axiomatized; the connections to chromatic numbers and the Frankl-Wilson theorem are recorded as prose rather than via opaque axioms.",
     "keyInsights": [
       "**Base case T(n,0) = 2^{n-1}**: The r = 0 case reduces to classical intersecting families, connecting to the Erdős-Ko-Rado framework",
       "**Pigeonhole mechanism**: Large sets ($|A| > (n+r)/2$) automatically satisfy $|A \\cap B| > r$, providing the key construction ingredient for all known optimal families",
@@ -155,7 +166,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987) using the nibble method. The formalization covers the full development from T(n,0) through optimal families to the main theorem, with connections to the Frankl-Wilson theorem and unit distance graph chromatic numbers. 2 sorries remain (T_n_0 proof, large_sets_avoid_1).",
+    "summary": "Erdős Problem #703 is SOLVED. The answer to 'Is T(n,r) < (2-δ)^n for middle range r?' is YES, proved by Frankl-Rödl (1987) using the nibble method. The formalization covers the full development from T(n,0) through optimal families to the main theorem, with connections to the Frankl-Wilson theorem and unit distance graph chromatic numbers recorded as prose. 0 sorries remain; the only axiom is the deep Frankl-Rödl bound (frankl_rodl_1987).",
     "implications": "The Frankl-Rödl theorem is a cornerstone of extremal set theory. The exponential bound has deep connections to geometry (unit distance graph chromatic numbers), coding theory (bounds on codes with forbidden distances), and probability (the nibble method became a general-purpose tool in probabilistic combinatorics).",
     "openQuestions": [
       "What is the optimal δ = δ(ε) as a function of ε in the Frankl-Rödl bound?",
@@ -167,23 +178,19 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Combinatorics.SetFamily.Intersecting"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
       "Finset"
     ],
     "namespace": "Erdos703",
-    "lineCount": 259,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 348,
+    "axiomCount": 1,
+    "theoremCount": 7,
     "definitionCount": 7,
     "path": "Proofs/Erdos703Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
-  "sorries": 1
+  "sorries": 0
 }

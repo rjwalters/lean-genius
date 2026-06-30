@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cramer%27s_rule#Efficiency",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/CramersRuleOQ02OQ02.lean",
     "tags": [
       "computational-complexity",
@@ -19,7 +19,7 @@
       "factorial-growth",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -54,9 +54,9 @@
     ],
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 189,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "One assumption: `Lean.ofReduceBool`. 0 `axiom` declarations, 0 sorries. The presented theorems `lu_beats_cramer_all` and `qr_beats_cramer_from_3` discharge their small-n base cases by `native_decide`, which the kernel accepts via `Lean.ofReduceBool` (compiler trust). Under the gallery convention (CLAUDE.md), native_decide on a presented result makes the entry `axiomatized` (axiomCount 1); `leanFile.axiomCount` stays 0 (no literal `axiom` declarations).",
     "theoremCount": 13,
     "definitionCount": 2
   },

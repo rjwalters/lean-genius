@@ -47,76 +47,108 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Library Imports",
-      "startLine": 13,
-      "endLine": 20,
-      "summary": "Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization.",
-      "mathContext": "Mathematical content: Imports Mathlib libraries for natural numbers, integers, finite sets (cardinality, sorting), real numbers, and tactics needed throughout the formalization."
+      "id": "preamble",
+      "title": "Preamble & Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring (Erdős #153 statement, status OPEN, references) and Mathlib imports",
+      "mathContext": "Mathematical content: Module docstring (Erdős #153 statement, status OPEN, references) and Mathlib imports"
     },
     {
       "id": "sidon-sets",
-      "title": "Sidon Sets",
-      "startLine": 21,
-      "endLine": 30,
-      "summary": "Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets.",
-      "mathContext": "Formal definition: Defines `IsSidon`: a finite set $A \\subseteq \\mathbb{N}$ where all pairwise sums $a+b$ with $a \\le b$ are distinct. Also known as $B_2$ sets."
+      "title": "Section I: Sidon Sets",
+      "startLine": 33,
+      "endLine": 42,
+      "summary": "IsSidon (B₂ set: pairwise sums distinct)",
+      "mathContext": "Mathematical content: IsSidon (B₂ set: pairwise sums distinct)"
     },
     {
-      "id": "sumset-gaps",
-      "title": "Sumset and Gap Structure",
-      "startLine": 31,
-      "endLine": 49,
-      "summary": "Defines the sumset $A+A$ via Cartesian product image, the sorted sumset as a list $\\{s_1 < \\cdots < s_t\\}$, and `gapSquaredSum` computing $\\sum (s_{i+1} - s_i)^2$ via fold over zipped consecutive pairs.",
-      "mathContext": "Defines the sumset $A+A$ via Cartesian product image, the sorted sumset as a list $\\{s_1 < \\cdots < s_t\\}$, and `gapSquaredSum` computing $\\sum (s_{i+1} - s_i)^2$ via fold over zipped consecutive pairs."
+      "id": "sumset-gap-structure",
+      "title": "Section II: Sumset and Gap Structure",
+      "startLine": 43,
+      "endLine": 61,
+      "summary": "sumset, sortedSumset, gapSquaredSum",
+      "mathContext": "Mathematical content: sumset, sortedSumset, gapSquaredSum"
     },
     {
       "id": "gap-variance",
-      "title": "The Gap Variance",
-      "startLine": 50,
-      "endLine": 63,
-      "summary": "Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity.",
-      "mathContext": "Formal definition: Defines `meanGapSquared` as $(1/(t-1)) \\cdot \\sum (s_{i+1}-s_i)^2$ and `minMeanGapSquared(n)` as the infimum over all Sidon sets of size $n$, capturing the extremal gap regularity."
+      "title": "Section III: The Gap Variance",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "meanGapSquared, minMeanGapSquared",
+      "mathContext": "Mathematical content: meanGapSquared, minMeanGapSquared"
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
-      "startLine": 64,
-      "endLine": 77,
-      "summary": "States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges.",
-      "mathContext": "Mathematical content: States `ErdosProblem153`: $\\forall M > 0, \\exists N_0$ such that all Sidon sets $A$ with $|A| \\ge N_0$ satisfy $\\bar{G}(A) > M$. The mean squared gap diverges."
+      "title": "Section IV: The Conjecture",
+      "startLine": 76,
+      "endLine": 89,
+      "summary": "ErdosProblem153 (mean squared gap tends to infinity)",
+      "mathContext": "Mathematical content: ErdosProblem153 (mean squared gap tends to infinity)"
     },
     {
       "id": "upper-triangle",
-      "title": "Upper Triangle Cardinality",
-      "startLine": 87,
-      "endLine": 182,
-      "summary": "Proves three helper lemmas establishing $|\\{(a,b) \\in A \\times A : a \\le b\\}| = n(n+1)/2$: diagonal cardinality (`diag_card_eq`), swap bijection (`card_lt_swap`), and the main counting lemma (`card_upper_triangle`) via partition into strict upper triangle, diagonal, and strict lower triangle.",
-      "mathContext": "Proved: The upper triangle $\\{(a,b) : a \\le b\\}$ of $A \\times A$ has exactly $n(n+1)/2$ elements, established via partition $A \\times A = \\{a < b\\} \\sqcup \\{a = b\\} \\sqcup \\{b < a\\}$, a swap bijection $\\{b < a\\} \\cong \\{a < b\\}$, and the identity $2|\\{a \\le b\\}| = n^2 + n$."
+      "title": "Section V: Upper Triangle Cardinality",
+      "startLine": 90,
+      "endLine": 186,
+      "summary": "diag_card_eq, card_lt_swap, card_upper_triangle (|{(a,b):a≤b}| = n(n+1)/2)",
+      "mathContext": "Mathematical content: diag_card_eq, card_lt_swap, card_upper_triangle (|{(a,b):a≤b}| = n(n+1)/2)"
     },
     {
-      "id": "sumset-properties",
-      "title": "Sidon Set Sumset Properties",
-      "startLine": 184,
-      "endLine": 223,
-      "summary": "Proves two structural properties: (1) `sidon_sumset_card`: $|A+A| \\ge n(n+1)/2$ for Sidon sets of size $n$ (fully proved via injection + upper triangle lemma), and (2) `sidon_sumset_range`: $A+A \\subseteq \\{0,\\ldots,2N\\}$ when $A \\subseteq \\{1,\\ldots,N\\}$.",
-      "mathContext": "Proved: Both structural properties are fully machine-checked. The sumset cardinality bound follows from injectivity of the sum map on ordered pairs (Sidon condition) combined with the upper triangle cardinality lemma."
+      "id": "general-sumset-bound",
+      "title": "Section V.5: General Sumset Cardinality Bound",
+      "startLine": 187,
+      "endLine": 216,
+      "summary": "sumset_eq_upper_image, sumset_card_le (|A+A| ≤ n(n+1)/2)",
+      "mathContext": "Mathematical content: sumset_eq_upper_image, sumset_card_le (|A+A| ≤ n(n+1)/2)"
+    },
+    {
+      "id": "sidon-sumset-properties",
+      "title": "Section VI: Sidon Set Sumset Properties",
+      "startLine": 217,
+      "endLine": 264,
+      "summary": "sidon_sumset_card, sidon_sumset_card_eq, sidon_sumset_range (|A+A| = n(n+1)/2 for Sidon A)",
+      "mathContext": "Mathematical content: sidon_sumset_card, sidon_sumset_card_eq, sidon_sumset_range (|A+A| = n(n+1)/2 for Sidon A)"
+    },
+    {
+      "id": "distinct-differences",
+      "title": "Section VI.5: Distinct Differences and Density",
+      "startLine": 265,
+      "endLine": 302,
+      "summary": "sidon_distinct_differences, sidon_density_bound",
+      "mathContext": "Mathematical content: sidon_distinct_differences, sidon_density_bound"
     },
     {
       "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 225,
-      "endLine": 257,
-      "summary": "Proves `average_gap_bounded` (trivially: $C$ may depend on $N$) and axiomatizes the Erdős–Sárközy–Sós (1994) result that $\\bar{G}(A) \\ge c > 0$ for sufficiently large Sidon sets.",
-      "mathContext": "Mixed: `average_gap_bounded` is fully proved. The ESS 1994 result is axiomatized as a deep published theorem."
+      "title": "Section VII: Known Bounds",
+      "startLine": 303,
+      "endLine": 401,
+      "summary": "average_gap_bounded, foldl_sq_gap_ge, gapSquaredSum_ge_card_sub_one, ess_1994_result",
+      "mathContext": "Mathematical content: average_gap_bounded, foldl_sq_gap_ge, gapSquaredSum_ge_card_sub_one, ess_1994_result"
+    },
+    {
+      "id": "main-conjecture-axiom",
+      "title": "Section VIII: The Main Conjecture (Axiomatized)",
+      "startLine": 402,
+      "endLine": 409,
+      "summary": "erdos_153_conjecture (axiom): the open conjecture",
+      "mathContext": "Mathematical content: erdos_153_conjecture (axiom): the open conjecture"
     },
     {
       "id": "infinite-sidon",
-      "title": "Infinite Sidon Sets",
-      "startLine": 259,
-      "endLine": 277,
-      "summary": "Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$.",
-      "mathContext": "Formal definition: Defines `IsInfiniteSidon` for infinite subsets of $\\mathbb{N}$ with the Sidon property, and states the analogous divergence question for $S \\cap \\{1,\\ldots,N\\}$ as $N \\to \\infty$."
+      "title": "Section IX: Infinite Sidon Sets (Derived from Finite Conjecture)",
+      "startLine": 410,
+      "endLine": 495,
+      "summary": "IsInfiniteSidon, infinite_sidon_restriction, infinite_set_exists_finset, infinite_set_card_grows, infinite_sidon_gap_from_finite",
+      "mathContext": "Mathematical content: IsInfiniteSidon, infinite_sidon_restriction, infinite_set_exists_finset, infinite_set_card_grows, infinite_sidon_gap_from_finite"
+    },
+    {
+      "id": "sumset-extremes",
+      "title": "Section X: Sumset Extremes",
+      "startLine": 496,
+      "endLine": 542,
+      "summary": "sumset_nonempty, sumset_min', sumset_max', sumset_span",
+      "mathContext": "Mathematical content: sumset_nonempty, sumset_min', sumset_max', sumset_span"
     }
   ],
   "conclusion": {

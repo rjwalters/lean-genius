@@ -1,0 +1,98 @@
+[
+  {
+    "id": "sc-triangle-cover-packing-defs",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 56, "endLine": 75 },
+    "type": "definition",
+    "title": "Triangles, Covers, and Edge-Disjoint Packings",
+    "content": "The three combinatorial objects of the LP. A triangle is a 3-clique (Mathlib's IsNClique 3). An edge set F covers a triangle s if it contains one of s's three edges (TriangleCoveredBy). F is a triangle edge cover of G when deleting its edges leaves G triangle-free (IsTriangleEdgeCover). A triangle packing P is edge-disjoint, encoded combinatorially: any two distinct triangles meet in at most one vertex, |s ∩ t| ≤ 1 — because two distinct 3-cliques sharing an edge would share two vertices. These are the primal (packing) and dual (cover) objects of the triangle hypergraph's covering LP.",
+    "mathContext": "$\\nu(G) = \\max|P|\\ (\\text{edge-disjoint packing}), \\quad \\tau\\text{-cover}: G \\setminus F \\text{ triangle-free}$",
+    "significance": "key",
+    "prerequisites": ["SimpleGraph.IsNClique", "Sym2 (unordered edges)", "Set.Pairwise", "covering and packing in hypergraphs"],
+    "relatedConcepts": ["triangle hypergraph", "LP duality", "vertex/edge cover", "matching (packing)", "Ruzsa–Szemerédi graphs"]
+  },
+  {
+    "id": "sc-bridge",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 81, "endLine": 116 },
+    "type": "theorem",
+    "title": "The Bridge: Triangle-Free After Deletion ⟺ F Covers Every Triangle",
+    "content": "The keystone lemma cliqueFree_deleteEdges_iff_covers links the analytic side (the removal lemma's 'make G triangle-free') with the combinatorial side ('F meets every triangle'). Forward: if deletion is triangle-free but some triangle s had no edge in F, every edge of s survives deletion (SimpleGraph.deleteEdges_adj), so s remains a triangle — contradiction. Backward: any triangle surviving deletion is a triangle of G, hence covered, but its covering edge was deleted — contradiction. This iff is what lets every later result reason about edge covers instead of graph deletion.",
+    "mathContext": "$(G \\setminus F)\\text{ is triangle-free} \\iff \\forall \\text{ triangle } s,\\ \\exists e \\in s \\text{ with } e \\in F$",
+    "significance": "critical",
+    "prerequisites": ["SimpleGraph.deleteEdges_adj", "CliqueFree", "proof by contradiction", "push_neg"],
+    "relatedConcepts": ["hitting set", "transversal", "set cover ↔ feasibility", "deletion vs covering"]
+  },
+  {
+    "id": "sc-weak-duality",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 122, "endLine": 177 },
+    "type": "theorem",
+    "title": "Weak LP Duality: |Packing| ≤ |Cover|",
+    "content": "The lower bracket's engine, packing_card_le_cover_card: any edge-disjoint packing P has |P| ≤ |F| for any cover F. Assign to each packed triangle a covering edge of F (Classical.choose on the attached domain, no junk values). The map is injective: if two triangles a, b receive the same edge s(x,y), then both x and y lie in a AND in b (via Sym2.eq_iff, handling both endpoint orderings), so |a ∩ b| ≥ 2 — contradicting edge-disjointness |a ∩ b| ≤ 1. Finset.card_le_card_of_injOn then gives |P| = |P.attach| ≤ |F|. This is the König-type weak-duality inequality ν ≤ τ-cover for the triangle hypergraph.",
+    "mathContext": "$|P| \\le |F| \\quad\\text{for any edge-disjoint packing } P,\\ \\text{cover } F$",
+    "significance": "critical",
+    "prerequisites": ["weak LP duality", "Classical.choose / choice function", "Finset.card_le_card_of_injOn", "Sym2.eq_iff", "injectivity from edge-disjointness"],
+    "relatedConcepts": ["König's theorem", "max-matching ≤ min-cover", "injective assignment", "integrality of packings"]
+  },
+  {
+    "id": "sc-triangles-numtriangles",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 183, "endLine": 203 },
+    "type": "definition",
+    "title": "The Triangle Set and Count τ(G)",
+    "content": "triangles G is the finite set of all 3-cliques (filtering univ by IsTriangle), and numTriangles G = |triangles G| is the total triangle count τ(G), the upper end of the bracket. mem_triangles is the membership simp lemma. IsTriangle.exists_edge extracts an explicit edge s(x,y) with x ≠ y from any triangle (its card is 3 > 1), the witness the greedy cover selects. These definitions are noncomputable (they use Classical decidability of IsTriangle), which is harmless for the existence statements.",
+    "mathContext": "$\\tau(G) = |\\{s : G.\\mathrm{IsNClique}\\,3\\,s\\}|$",
+    "significance": "supporting",
+    "prerequisites": ["Finset.filter", "Finset.one_lt_card", "noncomputable definitions"],
+    "relatedConcepts": ["triangle counting", "clique enumeration", "first moment / total count"]
+  },
+  {
+    "id": "sc-greedy-cover",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 205, "endLine": 236 },
+    "type": "theorem",
+    "title": "Greedy Upper Bound: a Cover of Size ≤ τ(G)",
+    "content": "exists_cover_card_le_numTriangles produces a cover by picking one edge from every triangle: F = image of the choice function g over triangles G.attach. It is a cover because every triangle's own chosen edge lies in F (so the bridge lemma applies). Its size is bounded since the image of a finset is no larger than the finset: |F| ≤ |triangles G.attach| = |triangles G| = τ(G). This witnesses ρ(G) ≤ τ(G) — distinct triangles may pick the same edge, so the cover can be much smaller, which is exactly where the integrality gap lives.",
+    "mathContext": "$\\exists F \\text{ cover with } |F| \\le \\tau(G)$",
+    "significance": "key",
+    "prerequisites": ["Classical.choose", "Finset.card_image_le", "Finset.attach", "greedy algorithm"],
+    "relatedConcepts": ["greedy cover", "one-edge-per-triangle", "trivial upper bound", "set cover heuristic"]
+  },
+  {
+    "id": "sc-removal-number",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 242, "endLine": 255 },
+    "type": "definition",
+    "title": "The Triangle Removal Number ρ(G)",
+    "content": "removalNumber G = sInf of the sizes of all triangle edge covers — the minimum number of edges whose deletion destroys every triangle, exactly the per-graph quantity the triangle removal lemma bounds. removalNumber_mem shows the infimum is attained: the cover-size set is nonempty (the greedy cover is a member), so Nat.sInf_mem gives an actual minimizing cover F with |F| = ρ(G). Working with ℕ-valued sInf keeps the definition constructive-friendly and the attainment immediate.",
+    "mathContext": "$\\rho(G) = \\min\\{|F| : G \\setminus F \\text{ triangle-free}\\}$",
+    "significance": "key",
+    "prerequisites": ["Nat.sInf", "Nat.sInf_mem", "infimum attainment over ℕ"],
+    "relatedConcepts": ["minimum edge cover", "removal lemma constant γ(δ)", "optimization over covers"]
+  },
+  {
+    "id": "sc-bracket",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 257, "endLine": 292 },
+    "type": "theorem",
+    "title": "The Headline Bracket ν(G) ≤ ρ(G) ≤ τ(G)",
+    "content": "Assembling both sides. packing_card_le_removalNumber: any packing P has |P| ≤ |F| = ρ(G) for the minimizing cover (weak duality + attainment), giving ν ≤ ρ. removalNumber_le_numTriangles: ρ = sInf ≤ |greedy cover| ≤ τ (Nat.sInf_le), giving ρ ≤ τ. packing_le_removal_le_numTriangles conjoins them into ν(G) ≤ ρ(G) ≤ τ(G) for an arbitrary finite graph. The optimal removal-lemma constant γ(δ) is governed by how large the gap ρ/τ — the LP integrality gap ν vs τ — can be, which Ruzsa–Szemerédi/Behrend constructions push to be super-polynomially small.",
+    "mathContext": "$\\nu(G) \\le \\rho(G) \\le \\tau(G)$",
+    "significance": "critical",
+    "prerequisites": ["Nat.sInf_le", "transitivity of ≤", "weak duality (packing_card_le_cover_card)"],
+    "relatedConcepts": ["packing–covering bracket", "integrality gap", "triangle removal lemma", "Ruzsa–Szemerédi theorem", "Behrend's construction"]
+  },
+  {
+    "id": "sc-sharpness-zero",
+    "proofId": "szemeredi-counting-oq-01",
+    "range": { "startLine": 298, "endLine": 312 },
+    "type": "theorem",
+    "title": "Sharpness: Triangle-Free ⟹ ρ = 0",
+    "content": "removalNumber_eq_zero_of_cliqueFree confirms the bracket bottoms out correctly: if G is already triangle-free, the empty edge set is a cover (deleting nothing leaves G unchanged and triangle-free), so 0 is a cover size and ρ(G) = 0. Combined with ν = τ = 0 in this case, the whole bracket collapses to ν = ρ = τ = 0 — the degenerate equality case that any meaningful two-sided bound must respect.",
+    "mathContext": "$G \\text{ triangle-free} \\;\\Longrightarrow\\; \\rho(G) = 0 = \\nu(G) = \\tau(G)$",
+    "significance": "supporting",
+    "prerequisites": ["SimpleGraph.deleteEdges_empty", "Nat.le_zero", "Nat.sInf_le", "degenerate / base case"],
+    "relatedConcepts": ["sharpness", "equality case", "sanity check", "bracket tightness"]
+  }
+]

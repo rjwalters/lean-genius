@@ -56,44 +56,60 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring framing Erdős #1027 OQ-03 (can good sets be found constructively?), the LLL + Moser-Tardos answer, the five-part roadmap, and references; imports Mathlib and the companion LovaszLocalLemma file, opens the Erdos1027.Constructive namespace.",
+      "mathContext": "For an $n$-uniform family $\\mathcal{F}$ with $|\\mathcal{F}| \\le m$, each $A \\in \\mathcal{F}$ generates a bad event $E_A$: $B \\cap A = \\emptyset$ or $A \\subseteq B$, with probability $2^{1-n}$ under uniform random $B \\subseteq X$. Dependency degree $\\le nm$; if $2^{1-n}(nm+1) \\le 1/e$ the LLL guarantees a good set, found by Moser-Tardos in expected $O(m/d)$ steps."
+    },
+    {
       "id": "bad-event-prob",
       "title": "Section I: Bad Event Probability Bounds",
       "summary": "Defines badEventProb(n) = 2/2^n as the combined probability of B missing A or containing A under uniform random B. Proves non-negativity, badEventProb ≤ 1 for n ≥ 1, badEventProb ≤ 1/4 for n ≥ 3, and the halving relation p(n+1) = p(n)/2.",
       "startLine": 33,
-      "endLine": 68,
+      "endLine": 70,
       "mathContext": "Under uniform random $B \\subseteq X$: $\\Pr[B \\cap A = \\emptyset] = 2^{-n}$, $\\Pr[A \\subseteq B] = 2^{-n}$, so $\\Pr[E_A] \\le 2 \\cdot 2^{-n} = 2/2^n$."
     },
     {
       "id": "lll-condition",
       "title": "Section II: LLL Condition Verification",
       "summary": "Defines depDegree(n,m) = nm and LLLCondition as p·(d+1) ≤ 1/4. Proves the condition holds when nm + 1 ≤ 2^{n-3}, with concrete instances for (n=10, m=12) and (n=20, m=6553). Shows the maximum m grows as Θ(2^n/n).",
-      "startLine": 70,
-      "endLine": 131,
+      "startLine": 71,
+      "endLine": 144,
       "mathContext": "Symmetric LLL condition: $p \\cdot (d+1) \\le 1/4$ where $p = 2/2^n$ and $d = nm$. Equivalent to $nm + 1 \\le 2^{n-3}$, giving $m \\le 2^{n-3}/n$."
     },
     {
       "id": "mt-runtime",
       "title": "Section III: Moser-Tardos Expected Runtime",
       "summary": "Defines mtExpectedSteps(n,m) = m/(nm) = 1/n as the Moser-Tardos expected resampling count. Proves non-negativity, the 1/n simplification, and the bound ≤ 1. Connects to the LLL file's moser_tardos_termination theorem.",
-      "startLine": 133,
-      "endLine": 170,
+      "startLine": 145,
+      "endLine": 195,
       "mathContext": "Moser-Tardos (2010) Thm 1.1: expected resampling $= \\sum_i x_i/(1-x_i)$. With $x_i = 1/(d+1)$ and $d = nm$: total $= m/(nm) = 1/n$."
     },
     {
       "id": "comparison",
       "title": "Section IV: Comparison with Erdős Classical Bound",
       "summary": "Proves the Erdős bound is stronger: 2^{n-3}/n ≤ 2^{n-1} for n ≥ 4. The LLL sacrifices tightness for constructiveness. Under the LLL bound, MT finds a good set in expected ≤ 1 step.",
-      "startLine": 172,
-      "endLine": 201,
+      "startLine": 196,
+      "endLine": 227,
       "mathContext": "Erdős 1963: $|\\mathcal{F}| < 2^{n-1}$ suffices. LLL bound: $|\\mathcal{F}| \\le 2^{n-3}/n$. The LLL is weaker by factor $\\sim 4n$ but constructive."
     },
     {
       "id": "main-theorem",
       "title": "Section V: Constructive Existence via LLL",
       "summary": "Proves the main theorem: for nm + 1 ≤ 2^{n-3}, the LLL condition holds, the avoidance product is positive, and MT terminates in ≤ 1 expected step. Defines ConstructiveRegime for the asymptotic form.",
-      "startLine": 203,
-      "endLine": 245,
+      "startLine": 228,
+      "endLine": 275,
       "mathContext": "When $nm + 1 \\le 2^{n-3}$: (1) LLL condition verified, (2) $\\prod(1 - 1/(d+1)) > 0$, (3) expected resampling $\\le 1$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 276,
+      "endLine": 308,
+      "summary": "Closing documentation block: restates the problem, tallies the ~240 lines across 5 sections, lists all 17 sorry-free results, and records the verified status (0 axioms, 0 sorries).",
+      "mathContext": "Confirms the constructive answer: bounded $n$-uniform families admit good sets found constructively via the Lovász Local Lemma and Moser-Tardos resampling, with every supporting lemma machine-checked and no axioms introduced."
     }
   ],
   "conclusion": {

@@ -16,7 +16,11 @@
       "Extremal graph theory",
       "Induced subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Extremal Graph Theory",
+      "Induced Subgraphs"
+    ]
   },
   {
     "id": "ann-e805-defs",
@@ -35,7 +39,11 @@
       "Graph complement"
     ],
     "mathContext": "See annotation content for formal details of cliques and independent sets",
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Adjacency",
+      "Complete Subgraphs",
+      "Graph Complement"
+    ]
   },
   {
     "id": "ann-e805-everywhere",
@@ -54,7 +62,11 @@
       "Induced subgraphs",
       "Threshold functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Subsets",
+      "Local Ramsey Properties",
+      "Threshold Functions"
+    ]
   },
   {
     "id": "ann-e805-negative",
@@ -73,7 +85,11 @@
       "Threshold functions",
       "Probabilistic methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bounds",
+      "Probabilistic Method",
+      "Counting Arguments"
+    ]
   },
   {
     "id": "ann-e805-positive",
@@ -92,7 +108,11 @@
       "Probabilistic constructions",
       "Iterative methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bounds",
+      "Probabilistic Constructions",
+      "Ramsey Numbers"
+    ]
   },
   {
     "id": "ann-e805-conjecture",
@@ -111,7 +131,11 @@
       "Threshold conjectures"
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal conjecture for (log n)³",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Hajnal Conjecture",
+      "Logarithmic Thresholds",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e805-summary",
@@ -130,6 +154,10 @@
       "Open threshold"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Upper And Lower Bounds",
+      "Asymptotic Growth Rates",
+      "Open Threshold Problems"
+    ]
   }
 ]

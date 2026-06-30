@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "gelfond-schneider-oq-04",
+    "range": { "startLine": 3, "endLine": 54 },
+    "type": "context",
+    "title": "Gelfond-Schneider as a Constraint on Logarithms",
+    "content": "The parent entry uses Gelfond-Schneider to produce transcendental constants (2^√2, e^π, ...). Its other principal consequence concerns logarithms: log_a b cannot be an irrational algebraic number when a, b are algebraic. This file proves that dichotomy and applies it to log₂ 3. Gelfond-Schneider itself is re-declared as an axiom, exactly as in the parent — the entry's value is the new logarithm reasoning built on top of it.",
+    "mathContext": "$\\log_a b=\\dfrac{\\log b}{\\log a}\\in\\mathbb{Q}\\ \\text{or transcendental, never irrational algebraic}$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gelfond-Schneider theorem",
+      "Hilbert's 7th problem",
+      "transcendence",
+      "logarithm"
+    ],
+    "prerequisites": [
+      "algebraic and transcendental numbers",
+      "real logarithm"
+    ]
+  },
+  {
+    "id": "ann-identity",
+    "proofId": "gelfond-schneider-oq-04",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "lemma",
+    "title": "Turning the Logarithm Back into an Exponent",
+    "content": "rpow_logb_eq proves a^(log b/log a) = b for positive a ≠ 1 and positive b. Using Real.rpow_def_of_pos, a^x = exp(x · log a); with x = log b/log a and log a ≠ 0, the exponent simplifies to log b, and Real.exp_log gives b. This identity is what lets Gelfond-Schneider — a statement about a^b — speak about the logarithm log b/log a.",
+    "mathContext": "$a^{\\log b/\\log a}=\\exp\\!\\big(\\tfrac{\\log b}{\\log a}\\cdot\\log a\\big)=\\exp(\\log b)=b$",
+    "significance": "high",
+    "relatedConcepts": [
+      "real power",
+      "exponential-logarithm inverse"
+    ],
+    "prerequisites": [
+      "Real.rpow_def_of_pos",
+      "Real.exp_log"
+    ]
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "gelfond-schneider-oq-04",
+    "range": { "startLine": 84, "endLine": 106 },
+    "type": "theorem",
+    "title": "The Logarithm Dichotomy",
+    "content": "gelfond_schneider_logb_dichotomy: for positive algebraic a, b with a ≠ 1, log b/log a is rational or transcendental. The proof splits on whether the ratio is rational; if not, it is irrational, and were it also algebraic, then a^(log b/log a) = b would be transcendental by Gelfond-Schneider — contradicting that b is algebraic. So an irrational algebraic logarithm is impossible.",
+    "mathContext": "$\\beta=\\tfrac{\\log b}{\\log a}\\ \\text{algebraic}\\wedge\\text{irrational}\\Rightarrow a^\\beta=b\\ \\text{transcendental},\\ \\text{contra } b\\ \\text{algebraic}$",
+    "significance": "high",
+    "relatedConcepts": [
+      "Gelfond-Schneider theorem",
+      "dichotomy",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "Gelfond-Schneider theorem",
+      "rationality case split"
+    ]
+  },
+  {
+    "id": "ann-irrational",
+    "proofId": "gelfond-schneider-oq-04",
+    "range": { "startLine": 108, "endLine": 147 },
+    "type": "theorem",
+    "title": "log 3 / log 2 is Irrational (Unconditional)",
+    "content": "irrational_log_three_div_log_two needs NO Gelfond-Schneider assumption. A rational value p/d (positive, in lowest terms) cross-multiplies to N · log 2 = d · log 3, i.e. log(2^N) = log(3^d), hence 2^N = 3^d as naturals (N ≥ 1). But 2 divides 2^N = 3^d forces 2 ∣ 3 by Nat.Prime.dvd_of_dvd_pow — false. Parity (even = odd) kills it.",
+    "mathContext": "$\\tfrac{\\log 3}{\\log 2}=\\tfrac{N}{d}\\Rightarrow 2^N=3^d,\\ N,d\\ge 1\\Rightarrow 2\\mid 3^d\\Rightarrow 2\\mid 3,\\ \\bot$",
+    "significance": "high",
+    "relatedConcepts": [
+      "irrationality",
+      "unique factorization",
+      "parity argument"
+    ],
+    "prerequisites": [
+      "Real.log_pow",
+      "Nat.Prime.dvd_of_dvd_pow"
+    ]
+  },
+  {
+    "id": "ann-transcendental",
+    "proofId": "gelfond-schneider-oq-04",
+    "range": { "startLine": 149, "endLine": 160 },
+    "type": "theorem",
+    "title": "log₂ 3 is Transcendental",
+    "content": "transcendental_log_three_div_log_two applies the dichotomy at the algebraic bases 2 and 3: log 3/log 2 is rational or transcendental, and since it is not rational (the previous theorem), it is transcendental. The dichotomy upgrades irrationality to transcendence at no extra cost.",
+    "mathContext": "$\\log_2 3\\notin\\mathbb{Q}\\ \\wedge\\ (\\log_2 3\\in\\mathbb{Q}\\vee\\log_2 3\\ \\text{transc.})\\Rightarrow\\log_2 3\\ \\text{transcendental}$",
+    "significance": "high",
+    "relatedConcepts": [
+      "transcendence",
+      "logarithm dichotomy"
+    ],
+    "prerequisites": [
+      "the logarithm dichotomy",
+      "irrationality of log₂ 3"
+    ]
+  }
+]

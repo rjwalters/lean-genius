@@ -15,7 +15,11 @@
       "ring theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering systems of congruences",
+      "modular arithmetic",
+      "Lean formalization of number-theoretic objects"
+    ]
   },
   {
     "id": "ann-e8-covering",
@@ -34,7 +38,11 @@
       "modular arithmetic",
       "covering systems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "congruence classes a mod n",
+      "modular arithmetic",
+      "covering systems (every integer covered)"
+    ]
   },
   {
     "id": "ann-e8-coloring",
@@ -53,7 +61,11 @@
       "graph coloring",
       "monochromatic sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite colorings of the moduli",
+      "Ramsey theory",
+      "monochromatic substructures"
+    ]
   },
   {
     "id": "ann-e8-conjecture",
@@ -72,7 +84,11 @@
       "counterexample",
       "existential vs universal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering systems and colorings",
+      "the Erdős–Graham conjecture",
+      "existential vs universal statements"
+    ]
   },
   {
     "id": "ann-e8-hough",
@@ -91,7 +107,11 @@
       "Lovász Local Lemma",
       "probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the minimum modulus problem",
+      "the Lovász Local Lemma",
+      "the probabilistic method (Hough's bound)"
+    ]
   },
   {
     "id": "ann-e8-counterexample",
@@ -110,7 +130,11 @@
       "proof by contradiction",
       "pigeonhole"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit covering-system constructions",
+      "proof by contradiction",
+      "the pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e8-density",
@@ -129,7 +153,11 @@
       "density conditions",
       "tail sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the harmonic series Σ1/n",
+      "density conditions on moduli",
+      "tail-sum estimates"
+    ]
   },
   {
     "id": "ann-e8-bottleneck",
@@ -148,7 +176,11 @@
       "bottleneck",
       "extremal construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "structural / extremal constructions",
+      "the bottleneck argument",
+      "limits on monochromatic coverings"
+    ]
   },
   {
     "id": "ann-e8-summary",
@@ -166,6 +198,10 @@
       "conjunction introduction"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "the disproved Erdős–Graham conjecture",
+      "combining the partial results",
+      "conjunction of the established facts"
+    ]
   }
 ]

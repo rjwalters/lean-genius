@@ -56,76 +56,116 @@
   },
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Part 1: Basic Definitions",
-      "startLine": 36,
-      "endLine": 51,
-      "summary": "hasDivisorInInterval, setA, setA_finite (proved).",
-      "mathContext": "Mathematical content: hasDivisorInInterval, setA, setA_finite (proved)."
+      "id": "header",
+      "title": "Header: Statement and References",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "States Erdős Problem #693 (divisor gaps in intervals). For $k\\geq2$ and large $n$, $A$ is the set of integers in $[n,n^k]$ with a divisor in $(n,2n)$, ordered $a_1<a_2<\\cdots$. Question: is $\\max_i(a_{i+1}-a_i)\\leq(\\log n)^{O(1)}$? Heuristic density $\\sim1/\\log n$. Status OPEN. References Erdős, Ford (2008), and Problem #446. Imports Mathlib; opens `Nat`/`Finset`/`Set`/`Filter`.",
+      "mathContext": "$A=\\{m\\in[n,n^k]:\\exists d\\mid m,\\ n<d<2n\\}$; is $\\max$ gap $\\leq(\\log n)^{O(1)}$?"
     },
     {
-      "id": "gap-definitions",
-      "title": "Part 2: Gap Definitions",
-      "startLine": 52,
-      "endLine": 73,
-      "summary": "setAFinset, orderedA, consecutiveGaps, maxGap, maxGapA.",
-      "mathContext": "Mathematical content: setAFinset, orderedA, consecutiveGaps, maxGap, maxGapA."
+      "id": "part1",
+      "title": "Part I: Basic Definitions",
+      "startLine": 31,
+      "endLine": 68,
+      "summary": "Defines `hasDivisorInInterval`, `setA n k` (integers in $[n,n^k]$ with a divisor in $(n,2n)$). PROVES `setA_finite`, `setA_subset_Icc`, `setA_lower_bound`/`_upper_bound`, `mem_setA_has_divisor`, and `divisor_factorization`.",
+      "mathContext": "$\\text{setA}(n,k)=\\{m:n\\leq m\\leq n^k,\\ \\exists d\\mid m,\\ n<d<2n\\}$; finite, $\\subseteq[n,n^k]$."
     },
     {
-      "id": "main-problem",
-      "title": "Part 3: The Main Problem",
-      "startLine": 74,
-      "endLine": 89,
-      "summary": "polylogBoundedGap definition and erdos693Conjecture.",
-      "mathContext": "Formal definition: polylogBoundedGap definition and erdos693Conjecture."
+      "id": "part2",
+      "title": "Part II: Monotonicity and Structural Properties",
+      "startLine": 69,
+      "endLine": 98,
+      "summary": "PROVES `setA_mono` ($k\\leq k'\\Rightarrow\\text{setA}\\,n\\,k\\subseteq\\text{setA}\\,n\\,k'$), `setA_divisor_bounds` (the divisor satisfies $n<d<2n$, $d\\geq2$), and `setA_quotient_ge_one` (the cofactor $q=m/d\\geq1$).",
+      "mathContext": "setA monotone in $k$; divisor $d\\in(n,2n)$, $d\\geq2$, cofactor $q\\geq1$."
     },
     {
-      "id": "basic-properties",
-      "title": "Part 4: Basic Properties",
-      "startLine": 90,
-      "endLine": 105,
-      "summary": "mem_setA_has_divisor (proved), divisor_factorization (proved), range_card (axiom).",
-      "mathContext": "Axiomatized: mem_setA_has_divisor (proved), divisor_factorization (proved), range_card (axiom)."
+      "id": "part3",
+      "title": "Part III: Gap Definitions",
+      "startLine": 99,
+      "endLine": 120,
+      "summary": "Defines `setAFinset` (setA as a Finset), `orderedA` (its sorted list), `consecutiveGaps` (differences of consecutive elements), `maxGap` (the fold-max gap), and `maxGapA n k` (max gap of $A$).",
+      "mathContext": "$\\text{maxGapA}(n,k)=\\max_i(a_{i+1}-a_i)$ over sorted $A$."
     },
     {
-      "id": "gap-bounds",
-      "title": "Part 5: Gap Bounds",
-      "startLine": 106,
-      "endLine": 116,
-      "summary": "maxGap_trivial_upper and maxGap_pigeonhole axioms.",
-      "mathContext": "Axiomatized: maxGap_trivial_upper and maxGap_pigeonhole axioms."
-    },
-    {
-      "id": "counting-density",
-      "title": "Part 6: Counting and Density",
-      "startLine": 117,
+      "id": "part4",
+      "title": "Part IV: The Main Problem",
+      "startLine": 121,
       "endLine": 132,
-      "summary": "countA definition, divisor_density_heuristic axiom.",
-      "mathContext": "Formal definition: countA definition, divisor_density_heuristic axiom."
+      "summary": "Defines `polylogBoundedGap k` ($\\exists C,\\alpha>0,\\ \\text{maxGapA}\\leq C(\\log n)^\\alpha$ eventually) and `erdos693Conjecture` (it holds for all $k\\geq2$) — the open problem.",
+      "mathContext": "Conjecture: $\\forall k\\geq2,\\ \\text{maxGapA}(n,k)\\leq C(\\log n)^\\alpha$ for large $n$."
     },
     {
-      "id": "alternative",
-      "title": "Part 7: Alternative Formulation",
+      "id": "part5",
+      "title": "Part V: List Infrastructure Lemmas",
       "startLine": 133,
-      "endLine": 144,
-      "summary": "uniformGapBound definition, uniform_equiv_maxgap axiom.",
-      "mathContext": "Formal definition: uniformGapBound definition, uniform_equiv_maxgap axiom."
+      "endLine": 146,
+      "summary": "PROVES the base cases `consecutiveGaps_nil`/`_singleton` and `maxGap_nil`/`_singleton` (empty/singleton lists have no gaps).",
+      "mathContext": "$\\text{maxGap}([])=\\text{maxGap}([a])=0$."
     },
     {
-      "id": "connections",
-      "title": "Part 8: Connections",
-      "startLine": 145,
-      "endLine": 159,
-      "summary": "divisor_distribution_connection and related_problem_446 placeholders.",
-      "mathContext": "Mathematical content: divisor_distribution_connection and related_problem_446 placeholders."
+      "id": "part6",
+      "title": "Part VI: Cardinality and Range",
+      "startLine": 147,
+      "endLine": 168,
+      "summary": "PROVES `le_pow_of_ge_one` ($n\\leq n^k$), `setAFinset_subset_Icc`, and `setA_card_le` ($|A|\\leq n^k-n+1$).",
+      "mathContext": "$|A|\\leq n^k-n+1$ (contained in $[n,n^k]$)."
     },
     {
-      "id": "summary",
-      "title": "Part 9: Summary",
-      "startLine": 160,
-      "endLine": 317,
-      "summary": "erdos_693_summary (proved), erdos_693_status.",
-      "mathContext": "Mathematical content: erdos_693_summary (proved), erdos_693_status."
+      "id": "part7",
+      "title": "Part VII: Membership Witnesses",
+      "startLine": 169,
+      "endLine": 220,
+      "summary": "PROVES membership criteria: `mem_setA_of_divisor_product` (the fundamental $d\\cdot q\\in A$ criterion), `mem_setA_of_succ` ($n+1\\in A$), `setA_nonempty`, `setA_contains_interval` (every $d\\in(n,2n)$ is in $A$), and `setA_has_many_elements` ($|A|\\geq n-1$ for $n\\geq3$).",
+      "mathContext": "$(n,2n)\\subseteq A$, so $|A|\\geq n-1$ for $n\\geq3$."
+    },
+    {
+      "id": "part8",
+      "title": "Part VIII: Gap Bounds",
+      "startLine": 221,
+      "endLine": 271,
+      "summary": "PROVES `maxGap_trivial_upper` ($\\text{maxGapA}\\leq n^k-n$, via the private list-induction helper `consecutiveGaps_foldl_max_le`) and `average_gap_crude_bound`. A documented note records that a previous `maxGap_pigeonhole` axiom was REMOVED as incorrect (counterexample $n=2,k=2$: $A=\\{3\\}$, gap $0$ but $n^k-n=2$).",
+      "mathContext": "$\\text{maxGapA}(n,k)\\leq n^k-n$ (trivial range bound); pigeonhole axiom removed (was false)."
+    },
+    {
+      "id": "part9",
+      "title": "Part IX: Counting and Density",
+      "startLine": 272,
+      "endLine": 277,
+      "summary": "Defines `countA n k` $=|A|$ (the cardinality of `setAFinset`).",
+      "mathContext": "$\\text{countA}(n,k)=|\\text{setAFinset}(n,k)|$."
+    },
+    {
+      "id": "part10",
+      "title": "Part X: orderedA Properties",
+      "startLine": 278,
+      "endLine": 314,
+      "summary": "PROVES properties of the sorted list: `orderedA_sorted`, `mem_orderedA_iff`, `orderedA_bounds`, `orderedA_length` ($=|A|$), `orderedA_ne_nil` (nonempty for $n,k\\geq2$), and `orderedA_nodup`.",
+      "mathContext": "orderedA: sorted, nodup, length $=|A|$, elements in $[n,n^k]$."
+    },
+    {
+      "id": "part11-alt",
+      "title": "Part XI: Alternative Formulation",
+      "startLine": 315,
+      "endLine": 329,
+      "summary": "Defines `maxConsecDiff` (an alias for `maxGap (orderedA …)`) and PROVES `polylog_restatement` (the conjecture restated explicitly, by `Iff.rfl`).",
+      "mathContext": "`maxConsecDiff` $=$ `maxGapA`; conjecture restated verbatim."
+    },
+    {
+      "id": "part11-connections",
+      "title": "Part XI: Connections to Problem #446",
+      "startLine": 330,
+      "endLine": 404,
+      "summary": "Relates #693 (worst-case gap) to #446 (average density $\\delta(n)$, solved by Ford 2008). Defines the Erdős–Ford constant `fordAlpha` ($\\alpha\\approx0.086$, a `def` — not an axiom) and `subpolynomialGap`. PROVES `polylog_implies_subpoly`: a polylog gap bound implies a subpolynomial one ($\\text{maxGapA}\\leq n^\\varepsilon$), via `isLittleO_log_rpow_atTop` (since $\\log=o(n^\\delta)$).",
+      "mathContext": "$\\delta(n)\\asymp1/((\\log n)^\\alpha(\\log\\log n)^{3/2})$, $\\alpha\\approx0.086$; polylog gap $\\Rightarrow$ subpolynomial."
+    },
+    {
+      "id": "part12",
+      "title": "Part XII: Summary",
+      "startLine": 405,
+      "endLine": 432,
+      "summary": "Closing summary docstring (status OPEN) and PROVES `erdos_693_summary` (the conjecture $\\Leftrightarrow$ polylog bound for all $k\\geq2$, by `Iff.rfl`). The file is axiom-free (the Ford density theorem is only referenced in prose, with `fordAlpha` a plain definition; `axiomCount = 0`).",
+      "mathContext": "Summary: 33 proved theorems, 0 axioms; conjecture $\\Leftrightarrow\\forall k\\geq2,\\ \\text{polylogBoundedGap}\\,k$."
     }
   ],
   "conclusion": {

@@ -16,7 +16,12 @@
       "coprime sequences",
       "gap bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "sieve theory basics",
+      "asymptotic analysis",
+      "infinite series"
+    ]
   },
   {
     "id": "ann-e1101-imports",
@@ -35,7 +40,11 @@
       "series"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "import declarations"
+    ]
   },
   {
     "id": "ann-e1101-aset",
@@ -54,7 +63,11 @@
       "divisibility",
       "survivor set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisibility",
+      "set-builder notation"
+    ]
   },
   {
     "id": "ann-e1101-enumeration",
@@ -73,7 +86,11 @@
       "ordering"
     ],
     "mathContext": "See annotation content for formal details of enumeration function a",
-    "prerequisites": []
+    "prerequisites": [
+      "order theory",
+      "Mathlib Nat.nth API",
+      "natural-number sequences"
+    ]
   },
   {
     "id": "ann-e1101-index",
@@ -91,7 +108,11 @@
       "product index",
       "cumulative product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "products and logarithms",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1101-isgood",
@@ -110,7 +131,12 @@
       "gap bound",
       "sieve theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "convergence of series",
+      "asymptotic (big-O/little-o) notation",
+      "sieve theory"
+    ]
   },
   {
     "id": "ann-e1101-no-polynomial",
@@ -129,7 +155,11 @@
       "open problem"
     ],
     "mathContext": "See annotation content for formal details of conjecture 1: no polynomial growth",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "growth rate asymptotics",
+      "open conjectures in combinatorics"
+    ]
   },
   {
     "id": "ann-e1101-yes-subexp",
@@ -148,7 +178,11 @@
       "conjecture"
     ],
     "mathContext": "See annotation content for formal details of conjecture 2: sub-exponential growth possible",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "growth rate asymptotics",
+      "little-o notation"
+    ]
   },
   {
     "id": "ann-e1101-existence",
@@ -167,7 +201,11 @@
       "known result"
     ],
     "mathContext": "See annotation content for formal details of erdős's existence theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "distribution of primes",
+      "prime counting asymptotics"
+    ]
   },
   {
     "id": "ann-e1101-sieve-bound",
@@ -186,6 +224,10 @@
       "lower bound",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sieve theory",
+      "analytic number theory",
+      "density and counting arguments"
+    ]
   }
 ]

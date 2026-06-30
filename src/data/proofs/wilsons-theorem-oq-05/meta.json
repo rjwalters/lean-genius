@@ -1,0 +1,155 @@
+{
+  "id": "wilsons-theorem-oq-05",
+  "title": "Wilson's Theorem in Classical Congruence Form: $(n-1)! \\equiv n-1 \\pmod n \\iff n$ Prime",
+  "slug": "wilsons-theorem-oq-05",
+  "description": "Answers the open question on the `wilsons-theorem` gallery family: state Wilson's theorem as the two-sided primality criterion n prime ⟺ (n-1)! ≡ -1 (mod n). Both Mathlib (`Nat.prime_iff_fac_equiv_neg_one`) and the parent gallery entry phrase the residue inside ZMod n: ((n-1)! : ZMod n) = -1. That is algebraically convenient but not the shape in which Wilson's theorem is classically stated and used — namely a congruence between natural numbers, (n-1)! ≡ n-1 [MOD n], equivalently the bare remainder identity (n-1)! % n = n-1 (with n-1 playing the role of -1 mod n). This file supplies that bridge, none of whose statements mention ZMod: `prime_iff_factorial_modEq` (2 ≤ n → (n.Prime ↔ (n-1)! ≡ n-1 [MOD n])), `prime_iff_factorial_mod` (2 ≤ n → (n.Prime ↔ (n-1)! % n = n-1), an elementary ZMod-free primality criterion), `factorial_pred_mod_of_prime` (the forward remainder identity), and `not_prime_of_factorial_mod_ne` (the contrapositive compositeness witness). The single technical lemma `natCast_pred_eq_neg_one` identifies the natural number n-1 with the ZMod n element -1 (via Nat.cast_sub and ZMod.natCast_self), letting ZMod.natCast_eq_natCast_iff transport Mathlib's ZMod statement to a Nat.ModEq. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Ibn al-Haytham (c. 1000); Wilson/Lagrange (1771); congruence form formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wilson%27s_theorem",
+    "date": "1771",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "primality",
+      "factorial",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 80,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.prime_iff_fac_equiv_neg_one` (the ZMod-valued Wilson biconditional) and elementary `ZMod`/`Nat.ModEq` bridging lemmas; no `decide`/`native_decide`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.prime_iff_fac_equiv_neg_one",
+        "description": "`n ≠ 1 → (Nat.Prime n ↔ ((n-1)! : ZMod n) = -1)`, Mathlib's ZMod-valued Wilson biconditional (forward = `ZMod.wilsons_lemma`, reverse = `Nat.prime_of_fac_equiv_neg_one`). The source statement this file restates as a congruence of naturals.",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "`(a : ZMod c) = (b : ZMod c) ↔ a ≡ b [MOD c]`. The transport that converts the ZMod equality `((n-1)! : ZMod n) = ((n-1 : ℕ) : ZMod n)` into the natural-number congruence `(n-1)! ≡ n-1 [MOD n]`.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_self",
+        "description": "`((n : ℕ) : ZMod n) = 0`, the key step in `natCast_pred_eq_neg_one`: `((n-1 : ℕ) : ZMod n) = (n : ZMod n) - 1 = 0 - 1 = -1`.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.mod_eq_of_lt",
+        "description": "`a < n → a % n = a`, used to simplify `(n-1) % n = n-1` so the congruence `(n-1)! ≡ n-1 [MOD n]` becomes the bare remainder identity `(n-1)! % n = n-1`.",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "`prime_iff_factorial_modEq`: Wilson's theorem in classical congruence form — for n ≥ 2, `Nat.Prime n ↔ (n-1)! ≡ n-1 [MOD n]` — with the residue expressed as the natural number n-1 (= -1 mod n) rather than an element of ZMod n. This is the elementary statement found in textbooks; Mathlib and the sibling entries carry only the ZMod-valued form.",
+      "`prime_iff_factorial_mod`: the elementary, ZMod-free primality criterion `Nat.Prime n ↔ (n-1)! % n = n - 1`, a decision procedure phrased purely in ℕ.",
+      "`factorial_pred_mod_of_prime`: the forward remainder identity `Nat.Prime n → (n-1)! % n = n - 1`, giving the exact remainder of (n-1)! modulo a prime.",
+      "`not_prime_of_factorial_mod_ne`: the contrapositive compositeness witness — `(n-1)! % n ≠ n - 1 → ¬ Nat.Prime n`.",
+      "`natCast_pred_eq_neg_one`: the reusable hinge `((n-1 : ℕ) : ZMod n) = -1` for n ≥ 1, the arithmetic content of '-1 mod n is n-1' that connects the two formulations."
+    ],
+    "prerequisites": [
+      "Wilson's theorem and its ZMod formulation",
+      "Natural-number congruences `Nat.ModEq` and the remainder `%`",
+      "Casts ℕ → ZMod n and the identity ((n : ℕ) : ZMod n) = 0",
+      "Factorials and divisibility"
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "wilsons-theorem",
+        "relationship": "Parent: the gallery entry proving Wilson's theorem in ZMod form (`wilsons_theorem : n ≠ 1 → (((n-1)! : ZMod n) = -1 ↔ prime)`); this entry restates it as the classical natural-number congruence and an elementary primality test."
+      },
+      {
+        "id": "wilsons-theorem-oq-01",
+        "relationship": "Sibling: oq-01 handles the composite side (n > 4 composite ⟹ n ∣ (n-1)!, so (n-1)! ≡ 0); this entry handles the prime side as an explicit ℕ remainder, the complementary residue."
+      },
+      {
+        "id": "wilsons-theorem-oq-03",
+        "relationship": "Sibling: oq-03 computes the p-adic valuation ν_p((p-1)!) = 0 (p ∤ (p-1)!); this entry pins the exact remainder (p-1)! % p = p-1, a sharper statement than non-divisibility."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 80,
+    "path": "Proofs/WilsonsTheoremOQ05.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Wilson's theorem — a natural number n > 1 is prime if and only if (n-1)! ≡ -1 (mod n) — was known to Ibn al-Haytham around 1000 AD, stated by John Wilson, and first proved by Joseph-Louis Lagrange in 1771 (Edward Waring published it without proof the same year). The classical statement is a congruence between integers: (n-1)! ≡ -1, i.e. (n-1)! ≡ n-1 (mod n). The forward direction follows from pairing each residue 1 ≤ a ≤ n-1 with its multiplicative inverse mod a prime (only ±1 are self-inverse), and the converse from the observation that a proper divisor of a composite n > 1 divides (n-1)!, so (n-1)! cannot be ≡ -1. Mathlib formalizes the theorem with the residue valued in ZMod n; the classical natural-number congruence form, and the resulting elementary primality test, are what this entry records.",
+    "problemStatement": "**Open Question (wilsons-theorem-oq-05):** state Wilson's theorem as the two-sided primality criterion n prime ⟺ (n-1)! ≡ -1 (mod n). This entry gives the classical natural-number congruence form (n-1)! ≡ n-1 [MOD n] and the ZMod-free remainder criterion (n-1)! % n = n-1.",
+    "text": "Wilson's theorem stated classically: for n ≥ 2, n is prime iff (n-1)! ≡ n-1 (mod n), equivalently iff (n-1)! % n = n-1.",
+    "proofStrategy": "Transport Mathlib's ZMod-valued biconditional `Nat.prime_iff_fac_equiv_neg_one : n ≠ 1 → (n.Prime ↔ ((n-1)! : ZMod n) = -1)` to ℕ. The hinge lemma `natCast_pred_eq_neg_one` shows ((n-1 : ℕ) : ZMod n) = -1 (via Nat.cast_sub and ZMod.natCast_self), so the ZMod equality becomes ((n-1)! : ZMod n) = ((n-1 : ℕ) : ZMod n); `ZMod.natCast_eq_natCast_iff` turns this into the congruence (n-1)! ≡ n-1 [MOD n]. Unfolding `Nat.ModEq` and applying `Nat.mod_eq_of_lt` to (n-1) % n = n-1 yields the bare remainder criterion. The prime-side remainder identity and the contrapositive compositeness witness are immediate corollaries.",
+    "keyInsights": [
+      "**'-1 mod n' is the natural number n-1.** The lemma `natCast_pred_eq_neg_one` makes this precise: ((n-1 : ℕ) : ZMod n) = (n : ZMod n) - 1 = 0 - 1 = -1. This is the only arithmetic needed to translate between the ZMod and ℕ formulations.",
+      "**The ℕ congruence is the textbook statement.** Wilson's theorem is classically '(n-1)! ≡ -1 (mod n)' as an integer congruence — `prime_iff_factorial_modEq` is exactly that, whereas Mathlib's ZMod form, while equivalent, hides the residue inside a quotient type.",
+      "**It is an elementary primality test.** `prime_iff_factorial_mod` reduces primality of n to a single equation (n-1)! % n = n-1 in ℕ — a (slow but) genuine decision procedure that needs no factorization, only a factorial and one division.",
+      "**Sharper than non-divisibility.** Sibling oq-03 proves p ∤ (p-1)! (valuation 0); this entry gives the exact remainder (p-1)! % p = p-1, which is strictly more information than 'remainder ≠ 0'."
+    ],
+    "prerequisites": [
+      "Wilson's theorem (ZMod form) and `Nat.prime_iff_fac_equiv_neg_one`",
+      "Natural-number congruence `Nat.ModEq` and remainder `%`",
+      "Casts ℕ → ZMod n; ((n : ℕ) : ZMod n) = 0",
+      "Factorials"
+    ]
+  },
+  "conclusion": {
+    "summary": "Wilson's theorem is restated in its classical natural-number congruence form (n-1)! ≡ n-1 [MOD n] ⟺ n prime, together with the ZMod-free remainder criterion (n-1)! % n = n-1, the prime-side remainder identity, and the contrapositive compositeness witness. 5 theorems, 80 lines, 0 sorries, 0 axioms, built on Mathlib's ZMod-valued Wilson biconditional.",
+    "implications": "The ℕ-level statements are directly usable in elementary number-theory developments that avoid ZMod, and `prime_iff_factorial_mod` exposes Wilson's theorem as a concrete primality decision procedure. Combined with sibling oq-01 (composite ⟹ (n-1)! ≡ 0, except n = 4 ≡ 2) this pins the full residue of (n-1)! mod n across primes and composites.",
+    "openQuestions": [
+      "Assemble the complete trichotomy of (n-1)! mod n: ≡ n-1 for n prime, ≡ 0 for composite n > 4, and the exceptional ≡ 2 for n = 4 — a single classification theorem combining this entry with sibling oq-01.",
+      "Derive a `Decidable`-instance-flavored corollary making `prime_iff_factorial_mod` an explicit (if exponential) primality certificate, and compare with the Lucas/Pratt certificate route.",
+      "Generalize to Gauss's version of Wilson's theorem — the product of units of ℤ/nℤ is -1 when (ℤ/nℤ)ˣ is cyclic of even order and +1 otherwise — already partly covered by siblings oq-02/oq-04; state the product form as a ℕ congruence too."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring contrasting Mathlib's ZMod-valued Wilson statement with the classical natural-number congruence this file targets, the list of the five results and the single bridging lemma, plus imports (`Mathlib.NumberTheory.Wilson`, `Mathlib.Tactic`) and the namespace opening `Nat` and `scoped Nat` (so `φ`/`!` notation and `Nat.Prime` resolve)."
+    },
+    {
+      "id": "bridge-lemma",
+      "title": "The Bridge Lemma: n-1 = -1 in ZMod n",
+      "startLine": 45,
+      "endLine": 53,
+      "summary": "`natCast_pred_eq_neg_one` (`((n-1 : ℕ) : ZMod n) = -1` for n ≥ 1): rewrite the cast of the subtraction via `Nat.cast_sub` to (n : ZMod n) - 1, then `ZMod.natCast_self` collapses (n : ZMod n) to 0, giving -1. The arithmetic hinge between the ZMod and ℕ formulations."
+    },
+    {
+      "id": "congruence-forms",
+      "title": "Wilson's Theorem as ℕ Congruence and Primality Test",
+      "startLine": 54,
+      "endLine": 80,
+      "summary": "`prime_iff_factorial_modEq` (n ≥ 2 → (n.Prime ↔ (n-1)! ≡ n-1 [MOD n])) via the Mathlib Wilson biconditional + bridge lemma + `ZMod.natCast_eq_natCast_iff`; `prime_iff_factorial_mod` (the ZMod-free remainder criterion, by unfolding `Nat.ModEq` and `Nat.mod_eq_of_lt`); and the corollaries `factorial_pred_mod_of_prime` and `not_prime_of_factorial_mod_ne`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "parent",
+      "description": "The parent gallery entry proves Wilson's theorem in ZMod form (((n-1)! : ZMod n) = -1 ↔ prime). This entry restates that biconditional as the classical natural-number congruence (n-1)! ≡ n-1 [MOD n] and an elementary ℕ-level primality test."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "oq-01 establishes the composite side (n > 4 composite ⟹ n ∣ (n-1)!, i.e. (n-1)! ≡ 0). This entry handles the prime side as an explicit remainder (n-1)! % n = n-1; together they classify the residue of (n-1)! mod n."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "oq-03 computes the p-adic valuation ν_p((p-1)!) = 0 (p does not divide (p-1)!). This entry sharpens 'non-divisible' to the exact remainder (p-1)! % p = p-1."
+    }
+  ]
+}

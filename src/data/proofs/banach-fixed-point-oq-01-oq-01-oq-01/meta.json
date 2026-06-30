@@ -1,0 +1,141 @@
+{
+  "id": "banach-fixed-point-oq-01-oq-01-oq-01",
+  "title": "Non-autonomous Picard–Lindelöf: packaging IsPicardLindelof for y' = F(t, y) with an explicit existence interval",
+  "slug": "banach-fixed-point-oq-01-oq-01-oq-01",
+  "description": "The parent entry packages the autonomous Cauchy–Lipschitz theorem y' = f(y) from Mathlib's ODE library. This entry answers its open questions by exposing the genuinely non-autonomous initial value problem y'(t) = F(t, y(t)), y(t₀) = x₀ directly. Mathlib's IsPicardLindelof f t₀ x₀ a r L K already carries a time-dependent vector field, but its four-field hypothesis bundle (Lipschitz in y, continuous in t, norm bound L, and the geometric interval condition L·max(tmax−t₀, t₀−tmin) ≤ a−r) is opaque. isPicardLindelof_of_box packages those hypotheses directly for the initial point x₀ (r = 0) from the three analytic conditions plus the explicit box inequality L·ρ ≤ a (OQ 1). exists_local_solution_Icc gives local existence on the closed interval in differential form, and exists_local_solution_integral exhibits the solution as a fixed point of the Picard integral operator (P y)(t) = x₀ + ∫ from t₀ to t of F(τ, y(τ)) dτ (OQ 2). exists_local_solution gives existence on an open interval with the explicit classical estimate ε = a / L for the half-width of the interval of existence (OQ 3): ε ≥ a/L achieved with equality. solution_unique gives uniqueness on an open interval for a globally (in y) Lipschitz field via Grönwall's inequality. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Émile Picard / Ernst Lindelöf (classical); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PicardLindelofOQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "ordinary-differential-equations",
+      "picard-lindelof",
+      "cauchy-lipschitz",
+      "non-autonomous",
+      "banach-fixed-point",
+      "existence-uniqueness",
+      "initial-value-problem",
+      "gronwall",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀",
+        "description": "Given an IsPicardLindelof bundle with ball radius r = 0, produces an integral curve α on the closed interval [tmin, tmax] with α t₀ = x₀ solving α'(t) = F(t, α t) in HasDerivWithinAt form. The existence engine, solved internally by the FunSpace contraction.",
+        "module": "Mathlib.Analysis.ODE.PicardLindelof"
+      },
+      {
+        "theorem": "IsPicardLindelof.exists_eq_forall_mem_Icc_eq_picard",
+        "description": "The integral form: the same data yields a curve satisfying the Picard fixed-point equation α t = ODE.picard F t₀ x₀ α t, i.e. α t = x₀ + ∫ from t₀ to t of F(τ, α τ) dτ. Exposes the successive-approximation (Picard iteration) structure of the solution.",
+        "module": "Mathlib.Analysis.ODE.PicardLindelof"
+      },
+      {
+        "theorem": "ODE_solution_unique_of_mem_Ioo",
+        "description": "Two solutions of y' = v(t, y) on an open interval that agree at one interior point agree on the whole interval, provided v is Lipschitz in y on the relevant set. Specialized to set = univ it gives the uniqueness half. A consequence of Grönwall's inequality.",
+        "module": "Mathlib.Analysis.ODE.Gronwall"
+      },
+      {
+        "theorem": "LipschitzWith.lipschitzOnWith",
+        "description": "A globally Lipschitz function is Lipschitz on any set; supplies the Lipschitz-on-univ hypothesis of ODE_solution_unique_of_mem_Ioo from a global Lipschitz constant on each time slice.",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      }
+    ],
+    "originalContributions": [
+      "isPicardLindelof_of_box: assembles Mathlib's IsPicardLindelof F ⟨t₀,·⟩ x₀ a 0 L K (initial point, r = 0) directly out of the three analytic hypotheses — K-Lipschitz in y on closedBall x₀ a, continuous in t, norm bounded by L — together with the explicit box inequality L·max(tmax−t₀, t₀−tmin) ≤ a. Exposes the otherwise-opaque hypothesis bundle in usable named form (OQ 1).",
+      "exists_local_solution_Icc: non-autonomous local existence on the closed interval [tmin, tmax] in differential (HasDerivWithinAt) form — an integral curve α with α t₀ = x₀ and α'(t) = F(t, α t) (OQ 1).",
+      "exists_local_solution_integral: the same solution as a fixed point of the Picard integral operator, α t = x₀ + ∫ from t₀ to t of F(τ, α τ) dτ, exhibiting the successive-approximation form (OQ 2).",
+      "exists_local_solution: non-autonomous local existence on an open interval with the explicit classical estimate ε = a / L for the half-width of the interval of existence; the box condition L·ε ≤ a is met with equality, realising the classical bound ε ≥ a/L (OQ 3).",
+      "solution_unique: for a field globally K-Lipschitz in y on each time slice, two integral curves of y' = F(t, y) on an open interval agreeing at one interior point coincide throughout — the uniqueness half via Grönwall, in the non-autonomous setting with set = univ handled."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (hence no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas. The statements take the usual mathematical hypotheses of the Picard–Lindelöf theorem (complete normed space, vector field Lipschitz in y and continuous in t, bounded on a box) as ordinary hypotheses, not as unproved assumptions.",
+    "lineCount": 132,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Émile Picard's method of successive approximations (1890) and Ernst Lindelöf's refinement (1894) established local existence and uniqueness for an initial value problem y' = F(t, y) with right-hand side Lipschitz in the space variable and continuous in time. The classical estimate locates a guaranteed interval of existence of half-width ε ≥ min(a/L, …) where a is the size of the spatial box on which the field is controlled and L bounds its norm. The modern proof is the textbook application of Banach's contraction mapping principle (1922) to the Picard integral operator.",
+    "problemStatement": "The parent entry packaged the *autonomous* IVP y' = f(y). Its open questions asked: (1) state the non-autonomous version y' = F(t, y) with F Lipschitz in y and continuous in t, packaging IsPicardLindelof's full hypothesis set directly; (2) expose the Picard integral operator P y = x₀ + ∫ F(y) and recover the solution as its fixed point; (3) quantify the interval of existence ε in terms of the bound on F, recovering ε ≥ a/L.\n\n**Answer:** All three. The four-field IsPicardLindelof bundle is assembled from explicit, named analytic hypotheses; the solution is produced both in differential and Picard-integral-fixed-point form; and the open-interval existence theorem carries the explicit half-width ε = a/L.",
+    "text": "The non-autonomous Picard–Lindelöf theorem for y' = F(t, y), y(t₀) = x₀ is packaged from Mathlib's ODE engine into a clean hypothesis bundle (isPicardLindelof_of_box), local existence in differential and integral form, an open-interval existence theorem with the explicit estimate ε = a/L, and Grönwall uniqueness — all with 0 axioms.",
+    "proofStrategy": "1. isPicardLindelof_of_box: the four fields of IsPicardLindelof for r = 0 are exactly the three analytic hypotheses plus the box inequality, with a − r simplifying to a; the structure is built directly and mul_max_le closed by simpa.\n2. exists_local_solution_Icc: apply IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt₀ to the packaged bundle.\n3. exists_local_solution_integral: apply IsPicardLindelof.exists_eq_forall_mem_Icc_eq_picard at the centre x₀ (r = 0) and rewrite ODE.picard by its definition x₀ + ∫ F.\n4. exists_local_solution: set ε = a/L; the box condition L·max(ε, ε) = L·ε = a holds by mul_div_cancel₀ (L > 0), so the Icc solution exists; convert HasDerivWithinAt on Icc to HasDerivAt on the open interval via Icc_mem_nhds.\n5. solution_unique: apply ODE_solution_unique_of_mem_Ioo with set s t := univ, taking the Lipschitz-on-univ hypotheses from LipschitzWith.lipschitzOnWith and membership in univ trivially.",
+    "keyInsights": [
+      "**The hypothesis bundle is the content.** Mathlib's IsPicardLindelof packs four conditions into one structure; exposing them as named analytic hypotheses (Lipschitz in y, continuous in t, bounded, plus a single box inequality) is what makes the non-autonomous theorem usable, and is precisely the parent's first open question.",
+      "**One box inequality fixes the interval.** Choosing the ball radius r = 0 collapses the interval condition to L·ε ≤ a; taking ε = a/L meets it with equality, which is exactly the classical existence-interval estimate ε ≥ a/L.",
+      "**Existence has two faces.** The same fixed point is delivered in differential form (HasDerivWithinAt α (F t (α t))) and in Picard-integral form (α t = x₀ + ∫ F(τ, α τ) dτ); the latter is the successive-approximation operator whose iterates converge to the solution.",
+      "**Uniqueness is Grönwall, time-dependence and all.** The non-autonomous uniqueness statement is the set = univ specialization of Mathlib's general Grönwall comparison, requiring only a Lipschitz-in-y bound on each time slice."
+    ],
+    "exampleSections": [
+      {
+        "title": "Time-dependent linear flow",
+        "mathContext": "For F(t, y) = A(t) y with A : ℝ → (E →L[ℝ] E) continuous and bounded by L on the box, the field is L·(radius)-bounded and Lipschitz in y with constant ‖A(t)‖; exists_local_solution produces a solution of y' = A(t) y, y(t₀) = x₀ on (t₀ − a/L, t₀ + a/L), and solution_unique makes it unique among all solutions there — the non-autonomous generalisation of the matrix-exponential flow."
+      }
+    ]
+  },
+  "references": [
+    {
+      "authors": "Picard, Émile",
+      "title": "Mémoire sur la théorie des équations aux dérivées partielles et la méthode des approximations successives",
+      "year": "1890",
+      "note": "J. Math. Pures Appl. 6, 145–210 — the method of successive approximations."
+    },
+    {
+      "authors": "Lindelöf, Ernst",
+      "title": "Sur l'application de la méthode des approximations successives aux équations différentielles ordinaires du premier ordre",
+      "year": "1894",
+      "note": "C. R. Acad. Sci. Paris 118, 454–457 — the sharpened existence-uniqueness statement."
+    },
+    {
+      "authors": "Banach, Stefan",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "note": "Fund. Math. 3, 133–181 — the contraction mapping principle underlying the proof."
+    },
+    {
+      "authors": "Teschl, Gerald",
+      "title": "Ordinary Differential Equations and Dynamical Systems",
+      "year": "2012",
+      "note": "American Mathematical Society — Chapter 2 develops Picard–Lindelöf, including the non-autonomous statement and the a/L existence-interval estimate."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "banach-fixed-point-oq-01-oq-01",
+      "reason": "The parent entry: the autonomous Picard–Lindelöf packaging y' = f(y). This entry answers its open questions by treating the non-autonomous y' = F(t, y) and quantifying the existence interval."
+    },
+    {
+      "id": "banach-fixed-point-oq-01",
+      "reason": "The grandparent: the Banach contraction mapping theorem, of which Picard–Lindelöf is the canonical application."
+    }
+  ],
+  "conclusion": {
+    "summary": "The non-autonomous Picard–Lindelöf theorem for y' = F(t, y), y(t₀) = x₀ is packaged into five verified theorems: a direct constructor for Mathlib's IsPicardLindelof from explicit analytic hypotheses (isPicardLindelof_of_box), local existence on the closed interval in differential form (exists_local_solution_Icc), the Picard integral-fixed-point form (exists_local_solution_integral), open-interval existence with the explicit estimate ε = a/L (exists_local_solution), and Grönwall uniqueness (solution_unique). All results are verified with 0 axioms and 0 sorries.",
+    "implications": "Exposes the non-autonomous Cauchy–Lipschitz theorem with its hypothesis bundle, integral-operator form, and explicit interval of existence as clean, reusable statements — answering all three of the parent entry's open questions and complementing the autonomous packaging.",
+    "openQuestions": [
+      "Recover the sharper interval estimate ε ≥ min(a/L, 1/K) by also exploiting the Lipschitz constant K (the contraction-rate bound), not only the norm bound L.",
+      "Expose the explicit contraction constant of the Picard operator and the geometric a-priori / a-posteriori error bounds for its successive approximations in the non-autonomous setting."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.ODE.PicardLindelof",
+      "Mathlib.Analysis.ODE.Gronwall"
+    ],
+    "opens": [
+      "Metric",
+      "Set"
+    ],
+    "namespace": "PicardLindelofOQ01OQ01OQ01",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/PicardLindelofOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

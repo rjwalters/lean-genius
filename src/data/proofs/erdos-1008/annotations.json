@@ -17,8 +17,8 @@
       "real number arithmetic"
     ],
     "range": {
-      "startLine": 590,
-      "endLine": 604
+      "startLine": 1,
+      "endLine": 39
     }
   },
   {
@@ -40,14 +40,14 @@
       "cycle detection"
     ],
     "range": {
-      "startLine": 590,
-      "endLine": 604
+      "startLine": 41,
+      "endLine": 49
     }
   },
   {
     "id": "ann-1008-subgraph",
     "proofId": "erdos-1008",
-    "type": "definition",
+    "type": "concept",
     "title": "Subgraphs and Edge Count",
     "content": "A subgraph H of G uses only edges from G. The edge count |E(H)| is the cardinality of the edge set. The problem asks: how many edges can we retain while eliminating all 4-cycles?",
     "mathContext": "For a graph $G = (V, E)$, a **subgraph** $H$ satisfies $E(H) \\subseteq E(G)$ (same vertex set, subset of edges). The **edge density** preserved is $|E(H)|/|E(G)|$. The problem asks for the maximum $f(m)$ such that every $m$-edge graph has a $C_4$-free subgraph with $\\geq f(m)$ edges.",
@@ -63,7 +63,7 @@
     ],
     "range": {
       "startLine": 112,
-      "endLine": 119
+      "endLine": 124
     }
   },
   {
@@ -84,8 +84,8 @@
       "extremal graph bounds"
     ],
     "range": {
-      "startLine": 590,
-      "endLine": 604
+      "startLine": 296,
+      "endLine": 300
     }
   },
   {
@@ -108,7 +108,7 @@
       "Kővári-Sós-Turán theorem"
     ],
     "range": {
-      "startLine": 184,
+      "startLine": 179,
       "endLine": 194
     }
   },
@@ -132,7 +132,7 @@
       "probabilistic combinatorics"
     ],
     "range": {
-      "startLine": 590,
+      "startLine": 587,
       "endLine": 604
     }
   },
@@ -156,8 +156,8 @@
       "Ramsey-type problems"
     ],
     "range": {
-      "startLine": 590,
-      "endLine": 604
+      "startLine": 50,
+      "endLine": 56
     }
   }
 ]

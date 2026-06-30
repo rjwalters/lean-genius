@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
   "title": "Nonderogatory Operators via Module Theory (Infinite-Dimensional Extension)",
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
-  "description": "Extends the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. A linear endomorphism T on V makes V into a K[X]-module; T is nonderogatory exactly when V is cyclic as K[X]-module. Includes a complete infinite-dimensional example: multiplication by X on K[X].",
+  "description": "Extends the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. A linear endomorphism T on V makes V into a K[X]-module; T is nonderogatory exactly when V is cyclic as a K[X]-module. Builds the evaluation map p ↦ p(T)v, identifies its range with the cyclic subspace, and proves an orbit dimension bound for integral endomorphisms together with the implication that a nonderogatory matrix over an infinite field has a cyclic vector.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Cyclic_module",
@@ -48,14 +48,14 @@
       }
     ],
     "originalContributions": [
-      "cyclicSubspace: K-span of {v, Tv, T^2v, ...} for general modules",
-      "IsCyclicVectorOp / IsNonderogatoryOp: Module-theoretic definitions",
-      "polynomialAction: K-linear map p -> p(T)v with range = cyclicSubspace",
-      "annihilatorIdeal: The ideal {p | p(T)v = 0} with full characterization",
-      "aeval_eq_zero_of_cyclic: Cyclic vector annihilation implies operator annihilation",
-      "annihilator_cyclic_eq_span_minpoly: Annihilator = (minpoly) for cyclic vectors",
-      "mulByX / isNonderogatoryOp_mulByX: Infinite-dimensional nonderogatory example",
-      "annihilator_mulByX_one_eq_bot: Trivial annihilator in infinite dimensions"
+      "cyclicSubspace / IsCyclicVector / IsNonderogatory: module-theoretic definitions generalizing the matrix notions to arbitrary K-modules",
+      "evalMap: the K-linear evaluation map p -> p(T)v, with computational lemmas (evalMap_one/X/X_pow)",
+      "range_evalMap_eq_cyclicSubspace: the range of the evaluation map equals the cyclic subspace",
+      "isCyclicVector_iff_surjective / isCyclicVector_iff_forall_exists: cyclic-vector characterizations via the evaluation map",
+      "annihilator_mul_closed / minpoly_multiple_annihilates / annihilator_congr: annihilator-ideal structure for the K[X]-action",
+      "cyclicSubspace_le_minpoly_degree: orbit dimension bound — for integral T, T^k v lies in span{v,...,T^{d-1}v} once k >= d = deg(minpoly)",
+      "matrix_nonderogatory_implies_module: over an infinite field, a nonderogatory matrix (minpoly = charpoly) has a cyclic vector",
+      "minpoly_minimal_degree: no nonzero polynomial below deg(minpoly) annihilates an integral endomorphism"
     ],
     "dateAdded": "2026-03-28",
     "prerequisites": [
@@ -88,12 +88,12 @@
   "overview": {
     "historicalContext": "The module-theoretic perspective on linear operators dates to Emmy Noether's foundational work on abstract algebra (1920s-30s). Given a linear endomorphism T on a K-vector space V, the space V acquires a K[X]-module structure via p * v = p(T)v. Under this identification, the 'nonderogatory' condition (minpoly = charpoly in finite dimensions) corresponds to V being a cyclic K[X]-module. This perspective is central to the structure theorem for finitely generated modules over PIDs, which gives the rational canonical form of a matrix. The infinite-dimensional extension raises new phenomena: the annihilator ideal can be trivial (no minimal polynomial), and the structure theorem for f.g. modules no longer directly applies.",
     "problemStatement": "Extend the nonderogatory/cyclic vector theory from finite-dimensional matrices to arbitrary K-modules. Define nonderogatory in the module-theoretic framework, prove key structural results about cyclic subspaces and annihilator ideals, and demonstrate the theory works for infinite-dimensional spaces.",
-    "proofStrategy": "Define cyclicSubspace T v as the K-span of {T^n v | n in N}. Show it equals the range of the polynomial action map p -> p(T)v. Prove p(T)-invariance by polynomial induction (base: C(c) is scalar; step: p*X uses T-invariance and IH). For cyclic vectors, show p(T)v = 0 implies p(T) = 0 using commutativity of K[X] (p(T)q(T) = q(T)p(T)). Demonstrate with K[X] under multiplication by X.",
+    "proofStrategy": "Define cyclicSubspace T v as the K-span of {T^n v | n in N}. Build the K-linear evaluation map evalMap T v : p -> p(T)v and show its range equals the cyclic subspace (forward by polynomial induction, backward by span induction). Characterize cyclic vectors as surjectivity of evalMap. Establish annihilator-ideal lemmas via commutativity of K[X]. For integral T, derive the orbit dimension bound T^k v in span{v,...,T^{d-1}v} for k >= deg(minpoly) from the monic minimal-polynomial relation, then bridge to the finite-dimensional matrix theory (nonderogatory matrix over an infinite field has a cyclic vector).",
     "keyInsights": [
       "The cyclic subspace equals the range of the polynomial action map, connecting geometric (span of Krylov vectors) and algebraic (K[X]-module quotient) perspectives",
       "For cyclic vectors, pointwise annihilation p(T)v = 0 implies global annihilation p(T) = 0, because K[X] is commutative: p(T)(q(T)v) = q(T)(p(T)v) = 0",
       "The annihilator ideal of a cyclic vector is generated by the minimal polynomial (when T is integral), connecting the ideal-theoretic and polynomial views",
-      "In infinite dimensions, the annihilator can be trivial: K[X] with multiplication by X has a cyclic vector (1) but no minimal polynomial",
+      "For an integral endomorphism the cyclic subspace of any vector is finite-dimensional with dimension at most deg(minpoly), bounding orbit size even when the ambient module is infinite-dimensional",
       "The structure theorem for modules over PIDs gives invariant factors; V is nonderogatory iff it has a single invariant factor (cyclic as K[X]-module)"
     ],
     "prerequisites": [
@@ -107,47 +107,79 @@
     {
       "id": "definitions",
       "title": "Definitions",
-      "startLine": 35,
-      "endLine": 82,
-      "summary": "Defines cyclicSubspace (K-span of Krylov vectors), IsCyclicVectorOp, IsNonderogatoryOp, polynomialAction (p -> p(T)v as K-linear map), and annihilatorIdeal ({p | p(T)v = 0} as ideal of K[X]).",
-      "mathContext": "The cyclic subspace $\\text{cyc}(T,v) = \\text{span}_K\\{v, Tv, T^2v, \\ldots\\}$ is the Krylov space. The polynomial action $\\varphi_{T,v} : K[X] \\to V$ given by $p \\mapsto p(T)v$ is $K$-linear. Its kernel $\\text{ann}(v) = \\{p \\in K[X] : p(T)v = 0\\}$ is an ideal since $K[X]$ is commutative."
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module header plus the three core definitions: cyclicSubspace T v (the K-span of the Krylov orbit {T^k v}), IsCyclicVector T v (cyclicSubspace = ⊤), and IsNonderogatory T (∃ a cyclic vector). This is the module-theoretic generalization of nonderogatory from finite-dimensional matrices.",
+      "mathContext": "For a linear endomorphism $T$ on a $K$-module $V$, the cyclic subspace is $\\mathrm{cyc}(T,v) = \\operatorname{span}_K\\{v, Tv, T^2 v, \\ldots\\}$. A vector is cyclic when $\\mathrm{cyc}(T,v) = V$, and $T$ is nonderogatory (module sense) when such a $v$ exists, i.e. $V$ is a cyclic $K[X]$-module under $p \\cdot v = p(T)v$."
     },
     {
-      "id": "basic-properties",
-      "title": "Basic Properties of Cyclic Subspaces",
-      "startLine": 84,
-      "endLine": 120,
-      "summary": "Proves: v and T^n v are in the cyclic subspace; the cyclic subspace is T-invariant (T sends it into itself); the cyclic subspace is p(T)-invariant for all polynomials p.",
-      "mathContext": "T-invariance: $T(T^n v) = T^{n+1} v \\in \\text{cyc}(T,v)$. For p(T)-invariance, induct on p: C(c) acts as scalar, addition is additive, and p*X uses $p(T)(Tw) = p(T) \\circ T$ with T-invariance of the IH."
+      "id": "evaluation-map",
+      "title": "The Evaluation Map",
+      "startLine": 63,
+      "endLine": 98,
+      "summary": "Defines evalMap T v : K[X] →ₗ[K] V, the K-linear map p ↦ p(T)(v), and proves its computational lemmas evalMap_apply (= aeval T p v), evalMap_one (= v), evalMap_X (= T v), and evalMap_X_pow (= T^k v).",
+      "mathContext": "The evaluation map $\\varphi_v : K[X] \\to V$, $p \\mapsto p(T)v$, is the bridge between polynomial algebra and the orbit geometry: it is $K$-linear, sends $1 \\mapsto v$, $X \\mapsto Tv$, and $X^k \\mapsto T^k v$. Its image is the cyclic subspace and its kernel is the annihilator ideal of $v$."
     },
     {
-      "id": "polynomial-characterization",
-      "title": "Polynomial Action Characterization",
-      "startLine": 122,
-      "endLine": 143,
-      "summary": "Proves cyclicSubspace T v = range(polynomialAction T v) and that v is cyclic iff polynomialAction is surjective.",
-      "mathContext": "$\\text{cyc}(T,v) = \\text{im}(\\varphi_{T,v})$ since generators $T^n v = \\varphi_{T,v}(X^n)$ are in the range, and conversely $p(T)v \\in \\text{cyc}(T,v)$ by $p(T)$-invariance. The surjectivity characterization: $v$ is cyclic $\\iff$ $\\varphi_{T,v}$ is onto $\\iff$ $V \\cong K[X]/\\text{ann}(v)$."
+      "id": "cyclic-subspace-properties",
+      "title": "Cyclic Subspace Properties",
+      "startLine": 99,
+      "endLine": 132,
+      "summary": "Basic structural facts: v lies in its own cyclic subspace (mem_cyclicSubspace_self), each T^k v lies in it (pow_mem_cyclicSubspace), and the cyclic subspace is T-invariant (map_cyclicSubspace_le, cyclicSubspace_T_mem).",
+      "mathContext": "$\\mathrm{cyc}(T,v)$ is the smallest $T$-invariant subspace containing $v$. $T$-invariance is shown via $T(T^k v) = T^{k+1} v \\in \\mathrm{cyc}(T,v)$ extended by span induction."
     },
     {
-      "id": "annihilator-structure",
-      "title": "Annihilator Structure for Cyclic Vectors",
-      "startLine": 145,
-      "endLine": 196,
-      "summary": "Proves: minpoly is in the annihilator; for cyclic vectors, p(T)v = 0 implies p(T) = 0 (using commutativity of K[X]); annihilator ideal = span{minpoly} for integral operators with cyclic vectors.",
-      "mathContext": "The key result: for a cyclic vector $v$, $\\text{ann}(v) = (\\mu_T)$ where $\\mu_T$ is the minimal polynomial. Proof: $p(T)v = 0 \\implies p(T)w = p(T)(q(T)v) = q(T)(p(T)v) = 0$ for all $w = q(T)v$, so $p(T) = 0$, hence $\\mu_T | p$."
+      "id": "range-evalmap",
+      "title": "Image of Evaluation Map = Cyclic Subspace",
+      "startLine": 133,
+      "endLine": 169,
+      "summary": "Proves range_evalMap_eq_cyclicSubspace: the range of evalMap T v equals cyclicSubspace T v. Forward direction uses polynomial induction (p(T)v is a K-combination of T^k v); backward uses span induction (each T^k v = evalMap (X^k)).",
+      "mathContext": "$\\operatorname{range}(\\varphi_v) = \\mathrm{cyc}(T,v)$ identifies the algebraic image $\\{p(T)v : p \\in K[X]\\}$ with the geometric span $\\operatorname{span}\\{T^k v\\}$, the key structural fact linking the two pictures."
     },
     {
-      "id": "infinite-dim-example",
-      "title": "Infinite-Dimensional Example: K[X] with Multiplication by X",
-      "startLine": 198,
-      "endLine": 235,
-      "summary": "Defines mulByX (multiplication by X on K[X]) and proves: aeval(mulByX)(p) acts as multiplication by p; 1 is a cyclic vector; mulByX is nonderogatory; the annihilator is trivial.",
-      "mathContext": "K[X] is infinite-dimensional over K, yet $\\text{mul}_X$ is nonderogatory with cyclic vector 1. The polynomial action is the identity: $p(\\text{mul}_X)(1) = p$, since $\\text{mul}_X$ IS $X$. The annihilator $\\{p : p \\cdot 1 = 0\\} = \\{0\\}$ is trivial, showing infinite-dimensional operators need not have a minimal polynomial."
+      "id": "cyclic-vector-characterization",
+      "title": "Cyclic Vector Characterization",
+      "startLine": 170,
+      "endLine": 186,
+      "summary": "Characterizes cyclic vectors via the evaluation map: isCyclicVector_iff_surjective (v cyclic ↔ evalMap surjective) and isCyclicVector_iff_forall_exists (v cyclic ↔ every w equals p(T)v for some p).",
+      "mathContext": "Since $\\operatorname{range}(\\varphi_v) = \\mathrm{cyc}(T,v)$, cyclicity ($\\mathrm{cyc}(T,v) = V$) is exactly surjectivity of $\\varphi_v$, equivalently $\\forall w\\, \\exists p,\\ p(T)v = w$."
+    },
+    {
+      "id": "annihilator-properties",
+      "title": "Annihilator Properties",
+      "startLine": 187,
+      "endLine": 221,
+      "summary": "Annihilator-ideal lemmas: the minimal polynomial annihilates every vector (minpoly_apply_eq_zero), the annihilator is closed under multiplication (annihilator_mul_closed), any minpoly multiple annihilates (minpoly_multiple_annihilates), and annihilation is invariant modulo minpoly (annihilator_congr).",
+      "mathContext": "The annihilator $\\{p : p(T)v = 0\\}$ is an ideal of $K[X]$ (closed under multiplication by arbitrary $q$). When $T$ is integral, $\\operatorname{minpoly}_K T$ annihilates every $v$, so the annihilator contains $(\\operatorname{minpoly}_K T)$ and is congruence-invariant modulo it."
+    },
+    {
+      "id": "orbit-dimension-bound",
+      "title": "Orbit Dimension Bound",
+      "startLine": 222,
+      "endLine": 291,
+      "summary": "Bounds orbit size even in infinite dimensions: finiteSpan_le_cyclicSubspace (the span of the first d powers sits inside the cyclic subspace) and cyclicSubspace_le_minpoly_degree (for an integral T, T^k v lies in span{v,…,T^{d-1}v} once k ≥ d = deg minpoly).",
+      "mathContext": "If $\\operatorname{minpoly}_K T$ is monic of degree $d$, the relation $\\mu(T)v = 0$ gives $T^d v = -\\sum_{i<d} \\mu_i\\, T^i v$, making $\\operatorname{span}\\{v, Tv, \\ldots, T^{d-1}v\\}$ $T$-invariant. By induction $T^k v$ lies in this finite span for all $k \\ge d$, so the cyclic subspace of any vector has dimension $\\le \\deg(\\operatorname{minpoly}_K T)$."
+    },
+    {
+      "id": "finite-dimensional-relation",
+      "title": "Relating to the Finite-Dimensional Case",
+      "startLine": 292,
+      "endLine": 318,
+      "summary": "Connects the module-theoretic definitions to the matrix theory: defines IsCyclicVectorMatrix and IsNonderogatoryMatrix (minpoly = charpoly), and proves matrix_nonderogatory_implies_module — over an infinite field, a nonderogatory matrix has a cyclic vector (via NonderogatoryComplete from OQ-05-OQ-01).",
+      "mathContext": "In dimension $n>0$ over an infinite field, the matrix notion (minpoly $=$ charpoly) implies the existence of a cyclic vector. The converse holds by the structure theorem but needs more infrastructure, so only the stated direction is formalized here."
+    },
+    {
+      "id": "invariant-factor-decomposition",
+      "title": "Invariant Factor Decomposition (Stated)",
+      "startLine": 319,
+      "endLine": 345,
+      "summary": "Records the minimality property minpoly_minimal_degree: for an integral T on a finite K-module, no nonzero polynomial of degree below deg(minpoly) annihilates T. Note: this holds for ALL integral endomorphisms, not only nonderogatory ones — the genuine nonderogatory characterization (single invariant factor / finrank = deg minpoly) requires the structure theorem and is left as a stated direction.",
+      "mathContext": "By $\\operatorname{minpoly}_K T \\mid p$ for any annihilator $p$, the minimal polynomial has least degree among nonzero annihilators. The full nonderogatory characterization — $T$ nonderogatory iff $V$ has a single invariant factor, equivalently $\\operatorname{finrank}_K V = (\\operatorname{minpoly}_K T).\\mathrm{natDegree}$ — depends on the structure theorem for f.g. modules over the PID $K[X]$."
     }
   ],
   "conclusion": {
-    "summary": "Complete module-theoretic framework for nonderogatory operators on arbitrary K-modules. Defines cyclic subspace, polynomial action, and annihilator ideal with full characterization theorems. Demonstrates the theory in infinite dimensions via the canonical example K[X] with multiplication by X.",
-    "implications": "This extends the finite-dimensional result (OQ-05-OQ-01) to the general setting. The module-theoretic framework connects to the structure theorem for modules over PIDs: a finitely generated K[X]-module is nonderogatory iff its invariant factor decomposition has a single factor. In infinite dimensions, the annihilator can be trivial, giving V = K[X] as K[X]-module (free of rank 1).",
+    "summary": "Module-theoretic framework for nonderogatory operators on arbitrary K-modules. Defines the cyclic subspace, the evaluation map p -> p(T)v, and annihilator-ideal structure with full characterization theorems, proves an orbit dimension bound for integral endomorphisms, and connects back to the finite-dimensional matrix case (nonderogatory matrix over an infinite field has a cyclic vector).",
+    "implications": "This extends the finite-dimensional result (OQ-05-OQ-01) to the general module setting. The framework connects to the structure theorem for modules over PIDs: a finitely generated K[X]-module is nonderogatory iff its invariant factor decomposition has a single factor. The orbit dimension bound shows that, even in infinite dimensions, each cyclic subspace of an integral endomorphism is finite-dimensional of dimension at most deg(minpoly).",
     "openQuestions": [
       "Formalize the structure theorem for f.g. modules over K[X] and its connection to the rational canonical form",
       "Characterize which operators on countably-dimensional spaces have cyclic vectors",

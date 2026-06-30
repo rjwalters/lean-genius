@@ -113,23 +113,23 @@
       "id": "sec-893-tau",
       "title": "Divisor Counting Function $\\tau$",
       "startLine": 31,
-      "endLine": 71,
+      "endLine": 85,
       "summary": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau(2^k-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors.",
       "mathContext": "Defines `tau n` as `n.divisors.card`. Verifies $\\tau($2^{k}$-1)$ for $k = 1, \\ldots, 8$ via `native_decide`. Proves `tau_prime_eq_two`: primes have exactly 2 divisors."
     },
     {
       "id": "sec-893-f",
       "title": "Cumulative Sum $f(n)$",
-      "startLine": 72,
-      "endLine": 110,
+      "startLine": 86,
+      "endLine": 133,
       "summary": "Defines `f n` as $\\sum_{k=1}^n \\tau(2^k-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`.",
       "mathContext": "Defines `f n` as $\\sum_{k=1}^n \\tau($2^{k}$-1)$ via `Finset.Icc` and `Finset.sum`. Verifies $f(1), \\ldots, f(8)$ via `native_decide` and collects into `f_initial_values`."
     },
     {
       "id": "sec-893-mono",
       "title": "Monotonicity and Positivity",
-      "startLine": 111,
-      "endLine": 125,
+      "startLine": 134,
+      "endLine": 206,
       "summary": "Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$.",
       "mathContext": "Verified: Proves `f_mono` ($m \\le n \\implies f(m) \\le f(n)$) via `Finset.sum_le_sum_of_subset` and `f_pos` ($n \\ge 1 \\implies f(n) > 0$) via chaining with $f(1) = 1$."
     },
@@ -137,7 +137,7 @@
       "id": "sec-893-mersenne",
       "title": "Mersenne Divisibility and Tau Bounds",
       "startLine": 207,
-      "endLine": 269,
+      "endLine": 270,
       "summary": "Proves `mersenne_dvd` ($a \\mid b \\Rightarrow (2^a-1) \\mid (2^b-1)$) by induction on the quotient, `mersenne_injective` ($2^a-1 = 2^b-1 \\Rightarrow a = b$) by strict monotonicity, `tau_mersenne_ge_tau` ($\\tau(2^k-1) \\geq \\tau(k)$) via injection of divisors, and `f_divisor_sum_lower` ($f(n) \\geq \\sum_{k=1}^n \\tau(k)$) connecting $f$ to the divisor summatory function.",
       "mathContext": "Key structural chain: Mersenne divisibility provides an injection from divisors of $k$ to divisors of $2^k-1$, giving $\\tau(2^k-1) \\geq \\tau(k)$. Summing yields $f(n) \\geq \\sum_{k=1}^n \\tau(k) \\sim n \\log n$ (by Dirichlet's divisor estimate)."
     },
@@ -145,7 +145,7 @@
       "id": "sec-893-ratio",
       "title": "The Ratio $f(2n)/f(n)$",
       "startLine": 271,
-      "endLine": 284,
+      "endLine": 285,
       "summary": "Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$.",
       "mathContext": "Formal definition: Defines `ratio n` as $(f(2n) : \\mathbb{R}) / (f(n) : \\mathbb{R})$. Proves `ratio_ge_one`: the ratio is at least 1 for $n \\ge 1$."
     },
@@ -153,7 +153,7 @@
       "id": "sec-893-known",
       "title": "Known Results: Kovac-Luca",
       "startLine": 286,
-      "endLine": 300,
+      "endLine": 301,
       "summary": "Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction.",
       "mathContext": "Verified: Axiomatizes `kovac_luca_limsup_infinite`: $\\forall M > 0,\\, \\exists n,\\, \\text{ratio}(n) > M$. Proves `ratio_unbounded` by contradiction."
     },
@@ -168,7 +168,7 @@
     {
       "id": "sec-893-summary",
       "title": "Summary Theorem",
-      "startLine": 320,
+      "startLine": 319,
       "endLine": 332,
       "summary": "Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness.",
       "mathContext": "Bound: Collects verified results into `erdos893_summary`: positivity, monotonicity, and ratio unboundedness."

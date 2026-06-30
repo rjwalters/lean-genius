@@ -63,46 +63,68 @@
   },
   "sections": [
     {
-      "id": "background",
+      "id": "header",
       "title": "Background and Imports",
       "startLine": 1,
-      "endLine": 30,
-      "summary": "Problem statement, references (HJNS 2024, Carnielli-Carolino 2011, Erdős Problem #395), and import of the parent Erdos395Problem formalization. Opens the Erdos395 and Complex namespaces."
+      "endLine": 31,
+      "summary": "States Erdős #395 OQ-01: the exact optimal constant $c$ in the reverse Littlewood–Offord bound $P(|\\sum\\varepsilon_i z_i|\\leq\\sqrt2)\\geq c/n$. HJNS (2024) prove $c>0$ exists but not its value. This file proves structural bounds, that the threshold-1 problem is false (now a theorem from a counterexample axiom), monotonicity, positivity of $c$, and rate tightness. Imports the parent `Erdos395Problem`.",
+      "mathContext": "Optimal $c$ in $P(|\\sum\\varepsilon_i z_i|\\leq\\sqrt2)\\geq c/n$; exact value OPEN (HJNS 2024)."
+    },
+    {
+      "id": "restored-axioms",
+      "title": "§ 0. Restored Axioms",
+      "startLine": 32,
+      "endLine": 54,
+      "summary": "Re-declares two AXIOMS the file depends on (removed from the parent in a cleanup): `counterexample_always_large` (the Carnielli–Carolino example has $|\\text{sum}|\\geq\\sqrt2$ for all sign vectors) and `extremal_example_tight` (the half-1s/half-$i$s example achieves probability $\\Theta(1/n)$).",
+      "mathContext": "Axioms: counterexample $|\\text{sum}|\\geq\\sqrt2$; extremal example probability $\\Theta(1/n)$."
     },
     {
       "id": "optimal-constant",
-      "title": "The Optimal Constant (Section 1)",
-      "startLine": 32,
-      "endLine": 52,
-      "summary": "Defines optimalConstant as sSup of the set of valid c > 0. Proves valid_constants_nonempty via hjns_2024. Leaves optimal_constant_pos as a sorry (requires bounding the sSup from below)."
+      "title": "§ 1. The Optimal Constant",
+      "startLine": 55,
+      "endLine": 127,
+      "summary": "Defines `optimalConstant` $c^*$ (the sSup of valid constants). PROVES `valid_constants_nonempty` (from HJNS 2024), `valid_constants_bddAbove` ($c\\leq1$, via $n=1$, $z=1$ giving probability $1$), and `optimal_constant_pos` ($c^*>0$).",
+      "mathContext": "$c^*=\\sup\\{c>0:\\forall n,z\\ \\text{unit},\\ P\\geq c/n\\}$; $0<c^*\\leq1$."
     },
     {
       "id": "original-false",
-      "title": "Original Problem is False (Section 2)",
-      "startLine": 54,
-      "endLine": 95,
-      "summary": "Proves counterexample_exceeds_one: the Carnielli-Carolino counterexample has |sum| > 1 for all sign choices. Then proves erdos_original_is_false_proved: the threshold-1 problem has no valid c > 0 for n=2. One sorry remains for the Set.toFinset zero-count computation."
+      "title": "§ 2. Derivation: Original Problem is False",
+      "startLine": 128,
+      "endLine": 182,
+      "summary": "PROVES `counterexample_exceeds_one` (the counterexample has $|\\text{sum}|\\geq\\sqrt2>1$) and `erdos_original_is_false_proved` (was an axiom): at $n=2$ the Carnielli–Carolino example $z_1=1,z_2=i$ has $|\\varepsilon_1+i\\varepsilon_2|\\geq\\sqrt2>1$ for all signs, so the threshold-1 count is $0$, refuting $\\geq c/n$.",
+      "mathContext": "Threshold-1 problem FALSE: $n=2$, $z=(1,i)$ gives $|\\text{sum}|\\geq\\sqrt2>1$ always."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity in Threshold (Section 3)",
-      "startLine": 97,
-      "endLine": 109,
-      "summary": "Proves count_monotone_threshold: the count of sign vectors achieving |sum| ≤ t is monotone in t. Clean proof via Finset.card_le_card and set containment."
+      "title": "§ 3. Monotonicity in Threshold",
+      "startLine": 183,
+      "endLine": 196,
+      "summary": "PROVES `count_monotone_threshold`: $t_1\\leq t_2\\Rightarrow\\#\\{|\\text{sum}|\\leq t_1\\}\\leq\\#\\{|\\text{sum}|\\leq t_2\\}$.",
+      "mathContext": "Count of small-sum sign vectors is monotone in the threshold."
     },
     {
-      "id": "criticality-and-rate",
-      "title": "√2 is Critical and Rate Tightness (Sections 4–5)",
-      "startLine": 111,
-      "endLine": 143,
-      "summary": "Section 4 proves sqrt2_is_critical as a conjunction: HJNS holds at √2, Carnielli-Carolino fails at 1. Section 5 proves rate_is_tight (Θ(1/n) for the extremal example, n ≥ 4) and extremal_is_unit (extremal vectors 1 and i have unit norm)."
+      "id": "sqrt2-critical",
+      "title": "§ 4. The √2 Threshold is Critical",
+      "startLine": 197,
+      "endLine": 210,
+      "summary": "PROVES `sqrt2_is_critical`: the $1/n$ bound holds at threshold $\\sqrt2$ (HJNS) but fails at threshold $1$ (Carnielli–Carolino) — so $\\sqrt2$ is the boundary.",
+      "mathContext": "$\\sqrt2$ critical: bound holds at $\\sqrt2$, fails at $1$."
+    },
+    {
+      "id": "rate-tight",
+      "title": "§ 5. Optimality of the 1/n Rate",
+      "startLine": 211,
+      "endLine": 230,
+      "summary": "PROVES `rate_is_tight` (the extremal example has probability $\\Theta(1/n)$, so $1/n$ cannot improve to $1/n^{1-\\varepsilon}$, from `extremal_example_tight`) and `extremal_is_unit` (the extremal example uses unit vectors $1$ and $i$).",
+      "mathContext": "Rate $1/n$ tight: extremal example probability $\\Theta(1/n)$."
     },
     {
       "id": "summary",
-      "title": "Summary (Section 6)",
-      "startLine": 145,
-      "endLine": 161,
-      "summary": "optimal_constant_summary combines: c > 0 exists (from hjns_2024) and the 1/n rate is tight for all n ≥ 4. Serves as the canonical statement of what the file proves."
+      "title": "§ 6. Summary",
+      "startLine": 231,
+      "endLine": 247,
+      "summary": "PROVES `optimal_constant_summary`: $c>0$ exists (HJNS) and the $1/n$ rate is tight (extremal example); the exact value of $c$ remains OPEN.",
+      "mathContext": "Summary: $c>0$ exists, rate $1/n$ tight; exact $c$ OPEN."
     }
   ],
   "conclusion": {

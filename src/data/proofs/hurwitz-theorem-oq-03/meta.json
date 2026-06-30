@@ -2,7 +2,7 @@
   "id": "hurwitz-theorem-oq-03",
   "title": "Hurwitz's Theorem: n-Square Identities and Normed Division Algebras",
   "slug": "hurwitz-theorem-oq-03",
-  "description": "Formalizes Hurwitz's 1898 theorem: the only n for which an identity (x₁²+⋯+xₙ²)(y₁²+⋯+yₙ²) = z₁²+⋯+zₙ² holds with bilinear zᵢ are n ∈ {1,2,4,8}. Proves the 2-square (Brahmagupta-Fibonacci) and 4-square (Euler) identities completely, using Mathlib quaternion norm multiplicativity. One axiom for the general impossibility direction.",
+  "description": "Formalizes Hurwitz's 1898 theorem: the only n for which an identity (x₁²+⋯+xₙ²)(y₁²+⋯+yₙ²) = z₁²+⋯+zₙ² holds with bilinear zᵢ are n ∈ {1,2,4,8}. Proves the 2-square (Brahmagupta-Fibonacci) and 4-square (Euler) identities completely, using Mathlib quaternion norm multiplicativity. The general impossibility direction is stated as a theorem with a single remaining `sorry` (the n=3 case is fully proved; no axiom declarations).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -39,8 +39,8 @@
   "overview": {
     "historicalContext": "Hurwitz's theorem (1898) is one of the most beautiful results in algebra, connecting number theory, geometry, and topology. The story begins with Brahmagupta's identity (628 CE): $(a^2+b^2)(c^2+d^2) = (ac-bd)^2+(ad+bc)^2$, which shows products of sums of two squares are again sums of two squares — an algebraic reflection of norm multiplicativity in ℂ. Euler discovered the analogous 4-square identity in 1748, 95 years before Hamilton found quaternions (1843). The Cayley numbers (octonions, 1845) gave the 8-square case. Hamilton's fruitless 15-year search for a 3-dimensional 'triplet' algebra suggested no such thing existed, but it was Adolf Hurwitz who proved in 1898 that n-square identities with bilinear terms exist only for $n \\in \\{1,2,4,8\\}$. Hurwitz's original proof used what we now call Hurwitz matrices. The topological dimension of the result was revealed much later: Adams (1962) proved that $S^{n-1}$ admits $n-1$ linearly independent tangent vector fields iff $n \\in \\{1,2,4,8\\}$, connecting norm composition to the parallelizability of spheres. The connection to Bott periodicity and algebraic K-theory (with period 8) was discovered by Bott and Milnor in the same era.",
     "problemStatement": "For which values of n does there exist an identity (x₁²+⋯+xₙ²)(y₁²+⋯+yₙ²) = z₁²+⋯+zₙ² where each zᵢ is bilinear in the xⱼ and yₖ? Hurwitz's answer: only n ∈ {1, 2, 4, 8}.",
-    "text": "An NSquareIdentity for n consists of n bilinear forms Bᵢ(x,y) such that ‖x‖²·‖y‖² = ‖B(x,y)‖². The theorem has two directions: (1) existence — for n=1,2,4,8, explicit identities are constructed using real multiplication, complex multiplication, quaternion multiplication, and octonion multiplication; (2) non-existence — for all other n, no such identity can exist. The existence direction is fully proved. The non-existence direction uses the axiom hurwitz_only_if, which captures the full Hurwitz theorem (requiring Clifford algebra theory).",
-    "proofStrategy": "The 2-square identity is the Brahmagupta-Fibonacci identity: (x₁²+x₂²)(y₁²+y₂²) = (x₁y₁-x₂y₂)²+(x₁y₂+x₂y₁)². The 4-square identity uses Mathlib's Quaternion.normSq_mul: the norm of a quaternion product equals the product of norms. The 1-square identity is trivial. The 8-square identity for octonions is axiomatized (octonion multiplication in Lean 4 requires additional infrastructure). The non-existence proof for n=3 uses a structural argument about bilinear forms over ℝ³.",
+    "text": "An NSquareIdentity for n consists of n bilinear forms Bᵢ(x,y) such that ‖x‖²·‖y‖² = ‖B(x,y)‖². The theorem has two directions: (1) existence — for n=1,2,4,8, explicit identities are constructed using real multiplication, complex multiplication, quaternion multiplication, and octonion multiplication; (2) non-existence — for all other n, no such identity can exist. The existence direction is fully proved. The non-existence direction is captured by the theorem hurwitz_only_if: the n=3 case is proved structurally and the odd-n case via a skew-symmetric orthogonal matrix argument, with a single remaining `sorry` for the even n∉{2,4,8} case (pending Clifford-algebra / Bott-periodicity machinery). There are no axiom declarations.",
+    "proofStrategy": "The 2-square identity is the Brahmagupta-Fibonacci identity: (x₁²+x₂²)(y₁²+y₂²) = (x₁y₁-x₂y₂)²+(x₁y₂+x₂y₁)². The 4-square identity uses Mathlib's Quaternion.normSq_mul: the norm of a quaternion product equals the product of norms. The 1-square identity is trivial. The 8-square identity for octonions is proved directly from an explicit octonion-style multiplication (Degen's 1818 identity), so all four existence cases are machine-checked. The non-existence proof for n=3 uses a structural argument about bilinear forms over ℝ³.",
     "keyInsights": [
       "The 4-square identity follows directly from Quaternion.normSq_mul — Mathlib does the heavy lifting",
       "n-square identities correspond exactly to normed division algebra multiplications: ℝ↔n=1, ℂ↔n=2, ℍ↔n=4, 𝕆↔n=8",
@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hurwitz's theorem is formalized with 1 axiom covering the non-existence direction (requiring Clifford algebra machinery). The existence direction — identities for n=1,2,4,8 — is fully proved, including the 4-square identity via quaternion norm multiplicativity from Mathlib. 45 theorems, 15 definitions, 1731 lines.",
+    "summary": "Hurwitz's theorem is formalized with a single remaining `sorry` covering the general non-existence direction (the even n∉{2,4,8} case, which needs Clifford-algebra / Bott-periodicity machinery); there are no axiom declarations. The existence direction — identities for n=1,2,4,8 — is fully proved, including the 4-square identity via quaternion norm multiplicativity from Mathlib, and the n=3 and odd-n impossibility are proved structurally. 45 theorems, 20 definitions, 2042 lines.",
     "implications": "This formalization demonstrates how Mathlib's quaternion library directly enables algebraic results. The four normed division algebras (ℝ,ℂ,ℍ,𝕆) are among the most fundamental structures in mathematics and physics. The Hurwitz theorem's connection to Bott periodicity and K-theory shows its deep topological significance.",
     "openQuestions": [
       "Prove hurwitz_only_if: requires Clifford algebra theory and representation of norm-preserving multiplications",
@@ -133,25 +133,41 @@
       "id": "impossibility",
       "title": "No 3-Square Identity: Overdetermined Orthonormality",
       "startLine": 848,
-      "endLine": 1595,
-      "summary": "Proves no_three_square_identity: any NSquareIdentity 3 leads to a contradiction via overdetermined orthonormality — the bilinearity forces more mutually orthogonal unit vectors into ℝ³ than its dimension allows.",
+      "endLine": 1685,
+      "summary": "Proves no_three_square_identity: any NSquareIdentity 3 leads to a contradiction via overdetermined orthonormality. Bilinearity forces the nine product vectors m_{ij} = mul(e_i, e_j) to satisfy both row- and column-orthonormality, packing more mutually orthogonal unit vectors into ℝ³ than its dimension allows. The contradiction is closed via a Parseval expansion (no_three_square_identity_proof).",
       "mathContext": "Column/row orthonormality from bilinearity gives 9 orthogonal unit vectors in $\\mathbb{R}^3$, impossible since $\\dim(\\mathbb{R}^3) = 3$. Derived via `inner_bilinear_expansion` and dimensional contradiction."
     },
     {
-      "id": "main-theorem",
-      "title": "Hurwitz's Complete Theorem",
-      "startLine": 1596,
-      "endLine": 1644,
-      "summary": "Assembles the biconditional: NSquareIdentity n is nonempty iff n ∈ {1,2,4,8}. Uses the constructive existence proofs and the hurwitz_only_if axiom.",
-      "mathContext": "$\\text{NSquareIdentity}(n) \\neq \\emptyset \\iff n \\in \\{1,2,4,8\\}$."
+      "id": "admissible-dimensions",
+      "title": "Admissible Dimensions: Existence for n ∈ {1,2,4,8}",
+      "startLine": 1686,
+      "endLine": 1712,
+      "summary": "PART 8. Defines admissibleDimensions = {1,2,4,8} and proves identities_exist_for_admissible: the positive (\"if\") direction of Hurwitz's theorem, assembling the four explicit constructions (n=1 trivial, n=2 Brahmagupta-Fibonacci, n=4 Euler/quaternion, n=8 Degen/octonion) into a single existence statement.",
+      "mathContext": "$\\{n : \\text{NSquareIdentity}(n) \\neq \\emptyset\\} \\supseteq \\{1,2,4,8\\}$, the constructive half of the biconditional."
+    },
+    {
+      "id": "odd-impossibility",
+      "title": "Odd-Dimension Impossibility: Skew-Symmetric Orthogonal Matrices",
+      "startLine": 1713,
+      "endLine": 1956,
+      "summary": "PART 8b. The core obstruction proof. Builds colMat (whose columns are orthonormal, so colMatᵀ·colMat = I) and crossMat M_{jk} = ⟨mul(e_j,e_{j₁}), mul(e_k,e_{j₂})⟩, shows M is orthogonal and skew-symmetric (Mᵀ = −M) for j₁ ≠ j₂, hence M² = −I — a complex structure. For odd n this forces det(M)² = (−1)ⁿ < 0, contradicting det(M)² ≥ 0 (no_odd_nsquare). Concludes hurwitz_only_if and the full hurwitz_theorem biconditional (the n even, n∉{2,4,8} case carries the single remaining sorry, blocked on Clifford/Bott periodicity).",
+      "mathContext": "A skew-symmetric orthogonal matrix satisfies $M^\\top = -M$ and $M^\\top M = I$, so $M^2 = -I$ and $\\det(M)^2 = \\det(-I) = (-1)^n$. For odd $n$ this is $-1 < 0$, impossible over $\\mathbb{R}$, ruling out all odd $n \\geq 3$."
     },
     {
       "id": "division-algebras",
-      "title": "The Four Normed Division Algebras",
-      "startLine": 1646,
-      "endLine": 1731,
-      "summary": "DivisionAlgebra inductive type (reals, complex, quaternions, octonions), properties table (ordering, commutativity, associativity), connections to physics and topology (parallelizable spheres).",
-      "mathContext": "Losing properties ℝ→ℂ→ℍ→𝕆: ordering, commutativity, associativity. Topological: only $S^0, S^1, S^3, S^7$ are parallelizable (Adams 1962)."
+      "title": "The Four Normed Division Algebras (ℝ, ℂ, ℍ, 𝕆)",
+      "startLine": 1957,
+      "endLine": 1998,
+      "summary": "PART 9. The DivisionAlgebra inductive type (reals, complex, quaternions, octonions), its dimension function (1,2,4,8), and division_algebra_identity linking each algebra to its n-square identity — the algebraic reinterpretation of Hurwitz's theorem as the classification of real normed division algebras.",
+      "mathContext": "Hurwitz ⇔ the only normed division algebras over $\\mathbb{R}$ are $\\mathbb{R},\\mathbb{C},\\mathbb{H},\\mathbb{O}$ with dimensions $1,2,4,8$."
+    },
+    {
+      "id": "significance",
+      "title": "Physical and Mathematical Significance",
+      "startLine": 1999,
+      "endLine": 2042,
+      "summary": "PART 10 and final verification. Commentary on the loss of structure along ℝ→ℂ→ℍ→𝕆 (ordering, commutativity, associativity), topological consequences (only S⁰,S¹,S³,S⁷ parallelizable, Adams 1962), and #check sanity statements confirming the headline constructions and theorems type-check.",
+      "mathContext": "Each step $\\mathbb{R}\\to\\mathbb{C}\\to\\mathbb{H}\\to\\mathbb{O}$ sacrifices a property; topologically only $S^0,S^1,S^3,S^7$ admit a trivial tangent bundle (Bott-Milnor / Adams)."
     }
   ],
   "sorries": 1

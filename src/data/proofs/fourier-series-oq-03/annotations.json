@@ -100,7 +100,7 @@
       "startLine": 181,
       "endLine": 190
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Bounded Variation on the Circle via Lifting",
     "content": "The predicate HasBoundedVariationCircle lifts Mathlib's BoundedVariationOn from real intervals to the additive circle by composing f with the quotient map R -> AddCircle T and checking BV on [0, T]. This design reuses Mathlib's existing BV infrastructure (eVariationOn, total variation) while adapting it to the periodic setting. The interval [0, T] is chosen as a fundamental domain; the equivalent [-T/2, T/2] would give the same result for periodic functions.",
     "mathContext": "$f : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ has bounded variation if $f \\circ \\iota$ has bounded variation on $[0, T]$, where $\\iota : \\mathbb{R} \\to \\mathbb{R}/T\\mathbb{Z}$ is the quotient map.",
@@ -125,7 +125,7 @@
       "startLine": 197,
       "endLine": 221
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "One-Sided Limits via limUnder and nhdsWithin",
     "content": "The right and left limits of f at x_0 are defined using Mathlib's limUnder applied to the nhdsWithin filter restricted to Ioi (for right) or Iio (for left). The definitions work in the lifted setting (f composed with the quotient map), matching the BV definition. The existence axioms assert that BV functions have one-sided limits everywhere, a classical result proved via the monotone decomposition theorem (every BV function is a difference of two monotone functions).",
     "mathContext": "$f(x_0^+) = \\lim_{x \\to x_0^+} f(x)$, $f(x_0^-) = \\lim_{x \\to x_0^-} f(x)$, defined as $\\texttt{limUnder}(\\mathcal{N}(x_0) \\cap (x_0, \\infty), f \\circ \\iota)$.",

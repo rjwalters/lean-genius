@@ -64,6 +64,10 @@ print_success() { echo -e "${GREEN}✓ $1${NC}"; }
 print_info() { echo -e "${BLUE}ℹ $1${NC}"; }
 print_warning() { echo -e "${YELLOW}! $1${NC}"; }
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Check dependencies
 check_deps() {
     local missing=()
@@ -280,6 +284,14 @@ stop_agent() {
 
     # Clean up signal
     rm -f "$SIGNALS_DIR/stop-deployer"
+
+    # Reclaim the agent's worktree now that its session is gone. The session is
+    # dead (kill-session above) so the worktree is idle; remove_own_worktree
+    # applies the shared safety guards (dirty / unpushed-or-unbacked / locked /
+    # active-process / current-checkout) and is a no-op if there is nothing to
+    # remove. No .env salvage needed: .env is gitignored and the canonical copy
+    # lives at $REPO_ROOT/.env, re-copied into the worktree on every launch.
+    remove_own_worktree "$WORKTREE_PATH"
 }
 
 # Check status
