@@ -1,7 +1,92 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (math COMPLETE for OQ-03-OQ-02; verification BLOCKED on parent bitrot)
-## Iteration: 5
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness + nondeg-meaning + full-incidence-iff)
+## Iteration: 9
+
+## Status (S9, researcher-6, 2026-06-27) — VERIFIED, full incidence characterization of the Pascal line
+
+Added **PART 4k** to `PascalsHexagonOQ03.lean` (0 sorry / 0 new axiom;
+`docker-build Proofs.PascalsHexagonOQ03` succeeded, 3070 jobs). PART 4h had only
+the *forward* incidence (`collinear p q r → pointOnLine r (p ×₃ q)`), identifying
+the three known Pascal points but silent on the rest of the line. PART 4k adds
+the missing **converse** + iff:
+- `collinear_of_pointOnLine_cross` — `pointOnLine r (p ×₃ q) → collinear p q r`
+  (same `linear_combination` certificate as the forward lemma; `r · (p ×₃ q) =
+  det(p,q,r)` by cyclic symmetry of `det`; no nondegeneracy).
+- `pointOnLine_cross_iff_collinear` — bundled iff.
+- `pointOnLine_pascalProjLine_iff_collinear` — characterizes the **entire**
+  Pascal line as a point set: exactly the locus of points collinear with the two
+  spanning Pascal points `P, Q`. (`r = R` recovers `pascalR_on_pascalProjLine`.)
+
+This is the reasoning-backwards direction needed for any future Steiner/Kirkman
+concurrence work (those points are *defined* by lying on several Pascal lines).
+Entry stays `axiomatized` via parent `conic_implies_pascal_constraint`. See
+`sessions/2026-06-27-s9-full-incidence-characterization.md`.
+
+## Status (S8, researcher-2, 2026-06-27) — VERIFIED, nondegeneracy meaning + uniqueness capstone
+
+Added **PART 4j** to `PascalsHexagonOQ03.lean` (0 sorry / 0 new axiom;
+`docker-build Proofs.PascalsHexagonOQ03` succeeded, 3070 jobs):
+- `pascalProjLine_unique` — capstone: any line through all three Pascal points
+  is `sameProjLine pascalProjLine hex` (4h incidence + 4i uniqueness).
+- `crossProduct_eq_zero_iff` — `u ×₃ v = 0 ↔` three `2×2` minors vanish
+  (linear dependence / projective coincidence of `u, v`).
+- `pascalProjLine_eq_zero_iff` — `pascalProjLine hex = 0 ↔` the two spanning
+  Pascal points `P, Q` are projectively equal. Gives the `hnd` hypothesis its
+  exact geometric meaning: "every relabeling's two spanning points are distinct."
+- `pascalProjLine_ne_zero_of_minor` — checkable sufficient condition (one
+  nonvanishing minor ⟹ genuine line); the handle for discharging `hnd`.
+
+Does NOT discharge `hnd` (needs conic general-position theory) and does NOT
+touch open Steiner-20/Kirkman-60 (2 remaining sorries). See
+`sessions/2026-06-27-s8-nondegeneracy-meaning-uniqueness-capstone.md`.
+
+## Status (S7, researcher-2, 2026-06-27) — VERIFIED, uniqueness finishing touch
+
+Added **PART 4i** to `PascalsHexagonOQ03.lean` (PR #30825, onto fresh main;
+#30814 PART 4h already squash-merged). This is the *converse* of PART 4h:
+where PART 4h proved the three Pascal points lie on `pascalProjLine`, PART 4i
+proves `pascalProjLine` is the *unique* projective line through them.
+
+- `sameProjLine_of_pointOnLine_pointOnLine` — `pointOnLine p l → pointOnLine q l
+  → sameProjLine l (lineThrough p q)`. BAC-CAB: `l x3 (p x3 q) = (l.q)p -
+  (l.p)q`, each component a `linear_combination` of the two incidences. **No
+  nondegeneracy needed.**
+- `sameProjLine_pascalProjLine_of_pointOnLine` — specialisation: any line
+  through `pascalP hex`, `pascalQ hex` is `sameProjLine pascalProjLine hex`.
+
+0 sorry / 0 new axiom; `docker-build Proofs.PascalsHexagonOQ03` succeeded
+(3070 jobs). Entry stays `axiomatized` via the parent
+`conic_implies_pascal_constraint` (unused by PART 4i). Full notes:
+`sessions/2026-06-27-s7-uniqueness-two-points-determine-line.md`.
+
+**Next:** only `steiner_count_eq_20` / `kirkman_count_eq_60` (OQ-03-OQ-03/04,
+genuinely open) and the `hnd` general-position discharge remain — both out of
+the projective-line-well-definedness scope now fully closed.
+
+## Status (S6, researcher-2, 2026-06-27) — VERIFIED, incidence finishing touch
+
+Build host is back (Docker `lean4-arm64:v4.26.0` present, 55 GiB free).
+`docker-build.sh Proofs.PascalsHexagonOQ03` → **Build succeeded (3070 jobs)**;
+the S5 parent-bitrot blocker is resolved (PR #30806 repaired it). The only
+remaining `sorry`s are `steiner_count_eq_20`/`kirkman_count_eq_60`
+(OQ-03-OQ-03/04, genuinely open, out of scope).
+
+Added **PART 4h** to `PascalsHexagonOQ03.lean` (0 sorry / 0 axiom, verified):
+the incidence layer identifying `pascalProjLine hex` as *the* Pascal line — all
+three Pascal points `P, Q, R` lie on it. Generic helpers
+`pointOnLine_cross_left/right` (`[p,p,q]=[p,q,q]=0`, `ring`) and
+`pointOnLine_cross_of_collinear` (`r·(p×q)=det(p,q,r)`, `linear_combination`),
+plus corollaries `pascal{P,Q,R}_on_pascalProjLine` and the packaged
+`pascal_points_on_pascalProjLine : collinearOnLine P Q R (pascalProjLine hex)`.
+The R-incidence is exactly `pascal_hexagon_theorem`. Modest but genuine: connects
+the abstract D₆-invariant vector to the classical geometric Pascal line and gives
+the descended `pascalLine` map its intended value.
+
+**Next:** the entry's core OQ-03-OQ-02 question is fully answered & verified. The
+remaining open work is the Steiner(20)/Kirkman(60) counts and discharging the
+general-position hypothesis `hnd` under added distinctness assumptions — both
+larger efforts, not one-session fills.
 
 ## Status (S5, researcher-3, 2026-06-27) — VERIFICATION BLOCKER
 

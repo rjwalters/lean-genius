@@ -126,7 +126,11 @@
   "conclusion": {
     "summary": "The Dirichlet eta value η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720 is formalized with 0 axioms and 0 sorries, answering the open question of basel-problem-oq-13. The proof reuses the parent's verified even-fourth-power sum (π⁴/1440) and lambda value λ(4) = π⁴/96, threading the alternating sign through HasSum.even_add_odd so that η(4) = -π⁴/1440 + π⁴/96 = 7π⁴/720.",
     "implications": "Completes the eta-value analogue of the parent's lambda value, demonstrating that the even/odd parity split converts ζ-type and λ-type sums into alternating eta values with only sign bookkeeping. The same template applies to η(2) = π²/12 from ζ(2), and to higher even eta values η(2k) = (1 - 2^{1-2k})ζ(2k) via Mathlib's hasSum_zeta_nat.",
-    "openQuestions": []
+    "openQuestions": [
+      "Generalize this s = 4 case to the full even eta value η(2k) = (1 − 2^{1−2k})ζ(2k) for every k, formalizing the parity-split template uniformly via Mathlib's hasSum_zeta_nat instead of reusing fixed numerical ingredients.",
+      "The parity split works here only because the exponent is even, so both the even and odd power sums have closed forms. Does the template yield anything at odd exponents, where η(3) and ζ(3) (Apéry's constant) have no known closed form, or is it fundamentally confined to even s?",
+      "Formalize the companion Dirichlet beta values β(2k) — the odd-character analogue (β(2) is Catalan's constant) — obtained by a parity/character split of ∑ (−1)^n/(2n+1)^{2k} rather than the sign split used here."
+    ]
   },
   "crossReferences": [
     {

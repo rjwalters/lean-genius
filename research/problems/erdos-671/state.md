@@ -1,8 +1,41 @@
 # Current State
 
-**Phase**: BLOCKED (entry at its natural ceiling; remaining sorries need deep Mathlib infrastructure)
+**Phase**: BLOCKED (registered entry at its natural ceiling) — but the lone
+tractable sorry (`equidistant_diverges`) now has a BUILD-VERIFIED orphan whose
+polynomial reduction is fully proved; only a finite arithmetic core remains.
 **Since**: 2026-06-26
-**Iteration**: 2 (assessment; orphan scaffold for the lone tractable sorry)
+**Iteration**: 3 (orphan made to compile + polynomial machinery proved)
+
+## Session 2026-06-28 (Session 7) — orphan BUILD-VERIFIED; pointwise sorry decomposed
+
+**Mode**: REVISIT (researcher-2). **Outcome**: real verified progress on the orphan
+(the registered file is unchanged — still axiomatized, 3 axioms + 7 sorries).
+
+- **The session-6 orphan never compiled.** Building it (Mathlib v4.26.0, oleans
+  cached → fast incremental build) surfaced two genuine errors: `div_le_iff` was
+  REMOVED upstream (→ `div_le_iff₀`), and a `linarith` in `midPoint_mem` lacked the
+  `(2:ℝ) ≤ n` cast of `hn`. Both fixed. So session 6's "scaffold" was unverified.
+- **Decomposed the monolithic pointwise sorry.** The orphan now PROVES (build-verified):
+  - `lagrangeBasis_eval` : `p_i(x) = ∏_{j≠i} (x - a_j)/(a_i - a_j)` (eval as product of ratios)
+  - `abs_lagrangeBasis_eval` : `|p_i(x)| = ∏_{j≠i} |x - a_j|/|a_i - a_j|`
+  - `lebesgueFunction_ge_single` : `λ_n(x) ≥ |p_i(x)|` for any single index
+  - `midPoint_sub_node` : `x* - x_j = (1 - 2j)/(n-1)`
+  - `node_sub_node` : `x_i - x_j = 2(i-j)/(n-1)`
+  - plus the previously-broken `equidistantNodes` / `midPoint_mem`.
+- **Residual sorry is now PURE finite real arithmetic** (no polynomials, no analysis):
+  `∃ m : Fin n, 2^(n-1)/n^2 ≤ |p_m(x*)|`. Via the proved lemmas this is the explicit
+  factorial inequality `(2n-3)!! / (|2m-1| · 2^(n-1) · m! · (n-1-m)!) ≥ 2^(n-1)/n^2`
+  at the central index `m ≈ ⌊(n-2)/2⌋`. This is the right shape for Aristotle
+  `prove_file` (currently DOWN, 404) or a manual double-factorial/factorial induction.
+- **Aristotle still DOWN** this session (smoke test → HTTP 404 on `/api/v1/project`),
+  so the residual sorry could not be submitted. Re-submit when it returns.
+
+### Next Action
+- Submit the orphan to Aristotle `prove_file` once the backend is reachable; the
+  residual goal is a single isolated arithmetic lemma now.
+- Or: manual proof of the central-index factorial inequality, then graft proof +
+  the separate `BddAbove`/sup step into the registered `equidistant_diverges`.
+- Do NOT re-attempt the other 6 sorries; they remain infrastructure-blocked.
 
 ## Session 2026-06-26 (Session 6) — confirm BLOCKED + orphan scaffold for `equidistant_diverges`
 

@@ -22,6 +22,8 @@ Estimate h(n). Is h(n) ≥ log₂ n + log* n − O(1)?
 -/
 
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Paths
+import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
@@ -207,3 +209,57 @@ theorem bounds_gap :
     ∃ C : ℕ, ∀ n : ℕ, n ≥ 3 →
     pancyclicExcess n ≤ pancyclicExcess n + C :=
   ⟨0, fun _ _ => Nat.le_add_right _ _⟩
+
+/-! ## Grounded `SimpleGraph` Pancyclic Model
+
+The abstract `IsPancyclic` model above is a documented diagnostic scaffold: its
+`hasCycleOfLength` argument is an unconstrained `Prop`, disconnected from any actual
+graph, which is precisely why `pancyclicExcess n` collapses to `0` (the defining set
+is empty, so `sSup ∅ = 0`). The definitions below replace that scaffold with a
+*grounded* model built directly on `SimpleGraph (Fin n)` and Mathlib's cycle API, so
+that the edge count is genuinely constrained by the cycle structure of the graph.
+
+This is the corrected formalization that future work on the real Bondy / Griffin / GKW
+bounds should build on. The headline lemma `pancyclicGraph_card_edgeFinset_ge` recovers
+a *non-vacuous* lower bound on the edge count from the genuine Hamiltonian cycle, which
+the abstract model could not express.
+-/
+
+section Grounded
+
+variable {n : ℕ} (G : SimpleGraph (Fin n)) [Fintype G.edgeSet]
+
+/-- `G` contains a cycle of length exactly `k`: there is a closed walk at some vertex
+    that is a cycle (no repeated vertices or edges) of length `k`. This pins the cycle
+    to the actual graph `G`, unlike the abstract `hasCycleOfLength : ℕ → Prop` parameter. -/
+def HasCycleOfLength (k : ℕ) : Prop :=
+  ∃ (v : Fin n) (w : G.Walk v v), w.IsCycle ∧ w.length = k
+
+/-- `G` is pancyclic (grounded definition): it contains a cycle of every length `k`
+    with `3 ≤ k ≤ n`. Unlike the abstract `IsPancyclic`, this is a genuine property of
+    the concrete graph `G`, so consequences about its edge count are not vacuous. -/
+def IsPancyclicGraph : Prop :=
+  ∀ k, 3 ≤ k → k ≤ n → HasCycleOfLength G k
+
+/-- **Grounded edge lower bound.** A cycle of length `k` is a trail of length `k`, so it
+    uses `k` distinct edges, all of which belong to `G`; hence `G` has at least `k` edges.
+    This is exactly the structural link the abstract model failed to capture, where
+    `edgeCount` was a free variable independent of the cycle data. -/
+theorem card_edgeFinset_ge_of_hasCycleOfLength {k : ℕ}
+    (h : HasCycleOfLength G k) : k ≤ G.edgeFinset.card := by
+  obtain ⟨v, w, hcyc, hlen⟩ := h
+  have hle := hcyc.isCircuit.isTrail.length_le_card_edgeFinset
+  omega
+
+/-- **Grounded baseline: a pancyclic graph on `n ≥ 3` vertices has at least `n` edges.**
+    This is derived from the genuine Hamiltonian (length-`n`) cycle guaranteed by
+    pancyclicity, *not* from a vacuous `sSup ∅`. In the grounded model the excess
+    `G.edgeFinset.card - n` is therefore a real non-negative quantity, repairing the
+    modeling flaw that made the abstract `pancyclicExcess` collapse to `0`. The deep
+    bounds `h(n) ≥ log₂(n−1) − 1` (Griffin 2013) and `h(n) ≤ log₂ n + log* n + O(1)`
+    (GKW 2016) remain open targets to be proved on top of this corrected definition. -/
+theorem pancyclicGraph_card_edgeFinset_ge (hn : 3 ≤ n)
+    (h : IsPancyclicGraph G) : n ≤ G.edgeFinset.card :=
+  card_edgeFinset_ge_of_hasCycleOfLength G (h n hn le_rfl)
+
+end Grounded

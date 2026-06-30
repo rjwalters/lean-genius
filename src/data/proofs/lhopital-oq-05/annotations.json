@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-lhoq05-header",
+    "proofId": "lhopital-oq-05",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "A Taylor-bound squeeze instead of three L'Hôpital passes",
+    "content": "The limit lim_{x→0} (x − sin x)/x³ = 1/6 is the textbook example where L'Hôpital must be applied **three times** (numerator and denominator vanish to third order at 0). This entry sidesteps that entirely: the leading nonzero Taylor term of x − sin x is x³/6, and Mathlib already ships the explicit cubic Taylor bound `Real.sin_bound : |x| ≤ 1 → |sin x − (x − x³/6)| ≤ |x|⁴·(5/96)`. The decisive observation is a degree count — the **error term has degree 4** while the **denominator is x³** — so the deviation of the quotient from 1/6 is controlled *linearly*: |(x−sin x)/x³ − 1/6| ≤ (5/96)·|x|. Since that bound → 0 and holds on a punctured neighbourhood of 0 (where |x| ≤ 1 is automatic), a squeeze delivers the limit with no iterated differentiation. The file imports only Mathlib and opens `Filter`/`Topology` for the neighbourhood filters.",
+    "mathContext": "$\\left|\\frac{x-\\sin x}{x^3}-\\frac16\\right| = \\frac{|\\sin x-(x-x^3/6)|}{|x|^3} \\le \\frac{|x|^4\\cdot 5/96}{|x|^3} = \\frac{5}{96}|x| \\xrightarrow[x\\to0]{} 0.$ The degree-4 numerator error beats the degree-3 denominator by one power of $x$.",
+    "significance": "context",
+    "relatedConcepts": ["Taylor's theorem with explicit remainder", "Real.sin_bound", "squeeze theorem", "iterated L'Hôpital", "order of vanishing"],
+    "prerequisites": ["Taylor expansion of sine", "the squeeze theorem", "order of a zero"]
+  },
+  {
     "id": "ann-deviation-bound",
     "proofId": "lhopital-oq-05",
     "range": { "startLine": 33, "endLine": 47 },

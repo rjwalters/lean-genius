@@ -17,7 +17,7 @@
       "asymptotics"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 877,
     "erdosUrl": "https://erdosproblems.com/877",
     "erdosProblemStatus": "solved",
@@ -29,20 +29,23 @@
       }
     ],
     "originalContributions": [
-      "isSumFree / isSumFree': two equivalent sum-free definitions",
+      "isSumFree / isSumFree: two equivalent sum-free definitions",
       "sumset: pairwise sumset via Finset.product",
       "isMaximalSumFree: maximality under inclusion",
       "f(n), f_m(n): counting functions via powerset filtering",
       "odds_sum_free: concrete example proved by omega",
       "upper_half_sum_free: parametric example proved by omega",
-      "maximal_criterion: structural criterion for positive excluded elements of a maximal sum-free set (PROVED; corrects the prior statement, which is false at x=0)",
+      "maximal_criterion: structural criterion for positive excluded elements of a maximal sum-free set (PROVED)",
       "odds_construction: the upper half {n/2+1,...,n} is sum-free of cardinality >= n/2 (PROVED)",
-      "f_m_le_f: every maximal sum-free set is sum-free",
+      "f_m_le_f: every maximal sum-free set is sum-free (PROVED)",
+      "blst_upper_bound: BLST 2015/2018 sharp upper bound f_m(n) <= C*2^{n/4} (axiom; the deep input that closes the headline theorem)",
+      "maximal_vs_all: PROVED sandwich 2^{n/4} <= f_m(n) <= f(n) (restated from a prior dubious pointwise 2^{n/2} claim)",
+      "erdos_877: PROVED headline f_m(n) = Theta(2^{n/4}) from cameron_erdos + blst_upper_bound",
       "erdos_877_solved: combined resolution theorem"
     ],
-    "axiomCount": 2,
-    "lineCount": 341,
-    "assumptions": "2 axioms: cameron_erdos_lower_bound, luczak_schoen_theorem (deep research results, not provable from Mathlib). 2 sorries (maximal_vs_all, erdos_877) depending on those axiomatized bounds.",
+    "axiomCount": 3,
+    "lineCount": 379,
+    "assumptions": "3 axioms, all deep literature results not provable from Mathlib: cameron_erdos_lower_bound (f_m(n) > 2^{n/4}), luczak_schoen_theorem (f_m(n) < 2^{cn}, c<1/2, resolving o(2^{n/2})), and blst_upper_bound (f_m(n) ≤ C·2^{n/4}, the BLST 2015/2018 container-method sharp upper bound). 0 sorries: erdos_877 (Θ(2^{n/4})) follows from cameron_erdos + blst; maximal_vs_all (2^{n/4} ≤ f_m ≤ f) from cameron_erdos + f_m_le_f. #print axioms confirms no sorryAx.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
     "definitionCount": 6,
@@ -149,7 +152,7 @@
     "historicalContext": "Sum-free sets (sets with no solution to a = b + c) are fundamental objects in additive combinatorics, studied since Schur (1916) and Erdős-Ko-Rado (1961). Cameron and Erdős studied both f(n), the count of all sum-free subsets of [n], and f_m(n), the count of maximal ones. They proved f_m(n) > 2^{n/4} using constructions from odd numbers, and asked whether f_m(n) = o(2^{n/2}). Łuczak and Schoen (2001) resolved this affirmatively, showing f_m(n) < 2^{cn} for some c < 1/2. Balogh, Liu, Sharifzadeh, and Treglown (BLST) then pinpointed the exact growth: f_m(n) = 2^{(1/4+o(1))n} (2015) and the sharp asymptotic f_m(n) = (C_n + o(1))·2^{n/4} with C_n depending on n mod 4 (2018). The BLST proofs use the hypergraph container method, one of the most powerful modern tools in combinatorics.",
     "problemStatement": "Let f_m(n) count the number of maximal sum-free subsets of {1,...,n}. Estimate f_m(n) - is it true that f_m(n) = o(2^{n/2})?",
     "text": "Let f_m(n) count maximal sum-free subsets A of {1,...,n}. Is f_m(n) = o(2^{n/2})? SOLVED: YES. Sharp bounds show f_m(n) = (C_n + o(1))2^{n/4} where C_n depends on n mod 4.",
-    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets with two equivalent formulations, establishes counting functions f(n) and f_m(n) via powerset filtering, proves basic examples (odds, upper half), and axiomatizes the key results: Cameron-Erdős lower bound, Łuczak-Schoen upper bound, and BLST sharp asymptotics.",
+    "proofStrategy": "The formalization defines sum-free and maximal sum-free sets with two equivalent formulations, establishes counting functions f(n) and f_m(n) via powerset filtering, proves basic examples (odds, upper half), and axiomatizes the three deep results: Cameron-Erdős lower bound (f_m(n) > 2^{n/4}), Łuczak-Schoen upper bound (f_m(n) < 2^{cn}, c < 1/2), and the BLST 2015/2018 sharp upper bound (f_m(n) ≤ C·2^{n/4}). From these the headline theorem erdos_877 (f_m(n) = Θ(2^{n/4})) is derived; the lower half of the Θ alone gives the maximal_vs_all sandwich 2^{n/4} ≤ f_m(n) ≤ f(n).",
     "keyInsights": [
       "**Sum-free characterization**: $A \\cap (A+A) = \\emptyset$ gives an elegant characterization; odd numbers and upper-half sets are canonical examples",
       "**Maximality as saturation**: Every element outside a maximal sum-free set participates in a sum with the set, creating strong structural constraints",
@@ -163,13 +166,13 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. 2 sorries remain (maximal_vs_all, erdos_877), both depending on the two axiomatized deep bounds; the file now compiles against Mathlib 4.26.",
+    "summary": "Erdős Problem #877 is SOLVED. The answer to 'Is f_m(n) = o(2^{n/2})?' is YES. The count of maximal sum-free subsets satisfies f_m(n) = Θ(2^{n/4}), with sharp asymptotics f_m(n) = (C_n + o(1))2^{n/4} where C_n is an explicit constant depending on n mod 4. The formalization captures the full progression from Cameron-Erdős through BLST. The file is now sorry-free: the headline theorem erdos_877 (Θ(2^{n/4})) and maximal_vs_all are both fully proved, each reducing to the named literature axioms (cameron_erdos_lower_bound, blst_upper_bound) — #print axioms confirms no sorryAx. 3 axioms remain, all genuinely deep results not available from Mathlib. Compiles against Mathlib 4.26.",
     "implications": "This result reveals a striking gap between the count of all sum-free sets (~2^{n/2}) and maximal sum-free sets (~2^{n/4}). The container method developed for this problem has become one of the most widely used tools in modern combinatorics, with applications to Turán-type problems, Ramsey theory, and graph enumeration.",
     "openQuestions": [
       "What are the exact numerical values of C_0, C_1, C_2, C_3 in the BLST sharp bound?",
       "Can the structure of maximal sum-free sets be characterized more precisely (e.g., typical set profiles)?",
       "What about maximal sum-free sets in other groups: ℤ_n, ℤ_p, or general abelian groups?",
-      "Can the 2 remaining sorries (maximal_vs_all, erdos_877) be closed, or do they genuinely require the Cameron-Erdős / Łuczak-Schoen content currently axiomatized?",
+      "Both former sorries (maximal_vs_all, erdos_877) are now closed: maximal_vs_all needs only cameron_erdos_lower_bound + f_m_le_f, while erdos_877's upper half genuinely requires the deep BLST sharp bound (now the axiom blst_upper_bound) — luczak_schoen_theorem is too weak. Can the BLST upper bound itself eventually be formalized from the container method rather than axiomatized?",
       "Is there a sharp threshold for the transition from f_m(n) ≈ f(n) to f_m(n) ≪ f(n) as the maximality constraint is relaxed?"
     ]
   },
@@ -183,16 +186,16 @@
       "Classical"
     ],
     "namespace": "Erdos877",
-    "lineCount": 341,
-    "axiomCount": 2,
+    "lineCount": 379,
+    "axiomCount": 3,
     "theoremCount": 9,
     "definitionCount": 6,
     "path": "Proofs/Erdos877Problem.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos877ProblemAristotle.lean",
       "Proofs/Erdos877Aristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }

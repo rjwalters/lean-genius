@@ -64,7 +64,7 @@ Mysticum):
 * `card_hexagon_labelings = 60` — follows from the previous two by
   Lagrange (proved).
 * `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02**: total,
-  defined via the canonical coset representative `lbl.out'` (the
+  defined via the canonical coset representative `lbl.out` (the
   representative-independence / full well-definedness remains future work).
 * `SteinerPoint`, `KirkmanPoint` — structures encoding the
   concurrence-triple data.
@@ -217,6 +217,12 @@ theorem orderOf_hexRot : orderOf hexRot = 6 := by
   apply (orderOf_eq_iff (by norm_num)).mpr
   exact ⟨hexRot_pow_six, hexRot_pow_lt_six_ne_one⟩
 
+/-- `hexRev` is not the identity. (Sanity check: reversal swaps `0` and `5`.) -/
+theorem hexRev_ne_one : hexRev ≠ 1 := by
+  intro h
+  have : hexRev 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
+  simp [hexRev, Fin.rev] at this
+
 /-- **`orderOf hexRev = 2`** — the reversal is an involution distinct from 1.
     Uses `hexRev_mul_self` (from `pow_two`) and `hexRev_ne_one`. -/
 theorem orderOf_hexRev : orderOf hexRev = 2 := by
@@ -308,10 +314,9 @@ theorem hexRev_hexRot_pow_hexRev (n : ℕ) :
     S3c homomorphism. -/
 private lemma hexRot_pow_zmod_val_add (i j : ZMod 6) :
     hexRot ^ (i + j).val = hexRot ^ i.val * hexRot ^ j.val := by
-  rw [← pow_add]
-  -- `ZMod.val_add` gives `(i + j).val = (i.val + j.val) % 6`; then
-  -- `pow_mod_orderOf` with `orderOf_hexRot = 6` collapses the `% 6`.
-  rw [ZMod.val_add i j, ← orderOf_hexRot, pow_mod_orderOf]
+  rw [← pow_add, pow_eq_pow_iff_modEq, orderOf_hexRot, ZMod.val_add]
+  -- `(i.val + j.val) % 6 ≡ i.val + j.val [MOD 6]`.
+  exact Nat.mod_modEq _ _
 
 /-- **Negation form**: `(hexRot ^ i.val)⁻¹ = hexRot ^ (-i).val`.
     Equivalent to saying that the map `i ↦ hexRot ^ i.val` respects
@@ -322,7 +327,7 @@ private lemma hexRot_pow_zmod_val_neg (i : ZMod 6) :
   have h := hexRot_pow_zmod_val_add i (-i)
   rw [add_neg_cancel, ZMod.val_zero, pow_zero] at h
   -- `h : 1 = hexRot ^ i.val * hexRot ^ (-i).val`
-  exact (eq_inv_of_mul_eq_one_left h.symm).symm
+  exact mul_eq_one_iff_inv_eq.mp h.symm
 
 /-- **Subtractive form**:
     `(hexRot ^ i.val)⁻¹ * hexRot ^ j.val = hexRot ^ (j - i).val`.
@@ -449,7 +454,7 @@ theorem dihedralHomToSym6_injective :
     -- `hg : hexRev * hexRot ^ i.val = 1` ⇒ contradiction.
     exfalso
     have h1 : hexRev = (hexRot ^ i.val)⁻¹ :=
-      eq_inv_of_mul_eq_one_right hg
+      mul_eq_one_iff_eq_inv.mp hg
     rw [hexRot_pow_zmod_val_neg] at h1
     exact hexRev_ne_hexRot_pow_of_lt (-i).val (ZMod.val_lt _) h1
 
@@ -690,7 +695,7 @@ theorem pascalP_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 /-- `hexRev` sends the second Pascal point to the negated first: `Q' = -P`. -/
@@ -706,7 +711,7 @@ theorem pascalQ_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 /-- `hexRev` fixes the third Pascal point: `R' = R`.  The two inner sign flips
@@ -723,7 +728,7 @@ theorem pascalR_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 -- ============================================================
@@ -756,7 +761,7 @@ theorem sameProjLine_refl (l : ProjLine) : sameProjLine l l := by
   unfold sameProjLine
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -765,7 +770,7 @@ theorem sameProjLine_neg_right (l : ProjLine) : sameProjLine l (-l) := by
   unfold sameProjLine
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -778,7 +783,7 @@ theorem sameProjLine_smul_right (c : ℝ) (l : ProjLine) : sameProjLine l (c •
   funext i
   fin_cases i <;>
     simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
+               Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
 /-- **BAC–CAB specialisation.** For any three vectors in `ℝ³`,
@@ -792,7 +797,7 @@ theorem cross_cross_eq_det_smul (P Q R : ProjPoint) :
   funext i
   fin_cases i <;>
     simp only [cross_apply, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
-               Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Fin.isValue, Nat.reduceAdd, Fin.reduceFinMk] <;>
     ring
 
@@ -834,7 +839,7 @@ theorem pascalLine_hexRev_sameProjLine {C : Conic} (hex : InscribedHexagon C) :
   unfold sameProjLine lineThrough
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -891,17 +896,17 @@ theorem sameProjLine_symm {l m : ProjLine} (h : sameProjLine l m) :
   have h0 := congrFun h 0
   have h1 := congrFun h 1
   have h2 := congrFun h 2
-  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
              Pi.zero_apply, Fin.isValue] at h0 h1 h2
   funext i
   fin_cases i
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h0
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h1
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h2
 
@@ -924,64 +929,64 @@ theorem sameProjLine_trans {l m n : ProjLine} (hm : m ≠ 0)
   -- Component equations of `l ×₃ m = 0` and `m ×₃ n = 0`.
   have a0 : l 1 * m 2 - l 2 * m 1 = 0 := by
     have := congrFun h1 0
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have a1 : l 2 * m 0 - l 0 * m 2 = 0 := by
     have := congrFun h1 1
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have a2 : l 0 * m 1 - l 1 * m 0 = 0 := by
     have := congrFun h1 2
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b0 : m 1 * n 2 - m 2 * n 1 = 0 := by
     have := congrFun h2 0
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b1 : m 2 * n 0 - m 0 * n 2 = 0 := by
     have := congrFun h2 1
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b2 : m 0 * n 1 - m 1 * n 0 = 0 := by
     have := congrFun h2 2
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   -- Each coordinate of `m` annihilates `l ×₃ n`.
   have key0 : m 0 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b0 - (n 2) * a2 - (n 1) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b1 + (n 0) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b2 + (n 0) * a2
   have key1 : m 1 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b0 + (n 1) * a0
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b1 - (n 0) * a0 - (n 2) * a2
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b2 + (n 1) * a2
   have key2 : m 2 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b0 + (n 2) * a0
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b1 + (n 2) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b2 - (n 1) * a1 - (n 0) * a0
   -- `m ≠ 0` ⟹ some coordinate is nonzero ⟹ `l ×₃ n = 0`.
   obtain ⟨k, hk⟩ := Function.ne_iff.mp hm
@@ -1173,6 +1178,288 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     (pascalProjLine_sameProjLine_of_mem hh hex hnd)
 
 -- ============================================================
+-- PART 4h: Incidence — the three Pascal points lie on `pascalProjLine`
+--          (the geometric meaning of the line we descend to the quotient)
+-- ============================================================
+
+/- The well-definedness theorems above establish that `pascalProjLine` is a
+   `D₆`-invariant *projective line*.  The lemmas in this part identify *which*
+   line it is: the one through all three Pascal points `P = AB ∩ DE`,
+   `Q = BC ∩ EF`, `R = CD ∩ FA`.  Incidence `pointOnLine p l` is the scalar
+   triple product `∑ᵢ pᵢ lᵢ`; for `l = p ×₃ q` it is `[p, p, q] = 0` (P, Q on
+   the line, unconditional) and `[r, p, q] = det(p, q, r)` (R on the line iff
+   `P, Q, R` collinear — exactly Pascal's theorem).  These are pure polynomial
+   identities in the nine coordinates, closed by `ring` / `linear_combination`. -/
+
+/-- A spanning point lies on the line it spans: `p · (p ×₃ q) = 0`.
+    The scalar triple product `[p, p, q]` has a repeated argument, so vanishes. -/
+theorem pointOnLine_cross_left (p q : ProjPoint) :
+    pointOnLine p (crossProduct p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  ring
+
+/-- The other spanning point lies on the line it spans: `q · (p ×₃ q) = 0`. -/
+theorem pointOnLine_cross_right (p q : ProjPoint) :
+    pointOnLine q (crossProduct p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  ring
+
+/-- A point collinear with `p, q` lies on the line `p ×₃ q` they span:
+    `collinear p q r → r · (p ×₃ q) = 0`.  The scalar triple product
+    `r · (p ×₃ q)` equals `det(p, q, r)` (the same monomials, by the cyclic
+    symmetry of the determinant), so it vanishes exactly when `p, q, r` are
+    collinear. -/
+theorem pointOnLine_cross_of_collinear (p q r : ProjPoint)
+    (h : collinear p q r) : pointOnLine r (crossProduct p q) := by
+  simp only [collinear, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons,
+    Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] at h
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  linear_combination h
+
+/-- The first Pascal point `P = AB ∩ DE` lies on `pascalProjLine`. -/
+theorem pascalP_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalP hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_left (pascalP hex) (pascalQ hex)
+
+/-- The second Pascal point `Q = BC ∩ EF` lies on `pascalProjLine`. -/
+theorem pascalQ_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalQ hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_right (pascalP hex) (pascalQ hex)
+
+/-- The third Pascal point `R = CD ∩ FA` lies on `pascalProjLine`.  This is the
+    geometric content of Pascal's theorem: the three opposite-side intersection
+    points are collinear, so `R` lies on the line spanned by `P` and `Q`. -/
+theorem pascalR_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalR hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_of_collinear (pascalP hex) (pascalQ hex) (pascalR hex)
+    (pascal_hexagon_theorem C hex)
+
+/-- **Geometric meaning of `pascalProjLine`.**  All three Pascal points
+    `P = AB ∩ DE`, `Q = BC ∩ EF`, `R = CD ∩ FA` lie on the single projective
+    line `pascalProjLine hex`.  Together with the `D₆`-invariance established in
+    PART 4g this pins down `pascalProjLine` as *the* Pascal line of the hexagon —
+    the common line of its three opposite-side intersections — and thereby gives
+    the descended quotient map `pascalLine` (PART 5) its intended geometric
+    value rather than just an abstract representative-independent vector. -/
+theorem pascal_points_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    collinearOnLine (pascalP hex) (pascalQ hex) (pascalR hex) (pascalProjLine hex) :=
+  ⟨pascalP_on_pascalProjLine hex, pascalQ_on_pascalProjLine hex,
+   pascalR_on_pascalProjLine hex⟩
+
+-- ============================================================
+-- PART 4i: Uniqueness — two points determine the projective line
+--          (the converse of PART 4h: pinning down *the* Pascal line)
+-- ============================================================
+
+/- PART 4h showed the three Pascal points lie on `pascalProjLine`.  This part
+   proves the converse half of "two points determine a line": *any* projective
+   line through two given points `p, q` is the same projective line as the one
+   they span, `lineThrough p q = p ×₃ q`.  The engine is the vector triple
+   product (BAC–CAB) identity
+       l ×₃ (p ×₃ q) = (l · q) p − (l · p) q,
+   whose right side vanishes precisely because `p` and `q` lie on `l`
+   (`pointOnLine p l : l · p = 0`).  No nondegeneracy is needed for this
+   direction; the result holds for every line through the two points. -/
+
+/-- **Two points determine their line.**  If both `p` and `q` lie on a line `l`,
+    then `l` is the same projective line as `lineThrough p q = p ×₃ q`.  The proof
+    is the BAC–CAB identity `l ×₃ (p ×₃ q) = (l · q) p − (l · p) q`: each
+    component is a fixed linear combination of the two incidence hypotheses
+    `l · p = 0` and `l · q = 0`.  Pure polynomial algebra in the nine
+    coordinates — no axiom, no nondegeneracy. -/
+theorem sameProjLine_of_pointOnLine_pointOnLine
+    {l : ProjLine} {p q : ProjPoint}
+    (hp : pointOnLine p l) (hq : pointOnLine q l) :
+    sameProjLine l (lineThrough p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three] at hp hq
+  unfold sameProjLine lineThrough
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+               Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+  · linear_combination (p 0) * hq - (q 0) * hp
+  · linear_combination (p 1) * hq - (q 1) * hp
+  · linear_combination (p 2) * hq - (q 2) * hp
+
+/-- **Uniqueness of the Pascal line.**  Any projective line `l` through the first
+    two Pascal points `P = AB ∩ DE` and `Q = BC ∩ EF` is the same projective line
+    as `pascalProjLine hex`.  Combined with the incidence of PART 4h
+    (`pascalP_on_pascalProjLine` / `pascalQ_on_pascalProjLine`), this pins down
+    `pascalProjLine hex` as *the* Pascal line: the unique projective line carrying
+    the opposite-side intersection points.  When `P ≠ Q` projectively this is
+    genuine uniqueness; the cross-product characterisation makes the statement
+    hold unconditionally. -/
+theorem sameProjLine_pascalProjLine_of_pointOnLine
+    {C : Conic} (hex : InscribedHexagon C) {l : ProjLine}
+    (hP : pointOnLine (pascalP hex) l) (hQ : pointOnLine (pascalQ hex) l) :
+    sameProjLine l (pascalProjLine hex) := by
+  unfold pascalProjLine
+  exact sameProjLine_of_pointOnLine_pointOnLine hP hQ
+
+/-- **Uniqueness capstone — `pascalProjLine` is *the* Pascal line.**  Combining
+    the incidence of PART 4h (all three Pascal points lie on `pascalProjLine`)
+    with the uniqueness of PART 4i (two points determine their line), *any*
+    projective line `l` carrying all three opposite-side intersection points
+    `P, Q, R` is the same projective line as `pascalProjLine hex`.  This is the
+    precise geometric characterisation the descent map descends *to*: the Pascal
+    line of a hexagon is the unique projective line on which its three
+    opposite-side intersections lie. -/
+theorem pascalProjLine_unique
+    {C : Conic} (hex : InscribedHexagon C) {l : ProjLine}
+    (hl : collinearOnLine (pascalP hex) (pascalQ hex) (pascalR hex) l) :
+    sameProjLine l (pascalProjLine hex) :=
+  sameProjLine_pascalProjLine_of_pointOnLine hex hl.1 hl.2.1
+
+-- ============================================================
+-- PART 4j: Geometric Meaning of the Non-Degeneracy Hypothesis `hnd`
+--          (when the spanning line `P ×₃ Q` is genuine)
+-- ============================================================
+
+/- The well-definedness theorems of PART 4g–5b all carry the general-position
+   hypothesis `hnd : ∀ k, pascalProjLine (permuteHexagon hex k) ≠ 0`.  Since
+   `pascalProjLine hex = lineThrough (pascalP hex) (pascalQ hex) =
+   crossProduct (pascalP hex) (pascalQ hex)`, this is a statement purely about
+   the two spanning Pascal points.  The lemmas here unpack `≠ 0` into its
+   concrete coordinate meaning: a cross product of two vectors in `ℝ³` vanishes
+   exactly when all three of their `2×2` minors vanish — i.e. the two points are
+   projectively *equal*.  So `hnd` says no more and no less than "for every
+   relabeling the two opposite-side intersection points `P = AB ∩ DE` and
+   `Q = BC ∩ EF` spanning the line are projectively distinct". -/
+
+/-- **Cross product vanishes iff the three `2×2` minors vanish.**  For `u, v` in
+    `ℝ³`, `u ×₃ v = 0` exactly when each component — a `2×2` minor of the
+    `2×3` matrix `[u; v]` — is zero.  Geometrically this is precisely linear
+    dependence of `u` and `v` (the two vectors are proportional), the honest
+    statement of "`u` and `v` are the same projective point".  Pure coordinate
+    algebra: each direction is the three component equations read off via
+    `cross_apply`. -/
+theorem crossProduct_eq_zero_iff (u v : ProjPoint) :
+    crossProduct u v = 0 ↔
+      u 1 * v 2 = u 2 * v 1 ∧ u 2 * v 0 = u 0 * v 2 ∧ u 0 * v 1 = u 1 * v 0 := by
+  constructor
+  · intro h
+    refine ⟨?_, ?_, ?_⟩
+    · have h0 := congrFun h 0
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h0
+      linarith
+    · have h1 := congrFun h 1
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h1
+      linarith
+    · have h2 := congrFun h 2
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h2
+      linarith
+  · rintro ⟨h0, h1, h2⟩
+    funext i
+    fin_cases i <;>
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue, Fin.reduceFinMk] <;>
+      linarith
+
+/-- **The non-degeneracy hypothesis, made concrete.**  `pascalProjLine hex = 0`
+    — the failure of general position that `hnd` rules out — holds *exactly*
+    when the two spanning Pascal points `P = AB ∩ DE` and `Q = BC ∩ EF` have all
+    three `2×2` minors equal, i.e. are projectively the same point.  Equivalently
+    (contrapositive), `pascalProjLine hex ≠ 0` iff some minor of `P, Q` is
+    nonzero — a genuine, checkable witness that the line is honest. -/
+theorem pascalProjLine_eq_zero_iff {C : Conic} (hex : InscribedHexagon C) :
+    pascalProjLine hex = 0 ↔
+      (pascalP hex) 1 * (pascalQ hex) 2 = (pascalP hex) 2 * (pascalQ hex) 1 ∧
+      (pascalP hex) 2 * (pascalQ hex) 0 = (pascalP hex) 0 * (pascalQ hex) 2 ∧
+      (pascalP hex) 0 * (pascalQ hex) 1 = (pascalP hex) 1 * (pascalQ hex) 0 := by
+  unfold pascalProjLine lineThrough
+  exact crossProduct_eq_zero_iff (pascalP hex) (pascalQ hex)
+
+/-- **A checkable sufficient condition for general position.**  If even one
+    `2×2` minor of the two spanning Pascal points is nonzero, the Pascal line is
+    genuine (`pascalProjLine hex ≠ 0`).  This is the practical handle for
+    discharging the per-relabeling side of `hnd`: one need not verify the full
+    projective distinctness abstractly, only exhibit a single nonvanishing
+    determinant of two coordinates. -/
+theorem pascalProjLine_ne_zero_of_minor {C : Conic} (hex : InscribedHexagon C)
+    (h : (pascalP hex) 0 * (pascalQ hex) 1 ≠ (pascalP hex) 1 * (pascalQ hex) 0 ∨
+         (pascalP hex) 1 * (pascalQ hex) 2 ≠ (pascalP hex) 2 * (pascalQ hex) 1 ∨
+         (pascalP hex) 2 * (pascalQ hex) 0 ≠ (pascalP hex) 0 * (pascalQ hex) 2) :
+    pascalProjLine hex ≠ 0 := by
+  rw [Ne, pascalProjLine_eq_zero_iff]
+  rintro ⟨m12, m20, m01⟩
+  rcases h with h | h | h
+  · exact h m01
+  · exact h m12
+  · exact h m20
+
+-- ============================================================
+-- PART 4k: Full Incidence Characterization of the Pascal Line
+--          (a point lies on `pascalProjLine` iff it is collinear with P, Q)
+-- ============================================================
+
+/- PART 4h established the *three* incidences `P, Q, R ∈ pascalProjLine` via the
+   one-directional `pointOnLine_cross_of_collinear : collinear p q r →
+   pointOnLine r (p ×₃ q)`.  That direction alone identifies the three known
+   Pascal points but says nothing about the rest of the line.  This part proves
+   the missing **converse** and packages the resulting *iff*: a point `r` lies on
+   the join `p ×₃ q` of two points **exactly when** `p, q, r` are collinear.
+   Both directions are the single identity `r · (p ×₃ q) = det(p, q, r)` (the
+   scalar triple product equals the determinant, by the cyclic symmetry of
+   `det`), so the converse is the *same* `linear_combination` certificate read
+   the other way — no nondegeneracy is needed.  Specialised to the Pascal points
+   this gives the complete geometric description of the Pascal line as a point
+   set: `pascalProjLine hex` is *precisely* the locus of points collinear with
+   the two spanning Pascal points `P` and `Q`, strengthening the three-point
+   incidence of PART 4h to an exhaustive characterization. -/
+
+/-- **Converse of `pointOnLine_cross_of_collinear`.**  If `r` lies on the line
+    `p ×₃ q` spanned by `p` and `q`, then `p, q, r` are collinear.  The incidence
+    `r · (p ×₃ q) = 0` is, monomial-for-monomial, the determinant
+    `det(p, q, r) = 0` (same `linear_combination` certificate as the forward
+    direction), so no general-position hypothesis is required. -/
+theorem collinear_of_pointOnLine_cross (p q r : ProjPoint)
+    (h : pointOnLine r (crossProduct p q)) : collinear p q r := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue] at h
+  simp only [collinear, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons,
+    Fin.isValue]
+  linear_combination h
+
+/-- **Incidence on a join is collinearity.**  A point `r` lies on the projective
+    line `p ×₃ q` through `p` and `q` *iff* the three points `p, q, r` are
+    collinear.  This is the exhaustive form of the one-directional incidence
+    lemmas of PART 4h: it characterizes the *entire* line `p ×₃ q` as a point
+    set, not merely the two spanning points.  Pure coordinate algebra — the
+    scalar triple product `r · (p ×₃ q)` is the determinant `det(p, q, r)`. -/
+theorem pointOnLine_cross_iff_collinear (p q r : ProjPoint) :
+    pointOnLine r (crossProduct p q) ↔ collinear p q r :=
+  ⟨collinear_of_pointOnLine_cross p q r, pointOnLine_cross_of_collinear p q r⟩
+
+/-- **Complete geometric description of the Pascal line.**  A point `r` lies on
+    `pascalProjLine hex` *iff* it is collinear with the two spanning Pascal
+    points `P = AB ∩ DE` and `Q = BC ∩ EF`.  Where PART 4h recorded the three
+    individual incidences `P, Q, R ∈ pascalProjLine`, this pins down the Pascal
+    line as a point set: it is *exactly* the locus of points collinear with `P`
+    and `Q`.  (Taking `r = R` recovers `pascalR_on_pascalProjLine` via Pascal's
+    theorem.)  Unconditional — no non-degeneracy hypothesis. -/
+theorem pointOnLine_pascalProjLine_iff_collinear {C : Conic}
+    (hex : InscribedHexagon C) (r : ProjPoint) :
+    pointOnLine r (pascalProjLine hex) ↔ collinear (pascalP hex) (pascalQ hex) r := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_iff_collinear (pascalP hex) (pascalQ hex) r
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
@@ -1184,7 +1471,7 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     line through two of those three Pascal points.
 
     The map is made *total* by evaluating it at the canonical coset
-    representative `lbl.out' : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
+    representative `lbl.out : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
     `D_6`-invariance of the resulting projective line — i.e. that the value
     is independent of the choice of representative — is the genuine
     "well-definedness" content of **OQ-03-OQ-02**; its geometric backbone is
@@ -1194,8 +1481,8 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     a nondegeneracy hypothesis, and is deferred. -/
 noncomputable def pascalLine
     (C : Conic) (hex : InscribedHexagon C) (lbl : HexagonLabeling) : ProjLine :=
-  lineThrough (pascalP (permuteHexagon hex lbl.out'))
-              (pascalQ (permuteHexagon hex lbl.out'))
+  lineThrough (pascalP (permuteHexagon hex lbl.out))
+              (pascalQ (permuteHexagon hex lbl.out))
 
 /-- **Hexagrammum Mysticum (existence statement)**: the assignment
     `HexagonLabeling → ProjLine` from a hexagon labeling to its Pascal
@@ -1209,6 +1496,53 @@ theorem hexagrammum_mysticum_pascal_lines
     (C : Conic) (hex : InscribedHexagon C) :
     ∃ (lines : HexagonLabeling → ProjLine), lines = pascalLine C hex :=
   ⟨pascalLine C hex, rfl⟩
+
+-- ============================================================
+-- PART 5b: Quotient-Level Well-Definedness of the Pascal Line
+--          (OQ-03-OQ-02: descent through the coset representative)
+-- ============================================================
+
+/- PART 4g proved that relabeling `hex` by any element of `hexagonalGroup`
+   leaves its Pascal line projectively unchanged (`…_of_mem`).  `pascalLine`
+   (PART 5) makes the labeling-indexed map total by evaluating at the canonical
+   representative `lbl.out`.  The two theorems below close the gap between these:
+   they show the *value* of `pascalLine` does not depend on the choice of coset
+   representative — the genuine well-definedness content of OQ-03-OQ-02. -/
+
+/-- **OQ-03-OQ-02 — coset well-definedness.**  Two permutations representing the
+    *same* `HexagonLabeling` coset relabel `hex` to the same projective Pascal
+    line (under the general-position hypothesis `hnd`).  This lifts the
+    group-level invariance `pascalProjLine_sameProjLine_of_mem` to the quotient:
+    representatives `π₁, π₂` of one coset differ by `π₁⁻¹ * π₂ ∈ hexagonalGroup`,
+    so the single-coset descent applies at `permuteHexagon hex π₁`. -/
+theorem pascalProjLine_sameProjLine_of_quotient_eq
+    {C : Conic} (hex : InscribedHexagon C) {π₁ π₂ : Equiv.Perm (Fin 6)}
+    (hquot : (π₁ : HexagonLabeling) = (π₂ : HexagonLabeling))
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine (permuteHexagon hex π₁))
+                 (pascalProjLine (permuteHexagon hex π₂)) := by
+  have hmem : π₁⁻¹ * π₂ ∈ hexagonalGroup := QuotientGroup.eq.mp hquot
+  have hnd' : ∀ k : Equiv.Perm (Fin 6),
+      pascalProjLine (permuteHexagon (permuteHexagon hex π₁) k) ≠ 0 := by
+    intro k; rw [permuteHexagon_mul]; exact hnd (π₁ * k)
+  have hstep := pascalProjLine_sameProjLine_of_mem hmem (permuteHexagon hex π₁) hnd'
+  rwa [permuteHexagon_mul, mul_inv_cancel_left] at hstep
+
+/-- **OQ-03-OQ-02 — `pascalLine` well-definedness.**  The total `pascalLine` map
+    — defined via the canonical representative `lbl.out` — agrees, as a
+    projective line, with the Pascal line computed from *any* representative `π`
+    of `lbl`.  Equivalently, the projective Pascal line of a coset is independent
+    of the representative used to compute it: precisely the well-definedness the
+    `Quotient.out`-based definition leaves implicit. -/
+theorem pascalLine_sameProjLine_rep
+    {C : Conic} (hex : InscribedHexagon C) (lbl : HexagonLabeling)
+    {π : Equiv.Perm (Fin 6)} (hπ : (π : HexagonLabeling) = lbl)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalLine C hex lbl) (pascalProjLine (permuteHexagon hex π)) := by
+  have hout : ((lbl.out : Equiv.Perm (Fin 6)) : HexagonLabeling) = lbl := Quotient.out_eq lbl
+  have hpl : pascalLine C hex lbl = pascalProjLine (permuteHexagon hex lbl.out) := rfl
+  rw [hpl]
+  exact pascalProjLine_sameProjLine_of_quotient_eq hex (hout.trans hπ.symm) hnd
 
 -- ============================================================
 -- PART 6: Steiner Points
@@ -1272,12 +1606,6 @@ theorem kirkman_count_eq_60
 theorem hexRot_ne_one : hexRot ≠ 1 := by
   intro h
   have : hexRot 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
-  simp [hexRot, finRotate] at this
-
-/-- `hexRev` is not the identity. (Sanity check: reversal swaps `0` and `5`.) -/
-theorem hexRev_ne_one : hexRev ≠ 1 := by
-  intro h
-  have : hexRev 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
-  simp [hexRev, Fin.rev] at this
+  simp [hexRot, finRotate_succ_apply] at this
 
 end PascalsHexagonOQ03

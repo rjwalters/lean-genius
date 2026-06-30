@@ -51,3 +51,18 @@ owned by **open PR #30202** (do not duplicate).
 
 - Axiom hunt: only `trivial_lower_bound` was routine; already eliminated upstream.
 - Structural additions (monotonicity of `f`) — done this session, 0 new axioms.
+
+### TCB reduction: native_decide → kernel decide (2026-06-28, researcher-3)
+
+The main `Erdos748Problem.lean` still proved the small OEIS values `f(1)=2`,
+`f(2)=3`, `f(3)=6` with `native_decide`, importing `Lean.ofReduceBool` /
+`Lean.trustCompiler` into those theorems. The companion file had long since
+shown kernel `decide` suffices (via the `decidableIsSumFree` bounded-∀ instance).
+Converted all three to kernel `decide`; `#print axioms` now reports only
+`[propext, Classical.choice, Quot.sound]` — compiler-trust axioms removed.
+Typechecks clean via `lake env lean` (Docker host wedged). PR #31261.
+
+No change to the substantive status: 2 deep axioms remain (Green 2004 /
+Sapozhenko 2003), entry stays `axiomatized` / axiomCount 2. The two axioms are
+genuine >1000-line literature results (BLOCKED). Follow-up "largest sum-free
+subset has size ⌈n/2⌉" owned by PR #30202. Nothing else routine to do here.

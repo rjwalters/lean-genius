@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Formalized the solvable side of the Sₙ threshold — reduction Aₙ solvable ⟹ Sₙ solvable, plus S₂ and S₃ solvable (0 axioms, 0 sorries). Only S₄ (needs A₄ solvable) remains. Char-p Abhyankar angle out of scope.",
+    "builtItems": [
+      "permSolvable_of_alternatingSolvable in AbelRuffiniOQ06.lean:57 — Sₙ solvable from Aₙ solvable via solvable_of_ker_le_range on 1→Aₙ→Sₙ→ℤˣ",
+      "permFinThree_isSolvable in AbelRuffiniOQ06.lean:90 — S₃ solvable (A₃ prime-order cyclic)",
+      "permFinTwo_isSolvable in AbelRuffiniOQ06.lean:86 — S₂ solvable via same reduction",
+      "alternatingFinThree_isSolvable / alternatingFinTwo_isSolvable instances (A₃ order 3 cyclic, A₂ trivial)"
+    ],
+    "insights": [
+      "Mathlib has the negative side (Equiv.Perm.fin_5_not_solvable / not_solvable) and the sign-kernel identity (alternatingGroup_eq_sign_ker) but NOT the positive instances IsSolvable (Perm (Fin n)) for n∈{3,4}; the missing piece is purely the Aₙ→Sₙ solvability transfer, which solvable_of_ker_le_range supplies in one line",
+      "A₃ solvability needs no permutation reasoning: |A₃|=3 prime ⟹ cyclic ⟹ abelian ⟹ solvable",
+      "The reduction makes S₄ solvable ⟺ A₄ solvable, isolating the whole remaining task to the Klein-four fact A₄ ⊳ V₄ ⊳ 1"
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma IsSolvable (Equiv.Perm (Fin n)) for n∈{3,4}; no packaged Aₙ→Sₙ solvability transfer; no A₄-solvable / Klein-four-normal-in-A₄ result"
+    ],
+    "nextSteps": [
+      "Prove alternatingFinFour_isSolvable (A₄ ⊳ V₄ ⊳ 1) — submitted to Aristotle via AbelRuffiniOQ06Aristotle.lean — then permFinFour_isSolvable lands by the reduction",
+      "Package full equivalence IsSolvable (Equiv.Perm (Fin n)) ⟺ n ≤ 4 once n=4 closes"
+    ]
   },
   "tags": [
     "algebra",

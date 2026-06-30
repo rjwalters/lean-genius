@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sharpened the EH level hierarchy. (1) EXACT additive decomposition discrepancySum_eq_add_band: discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x, localizing inter-level growth to the band of new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋ (monotonicity now a corollary). (2) EH-bound functional class is a CONVEX CONE: EHAtLevel_add, EHAtLevel_smul (0≤c), EHAtLevel_nonneg_linear. (3) Quantitative converse EHAtLevel_discrepancySum_up: EH at θ₁ + EH-type band bound ⟹ EH at θ₂ — the band is exactly the extra analytic input to raise the level. VERIFIED offline via lake env lean (full kernel check vs Mathlib oleans, EXIT 0; axioms = propext/Classical.choice/Quot.sound only); docker-build still host-blocked. 20 thm / 7 def, 0 axiom/0 sorry. EH itself remains OPEN.",
+    "progressSummary": "PROGRESS: grounded the abstract EH level-hierarchy in the GENUINE von-Mangoldt discrepancy. Defined the real per-modulus weight max over coprime residues of |psi(x;q,a)-x/phi(q)| (psiAP via ArithmeticFunction.vonMangoldt, apDiscrepancy, vonMangoldtWeight) and proved it nonnegative — the sole structural hypothesis — so the full framework (level monotonicity, exact band decomposition, EH=>BV, dyadic ascent) now specializes to the actual Elliott-Halberstam sum vonMangoldtDiscrepancySum theta x with ZERO further hypotheses. 32 thm / 12 def, 0 axiom / 0 sorry, verified offline (lake env lean EXIT 0; axioms = propext/Classical.choice/Quot.sound only). EH/BV bound itself remains OPEN — the genuine analytic input is now isolated as a single bound on vonMangoldtWeight.",
     "builtItems": [
       "EHAtLevel, LevelMonotone (defs) in BoundedPrimeGapsOQ02.lean:68,75",
       "EHAtLevel_of_le (level hierarchy) BoundedPrimeGapsOQ02.lean:81",
@@ -43,7 +43,11 @@
       "discrepancyBand f θ₁ θ₂ x := ∑ q ∈ Finset.Ioc ⌊x^θ₁⌋₊ ⌊x^θ₂⌋₊, f q x — the new-moduli band contribution",
       "discrepancySum_eq_add_band (hx:1≤x)(hθ:θ₁≤θ₂): discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x — exact decomposition via Finset.sum_Ioc_consecutive after Icc 1 = Ioc 0 conversion",
       "EHAtLevel_add / EHAtLevel_smul / EHAtLevel_nonneg_linear — EH-bound class is a convex cone (constants C₁+C₂ and c·C+1)",
-      "EHAtLevel_discrepancySum_up: EHAtLevel(discrepancySum f) θ₁ + band EH-bound ⟹ EHAtLevel(discrepancySum f) θ₂ — quantitative ascent converse to the descent hierarchy"
+      "EHAtLevel_discrepancySum_up: EHAtLevel(discrepancySum f) θ₁ + band EH-bound ⟹ EHAtLevel(discrepancySum f) θ₂ — quantitative ascent converse to the descent hierarchy",
+      "psiAP/apDiscrepancy/vonMangoldtWeight + vonMangoldtDiscrepancySum(Clamped) in BoundedPrimeGapsOQ02.lean: genuine EH weight from ArithmeticFunction.vonMangoldt + Nat.totient; vonMangoldtWeight_nonneg via Finset.le_sup'+abs_nonneg",
+      "Capstones EHAtLevel_of_le_vonMangoldt, bombieriVinogradov_of_EH_vonMangoldt, bombieriVinogradov_of_EHAtLevel_vonMangoldt, vonMangoldtDiscrepancySum_mono_level, vonMangoldtDiscrepancySum_eq_add_band, EHAtLevel_vonMangoldt_up_split — full hierarchy/band/cone/ascent now applies to the genuine functional, 0-axiom",
+      "EHAtLevel_discrepancySum_up_chain / EHAtLevel_vonMangoldt_up_chain (2026-06-27): finite-chain ascent over a monotone level sequence L : ℕ → ℝ — arbitrarily-many-blocks dyadic decomposition, of which the two-band split is the n=2 case",
+      "EHAtLevel_discrepancySum_up_arith / EHAtLevel_vonMangoldt_up_arith (2026-06-28, researcher-3, 0-axiom): the explicit EQUIPARTITION instantiation of the chain at the arithmetic level sequence L k = θ₀ + k·δ (δ ≥ 0) — Monotone L discharged from δ ≥ 0; choosing δ = (θ-θ₀)/n reaches any target θ ≥ θ₀ in n equal modulus blocks. GOTCHA: hband's θ₀+(k+1)·δ elaborates to ↑k+1, chain's L(k+1) is ↑(k+1); bridge with simpa only [Nat.cast_succ]"
     ],
     "insights": [
       "EH is a conjecture, so formalize it as a logical skeleton over an abstract discrepancy functional D θ x — never axiomatize EH itself.",
@@ -54,17 +58,17 @@
       "A base clamp (max 1 x) makes level-monotonicity hold for ALL real x, yielding a generally nonzero global model of LevelMonotone — strictly stronger non-vacuity than the zero functional.",
       "The inter-level growth in the discrepancy sum is EXACTLY the discrepancy of the band of new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋ — proved by Finset.sum_Ioc_consecutive after rewriting Finset.Icc 1 m = Finset.Ioc 0 m (ext + omega). This turns the qualitative hierarchy into a quantitative one.",
       "EHAtLevel at a fixed level is closed under +, nonneg scaling, hence a convex cone; the +1 in c·C+1 keeps the constant strictly positive when c=0, avoiding a case split.",
-      "Descent (higher⟹lower level) is free from monotonicity; ASCENT (raise the level) costs exactly an EH-type bound on the new-moduli band — formal statement of why EH beyond Bombieri–Vinogradov (θ=1/2) is hard."
+      "Descent (higher⟹lower level) is free from monotonicity; ASCENT (raise the level) costs exactly an EH-type bound on the new-moduli band — formal statement of why EH beyond Bombieri–Vinogradov (θ=1/2) is hard.",
+      "Genuine von-Mangoldt instantiation: the only structural hypothesis the abstract EH hierarchy needs from the per-modulus weight is NONNEGATIVITY; the worst-case discrepancy max over coprime residues of |psi(x;q,a) - x/phi(q)| is a max of absolute values, so nonnegativity is automatic and every structural theorem specializes to the real EH sum for free."
     ],
     "mathlibGaps": [
       "No global Mathlib gap for the skeleton; instantiating D with the genuine von-Mangoldt discrepancy sum and proving its LevelMonotone is the analytic work (depends on Bombieri–Vinogradov, ~12000 lines, tracked in OQ-04)."
     ],
     "nextSteps": [
-      "Re-confirm via docker-build.sh once host containerd corruption is repaired (offline `lake env lean` already passes; docker content store currently I/O-corrupt).",
-      "Instantiate D := von-Mangoldt discrepancy sum and prove LevelMonotone for it.",
-      "Formalize a strict/quantitative version of the hierarchy (constant improves as the level drops).",
-      "Instantiate f q x := max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)| using Mathlib von Mangoldt (ArithmeticFunction.vonMangoldt) to connect discrepancySum to the genuine EH sum",
-      "Bridge to the Maynard–Tao bounded-gap consequence (DHL[k,m]) under EHAtLevel — assess Mathlib sieve infrastructure"
+      "Prove an ACTUAL bound on vonMangoldtWeight/vonMangoldtDiscrepancySum at theta=1/2 (Bombieri-Vinogradov) — the genuine analytic content; assess Mathlib BV/large-sieve infrastructure (likely absent -> scope a build)",
+      "Relate vonMangoldtDiscrepancySum to the Maynard-Tao DHL[k,m] bounded-gap consequence under EHAtLevel",
+      "Formalize a strict/quantitative version of the hierarchy (constant improves as level drops)",
+      "Connect psiAP to a prime-counting (pi) form via partial summation"
     ]
   },
   "tags": [
@@ -97,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-04-22T12:51:58.076Z",
+  "lastUpdate": "2026-06-28T00:00:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [

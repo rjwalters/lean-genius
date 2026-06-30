@@ -25,13 +25,15 @@
   This file gives the **corrected, machine-checked** statement: the explicit 42-edge
   witness, built as a genuine `SimpleGraph (Fin 18)`, is triangle-free and has no
   independent additive triple among three distinct vertices. Both facts are discharged
-  by `native_decide` (exhaustive over `Fin 18`). The witness graph is
+  by **plain kernel `decide`** (exhaustive over `Fin 18`). The witness graph is
   `research/problems/erdos-895-incomplete-01/counterexample-fin18.json`.
 
-  Note on axioms: `native_decide` relies on `Lean.ofReduceBool` (the Lean compiler's
-  kernel-reduction trust). This file is therefore *axiomatized* in the gallery sense,
-  with that single disclosed assumption; the underlying combinatorial claim is an
-  exhaustive finite check.
+  Note on axioms: the exhaustive checks use plain `decide`, not `native_decide`, so this
+  file is **0-axiom** — `#print axioms` lists only `propext` / `Quot.sound`, with **no**
+  `Lean.ofReduceBool` and no `sorryAx`. (An earlier version used `native_decide`, which
+  trusts the compiler's kernel reduction via `Lean.ofReduceBool`; the finite search here
+  is small enough — `18³` triples over a 42-edge adjacency list — that the trusted kernel
+  evaluates it directly in a few seconds, so the extra axiom is unnecessary.)
 -/
 
 import Mathlib
@@ -87,15 +89,18 @@ instance : DecidableRel G895.Adj := fun a b =>
 
 /-! ## Verified properties (exhaustive `native_decide` over `Fin 18`) -/
 
-/-- `G895` is triangle-free. -/
-theorem ce895_triangleFree : IsTriangleFree G895 := by native_decide
+set_option maxRecDepth 10000 in
+/-- `G895` is triangle-free.  Exhaustive over `Fin 18` by plain kernel `decide` (0 axioms). -/
+theorem ce895_triangleFree : IsTriangleFree G895 := by decide
 
+set_option maxRecDepth 10000 in
 /-- `G895` has **no** independent additive triple among three DISTINCT vertices.
 (Under the loose predicate of `Erdos895Problem.lean` the degenerate triples `(k, k, 2k)`
-would spuriously count; with `a ≠ b` enforced there is genuinely none.) -/
+would spuriously count; with `a ≠ b` enforced there is genuinely none.)
+Exhaustive over `Fin 18` by plain kernel `decide` (0 axioms — no `native_decide`). -/
 theorem ce895_no_distinct_independent_additive_triple :
     ¬ ∃ a b c : Fin 18, IsDistinctAdditiveTriple a b c ∧ IsIndependentTriple G895 a b c := by
-  native_decide
+  decide
 
 /-- **Corrected sharpness witness for Erdős #895.** There is a triangle-free graph on
 `Fin 18` (= `{1,…,17}`, vertex `0` isolated) with no independent additive triple among
@@ -107,5 +112,9 @@ theorem counterexample_fin18 :
     ∃ G : SimpleGraph (Fin 18), IsTriangleFree G ∧
       ¬ ∃ a b c : Fin 18, IsDistinctAdditiveTriple a b c ∧ IsIndependentTriple G a b c :=
   ⟨G895, ce895_triangleFree, ce895_no_distinct_independent_additive_triple⟩
+
+-- Axiom audit: plain `decide` (NOT `native_decide`) ⇒ foundational axioms only
+-- (propext / Quot.sound); no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms counterexample_fin18
 
 end Erdos895CounterexampleFin18

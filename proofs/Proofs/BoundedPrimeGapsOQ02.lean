@@ -56,6 +56,23 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
 - [x] Quantitative converse `EHAtLevel_discrepancySum_up`: EH at level `θ₁` plus an
       EH-type bound on the new-moduli band ⟹ EH at the higher level `θ₂` — pinning the
       band as exactly the extra analytic input needed to raise the level of distribution
+- [x] Band cocycle (Chasles) identity `discrepancyBand_add_consecutive`: the new-moduli
+      band subdivides at any intermediate level, `band θ₁ θ₃ = band θ₁ θ₂ + band θ₂ θ₃`,
+      with `discrepancyBand_self` the empty-band base case — the moduli-range analogue of
+      the level decomposition that licenses dyadic decomposition of the modulus range
+- [x] Subdivided ascent `EHAtLevel_discrepancySum_up_split`: raising the level only needs
+      EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure
+- [x] Finite-chain ascent `EHAtLevel_discrepancySum_up_chain` (and its genuine specialization
+      `EHAtLevel_vonMangoldt_up_chain`): iterating the single-band ascent along an arbitrary
+      monotone level chain `L 0 ≤ L 1 ≤ ⋯`, EH at the base plus an EH-type bound on every
+      consecutive band lifts EH to every level `L n` — the arbitrarily-many-blocks form of
+      dyadic decomposition of the modulus range (the `n = 2` case is the split lemma above)
+- [x] Genuine von-Mangoldt instantiation: the concrete weight
+      `vonMangoldtWeight q x = max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|` (built from Mathlib's
+      `ArithmeticFunction.vonMangoldt` and `Nat.totient`) is *proved* nonnegative, so the
+      entire hierarchy — level monotonicity, exact band decomposition, EH ⟹ BV, and dyadic
+      ascent — specializes with no further hypotheses to the **actual** Elliott–Halberstam
+      sum `vonMangoldtDiscrepancySum θ x = Σ_{q ≤ x^θ} max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|`
 - [x] No `axiom`, no `sorry`, no `native_decide`
 -/
 
@@ -345,5 +362,300 @@ theorem EHAtLevel_discrepancySum_up (f : ℕ → ℝ → ℝ) {θ₁ θ₂ : ℝ
       ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
         linarith [hb₁ x hx, hb₂ x hx]
     _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
+
+/-! ## Subdividing the level-increment band
+
+The exact decomposition `discrepancySum_eq_add_band` localizes the inter-level growth to
+the new-moduli band `⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋`.  That band is itself additive: at any
+intermediate level `θ₂` it splits into two consecutive sub-bands.  This is the additive
+cocycle (Chasles) identity for the band — the moduli-range analogue of the level
+decomposition — and it is exactly what licenses the *dyadic decomposition of the modulus
+range* used in the analytic treatment of Elliott–Halberstam: control the discrepancy on
+each dyadic block of moduli separately and recombine. -/
+
+/-- The **empty band**: from a level to itself there are no new moduli, so the band
+discrepancy vanishes. -/
+theorem discrepancyBand_self (f : ℕ → ℝ → ℝ) (θ x : ℝ) :
+    discrepancyBand f θ θ x = 0 := by
+  unfold discrepancyBand
+  rw [Finset.Ioc_self, Finset.sum_empty]
+
+/-- **Cocycle / Chasles identity for the band.**  For `θ₁ ≤ θ₂ ≤ θ₃` on the analytic
+regime `x ≥ 1`, the new-moduli band from level `θ₁` to `θ₃` is the disjoint union of the
+`θ₁ → θ₂` and `θ₂ → θ₃` sub-bands, so its discrepancy is the sum of theirs:
+`discrepancyBand f θ₁ θ₃ x = discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x`.
+This subdivides the level increment at any intermediate level. -/
+theorem discrepancyBand_add_consecutive (f : ℕ → ℝ → ℝ) {θ₁ θ₂ θ₃ x : ℝ}
+    (hx : 1 ≤ x) (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃) :
+    discrepancyBand f θ₁ θ₃ x
+      = discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x := by
+  have hf12 : ⌊x ^ θ₁⌋₊ ≤ ⌊x ^ θ₂⌋₊ :=
+    Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx h₁₂)
+  have hf23 : ⌊x ^ θ₂⌋₊ ≤ ⌊x ^ θ₃⌋₊ :=
+    Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx h₂₃)
+  unfold discrepancyBand
+  exact (Finset.sum_Ioc_consecutive (fun q => f q x) hf12 hf23).symm
+
+/-- **Subdivided ascent.**  Strengthening `EHAtLevel_discrepancySum_up`: to raise the
+level of distribution from `θ₁` to `θ₃` it suffices to bound the discrepancy on each of
+the two consecutive sub-bands `θ₁ → θ₂` and `θ₂ → θ₃` separately.  The band cocycle
+identity splits the full `θ₁ → θ₃` band into these pieces, and the EH-bound class being a
+convex cone (`EHAtLevel_add`) recombines the two sub-band bounds into one.  This is the
+formal statement that the modulus range may be attacked dyadically — the standard
+analytic strategy for Elliott–Halberstam. -/
+theorem EHAtLevel_discrepancySum_up_split (f : ℕ → ℝ → ℝ) {θ₁ θ₂ θ₃ : ℝ}
+    (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃)
+    (hlow : EHAtLevel (discrepancySum f) θ₁)
+    (hband₁ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f θ₁ θ₂ x ≤ C * x / (Real.log x) ^ A)
+    (hband₂ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f θ₂ θ₃ x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel (discrepancySum f) θ₃ := by
+  refine EHAtLevel_discrepancySum_up f (le_trans h₁₂ h₂₃) hlow ?_
+  intro A hA
+  obtain ⟨C₁, hC₁, hb₁⟩ := hband₁ A hA
+  obtain ⟨C₂, hC₂, hb₂⟩ := hband₂ A hA
+  refine ⟨C₁ + C₂, by linarith, fun x hx => ?_⟩
+  rw [discrepancyBand_add_consecutive f (by linarith) h₁₂ h₂₃]
+  calc discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x
+      ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
+        linarith [hb₁ x hx, hb₂ x hx]
+    _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
+
+/-! ## Finite dyadic chain: ascent over arbitrarily many sub-bands
+
+`EHAtLevel_discrepancySum_up_split` raises the level of distribution across *two*
+consecutive sub-bands.  But the genuine analytic dyadic decomposition splits the modulus
+range `q ≤ x^θ` into `≍ log x` dyadic blocks, not two — so the two-band statement is only
+the first nontrivial instance of the real strategy.  Here we iterate the single-band ascent
+along an arbitrary finite increasing chain of levels `L 0 ≤ L 1 ≤ ⋯ ≤ L n`: an EH bound at
+the base level together with an EH-type bound on every consecutive band raises the level of
+distribution all the way to the top `L n`.  This is the full-strength formal statement that
+Elliott–Halberstam may be attacked by dyadic decomposition of the modulus range into any
+number of blocks. -/
+
+/-- **Finite-chain ascent.**  For a monotone level sequence `L : ℕ → ℝ`, if the canonical
+discrepancy sum satisfies the Elliott–Halberstam bound at the base level `L 0` and each
+consecutive band `L k → L (k+1)` independently satisfies an EH-type bound, then EH holds at
+*every* level `L n` of the chain.  The proof iterates `EHAtLevel_discrepancySum_up` along the
+chain; `n = 1` is exactly the single-band ascent and the `n = 2` case recovers
+`EHAtLevel_discrepancySum_up_split`.  This is the arbitrarily-many-blocks form of dyadic
+decomposition. -/
+theorem EHAtLevel_discrepancySum_up_chain (f : ℕ → ℝ → ℝ) {L : ℕ → ℝ}
+    (hmono : Monotone L)
+    (hlow : EHAtLevel (discrepancySum f) (L 0))
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (L k) (L (k + 1)) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel (discrepancySum f) (L n) := by
+  intro n
+  induction n with
+  | zero => exact hlow
+  | succ k ih =>
+      exact EHAtLevel_discrepancySum_up f (hmono (Nat.le_succ k)) ih (hband k)
+
+/-- **Equally-spaced (arithmetic) chain ascent.**  The explicit instantiation of
+`EHAtLevel_discrepancySum_up_chain` at the arithmetic level sequence `L k = θ₀ + k·δ`
+(`δ ≥ 0`): from an EH bound at the base `θ₀` together with an EH-type bound on every equal
+step `θ₀ + k·δ → θ₀ + (k+1)·δ`, EH holds at `θ₀ + n·δ` for all `n`.  This is the concrete,
+equipartition form of the dyadic ascent — by taking `δ := (θ - θ₀)/n` it reaches any
+prescribed target level `θ ≥ θ₀` in `n` equal blocks, with the abstract `Monotone L`
+hypothesis discharged outright from `δ ≥ 0`. -/
+theorem EHAtLevel_discrepancySum_up_arith (f : ℕ → ℝ → ℝ) {θ₀ δ : ℝ} (hδ : 0 ≤ δ)
+    (hlow : EHAtLevel (discrepancySum f) θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (θ₀ + k * δ) (θ₀ + (k + 1) * δ) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel (discrepancySum f) (θ₀ + n * δ) := by
+  have hmono : Monotone (fun k : ℕ => θ₀ + (k : ℝ) * δ) := by
+    intro a b hab
+    have hc : (a : ℝ) ≤ (b : ℝ) := by exact_mod_cast hab
+    have := mul_le_mul_of_nonneg_right hc hδ
+    simp only []
+    linarith
+  have hlow' : EHAtLevel (discrepancySum f) ((fun k : ℕ => θ₀ + (k : ℝ) * δ) 0) := by
+    simpa using hlow
+  refine EHAtLevel_discrepancySum_up_chain f hmono hlow' (fun k A hA => ?_)
+  simpa only [Nat.cast_succ] using hband k A hA
+
+/-- **Target-level ascent (equipartition wrapper).**  The packaged form of
+`EHAtLevel_discrepancySum_up_arith` that reaches a *prescribed* target level `θ ≥ θ₀` in a
+chosen number `n ≥ 1` of equal blocks.  It fixes the step `δ := (θ - θ₀)/n` internally and
+discharges the algebra `θ₀ + n·δ = θ`, so the caller only supplies the base EH bound at `θ₀`
+together with an EH-type bound on each of the `n` equal sub-bands
+`θ₀ + k·δ → θ₀ + (k+1)·δ`, and obtains EH at the exact endpoint `θ` (not at the cosmetic
+`θ₀ + n·δ`).  This is the directly usable equipartition form of the dyadic ascent. -/
+theorem EHAtLevel_discrepancySum_up_target (f : ℕ → ℝ → ℝ) {θ₀ θ : ℝ} {n : ℕ}
+    (hn : 0 < n) (hθ : θ₀ ≤ θ)
+    (hlow : EHAtLevel (discrepancySum f) θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (θ₀ + k * ((θ - θ₀) / n)) (θ₀ + (k + 1) * ((θ - θ₀) / n)) x
+          ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel (discrepancySum f) θ := by
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  set δ := (θ - θ₀) / n with hδdef
+  have hδ : 0 ≤ δ := by
+    rw [hδdef]; exact div_nonneg (by linarith) (by positivity)
+  have key := EHAtLevel_discrepancySum_up_arith f hδ hlow hband n
+  have heq : θ₀ + (n : ℝ) * δ = θ := by rw [hδdef]; field_simp; ring
+  rwa [heq] at key
+
+/-! ## Grounding the hierarchy in the genuine von-Mangoldt discrepancy
+
+Everything above treats the per-modulus weight `f` abstractly, requiring only
+nonnegativity.  Here we instantiate `f` with the **genuine** Elliott–Halberstam weight
+
+  `f q x = max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|`,   `ψ(x; q, a) = Σ_{n ≤ x, n ≡ a (q)} Λ(n)`,
+
+built from Mathlib's von-Mangoldt function `ArithmeticFunction.vonMangoldt` and Euler
+totient `Nat.totient`.  The maximum of absolute values is automatically nonnegative, so
+the single structural hypothesis the whole framework needs is discharged outright — and
+the level hierarchy, the exact band decomposition, the convex-cone closure and the dyadic
+ascent all specialize, with no further work, to the *actual* Elliott–Halberstam sum.  This
+converts the abstract skeleton into statements about the genuine object of the conjecture. -/
+
+open scoped ArithmeticFunction in
+/-- The **Chebyshev ψ in an arithmetic progression** at a real cutoff `x`:
+`ψ(x; q, a) = Σ_{1 ≤ n ≤ ⌊x⌋, n ≡ a (q)} Λ(n)`, with `Λ` the von-Mangoldt function. -/
+noncomputable def psiAP (q a : ℕ) (x : ℝ) : ℝ :=
+  ∑ n ∈ (Finset.Icc 1 ⌊x⌋₊).filter (fun n => n % q = a % q),
+    ArithmeticFunction.vonMangoldt n
+
+/-- The **per-residue discrepancy** `|ψ(x; q, a) − x/φ(q)|` of the progression `a mod q`
+against its expected main term `x/φ(q)`.  Nonnegative by construction (an absolute value). -/
+noncomputable def apDiscrepancy (q a : ℕ) (x : ℝ) : ℝ :=
+  |psiAP q a x - x / (Nat.totient q : ℝ)|
+
+/-- The **genuine Elliott–Halberstam per-modulus weight**: the worst-case discrepancy
+`max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|` over residues `a` coprime to `q` (and `0` for the
+degenerate empty range `q = 0`).  This is exactly the summand of the real EH sum. -/
+noncomputable def vonMangoldtWeight (q : ℕ) (x : ℝ) : ℝ :=
+  if h : ((Finset.range q).filter (fun a => Nat.Coprime a q)).Nonempty then
+    ((Finset.range q).filter (fun a => Nat.Coprime a q)).sup' h
+      (fun a => apDiscrepancy q a x)
+  else 0
+
+/-- The genuine weight is nonnegative — the sole structural hypothesis the abstract
+hierarchy requires — because it is a maximum (or `0`) of absolute values. -/
+theorem vonMangoldtWeight_nonneg (q : ℕ) (x : ℝ) : 0 ≤ vonMangoldtWeight q x := by
+  unfold vonMangoldtWeight
+  split
+  · next h =>
+    obtain ⟨a, ha⟩ := h
+    have h0 : 0 ≤ apDiscrepancy q a x := abs_nonneg _
+    exact le_trans h0 (Finset.le_sup' (fun a => apDiscrepancy q a x) ha)
+  · exact le_refl 0
+
+/-- The **genuine Elliott–Halberstam discrepancy sum** at level `θ`:
+`Σ_{q ≤ x^θ} max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|`, the object whose `≪_A x/(log x)^A`
+bound *is* the level-of-distribution statement. -/
+noncomputable def vonMangoldtDiscrepancySum (θ x : ℝ) : ℝ :=
+  discrepancySum vonMangoldtWeight θ x
+
+/-- The clamped genuine sum (base `max 1 x`), level-monotone for *every* real `x`. -/
+noncomputable def vonMangoldtDiscrepancySumClamped (θ x : ℝ) : ℝ :=
+  discrepancySumClamped vonMangoldtWeight θ x
+
+/-- On the analytic regime `x ≥ 1` the clamp is inert. -/
+theorem vonMangoldtDiscrepancySumClamped_eq {θ x : ℝ} (hx : 1 ≤ x) :
+    vonMangoldtDiscrepancySumClamped θ x = vonMangoldtDiscrepancySum θ x :=
+  discrepancySumClamped_eq vonMangoldtWeight hx
+
+/-- **The genuine EH sum is level-monotone on `x ≥ 1`** — proved, not assumed.  Larger
+levels admit more moduli `q ≤ x^θ`, and each new worst-case discrepancy is nonnegative. -/
+theorem vonMangoldtDiscrepancySum_mono_level {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    vonMangoldtDiscrepancySum θ₁ x ≤ vonMangoldtDiscrepancySum θ₂ x :=
+  discrepancySum_mono_level vonMangoldtWeight vonMangoldtWeight_nonneg hx hθ
+
+/-- The clamped genuine functional is globally level-monotone, hence a genuine (generally
+nonzero) model of `LevelMonotone` to which the level hierarchy `EHAtLevel_of_le` applies. -/
+theorem levelMonotone_vonMangoldtDiscrepancySumClamped :
+    LevelMonotone vonMangoldtDiscrepancySumClamped :=
+  levelMonotone_discrepancySumClamped vonMangoldtWeight vonMangoldtWeight_nonneg
+
+/-- **The level hierarchy for the genuine EH sum.**  If the real von-Mangoldt discrepancy
+sum satisfies the Elliott–Halberstam bound at some level `θ₂`, it satisfies it at every
+lower level `θ₁ ≤ θ₂`.  This is `EHAtLevel_of_le` at the actual object of the conjecture. -/
+theorem EHAtLevel_of_le_vonMangoldt {θ₁ θ₂ : ℝ} (h : θ₁ ≤ θ₂)
+    (hEH : EHAtLevel vonMangoldtDiscrepancySumClamped θ₂) :
+    EHAtLevel vonMangoldtDiscrepancySumClamped θ₁ :=
+  EHAtLevel_of_le _ levelMonotone_vonMangoldtDiscrepancySumClamped h hEH
+
+/-- **Elliott–Halberstam ⟹ Bombieri–Vinogradov, for the genuine functional.**  The full
+conjecture for the real von-Mangoldt discrepancy sum implies its proved `θ = 1/2` case. -/
+theorem bombieriVinogradov_of_EH_vonMangoldt
+    (hEH : ElliottHalberstam vonMangoldtDiscrepancySumClamped) :
+    BombieriVinogradov vonMangoldtDiscrepancySumClamped :=
+  bombieriVinogradov_of_elliottHalberstam _ hEH
+
+/-- For the genuine functional, the EH bound at **any** level `θ ≥ 1/2` already yields
+Bombieri–Vinogradov, via the hierarchy. -/
+theorem bombieriVinogradov_of_EHAtLevel_vonMangoldt {θ : ℝ} (hθ : 1 / 2 ≤ θ)
+    (hEH : EHAtLevel vonMangoldtDiscrepancySumClamped θ) :
+    BombieriVinogradov vonMangoldtDiscrepancySumClamped :=
+  bombieriVinogradov_of_EHAtLevel _ levelMonotone_vonMangoldtDiscrepancySumClamped hθ hEH
+
+/-- **Exact level increment for the genuine sum.**  On `x ≥ 1`, the real EH sum at level
+`θ₂` is its level-`θ₁` value plus exactly the worst-case discrepancy of the new moduli
+`⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋` — the genuine instance of `discrepancySum_eq_add_band`. -/
+theorem vonMangoldtDiscrepancySum_eq_add_band {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    vonMangoldtDiscrepancySum θ₂ x
+      = vonMangoldtDiscrepancySum θ₁ x + discrepancyBand vonMangoldtWeight θ₁ θ₂ x :=
+  discrepancySum_eq_add_band vonMangoldtWeight hx hθ
+
+/-- **Dyadic ascent for the genuine sum.**  To raise the genuine level of distribution
+from `θ₁` to `θ₃` it suffices to bound the real worst-case discrepancy on each consecutive
+sub-band of moduli `θ₁ → θ₂` and `θ₂ → θ₃` — the formal license for the dyadic attack on
+Elliott–Halberstam, now stated for the actual von-Mangoldt weight. -/
+theorem EHAtLevel_vonMangoldt_up_split {θ₁ θ₂ θ₃ : ℝ} (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₁)
+    (hband₁ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight θ₁ θ₂ x ≤ C * x / (Real.log x) ^ A)
+    (hband₂ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight θ₂ θ₃ x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel vonMangoldtDiscrepancySum θ₃ :=
+  EHAtLevel_discrepancySum_up_split vonMangoldtWeight h₁₂ h₂₃ hlow hband₁ hband₂
+
+/-- **Finite dyadic chain for the genuine sum.**  To raise the genuine level of
+distribution from the base of a monotone level chain `L` all the way to any level `L n`, it
+suffices to bound the real worst-case von-Mangoldt discrepancy on each consecutive sub-band
+`L k → L (k+1)`.  This is `EHAtLevel_discrepancySum_up_chain` specialized to the actual
+Elliott–Halberstam weight — the arbitrarily-many-blocks dyadic attack on the genuine
+object, of which `EHAtLevel_vonMangoldt_up_split` is the two-block case. -/
+theorem EHAtLevel_vonMangoldt_up_chain {L : ℕ → ℝ} (hmono : Monotone L)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum (L 0))
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (L k) (L (k + 1)) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (L n) :=
+  EHAtLevel_discrepancySum_up_chain vonMangoldtWeight hmono hlow hband
+
+/-- **Equally-spaced chain ascent for the genuine sum.**  The explicit arithmetic
+instantiation `L k = θ₀ + k·δ` (`δ ≥ 0`) of `EHAtLevel_vonMangoldt_up_chain`: bounding the
+real worst-case von-Mangoldt discrepancy on each equal step `θ₀ + k·δ → θ₀ + (k+1)·δ`
+raises the genuine level of distribution to `θ₀ + n·δ` for every `n`.  With `δ := (θ-θ₀)/n`
+this is the formal license to reach any target level `θ ≥ θ₀` in `n` equal modulus blocks —
+the equipartition form of the dyadic attack on Elliott–Halberstam, for the actual
+von-Mangoldt weight. -/
+theorem EHAtLevel_vonMangoldt_up_arith {θ₀ δ : ℝ} (hδ : 0 ≤ δ)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (θ₀ + k * δ) (θ₀ + (k + 1) * δ) x
+          ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (θ₀ + n * δ) :=
+  EHAtLevel_discrepancySum_up_arith vonMangoldtWeight hδ hlow hband
+
+/-- **Target-level ascent for the genuine sum.**  The von-Mangoldt specialization of
+`EHAtLevel_discrepancySum_up_target`: from the genuine EH bound at base `θ₀` together with a
+bound on the real worst-case von-Mangoldt discrepancy of each of `n` equal modulus blocks
+`θ₀ + k·δ → θ₀ + (k+1)·δ` (`δ = (θ - θ₀)/n`), the genuine level of distribution reaches the
+*exact* prescribed target `θ ≥ θ₀`.  This is the directly usable equipartition form of the
+dyadic attack on Elliott–Halberstam — the caller names the endpoint `θ` and the block count
+`n`, and the `θ₀ + n·δ = θ` algebra is discharged internally. -/
+theorem EHAtLevel_vonMangoldt_up_target {θ₀ θ : ℝ} {n : ℕ}
+    (hn : 0 < n) (hθ : θ₀ ≤ θ)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₀)
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (θ₀ + k * ((θ - θ₀) / n))
+            (θ₀ + (k + 1) * ((θ - θ₀) / n)) x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel vonMangoldtDiscrepancySum θ :=
+  EHAtLevel_discrepancySum_up_target vonMangoldtWeight hn hθ hlow hband
 
 end BoundedPrimeGapsOQ02

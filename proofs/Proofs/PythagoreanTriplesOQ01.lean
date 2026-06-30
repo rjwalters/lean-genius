@@ -53,6 +53,7 @@ asymptotically N/(2π). Specifically:
 - Axiomatized (3): sector lattice point density, coprime fraction, bothOdd fraction
 -/
 import Mathlib.NumberTheory.PythagoreanTriples
+import Mathlib.NumberTheory.SumTwoSquares
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
@@ -2076,10 +2077,49 @@ noncomputable def r2 (n : ℕ) : ℕ :=
     ∃ b : ℕ, b ≤ n ∧ a * a + b * b = n)).card
 
 /-- r₂(n) > 0 iff n has no prime factor ≡ 3 (mod 4) to an odd power.
-    This is Fermat's theorem on sums of two squares.
-    Full proof requires the Gaussian integer UFD structure. -/
-axiom r2_pos_iff (n : ℕ) (hn : 0 < n) :
-    0 < r2 n ↔ ∀ p, Nat.Prime p → p % 4 = 3 → Even (n.factorization p)
+    This is Fermat's theorem on sums of two squares (the full characterization).
+
+    PROVED from Mathlib's `Nat.eq_sq_add_sq_iff`. The proof has two bridges:
+    (1) `0 < r2 n ↔ ∃ x y, n = x² + y²` — positivity of the (nonnegative-pair)
+        representation count is equivalence to existence of a representation; the
+        `a, b ≤ n` bounds in `r2` are automatic since `a ≤ a² ≤ n`.
+    (2) the prime-factorization condition `∀ q ∈ n.primeFactors, q % 4 = 3 →
+        Even (padicValNat q n)` from Mathlib equals `∀ p, p.Prime → p % 4 = 3 →
+        Even (n.factorization p)`: for primes outside `primeFactors` the
+        factorization exponent is `0` (even), so the two universally quantified
+        forms agree. (The `hn : 0 < n` hypothesis is now unused but kept for the
+        stable downstream signature.) -/
+theorem r2_pos_iff (n : ℕ) (_hn : 0 < n) :
+    0 < r2 n ↔ ∀ p, Nat.Prime p → p % 4 = 3 → Even (n.factorization p) := by
+  -- A small fact: x ≤ x² in ℕ, used to discharge the `a, b ≤ n` bounds in `r2`.
+  have le_sq : ∀ x : ℕ, x ≤ x ^ 2 := by
+    intro x
+    rcases Nat.eq_zero_or_pos x with h | h
+    · simp [h]
+    · calc x = x ^ 1 := (pow_one x).symm
+        _ ≤ x ^ 2 := Nat.pow_le_pow_right h (by norm_num)
+  -- Step 1: positivity of r2 ↔ existence of a sum-of-two-squares representation.
+  have hrepr : 0 < r2 n ↔ ∃ x y : ℕ, n = x ^ 2 + y ^ 2 := by
+    rw [r2, Finset.card_pos, Finset.filter_nonempty_iff]
+    constructor
+    · rintro ⟨a, -, b, -, hab⟩
+      exact ⟨a, b, by rw [← hab]; ring⟩
+    · rintro ⟨x, y, hxy⟩
+      have hx : x ≤ n := le_trans (le_sq x) (by rw [hxy]; exact Nat.le_add_right _ _)
+      have hy : y ≤ n := le_trans (le_sq y) (by rw [hxy]; exact Nat.le_add_left _ _)
+      exact ⟨x, Finset.mem_Icc.mpr ⟨Nat.zero_le _, hx⟩, y, hy, by rw [hxy]; ring⟩
+  rw [hrepr, Nat.eq_sq_add_sq_iff]
+  -- Step 2: bridge the two forms of the prime-factorization condition.
+  constructor
+  · intro H p hp hp4
+    by_cases hmem : p ∈ n.primeFactors
+    · rw [Nat.factorization_def n hp]; exact H p hmem hp4
+    · have hz : n.factorization p = 0 := by
+        rw [← Finsupp.notMem_support_iff, Nat.support_factorization]; exact hmem
+      rw [hz]; exact ⟨0, rfl⟩
+  · intro H q hq hq4
+    have hp : q.Prime := Nat.prime_of_mem_primeFactors hq
+    rw [← Nat.factorization_def n hp]; exact H q hp hq4
 
 /-- The average order of r₂: (1/N) Σ_{n≤N} r₂(n) → π.
     This is equivalent to the Gauss circle problem: the number of
@@ -2204,7 +2244,8 @@ theorem all_primitive_triples_from_gaussian :
 
 ### New Definitions and Theorems:
 - **r2**: representation function r₂(n) = #{(a,b) : a²+b² = n}
-- **r2_pos_iff**: characterization via prime factorization (partial)
+- **r2_pos_iff**: characterization via prime factorization [PROVED from Mathlib's
+  `Nat.eq_sq_add_sq_iff` — no longer an axiom]
 - **r2_average_order**: (1/N)Σr₂(n) → π (Gauss circle) [AXIOM]
 - **GaussianInt**: Gaussian integer structure
 - **gaussian_norm_mul**: norm multiplicativity (PROVED)
@@ -2212,7 +2253,10 @@ theorem all_primitive_triples_from_gaussian :
 - **gaussian_square_components**: real and imaginary parts of z² (PROVED)
 - **landau_two_squares_statement**: Landau-Ramanujan constant (documentation)
 
-### Axiom Count: 5 total (3 original + 2 new: r2_average_order, primitive_by_leg_density)
+### Axiom Count: 6 total — 3 core (sector_lattice_point_density,
+###   coprime_fraction_in_sector, bothOdd_fraction_in_coprime_sector) +
+###   3 supplementary (r2_average_order, landau_two_squares, primitive_by_leg_density).
+###   (r2_pos_iff was previously an axiom; it is now PROVED.)
 ### Sorries: 0
 -/
 
@@ -2471,9 +2515,11 @@ The straddling analysis explains WHY the parity axiom holds:
 - Summing: total straddling = O(sqrt(N)) << coprime sector = Theta(N)
 
 ### Overall File Statistics:
-- **Axioms**: 6 (3 core + 3 supplementary)
+- **Axioms**: 6 (3 core + 3 supplementary: r2_average_order, landau_two_squares,
+  primitive_by_leg_density). `r2_pos_iff` was eliminated — it is now a proved
+  theorem (`Nat.eq_sq_add_sq_iff`), so the file is down from 7 axioms to 6.
 - **Sorries**: 0
-- **Theorems proved**: ~120
+- **Theorems proved**: ~121
 - **Definitions**: ~39
 
 ### The 3 Core Axioms (irreducible given current Mathlib):

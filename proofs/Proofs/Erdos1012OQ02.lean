@@ -223,7 +223,8 @@ theorem vertex_pancyclic_implies_connected (G : SimpleGraph V)
     (hV : 3 ≤ Fintype.card V)
     (h : isVertexPancyclicGraphUpTo G (Fintype.card V)) :
     G.Connected := by
-  constructor
+  rw [SimpleGraph.connected_iff]
+  refine ⟨?_, ?_⟩
   · -- Preconnected: ∀ u w, G.Reachable u w
     intro u w
     -- Get a Hamiltonian cycle through u (length = |V|)
@@ -239,7 +240,7 @@ theorem vertex_pancyclic_implies_connected (G : SimpleGraph V)
         omega
       -- By cardinality, p.support.tail.toFinset = Finset.univ
       have hcard : p.support.tail.toFinset.card = Fintype.card V := by
-        rw [htail_nd.card_toFinset, htail_len]
+        rw [List.toFinset_card_of_nodup htail_nd, htail_len]
       have huniv : p.support.tail.toFinset = Finset.univ :=
         Finset.eq_univ_of_card _ hcard
       -- w is in the tail, hence in support
@@ -266,18 +267,15 @@ theorem threshold_exceeds_turan_for_small_k (n k : ℕ)
   -- Suffices: choose(n-k-1, 2) + choose(k+2, 2) ≥ n^2/4
   suffices hsuff : n ^ 2 / 4 ≤ Nat.choose (n - k - 1) 2 + Nat.choose (k + 2) 2 by omega
   rw [Nat.choose_two_right, Nat.choose_two_right]
-  have ha_sub : n - k - 1 - 1 = n - k - 2 := by omega
-  have hb_sub : k + 2 - 1 = k + 1 := by omega
-  rw [ha_sub, hb_sub]
-  -- Goal: n^2/4 ≤ (n-k-1)*(n-k-2)/2 + (k+2)*(k+1)/2
+  -- Goal: n^2/4 ≤ (n-k-1)*((n-k-1)-1)/2 + (k+2)*((k+2)-1)/2
   set a := n - k - 1 with ha_def
   set b := k + 2 with hb_def
   have ha_ge : a ≥ 2 := by omega
   have hb_ge : b ≥ 2 := by omega
   have hab : a + b = n + 1 := by omega
   -- Both a*(a-1) and b*(b-1) are even (products of consecutive integers)
-  have ha_even : a * (a - 1) % 2 = 0 := by omega
-  have hb_even : b * (b - 1) % 2 = 0 := by omega
+  have ha_even : a * (a - 1) % 2 = 0 := Nat.even_iff.mp (Nat.even_mul_pred_self a)
+  have hb_even : b * (b - 1) % 2 = 0 := Nat.even_iff.mp (Nat.even_mul_pred_self b)
   -- Since both are even: a*(a-1)/2 + b*(b-1)/2 = (a*(a-1) + b*(b-1))/2
   have hdiv_add : a * (a - 1) / 2 + b * (b - 1) / 2 =
       (a * (a - 1) + b * (b - 1)) / 2 := by omega
@@ -301,8 +299,12 @@ theorem threshold_exceeds_turan_for_small_k (n k : ℕ)
     -- i.e., (n+1)^2 ≤ 2*(a^2 + b^2) [Cauchy-Schwarz]
     -- i.e., (a+b)^2 ≤ 2*(a^2 + b^2)
     zify
+    have hca : ((a - 1 : ℕ) : ℤ) = (a : ℤ) - 1 := by
+      rw [Nat.cast_sub (by omega : 1 ≤ a)]; norm_num
+    have hcb : ((b - 1 : ℕ) : ℤ) = (b : ℤ) - 1 := by
+      rw [Nat.cast_sub (by omega : 1 ≤ b)]; norm_num
     have hS_int : (S : ℤ) = (a : ℤ) * ((a : ℤ) - 1) + (b : ℤ) * ((b : ℤ) - 1) := by
-      simp [hS_def]; omega
+      rw [hS_def]; push_cast [hca, hcb]; ring
     nlinarith [sq_nonneg ((a : ℤ) - (b : ℤ)), sq_nonneg (a : ℤ), sq_nonneg (b : ℤ)]
   -- From hS_bound and evenness: n^2/4 ≤ S/2
   -- n^2/4 ≤ x when n^2 ≤ 4*x + 3
@@ -343,7 +345,7 @@ theorem spectrum_size_lower_bound (G : SimpleGraph V) (v : V) (m : ℕ)
   -- |{3,...,m}| = m - 2 for m ≥ 3
   -- Convert Set.Icc to Finset.Icc via coercion
   rw [show Set.Icc 3 m = ↑(Finset.Icc 3 m) from (Finset.coe_Icc 3 m).symm,
-      Set.ncard_coe_Finset, Finset.card_Icc]
+      Set.ncard_coe_finset, Nat.card_Icc]
   omega
 
 -- ============================================================================
