@@ -806,4 +806,99 @@ theorem franklin_fixed_point_isPartition_neg (k : ℕ) :
   ⟨staircasePartitionNeg_mem_distincts k, staircasePartitionNeg_card k,
    staircasePartitionNeg_sign k, genPentNatNeg_cast k⟩
 
+/-! ## Part 9: Franklin's fixed-point invariant — smallest part vs. number of parts
+
+Franklin's involution pairs the smallest part `s(λ)` of a distinct-part partition with
+the maximal descending run of consecutive top parts, of length `ℓ(λ)`.  Its two moves
+(absorb the smallest part `s` into the top run, or peel the run down past `s`) both fail
+exactly on the *staircases*, where the parts form one contiguous block and the two
+statistics are tied:
+
+    `s = ℓ`      on the positive arm `{k, …, 2k-1}`     (`s = ℓ = k`),
+    `s = ℓ + 1`  on the negative arm `{k+1, …, 2k}`     (`s = k+1`, `ℓ = k`).
+
+Here we pin those two invariants down arithmetically for the staircases of Parts 7/8 —
+using `min'` for the smallest part and `card` for the number of parts — and prove the
+matching converse: a contiguous block of parts `Ico a b` satisfying `s = ℓ` is forced to
+be `b = 2a` (the positive staircase), and `s = ℓ + 1` forces `b = 2a-1` (the negative
+staircase).  So the two fixed-point families are *exactly* the contiguous blocks meeting
+the `s = ℓ` / `s = ℓ+1` condition.  This is the elementary fixed-point bookkeeping of
+Franklin's involution; the involution on the *non-fixed* partitions remains the open
+core.  Each such block sums to a generalized pentagonal number (Part 7), recovered here
+directly from the invariant. -/
+
+/-- The smallest element of a nonempty natural interval `Ico a b` is its left endpoint. -/
+theorem min'_Ico (a b : ℕ) (H : (Finset.Ico a b).Nonempty) :
+    (Finset.Ico a b).min' H = a := by
+  have hab : a < b := Finset.nonempty_Ico.mp H
+  apply le_antisymm
+  · exact Finset.min'_le _ a (Finset.mem_Ico.mpr ⟨le_rfl, hab⟩)
+  · apply Finset.le_min'
+    intro y hy
+    exact (Finset.mem_Ico.mp hy).1
+
+/-- **Franklin invariant (positive arm).** On the positive staircase `{k, …, 2k-1}` the
+smallest part equals the number of parts: `s = ℓ = k`.  This is the case where Franklin's
+"absorb the smallest part" move collides with the top run and the involution fixes `λ`. -/
+theorem staircase_smallest_eq_card (k : ℕ)
+    (H : (Finset.Ico k (2 * k)).Nonempty) :
+    (Finset.Ico k (2 * k)).min' H = (Finset.Ico k (2 * k)).card := by
+  rw [min'_Ico, Nat.card_Ico]; omega
+
+/-- **Franklin invariant (negative arm).** On the negative staircase `{k+1, …, 2k}` the
+smallest part is one more than the number of parts: `s = ℓ + 1` (`s = k+1`, `ℓ = k`).
+This is the case where Franklin's "peel the top run" move collides with the smallest
+part and the involution fixes `λ`. -/
+theorem staircase_smallest_eq_card_succ_neg (k : ℕ)
+    (H : (Finset.Ico (k + 1) (2 * k + 1)).Nonempty) :
+    (Finset.Ico (k + 1) (2 * k + 1)).min' H = (Finset.Ico (k + 1) (2 * k + 1)).card + 1 := by
+  rw [min'_Ico, Nat.card_Ico]; omega
+
+/-- **Converse (positive arm).** A contiguous block of parts `Ico a b` whose smallest
+part equals its number of parts is forced to be the positive staircase: `b = 2a`. -/
+theorem interval_smallest_eq_card (a b : ℕ)
+    (H : (Finset.Ico a b).Nonempty)
+    (h : (Finset.Ico a b).min' H = (Finset.Ico a b).card) :
+    b = 2 * a := by
+  have hab : a < b := Finset.nonempty_Ico.mp H
+  rw [min'_Ico, Nat.card_Ico] at h
+  omega
+
+/-- **Converse (negative arm).** A contiguous block of parts `Ico a b` whose smallest
+part exceeds its number of parts by one is forced to be the negative staircase:
+`b = 2a - 1`. -/
+theorem interval_smallest_eq_card_succ (a b : ℕ)
+    (H : (Finset.Ico a b).Nonempty)
+    (h : (Finset.Ico a b).min' H = (Finset.Ico a b).card + 1) :
+    b = 2 * a - 1 := by
+  have hab : a < b := Finset.nonempty_Ico.mp H
+  rw [min'_Ico, Nat.card_Ico] at h
+  omega
+
+/-- **Fixed point ⟹ pentagonal (positive arm).** Any contiguous block of parts carrying
+the positive fixed-point invariant `s = ℓ` sums to the generalized pentagonal number
+`g(a)` — uniting the converse with the Part-7 staircase sum. -/
+theorem interval_fixed_point_sum (a b : ℕ)
+    (H : (Finset.Ico a b).Nonempty)
+    (h : (Finset.Ico a b).min' H = (Finset.Ico a b).card) :
+    (∑ i ∈ Finset.Ico a b, (i : ℤ)) = genPent (a : ℤ) := by
+  rw [interval_smallest_eq_card a b H h]
+  exact staircase_sum_eq_genPent a
+
+/-- **Headline (Part 9).** The two Franklin fixed-point families are exactly the
+contiguous blocks of parts on which the smallest part `s` and the number of parts `ℓ`
+are tied, `s = ℓ` (positive arm) or `s = ℓ + 1` (negative arm); each such block sums to
+a generalized pentagonal number.  This isolates the precise arithmetic condition under
+which both of Franklin's moves fail — the residual the open-core involution leaves. -/
+theorem franklin_fixed_point_invariant (k : ℕ) (_hk : 1 ≤ k)
+    (Hp : (Finset.Ico k (2 * k)).Nonempty)
+    (Hn : (Finset.Ico (k + 1) (2 * k + 1)).Nonempty) :
+    (Finset.Ico k (2 * k)).min' Hp = (Finset.Ico k (2 * k)).card ∧
+    (Finset.Ico (k + 1) (2 * k + 1)).min' Hn
+      = (Finset.Ico (k + 1) (2 * k + 1)).card + 1 ∧
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = genPent (k : ℤ) ∧
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ)) = genPent (-(k : ℤ)) :=
+  ⟨staircase_smallest_eq_card k Hp, staircase_smallest_eq_card_succ_neg k Hn,
+   staircase_sum_eq_genPent k, staircase_sum_eq_genPent_neg k⟩
+
 end PentagonalNumberTheoremOQ01
