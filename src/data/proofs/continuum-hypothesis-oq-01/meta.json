@@ -95,14 +95,14 @@
       "id": "deciding-ch",
       "title": "What It Means to Decide CH",
       "startLine": 60,
-      "endLine": 83,
+      "endLine": 80,
       "summary": "The `Decides` predicate: axiom Φ decides CH iff it implies CH or implies ¬CH. CH and ¬CH trivially decide themselves.",
       "mathContext": "$\\text{Decides}(\\Phi, \\text{CH}) \\iff (\\Phi \\Rightarrow \\text{CH}) \\lor (\\Phi \\Rightarrow \\neg\\text{CH})$. CH and $\\neg$CH are both consistent with ZFC, so ZFC alone does not decide CH."
     },
     {
       "id": "zfc-bounds",
       "title": "ZFC-Provable Bounds",
-      "startLine": 84,
+      "startLine": 81,
       "endLine": 129,
       "summary": "ℵ₁ ≤ 2^ℵ₀ (provable in ZFC); under ¬CH, the continuum is strictly > ℵ₁ and at least ℵ₂.",
       "mathContext": "$\\aleph_1 \\leq 2^{\\aleph_0}$ (provable in ZFC: $\\omega_1$ injects into $\\mathcal{P}(\\omega)$). Under $\\neg$CH: $\\aleph_1 < 2^{\\aleph_0}$, and $2^{\\aleph_0}$ can be $\\aleph_2$, $\\aleph_{\\omega_1}$, or any cardinal of uncountable cofinality (Easton's theorem for regular cardinals)."
@@ -127,22 +127,22 @@
       "id": "large-cardinal-incompatibility",
       "title": "V=L vs Large Cardinals (Scott's Theorem)",
       "startLine": 214,
-      "endLine": 259,
+      "endLine": 236,
       "summary": "Scott (1961): V=L and measurable cardinals are mutually exclusive. V=L is not large-cardinal compatible.",
       "mathContext": "Scott (1961): $V = L \\Rightarrow$ no measurable cardinals exist. Measurable $\\kappa$: $\\exists$ non-principal $\\kappa$-complete ultrafilter on $\\kappa$. Since large cardinals are accepted in modern set theory, $V = L$ is considered too restrictive."
     },
     {
       "id": "axiom-selection",
       "title": "Mathematical Criteria for Axiom Selection",
-      "startLine": 260,
-      "endLine": 281,
+      "startLine": 237,
+      "endLine": 260,
       "summary": "Key asymmetry theorem: V=L (→ CH) fails large-cardinal compatibility; PFA (→ ¬CH) satisfies it.",
       "mathContext": "$V = L \\Rightarrow \\text{CH}$ but $V = L \\Rightarrow \\neg\\exists$ measurable cardinals. PFA $\\Rightarrow \\neg\\text{CH}$ ($2^{\\aleph_0} = \\aleph_2$) and PFA is compatible with large cardinals. This asymmetry favors the $\\neg$CH direction."
     },
     {
       "id": "open-question-summary",
       "title": "Summary of the Open Question",
-      "startLine": 262,
+      "startLine": 261,
       "endLine": 317,
       "summary": "Both CH-deciding and ¬CH-deciding axioms exist. The ¬CH side has structural advantages via large-cardinal compatibility.",
       "mathContext": "Both CH and $\\neg$CH are equiconsistent with ZFC. The $\\neg$CH axioms (PFA, MM) have structural advantages: compatibility with large cardinals, natural combinatorial consequences, and Woodin's $\\Omega$-logic arguments. The question \"should we adopt $\\neg$CH?\" remains open in the philosophy of set theory."

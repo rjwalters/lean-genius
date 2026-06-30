@@ -1,0 +1,74 @@
+[
+  {
+    "id": "e1179-oq02w-ann-vacuity-gap",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "concept",
+    "title": "The Vacuity Gap in the OQ-02 Edifice",
+    "content": "Erdős #1179 OQ-02 (Erdős–Hall, 1976) asks whether the multiplicative (1+oₑ(1)) factor in gₑ(N) = (1+oₑ(1))·log₂N sharpens to a bounded additive error gₑ(N) ≤ log₂N + Oₑ(1). The sibling files (Erdos1179OQ02 lower bound, Upper, Extremal, Rigidity) prove optimality and rigidity for a unique-representation set — a finset A with reprCount A g = 1 for every g — but every one of those theorems takes ∀ g, reprCount A g = 1 (or IsEpsUniform A 0) as a HYPOTHESIS. Until a witness is exhibited the whole edifice is potentially vacuous: it might describe the empty class of groups. This file removes that gap by constructing the standard basis of the elementary abelian 2-group G = (Fin m → ZMod 2) of order N = 2^m and proving axiom-free that it is a unique-representation set.",
+    "mathContext": "Target: $g_\\varepsilon(N) \\le \\log_2 N + O_\\varepsilon(1)$; the witness discharges the hypothesis $\\forall g,\\ \\mathrm{reprCount}\\,A\\,g = 1$ on $G = (\\mathbb{F}_2)^m$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős problems", "conditional vs unconditional theorems", "elementary abelian 2-group", "subset sums", "additive combinatorics"],
+    "prerequisites": ["finite abelian groups", "ε-uniform subset-sum representations", "vacuous truth"]
+  },
+  {
+    "id": "e1179-oq02w-ann-basis-construction",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 60, "endLine": 84 },
+    "type": "concept",
+    "title": "The Standard Basis and Its Two Cardinalities",
+    "content": "basisVec m i = Pi.single i 1 is the i-th indicator vector of (Fin m → ZMod 2), and stdBasis m = univ.image (basisVec m) is the finset of these m vectors. Two cardinalities drive the whole counting argument: stdBasis_card proves |stdBasis m| = m (the map is injective so the image has full size — basisVec_injective uses 1 ≠ 0 in ZMod 2, read off coordinate i where Pi.single_eq_same gives 1 and Pi.single_eq_of_ne gives 0), and card_pi_zmod_two proves |(Fin m → ZMod 2)| = 2^m via Fintype.card_fun and ZMod.card. These are exactly the |A| = m and N = 2^m that the uniqueness proof equates.",
+    "mathContext": "$|\\mathrm{stdBasis}\\,m| = m$ and $|(\\mathbb{F}_2)^m| = 2^m$ — so $2^{|A|} = 2^m = N$.",
+    "significance": "supporting",
+    "relatedConcepts": ["indicator vectors", "Pi.single", "Finset.card_image_of_injective", "Fintype.card_fun", "ZMod.card"],
+    "prerequisites": ["injective images preserve cardinality", "cardinality of function types"]
+  },
+  {
+    "id": "e1179-oq02w-ann-spanning",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 86, "endLine": 113 },
+    "type": "insight",
+    "title": "Constructive Spanning: Every g Is a Subset-Sum",
+    "content": "stdBasis_spanning proves 1 ≤ reprCount (stdBasis m) g by exhibiting one explicit representation. Take T = {i : g i = 1}, the support of g, and the subset of basis vectors T.image (basisVec m) ⊆ stdBasis m. Its subset-sum is computed coordinatewise: Finset.sum_apply pushes the sum into coordinate j, each term id (basisVec m i) j evaluates to (if j = i then 1 else 0) by Pi.single_apply, and Finset.sum_ite_eq collapses the sum to the indicator of j ∈ T, i.e. of g j = 1. A finite ZMod 2 case split (g j = 0 or g j = 1, by decide) confirms this equals g j on every coordinate, so the sum is exactly g. That places T.image (basisVec m) in the reprCount fiber, giving card_pos and hence reprCount ≥ 1. Over 𝔽₂ the subset-sum map is the subset↔vector bijection, so the support is the canonical (and here the only) representation.",
+    "mathContext": "For $g \\in (\\mathbb{F}_2)^m$, $\\sum_{i : g_i = 1} e_i = g$, so $F_{\\mathrm{stdBasis}}(g) \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["support set", "coordinatewise computation", "Pi.single_apply", "Finset.sum_ite_eq", "𝔽₂ subset-sum bijection"],
+    "prerequisites": ["Finset.image and powerset filters", "sum over function-valued terms", "decide on ZMod 2"]
+  },
+  {
+    "id": "e1179-oq02w-ann-uniqueness-counting",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 115, "endLine": 136 },
+    "type": "insight",
+    "title": "Uniqueness for Free: Spanning + One Global Count",
+    "content": "stdBasis_unique_repr upgrades the per-element bound reprCount ≥ 1 to exact equality reprCount = 1 with no per-element work. The parent identity total_reprCount gives Σ_g reprCount = 2^|A|, and the two cardinality lemmas give 2^|A| = 2^m = |G| = Σ_g 1. So the termwise-≥-1 sequence (reprCount A g) and the all-ones sequence have equal total. Finset.sum_eq_sum_iff_of_le then forces equality term by term: a sum of terms each ≥ 1 can only equal the count of terms if every term is exactly 1. exists_unique_repr_set repackages this existentially as ∃ A, ∀ g, reprCount A g = 1 — precisely the clean hypothesis-discharging lemma the Upper/Extremal/Rigidity files can import. No probabilistic input, no case analysis beyond spanning.",
+    "mathContext": "$\\sum_g F_A(g) = 2^{|A|} = 2^m = |G| = \\sum_g 1$ with $F_A(g) \\ge 1 \\Rightarrow F_A(g) = 1\\ \\forall g$.",
+    "significance": "key",
+    "relatedConcepts": ["global counting argument", "Finset.sum_eq_sum_iff_of_le", "total_reprCount", "discharging existence hypotheses"],
+    "prerequisites": ["equality of termwise-bounded sums", "the parent total-count identity"]
+  },
+  {
+    "id": "e1179-oq02w-ann-sum-eq-tactic",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 126, "endLine": 130 },
+    "type": "tactic",
+    "title": "Squeezing Equality out of Two Equal Sums",
+    "content": "The mechanism that turns spanning into uniqueness is Finset.sum_eq_sum_iff_of_le: if aᵢ ≤ bᵢ for every index and Σ aᵢ = Σ bᵢ, then aᵢ = bᵢ for every index. Here aᵢ = 1 (constant) and bᵢ = reprCount (stdBasis m) h, with the termwise bound 1 ≤ reprCount supplied by stdBasis_spanning. The two sums are shown equal by rewriting the constant sum Σ 1 = card • 1 = |G| = 2^m (Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one) and then folding in total_reprCount and the cardinality identity hcardG. Applying .mp to the resulting sum equality and specializing at g (Finset.mem_univ g) yields 1 = reprCount, finished by .symm. This is the canonical 'no room to differ' squeeze: a lower bound on each term plus a matching total leaves no slack anywhere.",
+    "mathContext": "$a_i \\le b_i,\\ \\sum a_i = \\sum b_i \\Rightarrow a_i = b_i$; applied with $a_i \\equiv 1$, $b_i = F_A(g_i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_eq_sum_iff_of_le", "Finset.sum_const", "smul_eq_mul", "squeeze argument"],
+    "prerequisites": ["termwise-bounded finite sums", "specializing a universal at a point"]
+  },
+  {
+    "id": "e1179-oq02w-ann-consequences",
+    "proofId": "erdos-1179-oq-02-witness",
+    "range": { "startLine": 138, "endLine": 168 },
+    "type": "concept",
+    "title": "Exact 0-Uniformity and Additive Constant Zero",
+    "content": "Three consequences close the file. stdBasis_card_eq_clog gives |stdBasis m| = Nat.clog 2 N = ⌈log₂N⌉ via Nat.clog_pow 2 m (base 2 > 1), so the witness meets the trivial lower bound gₑ(N) ≥ log₂N with EQUALITY. stdBasis_epsUniform_zero proves IsEpsUniform (stdBasis m) 0: the representation count is 1 everywhere and the expected count μ = 2^|A|/N = 2^m/2^m = 1 (div_self), so |F_A(g) − μ| = 0 ≤ 0 exactly. additive_constant_zero_attained bundles these into ∃ A, IsEpsUniform A 0 ∧ |A| = ⌈log₂N⌉ — for every m a deterministic, exactly 0-uniform set of minimal size. Hence the conjectured additive sharpening of OQ-02 is attained with constant 0 (and ε = 0) on the infinite family N = 2^m, certifying the additive constant can never be forced positive in general and making the conditional sibling theorems non-vacuous. The headline asymptotic upper bound for ALL N remains open.",
+    "mathContext": "$\\mu = 2^{|A|}/N = 1$, so $|F_A(g) - \\mu| = 0 \\le 0$, and $|A| = m = \\lceil\\log_2 N\\rceil$ for $N = 2^m$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.clog_pow", "exact 0-uniformity", "expectedReprCount", "deterministic vs probabilistic witness", "extremal example"],
+    "prerequisites": ["ceiling logarithm", "the uniformity predicate IsEpsUniform", "div_self / μ = 1"]
+  }
+]

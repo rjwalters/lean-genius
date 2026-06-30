@@ -78,58 +78,98 @@
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$. All are computable, enabling concrete evaluation via native_decide.",
+      "summary": "Defines productValue m k = k(m-k), productSet m (the Finset A_m as the image of productValue over 1..m/2), validKRange, commonProducts m n = A_m ∩ B_n, and commonProductCount m n = |A_m ∩ B_n|. All definitions; no theorems.",
       "startLine": 37,
-      "endLine": 61,
-      "mathContext": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$."
+      "endLine": 60,
+      "mathContext": "Definitions: productValue, productSet, validKRange, commonProducts, commonProductCount."
     },
     {
       "id": "properties",
       "title": "Elementary Properties",
-      "summary": "Establishes that $k(m-k)$ is maximized at $k = m/2$ (axiomatized), vanishes at endpoints (proved via simp/ring), is bounded by $m^2/4$, and satisfies symmetry $k(m-k) = (m-k)k$. The set $A_m$ has $\\le m/2$ elements and is nonempty for $m \\ge 2$.",
-      "startLine": 62,
-      "endLine": 98,
-      "mathContext": "Establishes that $k(m-k)$ is maximized at $k = m/2$ (axiomatized), vanishes at endpoints (proved via simp/ring), is bounded by $m^2/4$, and satisfies symmetry $k(m-k) = (m-k)k$. The set $A_m$ has $\\le m/2$ elements and is nonempty for $m \\ge 2$."
+      "summary": "product_zero_endpoints: k(m-k) vanishes at the endpoints k=0 and k=m, proved via simp/ring.",
+      "startLine": 61,
+      "endLine": 73,
+      "mathContext": "Verified: product_zero_endpoints (vanishing at endpoints)."
+    },
+    {
+      "id": "size-of-am",
+      "title": "Size of A_m",
+      "summary": "Docstring noting that A_m has approximately m/2 elements. Descriptive only; no declarations in this part.",
+      "startLine": 74,
+      "endLine": 78,
+      "mathContext": "Prose on the size of A_m (no theorems or definitions)."
     },
     {
       "id": "diophantine",
       "title": "The Diophantine Equation",
-      "summary": "Defines sameProduct: $k(m-k) = l(n-l)$, with equivalences to expanded form $km - k^2 = ln - l^2$ and completed-square form $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ over $\\mathbb{Z}$. The latter reformulation connects intersection counting to the divisor function.",
-      "startLine": 99,
-      "endLine": 116,
-      "mathContext": "Defines sameProduct: $k(m-k) = l(n-l)$, with equivalences to expanded form $km - k^2 = ln - l^2$ and completed-square form $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ over $\\mathbb{Z}$."
+      "summary": "Defines sameProduct m n k l as the predicate k(m-k) = l(n-l); finding common products amounts to solving this Diophantine equation.",
+      "startLine": 79,
+      "endLine": 87,
+      "mathContext": "Definition: sameProduct (the equation k(m-k) = l(n-l))."
     },
     {
       "id": "main-results",
       "title": "Main Results - Hegyvári (2025)",
-      "summary": "Axiomatizes Hegyvári's bound $|A_m \\cap B_n| \\le m^{C/\\log\\log m}$ for $m > n$, the subpolynomial consequence $|A_m \\cap B_n| \\le (mn)^\\varepsilon$ eventually, and achievability of every finite intersection size. Proves intersection_unbounded as a corollary.",
-      "startLine": 117,
-      "endLine": 141,
-      "mathContext": "Axiomatizes Hegyvári's bound $|A_m \\cap B_n| \\le m^{C/\\log\\log m}$ for $m > n$, the subpolynomial consequence $|A_m \\cap B_n| \\le (mn)^\\varepsilon$ eventually, and achievability of every finite intersection size. Proves intersection_unbounded as a corollary."
+      "summary": "Axiomatizes the two solved directions: subpolynomial_bound (commonProductCount eventually ≤ (mn)^ε for every ε>0) and arbitrarily_large_intersection (for every s, arbitrarily large pairs (m,n) achieve commonProductCount = s). intersection_unbounded is then proved from the latter.",
+      "startLine": 88,
+      "endLine": 108,
+      "mathContext": "Axioms: subpolynomial_bound, arbitrarily_large_intersection. Theorem: intersection_unbounded."
     },
     {
       "id": "examples",
       "title": "Special Cases and Examples",
-      "summary": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets.",
-      "startLine": 142,
-      "endLine": 162,
-      "mathContext": "Verified: Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets."
+      "summary": "common_self: commonProducts m m = productSet m (via Finset.inter_self). native_decide examples computing productValue for m=4 and m=6.",
+      "startLine": 109,
+      "endLine": 123,
+      "mathContext": "Verified: common_self; native_decide example computations."
     },
     {
       "id": "quadratic",
-      "title": "Quadratic Structure",
-      "summary": "Axiomatizes the difference-of-squares identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ for even $m$, writing $A_m$ as shifted square complements. The product_set_squares_relation axiom captures the general case.",
-      "startLine": 163,
-      "endLine": 175,
-      "mathContext": "Axiomatizes the difference-of-squares identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ for even $m$, writing $A_m$ as shifted square complements. The product_set_squares_relation axiom captures the general case."
+      "title": "Relation to Quadratic Residues",
+      "summary": "Docstring relating k(m-k) to squares and quadratic residues. Descriptive only; no declarations in this part.",
+      "startLine": 124,
+      "endLine": 128,
+      "mathContext": "Prose on the quadratic-residue connection (no theorems or definitions)."
     },
     {
       "id": "arithmetic",
-      "title": "Arithmetic Progressions Connection",
-      "summary": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers.",
-      "startLine": 176,
+      "title": "Connection to Sums of Arithmetic Progressions",
+      "summary": "Defines triangularNumber m = m(m-1)/2, with a docstring describing k(m-k) as a partial sum of 1 + 2 + ... + (m-1) with terms removed.",
+      "startLine": 129,
+      "endLine": 136,
+      "mathContext": "Definition: triangularNumber."
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate Analysis",
+      "summary": "Docstring observing that the bound m^{O(1/log log m)} grows very slowly. Descriptive only; no declarations in this part.",
+      "startLine": 137,
+      "endLine": 141,
+      "mathContext": "Prose on the growth rate of the bound (no theorems or definitions)."
+    },
+    {
+      "id": "proof-technique",
+      "title": "The Proof Technique",
+      "summary": "Docstring sketching Hegyvári's approach via divisibility and sieve methods. Descriptive only; no declarations in this part.",
+      "startLine": 142,
+      "endLine": 147,
+      "mathContext": "Prose on the proof technique (no theorems or definitions)."
+    },
+    {
+      "id": "comparison",
+      "title": "Comparison with Related Problems",
+      "summary": "Defines binomialSet m, the set of values k(k-1)/2 = C(k,2), as a comparison with similar common-value problems.",
+      "startLine": 148,
+      "endLine": 156,
+      "mathContext": "Definition: binomialSet."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "erdos_443_summary and erdos_443: the problem is SOLVED, combining intersection_unbounded (arbitrarily large intersections) with subpolynomial_bound (the (mn)^{o(1)} bound).",
+      "startLine": 157,
       "endLine": 181,
-      "mathContext": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers."
+      "mathContext": "Verified (modulo the Part 5 axioms): erdos_443_summary, erdos_443."
     }
   ],
   "conclusion": {

@@ -140,6 +140,12 @@ MAX_RETRIES="${MAX_RETRIES:-5}"
 INITIAL_BACKOFF=60       # 1 minute
 MAX_BACKOFF=300          # 5 minutes
 CLAUDE_TIMEOUT="${CLAUDE_TIMEOUT:-3600}"  # 1 hour default; configurable per agent
+# Minimum wall-clock seconds per daemon cycle. After a successful (or timed-out)
+# cycle that finished faster than this, sleep the remainder before the next cycle.
+# Prevents busy-looping when an agent stands down in seconds (e.g. the herald with
+# nothing noteworthy to post). Default 0 = no floor, so continuously-working agents
+# (researchers, etc.) are unaffected.
+CYCLE_MIN_SECONDS="${CYCLE_MIN_SECONDS:-0}"
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOG_FILE=""
@@ -334,14 +340,19 @@ classify_error() {
     # wrapper rotates instead of pinning to the dead account for 300s ticks:
     #   - "hit your limit"                              (legacy short form)
     #   - "You've hit your org's monthly usage limit"   (org cap; multi-word gap defeats `hit.your.limit`)
+    #   - "You've hit your weekly limit · resets …"     (weekly cap; same multi-word gap)
     #   - "You're out of extra usage · resets …"        (session/extra-usage cap)
-    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|out of extra usage"; then
+    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|weekly limit\|out of extra usage"; then
         echo "TOKEN_EXHAUSTED"
         return
     fi
 
-    # Rate limit (429) — transient, retry with backoff
-    if echo "$output" | grep -qi "rate.limit\|too.many.requests\|429"; then
+    # Rate limit (429) — transient, retry with backoff.
+    # Require a nonzero exit: a genuine API 429 fails the CLI, whereas an agent
+    # merely *mentioning* a rate limit in prose on a successful exit-0 turn (e.g.
+    # the Herald noting its Mastodon daily post limit while standing down) must
+    # NOT be misclassified as an API error and counted as a consecutive failure.
+    if [[ "$exit_code" -ne 0 ]] && echo "$output" | grep -qi "rate.limit\|too.many.requests\|429"; then
         echo "RECOVERABLE"
         return
     fi
@@ -640,6 +651,30 @@ run_with_retry() {
     return 1
 }
 
+# Sleep the remainder of CYCLE_MIN_SECONDS after a cycle that finished early.
+# No-op when CYCLE_MIN_SECONDS is 0 (the default for continuously-working agents)
+# or when the cycle already ran at least that long. A stop signal during the sleep
+# breaks out promptly so shutdown stays responsive.
+enforce_cycle_floor() {
+    local cycle_start="$1"
+    [[ "${CYCLE_MIN_SECONDS:-0}" -le 0 ]] && return 0
+    local elapsed=$(( $(date +%s) - cycle_start ))
+    local remaining=$(( CYCLE_MIN_SECONDS - elapsed ))
+    [[ "$remaining" -le 0 ]] && return 0
+    log_info "Cycle floor: sleeping ${remaining}s (interval ${CYCLE_MIN_SECONDS}s, cycle took ${elapsed}s)"
+    # Sleep in short slices so a stop signal is honored within ~30s.
+    local slept=0
+    while [[ "$slept" -lt "$remaining" ]]; do
+        if check_stop_signal; then
+            log_info "Cycle floor interrupted by stop signal"
+            return 0
+        fi
+        sleep 30
+        slept=$((slept + 30))
+    done
+    return 0
+}
+
 # Daemon mode: infinite retry loop
 run_daemon() {
     local cycle=1
@@ -680,6 +715,8 @@ run_daemon() {
         write_cycle_separator "$cycle"
 
         # Run Claude
+        local cycle_start
+        cycle_start=$(date +%s)
         run_claude_once
         local exit_code=$?
 
@@ -694,6 +731,7 @@ run_daemon() {
                 consecutive_failures=0
                 # Reset pin-exhaust counter on success
                 rm -f "${REPO_ROOT:-.}/.loom/tokens/.pin-exhaust-count" 2>/dev/null
+                enforce_cycle_floor "$cycle_start"
                 cycle=$((cycle + 1))
                 continue
                 ;;
@@ -701,6 +739,7 @@ run_daemon() {
                 log_info "Daemon cycle $cycle: completed (hit ${CLAUDE_TIMEOUT}s timeout)"
                 backoff=$INITIAL_BACKOFF
                 consecutive_failures=0
+                enforce_cycle_floor "$cycle_start"
                 cycle=$((cycle + 1))
                 continue
                 ;;

@@ -25,8 +25,8 @@
     "id": "ann-839-consecutive-sum",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 26,
-      "endLine": 28
+      "startLine": 23,
+      "endLine": 25
     },
     "type": "definition",
     "title": "Consecutive Sum",
@@ -47,8 +47,8 @@
     "id": "ann-839-avoid",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 31,
-      "endLine": 33
+      "startLine": 27,
+      "endLine": 30
     },
     "type": "definition",
     "title": "Consecutive Sum Avoidance",
@@ -70,8 +70,8 @@
     "id": "ann-839-validseq",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 37,
-      "endLine": 38
+      "startLine": 32,
+      "endLine": 35
     },
     "type": "definition",
     "title": "Valid Sequence",
@@ -92,8 +92,8 @@
     "id": "ann-839-question1",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 43,
-      "endLine": 44
+      "startLine": 39,
+      "endLine": 41
     },
     "type": "definition",
     "title": "Question 1: Growth Rate",
@@ -115,8 +115,8 @@
     "id": "ann-839-question2",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 48,
-      "endLine": 52
+      "startLine": 43,
+      "endLine": 49
     },
     "type": "definition",
     "title": "Question 2: Logarithmic Density",
@@ -138,8 +138,8 @@
     "id": "ann-839-lower-bound",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 57,
-      "endLine": 64
+      "startLine": 53,
+      "endLine": 61
     },
     "type": "concept",
     "title": "Linear Lower Bound (Proved)",
@@ -160,8 +160,8 @@
     "id": "ann-839-single-sum",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 67,
-      "endLine": 69
+      "startLine": 63,
+      "endLine": 66
     },
     "type": "concept",
     "title": "Single-Term Consecutive Sum (Proved)",
@@ -181,8 +181,8 @@
     "id": "ann-839-no-repeat",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 73,
-      "endLine": 76
+      "startLine": 68,
+      "endLine": 73
     },
     "type": "concept",
     "title": "No Repeated Values (Proved)",
@@ -202,8 +202,8 @@
     "id": "ann-839-avoid-single",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 80,
-      "endLine": 82
+      "startLine": 75,
+      "endLine": 79
     },
     "type": "concept",
     "title": "No Single-Term Match (Proved)",
@@ -222,8 +222,8 @@
     "id": "ann-839-empty-sum",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 85,
-      "endLine": 87
+      "startLine": 81,
+      "endLine": 84
     },
     "type": "concept",
     "title": "Empty Consecutive Sum (Proved)",
@@ -242,8 +242,8 @@
     "id": "ann-839-sum-ge-first",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 91,
-      "endLine": 99
+      "startLine": 86,
+      "endLine": 96
     },
     "type": "concept",
     "title": "Sum at Least First Term (Proved)",
@@ -263,8 +263,8 @@
     "id": "ann-839-sum-gt-first",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 103,
-      "endLine": 115
+      "startLine": 98,
+      "endLine": 113
     },
     "type": "concept",
     "title": "Sum Strictly Greater Than First (Proved)",
@@ -285,8 +285,8 @@
     "id": "ann-839-linear-growth",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 118,
-      "endLine": 122
+      "startLine": 115,
+      "endLine": 120
     },
     "type": "concept",
     "title": "Real-Valued Linear Growth (Proved)",
@@ -307,8 +307,8 @@
     "id": "ann-839-liminf",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 128,
-      "endLine": 130
+      "startLine": 201,
+      "endLine": 248
     },
     "type": "concept",
     "title": "Finite lim inf is Achievable",
@@ -329,12 +329,12 @@
     "id": "ann-839-reciprocal",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 133,
-      "endLine": 138
+      "startLine": 124,
+      "endLine": 124
     },
     "type": "concept",
     "title": "Reciprocal Sum Lower Bound",
-    "content": "There exists a valid sequence whose reciprocal sum grows at least as $c \\cdot \\log \\log x$. This shows that valid sequences can be 'denser than expected' in the harmonic sense, and relates to Question 2: if the logarithmic density vanishes, the reciprocal sum must be $o(\\log x)$, but this axiom shows it can still grow as $\\Omega(\\log \\log x)$.",
+    "content": "A documented remark (not separately formalized in this file): a valid sequence's reciprocal sum can grow at least as fast as $c \\cdot \\log\\log x$, showing valid sequences can be 'denser than expected' in the harmonic sense. This relates to Question 2 on logarithmic density — slow reciprocal growth would force sparsity, so a $\\log\\log$ lower bound is evidence the density question is delicate.",
     "mathContext": "$\\exists\\, a \\in \\text{ValidSeq},\\; \\exists\\, c > 0,\\; \\forall\\, X \\geq 3: \\sum_{\\substack{n : a_n < X}} \\frac{1}{a_n} \\geq c \\cdot \\log \\log X$",
     "significance": "key",
     "relatedConcepts": [
@@ -351,8 +351,8 @@
     "id": "ann-839-upper-density",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 143,
-      "endLine": 146
+      "startLine": 125,
+      "endLine": 129
     },
     "type": "definition",
     "title": "Upper Density",
@@ -375,8 +375,8 @@
     "id": "ann-839-freud",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 150,
-      "endLine": 155
+      "startLine": 131,
+      "endLine": 141
     },
     "type": "concept",
     "title": "Freud's Counterexample",
@@ -394,15 +394,40 @@
     ]
   },
   {
+    "id": "ann-839-limsup-machinery",
+    "proofId": "erdos-839",
+    "type": "concept",
+    "range": {
+      "startLine": 151,
+      "endLine": 199
+    },
+    "title": "Counting-Function Machinery for Finite lim inf",
+    "content": "Support lemmas that power the `liminf_finite` proof. `countRatio` packages $a_n/n$ as a real sequence; `countRatio_nonneg` and `countRatio_isCoboundedUnder` give the boundedness needed for `Filter.limsup`/`liminf` to behave. `frequently_lt_of_lt_limsup` extracts a frequently-true inequality below a limsup (proved by contradiction), and `term_le_of_count_gt` converts a lower bound on the counting function into an upper bound on the term $a_n$ for a strictly increasing sequence. Together they bridge Freud's density statement to a finite $\\liminf a_n/n$.",
+    "mathContext": "$c < \\limsup f \\implies \\exists^\\infty n,\\; c < f(n)$; and for strictly increasing $a$, a lower bound on $\\#\\{n : a_n \\le N\\}$ yields an upper bound on $a_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "Filter.liminf",
+      "IsCoboundedUnder",
+      "counting function",
+      "frequently"
+    ],
+    "prerequisites": [
+      "Filter.limsup",
+      "Filter.Frequently",
+      "strict monotonicity"
+    ]
+  },
+  {
     "id": "ann-839-open",
     "proofId": "erdos-839",
     "range": {
-      "startLine": 159,
-      "endLine": 163
+      "startLine": 254,
+      "endLine": 255
     },
     "type": "concept",
     "title": "Open Status: Both Questions Axiomatized",
-    "content": "Both questions are asserted as axioms, reflecting their open status. `erdos_839_question1` asserts $\\limsup a_n/n = \\infty$ for all valid sequences, and `erdos_839_question2` asserts vanishing logarithmic density. These axioms would be theorems if the conjectures are proved, or would be removed/replaced if counterexamples are found.",
+    "content": "`Question1` and `Question2` are stated as `Prop` definitions (not axioms) and remain unproven — they are the two open questions of Erdős #839. The file establishes partial results (linear lower bound $a(n) \\ge n+1$, finite $\\liminf a_n/n$, and Freud's upper-density $19/36$ counterexample to Erdős's $\\le 1/2$ conjecture), but neither headline question is resolved. The only axiom in the file is `freud_density`, which encodes Freud's deep periodic construction; everything else is proved.",
     "mathContext": "Axiom: $\\text{Question1}$ and $\\text{Question2}$ both hold (OPEN, unproved).",
     "significance": "key",
     "relatedConcepts": [

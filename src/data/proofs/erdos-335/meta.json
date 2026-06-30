@@ -83,59 +83,91 @@
       "density_finite_zero: d(A) = 0 for any finite A ⊆ ℕ"
     ],
     "axiomCount": 3,
-    "lineCount": 363,
+    "lineCount": 414,
     "assumptions": "3 axioms: weyl_equidistribution, fractional_part_density_additive, erdos_335_conjecture (OPEN). See Lean source for complete statements.",
-    "theoremCount": 35,
+    "theoremCount": 40,
     "definitionCount": 8
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "File header for Erdős Problem #335: characterize sets A, B ⊆ ℕ of positive density with d(A+B) = d(A) + d(B). Notes the general Plünnecke–Ruzsa lower bound, the known fractional-part (group-rotation) examples, and the open question of whether all additive pairs arise that way. Lists references (Erdős–Graham 1980) and imports Mathlib.",
+      "mathContext": "Exact density additivity $d(A+B)=d(A)+d(B)$ is a strong rigidity condition, since generally $d(A+B)\\ge \\min(d(A)+d(B),1)$. The conjecture asks whether such pairs are essentially the fractional-part sets $\\{n:\\{n\\theta\\}\\in X\\}$ for irrational $\\theta$."
+    },
+    {
       "id": "density",
       "title": "Density Definitions",
-      "startLine": 20,
-      "endLine": 44,
-      "summary": "Defines **countingFn** ($|A \\cap \\{1, \\ldots, N\\}|$), **asympDensity** ($\\lim_{N \\to \\infty} |A \\cap [1,N]|/N$), **DensityExists** (the limit converges), and **HasPositiveDensity** ($d(A) > 0$). All built on Mathlib's **Filter.limUnder** and **Set.ncard**.",
-      "mathContext": "$d(A) = \\lim_{N \\to \\infty} |A \\cap [1,N]| / N$ (asymptotic density). Uses `Filter.Tendsto` for the limit formulation."
+      "startLine": 32,
+      "endLine": 49,
+      "summary": "Defines countingFn (|A ∩ [1,N]|), asympDensity (the limit of the counting ratio), DensityExists (the limit converges), and HasPositiveDensity.",
+      "mathContext": "The asymptotic density $d(A)=\\lim_{N\\to\\infty}\\frac{|A\\cap[1,N]|}{N}$ need not exist for arbitrary $A$; DensityExists records convergence and HasPositiveDensity asserts $d(A)>0$."
     },
     {
       "id": "sumset",
       "title": "Sumset and Density Additivity",
-      "startLine": 45,
-      "endLine": 57,
-      "summary": "Defines **Sumset** ($A + B = \\{a + b : a \\in A, b \\in B\\}$) and **DensityAdditive**, the four-part conjunction requiring density existence for $A$, $B$, and $A+B$, plus the exact equality $d(A+B) = d(A) + d(B)$.",
-      "mathContext": "$A + B = \\{a + b : a \\in A, b \\in B\\}$. Density additivity: $d(A + B) = d(A) + d(B)$ (equality, not just inequality)."
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "Defines the sumset A + B = {a + b : a ∈ A, b ∈ B} and the central DensityAdditive predicate: A, B and A+B all have densities and d(A+B) = d(A) + d(B).",
+      "mathContext": "DensityAdditive$(A,B)$ packages the existence of $d(A), d(B), d(A+B)$ together with the extremal identity $d(A+B)=d(A)+d(B)$, the regime studied in #335."
     },
     {
       "id": "construction",
-      "title": "Fractional Part Construction",
-      "startLine": 58,
-      "endLine": 79,
-      "summary": "Defines **frac** ($x - \\lfloor x \\rfloor$) and **FractionalPartSet** ($\\{n > 0 : \\{n\\theta\\} \\in X\\}$). Axiomatizes **weyl_equidistribution** (density exists for these sets) and **fractional_part_density_additive** (the known construction achieving exact additivity).",
-      "mathContext": "Construction: $A_\\alpha = \\{n : \\{n\\alpha\\} < d\\}$ for irrational $\\alpha$ gives $d(A_\\alpha) = d$. Conjecture: all density-additive pairs arise from such fractional part sets."
+      "title": "Known Construction: Fractional Parts",
+      "startLine": 63,
+      "endLine": 87,
+      "summary": "Defines frac and FractionalPartSet θ X = {n>0 : {nθ} ∈ X}. States two deep results as axioms: weyl_equidistribution (for irrational θ the density equals μ(X)) and fractional_part_density_additive (measure-additive X_A, X_B give density-additive sets).",
+      "mathContext": "By Weyl equidistribution, for irrational $\\theta$ the set $\\{n:\\{n\\theta\\}\\in X\\}$ has density $\\mu(X)$. These group-rotation constructions are the known source of density-additive pairs; both facts are axiomatized as they exceed current Mathlib coverage."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 80,
-      "endLine": 96,
-      "summary": "States **erdos_335_conjecture** (OPEN): all density-additive pairs arise from group rotation constructions. Formally: if $d(A+B) = d(A) + d(B)$ with positive densities, then $A$ and $B$ are fractional part sets for some irrational $\\theta$.",
-      "mathContext": "Conjecture (OPEN): if $d(A+B) = d(A) + d(B)$ with $d(A), d(B) > 0$, then $\\exists \\alpha \\in \\mathbb{R} \\setminus \\mathbb{Q}$ with $A, B$ related to $\\{\\{n\\alpha\\}\\}$."
+      "startLine": 88,
+      "endLine": 104,
+      "summary": "States Erdős Problem #335 as the axiom erdos_335_conjecture: every positive-density density-additive pair (A, B) arises (up to density) from a fractional-part construction for some irrational θ and sets X_A, X_B.",
+      "mathContext": "The open conjecture: $d(A+B)=d(A)+d(B)$ with $d(A),d(B)>0$ forces $A,B$ to be, up to density-zero perturbation, fractional-part sets $\\{n:\\{n\\theta\\}\\in X_A\\}$, $\\{n:\\{n\\theta\\}\\in X_B\\}$ for a common irrational $\\theta$."
     },
     {
       "id": "properties",
-      "title": "Basic Properties and Tightness",
-      "startLine": 97,
-      "endLine": 180,
-      "summary": "PROVES **density_nonneg** ($d(A) \\geq 0$), **density_le_one** ($d(A) \\leq 1$), **additive_sum_le_one** ($d(A) + d(B) \\leq 1$), **additive_implies_tight** (density additivity makes Plünnecke–Ruzsa tight), and **density_additive_comm** (density additivity is symmetric).",
-      "mathContext": "$d(A) \\in [0,1]$ always. $d(A+B) \\geq d(A) + d(B) - 1$ (Kneser). $d(A+B) \\leq 1$ trivially."
+      "title": "Basic Properties",
+      "startLine": 105,
+      "endLine": 148,
+      "summary": "Proves foundational bounds: density_nonneg, countingFn_le, density_le_one, additive_sum_le_one (d(A)+d(B) ≤ 1 for additive pairs), and additive_implies_tight (the Plünnecke–Ruzsa bound is achieved with equality).",
+      "mathContext": "Density additivity forces $d(A)+d(B)\\le 1$ (else $d(A+B)>1$), so $d(A+B)=\\min(d(A)+d(B),1)$: additive pairs sit exactly at the Plünnecke–Ruzsa lower bound."
     },
     {
       "id": "structural",
+      "title": "Derived Structural Results",
+      "startLine": 149,
+      "endLine": 209,
+      "summary": "Develops structural consequences: self_additive_density_le_half (d(A) ≤ 1/2 if A+A is additive), Sumset monotonicity and commutativity, density_additive_comm, the extremality bound, density_additive_pos/_zero, and empty-set sumset lemmas.",
+      "mathContext": "Symmetry and monotonicity of the sumset transfer to density additivity; a set additive with itself satisfies $2d(A)\\le 1$, i.e. $d(A)\\le \\tfrac12$, mirroring the Plünnecke–Ruzsa extremal geometry."
+    },
+    {
+      "id": "deeper-structural",
       "title": "Deeper Structural Results",
-      "startLine": 205,
-      "endLine": 282,
-      "summary": "PROVES **Sumset_assoc** (sumset associativity), **Sumset_univ_right** (sumset with univ contains large numbers), **Sumset_mono_left/right** (monotonicity), **density_additive_parts_le_one/nonneg** (density bounds for additive pairs), **density_additive_full** ($d(A)+d(B)=1$ implies full sumset density), **countingFn_empty/mono/mono_N** (counting function properties), and **Sumset_singleton** (singleton sumset characterization).",
-      "mathContext": "The sumset $(A + B) + C = A + (B + C)$ (associativity). The counting function $|A \\cap [1,N]|$ is monotone in both $A$ and $N$. These structural properties underpin iterated sumset analysis."
+      "startLine": 210,
+      "endLine": 288,
+      "summary": "Proves Sumset_assoc, Sumset_univ_right, two-sided monotonicity, parts-bounded and parts-nonnegative lemmas, density_additive_full (full sumset density when d(A)+d(B)=1), counting-function monotonicity in set and in N, and Sumset_singleton.",
+      "mathContext": "Associativity and monotonicity make the sumset operation algebraically well-behaved; when $d(A)+d(B)=1$ the additive sumset has full density $1$, the boundary case of the additivity constraint."
+    },
+    {
+      "id": "sumset-identity",
+      "title": "Sumset Identity and Further Properties",
+      "startLine": 289,
+      "endLine": 321,
+      "summary": "Establishes {0} as a two-sided identity for sumsets, density_additive_chain (additivity composes along A, B, C), density_additive_complement_bound (d(B) ≤ 1 − d(A)), and density_double_sumset (d(A+A) = 2·d(A)).",
+      "mathContext": "The singleton $\\{0\\}$ is a sumset identity, and additivity is chain-composable: $d(A+B+C)=d(A)+d(B)+d(C)$ when each successive sum is additive, giving a complement bound $d(B)\\le 1-d(A)$."
+    },
+    {
+      "id": "concrete-computations",
+      "title": "Concrete Density Computations",
+      "startLine": 322,
+      "endLine": 363,
+      "summary": "Computes concrete densities: countingFn_univ_eq and density_univ_one (d(ℕ) = 1), and density_finite_zero (every finite set has density 0), proved via an explicit ε–N tendsto argument.",
+      "mathContext": "Sanity-check computations anchor the theory: $d(\\mathbb{N})=1$ and $d(A)=0$ for finite $A$, the latter shown by bounding $|A\\cap[1,N]|\\le|A|$ so the ratio $|A|/N\\to 0$."
     }
   ],
   "overview": {
@@ -196,9 +228,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 363,
+    "lineCount": 459,
     "axiomCount": 3,
-    "theoremCount": 35,
+    "theoremCount": 42,
     "definitionCount": 8,
     "path": "Proofs/Erdos335Problem.lean",
     "sorries": 0

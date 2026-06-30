@@ -1,0 +1,184 @@
+{
+  "id": "fatou-lemma-oq-01-oq-01",
+  "slug": "fatou-lemma-oq-01-oq-01",
+  "title": "Reverse Fatou and the Strictness of the Limsup Inequality",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence",
+      "Mathlib.MeasureTheory.Integral.Lebesgue.Countable",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "FatouLemmaOQ01OQ01",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/FatouLemmaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FatouLemmaOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "convergence",
+      "real-analysis",
+      "fatou",
+      "lebesgue-integral",
+      "limsup",
+      "counting-measure",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 177,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "reverse_fatou_strict_on_alt: the headline result — reverse Fatou's inequality is GENUINELY STRICT. On the alternating two-point example limsupₙ ∫⁻ alt n = 1 < 2 = ∫⁻ limsupₙ alt n, even though the sequence is dominated by the integrable constant 1. Each integral sees only the single lit point (left side = 1), but the pointwise limsup lights both points (right side = 2). Mathlib records the inequality limsup_lintegral_le but no witness that it is strict. This is the dual of the parent's escaping-mass witness for forward Fatou.",
+      "alt: the alternating two-point indicator alt n i = 𝟙[Even (n + i)] on (Fin 2, counting measure) — point 0 lit on even steps, point 1 on odd steps, exactly one lit at any time. The mechanism of mass loss by oscillation (the sequence never settles), dual to the forward witness's loss by escape to infinity, and not formalized in Mathlib.",
+      "alt_lintegral: each integral is ∫⁻ alt n = 1 (exactly one point lit per step), the conserved unit mass that the oscillation hides from the limsup; hence limsupₙ ∫⁻ alt n = 1.",
+      "limsup_alt: the pointwise limsup is 1 at BOTH points (each point lit on infinitely many steps via frequently_even_add, never exceeding 1 via alt_le_one), so ∫⁻ limsupₙ alt n = 2 — the gap that makes reverse Fatou strict.",
+      "reverse_fatou_lintegral: a clean restatement of Mathlib's limsup_lintegral_le (dominated limsup form of Fatou), the headline statement for the gallery — the upper bracket dual to forward Fatou's lower bracket in the chain ∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ ≤ limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ.",
+      "alt_dominated_by_integrable: certifies that the witness satisfies the hypotheses of reverse_fatou_lintegral (dominated everywhere by the integrable constant 1, with ∫⁻ 1 ∂count = 2 ≠ ∞ on the two-point space), so the strict inequality holds WITHIN the hypotheses, not by violating them."
+    ],
+    "prerequisites": [
+      "MeasureTheory.limsup_lintegral_le: reverse Fatou's lemma in Mathlib (limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ for nonnegative measurable functions dominated a.e. by an integrable majorant)",
+      "MeasureTheory.lintegral_fintype: ∫⁻ over a finite measurable-singleton space equals ∑ x, f x · μ {x}; with counting measure this is the plain sum",
+      "MeasureTheory.Measure.count_singleton: the counting measure of a singleton is 1",
+      "Filter.le_limsup_of_frequently_le: if b ≤ u x frequently then b ≤ limsup u, used for the lower bound limsup (alt · i) ≥ 1",
+      "Filter.limsup_le_of_le: if u x ≤ a eventually then limsup u ≤ a, used for the upper bound limsup (alt · i) ≤ 1",
+      "Filter.frequently_atTop: a predicate holds frequently along atTop iff it holds at arbitrarily large indices, used to show each point is lit infinitely often"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.limsup_lintegral_le",
+        "description": "Reverse Fatou's lemma: for measurable fₙ : α → ℝ≥0∞ dominated a.e. by an integrable g, limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ. Re-exported as reverse_fatou_lintegral and shown to be strict on the alternating two-point example.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence"
+      },
+      {
+        "theorem": "MeasureTheory.lintegral_fintype",
+        "description": "∫⁻ x, f x ∂μ = ∑ x, f x * μ {x} on a Fintype with measurable singletons. With μ = counting measure on Fin 2 this computes both ∫⁻ alt n = 1 and ∫⁻ (limsup) = 2.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Countable"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.count_singleton",
+        "description": "count {a} = 1 for a measurable singleton, reducing the finite integral sums on the two-point space.",
+        "module": "Mathlib.MeasureTheory.Measure.Count"
+      },
+      {
+        "theorem": "Filter.le_limsup_of_frequently_le",
+        "description": "In a conditionally complete linear order, b ≤ limsup u if b ≤ u x frequently. Applied with the 'lit infinitely often' fact to give limsup (alt · i) ≥ 1.",
+        "module": "Mathlib.Order.LiminfLimsup"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Reverse Fatou (the dominated limsup inequality limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ) is the upper companion of Fatou's lemma. The two together bracket the Lebesgue integral of a sequence between the integral of its liminf and the integral of its limsup, and the collapse of that bracket is precisely the dominated convergence theorem (Folland Thm 2.24 and its discussion). The parent entry (fatou-lemma-oq-01) formalized the lower bracket — forward Fatou — and the escaping-mass witness 𝟙_[n,n+1) showing it is strict. This entry formalizes the upper bracket and a matching strict witness. Where the forward witness loses mass by letting it escape to +∞ along the real line, the reverse witness has no escape route (it lives on a two-point space dominated by an integrable constant) and must instead lose its alignment by oscillation: the mass is always present, but the limsup of the integrals — which only ever sees one lit point at a time — undershoots the integral of the pointwise limsup, which sees both points lit. Mathlib formalizes the inequality (limsup_lintegral_le) but records no witness that it is strict; this entry supplies that witness.",
+    "problemStatement": "Restate reverse Fatou's lemma for the gallery (limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ for nonnegative measurable fₙ dominated a.e. by an integrable g) and prove that the inequality is genuinely strict by an explicit witness that satisfies the domination hypothesis. Concretely, on the two-point space (Fin 2, counting measure), let alt n i = 𝟙[Even (n + i)]: each integral has ∫⁻ alt n = 1, yet the pointwise limsup is 1 at both points, so limsupₙ ∫⁻ alt n = 1 < 2 = ∫⁻ limsupₙ alt n, while alt n ≤ 1 with ∫⁻ 1 ∂count = 2 ≠ ∞.",
+    "proofStrategy": "The headline inequality is a direct re-export of Mathlib's limsup_lintegral_le. The strictness witness is built from three computations on alt n i = 𝟙[Even (n + i)] over (Fin 2, count). (1) alt_lintegral: ∫⁻ alt n = 1, because exactly one of n, n+1 is even, so exactly one point is lit; via lintegral_fintype, count_singleton and a parity case split. (2) limsup_alt: limsup (alt · i) = 1 at both points — frequently_even_add shows Even (n + i) holds at arbitrarily large n (each point is lit infinitely often) giving the lower bound via le_limsup_of_frequently_le, and alt_le_one gives the upper bound via limsup_le_of_le. (3) reverse_fatou_strict_on_alt: the left side limsupₙ ∫⁻ alt n is the limsup of the constant sequence 1 = 1 (limsup_const), the right side ∫⁻ limsupₙ alt n = ∫⁻ 1 ∂count = 2 (lintegral_fintype on the two-point space), hence 1 < 2 (ENNReal.one_lt_two). alt_dominated_by_integrable certifies the witness obeys the hypotheses of reverse_fatou_lintegral.",
+    "keyInsights": [
+      "Reverse Fatou is an inequality for a reason DUAL to forward Fatou. Forward Fatou can be strict because mass escapes to infinity (no point keeps it); reverse Fatou can be strict because mass oscillates (the limsup of integrals sees only one lit point at a time, but the integral of the limsup sees every point that is lit infinitely often). The strict gap 1 < 2 is the formal fingerprint of that oscillation.",
+      "An integrable majorant rules out the forward failure mode but NOT the reverse one. The escaping-mass sequence has no integrable majorant; the alternating witness IS dominated by the integrable constant 1, yet reverse Fatou is still strict. So domination alone does not force equality of limsupₙ ∫⁻ fₙ and ∫⁻ limsupₙ fₙ — pointwise convergence (the extra DCT hypothesis) is what finally collapses the bracket.",
+      "The two-point counting space is the minimal stage for oscillation: with only one point the limsup and the integral cannot disagree, so two points (and the parity flip) are exactly what is needed to separate 'one lit at a time' from 'both lit in the limsup'.",
+      "The clean separation — import the inequality, originate only the witness — keeps the 'mathlib' badge honest: the deep theorem is Mathlib's limsup_lintegral_le, the new mathematical content is the explicit demonstration that it cannot be improved to an equality even under domination.",
+      "Together with the parent's forward witness, the pair makes the full bracket ∫⁻ liminf ≤ liminf ∫⁻ ≤ limsup ∫⁻ ≤ ∫⁻ limsup concrete and shows BOTH outer inequalities are strict on explicit sequences — pinpointing why the dominated convergence theorem needs pointwise convergence to force the inner equality."
+    ]
+  },
+  "conclusion": {
+    "summary": "Reverse Fatou's lemma states that for nonnegative measurable functions fₙ dominated a.e. by an integrable g, the limsup of the integrals is at most the integral of the pointwise limsup: limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ. The inequality itself is Mathlib's MeasureTheory.limsup_lintegral_le, restated here as reverse_fatou_lintegral. The entry's substance is the alternating two-point witness proving the inequality is genuinely STRICT even under domination: alt n i = 𝟙[Even (n + i)] on (Fin 2, count), alt_lintegral shows each integral is 1 (exactly one lit point), limsup_alt shows the pointwise limsup is 1 at both points (each lit infinitely often), and reverse_fatou_strict_on_alt concludes limsupₙ ∫⁻ alt n = 1 < 2 = ∫⁻ limsupₙ alt n; alt_dominated_by_integrable certifies the domination hypothesis holds. 177 lines, 8 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The abstract reverse Fatou inequality is delegated to Mathlib (hence the mathlib badge); the new content is the formalized strict witness, which Mathlib does not record. It makes precise why reverse Fatou is only an inequality — mass can oscillate and be undercounted by the limsup of the integrals — and shows that an integrable majorant, while it blocks escape to infinity, does not by itself recover equality: the dominated convergence theorem still needs pointwise convergence. Paired with the parent's forward witness, it completes the strict bracketing of the Lebesgue integral by its liminf and limsup integrals.",
+    "openQuestions": [
+      "Quantify the oscillation gap: on a k-point cyclic space with a length-ℓ lit block, the strict ratio limsup ∫⁻ / ∫⁻ limsup is ℓ/k — formalize the family and its sharp constant.",
+      "State the equality case: characterize sequences for which reverse Fatou holds with equality (e.g. pointwise convergence a.e.) and connect to the dominated convergence collapse of the full liminf/limsup bracket."
+    ]
+  },
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.Lebesgue.DominatedConvergence",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of MeasureTheory.limsup_lintegral_le, the dominated limsup (reverse Fatou) inequality, re-exported as reverse_fatou_lintegral."
+    },
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "author": "Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Standard reference for Fatou's lemma, the reverse Fatou inequality, the liminf/limsup bracketing of the integral, and the dominated convergence theorem."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fatou-lemma-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry formalizes forward Fatou (∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ) and the escaping-mass witness showing it is strict. This entry supplies the opposite bracket — reverse Fatou (limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ) — and a dual strict witness (oscillation on a two-point space rather than escape to infinity), completing the liminf/limsup pair that brackets the dominated convergence theorem and answering the parent's open question oq-01."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "fatou-lemma-oq-01-oq-01-oq-01",
+      "question": "Quantify the oscillation gap: on the k-point cyclic counting space with a lit block of length ℓ that rotates each step, the strict ratio limsupₙ ∫⁻ fₙ / ∫⁻ limsupₙ fₙ equals ℓ/k. Formalize this family and identify the sharp constant as ℓ/k → 0.",
+      "significance": "medium"
+    },
+    {
+      "id": "fatou-lemma-oq-01-oq-01-oq-02",
+      "question": "Characterize the equality case of reverse Fatou: give a clean sufficient condition (e.g. a.e. pointwise convergence) under which limsupₙ ∫⁻ fₙ = ∫⁻ limsupₙ fₙ, and connect it to the collapse of the full liminf/limsup bracket in the dominated convergence theorem.",
+      "significance": "medium"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Reverse Fatou and the Strict Gap",
+      "startLine": 5,
+      "endLine": 68,
+      "summary": "States reverse Fatou (limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ under an integrable majorant), names the Mathlib vehicle limsup_lintegral_le, and lays out the alternating two-point witness alt n i = 𝟙[Even (n + i)] showing strictness: unit integral per step, pointwise limsup 1 at both points, strict gap 1 < 2. Explains the duality with the parent's escaping-mass witness (loss by oscillation vs loss by escape) and notes Mathlib records no strict witness. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "$\\limsup_n \\int^- f_n \\le \\int^- \\limsup_n f_n$; strict on the alternating two-point example."
+    },
+    {
+      "id": "reverse-fatou-restatement",
+      "title": "Reverse Fatou: Mathlib Restatement",
+      "startLine": 75,
+      "endLine": 86,
+      "summary": "reverse_fatou_lintegral re-exports Mathlib's limsup_lintegral_le: for nonnegative measurable fₙ dominated a.e. by an integrable g, limsupₙ ∫⁻ fₙ ≤ ∫⁻ limsupₙ fₙ. This is the upper bracket dual to forward Fatou's lower bracket; the mathlib badge is honest because the inequality is imported and only the strict witness is original.",
+      "mathContext": "$\\limsup_n \\int^- f_n \\le \\int^- \\limsup_n f_n$ for $f_n \\le^{ae} g$ with $\\int^- g < \\infty$."
+    },
+    {
+      "id": "alt-sequence",
+      "title": "The Alternating Two-Point Sequence",
+      "startLine": 88,
+      "endLine": 117,
+      "summary": "alt n i = 𝟙[Even (n + i)] on (Fin 2, count): point 0 lit on even steps, point 1 on odd steps. alt_measurable certifies measurability (discrete σ-algebra), alt_le_one bounds it by the integrable constant 1, and alt_lintegral computes ∫⁻ alt n = 1 since exactly one of n, n+1 is even — the conserved unit mass the oscillation will hide from the limsup.",
+      "mathContext": "$\\mathrm{alt}\\,n\\,i = \\mathbf{1}[\\,2 \\mid n+i\\,]$; $\\int^- \\mathrm{alt}\\,n = 1$ for all $n$."
+    },
+    {
+      "id": "limsup-both-lit",
+      "title": "Each Point Lit Infinitely Often",
+      "startLine": 119,
+      "endLine": 138,
+      "summary": "frequently_even_add shows Even (n + c) holds at arbitrarily large n; limsup_alt then proves limsup (alt · i) = 1 at BOTH points — lower bound 1 from le_limsup_of_frequently_le (each point lit infinitely often), upper bound 1 from limsup_le_of_le (never exceeds 1). This is the dual of the forward witness's 'eventually 0': here the sequence never settles, so the pointwise limsup keeps both points fully lit.",
+      "mathContext": "$\\limsup_n \\mathrm{alt}\\,n\\,i = 1$ for $i = 0, 1$, since each point is lit on infinitely many steps."
+    },
+    {
+      "id": "strict-gap",
+      "title": "The Headline: Reverse Fatou Is Strict",
+      "startLine": 140,
+      "endLine": 177,
+      "summary": "reverse_fatou_strict_on_alt assembles the witness: the left side limsupₙ ∫⁻ alt n = limsup of the constant 1 = 1 (alt_lintegral + limsup_const), the right side ∫⁻ limsupₙ alt n = ∫⁻ 1 ∂count = 2 (limsup_alt + lintegral_fintype), so 1 < 2 strictly. alt_dominated_by_integrable certifies the domination hypothesis (alt n ≤ 1, ∫⁻ 1 ∂count = 2 ≠ ∞), proving the strict gap holds WITHIN the hypotheses of reverse Fatou — an integrable majorant does not force equality.",
+      "mathContext": "$\\limsup_n \\int^- \\mathrm{alt}\\,n = 1 < 2 = \\int^- \\limsup_n \\mathrm{alt}\\,n$."
+    }
+  ]
+}

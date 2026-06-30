@@ -17,7 +17,11 @@
       "central binomial coefficient",
       "EGRS 1975"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "factorials and divisibility",
+      "mathematical conjectures"
+    ]
   },
   {
     "id": "ann-e727-centralbinom",
@@ -36,7 +40,11 @@
       "Pascal's triangle",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "binomial coefficients",
+      "factorials"
+    ]
   },
   {
     "id": "ann-e727-divides",
@@ -55,7 +63,11 @@
       "divisibility",
       "factorial powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime factorization",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e727-conjecture",
@@ -74,7 +86,11 @@
       "open problem",
       "infinite set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "first-order logic",
+      "set theory",
+      "open problems in number theory"
+    ]
   },
   {
     "id": "ann-e727-balakran",
@@ -93,7 +109,11 @@
       "1929 result",
       "boundary case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "factorial divisibility",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e727-catalan",
@@ -112,7 +132,11 @@
       "combinatorics",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "enumerative combinatorics",
+      "binomial coefficients",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e727-egrs",
@@ -131,7 +155,11 @@
       "weaker variant",
       "Balakran's method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic estimates",
+      "factorial divisibility"
+    ]
   },
   {
     "id": "ann-e727-relationship",
@@ -150,7 +178,11 @@
       "stronger vs weaker",
       "Set.Infinite.mono"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "inequalities",
+      "factorial monotonicity"
+    ]
   },
   {
     "id": "ann-e727-erdosbound",
@@ -169,7 +201,11 @@
       "logarithmic bound",
       "factorial divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic analysis",
+      "logarithmic bounds"
+    ]
   },
   {
     "id": "ann-e727-numerical",
@@ -188,7 +224,11 @@
       "counterexamples",
       "asymptotic behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic computation",
+      "factorials",
+      "divisibility testing"
+    ]
   },
   {
     "id": "ann-e727-status",
@@ -207,6 +247,10 @@
       "status summary",
       "partial progress"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "mathematical proof status",
+      "conjectures vs theorems"
+    ]
   }
 ]

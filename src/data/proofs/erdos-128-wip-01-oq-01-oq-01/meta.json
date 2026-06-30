@@ -1,0 +1,129 @@
+{
+  "id": "erdos-128-wip-01-oq-01-oq-01",
+  "title": "Erdős #128: clique-freeness pulls back along graph homomorphisms (every C₅-blow-up is K_r-free for all r ≥ 3)",
+  "slug": "erdos-128-wip-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos128WIP01OQ01OQ01",
+    "lineCount": 214,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos128WIP01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Lifts the homomorphism-pullback principle of the parent entry erdos-128-wip-01-oq-01 from triangles to cliques of every order, directly answering that entry's stated open question. The parent proved triangle-freeness pulls back along arbitrary graph homomorphisms; this entry proves cliqueFree_of_hom: for every r, K_r-freeness pulls back along a homomorphism f : G -> H -- if H has no r-clique then neither does G, the r image vertices being forced distinct by H's irreflexivity. It adds hasClique_mono / cliqueFree_mono (clique-freeness is monotone in the order: a K_m-clique sits inside any K_r-clique with m <= r, so K_m-freeness forces K_r-freeness for all r >= m), and the bridge hasTriangle_iff_hasClique_three / triangleFree_iff_cliqueFree_three identifying the parent's triangle predicates with the r = 3 case, which recovers triangleFree_of_hom as a corollary. Blow-ups preserve K_r-freeness (blowup_cliqueFree), and C5 -- being triangle-free (C5_triangleFree, ordinary decision procedure, not native_decide) -- is K_r-free for every r >= 3 (C5_cliqueFree), so every blow-up of C5, at every size and class assignment, is K_r-free for all r >= 3 (blowup_C5_cliqueFree): a clique-order-uniform strengthening of the extremal construction's triangle-freeness. 11 theorems, 8 definitions + 1 structure, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos128WIP01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "triangle-free",
+      "clique-free",
+      "graph-homomorphism",
+      "ramsey-turan",
+      "erdos-problems"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked with `lake env lean Proofs/Erdos128WIP01OQ01OQ01.lean` (Lean v4.26.0, Mathlib pin): compiles with 0 errors. 0 sorries, 0 axiom declarations, no native_decide. #print axioms reports: cliqueFree_of_hom depends on no axioms at all; C5_cliqueFree, blowup_C5_cliqueFree, triangleFree_of_hom and hasTriangle_iff_hasClique_three depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound] (the `decide` evaluation of C₅ over Fin 5 is the ordinary kernel decision procedure, NOT native_decide, so Lean.ofReduceBool is not used). Self-contained: the Graph objects are re-declared (the scaffold Erdos128Problem.lean does not build). Honest scope: the structural clique-pullback / clique-monotonicity facts and the K_r-freeness of the C₅-blow-up witnesses, NOT the open optimal-constant question (that these blow-ups achieve induced density > n²/50, and that 1/50 is optimal, remain open).",
+    "lineCount": 214,
+    "theoremCount": 11,
+    "definitionCount": 8,
+    "originalContributions": [
+      "cliqueFree_of_hom: K_r-freeness pulls back along graph homomorphisms, for every clique order r -- if f : G -> H is a homomorphism and H has no r-clique then neither does G; the r image vertices of a G-clique are forced distinct by H's irreflexivity (two equal images would be an H-loop). Strictly generalizes the parent's triangleFree_of_hom, which is the case r = 3.",
+      "hasClique_mono / cliqueFree_mono: clique-freeness is monotone in the order. A K_r-clique restricts to a K_m-clique for m <= r (compose the clique map with Fin.castLE), so K_m-freeness forces K_r-freeness for every r >= m. In particular triangle-free (K_3-free) implies K_r-free for all r >= 3.",
+      "hasTriangle_iff_hasClique_three / triangleFree_iff_cliqueFree_three: the bridge identifying the parent's hasTriangle / triangleFree with the r = 3 case of the clique predicates. The backward direction packages a triangle as an injective triple via an explicit map (triple); the forward direction reads three distinct mutually adjacent vertices off a 3-clique. This recovers triangleFree_of_hom as a corollary of cliqueFree_of_hom.",
+      "blowup_cliqueFree: every blow-up of a K_r-free graph is K_r-free, for every r (corollary of cliqueFree_of_hom applied to the class map).",
+      "C5_cliqueFree / blowup_C5_cliqueFree: C₅ has no clique of any order r >= 3 (it is triangle-free, and clique-freeness is monotone), hence every blow-up of C₅, at every size n and every class assignment c : Fin n -> Fin 5, is K_r-free for all r >= 3 -- the clique-order-uniform strengthening of the conjectured-optimal extremal construction's triangle-freeness."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #128 is a Ramsey–Turán-type question asking whether a uniform edge-density condition on all large induced subgraphs forces a triangle. The threshold constant 1/50 is conjectured optimal, witnessed by blow-ups of C₅ (and the Petersen graph), which are triangle-free yet have induced-subgraph density about 1/5 > 1/50. A long line of partial results (Erdős-Faudree-Rousseau-Schelp 1/16, Krivelevich, Razborov's flag-algebra 27/1024, Norin-Yepremyan) narrows the constant, but the exact 1/50 remains a $250 open problem. The parent chain isolated the structural reason the witnesses are triangle-free; this entry shows that reason is not special to triangles but holds for cliques of every order.",
+    "problemStatement": "Erdős #128: if every induced subgraph of an n-vertex graph G on >= floor(n/2) vertices has more than n²/50 edges, must G contain a triangle? This entry answers the parent entry's open question by generalizing the homomorphism-pullback principle from triangle-freeness to K_r-freeness for every clique order r, and shows the C₅-blow-up witnesses contain no clique of any order >= 3.",
+    "proofStrategy": "Re-declare the scaffold's Graph objects and define an r-clique as an injective family s : Fin r -> Fin n of pairwise-adjacent vertices. A homomorphism f preserves edges, so f ∘ s is again pairwise adjacent; its entries are distinct because H is irreflexive (equal images would be an H-loop), giving an H-clique of the same order -- hence K_r-freeness pulls back (cliqueFree_of_hom). Composing a clique map with Fin.castLE restricts a K_r-clique to a K_m-clique for m <= r, giving clique-order monotonicity (hasClique_mono / cliqueFree_mono). The triangle predicates are the r = 3 case (bridge via an explicit triple map), recovering triangleFree_of_hom. A blow-up's class map is a homomorphism, so blow-ups preserve K_r-freeness; C₅ is triangle-free by the finite decision procedure and therefore K_r-free for all r >= 3, and blowup_C5_cliqueFree is the composition.",
+    "keyInsights": [
+      "The homomorphism-pullback argument never used the number 3: the same irreflexivity-forces-distinctness step works for an injective family of any size, so K_r-freeness pulls back along homomorphisms for every clique order r.",
+      "Clique-freeness is monotone in the order — a smaller clique embeds in a larger one via Fin.castLE — so a single triangle-freeness fact propagates to K_r-freeness for all r >= 3 with no extra combinatorics.",
+      "Identifying the parent's bespoke triangle predicate with the r = 3 case of the clique predicate makes triangleFree_of_hom a one-line corollary, unifying the parent's result inside the general theorem.",
+      "Consequently the conjectured-optimal extremal witnesses (C₅-blow-ups) contain no clique of ANY order >= 3 at every scale — a structural fact uniform in clique order and independent of the open edge-density estimate."
+    ]
+  },
+  "sections": [
+    {
+      "id": "objects",
+      "title": "Graphs, cliques, and homomorphisms (re-declared)",
+      "summary": "Graph, hasTriangle, triangleFree, the r-clique predicates hasClique / cliqueFree, and the graph-homomorphism predicate IsHom.",
+      "startLine": 55,
+      "endLine": 80,
+      "mathContext": "Self-contained re-declaration; an r-clique is an injective family of r pairwise-adjacent vertices."
+    },
+    {
+      "id": "pullback",
+      "title": "Clique-freeness pulls back along homomorphisms",
+      "summary": "cliqueFree_of_hom: a homomorphism into a K_r-free graph forces K_r-freeness; the r image vertices are distinct by irreflexivity.",
+      "startLine": 89,
+      "endLine": 104,
+      "mathContext": "Generalizes the parent's triangleFree_of_hom (the case r = 3) to every clique order."
+    },
+    {
+      "id": "monotone",
+      "title": "Clique-freeness is monotone in the order",
+      "summary": "hasClique_mono / cliqueFree_mono: a K_r-clique restricts to a K_m-clique for m <= r, so K_m-freeness forces K_r-freeness for r >= m.",
+      "startLine": 107,
+      "endLine": 119,
+      "mathContext": "Restriction along Fin.castLE; in particular triangle-free implies K_r-free for all r >= 3."
+    },
+    {
+      "id": "bridge",
+      "title": "Triangles are 3-cliques (recovering the parent)",
+      "summary": "triple, hasTriangle_iff_hasClique_three, triangleFree_iff_cliqueFree_three, and triangleFree_of_hom recovered as the r = 3 corollary.",
+      "startLine": 121,
+      "endLine": 156,
+      "mathContext": "The parent's triangle predicate is exactly the r = 3 clique predicate, so triangleFree_of_hom follows from cliqueFree_of_hom."
+    },
+    {
+      "id": "blowup-c5",
+      "title": "Blow-ups and the C₅ witness, uniform in clique order",
+      "summary": "blowup, blowup_isHom, blowup_cliqueFree, C5, C5_triangleFree, C5_cliqueFree, blowup_C5_cliqueFree.",
+      "startLine": 158,
+      "endLine": 197,
+      "mathContext": "C₅ is triangle-free, hence K_r-free for every r >= 3, hence so is every blow-up of it at every scale."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #128 asks whether dense large induced subgraphs force a triangle, with conjectured-optimal constant 1/50 witnessed by C₅-blow-ups. The parent entry isolated the structural reason those witnesses are triangle-free (triangle-freeness pulls back along graph homomorphisms). This entry answers the parent's stated open question by lifting that principle to cliques of every order: cliqueFree_of_hom shows K_r-freeness pulls back along any homomorphism, cliqueFree_mono shows clique-freeness is monotone in r, and the bridge triangleFree_iff_cliqueFree_three recovers the parent's triangleFree_of_hom as the r = 3 case. Concretely, every blow-up of C₅ contains no clique of any order >= 3, at every size and class assignment (blowup_C5_cliqueFree). Self-contained over Mathlib, verified with the ordinary kernel decision procedure (no native_decide), 0 sorries, 0 axioms.",
+    "implications": "The extremal witness family is not merely triangle-free but K_r-free for every r >= 3, by a uniform pullback-plus-monotonicity argument independent of how its edges are counted. Any formal attack on the optimal constant 1/50 thus inherits a reusable foundation whose clique-freeness is established once and for all orders, and the clique-order generalization subsumes both the parent's homomorphism-pullback result and (via the bridge) its hereditary triangle-freeness.",
+    "openQuestions": [
+      "Formalize the edge-density estimate for C₅-blow-ups: that a balanced blow-up has induced-subgraph density > n²/50 on every floor(n/2)-subgraph, completing the lower-bound witness for the 1/50 constant.",
+      "Prove (or formalize a partial result toward) the main question: does density > n²/50 on every floor(n/2)-subgraph force a triangle?",
+      "Generalize beyond cliques to arbitrary forbidden subgraphs: an injective-homomorphism image of any fixed graph F pulls back along homomorphisms into irreflexive targets, of which clique-freeness is the F = K_r case."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-128-wip-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent entry proved triangle-freeness pulls back along arbitrary graph homomorphisms and listed as an open question the generalization to K_r-freeness. This entry proves exactly that (cliqueFree_of_hom), adds clique-order monotonicity, and recovers the parent's triangleFree_of_hom as the r = 3 case via an explicit triangle-as-3-clique bridge."
+    },
+    {
+      "targetId": "erdos-128-wip-01",
+      "relationship": "related",
+      "description": "The grandparent entry proved triangle-freeness is hereditary under induced subgraphs and the edge count is monotone; the clique-pullback theorem here subsumes that hereditary property at every clique order."
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "The base Erdős #128 scaffold, whose conjectured-optimal extremal witnesses are the C₅-blow-ups shown here to be K_r-free for every r >= 3."
+    }
+  ]
+}

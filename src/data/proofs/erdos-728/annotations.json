@@ -16,7 +16,11 @@
       "p-adic valuation",
       "Legendre's formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "factorials and divisibility",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e728-divisibility",
@@ -36,7 +40,11 @@
       "multinomial divisibility"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisibility relations",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e728-gap",
@@ -56,7 +64,11 @@
     ],
     "significance": "key",
     "mathContext": "See annotation content for formal details of logarithmic gap",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "logarithms and asymptotics",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e728-size",
@@ -74,7 +86,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "inequalities",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e728-solution",
@@ -92,7 +108,11 @@
       "formal definition",
       "factorial function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "predicate logic",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e728-erdos1968",
@@ -112,7 +132,11 @@
       "prime factorization"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "prime distribution",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e728-resolution",
@@ -132,7 +156,11 @@
       "Erdős problem 729"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "existential proofs",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e728-construction",
@@ -150,7 +178,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "factorial estimates",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e728-construction-works",
@@ -168,7 +200,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "inequalities",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e728-legendre",
@@ -186,7 +222,11 @@
       "formal definition",
       "factorial function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "p-adic valuation",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e728-legendre-div",
@@ -204,7 +244,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "valuation theory"
+    ]
   },
   {
     "id": "ann-e728-729",
@@ -222,6 +266,9 @@
       "factorial function",
       "ring theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "factorial arithmetic"
+    ]
   }
 ]

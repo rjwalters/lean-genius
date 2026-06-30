@@ -8,7 +8,7 @@
     "author": "James Stirling / Abraham de Moivre (formalized via Mathlib)",
     "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Analysis/SpecialFunctions/Stirling.lean",
     "date": "1730",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/StirlingFormula.lean",
     "tags": [
       "analysis",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "approximation"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -42,7 +42,7 @@
       "Connection to log-factorial approximation for entropy calculations"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 640,
     "prerequisites": [
       "Real analysis: limits, asymptotic equivalence (~), sequences",
@@ -50,7 +50,7 @@
       "The Wallis product: π/2 = ∏(4n²)/(4n²-1)",
       "Logarithmic approximation: log(n!) ≈ n log n - n + (1/2)log(2πn)"
     ],
-    "assumptions": "0 axioms. The error bound stirling_error_bound_ge_2 is now fully proved via telescoping log bounds from Mathlib.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. The error bound stirling_error_bound_ge_2 is proved via telescoping log bounds from Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 1
@@ -123,44 +123,74 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Docstring: Stirling's formula n! ~ √(2πn)(n/e)^n (Wiedijk #90), built on Mathlib's Stirling module (stirlingSeq, tendsto_stirlingSeq_sqrt_pi, factorial_isEquivalent_stirling) plus original pedagogical bounds and corollaries. Imports the Stirling/asymptotics machinery."
+    },
+    {
       "id": "stirling-sequence",
-      "title": "The Stirling Sequence",
+      "title": "PART 1: The Stirling Sequence",
       "startLine": 51,
-      "endLine": 72,
-      "summary": "Definition of stirlingSeq(n) = n!/[sqrt(2n) * (n/e)^n].",
-      "mathContext": "$S_n = \\frac{n!}{\\sqrt{2n} \\cdot (n/e)^n}$. The Stirling sequence normalizes $n!$ by the leading approximation, and $S_n \\to \\sqrt{\\pi}$ yields the formula."
+      "endLine": 82,
+      "summary": "stirlingSeq(n) = n!/[√(2n)(n/e)^n] (Mathlib): stirlingSeq_defined (the defining quotient) and stirlingSeq_pos (positive for n ≥ 1)."
     },
     {
       "id": "convergence",
-      "title": "Convergence to sqrt(pi)",
-      "startLine": 73,
-      "endLine": 98,
-      "summary": "The Stirling sequence converges to sqrt(pi).",
-      "mathContext": "$\\lim_{n\\to\\infty} S_n = \\sqrt{\\pi}$, proved via the Wallis product $\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}$."
+      "title": "PART 2: Convergence to √π",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "stirlingSeq_tendsto_sqrt_pi (the central limit stirlingSeq → √π, from Mathlib via the Wallis product) and factorial_ratio_tendsto restating it on the explicit quotient."
     },
     {
       "id": "asymptotic",
-      "title": "Asymptotic Equivalence",
-      "startLine": 99,
-      "endLine": 122,
-      "summary": "Stirling's formula as asymptotic equivalence.",
-      "mathContext": "$n! \\sim \\sqrt{2\\pi n} \\cdot (n/e)^n$, i.e., $\\lim_{n\\to\\infty} \\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1$."
+      "title": "PART 3: Stirling's Asymptotic Formula",
+      "startLine": 109,
+      "endLine": 138,
+      "summary": "stirling_formula (Wiedijk #90): n! is asymptotically equivalent to √(2πn)(n/e)^n, obtained from Mathlib's factorial_isEquivalent_stirling after reconciling √(2πn) vs √(2nπ)."
     },
     {
       "id": "bounds",
-      "title": "Bounds",
-      "startLine": 123,
-      "endLine": 149,
-      "summary": "Upper and lower bounds from Stirling's formula.",
-      "mathContext": "$\\sqrt{2\\pi n}(n/e)^n \\leq n! \\leq \\sqrt{2\\pi n}(n/e)^n \\cdot e^{1/(12n)}$ for $n \\geq 1$."
+      "title": "PART 4: Bounds from Stirling's Formula",
+      "startLine": 139,
+      "endLine": 226,
+      "summary": "sqrt_pi_le_stirlingSeq (every term ≥ √π via antitone-sequence/infimum), factorial_lower_bound (n! ≥ √(2πn)(n/e)^n), and log_factorial_lower_bound (the log form)."
+    },
+    {
+      "id": "classical-approx",
+      "title": "PART 5: Classical Approximation Formula",
+      "startLine": 227,
+      "endLine": 263,
+      "summary": "stirlingApprox n = √(2πn)(n/e)^n as a named function, stirlingApprox_pos, and factorial_div_approx_tendsto_one (n!/stirlingApprox(n) → 1 from the asymptotic equivalence)."
+    },
+    {
+      "id": "numerical-examples",
+      "title": "PART 6: Numerical Examples",
+      "startLine": 264,
+      "endLine": 282,
+      "summary": "factorial_10 and factorial_20 (native_decide) plus a docstring on the O(1/n) relative error of the approximation."
+    },
+    {
+      "id": "error-bound-infrastructure",
+      "title": "PART 6.5: Proof Infrastructure for Error Bound",
+      "startLine": 283,
+      "endLine": 569,
+      "summary": "The proved error bound (replacing a former axiom). Telescoping log lemmas log_stirlingSeq_ratio_bound and log_stirlingSeq_sub_log_sqrt_pi_le (log(stirlingSeq(m+1)) − log√π ≤ 1/(4m)), the elementary (1−x)eˣ ≤ 1 lemma, stirling_error_bound_ge_2 (stirlingSeq n/√π − 1 ≤ 1/n for n ≥ 2), and stirling_error_bound (∃ C>0, |n!/stirlingApprox − 1| ≤ C/n, with an explicit n=1 numerical case)."
     },
     {
       "id": "applications",
-      "title": "Applications",
-      "startLine": 209,
-      "endLine": 497,
-      "summary": "Log-factorial approximation and connections to entropy.",
-      "mathContext": "$\\log(n!) \\approx n\\log n - n + \\frac{1}{2}\\log(2\\pi n)$. Entropy: $H = \\log\\binom{n}{k} \\approx nH(k/n)$ where $H(p) = -p\\log p - (1-p)\\log(1-p)$."
+      "title": "PART 7: Applications",
+      "startLine": 570,
+      "endLine": 613,
+      "summary": "log_factorial_approx: log(n!) = log(stirlingSeq n) + log√(2n) + n·log n − n — the log-form used for entropy and asymptotic counting, plus notes on binomial/CLT/statistical-mechanics applications."
+    },
+    {
+      "id": "connections",
+      "title": "PART 8: Connection to Other Theorems",
+      "startLine": 614,
+      "endLine": 640,
+      "summary": "Closing docstring linking Stirling to the Wallis product, the Gamma function, the central limit theorem and de Moivre–Laplace, followed by #check exports of the main results."
     }
   ],
   "conclusion": {

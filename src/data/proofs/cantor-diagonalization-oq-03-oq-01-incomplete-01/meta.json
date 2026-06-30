@@ -56,40 +56,64 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 34,
+      "endLine": 41,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "id": "evalstruct",
-      "title": "Evaluation Structures (Copied from Parent)",
-      "startLine": 35,
+      "title": "SECTION I: Evaluation Structures (from parent)",
+      "startLine": 42,
       "endLine": 65,
       "summary": "Re-states EvalStructure, IsPointSurjective, and lawvere_abstract for self-containedness. These are proved identically to the parent file.",
       "mathContext": "An evaluation structure $(\\text{Ob}, \\text{Val}, \\text{eval})$ models the evaluation map $\\text{ev}: B^A \\times A \\to B$ at the global-element level. Point-surjectivity says every function $\\text{Ob} \\to \\text{Val}$ is representable."
     },
     {
       "id": "categorical",
-      "title": "Categorical Evaluation Structure",
-      "startLine": 67,
-      "endLine": 100,
+      "title": "SECTION II: Categorical Evaluation Structure",
+      "startLine": 66,
+      "endLine": 89,
       "summary": "Re-states CategoricalEval (from parent). Obj, Hom, exp, Pt, apply, ptSurj. HasFixedPoint definition.",
       "mathContext": "A CategoricalEval models a CCC: objects, morphisms, exponentials, global elements, and the evaluation map. The apply field is $\\text{ev}(-, -) : \\text{Pt}(B^A) \\times \\text{Pt}(A) \\to \\text{Pt}(B)$."
     },
     {
       "id": "main",
-      "title": "lawvere_categorical (FIXED)",
-      "startLine": 102,
-      "endLine": 145,
-      "summary": "The corrected categorical Lawvere theorem (0 sorries). Makes e : Pt A → Pt(exp A B) explicit. Proof: construct EvalStructure from (e, apply), apply lawvere_abstract.",
+      "title": "SECTION III: The Categorical Lawvere Theorem (COMPLETED)",
+      "startLine": 90,
+      "endLine": 139,
+      "summary": "The corrected categorical Lawvere theorem (0 sorries). Makes e : Pt A → Pt(exp A B) explicit. Proof: construct EvalStructure from (e, apply), apply lawvere_abstract. Also no_categorical_surjection.",
       "mathContext": "The morphism $e: A \\to B^A$ at the level of global elements is $e: \\text{Pt}(A) \\to \\text{Pt}(B^A)$. Point-surjectivity: $\\forall g: \\text{Pt}(A) \\to \\text{Pt}(B), \\exists a, \\forall x, \\text{ev}(e(a), x) = g(x)$."
     },
     {
       "id": "cantor",
-      "title": "Categorical Cantor and Connections",
-      "startLine": 148,
-      "endLine": 185,
-      "summary": "categorical_cantor: no e : A → (A → Prop) is point-surjective (via Not having no fixed point). categorical_specializes_to_type_theoretic: Function.Surjective e → lawvere_categorical applies.",
+      "title": "SECTION IV: Categorical Cantor's Theorem",
+      "startLine": 140,
+      "endLine": 177,
+      "summary": "typeUniverse: the type-universe CategoricalEval instance. categorical_cantor: no e : A → (A → Prop) is point-surjective, via the fact that internal negation Not has no fixed point (¬v = v is impossible).",
       "mathContext": "In a topos, $B = \\Omega$ (subobject classifier) with internal negation $\\neg: \\Omega \\to \\Omega$. Since $\\neg P = P$ is impossible for any proposition $P$, Lawvere prevents any $A \\twoheadrightarrow \\Omega^A$."
+    },
+    {
+      "id": "sorry-wellformed",
+      "title": "SECTION V: Well-Formedness of the Original Sorry",
+      "startLine": 178,
+      "endLine": 198,
+      "summary": "sorry_diagnosis_resolved: diagnoses the parent file's original sorry as a type error — the sorry was a constant of type Pt(exp A B) independent of a, where an explicit morphism e : Pt A → Pt(exp A B) was intended. Making e explicit resolves it, reducing to lawvere_categorical.",
+      "mathContext": "The intended hypothesis is $\\exists a, \\forall x, \\text{ev}(e(a), x) = g(x)$ for an explicit $e: \\text{Pt}(A) \\to \\text{Pt}(B^A)$, not a single constant term. Point-surjectivity of this explicit $e$ suffices for the fixed-point conclusion."
+    },
+    {
+      "id": "type-theoretic-connection",
+      "title": "SECTION VI: Connection to Type-Theoretic Version",
+      "startLine": 199,
+      "endLine": 230,
+      "summary": "categorical_specializes_to_type_theoretic: the parent's type-theoretic Lawvere theorem is the special case of lawvere_categorical with C = typeUniverse, apply = function application, and hSurj = Function.Surjective e.",
+      "mathContext": "Specializing the categorical theorem to $C = $ Type with $\\text{apply} = $ function application and $\\text{Pt} = \\text{id}$ recovers the classical statement: a surjection $e: A \\to (A \\to B)$ forces every endomorphism of $B$ to have a fixed point."
+    },
+    {
+      "id": "summary-checks",
+      "title": "Summary Checks",
+      "startLine": 231,
+      "endLine": 240,
+      "summary": "#check sanity statements for the four key results: lawvere_categorical, no_categorical_surjection, categorical_cantor, categorical_specializes_to_type_theoretic.",
+      "mathContext": "Final verification that the principal theorems type-check as stated."
     }
   ],
   "conclusion": {

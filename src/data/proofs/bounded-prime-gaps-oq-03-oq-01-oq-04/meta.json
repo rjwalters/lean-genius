@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "combinatorics",
       "prime-constellations"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified. Uses only Mathlib and the admissible_quadruple_0_2_6_8 witness from BoundedPrimeGaps.lean.",
+    "axiomCount": 1,
+    "assumptions": "Lean.ofReduceBool (via native_decide), 0 sorries, 0 literal axiom declarations. The headline equality minAdmissibleDiameter_4 : minAdmissibleDiameter 4 = 8 proves achievability by discharging the witness card/diameter checks with native_decide, so its #print axioms includes Lean.ofReduceBool (closed-term kernel reduction). The lower bound admissible_quad_diam_ge_8 is itself native_decide-free and fully symbolic, but the presented D(4)=8 result depends on the native_decide upper bound. Reuses the verified admissible_quadruple_0_2_6_8 witness from BoundedPrimeGaps.lean.",
     "lineCount": 187,
     "theoremCount": 7,
     "definitionCount": 0,
@@ -101,12 +101,12 @@
   },
   "crossReferences": [
     {
-      "slug": "bounded-prime-gaps",
+      "targetId": "bounded-prime-gaps",
       "relationship": "extends",
       "description": "Parent proof containing admissible_quadruple_0_2_6_8 witness and admissible_subset lemma used in the D(4)=8 proof"
     },
     {
-      "slug": "bounded-prime-gaps-oq-03-oq-01",
+      "targetId": "bounded-prime-gaps-oq-03-oq-01",
       "relationship": "extends",
       "description": "Prior OQ file proving D(2)=2 and D(3)=6, providing not_admissible_ap_diff2 and minAdmissibleDiameter_2/3 used here"
     }

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-loggamma-weighted",
+    "proofId": "gamma-log-convexity-oq-01-oq-01",
+    "range": { "startLine": 32, "endLine": 41 },
+    "type": "concept",
+    "title": "The Two-Point Additive Bound from Log-Convexity",
+    "content": "`logGamma_weighted_le` is the additive heart of the result: it evaluates Mathlib's `Real.convexOn_log_Gamma` (the statement that log∘Γ is convex on (0,∞)) at the convex combination t·a + (1−t)·b. The `.2` projection of a `ConvexOn` proof is exactly the two-point inequality, and `simpa [Function.comp_apply, smul_eq_mul]` unfolds the composition and scalar multiplication to the readable form log Γ(t·a+(1−t)·b) ≤ t·log Γ(a) + (1−t)·log Γ(b). Everything downstream is exponentiation of this one line.",
+    "mathContext": "$\\log\\Gamma(ta + (1-t)b) \\le t\\log\\Gamma(a) + (1-t)\\log\\Gamma(b)$, the defining two-point inequality of a convex function applied to $\\log\\circ\\Gamma$.",
+    "significance": "key",
+    "relatedConcepts": ["convex function", "log-convexity", "Bohr–Mollerup theorem", "convex combination"],
+    "prerequisites": ["convexity", "the Gamma function", "Real.convexOn_log_Gamma"]
+  },
+  {
+    "id": "ann-weighted-geom",
+    "proofId": "gamma-log-convexity-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 71 },
+    "type": "concept",
+    "title": "The Weighted Geometric-Mean Inequality (Headline)",
+    "content": "`gamma_weighted_geom_le` exponentiates the additive bound into the multiplicative form Γ(t·a+(1−t)·b) ≤ Γ(a)^t·Γ(b)^(1−t). Three positivity facts are assembled: Γ(a), Γ(b) > 0 (`Gamma_pos_of_pos`), the argument t·a+(1−t)·b > 0 (a convex combination of positives, by case-splitting on whether t = 0), and the right-hand product > 0. The key rewrite `hlogRHS` uses `Real.log_mul` and `Real.log_rpow` to show log(Γ(a)^t·Γ(b)^(1−t)) = t·log Γ(a) + (1−t)·log Γ(b) — identifying the product of real powers with the additive bound. Applying the monotone `exp` (with `exp_log` on both positive sides) converts the log-inequality back to the multiplicative one.",
+    "mathContext": "$\\Gamma(ta + (1-t)b) \\le \\Gamma(a)^{t}\\,\\Gamma(b)^{1-t}$; exponentiating $\\sum t_i \\log\\Gamma(x_i)$ turns sums of logs into products of real powers.",
+    "significance": "key",
+    "relatedConcepts": ["geometric mean", "weighted geometric mean", "real power (rpow)", "log_rpow bridge", "monotonicity of exp"],
+    "prerequisites": ["real powers x^t", "logarithm and exponential identities", "positivity reasoning"]
+  },
+  {
+    "id": "ann-jensen-finset",
+    "proofId": "gamma-log-convexity-oq-01-oq-01",
+    "range": { "startLine": 73, "endLine": 108 },
+    "type": "technique",
+    "title": "The Finite n-Point Jensen Form",
+    "content": "`gamma_weighted_geom_le_finset` is the honest generalization: for any finite family with weights wᵢ ≥ 0 summing to 1 and positive points xᵢ, Γ(∑ wᵢ·xᵢ) ≤ ∏ Γ(xᵢ)^(wᵢ). It applies `ConvexOn.map_sum_le` (Finset Jensen) to log∘Γ. A small lemma extracts a strictly positive weight j (else the weights would sum to 0 ≠ 1, by `Finset.sum_eq_zero`), which makes the argument positive via `Finset.sum_pos'`; the product is positive via `Finset.prod_pos`. `Real.log_prod` plus a `Real.log_rpow` under `Finset.sum_congr` turns log of the product into the Jensen right-hand side, and exponentiation closes it. The two-point inequality is the |index| = 2 special case.",
+    "mathContext": "$\\Gamma\\big(\\sum_i w_i x_i\\big) \\le \\prod_i \\Gamma(x_i)^{w_i}$ for $w_i \\ge 0$, $\\sum_i w_i = 1$ — Jensen's inequality for the convex $\\log\\circ\\Gamma$.",
+    "significance": "key",
+    "relatedConcepts": ["Jensen's inequality", "ConvexOn.map_sum_le", "weighted geometric mean", "finite sums and products in Lean"],
+    "prerequisites": ["Jensen's inequality", "Finset sums and products", "log_prod"]
+  },
+  {
+    "id": "ann-midpoint-recovery",
+    "proofId": "gamma-log-convexity-oq-01-oq-01",
+    "range": { "startLine": 110, "endLine": 126 },
+    "type": "insight",
+    "title": "Recovering the Parent's Midpoint Inequality (t = 1/2)",
+    "content": "`gamma_midpoint_sq_le` specializes the headline at t = 1/2 to recover the parent entry's Γ((a+b)/2)² ≤ Γ(a)·Γ(b). At t = 1/2 the convex combination collapses to (a+b)/2 and both exponents become 1/2, so `Real.sqrt_eq_rpow` rewrites the 1/2-powers as square roots and `Real.sqrt_mul` combines them into √(Γ(a)·Γ(b)). Squaring the nonnegative inequality Γ((a+b)/2) ≤ √(Γ(a)·Γ(b)) via `nlinarith` with `Real.sq_sqrt` yields the parent's bound — confirming the leaf strictly subsumes its parent rather than merely paralleling it.",
+    "mathContext": "$\\Gamma\\!\\left(\\tfrac{a+b}{2}\\right)^2 \\le \\Gamma(a)\\,\\Gamma(b)$, the $t = \\tfrac12$ case squared: $x^{1/2} = \\sqrt x$ and $(\\sqrt{uv})^2 = uv$.",
+    "significance": "supporting",
+    "relatedConcepts": ["midpoint convexity", "square root as a half-power", "specialization", "AM–GM analogue"],
+    "prerequisites": ["square roots and half-powers", "nlinarith"]
+  }
+]

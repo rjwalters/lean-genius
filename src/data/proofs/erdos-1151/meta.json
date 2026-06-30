@@ -79,7 +79,7 @@
       "id": "chebyshev-nodes",
       "title": "Part I: Chebyshev Nodes",
       "startLine": 39,
-      "endLine": 81,
+      "endLine": 82,
       "summary": "Defines chebyshevNode and chebyshevNodes. Proves chebyshevNode_mem_Icc (nodes lie in [−1,1]) and chebyshevNodes_injective (nodes are distinct via strictAntiOn_cos).",
       "mathContext": "$x_k^{(n)} = \\cos\\left(\\frac{(2k+1)\\pi}{2n}\\right) \\in [-1,1]$; all $n$ nodes distinct"
     },
@@ -87,7 +87,7 @@
       "id": "lagrange-interpolation",
       "title": "Part II: Lagrange Interpolation Operator",
       "startLine": 83,
-      "endLine": 100,
+      "endLine": 101,
       "summary": "Defines lagrangeBasis (ℓₖ(x) = ∏_{i≠k} (x−xᵢ)/(xₖ−xᵢ)), lagrangeInterp (𝓛ⁿf(x) = Σₖ f(xₖ)ℓₖ(x)), and chebyshevInterp (specialization to Chebyshev nodes).",
       "mathContext": "$\\ell_k(x) = \\prod_{i \\neq k} \\frac{x - x_i}{x_k - x_i}$; $\\mathcal{L}^n f(x) = \\sum_{k=0}^{n-1} f(x_k^{(n)}) \\ell_k(x)$"
     },
@@ -95,23 +95,23 @@
       "id": "limit-points",
       "title": "Part III: Limit Points of Sequences",
       "startLine": 102,
-      "endLine": 132,
+      "endLine": 164,
       "summary": "Defines IsLimitPoint and limitPointSet. Proves limitPointSet_isClosed: for bounded sequences, the limit point set is closed (complement is open by ε/2 argument).",
       "mathContext": "$y \\in \\text{limitPointSet}(a_n) \\iff \\forall \\varepsilon > 0,\\; \\forall N,\\; \\exists n \\geq N: |a_n - y| < \\varepsilon$"
     },
     {
       "id": "main-conjecture",
       "title": "Part IV: The Erdős Conjecture (Axiomatized)",
-      "startLine": 134,
-      "endLine": 164,
+      "startLine": 165,
+      "endLine": 196,
       "summary": "Defines chebyshevInterpSeq. Axiomatizes erdos_1941_divergence (Erdős 1941: divergence at rational cosines) and erdos_1151_conjecture (open: every closed A ⊆ [−1,1] is realizable as a limit point set).",
       "mathContext": "$\\forall A \\subseteq [-1,1]$ closed, $\\exists f \\in C[-1,1]: \\text{limitPointSet}(\\mathcal{L}^n f(x)) = A$ (open conjecture)"
     },
     {
       "id": "special-cases",
       "title": "Part V: Special Cases",
-      "startLine": 166,
-      "endLine": 183,
+      "startLine": 197,
+      "endLine": 215,
       "summary": "Derives erdos_1151_convergent_case (A = {y}: convergence) and erdos_1151_dense_case (A = [−1,1]: dense orbit) as one-line corollaries of the conjecture axiom.",
       "mathContext": "$A = \\{y\\}$: $\\mathcal{L}^n f(x) \\to y$; $A = [-1,1]$: orbit is dense in $[-1,1]$"
     }

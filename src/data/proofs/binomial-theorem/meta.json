@@ -7,7 +7,7 @@
     "author": "Al-Karaji, Newton (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_theorem",
     "date": "~1000 (al-Karaji), 1665 (Newton)",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebra",
       "combinatorics",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/BinomialTheorem.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -66,8 +66,8 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 44,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and no structure-encoded assumptions. All nine theorems are proved from Mathlib (add_pow, Nat.sum_range_choose, Int.alternating_sum_range_choose, Nat.choose_succ_succ, Nat.choose_symm, Nat.choose_zero_right, Nat.choose_self) with no custom axioms. The main theorem and corollaries are pedagogical wrappers composing Mathlib lemmas with algebraic normalization via the ring tactic.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool. The advertised originalContribution 'Six verified numerical examples with native_decide' is discharged solely by native_decide (e.g. (1+1)^4 = 16, Nat.choose 10 5 = 252, lines 153-169), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing an axiom-free kernel proof. The nine symbolic theorems are proved from Mathlib (add_pow, Nat.sum_range_choose, Int.alternating_sum_range_choose, Nat.choose_succ_succ, Nat.choose_symm, Nat.choose_zero_right, Nat.choose_self) with no custom axioms; the main theorem and corollaries are pedagogical wrappers composing Mathlib lemmas with algebraic normalization via the ring tactic. No literal axiom declarations and 0 sorries.",
     "relatedProblems": [
       {
         "id": "binomial-theorem-oq-01",

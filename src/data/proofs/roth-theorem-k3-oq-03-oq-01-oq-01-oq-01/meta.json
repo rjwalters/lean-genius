@@ -1,0 +1,149 @@
+{
+  "id": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+  "title": "Roth/Szemerédi OQ-03-OQ-01-OQ-01-OQ-01: Symmetries of the k-AP Counting Operator Λ_k",
+  "slug": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+  "description": "The geometric symmetries of the k-AP counting operator Λ_k(f₀,…,f_{k-1}) = E_{x,d} ∏ᵢ fᵢ(x+i·d): translation invariance (kAPCount_translate — a common shift of every function leaves the count unchanged) and reflection symmetry (kAPCount_reflect — reversing the tuple, Λ_k(f₀,…,f_{k-1}) = Λ_k(f_{k-1},…,f₀)). These are not consequences of multilinearity; they come from reindexing bijections of the averaging variables (x,d): the shift x↦x+t and the AP-reversal involution (x,d)↦(x+(k-1)d,−d) combined with the index reversal i↦k-1-i. Directly answers a parent open question. 0-axiom verified.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gowers_norm",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean",
+    "tags": [
+      "roth-theorem",
+      "szemeredi",
+      "gowers-norm",
+      "additive-combinatorics",
+      "symmetry",
+      "counting-operator",
+      "ZMod"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.prod_comp'",
+        "description": "∏ x∈s, f (σ x) x = ∏ x∈s, f x (σ.symm x) — reindex a product where the permutation acts on one of two slots; used with Fin.revPerm to reverse the index",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "Equiv.sum_comp / Fintype.sum_equiv",
+        "description": "Reindex a finite sum along an equivalence; here the AP-reversal involution on (ZMod N)² and the base-point shift on ZMod N",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "Function.Involutive.toPerm",
+        "description": "Package an involution as an Equiv.Perm — turns reflectShift into a usable reindexing bijection",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Fintype.sum_prod_type' / Fin.val_rev / add_nsmul",
+        "description": "Uncurry a double sum to a sum over the product type; the value of Fin.rev (k-1-i); split nsmul over a sum of naturals",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      }
+    ],
+    "originalContributions": [
+      "kAPCount_translate: translation invariance — Λ_k(f₀(·+t),…,f_{k-1}(·+t)) = Λ_k(f₀,…,f_{k-1}); the common shift is absorbed by reindexing the base-point average x↦x+t",
+      "kAPCount_reflect: reflection symmetry — Λ_k(f₀,…,f_{k-1}) = Λ_k(f_{k-1},…,f₀) (tuple reversal fun i => f (Fin.rev i))",
+      "reflectShift + reflectShift_involutive: the AP-reversal substitution (x,d)↦(x+(k-1)d,−d) is an involution of (ZMod N)²",
+      "prod_rev_reindex: index reversal inside the k-AP product via Fin.revPerm",
+      "reflect_shift_eq: the pointwise identity x+(k-1-i)·d = (x+(k-1)d)+i·(−d) relating the reversed AP shift to the reflected progression"
+    ],
+    "axiomCount": 0,
+    "lineCount": 134,
+    "assumptions": "0 axioms, 0 sorries. Only foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide. Imports the multilinearity parent Proofs.RothTheoremOQ03OQ01OQ01 (hence the grandparent operator definitions).",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Symmetries of the AP-counting average.** In the Gowers-norm approach to Roth's and Szemerédi's theorems the central object is the normalized k-term arithmetic-progression count Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏ᵢ fᵢ(x + i·d). Beyond its algebraic structure (multilinearity, proved in the parent file), Λ_k inherits the geometric symmetries of an arithmetic progression viewed as a set: it is unchanged when the whole configuration is translated, and when the progression is read backwards. These symmetries are used routinely — e.g. to normalize a configuration to a convenient base point, or to move the 'distinguished' slot to either end — and underlie the symmetric role the two endpoints play in the van der Corput / generalized von Neumann estimates.",
+    "problemStatement": "**Λ_k respects the symmetries of an AP.** For the operator Λ_k from the grandparent file:\n\n- **translation invariance:** Λ_k(f₀(·+t),…,f_{k-1}(·+t)) = Λ_k(f₀,…,f_{k-1}) for every t ∈ ZMod N;\n- **reflection symmetry:** Λ_k(f₀,…,f_{k-1}) = Λ_k(f_{k-1},…,f₀), i.e. Λ_k(fun i => f (Fin.rev i)) = Λ_k f.\n\nNeither follows from multilinearity; each is a reindexing of the averaging variables (x,d).",
+    "text": "The k-AP counting operator Λ_k is shown to be invariant under a common translation of its functions and under reversal of its argument tuple. The first follows by reindexing the base-point average x↦x+t; the second by the AP-reversal involution (x,d)↦(x+(k-1)d,−d) on (ZMod N)² together with the Fin index reversal i↦k-1-i. 0-axiom verified.",
+    "proofStrategy": "**Translation (kAPCount_translate).** Reading fᵢ((x+i·d)+t) = fᵢ((x+t)+i·d), the shift lands entirely on the base point x; `Fintype.sum_equiv (Equiv.addRight t)` reindexes the x-average, and the d-average and product are untouched (closed by `abel`).\n\n**Reflection (kAPCount_reflect).** Two independent bijections. (1) `prod_rev_reindex` reverses the index inside the product using `Equiv.Perm.prod_comp'` with `Fin.revPerm`, turning ∏ᵢ f(rev i)(x+i·d) into ∏ᵢ f i (x+(rev i)·d). (2) The pointwise identity `reflect_shift_eq`, x+(k-1-i)·d = (x+(k-1)d)+i·(−d), shows the reversed shift is the forward shift of the reflected progression (base point x+(k-1)d, difference −d); the map `reflectShift (x,d) = (x+(k-1)d, −d)` is an involution (`reflectShift_involutive`), so `Equiv.sum_comp` of its `toPerm` reindexes the double average (after uncurrying it with `Fintype.sum_prod_type'`).",
+    "keyInsights": [
+      "**The symmetries are reindexings, not algebra:** translation invariance and reflection live in the bijection group of the averaging variables (x,d), orthogonal to the slot-by-slot multilinearity of the parent file.",
+      "**Reflection = two commuting reversals:** reverse the index (which function sits where) with Fin.rev, and reverse the progression (base point and common difference) with the involution (x,d)↦(x+(k-1)d,−d); together they fix Λ_k.",
+      "**An AP read backwards is an AP:** the set {x, x+d, …, x+(k-1)d} equals {y, y+e, …, y+(k-1)e} with y = x+(k-1)d and e = −d, which is exactly the substitution reflectShift encodes.",
+      "**Translation absorbs into the base point:** a common shift t of all functions is the same as translating x by t, because (x+i·d)+t = (x+t)+i·d for every term simultaneously."
+    ],
+    "prerequisites": [
+      "The grandparent operator Λ_k = kAPCount (Proofs.RothTheoremOQ03OQ01) and its multilinearity (Proofs.RothTheoremOQ03OQ01OQ01)",
+      "Reindexing finite sums/products along equivalences (Equiv.sum_comp, Equiv.Perm.prod_comp', Fintype.sum_equiv)",
+      "Fin.rev and the involution i↦k-1-i; nsmul arithmetic in ZMod N"
+    ]
+  },
+  "sections": [
+    {
+      "id": "translation",
+      "title": "Translation Invariance",
+      "summary": "kAPCount_translate: a common shift fᵢ(·+t) of every function leaves Λ_k unchanged, by reindexing the base-point average x↦x+t.",
+      "startLine": 55,
+      "endLine": 65,
+      "mathContext": "Fintype.sum_equiv (Equiv.addRight t); (x+i·d)+t = (x+t)+i·d."
+    },
+    {
+      "id": "index-reversal",
+      "title": "Index Reversal in the Product",
+      "summary": "prod_rev_reindex: ∏ᵢ f(rev i)(x+i·d) = ∏ᵢ f i (x+(rev i)·d), via Equiv.Perm.prod_comp' with Fin.revPerm.",
+      "startLine": 75,
+      "endLine": 80,
+      "mathContext": "Permuting one slot of a two-slot product; Fin.revPerm is its own inverse."
+    },
+    {
+      "id": "reversal-involution",
+      "title": "The AP-Reversal Involution",
+      "summary": "reflectShift (x,d) = (x+(k-1)d, −d) is an involution (reflectShift_involutive); reflect_shift_eq is the pointwise shift identity.",
+      "startLine": 82,
+      "endLine": 106,
+      "mathContext": "x+(k-1-i)·d = (x+(k-1)d)+i·(−d); add_nsmul + Fin.val_rev."
+    },
+    {
+      "id": "reflection",
+      "title": "Reflection Symmetry of Λ_k",
+      "summary": "kAPCount_reflect: Λ_k(f₀,…,f_{k-1}) = Λ_k(f_{k-1},…,f₀), combining the index reversal with the AP-reversal involution on the (x,d)-average.",
+      "startLine": 108,
+      "endLine": 132,
+      "mathContext": "Fintype.sum_prod_type' to uncurry, then Equiv.sum_comp of reflectShift.toPerm."
+    }
+  ],
+  "conclusion": {
+    "summary": "Building on the grandparent's operator Λ_k and the parent's multilinearity, this entry records the geometric symmetries of Λ_k: it is invariant under a common translation of its functions (kAPCount_translate) and under reversal of its argument tuple (kAPCount_reflect). The reflection rests on an AP-reversal involution (x,d)↦(x+(k-1)d,−d) of the averaging variables together with the Fin index reversal. All 0-axiom and machine-checked.",
+    "implications": "Translation invariance and reflection symmetry are the configuration symmetries used to normalize AP counts (fix a base point, or move a distinguished slot to an endpoint) and they explain the symmetric role of the two extreme terms of the progression in the van der Corput / generalized von Neumann estimates. They directly resolve the parent file's open question on translation-invariance of Λ_k.",
+    "openQuestions": [
+      "Dilation/affine symmetry: Λ_k under d↦λ·d for a unit λ ∈ (ZMod N)ˣ, completing the affine symmetry group of the AP",
+      "Concrete k=3 (Roth) specialization: deduce Λ_3(f₀,f₁,f₂) = Λ_3(f₂,f₁,f₀) by evaluating Fin.rev on Fin 3",
+      "Conjugate symmetry Λ_k(conj f₀,…,conj f_{k-1}) = conj Λ_k(f₀,…,f_{k-1}) and its interaction with reflection"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.RothTheoremOQ03OQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "RothTheoremOQ03OQ01",
+    "lineCount": 134,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: multilinearity of Λ_k. This entry adds the orthogonal geometric symmetries."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03",
+      "relationship": "specializes",
+      "description": "Great-grandparent: Gowers norms and the k-AP counting operator for Roth's theorem."
+    }
+  ],
+  "sorries": 0
+}

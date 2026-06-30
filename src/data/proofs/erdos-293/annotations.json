@@ -16,7 +16,11 @@
       "Unit fractions",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Unit Fractions",
+      "Extremal Functions"
+    ]
   },
   {
     "id": "ann-e293-defs",
@@ -35,7 +39,11 @@
       "Minimal excludant",
       "Axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset Cardinality",
+      "Minimal Excludant",
+      "Axiomatization In Lean"
+    ]
   },
   {
     "id": "ann-e293-vardi",
@@ -44,7 +52,7 @@
       "startLine": 58,
       "endLine": 79
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Vardi Sequence and Constant",
     "content": "**vardiSeq**: The recurrence u₁ = 1, u_{n+1} = u_n(u_n + 1). This grows doubly exponentially: 1, 2, 6, 42, 1806, 3263442, ...\n\n**vardiSeq_values**: The first 5 values are verified by `simp` — a genuine proved theorem.\n\n**vardiConstant**: c₀ = lim u_n^{1/2^n} ≈ 1.26408. This constant appears in the upper bound on v(k).\n\nThe Vardi sequence arises because 1/u₁ + 1/u₂ + ... + 1/uₖ = 1 - 1/(u₁ · u₂ · ... · uₖ), which converges to 1. This gives a canonical k-term decomposition with the largest possible denominators.",
     "mathContext": "The Vardi constant c₀ is the unique positive real root of z^{2^n} - u_n as n → ∞. It satisfies c₀ = lim u_n^{1/2^n} and controls the doubly exponential growth of the sequence.",
@@ -54,7 +62,11 @@
       "Doubly exponential growth",
       "Sylvester-Fibonacci sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Recurrence Relations",
+      "Sylvester's Sequence",
+      "Doubly Exponential Growth"
+    ]
   },
   {
     "id": "ann-e293-lower",
@@ -73,7 +85,11 @@
       "van Doorn-Tang 2025",
       "Factorial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lower Bound Arguments",
+      "Factorial Growth",
+      "Stirling's Approximation"
+    ]
   },
   {
     "id": "ann-e293-upper",
@@ -92,7 +108,11 @@
       "Vardi sequence",
       "Doubly exponential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Bound Arguments",
+      "Vardi Sequence",
+      "Greedy Decomposition"
+    ]
   },
   {
     "id": "ann-e293-conjectures",
@@ -111,6 +131,10 @@
       "Computed values",
       "Erdős conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rates",
+      "Doubly Exponential Bounds",
+      "Small Case Verification"
+    ]
   }
 ]

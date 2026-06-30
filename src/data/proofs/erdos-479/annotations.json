@@ -16,7 +16,11 @@
       "exponential congruences",
       "Graham's conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic with congruences mod n",
+      "exponential congruences of the form 2^n",
+      "the notion of an open conjecture in number theory"
+    ]
   },
   {
     "id": "ann-e479-solution-set",
@@ -35,7 +39,11 @@
       "modular equivalence",
       "ZMOD"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation for subsets of the naturals",
+      "integer modular equivalence (ZMOD) and negative residues",
+      "membership condition 2^n ≡ k (mod n)"
+    ]
   },
   {
     "id": "ann-e479-why-k1-fails",
@@ -54,7 +62,11 @@
       "divisibility",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parity and even/odd case analysis",
+      "divisibility arguments using 2 | n",
+      "proof by contradiction on congruences mod 2"
+    ]
   },
   {
     "id": "ann-e479-partial-results",
@@ -73,7 +85,11 @@
       "multiplicative order",
       "special cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the multiplicative order of 2 modulo n",
+      "powers of two as residues 2^i",
+      "the Graham-Lehmer-Lehmer theorem"
+    ]
   },
   {
     "id": "ann-e479-conjecture",
@@ -92,7 +108,11 @@
       "asymptotic density",
       "existence of solutions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the predicate that a set is infinite",
+      "universal quantification over k > 1",
+      "reducing negative residues by taking k mod n"
+    ]
   },
   {
     "id": "ann-e479-k3-difficulty",
@@ -111,7 +131,11 @@
       "computational number theory",
       "sparse solutions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimal solutions catalogued in OEIS A036236",
+      "sparsity of solutions in computational number theory",
+      "verifying that all n below a bound fail"
+    ]
   },
   {
     "id": "ann-e479-fermat",
@@ -130,7 +154,11 @@
       "prime numbers",
       "infinitude of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fermat's Little Theorem a^p ≡ a (mod p)",
+      "the infinitude of the primes",
+      "odd primes as members of SolutionSet(2)"
+    ]
   },
   {
     "id": "ann-e479-examples",
@@ -149,7 +177,11 @@
       "computational verification",
       "OEIS"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "decidable propositions and Lean's decide tactic",
+      "kernel-checked computation of small congruences",
+      "OEIS minimal-n data A036236"
+    ]
   },
   {
     "id": "ann-e479-summary",
@@ -167,6 +199,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combining lemmas into a conjunction",
+      "finiteness of SolutionSet(1)",
+      "infinitude of SolutionSet for powers of two"
+    ]
   }
 ]

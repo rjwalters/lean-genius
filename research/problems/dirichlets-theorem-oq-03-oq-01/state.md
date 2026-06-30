@@ -1,25 +1,28 @@
 # Research State: dirichlets-theorem-oq-03-oq-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-05T05:12:48-07:00
-**Iteration**: 1
+**Since**: 2026-06-27
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Structural skeleton of the Linnik constant formalized axiom-free as a critical-exponent
+theory (DirichletsTheoremOQ03OQ01.lean, namespace LinnikAdmissible). VERIFIED.
 
 ## Active Approach
-None yet.
+Abstract admissible-exponent set over a base ≥ 1; ray + sandwich + monotonicity of the
+infimum, with the deep number theory isolated to an explicit nonemptiness hypothesis.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+Docker build host corrupt — verified via offline `lake env lean` against Mathlib oleans
+(exit 0; `#print axioms` ⇒ propext/Classical.choice/Quot.sound only).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Optional follow-ups: decide whether the critical exponent is attained (Ici vs Ioi at the
+endpoint); feed a concrete admissible witness into linnik_threshold to reduce parent axioms.

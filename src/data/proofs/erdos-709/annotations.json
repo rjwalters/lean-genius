@@ -17,7 +17,11 @@
       "Systems of distinct representatives",
       "Chinese Remainder Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial number theory",
+      "divisibility",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e709-validset",
@@ -36,7 +40,11 @@
       "Divisibility",
       "Natural numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e709-interval",
@@ -55,7 +63,11 @@
       "Interval arithmetic",
       "Number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 structures",
+      "natural number arithmetic",
+      "set theory basics"
+    ]
   },
   {
     "id": "ann-e709-covering",
@@ -75,7 +87,12 @@
       "Bipartite matching",
       "Injective functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 structures",
+      "functions and injectivity",
+      "divisibility",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e709-f-function",
@@ -94,7 +111,11 @@
       "Minimax problems",
       "Axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "axiomatization in Lean",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e709-lower-bound",
@@ -114,7 +135,11 @@
       "Prime numbers",
       "Erdős-style arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "prime number theory",
+      "combinatorial counting"
+    ]
   },
   {
     "id": "ann-e709-upper-bound",
@@ -134,7 +159,11 @@
       "Greedy algorithms",
       "Bipartite matching"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e709-combined",
@@ -153,7 +182,11 @@
       "Vinogradov notation",
       "Bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "mathematical logic"
+    ]
   },
   {
     "id": "ann-e709-special",
@@ -171,7 +204,11 @@
       "Base cases",
       "Divisibility spacing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "divisibility",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e709-monotone",
@@ -189,7 +226,11 @@
       "Monotone functions",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "order theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e709-problem708",
@@ -208,7 +249,11 @@
       "Covering problems",
       "Extremal set theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "combinatorial number theory",
+      "covering problems"
+    ]
   },
   {
     "id": "ann-e709-open",
@@ -227,7 +272,11 @@
       "Growth rates",
       "Open problems in combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "axiomatization in Lean"
+    ]
   },
   {
     "id": "ann-e709-techniques",
@@ -247,6 +296,10 @@
       "Hall's marriage theorem",
       "Bipartite matching"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "number theory",
+      "graph theory"
+    ]
   }
 ]

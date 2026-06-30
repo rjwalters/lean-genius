@@ -1,0 +1,210 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+  "title": "The Circumcenter–Center Square-Distance Sum: OI² + OIₐ² + OI_b² + OI_c² = 12R²",
+  "slug": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+  "description": "Adds Euler's two metric laws over the four classical tritangent centers — the incenter I and the three excenters Iₐ, I_b, I_c — and proves that the sum of squared distances from the circumcenter O collapses to a shape-independent constant: OI² + OIₐ² + OI_b² + OI_c² = 12R². The collapse hinges on the classical exradius identity rₐ + r_b + r_c − r = 4R, proved here as a separate theorem, which the four Euler formulas convert into 4R² + 2R·4R = 12R². The genuinely new ingredient is Heron's identity 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c), which clears the reciprocal sum 1/pₐ + 1/p_b + 1/p_c − 1/p_s into the circumradius. Reuses the four Euler formulas and the law-of-sines bridge from the sibling files; answers the first open question posed by the excenter entry. 3 theorems (+ 16 supporting lemmas), 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefsOQ02OQ01.lean",
+      "Proofs/FeuerbachsTheoremDefsOQ02.lean",
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "euler",
+      "circumcenter",
+      "incenter",
+      "excenter",
+      "circumradius",
+      "exradius",
+      "heron",
+      "triangle-inequality",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the standard foundational axioms propext / Classical.choice / Quot.sound, confirmed by #print axioms, which do not count as assumptions). Reuses the four Euler formulas euler_OI_formula / euler_OI_a_formula / euler_OI_b_formula / euler_OI_c_formula, the exradius bridges two_R_r_eq / two_R_ra_eq / two_R_rb_eq / two_R_rc_eq, and the law-of-sines identity four_R_area_eq_abc from the sibling files FeuerbachsTheoremDefsOQ02.lean and FeuerbachsTheoremDefsOQ02OQ01.lean, and the coordinate API (Triangle, circumcenter, incenter, excenter_a/b/c, circumradius, inradius, exradius_a/b/c, area, side lengths) from FeuerbachsTheoremDefs.lean; all are themselves 0-sorry, 0-axiom. The strict triangle inequalities (declared private in the parent) are reproved locally.",
+    "lineCount": 330,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "originalContributions": [
+      "sum_OI_sq_eq_twelve_R_sq: the circumcenter–center square-distance sum dist²(O,I) + dist²(O,Iₐ) + dist²(O,I_b) + dist²(O,I_c) = 12R² for an arbitrary non-degenerate triangle — a shape-independent constant obtained by adding Euler's incenter and three excenter laws",
+      "sum_exradii_sub_inradius_eq_four_R: the classical exradius identity rₐ + r_b + r_c − r = 4R, the algebraic heart of the collapse, derived by dividing the cleared key identity 2R(rₐ+r_b+r_c−r) = 8R² by 2R > 0",
+      "heron: Heron's identity in the form 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c), proved from the shoelace area and the coordinate squared side lengths — the bridge that turns the reciprocal sum 1/pₐ+1/p_b+1/p_c−1/p_s into the circumradius via 16·R²·Area² = (abc)²",
+      "key: the cleared reciprocal identity 2R·rₐ + 2R·r_b + 2R·r_c − 2R·r = 8R², obtained by combining the four exradius bridges abc/p_x with Heron's identity through a single linear_combination over the common denominator pₐ·p_b·p_c·p_s",
+      "triangle_345_sum_OI_sq: worked example — for the 3-4-5 right triangle the four squared distances are 5/4, 145/4, 85/4, 65/4, summing to 75 = 12·(5/2)²"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's 1765 study of the triangle gave two metric relations of identical shape: OI² = R² − 2Rr for the incenter and OIₐ² = R² + 2Rrₐ for each excenter, differing only in the sign of the 2Rr term. The sibling gallery entries established both. A natural structural question — posed explicitly as the first open question of the excenter entry — is what happens when all four classical tritangent centers (the incenter and the three excenters, the unique circles tangent to all three sidelines) are taken together. Adding the four formulas gives 4R² + 2R(rₐ + r_b + r_c − r), and a second classical identity of Euler's era, rₐ + r_b + r_c = r + 4R, makes the parenthesis equal to 4R. The total is therefore 12R², completely independent of the triangle's shape: a clean conservation law sitting on top of Euler's pair. The same constant also appears, suitably scaled, in the well-known relation for the centroidal moment of the tritangent centers; here it is proved directly and elementarily from coordinates.",
+    "problemStatement": "For a non-degenerate triangle with circumcenter O, incenter I, excenters Iₐ, I_b, I_c, circumradius R, inradius r and exradii rₐ, r_b, r_c, prove\n$$\\lVert OI\\rVert^2 + \\lVert OI_a\\rVert^2 + \\lVert OI_b\\rVert^2 + \\lVert OI_c\\rVert^2 = 12R^2,$$\nand the underlying exradius identity rₐ + r_b + r_c − r = 4R.",
+    "text": "A 330-line companion file. It reproves the side/area positivity and the strict triangle inequalities (which keep the excenter denominators −a+b+c, a−b+c, a+b−c positive), proves Heron's identity 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c), and assembles the four reused Euler formulas with the reused law of sines to obtain the constant sum 12R², the exradius identity rₐ+r_b+r_c−r = 4R, and the 3-4-5 worked example.",
+    "proofStrategy": "Add the four Euler formulas and reduce the residual to a side-length identity cleared by Heron.\n- **Reduce to the exradii** (`sum_OI_sq_eq_twelve_R_sq`): rewriting each squared distance via euler_OI_formula (R²−2Rr) and euler_OI_a/b/c_formula (R²+2Rr_x) turns the goal into 4R² + (2Rrₐ+2Rr_b+2Rr_c−2Rr) = 12R², i.e. the single identity 2Rrₐ+2Rr_b+2Rr_c−2Rr = 8R², closed by linear_combination.\n- **Clear the reciprocal sum** (`key`): the bridges two_R_ra_eq, …, two_R_r_eq give 2Rr_x = abc/p_x with pₐ = −a+b+c (cyclically) and p_s = a+b+c, so the identity becomes abc/pₐ + abc/p_b + abc/p_c − abc/p_s = 8R². Over the common denominator pₐ·p_b·p_c·p_s the numerator is abc·[p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c], and the pure polynomial fact p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c = 8·abc (a ring identity in a,b,c) reduces it to 8(abc)² = 8R²·pₐp_bp_cp_s.\n- **Heron + law of sines** (`heron`, `four_R_area_eq_abc`): Heron's identity 16·Area² = pₐp_bp_cp_s and the squared law of sines (4R·Area)² = (abc)² together give 8(abc)² = 128R²Area² = 8R²·(16Area²) = 8R²·pₐp_bp_cp_s, finishing the cleared identity by a single linear_combination of the two.\n- **Exradius identity** (`sum_exradii_sub_inradius_eq_four_R`): factoring 2R out of key gives 2R(rₐ+r_b+r_c−r) = 2R·4R; since R > 0 (from the law of sines and positivity of sides and area), mul_left_cancel₀ yields rₐ+r_b+r_c−r = 4R.",
+    "keyInsights": [
+      "The four Euler formulas are individually about single distances, but their sum forgets the shape entirely: every dependence on the side lengths is carried by the term 2R(rₐ+r_b+r_c−r), and the exradius identity annihilates exactly that term, leaving 12R².",
+      "The exradius identity rₐ+r_b+r_c−r = 4R is the load-bearing fact, and it is itself a consequence of Heron: written over a common denominator it is the polynomial identity p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c = 8abc together with 16Area² = pₐp_bp_cp_s.",
+      "Heron's identity is the only genuinely new analytic input; everything else is reuse. Proving it in the clean factored form 16Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c) lets a single ring call expand the product to 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴, which the coordinate squared side lengths match against the shoelace area.",
+      "Reusing the four Euler formulas and the law of sines means the proof never re-touches sqrt: the entire argument after the rewrites is a rational identity in the side lengths, circumradius and area, closed by linear_combination of Heron and the law of sines.",
+      "Clearing the reciprocal sum needs the excenter denominators to be nonzero, which is exactly the strict triangle inequality — the same obstruction the excenter entry isolated — so the constant 12R² quietly encodes the genuineness of the triangle."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefsOQ02OQ01.lean — the three excenter Euler formulas euler_OI_a/b/c_formula and the bridges two_R_ra/rb/rc_eq",
+      "FeuerbachsTheoremDefsOQ02.lean — the incenter Euler formula euler_OI_formula, the bridge two_R_r_eq, and the law-of-sines identity four_R_area_eq_abc",
+      "FeuerbachsTheoremDefs.lean — the coordinate API (Point, Triangle, circumcenter, incenter, excenter_a/b/c, circumradius, inradius, exradius_a/b/c, area, side_a/b/c, dist2_sq) and triangle_345",
+      "Heron's identity / the shoelace area, the 2-D Lagrange identity for the strict triangle inequality, and ring / linear_combination / nlinarith for polynomial identities over ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Module docstring stating the constant sum OI²+OIₐ²+OI_b²+OI_c² = 12R², imports FeuerbachsTheoremDefsOQ02OQ01 (transitively the sibling and parent defs), opens the FeuerbachsTheorem, FeuerbachEulerOI and FeuerbachExcenterEuler namespaces.",
+      "mathContext": "The four Euler formulas, the four exradius bridges and the law-of-sines identity all come from the sibling files; only Heron's identity and the constant-sum assembly are new."
+    },
+    {
+      "id": "positivity",
+      "title": "Part I: Squared Side Lengths and Positivity",
+      "startLine": 70,
+      "endLine": 127,
+      "summary": "Squared side lengths a² = |BC|² etc., positivity of each side and of the area, and positivity of the perimeter (the parent's are private).",
+      "mathContext": "Each side is positive because the vertices are pairwise distinct; the area is positive because the signed shoelace determinant is nonzero (non-degeneracy)."
+    },
+    {
+      "id": "triangleineq",
+      "title": "Part II: The Strict Triangle Inequalities",
+      "startLine": 129,
+      "endLine": 221,
+      "summary": "strict_tri_ineq_a/b/c (a < b+c and cyclic) and pa_pos/pb_pos/pc_pos (positivity of the excenter denominators −a+b+c, a−b+c, a+b−c), reproved locally since the parent declares them private.",
+      "mathContext": "Via the law of cosines a² = b²+c²+2P and the Lagrange identity b²c² − P² = D² with D the non-degeneracy determinant; D ≠ 0 gives P < bc, hence a² < (b+c)², hence a < b+c. These keep the reciprocal denominators nonzero."
+    },
+    {
+      "id": "heron",
+      "title": "Part III: Heron's Identity",
+      "startLine": 223,
+      "endLine": 249,
+      "summary": "heron: 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c), proved by expanding the product (ring) to 2a²b²+2b²c²+2c²a²−a⁴−b⁴−c⁴ and matching the coordinate squared side lengths against the shoelace area.",
+      "mathContext": "Area = |det|/2 so 16Area² = 4det²; the coordinate identity 4det² = 2a²b²+… is a degree-4 polynomial identity closed by ring after substituting a² = |BC|² (cyclically)."
+    },
+    {
+      "id": "key",
+      "title": "Part IV: The Key Reciprocal Identity",
+      "startLine": 250,
+      "endLine": 275,
+      "summary": "key: 2R·rₐ + 2R·r_b + 2R·r_c − 2R·r = 8R². The four exradius bridges turn this into abc/pₐ+abc/p_b+abc/p_c−abc/p_s = 8R², cleared over the common denominator pₐp_bp_cp_s by a single linear_combination of the law of sines and Heron.",
+      "mathContext": "The pure polynomial fact p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c = 8abc reduces the numerator to 8(abc)², and 16R²Area² = (abc)² with 16Area² = pₐp_bp_cp_s finishes it."
+    },
+    {
+      "id": "main",
+      "title": "Part V: The Main Identity OI²+OIₐ²+OI_b²+OI_c² = 12R²",
+      "startLine": 277,
+      "endLine": 292,
+      "summary": "sum_OI_sq_eq_twelve_R_sq: rewriting each squared distance by the four Euler formulas leaves 4R² + (2Rrₐ+2Rr_b+2Rr_c−2Rr) = 12R², closed by linear_combination of key.",
+      "mathContext": "All side-length dependence is concentrated in the parenthesis, which key shows equals 8R²; the result is shape-independent."
+    },
+    {
+      "id": "exradius",
+      "title": "Part VI: The Exradius Identity rₐ+r_b+r_c−r = 4R",
+      "startLine": 294,
+      "endLine": 314,
+      "summary": "sum_exradii_sub_inradius_eq_four_R: factoring 2R from key and cancelling (R > 0 from the law of sines and positivity) yields the classical exradius identity.",
+      "mathContext": "R > 0 because 4R·Area = abc > 0 with Area > 0; mul_left_cancel₀ removes the factor 2R from 2R(rₐ+r_b+r_c−r) = 2R·4R."
+    },
+    {
+      "id": "example",
+      "title": "Part VII: Worked Example — the 3-4-5 Triangle",
+      "startLine": 316,
+      "endLine": 330,
+      "summary": "triangle_345_sum_OI_sq: for the 3-4-5 right triangle the four squared distances 5/4, 145/4, 85/4, 65/4 sum to 75 = 12·(5/2)².",
+      "mathContext": "Instantiates the main theorem at the parent's triangle_345 and uses its circumradius 5/2; norm_num evaluates 12·(5/2)² = 75."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves the shape-independent conservation law OI² + OIₐ² + OI_b² + OI_c² = 12R² summing Euler's incenter and three excenter formulas over the four tritangent centers, together with the classical exradius identity rₐ + r_b + r_c − r = 4R that drives the collapse, both resting on a from-scratch proof of Heron's identity. Answers the first open question of the excenter entry. 3 theorems (plus 16 supporting lemmas), 0 axioms, 0 sorries.",
+    "implications": "**A conservation law on Euler's pair**: the sibling entries gave OI² = R² − 2Rr and OIₐ² = R² + 2Rrₐ; summing all four centers cancels every shape-dependent term and leaves the pure constant 12R², a fact more rigid than either Euler formula alone.\n\n**The exradius identity made explicit**: rₐ + r_b + r_c − r = 4R is supplied as a standalone theorem, a classical companion of Euler's formula useful wherever exradii and the circumradius interact.\n\n**Heron's identity as gallery infrastructure**: 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c) is proved coordinate-free of trigonometry and is reusable for any side-length/area relation in the triangle-geometry strand.",
+    "openQuestions": [
+      "Establish the incenter–excenter distance IIₐ² = 4R·rₐ (so IIₐ = 2√(R rₐ)) and the excenter–excenter distances IₐI_b, completing the metric table of the four tritangent centers and recovering their pairwise sum.",
+      "Show that I, Iₐ, I_b, I_c form an orthocentric system with common nine-point circle the circumcircle of ABC, so that 12R² also equals the analogous square-distance sum from the centroid of the four centers, linking back to the Feuerbach configuration.",
+      "Generalize to weighted tritangent sums: determine for which weights wₐ,w_b,w_c,w₀ the combination w₀·OI² + wₐ·OIₐ² + w_b·OI_b² + w_c·OI_c² is shape-independent, and characterize the resulting constants."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "the excenter Euler law OIₐ² = R² + 2Rrₐ; this entry sums it with the incenter law over all four tritangent centers, reusing its three excenter formulas and answering its first open question"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-02",
+      "relationship": "extends",
+      "description": "the incenter Euler law OI² = R² − 2Rr; reused here together with its law-of-sines identity four_R_area_eq_abc"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "extends",
+      "description": "uses the circumcenter, incenter, excenters, circumradius, inradius and exradii defined in FeuerbachsTheoremDefs.lean and the worked triangle_345"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "the full Feuerbach theorem, whose nine-point circle is tangent to the incircle and all three excircles whose centers appear here"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.FeuerbachsTheoremDefsOQ02OQ01"],
+    "opens": ["FeuerbachsTheorem", "FeuerbachEulerOI", "FeuerbachExcenterEuler"],
+    "namespace": "FeuerbachSumOISq",
+    "lineCount": 330,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ02OQ01OQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefsOQ02OQ01.lean",
+      "Proofs/FeuerbachsTheoremDefsOQ02.lean",
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "sum_OI_sq_eq_twelve_R_sq",
+      "type": "core",
+      "description": "The circumcenter–center square-distance sum over the four tritangent centers equals 12R², independent of the triangle's shape.",
+      "leanType": "∀ T : Triangle, dist2_sq T.circumcenter T.incenter + dist2_sq T.circumcenter T.excenter_a + dist2_sq T.circumcenter T.excenter_b + dist2_sq T.circumcenter T.excenter_c = 12 * T.circumradius ^ 2"
+    },
+    {
+      "name": "sum_exradii_sub_inradius_eq_four_R",
+      "type": "core",
+      "description": "The classical exradius identity: the three exradii exceed the inradius by exactly four circumradii.",
+      "leanType": "∀ T : Triangle, T.exradius_a + T.exradius_b + T.exradius_c - T.inradius = 4 * T.circumradius"
+    },
+    {
+      "name": "heron",
+      "type": "lemma",
+      "description": "Heron's identity in factored form, the bridge converting the reciprocal sum of excenter denominators into the circumradius.",
+      "leanType": "∀ T : Triangle, 16 * T.area ^ 2 = (T.side_a + T.side_b + T.side_c) * (-T.side_a + T.side_b + T.side_c) * (T.side_a - T.side_b + T.side_c) * (T.side_a + T.side_b - T.side_c)"
+    },
+    {
+      "name": "key",
+      "type": "lemma",
+      "description": "The cleared reciprocal identity 2Rrₐ + 2Rr_b + 2Rr_c − 2Rr = 8R², the algebraic core of both main theorems.",
+      "leanType": "∀ T : Triangle, 2 * T.circumradius * T.exradius_a + 2 * T.circumradius * T.exradius_b + 2 * T.circumradius * T.exradius_c - 2 * T.circumradius * T.inradius = 8 * T.circumradius ^ 2"
+    },
+    {
+      "name": "triangle_345_sum_OI_sq",
+      "type": "example",
+      "description": "Worked example: for the 3-4-5 right triangle the four squared distances sum to 75 = 12·(5/2)².",
+      "leanType": "dist2_sq triangle_345.circumcenter triangle_345.incenter + dist2_sq triangle_345.circumcenter triangle_345.excenter_a + dist2_sq triangle_345.circumcenter triangle_345.excenter_b + dist2_sq triangle_345.circumcenter triangle_345.excenter_c = 75"
+    }
+  ],
+  "sorries": 0
+}

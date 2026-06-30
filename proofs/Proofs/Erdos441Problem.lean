@@ -58,7 +58,7 @@ def IsLCMBounded (A : Finset ℕ) (N : ℕ) : Prop :=
 
 /-- g(N): Maximum size of an LCM-bounded subset of {1,...,N} -/
 noncomputable def g (N : ℕ) : ℕ :=
-  sSup {A.card | A : Finset ℕ, IsLCMBounded A N}
+  sSup { n | ∃ A : Finset ℕ, IsLCMBounded A N ∧ A.card = n }
 
 /-
 ## Part 2: Erdős' Proposed Construction
@@ -166,11 +166,12 @@ theorem erdos_question_disproved :
 /-- The constant (9/8)^{1/2} = 3/(2√2) ≈ 1.061 -/
 theorem constant_value :
     Real.sqrt ((9 : ℝ) / 8) = 3 / (2 * Real.sqrt 2) := by
-  rw [Real.sqrt_div_self', Real.sqrt_eq_iff_sq_eq]
-  · ring_nf
-    norm_num
-  · norm_num
-  · norm_num
+  have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hpos : (0 : ℝ) ≤ 3 / (2 * Real.sqrt 2) := by positivity
+  rw [← Real.sqrt_sq hpos]
+  congr 1
+  rw [div_pow, mul_pow, hs2]
+  norm_num
 
 /-
 ## Part 11: Summary

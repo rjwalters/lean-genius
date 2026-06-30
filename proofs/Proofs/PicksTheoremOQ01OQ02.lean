@@ -68,25 +68,26 @@ def triangleScaled (n t : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.range (t * n + 1) ×ˢ Finset.range (t * n + 1)).filter (fun p => p.1 + p.2 ≤ t * n)
 
 private lemma triangleScaled_eq_biUnion (n t : ℕ) :
-    triangleScaled n t = (Finset.range (t * n + 1)).biUnion Finset.Nat.antidiagonal := by
+    triangleScaled n t = (Finset.range (t * n + 1)).biUnion Finset.antidiagonal := by
   ext ⟨x, y⟩
   simp only [triangleScaled, Finset.mem_filter, Finset.mem_product, Finset.mem_range,
-    Finset.mem_biUnion, Finset.Nat.mem_antidiagonal]
+    Finset.mem_biUnion, Finset.mem_antidiagonal]
   constructor
   · intro ⟨⟨hx, hy⟩, hsum⟩; exact ⟨x + y, by omega, rfl⟩
   · intro ⟨k, hk, hxy⟩; omega
 
 private lemma antidiagonals_pairwise_disjoint (N : ℕ) :
-    (Finset.range N).PairwiseDisjoint Finset.Nat.antidiagonal := by
+    (↑(Finset.range N) : Set ℕ).PairwiseDisjoint
+      (Finset.antidiagonal : ℕ → Finset (ℕ × ℕ)) := by
   intro k _ l _ hkl
   apply Finset.disjoint_left.mpr
   intro ⟨x, y⟩ hk hl
-  rw [Finset.Nat.mem_antidiagonal] at hk hl
-  exact hkl (hk.trans hl.symm)
+  rw [Finset.mem_antidiagonal] at hk hl
+  exact hkl (by omega)
 
 /-- Gauss arithmetic series: 2 · ∑_{k=0}^{n} (k+1) = (n+1)(n+2). -/
 lemma gauss_sum_succ (n : ℕ) :
-    2 * ∑ k in Finset.range (n + 1), (k + 1) = (n + 1) * (n + 2) := by
+    2 * ∑ k ∈ Finset.range (n + 1), (k + 1) = (n + 1) * (n + 2) := by
   induction n with
   | zero => simp
   | succ n ih => rw [Finset.sum_range_succ]; push_cast; linarith
@@ -134,11 +135,23 @@ structure SimpleLatticePolygon where
   area           : ℚ
   area_pos       : 0 < area
   boundary_ge_three : 3 ≤ boundary_count
+  /-- Pick's relation, carried as data so every polygon value is a genuine lattice
+      polygon. This replaces a free-standing `axiom picks_theorem`, which was
+      logically inconsistent: the structure admitted non-Pick polygons for which
+      that axiom asserted a false equation (see #23117, #24682). -/
+  pick_relation  : area = interior_count + boundary_count / 2 - 1
 
-/-- Pick's theorem (axiom, matching PicksTheorem.lean):
+/-- A canonical witness so `opaque scaledPolygon` has a nonempty codomain to synthesize. -/
+instance : Inhabited SimpleLatticePolygon :=
+  ⟨{ interior_count := 0, boundary_count := 3, area := 1 / 2,
+     area_pos := by norm_num, boundary_ge_three := by norm_num,
+     pick_relation := by norm_num }⟩
+
+/-- Pick's theorem (now derived from the `pick_relation` field, matching PicksTheorem.lean):
     Area = interior_count + boundary_count/2 - 1. -/
-axiom picks_theorem (P : SimpleLatticePolygon) :
-    P.area = P.interior_count + P.boundary_count / 2 - 1
+theorem picks_theorem (P : SimpleLatticePolygon) :
+    P.area = P.interior_count + P.boundary_count / 2 - 1 :=
+  P.pick_relation
 
 /-- The integer dilation tP of P (opaque: implementation not needed for the theorem). -/
 opaque scaledPolygon (P : SimpleLatticePolygon) (t : ℕ) : SimpleLatticePolygon
@@ -219,6 +232,11 @@ noncomputable def rectanglePolygon (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
   area           := (m : ℚ) * n
   area_pos       := by positivity
   boundary_ge_three := by omega
+  pick_relation  := by
+    have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by exact_mod_cast Nat.cast_sub hm
+    have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by exact_mod_cast Nat.cast_sub hn
+    push_cast [hcm, hcn]
+    ring
 
 /-- Pick's theorem is satisfied for rectangles: mn = (m-1)(n-1) + (m+n) - 1 = mn - 1 + 1 = mn. -/
 theorem rectangle_picks_check (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
@@ -259,14 +277,15 @@ theorem rectangle_frameworks_agree (m n t : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) (
 The Ehrhart series ∑_{t≥0} L(P,t) z^t = h*(z) / (1-z)³ where
   h*(z) = 1 + h₁z + h₂z²
 
-For a 2D lattice polygon: h₀=1, h₁ = A + B/2 - 1 = i(P) + B - 1, h₂ = i(P).
-By Pick's theorem: h₁ = i(P) + B - 1 and all hᵢ are non-negative (Stanley's theorem).
+For a 2D lattice polygon: h₀=1, h₁ = A + B/2 - 2 = i(P) + B - 3, h₂ = i(P).
+(h₁ = L(P,1) - 3 = (A + B/2 + 1) - 3.) By Pick's theorem h₁ = i(P) + B - 3, and all
+hᵢ are non-negative (Stanley's theorem): i(P) ≥ 0 and B ≥ 3.
 -/
 
 /-- h*-vector of a SimpleLatticePolygon. -/
 noncomputable def hstar (P : SimpleLatticePolygon) : Fin 3 → ℚ
   | ⟨0, _⟩ => 1
-  | ⟨1, _⟩ => P.area + P.boundary_count / 2 - 1
+  | ⟨1, _⟩ => P.area + P.boundary_count / 2 - 2
   | ⟨2, _⟩ => P.interior_count
 
 /-- h*₀ = 1. -/
@@ -276,12 +295,12 @@ theorem hstar_zero (P : SimpleLatticePolygon) : hstar P ⟨0, by omega⟩ = 1 :=
 theorem hstar_two_eq_interior (P : SimpleLatticePolygon) :
     hstar P ⟨2, by omega⟩ = P.interior_count := rfl
 
-/-- h*₁ ≥ 0: follows from Pick's theorem since h*₁ = i(P) + B - 1 ≥ 0. -/
+/-- h*₁ ≥ 0: follows from Pick's theorem since h*₁ = i(P) + B - 3 ≥ 0. -/
 theorem hstar_one_nonneg (P : SimpleLatticePolygon) : 0 ≤ hstar P ⟨1, by omega⟩ := by
   simp only [hstar]
   have h := picks_theorem P
-  -- h: A = i + B/2 - 1, so A + B/2 - 1 = i + B - 2 + B/2... let me compute
-  -- h*₁ = A + B/2 - 1 = (i + B/2 - 1) + B/2 - 1 = i + B - 2 ≥ 0 since i ≥ 0 and B ≥ 3
+  -- h: A = i + B/2 - 1, so h*₁ = A + B/2 - 2 = (i + B/2 - 1) + B/2 - 2 = i + B - 3
+  -- ≥ 0 since i ≥ 0 and B ≥ 3.
   have hB : (3 : ℚ) ≤ P.boundary_count := by exact_mod_cast P.boundary_ge_three
   linarith [h, (Nat.cast_nonneg P.interior_count : (0 : ℚ) ≤ P.interior_count)]
 
@@ -297,13 +316,9 @@ theorem ehrhart_from_hstar (P : SimpleLatticePolygon) (t : ℕ) (ht : 1 ≤ t) :
     hstar P ⟨1, by omega⟩ * ((t + 1) * t / 2) +
     hstar P ⟨2, by omega⟩ * (t * (t - 1) / 2) := by
   simp only [hstar]
-  have hE := ehrhart_formula P t ht
-  have hB : ((P.boundary_count : ℚ) / 2) * t = P.boundary_count / 2 * t := by ring
-  have hi := picks_theorem P
-  push_cast at hE ⊢
-  field_simp
-  nlinarith [hE, hi,
-    (Nat.cast_nonneg P.interior_count : (0 : ℚ) ≤ P.interior_count),
-    (show (0 : ℚ) ≤ t by exact_mod_cast Nat.zero_le t)]
+  rw [ehrhart_formula P t ht]
+  have hint : (P.interior_count : ℚ) = P.area - P.boundary_count / 2 + 1 := by
+    have := picks_theorem P; linarith
+  rw [hint]; ring
 
 end EhrhartPolynomial

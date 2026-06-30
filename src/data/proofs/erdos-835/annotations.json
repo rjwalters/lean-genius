@@ -4,7 +4,7 @@
     "proofId": "erdos-835",
     "range": {
       "startLine": 1,
-      "endLine": 26
+      "endLine": 34
     },
     "type": "concept",
     "title": "Problem Overview",
@@ -27,12 +27,12 @@
     "id": "ann-835-imports",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 28,
-      "endLine": 34
+      "startLine": 36,
+      "endLine": 36
     },
     "type": "concept",
     "title": "Imports and Setup",
-    "content": "Imports Mathlib's SimpleGraph.Coloring for proper graph colorings, Finset.Basic for finite set operations, and Fintype.Card for cardinality. Opens the Finset namespace for convenient access to set operations.",
+    "content": "Imports the full Mathlib library, providing SimpleGraph.Coloring for proper graph colorings, Finset/Fintype machinery for finite sets and cardinality, and the tactic suite (fin_cases, decide, interval_cases) used in the proofs. Opens the Finset namespace for convenient access to set operations.",
     "mathContext": "The formalization uses `SimpleGraph.Coloring` which provides $\\text{Coloring}(G, \\alpha) := \\{f : V \\to \\alpha \\mid \\forall u \\sim v,\\, f(u) \\neq f(v)\\}$ as a subtype of vertex-to-color functions.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -49,8 +49,8 @@
     "id": "ann-835-baseset",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 40,
-      "endLine": 41
+      "startLine": 46,
+      "endLine": 47
     },
     "type": "definition",
     "title": "Base Set {1,...,n}",
@@ -71,8 +71,8 @@
     "id": "ann-835-ksubsets",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 43,
-      "endLine": 44
+      "startLine": 49,
+      "endLine": 50
     },
     "type": "definition",
     "title": "k-Subsets Type",
@@ -95,12 +95,12 @@
     "id": "ann-835-johnson-adj",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 46,
-      "endLine": 48
+      "startLine": 58,
+      "endLine": 62
     },
     "type": "definition",
     "title": "Johnson Adjacency",
-    "content": "Two k-subsets S, T are adjacent in J(n,k) if their intersection has cardinality k-1, meaning they differ by exactly one element. Each vertex has degree k(n-k): there are k choices for the element to remove and n-k choices for the replacement.",
+    "content": "Two k-subsets S, T are adjacent in J(n,k) when they are distinct and their intersection has cardinality k-1, i.e. they differ by exactly one element. The explicit distinctness clause makes the relation irreflexive for every k (including k=0), so it yields a genuine SimpleGraph. Each vertex has degree k(n-k): k choices for the element to remove and n-k for the replacement.",
     "mathContext": "$S \\sim T$ in $J(n,k)$ iff $|S \\cap T| = k - 1$, equivalently $|S \\triangle T| = 2$. Each vertex has degree $k(n-k)$, so $J(2k,k)$ is $k^2$-regular.",
     "significance": "key",
     "relatedConcepts": [
@@ -119,8 +119,8 @@
     "id": "ann-835-johnson-graph",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 50,
-      "endLine": 54
+      "startLine": 64,
+      "endLine": 71
     },
     "type": "definition",
     "title": "Johnson Graph J(n,k)",
@@ -143,8 +143,8 @@
     "id": "ann-835-coloring",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 60,
-      "endLine": 62
+      "startLine": 77,
+      "endLine": 79
     },
     "type": "definition",
     "title": "Proper Coloring",
@@ -167,8 +167,8 @@
     "id": "ann-835-chromatic",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 64,
-      "endLine": 66
+      "startLine": 81,
+      "endLine": 87
     },
     "type": "definition",
     "title": "Chromatic Number",
@@ -191,8 +191,8 @@
     "id": "ann-835-property",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 72,
-      "endLine": 76
+      "startLine": 93,
+      "endLine": 97
     },
     "type": "definition",
     "title": "Erdős-Rosenfeld Rainbow Property",
@@ -215,8 +215,8 @@
     "id": "ann-835-question",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 78,
-      "endLine": 80
+      "startLine": 99,
+      "endLine": 101
     },
     "type": "definition",
     "title": "The Erdős-Rosenfeld Question",
@@ -237,8 +237,8 @@
     "id": "ann-835-equiv",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 91,
-      "endLine": 93
+      "startLine": 103,
+      "endLine": 110
     },
     "type": "concept",
     "title": "Equivalence to Chromatic Number",
@@ -260,12 +260,12 @@
     "id": "ann-835-k2",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 99,
-      "endLine": 104
+      "startLine": 115,
+      "endLine": 137
     },
     "type": "concept",
     "title": "Base Case k = 2",
-    "content": "The base case k = 2 works: J(4,2) has 6 vertices (the 2-subsets of {1,2,3,4}) and is isomorphic to the octahedron graph (complement of 3K_2). Its chromatic number is 3 = k+1, and a proper 3-coloring satisfies the rainbow property. The constructive proof provides a witness coloring.",
+    "content": "The base case k = 2 is fully proved (no sorry). J(4,2) has 6 vertices (the 2-subsets of {1,2,3,4}). The witness colouring uses the three perfect matchings of K_4: {1,2},{3,4} -> 0; {1,3},{2,4} -> 1; {1,4},{2,3} -> 2. Every 3-subset A of {1,2,3,4} contains exactly one edge from each matching, so all three colours appear among its 2-subsets, establishing the Erdős-Rosenfeld rainbow property. The proof enumerates the four 3-subsets via powersetCard and discharges each colour by decide.",
     "mathContext": "$J(4,2) \\cong \\overline{3K_2}$ (octahedron), $\\chi(J(4,2)) = 3 = 2 + 1$. The 6 vertices are $\\{12, 13, 14, 23, 24, 34\\}$ and a valid coloring assigns complementary pairs the same color.",
     "significance": "key",
     "relatedConcepts": [
@@ -283,8 +283,8 @@
     "id": "ann-835-k3",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 106,
-      "endLine": 107
+      "startLine": 139,
+      "endLine": 140
     },
     "type": "concept",
     "title": "Case k = 3: Failure",
@@ -306,8 +306,8 @@
     "id": "ann-835-k4-k5",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 109,
-      "endLine": 113
+      "startLine": 142,
+      "endLine": 146
     },
     "type": "concept",
     "title": "Cases k = 4, 5: Clear Failure",
@@ -328,8 +328,8 @@
     "id": "ann-835-k6",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 115,
-      "endLine": 117
+      "startLine": 148,
+      "endLine": 150
     },
     "type": "concept",
     "title": "Case k = 6: Erdős-Rosenfeld 'Not Sure'",
@@ -350,8 +350,8 @@
     "id": "ann-835-k7-k8",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 119,
-      "endLine": 123
+      "startLine": 152,
+      "endLine": 156
     },
     "type": "concept",
     "title": "Cases k = 7, 8: Largest Verified",
@@ -372,8 +372,8 @@
     "id": "ann-835-lower-bound",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 129,
-      "endLine": 131
+      "startLine": 158,
+      "endLine": 162
     },
     "type": "concept",
     "title": "Lower Bound χ >= k+1",
@@ -395,8 +395,8 @@
     "id": "ann-835-upper-bound",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 133,
-      "endLine": 135
+      "startLine": 158,
+      "endLine": 162
     },
     "type": "concept",
     "title": "Upper Bound χ <= 2k",
@@ -417,8 +417,8 @@
     "id": "ann-835-values",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 137,
-      "endLine": 145
+      "startLine": 158,
+      "endLine": 162
     },
     "type": "concept",
     "title": "Known Chromatic Number Table",
@@ -439,8 +439,8 @@
     "id": "ann-835-main",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 160,
-      "endLine": 169
+      "startLine": 167,
+      "endLine": 185
     },
     "type": "concept",
     "title": "Main Theorem: erdos_835",
@@ -462,8 +462,8 @@
     "id": "ann-835-unique",
     "proofId": "erdos-835",
     "range": {
-      "startLine": 171,
-      "endLine": 177
+      "startLine": 187,
+      "endLine": 198
     },
     "type": "concept",
     "title": "Uniqueness of k = 2",

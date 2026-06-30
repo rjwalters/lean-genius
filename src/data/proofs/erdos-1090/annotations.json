@@ -16,7 +16,11 @@
       "Finset",
       "module structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 import and namespace system",
+      "Mathlib library organization",
+      "Euclidean inner product spaces"
+    ]
   },
   {
     "id": "ann-point-def",
@@ -35,7 +39,11 @@
       "abbrev vs def",
       "typeclass transparency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "EuclideanSpace ℝ (Fin n) as a vector space",
+      "Lean 4 abbrev vs def and definitional transparency",
+      "typeclass inference (Module, InnerProductSpace)"
+    ]
   },
   {
     "id": "ann-two-coloring",
@@ -54,7 +62,11 @@
       "subtype",
       "coloring functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-coloring of a set",
+      "Lean subtypes and membership coercion",
+      "Boolean-valued functions"
+    ]
   },
   {
     "id": "ann-collinear-def",
@@ -73,7 +85,11 @@
       "vector subtraction",
       "line parameterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vector subtraction and scalar multiplication in ℝ²",
+      "parametric description of a line",
+      "existential quantifiers in Lean Prop"
+    ]
   },
   {
     "id": "ann-line-structure",
@@ -92,7 +108,11 @@
       "non-degeneracy condition",
       "parametric line"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parametric line p + t·d in a vector space",
+      "Lean 4 structure types with proof fields",
+      "non-degeneracy conditions (direction ≠ 0)"
+    ]
   },
   {
     "id": "ann-monochromatic-def",
@@ -111,7 +131,11 @@
       "color uniformity",
       "Bool equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two-colorings as functions to Bool",
+      "subtype quantification in Lean",
+      "monochromatic set"
+    ]
   },
   {
     "id": "ann-k-collinear-def",
@@ -130,7 +154,11 @@
       "Finset subset",
       "existential witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset and Finset.card",
+      "the Line structure and OnLine predicate",
+      "Ramsey-type monochromatic configurations"
+    ]
   },
   {
     "id": "ann-ramsey-property",
@@ -149,7 +177,11 @@
       "Ramsey property",
       "vacuous truth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory and unavoidable monochromatic structures",
+      "universal vs existential quantification",
+      "vacuous truth of guarded implications"
+    ]
   },
   {
     "id": "ann-graham-selfridge",
@@ -168,7 +200,11 @@
       "existential construction",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Ramsey property (HasRamseyProperty)",
+      "axioms in Lean and existential witnesses",
+      "base case k=3 of the Erdős #1090 problem"
+    ]
   },
   {
     "id": "ann-combinatorial-line",
@@ -187,7 +223,11 @@
       "Fin type",
       "Disjoint predicate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the combinatorial cube [k]ⁿ",
+      "combinatorial lines (fixed vs varying coordinates)",
+      "Fin n indexing and Finset.Disjoint"
+    ]
   },
   {
     "id": "ann-hales-jewett",
@@ -206,7 +246,11 @@
       "van der Waerden",
       "Ramsey dimension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Hales-Jewett theorem",
+      "combinatorial lines in [k]ⁿ",
+      "van der Waerden's theorem as a corollary"
+    ]
   },
   {
     "id": "ann-generic-projection",
@@ -225,7 +269,11 @@
       "algebraic independence",
       "structure preservation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "generic / algebraically independent projections",
+      "injective structure-preserving maps",
+      "transfer from combinatorial to geometric collinearity"
+    ]
   },
   {
     "id": "ann-hunter-observation",
@@ -244,7 +292,11 @@
       "transfer principle",
       "composition of axioms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Hales-Jewett theorem and generic projection",
+      "pullback of a coloring along a map",
+      "the transfer principle (combinatorial to geometric Ramsey)"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -263,7 +315,11 @@
       "exact tactic",
       "corollary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hunter's observation for general k",
+      "Lean intro and exact tactics",
+      "deriving a theorem as a corollary of an axiom"
+    ]
   },
   {
     "id": "ann-bounds",
@@ -283,7 +339,11 @@
       "sorry",
       "optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey number as a minimization problem",
+      "noncomputable definitions and Nat.find",
+      "sorry placeholders in Lean"
+    ]
   },
   {
     "id": "ann-sylvester-gallai",
@@ -302,7 +362,11 @@
       "Finset.filter",
       "incidence geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Sylvester-Gallai theorem and ordinary lines",
+      "incidence geometry of points and lines",
+      "Finset.filter for counting incidences"
+    ]
   },
   {
     "id": "ann-generalizations",
@@ -321,6 +385,10 @@
       "higher dimensions",
       "Hales-Jewett generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "r-colorings via Fin r",
+      "higher-dimensional Euclidean space ℝᵈ and hyperplanes",
+      "the general (multi-color) Hales-Jewett theorem"
+    ]
   }
 ]

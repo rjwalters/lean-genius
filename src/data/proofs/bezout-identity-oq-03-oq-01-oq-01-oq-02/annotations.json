@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-00-preamble",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports full `Mathlib` and the parent file `Proofs.BezoutIdentityOQ03OQ01OQ01`, then `open BezoutCRTKFold` to bring the parent's `crtKFold` ring isomorphism and `CRTProd` nested product type into scope. The docstring states the open question and explains the Nat.card design choice.",
+    "mathContext": "The key reused objects are `crtKFold ns h : ZMod ns.prod ≃+* CRTProd ns` (the k-fold CRT) and `CRTProd`, the right-associated product type with `CRTProd (n :: ns) = ZMod n × CRTProd ns`. The new lemmas come from `Mathlib.SetTheory.Cardinal.Finite`: `Nat.card_congr`, `Nat.card_prod`, `Nat.card_zmod`, `Nat.card_unique`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.card",
+      "crtKFold",
+      "CRTProd"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib ZMod"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-01-card-crtprod",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 65
+    },
+    "type": "proof-step",
+    "title": "Cardinality of the Nested Product Type",
+    "content": "card_CRTProd proves Nat.card (CRTProd ns) = ∏ᵢ Nat.card (ZMod nᵢ) by induction on the modulus list. The base case unfolds CRTProd [] = PUnit and closes with Nat.card_unique (Nat.card PUnit = 1). The inductive step unfolds CRTProd (n :: ns) = ZMod n × CRTProd ns and splits the count with Nat.card_prod before applying the inductive hypothesis.",
+    "mathContext": "Nat.card_prod gives $|\\alpha \\times \\beta| = |\\alpha| \\cdot |\\beta|$ with no finiteness hypothesis, so the count of the right-associated product factors cleanly as $\\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card_prod",
+      "Nat.card_unique",
+      "list induction"
+    ],
+    "prerequisites": [
+      "Nat.card",
+      "product types"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-02-transport",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 79
+    },
+    "type": "proof-step",
+    "title": "Transport of the Count Along the CRT Isomorphism",
+    "content": "card_zmod_prod_eq_card_CRTProd proves Nat.card (ZMod ns.prod) = Nat.card (CRTProd ns) by Nat.card_congr (crtKFold ns h).toEquiv. The ring isomorphism is in particular an equivalence of underlying sets, and Nat.card is invariant under equivalence.",
+    "mathContext": "An isomorphism of rings is a bijection, hence source and target are equinumerous: $|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = |\\text{CRTProd}\\,ns|$. This is the formal sense in which the CRT preserves cardinality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card_congr",
+      "RingEquiv.toEquiv",
+      "crtKFold"
+    ],
+    "prerequisites": [
+      "ring isomorphism",
+      "cardinality invariance"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-03-preservation",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 93
+    },
+    "type": "key-insight",
+    "title": "Cardinality Preservation (Left Equality)",
+    "content": "card_preservation composes the transport step with card_CRTProd to give |ℤ/(∏nᵢ)ℤ| = ∏ᵢ|ℤ/nᵢℤ|. This is the substantive half of the open question: the count of the quotient ring equals the product of the per-modulus counts because of the CRT decomposition, not by independent evaluation of the two sides.",
+    "mathContext": "$|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = |\\text{CRTProd}\\,ns| = \\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}|$. The middle equality is the CRT isomorphism; the right is the product-type count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "cardinality preservation"
+    ],
+    "prerequisites": [
+      "card_CRTProd",
+      "card_zmod_prod_eq_card_CRTProd"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-04-evaluation",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 110
+    },
+    "type": "proof-step",
+    "title": "Termwise Evaluation (Right Equality)",
+    "content": "map_card_zmod_prod proves ∏ᵢ|ℤ/nᵢℤ| = ∏ᵢnᵢ by induction, rewriting each factor with Nat.card_zmod. Crucially Nat.card_zmod n = n holds for every n — including n = 0, where ℤ/0ℤ = ℤ is infinite and Nat.card ℤ = 0 — so no positivity hypothesis is needed.",
+    "mathContext": "$|\\mathbb{Z}/n_i\\mathbb{Z}| = n_i$ termwise gives $\\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}| = \\prod_i n_i$. The identity $\\text{Nat.card}(\\mathbb{Z}/0\\mathbb{Z}) = 0$ makes the degenerate modulus harmless.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.card_zmod",
+      "List.prod"
+    ],
+    "prerequisites": [
+      "Nat.card",
+      "list induction"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-05-chain",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "The Full Chain",
+    "content": "card_chain packages the complete cardinality-preservation chain |ℤ/(∏nᵢ)ℤ| = ∏ᵢ|ℤ/nᵢℤ| = ∏ᵢnᵢ as a conjunction so both equalities are visible at the use site. card_zmod_prod_eq_prod is the direct corollary |ℤ/(∏nᵢ)ℤ| = ∏ᵢnᵢ, recovering the familiar 'order of the product ring is the product of the moduli'.",
+    "mathContext": "Combining the left and right equalities answers the open question in full: $|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = \\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}| = \\prod_i n_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cardinality preservation",
+      "Chinese Remainder Theorem"
+    ],
+    "prerequisites": [
+      "card_preservation",
+      "map_card_zmod_prod"
+    ]
+  },
+  {
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-06-examples",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 136,
+      "endLine": 148
+    },
+    "type": "example",
+    "title": "Concrete Examples",
+    "content": "card_30 derives |ℤ/30ℤ| = 30 = 2·3·5 from the chain on the pairwise coprime list [2, 3, 5]. card_preservation_2_3_5 instantiates the preservation equality at [2, 3, 5].",
+    "mathContext": "For $30 = 2 \\cdot 3 \\cdot 5$: $|\\mathbb{Z}/30\\mathbb{Z}| = |\\mathbb{Z}/2\\mathbb{Z}| \\cdot |\\mathbb{Z}/3\\mathbb{Z}| \\cdot |\\mathbb{Z}/5\\mathbb{Z}| = 2 \\cdot 3 \\cdot 5 = 30$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide",
+      "concrete instance"
+    ],
+    "prerequisites": [
+      "card_chain"
+    ]
+  }
+]

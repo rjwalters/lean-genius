@@ -16,7 +16,11 @@
       "Van der Waerden numbers",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Two-Colorings",
+      "Discrepancy Theory"
+    ]
   },
   {
     "id": "ann-e176-arithprog",
@@ -34,7 +38,11 @@
       "Finsets"
     ],
     "mathContext": "See annotation content for formal details of arithmetic progression",
-    "prerequisites": []
+    "prerequisites": [
+      "Common Difference",
+      "Finsets",
+      "Index Maps"
+    ]
   },
   {
     "id": "ann-e176-ap-size",
@@ -52,7 +60,11 @@
       "Injectivity"
     ],
     "mathContext": "See annotation content for formal details of ap size",
-    "prerequisites": []
+    "prerequisites": [
+      "Cardinality",
+      "Injective Functions",
+      "Arithmetic Progressions"
+    ]
   },
   {
     "id": "ann-e176-coloring",
@@ -70,7 +82,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of ±1 colorings",
-    "prerequisites": []
+    "prerequisites": [
+      "Sign Functions",
+      "Two-Colorings",
+      "Natural Numbers"
+    ]
   },
   {
     "id": "ann-e176-discrepancy",
@@ -89,7 +105,11 @@
       "Balance"
     ],
     "mathContext": "See annotation content for formal details of ap discrepancy",
-    "prerequisites": []
+    "prerequisites": [
+      "Signed Sums",
+      "Absolute Value",
+      "Color Balance"
+    ]
   },
   {
     "id": "ann-e176-nkl",
@@ -107,7 +127,11 @@
       "Ramsey numbers"
     ],
     "mathContext": "See annotation content for formal details of the n(k,ℓ) function",
-    "prerequisites": []
+    "prerequisites": [
+      "Minimal Witness",
+      "Universal Quantification",
+      "Ramsey-Type Thresholds"
+    ]
   },
   {
     "id": "ann-e176-monotone",
@@ -125,7 +149,11 @@
       "Well-defined minimum"
     ],
     "mathContext": "See annotation content for formal details of monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "Monotone Functions",
+      "Domain Restriction",
+      "Well-Defined Minimum"
+    ]
   },
   {
     "id": "ann-e176-vdw",
@@ -143,7 +171,11 @@
       "Van der Waerden theorem",
       "Monochromatic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Van Der Waerden Theorem",
+      "Monochromatic Progressions",
+      "Two-Colorings"
+    ]
   },
   {
     "id": "ann-e176-spencer",
@@ -161,7 +193,11 @@
       "Exact formulas",
       "2-adic valuation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-Adic Valuation",
+      "Discrepancy Theory",
+      "Closed-Form Formulas"
+    ]
   },
   {
     "id": "ann-e176-erdos-lower",
@@ -179,7 +215,11 @@
       "Exponential lower bounds",
       "Growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Growth",
+      "Probabilistic Method",
+      "Discrepancy Bounds"
+    ]
   },
   {
     "id": "ann-e176-linear-conj",
@@ -197,7 +237,11 @@
       "Exponential growth"
     ],
     "mathContext": "See annotation content for formal details of linear discrepancy conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential Upper Bounds",
+      "Discrepancy Ratio",
+      "Open Conjectures"
+    ]
   },
   {
     "id": "ann-e176-disc2-conj",
@@ -215,7 +259,11 @@
       "Open problems"
     ],
     "mathContext": "See annotation content for formal details of discrepancy 2 conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "Constant Discrepancy",
+      "Exponential Upper Bounds",
+      "Open Problems"
+    ]
   },
   {
     "id": "ann-e176-sqrt-conj",
@@ -233,7 +281,11 @@
       "Sublinear discrepancy"
     ],
     "mathContext": "See annotation content for formal details of square root discrepancy conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "Sublinear Growth",
+      "Exponential Upper Bounds",
+      "Discrepancy Scaling"
+    ]
   },
   {
     "id": "ann-e176-connections",
@@ -252,7 +304,11 @@
       "Hales-Jewett"
     ],
     "mathContext": "See annotation content for formal details of related problems",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős Discrepancy Problem",
+      "Szemerédi Theorem",
+      "Hales-Jewett Theorem"
+    ]
   },
   {
     "id": "ann-e176-summary",
@@ -270,6 +326,10 @@
       "Open questions"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Van Der Waerden Numbers",
+      "Exponential Bounds",
+      "Open Conjectures"
+    ]
   }
 ]

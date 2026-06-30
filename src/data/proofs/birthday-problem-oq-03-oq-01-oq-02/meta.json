@@ -21,11 +21,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: poisson_approx_birthday3 (Lemma C only: P(no triple) → exp(-c³/6)); Lemmas A (lambda_tendsto: C(n,3)/d² → c³/6) and B (exp_lambda_tendsto) are now proved theorems.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: (1) p_no_triple_tendsto (Lemma C: P(no triple) → exp(-c³/6), the deep Chen-Stein / factorial-moments Poisson limit not in Mathlib 4.26), and (2) Lean.ofReduceBool. The credited lemmas choose_83_3 (C(83,3)=91881) and choose_84_3 (C(84,3)=95284) — which feed the credited threshold-crossover theorems expectedTriples_83_lt_log2, expectedTriples_84_ge_log2, and threshold_d365_crossover — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount. Lemmas A (lambda_tendsto: C(n,3)/d² → c³/6) and B (exp_lambda_tendsto) are proved theorems, and poisson_approx_birthday3 is now a derived theorem (was previously the axiom name). The rpow/log analytic results asympThreshold_d365_bounds, asympThreshold_const_bounds, and asympThreshold_sharp_bounds use no native_decide and remain free of Lean.ofReduceBool: asympThreshold_const_bounds localizes the exact scaling constant (6 ln 2)^{1/3} to the three-decimal interval (1.608, 1.609) via rpow-monotonicity and the Mathlib log-2 bounds; asympThreshold_sharp_bounds multiplies it through d^{2/3} to sharpen asympThreshold_order from the crude [d^{2/3}, 3·d^{2/3}] bracket to (1.608·d^{2/3}, 1.609·d^{2/3}). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted.",
     "dateAdded": "2026-04-04",
-    "lineCount": 2263,
-    "theoremCount": 59,
+    "lineCount": 2311,
+    "theoremCount": 61,
     "definitionCount": 8,
     "originalContributions": [
       "asympThreshold: exact definition (6d² ln 2)^{1/3} using Real.rpow",
@@ -37,7 +37,9 @@
       "general_threshold_exponent: scaling exponent is (k-1)/k for k-way coincidences",
       "nc_div_pow_tendsto: n_c(d)/d^{2/3} → c (foundation for Lemma A, squeeze proof strategy)",
       "lambda_tendsto (Lemma A): C(n_c(d),3)/d² → c³/6 via squeeze between (n-2)³/6d² and n³/6d² (PROVED)",
-      "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) via Real.continuous_exp continuity (PROVED)"
+      "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) via Real.continuous_exp continuity (PROVED)",
+      "asympThreshold_const_bounds: 1.608 < (6 ln 2)^{1/3} < 1.609 — sharp decimal bounds on the leading-order threshold constant, refining the symbolic value from asympThreshold_ratio (PROVED, axiom-free)",
+      "asympThreshold_sharp_bounds: 1.608·d^{2/3} < asympThreshold(d) < 1.609·d^{2/3} for all d ≥ 1 — three-decimal constant-factor sandwich sharpening asympThreshold_order's crude [1,3] bracket (PROVED, axiom-free)"
     ]
   },
   "overview": {
@@ -95,43 +97,99 @@
       "id": "choose3-bounds",
       "title": "§1. C(n,3) Formula and Bounds",
       "summary": "Binomial coefficient C(n,3) formula and asymptotic bounds used throughout.",
-      "startLine": 52,
-      "endLine": 110
+      "startLine": 49,
+      "endLine": 133
     },
     {
       "id": "expected-triples",
-      "title": "§2. Expected Number of Triples",
+      "title": "§2. Expected Triple Count",
       "summary": "Expected number of birthday triples in n people with d possible birthdays.",
-      "startLine": 108,
-      "endLine": 130
+      "startLine": 134,
+      "endLine": 155
     },
     {
       "id": "asymp-threshold",
-      "title": "§3. Asymptotic Threshold Definition and Properties",
+      "title": "§3. The Asymptotic Threshold",
       "summary": "The asymptotic threshold asympThreshold d = (6d² ln 2)^{1/3} with proved order bounds.",
-      "startLine": 130,
-      "endLine": 200
+      "startLine": 156,
+      "endLine": 226
     },
     {
       "id": "numerical",
-      "title": "§4. Numerical Verification for d=365",
+      "title": "§4. Numerical Verification for d = 365",
       "summary": "Exact numerical verification of the threshold crossover at n=83/84 for d=365.",
-      "startLine": 200,
-      "endLine": 295
+      "startLine": 227,
+      "endLine": 303
     },
     {
       "id": "poisson",
-      "title": "§5. Poisson Approximation (Axiom)",
+      "title": "§5. Poisson Approximation (Sorry/Axiom)",
       "summary": "Chen-Stein Poisson approximation axiom connecting expected triples to actual probability.",
-      "startLine": 294,
-      "endLine": 315
+      "startLine": 304,
+      "endLine": 474
     },
     {
       "id": "k2-comparison",
-      "title": "§6. k=3 vs k=2 Threshold Comparison",
+      "title": "§6. k=2 vs k=3 Threshold Comparison",
       "summary": "The k=3 threshold grows as d^{2/3} while the k=2 threshold grows as d^{1/2}; k=3 threshold exceeds k=2.",
-      "startLine": 310,
-      "endLine": 420
+      "startLine": 475,
+      "endLine": 528
+    },
+    {
+      "id": "elementary-counting-bound",
+      "title": "§7. Elementary Counting Bound (Union Bound)",
+      "summary": "An elementary union-bound estimate on the probability of a birthday triple.",
+      "startLine": 529,
+      "endLine": 622
+    },
+    {
+      "id": "indicator-algebra",
+      "title": "§3 (Lemma C). Indicator Algebra",
+      "summary": "Layer 1 of the Lemma C roadmap: indicator-function algebra for triple-coincidence events.",
+      "startLine": 623,
+      "endLine": 706
+    },
+    {
+      "id": "per-triple-count",
+      "title": "§4 (Lemma C). Per-Triple Count, General n",
+      "summary": "Layer 2 of the Lemma C roadmap: per-triple coincidence count for general n.",
+      "startLine": 707,
+      "endLine": 1026
+    },
+    {
+      "id": "first-moment-identity",
+      "title": "§5 (Lemma C). First-Moment Identity",
+      "summary": "Layer 2 part 2 of the Lemma C roadmap: the first-moment identity for the triple count.",
+      "startLine": 1027,
+      "endLine": 1263
+    },
+    {
+      "id": "second-factorial-moment",
+      "title": "§6 (Lemma C). Second Factorial Moment, r = 2",
+      "summary": "Layer 3 sub-pieces 3a/3b: the second factorial moment of the triple count.",
+      "startLine": 1264,
+      "endLine": 1373
+    },
+    {
+      "id": "overlap-pattern-partition",
+      "title": "§7 (Lemma C). Overlap-Pattern Partition",
+      "summary": "Layer 3c+3d: partition of triple pairs by their overlap pattern.",
+      "startLine": 1374,
+      "endLine": 1611
+    },
+    {
+      "id": "disjoint-joint-coincidence",
+      "title": "§8 (Lemma C). Disjoint Joint-Coincidence Count",
+      "summary": "Layer 3e: joint-coincidence count over disjoint triple pairs.",
+      "startLine": 1612,
+      "endLine": 1930
+    },
+    {
+      "id": "overlap-union-cardinality",
+      "title": "§9 (Lemma C). Overlap-Pattern Union-Cardinality",
+      "summary": "Layer 3f preliminaries: union-cardinality estimates over overlap-pattern families.",
+      "startLine": 1931,
+      "endLine": 2263
     }
   ],
   "leanFile": {
@@ -142,11 +200,11 @@
       "Real"
     ],
     "namespace": "BirthdayThreshold3",
-    "lineCount": 2263,
+    "lineCount": 2311,
     "axiomCount": 1,
     "sorries": 0,
     "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
-    "theoremCount": 59,
+    "theoremCount": 61,
     "definitionCount": 8
   },
   "sorries": 0

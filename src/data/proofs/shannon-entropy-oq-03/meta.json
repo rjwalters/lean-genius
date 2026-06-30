@@ -78,52 +78,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header & Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports (Mathlib and the parent ShannonEntropy.lean) and the module docstring stating the SSA inequality H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z), its three equivalent formulations (conditional MI non-negativity, conditioning reduces entropy, conditional subadditivity), the per-slice KL proof strategy, the Lanford-Robinson/Lieb-Ruskai history, and the dependency note that only ShannonEntropy.lean infrastructure is used. Opens the InformationTheory namespace and the Finset namespace.",
+      "mathContext": "$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$, equivalently $I(X;Z|Y) = H(X|Y) - H(X|Y,Z) \\geq 0$ and $H(X|Y,Z) \\leq H(X|Y)$."
+    },
+    {
       "id": "marginals",
-      "title": "Three-Variable Marginal Distributions",
-      "startLine": 42,
-      "endLine": 73,
-      "summary": "Defines marginalXY, marginalYZ, and marginalY_3 for computing 2-variable and 1-variable marginals from a 3-variable joint distribution.",
+      "title": "Part I — Three-Variable Marginal Distributions",
+      "startLine": 46,
+      "endLine": 72,
+      "summary": "Reproduces shannonEntropy' for self-containment and defines the three marginalization operators marginalXY, marginalYZ, and marginalY_3 that collapse a 3-variable joint distribution onto its 2-variable and 1-variable marginals by summing out the omitted coordinates.",
       "mathContext": "$p_{XY}(x,y) = \\sum_z p(x,y,z)$, $p_{YZ}(y,z) = \\sum_x p(x,y,z)$, $p_Y(y) = \\sum_x \\sum_z p(x,y,z)$"
     },
     {
       "id": "properties",
-      "title": "Marginal Properties",
-      "startLine": 75,
-      "endLine": 145,
-      "summary": "Proves that all marginals preserve non-negativity and sum to 1, establishing them as valid probability distributions.",
-      "mathContext": "If $p \\geq 0$ and $\\sum p = 1$, then each marginal distribution is also non-negative and sums to 1."
+      "title": "Part II — Marginal Properties",
+      "startLine": 73,
+      "endLine": 139,
+      "summary": "Proves the six lemmas establishing that each marginal is a valid probability distribution: marginalXY/marginalYZ/marginalY_3_nonneg (non-negativity is preserved via Finset.sum_nonneg) and marginalXY/marginalYZ/marginalY_3_sum (each marginal sums to 1, proved by rewriting the iterated sum as a single sum over the product type with Fintype.sum_prod_type and Finset.sum_comm).",
+      "mathContext": "If $p \\geq 0$ and $\\sum p = 1$, then each marginal distribution is also non-negative and sums to 1: $\\sum_{x,y} p_{XY}(x,y) = \\sum_{y,z} p_{YZ}(y,z) = \\sum_y p_Y(y) = 1$."
     },
     {
       "id": "chain-rule",
-      "title": "Entropy Chain Rule",
-      "startLine": 147,
-      "endLine": 201,
-      "summary": "States the entropy chain rule H(X,Y) = H(Y) + H(X|Y), the fundamental decomposition of joint entropy.",
-      "mathContext": "$H(X,Y) = H(Y) + H(X|Y)$ where $H(X|Y) = -\\sum_{x,y} p(x,y) \\log \\frac{p(x,y)}{p(y)}$."
+      "title": "Part III — Entropy Chain Rule for Pairs",
+      "startLine": 140,
+      "endLine": 243,
+      "summary": "Defines the Y-marginal marginalSnd and the conditional entropy condEntropy, then fully proves (0 sorries) the entropy chain rule H(X,Y) = H(Y) + H(X|Y). The proof splits log p(x,y) = log(p(x,y)/p_Y(y)) + log p_Y(y) term-by-term (hterm), telescopes the marginal term over x (hmarg via Finset.sum_mul), converts the product-type sum to a nested sum, and reassembles with ring.",
+      "mathContext": "$H(X,Y) = H(Y) + H(X|Y)$ where $H(X|Y) = -\\sum_{x,y} p(x,y) \\log \\frac{p(x,y)}{p_Y(y)}$; the key identity is $\\log p(x,y) = \\log\\frac{p(x,y)}{p_Y(y)} + \\log p_Y(y)$."
     },
     {
       "id": "subadditivity",
-      "title": "Subadditivity",
-      "startLine": 203,
-      "endLine": 220,
-      "summary": "States subadditivity H(X,Y) ≤ H(X) + H(Y) as a consequence of the chain rule and conditioning reduces entropy.",
-      "mathContext": "$H(X,Y) = H(Y) + H(X|Y) \\leq H(Y) + H(X) = H(X) + H(Y)$."
+      "title": "Part IV — Subadditivity from the Chain Rule",
+      "startLine": 244,
+      "endLine": 270,
+      "summary": "Proves subadditivity H(X,Y) ≤ H(X) + H(Y) by rewriting the joint entropy via entropy_chain_rule and bounding the conditional entropy by the marginal entropy using conditioning_reduces_entropy (imported from ShannonEntropy.lean), closing with linarith.",
+      "mathContext": "$H(X,Y) = H(Y) + H(X|Y) \\leq H(Y) + H(X) = H(X) + H(Y)$, using $H(X|Y) \\leq H(X)$."
     },
     {
       "id": "ssa",
-      "title": "Strong Subadditivity",
-      "startLine": 222,
-      "endLine": 260,
-      "summary": "States the strong subadditivity inequality with detailed proof strategy via conditional KL divergence.",
-      "mathContext": "$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$, equivalently $I(X;Z|Y) \\geq 0$."
+      "title": "Part V — Strong Subadditivity",
+      "startLine": 271,
+      "endLine": 489,
+      "summary": "The technical core: a complete (0-sorry) proof of strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z). A local copy of the KL bound kl_tb (p·log(p/q) ≥ p − q) is established, then four telescoping identities (htele and its XY/YZ/Y specializations) rewrite each marginal entropy as a nested sum, and a term-splitting identity (hterm) decomposes log p(x,y,z) into the conditional-MI term plus the three marginal log terms minus the Y-marginal term. Part 1 builds the conditional-independence distribution q(x,y,z) = p_{XY}·p_{YZ}/p_Y, proves it sums to 1, and applies kl_tb per-slice to show the conditional mutual information is ≥ 0 (h_cmi). Part 2 unfolds all entropies, normalizes every sum to nested form, applies the telescoping and splitting identities, and closes with linarith [h_cmi].",
+      "mathContext": "$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$, equivalently $I(X;Z|Y) = \\sum_y p(y)\\, D\\!\\left(p(x,z\\mid y)\\,\\|\\,p(x\\mid y)p(z\\mid y)\\right) \\geq 0$, each term non-negative by $p\\log(p/q) \\geq p - q$."
     },
     {
       "id": "consequences",
-      "title": "Consequences of SSA",
-      "startLine": 262,
-      "endLine": 276,
-      "summary": "Derives conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)) and conditional MI non-negativity from SSA.",
-      "mathContext": "SSA implies: (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) \\geq 0$."
+      "title": "Part VI — Consequences of SSA",
+      "startLine": 490,
+      "endLine": 526,
+      "summary": "Derives two corollaries directly from strong_subadditivity by linear rearrangement (linarith): conditioning_reduces_entropy_general (H(X|Y,Z) ≤ H(X|Y), i.e. extra conditioning cannot increase entropy) and conditional_mi_nonneg (I(X;Z|Y) ≥ 0, the conditional mutual information is non-negative). Closes the InformationTheory namespace.",
+      "mathContext": "SSA implies (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y) \\geq 0$."
     }
   ],
   "conclusion": {

@@ -16,7 +16,11 @@
       "General position",
       "Discrete geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "discrete geometry",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e589-collinear",
@@ -34,7 +38,11 @@
       "Lines in plane"
     ],
     "mathContext": "See annotation content for formal details of collinearity definitions",
-    "prerequisites": []
+    "prerequisites": [
+      "linear algebra",
+      "analytic geometry",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e589-general-position",
@@ -52,7 +60,11 @@
       "Point configurations"
     ],
     "mathContext": "See annotation content for formal details of general and almost general position",
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e589-g-function",
@@ -70,7 +82,11 @@
       "Extremal functions",
       "Worst-case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "real analysis",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e589-erdos-belief",
@@ -88,7 +104,11 @@
       "Disproved conjecture",
       "Sublinear growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e589-greedy",
@@ -106,7 +126,11 @@
       "Lower bounds"
     ],
     "mathContext": "See annotation content for formal details of greedy lower bound",
-    "prerequisites": []
+    "prerequisites": [
+      "greedy algorithms",
+      "combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e589-furedi",
@@ -124,7 +148,11 @@
       "Füredi 1991",
       "Improved bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic analysis",
+      "probabilistic method"
+    ]
   },
   {
     "id": "ann-e589-dhj",
@@ -142,7 +170,11 @@
       "Hales-Jewett",
       "Ergodic theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "ergodic theory",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e589-balogh-solymosi",
@@ -160,7 +192,11 @@
       "Container method",
       "Balogh-Solymosi 2018"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "probabilistic method",
+      "discrete geometry"
+    ]
   },
   {
     "id": "ann-e589-current-bounds",
@@ -178,7 +214,11 @@
       "Open gap"
     ],
     "mathContext": "See annotation content for formal details of current best bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e589-generalization",
@@ -196,7 +236,11 @@
       "Parameters"
     ],
     "mathContext": "See annotation content for formal details of generalized problem",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "discrete geometry",
+      "parametrized functions"
+    ]
   },
   {
     "id": "ann-e589-open",
@@ -214,7 +258,11 @@
       "Exact asymptotics"
     ],
     "mathContext": "See annotation content for formal details of open questions",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "extremal combinatorics",
+      "open problems in combinatorics"
+    ]
   },
   {
     "id": "ann-e589-summary",
@@ -232,6 +280,10 @@
       "Current state"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "discrete geometry",
+      "asymptotic analysis"
+    ]
   }
 ]

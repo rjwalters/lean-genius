@@ -17,7 +17,11 @@
       "Turan-theorem",
       "triangle-free-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph triangle (K_3 subgraph)",
+      "asymptotic threshold functions",
+      "graph coloring and chromatic number ≥ r"
+    ]
   },
   {
     "id": "ann-1011-definitions",
@@ -37,7 +41,11 @@
       "sInf",
       "threshold-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infimum (sInf) over a set of naturals",
+      "Fintype and finite simple graphs",
+      "axiomatized well-definedness (nonempty bounded-below set)"
+    ]
   },
   {
     "id": "ann-1011-turan",
@@ -57,7 +65,11 @@
       "complete-bipartite",
       "extremal-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "floor function and integer division ⌊n²/4⌋",
+      "balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉}",
+      "uniqueness of the extremal Turán graph"
+    ]
   },
   {
     "id": "ann-1011-small-r",
@@ -77,7 +89,11 @@
       "exact-threshold",
       "small-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vertex-deletion shift in extremal formulas ⌊(n-c)²/4⌋",
+      "threshold parameters g(r) and h(r)",
+      "large-n restrictions from finite case analysis"
+    ]
   },
   {
     "id": "ann-1011-simonovits",
@@ -97,7 +113,11 @@
       "Davies-Illingworth",
       "HHKP"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "big-O / o(1) asymptotic notation",
+      "off-diagonal Ramsey numbers R(3,k)",
+      "χ-Ramsey lower-bound techniques"
+    ]
   },
   {
     "id": "ann-1011-monotonicity",
@@ -117,6 +137,10 @@
       "odd-cycle",
       "bipartite-vertex-deletion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotonicity of parameterized bounds",
+      "Grötzsch graph (triangle-free, χ = 4)",
+      "odd cycles and bipartite-vertex-deletion distance"
+    ]
   }
 ]

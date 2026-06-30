@@ -18,8 +18,8 @@
       "irrationality criterion"
     ],
     "range": {
-      "startLine": 26,
-      "endLine": 45
+      "startLine": 1,
+      "endLine": 25
     }
   },
   {
@@ -41,7 +41,7 @@
     ],
     "range": {
       "startLine": 33,
-      "endLine": 36
+      "endLine": 34
     }
   },
   {
@@ -61,7 +61,7 @@
     ],
     "range": {
       "startLine": 37,
-      "endLine": 39
+      "endLine": 38
     }
   },
   {
@@ -80,8 +80,8 @@
       "Mathlib tsum definition"
     ],
     "range": {
-      "startLine": 26,
-      "endLine": 45
+      "startLine": 40,
+      "endLine": 42
     }
   },
   {
@@ -102,8 +102,8 @@
       "absolute convergence criterion"
     ],
     "range": {
-      "startLine": 47,
-      "endLine": 69
+      "startLine": 57,
+      "endLine": 95
     }
   },
   {
@@ -123,8 +123,8 @@
       "3 is not a power of 2"
     ],
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 98,
+      "endLine": 127
     }
   },
   {
@@ -143,8 +143,8 @@
       "basic properties of powers of 2"
     ],
     "range": {
-      "startLine": 47,
-      "endLine": 69
+      "startLine": 129,
+      "endLine": 134
     }
   },
   {
@@ -164,7 +164,7 @@
     ],
     "range": {
       "startLine": 136,
-      "endLine": 145
+      "endLine": 144
     }
   },
   {
@@ -178,7 +178,11 @@
     "relatedConcepts": [
       "denominator sign analysis"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Integer Subtraction",
+      "Sign of an Integer"
+    ],
     "range": {
       "startLine": 146,
       "endLine": 148
@@ -196,7 +200,11 @@
       "telescoping",
       "exact cancellation"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Reciprocal of an Integer",
+      "Additive Cancellation"
+    ],
     "range": {
       "startLine": 149,
       "endLine": 151
@@ -213,7 +221,11 @@
     "relatedConcepts": [
       "monotone decreasing terms"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Powers of Two",
+      "Monotone Decreasing Sequence",
+      "Positive Series Terms"
+    ],
     "range": {
       "startLine": 152,
       "endLine": 154
@@ -235,8 +247,8 @@
       "term computations term_1 through term_3"
     ],
     "range": {
-      "startLine": 98,
-      "endLine": 139
+      "startLine": 161,
+      "endLine": 213
     }
   },
   {
@@ -258,8 +270,8 @@
       "rational approximation theory"
     ],
     "range": {
-      "startLine": 98,
-      "endLine": 139
+      "startLine": 216,
+      "endLine": 221
     }
   },
   {
@@ -280,8 +292,8 @@
       "3 is not a power of 2"
     ],
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 222,
+      "endLine": 256
     }
   },
   {
@@ -302,8 +314,8 @@
       "1 is not a power of 2"
     ],
     "range": {
-      "startLine": 141,
-      "endLine": 205
+      "startLine": 258,
+      "endLine": 275
     }
   },
   {
@@ -322,8 +334,8 @@
       "borwein_irrationality"
     ],
     "range": {
-      "startLine": 141,
-      "endLine": 205
+      "startLine": 277,
+      "endLine": 290
     }
   },
   {
@@ -342,8 +354,8 @@
       "borwein_irrationality"
     ],
     "range": {
-      "startLine": 141,
-      "endLine": 205
+      "startLine": 292,
+      "endLine": 311
     }
   },
   {
@@ -363,8 +375,8 @@
       "T_summable"
     ],
     "range": {
-      "startLine": 141,
-      "endLine": 205
+      "startLine": 313,
+      "endLine": 322
     }
   },
   {
@@ -386,8 +398,8 @@
       "Borwein's irrationality result"
     ],
     "range": {
-      "startLine": 207,
-      "endLine": 236
+      "startLine": 324,
+      "endLine": 327
     }
   },
   {
@@ -407,8 +419,8 @@
       "definition of transcendental number"
     ],
     "range": {
-      "startLine": 207,
-      "endLine": 236
+      "startLine": 329,
+      "endLine": 334
     }
   },
   {
@@ -428,7 +440,7 @@
     ],
     "range": {
       "startLine": 336,
-      "endLine": 353
+      "endLine": 352
     }
   },
   {
@@ -442,10 +454,14 @@
     "relatedConcepts": [
       "open problems in transcendence theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Irrationality vs Transcendence",
+      "Open Conjectures",
+      "Axiomatized Statements"
+    ],
     "range": {
-      "startLine": 237,
-      "endLine": 257
+      "startLine": 354,
+      "endLine": 364
     }
   },
   {
@@ -465,8 +481,8 @@
       "Problem #1049 series"
     ],
     "range": {
-      "startLine": 237,
-      "endLine": 257
+      "startLine": 366,
+      "endLine": 368
     }
   },
   {
@@ -486,8 +502,8 @@
       "S_1049 definition"
     ],
     "range": {
-      "startLine": 237,
-      "endLine": 257
+      "startLine": 370,
+      "endLine": 376
     }
   },
   {
@@ -506,7 +522,7 @@
       "T_eq_S_1049"
     ],
     "range": {
-      "startLine": 377,
+      "startLine": 378,
       "endLine": 391
     }
   },
@@ -527,8 +543,8 @@
       "first terms computation"
     ],
     "range": {
-      "startLine": 258,
-      "endLine": 283
+      "startLine": 393,
+      "endLine": 395
     }
   },
   {
@@ -547,8 +563,8 @@
       "S_first_terms"
     ],
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 396,
+      "endLine": 400
     }
   },
   {
@@ -568,8 +584,8 @@
       "comparison with geometric series"
     ],
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 401,
+      "endLine": 405
     }
   },
   {
@@ -589,8 +605,8 @@
       "S_summable"
     ],
     "range": {
-      "startLine": 284,
-      "endLine": 303
+      "startLine": 406,
+      "endLine": 421
     }
   },
   {
@@ -606,10 +622,14 @@
       "Mersenne numbers",
       "shifted exponential sequences"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Mersenne Numbers",
+      "Integer Sequences",
+      "Exponential Sequences"
+    ],
     "range": {
-      "startLine": 284,
-      "endLine": 303
+      "startLine": 423,
+      "endLine": 427
     }
   },
   {
@@ -627,8 +647,8 @@
       "oeis_A331372 definition"
     ],
     "range": {
-      "startLine": 284,
-      "endLine": 303
+      "startLine": 428,
+      "endLine": 433
     }
   },
   {
@@ -648,8 +668,8 @@
       "basic properties of 2^n"
     ],
     "range": {
-      "startLine": 284,
-      "endLine": 303
+      "startLine": 434,
+      "endLine": 462
     }
   },
   {
@@ -669,8 +689,8 @@
       "borwein_irrationality"
     ],
     "range": {
-      "startLine": 305,
-      "endLine": 340
+      "startLine": 464,
+      "endLine": 466
     }
   },
   {
@@ -688,8 +708,8 @@
       "erdos_1050"
     ],
     "range": {
-      "startLine": 305,
-      "endLine": 340
+      "startLine": 467,
+      "endLine": 470
     }
   },
   {
@@ -708,8 +728,8 @@
       "borwein_irrationality"
     ],
     "range": {
-      "startLine": 305,
-      "endLine": 340
+      "startLine": 475,
+      "endLine": 483
     }
   }
 ]

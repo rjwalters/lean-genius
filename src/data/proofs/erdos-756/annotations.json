@@ -17,7 +17,11 @@
       "point configurations",
       "multiplicities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrete geometry",
+      "combinatorics",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e756-point",
@@ -36,7 +40,11 @@
       "coordinates",
       "inner product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean space",
+      "linear algebra",
+      "inner product spaces"
+    ]
   },
   {
     "id": "ann-e756-dist",
@@ -55,7 +63,11 @@
       "metric",
       "triangle inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "metric spaces",
+      "normed spaces",
+      "triangle inequality"
+    ]
   },
   {
     "id": "ann-e756-pointset",
@@ -74,7 +86,11 @@
       "point configurations"
     ],
     "mathContext": "See annotation content for formal details of point set",
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets",
+      "cardinality",
+      "Lean 4 Finset"
+    ]
   },
   {
     "id": "ann-e756-alldist",
@@ -93,7 +109,11 @@
       "Erdős distance problem",
       "point configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets",
+      "combinatorics",
+      "distinct distances problem"
+    ]
   },
   {
     "id": "ann-e756-mult",
@@ -112,7 +132,11 @@
       "repeated distances",
       "incidence geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "counting ordered pairs",
+      "incidence geometry"
+    ]
   },
   {
     "id": "ann-e756-rich",
@@ -131,7 +155,11 @@
       "distance counting",
       "rich structures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "distance multiplicity",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e756-numrich",
@@ -149,7 +177,11 @@
       "extremal configurations"
     ],
     "mathContext": "See annotation content for formal details of number of rich distances",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "finite sets",
+      "extremal configurations"
+    ]
   },
   {
     "id": "ann-e756-question",
@@ -168,7 +200,11 @@
       "extremal problems",
       "existence questions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic analysis",
+      "existence proofs"
+    ]
   },
   {
     "id": "ann-e756-strong",
@@ -187,7 +223,11 @@
       "all distances rich",
       "open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "convex geometry",
+      "open problems"
+    ]
   },
   {
     "id": "ann-e756-maxdist",
@@ -206,7 +246,11 @@
       "extreme points"
     ],
     "mathContext": "See annotation content for formal details of maximum distance",
-    "prerequisites": []
+    "prerequisites": [
+      "convex hull",
+      "diameter of a set",
+      "supremum"
+    ]
   },
   {
     "id": "ann-e756-hopf",
@@ -226,7 +270,11 @@
       "classical geometry",
       "extremal point pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convex geometry",
+      "diameter",
+      "classical combinatorial geometry"
+    ]
   },
   {
     "id": "ann-e756-maxnotrich",
@@ -244,7 +292,11 @@
       "corollary",
       "constraint on richness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "linear arithmetic",
+      "corollaries"
+    ]
   },
   {
     "id": "ann-e756-bhowmick-main",
@@ -263,7 +315,11 @@
       "linear bound",
       "affirmative answer"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "constructive existence proofs",
+      "discrete geometry",
+      "floor function"
+    ]
   },
   {
     "id": "ann-e756-bhowmick-general",
@@ -282,7 +338,11 @@
       "higher multiplicities",
       "generalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "multiplicity bounds",
+      "trade-off analysis"
+    ]
   },
   {
     "id": "ann-e756-answer",
@@ -300,7 +360,11 @@
       "problem resolution",
       "existence proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence proofs",
+      "Lean 4 tactics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e756-cdl",
@@ -319,7 +383,11 @@
       "lattice points",
       "superpolynomial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lattice points",
+      "number theory of grids",
+      "superpolynomial growth"
+    ]
   },
   {
     "id": "ann-e756-ratio",
@@ -338,7 +406,11 @@
       "optimal constant",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "optimal constants",
+      "real-valued ratios"
+    ]
   },
   {
     "id": "ann-e756-upper",
@@ -356,7 +428,11 @@
       "counting arguments"
     ],
     "mathContext": "See annotation content for formal details of upper bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "counting arguments",
+      "cardinality bounds",
+      "Cartesian products"
+    ]
   },
   {
     "id": "ann-e756-main",
@@ -375,6 +451,10 @@
       "problem solved",
       "Bhowmick 2024"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "discrete geometry",
+      "existence proofs"
+    ]
   }
 ]

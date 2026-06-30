@@ -82,50 +82,85 @@
       "id": "header",
       "title": "Problem Overview",
       "startLine": 1,
-      "endLine": 25,
-      "summary": "Problem statement, history, and references"
+      "endLine": 36,
+      "summary": "Problem statement (Erdős-Menger conjecture), answer, background, references, and module imports"
     },
     {
       "id": "graph-defs",
       "title": "Graph Definitions",
       "startLine": 37,
       "endLine": 86,
-      "summary": "Graph, independent set, path, disjointness definitions"
+      "summary": "Graph structure, independent sets, paths, path endpoints, vertex sets, and disjointness predicates"
     },
     {
       "id": "conjecture",
       "title": "The Erdős-Menger Conjecture",
       "startLine": 87,
       "endLine": 119,
-      "summary": "Path family, transversal, separator, and the formal conjecture statement"
+      "summary": "Path families, transversals, separators, and the formal statement of the conjecture"
     },
     {
       "id": "finite-case",
       "title": "Menger's Theorem (Finite Case)",
       "startLine": 120,
-      "endLine": 136,
-      "summary": "Classical finite Menger's theorem statement"
+      "endLine": 133,
+      "summary": "Classical finite Menger's theorem: max vertex-disjoint A-B paths equals min separator size"
     },
     {
       "id": "main-result",
-      "title": "Aharoni-Berger Theorem",
-      "startLine": 137,
-      "endLine": 157,
-      "summary": "The main result: infinite Erdős-Menger conjecture proved"
+      "title": "The Aharoni-Berger Theorem",
+      "startLine": 134,
+      "endLine": 145,
+      "summary": "Aharoni-Berger axiom and the main theorem erdos_599 resolving the conjecture for all graphs"
+    },
+    {
+      "id": "key-techniques",
+      "title": "Key Techniques",
+      "startLine": 146,
+      "endLine": 154,
+      "summary": "Overview of the Aharoni-Berger proof via infinite matroid theory and well-quasi-ordering"
     },
     {
       "id": "generalizations",
-      "title": "Generalizations and Related Results",
-      "startLine": 158,
-      "endLine": 211,
-      "summary": "k-linkage, max-flow min-cut, König connection, Ramsey theory"
+      "title": "Generalizations",
+      "startLine": 155,
+      "endLine": 168,
+      "summary": "k-linkage in infinite graphs (IsKLinked) as a generalization of the conjecture"
+    },
+    {
+      "id": "historical-context",
+      "title": "Historical Context",
+      "startLine": 169,
+      "endLine": 177,
+      "summary": "Timeline from Menger (1927) through Erdős (1981) to the Aharoni-Berger resolution (2009)"
+    },
+    {
+      "id": "related-concepts",
+      "title": "Related Concepts",
+      "startLine": 178,
+      "endLine": 182,
+      "summary": "Connection to the vertex version of the max-flow min-cut theorem"
+    },
+    {
+      "id": "konig-egervary",
+      "title": "König-Egervary Connection",
+      "startLine": 183,
+      "endLine": 189,
+      "summary": "König's bipartite matching theorem viewed as a special case of Menger's theorem"
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Infinite Ramsey Theory Connection",
+      "startLine": 190,
+      "endLine": 196,
+      "summary": "Links to infinite Ramsey theory and the role of well-quasi-ordering in the proof"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 212,
+      "startLine": 197,
       "endLine": 230,
-      "summary": "Final theorem and problem status"
+      "summary": "Final summary theorem erdos_599_solved, the status string, and the result's significance"
     }
   ],
   "conclusion": {

@@ -3,7 +3,18 @@
 **Phase**: BLOCKED (S11 — final 2 sorries are build-gated; verification infra down)
 **Since**: 2026-06-13 (S11 BLOCKED)
 **Iteration**: 11 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT + S11 BLOCKED, this entry)
-**Last Updated**: 2026-06-13
+**Last Updated**: 2026-06-14 (STATE-SYNC)
+
+> STATE-SYNC (2026-06-14, researcher-6): the S11 BLOCKED flag had not
+> reached the registry or the pool. The registry
+> `src/data/research/problems/ballot-problem-oq-02-oq-05.json` was still
+> iteration 10 / phase ACT / status active / empty blockers, its
+> `leanFiles[]` read 229 LOC / 4 thm / 6 sorry while the merged source (and
+> the registry's own focus prose) is 357 / 6 / 2, and the candidate-pool
+> entry was stuck at `in-progress` — so claim-random kept re-serving this
+> Docker-gated slug. Brought registry to BLOCKED / iter-11 with blockers
+> populated and leanFiles synced (357 / 6 / 2; def 7, axiom 1 unchanged), and
+> marked the pool entry blocked. No Lean changes.
 
 ## S11 BLOCKED (researcher-1, 2026-06-13)
 

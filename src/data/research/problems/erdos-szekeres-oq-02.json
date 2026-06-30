@@ -1,8 +1,8 @@
 {
   "slug": "erdos-szekeres-oq-02",
   "title": "Complexity of finding the actual Erdos-Szekeres monotonic subsequence",
-  "phase": "ORIENT",
-  "status": "surveyed",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,7 +28,7 @@
     "goal": "Formalize a computable incDP : Fin n -> Nat proven equal to maxIncLen, a constructive witness extractor, and an exact Theta(n^2) comparison-count closed form n(n-1)/2; document the Theta(n log n) optimum as the cost-model-gated remainder."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "BLOCKED",
     "since": "2026-06-13T00:00:00-07:00",
     "iteration": 2,
     "focus": "First survey complete (researcher-9 2026-06-13, build-free during the Docker/Aristotle verification blackout). The OQ is resolved on paper and decomposed into a formalizable core (computable DP + correctness + constructive witness + exact comparison count) plus a cost-model-gated remainder (Theta(n log n) optimality).",
@@ -98,17 +98,17 @@
     ]
   },
   "started": "2026-06-10T11:02:48-07:00",
-  "lastUpdate": "2026-06-13T00:00:00-07:00",
+  "lastUpdate": "2026-06-14T19:00:00Z",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/ErdosSzekeres.lean",
       "filename": "ErdosSzekeres.lean",
-      "lineCount": 344,
-      "theoremCount": 8,
+      "lineCount": 345,
+      "theoremCount": 12,
       "axiomCount": 2,
-      "defCount": 8,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosSzekeres.lean"

@@ -104,6 +104,16 @@
       "targetId": "subset-count",
       "relationship": "extends",
       "description": "Generalizes the subset counting theorem from sets to multisets"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The fixed-size submultiset counts are exactly the binomial-theorem coefficients: the generating function ∑_k card(powersetCard k s)·xᵏ = (1+x)ⁿ is the binomial theorem, and multiset_choose_card establishes card(powersetCard k s) = C(n,k)"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Companion counting result: the multinomial entry proves |s|ⁿ = ∑ multinomial(s,k), the multi-outcome analog of the 2ⁿ = ∑ C(n,k) submultiset identity established here — both reduce a global count to a sum over size/type-partitioned cells via a Mathlib cardinality lemma"
     }
   ],
   "conclusion": {

@@ -80,68 +80,92 @@
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "header",
+      "title": "Module Header and Namespace",
+      "summary": "File header for Huffman/Shannon source-coding optimality: proves the fundamental prefix-free code-length bounds $H(p)/\\ln2 \\le L_H \\le L^* \\le L_S < H(p)/\\ln2 + 1$ (entropy lower bound, Shannon upper bound, optimal-code monotonicity, Huffman optimality). Imports Mathlib, enters `InformationTheory.HuffmanOptimality`, opens `Finset`/`Real`. 1 axiom (`huffman_optimal`), 0 sorries.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "$H(p)/\\ln2 \\le L_H \\le L^* \\le L_S < H(p)/\\ln2+1$: entropy bits bound code lengths (Shannon 1948, Huffman 1952)."
+    },
+    {
+      "id": "core-definitions",
       "title": "Core Definitions",
+      "summary": "Defines `KraftValid` (the Kraft inequality $\\sum 2^{-l_i}\\le1$), `avgCodeLength` ($\\sum p_i l_i$), and `IsOptimal` (minimum average length among Kraft-valid codes).",
       "startLine": 28,
-      "endLine": 48,
-      "summary": "Kraft validity (sum 2^(-l_i) <= 1), average code length, and optimality definition.",
-      "mathContext": "A prefix-free code exists with given lengths iff the Kraft inequality holds."
+      "endLine": 46,
+      "mathContext": "Kraft: $\\sum_i 2^{-l_i}\\le1$ characterizes prefix-free codeword lengths; $L=\\sum_i p_i l_i$."
     },
     {
-      "id": "auxiliary",
+      "id": "auxiliary-lemmas",
       "title": "Auxiliary Lemmas",
-      "startLine": 53,
-      "endLine": 78,
-      "summary": "Pointwise KL bound p*log(p/q) >= p-q, positivity of Kraft terms, and log(2^(-l)) = -l*log(2).",
-      "mathContext": "The KL bound is the workhorse: it converts information-theoretic inequalities to arithmetic ones."
+      "summary": "Analytic helpers: `kl_term_bound` (a KL-divergence term inequality), `kraft_term_pos`, and `log_kraft_term`, used in the entropy lower-bound proof.",
+      "startLine": 47,
+      "endLine": 73,
+      "mathContext": "Per-term bounds underpinning Gibbs'/KL inequality $\\sum p_i\\log(p_i/q_i)\\ge0$."
     },
     {
-      "id": "entropy-lower-bound",
-      "title": "Entropy Lower Bound",
-      "startLine": 83,
-      "endLine": 112,
-      "summary": "Main theorem: L * ln(2) >= H(p) for any Kraft-valid code over a positive distribution.",
-      "mathContext": "No prefix-free code can compress below the entropy. This is the converse of the source coding theorem."
+      "id": "thm1-entropy-lower-bound",
+      "title": "Theorem 1: Entropy Lower Bound on Code Length",
+      "summary": "`avg_code_length_ge_entropy`: for any Kraft-valid code, $L\\cdot\\ln2\\ge H(p)$ — the average length is at least the entropy (in nats), via the Gibbs/KL inequality.",
+      "startLine": 74,
+      "endLine": 115,
+      "mathContext": "$L\\cdot\\ln2\\ge H(p)$: no prefix-free code beats entropy (Shannon's source-coding lower bound)."
     },
     {
-      "id": "entropy-nonneg",
-      "title": "Entropy Non-negativity",
-      "startLine": 117,
-      "endLine": 126,
-      "summary": "Shannon entropy is non-negative for distributions on [0,1].",
-      "mathContext": "Since 0 < p <= 1 implies log(p) <= 0, each term -p*log(p) is non-negative."
+      "id": "thm2-entropy-nonneg",
+      "title": "Theorem 2: Entropy Non-negativity",
+      "summary": "`entropy_nonneg`: the Shannon entropy $H(p)=-\\sum p_i\\ln p_i\\ge0$ for any probability distribution.",
+      "startLine": 116,
+      "endLine": 129,
+      "mathContext": "$H(p)=-\\sum_i p_i\\ln p_i\\ge0$."
     },
     {
       "id": "shannon-coding",
       "title": "Shannon Coding",
-      "startLine": 131,
-      "endLine": 162,
-      "summary": "Shannon code length definition and proof that it satisfies Kraft's inequality.",
-      "mathContext": "Shannon coding assigns l_i = ceil(-log_2(p_i)). Since 2^(-l_i) <= p_i, Kraft holds."
+      "summary": "Defines `shannonLength` $l_i=\\lceil-\\log_2 p_i\\rceil$, the explicit Shannon code construction.",
+      "startLine": 130,
+      "endLine": 138,
+      "mathContext": "Shannon code: $l_i=\\lceil-\\log_2 p_i\\rceil$."
     },
     {
-      "id": "shannon-upper-bound",
-      "title": "Shannon Upper Bound",
-      "startLine": 167,
-      "endLine": 210,
-      "summary": "Shannon coding achieves L_S * ln(2) < H(p) + ln(2), i.e., L_S < H_bits + 1.",
-      "mathContext": "Uses ceil(x) < x + 1 for x >= 0 and strict summation inequality."
+      "id": "thm3-shannon-kraft",
+      "title": "Theorem 3: Shannon Code Satisfies Kraft's Inequality",
+      "summary": "`shannon_kraft_valid`: the Shannon code lengths satisfy the Kraft inequality, so a prefix-free code with those lengths exists.",
+      "startLine": 139,
+      "endLine": 172,
+      "mathContext": "$\\sum_i 2^{-\\lceil-\\log_2 p_i\\rceil}\\le\\sum_i p_i=1$ — Shannon lengths are Kraft-valid."
     },
     {
-      "id": "optimal-properties",
+      "id": "thm4-shannon-upper-bound",
+      "title": "Theorem 4: Shannon Code Length Upper Bound",
+      "summary": "`shannon_code_length_bound`: the Shannon code's average length satisfies $L_S\\cdot\\ln2 < H(p)+\\ln2$, i.e. within one bit of entropy.",
+      "startLine": 173,
+      "endLine": 215,
+      "mathContext": "$L_S < H(p)/\\ln2 + 1$: Shannon coding is within one bit of the entropy bound."
+    },
+    {
+      "id": "optimal-code-properties",
       "title": "Optimal Code Properties",
-      "startLine": 215,
-      "endLine": 236,
-      "summary": "Axiomatized: optimal code monotonicity (exchange argument) and Huffman optimality (induction).",
-      "mathContext": "The exchange argument shows swapping code lengths of unequally probable symbols reduces average length."
+      "summary": "`optimal_code_monotone`: in an optimal code, more probable symbols get shorter codewords ($p_i>p_j\\Rightarrow l_i\\le l_j$) — proved, not axiomatized.",
+      "startLine": 216,
+      "endLine": 308,
+      "mathContext": "Optimal-code monotonicity: $p_i > p_j \\Rightarrow l_i \\le l_j$ (a necessary condition Huffman satisfies)."
     },
     {
-      "id": "tight-bounds",
-      "title": "Tight Bounds on Optimal Code Length",
-      "startLine": 241,
-      "endLine": 274,
-      "summary": "Corollary: the optimal code length satisfies H(p)/ln(2) <= L* < H(p)/ln(2) + 1.",
-      "mathContext": "Combines the entropy lower bound with Shannon coding upper bound and Huffman optimality."
+      "id": "huffman-optimality",
+      "title": "Huffman Coding Optimality (Axiomatized)",
+      "summary": "The single axiom `huffman_optimal`: the Huffman code achieves the minimum average length among all prefix-free codes — axiomatized because a full proof requires formalizing the Huffman tree-merge construction.",
+      "startLine": 309,
+      "endLine": 331,
+      "mathContext": "Huffman code is optimal: $L_H=L^*$ (axiomatized pending Huffman-tree formalization)."
+    },
+    {
+      "id": "corollary-tight-bounds",
+      "title": "Corollary: Tight Bounds on Optimal Code Length",
+      "summary": "`optimal_code_length_bounds`: combining the entropy lower bound, Shannon upper bound, and Huffman optimality gives $H(p)/\\ln2 \\le L^* < H(p)/\\ln2 + 1$ for the optimal code length.",
+      "startLine": 332,
+      "endLine": 357,
+      "mathContext": "$H(p)/\\ln2 \\le L^* < H(p)/\\ln2 + 1$: the optimal code length is pinned to within one bit of entropy."
     }
   ],
   "crossReferences": [

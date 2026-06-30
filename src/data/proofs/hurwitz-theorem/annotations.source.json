@@ -192,11 +192,11 @@
     "anchor": {
       "type": "declaration",
       "name": "eight_square_identity_exists",
-      "kind": "axiom"
+      "kind": "def"
     },
     "type": "insight",
     "title": "8-Square Identity (Degen's Identity)",
-    "content": "Axiomatizes eight_square_identity_exists : NSquareIdentity 8. The full formula (Degen's identity, 1818) has 8 output components, each a sum of 8 products of the 16 input variables -- too complex to write explicitly. Corresponds to octonion multiplication.",
+    "content": "Constructs eight_square_identity_exists : NSquareIdentity 8 explicitly, eliminating the former axiom. The 8-square identity (Degen, 1818) has 8 output components, each a sum of 8 products of the 16 input variables; it is built here via Cayley-Dickson octonion multiplication and verified with the ring tactic. Corresponds to octonion multiplication.",
     "mathContext": "Ferdinand Degen published the 8-square identity in 1818. John Graves discovered octonions independently in 1843, and Arthur Cayley rediscovered them in 1845. Octonions are the largest normed division algebra: they are non-associative but alternative (x(xy) = x^2 y). Their automorphism group is the exceptional Lie group G_2.",
     "significance": "key",
     "relatedConcepts": [

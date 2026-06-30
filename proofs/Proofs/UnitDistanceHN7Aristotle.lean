@@ -3,9 +3,11 @@
   Routine supporting lemmas for automated proof search.
   See UnitDistanceHN7.lean for the main Hadwiger-Nelson upper bound (χ(ℝ²) ≤ 7).
 
-  Status (2026-04-29): only the geometric covering-radius obligation remains as a sorry.
-  hexCenter_dist_sq and the modular-arithmetic step (hexColor_eq_implies_mod) are now
-  proved here as well (the latter mirrors the inline step in same_color_far).
+  Status (2026-06-21): COMPLETE — the geometric covering-radius obligation is now proved
+  in UnitDistanceHN7 (via the A₂ cube-rounding Voronoi analysis), so the whole
+  Hadwiger-Nelson upper bound χ(ℝ²) ≤ 7 is sorry-free and axiom-free.
+  hexCenter_dist_sq and the modular-arithmetic step (hexColor_eq_implies_mod) are also
+  proved here (the latter mirrors the inline step in same_color_far).
 
   Criteria for inclusion:
   - NOT the main Hadwiger-Nelson theorem (follows from the supporting lemmas above)
@@ -70,9 +72,10 @@ of its assigned Voronoi hex cell. The cube-coordinate rounding algorithm in
 hexCoord assigns each point to the nearest lattice site.
 -/
 
-/-- Every point is within distance hexSideLength of its assigned hex center. -/
+/-- Every point is within distance hexSideLength of its assigned hex center.
+    Now discharged by the proved `covering_radius` in `UnitDistanceHN7`. -/
 theorem covering_radius_ari (p : Plane) :
-    dist p (hexCenter (hexCoord p).1 (hexCoord p).2) ≤ hexSideLength := by
-  sorry
+    dist p (hexCenter (hexCoord p).1 (hexCoord p).2) ≤ hexSideLength :=
+  covering_radius p
 
 end UnitDistanceHN7Aristotle

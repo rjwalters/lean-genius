@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "divisibility-truncation-general-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Combining Osculators with the Last-k-Digits Rule",
+    "content": "This file answers the open question left by the parent entry `divisibility-truncation-general-oq-01` (the Unified Osculator Theorem): can the osculator test be extended to divisors that *share* factors with 10, such as 6, 12, 14, and 35?\n\nThe osculator rule $d \\mid n \\iff d \\mid (\\lfloor n/10 \\rfloor + c\\,(n \\bmod 10))$ requires $\\gcd(d, 10) = 1$, so it cannot test divisibility by even numbers or multiples of 5 on its own. The classical fix for the 2's and 5's is the *last-$k$-digits* rule. This file proves the two frameworks compose: factor $d = s\\cdot m$ with $s \\mid 10^k$ and $\\gcd(m, 10) = 1$, then test $s$ with last-$k$-digits and $m$ with the osculator.",
+    "mathContext": "Every divisor factors as $d = s\\cdot m$ with $s = 2^a 5^b$ and $\\gcd(m,10)=1$, and $\\gcd(s,m)=1$ automatically. CRT glues the two component tests.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "osculator divisibility test",
+      "last-k-digits rule",
+      "coprime factorization"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-last-k-digits",
+    "proofId": "divisibility-truncation-general-oq-01-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 61
+    },
+    "type": "lemma",
+    "title": "Last-k-Digits Rule in General Form",
+    "content": "`dvd_iff_dvd_last_k`: if $s \\mid 10^k$ then $s \\mid n \\iff s \\mid (n \\bmod 10^k)$. This generalises the gallery's fixed cases (4 with $k=2$, 8 with $k=3$, 25, 125) to an arbitrary divisor of a power of ten.\n\nThe proof uses $n = 10^k\\lfloor n/10^k \\rfloor + (n \\bmod 10^k)$. Since $s \\mid 10^k$, also $s \\mid 10^k\\lfloor n/10^k \\rfloor$, so $s$ divides $n$ iff it divides the remaining $n \\bmod 10^k$. The forward direction subtracts the divisible summand via `Nat.dvd_sub'`; the reverse adds it back via `dvd_add`.",
+    "mathContext": "$s \\mid 10^k \\implies (s \\mid n \\iff s \\mid n \\bmod 10^k)$. Only the last $k$ decimal digits matter for divisibility by $s$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean division",
+      "divisibility of powers of ten",
+      "positional notation",
+      "Nat.div_add_mod"
+    ],
+    "prerequisites": [
+      "Euclidean division",
+      "divisibility"
+    ]
+  },
+  {
+    "id": "ann-combined",
+    "proofId": "divisibility-truncation-general-oq-01-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "The Combined Divisibility Theorem",
+    "content": "`combined_divisibility`: for $d = s\\cdot m$ with $s \\mid 10^k$, $\\gcd(s,m)=1$, $\\gcd(m,10)=1$, and $m \\mid 10c - 1$ (so $c$ is the osculator of $m$):\n$$d \\mid n \\iff (s \\mid n \\bmod 10^k) \\,\\wedge\\, (m \\mid \\lfloor n/10 \\rfloor + c\\,(n \\bmod 10)).$$\n\nThe proof rewrites $s\\cdot m \\mid n$ as $s \\mid n \\wedge m \\mid n$ using the CRT split `coprime_mul_dvd_iff`, then transforms each conjunct: `dvd_iff_dvd_last_k` turns the $s$-part into the last-$k$-digits test, and the parent's `unified_osculator` turns the $m$-part into the osculator test (after a natural-to-integer cast bridge). `and_congr` assembles the two equivalences.",
+    "mathContext": "The first conjunct is positional (last $k$ digits, for the $2^a5^b$ part); the second is a modular congruence (osculator, for the coprime part). CRT makes them jointly equivalent to $d \\mid n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "multiplicative inverse of 10 modulo m",
+      "and_congr equivalence composition",
+      "natural-to-integer cast of divisibility"
+    ],
+    "prerequisites": [
+      "Chinese Remainder Theorem",
+      "modular multiplicative inverse"
+    ]
+  },
+  {
+    "id": "ann-new-rules",
+    "proofId": "divisibility-truncation-general-oq-01-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "New Divisibility Rules: 14 = 2*7 and 35 = 5*7",
+    "content": "Four instantiations of the combined theorem. The rules for $14 = 2\\cdot 7$ and $35 = 5\\cdot 7$ are genuinely new: they share a factor with 10, so the osculator theorem alone cannot state them.\n\n- $14$: $s=2$, $m=7$, $c=5$, $k=1$ ($7 \\mid 10\\cdot 5 - 1 = 49$): $14 \\mid n \\iff (2 \\mid n\\bmod 10) \\wedge (7 \\mid \\lfloor n/10 \\rfloor + 5(n\\bmod 10))$.\n- $35$: $s=5$, $m=7$, $c=5$, $k=1$.\n- $12 = 4\\cdot 3$: $s=4$ needs the last-*two*-digits rule ($4 \\mid 10^2$), $m=3$, $c=1$.\n- $6 = 2\\cdot 3$: $s=2$, $m=3$, $c=1$.\n\nSide conditions ($s \\mid 10^k$, coprimality, $m \\mid 10c-1$) are discharged by `norm_num` and `decide`.",
+    "mathContext": "The $14$ and $35$ rules extend the gallery beyond the coprime-to-10 osculator cases and the ad-hoc composite cases (6, 12, 15, 18, 30).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "modular multiplicative inverse",
+      "composite divisibility rules",
+      "norm_num",
+      "decide"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "divisibility rules"
+    ]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "divisibility-truncation-general-oq-01-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
+    "type": "tactic",
+    "title": "Sanity Checks via native_decide",
+    "content": "Concrete `native_decide` examples confirm that the combined rules agree with direct divisibility on specific numbers, guarding against an off-by-one in the osculator $c$ or the digit count $k$. Positive cases include $6 \\mid 144$, $14 \\mid 154$, $35 \\mid 245$, and $12 \\mid 1452$; matching non-divisibility counterexamples confirm the criterion is not vacuously true.\n\nBecause every hypothesis of `combined_divisibility` is decidable for fixed numerals, `native_decide` compiles the divisibility checks to native code and evaluates both sides of the equivalence, certifying the abstract theorem against ground instances.",
+    "mathContext": "For fixed $d, n$ the predicate $d \\mid n$ and the combined right-hand side are both decidable, so `native_decide` verifies the equivalence by evaluation rather than rewriting.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide",
+      "decidable divisibility",
+      "reflective verification",
+      "divisibility counterexamples"
+    ],
+    "prerequisites": [
+      "decidability",
+      "kernel reduction"
+    ]
+  }
+]

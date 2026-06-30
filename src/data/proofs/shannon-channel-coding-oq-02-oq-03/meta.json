@@ -147,17 +147,17 @@
   },
   "crossReferences": [
     {
-      "target": "shannon-channel-coding",
+      "targetId": "shannon-channel-coding",
       "relationship": "extends",
       "description": "Provides a proved version of channel_coding_converse for the asymptotic regime"
     },
     {
-      "target": "shannon-channel-coding-oq-03",
+      "targetId": "shannon-channel-coding-oq-03",
       "relationship": "uses",
       "description": "Fano's inequality (proved in OQ03) underlies the fano_mi_converse_bound axiom"
     },
     {
-      "target": "shannon-channel-coding-oq-02",
+      "targetId": "shannon-channel-coding-oq-02",
       "relationship": "related",
       "description": "BSC capacity proof and achievability lemma — the other half of the channel coding theorem"
     }

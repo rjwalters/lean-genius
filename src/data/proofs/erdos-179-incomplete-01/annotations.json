@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Scope: Elementary Scaffolding for Erdős #179",
+    "content": "The parent file states the deep Fox–Pohoata / Leng–Sah–Sawhney supersaturation results ($F_k(N,\\ell) = N^{2-o(1)}$) and leaves several elementary `sorry`s about counting arithmetic progressions. Those analytic theorems are out of reach of elementary formalization, but the combinatorial scaffolding around them is fully provable — and this file proves it with 0 axioms and 0 sorries.",
+    "mathContext": "$F_k(N,\\ell)$ is the minimum number of $k$-APs in an $N$-set forcing an $\\ell$-AP. The elementary facts: APs have $k$ elements, $k$-APs are $k$-subsets, so there are at most $C(N,k)$ of them.",
+    "significance": "key",
+    "relatedConcepts": [
+      "supersaturation",
+      "arithmetic progressions",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "Finset combinatorics",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 40,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "AP, ContainsAP, and the AP Count",
+    "content": "Defines `arithmeticProgression a d k` as the image of $i \\mapsto a + i\\cdot d$ over `range k`, `ContainsAP A k` (some length-k AP with $d>0$ sits inside A), and `countAPs A k` (the number of length-k AP subsets of A). These match the parent's definitions so the lemmas transfer.",
+    "mathContext": "$\\mathrm{AP}(a,d,k) = \\{a, a+d, \\dots, a+(k-1)d\\}$; $\\mathrm{countAPs}\\,A\\,k = |\\{S \\subseteq A : S = \\mathrm{AP}(a,d,k),\\ d>0\\}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "Finset image",
+      "powerset filter"
+    ]
+  },
+  {
+    "id": "ann-ap-card",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "An AP with Positive Step Has k Elements",
+    "content": "Proves $|\\mathrm{AP}(a,d,k)| = k$ for $d > 0$. The map $i \\mapsto a + i\\cdot d$ is injective on `range k` (from $a+id = a+jd$ and right-cancellation $i\\cdot d = j\\cdot d \\Rightarrow i = j$), so the image has the same cardinality as `range k`.",
+    "mathContext": "Injectivity needs $d > 0$: with $d = 0$ the AP collapses to $\\{a\\}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "injectivity",
+      "card_image_of_injOn",
+      "Nat cancellation"
+    ]
+  },
+  {
+    "id": "ann-monotone",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "Supersaturation is Monotone",
+    "content": "`ContainsAP_of_le`: an ℓ-AP forces a k-AP for every k ≤ ℓ, since `range k ⊆ range ℓ` pushes through the AP image with the same start and step. `ContainsAP_two_of_two_le_card`: any set with at least two elements contains a 2-AP.",
+    "mathContext": "If $\\{a+id : i<\\ell\\}\\subseteq A$ then the sub-progression $\\{a+id : i<k\\}\\subseteq A$ too.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity",
+      "sub-progression"
+    ]
+  },
+  {
+    "id": "ann-le-choose",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "At Most C(N,k) Arithmetic Progressions",
+    "content": "Proves `countAPs A k ≤ C(|A|, k)`. Each counted k-AP (with $d>0$) is a k-element subset of A, so the filtered powerset embeds in `powersetCard k A`, whose cardinality is $C(N,k)$. This is the elementary fact behind the parent's trivial $F_k(N,\\ell) \\le N^2$ bound.",
+    "mathContext": "$\\mathrm{countAPs}\\,A\\,k \\le \\binom{|A|}{k}$ because $\\{\\text{k-APs}\\} \\subseteq \\{\\text{k-subsets}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "upper bound",
+      "powersetCard",
+      "binomial coefficient"
+    ]
+  },
+  {
+    "id": "ann-count-two",
+    "proofId": "erdos-179-incomplete-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Exactly C(N,2) Two-Term APs — and a Redundant Hypothesis",
+    "content": "Proves `countAPs A 2 = C(|A|, 2)`: the 2-APs of A are exactly its 2-element subsets, because $\\{x,y\\}$ with $x<y$ equals the AP with start $x$ and step $y-x$. The corollary `AP_free_has_2APs` discharges the parent's lemma and shows its 3-AP-free hypothesis is REDUNDANT — the identity holds for every finite set.",
+    "mathContext": "Every 2-subset $\\{x,y\\}$ is an AP, so $\\mathrm{countAPs}\\,A\\,2 = \\binom{|A|}{2}$ unconditionally.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "exact count",
+      "2-subsets",
+      "redundant hypothesis"
+    ]
+  }
+]

@@ -7,7 +7,7 @@
     "author": "Ladyzhenskaya (1969)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations",
     "date": "1969",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "tags": [
       "pde",
@@ -20,9 +20,9 @@
       "analysis",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "mathlibDependencies": [
       {
         "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le",
@@ -61,7 +61,7 @@
     ],
     "dateAdded": "2026-02-26",
     "lineCount": 21110,
-    "assumptions": "None. Formalized with 0 axioms and 0 sorries remain.",
+    "assumptions": "Relies on `Lean.ofReduceBool`. The analytic core — the quantitative enstrophy decay bound E(t) ≤ E(s)·exp(-2νμ₁(t-s)) and the integrated energy identity (FTC applied to the enstrophy ODE) — is kernel-checked and axiom-free. However, the Sobolev/Lions-threshold classification theorems `lions_3d`, `lions_2d`, `critical_at_lions_is_zero`, `standard_ns_gap`, and `standard_2d_gap` are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (it appears under `#print axioms` for those theorems; these are rational-arithmetic facts that could alternatively be closed by kernel `decide`/`norm_num`). `leanFile.axiomCount` remains 0 because there are no literal `axiom` declarations.",
     "relatedProblems": [
       {
         "id": "navier-stokes",
@@ -137,7 +137,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization answers the open question affirmatively: all three quantitative results — inter-time decay, integrated energy identity, and total dissipation bound — can be formalized in Lean 4 with 0 axioms and 0 sorries. The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
+    "summary": "This formalization answers the open question affirmatively: all three quantitative results — inter-time decay, integrated energy identity, and total dissipation bound — can be formalized in Lean 4 with 0 literal axiom declarations and 0 sorries (the auxiliary Sobolev/Lions-threshold classification theorems use native_decide, which depends on Lean.ofReduceBool). The key tools are the integrating factor method (for decay between arbitrary times) and the FTC via `intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le` (for the integrated identity).",
     "implications": "**Theoretical Significance**: **For 2D fluid mechanics**: The enstrophy_uniform_decay theorem provides a precise Lyapunov function argument: g(t) = E(t)·exp(2νμ₁t) is nonincreasing, certifying exponential stability of the zero state.\n\n**For Mathlib**: The correct FTC lemma for enstrophy integration is `integral_eq_sub_of_hasDerivAt_of_le` (not the simpler `integral_eq_sub_of_hasDerivAt`), because the enstrophy ODE holds for t > 0 but not necessarily at t = 0.\n\nThis version requires ContinuousOn on the closed interval [0,T] and HasDerivAt only on the open interval (0,T).\n\n**For Navier-Stokes research**: These results form part of the infrastructure for more advanced 2D results, such as proving the Ladyzhenskaya inequality in Lean 4 and connecting 2D global regularity to Fourier space energy cascades.\n\n**For the 3D problem**: The 2D results demonstrate that the enstrophy framework works cleanly in Lean 4. The 3D case differs because vortex stretching prevents the Poincaré bound P ≥ μ₁E from giving exponential decay.",
     "openQuestions": [
       "Can the Ladyzhenskaya inequality ‖u‖₄ ≤ C‖u‖₂^{1/2}‖∇u‖₂^{1/2} be formalized in Lean 4 using Mathlib's Sobolev space infrastructure?",

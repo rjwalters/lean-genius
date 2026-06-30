@@ -131,7 +131,7 @@
       "startLine": 256,
       "endLine": 295
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "esymmMean, newton_inequality_means, and maclaurin_first_step",
     "content": "**esymmMean xs k** = $e_k(xs) / \\binom{|xs|}{k}$ \u2014 the normalized elementary symmetric mean. **newton_inequality_means**: $\\bar{e}_k^2 \\geq \\bar{e}_{k-1} \\cdot \\bar{e}_{k+1}$ \u2014 derived from `newton_inequality_binomial` by clearing denominators via `div_le_div_iff`. **maclaurin_first_step**: $\\bar{e}_1^2 \\geq \\bar{e}_2$ \u2014 the first Maclaurin inequality, proved from Newton with $k=1$ using `esymm_zero` ($\\bar{e}_0 = 1$).",
     "mathContext": "`newton_inequality_means` proof: unfold `esymmMean`, use `div_pow` and `div_mul_div_comm` to rewrite the goal, then `div_le_div_iff` with positivity of binomial coefficients to clear denominators. The resulting goal is exactly `newton_inequality_binomial`'s conclusion (after a `linarith`). For `maclaurin_first_step`: specialize Newton at $k=1$: $\\bar{e}_1^2 \\geq \\bar{e}_0 \\cdot \\bar{e}_2$. Since $\\bar{e}_0 = e_0 / \\binom{n}{0} = 1/1 = 1$ (from `esymm_zero` and `Nat.choose_zero_right`), this gives $\\bar{e}_1^2 \\geq \\bar{e}_2$.",

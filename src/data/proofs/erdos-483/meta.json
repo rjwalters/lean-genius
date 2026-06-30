@@ -70,52 +70,92 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Schur Property and Schur Number",
+      "id": "header",
+      "title": "Header: Statement and References",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Imports (including the local `Proofs.SchursTheorem`) and the module docstring for Erdős Problem #483: the Schur number $f(k)$ is the least $N$ such that every $k$-coloring of $\\{1,\\dots,N\\}$ has a monochromatic solution to $a+b=c$. Question: is $f(k)<c^k$ for some constant $c>0$? Records $f(1)=2,f(2)=5,f(3)=14$ (all proved), $f(4)=45,f(5)=161$ (axiomatized), the Ageron lower / Whitehead upper bounds, and the 5-axiom inventory.",
+      "mathContext": "$f(k)$ = least $N$ s.t. every $k$-coloring of $\\{1,\\dots,N\\}$ has monochromatic $a+b=c$. Open: $f(k)<c^k$?"
+    },
+    {
+      "id": "defining",
+      "title": "Defining the Schur Number",
       "startLine": 28,
-      "endLine": 77,
-      "summary": "Defines SchurProp, proves existence and monotonicity, defines schurNumber via Nat.find with specification and minimality theorems.",
-      "mathContext": "$S(k) = \\min\\{N : \\forall c : \\{1,\\ldots,N\\} \\to [k], \\; \\exists x,y,z \\text{ monochromatic with } x+y=z\\}$"
+      "endLine": 51,
+      "summary": "Defines `SchurProp N k` (every $k$-coloring of $\\{1,\\dots,N\\}$ has a monochromatic Schur triple). PROVES `schurProp_exists` (existence from Schur's theorem in `SchursTheorem`) and `schurProp_mono` (monotone in $N$).",
+      "mathContext": "$\\text{SchurProp}(N,k)$: every $k$-coloring of $[1,N]$ has monochromatic $x+y=z$."
     },
     {
-      "id": "s1-proof",
-      "title": "S(1) = 2 (Fully Proved)",
-      "startLine": 78,
-      "endLine": 106,
-      "summary": "Proves S(1) = 2: upper bound from SchursTheorem (1+1=2 in any 1-coloring), lower bound by showing {1} has no Schur triple.",
-      "mathContext": "$S(1) = 2$: with one color, $\\{1,2\\}$ forces $1+1=2$; $\\{1\\}$ alone has no valid triple"
+      "id": "schur-number",
+      "title": "The Schur Number as a Proper Definition",
+      "startLine": 52,
+      "endLine": 79,
+      "summary": "Defines `schurNumber k` as `Nat.find` of the least $N$ with `SchurProp` (or $0$ for $k=0$). PROVES `schurNumber_spec` (it satisfies SchurProp) and `schurNumber_min` (minimality: no smaller $N$ works).",
+      "mathContext": "$S(k)=\\min\\{N:\\text{SchurProp}(N,k)\\}$ via `Nat.find`; spec + minimality."
     },
     {
-      "id": "s2-proof",
-      "title": "S(2) = 5 (Fully Proved)",
-      "startLine": 107,
-      "endLine": 132,
-      "summary": "Proves S(2) = 5: upper bound from schur_2_upper (case analysis on 2-colorings of {1,...,5}), lower bound from sum-free partition {1,4},{2,3} of {1,...,4}.",
-      "mathContext": "$S(2) = 5$: partition $\\{1,4\\},\\{2,3\\}$ of $\\{1,2,3,4\\}$ is sum-free; every 2-coloring of $\\{1,\\ldots,5\\}$ forces a triple"
+      "id": "s1",
+      "title": "Proved: S(1) = 2",
+      "startLine": 80,
+      "endLine": 108,
+      "summary": "PROVES $S(1)=2$: upper bound `schurProp_2_1` (from `SchursTheorem`: $1+1=2$ collides in any $1$-coloring), lower bound `not_schurProp_1_1` ($\\{1\\}$ has no Schur triple), combined in `schurNumber_1`.",
+      "mathContext": "$S(1)=2$ (fully proved)."
+    },
+    {
+      "id": "s2",
+      "title": "Proved: S(2) = 5",
+      "startLine": 109,
+      "endLine": 134,
+      "summary": "PROVES $S(2)=5$: upper bound `schurProp_5_2` (`schur_2_upper`, case analysis on $2$-colorings of $\\{1,\\dots,5\\}$), lower bound `not_schurProp_4_2` (the sum-free partition $\\{1,4\\},\\{2,3\\}$ of $\\{1,\\dots,4\\}$), combined in `schurNumber_2`.",
+      "mathContext": "$S(2)=5$ (fully proved)."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 133,
-      "endLine": 168,
-      "summary": "Proves positivity (S(k) ≥ 1 for k ≥ 1) and monotonicity (k₁ ≤ k₂ ⟹ S(k₁) ≤ S(k₂)) via color embedding argument.",
-      "mathContext": "$S(k_1) \\leq S(k_2)$ for $k_1 \\leq k_2$: embed $k_1$ colors into $k_2$ colors via $\\text{Fin}\\, k_1 \\hookrightarrow \\text{Fin}\\, k_2$"
+      "startLine": 135,
+      "endLine": 170,
+      "summary": "PROVES `schurNumber_pos` ($S(k)\\geq1$ for $k\\geq1$) and `schurNumber_nondecreasing` ($k_1\\leq k_2\\Rightarrow S(k_1)\\leq S(k_2)$, via a color-embedding argument).",
+      "mathContext": "$S(k)\\geq1$; $S$ non-decreasing in $k$."
+    },
+    {
+      "id": "s3",
+      "title": "Proved: S(3) = 14",
+      "startLine": 171,
+      "endLine": 205,
+      "summary": "PROVES $S(3)=14$ (not axiomatized). Defines the explicit sum-free $3$-coloring `sumFreeColoring13` of $\\{1,\\dots,13\\}$; `sumFreeColoring13_no_triple` and `not_schurProp_13_3` give $S(3)>13$ via `native_decide`; `schurProp_14_3` gives $S(3)\\leq14$ via `native_decide`; combined in `schurNumber_3`.",
+      "mathContext": "$S(3)=14$ (fully proved via `native_decide` on the explicit witness coloring)."
     },
     {
       "id": "known-values",
-      "title": "Known Values (Axiomatized)",
-      "startLine": 169,
-      "endLine": 179,
-      "summary": "Axiomatizes S(3)=14, S(4)=45, S(5)=161 (Heule 2017). Exhaustive Lean verification would be prohibitively expensive.",
-      "mathContext": "$S(3)=14, S(4)=45, S(5)=161$. Ratios $\\approx 2.8, 3.2, 3.6$ suggest growth around $3^k$"
+      "title": "Known Values (larger cases — axiomatized)",
+      "startLine": 206,
+      "endLine": 213,
+      "summary": "The larger known Schur numbers, AXIOMATIZED because exhaustive Lean verification is prohibitive: `schurNumber_4` ($f(4)=45$) and `schurNumber_5` ($f(5)=161$, Heule 2017).",
+      "mathContext": "$f(4)=45$, $f(5)=161$ (axioms; too large for `native_decide`)."
     },
     {
-      "id": "bounds-conjecture",
-      "title": "Bounds and Conjecture",
-      "startLine": 180,
-      "endLine": 198,
-      "summary": "Axiomatizes exponential lower bound (S(k) ≥ C^k) and factorial upper bound (S(k) ≤ C·k!). States the open conjecture: S(k) < c^k?",
-      "mathContext": "$C_1^k \\leq S(k) \\leq C_2 \\cdot k!$ — is $S(k) < c^k$ for some $c$?"
+      "id": "bounds",
+      "title": "Bounds",
+      "startLine": 214,
+      "endLine": 225,
+      "summary": "Two AXIOMS encoding the literature bounds: `schur_lower_bound` (exponential lower bound $\\exists C>1,\\ C^k\\leq S(k)$) and `schur_upper_bound` (factorial upper bound $\\exists C>0,\\ S(k)\\leq C\\cdot k!$, Whitehead 1973).",
+      "mathContext": "$C^k\\leq S(k)\\leq C'\\cdot k!$ (axioms)."
+    },
+    {
+      "id": "recursive-lower",
+      "title": "Recursive Lower Bound: S(k+1) ≥ 3·S(k) − 1",
+      "startLine": 226,
+      "endLine": 336,
+      "summary": "PROVES the recursive lower bound `schurNumber_recursive_lower`: $S(k+1)\\geq3\\,S(k)-1$. Given a Schur-free $k$-coloring of $\\{1,\\dots,n\\}$ ($n=S(k)-1$), it builds a Schur-free $(k+1)$-coloring of $\\{1,\\dots,3n+1\\}$ by three regions (original / new color / mirror), with the full $8$-way region case analysis on a triple $a+b=d$ (helper `castSucc_inj`). Then `schurNumber_6_lower` ($S(6)\\geq482$ from $S(5)=161$).",
+      "mathContext": "$S(k+1)\\geq3S(k)-1$ (proved by 3-region coloring); $S(6)\\geq482$."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture",
+      "startLine": 337,
+      "endLine": 343,
+      "summary": "States Erdős Problem #483 as the AXIOM `erdos_483_conjecture`: $\\exists c>0,\\ \\forall k\\geq1,\\ S(k)<c^k$ — are the Schur numbers bounded by a simple exponential? OPEN.",
+      "mathContext": "Conjecture (axiom): $\\exists c>0,\\ S(k)<c^k$ for all $k\\geq1$."
     }
   ],
   "overview": {

@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-  "description": "Sigma-finite Lp Riesz representation theorem fully formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) are proved with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction.",
+  "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status downgraded to formalized until the chain builds green.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
     "lineCount": 952,
@@ -13,7 +13,7 @@
     "sorries": 0
   },
   "meta": {
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
     "tags": [
       "functional-analysis",
@@ -27,7 +27,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 952,
-    "assumptions": "All three sorries eliminated: Step A (localization_existence) was proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement). Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) were proved earlier. The proof depends on lemmas in the parent file Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean — assess parent's status independently.",
+    "buildStatus": "broken",
+    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file imports the chain foundation Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean (line 33), which produces 53 Mathlib-drift errors against leanprover/lean4:v4.26.0, so this file transitively fails to compile. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation. Mathematical content unchanged: Step A (localization_existence) proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement); Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) proved earlier. As the assumptions already noted, the parent's status must be assessed independently — it is now also formalized/broken.",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
@@ -58,48 +59,64 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Statement",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module header for the sigma-finite Riesz Lp representation theorem: states what is proved (Steps A localization, B Lp truncation convergence, C density extension), the dependency on σ-finiteness rather than finiteness of the measure, and references.",
+      "mathContext": "Riesz Lp representation for $\\sigma$-finite $\\mu$: every continuous functional on $L^p$ is $\\varphi(f) = \\int f g$ for some $g \\in L^q$, $1/p + 1/q = 1$."
+    },
+    {
       "id": "helper-lemmas",
-      "title": "Helper Lemmas",
-      "startLine": 49,
-      "endLine": 90,
+      "title": "§0. Helper Lemmas",
+      "startLine": 43,
+      "endLine": 78,
       "summary": "indicator_memLp_sf, lintegral_mul_le_sf (Hölder), integrable_mul_sf — all proved without IsFiniteMeasure.",
-      "mathContext": "Hölder's inequality for Lp × Lq → L1 integrability holds for any measure. These lemmas isolate the minimal measure-theoretic content needed."
+      "mathContext": "Hölder's inequality for $L^p \\times L^q \\to L^1$ integrability holds for any measure. These lemmas isolate the minimal measure-theoretic content needed."
     },
     {
       "id": "integration-clm",
-      "title": "Integration CLM for Sigma-Finite Measures",
-      "startLine": 91,
-      "endLine": 140,
+      "title": "§1. Integration CLM for Sigma-Finite Measures",
+      "startLine": 79,
+      "endLine": 119,
       "summary": "integrationCLM_sf and integrationCLM_sf_apply: define and evaluate the integration functional Λ(f) = ∫ fg for SigmaFinite μ.",
       "mathContext": "LinearMap.mkContinuous with Hölder bound. The IsFiniteMeasure hypothesis in the parent's integrationCLM was superfluous."
     },
     {
       "id": "density-extension",
-      "title": "Step C: Density Extension (Proved)",
-      "startLine": 141,
-      "endLine": 215,
+      "title": "§2. Density Extension (Step C, Proved)",
+      "startLine": 120,
+      "endLine": 168,
       "summary": "integral_representation_sf: if φ agrees with ∫ fg on indicators, then φ = ∫ fg everywhere. Uses Lp.induction (valid for SigmaFinite).",
       "mathContext": "The proof is essentially the parent's integral_representation with IsFiniteMeasure dropped. Three cases: indicators, additivity, closedness. All work for sigma-finite."
     },
     {
       "id": "spanning-set-lemmas",
-      "title": "Spanning Set Approximation Lemmas",
-      "startLine": 212,
-      "endLine": 234,
+      "title": "§3. Spanning-Set Approximation Lemmas",
+      "startLine": 169,
+      "endLine": 189,
       "summary": "mem_spanningSets_eventually and pointwise_mul_indicator_tendsto — proved, identical to parent entry.",
       "mathContext": "Basic set-theoretic consequences of the sigma-finite exhaustion. Used in the proof of lp_truncation_tendsto_zero (Step B)."
     },
     {
-      "id": "step-b-proved",
-      "title": "Step B: Lp Truncation Convergence (Proved)",
-      "startLine": 235,
-      "endLine": 300,
+      "id": "lp-truncation",
+      "title": "§4. Lp Truncation Convergence (Step B, Proved)",
+      "startLine": 190,
+      "endLine": 238,
       "summary": "lp_truncation_tendsto_zero: eLpNorm(f - f·1_{Sₙ}) → 0 via Vitali's convergence theorem.",
-      "mathContext": "unifIntegrable_const + unifTight_const + tendsto_Lp_of_tendsto_ae. Domination |f - f·1_{Sₙ}| ≤ |f| propagates UI/UT from the constant-f sequence."
+      "mathContext": "unifIntegrable_const + unifTight_const + tendsto_Lp_of_tendsto_ae. Domination $|f - f\\cdot 1_{S_n}| \\le |f|$ propagates UI/UT from the constant-f sequence."
     },
     {
-      "id": "step-a-localization",
-      "title": "Step A: Localization (Proved)",
+      "id": "ext-by-zero-infra",
+      "title": "§4.5. Extension-by-Zero Infrastructure",
+      "startLine": 239,
+      "endLine": 317,
+      "summary": "Extension-by-zero machinery used by Step A: eLpNorm_indicator_eq_restrict_loc (eLpNorm of an indicator under μ equals eLpNorm under μ.restrict S), memLp_indicator_of_restrict_loc, and the continuous linear map extByZeroCLM : Lp(μ.restrict S) →L[ℝ] Lp(μ).",
+      "mathContext": "Extension-by-zero $L^p(\\mu\\!\\restriction\\! S) \\to L^p(\\mu)$ is an isometry: $\\lVert S.\\mathrm{indicator}\\,f\\rVert_{L^p(\\mu)} = \\lVert f\\rVert_{L^p(\\mu\\restriction S)}$. Bypasses the standard Lp.restrict_comap path."
+    },
+    {
+      "id": "localization",
+      "title": "§5. Localization (Step A, Proved)",
       "startLine": 318,
       "endLine": 928,
       "summary": "localization_existence: constructs g ∈ Lq(μ) with indicator agreement on every finite-measure set. ~600 lines, fully proved without an Lp restriction map.",
@@ -107,11 +124,11 @@
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem (Assembled)",
+      "title": "§6. Main Theorem (Assembled)",
       "startLine": 929,
       "endLine": 952,
       "summary": "riesz_lp_surjective_sigma_finite: full Riesz Lp for sigma-finite, assembled from Steps A, B, and C — all three proved in this file.",
-      "mathContext": "Steps A (localization_existence), B (lp_truncation_tendsto_zero / pointwise_mul_indicator_tendsto), and C (integral_representation_sf) compose directly. The main theorem is sorry- and axiom-free."
+      "mathContext": "Steps A (localization_existence), B (lp_truncation_tendsto_zero / pointwise_mul_indicator_tendsto), and C (integral_representation_sf) compose directly."
     }
   ],
   "openQuestions": [

@@ -16,7 +16,11 @@
       "open-problems",
       "sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit fractions",
+      "Egyptian fractions",
+      "Integer sequences"
+    ]
   },
   {
     "id": "ann-e243-imports",
@@ -35,7 +39,11 @@
       "filters",
       "analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real analysis",
+      "Limits and convergence",
+      "Finite sums"
+    ]
   },
   {
     "id": "ann-e243-sylvester-def",
@@ -54,7 +62,11 @@
       "recurrence",
       "doubly-exponential"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Recurrence relations",
+      "Doubly exponential growth",
+      "Telescoping series"
+    ]
   },
   {
     "id": "ann-e243-verified-values",
@@ -73,7 +85,11 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Recursive sequence evaluation",
+      "Decidable propositions",
+      "Kernel computation"
+    ]
   },
   {
     "id": "ann-e243-eventually-sylvester",
@@ -92,7 +108,11 @@
       "filter",
       "recurrence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filters and atTop",
+      "Eventually quantifier",
+      "Recurrence relations"
+    ]
   },
   {
     "id": "ann-e243-growth-predicate",
@@ -111,7 +131,11 @@
       "limits",
       "quadratic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sequence limits",
+      "Quadratic growth rate",
+      "Asymptotic ratios"
+    ]
   },
   {
     "id": "ann-e243-rational-sum",
@@ -130,7 +154,11 @@
       "convergence",
       "egyptian-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Rational numbers",
+      "Series convergence",
+      "Reciprocal sums"
+    ]
   },
   {
     "id": "ann-e243-main-conjecture",
@@ -149,7 +177,11 @@
       "axiom",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open conjectures",
+      "Axioms in Lean",
+      "Integer sequence growth"
+    ]
   },
   {
     "id": "ann-e243-sylvester-pos",
@@ -168,7 +200,11 @@
       "positivity",
       "well-definedness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical induction",
+      "Positivity arguments",
+      "Recursive definitions"
+    ]
   },
   {
     "id": "ann-e243-sum-to-one",
@@ -187,6 +223,10 @@
       "egyptian-fractions",
       "unit-fractions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Telescoping sums",
+      "Egyptian fractions",
+      "Infinite series limits"
+    ]
   }
 ]

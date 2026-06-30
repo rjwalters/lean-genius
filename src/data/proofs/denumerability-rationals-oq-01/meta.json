@@ -88,14 +88,14 @@
       "id": "preamble",
       "title": "Module Documentation and Imports",
       "startLine": 1,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Documents the seven-part proof structure, the connection from denumerability of ℚ to the Continuum Hypothesis, and the Gödel-Cohen independence result. Imports Mathlib's cardinal arithmetic, continuum, and ordinal infrastructure."
     },
     {
       "id": "part-1-cardinality",
       "title": "Part 1: Cardinality of ℚ and ℝ",
-      "startLine": 69,
-      "endLine": 88,
+      "startLine": 71,
+      "endLine": 89,
       "summary": "Establishes |ℚ| = ℵ₀ (from Mathlib's Denumerable instance), |ℝ| = 𝔠 (from Cardinal.mk_real), and the cardinality gap |ℚ| < |ℝ|.",
       "mathContext": "$|\\mathbb{Q}| = \\aleph_0$ (via Denumerable), $|\\mathbb{R}| = \\mathfrak{c} = 2^{\\aleph_0}$ (via mk_real), and $\\aleph_0 < \\mathfrak{c}$ (Cantor)."
     },
@@ -103,43 +103,43 @@
       "id": "part-2-dedekind",
       "title": "Part 2: The Dedekind Cut Connection",
       "startLine": 91,
-      "endLine": 115,
+      "endLine": 111,
       "summary": "Proves |𝒫(ℚ)| = 𝔠 using Cardinal.mk_set and the continuum formula 2^ℵ₀ = 𝔠. Corollary: |𝒫(ℚ)| = |ℝ|, reflecting the Dedekind cut bijection.",
       "mathContext": "$|\\mathcal{P}(\\mathbb{Q})| = 2^{|\\mathbb{Q}|} = 2^{\\aleph_0} = \\mathfrak{c} = |\\mathbb{R}|$."
     },
     {
       "id": "part-3-aleph",
       "title": "Part 3: The Cardinality Gap and Aleph Hierarchy",
-      "startLine": 118,
-      "endLine": 143,
+      "startLine": 113,
+      "endLine": 135,
       "summary": "Proves ℵ₀ < 𝔠 (Cantor), ℵ₁ ≤ 𝔠 (ZFC bound), and ℵ₀ < ℵ₁ (smallest uncountable cardinal), establishing the aleph-hierarchy framework."
     },
     {
       "id": "part-4-ch-definition",
       "title": "Part 4: The Continuum Hypothesis",
-      "startLine": 146,
-      "endLine": 158,
+      "startLine": 137,
+      "endLine": 146,
       "summary": "Defines ContinuumHypothesis (𝔠 = ℵ₁) and CH_gap (no cardinal between ℵ₀ and 𝔠), the two standard formulations."
     },
     {
       "id": "part-5-equivalence",
       "title": "Part 5: CH Equivalence",
-      "startLine": 161,
-      "endLine": 191,
+      "startLine": 148,
+      "endLine": 178,
       "summary": "Proves ContinuumHypothesis ↔ CH_gap via the successor characterization of ℵ₁ = Order.succ ℵ₀."
     },
     {
       "id": "part-6-implications",
       "title": "Part 6: Implications of CH",
-      "startLine": 194,
-      "endLine": 228,
+      "startLine": 180,
+      "endLine": 213,
       "summary": "Under CH: only ℵ₀ and 𝔠 among infinite cardinals ≤ 𝔠; ℵ₁ = 𝔠. Under ¬CH: ℵ₁ < 𝔠 (at least one intermediate exists)."
     },
     {
       "id": "part-7-independence",
       "title": "Part 7: Independence Result",
-      "startLine": 231,
-      "endLine": 260,
+      "startLine": 215,
+      "endLine": 268,
       "summary": "Axiomatizes Gödel (1940) and Cohen (1963) independence: both CH and ¬CH are consistent with ZFC. Summary theorem collects all ZFC-provable facts."
     }
   ],

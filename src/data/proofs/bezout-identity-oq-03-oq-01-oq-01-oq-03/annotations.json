@@ -1,0 +1,188 @@
+[
+  {
+    "id": "ann-crtpi-overview",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 32
+    },
+    "type": "context",
+    "title": "The Pi-Type Form of the k-fold CRT",
+    "content": "The docstring frames the goal: upgrade the parent's list/nested-pair k-fold CRT to the canonical dependent-product form ℤ/(∏ nᵢ)ℤ ≅ ∏_{i:Fin k} ℤ/nᵢℤ, indexed symmetrically by Fin k. This is the textbook statement of the Chinese Remainder Theorem and the one that composes cleanly with other indexed constructions (no right-associated PUnit tail). The strategy is induction on k, peeling off the head modulus at each step, applying the binary CRT, and reassembling the Pi-type with a Fin.cons isomorphism.",
+    "mathContext": "$\\mathbb{Z}/(n_0 n_1\\cdots n_{k-1})\\mathbb{Z} \\;\\cong\\; \\prod_{i:\\mathrm{Fin}\\,k} \\mathbb{Z}/n_i\\mathbb{Z}\\qquad(\\text{pairwise coprime } n_i)$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "ring isomorphism",
+      "dependent product (Pi-type)",
+      "pairwise coprimality"
+    ],
+    "prerequisites": [
+      "modular arithmetic and coprimality",
+      "ring isomorphisms",
+      "Fin k indexing and dependent types"
+    ]
+  },
+  {
+    "id": "ann-crtpi-subsingleton",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 56
+    },
+    "type": "technique",
+    "title": "The Base Case: Subsingleton Rings are Isomorphic",
+    "content": "ringEquivOfSubsingleton supplies the k = 0 base. When both rings have at most one element, the constant-zero map in each direction is automatically a ring isomorphism — every law (left/right inverse, map_mul, map_add) follows from Subsingleton.elim, since any two elements are equal. This sidesteps the friction that ZMod (∏ over Fin 0) is ZMod 1 (the trivial ring) rather than something requiring a bespoke map: the empty product is 1 and the empty Pi-type is a subsingleton, so both sides collapse and this generic lemma closes the case.",
+    "mathContext": "$A, B \\text{ subsingleton} \\Rightarrow A \\cong B \\text{ via } x \\mapsto 0,\\quad \\mathbb{Z}/1\\mathbb{Z} = \\{0\\},\\; \\textstyle\\prod_{\\mathrm{Fin}\\,0} = \\{*\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subsingleton.elim",
+      "trivial ring ZMod 1",
+      "empty product = 1",
+      "RingEquiv"
+    ],
+    "prerequisites": [
+      "subsingleton types",
+      "the trivial (zero) ring"
+    ]
+  },
+  {
+    "id": "ann-crtpi-finsplit",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 74
+    },
+    "type": "technique",
+    "title": "The Fin.cons Ring Isomorphism (head × tail)",
+    "content": "finSplitRingEquiv is the structural reassembly step: a dependent product over Fin (k+1) is isomorphic to its head factor M 0 times the tail product over Fin k. The forward map f ↦ (f 0, fun i => f i.succ) is a ring homomorphism *on the nose* — because ring operations on dependent function types are pointwise, map_mul' and map_add' hold by rfl with no proof effort. The inverse is exactly Fin.cons (prepend the head), with the round-trip laws given by Fin.cons_self_tail and a two-case ext. This is the algebraic content that lets the binary CRT be threaded into an indexed product.",
+    "mathContext": "$\\Big(\\prod_{i:\\mathrm{Fin}(k+1)} M_i\\Big) \\;\\cong\\; M_0 \\times \\prod_{i:\\mathrm{Fin}\\,k} M_{i+1},\\qquad f \\mapsto (f\\,0,\\; i \\mapsto f\\,i.\\mathrm{succ})$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.cons",
+      "pointwise ring structure",
+      "definitional equality (rfl)",
+      "RingEquiv on Pi-types"
+    ],
+    "prerequisites": [
+      "Fin.cons and Fin.succ",
+      "ring structure on dependent function types"
+    ]
+  },
+  {
+    "id": "ann-crtpi-coprime",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Head Coprime to the Tail Product, and Tail Pairwise Coprimality",
+    "content": "Two coprimality bookkeeping lemmas feed the inductive step. head_coprime_tail_prod shows ns 0 is coprime to ∏ ns(i+1) via Nat.Coprime.prod_right: the head is coprime to each tail entry (indices 0 and i.succ differ, so pairwise coprimality applies), hence to their product — this is the hypothesis the binary CRT needs. pairwise_tail shows the tail family ns ∘ succ remains pairwise coprime (Fin.succ is injective), which is exactly the hypothesis the inductive call on Fin k requires.",
+    "mathContext": "$\\gcd\\Big(n_0,\\; \\prod_{i:\\mathrm{Fin}\\,k} n_{i+1}\\Big) = 1 \\;\\Longleftarrow\\; \\gcd(n_0, n_{i+1}) = 1 \\ \\forall i$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Coprime.prod_right",
+      "Fin.succ_ne_zero",
+      "Fin.succ_injective",
+      "pairwise coprimality"
+    ],
+    "prerequisites": [
+      "coprimality distributes over products",
+      "injectivity of Fin.succ"
+    ]
+  },
+  {
+    "id": "ann-crtpi-main",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 135
+    },
+    "type": "concept",
+    "title": "The Main Construction crtPi: Induction on k",
+    "content": "The heart of the file. crtPi builds the isomorphism by recursion on the number of moduli. The base rewrites the empty product to 1 and invokes ringEquivOfSubsingleton. The step composes three ring equivalences: e1 is the binary ZMod.chineseRemainder applied after Fin.prod_univ_succ splits ∏ = ns 0 · ∏ tail (the cast hprod ▸ aligns ZMod (∏) with ZMod (ns 0 · ∏ tail)); e2 lifts the inductive hypothesis on the tail into the second factor via RingEquiv.prodCongr; e3 reassembles the Pi-type with finSplitRingEquiv.symm. The final isomorphism is (e1.trans e2).trans e3 — a clean head|tail telescope.",
+    "mathContext": "$\\mathbb{Z}/\\!\\textstyle\\prod \\xrightarrow{e_1} \\mathbb{Z}/n_0 \\times \\mathbb{Z}/\\!\\prod_{\\mathrm{tail}} \\xrightarrow{e_2} \\mathbb{Z}/n_0 \\times \\!\\prod_{\\mathrm{Fin}\\,k}\\!\\mathbb{Z}/n_{i+1} \\xrightarrow{e_3} \\!\\prod_{\\mathrm{Fin}(k+1)}\\!\\mathbb{Z}/n_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod.chineseRemainder",
+      "Fin.prod_univ_succ",
+      "RingEquiv.prodCongr",
+      "RingEquiv.trans",
+      "induction on k"
+    ],
+    "prerequisites": [
+      "binary CRT ZMod.chineseRemainder",
+      "the two structural isomorphisms and the coprimality lemmas",
+      "composing ring equivalences"
+    ]
+  },
+  {
+    "id": "ann-crtpi-properties",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 137,
+      "endLine": 164
+    },
+    "type": "technique",
+    "title": "Free Properties from the RingEquiv API",
+    "content": "Because crtPi is packaged as a RingEquiv (not a bare bijection), bijectivity, multiplicativity, additivity, and the round-trip identity are immediate one-liners from the Mathlib RingEquiv API (.bijective, map_mul, map_add, .symm_apply_apply). This is the payoff of building the genuine algebraic isomorphism rather than just a set bijection: the homomorphism content travels for free, and the isomorphism can be used as a ring map wherever needed.",
+    "mathContext": "$\\varphi(xy) = \\varphi(x)\\varphi(y),\\quad \\varphi(x+y) = \\varphi(x)+\\varphi(y),\\quad \\varphi^{-1}(\\varphi(x)) = x$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "RingEquiv API",
+      "map_mul / map_add",
+      "bijectivity",
+      "symm_apply_apply"
+    ],
+    "prerequisites": [
+      "ring homomorphism laws",
+      "the RingEquiv structure"
+    ]
+  },
+  {
+    "id": "ann-crtpi-card",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 166,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "Cardinality Preservation: |∏ ℤ/nᵢℤ| = ∏ nᵢ",
+    "content": "crtPi_card derives the counting corollary: for positive moduli the dependent product ∀ i, ZMod (ns i) is finite with cardinality ∏ ns i. A ring bijection transports Nat.card (Nat.card_eq_of_bijective), and Nat.card (ZMod N) = N for N ≠ 0 (ZMod.card), so the two sides match. This recovers the classical multiplicative count |ℤ/Nℤ| = ∏ |ℤ/nᵢℤ| — the cardinality shadow of the CRT and the structural source of multiplicativity for counting functions like Euler's totient.",
+    "mathContext": "$\\Big|\\prod_{i} \\mathbb{Z}/n_i\\mathbb{Z}\\Big| = \\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}| = \\prod_i n_i = N$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card_eq_of_bijective",
+      "ZMod.card",
+      "multiplicativity",
+      "Euler's totient"
+    ],
+    "prerequisites": [
+      "Nat.card of ZMod N is N for N ≠ 0",
+      "cardinality transported across bijections"
+    ]
+  },
+  {
+    "id": "ann-crtpi-example",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 182,
+      "endLine": 198
+    },
+    "type": "context",
+    "title": "Concrete Instance: ℤ/30ℤ ≅ ℤ/2 × ℤ/3 × ℤ/5",
+    "content": "A worked instance grounds the abstract theorem: the family ![2,3,5] : Fin 3 → ℕ is pairwise coprime (discharged by ordinary kernel `decide`, keeping the file free of native_decide / Lean.ofReduceBool) with product 30, so crtPi specializes to ℤ/30ℤ ≅ ∏_{i:Fin 3} ℤ/[2,3,5]ᵢℤ. This is the canonical first example of the CRT, exhibiting the general construction on the smallest non-trivial pairwise-coprime triple.",
+    "mathContext": "$\\mathbb{Z}/30\\mathbb{Z} \\;\\cong\\; \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z} \\times \\mathbb{Z}/5\\mathbb{Z}$",
+    "significance": "context",
+    "relatedConcepts": [
+      "kernel decide",
+      "Matrix.of / ![…] notation",
+      "concrete CRT decomposition"
+    ],
+    "prerequisites": [
+      "decidable coprimality",
+      "the general crtPi construction"
+    ]
+  }
+]

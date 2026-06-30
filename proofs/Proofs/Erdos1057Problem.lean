@@ -139,10 +139,74 @@ theorem korselt_forward (n : ℕ) (hn : n > 1) (hsq : Squarefree n)
   have : a ^ n = n * k + a := by omega
   rw [this, Nat.mul_add_mod]
 
-/-- Korselt's theorem (backward): the Fermat characterization implies Korselt's criterion.
-    Requires primitive roots and is more technical; axiomatized. -/
-axiom korselt_backward :
-  ∀ n : ℕ, n > 1 → ¬n.Prime → satisfiesFermat n → satisfiesKorselt n
+/-- Korselt's theorem (backward): the Fermat characterization implies Korselt's
+    criterion. Squarefreeness follows from an elementary `a = p` argument: if
+    `p² ∣ n` then `p² ∣ pⁿ` and `p² ∣ pⁿ - p`, forcing `p² ∣ p`, impossible.
+    The divisibility `(p-1) ∣ (n-1)` follows from the cyclicity of `(ZMod p)ˣ`:
+    the Fermat condition forces every unit `u` to satisfy `uⁿ⁻¹ = 1`, so a
+    generator (of order `p-1`) has its order dividing `n-1`. -/
+theorem korselt_backward (n : ℕ) (hn : n > 1) (_hnp : ¬n.Prime)
+    (hf : satisfiesFermat n) : satisfiesKorselt n := by
+  have hn1 : 1 ≤ n := by omega
+  -- `aⁿ ≡ a (mod n)` as a `Nat.ModEq` for every `a`
+  have hmod : ∀ a : ℕ, a ^ n ≡ a [MOD n] := fun a => hf a
+  refine ⟨?_, ?_⟩
+  · -- `Squarefree n`
+    rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    -- `hp2 : p * p ∣ n`
+    have hge : p ≤ p ^ n := pow_ge_self' p n hn1
+    have hdvd_diff : n ∣ p ^ n - p := (Nat.modEq_iff_dvd' hge).mp (hmod p).symm
+    have hpp_diff : p * p ∣ p ^ n - p := dvd_trans hp2 hdvd_diff
+    have hn2 : 2 ≤ n := hn
+    have hpp_pn : p * p ∣ p ^ n := by
+      rw [← pow_two]; exact pow_dvd_pow p hn2
+    have hcollapse : p ^ n - (p ^ n - p) = p := by omega
+    have hpp_p : p * p ∣ p := by
+      have := Nat.dvd_sub' hpp_pn hpp_diff
+      rwa [hcollapse] at this
+    have hle : p * p ≤ p := Nat.le_of_dvd hp.pos hpp_p
+    have h2 : 2 ≤ p := hp.two_le
+    have h2p : 2 * p ≤ p * p := mul_le_mul_right' h2 p
+    omega
+  · -- `∀ p prime, p ∣ n → (p-1) ∣ (n-1)`
+    intro p hp hpdvd
+    haveI : Fact p.Prime := ⟨hp⟩
+    haveI : NeZero p := ⟨hp.pos.ne'⟩
+    -- Every unit `u` of `ZMod p` satisfies `uⁿ⁻¹ = 1`
+    have key : ∀ u : (ZMod p)ˣ, u ^ (n - 1) = 1 := by
+      intro u
+      have hcast : (u : ZMod p) ^ n = (u : ZMod p) := by
+        -- pull the Fermat congruence down from `mod n` to `mod p`
+        set a : ℕ := (u : ZMod p).val with ha
+        have hge_a : a ≤ a ^ n := pow_ge_self' a n hn1
+        have hdvdn : n ∣ a ^ n - a := (Nat.modEq_iff_dvd' hge_a).mp (hmod a).symm
+        have hdvdp : p ∣ a ^ n - a := dvd_trans hpdvd hdvdn
+        have hmp : a ^ n ≡ a [MOD p] := ((Nat.modEq_iff_dvd' hge_a).mpr hdvdp).symm
+        have hzz : ((a ^ n : ℕ) : ZMod p) = ((a : ℕ) : ZMod p) := by
+          rw [ZMod.natCast_eq_natCast_iff]; exact hmp
+        simpa [ha, ZMod.natCast_val, ZMod.cast_id] using hzz
+      have hune : (u : ZMod p) ≠ 0 := u.ne_zero
+      have hcancel : (u : ZMod p) ^ (n - 1) = 1 := by
+        have hsplit : (u : ZMod p) ^ n
+            = (u : ZMod p) ^ (n - 1) * (u : ZMod p) := by
+          rw [← pow_succ]; congr 1; omega
+        rw [hsplit] at hcast
+        have heq : (u : ZMod p) ^ (n - 1) * (u : ZMod p)
+            = 1 * (u : ZMod p) := by rw [one_mul]; exact hcast
+        exact mul_right_cancel₀ hune heq
+      apply Units.ext
+      push_cast
+      simpa using hcancel
+    -- A generator `g` of `(ZMod p)ˣ` has order `p - 1`
+    obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+    have hord : orderOf g = Fintype.card (ZMod p)ˣ :=
+      orderOf_eq_card_of_forall_mem_zpowers hg
+    have hcard : Fintype.card (ZMod p)ˣ = p - 1 := by
+      rw [ZMod.card_units_eq_totient, Nat.totient_prime hp]
+    have hgdvd : orderOf g ∣ (n - 1) := orderOf_dvd_of_pow_eq_one (key g)
+    rw [hord, hcard] at hgdvd
+    exact hgdvd
 
 /-- Korselt's theorem: the two definitions are equivalent -/
 theorem korselt_theorem (n : ℕ) (hn : n > 1) (hnp : ¬n.Prime) :

@@ -414,7 +414,7 @@
       "startLine": 187,
       "endLine": 192
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Littlewood Polynomials",
     "content": "A Littlewood polynomial has all coefficients with |a_i| = 1 or a_i = 0 (typically coefficients ±1). These have maximal sparsity n = d+1 and special root distribution properties.",
     "mathContext": "Littlewood polynomials are a classical object in analysis. The *Littlewood conjecture* (now theorem, Kahane 1985) states that for random ±1 polynomials of degree d, the roots cluster near the unit circle with discrepancy O(√(d log d)). For Littlewood polynomials, M ≤ (d+1)/1 = d+1, so log M ≤ log(d+1). The Erdős-Turán bound gives D* ≤ C√(d log(d+1)). The axiomatized bound `maxDiscrepancy ≤ √(d log d + d)` reflects the known results for this class. Littlewood polynomials appear in signal processing (binary phase codes) and number theory (Barker sequences).",

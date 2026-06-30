@@ -1,0 +1,265 @@
+{
+  "id": "derangements-convergence-oq-03-oq-01-oq-02",
+  "title": "Sign and sharp decay of the gap n!/e − D(n)",
+  "slug": "derangements-convergence-oq-03-oq-01-oq-02",
+  "description": "Sharpens the absolute bound |D(n) − n!/e| < 1/2 (parent) into a signed, two-sided statement. The signed gap G(n) = n!·e⁻¹ − D(n) equals n! times the alternating tail ∑_{k≥n+1} (−1)^k/k!, so (i) it has the sign of (−1)^{n+1} — D(n) straddles n!/e, exceeding it for even n and falling short for odd n — and (ii) it is squeezed between consecutive unit fractions, 1/(n+2) ≤ |G(n)| ≤ 1/(n+1), for every n ≥ 0. The lower bound 1/(n+2) is new content: the gap does not decay faster than the leading tail term. Built self-containedly on the base entry's alternating-series lemmas.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "asymptotics",
+      "alternating-series",
+      "exponential",
+      "number-theory",
+      "analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. Fully machine-checked, 0 axioms, 0 sorries. The file depends only on the base entry DerangementsConvergence.lean, re-using its alternating-series helper lemmas (alt_partial_sum_nonneg, alt_partial_sum_le_first) and the derangement/exponential series identities (numDerangements_eq_factorial_mul_altSum, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail) rather than re-proving them. All bounds hold for every n ≥ 0 (no n ≥ 2 restriction).",
+    "dateAdded": "2026-06-23",
+    "lineCount": 266,
+    "theoremCount": 20,
+    "definitionCount": 1,
+    "originalContributions": [
+      "signed_gap_eq_factorial_mul_tail (PROVED): G(n) := n!·e⁻¹ − D(n) = n! · ∑'ₖ altFactTerm(n+1+k) — the exact signed-gap identity, the alternating tail with no absolute value taken",
+      "gap_sign (PROVED): 0 < (−1)^{n+1} · G(n) for every n — the derangement counts straddle n!/e, alternating which side they fall on",
+      "gap_neg_of_even (PROVED): for even n, n!·e⁻¹ < D(n) (D(n) overshoots n!/e)",
+      "gap_pos_of_odd (PROVED): for odd n, D(n) < n!·e⁻¹ (D(n) undershoots n!/e)",
+      "abs_gap_ge (PROVED): 1/(n+2) ≤ |G(n)| — the NEW sharp lower bound; the gap does not decay faster than the leading tail term, obtained from the peeled envelope S(n+1) ≥ 1/(n+1)! − 1/(n+2)!",
+      "abs_gap_le (PROVED): |G(n)| ≤ 1/(n+1) — the base rate bound 1/(n+1)! scaled by n!",
+      "abs_gap_bounds (PROVED): 1/(n+2) ≤ |G(n)| ≤ 1/(n+1) — the full two-sided sandwich between consecutive unit fractions",
+      "tsum_cTerm_ge_first_two (PROVED): sharp lower envelope 1/m! − 1/(m+1)! ≤ ∑'ₖ (−1)^k/(m+k)!, obtained by peeling the first two terms and using nonnegativity of the shifted tail S(m+2) ≥ 0",
+      "tsum_cTerm_pos (PROVED): strict positivity 0 < S(n+1) of the signed tail, which supplies the strict sign in gap_sign"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "numDerangements_eq_factorial_mul_altSum",
+        "description": "D(n) = n!·Σ_{k=0}^n (−1)^k/k! — the Montmort/Euler identity, from the base entry",
+        "module": "Proofs.DerangementsConvergence"
+      },
+      {
+        "theorem": "exp_neg_one_eq_tsum_alt",
+        "description": "e⁻¹ = Σ_{k≥0} (−1)^k/k! — the exponential series at −1, from the base entry",
+        "module": "Proofs.DerangementsConvergence"
+      },
+      {
+        "theorem": "tsum_eq_partial_sum_add_tail",
+        "description": "splits e⁻¹ into the n-th partial sum plus the tail Σ_{k≥n+1}, exposing G(n) = n!·(tail)",
+        "module": "Proofs.DerangementsConvergence"
+      },
+      {
+        "theorem": "alt_partial_sum_nonneg",
+        "description": "partial sums of (−1)^k/(m+k)! are ≥ 0 — the lower envelope of the alternating series, from the base entry",
+        "module": "Proofs.DerangementsConvergence"
+      },
+      {
+        "theorem": "alt_partial_sum_le_first",
+        "description": "partial sums of (−1)^k/(m+k)! are ≤ 1/m! — the upper envelope, from the base entry",
+        "module": "Proofs.DerangementsConvergence"
+      },
+      {
+        "theorem": "Summable.sum_add_tsum_nat_add",
+        "description": "Σ_{k<N} a_k + Σ'_k a_{N+k} = Σ'_k a_k — peels the first two terms to sharpen the lower envelope",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "tsum_mul_left",
+        "description": "Σ'_k (c · a_k) = c · Σ'_k a_k — pulls the global sign (−1)^{n+1} out of the tail",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Ring"
+      },
+      {
+        "theorem": "le_of_tendsto / le_of_tendsto_of_tendsto",
+        "description": "limit of a convergent net inherits ≤ bounds satisfied eventually — lifts the partial-sum envelopes to the tsum",
+        "module": "Mathlib.Order.Topology.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Montmort (1708) and Euler (1751) gave D(n) = n!·Σ_{k=0}^n (−1)^k/k!, whose alternating tail makes D(n)/n! → e⁻¹. The textbook strengthening D(n) = round(n!/e) (the grandparent open question OQ-03) and its floor/ceiling repackaging (the parent OQ-03-OQ-01) both rest on the absolute bound |D(n) − n!/e| < 1/2 — and both discard the sign of the error. The parent's own closing open question asked to 'quantify the gap n!/e − D(n) as n → ∞: it is the alternating tail ±1/(n+1) + …, so its sign and decay could be recorded.' This entry answers exactly that: it recovers the sign (−1)^{n+1} and sharpens the one-sided 1/2 estimate to a two-sided sandwich between consecutive unit fractions.",
+    "problemStatement": "**OQ-03-OQ-01-OQ-02 of derangements-convergence**\n\nDetermine the sign and the sharp rate of decay of the signed gap\n\n  G(n) := n!·e⁻¹ − D(n).\n\nShow G(n) is the alternating tail n!·Σ_{k≥n+1} (−1)^k/k!, deduce its sign alternates with parity of n, and bound |G(n)| above and below by consecutive unit fractions.",
+    "text": "For every n ≥ 0: 0 < (−1)^{n+1}·(n!·e⁻¹ − D(n)) and 1/(n+2) ≤ |n!·e⁻¹ − D(n)| ≤ 1/(n+1). Equivalently D(n) > n!/e for even n and D(n) < n!/e for odd n, with |n!/e − D(n)| trapped strictly between 1/(n+2) and 1/(n+1).",
+    "proofStrategy": "**Signed tail, then envelopes:**\n1. **Signed gap = scaled tail** (`signed_gap_eq_factorial_mul_tail`): substitute D(n) = n!·(partial sum) and e⁻¹ = partial sum + tail (base lemmas), so G(n) = n!·Σ_{k≥n+1} (−1)^k/k! with no absolute value.\n2. **Factor the sign** (`tail_eq_sign_mul_cTerm`): altFactTerm(n+1+k) = (−1)^{n+1}·cTerm(n+1,k) where cTerm(m,k) = (−1)^k/(m+k)!; `tsum_mul_left` pulls (−1)^{n+1} out, leaving the sign-stable series S(m) = Σ'ₖ cTerm(m,k).\n3. **Envelopes for S(m)**: the base helper lemmas give 0 ≤ S(m) ≤ 1/m! by `le_of_tendsto` on the partial sums. Peeling the first two terms (`Summable.sum_add_tsum_nat_add 2`) and using S(m+2) ≥ 0 sharpens this to 1/m! − 1/(m+1)! ≤ S(m), which is strictly positive.\n4. **Sign**: G(n) = (−1)^{n+1}·n!·S(n+1) with n!·S(n+1) > 0, so (−1)^{n+1}·G(n) = n!·S(n+1) > 0; even/odd specialisations follow from (−1)^{n+1} = ∓1.\n5. **Decay**: |G(n)| = n!·S(n+1); multiply the sandwich 1/m! − 1/(m+1)! ≤ S(m) ≤ 1/m! (m = n+1) by n! and simplify n!/(n+1)! = 1/(n+1), n!/(n+2)! = 1/((n+1)(n+2)) so the endpoints collapse to 1/(n+2) and 1/(n+1).",
+    "keyInsights": [
+      "The absolute bound |D(n) − n!/e| < 1/2 of the parent throws away two pieces of information that this entry recovers: the sign of the error and a matching lower bound. Both come from looking at the alternating tail signed rather than in absolute value.",
+      "The sign (−1)^{n+1} means the integer sequence D(n) does not approach n!/e monotonically from one side — it alternates above and below, overshooting for even n and undershooting for odd n. This is the discrete signature of an alternating series.",
+      "The sharp lower bound 1/(n+2) is obtained by the standard alternating-series trick of peeling two terms: S(m) ≥ a₀ − a₁ = 1/m! − 1/(m+1)!. Scaled by n! this is exactly 1/(n+1) − 1/((n+1)(n+2)) = 1/(n+2), so |G(n)| is trapped between two consecutive unit fractions and |G(n)|·(n+1) → 1.",
+      "Reuse over re-proof: the base entry already proved the two-sided partial-sum envelopes (alt_partial_sum_nonneg, alt_partial_sum_le_first) for the alternating series. This entry lifts them to the infinite sum with le_of_tendsto and adds only the two-term peel needed for the sharp lower bound — no new analysis from scratch.",
+      "Honest scope: this is a sharpening corollary of an existing convergence rate, not new mathematics about derangements. Its value is closing the parent's explicitly stated open question with the sign and a matched lower bound, all at 0 axioms."
+    ],
+    "prerequisites": [
+      "numDerangements_eq_factorial_mul_altSum, exp_neg_one_eq_tsum_alt, tsum_eq_partial_sum_add_tail, alt_partial_sum_nonneg, alt_partial_sum_le_first from DerangementsConvergence.lean",
+      "Summable.sum_add_tsum_nat_add, tsum_mul_left, le_of_tendsto from Mathlib",
+      "Alternating series estimation (Leibniz): partial sums sandwich the limit; peeling terms sharpens the bound",
+      "Basic factorial ratio identities n!/(n+1)! = 1/(n+1), n!/(n+2)! = 1/((n+1)(n+2))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 65,
+      "description": "Documents the signed-gap goal, states the sign (−1)^{n+1} and the two-sided sandwich 1/(n+2) ≤ |G(n)| ≤ 1/(n+1), and records the self-contained design over the base DerangementsConvergence entry."
+    },
+    {
+      "id": "sec-cterm",
+      "title": "The sign-factored alternating tail S(m)",
+      "startLine": 66,
+      "endLine": 131,
+      "description": "Defines cTerm(m,k) = (−1)^k/(m+k)! (the global sign factored out), proves summability and the two-sided envelopes 0 ≤ S(m) ≤ 1/m! (lifted from the base partial-sum lemmas), and the sharp lower envelope 1/m! − 1/(m+1)! ≤ S(m) by peeling the first two terms."
+    },
+    {
+      "id": "sec-gap-formula",
+      "title": "Signed gap as a scaled alternating tail",
+      "startLine": 132,
+      "endLine": 161,
+      "description": "tail_eq_sign_mul_cTerm pulls the sign (−1)^{n+1} out of the tail; signed_gap_eq_factorial_mul_tail and signed_gap_eq_sign_form express G(n) = n!·tail = (−1)^{n+1}·n!·S(n+1)."
+    },
+    {
+      "id": "sec-sign",
+      "title": "Sign of the gap (alternation)",
+      "startLine": 162,
+      "endLine": 224,
+      "description": "tsum_cTerm_pos (strict positivity of S(n+1)), gap_sign (0 < (−1)^{n+1}·G(n)), and the even/odd specialisations gap_neg_of_even (D(n) > n!/e) and gap_pos_of_odd (D(n) < n!/e)."
+    },
+    {
+      "id": "sec-decay",
+      "title": "Sharp two-sided decay",
+      "startLine": 225,
+      "endLine": 271,
+      "description": "Factorial ratio helpers, abs_gap_eq (|G(n)| = n!·S(n+1)), the upper bound abs_gap_le (≤ 1/(n+1)), the new lower bound abs_gap_ge (≥ 1/(n+2)), and the combined sandwich abs_gap_bounds."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Parent: proves the floor/ceiling/round forms from the absolute bound |D(n) − n!/e| < 1/2 and explicitly poses (as a closing open question) the quantification of the signed gap that this entry answers."
+    },
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "depends-on",
+      "description": "Base entry: supplies the derangement/exponential series identities and the alternating-series partial-sum envelopes that this entry lifts to the infinite tail."
+    },
+    {
+      "targetId": "derangements-convergence-oq-03",
+      "relationship": "related",
+      "description": "Grandparent: the nearest-integer identity D(n) = round(n!/e); this entry records the signed error that the rounding discards."
+    }
+  ],
+  "conclusion": {
+    "summary": "The signed gap G(n) = n!·e⁻¹ − D(n) is exactly n! times the alternating tail Σ_{k≥n+1} (−1)^k/k!. Hence it has the sign of (−1)^{n+1} — the derangement counts straddle n!/e, overshooting for even n and undershooting for odd n — and its magnitude is squeezed between consecutive unit fractions, 1/(n+2) ≤ |G(n)| ≤ 1/(n+1), for every n ≥ 0. This recovers the sign and a matching lower bound that the parent's absolute estimate |D(n) − n!/e| < 1/2 discarded.",
+    "implications": [
+      "D(n) approaches n!/e by alternating around it, not from one side: the sign (−1)^{n+1} is the discrete fingerprint of the alternating Taylor series for e⁻¹.",
+      "The two-sided sandwich shows the convergence rate is sharp at the leading term: |G(n)|·(n+1) → 1, so no faster-than-1/(n+1) decay is possible and the parent's < 1/2 bound is far from tight for large n.",
+      "Methodologically, the entry demonstrates lifting partial-sum envelopes of an alternating series to the infinite tail (le_of_tendsto) and sharpening the lower bound by a two-term peel — a reusable pattern for any alternating-tail remainder estimate."
+    ],
+    "openQuestions": [
+      "Asymptotic expansion: refine 1/(n+2) ≤ |G(n)| ≤ 1/(n+1) to |G(n)| = 1/(n+1) − 1/((n+1)(n+2)) + O(1/n³), i.e. extract the full alternating expansion of the tail as a divergent asymptotic series in 1/n.",
+      "Transfer the signed-tail technique to the closely related count of partial derangements (rencontres numbers D(n,k)) and quantify the sign and rate of D(n,k) − n!/(k!·e)."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "signed_gap_eq_factorial_mul_tail",
+      "type": "core",
+      "description": "The signed gap G(n) = n!·e⁻¹ − D(n) equals n! times the alternating tail Σ_{k≥n+1} (−1)^k/k! — the exact error with no absolute value taken.",
+      "leanType": "(n : ℕ) : (n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ) = (n.factorial : ℝ) * ∑' k, altFactTerm (n + 1 + k)"
+    },
+    {
+      "name": "gap_sign",
+      "type": "main",
+      "description": "The gap has the sign of (−1)^{n+1}: 0 < (−1)^{n+1}·(n!·e⁻¹ − D(n)) for every n. The derangement counts straddle n!/e.",
+      "leanType": "(n : ℕ) : 0 < (-1 : ℝ) ^ (n + 1) * ((n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ))"
+    },
+    {
+      "name": "gap_neg_of_even",
+      "type": "main",
+      "description": "For even n the derangement count overshoots n!/e: n!·e⁻¹ < D(n).",
+      "leanType": "(n : ℕ) (hn : Even n) : (n.factorial : ℝ) * rexp (-1) < (numDerangements n : ℝ)"
+    },
+    {
+      "name": "gap_pos_of_odd",
+      "type": "main",
+      "description": "For odd n the derangement count undershoots n!/e: D(n) < n!·e⁻¹.",
+      "leanType": "(n : ℕ) (hn : Odd n) : (numDerangements n : ℝ) < (n.factorial : ℝ) * rexp (-1)"
+    },
+    {
+      "name": "abs_gap_ge",
+      "type": "main",
+      "description": "Sharp lower decay bound (new content): 1/(n+2) ≤ |n!·e⁻¹ − D(n)|. The gap does not decay faster than the leading tail term.",
+      "leanType": "(n : ℕ) : 1 / (n + 2 : ℝ) ≤ |(n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ)|"
+    },
+    {
+      "name": "abs_gap_le",
+      "type": "main",
+      "description": "Upper decay bound: |n!·e⁻¹ − D(n)| ≤ 1/(n+1) — the base rate 1/(n+1)! scaled by n!.",
+      "leanType": "(n : ℕ) : |(n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ)| ≤ 1 / (n + 1 : ℝ)"
+    },
+    {
+      "name": "abs_gap_bounds",
+      "type": "main",
+      "description": "Full two-sided sandwich between consecutive unit fractions: 1/(n+2) ≤ |n!·e⁻¹ − D(n)| ≤ 1/(n+1).",
+      "leanType": "(n : ℕ) : 1 / (n + 2 : ℝ) ≤ |(n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ)| ∧ |(n.factorial : ℝ) * rexp (-1) - (numDerangements n : ℝ)| ≤ 1 / (n + 1 : ℝ)"
+    },
+    {
+      "name": "tsum_cTerm_ge_first_two",
+      "type": "lemma",
+      "description": "Sharp lower envelope of the signed alternating tail: 1/m! − 1/(m+1)! ≤ Σ'ₖ (−1)^k/(m+k)!, by peeling the first two terms and using nonnegativity of the shifted tail.",
+      "leanType": "(m : ℕ) : 1 / (m.factorial : ℝ) - 1 / ((m + 1).factorial : ℝ) ≤ ∑' k, cTerm m k"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DerangementsConvergence"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "Real",
+      "BigOperators",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DerangementsConvergenceOQ03OQ01OQ02",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 20,
+    "substantiveTheoremCount": 8,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/DerangementsConvergenceOQ03OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Pierre de Montmort",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris: Jacque Quillau (2nd ed. 1713)",
+      "note": "Derangement formula D(n) = n!·Σ_{k=0}^n (−1)^k/k!, whose alternating tail is exactly the signed gap quantified here."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1751",
+      "venue": "Mémoires de l'Académie de Berlin 7, pp. 255–270",
+      "note": "States D(n)/n! → e⁻¹; the rate and sign of this convergence are the subject of this entry."
+    },
+    {
+      "authors": "Gottfried Wilhelm Leibniz",
+      "title": "Alternating series test",
+      "year": "1682",
+      "venue": "letter to Jean Paul de la Roque",
+      "note": "Partial sums of an alternating series with decreasing terms sandwich the limit; peeling terms sharpens the bound — the engine behind the two-sided sandwich 1/(n+2) ≤ |G(n)| ≤ 1/(n+1)."
+    }
+  ]
+}

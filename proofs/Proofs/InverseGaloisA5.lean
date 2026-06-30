@@ -756,9 +756,45 @@ Combined with |Gal| ∈ {5, 10, 20, 60} and 3 | |Gal|:
 | Infrastructure | Status | Needed For |
 |----------------|--------|------------|
 | Trinomial discriminant formula | Not in Mathlib | Ingredient 1 |
-| Disc square → Gal ⊆ Aₙ | Not in Mathlib | Ingredient 1 |
+| Disc square → Gal ⊆ Aₙ | Done here (Part XIV) | Ingredient 1 |
 | Dedekind's theorem | Not in Mathlib | Ingredient 3 |
 | Polynomial factorization over finite fields | Partial | Ingredient 3 |
+
+### Concrete Mathlib bridge plan for Ingredient 3 (Dedekind's theorem)
+
+Surveyed Mathlib 4.26.0 (researcher-3, 2026-06-28). The factorization↔cycle-type
+correspondence is the ONLY thing keeping `three_dvd_gal_card` an axiom, and it is
+genuinely absent. There is no "Frobenius element of Gal as a permutation of roots"
+primitive in Mathlib. What DOES exist as building blocks:
+
+  * `KummerDedekind.normalizedFactorsMapEquivNormalizedFactorsMinPolyMk`
+    (Mathlib/NumberTheory/KummerDedekind.lean): bijection between the prime
+    ideals above (p) and the irreducible factors of the min poly mod p, when the
+    conductor is coprime to (p). Gives the *ideal* factorization, not yet the
+    permutation cycle type.
+  * `Ideal.inertiaDeg`, `Ideal.ramificationIdx`
+    (Mathlib/NumberTheory/RamificationInertia/Basic.lean) and the Galois-case
+    identities `Ideal.card_inertia_eq_ramificationIdxIn`,
+    `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn`
+    (RamificationInertia/Galois.lean): degree d_i of an irreducible factor = the
+    inertia degree of the corresponding prime; orbit/decomposition-group sizes.
+  * `Polynomial.Gal.galActionHom : p.Gal →* Equiv.Perm (p.rootSet E)` and
+    `Polynomial.Gal.galActionHom_injective`
+    (Mathlib/FieldTheory/PolynomialGaloisGroup.lean): the faithful action of Gal
+    on the roots, into which a constructed Frobenius element would map.
+  * `Equiv.Perm.cycleType`, `Equiv.Perm.lcm_cycleType` (= orderOf)
+    (Mathlib/GroupTheory/Perm/Cycle/Type.lean): target side of the statement.
+
+The missing bridge: define the Frobenius automorphism for a prime P | (p) in the
+ring of integers of q.SplittingField (unramified since 7 ∤ disc q = 2¹⁶·5⁶),
+show it reduces to the residue-field Frobenius, and prove its cycle type on the
+roots equals the inertia-degree multiset = the mod-p factorization degrees. This
+needs Frobenius-as-Galois-automorphism (not a Mathlib primitive) plus the
+lift of roots through KummerDedekind — estimated 800–1500 lines of foundational
+number theory. This is beyond a single research session and is the standing
+blocker for eliminating `three_dvd_gal_card`. The alternative bridge (Dummit's
+resolvent-sextic correspondence, evidenced by `resolvent_no_*_root` below) is
+equally absent from Mathlib.
 
 ### Monotonicity and Real Root Count
 
@@ -1904,7 +1940,9 @@ theorem gal_card_dvd_60_proved : Fintype.card q.Gal ∣ 60 :=
 /-- The Galois group of q has exactly 60 elements (= |A₅|).
 
     **PROVED** from axiom B + gal_card_dvd_60_proved + structural lemmas.
-    Uses only 2 axioms: vandermondeProduct_sq_eq and three_dvd_gal_card.
+    Depends on the file's single remaining axiom, three_dvd_gal_card.
+    (vandermondeProduct_sq_eq was eliminated; it is now the theorem
+    vandermondeProduct_sq_eq_proved in Part XV.)
 
     Proof: |Gal| | 60 (gal_card_dvd_60_proved) and 15 | |Gal| (from B + proved 5 | |Gal|)
     gives |Gal| ∈ {15, 30, 60}. No S₅ subgroup of order 15 or 30 exists.

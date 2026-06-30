@@ -57,18 +57,18 @@
     },
     "type": "concept",
     "title": "Vieta's Identity and Irreducibility",
-    "content": "This section contains the mathematical heart of the n=5 case: the Vieta identity.\n\n**root_image_beta** (lines 80-86): If 4a²-2a-1=0, then 4(1/2-a)²-2(1/2-a)-1=0. The proof is a 2-line calculation: first verify by `ring` that 4(1/2-a)²-2(1/2-a)-1 = 4a²-2a-1 (algebraic identity), then substitute the hypothesis that the right side is 0.\n\nThis says: if α is a root, then 1/2-α is also a root. Why 1/2? By Vieta's formulas, the sum of roots of 4X²-2X-1 is (-(-2))/4 = 1/2, so β = 1/2-α is the other root.\n\n**pCos5_irreducible** (lines 92-99): This is the only sorry in the file. The rational root theorem gives candidates ±1, ±1/2, ±1/4. All fail norm_num checks (eval at ±1 = ±5 or 1; eval at ±1/2 = ∓1 or 1; eval at ±1/4 = -5/4 or -1/4). A degree-2 polynomial with no rational roots is irreducible over ℚ. This is routine but not yet automated.",
-    "mathContext": "**Vieta's formulas** for $4X^2 - 2X - 1$: sum of roots $= \\frac{-(-2)}{4} = \\frac{1}{2}$, product of roots $= \\frac{-1}{4}$.\n\nAlgebraic verification: $4(\\frac{1}{2}-a)^2 - 2(\\frac{1}{2}-a) - 1 = 4(\\frac{1}{4}-a+a^2) - 1 + 2a - 1 = 1 - 4a + 4a^2 - 1 + 2a - 1 = 4a^2 - 2a - 1$. ✓\n\n**Irreducibility by rational root theorem**: possible roots $p/q$ with $p | 1, q | 4$: $\\{\\pm 1, \\pm \\frac{1}{2}, \\pm \\frac{1}{4}\\}$. Checks: $p(1) = 1, p(-1) = 5, p(\\frac{1}{2}) = -1, p(-\\frac{1}{2}) = 1, p(\\frac{1}{4}) = -\\frac{5}{4}, p(-\\frac{1}{4}) = -\\frac{1}{4}$. None zero → irreducible.",
+    "content": "This section contains the mathematical heart of the n=5 case: the Vieta identity.\n\n**root_image_beta** (lines 80-86): If 4a²-2a-1=0, then 4(1/2-a)²-2(1/2-a)-1=0. The proof is a 2-line calculation: first verify by `ring` that 4(1/2-a)²-2(1/2-a)-1 = 4a²-2a-1 (algebraic identity), then substitute the hypothesis that the right side is 0.\n\nThis says: if α is a root, then 1/2-α is also a root. Why 1/2? By Vieta's formulas, the sum of roots of 4X²-2X-1 is (-(-2))/4 = 1/2, so β = 1/2-α is the other root.\n\n**pCos5_irreducible** (line 159): proved sorry-free via Eisenstein's criterion plus an invertible linear substitution. The auxiliary polynomial `r = Y²-5Y+5` is Eisenstein at p=5 (`r_eis_int_cos5_irreducible`), hence irreducible over ℤ and, by Gauss's lemma, over ℚ (`r_eis_rat_cos5_irreducible`). The substitution Y=2X+2 gives `r(2X+2) = 4X²-2X-1 = pCos5` (`r_comp_eq_pCos5`), and irreducibility is preserved under the invertible affine substitution (composing with X↦2X+2 has the inverse X↦½X-1), so pCos5 is irreducible over ℚ.",
+    "mathContext": "**Vieta's formulas** for $4X^2 - 2X - 1$: sum of roots $= \\frac{-(-2)}{4} = \\frac{1}{2}$, product of roots $= \\frac{-1}{4}$.\n\nAlgebraic verification: $4(\\frac{1}{2}-a)^2 - 2(\\frac{1}{2}-a) - 1 = 4(\\frac{1}{4}-a+a^2) - 1 + 2a - 1 = 1 - 4a + 4a^2 - 1 + 2a - 1 = 4a^2 - 2a - 1$. ✓\n\n**Irreducibility by Eisenstein + substitution**: $r = Y^2 - 5Y + 5$ is Eisenstein at $p = 5$ ($5 \\mid 5$ for the lower coefficients, $5 \\nmid 1$ for the leading one, $5^2 = 25 \\nmid 5$ for the constant term), so $r$ is irreducible over $\\mathbb{Z}$ and over $\\mathbb{Q}$ (Gauss). The invertible substitution $Y = 2X + 2$ gives $r(2X+2) = 4X^2 - 2X - 1 = p_{\\cos 5}$, and irreducibility is preserved under invertible affine substitutions → $p_{\\cos 5}$ irreducible.",
     "significance": "key",
     "relatedConcepts": [
       "Vieta's formulas",
-      "rational root theorem",
+      "Eisenstein's criterion",
       "irreducibility over ℚ",
       "ring tactic"
     ],
     "prerequisites": [
       "Vieta's formulas for quadratics",
-      "rational root theorem",
+      "Eisenstein's criterion",
       "Polynomial.Irreducible"
     ]
   },

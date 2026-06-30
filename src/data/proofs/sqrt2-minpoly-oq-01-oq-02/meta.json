@@ -1,0 +1,184 @@
+{
+  "id": "sqrt2-minpoly-oq-01-oq-02",
+  "title": "Minimal Polynomial of √r over ℚ for a Rational Radicand",
+  "slug": "sqrt2-minpoly-oq-01-oq-02",
+  "description": "A Lean 4 proof that minpoly ℚ (√r) = X² - r for every nonnegative rational r that is not a square in ℚ, generalizing the natural-number radicand result (sqrt2-minpoly-oq-01) to rational radicands. Includes the iff-characterization of irrationality of √r, the cleared-denominator form q·X² - p, and a genuinely rational example √(1/2).",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "algebraic-number-theory",
+      "minimal-polynomial",
+      "field-extensions",
+      "irrationality",
+      "sqrt"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/Sqrt2MinpolyOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "dateAdded": "2026-06-15",
+    "assumptions": "None (0 axioms, 0 sorries). Machine-verified: Proofs/Sqrt2MinpolyOQ01OQ02.lean is registered in Proofs.lean and was built green by the deployer when PR #24789 merged to main.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√x)² = x for 0 ≤ x, the root witness for X² - r",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "minpoly.dvd",
+        "description": "minpoly divides any polynomial annihilating the element, giving the degree-≤-2 bound",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "eq_ratCast",
+        "description": "Any ring hom out of ℚ is the rational cast, identifying algebraMap ℚ ℝ r with (r : ℝ)",
+        "module": "Mathlib.Data.Rat.Cast.Defs"
+      },
+      {
+        "theorem": "irrational_sqrt_two",
+        "description": "√2 is irrational, used to recover ¬IsSquare (2 : ℚ) for the example",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Main theorem: minpoly ℚ (√r) = X² - r for any nonnegative rational r that is not a square in ℚ",
+      "Irrationality characterization: √r is irrational iff r is not a rational square (for r ≥ 0)",
+      "Observation that for rational radicands the irrationality step is direct (a rational value of √r squares to r), avoiding irrational_nrt_of_notint_nrt needed in the natural-number case",
+      "Algebraic degree theorem: natDegree(minpoly ℚ √r) = 2",
+      "Field extension degree: [ℚ(√r) : ℚ] = 2",
+      "Cleared-denominator identity: C q · (X² - C(p/q)) = C q · X² - C p, relating the monic minimal polynomial to the integer associate q·X² - p",
+      "Explicit p/q form: minpoly ℚ (√(p/q)) = X² - p/q for naturals p, q",
+      "Genuinely rational example: minpoly ℚ (√(1/2)) = X² - 1/2"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The minimal polynomial of an algebraic number and the resulting field-extension degree are foundational in algebraic number theory. The classical statement minpoly_ℚ(√2) = X² − 2 is the prototype of a quadratic irrationality. The gallery entry sqrt2-minpoly-oq-01 generalizes this to the square root of any non-perfect-square natural number n, proving minpoly_ℚ(√n) = X² − n via an irrationality-and-degree argument. This entry takes the natural next step, listed explicitly as an open question in sqrt2-minpoly-oq-01: generalize the radicand from a natural number to an arbitrary nonnegative rational r = p/q.",
+    "problemStatement": "For a nonnegative rational r, when is minpoly ℚ (√r) = X² − r? Answer: exactly when r is not a square in ℚ. Equivalently, writing r = p/q, the monic minimal polynomial is X² − p/q, whose cleared-denominator integer associate is q·X² − p.",
+    "proofStrategy": "1. Irrationality: if √r were rational, equal to (s : ℝ) for s ∈ ℚ, then s² = r would exhibit r as a rational square; contrapositive gives irrationality from ¬IsSquare r. 2. X² − C r is monic with √r as a root (Real.sq_sqrt), so minpoly ℚ (√r) ∣ X² − C r, giving degree ≤ 2. 3. Irrationality rules out degree 1 (a monic linear minimal polynomial would put √r in ℚ), so degree = 2. 4. A monic divisor of the monic degree-2 polynomial X² − C r that has degree 2 must equal it.",
+    "keyInsights": [
+      "Over ℚ the irrationality argument is strictly simpler than over ℕ: IsSquare is taken directly in ℚ, so a rational value of √r immediately produces a rational square, with no descent or integrality lemma required.",
+      "The minimal polynomial is canonically monic, so the genuine answer is the monic X² − r; the q·X² − p form of the informal statement is the non-monic integer associate obtained by scaling by C q.",
+      "The degree argument is purely about monic divisors of a monic degree-2 polynomial, reusing the verified Sqrt2MinpolyOQ01 Part VII skeleton verbatim with the radicand type changed from ℕ to ℚ.",
+      "The irrationality characterization is an iff: √r is irrational exactly when r is not a rational square, recovering the standard irrationality criterion for square roots of rationals.",
+      "The field ℚ(√r) depends only on the squarefree part of r: since ℚ(√(p/q)) = ℚ(√(pq)), every rational-radicand quadratic field already arises from an integer radicand, so the rational generalization adds new minimal polynomials without adding new fields."
+    ]
+  },
+  "sections": [
+    {
+      "id": "irrationality",
+      "title": "Part I: Irrationality for a Rational Radicand",
+      "startLine": 50,
+      "endLine": 67,
+      "summary": "irrational_sqrt_of_not_isSquare_rat: if r ≥ 0 is not a square in ℚ then √r is irrational. A rational value s of √r would satisfy s² = r, contradicting ¬IsSquare r.",
+      "mathContext": "Direct contrapositive proof; no appeal to irrational_nrt_of_notint_nrt, which the natural-number case requires."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part II: The Minimal Polynomial",
+      "startLine": 69,
+      "endLine": 126,
+      "summary": "minpoly_sqrt_of_not_isSquare_rat: minpoly ℚ (√r) = X² − r for r ≥ 0 not a rational square. Degree ≤ 2 from divisibility, degree ≥ 2 from irrationality, equality from monic-divisor uniqueness.",
+      "mathContext": "Adapts Sqrt2MinpolyOQ01.minpoly_sqrt_of_not_sq from ℕ to ℚ radicands; algebraMap ℚ ℝ r is identified with (r : ℝ) via eq_ratCast."
+    },
+    {
+      "id": "irrationality-iff",
+      "title": "Part III: Irrationality Characterization",
+      "startLine": 128,
+      "endLine": 144,
+      "summary": "irrational_sqrt_iff_not_isSquare_rat: for r ≥ 0, √r is irrational iff r is not a rational square. The forward direction uses √(s²) = |s|.",
+      "mathContext": "Combines Part I with the elementary fact that the square root of a rational square is rational."
+    },
+    {
+      "id": "degree-results",
+      "title": "Part IV: Degree and Field-Extension Consequences",
+      "startLine": 145,
+      "endLine": 167,
+      "summary": "natDegree(minpoly ℚ √r) = 2, integrality of √r, and [ℚ(√r) : ℚ] = 2.",
+      "mathContext": "adjoin.finrank applied to the integral element √r; the minimal polynomial degree gives the extension degree."
+    },
+    {
+      "id": "explicit-forms",
+      "title": "Part V: Explicit p/q and Cleared-Denominator Forms",
+      "startLine": 168,
+      "endLine": 184,
+      "summary": "cleared_denom_form: C q·(X² − C(p/q)) = C q·X² − C p. minpoly_sqrt_div: minpoly ℚ (√(p/q)) = X² − p/q for naturals p, q with q > 0.",
+      "mathContext": "Bridges the monic minimal polynomial with the integer associate q·X² − p of the informal problem statement."
+    },
+    {
+      "id": "examples",
+      "title": "Part VI: Concrete Examples",
+      "startLine": 185,
+      "endLine": 203,
+      "summary": "¬IsSquare (2 : ℚ) recovered from irrational_sqrt_two; ¬IsSquare (1/2) via isSquare_inv; and minpoly ℚ (√(1/2)) = X² − 1/2.",
+      "mathContext": "Demonstrates the theorem on a genuinely rational (non-integer) radicand 1/2 = 2⁻¹."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 205-line Lean 4 formalization generalizing minpoly ℚ (√n) = X² − n from non-perfect-square natural radicands to nonnegative rational radicands: minpoly ℚ (√r) = X² − r whenever r is not a square in ℚ. The file also proves the iff-characterization of irrationality of √r, the cleared-denominator identity relating the monic form to q·X² − p, and a worked example for the genuinely rational radicand 1/2. 0 axioms, 0 sorries; machine-verified green on main.",
+    "implications": "**Irrationality of square roots of rationals**: the iff-corollary gives the clean criterion that √(p/q) is irrational exactly when p/q is not a rational square, a standard result now formalized for arbitrary rational radicands. **Quadratic field theory**: [ℚ(√r) : ℚ] = 2 for non-square rational r extends the degree-2 quadratic-extension foundation from integer to rational generators, with no change in the resulting field since ℚ(√(p/q)) = ℚ(√(pq)).",
+    "openQuestions": [
+      "Show ℚ(√(p/q)) = ℚ(√(pq)) explicitly, so that every quadratic field with a rational-radicand generator is generated by a squarefree integer radicand.",
+      "Generalize to k-th roots of rationals: minpoly ℚ (r^(1/k)) = X^k − r for rational r that is not a k-th power in ℚ, matching the natural-number k-th-root result in sqrt2-minpoly-oq-02."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "generalizes",
+      "description": "OQ-01 proves minpoly ℚ (√n) = X² − n for non-perfect-square natural n; this entry generalizes the radicand to any nonnegative rational r, resolving OQ-01's explicitly listed rational open question."
+    },
+    {
+      "targetId": "sqrt2-minpoly",
+      "relationship": "related",
+      "description": "The √2 case is the integer radicand r = 2; this entry covers non-integer rational radicands such as 1/2."
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-02",
+      "relationship": "sibling",
+      "description": "OQ-02 handles k-th roots of natural numbers; this entry handles square roots of rationals. A common generalization (k-th roots of rationals) is listed as an open question."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "Sqrt2MinpolyOQ01OQ02.minpoly_sqrt_of_not_isSquare_rat",
+      "statement": "minpoly ℚ (Real.sqrt (r : ℝ)) = X ^ 2 - C r, for r : ℚ with 0 ≤ r and ¬ IsSquare r",
+      "description": "Main result: minimal polynomial of the square root of a nonnegative rational that is not a rational square."
+    },
+    {
+      "name": "Sqrt2MinpolyOQ01OQ02.irrational_sqrt_iff_not_isSquare_rat",
+      "statement": "Irrational (Real.sqrt (r : ℝ)) ↔ ¬ IsSquare r, for r : ℚ with 0 ≤ r",
+      "description": "√r is irrational iff r is not a rational square."
+    },
+    {
+      "name": "Sqrt2MinpolyOQ01OQ02.minpoly_sqrt_div",
+      "statement": "minpoly ℚ (Real.sqrt ((p : ℝ) / q)) = X ^ 2 - C ((p : ℚ) / q), for p q : ℕ with 0 < q and ¬ IsSquare (p/q)",
+      "description": "Explicit p/q form of the main theorem."
+    },
+    {
+      "name": "Sqrt2MinpolyOQ01OQ02.adjoin_sqrt_finrank",
+      "statement": "Module.finrank ℚ ℚ⟮Real.sqrt (r : ℝ)⟯ = 2",
+      "description": "The field extension ℚ(√r)/ℚ has degree 2 for non-square rational r ≥ 0."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "IntermediateField"
+    ],
+    "namespace": "Sqrt2MinpolyOQ01OQ02",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/Sqrt2MinpolyOQ01OQ02.lean"
+  }
+}

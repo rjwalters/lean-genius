@@ -178,6 +178,16 @@
       "targetId": "erdos-53",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: additive combinatorics, number theory"
+    },
+    {
+      "proofId": "erdos-773",
+      "relationship": "specialized-by",
+      "description": "A concrete special case: Erdős #773 asks for the maximum Sidon subset of the perfect squares {1²,…,N²}. Where #530 establishes ℓ(N) ∼ N^{1/2} for an arbitrary N-element set, restricting the ambient set to squares lifts the extremal size well above √N — to between N^{2/3} (Lefmann–Thiele) and N/(log N)^{1/4} (Alon–Erdős) — showing how additive structure of the ground set can break the generic bound."
+    },
+    {
+      "proofId": "erdos-1206",
+      "relationship": "specialized-by",
+      "description": "Another special case over a structured ground set: Erdős #1206 concerns Sidon subsets of the cubes {1³,…,N³}. As with #773 (squares), the arithmetic of the ambient set governs the answer; the cube case was solved in the short-interval regime (Gabdullin–Konyagin 2024, size ≫N^{1/2}), again exceeding what the generic #530 bound predicts for an unstructured N-element set."
     }
   ],
   "sorries": 0

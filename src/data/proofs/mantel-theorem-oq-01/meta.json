@@ -1,0 +1,145 @@
+{
+  "id": "mantel-theorem-oq-01",
+  "title": "Mantel Stability: the Andrásfai–Erdős–Sós Min-Degree Ingredient",
+  "slug": "mantel-theorem-oq-01",
+  "description": "A partial formalization toward Erdős–Simonovits stability for triangle-free graphs. It packages the load-bearing min-degree ingredient of the degree-cleaning route: a triangle-free (K₃-free) graph on n vertices with minimum degree exceeding 2n/5 is bipartite (2-colorable), the r = 2 case of Mathlib's Andrásfai–Erdős–Sós theorem, plus its contrapositive 'sparse-at-some-vertex' form. The full edge-count o(n²) stability statement remains open.",
+  "meta": {
+    "author": "lean-genius researcher agents, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Andr%C3%A1sfai%E2%80%93Erd%C5%91s%E2%80%93S%C3%B3s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "extremal-graph-theory",
+      "triangle-free",
+      "stability",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/MantelStabilityOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.colorable_of_cliqueFree_lt_minDegree",
+        "description": "Brandt's theorem: a Kᵣ₊₁-free graph with (3r−4)·n/(3r−1) < δ(G) is r-colorable; the Andrásfai–Erdős–Sós theorem in its general min-degree form",
+        "module": "Mathlib.Combinatorics.SimpleGraph.FiveWheelLike"
+      },
+      {
+        "theorem": "SimpleGraph.minDegree",
+        "description": "Minimum degree of a finite simple graph, the quantity the cleaning step controls",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "SimpleGraph.Colorable",
+        "description": "n-colorability of a simple graph; Colorable 2 is bipartiteness",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      }
+    ],
+    "originalContributions": [
+      "triangleFree_colorable_two_of_lt_minDegree: the r = 2 specialization of Mathlib's general Andrásfai–Erdős–Sós theorem, showing the generic threshold (3r−4)n/(3r−1) collapses to exactly 2n/5 at r = 2 (discharged by omega), so a triangle-free graph with minimum degree > 2n/5 is bipartite",
+      "minDegree_le_of_triangleFree_not_colorable_two: the contrapositive 'sparse-at-some-vertex' form — a non-bipartite triangle-free graph has minimum degree ≤ 2n/5 — which is the exact shape consumed by the degree-cleaning step of the standard edge-count stability proof",
+      "Identifies and isolates the precise Mathlib hook (Brandt's colorable_of_cliqueFree_lt_minDegree) that supplies the min-degree stability half of the Erdős–Simonovits argument, separating it cleanly from the still-open edge-count accounting"
+    ],
+    "dateAdded": "2026-06-17",
+    "axiomCountNote": "0 axiom declarations, 0 structure-encoded assumptions; both results are machine-checked specializations of Mathlib's Andrásfai–Erdős–Sós theorem. NOTE: this entry formalizes only the min-degree ingredient, not the full edge-count o(n²) stability theorem of the open question, which remains unproven (see openQuestions)."
+  },
+  "overview": {
+    "historicalContext": "Mantel's 1907 theorem (the founding result of extremal graph theory) gives the exact maximum edge count ⌊n²/4⌋ for a triangle-free graph, attained uniquely by the balanced complete bipartite graph — this is the gallery entry mantel-theorem. Erdős and Simonovits later established the stability phenomenon: the extremal configuration is essentially unique even approximately, so any triangle-free graph with close to ⌊n²/4⌋ edges is structurally close to balanced bipartite. The standard proof of triangle-free edge-count stability routes through the Andrásfai–Erdős–Sós (AES) theorem (1974): a triangle-free graph with minimum degree exceeding 2n/5 is bipartite, the threshold being sharp at the balanced blow-up of C₅. Stephan Brandt's proof of the general r-colorability statement is what Mathlib formalizes in FiveWheelLike.lean.",
+    "problemStatement": "The open question mantel-theorem-oq-01 asks to formalize Erdős–Simonovits stability for triangle-free graphs: a K₃-free graph on n vertices with |E(G)| ≥ ⌊n²/4⌋ − o(n²) can be made bipartite by adding/deleting only o(n²) edges. This entry formalizes the load-bearing min-degree ingredient of the degree-cleaning route; it does not prove the full edge-count statement.",
+    "proofStrategy": "The textbook proof of triangle-free edge-count stability does not need the triangle removal lemma. It (1) deletes vertices of degree ≤ 2n/5 — few edges are lost when the graph is near-extremal — and (2) applies the AES theorem to the surviving high-min-degree subgraph to conclude it is bipartite, then (3) extends the bipartition back over the deleted vertices, accounting for only o(n²) misplaced edges. This entry formalizes step (2): triangleFree_colorable_two_of_lt_minDegree specializes Mathlib's colorable_of_cliqueFree_lt_minDegree at r = 2, where the general threshold (3r−4)·n/(3r−1) collapses to 2n/5 (closed by omega). The contrapositive minDegree_le_of_triangleFree_not_colorable_two restates this in the form the cleaning step consumes. Steps (1) and (3) — the edge-count accounting and the edit-distance bookkeeping — are not yet formalized.",
+    "keyInsights": [
+      "The hard structural content of triangle-free stability is already in Mathlib: Brandt's colorable_of_cliqueFree_lt_minDegree gives the Andrásfai–Erdős–Sós theorem in full generality, so the min-degree → bipartite step costs only a threshold specialization.",
+      "At r = 2 the AES threshold (3r−4)·n/(3r−1) is literally 2n/5; because r is a numeral, omega evaluates the arithmetic and discharges the side condition with no manual rewriting.",
+      "Phrasing the result contrapositively — non-bipartite triangle-free ⇒ minimum degree ≤ 2n/5 — produces the 'sparse-at-some-vertex' lemma that the degree-cleaning argument plugs in directly, making the remaining work purely a counting/accounting problem.",
+      "Min-degree stability (high δ forces exact bipartiteness) is logically distinct from edge-count stability (near-maximal edge count forces approximate bipartiteness); the former is the engine inside the proof of the latter, not the latter itself.",
+      "The 2n/5 threshold is sharp, and the balanced blow-up of the 5-cycle C₅ is the single example that certifies it: it is triangle-free, non-bipartite, and 2n/5-regular, so it simultaneously shows the AES hypothesis cannot be relaxed below 2n/5 and pins down the exact constant the degree-cleaning step must clear before invoking the lemma."
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry formalizes, with no axioms or sorries, the Andrásfai–Erdős–Sós min-degree ingredient underlying Erdős–Simonovits stability for triangle-free graphs: a triangle-free graph with minimum degree > 2n/5 is bipartite (the r = 2 case of Mathlib's colorable_of_cliqueFree_lt_minDegree), together with its contrapositive sparse-vertex form. It is a verified partial result, not the full stability theorem.",
+    "implications": "Isolates the precise Mathlib lemma that supplies the structural half of the stability argument and packages it in the exact shape the degree-cleaning proof consumes, lowering the barrier to a future full formalization. The remaining work is a self-contained counting problem (bounding the edges lost when low-degree vertices are deleted) plus an edit-distance accounting step.",
+    "openQuestions": [
+      "Formalize the full edge-count (Erdős–Simonovits) stability theorem: a triangle-free graph with |E(G)| ≥ ⌊n²/4⌋ − o(n²) is o(n²)-edit-close to the balanced complete bipartite graph. This requires the degree-cleaning counting lemma (deleting vertices of degree ≤ 2n/5 loses o(n²) edges) and an edit-distance predicate on SimpleGraph, neither yet formalized.",
+      "Formalize the handshake-based counting bound: from |E(G)| ≥ n²/4 − εn² the set of vertices of degree ≤ 2n/5 has size O(εn), the bridge between the edge-count hypothesis and the AES min-degree hypothesis.",
+      "Prove sharpness of the 2n/5 threshold via the balanced blow-up of C₅, the triangle-free non-bipartite graph with minimum degree exactly 2n/5."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "License and Imports",
+      "startLine": 1,
+      "endLine": 6,
+      "summary": "Apache-2.0 license header and a single import Mathlib, which brings in the SimpleGraph development including FiveWheelLike.lean (Brandt's Andrásfai–Erdős–Sós theorem) and the colorability/min-degree API the entry specializes.",
+      "mathContext": "Relies on Mathlib.Combinatorics.SimpleGraph.FiveWheelLike."
+    },
+    {
+      "id": "docstring",
+      "title": "Statement and Approach",
+      "startLine": 7,
+      "endLine": 42,
+      "summary": "Module docstring locating the result: the exact extremal form of Mantel's theorem (mantel-theorem, mantel-theorem-uniqueness) is settled, while edge-count stability is open. This file packages the degree-cleaning route's min-degree ingredient — the r = 2 case of Mathlib's colorable_of_cliqueFree_lt_minDegree — and is explicit that this is min-degree stability, distinct from the open edge-count statement.",
+      "mathContext": "AES (triangle-free case): K₃-free with δ(G) > 2n/5 ⇒ G is bipartite."
+    },
+    {
+      "id": "setup",
+      "title": "Ambient Setup",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "Opens Finset, Fintype, and SimpleGraph, enters namespace MantelStability, and fixes the working context: a finite vertex type V with a graph G whose adjacency is decidable ([Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj]). These are the minimal typeclass assumptions that make minDegree and CliqueFree 3 well-defined finite quantities, and stating the lemmas at this generality keeps them reusable on any survivor subgraph.",
+      "mathContext": "δ(G) = min over v of deg(v), defined for finite V with decidable adjacency."
+    },
+    {
+      "id": "aes-specialization",
+      "title": "AES Specialization to Triangle-Free Graphs",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "triangleFree_colorable_two_of_lt_minDegree instantiates colorable_of_cliqueFree_lt_minDegree at r = 2: CliqueFree 3 plus 2·card V/5 < minDegree yields Colorable 2. The general threshold (3r−4)·n/(3r−1) becomes 2n/5 at r = 2, discharged by omega.",
+      "mathContext": "$G$ $K_3$-free $\\wedge\\ 2|V|/5 < \\delta(G) \\Rightarrow G$ is $2$-colorable (bipartite)."
+    },
+    {
+      "id": "contrapositive",
+      "title": "Sparse-at-Some-Vertex Contrapositive",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "minDegree_le_of_triangleFree_not_colorable_two restates the AES specialization contrapositively: a triangle-free graph that is not bipartite must have minimum degree ≤ 2n/5. This is the shape consumed by the degree-cleaning step of the standard edge-count stability proof.",
+      "mathContext": "$G$ $K_3$-free $\\wedge\\ \\neg(G\\text{ bipartite}) \\Rightarrow \\delta(G) \\le 2|V|/5$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "extends",
+      "description": "mantel-theorem proves the exact extremal edge bound ⌊n²/4⌋ that this stability question stabilizes; this entry begins the structural (stability) layer above that numerical bound."
+    },
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "Both are structural results constraining triangle-related configurations in simple graphs."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Fintype",
+      "SimpleGraph"
+    ],
+    "namespace": "MantelStability",
+    "lineCount": 69,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/MantelStabilityOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    "triangleFree_colorable_two_of_lt_minDegree",
+    "minDegree_le_of_triangleFree_not_colorable_two"
+  ],
+  "sorries": 0
+}

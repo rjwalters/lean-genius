@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "Two opposite boundaries of the representable set",
+    "content": "The docstring frames OQ-02 of Erdős #1054 Construction D. A number n is representable if it occurs as a partial sum of the increasingly-sorted divisor list of some m ≥ 1. The parent file only ever exhibits numbers that ARE representable (σ(m), geometric sums, Mersenne numbers). This file supplies the two opposite extremes: a sharp lower boundary (2 is never representable) and an asymptotic upper boundary (the representable set is infinite, unbounded above). Together they show representability is a proper, infinite subset of ℕ. Everything is Lean.ofReduceBool-free — no native_decide, unlike the parent.",
+    "mathContext": "$\\neg\\,\\text{IsRepresentable}(2)\\ \\wedge\\ \\{n : \\text{IsRepresentable}(n)\\}\\text{ infinite} \\implies \\text{a proper, infinite subset of } \\mathbb{N}$",
+    "significance": "context",
+    "relatedConcepts": ["divisor partial sums", "representability", "sum-of-divisors σ", "Erdős #1054"],
+    "prerequisites": ["divisors of n", "sorted lists", "σ function"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 50, "endLine": 65 },
+    "type": "definition",
+    "title": "Native-decide-free definitions",
+    "content": "sortedDivisors m lists the divisors of m in increasing order; partialDivisorSums m is the tail of the running sums (scanl (+) 0) of that list; IsRepresentable n asserts n is a partial divisor sum of some m ≥ 1. These mirror the parent's definitions but are deliberately kept free of native_decide so every downstream result — including the concrete witnesses — stays axiom-free (only propext / Classical.choice / Quot.sound).",
+    "mathContext": "$\\text{IsRepresentable}(n) \\iff \\exists m \\geq 1,\\ n \\in \\text{partialDivisorSums}(m)$",
+    "significance": "supporting",
+    "relatedConcepts": ["scanl running sums", "sorted divisor list", "axiom-free formalization"],
+    "prerequisites": ["List.scanl", "Finset.sort"]
+  },
+  {
+    "id": "ann-scanl-monotonicity",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 67, "endLine": 94 },
+    "type": "insight",
+    "title": "The new monotonicity engine: scanl entries ≥ initial",
+    "content": "le_of_mem_scanl_add is the new core lemma and the engine behind the lower boundary: over ℕ, every entry of scanl (·+·) b L is ≥ b, since adding nonnegative naturals only increases the running total. It is a one-line induction (the cons step pushes the accumulator to b+a ≥ b and recurses). foldl_add_acc is its companion: folding (+) from accumulator a yields a + L.sum. This monotonicity is reusable for any divisor-partial-sum gap argument.",
+    "mathContext": "$\\forall x \\in \\operatorname{scanl}(+)\\,b\\,L,\\ b \\leq x;\\qquad \\operatorname{foldl}(+)\\,a\\,L = a + \\textstyle\\sum L$",
+    "significance": "key",
+    "relatedConcepts": ["running-sum monotonicity", "List.scanl", "induction on lists"],
+    "prerequisites": ["List.scanl", "structural induction"]
+  },
+  {
+    "id": "ann-sigma-machinery",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 96, "endLine": 138 },
+    "type": "concept",
+    "title": "σ(m) is the final partial sum",
+    "content": "The upper-boundary machinery, ported axiom-free. sortedDivisors_sum shows the sorted divisor list sums to σ(m) (sort is a permutation of the divisors). sum_divisors_mem_partialSums identifies σ(m) as the LAST partial sum (via List.getLast_scanl + foldl_add_acc), so sum_divisors_representable: σ(m) is representable for every m ≥ 1. geom_sum_representable specializes through Nat.sum_divisors_prime_pow: ∑_{i≤k} pⁱ = σ(pᵏ) is representable for every prime p.",
+    "mathContext": "$\\sigma(m) = \\sum_{d \\mid m} d \\text{ is the last entry of partialDivisorSums}(m);\\quad \\sum_{i=0}^{k} p^i = \\sigma(p^k)$",
+    "significance": "supporting",
+    "relatedConcepts": ["sum-of-divisors", "geometric sum", "List.getLast_scanl", "prime powers"],
+    "prerequisites": ["σ function", "Nat.sum_divisors_prime_pow"]
+  },
+  {
+    "id": "ann-upper-boundary",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 140, "endLine": 171 },
+    "type": "concept",
+    "title": "Upper boundary: infinite and unbounded via σ(p)",
+    "content": "succ_prime_representable is the k=1 instance: p+1 = σ(p) is representable for every prime p (last partial sum of p's divisors [1,p]). representable_unbounded uses Nat.exists_infinite_primes to find a prime p > N, making p+1 representable and > N. representable_infinite then concludes the representable set is infinite: a finite set of naturals would be bounded above (bddAbove), contradicting unboundedness. This is the asymptotic upper boundary the parent never establishes.",
+    "mathContext": "$p+1 = \\sigma(p)\\text{ representable};\\quad \\forall N\\ \\exists n > N\\text{ representable} \\implies \\{n : \\text{IsRepresentable}(n)\\}\\text{ infinite}$",
+    "significance": "key",
+    "relatedConcepts": ["unboundedness", "infinitude", "arbitrarily large primes", "bddAbove"],
+    "prerequisites": ["σ representability", "Nat.exists_infinite_primes"]
+  },
+  {
+    "id": "ann-lower-boundary",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 173, "endLine": 224 },
+    "type": "insight",
+    "title": "Lower boundary: 2 is not representable",
+    "content": "two_not_representable is the headline negative result, by case split on the sorted divisor list. Empty/singleton cases are immediate (only partial sum is the smallest divisor 1). For a :: b :: rest, the pairwise-sorted order plus nodup force the smallest divisor a = 1 (it is a positive divisor ≤ 1) and the second-smallest b ≥ 2 (a ≤ b and a ≠ b). The partial sums are then scanl (·+·) (0+a) (b :: rest), whose first entry is 1 and whose later entries are ≥ (0+a)+b ≥ 3 by le_of_mem_scanl_add. So every partial sum is 1 or ≥ 3 — never 2.",
+    "mathContext": "$\\text{partial sums} = \\{1\\} \\cup \\{x \\geq 1 + b \\geq 3\\} \\implies 2 \\notin \\text{partialDivisorSums}(m)$",
+    "significance": "key",
+    "relatedConcepts": ["smallest non-representable", "second-smallest divisor", "pairwise sorted", "nodup"],
+    "prerequisites": ["the scanl monotonicity lemma", "Finset.pairwise_sort", "sort nodup"]
+  },
+  {
+    "id": "ann-concrete-witnesses",
+    "proofId": "erdos-1054-construction-d-oq-02",
+    "range": { "startLine": 226, "endLine": 243 },
+    "type": "technique",
+    "title": "Concrete witnesses 1, 3, 4 — derived, not decided",
+    "content": "one_representable (1 = σ(1), the smallest representable number), three_representable (3 = σ(2) = 1+2) and four_representable (4 = σ(3) = 1+3) are derived symbolically from the general theorems (sum_divisors_representable and succ_prime_representable), NOT by native_decide. This is the key contrast with the parent Construction D, whose concrete witnesses carry a Lean.ofReduceBool dependency. The witnesses bracket the gap: 1, then 2 (not representable), then 3 and 4.",
+    "mathContext": "$1 = \\sigma(1),\\ 3 = \\sigma(2),\\ 4 = \\sigma(3)\\text{ representable};\\quad 2\\text{ sits in the gap}$",
+    "significance": "supporting",
+    "relatedConcepts": ["symbolic witnesses", "axiom-free", "boundary values"],
+    "prerequisites": ["σ representability", "succ_prime_representable"]
+  }
+]

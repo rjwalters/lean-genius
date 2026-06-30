@@ -103,7 +103,7 @@
       "startLine": 106,
       "endLine": 121
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Littlewood's Conjecture (Formal Statement)",
     "content": "**LittlewoodConjecture:** $\\exists c > 0$ such that $\\forall A \\subset \\mathbb{Z}$ with $|A| \\geq 2$, $\\|S_A\\|_1 \\geq c \\log |A|$.\n\n**LittlewoodConjecture':** Asymptotic formulation: for every $\\epsilon > 0$, there exists $N_0$ such that $\\|S_A\\|_1 \\geq (1-\\epsilon) \\log |A|$ whenever $|A| \\geq N_0$. This is a stronger statement suggesting the constant approaches 1.",
     "mathContext": "Littlewood's conjecture states $\\|S_A\\|_1 = \\Omega(\\log N)$ where $N = |A|$. Combined with the sharpness result $\\|S_A\\|_1 = O(\\log N)$ for arithmetic progressions, this gives $\\min_A \\|S_A\\|_1 = \\Theta(\\log N)$. The logarithmic growth is remarkably slow compared to $\\|S_A\\|_2 = \\sqrt{N}$ (Parseval) or $\\|S_A\\|_\\infty = N$.",
@@ -223,7 +223,7 @@
       "startLine": 197,
       "endLine": 214
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Generalizations: Weighted and Higher-Dimensional",
     "content": "**weightedExpSum A w θ:** Weighted exponential sum $\\sum_{n \\in A} w_n e(n\\theta)$ where $w_n \\in \\mathbb{C}$.\n\n**weighted_littlewood (axiom):** For unit weights ($|w_n| = 1$ for all $n \\in A$), the same $\\log N$ lower bound holds. This is the natural generalization: the conjecture depends only on the cardinality and the unit modulus constraint, not on the specific coefficients.\n\n**higherDimensionalGeneralization:** Placeholder noting that analogous bounds exist for character sums over $\\mathbb{Z}^d$.",
     "mathContext": "The weighted version: if $|w_n| = 1$ for all $n \\in A$, then $\\int_0^1 |\\sum_{n \\in A} w_n e^{2\\pi i n\\theta}|\\,d\\theta \\geq c \\log |A|$. This follows from the same technique since $|w_n| = 1$ preserves the unit modulus property. For non-unit weights, the bound depends on $\\sum |w_n|$ instead.",

@@ -17,7 +17,12 @@
       "Graph coloring",
       "Tree Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e1182-ramsey-def",
@@ -37,7 +42,11 @@
       "Edge coloring",
       "Clique"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "infimum over natural numbers",
+      "edge colorings of complete graphs"
+    ]
   },
   {
     "id": "ann-e1182-thresholds",
@@ -57,7 +66,11 @@
       "Bounded above condition",
       "Universal vs existential thresholds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "supremum of bounded sets",
+      "order theory on natural numbers"
+    ]
   },
   {
     "id": "ann-e1182-chvatal",
@@ -77,7 +90,11 @@
       "Connected graph",
       "Minimum spanning tree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "tree structure of connected graphs",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e1182-proved",
@@ -97,6 +114,10 @@
       "Small Ramsey numbers",
       "Complete graph K_2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order theory (csSup/csInf lemmas)",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   }
 ]

@@ -98,9 +98,14 @@
   },
   "crossReferences": [
     {
-      "id": "picks-theorem-oq-01",
-      "title": "Pick's Theorem (Parent)",
-      "relationship": "This file provides the primitive triangulation ingredient for the constructive proof of Pick's theorem."
+      "targetId": "picks-theorem-oq-01",
+      "relationship": "parent",
+      "description": "This file provides the primitive triangulation ingredient for the constructive proof of Pick's theorem ($A = I + B/2 - 1$): every non-degenerate lattice triangle decomposes into exactly $|\\det|$ primitive lattice triangles, each of area $1/2$, which is the base case the triangulation strategy builds on."
+    },
+    {
+      "targetId": "picks-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "The complementary ingredient in the same triangulation program: this entry counts primitive triangles, while oq-02 supplies the GCD boundary formula ($\\gcd(a,b)+1$ lattice points on the segment from $(0,0)$ to $(a,b)$) needed to track how boundary points $B$ are distributed across the triangulation."
     }
   ],
   "leanFile": {

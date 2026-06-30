@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-fiboq03-1",
+    "proofId": "fibonacci-identities-oq-03",
+    "range": { "startLine": 3, "endLine": 32 },
+    "type": "context",
+    "title": "Doubled-Index Fibonacci Numbers as Two Squares",
+    "content": "**Module framing.** The fast-doubling identities express $F$ at a doubled index in terms of two Fibonacci squares — the basis of the $O(\\log n)$ fast-doubling algorithm. Mathlib records the *odd* case as a literal sum of two squares (`Nat.fib_two_mul_add_one`: $F_{2n+1} = F_{n+1}^2 + F_n^2$), but the *even* case only in **product form** (`Nat.fib_two_mul_add_two`). The dual *difference-of-squares* reading $F_{2n+2} = F_{n+2}^2 - F_n^2$ — the natural even-index companion — is absent from both Mathlib and this gallery. This entry supplies it (in ℕ-additive and ℤ-subtractive forms), records the odd case for symmetry, and packages both as existential two-square statements.",
+    "mathContext": "$F_{2n+1} = F_{n+1}^2 + F_n^2$ (sum) and $F_{2n+2} = F_{n+2}^2 - F_n^2$ (difference).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fast-doubling identities",
+      "Sum / difference of two squares",
+      "Fibonacci fast-doubling algorithm"
+    ],
+    "prerequisites": [
+      "Fibonacci recurrence and indexing",
+      "Mathlib's Nat.fib doubling lemmas"
+    ],
+    "tags": ["module-header", "framing", "doubling"]
+  },
+  {
+    "id": "ann-fiboq03-2",
+    "proofId": "fibonacci-identities-oq-03",
+    "range": { "startLine": 36, "endLine": 42 },
+    "type": "concept",
+    "title": "Odd Case: Sum of Two Consecutive Squares",
+    "content": "**`fib_odd_sq_add_sq`** records the odd half directly from Mathlib's `Nat.fib_two_mul_add_one`: every odd-index Fibonacci number is the sum of the squares of two *consecutive* Fibonacci numbers, $F_{2n+1} = F_{n+1}^2 + F_n^2$. It is stated here unchanged so the sum/difference pair reads symmetrically — the sum half is already in Mathlib, the difference half (below) is the new content.",
+    "mathContext": "$F_{2n+1} = F_{n+1}^2 + F_n^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.fib_two_mul_add_one",
+      "Sum of two squares",
+      "Consecutive Fibonacci numbers"
+    ],
+    "prerequisites": [
+      "Mathlib's odd fast-doubling lemma"
+    ],
+    "tags": ["odd-case", "sum-of-squares", "mathlib"]
+  },
+  {
+    "id": "ann-fiboq03-3",
+    "proofId": "fibonacci-identities-oq-03",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "insight",
+    "title": "Even Case (ℕ form): the Cross Term IS the Content",
+    "content": "**`fib_even_add_sq_eq_sq`** is the new identity, stated additively to stay inside ℕ (no truncated subtraction): $F_{2n+2} + F_n^2 = F_{n+2}^2$. The proof is two rewrites and a `ring`: rewrite the product form `Nat.fib_two_mul_add_two` ($F_{2n+2} = F_{n+1}(2F_n + F_{n+1})$) and the recurrence `Nat.fib_add_two` ($F_{n+2} = F_n + F_{n+1}$), leaving a pure polynomial identity in the two atoms $F_n, F_{n+1}$. Both sides expand to $F_n^2 + 2F_nF_{n+1} + F_{n+1}^2$. The key observation: the square $(F_n + F_{n+1})^2$ differs from the product form by *exactly* $F_n^2$ — the cross term $2F_nF_{n+1}$ is the whole content of the identity.",
+    "mathContext": "$F_{n+1}(2F_n + F_{n+1}) + F_n^2 = (F_n + F_{n+1})^2 = F_n^2 + 2F_nF_{n+1} + F_{n+1}^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.fib_two_mul_add_two",
+      "Nat.fib_add_two",
+      "ring normalization",
+      "Difference of two squares"
+    ],
+    "prerequisites": [
+      "Even fast-doubling lemma (product form)",
+      "The ring tactic"
+    ],
+    "tags": ["main-theorem", "even-case", "ring", "beyond-mathlib"]
+  },
+  {
+    "id": "ann-fiboq03-4",
+    "proofId": "fibonacci-identities-oq-03",
+    "range": { "startLine": 54, "endLine": 61 },
+    "type": "technique",
+    "title": "Even Case (ℤ form): Making the Subtraction Literal",
+    "content": "**`fib_even_sq_sub_sq`** casts the ℕ-additive identity into ℤ to expose the literal difference of two squares $F_{2n+2} = F_{n+2}^2 - F_n^2$. The ℕ statement is transported with `exact_mod_cast` (cast commutes with `+`, `^`, and the `Nat.fib` coercions), then `linarith` rearranges the additive equation into the subtractive one. Stating it additively first and casting afterwards avoids ℕ's truncated subtraction entirely — the difference-of-squares form is then valid with no side conditions.",
+    "mathContext": "From $F_{2n+2} + F_n^2 = F_{n+2}^2$ over ℤ, rearrange to $F_{2n+2} = F_{n+2}^2 - F_n^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ℕ→ℤ cast (exact_mod_cast)",
+      "Truncated subtraction avoidance",
+      "linarith"
+    ],
+    "prerequisites": [
+      "Casting Nat to Int",
+      "Linear arithmetic over ℤ"
+    ],
+    "tags": ["even-case", "integer-form", "casting"]
+  },
+  {
+    "id": "ann-fiboq03-5",
+    "proofId": "fibonacci-identities-oq-03",
+    "range": { "startLine": 63, "endLine": 74 },
+    "type": "concept",
+    "title": "Existential Two-Square Readings",
+    "content": "**`fib_odd_isSumSq`** and **`fib_even_isDiffSq`** package the two named identities as existence statements: every odd-index Fibonacci number *is* a sum of two squares ($\\exists a\\,b,\\ F_{2n+1} = a^2 + b^2$), and every even-index one *is* a difference of two squares ($\\exists a\\,b,\\ F_{2n+2} + b^2 = a^2$). Both are proved by directly instantiating the witnesses — $a = F_{n+1}$ (resp. $F_{n+2}$), $b = F_n$ — and citing the corresponding equality. These are the clean, witness-free-to-state forms a downstream user would invoke.",
+    "mathContext": "$\\exists a\\,b,\\ F_{2n+1} = a^2 + b^2$ (witnesses $F_{n+1}, F_n$); $\\ \\exists a\\,b,\\ F_{2n+2} + b^2 = a^2$ (witnesses $F_{n+2}, F_n$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Existential quantification",
+      "Sum / difference of two squares",
+      "Witness instantiation"
+    ],
+    "prerequisites": [
+      "The named even/odd identities above"
+    ],
+    "tags": ["existential", "two-squares", "corollaries"]
+  }
+]

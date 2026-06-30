@@ -73,7 +73,7 @@
       "startLine": 75,
       "endLine": 90
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Smooth Number Predicates",
     "content": "Three definitions build the problem hierarchy: (1) **$B$-smooth** (`IsSmooth`): $\\operatorname{gpf}(n) \\leq B$, meaning all prime factors are $\\leq B$. (2) **sqrt-smooth** (`IsSqrtSmooth`): $\\operatorname{gpf}(n) < \\sqrt{n}$, using real-valued casting `(gpf n : R) < Real.sqrt n`. (3) **ConsecutiveSqrtSmooth**: both $n$ and $n+1$ are sqrt-smooth. Note that sqrt-smooth implies $n$ is composite with at least two prime factors.",
     "mathContext": "$\\text{IsSmooth}(B, n) :\\Leftrightarrow \\operatorname{gpf}(n) \\leq B$; $\\text{IsSqrtSmooth}(n) :\\Leftrightarrow \\operatorname{gpf}(n) < \\sqrt{n}$; $\\text{ConsecutiveSqrtSmooth}(n) :\\Leftrightarrow \\text{IsSqrtSmooth}(n) \\wedge \\text{IsSqrtSmooth}(n+1)$.",

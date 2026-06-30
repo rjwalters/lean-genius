@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 39, "endLine": 44 },
+    "type": "definition",
+    "title": "The Digit-Square Map and the Absorbing Set",
+    "content": "S n is defined directly from Mathlib's Nat.digits 10 n: take the decimal digits, square each, and sum. T is the finite absorbing set — the happy fixed point 1 together with the eight values of the unhappy cycle. Building S on Nat.digits (rather than a hand-rolled recursion) keeps the definition short but means the finite checks downstream are discharged by native_decide rather than kernel decide.",
+    "mathContext": "$S(n) = \\sum_{d \\in \\mathrm{digits}_{10}(n)} d^2$, and $T = \\{1, 4, 16, 37, 58, 89, 145, 42, 20\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["digit maps", "Nat.digits", "iterated functions", "absorbing set"],
+    "prerequisites": ["decimal representation", "lists in Lean"]
+  },
+  {
+    "id": "ann-terminal-structure",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 46, "endLine": 55 },
+    "type": "theorem",
+    "title": "Fixed Point, the 8-Cycle, and Absorption",
+    "content": "Three finite facts pin down the terminal behaviour: S_one (1 is a fixed point), unhappy_cycle (the explicit eight transitions 4 → 16 → ... → 20 → 4), and T_absorbing (T is closed under S, so once an orbit enters T it never leaves). All three are pure numeric verifications closed by native_decide. T_absorbing is what makes T a genuine trap rather than a way-station.",
+    "mathContext": "$S(1) = 1$; \\; $4 \\to 16 \\to 37 \\to 58 \\to 89 \\to 145 \\to 42 \\to 20 \\to 4$; \\; $m \\in T \\Rightarrow S(m) \\in T$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fixed points", "periodic orbits", "invariant sets", "native_decide"],
+    "prerequisites": ["dynamical systems vocabulary", "decidable equality"]
+  },
+  {
+    "id": "ann-aux-exp",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 57, "endLine": 70 },
+    "type": "insight",
+    "title": "Exponential Beats Linear",
+    "content": "aux_exp is the quantitative engine: 81·L < 10^(L-1) for every L ≥ 4. It is proved by Nat.le_induction starting at L = 4 (a norm_num base case), with the successor step rewriting 10^L = 10^(L-1)·10 and feeding nlinarith the inductive hypothesis together with 1000 ≤ 10^(L-1). This is the only place exponential growth is exploited, and it is what guarantees the digit-square map shrinks large inputs.",
+    "mathContext": "$81L < 10^{L-1}$ for all $L \\ge 4$; equivalently the per-digit budget $81$ times the digit count is dwarfed by the smallest $L$-digit number.",
+    "significance": "key",
+    "relatedConcepts": ["induction", "exponential vs polynomial growth", "nlinarith", "Nat.le_induction"],
+    "prerequisites": ["mathematical induction", "inequalities over ℕ"]
+  },
+  {
+    "id": "ann-descent",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 72, "endLine": 114 },
+    "type": "insight",
+    "title": "The Descent Lemma — Infinity Becomes Finite",
+    "content": "descent proves S n < n for every n ≥ 1000, and this single bound carries the entire infinite content of the theorem. The proof threads three estimates: n ≥ 1000 forces at least 4 digits (Nat.lt_base_pow_length_digits), the digit count gives the lower bound 10^(L-1) ≤ n (Nat.base_pow_length_digits_le), and each squared digit ≤ 81 gives the upper bound S n ≤ 81·L (List.sum_le_card_nsmul). Chaining S n ≤ 81·L < 10^(L-1) ≤ n via aux_exp closes it. Strict decrease above 1000 is exactly what lets strong induction reduce every orbit to the finite window [1, 999].",
+    "mathContext": "For $n \\ge 1000$ with $L = |\\mathrm{digits}_{10}(n)| \\ge 4$: \\; $S(n) \\le 81L < 10^{L-1} \\le n$.",
+    "significance": "critical",
+    "relatedConcepts": ["descent argument", "eventual confinement", "digit-count bounds", "well-founded recursion"],
+    "prerequisites": ["real analysis intuition for growth rates", "Nat.digits API"]
+  },
+  {
+    "id": "ann-positivity",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 116, "endLine": 127 },
+    "type": "theorem",
+    "title": "Positivity Keeps Orbits Away from Zero",
+    "content": "S_pos shows S n > 0 whenever n ≠ 0. The leading decimal digit is nonzero (Nat.getLast_digit_ne_zero), it is a member of the digit list, so its square is a positive summand and bounds the whole sum below. Without positivity the strong-induction step could in principle land on 0, where the descent machinery and the base-case enumeration (which starts at 1) say nothing.",
+    "mathContext": "$n \\ne 0 \\Rightarrow S(n) \\ge (\\text{leading digit})^2 > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["leading digit", "list membership", "lower bounds"],
+    "prerequisites": ["Nat.digits API", "ordering on ℕ"]
+  },
+  {
+    "id": "ann-confinement",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 129, "endLine": 155 },
+    "type": "insight",
+    "title": "Bounded Reachability and the Strong-Induction Confinement",
+    "content": "reachesT n is a Boolean checker: does the orbit of n hit T within 15 iterations? reachesT_below verifies (by native_decide) that this holds for every 1 ≤ n < 1000, and base_reaches unpacks the Boolean into an existential. reaches_T then closes the loop with strong induction (Nat.strongRecOn): for n ≥ 1000 the descent lemma yields a strictly smaller S n, the induction hypothesis supplies a witness for it, and Function.iterate_succ_apply prepends one step; for n < 1000 the base case applies directly. The 15-step bound comfortably covers the empirical worst case of 11 iterations.",
+    "mathContext": "Confinement: $\\forall n \\ge 1,\\ \\exists k,\\ S^{[k]}(n) \\in T$, obtained from descent + a $15$-step check on $[1, 999]$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "bounded model checking", "decidable predicates", "orbit witnesses"],
+    "prerequisites": ["strong recursion", "function iteration"]
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "happy-number-oq-01",
+    "range": { "startLine": 157, "endLine": 175 },
+    "type": "theorem",
+    "title": "The Happy / Unhappy Dichotomy",
+    "content": "reaches_one_or_four is the human-readable payoff: every positive integer reaches 1 (happy) or 4 (unhappy). It case-splits on the nine members of T returned by reaches_T. The fixed point 1 gives happiness immediately; each of the eight cycle values is advanced forward to 4 using Function.iterate_add_apply (to splice the known number of cycle steps onto the orbit) with native_decide certifying the splice. Because 4 lies on the unique nontrivial cycle, reaching any cycle element is equivalent to being unhappy.",
+    "mathContext": "$\\forall n \\ge 1:\\ (\\exists k,\\ S^{[k]}(n) = 1) \\;\\lor\\; (\\exists k,\\ S^{[k]}(n) = 4)$.",
+    "significance": "critical",
+    "relatedConcepts": ["happy numbers", "OEIS A007770", "case analysis", "cycle splicing"],
+    "prerequisites": ["function iteration", "logical disjunction"]
+  }
+]

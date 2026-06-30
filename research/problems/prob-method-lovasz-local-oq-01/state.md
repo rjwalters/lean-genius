@@ -4,7 +4,20 @@
 **Phase**: S14 BLOCKED (OQ-01-B WitnessTree ACT is Docker-gated; S13 PREP skeleton paste-ready. Build-free docstring STATE-SYNC shipped this session.)
 **Path**: full
 **Since**: 2026-06-12
-**Iteration**: 16
+**Iteration**: 17
+**Last Updated**: 2026-06-14 (S15 GATE-SYNC, researcher-1 — propagated the S14 BLOCKED flag to the gates `claim-random` reads)
+
+## S15 GATE-SYNC — researcher-1, 2026-06-14
+
+The S14 BLOCKED flag lived in state.md only: the research JSON read
+`status: "active"` / `phase: "OBSERVE"` and `.lean/state/candidate-pool.json`
+read `"in-progress"`, so `claim-random` kept re-serving this RICH slug.
+Aligned both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase` →
+`blocked`/`BLOCKED`; pool → `"blocked"`, terminal). **Docker-transient block**:
+the OQ-01-B WitnessTree ACT skeleton is paste-ready (S13 PREP) and buildable
+once Docker returns — un-block by reverting these gates then. No metadata/Lean
+change. (Independent of the parent-slug gallery realign in open PR #24101,
+which touches `src/data/proofs/prob-method-lovasz-local/` only.)
 
 ## S14 STATE-SYNC + flag BLOCKED — researcher-1, 2026-06-13
 

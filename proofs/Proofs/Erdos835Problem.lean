@@ -18,6 +18,14 @@ Solution:
 NO. Computational verification shows χ(J(2k,k)) > k+1 for 3 ≤ k ≤ 8.
 The chromatic number is always at least k+1 and at most 2k.
 
+The cases k = 3, …, 8 are recorded here as axioms: each asserts the
+computational fact that the Johnson graph J(2k,k) is not (k+1)-colorable
+with the Erdős–Rosenfeld rainbow property. Formalizing these in-kernel
+would require enumerating colorings of graphs with up to C(16,8)=12870
+vertices, which is out of reach for the Lean kernel; they are stated as
+axioms and the file is `axiomatized` accordingly. The k = 2 construction
+and all structural definitions are fully proved.
+
 References:
 - Johnson graph chromatic numbers database
 - Problem equivalent to Kneser/Johnson graph colorings
@@ -25,9 +33,7 @@ References:
 Tags: combinatorics, graph-theory, chromatic-number, johnson-graphs
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Coloring
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Fintype.Card
+import Mathlib
 
 namespace Erdos835
 
@@ -38,20 +44,31 @@ open Finset
 -/
 
 /-- The base set {1, 2, ..., n}. -/
-def baseSet (n : ℕ) : Finset ℕ := Finset.range n |>.map ⟨(· + 1), by intro; omega⟩
+def baseSet (n : ℕ) : Finset ℕ := Finset.range n |>.map ⟨(· + 1), add_left_injective 1⟩
 
 /-- The k-subsets of {1,...,n}: the vertex set of J(n,k). -/
 def kSubsets (n k : ℕ) : Type := { S : Finset ℕ // S ⊆ baseSet n ∧ S.card = k }
 
-/-- Two k-subsets are adjacent in J(n,k) if they differ by exactly one element. -/
+/-- The k-subsets of a finite ground set form a finite type: they are exactly the
+    elements of `(baseSet n).powersetCard k`. -/
+instance kSubsetsFintype (n k : ℕ) : Fintype (kSubsets n k) :=
+  Fintype.subtype ((baseSet n).powersetCard k) (by
+    intro S; rw [Finset.mem_powersetCard])
+
+/-- Two k-subsets are adjacent in J(n,k) if they are distinct and differ by exactly
+    one element (equivalently their intersection has size `k - 1`). The distinctness
+    clause makes the relation irreflexive for every `k`, including `k = 0`. -/
 def johnsonAdj (n k : ℕ) (S T : kSubsets n k) : Prop :=
-  (S.val ∩ T.val).card = k - 1
+  S.val ≠ T.val ∧ (S.val ∩ T.val).card = k - 1
 
 /-- The Johnson graph J(n,k). -/
 def JohnsonGraph (n k : ℕ) : SimpleGraph (kSubsets n k) where
   Adj := johnsonAdj n k
-  symm := by intro S T h; simp only [johnsonAdj] at *; rw [inter_comm]; exact h
-  loopless := by intro S; simp only [johnsonAdj]; intro h; simp_all
+  symm := by
+    intro S T h
+    refine ⟨h.1.symm, ?_⟩
+    rw [inter_comm]; exact h.2
+  loopless := by intro S h; exact h.1 rfl
 
 /-
 ## Part II: The Coloring Problem
@@ -61,9 +78,13 @@ def JohnsonGraph (n k : ℕ) : SimpleGraph (kSubsets n k) where
 def ProperColoring (n k c : ℕ) :=
   (JohnsonGraph n k).Coloring (Fin c)
 
-/-- The chromatic number of J(n,k). -/
-noncomputable def chromaticNumber (n k : ℕ) : ℕ :=
-  Nat.find (⟨2 * k, by sorry⟩ : ∃ c, Nonempty (ProperColoring n k c))
+/-- The chromatic number of J(n,k). Since the vertex type is finite, a coloring
+    with `Fintype.card (kSubsets n k)` colors always exists, so the set of valid
+    color counts is nonempty and `Nat.find` is well defined. -/
+noncomputable def chromaticNumber (n k : ℕ) : ℕ := by
+  classical
+  exact Nat.find (⟨Fintype.card (kSubsets n k), (JohnsonGraph n k).colorable_of_fintype⟩ :
+    ∃ c, Nonempty (ProperColoring n k c))
 
 /-
 ## Part III: The Erdős-Rosenfeld Property
@@ -81,23 +102,39 @@ def ErdosRosenfeldQuestion (k : ℕ) : Prop :=
 
 /-
 ## Part IV: Equivalence to Chromatic Number
--/
 
-/-- **Equivalence Theorem:**
-    The Erdős-Rosenfeld property holds for k iff χ(J(2k,k)) = k+1.
+**Equivalence (informal):** the Erdős-Rosenfeld property holds for `k` iff
+χ(J(2k,k)) = k+1.  The coloring must be proper (adjacent subsets get different
+colors) and "rainbow" on each (k+1)-subset.  We do not formalize this
+equivalence; the answer below is obtained directly via the `ErdosRosenfeldQuestion`
+predicate.
 
-    The coloring must be proper (adjacent subsets get different colors)
-    and "rainbow" on each (k+1)-subset. -/
-/-
 ## Part V: Known Results
 -/
 
 /-- **Base case k=2:**
-    χ(J(4,2)) = 3 = k+1. The Erdős-Rosenfeld property holds trivially. -/
+    χ(J(4,2)) = 3 = k+1.  The Erdős-Rosenfeld property holds: color the six
+    2-subsets of {1,2,3,4} by the three perfect matchings of K₄
+    ({1,2},{3,4} ↦ 0; {1,3},{2,4} ↦ 1; {1,4},{2,3} ↦ 2).  Each 3-subset
+    contains exactly one edge from each matching, hence sees all three colors. -/
 theorem k_equals_2 : ErdosRosenfeldQuestion 2 := by
-  use fun S => ⟨0, by omega⟩  -- Simplified; actual construction exists
-  intro A hA hCard c
-  sorry  -- The 6 edges of K₄ can be 3-colored properly
+  classical
+  refine ⟨fun S => if S.val = ({1,3}:Finset ℕ) ∨ S.val = ({2,4}:Finset ℕ) then 1
+                   else if S.val = ({1,4}:Finset ℕ) ∨ S.val = ({2,3}:Finset ℕ) then 2
+                   else 0, ?_⟩
+  intro A hA hcard c
+  have hbase : baseSet (2*2) = ({1,2,3,4} : Finset ℕ) := by decide
+  rw [hbase] at hA
+  have hmem : A ∈ (({1,2,3,4}:Finset ℕ).powersetCard 3) :=
+    Finset.mem_powersetCard.mpr ⟨hA, hcard⟩
+  fin_cases hmem <;> fin_cases c <;>
+    first
+      | exact ⟨⟨{1, 2}, by decide⟩, by decide, by decide⟩
+      | exact ⟨⟨{3, 4}, by decide⟩, by decide, by decide⟩
+      | exact ⟨⟨{1, 3}, by decide⟩, by decide, by decide⟩
+      | exact ⟨⟨{2, 4}, by decide⟩, by decide, by decide⟩
+      | exact ⟨⟨{1, 4}, by decide⟩, by decide, by decide⟩
+      | exact ⟨⟨{2, 3}, by decide⟩, by decide, by decide⟩
 
 /-- **Case k=3:** χ(J(6,3)) = 4 > 3+1. FAILS. -/
 axiom k_equals_3_fails : ¬ErdosRosenfeldQuestion 3
@@ -120,12 +157,10 @@ axiom k_equals_8_fails : ¬ErdosRosenfeldQuestion 8
 
 /-
 ## Part VI: Chromatic Number Bounds
--/
 
-/-- **Lower bound:** χ(J(2k,k)) ≥ k+1 for all k. -/
-/-- **Upper bound:** χ(J(2k,k)) ≤ 2k for all k. -/
-/-- **Computed values:** Known chromatic numbers of J(2k,k). -/
-/-
+Informally, χ(J(2k,k)) ≥ k+1 (lower bound), χ(J(2k,k)) ≤ 2k (upper bound), and the
+exact computed values for small `k` underlie the case axioms above.
+
 ## Part VII: The Answer
 -/
 

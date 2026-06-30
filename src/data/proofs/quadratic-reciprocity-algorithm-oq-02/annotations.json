@@ -1,0 +1,116 @@
+[
+  {
+    "id": "jacobi-composite-context",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Extending Legendre to Composite Moduli: One Direction Survives",
+    "content": "The Legendre symbol (a | p) over a prime p is a faithful quadratic-residuosity test: +1 means a is a nonzero square mod p, −1 means a nonsquare. Jacobi extended it to odd moduli by J(a | n) = ∏ (a | pᵢ) over the factorization of n, which is what lets the reciprocity-based algorithm avoid factoring. But over a composite modulus only one direction of the test survives: J(a | n) = −1 still certifies a nonsquare, while J(a | n) = 1 no longer guarantees a square — an even number of −1 factors can cancel. The smallest example is J(2 | 15) = 1 with 2 a genuine nonsquare mod 15.",
+    "mathContext": "$J(a \\mid n) = \\prod_i \\left(\\tfrac{a}{p_i}\\right)$ for $n = \\prod_i p_i$. Surviving: $J(a\\mid n) = -1 \\Rightarrow a$ a nonsquare. Lost: $J(a\\mid n) = 1 \\not\\Rightarrow a$ a square (e.g. $J(2\\mid 15) = (-1)(-1) = 1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre symbol",
+      "Jacobi symbol",
+      "quadratic residues",
+      "Solovay–Strassen primality test",
+      "multiplicativity in the modulus"
+    ],
+    "prerequisites": [
+      "quadratic residues mod p",
+      "the Legendre symbol",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "jacobi-multiplicativity",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Multiplicativity in the Modulus",
+    "content": "jacobi_mul_right states J(a | m·n) = J(a | m)·J(a | n), and jacobi_mul_right₃ iterates it to a three-factor product. This is the property that turns the prime-only Legendre symbol into a function of composite moduli: the Jacobi symbol of a over a product is the product of the symbols over the factors, which is precisely why the reciprocity algorithm never needs to factor the modulus to compute it.",
+    "mathContext": "$J(a \\mid mn) = J(a \\mid m)\\,J(a \\mid n)$. Iterating, $J(a \\mid mnk) = J(a\\mid m)J(a\\mid n)J(a\\mid k)$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "jacobiSym.mul_right",
+      "multiplicative functions",
+      "prime factorization of the modulus"
+    ],
+    "prerequisites": [
+      "Jacobi symbol definition",
+      "the modulus as a product of factors"
+    ]
+  },
+  {
+    "id": "jacobi-surviving",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "The Surviving Direction: a Nonresidue Certificate",
+    "content": "nonsquare_of_jacobi_eq_neg_one shows J(a | n) = −1 ⟹ a is a nonsquare mod n, with NO primality hypothesis on n. This is the half of the residuosity test that survives compositeness: a value of −1 can only come from an odd number of −1 Legendre factors, which is impossible if a were a global square. Its contrapositive (jacobi_ne_neg_one_of_isSquare) says a square never has symbol −1.",
+    "mathContext": "$J(a \\mid n) = -1 \\Rightarrow \\neg\\,\\mathrm{IsSquare}\\,(a : \\mathbb{Z}/n)$, for every $n$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ZMod.nonsquare_of_jacobiSym_eq_neg_one",
+      "nonresidue certificate",
+      "quadratic nonresidue"
+    ],
+    "prerequisites": [
+      "IsSquare in ZMod n",
+      "Jacobi symbol values"
+    ]
+  },
+  {
+    "id": "jacobi-lost-witness",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02",
+    "range": {
+      "startLine": 143,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "The Lost Direction, Witnessed",
+    "content": "jacobi_one_not_isSquare exhibits a = 2, n = 15 with J(2 | 15) = 1 (computed from J(2|3)·J(2|5) = (−1)·(−1) by multiplicativity) yet 2 not a square mod 15. This is the precise failure of the converse over composite moduli, and it is exactly what isSquare_of_jacobi_eq_one_prime shows does NOT happen for a prime modulus, where J(a | p) = 1 forces a to be a square. The asymmetry between these two theorems is the whole content of 'composite' here.",
+    "mathContext": "$\\exists\\,a,n:\\ J(a\\mid n)=1 \\wedge \\neg\\,\\mathrm{IsSquare}\\,(a:\\mathbb{Z}/n)$ — witnessed by $(2,15)$. Contrast: for prime $p$, $J(a\\mid p)=1 \\Rightarrow \\mathrm{IsSquare}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "ZMod.isSquare_of_jacobiSym_eq_one",
+      "Euler liars",
+      "Solovay–Strassen primality test",
+      "converse failure"
+    ],
+    "prerequisites": [
+      "multiplicativity of the Jacobi symbol",
+      "IsSquare in ZMod 15"
+    ]
+  },
+  {
+    "id": "jacobi-mechanism",
+    "proofId": "quadratic-reciprocity-algorithm-oq-02",
+    "range": {
+      "startLine": 160,
+      "endLine": 164
+    },
+    "type": "theorem",
+    "title": "Why the Witness Exists: Cancellation Across Factors",
+    "content": "jacobi_neg_one_factor exposes the mechanism: J(2 | 15) = 1 together with ¬IsSquare (2 : ZMod 3) and ¬IsSquare (2 : ZMod 5). The two −1 contributions from the prime factors 3 and 5 multiply to +1, so the global Jacobi symbol gives no alarm even though 2 is a nonsquare modulo each factor. This is the structural reason the J = 1 direction is lost, and the seed of the Solovay–Strassen 'Euler liar' phenomenon.",
+    "mathContext": "$J(2\\mid 15) = 1$ while $\\neg\\mathrm{IsSquare}(2:\\mathbb{Z}/3)$ and $\\neg\\mathrm{IsSquare}(2:\\mathbb{Z}/5)$: $(-1)\\cdot(-1) = +1$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "cancellation of nonresidue factors",
+      "Chinese Remainder structure of squares",
+      "Euler liars"
+    ],
+    "prerequisites": [
+      "multiplicativity in the modulus",
+      "the surviving nonresidue direction"
+    ]
+  }
+]

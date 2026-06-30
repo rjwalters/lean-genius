@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-pelloq0605-overview",
+    "proofId": "pell-equation-oq-06-oq-05",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "The Determinant / Lattice View of the Pell Chain",
+    "content": "The parent builds the chain (1,1) → (7,5) → (41,29) → … of solutions to x² − 2y² = −1; siblings describe it as odd powers of the fundamental unit (oq-06-oq-02), as the recurrence uₙ₊₂ = 6uₙ₊₁ − uₙ (oq-06-oq-03), and as best rational approximations of √2 (oq-06-oq-04). This entry adds the determinant/lattice view none of the others record: the 2×2 determinant of two consecutive solution vectors is the constant D(n) = xₙ·yₙ₊₁ − xₙ₊₁·yₙ = −2 (a Cassini-type identity), with companion xₙ₊₁·xₙ − 2·yₙ₊₁·yₙ = −3. Both follow from the parent's constant norm by a single linear_combination — no induction — and unify as the two parts of one ℤ[√2] identity aₙ₊₁·conj(aₙ) = −ζ². A corollary: every chain solution is primitive.",
+    "mathContext": "For $a_n = \\langle x_n,y_n\\rangle$ of norm $-1$ advancing by $\\zeta^2$ (norm $+1$): $a_{n+1}\\,\\overline{a_n} = \\zeta^2\\,N(a_n) = -\\zeta^2$, independent of $n$; its imaginary part is the determinant $-2$, its real part the inner product $-3$.",
+    "significance": "context",
+    "relatedConcepts": ["Cassini identity", "lattice determinant", "Brahmagupta composition", "conserved quantity"],
+    "prerequisites": ["the negative Pell chain", "the norm of ℤ[√2]", "2×2 determinants"]
+  },
+  {
+    "id": "ann-pelloq0605-cassini",
+    "proofId": "pell-equation-oq-06-oq-05",
+    "range": { "startLine": 70, "endLine": 93 },
+    "type": "insight",
+    "title": "The Constant-Determinant (Cassini) Identity",
+    "content": "negPellSeq_det proves xₙ·yₙ₊₁ − xₙ₊₁·yₙ = −2 for ALL n, and negPellSeq_inner proves the companion xₙ₊₁·xₙ − 2·yₙ₊₁·yₙ = −3. The key move: apply the parent's step map negPellSeq_succ to expand (xₙ₊₁,yₙ₊₁) = (3xₙ+4yₙ, 2xₙ+3yₙ); the determinant then collapses by ring to 2·(xₙ² − 2yₙ²) and the inner product to 3·(xₙ² − 2yₙ²). Substituting the parent's constant norm xₙ² − 2yₙ² = −1 gives −2 and −3 via a single linear_combination. No induction is needed — the conserved determinant is inherited directly from the conserved norm.",
+    "mathContext": "$x_n y_{n+1} - x_{n+1} y_n = 2(x_n^2 - 2y_n^2) = 2(-1) = -2$; $x_{n+1}x_n - 2y_{n+1}y_n = 3(x_n^2 - 2y_n^2) = -3$.",
+    "significance": "key",
+    "relatedConcepts": ["Cassini/Vajda identity", "negPellSeq_succ step map", "linear_combination", "conserved quantity from constant norm"],
+    "prerequisites": ["the parent's step map and norm relation", "ring normalization", "linear_combination tactic"]
+  },
+  {
+    "id": "ann-pelloq0605-matrix",
+    "proofId": "pell-equation-oq-06-oq-05",
+    "range": { "startLine": 95, "endLine": 108 },
+    "type": "technique",
+    "title": "The Mathlib Matrix Form",
+    "content": "negPellSeq_det_matrix exhibits the constant −2 as a genuine 2×2 integer determinant: the matrix !![xₙ, xₙ₊₁; yₙ, yₙ₊₁] whose columns are consecutive solution vectors has det = −2 for every n. The proof reduces via Matrix.det_fin_two_of (ad − bc for a fin-2 matrix) to the scalar negPellSeq_det. Geometrically this constant determinant says each consecutive pair spans a sublattice of ℤ² of index 2 — the chain sweeps out equal-area parallelograms, a discrete 'equal-areas' law for the Pell flow.",
+    "mathContext": "$\\det\\begin{pmatrix} x_n & x_{n+1} \\\\ y_n & y_{n+1}\\end{pmatrix} = x_n y_{n+1} - x_{n+1} y_n = -2$ — index-2 sublattice of $\\mathbb{Z}^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.det_fin_two_of", "sublattice index", "equal-area parallelograms"],
+    "prerequisites": ["the scalar Cassini identity", "2×2 determinant formula"]
+  },
+  {
+    "id": "ann-pelloq0605-zsqrtd",
+    "proofId": "pell-equation-oq-06-oq-05",
+    "range": { "startLine": 109, "endLine": 133 },
+    "type": "insight",
+    "title": "The Conceptual Source in ℤ[√2]",
+    "content": "negPellSeq_mul_conj reveals both scalar identities as one identity in disguise: with aₙ = ⟨xₙ,yₙ⟩ = ζ^(2n+1) (the oq-06-oq-02 representation) and conjugate conj⟨x,y⟩ = ⟨x,−y⟩, one has aₙ₊₁·conj(aₙ) = ⟨−3,−2⟩ = −ζ². Conceptually aₙ₊₁·conj(aₙ) = ζ²·(ζ·conj ζ)^(2n+1) = ζ²·N(ζ)^(2n+1) = −ζ², manifestly independent of n. The proof checks the two components (Zsqrtd.re_mul / im_mul): the real part is exactly negPellSeq_inner (−3) and the imaginary part is exactly negPellSeq_det (−2). This is Brahmagupta composition packaging a 2D conserved vector.",
+    "mathContext": "$a_{n+1}\\,\\overline{a_n} = \\zeta^{2n+3}\\,\\overline{\\zeta}^{\\,2n+1} = \\zeta^2(\\zeta\\overline\\zeta)^{2n+1} = \\zeta^2 N(\\zeta)^{2n+1} = -\\zeta^2 = \\langle -3,-2\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic conjugation", "Brahmagupta composition", "Zsqrtd.re_mul / im_mul", "ζ from oq-06-oq-02"],
+    "prerequisites": ["the unit ζ and ζ_sq", "the two scalar identities", "componentwise Zsqrtd equality"]
+  },
+  {
+    "id": "ann-pelloq0605-primitivity",
+    "proofId": "pell-equation-oq-06-oq-05",
+    "range": { "startLine": 134, "endLine": 153 },
+    "type": "insight",
+    "title": "Primitivity of the Chain Solutions",
+    "content": "negPellSeq_isCoprime shows every chain solution (xₙ, yₙ) is primitive: gcd(xₙ,yₙ) = 1. The witness is an explicit Bézout identity read straight off the negative Pell relation: (−xₙ)·xₙ + (2yₙ)·yₙ = −(xₙ² − 2yₙ²) = 1, so any common divisor of xₙ and yₙ divides 1. The proof is a single linear_combination of negPellSeq_norm. The sanity-check examples confirm the determinant −2 and inner product −3 at the first pair (1,1),(7,5).",
+    "mathContext": "Any $d \\mid x_n, y_n$ divides $x_n^2 - 2y_n^2 = -1$; explicitly $(-x_n)x_n + (2y_n)y_n = -(x_n^2 - 2y_n^2) = 1$, so $\\gcd(x_n,y_n) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCoprime", "Bézout identity", "primitive lattice points"],
+    "prerequisites": ["the negative Pell relation", "IsCoprime via an explicit witness"]
+  }
+]

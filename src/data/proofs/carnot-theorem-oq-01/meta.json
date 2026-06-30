@@ -1,0 +1,163 @@
+{
+  "id": "carnot-theorem-oq-01",
+  "title": "Carnot's Theorem (angle form)",
+  "slug": "carnot-theorem-oq-01",
+  "description": "For a triangle with angles A, B, C, the signed distances from the circumcenter to the three sides sum to R + r, equivalently cos A + cos B + cos C = 1 + r/R. The analytic core is the identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), proved here axiom-free for any reals with A + B + C = π.",
+  "meta": {
+    "author": "Lazare Carnot (1803)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carnot%27s_theorem_(inradius,_circumradius)",
+    "date": "1803",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CarnotTheorem.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "trigonometry",
+      "circumradius",
+      "inradius",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.cos_two_mul'",
+        "description": "Double-angle identity cos(2x) = cos²x - sin²x",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.sin_sq_add_cos_sq",
+        "description": "Pythagorean identity sin²x + cos²x = 1",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.cos_add",
+        "description": "Angle-addition formula for cosine",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.cos_pi_sub",
+        "description": "cos(π - x) = -cos x, used to eliminate C = π - A - B",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pi_div_two_sub",
+        "description": "sin(π/2 - x) = cos x, used to relate sin(C/2) to A/2, B/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of the angle form of Carnot's theorem: cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) for A + B + C = π",
+      "Half-angle reduction turning the identity into a polynomial identity in sin(A/2), cos(A/2), sin(B/2), cos(B/2) closed by a single linear_combination modulo the Pythagorean identities",
+      "Companion fundamental triangle cosine identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 81,
+    "assumptions": "0 axioms. 0 sorries. Fully verified. The only hypothesis is the angle-sum relation A + B + C = π characterizing a (possibly degenerate) triangle's angles.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "title": "Module header",
+      "startLine": 3,
+      "endLine": 27,
+      "description": "Docstring reducing the geometric Carnot theorem (sum of signed circumcenter-to-side distances = R + r) to the trigonometric core cos A + cos B + cos C = 1 + r/R, and via Euler's inradius formula r/R = 4 sin(A/2)sin(B/2)sin(C/2) to the identity proved axiom-free below.",
+      "summary": "Module header",
+      "id": "module-header"
+    },
+    {
+      "title": "Double-angle helper",
+      "startLine": 33,
+      "endLine": 36,
+      "description": "The sin-form double-angle identity cos(2x) = 1 - 2 sin²x, derived from Mathlib's cos_two_mul' and the Pythagorean identity via linear_combination.",
+      "summary": "Double-angle helper",
+      "id": "double-angle-helper"
+    },
+    {
+      "title": "Carnot's Theorem — statement and the half-angle identity for sin(C/2)",
+      "startLine": 38,
+      "endLine": 52,
+      "description": "States the main identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2) for A + B + C = π, with the docstring recording the geometric form 1 + r/R. The proof opens by eliminating the third angle: from A + B + C = π we get C/2 = π/2 - (A/2 + B/2), so sin(C/2) = cos(A/2)cos(B/2) - sin(A/2)sin(B/2) via Real.sin_pi_div_two_sub and Real.cos_add. This is the only place the angle-sum hypothesis is used.",
+      "summary": "Statement of Carnot's angle form and the half-angle expansion of sin(C/2)",
+      "id": "carnot-theorem-statement-half-angle"
+    },
+    {
+      "title": "Reducing to Pythagoras: 1 − 2sin² rewrites and linear_combination closure",
+      "startLine": 53,
+      "endLine": 62,
+      "description": "Each cosine is rewritten in the half-angle form cos θ = 1 - 2 sin²(θ/2) via the cos_two_mul_sin helper, and sin(C/2) is replaced by the expression from the previous step. What remains is a polynomial identity in sin(A/2), cos(A/2), sin(B/2), cos(B/2), which linear_combination discharges modulo the two Pythagorean identities sin²+cos² = 1 for A/2 and B/2 — no trigonometric reasoning beyond those two relations is needed.",
+      "summary": "Half-angle cosine rewrites and the linear_combination closure modulo sin²+cos²=1",
+      "id": "carnot-theorem-pythagorean-closure"
+    },
+    {
+      "title": "Fundamental triangle cosine identity",
+      "startLine": 64,
+      "endLine": 79,
+      "description": "The companion polynomial identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1, via cos C = -cos(A+B) and a linear_combination of the Pythagorean identities for A and B.",
+      "summary": "Fundamental triangle cosine identity",
+      "id": "fundamental-triangle-cosine-identity"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Carnot's theorem on the inradius and circumradius is due to Lazare Carnot (1753–1823), the French mathematician, engineer, and politician known as the 'Organizer of Victory' during the French Revolution. It appears in his 1803 work on the geometry of position. The theorem states that, for a triangle with circumradius R and inradius r, the sum of the signed distances from the circumcenter O to the three sides equals R + r. The sign convention is essential: a distance is counted negative when the circumcenter lies on the opposite side of an edge from the triangle's interior, which happens precisely for the side opposite an obtuse angle. With this convention the identity holds for every triangle, acute or obtuse.\n\nDividing the signed-distance form by R, and using that the signed distance from the circumcenter to the side opposite angle θ equals R cos θ (the central angle subtending that side is 2θ), Carnot's theorem becomes the compact trigonometric statement cos A + cos B + cos C = 1 + r/R. Combined with Euler's inradius formula r = 4R sin(A/2) sin(B/2) sin(C/2), the analytic heart of the theorem is the pure identity cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), which holds for any real angles summing to π.",
+    "problemStatement": "**Carnot's theorem (angle form)**: For any reals A, B, C with A + B + C = π, prove\n\n  cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2).\n\nThis is equivalent to the classical statement that the signed distances from the circumcenter to the three sides of a triangle sum to R + r, since cos A + cos B + cos C = 1 + r/R and r/R = 4 sin(A/2) sin(B/2) sin(C/2).",
+    "text": "For a triangle with circumradius R and inradius r, the signed distances from the circumcenter to the three sides sum to R + r; equivalently cos A + cos B + cos C = 1 + r/R.",
+    "proofStrategy": "The proof works entirely with the angle relation A + B + C = π and reduces to a polynomial identity.\n\n1. **Half angles**: Set a = A/2, b = B/2, c = C/2, so a + b + c = π/2 and c = π/2 - (a + b). Then sin(C/2) = sin(π/2 - (a+b)) = cos(a + b) = cos a cos b - sin a sin b, expressing the third half-angle sine through A/2 and B/2.\n\n2. **Cosine reduction**: Rewrite each full-angle cosine as cos(2·) and apply the double-angle identity cos(2x) = 1 - 2 sin²x. The left side becomes 3 - 2(sin²(A/2) + sin²(B/2) + sin²(C/2)).\n\n3. **Polynomial closure**: After substituting sin(C/2), the goal is a polynomial identity in sin(A/2), cos(A/2), sin(B/2), cos(B/2). It is closed by a single linear_combination of the Pythagorean identities sin²(A/2) + cos²(A/2) = 1 and sin²(B/2) + cos²(B/2) = 1.\n\nThe companion identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 is proved the same way, using cos C = -cos(A + B) and a linear_combination of the Pythagorean identities for A and B.",
+    "keyInsights": [
+      "**Half-angle linearization**: writing c = π/2 - (a + b) turns sin(C/2) into a polynomial in the sines and cosines of A/2 and B/2, removing the third angle entirely",
+      "**cos(2x) = 1 - 2 sin²x**: the sin-form double angle matches the half-angle products on the right-hand side, so both sides become polynomials in the same four quantities",
+      "**One linear_combination closes it**: modulo the two Pythagorean identities the whole theorem is a single algebraic identity — no case analysis on acute/obtuse is needed because the angle form is sign-agnostic",
+      "**r/R = 4 sin(A/2) sin(B/2) sin(C/2)**: Euler's inradius formula is what connects the proved trigonometric identity to the geometric R + r statement",
+      "**Two algebraic faces of one hypothesis**: the angle form (linear in the half-angle sine products) and the companion cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 (quadratic in the full-angle cosines) are both polynomial consequences of the single relation A + B + C = π, each closed by a `linear_combination` of two Pythagorean identities in a different coordinate system"
+    ],
+    "prerequisites": [
+      "Real trigonometric functions sin and cos",
+      "Double-angle and angle-addition identities",
+      "The Pythagorean identity sin²x + cos²x = 1",
+      "The angle-sum relation A + B + C = π for a triangle"
+    ],
+    "openQuestions": [
+      "Can the signed-distance form (sum of circumcenter-to-side distances = R + r) be formalized directly over EuclideanSpace ℝ (Fin 2) with an explicit circumcenter and inradius?",
+      "Can Euler's inradius formula r = 4R sin(A/2) sin(B/2) sin(C/2) be formalized to bridge the angle form to the metric form?"
+    ]
+  },
+  "conclusion": {
+    "summary": "Carnot's theorem is formalized in its angle form, cos A + cos B + cos C = 1 + 4 sin(A/2) sin(B/2) sin(C/2), for any reals summing to π. A half-angle substitution linearizes the third angle and a single linear_combination modulo the Pythagorean identities closes the proof. The companion fundamental cosine identity cos²A + cos²B + cos²C + 2 cos A cos B cos C = 1 is also established.",
+    "implications": "**Theoretical Significance**: The proof shows that the analytic content of Carnot's theorem is a polynomial identity, independent of the acute/obtuse case split that the signed-distance form requires geometrically. The same half-angle linearization technique applies to the broad family of triangle identities relating cos A + cos B + cos C, the half-angle products, and r/R.",
+    "openQuestions": [
+      "Can the signed-distance form be formalized directly with an explicit circumcenter over EuclideanSpace ℝ (Fin 2)?",
+      "Can Euler's inradius formula r = 4R sin(A/2) sin(B/2) sin(C/2) be formalized to bridge the two forms?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both are classical metric results about an arbitrary triangle; the law of cosines relates side lengths to a single angle, while Carnot's theorem packages all three angles into the circumradius/inradius relation R + r."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "related",
+      "description": "Both reduce a classical triangle theorem to an algebraic identity — Napoleon via complex coordinates and a rotation identity, Carnot via half-angle substitution and a Pythagorean linear_combination."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CarnotTheorem",
+    "lineCount": 81,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CarnotTheorem.lean"
+  }
+}

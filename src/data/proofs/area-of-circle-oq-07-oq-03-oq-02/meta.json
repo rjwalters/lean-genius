@@ -1,0 +1,178 @@
+{
+  "id": "area-of-circle-oq-07-oq-03-oq-02",
+  "slug": "area-of-circle-oq-07-oq-03-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Complex",
+      "MeasureTheory",
+      "intervalIntegral",
+      "Set"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ03OQ02",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/AreaOfCircleOQ07OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "title": "Γ(1/2)² = π via the Beta value B(1/2,1/2) = π and the arcsine density",
+  "description": "An independent, Beta-function-based derivation of Γ(1/2)² = π — not using the Gaussian integral (the route by which Mathlib's own Real.Gamma_one_half_eq is proved). Mathlib's Beta–Gamma relation Complex.Gamma_mul_Gamma_eq_betaIntegral gives Γ(1/2)·Γ(1/2) = Γ(1)·B(1/2,1/2) = B(1/2,1/2); the Beta value B(1/2,1/2) = ∫₀¹ x^{−1/2}(1−x)^{−1/2} dx = π is then computed from scratch by the fundamental theorem of calculus with antiderivative arcsin(2x−1), whose derivative on (0,1) is exactly the integrand because 1 − (2x−1)² = 4x(1−x). Combining gives Γ(1/2)² = π, hence Γ(1/2) = √π and the normalisation ∫₀¹ 1/(π√(x(1−x))) dx = 1 of the arcsine probability density. Answers the parent's open question oq-03-oq-02 verbatim.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ03OQ02.lean",
+    "tags": [
+      "analysis",
+      "gamma-function",
+      "beta-function",
+      "special-functions",
+      "arcsine-distribution",
+      "fundamental-theorem-of-calculus",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 185,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "integral_arcsineDensity: ∫₀¹ x^{−1/2}(1−x)^{−1/2} dx = π, evaluated independently by the FTC with antiderivative arcsin(2x−1) — the analytic heart, since 1 − (2x−1)² = 4x(1−x) makes the derivative of arcsin(2x−1) equal to the Beta integrand on (0,1)",
+      "betaIntegral_half_half: Complex.betaIntegral (1/2) (1/2) = π, obtained by reducing the complex Beta integrand to ofReal of the real arcsine density (via Complex.ofReal_cpow) and applying integral_arcsineDensity — not delegated to any Mathlib Beta special value",
+      "complex_Gamma_half_sq / real_Gamma_half_sq: Γ(1/2)² = π through the Beta value rather than the Gaussian integral, via Complex.Gamma_mul_Gamma_eq_betaIntegral and Γ(1) = 1",
+      "real_Gamma_half: Γ(1/2) = √π recovered as a corollary of B(1/2,1/2) = π (an independent proof of the equality Mathlib establishes through the Gaussian integral)",
+      "arcsine_density_normalised: ∫₀¹ 1/(π√(x(1−x))) dx = 1, the total-mass normalisation of the arcsine probability density on [0,1]"
+    ],
+    "prerequisites": [
+      "Euler Beta function Complex.betaIntegral and the Beta–Gamma relation Complex.Gamma_mul_Gamma_eq_betaIntegral",
+      "The fundamental theorem of calculus for an interval with endpoint singularities (intervalIntegral.integral_eq_sub_of_hasDeriv_right_of_le)",
+      "Real.arcsin and its derivative Real.hasDerivAt_arcsin; arcsin(±1) = ±π/2",
+      "Complex.ofReal_cpow to reduce the complex cpow integrand to a real rpow integrand",
+      "Parent: area-of-circle-oq-07-oq-03 (Γ(1/2) = √π, the Gaussian route)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.Gamma_mul_Gamma_eq_betaIntegral",
+        "description": "Γ(s)·Γ(t) = Γ(s+t)·B(s,t) for Re s, Re t > 0. Specialized at s = t = 1/2 (with Γ(1) = 1) to reduce Γ(1/2)² to the Beta value B(1/2,1/2).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Complex.betaIntegral_convergent",
+        "description": "Interval-integrability of the Beta integrand for positive real parts; used (via its norm) to supply integrability of the real arcsine density to the FTC.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Real.hasDerivAt_arcsin",
+        "description": "HasDerivAt arcsin (1/√(1−x²)) x for x ≠ ±1. Composed with the affine map x ↦ 2x−1 to produce the antiderivative of the Beta integrand on (0,1).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv"
+      },
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDeriv_right_of_le",
+        "description": "FTC variant requiring the derivative only on the open interval, with continuity of the antiderivative and integrability of the integrand — exactly the hypotheses available for the singular arcsine density.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus"
+      },
+      {
+        "theorem": "Complex.ofReal_cpow",
+        "description": "(↑(x^y) : ℂ) = (↑x)^(↑y) for 0 ≤ x and real y. Reduces the complex Beta integrand to ofReal of the real arcsine density on (0,1).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's Beta function B(u,v) = ∫₀¹ t^{u−1}(1−t)^{v−1} dt and Gamma function Γ are linked by the reflection B(u,v) = Γ(u)Γ(v)/Γ(u+v). At the centre u = v = 1/2 this reads Γ(1/2)² = Γ(1)·B(1/2,1/2) = B(1/2,1/2), so the single number π appears two ways: as the square of the Gamma half-value and as the total mass of the (unnormalised) arcsine density 1/√(t(1−t)) on [0,1]. The arcsine distribution — Wigner's law for a 1-D random walk's fraction-of-time-positive, and the spectral density of a free Jacobi/Chebyshev ensemble — has density 1/(π√(t(1−t))); that the constant is exactly 1/π is the statement B(1/2,1/2) = π. The companion entry area-of-circle-oq-07-oq-03 obtains Γ(1/2) = √π from the Gaussian integral; this entry obtains the same π from the Beta side, closing the loop between the two classical evaluations.",
+    "problemStatement": "**Open Question (oq-03-oq-02)**: connect Γ(1/2)² = π to the Beta value B(1/2,1/2) = π via the Beta–Gamma relation, exhibiting the same π as the area under the arcsine density on [0,1]. Answer: Γ(1/2)² = Γ(1)·B(1/2,1/2) = B(1/2,1/2), and B(1/2,1/2) = ∫₀¹ dt/√(t(1−t)) = π by the FTC with antiderivative arcsin(2t−1).",
+    "proofStrategy": "(1) hasDerivAt_arcsin_affine: chain-rule arcsin with x ↦ 2x−1, then identify 2/√(1−(2x−1)²) with x^{−1/2}(1−x)^{−1/2} using 1−(2x−1)² = 4x(1−x) and √(4x(1−x)) = 2√x√(1−x). (2) intervalIntegrable_arcsineDensity: the real density equals the norm of Mathlib's convergent complex Beta integrand a.e. on (0,1), so it is interval-integrable. (3) integral_arcsineDensity: apply the open-interval FTC; endpoint values arcsin(±1) = ±π/2 give total π. (4) betaIntegral_half_half: rewrite the complex Beta integrand as ofReal of the real density (Complex.ofReal_cpow) and push ofReal through the integral. (5) complex_Gamma_half_sq / real_Gamma_half_sq / real_Gamma_half: feed the Beta value into the Beta–Gamma relation and cast. (6) arcsine_density_normalised divides by π.",
+    "keyInsights": [
+      "The derivative of arcsin(2x−1) IS the Beta(1/2,1/2) integrand: 1 − (2x−1)² = 4x(1−x), so 2/√(1−(2x−1)²) = 1/√(x(1−x)) = x^{−1/2}(1−x)^{−1/2}. The arcsine substitution is not auxiliary — it is the antiderivative.",
+      "The endpoint singularities of x^{−1/2}(1−x)^{−1/2} are handled by the FTC variant that needs the derivative only on the open interval; integrability is borrowed from Mathlib's complex Beta-convergence lemma via the norm.",
+      "Reducing the complex cpow Beta integrand to a real rpow integrand (Complex.ofReal_cpow on (0,1), where both bases are nonnegative reals) lets a single real FTC computation evaluate the complex Beta integral.",
+      "This is an independent derivation of Γ(1/2) = √π: it never calls Real.Gamma_one_half_eq, so the value is recomputed through the Beta/arcsine route rather than the Gaussian one, and the two appearances of π (Gamma-square and arcsine mass) are unified."
+    ]
+  },
+  "sections": [
+    {
+      "id": "antiderivative",
+      "title": "The Antiderivative arcsin(2x−1)",
+      "startLine": 64,
+      "endLine": 100,
+      "summary": "hasDerivAt_arcsin_affine: on (0,1), arcsin(2x−1) has derivative x^{−1/2}(1−x)^{−1/2}. The chain rule gives 2/√(1−(2x−1)²); the identity 1−(2x−1)² = 4x(1−x) and √-arithmetic identify it with the arcsine density."
+    },
+    {
+      "id": "integrability",
+      "title": "Integrability of the Density",
+      "startLine": 102,
+      "endLine": 132,
+      "summary": "intervalIntegrable_arcsineDensity: the real density is interval-integrable on [0,1] because it equals, a.e. on (0,1), the norm of Mathlib's convergent complex Beta integrand (Complex.betaIntegral_convergent)."
+    },
+    {
+      "id": "arcsine-integral",
+      "title": "The Arcsine Integral Equals π",
+      "startLine": 134,
+      "endLine": 150,
+      "summary": "integral_arcsineDensity: ∫₀¹ x^{−1/2}(1−x)^{−1/2} dx = π by the open-interval FTC with antiderivative arcsin(2x−1); arcsin(1) − arcsin(−1) = π/2 − (−π/2) = π."
+    },
+    {
+      "id": "beta-value",
+      "title": "The Beta Value B(1/2,1/2) = π",
+      "startLine": 152,
+      "endLine": 170,
+      "summary": "betaIntegral_half_half: Complex.betaIntegral (1/2) (1/2) = π, by reducing the complex integrand to ofReal of the real density (Complex.ofReal_cpow) and pushing ofReal through the interval integral."
+    },
+    {
+      "id": "gamma-square",
+      "title": "Γ(1/2)² = π and Γ(1/2) = √π",
+      "startLine": 172,
+      "endLine": 185,
+      "summary": "complex_Gamma_half_sq and real_Gamma_half_sq: Γ(1/2)² = π through Complex.Gamma_mul_Gamma_eq_betaIntegral and Γ(1) = 1; real_Gamma_half recovers Γ(1/2) = √π; arcsine_density_normalised gives ∫₀¹ 1/(π√(x(1−x))) = 1."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-03-oq-02-oq-01",
+      "question": "Extend the Beta route to the general half-integer ladder: evaluate B(n+1/2, 1/2) by the same arcsine-substitution FTC (reducing ∫₀¹ x^{n−1/2}(1−x)^{−1/2} dx to a trigonometric moment via x = sin²θ), and identify Γ(n+1/2) = (2n−1)!!√π/2ⁿ as a product of these Beta values, an arcsine-density derivation parallel to the Gaussian-moment route of oq-03-oq-01.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-03",
+      "relationship": "extends",
+      "description": "Parent. The parent proves Γ(1/2) = √π via Mathlib's Gaussian-based Real.Gamma_one_half_eq; this entry re-derives Γ(1/2)² = π independently through the Beta value B(1/2,1/2) = π and the arcsine integral, answering the parent's open question oq-03-oq-02."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Grandparent. The Gaussian integral ∫_ℝ e^{−x²} = √π and the Beta value B(1/2,1/2) = π are two classical evaluations of the same π; this entry supplies the Beta/arcsine one."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Beta",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Complex.betaIntegral, Complex.Gamma_mul_Gamma_eq_betaIntegral, and Complex.betaIntegral_convergent."
+    },
+    {
+      "title": "Euler's Beta and Gamma functions",
+      "author": "Leonhard Euler",
+      "year": "1730",
+      "venue": "historical",
+      "description": "The Beta integral B(u,v) = ∫₀¹ t^{u−1}(1−t)^{v−1} dt and its relation to Γ; B(1/2,1/2) = π is the central value."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Γ(1/2)² = π is derived independently of the Gaussian integral. Mathlib's Beta–Gamma relation reduces Γ(1/2)² to the Beta value B(1/2,1/2); that value is computed from scratch as ∫₀¹ x^{−1/2}(1−x)^{−1/2} dx = π by the fundamental theorem of calculus with antiderivative arcsin(2x−1) (whose derivative on (0,1) is exactly the integrand, since 1−(2x−1)² = 4x(1−x)). Corollaries: Γ(1/2) = √π and the arcsine density normalisation ∫₀¹ 1/(π√(x(1−x))) dx = 1. 185 lines, 8 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "Unlike the parent entry (which records Mathlib's Gaussian-based special value), this entry carries out the arcsine FTC computation itself, so it is an independent proof of Γ(1/2) = √π through the Beta function. It exhibits the single constant π simultaneously as Γ(1/2)² and as the total mass of the arcsine probability density on [0,1].",
+    "openQuestions": [
+      "Extend the Beta route to B(n+1/2, 1/2) via the arcsine substitution and recover the half-integer ladder Γ(n+1/2) = (2n−1)!!√π/2ⁿ as a product of Beta values."
+    ]
+  }
+}

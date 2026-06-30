@@ -66,45 +66,61 @@
       "id": "header",
       "title": "Preamble: Problem Context and Imports",
       "startLine": 1,
-      "endLine": 24,
+      "endLine": 29,
       "summary": "File docstring establishing the problem: find f(n) approximating the least m with m ∤ C(2n,n). Cites the EGRS (1975) result m = exp((log n)^{1/2+o(1)}), Kummer's theorem on carries, and OEIS A006197. Imports Mathlib.Data.Nat.Choose.Central for central binomial coefficients, Mathlib.Data.Nat.Prime.Basic for primality, and Mathlib.Tactic for proof automation."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 38,
-      "summary": "Defines `centralBinom n` = $\\binom{2n}{n}$ via `Nat.choose`, `leastNonDivisor m` as the smallest positive $k$ with $k \\nmid m$ using `Nat.find`, and `leastNonDivCentral n` composing both."
+      "startLine": 30,
+      "endLine": 67,
+      "summary": "Defines `centralBinom n` = $\\binom{2n}{n}$ via `Nat.choose`, `leastNonDivisor m` as the smallest positive $k$ with $k \\nmid m$ using `Nat.find` (with $m=0 \\mapsto 1$), and `leastNonDivCentral n` composing both. Proves `centralBinom_pos` ($\\binom{2n}{n} > 0$) and tabulates concrete small values $C(0,0)=1,\\ C(2,1)=2,\\ C(4,2)=6,\\ C(6,3)=20,\\ C(8,4)=70,\\ C(10,5)=252$ by `native_decide`."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (EGRS)",
-      "startLine": 39,
-      "endLine": 47,
+      "startLine": 68,
+      "endLine": 73,
       "summary": "documents in source comments `erdos_731_conjecture` (no Lean declaration exists): for almost all $n$, $\\text{leastNonDivCentral}(n) = \\exp((\\log n)^{1/2+o(1)})$. Uses a placeholder `True` since the precise formulation requires asymptotic density."
     },
     {
       "id": "divisibility",
       "title": "Divisibility Properties",
-      "startLine": 48,
-      "endLine": 74,
+      "startLine": 74,
+      "endLine": 118,
       "summary": "Axiomatizes the prime divisibility criterion via prime_divides_central_iff ($p \\mid \\binom{2n}{n}$ iff some base-$p$ digit of $n$ is $\\geq \\lceil p/2 \\rceil$). Proves small_primes_divide_false (3 ∤ C(6,3)=20, showing the naive claim that small primes always divide C(2n,n) is FALSE) and two_divides_central (C(2n,n) is always even, by Pascal's rule)."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Analysis",
-      "startLine": 75,
-      "endLine": 107,
+      "startLine": 119,
+      "endLine": 134,
       "summary": "The counterexample `least_nondiv_counterexample` ($4$ is not prime but $4 \\nmid \\binom{4}{2} = 6$, showing the least non-divisor need not be prime). documents in source comments `egrs_typical_behavior` (no Lean declaration exists) (EGRS heuristic for typical $n$).",
       "mathContext": "For most $n$, $f(n)$ is the smallest prime not dividing $\\binom{2n}{n}$. But $n = 2$: $\\binom{4}{2} = 6$, $4 \\nmid 6$, so $f(2) = 4$ (not prime). This shows the prime restriction is 'almost always' true but not universal."
     },
     {
       "id": "bounds",
       "title": "Bounds on the Least Non-Divisor",
-      "startLine": 108,
-      "endLine": 154,
-      "summary": "Proves `lower_bound_most_n` (heuristic $f(n) > (\\log n)^{1/2 - \\varepsilon}$ for most $n$), axiomatizes `upper_bound_trivial` ($f(n) \\leq 2n + 1$). Proves `bertrand_central` ($\\exists p$ prime with $n < p \\leq 2n$ and $p \\mid \\binom{2n}{n}$, from Bertrand's postulate) and `central_binom_lower` ($\\binom{2n}{n} \\cdot (2n+1) \\geq 4^n$, the exponential lower bound from summing $\\sum \\binom{2n}{k} = 4^n$).",
-      "mathContext": "Bertrand's postulate: $\\exists p$ prime with $n < p \\leq 2n$. Since $p \\leq 2n$, $p \\mid \\binom{2n}{n}$ (Kummer: the single base-$p$ digit of $n$ is $< p$). Exponential bound: $\\binom{2n}{n} \\geq 4^n / (2n+1)$ from $(1+1)^{2n} = \\sum \\binom{2n}{k}$."
+      "startLine": 135,
+      "endLine": 290,
+      "summary": "Establishes upper and lower bounds. Proves `choose_dvd_lcm` ($\\binom{N}{k} \\mid \\operatorname{lcm}(1,\\dots,N)$ via $v_p$ comparison), the `leastNonDivisor` floor lemmas (`_le_of_ndvd`, `_ge_two`, `leastNonDivCentral_ge_two`, `leastNonDivisor_one`, `leastNonDivCentral_zero = 2`), and `upper_bound_trivial` ($\\text{leastNonDivCentral}\\,n \\le 2n+1$) — now fully PROVED by contradiction: if every $m \\le 2n+1$ divided $\\binom{2n}{n}$ then $\\operatorname{lcm}(1,\\dots,2n+1) \\mid \\binom{2n}{n}$, forcing $\\binom{2n+1}{n} \\mid \\binom{2n}{n}$ against $\\binom{2n+1}{n} > \\binom{2n}{n}$. Also `bertrand_central` (a prime $p \\in (n,2n]$ divides $\\binom{2n}{n}$), `prime_gt_not_dvd_central` (primes $> 2n$ do not divide it, via Legendre), and `central_binom_lower` ($\\binom{2n}{n}(2n+1) \\ge 4^n$).",
+      "mathContext": "$\\binom{N}{k} \\mid \\operatorname{lcm}(1,\\dots,N)$; hence $\\text{leastNonDivCentral}\\,n \\le 2n+1$. Bertrand: $\\exists p$ prime, $n < p \\le 2n$, $p \\mid \\binom{2n}{n}$. Exponential bound $\\binom{2n}{n} \\ge 4^n/(2n+1)$ from $\\sum_k \\binom{2n}{k} = 4^n$."
+    },
+    {
+      "id": "key-structural",
+      "title": "Key Structural Results",
+      "startLine": 291,
+      "endLine": 385,
+      "summary": "Develops the algebraic identities behind divisibility of $\\binom{2n}{n}$ by $2n+1$. Proves the absorption identity `central_binom_succ_identity` ($(n+1)\\binom{2n+1}{n} = (2n+1)\\binom{2n}{n}$), `coprime_two_n_succ_n_succ` ($\\gcd(2n+1,n+1)=1$), and `dvd_central_implies_sq_dvd` (if $(2n+1)\\mid\\binom{2n}{n}$ then $(2n+1)^2 \\mid \\binom{2n+1}{n}$). Combined with `prime_sq_not_dvd_choose` ($p^2 \\nmid \\binom{p}{k}$ for $0<k<p$), this yields two proofs that a prime $2n+1$ never divides $\\binom{2n}{n}$ (`not_dvd_central_prime`, `not_dvd_central_prime_alt`). Closes with `choose_succ_gt_central` ($\\binom{2n+1}{n} > \\binom{2n}{n}$), the strict inequality powering `upper_bound_trivial`.",
+      "mathContext": "$(n+1)\\binom{2n+1}{n} = (2n+1)\\binom{2n}{n}$ with $\\gcd(2n+1,n+1)=1$. Prime $2n+1 \\nmid \\binom{2n}{n}$ since $v_p\\!\\binom{p}{k}=1$ rules out $(2n+1)^2 \\mid \\binom{2n+1}{n}$."
+    },
+    {
+      "id": "sharp-bound",
+      "title": "Sharp Bound: Value Exactly 3 when 3 ∤ C(2n,n)",
+      "startLine": 386,
+      "endLine": 439,
+      "summary": "Extracts a sharp small-value case of the EGRS conjecture. Proves `leastNonDivisor_ge_three` (if $2 \\mid m$ then the least non-divisor is $\\ge 3$) and `leastNonDivCentral_le_three_of_ndvd` (if $3 \\nmid \\binom{2n}{n}$ then $\\le 3$), combining to `leastNonDivCentral_eq_three_of_ndvd`: for every $n \\ge 1$ with $3 \\nmid \\binom{2n}{n}$, the least non-divisor is *exactly* 3 (since $1 \\mid$ and $2 \\mid \\binom{2n}{n}$ by `two_divides_central`). By Kummer this holds for the infinite family of $n$ whose base-3 digits are all $\\le 1$ ($1,3,4,9,10,12,13,27,\\dots$). Concrete witnesses `leastNonDivCentral_three_eq_three` ($C(6,3)=20$) and `leastNonDivCentral_four_eq_three` ($C(8,4)=70$).",
+      "mathContext": "For $n \\ge 1$ with $3 \\nmid \\binom{2n}{n}$: $\\text{leastNonDivCentral}\\,n = 3$. The hypothesis holds iff every base-3 digit of $n$ is $\\le 1$ (Kummer) — an infinite family, sharply refining the $\\le 2n+1$ bound."
     }
   ],
   "conclusion": {

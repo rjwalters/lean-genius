@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-fiboq0503-1",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 3, "endLine": 30 },
+    "type": "context",
+    "title": "From Consecutive Products to a Fixed Gap",
+    "content": "**Module framing.** The parent entry proves the consecutive product staircase $F_0F_1 + \\cdots + F_nF_{n+1} = F_{n+1}^2 - [n\\text{ even}]$ and asks for the fixed-gap companion $\\sum F_k F_{k+2}$. This file settles the gap-two case: the sum closes on the *adjacent product* $F_{n+1}F_{n+2}$ rather than the square $F_{n+1}^2$, with the identical $\\pm[n\\text{ even}]$ parity correction. The reframing is the point — widening the summand gap by one widens the index gap of the closed-form product by one.",
+    "mathContext": "$\\sum_{k=0}^{n} F_k F_{k+2} = F_{n+1}F_{n+2} - [n\\text{ even}]$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Consecutive product staircase (parent entry)",
+      "Fixed-gap Fibonacci product sums",
+      "Parity-governed summation identities"
+    ],
+    "prerequisites": [
+      "The 0-indexed Fibonacci sequence Nat.fib",
+      "Classical Fibonacci summation identities"
+    ],
+    "tags": ["module-header", "framing", "fibonacci"]
+  },
+  {
+    "id": "ann-fiboq0503-2",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 37, "endLine": 54 },
+    "type": "technique",
+    "title": "Cassini's Identity for Nat.fib",
+    "content": "**The source identity.** $F_{n+2}^2 = F_{n+1}F_{n+3} + (-1)^{n+1}$ over $\\mathbb{Z}$, by a one-line induction off `Nat.fib_add_two`: rewrite the sign as $(-1)^{n+2} = -(-1)^{n+1}$, substitute the recurrence, and close with `linear_combination -ih + F_{k+3}·e1`. Mathlib records Cassini only over `Int.fib`, so the `Nat.fib` version is supplied here — and it is the seed from which the d'Ocagne identity (the actual engine of this entry) is grown.",
+    "mathContext": "$F_{n+2}^2 = F_{n+1}F_{n+3} + (-1)^{n+1}$.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "linear_combination tactic",
+      "Fibonacci recurrence Nat.fib_add_two"
+    ],
+    "prerequisites": ["Induction over ℤ", "The Fibonacci recurrence"],
+    "tags": ["cassini", "engine", "linear_combination"]
+  },
+  {
+    "id": "ann-fiboq0503-3",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 56, "endLine": 70 },
+    "type": "technique",
+    "title": "The d'Ocagne / Catalan Identity from Cassini",
+    "content": "**The engine.** $F_{n+1}F_{n+4} - F_{n+2}F_{n+3} = (-1)^n$. This is *not* proved by a fresh induction: it falls out of Cassini at index $n+1$ (giving $F_{n+3}^2 = F_{n+2}F_{n+4} + (-1)^n$) together with the recurrences $F_{n+3} = F_{n+1}+F_{n+2}$ and $F_{n+4} = F_{n+2}+F_{n+3}$. A single `linear_combination hc - F_{n+4}·e3 + F_{n+3}·e4` discharges it. Where Cassini is the quadratic identity behind the consecutive product sum, d'Ocagne is the bilinear identity behind the gap-two sum.",
+    "mathContext": "$F_{n+1}F_{n+4} - F_{n+2}F_{n+3} = (-1)^n$.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "d'Ocagne's identity",
+      "Catalan's identity",
+      "Deriving identities by linear_combination"
+    ],
+    "prerequisites": ["Cassini's identity", "The Fibonacci recurrence"],
+    "tags": ["docagne", "catalan", "engine"]
+  },
+  {
+    "id": "ann-fiboq0503-4",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 71, "endLine": 104 },
+    "type": "technique",
+    "title": "Linearizing the Step: a Product Relation omega Can Use",
+    "content": "**Making the step linear.** Substituting $F_{k+4} = F_{k+2}+F_{k+3}$ into d'Ocagne yields $F_{k+2}F_{k+3} - F_{k+1}F_{k+2} - F_{k+1}F_{k+3} = (-1)^{k+1}$ (`fib_gap_rel`). The three products now appear *linearly*. Collapsing the sign by parity (`Even.neg_one_pow` / `Odd.neg_one_pow`) gives the two natural-number specializations `gap_nat_even` ($F_{k+1}F_{k+2} + F_{k+1}F_{k+3} = F_{k+2}F_{k+3} + 1$) and `gap_nat_odd`. These are precisely the equations `omega` needs to combine with the inductive hypothesis, treating each product as an opaque atom.",
+    "mathContext": "$F_{k+2}F_{k+3} - F_{k+1}F_{k+2} - F_{k+1}F_{k+3} = (-1)^{k+1}$.",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "Linearization for omega",
+      "Parity collapse of (−1)ⁿ",
+      "Treating products as atoms"
+    ],
+    "prerequisites": ["The d'Ocagne identity", "Even/Odd.neg_one_pow"],
+    "tags": ["linearization", "omega", "parity"]
+  },
+  {
+    "id": "ann-fiboq0503-5",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 106, "endLine": 127 },
+    "type": "technique",
+    "title": "The Main Induction: Parity Split Closed by omega",
+    "content": "**The headline.** $F_{n+1}F_{n+2} = (\\sum_{i=0}^{n} F_i F_{i+2}) + [n\\text{ even}]$, by induction on $n$. Peel the last term with `Finset.sum_range_succ`, split on `Nat.even_or_odd`, and flip the parity indicator with `Nat.even_add_one`. In each branch the inductive hypothesis plus the matching `gap_nat_even`/`gap_nat_odd` relation are a system of linear equations in the Fibonacci products, so `omega` finishes. The additive phrasing keeps everything in $\\mathbb{N}$ despite the sign-flipping correction.",
+    "mathContext": "$F_{n+1}F_{n+2} = \\left(\\sum_{i=0}^{n} F_i F_{i+2}\\right) + [n\\text{ even}]$.",
+    "significance": "key-step",
+    "relatedConcepts": [
+      "Induction with Finset.sum_range_succ",
+      "Parity indicator flip (Nat.even_add_one)",
+      "omega over ℕ"
+    ],
+    "prerequisites": ["The linear product relation", "Finset induction"],
+    "tags": ["induction", "main-theorem", "omega"]
+  },
+  {
+    "id": "ann-fiboq0503-6",
+    "proofId": "fibonacci-identities-oq-05-oq-03",
+    "range": { "startLine": 129, "endLine": 144 },
+    "type": "technique",
+    "title": "The Two Explicit Branches",
+    "content": "**Reading off the subtractive form.** `fib_gap_two_even` gives $\\sum F_kF_{k+2} = F_{n+1}F_{n+2} - 1$ for even $n$ and `fib_gap_two_odd` gives $\\sum F_kF_{k+2} = F_{n+1}F_{n+2}$ for odd $n$. Both are immediate specializations of the unified additive form, with `omega` discharging the (now valid) truncated subtraction over $\\mathbb{N}$. Side by side with the consecutive case ($F_{n+1}^2 - 1$ / $F_{n+1}^2$) they make the gap-zero → gap-two pattern visible.",
+    "mathContext": "$\\sum F_kF_{k+2} = F_{n+1}F_{n+2} - [n\\text{ even}]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Truncated ℕ subtraction",
+      "Parity branches",
+      "Comparison with the consecutive product sum"
+    ],
+    "prerequisites": ["The unified additive identity"],
+    "tags": ["corollary", "branches", "parity"]
+  }
+]

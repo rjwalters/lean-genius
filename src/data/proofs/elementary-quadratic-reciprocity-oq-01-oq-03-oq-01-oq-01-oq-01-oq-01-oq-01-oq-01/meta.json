@@ -1,0 +1,126 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "The first supplement to quadratic reciprocity, the Zolotarev way: J(-1 | n) = (-1)^((n-1)/2)",
+  "description": "A direct payoff of the full odd-modulus Zolotarev–Frobenius identity (the parent), answering its listed open question #3: 'Recover the supplementary laws (a = -1 and a = 2) for odd n as values of signRingHom.' This entry delivers the FIRST supplement, a = -1. The parent proved that the sign of x ↦ a·x on ℤ/n IS the Jacobi symbol J(a | n) for every odd n. Specialize to a = -1: the permutation is simply NEGATION, x ↦ -x. Negation is an INVOLUTION, and for odd n its only fixed point is 0 (because 2 is a unit mod n, so -x = x forces 2x = 0 forces x = 0), hence it is a product of exactly (n-1)/2 disjoint transpositions and its sign is (-1)^((n-1)/2) — a completely elementary parity count, via Mathlib's involution-sign formula Equiv.Perm.sign_of_pow_two_eq_one. Equating the two evaluations of the same sign yields J(-1 | n) = (-1)^((n-1)/2) with NO appeal to Gauss sums, Eisenstein's lemma, or Mathlib's reciprocity machinery. The result itself is classical (Mathlib has jacobiSym.at_neg_one); what is new here is the route — the supplement read off as the parity of the negation permutation, exactly in the spirit of Zolotarev (1872). The entry also records the consistency check J(-1 | n) = χ₄ n (recovering ZMod.χ₄_eq_neg_one_pow through the permutation), and the Legendre/Euler-criterion special case (-1 / p) = (-1)^((p-1)/2) at an odd prime.",
+  "leanFile": {
+    "imports": [
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm",
+      "ZolotarevCRT"
+    ],
+    "namespace": "ZolotarevFirstSupplement",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "text": "The whole point of Zolotarev's theory is that arithmetic symbols are permutation parities. The parent established the dictionary in full generality — sign(x ↦ a·x on ℤ/n) = J(a | n) for all odd n — and the supplementary laws are simply the easiest dictionary entries to read off, because for special values of a the permutation is one whose parity can be counted by hand. For a = -1 the permutation is negation x ↦ -x. Negation squares to the identity, so it is an involution; on an odd-order group its only fixed point is 0; therefore it is a product of (n-1)/2 transpositions and has sign (-1)^((n-1)/2). The Jacobi symbol J(-1 | n), being the same sign by the parent's theorem, must equal (-1)^((n-1)/2). That is the first supplement, obtained without any of the analytic or lattice-point machinery the supplements are usually proved with.",
+    "historicalContext": "The first supplementary law (-1/p) = (-1)^((p-1)/2) — equivalently, -1 is a quadratic residue mod an odd prime p iff p ≡ 1 (mod 4) — is one of the oldest results in the subject, known to Fermat and Euler and proved by Euler's criterion. Its Jacobi-symbol form J(-1 | n) = (-1)^((n-1)/2) extends it to all odd n. Zolotarev (1872) reorganized quadratic reciprocity around permutation signs: the Legendre symbol is the sign of a multiplication permutation, and Frobenius (1914) generalized this to the Jacobi symbol on composite moduli. In that picture the supplements are the permutation parities at a = -1 and a = 2; the present entry computes the first of these, which is the parity of the negation involution.",
+    "problemStatement": "Open question #3 of elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01: 'Recover the supplementary laws (a = -1 and a = 2) for odd n as values of signRingHom, completing the dictionary between permutation signs on ℤ/n and the full Jacobi symbol.' This entry answers the a = -1 half: for every odd n > 0, J(-1 | n) = (-1)^((n-1)/2), proved by computing the sign of the negation permutation x ↦ -x two ways.",
+    "proofStrategy": "ringMulPerm_neg_one_sq: (-1)·(-1) = 1 in the units, so (ringMulPerm (-1))² = ringMulPerm 1 = 1 — negation is an involution. card_fixedPoints_neg_one: for odd n the fixed-point set of negation is the single point {0}; the proof uses Fintype.card_eq_one_iff, deriving from -x = x that 2x = 0, then that 2 is a unit mod n (ZMod.isUnit_iff_coprime with Nat.Coprime 2 n from oddness) and hence x = 0 (IsUnit.mul_right_eq_zero). sign_neg_one: apply Equiv.Perm.sign_of_pow_two_eq_one, which for an involution σ gives sign σ = (-1)^((|α| - |fixedPoints σ|)/2); substitute |ℤ/n| = n (ZMod.card) and |fixedPoints| = 1 to get (-1)^((n-1)/2). jacobiSym_neg_one: rewrite J(-1 | n) backwards by the parent's sign_ringMulPerm_eq_jacobiSym_odd (taking a = -1, representative A = -1), then by sign_neg_one. The corollaries jacobiSym_neg_one_eq_chi4 (via jacobiSym.at_neg_one) and legendreSym_neg_one (via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two) specialize the identity.",
+    "keyInsights": [
+      "The supplementary laws are the cheapest entries in the Zolotarev dictionary: where the main reciprocity law needs the parity of a two-dimensional shuffle, the a = -1 supplement only needs the parity of the one-dimensional negation involution, which has an explicit fixed-point count.",
+      "Oddness of n enters at exactly one place: it makes 2 a unit mod n, so negation has the single fixed point 0. For even n negation would fix both 0 and n/2, the parity count would change, and indeed the Jacobi symbol J(· | even) is undefined — the hypothesis is structural, not technical.",
+      "Mathlib's involution-sign formula Equiv.Perm.sign_of_pow_two_eq_one turns the whole computation into 'count the fixed points', so the only real content is card_fixedPoints_neg_one = 1.",
+      "The exponent matches Mathlib's quadratic character: (-1)^((n-1)/2) equals χ₄ n for odd n, so the permutation route reproduces ZMod.χ₄_eq_neg_one_pow, giving an independent consistency check against the analytic definition of χ₄.",
+      "Threading the integer representative A = -1 through the parent's identity is immediate, since ((-1 : ℤ) : ℤ/n) = ((-1 : (ℤ/n)ˣ) : ℤ/n), so the supplement follows from the general theorem by a one-line specialization."
+    ],
+    "prerequisites": [
+      "The full odd-modulus Zolotarev–Frobenius identity ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd (the parent) and the whole-ring multiplication permutation ZolotarevCRT.ringMulPerm / ringMulPerm_mul / ringMulPerm_one",
+      "The involution-sign formula Equiv.Perm.sign_of_pow_two_eq_one and Fintype.card_eq_one_iff",
+      "Units of ℤ/n: ZMod.isUnit_iff_coprime, IsUnit.mul_right_eq_zero, and Nat.Coprime 2 n from Odd n (Nat.Prime.coprime_iff_not_dvd, Nat.two_dvd_ne_zero, Nat.odd_iff)",
+      "ZMod.card (|ℤ/n| = n for NeZero n) and the cast ((-1 : (ℤ/n)ˣ) : ℤ/n) = -1",
+      "For the corollaries: jacobiSym.at_neg_one (J(-1 | n) = χ₄ n), ZMod.χ₄_eq_neg_one_pow, jacobiSym.legendreSym.to_jacobiSym, and Nat.Prime.odd_of_ne_two"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Negation is an involution",
+      "content": "ringMulPerm_neg_one_sq: the Zolotarev permutation for a = -1 is multiplication by -1, i.e. negation x ↦ -x, and (ringMulPerm (-1))² = 1 because (-1)·(-1) = 1 in the units (ringMulPerm_mul, neg_one_mul, neg_neg, ringMulPerm_one)."
+    },
+    {
+      "title": "For odd n, negation fixes exactly one point",
+      "content": "card_fixedPoints_neg_one: via Fintype.card_eq_one_iff, the fixed-point set of negation is {0}. From -x = x one gets 2x = 0 (linear_combination); since n is odd, 2 is coprime to n (Nat.prime_two.coprime_iff_not_dvd + Nat.two_dvd_ne_zero + Nat.odd_iff) hence a unit mod n (ZMod.isUnit_iff_coprime), so x = 0 (IsUnit.mul_right_eq_zero)."
+    },
+    {
+      "title": "The parity of the negation permutation",
+      "content": "sign_neg_one: Equiv.Perm.sign_of_pow_two_eq_one applied to the involution gives sign(ringMulPerm (-1)) = (-1)^((|ℤ/n| - |fixedPoints|)/2); substituting ZMod.card n = n and card_fixedPoints_neg_one = 1 yields (-1)^((n-1)/2)."
+    },
+    {
+      "title": "The first supplement and its specializations",
+      "content": "jacobiSym_neg_one: J(-1 | n) = (-1)^((n-1)/2) by rewriting through the parent's sign_ringMulPerm_eq_jacobiSym_odd (a = -1, A = -1) and sign_neg_one. jacobiSym_neg_one_eq_chi4: the same value equals χ₄ n (jacobiSym.at_neg_one), recovering ZMod.χ₄_eq_neg_one_pow. legendreSym_neg_one: the Legendre/Euler-criterion case (-1 / p) = (-1)^((p-1)/2) at an odd prime, via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two."
+    }
+  ],
+  "meta": {
+    "author": "Euler (first supplement); Zolotarev (1872), Frobenius (1914) (permutation-sign route)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+    "date": "1872",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "first-supplement",
+      "legendre-symbol",
+      "jacobi-symbol",
+      "permutation-sign",
+      "zolotarev",
+      "involution",
+      "negation",
+      "odd-modulus",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 153,
+    "theoremCount": 6,
+    "defCount": 0,
+    "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems sign_neg_one, jacobiSym_neg_one and legendreSym_neg_one were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). The result J(-1 | n) = (-1)^((n-1)/2) is classical and present in Mathlib (jacobiSym.at_neg_one + ZMod.χ₄_eq_neg_one_pow); the contribution here is the elementary permutation-sign proof route, not a new theorem.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "conclusion": {
+    "summary": "Proves, with 0 sorries and 0 axioms, the first supplementary law of quadratic reciprocity J(-1 | n) = (-1)^((n-1)/2) for every odd n > 0, by computing the sign of the negation permutation x ↦ -x two ways: once as J(-1 | n) via the parent's full odd-modulus Zolotarev–Frobenius identity, and once as (-1)^((n-1)/2) via the elementary fact that negation is an involution with a single fixed point (0). Also records the consistency check J(-1 | n) = χ₄ n and the Legendre/Euler-criterion specialization (-1 / p) = (-1)^((p-1)/2).",
+    "implications": "Answers the a = -1 half of the parent's listed open question (recover the supplementary laws as values of the Zolotarev sign character) and demonstrates the program's payoff: number-theoretic symbols become permutation parities, and the supplements are the parities cheap enough to count by hand. The reusable nugget is the negation-sign computation sign_neg_one — the parity of x ↦ -x on ℤ/n is (-1)^((n-1)/2) — which is exactly the input the Zolotarev derivation of the supplement needs.",
+    "openQuestions": [
+      "Prove the SECOND supplement J(2 | n) = (-1)^((n²-1)/8) the same way, by computing the sign of the doubling permutation x ↦ 2x on ℤ/n — harder, since the cycle structure of doubling is governed by the multiplicative order of 2 mod n rather than a simple fixed-point count.",
+      "Combine the two supplements with the main reciprocity law (the shuffle-permutation argument) to assemble a fully self-contained Zolotarev proof of quadratic reciprocity in the gallery.",
+      "Express the first supplement purely as an identity of characters, signRingHom (-1) = χ₄ ∘ (the modulus), closing the dictionary entry at the level of the homomorphism rather than pointwise values."
+    ]
+  },
+  "references": [
+    {
+      "title": "Zolotarev, Nouvelle démonstration de la loi de réciprocité de Legendre (1872)",
+      "url": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma"
+    },
+    {
+      "title": "Quadratic reciprocity — supplementary laws",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    },
+    {
+      "title": "Jacobi symbol",
+      "url": "https://en.wikipedia.org/wiki/Jacobi_symbol"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relation": "parent",
+      "note": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n); this entry specializes it to a = -1, answering the parent's open question #3 (recover the supplementary laws as values of the Zolotarev sign character)."
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relation": "ancestor",
+      "note": "Defines ZolotarevCRT.ringMulPerm and its multiplicativity, the permutation whose a = -1 instance (negation) is the subject of this entry."
+    }
+  ]
+}

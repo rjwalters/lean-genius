@@ -96,8 +96,8 @@
       "endLine": 60
     },
     "type": "concept",
-    "title": "Young's Inequality with $\\varepsilon$ (sorry)",
-    "content": "The parametric form $ab \\leq \\varepsilon a^2/2 + b^2/(2\\varepsilon)$ is essential in PDE energy estimates. Follows from applying the base Young inequality to $\\sqrt{\\varepsilon}\\,a$ and $b/\\sqrt{\\varepsilon}$. Currently sorry'd — the substitution requires careful handling of the square root.",
+    "title": "Young's Inequality with $\\varepsilon$",
+    "content": "The parametric form $ab \\leq \\varepsilon a^2/2 + b^2/(2\\varepsilon)$ is essential in PDE energy estimates. Proved (no square roots needed) by `rw [← sub_nonneg]` and `field_simp`, which rewrite the gap as $(\\varepsilon^2 a^2 + b^2 - 2\\varepsilon ab)/(2\\varepsilon)$, then `div_nonneg` and `nlinarith [sq_nonneg (ε * a - b)]` close it from $(\\varepsilon a - b)^2 \\geq 0$.",
     "mathContext": "For $\\varepsilon > 0$: $ab = (\\sqrt{\\varepsilon}\\,a)(b/\\sqrt{\\varepsilon}) \\leq \\frac{(\\sqrt{\\varepsilon}\\,a)^2}{2} + \\frac{(b/\\sqrt{\\varepsilon})^2}{2} = \\frac{\\varepsilon a^2}{2} + \\frac{b^2}{2\\varepsilon}$. This is used extensively in Sobolev embedding and elliptic regularity proofs.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -208,8 +208,8 @@
       "endLine": 137
     },
     "type": "concept",
-    "title": "Schur's Inequality (sorry)",
-    "content": "Schur's inequality at $t=1$: $a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b) \\geq 0$ for $a,b,c \\geq 0$. Currently sorry'd because the SOS decomposition is non-trivial — the standard proof assumes WLOG $a \\geq b \\geq c$ and rewrites as $a(a-b)(a-c) + c(b-c)(a-c) + b(a-b)(b-c) \\geq 0$, which requires case analysis on the sign of $(a-c)$.",
+    "title": "Schur's Inequality",
+    "content": "Schur's inequality at $t=1$: $a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b) \\geq 0$ for $a,b,c \\geq 0$. Proved via a `schur_sorted` helper that, for $x \\geq y \\geq z \\geq 0$, factors the symmetric expression as $(x-y)^2(x+y-z) + z(x-z)(y-z) \\geq 0$ (both summands manifestly nonnegative). The main theorem `schur_one` then dispatches all orderings of $(a,b,c)$ by `rcases le_total` case analysis, applying the helper after a `ring`-normalizing rewrite.",
     "mathContext": "**Schur's inequality** (1923): For $a,b,c \\geq 0$ and $t \\geq 0$, $a^t(a-b)(a-c) + b^t(b-a)(b-c) + c^t(c-a)(c-b) \\geq 0$. At $t=1$ this is equivalent to $a^3 + b^3 + c^3 + abc \\geq ab(a+b) + bc(b+c) + ca(c+a)$, a standard olympiad inequality.",
     "significance": "supporting",
     "relatedConcepts": [

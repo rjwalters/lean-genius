@@ -1,0 +1,215 @@
+{
+  "id": "gcd-algorithm-oq-01-oq-04",
+  "title": "Binary GCD vs Euclidean: An Unbounded Step-Count Gap on the Diagonal",
+  "slug": "gcd-algorithm-oq-01-oq-04",
+  "description": "A sharp complexity separation between Stein's Binary GCD and the Euclidean algorithm in the division-step model. On equal inputs (a, a) the Euclidean algorithm always finishes in one step, euclidSteps a a = 1, while Binary GCD takes binaryGcdSteps a a = ν₂(a) + 1 steps, where ν₂(a) = a.factorization 2 is the 2-adic valuation. Hence the pointwise gap is exactly ν₂(a), and it is unbounded (witness a = 2^N), so no additive or multiplicative constant bounds Binary GCD in terms of the Euclidean algorithm. This complements the parent's matching O(log) upper bounds.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "complexity",
+      "binary-gcd",
+      "euclidean-algorithm",
+      "2-adic-valuation",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/GCDAlgorithmOQ01OQ04.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 178,
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ordProj_mul_ordCompl_eq_self",
+        "description": "n = ordProj[p] n * ordCompl[p] n, i.e. p^(n.factorization p) * (n / p^(n.factorization p)) = n",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.not_dvd_ordCompl",
+        "description": "For prime p and n ≠ 0, p does not divide ordCompl[p] n (the odd core is coprime to p)",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.mul_div_cancel_left",
+        "description": "Cancellation a * b / a = b for a ≠ 0, used to compute (2^(v+1) * m) / 2 = 2^v * m",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "dvd_pow_self",
+        "description": "a ∣ a^n for n ≠ 0, used to show 2 ∣ 2^(v+1) * m",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "euclidSteps_self: the Euclidean algorithm finishes equal inputs in one step — euclidSteps a a = 1 for a > 0 (single division a % a = 0).",
+      "binaryGcdSteps_even_even: even/even one-step unfolding binaryGcdSteps a b = 1 + binaryGcdSteps (a/2) (b/2).",
+      "binaryGcdSteps_self_odd: an odd diagonal finishes in one step (the subtraction a - a = 0 terminates).",
+      "binaryGcdSteps_two_pow_mul_self: for odd m, binaryGcdSteps (2^v · m) (2^v · m) = v + 1 (each factor of two costs one halving step).",
+      "binaryGcdSteps_self: the headline — binaryGcdSteps a a = ν₂(a) + 1 = a.factorization 2 + 1, via the ordProj/ordCompl decomposition into a power of two times an odd core.",
+      "diagonal_gap: the pointwise gap binaryGcdSteps a a = euclidSteps a a + ν₂(a).",
+      "gap_unbounded: ∀ N, ∃ a > 0 with binaryGcdSteps a a ≥ euclidSteps a a + N (witness a = 2^N), so no constant bounds one in terms of the other.",
+      "diagonal_ratio: binaryGcdSteps (2^n) (2^n) = (n + 1) · euclidSteps (2^n) (2^n) — the step ratio is unbounded."
+    ],
+    "assumptions": "None. All theorems are kernel-checked and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (confirmed by #print axioms). No native_decide is used in any theorem (the sanity-check examples are specialisations of the general theorems, not native_decide). 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions.",
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Josef Stein introduced the Binary GCD algorithm in 1967 (*Journal of Computational Physics* 1:397–405) as a hardware-friendly alternative to Euclid's algorithm: it replaces division by shifts and subtractions. Both algorithms run in $O(\\log\\max(a,b))$ steps — see Knuth, *TAOCP* Vol. 2, §4.5.2 for the upper bounds, and Lamé (1844) for the Euclidean worst case (consecutive Fibonacci numbers).\n\nUpper bounds alone do not settle which algorithm is faster, and indeed neither dominates the other pointwise: in the parent file BinaryGcdOQ01 one has $\\text{euclidSteps}(12,8)=2<5=\\text{binaryGcdSteps}(12,8)$ but $\\text{euclidSteps}(89,55)=9>8=\\text{binaryGcdSteps}(89,55)$. This entry isolates a clean, infinite family where the *Euclidean* algorithm is dramatically faster: the diagonal $a = a$. Euclid performs a single division $a \\bmod a = 0$ and halts, whereas Binary GCD must strip every factor of two from $a$ one shift at a time before the odd core terminates. The overhead is therefore exactly the 2-adic valuation $\\nu_2(a)$ — the number of trailing zero bits — which is unbounded.",
+    "problemStatement": "**Open question OQ-04 of the GCD-algorithm complexity thread**: go beyond the matching $O(\\log)$ *upper* bounds for the Euclidean and Binary GCD step counts and pin down a *separation* showing the two cost models are genuinely incomparable. Concretely, exhibit an explicit family on which one algorithm beats the other by an unbounded margin, with the exact gap computed in closed form.",
+    "text": "On equal inputs the Euclidean algorithm takes one step but Binary GCD takes ν₂(a)+1 steps, so the worst-case step-count gap between the two algorithms is unbounded.",
+    "proofStrategy": "**Euclidean diagonal** (`euclidSteps_self`): unfold `euclidSteps.eq_3` on $(a'+1, a'+1)$; the guard $a'+1 \\le a'$ is false, so one step is taken with remainder $(a'+1) \\bmod (a'+1) = 0$, and `euclidSteps _ 0 = 0`.\n\n**Binary GCD diagonal** (`binaryGcdSteps_self`): write $a = 2^{\\nu_2(a)} \\cdot m$ with $m = \\text{ordCompl}[2]\\,a$ odd (via `Nat.ordProj_mul_ordCompl_eq_self` and `Nat.not_dvd_ordCompl`). Then induct on the valuation: the base case is `binaryGcdSteps_self_odd` (one subtraction step on an odd diagonal), and the step case uses `binaryGcdSteps_even_even` to peel one factor of two, with $(2^{v+1}m)/2 = 2^v m$. This yields $\\text{binaryGcdSteps}(2^v m,\\,2^v m) = v + 1$, hence $\\text{binaryGcdSteps}(a,a) = \\nu_2(a) + 1$.\n\n**Separation**: subtracting gives `diagonal_gap` ($\\text{gap} = \\nu_2(a)$); specialising to $a = 2^N$ gives `gap_unbounded` and the ratio statement `diagonal_ratio`.",
+    "keyInsights": [
+      "On the diagonal a = a the Euclidean algorithm sees a single remainder a mod a = 0 and stops — the step count is 1 regardless of a.",
+      "Binary GCD, by contrast, cannot subtract until both arguments are odd, so it must halve a exactly ν₂(a) times before the odd core (a / 2^ν₂(a)) finishes in one subtraction step.",
+      "Writing a = 2^ν₂(a) · (odd) via the ordProj/ordCompl decomposition turns the valuation into an explicit induction variable, making binaryGcdSteps a a = ν₂(a) + 1 a clean two-case induction.",
+      "Because ν₂(2^N) = N is unbounded, no additive (let alone multiplicative) constant relates the two step counts — a separation the matching O(log) upper bounds cannot detect.",
+      "The separation is specific to the division-step cost model: in a bit-operation model the halvings are cheap, which is exactly why Binary GCD remains competitive in practice."
+    ],
+    "prerequisites": [
+      "BinaryGcdOQ01.lean (euclidSteps and binaryGcdSteps definitions, binaryGcdSteps.eq_3, euclidSteps.eq_3, binaryGcdSteps_zero_right)",
+      "2-adic valuation ν₂(n) = n.factorization 2 and the ordProj/ordCompl decomposition of a natural number into a prime power times a coprime core"
+    ]
+  },
+  "sections": [
+    {
+      "id": "euclid-diagonal",
+      "title": "Euclidean algorithm on equal inputs",
+      "startLine": 36,
+      "endLine": 50,
+      "summary": "euclidSteps a a = 1 for positive a: a single division a mod a = 0 terminates the algorithm.",
+      "mathContext": "One unfolding of euclidSteps.eq_3 takes the else-branch; Nat.mod_self collapses the recursive call to euclidSteps _ 0 = 0."
+    },
+    {
+      "id": "binary-step-lemmas",
+      "title": "One-step unfoldings of Binary GCD",
+      "startLine": 52,
+      "endLine": 76,
+      "summary": "Even/even halving (binaryGcdSteps_even_even) and the odd-diagonal terminator (binaryGcdSteps_self_odd).",
+      "mathContext": "Resolves the four-branch recursion binaryGcdSteps.eq_3 via if_pos / if_neg according to the parities of the arguments."
+    },
+    {
+      "id": "valuation-form",
+      "title": "Binary GCD diagonal equals the 2-adic valuation plus one",
+      "startLine": 78,
+      "endLine": 117,
+      "summary": "binaryGcdSteps_two_pow_mul_self proves binaryGcdSteps (2^v m) (2^v m) = v + 1 for odd m; binaryGcdSteps_self lifts it to all a via the ordProj/ordCompl split.",
+      "mathContext": "Induction on the valuation v: peel a factor of two each step until the odd core finishes in one subtraction."
+    },
+    {
+      "id": "separation",
+      "title": "The separation",
+      "startLine": 119,
+      "endLine": 150,
+      "summary": "diagonal_gap (gap = ν₂(a)), gap_unbounded (witness 2^N), and diagonal_ratio (ratio n+1 on powers of two).",
+      "mathContext": "Combines euclidSteps_self = 1 with binaryGcdSteps_self = ν₂(a)+1; the unboundedness follows from ν₂(2^N) = N."
+    },
+    {
+      "id": "sanity",
+      "title": "Sanity checks",
+      "startLine": 152,
+      "endLine": 178,
+      "summary": "Worked instances (8,8)→4, (8,8)→1, (12,12)→3 derived from the general theorems without native_decide.",
+      "mathContext": "12 = 2²·3 so ν₂(12) = 2 and binaryGcdSteps 12 12 = 3, matching the closed form."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd-oq-01",
+      "relationship": "extends",
+      "description": "BinaryGcdOQ01 proves matching O(log) upper bounds for euclidSteps and binaryGcdSteps and notes that neither dominates pointwise. This entry turns that observation into a sharp, infinite separation on the diagonal a = a."
+    },
+    {
+      "targetId": "binary-gcd-oq-01-oq-04",
+      "relationship": "related",
+      "description": "BinaryGcdOQ01OQ04 establishes the Binary GCD worst case (1, 2^n - 1) takes exactly n steps (tightness of its own upper bound). This entry instead compares Binary GCD against the Euclidean algorithm, witnessing an unbounded gap in favour of Euclid."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "depends-on",
+      "description": "Provides Stein's Binary GCD recursion (binaryGcdSteps, binaryGcdSteps.eq_3) and the Euclidean step counter (euclidSteps) that this file analyzes."
+    }
+  ],
+  "conclusion": {
+    "summary": "On equal inputs the Euclidean algorithm always takes one step while Binary GCD takes ν₂(a) + 1, so binaryGcdSteps a a = euclidSteps a a + ν₂(a). The gap is unbounded (a = 2^N forces an N-step overhead). Proved with a single valuation induction; 0 sorries, 0 axioms.",
+    "implications": "Together with the parent's matching O(log) upper bounds, this shows the division-step counts of Binary GCD and the Euclidean algorithm are genuinely incomparable: Binary GCD can be a Θ(log a) factor slower on highly-even inputs. The separation is a feature of the step-count model — in a bit-operation model the halving steps are cheap — which clarifies why Binary GCD remains competitive in practice despite this worst case."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Factorization.Basic",
+      "Mathlib.Tactic",
+      "Proofs.BinaryGcdOQ01"
+    ],
+    "opens": [
+      "Nat",
+      "BinaryGcdOQ01"
+    ],
+    "namespace": "GCDAlgorithmOQ01OQ04",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/GCDAlgorithmOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Stein, J.",
+      "title": "Computational problems associated with Racah algebra",
+      "year": "1967",
+      "note": "Journal of Computational Physics 1(3), 397-405. Original Binary GCD algorithm."
+    },
+    {
+      "authors": "Knuth, D.E.",
+      "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+      "year": "1998",
+      "note": "Section 4.5.2 (Algorithm B). O(log) step bounds for Euclid and Binary GCD."
+    },
+    {
+      "authors": "Lamé, G.",
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
+      "year": "1844",
+      "note": "Comptes Rendus 19. Worst case of the Euclidean algorithm (consecutive Fibonacci numbers)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "binaryGcdSteps_self",
+      "type": "core",
+      "description": "Binary GCD on equal inputs takes ν₂(a) + 1 steps",
+      "leanType": "(a : ℕ) → 0 < a → binaryGcdSteps a a = a.factorization 2 + 1"
+    },
+    {
+      "name": "euclidSteps_self",
+      "type": "core",
+      "description": "The Euclidean algorithm finishes equal inputs in one step",
+      "leanType": "0 < a → euclidSteps a a = 1"
+    },
+    {
+      "name": "diagonal_gap",
+      "type": "core",
+      "description": "The pointwise step-count gap on (a, a) is exactly the 2-adic valuation ν₂(a)",
+      "leanType": "(a : ℕ) → 0 < a → binaryGcdSteps a a = euclidSteps a a + a.factorization 2"
+    },
+    {
+      "name": "gap_unbounded",
+      "type": "corollary",
+      "description": "The gap is unbounded: for every N some input forces an N-step overhead (witness 2^N)",
+      "leanType": "(N : ℕ) → ∃ a, 0 < a ∧ binaryGcdSteps a a ≥ euclidSteps a a + N"
+    },
+    {
+      "name": "diagonal_ratio",
+      "type": "corollary",
+      "description": "On (2^n, 2^n) Binary GCD uses n + 1 times as many steps as the Euclidean algorithm",
+      "leanType": "(n : ℕ) → binaryGcdSteps (2^n) (2^n) = (n + 1) * euclidSteps (2^n) (2^n)"
+    }
+  ],
+  "sorries": []
+}

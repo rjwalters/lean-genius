@@ -1,0 +1,122 @@
+{
+  "id": "lagrange-theorem-oq-09",
+  "title": "Center Dichotomy for Groups of Order pq",
+  "slug": "lagrange-theorem-oq-09",
+  "description": "For a finite group G of order p·q with p ≠ q prime, the center Z(G) has order either 1 or pq — never the intermediate divisors p or q. By Lagrange |Z(G)| divides pq; if it were p (resp. q) the central quotient G/Z(G) would have prime order q (resp. p), hence be cyclic, forcing G abelian and Z(G) = G — a contradiction. This pins the center to the two extremes and yields: a nonabelian group of order pq has trivial center.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ09.lean",
+    "tags": [
+      "group-theory",
+      "lagrange-theorem",
+      "center",
+      "class-equation",
+      "cyclic-quotient",
+      "groups-of-order-pq"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 160,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "None. Fully machine-verified from Mathlib (depends only on the foundational axioms propext, Classical.choice, Quot.sound).",
+    "originalContributions": [
+      "divisors_of_prime_mul_prime: every divisor of p·q (p ≠ q prime) is one of 1, p, q, p·q — proved cleanly from n = gcd(n,p)·gcd(n,q) via coprimality, each factor dividing a prime",
+      "mul_comm_of_center_index_prime: if the central quotient G/Z(G) has prime order then G is abelian — packaging isCyclic_of_prime_card with commutative_of_cyclic_center_quotient",
+      "center_eq_top_of_index_prime: the same hypothesis forces Z(G) = ⊤ (the whole group is its own center)",
+      "center_card_dichotomy: the headline — |Z(G)| ∈ {1, pq} for |G| = pq, ruling out the middle divisors via the prime-index abelianization argument",
+      "center_trivial_of_nonabelian: a nonabelian group of order pq has trivial center (the structural starting point for the pq classification)",
+      "center_eq_bot_or_top: the dichotomy restated at the subgroup level — Z(G) = ⊥ or Z(G) = ⊤"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Groups of order pq (p < q distinct primes) are among the first families fully classified in any algebra course: there is the cyclic group ℤ/pq always, and a unique nonabelian group exactly when p | q − 1. The sibling entry lagrange-theorem-oq-01-oq-01 carries out that Sylow-based classification but never mentions the center. Yet the center is the cleanest structural invariant separating the two cases: the abelian group is its own center, the nonabelian one has trivial center. The dichotomy here — |Z(G)| can only be 1 or pq — is the lemma that makes that separation precise, and it predates the Sylow machinery, resting only on Lagrange's theorem and the elementary 'G/Z cyclic ⟹ G abelian' fact.",
+    "problemStatement": "Let G be a finite group with |G| = p·q where p and q are distinct primes. Determine the possible orders of the center Z(G). Claim: |Z(G)| ∈ {1, pq}; the intermediate divisors p and q are impossible. Equivalently, Z(G) = ⊥ or Z(G) = ⊤, and a nonabelian group of order pq has trivial center.",
+    "proofStrategy": "**Divisor structure.** By Lagrange |Z(G)| divides pq. Since p, q are distinct primes they are coprime, so for any divisor n of pq one has n = gcd(n,p)·gcd(n,q); each gcd divides a prime and is therefore 1 or that prime, giving n ∈ {1, p, q, pq}.\n\n**Ruling out the middle.** Suppose |Z(G)| = p. From |Z(G)|·[G:Z(G)] = |G| = pq we get index [G:Z(G)] = q, a prime. A group of prime order is cyclic (isCyclic_of_prime_card), so G/Z(G) is cyclic; but if the central quotient is cyclic then G is abelian (commutative_of_cyclic_center_quotient), forcing Z(G) = G and |Z(G)| = pq. Since q > 1, pq ≠ p, a contradiction. The case |Z(G)| = q is symmetric (index p).\n\n**Conclusion.** Only 1 and pq survive. The nonabelian corollary follows because |Z(G)| = pq would make Z(G) = ⊤, i.e. G abelian.",
+    "keyInsights": [
+      "The whole result is 'Lagrange + (G/Z cyclic ⟹ abelian)'. The class equation is not actually needed: prime index alone makes the quotient cyclic, and that single fact abelianizes G.",
+      "The forbidden orders p and q are exactly the ones whose cofactor (the index) is prime — that is precisely when the cyclic-quotient lemma fires. So the middle divisors are unstable for a deep reason, not by accident.",
+      "Distinctness of p and q is used only in the divisor enumeration (to know the proper nontrivial divisors are the primes themselves); the abelianization step is indifferent to which prime is which, giving a clean symmetric pair of cases.",
+      "The center cleanly distinguishes the two isomorphism types of order-pq groups: abelian ⟺ Z(G) = G, nonabelian ⟺ Z(G) = 1, with nothing in between — a sharper statement than counting Sylow subgroups."
+    ],
+    "prerequisites": [
+      "Subgroup.card_subgroup_dvd_card: Lagrange's theorem (|H| divides |G|)",
+      "Subgroup.card_mul_index and Subgroup.index_eq_card: |H|·[G:H] = |G| and [G:H] = |G/H|",
+      "isCyclic_of_prime_card: a group of prime order is cyclic",
+      "commutative_of_cyclic_center_quotient: if G/Z(G) is cyclic then G is abelian",
+      "Nat.Coprime.gcd_mul and Nat.Prime.eq_one_or_self_of_dvd: divisor structure of a product of coprime primes",
+      "Lagrange's Theorem (parent) and the Sylow pq-classification (sibling lagrange-theorem-oq-01-oq-01)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring stating the dichotomy |Z(G)| ∈ {1, pq} and the prime-index/cyclic-quotient mechanism. Imports the cyclic-group, index, and center theory from Mathlib; opens the Subgroup namespace."
+    },
+    {
+      "id": "divisor-lemma",
+      "title": "Divisors of a Product of Two Distinct Primes",
+      "startLine": 38,
+      "endLine": 66,
+      "summary": "divisors_of_prime_mul_prime: every n dividing p·q is 1, p, q, or p·q. Proof via n = gcd(n,p)·gcd(n,q) (coprimality) with each gcd factor dividing a prime."
+    },
+    {
+      "id": "cyclic-quotient",
+      "title": "Prime-Index Central Quotient Forces Commutativity",
+      "startLine": 68,
+      "endLine": 87,
+      "summary": "mul_comm_of_center_index_prime: if [G:Z(G)] is prime, the quotient G/Z(G) is cyclic (isCyclic_of_prime_card) and so G is abelian (commutative_of_cyclic_center_quotient). center_eq_top_of_index_prime repackages this as Z(G) = ⊤."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Center Dichotomy",
+      "startLine": 89,
+      "endLine": 130,
+      "summary": "center_card_dichotomy: |Z(G)| ∈ {1, pq}. Lagrange gives |Z(G)| | pq; the divisor lemma leaves four cases; the cases p and q are killed because the resulting prime index abelianizes G, forcing |Z(G)| = pq and contradicting q > 1 (resp. p > 1)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries: Trivial Center and Subgroup Form",
+      "startLine": 132,
+      "endLine": 160,
+      "summary": "center_trivial_of_nonabelian: a nonabelian group of order pq has |Z(G)| = 1. center_eq_bot_or_top: the dichotomy as a subgroup statement Z(G) = ⊥ ∨ Z(G) = ⊤."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved that the center of a finite group of order pq (p ≠ q prime) has order exactly 1 or pq — the intermediate divisors p and q are impossible — together with the subgroup-level restatement Z(G) = ⊥ ∨ Z(G) = ⊤ and the corollary that a nonabelian group of order pq has trivial center. 160 lines, 6 theorems, 0 sorries, 0 axioms.",
+    "implications": "The center is the sharpest single invariant separating the two isomorphism types of order-pq groups: abelian ⟺ Z(G) = G, nonabelian ⟺ Z(G) = 1, with no middle ground. This is the structural starting point for the semidirect-product description of the nonabelian case and complements the sibling Sylow classification, which counts Sylow subgroups but never inspects the center.",
+    "openQuestions": [
+      "Generalize to |G| = p²q or squarefree order: characterize exactly which divisors of |G| can occur as |Z(G)|, and identify the orders for which the 'no middle divisor' phenomenon persists.",
+      "Conclude the classification from the center: show that trivial center plus a normal Sylow q-subgroup forces G to be the unique nonabelian semidirect product ℤ/q ⋊ ℤ/p when p | q − 1."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling. Classifies groups of order pq via Sylow counts but never touches the center; this entry supplies the complementary center-based separation of the abelian and nonabelian cases."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "extends",
+      "description": "Parent. Lagrange's theorem (|H| divides |G|) is the divisibility input that constrains |Z(G)| to a divisor of pq."
+    }
+  ],
+  "leanFile": {
+    "namespace": "LagrangeTheoremOQ09",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ09.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

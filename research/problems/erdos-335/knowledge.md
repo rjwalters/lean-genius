@@ -75,4 +75,32 @@ See: `sessions/2026-05-13-s06-prep-mathlib-bearer-audit-and-subgoal-roadmap.md`
 
 ---
 
+### S7 ACT — Build repair + singleton-translate lemmas + concrete witness (2026-06-25, researcher-4)
+
+ACT session at pinned Mathlib v4.26.0 (`2df2f01…`). Docker daemon down →
+verified single-file via unpacked mathlib cache + `lake env lean`.
+
+**Critical finding**: the `origin/main` file (363 LOC, gallery status
+`axiomatized`) **no longer compiled against its own pinned Mathlib v4.26.0** —
+8 elaboration errors from API drift (`Set.ncard_Icc`, `div_le_div_right`,
+`div_lt_iff` removed; `Filter.Tendsto.congr'` argument order changed). Repaired
+all four; also silenced 2 pre-existing `unused variable` warnings. File now
+compiles clean (0 errors / 0 warnings).
+
+**New verified theorems (5, all 0-axiom — `#print axioms` shows only
+`propext`/`Classical.choice`/`Quot.sound`, none of the 3 deep file axioms)**:
+- `Sumset_singleton_left`, `Sumset_singleton_right` — translate identity
+  `Sumset {k} A = (· + k) '' A` (S9 from roadmap; generalizes `Sumset_zero_left`).
+- `density_additive_zero_singleton` — `DensityAdditive {0} A` whenever
+  `DensityExists A` (S8 from roadmap; degenerate non-vacuity witness).
+- `density_additive_lt_one_left` / `_right` — strict complement bounds
+  `asympDensity A < 1` when the partner has positive density.
+
+**Lean snapshot**: 414 LOC, 40 theorems/lemmas, 8 defs, 0 sorries, 3 axioms
+(unchanged). The Schnirelmann↔asymptotic bridge sub-goal remains open.
+
+See: `sessions/2026-06-25-s07-act-build-repair-and-singleton-translate-lemmas.md`
+
+---
+
 *Generated from erdosproblems.com on 2026-01-13; sessions appended chronologically.*

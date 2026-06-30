@@ -74,6 +74,26 @@ theorem lcm_upto_five : lcm_upto 5 = 60 := by native_decide
 /-- Small values: lcm(1,...,6) = 60 (6 = 2·3, already covered) -/
 theorem lcm_upto_six : lcm_upto 6 = 60 := by native_decide
 
+/- ## Universal Property -/
+
+/-- Every `m` with `1 ≤ m ≤ n` divides `lcm_upto n`.
+    This is the defining property of the least common multiple, obtained
+    directly from `Finset.dvd_lcm`. -/
+theorem mem_dvd_lcm_upto {m n : ℕ} (hm : 1 ≤ m) (hmn : m ≤ n) : m ∣ lcm_upto n := by
+  unfold lcm_upto
+  simpa using Finset.dvd_lcm (f := id) (Finset.mem_Icc.mpr ⟨hm, hmn⟩)
+
+/-- `lcm_upto n` is the *least* common multiple: any `k` divisible by every
+    `m` in `[1, n]` is divisible by `lcm_upto n`. Obtained from `Finset.lcm_dvd`.
+    Together with `mem_dvd_lcm_upto` this characterizes `lcm_upto n` as exactly
+    the lcm of `{1, …, n}`. -/
+theorem lcm_upto_dvd {n k : ℕ} (h : ∀ m, 1 ≤ m → m ≤ n → m ∣ k) : lcm_upto n ∣ k := by
+  unfold lcm_upto
+  apply Finset.lcm_dvd
+  intro b hb
+  rw [Finset.mem_Icc] at hb
+  simpa using h b hb.1 hb.2
+
 /- ## Growth Properties -/
 
 /-- lcm_upto is monotone in the divisibility order -/
@@ -94,6 +114,51 @@ theorem nthPrime_prime (k : ℕ) : (nthPrime k).Prime :=
 /-- Primes are strictly increasing -/
 theorem nthPrime_strictMono : StrictMono nthPrime := fun _ _ hij =>
   Nat.nth_strictMono Nat.infinite_setOf_prime hij
+
+/- ## Concrete Prime Values
+
+  The values `nthPrime 0 = 2, nthPrime 1 = 3, …` are computed directly from the
+  `Nat.nth Nat.Prime` definition rather than asserted. The bridge is
+  `Nat.nth_count : p n → Nat.nth p (Nat.count p n) = n`, instantiated at a known
+  prime `n`; the auxiliary `Nat.count Nat.Prime n = k` (the number of primes
+  below `n`) is discharged by kernel `decide`. None of these proofs use
+  `native_decide`, so they add no `Lean.ofReduceBool` dependency — they are
+  axiom-clean modulo Lean's foundational axioms. -/
+
+/-- `nthPrime 0 = 2` (the 0-th prime is 2), proved from `Nat.nth`. -/
+theorem nthPrime_zero : nthPrime 0 = 2 := by
+  show Nat.nth Nat.Prime 0 = 2
+  have h := Nat.nth_count (p := Nat.Prime) Nat.prime_two
+  have hc : Nat.count Nat.Prime 2 = 0 := by decide
+  rwa [hc] at h
+
+/-- `nthPrime 1 = 3` (the 1-st prime is 3), proved from `Nat.nth`. -/
+theorem nthPrime_one : nthPrime 1 = 3 := by
+  show Nat.nth Nat.Prime 1 = 3
+  have h := Nat.nth_count (p := Nat.Prime) Nat.prime_three
+  have hc : Nat.count Nat.Prime 3 = 1 := by decide
+  rwa [hc] at h
+
+/-- `nthPrime 2 = 5` (the 2-nd prime is 5), proved from `Nat.nth`. -/
+theorem nthPrime_two : nthPrime 2 = 5 := by
+  show Nat.nth Nat.Prime 2 = 5
+  have h := Nat.nth_count (p := Nat.Prime) Nat.prime_five
+  have hc : Nat.count Nat.Prime 5 = 2 := by decide
+  rwa [hc] at h
+
+/-- `nthPrime 3 = 7` (the 3-rd prime is 7), proved from `Nat.nth`. -/
+theorem nthPrime_three : nthPrime 3 = 7 := by
+  show Nat.nth Nat.Prime 3 = 7
+  have h := Nat.nth_count (p := Nat.Prime) Nat.prime_seven
+  have hc : Nat.count Nat.Prime 7 = 3 := by decide
+  rwa [hc] at h
+
+/-- `nthPrime 4 = 11` (the 4-th prime is 11), proved from `Nat.nth`. -/
+theorem nthPrime_four : nthPrime 4 = 11 := by
+  show Nat.nth Nat.Prime 4 = 11
+  have h := Nat.nth_count (p := Nat.Prime) Nat.prime_eleven
+  have hc : Nat.count Nat.Prime 11 = 4 := by decide
+  rwa [hc] at h
 
 /- ## The Main Conjecture -/
 
@@ -129,7 +194,7 @@ between n² and (n+1)².
 def LegendreConjecture : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ p : ℕ, p.Prime ∧ n^2 < p ∧ p < (n + 1)^2
 
-/--
+/-
 **Conditional Result**: If Legendre's conjecture holds, the prime gap
 p_{k+1} - p_k is bounded, which helps control the LCM growth.
 -/
@@ -144,9 +209,27 @@ theorem erdos458_k1 : lcm_upto 4 < 3 * lcm_upto 3 := by native_decide
     p_2 = 5, p_3 = 7, lcm(1,...,6) = 60 < 5 · 60 = 300 ✓ -/
 theorem erdos458_k2 : lcm_upto 6 < 5 * lcm_upto 5 := by native_decide
 
+/-- The defining inequality of `Erdos458Conjecture` at `k = 1`, stated in terms
+    of `nthPrime` rather than the hardcoded primes. Using `nthPrime 1 = 3` and
+    `nthPrime 2 = 5` this is exactly `erdos458_k1`. -/
+theorem erdos458_conjecture_at_one :
+    lcm_upto (nthPrime 2 - 1) < nthPrime 1 * lcm_upto (nthPrime 1) := by
+  rw [nthPrime_one, nthPrime_two]
+  show lcm_upto 4 < 3 * lcm_upto 3
+  exact erdos458_k1
+
+/-- The defining inequality of `Erdos458Conjecture` at `k = 2`, stated in terms
+    of `nthPrime`. Using `nthPrime 2 = 5` and `nthPrime 3 = 7` this is exactly
+    `erdos458_k2`. -/
+theorem erdos458_conjecture_at_two :
+    lcm_upto (nthPrime 3 - 1) < nthPrime 2 * lcm_upto (nthPrime 2) := by
+  rw [nthPrime_two, nthPrime_three]
+  show lcm_upto 6 < 5 * lcm_upto 5
+  exact erdos458_k2
+
 /- ## Asymptotic Perspective -/
 
-/--
+/-
 **Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞
 
 This means lcm_upto n ≈ e^n asymptotically. The conjecture essentially

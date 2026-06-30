@@ -17,7 +17,11 @@
       "Arithmetic progressions",
       "Density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower density of a subset of the natural numbers",
+      "sumsets and finite subset sums",
+      "infinite arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e343-counting",
@@ -36,7 +40,11 @@
       "Lower density",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.filter and Finset.range",
+      "linear lower bound cN on a counting function",
+      "asymptotic density as a limit of count over N"
+    ]
   },
   {
     "id": "ann-e343-sumset",
@@ -55,7 +63,11 @@
       "Complete sequences",
       "Arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite subsets and their subset sums",
+      "coercion of a Finset to a Set",
+      "arithmetic progressions of the form a + kd"
+    ]
   },
   {
     "id": "ann-e343-folkman",
@@ -74,7 +86,11 @@
       "Extremal constructions",
       "Density gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "superlinear versus sublinear density growth rates",
+      "extremal set constructions as counterexamples",
+      "subcompleteness via infinite AP in the sumset"
+    ]
   },
   {
     "id": "ann-e343-szvu",
@@ -93,7 +109,11 @@
       "Sumset structure",
       "Long AP in sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive lower density hypothesis",
+      "Freiman-type structure theorems",
+      "long arithmetic progressions in iterated sumsets"
+    ]
   },
   {
     "id": "ann-e343-sharp",
@@ -112,7 +132,11 @@
       "Sharp thresholds",
       "Optimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "critical density threshold and phase transition",
+      "Folkman's sublinear counterexample",
+      "Szemeredi-Vu positive lower density result"
+    ]
   },
   {
     "id": "ann-e343-summary",
@@ -130,6 +154,10 @@
       "Problem resolution",
       "Threshold characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive lower density implies subcompleteness",
+      "sufficiency and necessity of linear density",
+      "Folkman 1966 and Szemeredi-Vu 2006 bracketing the threshold"
+    ]
   }
 ]

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "basel-problem-oq-03",
+    "range": {
+      "startLine": 5,
+      "endLine": 46
+    },
+    "type": "concept",
+    "title": "From Single Zeta Values to Multiple Zeta Values",
+    "content": "The Basel problem evaluates the single zeta value ζ(2) = π²/6. Euler's general formula makes every even zeta value a rational multiple of π^{2k}, which forces a web of polynomial relations among them — the single-variable shadow of the stuffle product on multiple zeta values (MZVs). This file derives ζ(6) and ζ(8), proves the product-reduction relations between the actual series, and records the simplest MZV value ζ(2,2) = π⁴/120. All 0 axioms / 0 sorries.",
+    "mathContext": "ζ(2k) = (-1)^{k+1}·2^{2k-1}·π^{2k}·B_{2k}/(2k)!; MZV ζ(2,2) = ∑_{m>n≥1} 1/(m²n²).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann zeta function",
+      "multiple zeta values",
+      "Bernoulli numbers",
+      "stuffle product"
+    ],
+    "prerequisites": [
+      "Basel problem ζ(2) = π²/6",
+      "Euler's even-zeta formula"
+    ]
+  },
+  {
+    "id": "ann-bernoulli",
+    "proofId": "basel-problem-oq-03",
+    "range": {
+      "startLine": 53,
+      "endLine": 80
+    },
+    "type": "lemma",
+    "title": "Bernoulli Numbers B₆ and B₈",
+    "content": "Euler's formula needs the Bernoulli numbers, but Mathlib stocks only B₂, B₃, B₄. We compute B₆ = 1/42 and B₈ = -1/30 from the defining recursion bernoulli'_def, using that the odd Bernoulli numbers B₅, B₇ vanish (bernoulli'_eq_zero_of_odd), then convert to the 'bernoulli' convention via bernoulli_eq_bernoulli'_of_ne_one.",
+    "mathContext": "bernoulli' n = 1 - ∑_{k<n} C(n,k)/(n-k+1)·bernoulli' k.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "recursive definition"
+    ],
+    "prerequisites": [
+      "Bernoulli number recursion"
+    ]
+  },
+  {
+    "id": "ann-closed-forms",
+    "proofId": "basel-problem-oq-03",
+    "range": {
+      "startLine": 82,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Closed Forms ζ(6) = π⁶/945 and ζ(8) = π⁸/9450",
+    "content": "Instantiating Euler's hasSum_zeta_nat at k=3 and k=4, with B₆ and B₈ substituted, gives ζ(6) = π⁶/945 and ζ(8) = π⁸/9450 after a push_cast/ring normalization of the constant. Together with Mathlib's ζ(2) and ζ(4), all four even values are packaged as tsums so the relations below are stated between genuine infinite series.",
+    "mathContext": "ζ(6): (-1)⁴·2⁵·π⁶·(1/42)/720 = π⁶/945; ζ(8): (-1)⁵·2⁷·π⁸·(-1/30)/40320 = π⁸/9450.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's even-zeta formula",
+      "Riemann zeta function"
+    ],
+    "prerequisites": [
+      "Bernoulli numbers B₆, B₈"
+    ]
+  },
+  {
+    "id": "ann-product-relations",
+    "proofId": "basel-problem-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Product-Reduction Relations",
+    "content": "Five exact identities among the infinite series: ζ(2)² = (5/2)ζ(4), ζ(2)·ζ(4) = (7/4)ζ(6), ζ(2)³ = (35/8)ζ(6), ζ(4)² = (7/6)ζ(8), and ζ(2)·ζ(6) = (5/3)ζ(8). Each holds because both sides are rational multiples of the same power of π; the proof rewrites the tsum closed forms and finishes with one ring step. ζ(2)² = (5/2)ζ(4) is the classical Euler relation and the stuffle square of ζ(2).",
+    "mathContext": "Products of even zeta values reduce to a single even zeta value of the summed weight.",
+    "significance": "key",
+    "relatedConcepts": [
+      "stuffle product",
+      "algebraic relations among zeta values"
+    ],
+    "prerequisites": [
+      "closed forms for ζ(2), ζ(4), ζ(6), ζ(8)"
+    ]
+  },
+  {
+    "id": "ann-double-zeta",
+    "proofId": "basel-problem-oq-03",
+    "range": {
+      "startLine": 157,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "The Double Zeta Value ζ(2,2) = π⁴/120",
+    "content": "The harmonic (stuffle) product gives ζ(2)·ζ(2) = ζ(4) + 2·ζ(2,2), where ζ(2,2) = ∑_{m>n≥1} 1/(m²n²) is the simplest genuine multiple zeta value. Solving and substituting the closed forms yields ζ(2,2) = (ζ(2)²−ζ(4))/2 = π⁴/120 = (3/4)ζ(4) — the canonical example of a multiple zeta value expressed through single zeta values.",
+    "mathContext": "(π⁴/36 − π⁴/90)/2 = π⁴/120; equivalently (3/4)·π⁴/90.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiple zeta values",
+      "double zeta value",
+      "stuffle relation"
+    ],
+    "prerequisites": [
+      "product-reduction relations",
+      "stuffle product ζ(2)² = ζ(4) + 2ζ(2,2)"
+    ]
+  }
+]

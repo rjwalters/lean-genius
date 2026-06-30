@@ -1,0 +1,191 @@
+{
+  "id": "sperner-simplicial-bridge-oq-02",
+  "title": "Sperner's Lemma Bridge for Mathlib's Geometry.SimplicialComplex",
+  "slug": "sperner-simplicial-bridge-oq-02",
+  "description": "Answers the open question posed by sperner-simplicial-bridge: does the pseudomanifold door-counting bridge extend to Mathlib's Geometry.SimplicialComplex? Yes. The apparent 'affine-set vs finset-of-vertices encoding' obstruction dissolves because Mathlib already stores faces as Finset E; affine independence is extra data layered on top, not a competing encoding. The file extracts facets (with a new exists_facet_superset lemma for finite complexes), transfers the affine structure, bounds the combinatorial dimension by the ambient affine dimension, and instantiates the bridge so the panchromatic witness is a genuine K.facets element.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "2026",
+    "dateAdded": "2026-06-21",
+    "mathlib_version": "4.26.0",
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "lineCount": 218,
+    "imports": [
+      "Proofs.SpernerSimplicialBridge",
+      "Mathlib.Analysis.Convex.SimplicialComplex.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional"
+    ],
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner",
+      "simplicial-complex",
+      "pseudomanifold",
+      "bridge",
+      "facets",
+      "affine-independence"
+    ],
+    "assumptions": "No axioms or sorries; #print axioms reports only propext, Classical.choice, Quot.sound (the standard foundational axioms). The combinatorial Sperner content is imported from the parent bridge SpernerSimplicialBridge (Sperner.SimplicialComplex.exists_panchromatic, itself 0-axiom). This file introduces no new mathematical assumptions: it carries hypotheses (facet enumeration htop, purity hpure, pseudomanifold hpseudo, coloring c, odd boundary parity hbdry) through to the imported bridge, and adds genuinely new structural lemmas about Mathlib's Geometry.SimplicialComplex (exists_facet_superset, facet_affineIndependent, facet_card_le_finrank_succ, facet_dim_le_ambient). The dimension lemmas additionally require a DivisionRing scalar field and a FiniteDimensional ambient space; the bridge theorem requires DecidableEq and LinearOrder on the vertex type E (used by the parent bridge's Finset.sort).",
+    "sorries": 0,
+    "proofRepoPath": "Proofs/SpernerSimplicialBridgeOQ02.lean",
+    "originalContributions": [
+      "exists_facet_superset: in a finite Mathlib simplicial complex, every face lies below a facet. Mathlib has only not_facet_iff_subface (a non-facet has a strict superface); the existence of a *maximal* superface is new, proved via Finite.exists_maximal on the finite set of faces containing s.",
+      "facet_affineIndependent: facets carry Mathlib's affine structure for free — the vertices of a facet are affinely independent (K.indep ∘ facets_subset). This is the precise statement reconciling the 'affine-set encoding' with the 'finset-of-vertices encoding'.",
+      "facet_card_le_finrank_succ + facet_dim_le_ambient: the affine encoding quantitatively bounds the combinatorial encoding — a facet has at most finrank 𝕜 E + 1 vertices (via AffineIndependent.card_le_finrank_succ and Submodule.finrank_le), so a pure complex of combinatorial dimension d needs ambient dimension d ≤ finrank 𝕜 E.",
+      "exists_panchromatic_facet: the bridge applied to a Mathlib Geometry.SimplicialComplex. Given a Finset enumerating K.facets plus purity/pseudomanifold/coloring/parity, produces a panchromatic facet whose witness is a genuine element of K.facets.",
+      "exists_panchromatic_facet_of_finrank: the capstone — in a finite-dimensional field setting, additionally certifies that the panchromatic facet's combinatorial dimension is bounded by the ambient affine dimension (d ≤ finrank 𝕜 E)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "facet-extraction",
+      "title": "Facet extraction for finite Mathlib complexes",
+      "startLine": 67,
+      "endLine": 103,
+      "summary": "exists_facet_superset: every face of a finite complex lies below a facet, proved by selecting a maximal face among those containing s via Finite.exists_maximal, then showing maximality forces the facet condition by antisymmetry. facet_affineIndependent: a facet is a face, so K.indep gives affine independence of its vertices — the explicit bridge from Mathlib's affine encoding to the combinatorial vertex-set encoding."
+    },
+    {
+      "id": "dimension-bound",
+      "title": "The affine encoding bounds the combinatorial dimension",
+      "startLine": 105,
+      "endLine": 136,
+      "summary": "facet_card_le_finrank_succ: a facet's affinely independent vertex set has at most finrank 𝕜 E + 1 elements, combining AffineIndependent.card_le_finrank_succ (cardinality ≤ vectorSpan dimension + 1) with Submodule.finrank_le (vectorSpan ⊆ E). facet_dim_le_ambient: for a pure complex (facet card = d+1) this reads d ≤ finrank 𝕜 E. This resolves the encoding-obstruction quantitatively: the combinatorial dimension cannot exceed the ambient affine dimension."
+    },
+    {
+      "id": "bridge-theorem",
+      "title": "The bridge applied to a Mathlib complex",
+      "startLine": 138,
+      "endLine": 189,
+      "summary": "exists_panchromatic_facet: given K : Geometry.SimplicialComplex 𝕜 E, a Finset topCells enumerating K.facets (htop), purity, the pseudomanifold condition, a coloring, and odd boundary parity, the imported bridge exists_panchromatic yields a panchromatic top cell; htop transports the witness back to a genuine K.facets membership. This is the concrete affirmative answer to the open question."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: a panchromatic facet of certified dimension",
+      "startLine": 191,
+      "endLine": 217,
+      "summary": "exists_panchromatic_facet_of_finrank: specialising to a finite-dimensional field, the panchromatic witness is certified both as a genuine facet and as respecting the ambient dimension (d ≤ finrank 𝕜 E). Packages facet extraction, the pseudomanifold input, the combinatorial Sperner conclusion, and the affine-dimension constraint into a single statement."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Sperner's lemma (Emanuel Sperner, 1928) is the combinatorial heart of Brouwer's fixed-point theorem. The Lean Genius gallery formalizes it in three layers: SpernerMathlib (abstract door-counting parity), SpernerSimplicialBridge (pseudomanifold simplicial data → abstract axioms), and SpernerSimplicialInstance (concrete triangulations → bridge). The bridge file deliberately parameterizes over a raw Finset (Finset E) of top cells and avoids importing Mathlib's geometric simplicial-complex stack, leaving as an explicit open question whether it connects to Mathlib's own Geometry.SimplicialComplex 𝕜 E (Dillies–Mehta, Mathlib 2021). This entry closes that question.",
+    "problemStatement": "**Open question (from sperner-simplicial-bridge):** Does this bridge extend to Mathlib's Geometry.SimplicialComplex type by extracting facets and verifying the pseudomanifold condition? The stated obstacle is reconciling Mathlib's affine-set encoding with the bridge's finset-of-vertices encoding.\n\n**Answer:** Yes. Mathlib's K.faces is already a Set (Finset E) of vertex sets, and K.facets ⊆ K.faces is the set of maximal such finsets — the same combinatorial datum the bridge consumes. The affine structure (AffineIndependent, convex-hull gluing) is *additional* data, not a rival encoding. Supplying a finite enumeration of K.facets, purity, and the pseudomanifold condition lets the imported bridge fire, and the panchromatic witness is a genuine K.facets member.",
+    "proofStrategy": "Four parts, all machine-checked with no axioms or sorries.\n\n1. **Facet extraction (general ring).** exists_facet_superset proves that in a finite complex every face sits below a facet — via Finite.exists_maximal on {t ∈ K.faces | s ⊆ t} and antisymmetry of ⊆. facet_affineIndependent transfers K.indep to facets.\n\n2. **Dimension bound (division ring, finite-dimensional).** facet_card_le_finrank_succ chains AffineIndependent.card_le_finrank_succ with Submodule.finrank_le to cap facet cardinality at finrank 𝕜 E + 1; facet_dim_le_ambient specializes to d ≤ finrank for pure complexes.\n\n3. **Bridge instantiation (linearly ordered vertices).** exists_panchromatic_facet feeds an enumerating Finset of K.facets, with purity as the cardinality witness, straight into the parent's exists_panchromatic, then converts the witness back to K.facets via htop.\n\n4. **Capstone.** exists_panchromatic_facet_of_finrank combines (2) and (3) in a finite-dimensional field setting.",
+    "keyInsights": [
+      "**The encoding 'obstruction' is illusory at the combinatorial level.** Mathlib's Geometry.SimplicialComplex stores faces as Finset E — exactly the bridge's encoding. AffineIndependent and convexHull data ride on top; they are never an *alternative* representation of the vertex sets. So no translation between encodings is needed; one only needs to *expose* the facet finset and check purity/pseudomanifold.",
+      "**Facets exist and exhaust the top cells (finite case).** exists_facet_superset is the lemma that makes 'extract the facets' well-posed: every face is dominated by a facet, so the facets are a faithful top-dimensional skeleton. Mathlib lacked this (it had only the negative not_facet_iff_subface).",
+      "**The affine encoding constrains, rather than competes with, the combinatorial one.** facet_card_le_finrank_succ turns affine independence into a hard cardinality bound: a d-dimensional pure complex cannot embed in fewer than d affine dimensions. This is the productive content of the 'reconciliation' — the two encodings agree, and the affine one supplies a dimension inequality the combinatorial one cannot see.",
+      "**The witness is a genuine Mathlib facet.** exists_panchromatic_facet returns σ with σ.1 ∈ K.facets, not merely a member of an abstract topCells set. The bridge therefore lands inside Mathlib's own API, which is what 'extending the bridge to Geometry.SimplicialComplex' should mean.",
+      "**Purity is an input, not a theorem.** Mathlib's facets may have varying cardinality (the complex need not be pure). The bridge requires pure top cells, so purity (∀ s ∈ topCells, s.card = d+1) is carried as a hypothesis and reused as the cardinality witness for vertexEnum — a small but essential plumbing point."
+    ]
+  },
+  "conclusion": {
+    "summary": "The Sperner pseudomanifold bridge extends cleanly to Mathlib's Geometry.SimplicialComplex 𝕜 E (218 lines, 6 theorems, 0 definitions, no axioms or sorries). The headline exists_panchromatic_facet takes a Mathlib complex with an enumerated, pure, pseudomanifold set of facets and a Sperner-proper coloring of odd boundary parity, and produces a panchromatic facet that is a genuine K.facets member. Supporting lemmas (exists_facet_superset, facet_affineIndependent, facet_card_le_finrank_succ) are new structural facts about Mathlib simplicial complexes.",
+    "implications": "Closes the second open question of sperner-simplicial-bridge. Any finite, pure, pseudomanifold Mathlib Geometry.SimplicialComplex with a suitable coloring now yields Sperner's lemma directly through the gallery's door-counting machinery, with the witness expressed in Mathlib's native facet vocabulary. The new exists_facet_superset lemma (existence of a maximal superface in a finite complex) is independently useful and a plausible Mathlib upstream candidate. The remaining open questions of the parent — weakening purity to mixed-dimensional complexes, and locally-finite/infinite analogues — stay open.",
+    "openQuestions": [
+      "Can purity be dropped: does a stratified door-counting argument handle Mathlib complexes whose facets have mixed cardinalities?",
+      "When can the finiteness and pseudomanifold hypotheses be *derived* rather than assumed — e.g. for the boundary complex of a simplicial polytope, or a triangulated closed pseudomanifold, directly inside Mathlib?",
+      "Does facet_card_le_finrank_succ sharpen to an equality (facet card = finrank + 1) under a full-dimensionality hypothesis, giving an intrinsic notion of a 'top-dimensional' Mathlib facet?",
+      "Could the bridge be packaged as a Mathlib-style structure (a FinitePurePseudomanifold over a Geometry.SimplicialComplex) to make the four hypotheses reusable across instances?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-simplicial-bridge",
+      "relationship": "extends",
+      "description": "Parent entry. This file answers its second open question by connecting the abstract topCells parameter to Mathlib's Geometry.SimplicialComplex.facets, importing exists_panchromatic directly."
+    },
+    {
+      "targetId": "sperner-mathlib",
+      "relationship": "uses",
+      "description": "Transitively: the parent bridge's exists_panchromatic is built on SpernerMathlib's abstract door-counting theorem."
+    },
+    {
+      "targetId": "sperner-simplicial-instance",
+      "relationship": "related",
+      "description": "Sibling layer that instantiates the same bridge for concrete Kuhn-style triangulations; this entry instead targets Mathlib's general Geometry.SimplicialComplex API."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "exists_panchromatic_facet",
+      "type": "core",
+      "statement": "$\\text{Given } K : \\mathrm{Geometry.SimplicialComplex}\\,\\Bbbk\\,E,\\ \\text{topCells enumerating } K.\\mathrm{facets},\\ \\text{purity } |s|=d+1,\\ \\text{the pseudomanifold condition},\\ c : E \\to \\mathrm{Fin}(d+1),\\ \\text{and odd boundary parity} \\Rightarrow \\exists\\,\\sigma,\\ \\sigma \\text{ panchromatic} \\wedge \\sigma.1 \\in K.\\mathrm{facets}$",
+      "significance": "**The affirmative answer to the open question.** The pseudomanifold door-counting bridge fires on a Mathlib Geometry.SimplicialComplex once its facets are enumerated and verified pure + pseudomanifold; the panchromatic witness is a genuine K.facets member, landing the result inside Mathlib's own simplicial-complex API.",
+      "description": "Sperner's lemma for a Mathlib Geometry.SimplicialComplex."
+    },
+    {
+      "name": "exists_facet_superset",
+      "type": "supporting",
+      "statement": "$K.\\mathrm{faces}\\text{ finite} \\wedge s \\in K.\\mathrm{faces} \\Rightarrow \\exists\\,t \\in K.\\mathrm{facets},\\ s \\subseteq t$",
+      "significance": "**New Mathlib-style lemma.** Existence of a maximal superface in a finite complex — Mathlib previously had only the negative not_facet_iff_subface. Makes 'extract the facets' well-posed: every face is dominated by a facet. Proved via Finite.exists_maximal and antisymmetry of ⊆.",
+      "description": "Every face of a finite complex lies below a facet."
+    },
+    {
+      "name": "facet_affineIndependent",
+      "type": "supporting",
+      "statement": "$s \\in K.\\mathrm{facets} \\Rightarrow \\mathrm{AffineIndependent}\\,\\Bbbk\\,((\\uparrow) : s \\to E)$",
+      "significance": "**The encoding reconciliation, made precise.** A facet is a face, so K.indep applies: its vertices are affinely independent. The bridge's combinatorial facets carry Mathlib's affine structure for free, demonstrating the two encodings are compatible, not competing.",
+      "description": "Facets carry Mathlib's affine independence structure."
+    },
+    {
+      "name": "facet_card_le_finrank_succ",
+      "type": "supporting",
+      "statement": "$[\\mathrm{FiniteDimensional}\\,\\Bbbk\\,E]\\ \\wedge\\ s \\in K.\\mathrm{facets} \\Rightarrow |s| \\le \\mathrm{finrank}\\,\\Bbbk\\,E + 1$",
+      "significance": "**The affine encoding bounds the combinatorial one.** Combines AffineIndependent.card_le_finrank_succ with Submodule.finrank_le. Corollary facet_dim_le_ambient gives d ≤ finrank 𝕜 E for pure complexes — the productive quantitative content of reconciling the two encodings.",
+      "description": "A facet has at most finrank + 1 vertices."
+    },
+    {
+      "name": "exists_panchromatic_facet_of_finrank",
+      "type": "core",
+      "statement": "$\\text{(finite-dimensional field)}\\ \\dots \\Rightarrow \\exists\\,\\sigma,\\ \\sigma \\text{ panchromatic} \\wedge \\sigma.1 \\in K.\\mathrm{facets} \\wedge d \\le \\mathrm{finrank}\\,\\Bbbk\\,E$",
+      "significance": "**Capstone.** The full answer in one statement: facet extraction, pseudomanifold input, combinatorial Sperner conclusion, and the affine-dimension constraint, all certified together for a finite-dimensional Geometry.SimplicialComplex over a field.",
+      "description": "The bridge with a certified ambient-dimension bound on the witness."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Sperner, Emanuel"],
+      "year": 1928,
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, vol. 6, pp. 265-272",
+      "note": "Sperner's original labeled-triangulation lemma."
+    },
+    {
+      "authors": ["Dillies, Yaël", "Mehta, Bhavik"],
+      "year": 2021,
+      "title": "Mathlib: Analysis.Convex.SimplicialComplex.Basic",
+      "venue": "leanprover-community/mathlib4",
+      "note": "Mathlib's Geometry.SimplicialComplex: faces as affinely independent finsets whose convex hulls glue nicely; defines vertices and facets. The target API this entry bridges to."
+    },
+    {
+      "authors": ["De Longueville, Mark"],
+      "year": 2013,
+      "title": "A Course in Topological Combinatorics",
+      "venue": "Springer Universitext",
+      "note": "Modern treatment of Sperner-style lemmas and the pseudomanifold abstraction this gallery layer formalizes."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SpernerSimplicialBridgeOQ02.lean",
+    "lineCount": 218,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "imports": [
+      "import Proofs.SpernerSimplicialBridge",
+      "import Mathlib.Analysis.Convex.SimplicialComplex.Basic",
+      "import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Sperner.SimplicialComplex"
+  }
+}

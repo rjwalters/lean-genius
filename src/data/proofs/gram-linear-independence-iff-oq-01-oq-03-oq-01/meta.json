@@ -1,0 +1,178 @@
+{
+  "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01",
+  "slug": "gram-linear-independence-iff-oq-01-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GramLinearIndependenceOQ01OQ03"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "Submodule",
+      "Finset",
+      "Matrix",
+      "RealInnerProductSpace"
+    ],
+    "namespace": "GramLinearIndependenceOQ01OQ03OQ01",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/GramLinearIndependenceOQ01OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Gram–Schmidt Height is the Distance to the Span of the Earlier Vectors",
+  "description": "Makes the parent's base × height reading literal: for any finite family v : Fin n → F in a real inner product space, the Gram–Schmidt height ‖gramSchmidt ℝ v i‖ equals the perpendicular distance Metric.infDist (v i) (span of v 0, …, v (i-1)). Gram–Schmidt is exactly the residual of v i after orthogonal projection onto the earlier span, so the parent's content factorization √(det gram v) = ∏ heights becomes √(det gram v) = ∏ dist(v i, earlier span) — the textbook recursive base × height volume, valid in any dimension.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GramLinearIndependenceOQ01OQ03OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "inner-product-space",
+      "gram-schmidt",
+      "orthogonal-projection",
+      "distance",
+      "infDist",
+      "volume",
+      "content",
+      "orthogonalization",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 156,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "norm_gramSchmidt_eq_infDist: the headline identity answering the parent's first open question — ‖gramSchmidt ℝ v i‖ = Metric.infDist (v i) (earlierSpan v i), i.e. each Gram–Schmidt height is literally the perpendicular distance from v i to the span of the earlier vectors. Mathlib has Gram–Schmidt, orthogonal projection, and infDist separately but never connects the Gram–Schmidt norm to a metric distance",
+      "gramSchmidt_eq_sub_starProjection: the structural fact behind the height — gramSchmidt ℝ v i = v i - (earlierSpan v i).starProjection (v i), so the Gram–Schmidt vector IS the orthogonal-projection residual of v i onto the earlier span. Proved via the projection-uniqueness lemma eq_starProjection_of_mem_orthogonal' from the orthogonal decomposition v i = (v i - gramSchmidt ℝ v i) + gramSchmidt ℝ v i",
+      "sub_gramSchmidt_mem_earlierSpan and gramSchmidt_mem_earlierSpan_orthogonal: the two halves of that decomposition — the residual v i - gramSchmidt ℝ v i lies in the earlier span (it is the sum of projections onto earlier Gram–Schmidt lines, gramSchmidt_def + starProjection_singleton), and gramSchmidt ℝ v i is orthogonal to the earlier span (gramSchmidt_orthogonal extended over the span by span_induction)",
+      "earlierSpan + finiteDimensional_earlierSpan: the earlier span is finite-dimensional (FiniteDimensional.span_of_finite), hence complete, hence has an orthogonal projection — supplying the HasOrthogonalProjection instance the projection API needs, with no completeness or finrank hypothesis on the ambient space",
+      "content_eq_prod_infDist and det_gram_eq_prod_infDist_sq: combining the new distance identity with the parent's content factorization gives the literal recursive base × height volume √(det gram v) = ∏ i, dist(v i, earlier span), and det(gram v) = ∏ i, dist(v i, earlier span)²"
+    ],
+    "prerequisites": [
+      "The parent entry gram-linear-independence-iff-oq-01-oq-03: content_eq_prod_gramSchmidt_norm (√(det gram v) = ∏ ‖gramSchmidt ℝ v i‖) and det_gram_eq_prod_gramSchmidt_norm_sq, reused verbatim for the base × height corollaries",
+      "Mathlib Gram–Schmidt API: gramSchmidt_def (the projection expansion gᵢ = vᵢ - ∑_{j<i} proj), gramSchmidt_orthogonal (pairwise orthogonality), span_gramSchmidt_Iio (Gram–Schmidt preserves the span of the earlier vectors)",
+      "Mathlib orthogonal-projection API: Submodule.starProjection, eq_starProjection_of_mem_orthogonal' (uniqueness from an orthogonal decomposition), starProjection_minimal (the residual norm is the infimal distance), starProjection_singleton",
+      "Distance / completeness infrastructure: Metric.infDist_eq_iInf, FiniteDimensional.span_of_finite (finite spans are finite-dimensional) and the finite-dimensional ⟹ complete ⟹ HasOrthogonalProjection instance chain"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "InnerProductSpace.gramSchmidt_def / gramSchmidt_orthogonal / span_gramSchmidt_Iio",
+        "description": "The Gram–Schmidt projection formula gᵢ = vᵢ - ∑_{j<i} proj_{ℝ∙gⱼ}(vᵢ) (writing the residual as a sum of projections into the earlier span), pairwise orthogonality of the output (giving gᵢ ⟂ earlier span), and the span-preservation span ℝ (gramSchmidt v '' Iio i) = span ℝ (v '' Iio i).",
+        "module": "Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho"
+      },
+      {
+        "theorem": "Submodule.eq_starProjection_of_mem_orthogonal'",
+        "description": "Uniqueness of the orthogonal projection: if u = w + z with w ∈ K and z ∈ Kᗮ then K.starProjection u = w. Applied to v i = (v i - gramSchmidt v i) + gramSchmidt v i this identifies the projection of v i onto the earlier span with the residual.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Projection.Basic"
+      },
+      {
+        "theorem": "Submodule.starProjection_minimal",
+        "description": "‖y - K.starProjection y‖ = ⨅ x : K, ‖y - x‖ — the orthogonal projection minimizes the distance, turning the residual norm ‖gramSchmidt v i‖ into the infimal distance from v i to the earlier span.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Projection.Basic"
+      },
+      {
+        "theorem": "Metric.infDist_eq_iInf",
+        "description": "infDist x s = ⨅ y : s, dist x y, the bridge from the projection-theoretic infimum ⨅ x : K, ‖y - x‖ to the metric distance Metric.infDist (v i) (earlierSpan v i).",
+        "module": "Mathlib.Topology.MetricSpace.HausdorffDistance"
+      },
+      {
+        "theorem": "FiniteDimensional.span_of_finite",
+        "description": "The span of a finite set is finite-dimensional; with the finite-dimensional ⟹ CompleteSpace ⟹ HasOrthogonalProjection instance chain this provides the orthogonal projection onto earlierSpan with no completeness hypothesis on the ambient space.",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional.Defs"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical recipe for the k-dimensional volume of a parallelepiped is iterated base × height: pick a base spanned by the first vectors, drop a perpendicular from the next vertex, multiply the resulting height into the running volume, and recurse. Gram–Schmidt orthogonalization is exactly this recursion made algebraic — the orthogonalized vector gramSchmidt v i is what is left of v i after subtracting its shadow on the span of the earlier vectors, and its length is the perpendicular height of v i above that span. The parent entry proved the algebraic half of the story, √(det gram v) = ∏ ‖gramSchmidt v i‖, and named the factors heights, but left the geometric identification ‖gramSchmidt v i‖ = dist(v i, earlier span) as an open question. Mathlib formalizes Gram–Schmidt, orthogonal projection onto a (complete) subspace, the minimal-distance property of the projection, and the metric Metric.infDist — but it never connects the Gram–Schmidt norm to a distance. This entry supplies that bridge, completing the base × height picture.",
+    "problemStatement": "For an arbitrary finite family v : Fin n → F in a real inner product space F — with no hypothesis relating n to finrank ℝ F — prove that each Gram–Schmidt norm is a perpendicular distance: ‖gramSchmidt ℝ v i‖ = Metric.infDist (v i) (span ℝ {v j | j < i}). Deduce the literal recursive base × height volume √(det gram v) = ∏ i, dist(v i, earlier span).",
+    "proofStrategy": "Let Kᵢ = earlierSpan v i = span ℝ (v '' Set.Iio i). Kᵢ is the span of a finite set, hence finite-dimensional (FiniteDimensional.span_of_finite), hence complete, hence carries an orthogonal projection. Establish the orthogonal decomposition v i = (v i - gramSchmidt v i) + gramSchmidt v i: the first summand lies in Kᵢ because gramSchmidt_def writes it as a sum of projections onto the lines ℝ ∙ gramSchmidt v j (j < i), each of which lies in Kᵢ after rewriting Kᵢ via span_gramSchmidt_Iio (sub_gramSchmidt_mem_earlierSpan); the second summand lies in Kᵢᗮ because gramSchmidt v i is orthogonal to every earlier gramSchmidt v j (gramSchmidt_orthogonal), extended over the whole span by span_induction (gramSchmidt_mem_earlierSpan_orthogonal). Projection uniqueness (eq_starProjection_of_mem_orthogonal') then gives Kᵢ.starProjection (v i) = v i - gramSchmidt v i, i.e. gramSchmidt v i = v i - Kᵢ.starProjection (v i) (gramSchmidt_eq_sub_starProjection). Taking norms and applying starProjection_minimal turns ‖gramSchmidt v i‖ into ⨅ x : Kᵢ, ‖v i - x‖, which Metric.infDist_eq_iInf identifies with Metric.infDist (v i) Kᵢ (norm_gramSchmidt_eq_infDist). The base × height corollaries (content_eq_prod_infDist, det_gram_eq_prod_infDist_sq) substitute this distance into the parent's content factorization.",
+    "keyInsights": [
+      "Gram–Schmidt is orthogonal projection in disguise: gramSchmidt v i = v i - starProjection_{earlier span}(v i). The defining formula gramSchmidt_def already subtracts the projections onto the earlier orthogonal lines, and orthogonality makes that sum the genuine projection onto their span — so the Gram–Schmidt vector is exactly the projection residual.",
+      "The height is a distance for free once the residual is the projection: starProjection_minimal says the projection residual realizes the infimal distance, so ‖gramSchmidt v i‖ = ‖v i - proj(v i)‖ = inf over the subspace of ‖v i - x‖ = dist(v i, earlier span). No separate minimization argument is needed.",
+      "No completeness hypothesis on the ambient space is required: the earlier span is the span of finitely many vectors, hence finite-dimensional, hence automatically complete and equipped with an orthogonal projection — so the distance identity holds in any real inner product space, complete or not, exactly the generality of the parent's content identity.",
+      "span_gramSchmidt_Iio is the linchpin connecting the two descriptions of the earlier span: the residual naturally lands in the span of the earlier Gram–Schmidt vectors while the orthogonality is also stated against them, and span_gramSchmidt_Iio identifies that with the span of the original earlier vectors, the subspace whose distance the open question asks about.",
+      "Combining with the parent turns an abstract determinant into a metric volume: √(det gram v) = ∏ ‖gramSchmidt v i‖ = ∏ dist(v i, earlier span), the literal recursive base × height formula — base = content of v 0, …, v (i-1), height = dist(v i, their span)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "earlier-span",
+      "title": "The Earlier Span and its Orthogonal Projection",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "Defines earlierSpan v i = span ℝ (v '' Set.Iio i), the span of the strictly earlier vectors. finiteDimensional_earlierSpan shows it is finite-dimensional (FiniteDimensional.span_of_finite), which supplies the completeness and HasOrthogonalProjection instances. earlierSpan_eq_gramSchmidt (via span_gramSchmidt_Iio) and gramSchmidt_mem_earlierSpan record that it is equally the span of the earlier Gram–Schmidt vectors.",
+      "mathContext": "$K_i = \\operatorname{span}_{\\mathbb R}\\{v_j : j < i\\} = \\operatorname{span}_{\\mathbb R}\\{g_j : j < i\\}$, finite-dimensional."
+    },
+    {
+      "id": "decomposition",
+      "title": "The Orthogonal Decomposition of v i",
+      "startLine": 84,
+      "endLine": 108,
+      "summary": "sub_gramSchmidt_mem_earlierSpan shows the residual v i - gramSchmidt v i lies in Kᵢ (gramSchmidt_def writes it as a sum of projections onto earlier Gram–Schmidt lines, each in Kᵢ via starProjection_singleton). gramSchmidt_mem_earlierSpan_orthogonal shows gramSchmidt v i ∈ Kᵢᗮ (gramSchmidt_orthogonal against each earlier vector, extended over the span by span_induction).",
+      "mathContext": "$v_i = \\underbrace{(v_i - g_i)}_{\\in K_i} + \\underbrace{g_i}_{\\in K_i^{\\perp}}.$"
+    },
+    {
+      "id": "height-is-distance",
+      "title": "Gram–Schmidt as a Residual and the Distance Identity",
+      "startLine": 110,
+      "endLine": 132,
+      "summary": "gramSchmidt_eq_sub_starProjection uses projection uniqueness (eq_starProjection_of_mem_orthogonal') on that decomposition to prove gramSchmidt v i = v i - Kᵢ.starProjection (v i). norm_gramSchmidt_eq_infDist then applies starProjection_minimal and Metric.infDist_eq_iInf to conclude ‖gramSchmidt v i‖ = Metric.infDist (v i) Kᵢ — the perpendicular height is the metric distance.",
+      "mathContext": "$\\lVert g_i\\rVert = \\lVert v_i - \\operatorname{proj}_{K_i} v_i\\rVert = \\operatorname{dist}(v_i, K_i).$"
+    },
+    {
+      "id": "base-times-height",
+      "title": "The Base × Height Volume",
+      "startLine": 134,
+      "endLine": 153,
+      "summary": "det_gram_eq_prod_infDist_sq and content_eq_prod_infDist substitute the distance identity into the parent's content factorization, giving det(gram v) = ∏ dist(v i, Kᵢ)² and √(det gram v) = ∏ dist(v i, Kᵢ) — the literal recursive base × height volume, valid in any dimension.",
+      "mathContext": "$\\sqrt{\\det\\mathrm{Gram}(v)} = \\prod_i \\operatorname{dist}(v_i, K_i).$"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-03-oq-01-oq-01",
+      "question": "Express the base × height recursion explicitly as content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1)), i.e. prove the running content satisfies a one-step multiplicative recursion in the number of vectors, recovering the full product by induction.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gram-linear-independence-iff-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "The parent proved √(det gram v) = ∏ ‖gramSchmidt v i‖ and named the factors heights; this entry proves each height ‖gramSchmidt v i‖ is literally the perpendicular distance dist(v i, span of earlier vectors), reusing the parent's content factorization to obtain the base × height volume √(det gram v) = ∏ dist(v i, earlier span). Answers the parent's first open question."
+    },
+    {
+      "targetId": "gram-linear-independence-iff-oq-01-oq-02",
+      "relationship": "complements",
+      "description": "The sibling realized √(det gram v) as the top-dimensional Haar/Lebesgue parallelepiped volume; this entry gives the complementary metric reading of the same content as an iterated product of perpendicular distances, valid without any spanning hypothesis."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.InnerProductSpace.GramSchmidtOrtho",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of gramSchmidt_def (the projection expansion), gramSchmidt_orthogonal (pairwise orthogonality) and span_gramSchmidt_Iio (span preservation) used to build the orthogonal decomposition of v i."
+    },
+    {
+      "title": "Mathlib4: Analysis.InnerProductSpace.Projection.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Submodule.starProjection, eq_starProjection_of_mem_orthogonal' (projection uniqueness) and starProjection_minimal (the projection residual realizes the infimal distance)."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For any finite family v : Fin n → F in a real inner product space — with no hypothesis relating n to finrank ℝ F — each Gram–Schmidt height equals the perpendicular distance to the span of the earlier vectors: ‖gramSchmidt ℝ v i‖ = Metric.infDist (v i) (earlierSpan v i) (norm_gramSchmidt_eq_infDist). This rests on gramSchmidt_eq_sub_starProjection, the fact that the Gram–Schmidt vector is exactly the orthogonal-projection residual gramSchmidt v i = v i - (earlierSpan v i).starProjection (v i), obtained from the orthogonal decomposition v i = (v i - gramSchmidt v i) + gramSchmidt v i (residual in the span, gramSchmidt v i in its orthogonal complement) via projection uniqueness, with starProjection_minimal and Metric.infDist_eq_iInf turning the residual norm into the metric distance. Combined with the parent's factorization this yields √(det gram v) = ∏ i, dist(v i, earlier span) (content_eq_prod_infDist) and det(gram v) = ∏ i, dist(v i, earlier span)² (det_gram_eq_prod_infDist_sq). 155 lines, 9 theorems, 2 definitions, 0 axioms, 0 sorries.",
+    "implications": "This answers the parent entry's first open question, making the base × height reading of the Gram determinant literal: the content of n vectors is the running product of perpendicular distances to the spans of their predecessors. Because the earlier span is finite-dimensional regardless of the ambient space, the distance identity needs no completeness or finrank hypothesis — it holds in every real inner product space. The intermediate gramSchmidt_eq_sub_starProjection (Gram–Schmidt = projection residual) is a reusable bridge between Mathlib's Gram–Schmidt and orthogonal-projection APIs.",
+    "openQuestions": [
+      "Express the base × height recursion as a one-step multiplicative recursion content(v 0, …, v i) = dist(v i, earlier span) · content(v 0, …, v (i-1))."
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "id": "basel-problem-oq-14",
+  "title": "Dirichlet eta at 4: ∑ (-1)^(n+1)/n⁴ = 7π⁴/720",
+  "slug": "basel-problem-oq-14",
+  "description": "Formalizes the Dirichlet eta value η(4) = ∑_{n≥1} (-1)^(n+1)/n⁴ = 7π⁴/720, the alternating companion of the fourth zeta value ζ(4) = π⁴/90. The proof specializes Mathlib's hasSum_zeta_four through the parity identity η(4) = (1 - 1/8)ζ(4): split the alternating series into even- and odd-indexed parts with HasSum.even_add_odd, evaluate the even part as -(1/16)ζ(4) = -π⁴/1440 and the odd part (the odd-fourth-power sum ∑ 1/(2k+1)⁴ = π⁴/96, itself recovered from ζ(4) minus its even part), and combine to -π⁴/1440 + π⁴/96 = 7π⁴/720. Verified with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ14.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "series",
+      "zeta-function",
+      "dirichlet-eta",
+      "basel-problem",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 113,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "dateAdded": "2026-06-19",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_zeta_four",
+        "description": "The fourth zeta value: HasSum (fun n => 1/n⁴) (π⁴/90)",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "HasSum.even_add_odd",
+        "description": "Combine the even- and odd-indexed subseries into the full sum",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "Summable.comp_injective",
+        "description": "Summability of the odd-indexed subseries from summability of ζ(4)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Odd.neg_one_pow / Even.neg_one_pow",
+        "description": "(-1)^n = -1 for n odd and 1 for n even, fixing the alternating signs",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasSum_even_zeta_four: ∑_k 1/(2k)⁴ = π⁴/1440 (a sixteenth of ζ(4) via reindexing)",
+      "hasSum_odd_zeta_four: ∑_k 1/(2k+1)⁴ = π⁴/96 (the odd-fourth-power sum) derived from ζ(4) minus its even part by HasSum.even_add_odd + HasSum.unique",
+      "hasSum_eta_four / tsum_eta_four: η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720 via the even/odd split of the alternating series"
+    ],
+    "prerequisites": [
+      "Fourth zeta value ζ(4) = π⁴/90 (Mathlib hasSum_zeta_four)",
+      "Even/odd splitting of an infinite sum (HasSum.even_add_odd)",
+      "Uniqueness of sums (HasSum.unique)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real"],
+    "namespace": "BaselEtaFour",
+    "path": "Proofs/BaselProblemOQ14.lean",
+    "lineCount": 113,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "Euler evaluated the even zeta values ζ(2k) = (rational)·π^{2k} in 1740; ζ(4) = π⁴/90 is the case k = 2. The alternating variant η(s) = ∑ (-1)^(n+1)/n^s is the Dirichlet eta function, the 'eta' counterpart of ζ. The functional relation η(s) = (1 - 2^(1-s))ζ(s) — which analytically continues ζ across the line Re s = 1 — gives η(4) = (1 - 2^{-3})ζ(4) = (7/8)ζ(4) = 7π⁴/720 at the integer point s = 4. This entry formalizes exactly that special value, reusing Mathlib's machine-checked ζ(4) = π⁴/90.",
+    "problemStatement": "Formalize, with 0 sorries and 0 axioms, the Dirichlet eta value\n\n$$\\eta(4) = \\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n^4} = \\frac{7\\pi^4}{720},$$\n\nby specializing Mathlib's `hasSum_zeta_four` (ζ(4) = π⁴/90) through the parity split η(4) = (1 - 1/8)ζ(4).",
+    "text": "The alternating fourth-power sum: the Dirichlet eta value η(4) = 7π⁴/720, obtained from Mathlib's ζ(4) = π⁴/90 by separating even- and odd-indexed terms.",
+    "proofStrategy": "Three HasSum lemmas plus a tsum corollary. (1) hasSum_even_zeta_four: rewrite 1/(2k)⁴ = (1/16)(1/k⁴) and scale ζ(4) by 1/16 to get π⁴/1440. (2) hasSum_odd_zeta_four: the odd subseries is summable (Summable.comp_injective with k ↦ 2k+1), so reassembling ζ(4) = even + odd via HasSum.even_add_odd and applying HasSum.unique against hasSum_zeta_four forces the odd sum to π⁴/90 - π⁴/1440 = π⁴/96. (3) hasSum_eta_four: for the alternating summand, the even-indexed terms are -1/(2k)⁴ (Odd.neg_one_pow) summing to -π⁴/1440, the odd-indexed terms are 1/(2k+1)⁴ (Even.neg_one_pow) summing to π⁴/96; HasSum.even_add_odd combines them and -π⁴/1440 + π⁴/96 = 7π⁴/720.",
+    "keyInsights": [
+      "**η(4) = (1 - 1/8)ζ(4) is the s = 4 case of η(s) = (1 - 2^(1-s))ζ(s).** The whole proof is the constructive content of that identity at a single point: the factor 1 - 2^(1-4) = 7/8 appears as -1/16 (even part) plus the full odd part, netting 7/8 of ζ(4).",
+      "**The even-indexed subseries is a scaled copy of ζ(4).** Since 1/(2k)⁴ = (1/16)(1/k⁴), the even part is exactly (1/16)ζ(4) = π⁴/1440 — a one-line HasSum.mul_left after a `ring` rewrite (valid even at k = 0 where both sides are 0 in ℝ).",
+      "**The odd-fourth-power sum π⁴/96 falls out for free.** Rather than proving ∑ 1/(2k+1)⁴ = π⁴/96 from scratch, reassemble ζ(4) from its even and odd halves and use uniqueness of sums: π⁴/1440 + (odd) = π⁴/90 ⟹ (odd) = π⁴/96. This reuses the same even/odd machinery twice.",
+      "**HasSum.even_add_odd needs a named summand for higher-order unification.** Defining `etaSummand` as a top-level function lets `HasSum.even_add_odd ha_even ha_odd` infer f := etaSummand from the pattern `f (2*k)`; an inline lambda would block the unification.",
+      "**Signs are pinned by parity, not case-split.** (-1)^(2k+1) = -1 (Odd.neg_one_pow) and (-1)^(2k+2) = 1 (Even.neg_one_pow) convert the alternating numerators into the two fixed-sign subseries — no per-term case analysis."
+    ],
+    "prerequisites": [
+      "Fourth zeta value ζ(4) = π⁴/90",
+      "Dirichlet eta function and η(s) = (1 - 2^(1-s))ζ(s)",
+      "Even/odd decomposition of infinite sums",
+      "HasSum / tsum API in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header, Imports, and the Eta Summand",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Documents the η(4) = (1 - 1/8)ζ(4) parity split; imports Mathlib's ZetaValues (for hasSum_zeta_four); defines the alternating summand etaSummand n = (-1)^(n+1)/n⁴.",
+      "mathContext": "η(4) is the value at 4 of the Dirichlet eta function, the alternating companion of ζ."
+    },
+    {
+      "id": "even-part",
+      "title": "hasSum_even_zeta_four — ∑ 1/(2k)⁴ = π⁴/1440",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "Rewrites 1/(2k)⁴ = (1/16)(1/k⁴) and scales ζ(4) by 1/16.",
+      "mathContext": "The even-indexed fourth-power terms form a sixteenth-scaled copy of ζ(4)."
+    },
+    {
+      "id": "odd-part",
+      "title": "hasSum_odd_zeta_four — ∑ 1/(2k+1)⁴ = π⁴/96",
+      "startLine": 53,
+      "endLine": 67,
+      "summary": "Odd subseries summable via comp_injective; reassemble ζ(4) = even + odd and use HasSum.unique to pin the odd sum to π⁴/96.",
+      "mathContext": "The odd-fourth-power sum, recovered as ζ(4) minus its even part."
+    },
+    {
+      "id": "eta",
+      "title": "hasSum_eta_four / tsum_eta_four — η(4) = 7π⁴/720",
+      "startLine": 69,
+      "endLine": 95,
+      "summary": "Even-indexed alternating terms sum to -π⁴/1440, odd-indexed to π⁴/96; HasSum.even_add_odd combines to 7π⁴/720, with a tsum corollary.",
+      "mathContext": "The Dirichlet eta value η(4) = (1 - 1/8)ζ(4) = 7π⁴/720."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Dirichlet eta value η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720 is formalized with 0 axioms and 0 sorries, built from Mathlib's ζ(4) = π⁴/90 by the even/odd parity split. The proof packages the even-indexed fourth-power sum (π⁴/1440), the odd-indexed fourth-power sum (π⁴/96), and the alternating value (7π⁴/720) as reusable HasSum lemmas plus a tsum corollary.",
+    "implications": "Completes the fourth-power analogue of η(2) = π²/12 and rounds out the (ζ(4), λ(4), η(4)) family of Basel-type fourth-power sums in the gallery. The same template — even part = scaled ζ, odd part by uniqueness, signs by parity — is the exponent-4 mirror of the η(2) construction and extends to higher even exponents via Mathlib's hasSum_zeta_nat.",
+    "openQuestions": [
+      {
+        "id": "basel-problem-oq-14-oq-01",
+        "question": "Abstract the even/odd parity split into a single reusable lemma η(2m) = (1 - 2^(1-2m)) ζ(2m) parameterized over the even exponent 2m, deriving η(2), η(4), η(6), ... uniformly from Mathlib's hasSum_zeta_nat.",
+        "significance": "medium"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-11",
+      "relationship": "extends",
+      "description": "η(2) = π²/12; this is the exponent-4 analogue η(4) = 7π⁴/720, built by the identical even/odd template at fourth powers."
+    },
+    {
+      "targetId": "basel-problem-oq-13",
+      "relationship": "extends",
+      "description": "λ(4) = ∑ 1/(2k+1)⁴ = π⁴/96 (odd-fourth-power sum); this entry's odd part reuses that value, combining it with the even part -π⁴/1440 to reach η(4)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum",
+      "author": "Leonhard Euler",
+      "year": "1748",
+      "description": "Euler's evaluation of the even zeta values ζ(2k) = (rational)·π^{2k}, including ζ(4) = π⁴/90, from which the alternating eta values follow."
+    },
+    {
+      "title": "Riemann's Zeta Function",
+      "author": "Harold M. Edwards",
+      "year": "1974",
+      "venue": "Academic Press",
+      "description": "Develops the Dirichlet eta function η(s) = (1 - 2^(1-s))ζ(s) as the alternating series used to continue ζ past Re s = 1."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "basel-problem-oq-14-oq-01",
+      "question": "Abstract the parity split into η(2m) = (1 - 2^(1-2m)) ζ(2m) and derive η(2), η(4), η(6), ... uniformly from hasSum_zeta_nat.",
+      "significance": "medium"
+    }
+  ],
+  "sorries": 0
+}

@@ -17,7 +17,11 @@
       "strong induction",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "derangements and the count D(n) (numDerangements)",
+      "factorials and the recurrence D(n+2)=(n+1)(D(n+1)+D(n))",
+      "proof by strong induction"
+    ]
   },
   {
     "id": "ann-exp-tsum",
@@ -37,7 +41,11 @@
       "Taylor series",
       "altFactTerm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite series (tsum) and convergence",
+      "the Taylor series of the exponential function",
+      "the value e⁻¹ = Σ(−1)ᵏ/k!"
+    ]
   },
   {
     "id": "ann-tail-bound",
@@ -57,7 +65,11 @@
       "le_of_tendsto",
       "tsum_mul_left"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "alternating series and the alternating series estimate",
+      "partial sums and tail remainders of a series",
+      "factorial growth bounding the tail"
+    ]
   },
   {
     "id": "ann-convergence-rate",
@@ -77,7 +89,11 @@
       "alternating_tail_bound",
       "abs_neg"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Euler identity D(n)/n! = Σ_{k≤n}(−1)ᵏ/k!",
+      "the series e⁻¹ = Σ(−1)ᵏ/k!",
+      "the alternating tail bound ≤ 1/(n+1)!"
+    ]
   },
   {
     "id": "ann-tendsto",
@@ -97,7 +113,11 @@
       "derangements_convergence_rate",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences (Tendsto, atTop)",
+      "the ε–N (metric) characterization of convergence",
+      "a summable series has terms tending to 0"
+    ]
   },
   {
     "id": "ann-alternating",
@@ -117,7 +137,11 @@
       "Even.neg_one_pow",
       "tsum_mul_left"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "alternating series and sign of (−1)ⁿ (Even/Odd)",
+      "partial sums bracketing the limit (overshoot/undershoot)",
+      "nonnegativity of alternating partial-sum differences"
+    ]
   },
   {
     "id": "ann-induction-pairs",
@@ -137,7 +161,11 @@
       "Finset.sum_range_succ",
       "div_le_div_of_nonneg_left"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strong induction on ℕ (Nat.strong_induction_on)",
+      "monotonicity of factorials",
+      "splitting a Finset sum (Finset.sum_range_succ)"
+    ]
   },
   {
     "id": "ann-tsum-decompose",
@@ -157,6 +185,10 @@
       "HasSum",
       "tsum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the HasSum / tsum formalism for infinite series",
+      "decomposing a sum over a set and its complement",
+      "reindexing a sum along an injection"
+    ]
   }
 ]

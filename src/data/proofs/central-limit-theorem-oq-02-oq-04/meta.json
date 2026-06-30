@@ -2,6 +2,34 @@
   "id": "central-limit-theorem-oq-02-oq-04",
   "title": "Ibragimov's CLT for Polynomial α-Mixing Sequences: Sharp Threshold r > (2+δ)/δ",
   "slug": "central-limit-theorem-oq-02-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
+      "Mathlib.Probability.IdentDistrib",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.NNReal",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Analytic",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Proofs.CentralLimitTheoremOQ02"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Filter",
+      "Real",
+      "Topology"
+    ],
+    "namespace": "CentralLimitTheoremOQ02OQ04",
+    "lineCount": 807,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+    "sorries": 2
+  },
   "description": "S2 ORIENT + S3 ACT for Ibragimov's 1962 CLT extended to polynomially α-mixing stationary sequences. Identifies the sharp threshold r > (2+δ)/δ on the polynomial decay exponent of the α-mixing coefficients, under which the (2+δ)-th moment + Davydov inequality yields summable covariances and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1}) exists finite. Defines Stationary, PolynomialMixingRate, MomentBound2δ, IbragimovHypotheses (structure bundling all hypotheses incl. r > (2+δ)/δ); states mixing_clt_ibragimov via characteristic-function convergence (Lévy continuity). S2 proves polynomial_summable_of_exponent_gt_one and ibragimov_threshold_summable. S3 adds three stationarity/moment bridge lemmas (stationary_eLpNorm_eq, polynomial_mixing_summable) and discharges longrun_variance_absolutely_convergent modulo a stated davydov_covariance_inequality (S4 target). Remaining sorries: davydov_covariance_inequality (S4) and mixing_clt_ibragimov (S6+ — Bernstein + Lindeberg).",
   "meta": {
     "author": "researcher-6",
@@ -20,7 +48,7 @@
     "badge": "axiom",
     "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 808,
+    "lineCount": 807,
     "assumptions": "2 sorries: (1) davydov_covariance_inequality — Davydov L^p covariance bound. Structurally reduces to (a) alphaMixingCoeff_le_one [proven S5], (b) alphaMixingCoeff_nonneg [proven S5 — closes parent file TODO at line 444], (c) davydov_indicator_bound [proven S5b — indicator base case via le_ciSup_of_le + ciSup_pos at the 4 nested ⨆ layers], (d) L^p density step via level-set decomposition + Hölder. With (a)/(b)/(c) all proven and the S5c-prep covariance-integral packaging indicator_covariance_le_alpha now in place (35 LOC, this session), only (d) remains for the full L^p Davydov bound; (d) is the S5c target (~100 lines). (2) mixing_clt_ibragimov — main CLT, deferred to S6+ pending Bernstein blocks + Lindeberg. S5c-prep ACT (latest session, this PR) adds indicator_covariance_le_alpha: bridges S4 indicator_pair_covariance_eq + S5b davydov_indicator_bound into the covariance-form indicator α-bound |∫1_A · 1_B dμ − (∫1_A dμ)(∫1_B dμ)| ≤ alphaMixingCoeff μ ℱ 𝒢. 3-line proof composing the algebraic identity + Measure.real_def + S5b. Build verified Docker (3131 jobs). Also fixes line-419 unused-simp-arg linter warning. Sorry count unchanged. A later session (S16) adds scaled_indicator_covariance_le_alpha (PROVEN): promotes the unit-indicator bound to arbitrary real scalars, |Cov(a·1_A, b·1_B)| ≤ |a|·|b|·alphaMixingCoeff μ ℱ 𝒢, the single-cell building block of the simple-function step toward davydov_covariance_inequality — purely additive infrastructure, sorry count still 2. 0 axioms; parent file CentralLimitTheoremOQ02.lean carries 1 axiom (martingale_clt) and 3 sorries reused by reference.",
     "mathlib_version": "4.26.0",
     "historicalContext": "Ibragimov's 1962 paper *Some limit theorems for stationary processes* (Theory Probab. Appl. 7, 349-382) is the foundational result for CLT under strong mixing. Building on Rosenblatt's 1956 introduction of α-mixing, Ibragimov showed that for stationary sequences with E[X₁²+δ] < ∞ and ∑_n α(n)^{δ/(2+δ)} < ∞, the partial sums S_n/√n converge weakly to a centered Gaussian with the long-run variance σ² = Var(X₁) + 2∑_{k=1}^∞ Cov(X₁, X_{1+k}). The polynomial-rate specialization α(n) ≤ C·n^{-r} translates Ibragimov's covariance summability condition to the algebraic threshold r > (2+δ)/δ — a sharpness statement first made explicit in the survey literature (Doukhan 1994, *Mixing: Properties and Examples*, Springer LNS 85, and Rio 2017, *Asymptotic Theory of Weakly Dependent Random Variables*). The threshold rate δ/(2+δ) is the Davydov exponent from his 1968 covariance inequality |Cov(X,Y)| ≤ C·α^{δ/(2+δ)}·‖X‖_{2+δ}·‖Y‖_{2+δ}.",
@@ -124,57 +152,77 @@
   "sections": [
     {
       "id": "header",
-      "title": "Conjecture and Predicates",
+      "title": "Header: Conjecture, Answer, and Imports",
       "startLine": 1,
-      "endLine": 60,
-      "summary": "Documents the Ibragimov CLT, the sharp threshold r > (2+δ)/δ, and the S2 scaffolding deliverables. Imports parent file's α-mixing infrastructure plus Mathlib's IdentDistrib, MemLp, and rpow APIs.",
-      "mathContext": "Setup: stationary $\\{X_n\\}$, $E[X_1] = 0$, $E[|X_1|^{2+\\delta}] < \\infty$, $\\alpha(n) \\le C n^{-r}$, sharp threshold $r > (2+\\delta)/\\delta$."
+      "endLine": 121,
+      "summary": "Module docstring stating the Ibragimov CLT question, the sharp threshold r > (2+δ)/δ, the long-run variance σ², and the per-session progress log (S2 scaffold through S16). Imports the parent CentralLimitTheoremOQ02.lean α-mixing infrastructure plus Mathlib's LpSpace, Bochner integral, IdentDistrib, rpow, and PSeries APIs; opens MeasureTheory/ProbabilityTheory/Filter/Real/Topology.",
+      "mathContext": "Setup: stationary $\\{X_n\\}$, $E[X_1]=0$, $E[|X_1|^{2+\\delta}]<\\infty$, $\\alpha(n)\\le C n^{-r}$; sharp threshold $r>(2+\\delta)/\\delta$ gives $\\sum_n \\alpha(n)^{\\delta/(2+\\delta)}<\\infty$ and finite $\\sigma^2$."
     },
     {
       "id": "predicates",
-      "title": "Stationarity, Mixing, Moment Predicates",
-      "startLine": 61,
-      "endLine": 110,
-      "summary": "Defines Stationary (marginal IdentDistrib), PolynomialMixingRate (α(n) ≤ C·n^{-r}), and MomentBound2δ (MemLp at p = 2+δ). The Stationary predicate uses the marginal slice; full joint stationarity is noted as a deferred strengthening.",
-      "mathContext": "$\\mathrm{Stationary}: \\forall k, X_k =_d X_0$. $\\mathrm{PolynomialMixingRate}: \\alpha(n) \\le C n^{-r}$. $\\mathrm{MomentBound2\\delta}: \\forall k, X_k \\in L^{2+\\delta}$."
+      "title": "Part I: Stationarity, Mixing, and Moment Predicates",
+      "startLine": 122,
+      "endLine": 168,
+      "summary": "Defines Stationary (marginal IdentDistrib slice X k =ᵈ X 0), PolynomialMixingRate (α(n) ≤ C·n^{-r}), and MomentBound2δ (MemLp at exponent 2+δ). The Stationary predicate uses the pairwise-marginal form sufficient for the long-run variance computation; full joint stationarity is noted as a deferred S6+ strengthening.",
+      "mathContext": "$\\mathrm{Stationary}: \\forall k,\\ X_k =_d X_0$. $\\mathrm{PolynomialMixingRate}: \\alpha(n)\\le C n^{-r}$. $\\mathrm{MomentBound2\\delta}: \\forall k,\\ X_k\\in L^{2+\\delta}$."
     },
     {
       "id": "ibragimov-hypotheses",
-      "title": "IbragimovHypotheses Structure",
-      "startLine": 111,
-      "endLine": 145,
-      "summary": "The bundled hypothesis structure containing 11 fields: stationary, integrable, mean_zero, delta_pos, moment_bound, alpha (numerical bound), pastSigma + futureSigma σ-algebra families, alpha_bound (abstract ≤ numerical), poly_rate (PolynomialMixingRate), and rate_admissible (r > (2+δ)/δ).",
-      "mathContext": "The structure formalizes the Ibragimov hypotheses in one place; the proof of the main theorem (S6+) opens the structure and pulls out each field as needed."
+      "title": "Part I: IbragimovHypotheses Structure",
+      "startLine": 169,
+      "endLine": 214,
+      "summary": "The bundled hypothesis structure with 16 fields: stationary, integrable, mean_zero, delta_pos, moment_bound, the numerical bound alpha with alpha_nonneg, the pastSigma/futureSigma σ-algebra families with past_measurable/future_measurable and the sub-σ inclusions past_le/future_le, alpha_bound (abstract α-mixing coefficient ≤ numerical), poly_rate, and rate_admissible (r > (2+δ)/δ).",
+      "mathContext": "The structure formalizes all Ibragimov hypotheses in one place; the main theorem (S6+) opens it and extracts each field. past_le/future_le supply both sub-σ measurability and ambient MeasurableSet at the Davydov call sites."
     },
     {
-      "id": "summability-helper",
-      "title": "Polynomial Summability Helper (proven)",
-      "startLine": 146,
-      "endLine": 185,
-      "summary": "Proves polynomial_summable_of_exponent_gt_one (Summable (n^{-s}) iff s > 1) via Real.summable_nat_rpow_inv, with careful handling of the n = 0 boundary case (zero_rpow). Then derives ibragimov_threshold_summable from the sharp-threshold algebra.",
-      "mathContext": "$\\sum_n n^{-s} < \\infty \\iff s > 1$ (p-series). Corollary: $r > (2+\\delta)/\\delta \\implies r\\delta/(2+\\delta) > 1$, hence $\\sum_n n^{-r\\delta/(2+\\delta)} < \\infty$."
+      "id": "summability-helpers",
+      "title": "Part II: Elementary Summability Helpers (proven)",
+      "startLine": 215,
+      "endLine": 237,
+      "summary": "Proves polynomial_summable_of_exponent_gt_one (Summable (n^{-s}) for s > 1) from Mathlib's Real.summable_nat_rpow, then derives ibragimov_threshold_summable: under r > (2+δ)/δ the Ibragimov covariance series ∑ n^{-rδ/(2+δ)} is summable, via the sharp-threshold algebra.",
+      "mathContext": "$\\sum_n n^{-s}<\\infty \\iff s>1$. Corollary: $r>(2+\\delta)/\\delta \\implies r\\delta/(2+\\delta)>1 \\implies \\sum_n n^{-r\\delta/(2+\\delta)}<\\infty$."
     },
     {
-      "id": "main-statements",
-      "title": "Main Theorem Statements (sorries)",
-      "startLine": 186,
-      "endLine": 231,
-      "summary": "States longrun_variance_absolutely_convergent (S5 target, sorry) and mixing_clt_ibragimov (S6+ target, sorry). The main CLT is stated via characteristic-function convergence (Lévy continuity form) with the long-run variance σ² supplied as an external parameter (avoiding inline plumbing of the parent's longRunVariance definition).",
-      "mathContext": "Statement: $\\phi_{S_n / \\sqrt{n}}(t) \\to \\exp(-\\sigma^2 t^2 / 2)$ for every $t \\in \\mathbb{R}$, under IbragimovHypotheses + $\\sigma^2 > 0$."
+      "id": "alpha-mixing-facts",
+      "title": "Part III: α-Mixing Coefficient Basic Facts (S4)",
+      "startLine": 238,
+      "endLine": 403,
+      "summary": "Three proven facts about the parent's 4-fold nested supremum alphaMixingCoeff: indicator_cov_le_one (per-term [0,1] envelope and BddAbove witness), alphaMixingCoeff_nonneg, alphaMixingCoeff_le_one, and davydov_indicator_bound (indicator base case |μ(A∩B)−μ(A)μ(B)| ≤ α, peeling the nested ⨆ via le_ciSup_of_le and ciSup_pos).",
+      "mathContext": "$0 \\le \\alpha(\\mathcal F,\\mathcal G) \\le 1$; for indicators $A\\in\\mathcal F$, $B\\in\\mathcal G$: $|\\mu(A\\cap B)-\\mu(A)\\mu(B)| \\le \\alpha(\\mathcal F,\\mathcal G)$."
+    },
+    {
+      "id": "davydov-inequality",
+      "title": "Part IV: Davydov's Covariance Inequality (S4 target, sorry)",
+      "startLine": 404,
+      "endLine": 614,
+      "summary": "Builds toward Davydov's covariance inequality: indicator_pair_covariance_eq, indicator_covariance_le_alpha (unit case), and scaled_indicator_covariance_le_alpha (|Cov(a·1_A, b·1_B)| ≤ |a||b|α, the single-cell building block of the simple-function step) are proven. The full L^p version davydov_covariance_inequality is stated and left as a sorry (S5c: truncation + Hölder density step).",
+      "mathContext": "Target: $|\\mathrm{Cov}(X,Y)| \\le 12\\,\\alpha^{(p-2)/p}\\,\\|X\\|_p\\,\\|Y\\|_p$. Reduces to the proven indicator/scaled-indicator cell bounds plus an $L^p$ density step."
+    },
+    {
+      "id": "longrun-variance",
+      "title": "Part V: Long-Run Variance Absolute Convergence (S3)",
+      "startLine": 615,
+      "endLine": 765,
+      "summary": "Proves stationary_eLpNorm_eq (stationarity collapses the per-lag L^p norms), polynomial_mixing_summable (the covariance series converges absolutely from the threshold summability), and longrun_variance_absolutely_convergent (σ² = Var(X₁) + 2∑ Cov(X₁, X_{k+1}) exists and is finite) — the last proven modulo the davydov_covariance_inequality sorry.",
+      "mathContext": "$\\sigma^2 = \\mathrm{Var}(X_1) + 2\\sum_{k\\ge 1}\\mathrm{Cov}(X_1, X_{k+1})$ converges absolutely under the Ibragimov threshold."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part VI: Ibragimov's CLT Main Theorem (S6+ target, sorry)",
+      "startLine": 766,
+      "endLine": 807,
+      "summary": "States the main result mixing_clt_ibragimov via characteristic-function (Lévy continuity) convergence, with the long-run variance σ² supplied as an external parameter. Left as a sorry (S6+ target). This and davydov_covariance_inequality are the file's two remaining sorries.",
+      "mathContext": "Statement: $\\phi_{S_n/\\sqrt n}(t) \\to \\exp(-\\sigma^2 t^2/2)$ for every $t\\in\\mathbb R$, under IbragimovHypotheses with $\\sigma^2>0$."
     }
   ],
   "crossReferences": [
     {
-      "type": "parent",
-      "slug": "central-limit-theorem-oq-02",
-      "title": "Central Limit Theorem OQ-02: Generalization to Dependent Random Variables",
-      "relation": "Direct parent. Defines alphaMixingCoeff, AlphaMixingSequence, longRunVariance, and martingale/mixing CLT axioms. This OQ-02-OQ-04 file imports it and adds the polynomial-rate specialization."
+      "targetId": "central-limit-theorem-oq-02",
+      "relationship": "Direct parent. Defines alphaMixingCoeff, AlphaMixingSequence, longRunVariance, and martingale/mixing CLT axioms. This OQ-02-OQ-04 file imports it and adds the polynomial-rate specialization."
     },
     {
-      "type": "ancestor",
-      "slug": "central-limit-theorem",
-      "title": "Central Limit Theorem (classical)",
-      "relation": "Foundational ancestor. The classical CLT is the i.i.d. specialization of Ibragimov's mixing CLT (α(n) = 0 for n ≥ 1)."
+      "targetId": "central-limit-theorem",
+      "relationship": "Foundational ancestor. The classical CLT is the i.i.d. specialization of Ibragimov's mixing CLT (α(n) = 0 for n ≥ 1)."
     }
   ],
   "conclusion": {
