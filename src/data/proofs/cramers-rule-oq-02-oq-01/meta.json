@@ -40,15 +40,17 @@
       "Tightening witnesses: gaussExactOps_le_cube (≤ n³, consistency with parent) and gaussExactOps_lt_cube (strict for n ≥ 2, the factor-3 gap is real)",
       "Comparison preserved: gaussExact_beats_cramer shows the tighter exact model still beats Cramer's rule for n ≥ 4 a fortiori, via the parent's gauss_beats_cramer",
       "Additions/subtractions count gaussExactSubs n = ∑_{j<n} j² (one multiply–subtract pair per trailing-entry update) with subtraction-free closed form gaussExactSubs_closed: 6·gaussExactSubs n + 3·n² = 2·n³ + n, i.e. (2n³−3n²+n)/6 ≈ n³/3",
-      "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks"
+      "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks",
+      "Back-substitution phase fully counted: backSubOps n = ∑_{j<n} (j+1) (mult+div) with backSubOps_closed: 2·backSubOps n = n²+n, and backSubSubs n = ∑_{j<n} j with backSubSubs_closed: 2·backSubSubs n + n = n²; their sum backSubFlops n is exactly n² (backSubFlops_eq), the clean O(n²) back-substitution flop count",
+      "Full solve cost fullSolveFlops n = gaussExactFlops n + backSubFlops n with subtraction-free closed form fullSolveFlops_closed: 6·fullSolveFlops n + n = 4n³ + 3n², i.e. (4n³+3n²−n)/6, leading term 2n³/3; back-substitution shown asymptotically negligible (backSubFlops_le_gaussFlops: backSubFlops n ≤ gaussExactFlops n for n ≥ 3) and the full solve still beats Cramer's rule for n ≥ 4 (fullSolve_beats_cramer), bundled in fullSolve_summary"
     ],
     "dateAdded": "2026-06-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 195,
-    "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (the small concrete counts gaussExactOps_small are derived from the closed form via omega rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
-    "theoremCount": 13,
-    "definitionCount": 3
+    "lineCount": 333,
+    "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (all concrete small-n counts are derived from the closed forms via omega/norm_num rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
+    "theoremCount": 25,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**The n³/3 Flop Count**\n\nEvery numerical-linear-algebra textbook states that solving an n×n linear system by Gaussian elimination (equivalently LU factorization) costs about n³/3 multiplications/divisions — one third the naive n³ estimate. The parent entry (cramers-rule-oq-02) compared Cramer's rule against Gaussian elimination but used the deliberately loose upper model gaussMuls n = n³, leaving the precise leading constant unformalized. This entry supplies the exact count.\n\n**Where the n³/3 Comes From**\n\nForward elimination runs in steps k = 1, …, n−1. At step k the pivot is at (k,k) and there are n−k rows beneath it. For each such row we compute one multiplier (a division) and update its n−k trailing entries (a multiplication each), for (n−k) + (n−k)² operations. Summing over k and substituting j = n−k gives ∑_{j=1}^{n−1} (j² + j) = (n−1)·n·(n+1)/3 = (n³ − n)/3.",
@@ -108,13 +110,21 @@
       "startLine": 117,
       "endLine": 133,
       "mathContext": "Since gaussExactOps n ≤ n³ = gaussMuls n and the parent proved gaussMuls n < cramersRuleMuls n for n ≥ 4, the tighter model beats Cramer's rule a fortiori — tightening the winner's cost cannot overturn the comparison."
+    },
+    {
+      "id": "back-substitution",
+      "title": "Back-Substitution and the Full Solve Cost",
+      "summary": "Counts the back-substitution phase: backSubOps n = ∑_{j<n}(j+1) mult/div (2·backSubOps = n²+n) and backSubSubs n = ∑_{j<n} j subtractions (2·backSubSubs + n = n²), summing to backSubFlops n = n² exactly (backSubFlops_eq). Composes the full solve cost fullSolveFlops n = gaussExactFlops n + backSubFlops n with closed form 6·fullSolveFlops n + n = 4n³ + 3n² (leading term 2n³/3), proves back-substitution is dominated by forward elimination for n ≥ 3 (backSubFlops_le_gaussFlops), the full solve stays ≤ n³ for n ≥ 2, and still beats Cramer's rule for n ≥ 4 (fullSolve_beats_cramer). Bundled in fullSolve_summary with concrete small-n checks.",
+      "startLine": 196,
+      "endLine": 332,
+      "mathContext": "Back-substitution on the upper-triangular system costs exactly n² flops (n(n+1)/2 mult/div + n(n−1)/2 subtractions), an O(n²) term negligible against the ~2n³/3 of forward elimination. The complete dense-solve cost is therefore (4n³ + 3n² − n)/6 ~ 2n³/3."
     }
   ],
   "conclusion": {
     "summary": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
     "implications": "Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian elimination beats Cramer's rule for n ≥ 4 — carries over to the exact model for free, with no re-proof needed. More broadly, the entry demonstrates a reusable pattern for formalizing exact flop counts: state the polynomial identity in subtraction-free additive form (k·sum + remainder = closed form) so the induction stays in the ℕ semiring and closes by ring, then recover the conventional division form as a one-line corollary. The same template applies to the ~2n³/3 LU-factorization count, the n²/2 back-substitution count, and other textbook complexity figures that are usually quoted asymptotically but rarely formalized exactly.",
     "openQuestions": [
-      "The additions/subtractions count (≈ n³/3) and the full forward-elimination flop total (≈ 2n³/3) are now formalized (gaussExactSubs_closed, gaussExactFlops_closed). Remaining: formalize the back-substitution phase (≈ n²/2 operations) and compose it for the complete solve cost.",
+      "The back-substitution phase is now formalized (backSubFlops_eq: exactly n²) and composed with forward elimination for the complete solve cost (fullSolveFlops_closed: 6·flops + n = 4n³ + 3n², leading term 2n³/3), with back-substitution shown asymptotically negligible and the full solve still beating Cramer's rule for n ≥ 4. Remaining: a refined model separating multiplications from divisions in the full solve, or accounting for multiple right-hand sides.",
       "Does the exact count extend to blocked/partial-pivoting LU factorization, where row interchanges add a lower-order term but the leading (n³ − n)/3 multiplication count is unchanged?",
       "Can a matching lower bound be formalized — that no elimination-based dense solver uses asymptotically fewer than n³/3 multiplications — to complement this exact upper count?"
     ]
@@ -143,15 +153,30 @@
       "name": "gaussExact_beats_cramer",
       "statement": "4 ≤ n → gaussExactOps n < CramersComplexity.cramersRuleMuls n",
       "description": "The tighter exact model still beats Cramer's rule for n ≥ 4, a fortiori from the parent comparison."
+    },
+    {
+      "name": "backSubFlops_eq",
+      "statement": "backSubFlops n = n ^ 2",
+      "description": "The back-substitution flop count is exactly n²: n(n+1)/2 multiplications/divisions plus n(n−1)/2 subtractions, a clean O(n²) closed form."
+    },
+    {
+      "name": "fullSolveFlops_closed",
+      "statement": "6 * fullSolveFlops n + n = 4 * n ^ 3 + 3 * n ^ 2",
+      "description": "Subtraction-free closed form for the complete solve cost (forward elimination + back-substitution); leading term 2n³/3, equivalently fullSolveFlops n = (4n³ + 3n² − n)/6."
+    },
+    {
+      "name": "fullSolve_beats_cramer",
+      "statement": "4 ≤ n → fullSolveFlops n < CramersComplexity.cramersRuleMuls n",
+      "description": "Even with back-substitution included, solving by Gaussian elimination beats Cramer's rule for n ≥ 4, since the full solve cost is ≤ n³ = gaussMuls n."
     }
   ],
   "leanFile": {
     "path": "Proofs/CramersRuleOQ02OQ01.lean",
     "axiomCount": 0,
     "sorryCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 1,
-    "lineCount": 195
+    "theoremCount": 25,
+    "definitionCount": 7,
+    "lineCount": 333
   },
   "references": [
     {

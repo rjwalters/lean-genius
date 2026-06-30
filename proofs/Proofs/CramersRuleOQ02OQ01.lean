@@ -192,4 +192,142 @@ lemma gaussExactFlops_small :
   norm_num at h2 h3 h4 h5
   omega
 
+-- ============================================================
+-- Back-substitution cost and the full solve cost (OQ-01)
+-- ============================================================
+
+/-- Exact multiplication+division count of **back-substitution** on the
+    upper-triangular system `U x = b` produced by forward elimination.
+    Processing the rows from the bottom up, the row with `j` already-solved
+    unknowns to its right costs `j` multiplications (the dot product
+    `∑ U_{i,k}·x_k`) and `1` division (by the pivot `U_{i,i}`): `j + 1`
+    operations, summed as `j` ranges over `0, …, n−1`. -/
+def backSubOps (n : ℕ) : ℕ := ∑ j ∈ range n, (j + 1)
+
+/-- Exact **subtraction** count of back-substitution: the row with `j` solved
+    unknowns to its right subtracts the `j`-term dot product from `b_i`, one
+    subtraction per term. -/
+def backSubSubs (n : ℕ) : ℕ := ∑ j ∈ range n, j
+
+/-- Unfolding one back-substitution step (operations). -/
+lemma backSubOps_succ (n : ℕ) :
+    backSubOps (n + 1) = backSubOps n + (n + 1) := by
+  unfold backSubOps; rw [Finset.sum_range_succ]
+
+/-- Unfolding one back-substitution step (subtractions). -/
+lemma backSubSubs_succ (n : ℕ) :
+    backSubSubs (n + 1) = backSubSubs n + n := by
+  unfold backSubSubs; rw [Finset.sum_range_succ]
+
+/-- **Closed form for back-substitution operations.** `2 · backSubOps n = n² + n`,
+    i.e. `backSubOps n = n(n+1)/2` — the `O(n²)` multiplication/division cost of
+    back-substitution (lower order than the `~n³/3` of forward elimination). -/
+theorem backSubOps_closed (n : ℕ) : 2 * backSubOps n = n ^ 2 + n := by
+  induction n with
+  | zero => simp [backSubOps]
+  | succ m ih =>
+    calc 2 * backSubOps (m + 1)
+        = 2 * backSubOps m + 2 * (m + 1) := by rw [backSubOps_succ]; ring
+      _ = (m ^ 2 + m) + 2 * (m + 1) := by rw [ih]
+      _ = (m + 1) ^ 2 + (m + 1) := by ring
+
+/-- **Closed form for back-substitution subtractions.** `2 · backSubSubs n + n = n²`,
+    i.e. `backSubSubs n = n(n−1)/2`. -/
+theorem backSubSubs_closed (n : ℕ) : 2 * backSubSubs n + n = n ^ 2 := by
+  induction n with
+  | zero => simp [backSubSubs]
+  | succ m ih =>
+    calc 2 * backSubSubs (m + 1) + (m + 1)
+        = (2 * backSubSubs m + m) + (2 * m + 1) := by rw [backSubSubs_succ]; ring
+      _ = m ^ 2 + (2 * m + 1) := by rw [ih]
+      _ = (m + 1) ^ 2 := by ring
+
+/-- Total **back-substitution flop count**: operations (mult+div) plus subtractions. -/
+def backSubFlops (n : ℕ) : ℕ := backSubOps n + backSubSubs n
+
+/-- **The back-substitution flop count is exactly `n²`.**
+    The `n(n+1)/2` multiplications/divisions plus the `n(n−1)/2` subtractions sum to
+    `n²` exactly — a clean closed form with no truncated subtraction. -/
+theorem backSubFlops_eq (n : ℕ) : backSubFlops n = n ^ 2 := by
+  have h1 := backSubOps_closed n
+  have h2 := backSubSubs_closed n
+  unfold backSubFlops
+  omega
+
+/-- Concrete back-substitution flop counts: `n=2 ↦ 4`, `n=3 ↦ 9`, `n=4 ↦ 16`, `n=5 ↦ 25`. -/
+lemma backSubFlops_small :
+    backSubFlops 2 = 4 ∧ backSubFlops 3 = 9 ∧
+    backSubFlops 4 = 16 ∧ backSubFlops 5 = 25 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> (rw [backSubFlops_eq]; norm_num)
+
+/-- Total cost to **solve** a dense `n × n` linear system by Gaussian elimination:
+    the forward-elimination flops (`gaussExactFlops`, `≈ 2n³/3`) together with the
+    `O(n²)` back-substitution flops. -/
+def fullSolveFlops (n : ℕ) : ℕ := gaussExactFlops n + backSubFlops n
+
+/-- **Closed form for the full solve cost (subtraction-free).**
+    `6 · fullSolveFlops n + n = 4n³ + 3n²`, i.e. `fullSolveFlops n = (4n³ + 3n² − n)/6`.
+    The leading term is `2n³/3`: back-substitution's `n²` is asymptotically negligible. -/
+theorem fullSolveFlops_closed (n : ℕ) :
+    6 * fullSolveFlops n + n = 4 * n ^ 3 + 3 * n ^ 2 := by
+  have h1 := gaussExactFlops_closed n
+  have h2 := backSubFlops_eq n
+  unfold fullSolveFlops
+  omega
+
+/-- Concrete full-solve flop counts (elimination + back-substitution):
+    `n=2 ↦ 7`, `n=3 ↦ 22`, `n=4 ↦ 50`, `n=5 ↦ 95`. -/
+lemma fullSolveFlops_small :
+    fullSolveFlops 2 = 7 ∧ fullSolveFlops 3 = 22 ∧
+    fullSolveFlops 4 = 50 ∧ fullSolveFlops 5 = 95 := by
+  have h2 := fullSolveFlops_closed 2
+  have h3 := fullSolveFlops_closed 3
+  have h4 := fullSolveFlops_closed 4
+  have h5 := fullSolveFlops_closed 5
+  norm_num at h2 h3 h4 h5
+  omega
+
+/-- Back-substitution is asymptotically negligible: for `n ≥ 3` its flop count is
+    dominated by the forward-elimination flop count. `backSubFlops n ≤ gaussExactFlops n`. -/
+theorem backSubFlops_le_gaussFlops {n : ℕ} (hn : 3 ≤ n) :
+    backSubFlops n ≤ gaussExactFlops n := by
+  have hF := gaussExactFlops_closed n
+  have hB := backSubFlops_eq n
+  have hcube : 3 * n ^ 2 ≤ n ^ 3 := by
+    calc 3 * n ^ 2 ≤ n * n ^ 2 := by gcongr
+      _ = n ^ 3 := by ring
+  have hsq : n ≤ n ^ 2 := by
+    have h := Nat.pow_le_pow_right (show 1 ≤ n by omega) (show (1 : ℕ) ≤ 2 by norm_num)
+    simpa using h
+  omega
+
+/-- With back-substitution included, the full solve cost still stays below the parent's
+    `n³` model for `n ≥ 2` (back-substitution only adds lower-order `n²` work). -/
+theorem fullSolveFlops_le_cube {n : ℕ} (hn : 2 ≤ n) : fullSolveFlops n ≤ n ^ 3 := by
+  have hfs := fullSolveFlops_closed n
+  have hc : 3 * n ^ 2 ≤ 2 * n ^ 3 := by
+    have e : 2 * n ^ 3 = (2 * n) * n ^ 2 := by ring
+    rw [e]; gcongr; omega
+  omega
+
+/-- With back-substitution included, solving an `n × n` system by Gaussian elimination
+    still beats Cramer's rule for `n ≥ 4` — a fortiori, since the full solve cost is
+    `≤ n³ = gaussMuls n` and the parent already proved `gaussMuls n < cramersRuleMuls n`. -/
+theorem fullSolve_beats_cramer {n : ℕ} (hn : 4 ≤ n) :
+    fullSolveFlops n < CramersComplexity.cramersRuleMuls n :=
+  lt_of_le_of_lt (fullSolveFlops_le_cube (by omega))
+    (CramersComplexity.gauss_beats_cramer hn)
+
+/-- Summary of the full solve-cost analysis: the back-substitution flop count is exactly
+    `n²`, the total solve cost has leading term `2n³/3` (`6·flops + n = 4n³ + 3n²`),
+    back-substitution is dominated by forward elimination for `n ≥ 3`, and the full
+    solve still beats Cramer's rule for `n ≥ 4`. -/
+theorem fullSolve_summary :
+    (∀ n : ℕ, backSubFlops n = n ^ 2) ∧
+    (∀ n : ℕ, 6 * fullSolveFlops n + n = 4 * n ^ 3 + 3 * n ^ 2) ∧
+    (∀ n : ℕ, 3 ≤ n → backSubFlops n ≤ gaussExactFlops n) ∧
+    (∀ n : ℕ, 4 ≤ n → fullSolveFlops n < CramersComplexity.cramersRuleMuls n) :=
+  ⟨backSubFlops_eq, fullSolveFlops_closed,
+   fun _ h => backSubFlops_le_gaussFlops h, fun _ h => fullSolve_beats_cramer h⟩
+
 end CramersComplexityExact
