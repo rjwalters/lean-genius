@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-pbfm-oq03oq02-overview",
+    "proofId": "property-b-first-moment-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "concept",
+    "title": "Recoloring: the Deterministic Core of the Alteration Method",
+    "content": "Property B asks whether a k-uniform hypergraph is 2-colorable; Erdős's 1963 first-moment bound (the parent) guarantees it when there are < 2^(k-1) edges. Two strengthenings exist. The DELETION method (the sibling OQ-03) discards the monochromatic edges of a near-good coloring, exposing a 2-colorable SUBfamily. The harder RECOLORING method (this file) instead REPAIRS each bad edge by flipping a single vertex, achieving FULL 2-colorability of the whole family. Radhakrishnan–Srinivasan recolor probabilistically precisely because, in general, monochromatic edges share vertices, so flipping one edge's vertex can break another. This entry isolates the clean deterministic regime where that dependency vanishes: each monochromatic edge owns a PRIVATE vertex (in no other edge). Flipping the private vertices repairs every bad edge and disturbs nothing else. The remaining gap to full RS is exactly the removal of this privacy hypothesis via randomness — the analytic step the knowledge base scopes for later.",
+    "mathContext": "Deletion $\\to$ 2-colorable subfamily; recoloring (flip a private vertex per bad edge) $\\to$ full 2-colorability. Privacy hypothesis = deterministic shadow of the RS probabilistic alteration.",
+    "significance": "supporting",
+    "relatedConcepts": ["Property B", "alteration / recoloring method", "deletion method", "Radhakrishnan–Srinivasan", "first moment method"],
+    "prerequisites": ["Erdős's first-moment bound (parent)", "2-coloring of hypergraphs", "the deletion-method sibling"]
+  },
+  {
     "id": "ann-pbfm-oq03oq02-recoloring",
     "proofId": "property-b-first-moment-oq-03-oq-02",
     "range": { "startLine": 54, "endLine": 117 },
