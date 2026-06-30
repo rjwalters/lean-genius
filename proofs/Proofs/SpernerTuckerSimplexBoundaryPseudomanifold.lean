@@ -142,4 +142,52 @@ theorem boundary_simplex_hdoor {n : ℕ}
     #{i | d ⊆ Finset.univ.erase i} ≤ 2 :=
   (boundary_simplex_closed_incidence d hd).le
 
+/-! ### The general `hpair`: distinct top cells share a *unique* door, all `n`
+
+The `n = 3` `hpair`/`simplex_degree` facts above were pinned to `∂Δ⁴` by `decide`.  The
+pair bound is in fact dimension-free and sharpens to an equality, completing the
+closed-pseudomanifold characterization of `∂Δ^{n+1}` begun by
+`boundary_simplex_closed_incidence`.  Two distinct top cells `Sᵢ = univ.erase i` and
+`Sⱼ = univ.erase j` (`(n+1)`-subsets of the `(n+2)`-vertex set) meet in the unique
+`n`-subset `univ \ {i,j} = (univ.erase i).erase j`: an `n`-vertex door `d` lies in both
+iff `i ∉ d` and `j ∉ d`, and the only such `n`-set is the full complement of `{i,j}`,
+which already has exactly `n` elements. -/
+
+/-- **General `hpair` (unique shared door) for `∂Δ^{n+1}`, all `n`.**  Two distinct top
+cells `Sᵢ = univ.erase i`, `Sⱼ = univ.erase j` of `∂Δ^{n+1}` share *exactly one* door:
+the unique `n`-vertex face `univ \ {i,j} = (univ.erase i).erase j`.  Dimension-free, no
+per-dimension `decide` — the generalization of the `n = 3` `hpair`/`simplex_degree` facts. -/
+theorem boundary_simplex_shared_door {n : ℕ} (i j : Fin (n + 2)) (hij : i ≠ j) :
+    #{d : Finset (Fin (n + 2)) |
+        d.card = n ∧ d ⊆ Finset.univ.erase i ∧ d ⊆ Finset.univ.erase j} = 1 := by
+  -- the common refinement `univ \ {i,j}` already has exactly `n` vertices
+  have hcard : ((Finset.univ.erase i).erase j).card = n := by
+    rw [Finset.card_erase_of_mem (Finset.mem_erase.2 ⟨hij.symm, Finset.mem_univ j⟩),
+      Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_fin]
+    omega
+  have hset : (Finset.univ.filter (fun d : Finset (Fin (n + 2)) =>
+        d.card = n ∧ d ⊆ Finset.univ.erase i ∧ d ⊆ Finset.univ.erase j))
+      = {(Finset.univ.erase i).erase j} := by
+    ext d
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]
+    constructor
+    · rintro ⟨hdc, hdi, hdj⟩
+      have hsub : d ⊆ (Finset.univ.erase i).erase j := by
+        intro x hx
+        exact Finset.mem_erase.2 ⟨(Finset.mem_erase.1 (hdj hx)).1, hdi hx⟩
+      exact Finset.eq_of_subset_of_card_le hsub (by rw [hcard, hdc])
+    · rintro rfl
+      refine ⟨hcard, ?_, ?_⟩
+      · exact Finset.erase_subset _ _
+      · exact Finset.erase_subset_erase j (Finset.erase_subset _ _)
+  rw [hset, Finset.card_singleton]
+
+/-- **General `hpair` bound for `∂Δ^{n+1}`, all `n`.**  The `≤ 1` form of
+`boundary_simplex_shared_door`: distinct top cells share at most one door, in every
+dimension — the dimension-free counterpart of the `n = 3` `hpair` above. -/
+theorem boundary_simplex_hpair {n : ℕ} (i j : Fin (n + 2)) (hij : i ≠ j) :
+    #{d : Finset (Fin (n + 2)) |
+        d.card = n ∧ d ⊆ Finset.univ.erase i ∧ d ⊆ Finset.univ.erase j} ≤ 1 :=
+  (boundary_simplex_shared_door i j hij).le
+
 end SpernerTuckerSimplexBoundaryPseudomanifold

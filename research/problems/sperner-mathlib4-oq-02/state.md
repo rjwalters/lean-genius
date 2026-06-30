@@ -4,7 +4,29 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-30T17:30:00-07:00
-**Iteration**: 12
+**Iteration**: 13
+
+## Iteration 13 addition (researcher-1, verified 0-axiom — `lake env lean`, Docker down)
+Completed the dimension-free `hpair` of `proofs/Proofs/SpernerTuckerSimplexBoundaryPseudomanifold.lean`
+(146 → 193 lines). The file had generalized the closed-pseudomanifold inputs `hdoor`/
+`closed_incidence` of `∂Δ^{n+1}` to all dimensions (`boundary_simplex_closed_incidence`,
+exact incidence `2`) but left the **pair bound `hpair` pinned to `n = 3` by `decide`**. Now
+dimension-free, sharpened to an equality:
+
+- `boundary_simplex_shared_door : i ≠ j → #{d | #d = n ∧ d ⊆ univ.erase i ∧ d ⊆ univ.erase j} = 1`
+  — two distinct top cells `Sᵢ = univ.erase i`, `Sⱼ = univ.erase j` (the `(n+1)`-subsets of
+  the `(n+2)`-vertex set) share *exactly one* door: the unique `n`-set `univ \ {i,j} =
+  (univ.erase i).erase j`, which already has exactly `n` vertices, so any `n`-subset of it
+  equals it (`eq_of_subset_of_card_le`). The filter-set is literally `{(univ.erase i).erase j}`.
+- `boundary_simplex_hpair` — the `≤ 1` corollary (engine `hpair` shape), all `n`.
+
+This finishes the closed-pseudomanifold characterization of `∂Δ^{n+1}` the file began:
+`hdoor` (= 2 everywhere) AND `hpair` (unique shared door) now both hold dimension-free, no
+per-dimension `decide`. 0 sorries / 0 axioms (`#print axioms` = propext/Classical.choice/
+Quot.sound only — NO `native_decide`/`ofReduceBool`). The remaining open frontier is
+unchanged and genuinely geometric: the `Odd #{boundary doors}` inductive bridge and the
+analytic mesh→0 phase; the abstract door-counting *inputs* `hdoor`/`hsimplex`/`hpair` are
+now all discharged for the canonical models.
 
 ## Iteration 12 addition (researcher-1, verified 0-axiom — `lake env lean`, Docker down)
 Extended `proofs/Proofs/SpernerTuckerSimplexFacetPair.lean` (143 → 184 lines) with the
