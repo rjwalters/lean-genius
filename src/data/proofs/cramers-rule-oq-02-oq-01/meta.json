@@ -38,15 +38,17 @@
       "Subtraction-free closed form gaussExactOps_closed: 3·gaussExactOps n + n = n³, proved by induction with a ℕ-semiring calc (ring + Finset.sum_range_succ), no truncated subtraction",
       "Division form gaussExactOps_eq_div: gaussExactOps n = (n³ − n)/3, the textbook n³/3 flop count, recovered via Nat.mul_div_cancel_left",
       "Tightening witnesses: gaussExactOps_le_cube (≤ n³, consistency with parent) and gaussExactOps_lt_cube (strict for n ≥ 2, the factor-3 gap is real)",
-      "Comparison preserved: gaussExact_beats_cramer shows the tighter exact model still beats Cramer's rule for n ≥ 4 a fortiori, via the parent's gauss_beats_cramer"
+      "Comparison preserved: gaussExact_beats_cramer shows the tighter exact model still beats Cramer's rule for n ≥ 4 a fortiori, via the parent's gauss_beats_cramer",
+      "Additions/subtractions count gaussExactSubs n = ∑_{j<n} j² (one multiply–subtract pair per trailing-entry update) with subtraction-free closed form gaussExactSubs_closed: 6·gaussExactSubs n + 3·n² = 2·n³ + n, i.e. (2n³−3n²+n)/6 ≈ n³/3",
+      "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks"
     ],
     "dateAdded": "2026-06-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 133,
+    "lineCount": 195,
     "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (the small concrete counts gaussExactOps_small are derived from the closed form via omega rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
-    "theoremCount": 8,
-    "definitionCount": 1
+    "theoremCount": 13,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "**The n³/3 Flop Count**\n\nEvery numerical-linear-algebra textbook states that solving an n×n linear system by Gaussian elimination (equivalently LU factorization) costs about n³/3 multiplications/divisions — one third the naive n³ estimate. The parent entry (cramers-rule-oq-02) compared Cramer's rule against Gaussian elimination but used the deliberately loose upper model gaussMuls n = n³, leaving the precise leading constant unformalized. This entry supplies the exact count.\n\n**Where the n³/3 Comes From**\n\nForward elimination runs in steps k = 1, …, n−1. At step k the pivot is at (k,k) and there are n−k rows beneath it. For each such row we compute one multiplier (a division) and update its n−k trailing entries (a multiplication each), for (n−k) + (n−k)² operations. Summing over k and substituting j = n−k gives ∑_{j=1}^{n−1} (j² + j) = (n−1)·n·(n+1)/3 = (n³ − n)/3.",
@@ -112,7 +114,7 @@
     "summary": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
     "implications": "Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian elimination beats Cramer's rule for n ≥ 4 — carries over to the exact model for free, with no re-proof needed. More broadly, the entry demonstrates a reusable pattern for formalizing exact flop counts: state the polynomial identity in subtraction-free additive form (k·sum + remainder = closed form) so the induction stays in the ℕ semiring and closes by ring, then recover the conventional division form as a one-line corollary. The same template applies to the ~2n³/3 LU-factorization count, the n²/2 back-substitution count, and other textbook complexity figures that are usually quoted asymptotically but rarely formalized exactly.",
     "openQuestions": [
-      "Can the back-substitution phase (≈ n²/2 operations) and the full solve cost (forward elimination + back-substitution) be formalized with the same subtraction-free closed-form technique and composed with this result?",
+      "The additions/subtractions count (≈ n³/3) and the full forward-elimination flop total (≈ 2n³/3) are now formalized (gaussExactSubs_closed, gaussExactFlops_closed). Remaining: formalize the back-substitution phase (≈ n²/2 operations) and compose it for the complete solve cost.",
       "Does the exact count extend to blocked/partial-pivoting LU factorization, where row interchanges add a lower-order term but the leading (n³ − n)/3 multiplication count is unchanged?",
       "Can a matching lower bound be formalized — that no elimination-based dense solver uses asymptotically fewer than n³/3 multiplications — to complement this exact upper count?"
     ]
@@ -147,9 +149,9 @@
     "path": "Proofs/CramersRuleOQ02OQ01.lean",
     "axiomCount": 0,
     "sorryCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 13,
     "definitionCount": 1,
-    "lineCount": 133
+    "lineCount": 195
   },
   "references": [
     {
