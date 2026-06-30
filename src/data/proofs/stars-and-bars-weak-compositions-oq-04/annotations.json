@@ -108,5 +108,71 @@
       "exact_mod_cast",
       "Finset.antidiagonal"
     ]
+  },
+  {
+    "id": "ann-pascal-recurrence",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 144,
+      "endLine": 167
+    },
+    "type": "theorem",
+    "title": "The Pascal recurrence (additive structure)",
+    "content": "card_weakComposition_recurrence records the additive dual of the convolution. A weak composition of n+1 into k+1 parts splits by whether its last part is zero — leaving a weak composition of n+1 into k parts — or positive, which after subtracting 1 from the last part becomes a weak composition of n into k+1 parts. Hence #(k+1 parts, total n+1) = #(k parts, total n+1) + #(k+1 parts, total n). This is the negative-binomial form of Pascal's rule C(n+k+1, n+1) = C(n+k, n+1) + C(n+k, n); the proof rewrites all three counts via the parent card_weakComposition, normalises the index arithmetic with omega, and applies Nat.choose_succ_succ.",
+    "mathContext": "$\\binom{n+k+1}{n+1} = \\binom{n+k}{n+1} + \\binom{n+k}{n}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Pascal's rule",
+      "recurrence relation",
+      "last-part classification"
+    ],
+    "prerequisites": [
+      "Nat.choose_succ_succ",
+      "card_weakComposition"
+    ]
+  },
+  {
+    "id": "ann-partial-sum",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 168,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "The hockey-stick partial sum",
+    "content": "card_weakComposition_partial_sum telescopes the Pascal recurrence. Classifying a weak composition of n into k+1 parts by the value of its last part (which ranges over 0…n, leaving a weak composition of the complementary total into the first k parts) gives #(k+1 parts, total n) = ∑_{m=0}^{n} #(k parts, total m). Proved by induction on n: the base case is both counts equal to 1, and the successor step combines Finset.sum_range_succ with card_weakComposition_recurrence.",
+    "mathContext": "$\\#(k{+}1\\text{ parts, total }n) = \\sum_{m=0}^{n} \\#(k\\text{ parts, total }m)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "hockey-stick identity",
+      "telescoping",
+      "induction"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ",
+      "card_weakComposition_recurrence"
+    ]
+  },
+  {
+    "id": "ann-negbinomial-hockey-stick",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 189,
+      "endLine": 203
+    },
+    "type": "theorem",
+    "title": "The negative-binomial hockey-stick identity",
+    "content": "negBinomial_hockey_stick is the pure-arithmetic reading of card_weakComposition_partial_sum, obtained by substituting the closed form C(m+k−1, m) for each count via card_weakComposition: ∑_{m=0}^{n} C(m+k−1, m) = C(n+k, n). It is the negative-binomial analogue of the classical hockey-stick (Christmas stocking) identity ∑_m C(m, r) = C(n+1, r+1), and the additive counterpart of the entry's multiplicative Vandermonde convolution.",
+    "mathContext": "$\\sum_{m=0}^{n} \\binom{m+k-1}{m} = \\binom{n+k}{n}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "hockey-stick identity",
+      "negative binomial",
+      "partial sums of binomial coefficients"
+    ],
+    "prerequisites": [
+      "card_weakComposition_partial_sum",
+      "card_weakComposition"
+    ]
   }
 ]

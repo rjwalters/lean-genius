@@ -31,6 +31,21 @@ Insights accumulated during research on this problem.
   - Technique worth reusing: to get a ℕ binomial-convolution identity, prove the GF
     identity, take `congrArg (coeff n)`, `simp [coeff_mul, <coeff-of-W>]`, then
     `exact_mod_cast` — avoids all truncated-ℕ-subtraction bookkeeping inside binomials.
+- **OQ-04 additive-structure layer (2026-06-30, same PR #31639, VERIFIED 0-axiom):**
+  the *additive* complement to the multiplicative convolution above, stated directly
+  on the combinatorial counts and reduced to Pascal's rule on `Nat.choose` (no Equiv,
+  no GF needed):
+  - `card_weakComposition_recurrence`: `#(k+1, n+1) = #(k, n+1) + #(k+1, n)` —
+    last-part-zero classification, = negative-binomial Pascal
+    `C(n+k+1, n+1) = C(n+k, n+1) + C(n+k, n)`. Proof: rewrite all 3 counts via parent
+    `card_weakComposition`, `show …`-normalise indices, `Nat.choose_succ_succ`.
+  - `card_weakComposition_partial_sum`: `#(k+1, n) = ∑_{m≤n} #(k, m)` — last-part-value
+    classification, by induction on n (`sum_range_succ` + the recurrence).
+  - `negBinomial_hockey_stick`: `∑_{m≤n} C(m+k−1, m) = C(n+k, n)` — pure-arithmetic
+    reading (negative-binomial hockey-stick / Christmas-stocking identity).
+  - GOTCHA: after `Nat.choose_succ_succ`, `omega` fails — the lemma emits `n.succ`
+    while the goal has `n+1`, so omega atomises them as distinct binomials. Fix:
+    `simp only [Nat.succ_eq_add_one]` before `omega`.
 
 [Insights from research attempts will be accumulated here]
 

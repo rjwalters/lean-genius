@@ -129,3 +129,75 @@ theorem vandermonde_negBinomial (k₁ k₂ n : ℕ) :
   simp only [PowerSeries.coeff_mul, hWcoeff] at hcoeff
   -- hcoeff is now the ℤ-cast of the desired ℕ identity; transport down.
   exact_mod_cast hcoeff
+
+/-!
+## Additive structure: the Pascal recurrence and hockey-stick partial sum
+
+Where `vandermonde_negBinomial` records the *multiplicative* structure of the
+weak-composition counts (the convolution coming from `W(k₁)·W(k₂) = W(k₁+k₂)`), the
+counts also satisfy the dual *additive* structure: a single Pascal recurrence and its
+telescoped consequence, the hockey-stick partial sum. Both are stated directly about
+the combinatorial counts `#{f : Fin k → ℕ // ∑ i, f i = n}` and reduce to the closed
+form `C(n + k − 1, n)` of the parent via Pascal's rule on binomial coefficients.
+-/
+
+open StarsAndBars in
+/-- **Pascal recurrence for weak compositions (last-part classification).**
+A weak composition of `n + 1` into `k + 1` parts either has its last part equal to
+`0` — in which case the first `k` parts form a weak composition of `n + 1` into `k`
+parts — or has a positive last part, which after subtracting `1` becomes a weak
+composition of `n` into `k + 1` parts. Hence the counts satisfy
+
+  `#(k+1 parts, total n+1) = #(k parts, total n+1) + #(k+1 parts, total n)`.
+
+This is the negative-binomial form of Pascal's rule
+`C(n+k+1, n+1) = C(n+k, n+1) + C(n+k, n)`, and is the additive recurrence underlying
+the whole stars-and-bars table. -/
+theorem card_weakComposition_recurrence (k n : ℕ) :
+    Fintype.card {f : Fin (k + 1) → ℕ // ∑ i, f i = n + 1}
+      = Fintype.card {f : Fin k → ℕ // ∑ i, f i = n + 1}
+        + Fintype.card {f : Fin (k + 1) → ℕ // ∑ i, f i = n} := by
+  rw [card_weakComposition, card_weakComposition, card_weakComposition,
+    show n + 1 + (k + 1) - 1 = n + k + 1 by omega,
+    show n + 1 + k - 1 = n + k by omega,
+    show n + (k + 1) - 1 = n + k by omega, Nat.choose_succ_succ (n + k) n]
+  simp only [Nat.succ_eq_add_one]
+  omega
+
+open StarsAndBars in
+/-- **Hockey-stick partial sum for weak compositions (last-part value).**
+Classifying a weak composition of `n` into `k + 1` parts by the value of its last
+part (which ranges over `0, 1, …, n`, leaving a weak composition of the complementary
+total into the first `k` parts) gives
+
+  `#(k+1 parts, total n) = ∑_{m = 0}^{n} #(k parts, total m)`.
+
+Proved by induction on `n` using the Pascal recurrence
+`card_weakComposition_recurrence`. -/
+theorem card_weakComposition_partial_sum (k n : ℕ) :
+    Fintype.card {f : Fin (k + 1) → ℕ // ∑ i, f i = n}
+      = ∑ m ∈ Finset.range (n + 1),
+          Fintype.card {f : Fin k → ℕ // ∑ i, f i = m} := by
+  induction n with
+  | zero =>
+    rw [Finset.sum_range_one, card_weakComposition, card_weakComposition,
+      Nat.choose_zero_right, Nat.choose_zero_right]
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ← ih, card_weakComposition_recurrence]
+    omega
+
+open StarsAndBars in
+/-- **Hockey-stick identity for negative-binomial coefficients.**
+The pure-arithmetic reading of `card_weakComposition_partial_sum`, obtained by
+substituting the closed form `C(m + k − 1, m)` for each count:
+
+  `∑_{m = 0}^{n} C(m + k − 1, m) = C(n + k, n)`.
+
+This is the negative-binomial analogue of the classical hockey-stick (Christmas
+stocking) identity `∑_{m} C(m, r) = C(n+1, r+1)`. -/
+theorem negBinomial_hockey_stick (k n : ℕ) :
+    ∑ m ∈ Finset.range (n + 1), (m + k - 1).choose m = (n + k).choose n := by
+  have h := card_weakComposition_partial_sum k n
+  simp only [card_weakComposition] at h
+  rw [show n + (k + 1) - 1 = n + k by omega] at h
+  exact h.symm
