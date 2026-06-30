@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Multiplicative structure of the weak-composition generating function",
+    "content": "OQ-01 identified the enumerative generating function W k = ∑ₙ #{f : Fin k → ℕ // ∑ᵢ f i = n}·Xⁿ with Mathlib's algebraic series invOneSubPow S k = 1/(1−X)ᵏ but stopped at a single exponent. This entry records how the family k ↦ W k multiplies: the convolution law W k₁·W k₂ = W (k₁+k₂), the power law W k = (W 1)ᵏ, and — reading off coefficients — the negative-binomial Vandermonde convolution ∑_{i+j=t} C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1, t). Combinatorially the first is concatenation of weak compositions, the second is 'k independent single parts', and the third is the coefficient bookkeeping of the Cauchy product.",
+    "mathContext": "$W_{k_1}\\cdot W_{k_2}=W_{k_1+k_2},\\quad W_k=(W_1)^k,\\quad \\sum_{i+j=t}\\binom{i+k_1-1}{i}\\binom{j+k_2-1}{j}=\\binom{t+k_1+k_2-1}{t}.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "generating function",
+      "Cauchy product / convolution",
+      "negative-binomial series",
+      "Chu–Vandermonde identity",
+      "invOneSubPow"
+    ],
+    "prerequisites": [
+      "OQ-01 identification W k = invOneSubPow.val",
+      "formal power series over a ring",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-coeff-formula",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 56,
+      "endLine": 61
+    },
+    "type": "technique",
+    "title": "Coefficient reader: [Xⁿ] W k = C(n+k−1, n)",
+    "content": "coeff_weakCompositionGenFun_eq_choose chains two imported facts: OQ-01's coeff_weakCompositionGenFun says the n-th coefficient of W k is the cast of the count #{f : Fin k → ℕ // ∑ f = n}, and the grandparent's StarsAndBars.card_weakComposition says that count is C(n+k−1, n). The rewrite goes straight under the Nat.cast wrapper, so no positivity is required (card_weakComposition is unrestricted in k). This lemma is the reusable bridge that lets the coefficient-extraction step of the convolution turn each power-series coefficient into a binomial number.",
+    "mathContext": "$[X^n]\\,W_k = \\bigl(\\tbinom{n+k-1}{n} : S\\bigr).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "PowerSeries.coeff",
+      "card_weakComposition",
+      "Nat.cast"
+    ],
+    "prerequisites": [
+      "coeff_weakCompositionGenFun (OQ-01)",
+      "card_weakComposition (parent)"
+    ]
+  },
+  {
+    "id": "ann-convolution-law",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 63,
+      "endLine": 74
+    },
+    "type": "key-step",
+    "title": "Convolution law via invOneSubPow_add",
+    "content": "weakCompositionGenFun_mul is the exponent-additivity of W. For positive k₁, k₂ the three generating functions are rewritten through OQ-01's weakCompositionGenFun_eq_invOneSubPow into vals of invOneSubPow (the exponent k₁+k₂ > 0 is discharged by omega). Mathlib's invOneSubPow_add factors invOneSubPow S (k₁+k₂) as invOneSubPow S k₁ · invOneSubPow S k₂ in the unit group, and Units.val_mul distributes the value coercion, leaving both sides syntactically equal. The point: because OQ-01 proved an equality of power series, the unit-level multiplicativity of invOneSubPow transfers verbatim — no combinatorial concatenation argument is needed.",
+    "mathContext": "$\\tfrac{1}{(1-X)^{k_1}}\\cdot\\tfrac{1}{(1-X)^{k_2}}=\\tfrac{1}{(1-X)^{k_1+k_2}}.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "invOneSubPow_add",
+      "Units.val_mul",
+      "exponent additivity"
+    ],
+    "prerequisites": [
+      "weakCompositionGenFun_eq_invOneSubPow (OQ-01)",
+      "units of a commutative ring"
+    ]
+  },
+  {
+    "id": "ann-power-law",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "key-step",
+    "title": "Power law W k = (W 1)ᵏ — answering OQ-01's open question",
+    "content": "weakCompositionGenFun_eq_pow exhibits the whole family as powers of the single-part series. The unit equality invOneSubPow S k = (invOneSubPow S 1)^k is obtained by rewriting both sides through invOneSubPow_eq_inv_one_sub_pow — which presents invOneSubPow S d as the d-th power of the fixed unit (1−X)⁻¹ — and simplifying the inner pow_one. Transporting to generating functions via weakCompositionGenFun_eq_invOneSubPow and Units.val_pow_eq_pow_val gives W k = (W 1)ᵏ. Since W 1 = 1/(1−X) = ∑ₙ Xⁿ, this is the geometric-series factorization flagged as OQ-01's first open question: a weak composition into k parts is an independent choice of one nonnegative integer per part.",
+    "mathContext": "$W_k=(W_1)^k,\\qquad W_1=\\tfrac{1}{1-X}=\\sum_n X^n.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "invOneSubPow_eq_inv_one_sub_pow",
+      "Units.val_pow_eq_pow_val",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "weakCompositionGenFun_eq_invOneSubPow (OQ-01)",
+      "powers in the unit group"
+    ]
+  },
+  {
+    "id": "ann-vandermonde",
+    "proofId": "stars-and-bars-weak-compositions-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 106
+    },
+    "type": "key-step",
+    "title": "Negative-binomial Vandermonde convolution by coefficient extraction",
+    "content": "weakComposition_convolution turns the analytic product law into a finite binomial identity. Over S = ℤ, take the coefficient of Xᵗ on both sides of weakCompositionGenFun_mul: PowerSeries.coeff_mul rewrites the left coefficient as ∑_{(i,j) ∈ antidiagonal t} coeff i (W k₁)·coeff j (W k₂), then simp with coeff_weakCompositionGenFun_eq_choose replaces every coefficient by its binomial cast. The resulting ℤ-equation is the cast of a ℕ-identity, so exact_mod_cast lands ∑_{i+j=t} C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1, t). No bijection is built — the convolution is a free consequence of the Cauchy product. This is the negative-binomial form of Chu–Vandermonde, not present in Mathlib.",
+    "mathContext": "$\\sum_{i+j=t}\\binom{i+k_1-1}{i}\\binom{j+k_2-1}{j}=\\binom{t+k_1+k_2-1}{t}.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "PowerSeries.coeff_mul",
+      "Finset.antidiagonal",
+      "Nat.cast injectivity",
+      "Chu–Vandermonde identity"
+    ],
+    "prerequisites": [
+      "coeff_weakCompositionGenFun_eq_choose",
+      "weakCompositionGenFun_mul",
+      "exact_mod_cast / push_cast"
+    ]
+  }
+]

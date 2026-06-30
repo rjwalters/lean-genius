@@ -1,0 +1,135 @@
+{
+  "id": "stars-and-bars-weak-compositions-oq-04",
+  "title": "The Convolution Law for Weak Compositions: W(k₁)·W(k₂) = W(k₁+k₂) and the Negative-Binomial Vandermonde Identity",
+  "slug": "stars-and-bars-weak-compositions-oq-04",
+  "description": "The sibling entry stars-and-bars-weak-compositions-oq-01 identified the ordinary generating function of the weak-composition counts, W k = ∑ₙ #{f : Fin k → ℕ // ∑ᵢ f i = n} · Xⁿ ∈ S⟦X⟧, with Mathlib's algebraic series invOneSubPow S k = 1/(1−X)ᵏ, but stopped at the single-exponent statement. This entry records the MULTIPLICATIVE structure of the family k ↦ W k and reads off its enumerative shadow. (1) Convolution / exponent-additivity (weakCompositionGenFun_mul): W k₁ · W k₂ = W (k₁+k₂) for k₁,k₂ > 0 — combinatorially the concatenation of a weak composition into k₁ parts with one into k₂ parts, algebraically the exponent-additivity invOneSubPow_add of (1−X)⁻ᵏ. (2) Power law (weakCompositionGenFun_eq_pow): W k = (W 1)ᵏ for k > 0 — k independent single parts, each with generating function W 1 = 1/(1−X), multiply. This directly answers the first open question of OQ-01. (3) Negative-binomial Vandermonde convolution (weakComposition_convolution): reading off the coefficient of Xᵗ in the product law gives the finite binomial identity ∑_{(i,j) ∈ antidiagonal t} C(i+k₁−1, i)·C(j+k₂−1, j) = C(t+(k₁+k₂)−1, t), the stars-and-bars / negative-binomial form of the Chu–Vandermonde convolution (distinct from the standard C(m+n,r)=∑C(m,i)C(n,r−i)), which is not recorded in Mathlib. The generating-function bridge of OQ-01 turns the analytic product law into this finite combinatorial identity for free.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.PowerSeries.WellKnown",
+      "Mathlib.Tactic",
+      "Proofs.StarsAndBarsWeakCompositions",
+      "Proofs.StarsAndBarsWeakCompositionsOQ01"
+    ],
+    "opens": [
+      "Finset",
+      "PowerSeries"
+    ],
+    "namespace": "StarsAndBarsGenFun",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/StarsAndBarsWeakCompositionsOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StarsAndBarsWeakCompositionsOQ04.lean",
+    "tags": [
+      "combinatorics",
+      "enumerative-combinatorics",
+      "generating-functions",
+      "stars-and-bars",
+      "weak-compositions",
+      "power-series",
+      "negative-binomial-series",
+      "binomial-coefficients",
+      "vandermonde-convolution",
+      "counting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-30",
+    "relatedProblems": [
+      {
+        "id": "stars-and-bars-weak-compositions-oq-01",
+        "relationship": "Direct parent. OQ-01 identified the enumerative generating function W k of the weak-composition counts with Mathlib's algebraic series invOneSubPow S k = 1/(1−X)ᵏ. This entry builds on that identification to establish the multiplicative law W k₁ · W k₂ = W (k₁+k₂) and the power law W k = (W 1)ᵏ, the latter answering OQ-01's first listed open question (the geometric-series factorization of invOneSubPow as a k-fold product, re-deriving the count via coeff_mul). It then extracts the negative-binomial Vandermonde convolution by reading off coefficients."
+      },
+      {
+        "id": "stars-and-bars-weak-compositions",
+        "relationship": "Grandparent. The base entry supplies card_weakComposition (the count C(n+k−1, n)) and the Fintype instance on the summing subtype, reused here at the coefficient level to convert each power-series coefficient into a binomial number before casting the product identity back to ℕ."
+      },
+      {
+        "id": "stars-and-bars-weak-compositions-oq-02",
+        "relationship": "Sibling refinement (bounded parts). OQ-02 multiplies the 1/(1−X)ᵏ denominator by the numerator (1−X^{b+1})ᵏ to bound each part by b. The convolution law proved here is the unbounded-part archetype: the same multiplicativity W k₁·W k₂ = W (k₁+k₂) governs how the bounded family composes when the bounds agree."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 106,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All four public theorems — coeff_weakCompositionGenFun_eq_choose, weakCompositionGenFun_mul (W k₁·W k₂ = W (k₁+k₂)), weakCompositionGenFun_eq_pow (W k = (W 1)ᵏ), and weakComposition_convolution (the negative-binomial Vandermonde identity) — were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The multiplicative laws require 0 < k₁, 0 < k₂ (resp. 0 < k), inherited from OQ-01's identification W k = invOneSubPow.val, which is stated for positive exponents (the k = 0 case is the constant series 1, a separate degenerate branch). The new content beyond Mathlib and the imported parents is twofold: (i) the multiplicative/power structure of the family k ↦ W k, obtained by transporting Mathlib's invOneSubPow_add and invOneSubPow_eq_inv_one_sub_pow through OQ-01's identification; and (ii) the resulting finite binomial identity ∑_{i+j=t} C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1,t), proved by taking the coefficient of Xᵗ over ℤ via PowerSeries.coeff_mul and casting back to ℕ with exact_mod_cast. This negative-binomial convolution is not in Mathlib. Sanity check: at k₁ = k₂ = 1 it reads ∑_{i+j=t} 1·1 = t+1 = C(t+1, t), the t+1 ways to split t = i + j.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The ordinary generating function (1−x)⁻ᵏ = ∑ₙ C(n+k−1, n) xⁿ is the k-fold product of the geometric series 1/(1−x), reflecting that a weak composition of n into k parts is an independent choice of one geometric factor per part. Multiplying generating functions corresponds to convolving coefficient sequences (the Cauchy product), so the identity (1−x)^{-k₁}·(1−x)^{-k₂} = (1−x)^{-(k₁+k₂)} — itself just the exponent law for powers — encodes, coefficient by coefficient, the convolution ∑_{i+j=t} C(i+k₁−1, i)·C(j+k₂−1, j) = C(t+k₁+k₂−1, t). This is the negative-binomial sibling of the Chu–Vandermonde identity C(m+n, r) = ∑ᵢ C(m, i)·C(n, r−i): both are coefficient extractions from a multiplicative law for generating functions, the former from (1−x)⁻ᵏ and the latter from (1+x)ᵏ. The combinatorial reading is concatenation: a weak composition into k₁+k₂ parts of total t splits uniquely, at the boundary between the first k₁ parts and the last k₂, into a weak composition of some i into k₁ parts and one of t−i into k₂ parts.",
+    "problemStatement": "Establish the multiplicative structure of the weak-composition generating function family: prove W(k₁)·W(k₂) = W(k₁+k₂) and W(k) = W(1)ᵏ in S⟦X⟧, and extract the resulting finite binomial identity ∑_{(i,j) ∈ antidiagonal t} C(i+k₁−1, i)·C(j+k₂−1, j) = C(t+(k₁+k₂)−1, t).",
+    "text": "The parent entry OQ-01 proved weakCompositionGenFun_eq_invOneSubPow: for 0 < k, the enumerative generating function W k of weak-composition counts equals (invOneSubPow S k).val, Mathlib's algebraic series 1/(1−X)ᵏ. Mathlib also proves invOneSubPow_add : invOneSubPow S (d+e) = invOneSubPow S d · invOneSubPow S e and invOneSubPow_eq_inv_one_sub_pow exhibiting invOneSubPow S d as a d-th power of the unit (1−X)⁻¹. Transporting these two algebraic facts through OQ-01's identification gives the convolution law and the power law for W. PowerSeries.coeff_mul then expands the coefficient of Xᵗ in a product as a sum over antidiagonal t, and OQ-01's coefficient formula turns each factor into a negative-binomial number; working over ℤ and casting back to ℕ yields the convolution identity as a statement about natural numbers.",
+    "proofStrategy": "coeff_weakCompositionGenFun_eq_choose combines OQ-01's coeff_weakCompositionGenFun with the parent's card_weakComposition to give coeff n (W k) = (C(n+k−1, n) : S) for every k (no positivity needed: card_weakComposition is unrestricted). weakCompositionGenFun_mul rewrites all three generating functions via weakCompositionGenFun_eq_invOneSubPow (each needing its exponent positive, with k₁+k₂ > 0 by omega), then closes with Mathlib's invOneSubPow_add and Units.val_mul. weakCompositionGenFun_eq_pow first shows invOneSubPow S k = (invOneSubPow S 1)^k by rewriting both sides through invOneSubPow_eq_inv_one_sub_pow and pow_one, then transports to W via Units.val_pow_eq_pow_val. weakComposition_convolution takes the coefficient of Xᵗ on both sides of weakCompositionGenFun_mul over S = ℤ: PowerSeries.coeff_mul expands the left side as ∑_{(i,j) ∈ antidiagonal t} coeff i (W k₁) · coeff j (W k₂), simp [coeff_weakCompositionGenFun_eq_choose] rewrites every coefficient as a binomial cast, and exact_mod_cast strips the ℤ-casts to land the identity in ℕ.",
+    "keyInsights": [
+      "**Multiplicativity is inherited, not reproved**: the convolution law W k₁·W k₂ = W (k₁+k₂) is not a fresh combinatorial argument — it is Mathlib's invOneSubPow_add (the exponent law for (1−X)⁻ᵏ) pulled back across OQ-01's identification of the enumerative series with the algebraic one. This is the payoff of having proved an *equality of power series* in OQ-01 rather than a mere coefficientwise numeric agreement: every algebraic identity for invOneSubPow transfers verbatim.",
+      "**The power law answers OQ-01's open question**: weakCompositionGenFun_eq_pow (W k = (W 1)ᵏ) is exactly the geometric-series factorization flagged as the first open question of OQ-01. A weak composition into k parts is an independent choice of one nonnegative integer per part, and W 1 = 1/(1−X) = ∑ₙ Xⁿ is the generating function of a single part, so the k parts multiply.",
+      "**Coefficient extraction is the bridge from analysis to combinatorics**: the finite identity ∑_{i+j=t} C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1,t) is a purely combinatorial statement, but it is obtained with no combinatorial bijection — only PowerSeries.coeff_mul applied to the analytic product law and a cast back to ℕ. The generating-function formalism does the convolution bookkeeping automatically.",
+      "**Negative-binomial, not ordinary, Vandermonde**: this convolution is the (1−x)⁻ᵏ form, distinct from Mathlib's setting around (1+x)ᵏ. Mathlib has the ordinary binomial theorem and add_pow_le-type results but does not record this negative-binomial convolution; it is the natural identity living on the weak-composition side and is new content.",
+      "**Working over ℤ is a convenience, not a restriction**: the multiplicative laws hold over an arbitrary commutative ring (they are formal), but the convolution identity is a statement about natural numbers, so the proof specializes to S = ℤ — an integral domain where Nat.cast is injective — and casts back. Any infinite characteristic-zero ring would do equally well."
+    ],
+    "prerequisites": [
+      "The OQ-01 identification weakCompositionGenFun_eq_invOneSubPow (W k = (invOneSubPow S k).val for 0 < k) and its coefficient reader coeff_weakCompositionGenFun",
+      "The grandparent count StarsAndBars.card_weakComposition : #{f : Fin k → ℕ // ∑ f = n} = C(n+k−1, n)",
+      "Mathlib's invOneSubPow_add (invOneSubPow S (d+e) = invOneSubPow S d · invOneSubPow S e) and invOneSubPow_eq_inv_one_sub_pow (invOneSubPow as a power of the unit (1−X)⁻¹)",
+      "The unit coercions Units.val_mul and Units.val_pow_eq_pow_val turning unit products/powers into power-series products/powers",
+      "PowerSeries.coeff_mul : coeff n (φ·ψ) = ∑_{p ∈ antidiagonal n} coeff p.1 φ · coeff p.2 ψ, and Nat.cast injectivity (via exact_mod_cast) to descend from ℤ to ℕ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-coefficient-formula",
+      "title": "Setup and the Coefficient Formula",
+      "startLine": 1,
+      "endLine": 61,
+      "mathContext": "$[X^n]\\,W_k = \\binom{n+k-1}{n}$ in $S$.",
+      "summary": "The module docstring states the three results — the convolution law, the power law, and the negative-binomial Vandermonde identity — and locates the new content relative to OQ-01 and Mathlib. coeff_weakCompositionGenFun_eq_choose is the reusable coefficient reader: chaining OQ-01's coeff_weakCompositionGenFun (coefficient = cast of the count) with the grandparent's card_weakComposition (count = C(n+k−1, n)) gives coeff n (W k) = (C(n+k−1, n) : S) for every k, with no positivity hypothesis."
+    },
+    {
+      "id": "convolution-law",
+      "title": "The Convolution Law W(k₁)·W(k₂) = W(k₁+k₂)",
+      "startLine": 63,
+      "endLine": 74,
+      "mathContext": "$W_{k_1}\\cdot W_{k_2} = W_{k_1+k_2}$.",
+      "summary": "weakCompositionGenFun_mul is the exponent-additivity of the generating function. For positive k₁, k₂ (hence positive k₁+k₂), all three series are rewritten via OQ-01's weakCompositionGenFun_eq_invOneSubPow into vals of invOneSubPow; Mathlib's invOneSubPow_add factors invOneSubPow S (k₁+k₂) as a unit product, and Units.val_mul distributes the val over it, matching the left-hand side. Combinatorially this is concatenation of weak compositions; algebraically it is (1−X)^{-k₁}·(1−X)^{-k₂} = (1−X)^{-(k₁+k₂)}."
+    },
+    {
+      "id": "power-law",
+      "title": "The Power Law W(k) = W(1)ᵏ",
+      "startLine": 76,
+      "endLine": 84,
+      "mathContext": "$W_k = (W_1)^k = \\bigl(1/(1-X)\\bigr)^k$.",
+      "summary": "weakCompositionGenFun_eq_pow answers OQ-01's first open question. The unit identity invOneSubPow S k = (invOneSubPow S 1)^k follows by rewriting both sides through invOneSubPow_eq_inv_one_sub_pow (each invOneSubPow is a power of the unit (1−X)⁻¹) and pow_one; transporting it to the generating functions via weakCompositionGenFun_eq_invOneSubPow and Units.val_pow_eq_pow_val gives W k = (W 1)ᵏ. This is the geometric-series factorization: a weak composition into k parts is k independent single-part choices, and W 1 = 1/(1−X)."
+    },
+    {
+      "id": "vandermonde-corollary",
+      "title": "The Negative-Binomial Vandermonde Convolution",
+      "startLine": 86,
+      "endLine": 106,
+      "mathContext": "$\\sum_{i+j=t}\\binom{i+k_1-1}{i}\\binom{j+k_2-1}{j} = \\binom{t+k_1+k_2-1}{t}$.",
+      "summary": "weakComposition_convolution extracts the finite binomial identity from the product law. Taking the coefficient of Xᵗ on both sides of weakCompositionGenFun_mul over S = ℤ, PowerSeries.coeff_mul expands the left coefficient as ∑_{(i,j) ∈ antidiagonal t} coeff i (W k₁)·coeff j (W k₂); simp with coeff_weakCompositionGenFun_eq_choose turns each coefficient into a binomial cast, and exact_mod_cast descends the resulting ℤ-equation to the natural-number identity ∑ C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1, t). No combinatorial bijection is constructed; the convolution is a free consequence of the Cauchy product."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multiplicative structure of the weak-composition generating function is formalized sorry-free and axiom-free. W k₁·W k₂ = W (k₁+k₂) (weakCompositionGenFun_mul) and W k = (W 1)ᵏ (weakCompositionGenFun_eq_pow) are obtained by transporting Mathlib's invOneSubPow_add and invOneSubPow_eq_inv_one_sub_pow through OQ-01's identification of the enumerative series with the algebraic one. Reading off the coefficient of Xᵗ in the product law yields the negative-binomial Vandermonde convolution ∑_{(i,j) ∈ antidiagonal t} C(i+k₁−1, i)·C(j+k₂−1, j) = C(t+(k₁+k₂)−1, t) (weakComposition_convolution), a finite binomial identity not in Mathlib.",
+    "implications": "The convolution law is the structural backbone of the entire stars-and-bars/composition family: it says the negative-binomial sequences C(·+k−1, ·) form a multiplicative monoid under convolution indexed by the number of parts, and the power law exhibits the whole family as powers of the single geometric sequence (1,1,1,…). Because the laws are proved as equalities of power series, they compose with the bounded-parts (OQ-02) and positive-parts siblings, which differ only by polynomial numerators. The convolution identity itself is a candidate Mathlib contribution (Nat.choose convolution for the negative-binomial / multichoose numbers), filling the gap left by Mathlib's (1+x)ᵏ-side Vandermonde results.",
+    "openQuestions": [
+      "Generalize the convolution law to a finite product W(k₁)·W(k₂)·⋯·W(k_m) = W(∑ kᵢ) over a list of positive part-counts, and read off the multinomial negative-binomial convolution ∑ C(i₁+k₁−1, i₁)·⋯·C(i_m+k_m−1, i_m) = C(t+∑kⱼ−1, t) summed over compositions i₁+⋯+i_m = t.",
+      "Extend the convolution identity to the k = 0 boundary by proving W 0 = 1 directly (the constant series, from the unique empty weak composition), removing the positivity hypotheses and giving the identity for all k₁, k₂ ≥ 0."
+    ]
+  },
+  "crossReferences": [
+    "stars-and-bars-weak-compositions-oq-01",
+    "stars-and-bars-weak-compositions",
+    "stars-and-bars-weak-compositions-oq-02"
+  ]
+}

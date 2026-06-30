@@ -1,0 +1,28 @@
+{
+  "id": "stars-and-bars-weak-compositions-oq-04",
+  "title": "The Convolution Law for Weak Compositions and the Negative-Binomial Vandermonde Identity",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "progressSummary": "COMPLETE (verified, 0-axiom): proved the multiplicative structure of the weak-composition generating function family on top of OQ-01's identification W k = invOneSubPow.val. Three results, all #print-axioms-clean (propext/Classical.choice/Quot.sound only).",
+    "insights": [
+      "OQ-01 having proved an EQUALITY OF POWER SERIES (W k = invOneSubPow.val), not just coefficientwise numeric agreement, is what makes the convolution law free: Mathlib's unit-level invOneSubPow_add transports verbatim to give W k₁·W k₂ = W (k₁+k₂).",
+      "The power law W k = (W 1)ᵏ is exactly OQ-01's first open question (geometric-series factorization). Proved via invOneSubPow_eq_inv_one_sub_pow (invOneSubPow S d = unit (1−X)⁻¹ to the d) + Units.val_pow_eq_pow_val.",
+      "The negative-binomial Vandermonde convolution ∑_{i+j=t} C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1, t) falls out of coeff_mul on the product law over ℤ + exact_mod_cast — no combinatorial bijection. It is the (1−x)⁻ᵏ analogue of Chu–Vandermonde and is NOT in Mathlib.",
+      "coeff_weakCompositionGenFun_eq_choose (coeff n (W k) = (C(n+k−1,n):S)) needs no positivity — card_weakComposition is unrestricted; the rewrite goes under the Nat.cast wrapper."
+    ],
+    "builtItems": [
+      "StarsAndBarsGenFun.coeff_weakCompositionGenFun_eq_choose : coeff n (W S k) = ((n+k-1).choose n : S) (Proofs/StarsAndBarsWeakCompositionsOQ04.lean:59)",
+      "StarsAndBarsGenFun.weakCompositionGenFun_mul : W S k₁ * W S k₂ = W S (k₁+k₂) for 0<k₁,0<k₂ (OQ04.lean:68)",
+      "StarsAndBarsGenFun.weakCompositionGenFun_eq_pow : W S k = (W S 1)^k for 0<k (OQ04.lean:79)",
+      "StarsAndBarsGenFun.weakComposition_convolution : ∑ ij ∈ antidiagonal t, (ij.1+k₁-1).choose ij.1 * (ij.2+k₂-1).choose ij.2 = (t+(k₁+k₂)-1).choose t (OQ04.lean:94)"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the (1+x)ᵏ-side binomial theorem but does not record the negative-binomial (multichoose) convolution ∑ C(i+k₁−1,i)·C(j+k₂−1,j) = C(t+k₁+k₂−1, t). Candidate upstream contribution as a Nat.choose convolution lemma."
+    ],
+    "nextSteps": [
+      "Generalize weakCompositionGenFun_mul to a finite product over a list of positive part-counts → multinomial negative-binomial convolution.",
+      "Prove W 0 = 1 directly (unique empty weak composition) to drop the positivity hypotheses and cover k = 0."
+    ]
+  }
+}
