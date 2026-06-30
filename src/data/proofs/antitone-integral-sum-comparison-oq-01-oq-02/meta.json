@@ -65,7 +65,56 @@
       "Filter.Tendsto and basic order limit lemmas"
     ]
   },
-  "sections": null,
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports, framing, and namespace",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Import Mathlib; docstring recalling the parent (the harmonic defect aₙ = Hₙ − log(n+1) was bounded in [0,1]) and stating this files open question — does the defect converge, and to what? Answer: to the Euler–Mascheroni constant γ. Open the namespace and Filter/Topology/Real scopes.",
+      "mathContext": "$a_n := H_n - \\log(n+1)$, $H_n = \\sum_{k=1}^n \\tfrac1k$; the parent proved $0 \\le a_n \\le 1$. Target: $a_n \\to \\gamma \\approx 0.5772$."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence to γ (both forms)",
+      "startLine": 42,
+      "endLine": 56,
+      "summary": "tendsto_harmonic_sub_log_add_one bridges the parents exact sequence Hₙ − log(n+1) → γ via Real.tendsto_harmonic_sub_log_add_one; tendsto_harmonic_sub_log gives the textbook form Hₙ − log n → γ (i.e. Hₙ ∼ log n + γ).",
+      "mathContext": "$H_n - \\log(n+1) \\to \\gamma$ and $H_n - \\log n \\to \\gamma$, since $\\log(n+1)-\\log n \\to 0$."
+    },
+    {
+      "id": "bracketing",
+      "title": "Two-sided bracketing of γ",
+      "startLine": 58,
+      "endLine": 85,
+      "summary": "harmonic_sub_log_add_one_lt_gamma (lower) and gamma_lt_harmonic_sub_log (upper) bracket γ for n ≥ 1; gamma_mem_Ioo packages the nested enclosure; bracket_width computes the gap as log(n+1) − log n.",
+      "mathContext": "$H_n - \\log(n+1) < \\gamma < H_n - \\log n$; gap $= \\log(n+1) - \\log n$."
+    },
+    {
+      "id": "width",
+      "title": "Bracket width → 0 pins down γ",
+      "startLine": 87,
+      "endLine": 95,
+      "summary": "tendsto_bracket_width: the bracket width log(n+1) − log n → 0 (as the difference of the two convergent defect sequences), so the nested intervals shrink to the single point γ.",
+      "mathContext": "$\\log(n+1) - \\log n \\to 0$, so $\\bigcap_n (H_n-\\log(n+1),\\,H_n-\\log n) = \\{\\gamma\\}$."
+    },
+    {
+      "id": "numeric-bounds",
+      "title": "Numeric bounds 1/2 < γ < 2/3",
+      "startLine": 97,
+      "endLine": 108,
+      "summary": "gamma_pos and gamma_lt_one give 0 < γ < 1; gamma_mem_Ioo_half_twoThirds sharpens to 1/2 < γ < 2/3 via Mathlibs Euler–Mascheroni bounds.",
+      "mathContext": "$\\tfrac12 < \\gamma < \\tfrac23$."
+    },
+    {
+      "id": "enclosure-six",
+      "title": "Concrete rational enclosure at n = 6",
+      "startLine": 110,
+      "endLine": 124,
+      "summary": "harmonic_six evaluates H₆ = 49/20; gamma_enclosure_six instantiates the bracket at n = 6 to the explicit rational/log enclosure 49/20 − log 7 < γ < 49/20 − log 6.",
+      "mathContext": "$\\tfrac{49}{20} - \\log 7 < \\gamma < \\tfrac{49}{20} - \\log 6$."
+    }
+  ],
   "conclusion": {
     "summary": "The parent's bounded harmonic defect Hₙ − log(n+1) is shown to converge to the Euler–Mascheroni constant γ, in both the parent's form and the textbook form Hₙ − log n → γ (so Hₙ ∼ log n + γ). The two parent-style sequences bracket γ from below and above with width log(n+1) − log n → 0, giving a nested enclosure; γ satisfies 0 < γ < 1, sharpened to 1/2 < γ < 2/3, with the concrete bracket 49/20 − log 7 < γ < 49/20 − log 6 at n = 6. 12 theorems, 0 definitions, 124 lines, 0 sorries, 0 axioms.",
     "implications": "Completes the integral-test story for the harmonic series: the parent proved the defect bounded, this entry proves it convergent and names the limit, turning the integral comparison into the asymptotic Hₙ = log n + γ + o(1). The bracketing scheme is a constructive enclosure of γ to arbitrary precision.",
