@@ -475,3 +475,46 @@ STILL OPEN (the genuine >1000-line part, unchanged): the ramified embedding K⸨
 HahnSeries ℚ K and the GENERAL edgeSlope = −v(root) bridge for arbitrary P ∈ K⸨x⸩[Y]. This
 session strengthens the target-field theory (monomial calculus + value group) but does not
 build the embedding. Phase: ACT.
+
+---
+
+## Session (2026-06-30, researcher-8, S09): full Yⁿ−x family — edgeSlope = −v(root) for an infinite family
+
+S07/S08 built the valued Puiseux field (`HahnSeries ℚ K` + `addVal`) and realized the single
+ramified root `x^{1/2}` of `Y²−x`. This session lifts the **combinatorial-side ↔ analytic-side
+bridge** `edgeSlope = −v(root)` — flagged "open in general" by every prior session — from the
+single `n = 2` worked instance to the **entire family `Yⁿ−x`, n ≥ 1**. File 1260→1329 lines,
++1 def +5 theorems, all **0 sorry / 0 axiom** (`#print axioms` on
+`ynMinusX_slope_eq_root_valuation`/`ynMinusX_isLowerEdge` = propext/Classical.choice/Quot.sound).
+
+- `YnMinusX (n) := [(0,1),(n,0)]` — support of `Yⁿ−x` (const `−x` at valuation 1, lead `Yⁿ` at 0).
+- `ynMinusX_two : YnMinusX 2 = YsqMinusX` (`rfl`) — the family contains the original example.
+- `ynMinusX_edge_slope (n) : edgeSlope (0,1) (n,0) = −1/n` — `simp [edgeSlope, Nat.cast_zero,
+  sub_zero]; norm_num`. **Dropped the `0 < n` hypothesis**: the formula holds even at `n = 0`
+  (`−1/0 = 0` in ℚ), and keeping `hn` triggered the unused-variable linter.
+- `ynMinusX_leading_exponent (n) (hn) : −edgeSlope (0,1) (n,0) = leadingExponentFromSlope 1 n hn`
+  — ties to the parent's `p/q` exponent; generalizes `ysqMinusX_leading_exponent`.
+- `ynMinusX_isLowerEdge (n) (hn) : IsLowerEdge (YnMinusX n) (0,1) (n,0)` — genuine lower edge via
+  supporting line `y = −(1/n)i + 1`. Key cancellation lemma `hc : (−1/↑n)·↑n = −1` proven
+  deterministically by `div_mul_eq_mul_div, mul_div_assoc, div_self hn', mul_one` (norm_num
+  cannot cancel `−1/↑n · ↑n` with `n` a variable, unlike the literal-2 ysqMinusX proof). Used
+  `show` to force Prod-projection reduction before `rw [hc]`.
+- **`ynMinusX_slope_eq_root_valuation (n) (hn)` (capstone):** `∃ t, tⁿ = x ∧ v(t) =
+  −edgeSlope (0,1) (n,0)`, witnessed by `t = x^{1/n}` (`nthRoot_x`, `nthRoot_valuation` from S08).
+  Two lines after the witness: `rw [nthRoot_valuation, ynMinusX_edge_slope n]; congr 1; ring`
+  (`congr 1` peels the `WithTop ℚ` coercion to a clean ℚ goal `1/↑n = −(−1/↑n)`).
+
+**Why this matters.** The bridge `edgeSlope = −v(root)` was the standing "genuinely open" half of
+S2-A (every prior session noted it blocked on a `K⸨x⸩[Y]` valuation API / ramified embedding). It
+is now *proven for an infinite family* — the combinatorial polygon (edge slope `−1/n`) and the
+analytic ℚ-valued root valuation (`v(x^{1/n}) = 1/n`) meet on the same `n`, not just `n = 2`.
+
+**STILL OPEN (unchanged, the >1000-line part):** the ramified embedding `K⸨x⸩ ↪ HahnSeries ℚ K`
+and the bridge for an *arbitrary* `P ∈ K⸨x⸩[Y]` (not just the binomial `Yⁿ−x`). The general case
+needs the embedding to even *name* the roots of a general polynomial as Puiseux elements.
+
+GOTCHA (infra): Docker daemon was DOWN this session (`docker-build.sh` prints "Docker daemon is
+not running" and exits 0 — a *false* green; always read the log tail). Verified instead via host
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean` (worktree `.lake`
+symlinks main's prebuilt oleans). GOTCHA (cwd): running the build from the *main* `proofs/` dir
+silently checks main's stale copy of the file — always `cd` into the **worktree** proofs dir.

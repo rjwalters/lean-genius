@@ -1254,7 +1254,76 @@ theorem puiseuxVal_surjective (q : ℚ) :
     ∃ t : PuiseuxSeries K, HahnSeries.addVal ℚ K t = (q : WithTop ℚ) :=
   ⟨puiseuxMonomial q, puiseuxVal_monomial q⟩
 
+/-! ### The `Yⁿ − x` family: combinatorial slope ↔ analytic root valuation, end to end
+
+The worked `Y² − x` instance above (`ysqMinusX_root_valuation`) realized the slope ↔
+root-valuation correspondence for a *single* polynomial.  Combining the monomial calculus
+(`nthRoot_x`, `nthRoot_valuation`) with the combinatorial `edgeSlope` lets us state that
+correspondence for the **entire family** `Yⁿ − x`, `n ≥ 1`: its Newton polygon is the single
+edge from `(0, 1)` to `(n, 0)` of slope `−1/n`, and the Puiseux element `t = x^{1/n}` is a
+genuine root (`tⁿ = x`) carrying valuation `1/n = −(edge slope)`.  This is the first time the
+general bridge `edgeSlope = −v(root)` is proven for an infinite family rather than one worked
+instance; the `n = 2` case recovers the `ysqMinusX_*` lemmas. -/
+
+/-- Support points of `Yⁿ − x`: `(0, 1)` from the constant term `−x` (valuation `1`) and
+`(n, 0)` from the leading term `Yⁿ` (valuation `0`).  The intermediate coefficients vanish. -/
+def YnMinusX (n : ℕ) : List SupportPoint := [(0, 1), (n, 0)]
+
+/-- For `n = 2` the family specializes to the original worked example `Y² − x`. -/
+theorem ynMinusX_two : YnMinusX 2 = YsqMinusX := rfl
+
+/-- The single Newton-polygon edge of `Yⁿ − x` has slope `−1/n` (for every `n`; the formula
+holds even at `n = 0`, where both sides are `0` by the `ℚ` convention `−1/0 = 0`). -/
+theorem ynMinusX_edge_slope (n : ℕ) :
+    edgeSlope (0, 1) (n, 0) = -1 / (n : ℚ) := by
+  simp only [edgeSlope, Nat.cast_zero, sub_zero]
+  norm_num
+
+/-- **The Newton polygon recovers the leading exponent of the root.**  The negative of the
+edge slope `−1/n` equals the parent's `leadingExponentFromSlope 1 n = 1/n`, the leading
+exponent of the ramified root `x^{1/n}` of `Yⁿ − x`.  Generalizes
+`ysqMinusX_leading_exponent` from `n = 2` to every `n ≥ 1`. -/
+theorem ynMinusX_leading_exponent (n : ℕ) (hn : 0 < n) :
+    -edgeSlope (0, 1) (n, 0) = PuiseuxTheorem.leadingExponentFromSlope 1 n hn := by
+  rw [ynMinusX_edge_slope n, PuiseuxTheorem.leadingExponentFromSlope]
+  push_cast
+  ring
+
+/-- The single segment of `Yⁿ − x` is a genuine lower edge for every `n ≥ 1`, witnessed by the
+supporting line `y = −(1/n)·i + 1` through both `(0, 1)` and `(n, 0)`.  Generalizes
+`ysqMinusX_isLowerEdge`. -/
+theorem ynMinusX_isLowerEdge (n : ℕ) (hn : 0 < n) :
+    IsLowerEdge (YnMinusX n) (0, 1) (n, 0) := by
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  have hc : (-1 / (n : ℚ)) * (n : ℚ) = -1 := by
+    rw [div_mul_eq_mul_div, mul_div_assoc, div_self hn', mul_one]
+  refine ⟨by simp [YnMinusX], by simp [YnMinusX], hn, -1 / (n : ℚ), 1, by norm_num, ?_, ?_⟩
+  · show (0 : ℚ) = -1 / (n : ℚ) * (n : ℚ) + 1
+    rw [hc]; norm_num
+  · intro r hr
+    fin_cases hr
+    · norm_num
+    · show -1 / (n : ℚ) * (n : ℚ) + 1 ≤ (0 : ℚ)
+      rw [hc]; norm_num
+
+/-- **The general slope ↔ root-valuation bridge for `Yⁿ − x`.**  For every `n ≥ 1` the Puiseux
+element `t = x^{1/n}` is a genuine root of `Yⁿ − x` (`tⁿ = x`) whose ℚ-valued valuation equals
+the **negative of the Newton-polygon edge slope**: `v(t) = 1/n = −edgeSlope (0,1) (n,0)`.  This
+proves the correspondence `edgeSlope = −v(root)` for the entire family `Yⁿ − x` — previously
+only the single `n = 2` instance (`ysqMinusX_root_valuation`) was realized.  The combinatorial
+side (`edgeSlope = −1/n`) and the analytic side (`v(x^{1/n}) = 1/n`) now meet on the same `n`. -/
+theorem ynMinusX_slope_eq_root_valuation (n : ℕ) (hn : 0 < n) :
+    ∃ t : PuiseuxSeries K,
+      t ^ n = puiseuxMonomial (K := K) 1 ∧
+      HahnSeries.addVal ℚ K t = ((-edgeSlope (0, 1) (n, 0) : ℚ) : WithTop ℚ) := by
+  refine ⟨puiseuxMonomial (1 / n), nthRoot_x n hn, ?_⟩
+  rw [nthRoot_valuation, ynMinusX_edge_slope n]
+  congr 1
+  ring
+
 #print axioms exists_nthRoot_of_x
 #print axioms puiseuxVal_surjective
+#print axioms ynMinusX_slope_eq_root_valuation
+#print axioms ynMinusX_isLowerEdge
 
 end PuiseuxTheoremOQ03
