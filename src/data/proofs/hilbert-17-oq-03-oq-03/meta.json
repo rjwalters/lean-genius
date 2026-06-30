@@ -180,5 +180,54 @@
       "relation": "Sibling: the analogous 0-axiom proof for the Motzkin polynomial."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement, imports, and namespace",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring: discharge the parent entrys Robinson axiom elementarily by proving from scratch that Robinsons degree-6 form is nonnegative yet not a sum of squares. Imports; open the namespace.",
+      "mathContext": "Robinsons form $R(x,y,z)$ is PSD but $R \\ne \\sum_i q_i^2$ — a concrete witness that nonnegative $\\not\\Rightarrow$ SOS in 3 variables, degree 6."
+    },
+    {
+      "id": "monomials",
+      "title": "Monomial bookkeeping in Fin 3 →₀ ℕ",
+      "startLine": 50,
+      "endLine": 98,
+      "summary": "mon3 and helper lemmas (eq_mon3, mon3_eq_iff, deg_eq3, degree_mon3, Xpp3, deg3_cases) set up a workable encoding of monomials in three variables and enumerate the ten degree-3 monomials.",
+      "mathContext": "$\\mathrm{mon3}(a,b,c) = $ the multidegree $(a,b,c)$; the ten cubic monomials are the $(a,b,c)$ with $a+b+c=3$."
+    },
+    {
+      "id": "robinson",
+      "title": "The Robinson polynomial: homogeneity and its ten zeros",
+      "startLine": 99,
+      "endLine": 189,
+      "summary": "robinson is defined and shown homogeneous of degree 6 (robinson_isHom); eval at ![1,0,0] is 1, and eval_robinson_P1…P10 verify it vanishes at the ten sign-pattern points.",
+      "mathContext": "$R$ is degree-6 homogeneous, $R(1,0,0)=1$, and $R=0$ at the ten points $(\\pm1,\\pm1,0)$ permutations and $(\\pm1,\\pm1,\\pm1)$ etc."
+    },
+    {
+      "id": "degree",
+      "title": "Generic SOS / degree facts",
+      "startLine": 190,
+      "endLine": 295,
+      "summary": "sum_sq_eq_zero, topForm_ne_zero, totalDegree_sub_top_lt, topsq, degree_bound: top-degree forms cannot cancel in a sum of squares, so an SOS decomposition of a degree-6 form forces each squares summand to have degree ≤ 3.",
+      "mathContext": "If $R=\\sum q_i^2$ with $\\deg R = 6$ then each $q_i$ has total degree $\\le 3$ (top forms add, never cancel)."
+    },
+    {
+      "id": "cubiczero",
+      "title": "The decisive linear algebra: cubic vanishing at the ten zeros is zero",
+      "startLine": 296,
+      "endLine": 377,
+      "summary": "as_cubic expands a homogeneous cubic in the ten-monomial basis; cubic_zero shows a cubic vanishing at the ten Robinson zeros must be identically zero (a 10×10 system with nonzero determinant 128).",
+      "mathContext": "A homogeneous cubic $q$ with $q(P_k)=0$ for all ten zeros $P_k$ is $0$; the coefficient system has $\\det = 128 \\ne 0$."
+    },
+    {
+      "id": "assembly",
+      "title": "Assembling robinson_not_sos",
+      "startLine": 378,
+      "endLine": 423,
+      "summary": "IsSOS is defined; robinson_not_sos combines the degree bound (each q_i is cubic) with cubic_zero (each q_i vanishes at the ten zeros ⇒ each q_i=0 ⇒ R=0), contradicting R(1,0,0)=1.",
+      "mathContext": "$R = \\sum q_i^2 \\Rightarrow$ each $q_i$ cubic $\\Rightarrow$ each $q_i(P_k)=0 \\Rightarrow q_i=0 \\Rightarrow R=0$, contradicting $R(1,0,0)=1$."
+    }
+  ]
 }
