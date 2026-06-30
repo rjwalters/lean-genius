@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-imports-docstring",
+    "proofId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "Why Inclusion–Exclusion Fails for Dimensions",
+    "content": "The two-submodule modular law finrank(p ⊔ q) + finrank(p ⊓ q) = finrank p + finrank q looks exactly like |A ∪ B| + |A ∩ B| = |A| + |B|, tempting the reader to extend the full three-set inclusion–exclusion formula to dimensions. That extension is false: the lattice of submodules is modular (Dedekind) but not distributive, and the symmetric three-term formula silently assumes distributivity. The correct count is asymmetric — built by iterating the two-term law along a chain — and this entry answers the parent's first open question by deriving it structurally from the second isomorphism theorem, then refuting the naive formula with an explicit ℝ² witness.",
+    "mathContext": "$\\operatorname{finrank}(p \\sqcup q \\sqcup r) + \\operatorname{finrank}(p \\sqcap q) + \\operatorname{finrank}((p \\sqcup q) \\sqcap r) = \\operatorname{finrank} p + \\operatorname{finrank} q + \\operatorname{finrank} r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular lattice",
+      "distributive lattice",
+      "inclusion–exclusion",
+      "dimension formula"
+    ],
+    "prerequisites": [
+      "submodule lattice (⊓, ⊔, ⊥, ⊤)",
+      "the two-submodule modular dimension law"
+    ]
+  },
+  {
+    "id": "ann-second-iso",
+    "proofId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Diamond Isomorphism as the Structural Foundation",
+    "content": "secondIso names Mathlib's LinearMap.quotientInfEquivSupQuotient as a LinearEquiv over an arbitrary ring R and module M, with the ambient comaps written explicitly in the type. The point of keeping it is provenance: by re-deriving the two-submodule modular law from this equivalence (next section), the three-submodule identity is exhibited as a consequence of the second isomorphism theorem rather than of Mathlib's independent dimension lemma — directly matching the parent's 'derived structurally' phrasing.",
+    "mathContext": "$\\uparrow\\!p \\,\\big/\\, \\operatorname{comap} p.\\mathrm{subtype}\\,(p \\sqcap q) \\;\\simeq_{\\ell}[R]\\; \\uparrow\\!(p \\sqcup q) \\,\\big/\\, \\operatorname{comap}(p \\sqcup q).\\mathrm{subtype}\\,q$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LinearEquiv",
+      "second isomorphism theorem",
+      "quotient module"
+    ],
+    "prerequisites": [
+      "modules and quotient modules",
+      "linear equivalences"
+    ]
+  },
+  {
+    "id": "ann-modular-law",
+    "proofId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 113
+    },
+    "type": "proof_step",
+    "title": "Re-deriving the Two-Submodule Modular Law",
+    "content": "finrank_modular_law re-proves finrank(p ⊔ q) + finrank(p ⊓ q) = finrank p + finrank q self-containedly. A linear equivalence preserves finrank, so the two diamond quotients have equal dimension; rank–nullity (Submodule.finrank_quotient_add_finrank) on each side turns those quotient dimensions into honest submodule dimensions, with the comap denominators identified by Submodule.comapSubtypeEquivOfLe. omega combines the isomorphism equality with the two additive rank–nullity identities to produce the modular law — never forming a subtraction, staying entirely in ℕ.",
+    "mathContext": "$\\dim(p+q) + \\dim(p \\cap q) = \\dim p + \\dim q$, as a corollary of the diamond isomorphism.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rank–nullity",
+      "LinearEquiv.finrank_eq",
+      "comapSubtypeEquivOfLe"
+    ],
+    "prerequisites": [
+      "rank–nullity for quotients",
+      "dimension invariance under linear equivalence"
+    ]
+  },
+  {
+    "id": "ann-three-submodule",
+    "proofId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+    "range": {
+      "startLine": 115,
+      "endLine": 143
+    },
+    "type": "key_insight",
+    "title": "Iteration, Not Symmetry: the Exact Three-Submodule Identity",
+    "content": "finrank_sup_three applies the modular law twice — to (p, q), then to (p ⊔ q, r). Because p ⊔ q ⊔ r parses as (p ⊔ q) ⊔ r, the second application's left-hand sup is literally the target, so omega closes the goal: finrank(p ⊔ q ⊔ r) + finrank(p ⊓ q) + finrank((p ⊔ q) ⊓ r) = finrank p + finrank q + finrank r. The correction term finrank((p ⊔ q) ⊓ r) is *asymmetric* and replaces the naive symmetric combination finrank(p ⊓ r) + finrank(q ⊓ r) − finrank(p ⊓ q ⊓ r); the two agree exactly under distributivity. finrank_sup_three_sub records the ℤ subtraction form, and finrank_sup_three_of_pairwise_bot isolates the additive case where both corrections vanish.",
+    "mathContext": "Correction term $\\operatorname{finrank}((p \\sqcup q) \\sqcap r)$ replaces $\\operatorname{finrank}(p \\sqcap r) + \\operatorname{finrank}(q \\sqcap r) - \\operatorname{finrank}(p \\sqcap q \\sqcap r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular law iteration",
+      "asymmetric correction term",
+      "distributivity"
+    ],
+    "prerequisites": [
+      "the two-submodule modular law",
+      "left-associativity of ⊔"
+    ]
+  },
+  {
+    "id": "ann-counterexample",
+    "proofId": "second-isomorphism-theorem-modules-oq-01-oq-01",
+    "range": {
+      "startLine": 145,
+      "endLine": 235
+    },
+    "type": "key_insight",
+    "title": "Three Lines in the Plane Kill the Symmetric Formula",
+    "content": "The witness is the simplest possible: p = span{(1,0)}, q = span{(0,1)}, r = span{(1,1)} in ℝ². Each line is 1-dimensional (finrank_span_singleton on a nonzero vector); the helper inf_span_eq_bot packages the scalar-witness chase (a • u = b • v forces both scalars to 0 for independent u, v), giving inf_pq, inf_pr, inf_qr = ⊥, and the triple intersection ⊆ p ⊓ q is ⊥ too; sup_pq_top shows the first two lines already span the plane. Hence the symmetric sum finrank(p ⊔ q ⊔ r) + finrank(p ⊓ q) + finrank(p ⊓ r) + finrank(q ⊓ r) = 2 + 0 + 0 + 0, while finrank p + finrank q + finrank r + finrank(p ⊓ q ⊓ r) = 1 + 1 + 1 + 0 = 3. Since 2 ≠ 3, the naive inclusion–exclusion formula is false. The gap 3 − 2 = 1 is exactly the failure of (p ⊔ q) ⊓ r = (p ⊓ r) ⊔ (q ⊓ r).",
+    "mathContext": "$\\underbrace{2}_{\\dim(p+q+r)} + 0 + 0 + 0 \\;\\neq\\; \\underbrace{1+1+1}_{\\dim p+\\dim q+\\dim r} + 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit counterexample",
+      "span of a vector",
+      "finrank of a product",
+      "non-distributivity"
+    ],
+    "prerequisites": [
+      "spans of single vectors",
+      "finrank of ℝ × ℝ"
+    ]
+  }
+]

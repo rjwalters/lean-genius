@@ -100,6 +100,23 @@
       "significance": "Clean two-way statement for the prime case."
     }
   ],
+  "overview": {
+    "historicalContext": "Carl Friedrich Gauss showed in 1796 (aged 19) that the regular 17-gon is constructible with compass and straightedge, and stated in Disquisitiones Arithmeticae (1801) that a regular n-gon is constructible iff n is a power of two times a product of distinct Fermat primes. Pierre Wantzel supplied the necessity direction in 1837, the same paper that proved the impossibility of trisecting a general angle and doubling the cube. The arithmetic heart of the theorem is the totient condition: φ(n) is a power of two exactly when the odd part of n is a squarefree product of Fermat primes 2^(2^j)+1. Only five Fermat primes are known (3, 5, 17, 257, 65537), and whether there are infinitely many remains open — Fermat himself wrongly conjectured every 2^(2^j)+1 is prime, refuted by Euler's factorization of 2^32+1.",
+    "problemStatement": "Characterize, for arbitrary n, when Euler's totient φ(n) is a power of two — the number-theoretic condition equivalent to constructibility of the regular n-gon. Prove both directions in full generality (not by case enumeration) with no axioms, and recover specific polygon (non-)constructibility as corollaries.",
+    "proofStrategy": "Necessity (totient_pow2_structure): for each odd prime p ∣ n with multiplicity e, φ(p^e) = p^(e-1)(p-1) divides φ(n) = 2^k; the odd factor p^(e-1) forces e=1 (squarefree), and (p-1) ∣ 2^k forces p = 2^m+1, then Mathlib's Nat.pow_of_pow_add_prime upgrades this to the Fermat form p = 2^(2^j)+1. Sufficiency (totient_pow2_two_pow_mul): Finset.induction over distinct odd Fermat-form primes, using coprimality of distinct primes and multiplicativity of φ, prepended with a 2^a factor. Specific polygons (15, 240, 7) drop out by instantiating the general theorems.",
+    "keyInsights": [
+      "The constructibility question reduces entirely to a statement about the totient φ(n) being a power of two — no geometry is needed once that reduction is made.",
+      "Necessity hinges on splitting φ(p^e) = p^(e-1)(p-1): the odd part p^(e-1) dividing 2^k forces squarefreeness, and the even part (p-1) dividing 2^k forces the Fermat shape.",
+      "Sufficiency is a clean induction over a finset of distinct primes, where distinctness gives coprimality for free and multiplicativity of φ does the rest.",
+      "Proving the characterization for general n (rather than enumerating n ≤ 50) means specific polygons like the 15-gon and 240-gon become one-line corollaries instead of separate computations.",
+      "Isolating the arithmetic core cleanly separates the 0-axiom number theory from the geometric equivalence that the parent entry must axiomatize."
+    ],
+    "prerequisites": [
+      "Euler's totient function and its multiplicativity over coprime arguments.",
+      "Fermat primes 2^(2^j)+1 and the fact that 2^m+1 prime forces m a power of two.",
+      "p-adic valuation and squarefreeness via prime-power multiplicity."
+    ]
+  },
   "sections": [
     {
       "id": "ispow2-toolbox",

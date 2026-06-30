@@ -1,0 +1,158 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "The Arithmetic Shadow of the Pell Chain",
+    "content": "The negative-Pell lineage `pell-equation-oq-06` and its children have described the solution chain of $x^2 - 2y^2 = \\pm 1$ analytically (best rational approximations of $\\sqrt2$), algebraically (powers of the fundamental unit, the Brahmagupta composition law, the linear recurrence), and via determinants (the Cassini constant). This entry records the one structural fact none of the siblings touch: a purely **arithmetic** (number-theoretic) property. Writing the positive-Pell unit $\\gamma = 3 + 2\\sqrt2$ and $\\gamma^n = X_n + Y_n\\sqrt2$, the second coordinates\n$$(Y_n) = 0,\\,2,\\,12,\\,70,\\,408,\\dots$$\nform a **divisibility sequence**: $m \\mid n \\Rightarrow Y_m \\mid Y_n$. The decisive point — mirroring the Fibonacci/Lucas case — is that this follows from the *addition law*, not from any closed form.",
+    "mathContext": "$\\gamma = 3 + 2\\sqrt2 = (1+\\sqrt2)^2 \\in \\mathbb{Z}[\\sqrt2]$ is the fundamental unit of norm $+1$; $\\gamma^n = X_n + Y_n\\sqrt2$ enumerates the positive solutions of $x^2 - 2y^2 = 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "divisibility sequence",
+      "Lucas sequence",
+      "Pell's equation",
+      "fundamental unit of a quadratic field"
+    ],
+    "prerequisites": [
+      "Pell's equation",
+      "quadratic integer rings",
+      "divisibility in the integers"
+    ]
+  },
+  {
+    "id": "ann-chain-definition",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 63, "endLine": 76 },
+    "type": "definition",
+    "title": "The Chain as Powers of the Fundamental Unit",
+    "content": "The entire chain is defined directly from a single quadratic integer: $\\gamma = \\langle 3, 2\\rangle : \\mathbb{Z}\\sqrt2$ in Mathlib's `Zsqrtd` model. The coordinate sequences are simply the real and imaginary parts of its powers, $X_n = (\\gamma^n)_{\\mathrm{re}}$ and $Y_n = (\\gamma^n)_{\\mathrm{im}}$. No recurrence is posited as an axiom; the recurrence and addition laws are *derived* below from the ring multiplication of $\\mathbb{Z}[\\sqrt2]$. The base values $X_0 = 1,\\ Y_0 = 0,\\ X_1 = 3,\\ Y_1 = 2$ are discharged by kernel `decide` on concrete integers.",
+    "mathContext": "$X_n = (\\gamma^n)_{\\mathrm{re}}$, $Y_n = (\\gamma^n)_{\\mathrm{im}}$, with $\\gamma^0 = 1$ giving $(X_0,Y_0) = (1,0)$ and $\\gamma^1 = \\gamma$ giving $(X_1,Y_1) = (3,2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Zsqrtd",
+      "ring of quadratic integers",
+      "real and imaginary parts"
+    ],
+    "prerequisites": [
+      "monoid powers",
+      "the ring Z[sqrt d]"
+    ]
+  },
+  {
+    "id": "ann-norm-pow",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 82, "endLine": 93 },
+    "type": "technique",
+    "title": "Multiplicativity of the Norm Across Powers",
+    "content": "The norm $N(a + b\\sqrt2) = a^2 - 2b^2$ is multiplicative ($N(zw) = N(z)N(w)$, Mathlib's `Zsqrtd.norm_mul`). `norm_pow` packages a clean one-line induction $N(z^k) = N(z)^k$ off that fact — a self-contained analogue of the missing power version. Since $N(\\gamma) = 3^2 - 2\\cdot 2^2 = 1$, every power keeps norm $1$: $N(\\gamma^n) = 1^n = 1$. This is the algebraic source of the Pell relation.",
+    "mathContext": "$N(z^k) = N(z)^k$; with $N(\\gamma)=1$, $N(\\gamma^n) = 1$ for all $n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiplicative norm",
+      "norm form of a quadratic field",
+      "induction on exponents"
+    ],
+    "prerequisites": [
+      "norm of a quadratic integer",
+      "mathematical induction"
+    ]
+  },
+  {
+    "id": "ann-pell-relation",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "concept",
+    "title": "The Pell Relation From the Norm",
+    "content": "Unfolding $N(\\gamma^n) = 1$ through `Zsqrtd.norm_def` gives exactly $X_n^2 - 2Y_n^2 = 1$ — every term of the chain is a genuine solution of Pell's equation. This is the bridge from algebra (the unit group of $\\mathbb{Z}[\\sqrt2]$) to Diophantine number theory: the powers of the fundamental unit *are* the positive solutions. The `linear_combination` tactic closes the gap between the unfolded norm and the stated quadratic identity.",
+    "mathContext": "$X_n^2 - 2Y_n^2 = 1$ for all $n \\ge 0$ — the norm-$+1$ form of $x^2 - 2y^2 = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pell's equation",
+      "norm form",
+      "units of a real quadratic field"
+    ],
+    "prerequisites": [
+      "Pell's equation",
+      "quadratic norm forms"
+    ]
+  },
+  {
+    "id": "ann-addition-formulas",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 106, "endLine": 124 },
+    "type": "insight",
+    "title": "The Addition Formulas — The Engine",
+    "content": "The decomposition $\\gamma^{m+n} = \\gamma^m \\cdot \\gamma^n$, read coordinate-wise through `Zsqrtd.re_mul` and `im_mul`, yields the **addition formulas** for free:\n$$X_{m+n} = X_m X_n + 2 Y_m Y_n, \\qquad Y_{m+n} = X_m Y_n + Y_m X_n.$$\nThe second of these is the engine of the whole entry. Setting $n = 1$ specializes them to the **step recurrences** $X_{n+1} = 3X_n + 4Y_n$ and $Y_{n+1} = 2X_n + 3Y_n$ — exactly the parent lineage's form automorphism $(x,y) \\mapsto (3x+4y,\\,2x+3y)$, now revealed as nothing more than multiplication by $\\gamma$.",
+    "mathContext": "$Y_{m+n} = X_m Y_n + Y_m X_n = (\\gamma^m\\gamma^n)_{\\mathrm{im}}$; the case $n=1$ gives $Y_{n+1} = 2X_n + 3Y_n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta composition law",
+      "addition formula",
+      "linear recurrence",
+      "group automorphism"
+    ],
+    "prerequisites": [
+      "multiplication in Z[sqrt d]",
+      "the law of exponents"
+    ]
+  },
+  {
+    "id": "ann-coprimality",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 138, "endLine": 141 },
+    "type": "technique",
+    "title": "Coprimality Is a Bézout Certificate",
+    "content": "Coprimality of $X_n$ and $Y_n$ is immediate from the Pell relation: rewriting $X_n^2 - 2Y_n^2 = 1$ as\n$$X_n \\cdot X_n + (-2Y_n)\\cdot Y_n = 1$$\nexhibits an explicit Bézout combination, so $\\gcd(X_n, Y_n) = 1$. The proof simply hands Lean the witnesses $(X_n,\\,-2Y_n)$ to the `IsCoprime` structure. This coprimality is the missing ingredient for the *strong* form $\\gcd(Y_m, Y_n) = Y_{\\gcd(m,n)}$, left here as future work.",
+    "mathContext": "$X_n\\cdot X_n + (-2Y_n)\\cdot Y_n = 1 \\Rightarrow \\gcd(X_n, Y_n) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "coprimality",
+      "strong divisibility sequence"
+    ],
+    "prerequisites": [
+      "Bézout's identity",
+      "greatest common divisor"
+    ]
+  },
+  {
+    "id": "ann-divisibility-core",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 147, "endLine": 161 },
+    "type": "insight",
+    "title": "The Divisibility Sequence by Induction on Multiples",
+    "content": "The headline result is reached in two moves. First the inductive core `Y_dvd_mul`: $Y_m \\mid Y_{k\\cdot m}$ by induction on $k$. Writing $(k+1)m = km + m$ and applying the addition formula gives\n$$Y_{(k+1)m} = X_{km}\\,Y_m + Y_{km}\\,X_m,$$\nwhose first summand carries $Y_m$ **directly** and whose second carries it **through the inductive hypothesis** $Y_m \\mid Y_{km}$. Reindexing $n = m\\cdot k$ then gives the full divisibility sequence $m \\mid n \\Rightarrow Y_m \\mid Y_n$. No closed form, no continued fractions — just the addition law and divisibility bookkeeping, exactly as in the Fibonacci proof that $F_m \\mid F_{km}$.",
+    "mathContext": "$Y_{(k+1)m} = X_{km}Y_m + Y_{km}X_m$; both summands are divisible by $Y_m$, so $Y_m \\mid Y_{km}$ for all $k$, hence $m \\mid n \\Rightarrow Y_m \\mid Y_n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility sequence",
+      "Fibonacci divisibility theorem",
+      "Lucas sequences",
+      "induction"
+    ],
+    "prerequisites": [
+      "divisibility of integers",
+      "mathematical induction",
+      "the addition formula above"
+    ]
+  },
+  {
+    "id": "ann-two-dvd-and-checks",
+    "proofId": "pell-equation-oq-06-oq-07",
+    "range": { "startLine": 163, "endLine": 175 },
+    "type": "concept",
+    "title": "Every Yₙ Is Even, and Concrete Witnesses",
+    "content": "Because $Y_1 = 2$ and $1 \\mid n$ for every $n$, the divisibility sequence instantly gives $2 = Y_1 \\mid Y_n$: **every Pell $Y_n$ is even** — a one-line corollary illustrating how index divisibility propagates a concrete factor along the whole chain. The closing sanity checks confirm $X_2 = 17,\\ Y_2 = 12,\\ X_3 = 99,\\ Y_3 = 70$ and exhibit explicit instances $Y_2 \\mid Y_6$ (from $6 = 2\\cdot 3$) and $Y_3 \\mid Y_9$ (from $9 = 3\\cdot 3$) of the divisibility sequence.",
+    "mathContext": "$2 = Y_1 \\mid Y_n$ for all $n$; e.g. $Y_2 = 12 \\mid Y_6 = 23184$ and $Y_3 = 70 \\mid Y_9$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity",
+      "divisibility sequence",
+      "worked examples"
+    ],
+    "prerequisites": [
+      "divisibility of integers"
+    ]
+  }
+]

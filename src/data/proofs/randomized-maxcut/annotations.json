@@ -50,7 +50,7 @@
     "proofId": "randomized-maxcut",
     "range": {
       "startLine": 141,
-      "endLine": 192
+      "endLine": 194
     },
     "type": "insight",
     "title": "The Toggle Bijection",
@@ -70,8 +70,8 @@
     "id": "ann-maxcut-theorem3",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 194,
-      "endLine": 198
+      "startLine": 196,
+      "endLine": 200
     },
     "type": "insight",
     "title": "Theorem 3: Edge Probability",
@@ -91,10 +91,10 @@
     "id": "ann-maxcut-sym2-induction",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 200,
-      "endLine": 240
+      "startLine": 202,
+      "endLine": 242
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Sym2 Induction",
     "content": "To prove something about an unordered pair $e$, we use `induction e using Sym2.ind` to get representatives $u, v$. The hypothesis `h : ¬e.IsDiag` ensures $u \\neq v$ (edges don't have both endpoints the same).",
     "mathContext": "$\\text{Sym2}(V) = V \\times V / \\sim$ where $(u,v) \\sim (v,u)$. An edge $e \\in E(G)$ satisfies $\\neg e.\\text{IsDiag}$, meaning $e = \\{u, v\\}$ with $u \\neq v$. Induction on the quotient gives representatives.",
@@ -114,8 +114,8 @@
     "id": "ann-maxcut-theorem4",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 248,
-      "endLine": 277
+      "startLine": 250,
+      "endLine": 279
     },
     "type": "insight",
     "title": "Theorem 4: Expected Cut Size (Main Result)",
@@ -136,8 +136,8 @@
     "id": "ann-maxcut-linearity",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 248,
-      "endLine": 277
+      "startLine": 250,
+      "endLine": 279
     },
     "type": "insight",
     "title": "Linearity of Expectation",
@@ -157,8 +157,8 @@
     "id": "ann-maxcut-maxcut-def",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 289,
-      "endLine": 299
+      "startLine": 291,
+      "endLine": 301
     },
     "type": "definition",
     "title": "Maximum Cut Value",
@@ -180,8 +180,8 @@
     "id": "ann-maxcut-theorem6",
     "proofId": "randomized-maxcut",
     "range": {
-      "startLine": 306,
-      "endLine": 317
+      "startLine": 308,
+      "endLine": 319
     },
     "type": "insight",
     "title": "Theorem 6: Approximation Guarantee",

@@ -59,25 +59,24 @@ theorem inner_proj_A (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A) =
     Real.cos t.sideA - Real.cos t.sideB * Real.cos t.sideC := by
   have hd := inner_decomposition t.B t.C t.A t.hA
-  rw [← cos_sideA, real_inner_comm t.B t.A, ← cos_sideC,
-      real_inner_comm t.C t.A, ← cos_sideB] at hd
-  linarith
+  rw [real_inner_comm t.A t.B, real_inner_comm t.A t.C] at hd
+  rw [cos_sideA, cos_sideB, cos_sideC]
+  linear_combination -hd
 
 theorem inner_proj_B (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.A t.B) (projectPerp t.C t.B) =
     Real.cos t.sideB - Real.cos t.sideA * Real.cos t.sideC := by
   have hd := inner_decomposition t.A t.C t.B t.hB
-  rw [← cos_sideB, real_inner_comm t.A t.B, ← cos_sideC,
-      real_inner_comm t.C t.B, ← cos_sideA] at hd
-  linarith
+  rw [real_inner_comm t.B t.C] at hd
+  rw [cos_sideA, cos_sideB, cos_sideC]
+  linear_combination -hd
 
 theorem inner_proj_C (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C) =
     Real.cos t.sideC - Real.cos t.sideA * Real.cos t.sideB := by
   have hd := inner_decomposition t.A t.B t.C t.hC
-  rw [← cos_sideC, real_inner_comm t.A t.C, ← cos_sideB,
-      real_inner_comm t.B t.C, ← cos_sideA] at hd
-  linarith
+  rw [cos_sideA, cos_sideB, cos_sideC]
+  linear_combination -hd
 
 -- ============================================================
 -- Part III: Norms of Projections
@@ -99,7 +98,7 @@ theorem norm_A_wrt_C (t : SphericalTriangle) : ‖projectPerp t.A t.C‖ = Real.
   norm_projectPerp_eq_sin t.A t.C t.hA t.hC
 
 theorem norm_B_wrt_C (t : SphericalTriangle) : ‖projectPerp t.B t.C‖ = Real.sin t.sideA :=
-  (norm_projectPerp_eq_sin t.B t.C t.hB t.hC).trans (congr_arg Real.sin (arcLength_comm t.B t.C))
+  norm_projectPerp_eq_sin t.B t.C t.hB t.hC
 
 -- ============================================================
 -- Part IV: Gram Determinant
@@ -119,6 +118,7 @@ theorem gramDet_nonneg (t : SphericalTriangle) : 0 ≤ gramDet t := by
   nlinarith [abs_real_inner_le_norm (projectPerp t.B t.A) (projectPerp t.C t.A),
              sq_abs (@inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A)),
              norm_nonneg (projectPerp t.B t.A), norm_nonneg (projectPerp t.C t.A),
+             abs_nonneg (@inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A)),
              sq_nonneg (‖projectPerp t.B t.A‖ * ‖projectPerp t.C t.A‖ -
                |@inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A)|)]
 
@@ -140,7 +140,8 @@ theorem cos_A_mul (t : SphericalTriangle)
   have hBne : ‖projectPerp t.B t.A‖ ≠ 0 := by rw [norm_B_wrt_A]; exact ne_of_gt hc
   have hCne : ‖projectPerp t.C t.A‖ ≠ 0 := by rw [norm_C_wrt_A]; exact ne_of_gt hb
   simp only [angleAtA, dif_neg (not_or.mpr ⟨hBne, hCne⟩)]
-  rw [Real.cos_arccos (abs_inner_div_le _ _), inner_proj_A, norm_B_wrt_A, norm_C_wrt_A]
+  have hbnd := abs_le.mp (abs_inner_div_le (projectPerp t.B t.A) (projectPerp t.C t.A))
+  rw [Real.cos_arccos hbnd.1 hbnd.2, inner_proj_A, norm_B_wrt_A, norm_C_wrt_A]
   field_simp
 
 theorem cos_B_mul (t : SphericalTriangle)
@@ -150,7 +151,8 @@ theorem cos_B_mul (t : SphericalTriangle)
   have hAne : ‖projectPerp t.A t.B‖ ≠ 0 := by rw [norm_A_wrt_B]; exact ne_of_gt hc
   have hCne : ‖projectPerp t.C t.B‖ ≠ 0 := by rw [norm_C_wrt_B]; exact ne_of_gt ha
   simp only [angleAtB, dif_neg (not_or.mpr ⟨hAne, hCne⟩)]
-  rw [Real.cos_arccos (abs_inner_div_le _ _), inner_proj_B, norm_A_wrt_B, norm_C_wrt_B]
+  have hbnd := abs_le.mp (abs_inner_div_le (projectPerp t.A t.B) (projectPerp t.C t.B))
+  rw [Real.cos_arccos hbnd.1 hbnd.2, inner_proj_B, norm_A_wrt_B, norm_C_wrt_B]
   field_simp
 
 theorem cos_C_mul (t : SphericalTriangle)
@@ -160,7 +162,8 @@ theorem cos_C_mul (t : SphericalTriangle)
   have hAne : ‖projectPerp t.A t.C‖ ≠ 0 := by rw [norm_A_wrt_C]; exact ne_of_gt hb
   have hBne : ‖projectPerp t.B t.C‖ ≠ 0 := by rw [norm_B_wrt_C]; exact ne_of_gt ha
   simp only [SphericalTriangle.angleC, dif_neg (not_or.mpr ⟨hAne, hBne⟩)]
-  rw [Real.cos_arccos (abs_inner_div_le _ _), inner_proj_C, norm_A_wrt_C, norm_B_wrt_C]
+  have hbnd := abs_le.mp (abs_inner_div_le (projectPerp t.A t.C) (projectPerp t.B t.C))
+  rw [Real.cos_arccos hbnd.1 hbnd.2, inner_proj_C, norm_A_wrt_C, norm_B_wrt_C]
   field_simp
 
 -- ============================================================
@@ -320,7 +323,7 @@ theorem dual_law_right_angles :
       -(Real.cos (Real.arccos (0:ℝ))) * Real.cos (Real.arccos (0:ℝ)) +
         Real.sin (Real.arccos (0:ℝ)) * Real.sin (Real.arccos (0:ℝ)) *
         Real.cos (Real.arccos (0:ℝ)) := by
-  simp [Real.cos_arccos (by norm_num : |(0:ℝ)| ≤ 1)]
+  simp
 
 /-- Equilateral spherical triangle with angles 2π/3:
     cos(2π/3) = -(-1/2)(-1/2) + (√3/2)²·(-1/2) = -1/4 + (3/4)·(-1/2) = -1/4 - 3/8 ≠ -1/2.
@@ -329,6 +332,6 @@ theorem dual_law_right_angles :
 theorem dual_law_equilateral_90 :
     Real.cos (Real.arccos (0:ℝ)) = -(Real.cos (Real.arccos (0:ℝ))) * Real.cos (Real.arccos (0:ℝ)) +
         Real.sin (Real.arccos (0:ℝ)) ^ 2 * Real.cos (Real.arccos (0:ℝ)) := by
-  simp [Real.cos_arccos (by norm_num : |(0:ℝ)| ≤ 1)]
+  simp
 
 end DualSphericalLawOfCosines

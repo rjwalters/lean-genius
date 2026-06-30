@@ -64,7 +64,8 @@
   ],
   "relatedProofs": [
     "szemeredi-full",
-    "szemeredi-theorem"
+    "szemeredi-theorem",
+    "szemeredi-theorem-oq-01"
   ],
   "references": {
     "papers": [],
@@ -79,13 +80,24 @@
     {
       "path": "Proofs/SzemerediTheorem.lean",
       "filename": "SzemerediTheorem.lean",
-      "lineCount": 374,
+      "lineCount": 375,
       "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheorem.lean"
+    },
+    {
+      "path": "Proofs/SzemerediTheoremOQ01.lean",
+      "filename": "SzemerediTheoremOQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheoremOQ01.lean"
     }
   ],
   "lastUpdate": "2026-05-18T00:00:00.000Z"

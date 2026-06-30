@@ -45,8 +45,13 @@
   ],
   "relatedProofs": [
     "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-01",
+    "algebraic-numbers-countable-oq-01-oq-01",
     "algebraic-numbers-countable-oq-02",
     "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-03",
+    "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-04",
     "algebraic-numbers-countable-oq-04",
     "algebraic-numbers-countable-oq-05"
   ],
@@ -75,7 +80,7 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableAristotle.lean",
       "filename": "AlgebraicNumbersCountableAristotle.lean",
-      "lineCount": 45,
+      "lineCount": 46,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -84,9 +89,31 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
     },
     {
+      "path": "Proofs/AlgebraicNumbersCountableOQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ01OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ01OQ01.lean",
+      "lineCount": 178,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
       "filename": "AlgebraicNumbersCountableOQ02.lean",
-      "lineCount": 192,
+      "lineCount": 193,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
@@ -97,7 +124,7 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ02.lean",
-      "lineCount": 285,
+      "lineCount": 286,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 5,
@@ -108,7 +135,7 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
-      "lineCount": 133,
+      "lineCount": 134,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -117,9 +144,42 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
     },
     {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ03.lean",
+      "lineCount": 194,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ03OQ02.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
+      "lineCount": 1080,
+      "theoremCount": 42,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
+    },
+    {
       "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
       "filename": "AlgebraicNumbersCountableOQ04.lean",
-      "lineCount": 758,
+      "lineCount": 759,
       "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 0,
@@ -130,8 +190,8 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
       "filename": "AlgebraicNumbersCountableOQ05.lean",
-      "lineCount": 296,
-      "theoremCount": 13,
+      "lineCount": 306,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,

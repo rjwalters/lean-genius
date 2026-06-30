@@ -117,6 +117,60 @@
       "description": "Proves F(N) ≤ N^{1/4+o(1)} via the non-dividing ⟹ non-averaging connection, refuting Erdős's original F(N) > N^{1/2−o(1)} guess; context for the open question of recovering global bounds elementarily."
     }
   ],
+  "overview": {
+    "historicalContext": "Erdős problem #131 asks for the growth rate of $F(N)$, the largest size of a subset of $\\{1,\\dots,N\\}$ in which no element divides the sum of any collection of distinct others — a *non-dividing* (or *non-averaging*-adjacent) set. Erdős originally guessed $F(N) > N^{1/2 - o(1)}$, but this was dramatically overturned: Pham and Zakharov (2024) proved $F(N) \\le N^{1/4 + o(1)}$ via a connection to non-averaging sets, so non-dividing sets are far sparser than Erdős expected. The structural engine behind this entry is the Erdős–Ginzburg–Ziv theorem (EGZ, 1961): among any $2n-1$ integers, some $n$ of them have a sum divisible by $n$. EGZ is itself a landmark of additive combinatorics, the prototypical *zero-sum* theorem and the seed of the Davenport-constant literature; it follows from the Chevalley–Warning theorem and is fully formalized in Mathlib as `Int.erdos_ginzburg_ziv`. The parent gallery entry on #131 proves only a mod-2 parity bound ($2 \\in A \\Rightarrow |A| \\le 3$); this entry recognizes that bound as exactly the prime case $p=2$ of EGZ and lifts it to every element.",
+    "problemStatement": "Call $A \\subseteq \\mathbb N$ *non-dividing* if for every $a \\in A$, no subset $S \\subseteq A \\setminus \\{a\\}$ with $|S| \\ge 2$ has $a \\mid \\sum_{i \\in S} i$. The theorem proved here is: if $a \\in A$, $a \\ge 2$, and $A$ is non-dividing, then $$|A| \\le 2a - 1.$$ In particular, instantiating at the least element, a non-dividing set of integers all $\\ge 2$ satisfies $|A| \\le 2\\min(A) - 1$ — its smallest element controls its size. The bound is sharp at $a = 2$, where $\\{2,4,5\\}$ attains $|A| = 3 = 2\\cdot 2 - 1$.",
+    "proofStrategy": "Argue by contradiction. Suppose $|A| \\ge 2a$. Removing $a$ leaves $|A \\setminus \\{a\\}| \\ge 2a - 1$ (`Finset.card_erase_of_mem`), exactly the hypothesis size for EGZ at modulus $n = a$. Apply `Int.erdos_ginzburg_ziv` to the integer-cast sequence $i \\mapsto (i : \\mathbb Z)$ on $A \\setminus \\{a\\}$: it returns an $a$-element subset $t \\subseteq A \\setminus \\{a\\}$ with $a \\mid \\sum_{i \\in t} i$ over $\\mathbb Z$. Transport the divisibility back to $\\mathbb N$ via `push_cast` / `exact_mod_cast`. Since $a \\ge 2$, the subset $t$ has $|t| = a \\ge 2$ elements, so it is a legitimate witness against the non-dividing property at $a$ — contradiction. The corollaries (smallest-element bound, $a=2$ recovery, contrapositive filter, sharpness) are short specializations.",
+    "keyInsights": [
+      "The parent's mod-2 parity pigeonhole is not an ad-hoc trick but precisely the $p = 2$ instance of Erdős–Ginzburg–Ziv: two integers of equal parity sum to an even number ⇔ among $2\\cdot2-1 = 3$ integers some $2$ sum to a multiple of $2$. Naming this reveals the right generalization for free.",
+      "EGZ converts a *size* hypothesis ($|A|$ large) directly into a *divisibility* witness (a zero-sum subset), which is exactly the shape the non-dividing property forbids — the two notions are dual, and the bound $2a-1$ is just EGZ's threshold $2n-1$ read back.",
+      "Applying the bound at the smallest element is optimal because $2a-1$ is increasing in $a$: the least element gives the tightest constraint, formalizing the heuristic that small elements force small non-dividing sets and explaining qualitatively why $F(N)$ grows slowly.",
+      "Self-containment was a deliberate engineering choice: the parent `Erdos131Problem` does not compile against the pinned Mathlib v4.26 (orphan docstrings before axioms, old `Finset.card_sdiff` argument order), so `IsNonDividing` is re-stated verbatim to keep this contribution axiom-free and independently verifiable.",
+      "Sharpness is witnessed concretely and decidably: $\\{2,4,5\\}$ is non-dividing ($2 \\nmid 9,\\ 4 \\nmid 7,\\ 5 \\nmid 6$), verified by `decide` after reducing each case to the full erased set — so the constant $2a-1$ cannot be lowered in general."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: From a Parity Bound to Erdős–Ginzburg–Ziv",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Frames the contribution: the parent's parity bound (2 ∈ A ⟹ |A| ≤ 3) is the p = 2 case of EGZ, which Mathlib has for every modulus, so it lifts to |A| ≤ 2a − 1 for any a ∈ A with a ≥ 2. Explains the EGZ mechanism and why the file is deliberately self-contained (the parent does not compile against pinned Mathlib v4.26).",
+      "mathContext": "EGZ: among any $2n-1$ integers, some $n$ have sum divisible by $n$. At $n = 2$ this is the parity pigeonhole; for general $n = a$ it yields the structural bound $|A| \\le 2a - 1$."
+    },
+    {
+      "id": "definition",
+      "title": "IsNonDividing: the Non-Dividing Property",
+      "startLine": 49,
+      "endLine": 60,
+      "summary": "Imports Mathlib, opens Finset, and re-states IsNonDividing verbatim from the parent: A is non-dividing if for every a ∈ A, no subset S ⊆ A.erase a of size ≥ 2 has a ∣ S.sum id.",
+      "mathContext": "$\\mathrm{IsNonDividing}(A) := \\forall a \\in A,\\ \\forall S \\subseteq A\\setminus\\{a\\},\\ |S| \\ge 2 \\Rightarrow a \\nmid \\textstyle\\sum_{i\\in S} i$."
+    },
+    {
+      "id": "main-bound",
+      "title": "egz_nondividing_card_bound: the EGZ Structural Bound",
+      "startLine": 62,
+      "endLine": 89,
+      "summary": "The headline theorem |A| ≤ 2a − 1. By contradiction: if |A| ≥ 2a then |A.erase a| ≥ 2a − 1, EGZ at modulus a returns an a-element subset t of A\\{a} with a ∣ ∑t over ℤ, transported to ℕ; since a ≥ 2, |t| ≥ 2 violates the non-dividing property at a.",
+      "mathContext": "Contradiction hypothesis $|A| \\ge 2a$ feeds EGZ's threshold $2a-1 \\le |A\\setminus\\{a\\}|$; the returned zero-sum $a$-subset is the forbidden divisor witness. `push_cast`/`exact_mod_cast` move $a \\mid \\sum t$ from $\\mathbb Z$ to $\\mathbb N$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Smallest-Element Bound, Parent Recovery, and Certification Form",
+      "startLine": 91,
+      "endLine": 116,
+      "summary": "Three corollaries: nondividing_card_le_two_min applies the bound at min'(A) for the tightest constraint; two_in_card_le_three recovers the parent's |A| ≤ 3 as the a = 2 case; not_nondividing_of_card_gt is the contrapositive filter — any set with |A| > 2a − 1 for some a ≥ 2 in A is not non-dividing.",
+      "mathContext": "$|A| \\le 2\\min(A) - 1$ (optimal since $2a-1$ increases in $a$); $a=2 \\Rightarrow |A| \\le 3$; contrapositive: $2a-1 < |A| \\Rightarrow \\neg\\,\\mathrm{IsNonDividing}(A)$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness at a = 2 via {2, 4, 5}",
+      "startLine": 118,
+      "endLine": 153,
+      "summary": "Proves {2,4,5} is non-dividing (a helper collapses any size-≥2 subset of a size-≤2 erased set to the whole, then decide checks 2∤9, 4∤7, 5∤6) and packages egz_bound_sharp_at_two: {2,4,5} contains 2, is non-dividing, and has card 3 = 2·2 − 1 — meeting two_in_card_le_three with equality.",
+      "mathContext": "$\\{2,4,5\\}$: erasing any element leaves a 2-set, whose only size-$\\ge 2$ subset is itself; $2\\nmid 4+5=9$, $4\\nmid 2+5=7$, $5\\nmid 2+4=6$. Card $3 = 2\\cdot 2 - 1$ shows the bound is tight at $a=2$."
+    }
+  ],
   "sorries": 0,
   "conclusion": {
     "summary": "For a non-dividing set A ⊆ ℕ (no a ∈ A divides the sum of any ≥2-element subset of A \\ {a}) and any a ∈ A with a ≥ 2, the Erdős–Ginzburg–Ziv theorem gives |A| ≤ 2a − 1 (egz_nondividing_card_bound). The argument: if |A| ≥ 2a then |A.erase a| ≥ 2a − 1, so EGZ at modulus a produces an a-element subset t ⊆ A\\{a} with a ∣ ∑_{i∈t} i; as a ≥ 2 this subset has ≥ 2 elements and violates the non-dividing property at a. Instantiating at the least element yields |A| ≤ 2·min(A) − 1 (nondividing_card_le_two_min), and the a = 2 case recovers the parent's parity bound |A| ≤ 3 (two_in_card_le_three), which is sharp via {2,4,5} (egz_bound_sharp_at_two). 153 lines, 7 theorems/lemmas, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",

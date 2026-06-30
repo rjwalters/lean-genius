@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-amgm-oq0402-overview",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "The Pythagorean Means inside the Power-Mean Family",
+    "content": "The opening docstring frames the whole file: the three classical 'Pythagorean means' — harmonic, geometric and arithmetic — are not three unrelated objects but the values of a single one-parameter power mean M_r at the exponents r = -1, 0, 1. Once that identification is made, the ancient chain HM ≤ GM ≤ AM becomes nothing more than two adjacent rungs of the power-mean monotonicity ladder M_r ≤ M_s (r ≤ s). The actual inequalities are imported wholesale from Mathlib's weighted mean lemmas; the original contribution is the bridge that names HM/GM/AM as M₋₁/M₀/M₁ in the same power-mean object the parent entry uses to study the r → ±∞ limits.",
+    "mathContext": "$M_{-1}(x) \\le M_0(x) \\le M_1(x) \\;\\Longleftrightarrow\\; \\frac{n}{\\sum_i x_i^{-1}} \\le \\Big(\\prod_i x_i\\Big)^{1/n} \\le \\frac{\\sum_i x_i}{n}$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Pythagorean means",
+      "power mean",
+      "mean inequality chain",
+      "monotonicity in the exponent"
+    ],
+    "prerequisites": [
+      "arithmetic, geometric and harmonic means of positive reals",
+      "the family of power (Hölder) means M_r"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-powermean-def",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 39
+    },
+    "type": "definition",
+    "title": "The Power Mean M_r (matching the parent's definition)",
+    "content": "The unweighted power mean is the same piecewise object used by the parent entry: for r ≠ 0 it is (Σ xᵢ^r / n)^{1/r}, and at the removable singularity r = 0 it is defined directly as the geometric mean (∏ xᵢ)^{1/n}. Reusing the parent's exact definition is what lets powerMean_chain be stated in the parent's vocabulary (M₋₁ ≤ M₀ ≤ M₁) rather than in a fresh, incompatible one. It is noncomputable because Real.rpow is noncomputable in Mathlib.",
+    "mathContext": "$M_r(x) = \\begin{cases} \\left(\\frac{1}{n}\\sum_{i} x_i^{r}\\right)^{1/r}, & r \\ne 0 \\\\[4pt] \\left(\\prod_{i} x_i\\right)^{1/n}, & r = 0 \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow",
+      "Fintype.card",
+      "noncomputable",
+      "removable singularity at r = 0"
+    ],
+    "prerequisites": [
+      "Real.rpow: real exponentiation x^r for x ≥ 0",
+      "Fintype.card ι as the count n"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-named-means",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 41,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "Arithmetic, Geometric and Harmonic Means in Closed Form",
+    "content": "The three classical means are defined directly in their familiar closed forms — AM = (Σ xᵢ)/n, GM = (∏ xᵢ)^{1/n}, HM = n/(Σ xᵢ⁻¹) — independently of the power mean. This separation is deliberate: the means are first given the shapes a reader recognises, and the lemmas of Part II then prove that each coincides with M_r at the right exponent. The private lemma card_ne_zero records that n = |ι| is nonzero (from Nonempty ι), the side condition every division by n below relies on.",
+    "mathContext": "$\\mathrm{AM} = \\tfrac{1}{n}\\sum_i x_i,\\quad \\mathrm{GM} = \\Big(\\prod_i x_i\\Big)^{1/n},\\quad \\mathrm{HM} = \\frac{n}{\\sum_i x_i^{-1}}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic mean",
+      "geometric mean",
+      "harmonic mean",
+      "Fintype.card_pos"
+    ],
+    "prerequisites": [
+      "finite products and sums over a Fintype",
+      "Nonempty ι ⇒ Fintype.card ι ≠ 0"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-powermean-one",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 66
+    },
+    "type": "technique",
+    "title": "M₁ = AM and M₀ = GM: the Two Easy Identifications",
+    "content": "The exponent-1 case is the simplest link: unfolding M₁ and applying Real.rpow_one (z^1 = z) collapses the outer 1/r = 1 exponent and div_one cleans up, leaving exactly (Σ xᵢ)/n = AM. The exponent-0 case is even simpler — powerMean takes its r = 0 branch by if_pos rfl and the result is geomMean definitionally (rfl), since both are (∏ xᵢ)^{1/n}. Note these two lemmas carry omit [Nonempty ι]: they hold for any Fintype because they need no nonzero-cardinality side condition.",
+    "mathContext": "$M_1(x) = \\Big(\\tfrac{1}{n}\\sum_i x_i^{1}\\Big)^{1/1} = \\tfrac{1}{n}\\sum_i x_i = \\mathrm{AM},\\qquad M_0(x) = \\Big(\\prod_i x_i\\Big)^{1/n} = \\mathrm{GM}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.rpow_one",
+      "definitional equality (rfl)",
+      "omit instance"
+    ],
+    "prerequisites": [
+      "Real.rpow_one: x^1 = x",
+      "if-then-else reduction in Lean"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-powermean-neg-one",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 81
+    },
+    "type": "technique",
+    "title": "M₋₁ = HM: the Only Nontrivial rpow Computation",
+    "content": "Identifying M₋₁ with the harmonic mean is the one identity that takes real work, because the exponent -1 appears twice. First, inside the sum, Real.rpow_neg_one rewrites each xᵢ^(-1) (an rpow) into the ordinary inverse xᵢ⁻¹, so the inner sum becomes Σ xᵢ⁻¹. Then the outer exponent is 1/(-1) = -1, and Real.rpow_neg (valid because the nonnegative base is checked by hbase) turns ((Σ xᵢ⁻¹)/n)^(-1) into the reciprocal of ((Σ xᵢ⁻¹)/n)^1; rpow_one and inv_div finish, giving n/(Σ xᵢ⁻¹) = HM. The hypothesis 0 < xᵢ is what makes the inverses and the nonnegative base legitimate.",
+    "mathContext": "$M_{-1}(x) = \\Big(\\tfrac{1}{n}\\sum_i x_i^{-1}\\Big)^{1/(-1)} = \\Big(\\tfrac{1}{n}\\sum_i x_i^{-1}\\Big)^{-1} = \\frac{n}{\\sum_i x_i^{-1}} = \\mathrm{HM}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.rpow_neg_one",
+      "Real.rpow_neg",
+      "inv_div",
+      "reciprocal"
+    ],
+    "prerequisites": [
+      "Real.rpow_neg: 0 ≤ x ⇒ x^(-y) = (x^y)⁻¹",
+      "Real.rpow_neg_one: x^(-1) = x⁻¹",
+      "positivity of the entries xᵢ"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-gm-le-am",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 105
+    },
+    "type": "concept",
+    "title": "GM ≤ AM (the link M₀ ≤ M₁) from weighted AM-GM",
+    "content": "The upper link is Mathlib's weighted AM-GM, Real.geom_mean_le_arith_mean_weighted (∏ zᵢ^{wᵢ} ≤ Σ wᵢ zᵢ), specialised to the uniform weights wᵢ = 1/n. The two side conditions are discharged by hand: every weight is nonnegative (hw, by positivity) and the weights sum to 1 (hw': sum_const gives n • (1/n), then mul_inv_cancel₀). The only genuine rewrite is turning the product-of-powers ∏ xᵢ^{1/n} returned by the lemma into the closed-form (∏ xᵢ)^{1/n} via Real.finset_prod_rpow; the right side ∑ (1/n)·xᵢ is then just (Σ xᵢ)/n by mul_sum and commutativity.",
+    "mathContext": "$\\Big(\\prod_i x_i\\Big)^{1/n} = \\prod_i x_i^{1/n} \\;\\le\\; \\sum_i \\tfrac{1}{n}\\,x_i = \\frac{1}{n}\\sum_i x_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.geom_mean_le_arith_mean_weighted",
+      "Real.finset_prod_rpow",
+      "uniform weights",
+      "mul_inv_cancel₀"
+    ],
+    "prerequisites": [
+      "weighted AM-GM inequality",
+      "Finset.sum_const and Finset.mul_sum",
+      "Real.finset_prod_rpow: ∏ fᵢ^r = (∏ fᵢ)^r for fᵢ ≥ 0"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-hm-le-gm",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "HM ≤ GM (the link M₋₁ ≤ M₀) from weighted HM-GM",
+    "content": "The lower link mirrors the upper one but uses Real.harm_mean_le_geom_mean_weighted, (Σ wᵢ/zᵢ)⁻¹ ≤ ∏ zᵢ^{wᵢ}, again at wᵢ = 1/n (here the weights must be strictly positive, hence 0 < xᵢ and univ_nonempty). The work is on the harmonic side: the calc step rewrites n/(Σ xᵢ⁻¹) into (Σ (1/n)/xᵢ)⁻¹ by pulling the constant 1/n out of the sum (mul_sum), so it matches the weighted-HM form exactly; mul_inv and inv_inv handle the nested inverses. The geometric side is again converted to (∏ xᵢ)^{1/n} by Real.finset_prod_rpow.",
+    "mathContext": "$\\mathrm{HM} = \\frac{n}{\\sum_i x_i^{-1}} = \\Big(\\sum_i \\tfrac{1/n}{x_i}\\Big)^{-1} \\;\\le\\; \\prod_i x_i^{1/n} = \\Big(\\prod_i x_i\\Big)^{1/n} = \\mathrm{GM}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.harm_mean_le_geom_mean_weighted",
+      "Real.finset_prod_rpow",
+      "Finset.mul_sum",
+      "mul_inv / inv_inv"
+    ],
+    "prerequisites": [
+      "weighted HM-GM inequality",
+      "strict positivity of weights and entries",
+      "algebra of finite sums and inverses"
+    ]
+  },
+  {
+    "id": "ann-amgm-oq0402-chain",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": {
+      "startLine": 135,
+      "endLine": 144
+    },
+    "type": "insight",
+    "title": "Assembling the Full Chain in Power-Mean Form",
+    "content": "The two named-mean inequalities are bundled into harm_le_geom_le_arith (HM ≤ GM ≤ AM as a conjunction). The payoff is powerMean_chain: rewriting through the three closed-form identities (powerMean_neg_one, powerMean_zero, powerMean_one) restates that same chain purely in the power-mean vocabulary as M₋₁ ≤ M₀ ≤ M₁. This is the sentence the parent entry was missing — it had the limiting endpoints M_r → max/min and now gets the three central, finitely-spaced rungs, exhibiting the classical chain as a special case of monotonicity in the exponent.",
+    "mathContext": "$M_{-1}(x) \\le M_0(x) \\le M_1(x),\\qquad\\text{i.e.}\\qquad \\min_i x_i \\le \\mathrm{HM} \\le \\mathrm{GM} \\le \\mathrm{AM} \\le \\max_i x_i$",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity of M_r in r",
+      "power-mean interpolation",
+      "rewriting via closed-form identities"
+    ],
+    "prerequisites": [
+      "the three identity lemmas (M₁ = AM, M₀ = GM, M₋₁ = HM)",
+      "conjunction of the two link inequalities"
+    ]
+  }
+]

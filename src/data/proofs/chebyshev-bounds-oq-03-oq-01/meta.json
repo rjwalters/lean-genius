@@ -1,0 +1,195 @@
+{
+  "id": "chebyshev-bounds-oq-03-oq-01",
+  "title": "θ ∼ x ⟺ π ∼ x/log x: The Chebyshev–Prime-Counting Form of PNT",
+  "slug": "chebyshev-bounds-oq-03-oq-01",
+  "description": "Closes the first open question of chebyshev-bounds-oq-03: the equivalence θ(x) ∼ x ⟺ π(x) ∼ x/log x between the prime-log sum θ and the prime-counting function π. Rather than Abel summation it uses the elementary two-inequality argument (Apostol, Thm 4.4): θ(x) ≤ π(x)·log x (every prime p ≤ x contributes log p ≤ log x) and π(x) ≤ x^α + θ(x)/(α·log x) for 0 < α < 1 (split the primes at x^α; those above contribute log p > α·log x). Dividing by x sandwiches the two ratios within a factor 1/α; since x^{α−1}·log x → 0 and α may approach 1, θ(x)/x → 1 ⟺ π(x)·log x/x → 1. Combined with the parent's ψ ∼ θ, all three classical forms of PNT are equivalent, from Chebyshev-level tools only. All 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ03OQ01.lean",
+    "tags": [
+      "analytic-number-theory",
+      "prime-counting",
+      "chebyshev",
+      "asymptotics",
+      "prime-number-theorem",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Chebyshev.theta",
+        "description": "The first Chebyshev function θ(x) = Σ_{p≤x} log p, as a sum over primes in (0, ⌊x⌋]",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Nat.primeCounting",
+        "description": "The prime-counting function π(n) = #{p ≤ n : p prime}",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Nat.primesBelow_card_eq_primeCounting'",
+        "description": "#(primesBelow n) = π'(n), the bridge from a filtered Finset to the prime-counting function",
+        "module": "Mathlib.NumberTheory.SmoothNumbers"
+      },
+      {
+        "theorem": "isLittleO_log_rpow_atTop",
+        "description": "log x = o(x^r) for r > 0; with r = 1−α gives the decay x^{α−1}·log x → 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
+      },
+      {
+        "theorem": "Real.log_rpow",
+        "description": "log(x^α) = α·log x for x > 0 — turns the split point x^α into the threshold α·log x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "tendsto_order",
+        "description": "Tendsto characterization in an order topology: f → a iff f eventually exceeds every b < a and is eventually below every b > a — used to take α → 1 cleanly",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "card_filter_prime_Ioc: #((Ioc 0 n).filter Prime) = π(n) — identifies θ's index set with the prime-counting function",
+      "theta_le_primeCounting_mul_log: θ(x) ≤ π(x)·log x, the easy bracketing inequality (each prime p ≤ x contributes log p ≤ log x)",
+      "primeCounting_le: π(x) ≤ x^α + θ(x)/(α·log x) for 0 < α < 1, the hard bracketing inequality via splitting the primes at x^α",
+      "theta_asymp_iff_primeCounting_asymp: θ(x)/x → 1 ⟺ π(x)·log x/x → 1 — the θ–π form of the Prime Number Theorem, taking α → 1 through tendsto_order"
+    ],
+    "axiomCount": 0,
+    "lineCount": 250,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound] for theta_le_primeCounting_mul_log, primeCounting_le, and theta_asymp_iff_primeCounting_asymp. This entry supplies the θ ∼ x ⟺ π ∼ x/log x link that the parent chebyshev-bounds-oq-03 left open (it had proved only ψ ∼ θ).",
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "prerequisites": [
+      "The first Chebyshev function θ(x) = Σ_{p≤x} log p and the prime-counting function π(x)",
+      "Asymptotic equivalence: f ∼ g means f(x)/g(x) → 1",
+      "Growth rates: log x grows slower than any positive power of x (log = o(x^r))",
+      "Order-topology limits and the ε/α bracketing technique"
+    ],
+    "relatedProblems": [
+      {
+        "id": "chebyshev-bounds-oq-03",
+        "relationship": "Parent: proved ψ ∼ θ and asked (OQ-03's first open question) to complete the chain θ ∼ x ⟺ π ∼ x/log x. This entry answers exactly that."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Prime Number Theorem can be stated in three classical, equivalent forms: ψ(x) ∼ x, θ(x) ∼ x, and π(x) ∼ x/log x, where θ(x) = Σ_{p≤x} log p, ψ(x) = Σ_{p^k≤x} log p, and π(x) = #{p ≤ x}. The standard route proves one form and transfers across the equivalences. The parent gallery chain established ψ ∼ θ (prime powers are negligible). The remaining link, θ ∼ x ⟺ π ∼ x/log x, connects a sum weighted by log p to a plain count. It is usually presented via Abel (partial) summation, but it also has a fully elementary proof (Apostol, Introduction to Analytic Number Theory, Theorem 4.4) requiring only two inequalities — which is what this entry formalizes.",
+    "problemStatement": "Prove the equivalence θ(x) ∼ x ⟺ π(x) ∼ x/log x, formalized as Tendsto (θ x / x) atTop (𝓝 1) ↔ Tendsto (π(x)·log x / x) atTop (𝓝 1), thereby completing the PNT equivalence chain ψ ∼ x ⟺ θ ∼ x ⟺ π ∼ x/log x entirely from Chebyshev-level tools (no contour integration, no zeta function).",
+    "proofStrategy": "Two bracketing inequalities. (A) θ(x) = Σ_{p≤x} log p ≤ Σ_{p≤x} log x = π(x)·log x, since each prime p ≤ x has log p ≤ log x. (B) For 0 < α < 1, split the primes ≤ x at x^α: those ≤ x^α number at most x^α, while each prime p with x^α < p ≤ x satisfies log p > log(x^α) = α·log x, so the count of those is ≤ (θ(x)−θ(x^α))/(α·log x) ≤ θ(x)/(α·log x); hence π(x) ≤ x^α + θ(x)/(α·log x). Writing f(x) = θ(x)/x and g(x) = π(x)·log x/x and dividing through, (A) gives f ≤ g and (B) gives g ≤ x^{α−1}·log x + (1/α)·f. The error term x^{α−1}·log x → 0 (log = o(x^{1−α})), so the two ratios are trapped within a factor 1/α of each other; letting α → 1 via the order-topology characterization tendsto_order forces them to share the limit 1. Each direction of the ⟺ chooses α as a function of the target neighborhood (α = 2/(1+b) for the upper bound, α = (max 0 b + 1)/2 for the lower).",
+    "keyInsights": [
+      "θ and π are two ways of weighing the primes up to x — by log p, or by 1 — and the transfer needs only that log p lies between α·log x and log x for the bulk of primes.",
+      "The easy inequality θ ≤ π·log x is immediate; the content is the reverse, where splitting at x^α discards a negligible head (≤ x^α primes) and bounds the tail by θ(x)/(α·log x).",
+      "Dividing by x sandwiches θ(x)/x and π(x)·log x/x within the factor 1/α; the single analytic input is the decay x^{α−1}·log x → 0, i.e. log grows slower than any positive power.",
+      "The α → 1 limit is the crux, and the order-topology characterization tendsto_order turns it into a clean choice of α per target neighborhood — no limsup/liminf bookkeeping.",
+      "Combined with the parent's ψ ∼ θ, this closes the loop: all three forms ψ ∼ x, θ ∼ x, π ∼ x/log x are equivalent using only Chebyshev-level estimates."
+    ],
+    "prerequisites": [
+      "Chebyshev's θ and the prime-counting function π",
+      "Asymptotic equivalence and the limit formulation f(x)/x → 1",
+      "log = o(x^r) for positive powers r",
+      "Order-topology limits (tendsto_order) and bracketing arguments"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bridge",
+      "title": "Section I: θ's Index Set Is the Prime-Counting Function",
+      "startLine": 47,
+      "endLine": 64,
+      "summary": "primeCountingReal packages π(⌊x⌋) as a real number; theta_eq_sum unfolds θ; card_filter_prime_Ioc proves #((Ioc 0 n).filter Prime) = π(n), identifying the support of θ with the primes counted by π.",
+      "mathContext": "θ sums log p over exactly the primes that π counts — the bridge that lets the two functions be compared."
+    },
+    {
+      "id": "lemma-a",
+      "title": "Section II: The Easy Inequality θ(x) ≤ π(x)·log x",
+      "startLine": 66,
+      "endLine": 85,
+      "summary": "theta_le_primeCounting_mul_log: bounding each term log p ≤ log x and summing gives θ(x) ≤ π(x)·log x for x ≥ 1.",
+      "mathContext": "Every prime ≤ x contributes at most log x, so the log-weighted sum is at most the count times log x."
+    },
+    {
+      "id": "lemma-b",
+      "title": "Section III: The Hard Inequality π(x) ≤ x^α + θ(x)/(α·log x)",
+      "startLine": 87,
+      "endLine": 157,
+      "summary": "primeCounting_le: split the primes ≤ x at x^α. The head (primes ≤ x^α) numbers at most x^α; each prime in the tail (x^α < p ≤ x) has log p > α·log x, so the tail numbers at most θ(x)/(α·log x).",
+      "mathContext": "Discarding a negligible head of ≤ x^α primes, the remaining primes are bounded by the log-weighted sum divided by the threshold α·log x."
+    },
+    {
+      "id": "equivalence",
+      "title": "Section IV: θ ∼ x ⟺ π ∼ x/log x",
+      "startLine": 159,
+      "endLine": 248,
+      "summary": "theta_asymp_iff_primeCounting_asymp: from f ≤ g ≤ x^{α−1}·log x + (1/α)·f and x^{α−1}·log x → 0, the order-topology characterization with α → 1 gives θ(x)/x → 1 ⟺ π(x)·log x/x → 1.",
+      "mathContext": "The two normalized counting functions share the limit 1: the PNT in θ-form holds iff it holds in π-form."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 250 lines establishing the θ–π form of the Prime Number Theorem: θ(x) ∼ x ⟺ π(x) ∼ x/log x. The heart is two bracketing inequalities — θ(x) ≤ π(x)·log x and π(x) ≤ x^α + θ(x)/(α·log x) — which sandwich the normalized functions within a factor 1/α; the decay x^{α−1}·log x → 0 and the limit α → 1 (via tendsto_order) collapse the sandwich to a shared limit.",
+    "implications": "This answers the first open question of the parent chebyshev-bounds-oq-03, completing the PNT equivalence chain ψ ∼ x ⟺ θ ∼ x ⟺ π ∼ x/log x entirely with Chebyshev-level tools. The elementary two-inequality route (Apostol Thm 4.4) is formalized in place of Abel summation, and the bracketing lemmas — θ ≤ π·log x and π ≤ x^α + θ/(α·log x) — are reusable for converting between log-weighted prime sums and prime counts in other analytic-number-theory formalizations.",
+    "openQuestions": [
+      "Combine with the parent's ψ ∼ θ to package all three PNT forms (ψ ∼ x, θ ∼ x, π ∼ x/log x) as a single equivalence theorem, so a proof of any one transfers to the others.",
+      "Quantify the transfer: from explicit Chebyshev bounds c₁x ≤ θ(x) ≤ c₂x, deduce explicit bounds on π(x)·log x/x, recovering a Chebyshev-type two-sided estimate for π."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Chebyshev",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Chebyshev",
+      "Finset",
+      "Filter",
+      "Real",
+      "Nat.Prime",
+      "Topology"
+    ],
+    "namespace": "ChebyshevBoundsOQ03OQ01",
+    "lineCount": 250,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/ChebyshevBoundsOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds-oq-03",
+      "relationship": "extends",
+      "description": "Parent: proved ψ ∼ θ and left θ ∼ x ⟺ π ∼ x/log x as its first open question. This entry closes that link, completing the PNT equivalence chain."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "related",
+      "description": "Explicit Chebyshev bounds on π(x); this entry instead proves the asymptotic equivalence between the θ and π forms of PNT."
+    }
+  ],
+  "references": [
+    {
+      "key": "Apostol",
+      "citation": "Apostol, T.M., Introduction to Analytic Number Theory, Springer (1976), Theorem 4.4 (relation between θ(x) and π(x)).",
+      "type": "book"
+    },
+    {
+      "key": "Ch1852",
+      "citation": "Chebyshev, P.L., Mémoire sur les nombres premiers, J. Math. Pures Appl. 17 (1852), 366–390.",
+      "type": "paper"
+    },
+    {
+      "key": "MV07",
+      "citation": "Montgomery, H.L. and Vaughan, R.C., Multiplicative Number Theory I: Classical Theory, Cambridge University Press (2007).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

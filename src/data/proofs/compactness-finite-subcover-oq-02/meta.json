@@ -18,6 +18,7 @@
     "sorries": 0
   },
   "title": "Subordinate Finite ε-Nets on Compact Metric Spaces",
+  "description": "A metric-space refinement of compactness: every open cover U of a compact metric space admits a single Lebesgue radius δ > 0 and a finite set of centers whose δ-balls cover the space, with each ball lying inside one cover member (a subordinate finite ε-net). No single Mathlib lemma states this — it is the compatible pairing of the Lebesgue number lemma with a finite δ-net from total boundedness at that same radius. From the net the entry constructively re-derives the Heine–Borel finite subcover and adds a fineness refinement bounding each member's diameter by 2δ — the structure underlying Heine–Cantor uniform continuity and partitions of unity.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -73,6 +74,41 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Compactness has three classical faces on a metric space: every open cover has a finite subcover (Heine–Borel), every sequence has a convergent subsequence (Bolzano–Weierstrass), and the space is complete and totally bounded. The bridge between the covering face and the metric face is the Lebesgue number lemma (Henri Lebesgue, early 1900s): for any open cover of a compact metric space there is a δ > 0 so small that every set of diameter < δ — in particular every δ-ball — lies inside some single cover member. Combined with total boundedness (finitely many δ-balls cover the space), this yields finite ε-nets that are adapted to a prescribed cover. Such subordinate nets are the standard engine behind Heine–Cantor (continuous functions on compacta are uniformly continuous) and the construction of partitions of unity. This entry formalizes the subordinate net itself and reads the classical corollaries off it.",
+    "problemStatement": "**Open Question (oq-02)**: refine the finite-subcover characterization of compactness to the metric setting with explicit geometric control. Produce, for any open cover U of a compact metric space X, a uniform radius δ > 0 and a finite center set t such that the δ-balls about t cover X and each ball lies in some U i — and recover both the Heine–Borel finite subcover and a diameter-controlled (fine) refinement from that single net.",
+    "proofStrategy": "The whole entry rests on one compatibility observation. (1) `exists_subordinate_finite_ball_cover` extracts a Lebesgue radius δ from `lebesgue_number_lemma_of_metric` applied to the compact `univ`, then runs `exists_finite_cover_balls_of_isCompact_closure` at that SAME δ to get finitely many centers t whose δ-balls cover X; the Lebesgue property gives the subordination (each ball ⊆ some U i) for free. (2) `exists_finite_subcover_via_net` makes t a Finite subtype, uses `choose` to pick for each center a containing cover member g, and shows `range g` is a finite subfamily covering X — a constructive Heine–Borel from the net rather than from abstract compactness. (3) `exists_subordinate_fine_cover` augments the net with `Metric.diam_ball`, bounding each member's diameter by 2δ. The mathematical content is the COMBINATION; no Mathlib lemma packages it.",
+    "keyInsights": [
+      "The crux is running the Lebesgue number lemma and total boundedness at the SAME radius δ: the Lebesgue δ makes every δ-ball subordinate to the cover, and total boundedness at δ makes finitely many δ-balls suffice — neither lemma alone yields the subordinate net.",
+      "The Heine–Borel finite subcover is recovered CONSTRUCTIVELY: `choose` selects, for each of finitely many net balls, a cover member containing it, so the finite subfamily is the explicit range of that choice function — not an existence pulled from abstract compactness.",
+      "Subordination plus a uniform radius is strictly more than a bare finite subcover: it is exactly the geometric control (a single δ that works everywhere, each piece inside one cover element) that powers Heine–Cantor uniform continuity and partitions of unity.",
+      "The fineness corollary (diam ≤ 2δ) shows an arbitrary open cover can be refined to a finite cover by sets of uniformly small, controlled diameter — the metric analogue of refining to an arbitrarily fine cover.",
+      "Honest provenance: the ingredients (Lebesgue number, total boundedness) are Mathlib's, hence the 'mathlib' badge; the formalized content is their compatible assembly and the constructive corollaries, not the ingredients themselves."
+    ]
+  },
+  "sections": [
+    {
+      "id": "subordinate-net",
+      "title": "The Subordinate Finite ε-Net",
+      "startLine": 56,
+      "endLine": 73,
+      "summary": "exists_subordinate_finite_ball_cover, the headline: a Lebesgue radius δ from lebesgue_number_lemma_of_metric (on the compact univ) is fed to exists_finite_cover_balls_of_isCompact_closure at the same δ, producing finitely many centers whose δ-balls cover X, each ball subordinate to some cover member. The compatibility of the two lemmas at one radius is the whole content."
+    },
+    {
+      "id": "finite-subcover",
+      "title": "Finite Subcover Re-Derived Through the Net",
+      "startLine": 75,
+      "endLine": 93,
+      "summary": "exists_finite_subcover_via_net recovers Heine–Borel constructively: with t made a Finite subtype, `choose` picks for each net ball a containing cover member g, and `range g` is shown to be a finite subfamily of U covering X — the finite subcover obtained from the Lebesgue number rather than abstract compactness."
+    },
+    {
+      "id": "fineness",
+      "title": "The Fineness Refinement (diam ≤ 2δ)",
+      "startLine": 95,
+      "endLine": 107,
+      "summary": "exists_subordinate_fine_cover augments the net with Metric.diam_ball, bounding each member's diameter by 2δ. An arbitrary open cover thus refines to a finite cover by sets of uniformly small controlled diameter, each inside one cover element — the structure behind uniform continuity and partitions of unity."
+    }
+  ],
   "openQuestions": [
     {
       "id": "compactness-finite-subcover-oq-02-oq-01",

@@ -83,19 +83,51 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Context: from the isoperimetric inequality to its equality case",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Docstring placing the file in the parent chain: the isoperimetric inequality C²≥4πA (Hurwitz's Fourier proof) reduces coordinate-by-coordinate to Wirtinger's inequality ∫f²≤∫(f')², and this file proves the equality case, the analytic heart of the rigidity statement 'C²=4πA ⟺ circle'. Imports the grandparent AreaOfCircleOQ01OQ03 (the axiom-free Fourier decomposition) and opens the IsoperimetricWirtingerEquality namespace."
+    },
+    {
       "id": "part-i",
       "title": "Fourier decomposition and Wirtinger's inequality",
-      "text": "`FourierDecomp` repackages the grandparent's axiom-free Parseval data; `fourier_decomp_exists` asserts its existence for any C¹ 2π-periodic function. `wirtinger_inequality` records the inequality ∫f²≤∫(f')² (n²≥1 for n≠0, c₀=0 from zero mean), the statement whose equality case is the subject of this entry."
+      "startLine": 54,
+      "endLine": 104,
+      "summary": "The FourierDecomp structure repackages the grandparent's axiom-free Parseval data (square-summability of cₙ and n²cₙ², Parseval ∫f²=Σcₙ² and ∫(f')²=Σn²cₙ², and c₀ ∝ mean); fourier_decomp_exists asserts its existence for any C¹ 2π-periodic f. wirtinger_inequality records ∫f²≤∫(f')² via the pointwise bound cₙ²≤n²cₙ² (n²≥1 for n≠0, c₀=0 from zero mean) summed with hasSum_le — the inequality whose equality case is the subject of this entry."
     },
     {
       "id": "part-ii",
       "title": "The rigidity theorem",
-      "text": "`wirtinger_equality_iff_first_harmonic`: equality ∫f²=∫(f')² holds iff cₙ=0 for all n≠±1. Forward uses that Σ(n²−1)cₙ²=0 is a vanishing sum of non-negative terms (Summable.tsum_pos for the contradiction); backward uses that n²=1 on the support {−1,+1} so the two Parseval sums coincide term-by-term."
+      "startLine": 106,
+      "endLine": 165,
+      "summary": "wirtinger_equality_iff_first_harmonic: equality ∫f²=∫(f')² holds iff cₙ=0 for all n≠±1. Forward sets g(m)=(m²−1)cₘ², a summable non-negative family (c₀=0 kills the m=0 term) whose tsum equals the gap ∫(f')²−∫f²=0; a surviving cₙ with |n|≥2 gives n²≥2 so g(n)>0, and Summable.tsum_pos forces the tsum strictly positive — contradiction. Backward uses that n²=1 on the support {−1,+1}, so the two Parseval sums coincide term-by-term."
     },
     {
       "id": "part-iii",
       "title": "The concrete extremiser a·cos t + b·sin t",
-      "text": "`first_harmonic_deriv`, `first_harmonic_mean_zero`, `first_harmonic_sq_integral` and `first_harmonic_wirtinger_equality` exhibit the first harmonic explicitly: zero mean, energy π(a²+b²), derivative b cos t − a sin t, and the attained equality ∫f²=∫(f')²=π(a²+b²)."
+      "startLine": 167,
+      "endLine": 224,
+      "summary": "first_harmonic_deriv, first_harmonic_mean_zero, first_harmonic_sq_integral and first_harmonic_wirtinger_equality exhibit the first harmonic explicitly: derivative b cos t − a sin t (HasDerivAt.const_mul on cos/sin), zero mean over a period, energy ∫f²=π(a²+b²) via integral_cos_sq / integral_sin_sq / integral_sin_mul_cos₁, and the attained equality ∫f²=∫(f')²=π(a²+b²) (the derivative is again a first harmonic, so the same energy formula applies)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) 224-line file with 7 theorems and 1 definition characterizing the equality case of Wirtinger's inequality: for a mean-zero 2π-periodic C¹ function, ∫f² = ∫(f')² holds iff the Fourier support is the first harmonic {−1,+1} (wirtinger_equality_iff_first_harmonic). The concrete extremiser f(t)=a cos t + b sin t is exhibited with zero mean, energy π(a²+b²), and attained equality. This discharges the rigidity half of the isoperimetric problem on top of the parent's axiom-free inequality.",
+    "implications": "This supplies the analytic core of isoperimetric rigidity — the statement that the circle is the unique extremiser of C²=4πA. The proof is purely spectral: the gap ∫(f')²−∫f² = Σ(n²−1)cₙ² is a sum of non-negative terms, and rigidity is the elementary fact that a non-negative sum vanishes iff every term does. Forcing the first-harmonic condition in both coordinates of a constant-speed closed curve yields a circle, completing the geometric rigidity statement. The reusable engine is Summable.tsum_pos applied to a manifestly non-negative spectral gap.",
+    "openQuestions": [
+      "Assemble the geometric rigidity statement: combine the coordinate-wise first-harmonic characterization with the constant-speed/closed-curve constraints to conclude that an isoperimetric extremiser is exactly a circle (C²=4πA ⟺ circle), not merely that each coordinate is a first harmonic.",
+      "Generalize the equality analysis to weighted or higher-dimensional Wirtinger/Poincaré inequalities, where the spectral gap (λ₁ minus the next eigenvalue) governs both the inequality and its rigidity.",
+      "Quantify the stability/near-equality regime: bound the deficit ∫(f')²−∫f² below by the energy in harmonics |n|≥2, yielding a quantitative isoperimetric inequality (Bonnesen-type) measuring how far a near-extremiser is from a circle."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "area-of-circle-oq-01-oq-02-oq-02-oq-01-oq-01",
+      "relationship": "Parent: proves Wirtinger's inequality ∫f²≤∫(f')² (all five analytic axioms discharged 0-axiom); this entry characterizes its equality case."
+    },
+    {
+      "proofId": "area-of-circle-oq-01-oq-03",
+      "relationship": "Grandparent: supplies the axiom-free Fourier decomposition (Parseval for f and f' via integration by parts) reused here as IsoperimetricOQ.fourier_decomposition."
     }
   ]
 }

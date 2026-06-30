@@ -1,0 +1,174 @@
+{
+  "id": "fibonacci-identities-oq-03-oq-03",
+  "title": "The Fibonacci–Lucas Doubling Identity: F₂ₙ = Fₙ·Lₙ",
+  "slug": "fibonacci-identities-oq-03-oq-03",
+  "description": "The doubled-index Fibonacci identities F_{2n+1} = F_{n+1}² + F_n² (odd → sum of two squares) and the symmetric even form F_{2n} = F_{n+1}² − F_{n−1}², together with the new content: reading the even case as a difference of two squares that factors. Since F_{n+1}² − F_{n−1}² = (F_{n+1} − F_{n−1})(F_{n+1} + F_{n−1}) = F_n·(F_{n−1} + F_{n+1}) = F_n·L_n, where L_n is the n-th Lucas number, the symmetric difference-of-squares form is exactly the classical Fibonacci–Lucas doubling identity F_{2n} = F_n·L_n. Lucas numbers (L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1}) appear nowhere in the Fibonacci gallery and are not packaged in Mathlib's Nat.fib API, so they are introduced here; the bridge L_{n+1} = F_n + F_{n+2} (i.e. L_m = F_{m−1} + F_{m+1}) is proved by two-step induction on the shared recurrence. The factorisation then follows from Mathlib's even-doubling lemma Nat.fib_two_mul_add_two by recognising its second factor 2F_n + F_{n+1} = F_n + F_{n+2} = L_{n+1}. The entry records the odd sum-of-squares case, the doubling identity F_{2m} = F_m·L_m (m ≥ 1), the difference-of-squares ⇒ product bridge F_{n+2}² − F_n² = F_{n+1}·L_{n+1} over ℤ, the question's exact symmetric form F_{2m} = F_{m+1}² − F_{m−1}², and an existential reading, all fully verified with 0 axioms and 0 sorries (decide checks use kernel reduction, not native_decide).",
+  "meta": {
+    "author": "Classical (Fibonacci–Lucas doubling identity); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_number#Relationship_to_Fibonacci_numbers",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "lucas-numbers",
+      "doubling-identity",
+      "difference-of-squares",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ03OQ03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_two_mul_add_one",
+        "description": "fib (2n+1) = fib (n+1)² + fib n² — the odd fast-doubling identity; recorded directly as the odd half of the sum/difference-of-squares pair named in the open question",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_two_mul_add_two",
+        "description": "fib (2n+2) = fib (n+1)·(2·fib n + fib (n+1)) — the even fast-doubling product whose second factor 2·fib n + fib (n+1) = fib n + fib (n+2) = L_{n+1} is recognised as a Lucas number, yielding F_{2n+2} = F_{n+1}·L_{n+1}",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the Fibonacci recurrence, used both to expand the doubling product and to drive the two-step induction proving the Lucas bridge",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.twoStepInduction",
+        "description": "Two-step (Fibonacci-style) induction principle with base cases at 0 and 1 and a step from P n, P (n+1) to P (n+2) — the natural induction for proving the Lucas–Fibonacci bridge L_{n+1} = F_n + F_{n+2}",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "lucas: the Lucas number sequence L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1}, absent from the Fibonacci gallery and from Mathlib's fib API",
+      "lucas_succ_eq_fib_add_fib: L_{n+1} = F_n + F_{n+2} (equivalently L_m = F_{m−1} + F_{m+1}), the Lucas–Fibonacci bridge, by two-step induction",
+      "fib_two_mul_add_two_eq_fib_mul_lucas: F_{2n+2} = F_{n+1}·L_{n+1} — Mathlib's even-doubling product factored through the Lucas number",
+      "fib_two_mul_eq_fib_mul_lucas: F_{2m} = F_m·L_m for m ≥ 1 — the classical Fibonacci–Lucas doubling identity in symmetric form",
+      "fib_sq_sub_sq_eq_fib_mul_lucas: F_{n+2}² − F_n² = F_{n+1}·L_{n+1} over ℤ — the even-index difference of two squares equals the Lucas product (the difference-of-squares ⇒ product bridge)",
+      "fib_two_mul_symmetric_diff_sq: F_{2m} = F_{m+1}² − F_{m−1}² over ℤ for m ≥ 1 — the open question's exact symmetric difference-of-squares form",
+      "fib_two_mul_isFibLucasProduct: every even-index Fibonacci number F_{2m} (m ≥ 1) is a Fibonacci × Lucas product",
+      "fib_odd_sq_add_sq: F_{2n+1} = F_{n+1}² + F_n², the odd half of the pair (Mathlib's Nat.fib_two_mul_add_one, recorded for completeness)"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 143,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound). All three numerical checks (L_5 = 11, F_10 = F_5·L_5 = 55, F_12 = F_6·L_6 = 144) use decide (kernel reduction, no native_decide / Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Fibonacci and Lucas sequences are the two canonical solutions of the recurrence x_{n+2} = x_n + x_{n+1}, distinguished by their seeds (0,1 and 2,1). Their interlocking identities — F_{2n} = F_n L_n, L_n = F_{n−1} + F_{n+1}, 5F_n = L_{n−1} + L_{n+1}, L_n² − 5F_n² = 4(−1)ⁿ — are the backbone of elementary Fibonacci theory (Lucas, 1878). The doubling identity F_{2n} = F_n L_n is the multiplicative companion of the additive recurrence and underlies the fast-doubling algorithm for computing F_n in O(log n) steps. Mathlib records the fast-doubling identities for fib in product/sum-of-squares form but does not name the Lucas sequence, so the F_n·L_n reading is not directly available.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-03 → oq-03)**: Express the doubled-index Fibonacci numbers as sums/differences of squares: F_{2n+1} = F_{n+1}² + F_n² and F_{2n} = F_{n+1}² − F_{n−1}².\n\n**Result**: the odd case (fib_odd_sq_add_sq, = Mathlib's fib_two_mul_add_one), the symmetric even case in its exact form (fib_two_mul_symmetric_diff_sq), and — the new content — its factorisation as the Fibonacci–Lucas product F_{2n} = F_n·L_n (fib_two_mul_eq_fib_mul_lucas) together with the difference-of-squares ⇒ product bridge (fib_sq_sub_sq_eq_fib_mul_lucas). The Lucas sequence and the bridge L_{n+1} = F_n + F_{n+2} are introduced to make the factorisation precise.",
+    "text": "Doubling the index of a Fibonacci number turns it into a quadratic expression in nearby Fibonacci values: the odd case is a sum of two consecutive squares F_{2n+1} = F_{n+1}² + F_n², and the even case is a symmetric difference of two squares F_{2n} = F_{n+1}² − F_{n−1}². That even difference of squares is not irreducible: it factors as F_n·(F_{n−1} + F_{n+1}) = F_n·L_n, the classical Fibonacci–Lucas doubling identity. This entry proves both square identities and the factorisation, introducing the Lucas numbers L_n needed to state it.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Lucas numbers (lucas).** Define L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1}; the recurrence lucas_add_two holds by rfl.\n2. **Bridge (lucas_succ_eq_fib_add_fib).** Prove L_{n+1} = F_n + F_{n+2} by Nat.twoStepInduction. Base cases n = 0,1 by decide. Step: lucas_add_two supplies L_{n+3} = L_{n+1} + L_{n+2}, the two IHs relate the Lucas terms to Fibonacci sums, and omega closes the linear identity given the Fibonacci recurrences F_{n+2} = F_n + F_{n+1}, F_{n+3} = F_{n+1} + F_{n+2}, F_{n+4} = F_{n+2} + F_{n+3}. (Nat.twoStepInduction hands back the second IH with un-normalised indices F_{n+1+2}; restating it as F_{n+3} first lets omega share atoms.)\n3. **Doubling (fib_two_mul_add_two_eq_fib_mul_lucas).** Rewrite Nat.fib_two_mul_add_two and the bridge so that F_{2n+2} = F_{n+1}·(F_n + F_{n+2}) = F_{n+1}·L_{n+1}; ring closes after Nat.fib_add_two. Reindexing m = n+1 gives F_{2m} = F_m·L_m (fib_two_mul_eq_fib_mul_lucas).\n4. **Difference-of-squares bridge (fib_sq_sub_sq_eq_fib_mul_lucas).** Over ℤ, combine the additive even identity F_{2n+2} + F_n² = F_{n+2}² with the product form via exact_mod_cast and linarith to get F_{n+2}² − F_n² = F_{n+1}·L_{n+1}.\n5. **Symmetric form (fib_two_mul_symmetric_diff_sq).** Reindex m = n+1, simplify (n+1) − 1 = n by Nat.add_sub_cancel, and derive F_{2m} = F_{m+1}² − F_{m−1}² from the same additive identity over ℤ.\n6. The numerical checks L_5 = 11, F_10 = F_5·L_5 = 55, F_12 = F_6·L_6 = 144 are confirmed by decide (kernel reduction)."
+    ,
+    "keyInsights": [
+      "**The even difference of squares is not prime — it factors.** F_{n+1}² − F_{n−1}² = (F_{n+1} − F_{n−1})(F_{n+1} + F_{n−1}); the first factor telescopes to F_n and the second is the Lucas number L_n, so the symmetric even-doubling identity F_{2n} = F_{n+1}² − F_{n−1}² is literally the product identity F_{2n} = F_n·L_n.",
+      "**Lucas numbers are forced by the factorisation.** The factor F_{n−1} + F_{n+1} is exactly L_n; stating the result cleanly requires the Lucas sequence, which is otherwise absent from the gallery and from Mathlib's fib API. The single bridge lemma L_{n+1} = F_n + F_{n+2} connects the two sequences.",
+      "**Two-step induction is the right tool.** Because L and F obey the same order-2 recurrence, the bridge L_{n+1} = F_n + F_{n+2} is a one-line Nat.twoStepInduction: agree at two base points, then the shared recurrence propagates the equality, with omega discharging the linear step.",
+      "**Mathlib's product factor was a Lucas number in disguise.** Mathlib stores the even doubling as F_{2n+2} = F_{n+1}(2F_n + F_{n+1}); since 2F_n + F_{n+1} = F_n + F_{n+2} = L_{n+1}, recognising this turns the opaque product into the meaningful Fibonacci–Lucas form."
+    ],
+    "prerequisites": [
+      "Mathlib's fast-doubling lemmas Nat.fib_two_mul_add_one and Nat.fib_two_mul_add_two",
+      "The Fibonacci recurrence Nat.fib_add_two",
+      "The two-step induction principle Nat.twoStepInduction",
+      "The ring, omega, linarith tactics and exact_mod_cast for the ℕ→ℤ transfer"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 3,
+      "endLine": 35,
+      "summary": "Module docstring: the doubled-index square identities, the factorisation of the even difference of squares as F_n·L_n, the absence of Lucas numbers from the gallery/Mathlib, and the plan (define Lucas, prove the bridge, read off the factorisation).",
+      "mathContext": "$F_{2n} = F_{n+1}^2 - F_{n-1}^2 = (F_{n+1}-F_{n-1})(F_{n+1}+F_{n-1}) = F_n L_n$."
+    },
+    {
+      "id": "lucas-def",
+      "title": "Lucas Numbers",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "lucas: the sequence L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1} (2,1,3,4,7,11,18,…), with base values and the recurrence lucas_add_two by rfl.",
+      "mathContext": "$L_0 = 2,\\ L_1 = 1,\\ L_{n+2} = L_n + L_{n+1}$."
+    },
+    {
+      "id": "bridge",
+      "title": "The Lucas–Fibonacci Bridge",
+      "startLine": 53,
+      "endLine": 74,
+      "summary": "lucas_succ_eq_fib_add_fib: L_{n+1} = F_n + F_{n+2} by Nat.twoStepInduction — base cases by decide, step closed by omega using lucas_add_two and the Fibonacci recurrences.",
+      "mathContext": "$L_{n+1} = F_n + F_{n+2}$, i.e. $L_m = F_{m-1} + F_{m+1}$."
+    },
+    {
+      "id": "doubling",
+      "title": "The Doubling Identity F_{2n} = F_n·L_n",
+      "startLine": 76,
+      "endLine": 100,
+      "summary": "fib_odd_sq_add_sq (the odd sum-of-squares, = Mathlib), fib_two_mul_add_two_eq_fib_mul_lucas (F_{2n+2} = F_{n+1}·L_{n+1} via the recognised Lucas factor), and fib_two_mul_eq_fib_mul_lucas (the reindexed F_{2m} = F_m·L_m, m ≥ 1).",
+      "mathContext": "$F_{2m} = F_m L_m\\ (m \\ge 1)$."
+    },
+    {
+      "id": "diff-sq",
+      "title": "Difference-of-Squares Bridge, Symmetric Form, and Checks",
+      "startLine": 101,
+      "endLine": 142,
+      "summary": "fib_sq_sub_sq_eq_fib_mul_lucas (F_{n+2}² − F_n² = F_{n+1}·L_{n+1} over ℤ), fib_two_mul_symmetric_diff_sq (the question's exact F_{2m} = F_{m+1}² − F_{m−1}²), fib_two_mul_isFibLucasProduct (existential), and decide checks L_5=11, F_10=55, F_12=144 (kernel reduction).",
+      "mathContext": "$F_{n+2}^2 - F_n^2 = F_{n+1} L_{n+1}$; $F_{2m} = F_{m+1}^2 - F_{m-1}^2$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-03",
+      "relationship": "extends",
+      "description": "The parent records the even doubling as the asymmetric difference of squares F_{2n+2} = F_{n+2}² − F_n²; this entry supplies the symmetric form F_{2n} = F_{n+1}² − F_{n−1}² and factors it as the Fibonacci–Lucas product F_n·L_n"
+    },
+    {
+      "targetId": "fibonacci-identities-oq-03-oq-02",
+      "relationship": "complements",
+      "description": "The sibling square-sum entry ∑ F_i² = F_n·F_{n+1} stays within the Fibonacci sequence; this entry introduces the Lucas sequence and the cross-sequence doubling identity F_{2n} = F_n·L_n"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) treatment of the doubled-index Fibonacci identities: the odd sum of two squares F_{2n+1} = F_{n+1}² + F_n², the symmetric even difference of two squares F_{2n} = F_{n+1}² − F_{n−1}², and the new content — its factorisation as the classical Fibonacci–Lucas doubling identity F_{2n} = F_n·L_n, with the Lucas sequence and the bridge L_{n+1} = F_n + F_{n+2} introduced to state it.",
+    "implications": "Brings Lucas numbers and the cross-sequence doubling identity F_{2n} = F_n·L_n into the gallery, making the even fast-doubling step interpretable (Mathlib's opaque product factor 2F_n + F_{n+1} is the Lucas number L_{n+1}). The bridge lemma L_m = F_{m−1} + F_{m+1} is reusable for further Fibonacci–Lucas identities.",
+    "openQuestions": [
+      "Prove the dual conversion 5F_n = L_{n−1} + L_{n+1} and the Lucas-square doubling L_{2n} = L_n² − 2(−1)ⁿ, closing the basic F/L doubling pair.",
+      "Formalize the Fibonacci–Lucas Pythagorean-like relation L_n² − 5F_n² = 4(−1)ⁿ and use it to give a second proof of F_{2n} = F_n L_n."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FibonacciIdentitiesOQ03OQ03",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/FibonacciIdentitiesOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Standard reference for the Fibonacci–Lucas doubling identity F_{2n} = F_n L_n and the conversion L_n = F_{n−1} + F_{n+1}"
+    },
+    {
+      "authors": "Vajda, Steven",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section",
+      "year": "1989",
+      "venue": "Ellis Horwood",
+      "note": "Catalogue of Fibonacci–Lucas identities including the doubling and difference-of-squares forms"
+    }
+  ],
+  "sorries": 0
+}

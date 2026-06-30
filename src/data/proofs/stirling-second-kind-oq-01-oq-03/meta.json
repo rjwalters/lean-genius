@@ -1,0 +1,164 @@
+{
+  "id": "stirling-second-kind-oq-01-oq-03",
+  "title": "Stirling Numbers of the Second Kind: the second subdiagonal S(n, n−2) = C(n,3) + 3·C(n,4)",
+  "slug": "stirling-second-kind-oq-01-oq-03",
+  "description": "The second subdiagonal of the Stirling numbers of the second kind: S(n, n−2) = C(n,3) + 3·C(n,4), equivalently S(m+2, m) = C(m+2,3) + 3·C(m+2,4). Mathlib records the Pascal recurrence, the diagonal S(n,n)=1, and the first subdiagonal S(n+1,n)=C(n+1,2), but not the second subdiagonal. Proved by induction on m: the successor step applies the recurrence once, replaces S(m+2,m+1) by the first subdiagonal C(m+2,2), invokes the induction hypothesis, and collapses via two instances of Pascal's rule and the single absorption identity m·C(m+2,2) = 3·C(m+2,3). Fully verified: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingSecondKindOQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "set-partitions",
+      "binomial-coefficients",
+      "subdiagonal",
+      "closed-form",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond_succ_succ",
+        "description": "Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k); applied once with n=m+2, k=m to step from S(m+2,m) to S(m+3,m+1)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingSecond_succ_self_left",
+        "description": "First subdiagonal S(n+1,n) = C(n+1,2); supplies S(m+2,m+1) = C(m+2,2) inside the induction step",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "C(n,k+1)·(k+1) = C(n,k)·(n−k); the n=m+2, k=2 instance is the absorption identity m·C(m+2,2) = 3·C(m+2,3)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ'",
+        "description": "Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1); two instances rewrite the target binomials C(m+3,3) and C(m+3,4) over the column n=m+2",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "add_one_mul",
+        "description": "(a+1)·b = a·b + b; splits the leading coefficient (m+1)·C(m+2,2) so the absorption identity can be substituted and omega can finish",
+        "module": "Mathlib.Algebra.Ring.Defs"
+      }
+    ],
+    "originalContributions": [
+      "stirlingSecond_sub_two: the second subdiagonal closed form S(m+2,m) = C(m+2,3) + 3·C(m+2,4), absent from Mathlib (which records only the diagonal and the first subdiagonal)",
+      "stirlingSecond_sub_two': the index-shifted statement S(n, n−2) = C(n,3) + 3·C(n,4) for n ≥ 2",
+      "absorption: the isolated arithmetic fact m·C(m+2,2) = 3·C(m+2,3) that drives the induction step, read off Nat.choose_succ_right_eq"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. stirlingSecond_sub_two depends only on propext and Quot.sound; stirlingSecond_sub_two' additionally on Classical.choice. No native_decide is used (the decide calls are kernel-reduction on Decidable instances), so there is no Lean.ofReduceBool dependency. Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 100,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Stirling number of the second kind S(n,k) counts partitions of an n-element set into k nonempty blocks. Along the main diagonal S(n,n)=1 (every block a singleton), and the first subdiagonal S(n,n−1)=C(n,2) records the single choice of which two elements share the lone doubleton. The second subdiagonal S(n,n−2) is the first genuinely two-term entry: a partition of an n-set into n−2 blocks must either have one triple and the rest singletons, or two doubletons and the rest singletons. Counting these two shapes gives C(n,3) + 3·C(n,4) — the C(n,3) triples, plus C(n,4) choices of the four paired elements times the 3 ways to split four elements into two unordered pairs. These subdiagonal values are classical (Graham–Knuth–Patashnik, Concrete Mathematics), but Mathlib stops at the first subdiagonal.",
+    "problemStatement": "Prove in Lean the second-subdiagonal closed form for Stirling numbers of the second kind, S(m+2, m) = C(m+2,3) + 3·C(m+2,4) (equivalently S(n,n−2) = C(n,3)+3·C(n,4) for n ≥ 2), directly from Mathlib's Pascal recurrence and first-subdiagonal lemma.",
+    "text": "Fix the claim P(m): S(m+2,m) = C(m+2,3) + 3·C(m+2,4) and induct on m. The successor step uses the Mathlib recurrence S(m+3,m+1) = (m+1)·S(m+2,m+1) + S(m+2,m), rewrites the first summand with the first subdiagonal S(m+2,m+1) = C(m+2,2) and the second with the induction hypothesis, and then matches against the target C(m+3,3) + 3·C(m+3,4) using Pascal's rule and the absorption identity m·C(m+2,2) = 3·C(m+2,3).",
+    "proofStrategy": "1. absorption: the n=m+2, k=2 case of Nat.choose_succ_right_eq gives C(m+2,3)·3 = C(m+2,2)·(m+2−2) = C(m+2,2)·m; commuting yields m·C(m+2,2) = 3·C(m+2,3) over ℕ.\n2. stirlingSecond_sub_two: induct on m. Base m=0 is decide (both sides 0: S(2,0)=0, C(2,3)=C(2,4)=0). Step: apply Nat.stirlingSecond_succ_succ (m+2) m to get S(m+3,m+1) = (m+1)·S(m+2,m+1) + S(m+2,m); rewrite S(m+2,m+1)=C(m+2,2) via Nat.stirlingSecond_succ_self_left and S(m+2,m) via the induction hypothesis; expand the target's C(m+3,3) and C(m+3,4) by Nat.choose_succ_succ' over the column m+2; split (m+1)·C(m+2,2) with add_one_mul and substitute absorption, after which the goal is linear in the three binomials C(m+2,2), C(m+2,3), C(m+2,4) and closes by omega.\n3. stirlingSecond_sub_two': re-express on n ≥ 2 by writing n = m+2 (Nat.exists_eq_add_of_le) and simplifying n−2 = m.",
+    "keyInsights": [
+      "**The second subdiagonal is the first two-term entry.** S(n,n) and S(n,n−1) are single binomials, but S(n,n−2) splits by partition shape into 'one triple' (C(n,3)) and 'two doubletons' (3·C(n,4)) — the factor 3 being the number of perfect matchings of four elements. The closed form encodes exactly this case split.",
+      "**One recurrence step plus the first subdiagonal is enough.** Because Mathlib already proves S(n+1,n)=C(n+1,2), the second subdiagonal needs the Pascal recurrence only once per induction step: it pulls S(m+3,m+1) back to a known first-subdiagonal term and the previous second-subdiagonal value.",
+      "**The whole step reduces to one absorption identity.** After Pascal-expanding the target binomials, everything cancels except m·C(m+2,2) = 3·C(m+2,3) — a single instance of Nat.choose_succ_right_eq. Isolating this fact lets omega discharge the remaining linear bookkeeping.",
+      "**Stay in ℕ.** All quantities — Stirling numbers, binomials, the multiplier m — are natural numbers; no integer or rational casting is needed. The only subtraction, (m+2)−2, is exact and handled by Nat.add_sub_cancel.",
+      "**decide for the base, not native_decide.** The base case and the numeric sanity checks use kernel-reduction decide on concrete Decidable goals, keeping the proof free of Lean.ofReduceBool while still machine-checking S(4,2)=7, S(5,3)=25, S(6,4)=65 against the formula."
+    ],
+    "prerequisites": [
+      "Stirling numbers of the second kind and set partitions",
+      "Binomial coefficients and Pascal's rule",
+      "Counting partitions by block-size shape",
+      "Induction on the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Overview and Strategy",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "File docstring stating the second-subdiagonal identity S(m+2,m) = C(m+2,3)+3·C(m+2,4), its set-partition interpretation (one triple, or two doubletons), and the induction plan resting on the Pascal recurrence, the first subdiagonal, and a single absorption identity.",
+      "mathContext": "S(n,n−2) = C(n,3) + 3·C(n,4): partitions of an n-set into n−2 blocks split into one-triple and two-doubleton shapes."
+    },
+    {
+      "id": "absorption",
+      "title": "The Absorption Identity",
+      "startLine": 53,
+      "endLine": 65,
+      "summary": "absorption: m·C(m+2,2) = 3·C(m+2,3), the single non-omega arithmetic fact behind the induction step. It is the n=m+2, k=2 instance of Nat.choose_succ_right_eq (with Nat.add_sub_cancel collapsing (m+2)−2 to m), reoriented by commutativity.",
+      "mathContext": "$m\\binom{m+2}{2} = 3\\binom{m+2}{3}$, an instance of $\\binom{n}{k+1}(k+1) = \\binom{n}{k}(n-k)$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Second Subdiagonal S(m+2,m) = C(m+2,3) + 3·C(m+2,4)",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "stirlingSecond_sub_two: induction on m. Base m=0 by decide. Step applies Nat.stirlingSecond_succ_succ once, rewrites the first subdiagonal term via Nat.stirlingSecond_succ_self_left and the rest via the induction hypothesis, expands the target binomials with two instances of Nat.choose_succ_succ', splits the leading coefficient with add_one_mul, substitutes absorption, and closes by omega.",
+      "mathContext": "$S(m+2,m) = \\binom{m+2}{3} + 3\\binom{m+2}{4}$ for all $m$."
+    },
+    {
+      "id": "shifted-form",
+      "title": "Index-Shifted Form and Sanity Checks",
+      "startLine": 88,
+      "endLine": 98,
+      "summary": "stirlingSecond_sub_two': re-indexes to S(n,n−2) = C(n,3)+3·C(n,4) for n ≥ 2 via Nat.exists_eq_add_of_le and n−2 = m. Five decide-checked examples confirm the formula against directly computed values S(2,0)=0, S(3,1)=1, S(4,2)=7, S(5,3)=25, S(6,4)=65.",
+      "mathContext": "$S(n,n-2) = \\binom{n}{3} + 3\\binom{n}{4}$ for $n \\ge 2$; numeric checks through $n=6$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6: Stirling numbers of the second kind, their recurrence, and subdiagonal values"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "note": "Set partitions counted by block-size type; the shape decomposition behind S(n,n−2)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; this proves the second subdiagonal of the same Stirling triangle"
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question: the general finite-difference closed form k!·S(n,k) = ∑(−1)^j C(k,j)(k−j)^n, of which the subdiagonal values are special low-codimension columns"
+    }
+  ],
+  "conclusion": {
+    "summary": "The second subdiagonal of the Stirling numbers of the second kind satisfies S(m+2,m) = C(m+2,3) + 3·C(m+2,4) (stirlingSecond_sub_two), equivalently S(n,n−2) = C(n,3) + 3·C(n,4) for n ≥ 2. The proof is a single induction on m using Mathlib's Pascal recurrence once per step, the existing first-subdiagonal lemma, and one absorption identity m·C(m+2,2) = 3·C(m+2,3). All three theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Adds the next entry beyond Mathlib's diagonal and first-subdiagonal Stirling lemmas — the first two-term subdiagonal — as a directly citable closed form, and packages a reusable absorption step for binomial subdiagonal identities.",
+    "openQuestions": [
+      "Does the third subdiagonal S(n,n−3) = C(n,4) + 10·C(n,5) + 15·C(n,6) admit the same one-step-recurrence proof, or does the growing number of block-shape types require a different bookkeeping?",
+      "Can the block-shape decomposition be made literal in Lean — proving S(n,n−2) equals the cardinality of the set of partitions of Fin n into n−2 blocks — to connect the closed form to an actual set-partition count?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "StirlingSecondKindOQ01OQ03",
+    "lineCount": 100,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingSecondKindOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

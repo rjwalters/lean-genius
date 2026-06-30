@@ -83,6 +83,45 @@
       "mathContext": "Demonstrates sharpness of card_classes_ge at the smallest possible minimum modulus."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-2",
+      "relationship": "extends",
+      "description": "Parent entry: formalizes the solved minimum-modulus problem (Hough 2015; Balister–Bollobás–Morris–Sahasrabudhe–Tiba 2022 bound 616,000; Owens 2014 construction with min modulus 42) via axioms including the density bound reciprocal_sum_ge_one. OQ-03 asks whether 616,000 can be improved. This entry isolates the elementary counting constraints any such bound must respect, taking the density bound as a hypothesis rather than an axiom, and is self-contained because the parent file currently fails to compile under Lean 4.26.0."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "card_classes_ge",
+      "type": "core",
+      "description": "A covering system with minimum modulus ≥ m has at least m congruence classes (k ≥ m). The elementary engine: combining the assumed density bound 1 ≤ Σ 1/nᵢ with Σ 1/nᵢ ≤ k/m. Conditional on the reciprocal-sum bound supplied as a hypothesis.",
+      "leanType": "∀ (cs : CoveringSystem) {m : ℕ}, 1 ≤ m → cs.hasMinModulusAtLeast m → cs.reciprocalSum ≥ 1 → m ≤ cs.classes.length"
+    },
+    {
+      "name": "maxModulus_ge",
+      "type": "core",
+      "description": "Spread bound: distinct moduli all in [m, M] force 2m ≤ M+1, i.e. a modulus ≥ 2m−1 exists. The k ≥ m classes inject into Icc m M (card M+1−m), and omega closes the factor-2 spread.",
+      "leanType": "∀ (cs : CoveringSystem) {m M : ℕ}, 1 ≤ m → cs.hasDistinctModuli → cs.hasMinModulusAtLeast m → (∀ c ∈ cs.classes, c.modulus ≤ M) → cs.reciprocalSum ≥ 1 → 2 * m ≤ M + 1"
+    },
+    {
+      "name": "improvement_cost",
+      "type": "headline",
+      "description": "The combined structural price of a minimum modulus ≥ m: at least m classes AND a modulus ≥ 2m−1. Packages card_classes_ge and maxModulus_ge — the structural content behind OQ-03.",
+      "leanType": "∀ (cs : CoveringSystem) {m M : ℕ}, 1 ≤ m → cs.hasDistinctModuli → cs.hasMinModulusAtLeast m → (∀ c ∈ cs.classes, c.modulus ≤ M) → cs.reciprocalSum ≥ 1 → m ≤ cs.classes.length ∧ 2 * m ≤ M + 1"
+    },
+    {
+      "name": "reciprocalSum_le",
+      "type": "supporting",
+      "description": "Reciprocal-sum upper bound: if every modulus is ≥ m ≥ 1 then Σ 1/nᵢ ≤ k/m. The trivial half of the density picture (each summand ≤ 1/m).",
+      "leanType": "∀ (cs : CoveringSystem) {m : ℕ}, 1 ≤ m → cs.hasMinModulusAtLeast m → cs.reciprocalSum ≤ (cs.classes.length : ℚ) / m"
+    },
+    {
+      "name": "card_bound_tight",
+      "type": "supporting",
+      "description": "Tightness of the class-count bound: the trivial {0,1 mod 2} cover has reciprocal sum 1 and realises k = m = 2, so card_classes_ge cannot be improved to k > m in general.",
+      "leanType": "∃ (cs : CoveringSystem) (m : ℕ), 1 ≤ m ∧ cs.hasMinModulusAtLeast m ∧ cs.reciprocalSum ≥ 1 ∧ cs.classes.length = m"
+    }
+  ],
   "conclusion": {
     "summary": "We give an axiom-free formalization of the structural arithmetic underlying Erdős Problem #2 and its open question OQ-03. Conditional only on the classical density bound Σ 1/nᵢ ≥ 1 (supplied as a hypothesis, not an axiom), we prove that a covering system with minimum modulus m has at least m congruence classes and a modulus at least 2m−1, and that the class-count bound is sharp.",
     "implications": "These inequalities quantify the combinatorial cost of a large minimum modulus and constrain any covering system relevant to improving the known bounds (Owens' 42 from below, Balister et al.'s 616,000 from above). The deep quantitative question OQ-03 — whether 616,000 can be improved — remains open and is untouched here.",

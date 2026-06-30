@@ -27,9 +27,32 @@ finite-subgraph / compactness infrastructure that the problem is built around.
   directly relevant to #736: the obstruction to a small coloring always lives in a
   finite part of the graph.
 
-## Open / unformalized side result
+## Resolved side result (finite_case — now fully proved, 0 sorry)
 
-- **`finite_case`** (1 `sorry`): for finite chromatic number `k`, every `m ≤ k`
+- **`finite_case`** (✅ proved, 2026-06-24): for finite chromatic number `k`, every
+  `m ≤ k` is realized as the chromatic number of an induced subgraph of `G`, so
+  finite-subgraph inheritance is automatic. The last `sorry` in the file is gone;
+  `#print axioms` shows `[propext, Classical.choice, Quot.sound]` only.
+  - **How it was discharged:** a *discrete intermediate value theorem*
+    `exists_induce_chiN_eq` proved by `Finset.induction`. The single graph-theoretic
+    fact is the one-vertex extension `colorable_induce_insert` (a coloring of the
+    induced subgraph on `s'` extends to `insert a s'` by giving `a` a fresh color, so
+    χ rises by ≤ 1). Combined with monotonicity (`chiN_induce_mono`), `chiN` of the
+    growing induced subgraph moves by 0 or 1 each step from 0 up to `k`, hence hits
+    every intermediate `m` (closed by `omega`). The finite witness of chromatic
+    number ≥ k comes from de Bruijn–Erdős (`exists_finite_induce_not_colorable`).
+  - **Cardinal bridge:** the custom `Cardinal`-valued `chromaticNumber` is matched to
+    Mathlib's `Colorable` via `chromaticNumber_eq_of_colorable` /
+    `colorable_of_chromaticNumber_eq` / `not_colorable_of_chromaticNumber_eq`. Key
+    point: cardinals are **well-ordered**, so the defining `sInf` is *attained*
+    (`csInf_mem`), turning the cardinal infimum into a concrete coloring of the right
+    cardinality — no approximation argument needed.
+  - **Inheritance** is the trivial composition: a finite `F` embedding into the
+    induced subgraph `G.induce ↑t` embeds into `G` via the subtype inclusion.
+
+### (historical) original sorry sketch
+
+- for finite chromatic number `k`, every `m ≤ k`
   is realized as a subgraph of `G`, so inheritance is automatic.
   - **Proof sketch (true, not deep):** take `H` to be an induced subgraph of `G`
     with `χ(H) = m`. Any finite subgraph of an induced subgraph of `G` is a finite
@@ -81,3 +104,35 @@ finite-subgraph / compactness infrastructure that the problem is built around.
   `propext`/`Classical.choice`/`Quot.sound` — fully verified, no `sorryAx`.
 - Opened PR **#26780** (`research` label only, no Judge review per math-agent policy).
 - Remaining work: `finite_case` discrete-IVT side lemma still deferred (1 `sorry`).
+
+### Session 2026-06-24 (Researcher-4) — finite_case DISCHARGED (0 sorry)
+
+**Mode:** completion task `erdos-736-incomplete-01` (discharge the last `sorry`).
+**Outcome:** SUCCESS — file is now fully verified, 0 sorry, 0 axioms.
+
+- Proved `finite_case` in full (the discrete-IVT side lemma). The file went from
+  3 theorems / 1 sorry to **17 theorems / 0 sorry / 444 lines**.
+- New machinery (all verified, axioms = `[propext, Classical.choice, Quot.sound]`):
+  - Bridge: `chromSet_nonempty`, `chromaticNumber_eq_of_colorable`,
+    `colorable_of_chromaticNumber_eq`, `not_colorable_of_chromaticNumber_eq`
+    (custom Cardinal χ ↔ Mathlib `Colorable`; uses `csInf_mem` — cardinals are
+    well-ordered so the infimum is attained).
+  - `chiN` (ℕ-valued χ for finite graphs) + `colorable_chiN`, `chiN_le_of_colorable`,
+    `not_colorable_of_lt_chiN`.
+  - `colorable_induce_mono` / `chiN_induce_mono` (via `induceHomOfLE` + `Colorable.of_hom`).
+  - `colorable_induce_insert` / `chiN_induce_insert_le` (one-vertex extension, the only
+    real graph content — fresh color for the new vertex).
+  - `exists_induce_chiN_eq` — discrete IVT by `Finset.induction`, closed by `omega`.
+  - `exists_finite_induce_not_colorable` (de Bruijn–Erdős in induced form, converting
+    `Subgraph.coe` to `G.induce` via a hom) + `exists_finite_chiN_ge`.
+- **Build-verified** via host toolchain (`LAKE_UNSAFE=1 lake env lean` against main's
+  `.lake`; Docker was down). 0 errors, 0 warnings. `#print axioms finite_case` =
+  `[propext, Classical.choice, Quot.sound]`.
+- Gallery `meta.json` updated: status `formalized`→`verified`, badge `wip`→`verified`,
+  sorries 1→0, theoremCount 3→17, lineCount→444, definitionCount→10. `assumptions`
+  field stresses that **Taylor's conjecture itself is only stated (a `def`), not
+  proved/assumed** — it remains independent of ZFC.
+- TECHNIQUE NOTE: the cardinal-valued χ is only awkward until you use well-ordering of
+  cardinals (`csInf_mem`) to *attain* the infimum; after that everything reduces to the
+  finite `Colorable`/`Fin n` API. The IVT is cleaner as `Finset.induction` (add a
+  vertex) than as list-prefix enumeration.

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "explicit-root",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "theorem",
+    "title": "Explicit Square Root in Odd Order",
+    "content": "`exists_sq_eq_of_odd_card`: writing the odd order as |G| = 2m+1, the element x^(m+1) is an explicit square root of x. The whole proof is a single exponent identity: (x^(m+1))^2 = x^((m+1)·2) = x^(|G|+1) = x^|G| · x = x, where the penultimate step kills x^|G| via Lagrange's `pow_card_eq_one`. No prime factorization or Sylow machinery is needed — the result is genuinely elementary, depending only on the order being coprime to 2.",
+    "mathContext": "If $|G|=2m+1$ then $\\bigl(x^{m+1}\\bigr)^2 = x^{2m+2} = x^{|G|+1} = x^{|G|}\\cdot x = x$, since $x^{|G|}=1$. So every element is a square with explicit root $x^{(|G|+1)/2}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange's theorem", "order of an element", "coprime exponents", "square root in a group"],
+    "prerequisites": ["finite group theory", "Lagrange's theorem"]
+  },
+  {
+    "id": "squaring-bijective",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 88 },
+    "type": "theorem",
+    "title": "Squaring Is a Bijection",
+    "content": "`sq_surjective_of_odd_card` repackages the explicit root as surjectivity of x ↦ x². `sq_bijective_of_odd_card` then upgrades this to bijectivity via the pigeonhole principle for self-maps of finite types (`Finite.injective_iff_surjective`): a surjective self-map of a finite set is automatically injective. Hence in an odd-order group square roots are not merely existent but unique, and squaring is an automorphism of the underlying set.",
+    "mathContext": "On a finite set, $f$ surjective $\\iff$ $f$ injective $\\iff$ $f$ bijective. So $x\\mapsto x^2$ being onto forces it to be a bijection; every element has a *unique* square root in an odd-order group.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "bijection on finite sets", "unique square roots", "power map"],
+    "prerequisites": ["finite sets", "injective and surjective functions"]
+  },
+  {
+    "id": "no-involution",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "theorem",
+    "title": "No Involutions in Odd Order",
+    "content": "`no_involution_of_odd_card`: if |G| is odd and x² = 1 then x = 1. From x² = 1, the order of x divides 2 (`orderOf_dvd_of_pow_eq_one`), so it is 1 or 2. If it were 2, Lagrange (`orderOf_dvd_card`) would give 2 ∣ |G|, contradicting oddness; hence the order is 1, i.e. x = 1. This is the exact contrapositive of the parent's even-order corollary that an even-order group must contain an involution.",
+    "mathContext": "$x^2=1 \\Rightarrow \\operatorname{ord}(x)\\mid 2$. If $\\operatorname{ord}(x)=2$ then $2\\mid|G|$ by Lagrange, contradicting $|G|$ odd. So $\\operatorname{ord}(x)=1$ and $x=1$.",
+    "significance": "key",
+    "relatedConcepts": ["involution", "order of an element", "Lagrange's theorem", "contrapositive"],
+    "prerequisites": ["order of an element", "divisibility"]
+  },
+  {
+    "id": "sharp-boundary",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 128 },
+    "type": "theorem",
+    "title": "Sharp Boundary: Involutions Iff Even Order",
+    "content": "`involution_iff_even_card`: a finite group has a nontrivial self-inverse element iff its order is even. The forward direction is the new odd-order result (contrapositive: no involution when odd). The backward direction is Cauchy's theorem at the prime 2 — `exists_prime_orderOf_dvd_card` produces an element of order exactly 2 when 2 ∣ |G|. Together they pin down precisely when involutions exist, upgrading the parent's one-directional corollary to a clean equivalence and exhibiting parity as the sole obstruction.",
+    "mathContext": "$\\bigl(\\exists x\\neq 1,\\ x^2=1\\bigr) \\iff 2\\mid|G|$. Forward by the odd-order theorem; backward by Cauchy's theorem for $p=2$.",
+    "significance": "critical",
+    "relatedConcepts": ["Cauchy's theorem", "involution", "parity", "if and only if"],
+    "prerequisites": ["Cauchy's theorem", "finite group theory"]
+  },
+  {
+    "id": "additive-form",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 130, "endLine": 138 },
+    "type": "theorem",
+    "title": "Additive Form: Doubling Is Surjective",
+    "content": "`exists_two_nsmul_eq_of_odd_card`: the additive translation of the squaring result. In a finite additive group of odd order every element is a double, with explicit witness x = 2 • ((m+1) • x) where |G| = 2m+1. The proof mirrors the multiplicative one, replacing `pow_card_eq_one` with its additive twin `card_nsmul_eq_zero`. This is the statement that 2 is invertible in ℤ/|G|ℤ when |G| is odd, packaged group-theoretically.",
+    "mathContext": "In an additive group of odd order $|G|=2m+1$: $2\\cdot\\bigl((m+1)x\\bigr) = (2m+2)x = (|G|+1)x = |G|\\cdot x + x = x$, since $|G|\\cdot x=0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["additive group", "doubling map", "invertibility of 2", "scalar multiplication"],
+    "prerequisites": ["additive groups", "module over ℤ"]
+  },
+  {
+    "id": "concrete-instances",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01",
+    "range": { "startLine": 140, "endLine": 151 },
+    "type": "tactic",
+    "title": "Concrete Witnesses in ZMod 3 and ZMod 5",
+    "content": "`zmod3_double_surjective`, `zmod5_double_surjective`, and `zmod3_no_involution` realize the abstract phenomena in the smallest odd-order groups. Each is discharged by kernel `decide` — a finite exhaustive check the Lean kernel reduces directly — deliberately avoiding `native_decide`, whose compiled evaluation would introduce the `Lean.ofReduceBool` axiom. Using kernel `decide` keeps these witnesses genuinely 0-axiom while still being fully automatic.",
+    "mathContext": "In $\\mathbb{Z}/3$ and $\\mathbb{Z}/5$ doubling is a bijection and the only self-inverse element is $0$ — checked exhaustively. Kernel `decide` (not `native_decide`) preserves the 0-axiom status.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod", "decidability", "kernel decide vs native_decide", "axiom hygiene"],
+    "prerequisites": ["cyclic groups", "decidable propositions"]
+  }
+]

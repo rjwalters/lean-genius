@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Completing the Minkowski Story: Sharpness and Seminorm Structure",
+    "content": "The sibling JensenInequalityOQ01OQ01OQ01OQ02 proves the finite-family Minkowski inequality ‖∑ⱼ Fⱼ‖_p ≤ ∑ⱼ ‖Fⱼ‖_p (subadditivity of the discrete ℓᵖ norm). This file records WHEN that inequality is sharp and supplies the two remaining seminorm axioms: positive homogeneity ‖c·g‖_p = c·‖g‖_p (c ≥ 0), definiteness ‖g‖_p = 0 ↔ g ≡ 0 on the coordinate set, and saturation on a common ray — if Fⱼ = cⱼ·h then equality holds for every p > 0. Together with the sibling's subadditivity, the three norm axioms are assembled in elementary closed form. Mathlib has neither these closed-form facts for the discrete ℓᵖ norm nor the saturation characterization.",
+    "mathContext": "$\\|g\\|_p = \\big(\\sum_i g(i)^p\\big)^{1/p}$; this file adds homogeneity, definiteness, and the equality case $\\|\\sum_j F_j\\|_p = \\sum_j \\|F_j\\|_p$ on rays.",
+    "significance": "context",
+    "relatedConcepts": ["Minkowski inequality", "ℓᵖ norm", "seminorm axioms", "equality case", "triangle inequality"],
+    "prerequisites": ["Lᵖ spaces", "convexity", "real analysis"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "definition",
+    "title": "The Discrete ℓᵖ Norm Lpnorm",
+    "content": "Lpnorm s p g = (∑ i ∈ s, g i ^ p)^(1/p), the unnormalised discrete ℓᵖ 'norm' of a vector g : ι → ℝ over a finite coordinate set s, using Real rpow (real exponents). It is declared in its own namespace JensenMinkowskiSharp, self-contained — the entry re-declares the norm rather than importing the sibling, so it depends on no other gallery file. The variables ι, κ allow distinct index types for coordinates (ι) and the summing family (κ).",
+    "mathContext": "$\\mathrm{Lpnorm}\\,s\\,p\\,g = \\Big(\\sum_{i\\in s} g(i)^p\\Big)^{1/p}$, real-exponent rpow.",
+    "significance": "supporting",
+    "relatedConcepts": ["rpow", "finite sums", "ℓᵖ space"],
+    "prerequisites": ["real exponentiation", "Finset.sum"]
+  },
+  {
+    "id": "ann-rpow-pow-inv",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 52 },
+    "type": "technique",
+    "title": "The Telescoping Identity (aᵖ)^{1/p} = a",
+    "content": "rpow_pow_inv: for a ≥ 0 and p ≠ 0, (a^p)^(1/p) = a. The proof composes the exponents via Real.rpow_mul (needing a ≥ 0), simplifies p·(1/p) = 1 (mul_one_div, div_self hp), and applies Real.rpow_one. This little lemma is the workhorse that inverts the outer 1/p power throughout the Young–Hölder–Minkowski family — it is what lets homogeneity collapse (cᵖ)^{1/p} back to c.",
+    "mathContext": "$(a^p)^{1/p} = a^{p\\cdot(1/p)} = a^1 = a$ for $a\\ge0$, $p\\neq0$.",
+    "significance": "technical",
+    "relatedConcepts": ["Real.rpow_mul", "Real.rpow_one", "exponent arithmetic"],
+    "prerequisites": ["real exponentiation"]
+  },
+  {
+    "id": "ann-homogeneity",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 63 },
+    "type": "theorem",
+    "title": "Lpnorm_smul: Positive Homogeneity",
+    "content": "Lpnorm_smul: for p > 0, c ≥ 0, and g nonnegative on s, ‖c·g‖_p = c·‖g‖_p. The proof factors each summand (c·g(i))ᵖ = cᵖ·g(i)ᵖ (Real.mul_rpow, valid for nonnegative bases), pulls the constant cᵖ out of the sum (Finset.mul_sum), splits the outer 1/p power across the product (Real.mul_rpow again, with the nonnegativity side-conditions discharged by Real.rpow_nonneg and Finset.sum_nonneg), and finally collapses (cᵖ)^{1/p} = c via rpow_pow_inv. Positive homogeneity is the elementary content distinguishing a norm from an arbitrary functional, and it is the single workhorse behind the saturation result.",
+    "mathContext": "$\\|c\\cdot g\\|_p = \\big(c^p\\textstyle\\sum_i g(i)^p\\big)^{1/p} = (c^p)^{1/p}\\,\\|g\\|_p = c\\,\\|g\\|_p$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.mul_rpow", "Finset.mul_sum", "positive homogeneity", "norm axiom"],
+    "prerequisites": ["real exponentiation", "finite sums"]
+  },
+  {
+    "id": "ann-definiteness",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "theorem",
+    "title": "Lpnorm_eq_zero_iff: Definiteness (Point Separation)",
+    "content": "Lpnorm_eq_zero_iff: for p > 0 and g nonnegative on s, ‖g‖_p = 0 ↔ g vanishes everywhere on s. The argument is a clean two-level rpow_eq_zero cascade: the outer 1/p power is zero iff the inner sum is (Real.rpow_eq_zero_iff_of_nonneg, using 1/p ≠ 0); the sum of nonnegatives is zero iff every term is (Finset.sum_eq_zero_iff_of_nonneg); and each g(i)ᵖ is zero iff g(i) is (rpow_eq_zero_iff again, using p ≠ 0). This is the point-separation (definiteness) axiom — the norm vanishes only on the zero vector — completing the seminorm axioms alongside homogeneity and the sibling's subadditivity.",
+    "mathContext": "$\\|g\\|_p = 0 \\iff \\sum_i g(i)^p = 0 \\iff \\forall i\\in s,\\ g(i) = 0$ (for $p>0$, $g\\ge0$).",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_eq_zero_iff_of_nonneg", "Finset.sum_eq_zero_iff_of_nonneg", "definiteness", "point separation"],
+    "prerequisites": ["real exponentiation", "finite sums"]
+  },
+  {
+    "id": "ann-saturation",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 77, "endLine": 95 },
+    "type": "insight",
+    "title": "minkowski_finset_eq_of_common_ray: Equality on Collinear Vectors",
+    "content": "The headline contribution: if every family member is Fⱼ = cⱼ·h for a common nonnegative direction h and nonnegative scalars cⱼ, then Minkowski saturates — ‖∑ⱼ Fⱼ‖_p = ∑ⱼ ‖Fⱼ‖_p — for EVERY p > 0. Strikingly the proof needs NO inequality: the inner sum collapses ∑ⱼ cⱼ·h(i) = (∑ⱼ cⱼ)·h(i) (Finset.sum_mul, lemma hL), so the left side is ‖(∑ⱼ cⱼ)·h‖_p = (∑ⱼ cⱼ)·‖h‖_p by homogeneity, while the right side is ∑ⱼ cⱼ·‖h‖_p = (∑ⱼ cⱼ)·‖h‖_p again by homogeneity and Finset.sum_mul. Both sides are the same number, so collinearity makes the triangle inequality an identity. This is the easy (forward) half of the Minkowski equality case, exhibiting its extremal configurations; the converse — equality forces proportionality — needs p > 1 and strict convexity of t ↦ tᵖ and is left as the leading open question.",
+    "mathContext": "$\\big\\|\\textstyle\\sum_j c_j h\\big\\|_p = \\big\\|(\\sum_j c_j)h\\big\\|_p = (\\sum_j c_j)\\|h\\|_p = \\sum_j c_j\\|h\\|_p = \\sum_j \\|c_j h\\|_p$.",
+    "significance": "key",
+    "relatedConcepts": ["Minkowski equality case", "collinearity", "Finset.sum_mul", "extremal configuration", "strict convexity"],
+    "prerequisites": ["positive homogeneity", "finite sums", "convexity"]
+  }
+]

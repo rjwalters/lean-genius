@@ -111,7 +111,7 @@
       "startLine": 120,
       "endLine": 225,
       "summary": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The parity principle is fully proved; edge-sharing properties are established in the proof.",
-      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total). The sorry remains — requires formal edge-sharing properties."
+      "mathContext": "States tucker_parity_principle: odd boundary complementary edge count implies existence of interior complementary triangle. Documents the double-counting argument (2×interior + 1×boundary = total), fully proved (no sorry) with the edge-sharing properties supplied as the hypothesis h_interior_deg."
     },
     {
       "id": "tucker-2d",

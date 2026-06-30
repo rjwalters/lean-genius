@@ -96,10 +96,10 @@
     ]
   },
   "relatedProofs": [
-    "weak-goldbach",
-    "prime-number-theorem",
     "infinitude-primes-4k1",
-    "infinitude-primes-4k3"
+    "infinitude-primes-4k3",
+    "prime-number-theorem",
+    "weak-goldbach"
   ],
   "tags": [
     "number-theory",
@@ -113,5 +113,18 @@
     "research"
   ],
   "createdAt": "2026-05-12T09:18:00.000Z",
-  "updatedAt": "2026-05-12T19:25:00.000Z"
+  "updatedAt": "2026-05-12T19:25:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/WeakGoldbach.lean",
+      "filename": "WeakGoldbach.lean",
+      "lineCount": 681,
+      "theoremCount": 30,
+      "axiomCount": 5,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WeakGoldbach.lean"
+    }
+  ]
 }

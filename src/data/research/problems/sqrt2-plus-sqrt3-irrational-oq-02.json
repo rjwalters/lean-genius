@@ -1,0 +1,103 @@
+{
+  "slug": "sqrt2-plus-sqrt3-irrational-oq-02",
+  "title": "Formalize Besicovitch''s theorem (1940): $\\{\\sqrt{a_1}, \\ldots, \\sqrt{a_n}\\}$ ...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Extracted as a `extension` follow-up to the gallery proof `sqrt2-plus-sqrt3-irrational` and classified as `challenging` based on the gallery extractor heuristics. The full prose statement above describes what the Researcher should explore.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "SHIP",
+    "since": "2026-06-18",
+    "iteration": 1,
+    "focus": "Re-landing PR #25713 (the coprime-squarefree generalization). The branch had fallen",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: sqrt2-plus-sqrt3-irrational-oq-02\n\n## Established Facts\n\n- **n = 2 concrete case (merged, PR #25630).** `{1, √2, √3, √6}` is ℚ-linearly\n  independent, axiom-free, via the elementary regroup-over-ℚ(√2) +\n  conjugate-multiplication method. Induction heart: `√3 ∉ ℚ(√2)`.\n- **General biquadratic case (this session).** For *any* coprime squarefree\n  `a, b > 1`, `{1, √a, √b, √(ab)}` is ℚ-linearly independent, i.e.\n  `[ℚ(√a, √b) : ℚ] = 4`. The same `linear_combination` certificate that proves\n  the `{2,3}` instance works verbatim with `a, b` symbolic — verified by an\n  explicit polynomial-identity check before building (the conjugate identity\n  `√b·(r² − a·s²) = (a·q·s − p·r) + (p·s − q·r)·√a` is the same in both).\n- Squarefree `n > 1` ⟹ `¬ IsSquare n` (`not_isSquare_of_squarefree`) ⟹\n  `Irrational (√n)` via Mathlib `irrational_sqrt_natCast_iff`. This replaces the\n  radicand-specific divisor-bound irrationality inputs of the n=2 file.\n\n## Open Questions Within This Problem\n\n- The main open question (general Besicovitch, see `problem.md`).\n- n = 3 concrete: `{√d : d ∣ 30 squarefree}` (8 radicands) — needs two nested\n  conjugate steps / degree-8 multiquadratic field.\n- The general induction heart `sqrt_prime_not_mem_multiquadratic` (arbitrary\n  finite prime set) remains `sorry` in the sibling\n  `Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02` — BUILD-class (~250–450 LOC),\n  needs the \"squares of a multiquadratic field are `r²·∏_{T⊆ps} q`\" lemma.\n\n## Failed Approaches\n\n(None this session — the generalization went through as designed.)\n\n## Promising Leads\n\n- The two-radicand degree-doubling lemma (`sqrtb_not_in_Qsqrta`, general `a,b`)\n  is the genuine n=2 layer of Besicovitch's induction. The next structural step\n  is to make the conjugate-multiplication argument relative: `√c ∉ ℚ(√a, √b)`\n  for a third coprime squarefree `c`, using a ℚ(√a,√b)-conjugate. If that\n  generalizes uniformly it gives the induction heart elementarily, bypassing the\n  powerset-squares characterization route currently sketched in the sibling file.\n- `irrational_sqrt_of_squarefree` and `not_isSquare_of_squarefree` are clean,\n  reusable, and plausibly Mathlib-contribution candidates.\n\n## Session Log\n\n### 2026-06-18 (REVISIT, FRESH-continuation) — generalize n=2 to coprime squarefree pairs\n\n**Outcome:** progress (added verified, axiom-free general theorem).\n\n- Confirmed PR #25630 (n=2 concrete `{1,√2,√3,√6}`) merged to main.\n- Generalized to `linearIndependent_one_sqrt_sqrt_sqrt`: coprime squarefree\n  `a,b > 1` ⟹ `{1,√a,√b,√(ab)}` ℚ-independent. Added supporting\n  `not_isSquare_of_squarefree`, `irrational_sqrt_of_squarefree`, general heart\n  `sqrtb_not_in_Qsqrta`, and a consistency corollary recovering the `{2,3}` case.\n- Verified the symbolic transfer of the conjugate identity by hand before\n  building (no enumeration; one structural generalization covering infinitely\n  many biquadratic fields).\n- File: `proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ02.lean` (already registered).\n"
+  },
+  "tags": [
+    "irrationality",
+    "real-analysis",
+    "square-roots",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "sqrt2-plus-sqrt3-irrational",
+    "sqrt2-plus-sqrt3-irrational-oq-02",
+    "sqrt2-plus-sqrt3-irrational-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:52.052Z",
+  "lastUpdate": "2026-06-13T12:52:52.148Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3Irrational.lean",
+      "filename": "Sqrt2PlusSqrt3Irrational.lean",
+      "lineCount": 55,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3Irrational.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ02.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ02.lean",
+      "lineCount": 394,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "lineCount": 404,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean"
+    }
+  ]
+}

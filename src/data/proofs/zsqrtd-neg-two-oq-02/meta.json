@@ -21,8 +21,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 139,
-    "theoremCount": 4,
+    "lineCount": 162,
+    "theoremCount": 6,
     "definitionCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The two finite case-checks use `decide` (kernel reduction over ZMod 8 and ZMod 4), not `native_decide`, so no `Lean.ofReduceBool` dependency: the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`. Depends only on Mathlib (`ZMod` arithmetic and `ZMod.intCast_zmod_eq_zero_iff_dvd`).",
     "mathlib_version": "4.26.0",
@@ -52,7 +52,9 @@
       "`not_sumThreeSq_four_pow_mul`: the headline necessity theorem — for all `a b : ℕ`, `4^a(8b+7)` is not a sum of three integer squares — proved by induction on the exponent `a`, combining the mod-8 obstruction in the base case with infinite descent in the inductive step. This is the complete elementary half of the Legendre–Gauss three-square theorem and is not available in Mathlib.",
       "`sumThreeSq_ne_seven_mod_eight`: the mod-8 obstruction that a sum of three integer squares is never ≡ 7 (mod 8), via a single `decide` over `ZMod 8` after `push_cast` reduces the integer statement to its residue.",
       "`descent_even`: the descent lemma that `x² + y² + z² ≡ 0 (mod 4)` forces `x, y, z` all even, via a `decide` over `ZMod 4` whose parity conclusions are transported to integer divisibility through the ring map `ZMod 4 → ZMod 2` (`map_intCast` + `ZMod.intCast_zmod_eq_zero_iff_dvd`).",
-      "`sumThreeSq_ne_four_pow_mul`: the contrapositive packaging — if `n` is a sum of three squares then `n ≠ 4^a(8b+7)` — the form in which the result reads as the necessity half of the classical iff."
+      "`sumThreeSq_ne_four_pow_mul`: the contrapositive packaging — if `n` is a sum of three squares then `n ≠ 4^a(8b+7)` — the form in which the result reads as the necessity half of the classical iff.",
+      "`normForm_isSumThreeSq`: the explicit bridge to the parent ℤ[√−2] norm form — every value `x² + 2y²` is a sum of three integer squares via the splitting `x² + 2y² = x² + y² + y²`. This is the elementary inclusion side that places the parent's `x²+2y²` development inside the three-square picture (previously the file proved the obstruction but never mentioned the norm form it extends).",
+      "`normForm_ne_four_pow_mul`: combining the inclusion with the obstruction — `x² + 2y²` is never of the excluded form `4^a(8b+7)`. So the ℤ[√−2] representable numbers respect the three-square obstruction (a consistency check confirming they form a proper subset of the sums of three squares, never reaching the full converse)."
     ],
     "prerequisites": [
       "Sums of three squares and the Legendre–Gauss characterisation",
@@ -77,12 +79,12 @@
     ]
   },
   "leanFile": {
-    "lineCount": 139,
+    "lineCount": 162,
     "path": "Proofs/ZsqrtdNegTwoOQ02.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 4
+    "theoremCount": 6
   },
   "sorries": 0,
   "overview": {
@@ -105,11 +107,11 @@
     ]
   },
   "conclusion": {
-    "summary": "The necessity direction of the Legendre–Gauss three-square theorem — that no number 4^a(8b+7) is a sum of three integer squares — is proved with 0 sorries and 0 axioms (kernel `decide`, no `native_decide`). The file is 152 lines, 4 theorems, 0 definitions, and rests only on elementary `ZMod` arithmetic from Mathlib. It complements the parent ℤ[√−2] family, which supplies sufficiency slices, by closing off the obstructed numbers.",
+    "summary": "The necessity direction of the Legendre–Gauss three-square theorem — that no number 4^a(8b+7) is a sum of three integer squares — is proved with 0 sorries and 0 axioms (kernel `decide`, no `native_decide`). The file is 162 lines, 6 theorems, 0 definitions, and rests only on elementary `ZMod` arithmetic from Mathlib. It complements the parent ℤ[√−2] family, which supplies sufficiency slices, by closing off the obstructed numbers.",
     "implications": "Together with the parent's representation results (p ≡ 3 mod 8 ⟹ p = x²+y²+z²) this pins down the obstruction side of the full three-square characterisation. The mod-8 + descent skeleton here is the standard elementary half on which any complete formalisation of the three-square theorem would build; the remaining sufficiency half is the genuinely deep input (Dirichlet / ternary form theory) still absent from Mathlib.",
     "openQuestions": [
       "Prove the sufficiency direction: every n with n ≠ 4^a(8b+7) is a sum of three squares. This is the hard half — the cleanest route runs through Dirichlet's theorem on primes in arithmetic progressions (to find an auxiliary prime in a suitable residue class) plus Gauss's theory of ternary quadratic forms, neither yet available in Mathlib for this purpose.",
-      "Assemble the full biconditional `n = x²+y²+z² ↔ ¬∃ a b, n = 4^a(8b+7)` once sufficiency is in place, and connect it to the parent ℤ[√−2] representation theorems as the special-prime instances.",
+      "PARTIALLY ADDRESSED (this session): the parent ℤ[√−2] norm form is now explicitly bridged in — `normForm_isSumThreeSq` (x²+2y² is a sum of three squares) and `normForm_ne_four_pow_mul` (x²+2y² avoids the excluded form). Still open: assemble the full biconditional `n = x²+y²+z² ↔ ¬∃ a b, n = 4^a(8b+7)` once sufficiency is in place, and connect it to the parent's representation theorems as the special-prime instances.",
       "Derive the classical corollary that a positive integer is a sum of three squares iff it is not 4^a(8b+7), and link it to Gauss's count of representations (the class number h(-n) weighting), bridging to the gallery's quadratic-form entries.",
       "Formalise the analogous obstruction for sums of three squares with congruence side-conditions, or the polygonal-number variants (Gauss's Eureka theorem on triangular numbers), reusing the mod-8 / descent template."
     ]
@@ -142,6 +144,13 @@
       "startLine": 93,
       "endLine": 139,
       "summary": "`not_sumThreeSq_four_pow_mul`: induction on a. Base a=0 — 8b+7 ≡ 7 (mod 8), excluded by Step 1. Step a+1 — divisibility `4 ∣ 4^(a+1)(8b+7)` gives `≡ 0 (mod 4)`, so Step 2 makes x,y,z even; substituting x=2x' and cancelling 4 yields a representation of 4^a(8b+7), contradicting the induction hypothesis. `sumThreeSq_ne_four_pow_mul` repackages this as the contrapositive necessity statement."
+    },
+    {
+      "id": "step4-bridge",
+      "title": "Step 4 — Bridge to the Parent ℤ[√−2] Norm Form",
+      "startLine": 140,
+      "endLine": 162,
+      "summary": "Connects the obstruction to the parent's norm form x²+2y². `normForm_isSumThreeSq`: every x²+2y² is a sum of three squares via x²+2y² = x²+y²+y² (a trivial `⟨x,y,y,by ring⟩`). `normForm_ne_four_pow_mul`: applying the contrapositive obstruction, x²+2y² is never 4^a(8b+7) — so the ℤ[√−2] representable numbers respect the three-square obstruction and form a proper subset of the sums of three squares. This makes the file actually engage the norm form its docstring frames it around."
     }
   ],
   "crossReferences": [

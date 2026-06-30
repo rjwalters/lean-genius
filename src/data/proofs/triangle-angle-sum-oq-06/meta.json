@@ -102,7 +102,15 @@
       "summary": "The equilateral triangle (A = B = C = π/3) instance of triangle_sin_sum, obtained by rewriting (π/3)/2 = π/6 — exhibiting the identity concretely without evaluating the surd values sin(π/3) = cos(π/6) = √3/2."
     }
   ],
-  "conclusion": "The four sum-to-product (prosthaphaeresis) identities and the two triangle half-angle product identities are formalised sorry-free and axiom-free. The four sum-to-product identities coincide with Mathlib's Real.cos_add_cos / Real.cos_sub_cos / Real.sin_add_sin / Real.sin_sub_sin (anchored here from the addition formulas because the gallery previously held no sum-to-product identity, covering both triangle-angle-sum-oq-06 and oq-07). The mathematical content beyond Mathlib is the triangle half-angle products sin A + sin B + sin C = 4cos(A/2)cos(B/2)cos(C/2) and cos A + cos B + cos C = 1 + 4sin(A/2)sin(B/2)sin(C/2), which hold precisely under A+B+C=π and which Mathlib does not record. The proof reduces each to a single complementarity, (A+B)/2 = π/2 − C/2, after which the residue is purely Pythagorean. A natural follow-up is the tangent form tan A + tan B + tan C = tan A·tan B·tan C for a triangle, or the product side of Mollweide's / Newton's formulas relating the sides and half-angles.",
+  "conclusion": {
+    "summary": "The four sum-to-product (prosthaphaeresis) identities and the two triangle half-angle product identities are formalised sorry-free and axiom-free. The four sum-to-product identities coincide with Mathlib's Real.cos_add_cos / Real.cos_sub_cos / Real.sin_add_sin / Real.sin_sub_sin (anchored here from the addition formulas because the gallery previously held no sum-to-product identity, covering both triangle-angle-sum-oq-06 and oq-07). The proof reduces each triangle corollary to a single complementarity, (A+B)/2 = π/2 − C/2, after which the residue is purely Pythagorean.",
+    "implications": "The mathematical content beyond Mathlib is the triangle half-angle products sin A + sin B + sin C = 4cos(A/2)cos(B/2)cos(C/2) and cos A + cos B + cos C = 1 + 4sin(A/2)sin(B/2)sin(C/2), which hold precisely under A+B+C=π and which Mathlib does not record. These constrained products are the classical geometric corollaries of the sum-to-product identities and supply the original content of the entry.",
+    "openQuestions": [
+      "Can the tangent form tan A + tan B + tan C = tan A·tan B·tan C for a triangle be formalised in the same style?",
+      "Can the product side of Mollweide's / Newton's formulas relating the sides and half-angles be derived as a further corollary?",
+      "Do the half-angle product identities admit a natural n-gon or spherical-triangle generalisation under the corresponding angle-sum constraint?"
+    ]
+  },
   "crossReferences": [
     "triangle-angle-sum-oq-04",
     "triangle-angle-sum-oq-05",

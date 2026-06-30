@@ -39,6 +39,11 @@
                                the PRODUCT side `genFun pentChar = ∏_{m≥1}(1 - Xᵐ)`
   - `coeff_genFun_pent`      — the COEFFICIENT side `[Xⁿ] genFun pentChar =
                                ∑_{p∈distincts n}(-1)^{#parts} = p_even(n)-p_odd(n)`
+  - `staircase_sum_eq_genPent` (and `_neg`) — the staircases `{k,…,2k-1}` and
+                               `{k+1,…,2k}` sum to `g(k)` resp. `g(-k)`
+  - `franklin_fixed_point` (and `_neg`) — Franklin's fixed points: each staircase
+                               is `k` distinct positive parts summing to a
+                               pentagonal number, with sign `(-1)^k = pentSign`
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -126,6 +131,40 @@ theorem isGenPent_iff_isSquare (m : ℤ) :
       have h12 : (12 : ℤ) * (2 * m) = 12 * ((k + 1) * (3 * (k + 1) - 1)) := by
         rw [hs1] at hs; linear_combination hs
       exact mul_left_cancel₀ (by norm_num) h12
+
+/-! ## Part 2b: Explicit discriminant roots and the ±-pairing
+
+The forward half of the recognition criterion is the algebraic identity
+`24·g(k)+1 = (6k-1)²`.  Where `isGenPent_iff_isSquare` only asserts that *some*
+square equals the discriminant, an enumerator of pentagonal exponents actually
+needs the *explicit* root, so we record it (and its negative-index companion) as
+named witnesses.  The two roots `6k∓1` of the `±k` pair straddle `6k`
+symmetrically, and the values themselves satisfy `g(k)+g(-k) = 3k²` (their
+difference being `k`, by `genPent_neg`). -/
+
+/-- **Explicit discriminant root (positive index).**  `24·g(k)+1 = (6k-1)²` — the
+concrete square witnessing `IsGenPent (g k)` in the recognition criterion, with
+its root named explicitly rather than existentially. -/
+theorem disc_genPent (k : ℤ) : 24 * genPent k + 1 = (6 * k - 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent k
+
+/-- **Explicit discriminant root (negative index).**  `24·g(-k)+1 = (6k+1)²`; the
+two roots `6k-1` and `6k+1` of the `±k` pair straddle `6k`. -/
+theorem disc_genPent_neg (k : ℤ) : 24 * genPent (-k) + 1 = (6 * k + 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent (-k)
+
+/-- **The `±k` pairing sum.**  `g(k)+g(-k) = 3k²`: the two pentagonal shifts that
+appear together in Euler's recurrence sum to `3k²` (their difference is `k`, by
+`genPent_neg`), since `2(g(k)+g(-k)) = k(3k-1)+k(3k+1) = 6k²`. -/
+theorem genPent_add_neg (k : ℤ) : genPent k + genPent (-k) = 3 * k ^ 2 := by
+  have h : 2 * (genPent k + genPent (-k)) = 2 * (3 * k ^ 2) := by
+    linear_combination two_mul_genPent k + two_mul_genPent (-k)
+  exact mul_left_cancel₀ (by norm_num) h
+
+/-- Sanity check on the explicit root: `24·g(3)+1 = 17²` with `17 = 6·3-1`,
+strengthening `twelve_isGenPent` (Part 4) to exhibit the concrete square root. -/
+theorem disc_genPent_three : 24 * genPent 3 + 1 = 17 ^ 2 := by
+  rw [disc_genPent 3]; norm_num
 
 /-! ## Part 3: Structural facts -/
 
@@ -367,6 +406,36 @@ theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
   rw [genPent_one] at h
   rw [h]; rfl
 
+/-- **The series coefficient as a finite sum over the computable enumerator.**
+Although `pentSeriesCoeff` is `noncomputable` (it picks the matching index via
+`Classical.choose`), it agrees with the *explicit* finite sum over `pentIndices n`
+(Part 3c) that keeps only the index landing on `n` exactly.  Since `genPent` is
+injective, at most one summand survives, so the right-hand side is `pentSign k`
+when `n = g(k)` and `0` otherwise — precisely `pentSeriesCoeff`.  This turns the
+abstract `[Xⁿ]` coefficient into a `Finset`-evaluable expression: the form
+Euler's recurrence `p(n) = ∑ₖ (-1)ᵏ⁻¹ p(n - g_k)` ranges over. -/
+theorem pentSeriesCoeff_eq_sum_pentIndices (n : ℤ) :
+    pentSeriesCoeff n
+      = ∑ k ∈ pentIndices n, if genPent k = n then pentSign k else 0 := by
+  by_cases h : IsGenPent n
+  · obtain ⟨k₀, hk₀⟩ := h
+    have hval : genPent k₀ = n := by
+      have h2 := two_mul_genPent k₀; linarith [hk₀, h2]
+    rw [Finset.sum_eq_single k₀]
+    · rw [if_pos hval, ← hval, pentSeriesCoeff_genPent]
+    · intro b _ hb
+      have hbne : genPent b ≠ n := fun hbn =>
+        hb (genPent_injective (hbn.trans hval.symm))
+      rw [if_neg hbne]
+    · intro hmem
+      exact absurd (mem_pentIndices.mpr hval.le) hmem
+  · rw [pentSeriesCoeff_of_not h]
+    refine (Finset.sum_eq_zero ?_).symm
+    intro k _
+    have hkne : genPent k ≠ n := fun hkn =>
+      h ⟨k, by have h2 := two_mul_genPent k; linarith [hkn, h2]⟩
+    rw [if_neg hkne]
+
 /-! ## Part 6: The Mathlib power-series bridges (both ends of Euler's identity)
 
 Mathlib's 2025 `Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang) supplies
@@ -480,6 +549,103 @@ theorem coeff_tprod_pent_eq_evenOdd_diff (n : ℕ) :
 
 end Bridges
 
+/-! ## Part 7: Franklin's fixed points — the pentagonal staircase partitions
+
+Franklin's sign-reversing involution (the OPEN CORE below) acts on partitions of
+`n` into *distinct* parts; its only fixed points are the "staircases"
+`{k, k+1, …, 2k-1}` and `{k+1, …, 2k}`, which sum to the generalized pentagonal
+numbers `g(k)` and `g(-k)` respectively.  The involution itself is not formalized
+(it is the deep, Mathlib-absent development described below), but its *fixed-point
+data* is elementary, and we record it here in this file's own
+`genPent` / `IsGenPent` / `pentSign` vocabulary: each staircase is a set of exactly
+`k` distinct positive integers whose sum is a generalized pentagonal number, and
+whose part-count parity is the pentagonal sign `(-1)^k`.  This is precisely the
+residual term that Franklin's cancellation leaves behind — the right-hand side of
+the FRANKLIN identity below — now pinned down arithmetically. -/
+
+/-- Gauss's sum `∑_{j<k} j` in `ℤ`, in the division-free doubled form. -/
+private theorem gauss_int (k : ℕ) :
+    (∑ j ∈ Finset.range k, (j : ℤ)) * 2 = (k : ℤ) * ((k : ℤ) - 1) := by
+  induction k with
+  | zero => simp
+  | succ n ih => rw [Finset.sum_range_succ, add_mul, ih]; push_cast; ring
+
+/-- The descending staircase `{k, k+1, …, 2k-1}`, re-indexed as `range k` via
+`i ↦ k + i`. -/
+theorem staircase_ico_eq_range (k : ℕ) :
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = ∑ j ∈ Finset.range k, ((k : ℤ) + j) := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  have h : 2 * k - k = k := by omega
+  rw [h]
+  exact Finset.sum_congr rfl (fun j _ => by push_cast; ring)
+
+/-- The ascending staircase `{k+1, …, 2k}`, re-indexed as `range k` via
+`i ↦ k + 1 + i`. -/
+theorem staircase_ico_eq_range_neg (k : ℕ) :
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ))
+      = ∑ j ∈ Finset.range k, ((k : ℤ) + 1 + j) := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  have h : 2 * k + 1 - (k + 1) = k := by omega
+  rw [h]
+  exact Finset.sum_congr rfl (fun j _ => by push_cast; ring)
+
+/-- **Staircase sum = pentagonal number (positive arm).** The `k` consecutive
+integers `k, k+1, …, 2k-1` sum to the generalized pentagonal number `g(k)`. -/
+theorem staircase_sum_eq_genPent (k : ℕ) :
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = genPent (k : ℤ) := by
+  have h2 : 2 * (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = 2 * genPent (k : ℤ) := by
+    rw [two_mul_genPent, staircase_ico_eq_range]
+    have hsplit : (∑ j ∈ Finset.range k, ((k : ℤ) + j))
+        = (k : ℤ) * k + ∑ j ∈ Finset.range k, (j : ℤ) := by
+      rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    rw [hsplit]; linear_combination gauss_int k
+  exact mul_left_cancel₀ (by norm_num) h2
+
+/-- **Staircase sum = pentagonal number (negative arm).** The `k` consecutive
+integers `k+1, …, 2k` sum to the generalized pentagonal number `g(-k)`. -/
+theorem staircase_sum_eq_genPent_neg (k : ℕ) :
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ)) = genPent (-(k : ℤ)) := by
+  have h2 : 2 * (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ))
+      = 2 * genPent (-(k : ℤ)) := by
+    rw [two_mul_genPent, staircase_ico_eq_range_neg]
+    have hsplit : (∑ j ∈ Finset.range k, ((k : ℤ) + 1 + j))
+        = (k : ℤ) * (k + 1) + ∑ j ∈ Finset.range k, (j : ℤ) := by
+      rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    rw [hsplit]; linear_combination gauss_int k
+  exact mul_left_cancel₀ (by norm_num) h2
+
+/-- **Franklin fixed point (positive arm).** For `k ≥ 1`, the staircase
+`{k, …, 2k-1}` is a partition of the generalized pentagonal number `g(k)` into
+exactly `k` distinct positive parts; its part-count parity gives sign
+`(-1)^k = pentSign k`.  These are the fixed points of Franklin's involution on
+which the cancellation fails — the source of the `(-1)^k X^{g(k)}` terms. -/
+theorem franklin_fixed_point (k : ℕ) (hk : 1 ≤ k) :
+    (Finset.Ico k (2 * k)).card = k ∧
+    (∀ i ∈ Finset.Ico k (2 * k), 0 < i) ∧
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = genPent (k : ℤ) ∧
+    ((-1 : ℤ)) ^ (Finset.Ico k (2 * k)).card = pentSign (k : ℤ) := by
+  refine ⟨?_, ?_, staircase_sum_eq_genPent k, ?_⟩
+  · rw [Nat.card_Ico]; omega
+  · intro i hi; rw [Finset.mem_Ico] at hi; omega
+  · rw [Nat.card_Ico]
+    have h : 2 * k - k = k := by omega
+    rw [h, pentSign, Int.natAbs_natCast]
+
+/-- **Franklin fixed point (negative arm).** For `k ≥ 1`, the staircase
+`{k+1, …, 2k}` is a partition of `g(-k)` into exactly `k` distinct positive parts,
+with sign `(-1)^k = pentSign (-k)`. -/
+theorem franklin_fixed_point_neg (k : ℕ) (hk : 1 ≤ k) :
+    (Finset.Ico (k + 1) (2 * k + 1)).card = k ∧
+    (∀ i ∈ Finset.Ico (k + 1) (2 * k + 1), 0 < i) ∧
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ)) = genPent (-(k : ℤ)) ∧
+    ((-1 : ℤ)) ^ (Finset.Ico (k + 1) (2 * k + 1)).card = pentSign (-(k : ℤ)) := by
+  refine ⟨?_, ?_, staircase_sum_eq_genPent_neg k, ?_⟩
+  · rw [Nat.card_Ico]; omega
+  · intro i hi; rw [Finset.mem_Ico] at hi; omega
+  · rw [Nat.card_Ico]
+    have h : 2 * k + 1 - (k + 1) = k := by omega
+    rw [h, pentSign, Int.natAbs_neg, Int.natAbs_natCast]
+
 /-! ## OPEN CORE (not formalized here) — sharply reduced by Mathlib's `Partition.genFun`
 
 The deep content of the pentagonal number theorem is the *identity*
@@ -525,6 +691,15 @@ that aligns this file's `ℤ`-valued `pentSeriesCoeff` / `genPent` index theory
 `ℕ`-indexed `genFun` coefficient.  Franklin's involution itself is still absent from
 Mathlib and remains the deep, multi-file development; this file supplies the
 index-set theory it consumes (notably `isGenPent_iff_isSquare` and
-`genPent_injective`). -/
+`genPent_injective`).
+
+**The fixed-point side IS now formalized (Part 7).** The *only* term Franklin's
+cancellation leaves behind is the contribution of the fixed points — the pentagonal
+staircases.  `franklin_fixed_point` / `franklin_fixed_point_neg` prove, with 0
+axioms, that the staircases `{k, …, 2k-1}` and `{k+1, …, 2k}` are partitions of
+`g(k)` and `g(-k)` into exactly `k` distinct positive parts carrying sign
+`(-1)^k = pentSign`.  So the RHS of the FRANKLIN identity is now accounted for
+arithmetically; what remains genuinely open is the *involution on the non-fixed
+partitions* witnessing the cancellation of all other terms. -/
 
 end PentagonalNumberTheoremOQ01

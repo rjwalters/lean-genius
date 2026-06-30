@@ -75,24 +75,24 @@
     "id": "ann-ch-oq05-oq01-oq04-sorry",
     "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
     "range": {
-      "startLine": 196,
-      "endLine": 206
+      "startLine": 224,
+      "endLine": 233
     },
     "type": "concept",
-    "title": "The Sorry: PID Structure Theorem as Mathlib Gap",
-    "content": "`nonderogatory_has_cyclic_vector_any_field` has a single sorry at line 206 with an explanatory comment: 'Requires: structure theorem for f.g. modules over PID (not in Mathlib)'. The comment above (lines 201-205) gives the complete mathematical proof: $K^n \\cong K[X]/(d_1) \\oplus \\cdots \\oplus K[X]/(d_r)$ with $d_1 \\mid \\cdots \\mid d_r$; nonderogatory means $d_r = \\chi_M = d_1 \\cdots d_r$, forcing $r = 1$; so $K^n \\cong K[X]/(\\mu_M)$, a cyclic module. The n=0 case is handled without sorry: `Fin.elim0` gives a vacuous cyclic vector (there are no degree-< 0 polynomials). This sorry-boundary design is optimal: the sorry is precisely isolated to the Mathlib gap, not to any mathematical uncertainty.",
-    "mathContext": "The structure theorem for f.g. modules over PIDs (Invariant Factor Theorem): every f.g. torsion $R$-module over a PID $R$ is isomorphic to $R/(d_1) \\oplus \\cdots \\oplus R/(d_k)$ with $d_1 \\mid \\cdots \\mid d_k$. For $R = K[X]$, this gives the rational canonical form of a linear operator. Nonderogatory forces the single-factor case. This theorem is in most algebra textbooks but its Mathlib formalization is incomplete.",
+    "title": "Main Theorem: Closed Sorry-Free by Delegating to WIP05 (avoids the PID structure theorem)",
+    "content": "`nonderogatory_has_cyclic_vector_any_field` is proved **sorry-free** (0 axioms, 0 sorries). The previously-isolated sorry — which assumed the structure theorem for f.g. modules over a PID (not in Mathlib) — has been removed. Rather than routing through Rational Canonical Form, the result is delegated to `GeneralCyclicVectorComplete.nonderogatory_has_cyclic_vector_any_field` (in `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean`), which proves cyclic-vector existence directly via Bezout/CRT primary decomposition (WIP04) plus UFD factorization of `minpoly K M` (WIP05), completely avoiding the PID structure theorem. The delegation is sound because the local `IsNonderogatory` and `IsCyclicVector` are definitionally equal to the ones used there (both unfold to `minpoly K M = M.charpoly` and the degree-bounded annihilation condition respectively).",
+    "mathContext": "The textbook route is the structure theorem for f.g. modules over PIDs (Invariant Factor Theorem): every f.g. torsion $R$-module over a PID $R$ is $R/(d_1) \\oplus \\cdots \\oplus R/(d_k)$ with $d_1 \\mid \\cdots \\mid d_k$, giving rational canonical form, and nonderogatory forces the single-factor ($k=1$) cyclic case. Because that decomposition is not available in Mathlib, this formalization instead obtains the cyclic vector constructively from a Bezout/CRT primary decomposition combined with the UFD factorization of the minimal polynomial — a route that needs only tools already in Mathlib.",
     "significance": "key",
     "relatedConcepts": [
-      "PID structure theorem (invariant factors)",
-      "rational canonical form",
-      "Mathlib formalization gap",
-      "Fin.elim0 for n=0 base case"
+      "Bezout/CRT primary decomposition",
+      "UFD factorization of minpoly",
+      "rational canonical form (avoided route)",
+      "definitional equality of nonderogatory/cyclic predicates"
     ],
     "prerequisites": [
-      "Structure theorem for f.g. modules over PID",
-      "K[X] as PID",
-      "invariant factor decomposition"
+      "minpoly K M = M.charpoly (nonderogatory)",
+      "primary decomposition via Bezout/CRT",
+      "K[X] as a UFD"
     ]
   },
   {

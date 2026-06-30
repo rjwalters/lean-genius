@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "burnside-counting-oq-06",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "The Necklace Proof of Fermat's Little Theorem",
+    "content": "The module docstring lays out the classical combinatorial argument. Color the $p$ beads of a circular necklace with $k$ colors: there are $k^p$ colorings, and the cyclic group of $p$ rotations acts on them. Because $p$ is prime, every non-constant coloring sits in an orbit of exactly $p$ rotations, while the $k$ constant colorings are fixed — so the $k^p-k$ non-constant colorings split into orbits of size $p$, forcing $p\\mid k^p-k$. Formally this entry obtains the same conclusion by specializing the gallery's divisor-form count $(\\#\\text{necklaces})\\cdot n = \\sum_{d\\mid n}\\varphi(n/d)k^d$ to a prime $n=p$, where only $d=1$ and $d=p$ survive: $(\\#\\text{necklaces})\\cdot p = (p-1)k + k^p$.",
+    "mathContext": "$(\\#\\text{necklaces})\\cdot p = \\varphi(p)\\,k + k^p = (p-1)k + k^p$",
+    "significance": "context",
+    "relatedConcepts": ["Fermat's little theorem", "necklace counting", "Burnside's lemma", "cyclic group action", "Euler's totient"],
+    "prerequisites": ["Burnside/orbit counting", "prime numbers"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "burnside-counting-oq-06",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "context",
+    "title": "Imports: the Reused Divisor-Form Necklace Count",
+    "content": "The single piece of gallery infrastructure this entry consumes is `card_necklaces_mul_eq_sum_divisors` from `BurnsideCountingOQ03OQ02OQ01OQ02` — the textbook divisor form $(\\#\\text{necklaces})\\cdot n = \\sum_{d\\mid n}\\varphi(n/d)k^d$ of the cyclic necklace count. The selective `open BurnsideCountingOQ03OQ02OQ01 (Rot)` brings the rotation action $\\mathrm{Rot}\\,n = \\mathrm{Multiplicative}(\\mathbb{Z}/n)$ into scope so the orbit space `orbitRel.Quotient (Rot p) (Rot p → Fin k)` — the set of $k$-colored $p$-bead necklaces — can be named. `open Finset MulAction` supplies $\\sum$ notation and the orbit-space construction.",
+    "mathContext": "$\\mathrm{Rot}\\,n = \\mathrm{Multiplicative}(\\mathbb{Z}/n),\\quad (\\#\\text{necklaces})\\cdot n = \\sum_{d\\mid n}\\varphi(n/d)k^d$",
+    "significance": "technical",
+    "relatedConcepts": ["module dependencies", "MulAction", "orbit space", "namespace management"],
+    "prerequisites": ["Lean 4 module system", "Mathlib big operators"]
+  },
+  {
+    "id": "ann-prime-collapse",
+    "proofId": "burnside-counting-oq-06",
+    "range": { "startLine": 52, "endLine": 63 },
+    "type": "technique",
+    "title": "Collapsing the Divisor Sum at a Prime",
+    "content": "`necklaces_mul_prime_eq` is the combinatorial core. After rewriting the necklace count by `card_necklaces_mul_eq_sum_divisors`, `Nat.Prime.divisors` replaces $p.\\text{divisors}$ with the explicit pair $\\{1,p\\}$, and `Finset.sum_pair` (whose hypothesis $1\\neq p$ is `hp.one_lt.ne`) evaluates the two-element sum to $\\varphi(p/1)\\cdot k^1 + \\varphi(p/p)\\cdot k^p$. The rewrites `Nat.div_one` ($p/1 = p$), `Nat.div_self` ($p/p = 1$), and `Nat.totient_one` ($\\varphi(1)=1$) reduce this to $\\varphi(p)\\cdot k + 1\\cdot k^p$, and `ring` normalizes it to $\\varphi(p)\\cdot k + k^p$. The `NeZero p` instance needed by the divisor-form lemma is supplied from `hp.pos`.",
+    "mathContext": "$\\sum_{d\\mid p}\\varphi(p/d)k^d = \\varphi(p)\\,k + k^p$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime.divisors", "Finset.sum_pair", "Euler's totient", "two-term sum"],
+    "prerequisites": ["divisors of a prime", "finite sums over a pair"]
+  },
+  {
+    "id": "ann-fermat",
+    "proofId": "burnside-counting-oq-06",
+    "range": { "startLine": 65, "endLine": 78 },
+    "type": "key-step",
+    "title": "From the Count to p ∣ kᵖ − k",
+    "content": "`fermat_little` extracts Fermat's theorem with an explicit witness. Set $N = \\#\\text{necklaces}$. The two facts cast to $\\mathbb{Z}$ are `h1`: $N\\cdot p = \\varphi(p)\\cdot k + k^p$ (from `necklaces_mul_prime_eq`) and `h2`: $\\varphi(p) + 1 = p$ (from `Nat.totient_prime`, with `hp.pos` so the truncated subtraction $p-1$ behaves). The claimed witness is $N - k$, and the identity to verify is $k^p - k = p\\,(N-k)$. Algebraically $k^p - k = N\\cdot p - \\varphi(p)\\cdot k - k = N\\cdot p - (\\varphi(p)+1)k = N\\cdot p - p\\cdot k = p(N-k)$; the single `linear_combination -h1 - k*h2` discharges exactly this combination of `h1` and `h2`.",
+    "mathContext": "$k^p - k = N\\cdot p - (\\varphi(p)+1)k = p\\,(N-k)$",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "explicit divisibility witness", "linear_combination", "Nat.totient_prime"],
+    "prerequisites": ["integer divisibility", "casting ℕ identities to ℤ"]
+  },
+  {
+    "id": "ann-modeq-zmod",
+    "proofId": "burnside-counting-oq-06",
+    "range": { "startLine": 80, "endLine": 95 },
+    "type": "technique",
+    "title": "Congruence and Finite-Field Forms",
+    "content": "Two standard repackagings of the divisibility. `fermat_little_modEq` rewrites $k^p \\equiv k \\;[\\mathrm{MOD}\\,p]$ via `Nat.modEq_iff_dvd` into $(p:\\mathbb{Z})\\mid k - k^p$, which is `dvd_sub_comm` applied to `fermat_little`'s $(p:\\mathbb{Z})\\mid k^p - k$. `pow_card_eq` recovers the finite-field identity $(k:\\mathbb{Z}/p)^p = k$: casting $k^p - k$ into $\\mathbb{Z}/p$ and using `ZMod.intCast_zmod_eq_zero_iff_dvd` turns the divisibility into $((k:\\mathbb{Z})^p - k : \\mathbb{Z}/p) = 0$, and `push_cast` + `linear_combination` read off $(k:\\mathbb{Z}/p)^p = k$. This is the statement of Mathlib's `ZMod.pow_card`, but produced from the necklace count rather than from the algebraic Frobenius proof.",
+    "mathContext": "$k^p \\equiv k \\pmod p \\;\\Longleftrightarrow\\; (k:\\mathbb{Z}/p)^p = k$",
+    "significance": "important",
+    "relatedConcepts": ["Nat.ModEq", "ZMod.pow_card", "ZMod.intCast_zmod_eq_zero_iff_dvd", "dvd_sub_comm"],
+    "prerequisites": ["modular congruence", "casting into ZMod p"]
+  }
+]

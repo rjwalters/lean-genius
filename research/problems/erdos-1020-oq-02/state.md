@@ -1,27 +1,27 @@
 # Current State
 
-**Phase**: NEW
+**Phase**: ACT
 **Since**: 2026-03-30T21:46:38.106Z
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+Regime-transition structure verified; sharpening the threshold characterization.
 
 ## Active Approach
 
-None yet.
+Exact step-difference identity + sharp crossover threshold for worked instances.
 
 ## Blockers
 
-None.
+The core open gap (Erdős Matching Conjecture for r≥4) is out of reach by these methods.
 
 ## Next Action
 
-Begin problem exploration.
+Generalize crossover_r4k2 to a closed-form threshold n₀(r,k); prove construction2→∞ for threshold existence.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1

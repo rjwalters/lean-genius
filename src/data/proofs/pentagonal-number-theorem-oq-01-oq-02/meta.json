@@ -1,0 +1,184 @@
+{
+  "id": "pentagonal-number-theorem-oq-01-oq-02",
+  "title": "Euler's Partition Recurrence as the Generating-Function Reciprocal of ∏(1−Xⁿ)",
+  "slug": "pentagonal-number-theorem-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PentagonalNumberTheoremOQ01"
+    ],
+    "opens": [
+      "PowerSeries",
+      "Finset",
+      "PowerSeries.WithPiTopology",
+      "PentagonalNumberTheoremOQ01"
+    ],
+    "namespace": "PentagonalNumberTheoremOQ01OQ02",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "path": "Proofs/PentagonalNumberTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Answers the parent's second open question — derive Euler's partition recurrence for p(n) as a corollary — by isolating its true analytic engine: the formal power-series reciprocal identity P(X)·∏_{m≥1}(1−Xᵐ) = 1, where P(X)=∑ p(n)Xⁿ is the partition generating function (Mathlib's Nat.Partition.genFun with the trivial character). The proof multiplies the two convergent infinite products factor-by-factor (Multipliable.tprod_mul), each combined factor (∑_j X^{(i+1)j})·(1−X^{i+1}) collapsing to 1 by the geometric-series identity, so the whole product is 1. Reading off the n-th coefficient (PowerSeries.coeff_mul) gives Euler's recurrence in Cauchy-convolution form ∑_{a+b=n} p(a)·c_b = [n=0], and solving for p(n) yields the explicit recurrence p(n) = −∑_{k<n} p(k)·c_{n−k}. The Euler coefficients c_b = [Xᵇ]∏(1−Xᵐ) = ∑_{q∈distincts b}(−1)^{#parts} are supplied by the parent's verified coeff_tprod_pent. All 0-sorry, 0-axiom. The famous pentagonal indexing p(n)=∑(−1)^{k−1}(p(n−g_k)+p(n−g_{−k})) is the only conditional step, gated on the identity ∑_{q∈distincts b}(−1)^{#parts}=pentSeriesCoeff b — Franklin's involution, the parent entry's stated OPEN CORE and still absent from Mathlib.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "partitions",
+      "pentagonal-numbers",
+      "generating-functions",
+      "formal-power-series",
+      "infinite-products",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/PentagonalNumberTheoremOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Partition.genFun_eq_tprod",
+        "description": "the partition generating function written as a convergent infinite product ∏_i (1 + ∑_j f(i+1,j+1)·X^{(i+1)(j+1)}); with the trivial character f≡1 each factor is the geometric series in X^{i+1}, exhibiting P(X) as ∏ 1/(1−X^{i+1})",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.GenFun"
+      },
+      {
+        "theorem": "Nat.Partition.multipliable_genFun",
+        "description": "the family of partition-generating-function factors is multipliable in the X-adic (WithPiTopology) topology — the convergence needed to multiply it against Euler's product factor-by-factor",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.GenFun"
+      },
+      {
+        "theorem": "Multipliable.tprod_mul",
+        "description": "for multipliable families, ∏'(f i · g i) = (∏' f)·(∏' g) — turns the product of the two generating functions into a single product whose i-th factor is the combined pair, ready for the per-factor telescoping",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "PowerSeries.WithPiTopology.tsum_pow_mul_one_sub_of_constantCoeff_eq_zero",
+        "description": "the formal geometric series identity (∑_n f^n)·(1−f) = 1 for f with zero constant term — the algebraic heart of each factor's collapse, with f = X^{i+1}",
+        "module": "Mathlib.RingTheory.PowerSeries.PiTopology"
+      },
+      {
+        "theorem": "PowerSeries.WithPiTopology.multipliable_one_sub_X_pow",
+        "description": "Euler's product ∏(1−X^{n+1}) is multipliable in ℤ⟦X⟧ — the convergence of the product side of the pentagonal identity",
+        "module": "Mathlib.RingTheory.PowerSeries.PiTopology"
+      },
+      {
+        "theorem": "PowerSeries.coeff_mul",
+        "description": "the n-th coefficient of a product of power series is the finite Cauchy convolution ∑_{(a,b)∈antidiagonal n} (coeff a φ)(coeff b ψ) — converts the reciprocal identity P·E=1 into Euler's recurrence on coefficients",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk",
+        "description": "rewrites a sum over the n-antidiagonal as a sum over range (n+1) via k ↦ (k, n−k) — re-indexes the convolution to isolate the k=n term and solve for p(n)",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      }
+    ],
+    "originalContributions": [
+      "partition_genFun_mul_euler_eq_one (headline): the formal power-series reciprocal identity P(X)·∏_{m≥1}(1−Xᵐ) = 1, equivalently ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ). This product form is a stated TODO in Mathlib's Combinatorics.Enumerative.Partition.GenFun; the entry proves the equivalent multiplicative reciprocal by combining the two convergent products factor-by-factor.",
+      "factor_telescope: the per-factor geometric collapse (1 + ∑_j 1·X^{(i+1)(j+1)})·(1 − X^{i+1}) = 1 in ℤ⟦X⟧, recognizing the i-th partition factor as the geometric series ∑_n (X^{i+1})^n and applying Mathlib's tsum_pow_mul_one_sub_of_constantCoeff_eq_zero.",
+      "coeff_P and coeff_E: the two coefficient dictionaries — [Xⁿ]P = #(Partition n) = p(n) (the trivial character makes every Finsupp.prod factor 1, so the genFun coefficient counts partitions), and [Xⁿ]E = ∑_{q∈distincts n}(−1)^{#parts}, the parent's coeff_tprod_pent.",
+      "euler_convolution: Euler's recurrence in coefficient form ∑_{a+b=n} p(a)·c_b = [n=0], obtained by extracting the n-th coefficient of P·E=1 as a Cauchy convolution (coeff_mul) against coeff_one.",
+      "distinctsSum_zero: the base coefficient c_0 = ∑_{q∈distincts 0}(−1)^{#parts} = 1, read off from the constant term of P·E=1 (the empty partition is the unique partition of 0).",
+      "partition_recurrence: the explicit p(n) recurrence p(n) = −∑_{k<n} p(k)·c_{n−k} for n ≥ 1, solved from euler_convolution by re-indexing the antidiagonal to range (n+1) and isolating the k=n term whose Euler factor c_0 = 1."
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 154,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline partition_genFun_mul_euler_eq_one, euler_convolution and partition_recurrence each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy (no sorryAx, no Lean.ofReduceBool / native_decide). The unconditional results are the reciprocal identity, the coefficient convolution and the explicit p(n) recurrence. The famous pentagonal-indexed form is NOT proved unconditionally: it requires ∑_{q∈distincts b}(−1)^{#parts}=pentSeriesCoeff b (Franklin's sign-reversing involution), the parent entry's documented OPEN CORE, which remains absent from Mathlib. Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (lake env lean Proofs/PentagonalNumberTheoremOQ01OQ02.lean, exit 0).",
+    "theoremCount": 7,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Euler's pentagonal number theorem ∏_{m≥1}(1−xᵐ) = ∑_{k∈ℤ}(−1)ᵏ x^{g(k)}, with generalized pentagonal exponents g(k)=k(3k−1)/2, has a celebrated combinatorial payoff: a recurrence computing the partition function p(n) from earlier values, p(n)=∑_{k≥1}(−1)^{k−1}(p(n−g_k)+p(n−g_{−k}))=p(n−1)+p(n−2)−p(n−5)−p(n−7)+⋯. Euler discovered both the product identity and this recurrence; the recurrence is what makes p(n) computable in sub-exponential time and underlies MacMahon's tables. The analytic mechanism is uniform: the partition generating function ∑ p(n)xⁿ = ∏ 1/(1−xᵐ) is, by construction, the reciprocal of Euler's product ∏(1−xᵐ), so multiplying the two gives 1 and reading off coefficients yields a convolution that must vanish away from n=0. The parent entry PentagonalNumberTheoremOQ01 machine-checked BOTH ends of Euler's identity through Mathlib's 2025 Partition.genFun, reducing the pentagonal number theorem to a single combinatorial identity (Franklin's involution). This entry supplies the OTHER half of the story — the generating-function reciprocal and the recurrence it produces — independently of that open core.",
+    "problemStatement": "Derive Euler's partition recurrence for p(n)=#(Partition n) as a corollary of the pentagonal development. Concretely, establish the formal power-series reciprocal identity\n\n$$ \\Big(\\sum_{n\\ge 0} p(n)\\,X^n\\Big)\\cdot \\prod_{m\\ge 1}(1-X^m) \\;=\\; 1 \\quad\\text{in } \\mathbb{Z}\\llbracket X\\rrbracket, $$\n\nand read off its coefficients to obtain Euler's recurrence in convolution form $\\sum_{a+b=n} p(a)\\,c_b=[n=0]$ and its solved form $p(n)=-\\sum_{k<n}p(k)\\,c_{n-k}$, where $c_b=[X^b]\\prod(1-X^m)$.",
+    "text": "The generating-function half of Euler's partition recurrence: the partition series is the reciprocal of Euler's product ∏(1−Xᵐ), proved by factor-by-factor geometric collapse of two convergent infinite products, and its coefficients give Euler's recurrence for p(n).",
+    "proofStrategy": "1. **Two generating functions (defs)**: P := Nat.Partition.genFun (fun _ _ => 1), whose n-th coefficient counts partitions (coeff_P, since the trivial character makes every Finsupp.prod factor 1); E := ∏_i (1 − X^{i+1}), Euler's product, whose n-th coefficient is the parent's signed distinct-parts count (coeff_E = coeff_tprod_pent).\n\n2. **Per-factor telescoping (factor_telescope)**: genFun_eq_tprod presents the i-th factor of P as 1 + ∑_j X^{(i+1)(j+1)} = ∑_n (X^{i+1})^n (a geometric series, using tsum_eq_zero_add' to split off the n=0 term). Multiplying by the i-th factor 1 − X^{i+1} of E gives 1 by the formal geometric identity tsum_pow_mul_one_sub_of_constantCoeff_eq_zero.\n\n3. **The reciprocal identity (partition_genFun_mul_euler_eq_one)**: both products converge (multipliable_genFun, multipliable_one_sub_X_pow), so Multipliable.tprod_mul merges them into a single product whose every factor telescopes to 1; tprod_one then gives P·E = 1.\n\n4. **Coefficient extraction (euler_convolution)**: coeff_mul turns [Xⁿ](P·E) into the Cauchy convolution ∑_{(a,b)∈antidiagonal n} p(a)·c_b, and coeff_one evaluates [Xⁿ]1 = [n=0]; coeff_P and coeff_E rewrite the entries into partition numbers and signed distinct-parts counts.\n\n5. **Solving for p(n) (partition_recurrence)**: re-index the antidiagonal as range (n+1) via k ↦ (k, n−k), split off the k=n term whose Euler factor c_0 = 1 (distinctsSum_zero), and rearrange to p(n) = −∑_{k<n} p(k)·c_{n−k}.",
+    "keyInsights": [
+      "Euler's recurrence is not really about pentagonal numbers — it is about a RECIPROCAL: ∑ p(n)Xⁿ and ∏(1−Xᵐ) are mutual inverses in ℤ⟦X⟧, so their product is 1 and every coefficient beyond the constant must vanish. The pentagonal exponents only enter when one evaluates the coefficients of ∏(1−Xᵐ), which is a separate (and here open) question.",
+      "The reciprocal is proved without ever expanding either side: two convergent infinite products are multiplied factor-by-factor, and each combined factor (geometric series)·(1−X^{i+1}) collapses to 1 by the formal geometric identity — a clean instance of how Mathlib's WithPiTopology makes infinite-product manipulation rigorous.",
+      "Reading a power-series identity at the n-th coefficient is exactly a finite Cauchy convolution over the antidiagonal {(a,b):a+b=n}; the recurrence is then pure bookkeeping — isolate the term with b=0 (where the Euler coefficient is 1) and solve.",
+      "The entry is honest about the boundary of the open core: it proves the recurrence with Euler coefficients c_b = [Xᵇ]∏(1−Xᵐ) in their distinct-parts form unconditionally, and flags that rewriting c_b as the pentagonal sign ±1 on g(k) is precisely the pentagonal number theorem (Franklin's involution), still missing from Mathlib.",
+      "Mathlib lists the product form ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ) as a TODO; the equivalent multiplicative reciprocal proved here fills that gap for ℤ coefficients."
+    ],
+    "prerequisites": [
+      "Formal power series ℤ⟦X⟧, coefficients, and the Cauchy product (PowerSeries.coeff_mul)",
+      "Convergent infinite products of power series in the X-adic topology (PowerSeries.WithPiTopology, Multipliable.tprod_mul)",
+      "Mathlib's partition generating function Nat.Partition.genFun and the parent entry's coeff_tprod_pent",
+      "The formal geometric series identity (∑ fⁿ)(1−f)=1 for f with zero constant term"
+    ]
+  },
+  "sections": [
+    {
+      "id": "generating-functions",
+      "title": "The Two Generating Functions and Their Coefficients",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "P := Nat.Partition.genFun (fun _ _ => 1) and E := ∏_i (1 − X^{i+1}), with coeff_P ([Xⁿ]P = #(Partition n) = p(n)) and coeff_E ([Xⁿ]E = ∑_{q∈distincts n}(−1)^{#parts}, the parent's coeff_tprod_pent).",
+      "mathContext": "With the trivial character f≡1, every Finsupp.prod factor in genFun's coefficient formula is 1, so [Xⁿ]P sums 1 over the partitions of n. E is Euler's product, whose coefficients the parent already identified with the signed distinct-parts count p_even(n)−p_odd(n)."
+    },
+    {
+      "id": "telescoping",
+      "title": "Per-Factor Geometric Telescoping",
+      "startLine": 78,
+      "endLine": 96,
+      "summary": "factor_telescope: the i-th factor of P, namely 1 + ∑_j 1·X^{(i+1)(j+1)} = ∑_n (X^{i+1})^n, times the i-th factor 1 − X^{i+1} of E equals 1 in ℤ⟦X⟧.",
+      "mathContext": "X^{i+1} has zero constant term, so the formal geometric series ∑_n (X^{i+1})^n converges and (∑_n (X^{i+1})^n)·(1−X^{i+1}) = 1 (tsum_pow_mul_one_sub_of_constantCoeff_eq_zero). The genFun factor is rewritten to this geometric form by splitting off the n=0 term (tsum_eq_zero_add')."
+    },
+    {
+      "id": "reciprocal",
+      "title": "The Reciprocal Identity P·E = 1 (Headline)",
+      "startLine": 98,
+      "endLine": 109,
+      "summary": "partition_genFun_mul_euler_eq_one: P(X)·∏_{m≥1}(1−Xᵐ) = 1, equivalently ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ) — the multiplicative reciprocal Mathlib lists as a TODO.",
+      "mathContext": "Both families are multipliable (multipliable_genFun, multipliable_one_sub_X_pow), so Multipliable.tprod_mul merges the two products into one whose i-th factor is the combined pair; every factor telescopes to 1 (factor_telescope), and tprod_one gives the product 1."
+    },
+    {
+      "id": "convolution",
+      "title": "Euler's Recurrence in Convolution Form",
+      "startLine": 111,
+      "endLine": 130,
+      "summary": "euler_convolution: ∑_{a+b=n} p(a)·c_b = [n=0], the n-th coefficient of P·E=1; and distinctsSum_zero: the base Euler coefficient c_0 = 1.",
+      "mathContext": "coeff_mul expands [Xⁿ](P·E) as the Cauchy convolution over the antidiagonal, coeff_one evaluates [Xⁿ]1, and coeff_P/coeff_E rewrite the factors into partition numbers and signed distinct-parts counts. c_0 = ∑_{q∈distincts 0}(−1)^{#parts} = 1 since the empty partition is the unique partition of 0."
+    },
+    {
+      "id": "recurrence",
+      "title": "Solving for p(n): the Explicit Recurrence",
+      "startLine": 132,
+      "endLine": 147,
+      "summary": "partition_recurrence: for n ≥ 1, p(n) = −∑_{k<n} p(k)·c_{n−k}, where c_b = ∑_{q∈distincts b}(−1)^{#parts} = [Xᵇ]∏(1−Xᵐ).",
+      "mathContext": "Re-indexing the antidiagonal as range (n+1) via k ↦ (k, n−k) and isolating the k=n term (whose Euler factor c_0 = 1) turns the vanishing convolution into the solved recurrence. With the pentagonal number theorem the coefficients c_{n−k} become the pentagonal signs, recovering p(n)=∑_{k≥1}(−1)^{k−1}(p(n−g_k)+p(n−g_{−k}))."
+    }
+  ],
+  "openQuestions": [
+    "Discharge the parent's open core (Franklin's sign-reversing involution) ∑_{q∈distincts b}(−1)^{#parts} = pentSeriesCoeff b, then specialize partition_recurrence to the famous pentagonal form p(n)=∑_{k≥1}(−1)^{k−1}(p(n−g_k)+p(n−g_{−k})), summing only over generalized pentagonal shifts ≤ n.",
+    "Upstream the reciprocal identity ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ) (Mathlib's stated TODO in Partition.GenFun) over an arbitrary commutative ring, of which partition_genFun_mul_euler_eq_one is the ℤ instance.",
+    "Use partition_recurrence to derive growth or congruence information for p(n) (e.g. machine-checked initial values 1,1,2,3,5,7,11,… or Ramanujan-style congruences modulo 5,7,11) directly from the convolution, independent of the pentagonal indexing."
+  ],
+  "conclusion": {
+    "summary": "This entry answers the parent's second open question by isolating the analytic engine of Euler's partition recurrence: the formal power-series reciprocal P(X)·∏_{m≥1}(1−Xᵐ) = 1, where P=∑ p(n)Xⁿ is the partition generating function. The proof merges two convergent infinite products factor-by-factor (Multipliable.tprod_mul), each combined factor (∑_j X^{(i+1)j})·(1−X^{i+1}) collapsing to 1 by the formal geometric identity. Extracting the n-th coefficient (coeff_mul) gives Euler's recurrence ∑_{a+b=n} p(a)·c_b = [n=0], and isolating the b=0 term yields the explicit p(n) = −∑_{k<n} p(k)·c_{n−k}. All machine-verified with 0 axioms and 0 sorries.",
+    "implications": "The recurrence is proved with its Euler coefficients c_b = [Xᵇ]∏(1−Xᵐ) in the distinct-parts form supplied by the parent, so the convolution and the p(n)-recurrence are fully unconditional. Only the famous pentagonal INDEXING of the shifts — rewriting c_b as the sign ±1 on the generalized pentagonal numbers g(k) — rides on the pentagonal number theorem (Franklin's involution), the parent's documented open core. The reciprocal identity itself fills a stated Mathlib TODO (∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ)) for ℤ coefficients, and the convolution form is the computational backbone that makes p(n) effectively calculable.",
+    "openQuestions": [
+      "Discharge Franklin's involution and specialize the recurrence to the pentagonal-indexed form.",
+      "Upstream the reciprocal ∑ p(n)Xⁿ = ∏ 1/(1−Xᵐ) over a general commutative ring.",
+      "Derive growth or Ramanujan-style congruences for p(n) directly from the convolution."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "pentagonal-number-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry: the division-free index theory of the generalized pentagonal numbers and BOTH ends of Euler's identity through Mathlib's genFun — the product side ∏(1−Xᵐ) and the coefficient side ∑_{q∈distincts n}(−1)^{#parts} (coeff_tprod_pent). This entry consumes coeff_tprod_pent as its Euler-coefficient dictionary and answers the parent's second open question (derive Euler's partition recurrence), proving the generating-function reciprocal and the recurrence it produces while leaving the parent's open core — Franklin's involution — as the only gate on the pentagonal indexing."
+    },
+    {
+      "proofId": "pentagonal-number-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The sibling order-theoretic entry constructs the strictly-increasing enumeration gpAt of the generalized pentagonal numbers (OEIS A001318); its third open question asks to re-index Euler's partition recurrence by rank over the initial segment of gpAt below n. This entry supplies the recurrence itself in convolution form, the object that re-indexing would act on."
+    },
+    {
+      "proofId": "partition-theorem",
+      "relationship": "related",
+      "description": "Euler's theorem that partitions into odd parts equinumerate partitions into distinct parts. Both rest on the same generating-function reciprocal machinery (∏ 1/(1−Xᵐ) and its companions); the distinct-parts signed count ∑_{q∈distincts b}(−1)^{#parts} appearing here as the Euler coefficient c_b is exactly the alternating distinct-parts statistic governing ∏(1−Xⁿ)."
+    }
+  ]
+}

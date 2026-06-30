@@ -89,3 +89,42 @@ proven infrastructure (the same dead-end the waring-g2 slug flags re: Davenport�
 - Therefore the only genuinely OPEN piece on this slug is the **converse** (`¬4ᵃ(8b+7) ⟹ three squares`), which this slug already established (quantitatively, 36% subset) is **not** reachable via the ℤ[√−2] norm form. The converse is itself axiomatized-but-not-proved in `ThreeSquares.lean` (`not_excluded_form_is_sum_three_sq`, the Minkowski+Dirichlet route, Docker-gated) — see the `lagrange-four-squares-waring-g2-oq-03` slug, which owns that work.
 
 **Net**: this slug needs **no new Lean** — its formalizable deliverable is subsumed by `ThreeSquares.lean`, and its deep direction is owned by the waring-g2 slug. Recommend marking the ℤ[√−2] route closed (negative verdict) and not re-attempting the forward obstruction. (No code; dual blackout re-confirmed live: docker timeout, Aristotle 404.)
+
+## Session 2026-06-22 (researcher-1) — bridge the obstruction to the parent norm form
+
+**Mode**: REVISIT (RICH, verdict was "no new Lean"). **Outcome**: progress (small but real:
+the file's docstring is framed entirely around the ℤ[√−2] norm form `x²+2y²`, yet contained
+ZERO lemmas about it — added the missing bridge).
+
+### What I Did
+- `normForm_isSumThreeSq (x y : ℤ) : ∃ a b c, a²+b²+c² = x²+2y²` — the trivial inclusion
+  `x²+2y² = x²+y²+y²` (`⟨x, y, y, by ring⟩`).
+- `normForm_ne_four_pow_mul (x y a b) : x²+2y² ≠ 4^a(8b+7)` — applying the existing
+  contrapositive `sumThreeSq_ne_four_pow_mul` to the inclusion. The ℤ[√−2] representable
+  numbers provably respect the Legendre obstruction (a proper subset of three-square numbers).
+
+This makes the file actually engage the norm form it is *about*, and partially addresses the
+file's open question "connect it to the parent ℤ[√−2] representation theorems".
+
+### Verification — DOCKER WAS DOWN, used host single-file bypass
+- `docker-build.sh` crashed mid-build with `error waiting for container: unexpected EOF`
+  (exit 125), then Docker Desktop went fully down ("Docker is not installed"); restart
+  (`osascript quit` + `open -a Docker`) did NOT bring the daemon back within ~9 min (disk
+  was healthy at 17%, so NOT disk pressure this time — daemon just stuck).
+- **BYPASS (works, matches researcher-7 memory note)**: host has `lean v4.26.0`
+  (`/opt/homebrew/bin/lean`) + prebuilt Mathlib oleans in main-repo
+  `proofs/.lake/packages/*/.lake/build/lib/lean`. Set
+  `LEAN_PATH=$(printf '%s:' proofs/.lake/packages/*/.lake/build/lib/lean; echo proofs/.lake/build/lib/lean)`
+  and run `lean <worktree-file>` directly (~seconds, no Docker). EXIT=0, no errors.
+- `#print axioms` (append fully-qualified `#print axioms ZsqrtNegTwoOQ02.normForm_*` to a
+  temp copy, elaborate): both new theorems depend only on `[propext, Classical.choice,
+  Quot.sound]` (normForm_isSumThreeSq just `[propext]`) — NO `ofReduceBool`/`sorryAx`.
+  Stays 0-axiom verified.
+
+### Files Modified
+- `proofs/Proofs/ZsqrtdNegTwoOQ02.lean` (139→162 lines, +2 thm, Step 4 section)
+- `src/data/proofs/zsqrtd-neg-two-oq-02/meta.json` (counts, contributions, section, open Q)
+
+### Next Steps (unchanged deep work)
+- Sufficiency direction (Dirichlet + ternary forms) remains the genuine open work, owned by
+  the `lagrange-four-squares-waring-g2-oq-03` slug; NOT reachable via ℤ[√−2].
