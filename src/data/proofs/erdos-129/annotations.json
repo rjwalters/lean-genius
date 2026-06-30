@@ -126,8 +126,8 @@
     "proofId": "erdos-129",
     "type": "concept",
     "range": {
-      "startLine": 71,
-      "endLine": 73
+      "startLine": 69,
+      "endLine": 70
     },
     "title": "Erdős–Gyárfás Lower Bound",
     "content": "**Erdős–Gyárfás (1997)**: For $r \\geq 2$, there exists $C > 1$ such that for all large $n$:\n\n$$R(n; 3, r) > C^{\\sqrt{n}}$$\n\n**Proof idea** (not formalized): Use the probabilistic method. Take a random $r$-coloring of $K_N$. For any fixed set $S$ of $n$ vertices, the probability that $S$ contains no monochromatic triangle is at most $(1 - r^{-1})^{\\binom{n}{3}/\\binom{3}{2}} \\approx e^{-cn^3/r}$ after careful counting. Union-bounding over all $\\binom{N}{n}$ vertex sets shows that when $N < C^{\\sqrt{n}}$, the expected number of triangle-free $n$-sets tends to 0.\n\n**Lean**: Stated in **contrapositive form**: if $N < C^{\\sqrt{n}}$, then $\\neg\\text{HasRamseyAvoid}(N, n, 3, r)$. This avoids defining $R(n;3,r)$ explicitly as a minimum. Axiomatized because the probabilistic proof requires measure theory on the space of colorings.\n\n**Combined with conjecture**: If the upper bound is also $C^{\\sqrt{n}}$, then $R(n;3,r) = \\Theta(C^{\\sqrt{n}})$, giving a complete growth rate characterization.",
@@ -173,18 +173,18 @@
     "proofId": "erdos-129",
     "type": "concept",
     "range": {
-      "startLine": 77,
-      "endLine": 97
+      "startLine": 76,
+      "endLine": 140
     },
     "title": "Structural Properties of HasRamseyAvoid",
-    "content": "Five axiomatized structural properties that constrain $R(n;k,r)$:\n\n1. **Monotonicity in $N$** (`hasRamseyAvoid_mono`): If $K_N$ works, so does $K_M$ for $M \\geq N$, since the extra vertices can only help find large clique-free sets. This is the key property making $R(n;k,r)$ well-defined as a minimum.\n\n2. **Anti-monotonicity in $r$** (`hasRamseyAvoid_more_colors`): More colors make avoidance easier — with more colors, each color class is thinner, making monochromatic cliques harder to form. Formally: $R(n;k,r_1) \\geq R(n;k,r_2)$ when $r_1 \\leq r_2$.\n\n3. **Vacuity for $k \\leq 2$** (`hasRamseyAvoid_small_k`): When $k \\leq 2$, every vertex set trivially avoids monochromatic $K_k$ since a single edge cannot form a 2-clique in the avoidance sense. So $R(n;k,r) = n$ for $k \\leq 2$.\n\n4. **Singleton case** (`hasRamseyAvoid_one`): Any single vertex trivially avoids monochromatic $K_3$ — you need at least 3 vertices to form a triangle.\n\n5. **Empty set** (`hasRamseyAvoid_zero`): The empty set trivially avoids everything.\n\nThese properties are axiomatized rather than proved because their proofs require embedding and subset construction arguments that interact with the Finset API in non-trivial ways. All five are routine consequences of the definitions and could in principle be proved from Mathlib once the appropriate lemmas for Finset subset selection are available.",
-    "mathContext": "Structural properties: $N \\leq M \\Rightarrow R_N \\Rightarrow R_M$; $r_1 \\leq r_2 \\Rightarrow R_{r_1} \\Rightarrow R_{r_2}$; $k \\leq 2 \\Rightarrow$ trivial; $n = 0, 1 \\Rightarrow$ trivial. Together these constrain the Ramsey function $R(n;k,r)$.",
+    "content": "Five structural properties of NoMonoClique / HasRamseyAvoid, all proved from first principles (no axioms, no sorries):\n\n1. **Empty set** (`hasRamseyAvoid_zero`): for n = 0 the empty set has card ≥ 0 and vacuously avoids every monochromatic clique.\n\n2. **Singleton, k ≥ 3** (`hasRamseyAvoid_one_of_k_ge_three`): for k ≥ 3 and N ≥ 1, a single vertex {v} avoids monochromatic K_k, since a 1-element set has no k-element subset.\n\n3. **Small cardinality** (`noMonoClique_of_card_lt`): if |S| < k then S has no monochromatic K_k, because any clique T ⊆ S satisfies |T| ≤ |S| < k.\n\n4. **n ≤ 1** (`hasRamseyAvoid_of_n_le_one`): for k ≥ 3, n ≤ 1 and n ≤ N, HasRamseyAvoid holds, unifying the n = 0 and n = 1 cases via a singleton witness.\n\n5. **More colors help** (`noMonoClique_of_color_embed`): if a set avoids monochromatic K_k under an r-coloring, it still avoids them under any r'-coloring with r ≤ r', viewing the r-coloring as an r'-coloring via Fin.castLE — anti-monotonicity in the number of colors.\n\nAll five follow directly from the Finset cardinality API (Finset.card_le_card) and the definitions.",
+    "mathContext": "Card bound: $|S| < k \\Rightarrow$ no monochromatic $K_k$ in $S$. Boundary: $n \\leq 1 \\Rightarrow$ HasRamseyAvoid (for $k \\geq 3$). Color monotonicity: $r \\leq r' \\Rightarrow$ avoidance under $r$ colors lifts to $r'$ colors (via Fin.castLE). Together these are the elementary constraints on the Ramsey function $R(n;k,r)$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "monotonicity",
-      "well-definedness of Ramsey numbers",
+      "monochromatic clique avoidance",
+      "Finset cardinality bounds",
       "boundary cases",
-      "Finset subset selection"
+      "color embedding (Fin.castLE)"
     ],
     "prerequisites": [
       "HasRamseyAvoid definition",

@@ -2,6 +2,21 @@
   "id": "frobenius-number-oq-03",
   "title": "Frobenius Number — Three Generators (Foundation)",
   "slug": "frobenius-number-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Lattice",
+      "Proofs.FrobeniusNumber"
+    ],
+    "opens": [],
+    "namespace": "FrobeniusOQ03",
+    "lineCount": 440,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 2,
+    "path": "Proofs/FrobeniusNumberOQ03.lean",
+    "sorries": 0
+  },
   "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. S5 specializes the S3b bridge to the three-consecutive family $(n, n+1, n+2)$ via `Nat.coprime_self_add_right`: every $m \\ge (n-1)\\cdot n$ is `Representable3 n (n+1) (n+2) m` (loose vs Roberts' tight $\\approx n^2/2$). Foundation for Roberts-1956 closed forms (S6+). 17 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
@@ -16,7 +31,7 @@
       "three-generators",
       "research"
     ],
-    "badge": "research",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 440,
@@ -112,15 +127,31 @@
       "id": "s4a-tight-sylvester-upper-bound",
       "title": "S4a — Tight Sylvester Upper Bound",
       "startLine": 225,
-      "endLine": 253,
+      "endLine": 252,
       "summary": "Proves `frobeniusNumber3_le_sylvester_bound_tight`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, `frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1`. Refines S3c's loose bound to the tight `- 1` form, matching the classical 2-generator Sylvester identity g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1. The proof reuses the same contrapositive of S3b's bridge as S3c but tightens the containment to a strict inequality `n < (a - 1) * (b - 1)` on every element of the non-representable set; in ℕ, this implies `n ≤ (a - 1) * (b - 1) - 1` via omega (including the degenerate `a = 1 ∨ b = 1` case where the non-representable set is empty, `csSup_empty = ⊥ = 0`, and the RHS ℕ-subtraction underflows to 0). Single `by_cases` on `Set.Nonempty`, mirroring the S3a structural API pattern."
     },
     {
       "id": "s5-large-representable3-three-consecutive",
       "title": "S5 — large_representable3 for Three Consecutive Integers",
-      "startLine": 255,
-      "endLine": 281,
+      "startLine": 253,
+      "endLine": 280,
       "summary": "Proves `large_representable3_three_consecutive`: for `1 ≤ n`, every `m ≥ (n - 1) * n` is `Representable3 n (n + 1) (n + 2) m`. Direct specialization of S3b's `large_representable3_via_two_gen` bridge to the three-consecutive family — `a := n`, `b := n + 1` (consecutive integers are coprime via `Nat.coprime_self_add_right` reducing to `Nat.coprime_one_right`), `c := n + 2`. The bound `(n - 1) * n = n² - n` is the Sylvester quantity instantiated at `(a - 1) * (b - 1) = (n - 1) * (n + 1 - 1)` after a single `omega`-discharged `n + 1 - 1 = n` rewrite. Loose compared to Roberts' tight d = 1 closed form `g(n, n+1, n+2) = ⌊(n - 2) / 2⌋ · n + (n - 1) ≈ n²/2` (asymptotically half this bound) but unconditional and the foundation for the Roberts closed-form chain (S6 = Roberts 3-AP, S6+ = Fibonacci / Mersenne triples). Closes the namespace."
+    },
+    {
+      "id": "s6-pair-symmetric",
+      "title": "S6 — Pair-Symmetric Sylvester Bounds ((a,c) and (b,c) variants)",
+      "startLine": 281,
+      "endLine": 389,
+      "summary": "Exploits the slot-symmetry of Representable3 to add the (a,c) and (b,c) analogues of the S3b/S3c/S4 results: representable3_of_ac_gen, representable3_of_bc_gen, large_representable3_via_ac/_bc, frobeniusNumber3_le_sylvester_bound_ac/_bc, set_non_representable3_finite_of_coprime_ac/_bc, and frobeniusNumber3_le_min_sylvester_bound (min over the three pair-bounds). Consequence: the non-representable set is finite whenever ANY pair of (a,b,c) is coprime, not just (a,b).",
+      "mathContext": "Representable3 is symmetric in its three slots, so the Sylvester bound holds under gcd(a,c)=1 or gcd(b,c)=1; e.g. a=4,b=6,c=5 is finite via gcd(a,c)=gcd(b,c)=1 despite gcd(a,b)=2."
+    },
+    {
+      "id": "s6-consecutive-criterion",
+      "title": "S6 — Exact Representability Criterion for Three Consecutive Generators",
+      "startLine": 390,
+      "endLine": 440,
+      "summary": "representable3_consecutive_iff: a two-sided characterization for the consecutive family (n, n+1, n+2). Since n·x+(n+1)·y+(n+2)·z = n·s + (y+2z) with s = x+y+z and the remainder y+2z ranging over [0,2s], m is representable iff n·s ≤ m ≤ (n+2)·s for some s. This interval-covering reformulation is the structural key to Roberts' tight d=1 closed form.",
+      "mathContext": "$\\mathrm{Representable3}\\,n\\,(n{+}1)\\,(n{+}2)\\,m \\iff \\exists s,\\ n s \\le m \\le (n{+}2)s$, where $s$ is the total generator count $x+y+z$."
     }
   ],
   "conclusion": {
@@ -135,14 +166,12 @@
   },
   "crossReferences": [
     {
-      "slug": "frobenius-number",
-      "title": "Frobenius Number (Two Generators, Sylvester)",
+      "targetId": "frobenius-number",
       "relationship": "parent",
       "description": "The 2-generator parent: Sylvester's 1884 closed form $g(a, b) = ab - a - b$ for coprime $a, b$. The S3b bridge `large_representable3_via_two_gen` imports `FrobeniusNumber.large_representable` directly — the 3-generator Sylvester upper bound is a one-line corollary of the 2-generator theorem (setting $z = 0$). Without the parent's `large_representable`, the entire S3c/S4 stack here would be inaccessible."
     },
     {
-      "slug": "frobenius-number-oq-01",
-      "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
+      "targetId": "frobenius-number-oq-01",
       "relationship": "sibling",
       "description": "The 2-generator count theorem: exactly $(a-1)(b-1)/2$ positive integers are non-representable for coprime $a, b \\ge 2$. The 3-generator analogue (a closed-form count theorem) is **open** — there is no Roberts-type closed form for the count, only for the maximum (the Frobenius number itself, on specific families)."
     },

@@ -1,0 +1,188 @@
+{
+  "id": "de-moivre-oq-03-oq-01-oq-01",
+  "title": "De Moivre for Irrational Exponents: Genuine Single-Valuedness",
+  "slug": "de-moivre-oq-03-oq-01-oq-01",
+  "description": "The parent entry de-moivre-oq-03-oq-01 states irrational_exponent_single_valued as a placeholder (theorem … : True := trivial) and asks, as its first open question, whether it can be proved from cpow_def_of_ne_zero and the single-valuedness of Complex.log. This entry replaces the True stub with genuine content: the principal power (e^{iθ})^α = e^{iαθ} for θ ∈ (-π,π] (single value, via cpow_def_of_ne_zero + Complex.log_exp), and the precise reason it is single-valued — the branch family k ↦ e^{2πiαk} is INJECTIVE for irrational α (the orbit never returns to 1, so no integer q creates a q-fold ambiguity, unlike the rational p/q case). Proves principal_value, exp_two_pi_ne_one_of_irrational, branch_injective, the bundled irrational_exponent_single_valued, and the corollary e^{2πiαn}=1 ↔ n=0. Zero axioms, no native_decide.",
+  "meta": {
+    "author": "Abraham de Moivre (1707); Leonhard Euler; formalized in Lean 4",
+    "date": "1707",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ03OQ01OQ01.lean",
+    "tags": [
+      "complex-analysis",
+      "de-moivre",
+      "complex-power",
+      "irrational",
+      "single-valued",
+      "branch-cut"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 112,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irrational_exponent_single_valued: the GENUINE statement replacing the parent's placeholder `theorem … : True := trivial` — the principal-value formula together with branch injectivity, answering the parent's first open question.",
+      "principal_value: (e^{iθ})^α = e^{iαθ} for θ ∈ (-π,π], the single principal value, derived from Complex.cpow_def_of_ne_zero and Complex.log_exp (as the open question suggested).",
+      "exp_two_pi_ne_one_of_irrational: for irrational α and n ≠ 0, e^{2πiαn} ≠ 1 — the orbit never returns to 1, the crux of single-valuedness (no q creating a q-fold ambiguity). Proved via Complex.exp_eq_one_iff and Irrational.intCast_mul.",
+      "branch_injective: k ↦ e^{2πiαk} is injective on ℤ for irrational α — the branches never coincide, the precise contrast with the rational p/q case (which has exactly q values).",
+      "exp_two_pi_eq_one_iff: e^{2πiαn} = 1 ↔ n = 0, exhibiting the multiplicative orbit as a free (infinite) family."
+    ],
+    "prerequisites": [
+      "Complex power Complex.cpow and its principal-branch definition",
+      "Complex.log_exp on the principal strip (-π, π]",
+      "Irrationality (Irrational.intCast_mul) and Complex.exp_eq_one_iff"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.cpow_def_of_ne_zero / Complex.log_exp",
+        "description": "z^w = exp(w·log z) for z ≠ 0, and log(exp(iθ)) = iθ on the principal strip — give the single principal value.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      },
+      {
+        "theorem": "Complex.exp_eq_one_iff / Complex.exp_eq_exp_iff_exp_sub_eq_one",
+        "description": "exp z = 1 ↔ z ∈ 2πiℤ; the bridge to the integer arithmetic behind branch injectivity.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Log"
+      },
+      {
+        "theorem": "Irrational.intCast_mul / Int.not_irrational",
+        "description": "n·α is irrational for n ≠ 0; an integer is not irrational — together force the orbit to be aperiodic.",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "De Moivre's theorem (e^{iθ})^n = e^{inθ} extends from integer to rational and real exponents through the complex power z^α = exp(α log z). For a rational exponent p/q the multi-valuedness is genuine: there are exactly q distinct values, the q-th roots of unity times a base value. For an irrational exponent the situation is qualitatively different, and the parent entry de-moivre-oq-03-oq-01 flags this with a placeholder theorem proving only `True`, asking (its first open question) for the real statement and proof from cpow_def_of_ne_zero and the single-valuedness of Complex.log.\n\nThis entry supplies it. The principal value (e^{iθ})^α = e^{iαθ} (for θ in the principal strip) is a single well-defined number — that part is, as the open question says, almost definitional. The substantive content is *why* the irrational case has no multi-valuedness: the candidate branch shifts e^{2πiαk}, k ∈ ℤ, are all distinct, because for irrational α the relation αn = m forces n = 0 (else α = m/n is rational). So the multiplicative orbit {e^{2πiαn}} is a free, infinite family — there is no integer q producing a q-fold cycle, exactly the structural difference from the rational case.",
+    "problemStatement": "**Open Question (parent de-moivre-oq-03-oq-01, OQ-01)**: prove irrational_exponent_single_valued (currently a `True := trivial` stub) from cpow_def_of_ne_zero and the single-valuedness of Complex.log.\n\n**This entry**: the principal-value formula plus the genuine single-valuedness witness — branch injectivity for irrational α — replacing the placeholder.",
+    "text": "A 112-line, fully verified file (0 sorries, 0 axioms, no native_decide) importing only Mathlib. principal_value gives the single value via cpow_def_of_ne_zero + log_exp; exp_two_pi_ne_one_of_irrational and branch_injective give the aperiodicity/injectivity that is the true single-valuedness content; irrational_exponent_single_valued bundles them (the honest replacement for the stub); exp_two_pi_eq_one_iff records the orbit-never-returns corollary.",
+    "proofStrategy": "principal_value mirrors the De Moivre derivation: cpow_def_of_ne_zero rewrites the power as exp(α·log(e^{iθ})), and Complex.log_exp (valid since the imaginary part θ lies in (-π, π]) gives log(e^{iθ}) = iθ; congr + push_cast + ring finish. exp_two_pi_ne_one_of_irrational assumes e^{2πiαn} = 1, applies Complex.exp_eq_one_iff to get 2παn·I = k·(2π·I), cancels I and the real factor 2π (via mul_right_cancel₀, exact_mod_cast, and linear_combination) to reach n·α = k, then derives a contradiction: Irrational.intCast_mul makes n·α irrational (n ≠ 0) while k is an integer (Int.not_irrational). branch_injective reduces e^{2πiαj} = e^{2πiαk} to e^{2πiα(j−k)} = 1 (exp_eq_exp_iff_exp_sub_eq_one + a push_cast/ring identity) and applies the previous theorem. The bundle and the iff are immediate.",
+    "keyInsights": [
+      "The principal value is single by construction (cpow is a function); the open question's 'almost definitional' part is principal_value, one cpow_def + log_exp rewrite.",
+      "The substantive content is the absence of finite multi-valuedness: for irrational α the branch shifts e^{2πiαk} never coincide, because αn = m ⟹ n = 0.",
+      "This is the exact contrast with the rational p/q case: there the orbit cycles with period q (giving q values); for irrational α the orbit is a free infinite family.",
+      "Irrationality enters through Irrational.intCast_mul: n·α stays irrational for n ≠ 0, so it can never equal an integer — the arithmetic heart of aperiodicity.",
+      "A `True := trivial` placeholder asserting a real mathematical claim is not a proof; replacing it with the genuine statement and a machine-checked proof is the point of the open question."
+    ]
+  },
+  "sections": [
+    {
+      "id": "principal",
+      "title": "The Single Principal Value",
+      "startLine": 37,
+      "endLine": 48,
+      "summary": "principal_value: (e^{iθ})^α = e^{iαθ} for θ ∈ (-π,π], via cpow_def_of_ne_zero and Complex.log_exp.",
+      "mathContext": "The 'almost definitional' part the open question identifies."
+    },
+    {
+      "id": "aperiodic",
+      "title": "The Orbit Never Returns",
+      "startLine": 50,
+      "endLine": 88,
+      "summary": "exp_two_pi_ne_one_of_irrational (e^{2πiαn} ≠ 1 for n ≠ 0) and branch_injective (k ↦ e^{2πiαk} injective) — the real single-valuedness content.",
+      "mathContext": "Irrational α ⟹ no finite cyclic ambiguity, unlike the rational q-fold case."
+    },
+    {
+      "id": "bundle",
+      "title": "The Genuine Statement",
+      "startLine": 90,
+      "endLine": 111,
+      "summary": "irrational_exponent_single_valued (principal value ∧ branch injectivity) replaces the parent's True stub; exp_two_pi_eq_one_iff (orbit free).",
+      "mathContext": "The honest replacement for `theorem … : True := trivial`."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry replaces the parent's placeholder irrational_exponent_single_valued (theorem … : True := trivial) with genuine content: the single principal value (e^{iθ})^α = e^{iαθ} (via cpow_def_of_ne_zero and Complex.log_exp) and the structural reason it is single-valued — for irrational α the branch family k ↦ e^{2πiαk} is injective (the orbit never returns to 1, so there is no q-fold ambiguity as in the rational case). Zero axioms, no native_decide, answering the parent's first open question.",
+    "implications": "The 'single-valuedness for irrational exponents' that the parent only asserted is now a theorem with explicit mathematical content: the multiplicative orbit {e^{2πiαn}} is free (infinite), the precise contrast with the q-periodic rational case. This also demonstrates the discipline of replacing True-stub placeholders with honest statements — a recurring audit need across the gallery.",
+    "openQuestions": [
+      "Strengthen to Weyl equidistribution: the orbit {e^{2πiαn}} is not merely injective but equidistributed on the unit circle (the parent's remaining axiom).",
+      "Formalize the branch-cut/monodromy behaviour of iterated powers (z^{1/2})^{1/2} (the parent's third open question).",
+      "Relate branch injectivity to the cyclic structure of the rational case via the index [orbit : ⟨e^{2πiα}⟩]."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Parent: states irrational_exponent_single_valued as a True := trivial placeholder and asks for the genuine proof. This entry supplies it."
+    },
+    {
+      "targetId": "de-moivre-oq-03",
+      "relationship": "related",
+      "description": "Grandparent: fractional exponents and root extraction; this entry handles the irrational-exponent single-valuedness it points toward."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Real"
+    ],
+    "namespace": "DeMoivreOQ03OQ01OQ01",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "irrational_exponent_single_valued",
+        "type": "core",
+        "description": "Genuine single-valuedness: the principal value formula together with branch injectivity (replaces the parent's True stub).",
+        "leanType": "{θ α : ℝ} → Irrational α → -π < θ → θ ≤ π → ((e^{iθ})^α = e^{iαθ} ∧ Function.Injective (k ↦ e^{2πiαk}))"
+      },
+      {
+        "name": "branch_injective",
+        "type": "key",
+        "description": "For irrational α, k ↦ e^{2πiαk} is injective — no finite cyclic ambiguity.",
+        "leanType": "{α : ℝ} → Irrational α → Function.Injective (fun k : ℤ => Complex.exp (↑(2*π*α*k) * Complex.I))"
+      },
+      {
+        "name": "exp_two_pi_ne_one_of_irrational",
+        "type": "key",
+        "description": "For irrational α and n ≠ 0, e^{2πiαn} ≠ 1 — the orbit never returns.",
+        "leanType": "{α : ℝ} → Irrational α → {n : ℤ} → n ≠ 0 → Complex.exp (↑(2*π*α*n) * Complex.I) ≠ 1"
+      }
+    ],
+    "path": "Proofs/DeMoivreOQ03OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "irrational_exponent_single_valued",
+      "type": "core",
+      "description": "The genuine single-valuedness statement, replacing the parent's True := trivial placeholder.",
+      "leanType": "{θ α : ℝ} → Irrational α → -π < θ → θ ≤ π → ((e^{iθ})^α = e^{iαθ} ∧ Function.Injective (k ↦ e^{2πiαk}))"
+    },
+    {
+      "name": "branch_injective",
+      "type": "key",
+      "description": "The branch family k ↦ e^{2πiαk} is injective for irrational α.",
+      "leanType": "{α : ℝ} → Irrational α → Function.Injective (fun k : ℤ => Complex.exp (↑(2*π*α*k) * Complex.I))"
+    },
+    {
+      "name": "exp_two_pi_eq_one_iff",
+      "type": "supporting",
+      "description": "e^{2πiαn} = 1 ↔ n = 0 — the orbit is a free infinite family.",
+      "leanType": "{α : ℝ} → Irrational α → (n : ℤ) → (Complex.exp (↑(2*π*α*n) * Complex.I) = 1 ↔ n = 0)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "de Moivre, Abraham",
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "year": "1730",
+      "venue": "London",
+      "note": "De Moivre's formula for powers of complex numbers"
+    },
+    {
+      "authors": "Ahlfors, Lars",
+      "title": "Complex Analysis",
+      "year": "1979",
+      "venue": "McGraw-Hill, 3rd ed.",
+      "note": "Principal branch of the complex logarithm and complex powers"
+    }
+  ],
+  "sorries": 0
+}

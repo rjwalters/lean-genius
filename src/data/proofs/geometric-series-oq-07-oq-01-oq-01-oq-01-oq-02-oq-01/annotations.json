@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 4, "endLine": 47 },
+    "type": "context",
+    "title": "Connecting Eulerian Numbers to Honest Permutations",
+    "content": "The parent proved the closed form A(n,k) = ∑(−1)ⁱC(n+1,i)(k+1−i)ⁿ = ⟨n,k⟩ for the combinatorial Eulerian numbers, and asked (in its open question) to show that A(n,k) counts the permutations of {1,…,n} with exactly k descents. Siblings settled nonnegativity, row palindromy, and the descent moments analytically — but none of them defined the descent statistic on actual permutations. Mathlib has no permutation descent statistic (only Coxeter-group descents), so it must be built from scratch. This entry takes the first concrete step: it defines descentCount σ and proves the k = 0 base rung of the bijection — descent-free permutations are exactly the identity, counted by ⟨n+1,0⟩ = 1. This is the first place in the gallery where the abstract Eulerian number is matched against a genuine cardinality of a descent class. Columns k ≥ 1 (the full bijection via the insertion recurrence) remain open.",
+    "mathContext": "$\\langle n,k\\rangle = \\#\\{\\sigma \\in S_n : \\mathrm{des}(\\sigma) = k\\};$ this entry proves the $k=0$ rung $\\langle n{+}1,0\\rangle = 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Eulerian numbers",
+      "permutation descents",
+      "Eulerian triangle",
+      "combinatorial bijection"
+    ],
+    "prerequisites": [
+      "the parent Eulerian closed form",
+      "permutations Equiv.Perm (Fin n)"
+    ]
+  },
+  {
+    "id": "ann-strictmono",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 53, "endLine": 73 },
+    "type": "technique",
+    "title": "A Strictly Monotone Permutation Is the Identity",
+    "content": "perm_eq_one_of_strictMono: a strictly monotone self-equivalence of Fin n must be the identity. The argument promotes σ to an order isomorphism: σ is monotone by hypothesis, and its inverse is monotone too (a short by_contra using strict monotonicity), so σ.toOrderIso gives an element of Fin n ≃o Fin n. That type is a subsingleton — a finite linear order has exactly one order automorphism, the identity — so Subsingleton.elim forces e = OrderIso.refl, hence σ i = i for all i. This is the structural lemma that pins down the unique descent-free permutation.",
+    "mathContext": "$\\sigma \\in \\mathrm{Perm}(\\mathrm{Fin}\\,n) \\text{ strictly monotone} \\Rightarrow \\sigma = \\mathrm{id},$ since $\\mathrm{Fin}\\,n \\simeq_o \\mathrm{Fin}\\,n$ is a subsingleton.",
+    "significance": "key",
+    "relatedConcepts": [
+      "order isomorphism",
+      "subsingleton",
+      "strict monotonicity",
+      "Equiv.toOrderIso"
+    ],
+    "prerequisites": [
+      "order isomorphisms on finite linear orders",
+      "monotone equivalences"
+    ]
+  },
+  {
+    "id": "ann-descentcount",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 75, "endLine": 81 },
+    "type": "definition",
+    "title": "The Descent Statistic",
+    "content": "descentCount σ is defined as the number of positions i : Fin n where σ falls, i.e. σ(i.succ) < σ(i.castSucc) — the cardinality of the filter of descent positions among the n adjacent pairs of Fin (n+1). This is the permutation descent statistic des(σ), built directly since Mathlib lacks it. For n = 0 there are no adjacent pairs, so every permutation of Fin 1 is vacuously descent-free.",
+    "mathContext": "$\\mathrm{descentCount}\\,\\sigma = \\#\\{\\,i : \\sigma(i{+}1) < \\sigma(i)\\,\\}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "descent statistic",
+      "Finset.filter cardinality",
+      "Fin.succ / Fin.castSucc adjacency"
+    ],
+    "prerequisites": [
+      "permutations of Fin (n+1)",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "ann-descentfree-iff",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 83, "endLine": 113 },
+    "type": "insight",
+    "title": "Descent-Free ⟺ Identity",
+    "content": "descentCount_eq_zero_iff: a permutation of Fin (n+1) has zero descents exactly when it is the identity. Forward: zero descents means the descent filter is empty, so σ(i.castSucc) is never strictly above σ(i.succ); the strict inequality σ(i.castSucc) < σ(i.succ) follows by trichotomy — equality is impossible by injectivity (since castSucc < succ), and the reverse strict inequality is exactly the excluded descent. Strict monotonicity on adjacent pairs (Fin.strictMono_iff_lt_succ) then triggers perm_eq_one_of_strictMono, forcing σ = 1. Converse: the identity sends i.castSucc < i.succ, so it never descends and the descent filter is empty.",
+    "mathContext": "$\\mathrm{descentCount}\\,\\sigma = 0 \\iff \\sigma = 1$ (the unique increasing arrangement).",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity of permutations",
+      "trichotomy",
+      "Fin.strictMono_iff_lt_succ",
+      "monovariant on adjacent pairs"
+    ],
+    "prerequisites": [
+      "the strictly-monotone-is-identity lemma",
+      "the descent statistic"
+    ]
+  },
+  {
+    "id": "ann-card-descentfree",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 115, "endLine": 125 },
+    "type": "insight",
+    "title": "The Descent-Free Base Rung ⟨n+1,0⟩ = 1",
+    "content": "card_descentFree: the descent-free permutations of Fin (n+1) number exactly the Eulerian number ⟨n+1,0⟩ = 1. Using eulerian_succ_zero (the left border of the Eulerian triangle is 1) and Finset.card_eq_one, the goal reduces to exhibiting a unique element of the descent-free class — which descentCount_eq_zero_iff identifies as the identity. This is the k = 0 case of the open claim |{σ : descentCount σ = k}| = ⟨n+1,k⟩, the first rung where the abstract Eulerian number is matched against an actual descent-class cardinality.",
+    "mathContext": "$\\#\\{\\sigma : \\mathrm{descentCount}\\,\\sigma = 0\\} = \\langle n{+}1, 0\\rangle = 1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eulerian triangle border",
+      "Finset.card_eq_one",
+      "eulerian_succ_zero",
+      "descent class"
+    ],
+    "prerequisites": [
+      "descent-free ⟺ identity",
+      "the Eulerian number ⟨n+1,0⟩"
+    ]
+  }
+]

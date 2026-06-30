@@ -17,7 +17,11 @@
       "Nat subtraction",
       "complement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Permutation Support",
+      "Fixed Points",
+      "Natural Number Subtraction"
+    ]
   },
   {
     "id": "ann-support-invariance",
@@ -61,7 +65,11 @@
       "derangements",
       "bijection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Type Equivalences",
+      "subtypePerm and ofSubtype",
+      "Derangements"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -82,7 +90,11 @@
       "binomial coefficient",
       "numDerangements"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset biUnion",
+      "Binomial Coefficients",
+      "Derangement Numbers"
+    ]
   },
   {
     "id": "ann-special-cases",
@@ -101,7 +113,11 @@
       "identity permutation",
       "card_support_ne_one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Identity Permutation",
+      "Permutation Support Cardinality",
+      "Derangements"
+    ]
   },
   {
     "id": "ann-sum-factorial",
@@ -121,7 +137,11 @@
       "Fintype.card_perm",
       "factorial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Partition",
+      "Finset.card_biUnion",
+      "Factorial of Permutations"
+    ]
   },
   {
     "id": "ann-native-decide",
@@ -140,6 +160,10 @@
       "derangement numbers",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide Tactic",
+      "Derangement Numbers",
+      "Decidable Propositions"
+    ]
   }
 ]

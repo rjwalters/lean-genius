@@ -187,17 +187,25 @@
     },
     {
       "id": "ford-distribution",
-      "title": "Ford's Distribution Function $H(x,y,z)$",
-      "summary": "Defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ and the oscillation interpretation connecting 'at least one' to 'exactly one' via inclusion-exclusion",
-      "startLine": 212,
+      "title": "Part VII: Related Results and Ford's Distribution Function",
+      "summary": "Connects Erdős Problem #692 to related divisor-distribution problems (notably Erdős Problem #446), then defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ — Ford's function $H(x,y,z)$ — whose oscillation links 'at least one divisor in $(n,m)$' to 'exactly one' via inclusion-exclusion",
+      "startLine": 201,
       "endLine": 219,
       "mathContext": "Ford: $\\\\Phi(x,y,z) = \\\\#\\\\{n \\\\leq x : \\\\exists d \\\\mid n,; y < d \\\\leq z\\\\}$. The distribution of divisors in intervals is a rich and well-studied topic."
     },
     {
+      "id": "physical-interpretation",
+      "title": "Part VIII: Physical Interpretation",
+      "summary": "Explains in commentary (docstring at lines 221–236) why unimodality of $m \\mapsto \\delta_1(n,m)$ fails: as $m$ grows, more divisors become candidates for the interval $(n,m)$ (raising $\\delta_1$) but integers also become more likely to have multiple divisors there (lowering $\\delta_1$); these competing effects produce oscillations rather than a single peak. No declaration is introduced — this section is exposition.",
+      "startLine": 221,
+      "endLine": 236,
+      "mathContext": "The 'exactly one divisor' density $\\\\delta_1$ is non-monotone because adding interval width both admits new divisors and converts single-divisor integers into multiple-divisor ones; the balance shifts irregularly, the mechanism behind Cambie's superpolynomially many local maxima."
+    },
+    {
       "id": "main-results",
       "title": "Main Summary Theorems",
-      "summary": "`erdos_692` combines the upper bound with Cambie's disproof via `constructor`; `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ resolving a 39-year-old problem",
-      "startLine": 263,
+      "summary": "Part IX gathers the resolution of Erdős Problem #692: a summary docstring (lines 238–262) recaps the DISPROVED status, then `erdos_692` combines the upper bound with Cambie's disproof via `constructor`, and `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ — resolving a 39-year-old problem",
+      "startLine": 238,
       "endLine": 279,
       "mathContext": "DISPROVED (Cambie 2025). The density $\\\\delta_1(n,m)$ oscillates with super-polynomially many local maxima. Combined with Erdos upper bound $\\\\delta_1 < 1$."
     }

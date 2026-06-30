@@ -22,7 +22,11 @@
       "counterexample",
       "erdos-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "three-term arithmetic progressions",
+      "AP-free sets",
+      "finite unions of structured sets"
+    ]
   },
   {
     "id": "ann-847-threeap",
@@ -45,7 +49,10 @@
       "definition",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions",
+      "the common difference d > 0"
+    ]
   },
   {
     "id": "ann-847-apfree",
@@ -69,7 +76,10 @@
       "density",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "three-term arithmetic progressions",
+      "sets containing no 3-AP"
+    ]
   },
   {
     "id": "ann-847-apfree-alt",
@@ -92,7 +102,10 @@
       "equivalent-formulations",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the midpoint condition 2y = x + z",
+      "ordered triples x < y < z"
+    ]
   },
   {
     "id": "ann-847-enr",
@@ -116,7 +129,11 @@
       "uniform-bounds",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AP-free subsets",
+      "relative size ε·|B|",
+      "the ENR (every-finite-subset) condition"
+    ]
   },
   {
     "id": "ann-847-finunion",
@@ -140,7 +157,10 @@
       "partition",
       "definition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AP-free sets",
+      "partition into finitely many parts"
+    ]
   },
   {
     "id": "ann-847-conjecture",
@@ -164,7 +184,10 @@
       "additive-combinatorics",
       "erdos-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ENR property",
+      "finite unions of AP-free sets"
+    ]
   },
   {
     "id": "ann-847-false",
@@ -188,7 +211,11 @@
       "additive-combinatorics",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ENR conjecture",
+      "counterexample constructions",
+      "disproof of a conjecture"
+    ]
   },
   {
     "id": "ann-847-szemeredi",
@@ -212,7 +239,11 @@
       "ramsey-theory",
       "foundational-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "density of subsets of [1,N]",
+      "k-term arithmetic progressions",
+      "Szemerédi's theorem"
+    ]
   },
   {
     "id": "ann-847-density",
@@ -235,7 +266,11 @@
       "asymptotics",
       "szemeredi-theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AP-free subsets of [1,N]",
+      "natural density tending to 0",
+      "o(N) growth"
+    ]
   },
   {
     "id": "ann-847-insight",
@@ -259,7 +294,10 @@
       "uniformity",
       "key-insight"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ENR condition (only SOME large AP-free subset)",
+      "why local decompositions need not glue globally"
+    ]
   },
   {
     "id": "ann-847-implication",
@@ -283,7 +321,11 @@
       "partition",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite unions of k AP-free sets",
+      "partitioning a finite subset",
+      "the parameter ε = 1/k"
+    ]
   },
   {
     "id": "ann-847-related",
@@ -306,7 +348,10 @@
       "cross-references",
       "arithmetic-progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AP-free sets",
+      "Erdős problems #774 and #846"
+    ]
   },
   {
     "id": "ann-847-roth",
@@ -330,7 +375,11 @@
       "number-theory",
       "foundational-result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-term arithmetic progressions",
+      "density bound N/(log N)^c",
+      "Roth's 1953 theorem"
+    ]
   },
   {
     "id": "ann-847-kelley-meka",
@@ -354,7 +403,11 @@
       "ap-free-sets",
       "analytic-number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "AP-free subsets of [1,N]",
+      "the bound N·exp(−c(log N)^{1/12})",
+      "the Kelley–Meka 2023 breakthrough"
+    ]
   },
   {
     "id": "ann-847-main",
@@ -378,6 +431,10 @@
       "counterexample",
       "erdos-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ENR conjecture",
+      "the explicit infinite counterexample",
+      "disproof of the conjecture"
+    ]
   }
 ]

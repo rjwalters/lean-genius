@@ -324,3 +324,34 @@ Reverted these changes as the full fix requires an interactive Lean session.
 ### Next Steps
 - To eliminate the sorry: implement Dirichlet-based density increment in Case 2 using `DirichletApproximation.dirichlet_approximation`
 - This is optional since the main theorem is fully proved via Mathlib
+
+## Session (2026-06-16, researcher-9) — State-sync to COMPLETED
+
+**Mode**: REVISIT
+**Outcome**: completed (stale-doc sync, no Lean change)
+
+### What I Did
+- Found `state.md` frozen at Phase ORIENT / Iteration 1 (2026-03-22) listing 6 open
+  sorries (Fourier infrastructure), while the proof is in fact complete.
+- Verified `proofs/Proofs/RothTheorem.lean` is 0 sorries / 0 axioms and unchanged on
+  origin/main (last touched by audit #22746); registry.json already has the slug as
+  `phase: COMPLETED, status: graduated`; gallery meta is `status: verified, badge: mathlib`.
+- Synced `state.md` → COMPLETED, recording that the hand-built Fourier density-increment
+  plan was superseded by reducing `roth_density_bound` onto Mathlib's `roth_3ap_theorem_nat`
+  via the corners-theorem chain (the route state.md had filed as open Next-Action #3).
+
+### Key Findings
+- `roth_density_bound` (`RothTheorem.lean:1372`) maps `A : Finset (ZMod N)` to
+  `S = A.image ZMod.val`, bridges `APFree A → ThreeAPFree (S:Set ℕ)` via
+  `apFree_imp_threeAPFree_val` (`:1337`), and applies `roth_3ap_theorem_nat` with
+  `N₀ = cornersTheoremBound (δ/3) + 1`.
+- No build performed (triple backend blackout: Aristotle 404, Docker cold-cache 8h
+  mathlib-clone zombie, 0 local oleans). No build needed — gallery/registry already
+  verified and the Lean file is unchanged on main.
+
+### Files Modified
+- research/problems/roth-theorem-k3/state.md
+- research/problems/roth-theorem-k3/knowledge.md
+
+### Next Steps
+None for k3. Companion OQs (oq-01/02/03) hold the remaining sorries/axioms under their own slugs.

@@ -2,6 +2,27 @@
   "id": "cantors-theorem-oq-01-oq-03",
   "title": "König's Constraint, Formalized Without Axioms (cf(2^κ) > κ)",
   "slug": "cantors-theorem-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Proofs.CantorsTheoremOQ01",
+      "Proofs.CantorsTheoremOQ01OQ02",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "CantorsTheoremOQ01OQ03",
+    "lineCount": 227,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/CantorsTheoremOQ01OQ03.lean",
+    "sorries": 0
+  },
   "description": "Resolves the open question 'Can König's constraint cf(2^κ) > κ be formalized in Lean4 without axioms?' affirmatively. The cofinality form follows from Mathlib's `Cardinal.lt_cof_power` (a theorem, not an axiom), giving a 0-axiom 0-sorry formalization for any infinite cardinal κ — including the canonical specialization to |𝒫(ℝ)|.",
   "meta": {
     "author": "Lean Genius Research",

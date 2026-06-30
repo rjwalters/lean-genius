@@ -107,7 +107,7 @@
     },
     "type": "concept",
     "title": "Wirtinger's Inequality and SmoothClosedCurve Infrastructure",
-    "content": "Part IV proves Parseval's identity (parseval_periodic_real, via Aristotle), states fourierCoeffOn_deriv_periodic (IBP, 1 sorry), and proves the Fourier decomposition theorem and Wirtinger's inequality. SmoothClosedCurve structure has fields x, y : ℝ → ℝ (each smooth 2π-periodic), with circumference = ∫₀²π √(x'² + y'²) dt and area = (1/2)|∫₀²π (xy' - yx') dt| (Green's theorem). wirtinger_inequality is a theorem: for smooth mean-zero periodic f, ∫f² ≤ ∫(f')², proved from Fourier decomposition via hasSum_le. circleGamma provides the circle as SmoothClosedCurve with verified circumference 2πr and area πr².",
+    "content": "Part IV proves Parseval's identity (parseval_periodic_real, via Aristotle), proves fourierCoeffOn_deriv_periodic (IBP, fully proved — converted from axiom to theorem), and proves the Fourier decomposition theorem and Wirtinger's inequality. SmoothClosedCurve structure has fields x, y : ℝ → ℝ (each smooth 2π-periodic), with circumference = ∫₀²π √(x'² + y'²) dt and area = (1/2)|∫₀²π (xy' - yx') dt| (Green's theorem). wirtinger_inequality is a theorem: for smooth mean-zero periodic f, ∫f² ≤ ∫(f')², proved from Fourier decomposition via hasSum_le. circleGamma provides the circle as SmoothClosedCurve with verified circumference 2πr and area πr².",
     "mathContext": "**Parseval** (proved): $\\int_0^{2\\pi} f^2 = 2\\pi \\sum \\|\\hat{c}_n\\|^2$. **Wirtinger** (proved): $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ for mean-zero periodic $f$. **Fourier proof**: $\\int f^2 = \\sum c_n^2$ and $\\int(f')^2 = \\sum n^2 c_n^2 \\geq \\int f^2$. **Green's theorem area**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(x(t)y'(t) - y(t)x'(t))\\,dt|$.",
     "significance": "key",
     "relatedConcepts": [
@@ -134,7 +134,7 @@
     },
     "type": "insight",
     "title": "Smooth Curve Inequality, Equality Characterization, and Algebraic Corollaries",
-    "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — NOW FULLY PROVED via mean subtraction (zero mean, preserves C and A), reparametrization to constant speed (exists_arclength_reparam, 1 sorry), Wirtinger sum-of-squares bound, integral Cauchy-Schwarz, area bound, and the arithmetic kernel. Part VI: equality characterization — equality_implies_circle proved algebraically (set r=C/(2π)). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance, circle maximizes area.",
+    "content": "Parts V-VII build on Wirtinger. Part V: isoperimetric_inequality_smooth — NOW FULLY PROVED via mean subtraction (zero mean, preserves C and A), reparametrization to constant speed (exists_arclength_reparam, fully proved), Wirtinger sum-of-squares bound, integral Cauchy-Schwarz, area bound, and the arithmetic kernel. Part VI: equality characterization — equality_implies_circle proved algebraically (set r=C/(2π)). Part VII: algebraic corollaries from 4πA ≤ C² — bounds on area from perimeter, scale invariance, circle maximizes area.",
     "mathContext": "**Main theorem** `isoperimetric_inequality_smooth` (proved): $4\\pi A \\leq C^2$ for any SmoothClosedCurve. **Proof**: reparametrize to constant speed + zero mean, apply Wirtinger bounds, close with arithmetic kernel. **Equality**: if $4\\pi A = C^2$ then curve is a circle ($r = C/(2\\pi)$). **Corollary**: $A \\leq C^2/(4\\pi)$ with equality iff circle.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -159,7 +159,7 @@
     },
     "type": "concept",
     "title": "Arithmetic Kernel and 2D Cauchy-Schwarz: Fully Proved",
-    "content": "Part VIII proves two key algebraic ingredients of the Hurwitz isoperimetric proof. cross_product_sq_le establishes the 2D Cauchy-Schwarz inequality |xv-yu|² ≤ (x²+y²)(u²+v²) by a one-line nlinarith proof: the squared area of a parallelogram is at most the product of squared norms. isoperimetric_from_wirtinger_bounds is the arithmetic kernel: given the Wirtinger bounds (Sxy ≤ 2πc², S² ≤ 2πSxy, 2A ≤ cS), it proves 4πA ≤ L² via a fully explicit calculation chain. Together, these reduce the remaining sorry to integral-form Wirtinger bounds + Green's theorem.",
+    "content": "Part VIII proves two key algebraic ingredients of the Hurwitz isoperimetric proof. cross_product_sq_le establishes the 2D Cauchy-Schwarz inequality |xv-yu|² ≤ (x²+y²)(u²+v²) by a one-line nlinarith proof: the squared area of a parallelogram is at most the product of squared norms. isoperimetric_from_wirtinger_bounds is the arithmetic kernel: given the Wirtinger bounds (Sxy ≤ 2πc², S² ≤ 2πSxy, 2A ≤ cS), it proves 4πA ≤ L² via a fully explicit calculation chain. Together with the integral-form Wirtinger bounds and Green's theorem, these complete the isoperimetric proof — no sorry remains (the entry is fully machine-checked, 0 sorries, 0 axioms).",
     "mathContext": "**2D Cauchy-Schwarz**: $(xv-yu)^2 \\leq (x^2+y^2)(u^2+v^2)$. Proof: nlinarith. **Arithmetic kernel**: chain $S^2 \\leq 2\\pi S_{xy} \\leq 2\\pi(2\\pi c^2) = (2\\pi c)^2$, so $S \\leq 2\\pi c$. Then $2A \\leq cS \\leq 2\\pi c^2$, so $A \\leq \\pi c^2$, giving $4\\pi A \\leq 4\\pi^2 c^2 = (2\\pi c)^2 = L^2$. **Key**: constant-speed $c$ means $\\int(x'^2+y'^2) = 2\\pi c^2$ exactly.",
     "significance": "key",
     "relatedConcepts": [

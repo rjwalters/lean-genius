@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ03.lean",
     "tags": [
       "information-theory",
@@ -68,7 +68,7 @@
   "overview": {
     "historicalContext": "Fano's inequality was proved by Robert Fano in 1952 and is one of the most important tools in information theory. It provides a lower bound on the probability of error for any estimator of a random variable X given observations Y. The inequality states that the conditional entropy H(X|Y) is at most h(P_e) + P_e·log(|X|-1), where P_e is the error probability and h is binary entropy.\n\nFano's inequality is the key ingredient in the converse direction of Shannon's channel coding theorem: it shows that any reliable communication at rate above channel capacity is impossible. Without it, we could only prove achievability (good codes exist at rate < C) but not the converse (no codes exist at rate > C).\n\nThe inequality has been refined and generalized many times since 1952, and appears in virtually every proof of impossibility results in information theory and statistical inference.",
     "problemStatement": "For a joint distribution $P_{XY}$ on finite alphabets $\\mathcal{X} \\times \\mathcal{Y}$ with $|\\mathcal{X}| \\geq 2$, define the error probability:\n$$P_e = 1 - \\sum_{y} \\frac{\\sum_x P(x,y)^2}{P(Y=y)}$$\n\nProve **Fano's Inequality**:\n$$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}| - 1)$$\n\nwhere $h(p) = -p\\log p - (1-p)\\log(1-p)$ is the binary entropy function.",
-    "proofStrategy": "The proof proceeds in four conceptual steps:\n\n**Step 1: Algebraic Foundation (Proved)**\nFor any probability distribution $q$ on a finite set, $\\sum_x q(x)^2 \\leq \\max_x q(x)$. Proof: since $q(x) \\leq \\max q$, we have $q(x)^2 \\leq (\\max q) \\cdot q(x)$, and summing gives $\\sum q^2 \\leq (\\max q) \\cdot \\sum q = \\max q$.\n\n**Step 2: Formula P_e ≥ MAP P_e (Proved)**\nThe gallery's formula P_e is an upper bound on the MAP (minimum) error probability. The per-slice inequality from Step 1 (after dividing by $P(Y=y)$) shows $\\sum_x P(x,y)^2/P(Y=y) \\leq \\max_x P(x,y)$, and summing over $y$ relates the two error probability definitions.\n\n**Step 3: Per-element Fano via Gibbs (Sorry)**\nFor a single distribution $q$ with $|\\text{supp}| \\geq 2$, apply Gibbs inequality with bimodal reference distribution $Q$: put mass $p^* = \\max q$ on the mode and distribute $(1-p^*)/(n-1)$ uniformly on the remaining $n-1$ elements. The resulting bound is exactly $h(1-p^*) + (1-p^*)\\log(n-1)$.\n\n**Step 4: Aggregation via Jensen (Sorry)**\nDecompose $H(X|Y) = \\sum_y P(Y=y) \\cdot H(X|Y=y)$, apply Step 3 slice-by-slice, then use Jensen's inequality for the concave function $h$ to combine the per-slice bounds into a bound on the aggregate error $P_e^{\\text{MAP}}$.\n\n**Step 5: Monotonicity (Sorry)**\nSince $P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}}$ (Step 2), and $f(p) = h(p) + p\\log(n-1)$ is non-decreasing on $[0,(n-1)/n]$, the bound at $P_e^{\\text{MAP}}$ extends to $P_e^{\\text{formula}}$.",
+    "proofStrategy": "The proof proceeds in five conceptual steps:\n\n**Step 1: Algebraic Foundation (Proved)**\nFor any probability distribution $q$ on a finite set, $\\sum_x q(x)^2 \\leq \\max_x q(x)$. Proof: since $q(x) \\leq \\max q$, we have $q(x)^2 \\leq (\\max q) \\cdot q(x)$, and summing gives $\\sum q^2 \\leq (\\max q) \\cdot \\sum q = \\max q$.\n\n**Step 2: Formula P_e ≥ MAP P_e (Proved)**\nThe gallery's formula P_e is an upper bound on the MAP (minimum) error probability. The per-slice inequality from Step 1 (after dividing by $P(Y=y)$) shows $\\sum_x P(x,y)^2/P(Y=y) \\leq \\max_x P(x,y)$, and summing over $y$ relates the two error probability definitions.\n\n**Step 3: Per-element Fano via Gibbs (Proved)**\nFor a single distribution $q$ with $|\\text{supp}| \\geq 2$, apply Gibbs inequality with bimodal reference distribution $Q$: put mass $p^* = \\max q$ on the mode and distribute $(1-p^*)/(n-1)$ uniformly on the remaining $n-1$ elements. The resulting bound is exactly $h(1-p^*) + (1-p^*)\\log(n-1)$.\n\n**Step 4: Aggregation via Jensen (Proved)**\nDecompose $H(X|Y) = \\sum_y P(Y=y) \\cdot H(X|Y=y)$, apply Step 3 slice-by-slice, then use Jensen's inequality for the concave function $h$ to combine the per-slice bounds into a bound on the aggregate error $P_e^{\\text{MAP}}$.\n\n**Step 5: Monotonicity (Proved)**\nSince $P_e^{\\text{MAP}} \\leq P_e^{\\text{formula}}$ (Step 2), and $f(p) = h(p) + p\\log(n-1)$ is non-decreasing on $[0,(n-1)/n]$, the bound at $P_e^{\\text{MAP}}$ extends to $P_e^{\\text{formula}}$.",
     "keyInsights": [
       "The gallery uses a 'formula P_e' (based on ∑P²/P(Y)) rather than the classical MAP error probability — these differ but satisfy MAP ≤ formula, and monotonicity of h(p)+p·log(c) bridges the gap",
       "The key algebraic move is ∑q² ≤ max(q) for probability distributions — this follows from q(x) ≤ max(q) and is proved completely",
@@ -88,73 +88,89 @@
     {
       "id": "definitions",
       "title": "Information-Theoretic Definitions",
-      "startLine": 36,
-      "endLine": 75,
-      "summary": "Self-contained definitions of Shannon entropy, conditional entropy, and the Gibbs inequality (sorry), independent of the main ShannonEntropy.lean due to a pre-existing build issue.",
+      "startLine": 41,
+      "endLine": 103,
+      "summary": "Self-contained definitions of Shannon entropy and conditional entropy, plus a fully proved Gibbs inequality (KL divergence non-negativity via log x ≤ x - 1), independent of the main ShannonEntropy.lean due to a pre-existing build issue.",
       "mathContext": "$H(X) = -\\sum_x p(x)\\log p(x)$, $H(X|Y) = -\\sum_{x,y} p(x,y)\\log(p(x,y)/p(y))$"
     },
     {
       "id": "map-error",
       "title": "MAP Error Probability",
-      "startLine": 63,
-      "endLine": 76,
-      "summary": "Defines MAP error probability P_e^{MAP} = 1 - ∑_y max_x P(X=x,Y=y) as 1 minus the sum of maximum probabilities per y-slice.",
+      "startLine": 105,
+      "endLine": 118,
+      "summary": "Defines maxProb (the maximum probability per y-slice) and the MAP error probability P_e^{MAP} = 1 - ∑_y max_x P(X=x,Y=y) as 1 minus the sum of maximum probabilities per y-slice.",
       "mathContext": "$P_e^{\\text{MAP}} = 1 - \\sum_y \\max_x P(X=x,Y=y)$"
     },
     {
       "id": "core-algebra",
       "title": "Core Algebraic Inequality (Proved)",
-      "startLine": 80,
-      "endLine": 102,
-      "summary": "PROVED: For any probability distribution q, ∑q(x)² ≤ max q(x). The proof uses that q(x) ≤ max(q), so q(x)² ≤ max(q)·q(x), and summing gives ∑q² ≤ max(q)·1.",
+      "startLine": 119,
+      "endLine": 138,
+      "summary": "PROVED (sum_sq_le_max): For any probability distribution q, ∑q(x)² ≤ max q(x). The proof uses that q(x) ≤ max(q), so q(x)² ≤ max(q)·q(x), and summing gives ∑q² ≤ max(q)·1.",
       "mathContext": "$\\sum_x q(x)^2 \\leq \\max_x q(x)$ for any probability distribution $q$"
     },
     {
       "id": "slice-bound",
-      "title": "Per-Slice Bound (Proved)",
-      "startLine": 103,
-      "endLine": 121,
-      "summary": "PROVED: For each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y).",
+      "title": "Slice-wise Bound (Proved)",
+      "startLine": 139,
+      "endLine": 182,
+      "summary": "PROVED (slice_sq_le_max): For each y, ∑_x P(x,y)²/P(Y=y) ≤ max_x P(x,y). Follows by applying the core algebraic inequality to the conditional distribution P(X=x|Y=y), handling the degenerate P(Y=y)=0 slice separately.",
       "mathContext": "$\\sum_x \\frac{P(x,y)^2}{P(Y=y)} \\leq \\max_x P(x,y)$ for each $y$"
     },
     {
       "id": "formula-pe-ge-map",
       "title": "Formula P_e Bounds MAP P_e (Proved)",
-      "startLine": 122,
-      "endLine": 139,
-      "summary": "PROVED: P_e^{MAP} ≤ P_e^{formula}, where the formula uses ∑_y ∑_x P²/P(Y). This means the gallery's formula P_e is a conservative upper bound on the actual MAP error probability.",
+      "startLine": 183,
+      "endLine": 194,
+      "summary": "PROVED (formula_pe_ge_map_pe): P_e^{MAP} ≤ P_e^{formula}, where the formula uses ∑_y ∑_x P²/P(Y). This means the gallery's formula P_e is a conservative upper bound on the actual MAP error probability.",
       "mathContext": "$P_e^{\\text{MAP}} \\leq 1 - \\sum_y \\frac{\\sum_x P(x,y)^2}{P(Y=y)} = P_e^{\\text{formula}}$"
     },
     {
       "id": "per-element-fano",
       "title": "Per-Element Fano Bound (Proved)",
-      "startLine": 140,
-      "endLine": 166,
-      "summary": "PROVED: For a single distribution q with |α| ≥ 2, H(q) ≤ h(1-max q) + (1-max q)·log(|α|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode.",
+      "startLine": 195,
+      "endLine": 317,
+      "summary": "PROVED (fano_per_element): For a single distribution q with |α| ≥ 2, H(q) ≤ h(1-max q) + (1-max q)·log(|α|-1). Uses Gibbs inequality with a bimodal reference distribution concentrating p* = max(q) on the mode, with a degenerate (p*=1) case handled separately.",
       "mathContext": "$H(q) \\leq h(1-p^*) + (1-p^*)\\log(n-1)$ where $p^* = \\max_x q(x)$"
     },
     {
       "id": "map-fano-bound",
-      "title": "MAP Fano Bound via Jensen (Proved)",
-      "startLine": 168,
-      "endLine": 191,
-      "summary": "PROVED: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(|X|-1). Aggregates per-slice bounds using Jensen's inequality for the concave binary entropy function h.",
+      "title": "Conditional Entropy Fano Bound — MAP Version (Proved)",
+      "startLine": 318,
+      "endLine": 469,
+      "summary": "PROVED (fano_map_bound): H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP}·log(|X|-1). Decomposes H(X|Y) = ∑_y P(Y=y)·H(X|Y=y), applies the per-element Fano bound per slice, then aggregates with Jensen's inequality for the concave binary entropy function h.",
       "mathContext": "$H(X|Y) \\leq h(P_e^{\\text{MAP}}) + P_e^{\\text{MAP}}\\log(|X|-1)$"
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Cauchy-Schwarz for Sums (Helper, Proved)",
+      "startLine": 470,
+      "endLine": 503,
+      "summary": "PROVED (cauchy_schwarz_sum): (∑ f)² ≤ |α|·∑ f² for any f on a finite type. Proved via non-negative variance: 0 ≤ n·∑(f-mean)² = n·∑f² - (∑f)².",
+      "mathContext": "$\\left(\\sum_x f(x)\\right)^2 \\leq |\\alpha| \\cdot \\sum_x f(x)^2$"
+    },
+    {
+      "id": "per-slice-collision",
+      "title": "Per-Slice Collision Bound (Helper, Proved)",
+      "startLine": 504,
+      "endLine": 531,
+      "summary": "PROVED (per_slice_bound): For non-negative f with |α| = n, ∑ f(x)²/(∑ f) ≥ (∑ f)/n. Follows from Cauchy-Schwarz, (∑f)² ≤ n·∑f², after handling the ∑f = 0 case.",
+      "mathContext": "$\\frac{\\sum_x f(x)}{|\\alpha|} \\leq \\sum_x \\frac{f(x)^2}{\\sum_x f(x)}$"
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity of Fano Bound (Proved)",
-      "startLine": 193,
-      "endLine": 209,
-      "summary": "PROVED: f(p) = h(p) + p·log(c) is non-decreasing on [0, c/(1+c)] for c ≥ 1. Derivative argument: f'(p) = log((1-p)c/p) ≥ 0 iff p ≤ c/(1+c).",
+      "startLine": 532,
+      "endLine": 600,
+      "summary": "PROVED (fano_func_mono): f(p) = h(p) + p·log(c) is non-decreasing on [0, c/(1+c)] for c ≥ 1. Derivative argument via monotoneOn_of_deriv_nonneg: f'(p) = log((1-p)c/p) ≥ 0 iff p ≤ c/(1+c).",
       "mathContext": "$f(p) = h(p) + p\\log c$ is monotone on $[0, c/(1+c)]$, so $p_1 \\leq p_2 \\leq c/(1+c) \\Rightarrow f(p_1) \\leq f(p_2)$"
     },
     {
       "id": "main-theorem",
       "title": "Fano's Inequality (Main Theorem)",
-      "startLine": 211,
-      "endLine": 255,
-      "summary": "Main theorem: H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) for formula P_e. Chains together MAP Fano bound → monotonicity → formula P_e version. Proof structure is complete; remaining sorries are in the supporting lemmas.",
+      "startLine": 601,
+      "endLine": 664,
+      "summary": "Main theorem (fano_theorem): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1) for formula P_e. Chains together MAP Fano bound → monotonicity → formula P_e version. The main file is complete: all supporting lemmas and the main theorem are fully proved with 0 sorries and 0 axioms (the Aristotle companion file holds 4 supporting-lemma sorries, not required by the main theorem).",
       "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$"
     }
   ],

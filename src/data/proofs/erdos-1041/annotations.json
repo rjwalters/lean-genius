@@ -17,7 +17,12 @@
       "path length",
       "Hausdorff measure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "polynomial root theory",
+      "metric space topology",
+      "Hausdorff measure"
+    ]
   },
   {
     "id": "ann-e1041-imports",
@@ -36,7 +41,11 @@
       "topology"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "measure theory basics"
+    ]
   },
   {
     "id": "ann-e1041-sublevelset",
@@ -55,7 +64,11 @@
       "polynomial evaluation",
       "open sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "continuity of functions",
+      "preimages and open sets"
+    ]
   },
   {
     "id": "ann-e1041-length",
@@ -74,7 +87,11 @@
       "arc length",
       "rectifiable curves"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "Hausdorff measure",
+      "rectifiable curves and arc length"
+    ]
   },
   {
     "id": "ann-e1041-component-lemma",
@@ -93,7 +110,12 @@
       "connected components",
       "potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "potential theory",
+      "logarithmic potentials",
+      "point-set topology",
+      "connectedness"
+    ]
   },
   {
     "id": "ann-e1041-conjecture",
@@ -112,7 +134,12 @@
       "path length bound",
       "quantitative topology"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "continuous paths",
+      "Hausdorff measure",
+      "quantitative topology",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-e1041-diameter",
@@ -130,7 +157,11 @@
       "triangle inequality"
     ],
     "mathContext": "See annotation content for formal details of diameter bound",
-    "prerequisites": []
+    "prerequisites": [
+      "metric space topology",
+      "triangle inequality",
+      "complex modulus"
+    ]
   },
   {
     "id": "ann-e1041-quadratic",
@@ -149,7 +180,11 @@
       "quadratic polynomials",
       "Cassini ovals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex polynomials",
+      "Euclidean geometry of line segments",
+      "Cassini ovals"
+    ]
   },
   {
     "id": "ann-e1041-open",
@@ -168,7 +203,11 @@
       "open sets",
       "preimages"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "topology of continuous functions",
+      "preimages and open sets",
+      "polynomial evaluation"
+    ]
   },
   {
     "id": "ann-e1041-roots-in",
@@ -187,7 +226,11 @@
       "containment",
       "polynomial zeros"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial root theory",
+      "complex modulus",
+      "set containment"
+    ]
   },
   {
     "id": "ann-e1041-dist",
@@ -205,6 +248,10 @@
       "norm bounds"
     ],
     "mathContext": "See annotation content for formal details of distance bound in unit disk",
-    "prerequisites": []
+    "prerequisites": [
+      "triangle inequality",
+      "complex modulus",
+      "norm bounds"
+    ]
   }
 ]

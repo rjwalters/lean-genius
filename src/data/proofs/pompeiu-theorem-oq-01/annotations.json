@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 3, "endLine": 26 },
+    "type": "concept",
+    "title": "Pompeiu's Theorem via Complex Coordinates",
+    "content": "For an equilateral triangle $ABC$ and any point $P$ in the plane, the three distances $PA, PB, PC$ themselves satisfy the triangle inequality, so they are the side lengths of a (possibly degenerate) triangle — degenerate exactly when $P$ lies on the circumcircle. Pompeiu (1936) discovered this; the proof here places all four points in $\\mathbb{C}$ and reduces the metric claim to a hypothesis-free polynomial identity plus the norm triangle inequality.",
+    "mathContext": "$PA \\le PB + PC$ (and cyclically), where $A, B, C, P \\in \\mathbb{C}$ and $|A-B| = |B-C| = |C-A|$.",
+    "significance": "key",
+    "relatedConcepts": ["equilateral triangle", "complex coordinates", "triangle inequality", "circumcircle"],
+    "prerequisites": ["complex numbers", "plane geometry"]
+  },
+  {
+    "id": "ann-identity",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 30, "endLine": 35 },
+    "type": "theorem",
+    "title": "The Pompeiu Identity (Hypothesis-Free)",
+    "content": "The algebraic engine: $(p-a)(b-c) + (p-b)(c-a) + (p-c)(a-b) = 0$ for *any* four complex numbers — a pure polynomial identity closed by `ring`, with no geometric hypothesis. This is the same Lagrange-style three-term identity underlying the complex-number proof of Ptolemy's inequality. Geometry enters only later, through the equilateral side-length equality.",
+    "mathContext": "$(p-a)(b-c) + (p-b)(c-a) + (p-c)(a-b) = 0,\\qquad \\forall\\, a,b,c,p \\in \\mathbb{C}.$",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange identity", "polynomial identity", "Ptolemy's inequality", "ring tactic"],
+    "prerequisites": ["complex arithmetic"]
+  },
+  {
+    "id": "ann-core",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 37, "endLine": 65 },
+    "type": "theorem",
+    "title": "Core Inequality: dist p a ≤ dist p b + dist p c",
+    "content": "Isolate the $a$-term as $-(p-b)(c-a) - (p-c)(a-b)$ (via `linear_combination` on the identity), then apply `norm_add_le` to get $|p-a||b-c| \\le |p-b||c-a| + |p-c||a-b|$. The equilateral hypothesis $|a-b| = |b-c| = |c-a|$ rewrites every side length to the common $|b-c|$, which factors out. When that common length is positive it cancels (`le_of_mul_le_mul_right`); when it is $0$ the triangle collapses to a point ($a=b=c$) and the inequality is trivial.",
+    "mathContext": "$|p-a|\\,|b-c| \\le |p-b|\\,|c-a| + |p-c|\\,|a-b| \\ \\xrightarrow{\\ |a-b|=|b-c|=|c-a|\\ }\\ |p-a| \\le |p-b| + |p-c|.$",
+    "significance": "key",
+    "relatedConcepts": ["triangle inequality for norms", "norm_mul", "side-length cancellation", "degenerate case"],
+    "prerequisites": ["complex norm", "multiplicativity of norm"]
+  },
+  {
+    "id": "ann-degenerate",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 50, "endLine": 65 },
+    "type": "warning",
+    "title": "The Zero-Side-Length Edge Case",
+    "content": "Cancelling the common side length requires it to be nonzero, so the proof splits on $\\|b-c\\| = 0$ vs $> 0$. In the degenerate branch $\\|b-c\\| = 0$ forces $b = c$, and the equilateral relation forces $a = b$ too, collapsing the triangle to a single point; the inequality then reduces to $\\|p-c\\| \\le 2\\|p-c\\|$ by `linarith`. Handling this explicitly is what makes the lemma hold for *every* equilateral triangle, including the trivial one.",
+    "mathContext": "$\\|b-c\\| = 0 \\implies a = b = c \\implies \\mathrm{dist}\\,p\\,a \\le 2\\,\\mathrm{dist}\\,p\\,c.$",
+    "significance": "supporting",
+    "relatedConcepts": ["case split", "norm_eq_zero", "degenerate triangle"],
+    "prerequisites": ["norm positivity"]
+  },
+  {
+    "id": "ann-theorem",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "theorem",
+    "title": "Full Theorem by Cyclic Permutation",
+    "content": "All three triangle inequalities follow from the single core lemma by relabeling the vertices cyclically: applying `pompeiu_dist` to $(b,c,a)$ and $(c,a,b)$ — with the equilateral hypotheses permuted accordingly — yields the inequalities centered on $B$ and $C$. The cyclic symmetry of the equilateral configuration is exactly what lets one lemma cover all three cases.",
+    "mathContext": "$PA \\le PB + PC,\\quad PB \\le PC + PA,\\quad PC \\le PA + PB.$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic symmetry", "triangle inequality", "vertex relabeling"],
+    "prerequisites": ["symmetry arguments"]
+  },
+  {
+    "id": "ann-linear-combination",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": { "startLine": 44, "endLine": 49 },
+    "type": "tactic",
+    "title": "Using the Identity as a Certificate: linear_combination",
+    "content": "The bridge from the hypothesis-free identity to the inequality. `linear_combination pompeiu_identity a b c p` proves the rearranged goal $(p-a)(b-c) = -((p-b)(c-a) + (p-c)(a-b))$ by certifying that goal-minus-(1·identity) reduces to $0 = 0$ under `ring`. This isolates the $a$-term so that the next line can hit it with `norm_add_le`. The pattern — prove a clean polynomial identity once, then `linear_combination` it into whatever local rearrangement a step needs — is the standard Lean idiom for reusing algebraic identities without re-running `ring` on a bespoke expression each time.",
+    "mathContext": "$\\text{goal} - 1\\cdot\\text{identity} \\xrightarrow{\\text{ring}} 0;\\quad (p-a)(b-c) = -\\big((p-b)(c-a) + (p-c)(a-b)\\big).$",
+    "significance": "supporting",
+    "relatedConcepts": ["linear_combination tactic", "polynomial certificate", "ring normalization", "norm_add_le"],
+    "prerequisites": ["Lean tactics", "commutative ring identities"]
+  }
+]

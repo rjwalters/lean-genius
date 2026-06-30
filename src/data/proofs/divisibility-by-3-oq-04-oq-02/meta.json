@@ -2,12 +2,12 @@
   "id": "divisibility-by-3-oq-04-oq-02",
   "title": "Detection Probability for Casting Out Methods",
   "slug": "divisibility-by-3-oq-04-oq-02",
-  "description": "Formalizes the detection probability of casting-out arithmetic checks: casting out with modulus d detects exactly (d-1)/d of all single-digit errors. Proves the core counting result (d-1 of d perturbation magnitudes are detected) both generally and for specific bases. All 22 theorems fully verified with 0 axioms.",
+  "description": "Formalizes the detection probability of casting-out arithmetic checks: casting out with modulus d detects exactly (d-1)/d of all single-digit errors. Proves the core counting result (d-1 of d perturbation magnitudes are detected) both generally and for specific bases. The general counting theorems are axiom-free; the concrete base specializations (nines 8/9, threes 2/3, octal 6/7, hex 14/15) are discharged by native_decide, which relies on the Lean.ofReduceBool axiom.",
   "meta": {
     "author": "Detection probability analysis (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Casting_out_nines",
     "date": "Classical",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "proofRepoPath": "Proofs/DivisibilityBy3OQ04OQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "prerequisites": [
       "modular arithmetic",
@@ -58,7 +58,7 @@
       "casting_out_base_cong: b ≡ 1 (mod b-1) for any base b ≥ 3"
     ],
     "dateAdded": "2026-03-29",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 228,
     "theoremCount": 22,
     "relatedProblems": [
@@ -71,14 +71,14 @@
         "relationship": "Grandparent proof: the digit-sum divisibility rule (Wiedijk #85)"
       }
     ],
-    "assumptions": "0 axioms, 0 sorries. All theorems derived from Mathlib primitives and verified by native_decide for concrete cases.",
+    "assumptions": "0 sorries. The general counting theorems (base_pow_mod_one, detected_count, detection_rate_ratio, nonzero_residues_count) are derived from Mathlib primitives and are axiom-free. The concrete base specializations (nines_detected/nines_rate, threes_detected_full/threes_rate, octal_detected, hex_detected, binary_trivial, etc.) are discharged by native_decide, which trusts the Lean compiler's kernel reduction and so depends on the Lean.ofReduceBool axiom. axiomCount = 1 (Lean.ofReduceBool); no literal axiom declarations.",
     "mathlib_version": "4.26.0",
     "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The detection probability of casting out nines has been understood informally since the method's widespread adoption: if you make a single-digit transcription error, casting out nines catches it unless the error happens to be a multiple of 9. For base 10, the only undetectable single-digit substitution is swapping 0 and 9 (or vice versa), giving a detection rate of 8/9 ≈ 89%. This quantitative analysis generalizes: for any base b and modulus d = b−1, the detection rate is (d−1)/d.\n\nThis formalization makes the counting argument fully rigorous. The key insight is that detection depends only on the perturbation residue mod d (not the digit position), because b^k ≡ 1 (mod d). Among the d possible perturbation magnitudes {1, ..., d}, exactly one (d itself) is divisible by d and escapes detection.",
     "problemStatement": "**Detection Probability:**\n\nFor casting out with modulus $d = b - 1$ in base $b$, a single-digit substitution error with perturbation magnitude $\\delta \\in \\{1, \\ldots, d\\}$ is detected if and only if $d \\nmid \\delta$. Among these $d$ magnitudes, exactly $d - 1$ are detected.\n\n**Detection rate** $= \\frac{d-1}{d}$",
-    "text": "A 228-line formalization proving 22 theorems with 0 axioms and 0 sorries. The proof first establishes position independence: since b^k ≡ 1 (mod d) when b ≡ 1 (mod d), a perturbation δ·b^k at any digit position has the same residue mod d as δ itself. The core counting argument then shows that among perturbation magnitudes {1, ..., d}, exactly one (d itself) is divisible by d, so d−1 are detected. Concrete specializations verify: casting out nines detects 8/9 of errors, threes detects 2/3, sevens (octal) detects 6/7, and fifteens (hex) detects 14/15.",
+    "text": "A 228-line formalization proving 22 theorems with 0 sorries. The general counting theorems are axiom-free; the concrete base specializations are verified by native_decide (which depends on the Lean.ofReduceBool axiom). The proof first establishes position independence: since b^k ≡ 1 (mod d) when b ≡ 1 (mod d), a perturbation δ·b^k at any digit position has the same residue mod d as δ itself. The core counting argument then shows that among perturbation magnitudes {1, ..., d}, exactly one (d itself) is divisible by d, so d−1 are detected. Concrete specializations verify: casting out nines detects 8/9 of errors, threes detects 2/3, sevens (octal) detects 6/7, and fifteens (hex) detects 14/15.",
     "proofStrategy": "Position independence via Nat.pow_mod reduces detection to a divisibility check on the perturbation amount alone. The counting uses Finset.Icc with a filter: the set of multiples of d in {1,...,d} is the singleton {d} (proved by showing any multiple of d in this range must equal d), so the complement has d−1 elements. The detection rate ratio (d−1)×total = detected×d is then immediate arithmetic.",
     "keyInsights": [
       "Detection is position-independent: b^k ≡ 1 (mod d) means the digit position doesn't matter",
@@ -161,7 +161,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Complete formalization of the detection probability for casting-out methods, with 0 axioms and 0 sorries. The core result — exactly (d−1)/d of single-digit errors are detected — is proved both in full generality and verified for all classical specializations.",
+    "summary": "Complete formalization of the detection probability for casting-out methods, with 0 sorries. The general counting theorems are axiom-free; the concrete base specializations are discharged by native_decide (Lean.ofReduceBool axiom). The core result — exactly (d−1)/d of single-digit errors are detected — is proved both in full generality and verified for all classical specializations.",
     "implications": "Answers the open question from the parent proof (OQ-04): the detection probability of casting out nines is exactly 8/9, and more generally (d−1)/d for modulus d = b−1. This provides a formally verified quantitative guarantee on the reliability of one of mathematics' oldest error-checking methods.",
     "openQuestions": [
       "Can the analysis extend to transposition errors (swapping adjacent digits)? Casting out nines fails to detect all transpositions of digits differing by 9.",

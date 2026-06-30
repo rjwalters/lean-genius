@@ -84,47 +84,47 @@
       "id": "hermite-lindemann-theorem",
       "title": "Part II: The Hermite-Lindemann Theorem",
       "startLine": 127,
-      "endLine": 159,
+      "endLine": 156,
       "summary": "Axiomatizes the main theorem: $\\alpha \\neq 0$ algebraic $\\Rightarrow e^\\alpha$ transcendental. Also states the contrapositive: $e^\\alpha$ algebraic $\\Rightarrow \\alpha$ transcendental.",
       "mathContext": "Axiomatizes the main theorem: $\\$\\alpha$ \\neq 0$ algebraic $\\Rightarrow e^\\$\\alpha$$ transcendental. Also states the contrapositive: $e^\\$\\alpha$$ algebraic $\\Rightarrow \\$\\alpha$$ transcendental."
     },
     {
       "id": "lindemann-weierstrass",
       "title": "Part III: The Lindemann-Weierstrass Theorem",
-      "startLine": 160,
-      "endLine": 206,
+      "startLine": 157,
+      "endLine": 186,
       "summary": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials).",
       "mathContext": "Defines `AlgebraicallyIndependent` using `MvPolynomial` and axiomatizes two forms: classical (distinct algebraics $\\Rightarrow$ linearly independent exponentials) and strong ($\\mathbb{Q}$-linearly independent algebraics $\\Rightarrow$ algebraically independent exponentials)."
     },
     {
       "id": "fundamental-corollaries",
       "title": "Part IV: Fundamental Corollaries",
-      "startLine": 207,
-      "endLine": 282,
+      "startLine": 187,
+      "endLine": 271,
       "summary": "Derives transcendence of $e$ (Wiedijk #67), $\\pi$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\alpha}$ for algebraic $\\alpha$.",
       "mathContext": "Derives transcendence of $e$ (Wiedijk #67), $\\$\\pi$$ (Wiedijk #53), $e^n$ for nonzero $n \\in \\mathbb{Z}$ (proved via `hermite_lindemann` + `isAlgebraic_int`), and $e^{n\\$\\alpha$}$ for algebraic $\\$\\alpha$$."
     },
     {
       "id": "applications",
       "title": "Part V: Applications",
-      "startLine": 283,
-      "endLine": 318,
+      "startLine": 272,
+      "endLine": 295,
       "summary": "Axiomatizes $\\sqrt{\\pi}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties.",
       "mathContext": "Axiomatizes $\\sqrt{\\$\\pi$}$ transcendental (impossibility of squaring the circle) and $e$ irrational (non-periodic decimal expansion). Both follow from transcendence via algebraic closure properties."
     },
     {
       "id": "connections",
       "title": "Part VI: Connections to Other Results",
-      "startLine": 319,
-      "endLine": 353,
+      "startLine": 296,
+      "endLine": 330,
       "summary": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental? Describes Schanuel's conjecture.",
       "mathContext": "Documents generalizations: Gelfond-Schneider (1934, $\\alpha^\\beta$ transcendental, Hilbert #7), Baker's theorem (1966, linear forms in logarithms). Lists open problems: is $e + \\pi$ transcendental?"
     },
     {
       "id": "proof-techniques",
       "title": "Part VII: Proof Techniques (Pedagogical)",
-      "startLine": 354,
-      "endLine": 374,
+      "startLine": 331,
+      "endLine": 373,
       "summary": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction.",
       "mathContext": "Detailed pedagogical exposition of Hermite's auxiliary polynomial method: construction of $f(x) = x^{p-1}\\prod(x-k)^p / (p-1)!$, the sum $F(x) = \\sum f^{(k)}(x)$, integration by parts yielding $I_k = e^k F(0) - F(k)$, and the integer-vs-small contradiction."
     }

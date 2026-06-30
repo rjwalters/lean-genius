@@ -101,7 +101,7 @@
       "startLine": 90,
       "endLine": 102
     },
-    "type": "definition",
+    "type": "inductive",
     "title": "Decomposition Pieces and Their Edge Sets",
     "content": "**DecompPiece G** is an inductive type: either a `cycle` or an `edge`. The function **edgesOfPiece** extracts the edge set of each piece — for a cycle, the set of edges along the cyclic vertex sequence; for an edge, the singleton $\\{\\{u, v\\}\\}$.",
     "mathContext": "Edges are represented as elements of `Sym2 V` (unordered pairs), which correctly models undirected edges. The edge set of a $k$-cycle has exactly $k$ edges, while a single-edge piece contributes 1 edge. The total edge count across all pieces in a valid decomposition equals $|E(G)|$, so the decomposition number satisfies $\\text{dec}(G) \\leq |E(G)|$ trivially.",

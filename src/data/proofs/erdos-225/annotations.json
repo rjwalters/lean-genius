@@ -203,7 +203,7 @@
       "startLine": 145,
       "endLine": 151
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Equivalent Polynomial Formulation",
     "content": "**PolynomialHasUnitCircleRoots**: An alternative formulation using the algebraic polynomial $P(z) = \\sum c_k z^k$ directly. Identical to `HasUnitCircleRoots` — both require all roots to satisfy $\\|z\\| = 1$.",
     "mathContext": "The equivalence between the trigonometric formulation ($f(\\theta) = \\sum c_k e^{ik\\theta}$) and the algebraic one ($P(z) = \\sum c_k z^k$) arises from the substitution $z = e^{i\\theta}$. The roots of $P(z)$ correspond to the zeros of $f(\\theta)$: $f(\\theta_0) = 0 \\iff P(e^{i\\theta_0}) = 0$.",

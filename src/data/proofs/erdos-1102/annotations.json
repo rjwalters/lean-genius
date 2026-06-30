@@ -16,7 +16,11 @@
       "filters",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure",
+      "filters and topology"
+    ]
   },
   {
     "id": "ann-e1102-property-p",
@@ -35,7 +39,11 @@
       "squarefree",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "finiteness arguments"
+    ]
   },
   {
     "id": "ann-e1102-property-q",
@@ -54,7 +62,11 @@
       "squarefree",
       "universal quantifier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "logical quantifiers",
+      "infinite sets"
+    ]
   },
   {
     "id": "ann-e1102-squarefree-set",
@@ -73,7 +85,11 @@
       "zeta function",
       "product formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "Riemann zeta function",
+      "Euler products"
+    ]
   },
   {
     "id": "ann-e1102-examples",
@@ -91,7 +107,11 @@
       "computation",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "Lean 4 decidability and native_decide",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e1102-density-constant",
@@ -110,7 +130,11 @@
       "Euler product",
       "probability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "Riemann zeta function",
+      "Euler products"
+    ]
   },
   {
     "id": "ann-e1102-p-density-zero",
@@ -129,7 +153,11 @@
       "counting function",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic density",
+      "counting functions"
+    ]
   },
   {
     "id": "ann-e1102-p-slow-decay",
@@ -148,7 +176,11 @@
       "construction",
       "slow decay"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "greedy constructions",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1102-q-upper-density",
@@ -167,7 +199,11 @@
       "optimal bound",
       "squarefree density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "natural density",
+      "probabilistic heuristics"
+    ]
   },
   {
     "id": "ann-e1102-squarefrees-form-q",
@@ -186,7 +222,11 @@
       "property Q",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "existential reasoning",
+      "number theory"
+    ]
   },
   {
     "id": "ann-e1102-optimal-density",
@@ -205,6 +245,10 @@
       "density",
       "6/π²"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "limits and convergence",
+      "asymptotic density"
+    ]
   }
 ]

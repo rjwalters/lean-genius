@@ -3,7 +3,7 @@
     "id": "ann-634-header",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 30,
+      "startLine": 1,
       "endLine": 34
     },
     "type": "concept",
@@ -136,8 +136,8 @@
     "id": "ann-634-dissection",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 89,
-      "endLine": 93
+      "startLine": 101,
+      "endLine": 104
     },
     "type": "definition",
     "title": "Dissection Structure",
@@ -159,8 +159,8 @@
     "id": "ann-634-congruent-dissection",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 95,
-      "endLine": 97
+      "startLine": 107,
+      "endLine": 108
     },
     "type": "definition",
     "title": "Congruent Dissection",
@@ -182,8 +182,8 @@
     "id": "ann-634-dissectable",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 99,
-      "endLine": 101
+      "startLine": 111,
+      "endLine": 112
     },
     "type": "definition",
     "title": "IsDissectable — The Central Predicate",
@@ -205,8 +205,8 @@
     "id": "ann-634-squares",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 109,
-      "endLine": 111
+      "startLine": 132,
+      "endLine": 137
     },
     "type": "concept",
     "title": "Perfect Squares Are Dissectable",
@@ -228,8 +228,8 @@
     "id": "ann-634-two-squares",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 113,
-      "endLine": 115
+      "startLine": 139,
+      "endLine": 142
     },
     "type": "concept",
     "title": "2k² Is Dissectable",
@@ -250,8 +250,8 @@
     "id": "ann-634-three-squares",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 117,
-      "endLine": 119
+      "startLine": 144,
+      "endLine": 147
     },
     "type": "concept",
     "title": "3k² Is Dissectable",
@@ -273,8 +273,8 @@
     "id": "ann-634-six-squares",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 121,
-      "endLine": 123
+      "startLine": 149,
+      "endLine": 152
     },
     "type": "concept",
     "title": "6k² Is Dissectable",
@@ -295,8 +295,8 @@
     "id": "ann-634-sum-squares",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 125,
-      "endLine": 128
+      "startLine": 154,
+      "endLine": 159
     },
     "type": "concept",
     "title": "Sum of Two Squares Is Dissectable",
@@ -317,8 +317,8 @@
     "id": "ann-634-27",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 130,
-      "endLine": 132
+      "startLine": 161,
+      "endLine": 165
     },
     "type": "concept",
     "title": "27 Is Dissectable (Special Case)",
@@ -339,8 +339,8 @@
     "id": "ann-634-seven",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 140,
-      "endLine": 141
+      "startLine": 173,
+      "endLine": 174
     },
     "type": "concept",
     "title": "7 Is NOT Dissectable (Beeson)",
@@ -361,8 +361,8 @@
     "id": "ann-634-eleven",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 143,
-      "endLine": 144
+      "startLine": 176,
+      "endLine": 177
     },
     "type": "concept",
     "title": "11 Is NOT Dissectable (Beeson)",
@@ -383,8 +383,8 @@
     "id": "ann-634-non-diss-form",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 149,
-      "endLine": 156
+      "startLine": 182,
+      "endLine": 189
     },
     "type": "concept",
     "title": "Non-Dissectable Values Have Form 4k+3",
@@ -405,12 +405,12 @@
     "id": "ann-634-conjecture",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 164,
-      "endLine": 166
+      "startLine": 198,
+      "endLine": 199
     },
     "type": "definition",
     "title": "The 4k+3 Prime Conjecture",
-    "content": "**Conjecture_4k3**: Every prime of form $4k + 3$ is non-dissectable.\n\nThis initial version does not exclude $p = 3$, which is actually dissectable as $3 \\cdot 1^2$. The refined version (lines 175–176) adds the condition $p \\neq 3$.",
+    "content": "**Conjecture_4k3**: Every prime of form $4k + 3$ is non-dissectable.\n\nThis initial version does not exclude $p = 3$, which is actually dissectable as $3 \\cdot 1^2$. The refined version (lines 207–209) adds the condition $p \\neq 3$.",
     "mathContext": "$\\text{Conjecture}_{4k+3}: \\forall\\, p \\text{ prime},\\; (\\exists\\, k,\\; p = 4k + 3) \\implies \\neg\\text{IsDissectable}(p)$. The primes $\\equiv 3 \\pmod{4}$ form the sequence $3, 7, 11, 19, 23, 31, 43, \\ldots$",
     "significance": "key",
     "relatedConcepts": [
@@ -427,8 +427,8 @@
     "id": "ann-634-three-exception",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 168,
-      "endLine": 176
+      "startLine": 201,
+      "endLine": 205
     },
     "type": "concept",
     "title": "3 Is Dissectable (Exception to Conjecture)",
@@ -449,8 +449,8 @@
     "id": "ann-634-19",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 184,
-      "endLine": 191
+      "startLine": 218,
+      "endLine": 224
     },
     "type": "definition",
     "title": "Open Case: n = 19",
@@ -471,8 +471,8 @@
     "id": "ann-634-conjecture-implies",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 193,
-      "endLine": 196
+      "startLine": 226,
+      "endLine": 229
     },
     "type": "concept",
     "title": "Conjecture Implies 19 Is Not Dissectable",
@@ -494,8 +494,8 @@
     "id": "ann-634-similar-dissection",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 204,
-      "endLine": 210
+      "startLine": 237,
+      "endLine": 243
     },
     "type": "definition",
     "title": "Similar Dissection Definitions",
@@ -516,8 +516,8 @@
     "id": "ann-634-soifer",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 212,
-      "endLine": 214
+      "startLine": 245,
+      "endLine": 247
     },
     "type": "concept",
     "title": "Soifer's Theorem (Complete Solution for Similar Case)",
@@ -537,8 +537,8 @@
     "id": "ann-634-similar-fails",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 216,
-      "endLine": 223
+      "startLine": 249,
+      "endLine": 251
     },
     "type": "concept",
     "title": "Similar Dissection Failures: 2, 3, 5",
@@ -559,8 +559,8 @@
     "id": "ann-634-self-similar-def",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 231,
-      "endLine": 237
+      "startLine": 259,
+      "endLine": 264
     },
     "type": "definition",
     "title": "Self-Similar Dissection",
@@ -582,8 +582,8 @@
     "id": "ann-634-sww",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 239,
-      "endLine": 245
+      "startLine": 266,
+      "endLine": 267
     },
     "type": "concept",
     "title": "Snover–Waiveris–Williams Theorem",
@@ -605,8 +605,8 @@
     "id": "ann-634-zhang",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 253,
-      "endLine": 255
+      "startLine": 274,
+      "endLine": 274
     },
     "type": "concept",
     "title": "Zhang's 2025 Sufficient Condition",
@@ -627,8 +627,8 @@
     "id": "ann-634-known-set",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 257,
-      "endLine": 263
+      "startLine": 276,
+      "endLine": 281
     },
     "type": "definition",
     "title": "Known Dissectable Set",
@@ -649,8 +649,8 @@
     "id": "ann-634-partial",
     "proofId": "erdos-634",
     "range": {
-      "startLine": 271,
-      "endLine": 298
+      "startLine": 289,
+      "endLine": 317
     },
     "type": "concept",
     "title": "Erdős Problem #634 — Partial Answer",

@@ -55,83 +55,59 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Mathlib Imports",
-      "startLine": 19,
-      "endLine": 23,
-      "summary": "Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations.",
-      "mathContext": "Mathematical content: Imports Finset, Nat.Basic, and tactic libraries from Mathlib for finite set operations."
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 20,
+      "summary": "Module docstring introducing Erdős Problem #42 (Sidon sets with disjoint difference sets), the companion-set question, and known partial results (M=1 trivial, M=2 and M=3 by Sedov), followed by `import Mathlib`.",
+      "mathContext": "A Sidon (B₂) set has all pairwise sums distinct; Erdős asked whether every maximal Sidon set $A \\subseteq \\{1,\\ldots,N\\}$ has a companion Sidon set $B$ of size $M$ with $(A-A) \\cap (B-B) = \\{0\\}$ for large $N$."
     },
     {
-      "id": "sidon-def",
-      "title": "Sidon Set Definition",
-      "startLine": 24,
-      "endLine": 31,
-      "summary": "Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}.",
-      "mathContext": "Formal definition: Defines IsSidonSet via sum-distinctness: if a₁ + b₁ = a₂ + b₂ then {a₁,b₁} = {a₂,b₂}."
-    },
-    {
-      "id": "interval-def",
-      "title": "Interval Containment",
-      "startLine": 32,
-      "endLine": 35,
-      "summary": "Defines InInterval A N requiring all elements of A to lie in {1,...,N}.",
-      "mathContext": "Formal definition: Defines InInterval A N requiring all elements of A to lie in {1,...,N}."
-    },
-    {
-      "id": "maximal-sidon",
-      "title": "Maximal Sidon Sets",
-      "startLine": 36,
-      "endLine": 41,
-      "summary": "Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon.",
-      "mathContext": "Formal definition: Defines IsMaximalSidon: a Sidon set in {1,...,N} where no element can be added while preserving Sidon."
+      "id": "sidon-defs",
+      "title": "Sidon Set Definitions",
+      "startLine": 21,
+      "endLine": 38,
+      "summary": "Defines `IsSidonSet` (all pairwise sums distinct), `InInterval` ($A \\subseteq \\{1,\\ldots,N\\}$), and `IsMaximalSidon` (a Sidon set in $\\{1,\\ldots,N\\}$ to which no element can be added while preserving the Sidon property).",
+      "mathContext": "`IsSidonSet A`: if $a_1 + b_1 = a_2 + b_2$ with elements in $A$ then $\\{a_1,b_1\\} = \\{a_2,b_2\\}$, equivalently all nonzero differences are distinct."
     },
     {
       "id": "difference-sets",
-      "title": "Difference Set Infrastructure",
-      "startLine": 42,
-      "endLine": 51,
-      "summary": "Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}.",
-      "mathContext": "Formal definition: Defines diffSet via biUnion over pairs and DisjointDiffs requiring (A−A) ∩ (B−B) = {0}."
+      "title": "Difference Sets",
+      "startLine": 39,
+      "endLine": 48,
+      "summary": "Defines `diffSet A` (the difference set $A - A \\subseteq \\mathbb{Z}$ via `biUnion` over pairs) and `DisjointDiffs A B` (the difference sets intersect only at $0$).",
+      "mathContext": "$A - A = \\{a_1 - a_2 : a_1, a_2 \\in A\\}$; `DisjointDiffs A B` asserts $(A-A) \\cap (B-B) = \\{0\\}$."
     },
     {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "startLine": 52,
-      "endLine": 110,
-      "summary": "Proves the classical size bound |A|(|A|-1) ≤ 2(N-1) from Mathlib via difference counting injection, plus 0 ∈ A−A and example {1,2,4}.",
-      "mathContext": "Proved: The classical Sidon set size bound |A|(|A|-1) $\\leq$ 2(N-1) is proved from Mathlib by showing the difference map is injective on off-diagonal pairs. Also proves 0 ∈ A−A and verifies {1,2,4} as a concrete maximal Sidon set."
+      "id": "size-bound",
+      "title": "Basic Properties — The Sidon Size Bound",
+      "startLine": 49,
+      "endLine": 124,
+      "summary": "Proves `sidon_size_bound`: a Sidon set in $\\{1,\\ldots,N\\}$ satisfies $|A|(|A|-1) \\leq 2(N-1)$, via injectivity of the difference map on off-diagonal pairs, and `zero_in_diffSet` ($0 \\in A - A$ for nonempty $A$).",
+      "mathContext": "The off-diagonal differences of a Sidon set are distinct nonzero integers in $[-(N-1), N-1]$, giving $|A|(|A|-1) \\leq 2(N-1)$, hence $|A| = O(\\sqrt{N})$."
     },
     {
-      "id": "sedov-M2",
-      "title": "Sedov's M = 2 Result",
-      "startLine": 66,
-      "endLine": 75,
-      "summary": "Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences.",
-      "mathContext": "Verified: Axiomatizes Sedov's proof that every maximal Sidon set admits a 2-element companion with disjoint differences."
+      "id": "worked-example",
+      "title": "Worked Example — {1, 2, 4} as a Maximal Sidon Set",
+      "startLine": 125,
+      "endLine": 154,
+      "summary": "Three proved example theorems: `sidon_124` ({1,2,4} is Sidon), `interval_124` ({1,2,4} ⊆ {1,...,4}), and `example_maximal_sidon` ({1,2,4} is maximal in {1,...,4} since adding 3 breaks the Sidon property).",
+      "mathContext": "Concrete instance verifying the definitions: $\\{1,2,4\\}$ has pairwise sums $2,3,5,4,6,8$ (all distinct) and cannot be extended within $\\{1,\\ldots,4\\}$."
     },
     {
-      "id": "sedov-M3",
-      "title": "Sedov's M = 3 Result",
-      "startLine": 76,
-      "endLine": 82,
-      "summary": "Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods.",
-      "mathContext": "Axiomatized: Axiomatizes Sedov's extension to M = 3, combining analytic and computational methods."
+      "id": "partial-results",
+      "title": "Partial Results (M = 2, M = 3)",
+      "startLine": 155,
+      "endLine": 159,
+      "summary": "Documentation comments recording the known partial results: Sedov's proof of the M = 2 case and his (computational) M = 3 case. These are stated as commentary, not formalized as theorems.",
+      "mathContext": "For $M = 2$ and $M = 3$, Sedov proved that large maximal Sidon sets always admit a companion Sidon set of the required size with disjoint differences."
     },
     {
-      "id": "main-conjecture",
-      "title": "The General Conjecture",
-      "startLine": 83,
-      "endLine": 94,
-      "summary": "States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets.",
-      "mathContext": "Mathematical content: States Erdős Problem 42 in full generality: for every M, sufficiently large N yields companion sets."
-    },
-    {
-      "id": "constructive",
-      "title": "Constructive Version",
-      "startLine": 95,
-      "endLine": 100,
-      "summary": "Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀.",
-      "mathContext": "Bound: Strengthens the conjecture by asserting an explicit threshold function f(M) bounding N₀."
+      "id": "the-problem",
+      "title": "The Erdős Problem",
+      "startLine": 160,
+      "endLine": 165,
+      "summary": "Documentation comments stating Erdős Problem 42 in full generality (every $M$, sufficiently large $N$) and a constructive strengthening asserting an explicit threshold function $f(M)$ bounding $N_0$. Stated as commentary; the general conjecture remains open.",
+      "mathContext": "General conjecture: for every $M \\geq 1$ there is $N_0$ such that for $N \\geq N_0$, every maximal Sidon set in $\\{1,\\ldots,N\\}$ has a size-$M$ companion with disjoint differences; the constructive version asks for an explicit $f(M) \\geq N_0$."
     }
   ],
   "conclusion": {

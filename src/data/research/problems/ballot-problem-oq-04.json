@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-04",
   "title": "Ballot Sequences and Non-Crossing Partition Bijection",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Introduced non-crossing partitions to Lean (Mathlib has none) as the previously-absent codomain of the ballot/Dyck-to-non-crossing-partition Catalan bijection. Modelled a partition of Fin n by its same-block equivalence relation (Setoid) and defined IsNonCrossing. Proved: top/bot partitions non-crossing; every partition of a <=3-element set is non-crossing (crossings need 4 points; first crossing {{0,2},{1,3}} on Fin 4, where Bell B4=15 drops to catalan 4=14); the structural heart all_related (an interleaving config forces all four indices into one block); outer_related; the 'no genuine crossing' reformulation isNonCrossing_iff; and re-exposed Mathlib's Dyck-side count catalan n. 7 theorems, 1 def, 0 sorries/0 axioms, builds green. PR #PENDING.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "insights": [
+      "A partition is cleanly modelled by its same-block equivalence relation (Setoid); block algebra reduces to refl/symm/trans.",
+      "Non-crossing-ness means two blocks interleave only by coinciding: a crossing config a<b<c<d with a~c, b~d forces all four into one block (all_related).",
+      "Crossings are a four-point phenomenon; every partition of a <=3-element set is non-crossing.",
+      "Fin 4 is where non-crossing first bites: excluding {{0,2},{1,3}} sends Bell B4=15 to catalan 4=14, the first Catalan/Bell discrepancy.",
+      "Mathlib supplies the ballot/Dyck side (catalan n Dyck words of semilength n); this entry supplies the missing non-crossing codomain."
+    ],
+    "mathlibGaps": [
+      "No non-crossing partitions in Mathlib (this entry is the first formalization in the project); no non-crossing partition lattice NC(n)."
+    ],
+    "nextSteps": [
+      "Construct the explicit Dyck-word <-> non-crossing-partition bijection (via nest/firstReturn recursion) and prove non-crossing partitions of Fin n number catalan n.",
+      "Give a Finpartition formulation, prove it agrees with the Setoid one, and decide the count = catalan n (first discriminating at n=4).",
+      "Develop the non-crossing partition lattice NC(n) (Catalan-counted, self-dual) on top of IsNonCrossing."
+    ]
   },
   "tags": [
     "combinatorics",
@@ -45,19 +57,33 @@
     "ballot-problem",
     "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-01-oq-02-oq-01",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
+    "ballot-problem-oq-01-oq-03",
     "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-01-oq-04-oq-01",
     "ballot-problem-oq-02",
+    "ballot-problem-oq-02-oq-02",
+    "ballot-problem-oq-02-oq-02-oq-05",
+    "ballot-problem-oq-02-oq-04",
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
-    "ballot-problem-oq-03-oq-02"
+    "ballot-problem-oq-03-oq-02",
+    "ballot-problem-oq-03-oq-02-oq-01",
+    "ballot-problem-oq-03-oq-02-oq-03",
+    "ballot-problem-oq-03-oq-03",
+    "ballot-problem-oq-04",
+    "ballot-problem-oq-04-oq-02",
+    "ballot-problem-oq-04-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -103,6 +129,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 641,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ01OQ02.lean",
       "filename": "BallotProblemOQ01OQ02.lean",
       "lineCount": 1048,
@@ -127,13 +175,24 @@
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
       "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
-      "lineCount": 112,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
@@ -167,6 +226,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ03.lean",
+      "filename": "BallotProblemOQ01OQ03.lean",
+      "lineCount": 93,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ04.lean",
@@ -224,6 +294,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ02OQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ02OQ05.lean",
+      "lineCount": 205,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02OQ05.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ04.lean",
+      "filename": "BallotProblemOQ02OQ04.lean",
+      "lineCount": 154,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ05.lean",
+      "lineCount": 358,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ05.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
       "lineCount": 2923,
@@ -248,8 +351,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 2437,
-      "theoremCount": 52,
+      "lineCount": 2558,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 17,
@@ -259,7 +362,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
-      "lineCount": 131,
+      "lineCount": 132,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -281,19 +384,19 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 117,
+      "lineCount": 118,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
-      "lineCount": 15995,
-      "theoremCount": 527,
+      "lineCount": 15996,
+      "theoremCount": 79,
       "axiomCount": 0,
       "defCount": 15,
       "sorryCount": 9,
@@ -314,8 +417,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2532,
-      "theoremCount": 92,
+      "lineCount": 2590,
+      "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,
       "sorryCount": 0,
@@ -323,15 +426,71 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ01.lean",
+      "filename": "BallotProblemOQ03OQ02OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02OQ03.lean",
+      "filename": "BallotProblemOQ03OQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03OQ03.lean",
       "filename": "BallotProblemOQ03OQ03.lean",
-      "lineCount": 188,
-      "theoremCount": 9,
+      "lineCount": 281,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04.lean",
+      "filename": "BallotProblemOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02.lean",
+      "filename": "BallotProblemOQ04OQ02.lean",
+      "lineCount": 153,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
+      "filename": "BallotProblemOQ04OQ02OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean"
     }
-  ]
+  ],
+  "builtItems": []
 }

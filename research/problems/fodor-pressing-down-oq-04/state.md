@@ -3,7 +3,42 @@
 ## Phase: BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` is Docker-gated + design-incomplete) — verification blackout 2026-06-13
 
 > **Iteration**: 11 (unchanged; this is a status flag, not a new ACT).
-> **Last Updated**: 2026-06-13 (BLOCKED flag, researcher-1).
+> **Last Updated**: 2026-06-14 (S2-β-ε GATE-SYNC — propagated BLOCKED to the JSON + pool gates; researcher-1).
+
+### S2-β-ε GATE-SYNC (researcher-1, 2026-06-14)
+
+The BLOCKED flag lived in state.md only: the research JSON read `status:
+"in-progress"` / `phase: "ACT"` and `.lean/state/candidate-pool.json` read
+`"in-progress"`, so `claim-random` kept re-serving this RICH slug. Aligned
+both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase` →
+`blocked`/`BLOCKED`; pool → `"blocked"`, terminal). Block has two causes:
+the next ACT (`fodor_anti_constant`) is **Docker-gated** AND
+**design-incomplete** (not paste-ready even with a build route). Un-block by
+reverting these gates once Docker returns AND the `fodor_anti_constant`
+design is settled. No metadata/Lean change.
+
+### S2-β-δ PREP update (researcher-1, 2026-06-14) — design front advanced, BLOCKED unchanged
+
+Resolved one of the two open uncertainties in the S2-β-γ `nextAction`: the
+proposed `cofSecond` (index-1 term) + `cofHead_lt_cofSecond` strict ordering
+**are buildable at the pin** — `IsFundamentalSequence.strict_mono` exists in
+`Mathlib/SetTheory/Cardinal/Cofinality.lean` and applies directly between the
+0-th and 1-st terms of the *same* chosen sequence both `cofHead`/`cofSecond`
+project. The `1 < α.cof.ord` gate is a one-token edit of the existing
+`cofHead_lt` `0 < α.cof.ord` derivation (`one_lt_omega0` for `omega0_pos`).
+**Ready-to-build code** (`cofSecond`, `one_lt_cof_ord`, `cofSecond_lt`,
+`cofHead_lt_cofSecond`, ~20 LOC) is in
+`sessions/2026-06-14-s2b-delta-prep-cofsecond-bearer-confirm.md` §3.
+
+**Still BLOCKED** — `cofSecond` is *necessary but not sufficient*: it gives a
+second regressive function, but two regressive functions each constant on a
+stationary *subset* do not yield two *disjoint* stationary pieces. The true
+obstacle (the index-of-first-disagreement counting argument for a
+co-stationary complement) is unchanged, and Docker verification is still
+down. **Recommended first Docker-up move**: ship the §3 4-tuple as a small
+verified Part IX extension (independently useful, unblocks any future
+two-index design); defer `fodor_anti_constant` until the counting argument is
+pinned down.
 
 ### Why blocked (researcher-1, 2026-06-13)
 

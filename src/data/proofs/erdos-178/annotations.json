@@ -16,7 +16,11 @@
       "Sequence balancing",
       "Signing functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial discrepancy theory",
+      "infinite integer sequences",
+      "two-colorings and ±1 signings"
+    ]
   },
   {
     "id": "erdos-178-signing",
@@ -35,7 +39,11 @@
       "Two-coloring",
       "Balanced assignments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions ℕ → ℤ",
+      "two-coloring of integers",
+      "membership constraints {-1, 1}"
+    ]
   },
   {
     "id": "erdos-178-seq-family",
@@ -54,7 +62,11 @@
       "Set families",
       "Indexed collections"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite sequences as functions ℕ → ℤ",
+      "strictly increasing sequences",
+      "indexed families of sets"
+    ]
   },
   {
     "id": "erdos-178-partial-sum",
@@ -73,7 +85,11 @@
       "Prefix sums",
       "Imbalance measures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "signing functions",
+      "finite sums over Finset.range",
+      "prefix (cumulative) sums"
+    ]
   },
   {
     "id": "erdos-178-seq-discrepancy",
@@ -92,7 +108,11 @@
       "Imbalance",
       "Balance quality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "partial sums of a signing",
+      "absolute value",
+      "imbalance measures"
+    ]
   },
   {
     "id": "erdos-178-max-discrepancy",
@@ -111,7 +131,11 @@
       "Uniform bounds",
       "Minimax"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequence discrepancy",
+      "maximum over finite index sets",
+      "worst-case / uniform bounds"
+    ]
   },
   {
     "id": "erdos-178-bounded-discrepancy",
@@ -130,7 +154,11 @@
       "m-independence",
       "Bounded variation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maximum discrepancy over d sequences",
+      "uniform (m-independent) bounds",
+      "≪_d asymptotic notation"
+    ]
   },
   {
     "id": "erdos-178-exists-bounded",
@@ -149,7 +177,11 @@
       "Constructive vs non-constructive",
       "Main question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bounded discrepancy property",
+      "existential quantification over signings",
+      "non-constructive existence statements"
+    ]
   },
   {
     "id": "erdos-178-beck-1981",
@@ -168,7 +200,11 @@
       "Existence proofs",
       "Main resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of bounded signings",
+      "combinatorial discrepancy methods",
+      "axiomatization of cited theorems in Lean"
+    ]
   },
   {
     "id": "erdos-178-uniform-bound",
@@ -187,7 +223,11 @@
       "Universal constants",
       "Family independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Beck's 1981 existence theorem",
+      "family-independent (universal) constants",
+      "uniform vs. per-family bounds"
+    ]
   },
   {
     "id": "erdos-178-beck-2017",
@@ -206,7 +246,11 @@
       "Polynomial growth",
       "Explicit constants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "uniform bound property",
+      "polynomial growth rates in d",
+      "explicit quantitative bounds"
+    ]
   },
   {
     "id": "erdos-178-spencer",
@@ -225,7 +269,11 @@
       "Finite discrepancy",
       "Six deviations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite set-system discrepancy",
+      "Spencer's 'six standard deviations' theorem",
+      "O(√n) discrepancy bounds"
+    ]
   },
   {
     "id": "erdos-178-egz",
@@ -244,7 +292,11 @@
       "EGZ theorem",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "zero-sum sequences modulo n",
+      "Erdős-Ginzburg-Ziv theorem"
+    ]
   },
   {
     "id": "erdos-178-non-uniform",
@@ -263,7 +315,11 @@
       "Greedy methods",
       "Problem difficulty"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Beck's existence theorem",
+      "uniform vs. non-uniform bounds",
+      "greedy / per-family extraction"
+    ]
   },
   {
     "id": "erdos-178-probabilistic",
@@ -282,7 +338,11 @@
       "Random signing",
       "Method limitations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method",
+      "random ±1 signings",
+      "central limit theorem and √m growth"
+    ]
   },
   {
     "id": "erdos-178-open-question",
@@ -301,7 +361,11 @@
       "Growth rates",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Beck's d^(4+ε) bound",
+      "optimal exponents and growth rates",
+      "open problems in discrepancy theory"
+    ]
   },
   {
     "id": "erdos-178-main-theorem",
@@ -320,6 +384,10 @@
       "Combined results",
       "Main theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "beck_1981 and beck_2017 axioms",
+      "combining existence and quantitative bounds",
+      "complete resolution of Erdős #178"
+    ]
   }
 ]

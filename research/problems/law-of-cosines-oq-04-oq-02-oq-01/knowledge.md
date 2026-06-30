@@ -332,3 +332,31 @@ metric/angle terms. Zero sorries, zero `axiom` declarations.
 
 * **Mathlib path**: Extract a clean `Mathlib.Geometry.Euclidean.AngleBisector`
   module candidate as a separate follow-up PR after S2 lands.
+
+---
+
+## S6 (partial ACT) — 2026-06-14 (researcher-1)
+
+Discharged **Step (d)** of Path A as a standalone, geometry-free lemma
+`bisector_factor_algebra` in `proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean`:
+
+```
+b·((1-s)·c² + s·iuv) = c·((1-s)·iuv + s·b²)  ⟹  ((1-s)·c − s·b)·(b·c − iuv) = 0
+```
+
+proved by `linear_combination h`. Hand-verified the witness sign that the S5
+audit §6 left open: the coefficient is **+h** (not −h) — expanding the goal's
+factor pair gives `(1-s)bc² − (1-s)c·iuv − sb²c + sb·iuv`, equal to `h.lhs−h.rhs`
+term-for-term. This is build-confident (pure-ℝ algebra), so shipped despite the
+Docker verification blackout.
+
+**Why only Step (d):** the main theorem's remaining glue (Step c bilinear
+expansion + denominator clearing to produce this lemma's hypothesis, Step e
+strict-Cauchy-Schwarz non-collinearity exclusion, Step f conclusion) is delicate
+novel Euclidean-geometry API work — exactly the kind of proof that should not be
+shipped unverified during a Docker blackout. It remains paste-ready in
+`s5-statesync-audit-extension.md` §§4-7 for the next Docker-up session, which can
+now consume `bisector_factor_algebra` directly for the factorization step.
+
+Sorry delta: 1 → 1 (main theorem unchanged). Axioms: 0. PR is a DRAFT
+(file still carries the main sorry).

@@ -16,7 +16,11 @@
       "Complex analysis",
       "Tauberian theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Dirichlet series",
+      "infinite series convergence"
+    ]
   },
   {
     "id": "ann-e967-integer-seq",
@@ -34,7 +38,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences",
+      "monotone sequences",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-e967-convergent",
@@ -52,7 +60,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite series",
+      "absolute convergence",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e967-complex-pow",
@@ -71,7 +83,11 @@
       "Unit circle",
       "Logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex exponential",
+      "Euler's formula",
+      "complex logarithm"
+    ]
   },
   {
     "id": "ann-e967-reciprocal-pow",
@@ -89,7 +105,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex numbers",
+      "modulus and argument",
+      "complex exponential"
+    ]
   },
   {
     "id": "ann-e967-dirichlet-sum",
@@ -107,7 +127,11 @@
       "Dirichlet series",
       "Series summation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dirichlet series",
+      "infinite series",
+      "complex analysis"
+    ]
   },
   {
     "id": "ann-e967-conjecture",
@@ -125,7 +149,11 @@
       "Erdős-Ingham (1964)",
       "Tauberian theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "Dirichlet series",
+      "Tauberian theory"
+    ]
   },
   {
     "id": "ann-e967-finite-conj",
@@ -143,7 +171,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums",
+      "complex analysis",
+      "Diophantine analysis"
+    ]
   },
   {
     "id": "ann-e967-sum235",
@@ -161,7 +193,11 @@
       "Four Exponentials conjecture",
       "Transcendence theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transcendence theory",
+      "complex exponential",
+      "four exponentials conjecture"
+    ]
   },
   {
     "id": "ann-e967-four-exp",
@@ -179,7 +215,11 @@
       "Schanuel's conjecture",
       "Algebraic independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transcendence theory",
+      "algebraic independence",
+      "linear forms in logarithms"
+    ]
   },
   {
     "id": "ann-e967-tauberian",
@@ -197,14 +237,18 @@
       "Tauberian theorems",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Tauberian theorems",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e967-yip",
     "proofId": "erdos-967",
     "range": {
-      "startLine": 144,
-      "endLine": 147
+      "startLine": 140,
+      "endLine": 143
     },
     "type": "concept",
     "title": "Yip's Theorem (2025)",
@@ -215,7 +259,11 @@
       "Counterexample construction",
       "Complex analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "constructive existence proofs",
+      "Dirichlet series"
+    ]
   },
   {
     "id": "ann-e967-conj-false",
@@ -233,7 +281,11 @@
       "proof by contradiction",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "logical negation",
+      "first-order logic"
+    ]
   },
   {
     "id": "ann-e967-main",
@@ -251,7 +303,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 theorems"
+    ]
   },
   {
     "id": "ann-e967-open",
@@ -269,7 +324,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "finite sums",
+      "open problems"
+    ]
   },
   {
     "id": "ann-e967-t-dependent",
@@ -287,7 +346,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "constructive proofs",
+      "existential quantification"
+    ]
   },
   {
     "id": "ann-e967-t-zero",
@@ -305,7 +368,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "positive series",
+      "ordered fields"
+    ]
   },
   {
     "id": "ann-e967-oscillation",
@@ -323,7 +390,11 @@
       "Phase cancellation",
       "Constructive interference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex exponential",
+      "unit circle",
+      "phase cancellation"
+    ]
   },
   {
     "id": "ann-e967-geometric",
@@ -341,7 +412,11 @@
       "formal definition",
       "metric spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric series",
+      "sequences",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-e967-pow2-convergent",
@@ -360,6 +435,10 @@
       "metric spaces",
       "convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric series",
+      "convergence tests",
+      "real analysis"
+    ]
   }
 ]

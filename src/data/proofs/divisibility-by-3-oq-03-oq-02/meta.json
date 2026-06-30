@@ -4,7 +4,7 @@
   "slug": "divisibility-by-3-oq-03-oq-02",
   "description": "Generalizes the digital root from base 10 to arbitrary base b \u2265 2. Proves the closed-form formula dr_b(n) = 1 + ((n-1) mod (b-1)), idempotence, divisibility criteria, multiplicativity, and specializations to base 10 (casting out nines) and base 2.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02.lean",
     "tags": [
       "number-theory",
@@ -13,13 +13,15 @@
       "modular-arithmetic",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 211,
     "theoremCount": 21,
     "definitionCount": 1,
-    "assumptions": [],
+    "assumptions": [
+      "Lean.ofReduceBool: the concrete base-specialization examples (hex_root_15/16/255, oct_root_7/64, base7_root_42/43) — the 'concrete examples in hex, octal, and base 7' deliverable — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom. The general framework theorems (closed form, congruence dr_b(n) ≡ n mod (b-1), idempotence, factor divisibility rule, base-10 specialization) remain axiom-free."
+    ],
     "dateAdded": "2026-04-12",
     "mathlibDependencies": [
       {

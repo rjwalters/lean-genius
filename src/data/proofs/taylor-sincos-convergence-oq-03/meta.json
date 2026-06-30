@@ -59,6 +59,16 @@
       "targetId": "taylor-sincos-convergence",
       "relationship": "extends",
       "description": "Sharpens the axiomatized Lagrange remainder bounds in the parent formalization using alternating series theory"
+    },
+    {
+      "targetId": "taylor-sincos-convergence-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 discharges the parent's two remainder axioms by proving the standard Lagrange remainder bounds via Mathlib's taylor_mean_remainder_bound; this entry takes a complementary route, deriving tighter error bounds from the alternating-series estimation theorem instead of Lagrange. Two different remainder-bounding techniques for the same sin/cos partial sums."
+    },
+    {
+      "targetId": "taylor-sincos-convergence-oq-04",
+      "relationship": "complements",
+      "description": "OQ-04 generalizes sin/cos convergence to any C^∞ function with uniformly bounded derivatives via a uniform Lagrange remainder bound; this entry specializes in the opposite direction, exploiting the sign-alternation specific to sin/cos to get sharper-than-Lagrange estimates. OQ-04 already references this entry as a complement."
     }
   ],
   "leanFile": {

@@ -2142,6 +2142,121 @@
       "status": "completed",
       "outcome": "1 sorries remaining",
       "notes": "Recovered from server at 2026-05-04T05:54:14Z. No sorry reduction."
+    },
+    {
+      "project_id": "8feb596c-2d32-4da6-9811-928f629cee7d",
+      "file": "proofs/Proofs/ThreeSquaresSliceMinkowski.lean",
+      "problem_id": "zsqrtd-neg-two-oq-02",
+      "submitted": "2026-06-19T11:06:36Z",
+      "status": "submitted",
+      "companion_file": false,
+      "notes": "researcher-2: sole sorry exists_sheared_point_lt_two_mul_d2 (d=2 Minkowski core) submitted via CLI as standalone snippet MinkowskiCore.lean. MCP wrapper 404 this session; CLI reachable. Retrieve: uvx --from aristotlelib aristotle show 8feb596c... ; if PROVED integrate proof body into ThreeSquaresSliceMinkowski.lean line 263-266.",
+      "outcome": null
+    },
+    {
+      "project_id": "52afa73c-792e-49c8-99fd-6b543d8e6af7",
+      "file": "proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean",
+      "problem_id": "de-moivre-oq-02-oq-03",
+      "submitted": "2026-06-19T11:35:00Z",
+      "status": "submitted",
+      "companion_file": true,
+      "notes": "researcher-10: FULL divided-difference (Lagrange) reduction of weak_alternation_eq_zero written out and submitted as standalone WeakAlternation.lean (import Mathlib only). Wrapper is complete; sole sorry = node_divdiff_sign (sign of n-th divided-difference weight = (-1)^i). This job doubles as off-host compile-check of the wrapper (local Docker gate closed). Retrieve: aristotle show 52afa73c -> if PROVED, integrate node_divdiff_sign body at DeMoivreOQ02OQ03UniqueAristotle.lean and docker-build + un-draft PR #26135. r7 job 3b070308 targets the same sign lemma; dea4355b targets full crux.",
+      "outcome": null
+    },
+    {
+      "project_id": "9d6ef543-1f33-43ae-82d0-a82cacb03440",
+      "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
+      "problem_id": "erdos-998-oq-04",
+      "submitted": "2026-06-19T12:50:00Z",
+      "sorries": [
+        "exists_gap_triple N>=2 case (van Ravenstein three-gap classification)"
+      ],
+      "notes": "STEP D crux: gapLengths a N subset {a,b,c}; witnesses a,b,c fixed in file; self-contained (Mathlib-only import). MCP prove_file still 404; submitted via CLI submit --project-dir.",
+      "status": "submitted",
+      "last_check": null
+    },
+    {
+      "project_id": "ddd818e2-e934-4fd9-b389-15d56a22b49a",
+      "file": "proofs/Proofs/AbelRuffiniOQ07Order6.lean",
+      "problem_id": "abel-ruffini-oq-07",
+      "submitted": "2026-06-19T13:20:00Z",
+      "sorries": [
+        "orderOf_eq_six_pow_three_isSwap : (σ:Perm(Fin5)) orderOf σ=6 → (σ^3).IsSwap",
+        "gal_eq_top_of_five_dvd_and_order6 : 5∣|G| ∧ ∃ order-6 elem → G=⊤"
+      ],
+      "notes": "Generic S5 order-6→swap step. Consumes the now-PROVED Dedekind-Frobenius bridge (DedekindFrobeniusBridge.lean) output: bridge gives orderOf(arithFrobAt)=inertiaDegIn=6 at a prime over 2 of the splitting field, this turns it into the swap the verified reduction gal_eq_top_of_five_dvd_and_swap consumes. Self-contained Mathlib-only companion (NOT registered in Proofs.lean). CLI submit; v4.26 vs Aristotle v4.28 warning (Perm(Fin5) API stable).",
+      "status": "integrated",
+      "last_check": null,
+      "outcome": "Both lemmas (orderOf_eq_six_pow_three_isSwap, gal_eq_top_of_five_dvd_and_order6) proved 0-sorry/0-axiom; file promoted from *Aristotle.lean scratch to registered module AbelRuffiniOQ07Order6 (in Proofs.lean). Aristotle project expired (Resource not found)."
+    },
+    {
+      "project_id": "f3b4620d-814e-430d-97a8-c40321b48abf",
+      "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
+      "problem_id": "erdos-998-oq-04",
+      "submitted": "2026-06-19T~04:12Z (researcher-2 S10, CLI)",
+      "sorries": [
+        "exists_gap_triple N>=2 case (van Ravenstein three-gap classification) — CLOSED"
+      ],
+      "notes": "COMPLETE/PROVED. Retrieved by researcher-3 via CLI download, grafted into Erdos998ThreeGapOQ04.lean (full file: +10 supporting lemmas fract_add_of_lt_one/_one_le, fract_nat_add_lt/_ge, fract_neg_mul, forwardGap_ge, forwardGap_region_a/b/c, forwardGap_mem_triple; dropped unused forwardGap_attained). 0 sorry, 0 axiom (propext/Classical.choice/Quot.sound only). Public statements byte-identical to pre-graft; defs/imports identical. Aristotle reports clean lake build 8027 jobs under v4.28.0; BUILD VERIFICATION PENDING under repo-pinned v4.26.0 (Docker down this session). Toolchain NOT changed in repo.",
+      "status": "integrated",
+      "last_check": "2026-06-19T14:28:05Z"
+    },
+    {
+      "project_id": "62d1066c-7edd-4419-b588-4bc430d4d4fb",
+      "file": "proofs/Proofs/ErdosMordellChordIdentity.lean",
+      "problem_id": "erdos-mordell-inequality-oq-01",
+      "submitted": "2026-06-19T15:16Z (researcher-1, CLI; from research/erdos-mordell-pedalfoot-eq branch)",
+      "sorries": [
+        "chord_cos_eq — cosine-side core: ⟪F_b−P,F_c−P⟫/(‖F_b−P‖‖F_c−P‖) = −⟪Y−X,Z−X⟫/(‖Y−X‖‖Z−X‖). Pure Fin 2 coordinate identity; squared half is ring, sign half is [u,w]·[v,w]=−s·t·[u,v]² from interior_barycentric."
+      ],
+      "notes": "MORE-REDUCED target than still-RUNNING 55ae116d (which works main's 2 unreduced geometric sorries). This is the unmerged research/erdos-mordell-pedalfoot-eq branch state: chord_length_eq (sine side) and angle_at_P (wrapper over chord_cos_eq) are HAND-PROVED; only the single algebraic chord_cos_eq remains. Submitting also build-VERIFIES the branch's unmerged hand-proofs server-side (local Docker gate closed: 11 containers, load 15). chord_cos_eq follows the same coordinate-ring pattern as the already-proved chord_length_eq → high success odds. MCP prove/prove_file/check_proof return 404 this session; CLI works. v4.26↔v4.28 toolchain warning noted. Poll: aristotle show 62d1066c-7edd-4419-b588-4bc430d4d4fb. On PROVED: graft into the branch file, rebuild when gate opens, then the whole E–M closes (chord_identity already wired turnkey).",
+      "status": "submitted",
+      "last_check": "2026-06-19T15:16Z"
+    },
+    {
+      "project_id": "d2395b8d-2153-48fd-823f-e267f93ec5d7",
+      "file": "/tmp/RationalCanonicalFormExists.lean",
+      "problem_id": "minpoly-charpoly-oq-03-oq-01",
+      "submitted": "2026-06-19T16:43:28Z",
+      "sorries": [
+        "theorem rational_canonical_form_exists"
+      ],
+      "notes": "RCF existence (invariant-factor chain): primary decomp via Module.equiv_directSum_of_isTorsion + regrouping. Never submitted before; HARD known classical result. [S4 2026-06-19: CONFIRMED RUNNING ~17% via CLI; status-script/MCP gave false NOT_FOUND.]",
+      "status": "running",
+      "last_check": "2026-06-19T17:00:00Z"
+    },
+    {
+      "project_id": "a1441c24-c444-4cb6-ba78-9c0357beffcf",
+      "task_id": "49f58f23-9f57-46e9-91ed-25937c688b89",
+      "file": "proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean",
+      "problem_id": "erdos-107-oq-01",
+      "submitted": "2026-06-19T07:00:00Z",
+      "sorries": [
+        "klein_upper_bound"
+      ],
+      "notes": "Klein 1931 upper bound 5 ∈ CardSet 4 (Happy Ending base case) — the lone remaining axiom of erdos-107-oq-01. Submitted via CLI by researcher-10.",
+      "status": "integrated",
+      "last_check": {
+        "timestamp": "2026-06-27T00:43:40Z",
+        "percent": 100,
+        "runtime_minutes": 0
+      },
+      "outcome": "PROVED klein_upper_bound axiom-free (339-line proof: finite Krein-Milman extreme-point case analysis + 2D separating functional). Aristotle verified clean: #print axioms = propext/Classical.choice/Quot.sound only. Proved against Mathlib v4.28.0; repo pins v4.26.0 so integration PR is CI-gated on the toolchain port.",
+      "integrated": "2026-06-27T00:43:40Z",
+      "theorems_proven": [
+        "klein_upper_bound",
+        "extreme_not_in_hull_erase",
+        "subset_convexHull_extremePoints",
+        "hasConvexNGon_of_four_extreme",
+        "cross_eq_zero_iff_collinear",
+        "exists_line_functional",
+        "two_same_sign",
+        "not_mem_convexHull_triple_of_functional",
+        "collinear_convexHull_of_collinear",
+        "not_collinear_pts",
+        "hasConvexNGon_of_pair",
+        "hasConvexNGon_caseB"
+      ]
     }
   ]
 }

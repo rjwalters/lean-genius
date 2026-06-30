@@ -102,6 +102,26 @@
         "gauss-sums"
       ],
       "targetId": "bounded-prime-gaps-oq-04"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Pólya-Vinogradov is the central quantitative tool behind equidistribution of primes in arithmetic progressions; it converts the qualitative non-vanishing used in Dirichlet's theorem into effective character-sum bounds."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "Shares the Gauss-sum machinery. The norm |τ(χ)| = √q that anchors this proof is the same normalization that makes the quadratic Gauss sum evaluate to ±√q (or ±i√q), the classical route to quadratic reciprocity."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "thematic",
+      "description": "The headline downstream result this chain serves: bounded gaps between primes (Zhang / Maynard-Tao). Bombieri-Vinogradov — for which Pólya-Vinogradov is a building block — is the key analytic input to the conditional gap bounds."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "foundational",
+      "description": "The broader analytic-number-theory context. Character sums and their bounds sit alongside the zeta/L-function methods that prove the prime number theorem and its arithmetic-progression refinements."
     }
   ],
   "leanFile": {

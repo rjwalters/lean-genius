@@ -97,7 +97,7 @@
       "startLine": 97,
       "endLine": 103
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Erdős Conjecture: f(n) = Θ(n^{3/2})",
     "content": "The central definition of the formalization: `erdos_1155_conjecture` asserts that the triangle removal function satisfies $f(n) = \\Theta(n^{3/2})$ with explicit constants. Specifically: $\\exists c_1, c_2 \\in \\mathbb{R}$ with $0 < c_1 \\leq c_2$ such that $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for all sufficiently large $n$.\n\nThe gap with BFL: the conjecture requires **constant** multiplicative bounds ($c_1, c_2$ independent of $n$), while BFL only establishes **sub-polynomial** bounds ($n^{-\\varepsilon} \\leq f(n)/n^{3/2} \\leq n^{\\varepsilon}$). This is the difference between the ratio $f(n)/n^{3/2}$ being bounded between constants versus being bounded between functions that grow/shrink with $n$.\n\nThe built-in constraint $c_1 \\leq c_2$ is not a separate assumption — it's forced by the eventual inequality $c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$ for $n^{3/2} > 0$. Including it in the definition simplifies later proofs (see `conjecture_iff_both_bounds`).",
     "mathContext": "$\\text{erdos\\_1155\\_conjecture} := \\exists c_1, c_2 \\in \\mathbb{R},\\; 0 < c_1 \\leq c_2 \\wedge \\forall^\\infty n,\\; c_1 n^{3/2} \\leq f(n) \\leq c_2 n^{3/2}$.\n\nEquivalently: $\\exists c_1, c_2 > 0$ such that $f(n)/n^{3/2} \\in [c_1, c_2]$ eventually — a compactness condition on the ratio sequence in $(0, \\infty)$.",

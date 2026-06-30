@@ -131,7 +131,7 @@
       "startLine": 350,
       "endLine": 417
     },
-    "type": "definition",
+    "type": "lemma",
     "title": "Insphere and Exspheres: Face-Area Barycentric Coordinates",
     "content": "`Tetrahedron.incenter` is the face-area-weighted average of vertices: $I = (S_A A + S_B B + S_C C + S_D D)/(S_A + S_B + S_C + S_D)$ where $S_X$ is the area of the face opposite vertex $X$. `inradius = 3V / S` (total surface area $S$). The four excenters use signed barycentric coordinates: `excenter_A` flips the sign of $S_A$ (negative weight for face A), giving $E_A = (-S_A A + S_B B + S_C C + S_D D) / (-S_A + S_B + S_C + S_D)$. Each `exradius_X = 3V / (-S_X + \\sum_{Y \\neq X} S_Y)`.",
     "mathContext": "The incenter barycentric formula generalizes the 2D formula (where weights are side lengths in 2D, but face areas in 3D). The inradius formula $r = 3V/S$ follows from: the tetrahedron decomposes into 4 sub-tetrahedra from the incenter to each face, each with volume $= (\\text{face area}) \\times r / 3$, summing to $V = S \\cdot r / 3$. The exsphere opposite vertex $A$ is tangent externally to face $BCD$ and internally to the planes of faces $ABC$, $ABD$, $ACD$. Its radius $r_A = 3V / (S_B + S_C + S_D - S_A)$, which is positive when $S_A < S_B + S_C + S_D$ (a non-trivial geometric constraint).",

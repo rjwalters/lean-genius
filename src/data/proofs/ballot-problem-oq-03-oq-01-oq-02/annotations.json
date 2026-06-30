@@ -4,380 +4,197 @@
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 36
+      "endLine": 43
     },
     "type": "concept",
-    "title": "Hook-Length Formula: Historical Context and LGV Strategy",
-    "content": "The hook-length formula (Frame-Robinson-Thrall 1954) counts Standard Young Tableaux: f^λ = n!/∏h(u), where h(u) = arm(u) + leg(u) + 1 is the hook length at cell u of shape λ. This is one of the most celebrated formulas in algebraic combinatorics — it connects SYT enumeration, representation theory (f^λ = dim Specht module S^λ), and lattice path counting via LGV. The file extends the n×n LGV infrastructure from BallotProblemOQ03OQ02 toward a full formalization: hook infrastructure is built and verified numerically for 8 shapes, while the two deep steps (SYT↔NI bijection and det factorization) remain as named sorries.",
-    "mathContext": "For a Young diagram $\\lambda$ with $n = |\\lambda|$ cells, the **hook-length formula** states $f^\\lambda = \\frac{n!}{\\prod_{u \\in \\lambda} h(u)}$, where $h(u) = \\text{arm}(u) + \\text{leg}(u) + 1$. The **LGV proof strategy**: (1) SYT($\\lambda$) bijects with non-intersecting lattice path tuples via the Fomin/RSK correspondence; (2) the LGV determinant $\\det\\left[\\binom{m+\\sigma_j+j-i}{m}\\right]$ factors as $n!/\\text{hookProd}(\\lambda)$. Together with the LGV lemma, these give $|\\text{SYT}(\\lambda)| = n!/\\text{hookProd}(\\lambda)$.",
+    "title": "Hook-Length Formula: Historical Context, Strategy, and Status",
+    "content": "The file header states the Frame-Robinson-Thrall (1954) hook-length formula: for a Young diagram μ with n cells, card(SYT(μ)) × ∏_{u∈μ} h(u) = n!, where h(u) = arm(u) + leg(u) + 1. Two proof routes are documented. The originally intended LGV route (SYT ↔ non-intersecting lattice-path tuples, then a determinant factorization) remains open. The route actually carried through here is corner recursion: the main theorem `hook_length_formula_general` is established via `card_SYT_corner_step` plus the `hook_walk_identity` dispatcher. The status block is candid about remaining sorries — all confined to PART XXVI of the companion Helpers file (the GNW 1979 key identity `gnwProb_key`, a standard induction `gnwProb_sum_corners`, and four trivial supporting lemmas) — so the gallery entry is marked formalized/wip rather than verified.",
+    "mathContext": "Hook-length formula: $\\operatorname{card}(\\mathrm{SYT}(\\mu)) \\cdot \\prod_{u\\in\\mu} h(u) = n!$ for $|\\mu| = n$, with $h(u) = \\operatorname{arm}(u) + \\operatorname{leg}(u) + 1$. Proved here by well-founded recursion on $|\\mu|$ via corner removal, reducing to the hook-walk identity $\\sum_{c\\in\\text{corners}(\\mu)} \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus c)} = |\\mu|$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Frame-Robinson-Thrall formula",
+      "hook-length formula",
       "Standard Young Tableaux",
-      "LGV lemma",
-      "Specht modules",
-      "RSK correspondence"
-    ],
-    "prerequisites": [
-      "lgv_lemma_rxr from BallotProblemOQ03OQ02",
-      "YoungDiagram (Mathlib)",
-      "Frame-Robinson-Thrall 1954"
-    ]
-  },
-  {
-    "id": "ann-hook-length-def",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 47,
-      "endLine": 71
-    },
-    "type": "definition",
-    "title": "hookLength: arm + leg + 1, Always Positive",
-    "content": "Three layered definitions: armLen μ i j = rowLen(i) - j - 1 (cells to the right), legLen μ i j = colLen(j) - i - 1 (cells below), hookLength μ i j = armLen + legLen + 1. The unconditional positivity lemma hookLength_pos uses omega directly (arm + leg + 1 ≥ 1 always). The characterization lemma hookLength_add_eq: for (i,j) ∈ μ, hookLength + i + j + 1 = rowLen(i) + colLen(j) — this avoids ℕ subtraction issues by converting the hook formula to an additive identity. The membership hypotheses give j < rowLen(i) and i < colLen(j), which reenergize the subtraction terms.",
-    "mathContext": "In a Young diagram $\\mu$: $\\text{arm}(i,j) = \\text{rowLen}(i) - j - 1$ and $\\text{leg}(i,j) = \\text{colLen}(j) - i - 1$, so $h(i,j) = \\text{arm} + \\text{leg} + 1$. **Key identity**: $h(i,j) + i + j + 1 = \\text{rowLen}(i) + \\text{colLen}(j)$ for $(i,j) \\in \\mu$. This is proved by `omega` using the membership conditions $j < \\text{rowLen}(i)$ and $i < \\text{colLen}(j)$, which prevent truncated-subtraction degeneracy. The hook-length formula uses this identity: $\\prod_{(i,j)\\in\\mu} h(i,j) = \\text{hookProd}(\\mu)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "YoungDiagram.rowLen",
-      "YoungDiagram.colLen",
-      "arm length",
-      "leg length",
-      "natural number subtraction"
-    ],
-    "prerequisites": [
-      "YoungDiagram.mem_iff_lt_rowLen",
-      "YoungDiagram.mem_iff_lt_colLen",
-      "omega tactic"
-    ]
-  },
-  {
-    "id": "ann-hook-prod-def",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 79,
-      "endLine": 92
-    },
-    "type": "definition",
-    "title": "hookProd: Product of Hook Lengths over All Cells",
-    "content": "hookProd μ = ∏ c ∈ μ.cells, hookLength μ c.1 c.2 — the product of all hook lengths over all cells. Two basic properties: hookProd_pos (always > 0, via Finset.prod_pos + hookLength_pos) and hookProd_empty (= 1 for the empty diagram, via cells_bot + prod_empty). The hook-length formula states card(SYT μ) × hookProd μ = μ.card! Numerically: for (2,1): hookProd = 3×1×1 = 3, 3!/3 = 2 SYTs; for (3,2,1): hookProd = 5×3×1×3×1×1 = 45, 6!/45 = 16 SYTs.",
-    "mathContext": "$\\text{hookProd}(\\mu) = \\prod_{(i,j) \\in \\mu} h(i,j)$. Positivity: each factor $h(i,j) \\geq 1 > 0$, so `Finset.prod_pos` with `hookLength_pos` gives $\\text{hookProd}(\\mu) > 0$. Empty diagram: $\\mu = \\bot$ has `cells_bot = \\emptyset$`, giving the empty product = 1. The hook-length formula can be written as $\\text{card(SYT}(\\mu)) = \\frac{|\\mu|!}{\\text{hookProd}(\\mu)}$, where $\\text{hookProd}(\\mu)$ always divides $|\\mu|!$ (a non-obvious divisibility result).",
-    "significance": "key",
-    "relatedConcepts": [
-      "hookLength",
-      "YoungDiagram.cells",
-      "Finset.prod_pos",
-      "hook-length formula"
-    ],
-    "prerequisites": [
-      "hookLength_pos",
-      "YoungDiagram.cells_bot",
-      "Finset.prod_pos",
-      "Finset.prod_empty"
-    ]
-  },
-  {
-    "id": "ann-syt-structure",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 101,
-      "endLine": 120
-    },
-    "type": "definition",
-    "title": "StandardYoungTableau: Strict Row/Column Increases, Not in Mathlib",
-    "content": "Defines StandardYoungTableau μ as a structure with 6 fields: entry (cell → ℕ), entry_zero (cells outside μ map to 0), entry_range (cells inside μ have entries in {1,...,|μ|}), entry_injOn (injectivity on μ), row_strict (entries strictly increase left-to-right), col_strict (entries strictly increase top-to-bottom). Mathlib has SemistandardYoungTableau (weakly increasing rows) but NOT SYT. The ext lemma (proved by cases + funext) gives proof irrelevance: two SYTs are equal iff their entry functions agree everywhere.",
-    "mathContext": "An SYT of shape $\\mu$ is a bijection $T: \\mu \\to \\{1,\\ldots,|\\mu|\\}$ with $T(i,j_1) < T(i,j_2)$ for $j_1 < j_2$ (row-strict) and $T(i_1,j) < T(i_2,j)$ for $i_1 < i_2$ (column-strict). Extending $T$ to all of $\\mathbb{N}^2$ via `entry_zero` (outside cells = 0) makes the domain a total Lean function. The `Fintype` instance for `StandardYoungTableau μ` (needed for `Fintype.card`) remains open — it would require showing SYT biject with a `Fin` type via the column-reading order.",
-    "significance": "key",
-    "relatedConcepts": [
-      "SemistandardYoungTableau (Mathlib)",
-      "YoungDiagram",
-      "Fintype.card",
-      "RSK correspondence"
-    ],
-    "prerequisites": [
-      "YoungDiagram",
-      "Fintype",
-      "funext"
-    ]
-  },
-  {
-    "id": "ann-lgv-config",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 130,
-      "endLine": 153
-    },
-    "type": "definition",
-    "title": "youngLGVConfig: LGV Encoding for Partitions via Reversed Row Lengths",
-    "content": "youngLGVConfig r σ hσ m hm builds the LGV configuration for a partition with weakly increasing row lengths σ : Fin r → ℕ (reversed from standard partition order). Sources: k ↦ k (identity, strictly monotone). Targets: k ↦ σ(k) + k (strictly monotone since σ monotone + position increments). The wellFormed condition (max source ≤ min target) requires σ(0) ≥ r-1: the smallest row must be long enough to dominate all sources. targets_strictMono is proved by omega after establishing σ(a) ≤ σ(b) (from monotonicity) and a < b (given).",
-    "mathContext": "For partition $(\\lambda_1 \\geq \\cdots \\geq \\lambda_r)$, reverse to get $\\sigma = (\\lambda_r \\leq \\cdots \\leq \\lambda_1)$. LGV sources $a_k = k$, targets $b_k = \\sigma_k + k$. Strictly monotone: $\\sigma_a \\leq \\sigma_b$ and $a < b$ imply $\\sigma_a + a < \\sigma_b + b$. **wellFormed** requires $\\max\\{a_k\\} = r-1 \\leq \\min\\{b_k\\} = \\sigma_0 + 0$, i.e., $\\sigma_0 \\geq r-1$ (smallest row length $\\geq$ number of rows minus 1). This ensures paths have valid start/end positions.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "LGVConfig",
-      "niTupleCount",
-      "Fomin growth diagrams",
-      "RSK correspondence"
-    ],
-    "prerequisites": [
-      "LGVConfig from BallotProblemOQ03OQ02",
-      "Monotone",
-      "Fin.zero_le"
-    ]
-  },
-  {
-    "id": "ann-main-theorem-sorries",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 164,
-      "endLine": 191
-    },
-    "type": "insight",
-    "title": "One Remaining Sorry: gnwProb_key (GNW 1979 Probabilistic Identity)",
-    "content": "The formalization has converged to corner induction (GNW strategy) as the main proof architecture. hook_length_formula_general is proved via well-founded induction in Part XIV using three components: (1) card_SYT_corner_step (corner recursion, proved), (2) hookProd_ratio_formula (proved in Part X), and (3) hook_walk_identity (the GNW summation identity). The sole remaining sorry is gnwProb_key in BallotProblemOQ03OQ01OQ02Helpers.lean — the GNW 1979 probabilistic identity for shapes with ≥10 rows and ≥3 columns that do not fall under the gHookYD case. The LGV-based route (ni_count_eq_syt_count, lgv_det_factors_as_hook_quotient) was superseded by this corner induction approach. The 2-row formula (hook_length_formula_2row_rect) connects to BallotProblemOQ03OQ03 via LGVCorollaries.",
-    "mathContext": "The **GNW corner induction**: $|\\text{SYT}(\\mu)| \\cdot \\text{hookProd}(\\mu) = \\sum_{c \\in \\text{corners}} |\\text{SYT}(\\mu\\setminus c)| \\cdot \\text{hookProd}(\\mu) = \\sum_c (n-1)! \\cdot \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus c)} = (n-1)! \\cdot n = n!$ using hook_walk_identity $\\sum_c \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus c)} = n$. The open sorry `gnwProb_key` establishes this identity for large shapes via the GNW probabilistic argument: the hook walk Markov chain has stationary measure whose corner masses sum to 1.",
-    "significance": "key",
-    "relatedConcepts": [
-      "hook_length_formula_2row_rect",
-      "lgv_lemma_rxr",
-      "RSK correspondence",
-      "Frame-Robinson-Thrall identity",
-      "Vandermonde determinant"
-    ],
-    "prerequisites": [
-      "lgv_lemma_rxr",
-      "ni_count_eq_syt_count (sorry)",
-      "lgv_det_factors_as_hook_quotient (sorry)"
-    ]
-  },
-  {
-    "id": "ann-numerical-verification",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 199,
-      "endLine": 223
-    },
-    "type": "concept",
-    "title": "Numerical Verification via norm_num for 8 Shapes",
-    "content": "Eight concrete examples verify the hook-length formula numerically for specific shapes: (2,1)→2, (2,2)→2, (3,1)→3, (3,2)→5, (3,2,1)→16, (4,3,2,1)→1440, (3,3)→5 (Catalan C₃), (4,4)→14 (Catalan C₄). All proved by norm_num after computing hookProd explicitly. The Catalan cases connect to the ballot problem: f^{(n,n)} = C_n since SYT of rectangular 2-row shape (n,n) biject with Dyck paths (non-crossing matchings). The norm_num proofs validate the hook computations without needing the full bijection proof.",
-    "mathContext": "**Catalan connection**: $f^{(n,n)} = C_n = \\frac{1}{n+1}\\binom{2n}{n}$. For $(3,3)$: hookProd $= 4\\cdot 3\\cdot 2\\cdot 3\\cdot 2\\cdot 1 = 144$, $f = 6!/144 = 5 = C_3$. For $(4,4)$: hookProd $= 5\\cdot 4\\cdot 3\\cdot 2\\cdot 4\\cdot 3\\cdot 2\\cdot 1 = 2880$, $f = 8!/2880 = 14 = C_4$. These connect to `hook_length_formula_2row_rect` (proved via `LGVCorollaries.hook_length_formula_two_row`): $C_m \\cdot (m+1)!\\cdot m! = (2m)!$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Catalan numbers",
-      "norm_num tactic",
-      "hook product",
-      "staircase partition",
-      "Dyck paths"
-    ],
-    "prerequisites": [
-      "hookProd computation",
-      "Nat.factorial",
-      "norm_num"
-    ]
-  },
-  {
-    "id": "ann-single-row-col-direct",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 276,
-      "endLine": 643
-    },
-    "type": "concept",
-    "title": "Direct HLF for 1×n and n×1: Unique SYT and hookProd = n! (No LGV Needed)",
-    "content": "Parts VI and VIb prove the hook-length formula for single-row (1×n) and single-column (n×1) shapes directly — no LGV machinery needed. For `oneRowYD n` (lines 291-469): hookLength(0,j) = n−j−1+0+1 = n−j, so hookProd = n×(n-1)×...×1 = n!. The unique SYT is `oneRowSYT n` with entry(0,j) = j+1. The formula: 1 × n! = n! follows by rewriting hcard=1 and hookProd=n!. For `oneColYD n` (lines 486-642): hookLength(i,0) = 0+(n−i−1)+1 = n−i, same product n!. The unique SYT is `oneColSYT n` with entry(i,0) = i+1. Both proofs are fully closed (0 sorries).\n\nThese two cases illustrate that for degenerate shapes (single row/column), SYT theory collapses: the unique filling is forced by the strict-increase conditions. They also validate the hook-length definitions: arm=0 for column-0 cells and leg=0 for row-0 cells simplify cleanly.",
-    "mathContext": "For $\\lambda = (n)$ (single row): $h(0,j) = (n-j-1) + 0 + 1 = n-j$. $\\text{hookProd} = \\prod_{j=0}^{n-1} (n-j) = n!$. Unique SYT: entry$(0,j) = j+1$. For $\\lambda = (1^n)$ (single column): $h(i,0) = 0 + (n-i-1) + 1 = n-i$. Same product. These are the row and column transposes of each other; the hook-length formula is symmetric under diagram transposition (since transposing swaps arm and leg, leaving $h(u)$ invariant). The LGV approach would give: for single-row, the LGV config has $r=1$, $\\sigma = (n)$, producing paths from $\\{0\\}$ to $\\{n\\}$ — trivially non-intersecting, giving niTupleCount = C(n,n) = 1 = |SYT|.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "oneRowYD",
-      "oneColYD",
-      "hookProd_oneRowYD",
-      "hookProd_oneColYD",
-      "degenerate Young diagrams"
-    ],
-    "prerequisites": [
-      "hookLength definition",
-      "hookProd definition",
-      "StandardYoungTableau definition",
-      "Fintype.card_eq_one_iff"
-    ]
-  },
-  {
-    "id": "ann-hook-shape-bijection",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 677,
-      "endLine": 1088
-    },
-    "type": "insight",
-    "title": "HLF for Hook-Shape (m+1,1): Explicit Bijection hookSYT: Fin(m+1) → SYT",
-    "content": "Part VIII proves the hook-length formula for `hookShapeYD m` — the Young diagram with top row of length m+1 and left column of height 2 (shape (m+1,1), a 'hook'). The proof is a direct bijection rather than LGV.\n\n**Key theorem `hookProd_hookShapeYD`** (line 778): hookProd(hookShapeYD m) = (m+2) × m!. The hook lengths are: (0,0)↦m+1 (arm=m, leg=0), (0,j)↦m+1-j for j=1..m (arm=m-j, leg=0), (1,0)↦1 (arm=0, leg=0). Product: (m+1)×m×...×1×1 = (m+1)! × m! / ... actually = (m+2)×m! by the combinatorial identity.\n\n**card_SYT_hookShapeYD** (line 1069): card(SYT(hookShapeYD m)) = m+1. The explicit bijection `hookSYT m : Fin(m+1) → SYT(hookShapeYD m)` maps index k to the tableau where cell (1,0) gets entry k+1 and the top row gets entries {1,...,m+1} \\ {k+1} in increasing order. The formula: (m+1) × (m+2)×m! = (m+2)!",
-    "mathContext": "Hook-shape $\\lambda = (m+1, 1)$ has $|\\lambda| = m+2$ cells. Hook lengths: $h(0,0) = m+2$ (arm $= m$, leg $= 1$); $h(0,j) = m+2-j-1$ for $j = 1,\\ldots,m$ (arm $= m-j$, leg $= 0$); $h(1,0) = 1$ (arm $= 0$, leg $= 0$). $\\text{hookProd} = (m+1) \\cdot m \\cdots 1 \\cdot 1 = (m+1)! / m! \\cdot m! = ...$. Actually: $\\text{hookProd} = \\prod_{j=0}^m (m+1-j) \\cdot 1 = (m+1)! $. But the meta says $(m+2) \\times m!$. For $m=1$: $(2,1)$-shape, hooks are 3,1,1: product = 3. formula gives $(1+2) \\times 1! = 3$. ✓ For $m=2$: $(3,1)$-shape, hooks are 3,2,1,1: product = 6. Formula gives $(2+2) \\times 2! = 8$? That doesn't match... Actually let me check: For $(3,1)$, $n=4$, $f^{(3,1)} = 4!/(3\\cdot 2\\cdot 1\\cdot 1) = 24/6 = 4$. So card = 3+1 = 4... wait, $m=2$ gives hookShapeYD 2 = shape $(3,1)$, $m+1 = 3$ SYTs. And $3 \\times 8 = 24 = 4!$ ✓ with hookProd $= 8 = 4 \\times 2! = (m+2) \\times m!$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "hookShapeYD",
-      "hookSYT bijection",
-      "card_SYT_hookShapeYD",
-      "hookProd_hookShapeYD",
-      "hook partition"
-    ],
-    "prerequisites": [
-      "StandardYoungTableau definition",
-      "hookProd definition",
-      "Fintype.card_congr",
-      "Equiv.ofBijective"
-    ]
-  },
-  {
-    "id": "ann-two-rect-catalan",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 1089,
-      "endLine": 2727
-    },
-    "type": "insight",
-    "title": "HLF for 2×m Rectangles via Ballot Bijection and Lindstrom Reflection: C_m × (m+1)! × m! = (2m)!",
-    "content": "Part IX (lines 1089-2727) proves the hook-length formula for `twoRectYD m` (two rows each of length m, total 2m cells): card(SYT(m×m)) × hookProd = (2m)!. This is the most complex proof in the file, requiring a full ballot bijection and Lindstrom reflection argument.\n\n**hookProd_twoRectYD** (line 1203): hookProd(twoRectYD m) = (m+1)! × m!. Row-0 hooks: m+1, m, ..., 2, 1 (product = (m+1)!). Row-1 hooks: m, m-1, ..., 1 (product = m!). Total = (m+1)! × m!.\n\n**card_SYT_twoRectYD** (line ~1380, completed in IXb-IXd): card(SYT(twoRectYD m)) = C_m (Catalan number). The proof constructs an explicit bijection SYT(m×m) ↔ ballot sequences of length 2m. Part IXb (lines 1256-1380) builds the forward map (SYT → ballot Finset). Part IXc (lines 1381-1566) constructs the inverse. Part IXd (lines 1567-1741) proves the ballot count = C_m via the Lindstrom reflection principle.\n\n**hook_length_formula_two_rect** (line 2716): C_m × (m+1)! × m! = (2m)! — this is exactly `LGVCorollaries.hook_length_formula_two_row`, delegating to the pre-built LGV infrastructure in BallotProblemOQ03OQ03.",
-    "mathContext": "The **Catalan connection**: Standard Young Tableaux of shape $(m,m)$ are in bijection with ballot sequences (sequences of m A's and m B's where every prefix has at least as many A's as B's), and these count Dyck paths and non-crossing matchings — all counted by $C_m = \\frac{1}{m+1}\\binom{2m}{m}$. The **Lindstrom reflection bijection**: ballot sequences with more B's than A's biject with unrestricted sequences via reflecting the first bad prefix, giving $\\binom{2m}{m} - \\binom{2m}{m-1} = C_m$. Lean statement: $C_m \\times (m+1)! \\times m! = (2m)!$, which follows from $C_m = \\frac{(2m)!}{(m+1)!m!}$. This connects to RSK: the Schensted insertion of a ballot sequence of shape $(m,m)$ is exactly the tableau bijection.",
-    "significance": "key",
-    "relatedConcepts": [
-      "twoRectYD",
-      "Catalan numbers",
-      "ballot sequences",
-      "Lindstrom reflection",
-      "card_SYT_twoRectYD",
-      "LGVCorollaries.hook_length_formula_two_row",
-      "Dyck paths"
-    ],
-    "prerequisites": [
-      "hookProd_twoRectYD",
-      "card_SYT_twoRectYD",
-      "ballot bijection infrastructure",
-      "LGVCorollaries from BallotProblemOQ03OQ03"
-    ]
-  },
-  {
-    "id": "ann-ghookyd",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 644,
-      "endLine": 1420
-    },
-    "type": "insight",
-    "title": "HLF for Generalized Hook Shapes [a, 1ᵇ]: Fully Proved",
-    "content": "Part VIc (lines 644-1376) proves the hook-length formula for generalized hook shapes gHookYD a b: a first row of length a with a vertical 'leg' of b cells below (0,0). Shape [a, 1ᵇ] has n = a+b cells. Hook lengths: h(0,0) = a+b (corner), h(0,j) = a-j for j=1..a-1 (arm), h(i,0) = b+1-i for i=1..b (leg). hookProd = (a+b)·(a-1)!·b!. The SYT count is C(a+b-1, b) (choosing which b of the a+b-1 non-corner positions go in the leg). The proof `hook_length_formula_gHookYD` is complete with 0 sorries, using double induction + the identity C(n,k)·k!·(n-k)! = n!. Part VIIIb (lines 1421-1826) then proves the hook-shape formula for (m+1, 1) as a special case, with an explicit bijection hookSYT: Fin(m+1) → SYT(hookShapeYD m).",
-    "mathContext": "For shape $[a, 1^b]$ with $n = a+b$: $\\text{hookProd} = (a+b) \\cdot (a-1)! \\cdot b!$ and $|\\text{SYT}| = \\binom{a+b-1}{b}$. Identity: $\\binom{a+b-1}{b} \\cdot (a+b) \\cdot (a-1)! \\cdot b! = (a+b)!$ follows from $\\binom{n-1}{k} = \\frac{(n-1)!}{k!(n-k-1)!}$ by multiplying by $n! / (n-1)!$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "gHookYD",
-      "hook partition",
-      "double induction",
-      "Nat.choose_mul_factorial"
-    ],
-    "prerequisites": [
-      "hookLength definition",
-      "hookProd definition",
-      "card_SYT_gHookYD",
-      "Nat.choose"
-    ]
-  },
-  {
-    "id": "ann-general-two-row",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 3473,
-      "endLine": 4327
-    },
-    "type": "insight",
-    "title": "HLF for General 2-Row [a,b]: ballotSeqCount via Corner Recursion",
-    "content": "Parts XI-XII prove the hook-length formula for all 2-row Young diagrams twoRowYD a b (a ≥ b ≥ 0). Key results:\n\n**hookProd_twoRowYD**: hookProd([a,b]) = (a+1).descFactorial(b) × (a-b)! × b!. Row-0 hooks for j<b: a-j+1 (arm=a-j-1, leg=1); for b≤j<a: a-j (leg=0). Row-1 hooks: b-j for j<b.\n\n**card_SYT_twoRowYD**: card(SYT([a,b])) = ballotSeqCount(a+1, b) — proved via corner recursion. When a > b, the unique corner is (0,a-1); when a = b, the unique corner is (1,b-1). The recursion ballotSeqCount(a+1,b) = ballotSeqCount(a,b) + ballotSeqCount(a+1,b-1) (removing the corner and applying IH) matches the ballot recursion.\n\n**hook_length_formula_two_row_gen** (line 4272): the product identity is closed. **hook_length_formula_atMostTwoRows** (line 4323): extends to all μ with μ.rowLen 2 = 0.",
-    "mathContext": "For shape $[a,b]$ with $a \\geq b$: the number of SYT is the ballot count $\\frac{a-b+1}{a+1}\\binom{a+b}{b}$. Combined with $\\text{hookProd}([a,b]) = \\frac{(a+1)!}{(a-b+1)} \\cdot \\frac{b!}{1} = ...$, the product $(a-b+1)/(a+1) \\cdot \\binom{a+b}{b} \\cdot \\text{hookProd} = (a+b)!$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "twoRowYD",
-      "ballot sequences",
-      "ballotSeqCount",
-      "descending factorial",
-      "corner recursion"
-    ],
-    "prerequisites": [
-      "ballotSeqCount",
-      "hookProd_twoRowYD",
-      "card_SYT_twoRowYD",
-      "hook_length_formula_gHookYD"
-    ]
-  },
-  {
-    "id": "ann-corner-induction",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 4329,
-      "endLine": 4725
-    },
-    "type": "concept",
-    "title": "General HLF via Corner Induction and Hook Walk Identity",
-    "content": "Parts XIII-XIV prove hook_length_formula_general by well-founded induction on μ.card.\n\n**Part XIII (corner recursion)**: `card_SYT_corner_step` proves card(SYT(μ)) = Σ_{c∈corners(μ)} card(SYT(μ\\c)) for non-empty μ. Each corner c (arm=0, leg=0, hookLength=1) corresponds to a tableau where the maximum entry n fills position c. Removing c gives a valid SYT of μ\\c.\n\n**Part XIV (corner induction)**: `hook_length_formula_Q` in ℚ, by WF induction:\n- card(SYT) × hookProd = Σ_c card(SYT(μ\\c)) × hookProd  [corner step]\n- = Σ_c (n-1)! × hookProd/hookProd(μ\\c)  [IH]\n- = (n-1)! × Σ_c hookProd(μ)/hookProd(μ\\c)\n- = (n-1)! × n = n!  [hook_walk_identity]\n\n`hook_length_formula_general` is then `exact_mod_cast hook_length_formula_Q μ`. The sole sorry is hook_walk_identity for ≥10-row shapes with ≥3 columns.",
-    "mathContext": "**Hook walk identity**: $\\sum_{c \\in \\text{corners}(\\mu)} \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu \\setminus c)} = |\\mu|$. Each ratio corresponds to the product of hook lengths along the 'hook' of corner $c$ — the arm plus leg. The GNW probabilistic proof: starting from a random cell, take a random step to the arm or leg, repeat until reaching a corner; the probability of ending at corner $c$ equals $\\text{hookProd}(\\mu \\setminus c)/\\text{hookProd}(\\mu)$, and these probabilities sum to 1.",
-    "significance": "key",
-    "relatedConcepts": [
-      "corner recursion",
-      "hook_walk_identity",
       "Frame-Robinson-Thrall",
+      "corner recursion",
+      "LGV lemma",
+      "GNW hook walk"
+    ],
+    "prerequisites": [
+      "Young diagrams",
+      "Standard Young Tableaux",
+      "arm and leg lengths",
+      "BallotProblemOQ03OQ01OQ02Helpers.lean"
+    ]
+  },
+  {
+    "id": "ann-rectYD",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 107
+    },
+    "type": "definition",
+    "title": "rectYD: The k×a Rectangular Young Diagram and Its Basic Measurements",
+    "content": "PART XXV opens by constructing the k×a rectangular Young diagram `rectYD k a` as the lower set of all cells (i,j) with i<k and j<a (built via a biUnion of row images, with `isLowerSet` discharged from the product order). The membership lemma `mem_rectYD` characterizes (i,j) ∈ rectYD k a ⟺ i<k ∧ j<a. From it, three measurement lemmas are proved by antisymmetry: `rowLen_rectYD i = a` for i<k, `colLen_rectYD j = k` for j<a, and `card_rectYD = k * a` (by exhibiting the cell set as a literal Finset product range k ×ˢ range a). These give the building blocks for the rectangular hook-walk identity that follows.",
+    "mathContext": "$\\text{rectYD}(k,a) = \\{(i,j) : i < k,\\ j < a\\}$. Row lengths are all $a$, column lengths all $k$, and $|\\text{rectYD}(k,a)| = k\\cdot a$ since its cells equal $\\{0,\\dots,k-1\\} \\times \\{0,\\dots,a-1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Young diagram",
+      "lower set",
+      "rowLen and colLen",
+      "Finset.product",
+      "diagram cardinality"
+    ],
+    "prerequisites": [
+      "YoungDiagram structure",
+      "Finset.biUnion and Finset.image",
+      "YoungDiagram.mem_iff_lt_rowLen / mem_iff_lt_colLen"
+    ]
+  },
+  {
+    "id": "ann-rect-hooks-corner",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Hook Lengths on the Rectangle and Its Unique Corner",
+    "content": "Two lemmas compute hook lengths along the rectangle's boundary directly from `hookLength_add_eq` (hook = arm + leg + 1) and the row/column-length facts: along the last row, `hookLength (rectYD k a) (k-1) s = a - s`; along the last column, `hookLength (rectYD k a) r (a-1) = k - r`. The geometric crux follows: `isCorner_rectYD` shows (k-1, a-1) is a corner (its right and below neighbors are outside the diagram), and `corners_rectYD_singleton` proves the corner set is exactly the singleton {(k-1, a-1)} via `Finset.eq_singleton_iff_unique_mem`. A rectangle has exactly one removable corner — the fact that collapses the hook-walk sum to a single term.",
+    "mathContext": "On $\\text{rectYD}(k,a)$: last-row hooks are $h(k-1,s)=a-s$, last-column hooks are $h(r,a-1)=k-r$. The only corner is $(k-1,a-1)$, so $\\text{corners}(\\text{rectYD}(k,a)) = \\{(k-1,a-1)\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hook length",
+      "corner cell",
+      "removable corner",
+      "Finset.eq_singleton_iff_unique_mem"
+    ],
+    "prerequisites": [
+      "hookLength_add_eq",
+      "rowLen_rectYD / colLen_rectYD",
+      "isCorner and corners definitions"
+    ]
+  },
+  {
+    "id": "ann-telescope",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 145,
+      "endLine": 216
+    },
+    "type": "insight",
+    "title": "Telescoping Products: Arm and Leg Ratios Collapse to a and k",
+    "content": "The general telescoping identity `prod_telescope_gen m n` proves ∏_{s<n} (m+1-s)/(m-s) = (m+1)/(m+1-n) for n ≤ m, by induction with field_simp clearing the non-vanishing denominators. It is then applied twice. `arm_prod_rectYD` rewrites the arm-direction hook ratios over the last row (substituting hookLength = a - s, reindexing denominators a-s-1 = (a-1)-s) so the telescoping collapses the product to exactly a. Symmetrically `leg_prod_rectYD` collapses the leg-direction product over the last column to exactly k. These two closed forms feed the rectangular hook-walk identity.",
+    "mathContext": "$\\prod_{s<n} \\frac{m+1-s}{m-s} = \\frac{m+1}{m+1-n}$. Specializing to the rectangle's hook ratios, the arm product over the last row telescopes to $a$ and the leg product over the last column telescopes to $k$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping product",
+      "Finset.prod_range_succ",
+      "field_simp",
+      "hook ratios"
+    ],
+    "prerequisites": [
+      "induction on Finset.range",
+      "rational arithmetic in ℚ",
+      "hookLength_rectYD_lastrow / lastcol"
+    ]
+  },
+  {
+    "id": "ann-rect-hookwalk",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 218,
+      "endLine": 241
+    },
+    "type": "insight",
+    "title": "hook_walk_identity_rectYD: The Identity for Rectangles, Proved Non-Circularly",
+    "content": "`hook_walk_identity_rectYD` establishes the hook-walk identity for k×a rectangles directly: ∑_{c ∈ corners} hookProd(μ)/hookProd(μ\\c) = card(μ). Because the rectangle has a single corner, the sum is one term; `hookProd_ratio_formula` expands that term as the product of arm and leg hook ratios, which the preceding telescoping lemmas collapse to a and k respectively, giving a·k = card(rectYD k a). Crucially this proof avoids the GNW probabilistic machinery, so it is non-circular — it serves as the base/rectangle branch of the general dispatcher.",
+    "mathContext": "For the rectangle, $\\sum_{c\\in\\text{corners}}\\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus c)} = \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus(k-1,a-1))} = a\\cdot k = |\\text{rectYD}(k,a)|$ via the arm/leg telescoping products.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hook walk identity",
+      "hookProd_ratio_formula",
       "removeCorner",
-      "GNW proof"
+      "non-circular proof"
+    ],
+    "prerequisites": [
+      "corners_rectYD_singleton",
+      "arm_prod_rectYD / leg_prod_rectYD",
+      "card_rectYD"
+    ]
+  },
+  {
+    "id": "ann-hookwalk-dispatcher",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 243,
+      "endLine": 307
+    },
+    "type": "insight",
+    "title": "hook_walk_identity: The Shape-by-Shape Dispatcher",
+    "content": "`hook_walk_identity` proves the hook-walk identity for an arbitrary diagram μ by case-splitting on shape and delegating each case to a specialized lemma proved elsewhere. The cascade: at-most-2-row and at-most-2-column shapes; generalized hook shapes [a, 1ᵇ]; then explicit branches for exactly 3, 4, 5, 6, 7, 8, and 9 rows; the transpose-duality branch for ≤9 columns; the rectangle branch (this file's `hook_walk_identity_rectYD`); and finally the ≥10-row, ≥10-column, non-rectangular case, which is the only branch routed to the GNW infrastructure (`hook_walk_identity_gnw`) where the remaining sorries live. The dispatcher itself is sorry-free; every closed case is non-circular.",
+    "mathContext": "For every YoungDiagram $\\mu$ with $|\\mu|>0$: $\\sum_{c\\in\\text{corners}(\\mu)} \\frac{\\text{hookProd}(\\mu)}{\\text{hookProd}(\\mu\\setminus c)} = |\\mu|$. Proved by exhaustive shape dispatch; only the $\\ge 10\\times\\ge 10$ non-rectangular branch depends on the GNW hook-walk argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hook walk identity",
+      "case analysis by row count",
+      "transpose duality",
+      "GNW 1979 hook walk",
+      "rowLen / colLen"
+    ],
+    "prerequisites": [
+      "hook_walk_identity_rectYD",
+      "the per-shape companion lemmas in Helpers",
+      "hook_walk_identity_gnw"
+    ]
+  },
+  {
+    "id": "ann-formula-Q",
+    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 309,
+      "endLine": 375
+    },
+    "type": "insight",
+    "title": "hook_length_formula_Q: Well-Founded Corner Recursion over ℚ",
+    "content": "`hook_length_formula_Q` proves card(SYT(ν)) × hookProd(ν) = ν.card! over ℚ by well-founded recursion on ν.card. The empty diagram is the base case (a unique tableau, hookProd = 1). For ν.card > 0 the proof uses `card_SYT_corner_step` (card(SYT ν) = Σ_c card(SYT(ν\\c))) and the inductive hypothesis on each removed-corner subdiagram, then a five-step ℚ calculation: substitute the corner step, rewrite each summand via the IH as (ν.card-1)! · hookProd(ν)/hookProd(ν\\c), factor out (ν.card-1)!, apply `hook_walk_identity` to turn the remaining sum into ν.card, and finish with (ν.card-1)!·ν.card = ν.card!. Termination holds because removeCorner strictly decreases card.",
+    "mathContext": "$\\operatorname{card}(\\mathrm{SYT}(\\nu)) \\cdot \\text{hookProd}(\\nu) = |\\nu|!$, by induction on $|\\nu|$: $\\text{card}(\\mathrm{SYT}(\\nu)) \\cdot \\text{hookProd}(\\nu) = \\sum_c (|\\nu|-1)! \\frac{\\text{hookProd}(\\nu)}{\\text{hookProd}(\\nu\\setminus c)} = (|\\nu|-1)! \\cdot |\\nu| = |\\nu|!$, using the hook-walk identity for the middle step.",
+    "significance": "key",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "card_SYT_corner_step",
+      "removeCorner",
+      "hook walk identity",
+      "factorial identity"
     ],
     "prerequisites": [
       "card_SYT_corner_step",
       "hook_walk_identity",
-      "hookProd_pos",
-      "WF induction"
+      "hookProdQ_ne_zero",
+      "termination_by / decreasing_by"
     ]
   },
   {
-    "id": "ann-transpose-and-nrow",
+    "id": "ann-capstone",
     "proofId": "ballot-problem-oq-03-oq-01-oq-02",
     "range": {
-      "startLine": 5183,
-      "endLine": 13633
-    },
-    "type": "concept",
-    "title": "Transpose Duality and N-Row Hook Walk: Direct Algebraic Proofs",
-    "content": "**Part XV (transpose duality, lines 5183-5357)**: Proves `hookLength_transpose` (h(μ,i,j) = h(μᵀ,j,i)) by omega after swapping rowLen↔colLen via Mathlib's YoungDiagram.rowLen_transpose. From this: hookProd(μ) = hookProd(μᵀ) and card(SYT μ) = card(SYT μᵀ) via the sytTranspose bijection T ↦ (T(j,i)). Consequence: HLF and hook_walk_identity for ≤2-column shapes via reflection to ≤2-row cases.\n\n**Parts XIVc-XXIII (3-row through 9-row, lines 5725-13633)**: For each exactly-N-row shape [a₁≥⋯≥aₙ>0], the hook walk identity is proved by:\n1. Computing `colLen` in zones (ranges of j where colLen changes)\n2. Deriving `hookLen` lemmas expressing each hook length as a polynomial in a₁,...,aₙ\n3. Computing `armProd` (product of arm hook lengths at each corner)\n4. Applying `field_simp + ring` to verify the sum-of-ratios identity algebraically\n\nPart XXII (8-row, ~1,612 lines): 36 hookLen lemmas + 8 armProd lemmas. Part XXIII (9-row): similar scale. The `ring` tactic closes the identity once hook lengths are polynomial expressions.",
-    "mathContext": "**Transpose**: $h(\\mu, i, j) = (\\text{rowLen}_\\mu(i) - j - 1) + (\\text{colLen}_\\mu(j) - i - 1) + 1 = h(\\mu^\\top, j, i)$ since $\\text{rowLen}_{\\mu^\\top}(j) = \\text{colLen}_\\mu(j)$. **N-row hook walk**: for shape $[a_1, \\ldots, a_N]$ with $a_1 > \\cdots > a_N$, the corners are $(i, a_{i+1})$ for $i=0,\\ldots,N-1$ (and possibly more). The ratio $\\text{hookProd}(\\mu)/\\text{hookProd}(\\mu\\setminus c)$ is rational in $a_1,\\ldots,a_N$, and their sum equals $\\sum a_i = |\\mu|$ — verifiable by `ring` once polynomially expressed.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "YoungDiagram.transpose",
-      "hookLength_transpose",
-      "hook_walk_identity_NRow",
-      "field_simp + ring",
-      "GNW identity"
-    ],
-    "prerequisites": [
-      "hookLength definition",
-      "YoungDiagram.rowLen_transpose",
-      "isCorner definition",
-      "field_simp"
-    ]
-  },
-  {
-    "id": "ann-final-theorem",
-    "proofId": "ballot-problem-oq-03-oq-01-oq-02",
-    "range": {
-      "startLine": 13634,
-      "endLine": 13638
+      "startLine": 377,
+      "endLine": 398
     },
     "type": "insight",
-    "title": "hook_length_formula_general: The Capstone of 13,638 Lines",
-    "content": "`hook_length_formula_general` at line 13634 is the logical culmination of the entire file. Its proof is a one-liner: `exact_mod_cast hook_length_formula_Q μ`. The ℚ version (hook_length_formula_Q) was proved by corner induction in Part XIV using hook_walk_identity. The `exact_mod_cast` coercion from ℚ to ℕ is valid because both sides are natural numbers and the equality holds in ℚ. This represents the first Lean 4 formalization of the hook-length formula for all currently verified shape families, and the most comprehensive formalization of the Frame-Robinson-Thrall theorem in any proof assistant. The remaining sorry (hook_walk_identity for ≥10-row, ≥3-col, non-gHookYD shapes) is the only obstacle to a complete axiom-free proof.",
-    "mathContext": "The **Frame-Robinson-Thrall theorem** (1954): for any Young diagram $\\mu$ with $n$ cells, $|\\text{SYT}(\\mu)| = n! / \\prod_{(i,j) \\in \\mu} h(i,j)$. The GNW (Greene-Nijenhuis-Wilf 1979) proof via the hook walk identity is the most elegant known proof. This formalization implements GNW for small cases and uses it to drive the corner induction that gives the general result, modulo the one remaining sorry.",
+    "title": "hook_length_formula_general and hook_length_formula: The Capstone Theorems",
+    "content": "The two public theorems cast the rational identity back to ℕ. `hook_length_formula_general μ` states card(SYT(μ)) × hookProd(μ) = μ.card!, proved by `exact_mod_cast` from `hook_length_formula_Q`. `hook_length_formula μ` is its conventionally-named alias. The docstrings record the honest mathematical status: the formula is fully proved for all shapes with ≤9 rows or ≤9 columns and for all rectangles via the non-circular dispatcher branches; the ≥10×≥10 non-rectangular case rests on the GNW infrastructure in PART XXVI of Helpers, whose `gnwProb_key` is the hard remaining sorry. The alternate LGV route stays open.",
+    "mathContext": "$\\operatorname{card}(\\mathrm{SYT}(\\mu)) \\cdot \\text{hookProd}(\\mu) = |\\mu|!$ in $\\mathbb{N}$, obtained by casting `hook_length_formula_Q` from $\\mathbb{Q}$. Complete for $\\le 9$ rows/columns and all rectangles; the $\\ge 10\\times\\ge 10$ non-rectangular case is conditional on GNW infrastructure.",
     "significance": "key",
     "relatedConcepts": [
-      "hook_length_formula_Q",
+      "hook-length formula",
       "exact_mod_cast",
-      "hook_walk_identity",
-      "Frame-Robinson-Thrall 1954",
-      "GNW 1979"
+      "Standard Young Tableaux count",
+      "GNW remaining sorry"
     ],
     "prerequisites": [
       "hook_length_formula_Q",
-      "corner induction",
-      "hook_walk_identity"
+      "casting ℚ identities to ℕ"
     ]
   }
 ]

@@ -9,9 +9,14 @@
       "ContinuousOn.sub for continuity of g = f - id",
       "Cauchy-Bolzano theorem as prototype"
     ],
+    "prerequisites": [
+      "continuity of real functions on a closed interval [a,b]",
+      "the Intermediate Value Theorem",
+      "the auxiliary function g(x) = f(x) \u2212 x and its sign changes"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 64,
+      "startLine": 67,
       "endLine": 117
     },
     "id": "ann-brouwer-oq01-1d-ivt",
@@ -28,9 +33,14 @@
       "connected vs discrete image",
       "Brouwer FPT \u2194 No-Retraction equivalence"
     ],
+    "prerequisites": [
+      "continuous maps and connectedness of the image",
+      "the boundary {0,1} of the interval [0,1]",
+      "the Intermediate Value Theorem (no continuous surjection onto a disconnected set)"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 119,
+      "startLine": 123,
       "endLine": 159
     },
     "id": "ann-brouwer-oq01-no-retraction",
@@ -47,9 +57,14 @@
       "antipodal points on S^n",
       "antisymmetric function g(-x) = -g(x)"
     ],
+    "prerequisites": [
+      "antipodal / antisymmetric functions g(\u2212x) = \u2212g(x)",
+      "the Intermediate Value Theorem",
+      "odd functions vanish somewhere on a symmetric interval"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 161,
+      "startLine": 165,
       "endLine": 229
     },
     "id": "ann-brouwer-oq01-borsuk-ulam",
@@ -66,9 +81,14 @@
       "NNReal for nonneg Lipschitz constants",
       "Picard iteration for ODEs as application"
     ],
+    "prerequisites": [
+      "metric spaces and the distance function",
+      "contraction mappings (Lipschitz constant K < 1)",
+      "the Banach fixed-point theorem and Picard iteration"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 231,
+      "startLine": 235,
       "endLine": 278
     },
     "id": "ann-brouwer-oq01-banach",
@@ -85,9 +105,14 @@
       "existence vs uniqueness in fixed point theory",
       "existsUnique (\u2203! x) in Lean 4"
     ],
+    "prerequisites": [
+      "the distinction between existence and uniqueness",
+      "fixed points of the identity vs a constant map",
+      "the \u2203! (exists-unique) quantifier"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 280,
+      "startLine": 284,
       "endLine": 310
     },
     "id": "ann-brouwer-oq01-nonuniqueness",
@@ -104,9 +129,14 @@
       "BrouwerFixedPoint.lean axiomatized companion",
       "Mathlib gap: Brouwer FPT not in Mathlib 4.26"
     ],
+    "prerequisites": [
+      "the 1-dimensional Brouwer/IVT argument",
+      "why the IVT has no direct higher-dimensional analogue",
+      "algebraic-topology obstructions (singular homology H\u2099(S\u207f\u207b\u00b9), Sperner\u2019s lemma)"
+    ],
     "proofId": "brouwer-fixed-point-oq-01",
     "range": {
-      "startLine": 355,
+      "startLine": 359,
       "endLine": 392
     },
     "id": "ann-brouwer-oq01-dimensional-gap",

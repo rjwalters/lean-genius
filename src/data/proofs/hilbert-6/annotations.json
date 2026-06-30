@@ -16,7 +16,11 @@
       "foundations of mathematics",
       "Hilbert's program"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the axiomatic method",
+      "foundations of mathematics and Hilbert's program",
+      "mathematical modeling of physics"
+    ]
   },
   {
     "id": "ann-kolmogorov",
@@ -35,7 +39,11 @@
       "sample space",
       "normalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sample spaces and events",
+      "measures and the unit total measure",
+      "probability as a normalized measure"
+    ]
   },
   {
     "id": "ann-sigma-additivity",
@@ -54,7 +62,11 @@
       "convergence theorems",
       "Lebesgue integration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "σ-algebras and measures",
+      "countable disjoint unions",
+      "Lebesgue measure/integration"
+    ]
   },
   {
     "id": "ann-bayes",
@@ -73,7 +85,11 @@
       "conditional probability",
       "statistical learning"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conditional probability P(A|B)",
+      "the law of total probability",
+      "Bayesian updating"
+    ]
   },
   {
     "id": "ann-quantum-state",
@@ -92,7 +108,11 @@
       "quantum superposition",
       "wave function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hilbert spaces and unit vectors",
+      "superposition and the wave function",
+      "inner products in ℂⁿ"
+    ]
   },
   {
     "id": "ann-born-rule",
@@ -111,7 +131,11 @@
       "probability amplitude",
       "wave function collapse"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quantum states as Hilbert-space vectors",
+      "probability amplitudes and |ψ|²",
+      "measurement and projection"
+    ]
   },
   {
     "id": "ann-lagrangian",
@@ -130,7 +154,11 @@
       "kinetic energy",
       "potential energy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "configuration space and generalized coordinates",
+      "kinetic and potential energy",
+      "the Lagrangian L = T − V"
+    ]
   },
   {
     "id": "ann-hamilton",
@@ -149,7 +177,11 @@
       "Euler-Lagrange equations",
       "Noether's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the action functional",
+      "the calculus of variations / Euler–Lagrange equations",
+      "Noether's theorem (symmetries ↔ conservation laws)"
+    ]
   },
   {
     "id": "ann-caratheodory",
@@ -168,7 +200,11 @@
       "second law",
       "irreversibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "thermodynamic states and processes",
+      "adiabatic accessibility",
+      "Pfaffian (differential) forms"
+    ]
   },
   {
     "id": "ann-entropy",
@@ -187,7 +223,11 @@
       "irreversibility",
       "Pfaffian forms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the second law of thermodynamics",
+      "integrating factors for Pfaffian forms",
+      "entropy as a state function"
+    ]
   },
   {
     "id": "ann-status",
@@ -206,6 +246,10 @@
       "theory of everything",
       "philosophy of physics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the axiomatization goal of Hilbert's 6th",
+      "quantum field theory and general relativity",
+      "the open quantum-gravity unification"
+    ]
   }
 ]

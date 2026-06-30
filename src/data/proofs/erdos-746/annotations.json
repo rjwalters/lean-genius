@@ -216,7 +216,7 @@
       "startLine": 200,
       "endLine": 216
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Connectivity and Threshold Coincidence",
     "content": "**IsConnected G**: All vertices are mutually reachable via `G.Reachable`.\n\n**connectivity_threshold** (axiom): $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ is a.s. connected.\n\n**hamiltonian_implies_connected** (sorry): Hamiltonicity implies connectivity (a Hamiltonian cycle connects all vertices).\n\n**thresholdCoincidence**: The thresholds for connectivity and Hamiltonicity coincide at $(1/2) n \\log n$.",
     "mathContext": "The coincidence of the connectivity and Hamiltonicity thresholds is a deep structural fact. Both are governed by the same bottleneck: isolated vertices (for connectivity) and low-degree vertices (for Hamiltonicity). At the threshold, the last isolated vertex disappears simultaneously with the graph becoming Hamiltonian. This is an instance of the **'minimum degree controls everything'** phenomenon in random graph theory.",

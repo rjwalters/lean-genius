@@ -112,25 +112,49 @@
       "id": "not-perfect-power",
       "title": "Not-a-Perfect-Power Lemmas",
       "startLine": 100,
-      "endLine": 231,
+      "endLine": 249,
       "summary": "Concrete proofs that specific small numbers are not perfect squares, cubes, 4th or 5th powers.",
-      "mathContext": "Concrete verifications that specific small integers are not perfect powers: $2, 3, 5$ are not perfect squares; $2, 3, 5$ are not perfect cubes; etc. Each proved by exhaustive case analysis or `omega`/`norm_num`."
+      "mathContext": "Concrete verifications that specific small integers are not perfect powers: $2, 3, 5$ are not perfect squares; $2, 3, 5$ are not perfect cubes; $2, 3$ are not perfect fourth powers; $2$ is not a perfect fifth power. Each proved by exhaustive case analysis or `omega`/`norm_num`."
     },
     {
-      "id": "corollaries",
-      "title": "Concrete Corollaries",
-      "startLine": 232,
-      "endLine": 276,
-      "summary": "Specific irrationality results: sqrt(2,3,5), cbrt(2,3,5), 4thrt(2,3), 5thrt(2).",
-      "mathContext": "Specific irrationality results: $\\sqrt{2}, \\sqrt{3}, \\sqrt{5} \\notin \\mathbb{Q}$; $\\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[3]{5} \\notin \\mathbb{Q}$; $\\sqrt[4]{2}, \\sqrt[4]{3} \\notin \\mathbb{Q}$; $\\sqrt[5]{2} \\notin \\mathbb{Q}$. Each instantiates the general theorem."
+      "id": "corollaries-sqrt",
+      "title": "Concrete Corollaries: Square Roots",
+      "startLine": 250,
+      "endLine": 263,
+      "summary": "Specific irrationality results for square roots: sqrt(2), sqrt(3), sqrt(5).",
+      "mathContext": "Square-root instances of the general theorem: $\\sqrt{2}, \\sqrt{3}, \\sqrt{5} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-square lemma."
+    },
+    {
+      "id": "corollaries-cbrt",
+      "title": "Concrete Corollaries: Cube Roots",
+      "startLine": 264,
+      "endLine": 277,
+      "summary": "Specific irrationality results for cube roots: cbrt(2), cbrt(3), cbrt(5).",
+      "mathContext": "Cube-root instances of the general theorem: $\\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[3]{5} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-cube lemma."
+    },
+    {
+      "id": "corollaries-fourth",
+      "title": "Concrete Corollaries: Fourth Roots",
+      "startLine": 278,
+      "endLine": 287,
+      "summary": "Specific irrationality results for fourth roots: 4thrt(2), 4thrt(3).",
+      "mathContext": "Fourth-root instances of the general theorem: $\\sqrt[4]{2}, \\sqrt[4]{3} \\notin \\mathbb{Q}$, each obtained from the corresponding not-a-perfect-fourth-power lemma."
+    },
+    {
+      "id": "corollaries-fifth",
+      "title": "Fifth Roots",
+      "startLine": 288,
+      "endLine": 293,
+      "summary": "Specific irrationality result for fifth roots: 5thrt(2).",
+      "mathContext": "Fifth-root instance of the general theorem: $\\sqrt[5]{2} \\notin \\mathbb{Q}$, obtained from the not-a-perfect-fifth-power lemma."
     },
     {
       "id": "converse",
-      "title": "The Converse: Perfect Powers",
-      "startLine": 277,
+      "title": "The Characterization (Converse: Perfect Powers)",
+      "startLine": 294,
       "endLine": 312,
       "summary": "Shows the characterization is tight: perfect nth powers give integer nth roots.",
-      "mathContext": "The characterization is tight: $\\sqrt[n]{m^n} = m \\in \\mathbb{Z}$ for any positive integer $m$. Thus $\\sqrt[n]{k} \\in \\mathbb{Q} \\iff k$ is a perfect $n$th power."
+      "mathContext": "The characterization is tight: $\\sqrt[n]{m^n} = m \\in \\mathbb{Z}$ for any positive integer $m$. Thus $\\sqrt[n]{k} \\in \\mathbb{Q} \\iff k$ is a perfect $n$th power. Closing examples confirm $\\sqrt{4}=2$, $\\sqrt[3]{8}=2$, $\\sqrt[3]{27}=3$, $\\sqrt[4]{16}=2$."
     }
   ],
   "conclusion": {
@@ -177,6 +201,16 @@
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "The Hermite-Lindemann theorem proves that e^alpha is transcendental for nonzero algebraic alpha. Since nth roots are algebraic, this creates a sharp divide: nth roots of integers are algebraic irrationals (this file), while exponentials of algebraic numbers are transcendental (Hermite-Lindemann). The two results together characterize much of classical transcendence theory."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "extended-by",
+      "description": "Recasts the elementary irrationality argument in the language of irreducible polynomials: roots of degree-≥2 irreducibles over ℚ are irrational, and Eisenstein's criterion shows Xⁿ − p is irreducible for prime p, recovering irrationality of ⁿ√p as a special case."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the base file's per-value 'not a perfect power' lemmas to a single uniform prime-factorization criterion: if a prime divides m to an exponent not divisible by n, then m is not a perfect nth power, so ⁿ√m is irrational for arbitrary non-perfect-power m."
     }
   ],
   "leanFile": {

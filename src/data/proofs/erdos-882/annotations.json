@@ -280,7 +280,7 @@
       "startLine": 110,
       "endLine": 113
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "DistinctSubsetSums",
     "content": "Property that all non-empty subset sums are distinct: for $S \\neq T$ both non-empty subsets of $A$, $\\sum_{s \\in S} s \\neq \\sum_{t \\in T} t$. This is the condition studied in **Erdős Problem #1**.",
     "mathContext": "The distinct subset sums property means $|\\Sigma(A)| = 2^{|A|} - 1$, the maximum possible. Erdős and Moser conjectured that if $A \\subseteq \\{1,\\ldots,n\\}$ has distinct subset sums, then $|A| \\leq \\log_2 n + O(1)$. The best known result is $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + O(1)$ by Dubroff, Fox, and Xu (2021).",

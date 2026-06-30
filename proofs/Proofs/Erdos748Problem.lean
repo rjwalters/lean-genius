@@ -35,7 +35,6 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Nat.Basic
-import Mathlib.Analysis.Asymptotics.Asymptotics
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Finset
@@ -56,6 +55,15 @@ def IsSumFree (A : Finset ℕ) : Prop :=
   ∀ a b c, a ∈ A → b ∈ A → c ∈ A → a ≠ b + c
 
 /--
+`IsSumFree` is decidable: although the quantifiers range over all of `ℕ`, the
+guards `a ∈ A`, `b ∈ A`, `c ∈ A` restrict each variable to the finite set `A`,
+so the property is equivalent to a bounded `∀ … ∈ A` statement.
+-/
+instance decidableIsSumFree (A : Finset ℕ) : Decidable (IsSumFree A) :=
+  decidable_of_iff (∀ a ∈ A, ∀ b ∈ A, ∀ c ∈ A, a ≠ b + c)
+    ⟨fun h a b c ha hb hc => h a ha b hb c hc, fun h a ha b hb c hc => h a b c ha hb hc⟩
+
+/--
 **Alternative definition:**
 A is sum-free iff A ∩ (A + A) = ∅.
 -/
@@ -68,7 +76,7 @@ theorem sumFree_iff (A : Finset ℕ) : IsSumFree A ↔ IsSumFree' A := by
   · intro h a ha b hb c hc
     exact fun heq => h a b c ha hb hc heq.symm
   · intro h a b c ha hb hc heq
-    exact h a ha b hb c hc heq
+    exact h a ha b hb c hc heq.symm
 
 /-
 ## Part II: Counting Sum-Free Sets
@@ -100,17 +108,106 @@ theorem upperHalf_sumFree (n : ℕ) (A : Finset ℕ) (hA : ∀ a ∈ A, n / 2 + 
     IsSumFree A := by
   intro a b c ha hb hc heq
   have hca : n / 2 + 1 ≤ c := (hA c hc).1
-  have hcb : n / 2 + 1 ≤ b := (hA b hb).2
-  have hbc : b + c ≥ n + 2 := by omega
+  have hcb : n / 2 + 1 ≤ b := (hA b hb).1
   have han : a ≤ n := (hA a ha).2
   omega
 
 /--
 **Trivial Lower Bound:**
-f(n) ≥ 2^{⌊n/2⌋} because all 2^{⌊n/2⌋} subsets of the upper half are sum-free.
+f(n) ≥ 2^{⌊n/2⌋} because all 2^{⌈n/2⌉} subsets of the upper half are sum-free.
+
+Proof: Let U = {⌊n/2⌋+1, ..., n}. By `upperHalf_sumFree` every subset of U is
+sum-free, and every subset of U is a subset of {1,...,n}, so `U.powerset` embeds
+into `sumFreeSubsets n`. Hence f(n) ≥ |U.powerset| = 2^{|U|} = 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋}.
 -/
-axiom trivial_lower_bound (n : ℕ) (hn : n ≥ 2) :
-    f n ≥ 2 ^ (n / 2)
+theorem trivial_lower_bound (n : ℕ) (hn : n ≥ 2) :
+    f n ≥ 2 ^ (n / 2) := by
+  -- The upper half U = {⌊n/2⌋+1, ..., n}
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  -- Every subset of U is a sum-free subset of {1,...,n}
+  have hsub : U.powerset ⊆ sumFreeSubsets n := by
+    intro A hAmem
+    rw [Finset.mem_powerset] at hAmem
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hAmem.trans ?_, ?_⟩
+    · -- U ⊆ {1,...,n}
+      rw [hU]
+      exact Finset.Icc_subset_Icc (by omega) (le_refl n)
+    · -- A is sum-free since A ⊆ U
+      apply upperHalf_sumFree n A
+      intro a ha
+      have haU : a ∈ U := hAmem ha
+      rw [hU, Finset.mem_Icc] at haU
+      exact haU
+  -- Cardinality bound: f n ≥ 2^|U|
+  have hcard : 2 ^ U.card ≤ f n :=
+    calc 2 ^ U.card = U.powerset.card := (Finset.card_powerset U).symm
+      _ ≤ (sumFreeSubsets n).card := Finset.card_le_card hsub
+      _ = f n := rfl
+  -- |U| = n - ⌊n/2⌋ ≥ ⌊n/2⌋
+  have hUcard : U.card = n - n / 2 := by rw [hU, Nat.card_Icc]; omega
+  have hexp : n / 2 ≤ U.card := by rw [hUcard]; omega
+  calc 2 ^ (n / 2) ≤ 2 ^ U.card := Nat.pow_le_pow_right (by norm_num) hexp
+    _ ≤ f n := hcard
+
+/--
+**Sharp Trivial Lower Bound:**
+`f(n) ≥ 2^{⌈n/2⌉}`.
+
+The upper half `U = {⌊n/2⌋+1, …, n}` has *exactly* `⌈n/2⌉ = n − ⌊n/2⌋` elements,
+and by `upperHalf_sumFree` **all** `2^{⌈n/2⌉}` of its subsets are sum-free. This
+sharpens `trivial_lower_bound`, which only extracted the weaker exponent `⌊n/2⌋`:
+for odd `n`, `⌈n/2⌉ = ⌊n/2⌋ + 1`, so the bound here is a full factor of `2`
+(i.e. `√2` per element) larger. It is the largest power of two the upper-half
+construction can yield. In `ℕ`, the ceiling `⌈n/2⌉` is written `(n + 1) / 2`.
+-/
+theorem sharp_lower_bound (n : ℕ) :
+    f n ≥ 2 ^ ((n + 1) / 2) := by
+  -- Same upper half U = {⌊n/2⌋+1, …, n}, but we keep its full cardinality.
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  have hsub : U.powerset ⊆ sumFreeSubsets n := by
+    intro A hAmem
+    rw [Finset.mem_powerset] at hAmem
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hAmem.trans ?_, ?_⟩
+    · rw [hU]; exact Finset.Icc_subset_Icc (by omega) (le_refl n)
+    · apply upperHalf_sumFree n A
+      intro a ha
+      have haU : a ∈ U := hAmem ha
+      rw [hU, Finset.mem_Icc] at haU
+      exact haU
+  have hcard : 2 ^ U.card ≤ f n :=
+    calc 2 ^ U.card = U.powerset.card := (Finset.card_powerset U).symm
+      _ ≤ (sumFreeSubsets n).card := Finset.card_le_card hsub
+      _ = f n := rfl
+  -- |U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2.
+  have hUcard : U.card = (n + 1) / 2 := by rw [hU, Nat.card_Icc]; omega
+  rw [hUcard] at hcard
+  exact hcard
+
+/--
+**Monotonicity, ground step:**
+Every sum-free subset of {1,...,n} is also a sum-free subset of {1,...,n+1}.
+Sum-freeness is a property of the set itself (no `a = b + c` among its own
+elements), so enlarging the ambient range cannot break it; the only change is
+that the subset is now allowed to live in the larger box.
+-/
+theorem sumFreeSubsets_subset_succ (n : ℕ) :
+    sumFreeSubsets n ⊆ sumFreeSubsets (n + 1) := by
+  intro A hA
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc (le_refl 1) (Nat.le_succ n)), hA.2⟩
+
+/--
+**The counting function `f` is monotone.**
+Since the family of sum-free subsets only grows as the ambient range grows
+(`sumFreeSubsets_subset_succ`), its cardinality `f n` is non-decreasing in `n`.
+This is the structural fact underlying the trivial lower bound: the supply of
+sum-free sets never shrinks.
+-/
+theorem f_monotone : Monotone f :=
+  monotone_nat_of_le_succ fun n =>
+    Finset.card_le_card (sumFreeSubsets_subset_succ n)
 
 /-
 ## Part IV: The Cameron-Erdős Conjecture
@@ -139,7 +236,7 @@ f(n) ≪ 2^{n/2}, i.e., there exists a constant C such that f(n) ≤ C · 2^{n/2
 axiom green_upper_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → (f n : ℝ) ≤ C * 2 ^ (n / 2)
 
-/--
+/-
 **Sapozhenko's Theorem (2003):**
 Same result, proved independently.
 -/
@@ -206,12 +303,12 @@ theorem cameron_erdos_proved : cameronErdosConjecture := by
         Real.log_pow] at h
     linarith
   constructor
-  · rw [le_div_iff hlog2_pos]
+  · rw [le_div_iff₀ hlog2_pos]
     have h_step : (1 - ε) * ((n : ℝ) / 2) ≤ ↑(n / 2 : ℕ) := by linarith
     linarith [mul_le_mul_of_nonneg_right h_step hlog2_pos.le]
-  · rw [div_le_iff hlog2_pos]
+  · rw [div_le_iff₀ hlog2_pos]
     have hlogC : Real.log C ≤ ε * ((n : ℝ) / 2) * Real.log 2 := by
-      have h := (div_le_iff hlog2_pos).mp ((le_max_right 0 _ : Real.log C / Real.log 2 ≤ K).trans hK_ε_n2)
+      have h := (div_le_iff₀ hlog2_pos).mp ((le_max_right 0 _ : Real.log C / Real.log 2 ≤ K).trans hK_ε_n2)
       linarith
     linarith [mul_le_mul_of_nonneg_right hn_half_hi hlog2_pos.le]
 
@@ -224,7 +321,7 @@ theorem cameron_erdos_proved : cameronErdosConjecture := by
 -/
 theorem empty_sumFree : IsSumFree ∅ := by
   intro a b c ha _ _
-  exact (Finset.not_mem_empty a ha).elim
+  exact (Finset.notMem_empty a ha).elim
 
 /--
 **Singletons are sum-free:**
@@ -256,7 +353,7 @@ theorem oddNumbers_sumFree (n : ℕ) :
 ## Part VII: Structure of Sum-Free Sets
 -/
 
-/--
+/-
 **Types of Sum-Free Sets:**
 Most sum-free sets are "essentially" one of:
 1. Subsets of [n/2+1, n] (type 1)
@@ -264,8 +361,7 @@ Most sum-free sets are "essentially" one of:
 3. Various other sparse structures
 
 Green's proof shows type 1 and 2 dominate the count.
--/
-/--
+
 **Schur's Theorem Connection:**
 Sum-free sets are related to Schur numbers.
 The maximum size of a sum-free subset of [1,n] is ⌈n/2⌉.
@@ -283,9 +379,12 @@ f(4) = 9
 f(5) = 16
 ...
 -/
-theorem f_1 : f 1 = 2 := by native_decide
-theorem f_2 : f 2 = 3 := by native_decide
-theorem f_3 : f 3 = 6 := by native_decide
+-- Kernel `decide` suffices (axiom-free): the `decidableIsSumFree` instance reduces
+-- `IsSumFree` to a bounded `∀ … ∈ A` decision, so these small `f n` values compute
+-- in the kernel without `native_decide` (which would add `Lean.ofReduceBool`).
+theorem f_1 : f 1 = 2 := by decide
+theorem f_2 : f 2 = 3 := by decide
+theorem f_3 : f 3 = 6 := by decide
 
 /-
 ## Part IX: Summary
@@ -304,14 +403,14 @@ More precisely:
 3. f(n) ~ c_n · 2^{n/2} with c_n depending on parity
 -/
 theorem erdos_748_summary :
-    -- Trivial lower bound
-    (∀ n ≥ 2, f n ≥ 2 ^ (n / 2)) ∧
+    -- Sharp trivial lower bound (uses the full ⌈n/2⌉ exponent)
+    (∀ n : ℕ, f n ≥ 2 ^ ((n + 1) / 2)) ∧
     -- Upper bound exists
     (∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (f n : ℝ) ≤ C * 2 ^ (n / 2)) ∧
     -- Precise asymptotic exists
     (∃ c_even c_odd : ℝ, c_even > 0 ∧ c_odd > 0) := by
   constructor
-  · exact trivial_lower_bound
+  · exact sharp_lower_bound
   constructor
   · exact green_upper_bound
   · obtain ⟨ce, co, hce, hco, _⟩ := precise_asymptotic

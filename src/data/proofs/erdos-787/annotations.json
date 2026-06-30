@@ -16,7 +16,11 @@
       "additive combinatorics",
       "extremal problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sum-free sets",
+      "Additive combinatorics",
+      "Extremal set theory"
+    ]
   },
   {
     "id": "ann-e787-definitions",
@@ -35,7 +39,11 @@
       "sup'",
       "vacuous truth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.powerset",
+      "Finset.sup'",
+      "Vacuous truth"
+    ]
   },
   {
     "id": "ann-e787-historical-bounds",
@@ -54,7 +62,11 @@
       "probabilistic method",
       "subpolynomial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Greedy algorithms",
+      "Probabilistic method",
+      "Exponential bounds"
+    ]
   },
   {
     "id": "ann-e787-modern-bounds",
@@ -73,7 +85,11 @@
       "polylogarithmic bounds",
       "configuration counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-configurations",
+      "Polylogarithmic bounds",
+      "Configuration counting"
+    ]
   },
   {
     "id": "ann-e787-k-config",
@@ -92,7 +108,11 @@
       "configuration counting",
       "additive structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Duality",
+      "Additive structure",
+      "Configuration counting"
+    ]
   },
   {
     "id": "ann-e787-summary",
@@ -111,6 +131,10 @@
       "axiom combination",
       "bound gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical conjunction",
+      "Axiom combination",
+      "Bound gaps"
+    ]
   }
 ]

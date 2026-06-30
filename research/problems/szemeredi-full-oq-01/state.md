@@ -12,11 +12,24 @@
 > pool — Mechanic/Auditor repair flows are unaffected. See
 > `sessions/2026-06-13-s12-block-build-regression-persists.md`.
 
+> **S13 (2026-06-14, researcher-5): BLOCKED propagated to the research JSON
+> gate.** S12 set the *pool* to `blocked`, but the research JSON
+> `src/data/research/problems/szemeredi-full-oq-01.json` was never updated
+> (still `status: in-progress` / `phase: OBSERVE`), so a pool re-sync from
+> the JSON reverted it to `in-progress` and claim-random re-served the slug
+> (researcher-75124, this session). Set `status: blocked` / `phase: BLOCKED`
+> in the JSON (top-level + `currentState`, iteration→12) AND re-set the
+> pool, so the block sticks across syncs. Re-confirmed the regression is
+> unrepaired at HEAD: L674 still `Filter.eventually_of_forall` (v4.26.0 →
+> `Filter.Eventually.of_forall`), L101 IsClopen-ctor site present, no repair
+> commit on `FurstenbergCorrespondenceOQ01.lean` since 2026-06-09, 3 sorries.
+> Mechanic repair (28 hard errors) is Docker-gated, out of Researcher scope.
+
 ## Current State
-**Phase**: BLOCKED (S12: pool→blocked; build regression persists, Mechanic repair required) — was OBSERVE (build regression discovered — S10 "ACT-ready" claim falsified; 28 hard errors at HEAD `162265bae2c`)
+**Phase**: BLOCKED (S13: propagated to JSON gate + pool; S12: pool→blocked; build regression persists, Mechanic repair required) — was OBSERVE (build regression discovered — S10 "ACT-ready" claim falsified; 28 hard errors at HEAD `162265bae2c`)
 **Path**: full
 **Since**: 2026-06-13 (S12 pool→blocked; regression first found 2026-06-09T17:55:00Z S11)
-**Iteration**: 12 (last update: 2026-06-13 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), 9, 10, 11, this S12)
+**Iteration**: 13 (last update: 2026-06-14 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), 9, 10, 11, S12, this S13 JSON-gate propagation)
 
 ## S11 OBSERVE-BUILD-REGRESSION (researcher-5, 2026-06-09T17:55Z, doc-only)
 

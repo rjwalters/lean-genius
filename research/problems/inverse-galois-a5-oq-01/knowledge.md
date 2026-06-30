@@ -413,3 +413,51 @@ S3's value: replace S1's hand-waved Mathlib references with concrete,
 verified-against-`v4.26.0` declaration names + signatures, so S4 ACT
 inherits a precise import-and-API-call list instead of an
 exploratory phase.
+
+## S4-prep (researcher-12, 2026-06-19) — abstract bridge lemma submitted to Aristotle (non-circular)
+
+**Mode**: REVISIT (via sibling abel-ruffini-oq-07, RICH). **Outcome**: progress (async submission).
+
+### Key realization — circularity trap
+`exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3` (InverseGaloisA5Dedekind.lean:77)
+CANNOT be handed to Aristotle via `prove_file`: that file imports the parent's
+`axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal`, and since 3 is prime,
+`Mathlib.exists_prime_orderOf_dvd_card 3 (by norm_num) three_dvd_gal_card` closes
+the sorry **circularly** in one line. Any Aristotle run with the parent in scope cheats.
+
+### What I did instead
+Isolated the genuine missing content (the S3 "pinpointed Mathlib gap") as a fully
+self-contained, axiom-free, `q`-free abstract lemma and submitted *that*:
+
+```lean
+theorem orderOf_arithFrobAt_eq_inertiaDegIn
+    {R S G : Type*} [CommRing R] [CommRing S] [Algebra R S] [Group G]
+    [MulSemiringAction G S] [IsGaloisGroup G R S] [Finite G]
+    [IsDedekindDomain R] [IsDedekindDomain S] [Module.Finite R S] [NoZeroSMulDivisors R S]
+    (Q : Ideal S) [Q.IsMaximal] [Finite (S ⧸ Q)] [(Q.under R).IsMaximal]
+    [Algebra.IsSeparable (R ⧸ Q.under R) (S ⧸ Q)]
+    (hp : Q.under R ≠ ⊥) (hunram : Ideal.ramificationIdxIn (Q.under R) S = 1) :
+    orderOf (arithFrobAt R G Q) = Ideal.inertiaDegIn (Q.under R) S := by sorry
+```
+
+`IsGaloisGroup G R S` (FieldTheory/Galois/IsGaloisGroup.lean:51) supplies
+`SMulCommClass`+`Algebra.IsInvariant` as low-prio instances, so `arithFrobAt R G Q`
+is well-defined. Submitted via CLI (MCP `prove` still 404 this session) as standalone
+`import Mathlib` snippet → **Aristotle project `9c006ee6-c8e9-4c17-918f-c7d8b6d1926f`** (RUNNING).
+Toolchain warning v4.26.0 vs Aristotle v4.28.0 — the API (`arithFrobAt`,
+`card_inertia_eq_ramificationIdxIn`, `stabilizerHom_surjective`, `inertiaDegIn`) is
+stable across both, should elaborate.
+
+### Proof skeleton given to Aristotle (the S3 audit, made concrete)
+inertia trivial (card_inertia_eq_ramificationIdxIn + hunram) ⟹ stabilizerHom iso
+(ker = inertia, Ideal.Quotient.ker_stabilizerHom) ⟹ arithFrobAt ↦ residue Frobenius
+x↦x^card(R/p), which generates the cyclic residue Galois group of order
+finrank = inertiaDeg = inertiaDegIn ⟹ transport order across the iso.
+
+### Next step (S4 ACT)
+`aristotle show 9c006ee6-c8e9-4c17-918f-c7d8b6d1926f`. If PROVED: drop the lemma into
+a shared infra file, instantiate R=ℤ, S=𝓞 (q.SplittingField), G=q.Gal, Q= a maximal
+prime over 7 (inertiaDegIn=3 from `cubic_factor_no_roots_mod7`), to discharge both
+`exists_gal_order_three` (InverseGaloisA5) and the same S₅ input for AbelRuffiniOQ07,
+then rewrite `axiom three_dvd_gal_card` → `theorem`. Removes the last axiom from the
+gallery A₅ entry and verifies abel-ruffini-oq-07.

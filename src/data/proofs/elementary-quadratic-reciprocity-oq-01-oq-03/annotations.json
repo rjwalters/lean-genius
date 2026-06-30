@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-eqr-oq0103-ringmulperm",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 84 },
+    "type": "definition",
+    "title": "Multiplication by a unit on the WHOLE ring ℤ/n",
+    "content": "ringMulPerm a is the permutation x ↦ a·x acting on every residue of ℤ/n, not merely the units. This is the decisive setting change from the parent (which permuted (ℤ/p)ˣ): the Frobenius/Jacobi generalization needs |ℤ/n| = n, which is ODD for odd n, whereas |(ℤ/n)ˣ| = φ(n) is even and would force every permutation sign to be +1. The map is a bijection because a is a unit (inverse x ↦ a⁻¹·x), and ringMulPermHom packages it as a group homomorphism (ℤ/n)ˣ →* Perm(ℤ/n).",
+    "mathContext": "$\\mathrm{ringMulPerm}\\,a : \\mathbb{Z}/n \\to \\mathbb{Z}/n,\\ x \\mapsto a x$, with $|\\mathbb{Z}/n| = n$ odd for odd $n$. The assignment $a \\mapsto (x \\mapsto ax)$ is a group homomorphism $(\\mathbb{Z}/n)^\\times \\to \\mathrm{Perm}(\\mathbb{Z}/n)$.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.Perm", "ZMod units", "group homomorphism", "Zolotarev's lemma"],
+    "prerequisites": ["modular arithmetic", "permutations", "units of a ring"]
+  },
+  {
+    "id": "ann-eqr-oq0103-signring",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 99 },
+    "type": "definition",
+    "title": "The Zolotarev sign character for any modulus",
+    "content": "signRingHom = sign ∘ ringMulPermHom : (ℤ/n)ˣ →* ℤˣ is the Zolotarev sign character defined for EVERY positive modulus, generalizing the parent's prime-only signMulHom. signRingHom_sq shows it is a quadratic character (it squares to 1), since ℤˣ = {±1} has exponent 2.",
+    "mathContext": "$\\mathrm{signRingHom} : (\\mathbb{Z}/n)^\\times \\to \\mathbb{Z}^\\times$, $a \\mapsto \\mathrm{sign}(x \\mapsto ax)$, with $\\mathrm{signRingHom}(a)^2 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["permutation sign", "quadratic character", "MonoidHom"],
+    "prerequisites": ["Equiv.Perm.sign", "monoid homomorphisms"]
+  },
+  {
+    "id": "ann-eqr-oq0103-sign-prodcongr",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+    "range": { "startLine": 116, "endLine": 137 },
+    "type": "theorem",
+    "title": "Sign of a product permutation (absent from Mathlib)",
+    "content": "sign_prodCongr proves sign(σ ×ₚ τ) = sign σ ^ |β| · sign τ ^ |α| for permutations σ of α and τ of β. Mathlib has only the constant-free family lemmas sign_prodCongrLeft / sign_prodCongrRight (each giving a product ∏ sign over the index type); this combines them on the constant families fun _ => σ and fun _ => τ, after rewriting σ.prodCongr τ as prodCongrLeft (fun _ => σ) * prodCongrRight (fun _ => τ). This general lemma is the combinatorial engine of the CRT decomposition.",
+    "mathContext": "$\\mathrm{sign}(\\sigma \\times_p \\tau) = (\\mathrm{sign}\\,\\sigma)^{|\\beta|} \\cdot (\\mathrm{sign}\\,\\tau)^{|\\alpha|}$ on $\\alpha \\times \\beta$.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.prodCongr", "sign_prodCongrLeft", "sign_prodCongrRight", "Fintype.card"],
+    "prerequisites": ["permutation sign as a homomorphism", "products of permutations"]
+  },
+  {
+    "id": "ann-eqr-oq0103-crt",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+    "range": { "startLine": 145, "endLine": 168 },
+    "type": "theorem",
+    "title": "CRT decomposition of the Zolotarev sign",
+    "content": "sign_ringMulPerm_crt is the structural heart. Through the Chinese Remainder ring isomorphism ZMod.chineseRemainder : ℤ/mn ≃+* ℤ/m × ℤ/n, the permutation x ↦ a·x on ℤ/mn intertwines (via sign_eq_sign_of_equiv) with the product of the component permutations x ↦ a₁·x and x ↦ a₂·x. Combined with sign_prodCongr and ZMod.card, this yields sign(ringMulPerm a) = sign(ringMulPerm a₁)^n · sign(ringMulPerm a₂)^m. The proof's key step shows the CRT iso commutes with multiplication-by-a because it is a ring homomorphism (e(a·x) = e(a)·e(x)).",
+    "mathContext": "Through $\\mathbb{Z}/mn \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$: $\\mathrm{sign}(x \\mapsto ax) = \\mathrm{sign}(x \\mapsto a_1 x)^{n} \\cdot \\mathrm{sign}(x \\mapsto a_2 x)^{m}$.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.chineseRemainder", "sign_eq_sign_of_equiv", "Chinese Remainder Theorem", "RingEquiv"],
+    "prerequisites": ["Chinese Remainder Theorem", "ring isomorphisms", "permutation sign transport"]
+  },
+  {
+    "id": "ann-eqr-oq0103-mul-odd",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+    "range": { "startLine": 170, "endLine": 197 },
+    "type": "theorem",
+    "title": "Multiplicativity for odd moduli mirrors jacobiSym.mul_right",
+    "content": "sign_ringMulPerm_mul_of_odd specializes the CRT decomposition to ODD coprime m, n: the cardinality exponents n and m are then odd, and units_pow_odd (a unit of ℤ raised to an odd power equals itself) collapses sign(σ₁)^n · sign(σ₂)^m to sign(σ₁) · sign(σ₂). This is the exact permutation-theoretic image of Mathlib's jacobiSym.mul_right, J(a | mn) = J(a | m)·J(a | n) — recorded alongside as jacobiSym_mul_right_mirror, with the prime base case legendre_eq_jacobi (legendreSym.to_jacobiSym).",
+    "mathContext": "For odd coprime $m, n$: $\\mathrm{sign}(x \\mapsto ax) = \\mathrm{sign}(x \\mapsto a_1 x) \\cdot \\mathrm{sign}(x \\mapsto a_2 x)$, mirroring $J(a \\mid mn) = J(a \\mid m) J(a \\mid n)$.",
+    "significance": "key",
+    "relatedConcepts": ["jacobiSym.mul_right", "odd exponents", "Jacobi symbol multiplicativity"],
+    "prerequisites": ["Jacobi symbol", "parity"]
+  }
+]

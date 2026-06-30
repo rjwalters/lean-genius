@@ -16,7 +16,11 @@
       "arithmetic progressions",
       "intersection properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Set Theory",
+      "Arithmetic Progressions",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e272-definitions",
@@ -35,7 +39,11 @@
       "singleton",
       "constructive proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Arithmetic Progressions",
+      "Lean Structures",
+      "interval_cases Tactic"
+    ]
   },
   {
     "id": "ann-e272-intersection",
@@ -54,7 +62,11 @@
       "extremal function",
       "Finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Intersection",
+      "Finset Families",
+      "Axiomatized Definitions"
+    ]
   },
   {
     "id": "ann-e272-bounds",
@@ -73,7 +85,11 @@
       "quadratic growth",
       "extremal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O Notation",
+      "Counting Arguments",
+      "Extremal Bounds"
+    ]
   },
   {
     "id": "ann-e272-disproved",
@@ -92,7 +108,11 @@
       "counterexample",
       "small sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counterexample Construction",
+      "Erdos-Graham Conjecture",
+      "Asymptotic Comparison"
+    ]
   },
   {
     "id": "ann-e272-construction",
@@ -101,7 +121,7 @@
       "startLine": 112,
       "endLine": 125
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Simonovits-Sós Construction",
     "content": "**smallSetsThroughElement N k** constructs all subsets of {1,...,N} of size ≤ 3 that contain element k. **small_sets_count** gives the exact count: C(N-1,2) + 1 (choose 2 more elements from the remaining N-1, plus the singleton {k}). **small_sets_has_AP** confirms this family satisfies the AP-intersection property: any two such sets share at least k, and {k} is a singleton AP.",
     "mathContext": "The count C(N-1,2) + 1 = (N-1)(N-2)/2 + 1 ~ N²/2 is asymptotically larger than π²N²/24 ~ N²/2.4, which is why this construction disproves Erdős-Graham.",
@@ -112,7 +132,11 @@
       "binomial coefficient",
       "singleton AP"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Binomial Coefficients",
+      "Powerset Filtering",
+      "Singleton Intersections"
+    ]
   },
   {
     "id": "ann-e272-szabo",
@@ -132,6 +156,10 @@
       "nhds",
       "error term"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Analysis",
+      "Error Term Estimates",
+      "Limit of Sequences"
+    ]
   }
 ]

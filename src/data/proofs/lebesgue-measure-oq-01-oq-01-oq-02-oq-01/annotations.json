@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-strategy-docstring",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "concept",
+    "title": "Why the Lebesgue criterion is the wrong Lean target",
+    "content": "The docstring frames the key formalization decision. The textbook proof that Thomae's function is Riemann integrable invokes the Lebesgue criterion: a bounded function is Riemann integrable iff its set of discontinuities has measure zero. Mathlib, however, exposes neither a first-class `RiemannIntegrable` predicate nor that criterion as a usable lemma, and its `intervalIntegral` already IS the Bochner/Lebesgue integral. So the natural Lean goal is the value of that integral, reached directly by showing the function vanishes almost everywhere.",
+    "mathContext": "$t =ᵐ_{[\\mathrm{vol}]} 0$ because $t(x) \\neq 0 \\Rightarrow x \\in \\mathbb{Q}$, and $\\mathbb{Q}$ is null in $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lebesgue criterion for Riemann integrability", "almost-everywhere equality", "Bochner integral", "null sets"],
+    "prerequisites": ["measure theory", "Riemann vs Lebesgue integration"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 25, "endLine": 31 },
+    "type": "concept",
+    "title": "Imports and the parent module",
+    "content": "Imports Mathlib and the parent entry `Proofs.LebesgueMeasureOQ01OQ01OQ02`, then opens `MeasureTheory`, `Set`, and the parent namespace. The only fact pulled from the parent is `thomae_irrational : Irrational x → thomae x = 0`; the parent's continuity-at-irrationals and discontinuity-at-rationals classification is deliberately not used on this route.",
+    "mathContext": "$t : \\mathbb{R} \\to \\mathbb{R}$, with $t(p/q) = 1/q$ in lowest terms and $t(x) = 0$ for $x \\notin \\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["module dependency", "Thomae's function definition"],
+    "prerequisites": ["Lean 4 namespaces"]
+  },
+  {
+    "id": "ann-support-subset-rat",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 33, "endLine": 41 },
+    "type": "insight",
+    "title": "Localizing the support inside the rationals",
+    "content": "`thomae_support_subset_rat` shows that wherever Thomae's function is nonzero, the point must be rational: the nonzero set is contained in `Set.range ((↑) : ℚ → ℝ)`. The proof is a one-line contrapositive: `by_contra h` produces `Irrational x`, and since `Irrational x` is by definition `x ∉ Set.range ((↑) : ℚ → ℝ)`, that hypothesis feeds `thomae_irrational` directly to derive `thomae x = 0`, contradicting `hx`. No coercion bookkeeping is needed because `Irrational` already unfolds to the non-membership statement.",
+    "mathContext": "$\\{x : t(x) \\neq 0\\} \\subseteq \\{\\,(\\uparrow q) : q \\in \\mathbb{Q}\\,\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["support of a function", "Irrational as non-membership", "proof by contradiction"],
+    "prerequisites": ["definition of Irrational", "Set.range"]
+  },
+  {
+    "id": "ann-support-null",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "concept",
+    "title": "The support is a null set",
+    "content": "`thomae_support_null` upgrades the containment to a measure statement: the support has Lebesgue measure zero. It applies `measure_mono_null` to the previous inclusion together with `(Set.countable_range ((↑) : ℚ → ℝ)).measure_zero volume`. The countability of `ℚ` does all the work — a countable set is null under any atomless (`NoAtoms`) measure, and Lebesgue measure on `ℝ` has no atoms. None of the fine structure of the $1/q$ values matters.",
+    "mathContext": "$\\mathrm{vol}\\,\\{x : t(x) \\neq 0\\} = 0$, since a countable set is null when the measure has no atoms.",
+    "significance": "key",
+    "relatedConcepts": ["countable sets are null", "atomless measure", "monotonicity of null sets", "Lebesgue measure"],
+    "prerequisites": ["NoAtoms typeclass", "Set.Countable.measure_zero", "measure_mono_null"]
+  },
+  {
+    "id": "ann-ae-eq-zero",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "insight",
+    "title": "Almost-everywhere equal to zero",
+    "content": "`thomae_ae_eq_zero` is the pivot of the whole proof: Thomae's function equals the zero function `volume`-almost everywhere. The goal `thomae =ᵐ[volume] 0` is rewritten by `ae_iff` into a statement that the set where `thomae x ≠ 0` has measure zero (after `simp [Pi.zero_apply, ne_eq]` normalizes `0 x` to `0`), which is exactly `thomae_support_null`. Once a function is a.e. zero, every integral-theoretic property of the zero function transfers to it.",
+    "mathContext": "$t =ᵐ_{[\\mathrm{vol}]} 0 \\iff \\mathrm{vol}\\,\\{x : t(x) \\neq 0\\} = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["almost-everywhere equality", "ae_iff", "filter Germs"],
+    "prerequisites": ["MeasureTheory.ae filter", "ae_iff"]
+  },
+  {
+    "id": "ann-integrable",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 58 },
+    "type": "insight",
+    "title": "Integrability by a.e.-congruence with zero",
+    "content": "`thomae_integrable` obtains `Integrable thomae volume` for free: the zero function is integrable (`integrable_zero ℝ ℝ volume`), and integrability is preserved under a.e.-equality via `Integrable.congr`. The `.symm` adjusts the direction of `thomae_ae_eq_zero` to match the congruence lemma's expected orientation (transporting from `0` to `thomae`).",
+    "mathContext": "$0 \\in L^1 \\;\\wedge\\; t =ᵐ 0 \\;\\Rightarrow\\; t \\in L^1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Integrable.congr", "L¹ space", "a.e.-equality preserves integrability"],
+    "prerequisites": ["MeasureTheory.Integrable", "integrable_zero"]
+  },
+  {
+    "id": "ann-integral-zero",
+    "proofId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 60, "endLine": 67 },
+    "type": "insight",
+    "title": "The headline: the integral is zero",
+    "content": "`thomae_intervalIntegral_zero` is the result that names the entry: $\\int_0^1 t = 0$. Since `intervalIntegral` is the Lebesgue integral, `intervalIntegral.integral_congr_ae` rewrites the integrand from `thomae` to the constant `0` using the a.e.-equality (restricted to the interval via `.mono`), and `intervalIntegral.integral_zero` finishes. This realizes the classical fact — Thomae's function is Riemann integrable with integral 0 — without ever invoking the Lebesgue criterion, which Mathlib does not provide.",
+    "mathContext": "$\\displaystyle\\int_{0}^{1} t(x)\\,dx = \\int_{0}^{1} 0\\,dx = 0.$",
+    "significance": "key",
+    "relatedConcepts": ["intervalIntegral", "integral_congr_ae", "Riemann integral equals Lebesgue integral here"],
+    "prerequisites": ["intervalIntegral.integral_congr_ae", "intervalIntegral.integral_zero"]
+  }
+]

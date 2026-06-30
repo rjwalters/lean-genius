@@ -50,6 +50,12 @@ open DissectionOfCubesOQ01
 
 namespace DissectionOfCubesOQ01OQ01
 
+/-- A single canonical (classical, noncomputable) `DecidableEq Cube`. Declared once at file
+    scope so that `Finset Cube` literals elaborate inside theorem *statements* (e.g. the RHS
+    of `colliding_eq_pair`) and every proof shares the **same** instance term — avoiding the
+    instance-diamond mismatch that would otherwise break `rw [colliding_eq_pair, …]`. -/
+noncomputable instance : DecidableEq Cube := Classical.decEq _
+
 -- ============================================================
 -- SECTION 1: Concrete Cube Definitions
 -- ============================================================
@@ -73,11 +79,11 @@ lemma cubeAB_same_size : cubeA.size = cubeB.size := by simp
 
 /-- C has a different size from A -/
 lemma cubeC_size_ne_cubeA : cubeC.size ≠ cubeA.size := by
-  simp; norm_num
+  norm_num [cubeC_size, cubeA_size]
 
 /-- C has a different size from B -/
 lemma cubeC_size_ne_cubeB : cubeC.size ≠ cubeB.size := by
-  simp; norm_num
+  norm_num [cubeC_size, cubeB_size]
 
 -- ============================================================
 -- SECTION 2: Cube Distinctness
@@ -167,7 +173,6 @@ lemma cubeC_cubeB_disjoint : cubeC.interiorDisjoint cubeB := by
 
 /-- The finite set of our three example cubes -/
 noncomputable def exampleCubes : Finset Cube :=
-  haveI : DecidableEq Cube := Classical.decEq _
   {cubeA, cubeB, cubeC}
 
 /-- The example CubeDissection — covers_unit_cube holds trivially -/
@@ -175,7 +180,6 @@ noncomputable def exampleDissection : CubeDissection where
   cubes := exampleCubes
   all_contained := by
     intro c hc
-    haveI : DecidableEq Cube := Classical.decEq _
     simp only [exampleCubes, Finset.mem_insert, Finset.mem_singleton] at hc
     rcases hc with rfl | rfl | rfl
     · exact cubeA_inUnitCube
@@ -183,7 +187,6 @@ noncomputable def exampleDissection : CubeDissection where
     · exact cubeC_inUnitCube
   pairwise_disjoint := by
     intro c₁ hc₁ c₂ hc₂ hne
-    haveI : DecidableEq Cube := Classical.decEq _
     simp only [exampleCubes, Finset.mem_insert, Finset.mem_singleton] at hc₁ hc₂
     rcases hc₁ with rfl | rfl | rfl <;> rcases hc₂ with rfl | rfl | rfl
     · exact absurd rfl hne
@@ -202,16 +205,13 @@ noncomputable def exampleDissection : CubeDissection where
 -- ============================================================
 
 lemma cubeA_mem : cubeA ∈ exampleDissection.cubes := by
-  haveI : DecidableEq Cube := Classical.decEq _
   simp [exampleDissection, exampleCubes]
 
 lemma cubeB_mem : cubeB ∈ exampleDissection.cubes := by
-  haveI : DecidableEq Cube := Classical.decEq _
   simp [exampleDissection, exampleCubes, Finset.mem_insert, Finset.mem_singleton,
         cubeA_ne_cubeB.symm]
 
 lemma cubeC_mem : cubeC ∈ exampleDissection.cubes := by
-  haveI : DecidableEq Cube := Classical.decEq _
   simp [exampleDissection, exampleCubes, Finset.mem_insert, Finset.mem_singleton,
         cubeA_ne_cubeC.symm, cubeB_ne_cubeC.symm]
 
@@ -220,7 +220,6 @@ lemma mem_collidingCubes_iff (c : Cube) :
     c ∈ collidingCubes exampleDissection ↔
       c ∈ exampleDissection.cubes ∧
         ∃ c' ∈ exampleDissection.cubes, c ≠ c' ∧ c.size = c'.size := by
-  haveI : DecidableEq Cube := Classical.decEq _
   simp [collidingCubes, Finset.mem_filter]
 
 -- ============================================================
@@ -239,7 +238,6 @@ lemma cubeB_collides : cubeB ∈ collidingCubes exampleDissection := by
 
 /-- C does NOT collide: its size 1/3 differs from every other cube's size -/
 lemma cubeC_not_collides : cubeC ∉ collidingCubes exampleDissection := by
-  haveI : DecidableEq Cube := Classical.decEq _
   rw [mem_collidingCubes_iff]
   push_neg
   intro _
@@ -247,12 +245,12 @@ lemma cubeC_not_collides : cubeC ∉ collidingCubes exampleDissection := by
   intro c' hc'
   simp only [exampleDissection, exampleCubes, Finset.mem_insert, Finset.mem_singleton] at hc'
   rcases hc' with rfl | rfl | rfl
-  · -- c' = cubeA: sizes differ (1/3 ≠ 1/4)
-    right; simp; norm_num
-  · -- c' = cubeB: sizes differ (1/3 ≠ 1/4)
-    right; simp; norm_num
-  · -- c' = cubeC: same cube, so ¬(cubeC ≠ cubeC)
-    left; rfl
+  · -- c' = cubeA: assuming cubeC ≠ cubeA, sizes differ (1/3 ≠ 1/4)
+    intro _; norm_num [cubeC_size, cubeA_size]
+  · -- c' = cubeB: assuming cubeC ≠ cubeB, sizes differ (1/3 ≠ 1/4)
+    intro _; norm_num [cubeC_size, cubeB_size]
+  · -- c' = cubeC: the hypothesis cubeC ≠ cubeC is absurd
+    intro h; exact absurd rfl h
 
 -- ============================================================
 -- SECTION 8: Colliding Cubes = {A, B}
@@ -261,7 +259,6 @@ lemma cubeC_not_collides : cubeC ∉ collidingCubes exampleDissection := by
 /-- The colliding cubes of the example dissection are exactly {cubeA, cubeB} -/
 theorem colliding_eq_pair :
     collidingCubes exampleDissection = {cubeA, cubeB} := by
-  haveI : DecidableEq Cube := Classical.decEq _
   ext c
   simp only [Finset.mem_insert, Finset.mem_singleton]
   constructor
@@ -285,7 +282,6 @@ theorem colliding_eq_pair :
 /-- **Theorem**: The example dissection has exactly 2 colliding cubes -/
 theorem example_has_minimal_collision : HasMinimalCollision exampleDissection := by
   unfold HasMinimalCollision
-  haveI : DecidableEq Cube := Classical.decEq _
   rw [colliding_eq_pair, Finset.card_pair cubeA_ne_cubeB]
 
 /-- **Main Result**: `HasMinimalCollision` is achievable in our formalization.

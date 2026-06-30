@@ -17,7 +17,11 @@
       "functional-inequality",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "functional inequalities",
+      "history of the Scottish Book problems"
+    ]
   },
   {
     "id": "ann-1125-kemperman-def",
@@ -36,7 +40,11 @@
       "linarith",
       "equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "real-valued functions",
+      "linarith tactic"
+    ]
   },
   {
     "id": "ann-1125-monotonicity",
@@ -55,7 +63,11 @@
       "disjunction",
       "main-question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order relations on the reals",
+      "Lean 4 definitions",
+      "propositional logic (disjunction)"
+    ]
   },
   {
     "id": "ann-1125-kemperman1969",
@@ -74,7 +86,11 @@
       "partial-result",
       "Kemperman-1969"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "Mathlib Measurable typeclass",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-1125-laczkovich",
@@ -93,7 +109,11 @@
       "full-resolution",
       "no-measurability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "combinatorial order theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-1125-interpretation",
@@ -112,7 +132,10 @@
       "linarith",
       "local-to-global"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real arithmetic inequalities",
+      "linarith tactic"
+    ]
   },
   {
     "id": "ann-1125-examples",
@@ -132,7 +155,11 @@
       "convexity",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convex functions",
+      "polynomial algebra",
+      "nlinarith and ring_nf tactics"
+    ]
   },
   {
     "id": "ann-1125-summary",
@@ -151,6 +178,9 @@
       "solved",
       "historical-completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 term-mode proofs",
+      "anonymous constructor syntax"
+    ]
   }
 ]

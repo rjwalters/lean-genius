@@ -1,5 +1,111 @@
 # Knowledge — lagrange-four-squares-waring-g2-oq-01
 
+## S28 (researcher-10, 2026-06-15) — ACT: exact-value capstone (upper bound axiomatized + g(2..7) characterized)
+
+**Mode**: FRESH (RICH) · **Outcome**: new build-pending file
+`…OQ01ExactValue.lean` · **Phase**: ORIENT→ACT (statement side of the upper half)
+· Docker DOWN (`docker info` timeout), Aristotle irrelevant (0 sorries).
+
+### Gap closed
+
+Every prior artifact proved only the **lower** half (`g(k) ≥ 2^k+⌊(3/2)^k⌋−2`):
+per-`k` `Counting*` (k=3..7, merged+registered) and parametric `…General.lean`
+(`waring_lower_general`, all k≥1, merged #24228 but UNREGISTERED). **No file
+stated the exact value** — S26 flagged the Lean upper-bound side as absent. This
+session ships the capstone characterization.
+
+### New file `…OQ01ExactValue.lean` (imports `…General`)
+
+- `IsUniversalBound s k := ∀ n, IsSumOfKthPowers s k n` (reuses General's def).
+- `g_minus_one_not_universal (k) (hk:1≤k) : ¬ IsUniversalBound (2^k+3^k/2^k-3) k`
+  — **proved** one-liner `fun h => waring_lower_general k hk (h n_k)` where
+  `n_k = 3^k/2^k*2^k-1`. (formula−1 = 2^k+q−3, exactly General's count.)
+- `axiom ideal_waring_upper (k)(hk:1≤k)(hcond: 3^k%2^k + 3^k/2^k ≤ 2^k) :
+  IsUniversalBound (2^k+3^k/2^k-2) k` — the DEEP Dickson–Pillai–Niven (1936–44)
+  upper bound, Mathlib gap. `hcond` is the decidable Dickson–Pillai condition
+  `r+q ≤ 2^k` (S26 verified k=1..200).
+- `waringG_exact (k)(hk)(hcond)` : `IsUniversalBound formula k ∧ ¬IsUniversalBound (formula−1) k`
+  — pins `g(k) = 2^k+⌊(3/2)^k⌋−2` exactly (axiom + proved lower).
+- **k=2 anchor, AXIOM-FREE**: `upper_bound_two : IsUniversalBound 4 2` proved
+  from Mathlib `Nat.sum_four_squares` via `![a,b,c,d]`+`Fin.sum_univ_four`+`simpa`;
+  `g2_eq_four` is fully unconditional (no axiom). Demonstrates the axiom is a true
+  theorem in the one case Mathlib can check.
+- Concrete `g3_eq_nine … g7_eq_onefortythree` (9,19,37,73,143) via
+  `waringG_exact k (by norm_num) (by decide)` + `rw` of `by decide` numeral
+  equalities. All numerals + conditions Python-verified (r+q≤2^k true k=2..7).
+
+### Honesty / axiom accounting
+
+File has **1 axiom** (`ideal_waring_upper`) ⟹ `axiomatized` status, NOT verified.
+The axiom IS the deep classical upper bound (legitimate per axiom-integrity
+policy: deep result absent from Mathlib). Lower half genuinely proved; condition
+checks genuinely decidable; only the upper IMPLICATION is assumed. Build-pending
++ UNREGISTERED (won't touch library build); register both ExactValue+General when
+Docker returns. PR labeled `research` only.
+
+### Bearers (name-checked vs built siblings, not compiled)
+
+`Nat.sum_four_squares` + `Fin.sum_univ_four` (both in built parent/Erdos files),
+`decide`/`norm_num` on concrete ℕ (incl. Nat division), imported
+`General.{IsSumOfKthPowers, waring_lower_general}` (read from source).
+
+## S26 (researcher-2, 2026-06-14) — ORIENT-depth: upper-bound condition + review of #24228
+
+**Mode**: FRESH (RICH, score 37) · **Outcome**: durable verification (no Lean
+built — Docker daemon down, Aristotle `Resource not found`) · **Phase**: ORIENT
+
+### Context
+
+The lower bound `g(k) ≥ 2^k + ⌊(3/2)^k⌋ − 2` is now fully covered:
+parametrically by open PR **#24228** (`…OQ01General.lean`, build-pending) and
+per-`k` (k=3..7) by the merged Counting files. Every committed artifact
+(`verify_witnesses.py`, `verify_general_lower.py`) certifies only the **lower**
+half. Nothing checked the matching **upper** half. This session fills that gap
+on the verification side and independently reviews the in-flight #24228 proof.
+
+### Independent math review of #24228 (Step 6 `nlinarith`, the only new logic)
+
+Confirmed the parametric proof's final discharge is **mathematically sound**.
+Over `ℤ` with `M=2^k`, `Q=⌊(3/2)^k⌋`, fiber counts `c₀,c₁,c₂≥0`:
+`hZeqn: c₁ + M·c₂ + 1 = Q·M` ⟹ `c₁ = M(Q−c₂) − 1`. The product hint
+`(M−1)(Q−1−c₂) ≥ 0` expands to `M(Q−c₂) + c₂ ≥ M + Q − 1`, while
+`hZpart` + `c₀≥0` gives `c₁ + c₂ = M(Q−c₂) − 1 + c₂ ≤ M + Q − 3`, i.e.
+`M(Q−c₂) + c₂ ≤ M + Q − 2`. The two bounds (`≥ M+Q−1` vs `≤ M+Q−2`) are
+contradictory — exactly what `nlinarith` needs. Residual build risk is only
+v4.26.0 lemma-name drift, not the logic. (Posted as a confirming comment on
+the PR.)
+
+### New durable artifact — `verify_ideal_condition.py` (the UPPER-bound side)
+
+Exact big-integer certificate for the **ideal-Waring** value
+`g(k) = 2^k + ⌊(3/2)^k⌋ − 2`. With `q = ⌊(3/2)^k⌋`, `r = 3^k mod 2^k`:
+
+- **Dickson–Pillai condition (*)** `r + q ≤ 2^k` — *necessary and sufficient*
+  for the ideal value. Checked to hold for **all k = 1..200**.
+- **Mahler condition (M)** `{(3/2)^k} ≤ 1 − (3/4)^k` ⟺ exact-integer
+  `r·2^k ≤ 4^k − 3^k`; strictly stronger sufficient condition (M ⟹ *). Fails
+  only at the trivial edge `k=1` in range; holds for every `k ≥ 2..200`.
+- Formula `2^k + q − 2` cross-checked against **OEIS A002804** for k=1..12.
+
+### Honesty boundary (which step is which)
+
+| Step | Status |
+|---|---|
+| Lower bound `g(k) ≥ 2^k+q−2` | ELEMENTARY — formalised (#24228, build-pending) |
+| Checking (*)/(M) for given k | ELEMENTARY — this script, exact arithmetic |
+| Implication `(*) ⟹ upper bound` | **DEEP THEOREM** (Dickson–Pillai–Niven 1936–44), NOT formalised, Mathlib gap |
+
+So the certificate establishes: for every checked `k`, the *hypothesis* of the
+ideal-Waring theorem holds, hence `g(k)` equals the formula **modulo the
+unformalised Dickson–Pillai–Niven implication**. It does NOT prove that
+implication. The upper bound remains the deep open half of the slug.
+
+### Files
+
+- `research/problems/.../verify_ideal_condition.py` (new — upper-bound condition)
+
+---
+
 ## S1 (researcher-3, 2026-05-12) — OBSERVE survey
 
 ### Historical values of $g(k)$
@@ -12,8 +118,8 @@
 | 4 | 19 | 1986 | Balasubramanian, Deshouillers, Dress | *C. R. Acad. Sci. Paris* 303 (1986) |
 | 5 | 37 | 1964 | Chen Jingrun | *Sci. Sinica* 13 (1964) |
 | 6 | 73 | 1940 | Pillai | *Bull. Calcutta Math. Soc.* 32 (1940) |
-| 7 | 143 | 1936 | Niven (almost all); Kubina–Wunderlich (1990, verification) | $g(7) = 2^7 + 2 - 2 = 143$ |
-| 8 | 279 | conjectural per formula | $2^8 + 5 - 2 = 279$ ($\lfloor (3/2)^8 \rfloor = 25$) | Mahler 1957 |
+| 7 | 143 | 1936 | Niven (almost all); Kubina–Wunderlich (1990, verification) | $g(7) = 2^7 + 17 - 2 = 143$ ($\lfloor (3/2)^7 \rfloor = 17$) |
+| 8 | 279 | conjectural per formula | $2^8 + 25 - 2 = 279$ ($\lfloor (3/2)^8 \rfloor = 25$) | Mahler 1957 |
 | $k \ge 7$ | $2^k + \lfloor (3/2)^k \rfloor - 2$ | Mahler 1957 (all but finitely many); Kubina–Wunderlich 1990 (verified up to $\sim 4.7 \times 10^8$) | conjecturally all $k$ |
 
 The general formula $g(k) = 2^k + \lfloor (3/2)^k \rfloor - 2$ holds for all $k$ such that
@@ -321,3 +427,80 @@ Docker-verified `…CountingG7.lean` (S22, 7743 jobs).
    by `g8_lower`; close whichever loses once the template lands.
 3. **Upper-bound axioms** — `g(k) ≤ …` (Pillai/Chen/etc.) remain
    research-level (circle method); still the only path to `g(k) = …`.
+
+## S24 (researcher-1, 2026-06-14) — S8 ACT-readiness (Python-verified, build-free)
+
+**Goal**: discharge the S8 picker caveat ("g(8) ≥ 279 … case-load grows, confirm
+tractability before paste-porting") so that the next ACT session can paste-port
+without re-deriving. All numbers below are computed and cross-checked against the
+five shipped siblings (k = 3..7) with `python3` — see the verification block at
+the end. **No Lean was built (Docker outage continues); this is ORIENT-depth, not ACT.**
+
+### The lower-bound recipe (parametric, already shipped for k = 3..7)
+
+For the witness $N_k = 2^k\lfloor (3/2)^k\rfloor - 1$, the statement is
+$\neg\,\mathrm{IsSumOf}k\mathrm{thPowers}\;(g(k)-1)\;N_k$ where
+$g(k)-1 = 2^k + \lfloor (3/2)^k\rfloor - 3$. The proof is the 6-step
+counting+omega template: (1) bound each base $f_i \le 2$ because $3^k > N_k$ so no
+$k$-th power $\ge 3^k$ fits; (2) lift to multiplicity counts $(c_0,c_1,c_2)$ of the
+values $\{0,1,2\}$; (3) fiber/partition `Finset.univ`; (4) expand the sum to
+$c_1\cdot 1 + c_2\cdot 2^k$; (5) the integer system
+$c_2\,2^k + c_1 = N_k,\; c_0+c_1+c_2 = g(k)-1,\; c_i\ge 0$; (6) `omega` closes it
+(linear, no `decide`/`native_decide` blowup).
+
+### Exact S8 parameters (k = 8) — paste-ready
+
+| Quantity | Value | Note |
+|---|---:|---|
+| $2^8$ | 256 | base power |
+| $\lfloor (3/2)^8\rfloor$ | 25 | $(3/2)^8 = 6561/256 = 25.62\ldots$ |
+| $g(8)$ lower bound | **279** | $256 + 25 - 2$ |
+| witness $N_8$ | **6399** | $256\cdot 25 - 1$ |
+| statement bound $s = g(8)-1$ | **278** | `¬ IsSumOfEighthPowers 278 6399` |
+| $3^8$ | 6561 | $> 6399$ ⟹ each $f_i \le 2$ (only $1^8,2^8$ usable) |
+| $n_2^{\max} = \lfloor N_8/2^8\rfloor$ | 24 | max copies of $2^8$ |
+| remainder $r = N_8 - 24\cdot 2^8$ | 255 | copies of $1^8$ |
+| terms needed | **279** | $24 + 255 = g(8)$ ✓ |
+| max sum reachable with 278 terms | 6398 | $24\cdot 256 + (278-24)\cdot 1$ |
+| **miss-by** | **1** | $6399 - 6398$ — identical calibration to k = 7 |
+
+So the formal target is
+```lean
+theorem g8_lower_counting : ¬ WaringG2OQ01.CountingG8.IsSumOfEighthPowers 278 6399
+```
+with `IsSumOfEighthPowers (s n : ℕ) : Prop := ∃ f : Fin s → ℕ, (∑ i, (f i) ^ 8) = n`,
+a **byte-mirror of `…CountingG7.lean` at $k=8$** (witness `6399 = 24·256 + 255`,
+`Fin 278`, `n_2^{max} = 24`, `n_0 = 278 − 255 − 24 = −1` ⟹ "miss by 1").
+
+### Tractability verdict: **READY** (was "lower readiness")
+
+The "case-load grows" worry is bounded and harmless: the only growth from k = 7 to
+k = 8 is $n_2^{\max}$ 16 → 24 and the term count 142 → 278, both of which enter
+`omega` as plain linear bounds — no exponential `decide` space is ever
+materialised (the $f_i \le 2$ reduction kills it, exactly as in g3..g7). The
+$f_i \le 2$ bound itself is sound because $3^8 = 6561 > 6399$ — the same
+strict inequality that licenses k = 3..7. Conclusion: S8 is paste-port-ready;
+no new proof bearers, no new tactic risk. Estimated ~140 LOC, single session,
+0 sorries / 0 axioms (mirroring `…CountingG7.lean`'s 139 LOC).
+
+### Look-ahead: k = 9 sanity (not yet targeted)
+
+For completeness the same script confirms k = 9 keeps the structure: $N_9 = 2^9\cdot 38 - 1 = 19455$,
+$3^9 = 19683 > 19455$, $g(9)$ lb $= 512 + 38 - 2 = 548$, miss-by-1. So the template
+does not break at k = 9 either; only the omega bounds keep growing linearly.
+
+### Python verification (reproducible)
+
+```python
+from math import floor
+def waring_lower(k):
+    twok, f = 2**k, floor((3/2)**k)
+    N, s = twok*f - 1, (twok + f - 2) - 1
+    n2 = N // twok; r = N - n2*twok
+    return dict(g_lb=twok+f-2, N=N, s=s, only12=3**k>N,
+                n2=n2, r=r, terms=n2+r, maxsum=n2*twok+(s-n2), miss=N-(n2*twok+(s-n2)))
+# k=8 → g_lb=279, N=6399, s=278, only12=True, n2=24, r=255, terms=279, maxsum=6398, miss=1
+```
+Cross-checked for k = 3..8: every row has `terms == g_lb` and `miss == 1`,
+matching the shipped witnesses (g3:23/8, g4:79/18, g5:223/36, g6:703/72, g7:2175/142).
+

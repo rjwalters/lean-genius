@@ -1,0 +1,180 @@
+{
+  "id": "solution-of-cubic-oq-01-oq-02",
+  "title": "The Sign of the Real Cubic Discriminant Classifies the Root Structure",
+  "slug": "solution-of-cubic-oq-01-oq-02",
+  "description": "Over ℝ the cubic discriminant carries strictly more information than over ℂ: its sign classifies the root structure (the classical discriminant test). Δ > 0 for three distinct real roots, Δ < 0 for one real root and a non-real complex-conjugate pair, Δ = 0 for a repeated root. Both sign theorems flow from the root form Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))²; the conjugate-pair case collapses to a single real polynomial identity Δ = −4a⁴n²((r−m)²+n²)². Answers the sign-trichotomy open question raised by the sibling discriminant entry OQ-01-OQ-01.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Discriminant#Nature_of_the_roots",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "cubic-equations",
+      "discriminant",
+      "real-roots",
+      "discriminant-test",
+      "complex-conjugate-roots",
+      "vieta",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "realDiscriminant: the real-valued cubic discriminant 18abcd − 4b³d + b²c² − 4ac³ − 27a²d², whose sign (unlike the complex version) is meaningful",
+      "realDiscriminant_eq_root_form: the real root form Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))² for Vieta coefficients of three real roots",
+      "realDiscriminant_pos_of_distinct_real_roots: three distinct real roots force Δ > 0 (first leg of the discriminant test), with realDiscriminant_nonneg_of_real_roots giving Δ ≥ 0 for any real roots",
+      "realDiscriminant_eq_zero_iff_repeated_real: among real roots, Δ = 0 ⟺ two of them coincide (the Δ = 0 boundary of the test)",
+      "realDiscriminant_conj_pair: the headline real identity Δ = −4a⁴n²((r−m)²+n²)² for a real root r and conjugate pair m ± n·i — a pure ring identity in a, r, m, n",
+      "realDiscriminant_neg_of_conj_pair: a real root plus a non-real conjugate pair (n ≠ 0) forces Δ < 0 (second leg of the discriminant test)",
+      "realDiscriminant_conj_pair_root_form: certifies the conjugate-pair parametrization is the genuine Vieta data of the complex roots r, w, w̄ (w = m + n·i), bridging back to the sibling's complex generalDiscriminant via the ℝ → ℂ cast"
+    ],
+    "dateAdded": "2026-06-23",
+    "prerequisites": [
+      "The general cubic discriminant and its symmetric root form (sibling proof, OQ-01-OQ-01)",
+      "Vieta's formulas; the conjugate-root theorem for real polynomials",
+      "Order properties of ℝ; basic complex arithmetic (re/im, conjugation)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic-oq-01-oq-01",
+        "relationship": "Sibling: defines the general cubic discriminant and its complex root form. This entry answers its stated open question on the real sign trichotomy."
+      },
+      {
+        "id": "solution-of-cubic-oq-01",
+        "relationship": "Parent: the Tschirnhaus shift reducing the general cubic to depressed form."
+      },
+      {
+        "id": "solution-of-cubic-oq-03-oq-01",
+        "relationship": "Cousin: the depressed discriminant −4p³ − 27q² in root form over ℝ."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 228,
+    "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); no native_decide, no Lean.ofReduceBool. The forward sign implications are proved unconditionally; the full ⟺ classification additionally uses that a real cubic's three roots are exhaustively either all real or one real plus a conjugate pair (the standard conjugate-root theorem), which is discussed in the docstring rather than re-formalized here.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "For a real cubic the discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² does more than detect repeated roots: its sign separates the three classical regimes. Δ > 0 gives three distinct real roots; Δ = 0 a repeated (hence all-real) root; Δ < 0 one real root and a non-real complex-conjugate pair. This sign test is the real-analytic counterpart of the purely algebraic discriminant of the sibling entry, which lives over ℂ where only Δ = 0 versus Δ ≠ 0 is visible. The trichotomy underlies the casus irreducibilis: exactly when Δ > 0 (three real roots) Cardano's formula is forced through non-real cube roots. The classification follows cleanly from the symmetric root form Δ = a⁴·∏(xᵢ−xⱼ)²: for three real roots the squared product is a nonnegative real, while for a conjugate pair m ± n·i the factor (w − w̄)² = (2n·i)² = −4n² flips the sign.",
+    "problemStatement": "Prove the sign classification of the real cubic discriminant: three distinct real roots ⟹ Δ > 0; one real root and a non-real conjugate pair ⟹ Δ < 0; a repeated real root ⟹ Δ = 0. Certify that the conjugate-pair parametrization is the genuine Vieta data of the complex roots r, w, w̄.",
+    "proofStrategy": "Define realDiscriminant over ℝ so its sign is meaningful, and prove the real root form Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))² by substituting Vieta and calling ring. The all-real case is then positivity: a⁴·(square) ≥ 0, strictly > 0 when the root differences are nonzero (distinct roots). The conjugate-pair case is the key simplification: writing the Vieta coefficients of r and m ± n·i as real expressions, the discriminant collapses to the single real polynomial identity Δ = −4a⁴n²((r−m)²+n²)² (one ring call), manifestly < 0 when n ≠ 0 — the complex root w − w̄ never has to be handled directly. Finally realDiscriminant_conj_pair_root_form casts to ℂ and applies the sibling's complex generalDiscriminant_eq_root_form with x₁ = r, x₂ = w, x₃ = w̄, discharging the three Vieta equalities componentwise (Complex.ext), so the parametrization is provably that of the conjugate pair.",
+    "keyInsights": [
+      "Over ℝ the discriminant's sign — not just its vanishing — is the invariant of interest: it is the order structure of ℝ, absent over ℂ, that makes the trichotomy possible.",
+      "Both signs come from one identity, the root form Δ = a⁴·∏(xᵢ−xⱼ)²: a real square is ≥ 0, and the conjugate-difference square (2n·i)² = −4n² is the lone source of negativity.",
+      "The conjugate-pair case never needs complex algebra: the Vieta coefficients of r, m ± n·i are real, and Δ = −4a⁴n²((r−m)²+n²)² is a pure ℝ-identity that ring verifies, with the sign read off by positivity.",
+      "The hypothesis n ≠ 0 is exactly the statement that the pair is genuinely non-real; setting n = 0 returns a (repeated) real root and Δ = 0, recovering the boundary of the test.",
+      "The three structural cases (three real, or one real plus a conjugate pair, with the repeated case at the Δ = 0 boundary) are exhaustive for a real cubic, so the forward sign implications give the full ⟺ classification."
+    ],
+    "prerequisites": [
+      "The sibling's general cubic discriminant generalDiscriminant and its complex root form generalDiscriminant_eq_root_form",
+      "Vieta's formulas and the conjugate-root theorem for real polynomials",
+      "The order field ℝ, positivity/nlinarith, and basic complex re/im arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "real-discriminant",
+      "title": "Part 1: The Real Cubic Discriminant",
+      "startLine": 67,
+      "endLine": 84,
+      "summary": "Defines realDiscriminant a b c d over ℝ (so its sign is meaningful) and realDiscriminant_cast, identifying it with the cast of the sibling's complex generalDiscriminant; a private a⁴ > 0 helper.",
+      "mathContext": "The same degree-4 polynomial as the complex discriminant, now valued in ℝ where order — and hence sign — is available."
+    },
+    {
+      "id": "all-real-case",
+      "title": "Part 2: The All-Real-Roots Case — Δ ≥ 0",
+      "startLine": 86,
+      "endLine": 144,
+      "summary": "realDiscriminant_eq_root_form (Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))² by ring), realDiscriminant_nonneg_of_real_roots (Δ ≥ 0), realDiscriminant_pos_of_distinct_real_roots (Δ > 0 when distinct), and realDiscriminant_eq_zero_iff_repeated_real (Δ = 0 ⟺ two coincide).",
+      "mathContext": "Three real roots make Δ a leading factor times a real square — nonnegative, and positive exactly when the roots are distinct."
+    },
+    {
+      "id": "conjugate-pair-case",
+      "title": "Part 3: The Conjugate-Pair Case — Δ < 0",
+      "startLine": 145,
+      "endLine": 174,
+      "summary": "realDiscriminant_conj_pair: the real identity Δ = −4a⁴n²((r−m)²+n²)² for the Vieta data of r and m ± n·i (one ring call); realDiscriminant_neg_of_conj_pair: Δ < 0 when n ≠ 0, by positivity.",
+      "mathContext": "A real root plus a genuine non-real conjugate pair forces Δ < 0; the factor −4n² = (w − w̄)² is the whole story."
+    },
+    {
+      "id": "complex-bridge",
+      "title": "Part 4: The Bridge to Complex Conjugate Roots",
+      "startLine": 175,
+      "endLine": 204,
+      "summary": "realDiscriminant_conj_pair_root_form: casting to ℂ, the conjugate-pair cubic equals the sibling's root form a⁴·((r−w)(r−w̄)(w−w̄))² with w = m + n·i — certifying the parametrization is the genuine Vieta data of r, w, w̄.",
+      "mathContext": "Ties the real identity back to actual complex roots so the negativity is provably caused by a real conjugate pair, not just a chosen parametrization."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Part 5: Sanity Checks",
+      "startLine": 205,
+      "endLine": 228,
+      "summary": "x³ − x = x(x−1)(x+1) has Δ = 4 > 0 (three distinct real roots); x³ + x = x(x²+1) has Δ = −4 < 0 (real root 0 and the pair ±i); x³ − 3x + 2 = (x−1)²(x+2) has Δ = 0 (repeated real root).",
+      "mathContext": "One worked cubic in each regime of the discriminant test."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the real cubic discriminant test: three distinct real roots ⟹ Δ > 0, one real root and a non-real conjugate pair ⟹ Δ < 0, a repeated real root ⟹ Δ = 0. The all-real case is a positivity argument on the root form Δ = a⁴·∏(xᵢ−xⱼ)²; the conjugate-pair case collapses to the real polynomial identity Δ = −4a⁴n²((r−m)²+n²)², with a complex-root bridge certifying the parametrization. 228 lines, 8 theorems, 1 definition.",
+    "implications": "This answers the sign-trichotomy open question raised by the sibling discriminant entry OQ-01-OQ-01, completing the gallery's account of the cubic discriminant: the algebraic invariant over ℂ (sibling) and its real sign classification (here). It pins down the casus irreducibilis boundary (Δ > 0 ⟺ three real roots) at which Cardano's radicals are forced complex.",
+    "openQuestions": [
+      "Formalize the exhaustiveness step explicitly: every real cubic has either three real roots or one real root and a conjugate pair, upgrading the forward sign implications to a single decidable ⟺ classification.",
+      "Extend the sign analysis to the quartic, whose discriminant sign (together with auxiliary invariants P and D) distinguishes four real-root regimes."
+    ]
+  },
+  "status": "verified",
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Proofs.SolutionOfCubicOQ01OQ01"
+    ],
+    "opens": [
+      "SolutionOfCubicOQ01OQ01"
+    ],
+    "namespace": "SolutionOfCubicOQ01OQ02",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sibling entry defining the general cubic discriminant over ℂ and its symmetric root form. Its conclusion explicitly asked to prove the real sign trichotomy (Δ > 0 ⟺ three distinct real roots, Δ < 0 ⟺ one real and two conjugate complex roots); this entry does exactly that, reusing its generalDiscriminant and generalDiscriminant_eq_root_form via the ℝ → ℂ cast."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: the Tschirnhaus shift reducing the general cubic to depressed form, on whose discriminant the sibling and this entry build."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-01",
+      "relationship": "complementary",
+      "description": "Cousin entry on the depressed discriminant −4p³ − 27q² in root form over ℝ; this entry supplies the general-cubic sign classification."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ir90",
+      "citation": "Irving, R.S., Integers, Polynomials, and Rings, Springer (2004), Chapter on cubic and quartic equations and the discriminant.",
+      "type": "book"
+    },
+    {
+      "key": "Ti01",
+      "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001), Chapters 3–6 (discriminant, real roots, casus irreducibilis).",
+      "type": "book"
+    },
+    {
+      "key": "Wiki-disc",
+      "citation": "Wikipedia, Discriminant — Nature of the roots (cubic), https://en.wikipedia.org/wiki/Discriminant#Nature_of_the_roots.",
+      "type": "web"
+    }
+  ],
+  "sorries": 0
+}

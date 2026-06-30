@@ -91,82 +91,90 @@
     {
       "id": "header",
       "title": "Problem Statement",
+      "description": null,
       "startLine": 1,
-      "endLine": 26,
-      "summary": "Introduction to the subset sum AP-avoidance problem",
-      "mathContext": "Mathematical content: Introduction to the subset sum AP-avoidance problem"
+      "endLine": 33,
+      "summary": "Introduction to the subset sum AP-avoidance problem"
     },
     {
       "id": "ap-free",
       "title": "Arithmetic Progressions",
+      "description": null,
       "startLine": 34,
       "endLine": 64,
-      "summary": "Definition of k-AP-free sets with two equivalent formulations",
-      "mathContext": "Formal definition: Definition of k-AP-free sets with two equivalent formulations"
+      "summary": "Definition of k-AP-free sets with two equivalent formulations"
     },
     {
       "id": "subset-sums",
       "title": "Subset Sums",
+      "description": null,
       "startLine": 65,
-      "endLine": 103,
-      "summary": "Definition of subset sum set and basic properties",
-      "mathContext": "Formal definition: Definition of subset sum set and basic properties"
+      "endLine": 101,
+      "summary": "Definition of subset sum set and basic properties"
     },
     {
       "id": "g-function",
       "title": "The Function g_k(n)",
-      "startLine": 104,
-      "endLine": 129,
-      "summary": "Definition of the extremal function via infimum",
-      "mathContext": "Formal definition: Definition of the extremal function via infimum"
+      "description": null,
+      "startLine": 102,
+      "endLine": 127,
+      "summary": "Definition of the extremal function via infimum"
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture (OPEN)",
-      "startLine": 130,
-      "endLine": 150,
-      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ",
-      "mathContext": "Mathematical content: Statement of the open problem g₃(n) ≫ 3ⁿ"
+      "title": "The Main Conjecture (OPEN)",
+      "description": null,
+      "startLine": 128,
+      "endLine": 148,
+      "summary": "Statement of the open problem g₃(n) ≫ 3ⁿ"
     },
     {
       "id": "partial",
-      "title": "Erdős-Sárközy Partial Result",
-      "startLine": 151,
-      "endLine": 164,
-      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}",
-      "mathContext": "The known bound g₃(n) ≫ 3ⁿ/n^{$O(1)$}"
+      "title": "The Erdős-Sárközy Partial Result",
+      "description": null,
+      "startLine": 149,
+      "endLine": 160,
+      "summary": "The known bound g₃(n) ≫ 3ⁿ/n^{O(1)}"
+    },
+    {
+      "id": "helper-base3",
+      "title": "Helper Lemmas: Base-3 Digit Uniqueness",
+      "description": null,
+      "startLine": 161,
+      "endLine": 287,
+      "summary": "Base-3 digit arguments: the core AP lemma forcing S=T=U for matched subset sums"
     },
     {
       "id": "properties",
       "title": "Basic Properties",
-      "startLine": 165,
-      "endLine": 180,
-      "summary": "Trivial bounds on g_k(n)",
-      "mathContext": "Bound: Trivial bounds on g_k(n)"
+      "description": null,
+      "startLine": 288,
+      "endLine": 428,
+      "summary": "Trivial bounds on g_k(n), monotonicity, and the 3^n upper bound"
     },
     {
       "id": "examples",
-      "title": "Small Cases",
-      "startLine": 181,
-      "endLine": 197,
-      "summary": "Values of g₃(1) and g₃(2)",
-      "mathContext": "Mathematical content: Values of g₃(1) and g₃(2)"
+      "title": "Examples for Small Cases",
+      "description": null,
+      "startLine": 429,
+      "endLine": 540,
+      "summary": "Values of g₃(1) and g₃(2)"
     },
     {
       "id": "heuristic",
       "title": "Heuristic Analysis",
-      "startLine": 198,
-      "endLine": 225,
-      "summary": "Why exponential growth is expected",
-      "mathContext": "Mathematical content: Why exponential growth is expected"
+      "description": null,
+      "startLine": 541,
+      "endLine": 568,
+      "summary": "Why exponential growth is expected"
     },
     {
       "id": "szemeredi",
-      "title": "Connection to Szemerédi",
-      "startLine": 226,
-      "endLine": 232,
-      "summary": "Relation to density-based AP results",
-      "mathContext": "Mathematical content: Relation to density-based AP results"
+      "title": "Connection to Szemerédi's Theorem",
+      "description": null,
+      "startLine": 569,
+      "endLine": 580,
+      "summary": "Relation to density-based AP results"
     }
   ],
   "crossRefs": [

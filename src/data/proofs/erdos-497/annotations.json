@@ -17,7 +17,11 @@
       "Sperner families",
       "Boolean lattice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "antichains in the power set P([n])",
+      "Dedekind numbers counting monotone Boolean functions",
+      "doubly exponential growth and Kleitman's asymptotic"
+    ]
   },
   {
     "id": "ann-e497-antichain",
@@ -36,7 +40,11 @@
       "partial order",
       "incomparability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of Fin n ordered by inclusion",
+      "incomparable elements in the Boolean lattice 2^[n]",
+      "filtering subfamilies of a powerset to count antichains"
+    ]
   },
   {
     "id": "ann-e497-sperner",
@@ -56,7 +64,11 @@
       "middle layer",
       "extremal set theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficient C(n, n/2) as the maximum antichain size",
+      "the middle layer of n/2-element subsets",
+      "the LYM inequality bounding antichain density"
+    ]
   },
   {
     "id": "ann-e497-dedekind",
@@ -75,7 +87,11 @@
       "Dedekind's problem",
       "computational complexity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the OEIS A000372 sequence of Dedekind numbers",
+      "double-exponential growth of D(n)",
+      "computational infeasibility of exact values beyond small n"
+    ]
   },
   {
     "id": "ann-e497-imports",

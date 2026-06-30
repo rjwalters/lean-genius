@@ -4,7 +4,7 @@
   "slug": "chebyshev-pnt-bridge-oq-01",
   "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} ≤ 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
   "meta": {
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
     "tags": [
       "number-theory",
@@ -13,11 +13,11 @@
       "Chebyshev",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 210,
-    "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) ≤ (2n)^π(2n), Chebyshev lower bound.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Core lemmas (Legendre formula, prime power bound, C(2n,n) <= (2n)^pi(2n), Chebyshev lower bound) are proved from Mathlib.",
     "dateAdded": "2026-04-12",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -86,7 +86,10 @@
     "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (Legendre formula, carry bound, vanishing for large powers) and the product bound corollary are fully proved with 0 axioms and 0 sorries.",
     "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery — a remarkable result that predated the Prime Number Theorem by nearly 50 years. The complete formal chain from Kummer's theorem to Chebyshev's bound is now established.",
     "openQuestions": [
-      "Can this be extended to prove Bertrand's postulate ($\\exists$ prime $p$ with $n < p \\leq 2n$) by refining the upper bound on $\\binom{2n}{n}$ to exclude primes in $(\\sqrt{2n}, 2n/3)$?"
+      "Can this be extended to prove Bertrand's postulate ($\\exists$ prime $p$ with $n < p \\leq 2n$) by refining the upper bound on $\\binom{2n}{n}$ to exclude primes in $(\\sqrt{2n}, 2n/3)$?",
+      "Can the complementary upper Chebyshev bound $\\pi(x) = O(x/\\ln x)$ be formalized from the same factorization data? Every prime $p$ with $n < p \\leq 2n$ divides $\\binom{2n}{n}$ exactly once, so $\\prod_{n < p \\leq 2n} p \\mid \\binom{2n}{n} \\leq 4^n$, giving $\\vartheta(2n) - \\vartheta(n) \\leq 2n\\ln 2$ and hence the matching upper bound on $\\pi(x)$. This entry currently derives only Chebyshev's lower bound; the upper half would complete $\\pi(x) \\asymp x/\\ln x$ entirely from central-binomial estimates.",
+      "Do the explicit Chebyshev constants follow with the constants made rigorous in Lean? Chebyshev's method yields $0.92129\\,\\tfrac{x}{\\ln x} \\leq \\pi(x) \\leq 1.10555\\,\\tfrac{x}{\\ln x}$ for large $x$; tracking the carry-counting bound quantitatively (rather than asymptotically) would let Mathlib state effective, fully verified bounds with named constants instead of an unspecified $c$.",
+      "Does the carry-counting bound generalize to multinomial coefficients $\\binom{kn}{n,\\ldots,n}$, giving $p^{v_p} \\leq kn$ and a corresponding lower bound on $\\pi(kn)$? Kummer's theorem extends to base-$p$ carries of multi-term sums, so the one-line `Nat.pow_factorization_choose_le` core may admit a multinomial analogue."
     ]
   },
   "references": [

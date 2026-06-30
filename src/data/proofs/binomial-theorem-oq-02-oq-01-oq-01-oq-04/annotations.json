@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 5, "endLine": 61 },
+    "type": "concept",
+    "title": "Overview: completing the multinomial's second-order law",
+    "content": "The parent binomial-theorem-oq-02-oq-01-oq-01 proves the mean E[Xᵢ]=n·pᵢ, the cross moment E[XᵢXⱼ]=n(n-1)pᵢpⱼ, and the covariance Cov(Xᵢ,Xⱼ)=-n·pᵢpⱼ — but its covariance theorem carries the hypothesis i≠j, so the diagonal (the variance) is genuinely missing. This file supplies it: the diagonal second factorial moment, the second moment, the variance Var(Xᵢ)=n·pᵢ(1-pᵢ), and a single covariance-matrix formula Cov(Xᵢ,Xⱼ)=n·pᵢ·(δᵢⱼ-pⱼ) valid for all i,j. All expectations are finite sums over s.piAntidiag n, matching the parent's discrete convention. Everything is 0-axiom and sorry-free.",
+    "mathContext": "Covariance matrix $\\Sigma_{ij} = n p_i(\\delta_{ij} - p_j)$, i.e. $\\Sigma = n(\\operatorname{diag}(p) - p p^\\top)$; the diagonal $\\Sigma_{ii} = n p_i(1-p_i)$ is the variance.",
+    "significance": "supporting",
+    "relatedConcepts": ["multinomial distribution", "covariance matrix", "variance", "factorial moments"],
+    "prerequisites": ["multinomial PMF", "expectation as a finite sum"]
+  },
+  {
+    "id": "ann-absorb",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 63, "endLine": 148 },
+    "type": "technique",
+    "title": "The absorption engine (re-derived locally)",
+    "content": "absorb is the combinatorial identity kᵢ·multinomial(s,k) = n·multinomial(s, update k i (kᵢ-1)): lowering the i-th count by one absorbs the factor kᵢ into n. absorb_weighted carries the probability weight, turning kᵢ·multinomial(s,k)·∏pⱼ^kⱼ into n·pᵢ·multinomial(s,k')·∏pⱼ^k'ⱼ. Both are proved from Nat.multinomial_spec and the factorial identity k·(k-1)! = k!. The parent file's copies are `private`, so they are re-derived here.",
+    "mathContext": "$k_i \\binom{n}{k} = n \\binom{n-1}{k - e_i}$ in multinomial form: $k_i \\cdot \\frac{n!}{\\prod_j k_j!} = n \\cdot \\frac{(n-1)!}{(k_i-1)!\\prod_{j\\ne i} k_j!}$.",
+    "significance": "key",
+    "relatedConcepts": ["multinomial coefficient", "absorption identity", "Nat.multinomial_spec"],
+    "prerequisites": ["factorials", "Finset.prod over erase"]
+  },
+  {
+    "id": "ann-second-factorial-moment",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 150, "endLine": 237 },
+    "type": "theorem",
+    "title": "Diagonal second factorial moment E[Xᵢ(Xᵢ-1)] = n(n-1)pᵢ²",
+    "content": "The single-coordinate analogue of the parent's cross moment. After dropping the kᵢ=0 terms, the absorption bijection k ↦ update k i (kᵢ-1) maps onto compositions of n-1; the surviving factor (kᵢ-1) equals the lowered count k'ᵢ, so the sum becomes n·pᵢ times the (n-1)-trial mean of Xᵢ, which is (n-1)·pᵢ by multinomial_mean. The membership and inverse bookkeeping mirror the parent's cross-moment proof; only the summand correspondence differs (the rider is (kᵢ-1)→k'ᵢ rather than kⱼ).",
+    "mathContext": "$E[X_i(X_i-1)] = \\sum_{k} k_i(k_i-1)\\,P(X=k) = n p_i \\cdot E_{n-1}[X_i] = n p_i (n-1) p_i = n(n-1)p_i^2$.",
+    "significance": "key",
+    "relatedConcepts": ["factorial moment", "absorption bijection", "Finset.sum_nbij'"],
+    "prerequisites": ["multinomial_mean", "Nat.cast_sub"]
+  },
+  {
+    "id": "ann-second-moment",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 239, "endLine": 255 },
+    "type": "theorem",
+    "title": "Second moment E[Xᵢ²] = n(n-1)pᵢ² + n·pᵢ",
+    "content": "Immediate from the decomposition Xᵢ² = Xᵢ(Xᵢ-1) + Xᵢ: split the summand, then apply the second factorial moment and the mean termwise.",
+    "mathContext": "$E[X_i^2] = E[X_i(X_i-1)] + E[X_i] = n(n-1)p_i^2 + n p_i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["raw moments", "factorial moments"],
+    "prerequisites": ["multinomial_second_factorial_moment", "multinomial_mean"]
+  },
+  {
+    "id": "ann-variance",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 256, "endLine": 288 },
+    "type": "theorem",
+    "title": "Variance Var(Xᵢ) = n·pᵢ·(1-pᵢ)",
+    "content": "The missing diagonal. Expanding the centred square gives (kᵢ-npᵢ)² = kᵢ(kᵢ-1) + (1-2npᵢ)kᵢ + (npᵢ)²; summing termwise uses the factorial moment, the mean, and total mass 1, then n=m+1 with push_cast and ring closes it (the n=0 case is simp).",
+    "mathContext": "$\\operatorname{Var}(X_i) = E[X_i^2] - (E[X_i])^2 = n(n-1)p_i^2 + n p_i - n^2 p_i^2 = n p_i(1-p_i)$.",
+    "significance": "key",
+    "relatedConcepts": ["variance", "centred second moment"],
+    "prerequisites": ["multinomial_second_factorial_moment", "multinomial_mean"]
+  },
+  {
+    "id": "ann-covariance-matrix",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
+    "range": { "startLine": 289, "endLine": 329 },
+    "type": "theorem",
+    "title": "The unified covariance matrix Cov(Xᵢ,Xⱼ) = n·pᵢ·(δᵢⱼ - pⱼ)",
+    "content": "One formula for every entry. The i=j case reduces to the variance (the centred product becomes a square). The i≠j case is routed through the parent's multinomial_covariance: the centred summand (kᵢ-npᵢ)(kⱼ-npⱼ)·w and the parent's (kᵢkⱼ-n²pᵢpⱼ)·w differ by -(npⱼ)·kᵢ·w - (npᵢ)·kⱼ·w + 2n²pᵢpⱼ·w, whose total mass is -npⱼ·npᵢ - npᵢ·npⱼ + 2n²pᵢpⱼ = 0 (each piece evaluated by multinomial_mean and total mass 1). Hence the centred sum equals the parent's, namely -n·pᵢpⱼ.",
+    "mathContext": "$\\Sigma_{ij} = n p_i(\\delta_{ij} - p_j)$: diagonal $n p_i(1-p_i)$, off-diagonal $-n p_i p_j$; equivalently $\\Sigma = n(\\operatorname{diag}(p) - p p^\\top)$, the rank-deficient covariance supported on $\\{y : \\sum y_i = 0\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["covariance matrix", "Kronecker delta", "multinomial_covariance"],
+    "prerequisites": ["multinomial_variance", "multinomial_covariance", "multinomial_mean"]
+  }
+]

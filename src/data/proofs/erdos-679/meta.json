@@ -18,7 +18,7 @@
       "open"
     ],
     "badge": "wip",
-    "sorries": 10,
+    "sorries": 9,
     "erdosNumber": 679,
     "erdosUrl": "https://erdosproblems.com/679",
     "erdosProblemStatus": "open",
@@ -85,8 +85,8 @@
       "density_upper_bound: special n have density ≤ x/log x"
     ],
     "axiomCount": 0,
-    "lineCount": 259,
-    "assumptions": "0 axiom(s) and 10 sorry(s). See the Lean source for details.",
+    "lineCount": 284,
+    "assumptions": "0 axiom(s) and 9 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
     "theoremCount": 16,
     "definitionCount": 18,
@@ -274,7 +274,8 @@
     "imports": [
       "Mathlib.NumberTheory.ArithmeticFunction",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Topology.Instances.Real",
+      "Mathlib.Topology.Instances.Real.Lemmas",
+      "Mathlib.Data.Nat.Nth",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -284,16 +285,16 @@
       "Filter"
     ],
     "namespace": "Erdos679",
-    "lineCount": 259,
+    "lineCount": 284,
     "axiomCount": 0,
     "theoremCount": 16,
     "definitionCount": 18,
-    "sorries": 10,
+    "sorries": 9,
     "path": "Proofs/Erdos679Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos679Aristotle.lean",
       "Proofs/Erdos679ProblemAristotle.lean"
     ]
   },
-  "sorries": 10
+  "sorries": 9
 }

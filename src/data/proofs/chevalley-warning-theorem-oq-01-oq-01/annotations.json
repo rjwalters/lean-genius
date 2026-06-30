@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-cw2-overview",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 45 },
+    "type": "concept",
+    "title": "Structural Consequences of p ∣ #solutions",
+    "content": "The docstring frames this as a follow-up to the parent divisibility entry, extracting the structural facts the bare congruence p ∣ #solutions implies but that Mathlib never packages. As a constraint on a nonnegative count, divisibility by p means the count lives in {0, p, 2p, …}, so the first nonzero value is already p. From that single observation flow four results: the characteristic lower bound (count is 0 or ≥ p), the no-unique-solution law (count ≠ 1), the existence lower bound (one zero ⇒ at least p), and the second-solution theorem (any known zero forces a distinct one). The parent's origin corollary becomes the x₀ = 0 instance. The entry is careful to flag that this 0-or-≥-p bound is the elementary one, far weaker than Warning's second theorem (0 or ≥ qⁿ⁻ᵈ), which it does NOT claim.",
+    "mathContext": "$p \\mid \\#S \\Rightarrow \\#S \\in \\{0, p, 2p, \\dots\\}$, so the first nonzero count is $p$.",
+    "significance": "context",
+    "relatedConcepts": ["Chevalley–Warning divisibility", "Warning's second theorem", "finite fields", "solution counting"],
+    "prerequisites": ["divisibility", "finite fields"]
+  },
+  {
+    "id": "ann-cw2-lower-bound",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 83 },
+    "type": "theorem",
+    "title": "The Characteristic Lower Bound: 0 or ≥ p",
+    "content": "card_zero_or_ge (family) and card_zero_or_ge_single (single polynomial) state that the number of common zeros is 0 or at least p — no count strictly between. The proof cases on Nat.eq_zero_or_pos of the count: the zero case is immediate, and in the positive case Nat.le_of_dvd lifts the Chevalley–Warning divisibility p ∣ #S together with #S ≥ 1 to p ≤ #S. This names the dichotomy that turns 'a solution exists' directly into 'at least p solutions exist'.",
+    "mathContext": "$\\#S = 0 \\ \\vee\\ p \\le \\#S$, since a positive multiple of $p$ is $\\ge p$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.eq_zero_or_pos", "Nat.le_of_dvd", "dichotomy"],
+    "prerequisites": ["divisibility", "subtype cardinality"]
+  },
+  {
+    "id": "ann-cw2-no-unique",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 112 },
+    "type": "theorem",
+    "title": "The No-Unique-Solution Law",
+    "content": "card_ne_one (family) and card_ne_one_single (single polynomial) prove a low-degree system can never have exactly one common zero. The argument is a clean obstruction: if #solutions = 1 then p ∣ 1, so Nat.dvd_one forces p = 1, contradicting (Fact p.Prime).ne_one. Because 1 is a multiple of no prime, a singleton solution set is impossible — any solution is one of at least p.",
+    "mathContext": "$\\#S = 1 \\Rightarrow p \\mid 1 \\Rightarrow p = 1$, contradicting $p$ prime; hence $\\#S \\ne 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_one", "primality", "singleton obstruction"],
+    "prerequisites": ["divisibility", "Fact p.Prime"]
+  },
+  {
+    "id": "ann-cw2-second-solution",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01",
+    "range": { "startLine": 114, "endLine": 169 },
+    "type": "theorem",
+    "title": "Existence Lower Bound and the Second-Solution Theorem",
+    "content": "char_le_card_of_exists records that one common zero already forces at least p (a known zero witnesses #S ≥ 1 via Fintype.card_pos_iff, then Nat.le_of_dvd). exists_second_common_zero and its single-polynomial form are the headline: from ANY known common zero x₀ — not only the origin — a distinct second common zero exists. The proof witnesses #S ≥ 1 by x₀, uses p.one_lt + Nat.le_of_dvd to get 1 < #S, then Fintype.exists_ne_of_one_lt_card produces y ≠ ⟨x₀⟩ with y.val a distinct zero (distinctness by Subtype.ext). The key insight is that the origin was never special — it only served to witness one solution — so the general second-solution statement is the honest one.",
+    "mathContext": "$x_0$ known zero $\\Rightarrow \\#S \\ge 1$; $p$ prime $\\Rightarrow \\#S \\ge p \\ge 2 \\Rightarrow \\exists\\,x \\ne x_0$ common zero.",
+    "significance": "critical",
+    "relatedConcepts": ["Fintype.card_pos_iff", "Fintype.exists_ne_of_one_lt_card", "Subtype.ext", "generalizing the origin"],
+    "prerequisites": ["subtype cardinality", "pigeonhole"]
+  },
+  {
+    "id": "ann-cw2-recover-parent",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01",
+    "range": { "startLine": 171, "endLine": 182 },
+    "type": "context",
+    "title": "Recovering the Parent's Origin Corollary",
+    "content": "nontrivial_of_origin is exists_second_common_zero applied at x₀ = 0: if every f i vanishes at the origin, a distinct (hence nonzero) common zero exists — exactly the parent's chevalley_warning_nontrivial. This makes precise that the parent corollary is a one-line specialization of the general second-solution theorem, with the origin merely the most common choice of the witnessing solution.",
+    "mathContext": "$x_0 = 0$: origin-vanishing system $\\Rightarrow \\exists\\,x \\ne 0$ common zero (the parent corollary).",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "parent corollary", "origin"],
+    "prerequisites": ["the second-solution theorem"]
+  }
+]

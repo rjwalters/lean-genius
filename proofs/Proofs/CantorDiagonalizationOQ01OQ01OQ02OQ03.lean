@@ -112,7 +112,8 @@ theorem easton_consistency (F : Ordinal.{0} → Cardinal.{0})
     True := by
   trivial  -- Placeholder; the mathematical content requires class forcing
 
--- The MEANINGFUL content is the directional sorry below:
+-- The MEANINGFUL content is the directional characterization below (the
+-- forcing-side existential is stated with a `True` codomain, not a `sorry`):
 theorem easton_full_characterization (F : Ordinal.{0} → Cardinal.{0})
     (hF : SatisfiesEastonConditions F) :
     ∃ _ : Prop,

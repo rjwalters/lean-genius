@@ -52,86 +52,76 @@
   },
   "sections": [
     {
-      "id": "cycle-config",
+      "id": "module-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "States the research question: for a Collatz cycle with j odd steps and M total halvings, the odd elements and halving counts satisfy ∏(3nᵢ+1) = 2^M·∏nᵢ. Lists the three consequences (2^M > 3^j; 2^M ≠ 3^j; M ≥ j+1) and references (Lagarias 1985, Eliahou 1993). Imports Mathlib, opens the namespace.",
+      "mathContext": "From the step relations $2^{m_i} n_{(i+1)\\bmod j} = 3n_i+1$, taking the product over $i$ yields $\\prod_i (3n_i+1) = 2^M \\prod_i n_i$ with $M = \\sum_i m_i$."
+    },
+    {
+      "id": "part-i-configurations",
       "title": "Part I: Collatz Cycle Configurations",
-      "description": "CycleConfig structure for j-step Collatz cycles",
-      "theorems": []
+      "startLine": 36,
+      "endLine": 51,
+      "summary": "Defines the `CycleConfig` structure: j positive odd values, j halving counts, and the cyclic step relation 2^{mᵢ}·n_{(i+1) mod j} = 3nᵢ+1. Defines total halvings `CycleConfig.M = ∑ᵢ mᵢ`.",
+      "mathContext": "A `CycleConfig j` packages $(n_i)$ odd and positive, $(m_i)$, and the constraint $2^{m_i} n_{(i+1)\\bmod j} = 3 n_i + 1$ for all $i \\in \\mathrm{Fin}\\,j$."
     },
     {
-      "id": "cyclic-bijection",
+      "id": "part-ii-cyclic-successor",
       "title": "Part II: The Cyclic Successor Bijection",
-      "description": "cyclicSucc: i ↦ (i+1) mod j as an Equiv.Perm (Fin j)",
-      "theorems": [
-        {
-          "name": "prod_perm_eq",
-          "statement": "∏ i, f (σ i) = ∏ i, f i for any permutation σ",
-          "status": "proved",
-          "description": "Products are invariant under permutation of the index set"
-        },
-        {
-          "name": "prod_two_pow",
-          "statement": "∏ᵢ 2^{mᵢ} = 2^{∑ᵢ mᵢ}",
-          "status": "proved",
-          "description": "Product of powers equals power of sum"
-        }
-      ]
+      "startLine": 52,
+      "endLine": 60,
+      "summary": "Defines `cyclicSucc`, the permutation i ↦ (i+1) mod j of Fin j (with explicit inverse i ↦ (i+j−1) mod j), making the cyclic shift a bijection — the key fact that lets the index reordering cancel in the product.",
+      "mathContext": "$\\mathrm{cyclicSucc} : \\mathrm{Fin}\\,j \\simeq \\mathrm{Fin}\\,j,\\ i \\mapsto (i+1)\\bmod j$, a cyclic permutation."
     },
     {
-      "id": "product-equation",
+      "id": "part-iii-product-identities",
+      "title": "Part III: Key Product Identities",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "Two product lemmas: `prod_perm_eq` (a product over a permuted index equals the original, via Equiv.prod_comp) and `prod_two_pow` (∏ᵢ 2^{mᵢ} = 2^{∑ᵢ mᵢ}).",
+      "mathContext": "$\\prod_i f(\\sigma i) = \\prod_i f(i)$ for any permutation $\\sigma$, and $\\prod_i 2^{m_i} = 2^{\\sum_i m_i}$."
+    },
+    {
+      "id": "part-iv-product-equation",
       "title": "Part IV: The Product Equation",
-      "description": "Main algebraic identity: ∏(3nᵢ+1) = 2^M · ∏nᵢ",
-      "theorems": [
-        {
-          "name": "cycle_product_equation",
-          "statement": "∏ᵢ (3·c.odds i + 1) = 2^c.M · ∏ᵢ c.odds i",
-          "status": "proved",
-          "description": "Product telescoping via cyclic bijection. Follows from step relation 3nᵢ+1 = 2^{mᵢ}·n_{σ(i)} by taking the product over all i."
-        }
-      ]
+      "startLine": 74,
+      "endLine": 95,
+      "summary": "The main theorem `cycle_product_equation`: ∏ᵢ(3nᵢ+1) = 2^M·∏ᵢ nᵢ. Proof multiplies the step relations, splits the product (Finset.prod_mul_distrib), then applies the two Part III identities — the cyclic shift bijection reindexes ∏ n_{σ(i)} back to ∏ nᵢ.",
+      "mathContext": "$\\prod_i (3 n_i + 1) = \\left(\\prod_i 2^{m_i}\\right)\\left(\\prod_i n_{\\sigma(i)}\\right) = 2^M \\prod_i n_i$."
     },
     {
-      "id": "halving-constraint",
-      "title": "Part V–VI: The Halving Constraint and Parity",
-      "description": "3^j < 2^M and 2^M ≠ 3^j",
-      "theorems": [
-        {
-          "name": "prod_step_gt",
-          "statement": "3^j · ∏nᵢ < ∏(3nᵢ+1) for all positive nᵢ",
-          "status": "proved",
-          "description": "Inductive proof: each factor 3nᵢ+1 > 3nᵢ, so the product exceeds 3^j · ∏nᵢ"
-        },
-        {
-          "name": "halving_constraint",
-          "statement": "3^j < 2^M for any valid Collatz cycle configuration",
-          "status": "proved",
-          "description": "Combines cycle_product_equation with prod_step_gt, cancelling ∏nᵢ > 0"
-        },
-        {
-          "name": "no_power_eq",
-          "statement": "2^M ≠ 3^j for M ≥ 1",
-          "status": "proved",
-          "description": "Parity argument: 2^M is even, 3^j is odd"
-        }
-      ]
+      "id": "part-v-halving-constraint",
+      "title": "Part V: The Halving Constraint",
+      "startLine": 96,
+      "endLine": 145,
+      "summary": "Proves `prod_step_gt` (∏(3nᵢ+1) > 3^j·∏nᵢ for positive nᵢ, by induction on j) and combines it with the product equation to get `halving_constraint`: 2^M > 3^j for every cycle.",
+      "mathContext": "Since $3n_i + 1 > 3 n_i$, $\\ \\prod_i(3n_i+1) > 3^j \\prod_i n_i$; with the product equation this forces $2^M > 3^j$."
     },
     {
-      "id": "cycle-length",
-      "title": "Part VII–VIII: Cycle Length Lower Bound",
-      "description": "M ≥ j+1 and specialization to j=1,2,3,4",
-      "theorems": [
-        {
-          "name": "cycle_M_gt_j",
-          "statement": "c.M ≥ j + 1 for any valid cycle with j odd steps",
-          "status": "proved",
-          "description": "From 2^M > 3^j > 2^j: monotonicity of 2^· gives M > j, hence M ≥ j+1"
-        },
-        {
-          "name": "min_halvings_j1/j2/j3/j4",
-          "statement": "j=1: M ≥ 2; j=2: M ≥ 4; j=3: M ≥ 5; j=4: M ≥ 7",
-          "status": "proved",
-          "description": "Specializations of halving_constraint via interval_cases"
-        }
-      ]
+      "id": "part-vi-no-power-equality",
+      "title": "Part VI: No Power Equality",
+      "startLine": 146,
+      "endLine": 163,
+      "summary": "Parity argument: `odd_three_pow` (3^j is odd) and `no_power_eq` (2^M ≠ 3^j for M > 0, since 2^M is even while 3^j is odd).",
+      "mathContext": "$3^j \\equiv 1 \\pmod 2$, so for $M \\geq 1$ the even number $2^M$ cannot equal the odd $3^j$."
+    },
+    {
+      "id": "part-vii-min-cycle-length",
+      "title": "Part VII: Minimum Cycle Length",
+      "startLine": 164,
+      "endLine": 180,
+      "summary": "Derives the cycle-length lower bound: `two_pow_lt_three_pow` (2^j < 3^j) and `cycle_M_gt_j` (combining 2^M > 3^j with 3^j > 2^j and 2^M ≠ 3^j gives M ≥ j+1).",
+      "mathContext": "$2^M > 3^j > 2^j$ together with $2^M \\neq 3^j$ yields $M \\geq j+1$ total halvings."
+    },
+    {
+      "id": "part-viii-connection-oq02",
+      "title": "Part VIII: Connection to CollatzCycles.lean (OQ-02)",
+      "startLine": 181,
+      "endLine": 209,
+      "summary": "Recovers the specific small-j results of the companion OQ-02 file as corollaries of the general bound: `min_halvings_j1` through `min_halvings_j4` give the minimum halving counts for j = 1,2,3,4, now uniformly implied by M ≥ j+1.",
+      "mathContext": "The cases $j=1,2,3,4$ (min halvings $\\geq j+1$) follow uniformly from `cycle_M_gt_j`, unifying the per-case arguments of CollatzCycles.lean."
     }
   ],
   "conclusion": {

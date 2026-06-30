@@ -16,7 +16,12 @@
       "binomial-coefficients",
       "singmaster-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose (binomial coefficient C(n,k))",
+      "Pascal's triangle symmetry C(n,k) = C(n,n-k)",
+      "Singmaster's Conjecture (1971)",
+      "definition of multiplicity in Pascal's triangle"
+    ]
   },
   {
     "id": "ann-e849-multiplicity-set",
@@ -34,7 +39,12 @@
       "set-builder",
       "nat-pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose (binomial coefficient C(n,k))",
+      "set-builder notation in Lean",
+      "the restriction 2k ≤ n (k ≤ n/2)",
+      "ordered pairs (n,k) of naturals"
+    ]
   },
   {
     "id": "ann-e849-multiplicity-functions",
@@ -53,7 +63,12 @@
       "noncomputable",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "BinomMultiplicitySet definition",
+      "Set.ncard (set cardinality)",
+      "ℕ∞ (extended naturals / WithTop ℕ)",
+      "noncomputable definitions and Classical.choice"
+    ]
   },
   {
     "id": "ann-e849-appears-once",
@@ -71,7 +86,12 @@
       "verified",
       "choose_one_right"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.choose_one_right (C(n,1) = n)",
+      "BinomMultiplicitySet definition",
+      "existential introduction (providing a witness)",
+      "the k ≤ n/2 restriction"
+    ]
   },
   {
     "id": "ann-e849-one-two-mult",
@@ -89,7 +109,12 @@
       "base-cases",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "C(n,0) = C(n,n) = 1 boundary values",
+      "the excluded cases k = 0 and k = n",
+      "case analysis on (n,k) pairs"
+    ]
   },
   {
     "id": "ann-e849-singmaster",
@@ -108,7 +133,12 @@
       "upper-bound",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "Singmaster's Conjecture (1971)",
+      "axiom declarations in Lean",
+      "bounded-quantifier statements (∃ N, ∀ a, ...)"
+    ]
   },
   {
     "id": "ann-e849-mult-120",
@@ -127,7 +157,12 @@
       "native_decide",
       "witness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "native_decide tactic",
+      "Nat.choose computation (C(10,3), C(16,2), C(120,1))",
+      "witness for a multiplicity case"
+    ]
   },
   {
     "id": "ann-e849-mult-3003",
@@ -146,7 +181,12 @@
       "record-holder",
       "four-appearances"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "native_decide tactic",
+      "Nat.choose computation (C(14,6), C(15,5), C(78,2))",
+      "multiplicity_120 (prior verified example)"
+    ]
   },
   {
     "id": "ann-e849-main-conjecture",
@@ -165,7 +205,12 @@
       "existence",
       "multiplicity-spectrum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "Singmaster's Conjecture bound N",
+      "t=1,3,4 witnesses (2, 120, 3003)",
+      "existential quantifier over t"
+    ]
   },
   {
     "id": "ann-e849-t-cases",
@@ -183,7 +228,12 @@
       "constructive-witnesses",
       "existence-proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two_multiplicity / multiplicity_120 / multiplicity_3003 axioms",
+      "existential introduction with explicit witness",
+      "law of excluded middle (tautology p ∨ ¬p)",
+      "binomNMultiplicity definition"
+    ]
   },
   {
     "id": "ann-e849-special",
@@ -201,7 +251,12 @@
       "triangular-numbers",
       "multiplicity-2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "native_decide tactic",
+      "triangular numbers T_n = C(n+1,2)",
+      "edge appearance C(a,1) = a"
+    ]
   },
   {
     "id": "ann-e849-asymptotic",
@@ -219,7 +274,12 @@
       "asymptotic-analysis",
       "logarithmic-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "Real.log (natural logarithm)",
+      "asymptotic O(log a) bound notation",
+      "counting deep appearances C(n,k) = a with n ≈ a^{1/k}"
+    ]
   },
   {
     "id": "ann-e849-infinite-mult2",
@@ -237,7 +297,12 @@
       "infinite-sets",
       "triangular-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "Set.Infinite",
+      "triangular numbers T_n = C(n+1,2)",
+      "edge appearance C(T_n,1) = T_n"
+    ]
   },
   {
     "id": "ann-e849-oeis",
@@ -256,7 +321,12 @@
       "A003015",
       "A182238"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomNMultiplicity definition",
+      "native_decide tactic",
+      "OEIS sequences A003015 and A182238",
+      "subset relation ⊆ on sets"
+    ]
   },
   {
     "id": "ann-e849-summary",
@@ -275,6 +345,11 @@
       "open",
       "singmaster"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "appears_at_least_once theorem",
+      "multiplicity_120 and multiplicity_3003 axioms",
+      "t_equals_1/3/4 theorems",
+      "erdos_849_conjecture and Singmaster's Conjecture"
+    ]
   }
 ]

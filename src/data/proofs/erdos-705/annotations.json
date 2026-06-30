@@ -17,7 +17,11 @@
       "girth",
       "combinatorial geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "graph theory",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e705-udg",
@@ -36,7 +40,12 @@
       "SimpleGraph",
       "metric geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "metric spaces",
+      "real analysis",
+      "Mathlib library structure",
+      "Lean 4 structure definitions"
+    ]
   },
   {
     "id": "ann-e705-parameters",
@@ -55,7 +64,11 @@
       "acyclic graphs"
     ],
     "mathContext": "See annotation content for formal details of chromatic number and girth",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e705-constructions",
@@ -74,7 +87,11 @@
       "graph constructions",
       "combinatorial geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "graph theory",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e705-conjecture",
@@ -93,7 +110,11 @@
       "3-colorability"
     ],
     "mathContext": "See annotation content for formal details of the erdős conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "graph theory",
+      "Euclidean geometry"
+    ]
   },
   {
     "id": "ann-e705-consequences",
@@ -111,7 +132,11 @@
       "construction consequences"
     ],
     "mathContext": "See annotation content for formal details of consequences of known constructions",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "logical deduction"
+    ]
   },
   {
     "id": "ann-e705-hadwiger-nelson",
@@ -130,7 +155,11 @@
       "chromatic number of the plane",
       "de Grey"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial geometry",
+      "graph coloring",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e705-abstract-vs-geometric",
@@ -149,7 +178,11 @@
       "Erdős 1959",
       "geometric constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "combinatorics",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e705-vertex-growth",
@@ -168,7 +201,11 @@
       "geometric constraints"
     ],
     "mathContext": "See annotation content for formal details of vertex count growth",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e705-main",
@@ -187,6 +224,10 @@
       "combinatorial geometry",
       "graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial geometry",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

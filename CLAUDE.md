@@ -137,6 +137,8 @@ Structure-encoded hypotheses (fields in structures/typeclasses such as `NSAxioms
 - Restructuring axioms into structures is a valid proof architecture choice, but it does not change the mathematical status
 - `grep -c "^axiom "` alone is NOT sufficient to count assumptions — always inspect structure fields too
 
+**`native_decide` rule:** `native_decide` trusts the Lean compiler's kernel reduction and so depends on the `Lean.ofReduceBool` axiom (`#print axioms` lists it; the proof is *not* axiom-free). When `native_decide` discharges a **substantive** result the entry presents as verified, count it: `axiomCount ≥ 1`, `status: "axiomatized"`, `badge: "axiom"`, and disclose `Lean.ofReduceBool` in `assumptions`. (`leanFile.axiomCount` still counts only literal `axiom` declarations, so it may legitimately read 0 while `meta.axiomCount` is 1.) The ordinary foundational axioms `propext` / `Classical.choice` / `Quot.sound` do NOT count — only `Lean.ofReduceBool` (and `sorryAx`) do. This is the conservative reading of "when in doubt, axiomatized."
+
 **Status field definitions** (meta.json `status` and `badge`):
 
 | Status | Badge | Meaning | Requirements |
@@ -239,6 +241,6 @@ make status                   # Show all agent claim status
 
 **Labels out of sync**: `gh label sync --file .github/labels.yml`
 
-**Manual worktree cleanup**: `git worktree list`, then `git worktree remove <path> --force` and `git worktree prune`.<!-- BEGIN LOOM ORCHESTRATION -->
+<!-- BEGIN LOOM ORCHESTRATION -->
 This repository uses [Loom](https://github.com/rjwalters/loom) for AI-powered development orchestration. See `.loom/CLAUDE.md` for the full guide (roles, labels, worktrees, configuration).
 <!-- END LOOM ORCHESTRATION -->

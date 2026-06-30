@@ -60,7 +60,8 @@
       "The construction N = 4·(n+1)! - 1 ensures N ≡ 3 (mod 4) AND that any small prime divides N+1 but not N",
       "Unlike the general Dirichlet theorem, this special case needs no analytic number theory — pure number theory and induction suffice",
       "The proof uses strong induction (well-founded recursion on n) for the key lemma, with termination from n/p < n",
-      "The proof avoids L-functions and Dirichlet characters entirely — the special structure of ≡ 3 (mod 4) primes allows a purely elementary argument that doesn't generalize to other arithmetic progressions."
+      "The proof avoids L-functions and Dirichlet characters entirely — the special structure of ≡ 3 (mod 4) primes allows a purely elementary argument that doesn't generalize to other arithmetic progressions.",
+      "**When does Euclid's method suffice?** A Euclidean-style (polynomial) proof of infinitely many primes ≡ a (mod q) exists *if and only if* a² ≡ 1 (mod q): Schur (1912) constructed such proofs whenever a² ≡ 1, and Murty (1988) proved the converse. Here a = 3, q = 4, and 3² = 9 ≡ 1 (mod 4) — which is exactly why this file's elementary argument exists. It also explains the obstruction: no analogous Euclidean proof exists for, e.g., primes ≡ 2 (mod 5), since 2² = 4 ≢ 1 (mod 5)."
     ],
     "prerequisites": [
       "Elementary number theory (primes, divisibility, modular arithmetic)",
@@ -68,27 +69,6 @@
     ]
   },
   "sections": [
-    {
-      "id": "key-lemma",
-      "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
-      "startLine": 17,
-      "endLine": 53,
-      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction."
-    },
-    {
-      "id": "main-theorem",
-      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
-      "startLine": 55,
-      "endLine": 95,
-      "summary": "Constructs N = 4·(n+1)! - 1 to find primes ≡ 3 (mod 4) larger than any given bound."
-    },
-    {
-      "id": "existence",
-      "title": "Existence Witness",
-      "startLine": 97,
-      "endLine": 101,
-      "summary": "Exhibits 3 as a prime ≡ 3 (mod 4)."
-    },
     {
       "id": "setup",
       "title": "Setup: Imports and Mathematical Context",
@@ -98,20 +78,45 @@
       "mathContext": "The arithmetic progression $3, 7, 11, 15, 19, \\ldots$ (primes ≡ 3 mod 4): $3, 7, 11, 19, 23, 31, \\ldots$ The density of such primes is $1/\\varphi(4) = 1/2$ of all primes by the general Dirichlet density theorem, but this file proves infinitude without analytic methods."
     },
     {
+      "id": "key-lemma",
+      "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
+      "startLine": 17,
+      "endLine": 54,
+      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction: if every prime factor were ≡ 1 (mod 4), their product would be ≡ 1 (mod 4).",
+      "mathContext": "$n > 1,\\ n \\equiv 3 \\pmod 4 \\implies \\exists p\\text{ prime},\\ p \\mid n,\\ p \\equiv 3 \\pmod 4$. Strong induction via `termination_by n` with decreasing measure $k = n/p < n$: take any prime factor $p$; if $p \\equiv 3$ we are done, otherwise $p$ is odd so $p \\equiv 1 \\pmod 4$, and $\\bar 1 \\cdot \\bar k = \\bar 3$ in $(\\mathbb{Z}/4\\mathbb{Z})^\\times$ forces $k = n/p \\equiv 3 \\pmod 4$, so the recursive call on $k$ yields the required factor of $n$."
+    },
+    {
+      "id": "main-construction",
+      "title": "Main Theorem — Euclid Construction: N = 4·(n+1)! − 1",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "Reduces infinitude to `Set.infinite_iff_exists_gt`: for an arbitrary bound n, builds the witness N = 4·(n+1)! − 1, establishes N > 1 and N ≡ 3 (mod 4), then extracts a prime factor p ≡ 3 (mod 4) from the key lemma.",
+      "mathContext": "By `Set.infinite_iff_exists_gt` it suffices, for every $n$, to exhibit a prime $p > n$ with $p \\equiv 3 \\pmod 4$. Set $N = 4(n+1)! - 1$. Then $N > 1$ (since $(n+1)! \\ge 1$) and $N \\equiv 3 \\pmod 4$ (as $4(n+1)! \\equiv 0$), so the key lemma `exists_prime_factor_three_mod_four` supplies a prime $p \\mid N$ with $p \\equiv 3 \\pmod 4$."
+    },
+    {
+      "id": "main-contradiction",
+      "title": "Main Theorem — Coprimality Contradiction: p > n",
+      "startLine": 73,
+      "endLine": 96,
+      "summary": "Shows the extracted prime exceeds the bound: if p ≤ n+1 then p ∣ (n+1)! ∣ 4·(n+1)! = N+1, while p ∣ N, forcing p ∣ gcd(N, N+1) = 1 — impossible for a prime. Hence p > n, yielding arbitrarily large primes ≡ 3 (mod 4).",
+      "mathContext": "Suppose for contradiction $p \\le n$, hence $p \\le n+1$. Then `Nat.Prime.dvd_factorial` gives $p \\mid (n+1)!$, so $p \\mid 4(n+1)! = N+1$. Together with $p \\mid N$ this yields $p \\mid (N+1) - N = 1$, i.e. $p \\le 1$, contradicting $p \\ge 2$. Concretely, writing $N = p a$ and $N+1 = p b$ gives $p(b-a) = 1$, discharged by `nlinarith`. Therefore $p > n$."
+    },
+    {
       "id": "existence-witness",
-      "title": "Witness: 3 is Prime and ≡ 3 (mod 4)",
+      "title": "Existence Witness: 3 is Prime and ≡ 3 (mod 4)",
       "startLine": 97,
       "endLine": 101,
-      "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3, proved by decide. This completes the Set.Infinite proof by providing the base case.",
-      "mathContext": "$3$ is prime (decidable) and $3 \\bmod 4 = 3$ (computable). The existence of at least one such prime, combined with the unboundedness from infinite_primes_three_mod_four, gives the full Set.Infinite characterization."
+      "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3. Combined with the unboundedness from infinite_primes_three_mod_four, this gives the full Set.Infinite characterization.",
+      "mathContext": "$3$ is prime (decidable) and $3 \\bmod 4 = 3$ (computable). The existence of at least one such prime, together with the unboundedness result, yields the complete Set.Infinite statement."
     }
   ],
   "conclusion": {
     "summary": "A fully verified, axiom-free elementary proof that infinitely many primes are congruent to 3 modulo 4. The proof uses only basic number theory and well-founded induction — no L-functions, characters, or analytic techniques.",
-    "implications": "This is a special case of Dirichlet's theorem (which Mathlib proves in full generality using L-functions). The elementary approach here demonstrates that certain arithmetic progression results can be obtained without heavy analytic machinery.\n\nSimilar elementary arguments work for primes ≡ 2 (mod 3), but most residue classes require L-functions.",
+    "implications": "This is a special case of Dirichlet's theorem (which Mathlib proves in full generality using L-functions). The elementary approach here demonstrates that certain arithmetic progression results can be obtained without heavy analytic machinery.\n\nSimilar elementary arguments work for primes ≡ 2 (mod 3) — and, more precisely, the Schur–Murty theorem pins down the exact boundary: a Euclidean-style proof of infinitude for the class a (mod q) exists if and only if a² ≡ 1 (mod q). The class 3 (mod 4) satisfies 3² ≡ 1, so it lies inside the Euclidean regime; classes like 2 (mod 5) do not, and provably admit no such elementary Euclidean proof.",
     "openQuestions": [
-      "Which residue classes admit elementary (non-L-function) proofs of infinitude?",
-      "Can the construction be made effective — what is the smallest prime ≡ 3 (mod 4) exceeding n?"
+      "For Euclidean-style (polynomial) proofs the answer is settled by Schur (1912) and Murty (1988): infinitude of primes ≡ a (mod q) admits such a proof iff a² ≡ 1 (mod q). Do the remaining residue classes (e.g. 2 mod 5) admit *any* elementary, non-analytic proof, or is some analytic input provably necessary?",
+      "Can the construction be made effective — what is the smallest prime ≡ 3 (mod 4) exceeding n?",
+      "The factorial construction N = 4·(n+1)! − 1 certifies a prime ≡ 3 (mod 4) above n, as does the simpler product variant N = 4·p₁⋯p_k − 1 over the known such primes. How does the lower bound on the k-th prime ≡ 3 (mod 4) that these elementary constructions certify compare with the true asymptotic growth ~2k·ln k from the prime number theorem for arithmetic progressions?"
     ]
   },
   "crossReferences": [
@@ -132,8 +137,8 @@
     },
     {
       "targetId": "dirichlets-theorem-oq-02-oq-01",
-      "relationship": "parent",
-      "description": "Parent entry for the GRH sub-question about Dirichlet L-functions"
+      "relationship": "child",
+      "description": "A deeper sub-question nested under this entry: the Generalized Riemann Hypothesis for Dirichlet L-functions pursues the full analytic theory (L(s,χ) zeros, effective PNT for progressions, Linnik bounds) that this elementary special case deliberately bypasses"
     },
     {
       "targetId": "prime-number-theorem",
@@ -155,6 +160,13 @@
       "year": "1977",
       "venue": "Springer-Verlag, Universitext",
       "note": "Chapter 4 discusses primes in arithmetic progressions and the special cases admitting elementary proofs, including primes ≡ 3 (mod 4)"
+    },
+    {
+      "authors": "M. Ram Murty",
+      "title": "Primes in certain arithmetic progressions",
+      "year": "1988",
+      "venue": "Journal of the Madras University, Section B 51, 161–169",
+      "note": "Proves the converse of Schur's 1912 result: a Euclidean-style proof of the infinitude of primes ≡ a (mod q) exists if and only if a² ≡ 1 (mod q). The class 3 (mod 4) satisfies this, explaining why the elementary argument formalized here works."
     }
   ],
   "leanFile": {

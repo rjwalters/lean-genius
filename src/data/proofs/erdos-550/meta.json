@@ -83,67 +83,99 @@
   "sections": [
     {
       "id": "graph-defs",
-      "title": "Graph Definitions",
-      "summary": "Trees and vertex counting",
+      "title": "Part I: Basic Graph Definitions",
       "startLine": 30,
-      "endLine": 44,
-      "mathContext": "Tree: connected acyclic, n vertices, n-1 edges."
+      "endLine": 38,
+      "summary": "IsTree (connected and acyclic) and vertexCount (Fintype.card V).",
+      "mathContext": "Tree: connected acyclic graph on $n$ vertices with $n-1$ edges."
     },
     {
       "id": "multipartite",
-      "title": "Complete Multipartite Graphs",
-      "summary": "K_{m₁,...,mₖ} structure and chromatic number",
-      "startLine": 45,
-      "endLine": 73,
-      "mathContext": "K_{m1,...,mk}: complete k-partite. chi=k."
+      "title": "Part II: Complete Multipartite Graphs",
+      "startLine": 39,
+      "endLine": 68,
+      "summary": "CompleteMultipartite structure (k parts with sorted sizes m₁ ≤ ⋯ ≤ mₖ), totalVertices, chromaticNumber = k, completeGraphAsMultipartite (Kₘ as m parts of size 1), completeBipartite K_{m₁,m₂}.",
+      "mathContext": "$K_{m_1,\\dots,m_k}$: complete $k$-partite graph, $\\chi(K_{m_1,\\dots,m_k}) = k$."
     },
     {
       "id": "ramsey",
-      "title": "Ramsey Numbers",
-      "summary": "Definition of R(T, G) and Ramsey property",
-      "startLine": 74,
-      "endLine": 102,
-      "mathContext": "R(T,G) = min N with red-T or blue-G in 2-coloring of K_N."
+      "title": "Part III: Ramsey Numbers",
+      "startLine": 69,
+      "endLine": 87,
+      "summary": "ramsey_exists (axiom: a Ramsey N exists for any T and multipartite G) and ramseyNumber R(T, G) defined as Nat.find over that existence.",
+      "mathContext": "$R(T,G)$: least $N$ such that every 2-colouring of $K_N$ contains a red $T$ or a blue $G$."
     },
     {
       "id": "chvatal",
-      "title": "Chvátal's Theorem",
-      "summary": "R(T, Kₘ) = (m-1)(n-1) + 1",
-      "startLine": 103,
-      "endLine": 130,
-      "mathContext": "Chvatal: R(T,K_m) = (m-1)(n-1)+1 for tree T on n vertices."
+      "title": "Part IV: Chvátal's Theorem",
+      "startLine": 88,
+      "endLine": 103,
+      "summary": "chvatal (axiom, 1977): R(T, Kₘ) = (m-1)(n-1) + 1 for any tree T on n vertices, plus four native_decide examples verifying the formula.",
+      "mathContext": "Chvátal (1977): $R(T,K_m) = (m-1)(n-1)+1$ for any tree $T$ on $n$ vertices."
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture",
-      "summary": "The conjectured bound for multipartite G",
-      "startLine": 131,
-      "endLine": 152,
-      "mathContext": "Conjectured: R(T,K_{m1,...,mk}) extends Chvatal to multipartite."
+      "title": "Part V: The Conjecture",
+      "startLine": 104,
+      "endLine": 125,
+      "summary": "ConjecturedBound ((χ-1)(R(T,K_{m₁,m₂})-1) + m₁), ErdosConjecture (the bound holds for all large trees and multipartite G), erdos_conjecture_open (axiom marking it OPEN).",
+      "mathContext": "Erdős's conjecture: $R(T,G) \\leq (\\chi(G)-1)(R(T,K_{m_1,m_2})-1) + m_1$, extending Chvátal to multipartite $G$."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Complete graphs, bipartite, stars",
-      "startLine": 153,
-      "endLine": 176,
-      "mathContext": "Known for complete graphs, bipartite, stars."
+      "title": "Part VI: Special Cases",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "complete_graph_case (reduces to Chvátal when G = Kₘ), bipartite_case (axiom bound for K_{m,m}), starGraph (K_{1,n-1}).",
+      "mathContext": "Known reductions: $G=K_m$ recovers Chvátal; bipartite $K_{m,m}$ and stars $K_{1,n-1}$ have explicit bounds."
     },
     {
       "id": "paths",
-      "title": "Path Graphs",
-      "summary": "P_n and Gerencsér-Gyárfás",
-      "startLine": 177,
-      "endLine": 197,
-      "mathContext": "Gerencser-Gyarfas: path Ramsey numbers determined."
+      "title": "Part VII: Path Graphs",
+      "startLine": 144,
+      "endLine": 150,
+      "summary": "IsPath: a tree with maximum degree ≤ 2 and exactly two degree-1 endpoints (the path graph P_n).",
+      "mathContext": "Path $P_n$: a tree where every vertex has degree $\\leq 2$ and two endpoints have degree $1$."
     },
     {
       "id": "tree-structure",
-      "title": "Tree Structure",
-      "summary": "Maximum degree and Burr's conjecture",
-      "startLine": 198,
+      "title": "Part VIII: General Tree Structure",
+      "startLine": 151,
+      "endLine": 166,
+      "summary": "maxDegree (sup of vertex degrees), BurrConjecture (linear Ramsey bound for bounded-degree trees), burr_conjecture (axiom: the conjecture holds).",
+      "mathContext": "Burr: for trees of bounded max degree $\\Delta$, $R(T,K_3) = O(n)$ — linear in the number of vertices."
+    },
+    {
+      "id": "turan",
+      "title": "Part IX: Turán-Type Connections",
+      "startLine": 167,
+      "endLine": 172,
+      "summary": "turanNumber: the Turán number ex(n, Kᵣ) = (1 - 1/(r-1)) n²/2, the maximum edge count of an n-vertex Kᵣ-free graph.",
+      "mathContext": "Turán: $\\mathrm{ex}(n,K_r) = (1 - \\tfrac{1}{r-1})\\tfrac{n^2}{2}$, linking extremal edge counts to Ramsey bounds."
+    },
+    {
+      "id": "probabilistic-bounds",
+      "title": "Part X: Probabilistic Lower Bounds",
+      "startLine": 173,
+      "endLine": 174,
+      "summary": "Placeholder banner for probabilistic lower-bound constructions; no declarations yet in this file.",
+      "mathContext": "Probabilistic (random colouring) arguments give lower bounds on $R(T,G)$; not yet formalized here."
+    },
+    {
+      "id": "extremal-graphs",
+      "title": "Part XI: Extremal Graphs",
+      "startLine": 175,
+      "endLine": 186,
+      "summary": "RamseyExtremalGraph: the (m-1)(n-1)-vertex extremal construction (m-1 disjoint red cliques of size n-1) with no red tree and no blue Kₘ, witnessing the lower bound for Chvátal's formula.",
+      "mathContext": "Extremal witness: $(m-1)$ disjoint red $K_{n-1}$'s give $(m-1)(n-1)$ vertices with no red tree and no blue $K_m$."
+    },
+    {
+      "id": "asymptotic",
+      "title": "Part XII: Asymptotic Behavior",
+      "startLine": 187,
       "endLine": 211,
-      "mathContext": "Max degree Delta(T) affects Ramsey number."
+      "summary": "Placeholder banner for asymptotic behavior, followed by the closing file summary (status OPEN, the conjecture, known results, and key axioms: chvatal, erdos_conjecture_open, bipartite_case, burr_conjecture).",
+      "mathContext": "Open: precise asymptotics of $R(T,K_{m_1,\\dots,m_k})$; Chvátal gives the exact complete-graph case, the multipartite extension remains conjectural."
     }
   ],
   "conclusion": {

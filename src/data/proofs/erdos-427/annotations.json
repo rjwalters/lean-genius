@@ -17,7 +17,11 @@
       "Shiu's theorem",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "divisibility of integers",
+      "indexing the primes (p_n notation)"
+    ]
   },
   {
     "id": "ann-e427-imports",
@@ -36,7 +40,11 @@
       "modular arithmetic"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 and Mathlib basics",
+      "module import system",
+      "predicates and propositions"
+    ]
   },
   {
     "id": "ann-e427-nthprime",
@@ -55,7 +63,11 @@
       "monotonicity",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "functions on natural numbers",
+      "strict monotonicity"
+    ]
   },
   {
     "id": "ann-e427-primesum",
@@ -74,7 +86,11 @@
       "Finset.sum",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums over index sets",
+      "half-open intervals",
+      "natural number arithmetic"
+    ]
   },
   {
     "id": "ann-e427-statement",
@@ -93,7 +109,11 @@
       "existential quantifier",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility relation a ∣ b",
+      "logical quantifiers",
+      "consecutive prime sums"
+    ]
   },
   {
     "id": "ann-e427-shiu-statement",
@@ -113,7 +133,11 @@
       "Set.Infinite",
       "coprimality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "congruence modulo q",
+      "coprime integers",
+      "infinite sets"
+    ]
   },
   {
     "id": "ann-e427-shiu-axiom",
@@ -132,7 +156,11 @@
       "axiom justification",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "axioms vs proved theorems",
+      "citing mathematical literature",
+      "analytic number theory background"
+    ]
   },
   {
     "id": "ann-e427-pilatte",
@@ -151,7 +179,11 @@
       "residue arithmetic",
       "proof strategy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "residues mod d",
+      "additivity of sums modulo d"
+    ]
   },
   {
     "id": "ann-e427-main-theorem",
@@ -170,7 +202,11 @@
       "modus ponens",
       "theorem composition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical implication and modus ponens",
+      "axiomatized lemmas",
+      "the Erdos 427 statement"
+    ]
   },
   {
     "id": "ann-e427-examples",
@@ -189,7 +225,11 @@
       "prime sums",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing small primes",
+      "checking divisibility",
+      "summing consecutive primes"
+    ]
   },
   {
     "id": "ann-e427-dirichlet",
@@ -208,7 +248,11 @@
       "prime distribution",
       "consecutive primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes in arithmetic progressions",
+      "congruence classes mod q",
+      "notion of infinitely many primes"
+    ]
   },
   {
     "id": "ann-e427-corollary",
@@ -227,6 +271,10 @@
       "existential extraction",
       "residue classes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nonempty vs infinite sets",
+      "existential statements",
+      "coprime residue classes"
+    ]
   }
 ]

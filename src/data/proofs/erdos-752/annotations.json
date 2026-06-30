@@ -18,7 +18,11 @@
       "Moore graphs",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "erdos-752-min-degree",
@@ -37,7 +41,11 @@
       "Graph density",
       "Regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Finset operations in Mathlib",
+      "order theory (infima)"
+    ]
   },
   {
     "id": "erdos-752-girth",
@@ -57,7 +65,11 @@
       "Tree-like graphs",
       "Cage graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "cycles and paths",
+      "predicate logic"
+    ]
   },
   {
     "id": "erdos-752-conjecture",
@@ -76,7 +88,11 @@
       "Asymptotic notation",
       "Graph forcing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "quantifier logic"
+    ]
   },
   {
     "id": "erdos-752-sudakov-verstrate",
@@ -95,7 +111,11 @@
       "Sparse graphs",
       "Combinatorica"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "probabilistic combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-752-main-proof",
@@ -114,7 +134,11 @@
       "Constant adjustment",
       "Floor function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "real analysis (inequalities)",
+      "graph theory"
+    ]
   },
   {
     "id": "erdos-752-moore-bound",
@@ -134,7 +158,11 @@
       "BFS tree",
       "Tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial counting",
+      "geometric series"
+    ]
   },
   {
     "id": "erdos-752-high-girth-cycles",
@@ -153,7 +181,11 @@
       "Definition unfolding",
       "Basic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "propositional logic"
+    ]
   },
   {
     "id": "erdos-752-chromatic",
@@ -173,6 +205,10 @@
       "Odd cycles",
       "Bipartiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "graph coloring",
+      "combinatorics"
+    ]
   }
 ]

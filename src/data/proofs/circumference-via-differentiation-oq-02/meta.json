@@ -1,0 +1,147 @@
+{
+  "id": "circumference-via-differentiation-oq-02",
+  "title": "Radial-Shell Decomposition: Volume as the Integral of Surface Area",
+  "slug": "circumference-via-differentiation-oq-02",
+  "description": "The parent CircumferenceViaDifferentiation proves the differential half of the area-circumference duality (d/dr(πr²) = 2πr), and OQ-01 generalizes the derivative direction to all dimensions. But the integral half — A(r) = ∫₀ʳ C(t)dt, the disk read as a union of concentric circles — was stated only informally; the parent's conclusion explicitly notes it 'does not separately formalize the integral.' This entry fills that gap in general dimension via the Fundamental Theorem of Calculus: V_n(r) = ∫₀ʳ S_{n-1}(ρ)dρ, with the annular-shell form V_n(b)−V_n(a) = ∫ₐᵇ S_{n-1}, and concrete cross-checks ∫₀ʳ 2πρ dρ = πr² and ∫₀ʳ 4πρ² dρ = (4/3)πr³ computed directly. Built on OQ-01's genuine Gamma-function n-ball definitions.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallVolumeSurfaceDuality.lean",
+    "tags": [
+      "geometry",
+      "calculus",
+      "integration",
+      "fundamental-theorem-of-calculus",
+      "n-dimensional",
+      "surface-area",
+      "radial-shell",
+      "verified"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 161,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "assumptions": "None beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). Reuses OQ-01's n-ball volume and sphere-surface definitions; the integral direction is the Fundamental Theorem of Calculus applied to OQ-01's derivative identity, plus direct evaluation of ∫ρ and ∫ρ² for the concrete cases.",
+    "mathlibDependencies": [
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "Fundamental Theorem of Calculus: ∫ₐᵇ f' = f(b) − f(a) when f has derivative f' on [a,b] and f' is interval-integrable",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus"
+      },
+      {
+        "theorem": "Continuous.intervalIntegrable",
+        "description": "A continuous function is interval-integrable (used to discharge the FTC integrability hypothesis for the surface function)",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "integral_id",
+        "description": "∫ₐᵇ x dx = (b² − a²)/2 (direct evaluation for the n=2 circumference integral)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "integral_pow",
+        "description": "∫ₐᵇ xⁿ dx = (bⁿ⁺¹ − aⁿ⁺¹)/(n+1) (direct evaluation for the n=3 sphere integral)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "CircumferenceViaDifferentiationOQ01.nBallVolumeFn_hasDerivAt",
+        "description": "OQ-01's core identity dV/dr = S, the hypothesis fed into the FTC to obtain the integral direction",
+        "module": "Proofs.CircumferenceViaDifferentiationOQ01"
+      }
+    ],
+    "originalContributions": [
+      "The integral direction of the volume-surface duality, V_n(r) = ∫₀ʳ S_{n-1}(ρ)dρ, formalized for general dimension n ≥ 1 — the antiderivative half the parent and OQ-01 leave unformalized",
+      "The annular-shell volume identity V_n(b) − V_n(a) = ∫ₐᵇ S_{n-1}(ρ)dρ over an arbitrary radial interval",
+      "volume_surface_duality bundling both directions (dV/dr = S from OQ-01 and V = ∫₀ʳ S from this file) as inverse statements",
+      "Direct independent evaluation of the concrete radial integrals: ∫₀ʳ 2πρ dρ = πr² (recovering the parent's disk area) and ∫₀ʳ 4πρ² dρ = (4/3)πr³ (the sphere), with the integrands shown equal to OQ-01's surface functions"
+    ],
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Archimedes' onion-peel intuition — a disk or ball is the union of concentric thin shells — is the geometric content behind both d/dr(volume) = surface and its inverse, volume = ∫ surface dr. The parent entry CircumferenceViaDifferentiation formalizes the derivative direction in 2D and OQ-01 extends it to all dimensions using the Gamma-function form ω_n = π^(n/2)/Γ(n/2+1) of the unit-ball volume. The companion integral statement — the disk (or ball) reconstituted by integrating the surface areas of its bounding spheres — has the more classical 'shell method' flavor but had not been machine-checked: the parent's conclusion explicitly records that its Lean theorem 'states the derivative direction and does not separately formalize the integral.' This entry supplies that missing half via the Fundamental Theorem of Calculus, in general dimension.",
+    "problemStatement": "Let $V_n(r) = \\omega_n r^n$ be the volume of the $n$-ball of radius $r$ and $S_{n-1}(r) = n\\,\\omega_n r^{n-1}$ the surface area of its bounding $(n-1)$-sphere (OQ-01's definitions, with $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$). Formalize the integral direction of the volume–surface duality: $V_n(r) = \\int_0^r S_{n-1}(\\rho)\\,d\\rho$ for $n \\ge 1$, together with the annular-shell form $V_n(b) - V_n(a) = \\int_a^b S_{n-1}(\\rho)\\,d\\rho$, and verify the concrete cases $\\int_0^r 2\\pi\\rho\\,d\\rho = \\pi r^2$ and $\\int_0^r 4\\pi\\rho^2\\,d\\rho = \\tfrac{4}{3}\\pi r^3$.",
+    "proofStrategy": "The engine is `intervalIntegral.integral_eq_sub_of_hasDerivAt`: feeding it OQ-01's derivative identity `nBallVolumeFn_hasDerivAt` (the surface function is the derivative of the volume) together with `Continuous.intervalIntegrable` for the surface function yields `∫ₐᵇ S = V(b) − V(a)` immediately (`integral_surface_eq_sub`). Specializing to `a = 0` and using `V_n(0) = 0` for `n ≥ 1` (via `zero_pow`) gives the radial-shell decomposition `V_n(r) = ∫₀ʳ S`. The annular-shell identity is the symmetric statement. For the concrete cross-checks, the integrands are first rewritten to closed form (`nSphereSurfaceFn_two_eq`, `nSphereSurfaceFn_three_eq`) and the integrals evaluated directly with `integral_id` (∫ρ) and `integral_pow` (∫ρ²), confirming the classical πr² and (4/3)πr³.",
+    "keyInsights": [
+      "The integral direction is genuinely distinct from the derivative direction: the parent proves dA/dr = C and OQ-01 generalizes it, but neither establishes A(r) = ∫₀ʳ C — that requires the Fundamental Theorem of Calculus, which converts the pointwise derivative statement into an antiderivative/integral statement.",
+      "`integral_eq_sub_of_hasDerivAt` needs two inputs: the derivative at every point of the interval (supplied verbatim by OQ-01's `nBallVolumeFn_hasDerivAt`) and interval-integrability of the derivative (discharged by `Continuous.intervalIntegrable`, since the surface function is a constant times a monomial). Reusing OQ-01's lemma keeps this file a clean cap on the existing tower rather than a re-derivation.",
+      "The boundary term V_n(0) = 0 holds precisely because n ≥ 1 (so 0ⁿ = 0); the n = 0 'ball' is a point with constant volume ω_0 = 1 and no surface, which is exactly the degenerate case the hypothesis 1 ≤ n excludes.",
+      "The two concrete integrals provide an independent check: rather than trusting the abstract FTC chain alone, ∫₀ʳ 2πρ dρ and ∫₀ʳ 4πρ² dρ are evaluated from scratch via integral_id and integral_pow and shown to equal πr² and (4/3)πr³ — the classical area and volume — and these integrands are proved equal to OQ-01's surface functions.",
+      "The annular-shell form V(b) − V(a) = ∫ₐᵇ S is the 'shell method' of elementary calculus made rigorous and dimension-uniform: the volume between two concentric spheres is the radial integral of the surface area swept out."
+    ]
+  },
+  "sections": [
+    {
+      "id": "continuity",
+      "title": "Continuity of the Surface Function",
+      "startLine": 47,
+      "endLine": 56,
+      "summary": "Proves `nSphereSurfaceFn_continuous`: the (n−1)-sphere surface function S(ρ) = n·ω_n·ρⁿ⁻¹ is continuous, being a constant times a monomial. This is the integrability input the Fundamental Theorem of Calculus requires."
+    },
+    {
+      "id": "ftc-integral",
+      "title": "The Integral Direction via the FTC",
+      "startLine": 58,
+      "endLine": 103,
+      "summary": "The core results. `integral_surface_eq_sub` applies `integral_eq_sub_of_hasDerivAt` to OQ-01's derivative identity to get ∫ₐᵇ S = V(b) − V(a). `shell_volume_eq_integral` is the annular-shell form. `nBallVolume_eq_integral` specializes to a=0 (using V(0)=0 for n≥1) to give the radial-shell decomposition V_n(r) = ∫₀ʳ S. `volume_surface_duality` bundles both directions."
+    },
+    {
+      "id": "low-dim-integrands",
+      "title": "Closed Form of the Integrand in Low Dimensions",
+      "startLine": 105,
+      "endLine": 121,
+      "summary": "Rewrites OQ-01's abstract surface function to classical closed form: `nSphereSurfaceFn_two_eq` gives S_1(ρ) = 2πρ (circumference) and `nSphereSurfaceFn_three_eq` gives S_2(ρ) = 4πρ² (sphere surface area)."
+    },
+    {
+      "id": "concrete-integrals",
+      "title": "Concrete Radial Integrals, Computed Directly",
+      "startLine": 123,
+      "endLine": 159,
+      "summary": "Independent cross-checks. `circumference_integral_eq` evaluates ∫₀ʳ 2πρ dρ = πr² via integral_id; `sphere_surface_integral_eq` evaluates ∫₀ʳ 4πρ² dρ = (4/3)πr³ via integral_pow. `disk_area_radial_shell` and `ball_volume_radial_shell` then state the n=2 and n=3 volumes as these explicit radial integrals, and `disk_area_presentations_agree` confirms the abstract and explicit integrands give the same integral."
+    }
+  ],
+  "conclusion": {
+    "summary": "The integral half of the volume–surface duality is now machine-checked in general dimension: for n ≥ 1, V_n(r) = ∫₀ʳ S_{n-1}(ρ)dρ (`nBallVolume_eq_integral`), with the annular-shell generalization V_n(b) − V_n(a) = ∫ₐᵇ S_{n-1} (`shell_volume_eq_integral`). The proof is a clean application of the Fundamental Theorem of Calculus to OQ-01's derivative identity, with continuity supplying integrability. Concrete radial integrals are evaluated independently — ∫₀ʳ 2πρ dρ = πr² and ∫₀ʳ 4πρ² dρ = (4/3)πr³ — recovering the classical disk area and ball volume and closing the loop the parent left open. Zero sorries, zero axioms beyond Mathlib's foundational three.",
+    "implications": "Together with the parent (2D derivative direction) and OQ-01 (general-n derivative direction), this completes both directions of the radial duality: differentiating volume gives surface area, and integrating surface area gives volume. The annular-shell identity is the rigorous, dimension-uniform 'shell method.' The same FTC pattern would extend to any radial density, suggesting a route to the co-area formula and to weighted/Riemannian volumes (cf. OQ-03's Riemannian witnesses).",
+    "openQuestions": [
+      "Can the radial-shell decomposition be transported to Mathlib's actual Lebesgue measure of Euclidean balls (via the co-area formula), so that V_n(r) = ∫₀ʳ S_{n-1} holds for volume (ball 0 r) directly rather than for the symbolic ω_n rⁿ?",
+      "Does the annular-shell identity generalize to anisotropic or weighted volumes, where the 'surface' is a flux integral of a radial density?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "circumference-via-differentiation",
+      "relationship": "extends",
+      "description": "The parent proves the derivative direction d/dr(πr²) = 2πr and states the integral direction A(r) = ∫₀ʳ C(t)dt only informally, explicitly noting its Lean theorem 'does not separately formalize the integral.' This entry formalizes exactly that integral direction, in general dimension."
+    },
+    {
+      "proofId": "circumference-via-differentiation-oq-01",
+      "relationship": "uses",
+      "description": "Reuses OQ-01's genuine n-ball volume and (n-1)-sphere surface definitions (nBallVolumeFn, nSphereSurfaceFn with ω_n = π^(n/2)/Γ(n/2+1)) and its core derivative identity nBallVolumeFn_hasDerivAt, which is the hypothesis fed into the Fundamental Theorem of Calculus here."
+    },
+    {
+      "proofId": "circumference-via-differentiation-oq-03",
+      "relationship": "complementary",
+      "description": "OQ-03 supplies Euclidean witnesses of the Riemannian dV/dr = A identity (the derivative direction with Mathlib's actual ball volume); this entry supplies the inverse integral direction for the symbolic volume functions."
+    },
+    {
+      "proofId": "fundamental-theorem-calculus",
+      "relationship": "uses",
+      "description": "The entire integral direction rests on intervalIntegral.integral_eq_sub_of_hasDerivAt: applying the FTC to OQ-01's pointwise derivative identity turns 'surface is the derivative of volume' into 'volume is the radial integral of surface.'"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BallVolumeSurfaceDuality.lean",
+    "filename": "BallVolumeSurfaceDuality.lean",
+    "lineCount": 161,
+    "theoremCount": 12,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallVolumeSurfaceDuality.lean"
+  },
+  "sorries": 0
+}

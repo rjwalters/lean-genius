@@ -1,0 +1,152 @@
+{
+  "id": "harmonic-divergence-oq-02-oq-01",
+  "title": "The Bertrand Series Threshold: Σ 1/(n·(log n)^p) Converges ⟺ p > 1",
+  "slug": "harmonic-divergence-oq-02-oq-01",
+  "description": "Promotes the parent's two isolated cases (p=1 divergent, p=2 convergent) to the full real-exponent dichotomy: for every p ∈ ℝ, the Bertrand series Σ 1/(n·(log n)^p) converges if and only if p > 1. For p ≥ 0 the term is antitone and Cauchy condensation reduces it to (1/(log 2)^p)·Σ 1/k^p, a real p-series; for p < 0 it dominates the harmonic series on the tail. Recovers the parent's p=1 and p=2 as corollaries.",
+  "meta": {
+    "author": "Researcher (Lean Genius)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergenceOQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "divergence",
+      "condensation test",
+      "rpow",
+      "p-series",
+      "Bertrand series",
+      "logarithmic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "lineCount": 213,
+    "definitionCount": 1,
+    "assumptions": "None. Fully machine-checked; #print axioms reports only propext, Classical.choice, Quot.sound (no extra axioms, no sorries).",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The series Σ 1/(n·(log n)^p) is the classical Bertrand series, named for Joseph Bertrand who studied such logarithmic refinements of the p-series in the mid-19th century. It is the first non-trivial rung of du Bois-Reymond's (1873) logarithmico-exponential scale and the standard textbook example separating convergence from divergence at a logarithmic correction: the bare p-series Σ 1/n^q has its threshold at q = 1, and inserting a single logarithm shifts the delicate boundary to the exponent of that logarithm. The whole family is handled by one tool, Cauchy's condensation test (Cours d'Analyse, 1827), which collapses Σ f(n) to Σ 2^k f(2^k); for the Bertrand term the 2^k factors cancel exactly and log(2^k) = k·log 2 turns the condensed series into a constant multiple of an ordinary p-series. The parent entry (OQ-02) formalized only the two endpoints p = 1 (divergent borderline) and p = 2 (convergent); this entry establishes the complete threshold for a continuous real exponent.",
+    "problemStatement": "For a real exponent $p$, determine exactly when the Bertrand series $\\sum_{n \\geq 2} \\frac{1}{n (\\log n)^p}$ converges. Theorem: it converges if and only if $p > 1$. The exponent is realized as a genuine real power (`rpow`) of $\\log n$, so the result interpolates across the entire family and pins the convergence boundary at $p = 1$, recovering the parent's $p = 1$ (divergent) and $p = 2$ (convergent) as the two sides of the threshold.",
+    "text": "Cauchy condensation reduces the Bertrand series to its condensed form 2^k·f(2^k) = 1/(k·log 2)^p = (1/(log 2)^p)·(1/k^p). This is a constant multiple of the real p-series Σ 1/k^p, which converges iff p > 1 (Mathlib's Real.summable_one_div_nat_rpow). For p < 0, antitonicity fails, but the term then dominates 1/n on the tail n ≥ 3 (where (log n)^p ≤ 1), giving divergence by comparison. Combining, the series converges iff p > 1 for every real p.",
+    "proofStrategy": "1. Define `bertrand p n = 1/(n·(log n)^p)` for n ≥ 2, capped at the n=2 value for n < 2 (a finite modification that makes the sequence genuinely non-increasing on all positive indices — the naive `if n<2 then 0` truncation of the parent is NOT antitone at n=1, where it dips below the n=2 term and breaks the condensation hypothesis). 2. Prove nonnegativity and, for p ≥ 0, antitonicity via monotonicity of the denominator n·(log n)^p (`Real.rpow_le_rpow`). 3. Compute the condensed identity `condensed_eq`: 2^k·bertrand p (2^k) = (1/(log 2)^p)·(1/k^p), using log(2^k) = k·log 2 and `Real.mul_rpow` to split (k·log 2)^p. 4. For p ≥ 0, chain Cauchy condensation (`summable_condensed_iff_of_nonneg`) with a shift past k=0 (`summable_nat_add_iff`), a constant-multiple cancellation (`summable_mul_left_iff`), and the real p-series test (`Real.summable_one_div_nat_rpow`) to get `Summable ↔ 1 < p`. 5. For p < 0, compare with the p=0 (harmonic) series on the tail n ≥ 3 using `Real.rpow_le_one_of_one_le_of_nonpos` and `Summable.of_nonneg_of_le`. 6. Assemble the full real-p dichotomy and derive the parent's p=1 and p=2 cases as corollaries.",
+    "keyInsights": [
+      "Promoting the natural-number/discrete cases of the parent to a continuous real exponent via `rpow` turns two isolated facts into a single sharp threshold theorem: convergence ⟺ p > 1, valid for ALL real p. The threshold value p = 1 is the boundary, p = 2 sits strictly inside the convergent region, and the entire strip 0 < p < 1 — invisible to the parent — is divergent.",
+      "The condensation cancellation is exponent-uniform: 2^k·1/(2^k·(log 2^k)^p) = 1/(k·log 2)^p, and Real.mul_rpow splits (k·log 2)^p = k^p·(log 2)^p, exposing the condensed series as a constant multiple of the real p-series Σ 1/k^p. One Mathlib lemma (Real.summable_one_div_nat_rpow) then supplies the entire 0 ≤ p dichotomy with no case split on whether p is an integer.",
+      "The parent's `if n < 2 then 0` convention is mathematically unsound for the condensation test: f(1)=0 lies BELOW f(2)>0, so f is not non-increasing on the positives and the antitone hypothesis is unprovable at (m,n)=(1,2). Capping the n<2 values at the n=2 term repairs antitonicity while changing only finitely many terms, hence leaving convergence — the only property the theorem asserts — untouched.",
+      "Negative exponents need a different mechanism: antitonicity genuinely fails, but the term then exceeds the harmonic term 1/n on the tail (for n ≥ 3, log n > 1 forces (log n)^p ≤ 1), so divergence follows by direct comparison with the p=0 case rather than by condensation. The proof therefore splits at p = 0, condensation above and comparison below.",
+      "Both parent cases are now one-line corollaries of the general theorem: `logHarmonic_diverges` (p=1) is `bertrand_not_summable_of_le_one le_rfl`, and `logHarmonicSq_converges` (p=2) is `bertrand_summable_of_one_lt (by norm_num)`. The general dichotomy strictly subsumes and re-derives the parent."
+    ],
+    "prerequisites": [
+      "Cauchy condensation test (Mathlib's summable_condensed_iff_of_nonneg)",
+      "Real p-series convergence test (Real.summable_one_div_nat_rpow: Σ 1/n^p summable ⟺ 1 < p)",
+      "Real rpow API (Real.mul_rpow, Real.rpow_le_rpow, Real.rpow_pos_of_pos, Real.rpow_le_one_of_one_le_of_nonpos, Real.rpow_zero)",
+      "Real.log properties (Real.log_pow, Real.log_pos, Real.le_log_iff_exp_le, Real.exp_one_lt_d9)",
+      "Tail/shift and constant-multiple summability lemmas (summable_nat_add_iff, summable_mul_left_iff, Summable.of_nonneg_of_le)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Real-Exponent Bertrand Term",
+      "startLine": 49,
+      "endLine": 89,
+      "summary": "Defines bertrand p n = 1/(n·(log n)^p) for n ≥ 2 (capped at the n=2 value for n < 2) and proves positivity of the denominator and nonnegativity of the term.",
+      "mathContext": "The exponent is a real power $(\\log n)^p$ via `Real.rpow`. The small-index cap (value at $n=0,1$ set equal to the $n=2$ term) is a finite modification preserving convergence; it is chosen precisely so the sequence is non-increasing on all positive indices, repairing the antitonicity defect of the parent's `if n<2 then 0` definition."
+    },
+    {
+      "id": "antitone",
+      "title": "Antitonicity for p ≥ 0",
+      "startLine": 90,
+      "endLine": 117,
+      "summary": "For p ≥ 0, bertrand p is antitone on positive indices, the hypothesis the condensation test requires. Reduces to monotonicity of the denominator n·(log n)^p.",
+      "mathContext": "For $0 < m \\le n$ with both $\\ge 2$, $1/(n(\\log n)^p) \\le 1/(m(\\log m)^p)$ because $m(\\log m)^p \\le n(\\log n)^p$: the factor $n$ grows and $(\\log n)^p$ is non-decreasing in $n$ for $p \\ge 0$ (`Real.rpow_le_rpow`). The $m=1$ boundary is handled by the cap, which equals the $n=2$ value and dominates every later term."
+    },
+    {
+      "id": "condensation",
+      "title": "The Condensed Term Is a Rescaled p-Series",
+      "startLine": 118,
+      "endLine": 139,
+      "summary": "Key computation: 2^k · bertrand p (2^k) = (1/(log 2)^p)·(1/k^p) for k ≥ 1.",
+      "mathContext": "Using $\\log(2^k) = k\\log 2$ and `Real.mul_rpow`, $(k\\log 2)^p = k^p (\\log 2)^p$, so $2^k \\cdot \\frac{1}{2^k (k\\log 2)^p} = \\frac{1}{(\\log 2)^p}\\cdot\\frac{1}{k^p}$. The nonzero guards ($2^k$, $k^p$, $(\\log 2)^p$) feed `field_simp`."
+    },
+    {
+      "id": "dichotomy-nonneg",
+      "title": "Convergence Dichotomy for p ≥ 0",
+      "startLine": 140,
+      "endLine": 156,
+      "summary": "For p ≥ 0, Σ bertrand p converges iff p > 1, by chaining condensation, a shift past k=0, constant-multiple cancellation, and the real p-series test.",
+      "mathContext": "`summable_condensed_iff_of_nonneg` reduces to the condensed series; `summable_nat_add_iff` drops the $k=0$ term; `summable_mul_left_iff` removes the constant $1/(\\log 2)^p$; `Real.summable_one_div_nat_rpow` gives Σ $1/k^p$ summable $\\iff 1 < p$."
+    },
+    {
+      "id": "negative-exponent",
+      "title": "Divergence for p < 0 by Comparison",
+      "startLine": 157,
+      "endLine": 184,
+      "summary": "For p < 0 antitonicity fails; instead the term dominates the harmonic term on the tail n ≥ 3, giving divergence by comparison with the p=0 case.",
+      "mathContext": "For $n \\ge 3$, $\\log n > 1$ and $p \\le 0$ give $(\\log n)^p \\le 1$ (`Real.rpow_le_one_of_one_le_of_nonpos`), so $\\text{bertrand } 0\\,(n) \\le \\text{bertrand } p\\,(n)$. Since the $p=0$ series diverges, `Summable.of_nonneg_of_le` on the tail forces divergence of the $p<0$ series."
+    },
+    {
+      "id": "threshold-and-corollaries",
+      "title": "The Full Threshold and Parent Corollaries",
+      "startLine": 185,
+      "endLine": 211,
+      "summary": "Combines the p ≥ 0 and p < 0 analyses into the all-real-p theorem Σ bertrand p converges ⟺ p > 1, and recovers the parent's p=1 (divergent) and p=2 (convergent) as one-line corollaries.",
+      "mathContext": "Splitting at $p=0$: for $p<0$ both `Summable` and $1<p$ are false; for $p \\ge 0$ the condensation dichotomy applies. Corollaries: $p \\le 1 \\Rightarrow$ divergent (includes $p=1$ and $0<p<1$), $p>1 \\Rightarrow$ convergent."
+    }
+  ],
+  "conclusion": {
+    "summary": "For every real exponent p, the Bertrand series Σ 1/(n·(log n)^p) converges if and only if p > 1. The p ≥ 0 half is Cauchy condensation reducing the series to a constant multiple of the real p-series Σ 1/k^p; the p < 0 half is direct comparison with the harmonic series. The theorem strictly subsumes the parent entry, whose p=1 (divergent) and p=2 (convergent) cases drop out as immediate corollaries, and repairs the parent's antitonicity defect by capping the singular small-index values.",
+    "openQuestions": [
+      "Iterated logarithms: does the same threshold persist one level up, i.e. is Σ 1/(n·log n·(log log n)^p) convergent ⟺ p > 1? This is the next rung of the du Bois-Reymond scale and should again yield to condensation after one extra peeling.",
+      "Two-parameter refinement: classify convergence of Σ 1/(n^q·(log n)^p) in the full (q,p) plane — convergent for q > 1 (any p), divergent for q < 1 (any p), and governed by p at the critical line q = 1, which is exactly the present theorem.",
+      "Sharp asymptotics in the divergent regime: for 0 ≤ p < 1 the partial sums grow like (log N)^{1-p}/(1-p); can this rate (and the log log N rate at p = 1) be formalized via the integral test in Mathlib's MeasureTheory?"
+    ],
+    "implications": "Casting the exponent as a real `rpow` collapses an entire family of convergence questions into a single sharp statement and shows that the discrete cases formalized in the parent are samples of one continuous threshold. Methodologically, it illustrates that the condensation test plus the real p-series test is enough to settle the borderline logarithmic series uniformly in the exponent, and it flags a reusable subtlety: truncating a singular term to 0 can silently break the antitonicity hypothesis of the condensation test."
+  },
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence-oq-02",
+      "relationship": "extends",
+      "description": "Generalizes the parent's two isolated cases (p=1 divergent, p=2 convergent) to the full real-exponent threshold p > 1, recovering both as corollaries and repairing the parent's antitonicity convention."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "extends",
+      "description": "Continues the logarithmic-hierarchy story begun with the harmonic series Σ 1/n (the q=1, p=0 corner of the Bertrand family)."
+    }
+  ],
+  "references": [
+    {
+      "author": "Cauchy, A.-L.",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": 1827,
+      "note": "Condensation test reducing Σ f(n) to Σ 2^k f(2^k)."
+    },
+    {
+      "author": "du Bois-Reymond, P.",
+      "title": "Sur la grandeur relative des infinis des fonctions",
+      "year": 1873,
+      "note": "Logarithmic comparison scale in which the Bertrand series is the first refined rung."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "HarmonicDivergenceOQ02OQ01",
+    "lineCount": 213,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "path": "Proofs/HarmonicDivergenceOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

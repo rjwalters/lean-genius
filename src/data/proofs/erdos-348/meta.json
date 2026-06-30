@@ -87,76 +87,100 @@
   },
   "sections": [
     {
-      "id": "header-docstring",
+      "id": "module-docstring",
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348.",
-      "mathContext": "Problem statement, definition of completeness and robustness, known cases (0,1) via powers of 2 and (1,2) via Fibonacci, the open (2,3) case, and reference to erdosproblems.com/348."
+      "summary": "States Erdős Problem #348 (Erdős–Graham): for which 0 ≤ m < n does there exist a complete integer sequence that stays complete after removing any m elements but fails to be complete after removing some n elements? Notes the known cases (0,1) and (1,2) and the open case (2,3).",
+      "mathContext": "A sequence $A$ is *complete* if every sufficiently large integer is a sum of distinct elements of $A$. The problem asks to characterize the valid pairs $(m,n)$."
     },
     {
       "id": "complete-sequences",
       "title": "Complete Sequences",
       "startLine": 23,
       "endLine": 48,
-      "summary": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ).",
-      "mathContext": "Core definitions: finiteSums (all sums of distinct elements from a set), IsComplete (all large integers representable), IsStronglyComplete (all integers representable), and sequenceToSet (converting ℕ → ℕ to Set ℕ)."
+      "summary": "Core definitions: `finiteSums` (all sums of distinct elements of a set), `IsComplete` (represents all sufficiently large n), `IsStronglyComplete` (represents every n), and `sequenceToSet` (the range of a sequence).",
+      "mathContext": "$\\mathrm{IsComplete}(A) \\iff \\exists N,\\ \\forall n \\geq N,\\ n \\in \\{\\textstyle\\sum_{s \\in S} s : S \\subseteq A \\text{ finite}\\}$."
     },
     {
       "id": "removing-elements",
-      "title": "Removing Elements and Robustness",
+      "title": "Removing Elements",
       "startLine": 49,
-      "endLine": 83,
-      "summary": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set.",
-      "mathContext": "Defines removeIndices (exclude indices from sequence), removeValues (set difference), IsRobust (complete after removing any m indices), NotRobust (some n-deletion breaks completeness), and validPairs set."
+      "endLine": 62,
+      "summary": "Formalizes deletion from a sequence: `removeIndices` drops a finite set of indices, `removeValues` drops a finite set of values. Index-removal is the notion used throughout the robustness definitions.",
+      "mathContext": "$\\mathrm{removeIndices}(a, S) = \\{a_i : i \\notin S\\}$ for a finite index set $S$."
     },
     {
-      "id": "known-examples",
-      "title": "Known Examples: Powers of 2 and Fibonacci",
+      "id": "robustness-valid-pairs",
+      "title": "Robustness and Valid Pairs",
+      "startLine": 63,
+      "endLine": 83,
+      "summary": "Defines `IsRobust a m` (stays complete after removing any m indices), `NotRobust a n` (some n indices break completeness), and `validPairs` — the set of (m,n) realized by a monotone complete sequence that is m-robust but not n-robust.",
+      "mathContext": "$(m,n) \\in \\mathrm{validPairs} \\iff \\exists$ monotone complete $a$ with $\\mathrm{IsRobust}(a,m) \\wedge \\mathrm{NotRobust}(a,n)$ and $m < n$."
+    },
+    {
+      "id": "powers-of-2",
+      "title": "Powers of 2: Completeness and the (0,1) Pair",
       "startLine": 84,
-      "endLine": 165,
-      "summary": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments.",
-      "mathContext": "Defines powersOf2 and fib sequences. Proves pair_0_1_valid (powers of 2 are 0-robust, not 1-robust) with partial proofs and pair_1_2_valid (Fibonacci is 1-robust, not 2-robust) with sorries for Zeckendorf arguments."
+      "endLine": 187,
+      "summary": "The (0,1) witness. Defines `powersOf2` and `fib`; proves `binary_sum` (every n is a sum of distinct powers of 2), `powersOf2_complete`, and `powersOf2_not_1_robust` (removing 1 leaves only even values, so odd numbers become unrepresentable). Concludes `pair_0_1_valid`.",
+      "mathContext": "Powers of two are complete (binary representation) but not 1-robust: deleting $2^0=1$ leaves $\\{2,4,8,\\dots\\}$, whose finite sums are all even."
+    },
+    {
+      "id": "fib-1-robust-axiom",
+      "title": "Fibonacci 1-Robustness (Axiom)",
+      "startLine": 188,
+      "endLine": 203,
+      "summary": "Introduces the single axiom `fib_1_robust : IsRobust fib 1`. Its docstring flags a correctness issue: with the file's indexing (fib 0 = 1, fib 1 = 2) the statement is actually false; the classical result needs the 1,1,2,3,… indexing. This is the only assumption in the file (status: axiomatized).",
+      "mathContext": "Axiom: $\\mathrm{IsRobust}(\\mathrm{fib}, 1)$ — Fibonacci stays complete after deleting any one element. The accompanying note records that this is unsound for the present `fib` indexing."
+    },
+    {
+      "id": "fib-growth-lemmas",
+      "title": "Fibonacci Growth Lemmas",
+      "startLine": 204,
+      "endLine": 258,
+      "summary": "Monotonicity and growth helpers: `fib_mono_succ`, `fib_strictMono`, `fib_ge_succ` (fib k ≥ k+1), `fib_succ_le_double` (fib(k+1) ≤ 2·fib k), and `fib_bracketing` (largest index with fib k ≤ n). These power the greedy completeness argument.",
+      "mathContext": "Key bounds: $\\mathrm{fib}(k+1) \\leq 2\\,\\mathrm{fib}(k)$ and, for $n \\geq 1$, $\\exists k$ with $\\mathrm{fib}(k) \\leq n < \\mathrm{fib}(k+1)$."
+    },
+    {
+      "id": "fib-completeness",
+      "title": "Fibonacci Completeness (Greedy Algorithm)",
+      "startLine": 259,
+      "endLine": 289,
+      "summary": "Proves `fib_complete` by strong induction: take the largest fib(k) ≤ n; since fib(k+1) ≤ 2·fib(k), the remainder n − fib(k) < fib(k), so the IH represents it using strictly smaller Fibonacci values, leaving fib(k) fresh to insert.",
+      "mathContext": "Greedy/Zeckendorf-style argument: $n = \\mathrm{fib}(k) + (n - \\mathrm{fib}(k))$ with $n - \\mathrm{fib}(k) < \\mathrm{fib}(k)$, so distinctness is preserved."
+    },
+    {
+      "id": "fib-not-2-robust",
+      "title": "Non-Representability: Fibonacci Is Not 2-Robust",
+      "startLine": 290,
+      "endLine": 497,
+      "summary": "The technical heart. Lemmas `fib_ge_three`, `removeIndices_fib_ge_three`, `fib_succ_gt_succ`, `fib_partial_sum` (∑_{2≤i≤n} fib i = fib(n+2) − 5), and `fib_plus_one_not_repr` (fib(k)+1 is not a sum of distinct {fib j : j ≥ 2}) combine to prove `fib_not_2_robust`: deleting indices {0,1} leaves infinitely many unrepresentable numbers.",
+      "mathContext": "For $k \\geq 2$, $\\mathrm{fib}(k)+1$ is not expressible as a sum of distinct $\\{\\mathrm{fib}(j) : j \\geq 2\\}$, so removing $\\{0,1\\}$ destroys completeness."
+    },
+    {
+      "id": "pair-1-2",
+      "title": "The (1,2) Pair",
+      "startLine": 498,
+      "endLine": 514,
+      "summary": "Assembles `pair_1_2_valid`: Fibonacci is monotone, complete (`fib_complete`), 1-robust (axiom `fib_1_robust`), and not 2-robust (`fib_not_2_robust`), hence (1,2) ∈ validPairs.",
+      "mathContext": "$(1,2) \\in \\mathrm{validPairs}$ via the Fibonacci sequence: complete, 1-robust (assumed), not 2-robust (proved)."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 166,
-      "endLine": 183,
-      "summary": "Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question).",
-      "mathContext": "Axiomatized: Two axioms: erdos_348_characterization (validPairs is either all (m,m+1) or has a cutoff) and erdos_348_case_2_3 (the (2,3) case is either valid or not — a tautology highlighting the open question)."
+      "title": "The Main Conjecture",
+      "startLine": 515,
+      "endLine": 543,
+      "summary": "States `erdos_348_characterization` (valid pairs are exactly {(m,m+1)} or are cut off below some k), the decidable-but-unknown `erdos_348_case_2_3`, the `IsStronglyRobust` notion, and a reference docstring on van Doorn's theorem (no strongly complete sequence is 2-robust) and bounded-gap facts.",
+      "mathContext": "Conjecture: $\\mathrm{validPairs} = \\{(m,m+1)\\}$, or $\\exists k$ beyond which no consecutive pair is valid. Van Doorn: no *strongly* complete sequence is 2-robust."
     },
     {
-      "id": "van-doorn",
-      "title": "Van Doorn's Theorem",
-      "startLine": 184,
-      "endLine": 199,
-      "summary": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m ≥ 2 under strong completeness.",
-      "mathContext": "Defines IsStronglyRobust and states vanDoorn_theorem: no monotone, strongly complete sequence is 2-robust. This eliminates all (m,n) pairs with m $\\geq$ 2 under strong completeness."
-    },
-    {
-      "id": "representation-theory",
-      "title": "Representation Count",
-      "startLine": 200,
-      "endLine": 213,
-      "summary": "Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry).",
-      "mathContext": "Formal definition: Defines representationCount via Nat.card of representation sets. States complete_iff_repr: completeness ⟺ positive representation count for all large n (sorry)."
-    },
-    {
-      "id": "gap-property",
-      "title": "Gap Property",
-      "startLine": 214,
-      "endLine": 228,
-      "summary": "Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps.",
-      "mathContext": "Formal definition: Defines gap(a, n) = a(n+1) - a(n). States complete_bounded_gaps: complete monotone sequences have eventually bounded gaps."
-    },
-    {
-      "id": "main-problem",
-      "title": "Main Open Problem",
-      "startLine": 229,
-      "endLine": 255,
-      "summary": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question.",
-      "mathContext": "The final axiom erdos_348_main_problem: either all (m, m+1) are valid, or ∃ cutoff k with (m, m+1) ∉ validPairs for m ≥ k. Includes comprehensive docstring summarizing known results and the open question."
+      "id": "main-open-question",
+      "title": "The Main Open Question",
+      "startLine": 544,
+      "endLine": 570,
+      "summary": "Final formalization `erdos_348_main_problem`: either every consecutive pair (m, m+1) is valid, or there is a cutoff k beyond which consecutive pairs fail. The precise characterization of valid pairs — including whether (2,3) is valid for the weak completeness notion — remains open.",
+      "mathContext": "Open: is $(2,3)$ valid for weak completeness? The full characterization of $\\mathrm{validPairs}$ is unknown."
     }
   ],
   "conclusion": {

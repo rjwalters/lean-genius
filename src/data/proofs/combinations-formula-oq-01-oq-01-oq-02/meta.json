@@ -1,0 +1,125 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-02",
+  "title": "p-Step Shallow Diagonals of Pascal's Triangle and the p-Bonacci Sequences",
+  "slug": "combinations-formula-oq-01-oq-01-oq-02",
+  "description": "Generalizes the Fibonacci shallow-diagonal identity ∑_j C(n−j, j) = F(n+1) to the p-step shallow diagonals of Pascal's triangle, which produce the p-bonacci (generalized Fibonacci) sequences. For step parameter q (so p = q+1), the diagonal sum S q n = ∑_j C(n − q·j, j) is proved, axiom-free, to satisfy the p-bonacci recurrence S q (n+q+1) = S q (n+q) + S q n together with the constant base segment S q n = 1 for n ≤ q. Specializations recover the powers of two (q=0), the Fibonacci numbers (q=1, the parent result), and Narayana's-cows sequence (q=2).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "fibonacci",
+      "p-bonacci",
+      "generalized-fibonacci",
+      "pascal-triangle",
+      "linear-recurrence",
+      "finite-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (pbonacci_rec, pbonacci_base, pbonacci_one_eq_fib, pbonacci_extend). No native_decide is used; numeric sanity checks use kernel decide only.",
+    "lineCount": 195,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "pbonacci q n := ∑_j C(n − q·j, j): the p-step shallow-diagonal sum of Pascal's triangle, indexed by a single step parameter q so that p = q+1 covers all cases at once.",
+      "pbonacci_rec: S q (n+q+1) = S q (n+q) + S q n — the p-bonacci linear recurrence a(m) = a(m−1) + a(m−p), proved uniformly for all q ≥ 0 by a single application of Pascal's rule to each diagonal term.",
+      "pbonacci_base: S q n = 1 for n ≤ q — the constant initial segment fixing the p initial values of the generalized Fibonacci sequence.",
+      "pbonacci_one_eq_fib: S 1 n = F(n+1) — the q=1 specialization recovers the parent's Fibonacci shallow-diagonal identity as a corollary of the general recurrence."
+    ]
+  },
+  "overview": {
+    "historicalContext": "That the shallow (rising) diagonals of Pascal's triangle sum to the Fibonacci numbers is a classical observation (Lucas). Replacing the diagonal slope by a steeper one produces the 'generalized Fibonacci' or p-bonacci sequences obeying a(m) = a(m−1) + a(m−p): p=2 is Fibonacci, p=3 is Narayana's cows (a(m)=a(m−1)+a(m−3), OEIS A000930), and so on. The parent gallery entry combinations-formula-oq-01-oq-01 proved the Fibonacci case ∑_j C(n−j, j) = F(n+1) axiom-free and posed the p-step generalization as its second open question. This entry answers it.",
+    "problemStatement": "For a step parameter q (with p = q+1), show that the p-step shallow-diagonal sum S q n = ∑_j C(n − q·j, j) satisfies the p-bonacci recurrence S q (n+q+1) = S q (n+q) + S q n with constant base segment S q n = 1 for n ≤ q, and that q=1 recovers the Fibonacci numbers.",
+    "text": "The single parameter q unifies the family: q=0 gives ∑_j C(n,j) = 2^n (the degenerate p=1 case), q=1 gives the Fibonacci diagonal, q=2 gives Narayana's cows, and general q gives the p-bonacci recurrence with p=q+1. The engine is Pascal's rule C(m+1, k+1) = C(m, k+1) + C(m, k) applied to each diagonal term: writing the index of the leading term as n+q+1−q(j+1), Pascal splits C(n+q+1−q(j+1), j+1) into C(n−q·j, j+1) (which feeds S q (n+q)) and C(n−q·j, j) (which feeds S q n after reindexing j ↦ j−1). The only subtlety is natural-number subtraction at the boundary of the binomial support, handled by the helper diag_pascal (which checks the truncated case where both upper indices collapse to 0) and by pbonacci_extend (which enlarges summation ranges freely, since C(n−q·j, j) = 0 once j > n). The Fibonacci corollary follows by two-step induction from the recurrence at q=1 and Nat.fib_add_two.",
+    "proofStrategy": "Peel the j=0 term with Finset.sum_range_succ', apply Pascal's rule termwise via the helper diag_pascal, recognize the two resulting sums as S q (n+q) and S q n (extending ranges with pbonacci_extend so the bookkeeping is linear), and finish with omega. Specialize to q=1 and induct with Nat.fib_add_two for the Fibonacci corollary.",
+    "keyInsights": [
+      "A single step parameter q (p = q+1) captures the whole p-bonacci family — powers of two, Fibonacci, Narayana's cows, and beyond — in one definition and one recurrence proof.",
+      "Pascal's rule on the leading diagonal index n+q+1−q(j+1) splits each term into exactly the contributions of S q (n+q) (slope-preserving) and S q n (one full step down), which is precisely the recurrence a(m) = a(m−1) + a(m−p).",
+      "The boundary case of natural-number subtraction is the only obstruction; isolating it in a termwise Pascal lemma (diag_pascal) and a range-extension lemma (pbonacci_extend) keeps the main argument purely linear (omega-dischargeable).",
+      "The recurrence plus the constant base segment S q n = 1 for n ≤ q together characterize the sequence, so no separate Lean definition of the p-bonacci numbers is needed — the diagonal sum is its own generating recurrence."
+    ],
+    "prerequisites": [
+      "Binomial coefficients Nat.choose and Pascal's rule Nat.choose_succ_succ",
+      "The Fibonacci sequence Nat.fib and Nat.fib_add_two",
+      "Finset range sums, Finset.sum_range_succ', and Finset.sum_subset",
+      "Two-step induction Nat.twoStepInduction"
+    ]
+  },
+  "conclusion": {
+    "summary": "The p-step shallow-diagonal sums S q n = ∑_j C(n − q·j, j) of Pascal's triangle are proved, axiom-free, to satisfy the p-bonacci recurrence S q (n+q+1) = S q (n+q) + S q n with constant base segment S q n = 1 for n ≤ q, and the q=1 case is shown to equal F(n+1). 5 theorems, 1 definition, 195 lines, 0 axioms.",
+    "implications": "Upgrades the parent's single Fibonacci diagonal identity to the full p-bonacci family in one uniform statement, recovering the Fibonacci result as a corollary and exhibiting the powers of two and Narayana's cows as the q=0 and q=2 instances.",
+    "openQuestions": [
+      "Express the p-bonacci closed form (Binet-type / dominant-root asymptotics) and prove S q n ∼ C·ρ^n where ρ is the real root of x^p = x^{p−1} + 1.",
+      "Give a bijective (lattice-path) proof in Lean matching the combinatorial interpretation of the p-step diagonal.",
+      "Prove the companion identity for the row sums of the p-step diagonals (partial sums ∑_{m≤N} S q m) and the associated generating function ∑_n S q n · x^n = 1/(1 − x − x^p)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Fibonacci shallow-diagonal identity ∑_j C(n−j, j) = F(n+1). This entry answers its second open question, generalizing to the p-step diagonals and recovering the Fibonacci case as pbonacci_one_eq_fib."
+    },
+    {
+      "targetId": "combinations-formula-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: extended binomial coefficient identities, which first recorded the shallow-diagonal Fibonacci connection via native_decide examples."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Fibonacci summation identities; this entry places the Fibonacci diagonal sum inside the broader p-bonacci family of linear recurrences."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the p-step shallow-diagonal generalization (the parent's second open question), the step parametrization q = p−1, the main results (recurrence, base segment, Fibonacci corollary), and the worked specializations q=0 (powers of two), q=1 (Fibonacci), q=2 (Narayana's cows). Imports Mathlib."
+    },
+    {
+      "title": "The p-step shallow-diagonal sum",
+      "startLine": 56,
+      "endLine": 60,
+      "summary": "pbonacci q n := ∑_{j ∈ range (n+1)} C(n − q·j, j), the p-step diagonal sum; q=1 is the parent's Fibonacci diagonal."
+    },
+    {
+      "title": "Range extension",
+      "startLine": 62,
+      "endLine": 73,
+      "summary": "pbonacci_extend: terms vanish once j outruns n − q·j, so the summation range may be enlarged above n without changing the value. Used to make the recurrence bookkeeping linear."
+    },
+    {
+      "title": "Pascal's rule on a diagonal term",
+      "startLine": 77,
+      "endLine": 106,
+      "summary": "diag_pascal (private helper): C(n+q+1 − q(j+1), j+1) = C(n − q·j, j+1) + C(n − q·j, j) for j ≥ 1, splitting by whether the subtraction truncates. This is the engine of the recurrence."
+    },
+    {
+      "title": "The p-bonacci recurrence",
+      "startLine": 108,
+      "endLine": 155,
+      "summary": "pbonacci_rec: S q (n+q+1) = S q (n+q) + S q n. Peels the j=0 term, applies diag_pascal termwise, identifies the two resulting sums as S q (n+q) and S q n via pbonacci_extend, and closes with omega."
+    },
+    {
+      "title": "Constant base segment",
+      "startLine": 157,
+      "endLine": 174,
+      "summary": "pbonacci_base: S q n = 1 for n ≤ q. Every term beyond j=0 vanishes because n − q(j+1) = 0, leaving the single leading C(n,0) = 1."
+    },
+    {
+      "title": "Recovering the parent Fibonacci identity",
+      "startLine": 176,
+      "endLine": 195,
+      "summary": "pbonacci_one_eq_fib: S 1 n = F(n+1), proved by two-step induction from pbonacci_rec at q=1 and Nat.fib_add_two — the parent result as a corollary of the general recurrence."
+    }
+  ],
+  "sorries": []
+}

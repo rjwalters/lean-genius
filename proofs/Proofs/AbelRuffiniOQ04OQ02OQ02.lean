@@ -62,22 +62,75 @@ theorem a0_solvable : IsSolvable (alternatingGroup (Fin 0)) := inferInstance
 /-- A₁ is solvable (trivial group). -/
 theorem a1_solvable : IsSolvable (alternatingGroup (Fin 1)) := inferInstance
 
-/-- A₂ is solvable (trivial group). -/
-theorem a2_solvable : IsSolvable (alternatingGroup (Fin 2)) := inferInstance
+/-- A₂ is solvable (trivial group, hence commutative). -/
+theorem a2_solvable : IsSolvable (alternatingGroup (Fin 2)) := by
+  apply isSolvable_of_comm
+  decide
 
 /-- A₃ is solvable. A₃ ≅ ℤ/3ℤ is abelian (cyclic of order 3). -/
 theorem a3_solvable : IsSolvable (alternatingGroup (Fin 3)) := by
   apply isSolvable_of_comm
   decide
 
-/-- A₄ is solvable. It is a subgroup of the solvable group S₄.
-    S₄ is solvable (derived series length 3: S₄ ⊵ A₄ ⊵ V₄ ⊵ {e}). -/
+/-! ### A₄ is solvable, via its Klein four commutator subgroup
+
+The previous proof discharged `derivedSeries (Perm (Fin 4)) 3 = ⊥` with
+`native_decide`, relying on a `Decidable (derivedSeries … = ⊥)` instance that
+current Mathlib no longer provides (subgroup equality of commutator closures is
+not decidable by instance). We instead give a structural, `native_decide`-free
+proof: the commutator subgroup of A₄ is contained in the Klein four-group
+`V₄ = {g | g² = 1}`, which is abelian, so the second derived subgroup is trivial.
+All `decide` calls below range over A₄ (12 elements) checking element-level
+identities — no closure decidability is required. -/
+
+/-- `V₄ ⊴ A₄`: the elements of order dividing two — the identity together with the
+three double transpositions `(ab)(cd)`. (In A₄ every order-2 element is a product
+of two disjoint transpositions, since single transpositions are odd.) -/
+def A4V4 : Subgroup (alternatingGroup (Fin 4)) where
+  carrier := {g | g ^ 2 = 1}
+  mul_mem' := by decide
+  one_mem' := by decide
+  inv_mem' := by decide
+
+instance : DecidablePred (· ∈ A4V4) := fun x => inferInstanceAs (Decidable (x ^ 2 = 1))
+
+set_option maxRecDepth 4000 in
+/-- The commutator subgroup of A₄ is contained in the Klein four-group `V₄`:
+every generator `⁅a, b⁆` has order dividing two. -/
+theorem commutator_le_A4V4 : commutator (alternatingGroup (Fin 4)) ≤ A4V4 := by
+  rw [commutator_def, Subgroup.commutator_le]
+  simp only [Subgroup.mem_top, true_implies]
+  decide
+
+set_option maxRecDepth 4000 in
+/-- `V₄` is abelian. -/
+theorem A4V4_comm : ∀ a ∈ A4V4, ∀ b ∈ A4V4, b * a = a * b := by decide
+
+/-- `⁅V₄, V₄⁆ = ⊥` since `V₄` is abelian. -/
+theorem commutator_A4V4_eq_bot : ⁅A4V4, A4V4⁆ = ⊥ := by
+  rw [Subgroup.commutator_eq_bot_iff_le_centralizer]
+  intro a ha
+  rw [Subgroup.mem_centralizer_iff]
+  intro b hb
+  exact A4V4_comm a ha b hb
+
+/-- **A₄ has derived length exactly 2.** The second derived subgroup is trivial:
+`D²(A₄) = ⁅[A₄,A₄], [A₄,A₄]⁆ ≤ ⁅V₄, V₄⁆ = ⊥`. -/
+theorem a4_derivedSeries_two_eq_bot :
+    derivedSeries (alternatingGroup (Fin 4)) 2 = ⊥ := by
+  have h2 : derivedSeries (alternatingGroup (Fin 4)) 2
+      = ⁅commutator (alternatingGroup (Fin 4)), commutator (alternatingGroup (Fin 4))⁆ := by
+    rw [show (2 : ℕ) = 1 + 1 from rfl, derivedSeries_succ, derivedSeries_one]
+  rw [h2]
+  refine le_bot_iff.mp ?_
+  calc ⁅commutator (alternatingGroup (Fin 4)), commutator (alternatingGroup (Fin 4))⁆
+      ≤ ⁅A4V4, A4V4⁆ := Subgroup.commutator_mono commutator_le_A4V4 commutator_le_A4V4
+    _ = ⊥ := commutator_A4V4_eq_bot
+
+/-- A₄ is solvable (derived length 2: A₄ ⊵ V₄ ⊵ {e}). -/
 theorem a4_solvable : IsSolvable (alternatingGroup (Fin 4)) := by
-  -- S₄ is solvable (Mathlib knows this via native_decide)
-  have hs4 : IsSolvable (Perm (Fin 4)) := by
-    rw [isSolvable_def]; exact ⟨3, by native_decide⟩
-  -- Subgroup of a solvable group is solvable
-  exact inferInstance
+  rw [isSolvable_def]
+  exact ⟨2, a4_derivedSeries_two_eq_bot⟩
 
 -- ============================================================
 -- PART 2: Large Alternating Groups Are NOT Solvable (n ≥ 5)

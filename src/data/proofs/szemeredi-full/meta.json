@@ -139,9 +139,17 @@
       "id": "full-theorem",
       "title": "Full Szemeredi Theorem Assembly",
       "startLine": 315,
-      "endLine": 335,
+      "endLine": 342,
       "summary": "Assembles the full theorem via `Nat.lt_or_ge k 4` and `interval_cases k`. For k<4, enumerates k=1,2,3 with their dedicated proofs. For k>=4, invokes the axiom. The corollary `dense_set_has_long_ap` provides a readable API entry point. This modular structure ensures future k>=4 proofs need only replace one axiom.",
       "mathContext": "$\\text{szemeredi\\_theorem} : \\text{SzemerediTheorem}$, proved by cases $k \\in \\{1,2,3\\}$ plus axiom for $k \\geq 4$."
+    },
+    {
+      "id": "monotonicity-corollaries",
+      "title": "Monotonicity Corollaries",
+      "startLine": 343,
+      "endLine": 373,
+      "summary": "Structural corollaries proved from the definitions: `hasAP_mono` (longer-AP containment implies shorter), `hasAP_superset` (AP membership is monotone in the set), `szemeredi_mono` (the density conclusion descends from k to j ≤ k), and `ap_free_density_bound`.",
+      "mathContext": "$j \\le k$: $\\text{HasAPOfLength}(S,k) \\Rightarrow \\text{HasAPOfLength}(S,j)$; $S \\subseteq T$: $\\text{HasAPOfLength}(S,k) \\Rightarrow \\text{HasAPOfLength}(T,k)$."
     }
   ],
   "crossReferences": [

@@ -32,7 +32,11 @@ for every Hall divisor of |G|.
 ## Why the main theorem is axiomatized
 Hall's theorem for solvable groups requires the Schur–Zassenhaus theorem and
 properties of minimal normal subgroups (elementary abelian structure).
-Schur–Zassenhaus is not yet in Mathlib 4.26, making the full proof unavailable.
+Schur–Zassenhaus IS available in Mathlib 4.26
+(`Subgroup.exists_right_complement'_of_coprime`); the actual remaining gap is the
+minimal-normal-subgroup machinery (existence and elementary-abelian structure).
+The Schur–Zassenhaus lifting step of the induction is proved with 0 axioms in the
+follow-up entry `lagrange-theorem-oq-01-oq-03-oq-01`.
 
 ## References
 - Hall, P. (1928), "A note on soluble groups", J. London Math. Soc.
@@ -152,7 +156,9 @@ theorem hall_cyclic_hall_divisor [Fintype G] [IsCyclic G]
     (3) If p | d: Induct on G/N — get H'/N ≤ G/N of order d/p^a.
         Sylow and Schur–Zassenhaus yield a complement of order d in G.
 
-    Blocked on: Schur–Zassenhaus theorem not in Mathlib 4.26. -/
+    Schur–Zassenhaus IS in Mathlib 4.26; the lifting step (case p ∤ d) is proved
+    with 0 axioms in lagrange-theorem-oq-01-oq-03-oq-01. The remaining gap is
+    minimal-normal-subgroup structure (elementary abelian), needed for case p | d. -/
 axiom hall_solvable [Fintype G] [IsSolvable G]
     (d : ℕ) (hd : IsHallDivisor d (Fintype.card G)) :
     ∃ H : Subgroup G, Nat.card H = d

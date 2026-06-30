@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Repunit",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -17,7 +17,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,9 +43,9 @@
       "Verified concrete examples: ord_7(10)=6, ord_11(10)=2, ord_13(10)=6, ord_37(10)=3 via native_decide"
     ],
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 65,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "The headline biconditional repunit_dvd_iff_orderOf and the supporting ZMod identity repunit_ZMod_aux are fully symbolic and native_decide-free. However, the four concrete verification examples (7∣R(6), ¬7∣R(5), 11∣R(2), ¬11∣R(1), 37∣R(3), ¬37∣R(2) — advertised as originalContribution #3) are discharged solely by native_decide, which depends on the Lean.ofReduceBool axiom (trusts the compiler's kernel reduction). Per the project's axiom-integrity policy, this is counted as 1 axiom. No literal axiom declarations or sorries.",
     "theoremCount": 2,
     "definitionCount": 1
   },
@@ -115,6 +115,21 @@
       "targetId": "divisibility-by-three-oq-02",
       "relationship": "extends",
       "description": "DivisibilityByThreeOQ02.lean proved repunit_dvd_iff_pow_mod (d∣R(k)↔d∣10^k-1) and listed concrete examples. This file completes the open question with the full orderOf characterization."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "sibling",
+      "description": "Companion in the same divisibility-by-three series, treating last-k-digit rules, powers of 2 and 5, and digital roots. Both study how base-10 structure governs divisibility via modular arithmetic on powers of 10."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's theorem (the generalization of Fermat's little theorem) gives orderOf(10 : ZMod d) ∣ φ(d) whenever gcd(d,10)=1, so the repunit period ord_d(10) is bounded by the totient — the structural reason the order-based characterization terminates."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "thematic",
+      "description": "A companion elementary result about the multiplicative structure of ZMod d; both exploit the cyclic/group-order behavior of units modulo d that underlies this repunit-period characterization."
     }
   ],
   "conclusion": {

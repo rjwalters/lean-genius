@@ -50,7 +50,7 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 29,
+      "startLine": 30,
       "endLine": 31
     },
     "title": "IsSumOfPowers Predicate",
@@ -74,7 +74,7 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 33,
+      "startLine": 34,
       "endLine": 35
     },
     "title": "Counting Function f_{k,m}(x)",
@@ -98,8 +98,8 @@
     "proofId": "erdos-323",
     "type": "concept",
     "range": {
-      "startLine": 39,
-      "endLine": 42
+      "startLine": 43,
+      "endLine": 46
     },
     "title": "First Powers: Trivial Case k = 1",
     "content": "When $k = 1$, every integer from 0 to $x$ is a sum of $m$ first powers (for $m \\le x$), so $f_{1,m}(x) \\ge m$. This axiom captures the degenerate case where sums of 1st powers are ordinary sums of nonnegative integers.",
@@ -120,8 +120,8 @@
     "proofId": "erdos-323",
     "type": "concept",
     "range": {
-      "startLine": 44,
-      "endLine": 46
+      "startLine": 57,
+      "endLine": 58
     },
     "title": "Monotonicity in Number of Summands",
     "content": "**power_sum_count_mono:** $f_{k,m}(x) \\le f_{k,m+1}(x)$. Adding an extra summand (which can be $0^k = 0$) can only increase the set of representable integers.",
@@ -143,8 +143,8 @@
     "proofId": "erdos-323",
     "type": "concept",
     "range": {
-      "startLine": 50,
-      "endLine": 55
+      "startLine": 107,
+      "endLine": 110
     },
     "title": "Landau's Theorem: Sums of Two Squares",
     "content": "**Landau's classical theorem** (1908): $f_{2,2}(x) \\sim c \\cdot x / \\sqrt{\\log x}$ for the Landau–Ramanujan constant $c > 0$. This completely resolves $k = 2$.",
@@ -167,8 +167,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 59,
-      "endLine": 65
+      "startLine": 117,
+      "endLine": 123
     },
     "title": "Part 1: f_{k,k}(x) >> x^{1-ε}",
     "content": "**ErdosProblem323_part1:** for every $k \\ge 2$ and $\\varepsilon > 0$, there exist $c > 0$ and $x_0$ such that $f_{k,k}(x) \\ge c \\cdot x^{1-\\varepsilon}$ for all $x \\ge x_0$. Sums of $k$ $k$-th powers have near-full density.",
@@ -191,8 +191,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 67,
-      "endLine": 73
+      "startLine": 125,
+      "endLine": 129
     },
     "title": "Part 2: f_{k,m}(x) >> x^{m/k} for m < k",
     "content": "**ErdosProblem323_part2:** for $1 \\le m < k$ with $k \\ge 2$, there exist $c > 0$ and $x_0$ such that $f_{k,m}(x) \\ge c \\cdot x^{m/k}$ for $x \\ge x_0$.",
@@ -215,8 +215,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 75,
-      "endLine": 76
+      "startLine": 131,
+      "endLine": 131
     },
     "title": "Combined Statement",
     "content": "**ErdosProblem323** is the conjunction of both parts: the near-full density bound for $f_{k,k}$ (Part 1) **and** the $x^{m/k}$ lower bound for $f_{k,m}$ when $m < k$ (Part 2).",
@@ -236,8 +236,8 @@
     "proofId": "erdos-323",
     "type": "definition",
     "range": {
-      "startLine": 80,
-      "endLine": 84
+      "startLine": 137,
+      "endLine": 139
     },
     "title": "Density Question: Is f_{k,k}(x) = o(x)?",
     "content": "**DensityQuestion($k$):** for every $\\varepsilon > 0$, for large enough $x$, $f_{k,k}(x) < \\varepsilon \\cdot x$. This asks whether sums of $k$ $k$-th powers have zero natural density for $k > 2$.",

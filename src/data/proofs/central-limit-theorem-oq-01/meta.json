@@ -51,7 +51,7 @@
       "Proved Gaussian (α=2) and Cauchy (α=1) are special stable cases with correct normalizations",
       "Proved Lévy distribution (α=1/2) is 1/2-stable with normalization n²",
       "Proved that non-Gaussian stable laws (α < 2) have different characteristic functions from Gaussian",
-      "Formal statement of Gnedenko-Kolmogorov domain of attraction theorem"
+      "Precise prose statement of the Gnedenko-Kolmogorov domain of attraction theorem (documented, not formalized — requires deep measure theory)"
     ],
     "dateAdded": "2026-02-23",
     "axiomCount": 0,
@@ -117,7 +117,7 @@
       "title": "Why Infinite Variance: Distinctness from Gaussian",
       "startLine": 186,
       "endLine": 245,
-      "summary": "Proof that α-stable (α<2) differs from Gaussian via log-injectivity argument. Formal statement of domain of attraction theorem.",
+      "summary": "Theorem stable_infinite_variance: α-stable (α<2) differs from Gaussian via a log-injectivity argument. The domain of attraction theorem is described in prose only, not formalized.",
       "mathContext": "For $\\alpha < 2$, the $\\alpha$-stable distribution has infinite variance. Proof: if it had finite variance, the CLT would give Gaussian convergence with $\\sqrt{n}$ normalization, contradicting the $n^{1/\\alpha}$ normalization ($\\alpha < 2 \\Rightarrow 1/\\alpha > 1/2$)."
     },
     {
@@ -125,7 +125,7 @@
       "title": "The Generalized CLT and Lévy-Khintchine",
       "startLine": 246,
       "endLine": 295,
-      "summary": "Axiomatized Lévy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem.",
+      "summary": "Theorems nongaussian_stable_infinite_variance and levy_is_half_stable (Lévy is 1/2-stable). The Lévy-Khintchine representation and Gnedenko-Kolmogorov domain of attraction theorem are described in prose only — not axiomatized (this file has 0 axioms).",
       "mathContext": "The Gnedenko-Kolmogorov generalized CLT: the domain of attraction of an $\\alpha$-stable law consists of distributions with regularly varying tails $P(|X| > x) \\sim x^{-\\alpha} L(x)$ where $L$ is slowly varying. The Lévy-Khintchine representation characterizes all infinitely divisible distributions."
     },
     {

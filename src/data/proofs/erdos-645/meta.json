@@ -78,76 +78,67 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Documentation",
+      "id": "header-context",
+      "title": "Module Header and Context",
       "startLine": 1,
-      "endLine": 22,
-      "summary": "Problem statement, status (SOLVED), and connection to van der Waerden's theorem.",
-      "mathContext": "Verified: Problem statement, status (SOLVED), and connection to van der Waerden's theorem."
+      "endLine": 26,
+      "summary": "Module docstring (Erdős #645: monochromatic 3-AP with d > x, SOLVED), imports, and namespace"
     },
     {
       "id": "background",
       "title": "Arithmetic Progressions and Colorings",
       "startLine": 27,
-      "endLine": 52,
-      "summary": "Definitions of 3-APs, AP terms function, and the monochromatic condition.",
-      "mathContext": "Formal definition: Definitions of 3-APs, AP terms function, and the monochromatic condition."
+      "endLine": 73,
+      "summary": "`is3AP`, `AP3terms`, `isMonochromatic`/`isMonochromatic'`, and the `monochromatic_iff` equivalence"
     },
     {
       "id": "erdos-condition",
-      "title": "The Erdős Condition",
-      "startLine": 73,
-      "endLine": 93,
-      "summary": "The key constraint d > x with examples and non-examples.",
-      "mathContext": "Mathematical content: The key constraint d > x with examples and non-examples."
+      "title": "The Erdős Condition: d > x",
+      "startLine": 74,
+      "endLine": 94,
+      "summary": "`erdosCondition` (0 < x ∧ x < d): the difference exceeds the first term, with worked examples"
     },
     {
       "id": "main-statement",
       "title": "Main Statement",
-      "startLine": 94,
-      "endLine": 121,
-      "summary": "Formal statement of Erdős #645 with equivalent formulations.",
-      "mathContext": "Mathematical content: Formal statement of Erdős #645 with equivalent formulations."
+      "startLine": 95,
+      "endLine": 122,
+      "summary": "`erdos_645_statement` and `erdos_645_explicit` formulations plus the `erdos_645_equiv` bridge"
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 141,
-      "endLine": 174,
-      "summary": "Definition of vanDerWaerden_2_3 and proof that erdos_645_statement → vanDerWaerden_2_3 (erdos_645_implies_vdw). The main conjecture erdos_645_statement is defined but not axiomatized or proved in this file.",
-      "mathContext": "Mathematical content: Theorem erdos_645_implies_vdw: erdos_645_statement → vanDerWaerden_2_3. The conjecture itself is stated as a Prop definition, not assumed as an axiom."
+      "id": "proof-sketch",
+      "title": "Proof Sketch",
+      "startLine": 123,
+      "endLine": 144,
+      "summary": "Informal pigeonhole / finitary Ramsey proof sketch and the Main Theorem docstring"
     },
     {
-      "id": "vdw-connection",
-      "title": "Connection to van der Waerden",
-      "startLine": 149,
-      "endLine": 175,
-      "summary": "Erdős #645 implies van der Waerden for 2-colorings and 3-APs.",
-      "mathContext": "Mathematical content: Erdős #645 implies van der Waerden for 2-colorings and 3-APs."
+      "id": "why-interesting",
+      "title": "Why This Is Interesting",
+      "startLine": 145,
+      "endLine": 173,
+      "summary": "Relation to van der Waerden: `vanDerWaerden_2_3` and `erdos_645_implies_vdw`"
     },
     {
-      "id": "examples",
+      "id": "concrete-examples",
       "title": "Concrete Examples",
-      "startLine": 176,
-      "endLine": 206,
-      "summary": "Verification on specific colorings: parity and threshold colorings.",
-      "mathContext": "Mathematical content: Verification on specific colorings: parity and threshold colorings."
+      "startLine": 174,
+      "endLine": 200,
+      "summary": "`colorByParity` and `colorByThreshold` example colorings witnessing the statement"
     },
     {
-      "id": "generalization",
-      "title": "Generalization to k-APs",
-      "startLine": 207,
-      "endLine": 233,
-      "summary": "Extension to k-term APs and equivalence with k=3 case.",
-      "mathContext": "Mathematical content: Extension to k-term APs and equivalence with k=3 case."
+      "id": "generalizations",
+      "title": "Generalization Questions",
+      "startLine": 201,
+      "endLine": 226,
+      "summary": "`erdos_645_generalized` k-AP version and open generalization questions"
     },
     {
       "id": "finite-version",
       "title": "The Finite Version",
-      "startLine": 234,
+      "startLine": 227,
       "endLine": 251,
-      "summary": "Finite formulation and the threshold N₀.",
-      "mathContext": "Mathematical content: Finite formulation and the threshold N₀."
+      "summary": "`finiteErdos645 N` and the threshold axiom `erdos645_threshold`"
     }
   ],
   "conclusion": {

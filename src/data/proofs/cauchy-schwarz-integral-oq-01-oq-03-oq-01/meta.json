@@ -87,44 +87,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the open question and answer (Hölder's inequality in eLpNorm form for an arbitrary NormedField 𝕜, 0 sorries / 0 axioms), opens `noncomputable section` and `namespace HolderELpNorm`.",
+      "mathContext": "$\\|fg\\|_1 \\le \\|f\\|_p\\,\\|g\\|_q$ for conjugate exponents $1/p+1/q=1$, formalized via Mathlib's `eLpNorm` API for NormedField-valued functions."
+    },
+    {
       "id": "bridge-lemma",
-      "title": "Bridge Lemma: eLpNorm ↔ lintegral",
+      "title": "Part 1: Bridge Lemma — eLpNorm ↔ lintegral",
+      "startLine": 45,
+      "endLine": 58,
       "summary": "eLpNorm_ofReal_eq converts eLpNorm f (ENNReal.ofReal p) μ to (∫⁻ ‖f‖ₑ^p)^(1/p) using eLpNorm_eq_lintegral_rpow_enorm.",
-      "startLine": 46,
-      "endLine": 56,
       "mathContext": "Bridge from eLpNorm API to lintegral form. Requires p > 0 as a real number."
     },
     {
       "id": "holder-elpnorm",
-      "title": "Hölder in eLpNorm Form for NormedField",
+      "title": "Part 2: Hölder in eLpNorm Form",
+      "startLine": 59,
+      "endLine": 87,
       "summary": "holder_normedField_eLpNorm: the main theorem. Applies bridge, nnnorm_mul factoring, and ENNReal Hölder.",
-      "startLine": 57,
-      "endLine": 85,
       "mathContext": "eLpNorm (f·g) 1 ≤ eLpNorm f p · eLpNorm g q for any NormedField 𝕜."
     },
     {
       "id": "product-membership",
-      "title": "Product Membership: fg ∈ L1",
+      "title": "Part 3: Product Membership in L1 — the Practical Consequence",
+      "startLine": 88,
+      "endLine": 108,
       "summary": "memLp_mul_of_memLp_ofReal: the practical Hölder consequence. f ∈ Lp and g ∈ Lq implies fg ∈ L1.",
-      "startLine": 86,
-      "endLine": 106,
       "mathContext": "The most useful form of Hölder's inequality for integration theory."
     },
     {
       "id": "specializations",
-      "title": "Real, Complex, and Cauchy-Schwarz Specializations",
+      "title": "Part 4: Real and Complex Specializations",
+      "startLine": 109,
+      "endLine": 138,
       "summary": "One-line corollaries: holder_real_eLpNorm, holder_complex_eLpNorm, cauchy_schwarz_complex_eLpNorm.",
-      "startLine": 107,
-      "endLine": 145,
       "mathContext": "Specializations to ℝ, ℂ, and the p=q=2 Cauchy-Schwarz case."
     },
     {
       "id": "verification",
-      "title": "Numerical Verification",
+      "title": "Part 5: Numerical Verification",
+      "startLine": 139,
+      "endLine": 151,
       "summary": "Checks: HolderConjugate 2 2 holds, ENNReal.ofReal 2 = 2.",
-      "startLine": 140,
-      "endLine": 145,
       "mathContext": "Quick sanity checks for the p=q=2 special case."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 152,
+      "endLine": 176,
+      "summary": "Closing docstring recapping the six results (bridge lemma, NormedField Hölder, L1 product membership, real/complex specializations, Cauchy-Schwarz at p=q=2) and the axiom-free / sorry-free status, then closes `namespace HolderELpNorm`.",
+      "mathContext": "Summary of the eLpNorm-form Hölder development; the $p=q=2$ case is the integral Cauchy-Schwarz inequality."
     }
   ],
   "conclusion": {

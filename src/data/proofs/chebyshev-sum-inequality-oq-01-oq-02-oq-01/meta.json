@@ -1,0 +1,166 @@
+{
+  "id": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+  "title": "Strict Reverse Chebyshev Sum Inequality (Antivarying / Mixed-Monotone Case)",
+  "slug": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+  "description": "The parent entry chebyshev-sum-inequality-oq-01-oq-02 packages the strict Chebyshev sum inequality for monovarying (e.g. both monotone) sequences. This entry answers the parent's own open question by treating the opposite ordering regime: when f and g antivary (the textbook 'f increasing, g decreasing' case) the inequality reverses to #s·∑ f·g ≤ (∑ f)(∑ g), strict unless one sequence is constant. Everything rides on the same order-free covariance identity from the grandparent: for antivarying f, g each summand (fᵢ−fⱼ)(gᵢ−gⱼ) is now non-positive, so the double sum is ≤ 0 — exactly the reversed bound — and a single doubly-varying pair makes one summand strictly negative. The equality characterisation ∀ i j, fᵢ=fⱼ ∨ gᵢ=gⱼ is identical to the monovarying case (a product vanishes regardless of factor signs); only the inequality direction flips. We give the same three layers as the parent plus the antitone equality-constant lemma.",
+  "meta": {
+    "author": "Classical (Chebyshev); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality",
+    "date": "1882",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "inequalities",
+      "order",
+      "chebyshev-sum-inequality",
+      "monotone",
+      "antitone",
+      "rearrangement",
+      "strict-inequality"
+    ],
+    "proofRepoPath": "Proofs/RearrangementChebyshevStrictOQ01OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 209,
+    "mathlibDependencies": [
+      {
+        "theorem": "Monotone.antivary",
+        "description": "A monotone f and an antitone g antivary — the bridge that feeds AntivaryOn into the reverse bound and the equality lemmas in the mixed-monotone textbook form",
+        "module": "Mathlib.Order.Monotone.Monovary"
+      },
+      {
+        "theorem": "Finset.sum_nonpos",
+        "description": "A finite sum of non-positive terms is non-positive — turns the per-term non-positivity (term_nonpos) into the ≤ 0 double sum that the covariance identity converts to the reverse bound",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonpos",
+        "description": "A sum of non-positive terms vanishes iff every term vanishes — extracts the per-pair equality condition from the equality case in the antivarying regime",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "lt_of_le_of_ne",
+        "description": "Upgrades the reverse ≤ bound to a strict < once equality is excluded by the negated equality characterisation",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "StrictAnti.injective",
+        "description": "A strictly antitone g is injective — converts distinct indices a ≠ b into g a ≠ g b for the strictly-monotone/strictly-antitone specialisation",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "originalContributions": [
+      "term_nonpos: under AntivaryOn f g s each covariance summand (f i − f j)(g i − g j) ≤ 0, the antivarying mirror of the grandparent's term_nonneg",
+      "chebyshev_sum_reverse: the reverse Chebyshev bound #s·∑ f·g ≤ (∑ f)(∑ g) for antivarying f, g, one line from the order-free covariance identity whose double sum is now ≤ 0",
+      "chebyshev_sum_reverse_eq_iff: equality holds iff every pair i, j ∈ s has f i = f j ∨ g i = g j — the same characterisation as the monovarying case, since a product vanishes independent of factor signs",
+      "chebyshev_sum_reverse_eq_iff_const: the textbook form — for f monotone, g antitone on a linearly ordered index with s nonempty, equality holds iff f or g is constant on s, via the extreme-pair (min', max') argument adapted to an antitone g",
+      "chebyshev_sum_reverse_strict_of_pair: a single pair a, b ∈ s with f a ≠ f b and g a ≠ g b already forces (∑ f)(∑ g) > #s·∑ f·g under only AntivaryOn",
+      "chebyshev_sum_reverse_strict: the textbook strict form — f monotone, g antitone, s nonempty, neither constant ⇒ strict",
+      "chebyshev_sum_reverse_strict_strictMonoAnti: the clean specialisation — f strictly monotone, g strictly antitone, 1 < #s ⇒ strict, with injectivity supplying the varying pair"
+    ],
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Chebyshev's sum inequality has two faces. For sequences sorted the same way (comonotone / monovarying) the mean of the products dominates the product of the means; for sequences sorted oppositely (one increasing, one decreasing — antivarying) the inequality reverses. The reverse form is the discrete shadow of the fact that two anticomonotone random variables have non-positive covariance, and it is the inequality that actually appears in rearrangement arguments where one factor is deliberately reversed. Mathlib records the non-strict reverse bound through the AntivaryOn predicate but, as in the monovarying case, says nothing about when it is tight. The parent entry settled the monovarying strict statement; this entry completes the symmetric picture for the antivarying regime, which is exactly the open question the parent posed.",
+    "problemStatement": "Let $f, g$ be real sequences on a finite nonempty index set $s$ with $f$ monotone and $g$ antitone (more generally, antivarying on $s$). Then the reverse Chebyshev bound holds:\n\n$$\\#s \\sum_{i\\in s} f_i g_i \\;\\le\\; \\Big(\\sum_{i\\in s} f_i\\Big)\\Big(\\sum_{i\\in s} g_i\\Big),$$\n\nwith equality iff $f$ or $g$ is constant on $s$. If neither is constant the inequality is strict, equivalently $\\big(\\sum f\\big)\\big(\\sum g\\big) > \\#s\\sum f g$. More generally a single pair $a, b \\in s$ with $f_a \\ne f_b$ and $g_a \\ne g_b$ already forces strictness.",
+    "proofStrategy": "The engine is the grandparent's order-free covariance identity ∑ᵢ∑ⱼ (fᵢ−fⱼ)(gᵢ−gⱼ) = 2·(#s·∑ fᵢgᵢ − (∑ fᵢ)(∑ gᵢ)).\n\n1. term_nonpos: for antivarying f, g a case split on the sign of g i − g j shows each summand (f i − f j)(g i − g j) ≤ 0 (the two differences have opposite signs).\n\n2. chebyshev_sum_reverse: Finset.sum_nonpos makes the double sum ≤ 0; the covariance identity then gives #s·∑ f·g ≤ (∑ f)(∑ g) by linarith.\n\n3. chebyshev_sum_reverse_eq_iff: equality forces the double sum to be 0; Finset.sum_eq_zero_iff_of_nonpos pins every summand to 0, and mul_eq_zero reads off f i = f j ∨ g i = g j. The converse is termwise.\n\n4. chebyshev_sum_reverse_eq_iff_const: the extreme-pair argument — a monotone non-constant f differs between min' s and max' s, and an antitone non-constant g likewise (the inequalities point the other way but the conclusion g m ≠ g M is the same).\n\n5. The strict statements are lt_of_le_of_ne of the reverse bound and the negated equality characterisation, with StrictAnti.injective supplying the varying pair in the strictly-monotone/strictly-antitone case.",
+    "keyInsights": [
+      "The covariance identity carries no order hypothesis, so it serves both regimes unchanged — only the sign of each summand flips (non-negative for monovarying, non-positive for antivarying), which is exactly why the inequality reverses.",
+      "The equality characterisation ∀ i j, f i = f j ∨ g i = g j is literally identical to the monovarying case, because a real product is zero precisely when a factor is zero, independent of the product's sign.",
+      "Strictness remains local: one index pair varying in both coordinates makes a single summand strictly negative and forces the global strict inequality.",
+      "An antitone g still produces an extreme varying pair at (min' s, max' s) once it is non-constant; the min'/max' argument is sign-agnostic, so the rigidity lemma transfers verbatim from the monotone case."
+    ],
+    "prerequisites": [
+      "Finite sums over a Finset and Finset.card",
+      "Monotone / Antitone / StrictMono / StrictAnti functions and the AntivaryOn order-correlation predicate",
+      "The discrete covariance identity and the equality machinery from the grandparent entry",
+      "The lt_of_le_of_ne pattern for upgrading ≤ to < by excluding equality"
+    ]
+  },
+  "conclusion": {
+    "summary": "We packaged the reverse (antivarying) form of Chebyshev's sum inequality and its strict statement: for f monotone and g antitone (more generally antivarying) on a finite set, #s·∑ f·g ≤ (∑ f)(∑ g), with equality iff one sequence is constant, otherwise strict. The whole development reuses the grandparent's order-free covariance identity with the sign of each summand flipped. All seven results are fully machine-checked and depend only on the foundational axioms (0 sorries, 0 axioms).",
+    "implications": "Together with the parent's monovarying strict form, this gives the complete strict-and-rigidity picture for both ordering regimes of Chebyshev's sum inequality: the same covariance identity yields the forward bound for comonotone sequences and the reverse bound for anticomonotone ones, each tight exactly when a sequence is constant.",
+    "openQuestions": [
+      "State the strict reverse inequality in the continuous (integral) form for a monotone and an antitone integrable function on an interval.",
+      "Derive the rearrangement inequality's extremal endpoints by combining the forward (sorted-same) and reverse (sorted-opposite) Chebyshev bounds."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (Mathlib and the parent strict file, which transitively brings the grandparent equality machinery), an expository docstring relating the reverse statement to the order-free covariance identity, and namespace setup opening RearrangementChebyshevEq."
+    },
+    {
+      "id": "reverse-bound",
+      "title": "Term Non-Positivity and the Reverse Bound",
+      "startLine": 66,
+      "endLine": 90,
+      "summary": "term_nonpos — each covariance summand (f i − f j)(g i − g j) ≤ 0 under AntivaryOn, by a sign case split; chebyshev_sum_reverse — Finset.sum_nonpos plus the covariance identity give #s·∑ f·g ≤ (∑ f)(∑ g)."
+    },
+    {
+      "id": "equality-case",
+      "title": "Equality Characterisation",
+      "startLine": 92,
+      "endLine": 159,
+      "summary": "chebyshev_sum_reverse_eq_iff — equality iff every pair varies in at most one coordinate, via Finset.sum_eq_zero_iff_of_nonpos; chebyshev_sum_reverse_eq_iff_const — the monotone/antitone textbook form through the extreme-pair (min', max') argument adapted to an antitone g."
+    },
+    {
+      "id": "strict-forms",
+      "title": "Strict Reverse Inequalities",
+      "startLine": 161,
+      "endLine": 209,
+      "summary": "chebyshev_sum_reverse_strict_of_pair (one doubly-varying pair forces strictness), chebyshev_sum_reverse_strict (monotone/antitone, neither constant), and chebyshev_sum_reverse_strict_strictMonoAnti (strictly monotone f, strictly antitone g, ≥ 2 indices), each lt_of_le_of_ne of the reverse bound and the negated equality case."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-sum-inequality-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The monovarying strict form whose open question (the antivarying analogue) this entry answers, reusing its imports and the grandparent covariance identity"
+    },
+    {
+      "targetId": "chebyshev-sum-inequality",
+      "relationship": "extends",
+      "description": "Chebyshev's Sum Inequality"
+    }
+  ],
+  "references": [
+    {
+      "text": "Hardy, G. H., Littlewood, J. E., Pólya, G. (1952). Inequalities, 2nd ed., Cambridge University Press (Chebyshev's inequality, both ordering regimes, and equality cases).",
+      "url": "https://archive.org/details/Inequalities_201705"
+    },
+    {
+      "text": "Chebyshev's sum inequality.",
+      "url": "https://en.wikipedia.org/wiki/Chebyshev%27s_sum_inequality"
+    },
+    {
+      "text": "Mathlib4: Order.Monotone.Monovary (Monovary / Antivary) and Algebra.Order.Chebyshev.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Order/Monotone/Monovary.html"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.RearrangementChebyshevStrictOQ01OQ02"
+    ],
+    "opens": [
+      "Finset",
+      "RearrangementChebyshevEq"
+    ],
+    "namespace": "RearrangementChebyshevReverse",
+    "lineCount": 209,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/RearrangementChebyshevStrictOQ01OQ02OQ01.lean",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}

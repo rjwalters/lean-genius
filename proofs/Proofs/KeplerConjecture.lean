@@ -138,6 +138,19 @@ noncomputable def hexagonalPacking2D : PackingDensity where
 /-- The kissing number in 2D is 6 (each disk touches 6 neighbors) -/
 def kissingNumber2D : ℕ := 6
 
+/-- **Uninterpreted shape predicate: "this density arises from a 2D disk
+packing".**
+
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsDiskPacking d` for any concrete `d`. This gates Thue's
+shape-specific bound below: without it, the universally-quantified
+`d.density ≤ hexagonalDensity2D` (a bound `< 1`) applied to the trivially
+constructible density-1 packing `⟨1, by norm_num, le_refl 1⟩` yields
+`1 ≤ hexagonalDensity2D ≈ 0.9069`, i.e. `False`. The predicate restricts
+the axiom to genuine disk packings, of which the density-1 witness is not
+one. -/
+opaque IsDiskPacking : PackingDensity → Prop
+
 /-- **Thue's Theorem** (Axiomatized)
 
 The hexagonal packing achieves the maximum density among all disk packings in ℝ².
@@ -148,13 +161,15 @@ The proof uses:
 1. Voronoi cells to partition the plane
 2. Show each Voronoi cell has area ≥ 2√3 r² for non-overlapping disks
 3. Conclude density ≤ π / (2√3)
--/
-axiom thues_theorem (d : PackingDensity) :
+
+Gated by `IsDiskPacking` (see above) so the bound applies only to genuine
+2D disk packings, not to arbitrary `PackingDensity` values. -/
+axiom thues_theorem (d : PackingDensity) (hd : IsDiskPacking d) :
     d.density ≤ hexagonalDensity2D
 
-/-- Hexagonal packing is optimal in 2D -/
+/-- Hexagonal packing is optimal among 2D disk packings -/
 theorem hexagonal_is_optimal_2D :
-    ∀ (d : PackingDensity), d.density ≤ hexagonalPacking2D.density :=
+    ∀ (d : PackingDensity), IsDiskPacking d → d.density ≤ hexagonalPacking2D.density :=
   thues_theorem
 
 -- ============================================================
@@ -262,6 +277,19 @@ We axiomatize this result as it requires substantial computational verification
 that is beyond the scope of this formalization.
 -/
 
+/-- **Uninterpreted shape predicate: "this density arises from a 3D
+congruent-sphere packing".**
+
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsSpherePacking d` for any concrete `d`. This gates the
+Kepler/Gauss bounds below: without it, the universally-quantified
+`d.density ≤ fccDensity` (a bound `< 1`) applied to the density-1 packing
+`⟨1, by norm_num, le_refl 1⟩` yields `1 ≤ fccDensity ≈ 0.7405`, i.e.
+`False`. Equally, applying it to `hexagonalPacking2D` would give
+`hexagonalDensity2D ≤ fccDensity`, contradicting `hexagonal_gt_fcc`. The
+predicate restricts these axioms to genuine sphere packings. -/
+opaque IsSpherePacking : PackingDensity → Prop
+
 /-- **The Kepler Conjecture** (Axiomatized)
 
 No packing of congruent spheres in three-dimensional Euclidean space has
@@ -272,22 +300,29 @@ The maximum density is π/(3√2) ≈ 0.7405.
 **Proven by**: Thomas Hales (1998)
 **Published**: Annals of Mathematics (2005)
 **Formally verified**: Flyspeck project in HOL Light (2014)
--/
-axiom kepler_conjecture (d : PackingDensity) :
+
+Gated by `IsSpherePacking` (see above) so the bound applies only to
+genuine congruent-sphere packings, not to arbitrary `PackingDensity`
+values (e.g. the 2D hexagonal density, or a non-spherical body packing
+denser than FCC). -/
+axiom kepler_conjecture (d : PackingDensity) (hd : IsSpherePacking d) :
     d.density ≤ fccDensity
 
-/-- The FCC packing achieves the maximum density -/
+/-- The FCC packing achieves the maximum density among 3D sphere packings -/
 theorem fcc_is_optimal_3D :
-    ∀ (d : PackingDensity), d.density ≤ fccPacking.density :=
+    ∀ (d : PackingDensity), IsSpherePacking d → d.density ≤ fccPacking.density :=
   kepler_conjecture
 
-/-- Gauss's theorem: FCC is optimal among lattice packings
+/-- Gauss's theorem: FCC is optimal among lattice (sphere) packings
 
 This was proven by Gauss in 1831 - much earlier than the full Kepler conjecture.
 The full conjecture requires ruling out non-lattice packings as well.
--/
-axiom gauss_lattice_theorem :
-    ∀ (d : PackingDensity), d.density ≤ fccDensity
+
+Gated by `IsSpherePacking` (a lattice sphere packing is in particular a
+sphere packing) so the bound does not over-quantify to arbitrary
+`PackingDensity` values. -/
+axiom gauss_lattice_theorem (d : PackingDensity) (hd : IsSpherePacking d) :
+    d.density ≤ fccDensity
 
 -- ============================================================
 -- PART 5: Higher Dimensions
@@ -339,14 +374,26 @@ def kissingNumber8D : ℕ := 240
 /-- The kissing number in dimension 24 is 196560 -/
 def kissingNumber24D : ℕ := 196560
 
+/-- **Uninterpreted shape predicate: "this density is realised by an 8D
+sphere packing".**
+
+`opaque` (no defining body, no introduction axiom). Gates Viazovska's
+bound below: without it, the hypothesis `0 ≤ d ∧ d ≤ 1` alone would let
+`d := 1/2` give `1/2 ≤ e8Density ≈ 0.2537`, i.e. `False`. The predicate
+restricts the bound to densities actually achieved by 8D sphere
+packings. -/
+opaque IsSpherePacking8D : ℝ → Prop
+
 /-- **Viazovska's Theorem** (Axiomatized)
 
 The E8 lattice achieves the maximum sphere packing density in ℝ⁸.
 
 Proven by Maryna Viazovska in 2016 using modular forms and linear programming bounds.
 She won the Fields Medal in 2022 for this work.
--/
-axiom viazovska_theorem_8d (d : ℝ) (h : 0 ≤ d ∧ d ≤ 1) :
+
+Gated by `IsSpherePacking8D` (see above) so the bound applies only to
+densities realised by 8D sphere packings, not to every real in `[0, 1]`. -/
+axiom viazovska_theorem_8d (d : ℝ) (h : 0 ≤ d ∧ d ≤ 1) (hd : IsSpherePacking8D d) :
     d ≤ e8Density
 
 -- ============================================================

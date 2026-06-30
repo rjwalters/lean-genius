@@ -210,7 +210,7 @@
       "startLine": 200,
       "endLine": 215
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Question 1: √N Density (OPEN)",
     "content": "Can a divisibility-free set achieve positive √N-density? Formally: ∃ A infinite and divisibility-free with ∃ c > 0, ∀ᶠ N, A(N)/√N ≥ c. The Elsholtz-Planitzer construction gets within logarithmic factors: A(N) ≥ √N/(√(log N)·(log log N)²).",
     "mathContext": "Question 1 asks: $\\exists A$ div-free with $\\liminf_{N \\to \\infty} A(N)/\\sqrt{N} > 0$? The best construction (Elsholtz-Planitzer 2017) achieves $A(N) \\geq \\sqrt{N} \\cdot (\\sqrt{\\log N} \\cdot (\\log\\log N)^2)^{-1}$, tantalizingly close. The prime squares construction gives $A(N) \\sim \\sqrt{N}/\\log N$, weaker by a full $\\log N$ factor. Closing the gap requires either a better construction or a proof that $\\sqrt{N}$ density is impossible.",

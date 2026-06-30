@@ -107,74 +107,104 @@
   ],
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "content": "File header stating Erdős Problem #504 (Blumenthal's problem): determine $\\alpha_n$, the supremum of $\\alpha$ such that every $n$-point set in $\\mathbb{R}^2$ contains three points with angle $\\ge \\alpha$. Records the historical development (Szekeres 1941, Erdős–Szekeres 1960, Sendov 1992/1993) and the Mathlib imports.",
+      "proofMethod": "Exposition: problem statement, Sendov's solution formulas, and imports (trigonometric special functions, metric spaces, Finset, reals).",
+      "mathContext": "$\\alpha_N = \\pi(1-1/n)$ for $2^{n-1}+2^{n-3} < N \\le 2^n$ and $\\alpha_N = \\pi(1-1/(2n-1))$ for $2^{n-1} < N \\le 2^{n-1}+2^{n-3}$ (Sendov 1993).",
+      "summary": "Problem statement, Sendov's solution, and historical context."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part I: Basic Definitions",
       "startLine": 43,
-      "endLine": 67,
-      "content": "Defines the angle $\\angle(x,y,z)$ at vertex $y$ using the dot product formula $\\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, with axioms for range $[0,\\pi]$ and symmetry $\\angle(x,y,z) = \\angle(z,y,x)$.",
-      "proofMethod": "Direct computation via dot product and arccos, with axioms for range and symmetry.",
-      "mathContext": "$\\angle(x,y,z) = \\arccos\\left(\\frac{(x-y) \\cdot (z-y)}{\\|x-y\\| \\cdot \\|z-y\\|}\\right) \\in [0, \\pi]$, with $\\angle(x,y,z) = \\angle(z,y,x)$ (symmetry in the outer points).",
-      "summary": "Basic Definitions"
+      "endLine": 61,
+      "content": "Defines `angle x y z` at vertex $y$ via the dot-product formula $\\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\,\\|z-y\\|}\\bigr)$, returning $0$ when either vector is degenerate (zero norm).",
+      "proofMethod": "Direct `noncomputable def` using `Real.arccos` of the normalized dot product, with a guard for zero-length vectors.",
+      "mathContext": "$\\angle(x,y,z) = \\arccos\\left(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\,\\|z-y\\|}\\right) \\in [0,\\pi]$, defined to be $0$ when $x=y$ or $z=y$.",
+      "summary": "The planar angle at a vertex via normalized dot product."
     },
     {
       "id": "max-angle",
-      "title": "Maximum Angle in a Point Set",
-      "startLine": 68,
-      "endLine": 84,
-      "content": "Axiomatized `maxAngleInSet` function giving $\\max_{x,y,z \\in A}\\angle(x,y,z)$ for a finite set $A$, with positivity for $|A| \\ge 3$ and the upper bound $\\le \\pi$.",
-      "proofMethod": "Axiomatized to avoid Finset.sup' nonempty proof obligations.",
-      "mathContext": "$\\text{maxAngle}(A) = \\max_{x,y,z \\in A, \\text{distinct}} \\angle(x,y,z)$. For $|A| \\geq 3$: $0 < \\text{maxAngle}(A) \\leq \\pi$.",
-      "summary": "Maximum Angle in a Point Set"
+      "title": "Part II: Maximum Angle in a Point Set",
+      "startLine": 62,
+      "endLine": 71,
+      "content": "Introduces `maxAngleInSet A` as a `noncomputable axiom` giving the largest angle $\\angle(x,y,z)$ over distinct triples in a finite set $A$.",
+      "proofMethod": "Axiomatized as an opaque $\\mathbb{R}$-valued function on `Finset (ℝ × ℝ)` to avoid `Finset.sup'` nonemptiness obligations.",
+      "mathContext": "$\\text{maxAngleInSet}(A) = \\max_{x,y,z \\in A \\text{ distinct}} \\angle(x,y,z)$, declared as an axiom.",
+      "summary": "Axiomatized maximum-angle functional on a finite point set."
     },
     {
       "id": "alpha-n",
-      "title": "The α_n Function and Small Cases",
-      "startLine": 85,
-      "endLine": 112,
-      "content": "Defines $\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : |A| = n\\}$ as the infimum over all $n$-point configurations. Includes well-definedness ($0 < \\alpha_n \\le \\pi$ for $n \\ge 3$), monotonicity ($\\alpha_n \\le \\alpha_m$ for $m \\le n$), and small cases $\\alpha_3 = \\alpha_4 = \\pi$.",
-      "proofMethod": "iInf definition with axioms for monotonicity and boundary values.",
-      "mathContext": "$\\alpha_n = \\inf_{|A|=n} \\text{maxAngle}(A)$. Properties: $0 < \\alpha_n \\leq \\pi$ for $n \\geq 3$; $\\alpha_n \\leq \\alpha_m$ for $m \\leq n$ (monotone decreasing); $\\alpha_3 = \\alpha_4 = \\pi$ (triangles and quadrilaterals always contain angles up to $\\pi$).",
-      "summary": "The α_n Function and Small Cases"
+      "title": "Part III: The α_n Function",
+      "startLine": 72,
+      "endLine": 85,
+      "content": "Defines `alphaN n` as the infimum of `maxAngleInSet A` over all finite sets $A$ with $|A| = n$ — the central quantity the problem asks to determine.",
+      "proofMethod": "`noncomputable def` using the indexed infimum $\\bigsqcap$ over `Finset (ℝ × ℝ)` filtered by `A.card = n`.",
+      "mathContext": "$\\alpha_n = \\inf\\{\\,\\text{maxAngleInSet}(A) : A \\subset \\mathbb{R}^2,\\ |A| = n\\,\\}$.",
+      "summary": "Definition of α_n as an infimum of maximum angles."
     },
     {
       "id": "erdos-szekeres",
-      "title": "Erdős-Szekeres Results (1960)",
-      "startLine": 113,
-      "endLine": 128,
-      "content": "The Erdős–Szekeres formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2 ($n \\ge 2$), where the regular $2^n$-gon achieves the minimum maximum angle.",
-      "proofMethod": "Axiomatized formula erdosSzekeresFormula with the main theorem axiom erdos_szekeres.",
-      "mathContext": "Erdős-Szekeres (1960): $\\alpha_{2^n} = \\pi(1 - 1/n)$ for $n \\geq 2$. The regular $2^n$-gon achieves this: its maximum inscribed angle is $\\pi(1 - 1/n)$ by the inscribed angle theorem.",
-      "summary": "Erdős-Szekeres Results (1960)"
+      "title": "Parts IV–V: Small Cases and Erdős–Szekeres Results (1960)",
+      "startLine": 86,
+      "endLine": 99,
+      "content": "After a marker for small cases, defines `erdosSzekeresFormula n = π(1 - 1/n)`, the value Erdős and Szekeres proved equals $\\alpha_{2^n} = \\alpha_{2^n-1}$ for powers of two.",
+      "proofMethod": "`noncomputable def` recording the 1960 closed form; the small-cases marker carries no declarations.",
+      "mathContext": "Erdős–Szekeres (1960): $\\alpha_{2^n} = \\alpha_{2^n-1} = \\pi(1 - 1/n)$.",
+      "summary": "The Erdős–Szekeres power-of-two formula π(1 − 1/n)."
     },
     {
       "id": "sendov-solution",
-      "title": "Sendov's Complete Solution (1993)",
-      "startLine": 129,
-      "endLine": 168,
-      "content": "The full determination of $\\alpha_N$: for the upper range $2^{n-1} + 2^{n-3} < N \\le 2^n$, $\\alpha_N = \\pi(1-1/n)$; for the lower range $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$, $\\alpha_N = \\pi(1-1/(2n-1))$. The threshold $5 \\cdot 2^{n-3}$ splits each dyadic interval.",
-      "proofMethod": "Two axiomatized formulas (sendov_upper, sendov_lower) with separate range conditions.",
-      "mathContext": "Sendov (1993): For $2^{n-1} < N \\leq 2^n$: $\\alpha_N = \\pi(1-1/n)$ if $N > 5 \\cdot 2^{n-3}$, and $\\alpha_N = \\pi(1-1/(2n-1))$ if $N \\leq 5 \\cdot 2^{n-3}$. The threshold $5 \\cdot 2^{n-3} = 5/8 \\cdot 2^n$ splits each dyadic interval.",
-      "summary": "Sendov's Complete Solution (1993)"
+      "title": "Part VI: Sendov's Complete Solution (1993)",
+      "startLine": 100,
+      "endLine": 139,
+      "content": "Defines the two range formulas `sendovUpperFormula n = π(1 - 1/n)` and `sendovLowerFormula n = π(1 - 1/(2n-1))`, and states them as axioms `sendov_upper` and `sendov_lower` determining $\\alpha_N$ on the two ranges of $N$.",
+      "proofMethod": "Two `noncomputable def`s plus two `axiom`s asserting Sendov's 1993 theorem for $n \\ge 3$ on the upper and lower ranges of $N$.",
+      "mathContext": "$\\alpha_N = \\pi(1-1/n)$ for $2^{n-1}+2^{n-3} < N \\le 2^n$; $\\alpha_N = \\pi(1-1/(2n-1))$ for $2^{n-1} < N \\le 2^{n-1}+2^{n-3}$.",
+      "summary": "Sendov's 1993 two-range determination of α_N (axiomatized)."
     },
     {
       "id": "counterexample",
-      "title": "Counterexample to Erdős-Szekeres Conjecture",
-      "startLine": 169,
-      "endLine": 183,
-      "content": "Sendov's 1992 disproof: $\\exists\\, n, N$ with $2^{n-1} < N \\le 2^n$ such that $\\alpha_N \\ne \\pi(1-1/n)$. The smallest instance is $N = 5$ with $n = 3$.",
-      "proofMethod": "Axiomatized existential statement erdos_szekeres_conjecture_false.",
-      "mathContext": "Sendov (1992): the Erdős-Szekeres conjecture $\\alpha_N = \\pi(1-1/n)$ for all $2^{n-1} < N \\leq 2^n$ is FALSE. Smallest counterexample: $N = 5$, $n = 3$: $\\alpha_5 = \\pi(1-1/5) = 4\\pi/5$ but the conjecture predicts $\\pi(1-1/3) = 2\\pi/3$.",
-      "summary": "Counterexample to Erdős-Szekeres Conjecture"
+      "title": "Part VII: Counterexample to Erdős–Szekeres Conjecture",
+      "startLine": 140,
+      "endLine": 154,
+      "content": "States `erdos_szekeres_conjecture_false` as an axiom: there exist $n \\ge 3$ and $N$ with $2^{n-1} < N \\le 2^n$ for which $\\alpha_N \\ne \\text{erdosSzekeresFormula}\\,n$, encoding Sendov's 1992 disproof.",
+      "proofMethod": "Single existential `axiom` recording that the conjectured single formula fails on the lower sub-range.",
+      "mathContext": "$\\exists\\, n \\ge 3,\\ N:\\ 2^{n-1} < N \\le 2^n \\wedge \\alpha_N \\ne \\pi(1 - 1/n)$.",
+      "summary": "Sendov's 1992 counterexample to the Erdős–Szekeres conjecture."
     },
     {
       "id": "optimal-configs",
-      "title": "Optimal Configurations and Convex Position",
-      "startLine": 184,
+      "title": "Part VIII: Optimal Configurations",
+      "startLine": 155,
+      "endLine": 169,
+      "content": "Defines `regularNGonVertices n` as the image of $k \\mapsto (\\cos(2\\pi k/n), \\sin(2\\pi k/n))$ over `Finset.range n` — the regular $n$-gon vertices conjectured to be extremal.",
+      "proofMethod": "`def` building the vertex set via `Finset.image` of the trigonometric parametrization.",
+      "mathContext": "Regular $n$-gon vertices $\\{(\\cos(2\\pi k/n), \\sin(2\\pi k/n)) : 0 \\le k < n\\}$ as candidate optimal configurations.",
+      "summary": "Regular-polygon vertex configurations."
+    },
+    {
+      "id": "convex-position",
+      "title": "Part IX: Connection to Convex Position",
+      "startLine": 170,
+      "endLine": 182,
+      "content": "Discusses that optimal configurations tend to lie in convex position, and introduces `isConvexPosition A` as an axiomatized predicate on finite point sets.",
+      "proofMethod": "Single `axiom` declaring the convex-position predicate; surrounding text is expository.",
+      "mathContext": "A finite set $A$ is in convex position when every point is a vertex of its convex hull (predicate axiomatized).",
+      "summary": "Convex-position predicate and its relevance to optimality."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 183,
       "endLine": 217,
-      "content": "Defines regular $n$-gon vertices via $\\bigl(\\cos(2\\pi k/n), \\sin(2\\pi k/n)\\bigr)$, proves optimality for $N = 2^k$, and shows optimal configurations achieving $\\alpha_N$ are always in convex position.",
-      "proofMethod": "Finset.image for polygon vertices, axioms for optimality and convexity.",
-      "mathContext": "Regular $n$-gon vertices: $(\\cos(2\\pi k/n), \\sin(2\\pi k/n))$ for $k = 0, \\ldots, n-1$. For $N = 2^k$, the regular $N$-gon is optimal (achieves $\\alpha_N$). All optimal configurations are in convex position.",
-      "summary": "Optimal Configurations and Convex Position"
+      "content": "Proves `erdos_504_summary`, bundling the two Sendov range formulas and the falsity of the Erdős–Szekeres conjecture into a single conjunction, discharged from the stated axioms.",
+      "proofMethod": "Anonymous constructor combining `sendov_upper`, `sendov_lower`, and `erdos_szekeres_conjecture_false`.",
+      "mathContext": "$\\big(\\forall n,N,\\dots\\,\\alpha_N=\\pi(1-1/n)\\big) \\wedge \\big(\\forall n,N,\\dots\\,\\alpha_N=\\pi(1-1/(2n-1))\\big) \\wedge \\big(\\exists n,N,\\dots\\,\\alpha_N \\ne \\pi(1-1/n)\\big)$.",
+      "summary": "Theorem bundling Sendov's solution and the counterexample."
     }
   ],
   "conclusion": {

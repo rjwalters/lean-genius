@@ -1,0 +1,212 @@
+{
+  "id": "stirling-first-kind-oq-01-oq-01",
+  "slug": "stirling-first-kind-oq-01-oq-01",
+  "title": "The Generating Identity for Unsigned Stirling Numbers of the First Kind",
+  "description": "Proves that the unsigned Stirling numbers of the first kind c(n,k) = Nat.stirlingFirst n k are exactly the coefficients of the rising factorial: ascPochhammer R n = ∑_{k=0}^{n} c(n,k) Xᵏ, equivalently (ascPochhammer R n).coeff k = c(n,k). Mathlib defines both Nat.stirlingFirst and ascPochhammer but never connects them — in fact Nat.stirlingFirst is unused outside its defining file. The proof is an induction on n comparing coefficients: the Pochhammer recurrence ascPochhammer (n+1) = ascPochhammer n · (X + n) realises exactly the Stirling recurrence c(n+1,k) = c(n,k−1) + n·c(n,k). Corollaries: the evaluation form x(x+1)⋯(x+n−1) = ∑ c(n,k) xᵏ, and the row sum ∑ₖ c(n,k) = n! recovered via the generating function.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "StirlingFirstGenerating",
+    "lineCount": 97,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "ascPochhammer_eq_sum_stirlingFirst",
+        "type": "original",
+        "description": "The rising factorial is the polynomial whose coefficients are the unsigned Stirling numbers of the first kind: ascPochhammer R n = ∑_{k=0}^{n} c(n,k) Xᵏ",
+        "leanType": "(n : ℕ) → ascPochhammer R n = ∑ k ∈ Finset.range (n + 1), C (Nat.stirlingFirst n k : R) * X ^ k"
+      },
+      {
+        "name": "coeff_ascPochhammer_eq_stirlingFirst",
+        "type": "original",
+        "description": "Coefficient form: the k-th coefficient of the rising factorial ascPochhammer R n is c(n,k)",
+        "leanType": "(n k : ℕ) → (ascPochhammer R n).coeff k = (Nat.stirlingFirst n k : R)"
+      },
+      {
+        "name": "eval_ascPochhammer_eq_sum",
+        "type": "original",
+        "description": "Evaluation form: the value of the rising factorial x(x+1)⋯(x+n−1) equals ∑ c(n,k) xᵏ",
+        "leanType": "(n : ℕ) → (x : R) → (ascPochhammer R n).eval x = ∑ k ∈ Finset.range (n + 1), (Nat.stirlingFirst n k : R) * x ^ k"
+      },
+      {
+        "name": "sum_stirlingFirst_eq_factorial",
+        "type": "original",
+        "description": "Row sum: the unsigned Stirling numbers of the first kind in row n sum to n!, recovered here by specialising the generating function to x = 1",
+        "leanType": "(n : ℕ) → (∑ k ∈ Finset.range (n + 1), Nat.stirlingFirst n k) = Nat.factorial n"
+      }
+    ],
+    "path": "Proofs/StirlingFirstKindOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFirstKindOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "polynomials",
+      "stirling-numbers",
+      "rising-factorial",
+      "generating-functions",
+      "algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 97,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound). The result connects two existing Mathlib definitions — Nat.stirlingFirst and ascPochhammer — using the Pochhammer recurrence ascPochhammer_succ_right, the Stirling recurrence Nat.stirlingFirst_succ_succ, and standard polynomial coefficient lemmas. Mathlib does not contain this generating identity.",
+    "originalContributions": [
+      "ascPochhammer_eq_sum_stirlingFirst: the rising factorial equals ∑ c(n,k) Xᵏ — original, the headline generating identity not present in Mathlib",
+      "coeff_ascPochhammer_eq_stirlingFirst: (ascPochhammer R n).coeff k = c(n,k) — original coefficient characterisation, proved by induction matching the Pochhammer and Stirling recurrences",
+      "eval_ascPochhammer_eq_sum: evaluation form x(x+1)⋯(x+n−1) = ∑ c(n,k) xᵏ — original corollary",
+      "sum_stirlingFirst_eq_factorial: row sum ∑ c(n,k) = n! recovered via the generating function at x = 1 — gives a second, structural proof of the OQ-01 row-sum identity"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ascPochhammer_succ_right",
+        "description": "Rising factorial recurrence: ascPochhammer R (n+1) = ascPochhammer R n * (X + n)",
+        "module": "Mathlib.RingTheory.Polynomial.Pochhammer"
+      },
+      {
+        "theorem": "Nat.stirlingFirst_succ_succ",
+        "description": "Stirling first-kind recurrence: c(n+1,k+1) = n·c(n,k+1) + c(n,k)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Polynomial.coeff_mul_X",
+        "description": "(p * X).coeff (n+1) = p.coeff n — the multiply-by-X coefficient shift",
+        "module": "Mathlib.Algebra.Polynomial.Coeff"
+      },
+      {
+        "theorem": "Polynomial.coeff_mul_C",
+        "description": "(p * C a).coeff n = p.coeff n * a — the multiply-by-constant coefficient law",
+        "module": "Mathlib.Algebra.Polynomial.Coeff"
+      },
+      {
+        "theorem": "ascPochhammer_eval_one",
+        "description": "(ascPochhammer S n).eval 1 = n! — used to recover the row sum",
+        "module": "Mathlib.RingTheory.Polynomial.Pochhammer"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "Stirling numbers of the first kind and their cycle interpretation",
+      "The rising factorial / Pochhammer symbol as a polynomial",
+      "Polynomial coefficients and the coeff API in Mathlib",
+      "Induction comparing coefficients of polynomials",
+      "Familiarity with Lean 4 and Mathlib"
+    ],
+    "sourceUrl": "https://en.wikipedia.org/wiki/Stirling_numbers_of_the_first_kind",
+    "date": "1730",
+    "relatedProblems": [
+      {
+        "id": "stirling-first-kind-oq-01",
+        "relationship": "Answers the parent entry's open question asking for the generating identity ∑ c(n,k) xᵏ = rising factorial; also gives a second proof of that entry's row-sum identity ∑ c(n,k) = n! via the generating function"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "problemStatement": "The unsigned Stirling numbers of the first kind c(n,k) count permutations of n elements with exactly k cycles, and satisfy c(n+1,k) = c(n,k−1) + n·c(n,k). The rising factorial x^(n↑) = x(x+1)⋯(x+n−1) is a degree-n polynomial. Are the Stirling numbers exactly the coefficients of the rising factorial, i.e. x^(n↑) = ∑_{k=0}^{n} c(n,k) xᵏ? Mathlib defines both objects but never links them.",
+    "text": "This is the classical generating identity for the unsigned Stirling numbers of the first kind. The rising factorial $x^{(n\\uparrow)} = x(x+1)\\cdots(x+n-1)$, written `ascPochhammer R n` in Mathlib, expands into a polynomial whose coefficient of $x^k$ is the number of permutations of $n$ elements with exactly $k$ cycles. The proof works coefficient-by-coefficient: multiplying $x^{(n\\uparrow)}$ by $(x+n)$ to form $x^{((n+1)\\uparrow)}$ sends the coefficient sequence $a_k$ to $a_{k-1} + n\\,a_k$, which is precisely the Stirling recurrence.",
+    "proofStrategy": "Prove the coefficient identity (ascPochhammer R n).coeff k = c(n,k) by induction on n. The base case is coeff_one. In the inductive step, rewrite with ascPochhammer_succ_right to get ascPochhammer n · (X + n), distribute, and read off the two contributions: the X-multiplication shifts coeff k to coeff (k−1) (coeff_mul_X), and the (+n)-multiplication scales coeff k by n (coeff_mul_C after C_eq_natCast). Adding them and applying the induction hypothesis twice yields n·c(n,k) + c(n,k−1) = c(n+1,k) (Nat.stirlingFirst_succ_succ). The headline polynomial identity follows by Polynomial.ext, and the evaluation and row-sum forms by specialisation.",
+    "keyInsights": [
+      "The polynomial recurrence ascPochhammer (n+1) = ascPochhammer n · (X + n) IS the Stirling recurrence c(n+1,k) = c(n,k−1) + n·c(n,k), once read off coefficient-wise — multiplication by X shifts, multiplication by n scales.",
+      "Comparing coefficients (Polynomial.ext) is far cleaner than reindexing Finset sums with scalar multiplication; the coefficient form is the natural carrier of the induction.",
+      "The identity holds over an arbitrary commutative semiring, so no subtraction or signs are needed — these are the unsigned Stirling numbers, matching the rising (not falling) factorial.",
+      "Setting x = 1 collapses the generating function to the row sum ∑ c(n,k) = n!, giving a structural reproof of the purely combinatorial fact and confirming the two Mathlib definitions are consistent."
+    ],
+    "historicalContext": "Stirling numbers originate in James Stirling's Methodus Differentialis (1730), which studied exactly the conversion between the monomial basis xᵏ and the factorial bases. The unsigned Stirling numbers of the first kind are the change-of-basis coefficients from the rising-factorial basis to the monomial basis; the signed version performs the inverse change from falling factorials. The cycle interpretation (permutations with k cycles) was made precise much later in the combinatorial theory of the symmetric group.",
+    "prerequisites": [
+      "Stirling numbers of the first kind",
+      "The rising factorial / Pochhammer symbol",
+      "Polynomial coefficients and evaluation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Module Overview and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib and opens Polynomial and Finset. The docstring states the generating identity, explains the Mathlib gap (Nat.stirlingFirst is unused outside its defining file), and outlines the coefficient-comparison strategy.",
+      "mathContext": "Goal: $\\mathrm{ascPochhammer}\\,R\\,n = \\sum_{k=0}^{n} c(n,k)\\,X^k$, equivalently $(\\mathrm{ascPochhammer}\\,R\\,n).\\mathrm{coeff}\\,k = c(n,k)$."
+    },
+    {
+      "id": "coeff-form",
+      "title": "Coefficient Form by Induction",
+      "startLine": 45,
+      "endLine": 66,
+      "summary": "Proves coeff_ascPochhammer_eq_stirlingFirst: (ascPochhammer R n).coeff k = c(n,k) by induction on n generalizing k. The base uses coeff_one; the step rewrites ascPochhammer_succ_right and splits the constant term (no constant coefficient in p·X) from the general term, where coeff_mul_X and coeff_mul_C realise the Stirling recurrence.",
+      "mathContext": "Multiplying by $(X+n)$: $\\mathrm{coeff}\\,k \\mapsto \\mathrm{coeff}\\,(k-1) + n\\cdot\\mathrm{coeff}\\,k$, which equals $c(n,k-1) + n\\,c(n,k) = c(n+1,k)$."
+    },
+    {
+      "id": "headline-identity",
+      "title": "The Generating Identity",
+      "startLine": 68,
+      "endLine": 80,
+      "summary": "Proves ascPochhammer_eq_sum_stirlingFirst by Polynomial.ext: the j-th coefficient of the right-hand sum is c(n,j) (only the k = j term of ∑ C(c(n,k))·Xᵏ survives, via coeff_X_pow and Finset.sum_ite_eq), matching the coefficient form; for j > n both sides vanish (stirlingFirst_eq_zero_of_lt).",
+      "mathContext": "$\\left(\\sum_{k} c(n,k) X^k\\right).\\mathrm{coeff}\\,j = c(n,j)$ since $(X^k).\\mathrm{coeff}\\,j = [j=k]$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Evaluation and Row-Sum Corollaries",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "eval_ascPochhammer_eq_sum pushes eval through the generating identity to give x(x+1)⋯(x+n−1) = ∑ c(n,k) xᵏ. sum_stirlingFirst_eq_factorial specialises to x = 1 over ℕ, using ascPochhammer_eval_one to obtain the row sum ∑ c(n,k) = n!.",
+      "mathContext": "At $x = 1$: $\\sum_k c(n,k) = (\\mathrm{ascPochhammer}\\,\\mathbb{N}\\,n).\\mathrm{eval}\\,1 = n!$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The unsigned Stirling numbers of the first kind are exactly the coefficients of the rising factorial: ascPochhammer R n = ∑ c(n,k) Xᵏ, proved over an arbitrary commutative semiring with 0 axioms and 0 sorries by matching the Pochhammer and Stirling recurrences coefficient-by-coefficient. The evaluation form and the row sum ∑ c(n,k) = n! follow by specialisation, the latter giving a structural reproof of the parent entry's combinatorial identity.",
+    "implications": [
+      "Bridges two previously disconnected Mathlib definitions, Nat.stirlingFirst and ascPochhammer, supplying the change-of-basis identity between the monomial and rising-factorial bases.",
+      "Provides the coefficient characterisation (ascPochhammer R n).coeff k = c(n,k) as reusable infrastructure for further identities (orthogonality with the second-kind numbers, log-concavity, unimodality).",
+      "Recovers the row-sum identity ∑ c(n,k) = n! as a one-line specialisation, showing the generating-function viewpoint subsumes the direct combinatorial argument."
+    ],
+    "openQuestions": [
+      "Prove the companion identity for the falling factorial using the signed Stirling numbers of the first kind, and combine with the second-kind generating identity to formalise that the two Stirling matrices are inverse.",
+      "Derive structural consequences of the coefficient identity: that row n is log-concave (hence unimodal), or the explicit value c(n,2) = (n−1)! · H_{n−1}.",
+      "Establish the generating identity for the unsigned numbers as a polynomial over ℤ and relate its coefficients to the elementary symmetric polynomials in {0,1,…,n−1}."
+    ]
+  },
+  "references": [
+    {
+      "title": "Stirling numbers of the first kind",
+      "url": "https://en.wikipedia.org/wiki/Stirling_numbers_of_the_first_kind",
+      "description": "Definition, recurrence, cycle interpretation, and the generating identity with the rising factorial."
+    },
+    {
+      "title": "Falling and rising factorials",
+      "url": "https://en.wikipedia.org/wiki/Falling_and_rising_factorials",
+      "description": "The Pochhammer symbols and their expansion in the monomial basis via Stirling numbers."
+    },
+    {
+      "title": "James Stirling, Methodus Differentialis (1730)",
+      "url": "https://en.wikipedia.org/wiki/Methodus_Differentialis",
+      "description": "Original source studying the conversion between monomial and factorial bases."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-first-kind-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent entry's open question for the generating identity ∑ c(n,k) xᵏ = rising factorial, and reproves its row-sum identity ∑ c(n,k) = n! via the generating function at x = 1."
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "complementary",
+      "description": "The second-kind generating identity expands ordinary powers in the falling-factorial basis; together the two are the mutually inverse change-of-basis identities between monomials and factorials."
+    }
+  ],
+  "sorries": []
+}

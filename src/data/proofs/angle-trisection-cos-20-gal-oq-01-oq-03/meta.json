@@ -2,6 +2,21 @@
   "id": "angle-trisection-cos-20-gal-oq-01-oq-03",
   "title": "Eisenstein Conjecture for cos(π/p), General Odd Prime p",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "AngleTrisectionCos20GalOQ01OQ03",
+    "lineCount": 1380,
+    "axiomCount": 0,
+    "theoremCount": 63,
+    "definitionCount": 1,
+    "path": "Proofs/AngleTrisectionCos20GalOQ01OQ03.lean",
+    "sorries": 1
+  },
   "description": "States the uniform Eisenstein conjecture: for every odd prime p ≥ 3, the minimal polynomial of 2 + 2cos(π/p) over ℚ is Eisenstein at p. Defines a parametric polynomial r : ℕ → ℤ[X] with explicit values for p ∈ {3, 5, 7, 11, 13}: r₃ = Y−3 (degenerate degree-1 boundary case, since cos(π/3) = 1/2), r₅ = Y²−5Y+5, r₇ = Y³−7Y²+14Y−7, r₁₁ = Y⁵−11Y⁴+44Y³−77Y²+55Y−11, r₁₃ = Y⁶−13Y⁵+65Y⁴−156Y³+182Y²−91Y+13. Proves IsEisensteinAt for each of the five primes by direct coefficient computation, derives irreducibility for the new primes p = 11, p = 13, and packages two structural Vieta fingerprints: (i) `r_constantCoeff_eq_signed_p` — `(r p).coeff 0 = (-1)^((p-1)/2) · p` (the norm half, matching N(2+θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1)), and (ii) `r_subLeadingCoeff_eq_neg_p` together with `r_3_traceCoeff` — the sub-leading coefficient equals −p (the trace half, matching −Tr(2+θ_p) = −p). The general conjecture is stated as a sorry; the proof requires the cyclotomic-ramification argument that 2 + 2cos(π/p) is a uniformizer in the unique prime above p in ℤ[2cos(π/p)] (totally ramified extension of degree (p−1)/2, with norm Φ_{2p}(−1) = Φ_p(1) = p). S5 ACT adds the cyclotomic anchor for the norm fingerprint at p ∈ {3, 5, 7}: explicit forms `cyclotomic_{6,10,14}_eq` derived via `eq_cyclotomic_iff` and divisor-product expansion, plus `cyclotomic_{six,ten,fourteen}_eval_neg_one` (Φ_{2p}(-1) = p), plus the bridge `r_constantCoeff_eq_cyclotomic_small` connecting `(r p).coeff 0` to Mathlib's cyclotomic API. S6 extends the cyclotomic-anchor coverage to the remaining gallery primes p ∈ {11, 13}: `cyclotomic_11_eq`, `cyclotomic_13_eq`, `cyclotomic_22_eq` (degree-22 ring), `cyclotomic_26_eq` (degree-26 ring), `cyclotomic_twentytwo_eval_neg_one` (Φ_22(-1) = 11), `cyclotomic_twentysix_eval_neg_one` (Φ_26(-1) = 13), bridge `r_{11,13}_constantCoeff_eq_cyclotomic`, and packaged 5-prime `r_constantCoeff_eq_cyclotomic_full` extending the S5 3-prime version.",
   "meta": {
     "author": "researcher-6",
@@ -26,7 +41,7 @@
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to the irreducibility of minimal polynomials of cosines. For specific primes the gallery already has formalizations: cos(20°) = cos(π/9) (Eisenstein at 3), cos(π/5) (Eisenstein at 5), cos(π/7) (Eisenstein at 7). The pattern Y → Y − 2 and the resulting Eisenstein-at-p form for the minimal polynomial of 2 + 2cos(π/p) is conjectured to hold for every odd prime p ≥ 3. The cyclotomic perspective ties this to Φ_{2p}(−1) = Φ_p(1) = p, a Mathlib-available identity, and the standard ramification theory of cyclotomic fields developed by Kummer, Hilbert, and Hensel.",
     "proofStrategy": "Per-prime: define the explicit polynomial r_p ∈ ℤ[X] and apply Mathlib's `Polynomial.IsEisensteinAt` constructor with three obligations: leadingCoeff = 1 ∉ (p), all sub-leading coefficients in (p), constant term ∉ (p)². Each obligation reduces to `decide` or `interval_cases k <;> norm_num` after coefficient unfolding. For p ∈ {11, 13}, derive irreducibility via `Polynomial.irreducible_of_eisenstein_criterion`. General conjecture (sorry): cyclotomic ramification — (1+ζ_{2p}) is uniformizer of unique prime above p in ℤ[ζ_{2p}] (Mathlib's `IsCyclotomicExtension.Rat.totallyRamified`), descends to (2 + 2cos(π/p)) as uniformizer in the real subfield with ramification index (p−1)/2, hence minimal polynomial is Eisenstein by local-field theory. S5 added the per-prime cyclotomic anchor for p ∈ {3, 5, 7}; S6 extends the same per-prime template to p ∈ {11, 13} via degree-22 and degree-26 `ring` identities, closing the cyclotomic-side range to the full verified gallery set.",
-    "theoremCount": 64,
+    "theoremCount": 63,
     "definitionCount": 1,
     "originalContributions": [
       "Parametric definition r : ℕ → ℤ[X] explicit for p ∈ {3, 5, 7, 11, 13}",
@@ -314,22 +329,16 @@
   },
   "crossReferences": [
     {
-      "type": "sibling",
-      "slug": "angle-trisection-cos-20-gal-oq-01-oq-02",
-      "title": "p=5 case: Galois group of cos(π/5)",
-      "relation": "Sibling file establishing Eisenstein at 5 for the equivalent polynomial 4X²−2X−1 (= r_5(2X+2))."
+      "targetId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+      "relationship": "Sibling file establishing Eisenstein at 5 for the equivalent polynomial 4X²−2X−1 (= r_5(2X+2))."
     },
     {
-      "type": "sibling",
-      "slug": "angle-trisection-cos-20-gal-oq-01",
-      "title": "p=7 case: Galois group of cos(π/7)",
-      "relation": "Sibling file establishing Eisenstein at 7 for the equivalent polynomial 8X³−4X²−4X+1 (= r_7(2X+2))."
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
+      "relationship": "Sibling file establishing Eisenstein at 7 for the equivalent polynomial 8X³−4X²−4X+1 (= r_7(2X+2))."
     },
     {
-      "type": "parent",
-      "slug": "angle-trisection-cos-20-gal",
-      "title": "Galois group of cos(20°) = cos(π/9)",
-      "relation": "Origin of the family. Uses Eisenstein at p=3 for Y³−6Y²+9Y−3. Not part of the prime-p family (9 is not prime) but structurally analogous."
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "Origin of the family. Uses Eisenstein at p=3 for Y³−6Y²+9Y−3. Not part of the prime-p family (9 is not prime) but structurally analogous."
     }
   ]
 }

@@ -78,68 +78,84 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Namespace",
-      "summary": "Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace.",
-      "startLine": 36,
-      "endLine": 44,
-      "mathContext": "Mathematical content: Imports `Mathlib.Data.Nat.Totient` for $\\varphi$, `Finset` for finite counting, and `Filter` for asymptotic limits. Opens `Erdos417` namespace."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "summary": "File header for Erdős #417 (OPEN): with $V'(x)=|\\{\\varphi(m):m\\le x\\}|$ (distinct totient values from small inputs) and $V(x)=|\\{n\\le x: n\\in\\operatorname{range}\\varphi\\}|$ (totient values up to $x$), does $V(x)/V'(x)$ have a limit, and is it $>1$ (Erdős conjectured $\\infty$)? Imports Mathlib, opens `Nat`/`Set`/`Filter`/`Finset`, enters the `Erdos417` namespace.",
+      "startLine": 1,
+      "endLine": 41,
+      "mathContext": "$V'(x)\\le V(x)$; the ratio measures density of totient values vs. their appearances. Erdős conjectured $V(x)/V'(x)\\to\\infty$."
     },
     {
-      "id": "definitions",
-      "title": "Counting Functions",
-      "summary": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`.",
-      "startLine": 45,
-      "endLine": 73,
-      "mathContext": "Defines $V'(x) = |\\text{image}(\\varphi, \\{1,\\ldots,x\\})|$ via `Finset.image`, the `IsTotientValue` predicate $\\exists m > 0,\\, \\varphi(m) = n$, and $V(x) = |\\{n \\le x : n \\in \\text{range}(\\varphi)\\}|$ via `Finset.filter`."
+      "id": "part1-definitions",
+      "title": "Part I: Basic Definitions",
+      "summary": "Defines the two counting functions `V'` and `V`, and the predicate `IsTotientValue n` ($n$ is in the range of Euler's totient).",
+      "startLine": 42,
+      "endLine": 70,
+      "mathContext": "$V'(x)=|\\{\\varphi(m):1\\le m\\le x\\}|$, $V(x)=|\\{n\\le x: n\\in\\operatorname{range}\\varphi\\}|$."
     },
     {
-      "id": "basic-properties",
-      "title": "Basic Properties",
-      "summary": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry).",
-      "startLine": 74,
-      "endLine": 97,
-      "mathContext": "Proves $V'(x) \\le V(x)$ (sorry), `one_is_totient_value` ($\\varphi(1) = 1$), `two_is_totient_value` ($\\varphi(3) = 2$, sorry), and `odd_gt_one_not_totient` ($n > 1$ odd $\\Rightarrow \\neg\\text{IsTotientValue}(n)$, sorry)."
+      "id": "part2-basic-properties",
+      "title": "Part II: Basic Properties",
+      "summary": "Structural facts: `V'_le_V`, monotonicity (`V'_mono`, `V_mono`), positivity (`V'_pos`, `V_pos`), small totient values (`one_/two_/four_is_totient_value`), `zero_not_totient_value`, and `odd_gt_one_not_totient` ($\\varphi(m)$ is even for $m>2$).",
+      "startLine": 71,
+      "endLine": 158,
+      "mathContext": "$V'\\le V$, both monotone and positive; no odd $n>1$ is a totient value."
     },
     {
-      "id": "main-questions",
-      "title": "The Main Questions",
-      "summary": "States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized.",
-      "startLine": 98,
-      "endLine": 127,
-      "mathContext": "Axiomatized: States three OPEN questions using `Filter.Tendsto`: (1) $\\lim V(x)/V'(x)$ exists, (2) $V(x)/V'(x) > 1$ eventually, (3) $V(x)/V'(x) \\to \\infty$ (Erdős's conjecture). All axiomatized."
+      "id": "part3-main-questions",
+      "title": "Part III: The Main Questions",
+      "summary": "Formalizes the open problem: `erdos417LimitExists`, `erdos417RatioGtOne`, and `erdos417ConjectureInfinite`. The axiom `erdos_417_conjecture` asserts the (open) infinite-limit conjecture, from which `erdos_417_ratio_gt_one` follows.",
+      "startLine": 159,
+      "endLine": 197,
+      "mathContext": "Conjecture (axiomatized): $V(x)/V'(x)\\to\\infty$; in particular the ratio exceeds 1."
     },
     {
-      "id": "intuition",
-      "title": "Intuition for the Conjecture",
-      "summary": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi(2^{10}) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$.",
-      "startLine": 128,
-      "endLine": 150,
-      "mathContext": "Explains why $V(x) \\gg V'(x)$: $\\varphi$ can be very small relative to its input (e.g., $\\varphi($$2^{{10}$}$) = 512$), so totient values $\\le x$ arise from inputs $m \\gg x$."
+      "id": "part4-intuition",
+      "title": "Part IV: Intuition for the Conjecture",
+      "summary": "Commentary on why the ratio should grow: $V(x)$ counts all totient values $\\le x$ regardless of input size, while $V'(x)$ only counts those reachable from inputs $\\le x$.",
+      "startLine": 198,
+      "endLine": 211,
+      "mathContext": "Large totient values $\\le x$ may require inputs $\\gg x$, inflating $V$ relative to $V'$."
     },
     {
-      "id": "totient-structure",
-      "title": "Totient Value Structure",
-      "summary": "Proves `pow_two_totient_value`: $\\varphi(2^{k+1}) = 2^k$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`).",
-      "startLine": 151,
-      "endLine": 165,
-      "mathContext": "Proves `pow_two_totient_value`: $\\varphi($$2^{{k+1}$}$) = $2^{k}$$ (sorry), and `prime_pred_totient_value`: $\\varphi(p) = p - 1$ for prime $p$ (complete proof via `totient_prime`)."
+      "id": "part5-connection-416",
+      "title": "Part V: Connection to Problem #416",
+      "summary": "Relates this problem to the sibling Erdős Problem #416 on the distribution of totient values.",
+      "startLine": 212,
+      "endLine": 220,
+      "mathContext": "Problem #416 studies the multiplicity/distribution of totient values, closely tied to counting them here."
     },
     {
-      "id": "asymptotics",
-      "title": "Asymptotic Estimates",
-      "summary": "Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$.",
-      "startLine": 166,
-      "endLine": 189,
-      "mathContext": "Mathematical content: Discusses Ford's result $V(x) \\sim cx/\\log x$ and the difficulty of analyzing $V'(x)$ separately. The key challenge is understanding the smallest preimage function $m^*(n)$."
+      "id": "part6-totient-structure",
+      "title": "Part VI: Totient Value Structure",
+      "summary": "Concrete structure of totient values: `pow_two_totient_value` ($2^k=\\varphi(2^{k+1})$), `prime_pred_totient_value` ($p-1=\\varphi(p)$), `totient_zero_one_or_even`, `prime_sub_one_even` ($p-1$ even for $p\\ge3$), and `V_element_structure`.",
+      "startLine": 221,
+      "endLine": 261,
+      "mathContext": "Totient values include all $2^k$ and all $p-1$; every totient value is $0$, $1$, or even."
     },
     {
-      "id": "summary",
-      "title": "Summary and Open Questions",
-      "summary": "`erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070.",
-      "startLine": 190,
-      "endLine": 219,
-      "mathContext": "Verified: `erdos_417_summary` packages $V'(x) \\le V(x)$ as a theorem. `erdos_417_open_questions` bundles all three conjectures into a single `Prop`. Related to OEIS A264810 and A061070."
+      "id": "part7-asymptotic-estimates",
+      "title": "Part VII: Asymptotic Estimates",
+      "summary": "Commentary on the known asymptotics of $V(x)$ (the Erdős–Ford–Tenenbaum theory of the multiplicative structure of totient values) and what is needed to attack the ratio.",
+      "startLine": 262,
+      "endLine": 271,
+      "mathContext": "$V(x)=x/(\\log x)^{1+o(1)}$ (Ford); precise $V'$ asymptotics are subtler."
+    },
+    {
+      "id": "part8-why-hard",
+      "title": "Part VIII: Why This Is Hard",
+      "summary": "Discussion of the difficulty: controlling $V(x)/V'(x)$ requires fine understanding of how totient values are distributed relative to their preimages.",
+      "startLine": 272,
+      "endLine": 285,
+      "mathContext": "The ratio couples two different counts of totient values, each governed by delicate sieve/anatomy-of-integers estimates."
+    },
+    {
+      "id": "part9-summary",
+      "title": "Part IX: Summary",
+      "summary": "Recaps the status (OPEN) via `erdos_417_summary` and `erdos_417_open_questions`: the basic properties and totient-value structure are proved, while the limit existence and its value remain conjectural. Closes the namespace.",
+      "startLine": 286,
+      "endLine": 315,
+      "mathContext": "Status OPEN: $V(x)/V'(x)$ limit existence and value (conjectured $\\infty$) remain unproven."
     }
   ],
   "conclusion": {

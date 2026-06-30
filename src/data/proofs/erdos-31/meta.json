@@ -92,49 +92,97 @@
       "id": "density-defs",
       "title": "Density Definitions",
       "startLine": 28,
-      "endLine": 48,
-      "summary": "Define counting function, HasDensity, HasDensityZero, and upperDensity.",
+      "endLine": 47,
+      "summary": "Defines `countingFn`, `HasDensity`, `HasDensityZero`, `upperDensity`, and `HasUpperDensityZero`.",
       "mathContext": "$d(A) = \\lim_{N\\to\\infty} \\frac{|A \\cap \\{1,\\ldots,N\\}|}{N}$"
     },
     {
       "id": "sumsets",
       "title": "Sumsets",
-      "startLine": 49,
-      "endLine": 61,
-      "summary": "Define sumsets A +ₛ B and CoversAllButFinitely predicate.",
+      "startLine": 48,
+      "endLine": 62,
+      "summary": "Defines `Sumset` $A +_s B$, `CoversCofinite`, and `CoversAllButFinitely`.",
       "mathContext": "$A +_s B = \\{a + b \\mid a \\in A,\\, b \\in B\\} \\subseteq \\mathbb{N}$"
+    },
+    {
+      "id": "primes-density-zero",
+      "title": "Primes Have Density Zero (Chebyshev Bound)",
+      "startLine": 63,
+      "endLine": 236,
+      "summary": "Proves the primes have density zero via the Chebyshev bound: `chebyshevTheta_le` ($\\vartheta(n) \\le n \\log 4$), `primeCounting_le_chebyshev`, `chebyshev_bound_tendsto_zero`, and `primes_density_zero`.",
+      "mathContext": "$\\vartheta(n) = \\sum_{p \\le n} \\log p \\le n \\log 4 \\Rightarrow \\pi(N)/N \\to 0$, so $d(\\{p \\text{ prime}\\}) = 0$."
+    },
+    {
+      "id": "sparse-sets",
+      "title": "Properties of Sparse Sets",
+      "startLine": 237,
+      "endLine": 478,
+      "summary": "Proves powers of 2 and perfect squares have density zero: `powers_of_2_count_bound`/`powers_of_2_density_zero` and `squares_count_bound`/`squares_density_zero`, with supporting counting and limit lemmas.",
+      "mathContext": "$|\\{2^k\\} \\cap [1,N]| = O(\\log N)$ and $|\\{k^2\\} \\cap [1,N]| = O(\\sqrt N)$, both giving density 0."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 79,
-      "endLine": 107,
-      "summary": "State Erdős Problem #31 and axiomatize Lorentz's theorem with the strengthened bound.",
+      "startLine": 479,
+      "endLine": 549,
+      "summary": "States `Erdos31Statement` (every infinite $A$ has a density-0 complement $B$ with cofinite sumset) and proves supporting results: `coversCofinite_implies_allButFinitely`, `finite_has_density_zero`, and the axiom-free `erdos31_bounded_gaps` case.",
       "mathContext": "$\\forall A \\subseteq \\mathbb{N},\\, A \\text{ infinite} \\Rightarrow \\exists B,\\, d(B)=0 \\wedge (\\mathbb{N} \\setminus (A+B) \\text{ finite})$"
     },
     {
-      "id": "optimal-density",
-      "title": "Optimal Density",
-      "startLine": 132,
-      "endLine": 165,
-      "summary": "Define OptimalBDensity and prove it equals 0 for infinite A.",
-      "mathContext": "$\\text{OptimalBDensity}(A) = \\inf\\{d(B) \\mid B \\text{ covers cofinitely}\\} = 0$"
+      "id": "axiom-free-special-cases",
+      "title": "Axiom-Free Special Cases via Bounded Gaps",
+      "startLine": 550,
+      "endLine": 584,
+      "summary": "Proves (without any axiom) that bounded-gap sets admit sparse complements: `multiples_have_sparse_complement` and `even_numbers_have_sparse_complement`.",
+      "mathContext": "Sets with bounded gaps (e.g. multiples of $k$, even numbers) have density-0 complements covering all but finitely many integers — proved directly."
     },
     {
-      "id": "coverage-requirements",
-      "title": "Coverage Requirements",
-      "startLine": 172,
-      "endLine": 219,
-      "summary": "Prove that finite A and finite B cannot achieve cofinite coverage.",
-      "mathContext": "$A, B \\text{ finite} \\Rightarrow |A +_s B| \\leq |A| \\cdot |B| < \\infty$, so $A +_s B$ cannot be cofinite"
+      "id": "lorentz-axiom",
+      "title": "Lorentz's Theorem (Axiom) and Construction",
+      "startLine": 585,
+      "endLine": 597,
+      "summary": "The file's sole axiom `lorentz_theorem : Erdos31Statement` (Lorentz 1954, the general case), followed by a docstring describing Lorentz's greedy construction.",
+      "mathContext": "Lorentz (1954): every infinite $A$ has a density-0 complement $B$ (counting function $O(N/\\log N)$) achieving cofinite coverage — axiomatized as a deep published result."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 598,
+      "endLine": 621,
+      "summary": "`primes_have_sparse_complement`: applies the result to the primes.",
+      "mathContext": "The primes (infinite) admit a density-0 complement $B$ with cofinite sumset."
+    },
+    {
+      "id": "density-properties",
+      "title": "Density Properties",
+      "startLine": 622,
+      "endLine": 664,
+      "summary": "Defines `OptimalBDensity` and proves `density_nonneg` and `optimal_B_density_zero` (the optimal complement density is 0 for infinite $A$).",
+      "mathContext": "$\\text{OptimalBDensity}(A) = \\inf\\{d(B) \\mid B \\text{ covers cofinitely}\\} = 0$ for infinite $A$."
+    },
+    {
+      "id": "converse",
+      "title": "Converse Direction",
+      "startLine": 665,
+      "endLine": 708,
+      "summary": "`coverage_requires_density`: cofinite coverage requires at least one of $A$, $B$ to be infinite (finite × finite sumsets are finite).",
+      "mathContext": "$A, B \\text{ finite} \\Rightarrow |A +_s B| \\leq |A| \\cdot |B| < \\infty$, so $A +_s B$ cannot be cofinite."
     },
     {
       "id": "additive-bases",
       "title": "Connection to Additive Bases",
-      "startLine": 220,
-      "endLine": 726,
-      "summary": "Show that the result implies A ∪ B is an asymptotic basis of order 2.",
-      "mathContext": "$A \\cup B$ is an asymptotic basis of order 2: $\\forall n \\gg 1,\\, n \\in (A \\cup B) + (A \\cup B)$"
+      "startLine": 709,
+      "endLine": 788,
+      "summary": "Defines `IsAsymptoticBasis` and proves `sumset_covers_implies_basis` (cofinite $A+B$ makes $A \\cup B$ an asymptotic basis of order 2) and `infinite_set_augmentable`.",
+      "mathContext": "$A \\cup B$ is an asymptotic basis of order 2: $\\forall n \\gg 1,\\, n \\in (A \\cup B) + (A \\cup B)$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 789,
+      "endLine": 820,
+      "summary": "Closing docstring recapping the formalization: the general theorem is axiomatized (Lorentz 1954) while bounded-gap special cases and structural consequences are proved.",
+      "mathContext": "Erdős #31: infinite sets always have density-0 additive complements covering almost all of ℕ."
     }
   ],
   "conclusion": {

@@ -139,7 +139,11 @@
       "chromatic-number",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Universal Quantification",
+      "Chromatic Number",
+      "Cardinal Bounds"
+    ]
   },
   {
     "id": "ann-603-komjath",
@@ -222,7 +226,11 @@
       "cardinality",
       "open-question"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Cardinality",
+      "Aleph-Zero",
+      "Finite Versus Infinite Dichotomy"
+    ]
   },
   {
     "id": "ann-603-hypergraph",
@@ -301,7 +309,11 @@
       "komjath",
       "intersection-restriction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Intersection Cardinality",
+      "Komjath's Theorem",
+      "Constraint Restriction"
+    ]
   },
   {
     "id": "ann-603-statement",
@@ -354,6 +366,10 @@
       "erdos",
       "set-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open Problems",
+      "Cardinal Bounds",
+      "Aleph-Zero"
+    ]
   }
 ]

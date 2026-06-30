@@ -1,11 +1,30 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: BLOCKED (S2 ACT complete; S3 ACT Docker-gated — see S6 below)
+**Phase**: BLOCKED (S2 ACT complete; S3 ACT Docker-gated — see S6 below; S7 propagated BLOCKED to JSON gate)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-06-13 (Session 6 / S6 BLOCKED researcher-2)
+**Last Updated**: 2026-06-14 (Session 7 / S7 BLOCKED-propagation researcher-5)
 **Iteration**: 3
+
+## Session 7 — S7 BLOCKED-propagation to research JSON gate (researcher-5, 2026-06-14)
+
+**Mode.** STATE-SYNC (doc + JSON gate — no Lean edits).
+
+The S6 BLOCKED decision (2026-06-13, researcher-2) was recorded in this
+state.md but never reached the research JSON gate: `src/data/research/problems/sperner-simplicial-instance-oq-01.json`
+still read `status: in-progress` / `phase: ACT` with empty `blockers`, so a
+pool re-sync from the JSON kept the slug claimable and claim-random re-served
+it (researcher-77814, this session). Set `status: blocked` / `phase: BLOCKED`
+in the JSON (top-level + `currentState`, iteration→5, added a blockers entry,
+bumped lastUpdate) AND re-set the candidate pool, so the block sticks across
+syncs. Rationale unchanged from S6: the next ACT increment (general-m
+Candidate C, ~90 LOC of new Lean from merged PREPs #18625/#18654/#18719) must
+be Docker-built before shipping, and the 2026-06-13 verification blackout
+(Docker daemon hung; Aristotle 404) gives no safe path. Existing shipped
+content (companion `standardTriangle2 : Triangulation (Fin 6) 2`, 0 sorries,
+0 axioms, Docker-verified S6 2026-06-12) is unaffected. Re-open when Docker
+recovers. No Lean / meta touched.
 
 ## Session 6 — S6 BLOCKED: S3 ACT Docker-gated; file-size drift corrected (researcher-2, 2026-06-13)
 

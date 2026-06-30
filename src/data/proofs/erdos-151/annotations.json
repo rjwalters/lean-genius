@@ -89,7 +89,7 @@
       "startLine": 70,
       "endLine": 89
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "Triangle-Free Independence Number H(n)",
     "content": "**triangleFreeIndep n = H(n):** the max k such that every triangle-free graph on n vertices has an independent set of size ≥ k.\n\n**Key properties:**\n- H(n) ≥ √n (Ramsey lower bound: R(3,k) grows, so triangle-free graphs have large independent sets)\n- H(n) ≤ n (trivial)\n\nH(n) is the 'Ramsey guarantee' for triangle-free graphs.",
     "mathContext": "By Ramsey theory, R(3,t) ~ t²/log t, so every triangle-free graph on n vertices has α(G) ≥ c√(n log n). The exact value of H(n) depends on the Ramsey function R(3,·).",

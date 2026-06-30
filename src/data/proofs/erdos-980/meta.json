@@ -50,38 +50,73 @@
   "sections": [
     {
       "id": "power-residues",
-      "title": "Power Residues and Nonresidues",
-      "startLine": 42,
-      "endLine": 104,
-      "summary": "Defines IsPowerResidue, IsPowerNonresidue, and leastPowerNonresidue (using Nat.find). States Vinogradov's bound n(p) = O(p^{1/(4√e)+ε}) and the GRH conditional bound n(p) = O((log p)²)."
+      "title": "Part I: Power Residues",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "File header (problem statement, history, references) plus basic definitions: IsPowerResidue and IsPowerNonresidue modulo a prime, and quadratic_case relating the k=2 instance to quadratic (non)residues."
+    },
+    {
+      "id": "least-nonresidue",
+      "title": "Part II: Least Power Nonresidue",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "leastPowerNonresidue: n_k(p), the least k-th power nonresidue modulo prime p — the central quantity whose prime-sum asymptotics the problem concerns."
     },
     {
       "id": "sum-function",
-      "title": "The Sum Function S_k(x)",
-      "startLine": 105,
-      "endLine": 122,
-      "summary": "Defines sumLeastNonresidues S_k(x) = Σ_{p<x} n_k(p) using Finset.range with primality filter. Axiomatizes nonnegativity."
+      "title": "Part III: The Sum Function",
+      "startLine": 95,
+      "endLine": 109,
+      "summary": "sumLeastNonresidues: the summatory function S_k(x) = Σ_{p < x} n_k(p) over primes p below x."
     },
     {
-      "id": "constants",
-      "title": "The Constants c_k",
-      "startLine": 123,
-      "endLine": 159,
-      "summary": "Defines c_2 = Σ p_j/2^j (≈ 3.67) as a tprime series, axiomatizes c_2_positive and c_2_approx (3.5 < c₂ < 4). Defines general c_k with positivity axiom for k ≥ 2."
+      "id": "constants-ck",
+      "title": "Part IV: The Constants c_k",
+      "startLine": 110,
+      "endLine": 146,
+      "summary": "c_2 = Σ_{j≥1} p_j/2^j (≈ 3.67) and the general constant c_k k — the asymptotic constants appearing in S_k(x) ~ c_k · x/log x."
     },
     {
       "id": "erdos-1961",
-      "title": "Erdős's Result (1961)",
-      "startLine": 160,
-      "endLine": 183,
-      "summary": "Axiomatizes Erdős's 1961 result: Σ_{p<x} n_2(p) ~ c₂ · x/log x in both absolute error and ratio convergence forms."
+      "title": "Part V: Erdős's Result for k = 2 (1961)",
+      "startLine": 147,
+      "endLine": 166,
+      "summary": "Exposition of Erdős's 1961 theorem proving the k=2 case of the asymptotic with the explicit constant c₂."
     },
     {
       "id": "elliott-1967",
-      "title": "Elliott's Generalization (1967)",
-      "startLine": 184,
+      "title": "Part VI: Elliott's General Result (1967)",
+      "startLine": 167,
+      "endLine": 198,
+      "summary": "erdos_980_solution: Elliott's 1967 generalization to all k ≥ 2, establishing S_k(x) ~ c_k · x/log x with c_k > 0."
+    },
+    {
+      "id": "interpretation",
+      "title": "Part VII: Interpretation",
+      "startLine": 199,
+      "endLine": 217,
+      "summary": "Interpretation of the asymptotic: on average the least k-th power nonresidue grows like a constant times log x."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part VIII: Special Cases and Examples",
+      "startLine": 218,
+      "endLine": 233,
+      "summary": "Worked special cases and examples illustrating n_k(p) and the constants c_k for small k."
+    },
+    {
+      "id": "character-sums",
+      "title": "Part IX: Connection to Character Sums",
+      "startLine": 234,
+      "endLine": 245,
+      "summary": "The role of the Pólya–Vinogradov inequality for Dirichlet character sums in bounding partial sums of k-th power-residue symbols — the analytic engine behind both the Erdős and Elliott proofs."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 246,
       "endLine": 276,
-      "summary": "Axiomatizes Elliott's 1967 generalization to all k ≥ 2. States erdos_980_solution (the main theorem), average interpretation, special cases (n₂(p) = 2 for p ≡ ±3 mod 8), Pólya-Vinogradov connection, and the summary theorem."
+      "summary": "erdos_980_summary bundles the positive answer: the k=2 case (Erdős) and all k ≥ 2 (Elliott), with c₂ = Σ_{j≥1} p_j/2^j ≈ 3.67. The problem is SOLVED."
     }
   ],
   "conclusion": {

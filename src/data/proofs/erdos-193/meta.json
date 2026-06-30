@@ -22,7 +22,7 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "lineCount": 403,
-    "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem, published result). Proved: erdos193_rank_le_2 (reduction to 2D via projection + Gerver-Ramsey), plus 17 other theorems including collinearity properties, dimension-1 case, singleton/parallel step sets, and dimension reduction framework.",
+    "assumptions": "1 axiom: gerver_ramsey_2d (Gerver-Ramsey 2D theorem, published result). Proved: erdos193_rank_le_2 (reduction to 2D via projection + Gerver-Ramsey), plus 18 other theorems including collinearity properties, dimension-1 case, singleton/parallel step sets, and dimension reduction framework.",
     "mathlib_version": "4.26.0",
     "theoremCount": 19,
     "definitionCount": 11
@@ -47,100 +47,116 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Library Imports",
-      "startLine": 14,
-      "endLine": 16,
-      "summary": "Imports Mathlib for $\\mathbb{Z}$-arithmetic, $\\text{Finset}$ for finite step sets $S \\subseteq \\mathbb{Z}^d$, and general tactics.",
-      "mathContext": "Mathematical content: Imports Mathlib for $\\mathbb{Z}$-arithmetic, $\\text{Finset}$ for finite step sets $S \\subseteq \\mathbb{Z}^d$, and general tactics."
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "States Erdős Problem #193 (Gerver–Ramsey): for a finite $S\\subseteq\\mathbb{Z}^3$ and an infinite injective $S$-walk $A$ (consecutive differences in $S$), must $A$ contain three collinear points? Proved in $\\mathbb{Z}^2$; the $\\mathbb{Z}^3$ case is OPEN. Imports `Int`/`Finset`/tactics.",
+      "mathContext": "$S$-walk: $a_{i+1}-a_i\\in S$. Question: must an infinite injective $S$-walk in $\\mathbb{Z}^3$ have 3 collinear points?"
     },
     {
       "id": "lattice-points",
       "title": "Lattice Points and Walks",
-      "startLine": 20,
+      "startLine": 18,
       "endLine": 28,
-      "summary": "Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup.",
-      "mathContext": "Formal definition: Defines $\\text{LatticePoint}\\,d = \\text{Fin}\\,d \\to \\mathbb{Z}$, $\\text{Walk}\\,d = \\mathbb{N} \\to \\mathbb{Z}^d$, and $\\text{StepSet}\\,d = \\text{Finset}(\\mathbb{Z}^d)$ — dimension-generic setup."
+      "summary": "Defines `LatPoint d = Fin d → ℤ`, `Walk d = ℕ → LatPoint d`, and `StepSet d = Finset (LatPoint d)` (all abbrevs).",
+      "mathContext": "$\\text{LatPoint}\\,d=\\text{Fin}\\,d\\to\\mathbb{Z}$; $\\text{Walk}\\,d=\\mathbb{N}\\to\\mathbb{Z}^d$; $\\text{StepSet}\\,d=\\text{Finset}(\\mathbb{Z}^d)$."
     },
     {
-      "id": "step-walk",
+      "id": "swalk-injective",
       "title": "S-Walk and Injectivity",
       "startLine": 29,
-      "endLine": 35,
-      "summary": "Defines IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$, and IsInjective$(w)$: $w$ is injective. Together these define the self-avoiding lattice walk.",
-      "mathContext": "Formal definition: Defines IsStepWalk$(S, w)$: $\\forall i, w(i+1) - w(i) \\in S$, and IsInjective$(w)$: $w$ is injective. Together these define the self-avoiding lattice walk."
+      "endLine": 36,
+      "summary": "Defines `IsStepWalk S w` ($\\forall i,\\ w(i+1)-w(i)\\in S$) and `IsInjective w` ($w$ injective) — together the self-avoiding lattice walk.",
+      "mathContext": "$\\text{IsStepWalk}(S,w):\\forall i,\\ w(i+1)-w(i)\\in S$; injective = self-avoiding."
     },
     {
-      "id": "collinearity-def",
+      "id": "collinearity",
       "title": "Collinearity via Integer Parallelism",
-      "startLine": 39,
+      "startLine": 37,
       "endLine": 45,
-      "summary": "Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition.",
-      "mathContext": "Formal definition: Defines AreCollinear$(p, q, r)$ via $\\exists a, b \\in \\mathbb{Z}, (a,b) \\neq 0, \\forall j: a(q_j - p_j) = b(r_j - p_j)$ — the integer cross product condition."
+      "summary": "Defines `AreCollinear p q r`: $\\exists a,b\\in\\mathbb{Z}$ not both zero with $a(q_j-p_j)=b(r_j-p_j)$ for all coordinates $j$ — the integer parallelism condition.",
+      "mathContext": "$\\text{AreCollinear}(p,q,r):\\exists(a,b)\\neq0,\\ \\forall j,\\ a(q_j-p_j)=b(r_j-p_j)$."
     },
     {
       "id": "three-collinear",
       "title": "Walk Contains Three Collinear Points",
       "startLine": 46,
-      "endLine": 49,
-      "summary": "HasThreeCollinear$(w)$: $\\exists i < j < k$ with $w(i), w(j), w(k)$ collinear. Strict ordering ensures distinct visit times.",
-      "mathContext": "Mathematical content: HasThreeCollinear$(w)$: $\\exists i < j < k$ with $w(i), w(j), w(k)$ collinear. Strict ordering ensures distinct visit times."
+      "endLine": 50,
+      "summary": "Defines `HasThreeCollinear w`: $\\exists i<j<k$ with $w(i),w(j),w(k)$ collinear (strict order ensures distinct visit times).",
+      "mathContext": "$\\text{HasThreeCollinear}(w):\\exists i<j<k,\\ \\text{AreCollinear}(w_i,w_j,w_k)$."
     },
     {
-      "id": "main-conjecture",
+      "id": "conjecture",
       "title": "The Open 3D Conjecture",
-      "startLine": 53,
-      "endLine": 57,
-      "summary": "ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, every infinite injective $S$-walk has three collinear points. Open since 1979.",
-      "mathContext": "Mathematical content: ErdosProblem193: $\\forall S \\subseteq \\mathbb{Z}^3$ finite, every infinite injective $S$-walk has three collinear points. Open since 1979."
+      "startLine": 51,
+      "endLine": 58,
+      "summary": "Defines `ErdosProblem193`: every infinite injective $S$-walk in $\\mathbb{Z}^3$ has three collinear points. OPEN.",
+      "mathContext": "$\\forall S\\subseteq\\mathbb{Z}^3$ finite, every infinite injective $S$-walk has 3 collinear points."
     },
     {
       "id": "gerver-ramsey",
       "title": "Gerver–Ramsey Theorem (ℤ² Case)",
-      "startLine": 61,
-      "endLine": 65,
-      "summary": "The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions.",
-      "mathContext": "Mathematical content: The known 2D result: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points. Proved by pigeonhole on step directions."
+      "startLine": 59,
+      "endLine": 66,
+      "summary": "States the known 2D result as the single AXIOM `gerver_ramsey_2d`: every infinite injective $S$-walk in $\\mathbb{Z}^2$ contains three collinear points.",
+      "mathContext": "Axiom (Gerver–Ramsey): the conjecture holds in $\\mathbb{Z}^2$."
     },
     {
-      "id": "collinearity-properties",
+      "id": "basic-properties",
       "title": "Basic Collinearity Properties",
-      "startLine": 69,
-      "endLine": 103,
-      "summary": "Proves collinearity reflexivity, symmetry in outer points, constant walk degeneracy, and permutation of first two arguments — establishing that collinearity is a symmetric relation on unordered triples.",
-      "mathContext": "Formal definition: Proves collinearity reflexivity (via `ring`), symmetry (witness transformation), constant walks, and first-two-argument swap (witnesses $(b-a, b)$) — validating the definition."
+      "startLine": 67,
+      "endLine": 104,
+      "summary": "PROVES `collinear_refl`, `collinear_symm` (symmetry in the outer points), `collinear_const` (constant walks), and `collinear_perm12` (swap of first two arguments) — the structural symmetries of `AreCollinear`.",
+      "mathContext": "Collinearity is reflexive, symmetric in outer points, and invariant under swapping the first two."
     },
     {
-      "id": "dimension-1",
+      "id": "dim1",
       "title": "Dimension 1: Trivial Collinearity",
       "startLine": 105,
-      "endLine": 122,
-      "summary": "In $\\mathbb{Z}^1$, all triples are collinear (single coordinate, multiplicative commutativity). The conjecture holds trivially for $d = 1$.",
-      "mathContext": "Mathematical content: Proves $\\text{collinear\\_dim1}$: every triple in $\\mathbb{Z}^1$ is collinear, and $\\text{erdos193\\_dim1}$: the conjecture holds for dimension 1 without any axioms."
+      "endLine": 123,
+      "summary": "PROVES `collinear_dim1` (all triples in $\\mathbb{Z}^1$ are collinear) and `erdos193_dim1` (the conjecture holds trivially for $d=1$).",
+      "mathContext": "In $\\mathbb{Z}^1$ every triple is collinear, so the conjecture is trivial."
     },
     {
-      "id": "singleton-step-sets",
+      "id": "singleton",
       "title": "Singleton Step Sets",
       "startLine": 124,
-      "endLine": 158,
-      "summary": "For walks with $|S| = 1$, all visited points lie on a line ($w(n) = w(0) + nv$), so any three are collinear. Proved by induction on position formula, then multiplicative commutativity.",
-      "mathContext": "Mathematical content: Proves $\\text{singleton\\_walk\\_pos}$ (position formula by induction), $\\text{singleton\\_step\\_collinear}$ (collinearity via witnesses $(k-i, j-i)$), and $\\text{erdos193\\_singleton}$ (the conjecture for $|S|=1$, without requiring injectivity)."
+      "endLine": 159,
+      "summary": "For $|S|=1$, PROVES the position formula `singleton_walk_pos` ($w(n)=w(0)+nv$), `singleton_step_collinear` (any three points collinear), and `erdos193_singleton` (three collinear points exist, no injectivity needed).",
+      "mathContext": "Singleton step $\\{v\\}$: $w(n)=w(0)+nv$ lies on a line; any 3 points collinear."
     },
     {
-      "id": "parallel-step-sets",
+      "id": "parallel",
       "title": "Parallel Step Sets",
       "startLine": 160,
       "endLine": 217,
-      "summary": "For walks where all steps are multiples of a single direction $v$, the walk lies on a line. Proves position formula, collinearity via integer coefficients, and the conjecture for all parallel step sets.",
-      "mathContext": "Mathematical content: Defines $\\text{IsParallelStepSet}$, proves $\\text{parallel\\_walk\\_on\\_line}$ (walk stays on affine line), $\\text{line\\_points\\_collinear}$ (collinearity helper), $\\text{parallel\\_step\\_collinear}$, and $\\text{erdos193\\_parallel}$ (the conjecture for parallel step sets)."
+      "summary": "For step sets where every step is a multiple of one direction $v$ (`IsParallelStepSet`), PROVES the on-line position formula `parallel_walk_on_line`, the helper `line_points_collinear`, `parallel_step_collinear`, and `erdos193_parallel` (three collinear points exist).",
+      "mathContext": "Parallel steps ($s=c\\,v$): the walk lies on a line through $w(0)$; 3 collinear points exist."
+    },
+    {
+      "id": "translation",
+      "title": "Collinearity Under Translation",
+      "startLine": 218,
+      "endLine": 227,
+      "summary": "PROVES `collinear_translate`: collinearity is invariant under adding a constant vector to all three points (the differences $q-p$, $r-p$ are unchanged).",
+      "mathContext": "Collinearity is translation-invariant."
+    },
+    {
+      "id": "two-d-span",
+      "title": "2D-Span Position Formula",
+      "startLine": 228,
+      "endLine": 265,
+      "summary": "For step sets spanning a 2D subspace, PROVES `walk_in_2d_span` ($w(n)=w(0)+a\\,v_1+b\\,v_2$ for integers $a,b$) and `collinear_from_2d_coords` (collinearity of the $(a_i,b_i)$ 2D coordinates lifts to collinearity in the ambient space).",
+      "mathContext": "$w(n)=w(0)+a\\,v_1+b\\,v_2$; 2D-coordinate collinearity lifts to $\\mathbb{Z}^d$."
     },
     {
       "id": "dimension-reduction",
       "title": "Dimension Reduction Framework",
-      "startLine": 218,
-      "endLine": 267,
-      "summary": "Defines $\\text{SpansAtMost2D}$ (step set in a 2D subspace), axiomatizes the rank $\\leq 2$ case via Gerver-Ramsey reduction, and proves that ErdosProblem193 reduces to the full-rank (rank 3) case.",
-      "mathContext": "Mathematical content: Defines $\\text{SpansAtMost2D}$, axiomatizes $\\text{erdos193\\_rank\\_le\\_2}$ (rank $\\leq 2$ reduction), and proves $\\text{erdos193\\_reduces\\_to\\_full\\_rank}$: the conjecture holds iff it holds for full-rank step sets."
+      "startLine": 266,
+      "endLine": 403,
+      "summary": "The reduction of the 3D problem to the 2D (Gerver–Ramsey) case. Defines `SpansAtMost2D` and the accumulated-coordinate machinery (`accumCoords`, `accumCoords_repr`). PROVES `erdos193_rank_le_2` (NOT axiomatized — a full proof: project the walk to $\\mathbb{Z}^2$ via accumulated step coordinates, show it is an injective $S'$-walk, apply `gerver_ramsey_2d`, and lift collinearity back via `collinear_from_2d_coords`) and `erdos193_reduces_to_full_rank` (the conjecture reduces to full-rank step sets — the only remaining open case). A closing comment summarizes the proved special cases ($d=1$, singleton, parallel, rank $\\leq2$) and that the sole axiom is `gerver_ramsey_2d`.",
+      "mathContext": "Rank $\\leq2$ case PROVED by projecting to $\\mathbb{Z}^2$ + Gerver–Ramsey; only full-rank-3 remains open."
     }
   ],
   "conclusion": {

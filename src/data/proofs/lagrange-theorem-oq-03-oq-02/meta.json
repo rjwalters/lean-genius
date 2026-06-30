@@ -1,0 +1,204 @@
+{
+  "id": "lagrange-theorem-oq-03-oq-02",
+  "title": "A₄ Has No Subgroup of Order 6 — A 0-Axiom Structural Proof",
+  "slug": "lagrange-theorem-oq-03-oq-02",
+  "description": "The canonical counterexample to the converse of Lagrange's theorem: 6 divides |A₄| = 12, yet the alternating group A₄ has no subgroup of order 6. The parent entry (lagrange-theorem-oq-03) discharges the two arithmetic atoms with `native_decide`, which trusts the compiler and pulls in the `Lean.ofReduceBool` axiom. This entry gives a fully structural, axiom-free proof: an order-6 subgroup would have index 2, hence be normal with an order-2 quotient, forcing every square — in particular every 3-cycle — to lie inside it; but the 3-cycles generate A₄, so the subgroup would be all of A₄, contradicting |H| = 6.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alternating_group",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ03OQ02.lean",
+    "tags": [
+      "group-theory",
+      "abstract-algebra",
+      "alternating-group",
+      "lagrange-theorem",
+      "converse-of-lagrange",
+      "axiom-free",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "card_alternatingGroup",
+        "description": "|Aₙ| = n!/2, giving |A₄| = 12 structurally (no enumeration)",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      },
+      {
+        "theorem": "closure_three_cycles_eq_alternating",
+        "description": "The 3-cycles generate the alternating group",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Alternating"
+      },
+      {
+        "theorem": "Subgroup.normal_of_index_eq_two",
+        "description": "A subgroup of index 2 is normal",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "pow_card_eq_one'",
+        "description": "In a finite group, g raised to the group order is the identity",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "IsThreeCycle.orderOf",
+        "description": "A 3-cycle has order 3",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "Subgroup.equivMapOfInjective",
+        "description": "An injective homomorphism gives a cardinality-preserving equivalence onto the image",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      }
+    ],
+    "originalContributions": [
+      "0-axiom proof that A₄ has no subgroup of order 6 (`#print axioms` shows only propext / Classical.choice / Quot.sound — no `Lean.ofReduceBool`)",
+      "a4_card: |A₄| = 12 derived structurally from `card_alternatingGroup` (= 4!/2) with kernel `decide`, not `native_decide`",
+      "sq_mem_of_index_two: in any finite group, an index-2 subgroup contains every square (the image in the order-2 quotient squares to 1)",
+      "index_two_of_card_six: a subgroup of order 6 in A₄ has index 2, by the order equation |H|·[A₄:H] = 12",
+      "a4_no_subgroup_order_six: the main result via the generation argument — every 3-cycle is a square, 3-cycles generate A₄, cardinality transport along the injective inclusion H ↪ Perm(Fin 4) yields the contradiction",
+      "lagrange_converse_fails: bundles 6 | |A₄| with the non-existence into a single statement"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 130,
+    "assumptions": "None. Fully machine-checked; #print axioms reports only propext, Classical.choice, Quot.sound (the standard foundational axioms, which do not count as assumptions). No native_decide, no Lean.ofReduceBool.",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lagrange's theorem (1771) — the order of a subgroup divides the order of the group — invites an immediate converse: does every divisor of |G| arise as the order of a subgroup? The smallest counterexample is the alternating group A₄ of order 12: although 6 divides 12, A₄ has no subgroup of order 6. This single fact motivates the entire Sylow–Hall theory of partial converses (Sylow 1872 for prime powers, Hall 1928 for coprime 'Hall divisors' in solvable groups). The standard textbook argument (Rotman, Ch. 3–4) is the one formalized here: an order-6 subgroup would have index 2, hence be normal with quotient of order 2, forcing all squares into it; since every 3-cycle is a square and the 3-cycles generate A₄, the subgroup would have to be all of A₄.",
+    "problemStatement": "OQ-03-OQ-02: The parent entry establishes the A₄ counterexample but discharges its two arithmetic atoms (|A₄| = 12 and the 'A₄ has 9 distinct squares' count) with `native_decide`, which trusts the Lean compiler and depends on the `Lean.ofReduceBool` axiom. Can the non-existence of an order-6 subgroup of A₄ be proved fully structurally, with zero axioms beyond the standard foundational ones — never enumerating group elements?",
+    "text": "A fully structural, axiom-free proof that A₄ has no subgroup of order 6, removing the `native_decide` / `Lean.ofReduceBool` dependency of the parent entry. The argument is purely algebraic: index-2 normality, squares in the quotient, generation by 3-cycles, and cardinality transport along the injective inclusion A₄ ↪ Perm(Fin 4).",
+    "proofStrategy": "Suppose H ≤ A₄ with |H| = 6.\n\n1. **Index 2** (`index_two_of_card_six`): from |H| · [A₄:H] = |A₄| = 12 and |H| = 6, omega gives [A₄:H] = 2. |A₄| = 12 comes from `card_alternatingGroup` (= 4!/2) plus kernel `decide` — no `native_decide`.\n2. **Normality + squares** (`sq_mem_of_index_two`): index 2 ⟹ H normal; the order-2 quotient A₄/H satisfies x² = 1 for every x, so g² ∈ H for all g ∈ A₄.\n3. **Every 3-cycle is a square**: a 3-cycle σ has order 3, so σ = σ⁴ = (σ²)², hence σ ∈ H. Order is transported across the injective inclusion via `orderOf_injective`.\n4. **3-cycles generate A₄**: `closure_three_cycles_eq_alternating` gives that the image H.map(subtype) contains the whole closure, i.e. all of A₄.\n5. **Cardinality contradiction**: combining H.map ≤ A₄ and A₄ ≤ H.map gives H.map = A₄; transporting |H| along `Subgroup.equivMapOfInjective` yields |H| = |A₄| = 12, contradicting |H| = 6.\n\nThe route never enumerates the 12 elements of A₄ — every step is structural.",
+    "keyInsights": [
+      "**Index 2 forces all squares inside.** A subgroup of index 2 is normal with quotient of order 2, so the image of every element squares to the identity: g² ∈ H for all g. This is the single structural lever that replaces all element enumeration.",
+      "**Every 3-cycle is a square.** A 3-cycle has order 3, so σ = σ⁴ = (σ²)². Hence the index-2 'all squares inside' property drags every 3-cycle into H.",
+      "**3-cycles generate A₄.** By `closure_three_cycles_eq_alternating`, once H contains every 3-cycle its image is all of A₄, so |H| = |A₄| = 12 — impossible for |H| = 6.",
+      "**Structural beats computational.** The parent's `native_decide` trusts the compiler (the `Lean.ofReduceBool` axiom); this proof gets |A₄| = 12 from `card_alternatingGroup` (4!/2) with kernel `decide` and never builds the group table, yielding a genuinely axiom-free result."
+    ],
+    "prerequisites": [
+      "Lagrange's theorem and the order equation |H| · [G:H] = |G|",
+      "Index-2 subgroups are normal; quotient groups and the order-2 quotient",
+      "Order of a group element; 3-cycles have order 3",
+      "The alternating group, its cardinality 4!/2, and generation by 3-cycles"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Strategy",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring explaining the converse-of-Lagrange counterexample, what is new (a 0-axiom replacement for the parent's `native_decide` route), and the full structural argument. Imports Mathlib, sets heartbeats, opens `Equiv` / `Equiv.Perm`, enters the `LagrangeA4` namespace.",
+      "mathContext": "The file targets the classic fact that 6 ∣ |A₄| = 12 while A₄ has no subgroup of order 6, and emphasizes that the proof is purely algebraic — never enumerating the group's elements."
+    },
+    {
+      "id": "a4-card",
+      "title": "|A₄| = 12, Structurally",
+      "startLine": 47,
+      "endLine": 51,
+      "summary": "`a4_card` proves Fintype.card (alternatingGroup (Fin 4)) = 12 by rewriting with `card_alternatingGroup` (|Aₙ| = n!/2) and closing the resulting 4!/2 = 12 with kernel `decide` — no `native_decide`, so no `Lean.ofReduceBool`.",
+      "mathContext": "The cardinality of the alternating group is n!/2; for n = 4 this is 24/2 = 12, computed in the kernel rather than by compiler reduction."
+    },
+    {
+      "id": "sq-mem-index-two",
+      "title": "Index 2 ⟹ All Squares Inside",
+      "startLine": 53,
+      "endLine": 63,
+      "summary": "`sq_mem_of_index_two`: in a finite group, if H is normal of index 2 then g² ∈ H for every g. Proof: the order-2 quotient A₄/H satisfies (mk g)^2 = 1 by `pow_card_eq_one'`, and `map_pow` pushes this back to g² ∈ H.",
+      "mathContext": "In a group of order 2 every element squares to the identity; lifting through the quotient map gives that every square lies in the index-2 subgroup."
+    },
+    {
+      "id": "index-two-of-six",
+      "title": "An Order-6 Subgroup Has Index 2",
+      "startLine": 65,
+      "endLine": 73,
+      "summary": "`index_two_of_card_six`: from the order equation `Subgroup.card_mul_index` (|H| · [A₄:H] = |A₄|) with |H| = 6 and |A₄| = 12, omega concludes [A₄:H] = 2.",
+      "mathContext": "The Lagrange order equation forces the index of an order-6 subgroup of a group of order 12 to equal 2."
+    },
+    {
+      "id": "main-theorem",
+      "title": "A₄ Has No Subgroup of Order 6",
+      "startLine": 75,
+      "endLine": 121,
+      "summary": "`a4_no_subgroup_order_six`: assuming H of order 6, derive index 2 ⟹ normal ⟹ all squares inside. Every 3-cycle σ lifts to x ∈ A₄ of order 3, so x = (x²)² ∈ H, hence σ ∈ H.map(subtype). Since the 3-cycles generate A₄ (`closure_three_cycles_eq_alternating`), H.map = A₄; transporting cardinality along `equivMapOfInjective` gives |H| = 12, contradicting |H| = 6.",
+      "mathContext": "The heart of the proof: 'index 2 contains all squares' + 'every 3-cycle is a square' + '3-cycles generate A₄' collapse an order-6 subgroup into all of A₄, a contradiction obtained by transporting cardinality across the injective inclusion A₄ ↪ Perm(Fin 4)."
+    },
+    {
+      "id": "converse-fails",
+      "title": "The Converse of Lagrange Fails",
+      "startLine": 123,
+      "endLine": 130,
+      "summary": "`lagrange_converse_fails` bundles the two halves into one statement: 6 ∣ |A₄| (from `a4_card`, closed by kernel `decide`) and ¬ ∃ H, |H| = 6 (the main theorem).",
+      "mathContext": "States the full counterexample to the naive converse of Lagrange's theorem: a divisor of the group order need not be realized as a subgroup order."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 130-line, 5-theorem, 0-sorry, axiom-free formalization that A₄ has no subgroup of order 6. It strengthens the parent Hall's-theorem entry by replacing its `native_decide`-based discharge of |A₄| = 12 and the squares count (which depend on `Lean.ofReduceBool`) with a purely structural argument: index-2 normality, all squares in the quotient, generation by 3-cycles, and cardinality transport. `#print axioms` reports only propext / Classical.choice / Quot.sound.",
+    "implications": "This is the canonical demonstration that the converse of Lagrange's theorem fails, and that failure is exactly what Sylow's and Hall's theorems repair. Making it axiom-free is methodologically useful: it answers the parent entry's own open question (whether the A₄ counterexample needs computation) in the negative — the obstruction is structural, not arithmetic, and the proof scales conceptually (the same 'index 2 + generation' template applies to other Aₙ-style obstructions) in a way an enumeration over the group table never could.",
+    "openQuestions": [
+      "Does the same 'index 2 ⟹ all squares ⟹ generated set inside' template give axiom-free non-existence results for other forbidden subgroup orders (e.g. order-15 or order-20 subgroups of larger alternating groups)?",
+      "Can the broader statement — A₄'s only proper nontrivial subgroup orders are 1, 2, 3, 4 — be assembled structurally from the same generation and Sylow ingredients?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "lagrange-theorem-oq-03",
+      "relationship": "Parent entry (Hall's theorem); this entry replaces its native_decide A₄ counterexample with a 0-axiom structural proof"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm"
+    ],
+    "namespace": "LagrangeA4",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "J. Rotman",
+      "title": "An Introduction to the Theory of Groups",
+      "year": "2012",
+      "venue": "Springer GTM",
+      "note": "Chapters 3–4: the A₄ counterexample to the converse of Lagrange"
+    },
+    {
+      "authors": "P. Hall",
+      "title": "A note on soluble groups",
+      "year": "1928",
+      "venue": "J. London Math. Soc.",
+      "note": "Origin of the partial converse repaired by the coprimality condition"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-03",
+      "relationship": "extends",
+      "description": "The parent Hall's-theorem entry axiomatizes / `native_decide`s the A₄ non-existence; this entry proves it structurally with zero axioms, directly addressing the parent's open question on whether the counterexample requires computation."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Root Lagrange's theorem: subgroup orders divide the group order. This entry exhibits the sharpest limit of its converse — divisibility is necessary but not sufficient."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Both concern the subgroup structure of alternating groups. The generation of Aₙ by 3-cycles used here is the same fact underlying the simplicity arguments for A₅ central to Abel–Ruffini."
+    }
+  ],
+  "sorries": 0
+}

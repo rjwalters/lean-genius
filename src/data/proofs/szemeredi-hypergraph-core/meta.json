@@ -112,9 +112,16 @@
       "id": "graph-bridge",
       "title": "Bridge to Graph Case",
       "startLine": 154,
-      "endLine": 175,
+      "endLine": 171,
       "summary": "Constructs a 2-uniform hypergraph from a SimpleGraph, connecting the hypergraph framework back to the graph regularity pipeline.",
       "mathContext": "For a simple graph $G$, the 2-uniform hypergraph has edges $\\{\\{u,v\\} : uv \\in E(G)\\}$."
+    },
+    {
+      "id": "follow-up-directions",
+      "title": "Follow-Up Directions",
+      "startLine": 172,
+      "endLine": 213,
+      "summary": "Roadmap docstring for the full Gowers (2007) relative hypergraph regularity: simplicial complexes, relative density conditioned on the (k-1)-skeleton, IsGowersRegular, the Nagle-Rodl-Schacht counting lemma, and references."
     }
   ],
   "crossReferences": [

@@ -1,0 +1,106 @@
+{
+  "id": "cassini-identity-oq-01",
+  "title": "Cassini's Identity via the Fibonacci Q-Matrix Determinant",
+  "slug": "cassini-identity-oq-01",
+  "description": "A fully machine-checked proof of Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} obtained from the multiplicativity of the determinant along powers of the Fibonacci companion matrix Q = !![1,1;1,0]. Since det(Q^{n+1}) = (det Q)^{n+1} = (−1)^{n+1} while the explicit power Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n] expands to F_{n+2}·F_n − F_{n+1}², the identity falls out by equating the two evaluations. Mathlib proves the integer-indexed Cassini identity (Int.fib_succ_mul_fib_pred_sub_fib_sq) only by direct induction and records no Fibonacci matrix; this entry supplies the conceptually different linear-algebra/determinant proof.",
+  "meta": {
+    "author": "Jean-Dominique Cassini (1680); matrix proof formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cassini_and_Catalan_identities",
+    "date": "1680",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "cassini",
+      "linear-algebra",
+      "determinant",
+      "companion-matrix",
+      "induction",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CassiniIdentityOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_pow",
+        "description": "det (M^k) = (det M)^k. The crux: multiplicativity of the determinant along matrix powers turns det(Q^{n+1}) into (det Q)^{n+1} = (−1)^{n+1}.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_fin_two",
+        "description": "Closed form for the determinant of a 2×2 matrix: det !![a,b;c,d] = a·d − b·c. Both evaluations of det Q and det(Q^{n+1}) reduce through this.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "The Fibonacci recurrence fib (n+2) = fib n + fib (n+1), used in the inductive step that identifies the entries of Q^{n+1} with consecutive Fibonacci numbers.",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "The Fibonacci matrix-power identity Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] over ℤ, proved by induction with the Fibonacci recurrence — Mathlib records no Fibonacci companion matrix at all",
+      "Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} derived as the determinant evaluation det(Q^{n+1}) = (det Q)^{n+1}, the standard 'matrix proof', conceptually distinct from Mathlib's induction-only Int.fib_succ_mul_fib_pred_sub_fib_sq",
+      "det Q = −1 computed for the companion matrix, the single scalar that drives the alternating sign (−1)^{n+1}"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 71,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The proof uses only structural Mathlib lemmas (Matrix.det_pow, Matrix.det_fin_two, Nat.fib_add_two) with induction, push_cast, and ring; no native_decide and no structure-encoded hypotheses. #print axioms is expected to report only the foundational propext, Classical.choice, Quot.sound, none of which count as assumptions.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "id": "q-matrix",
+      "title": "The Fibonacci Q-Matrix and its Determinant",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "The companion matrix Q = !![1,1;1,0] over ℤ, together with det Q = −1 computed by det_fin_two. This single determinant supplies the alternating sign in Cassini's identity."
+    },
+    {
+      "id": "matrix-power",
+      "title": "The Matrix-Power Identity",
+      "startLine": 37,
+      "endLine": 55,
+      "summary": "Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] by induction on n. The base case is Q^1 = Q; the step multiplies by Q and closes each of the four entries with the Fibonacci recurrence (push_cast [Nat.fib_add_two]) followed by ring."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini's Identity by Determinant Multiplicativity",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "Two evaluations of det(Q^{n+1}) are equated: det_pow gives (det Q)^{n+1} = (−1)^{n+1}, while det_fin_two applied to the explicit power gives F_{n+2}·F_n − F_{n+1}². Their equality is Cassini's identity."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Cassini's Identity**\n\nJean-Dominique Cassini observed in 1680 that consecutive Fibonacci numbers satisfy\n$$F_{n+2}\\,F_n - F_{n+1}^2 = (-1)^{n+1},$$\na tight 'near-miss' relation: the product of the Fibonacci numbers two apart differs from the square of the one between them by exactly $\\pm 1$. It is the prototype of the Cassini–Catalan family of identities and underlies the classic missing-square dissection puzzle. Mathlib already contains the integer-indexed form `Int.fib_succ_mul_fib_pred_sub_fib_sq`, proved by direct induction, but records no Fibonacci companion matrix. This entry gives the other classical proof — the linear-algebra one.",
+    "problemStatement": "**Cassini's Identity (matrix proof)**\n\nFor every natural number $n$,\n$$F_{n+2}\\cdot F_n - F_{n+1}^2 = (-1)^{n+1},$$\nwith the Fibonacci numbers viewed inside $\\mathbb{Z}$. The goal is a fully machine-checked proof that realises the identity as the multiplicativity of $\\det$ along powers of the companion matrix $Q = \\begin{psmallmatrix}1&1\\\\1&0\\end{psmallmatrix}$, with no axioms and no sorries.",
+    "proofStrategy": "**One determinant, evaluated two ways**\n\nLet $Q = \\begin{psmallmatrix}1&1\\\\1&0\\end{psmallmatrix}$ over $\\mathbb{Z}$. An induction shows the powers of $Q$ carry the Fibonacci numbers as entries:\n$$Q^{n+1} = \\begin{pmatrix}F_{n+2} & F_{n+1}\\\\ F_{n+1} & F_n\\end{pmatrix},$$\nthe inductive step closing each entry via the recurrence $F_{n+2} = F_n + F_{n+1}$. Now evaluate $\\det(Q^{n+1})$ in two ways. Multiplicativity (`Matrix.det_pow`) gives $\\det(Q^{n+1}) = (\\det Q)^{n+1} = (-1)^{n+1}$, since $\\det Q = -1$. The $2\\times 2$ determinant of the explicit power (`Matrix.det_fin_two`) gives $F_{n+2}F_n - F_{n+1}^2$. Equating the two yields Cassini's identity.",
+    "keyInsights": [
+      "**The sign is a determinant.** The mysterious alternating $(-1)^{n+1}$ is nothing but $(\\det Q)^{n+1}$ — the whole oscillation is forced by the single fact $\\det Q = -1$.",
+      "**Fibonacci numbers live in the matrix.** The recurrence $F_{n+2} = F_n + F_{n+1}$ is exactly matrix multiplication by $Q$, so $Q^{n+1}$ tabulates four consecutive Fibonacci numbers and the identity becomes a statement about $\\det$.",
+      "**Multiplicativity does the work.** Once the entries are identified, the proof is just `det_pow` against `det_fin_two`; no second induction on the identity itself is needed.",
+      "**Stay in ℤ from the start.** Casting the Fibonacci entries into $\\mathbb{Z}$ up front means the subtraction $F_{n+2}F_n - F_{n+1}^2$ is genuine (not truncated), and `ring` handles the entry-wise algebra cleanly."
+    ],
+    "prerequisites": [
+      "Matrix multiplication and the determinant",
+      "Multiplicativity of the determinant",
+      "Fibonacci numbers and their recurrence",
+      "Mathematical induction"
+    ]
+  },
+  "conclusion": {
+    "summary": "Cassini's identity $F_{n+2}F_n - F_{n+1}^2 = (-1)^{n+1}$ is obtained by evaluating $\\det(Q^{n+1})$ two ways for the companion matrix $Q = \\begin{psmallmatrix}1&1\\\\1&0\\end{psmallmatrix}$: `Matrix.det_pow` gives $(\\det Q)^{n+1} = (-1)^{n+1}$, and `Matrix.det_fin_two` on the explicit power $Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n]$ gives $F_{n+2}F_n - F_{n+1}^2$. The matrix-power identity itself is a short induction on the Fibonacci recurrence. 0 axioms, 0 sorries.",
+    "implications": [
+      "Records the Fibonacci companion matrix and its power identity $Q^{n+1} = !![F_{n+2},F_{n+1};F_{n+1},F_n]$ — infrastructure Mathlib lacks — making the matrix proof of Cassini reusable for related identities (e.g. d'Ocagne, Catalan, the addition formula).",
+      "Complements Mathlib's induction-only `Int.fib_succ_mul_fib_pred_sub_fib_sq` with the conceptual linear-algebra proof, exposing the alternating sign as a determinant power.",
+      "Demonstrates the 'evaluate one determinant two ways' technique for turning recurrence identities into one-line determinant computations."
+    ],
+    "openQuestions": [
+      "Does the same Q-matrix bookkeeping yield the Catalan identity $F_{n-r}F_{n+r} - F_n^2 = (-1)^{n-r+1}F_r^2$ via $\\det(Q^{n-r}\\cdot Q^{2r})$, or does the off-diagonal mixing demand a separate entry analysis?",
+      "Can the addition formula $F_{m+n} = F_{m+1}F_n + F_m F_{n-1}$ be read off directly from the entries of $Q^{m+n} = Q^m Q^n$, packaging several Fibonacci identities as corollaries of one matrix factorisation?"
+    ]
+  }
+}

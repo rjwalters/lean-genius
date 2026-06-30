@@ -26,7 +26,7 @@
     "proofId": "erdos-1094",
     "type": "definition",
     "range": {
-      "startLine": 30,
+      "startLine": 28,
       "endLine": 36
     },
     "title": "LPF Bound and Exceptions",
@@ -50,8 +50,8 @@
     "proofId": "erdos-1094",
     "type": "concept",
     "range": {
-      "startLine": 43,
-      "endLine": 46
+      "startLine": 42,
+      "endLine": 44
     },
     "title": "Erdős Problem 1094",
     "content": "The main conjecture states that the set of exception pairs is finite. This is formalized using Set.Finite, making it a statement about the cardinality of a set of natural number pairs. Erdős, Lacampagne, and Selfridge posed this in 1988 as a strengthening of Problem 384.",
@@ -73,8 +73,8 @@
     "proofId": "erdos-1094",
     "type": "insight",
     "range": {
-      "startLine": 50,
-      "endLine": 81
+      "startLine": 48,
+      "endLine": 79
     },
     "title": "Computationally Verified Exceptions",
     "content": "Twelve of the 14 known exceptions are verified computationally using native_decide, which reduces the check to kernel evaluation. Each exception (n,k) satisfies k > 0, n ≥ 2k, and minFac(C(n,k)) > max(n/k, k). Notable cases include C(7,3) = 35 (the smallest exception, shared with Problem 384), C(62,6) (Selfridge's famous exception), and C(95,10) (the largest computationally verified).",
@@ -95,17 +95,17 @@
     "proofId": "erdos-1094",
     "type": "concept",
     "range": {
-      "startLine": 83,
-      "endLine": 86
+      "startLine": 82,
+      "endLine": 84
     },
-    "title": "Large Axiomatized Exceptions",
-    "content": "C(241,16) and C(284,28) are too large for native_decide within reasonable time and memory, so they are axiomatized. These are the two largest known exceptions from the Erdős-Lacampagne-Selfridge list of 14.",
-    "mathContext": "$\\binom{241}{16} \\approx 1.6 \\times 10^{27}$ and $\\binom{284}{28} \\approx 2.4 \\times 10^{38}$; their primality factorizations exceed Lean's kernel computation budget.",
+    "title": "Large Exceptions: C(241,16) and C(284,28) (Now Proved)",
+    "content": "C(241,16) ≈ 1.6×10²⁷ and C(284,28) ≈ 2.4×10³⁸ are the two largest known exceptions from the Erdős-Lacampagne-Selfridge list of 14. They were previously axiomatized (too large for the kernel), but are now fully proved by native_decide (exception_241_16, exception_284_28), so the file is axiom-free.",
+    "mathContext": "$\\binom{241}{16} \\approx 1.6 \\times 10^{27}$ and $\\binom{284}{28} \\approx 2.4 \\times 10^{38}$; native_decide now discharges both within the kernel budget, removing the former axioms.",
     "significance": "supporting",
     "relatedConcepts": [
-      "computational limits",
-      "axiom",
-      "large binomial coefficients"
+      "native_decide",
+      "large binomial coefficients",
+      "axiom-free verification"
     ],
     "prerequisites": [
       "native_decide limitations",
@@ -117,8 +117,8 @@
     "proofId": "erdos-1094",
     "type": "insight",
     "range": {
-      "startLine": 88,
-      "endLine": 114
+      "startLine": 90,
+      "endLine": 111
     },
     "title": "Verified Non-Exceptions",
     "content": "Eight pairs are verified to satisfy the LPF bound, demonstrating that the bound holds generically. C(12,4) = 495 is a near-miss: minFac(495) = 3 just meets max(3,4) = 4. The even binomial C(20,10) = 184756 trivially satisfies the bound since minFac = 2. C(100,2) = 4950 illustrates that large n/k makes the bound easy to satisfy.",
@@ -138,8 +138,8 @@
     "proofId": "erdos-1094",
     "type": "concept",
     "range": {
-      "startLine": 118,
-      "endLine": 128
+      "startLine": 116,
+      "endLine": 126
     },
     "title": "Bound Simplification Theorems",
     "content": "Two iff-rewriting lemmas decompose the bound by the relative size of n/k and k. When k ≤ n/k (equivalently n ≥ k²), max(n/k, k) = n/k, reducing to the weaker Erdős-Selfridge bound from Problem 384. When n/k < k (n < k²), the bound becomes lpf(C(n,k)) ≤ k. These use max_eq_left and max_eq_right from Mathlib.",
@@ -160,8 +160,8 @@
     "proofId": "erdos-1094",
     "type": "insight",
     "range": {
-      "startLine": 130,
-      "endLine": 152
+      "startLine": 129,
+      "endLine": 150
     },
     "title": "Trivial Cases: k = 0 and k = 1",
     "content": "The cases k = 0 and k = 1 are ruled out as exceptions. For k = 0, the IsException definition requires k > 0, giving immediate contradiction via omega. For k = 1, C(n,1) = n and n/1 = n, so minFac(n) ≤ n = max(n, 1) holds for n ≥ 2 by Nat.minFac_le. Six explicit n = 2k cases are also verified computationally.",
@@ -182,7 +182,7 @@
     "type": "definition",
     "range": {
       "startLine": 156,
-      "endLine": 160
+      "endLine": 159
     },
     "title": "Selfridge's Refinement",
     "content": "John Selfridge conjectured (1977) that the LPF bound holds for all n ≥ k² − 1, with C(62,6) as the sole exception. This is much stronger than the original conjecture, effectively predicting that all 14 exceptions have n < k² − 1 except C(62,6) (since 62 ≥ 36 − 1 = 35).",
@@ -203,7 +203,7 @@
     "type": "definition",
     "range": {
       "startLine": 164,
-      "endLine": 177
+      "endLine": 176
     },
     "title": "Stronger Bound Conjectures",
     "content": "Two progressively stronger conjectures replace k in the bound. StrongerBoundSqrt replaces k with √k, asserting lpf(C(n,k)) ≤ max(n/k, √k) with finitely many exceptions. StrongestBound13 replaces k with the constant 13, asserting at most 12 exceptions—remarkably, one fewer than the 13 exceptions with k > 13 in the original list.",
@@ -225,10 +225,10 @@
     "type": "definition",
     "range": {
       "startLine": 181,
-      "endLine": 187
+      "endLine": 206
     },
     "title": "Connection to Problem 384",
-    "content": "Problem 384 asks whether C(n,k) always has a prime factor ≤ n/k for n ≥ 2k. Problem 1094 is strictly stronger: if lpf(C(n,k)) ≤ max(n/k, k) with finitely many exceptions, then for large enough n the lpf is ≤ n/k (since n/k eventually dominates k), implying Problem 384 asymptotically. The implication is axiomatized since the formal proof would require handling the finite exception set.",
+    "content": "Problem 384 asks whether C(n,k) always has a prime factor ≤ n/k for n ≥ 2k. Problem 1094 is strictly stronger: if lpf(C(n,k)) ≤ max(n/k, k) with finitely many exceptions, then for large enough n the lpf is ≤ n/k (since n/k eventually dominates k), implying Problem 384 asymptotically. This implication is left as an informal comment (not a formal lemma); a previously-present axiom asserting #1094 ⇒ naive #384 was removed (it was incorrect, since the naive #384 is false), leaving the file axiom-free.",
     "mathContext": "Problem 384: $\\forall\\, n \\geq 2k,\\; \\exists\\, p \\leq n/k$ with $p \\mid \\binom{n}{k}$ and $p$ prime. Since $\\operatorname{lpf}\\binom{n}{k}$ divides $\\binom{n}{k}$ and $\\operatorname{lpf} \\leq \\max(n/k, k)$, the finite exceptions do not affect the asymptotic claim.",
     "significance": "key",
     "relatedConcepts": [
@@ -246,8 +246,8 @@
     "proofId": "erdos-1094",
     "type": "concept",
     "range": {
-      "startLine": 191,
-      "endLine": 195
+      "startLine": 216,
+      "endLine": 219
     },
     "title": "Binomial Coefficient Lower Bounds",
     "content": "Four specific instances of C(n,k) > 1 are verified computationally, confirming that these binomial coefficients are composite or prime (not trivial). This ensures minFac returns a genuine prime factor rather than 1.",

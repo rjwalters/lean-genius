@@ -16,7 +16,11 @@
       "Hypergraph coloring",
       "Phase transitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Theory",
+      "Hypergraph 2-Coloring",
+      "Asymptotic Density"
+    ]
   },
   {
     "id": "ann-161-definitions",
@@ -35,7 +39,11 @@
       "Balanced coloring",
       "Uniformity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Uniform Hypergraphs",
+      "T-Element Subsets",
+      "Binomial Coefficients"
+    ]
   },
   {
     "id": "ann-161-F-function",
@@ -53,7 +61,11 @@
       "ring theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Functions",
+      "Existence Proofs",
+      "Lean Axiomatization"
+    ]
   },
   {
     "id": "ann-161-ramsey",
@@ -72,7 +84,11 @@
       "Iterated logarithm",
       "Erdős-Hajnal-Rado"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hypergraph Ramsey Numbers",
+      "Iterated Logarithm",
+      "Asymptotic Growth Rates"
+    ]
   },
   {
     "id": "ann-161-bounds",
@@ -90,7 +106,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Logarithmic Bounds",
+      "Greedy Coloring"
+    ]
   },
   {
     "id": "ann-161-jump",
@@ -108,7 +128,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Phase Transitions",
+      "Threshold Functions",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-161-cfs",
@@ -127,7 +151,11 @@
       "Upper bounds",
       "Phase transition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dependent Random Choice",
+      "Matching Bounds",
+      "Hypergraph Ramsey Theory"
+    ]
   },
   {
     "id": "ann-161-summary",
@@ -145,6 +173,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Equivalence",
+      "Open Problems",
+      "Hypergraph Ramsey Theory"
+    ]
   }
 ]

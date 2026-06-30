@@ -16,7 +16,11 @@
       "flag algebras",
       "cycle counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "counting cycles in graphs",
+      "flag algebras (the SDP method)"
+    ]
   },
   {
     "id": "ann-e24-trianglefree",
@@ -35,7 +39,11 @@
       "girth",
       "Mantel's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "triangle-free graphs (no K₃)",
+      "girth and clique-freeness",
+      "Mantel's theorem"
+    ]
   },
   {
     "id": "ann-e24-cyclegraph5",
@@ -54,7 +62,11 @@
       "pentagon",
       "odd cycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycle graphs Cₙ",
+      "the pentagon C₅",
+      "odd cycles"
+    ]
   },
   {
     "id": "ann-e24-c5copy",
@@ -73,7 +85,11 @@
       "subgraph counting",
       "injectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph homomorphisms and subgraphs",
+      "injective copies of a subgraph",
+      "counting copies of C₅"
+    ]
   },
   {
     "id": "ann-e24-countc5",
@@ -92,7 +108,11 @@
       "dihedral group",
       "classical logic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the dihedral symmetry of C₅ (×10)",
+      "subgraph-copy counting",
+      "correcting for automorphisms"
+    ]
   },
   {
     "id": "ann-e24-blowup",
@@ -111,7 +131,11 @@
       "extremal graph",
       "Turán-type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the balanced blow-up of a graph",
+      "Turán-type extremal constructions",
+      "replacing vertices by independent sets"
+    ]
   },
   {
     "id": "ann-e24-blowup-trianglefree",
@@ -129,7 +153,11 @@
       "hereditary properties",
       "blow-up properties"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "hereditary graph properties",
+      "blow-up operations",
+      "why a C₅ blow-up stays triangle-free"
+    ]
   },
   {
     "id": "ann-e24-main-theorem",
@@ -148,7 +176,11 @@
       "SDP",
       "computer-assisted proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "flag algebras and semidefinite programming",
+      "computer-assisted extremal proofs",
+      "the Grzesik–Hatami pentagon theorem"
+    ]
   },
   {
     "id": "ann-e24-uniqueness",
@@ -167,7 +199,11 @@
       "graph isomorphism",
       "stability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graphs and their uniqueness",
+      "graph isomorphism",
+      "stability of extremal configurations"
+    ]
   },
   {
     "id": "ann-e24-gyori",
@@ -185,7 +221,11 @@
       "historical progress",
       "approximate bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "approximate extremal bounds",
+      "historical progress on the problem",
+      "Győri's earlier bound"
+    ]
   },
   {
     "id": "ann-e24-general",
@@ -204,7 +244,11 @@
       "odd cycles",
       "open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "girth and odd cycles",
+      "maximizing C_{2k+1} copies",
+      "Erdős's general conjecture"
+    ]
   },
   {
     "id": "ann-e24-summary",
@@ -223,6 +267,10 @@
       "existence",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum C₅ count (n/5)⁵",
+      "existence and tightness of the extremal",
+      "assembling the main result"
+    ]
   }
 ]
