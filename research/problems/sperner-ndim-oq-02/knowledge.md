@@ -1969,3 +1969,48 @@ true `adj` still needs the cross-chain gluing (or a proof such facets lie on `�
 2. Discharge the abstract door-graph `adj` fields for `d ≥ 2` using `gridNeighbor_spec` +
    `GridGlued.{ne,shares_facet}`, `GridGlued_symm`, `gridFacet_unique_neighbor`.
 3. Phase 2: last-face door oddness induction on `d`; apply `sperner_ndim`.
+
+## Session 2026-06-30 (researcher-1) — REGRESSION REPAIR: restore stale-branch-clobbered file
+
+**Mode**: REVISIT (claimed RICH). **Outcome**: regression repair — restored ~1400 lines of
+verified work silently lost by a stale-branch merge, keeping the new content that overwrote it.
+
+### The regression
+`SpernerNDimOQ02.lean` on `main` was **1772 → 464 lines** (−1397, only +89) by commit
+`09b7a20b816` = **PR #30947 "barycentric facet algebra bridge"**, *authored AND committed
+2026-06-30 10:15* from a branch that predated PRs #31338/#31422/#31443/#31495. Merged last, it
+reset the file to its old-branch base, **deleting 72 of 97 decls** — the entire boundary-face
+reduction (`boundary_face_iff_coords_zero`, `gridVertices_onFace_iff`, `miss_not_boundary_face`),
+per-vertex coordinate evaluation (`coord_incDir_eq_zero_iff`, `miss_coord_eq_zero_iff`,
+`onFace_miss_imp_last`, …), the total door-graph map `gridNeighbor`, and the `GridSimplex` carrier
+work. This is why the merged code lagged this knowledge.md's narrative: the narrative was right;
+the code had been clobbered.
+
+### The fix (verified)
+Reconstructed the file as **1772-version ⊕ #30947's 8 genuinely-new `baryFacet` lemmas**
+(`baryFacet`, `mem_baryFacet_iff`, `facet_eq_image_baryFacet`, `baryFacet_card`,
+`verts_not_mem_baryFacet`, `baryFacet_injective`, `facet_eq_iff_baryFacet_eq`,
+`canon_eq_of_baryFacet_and_vertex`). Confirmed via `comm` that those 8 were the ONLY decls #30947
+added beyond the 1772 set, and that all their dependencies (`CanonSimplex`/`vertices`/`facet`/
+`mem_facet_iff`/`facet_card`/`canon_eq_of_facet_and_vertex`) survive in the 1772 version, so the
+`baryFacet` section (same `namespace SpernerNDimOQ02`) splices in cleanly before the final `end`.
+Result: **1878 lines, 91 theorems + 15 defs, 0 sorries, 0 axioms**.
+
+**Verification** (docker DOWN): `LAKE_UNSAFE=1 lake env lean Proofs/SpernerNDimOQ02.lean` → **EXIT 0**,
+no errors/sorries/warnings. `#print axioms` on `boundary_face_iff_coords_zero`,
+`coord_incDir_eq_zero_iff`, `gridNeighbor`, `canon_eq_of_baryFacet_and_vertex` =
+`[propext, Classical.choice, Quot.sound]` (0-axiom). OQ02 imports only `SpernerNDim` +
+`SpernerGridBase` (dep oleans present); single-file elaboration against the cache.
+
+### Lesson (stale-branch clobber at the MERGE level)
+A PR branched from old main and merged later can REPLACE a whole file, silently dropping
+intervening merged work with no git conflict (it "cleanly" overwrites). The `-S` pickaxe
+(`git log -S "<lost-decl>" origin/main`) flags the deleting commit; `comm` on sorted decl lists of
+`<clobber>` vs `<clobber>~1` separates genuinely-new decls from the casualties. Deployer/judge should
+diff line-count deltas on research files — a −1397 line "bridge" PR is a red flag.
+
+### Frontier UNCHANGED
+The cross-chain gluing blocker (≳ several hundred lines) is untouched; this session only restores
+the prerequisite toolkit the next-steps depend on (which was missing from main). Next-step item 2
+(increase-direction `boundary_face` characterization) is now actionable again because
+`coord_incDir_eq_zero_iff` + `boundary_face_iff_coords_zero` are back in the file.
