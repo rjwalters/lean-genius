@@ -202,7 +202,60 @@ theorem halfPerimeter_tendsto_pi :
     exact le_of_lt (halfPerimeter_lt_pi hm)
 
 -- ============================================================
--- PART V: Summary
+-- PART V: Explicit convergence rate (quadratic in 1/m)
+-- ============================================================
+
+/-- **Explicit `O(1/m²)` convergence rate of the doubling method.**  The inscribed
+half-perimeter approximates π with error at most quadratic in `1/m`:
+`π - p(m) ≤ (7/32)·π³/m²` for every `m ≥ 4`.
+
+Proof: with `x = π/m ≤ 1`, Mathlib's Taylor estimate `Real.sin_bound` gives
+`sin x ≥ x - x³/6 - (5/96)x⁴`; absorbing `x⁴ ≤ x³` (valid since `x ≤ 1`) into the cubic
+term yields `sin x ≥ x - (7/32)x³` (note `1/6 + 5/96 = 7/32`).  Multiplying by `m` and
+using `m·x = π`, `m·x³ = π³/m²` gives `p(m) = m·sin x ≥ π - (7/32)π³/m²`.
+
+Since the doubling iteration runs over `m = 6·2ᵏ` (or any `m = c·2ᵏ`), this is exactly the
+`π - p(2ᵏ) = O(4⁻ᵏ)` rate of the second open question: each doubling quarters the error
+bound. -/
+theorem pi_sub_halfPerimeter_le {m : ℕ} (hm : 4 ≤ m) :
+    Real.pi - halfPerimeter m ≤ 7 / 32 * Real.pi ^ 3 / (m : ℝ) ^ 2 := by
+  have hπ := Real.pi_pos
+  have hm' : (4 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  have hmpos : (0 : ℝ) < (m : ℝ) := by linarith
+  set x := Real.pi / (m : ℝ) with hx
+  have hxpos : 0 < x := by rw [hx]; positivity
+  have hπlt : Real.pi < 4 := Real.pi_lt_four
+  have hx1 : x ≤ 1 := by rw [hx, div_le_one hmpos]; linarith
+  -- Taylor lower bound on sin from Real.sin_bound
+  have hbound := Real.sin_bound (x := x) (by rw [abs_of_pos hxpos]; exact hx1)
+  rw [abs_of_pos hxpos] at hbound
+  have hlow : x - x ^ 3 / 6 - x ^ 4 * (5 / 96) ≤ Real.sin x := by
+    have := (abs_le.mp hbound).1; linarith
+  have hx43 : x ^ 4 ≤ x ^ 3 := by
+    calc x ^ 4 = x ^ 3 * x := by ring
+      _ ≤ x ^ 3 * 1 := mul_le_mul_of_nonneg_left hx1 (pow_nonneg hxpos.le 3)
+      _ = x ^ 3 := by ring
+  have hsin : x - 7 / 32 * x ^ 3 ≤ Real.sin x := by nlinarith [hlow, hx43]
+  -- clear the m-scaling: m·x = π and m·x³ = π³/m²
+  have hmx : (m : ℝ) * x = Real.pi := by rw [hx]; field_simp
+  have hmx3 : (m : ℝ) * x ^ 3 = Real.pi ^ 3 / (m : ℝ) ^ 2 := by
+    rw [hx]; field_simp
+  have hstep : (m : ℝ) * Real.sin x ≥ Real.pi - 7 / 32 * (Real.pi ^ 3 / (m : ℝ) ^ 2) := by
+    have h1 : (m : ℝ) * (x - 7 / 32 * x ^ 3) ≤ (m : ℝ) * Real.sin x :=
+      mul_le_mul_of_nonneg_left hsin hmpos.le
+    have h2 : (m : ℝ) * (x - 7 / 32 * x ^ 3)
+        = Real.pi - 7 / 32 * (Real.pi ^ 3 / (m : ℝ) ^ 2) := by
+      rw [mul_sub, hmx, show (m : ℝ) * (7 / 32 * x ^ 3) = 7 / 32 * ((m : ℝ) * x ^ 3) by ring,
+        hmx3]
+    linarith [h1, h2 ▸ h1]
+  have hgoal_rw : (7 : ℝ) / 32 * Real.pi ^ 3 / (m : ℝ) ^ 2
+      = 7 / 32 * (Real.pi ^ 3 / (m : ℝ) ^ 2) := by ring
+  simp only [halfPerimeter]
+  rw [← hx, hgoal_rw]
+  linarith [hstep]
+
+-- ============================================================
+-- PART VI: Summary
 -- ============================================================
 
 /-- **Summary.** Archimedes' half-angle doubling method, formalized constructively:
