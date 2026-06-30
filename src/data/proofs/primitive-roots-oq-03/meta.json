@@ -54,6 +54,48 @@
       "Finset.filter cardinality and Finset.sum_congr"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header: From Generators to the Full Order Distribution",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Frames the file as the all-d strengthening of the base entry's generator (d = p−1) count: for every divisor d of p−1, (ℤ/pℤ)ˣ has exactly φ(d) elements of order d, and summing over divisors recovers Gauss's identity. The engine is Mathlib's IsCyclic.card_orderOf_eq_totient specialized to (ℤ/pℤ)ˣ.",
+      "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = d\\} = \\varphi(d)$ for $d \\mid p-1$; $\\sum_{d \\mid p-1}\\varphi(d) = p-1$."
+    },
+    {
+      "id": "setup",
+      "title": "Cyclicity and Order of the Unit Group",
+      "startLine": 47,
+      "endLine": 53,
+      "summary": "The IsCyclic instance on (ℤ/pℤ)ˣ via isCyclic_of_subgroup_isDomain (a finite subgroup of a field's units is cyclic), and card_units: |(ℤ/pℤ)ˣ| = p−1 via ZMod.card_units_eq_totient + Nat.totient_prime.",
+      "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^\\times$ cyclic of order $\\varphi(p) = p-1$."
+    },
+    {
+      "id": "distribution",
+      "title": "The Full Order Distribution",
+      "startLine": 55,
+      "endLine": 69,
+      "summary": "card_orderOf_eq_totient: for d ∣ p−1, exactly φ(d) elements of order d, by lifting d ∣ p−1 to d ∣ |group| (card_units) and specializing IsCyclic.card_orderOf_eq_totient.",
+      "mathContext": "$d \\mid p-1 \\Rightarrow \\#\\{g : \\mathrm{ord}(g) = d\\} = \\varphi(d)$."
+    },
+    {
+      "id": "existence-generators",
+      "title": "Existence of Each Order and the Generator Count",
+      "startLine": 71,
+      "endLine": 89,
+      "summary": "exists_orderOf_eq: an element of each order d ∣ p−1 exists (φ(d) > 0 since d ≥ 1). card_generators: the d = p−1 case recovers #generators = φ(p−1), the base entry's primitive-root count.",
+      "mathContext": "$\\exists g,\\ \\mathrm{ord}(g) = d$ for $d \\mid p-1$; $\\#\\{g : \\mathrm{ord}(g) = p-1\\} = \\varphi(p-1)$."
+    },
+    {
+      "id": "tiling-gauss",
+      "title": "Tiling and Gauss's Divisor Sum",
+      "startLine": 91,
+      "endLine": 115,
+      "summary": "sum_card_orderOf: the order classes tile the group — summing the counts over d ∣ p−1 gives p−1 (each summand is φ(d) via card_orderOf_eq_totient, closed by Nat.sum_totient). gauss_divisor_sum: ∑_{d∣p−1} φ(d) = p−1 stated in the primitive-root setting.",
+      "mathContext": "$\\sum_{d \\mid p-1}\\#\\{g : \\mathrm{ord}(g) = d\\} = \\sum_{d \\mid p-1}\\varphi(d) = p-1$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "primitive-roots",

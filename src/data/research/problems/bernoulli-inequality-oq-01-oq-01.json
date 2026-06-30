@@ -10,20 +10,103 @@
   "problemStatement": "Mathlib's weak Bernoulli inequality one_add_mul_le_pow holds for all −2 ≤ a, but the strict form 1 + n·a < (1+a)ⁿ (a ≠ 0, n ≥ 2) had only been proved for a > −1. Extend strictness across the sign change of 1 + a to the entire weak domain −2 ≤ a, and characterize strictness and equality there.",
   "leanFiles": [
     {
+      "path": "Proofs/BernoulliInequalityOQ01.lean",
+      "filename": "BernoulliInequalityOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01.lean"
+    },
+    {
       "path": "Proofs/BernoulliInequalityOQ01OQ01.lean",
       "filename": "BernoulliInequalityOQ01OQ01.lean",
-      "lineCount": 136,
+      "lineCount": 137,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ01OQ01.lean",
+      "filename": "BernoulliInequalityOQ01OQ01OQ01.lean",
+      "lineCount": 190,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ01OQ01OQ01.lean",
+      "filename": "BernoulliInequalityOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ01OQ02.lean",
+      "filename": "BernoulliInequalityOQ01OQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ01OQ02OQ01.lean",
+      "filename": "BernoulliInequalityOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ02.lean",
+      "filename": "BernoulliInequalityOQ01OQ02.lean",
+      "lineCount": 171,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BernoulliInequalityOQ01OQ02OQ01.lean",
+      "filename": "BernoulliInequalityOQ01OQ02OQ01.lean",
+      "lineCount": 149,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BernoulliInequalityOQ01OQ02OQ01.lean"
     }
   ],
   "relatedProofs": [
     "bernoulli-inequality-oq-01",
     "bernoulli-inequality-oq-01-oq-01",
+    "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "bernoulli-inequality-oq-01-oq-01-oq-02",
+    "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "bernoulli-inequality-oq-01-oq-02",
+    "bernoulli-inequality-oq-01-oq-02-oq-01",
     "binomial-theorem-oq-05"
   ],
   "knowledge": {

@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-soc-oq0104-rootmult",
+    "proofId": "solution-of-cubic-oq-01-oq-04",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Multiplicity-Level Shift Law",
+    "content": "rootMultiplicity_comp_X_sub_C is the multiplicity-level statement underlying everything: the multiplicity of a as a root of p.comp (X - C s) equals the multiplicity of a - s as a root of p. The proof applies Mathlib's rootMultiplicity_eq_rootMultiplicity to the composed polynomial, uses comp_assoc to merge the two nested shifts into (X - C s).comp (X + C a) = X + C (a - s) (a one-line ring identity), then peels back to p's own multiplicity. No derivative computation is needed — the Taylor-shift primitive does all the work.",
+    "mathContext": "$\\operatorname{mult}_a\\big(p\\circ(X - s)\\big) = \\operatorname{mult}_{a-s}(p)$, where $\\operatorname{mult}$ is rootMultiplicity.",
+    "significance": "supporting",
+    "relatedConcepts": ["rootMultiplicity", "Taylor shift", "rootMultiplicity_eq_rootMultiplicity", "polynomial composition"],
+    "prerequisites": ["root multiplicity of polynomials", "polynomial composition comp"]
+  },
+  {
     "id": "ann-soc-oq0104-shift-roots",
     "proofId": "solution-of-cubic-oq-01-oq-04",
     "range": {
@@ -8,7 +23,26 @@
     },
     "type": "insight",
     "title": "A Change of Variable Translates the Root Multiset",
-    "content": "roots_comp_X_sub_C is the reusable core: composing a polynomial with the shift X ↦ X - C s translates its entire root multiset by +s, (p.comp (X - C s)).roots = p.roots.map (· + s). The proof works at the level of multiplicities. Mathlib's rootMultiplicity_eq_rootMultiplicity (p.rootMultiplicity t = (p.comp (X + C t)).rootMultiplicity 0) is applied twice — once to expose the shifted polynomial, once to read off the shifted multiplicity — giving rootMultiplicity a (p.comp (X - C s)) = rootMultiplicity (a - s) p with no derivative computation. count_roots and the injectivity of (· + s) (Multiset.count_map_eq_count') then upgrade the per-point identity to an equality of multisets. The lemma needs only commutative-ring facts, though it is stated here over ℂ."
+    "content": "roots_comp_X_sub_C is the reusable core: composing a polynomial with the shift X ↦ X - C s translates its entire root multiset by +s, (p.comp (X - C s)).roots = p.roots.map (· + s). The proof works at the level of multiplicities. Mathlib's rootMultiplicity_eq_rootMultiplicity (p.rootMultiplicity t = (p.comp (X + C t)).rootMultiplicity 0) is applied twice — once to expose the shifted polynomial, once to read off the shifted multiplicity — giving rootMultiplicity a (p.comp (X - C s)) = rootMultiplicity (a - s) p with no derivative computation. count_roots and the injectivity of (· + s) (Multiset.count_map_eq_count') then upgrade the per-point identity to an equality of multisets. The lemma needs only commutative-ring facts, though it is stated here over ℂ.",
+    "mathContext": "$\\big(p\\circ(X - s)\\big).\\text{roots} = p.\\text{roots}.\\text{map}(\\cdot + s)$ — an equality of multisets (counting multiplicity), proved via $\\text{count}_a = \\operatorname{mult}_a$ for every $a$.",
+    "significance": "key",
+    "relatedConcepts": ["root multiset", "Multiset.count", "injectivity of translation", "change of variable as isomorphism of splitting data"],
+    "prerequisites": ["root multisets and count_roots", "multiplicity-level shift law above", "multiset map and count"]
+  },
+  {
+    "id": "ann-soc-oq0104-poly",
+    "proofId": "solution-of-cubic-oq-01-oq-04",
+    "range": {
+      "startLine": 93,
+      "endLine": 100
+    },
+    "type": "definition",
+    "title": "Packaging the General Cubic as an Honest Polynomial",
+    "content": "The parent worked with the evaluation function generalCubicEval : ℂ → ℂ. To speak of a roots multiset and a factorization one needs an actual Polynomial ℂ, so generalCubicPoly a b c d := C a · X³ + C b · X² + C c · X + C d is introduced, and generalCubicPoly_eval confirms it evaluates to the parent's generalCubicEval. This is the object on which roots and degree are defined.",
+    "mathContext": "$\\text{generalCubicPoly}(a,b,c,d) = a X^3 + b X^2 + c X + d \\in \\mathbb{C}[X]$, with $\\text{eval}_x = \\text{generalCubicEval}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Polynomial ℂ", "eval homomorphism", "noncomputable polynomial construction"],
+    "prerequisites": ["the polynomial ring ℂ[X]", "polynomial evaluation"]
   },
   {
     "id": "ann-soc-oq0104-funext",
@@ -19,17 +53,25 @@
     },
     "type": "technique",
     "title": "Lifting an Evaluation Identity to a Polynomial Identity",
-    "content": "The parent proved generalCubicEval_shift as an equality of functions ℂ → ℂ. To talk about root multisets and factorizations we need an equality of actual polynomials: generalCubicPoly.comp (X - C (b/3a)) = C a · depressedCubic. Polynomial.funext supplies the bridge — over an infinite field, two polynomials agreeing at every point are equal — so the polynomial identity follows by checking eval at an arbitrary x and invoking the parent's evaluation identity. This 'evaluate, then funext' pattern is the clean way to reuse pointwise algebra at the level of polynomials."
+    "content": "The parent proved generalCubicEval_shift as an equality of functions ℂ → ℂ. To talk about root multisets and factorizations we need an equality of actual polynomials: generalCubicPoly.comp (X - C (b/3a)) = C a · depressedCubic. Polynomial.funext supplies the bridge — over an infinite field, two polynomials agreeing at every point are equal — so the polynomial identity follows by checking eval at an arbitrary x and invoking the parent's evaluation identity. This 'evaluate, then funext' pattern is the clean way to reuse pointwise algebra at the level of polynomials.",
+    "mathContext": "$\\text{generalCubicPoly}\\circ(X - \\tfrac{b}{3a}) = C_a \\cdot \\text{depressedCubic}$ in $\\mathbb{C}[X]$, obtained from the pointwise identity because $\\mathbb{C}$ is infinite.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.funext", "infinite integral domain", "function vs polynomial equality", "lifting pointwise identities"],
+    "prerequisites": ["polynomials over an infinite field", "the parent's evaluation identity generalCubicEval_shift"]
   },
   {
     "id": "ann-soc-oq0104-bijection-factorization",
     "proofId": "solution-of-cubic-oq-01-oq-04",
     "range": {
       "startLine": 119,
-      "endLine": 178
+      "endLine": 180
     },
     "type": "insight",
     "title": "From Multiset Bijection to Factorization: the Leading Coefficient is All That is Forgotten",
-    "content": "The multiset bijection generalCubicPoly_roots = depressedCubic.roots.map (· - b/(3a)) comes from cancelling the constant factor C a (roots_C_mul) on the composed polynomial and inverting the shift. The factorization generalCubicPoly = C a · ∏ (X - C (t - b/(3a))) then restores exactly that forgotten factor: over the algebraically closed field ℂ the cubic splits, so C_leadingCoeff_mul_prod_multiset_X_sub_C writes it as its leading coefficient (= a, with natDegree 3) times the product of its linear factors, and substituting the root multiset gives the shifted depressed factors. Root multiset and factorization thus carry the same information up to the scalar a."
+    "content": "The multiset bijection generalCubicPoly_roots = depressedCubic.roots.map (· - b/(3a)) comes from cancelling the constant factor C a (roots_C_mul) on the composed polynomial and inverting the shift. The factorization generalCubicPoly = C a · ∏ (X - C (t - b/(3a))) then restores exactly that forgotten factor: over the algebraically closed field ℂ the cubic splits (IsAlgClosed.splits + splits_iff_card_roots), so C_leadingCoeff_mul_prod_multiset_X_sub_C writes it as its leading coefficient (= a, with natDegree 3) times the product of its linear factors, and substituting the root multiset gives the shifted depressed factors. Root multiset and factorization thus carry the same information up to the scalar a. The Part 4 sanity example recovers the parent's pointwise depressed↦general membership via Multiset.mem_map_of_mem.",
+    "mathContext": "$\\text{generalCubicPoly} = C_a \\cdot \\!\\!\\prod_{t \\in \\text{depressedCubic.roots}}\\!\\!\\big(X - (t - \\tfrac{b}{3a})\\big)$; the root multiset forgets only the leading coefficient $a$.",
+    "significance": "key",
+    "relatedConcepts": ["roots_C_mul", "C_leadingCoeff_mul_prod_multiset_X_sub_C", "algebraically closed field splitting", "leading coefficient", "Multiset.mem_map_of_mem"],
+    "prerequisites": ["splitting of polynomials over ℂ", "the root-multiset bijection", "leading coefficient and natDegree"]
   }
 ]

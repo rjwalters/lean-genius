@@ -8,7 +8,19 @@
     },
     "type": "concept",
     "title": "Module Header and Problem Setup",
-    "content": "The open question, posed by the parent $\\zeta(6)$ entry, asks for $\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$, the degree-8 even-zeta value, plus the ratio chain $\\zeta(2k)/\\pi^{2k}$. Euler's 1740 formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=4$ using $B_8 = -1/30$. Mathlib formalizes the underlying Hurwitz-zeta computation as `hasSum_zeta_nat`, but stops its packaged Bernoulli evaluations at $B_4$ — so the entry must first compute $B_6$ and then $B_8$."
+    "content": "The open question, posed by the parent $\\zeta(6)$ entry, asks for $\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$, the degree-8 even-zeta value, plus the ratio chain $\\zeta(2k)/\\pi^{2k}$. Euler's 1740 formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=4$ using $B_8 = -1/30$. Mathlib formalizes the underlying Hurwitz-zeta computation as `hasSum_zeta_nat`, but stops its packaged Bernoulli evaluations at $B_4$ — so the entry must first compute $B_6$ and then $B_8$.",
+    "mathContext": "$\\zeta(2k) = \\dfrac{(-1)^{k+1} B_{2k}(2\\pi)^{2k}}{2\\,(2k)!},\\qquad \\zeta(8)=\\dfrac{\\pi^8}{9450}\\ (k=4,\\ B_8=-\\tfrac{1}{30}).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Riemann zeta at even integers",
+      "Euler's formula for ζ(2k)",
+      "Bernoulli numbers",
+      "hasSum_zeta_nat"
+    ],
+    "prerequisites": [
+      "The parent ζ(6) / Basel lineage",
+      "Euler's closed form for ζ(2k)"
+    ]
   },
   {
     "id": "baseloq15-bernoulli-eight",
@@ -19,7 +31,19 @@
     },
     "type": "theorem",
     "title": "The Eighth Bernoulli Number B₈ = −1/30",
-    "content": "`bernoulli_eight` proves $B_8 = -1/30$. Mathlib packages `bernoulli'_two` $(=1/6)$ and `bernoulli'_four` $(=-1/30)$ but neither `bernoulli'_six` nor `bernoulli'_eight`, so we expand the defining recurrence $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$ over the range $k = 0,\\dots,7$. The odd terms $B_3 = B_5 = B_7 = 0$ come from `bernoulli'_eq_zero_of_odd`; the one value past Mathlib's packaging, $B_6 = 1/42$, is computed in-line from the range-6 recurrence; and the explicit binomials $\\binom{8}{1},\\dots,\\binom{8}{7} = 8,28,56,70,56,28,8$ are supplied to `norm_num`. Reaching $B_8$ thus unrolls the recurrence twice — the computational step the gallery adds over a pure Mathlib lookup."
+    "content": "`bernoulli_eight` proves $B_8 = -1/30$. Mathlib packages `bernoulli'_two` $(=1/6)$ and `bernoulli'_four` $(=-1/30)$ but neither `bernoulli'_six` nor `bernoulli'_eight`, so we expand the defining recurrence $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$ over the range $k = 0,\\dots,7$. The odd terms $B_3 = B_5 = B_7 = 0$ come from `bernoulli'_eq_zero_of_odd`; the one value past Mathlib's packaging, $B_6 = 1/42$, is computed in-line from the range-6 recurrence; and the explicit binomials $\\binom{8}{1},\\dots,\\binom{8}{7} = 8,28,56,70,56,28,8$ are supplied to `norm_num`. Reaching $B_8$ thus unrolls the recurrence twice — the computational step the gallery adds over a pure Mathlib lookup.",
+    "mathContext": "$B_n = 1 - \\sum_{k<n}\\binom{n}{k}\\dfrac{B_k}{n+1-k};\\quad B_6=\\tfrac{1}{42},\\ B_8=-\\tfrac{1}{30},\\ B_3=B_5=B_7=0.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bernoulli numbers recurrence",
+      "bernoulli'_eq_zero_of_odd",
+      "binomial coefficients",
+      "norm_num computation"
+    ],
+    "prerequisites": [
+      "Definition of Bernoulli numbers and their recurrence",
+      "Vanishing of odd Bernoulli numbers (n ≥ 3)"
+    ]
   },
   {
     "id": "baseloq15-zeta-eight",
@@ -30,7 +54,19 @@
     },
     "type": "theorem",
     "title": "The Value ζ(8) = π⁸/9450",
-    "content": "`tsum_one_div_nat_pow_eight` is the headline result $\\sum' n,\\ 1/n^8 = \\pi^8/9450$. It comes from `hasSum_one_div_nat_pow_eight`, the $k=4$ instance of `hasSum_zeta_nat`: substituting $B_8 = -1/30$ and $8! = 40320$ into $(-1)^5\\cdot 2^7\\cdot\\pi^8\\cdot B_8/8!$ gives $128\\cdot(1/30)/40320 = 1/9450$. `riemannZeta_eight_eq` records the same value for the analytically continued zeta, $\\zeta(8) = \\pi^8/9450$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`."
+    "content": "`tsum_one_div_nat_pow_eight` is the headline result $\\sum' n,\\ 1/n^8 = \\pi^8/9450$. It comes from `hasSum_one_div_nat_pow_eight`, the $k=4$ instance of `hasSum_zeta_nat`: substituting $B_8 = -1/30$ and $8! = 40320$ into $(-1)^5\\cdot 2^7\\cdot\\pi^8\\cdot B_8/8!$ gives $128\\cdot(1/30)/40320 = 1/9450$. `riemannZeta_eight_eq` records the same value for the analytically continued zeta, $\\zeta(8) = \\pi^8/9450$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`.",
+    "mathContext": "$\\sum_{n\\ge 1}\\dfrac{1}{n^8}=\\dfrac{(-1)^5\\,2^7\\,\\pi^8 B_8}{8!}=\\dfrac{128\\cdot\\tfrac{1}{30}}{40320}=\\dfrac{\\pi^8}{9450},\\qquad \\zeta(8)=\\dfrac{\\pi^8}{9450}.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Riemann zeta ζ(8)",
+      "hasSum_zeta_nat",
+      "riemannZeta_two_mul_nat",
+      "analytic continuation"
+    ],
+    "prerequisites": [
+      "bernoulli_eight (B₈ = −1/30)",
+      "Mathlib's hasSum_zeta_nat"
+    ]
   },
   {
     "id": "baseloq15-ratio",
@@ -41,6 +77,18 @@
     },
     "type": "theorem",
     "title": "Euler's π-free Ratio ζ(8)/ζ(2)⁴ = 24/175",
-    "content": "`tsum_eight_div_tsum_two_fourth` divides the even-zeta values: $\\zeta(8)/\\zeta(2)^4 = (\\pi^8/9450)/(\\pi^2/6)^4 = (\\pi^8/9450)/(\\pi^8/1296) = 1296/9450 = 24/175$. The $\\pi$ cancels entirely, leaving a rational determined only by the Bernoulli numbers $B_2 = 1/6$ and $B_8 = -1/30$. This continues the chain $\\zeta(4)/\\zeta(2)^2 = 2/5$ and $\\zeta(6)/\\zeta(2)^3 = 8/35$, the degree-8 link of the requested ratio chain."
+    "content": "`tsum_eight_div_tsum_two_fourth` divides the even-zeta values: $\\zeta(8)/\\zeta(2)^4 = (\\pi^8/9450)/(\\pi^2/6)^4 = (\\pi^8/9450)/(\\pi^8/1296) = 1296/9450 = 24/175$. The $\\pi$ cancels entirely, leaving a rational determined only by the Bernoulli numbers $B_2 = 1/6$ and $B_8 = -1/30$. This continues the chain $\\zeta(4)/\\zeta(2)^2 = 2/5$ and $\\zeta(6)/\\zeta(2)^3 = 8/35$, the degree-8 link of the requested ratio chain.",
+    "mathContext": "$\\dfrac{\\zeta(8)}{\\zeta(2)^4}=\\dfrac{\\pi^8/9450}{(\\pi^2/6)^4}=\\dfrac{1296}{9450}=\\dfrac{24}{175}\\in\\mathbb{Q}\\ (\\pi\\text{ cancels}).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ratios of even-zeta values",
+      "rationality of ζ(2k)/π^{2k}",
+      "Bernoulli numbers B₂, B₈",
+      "ζ(4)/ζ(2)² and ζ(6)/ζ(2)³ chain"
+    ],
+    "prerequisites": [
+      "ζ(8) = π⁸/9450 and ζ(2) = π²/6",
+      "Field arithmetic over ℝ"
+    ]
   }
 ]

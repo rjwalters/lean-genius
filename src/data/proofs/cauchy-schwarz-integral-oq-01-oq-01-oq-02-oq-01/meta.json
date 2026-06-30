@@ -124,7 +124,7 @@
   ],
   "conclusion": {
     "summary": "The `riesz_lp_surjective` axiom in the parent file is proved using Mathlib's existing infrastructure. The Rudin route via Radon-Nikodým is fully formalized: signed measure construction, RN derivative, Hölder extremizer bound, and Lp.induction extension.",
-    "implications": "This is a complete machine-verified proof of the Riesz representation theorem (surjectivity direction) for $L^p$ spaces with $1 < p < \\infty$ in Lean 4. The proof is elementary in structure, requiring no beyond-Mathlib infrastructure.",
+    "implications": "This is a complete formalization of the Riesz representation theorem (surjectivity direction) for $L^p$ spaces with $1 < p < \\infty$ in Lean 4, elementary in structure and requiring no beyond-Mathlib infrastructure. NOTE (2026-06-24, #28788): the formalization is not currently machine-checked — the file does not compile against the pinned v4.26.0 toolchain due to Mathlib API drift (53 errors); repair is tracked separately and the status has been downgraded to formalized until the build is green.",
     "openQuestions": [
       "Can the proof be generalized to sigma-finite measures without IsFiniteMeasure (would require localizing the argument)?",
       "Does the proof extend to complex-valued Lp spaces (Riesz representation for complex functionals)?"

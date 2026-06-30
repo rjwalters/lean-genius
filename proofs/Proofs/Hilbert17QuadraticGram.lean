@@ -323,4 +323,161 @@ theorem homogeneous_quadratic_psd_isSumSq (Q : MvPolynomial (Fin n) ℝ)
   obtain ⟨m, q, hq⟩ := posSemidef_matrixQuadratic_isSumSq hM
   exact ⟨m, q, hrepr.trans hq⟩
 
+/-! ## Affine homogenisation — the full `totalDegree ≤ 2` case
+
+Given an arbitrary `Q : MvPolynomial (Fin n) ℝ` with `totalDegree Q ≤ 2` that is
+positive semidefinite, we homogenise by one extra coordinate `x₀ = X 0`: each
+monomial `X^d` of `Q` (necessarily of degree `≤ 2`) is replaced by
+`x₀^{2 - deg d} · X^d`, lifted to `Fin (n+1)` via `Finsupp.cons`.  The result
+`homogenize Q` is a genuine *homogeneous* quadratic form in `n+1` variables.
+
+* `homogenize_isHomogeneous` — it really is homogeneous of degree 2;
+* `eval_cons_one_homogenize` — setting `x₀ = 1` recovers `Q` at the value level;
+* `homogenize_nonneg` — PSD transfers: on `{x₀ ≠ 0}` by a homogeneity scaling
+  identity, and at `x₀ = 0` by continuity (polynomial evaluation is continuous);
+* `affine_quadratic_psd_isSumSq` — feed the homogeneous theorem and dehomogenise
+  the resulting linear forms (`bind₁ (Fin.cons 1 X)`) back to affine forms in `n`
+  variables.  This is the full affine case of `quadratic_psd_is_sos_aux`. -/
+
+/-- Degree of a `Finsupp.cons`: the new head coordinate adds to the tail degree. -/
+lemma degree_cons (y : ℕ) (s : Fin n →₀ ℕ) :
+    (Finsupp.cons y s).degree = y + s.degree := by
+  rw [Finsupp.degree_eq_sum, Finsupp.degree_eq_sum, Fin.sum_univ_succ]
+  simp [Finsupp.cons_zero, Finsupp.cons_succ]
+
+/-- **Homogenisation by one extra coordinate.**  Each monomial `X^d` of `Q`
+    becomes `X 0 ^ (2 - deg d) · X^d`, the variables shifted up by one index via
+    `Finsupp.cons`.  For `totalDegree Q ≤ 2` every term lands in degree exactly 2. -/
+noncomputable def homogenize (Q : MvPolynomial (Fin n) ℝ) : MvPolynomial (Fin (n + 1)) ℝ :=
+  ∑ d ∈ Q.support, monomial (Finsupp.cons (2 - d.degree) d) (Q.coeff d)
+
+/-- For `totalDegree Q ≤ 2`, the homogenisation is homogeneous of degree 2. -/
+lemma homogenize_isHomogeneous (Q : MvPolynomial (Fin n) ℝ) (hQ : Q.totalDegree ≤ 2) :
+    (homogenize Q).IsHomogeneous 2 := by
+  apply IsHomogeneous.sum
+  intro d hd
+  apply isHomogeneous_monomial
+  rw [degree_cons]
+  have hdle : d.degree ≤ 2 := by
+    calc d.degree = d.sum (fun _ e => e) := rfl
+      _ ≤ Q.totalDegree := le_totalDegree hd
+      _ ≤ 2 := hQ
+  omega
+
+/-- **Scaling identity for homogeneous quadratics.**  For a homogeneous degree-2
+    polynomial, evaluation scales as `eval (c • x) p = c² · eval x p`. -/
+lemma eval_smul_homogeneous {m : ℕ} {p : MvPolynomial (Fin m) ℝ} (hp : p.IsHomogeneous 2)
+    (c : ℝ) (x : Fin m → ℝ) : eval (c • x) p = c ^ 2 * eval x p := by
+  conv_lhs => rw [p.as_sum]
+  conv_rhs => rw [p.as_sum]
+  rw [map_sum, map_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun d hd => ?_)
+  rw [eval_monomial, eval_monomial,
+      Finsupp.prod_fintype _ _ (fun i => pow_zero _),
+      Finsupp.prod_fintype _ _ (fun i => pow_zero _)]
+  have hdeg : d.degree = 2 := by
+    by_contra h; exact (mem_support_iff.mp hd) (hp.coeff_eq_zero h)
+  simp only [Pi.smul_apply, smul_eq_mul, mul_pow]
+  rw [Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_eq_sum, hdeg]
+  ring
+
+/-- **Setting `x₀ = 1` recovers `Q`** (value level): evaluating `homogenize Q` at
+    `Fin.cons 1 w` gives `eval w Q`.  The head factor `1 ^ (2 - deg d) = 1`
+    disappears and the shifted variables `X (j+1)` read off `w j`. -/
+lemma eval_cons_one_homogenize (Q : MvPolynomial (Fin n) ℝ) (w : Fin n → ℝ) :
+    eval (Fin.cons (1 : ℝ) w) (homogenize Q) = eval w Q := by
+  rw [homogenize, map_sum]
+  conv_rhs => rw [Q.as_sum, map_sum]
+  refine Finset.sum_congr rfl (fun d hd => ?_)
+  rw [eval_monomial, eval_monomial,
+      Finsupp.prod_fintype _ _ (fun i => pow_zero _),
+      Finsupp.prod_fintype _ _ (fun i => pow_zero _)]
+  congr 1
+  rw [Fin.prod_univ_succ]
+  simp [Finsupp.cons_zero, Finsupp.cons_succ, Fin.cons_zero, Fin.cons_succ]
+
+/-- PSD on the dense slice `{x₀ ≠ 0}`: rescale to `x₀ = 1` and use the scaling
+    identity together with `eval_cons_one_homogenize`. -/
+lemma homogenize_nonneg_pos {Q : MvPolynomial (Fin n) ℝ}
+    (hpsd : ∀ x : Fin n → ℝ, 0 ≤ eval x Q) (hQ : Q.totalDegree ≤ 2)
+    (y : Fin (n + 1) → ℝ) (hy : y 0 ≠ 0) : 0 ≤ eval y (homogenize Q) := by
+  set c := y 0 with hc
+  have hc0 : c ≠ 0 := hy
+  set w : Fin n → ℝ := fun j => y (Fin.succ j) * c⁻¹ with hw
+  have hyeq : y = c • (Fin.cons (1 : ℝ) w : Fin (n + 1) → ℝ) := by
+    funext i
+    refine Fin.cases ?_ ?_ i
+    · simp [Fin.cons_zero, hc]
+    · intro j
+      simp only [Pi.smul_apply, Fin.cons_succ, smul_eq_mul, hw]
+      field_simp
+  rw [hyeq, eval_smul_homogeneous (homogenize_isHomogeneous Q hQ),
+      eval_cons_one_homogenize]
+  exact mul_nonneg (sq_nonneg c) (hpsd w)
+
+/-- **PSD transfers to the homogenisation.**  If `Q` is PSD then so is
+    `homogenize Q` — nonnegativity holds on the dense set `x₀ ≠ 0`
+    (`homogenize_nonneg_pos`) and extends to `x₀ = 0` by continuity of polynomial
+    evaluation. -/
+lemma homogenize_nonneg {Q : MvPolynomial (Fin n) ℝ}
+    (hpsd : ∀ x : Fin n → ℝ, 0 ≤ eval x Q) (hQ : Q.totalDegree ≤ 2)
+    (y : Fin (n + 1) → ℝ) : 0 ≤ eval y (homogenize Q) := by
+  by_cases hy : y 0 = 0
+  · have hupd : Continuous fun t : ℝ => Function.update y 0 t :=
+      Continuous.update continuous_const 0 continuous_id
+    have hcont : Continuous fun t : ℝ => eval (Function.update y 0 t) (homogenize Q) :=
+      (MvPolynomial.continuous_eval (p := homogenize Q)).comp hupd
+    have htend : Filter.Tendsto (fun t : ℝ => eval (Function.update y 0 t) (homogenize Q))
+        (nhdsWithin 0 {0}ᶜ) (nhds (eval (Function.update y 0 (0 : ℝ)) (homogenize Q))) :=
+      (hcont.tendsto 0).mono_left nhdsWithin_le_nhds
+    have hpos : ∀ᶠ t in nhdsWithin (0 : ℝ) {0}ᶜ,
+        0 ≤ eval (Function.update y 0 t) (homogenize Q) := by
+      filter_upwards [self_mem_nhdsWithin] with t ht
+      refine homogenize_nonneg_pos hpsd hQ _ ?_
+      simpa using ht
+    have h0 : 0 ≤ eval (Function.update y 0 (0 : ℝ)) (homogenize Q) := ge_of_tendsto htend hpos
+    have hself : Function.update y 0 (0 : ℝ) = y := by
+      rw [← hy]; exact Function.update_eq_self 0 y
+    rwa [hself] at h0
+  · exact homogenize_nonneg_pos hpsd hQ y hy
+
+/-- `eval` of a `bind₁` substitution at `Fin.cons 1 X` equals evaluation at the
+    augmented point `Fin.cons 1 w`. -/
+lemma eval_cons_bind₁ (P : MvPolynomial (Fin (n + 1)) ℝ) (w : Fin n → ℝ) :
+    eval w (bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) P)
+      = eval (Fin.cons (1 : ℝ) w) P := by
+  have h := aeval_bind₁ w (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) P
+  simp only [aeval_eq_eval] at h
+  rw [h]
+  have hfun : (fun i => eval w
+        ((Fin.cons (1 : MvPolynomial (Fin n) ℝ) X : Fin (n + 1) → MvPolynomial (Fin n) ℝ) i))
+      = (Fin.cons (1 : ℝ) w : Fin (n + 1) → ℝ) := by
+    funext i
+    refine Fin.cases ?_ ?_ i
+    · simp [Fin.cons_zero]
+    · intro j; simp [Fin.cons_succ]
+  rw [hfun]
+
+/-- **Affine case of Hilbert 17 for quadratics, fully verified (0 axioms).**
+
+    Every positive-semidefinite polynomial `Q` of `totalDegree ≤ 2` in `n`
+    variables is an honest polynomial sum of squares — of *affine*-linear forms.
+    Homogenise to `homogenize Q` (a PSD homogeneous quadratic in `n+1`
+    variables), apply `homogeneous_quadratic_psd_isSumSq`, then dehomogenise the
+    linear forms by setting `X 0 = 1` (`bind₁ (Fin.cons 1 X)`). -/
+theorem affine_quadratic_psd_isSumSq (Q : MvPolynomial (Fin n) ℝ)
+    (hQ : Q.totalDegree ≤ 2) (hpsd : ∀ x : Fin n → ℝ, 0 ≤ eval x Q) :
+    ∃ (m : ℕ) (q : Fin m → MvPolynomial (Fin n) ℝ), Q = ∑ i, q i ^ 2 := by
+  obtain ⟨m, q, hq⟩ := homogeneous_quadratic_psd_isSumSq (homogenize Q)
+    (homogenize_isHomogeneous Q hQ) (homogenize_nonneg hpsd hQ)
+  have hdeh : bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) (homogenize Q) = Q := by
+    apply MvPolynomial.funext
+    intro w
+    rw [eval_cons_bind₁, eval_cons_one_homogenize]
+  refine ⟨m, fun k => bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) (q k), ?_⟩
+  calc Q = bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) (homogenize Q) := hdeh.symm
+    _ = bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) (∑ k, q k ^ 2) := by rw [hq]
+    _ = ∑ k, (bind₁ (Fin.cons (1 : MvPolynomial (Fin n) ℝ) X) (q k)) ^ 2 := by
+        rw [map_sum]; simp_rw [map_pow]
+
 end Hilbert17

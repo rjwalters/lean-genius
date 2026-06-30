@@ -111,12 +111,12 @@
   ],
   "crossReferences": [
     {
-      "targetId": "derangements-oq-03",
+      "proofId": "derangements-oq-03",
       "relationship": "extends",
       "description": "Supplies the matrix-probability meaning of the parent's analytic result: the parent proves |D(n)/n! - 1/e| ≤ 1/(n+1)! and D(n)/n! → 1/e; this entry identifies D(n)/n! as the probability that a uniformly random n×n permutation matrix is a derangement matrix (zero diagonal)."
     },
     {
-      "targetId": "derangements",
+      "proofId": "derangements",
       "relationship": "depends-on",
       "description": "Uses the derangement counting numDerangements n = card (derangements (Fin n)) and the definition of derangements as fixed-point-free permutations."
     }

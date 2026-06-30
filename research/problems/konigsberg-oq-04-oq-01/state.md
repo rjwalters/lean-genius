@@ -1,9 +1,43 @@
 # Current State
 
-**Phase**: ACT (S2 — base-case Lean oracle)
+**Phase**: ACT — **M1a-i PROVED** (oriented incidence ⇒ Laplacian); M1a-ii (Cauchy–Binet) + M2 (Tutte) remain
 **Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 2
-**Last Updated**: 2026-06-15 (researcher-1, **S2 ACT** — Lean transcription of the S1 cert's determinant anchors)
+**Iteration**: 4
+**Last Updated**: 2026-06-28 (researcher-1, **S4 ACT** — proved `incidence_mul_transpose : B Bᵀ = D − A` + K₃ bridge, 0-axiom host-verified)
+
+## S4 ACT (researcher-1, 2026-06-28) — M1a-i proved, host-verified 0-axiom
+
+Turned the Insight-5 substrate gap into a machine-checked theorem. Extended the
+(previously oracle-only) `proofs/Proofs/KonigsbergOQ04OQ01MatrixTree.lean` with a new
+`IncidenceLaplacian` section:
+- `incidence head tail : Matrix V E ℤ` — the **signed** oriented incidence matrix Mathlib
+  lacks (its `incMatrix` is unsigned). Multigraph presented by `head tail : E → V`.
+- `incidence_mul_transpose : incidence head tail * (incidence head tail)ᵀ = lap head tail`
+  for loopless multigraphs, where `lap = D − A` (degree diag, `−`edge-multiplicity off-diag).
+  Entrywise proof (diag `(a−b)²=a+b`; off-diag four-way indicator split). This is exactly
+  Mathlib's `IncMatrix.lean:42` future-work TODO ("graph Laplacian via oriented incidence").
+- `k3_incidence_mul_transpose` — concrete K₃ bridge: `B Bᵀ = [[2,−1,−1],[−1,2,−1],[−1,−1,2]]`,
+  reduced cofactor det 3 = the existing `spanningTreeCofactor_K3` oracle.
+
+Host-verified (`lake env lean`, EXIT 0, no warnings); `#print axioms` =
+`propext/Classical.choice/Quot.sound` only (no `sorryAx`, no `native_decide`/`ofReduceBool`).
+Also confirmed the pre-existing base-case oracle compiles (it was tagged "build-pending"
+but is in fact registered in `Proofs.lean:3454` and passes).
+
+**Does NOT discharge the parent axiom.** M1 now reduces to **M1a-ii Cauchy–Binet** (still
+absent upstream) over the now-available `incidence`; the BEST path still needs **M2**.
+
+## S3 ACT (researcher-10, 2026-06-27) — build-free bearer refresh
+
+Re-surveyed the pinned Mathlib **v4.26.0** (`proofs/.lake/packages/mathlib`). The
+2026-06-14 gap is unchanged: Cauchy-Binet, Kirchhoff/Matrix-Tree, and a directed
+Laplacian are all still ABSENT; `lapMatrix` still exposes only `det_lapMatrix_eq_zero`.
+**Sharper finding (knowledge.md Insight 5):** Mathlib's `incMatrix` is *unsigned*, so
+`incMatrix_mul_transpose` yields `N Nᵀ = D + A` (signless Laplacian), not the
+`B Bᵀ = D − A = lapMatrix` the classical proof needs. Hence M1a splits into
+(i) build an oriented incidence `B` with `B Bᵀ = lapMatrix` (no upstream object) and
+(ii) Cauchy-Binet over `B`. The base-case Lean oracle (S2) and the numeric cert remain
+the durable, build-free surface; full M1/M2 transcription is still Docker-gated.
 
 ## S2 ACT (researcher-1, 2026-06-15) — build-pending
 

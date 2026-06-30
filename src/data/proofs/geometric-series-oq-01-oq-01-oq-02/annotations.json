@@ -1,26 +1,62 @@
 [
   {
+    "id": "ann-gs-header",
+    "proofId": "geometric-series-oq-01-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 26 },
+    "type": "context",
+    "title": "Euler's Divergent Series and Abel Summation",
+    "content": "Euler's series 1 − 2 + 3 − 4 + ⋯ is the term-by-term derivative of Grandi's series 1 − 1 + 1 − 1 + ⋯ (the parent entry). Both diverge in the ordinary sense; Euler assigned this one the value 1/4 by setting x = 1 in ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)². Abel's method makes that rigorous via the radial boundary limit. The value 1/4 = η(−1), tied to ζ(−1) = −1/12 through η(s) = (1 − 2¹⁻ˢ)ζ(s).",
+    "mathContext": "$1 - 2 + 3 - 4 + \\cdots$ diverges, yet its Abel sum is $\\lim_{x\\to 1^-} \\sum_n (-1)^n (n+1) x^n = \\tfrac14 = \\eta(-1)$.",
+    "significance": "context",
+    "relatedConcepts": ["Grandi's series", "Abel summation", "Dirichlet eta function", "divergent series", "ζ(−1)"],
+    "prerequisites": ["power series", "divergent-series summation methods"]
+  },
+  {
     "id": "ann-closed-form",
     "proofId": "geometric-series-oq-01-oq-01-oq-02",
-    "range": {
-      "startLine": 35,
-      "endLine": 66
-    },
+    "range": { "startLine": 31, "endLine": 56 },
     "type": "insight",
     "title": "The Differentiated Geometric Series Without Calculus",
-    "content": "hasSum_alt_nat builds the closed form ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² by addition rather than differentiation. Setting y = −x (with ‖y‖ = |x| < 1), it adds two Mathlib sums: ∑ n·yⁿ = y/(1−y)² (hasSum_coe_mul_geometric_of_norm_lt_one) and ∑ yⁿ = 1/(1−y) (hasSum_geometric_of_norm_lt_one). The combined general term is n·yⁿ + yⁿ = (n+1)yⁿ and the combined value is y/(1−y)² + 1/(1−y) = 1/(1−y)². Rewriting yⁿ = (−1)ⁿxⁿ (neg_pow) and 1−y = 1+x gives HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²); alt_nat_power_series is the tsum form.",
-    "mathContext": "∑ (n+1) yⁿ = 1/(1−y)² is the derivative of the geometric series, obtained here purely by summation."
+    "content": "hasSum_alt_nat builds the closed form ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² by addition rather than differentiation. Setting y = −x (with ‖y‖ = |x| < 1), it adds two Mathlib sums: ∑ n·yⁿ = y/(1−y)² (hasSum_coe_mul_geometric_of_norm_lt_one) and ∑ yⁿ = 1/(1−y) (hasSum_geometric_of_norm_lt_one). The combined general term is n·yⁿ + yⁿ = (n+1)yⁿ and the combined value is y/(1−y)² + 1/(1−y) = 1/(1−y)². Rewriting yⁿ = (−1)ⁿxⁿ (neg_pow) and 1−y = 1+x gives HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²).",
+    "mathContext": "$\\sum_n (n+1) y^n = \\frac{1}{(1-y)^2}$ at $y=-x$, i.e. $\\sum_n (-1)^n(n+1)x^n = \\frac{1}{(1+x)^2}$ — the derivative of the geometric series, obtained purely by summation.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series derivative", "HasSum", "hasSum_coe_mul_geometric_of_norm_lt_one", "neg_pow"],
+    "prerequisites": ["summability (HasSum)", "geometric series", "field_simp/ring"]
+  },
+  {
+    "id": "ann-tsum",
+    "proofId": "geometric-series-oq-01-oq-01-oq-02",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "theorem",
+    "title": "The tsum Closed Form",
+    "content": "alt_nat_power_series is the tsum_eq of hasSum_alt_nat: ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x| < 1. Passing from HasSum to tsum is what lets the next step take a limit of the scalar-valued function x ↦ ∑'ₙ … rather than reasoning about summability families.",
+    "mathContext": "$\\sum'_n (-1)^n(n+1)x^n = (1+x)^{-2}$ for $|x| < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["tsum", "HasSum.tsum_eq", "unconditional convergence"],
+    "prerequisites": ["tsum vs. HasSum"]
   },
   {
     "id": "ann-abel-limit",
     "proofId": "geometric-series-oq-01-oq-01-oq-02",
-    "range": {
-      "startLine": 68,
-      "endLine": 91
-    },
+    "range": { "startLine": 62, "endLine": 80 },
     "type": "insight",
     "title": "The Abel Sum Is the Boundary Value 1/4",
-    "content": "abel_tendsto_quarter reads Euler's series as the radial boundary value of 1/(1+x)². On a left-neighborhood of 1 (filter_upwards over 𝓝[<]1, where x < 1 and eventually x > −1 force |x| < 1) the tsum equals 1/(1+x)², so tendsto_congr' transfers the limit; then lim_{x→1} 1/(1+x)² = 1/(1+1)² = 1/4 follows from Tendsto.inv₀ applied to x ↦ (1+x)² → 4. Hence 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4, the value Euler assigned and the one matching η(−1).",
-    "mathContext": "The radial boundary limit of 1/(1+x)² at x = 1 is 1/4, the Abel sum of Euler's series."
+    "content": "abel_tendsto_quarter reads Euler's series as the radial boundary value of 1/(1+x)². On a left-neighborhood of 1 (filter_upwards over 𝓝[<]1, where x < 1 and eventually x > −1 force |x| < 1) the tsum equals 1/(1+x)², so tendsto_congr' transfers the limit; then lim_{x→1} 1/(1+x)² = 1/(1+1)² = 1/4 follows from Tendsto.inv₀ applied to x ↦ (1+x)² → 4. The subtlety is purely the eventual-membership bookkeeping that keeps |x| < 1 on the approach to the boundary.",
+    "mathContext": "$\\lim_{x\\to 1^-} (1+x)^{-2} = \\tfrac14$; transferred to $\\sum'_n (-1)^n(n+1)x^n$ via agreement on $\\mathcal{N}[<]1$.",
+    "significance": "key",
+    "relatedConcepts": ["radial boundary limit", "nhdsWithin", "tendsto_congr'", "Filter.Tendsto.inv₀"],
+    "prerequisites": ["filters and nhdsWithin", "continuity of inversion"]
+  },
+  {
+    "id": "ann-package",
+    "proofId": "geometric-series-oq-01-oq-01-oq-02",
+    "range": { "startLine": 81, "endLine": 107 },
+    "type": "concept",
+    "title": "Packaging and the η(−1) Connection",
+    "content": "abel_value_quarter packages the conclusion: 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4. The closing remarks situate 1/4 = η(−1) within the analytic continuation of the Dirichlet eta function, η(s) = (1 − 2¹⁻ˢ)ζ(s), connecting this elementary, fully-verified real-analysis computation to the celebrated ζ(−1) = −1/12. Everything stays inside elementary summability — no native_decide, no axioms.",
+    "mathContext": "$1 - 2 + 3 - 4 + \\cdots \\overset{A}{=} \\tfrac14 = \\eta(-1)$, with $\\eta(s) = (1 - 2^{1-s})\\zeta(s)$ giving $\\zeta(-1) = -\\tfrac{1}{12}$.",
+    "significance": "context",
+    "relatedConcepts": ["Dirichlet eta function", "analytic continuation", "ζ(−1) = −1/12", "Abel summability"],
+    "prerequisites": ["Abel summation conclusion"]
   }
 ]

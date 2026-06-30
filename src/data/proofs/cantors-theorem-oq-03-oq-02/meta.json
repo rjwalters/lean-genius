@@ -1,0 +1,198 @@
+{
+  "id": "cantors-theorem-oq-03-oq-02",
+  "title": "The Diagonal Argument for Higher-Order Types",
+  "slug": "cantors-theorem-oq-03-oq-02",
+  "description": "Answers OQ-03's open question OQ-02: extending the fixed-point-free diagonal to a higher-order codomain (α → β) → γ requires a strictly augmented structural condition. The relevant fixed-point-free endomorphism is post-composition postcomp g = (g ∘ ·), and the core theorem characterizes exactly when it is fixed-point-free: iff the function domain (α → β) is inhabited AND g is fixed-point-free on the output type γ. The inhabitation hypothesis is genuinely new (absent at the base level) and necessary — when (α → β) is empty the codomain collapses to a singleton and the diagonal fails. Feeding the characterization into Lawvere's engine yields a higher-order Cantor/Lawvere theorem.",
+  "meta": {
+    "author": "Lawvere (1969); formalized here as a follow-up to cantors-theorem-oq-03",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "1969",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorsTheoremOQ03OQ02.lean",
+    "tags": [
+      "set-theory",
+      "diagonal-argument",
+      "fixed-point",
+      "lawvere-theorem",
+      "higher-order",
+      "non-enumerability",
+      "cartesian-closed",
+      "generalization",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Function.Surjective",
+        "description": "Surjective functions: ∀ b, ∃ a, f a = b",
+        "module": "Mathlib.Logic.Function.Basic"
+      },
+      {
+        "theorem": "congrFun",
+        "description": "Function extensionality: h : f = g → f a = g a",
+        "module": "Lean core"
+      },
+      {
+        "theorem": "isEmptyElim",
+        "description": "Elimination from an empty type: produces any goal from a term of an IsEmpty type",
+        "module": "Mathlib.Logic.IsEmpty"
+      },
+      {
+        "theorem": "not_nonempty_iff",
+        "description": "¬Nonempty α ↔ IsEmpty α, bridging non-inhabitation and emptiness",
+        "module": "Mathlib.Logic.IsEmpty"
+      }
+    ],
+    "originalContributions": [
+      "postcomp: post-composition endomorphism (g ∘ ·) on a function type X → γ as the canonical lift of an output-type map to a higher-order type",
+      "postcomp_fixedPointFree_iff: CORE characterization — postcomp g is fixed-point-free iff Nonempty X ∧ (g fixed-point-free); splits the single base-level condition into output-freeness plus domain inhabitation",
+      "postcomp_has_fixedPoint_of_isEmpty: on an empty domain post-composition always has a fixed point (the empty function), the obstruction distinguishing higher-order from base-level diagonals",
+      "higher_order_cantor: no f : ι → (ι → ((α → β) → γ)) is surjective when (α → β) is inhabited and g : γ → γ is fixed-point-free",
+      "higher_order_lawvere: positive form — a surjection forces every g : γ → γ to have a fixed point",
+      "subsingleton_codomain_of_isEmpty / surjection_exists_of_isEmpty_domain: necessity of the inhabitation hypothesis — an empty domain makes the codomain a singleton and a surjection exists, so the diagonal genuinely fails",
+      "cantor_higherOrder_bool / cantor_higherOrder_prop: concrete second-order instances over (ℕ → Bool) → Bool and (ℕ → Prop) → Prop"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 195,
+    "prerequisites": [
+      "Lawvere's fixed-point theorem (cantors-theorem-oq-03, Level 1)",
+      "Function types as exponential objects; post-composition",
+      "Empty / inhabited types (IsEmpty, Nonempty, Subsingleton)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cantors-theorem-oq-03",
+        "relationship": "Parent — proves the Level-1/Level-3 diagonal hierarchy and poses this open question"
+      },
+      {
+        "id": "cantors-theorem-oq-02",
+        "relationship": "Grandparent — formalizes Lawvere's FPT (the base-level condition being generalized)"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Lawvere's 1969 fixed-point theorem unifies the diagonal arguments of Cantor, Russell, and Gödel: in a cartesian closed category, a point-surjective morphism A → Y^A forces every endomorphism of Y to have a fixed point. The base-level condition for non-surjectivity is therefore 'Y admits a fixed-point-free endomorphism'. The parent entry (OQ-03) formalizes this Level-1 statement together with the König/coordinate hierarchy, and asks what happens when the codomain Y is itself a function type (α → β) → γ.",
+    "problemStatement": "**Open Question (cantors-theorem-oq-03, OQ-02)**: Can the fixed-point-free characterization be extended to higher-order types — does the diagonal argument for (α → β) → γ require a different structural condition than g : β → β with no fixed point?\n\n**Answer**: YES, a strictly augmented condition. For the higher-order codomain T = (α → β) → γ, the natural fixed-point-free endomorphism is post-composition postcomp g = (g ∘ ·). It is fixed-point-free precisely when the *function domain* (α → β) is inhabited AND g is fixed-point-free on the *output* type γ. The inhabitation requirement is the genuinely new ingredient — at the base level (codomain a plain type) it is vacuous, but here it is necessary: an empty domain collapses T to a singleton and the diagonal fails.",
+    "proofStrategy": "**Part I**: A self-contained statement of Lawvere's Level-1 engine: a fixed-point-free g : β → β obstructs surjectivity of f : α → (α → β).\n\n**Part II (core)**: Define postcomp g on X → γ and prove postcomp_fixedPointFree_iff — fixed-point-freeness ⟺ Nonempty X ∧ (g fixed-point-free). Forward: an empty domain yields the empty function as a fixed point, and a fixed point of g yields a constant fixed point; backward: evaluate g ∘ h = h at any point of X.\n\n**Part III**: Specialize X := (α → β) and feed the lifted fixed-point-free map into the Level-1 engine to obtain higher_order_cantor and its positive dual higher_order_lawvere.\n\n**Part IV**: Show the inhabitation hypothesis is necessary — when (α → β) is empty the codomain is a subsingleton and an explicit constant surjection exists.\n\n**Part V**: Instantiate over (ℕ → Bool) → Bool (negation) and (ℕ → Prop) → Prop (logical negation).",
+    "keyInsights": [
+      "The higher-order diagonal does NOT need a fixed-point-free map on the whole codomain (α → β) → γ; it suffices to dodge in the OUTPUT type γ and lift by post-composition",
+      "The base-level condition splits into TWO at higher order: (i) g fixed-point-free on γ, plus (ii) the function domain (α → β) inhabited — and (ii) is the genuinely new requirement",
+      "The inhabitation hypothesis is not a technicality: when (α → β) is empty, (α → β) → γ is a singleton, every endomorphism has a fixed point, and a surjection ι → (ι → singleton) exists, so the diagonal provably fails",
+      "postcomp_fixedPointFree_iff is an exact iff, so it simultaneously gives the positive Lawvere direction (surjection ⟹ fixed point) and pins down precisely when the diagonal succeeds"
+    ],
+    "prerequisites": [
+      "Lawvere's fixed-point theorem and the diagonal hierarchy (cantors-theorem-oq-03)",
+      "Cartesian closed structure: function types, post-composition",
+      "Inhabited vs. empty types (Nonempty, IsEmpty, Subsingleton)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction: The Higher-Order Question",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "States OQ-02 and the answer: the higher-order codomain (α → β) → γ requires the augmented condition 'g fixed-point-free on output + domain inhabited', realized via post-composition.",
+      "mathContext": "For T = (α → β) → γ, the relevant endomorphism is $\\text{postcomp}\\,g = (g \\circ -)$, fixed-point-free iff the domain is inhabited and $g$ is fixed-point-free."
+    },
+    {
+      "id": "lawvere-engine",
+      "title": "Part I: The Lawvere Diagonal Engine",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "Self-contained Level-1 Lawvere theorem: a fixed-point-free g : β → β obstructs surjectivity of f : α → (α → β).",
+      "mathContext": "If $g(b) \\neq b$ for all $b$ and $f$ were surjective, the diagonal $d(x) = g(f(x)(x))$ would force $f(a)(a) = g(f(a)(a))$, a fixed point of $g$."
+    },
+    {
+      "id": "postcomp-characterization",
+      "title": "Part II: Post-Composition Fixed-Point-Free Characterization",
+      "startLine": 86,
+      "endLine": 134,
+      "summary": "Core result: postcomp g on X → γ is fixed-point-free iff Nonempty X ∧ (g fixed-point-free). Plus the empty-domain obstruction.",
+      "mathContext": "$\\forall h,\\ g \\circ h \\neq h \\iff \\text{Nonempty}\\,X \\wedge \\forall c,\\ g(c) \\neq c$. Empty $X$ ⟹ the empty function is a fixed point."
+    },
+    {
+      "id": "higher-order-cantor",
+      "title": "Part III: Higher-Order Cantor / Lawvere",
+      "startLine": 135,
+      "endLine": 159,
+      "summary": "Feeding the characterization into the engine: no surjection ι → (ι → ((α → β) → γ)) when the domain is inhabited and g is fixed-point-free; dual positive form.",
+      "mathContext": "Inhabited $(\\alpha \\to \\beta)$ and fixed-point-free $g : \\gamma \\to \\gamma$ ⟹ no $f : \\iota \\to (\\iota \\to ((\\alpha \\to \\beta) \\to \\gamma))$ is surjective."
+    },
+    {
+      "id": "necessity",
+      "title": "Part IV: Necessity of the Inhabitation Hypothesis",
+      "startLine": 160,
+      "endLine": 180,
+      "summary": "When (α → β) is empty the codomain is a subsingleton and an explicit surjection exists — the diagonal fails, so inhabitation is essential.",
+      "mathContext": "$\\text{IsEmpty}(\\alpha \\to \\beta) \\Rightarrow (\\alpha \\to \\beta) \\to \\gamma$ is a subsingleton, and a constant $f$ is surjective onto $\\iota \\to (\\text{singleton})$."
+    },
+    {
+      "id": "instances",
+      "title": "Part V: Concrete Higher-Order Instances",
+      "startLine": 181,
+      "endLine": 195,
+      "summary": "Second-order Cantor over (ℕ → Bool) → Bool (negation) and (ℕ → Prop) → Prop (logical negation).",
+      "mathContext": "Boolean and propositional negation are the fixed-point-free output maps; $\\mathbb{N} \\to \\text{Bool}$ and $\\mathbb{N} \\to \\text{Prop}$ are inhabited by constants."
+    }
+  ],
+  "conclusion": {
+    "summary": "Extending Lawvere's diagonal from a base-type codomain to a higher-order codomain (α → β) → γ requires an augmented structural condition. The fixed-point-free endomorphism is post-composition postcomp g = (g ∘ ·), and it is fixed-point-free exactly when the function domain is inhabited AND g is fixed-point-free on the output type. This yields a higher-order Cantor/Lawvere theorem, and the new inhabitation hypothesis is proved necessary.",
+    "significance": "Gives a precise, fully verified (0 axioms, 0 sorries) answer to the parent's open question: the higher-order diagonal does need a different condition, and the difference is exactly one extra clause — inhabitation of the function domain — which is vacuous at the base level but essential here.",
+    "implications": "The post-composition lift identifies the categorical mechanism by which Lawvere's theorem propagates through exponential objects: dodging in the output object and lifting by (g ∘ -). The exact iff characterization isolates inhabitation of the function domain as the sole new obstruction, suggesting that in a cartesian closed category the fixed-point property transports along Y ↦ X ⇒ Y precisely when X has a global point.",
+    "openQuestions": [
+      "Does the post-composition lift compose across towers ((α → β) → γ) → δ, and does each additional arrow add exactly one inhabitation clause?",
+      "Is there a fixed-point-free endomorphism of (α → β) → γ that is NOT of post-composition form, and if so does it require a strictly weaker condition than 'g fixed-point-free on γ'?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantors-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Answers OQ-03's open question OQ-02 on extending the fixed-point-free characterization to higher-order types"
+    },
+    {
+      "targetId": "cantors-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Lifts Lawvere's Level-1 fixed-point theorem (the base-level condition) to a function-type codomain"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "generalizes",
+      "description": "Cantor's |A| < |P(A)| is the base case; here the codomain is itself a function space"
+    }
+  ],
+  "references": [
+    {
+      "text": "Lawvere, F.W. (1969). Diagonal Arguments and Cartesian Closed Categories. Lecture Notes in Mathematics 92, 134-145.",
+      "url": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem"
+    },
+    {
+      "text": "Yanofsky, N.S. (2003). A Universal Approach to Self-Referential Paradoxes, Incompleteness and Fixed Points.",
+      "url": "https://arxiv.org/abs/math/0305282"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 195,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "lemmaCount": 0,
+    "definitionCount": 1,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "path": "Proofs/CantorsTheoremOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

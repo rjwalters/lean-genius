@@ -41,6 +41,47 @@
     ]
   },
   {
+    "id": "ann-pent03-roots-pairing",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-03",
+    "range": { "startLine": 134, "endLine": 150 },
+    "type": "key-step",
+    "title": "Explicit discriminant roots and the ±k pairing straddling 10k",
+    "content": "Where isGenHept_iff_isSquare only asserts existence of a square root, disc_genHept and disc_genHept_neg name it: 40·h(k)+9=(10k−3)² and 40·h(−k)+9=(10k+3)², each by linear_combination 20·two_mul_genHept. The two roots 10k−3 and 10k+3 are symmetric about 10k, the heptagonal mirror of the pentagonal 6k∓1 about 6k. The ±k pairing is recorded in two forms: genHept_neg (h(−k)=h(k)+3k, from 2h(−k)−2h(k)=6k) and the symmetric sum genHept_add_neg (h(k)+h(−k)=5k², from 2(h(k)+h(−k))=10k² and mul_left_cancel₀). This 5k² sum is the heptagonal analogue of the pentagonal g(k)+g(−k)=3k², with the coefficient s−2 tracking the polygon.",
+    "mathContext": "$40h(k)+9=(10k-3)^2$, $40h(-k)+9=(10k+3)^2$; $h(-k)=h(k)+3k$ and $h(k)+h(-k)=5k^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "discriminant roots",
+      "completing the square",
+      "symmetry of the ±k index",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "the doubling relation 2h(k)=k(5k−3)",
+      "the pentagonal 6k∓1 roots"
+    ]
+  },
+  {
+    "id": "ann-pent03-structure",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-03",
+    "range": { "startLine": 152, "endLine": 188 },
+    "type": "technique",
+    "title": "Structural facts: nonnegativity, injectivity, and sanity values",
+    "content": "isGenHept_nonneg shows every generalized heptagonal number is ≥ 0 by proving k(5k−3) ≥ 0 with a sign case split (for k ≤ 0 rewrite as (−k)(3−5k), a product of nonnegatives; for k > 0 both factors are nonnegative). genHept_injective shows k ↦ h(k) is injective: from h(a)=h(b) the doubling relation gives (a−b)(5(a+b)−3)=0, and the second factor 5(a+b)−3 can never vanish over ℤ (it is ≡ 2 mod 5), so a=b — this is what makes the index well-defined for recognition. The sanity values h(0,1,−1,2,−2)=0,1,4,7,13 (each closed by the doubling relation plus omega) match OEIS A085787 and confirm the ±k asymmetry h(−k)=h(k)+3k.",
+    "mathContext": "$k(5k-3)\\ge 0$ for all $k\\in\\mathbb{Z}$; $h(a)=h(b)\\Rightarrow (a-b)(5(a+b)-3)=0\\Rightarrow a=b$; $h(0,1,-1,2,-2)=0,1,4,7,13$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonnegativity",
+      "injectivity",
+      "case analysis on sign",
+      "OEIS A085787"
+    ],
+    "prerequisites": [
+      "the doubling relation",
+      "factoring over ℤ",
+      "the omega tactic"
+    ]
+  },
+  {
     "id": "ann-pent03-general",
     "proofId": "pentagonal-number-theorem-oq-01-oq-03",
     "range": { "startLine": 190, "endLine": 202 },

@@ -1,46 +1,77 @@
 [
   {
-    "id": "ann-pair-examples",
-    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
-    "range": {
-      "startLine": 51,
-      "endLine": 68
-    },
-    "type": "insight",
-    "title": "Composite Coprime Moduli Without native_decide",
-    "content": "crt_17_mod_20 (4·5), crt_135_mod_143 (11·13), and crt_8_mod_15 (3·5) are each a single application of the sibling's crt_pair_iff. The four side conditions — Coprime of the two moduli, the witness below the product, and the two residue computations N % m = a, N % n = b — are kernel `decide` (the gcd and modular reductions are ordinary kernel computation, not native code), and the range hypothesis x < (product) is definitionally the required x < m·n. Because the proofs are instances of crt_pair_iff, they inherit its axiom profile {propext, Classical.choice, Quot.sound} for free — no Lean.ofReduceBool. crt_8_mod_15 is the kernel-checked counterpart of the native_decide example_8_mod3_mod5 in the list-based sibling ...OQ04OQ02."
-  },
-  {
-    "id": "ann-triple-certificate",
-    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
-    "range": {
-      "startLine": 79,
-      "endLine": 99
-    },
-    "type": "insight",
-    "title": "Folding in a Third Modulus",
-    "content": "crt_triple_iff extends crt_pair_iff by one fold. Forward: each residue equation x % mᵢ = aᵢ becomes a congruence x ≡ N [MOD mᵢ] (Nat.ModEq unfolds to x % mᵢ = N % mᵢ, closed by omega using the literal residue of N). Nat.modEq_and_modEq_iff_modEq_mul combines m and n into m·n; to fold in p one needs Coprime (m·n) p, supplied by Nat.Coprime.mul_left from Coprime m p and Coprime n p. A second application gives x ≡ N modulo m·n·p, and Nat.mod_eq_of_lt on both x and N (both below the product) collapses it to x = N. The reverse direction is just the three residues of N. Only kernel omega is used — no native_decide."
-  },
-  {
-    "id": "ann-triple-example",
-    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
-    "range": {
-      "startLine": 105,
-      "endLine": 108
-    },
-    "type": "concept",
-    "title": "Three Composite Moduli at Once",
-    "content": "crt_11_mod_60 instantiates crt_triple_iff on the pairwise-coprime composite range 60 = 3·4·5: over 0 ≤ x < 60, (x ≡ 2 mod 3 ∧ x ≡ 3 mod 4 ∧ x ≡ 1 mod 5) ↔ x = 11. The seven side conditions (three pairwise coprimalities, the witness bound, three residues) are all kernel decide. This is the three-modulus analogue of the sibling's pair examples and the next rung toward a fully list-indexed CRT certificate."
-  },
-  {
     "id": "ann-axiom-free",
     "proofId": "chinese-remainder-constructive-oq-05-oq-01",
     "range": {
       "startLine": 1,
       "endLine": 44
     },
-    "type": "concept",
+    "type": "context",
     "title": "Axiom Profile Confirmed",
-    "content": "#print axioms on all five theorems (crt_17_mod_20, crt_135_mod_143, crt_8_mod_15, crt_triple_iff, crt_11_mod_60) lists only propext, Classical.choice, Quot.sound. No Lean.ofReduceBool (which native_decide would inject), no sorryAx, no axiom declarations. The entry demonstrates that even composite-modulus residue and coprimality checks need no native_decide: kernel decide suffices and stays within the ordinary foundational axioms."
+    "content": "#print axioms on all five theorems (crt_17_mod_20, crt_135_mod_143, crt_8_mod_15, crt_triple_iff, crt_11_mod_60) lists only propext, Classical.choice, Quot.sound. No Lean.ofReduceBool (which native_decide would inject), no sorryAx, no axiom declarations. The entry demonstrates that even composite-modulus residue and coprimality checks need no native_decide: kernel decide suffices and stays within the ordinary foundational axioms.",
+    "mathContext": "Every theorem's axiom set $= \\{\\mathsf{propext}, \\mathsf{Classical.choice}, \\mathsf{Quot.sound}\\}$; in particular $\\mathsf{Lean.ofReduceBool} \\notin$ the set, so the worked examples are genuinely axiom-free.",
+    "significance": "key",
+    "relatedConcepts": ["#print axioms", "Lean.ofReduceBool", "native_decide vs kernel decide", "axiom integrity policy"],
+    "prerequisites": ["Lean's axiom tracking", "decision procedures and their trust assumptions"]
+  },
+  {
+    "id": "ann-pair-examples",
+    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 60
+    },
+    "type": "insight",
+    "title": "Composite Coprime Moduli Without native_decide",
+    "content": "crt_17_mod_20 (4·5) and crt_135_mod_143 (11·13) are each a single application of the sibling's crt_pair_iff. The four side conditions — Coprime of the two moduli, the witness below the product, and the two residue computations N % m = a, N % n = b — are kernel `decide` (the gcd and modular reductions are ordinary kernel computation, not native code), and the range hypothesis x < (product) is definitionally the required x < m·n. Because the proofs are instances of crt_pair_iff, they inherit its axiom profile {propext, Classical.choice, Quot.sound} for free — no Lean.ofReduceBool.",
+    "mathContext": "$x \\equiv \\cdot\\ (4),\\ x \\equiv \\cdot\\ (5) \\iff x = 17$ on $x < 20$; $x \\equiv \\cdot\\ (11),\\ x \\equiv \\cdot\\ (13) \\iff x = 135$ on $x < 143$. The moduli are coprime composites ($4 = 2^2$), not all prime.",
+    "significance": "key",
+    "relatedConcepts": ["crt_pair_iff instantiation", "coprime composite moduli", "kernel decide", "inherited axiom profile"],
+    "prerequisites": ["the sibling's crt_pair_iff certificate", "coprimality of composite numbers"]
+  },
+  {
+    "id": "ann-eight-mod-fifteen",
+    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "crt_8_mod_15: the Kernel-Checked Counterpart of a native_decide Sibling",
+    "content": "crt_8_mod_15 (3·5) proves the same fact as the list-based sibling ...OQ04OQ02's native_decide example example_8_mod3_mod5, but via kernel `decide` through crt_pair_iff instead. It is the direct demonstration that the sibling's only axiom (Lean.ofReduceBool, from native_decide) can be removed for this example with no loss — the concrete payoff of the OQ-05 axiom-elimination program.",
+    "mathContext": "$x \\equiv 2\\ (3),\\ x \\equiv 3\\ (5) \\iff x = 8$ on $x < 15$; identical statement to the sibling's native_decide proof, here kernel-checked.",
+    "significance": "supporting",
+    "relatedConcepts": ["axiom elimination", "list-based CRT sibling (OQ04-OQ02)", "native_decide replacement", "Lean.ofReduceBool removal"],
+    "prerequisites": ["crt_pair_iff", "the sibling's native_decide example"]
+  },
+  {
+    "id": "ann-triple-certificate",
+    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "Folding in a Third Modulus",
+    "content": "crt_triple_iff extends crt_pair_iff by one fold. Forward: each residue equation x % mᵢ = aᵢ becomes a congruence x ≡ N [MOD mᵢ] (Nat.ModEq unfolds to x % mᵢ = N % mᵢ, closed by omega using the literal residue of N). Nat.modEq_and_modEq_iff_modEq_mul combines m and n into m·n; to fold in p one needs Coprime (m·n) p, supplied by Nat.Coprime.mul_left from Coprime m p and Coprime n p. A second application gives x ≡ N modulo m·n·p, and Nat.mod_eq_of_lt on both x and N (both below the product) collapses it to x = N. The reverse direction is just the three residues of N. Only kernel omega is used — no native_decide.",
+    "mathContext": "$\\gcd(m,n)=\\gcd(m,p)=\\gcd(n,p)=1 \\Rightarrow \\big((x\\bmod m=a \\wedge x\\bmod n=b \\wedge x\\bmod p=c) \\iff x=N\\big)$ on $x < mnp$; uses $\\gcd(mn,p)=1$ from $\\gcd(m,p)=\\gcd(n,p)=1$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Coprime.mul_left", "iterated CRT fold", "three-modulus certificate", "Nat.mod_eq_of_lt"],
+    "prerequisites": ["crt_pair_iff", "coprimality of a product with a third modulus"]
+  },
+  {
+    "id": "ann-triple-example",
+    "proofId": "chinese-remainder-constructive-oq-05-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "Three Composite Moduli at Once",
+    "content": "crt_11_mod_60 instantiates crt_triple_iff on the pairwise-coprime composite range 60 = 3·4·5: over 0 ≤ x < 60, (x ≡ 2 mod 3 ∧ x ≡ 3 mod 4 ∧ x ≡ 1 mod 5) ↔ x = 11. The seven side conditions (three pairwise coprimalities, the witness bound, three residues) are all kernel decide. This is the three-modulus analogue of the pair examples and the next rung toward a fully list-indexed CRT certificate.",
+    "mathContext": "$x \\equiv 2\\ (3),\\ x \\equiv 3\\ (4),\\ x \\equiv 1\\ (5) \\iff x = 11$ on $x < 60 = 3\\cdot4\\cdot5$.",
+    "significance": "supporting",
+    "relatedConcepts": ["crt_triple_iff instantiation", "pairwise-coprime composite moduli", "toward a list-indexed CRT"],
+    "prerequisites": ["the triple certificate", "pairwise coprimality of 3,4,5"]
   }
 ]

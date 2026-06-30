@@ -1,0 +1,99 @@
+[
+  {
+    "id": "ann-choq0102-00-header",
+    "proofId": "cayley-hamilton-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 53 },
+    "type": "concept",
+    "title": "Overview: minpoly as the lcm of basis-vector orders",
+    "content": "Fixing an n×n matrix M makes Kⁿ a K[X]-module (X acts as M). Each vector v has an order ideal vecAnnIdeal M v = {f | f(M)·v = 0}, generated in the PID K[X] by its order polynomial. This file proves the minimal polynomial of M is the lcm of the orders of any basis: at the ideal level span{minpoly K M} is the intersection of the vector annihilators over a spanning family, and the intersection of principal ideals in K[X] is the lcm ideal.",
+    "mathContext": "span{minpoly K M} = ⨅ᵢ vecAnnIdeal M (bᵢ); ⨅ᵢ span{μᵢ} = span{lcm μ}; hence minpoly K M = Finset.univ.lcm μ.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "annihilator ideal",
+      "least common multiple",
+      "principal ideal domain",
+      "invariant factors"
+    ],
+    "prerequisites": [
+      "Module.AEval'",
+      "CayleyHamiltonOQ01OQ01.vecAnnIdeal"
+    ]
+  },
+  {
+    "id": "ann-choq0102-01-iinf",
+    "proofId": "cayley-hamilton-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 107 },
+    "type": "technique",
+    "title": "minpoly ideal = intersection of vector annihilators",
+    "content": "minpoly_span_eq_iInf_vecAnnIdeal: for any family v whose range spans Kⁿ, span{minpoly K M} = ⨅ᵢ vecAnnIdeal M (vᵢ). The ≤ direction is the reused minpoly_ideal_le_vecAnnIdeal. The ≥ direction is the new content: from f killing every spanning vector (aeval M.mulVecLin f (vᵢ) = 0, extracted from the AEval' scalar action) and LinearMap.ext_on_range, the endomorphism aeval M.mulVecLin f is zero; then minpoly.dvd plus minpoly K M = minpoly K M.mulVecLin gives minpoly K M ∣ f.",
+    "mathContext": "A polynomial annihilates the endomorphism iff it annihilates a spanning set, so the global annihilator is the meet of the per-vector annihilators.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "spanning family",
+      "LinearMap.ext_on_range",
+      "minpoly.dvd"
+    ],
+    "prerequisites": [
+      "LinearMap.ext_on_range",
+      "minpoly.dvd"
+    ]
+  },
+  {
+    "id": "ann-choq0102-02-lcm-bridge",
+    "proofId": "cayley-hamilton-oq-01-oq-02",
+    "range": { "startLine": 109, "endLine": 118 },
+    "type": "technique",
+    "title": "Intersection of principal ideals = lcm ideal",
+    "content": "iInf_span_singleton_eq_lcm: in K[X], ⨅ᵢ span{aᵢ} = span{Finset.univ.lcm a}. This is a one-line membership calculation: x ∈ ⨅ᵢ span{aᵢ} ↔ (∀ i, aᵢ ∣ x) ↔ Finset.univ.lcm a ∣ x ↔ x ∈ span{lcm}, using Finset.lcm_dvd_iff. It is the abstract ring-theoretic fact that turns the meet of orders into a least common multiple.",
+    "mathContext": "Finset.lcm_dvd_iff: s.lcm f ∣ a ↔ ∀ i ∈ s, f i ∣ a.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.lcm",
+      "NormalizedGCDMonoid",
+      "principal ideal"
+    ],
+    "prerequisites": [
+      "Finset.lcm_dvd_iff"
+    ]
+  },
+  {
+    "id": "ann-choq0102-03-lcm-of-generators",
+    "proofId": "cayley-hamilton-oq-01-oq-02",
+    "range": { "startLine": 120, "endLine": 155 },
+    "type": "technique",
+    "title": "minpoly span = lcm of order generators; existence of monic orders",
+    "content": "minpoly_span_eq_lcm_of_generators composes the two previous results over a basis b: if μᵢ generates vecAnnIdeal M (bᵢ), then span{minpoly K M} = span{Finset.univ.lcm μ}. exists_monic_generators produces such generators monically: each annihilator ideal is principal (PID), and normalize of a chosen generator is monic (monic_normalize, since the ideal is nonzero — it contains the nonzero minpoly) and generates the same ideal (associated to the original generator).",
+    "mathContext": "Each vecAnnIdeal M (bᵢ) is principal and nonzero; its normalized generator is the monic order polynomial of bᵢ.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "IsPrincipalIdealRing",
+      "normalize",
+      "monic_normalize",
+      "Basis.span_eq"
+    ],
+    "prerequisites": [
+      "Submodule.IsPrincipal.principal",
+      "Ideal.span_singleton_eq_span_singleton"
+    ]
+  },
+  {
+    "id": "ann-choq0102-04-literal-eq",
+    "proofId": "cayley-hamilton-oq-01-oq-02",
+    "range": { "startLine": 156, "endLine": 187 },
+    "type": "key-result",
+    "title": "minpoly K M = Finset.univ.lcm μ (no monicity needed)",
+    "content": "minpoly_eq_lcm: the literal polynomial identity for any generators μᵢ of the basis-vector annihilators — strikingly with no monicity hypothesis on the μᵢ. From span{minpoly K M} = span{Finset.univ.lcm μ}, Ideal.span_singleton_eq_span_singleton gives Associated. The lcm is nonzero (else minpoly would be associated to 0, hence 0) and normalized (Finset.normalize_lcm), so monic_normalize makes it monic; minpoly is monic by Cayley-Hamilton integrality; eq_of_monic_of_associated concludes equality. exists_minpoly_eq_lcm packages the headline existence statement.",
+    "mathContext": "Two monic associated polynomials are equal; Finset.lcm is automatically normalized, so the generators need not be chosen monic.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "eq_of_monic_of_associated",
+      "Finset.normalize_lcm",
+      "Associated"
+    ],
+    "prerequisites": [
+      "Ideal.span_singleton_eq_span_singleton",
+      "Polynomial.eq_of_monic_of_associated"
+    ]
+  }
+]

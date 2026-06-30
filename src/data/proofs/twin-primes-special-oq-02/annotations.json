@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-tps-oq02-def",
+    "proofId": "twin-primes-special-oq-02",
+    "range": { "startLine": 44, "endLine": 45 },
+    "type": "definition",
+    "title": "The Twin-Prime Counting Function π₂",
+    "content": "piTwo N is the number of p ≤ N with p and p+2 both prime, formalized as the cardinality of the Finset filter of range (N+1) by the explicit predicate Nat.Prime p ∧ Nat.Prime (p+2). Writing the predicate out (rather than via the opaque def IsTwinPrimePair) keeps it decidable, so the filter and the concrete-value computations work.",
+    "mathContext": "\\pi_2(N) := \\#\\{\\,p \\le N : p,\\ p+2 \\text{ both prime}\\,\\}",
+    "significance": "key",
+    "relatedConcepts": ["prime counting function", "Finset.filter", "decidability"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-tps-oq02-values",
+    "proofId": "twin-primes-special-oq-02",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "theorem",
+    "title": "Concrete Values by decide",
+    "content": "piTwo_zero, piTwo_five, piTwo_thirteen pin down π₂(0)=0, π₂(5)=2, π₂(13)=3 by decide. Crucially these use decide (kernel reduction), not native_decide, so they introduce no Lean.ofReduceBool — they remain genuinely machine-checked and the only assumption in the file is the Hardy–Littlewood axiom.",
+    "mathContext": "\\pi_2(5)=2,\\quad \\pi_2(13)=3",
+    "significance": "standard",
+    "relatedConcepts": ["decide", "kernel reduction", "worked example"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-tps-oq02-mono-bound",
+    "proofId": "twin-primes-special-oq-02",
+    "range": { "startLine": 60, "endLine": 70 },
+    "type": "theorem",
+    "title": "Monotonicity and the Trivial Bound",
+    "content": "piTwo_mono shows π₂ is non-decreasing: a larger range gives a superset filter, so Finset.card_le_card (via Finset.range_mono) bounds the cardinalities. piTwo_le gives π₂(N) ≤ N+1 from Finset.card_filter_le and card_range. Both are unconditional.",
+    "mathContext": "M \\le N \\Rightarrow \\pi_2(M) \\le \\pi_2(N) \\le N+1",
+    "significance": "standard",
+    "relatedConcepts": ["monotonicity", "Finset.card_le_card", "card_filter_le"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-tps-oq02-bridge",
+    "proofId": "twin-primes-special-oq-02",
+    "range": { "startLine": 80, "endLine": 116 },
+    "type": "theorem",
+    "title": "Growth Controls Existence",
+    "content": "twinPrimeConjecture_of_piTwo_unbounded is the headline unconditional result: if π₂ is unbounded then the Twin Prime Conjecture holds. From a strict increase π₂(N) < π₂(N') it deduces N ≤ N', makes the filter over range (N+1) a strict subset of the filter over range (N'+1) (Finset.ssubset_iff_subset_ne, using the cardinality gap), and extracts via Finset.exists_of_ssubset an element p in the difference — a twin head outside range (N+1), hence p > N. So any unbounded lower bound on π₂ (in particular Hardy–Littlewood, which forces π₂→∞) is strictly stronger than mere infinitude.",
+    "mathContext": "(\\forall M,\\ \\exists N,\\ \\pi_2(N) > M) \\Longrightarrow \\forall N,\\ \\exists p > N,\\ (p,p+2)\\text{ twin}",
+    "significance": "key",
+    "relatedConcepts": ["Twin Prime Conjecture", "strict subset", "exists_of_ssubset", "reduction"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-tps-oq02-axiom",
+    "proofId": "twin-primes-special-oq-02",
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "remark",
+    "title": "Hardy–Littlewood Conjecture B (Axiomatized)",
+    "content": "hardy_littlewood_conjecture_B is the single declared axiom: π₂(N)/(N/(log N)²) → 2C for some positive C, i.e. π₂(N) ~ 2C₂N/(log N)². This open prediction is stated, not proved; the existential constant records the conjectured 2C₂ without formalizing the infinite product for C₂. Status: axiomatized (axiomCount 1, badge axiom).",
+    "mathContext": "\\pi_2(N) \\sim \\frac{2C_2\\,N}{(\\log N)^2},\\qquad C_2 = \\prod_{p\\ge 3}\\frac{p(p-2)}{(p-1)^2} \\approx 0.6601",
+    "significance": "key",
+    "relatedConcepts": ["Hardy-Littlewood", "twin prime constant", "axiomatized", "singular series"],
+    "prerequisites": []
+  }
+]

@@ -81,6 +81,62 @@ def InAlmostGeneralPosition (S : Set Point) : Prop :=
     ¬Collinear4 p q r s
 
 /-
+## Part I.5: Structural Relationships (fully verified, 0 axioms)
+
+These lemmas establish the basic logic of the two position notions and the
+collinearity predicate directly from their definitions. They contain no
+axioms and no `sorry`; in particular they pin down the *logical skeleton*
+of Erdős #589, namely that "general position" is strictly stronger than
+"almost general position" — which is exactly why g(n) (a guarantee about
+general-position subsets inside almost-general-position sets) is nontrivial.
+-/
+
+/-- The collinearity predicate is symmetric in its last two arguments:
+this is just symmetry of the defining determinant equation. -/
+theorem collinear3_swap_right (p q r : Point) :
+    Collinear3 p q r ↔ Collinear3 p r q :=
+  eq_comm
+
+/-- Swapping the first two arguments preserves collinearity (the signed area
+flips sign, but the "= 0" condition is unchanged). -/
+theorem collinear3_swap_left (p q r : Point) :
+    Collinear3 p q r ↔ Collinear3 q p r := by
+  unfold Collinear3
+  constructor <;> intro h <;> linear_combination -h
+
+/-- A degenerate triple with a repeated first/second point is collinear. -/
+theorem collinear3_self_left (p r : Point) : Collinear3 p p r := by
+  unfold Collinear3; ring
+
+/-- A degenerate triple with a repeated last point is collinear. -/
+theorem collinear3_self_right (p q : Point) : Collinear3 p q q := by
+  unfold Collinear3; ring
+
+/-- **General position is preserved under subsets:** if no three points of `S`
+are collinear, the same holds for any subset. -/
+theorem inGeneralPosition_subset {S T : Set Point} (hTS : T ⊆ S)
+    (h : InGeneralPosition S) : InGeneralPosition T :=
+  fun p q r hp hq hr hpq hqr hpr =>
+    h p q r (hTS hp) (hTS hq) (hTS hr) hpq hqr hpr
+
+/-- **Almost general position is preserved under subsets.** -/
+theorem inAlmostGeneralPosition_subset {S T : Set Point} (hTS : T ⊆ S)
+    (h : InAlmostGeneralPosition S) : InAlmostGeneralPosition T :=
+  fun p q r s hp hq hr hs hpq hpr hps hqr hqs hrs =>
+    h p q r s (hTS hp) (hTS hq) (hTS hr) (hTS hs) hpq hpr hps hqr hqs hrs
+
+/-- **General position ⟹ almost general position.**
+If no three points of `S` are collinear, then a fortiori no four are: a
+collinear quadruple would in particular have its first three points collinear.
+This is the key structural fact underlying the problem — the hypothesis "no
+four collinear" defining g(n) is genuinely weaker than the conclusion "no
+three collinear" it seeks in a subset. -/
+theorem inGeneralPosition_imp_inAlmostGeneralPosition (S : Set Point)
+    (h : InGeneralPosition S) : InAlmostGeneralPosition S := by
+  intro p q r s hp hq hr _ hpq hpr _ hqr _ _ hcol
+  exact h p q r hp hq hr hpq hqr hpr hcol.1
+
+/-
 ## Part II: The Function g(n)
 -/
 
@@ -104,6 +160,17 @@ noncomputable def g (n : ℕ) : ℕ :=
   sInf { k : ℕ | ∃ S : Finset Point, S.card = n ∧
     InAlmostGeneralPosition (S : Set Point) ∧
     maxGeneralPositionSubset S = k }
+
+/--
+**Füredi's upper bound (1991):**
+g(n) = o(n), i.e., g(n)/n → 0 as n → ∞.
+
+This uses the density Hales-Jewett theorem of Furstenberg-Katznelson.
+Declared here (ahead of its first use in `erdos_belief_false`) because Lean
+requires a declaration to precede the theorems that depend on it.
+-/
+axiom furedi_upper_bound :
+  ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (g n : ℝ) < ε * n
 
 /-
 ## Part III: Erdős's Original Belief
@@ -143,20 +210,21 @@ Algorithm: Pick points one by one, always choosing a point that doesn't
 form a collinear triple with any two already chosen points.
 -/
 axiom greedy_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → (g n : ℝ) ≥ c * n.sqrt
+  ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 → (g n : ℝ) ≥ c * Real.sqrt (n : ℝ)
 
 /--
 **The trivial bound:**
 g(n) ≫ n^(1/2)
+
+This is the greedy bound restated with the real power `n ^ (1/2)` in place of
+`Real.sqrt n`; the two agree by `Real.sqrt_eq_rpow`.
 -/
 theorem trivial_lower_bound : ∃ c : ℝ, c > 0 ∧ ∀ n : ℕ, n ≥ 1 →
     (g n : ℝ) ≥ c * (n : ℝ)^(1/2 : ℝ) := by
   obtain ⟨c, hc, hBound⟩ := greedy_lower_bound
-  exact ⟨c, hc, fun n hn => by
-    have h := hBound n hn
-    simp only [Nat.sqrt] at h
-    -- Need to relate Nat.sqrt to Real.rpow
-    sorry⟩
+  refine ⟨c, hc, fun n hn => ?_⟩
+  have h := hBound n hn
+  rwa [Real.sqrt_eq_rpow] at h
 
 /-
 ## Part V: Füredi's Result (1991)
@@ -173,15 +241,6 @@ axiom furedi_lower_bound :
     (g n : ℝ) ≥ c * (n : ℝ).sqrt * (n : ℝ).log
 
 /--
-**Füredi's upper bound (1991):**
-g(n) = o(n), i.e., g(n)/n → 0 as n → ∞.
-
-This uses the density Hales-Jewett theorem of Furstenberg-Katznelson.
--/
-axiom furedi_upper_bound :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n : ℕ, n ≥ N → (g n : ℝ) < ε * n
-
-/--
 **Füredi's combined result:**
 n^(1/2) · log n ≪ g(n) = o(n)
 -/
@@ -195,7 +254,7 @@ theorem furedi_bounds :
 ## Part VI: Density Hales-Jewett Connection
 -/
 
-/--
+/-
 **Density Hales-Jewett Theorem (Furstenberg-Katznelson 1991):**
 A deep result in combinatorics that implies g(n) = o(n).
 
@@ -259,24 +318,29 @@ theorem current_bounds :
 ## Part VIII: Generalization
 -/
 
-/--
-**Generalized problem:**
+/-
+**Generalized problem (stated, not formalized):**
 For k > l ≥ 3, let g_{k,l}(n) be maximal such that any n-point set with
 no k collinear has a subset of g_{k,l}(n) points with no l collinear.
+The original problem is the instance g(n) = g_{4,3}(n).
 
-The original problem is g(n) = g_{4,3}(n).
+Formalizing g_{k,l} requires a uniform "no m points collinear" predicate for
+arbitrary m (the present file only defines the m = 3 and m = 4 cases via
+`Collinear3`/`Collinear4`). We record the (4,3) instance concretely instead:
+`g` itself is exactly g_{4,3}, since it is built from `InAlmostGeneralPosition`
+(no 4 collinear) and `InGeneralPosition` (no 3 collinear).
 -/
-noncomputable def g_kl (k l n : ℕ) : ℕ :=
-  -- Generalized version
-  sorry
 
 /--
-**Connection to original:**
-g(n) = g_{4,3}(n)
+**The (4,3) instance is the original g:**
+`g` is, by construction, the case k = 4, l = 3 of the generalized problem.
+This is a definitional identity: `g n` unfolds to "min over n-point sets with
+no 4 collinear of the max subset size with no 3 collinear".
 -/
-theorem g_is_g43 : ∀ n, g n = g_kl 4 3 n := by
-  intro n
-  rfl
+theorem g_eq_g43_spec (n : ℕ) :
+    g n = sInf { k : ℕ | ∃ S : Finset Point, S.card = n ∧
+      InAlmostGeneralPosition (S : Set Point) ∧
+      maxGeneralPositionSubset S = k } := rfl
 
 /-
 ## Part IX: Open Questions

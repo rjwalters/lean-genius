@@ -51,22 +51,45 @@ structure PointConfig where
   points : Finset Point
   card_pos : points.card > 0
 
-/-- The set of all pairwise distances in a configuration. -/
+/-- The set of all pairwise distances between *distinct* points of the
+    configuration.  We range over `offDiag` (ordered pairs `(p, q)` with
+    `p ≠ q`) because Erdős's distance multiplicities count distances between
+    distinct points; the diagonal pairs `(p, p)` all have distance `0` and
+    are excluded. -/
 noncomputable def distanceSet (P : PointConfig) : Finset ℝ :=
-  (P.points ×ˢ P.points).image (fun pq => dist pq.1 pq.2)
+  (P.points.offDiag).image (fun pq => dist pq.1 pq.2)
 
-/-- The multiplicity of a distance d: how many pairs (p,q) have dist(p,q) = d. -/
+/-- The multiplicity of a distance `d`: how many ordered pairs `(p, q)` of
+    *distinct* points have `dist p q = d`. -/
 noncomputable def multiplicity (P : PointConfig) (d : ℝ) : ℕ :=
-  ((P.points ×ˢ P.points).filter (fun pq => dist pq.1 pq.2 = d)).card
+  ((P.points.offDiag).filter (fun pq => dist pq.1 pq.2 = d)).card
 
 /-
 ## Part II: The Sum of Squared Multiplicities
 -/
 
-/-- The sum of multiplicities equals C(n,2) (each pair counted once). -/
+/-- The sum of multiplicities equals the number of ordered pairs of distinct
+    points, `n(n-1)`.  Each ordered pair `(p, q)` with `p ≠ q` contributes to
+    exactly one distance value, so summing the fibre sizes over the distance
+    set recovers the cardinality of `offDiag`. -/
 theorem sum_multiplicities (P : PointConfig) :
     (distanceSet P).sum (multiplicity P) = P.points.card * (P.points.card - 1) := by
-  sorry  -- Standard counting argument
+  -- Fibre decomposition: `offDiag.card = ∑_{d ∈ distanceSet} (fibre over d).card`.
+  have hmem : ∀ pq ∈ P.points.offDiag, dist pq.1 pq.2 ∈ distanceSet P :=
+    fun pq hpq => Finset.mem_image_of_mem _ hpq
+  -- The fibre sum over the distance set recovers `offDiag.card` (each `multiplicity P d`
+  -- is, by definition, the size of the fibre over `d`).
+  have hfib : P.points.offDiag.card = (distanceSet P).sum (multiplicity P) :=
+    Finset.card_eq_sum_card_fiberwise (f := fun pq => dist pq.1 pq.2)
+      (t := distanceSet P) hmem
+  rw [← hfib, Finset.offDiag_card]
+  -- `offDiag_card` gives the `n*n - n` form; bridge to `n*(n-1)`.
+  cases h : P.points.card with
+  | zero => simp
+  | succ n =>
+    have hrw : (n + 1) * (n + 1) = (n + 1) * n + (n + 1) := by ring
+    simp only [Nat.succ_sub_one]
+    omega
 
 /-- The sum of squared multiplicities: ∑ f(uᵢ)². -/
 noncomputable def sumSquaredMultiplicities (P : PointConfig) : ℕ :=
@@ -99,17 +122,41 @@ axiom guth_katz_theorem :
       (sumSquaredMultiplicities P : ℝ) ≤
         C * (P.points.card : ℝ)^3 * Real.log (P.points.card)
 
-/-- Guth-Katz implies Erdős's conjecture. -/
+/-- Guth-Katz implies Erdős's conjecture.
+
+    The Guth–Katz bound is `∑f(uᵢ)² ≤ C · n³ · log n`.  To obtain the Erdős
+    form `≤ C' · n^{3+ε}` we absorb the logarithm into the `n^ε` factor:
+    since `log n ≤ n^ε / ε` for every `n ≥ 1` (a consequence of
+    `log x ≤ x - 1`), we may take `C' = C / ε`. -/
 theorem erdos_conjecture_proved : ErdosConjecture := by
   intro ε hε
-  obtain ⟨C, hC⟩ := guth_katz_theorem
-  use C + 1
-  constructor
-  · linarith [hC.choose_spec]  -- C > 0
-  intro P
+  obtain ⟨C, hCpos, hC⟩ := guth_katz_theorem
+  refine ⟨C / ε, by positivity, fun P => ?_⟩
+  set m : ℝ := (P.points.card : ℝ) with hm
+  have hm1 : (1 : ℝ) ≤ m := by
+    rw [hm]; exact_mod_cast P.card_pos
+  have hmpos : (0 : ℝ) < m := lt_of_lt_of_le one_pos hm1
+  -- Key estimate: `ε · log m ≤ m^ε`, i.e. the log is dominated by any power.
+  have hlog : ε * Real.log m ≤ m ^ ε := by
+    rw [← Real.log_rpow hmpos]
+    have := Real.log_le_sub_one_of_pos (Real.rpow_pos_of_pos hmpos ε)
+    linarith
+  -- Split `m^{3+ε} = m^3 · m^ε`.
+  have hsplit : m ^ (3 + ε) = m ^ (3 : ℕ) * m ^ ε := by
+    rw [Real.rpow_add hmpos]
+    congr 1
+    rw [← Real.rpow_natCast]; norm_num
+  -- Chain the Guth–Katz bound with the logarithmic estimate.
+  have hnn : (0 : ℝ) ≤ C * m ^ (3 : ℕ) := by positivity
   have hGK := hC P
-  -- n³ log n ≤ n^{3+ε} for large n
-  sorry  -- log n = o(n^ε)
+  rw [hsplit]
+  rw [show C / ε * (m ^ (3 : ℕ) * m ^ ε) = C * m ^ (3 : ℕ) * m ^ ε / ε by ring,
+      le_div_iff₀ hε]
+  calc (sumSquaredMultiplicities P : ℝ) * ε
+      ≤ (C * m ^ (3 : ℕ) * Real.log m) * ε := by
+        apply mul_le_mul_of_nonneg_right hGK (le_of_lt hε)
+    _ = C * m ^ (3 : ℕ) * (ε * Real.log m) := by ring
+    _ ≤ C * m ^ (3 : ℕ) * m ^ ε := mul_le_mul_of_nonneg_left hlog hnn
 
 /-
 ## Part V: The Polynomial Method

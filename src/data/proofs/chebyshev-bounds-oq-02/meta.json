@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Imports, Statement, and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports Mathlib, opens Finset and ArithmeticFunction, and frames the goal: define the second Chebyshev function ψ in von Mangoldt form and prove Legendre's identity log(n!) = ∑_{d≤n} Λ(d)·⌊n/d⌋, the elementary engine of the Chebyshev bounds.",
+      "mathContext": "Working namespace ChebyshevBoundsOQ02 with Λ = ArithmeticFunction.vonMangoldt; the parent's second open direction is the ψ function."
+    },
+    {
       "id": "psi-def",
       "title": "The Second Chebyshev Function ψ",
       "startLine": 38,

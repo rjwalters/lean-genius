@@ -2,34 +2,61 @@
   {
     "id": "ann-leibniz",
     "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
-    "range": {
-      "startLine": 40,
-      "endLine": 54
-    },
+    "range": { "startLine": 40, "endLine": 54 },
     "type": "insight",
     "title": "The Leibniz Estimation, Discharged",
-    "content": "alternating_tail_bound is the parent's first sorry: for an antitone summable sequence a, the alternating tail from index n has norm ≤ a n. The proof derives a ≥ 0 from antitone + (terms → 0), shows the signed series Σ(-1)^i a_i is summable (its norm is a), rewrites the tail Σ' k (-1)^(k+n) a(k+n) as (Σ' (-1)^i a_i) − Σ_{i<n}(-1)^i a_i via Summable.sum_add_tsum_nat_add, and applies Mathlib's alternating_series_error_bound. This is the engine behind both trigonometric bounds."
+    "content": "alternating_tail_bound is the parent's first sorry: for an antitone summable sequence a, the alternating tail from index n has norm ≤ a n. The proof derives a ≥ 0 from antitone + (terms → 0), shows the signed series Σ(-1)^i a_i is summable (its norm is a, via norm_mul/norm_pow/norm_neg simplifications), rewrites the tail Σ' k (-1)^(k+n) a(k+n) as (Σ' (-1)^i a_i) − Σ_{i<n}(-1)^i a_i using Summable.sum_add_tsum_nat_add, and applies Mathlib's alternating_series_error_bound. This is the engine behind both trigonometric bounds.",
+    "mathContext": "$\\left\\|\\sum_{k\\ge 0} (-1)^{k+n} a_{k+n}\\right\\| \\le a_n$ for antitone summable $a \\ge 0$ (Leibniz). Tail decomposition: $\\sum'_k f(k+n) = \\sum'_i f_i - \\sum_{i<n} f_i$.",
+    "significance": "key",
+    "relatedConcepts": ["alternating series test", "Leibniz criterion", "tail decomposition", "alternating_series_error_bound", "summability"],
+    "prerequisites": ["infinite series", "antitone sequences", "tsum manipulation"]
   },
   {
-    "id": "ann-terms",
+    "id": "ann-term-defs",
     "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
-    "range": {
-      "startLine": 66,
-      "endLine": 98
-    },
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "Term Magnitudes sinTermAbs and cosTermAbs",
+    "content": "The two `noncomputable def`s isolate the magnitude of the k-th series term: `sinTermAbs x k = |x|^{2k+1}/(2k+1)!` and `cosTermAbs x k = |x|^{2k}/(2k)!`. Pulling these out as named sequences is what lets the proof speak about antitonicity and summability abstractly and then feed them to the generic Leibniz estimation. They are reproduced from the parent rather than imported, precisely because the parent still carries sorries — importing it would taint this otherwise axiom-free file.",
+    "mathContext": "$\\mathrm{sinTermAbs}(x,k) = \\dfrac{|x|^{2k+1}}{(2k+1)!}$, $\\quad \\mathrm{cosTermAbs}(x,k) = \\dfrac{|x|^{2k}}{(2k)!}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Taylor series terms", "factorial", "self-contained formalization"],
+    "prerequisites": ["Taylor series of sin/cos", "factorials"]
+  },
+  {
+    "id": "ann-antitone-domain",
+    "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
+    "range": { "startLine": 66, "endLine": 90 },
     "type": "concept",
     "title": "Why the Domain Is |x| ≤ 1",
-    "content": "The alternating estimation requires the term magnitudes to decrease. For the sin/cos series, |x|^{2k+2}/(2k+2)! ≤ |x|^{2k}/(2k)! holds precisely when |x| ≤ 1 (then |x|^{2k+2} ≤ |x|^{2k}, and the larger factorial only helps). cosTermAbs_antitone and sinTermAbs_antitone establish this; summability comes free as a subseries (even or odd indices) of the summable Σ|x|^n/n!. This domain restriction is exactly the correct scope of the alternating sharpening — sharper than Lagrange, but only where the terms are monotone."
+    "content": "The alternating estimation requires the term magnitudes to decrease. For the sin/cos series, |x|^{2k+2}/(2k+2)! ≤ |x|^{2k}/(2k)! holds precisely when |x| ≤ 1: then |x|^{2k+2} ≤ |x|^{2k} (pow_le_pow_of_le_one), and the larger factorial only shrinks the term further. cosTermAbs_antitone and sinTermAbs_antitone establish this via a two-step calc that drops the power and grows the factorial denominator separately. This domain restriction is exactly the correct scope of the alternating sharpening — sharper than Lagrange, but only where the terms are monotone.",
+    "mathContext": "Monotone decrease $\\dfrac{|x|^{2k+2}}{(2k+2)!} \\le \\dfrac{|x|^{2k}}{(2k)!} \\iff |x| \\le 1$, the hypothesis the Leibniz bound needs.",
+    "significance": "key",
+    "relatedConcepts": ["antitone sequences", "pow_le_pow_of_le_one", "monotone term decay", "domain of validity"],
+    "prerequisites": ["monotonicity of power functions", "factorial growth"]
+  },
+  {
+    "id": "ann-summable-subseq",
+    "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
+    "range": { "startLine": 92, "endLine": 98 },
+    "type": "technique",
+    "title": "Summability for Free as an Injective Subseries",
+    "content": "cosTermAbs_summable and sinTermAbs_summable get summability without new analysis: each magnitude sequence is the composition of the known-summable `Real.summable_pow_div_factorial |x|` (i.e. Σ |x|^n/n! = e^{|x|}) with the injective index maps k ↦ 2k and k ↦ 2k+1. `Summable.comp_injective` then transfers summability along the injection — a subseries of a summable non-negative series is summable. The injectivity obligations are discharged by `omega`.",
+    "mathContext": "$\\sum_k \\dfrac{|x|^{2k}}{(2k)!}$ and $\\sum_k \\dfrac{|x|^{2k+1}}{(2k+1)!}$ are subseries of the summable $\\sum_n \\dfrac{|x|^n}{n!} = e^{|x|}$, summable by injective reindexing.",
+    "significance": "supporting",
+    "relatedConcepts": ["Summable.comp_injective", "subseries", "exponential series", "injective reindexing"],
+    "prerequisites": ["absolute convergence", "the exponential series"]
   },
   {
     "id": "ann-remainders",
     "proofId": "taylor-sincos-convergence-oq-03-incomplete-01",
-    "range": {
-      "startLine": 102,
-      "endLine": 139
-    },
+    "range": { "startLine": 102, "endLine": 139 },
     "type": "insight",
     "title": "From Taylor tsum to the Sharp Bound",
-    "content": "cos_alternating_remainder and sin_alternating_remainder write the k-th Taylor term as (-1)^k times a non-negative magnitude — for cosine, x^{2k} = |x|^{2k} (even power, via pow_mul + sq_abs) so it works for both signs of x; for sine, x ≥ 0 gives x^{2k+1} = |x|^{2k+1}. Rewriting cos/sin as their tsums (Real.cos_eq_tsum / Real.sin_eq_tsum) and the partial sums correspondingly, the bound is exactly alternating_series_error_bound applied to the antitone, summable magnitude sequence. The error is the first omitted term — the alternating sharpening of Taylor's remainder."
+    "content": "cos_alternating_remainder and sin_alternating_remainder write the k-th Taylor term as (-1)^k times a non-negative magnitude — for cosine, x^{2k} = |x|^{2k} (even power, via pow_mul + sq_abs) so it works for both signs of x; for sine, x ≥ 0 gives x^{2k+1} = |x|^{2k+1}. Rewriting cos/sin as their tsums (Real.cos_eq_tsum / Real.sin_eq_tsum) and the partial sums correspondingly, the bound is exactly alternating_series_error_bound applied to the antitone, summable magnitude sequence. The error is the first omitted term — the alternating sharpening of Taylor's remainder.",
+    "mathContext": "$\\left|\\cos x - \\sum_{k<n} \\tfrac{(-1)^k x^{2k}}{(2k)!}\\right| \\le \\tfrac{|x|^{2n}}{(2n)!}$ for $|x|\\le 1$; $\\left|\\sin x - \\sum_{k<n} \\tfrac{(-1)^k x^{2k+1}}{(2k+1)!}\\right| \\le \\tfrac{|x|^{2n+1}}{(2n+1)!}$ for $0\\le x\\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Taylor remainder", "Real.cos_eq_tsum", "Real.sin_eq_tsum", "alternating series error", "sq_abs"],
+    "prerequisites": ["Taylor series", "partial sums", "even/odd powers"]
   }
 ]

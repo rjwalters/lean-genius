@@ -2,25 +2,61 @@
   {
     "id": "ann-lg020201-congruence",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
-    "range": { "startLine": 47, "endLine": 64 },
+    "range": { "startLine": 53, "endLine": 59 },
     "type": "technique",
     "title": "Burnside's Fixed-Point Congruence",
-    "content": "card_modEq_card_fixedPoints is the engine: when a p-group G acts on a finite set α, orbit–stabilizer plus Lagrange force every orbit to have p-power size, so orbits of size > 1 contribute multiples of p. Hence |α| ≡ (number of singleton orbits) = |fixed points| (mod p). nonempty_fixedPoints_of_not_dvd is the immediate corollary: if p does not divide |α|, the fixed-point set cannot be empty — the counting argument behind Cauchy- and Cayley-style existence results."
+    "content": "card_modEq_card_fixedPoints is the engine: when a p-group G acts on a finite set α, orbit–stabilizer plus Lagrange force every orbit to have p-power size, so orbits of size > 1 contribute multiples of p. Hence |α| ≡ (number of singleton orbits) = |fixed points| (mod p). It wraps Mathlib's IsPGroup.card_modEq_card_fixedPoints over the hypothesis hG : IsPGroup p G.",
+    "mathContext": "$|\\alpha| \\equiv |\\alpha^G| \\pmod p$, since every non-singleton orbit has size $p^k$ with $k \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["orbit–stabilizer theorem", "p-power orbit size", "IsPGroup", "Burnside counting"],
+    "prerequisites": ["group actions", "orbits and fixed points", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-lg020201-existence",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
+    "range": { "startLine": 60, "endLine": 69 },
+    "type": "theorem",
+    "title": "Existence of a Fixed Point",
+    "content": "nonempty_fixedPoints_of_not_dvd is the immediate corollary: if p does not divide |α|, then |α| ≢ 0 (mod p), so by the congruence |fixed points| ≢ 0 (mod p), and the fixed-point set cannot be empty. This is the counting argument behind Cauchy- and Cayley-style existence results — a nonempty fixed-point set extracted purely from a divisibility hypothesis on the set's cardinality.",
+    "mathContext": "$p \\nmid |\\alpha| \\Rightarrow \\alpha^G \\ne \\varnothing$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fixed point", "existence by counting", "Cauchy's theorem"],
+    "prerequisites": ["the fixed-point congruence", "divisibility mod p"]
   },
   {
     "id": "ann-lg020201-center",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
-    "range": { "startLine": 65, "endLine": 90 },
+    "range": { "startLine": 71, "endLine": 82 },
     "type": "concept",
     "title": "The Class Equation and Center Nontriviality",
-    "content": "Specializing the congruence to G acting on itself by conjugation, the fixed points are exactly the center Z(G), and the congruence becomes the class equation mod p: |G| ≡ |Z(G)| (mod p). For a nontrivial p-group p ∣ |G|, so p ∣ |Z(G)|; since 1 ∈ Z(G) the center has positive p-divisible order and cannot be trivial. center_nontrivial and bot_lt_center record this; p_dvd_card_center sharpens it to p ∣ |Z(G)| by observing the center is itself a nontrivial p-group via IsPGroup.to_subgroup and IsPGroup.nontrivial_iff_card."
+    "content": "Specializing the congruence to G acting on itself by conjugation, the fixed points are exactly the center Z(G), and the congruence becomes the class equation mod p: |G| ≡ |Z(G)| (mod p). For a nontrivial p-group p ∣ |G|, so p ∣ |Z(G)|; since 1 ∈ Z(G) the center has positive p-divisible order and cannot be trivial. center_nontrivial and bot_lt_center record this (the latter as ⊥ < Z(G)).",
+    "mathContext": "$|G| \\equiv |Z(G)| \\pmod p$ (class equation mod $p$); for a nontrivial $p$-group $p \\mid |G|$, so $Z(G) \\ne 1$, i.e. $\\bot < Z(G)$.",
+    "significance": "key",
+    "relatedConcepts": ["class equation", "conjugation action", "center of a group", "IsPGroup.center_nontrivial"],
+    "prerequisites": ["conjugation action", "center Z(G)", "the fixed-point congruence"]
+  },
+  {
+    "id": "ann-lg020201-pdvd",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
+    "range": { "startLine": 83, "endLine": 90 },
+    "type": "theorem",
+    "title": "p Divides the Order of the Center",
+    "content": "p_dvd_card_center sharpens center nontriviality to the quantitative p ∣ |Z(G)|. The argument observes that the center is itself a nontrivial p-group (IsPGroup.to_subgroup), so IsPGroup.nontrivial_iff_card gives |Z(G)| = pⁿ with n > 0, whence p ∣ |Z(G)| by dvd_pow_self. This is the form most directly usable in the induction that proves p-groups nilpotent.",
+    "mathContext": "$|Z(G)| = p^n$ with $n \\ge 1$, hence $p \\mid |Z(G)|$.",
+    "significance": "key",
+    "relatedConcepts": ["IsPGroup.to_subgroup", "nontrivial_iff_card", "dvd_pow_self", "order of the center"],
+    "prerequisites": ["p-group orders are prime powers", "subgroup of a p-group is a p-group"]
   },
   {
     "id": "ann-lg020201-summary",
     "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
     "range": { "startLine": 91, "endLine": 120 },
-    "type": "concept",
+    "type": "context",
     "title": "Summary: One Congruence, Many Theorems",
-    "content": "The closing table pairs each step with its Mathlib backing. The single fixed-point congruence — itself a corollary of Lagrange and orbit–stabilizer — is the common source of center nontriviality (here), the nilpotency of p-groups (induct by quotienting out Z(G)), Cauchy's theorem, and the Sylow theorems. This entry isolates the first link, the one that makes the inductive structure theory of p-groups possible."
+    "content": "The closing table pairs each step with its Mathlib backing. The single fixed-point congruence — itself a corollary of Lagrange and orbit–stabilizer — is the common source of center nontriviality (here), the nilpotency of p-groups (induct by quotienting out Z(G)), Cauchy's theorem, and the Sylow theorems. This entry isolates the first link, the one that makes the inductive structure theory of p-groups possible.",
+    "mathContext": "Fixed-point congruence $\\Rightarrow$ {center nontrivial, $p$-groups nilpotent, Cauchy, Sylow}.",
+    "significance": "context",
+    "relatedConcepts": ["nilpotent groups", "Sylow theorems", "Cauchy's theorem", "structure theory of p-groups"],
+    "prerequisites": ["the preceding theorems"]
   }
 ]

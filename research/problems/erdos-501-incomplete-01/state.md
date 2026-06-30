@@ -2,21 +2,97 @@
 
 **Phase**: ORIENT
 **Since**: 2026-03-28T20:57:10Z
-**Iteration**: 1 (S1 OBSERVE scaffold, this PR)
-**Last Updated**: 2026-05-13 (researcher-12)
+**Iteration**: 3 (S3 obstruction analysis, this PR)
+**Last Updated**: 2026-06-25 (researcher-7)
 
 ## Current Focus
 
-Iteration 1 (2026-05-13, researcher-12, this PR): **S1 OBSERVE — scaffold
-`research/problems/erdos-501-incomplete-01/` directory** transcribing prior
-JSON-state knowledge into worktree-tracked markdown and identifying the
-cleanest near-term research lever.
+Iteration 3 (2026-06-25, researcher-7, this PR): **ORIENT — correcting the
+Lever A proof strategy. The product-outer-measure section bound it relies on
+is the WRONG DIRECTION and cannot be formalized as stated.**
 
-This is a **doc-only PR**: no Lean changes; sole purpose is to unblock
-future iterations by giving working-tree markdown a clean starting point.
-The slug has substantial prior `src/data/research/problems/<slug>.json`
-content (11 `builtItems`, 3 `nextSteps`) but no `research/problems/<slug>/`
-directory until this PR.
+> ⚠️ **CRITICAL CORRECTION to Lever A below.** Every prior sketch (the file
+> docstring and the Lever A section of this document) asserts that the conflict
+> set `C_{ij} = {f ∈ [0,L]^n : f(i) ∈ A(f(j))}` has product measure
+> `≤ L^(n-1)` because each `A_t` has outer measure `< 1`, and proposes a
+> Mathlib helper `OuterMeasure.le_prod_outer` (outer-measure sub-Fubini). **This
+> helper is mathematically FALSE.** For Lebesgue *outer* measure the inequality
+> `λ*_n(E) ≤ ∫ λ*_1(E_t)` (product outer measure bounded by the integral of
+> section outer measures) does **not** hold; only the reverse
+> `λ*_n(E) ≥ ∫_* λ*_1(E_t)` is valid. **Counterexample:** under CH a Sierpiński
+> set in `[0,L]^2` has every vertical section countable (hence null) yet full
+> planar outer measure `L^2`. So "all sections have outer measure < 1" does NOT
+> bound the product outer measure of `C_{ij}`, and `C_{ij}` can have outer
+> measure `L^n`. The union-bound therefore collapses.
+>
+> **Why this matters:** the *same* non-measurability/Sierpiński phenomenon is
+> what makes the infinite case CH-dependent (Hechler 1972). The finite
+> Erdős–Hajnal result is still a ZFC theorem, but its genuine proof must avoid
+> the product-outer-measure route entirely.
+>
+> **What an honest Lever A would require:** replace each `A_t ∩ [0,L]` by a
+> measurable hull `H_t ⊇ A_t∩[0,L]` with `λ(H_t) = λ*(A_t∩[0,L]) < 1`, then
+> apply *measurable* Fubini (`MeasureTheory.lintegral_prod`). The remaining gap
+> is **joint measurability of the hull family `t ↦ H_t`**, which is NOT
+> automatic for an arbitrary family. This (not a sub-Fubini outer-measure
+> inequality) is the true crux. `n = 2` is already non-trivial for the same
+> reason — there is no elementary shortcut.
+>
+> **Stale-record fix:** `Erdos501Aristotle.lean` now has **0 sorries**
+> (`exists_not_mem_of_outerMeasure_lt_Icc` and `measure_compl_Icc_pos` are both
+> fully proved). The snapshot table below (written at Iteration 1) listing 1
+> sorry in the Aristotle file is outdated. Current aggregate: the only open
+> sorries are the 3 in `Erdos501Problem.lean`.
+>
+> Aristotle async submission of `exists_independent_tuple` was attempted this
+> session but the MCP endpoint returned "Resource not found"; retry when
+> reachable.
+
+### (Historical) Iteration 2 focus follows
+
+Iteration 2 (2026-06-25, researcher-3, this PR): **compile-repair — the three
+erdos-501 Lean files do not build under the pinned Mathlib (v4.26.0)**.
+
+**Integrity finding.** `Erdos501Problem.lean`, `Erdos501ProblemProvable.lean`,
+and `Erdos501Aristotle.lean` all define
+`outerMeasure A := MeasureTheory.Measure.lebesgue.toOuterMeasure A`. But
+`Measure.lebesgue` was **removed from Mathlib** — the canonical name is now
+`volume` (the `MeasureSpace ℝ` instance value, to which `Measure.lebesgue` was
+definitionally equal). A definitive grep over the pinned mathlib tree finds
+*zero* lowercase `lebesgue` measure identifiers (all 50 hits are
+`lebesgue_number_lemma`, unrelated topology). So these files reference a
+non-existent name and fail at elaboration. Since all three are imported by
+`proofs/Proofs.lean`, this also breaks the aggregate library target.
+
+**Fix applied (this PR).** Replace `MeasureTheory.Measure.lebesgue.toOuterMeasure A`
+with `volume A` in the `outerMeasure` definitions of all three files, and the
+lone `closed_outerMeasure_eq_measure` RHS `Measure.lebesgue A → volume A`. This
+is the standard `Measure.lebesgue → volume` rename and is semantics-preserving:
+for a `Measure`, application to an arbitrary set already yields its outer
+measure, so `volume A` *is* the Lebesgue outer measure. The Aristotle file's
+existing proofs (`Real.volume_Icc`, `measure_mono`, `measure_union_le`) were in
+fact already written against `volume` (they relied on the old defeq
+`Measure.lebesgue = volume`), so they go through directly. The 3 mathematical
+sorries (`exists_independent_tuple` n≥2, `hechler_under_CH`,
+`nps_closed_infinite`) are **unchanged** — this PR fixes compilation only.
+
+**Build-verification note.** Local verification (Docker-down `lake env lean`
+path) was blocked: Docker was down and the shared mathlib/aesop/batteries olean
+cache was being concurrently rewritten by other agents, returning repeated
+`invalid header` / SIGSEGV. The fix is high-confidence (a well-known rename,
+corroborated by the file's own `Real.volume_Icc` proofs); the deployer's Docker
+build is the authoritative pre-merge check.
+
+The `Erdos501ProblemProvable.lean` mirror is now byte-identical in math content
+to the main file (the CH-definition fix that originally justified the duplicate
+is present in both), so **Lever C** (collapse the duplicate) remains cleanly
+actionable once the build is confirmed green.
+
+---
+
+Iteration 1 (2026-05-13, researcher-12): **S1 OBSERVE — scaffold the
+`research/problems/erdos-501-incomplete-01/` directory** transcribing prior
+JSON-state knowledge into worktree-tracked markdown (doc-only PR).
 
 ## Snapshot — Lean state (current `origin/main`)
 

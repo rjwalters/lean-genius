@@ -145,7 +145,7 @@
       "(RESOLVED in `bezout-identity-oq-01-oq-01-oq-01-oq-01`) Can `stepBitOps_le` be eliminated by defining a more explicit bit-level computation model in Lean 4? Yes: the concrete cost model `2 · Nat.size (max a b) + 1` (comparison + shift/subtraction + parity check) satisfies the envelope `≤ 3 · (log₂(max a b) + 1)` via the bridging identity `Nat.size n = Nat.log 2 n + 1` for `n ≥ 1`.",
       "Does the analysis extend to the HGCD (half-GCD) algorithm of Schönhage, giving $O(M(n) \\log n)$ complexity where $M(n)$ is the multiplication cost? HGCD's recurrence is $T(n) = 2T(n/2) + M(n)$, which by the Master theorem gives $T(n) = O(M(n) \\log n)$. Formalizing this would require: (a) HGCD's key invariant that two-by-two integer matrices encode partial Euclidean steps, (b) the Master theorem in Lean (currently absent from Mathlib), and (c) parametrization over the multiplication primitive $M$.",
       "**Word-RAM bound**: Formalize the alternative $O(\\log n)$ word-operation bound for inputs fitting in a machine word. This requires a model with $O(1)$ word-arithmetic and would give a much sharper bound for practical use cases.",
-      "**Tightness of the step-count constant 2**: Prove that the constant 2 in $2(\\log_2 a + \\log_2 b) + 2$ is asymptotically tight by exhibiting an input family $\\{(a_n, b_n)\\}$ where the step count is exactly $2 \\log_2 a_n + 2 \\log_2 b_n + O(1)$. The candidate is the worst-case Fibonacci-like inputs; formalizing tightness would require a matching lower bound on `binaryGcdSteps`."
+      "(RESOLVED in `bezout-identity-oq-01-oq-01-oq-01-oq-04`) **Tightness of the step-count constant 2**: Prove that the constant 2 in $2(\\log_2 a + \\log_2 b) + 2$ is asymptotically tight by exhibiting an input family $\\{(a_n, b_n)\\}$ where the step count is exactly $2 \\log_2 a_n + 2 \\log_2 b_n + O(1)$. The candidate is the worst-case Fibonacci-like inputs; formalizing tightness would require a matching lower bound on `binaryGcdSteps`. Resolved: the tight constant is 1, not 2. The sharp bound `binaryGcdSteps a b ≤ log₂ a + log₂ b + 1` holds, and the family `(1, 2^k)` attains it with equality (`binaryGcdSteps 1 (2^k) = k + 1`), so the worst-case step count is exactly M + 1 (M = log₂ a + log₂ b) and the constant 2 overcounts by an asymptotic factor of 2."
     ]
   },
   "crossReferences": [
@@ -202,7 +202,9 @@
       "note": "Introduces the Half-GCD (HGCD) algorithm achieving $O(M(n) \\log n)$ bit complexity (where $M(n)$ is the multiplication cost). HGCD is the asymptotically fastest known GCD algorithm, but its constants are large enough that binary GCD remains competitive for inputs up to thousands of bits. The HGCD analysis is significantly more complex than the bit-stripping argument formalized here."
     },
     {
-      "authors": ["Möller, Niels"],
+      "authors": [
+        "Möller, Niels"
+      ],
       "title": "On Schönhage's algorithm and subquadratic integer GCD computation",
       "year": "2008",
       "venue": "Mathematics of Computation",

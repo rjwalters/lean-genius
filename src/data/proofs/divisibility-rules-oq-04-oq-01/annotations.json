@@ -39,8 +39,44 @@
     "title": "Coprimality Fusion: All Three Primes ↔ 1001",
     "content": "`all_three_dvd_iff_dvd_1001` shows 7 ∣ n ∧ 11 ∣ n ∧ 13 ∣ n ↔ 1001 ∣ n. The forward direction chains `Nat.Coprime.mul_dvd_of_dvd_of_dvd` twice (first 7·11 = 77, then 77·13 = 1001), each coprimality discharged by `norm_num`; the reverse is three `dvd_trans` from 1001. Composing this with the m = 1001 instance of the parametric lemma gives `all_three_dvd_iff_blockAltSum`: the conjunction of the three single-prime tests is equivalent to a single 1001-divisibility test on blockAltSum n. This is why the three rules genuinely fuse into one.",
     "mathContext": "Since $7, 11, 13$ are pairwise coprime, $\\mathrm{lcm} = 7\\cdot 11\\cdot 13 = 1001$, so $7\\mid n \\wedge 11\\mid n \\wedge 13\\mid n \\iff 1001 \\mid n$. Combined with the $m=1001$ rule, $1001 \\mid n \\iff (1001:\\mathbb{Z}) \\mid \\mathrm{blockAltSum}\\,n$.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": ["Nat.Coprime.mul_dvd_of_dvd_of_dvd", "lcm of coprimes", "1001 = 7·11·13"],
     "prerequisites": ["pairwise coprimality", "Nat.Coprime.mul_dvd_of_dvd_of_dvd"]
+  },
+  {
+    "id": "ann-droq0401-blockaltsum",
+    "proofId": "divisibility-rules-oq-04-oq-01",
+    "range": { "startLine": 34, "endLine": 41 },
+    "type": "definition",
+    "title": "blockAltSum: the shared divisibility certificate",
+    "content": "blockAltSum n is defined as the alternating sum of the base-1000 digits of n — Nat.digits 1000 n cast to ℤ, then List.alternatingSum. Reading from the least-significant block, it computes b₀ - b₁ + b₂ - ⋯ where each bₖ is a three-decimal-digit group (0–999). This single integer is the certificate every rule reads off: there is no per-prime quantity, only this one alternating sum. The companion fact one_thousand_one_eq records 1001 = 7·11·13 by norm_num, pinning down which moduli the construction serves.",
+    "mathContext": "$\\mathrm{blockAltSum}(n) = \\sum_{k\\ge 0} (-1)^k b_k$ where $n = \\sum_{k} b_k\\,1000^k$ and $0 \\le b_k < 1000$. For example $1\\,234\\,567 \\mapsto 567 - 234 + 1 = 334$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.digits", "List.alternatingSum", "base-1000 blocks"],
+    "prerequisites": ["positional numeral systems", "List.alternatingSum"]
+  },
+  {
+    "id": "ann-droq0401-instances",
+    "proofId": "divisibility-rules-oq-04-oq-01",
+    "range": { "startLine": 56, "endLine": 75 },
+    "type": "insight",
+    "title": "Three rules as one-line instances of the parametric lemma",
+    "content": "seven_dvd_iff, eleven_dvd_iff and thirteen_dvd_iff are each a single application of dvd_iff_dvd_blockAltSum with the side condition (m:ℤ) ∣ 1001 discharged by norm_num — 7, 11 and 13 all divide 1001. unified_7_11_13 simply tuples the three together. The pedagogical point is that none of these re-derives anything: the mathematical content lives entirely in the parametric lemma, and the three classical 'tricks' are revealed as the same theorem evaluated at three divisors of 1001. The parent oq-04 had to treat 11 by a separate computation.",
+    "mathContext": "$7 \\mid n \\iff (7:\\mathbb{Z}) \\mid \\mathrm{blockAltSum}\\,n$, and identically for $11$ and $13$, because $\\{7,11,13\\} \\subset \\{d : d \\mid 1001\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["instantiation", "divisors of 1001", "uniform proof"],
+    "prerequisites": ["the parametric lemma dvd_iff_dvd_blockAltSum"]
+  },
+  {
+    "id": "ann-droq0401-modeq",
+    "proofId": "divisibility-rules-oq-04-oq-01",
+    "range": { "startLine": 97, "endLine": 104 },
+    "type": "insight",
+    "title": "The residue identity powering every rule",
+    "content": "modEq_blockAltSum strengthens the divisibility tests to a full congruence: n ≡ blockAltSum n modulo 1001, not merely 'divisible-or-not'. It is proved from 1000 ≡ -1 [ZMOD 1001] (Int.modEq_iff_dvd plus norm_num) fed into Nat.zmodeq_ofDigits_digits, then rewritten by Nat.ofDigits_neg_one. This congruence is the true engine: every divisibility rule above is the special case 'the residue is 0 modulo m' for m ∣ 1001, and it additionally lets one compute n mod 1001 (hence mod 7, 11, 13) directly from the block alternating sum.",
+    "mathContext": "$n \\equiv \\mathrm{blockAltSum}(n) \\pmod{1001}$, from $1000 \\equiv -1 \\pmod{1001}$. Reducing mod $7$, $11$ or $13$ recovers each single-prime rule as a corollary.",
+    "significance": "key",
+    "relatedConcepts": ["Int.ModEq", "Nat.zmodeq_ofDigits_digits", "complete residue vs. divisibility"],
+    "prerequisites": ["integer congruences", "Nat.zmodeq_ofDigits_digits"]
   }
 ]

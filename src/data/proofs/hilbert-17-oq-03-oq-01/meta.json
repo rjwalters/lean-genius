@@ -138,7 +138,19 @@
       "leanType": "∑ p : Fin 7 × Fin 3, (qv p.1 * dv p.2)^2 = (multiplier * motzkin) * multiplier"
     }
   ],
-  "overview": "The parent Hilbert's-17th entry states Artin's theorem — every nonnegative real polynomial is a sum of squares of rational functions — but must axiomatize it (the general proof needs real-closed-field model theory), and likewise axiomatizes that the Motzkin polynomial is not a sum of squares of polynomials. This follow-up supplies the missing constructive content for the canonical example. A single integer-coefficient polynomial identity certifies that 4 + 4x² + 4y² times Motzkin is a sum of seven polynomial squares; since that multiplier is 2² + (2x)² + (2y)², a sum of squares, dividing in ℝ(x,y) and multiplying the two SOS representations gives Motzkin itself as a sum of 21 squares of rational functions. Everything is checked by ring plus elementary field algebra, with 0 axioms. The certificate was discovered by solving the semidefinite Gram-matrix feasibility problem for the SOS multiplier.",
+  "overview": {
+    "historicalContext": "Hilbert's 17th problem (1900) asked whether every real polynomial that is nonnegative everywhere can be written as a sum of squares of rational functions. Emil Artin answered yes in 1927 (Über die Zerlegung definiter Funktionen in Quadrate), using the theory of formally real / real-closed fields. The necessity of rational functions — rather than polynomials — is shown by explicit counterexamples; the canonical one is the Motzkin polynomial $M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1$, which is nonnegative (by AM–GM) yet is provably not a sum of squares of polynomials. The parent gallery entry hilbert-17 states Artin's theorem and the Motzkin counterexample but must carry both as axioms, since the general proof needs real-closed-field model theory. This entry supplies the missing positive, constructive content for the canonical example.",
+    "problemStatement": "Exhibit and machine-check an explicit witness that the Motzkin polynomial $M = x^4y^2 + x^2y^4 - 3x^2y^2 + 1$ is a sum of squares of rational functions in $\\mathbb{R}(x,y)$, i.e. $M = \\sum_i g_i^2$ with each $g_i \\in \\mathbb{R}(x,y)$, with $0$ axioms. This is Artin's theorem made constructive for the instance that is known to fail polynomial SOS, thereby replacing the parent entry's existence axiom $\\texttt{artin\\_hilbert17}$ for this $M$.",
+    "proofStrategy": "The core is a single integer-coefficient SOS Positivstellensatz certificate, closed entirely by $\\texttt{ring}$: the multiplier $4 + 4x^2 + 4y^2$ times $M$ equals a sum of seven polynomial squares, $(2xy - x^3y - xy^3)^2$ (three copies) $+ (x^3y - xy^3)^2 + (2x - 2xy^2)^2 + (2y - 2x^2y)^2 + (2 - 2x^2y^2)^2$. The multiplier itself is a sum of squares, $4 + 4x^2 + 4y^2 = 2^2 + (2x)^2 + (2y)^2$. Working in the fraction field $\\mathbb{R}(x,y) = \\mathrm{FractionRing}\\,\\mathbb{R}[x,y]$, one shows the multiplier is nonzero (its constant term is $4$, via evaluation at $0$) and its image in $\\mathbb{R}(x,y)$ is nonzero (using $\\texttt{IsFractionRing.injective}$). Then, using that a product of two sums of squares is a sum of squares — $(\\sum a_i^2)(\\sum b_j^2) = \\sum_{i,j}(a_ib_j)^2$ — the $7$-square certificate for $(\\text{multiplier})\\cdot M$ and the $3$-square certificate for the multiplier combine into a $21$-term polynomial identity $\\sum_{i<7,j<3}(q_i d_j)^2 = (\\text{multiplier}\\cdot M)\\cdot\\text{multiplier}$. Dividing through by $\\text{multiplier}^2$ in the field and reindexing $\\mathrm{Fin}\\,7 \\times \\mathrm{Fin}\\,3 \\simeq \\mathrm{Fin}\\,21$ yields $M = \\sum_{i,j}(q_i d_j / (4+4x^2+4y^2))^2$, a sum of $21$ squares of rational functions. The certificate was discovered by solving the associated semidefinite Gram-matrix feasibility problem numerically (alternating projection onto the affine constraint set and the PSD cone) and reading off the rational boundary Gram factorization.",
+    "keyInsights": [
+      "Rational functions are genuinely necessary: the Motzkin polynomial is nonnegative everywhere yet is not a sum of squares of polynomials, so a polynomial SOS witness cannot exist — only the rational-function representation succeeds, which is exactly what makes Hilbert's 17th problem deeper than the polynomial case.",
+      "The whole construction reduces to one integer-coefficient polynomial identity that Lean closes by $\\texttt{ring}$: $(4+4x^2+4y^2)\\cdot M = 3G_0^2 + G_1^2 + G_2^2 + G_3^2 + G_4^2$. Because the identity is over a known finite set of monomials with integer coefficients, no heavy machinery is needed — verification is purely algebraic.",
+      "The auxiliary multiplier must itself be a sum of squares for the argument to work: $4 + 4x^2 + 4y^2 = 2^2 + (2x)^2 + (2y)^2$. Combined with the product-of-SOS-is-SOS identity, this is precisely what converts the polynomial certificate $(\\text{multiplier})\\cdot M = \\text{SOS}$ into a genuine rational-function SOS for $M$ after dividing by the multiplier.",
+      "Division by the multiplier is legitimized formally: the multiplier is nonzero in $\\mathbb{R}[x,y]$ (its evaluation at $0$ is the constant term $4 \\neq 0$), and $\\texttt{IsFractionRing.injective}$ lifts this to a nonzero image in $\\mathbb{R}(x,y)$, so the field division step is sound rather than assumed.",
+      "Motzkin sits on the boundary of the SOS cone, so the certificate was not guessed but computed: solving the semidefinite Gram-matrix feasibility problem (SOS/SDP duality) produces the rational boundary Gram matrix, which factors into the five explicit squares — demonstrating the SDP-to-formal-proof pipeline of solve numerically, read off a rational Gram factorization, then discharge the resulting identity with $\\texttt{ring}$.",
+      "The result is $0$-axiom: $\\#\\texttt{print axioms}$ on $\\texttt{motzkin\\_isSOS\\_ratFunc}$ reports only $\\texttt{propext}$, $\\texttt{Classical.choice}$, $\\texttt{Quot.sound}$ — no $\\texttt{sorryAx}$ and no $\\texttt{native\\_decide}$/$\\texttt{Lean.ofReduceBool}$ — so it replaces the parent's existence axiom $\\texttt{artin\\_hilbert17}$ for this $M$ with a fully machine-checked witness. The $21 = 7\\times 3$ squares are un-optimized; the true minimum (a Pfister-type bound) is smaller."
+    ]
+  },
   "conclusion": {
     "summary": "A 177-line, 0-sorry, 0-axiom formalization giving an explicit, machine-checked rational sum-of-squares certificate for the Motzkin polynomial: the constructive, positive side of Hilbert's 17th problem for the canonical example, complementing the parent's axiomatized general Artin theorem.",
     "implications": "Where the parent only asserts existence of a rational SOS (artin_hilbert17 as an axiom), this entry exhibits one for Motzkin and verifies it with 0 axioms. It also demonstrates the Gram-matrix / SDP route to SOS certificates inside a formal proof: solve the SDP numerically, read off the rational boundary Gram factorization, and discharge the resulting polynomial identity with ring.",
@@ -166,7 +178,18 @@
       "url": "https://link.springer.com/article/10.1007/BF02952513"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Parent: states Artin's theorem (every nonnegative real polynomial is a sum of squares of rational functions) but must axiomatize it, and axiomatizes that Motzkin is not a polynomial SOS. This entry replaces the existence axiom artin_hilbert17 with an explicit, machine-checked rational SOS certificate for the canonical example M."
+    },
+    {
+      "targetId": "hilbert-17-oq-03-oq-02",
+      "relationship": "complements",
+      "description": "Companion proving Motzkin is NOT a sum of squares of polynomials. Together the two entries exhibit the full Hilbert-17 picture for M: polynomial SOS fails (oq-03-oq-02), yet rational-function SOS succeeds (this entry), so rational functions are genuinely necessary."
+    }
+  ],
   "sections": [
     {
       "id": "definitions",

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-lawtype-overview",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 49 },
+    "type": "context",
+    "title": "Cashing Out the Abstract Lawvere Theorem in Two Models",
+    "content": "The docstring frames the open question: the parent entry proved Lawvere's fixed-point theorem at full categorical generality (in any cartesian closed category, a point-surjective φ : A ⟶ (A ⟹ B) forces every endomorphism t : B ⟶ B to have a fixed global point). This file instantiates it in the two standard models — the category Type of sets and presheaf topoi C ⥤ Type — recovering Cantor's theorem as a literal corollary. The crux is a computational 'bridge' showing that in Type the categorical vocabulary (global points, exponentials, evaluation, point-surjectivity) decodes exactly to the set-theoretic notions (elements, function types, application, surjectivity), so the categorical hypothesis is not merely analogous to the classical one but identical to it.",
+    "mathContext": "Lawvere: point-surjective $\\varphi : A \\to (A \\Rightarrow B) \\Rightarrow$ every $t : B \\to B$ has a fixed point. Cantor is the case $B = \\mathrm{Bool}$, $t = \\lnot$.",
+    "significance": "context",
+    "relatedConcepts": ["Lawvere fixed-point theorem", "Cantor's diagonal argument", "cartesian closed category", "presheaf topos"],
+    "prerequisites": ["category theory basics", "cartesian closed categories", "the parent CCC Lawvere theorem"]
+  },
+  {
+    "id": "ann-lawtype-bridge",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 85 },
+    "type": "technique",
+    "title": "The Type Bridge: Evaluation, Uncurrying, and Names Are Honest Application",
+    "content": "Three lemmas translate the cartesian-closed structure on Type into ordinary set theory. `ev_apply`: the categorical evaluation (exp.ev A).app X (a, h) is literally h a — true by rfl on Mathlib's model A ⟹ X = (A → X). `uncurry_apply`: uncurrying g : Y ⟶ (A ⟹ X) gives (uncurry g)(a,y) = g y a, unfolded via CartesianClosed.uncurry_eq, types_comp_apply, and whiskerLeft_apply. `name_apply`: the categorical *name* of f : A → B — the global point name f : 𝟙_ ⟶ (A ⟹ B) — picks out f itself, name f PUnit.unit = f, proved from uncurry_curry and the right-unitor. Together these strip the categorical wrapper off every operation the Lawvere theorem uses.",
+    "mathContext": "$\\mathrm{ev}(a,h) = h\\,a$; $\\ \\mathrm{uncurry}\\,g\\,(a,y) = g\\,y\\,a$; $\\ \\mathrm{name}\\,f\\,(\\ast) = f$.",
+    "significance": "key",
+    "relatedConcepts": ["cartesian closed structure on Type", "evaluation and currying", "Types.tensorProductAdjunction", "monoidal unit PUnit"],
+    "prerequisites": ["exponential objects", "uncurry/curry adjunction", "Mathlib CategoryTheory.Monoidal.Closed.Types"]
+  },
+  {
+    "id": "ann-lawtype-pointsurj",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 104 },
+    "type": "insight",
+    "title": "Categorical Point-Surjectivity = Honest Surjectivity",
+    "content": "`pointSurjective_iff_surjective` is the heart of the bridge: for φ : A ⟶ (A ⟹ B), the categorical PointSurjective φ (every global point of A ⟹ B factors through φ after naming) is equivalent to Function.Surjective φ. The forward direction uses name_apply to convert a categorical witness into a set-theoretic preimage (evaluating the naming square at PUnit.unit); the reverse builds a constant global point fun _ => a from a set-theoretic preimage and checks the naming condition via name_apply again. This equivalence is exactly the 'single non-formal modelling choice' of the parent — point-surjectivity vs. Lean surjectivity — shown to be faithful in Type, so the categorical hypothesis decodes precisely to the classical one.",
+    "mathContext": "$\\mathrm{PointSurjective}\\,\\varphi \\iff \\mathrm{Surjective}\\,\\varphi$ for $\\varphi : A \\to (A \\to B)$.",
+    "significance": "key",
+    "relatedConcepts": ["point-surjectivity", "global points", "decategorification", "surjectivity"],
+    "prerequisites": ["name_apply", "global points as elements"]
+  },
+  {
+    "id": "ann-lawtype-diagonal",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 106, "endLine": 118 },
+    "type": "insight",
+    "title": "Lawvere's Diagonal in Type",
+    "content": "`no_surjective_of_fixedPointFree`: any fixed-point-free t : B → B forbids a surjection A → (A → B). The proof translates a set-theoretic fixed-point-free hypothesis into the categorical form — a global point s : 𝟙_ ⟶ B fixed by t would give t (s PUnit.unit) = s PUnit.unit, contradicting ht — and then feeds the surjection through the parent's lawvere_cantor, converting it to point-surjectivity via pointSurjective_iff_surjective. This is the decategorified Lawvere diagonal: the would-be diagonal value f a = t (φ a a) cannot be in the image of a surjection.",
+    "mathContext": "$(\\forall b,\\ t\\,b \\neq b) \\Rightarrow$ no surjection $A \\to (A \\to B)$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal argument", "fixed-point-free endomorphism", "lawvere_cantor", "self-reference"],
+    "prerequisites": ["the parent lawvere_cantor", "pointSurjective_iff_surjective"]
+  },
+  {
+    "id": "ann-lawtype-cantor",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 122, "endLine": 136 },
+    "type": "concept",
+    "title": "Cantor's Theorem as a One-Line Corollary",
+    "content": "`cantor_no_surjective` recovers the classical Cantor diagonal — no surjection A → (A → Bool) — by instantiating no_surjective_of_fixedPointFree at the fixed-point-free negation t = (!·), whose fixed-point-freeness is Bool.not_ne_self. `cantor_exists_missed` restates it existentially: some g : A → Bool lies outside the image of any φ (the diagonal complement), proved by contradiction. The significance: Cantor's theorem is here literally a special case of the categorical Lawvere theorem, not merely an analogue — the same diagonal that underlies Russell, Gödel, Tarski, and Turing.",
+    "mathContext": "No surjection $A \\to (A \\to \\mathrm{Bool})$, since $b \\mapsto \\lnot b$ has no fixed point; equivalently $|A| < |2^A|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cantor's theorem", "negation as fixed-point-free map", "Russell/Gödel/Tarski/Turing diagonal", "power set"],
+    "prerequisites": ["no_surjective_of_fixedPointFree", "Bool.not_ne_self"]
+  },
+  {
+    "id": "ann-lawtype-presheaf",
+    "proofId": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 142, "endLine": 157 },
+    "type": "concept",
+    "title": "The Presheaf-Topos Instance",
+    "content": "`lawvere_fixedPoint_presheaf` and `lawvere_cantor_presheaf` apply the abstract theorem in a presheaf topos C ⥤ Type u, where Mathlib already provides the CartesianClosed instance. Because the parent's theorem is stated for an arbitrary CCC, no bridge is needed here — the abstract statements apply verbatim: a point-surjective φ : A ⟶ (A ⟹ B) of presheaves forces a fixed global point of any t, and dually a fixed-point-free t blocks point-surjectivity. This confirms the same categorical machine runs unchanged in a genuine topos, isolating the diagonal phenomenon as one statement spanning sets and toposes.",
+    "mathContext": "In $C \\Rightarrow \\mathbf{Type}$: point-surjective $\\varphi \\Rightarrow t$ has a fixed global section; fixed-point-free $t \\Rightarrow \\varphi$ not point-surjective.",
+    "significance": "supporting",
+    "relatedConcepts": ["presheaf topos", "CartesianClosed (C ⥤ Type)", "topos theory", "generality of CCC theorems"],
+    "prerequisites": ["presheaf categories", "the abstract lawvere_fixedPoint / lawvere_cantor"]
+  }
+]

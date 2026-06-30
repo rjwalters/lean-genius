@@ -437,6 +437,64 @@ Fin n ↔ Fin (n+1) index juggling + the scaling-limit PSD transfer are the work
   repeatedly — re-`cp` from worktree before every compile, trust the worktree
   commit + the `#print axioms` from the run that actually compiled.
 
-## Still open (parent hilbert-17, 2 axioms remain)
-- `quadratic_psd_is_sos_aux` — homogeneous case DONE; only affine homogenisation left.
-- `pfister_bound_aux` — Pfister's 2ⁿ bound; genuinely deep, no short Mathlib path.
+## Session 2026-06-24 (researcher-1) — AFFINE quadratic PSD=SOS DONE (parent axiom 2 → 1)
+Completed the affine homogenisation, discharging `quadratic_psd_is_sos_aux`
+entirely. Extended `Hilbert17QuadraticGram.lean` (now 483 L, 0 axioms) with the
+headline `affine_quadratic_psd_isSumSq`: every PSD `Q : MvPolynomial (Fin n) ℝ`
+with `totalDegree Q ≤ 2` (affine quadratics included) is a polynomial SOS of
+affine-linear forms. Wired into the parent (`import Proofs.Hilbert17QuadraticGram`;
+`theorem quadratic_psd_is_sos_aux Q hQ h := affine_quadratic_psd_isSumSq Q hQ.le h`
+— parent predicates are defeq to the child's). **Parent axiomCount 2 → 1**
+(only `pfister_bound_aux` remains). Both `quadratic_psd_is_sos_aux` and
+`quadratic_psd_is_sos` `#print axioms` → propext/Classical.choice/Quot.sound.
+
+### The construction (cleaner than the prior "scaling-limit" sketch)
+`homogenize Q := ∑ d ∈ Q.support, monomial (Finsupp.cons (2 - d.degree) d) (coeff d Q)`
+— each monomial `X^d` (deg ≤ 2) becomes `X 0 ^ (2 - deg d) · X^d`, variables
+shifted up one index by `Finsupp.cons`. Then:
+1. `homogenize_isHomogeneous` (deg 2): `IsHomogeneous.sum` + `isHomogeneous_monomial`,
+   degree via `degree_cons : (cons y s).degree = y + s.degree`; `2 - deg d + deg d = 2`
+   since `deg d ≤ totalDegree Q ≤ 2` (`le_totalDegree`).
+2. `eval_cons_one_homogenize`: `eval (Fin.cons 1 w) (homogenize Q) = eval w Q`
+   — the head factor `1 ^ (2-deg d) = 1` vanishes; per-monomial via `eval_monomial`,
+   `Finsupp.prod_fintype`, `Fin.prod_univ_succ`, `cons_zero/cons_succ`. **No
+   division / negative-exponent juggling** (the key simplification vs the t⁻¹ route).
+3. PSD transfer (`homogenize_nonneg`): on `{x₀ ≠ 0}` write `y = c • Fin.cons 1 w`
+   (`c = y 0`, `w j = y (succ j)/c`) and use the **homogeneity scaling identity**
+   `eval_smul_homogeneous : p.IsHomogeneous 2 → eval (c•x) p = c² · eval x p`
+   (proved by `as_sum` + `prod_pow_eq_pow_sum`, `deg d = 2`) ⟹ `= c² · eval w Q ≥ 0`.
+   At `x₀ = 0`: **continuity** — `g t := eval (update y 0 t) (homogenize Q)` is
+   continuous (`MvPolynomial.continuous_eval ∘ Continuous.update`), `≥0` for `t≠0`,
+   so `g 0 = eval y (homogenize Q) ≥ 0` via `ge_of_tendsto` on `𝓝[≠] 0`
+   (`NeBot` for ℝ; `update y 0 0 = y` by `Function.update_eq_self`).
+4. Assembly: apply `homogeneous_quadratic_psd_isSumSq (homogenize Q)` ⟹ `= ∑ qₖ²`,
+   then dehomogenise with `bind₁ (Fin.cons 1 X)` (set `x₀ = 1`):
+   `bind₁ (cons 1 X) (homogenize Q) = Q` by `MvPolynomial.funext` + `eval_cons_bind₁`
+   (= `aeval_bind₁` + `aeval_eq_eval`), and `bind₁` is an alg hom so it pushes
+   through `∑ ()²` (`map_sum`, `map_pow`). Witnesses `qₖ' = bind₁ (cons 1 X) qₖ`.
+
+### Lean gotchas (v4.26, this session)
+- `Fin.cons (1 : T) X` and `c • Fin.cons 1 w` need explicit type ascriptions
+  (`: Fin (n+1) → T`) — the dependent-`cons` motive otherwise fails to synthesise
+  (HSMul/`?m i` typeclass timeout, "argument w expected (i:Fin ?) → ? i.succ").
+- `le_of_tendsto` puts the bound on the RIGHT (`f c ≤ b ⟹ a ≤ b`); for `0 ≤ f`
+  use **`ge_of_tendsto`**.
+- `Continuous.update continuous_const 0 continuous_id` needs the const pinned by
+  the `have`'s explicit type (`Continuous fun t => Function.update y 0 t`) else the
+  constant `?m` is unsolved.
+- `rw [aeval_eq_eval] at h` leaves the RHS `aeval (fun i => …)` un-rewritten (head
+  function differs) → `congr 1` then sees `→ₐ` vs `→+*`; use
+  `simp only [aeval_eq_eval] at h` (rewrites all occurrences), and rewrite the
+  inner substitution function by a separate `have hfun … := by funext; Fin.cases`.
+- BUILD: docker DOWN, Aristotle DOWN (404) again. Verified via MAIN mathlib cache:
+  `cp` worktree sources to `<MAIN>/proofs/Proofs/`, build child oleans
+  (`LAKE_UNSAFE=1 ./bin/lake env lean F.lean -o .lake/build/lib/lean/Proofs/F.olean`)
+  for Gram (new) + Univariate (its olean was MISSING), then `lake env lean` the
+  parent (reads Motzkin/Robinson/Gram/Univariate oleans). `git checkout` the MAIN
+  sources after to leave it clean.
+
+## Still open (parent hilbert-17, 1 axiom remains)
+- `pfister_bound_aux` — Pfister's 2ⁿ bound; genuinely deep (Pfister forms over
+  formally real fields), no short Mathlib path. This is the last axiom; the
+  PSD=SOS *classification* cases (univariate, quadratic-forms) are now all
+  machine-checked 0-axiom, as are both PSD⊋SOS counterexamples (Motzkin, Robinson).

@@ -109,7 +109,8 @@
     "erdos-2",
     "erdos-24",
     "erdos-247",
-    "erdos-247-oq-01"
+    "erdos-247-oq-01",
+    "erdos-247-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -144,6 +145,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos247RatioGrowth.lean",
+      "filename": "Erdos247RatioGrowth.lean",
+      "lineCount": 318,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247RatioGrowth.lean"
     }
   ]
 }

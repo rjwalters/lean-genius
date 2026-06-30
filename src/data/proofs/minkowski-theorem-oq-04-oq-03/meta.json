@@ -83,6 +83,113 @@
     "historicalContext": "Blichfeldt's 1914 theorem strengthens Minkowski's geometry of numbers: any measurable set of volume strictly greater than k holds k+1 distinct points that are pairwise congruent modulo ℤⁿ. A natural companion question is whether the strict inequality is necessary. It is: the half-open unit cube [0,1)ⁿ is a fundamental domain for ℤⁿ, so it has volume exactly 1 yet meets each lattice coset in a single point. This is the canonical demonstration that the volume threshold cannot be relaxed from `> k` to `≥ k`.",
     "problemStatement": "Is the strict inequality in Blichfeldt's theorem necessary? Equivalently, for each k is there a measurable set of volume exactly k that contains no k+1 pairwise ℤⁿ-congruent points?",
     "text": "Yes — the threshold is sharp (status `verified`, 0 axioms, 0 sorries). For k=1 the witness is the half-open unit cube F = [0,1)ⁿ = stdFundDomain n: it is measurable, has volume exactly 1 (stdLattice_covolume), and carries no two distinct ℤⁿ-congruent points (stdFundDomain_congruent_eq), so the blichfeldt_basic hypothesis 1 < vol(S) cannot be weakened to ≤. For general k the witness is the box [0,k) × [0,1)ⁿ⁻¹ of volume exactly k, which holds at most k mutually congruent points, contradicting any k+1 family — so the strict inequality of blichfeldt_general is also sharp.",
-    "proofStrategy": "The key conversion (ZSpan.fract_eq_fract) turns ℤⁿ-congruence into equality of fractional parts. (1) k=1: a point of the fundamental domain equals its own fractional part (ZSpan.fract_eq_self), so two congruent points of [0,1)ⁿ have equal fractional parts and are therefore equal. (2) general k: in the box [0,k) × [0,1)ⁿ⁻¹ every coordinate i≠0 lies in [0,1) and so equals its fractional part, while the long coordinate satisfies x₀ = ⌊x₀⌋ + Int.fract(x₀) with ⌊x₀⌋ ∈ {0,…,k-1}. Congruent points share all fractional parts, so a point is determined by ⌊x₀⌋ alone — an injection into Fin k. Volume k is computed by volume_pi_pi. Pigeonhole (Fintype.card_le_of_injective) then forbids k+1 distinct pairwise-congruent points."
-  }
+    "proofStrategy": "The key conversion (ZSpan.fract_eq_fract) turns ℤⁿ-congruence into equality of fractional parts. (1) k=1: a point of the fundamental domain equals its own fractional part (ZSpan.fract_eq_self), so two congruent points of [0,1)ⁿ have equal fractional parts and are therefore equal. (2) general k: in the box [0,k) × [0,1)ⁿ⁻¹ every coordinate i≠0 lies in [0,1) and so equals its fractional part, while the long coordinate satisfies x₀ = ⌊x₀⌋ + Int.fract(x₀) with ⌊x₀⌋ ∈ {0,…,k-1}. Congruent points share all fractional parts, so a point is determined by ⌊x₀⌋ alone — an injection into Fin k. Volume k is computed by volume_pi_pi. Pigeonhole (Fintype.card_le_of_injective) then forbids k+1 distinct pairwise-congruent points.",
+    "keyInsights": [
+      "Sharpness is the statement that a bound is best possible: Blichfeldt forces k+1 congruent points only above volume k, and the half-open witnesses of volume exactly k show the 'k' cannot be lowered — the open boundary case genuinely behaves differently from the strict one.",
+      "A fundamental domain is precisely a set that meets every lattice coset exactly once, so by definition it carries no two congruent points. The unit cube [0,1)ⁿ being a fundamental domain of volume 1 is therefore the cleanest possible k=1 counterexample to a weakened (≤) threshold.",
+      "ℤⁿ-congruence is equality of fractional parts (ZSpan.fract_eq_fract). This single conversion reduces a lattice-theoretic statement to coordinatewise real arithmetic and powers both the k=1 uniqueness and the general-k floor argument.",
+      "The half-open box stretches the cube k-fold in one coordinate. A point is then pinned down by its shared fractional part plus the floor ⌊x₀⌋ ∈ {0,…,k−1} of the long coordinate — an injection of any congruent family into Fin k, so pigeonhole caps it at k and rules out k+1.",
+      "Half-openness is essential: closing the box to [0,k] × [0,1]ⁿ⁻¹ would glue opposite faces under congruence and reintroduce congruent pairs, breaking sharpness. The Ico (left-closed, right-open) intervals are exactly what make each coset representative unique."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Sharpness of Blichfeldt's Threshold",
+      "startLine": 7,
+      "endLine": 46,
+      "summary": "States the goal — the strict inequality k < vol(S) in Blichfeldt's theorem cannot be weakened to ≤ — and previews the two witnesses (the unit cube for k=1, the box [0,k)×[0,1)ⁿ⁻¹ for general k) plus the key idea: congruent points share fractional parts, and a box point is fixed by its fractional part and one floor.",
+      "mathContext": "Blichfeldt needs $\\mathrm{vol}(S) > k$; the witnesses have volume exactly $k$ with no $k{+}1$ congruent points."
+    },
+    {
+      "id": "k1-uniqueness",
+      "title": "Part 1: k=1 — Uniqueness in the Fundamental Domain",
+      "startLine": 58,
+      "endLine": 97,
+      "summary": "stdFundDomain_congruent_eq: two ℤⁿ-congruent points of [0,1)ⁿ are equal (each is its own fractional part, and congruent points share fractional parts). blichfeldt_threshold_sharp packages the unit cube as a volume-1 witness with no congruent pair, and blichfeldt_basic_threshold_not_le concludes 1 < vol(S) cannot be weakened to 1 ≤ vol(S).",
+      "mathContext": "$x,y \\in [0,1)^n,\\ x-y \\in \\mathbb{Z}^n \\Rightarrow x = y$."
+    },
+    {
+      "id": "box-volume",
+      "title": "Part 2: The Box and Its Volume",
+      "startLine": 103,
+      "endLine": 118,
+      "summary": "box n k = [0,k) × [0,1)ⁿ⁻¹ with box_measurableSet, and volume_box: its volume is exactly k via volume_pi_pi and Finset.prod_eq_single isolating the long coordinate (contributing k) from the unit coordinates (each 1).",
+      "mathContext": "$\\mathrm{vol}([0,k)\\times[0,1)^{n-1}) = k$."
+    },
+    {
+      "id": "fract-coordinates",
+      "title": "Part 2: Coordinatewise Fractional Parts",
+      "startLine": 120,
+      "endLine": 141,
+      "summary": "stdFract_coord: (ZSpan.fract x) i = Int.fract(x i) in the standard basis (Pi.basisFun has identity repr). congruent_fract_coord: ℤⁿ-congruent points share Int.fract in every coordinate — the coordinatewise form of ZSpan.fract_eq_fract.",
+      "mathContext": "$(\\mathrm{fract}\\,x)_i = \\{x_i\\}$, and congruence $\\Rightarrow \\{x_i\\} = \\{y_i\\}$."
+    },
+    {
+      "id": "general-pigeonhole",
+      "title": "Part 2: General k via Floor and Pigeonhole",
+      "startLine": 143,
+      "endLine": 215,
+      "summary": "blichfeldt_general_threshold_sharp: the box of volume k holds no k+1 pairwise congruent points. A point is determined by its shared fractional part plus ⌊x₀⌋ ∈ {0,…,k−1}; the map to Fin k is injective on any congruent family, and Fin (k+1) ↪ Fin k is impossible (Fintype.card_le_of_injective + omega).",
+      "mathContext": "Injection into $\\mathrm{Fin}\\,k$ $\\Rightarrow$ at most $k$ mutually congruent points."
+    }
+  ],
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Module.ZLattice.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Proofs.MinkowskiTheoremOQ04",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["MeasureTheory", "Set", "MinkowskiProved"],
+    "namespace": "BlichfeldtSharpness",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/MinkowskiTheoremOQ04OQ03.lean",
+    "sorries": 0
+  },
+  "conclusion": {
+    "summary": "A fully verified (0 axioms, 0 sorries) demonstration that Blichfeldt's volume threshold is sharp. For k=1 the half-open unit cube [0,1)ⁿ — a fundamental domain of volume exactly 1 — carries no two distinct ℤⁿ-congruent points (stdFundDomain_congruent_eq), so the hypothesis 1 < vol(S) cannot be weakened to ≤ (blichfeldt_basic_threshold_not_le). For general k the box [0,k) × [0,1)ⁿ⁻¹ of volume exactly k holds at most k mutually congruent points (blichfeldt_general_threshold_sharp), via the floor-plus-fractional-part injection into Fin k and pigeonhole. 215 lines, 8 theorems, 1 definition.",
+    "implications": "This pins down the exact boundary of Blichfeldt's theorem (and hence of the Minkowski geometry-of-numbers circle): the result holds for volume strictly above k and provably fails at volume exactly k. The witnesses are the most natural objects available — a fundamental domain and its k-fold stretch — underscoring that the strictness is not a technical artifact but reflects the geometry of how lattice cosets tile space. The half-open (Ico) structure is what keeps coset representatives unique.",
+    "openQuestions": [
+      "Characterize all volume-exactly-k measurable sets with no k+1 pairwise ℤⁿ-congruent points: are they precisely the (essentially) fundamental-domain-like sets, up to measure-zero modifications?",
+      "Extend the sharpness analysis to a general lattice L (not just ℤⁿ) and to the symmetric-convex-body form of Minkowski's theorem, identifying the analogous boundary witnesses.",
+      "Quantify the failure just below threshold: for vol(S) = k − ε, what is the maximal number of guaranteed pairwise congruent points as a function of ε?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Parent: proves Blichfeldt's theorem (vol(S) > k forces k+1 pairwise ℤⁿ-congruent points). This entry proves the strict threshold there is sharp."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02",
+      "relationship": "builds-on",
+      "description": "Sibling in the Minkowski geometry-of-numbers cluster developing lattice-point counting and volume bounds."
+    },
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "builds-on",
+      "description": "Root entry: Minkowski's convex body theorem, the geometry-of-numbers result that Blichfeldt's theorem generalizes."
+    }
+  ],
+  "references": [
+    {
+      "key": "Blichfeldt1914",
+      "citation": "Blichfeldt, H.F., A new principle in the geometry of numbers, with some applications, Trans. Amer. Math. Soc. 15 (1914), 227–235.",
+      "type": "paper"
+    },
+    {
+      "key": "Cassels1959",
+      "citation": "Cassels, J.W.S., An Introduction to the Geometry of Numbers, Springer (1959), Ch. III.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
 }

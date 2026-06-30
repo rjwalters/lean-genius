@@ -76,6 +76,53 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The n-dimensional Gaussian integral ∫_{ℝⁿ} e^{-‖x‖²} = π^{n/2} is foundational across mathematics and physics. It is the normalization constant of the multivariate normal distribution, the partition function of a system of independent Gaussian degrees of freedom in statistical mechanics, and the prototype of the Gaussian path integral in quantum field theory (where the finite-dimensional version is the rigorous core behind formal infinite-dimensional Gaussian integrals). Its evaluation rests on a single structural fact — the radial Gaussian e^{-b∑xᵢ²} is separable, a product of one-dimensional Gaussians — so the n-dimensional integral is just the n-th power of the line integral √(π/b). The classical n = 2 case is Poisson's trick: squaring the line integral and evaluating in polar coordinates produces the factor of π, the circle-area Jacobian that names this problem family.",
+    "problemStatement": "Prove the n-dimensional Gaussian integral factors and evaluates in closed form: $\\int_{\\mathbb{R}^n} e^{-b\\sum_i x_i^2}\\,dx = \\left(\\int_{\\mathbb{R}} e^{-b t^2}\\,dt\\right)^n = (\\pi/b)^{n/2}$, with ℝⁿ modeled as Fin n → ℝ under the product Lebesgue measure and ∑ᵢ xᵢ² the squared Euclidean norm.",
+    "proofStrategy": "Four steps. (1) gaussian_pow_eq_integral_pi is the product–Fubini engine: rewrite the separable integrand e^{-b∑xᵢ²} as the product ∏ᵢ e^{-b xᵢ²} (Real.exp_sum + Finset.mul_sum), then integral_fintype_prod_volume_eq_pow collapses the product integral over Fin n → ℝ to the n-th power of the line integral — for every real b, no positivity needed. (2) integral_pi_gaussian_eq_sqrt_pow substitutes Mathlib's integral_gaussian = √(π/b) to give (√(π/b))ⁿ. (3) integral_pi_gaussian_eq_rpow converts (√(π/b))ⁿ to the standard real-exponent form (π/b)^{n/2}, valid for b > 0 where π/b ≥ 0 (via Real.sqrt_eq_rpow and Real.rpow_mul). (4) integral_pi_gaussian_eq_pi specializes b = 1 to π^{n/2}.",
+    "keyInsights": [
+      "**Separability is the whole engine.** Because e^{-b∑xᵢ²} = ∏ᵢ e^{-b xᵢ²}, the n-dimensional integral is forced to be the n-th power of the line integral — Fubini over a product measure does the rest. The radial symmetry that makes polar coordinates work in 2D is, in n dimensions, just this product structure.",
+      "**The product step needs no positivity.** gaussian_pow_eq_integral_pi holds for every real b (both sides are 0 when b ≤ 0); only the final closed form (π/b)^{n/2}, which uses a real exponent, requires b > 0 so that π/b ≥ 0.",
+      "**It unifies the family.** n = 1 recovers Mathlib's base ∫_ℝ e^{-b x²} = √(π/b); n = 2 recovers the parent's literal 2-D area identity (∫_ℝ e^{-b x²})² = π/b. This entry is the arbitrary-dimension generalization of that polar evaluation.",
+      "**The √(·)ⁿ → (π/b)^{n/2} conversion is the only real subtlety.** Turning a natural-power of a square root into a single rpow requires Real.sqrt_eq_rpow and Real.rpow_mul on a nonnegative base, which is exactly where the b > 0 hypothesis enters."
+    ],
+    "prerequisites": [
+      "Integration over a product measure on Fin n → ℝ (MeasureTheory, Fubini)",
+      "The one-dimensional Gaussian integral ∫_ℝ e^{-b x²} = √(π/b) (Mathlib integral_gaussian)",
+      "integral_fintype_prod_volume_eq_pow and Real.exp_sum",
+      "Real.rpow / Real.sqrt API and the identity √a = a^{1/2} for a ≥ 0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "product-fubini",
+      "title": "The product–Fubini step (arbitrary dimension)",
+      "startLine": 46,
+      "endLine": 60,
+      "summary": "gaussian_pow_eq_integral_pi: ∫_{ℝⁿ} e^{-b∑xᵢ²} = (∫_ℝ e^{-b t²})ⁿ. The separable integrand factors via Real.exp_sum + Finset.mul_sum into ∏ᵢ e^{-b xᵢ²}, and integral_fintype_prod_volume_eq_pow collapses the product integral to a power. Holds for every real b."
+    },
+    {
+      "id": "closed-form-sqrt",
+      "title": "Closed form via Mathlib's integral_gaussian",
+      "startLine": 62,
+      "endLine": 66,
+      "summary": "integral_pi_gaussian_eq_sqrt_pow: substituting integral_gaussian (∫_ℝ e^{-b t²} = √(π/b)) into the product step gives ∫_{ℝⁿ} e^{-b∑xᵢ²} = (√(π/b))ⁿ, again for every real b."
+    },
+    {
+      "id": "standard-rpow",
+      "title": "The standard closed form (π/b)^{n/2}",
+      "startLine": 68,
+      "endLine": 76,
+      "summary": "integral_pi_gaussian_eq_rpow: for b > 0, (√(π/b))ⁿ = (π/b)^{n/2} via Real.sqrt_eq_rpow and Real.rpow_mul on the nonnegative base π/b — the only step that needs positivity."
+    },
+    {
+      "id": "unit-case",
+      "title": "The b = 1 form π^{n/2}",
+      "startLine": 78,
+      "endLine": 83,
+      "summary": "integral_pi_gaussian_eq_pi: specializing b = 1 gives ∫_{ℝⁿ} e^{-‖x‖²} = π^{n/2}, the radial Gaussian mass over ℝⁿ and the multivariate-normal normalization constant."
+    }
+  ],
   "openQuestions": [
     {
       "id": "area-of-circle-oq-07-oq-04-oq-01-oq-01-oq-01",
