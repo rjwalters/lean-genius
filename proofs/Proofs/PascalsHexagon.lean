@@ -132,6 +132,53 @@ def Conic.nondegenerate (C : Conic) : Prop := C.det ≠ 0
 /-- A conic is symmetric (Cᵢⱼ = Cⱼᵢ). We work with symmetric conics. -/
 def Conic.symmetric (C : Conic) : Prop := ∀ i j, C i j = C j i
 
+/-- **The conic quadratic form depends only on the symmetric part of `C`.**  Because
+`pᵀ C p` is a scalar it equals `pᵀ Cᵀ p` (swap the summation indices), so averaging gives
+`conicQuadraticForm C p = conicQuadraticForm (½·(C + Cᵀ)) p`.  Hence every conic has the
+*same zero set* (`pointOnConic`) as its symmetrization `½·(C + Cᵀ)`, which is genuinely
+symmetric (`symmetrizedConic_symmetric`).
+
+This discharges the "same zero set" half of step 1 of the roadmap to eliminating the
+`conic_implies_pascal_constraint` axiom (reduce an asymmetric conic to a symmetric one):
+the projective/zero-locus content transfers for free, leaving only the transfer of the
+`det`-based non-degeneracy from `C` to `½·(C + Cᵀ)`. -/
+theorem conicQuadraticForm_eq_symmetrized (C : Conic) (p : ProjPoint) :
+    conicQuadraticForm C p = conicQuadraticForm ((1 / 2 : ℝ) • (C + Cᵀ)) p := by
+  have hswap : (∑ i, ∑ j, C j i * p i * p j) = ∑ i, ∑ j, C i j * p i * p j := by
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+  simp only [conicQuadraticForm, Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply,
+    smul_eq_mul]
+  have h1 : (∑ i, ∑ j, (1 : ℝ) / 2 * (C i j * p i * p j))
+      = 1 / 2 * ∑ i, ∑ j, C i j * p i * p j := by
+    rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => ?_; rw [Finset.mul_sum]
+  have h2 : (∑ i, ∑ j, (1 : ℝ) / 2 * (C j i * p i * p j))
+      = 1 / 2 * ∑ i, ∑ j, C j i * p i * p j := by
+    rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => ?_; rw [Finset.mul_sum]
+  have hsplit : (∑ i, ∑ j, 1 / 2 * (C i j + C j i) * p i * p j)
+      = (∑ i, ∑ j, (1 : ℝ) / 2 * (C i j * p i * p j))
+        + (∑ i, ∑ j, (1 : ℝ) / 2 * (C j i * p i * p j)) := by
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun j _ => by ring
+  rw [hsplit, h1, h2, hswap]; ring
+
+/-- The symmetrization `½·(C + Cᵀ)` of any conic is symmetric. -/
+theorem symmetrizedConic_symmetric (C : Conic) :
+    ((1 / 2 : ℝ) • (C + Cᵀ)).symmetric := by
+  intro i j
+  simp only [Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply, smul_eq_mul]
+  ring
+
+/-- **A point lies on a conic iff it lies on its symmetrization.**  Direct corollary of
+`conicQuadraticForm_eq_symmetrized`: passing to the symmetric representative `½·(C + Cᵀ)`
+preserves the conic's point set exactly. -/
+theorem pointOnConic_iff_symmetrized (C : Conic) (p : ProjPoint) :
+    pointOnConic p C ↔ pointOnConic p ((1 / 2 : ℝ) • (C + Cᵀ)) := by
+  unfold pointOnConic
+  exact iff_of_eq (by rw [conicQuadraticForm_eq_symmetrized C p])
+
 -- ============================================================
 -- PART 5: Hexagon Inscribed in Conic
 -- ============================================================
