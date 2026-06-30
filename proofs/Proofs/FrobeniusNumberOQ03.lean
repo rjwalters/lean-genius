@@ -437,4 +437,123 @@ theorem representable3_consecutive_iff (n m : ℕ) :
       have e3 : n * s = n * w + n * v := by rw [hw]; ring
       omega
 
+/-! ### S7 — Roberts' closed form for three consecutive generators (d = 1)
+
+Roberts (1956) gives the exact Frobenius number of an arithmetic progression.
+For the three-consecutive family `(n, n+1, n+2)` (common difference `d = 1`,
+three terms) his formula specialises to
+
+  `g(n, n+1, n+2) = ⌊(n-2)/2⌋ · n + (n - 1)`.
+
+Combined with the exact interval criterion `representable3_consecutive_iff`
+(S6), we pin `frobeniusNumber3 n (n+1) (n+2)` to this value unconditionally for
+every `n ≥ 1`. The `ℕ`-truncated subtractions make the degenerate small cases
+come out correctly: `g(1,2,3) = 0` (everything is representable since `1` is a
+generator) and `g(2,3,4) = 1`.
+
+Geometrically, writing `q := ⌊(n-2)/2⌋`, the witness `g = q·n + (n-1) =
+(q+1)·n - 1` is the right endpoint of the **last gap** between the consecutive
+representable intervals `[n·s, (n+2)·s]`. For `s ≤ q` adjacent intervals leave a
+gap (`(n+2)·s < n·(s+1) - 1`), while at `s = q+1` they become contiguous
+(`n ≤ 2(q+1)+1`). Hence every value `≥ (q+1)·n` is representable while
+`(q+1)·n - 1` is not. This is asymptotically `~ n²/2`, roughly half the loose
+Sylvester bound `(n-1)·n` from `large_representable3_three_consecutive` (S5). -/
+
+/-- The Roberts witness `g = ⌊(n-2)/2⌋·n + (n-1)` is **not** representable by
+    `(n, n+1, n+2)`: by `representable3_consecutive_iff` a witness would give an
+    interval `[n·s, (n+2)·s]` containing `g`, but `n·s ≤ g` forces
+    `s ≤ ⌊(n-2)/2⌋`, whence `(n+2)·s ≤ ⌊(n-2)/2⌋·n + 2·⌊(n-2)/2⌋ < g`. -/
+theorem not_representable3_roberts (n : ℕ) (hn : 2 ≤ n) :
+    ¬ Representable3 n (n + 1) (n + 2) ((n - 2) / 2 * n + (n - 1)) := by
+  rw [representable3_consecutive_iff]
+  rintro ⟨s, h1, h2⟩
+  -- From `n·s ≤ g`, the index `s` cannot exceed `⌊(n-2)/2⌋`.
+  have hsq : s ≤ (n - 2) / 2 := by
+    by_contra hc
+    push_neg at hc
+    have hc' : (n - 2) / 2 + 1 ≤ s := hc
+    have hge : n * ((n - 2) / 2 + 1) ≤ n * s := Nat.mul_le_mul (le_refl n) hc'
+    have he : n * ((n - 2) / 2 + 1) = (n - 2) / 2 * n + n := by ring
+    omega
+  -- But then the right endpoint `(n+2)·s` lands strictly below `g`.
+  have hle : (n + 2) * s ≤ (n + 2) * ((n - 2) / 2) :=
+    Nat.mul_le_mul (le_refl (n + 2)) hsq
+  have he2 : (n + 2) * ((n - 2) / 2) = (n - 2) / 2 * n + 2 * ((n - 2) / 2) := by ring
+  omega
+
+/-- Every value strictly above the Roberts witness is representable by
+    `(n, n+1, n+2)`. Choosing the interval index `s = m / n` works: `n·s ≤ m`
+    always holds, and `m ≤ (n+2)·s` reduces to `m % n ≤ 2·(m / n)`, which holds
+    because `m % n < n ≤ 2·(m / n) + 1` once `m / n ≥ ⌊(n-2)/2⌋ + 1`. -/
+theorem representable3_above_roberts {n m : ℕ} (hn : 1 ≤ n)
+    (hm : (n - 2) / 2 * n + (n - 1) < m) :
+    Representable3 n (n + 1) (n + 2) m := by
+  rw [representable3_consecutive_iff]
+  have hn0 : 0 < n := hn
+  have hdm : n * (m / n) + m % n = m := Nat.div_add_mod m n
+  have hmod : m % n < n := Nat.mod_lt m hn0
+  -- `m` is at least `(⌊(n-2)/2⌋ + 1)·n`, so `m / n ≥ ⌊(n-2)/2⌋ + 1`.
+  have hbig : ((n - 2) / 2 + 1) * n ≤ m := by
+    have hexpand : ((n - 2) / 2 + 1) * n = (n - 2) / 2 * n + n := by ring
+    omega
+  have hk : (n - 2) / 2 + 1 ≤ m / n := (Nat.le_div_iff_mul_le hn0).mpr hbig
+  refine ⟨m / n, ?_, ?_⟩
+  · omega
+  · have hexp : (n + 2) * (m / n) = n * (m / n) + 2 * (m / n) := by ring
+    omega
+
+/-- **Roberts' closed form (`d = 1`).** For every `n ≥ 1` the Frobenius number of
+    the three consecutive generators `(n, n+1, n+2)` equals
+    `⌊(n-2)/2⌋ · n + (n - 1)`.
+
+    Proof: `not_representable3_roberts` shows the value lies in the
+    non-representable set (so it is `≤ sSup`, using that the set is finite hence
+    bounded — `set_non_representable3_finite_of_coprime_ab` with the coprime pair
+    `(n, n+1)`), while `representable3_above_roberts` shows everything strictly
+    larger is representable (so `sSup ≤` it). Antisymmetry pins the value. -/
+theorem frobenius_three_consecutive (n : ℕ) (hn : 1 ≤ n) :
+    frobeniusNumber3 n (n + 1) (n + 2) = (n - 2) / 2 * n + (n - 1) := by
+  have hcop : Nat.Coprime n (n + 1) := by
+    rw [Nat.coprime_self_add_right]; exact Nat.coprime_one_right n
+  have hfin : { m : ℕ | ¬ Representable3 n (n + 1) (n + 2) m }.Finite :=
+    set_non_representable3_finite_of_coprime_ab hcop hn (by omega)
+  have hbdd : BddAbove { m : ℕ | ¬ Representable3 n (n + 1) (n + 2) m } :=
+    hfin.bddAbove
+  apply le_antisymm
+  · rw [frobeniusNumber3_def]
+    by_cases hne : ({ m : ℕ | ¬ Representable3 n (n + 1) (n + 2) m }).Nonempty
+    · refine csSup_le hne (fun m hm => ?_)
+      by_contra hgt
+      push_neg at hgt
+      exact hm (representable3_above_roberts hn hgt)
+    · rw [Set.not_nonempty_iff_eq_empty.mp hne, csSup_empty]
+      exact Nat.zero_le _
+  · rw [frobeniusNumber3_def]
+    rcases Nat.lt_or_ge n 2 with hlt | hge
+    · -- `n = 1`: the witness is `0`, and the non-representable set is empty, so
+      -- the lower bound `0 ≤ sSup ∅` is trivial.
+      have hn1 : n = 1 := by omega
+      subst hn1
+      have hzero : (1 - 2) / 2 * 1 + (1 - 1) = 0 := by norm_num
+      rw [hzero]
+      exact Nat.zero_le _
+    · exact le_csSup hbdd (not_representable3_roberts n hge)
+
+/-! ### S7a — concrete instances of Roberts' closed form -/
+
+/-- `g(3,4,5) = 2`. -/
+theorem frobenius_3_4_5 : frobeniusNumber3 3 4 5 = 2 := by
+  have h := frobenius_three_consecutive 3 (by norm_num)
+  norm_num at h; exact h
+
+/-- `g(4,5,6) = 7`. -/
+theorem frobenius_4_5_6 : frobeniusNumber3 4 5 6 = 7 := by
+  have h := frobenius_three_consecutive 4 (by norm_num)
+  norm_num at h; exact h
+
+/-- `g(5,6,7) = 9`. -/
+theorem frobenius_5_6_7 : frobeniusNumber3 5 6 7 = 9 := by
+  have h := frobenius_three_consecutive 5 (by norm_num)
+  norm_num at h; exact h
+
 end FrobeniusOQ03
