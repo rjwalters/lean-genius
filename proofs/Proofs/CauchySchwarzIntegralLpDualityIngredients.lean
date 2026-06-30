@@ -183,6 +183,90 @@ theorem eLpNorm_rpow_restrict_mono {g : α → ℝ} {A B : Set α}
   rw [eLpNorm_rpow_restrict_diff hA hB hAB hq0 hqtop]
   exact le_self_add
 
+/-! ## Converse Hölder: the extremizer attaining equality
+
+Mathlib supplies the Hölder *upper* bound `ENNReal.lintegral_mul_le_Lp_mul_Lq`
+(`∫⁻ f·g ≤ ‖f‖_p · ‖g‖_q` for Hölder-conjugate `p, q`) but **not** the converse
+fact that the bound is *sharp* — that the explicit extremizer `f = g^{q-1}` attains
+equality. That sharpness is exactly what upgrades the upper bound to the dual-norm
+identity `‖g‖_q = sup_{‖f‖_p ≤ 1} ∫⁻ f·g`, the analytic core of the `Lᵖ`-duality
+(Riesz representation) being reduced. We work in the `ℝ≥0∞` setting throughout,
+where the lower integral `∫⁻ g^q` *is* `‖g‖_q^q`, sidestepping the real-valued
+sign/integrability bookkeeping; the conjugacy arithmetic is `Real.HolderConjugate`.
+
+The two pointwise identities driving everything are
+`(q−1)·p = q` (so `(g^{q-1})^p = g^q`) and `(q−1)+1 = q` (so `g^{q-1}·g = g^q`),
+which between them make the Hölder right-hand side `(∫⁻ g^q)^{1/p}·(∫⁻ g^q)^{1/q}`
+collapse — via `1/p + 1/q = 1` — to `∫⁻ g^q`, the left-hand side. -/
+
+variable {g : α → ℝ≥0∞}
+
+/-- **Extremizer power identity.** For Hölder-conjugate `p, q`, the `p`-th power of
+    the extremizer `g^{q-1}` integrates to the `q`-th power lower integral of `g`:
+
+      `∫⁻ ((g)^{q-1})^p = ∫⁻ (g)^q`.
+
+    Pointwise this is `((g x)^{q-1})^p = (g x)^{(q-1)·p} = (g x)^q`, using the
+    conjugacy arithmetic `(q-1)·p = q` (`HolderConjugate.sub_one_mul_conj`). This is
+    the identity that makes `‖g^{q-1}‖_p = ‖g‖_q^{q-1}` — the normalization of the
+    extremizer in the dual-norm computation. -/
+theorem lintegral_extremizer_rpow {p q : ℝ} (hpq : p.HolderConjugate q) :
+    ∫⁻ x, ((g x) ^ (q - 1)) ^ p ∂μ = ∫⁻ x, (g x) ^ q ∂μ := by
+  refine lintegral_congr fun x => ?_
+  rw [← ENNReal.rpow_mul, hpq.symm.sub_one_mul_conj]
+
+/-- **Extremizer pairing identity.** For `1 ≤ q`, the extremizer `g^{q-1}` paired
+    against `g` integrates to the `q`-th power lower integral of `g`:
+
+      `∫⁻ (g)^{q-1} · g = ∫⁻ (g)^q`.
+
+    Pointwise `(g x)^{q-1} · g x = (g x)^{(q-1)+1} = (g x)^q` via
+    `ENNReal.rpow_add_of_nonneg` (the unconditional `ℝ≥0∞` exponent-additivity for
+    nonnegative exponents). This is the numerator `∫⁻ f·g` of the dual pairing at the
+    extremizer. -/
+theorem lintegral_extremizer_mul {q : ℝ} (hq : 1 ≤ q) :
+    ∫⁻ x, (g x) ^ (q - 1) * g x ∂μ = ∫⁻ x, (g x) ^ q ∂μ := by
+  refine lintegral_congr fun x => ?_
+  have hqe : q - 1 + 1 = q := by ring
+  conv_rhs => rw [← hqe, ENNReal.rpow_add_of_nonneg (q - 1) 1 (by linarith) zero_le_one,
+    ENNReal.rpow_one]
+
+/-- **Converse Hölder / sharpness at the extremizer.** For Hölder-conjugate `p, q`
+    the explicit extremizer `f = g^{q-1}` attains *equality* in Hölder's inequality:
+
+      `∫⁻ (g)^{q-1} · g = (∫⁻ ((g)^{q-1})^p)^{1/p} · (∫⁻ (g)^q)^{1/q}`.
+
+    Combined with the Mathlib upper bound `ENNReal.lintegral_mul_le_Lp_mul_Lq`, this
+    shows the Hölder bound is sharp — the dual norm of `g ↦ ∫⁻ f·g` over the `Lᵖ`
+    unit ball equals `‖g‖_q = (∫⁻ g^q)^{1/q}`. Proof: both integrals on the right
+    equal `∫⁻ g^q` (the two extremizer identities), and
+    `(∫⁻ g^q)^{1/p} · (∫⁻ g^q)^{1/q} = (∫⁻ g^q)^{1/p + 1/q} = (∫⁻ g^q)^1`
+    by `1/p + 1/q = 1` (`HolderConjugate.inv_add_inv_eq_one`). The collapse is
+    edge-case-free: `ENNReal.rpow_add_of_nonneg` needs only `1/p, 1/q ≥ 0`, so the
+    degenerate `∫⁻ g^q ∈ {0, ∞}` cases require no separate handling. -/
+theorem lintegral_extremizer_holder_eq {p q : ℝ} (hpq : p.HolderConjugate q) :
+    ∫⁻ x, (g x) ^ (q - 1) * g x ∂μ
+      = (∫⁻ x, ((g x) ^ (q - 1)) ^ p ∂μ) ^ (1 / p)
+        * (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by
+  have hp : (0 : ℝ) < p := lt_trans one_pos hpq.lt
+  have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+  rw [lintegral_extremizer_mul hpq.symm.lt.le, lintegral_extremizer_rpow hpq,
+    ← ENNReal.rpow_add_of_nonneg (1 / p) (1 / q) (one_div_nonneg.2 hp.le)
+      (one_div_nonneg.2 hq.le), one_div, one_div, hpq.inv_add_inv_eq_one, ENNReal.rpow_one]
+
+/-- **Hölder is sharp: existence of an attaining extremizer.** Packaged existential
+    form of `lintegral_extremizer_holder_eq`: for Hölder-conjugate `p, q` and
+    measurable `g`, there is a measurable `f` (namely `g^{q-1}`) attaining equality
+    in Hölder's inequality. This is the converse to `lintegral_mul_le_Lp_mul_Lq`: the
+    pairing `g ↦ ∫⁻ f·g` realizes the full dual norm `‖g‖_q`, not merely a lower
+    bound for it. -/
+theorem exists_holder_extremizer {p q : ℝ} (hpq : p.HolderConjugate q)
+    (hg : Measurable g) :
+    ∃ f : α → ℝ≥0∞, Measurable f ∧
+      ∫⁻ x, f x * g x ∂μ
+        = (∫⁻ x, (f x) ^ p ∂μ) ^ (1 / p) * (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) :=
+  ⟨fun x => (g x) ^ (q - 1), hg.pow_const _, lintegral_extremizer_holder_eq hpq⟩
+
 end RieszLpDualityIngredients
 
 end
