@@ -2,7 +2,7 @@
   "id": "inverse-galois-d4-oq-02",
   "title": "Galois Group of Xⁿ−p: The Metacyclic Divisibility Bracket n ∣ |Gal| ∣ n! and φ(n) ∣ |Gal|",
   "slug": "inverse-galois-d4-oq-02",
-  "description": "Generalizes the parent entry's D₄ = Gal(X⁴−2/ℚ) computation toward the metacyclic structure of Gal(Xⁿ−p/ℚ) for an arbitrary degree n ≥ 2 and prime p. The full open question asks for |Gal(Xⁿ−p/ℚ)| = n·φ(n) (the affine/holomorph group ℤ/n ⋊ (ℤ/n)ˣ) under genericity. This entry establishes the verified divisibility skeleton that pins that order from both sides: the lower factor n ∣ |Gal| (the irreducible degree divides the splitting-field degree, generalizing the parent's four_dvd_x4_sub_2_gal_card), the cyclotomic lower factor φ(n) ∣ |Gal| (the splitting field contains a primitive n-th root of unity, so ℚ(ζₙ) ⊆ ℚ(roots) of degree φ(n) — the new metacyclic quotient witness Gal ↠ (ℤ/n)ˣ), and the upper bound |Gal| ∣ n! (embedding into Sₙ via the root action, generalizing the parent's x4_sub_2_gal_card_dvd_24). For n = 4, p = 2 these read 4 ∣ |Gal|, 2 = φ(4) ∣ |Gal|, |Gal| ∣ 24, consistent with the known |Gal| = 8. Irreducibility of Xⁿ−p is Eisenstein at p. 7 theorems, 0 sorries, 0 axioms.",
+  "description": "Generalizes the parent entry's D₄ = Gal(X⁴−2/ℚ) computation toward the metacyclic structure of Gal(Xⁿ−p/ℚ) for an arbitrary degree n ≥ 2 and prime p. The full open question asks for |Gal(Xⁿ−p/ℚ)| = n·φ(n) (the affine/holomorph group ℤ/n ⋊ (ℤ/n)ˣ) under genericity. This entry establishes the verified divisibility skeleton that pins that order from both sides: the lower factor n ∣ |Gal| (the irreducible degree divides the splitting-field degree, generalizing the parent's four_dvd_x4_sub_2_gal_card), the cyclotomic lower factor φ(n) ∣ |Gal| (the splitting field contains a primitive n-th root of unity, so ℚ(ζₙ) ⊆ ℚ(roots) of degree φ(n) — the new metacyclic quotient witness Gal ↠ (ℤ/n)ˣ), and the upper bound |Gal| ∣ n! (embedding into Sₙ via the root action, generalizing the parent's x4_sub_2_gal_card_dvd_24). For n = 4, p = 2 these read 4 ∣ |Gal|, 2 = φ(4) ∣ |Gal|, |Gal| ∣ 24, consistent with the known |Gal| = 8. Irreducibility of Xⁿ−p is Eisenstein at p. The two outer bounds close to an exact equality at n = 3, where n·φ(n) = 6 = n!: combining |Gal| ∣ 3! and 6 = 3·φ(3) ∣ |Gal| gives the exact order |Gal(X³−p/ℚ)| = 6 = |S₃| (gal_card_X3_sub_prime). 10 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Researcher (researcher-9)",
     "status": "verified",
@@ -23,8 +23,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 240,
-    "theoremCount": 9,
+    "lineCount": 268,
+    "theoremCount": 10,
     "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. All nine theorems are term-mode compositions of the three headline divisibilities; the two n=3, n=5 examples use kernel `decide` (for Nat.totient and Nat.Coprime), which relies only on the foundational axioms — no native_decide, no Lean.ofReduceBool.",
     "buildStatus": "Verified via ./proofs/scripts/docker-build.sh Proofs.InverseGaloisD4OQ02 against pinned Mathlib v4.26.0. Build completed successfully (7745 jobs, 0 errors). No native_decide; foundational axioms only.",
     "mathlibDependencies": [
@@ -86,7 +86,8 @@
       "**Metacyclic, not cyclic**: Over ℚ (which lacks the n-th roots of unity for n ≥ 3) the group of Xⁿ−p is NOT the cyclic Kummer group; it sits in 1 → Cₙ → Gal → (ℤ/n)ˣ → 1. The two divisibilities n ∣ |Gal| and φ(n) ∣ |Gal| are the verified shadows of the kernel Cₙ and the quotient (ℤ/n)ˣ respectively.",
       "**Roots of unity for free**: A primitive n-th root of unity is manufactured from the roots of Xⁿ−p themselves — every root has the same n-th power p, so the n ratios β/α are exactly the n distinct n-th roots of unity. No separate cyclotomic splitting-field construction is needed; HasEnoughRootsOfUnity.of_card_le converts the count into a primitive root.",
       "**Eisenstein is uniform in n**: Xⁿ−p is Eisenstein at p for every n, so irreducibility (and hence the clean n ∣ |Gal| factor) holds across all degrees with no case analysis — unlike the harder even-n irreducibility criteria for general Xⁿ−a.",
-      "**Sharp at n = 4**: For n=4, p=2 the bracket gives 4 ∣ |Gal|, φ(4)=2 ∣ |Gal|, |Gal| ∣ 24. The parent entry's independent ℝ-embedding argument pins |Gal| = 8 inside this bracket — both factors 4 and 2 are achieved, and 8 ∣ 24."
+      "**Sharp at n = 4**: For n=4, p=2 the bracket gives 4 ∣ |Gal|, φ(4)=2 ∣ |Gal|, |Gal| ∣ 24. The parent entry's independent ℝ-embedding argument pins |Gal| = 8 inside this bracket — both factors 4 and 2 are achieved, and 8 ∣ 24.",
+      "**The bracket closes at n = 3**: when n·φ(n) = n! the metacyclic lower bound and the Sₙ-embedding upper bound coincide, forcing |Gal| = n·φ(n) by divisibility antisymmetry alone. This happens for n = 3 (6 = 3! = 3·φ(3)), giving the exact order |Gal(X³−p)| = 6 = |S₃| unconditionally — no genericity/linear-disjointness hypothesis required."
     ]
   },
   "sections": [
@@ -131,12 +132,20 @@
       "startLine": 186,
       "endLine": 240,
       "summary": "Since n and φ(n) both divide |Gal| simultaneously, so does their lcm (lcm_dvd_gal_card). When gcd(n,φ(n))=1 this combines to the full generic metacyclic order n·φ(n) ∣ |Gal| (mul_totient_dvd_gal_card_of_coprime), which is exact for n=3 (6=|S₃|) and n=5 (20=|F₂₀|); the base n=4 is excluded since gcd(4,2)=2."
+    },
+    {
+      "id": "part-vi-exact-n3",
+      "title": "Part VI — Exact order at n = 3: |Gal(X³−p)| = 6",
+      "startLine": 241,
+      "endLine": 268,
+      "summary": "The factorial upper bound |Gal| ∣ 3! = 6 and the coprime metacyclic lower bound 6 = 3·φ(3) ∣ |Gal| (gcd(3,2)=1) squeeze to an equality by divisibility antisymmetry: gal_card_X3_sub_prime proves |Gal(X³−p/ℚ)| = 6 for every prime p, matching Gal(X³−p) ≅ S₃. This is the first n where the file's divisibility bracket pins the order exactly with no extra hypotheses, because n·φ(n) = n! = 6; n = 5 (20 vs 5!=120) and n = 4 (non-coprime factors) still need the genericity upper bound."
     }
   ],
   "conclusion": {
     "summary": "Verified divisibility skeleton for Gal(Xⁿ−p/ℚ): n ∣ |Gal|, φ(n) ∣ |Gal|, and |Gal| ∣ n!, for every n ≥ 2 and prime p; combined into lcm(n,φ(n)) ∣ |Gal|, sharpening to n·φ(n) ∣ |Gal| when gcd(n,φ(n))=1 (exact for n=3: 6=|S₃|, n=5: 20=|F₂₀|). 9 theorems, 0 sorries, 0 axioms.",
     "implications": "Generalizes the parent's n=4 divisibility lemmas (four_dvd_x4_sub_2_gal_card, x4_sub_2_gal_card_dvd_24) to all degrees and supplies the cyclotomic-quotient factor, narrowing the order of Gal(Xⁿ−p/ℚ) to a multiple of lcm(n, φ(n)) dividing n!. This is the verified scaffold on which the exact metacyclic computation |Gal| = n·φ(n) can be assembled.",
     "openQuestions": [
+      "Prove the genericity upper bound |Gal| ≤ n·φ(n) (via the tower SF = ℚ(ζₙ)(ⁿ√p)); combined with the existing coprime lower bound n·φ(n) ∣ |Gal| this would give the exact order |Gal| = n·φ(n) for all coprime n (e.g. closing n = 5 to 20), generalizing the unconditional n = 3 case already proved here.",
       "Prove the exact metacyclic order |Gal(Xⁿ−p/ℚ)| = n·φ(n) under the genericity hypothesis ℚ(ⁿ√p) ∩ ℚ(ζₙ) = ℚ (equivalently, the upper bound |Gal| ≤ n·φ(n) via the tower SF = ℚ(ζₙ)(ⁿ√p)).",
       "Identify the semidirect-product structure Gal ≅ ℤ/n ⋊ (ℤ/n)ˣ explicitly, not just the order.",
       "Combine n ∣ |Gal| and φ(n) ∣ |Gal| into lcm(n, φ(n)) ∣ |Gal|, and characterize when this lower bound is sharp (e.g. gcd(n, φ(n)) = 1)."
