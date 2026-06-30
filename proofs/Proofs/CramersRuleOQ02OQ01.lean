@@ -41,6 +41,16 @@ Gaussian elimination look better against Cramer's rule).
 - `gaussExact_beats_cramer`  : the tighter model still beats Cramer's rule for
   `n ≥ 4`, a fortiori.
 
+Two further sections extend this to the FULL flop count and the COMPLETE solve:
+
+- `gaussExactSubs`/`gaussExactFlops` — the `≈ n³/3` subtractions and the resulting
+  `≈ 2n³/3` total leading flop count of the factorization.
+- `solveMulsDivs` — the multiplication+division count of a complete linear solve
+  `A x = b` (factorization + right-hand-side elimination + back-substitution), with
+  `solve_overhead_quadratic : solveMulsDivs n = gaussExactOps n + n²` showing the RHS
+  handling is a pure lower-order `n²` correction, so the cubic `n³/3` headline lives
+  entirely in the factorization.
+
 ## Proof techniques
 
 - `Finset.sum_range_succ` for the inductive step on `∑_{j<n} (j² + j)`.
@@ -191,5 +201,123 @@ lemma gaussExactFlops_small :
   have h5 := gaussExactFlops_closed 5
   norm_num at h2 h3 h4 h5
   omega
+
+-- ============================================================
+-- Right-hand-side handling and the COMPLETE linear solve (OQ-01)
+-- ============================================================
+--
+-- The counts above (`gaussExactOps`, `gaussExactSubs`, `gaussExactFlops`) account
+-- only for **factoring the matrix** (forward elimination of `A`). To actually
+-- *solve* `A x = b` one must also (i) forward-eliminate the right-hand side `b`
+-- and (ii) back-substitute through the resulting upper-triangular system. Both of
+-- these are merely **quadratic** in `n`, so they leave the cubic leading term
+-- untouched — the headline `n³/3` multiplications live entirely in the
+-- factorization. We pin that down exactly: the full multiplication+division count
+-- of a complete solve exceeds the factorization count by *precisely* `n²`.
+
+/-- The triangular (Gauss) sum `∑_{i<n} i = n(n−1)/2`, the shape of both the
+    right-hand-side and back-substitution multiplication counts. -/
+def gaussSum (n : ℕ) : ℕ := ∑ i ∈ range n, i
+
+/-- Unfolding one term of the triangular sum. -/
+lemma gaussSum_succ (n : ℕ) : gaussSum (n + 1) = gaussSum n + n := by
+  unfold gaussSum; rw [Finset.sum_range_succ]
+
+/-- **Closed form (subtraction-free).** `2 · gaussSum n + n = n²`, i.e.
+    `gaussSum n = (n² − n)/2`. -/
+theorem gaussSum_closed (n : ℕ) : 2 * gaussSum n + n = n ^ 2 := by
+  induction n with
+  | zero => simp [gaussSum]
+  | succ m ih =>
+    calc 2 * gaussSum (m + 1) + (m + 1)
+        = (2 * gaussSum m + m) + (2 * m + 1) := by rw [gaussSum_succ]; ring
+      _ = m ^ 2 + (2 * m + 1) := by rw [ih]
+      _ = (m + 1) ^ 2 := by ring
+
+/-- **Right-hand-side forward-elimination multiplications.** At the step clearing a
+    column with `j` rows beneath the pivot, each of those rows updates its single RHS
+    entry `b := b − mult · b_pivot` — one multiplication per row, `j` per step, so
+    `∑_{j<n} j = n(n−1)/2` in total. -/
+def rhsElimMuls (n : ℕ) : ℕ := gaussSum n
+
+/-- **Back-substitution multiplications.** Solving the upper-triangular `U x = y`,
+    the unknown with `i` already-solved entries to its right costs `i` multiplications
+    (one per term `U_{i,k} · x_k`), so `∑_{i<n} i = n(n−1)/2` in total. Back-substitution
+    additionally performs exactly `n` divisions (one per pivot, `x_i := (…)/U_{i,i}`). -/
+def backSubMuls (n : ℕ) : ℕ := gaussSum n
+
+/-- **Total multiplications + divisions for a COMPLETE linear solve `A x = b`:**
+    forward elimination of the matrix (`gaussExactOps`), forward elimination of the
+    right-hand side (`rhsElimMuls`), and back-substitution (`backSubMuls` multiplications
+    plus `n` divisions). -/
+def solveMulsDivs (n : ℕ) : ℕ :=
+  gaussExactOps n + rhsElimMuls n + backSubMuls n + n
+
+/-- **Closed form for the complete-solve count (subtraction-free).**
+    `3 · solveMulsDivs n + n = n³ + 3n²`, i.e. `solveMulsDivs n = (n³ + 3n² − n)/3`,
+    asymptotically `n³/3` — the same cubic leading term as the bare factorization. -/
+theorem solveMulsDivs_closed (n : ℕ) :
+    3 * solveMulsDivs n + n = n ^ 3 + 3 * n ^ 2 := by
+  have h1 := gaussExactOps_closed n
+  have h2 := gaussSum_closed n
+  unfold solveMulsDivs rhsElimMuls backSubMuls
+  omega
+
+/-- The complete-solve count in explicit division form: `(n³ + 3n² − n)/3`. -/
+theorem solveMulsDivs_eq_div (n : ℕ) :
+    solveMulsDivs n = (n ^ 3 + 3 * n ^ 2 - n) / 3 := by
+  have h : 3 * solveMulsDivs n = n ^ 3 + 3 * n ^ 2 - n := by
+    have := solveMulsDivs_closed n; omega
+  rw [← h, Nat.mul_div_cancel_left _ (by norm_num : 0 < 3)]
+
+/-- **The cubic leading term lives entirely in the factorization.** The right-hand-side
+    handling and back-substitution add *exactly* `n²` multiplications+divisions on top of
+    the matrix-factorization count: `solveMulsDivs n = gaussExactOps n + n²`. So the
+    `n³/3` headline is precisely the cost of factoring `A`; everything RHS-related is
+    a lower-order `n²` correction. -/
+theorem solve_overhead_quadratic (n : ℕ) :
+    solveMulsDivs n = gaussExactOps n + n ^ 2 := by
+  have h := gaussSum_closed n
+  unfold solveMulsDivs rhsElimMuls backSubMuls
+  omega
+
+/-- The complete solve still costs no more than the parent's loose `n³` model
+    (for `n ≥ 4`): `solveMulsDivs n ≤ n³`. The quadratic RHS overhead is absorbed
+    by the gap between the exact `(n³−n)/3` factorization count and `n³`. -/
+theorem solveMulsDivs_le_cube {n : ℕ} (hn : 4 ≤ n) : solveMulsDivs n ≤ n ^ 3 := by
+  have hc := solveMulsDivs_closed n
+  have hpow : 2 * n ^ 2 ≤ n ^ 3 := by
+    calc 2 * n ^ 2 ≤ n * n ^ 2 := by gcongr; omega
+      _ = n ^ 3 := by ring
+  omega
+
+/-- With the full complete-solve accounting (factorization + RHS + back-substitution),
+    Gaussian elimination *still* beats Cramer's rule for `n ≥ 4` — the quadratic RHS
+    overhead is dwarfed by the factorial blow-up of Cramer's rule. -/
+theorem solve_beats_cramer {n : ℕ} (hn : 4 ≤ n) :
+    solveMulsDivs n < CramersComplexity.cramersRuleMuls n :=
+  lt_of_le_of_lt (solveMulsDivs_le_cube hn) (CramersComplexity.gauss_beats_cramer hn)
+
+/-- Concrete complete-solve counts: `n=2 ↦ 6`, `n=3 ↦ 17`, `n=4 ↦ 36`, `n=5 ↦ 65`
+    (factorization `2,8,20,40` plus the `n²` overhead `4,9,16,25`). -/
+lemma solveMulsDivs_small :
+    solveMulsDivs 2 = 6 ∧ solveMulsDivs 3 = 17 ∧
+    solveMulsDivs 4 = 36 ∧ solveMulsDivs 5 = 65 := by
+  have h2 := solveMulsDivs_closed 2
+  have h3 := solveMulsDivs_closed 3
+  have h4 := solveMulsDivs_closed 4
+  have h5 := solveMulsDivs_closed 5
+  norm_num at h2 h3 h4 h5
+  omega
+
+/-- Summary of the complete-solve accounting: closed form, division form, the exact
+    `n²` overhead over the factorization, and the preserved comparison verdict. -/
+theorem solve_complete_summary :
+    (∀ n : ℕ, 3 * solveMulsDivs n + n = n ^ 3 + 3 * n ^ 2) ∧
+    (∀ n : ℕ, solveMulsDivs n = (n ^ 3 + 3 * n ^ 2 - n) / 3) ∧
+    (∀ n : ℕ, solveMulsDivs n = gaussExactOps n + n ^ 2) ∧
+    (∀ n : ℕ, 4 ≤ n → solveMulsDivs n < CramersComplexity.cramersRuleMuls n) :=
+  ⟨solveMulsDivs_closed, solveMulsDivs_eq_div, solve_overhead_quadratic,
+   fun _ h => solve_beats_cramer h⟩
 
 end CramersComplexityExact

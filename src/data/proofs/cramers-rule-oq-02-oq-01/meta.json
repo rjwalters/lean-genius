@@ -40,15 +40,17 @@
       "Tightening witnesses: gaussExactOps_le_cube (≤ n³, consistency with parent) and gaussExactOps_lt_cube (strict for n ≥ 2, the factor-3 gap is real)",
       "Comparison preserved: gaussExact_beats_cramer shows the tighter exact model still beats Cramer's rule for n ≥ 4 a fortiori, via the parent's gauss_beats_cramer",
       "Additions/subtractions count gaussExactSubs n = ∑_{j<n} j² (one multiply–subtract pair per trailing-entry update) with subtraction-free closed form gaussExactSubs_closed: 6·gaussExactSubs n + 3·n² = 2·n³ + n, i.e. (2n³−3n²+n)/6 ≈ n³/3",
-      "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks"
+      "Full leading flop count gaussExactFlops n = gaussExactOps n + gaussExactSubs n with closed form gaussExactFlops_closed: 6·gaussExactFlops n + 3·n² + n = 4·n³, i.e. (4n³−3n²−n)/6 — the textbook ≈ 2n³/3 flops (≈ n³/3 mults + ≈ n³/3 adds); plus gaussExactOps_le_flops and concrete small-n checks",
+      "Complete linear-solve count solveMulsDivs n = gaussExactOps n + rhsElimMuls n + backSubMuls n + n (factorization + right-hand-side forward elimination + back-substitution multiplications + n back-substitution divisions), with subtraction-free closed form solveMulsDivs_closed: 3·solveMulsDivs n + n = n³ + 3n², i.e. (n³+3n²−n)/3",
+      "Key structural result solve_overhead_quadratic: solveMulsDivs n = gaussExactOps n + n² — the right-hand-side handling and back-substitution add exactly n² multiplications+divisions, so the cubic n³/3 leading term lives entirely in the matrix factorization; supported by gaussSum_closed (2·∑_{i<n} i + n = n²), solveMulsDivs_le_cube, the preserved comparison solve_beats_cramer (n ≥ 4), and concrete small-n checks (6, 17, 36, 65)"
     ],
     "dateAdded": "2026-06-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 195,
-    "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (the small concrete counts gaussExactOps_small are derived from the closed form via omega rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
-    "theoremCount": 13,
-    "definitionCount": 3
+    "lineCount": 323,
+    "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (the small concrete counts gaussExactOps_small, gaussExactFlops_small, solveMulsDivs_small are derived from the closed forms via omega rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
+    "theoremCount": 22,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "**The n³/3 Flop Count**\n\nEvery numerical-linear-algebra textbook states that solving an n×n linear system by Gaussian elimination (equivalently LU factorization) costs about n³/3 multiplications/divisions — one third the naive n³ estimate. The parent entry (cramers-rule-oq-02) compared Cramer's rule against Gaussian elimination but used the deliberately loose upper model gaussMuls n = n³, leaving the precise leading constant unformalized. This entry supplies the exact count.\n\n**Where the n³/3 Comes From**\n\nForward elimination runs in steps k = 1, …, n−1. At step k the pivot is at (k,k) and there are n−k rows beneath it. For each such row we compute one multiplier (a division) and update its n−k trailing entries (a multiplication each), for (n−k) + (n−k)² operations. Summing over k and substituting j = n−k gives ∑_{j=1}^{n−1} (j² + j) = (n−1)·n·(n+1)/3 = (n³ − n)/3.",
@@ -108,13 +110,21 @@
       "startLine": 117,
       "endLine": 133,
       "mathContext": "Since gaussExactOps n ≤ n³ = gaussMuls n and the parent proved gaussMuls n < cramersRuleMuls n for n ≥ 4, the tighter model beats Cramer's rule a fortiori — tightening the winner's cost cannot overturn the comparison."
+    },
+    {
+      "id": "complete-solve",
+      "title": "Right-Hand-Side Handling and the Complete Solve",
+      "summary": "Defines the triangular sum gaussSum n = ∑_{i<n} i (with subtraction-free closed form gaussSum_closed: 2·gaussSum n + n = n²), the right-hand-side forward-elimination count rhsElimMuls and back-substitution count backSubMuls, and the complete-solve count solveMulsDivs n = gaussExactOps n + rhsElimMuls n + backSubMuls n + n. Proves solveMulsDivs_closed (3·solveMulsDivs n + n = n³ + 3n²), its division form, solve_overhead_quadratic (solveMulsDivs n = gaussExactOps n + n²), the preserved comparison solve_beats_cramer (n ≥ 4), small-n checks, and the bundling theorem solve_complete_summary.",
+      "startLine": 206,
+      "endLine": 322,
+      "mathContext": "Solving A x = b (not just factoring A) adds RHS forward elimination (∑_{j<n} j multiplications) and back-substitution (∑_{i<n} i multiplications + n divisions). Both are quadratic, so solveMulsDivs n = gaussExactOps n + n² exactly: the RHS handling is a pure n² correction and the cubic n³/3 leading term is entirely the factorization cost."
     }
   ],
   "conclusion": {
     "summary": "This entry pins down the exact leading cost of Gaussian elimination — (n³ − n)/3 multiplications and divisions — that the parent Cramer-vs-Gauss comparison only bounded by n³. The closed form 3·gaussExactOps n + n = n³ is proved by a short subtraction-free induction in the ℕ semiring, its (n³ − n)/3 division form follows in one line, and omega supplies both the consistency bound (≤ n³) and the strict tightening (< n³ for n ≥ 2). The whole file is axiom-free (no sorries, no native_decide), upgrading the parent's axiomatized model to a fully kernel-checked exact count.",
     "implications": "Because a smaller cost can only strengthen a comparison the winner already led, the headline verdict — Gaussian elimination beats Cramer's rule for n ≥ 4 — carries over to the exact model for free, with no re-proof needed. More broadly, the entry demonstrates a reusable pattern for formalizing exact flop counts: state the polynomial identity in subtraction-free additive form (k·sum + remainder = closed form) so the induction stays in the ℕ semiring and closes by ring, then recover the conventional division form as a one-line corollary. The same template applies to the ~2n³/3 LU-factorization count, the n²/2 back-substitution count, and other textbook complexity figures that are usually quoted asymptotically but rarely formalized exactly.",
     "openQuestions": [
-      "The additions/subtractions count (≈ n³/3) and the full forward-elimination flop total (≈ 2n³/3) are now formalized (gaussExactSubs_closed, gaussExactFlops_closed). Remaining: formalize the back-substitution phase (≈ n²/2 operations) and compose it for the complete solve cost.",
+      "The additions/subtractions count (≈ n³/3), the full forward-elimination flop total (≈ 2n³/3), and the complete-solve multiplication+division count (factorization + RHS + back-substitution, with solve_overhead_quadratic showing the RHS handling is exactly an n² correction) are all now formalized. Remaining: count the back-substitution additions/subtractions separately for the complete-solve flop total (≈ 2n³/3 + O(n²)).",
       "Does the exact count extend to blocked/partial-pivoting LU factorization, where row interchanges add a lower-order term but the leading (n³ − n)/3 multiplication count is unchanged?",
       "Can a matching lower bound be formalized — that no elimination-based dense solver uses asymptotically fewer than n³/3 multiplications — to complement this exact upper count?"
     ]
@@ -143,15 +153,25 @@
       "name": "gaussExact_beats_cramer",
       "statement": "4 ≤ n → gaussExactOps n < CramersComplexity.cramersRuleMuls n",
       "description": "The tighter exact model still beats Cramer's rule for n ≥ 4, a fortiori from the parent comparison."
+    },
+    {
+      "name": "solveMulsDivs_closed",
+      "statement": "3 * solveMulsDivs n + n = n ^ 3 + 3 * n ^ 2",
+      "description": "Subtraction-free closed form for the multiplication+division count of a COMPLETE linear solve (factorization + RHS forward elimination + back-substitution); equivalently (n³ + 3n² − n)/3."
+    },
+    {
+      "name": "solve_overhead_quadratic",
+      "statement": "solveMulsDivs n = gaussExactOps n + n ^ 2",
+      "description": "The right-hand-side handling and back-substitution add exactly n² operations over the factorization count, so the cubic n³/3 leading term lives entirely in the matrix factorization."
     }
   ],
   "leanFile": {
     "path": "Proofs/CramersRuleOQ02OQ01.lean",
     "axiomCount": 0,
     "sorryCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 1,
-    "lineCount": 195
+    "theoremCount": 22,
+    "definitionCount": 7,
+    "lineCount": 323
   },
   "references": [
     {

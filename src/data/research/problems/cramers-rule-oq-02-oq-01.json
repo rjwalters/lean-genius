@@ -22,7 +22,7 @@
       "gaussExact_beats_cramer: the tighter model still beats Cramer's rule for n ≥ 4, a fortiori from the parent gauss_beats_cramer."
     ],
     "open": [
-      "Separately counting additions/subtractions (~n³/3 each) and the right-hand-side back-substitution cost for the full ~2n³/3 flop total.",
+      "Additions/subtractions (~n³/3), the full ~2n³/3 forward-elimination flop total, and the complete multiplication+division solve count (factorization + RHS + back-substitution, with solve_overhead_quadratic: it exceeds the factorization count by exactly n²) are now formalized. Remaining: the back-substitution additions/subtractions for the complete-solve flop total.",
       "Generalizing to block / Strassen-style elimination where the leading constant changes."
     ],
     "goal": "Replace the loose n³ Gaussian-elimination model with the exact (n³ − n)/3 count and confirm the Cramer-vs-Gauss verdict is preserved."
@@ -41,13 +41,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-9, 2026-06-26): Created Proofs/CramersRuleOQ02OQ01.lean (133 LOC, axiom-free, 0 sorry, no native_decide) tightening the parent CramersRuleOQ02 Gaussian-elimination model from the loose gaussMuls n = n³ to the exact gaussExactOps n = ∑_{j<n}(j²+j) = (n³ − n)/3. Closed form 3·gaussExactOps n + n = n³ proved by induction with a subtraction-free ℕ-semiring calc (Finset.sum_range_succ + ring); division form via Nat.mul_div_cancel_left; ≤/< n³ bounds and the preserved Cramer comparison (n ≥ 4) via omega + parent gauss_beats_cramer. Docker build clean. Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 added (status verified, badge original).",
+    "progressSummary": "ACT (researcher-2, 2026-06-30): Extended Proofs/CramersRuleOQ02OQ01.lean (now 323 LOC, 7 defs, 22 thm, axiom-free, 0 sorry, no native_decide) from factorization-only counts to the COMPLETE linear solve A x = b. Added gaussSum n = ∑_{i<n} i (closed form 2·gaussSum n + n = n²), the RHS forward-elimination count rhsElimMuls and back-substitution count backSubMuls (both = gaussSum n), and solveMulsDivs n = gaussExactOps n + rhsElimMuls n + backSubMuls n + n (the +n = back-substitution divisions). Key result solve_overhead_quadratic: solveMulsDivs n = gaussExactOps n + n² — RHS+back-substitution add EXACTLY n² operations, so the cubic n³/3 headline is entirely the factorization. Closed form 3·solveMulsDivs n + n = n³ + 3n² (= (n³+3n²−n)/3); comparison preserved solve_beats_cramer (n ≥ 4). Verified host (docker down): bin/lake env lean, #print axioms shows only propext/Classical.choice/Quot.sound. Builds on ACT (researcher-9, 2026-06-26) exact (n³−n)/3 factorization count and #31586 additions/subtractions ~2n³/3 flop total.",
     "builtItems": [
-      "Proofs/CramersRuleOQ02OQ01.lean — 1 def (gaussExactOps), 8 theorems/lemmas, axiom-free, 0 sorry, no native_decide.",
-      "gaussExactOps_closed: 3·gaussExactOps n + n = n³ (subtraction-free induction, ring in ℕ semiring).",
-      "gaussExactOps_eq_div: gaussExactOps n = (n³ − n)/3 — exact n³/3 flop count.",
-      "gaussExactOps_lt_cube: strict tightening below n³ for n ≥ 2; gaussExact_beats_cramer: comparison preserved for n ≥ 4.",
-      "Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 (meta.json) documenting the exact model."
+      "Proofs/CramersRuleOQ02OQ01.lean — 7 defs, 22 theorems/lemmas, axiom-free, 0 sorry, no native_decide.",
+      "gaussExactOps_closed: 3·gaussExactOps n + n = n³ (subtraction-free induction, ring in ℕ semiring); gaussExactOps_eq_div: (n³ − n)/3.",
+      "gaussExactSubs_closed / gaussExactFlops_closed: ~n³/3 subtractions and ~2n³/3 full forward-elimination flop total.",
+      "gaussSum_closed: 2·∑_{i<n} i + n = n² (subtraction-free triangular-sum closed form).",
+      "solveMulsDivs_closed: 3·solveMulsDivs n + n = n³ + 3n² — complete-solve mult+div count (factorization + RHS + back-substitution).",
+      "solve_overhead_quadratic: solveMulsDivs n = gaussExactOps n + n² — RHS handling is exactly an n² correction; solve_beats_cramer preserves the verdict for n ≥ 4.",
+      "Gallery entry src/data/proofs/cramers-rule-oq-02-oq-01 (meta.json) updated with the complete-solve section."
     ],
     "insights": [
       "Stating the closed form subtraction-free as 3·ops + n = n³ keeps the induction in the ℕ semiring so plain `ring` closes the successor step; the (n³ − n)/3 division form is then a one-line corollary. linear_combination would not work here because ℕ is not a ring.",
