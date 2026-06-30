@@ -10,8 +10,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "theoremCount": 6,
+    "lineCount": 273,
+    "theoremCount": 13,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k ≥ 2 in the final lower bound, and the smallness bound n² < 2(k-1)·2^(k-1)) are inputs to the statements, not standing assumptions; the core sharpened count card_vdwFamily_two_mul_le needs no hypothesis on k at all. #print axioms reports only propext, Classical.choice, Quot.sound for vdw_lower_bound_sharp, card_vdwFamily_two_mul_le, and vdwFilter_card_eq_sum. The probabilistic core is the gallery's verified entry property-b-first-moment (via vdw_two_coloring_exists from the base van-der-waerden-first-moment entry), consumed as a black box; this entry contributes the exact triangular parameter count and the telescoping-of-squares bound on top of it. Badged 'original' because the exact-count and factor-2 sharpening are new content layered on a verified base entry, not a Mathlib headline theorem.",
     "tags": [
@@ -25,6 +25,8 @@
     ],
     "dateAdded": "2026-06-27",
     "originalContributions": [
+      "card_vdwFamily_eq_sum: the number of length-k APs in [n] equals EXACTLY the triangular sum ∑_{d=1}^{n}(n-(k-1)d) — not merely bounded by it. The base/prior bound card_vdwFamily_le_sum is upgraded from ≤ to = by proving vdwFamily_param_injOn: the parametrization (a,d) ↦ vdwAP n a d k is injective on the fitting box (k ≥ 2), since a fitting positive-step AP is increasing, so its set determines its minimum a (vdwAP_mem_first + vdwAP_first_le) and maximum a+(k-1)d (vdwAP_mem_last + vdwAP_le_last), and cancelling k-1 recovers the step d. This pins the parameter sum as the true count rather than an overestimate.",
+      "card_vdwFamily_ge: a crude exact lower bound n - (k-1) ≤ |family| (the step-1 fiber alone), confirming the AP count is positive — hence the union-bound regime non-vacuous — whenever k - 1 < n; the matching Θ(n²/(k-1)) lower bound is left as a follow-up.",
       "vdwFilter_card_eq_sum: the EXACT parameter count of fitting length-k APs equals the triangular sum ∑_{d=1}^{n} (n - (k-1)d) — fiberwise counting of admissible first terms a for each step d, with truncated ℕ-subtraction handling the d > (n-1)/(k-1) tail automatically; replaces the base entry's loose n² overcount with an equality",
       "card_vdwFamily_two_mul_le: 2·(k-1)·|family| ≤ n² with NO hypothesis on k — at most n²/(2(k-1)) length-k APs fit in [n], twice as sharp as the open question's requested n²/(k-1) and a factor 2(k-1) improvement on the base n² bound",
       "two_mul_sum_sq_le: the telescoping-of-squares engine 2c·∑_{d=1}^{m}(N - c·d) + (N - c·m)² ≤ N², the per-step bound 2c(N-cd) ≤ (N-c(d-1))² - (N-cd)² summed by induction — the elementary heart of the sharpening",
@@ -59,8 +61,8 @@
     "namespace": "ProbMethod.VanDerWaerden",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "theoremCount": 6,
+    "lineCount": 273,
+    "theoremCount": 13,
     "definitionCount": 0
   },
   "overview": {
@@ -110,10 +112,17 @@
       "startLine": 125,
       "endLine": 152,
       "summary": "vdw_lower_bound_sharp: if n² < 2(k-1)·2^(k-1), cancel 2(k-1) to get |family| < 2^(k-1), invoke the base entry's Property B engine, and verify each fitting AP is in the family — giving W(k) ≳ √(2(k-1))·2^((k-1)/2)."
+    },
+    {
+      "id": "exact-count",
+      "title": "Exact AP Count via Injectivity of the Parametrization",
+      "startLine": 152,
+      "endLine": 273,
+      "summary": "Upgrades the family-count inequality to an equality. vdwAP_mem_first/vdwAP_first_le show ↑a is the minimum point of a fitting AP; vdwAP_mem_last/vdwAP_le_last show ↑(a+(k-1)d) is the maximum. vdwFamily_param_injOn: the set determines both extremes, so (for k ≥ 2) it recovers a and (cancelling k-1) d — the parametrization is injective on the fitting box. card_vdwFamily_eq_sum: hence |family| = ∑_{d=1}^{n}(n-(k-1)d) exactly. card_vdwFamily_ge: the step-1 fiber gives the crude exact lower bound n-(k-1) ≤ |family|."
     }
   ],
   "conclusion": {
-    "summary": "6 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. The number of length-k arithmetic progressions fitting in [n] is computed exactly as the triangular sum ∑_{d=1}^{n}(n - (k-1)d), and a telescoping-of-squares bound collapses it to 2(k-1)·|family| ≤ n² — at most n²/(2(k-1)) APs, twice as sharp as the base entry's open question asked. Feeding this through the verified Property B engine widens the van der Waerden lower bound's admissible range to n² < 2(k-1)·2^(k-1), giving W(k) ≳ √(2(k-1))·2^((k-1)/2).",
+    "summary": "13 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. The number of length-k arithmetic progressions fitting in [n] is computed EXACTLY as the triangular sum ∑_{d=1}^{n}(n - (k-1)d) — the parameter-box count card_vdwFamily_le_sum is upgraded from ≤ to = (card_vdwFamily_eq_sum) by proving the parametrization (a,d) ↦ AP injective on the fitting box (vdwFamily_param_injOn: a fitting AP's minimum is a and maximum is a+(k-1)d, recovering both parameters). A telescoping-of-squares bound collapses the sum to 2(k-1)·|family| ≤ n² — at most n²/(2(k-1)) APs, twice as sharp as the base entry's open question asked. Feeding this through the verified Property B engine widens the van der Waerden lower bound's admissible range to n² < 2(k-1)·2^(k-1), giving W(k) ≳ √(2(k-1))·2^((k-1)/2).",
     "implications": "Resolves the base entry's open question oq-01 (sharpen the AP count to ~n²/(k-1)) and improves on it by a factor of 2 with an exact count. Demonstrates that the loose n² in the first-moment van der Waerden bound is genuinely improvable inside Lean by elementary lattice-point counting, and that the verified Property B engine accepts the sharper count unchanged.",
     "openQuestions": [
       "Track the lower-order term: vdwFilter_card_eq_sum is an equality, so the exact threshold (including the (N-cm)² remainder dropped in two_mul_sum_sq_le) could be stated, pinning the optimal constant rather than the ≤ n² bound.",
