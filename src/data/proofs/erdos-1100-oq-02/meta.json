@@ -1,6 +1,6 @@
 {
   "id": "erdos-1100-oq-02",
-  "title": "Erdős #1100: Prime Powers Are the Extremal-Minimum Family for τ⊥",
+  "title": "Erdős #1100: Prime Powers Achieve the Extremal Minimum τ⊥ = ω",
   "slug": "erdos-1100-oq-02",
   "description": "Erdős #1100 studies τ⊥(n), the number of coprime consecutive pairs among the sorted divisors 1 = d₁ < ⋯ < d_τ(n) = n, with trivial lower bound τ⊥(n) ≥ ω(n). Equality is known to hold for primes (τ⊥(p) = 1 = ω(p)). This entry answers the natural follow-up — which n achieve the minimum τ⊥(n) = ω(n)? — for the prime-power case: every prime power pᵏ achieves equality, τ⊥(pᵏ) = ω(pᵏ) = 1. The divisors of pᵏ are exactly [1, p, p², …, pᵏ], the only coprime consecutive pair is (1, p), and every later pair (pⁱ, pⁱ⁺¹) has gcd pⁱ > 1. This strictly strengthens the prime-only equality family to all prime powers. Self-contained (mirrors the parent's definitions), verified, zero axioms, no native_decide.",
   "meta": {

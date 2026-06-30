@@ -212,3 +212,103 @@ File 267→293 lines, all three 0-axiom (verified). EXTRA GOTCHA: a `set c := �
 every inner product to it via an explicit `hcio : ⟪O₁,O₂⟫ = c` (one `rw [hcio]` rewrites all
 occurrences). Then the spherical angle hypothesis `hangle`, stated in `cos d`/`sin d`, is
 auto-folded to `c`/`s` by `set` and closes hPO₂ with `linear_combination -hangle`.
+
+## Session 2026-06-28 (researcher-3): tangent-point UNIQUENESS [ACT/DEEP DIVE]
+
+**Mode**: ACT (CONTINUE — executed the standing next-step "uniqueness of the tangent
+point: it is the ONLY common point"). **Outcome**: PROGRESS — upgraded tangent-point
+existence to genuine tangency. `FeuerbachsTheoremOQ04.lean` +94 L (now 486), **0 sorry /
+0 axiom** (`#print axioms` on all three new theorems = propext/Classical.choice/Quot.sound
+only; no native_decide). Single-file verified: `LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/FeuerbachsTheoremOQ04.lean` exit 0.
+
+### Delivered
+- **`sphere_slerp_inter_eq_singleton`** (headline): under the same hypotheses as the
+  existence core (`sdist O₁ O₂ = d ∈ (0,π)`, angle relation
+  `cos ρ₂ = cos ρ₁ cos d + sin ρ₁ sin d`), the *whole* intersection
+  `sCircle O₁ ρ₁ ∩ sCircle O₂ ρ₂ = {Pₛ}` is the singleton at the slerp point. Mechanism:
+  any common point `Q` has `⟪Q,Pₛ⟫ = cos²ρ₁ + sin²ρ₁ = 1` (the angle relation supplies the
+  cross term `cos ρ₂ − cos d cos ρ₁ = sin ρ₁ sin d`), so
+  `⟪Q−Pₛ,Q−Pₛ⟫ = ⟪Q,Q⟫ − 2⟪Q,Pₛ⟫ + ⟪Pₛ,Pₛ⟫ = 1 − 2 + 1 = 0` ⇒ `Q = Pₛ` via
+  `inner_self_eq_zero`. NB this is NOT automatic from the metric data: in dim ≥ 3 two
+  generic spherical circles meet in an `(n−3)`-sphere; the angle/tangency relation is
+  exactly what collapses it to one point.
+- **`externallyTangent_unique_common_point`** / **`internallyTangent_unique_common_point`**:
+  the singleton-intersection corollaries (same angle-relation discharge as the existence
+  versions). These strengthen `..._has_common_point` from "∃ a common point" to "= {P}".
+
+### GOTCHAs
+- `real_inner_comm a b : ⟪b,a⟫ = ⟪a,b⟫` (RHS = `⟪a,b⟫`). To rewrite a `⟪P,Q⟫` *into*
+  `⟪Q,P⟫` (to then fold with `hQP : ⟪Q,P⟫ = 1`) use `real_inner_comm Q P` (= `⟪P,Q⟫=⟪Q,P⟫`),
+  NOT `real_inner_comm P Q` (which targets `⟪Q,P⟫` and so doesn't fire). First attempt with
+  `P Q` left goal `1 - 1 - (⟪P,Q⟫ - 1) = 0` unsolved.
+- `simpa [scos] using hQO₁` cleanly turns the `sCircle` membership component
+  `scos Q O₁ = cos ρ₁` into the inner-product form `⟪Q,O₁⟫ = cos ρ₁` (scos is a def).
+- `Set.eq_singleton_iff_unique_mem.mpr ⟨mem, uniq⟩` is the clean way to prove `s = {P}`;
+  the membership proof reuses the existence half (hP_sphere/hPO₁/hPO₂) verbatim, so the
+  singleton theorem subsumes existence (the `_has_common_point` lemmas are kept as the
+  weaker public API).
+- The `set c := Real.cos d` / `set s := Real.sin d` discipline from the existence core
+  carries over unchanged; `field_simp` (with `hsne : s ≠ 0` in context) closes the
+  `sin ρ₁/s * (sin ρ₁ * s) = sin ρ₁^2` cancellation directly.
+
+### Note on rebase
+Branch was rebased onto fresh origin/main mid-session (commit hashes changed; the worktree
+file jumped to include researcher-4's already-merged point-separation + triangle-inequality
+lemmas). No conflict — my additions append after `internallyTangent_has_common_point`.
+
+### Next steps (unchanged direction)
+1. Spherical incircle / nine-point circle constructions for a spherical triangle.
+2. Attempt the spherical Feuerbach tangency itself, using existence+uniqueness.
+3. Optional: tangent-line characterization (common tangent geodesic at Pₛ ⊥ centre geodesic).
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
+
+## Session 2026-06-28 (researcher-3): tangent point on the LINE OF CENTRES + full spec [ACT/CONTINUE]
+
+**Mode**: ACT (CONTINUE — executed standing next-step #3 "tangent-line / collinearity
+characterization"). **Outcome**: PROGRESS. `FeuerbachsTheoremOQ04.lean` 486→548 L,
+**0 sorry / 0 axiom** (`#print axioms` on all five touched theorems =
+propext/Classical.choice/Quot.sound only; no native_decide / Lean.ofReduceBool). Verified
+single-file: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/FeuerbachsTheoremOQ04.lean` exit 0.
+
+### Delivered
+- Strengthened **`sphere_slerp_inter_eq_singleton`** to also conclude the unique contact
+  point `P ∈ Submodule.span ℝ {O₁, O₂}` — the geodesic (great circle) through the two
+  centres, i.e. the spherical "line of centres". Proof: `P` is literally
+  `cos ρ₁ • O₁ + (sin ρ₁/sin d) • (O₂ − cos d • O₁)`, so span membership is
+  `Submodule.add_mem/smul_mem/sub_mem` over `Submodule.subset_span` on `{O₁,O₂}`.
+- Threaded the span conjunct through **`externallyTangent_unique_common_point`** /
+  **`internallyTangent_unique_common_point`** (pure pass-through, statements strengthened).
+- **`sphere_slerp_tangent_point_spec`** (full characterization core): unique point, on the
+  line of centres, AND `sdist P O₁ = ρ₁`, `sdist P O₂ = ρ₂`. Radii via `Real.arccos_cos`
+  (needs `ρᵢ ∈ [0,π]`): the witness `P ∈ {P}` is a member of the intersection, so
+  `scos P Oᵢ = cos ρᵢ`; `sdist P Oᵢ = arccos⟪P,Oᵢ⟫ = arccos(cos ρᵢ) = ρᵢ`.
+- **`externallyTangent_tangent_point_spec`**: external-case corollary (`ρᵢ ≤ π` auto from
+  `ρ₁+ρ₂ < π` + nonnegativity via linarith).
+
+### GOTCHAs
+- The singleton theorem hides its witness `P` behind `∃`. To extract membership facts for
+  the spec, recover `P ∈ inter` from `inter = {P}` via `rw [hsing]; rfl` (`rfl : P ∈ {P}`),
+  then destructure to get `scos P Oᵢ = cos ρᵢ`.
+- `Real.arccos_cos : 0 ≤ x → x ≤ π → arccos (cos x) = x`. Drive `sdist P Oᵢ = ρᵢ` by
+  `rw [sdist, show (⟪P,Oᵢ⟫:ℝ) = Real.cos ρᵢ from hsc, Real.arccos_cos h0 hpi]` (sdist unfolds
+  to `arccos ⟪P,Oᵢ⟫`; scos = ⟪⟫ is definitional so the membership component `hsc` fits the
+  `show`).
+- External `hdpos : 0 < ρ₁+ρ₂` is NOT derivable from `0≤ρ₁, 0≤ρ₂` alone — keep it as an
+  explicit hypothesis; only the upper bounds `ρᵢ ≤ π` come free from `ρ₁+ρ₂<π`.
+
+### Branch/merge note (recurring)
+On reclaim, origin/main already had the EXISTENCE work (`sphere_slerp_common_point`,
+`externallyTangent/internallyTangent_has_common_point`, 373 L) squash-merged, but NOT the
+uniqueness commit. `git rebase origin/main` conflicted on my own already-squashed existence
+commit. Recovery: `rebase --abort` → fresh branch off origin/main → drop in my HEAD file
+(its 1–372 prefix is byte-identical to origin/main; everything new is a pure append) →
+single commit. knowledge.md likewise a clean superset (append-only).
+
+### Next steps (unchanged direction)
+1. Spherical incircle / nine-point circle constructions for a spherical triangle.
+2. Attempt the spherical Feuerbach tangency itself, using existence+uniqueness+line-of-centres.
+3. Optional: tangent geodesic at P is ⊥ the centre geodesic (the metric "tangent line" fact).
+
+BLOCKER (hyperbolic side, unchanged): no Mathlib hyperbolic metric — spherical model only.
