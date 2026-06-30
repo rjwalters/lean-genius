@@ -1,0 +1,135 @@
+{
+  "id": "abundant-number-oq-02-oq-01",
+  "title": "The Smallest Odd Abundant Number Coprime to 3 Is 5391411025",
+  "slug": "abundant-number-oq-02-oq-01",
+  "description": "An axiom-free Lean 4 capstone proving IsLeast {n | Odd n ∧ ¬3∣n ∧ Abundant n} 5391411025 — the least odd abundant number not divisible by 3 is exactly 5391411025 = 5²·7·11·13·17·19·23·29. Both directions: the witness is itself odd, coprime to 3, and abundant (via multiplicativity of σ, no native_decide), and no smaller such number exists (a sharp rational Euler abundancy argument reducing to four explicit 7-prime supports and forcing 25∣n, 49∣n).",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abundant_number",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbundantNumberOQ02OQ01Capstone.lean",
+    "tags": [
+      "number-theory",
+      "abundant-numbers",
+      "sigma-function",
+      "euler-abundancy",
+      "extremal",
+      "is-least",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsLeast",
+        "description": "a ∈ s ∧ a ∈ lowerBounds s — the least element of a set, used for the two-directional exact-minimality statement",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "ArithmeticFunction.isMultiplicative_sigma",
+        "description": "σ is multiplicative, used to assemble σ(5391411025) from the eight prime-power divisor sums without enumerating divisors",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      }
+    ],
+    "originalContributions": [
+      "isLeast_oddThreeFreeAbundant: IsLeast {n | Odd n ∧ ¬(3∣n) ∧ Nat.Abundant n} 5391411025 — the complete, both-directional resolution of the open question (the prior companion files proved the two halves only separately)",
+      "witness_mem_lowerBounds: 5391411025 ∈ lowerBounds of the family, repackaging the hard minimality theorem odd_abundant_coprime_three_ge_witness as an order-theoretic lower bound",
+      "smallest_odd_abundant_coprime_three: explicit two-sided statement (membership of the witness AND ∀ smaller candidate is excluded), the human-readable form of the IsLeast capstone",
+      "Ties together the membership half (AbundantNumberOQ02OQ01.mem_odd_three_free_abundant) and the minimality half (AbundantNumberOQ02OQ01SevenPrimeExponents.odd_abundant_coprime_three_ge_witness), both axiom-free, into one headline IsLeast — closing the gap left by the main file whose header still recorded minimality as 'the open half'"
+    ],
+    "dateAdded": "2026-06-30",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 80,
+    "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures. The #print axioms audit of isLeast_oddThreeFreeAbundant shows only the foundational axioms propext / Classical.choice / Quot.sound — in particular NO Lean.ofReduceBool (no native_decide anywhere in the dependency chain) and NO sorryAx. The abundance of the ten-digit witness is established via multiplicativity of σ over its prime-power factors (eight tiny divisor sums), never by enumerating divisors of 5391411025.",
+    "theoremCount": 3,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Abundant numbers and the role of small primes.**\n\nA positive integer n is abundant when σ(n) > 2n (the sum of its proper divisors exceeds n). The smallest abundant number is 12, and the smallest odd abundant number is 945 = 3³·5·7 (sibling entry abundant-number-oq-02). The factor 3 is doing heavy lifting there: forbidding it forces the smallest example to leap from 945 to the eight-prime number 5391411025 = 5²·7·11·13·17·19·23·29, whose abundancy index σ(n)/n ≈ 2.00306 only barely clears 2. Odd numbers coprime to 3 are 'only just' abundant, which is exactly what makes the extremal value so large and the proof so delicate.",
+    "problemStatement": "**The open question (abundant-number-oq-02-oq-01).**\n\nWhat is the least element of S = { n | Odd n ∧ ¬(3 ∣ n) ∧ Nat.Abundant n }?\n\n**Answer: 5391411025 = 5²·7·11·13·17·19·23·29.**\n\nThis entry is the capstone that proves IsLeast S 5391411025 in Lean, combining a witness-membership certificate with the minimality lower bound established across the companion files.",
+    "text": "An axiom-free Lean 4 proof that the smallest odd abundant number coprime to 3 is exactly 5391411025, stated as IsLeast over the family of odd abundant 3-free integers.",
+    "proofStrategy": "**Two halves, assembled.**\n\n1. **Membership (upper bound)**: 5391411025 is odd, not divisible by 3, and abundant. Abundance is checked via multiplicativity of σ — σ(5391411025) = σ(5²)·σ(7)·σ(11)·σ(13)·σ(17)·σ(19)·σ(23)·σ(29) = 31·8·12·14·18·20·24·30 = 10799308800 > 10782822050 = 2·5391411025 — so no divisor enumeration over a ten-digit number is needed (and no native_decide).\n2. **Minimality (lower bound)**: every odd abundant n coprime to 3 satisfies n ≥ 5391411025. This is the hard half, assembled in the companion files from the squarefree case (≥ 33426748355), the ω ≥ 8 case (≥ 5391411025), and the residual ω = 7 case. The ω = 7 case pins the prime support to one of four explicit sets {5,7,11,13,17,19,q}, q ∈ {23,29,31,37}, via a sharp rational Euler abundancy product, then forces 25 ∣ n and 49 ∣ n and bounds the magnitude.\n3. **Assembly**: witness_mem_lowerBounds repackages the minimality theorem as an order-theoretic lower bound, and isLeast_oddThreeFreeAbundant pairs it with the membership certificate to produce IsLeast S 5391411025.",
+    "keyInsights": [
+      "**IsLeast is the right headline shape**: stating the result as IsLeast S 5391411025 captures both the upper bound (the witness is in S) and the lower bound (nothing smaller is) in a single Mathlib-idiomatic statement, matching the sibling entries smallest_abundant (12) and the odd case (945).",
+      "**Multiplicativity beats enumeration**: abundance of a ten-digit number is reduced to eight one-line divisor-sum computations via isMultiplicative_sigma, so the proof never touches a divisor enumeration of 5391411025 and stays free of Lean.ofReduceBool / native_decide.",
+      "**The minimality half was already done, just not packaged**: the prior companion files proved odd_abundant_coprime_three_ge_witness (≥ 5391411025) and, separately, mem_odd_three_free_abundant (the witness is in S). The main file's header still called minimality 'the open half'; this capstone observes that it is closed and assembles the two into the exact-minimality IsLeast.",
+      "**Razor-thin abundance**: σ(n)/n ≈ 2.00306 — the abundance margin is only 16486750 out of ~5.4·10⁹ — explaining both why the extremal value is so large and why the lower bound needs sharp (not just supremum) Euler weights."
+    ],
+    "prerequisites": [
+      "The sum-of-divisors function σ and the definition of abundant numbers (σ(n) > 2n)",
+      "Multiplicativity of σ over coprime factors",
+      "Order-theoretic least elements (IsLeast, lowerBounds) in Mathlib",
+      "Euler abundancy products ∏ p/(p−1) and their sharp per-prime-power refinements"
+    ]
+  },
+  "sections": [
+    {
+      "id": "family",
+      "title": "The Family and the Lower Bound",
+      "summary": "Defines OddThreeFreeAbundant = {n | Odd n ∧ ¬(3∣n) ∧ Nat.Abundant n} and proves witness_mem_lowerBounds: 5391411025 is a lower bound for the family, repackaging the minimality theorem odd_abundant_coprime_three_ge_witness.",
+      "startLine": 44,
+      "endLine": 53,
+      "mathContext": "lowerBounds S = {x | ∀ ⦃a⦄, a ∈ S → x ≤ a}; the membership here is exactly the statement that every odd abundant n coprime to 3 is ≥ 5391411025."
+    },
+    {
+      "id": "isleast",
+      "title": "Exact Minimality (IsLeast)",
+      "summary": "Proves isLeast_oddThreeFreeAbundant: IsLeast OddThreeFreeAbundant 5391411025, pairing the witness-membership certificate with the lower bound, and the explicit two-sided corollary smallest_odd_abundant_coprime_three.",
+      "startLine": 55,
+      "endLine": 73,
+      "mathContext": "IsLeast S a ↔ a ∈ S ∧ a ∈ lowerBounds S; here a = 5391411025 = 5²·7·11·13·17·19·23·29, simultaneously the least odd abundant 3-free number and a witness that the bound is attained."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isLeast_oddThreeFreeAbundant",
+      "statement": "IsLeast {n | Odd n ∧ ¬ (3 ∣ n) ∧ Nat.Abundant n} 5391411025",
+      "description": "The least odd abundant number coprime to 3 is exactly 5391411025 = 5²·7·11·13·17·19·23·29 — the complete two-directional resolution of the open question."
+    },
+    {
+      "name": "smallest_odd_abundant_coprime_three",
+      "statement": "(Odd 5391411025 ∧ ¬(3 ∣ 5391411025) ∧ Nat.Abundant 5391411025) ∧ (∀ m, Odd m → ¬(3 ∣ m) → Nat.Abundant m → 5391411025 ≤ m)",
+      "description": "Explicit two-sided form: the witness is odd, coprime to 3, and abundant, and no smaller such number exists."
+    },
+    {
+      "name": "witness_mem_lowerBounds",
+      "statement": "5391411025 ∈ lowerBounds {n | Odd n ∧ ¬ (3 ∣ n) ∧ Nat.Abundant n}",
+      "description": "The minimality half as an order-theoretic lower bound, built on odd_abundant_coprime_three_ge_witness."
+    }
+  ],
+  "conclusion": {
+    "summary": "This capstone resolves the open question abundant-number-oq-02-oq-01 in full: the least odd abundant number coprime to 3 is exactly 5391411025 = 5²·7·11·13·17·19·23·29, stated as IsLeast over the family of odd abundant 3-free integers and proved axiom-free. It assembles the witness-membership certificate (abundance via multiplicativity of σ, no native_decide) with the minimality lower bound built across the companion files (sharp rational Euler abundancy argument reducing the ω = 7 residual to four explicit prime supports and forcing 25∣n, 49∣n).",
+    "implications": "The result completes a small family of exact extremal-abundancy theorems alongside the least abundant number (12) and the least odd abundant number (945), and demonstrates that ten-digit abundance certificates are tractable kernel-checked facts when σ is assembled multiplicatively rather than by divisor enumeration. The lower-bound machinery (sharp per-prime-power Euler weights, refined_euler_set, the residual-support analysis) is reusable for other constrained least-abundant questions, e.g. coprime-to-15 or higher congruence restrictions.",
+    "openQuestions": [
+      "Extend to the smallest odd abundant number coprime to 15 (primes ≥ 7): the same domProd/gap-list method applies but needs a longer canonical prime list (~16 primes) to exceed abundancy 2.",
+      "Formalize a matching density statement: the abundancy index of odd 3-free integers and how rarely it exceeds 2, complementing the single extremal value.",
+      "Generalize the exact extremal value to abundant numbers avoiding an arbitrary fixed small prime p, as a function of p."
+    ]
+  },
+  "references": [
+    {
+      "title": "Abundant number",
+      "url": "https://en.wikipedia.org/wiki/Abundant_number"
+    },
+    {
+      "title": "Divisor function (sum of divisors σ)",
+      "url": "https://en.wikipedia.org/wiki/Divisor_function"
+    }
+  ],
+  "crossReferences": [],
+  "sorries": [],
+  "leanFile": {
+    "path": "Proofs/AbundantNumberOQ02OQ01Capstone.lean",
+    "axiomCount": 0,
+    "sorryCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "lineCount": 80
+  },
+  "relatedProblems": [
+    "abundant-number-oq-02",
+    "abundant-number-oq-01"
+  ]
+}

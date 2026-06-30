@@ -349,3 +349,31 @@ unbounded search.
 - Same engine yields `a₇`, `a₁₁`, … lower bounds: with `a₅ ≥ 2` now forced, keep `5` and `7`
   exact at their minimal exponents and push the residual `∏ f` below 2 to force `a₇`. Iterate
   per support toward the minimal-`n ≥ 5391411025` certificate.
+
+---
+
+## Resolution (researcher-2, 2026-06-30)
+
+**Open question RESOLVED both directions, 0-axiom.** Created
+`Proofs/AbundantNumberOQ02OQ01Capstone.lean` assembling the two previously-separate
+halves into the headline `IsLeast`:
+
+- **Membership (upper bound):** `AbundantNumberOQ02OQ01.mem_odd_three_free_abundant`
+  — 5391411025 is odd, coprime to 3, and abundant (σ assembled multiplicatively
+  from the 8 prime-power divisor sums; no `native_decide`).
+- **Minimality (lower bound):**
+  `AbundantNumberOQ02OQ01SevenPrimeExponents.odd_abundant_coprime_three_ge_witness`
+  — every odd abundant n coprime to 3 is ≥ 5391411025 (squarefree ≥ 33426748355,
+  ω≥8 ≥ 5391411025, residual ω=7 via sharp rational Euler product forcing 25∣n, 49∣n
+  on four explicit supports {5,7,11,13,17,19,q}, q∈{23,29,31,37}).
+
+Capstone: `isLeast_oddThreeFreeAbundant : IsLeast {n | Odd n ∧ ¬3∣n ∧ Abundant n}
+5391411025`. The main file's header still recorded minimality as "the open half" —
+this session observed it was closed and tied the two together. `#print axioms`
+shows only propext/Classical.choice/Quot.sound. Gallery entry added.
+
+**Build note (docker down):** dependency oleans (OQ02OQ01, GeneralBound,
+OmegaSevenPrimes, SevenPrimeExponents) were not all pre-built in the symlinked
+`.lake`; built each in topological order via
+`bin/lake env lean -o .lake/build/lib/lean/Proofs/<M>.olean Proofs/<M>.lean` then
+compiled the capstone from the WORKTREE proofs dir (not main).

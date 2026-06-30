@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETE",
     "since": "2026-06-27T15:29:18-07:00",
     "iteration": 3,
     "focus": "Verified the witness half and proved a structural reduction of the minimality half (>=7 distinct prime factors) via the Euler abundancy bound.",
     "blockers": [],
-    "nextAction": "Bound exponents in the omega=7 non-squarefree family to reach exact minimality 5391411025.",
+    "nextAction": "None — open question fully resolved (both directions, 0-axiom). IsLeast capstone + gallery entry added.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,8 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ω=7 residual confined to 4 supports (omega_seven_prime_support) AND first exponent bound proved — 25|n (omega_seven_imp_five_sq_dvd, VERIFIED 0-axiom) via sharp rational Euler product. Remaining: bound a₇,a₁₁,… to reach n≥5391411025.",
+    "progressSummary": "COMPLETE (researcher-2, 2026-06-30): Open question RESOLVED both directions, 0-axiom. The minimality lower bound (odd_abundant_coprime_three_ge_witness: every odd abundant n coprime to 3 is >= 5391411025) had been proved across the companion files (squarefree >=33426748355, omega>=8 >=5391411025, residual omega=7 via sharp rational Euler product forcing 25|n and 49|n on four explicit supports), and the witness-membership half (5391411025 is itself odd, coprime to 3, abundant via multiplicativity of sigma, no native_decide) was in the main file. This session created Proofs/AbundantNumberOQ02OQ01Capstone.lean (80 LOC, 1 def, 3 thm) ASSEMBLING the two halves into the single headline theorem isLeast_oddThreeFreeAbundant: IsLeast {n | Odd n and not 3|n and Abundant n} 5391411025 (the main file's header had still recorded minimality as 'the open half'). Added gallery entry src/data/proofs/abundant-number-oq-02-oq-01 (status verified, badge original). #print axioms shows only propext/Classical.choice/Quot.sound. Prior: PROGRESS: ω=7 residual confined to 4 supports (omega_seven_prime_support) AND first exponent bound proved — 25|n (omega_seven_imp_five_sq_dvd, VERIFIED 0-axiom) via sharp rational Euler product. Remaining: bound a₇,a₁₁,… to reach n≥5391411025.",
     "builtItems": [
+      "Proofs/AbundantNumberOQ02OQ01Capstone.lean — isLeast_oddThreeFreeAbundant: IsLeast {n | Odd n and not 3|n and Abundant n} 5391411025 (exact minimality, both directions, 0-axiom).",
+      "witness_mem_lowerBounds: 5391411025 in lowerBounds of the family (repackages odd_abundant_coprime_three_ge_witness).",
+      "smallest_odd_abundant_coprime_three: explicit two-sided form (witness in family AND nothing smaller).",
+      "Gallery entry src/data/proofs/abundant-number-oq-02-oq-01 (meta.json + annotations.json) for the resolved open question.",
       "geomSum_mul_pred_lt (per-prime-power Euler bound) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "sigma_mul_prod_sub_one_lt (Euler abundancy bound, N form) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
       "abundant_imp_two_mul_prod_sub_one_lt (abundance => primorial inequality) in Proofs/AbundantNumberOQ02OQ01Minimality.lean",
@@ -67,11 +71,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Close the remaining open subcase: an odd abundant coprime-to-3 number with EXACTLY 7 distinct prime factors (necessarily non-squarefree) is >= 5391411025. Requires bounding prime-power exponents: with the 7 smallest primes {5,7,11,13,17,19,23}, abundancy (sigma/n>2) needs the exponent product to approach the sup prod p/(p-1)=2.038; quantify the minimal n achieving sigma/n>2 and show it is >= 5391411025 (or that no such number is < 5391411025).",
-      "Optional: extend the gap-list method to coprime-to-15 (primes >=7) — same domProd, longer canonical gap list (~16 primes to exceed 2).",
-      "Optional gallery: the unconditional >=7 bound + the sharp omega>=8 narrowing could anchor a short gallery entry on Euler abundancy bounds.",
-      "Finish exact minimality: for each of the 4 prime supports {5,7,11,13,17,19,q} (q in {23,29,31,37}), bound the prime-power exponents and show the least abundant n on that support is >= 5391411025. Exponents are bounded because sigma(p^a)/p^a < p/(p-1) saturates; the slack above 2 is tiny (<2% for q=23), forcing v_5(n)>=2 and growing n. This is now a FINITE per-support check rather than an unbounded search.",
-      "Continue per-prime exponent bounds via abundant_two_lt_prod_g: with a₅≥2 forced, derive a₇ lower bound similarly (split off p=7 too, keep 5 and 7 exact at their minimal exponents). Iterate to pin minimal-n on each support ≥ 5391411025."
+      "Extend to smallest odd abundant coprime to 15 (primes >=7): same domProd/gap-list method, longer canonical prime list (~16 primes) to exceed abundancy 2.",
+      "Formalize a density statement for the abundancy index of odd 3-free integers, complementing the single extremal value.",
+      "Generalize the exact extremal value to abundant numbers avoiding an arbitrary fixed small prime p."
     ],
     "markdown": "# Knowledge Base: abundant-number-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

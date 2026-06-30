@@ -1,0 +1,26 @@
+[
+  {
+    "id": "abundant0201-ann-overview",
+    "proofId": "abundant-number-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "concept",
+    "title": "The Smallest Odd Abundant Number Coprime to 3",
+    "content": "A natural number $n$ is **abundant** when $\\sigma(n) > 2n$. The smallest abundant number is $12$ and the smallest *odd* one is $945 = 3^3\\cdot 5\\cdot 7$. Forbidding the prime $3$ makes the least example jump to the eight-prime number $5391411025 = 5^2\\cdot 7\\cdot 11\\cdot 13\\cdot 17\\cdot 19\\cdot 23\\cdot 29$, whose abundancy index $\\sigma(n)/n \\approx 2.00306$ barely clears $2$. This file is the **capstone** assembling the two companion halves — the witness is in the family, and nothing smaller is — into a single `IsLeast` statement."
+  },
+  {
+    "id": "abundant0201-ann-family",
+    "proofId": "abundant-number-oq-02-oq-01",
+    "range": { "startLine": 44, "endLine": 53 },
+    "type": "definition",
+    "title": "The Family and the Minimality Lower Bound",
+    "content": "`OddThreeFreeAbundant = {n | Odd n ∧ ¬(3∣n) ∧ Nat.Abundant n}` is the family the open question is about. `witness_mem_lowerBounds` shows $5391411025 \\in \\mathrm{lowerBounds}$ of this family — i.e. every odd abundant $n$ coprime to $3$ satisfies $n \\ge 5391411025$ — by repackaging the hard companion theorem `odd_abundant_coprime_three_ge_witness` (assembled from the squarefree, $\\omega\\ge 8$, and residual $\\omega = 7$ cases via a sharp rational Euler abundancy product)."
+  },
+  {
+    "id": "abundant0201-ann-isleast",
+    "proofId": "abundant-number-oq-02-oq-01",
+    "range": { "startLine": 55, "endLine": 73 },
+    "type": "theorem",
+    "title": "Exact Minimality: IsLeast S 5391411025",
+    "content": "`isLeast_oddThreeFreeAbundant : IsLeast OddThreeFreeAbundant 5391411025` is the headline result. Since `IsLeast S a ↔ a ∈ S ∧ a ∈ lowerBounds S`, it pairs the membership certificate (the witness is odd, coprime to $3$, and abundant — abundance via multiplicativity of $\\sigma$, **no** `native_decide`) with the lower bound above. `smallest_odd_abundant_coprime_three` restates it as an explicit two-sided claim. The whole dependency chain is axiom-free: `#print axioms` shows only `propext`/`Classical.choice`/`Quot.sound`."
+  }
+]
