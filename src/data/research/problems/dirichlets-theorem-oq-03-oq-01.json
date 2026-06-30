@@ -1,7 +1,7 @@
 {
   "slug": "dirichlets-theorem-oq-03-oq-01",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "The Linnik Constant as a Critical Exponent: Axiom-Free Ray Structure",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "VERIFIED (2026-06-27): new axiom-free file DirichletsTheoremOQ03OQ01.lean (namespace LinnikAdmissible, 11 theorems / 3 defs, 0 axioms / 0 sorries, machine-checked vs Mathlib v4.26.0). Isolates the structural skeleton of the Linnik constant: the admissible-exponent set is an upward-closed below-bounded ray, its infimum (criticalExponent) is non-negative and satisfies the sandwich Ioi(c) ⊆ admissible ⊆ Ici(c), and is monotone under pointwise domination of the growth function. Key separation: well-definedness of L* is elementary (rpow-monotonicity + conditional-infimum API); the deep number theory enters only via nonemptiness of the admissible set (Linnik's theorem), kept as an explicit hypothesis so the file is axiom-free.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],

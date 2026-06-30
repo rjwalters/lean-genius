@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "The Open Question and Its Two-Path Answer",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Imports and module docstring. States the open question inherited from the parent (cauchy-schwarz-integral-oq-02): can the REVERSE Minkowski inequality |‖f‖_p − ‖g‖_p| ≤ ‖f+g‖_p also be derived from Cauchy–Schwarz? The answer is YES, by two complementary routes set out here — Path 1 (p = 2 and abstract inner-product spaces) uses the CS LOWER bound ⟪f,g⟫ ≥ −‖f‖·‖g‖ directly, mirroring the parent's forward derivation from the CS upper bound; Path 2 (general Lᵖ) derives it from the forward triangle inequality, which the parent obtained from CS/Hölder. Sets up the measure-space context (noncomputable section, open MeasureTheory, namespace ReverseMinkowskiFromCS).",
+      "mathContext": "Open question: $\\big|\\,\\|f\\|_p - \\|g\\|_p\\,\\big| \\le \\|f+g\\|_p$ from Cauchy–Schwarz? Answer: yes — CS lower bound for $p=2$, forward triangle for general $p$."
+    },
+    {
       "id": "from-cs",
       "title": "Reverse Minkowski from the CS Lower Bound",
       "startLine": 60,

@@ -75,7 +75,8 @@
       "Irreducibility is exactly transitivity of the Galois action: the roots of an irreducible polynomial are mutually conjugate, hence form a single orbit. This is the Galois-theoretic source of the 'transitive subgroup of S_n' hypothesis that the sibling lemma consumes abstractly.",
       "Transitivity transfers from the abstract group action to the realised permutation subgroup with no extra work, because the corestriction onto the range is a surjective equivariant map — the subgroup acts by the very same permutations.",
       "Mathlib's prime_degree_dvd_card is not really about prime degree: primality was used solely to know the degree is nonzero. Replacing that with Irreducible.natDegree_pos yields the divisibility n | |Gal| for all n, recovering the parent's '5 | |Gal|' as the prime instance.",
-      "The orbit–stabilizer divisibility n | |Gal| is the quantitative shadow of transitivity: a transitive action of Gal on the n roots forces n to divide |Gal|, which is precisely how one knows a degree-n irreducible polynomial has Galois group of order a multiple of n."
+      "The orbit–stabilizer divisibility n | |Gal| is the quantitative shadow of transitivity: a transitive action of Gal on the n roots forces n to divide |Gal|, which is precisely how one knows a degree-n irreducible polynomial has Galois group of order a multiple of n.",
+      "Faithfulness — not the homomorphism alone — is what makes 'subgroup' literal rather than figurative. galActionHom_injective promotes the permutation representation Gal p → Perm(rootSet p E) to an isomorphism onto its image (galMulEquivRange), so Gal p is realised as, not merely mapped to, a transitive subgroup of S_n. Without injectivity one would only have a quotient acting on the roots."
     ],
     "prerequisites": [
       "Galois theory of polynomials: splitting fields, p.Gal, the action on roots",

@@ -78,7 +78,13 @@
   },
   "overview": {
     "historicalContext": "The Pólya–Vinogradov inequality (1918) bounds incomplete character sums |∑_{n=M+1}^{M+N} χ(n)| ≤ √q·log q and is the foundational tool for studying the distribution of characters over short intervals. Its proof expands χ via its Gauss-sum Fourier series, reducing the character sum to a combination of partial exponential sums ∑ e^{2πian/q}. The bound on those exponential sums — the content of this entry — is the analytic heart of the argument; the rest is the algebra of Gauss sums and the aggregation of the resulting 1/|sin| factors.",
-    "keyInsight": "A partial sum of e^{2πiθn} is a partial geometric series with ratio z = e^{2πiθ} on the unit circle. Its modulus telescopes to |z^{M+1}|·|zⁿ − 1|/|z − 1|; the numerator is at most 2 by the triangle inequality, and the denominator is exactly the chord length 2|sin(πθ)|. So the whole sum is bounded by 1/|sin(πθ)| — independent of how many terms N are summed.",
+    "keyInsights": [
+      "A partial sum of e^{2πiθn} is a partial geometric series with ratio z = e^{2πiθ} on the unit circle: its modulus factors as |z^{M+1}|·|zᴺ − 1|/|z − 1|, where the prefactor |z^{M+1}| = 1, so the offset M drops out of the bound entirely.",
+      "The numerator is controlled crudely but uniformly: |zᴺ − 1| ≤ 2 is just the diameter of the unit circle (triangle inequality), so the estimate is completely independent of the number of terms N — the hallmark of a genuine partial-sum bound.",
+      "The denominator is exact geometry: |1 − e^{2πiθ}| = 2|sin(πθ)| is the chord subtending the arc of angle 2πθ, twice the half-angle sine. This single identity is the sole source of the 1/|sin| factor that propagates into Pólya–Vinogradov.",
+      "Non-integrality of θ is exactly what keeps the estimate alive: it forces sin(πθ) ≠ 0 (so 1/|sin(πθ)| is finite) and z ≠ 1 (so the geometric closed form applies). At integer θ every summand is 1, the sum equals N, and no nontrivial bound exists.",
+      "This is the one ingredient of Pólya–Vinogradov that is a clean, self-contained classical estimate, reusable across exponential sums, equidistribution, and discrepancy theory; verifying it 0-axiom converts the companion file's central sorry into machine-checked mathematics."
+    ],
     "significance": "This is the one ingredient of Pólya–Vinogradov that is a clean, self-contained classical estimate, and it is reusable throughout analytic number theory (exponential sums, equidistribution, discrepancy). Verifying it 0-axiom turns the companion's central sorry into machine-checked mathematics."
   },
   "sections": [

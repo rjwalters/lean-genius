@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-oq-04-oq-02-oq-01",
   "title": "Exhibit derived series for S₃ and S₄ explicitly",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS (UNVERIFIED): explicit S₃ and S₄ derived/composition series with all factors identified (ℤ/2,ℤ/3,(ℤ/2)²) assembled in AbelRuffiniOQ04OQ02OQ01.lean (13 thms, 0 sorry/axiom), reusing the A4-layer from the sibling. Composition-series statement complete & unconditional; [Sₙ,Sₙ]=Aₙ equality (n≤4) left as documented follow-up. Build host down → not yet machine-checked.",
+    "builtItems": [
+      "proofs/Proofs/AbelRuffiniOQ04OQ02OQ01.lean — 13 theorems, 0 sorry, 0 axiom: derived_series_S3, derived_series_S4 (full chains with factor isos), derived_layers_S3/S4 (commutator data), card/iso helpers. UNVERIFIED (build host down).",
+      "card_a3 |A₃|=3 via nat_card_alternatingGroup; card_quot_s3/s4 |Sₙ/Aₙ|=2 via Subgroup.index_eq_card + alternatingGroup.index_eq_two."
+    ],
+    "insights": [
+      "Derived/composition series for S₃ and S₄ are short with abelian prime-power factors: S₃⊵A₃⊵{e} (factors ℤ/2, ℤ/3); S₄⊵A₄⊵V₄⊵{e} (factors ℤ/2, ℤ/3, (ℤ/2)²).",
+      "Mathlib commutator(Perm α)=alternatingGroup α (alternatingGroup.commutator_perm_eq) requires 5≤card α, so it does NOT cover S₃/S₄. Only the ≤ direction (alternatingGroup.commutator_perm_le) is hypothesis-free and applies to Fin 3/Fin 4.",
+      "Top factor Sₙ/Aₙ≅ℤ/2 comes for free: alternatingGroup=sign.ker is normal with index 2 (alternatingGroup.index_eq_two); Subgroup.index_eq_card gives quotient card 2; mulEquivOfPrimeCardEq builds the iso.",
+      "A₄-layer (A₄/V₄≅ℤ/3, V₄≅(ℤ/2)², V₄=[A₄,A₄]) reused verbatim from sibling AbelRuffiniA4CompositionSeries (oq-04-oq-02-oq-02-oq-01).",
+      "Nontrivial (Fin 3)/(Fin 4) instances do NOT fire automatically on numeral literals; supply haveI : Nontrivial (Fin 3) := ⟨⟨0,1,by decide⟩⟩."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no [Sₙ,Sₙ]=Aₙ for small n (n=3,4): commutator_perm_eq is gated on 5≤card α. The reverse inclusion Aₙ≤[Sₙ,Sₙ] for n∈{3,4} must be proven via 3-cycles-are-commutators ((a b c)=⁅(a b),(a c)⁆) + closure_three_cycles_eq_alternating."
+    ],
+    "nextSteps": [
+      "Build-verify AbelRuffiniOQ04OQ02OQ01.lean once Docker containerd is restored (containerd meta.db I/O corruption blocks all docker image builds as of 2026-06-27).",
+      "Optional refinement: prove A₄≤commutator(Perm (Fin 4)) and A₃≤commutator(Perm (Fin 3)) via the 3-cycle commutator identity to upgrade derived_layers to full equality [Sₙ,Sₙ]=Aₙ (good Aristotle candidate).",
+      "Add gallery entry src/data/proofs/abel-ruffini-oq-04-oq-02-oq-01/{meta.json,annotations.json} after build verification."
+    ],
     "markdown": "# Knowledge Base: abel-ruffini-oq-04-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

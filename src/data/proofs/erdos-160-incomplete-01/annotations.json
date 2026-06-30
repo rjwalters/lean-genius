@@ -1,5 +1,17 @@
 [
   {
+    "id": "e160i01-setup",
+    "proofId": "erdos-160-incomplete-01",
+    "range": { "startLine": 27, "endLine": 32 },
+    "type": "context",
+    "title": "The Predicates Reused from the Parent File",
+    "content": "The file opens by importing Erdos160Problem and the Erdos160 namespace, reusing its definitions rather than redefining them. The four that matter: Is4AP n a d says positions a, a+d, a+2d, a+3d form a valid 4-term AP inside {1,…,n} (constraints a ≥ 1, d ≥ 1, a+3d ≤ n); colorCount4 c i j k l is the cardinality of the Finset {c i, c j, c k, c l} of colours on those four points; Achievable n k means some colouring c : Fin n → Fin k makes colorCount4 ≥ 3 on every 4-AP (it is '3-diverse'); and h n := sInf {k | Achievable n k} is the colouring number itself. Crucially, importing the parent does NOT import its axioms into these proofs — #print axioms confirms the three theorems below depend only on propext/Classical.choice/Quot.sound.",
+    "mathContext": "$h(n) = \\inf\\{\\,k : \\exists\\,c : \\mathrm{Fin}\\,n \\to \\mathrm{Fin}\\,k,\\ \\forall\\ 4\\text{-AP},\\ \\mathrm{colorCount4} \\ge 3\\,\\}$",
+    "significance": "context",
+    "prerequisites": ["the parent Erdos160Problem definitions", "Finset cardinality", "sInf over ℕ"],
+    "relatedConcepts": ["3-diverse colouring", "arithmetic progression predicate", "extremal function as an infimum", "axiom isolation across imports"]
+  },
+  {
     "id": "e160i01-not-two",
     "proofId": "erdos-160-incomplete-01",
     "range": { "startLine": 35, "endLine": 59 },

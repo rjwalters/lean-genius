@@ -26,6 +26,11 @@ totient value is attained by only finitely many integers (`totient_fiber_finite`
 (★) is **sharp** at `n = 2`, where `2·φ(2)² = 2·1 = 2`.  A real-analytic
 restatement `√(n/2) ≤ φ(n)` is recorded as well.
 
+The finiteness is moreover **effective**: the fiber over `v` is recovered by a
+finite search of `Iic (2v²)` (`totient_fiber_eq_filter`), giving a decidable
+enumeration domain and the explicit cardinality bound `#{n : φ(n)=v} ≤ 2v²+1`
+(`totient_fiber_ncard_le`), which is **sharp at `v = 0`**.
+
 ## The idea
 Both bounds are *multiplicative invariants*.  Factoring `n` into coprime
 prime powers, the inequality is tight only at the single prime power `2¹`
@@ -169,5 +174,57 @@ theorem totient_ge_sqrt_half (n : ℕ) :
   calc Real.sqrt ((n : ℝ) / 2)
         ≤ Real.sqrt ((Nat.totient n : ℝ) ^ 2) := Real.sqrt_le_sqrt h2
     _ = (Nat.totient n : ℝ) := Real.sqrt_sq (by positivity)
+
+/-! ### Effective finite-to-one: enumeration domain and explicit cardinality
+
+`totient_fiber_finite` is qualitative.  The fiber bound `n ≤ 2v²` makes the
+finiteness *effective*: the whole fiber is recovered by a finite search over
+`Iic (2v²)`, giving both a decidable enumeration domain and an explicit
+cardinality bound.  The cardinality bound is **sharp at `v = 0`**. -/
+
+/-- **Effective fiber description.** The (a priori infinite) set of integers with
+totient `v` equals the coercion of an explicit, computable `Finset`: it suffices
+to search the initial segment `Iic (2v²)`.  This upgrades the qualitative
+`totient_fiber_finite` to a concrete decidable enumeration domain. -/
+theorem totient_fiber_eq_filter (v : ℕ) :
+    {n : ℕ | Nat.totient n = v}
+      = ↑((Finset.Iic (2 * v ^ 2)).filter (fun n => Nat.totient n = v)) := by
+  ext n
+  simp only [Finset.coe_filter, Finset.mem_Iic, Set.mem_setOf_eq]
+  constructor
+  · intro h; exact ⟨totient_fiber_bound h, h⟩
+  · intro h; exact h.2
+
+/-- **Explicit fiber cardinality bound.** Each totient value `v` is attained by
+at most `2v² + 1` integers — the fiber sits inside `Iic (2v²)`, which has exactly
+`2v² + 1` elements.  Sharp at `v = 0`. -/
+theorem totient_fiber_ncard_le (v : ℕ) :
+    {n : ℕ | Nat.totient n = v}.ncard ≤ 2 * v ^ 2 + 1 := by
+  have hsub : {n : ℕ | Nat.totient n = v} ⊆ Set.Iic (2 * v ^ 2) := by
+    intro n hn
+    simp only [Set.mem_setOf_eq] at hn
+    exact Set.mem_Iic.mpr (totient_fiber_bound hn)
+  have hcard : (Set.Iic (2 * v ^ 2)).ncard = 2 * v ^ 2 + 1 := by
+    rw [← Finset.coe_Iic, Set.ncard_coe_finset, Nat.card_Iic]
+  calc {n : ℕ | Nat.totient n = v}.ncard
+      ≤ (Set.Iic (2 * v ^ 2)).ncard := Set.ncard_le_ncard hsub (Set.finite_Iic _)
+    _ = 2 * v ^ 2 + 1 := hcard
+
+/-- The unique solution of `φ(n) = 0` is `n = 0` (every positive integer has a
+positive totient).  This pins down the `v = 0` fiber. -/
+theorem totient_fiber_zero : {n : ℕ | Nat.totient n = 0} = {0} := by
+  ext n
+  simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · intro h
+    by_contra hn
+    have hpos : 0 < Nat.totient n := Nat.totient_pos.mpr (Nat.pos_of_ne_zero hn)
+    omega
+  · rintro rfl; exact Nat.totient_zero
+
+/-- **Sharpness of the cardinality bound at `v = 0`.** Equality `1 = 2·0² + 1`
+holds: the fiber over `0` is the singleton `{0}`. -/
+example : {n : ℕ | Nat.totient n = 0}.ncard = 2 * 0 ^ 2 + 1 := by
+  rw [totient_fiber_zero]; simp
 
 end Erdos1004OQ02

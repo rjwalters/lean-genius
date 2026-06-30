@@ -1,0 +1,517 @@
+/-
+# OQ-01: Backward Collatz — Preimage Structure and Infinitude of the Basin of 1
+
+Parent: `collatz-structured` (CollatzStructured.lean) proves *forward* facts —
+powers of two reach 1, closure of "reaches 1" under doubling, and specific small
+values. This file studies the **backward** dynamics: the preimage (predecessor)
+structure of the Collatz map and what it implies about the set of numbers that
+reach 1 (the *basin* of 1).
+
+We prove, with **no axioms and no `sorry`**:
+
+1. **Exact preimage characterization.** For every `a m : ℕ`,
+   `collatz a = m ↔ a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m)`.
+   Every predecessor of `m` is either the *even predecessor* `2m` or an
+   *odd predecessor* `a` with `3a + 1 = m`.
+
+2. **Branching law.** An odd predecessor exists iff `m ≡ 4 (mod 6)`:
+   `(∃ a, a % 2 = 1 ∧ 3 * a + 1 = m) ↔ m % 6 = 4`.
+   Hence in the Collatz graph every vertex `m ≡ 4 (mod 6)` has two predecessors
+   and every other vertex has exactly one (the even predecessor `2m`).
+
+3. **Backward closure of the basin.** If `collatz a = m` and `m` reaches 1, then
+   `a` reaches 1. The basin of 1 is closed under taking predecessors.
+
+4. **The basin of 1 is infinite** — it contains every power of two.
+
+These are *unconditional* structural facts about the Collatz graph: they do not
+assume the Collatz conjecture, but describe the shape of the component containing
+1, independently of whether that component is all of `ℕ`.
+
+Tags: number-theory, collatz, predecessor, preimage, dynamical-systems
+-/
+
+import Mathlib.Tactic
+import Proofs.CollatzStructured
+
+namespace CollatzBackward
+
+open Collatz
+
+/-!
+## Part I: Exact Preimage Characterization
+
+The Collatz map `collatz n = if n even then n/2 else 3n+1` is two-to-one onto its
+image in a controlled way. A predecessor `a` of `m` (i.e. `collatz a = m`) is
+either even — in which case `a/2 = m`, forcing `a = 2m` — or odd, in which case
+`3a + 1 = m`.
+-/
+
+/-- **Exact preimage characterization.** `a` maps to `m` under the Collatz map iff
+`a` is the even predecessor `2m` or an odd number with `3a + 1 = m`. -/
+theorem collatz_eq_iff (a m : ℕ) :
+    collatz a = m ↔ a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m) := by
+  unfold collatz
+  split_ifs with h
+  · -- a is even
+    constructor
+    · intro hm; exact Or.inl (by omega)
+    · rintro (rfl | ⟨h1, _⟩) <;> omega
+  · -- a is odd
+    have h1 : a % 2 = 1 := by omega
+    constructor
+    · intro hm; exact Or.inr ⟨h1, hm⟩
+    · rintro (rfl | ⟨_, h2⟩)
+      · omega
+      · exact h2
+
+/-- The preimage of `{m}` under the Collatz map, described explicitly. -/
+theorem preimage_collatz (m : ℕ) :
+    collatz ⁻¹' {m} = {a | a = 2 * m ∨ (a % 2 = 1 ∧ 3 * a + 1 = m)} := by
+  ext a
+  simp [Set.mem_preimage, collatz_eq_iff]
+
+/-- The **even predecessor**: `2m` always maps to `m`. -/
+theorem even_pred (m : ℕ) : collatz (2 * m) = m := collatz_two_mul m
+
+/-!
+## Part II: The Branching Law
+
+An *odd* predecessor of `m` exists exactly when `m ≡ 4 (mod 6)`. Combined with the
+always-present even predecessor `2m`, this says: vertices congruent to `4 mod 6`
+have in-degree 2 in the Collatz graph; all others have in-degree 1.
+-/
+
+/-- **Branching law.** `m` has an odd predecessor iff `m ≡ 4 (mod 6)`. -/
+theorem odd_pred_exists_iff (m : ℕ) :
+    (∃ a, a % 2 = 1 ∧ 3 * a + 1 = m) ↔ m % 6 = 4 := by
+  constructor
+  · rintro ⟨a, ha, rfl⟩
+    omega
+  · intro hm
+    exact ⟨2 * (m / 6) + 1, by omega, by omega⟩
+
+/-- When `m ≡ 4 (mod 6)` there are (at least) two distinct predecessors: the even
+predecessor `2m` and a distinct odd predecessor. The Collatz graph branches here. -/
+theorem two_preds_of_mod {m : ℕ} (hm : m % 6 = 4) :
+    ∃ a b, a ≠ b ∧ collatz a = m ∧ collatz b = m := by
+  obtain ⟨c, hc, hcm⟩ := (odd_pred_exists_iff m).mpr hm
+  refine ⟨2 * m, c, ?_, even_pred m, ?_⟩
+  · omega
+  · rw [collatz_eq_iff]; exact Or.inr ⟨hc, hcm⟩
+
+/-- When `m % 6 ≠ 4`, the *only* predecessor of `m` is the even predecessor `2m`. -/
+theorem unique_pred_of_not_mod {m : ℕ} (hm : m % 6 ≠ 4) {a : ℕ}
+    (ha : collatz a = m) : a = 2 * m := by
+  rcases (collatz_eq_iff a m).mp ha with h | ⟨hodd, h3⟩
+  · exact h
+  · exact absurd ((odd_pred_exists_iff m).mp ⟨a, hodd, h3⟩) hm
+
+/-!
+## Part II½: Exact predecessor sets and the precise in-degree
+
+`two_preds_of_mod` / `unique_pred_of_not_mod` give the in-degree *dichotomy*
+qualitatively ("at least two" / "the only one"). Here we sharpen it to the **exact**
+preimage set, and read off the precise in-degree as a number. The odd predecessor of an
+`m ≡ 4 (mod 6)` has the closed form `(m-1)/3`, so the full predecessor set is
+`{2m, (m-1)/3}` (in-degree exactly `2`); for every other `m` it is `{2m}` (in-degree
+exactly `1`).
+-/
+
+/-- The **odd predecessor in closed form**: when `m ≡ 4 (mod 6)`, the number `(m-1)/3`
+is odd and maps to `m` under the Collatz step. -/
+theorem odd_pred_eq {m : ℕ} (hm : m % 6 = 4) :
+    ((m - 1) / 3) % 2 = 1 ∧ 3 * ((m - 1) / 3) + 1 = m := by
+  omega
+
+/-- **Exact predecessor set, branching case.** For `m ≡ 4 (mod 6)` the full Collatz
+preimage of `m` is exactly the pair `{2m, (m-1)/3}`. -/
+theorem preimage_collatz_eq_pair {m : ℕ} (hm : m % 6 = 4) :
+    collatz ⁻¹' {m} = {2 * m, (m - 1) / 3} := by
+  rw [preimage_collatz]
+  ext a
+  simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · rintro (h | ⟨_, h3⟩)
+    · exact Or.inl h
+    · exact Or.inr (by omega)
+  · rintro (rfl | rfl)
+    · exact Or.inl rfl
+    · exact Or.inr (odd_pred_eq hm)
+
+/-- **Exact predecessor set, non-branching case.** For `m ≢ 4 (mod 6)` the full Collatz
+preimage of `m` is exactly the singleton `{2m}`. -/
+theorem preimage_collatz_eq_singleton {m : ℕ} (hm : m % 6 ≠ 4) :
+    collatz ⁻¹' {m} = {2 * m} := by
+  ext a
+  simp only [Set.mem_preimage, Set.mem_singleton_iff]
+  exact ⟨unique_pred_of_not_mod hm, by rintro rfl; exact even_pred m⟩
+
+/-- **Precise in-degree, branching case.** Every vertex `m ≡ 4 (mod 6)` has in-degree
+exactly `2` in the Collatz graph. -/
+theorem indegree_eq_two {m : ℕ} (hm : m % 6 = 4) :
+    (collatz ⁻¹' {m}).ncard = 2 := by
+  rw [preimage_collatz_eq_pair hm]
+  exact Set.ncard_pair (by omega)
+
+/-- **Precise in-degree, non-branching case.** Every vertex `m ≢ 4 (mod 6)` has in-degree
+exactly `1` (its sole predecessor being the even one, `2m`). -/
+theorem indegree_eq_one {m : ℕ} (hm : m % 6 ≠ 4) :
+    (collatz ⁻¹' {m}).ncard = 1 := by
+  rw [preimage_collatz_eq_singleton hm]
+  exact Set.ncard_singleton _
+
+/-- **Every in-degree set is finite.** The predecessor set of any `m` is either a
+singleton (`{2m}`) or a pair (`{2m, (m-1)/3}`); in both cases finite.  This is the
+prerequisite for counting nodes of the backward tree (an `ncard` argument needs the
+sets to be genuinely finite, not merely `ncard`-positive). -/
+theorem indegree_finite (m : ℕ) : (collatz ⁻¹' {m}).Finite := by
+  by_cases hm : m % 6 = 4
+  · rw [preimage_collatz_eq_pair hm]; exact Set.Finite.insert _ (Set.finite_singleton _)
+  · rw [preimage_collatz_eq_singleton hm]; exact Set.finite_singleton _
+
+/-- **Unconditional in-degree dichotomy.** Regardless of the residue of `m`, every
+Collatz vertex has in-degree exactly `1` or exactly `2` — the even predecessor `2m`
+always exists, and the second (odd) predecessor exists precisely when `m ≡ 4 (mod 6)`.
+This is the uniform fact underlying the geometric (`≤ 2^d`) growth of the backward
+tree; the residue-split lemmas `indegree_eq_one`/`indegree_eq_two` refine it. -/
+theorem indegree_eq_one_or_two (m : ℕ) :
+    (collatz ⁻¹' {m}).ncard = 1 ∨ (collatz ⁻¹' {m}).ncard = 2 := by
+  by_cases hm : m % 6 = 4
+  · exact Or.inr (indegree_eq_two hm)
+  · exact Or.inl (indegree_eq_one hm)
+
+/-- **Uniform in-degree upper bound:** the Collatz in-degree never exceeds `2`. -/
+theorem indegree_le_two (m : ℕ) : (collatz ⁻¹' {m}).ncard ≤ 2 := by
+  rcases indegree_eq_one_or_two m with h | h <;> omega
+
+/-- **In-degree is positive:** `2 * m` is always a predecessor of `m`, so the
+predecessor set is nonempty. -/
+theorem indegree_pos (m : ℕ) : 1 ≤ (collatz ⁻¹' {m}).ncard := by
+  rcases indegree_eq_one_or_two m with h | h <;> omega
+
+/-!
+## Part II¾: Density of Branch Vertices
+
+The branching dichotomy (in-degree 2 on `m ≡ 4 (mod 6)`, else 1) lets us *count*.
+First we bridge the arithmetic condition to the in-degree itself: a vertex has
+in-degree exactly 2 **iff** `m ≡ 4 (mod 6)`. Then the branch vertices form the
+arithmetic progression `{6j + 4 : j ∈ ℕ}`, enumerated injectively by `j ↦ 6j + 4`,
+and exactly `k` of them lie below `6k`. So branch vertices have density exactly
+`1/6` — an unconditional, verified density fact about the Collatz graph, far weaker
+than the conjecture.
+-/
+
+/-- **In-degree characterizes branching.** A vertex has in-degree exactly `2` in the
+Collatz graph iff it is a branch vertex `m ≡ 4 (mod 6)`; otherwise its in-degree is `1`. -/
+theorem indegree_eq_two_iff (m : ℕ) :
+    (collatz ⁻¹' {m}).ncard = 2 ↔ m % 6 = 4 := by
+  refine ⟨fun h => ?_, indegree_eq_two⟩
+  by_contra hm
+  rw [indegree_eq_one hm] at h
+  exact absurd h (by norm_num)
+
+/-- The branch vertices (in-degree 2, i.e. `m ≡ 4 (mod 6)`) are exactly the arithmetic
+progression `{6j + 4 : j ∈ ℕ}`. -/
+theorem branch_vertices_eq :
+    {m : ℕ | m % 6 = 4} = Set.range (fun j : ℕ => 6 * j + 4) := by
+  ext m
+  simp only [Set.mem_setOf_eq, Set.mem_range]
+  constructor
+  · intro hm; exact ⟨m / 6, by show 6 * (m / 6) + 4 = m; omega⟩
+  · rintro ⟨j, rfl⟩; show (6 * j + 4) % 6 = 4; omega
+
+/-- The enumeration `j ↦ 6j + 4` of branch vertices is injective. -/
+theorem branch_enum_injective : Function.Injective (fun j : ℕ => 6 * j + 4) := by
+  intro a b hab
+  have h : 6 * a + 4 = 6 * b + 4 := hab
+  omega
+
+/-- Below `6k`, the branch vertices are exactly the image of `range k` under `j ↦ 6j + 4`. -/
+theorem branch_below_eq (k : ℕ) :
+    (Finset.range (6 * k)).filter (fun m => m % 6 = 4)
+      = (Finset.range k).image (fun j => 6 * j + 4) := by
+  ext m
+  simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+  constructor
+  · rintro ⟨hlt, hm⟩
+    exact ⟨m / 6, by omega, by omega⟩
+  · rintro ⟨j, hj, rfl⟩
+    exact ⟨by omega, by omega⟩
+
+/-- **Exact count of branch vertices.** Precisely `k` vertices below `6k` are branch
+vertices (in-degree 2). Branch vertices therefore have density exactly `1/6`. -/
+theorem branch_count (k : ℕ) :
+    ((Finset.range (6 * k)).filter (fun m => m % 6 = 4)).card = k := by
+  rw [branch_below_eq, Finset.card_image_of_injective _ branch_enum_injective,
+    Finset.card_range]
+
+/-- The set of branch vertices is infinite (it contains the whole progression `6j + 4`). -/
+theorem branch_vertices_infinite : {m : ℕ | m % 6 = 4}.Infinite := by
+  rw [branch_vertices_eq]
+  exact Set.infinite_range_of_injective branch_enum_injective
+
+/-!
+## Part II⅞: Geometric growth of the backward tree (`≤ 2^d`)
+
+The in-degree dichotomy (`indegree_le_two`) says every vertex has at most two
+predecessors.  Iterating, the set of depth-`d` backward-ancestors of `m` — the nodes
+`x` with `collatz^[d] x = m` — can at most *double* each level, so it has at most `2^d`
+elements.  This is the unconditional geometric bound the in-degree results were built for
+(docstring of `indegree_eq_one_or_two`): the backward Collatz tree is at worst binary.
+
+We make the bound *constructive*: the explicit predecessor sets (`{2m}` or `{2m,(m-1)/3}`)
+build a `Finset` of depth-`d` ancestors that provably equals the set-preimage
+`(collatz^[d]) ⁻¹' {m}`, and a `card_biUnion_le` induction caps its cardinality at `2^d`.
+A free corollary: every backward level is finite.
+-/
+
+/-- The explicit predecessor `Finset` of `m`: the even predecessor `2m`, together with the
+odd predecessor `(m-1)/3` exactly when `m ≡ 4 (mod 6)`. -/
+def preds (m : ℕ) : Finset ℕ :=
+  insert (2 * m) (if m % 6 = 4 then {(m - 1) / 3} else ∅)
+
+/-- `preds m` is exactly the one-step Collatz preimage of `m`. -/
+theorem mem_preds (m p : ℕ) : p ∈ preds m ↔ collatz p = m := by
+  rw [collatz_eq_iff]
+  by_cases hm : m % 6 = 4
+  · simp only [preds, hm, if_true, Finset.mem_insert, Finset.mem_singleton]
+    constructor
+    · rintro (rfl | rfl)
+      · exact Or.inl rfl
+      · exact Or.inr (odd_pred_eq hm)
+    · rintro (rfl | ⟨_, _⟩)
+      · exact Or.inl rfl
+      · right; omega
+  · simp only [preds, hm, if_false, Finset.mem_insert, Finset.notMem_empty, or_false]
+    constructor
+    · rintro rfl; exact Or.inl rfl
+    · rintro (rfl | ⟨hodd, h3⟩)
+      · rfl
+      · exact absurd ((odd_pred_exists_iff m).mp ⟨p, hodd, h3⟩) hm
+
+/-- Every vertex has at most two predecessors (the `Finset` form of `indegree_le_two`). -/
+theorem preds_card_le (m : ℕ) : (preds m).card ≤ 2 := by
+  refine (Finset.card_insert_le _ _).trans ?_
+  by_cases hm : m % 6 = 4 <;> simp [hm]
+
+/-- The depth-`d` backward-ancestor `Finset` of `m`, built by iterating `preds`. -/
+def ancestors : ℕ → ℕ → Finset ℕ
+  | 0, m => {m}
+  | d + 1, m => (preds m).biUnion (fun p => ancestors d p)
+
+/-- `ancestors d m` is exactly the depth-`d` preimage: `x` is a depth-`d` ancestor iff
+`collatz^[d] x = m`. -/
+theorem mem_ancestors (d m x : ℕ) : x ∈ ancestors d m ↔ collatz^[d] x = m := by
+  induction d generalizing m with
+  | zero => simp [ancestors]
+  | succ d ih =>
+    rw [ancestors, Finset.mem_biUnion]
+    constructor
+    · rintro ⟨p, hp, hx⟩
+      rw [ih] at hx
+      rw [Function.iterate_succ_apply', hx]
+      exact (mem_preds m p).mp hp
+    · intro hx
+      rw [Function.iterate_succ_apply'] at hx
+      exact ⟨collatz^[d] x, (mem_preds m _).mpr hx, by rw [ih]⟩
+
+/-- **Backward tree, set form.** The depth-`d` preimage of `m` is the coercion of the
+constructive ancestor `Finset`. -/
+theorem iter_preimage_eq_ancestors (d m : ℕ) :
+    (collatz^[d]) ⁻¹' {m} = ↑(ancestors d m) := by
+  ext x
+  simp [Set.mem_preimage, mem_ancestors]
+
+/-- **Each backward level is finite.** -/
+theorem iter_preimage_finite (d m : ℕ) : ((collatz^[d]) ⁻¹' {m}).Finite := by
+  rw [iter_preimage_eq_ancestors]
+  exact (ancestors d m).finite_toSet
+
+/-- **`ancestors` doubles at most each level:** `|ancestors d m| ≤ 2^d`. -/
+theorem ancestors_card_le (d m : ℕ) : (ancestors d m).card ≤ 2 ^ d := by
+  induction d generalizing m with
+  | zero => simp [ancestors]
+  | succ d ih =>
+    calc (ancestors (d + 1) m).card
+        = ((preds m).biUnion (fun p => ancestors d p)).card := by rw [ancestors]
+      _ ≤ ∑ p ∈ preds m, (ancestors d p).card := Finset.card_biUnion_le
+      _ ≤ ∑ _p ∈ preds m, 2 ^ d := Finset.sum_le_sum (fun p _ => ih p)
+      _ = (preds m).card * 2 ^ d := by rw [Finset.sum_const, smul_eq_mul]
+      _ ≤ 2 * 2 ^ d := Nat.mul_le_mul_right _ (preds_card_le m)
+      _ = 2 ^ (d + 1) := by ring
+
+/-- **Geometric growth of the backward tree.** The number of depth-`d` backward-ancestors
+of any `m` is at most `2^d`: the backward Collatz tree is at worst binary.  Unconditional —
+no Collatz conjecture, just the in-degree-`≤ 2` dichotomy iterated. -/
+theorem backward_tree_ncard_le (d m : ℕ) : ((collatz^[d]) ⁻¹' {m}).ncard ≤ 2 ^ d := by
+  rw [iter_preimage_eq_ancestors, Set.ncard_coe_finset]
+  exact ancestors_card_le d m
+
+/-- Sanity check: depth `1` recovers the in-degree bound `≤ 2` of `indegree_le_two`. -/
+theorem backward_tree_depth_one (m : ℕ) : ((collatz^[1]) ⁻¹' {m}).ncard ≤ 2 := by
+  simpa using backward_tree_ncard_le 1 m
+
+/-!
+## Part III: Backward Closure of the Basin
+
+If `a` maps to `m` in one step and `m` reaches 1, then `a` reaches 1 (in one more
+step). Thus the basin of 1 is closed under taking predecessors — its preimage
+under `collatz` is contained in itself.
+-/
+
+/-- **Backward closure.** If `collatz a = m` and `m` reaches 1, then `a` reaches 1. -/
+theorem reaches_one_of_collatz {a m : ℕ} (h : collatz a = m) (hm : ReachesOne m) :
+    ReachesOne a := by
+  obtain ⟨k, hk⟩ := hm
+  refine ⟨k + 1, ?_⟩
+  simp only [collatzIter] at hk ⊢
+  rw [Function.iterate_succ_apply, h]
+  exact hk
+
+/-- Backward closure via the odd predecessor: if `a` is odd and `3a + 1` reaches 1,
+then `a` reaches 1. -/
+theorem reaches_one_odd_pred {a : ℕ} (ha : a % 2 = 1) (h : ReachesOne (3 * a + 1)) :
+    ReachesOne a :=
+  reaches_one_of_collatz ((collatz_eq_iff a (3 * a + 1)).mpr (Or.inr ⟨ha, rfl⟩)) h
+
+/-- The basin of 1 is closed under `collatz`-preimages: every predecessor of a
+basin element is again a basin element. -/
+theorem basin_closed_under_pred :
+    collatz ⁻¹' {n | ReachesOne n} ⊆ {n | ReachesOne n} := by
+  intro a ha
+  exact reaches_one_of_collatz (rfl : collatz a = collatz a) ha
+
+/-!
+## Part IV: The Basin of 1 is Infinite
+
+The set of numbers reaching 1 contains every power of two (parent file:
+`pow_two_reaches_one`), and `k ↦ 2^(k+1)` is an injection into it, so the basin is
+infinite. This is unconditional — it does not need the Collatz conjecture.
+-/
+
+/-- **The basin of 1 is infinite.** -/
+theorem basin_infinite : {n : ℕ | ReachesOne n}.Infinite := by
+  apply Set.infinite_of_injective_forall_mem (f := fun k : ℕ => 2 ^ (k + 1))
+  · intro x y hxy
+    have hxy' : 2 ^ (x + 1) = 2 ^ (y + 1) := hxy
+    have : x + 1 = y + 1 := Nat.pow_right_injective (le_refl 2) hxy'
+    omega
+  · intro k
+    simp only [Set.mem_setOf_eq]
+    exact pow_two_reaches_one (k + 1) (by omega)
+
+/-!
+## Part V: Computed Examples of the Branching Structure
+
+Concrete instances of the preimage law for small `m`.
+-/
+
+-- 16 ≡ 4 (mod 6): two predecessors, 32 (even) and 5 (odd, 3·5+1 = 16).
+example : collatz 32 = 16 := by decide
+example : collatz 5 = 16 := by decide
+example : (16 : ℕ) % 6 = 4 := by decide
+
+-- 10 ≡ 4 (mod 6): two predecessors, 20 (even) and 3 (odd, 3·3+1 = 10).
+example : collatz 20 = 10 := by decide
+example : collatz 3 = 10 := by decide
+
+-- 8 ≢ 4 (mod 6): only the even predecessor 16.
+example : (8 : ℕ) % 6 ≠ 4 := by decide
+example : collatz 16 = 8 := by decide
+
+/-!
+## Part VI: A logarithmic lower bound on the basin counting function
+
+`basin_infinite` (Part IV) is qualitative. Here we make it **quantitative**: at
+least `Nat.log 2 N + 1` of the numbers in `[0, N]` reach 1. The reason is
+elementary — the `Nat.log 2 N + 1` distinct powers of two
+`2^0, 2^1, …, 2^(Nat.log 2 N)` all lie in `[1, N]` and all reach 1 — but it turns
+`basin_infinite` into an explicit growth rate for the counting function
+`N ↦ #{n ≤ N : ReachesOne n}`.
+
+This is the *achievable* (lower-bound) half of nextStep 4's "two-sided bound". A
+matching **nontrivial upper bound** `#{n ≤ N : ReachesOne n} < N + 1` would require
+exhibiting some `n ≤ N` that never reaches 1 — which is exactly the open Collatz
+question. So only the lower bound is unconditional.
+-/
+
+/-- Every power of two reaches 1: `one_reaches_one` handles the exponent `0`
+(`2^0 = 1`) and `pow_two_reaches_one` the positive exponents. -/
+theorem pow_two_reaches_one' (k : ℕ) : ReachesOne (2 ^ k) := by
+  cases k with
+  | zero => simpa using one_reaches_one
+  | succ k => exact pow_two_reaches_one (k + 1) (by omega)
+
+/-- The basin elements not exceeding `N` form a finite set (a subset of `[0, N]`). -/
+theorem basin_below_finite (N : ℕ) : {n : ℕ | n ≤ N ∧ ReachesOne n}.Finite :=
+  (Set.finite_Iic N).subset (fun _ hn => Set.mem_Iic.mpr hn.1)
+
+/-- **Logarithmic lower bound on the basin counting function.** At least
+`Nat.log 2 N + 1` of the integers in `[0, N]` reach 1 — the `Nat.log 2 N + 1`
+distinct powers of two below `N` are a witness set. Unconditional: this is a lower
+bound on how *many* numbers reach 1, independent of the Collatz conjecture. -/
+theorem basin_count_lower (N : ℕ) (hN : 1 ≤ N) :
+    Nat.log 2 N + 1 ≤ {n : ℕ | n ≤ N ∧ ReachesOne n}.ncard := by
+  set L := Nat.log 2 N with hL
+  -- The powers of two `2^0, …, 2^L` sit inside the basin below `N`.
+  have hsub : ↑((Finset.range (L + 1)).image (fun k => 2 ^ k))
+      ⊆ {n : ℕ | n ≤ N ∧ ReachesOne n} := by
+    intro n hn
+    simp only [Finset.coe_image, Finset.coe_range, Set.mem_image, Set.mem_Iio] at hn
+    obtain ⟨k, hk, rfl⟩ := hn
+    refine ⟨?_, pow_two_reaches_one' k⟩
+    calc 2 ^ k ≤ 2 ^ L := Nat.pow_le_pow_right (by norm_num) (by omega)
+      _ ≤ N := Nat.pow_log_le_self 2 (by omega)
+  -- That witness set has exactly `L + 1` elements (powers of two are distinct).
+  have hcard : ((Finset.range (L + 1)).image (fun k => 2 ^ k)).card = L + 1 := by
+    rw [Finset.card_image_of_injective _ (Nat.pow_right_injective (le_refl 2)),
+      Finset.card_range]
+  calc L + 1
+      = ((Finset.range (L + 1)).image (fun k => 2 ^ k)).card := hcard.symm
+    _ = (↑((Finset.range (L + 1)).image (fun k => 2 ^ k)) : Set ℕ).ncard :=
+        (Set.ncard_coe_finset _).symm
+    _ ≤ {n : ℕ | n ≤ N ∧ ReachesOne n}.ncard :=
+        Set.ncard_le_ncard hsub (basin_below_finite N)
+
+-- N = 8: `Nat.log 2 8 = 3`, so at least 4 numbers in `[0, 8]` reach 1
+-- (indeed 1, 2, 4, 8 — the powers of two ≤ 8).
+example : 4 ≤ {n : ℕ | n ≤ 8 ∧ ReachesOne n}.ncard := by
+  have := basin_count_lower 8 (by norm_num)
+  norm_num [Nat.log] at this ⊢
+  omega
+
+/-!
+## Summary
+
+**Proved (no axioms, no `sorry`)**:
+1. ✓ Exact preimage characterization `collatz_eq_iff`
+2. ✓ Branching law `odd_pred_exists_iff` (odd predecessor ⟺ `m ≡ 4 mod 6`)
+3. ✓ In-degree dichotomy: `two_preds_of_mod` / `unique_pred_of_not_mod`
+4. ✓ Exact predecessor sets and precise in-degree: `odd_pred_eq` (odd predecessor
+   `= (m-1)/3`), `preimage_collatz_eq_pair` / `preimage_collatz_eq_singleton`
+   (full preimage `= {2m, (m-1)/3}` / `= {2m}`), `indegree_eq_two` / `indegree_eq_one`
+   (in-degree `= 2` / `= 1` exactly, via `Set.ncard`)
+5. ✓ Density of branch vertices: `indegree_eq_two_iff` (in-degree `= 2` ⟺ `m ≡ 4 mod 6`),
+   `branch_vertices_eq` (branch vertices `= {6j+4}`), `branch_count` (exactly `k` branch
+   vertices below `6k`, so density exactly `1/6`), `branch_vertices_infinite`
+6. ✓ Geometric growth of the backward tree: `mem_preds`/`preds_card_le` (explicit ≤2
+   predecessor `Finset`), `mem_ancestors`/`iter_preimage_eq_ancestors` (constructive
+   depth-`d` ancestor set = `(collatz^[d]) ⁻¹' {m}`), `ancestors_card_le` /
+   `backward_tree_ncard_le` (depth-`d` backward level has `≤ 2^d` nodes),
+   `iter_preimage_finite` (every backward level is finite)
+7. ✓ Backward closure of the basin `reaches_one_of_collatz`, `basin_closed_under_pred`
+8. ✓ The basin of 1 is infinite `basin_infinite`
+9. ✓ Logarithmic lower bound on the basin counting function: `pow_two_reaches_one'`
+   (every power of two reaches 1), `basin_below_finite`, `basin_count_lower`
+   (`#{n ≤ N : ReachesOne n} ≥ Nat.log 2 N + 1`) — the unconditional lower-bound half
+   of a two-sided basin count; a nontrivial upper bound is exactly the open problem
+
+**Unconditional**: none of these assume the Collatz conjecture. They describe the
+backward dynamics (the Collatz graph) regardless of whether every `n` reaches 1.
+
+**What remains open**: whether the basin of 1 is *all* of `ℕ ≥ 1` — i.e. the
+Collatz conjecture itself (axiomatized in the parent file).
+-/
+
+end CollatzBackward

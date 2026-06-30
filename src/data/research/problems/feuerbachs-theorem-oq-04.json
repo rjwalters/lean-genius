@@ -1,14 +1,17 @@
 {
   "slug": "feuerbachs-theorem-oq-04",
   "title": "Feuerbach's Theorem in Non-Euclidean Geometry",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Feuerbach's Theorem in Non-Euclidean Geometry.",
-    "whyMatters": []
+    "formal": "On the unit sphere of a real inner-product space E (points = unit vectors P with sdist P Q := arccos <P,Q>), a spherical circle (O, rho) is {P : OnSphere P and <P,O> = cos rho}. Spherical Feuerbach: for a spherical triangle the spherical nine-point circle is tangent to the spherical incircle and the three excircles, where two circles (O1,rho1),(O2,rho2) are internally tangent iff sdist O1 O2 = |rho1 - rho2| and externally tangent iff sdist O1 O2 = rho1 + rho2.",
+    "plain": "Formalize and prove Feuerbach's theorem in non-Euclidean (spherical) geometry: the nine-point circle of a spherical triangle is tangent to its incircle and excircles. Mathlib has no hyperbolic geometry, so the tractable constant-curvature model is the sphere (unit vectors with arccos distance).",
+    "whyMatters": [
+      "Extends a fully-verified Euclidean Feuerbach development to constant positive curvature.",
+      "Spherical circle tangency reduces to an inner-product identity via the chord-cosine bridge, keeping the argument axiom-free in Mathlib."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,24 +19,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T12:51:58.293Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-06-28T10:40:00.000Z",
+    "iteration": 3,
+    "focus": "Spherical circles (level sets of scos) + internal/external tangency relations formalized on top of the metric layer; level-set circle identified with the metric circle (mem_sCircle_iff_sdist).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Tangent-point existence: exhibit the unique common point on the geodesic between centres for tangent circles (spherical slerp) and verify it lies on both sCircles; then build spherical incircle / nine-point circle and attempt the spherical Feuerbach tangency.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "BUILD: spherical model verified layer (FeuerbachsTheoremOQ04.lean, 0-axiom). chord_sq is the chord-cosine bridge; scos/sdist well-defined ([-1,1] cosine, [0,pi] distance). Spherical circles defined as scos level sets with the internal/external tangency criterion (mem_sCircle_iff_sdist, InternallyTangent/ExternallyTangent + symmetry). Point separation: scos_eq_one_iff, sdist_eq_zero_iff (sdist P Q = 0 <-> P = Q), sdist_pos. NEW (researcher-4): spherical triangle inequality — sdist_eq_angle identifies sdist with Mathlib's InnerProductGeometry.angle on unit vectors, transporting angle_le_angle_add_angle to sdist_triangle (sdist P R <= sdist P Q + sdist Q R); sdist_isMetric bundles all four metric-space axioms, so (S^n, sdist) is now a genuine metric on the spherical model. Hyperbolic model deferred (no Mathlib support). Next: tangent-point existence and incircle/nine-point constructions toward the Feuerbach tangency.",
+    "builtItems": [
+      "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
+      "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
+      "FeuerbachsTheoremOQ04.scos_self/sdist_self/sdist_nonneg/sdist_le_pi/sdist_eq_zero_of_eq — sdist is a well-defined [0,pi]-valued angle vanishing on the diagonal",
+      "defs OnSphere (unit vector), scos := <P,Q>, sdist := arccos <P,Q> — the spherical model primitives",
+      "FeuerbachsTheoremOQ04.scos_eq_one_iff/sdist_eq_zero_iff/sdist_pos (researcher-4) — point separation: for unit vectors sdist P Q = 0 iff P = Q, so sdist separates points (genuine metric modulo triangle ineq). 0-axiom.",
+      "FeuerbachsTheoremOQ04.sdist_eq_angle/sdist_triangle/sdist_isMetric (researcher-4) — spherical triangle inequality: sdist = InnerProductGeometry.angle on unit vectors, so angle_le_angle_add_angle gives sdist P R <= sdist P Q + sdist Q R; sdist_isMetric bundles all four metric-space axioms, completing (S^n, sdist) as a genuine metric on the spherical model. 0-axiom."
+    ],
+    "insights": [
+      "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
+      "The chord-cosine bridge ||P-Q||^2 = 2-2<P,Q> is the key reduction: a spherical circle (level set of <P,O>) and tangency conditions become polynomial in the inner product, so the argument stays axiom-free.",
+      "Spherical circle tangency target: internal iff sdist(O1,O2)=|rho1-rho2|, external iff sdist(O1,O2)=rho1+rho2 — the non-Euclidean analog of the Euclidean d=|r1-r2| / r1+r2 used in the verified Euclidean Feuerbach gallery files."
+    ],
+    "mathlibGaps": [
+      "No developed hyperbolic-geometry metric (hyperboloid / Poincare disk distance) in Mathlib — blocks an axiom-free hyperbolic Feuerbach without building the model first.",
+      "No spherical-triangle incircle / nine-point-circle construction in Mathlib; must be built on scos/sdist."
+    ],
+    "nextSteps": [
+      "Bundle (S^n, sdist) as an actual Mathlib MetricSpace instance on the sphere subtype (sdist_isMetric supplies all four axioms; the remaining work is the subtype packaging).",
+      "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
+      "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion."
+    ]
   },
   "tags": [
     "geometry",
@@ -71,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-04-22T12:51:58.293Z",
+  "lastUpdate": "2026-06-28T11:55:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -360,6 +381,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ04.lean",
+      "filename": "FeuerbachsTheoremOQ04.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ04.lean"
     }
   ]
 }

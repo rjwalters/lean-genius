@@ -76,6 +76,23 @@
       "The Catalan numbers and the notion of a Catalan family / bijective enumeration"
     ]
   },
+  "overview": {
+    "historicalContext": "The Catalan numbers catalan n count a famous web of more than two hundred combinatorial families (catalogued in Stanley's Catalan Numbers and Enumerative Combinatorics, exercise 6.19): Dyck paths, balanced parenthesisations, binary trees, triangulations of a polygon, noncrossing partitions, and — central here — plane trees (ordered rooted trees, where each node has a finite ordered list of children of arbitrary arity). The correspondence used to count them is the 'natural correspondence' between forests and binary trees described by Knuth (TAOCP vol. 1, §2.3.2), better known to programmers as the first-child/next-sibling (left-child right-sibling) representation: a node's first child becomes the left child of the binary node and its next sibling becomes the right child. Mathlib already counts binary trees (Tree Unit) and Dyck words (DyckWord) by catalan n, but has no plane-tree type; this entry supplies it and routes the count through Knuth's bijection, the textbook way to enumerate a new Catalan family by reduction to an already-counted one.",
+    "problemStatement": "Answer the parent entry's open question: exhibit a Catalan family not yet counted in Mathlib together with an explicit bijection to Dyck words. Concretely, define plane trees / plane forests, build an explicit size-preserving bijection PlaneForest ≃ Tree Unit (and hence to Dyck words), and conclude that plane forests with n nodes — and plane trees with n+1 nodes — are counted by catalan n.",
+    "proofStrategy": "Define PlaneTree as a nested inductive type (a node carrying a List PlaneTree) and PlaneForest as a list of plane trees. Build the first-child/next-sibling encoding PlaneForest.encode → Tree Unit and its inverse Tree.decodeForest, and prove both round-trips: decode_encode by recursion descending simultaneously into a head tree's children and the rest of the forest, encode_decode by structural induction on the binary tree. Bundle these as forestEquivTree : PlaneForest ≃ Tree Unit. Show the encoding is size-preserving (numNodes_encode), so Equiv.subtypeEquiv refines it to a bijection of n-node forests with n-node binary trees. Compose with Mathlib's DyckWord.equivTree and transport cardinalities by Fintype.card_congr to obtain card_planeForest_numNodes_eq_catalan; the constructor equivalence PlaneTree ≃ PlaneForest then gives card_planeTree_numNodes_eq_catalan.",
+    "keyInsights": [
+      "**Count by bijection, not by closed form.** Rather than re-deriving a generating function or recurrence for plane trees, the proof transports the count from an already-enumerated family: an explicit equivalence to binary trees (and onward to Dyck words) turns 'how many plane trees' into a cardinality already known to be catalan n.",
+      "**The bijection genuinely changes arity.** A plane-tree node has an arbitrary ordered list of children, while a binary node has exactly two; first-child/next-sibling reconciles them by reading 'first child' as the left branch and 'next sibling' as the right branch. This is a real structural recursion, not a relabeling of a Dyck word's U/D symbols.",
+      "**Size-preservation is what makes the count work.** Because the encoding sends an n-node forest to an n-node binary tree (numNodes_encode), the global equivalence refines to every fixed size via Equiv.subtypeEquiv — without this grading alignment the bijection would not yield a per-n enumeration.",
+      "**Forests, not single trees, are the natural unit.** The clean equivalence is PlaneForest ≃ Tree Unit; the single-plane-tree count (n+1 nodes ↔ catalan n) falls out of the trivial constructor equivalence PlaneTree ≃ PlaneForest, reflecting that a tree is just a root sitting over its forest of children."
+    ],
+    "prerequisites": [
+      "Catalan numbers and the notion of a 'Catalan family' (Stanley's catalogue)",
+      "Nested inductive types in Lean (a constructor taking List of the type being defined) and recursion/induction over them",
+      "Equiv (type equivalences), Equiv.subtypeEquiv, and transporting cardinality by Fintype.card_congr",
+      "Mathlib's binary trees Tree Unit and the Dyck-word equivalence DyckWord.equivTree"
+    ]
+  },
   "sections": [
     {
       "id": "header",

@@ -2,7 +2,7 @@
   "id": "szemeredi-counting-oq-02",
   "title": "Hypergraph Counting Lemma: the Exact Base Term and the Cherry Engine",
   "slug": "szemeredi-counting-oq-02",
-  "description": "Builds the self-contained counting layer for tripartite 3-uniform hypergraphs that underlies the Nagle–Rödl–Schacht (2006) hypergraph counting lemma, and isolates exactly the part of that lemma that is deterministic — provable with no regularity hypothesis and no error term. A tripartite 3-graph is modeled as a ternary adjacency predicate Tri3Graph (adj : α → β → γ → Prop), making a labeled copy of the single-hyperedge pattern literally an edge of α × β × γ. The entry proves: (1) edgeCount_eq_density_mul — the EXACT counting identity e(H) = d · |α||β||γ| for the single-hyperedge pattern, the counting lemma's main term d^{e(F)}·∏|Vᵢ| in the base case e(F) = 1, holding with zero error; (2) edgeCount_sq_le — the Cauchy–Schwarz 'cherry' inequality e(H)² ≤ |α| · ∑_a deg(a)², the second-moment engine every regularity-based counting/removal argument iterates, obtained from Mathlib's sq_sum_le_card_mul_sum_sq after sum_degA decomposes the edge count over first-coordinate fibres; (3) cherryCount_eq_sum_sq_degA — the EXACT e(F) = 2 enumeration, counting labeled cherries (ordered edge pairs sharing a first coordinate) as ∑_a deg(a)² with no error, via card_eq_sum_card_fiberwise over the shared α-coordinate plus card_product on each fibre; and (4) edgeCount_sq_le_cherryCount — the same Cauchy–Schwarz bound rendered as e(H)² ≤ |α| · cherryCount(H), an inequality on an explicit count of two-edge configurations. The deliberate boundary: the approximate (1 ± f(ε)) NRS lemma for e(F) ≥ 2 needs RELATIVE (Gowers / Rödl–Skokan) regularity — density conditioned on the bipartite 2-skeletons — which is research-level and left open. What is exact (the e(F)=1 main term and the e(F)=2 cherry count) is separated cleanly from what needs regularity (the two-sided bound on the cherry count). 14 theorems + 10 definitions, 0 sorries, 0 axioms.",
+  "description": "Builds the self-contained counting layer for tripartite 3-uniform hypergraphs that underlies the Nagle–Rödl–Schacht (2006) hypergraph counting lemma, and isolates exactly the part of that lemma that is deterministic — provable with no regularity hypothesis and no error term. A tripartite 3-graph is modeled as a ternary adjacency predicate Tri3Graph (adj : α → β → γ → Prop), making a labeled copy of the single-hyperedge pattern literally an edge of α × β × γ. The entry proves: (1) edgeCount_eq_density_mul — the EXACT counting identity e(H) = d · |α||β||γ| for the single-hyperedge pattern, the counting lemma's main term d^{e(F)}·∏|Vᵢ| in the base case e(F) = 1, holding with zero error; (2) edgeCount_sq_le — the Cauchy–Schwarz 'cherry' inequality e(H)² ≤ |α| · ∑_a deg(a)², the second-moment engine every regularity-based counting/removal argument iterates, obtained from Mathlib's sq_sum_le_card_mul_sum_sq after sum_degA decomposes the edge count over first-coordinate fibres; (3) cherryCount_eq_sum_sq_degA — the EXACT e(F) = 2 enumeration, counting labeled cherries (ordered edge pairs sharing a first coordinate) as ∑_a deg(a)² with no error, via card_eq_sum_card_fiberwise over the shared α-coordinate plus card_product on each fibre; and (4) edgeCount_sq_le_cherryCount — the same Cauchy–Schwarz bound rendered as e(H)² ≤ |α| · cherryCount(H), an inequality on an explicit count of two-edge configurations. The deliberate boundary: the approximate (1 ± f(ε)) NRS lemma for e(F) ≥ 2 needs RELATIVE (Gowers / Rödl–Skokan) regularity — density conditioned on the bipartite 2-skeletons — which is research-level and left open. What is exact (the e(F)=1 main term and the e(F)=2 cherry count) is separated cleanly from what needs regularity (the two-sided bound on the cherry count). 14 theorems + 10 definitions, 0 sorries, 0 axioms. Part VII adds the equality behind the inequality: Lagrange's identity shows the Cauchy–Schwarz defect is exactly the degree variance, |α|·cherryCount(H) − e(H)² = ½·∑_{a,b}(deg a − deg b)², so the cherry bound is tight precisely when the first-part degrees are constant — i.e. when H is first-coordinate regular (card_mul_cherryCount_eq_edgeCount_sq_iff). This pins down why regularity is the hypothesis the full counting lemma needs.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -23,8 +23,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 252,
-    "theoremCount": 14,
+    "lineCount": 445,
+    "theoremCount": 17,
     "definitionCount": 10,
     "assumptions": "None beyond finite vertex parts. All results are universally quantified over a Tri3Graph H on Fintype parts α, β, γ; the adjacency predicate is an arbitrary Prop and decidability is supplied classically (open Classical), so edgeFinset/degA/cherryFinset are noncomputable Finset filters with no DecidableRel hypothesis. #print axioms reports only Lean/Mathlib's foundational propext, Classical.choice, Quot.sound; no sorryAx, no native_decide, no Lean.ofReduceBool.",
     "mathlibDependencies": [
@@ -91,7 +91,7 @@
     ]
   },
   "conclusion": {
-    "summary": "In 252 lines, 0 sorries, 0 axioms, the entry builds a tripartite 3-graph counting layer on a ternary adjacency predicate and proves the deterministic core of the Nagle–Rödl–Schacht counting lemma: the exact main term e(H) = d·|α||β||γ| (the e(F)=1 base case, no error), the Cauchy–Schwarz cherry inequality e(H)² ≤ |α|·∑_a deg(a)², and the exact e(F)=2 enumeration cherryCount = ∑_a deg(a)², combined into e(H)² ≤ |α|·cherryCount. The model makes a labeled single-edge copy literally an edge, so the base term is definitional, and the cherry count is computed by fibering over the shared first coordinate.",
+    "summary": "In 445 lines, 0 sorries, 0 axioms, the entry builds a tripartite 3-graph counting layer on a ternary adjacency predicate and proves the deterministic core of the Nagle–Rödl–Schacht counting lemma: the exact main term e(H) = d·|α||β||γ| (the e(F)=1 base case, no error), the Cauchy–Schwarz cherry inequality e(H)² ≤ |α|·∑_a deg(a)², and the exact e(F)=2 enumeration cherryCount = ∑_a deg(a)², combined into e(H)² ≤ |α|·cherryCount. The model makes a labeled single-edge copy literally an edge, so the base term is definitional, and the cherry count is computed by fibering over the shared first coordinate. Part VII promotes the second-moment inequality to an equality — Lagrange's identity makes the Cauchy–Schwarz defect |α|·cherryCount − e(H)² an exact degree variance ½∑_{a,b}(deg a − deg b)² — and shows the cherry bound is tight iff H is first-coordinate regular, isolating exactly why regularity is the right hypothesis.",
     "implications": "This isolates exactly which part of the hypergraph counting lemma is regularity-free: the e(F)=1 main term and the e(F)=2 cherry enumeration are both exact, and Cauchy–Schwarz supplies the one-sided second-moment bound. The genuine NRS content — the two-sided (1 ± f(ε)) count for e(F) ≥ 2 — is precisely the step that needs relative (Gowers / Rödl–Skokan) regularity, density conditioned on the bipartite 2-skeletons, which the entry leaves as the named next layer (relativeDensity / IsGowersRegular on Tri3Graph). It is the 3-graph companion to the verified graph counting lemma in SzemerediCounting.lean and the natural home for a future inductive counting argument over the uniformity.",
     "openQuestions": [
       "Build a relativeDensity layer on Tri3Graph: the 3-graph density conditioned on its three bipartite 2-skeletons (on α×β, β×γ, α×γ), and define IsGowersRegular relative to those skeletons — the missing hypothesis that turns the one-sided cherry inequality into a two-sided bound.",
@@ -139,6 +139,22 @@
       "endLine": 249,
       "summary": "edgeCount_mono (count monotone in adjacency), and the extreme cases: complete/empty tripartite 3-graphs with edgeCount_complete = vertexTriples, edgeCount_empty = 0, density_empty = 0.",
       "mathContext": "$0 = e(\\text{empty}) \\le e(H) \\le e(\\text{complete}) = |\\alpha||\\beta||\\gamma|$."
+    },
+    {
+      "id": "supersaturation",
+      "title": "Part VI — Supersaturation: Density Forces Cherries",
+      "startLine": 270,
+      "endLine": 347,
+      "summary": "cherryCount_ge_edgeCount (trivial second-moment floor e(H) ≤ cherryCount), density_mul_le_edgeCount (base-term identity as a hypothesis-free inequality), and the density engine cherry_supersaturation / cherryCount_ge_density_sq: a fixed density d forces d²·|α|·(|β||γ|)² cherries, with no positivity side conditions.",
+      "mathContext": "$d(H)^2\\,(|\\alpha||\\beta||\\gamma|)^2 \\le |\\alpha|\\cdot \\mathrm{cherryCount}(H)$."
+    },
+    {
+      "id": "defect-variance",
+      "title": "Part VII — The Cauchy–Schwarz Defect is the Degree Variance",
+      "startLine": 359,
+      "endLine": 444,
+      "summary": "sum_sq_sub_eq_two_mul_defect (Lagrange's identity ∑_{a,b}(f a − f b)² = 2(|α|∑ f² − (∑ f)²)) specialised to the degree sequence gives card_mul_cherryCount_sub_edgeCount_sq: |α|·cherryCount(H) − e(H)² = ½∑_{a,b}(deg a − deg b)². The deficit is a manifest sum of squares, so card_mul_cherryCount_eq_edgeCount_sq_iff characterises tightness of the cherry inequality as first-coordinate regularity (all α-degrees equal).",
+      "mathContext": "$|\\alpha|\\cdot\\mathrm{cherryCount}(H) - e(H)^2 = \\tfrac12\\sum_{a,b}(\\deg a-\\deg b)^2 \\ge 0$, with equality iff $H$ is degree-regular."
     }
   ],
   "crossReferences": [
@@ -183,8 +199,8 @@
       "Mathlib"
     ],
     "namespace": "Szemeredi.HypergraphCounting",
-    "lineCount": 252,
-    "theoremCount": 14,
+    "lineCount": 445,
+    "theoremCount": 17,
     "axiomCount": 0,
     "definitionCount": 10,
     "sorries": 0,

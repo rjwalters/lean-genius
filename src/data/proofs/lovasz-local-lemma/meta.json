@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
-    "lineCount": 364,
-    "theoremCount": 25,
+    "lineCount": 471,
+    "theoremCount": 29,
     "definitionCount": 3,
     "originalContributions": [
       "Ten-part algebraic formalization of the Lovász Local Lemma covering symmetric and general cases",
@@ -31,7 +31,9 @@
       "Moser-Tardos constructive LLL bound: nonnegative expected resampling count Σ x_i/(1-x_i)",
       "Dependency graph structure: IsValidDepGraph and HasMaxDegree predicates",
       "threshold_satisfies_lll bridging symmetric threshold to the general LLL framework",
-      "Bernoulli's inequality proved by induction; (1+1/d)^d ≥ 2 and (d+1)^d ≥ 2·d^d as corollaries"
+      "Bernoulli's inequality proved by induction; (1+1/d)^d ≥ 2 and (d+1)^d ≥ 2·d^d as corollaries",
+      "Threshold monotonicity lllThreshold_succ_le: T(d+1) ≤ T(d) for all d ≥ 1, and lllThreshold_antitone: T(d) ≤ T(c) for 1 ≤ c ≤ d — the LLL probability budget shrinks as dependency degree grows; subsumes lllThreshold_le_quarter via T(1) = 1/4",
+      "Bridge identity lllThreshold_mul_succ: (d+1)·T(d) = (d/(d+1))^d, rescaling the threshold into the symmetric avoidance-product form"
     ]
   },
   "overview": {
@@ -305,12 +307,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 364,
+    "lineCount": 471,
     "path": "Proofs/LovaszLocalLemma.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 25
+    "theoremCount": 29
   },
   "sorries": 0
 }

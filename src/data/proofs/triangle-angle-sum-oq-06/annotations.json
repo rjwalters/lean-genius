@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-orientation",
+    "proofId": "triangle-angle-sum-oq-06",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Orientation: Prosthaphaeresis and the Converse of Werner",
+    "content": "The file is organised in three movements. (1) The four sum-to-product (prosthaphaeresis) identities turn a sum of two sinusoids into a product, each derived directly from the addition formulas through the single substitution x = (x+y)/2 + (x−y)/2, y = (x+y)/2 − (x−y)/2 — the in-phase mean and the envelope half-difference. They are the exact converse of the Werner product-to-sum family of triangle-angle-sum-oq-04/oq-05 (there a product becomes a sum; here a sum becomes a product) and coincide with Mathlib's Real.cos_add_cos / cos_sub_cos / sin_add_sin / sin_sub_sin, anchored here because the gallery had no sum-to-product identity. (2) The original content beyond Mathlib: the two triangle half-angle product identities, proved in a general a+b+c=π/2 form and specialised to A+B+C=π. (3) An equilateral worked instance. The name prosthaphaeresis (Greek prósthesis 'addition' + aphaíresis 'subtraction') was the pre-logarithm algorithm for multiplying via trig tables.",
+    "mathContext": "$x = \\tfrac{x+y}{2} + \\tfrac{x-y}{2}, \\quad y = \\tfrac{x+y}{2} - \\tfrac{x-y}{2}$",
+    "prerequisites": [
+      "The sine and cosine addition formulas",
+      "Familiarity with the product-to-sum (Werner) direction in triangle-angle-sum-oq-04/oq-05"
+    ],
+    "relatedConcepts": [
+      "prosthaphaeresis",
+      "history of logarithms",
+      "wave superposition",
+      "converse identities"
+    ],
+    "significance": "supporting"
+  },
+  {
     "id": "ann-sum-to-product",
     "proofId": "triangle-angle-sum-oq-06",
     "range": {
@@ -19,7 +42,7 @@
       "sum-to-product formulas",
       "beat-frequency decomposition"
     ],
-    "significance": "The classical sum-to-product formulas, the converse of the Werner product-to-sum family; the factorisation through the mean (x+y)/2 and half-difference (x−y)/2 is the beat-frequency / envelope decomposition of a superposition of two tones, and the building block for the triangle half-angle products."
+    "significance": "key"
   },
   {
     "id": "ann-half-angle-products",
@@ -41,7 +64,30 @@
       "half-angle complementarity",
       "Pythagorean reduction"
     ],
-    "significance": "The original content beyond Mathlib: classical triangle identities that hold precisely because A + B + C = π forces (A+B)/2 = π/2 − C/2, turning three independent sinusoids into a single product of three half-angle factors."
+    "significance": "key"
+  },
+  {
+    "id": "ann-linear-combination-technique",
+    "proofId": "triangle-angle-sum-oq-06",
+    "range": {
+      "startLine": 119,
+      "endLine": 139
+    },
+    "type": "tactic",
+    "title": "The Closing Move: linear_combination against the Pythagorean Identity",
+    "content": "Both triangle identities bottom out in the same Lean tactic. After the π-reflections eliminate the constrained variable c and simp expands the double- and sum-angle formulas, the goal is a bare polynomial identity in sin a, cos a, sin b, cos b that holds only modulo sin² + cos² = 1. linear_combination proves it by a certificate: the user supplies an explicit linear combination of hypotheses whose difference from the goal ring-normalises to zero. In half_angle_sin_sum the certificate is (−2·sin a·cos a)·(sin²b + cos²b = 1) + (−2·sin b·cos b)·(sin²a + cos²a = 1); in half_angle_cos_sum it is (2 − 2·cos²b)·(sin²a + cos²a = 1) + (2·sin²a)·(sin²b + cos²b = 1). The coefficients are exactly the multiples of Real.sin_sq_add_cos_sq needed to cancel the non-Pythagorean residue, so no nonlinear search or decision procedure is invoked — the proof is a hand-written algebraic certificate, which is why the whole file stays axiom-free (no native_decide / Lean.ofReduceBool).",
+    "mathContext": "$\\text{goal} - \\sum_i c_i\\,(\\sin^2 + \\cos^2 - 1) \\;\\equiv\\; 0 \\pmod{\\text{ring}}$",
+    "prerequisites": [
+      "The Pythagorean identity Real.sin_sq_add_cos_sq",
+      "How the linear_combination tactic certifies an equality modulo given hypotheses"
+    ],
+    "relatedConcepts": [
+      "linear_combination tactic",
+      "proof certificates",
+      "Pythagorean reduction",
+      "ring normalisation"
+    ],
+    "significance": "key"
   },
   {
     "id": "ann-worked-instance",
@@ -50,7 +96,7 @@
       "startLine": 163,
       "endLine": 173
     },
-    "type": "example",
+    "type": "concept",
     "title": "Worked Instance: the Equilateral Triangle",
     "content": "The equilateral triangle A = B = C = π/3 instance of triangle_sin_sum: applying it at π/3, π/3, π/3 (with π/3 + π/3 + π/3 = π closed by ring) and rewriting (π/3)/2 = π/6 gives sin(π/3) + sin(π/3) + sin(π/3) = 4·cos(π/6)·cos(π/6)·cos(π/6), i.e. 3·sin(π/3) = 4·cos³(π/6). The instance is obtained purely from the theorem, with no evaluation of the surd values sin(π/3) = cos(π/6) = √3/2.",
     "mathContext": "$3\\sin\\tfrac{\\pi}{3} = 4\\cos^3\\tfrac{\\pi}{6}$.",
@@ -62,6 +108,6 @@
       "equilateral triangle",
       "specialization of a general identity"
     ],
-    "significance": "Exhibits the triangle sine identity concretely on the most symmetric triangle, confirming the formula without needing the explicit surd values of the trigonometric functions."
+    "significance": "supporting"
   }
 ]
