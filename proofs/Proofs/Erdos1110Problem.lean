@@ -1014,6 +1014,48 @@ noncomputable def minSummandBound (n : ℕ) : ℝ :=
   sSup {f : ℝ | ∃ S : Finset ℕ, (∀ s ∈ S, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧
     NoOneDividesAnother S ∧ S.sum id = n}
 
+/--
+**Base value `minSummandBound 1 = 1`.**  Gives the scaffolding definition `minSummandBound`
+concrete content at `n = 1`.  The only antichain of power-forms summing to `1` is `{1}`
+itself: every power-form `3ᵏ2ˡ ≥ 1`, so a subset summing to `1` must be the singleton `{1}`.
+Hence the witness set `{f | ∃ S, … ∧ ∑S = 1}` is exactly `{f | f < 1} = Iio 1` (the strict
+bound `s > f` becomes `1 > f`), whose supremum is `1` by `csSup_Iio`.  So the largest
+summand-size threshold achievable at `n = 1` is the value of the unique summand, `1`. -/
+theorem minSummandBound_one : minSummandBound 1 = 1 := by
+  have heq : minSummandBound 1 = sSup (Set.Iio (1 : ℝ)) := by
+    unfold minSummandBound
+    congr 1
+    ext f
+    simp only [Set.mem_setOf_eq, Set.mem_Iio]
+    constructor
+    · rintro ⟨S, hpow, _, hsum⟩
+      -- the witness sums to 1, so it is nonempty and contains a power-form ≤ 1, forcing 1
+      have hne : S.Nonempty := by
+        rw [Finset.nonempty_iff_ne_empty]; rintro rfl; simp at hsum
+      obtain ⟨s, hs⟩ := hne
+      have h1le : 1 ≤ s := by
+        obtain ⟨k, l, hkl⟩ := (hpow s hs).1
+        rw [hkl]
+        have : 0 < 3 ^ k * 2 ^ l := by positivity
+        omega
+      have hle1 : s ≤ 1 := by
+        have hsingle : id s ≤ S.sum id :=
+          Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le i) hs
+        rw [hsum] at hsingle
+        simpa using hsingle
+      have hs1 : s = 1 := le_antisymm hle1 h1le
+      have hgt := (hpow s hs).2
+      rw [hs1] at hgt; simpa using hgt
+    · intro hf
+      refine ⟨{1}, ?_, ?_, ?_⟩
+      · intro s hs
+        rw [Finset.mem_singleton] at hs; subst hs
+        exact ⟨⟨0, 0, by norm_num⟩, by simpa using hf⟩
+      · intro a ha b hb hab
+        rw [Finset.mem_singleton] at ha hb; subst ha; subst hb; exact absurd rfl hab
+      · simp
+  rw [heq, csSup_Iio]
+
 /-
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
