@@ -20,21 +20,23 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-28",
-    "iteration": 6,
-    "focus": "Extracted the general power-form-is-representable lemma (was duplicated inline); the representable set contains the entire multiplicative monoid of power forms. Deep infinitude axiom (Erdos-Lewin 1996) remains the sole open content.",
+    "iteration": 7,
+    "focus": "Generalized the minSummandBound (Erdős–Lewin f(n)) scaffolding: minSummandBound_powerForm (= 3^k·2^l on the whole power-form monoid) + the two-sided bound 1 ≤ minSummandBound n ≤ n for all n≥1. All 0-axiom (propext/Classical.choice/Quot.sound only). Deep infinitude axiom (Erdos-Lewin 1996) remains the sole open content; NOT touched (confirmed not session-sized across 7 sessions).",
     "blockers": [
-      "The deep direction of Erdos-Lewin ({p,q}!={2,3} => INFINITELY many non-representable) is not in Mathlib 4.26; it stays axiomatized as erdos_lewin_infinite. The existence half (>=1 non-representable) is now proved; only the jump from existence to infinitude remains."
+      "The deep direction of Erdos-Lewin ({p,q}!={2,3} => INFINITELY many non-representable) is not in Mathlib 4.26; it stays axiomatized as erdos_lewin_infinite. The existence half (>=1 non-representable) is proved; the jump to infinitude is genuinely upward (multiplicative closure is DOWNWARD, cannot help) and not session-sized. Treat as BLOCKED per 3+-session rule; mine 0-axiom structural lemmas instead."
     ],
-    "nextAction": "Attempt to lift exists_positive_nonRepresentable_of_ne_two_three to infinitude for a concrete sub-family (e.g. q=2, p>=4: are 3, 3*p^2, ... an infinite antichain of non-representables?), which would partially discharge erdos_lewin_infinite. Or prove a HasDensity statement for a non-{2,3} pair. The minSummandBound / CoprimeNonRepresentable scaffolding remains def-only.",
+    "nextAction": "Deep axiom is BLOCKED (7 sessions). Continue mining 0-axiom structure: (a) sharp value minSummandBound n = n iff n is a power form (the converse of minSummandBound_powerForm); (b) characterize representability on the second window [2q,3q); (c) general-pair minSummandBound (current def is hard-coded to {3,2}).",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "2026-06-30 (researcher-3): gave the unused minSummandBound scaffolding concrete content — proved minSummandBound_one (minSummandBound 1 = 1, 0-axiom): the only power-form antichain summing to 1 is {1}, so the witness set is Iio 1 with supremum 1 (csSup_Iio). File 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. PROGRESS (S6): proved multiplicative closure of representability (×p, ×q, ×p^a q^b) and downward non-rep propagation, 0-axiom — structural generalization of the {2,3} doubling. Deep axiom erdos_lewin_infinite unchanged (closure is downward, cannot give infinitude).",
+    "progressSummary": "2026-06-30 (researcher-3, S7): generalized the minSummandBound (Erdős–Lewin f(n)) scaffolding from the single point n=1 to the whole power-form monoid + a global two-sided bound. minSummandBound_powerForm: minSummandBound (3^k·2^l) = 3^k·2^l (witness set = Iio N, sSup N); one_le_minSummandBound + minSummandBound_le_self: 1 ≤ minSummandBound n ≤ n for every n≥1, with upper equality exactly on power forms. All 0-axiom (propext/Classical.choice/Quot.sound only; verified via #print axioms), file 0-sorry, 1-axiom (erdos_lewin_infinite unchanged). PR pending. EARLIER S6 (researcher-3): minSummandBound_one + multiplicative closure (×p, ×q, ×p^a q^b) + downward non-rep propagation, all 0-axiom. Deep axiom erdos_lewin_infinite is BLOCKED (closure is downward, cannot give infinitude; not session-sized across 7 sessions).",
     "builtItems": [
+      "minSummandBound_powerForm (S7, researcher-3, 0-axiom): minSummandBound (3^k·2^l) = 3^k·2^l. Generalizes minSummandBound_one (k=l=0) to the entire power-form monoid. Witness set is exactly Iio N (N=3^k·2^l): singleton {N} represents N so any f<N admissible; any rep summing to N has summand s≤N so f<s≤N; sSup=N via csSup_Iio. On power forms the maximal min-summand threshold is N itself (antichain forced to trivial singleton).",
+      "one_le_minSummandBound + minSummandBound_le_self (S7, researcher-3, 0-axiom): two-sided bound 1 ≤ minSummandBound n ≤ n for every n≥1. Lower: every n≥1 is {2,3}-representable (case_2_3_all_representable), summands ≥1, so Iio 1 ⊆ witness set ⟹ sSup ≥ sSup(Iio 1)=1 (csSup_le_csSup, BddAbove by n). Upper: any rep has summand s≤n, threshold f<s≤n bounds witness set above by n (csSup_le). Equality at upper end exactly on power forms; pins minSummandBound n ∈ [1,n], giving Erdős–Lewin f(n) scaffolding general content.",
       "add_one_nonRepresentable_iff (iter 5, researcher-8, 0-axiom): sharp criterion for the canonical candidate q+1. For every p>q>=2, q+1 (always in the window [q,2q)) is non-representable EXACTLY when q+1 is not a power of p: (q+1) in NonRepresentable p q <-> not exists k, q+1 = p^k. Forced via the window characterization isRepresentable_iff_isPowerForm_window: the only power form q+1 can be is a pure power of p, since a q^l factor with l>=1 gives q | q+1 hence q | 1. For q=2 this isolates {2,3} as the unique q=2 exception (3 = 3^1 is a power form exactly when p=3).",
       "add_one_nonRepresentable_of_lt (iter 5, researcher-8, 0-axiom): if q>=2 and q+1 < p (i.e. p >= q+2) then q+1 is non-representable, because q+1 can be no power p^k (p^0=1<q+1, p^k>=p>q+1 for k>=1). Trivially-checkable explicit witness for every pair with p>=q+2; verified instance 3 in NonRepresentable 5 2.",
       "exists_positive_nonRepresentable_of_ne_two_three (iter 4, 0-axiom): for coprime p>q>=2 with {p,q}!={2,3}, EXISTS n>=1 with n in NonRepresentable p q. Case split: q=2 (then p>=4) uses witness 3; q>=3 uses witness 2. Unconditional existence half of erdos_lewin_infinite.",
@@ -105,8 +107,8 @@
     {
       "path": "Proofs/Erdos1110Problem.lean",
       "filename": "Erdos1110Problem.lean",
-      "lineCount": 1139,
-      "theoremCount": 34,
+      "lineCount": 1244,
+      "theoremCount": 37,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
