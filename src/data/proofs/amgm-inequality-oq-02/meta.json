@@ -88,23 +88,24 @@
       "maclaurinMean def: Mₖ = (eₖ/C(n,k))^(1/k) as a noncomputable real power function",
       "maclaurinMean_nonneg: Mₖ ≥ 0 for non-negative inputs via rpow_nonneg + elemSymm_nonneg",
       "amgm_from_maclaurin: AM-GM as corollary via Real.geom_mean_le_arith_mean_weighted",
-      "maclaurin_chain: Mⱼ ≥ Mₖ for 0 < j ≤ k ≤ n by induction on k-j using maclaurin_step axiom",
+      "maclaurin_step: Mₖ ≥ Mₖ₊₁ — formerly an axiom, now a THEOREM derived from newton_log_concavity alone (logarithm-free, product-free multiplicative core maclaurin_core_of_pos: p_{k+1}^k ≤ p_k^{k+1}, crossed root extraction rpow_cross, and a 'zeros form a suffix' argument elemSymm_pos_of_top_pos for the non-negative case)",
+      "maclaurin_chain: Mⱼ ≥ Mₖ for 0 < j ≤ k ≤ n by induction on k-j using the maclaurin_step theorem",
       "maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) as corollary of maclaurin_chain",
       "Aristotle companion AmgmInequalityOQ02Aristotle.lean: proof targets for elemSymm infrastructure"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Elementary symmetric polynomials and their basic properties",
       "Cauchy-Schwarz inequality and sum-of-squares methods",
       "Real analysis (rpow, sqrt, mean inequalities)",
       "Finset combinatorics (powersetCard, sum, prod)"
     ],
-    "lineCount": 543,
-    "assumptions": "2 axioms: (1) newton_log_concavity — for non-negative inputs, the normalized elementary symmetric sequence is log-concave: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). Classical result proved by polarization + induction (Hardy-Littlewood-Pólya §2.22), not yet in Mathlib. (2) maclaurin_step — Mₖ ≥ Mₖ₊₁ where Mₖ = (eₖ/C(n,k))^(1/k). Follows from newton_log_concavity + monotonicity of t^(1/k). Note: the k=1 case of Newton's inequality (newton_k1) is proved without axioms. 0 sorries remain.(s) remain.",
+    "lineCount": 701,
+    "assumptions": "1 axiom: newton_log_concavity — for non-negative inputs, the normalized elementary symmetric sequence is log-concave: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). Classical result needing the real-rootedness / Rolle machinery (Hardy-Littlewood-Pólya §2.22), not yet in Mathlib. The previously-assumed maclaurin_step (Mₖ ≥ Mₖ₊₁) is NO LONGER an axiom: it is now derived from newton_log_concavity alone via the logarithm-free, product-free multiplicative core (maclaurin_core_of_pos: p_{k+1}^k ≤ p_k^{k+1}, induction on k), a crossed root extraction (rpow_cross), and a 'zeros form a suffix' positivity argument (elemSymm_pos_of_top_pos) covering all non-negative inputs. The k=1 case of Newton's inequality (newton_k1) is also proved without axioms. 0 sorries remain.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26,
-    "definitionCount": 3
+    "theoremCount": 34,
+    "definitionCount": 4
   },
   "crossReferences": [
     {
@@ -177,7 +178,7 @@
     "historicalContext": "In 1729, Colin Maclaurin discovered a remarkable chain of inequalities that strictly refines the AM-GM inequality. Writing the $k$-th elementary symmetric polynomial as $e_k(x_1,\\ldots,x_n) = \\sum_{|S|=k} \\prod_{i\\in S} x_i$ and defining the **Maclaurin mean** $M_k = (e_k/\\binom{n}{k})^{1/k}$, Maclaurin proved:\n\n$$M_1 \\geq M_2 \\geq \\cdots \\geq M_n \\geq 0$$\n\nfor non-negative reals $x_1, \\ldots, x_n$. The endpoints give $M_1 = \\text{AM}$ and $M_n = \\text{GM}$, recovering AM-GM as the coarsest inequality in the chain.\n\nThe key engine behind Maclaurin's inequalities is **Newton's inequalities**, first appearing in Newton's *Arithmetica Universalis* (published 1707, based on lectures from c. 1683–1684): the normalized elementary symmetric sequence $e_k/\\binom{n}{k}$ is log-concave. Newton stated these inequalities without proof in the context of bounding polynomial roots; the first complete proof is attributed to Maclaurin himself. The standard modern proof via polarization and induction on $n$ was systematized by Hardy, Littlewood, and Pólya in their landmark *Inequalities* (1934, §2.22), which became the canonical reference for the entire theory.\n\nMaclaurin's inequalities are fundamental in symmetric function theory and appear throughout analytic number theory, combinatorics, and mathematical programming. In the 21st century, log-concavity of symmetric-polynomial-like sequences has undergone a dramatic renaissance: June Huh's Fields Medal work (2022) proved the log-concavity of characteristic polynomials of matroids using Hodge theory on algebraic varieties, confirming the Heron-Rota-Welsh conjecture. Brändén and Huh's theory of **Lorentzian polynomials** (2020) provides a unified framework encompassing Newton's inequalities, Mason's conjecture, and ultra-log-concavity — showing that Maclaurin's 1729 observation sits at the origin of a vast modern research program.",
     "problemStatement": "**Open Question (amgm-inequality-oq-02)**: Fully formalize Maclaurin's chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ in Lean 4, removing all axioms.\n\n**Definitions**:\n- $e_k(x) = \\sum_{|S|=k} \\prod_{i\\in S} x_i$ (k-th elementary symmetric polynomial)\n- $M_k = (e_k/\\binom{n}{k})^{1/k}$ (normalized Maclaurin mean)\n\n**Currently proved** (axiom-free): Elementary symmetric polynomial infrastructure, $M_1^2 \\geq M_2$ for $n = 2, 3, 4$, the general case $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ via Cauchy-Schwarz with the binomial identity $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ fully proved by induction, and Newton's inequality at $k=1$.\n\n**Main gaps**: Newton's log-concavity for $k \\geq 2$ and the Maclaurin step $M_k \\geq M_{k+1}$ are axiomatized pending a polarization-based formalization.",
     "text": "A 543-line formalization of Maclaurin's inequality chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ via elementary symmetric polynomials defined over `Finset.powersetCard`. Proves `elemSymm` infrastructure ($e_0 = 1$, $e_1 = \\sum x_i$, `elemSymm_nonneg`), small-case AM-GM for $n=2,3,4$ via sum-of-squares with `nlinarith`, a general `cauchy_schwarz_sum` ($n \\cdot \\sum x_i^2 \\geq (\\sum x_i)^2$) via double-sum expansion, and AM-GM from Mathlib's `geom_mean_le_arith_mean_weighted`. Two axioms encode Newton's log-concavity and the Maclaurin step $M_k \\geq M_{k+1}$, enabling the full chain theorem `maclaurin_chain` by induction on $k-j$. The `maclaurinMean` definition uses `Real.rpow` for fractional exponents.",
-    "proofStrategy": "**Proven Components:**\n\n**1. Cauchy-Schwarz approach for $M_1^2 \\geq M_2$** (axiom-free, works for all reals):\n- Define $S_1 = \\sum x_i$, $S_2 = \\sum x_i^2$, $e_2 = \\text{elemSymm}\\ 2\\ x$\n- **Cauchy-Schwarz** (`cauchy_schwarz_sum`): $n \\cdot S_2 \\geq S_1^2$ via double-sum identity $\\sum_i\\sum_j (x_i-x_j)^2 = 2(nS_2 - S_1^2) \\geq 0$\n- **Binomial identity** (`sq_sum_eq_sum_sq_add_two_elemSymm`): $S_1^2 = S_2 + 2e_2$, proved by induction using the recurrence $e_2(x_1,\\ldots,x_{n+1}) = e_2(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_1(x_1,\\ldots,x_n)$\n- **Pascal identity**: $2\\binom{n}{2} = n(n-1)$, proved by induction via `Nat.choose_succ_succ`\n- **Combine** (`maclaurin_sq_m1_ge_m2_general`): $2(\\binom{n}{2} S_1^2 - n^2 e_2) = n(nS_2 - S_1^2) \\geq 0$ by Cauchy-Schwarz, closed by `nlinarith`\n\n**2. Newton log-concavity** (axiomatized as `newton_log_concavity`):\n- $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1}) \\cdot (e_{k+1}/\\binom{n}{k+1})$ for $x_i \\geq 0$\n- Classical proof: polarization + induction on $n$ (Hardy-Littlewood-Pólya §2.22)\n- **Special case $k=1$** (`newton_k1`): proved axiom-free from `maclaurin_sq_m1_ge_m2_general`\n\n**3. Maclaurin step $M_k \\geq M_{k+1}$** (axiomatized as `maclaurin_step`):\n- Follows from Newton log-concavity + monotonicity of $t \\mapsto t^{1/k}$ for $t \\geq 0$\n- Chain (`maclaurin_chain`): $M_j \\geq M_k$ for $j \\leq k$ by induction on gap $d = k - j$",
+    "proofStrategy": "**Proven Components:**\n\n**1. Cauchy-Schwarz approach for $M_1^2 \\geq M_2$** (axiom-free, works for all reals):\n- Define $S_1 = \\sum x_i$, $S_2 = \\sum x_i^2$, $e_2 = \\text{elemSymm}\\ 2\\ x$\n- **Cauchy-Schwarz** (`cauchy_schwarz_sum`): $n \\cdot S_2 \\geq S_1^2$ via double-sum identity $\\sum_i\\sum_j (x_i-x_j)^2 = 2(nS_2 - S_1^2) \\geq 0$\n- **Binomial identity** (`sq_sum_eq_sum_sq_add_two_elemSymm`): $S_1^2 = S_2 + 2e_2$, proved by induction using the recurrence $e_2(x_1,\\ldots,x_{n+1}) = e_2(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_1(x_1,\\ldots,x_n)$\n- **Pascal identity**: $2\\binom{n}{2} = n(n-1)$, proved by induction via `Nat.choose_succ_succ`\n- **Combine** (`maclaurin_sq_m1_ge_m2_general`): $2(\\binom{n}{2} S_1^2 - n^2 e_2) = n(nS_2 - S_1^2) \\geq 0$ by Cauchy-Schwarz, closed by `nlinarith`\n\n**2. Newton log-concavity** (axiomatized as `newton_log_concavity`):\n- $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1}) \\cdot (e_{k+1}/\\binom{n}{k+1})$ for $x_i \\geq 0$\n- Classical proof: polarization + induction on $n$ (Hardy-Littlewood-Pólya §2.22)\n- **Special case $k=1$** (`newton_k1`): proved axiom-free from `maclaurin_sq_m1_ge_m2_general`\n\n**3. Maclaurin step $M_k \\geq M_{k+1}$** (now a THEOREM `maclaurin_step`, derived from `newton_log_concavity` alone — formerly an axiom):\n- Logarithm-free, product-free multiplicative core (`maclaurin_core_of_pos`): $p_{k+1}^k \\leq p_k^{k+1}$ by induction on $k$, where $p_k = e_k/\\binom{n}{k}$\n- Crossed root extraction (`rpow_cross`): $b^s \\leq a^t \\Rightarrow b^{1/t} \\leq a^{1/s}$, giving $M_{k+1} \\leq M_k$\n- Non-negative case via 'zeros form a suffix' ($e_{k+1} > 0 \\Rightarrow e_j > 0$ for $j \\leq k+1$, `elemSymm_pos_of_top_pos`); the $e_{k+1}=0$ case gives $M_{k+1}=0 \\leq M_k$\n- Chain (`maclaurin_chain`): $M_j \\geq M_k$ for $j \\leq k$ by induction on gap $d = k - j$",
     "keyInsights": [
       "The binomial identity (∑ xᵢ)² = ∑ xᵢ² + 2·e₂ requires a bijection between off-diagonal ordered pairs in Fin n × Fin n and 2 copies of powersetCard 2. The cleanest proof is by induction on n using the elemSymm recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ·∑ᵢxᵢ.",
       "The Cauchy-Schwarz sum n·∑xᵢ² ≥ (∑xᵢ)² is proved via the double-sum identity ∑ᵢ∑ⱼ(xᵢ-xⱼ)² = 2(n·∑xᵢ² - (∑xᵢ)²) ≥ 0, expanding the double sum into three Finset sums.",
@@ -240,7 +241,7 @@
       "title": "Part III: Newton Log-Concavity and Maclaurin Means",
       "startLine": 273,
       "endLine": 310,
-      "summary": "newton_log_concavity (axiom): normalized eₖ sequence is log-concave. maclaurinMean definition: Mₖ = (eₖ/C(n,k))^(1/k). maclaurin_step (axiom): Mₖ ≥ Mₖ₊₁. maclaurinMean_nonneg: proved via rpow_nonneg.",
+      "summary": "newton_log_concavity (axiom): normalized eₖ sequence is log-concave. maclaurinMean definition: Mₖ = (eₖ/C(n,k))^(1/k). maclaurin_step (THEOREM, derived from newton_log_concavity via maclaurin_core_of_pos + rpow_cross + elemSymm_pos_of_top_pos): Mₖ ≥ Mₖ₊₁. maclaurinMean_nonneg: proved via rpow_nonneg.",
       "mathContext": "Newton: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Maclaurin mean: $M_k = (e_k/\\binom{n}{k})^{1/k}$. Step: $M_k \\geq M_{k+1}$ follows from Newton + monotonicity of $t^{1/k}$."
     },
     {
@@ -281,7 +282,7 @@
       "startLine": 513,
       "endLine": 543,
       "summary": "Comprehensive listing of all 17 proved theorems and 2 axioms. The file proves elementary symmetric polynomial infrastructure, M₁²≥M₂ for small and general n, the full Maclaurin chain (via axioms), and AM-GM from Mathlib.",
-      "mathContext": "17 proved results + 2 axioms. Key results: $e_k$ definition and properties, $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ (inductive), $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ (Cauchy-Schwarz), $M_j \\geq M_k$ for $j \\leq k$ (chain). Axioms: Newton log-concavity, Maclaurin step."
+      "mathContext": "25 proved results + 1 axiom. Key results: $e_k$ definition and properties, $(\\sum x_i)^2 = \\sum x_i^2 + 2e_2$ (inductive), $\\binom{n}{2}(\\sum x_i)^2 \\geq n^2 e_2$ (Cauchy-Schwarz), the Maclaurin step $M_k \\geq M_{k+1}$ (now derived from Newton log-concavity, not assumed), $M_j \\geq M_k$ for $j \\leq k$ (chain). Sole axiom: Newton log-concavity."
     }
   ],
   "conclusion": {
@@ -304,17 +305,17 @@
       "Real"
     ],
     "namespace": null,
-    "lineCount": 543,
+    "lineCount": 701,
     "structureCount": 0,
-    "axiomCount": 2,
-    "theoremCount": 26,
-    "substantiveTheoremCount": 17,
+    "axiomCount": 1,
+    "theoremCount": 34,
+    "substantiveTheoremCount": 25,
     "privateHelperCount": 6,
-    "axiomDeclCount": 2,
+    "axiomDeclCount": 1,
     "lemmaCount": 0,
     "path": "Proofs/AmgmInequalityOQ02.lean",
     "sorries": 0,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "additionalFiles": [
       "Proofs/AmgmInequalityOQ02Aristotle.lean",
       "Proofs/AmgmInequalityOQ02Defs.lean"
