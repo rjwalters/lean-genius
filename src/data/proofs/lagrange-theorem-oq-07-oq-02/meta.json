@@ -188,7 +188,8 @@
     "summary": "The additive annihilation identity n · x = 0 in a finite group of order n is machine-checked, derived from additive Lagrange, sharpened on ZMod n where the additive exponent equals n, and shown to be the parent's multiplicative theorem transported through Multiplicative.",
     "implications": "Confirms that the finite-group exponent identity and its additive image are a single fact under to_additive, and recovers the elementary char-n statement n · x = 0 in ℤ/nℤ as a special case.",
     "openQuestions": [
-      "Can the structure theorem for finite abelian groups be used to compute the additive exponent of an arbitrary finite abelian group as the lcm of the orders of its cyclic factors, sharpening exponent ∣ card to an exact value?"
+      "Can the structure theorem for finite abelian groups be used to compute the additive exponent of an arbitrary finite abelian group as the lcm of the orders of its cyclic factors, sharpening exponent ∣ card to an exact value?",
+      "Characterize exactly when the additive exponent equals the order (exponent G = |G|): for finite abelian groups this is precisely cyclicity, so a formalized 'exponent = card ↔ IsAddCyclic' would turn the ZMod n sharpness shown here into a complete criterion."
     ]
   },
   "leanFile": {

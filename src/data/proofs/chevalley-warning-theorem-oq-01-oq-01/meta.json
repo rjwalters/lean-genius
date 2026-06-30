@@ -142,12 +142,14 @@
   ],
   "crossReferences": [
     {
-      "id": "chevalley-warning-theorem-oq-01",
-      "reason": "Direct parent: proves the divisibility forms and the origin-based nontrivial-solution corollary that this entry generalizes (nontrivial_of_origin = exists_second_common_zero at x₀ = 0)"
+      "targetId": "chevalley-warning-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves the divisibility forms and the origin-based nontrivial-solution corollary that this entry generalizes (nontrivial_of_origin = exists_second_common_zero at x₀ = 0)"
     },
     {
-      "id": "erdos-ginzburg-ziv-oq-01",
-      "reason": "The 0-or-≥-p dichotomy is the form of Chevalley–Warning invoked in the EGZ argument, where a solution is exhibited and a second one extracted"
+      "targetId": "erdos-ginzburg-ziv-oq-01",
+      "relationship": "related",
+      "description": "The 0-or-≥-p dichotomy is the form of Chevalley–Warning invoked in the EGZ argument, where a solution is exhibited and a second one extracted"
     }
   ],
   "conclusion": {

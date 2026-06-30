@@ -1,0 +1,95 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+  "title": "Irreducibles of ℤ[√d] Have Prime or Prime-Squared Norm (−2 ≤ d < 0)",
+  "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+  "description": "Answers the first open question of the parent PID/UFD entry: the necessary direction of the norm criterion for irreducibility. Where the parent proved that prime-norm elements are irreducible (sufficiency), this entry proves the converse-flavored constraint — every irreducible element of ℤ[√d] (for −2 ≤ d < 0) has |N(z)| equal to a rational prime p or to p². Together the two pin the norm of any irreducible to exactly two possibilities: the split/ramified case (norm p) and the inert rational-prime case (norm p²). The engine is that, in the UFD, z is prime and divides N(z) = z·z̄, hence divides the image of some rational prime ↑p; comparing norms of ↑p = z·w gives p² = |N(z)|·|N(w)|, so |N(z)| ∣ p², and being ≠ 1 it equals p or p².",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-integers",
+      "Euclidean-domain",
+      "UFD",
+      "irreducible",
+      "norm",
+      "Zsqrtd"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Built on the parent's prime-norm entry (and its EuclideanDomain (ℤ√d) value for −2 ≤ d < 0) plus Mathlib's UniqueFactorizationMonoid.irreducible_iff_prime, Zsqrtd.norm_eq_mul_conj / norm_intCast / norm_mul / norm_nonneg / norm_eq_zero_iff / norm_eq_one_iff, Nat.exists_prime_and_dvd, and Nat.dvd_prime_pow. Depends only on the standard foundational axioms (propext, Classical.choice, Quot.sound); no sorry, no native_decide.",
+    "lineCount": 130,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "originalContributions": [
+      "irreducible_norm_eq_prime_or_sq: the necessary direction of the norm criterion — for −2 ≤ d < 0, every irreducible element of ℤ[√d] has |N(z)| = p or p² for a rational prime p; combined with the parent's irreducible_of_prime_norm this brackets the norm of an irreducible to exactly two possibilities (split/ramified vs inert)",
+      "exists_prime_dvd_natCast: a supporting lemma proved by strong induction — a prime element of ℤ[√d] dividing the image of a nonzero natural number divides the image of some rational prime, the key step turning 'z divides N(z)' into 'z divides a rational prime'"
+    ]
+  },
+  "overview": {
+    "historicalContext": "In a ring of quadratic integers the norm is the principal tool for locating and classifying irreducible elements. The classical dichotomy states that an irreducible π is, up to associates, either a divisor of a split or ramified rational prime — in which case N(π) = p — or an inert rational prime itself, in which case N(π) = p². For the Gaussian integers ℤ[i] this is the arithmetic behind the sum-of-two-squares theorem (split primes p ≡ 1 mod 4 factor as π·π̄ with N(π) = p, while inert primes p ≡ 3 mod 4 stay irreducible with norm p²). This entry formalizes the norm-side dichotomy uniformly across the norm-Euclidean family −2 ≤ d < 0.",
+    "problemStatement": "The parent entry proved sufficiency: |N(z)| prime ⟹ z irreducible. What is the necessary constraint — given that z is irreducible, what can |N(z)| be?",
+    "text": "**The dichotomy.** Fix −2 ≤ d < 0, so ℤ[√d] is a UFD. Let z be irreducible, hence prime. Then |N(z)| is either a rational prime p or its square p².\n\n**Why.** Since (N(z) : ℤ√d) = z · z̄ (Zsqrtd.norm_eq_mul_conj), the prime z divides ↑N(z), and as the norm is nonnegative (d < 0) it divides ↑|N(z)|. A prime element dividing the image of a natural number divides the image of one of its prime factors (exists_prime_dvd_natCast, by strong induction peeling off prime factors and splitting z ∣ ↑p · ↑k). So z ∣ ↑p for a rational prime p; write ↑p = z · w. Taking norms with norm_intCast (N(↑p) = p²) and multiplicativity gives p² = N(z) · N(w), hence |N(z)| · |N(w)| = p², so |N(z)| ∣ p². Since z is not a unit, |N(z)| ≠ 1 (norm_eq_one_iff), and the only divisors of p² are 1, p, p²; therefore |N(z)| = p or p².",
+    "proofStrategy": "1. exists_prime_dvd_natCast: strong induction on n. If n = 1 then z ∣ 1 makes z a unit (contradiction); otherwise take a prime factor p of n, write n = p·k, and from z ∣ ↑p·↑k split via Prime.dvd_or_dvd into z ∣ ↑p (done) or z ∣ ↑k (recurse on the smaller k). 2. irreducible_norm_eq_prime_or_sq: introduce the parent's euclideanDomain as a local instance; convert Irreducible to Prime via irreducible_iff_prime; derive z ∣ ↑|N(z)| from norm_eq_mul_conj and norm_nonneg; obtain a rational prime p with z ∣ ↑p; compare norms of ↑p = z·w using norm_intCast and norm_mul to get |N(z)| ∣ p²; finish with norm_eq_one_iff (|N(z)| ≠ 1) and Nat.dvd_prime_pow (divisors of p² are p^0, p^1, p^2).",
+    "keyInsights": [
+      "The norm turns a structural question about irreducibles into an elementary divisibility statement about integers: z prime divides N(z) = z·z̄, so it must divide a rational prime factor of |N(z)|.",
+      "exists_prime_dvd_natCast is the crux — moving from 'z divides the image of a composite integer' to 'z divides the image of a rational prime' — and it is a clean strong induction that peels prime factors and uses Prime.dvd_or_dvd at each step.",
+      "Once z ∣ ↑p is known, norm_intCast (N(↑p) = p²) forces |N(z)| ∣ p², and the only non-unit divisors of p² are p and p²; this is exactly the split/ramified (norm p) vs inert (norm p²) dichotomy.",
+      "This is the necessary direction complementing the parent's sufficient irreducible_of_prime_norm: prime norm ⟹ irreducible, and irreducible ⟹ norm p or p²."
+    ],
+    "prerequisites": [
+      "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02: the parent PID/UFD entry with irreducible_of_prime_norm and the EuclideanDomain (ℤ√d) value for −2 ≤ d < 0",
+      "Mathlib: UniqueFactorizationMonoid.irreducible_iff_prime, Zsqrtd.norm_eq_mul_conj, Zsqrtd.norm_intCast, Zsqrtd.norm_mul, Zsqrtd.norm_nonneg, Zsqrtd.norm_eq_zero_iff, Zsqrtd.norm_eq_one_iff, Nat.exists_prime_and_dvd, Prime.dvd_or_dvd, Nat.dvd_prime_pow"
+    ]
+  },
+  "conclusion": {
+    "summary": "For −2 ≤ d < 0, every irreducible element of ℤ[√d] has |N(z)| equal to a rational prime p or to p². Combined with the parent's sufficiency (prime norm ⟹ irreducible), the norm of an irreducible is pinned to exactly these two possibilities — the split/ramified case (norm p) and the inert rational-prime case (norm p²).",
+    "implications": "The two directions together give a near-complete norm classification of irreducibles in the norm-Euclidean family, and isolate the remaining content (which rational primes are inert vs split) as a congruence/Legendre-symbol question handled per-d in the classical sum-of-two-squares and x²+2y² entries.",
+    "openQuestions": [
+      "Determine, for each d ∈ {−1,−2}, exactly which rational primes are inert (norm p², irreducible) versus split (norm p), recovering p ≡ 3 mod 4 (resp. the x²+2y² congruence) as the inert criterion — i.e. attach the Legendre-symbol condition to the norm dichotomy proved here.",
+      "Prove the associate-uniqueness refinement: a norm-p irreducible and its conjugate exhaust the irreducible factors of ↑p up to units, making the factorization ↑p = z·z̄ essentially unique."
+    ]
+  },
+  "leanFile": {
+    "namespace": "NormEuclideanZsqrtdFamilyIrredNorm",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/NormEuclideanZsqrtdFamilyOQ03OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent proof: PID/UFD for −2 ≤ d < 0 and the sufficient prime-norm criterion (irreducible_of_prime_norm). This entry answers its first open question with the necessary direction — irreducible ⟹ norm p or p²."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "thematic",
+      "description": "Grandparent: Gaussian integers ℤ[i] = ℤ[√-1] as a Euclidean domain; the norm dichotomy here is the d = −1 arithmetic behind the sum-of-two-squares factorization of rational primes."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-exists-prime-dvd",
+      "title": "A prime element divides the image of a rational prime",
+      "startLine": 46,
+      "endLine": 81,
+      "summary": "exists_prime_dvd_natCast: by strong induction on n, a prime element of ℤ[√d] dividing ↑n (n ≠ 0) divides ↑p for some rational prime p. Each step factors off a prime p ∣ n, writes n = p·k, and splits z ∣ ↑p·↑k via Prime.dvd_or_dvd — either z ∣ ↑p (done) or z ∣ ↑k and recurse; n = 1 is impossible since z ∣ 1 would make z a unit."
+    },
+    {
+      "id": "sec-norm-dichotomy",
+      "title": "The norm of an irreducible is a prime or a prime square",
+      "startLine": 82,
+      "endLine": 130,
+      "summary": "irreducible_norm_eq_prime_or_sq: for −2 ≤ d < 0, an irreducible z is prime and divides ↑|N(z)| = z·z̄; via exists_prime_dvd_natCast it divides some ↑p, and comparing norms of ↑p = z·w (norm_intCast, norm_mul) gives |N(z)| ∣ p². Since |N(z)| ≠ 1 (norm_eq_one_iff), Nat.dvd_prime_pow forces |N(z)| = p or p²."
+    }
+  ],
+  "sorries": 0
+}

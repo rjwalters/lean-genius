@@ -66,6 +66,50 @@
       "Symmetry / predecessor: prove the dual predecessor formula and the reflection a/b ↔ (1−)·, exhibiting the involution that reverses the Farey sequence and shows the successor recurrence is time-reversible."
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background: the successor formula",
+      "startLine": 4,
+      "endLine": 58,
+      "summary": "Module docstring framing the file as the constructive complement to the sibling adjacency criterion: it produces the next Farey term e/f = (kc−a)/(kd−b), k = ⌊(n+b)/d⌋. Notes self-containment under Mathlib v4.26.0 and previews the certificates and the run-generating recurrence."
+    },
+    {
+      "id": "scaffold",
+      "title": "§1 Farey fractions",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "The FareyFraction n structure, its rational value toRat, and the unimodular predicate IsConsecutiveFarey — mirrored from the sibling so the file stands alone."
+    },
+    {
+      "id": "denomsum",
+      "title": "§2 Order and the denominator-sum lemma",
+      "startLine": 84,
+      "endLine": 129,
+      "summary": "Reused machinery: toRat_lt_iff (order as cross-multiplication), intermediate_denom_ge (q ≥ b + d for any in-between fraction), and farey_adjacent_of_denom_sum_gt (b + d > n ⟹ adjacent) — fed back through in the headline proof."
+    },
+    {
+      "id": "defs",
+      "title": "§3 The successor and floor bracket",
+      "startLine": 131,
+      "endLine": 198,
+      "summary": "Definitions succK = ⌊(n+b)/d⌋, succNum e = kc−a, succDen f = kd−b. The bracket kd ≤ n+b < (k+1)d (succK_mul_le, lt_succK_succ_mul) gives f ≤ n and d+f > n; den_lt_succK_mul and num_lt_succK_mul certify the ℕ subtractions e, f are genuine (kd > b, kc > a)."
+    },
+    {
+      "id": "relations",
+      "title": "§4 Successor relations and certificates",
+      "startLine": 200,
+      "endLine": 306,
+      "summary": "succ_unimodular (e·d − c·f = 1, preserved for free), plus the membership/position certificates: f ≤ n, f ≥ 1, n < d+f, e ≥ 1, gcd(e,f)=1, and e ≤ f when c/d < 1 — all from the floor bracket and the clean relation e·d = c·f + 1."
+    },
+    {
+      "id": "packaging",
+      "title": "§5 Packaging and the headline",
+      "startLine": 308,
+      "endLine": 368,
+      "summary": "succFarey bundles the certificates into a FareyFraction n; cur_lt_succ (c/d < e/f) and isConsecutive_cur_succ set up iteration. is_successor proves no order-n fraction lies strictly between c/d and e/f (via the denominator-sum criterion). den_recurrence / num_recurrence give the closed-form, iterable recurrence."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1005-oq-03",

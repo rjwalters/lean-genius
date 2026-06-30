@@ -77,17 +77,27 @@
     "definitionCount": 0
   },
   "sorries": 0,
-  "overview": [
-    "The parent entry, *Combinatorial Moments of the Binomial Coefficients*, computes the unsigned sums Σ k·C(n,k), Σ k(k-1)·C(n,k), … — the values of the derivatives of the generating function (1+x)ⁿ = Σ C(n,k)xᵏ evaluated at x = +1. This follow-up evaluates the same derivatives at the other natural point, x = -1, by inserting the alternating sign (-1)ᵏ. The question becomes: what are the signed moments Σ_{k=0}^{n} (-1)ᵏ·k^(r)·C(n,k)?",
-    "Where the unsigned case keeps the large factor (1+x)ⁿ⁻ʳ = 2ⁿ⁻ʳ at x = 1, the signed case kills it: (1+x)ⁿ⁻ʳ = 0 at x = -1 for every r < n. This is the generating-function form of the classical finite-difference fact that the n-th forward difference annihilates every polynomial of degree < n. The result is a single Iverson-bracket closed form Σ (-1)ᵏ·k^(r)·C(n,k) = (-1)ʳ·n^(r)·[n = r], vanishing off the diagonal and peaking at (-1)ⁿ·n! when r = n.",
-    "None of these signed moments is in Mathlib, which supplies only the zeroth one, Int.alternating_sum_range_choose : Σ (-1)ᵏ·C(n,k) = [n = 0]. That lemma is exactly the base case of the induction here.",
-    "The proof reuses the grandparent's single absorption identity (k+1)·C(m+1,k+1) = (m+1)·C(m,k). Cast to ℤ and combined with the reindex k ↦ k+1 — which turns (-1)ᵏ⁺¹ into -(-1)ᵏ — it lifts the signed sum to the recurrence T(m+1, r+1) = -(m+1)·T(m, r), the parent's positive recurrence with one extra minus sign. A single induction on r unfolds n^(r) through descFactorial and lands the base case; everything stays exact over ℤ."
-  ],
-  "conclusion": [
-    "The signed falling-factorial moments collapse to one formula, Σ_{k=0}^{n} (-1)ᵏ·k^(r)·C(n,k) = (-1)ʳ·n^(r)·[n = r]. Off the diagonal the sum is identically zero — the finite-difference annihilation of low-degree polynomials — and on the diagonal it attains the sharp value (-1)ⁿ·n!, the discrete shadow of dⁿ/dxⁿ xⁿ = n!.",
-    "Together with the parent's unsigned moments, this entry pins down both natural evaluation points of the binomial generating function's derivatives: x = +1 gives the 2ⁿ⁻ʳ-scaled moments, x = -1 gives the finite differences. A single absorption identity, with or without the alternating sign, produces the whole pair.",
-    "Because these closed forms extend Mathlib's `Nat.Choose.Sum` — which stops at the zeroth signed moment Int.alternating_sum_range_choose — they are natural upstream contributions sitting one induction away from material Mathlib already has."
-  ],
+  "overview": {
+    "historicalContext": "The parent entry, *Combinatorial Moments of the Binomial Coefficients*, computes the unsigned sums Σ k·C(n,k), Σ k(k-1)·C(n,k), … — the values of the derivatives of the generating function (1+x)ⁿ = Σ C(n,k)xᵏ evaluated at x = +1. This follow-up evaluates the same derivatives at the other natural point, x = -1, by inserting the alternating sign (-1)ᵏ. Where the unsigned case keeps the large factor (1+x)ⁿ⁻ʳ = 2ⁿ⁻ʳ at x = 1, the signed case kills it: (1+x)ⁿ⁻ʳ = 0 at x = -1 for every r < n. This is the generating-function form of the classical finite-difference fact — going back to Newton's forward-difference calculus — that the n-th forward difference annihilates every polynomial of degree < n. Mathlib supplies only the zeroth signed moment, Int.alternating_sum_range_choose : Σ (-1)ᵏ·C(n,k) = [n = 0], which is exactly the base case of the induction here; the higher signed moments are new.",
+    "problemStatement": "Determine the signed (alternating) falling-factorial moments Σ_{k=0}^{n} (-1)ᵏ·k^(r)·C(n,k) of the binomial coefficients, where k^(r) = Nat.descFactorial k r. Result: the single Iverson-bracket closed form (-1)ʳ·n^(r)·[n = r] — the sum vanishes whenever n ≠ r and peaks at (-1)ⁿ·n! on the diagonal r = n.",
+    "proofStrategy": "The proof reuses the grandparent's single absorption identity (k+1)·C(m+1,k+1) = (m+1)·C(m,k). Cast to ℤ and combined with the reindex k ↦ k+1 — which turns (-1)ᵏ⁺¹ into -(-1)ᵏ — it lifts the signed sum to the recurrence T(m+1, r+1) = -(m+1)·T(m, r), the parent's positive recurrence with one extra minus sign. A single induction on r unfolds n^(r) through descFactorial and lands on the base case Int.alternating_sum_range_choose; everything stays exact over ℤ. The off-diagonal vanishing and the diagonal peak (-1)ⁿ·n! both fall out of the Iverson bracket [n = r] that the recurrence produces.",
+    "keyInsights": [
+      "Inserting the alternating sign (-1)ᵏ is exactly evaluation of the generating function's derivatives at x = -1 instead of x = +1 — the two natural evaluation points of (1+x)ⁿ.",
+      "At x = -1 the factor (1+x)ⁿ⁻ʳ vanishes for r < n, which is the generating-function form of the finite-difference annihilation of polynomials of degree < n; this is why the signed moment is zero off the diagonal.",
+      "The whole family collapses to one Iverson-bracket closed form Σ (-1)ᵏ·k^(r)·C(n,k) = (-1)ʳ·n^(r)·[n = r], peaking at the sharp diagonal value (-1)ⁿ·n! — the discrete shadow of dⁿ/dxⁿ xⁿ = n!.",
+      "The same absorption identity that drives the unsigned moments drives the signed ones; the only change is a single extra minus sign from k ↦ k+1, giving the recurrence T(m+1,r+1) = -(m+1)·T(m,r).",
+      "Working over ℤ keeps everything exact (no truncated subtraction), and the base case is precisely Mathlib's Int.alternating_sum_range_choose — so the result sits one induction away from existing Mathlib material."
+    ]
+  },
+  "conclusion": {
+    "summary": "The signed falling-factorial moments collapse to one formula, Σ_{k=0}^{n} (-1)ᵏ·k^(r)·C(n,k) = (-1)ʳ·n^(r)·[n = r]. Off the diagonal the sum is identically zero — the finite-difference annihilation of low-degree polynomials — and on the diagonal it attains the sharp value (-1)ⁿ·n!, the discrete shadow of dⁿ/dxⁿ xⁿ = n!.",
+    "implications": "Together with the parent's unsigned moments, this entry pins down both natural evaluation points of the binomial generating function's derivatives: x = +1 gives the 2ⁿ⁻ʳ-scaled moments, x = -1 gives the finite differences. A single absorption identity, with or without the alternating sign, produces the whole pair. Because these closed forms extend Mathlib's `Nat.Choose.Sum` — which stops at the zeroth signed moment Int.alternating_sum_range_choose — they are natural upstream contributions sitting one induction away from material Mathlib already has.",
+    "openQuestions": [
+      "Formalize the general finite-difference operator Δⁿ and recover this signed moment as the statement Δⁿ(xʳ)|₀ = (-1)ⁿ⁻ʳ·n!·S(r,n) for the Stirling numbers, unifying the signed and unsigned ladders.",
+      "Derive the ordinary signed power moments Σ (-1)ᵏ·kʳ·C(n,k) via a Stirling-number change of basis from the falling-factorial form proved here.",
+      "Upstream the signed falling-factorial moment into Mathlib's Nat.Choose.Sum alongside Int.alternating_sum_range_choose."
+    ]
+  },
   "sections": [
     {
       "id": "header-imports",

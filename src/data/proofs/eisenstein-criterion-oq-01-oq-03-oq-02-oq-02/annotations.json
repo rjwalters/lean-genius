@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-eisenstein-oq01030202-context",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "context",
+    "title": "Why irreducibility of Φ_p is the load-bearing input",
+    "content": "Irreducibility of the cyclotomic polynomial Φ_p over ℚ is not an end in itself — its purpose is to fix the degree of the cyclotomic field. For a primitive p-th root of unity ζ, the minimal polynomial minpoly ℚ ζ is a priori only SOME monic divisor of Φ_p (every primitive root is a root of Φ_p, so its minimal polynomial divides Φ_p). Irreducibility collapses that divisor to Φ_p itself, whence minpoly ℚ ζ = Φ_p and [ℚ(ζ):ℚ] = deg Φ_p = φ(p) = p − 1. The irreducibility consumed here is the parent entry's ELEMENTARY result, re-derived from Eisenstein's criterion applied to Φ_p(X + 1), not Mathlib's general cyclotomic.irreducible_rat.",
+    "mathContext": "$\\zeta$ a primitive $p$-th root of unity $\\Rightarrow \\Phi_p(\\zeta)=0 \\Rightarrow \\operatorname{minpoly}_{\\mathbb{Q}}\\zeta \\mid \\Phi_p$; irreducibility of $\\Phi_p$ forces $\\operatorname{minpoly}_{\\mathbb{Q}}\\zeta=\\Phi_p$, so $[\\mathbb{Q}(\\zeta):\\mathbb{Q}]=\\deg\\Phi_p=\\varphi(p)=p-1$.",
+    "significance": "context",
+    "relatedConcepts": ["cyclotomic polynomial", "irreducibility", "minimal polynomial", "Eisenstein's criterion", "field extension degree"],
+    "prerequisites": ["cyclotomic polynomials", "minimal polynomials", "field extensions"]
+  },
+  {
+    "id": "ann-eisenstein-oq01030202-setup",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 31,
+      "endLine": 41
+    },
+    "type": "definition",
+    "title": "Setup: a prime p and a primitive root in a characteristic-zero field",
+    "content": "The results are stated abstractly: p is a prime (Fact p.Prime makes Mathlib's prime-dependent instances available), and ζ is a primitive p-th root of unity living in an arbitrary characteristic-zero field L. Working over a general CharZero field rather than ℂ keeps the minimal-polynomial argument purely algebraic; the concrete complex root ζ_p = exp(2πi/p) appears only in the final capstone. CharZero is exactly what supplies the NeZero ((p:ℕ):ℚ) instance needed below.",
+    "mathContext": "$p$ prime, $L$ a field with $\\operatorname{char} L = 0$, $\\zeta\\in L$ with $\\operatorname{IsPrimitiveRoot}\\,\\zeta\\,p$ (order exactly $p$ in $L^\\times$).",
+    "significance": "supporting",
+    "relatedConcepts": ["primitive root of unity", "characteristic zero", "Fact typeclass", "NeZero"],
+    "prerequisites": ["roots of unity", "field characteristic"]
+  },
+  {
+    "id": "ann-eisenstein-oq01030202-minpoly",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 52
+    },
+    "type": "insight",
+    "title": "minpoly_eq_cyclotomic: the minimal polynomial is Φ_p",
+    "content": "The first core result: minpoly ℚ ζ = cyclotomic p ℚ. The proof obtains the NeZero ((p:ℕ):ℚ) instance from p ≠ 0 in characteristic zero, then feeds the parent's elementary irreducibility cyclotomic_prime_irreducible_rat into Mathlib's IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible (which yields cyclotomic p ℚ = minpoly ℚ ζ) and symmetrizes. This is the half of the open question that identifies Φ_p as the minimal polynomial.",
+    "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}(\\zeta)=\\Phi_p$. The Mathlib lemma `IsPrimitiveRoot.minpoly_eq_cyclotomic_of_irreducible` packages 'irreducible divisor of $\\Phi_p$ that is also $\\Phi_p$' once irreducibility is provided.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "cyclotomic polynomial", "IsPrimitiveRoot", "irreducibility"],
+    "prerequisites": ["minimal polynomials", "cyclotomic polynomials"]
+  },
+  {
+    "id": "ann-eisenstein-oq01030202-degree",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "technique",
+    "title": "minpoly_natDegree: reading off degree p − 1",
+    "content": "Rewriting minpoly ℚ ζ as cyclotomic p ℚ (the previous theorem), natDegree_cyclotomic gives (cyclotomic p ℚ).natDegree = totient p, and Nat.totient_prime collapses totient p to p − 1 for prime p. This three-step rewrite is the degree computation that bridges the minimal-polynomial identity and the field-degree result.",
+    "mathContext": "$\\deg\\Phi_p=\\varphi(p)=p-1$ since $\\varphi(p)=p-1$ for prime $p$ (every residue $1,\\dots,p-1$ is coprime to $p$).",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient", "natDegree", "cyclotomic polynomial degree", "Nat.totient_prime"],
+    "prerequisites": ["Euler's totient function", "polynomial degree"]
+  },
+  {
+    "id": "ann-eisenstein-oq01030202-finrank",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 59,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "finrank_adjoin: the cyclotomic field degree [ℚ(ζ):ℚ] = p − 1",
+    "content": "The headline result. IntermediateField.adjoin.finrank states Module.finrank ℚ ℚ⟮ζ⟯ = (minpoly ℚ ζ).natDegree for ζ integral over ℚ. Integrality is supplied by IsPrimitiveRoot.isIntegral (ζ is integral over ℤ, being a root of X^p − 1) promoted to ℚ via IsIntegral.tower_top. Combined with minpoly_natDegree = p − 1, this yields [ℚ(ζ):ℚ] = p − 1 — the explicit cyclotomic field degree the open question requested.",
+    "mathContext": "$[\\mathbb{Q}(\\zeta):\\mathbb{Q}]=\\dim_{\\mathbb{Q}}\\mathbb{Q}(\\zeta)=\\deg(\\operatorname{minpoly}_{\\mathbb{Q}}\\zeta)=p-1$. Integrality over $\\mathbb{Q}$ is required for the adjoin–finrank identity to hold.",
+    "significance": "key",
+    "relatedConcepts": ["field extension degree", "IntermediateField adjoin", "integral element", "tower of integrality", "Module.finrank"],
+    "prerequisites": ["field extension degree", "integral elements", "intermediate fields"]
+  },
+  {
+    "id": "ann-eisenstein-oq01030202-capstone",
+    "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
+    "type": "concept",
+    "title": "Concrete capstone: ζ_p = exp(2πi/p) in ℂ",
+    "content": "The abstract result is grounded in ℂ at the canonical primitive root. Complex.isPrimitiveRoot_exp p (p ≠ 0) certifies that ζ_p = exp(2πi/p) is a primitive p-th root of unity, and finrank_adjoin then gives [ℚ(exp(2πi/p)):ℚ] = p − 1. This exhibits the standard cyclotomic field ℚ(ζ_p) ⊂ ℂ as a degree-(p−1) extension, the familiar concrete instance of the general theorem.",
+    "mathContext": "$\\zeta_p=e^{2\\pi i/p}$ is a primitive $p$-th root in $\\mathbb{C}$; $[\\mathbb{Q}(\\zeta_p):\\mathbb{Q}]=p-1$, e.g. $[\\mathbb{Q}(e^{2\\pi i/5}):\\mathbb{Q}]=4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex roots of unity", "cyclotomic field", "Complex.isPrimitiveRoot_exp", "exp(2πi/p)"],
+    "prerequisites": ["complex exponential", "roots of unity in ℂ"]
+  }
+]

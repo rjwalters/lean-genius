@@ -23,6 +23,10 @@ Main results (for a reduced fraction α = p/q, i.e. gcd(p,q) = 1, q ≥ 1):
         Hence for rational α the inner sum grows **exactly linearly**, with the
         per-step rate 1/(2q) governed solely by the denominator q.
 
+  * `innerSum_period_sum_general` :  S(p/q, q) = gcd(p,q)/2  (no coprimality).
+        Dropping `gcd(p,q) = 1`, a block of length q is gcd(p,q) full periods of
+        the reduced fraction, so the per-block sum reads off the gcd.
+
 The crux is an elementary fact: as m runs over a full period, the residues
 p·m mod q run over a complete residue system (multiplication by a unit permutes
 ℤ/qℤ), so Σ {pm/q} = (q−1)/2 and the deviations telescope to 1/2.
@@ -197,7 +201,42 @@ theorem innerSum_linear (p q : ℕ) (hq : q ≥ 1) (hcop : Nat.gcd p q = 1) (n :
     rw [hstep, hrec, ih, innerSum_period_sum p q hq hcop]
     push_cast; ring
 
-/-! ## Part V: Sanity-check corollaries -/
+/-! ## Part V: The gcd governs the per-period sum (coprimality dropped)
+
+`innerSum_period_sum` assumed `gcd(p,q) = 1`.  Without it the block of length `q`
+is no longer a *single* period of `p/q`: writing `p/q = p'/q'` in lowest terms,
+`q = gcd(p,q)·q'` consists of exactly `gcd(p,q)` full periods of `p'/q'`.  Hence the
+per-block sum reads off the gcd. -/
+
+/-- **General per-period sum (no coprimality hypothesis).**  For *any* naturals
+    `p, q` with `q ≥ 1`,
+        `S(p/q, q) = gcd(p,q) / 2`.
+    Reducing `p/q` to lowest terms `p'/q'` makes the block `q = gcd·q'` exactly
+    `gcd` full periods of `p'/q'`, so `innerSum_linear` gives `gcd/2`.  This
+    strengthens `innerSum_period_sum`, which is the special case `gcd(p,q) = 1`. -/
+theorem innerSum_period_sum_general (p q : ℕ) (hq : q ≥ 1) :
+    innerSum (↑p / ↑q) q = (Nat.gcd p q : ℝ) / 2 := by
+  have hgp : Nat.gcd p q ∣ p := Nat.gcd_dvd_left p q
+  have hgq : Nat.gcd p q ∣ q := Nat.gcd_dvd_right p q
+  have hgpos : 0 < Nat.gcd p q :=
+    Nat.pos_of_ne_zero (by intro h; rw [Nat.gcd_eq_zero_iff] at h; omega)
+  have hq'pos : 0 < q / Nat.gcd p q := Nat.div_pos (Nat.le_of_dvd (by omega) hgq) hgpos
+  have hcop' : Nat.gcd (p / Nat.gcd p q) (q / Nat.gcd p q) = 1 :=
+    Nat.coprime_div_gcd_div_gcd hgpos
+  have hgne : (Nat.gcd p q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hgpos.ne'
+  -- `p/q = p'/q'` since `p = gcd·p'`, `q = gcd·q'`.
+  have e1 : (↑p : ℝ) = ↑(Nat.gcd p q) * ↑(p / Nat.gcd p q) := by
+    rw [← Nat.cast_mul, Nat.mul_div_cancel' hgp]
+  have e2 : (↑q : ℝ) = ↑(Nat.gcd p q) * ↑(q / Nat.gcd p q) := by
+    rw [← Nat.cast_mul, Nat.mul_div_cancel' hgq]
+  have hfrac : (↑p / ↑q : ℝ) = ↑(p / Nat.gcd p q) / ↑(q / Nat.gcd p q) := by
+    rw [e1, e2, mul_div_mul_left _ _ hgne]
+  -- the block `q` is `gcd` periods of `p'/q'`
+  have hlin := innerSum_linear (p / Nat.gcd p q) (q / Nat.gcd p q) hq'pos hcop' (Nat.gcd p q)
+  rw [Nat.mul_div_cancel' hgq] at hlin
+  rw [hfrac]; exact hlin
+
+/-! ## Part VI: Sanity-check corollaries -/
 
 /-- The growth is genuinely unbounded: e.g. after two periods the sum is `1`. -/
 example (p q : ℕ) (hq : q ≥ 1) (hcop : Nat.gcd p q = 1) :
@@ -208,5 +247,12 @@ example (p q : ℕ) (hq : q ≥ 1) (hcop : Nat.gcd p q = 1) :
 example : innerSum (1 / 2 : ℝ) 2 = 1 / 2 := by
   have h := innerSum_period_sum 1 2 (by norm_num) (by decide)
   simpa using h
+
+/-- Non-reduced check: `α = 2/4` over a block of length `4` sums to `gcd(2,4)/2 = 1`
+    (two full periods of `1/2`), not `1/2`. -/
+example : innerSum (↑(2 : ℕ) / ↑(4 : ℕ) : ℝ) 4 = 1 := by
+  have h := innerSum_period_sum_general 2 4 (by norm_num)
+  rw [show Nat.gcd 2 4 = 2 from by decide] at h
+  rw [h]; norm_num
 
 end Erdos1002OQ03

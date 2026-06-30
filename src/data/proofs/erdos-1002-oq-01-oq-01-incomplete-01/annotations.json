@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-erdos1002-overview",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 5, "endLine": 54 },
+    "type": "concept",
+    "title": "The Unconditional Backbone of an Open Problem",
+    "content": "The docstring states Erdős Problem #1002 (OPEN): for 0 < α < 1 and the midpoint deviation deviation x = 1/2 − {x}, does f(α,n) = (1/log n)·∑_{k=1}^n deviation(α·k) have an asymptotic distribution function? Kesten (1960) settled the two-parameter variant (Cauchy limit); the one-parameter case is open. This file deliberately proves only the unconditional elementary facts the analysis rests on — the pointwise size of the deviation, the a priori control of the weighted sum, and the zero mean of the deviation over a period — and does NOT depend on the analytic Stone–Weierstrass sorry carried by the sibling equidistribution file. It is also self-contained because the base Erdos1002Problem.lean no longer builds on the pinned Mathlib (it imports the removed modules Topology.Instances.Real.Basic and Data.Int.Floor), so the three definitions are re-declared verbatim.",
+    "mathContext": "$f(\\alpha,n) = \\frac{1}{\\log n}\\sum_{k=1}^n\\left(\\tfrac12 - \\{\\alpha k\\}\\right)$; this file proves $|\\mathrm{deviation}| \\le \\tfrac12$, a priori bounds, and $\\int_0^1\\mathrm{deviation} = 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős problems", "equidistribution", "Weyl's theorem", "fractional parts", "asymptotic distribution"],
+    "prerequisites": ["fractional parts", "number theory", "measure theory"]
+  },
+  {
+    "id": "ann-erdos1002-defs",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 62, "endLine": 77 },
+    "type": "definition",
+    "title": "The Re-declared #1002 Definitions",
+    "content": "Three noncomputable definitions, re-declared verbatim because the base file no longer builds: deviation x = 1/2 − Int.fract x (the signed gap from the midpoint of [0,1]), innerSum α n = ∑_{k ∈ range n} deviation(α·(k+1)) (the inner sum S(α,n) over k = 1..n), and f α n = if n ≤ 1 then 0 else innerSum α n / Real.log n (the normalized weighted sum, guarded against log n ≤ 0 for small n). These mirror Erdos1002Problem.lean exactly so the results transfer back once the base file is repaired.",
+    "mathContext": "$\\mathrm{deviation}(x) = \\tfrac12 - \\{x\\}$, $S(\\alpha,n) = \\sum_{k=1}^n \\mathrm{deviation}(\\alpha k)$, $f(\\alpha,n) = S(\\alpha,n)/\\log n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.fract", "Finset.range sum", "normalization", "self-contained re-declaration"],
+    "prerequisites": ["Lean definitions", "fractional part"]
+  },
+  {
+    "id": "ann-erdos1002-envelope",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "theorem",
+    "title": "The Sharp Pointwise Envelope",
+    "content": "Three one-line lemmas establish |deviation x| ≤ 1/2 with no equidistribution input. neg_half_lt_deviation: deviation x > −1/2 from Int.fract_lt_one ({x} < 1). deviation_le_half: deviation x ≤ 1/2 from Int.fract_nonneg (0 ≤ {x}). abs_deviation_le_half combines them via abs_le into the sharp two-sided bound, with the upper value 1/2 attained exactly at integers (where {x} = 0). This elementary envelope is the floor all subsequent control is built on.",
+    "mathContext": "$0 \\le \\{x\\} < 1 \\Rightarrow -\\tfrac12 < \\tfrac12 - \\{x\\} \\le \\tfrac12$, i.e. $|\\mathrm{deviation}\\,x| \\le \\tfrac12$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.fract_nonneg", "Int.fract_lt_one", "abs_le", "sharp bound"],
+    "prerequisites": ["fractional part bounds", "linarith"]
+  },
+  {
+    "id": "ann-erdos1002-apriori",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 100, "endLine": 126 },
+    "type": "theorem",
+    "title": "A Priori Control of the Weighted Sum",
+    "content": "abs_innerSum_le bounds the inner sum |S(α,n)| ≤ n/2 by the triangle inequality (Finset.abs_sum_le_sum_abs) over the pointwise envelope, summing n copies of 1/2. abs_f_le divides by log n > 0 (Real.log_pos, valid for n ≥ 2) to get |f(α,n)| ≤ (n/2)/log n, with gcongr propagating the inner bound through the division. This is the crude control certifying f is finite and well-defined — the open problem asks for the far finer O(1)-distributed behaviour, but even this trivial envelope confirms the question is about distribution, not size.",
+    "mathContext": "$|S(\\alpha,n)| \\le \\sum_{k=1}^n |\\mathrm{deviation}| \\le n\\cdot\\tfrac12 = \\tfrac n2$; $|f(\\alpha,n)| \\le \\frac{n/2}{\\log n}$ for $n \\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.abs_sum_le_sum_abs", "Finset.sum_le_sum", "Real.log_pos", "gcongr", "triangle inequality"],
+    "prerequisites": ["finite sums", "logarithm positivity"]
+  },
+  {
+    "id": "ann-erdos1002-zero-mean",
+    "proofId": "erdos-1002-oq-01-oq-01-incomplete-01",
+    "range": { "startLine": 127, "endLine": 173 },
+    "type": "theorem",
+    "title": "The Zero Mean: the Structural Keystone",
+    "content": "integral_deviation_eq_zero is the headline: ∫₀¹ deviation x dx = 0. On [0,1) the fractional part is the identity (Int.fract_eq_self), so deviation x = 1/2 − x. The proof replaces {x} by x via an almost-everywhere congruence (intervalIntegral.integral_congr_ae): the two integrands differ only at the single point x = 1, which has measure zero (measure_singleton), so the a.e. equality is valid and avoids any special fractional-part integration lemma. Then ∫₀¹ (1/2 − x) = ∫₀¹ 1/2 − ∫₀¹ x = 1/2 − 1/2 = 0 (integral_const, integral_id). This vanishing mean is the structural reason every Weyl/Cesàro equidistribution average of the deviation converges to 0 — the open content concerns the fluctuations around this center, not its value.",
+    "mathContext": "$\\int_0^1 \\mathrm{deviation}\\,x\\,dx = \\int_0^1(\\tfrac12 - x)\\,dx = \\tfrac12 - \\tfrac12 = 0$ (a.e. since $\\{x\\}=x$ off the null set $\\{1\\}$).",
+    "significance": "critical",
+    "relatedConcepts": ["intervalIntegral.integral_congr_ae", "Int.fract_eq_self", "measure_singleton", "integral_id", "Cesàro mean"],
+    "prerequisites": ["interval integration", "almost-everywhere equality", "null sets"]
+  }
+]

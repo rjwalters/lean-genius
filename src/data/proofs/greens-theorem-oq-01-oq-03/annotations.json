@@ -1,0 +1,86 @@
+[
+  {
+    "id": "greensoq0103-header",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 63 },
+    "type": "context",
+    "title": "Open Question and Tiling Strategy",
+    "content": "The parent `greens_theorem_concrete` (greens-theorem-oq-01) proves Green's theorem on a *single* rectangle. The standard route from one rectangle to a general region is to **tile** the region with rectangles and add the cell-wise identities — relying on the fact that contributions along shared interior edges cancel because each interior edge is traversed once in each direction. This file isolates and proves exactly that cancellation for the concrete `rectLineIntegral` / `rectDoubleIntegral` formulation, with no ordering hypothesis ($a \\le e \\le b$ is never assumed).",
+    "mathContext": "$\\oint_{\\partial R} = \\oint_{\\partial R_1} + \\oint_{\\partial R_2}$ when $R = R_1 \\cup R_2$, the shared edge cancelling",
+    "significance": "context",
+    "relatedConcepts": ["region tiling", "orientation", "staircase approximation", "interior edge cancellation"],
+    "prerequisites": ["Green's theorem on a rectangle", "boundary orientation conventions"]
+  },
+  {
+    "id": "greensoq0103-line-vsplit",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 78, "endLine": 100 },
+    "type": "theorem",
+    "title": "Line Integral Additive Under a Vertical Cut",
+    "content": "`rectLineIntegral_vsplit` cuts $[a,b]\\times[c,d]$ at $x=e$. The shared interior edge $x=e$ is the right edge of the left cell (contributing $+\\int_c^d Q(e,y)\\,dy$) and the left edge of the right cell (contributing $-\\int_c^d Q(e,y)\\,dy$); these cancel by pure `ring`/`linarith` with **no hypothesis**. Only the outer edges $P(\\cdot,c)$ and $P(\\cdot,d)$, integrated in $x$, genuinely combine into longer integrals — hence the four `IntervalIntegrable` hypotheses feeding `integral_add_adjacent_intervals`.",
+    "mathContext": "$\\int_c^d Q(e,y)\\,dy - \\int_c^d Q(e,y)\\,dy = 0$; outer edges glue via $\\int_a^e + \\int_e^b = \\int_a^b$",
+    "significance": "key",
+    "relatedConcepts": ["orientation cancellation", "integral_add_adjacent_intervals", "boundary line integral"],
+    "prerequisites": ["interval integral additivity", "signed line integrals"]
+  },
+  {
+    "id": "greensoq0103-double-vsplit",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 102, "endLine": 120 },
+    "type": "theorem",
+    "title": "Double Integral Additive Under a Vertical Cut",
+    "content": "`rectDoubleIntegral_vsplit` splits the iterated double integral $\\iint_{[a,b]\\times[c,d]} f$ at $x=e$. The inner additivity $\\int_a^e f(\\cdot,y) + \\int_e^b f(\\cdot,y) = \\int_a^b f(\\cdot,y)$ holds pointwise in $y$ (via `integral_add_adjacent_intervals`), and is lifted through the outer $y$-integral with `integral_add` and `integral_congr`. Unlike the line integral, there is no cancellation here — the cut simply concatenates the two $x$-ranges.",
+    "mathContext": "$\\iint_{[a,b]\\times[c,d]} f = \\iint_{[a,e]\\times[c,d]} f + \\iint_{[e,b]\\times[c,d]} f$",
+    "significance": "key",
+    "relatedConcepts": ["iterated integral", "integral_congr", "Fubini-style additivity"],
+    "prerequisites": ["iterated integration", "pointwise-to-integral lifting"]
+  },
+  {
+    "id": "greensoq0103-line-hsplit",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 130, "endLine": 149 },
+    "type": "theorem",
+    "title": "Line Integral Additive Under a Horizontal Cut",
+    "content": "`rectLineIntegral_hsplit` is the symmetric statement for a horizontal cut at $y=g$. Now the shared edge $y=g$ contributes $-\\int_a^b P(x,g)\\,dx$ to the bottom cell and $+\\int_a^b P(x,g)\\,dx$ to the top cell, again cancelling by `linarith`. The outer edges $Q(b,\\cdot)$ and $Q(a,\\cdot)$, integrated in $y$, glue via `integral_add_adjacent_intervals`. The roles of $P$/$Q$ and $x$/$y$ swap relative to the vertical case.",
+    "mathContext": "$\\int_a^b P(x,g)\\,dx - \\int_a^b P(x,g)\\,dx = 0$ (the $y=g$ edge cancels)",
+    "significance": "supporting",
+    "relatedConcepts": ["horizontal subdivision", "symmetry of P and Q", "orientation cancellation"],
+    "prerequisites": ["interval integral additivity"]
+  },
+  {
+    "id": "greensoq0103-double-hsplit",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 151, "endLine": 161 },
+    "type": "theorem",
+    "title": "Double Integral Additive Under a Horizontal Cut",
+    "content": "`rectDoubleIntegral_hsplit` is the simplest of the four: cutting at $y=g$ splits the *outer* integral directly, so the proof is a single application of `integral_add_adjacent_intervals` on $\\int_c^d (\\cdots)\\,dy$. No inner manipulation is needed because the cut variable is already the outer one.",
+    "mathContext": "$\\iint_{[a,b]\\times[c,d]} f = \\iint_{[a,b]\\times[c,g]} f + \\iint_{[a,b]\\times[g,d]} f$",
+    "significance": "supporting",
+    "relatedConcepts": ["outer-integral additivity", "iterated integral"],
+    "prerequisites": ["interval integral additivity"]
+  },
+  {
+    "id": "greensoq0103-capstone",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 173, "endLine": 195 },
+    "type": "insight",
+    "title": "Capstone: Green's Theorem Glues Across a Cut",
+    "content": "`greens_additive_vertical` is the payoff. Given that the concrete Green identity holds on the left cell and the right cell, it holds on their union — proved by a pure rewrite: replace each whole-rectangle side by its two-cell split (`rectLineIntegral_vsplit`, `rectDoubleIntegral_vsplit`), then substitute the two cell-wise identities `hL`, `hR`. The interior edge takes care of itself. This is exactly the **inductive step** for proving Green's theorem on any rectangle-tiled (staircase) region by working cell by cell.",
+    "mathContext": "$\\big(\\text{Green on }R_1\\big) \\wedge \\big(\\text{Green on }R_2\\big) \\Rightarrow \\big(\\text{Green on }R_1\\cup R_2\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["induction over a tiling", "gluing lemma", "staircase region", "structural rewrite"],
+    "prerequisites": ["additivity lemmas above", "Green's theorem on a cell"]
+  },
+  {
+    "id": "greensoq0103-sanity",
+    "proofId": "greens-theorem-oq-01-oq-03",
+    "range": { "startLine": 204, "endLine": 211 },
+    "type": "technique",
+    "title": "Concrete Sanity Check: Splitting the Unit Square",
+    "content": "`area_vsplit_unit_square` is a fully concrete instance: the area of $[0,1]^2$, computed as $\\iint 1$, splits at $x=\\tfrac12$ into two half-rectangles of area $\\tfrac12$ each. It closes by `area_double_integral` (from the parent) plus `ring`, confirming the abstract additivity lemmas reduce correctly on a numeric example.",
+    "mathContext": "$\\tfrac12 + \\tfrac12 = 1$, i.e. $\\iint_{[0,\\frac12]\\times[0,1]} 1 + \\iint_{[\\frac12,1]\\times[0,1]} 1 = \\iint_{[0,1]^2} 1$",
+    "significance": "technical",
+    "relatedConcepts": ["sanity check", "area as double integral"],
+    "prerequisites": ["area_double_integral from greens-theorem-oq-01"]
+  }
+]

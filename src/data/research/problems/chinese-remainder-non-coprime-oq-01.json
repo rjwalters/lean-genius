@@ -57,8 +57,11 @@
     "chinese-remainder-non-coprime-oq-01",
     "chinese-remainder-non-coprime-oq-01-oq-01",
     "chinese-remainder-non-coprime-oq-02",
+    "chinese-remainder-non-coprime-oq-02-oq-01",
     "chinese-remainder-non-coprime-oq-03",
+    "chinese-remainder-non-coprime-oq-03-oq-01",
     "chinese-remainder-non-coprime-oq-03-oq-02",
+    "chinese-remainder-non-coprime-oq-03-oq-03",
     "chinese-remainder-non-coprime-oq-04"
   ],
   "references": {
@@ -128,6 +131,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02.lean"
     },
     {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ02OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
       "filename": "ChineseRemainderNonCoprimeOQ03.lean",
       "lineCount": 392,
@@ -150,6 +164,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03Aristotle.lean"
     },
     {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03OQ01.lean",
+      "lineCount": 381,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ01.lean"
+    },
+    {
       "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean",
       "filename": "ChineseRemainderNonCoprimeOQ03OQ02.lean",
       "lineCount": 379,
@@ -161,10 +186,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean"
     },
     {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03OQ03.lean",
+      "lineCount": 161,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean"
+    },
+    {
       "path": "Proofs/ChineseRemainderNonCoprimeOQ04.lean",
       "filename": "ChineseRemainderNonCoprimeOQ04.lean",
-      "lineCount": 240,
-      "theoremCount": 15,
+      "lineCount": 266,
+      "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,

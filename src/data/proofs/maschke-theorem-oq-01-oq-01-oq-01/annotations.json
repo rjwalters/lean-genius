@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 69 },
+    "type": "definition",
+    "title": "Group Algebra, Generator, and the Augmentation Map",
+    "content": "The cyclic group ℤ/p is written multiplicatively as `G = Multiplicative (ZMod p)` so its group algebra `A = MonoidAlgebra (ZMod p) (G p)` is a `MonoidAlgebra`. The generator `g = single (ofAdd 1) 1` is the basis element indexed by the additive generator 1 ∈ ℤ/p. The augmentation `ε : A →ₐ[𝔽_p] 𝔽_p` is realised as `MonoidAlgebra.lift 1`, the algebra hom determined by sending every group element to 1; on a basis element it returns its coefficient, ε(∑ a_h h) = ∑ a_h.",
+    "mathContext": "$A = \\mathbb{F}_p[\\mathbb{Z}/p]$, $g = [1]$, and $\\varepsilon : A \\to \\mathbb{F}_p$, $\\sum_h a_h h \\mapsto \\sum_h a_h$.",
+    "significance": "context",
+    "relatedConcepts": ["group algebra", "MonoidAlgebra", "augmentation map", "MonoidAlgebra.lift", "trivial representation"],
+    "prerequisites": ["group algebras", "algebra homomorphisms", "finite cyclic groups"]
+  },
+  {
+    "id": "ann-augmentation-sum",
+    "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 88 },
+    "type": "technique",
+    "title": "The Augmentation as a Sum of Coefficients",
+    "content": "`ε_single` and `ε_g` evaluate ε on basis elements: ε(single a b) = b and ε g = 1, via `lift_single` (and `lift`'s defining formula). `ε_eq_sum` is the workhorse: unfolding `lift_apply` gives ε y = y.sum (fun _ b => b • 1) = y.sum (fun _ b => b), and `Finsupp.sum_fintype` converts this support-sum into the finite sum ∑_{h : G} y h over the whole group. `mem_ker_iff` records that membership in the augmentation ideal ker ε is exactly having ε-image 0.",
+    "mathContext": "$\\varepsilon\\, y = \\sum_{h \\in \\mathbb{Z}/p} y_h$, so $\\ker\\varepsilon = \\{ y : \\sum_h y_h = 0 \\}$.",
+    "significance": "key",
+    "relatedConcepts": ["augmentation ideal", "MonoidAlgebra.lift_apply", "Finsupp.sum_fintype", "RingHom.ker"],
+    "prerequisites": ["Finsupp sums", "kernels of ring homomorphisms"]
+  },
+  {
+    "id": "ann-cyclic-shift",
+    "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 127 },
+    "type": "insight",
+    "title": "Cyclic Shift Forces Constant Coefficients",
+    "content": "Multiplication by g = single (ofAdd 1) 1 permutes the basis cyclically: `coeff_shift` reads off y((ofAdd 1)⁻¹ * h) = y h from g * y = y using `MonoidAlgebra.single_mul_apply` ((single g r * x) h = r · x(g⁻¹ * h)). Phrased additively this is the one-step identity y(ofAdd (s+1)) = y(ofAdd s). Because 1 generates ℤ/p, `coeff_const` iterates the step from 0 — induction on ℕ via `Nat.cast`, then `ZMod.natCast_rightInverse` to reach an arbitrary residue — concluding that a g-invariant element has the same coefficient at every group element. This is the regular-representation form of 'a translation-invariant function on a cyclic group is constant'.",
+    "mathContext": "$g\\cdot y = y \\implies y_{t-1} = y_t$ for all $t$, hence $y_t = y_0$ for all $t \\in \\mathbb{Z}/p$.",
+    "significance": "key",
+    "relatedConcepts": ["MonoidAlgebra.single_mul_apply", "cyclic shift", "invariant vectors", "ZMod.natCast_rightInverse", "regular representation"],
+    "prerequisites": ["MonoidAlgebra multiplication", "induction over ZMod", "group generation"]
+  },
+  {
+    "id": "ann-aug-zero",
+    "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 129, "endLine": 141 },
+    "type": "insight",
+    "title": "A g-Invariant Element Has Augmentation Zero",
+    "content": "`aug_zero_of_g_mul_self` is the structural core. For g-invariant y, `coeff_const` makes every coefficient equal to the common value c, so ε y = ∑_{h : G} y h = ∑_h c = (Fintype.card G) • c = p • c (via `Finset.sum_const`, `ZMod.card`). In characteristic p, p • c = (p : ZMod p) · c = 0 (`ZMod.natCast_self`). So no g-fixed vector can have nonzero augmentation — exactly the fact that obstructs a section of ε. Characteristic p is decisive: in characteristic 0 the value would be p · c ≠ 0.",
+    "mathContext": "$\\varepsilon\\, y = \\sum_{h} c = p\\cdot c = 0$ in $\\mathbb{F}_p$ for $g$-invariant $y$ with common coefficient $c$.",
+    "significance": "critical",
+    "relatedConcepts": ["invariant vectors", "characteristic p", "Finset.sum_const", "ZMod.natCast_self", "averaging"],
+    "prerequisites": ["sums over finite types", "modular arithmetic"]
+  },
+  {
+    "id": "ann-no-split",
+    "proofId": "maschke-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 143, "endLine": 183 },
+    "type": "insight",
+    "title": "The Sequence Does Not Split — Named Witness ker ε",
+    "content": "`augmentation_no_complement` runs the contradiction. A complement J of ker ε gives ker ε ⊔ J = ⊤ (`IsCompl.sup_eq_top`), so 1 = a + b with a ∈ ker ε, b ∈ J; applying ε yields ε b = 1. Then g·b − b lies in ker ε (ε(g·b − b) = ε g · ε b − ε b = 0) and in J (an ideal containing b), hence in ker ε ⊓ J = ⊥ (`IsCompl.inf_eq_bot`), forcing g·b = b. But `aug_zero_of_g_mul_self` gives ε b = 0, contradicting ε b = 1. `exists_submodule_no_complement` then packages ⟨ker ε, augmentation_no_complement⟩, recovering the parent's anonymous statement with the explicit augmentation-ideal witness.",
+    "mathContext": "$0 \\to \\ker\\varepsilon \\to \\mathbb{F}_p[\\mathbb{Z}/p] \\to \\mathbb{F}_p \\to 0$ admits no $\\mathbb{F}_p[\\mathbb{Z}/p]$-linear splitting.",
+    "significance": "critical",
+    "relatedConcepts": ["short exact sequence", "splitting", "IsCompl", "augmentation ideal", "complete reducibility"],
+    "prerequisites": ["complemented submodules", "split exact sequences", "ideals as submodules"]
+  }
+]

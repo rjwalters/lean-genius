@@ -55,6 +55,43 @@
       "Does the half-interval refinement ∫₀^{π/2} sin²ⁿx dx = (π/2)·C(2n,n)/4^n (via the sin(π−x) symmetry) yield the Beta-function value B(n+1/2, 1/2) = π·C(2n,n)/4^n, connecting this thread to Mathlib's Gamma/Beta development?"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Combinatorial vs Analytic Wallis Product",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Docstring contrasting the parent's combinatorial product C(2n,n)/4^n = ∏(2k+1)/(2k+2) (pure ℚ-arithmetic of the recurrence) with this file's analytic twin: Mathlib's Wallis integrals ∫₀^π sin²ⁿ = π·∏(2k+1)/(2k+2) and ∫₀^π sin²ⁿ⁺¹ = 2·∏(2k+2)/(2k+3) evaluate the same closed products. Imports Mathlib and the parent, opens Nat/Finset/Real/MeasureTheory/intervalIntegral, opens the namespace."
+    },
+    {
+      "id": "odd-telescope",
+      "title": "The Odd-Index Telescoping Product",
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "prod_odd_telescope: ∏_{k<n} (2k+1)/(2k+3) = 1/(2n+1), the elementary telescope (1/3)(3/5)(5/7)···((2n−1)/(2n+1)). One-line induction via Finset.prod_range_succ, push_cast, field_simp, ring — the combinatorial input for the odd powers."
+    },
+    {
+      "id": "integral-rep",
+      "title": "The Integral Representation of C(2n,n)",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "integral_sin_pow_even_eq_centralBinom (headline): ∫₀^π sin²ⁿ = π·C(2n,n)/4^n, by rewriting Mathlib's integral_sin_pow_even and the parent's centralBinom_div_eq_wallis_prod backwards, closing by ring. centralBinom_eq_integral inverts it via field_simp: C(2n,n) = (4^n/π)·∫₀^π sin²ⁿ — an integer written as a definite integral."
+    },
+    {
+      "id": "odd-reciprocal",
+      "title": "The Odd Powers: the Reciprocal Central Binomial",
+      "startLine": 102,
+      "endLine": 138,
+      "summary": "wallis_odd_prod_eq: ∏(2k+2)/(2k+3) = 4^n/((2n+1)·C(2n,n)), by setting A = ∏(2k+1)/(2k+2), B = ∏(2k+2)/(2k+3), observing A·B = ∏(2k+1)/(2k+3) factorwise (Finset.prod_mul_distrib), substituting A = C/4^n and the telescope to get A·B·(2n+1) = 1, then clearing denominators (eq_div_iff, linear_combination). integral_sin_pow_odd_eq_centralBinom follows: ∫₀^π sin²ⁿ⁺¹ = 2·4^n/((2n+1)·C(2n,n))."
+    },
+    {
+      "id": "consequences",
+      "title": "Multiplying Cancels, Dividing Squares",
+      "startLine": 140,
+      "endLine": 166,
+      "summary": "integral_even_mul_odd_eq: the product (∫sin²ⁿ)(∫sin²ⁿ⁺¹) = 2π/(2n+1) — the central binomial coefficient cancels completely. integral_ratio_eq: the quotient (∫sin²ⁿ)/(∫sin²ⁿ⁺¹) = (π/2)(2n+1)(C(2n,n)/4^n)² — the square of the normalised central binomial sequence, whose Wallis-limit-to-1 is the analytic origin of C(2n,n)/4^n ∼ 1/√(πn). Both by field_simp after the two integral evaluations."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib",

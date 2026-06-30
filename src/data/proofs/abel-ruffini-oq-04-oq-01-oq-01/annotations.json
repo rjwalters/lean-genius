@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-the-witness-polynomial",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 67 },
+    "type": "definition",
+    "title": "The Quintic q = X⁵ − X − 1 and Its Shape",
+    "content": "q is the Selmer trinomial x⁵ − x − 1 over ℚ, the second textbook quintic with Galois group S₅. q_natDegree (compute_degree!) and q_monic (monicity!) pin the basic shape that every later argument depends on. Monicity matters specifically for the rational root theorem: for a MONIC integer polynomial, any rational root must be an integer dividing the constant term. Here the constant term is −1, so the only candidate rational roots are ±1 — which the next two lemmas eliminate.",
+    "mathContext": "$q = X^5 - X - 1 \\in \\mathbb{Q}[X]$, $\\deg q = 5$, $q$ monic.",
+    "significance": "supporting",
+    "relatedConcepts": ["Selmer trinomial", "monic polynomial", "rational root theorem", "compute_degree", "Abel–Ruffini theorem"],
+    "prerequisites": ["polynomials over a field", "degree of a polynomial"]
+  },
+  {
+    "id": "ann-no-rational-roots",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "technique",
+    "title": "±1 Are Not Roots ⇒ No Linear Factor Over ℚ",
+    "content": "q_eval_one and q_eval_neg_one compute q(1) = −1 and q(−1) = −1, both nonzero. Combined with monicity (the rational root theorem restricts candidates to ±1), this proves q has no rational root, hence no degree-1 factor over ℚ. This is the first step toward irreducibility, though it is not the whole story: ruling out linear factors does not rule out a (2,3) split into a quadratic times a cubic over ℚ. Full irreducibility is the genuinely hard step, deferred to a mod-3 reduction (documented, not formalized here).",
+    "mathContext": "$q(1) = q(-1) = -1 \\neq 0$; by the monic rational root theorem the only candidates are $\\pm 1$, so $q$ has no rational root.",
+    "significance": "supporting",
+    "relatedConcepts": ["rational root theorem", "irreducibility", "linear factors", "Gauss's lemma"],
+    "prerequisites": ["evaluation of polynomials", "divisibility of integers"]
+  },
+  {
+    "id": "ann-one-real-root-ivt",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 98 },
+    "type": "insight",
+    "title": "A Real Root in (1,2) by the Intermediate Value Theorem",
+    "content": "The real function f(x) = x⁵ − x − 1 is continuous (fun_prop) with f(1) = −1 < 0 < 29 = f(2), so intermediate_value_Ioo delivers a root strictly inside (1,2). This is the crux of the entry's correction: existence is all the IVT gives, but the header's derivative analysis shows this root is UNIQUE. f′(x) = 5x⁴ − 1 has critical points at x = ±5^(−1/4), and the local maximum f(−5^(−1/4)) ≈ −0.465 already sits below the axis — so the curve crosses zero exactly once. One real root means two complex-conjugate pairs, the geometric fact that breaks the parent's argument.",
+    "mathContext": "$f(1) = -1 < 0 < 29 = f(2) \\Rightarrow \\exists x \\in (1,2),\\ f(x) = 0$. Local max $f(-5^{-1/4}) \\approx -0.465 < 0 \\Rightarrow$ exactly one real root.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "continuity", "critical points", "real root counting", "sign of the discriminant"],
+    "prerequisites": ["intermediate value theorem", "first derivative test"]
+  },
+  {
+    "id": "ann-conjugation-is-even",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "concept",
+    "title": "Why the Parent's Argument Fails: Conjugation Lands in A₅",
+    "content": "With r real roots and (5−r)/2 conjugate pairs, complex conjugation permutes the five roots as a product of (5−r)/2 disjoint transpositions. For the parent x⁵ − 4x + 2 (r = 3) that is ONE transposition — an odd permutation, the engine that forces Gal ⊄ A₅. For x⁵ − x − 1 (r = 1) it is TWO transpositions — a (2,2) double transposition, which is EVEN and lies in A₅. So conjugation supplies no parity information here and the parent's route collapses. A correct S₅ proof must obtain a transposition elsewhere: via Dedekind's theorem mod 2, where q ≡ (x²+x+1)(x³+x²+1) gives Frobenius cycle type (2,3) whose cube is a transposition, with mod-3 irreducibility supplying a 5-cycle.",
+    "mathContext": "$r=1 \\Rightarrow$ conjugation $= (2,2)$ double transposition $\\in A_5$ (even); $r=3 \\Rightarrow$ single transposition $\\notin A_5$ (odd).",
+    "significance": "key",
+    "relatedConcepts": ["complex conjugation as a permutation", "alternating group A₅", "parity of permutations", "Dedekind's theorem", "Frobenius cycle type"],
+    "prerequisites": ["Galois theory", "symmetric and alternating groups", "cycle decomposition"]
+  },
+  {
+    "id": "ann-discriminant-value",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 103 },
+    "type": "technique",
+    "title": "The Bring–Jerrard Discriminant Value 2869",
+    "content": "For a depressed quintic x⁵ + px + q the discriminant is 256p⁵ + 3125q⁴. At (p,q) = (−1,−1) this is 256·(−1)⁵ + 3125·(−1)⁴ = −256 + 3125 = 2869. The sign is the consistency check: a quintic with an even number of conjugate pairs has positive discriminant, and indeed 2869 > 0 matches the two-conjugate-pair geometry (whereas the parent's x⁵ − 4x + 2 has negative discriminant, one conjugate pair). The discriminant being a perfect square is exactly the criterion Gal ⊆ A₅; the next lemma shows it is not.",
+    "mathContext": "$\\Delta = 256p^5 + 3125q^4 \\big|_{(p,q)=(-1,-1)} = -256 + 3125 = 2869 > 0.$",
+    "significance": "supporting",
+    "relatedConcepts": ["discriminant of a polynomial", "Bring–Jerrard form", "depressed quintic", "sign of the discriminant", "real-root parity"],
+    "prerequisites": ["discriminant", "elementary symmetric functions"]
+  },
+  {
+    "id": "ann-nonsquare-finite-check",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 110 },
+    "type": "technique",
+    "title": "2869 Is Not a Perfect Square ⇒ Gal ⊄ A₅",
+    "content": "not_isSquare_2869 rules out r·r = 2869 by a finite search: any root r satisfies r ≤ 53 (since 54² = 2916 > 2869), bounded by nlinarith, then interval_cases r exhausts r = 0..53 and omega kills each case (53² = 2809, 54² = 2916, so 2869 falls strictly between consecutive squares). A non-square discriminant means the Galois group is NOT contained in the alternating group A₅ — consistent with the full group being S₅. This is a kernel-checked decision (no native_decide), keeping the entry at 0 axioms beyond propext/Classical.choice/Quot.sound.",
+    "mathContext": "$53^2 = 2809 < 2869 < 2916 = 54^2 \\Rightarrow 2869 \\notin \\{n^2\\}$; non-square $\\Delta \\Rightarrow \\mathrm{Gal} \\not\\subseteq A_5.$",
+    "significance": "key",
+    "relatedConcepts": ["perfect squares", "discriminant criterion for A₅", "interval_cases", "decidable finite search", "Galois group membership"],
+    "prerequisites": ["square numbers", "bounded case analysis"]
+  }
+]

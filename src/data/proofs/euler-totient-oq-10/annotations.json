@@ -1,0 +1,120 @@
+[
+  {
+    "id": "totient-oq10-ann-header",
+    "proofId": "euler-totient-oq-10",
+    "range": {
+      "startLine": 1,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Menon's Identity and the Counting Proof",
+    "content": "Menon's identity (P. Kesava Menon, 1965) states that summing gcd(k − 1, n) over the residues k coprime to n equals φ(n)·d(n), where φ is Euler's totient and d(n) is the number of divisors. This file formalizes the counting proof, which is uniform in n and avoids any factorization or multiplicativity argument. The sum is indexed by the unit group (ℤ/nℤ)ˣ, so the summand is gcd((a − 1).val, n). Imports Mathlib's totient, ZMod units, and quotient-group / coset-cardinality infrastructure.",
+    "mathContext": "$\\sum_{a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} \\gcd((a-1).\\mathrm{val},\\, n) = \\varphi(n)\\, d(n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Menon's identity",
+      "Euler's totient",
+      "number of divisors",
+      "unit group of ℤ/nℤ"
+    ],
+    "prerequisites": [
+      "totient function",
+      "gcd",
+      "reduced residue system"
+    ]
+  },
+  {
+    "id": "totient-oq10-ann-gcd-expansion",
+    "proofId": "euler-totient-oq-10",
+    "range": {
+      "startLine": 56,
+      "endLine": 73
+    },
+    "type": "lemma",
+    "title": "Divisor Expansion of the gcd",
+    "content": "gcd_eq_sum_totient proves gcd(v, n) = ∑_{d∣n} (if d∣v then φ(d) else 0) for n ≠ 0. The key step is the set identity (gcd v n).divisors = n.divisors.filter (· ∣ v): a number d divides gcd(v, n) exactly when it divides both v and n. Applying Gauss's identity Nat.sum_totient, which says ∑_{e∣g} φ(e) = g, to g = gcd(v, n) then rewrites the gcd as a divisor-filtered totient sum. This is the device that converts each summand of Menon's sum into a double sum amenable to exchange.",
+    "mathContext": "$\\gcd(v,n) = \\sum_{d \\mid \\gcd(v,n)} \\varphi(d) = \\sum_{\\substack{d \\mid n \\\\ d \\mid v}} \\varphi(d).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gauss's totient identity",
+      "divisors of a gcd",
+      "divisor sums"
+    ],
+    "prerequisites": [
+      "totient function",
+      "divisors",
+      "gcd"
+    ]
+  },
+  {
+    "id": "totient-oq10-ann-criterion",
+    "proofId": "euler-totient-oq-10",
+    "range": {
+      "startLine": 75,
+      "endLine": 85
+    },
+    "type": "lemma",
+    "title": "The Reduction-to-1 Criterion",
+    "content": "dvd_val_sub_one_iff shows d ∣ (a − 1).val ⟺ unitsMap_{d∣n}(a) = 1 for a unit a of ℤ/nℤ. The proof routes the divisibility statement through ZMod.natCast_eq_zero_iff (so d ∣ m ⟺ (m : ZMod d) = 0) and the reduction ring homomorphism castHom : ZMod n →+* ZMod d (using map_sub / map_one), matching it against the value of unitsMap a. This criterion is what lets the counted residue set be replaced by the kernel of a group homomorphism.",
+    "mathContext": "$d \\mid (a-1).\\mathrm{val} \\iff \\mathrm{unitsMap}_{d \\mid n}(a) = 1 \\iff a \\in \\ker(\\mathrm{unitsMap}).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reduction homomorphism",
+      "kernel of a homomorphism",
+      "ZMod cast"
+    ],
+    "prerequisites": [
+      "units of ℤ/nℤ",
+      "ring homomorphisms",
+      "divisibility in ZMod"
+    ]
+  },
+  {
+    "id": "totient-oq10-ann-fibre-count",
+    "proofId": "euler-totient-oq-10",
+    "range": {
+      "startLine": 86,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "The Fibre Count via Lagrange",
+    "content": "totient_mul_fiber_card proves #{a ∈ (ℤ/nℤ)ˣ : d ∣ (a − 1).val}·φ(d) = φ(n) for d ∣ n. Using the reduction-to-1 criterion, the counted set equals the kernel of unitsMap. Because unitsMap is surjective (ZMod.unitsMap_surjective), Lagrange's theorem Subgroup.card_eq_card_quotient_mul_card_subgroup together with the first isomorphism theorem QuotientGroup.quotientKerEquivOfSurjective gives |(ℤ/nℤ)ˣ| = |(ℤ/dℤ)ˣ|·|ker|, i.e. φ(n) = φ(d)·|ker|. So every divisor d of n contributes the same value φ(n) to Menon's sum.",
+    "mathContext": "$\\#\\{a : d \\mid (a-1).\\mathrm{val}\\} \\cdot \\varphi(d) = |\\ker| \\cdot \\varphi(d) = \\varphi(n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "first isomorphism theorem",
+      "surjective homomorphism fibres",
+      "kernel cardinality"
+    ],
+    "prerequisites": [
+      "finite group cardinality",
+      "kernels and quotients",
+      "Euler's totient as |(ℤ/nℤ)ˣ|"
+    ]
+  },
+  {
+    "id": "totient-oq10-ann-menon",
+    "proofId": "euler-totient-oq-10",
+    "range": {
+      "startLine": 122,
+      "endLine": 153
+    },
+    "type": "theorem",
+    "title": "Menon's Identity",
+    "content": "menon_identity assembles the result: ∑_{a ∈ (ℤ/nℤ)ˣ} gcd((a − 1).val, n) = φ(n)·d(n). Each summand is expanded by gcd_eq_sum_totient, the order of summation is swapped by Finset.sum_comm, the inner sum is collapsed to (fibre).card • φ(d) and evaluated to φ(n) by totient_mul_fiber_card, and the resulting constant sum over the d(n) divisors gives φ(n)·d(n). A worked n = 6 example instantiates the theorem (units {1, 5}: gcd(0,6) + gcd(4,6) = 6 + 2 = 8 = φ(6)·d(6) = 2·4).",
+    "mathContext": "$\\sum_{a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} \\gcd((a-1).\\mathrm{val}, n) = \\sum_{d \\mid n} \\varphi(n) = \\varphi(n)\\, d(n).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Menon's identity",
+      "swap of summation",
+      "divisor counting function",
+      "Euler's totient"
+    ],
+    "prerequisites": [
+      "double sums over Finsets",
+      "Gauss's totient identity",
+      "Lagrange's theorem"
+    ]
+  }
+]

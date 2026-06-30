@@ -1,35 +1,62 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "erdos-415-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Erdős #415 and the Ordering-Pattern Function F(n)",
+    "content": "Erdős Problem #415 studies the local order of Euler's totient. For a window of k consecutive values φ(m+1),…,φ(m+k), their relative order is one of the k! permutations; F(n) is the largest k such that every one of the k! orderings is realized by some window inside [1,n]. Erdős proved F(n) ≍ log log log n — one of the slowest growth rates in number theory — with the exact constant still open (the parent's first open question). This file pins the explicit small end: a constructive F(n) ≥ 3, with a witness table for all six orderings of three consecutive totients.",
+    "mathContext": "$F(n) = \\max\\{k : \\text{all } k!\\text{ orderings of some } (\\varphi(m+1),\\dots,\\varphi(m+k))\\subseteq[1,n] \\text{ occur}\\}$, with $F(n) \\asymp \\log\\log\\log n$.",
+    "significance": "context",
+    "relatedConcepts": ["Euler's totient", "permutation patterns", "Erdős problems", "iterated logarithm growth"],
+    "prerequisites": ["Euler's totient function", "permutations", "asymptotic notation"]
+  },
+  {
     "id": "ann-k2",
     "proofId": "erdos-415-oq-01",
-    "range": {
-      "startLine": 35,
-      "endLine": 42
-    },
+    "range": { "startLine": 35, "endLine": 42 },
     "type": "concept",
     "title": "The Base Case: Both Adjacent Orderings",
-    "content": "pattern_lt and pattern_gt give the two 2! = 2 orderings of adjacent totients: an increasing pair φ(2)=1 < 2=φ(3) and a decreasing pair φ(5)=4 > 2=φ(6). Both occur within [1,6], so F(n) ≥ 2 for every n ≥ 6 — the smallest nontrivial instance of the ordering-pattern problem."
+    "content": "pattern_lt and pattern_gt give the two 2! = 2 orderings of adjacent totients: an increasing pair φ(2)=1 < 2=φ(3) and a decreasing pair φ(5)=4 > 2=φ(6). Both occur within [1,6], so F(n) ≥ 2 for every n ≥ 6 — the smallest nontrivial instance of the ordering-pattern problem. Each is a single kernel decide on small totient values.",
+    "mathContext": "$\\varphi(2)=1 < 2=\\varphi(3)$ (increasing) and $\\varphi(5)=4 > 2=\\varphi(6)$ (decreasing); both within $[1,6]$, so $F(n)\\ge 2$ for $n\\ge 6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["base case", "totient values", "adjacent comparison"],
+    "prerequisites": ["Euler's totient function"]
   },
   {
     "id": "ann-monotone-runs",
     "proofId": "erdos-415-oq-01",
-    "range": {
-      "startLine": 44,
-      "endLine": 77
-    },
+    "range": { "startLine": 44, "endLine": 71 },
     "type": "insight",
     "title": "The Rare Monotone Runs",
-    "content": "Of the six orderings of three consecutive totients, four are 'mixed' and appear almost immediately (m ≤ 16). The two strictly monotone runs are rare. The first strictly increasing run is φ(105)=48 < φ(106)=52 < φ(107)=106 (φ(107)=106 because 107 is prime); the first strictly decreasing run is φ(313)=312 > φ(314)=156 > φ(315)=144. The proofs use kernel decide with a raised maxRecDepth (the totient of 315 exceeds the default recursion limit) — still kernel decide, not native_decide, so no Lean.ofReduceBool is introduced."
+    "content": "Of the six orderings of three consecutive totients, four are 'mixed' (pattern_acb at m=6, pattern_bac at m=5, pattern_bca at m=13, pattern_cab at m=16) and appear almost immediately (m ≤ 16). The two strictly monotone runs are rare. The first strictly increasing run is φ(105)=48 < φ(106)=52 < φ(107)=106 (φ(107)=106 because 107 is prime, so φ(p)=p−1); the first strictly decreasing run is φ(313)=312 > φ(314)=156 > φ(315)=144 (313 prime gives the large φ; 315=3²·5·7 highly composite gives the small φ). Monotone runs are hard precisely because φ swings between p−1 at primes and small values at highly composite numbers.",
+    "mathContext": "Increasing: $\\varphi(105){=}48 < \\varphi(106){=}52 < \\varphi(107){=}106$. Decreasing: $\\varphi(313){=}312 > \\varphi(314){=}156 > \\varphi(315){=}144$. Large $\\varphi$ at primes $p{-}1$, small $\\varphi$ at composites.",
+    "significance": "key",
+    "relatedConcepts": ["monotone runs", "totient at primes", "highly composite numbers", "permutation patterns"],
+    "prerequisites": ["Euler's totient at primes and prime powers", "factorization"]
+  },
+  {
+    "id": "ann-decide-integrity",
+    "proofId": "erdos-415-oq-01",
+    "range": { "startLine": 47, "endLine": 71 },
+    "type": "technique",
+    "title": "Kernel decide vs native_decide: Staying Axiom-Free",
+    "content": "Every comparison is closed by kernel decide, which evaluates Nat.totient by trusted kernel reduction. For the two large windows (m=105 and m=313) the evaluation exceeds Lean's default recursion limit, so a local set_option maxRecDepth (4000 for pattern_abc, 8000 for pattern_cba) is used — this only raises the recursion budget, it remains kernel decide. Crucially it is NOT native_decide: native_decide would compile to native code and add the Lean.ofReduceBool axiom, which (per the project's axiom-integrity policy) counts as an assumption and would force status 'axiomatized'. Kernel decide depends only on propext / Classical.choice / Quot.sound, so the entry is genuinely verified / 0-axiom.",
+    "mathContext": "$\\texttt{decide}$ trusts kernel reduction (foundational axioms only); $\\texttt{native\\_decide}$ adds $\\texttt{Lean.ofReduceBool}$. Here only $\\texttt{maxRecDepth}$ is raised, so the proofs stay axiom-free.",
+    "significance": "technical",
+    "relatedConcepts": ["decidability", "kernel reduction", "native_decide", "axiom integrity", "maxRecDepth"],
+    "prerequisites": ["Lean decide tactic", "Lean axiom system"]
   },
   {
     "id": "ann-bound",
     "proofId": "erdos-415-oq-01",
-    "range": {
-      "startLine": 79,
-      "endLine": 97
-    },
+    "range": { "startLine": 73, "endLine": 97 },
     "type": "insight",
     "title": "F(n) ≥ 3, Explicitly",
-    "content": "all_six_orderings_realized bundles the six witnesses: since all 3! = 6 orderings of three consecutive totients are realized by windows inside [1,315], F(n) ≥ 3 for every n ≥ 315. This is the explicit lower-bound counterpart to the parent's asymptotic F(n) ≍ log log log n. extreme_runs_are_late isolates the two monotone runs — their lateness (m = 105, 313 versus m ≤ 16 for the mixed patterns) is the elementary reason F(n) grows only triple-logarithmically: building longer monotone runs of totients requires looking exponentially further out."
+    "content": "all_six_orderings_realized bundles the six pattern witnesses by the anonymous constructor: since all 3! = 6 orderings of three consecutive totients are realized by windows inside [1,315], F(n) ≥ 3 for every n ≥ 315. This is the explicit lower-bound counterpart to the parent's asymptotic F(n) ≍ log log log n. extreme_runs_are_late destructures the bundle to isolate the two monotone runs — their lateness (m = 105, 313 versus m ≤ 16 for the mixed patterns) is the elementary reason F(n) grows only triple-logarithmically: forcing a longer monotone run of totients requires looking exponentially further out.",
+    "mathContext": "All six orderings realized within $[1,315] \\Rightarrow F(n)\\ge 3$ for $n\\ge 315$. The gap between $m\\le 16$ (mixed) and $m=105,313$ (monotone) is the fingerprint of $\\log\\log\\log n$ growth.",
+    "significance": "key",
+    "relatedConcepts": ["constructive lower bound", "anonymous constructor", "asymptotic vs explicit", "triple logarithm"],
+    "prerequisites": ["logical conjunction", "Euler's totient function"]
   }
 ]

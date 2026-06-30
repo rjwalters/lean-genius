@@ -98,7 +98,7 @@
     },
     "type": "insight",
     "title": "Traditional Formulations via norm_num",
-    "content": "Archimedes' bounds are often stated as $3 + 10/71 < \\pi < 3 + 1/7$ rather than as improper fractions. These theorems establish the equivalence using `norm_num` for the arithmetic identity ($3 + 10/71 = 223/71$) and `linarith` to chain with the axiom. This demonstrates Lean's strength at verified arithmetic: the equality $3 + 10/71 = 223/71$ is not merely claimed but machine-checked.",
+    "content": "Archimedes' bounds are often stated as $3 + 10/71 < \\pi < 3 + 1/7$ rather than as improper fractions. These theorems establish the equivalence using `norm_num` for the arithmetic identity ($3 + 10/71 = 223/71$) and `linarith` to chain with the proved bounds `archimedes_lower_bound`/`archimedes_upper_bound`. This demonstrates Lean's strength at verified arithmetic: the equality $3 + 10/71 = 223/71$ is not merely claimed but machine-checked.",
     "mathContext": "$3 + \\frac{10}{71} = \\frac{223}{71}$ and $3 + \\frac{1}{7} = \\frac{22}{7}$",
     "significance": "supporting",
     "relatedConcepts": [

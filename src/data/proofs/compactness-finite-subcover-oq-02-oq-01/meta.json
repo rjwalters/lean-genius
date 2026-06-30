@@ -1,0 +1,151 @@
+{
+  "id": "compactness-finite-subcover-oq-02-oq-01",
+  "slug": "compactness-finite-subcover-oq-02-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "CompactnessFiniteSubcoverOq02Oq01",
+    "lineCount": 105,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcoverOq02Oq01.lean",
+    "sorries": 0
+  },
+  "title": "Heine–Cantor via the Lebesgue Number of the Preimage Cover",
+  "description": "A continuous map from a compact metric space to a metric space is uniformly continuous — proved along the route singled out by the parent entry rather than by invoking Mathlib's packaged CompactSpace.uniformContinuous_of_continuous. Fix ε > 0 and cover X by the open sets U z = f⁻¹(ball (f z) ε/2), one per point z. The Lebesgue number lemma returns a single δ > 0 with every δ-ball subordinate to some U z; then dist x y < δ places both x and y in one common ball ⊆ U z, so f x and f y are each within ε/2 of f z and the triangle inequality closes dist (f x) (f y) < ε. The Lebesgue radius read off the preimage cover IS a global modulus of continuity. The entry packages the ε–δ engine, the UniformContinuous headline, the continuity ⇔ uniform-continuity equivalence on compact metric domains, and the Cauchy-preservation corollary.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcoverOq02Oq01.lean",
+    "tags": [
+      "topology",
+      "metric-spaces",
+      "compactness",
+      "uniform-continuity",
+      "heine-cantor",
+      "lebesgue-number",
+      "modulus-of-continuity",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 105,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "heine_cantor_dist: the explicit ε–δ engine. For continuous f on a compact metric space and any ε > 0 it produces a SINGLE δ > 0 with dist x y < δ ⟹ dist (f x) (f y) < ε at every pair of points. The δ is the Lebesgue number (lebesgue_number_lemma_of_metric) of the cover of X by the f-preimages f⁻¹(ball (f z) ε/2); the ε/2 trick and the triangle inequality convert the subordination of one common δ-ball into the modulus bound. This realizes the parent's subordinate-net philosophy as a concrete global modulus of continuity, NOT via Mathlib's packaged CompactSpace.uniformContinuous_of_continuous.",
+      "heine_cantor: the headline, repackaging heine_cantor_dist through Metric.uniformContinuous_iff as UniformContinuous f — the Heine–Cantor theorem.",
+      "continuous_iff_uniformContinuous: the equivalence Continuous f ↔ UniformContinuous f on a compact metric domain, pairing Heine–Cantor (forward) with the general UniformContinuous.continuous (reverse). On compacta the two notions of continuity coincide.",
+      "cauchySeq_comp_of_continuous: the downstream corollary that a continuous map on a compact metric space preserves Cauchy sequences, read off Heine–Cantor since uniformly continuous maps preserve the Cauchy property."
+    ],
+    "prerequisites": [
+      "lebesgue_number_lemma_of_metric: for a compact set with an open cover in a metric space, there is δ > 0 with every δ-ball contained in some cover member",
+      "Metric.uniformContinuous_iff: UniformContinuous f ⇔ ∀ ε > 0, ∃ δ > 0, dist a b < δ → dist (f a) (f b) < ε",
+      "isOpen_ball and Continuous.preimage: preimages of open balls under a continuous map are open (the cover members)",
+      "UniformContinuous.continuous and UniformContinuous.comp_cauchySeq: uniform continuity implies continuity and preservation of Cauchy sequences",
+      "dist_triangle, dist_comm, mem_ball_self: the ε/2 triangle-inequality bookkeeping"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "lebesgue_number_lemma_of_metric",
+        "description": "For a compact set s in a metric space and an open cover, there is δ > 0 such that for every x ∈ s some cover member contains ball x δ. Supplies the single global δ from the preimage cover.",
+        "module": "Mathlib.Topology.MetricSpace.Pseudo.Lemmas"
+      },
+      {
+        "theorem": "Metric.uniformContinuous_iff",
+        "description": "The ε–δ characterization of uniform continuity in metric spaces. Repackages the explicit engine heine_cantor_dist as UniformContinuous f.",
+        "module": "Mathlib.Topology.MetricSpace.Pseudo.Defs"
+      },
+      {
+        "theorem": "UniformContinuous.comp_cauchySeq",
+        "description": "A uniformly continuous map sends Cauchy sequences to Cauchy sequences. Gives the Cauchy-preservation corollary.",
+        "module": "Mathlib.Topology.UniformSpace.Cauchy"
+      },
+      {
+        "theorem": "isCompact_univ",
+        "description": "The universal set of a compact space is compact. Feeds the Lebesgue number lemma on univ.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Heine–Cantor (Eduard Heine, Georg Cantor, 1870s) states that a continuous function on a compact set is uniformly continuous: a single modulus of continuity works everywhere at once, not just point-by-point. On metric spaces the cleanest modern proof routes through the Lebesgue number lemma (Henri Lebesgue): given the open cover of the domain by the f-preimages of ε/2-balls, compactness yields one radius δ small enough that every δ-ball is subordinate to a single cover member, and that δ is exactly the uniform modulus. This sits at the head of the standard chain compact ⟹ uniformly continuous ⟹ Riemann integrable for continuous functions, and underlies extension theorems and the construction of partitions of unity.",
+    "problemStatement": "**Open Question (oq-01 of oq-02)**: use the subordinate fine cover of the parent to prove Heine–Cantor — a continuous map from a compact metric space to a metric space is uniformly continuous — by taking the Lebesgue number of the cover by f-preimages of ε/2-balls and reading off a single δ that works at every point.",
+    "proofStrategy": "Fix ε > 0. Cover X by U z = f⁻¹(ball (f z) ε/2) for each z ∈ X: each U z is open (preimage of an open ball under the continuous f) and they cover X (z ∈ U z because ε/2 > 0). Apply lebesgue_number_lemma_of_metric to the compact univ to obtain δ > 0 with every δ-ball contained in some U z. Given dist x y < δ, the ball ball x δ contains both x and itself; pick the witnessing z with ball x δ ⊆ U z. Then x, y ∈ U z means dist (f x) (f z) < ε/2 and dist (f y) (f z) < ε/2, and dist (f x) (f y) ≤ dist (f x) (f z) + dist (f z) (f y) < ε. That is the ε–δ engine heine_cantor_dist; Metric.uniformContinuous_iff repackages it as UniformContinuous f (heine_cantor), and the equivalence and Cauchy-preservation corollaries follow.",
+    "keyInsights": [
+      "The Lebesgue number of the SPECIFIC cover by f-preimages of ε/2-balls is exactly a global modulus of continuity: subordination of a δ-ball to one U z is precisely the statement that f varies by less than ε on that ball.",
+      "The ε/2 split is essential: both x and y are within ε/2 of the SAME center value f z, so the triangle inequality gives the full ε — neither point need be close to a fixed reference, only to a common one.",
+      "The proof is self-contained along the parent's route: it uses lebesgue_number_lemma_of_metric directly and does NOT invoke Mathlib's packaged CompactSpace.uniformContinuous_of_continuous, demonstrating the subordinate-net technique end to end.",
+      "On a compact metric domain continuity and uniform continuity coincide (continuous_iff_uniformContinuous); the forward direction is the whole content, the reverse is general.",
+      "Honest provenance: the ingredient (Lebesgue number lemma) is Mathlib's and Mathlib also packages Heine–Cantor directly, so the badge is 'mathlib'; the formalized content is the self-contained derivation along the Lebesgue-number route plus the equivalence and Cauchy corollaries."
+    ]
+  },
+  "sections": [
+    {
+      "id": "epsilon-delta-engine",
+      "title": "The ε–δ Engine from the Lebesgue Number",
+      "startLine": 61,
+      "endLine": 84,
+      "summary": "heine_cantor_dist builds the open cover U z = f⁻¹(ball (f z) ε/2), invokes lebesgue_number_lemma_of_metric on the compact univ for a single δ, and turns subordination of a common δ-ball into dist (f x) (f y) < ε via the ε/2 triangle inequality."
+    },
+    {
+      "id": "uniform-continuity",
+      "title": "Heine–Cantor: Uniform Continuity",
+      "startLine": 86,
+      "endLine": 92,
+      "summary": "heine_cantor repackages the ε–δ engine through Metric.uniformContinuous_iff to conclude UniformContinuous f — the headline theorem."
+    },
+    {
+      "id": "equivalence-and-cauchy",
+      "title": "Equivalence and Cauchy Preservation",
+      "startLine": 94,
+      "endLine": 104,
+      "summary": "continuous_iff_uniformContinuous records that continuity and uniform continuity coincide on a compact metric domain, and cauchySeq_comp_of_continuous reads off that continuous maps there preserve Cauchy sequences."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-02-oq-01-oq-01",
+      "question": "Quantify the modulus: for a Lipschitz (or Hölder) f on a compact metric space, show the Lebesgue-number δ extracted above can be taken linear (resp. polynomial) in ε, recovering an explicit modulus of continuity rather than a bare existence.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "compactness-finite-subcover-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: oq-02 builds the subordinate finite ε-net from the Lebesgue number lemma; this entry cashes that machinery in for Heine–Cantor, using the Lebesgue number of the cover by f-preimages of ε/2-balls as the global modulus of continuity."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.MetricSpace.Pseudo.Lemmas",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of lebesgue_number_lemma_of_metric, the single non-trivial ingredient."
+    },
+    {
+      "title": "Principles of Mathematical Analysis",
+      "author": "Rudin",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "description": "Classical statement and proof of the Heine–Cantor theorem (Theorem 4.19): continuous functions on compact metric spaces are uniformly continuous."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A continuous map f from a compact metric space to a metric space is uniformly continuous (heine_cantor). The proof follows the parent's route: cover X by U z = f⁻¹(ball (f z) ε/2), take the Lebesgue number δ of that cover, and observe that dist x y < δ forces both f x and f y within ε/2 of a common f z, so dist (f x) (f y) < ε (heine_cantor_dist). The entry adds the continuity ⇔ uniform-continuity equivalence on compact metric domains (continuous_iff_uniformContinuous) and the Cauchy-preservation corollary (cauchySeq_comp_of_continuous). 105 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The single ingredient, the Lebesgue number lemma, is Mathlib's, and Mathlib also packages Heine–Cantor directly (hence the mathlib badge); the formalized content is the self-contained derivation along the Lebesgue-number route — turning the parent's subordinate-net structure into a global modulus of continuity — together with the equivalence and Cauchy corollaries read off it.",
+    "openQuestions": [
+      "Make the modulus quantitative for Lipschitz/Hölder maps, taking δ linear/polynomial in ε."
+    ]
+  }
+}

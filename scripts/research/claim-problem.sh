@@ -307,7 +307,7 @@ claim_random_problem() {
         score=$(get_knowledge_score "$problem_id")
         available+=("$problem_id")
         scores+=("$score")
-    done < <(jq -r '.candidates[] | select(.status != "completed" and .status != "blocked" and .status != "graduated") | .id' "$POOL_FILE" 2>/dev/null)
+    done < <(jq -r '.candidates[] | select(.status != "completed" and .status != "blocked" and .status != "graduated" and .status != "skipped") | .id' "$POOL_FILE" 2>/dev/null)
 
     if [[ ${#available[@]} -eq 0 ]]; then
         echo "No available problems to claim" >&2

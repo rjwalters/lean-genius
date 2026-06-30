@@ -1,26 +1,62 @@
 [
   {
+    "id": "ann-defs",
+    "proofId": "pell-equation-oq-04",
+    "range": { "startLine": 50, "endLine": 63 },
+    "type": "definition",
+    "title": "The Norm Form and Composition in ℤ[√D]",
+    "content": "Two elementary definitions carry the whole theory. `normForm D x y = x² − D y²` is the norm of $x+y\\sqrt D$ in $\\mathbb{Z}[\\sqrt D]$, and the equation $x^2-Dy^2=N$ is `normForm D x y = N`. `comp D p q = (p_1 q_1 + D p_2 q_2,\\ p_1 q_2 + p_2 q_1)$ is multiplication in $\\mathbb{Z}[\\sqrt D]$: $(x+y\\sqrt D)(u+v\\sqrt D)=(xu+Dyv)+(xv+yu)\\sqrt D$. The `@[simp]` projections `comp_fst`/`comp_snd` expose the coordinates so later `ring` proofs see through `comp`.",
+    "mathContext": "$N(x+y\\sqrt D)=x^2-Dy^2;\\quad (x+y\\sqrt D)(u+v\\sqrt D)=(xu+Dyv)+(xv+yu)\\sqrt D$",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic ring ℤ[√D]", "norm of a quadratic integer", "binary quadratic form"],
+    "prerequisites": ["rings of quadratic integers"]
+  },
+  {
     "id": "ann-multiplicativity",
     "proofId": "pell-equation-oq-04",
     "range": { "startLine": 67, "endLine": 87 },
     "type": "insight",
     "title": "Brahmagupta's Identity is Multiplicativity of the Norm",
-    "content": "`normForm_mul` is the single identity normForm D (xu+Dyv) (xv+yu) = (x²−Dy²)(u²−Dv²), closed by `ring` because the cross terms 2Dxyuv cancel. This is exactly the statement that the norm of x + y√D in ℤ[√D] is multiplicative — Brahmagupta's 7th-century composition law. `sol_comp` is the immediate consequence: a solution of x²−Dy²=M and a solution of x²−Dy²=N compose to a solution of x²−Dy²=MN. Everything else in the file is downstream of this one line."
+    "content": "`normForm_mul` is the single identity normForm D (xu+Dyv) (xv+yu) = (x²−Dy²)(u²−Dv²), closed by `ring` because the cross terms 2Dxyuv cancel. This is exactly the statement that the norm of x + y√D in ℤ[√D] is multiplicative — Brahmagupta's 7th-century composition law (samasa). `sol_comp` is the immediate consequence: a solution of x²−Dy²=M and a solution of x²−Dy²=N compose to a solution of x²−Dy²=MN. Everything else in the file is downstream of this one line.",
+    "mathContext": "$N(\\alpha\\beta)=N(\\alpha)N(\\beta);\\quad (x^2-Dy^2)(u^2-Dv^2)=(xu+Dyv)^2-D(xv+yu)^2$",
+    "significance": "key",
+    "relatedConcepts": ["Brahmagupta–Fibonacci identity", "multiplicative norm", "composition of solutions", "ring tactic"],
+    "prerequisites": ["polynomial identities", "norm multiplicativity"]
   },
   {
     "id": "ann-pell-group",
     "proofId": "pell-equation-oq-04",
-    "range": { "startLine": 116, "endLine": 159 },
+    "range": { "startLine": 97, "endLine": 167 },
     "type": "insight",
     "title": "The Norm-1 Solutions Form an Abelian Group",
-    "content": "`PellUnit D` is the subtype of integer points with x²−Dy²=1, and it carries a genuine `CommGroup` instance: the identity is (1,0), multiplication is composition (`comp`), and the inverse of (x,y) is its conjugate (x,−y) — because (x,y)·(x,−y) = (x²−Dy², 0) = (1,0) precisely when the norm is 1. Associativity and commutativity are `ring` facts about the coordinates. This is the Pell group, and `unit_smul_sol` shows it *acts* on the solutions of every right-hand side N (since N·1 = N), so the N-solutions are partitioned into group orbits — the structural meaning of 'generalize to arbitrary N'."
+    "content": "`PellUnit D` is the subtype of integer points with x²−Dy²=1, and it carries a genuine `CommGroup` instance: the identity is (1,0), multiplication is composition (`comp`), and the inverse of (x,y) is its conjugate (x,−y) — because (x,y)·(x,−y) = (x²−Dy², 0) = (1,0) precisely when the norm is 1. Associativity and commutativity are `ring` facts about the coordinates (after `Prod.ext_iff`). This is the Pell group, and `unit_smul_sol` shows it *acts* on the solutions of every right-hand side N (since N·1 = N), so the N-solutions are partitioned into group orbits — the structural meaning of 'generalize to arbitrary N'.",
+    "mathContext": "$\\{(x,y):x^2-Dy^2=1\\}$ is a $\\mathrm{CommGroup}$; inverse $(x,y)^{-1}=(x,-y)$",
+    "significance": "key",
+    "relatedConcepts": ["Pell group", "CommGroup instance", "conjugate (inverse)", "group action on solutions", "orbits"],
+    "prerequisites": ["abelian groups", "group actions", "subtypes in Lean"]
+  },
+  {
+    "id": "ann-negpell-bridge",
+    "proofId": "pell-equation-oq-04",
+    "range": { "startLine": 160, "endLine": 167 },
+    "type": "technique",
+    "title": "The Negative-Pell Bridge and Conjugation Symmetries",
+    "content": "`sol_neg_one_comp` is `sol_comp` specialised at M = N = −1: two solutions of the negative-Pell form x²−Dy²=−1 compose to a solution of the classical Pell form x²−Dy²=+1, since (−1)(−1)=1. This ties the gallery's negative-Pell siblings back into the same multiplicative structure — they are the order-2 elements relative to the Pell group. `normForm_neg_snd` and `normForm_neg_fst` record the conjugation symmetries: the form is invariant under flipping the sign of either coordinate, the reflection underlying the group inverse.",
+    "mathContext": "$N(\\alpha)=N(\\beta)=-1 \\Rightarrow N(\\alpha\\beta)=1;\\quad \\mathrm{normForm}\\,D\\,x\\,(-y)=\\mathrm{normForm}\\,D\\,x\\,y$",
+    "significance": "supporting",
+    "relatedConcepts": ["negative Pell equation", "conjugation symmetry", "order-2 elements", "sibling entries"],
+    "prerequisites": ["the negative Pell equation x²−Dy²=−1"]
   },
   {
     "id": "ann-infinitude",
     "proofId": "pell-equation-oq-04",
-    "range": { "startLine": 168, "endLine": 233 },
+    "range": { "startLine": 168, "endLine": 251 },
     "type": "insight",
     "title": "One Seed plus One Unit gives Infinitely Many Solutions",
-    "content": "The orbit of a seed (a,b) under repeated composition with a fixed unit (u,v) keeps norm N at every step (`orbit_sol`, via multiplicativity and the unit having norm 1). When the data is positive, a nontrivial unit has u ≥ 2 (since u² = 1 + Dv² ≥ 2), so the first coordinate at least doubles each step (`orbit_fst_strictMono`) and is therefore strictly increasing — hence the orbit map ℕ → solutions is injective. `Set.infinite_of_injective_forall_mem` turns this into `infinite_solutions`: x²−Dy²=N has infinitely many solutions once it has one positive solution and a nontrivial unit. The worked instance derives that x²−2y²=7 has infinitely many integer solutions from the seed (3,1) and the fundamental unit (3,2) of ℤ[√2]."
+    "content": "The orbit of a seed (a,b) under repeated composition with a fixed unit (u,v) keeps norm N at every step (`orbit_sol`, via multiplicativity and the unit having norm 1). When the data is positive, a nontrivial unit has u ≥ 2 (since u² = 1 + Dv² ≥ 2), so the first coordinate at least doubles each step (`orbit_fst_strictMono`) and is therefore strictly increasing — hence the orbit map ℕ → solutions is injective (`strictMono_nat_of_lt_succ`). `Set.infinite_of_injective_forall_mem` turns this into `infinite_solutions`: x²−Dy²=N has infinitely many solutions once it has one positive solution and a nontrivial unit — the clean dichotomy 'none, or infinitely many'. The worked instance derives that x²−2y²=7 has infinitely many integer solutions from the seed (3,1) and the fundamental unit (3,2) of ℤ[√2], with (3,1)·(3,2)=(13,9) shown explicitly.",
+    "mathContext": "$\\text{orbit}_k=(a,b)\\cdot(u,v)^k,\\ u\\ge 2 \\Rightarrow \\text{fst strictly}\\uparrow \\Rightarrow \\{x^2-Dy^2=N\\}\\text{ infinite}$",
+    "significance": "key",
+    "relatedConcepts": ["orbit", "strictMono_nat_of_lt_succ", "Set.infinite_of_injective_forall_mem", "fundamental unit", "dichotomy"],
+    "prerequisites": ["group orbits", "strict monotonicity ⟹ injectivity", "infinite sets"]
   }
 ]

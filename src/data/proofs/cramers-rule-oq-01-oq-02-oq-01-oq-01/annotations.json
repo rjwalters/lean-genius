@@ -132,15 +132,27 @@
     "prerequisites": ["DivisionRing.zero_mul / mul_zero", "Finset.sum_const_zero"]
   },
   {
-    "id": "ann-qdetn-step-eq-qdetf",
+    "id": "ann-aux-insert-row-sign",
     "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
-    "range": { "startLine": 244, "endLine": 269 },
-    "type": "concept",
-    "title": "Field-consistency bridge qdetN_step_eq_qdetF (S3 SCAFFOLD, deferred sorry)",
-    "content": "The strategic linchpin of the entire program: over a field `F`, choosing `Minv := (minorIJ A i j)⁻¹` (Mathlib's `Matrix.nonsingInv`) inside `qdetN_step` recovers `qdetF A i j = det A / det(minor)`. This identity bridges the commutative (S2) and non-commutative (S3) formulations and reduces the entire Route B construction to a *known* Mathlib identity — the Laplace cofactor expansion `Matrix.det_succ_row`. The proof carries a `sorry` deferred to S4. The detailed strategy in the docstring is: (1) expand `Matrix.inv_def` to rewrite `(minorIJ A i j)⁻¹` as `(1 / det(minor)) • adjugate(minor)`; (2) factor the scalar `1/det(minor)` out of the double sum; (3) apply `Matrix.det_succ_row` along row `i`, which gives `det A = ∑_k A i k · (-1)^(i+k) · det(minor_{i,k}(A))`; (4) separate the `k = j` summand from the remaining cofactor terms; (5) use `Matrix.adjugate_apply` (which relates `(adjugate M) q p` to `(-1)^(p+q) · det(submatrix_{p,q} M)`) to align signs. Estimated S4 proof size: ~60–90 Lean lines, dominated by `Fin.succAbove` re-indexing.",
-    "mathContext": "$\\mathrm{qdetN\\_step}(A, i, j, M^{-1}) = A_{ij} - \\sum_{p,q} A_{i,\\widehat{\\jmath}_q} \\cdot M^{-1}_{q,p} \\cdot A_{\\widehat{\\imath}_p, j} \\stackrel{?}{=} \\frac{\\det A}{\\det M} = |A|^{(F)}_{ij}.$ The equality follows from Laplace expansion of $\\det A$ along row $i$ combined with the adjugate's definition $(\\mathrm{adj}\\,M)_{q,p} = (-1)^{p+q} \\det(\\mathrm{submatrix}_{p,q}\\,M)$.",
+    "range": { "startLine": 251, "endLine": 321 },
+    "type": "technique",
+    "title": "The combinatorial sign lemma aux_insert_row_sign",
+    "content": "The single genuinely non-trivial ingredient of the bordered-determinant crux. Two ways of selecting the same `(m+1)`-element row set `Fin (m+2) \\ {i.succAbove p}` are compared: the 'insert row i at slot p' selection `fun r => if r = p then i else i.succAbove r`, and the sorted selection `(i.succAbove p).succAbove`. Their determinants (same columns) differ by `(-1)^(i + i.succAbove p + 1)`. The proof expands BOTH determinants along the row carrying `i` — via `Matrix.det_succ_row` at slot `p` on the left and at slot `p.predAbove i` on the right. The two resulting cofactor minors are literally equal by `Fin.succAbove_succAbove_succAbove_predAbove` (the Mathlib lemma equating `i.succAbove ∘ p.succAbove` with `(i.succAbove p).succAbove ∘ (p.predAbove i).succAbove`), and `Fin.succAbove_succAbove_predAbove` certifies that `i` does sit at slot `p.predAbove i`. The residual sign reduces to a parity identity on `Fin` indices, discharged by `omega` after a case split on `castSucc p < i` and `neg_one_pow_eq_pow_mod_two`.",
+    "mathContext": "Both `i.succAbove ∘ p.succAbove` and `(i.succAbove p).succAbove ∘ (p.predAbove i).succAbove` are the order embedding `Fin m → Fin (m+2)` with holes at `{i, i.succAbove p}`, so the cofactor minors agree termwise; the determinants then differ only by the position of `i` in each enumeration, giving the sign `(-1)^{i + i.succAbove p + 1}`.",
     "significance": "key",
-    "relatedConcepts": ["Matrix.det_succ_row", "Matrix.adjugate", "Matrix.adjugate_apply", "Matrix.inv_def", "Laplace expansion", "field-consistency bridge"],
-    "prerequisites": ["Matrix.nonsingInv", "Matrix.det_succ_row", "Matrix.adjugate_apply", "Fin.succAbove sign-of-permutation conventions"]
+    "relatedConcepts": ["Matrix.det_succ_row", "Fin.succAbove", "Fin.predAbove", "Fin.succAbove_succAbove_succAbove_predAbove", "permutation sign", "Laplace expansion"],
+    "prerequisites": ["Matrix.det_succ_row", "Fin.succAbove / Fin.predAbove value lemmas", "neg_one_pow_eq_pow_mod_two"]
+  },
+  {
+    "id": "ann-qdetn-step-eq-qdetf-aux",
+    "proofId": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 323, "endLine": 419 },
+    "type": "concept",
+    "title": "The division-free bordered-determinant crux qdetN_step_eq_qdetF_aux",
+    "content": "The combinatorial heart of field consistency, stated over the commutative ring `F` without any division: `det M · A i j − ∑_{p,q} A i (succAbove j q) · adj(M) q p · A (succAbove i p) j = (-1)^(i+j) · det A`, where `M = minorIJ A i j`. This is the classical Schur-complement / bordered-determinant identity `det M · a − bᵀ adj(M) c = (-1)^(i+j) det A`, valid universally (Mathlib's block-determinant lemmas require invertibility, so this adjugate form is proved directly). Proof: (1) column-`j` Laplace-expand `det A` with `Matrix.det_succ_column` and split off the row-`i` term, giving `(-1)^(i+j) det A = det M · A i j + ∑_p (-1)^(i+σp) A (σp,j) det(minor_p)`; (2) identify the inner `q`-sum `∑_q A i (τq) · adj(M) q p` with the determinant of the 'insert row i at slot p' matrix, using `Matrix.det_succ_row` + `Matrix.adjugate_fin_succ_eq_det_submatrix`; (3) apply the sign lemma `aux_insert_row_sign` to convert that determinant into `(-1)^(i+σp+1) det(minor_p)`; (4) the two sums cancel termwise via `pow_succ`. With `aux` proved, the field-consistency bridge `qdetN_step_eq_qdetF` and the whole file are sorry-free.",
+    "mathContext": "$\\det M \\cdot A_{ij} - \\sum_{p,q} A_{i,\\widehat{\\jmath}_q}\\,(\\mathrm{adj}\\,M)_{q,p}\\,A_{\\widehat{\\imath}_p,j} = (-1)^{i+j}\\det A.$ Multiplying the field identity $|A|_{ij} = A_{ij} - b^\\top M^{-1} c$ through by $\\det M$ and using $M^{-1} = (\\det M)^{-1}\\mathrm{adj}\\,M$ turns it into this purely polynomial statement; it is the cofactor expansion of the bordered matrix $\\begin{psmallmatrix} A_{ij} & b^\\top \\\\ c & M \\end{psmallmatrix}$ reindexed to put row $i$, column $j$ in the corner.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_succ_column", "Matrix.det_succ_row", "Matrix.adjugate_fin_succ_eq_det_submatrix", "Schur complement", "bordered determinant", "field-consistency bridge"],
+    "prerequisites": ["Matrix.det_succ_column", "Matrix.adjugate_fin_succ_eq_det_submatrix", "aux_insert_row_sign", "Fin.sum_univ_succAbove"]
   }
 ]

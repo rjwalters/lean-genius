@@ -176,8 +176,13 @@ theorem riesz_lp_surjective_sigma_finite
     [SigmaFinite μ] [Fact (1 ≤ p)] :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
-      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ :=
-  RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite p q hp1 hptop hpq
+      ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := fun φ => by
+  -- The complete σ-finite Riesz theorem now also returns the converse-Hölder norm
+  -- bound `eLpNorm g q μ ≤ ‖φ‖`; this re-export keeps the existence/representation
+  -- interface and simply discards the (here unused) quantitative bound.
+  obtain ⟨g, hg, _hg_norm, hrep⟩ :=
+    RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite p q hp1 hptop hpq φ
+  exact ⟨g, hg, hrep⟩
 
 /-
 ## Sorries Summary

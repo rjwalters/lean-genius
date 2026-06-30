@@ -25,11 +25,11 @@ import Proofs.KonigsbergOQ02
   5. `removeArcList_arcCount`: residual arcCount = D.arcCount - removed (PROVED)
   6. `removeArcList_balanced`: balance preserved when removing a circuit (PROVED)
   7. `directed_euler_circuit_sufficient_corrected`: corrected statement with
-     `hconn : D.isStronglyConnected`; Hierholzer WF induction is sorry'd.
+     `hconn : D.isStronglyConnected`; Hierholzer WF induction is PROVED (0 sorries).
 
   The key sub-lemmas, splice constructor, and both residual lemmas form the
-  complete mathematical infrastructure for Hierholzer's algorithm. The remaining
-  sorry is purely the well-founded induction combining them.
+  complete mathematical infrastructure for Hierholzer's algorithm. The well-founded
+  induction combining them is now fully formalized — the whole file is 0 sorries.
 
   Parent: KonigsbergOQ02.lean (Digraph, Walk, isEulerian, degree definitions)
 -/

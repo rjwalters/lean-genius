@@ -59,6 +59,24 @@
     "mathlib_version": "4.26.0",
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "The Apéry numbers bₙ = ∑_{k=0}^n C(n,k)²·C(n+k,k)² (1, 5, 73, 1445, 33001, …) were introduced by Roger Apéry in his celebrated 1978–1979 proof that ζ(3) = ∑ 1/m³ is irrational — a result Euler had sought but never obtained, and which Henri Cohen and Alfred van der Poorten reconstructed in van der Poorten's famous 1979 account 'A proof that Euler missed'. Apéry's argument hinges on a delicate growth estimate: the bₙ must grow geometrically with base strictly less than the cube of the denominator growth e³ so that the rational approximations to ζ(3) converge fast enough to violate Liouville-type bounds for rationals. The exact exponential base of bₙ is the irrational (1+√2)⁴ = 17 + 12√2 ≈ 33.97, the square of the dominant root of Apéry's three-term recurrence (n+1)³ uₙ₊₁ = (2n+1)(17n²+17n+5) uₙ − n³ uₙ₋₁. Capturing that base elementarily — without invoking the recurrence as an axiom — is exactly what this entry's two-sided bracket 4ⁿ ≤ bₙ ≤ 64ⁿ accomplishes on the formalization side.",
+    "problemStatement": "**Parent's open questions (basel-problem-oq-01-oq-01-oq-02-oq-01).** The parent proved the axiom-free lower bound 4ⁿ ≤ bₙ but left open (i) a matching axiom-free geometric UPPER bound bₙ ≤ Cⁿ, and (ii) the parity of bₙ. The grandparent ζ(3) file supplies the upper half only as an axiom (bₙ ≤ 34ⁿ).\n\n**Headline (aperyB_le_64_pow):** for all n, aperyB n ≤ 64 ^ n.\n\n**Parity (aperyB_odd):** for all n, Odd (aperyB n).",
+    "proofStrategy": "**Upper bound.** (1) sum_choose_sq: the diagonal Vandermonde identity ∑_{k≤n} C(n,k)² = C(2n,n), via the antidiagonal expansion of (n+n).choose n paired through Nat.choose_symm. (2) aperyB_le_centralBinom_cube: bound each C(n+k,k) ≤ C(2n,n) (Nat.choose_le_choose then Nat.choose_le_centralBinom), so bₙ ≤ (∑ C(n,k)²)·C(2n,n)² = C(2n,n)³ — the Vandermonde collapse is what keeps it geometric, not merely sub-exponential. (3) centralBinom_le_four_pow: C(2n,n) ≤ 4ⁿ by keeping a single term of ∑_i C(2n,i) = 2^(2n). (4) Chain to bₙ ≤ (4ⁿ)³ = 64ⁿ.\n\n**Parity.** two_dvd_choose_mul: the trinomial-revision identity C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k) (Nat.choose_mul) exposes the central factor C(2k,k), even for k ≥ 1. Squaring keeps each k ≥ 1 summand even; aperyB_odd peels the k = 0 term (= 1) with Finset.sum_range_succ' and absorbs the even remainder.",
+    "keyInsights": [
+      "The Vandermonde collapse ∑ C(n,k)² = C(2n,n) is the crux: bounding each C(n+k,k) by C(2n,n) leaves a residual squared-binomial row that is EXACTLY the central coefficient, so no n-fold polynomial factor leaks and the upper bound stays geometric (bₙ ≤ C(2n,n)³) rather than degrading to C(2n,n)³·poly(n)",
+      "The whole upper bound is built from off-the-shelf central-binomial facts (C(n+k,k) ≤ C(2n,n) and C(2n,n) ≤ 4ⁿ), so it is fully axiom-free — it replaces the grandparent ζ(3) file's axiomatic bₙ ≤ 34ⁿ on the elementary side without re-deriving Apéry's recurrence",
+      "Parity reduces to a single divisibility: the trinomial-revision identity C(n,k)·C(n+k,k) = C(n+k,2k)·C(2k,k) surfaces the even central binomial C(2k,k) (k ≥ 1), so every summand but k = 0 vanishes mod 2 and bₙ ≡ 1",
+      "The crude base 64 versus the true (1+√2)⁴ ≈ 33.97 measures the slack in bounding every C(n+k,k) uniformly by C(2n,n); the dominant index is near k ≈ 0.8n, and a peak-localized estimate is the route to a sharper constant",
+      "Working entirely over ℕ with Nat.choose keeps the argument decidable and axiom-free (no native_decide, no real analysis), in contrast to the analytic recurrence-based bound it supersedes"
+    ],
+    "prerequisites": [
+      "Binomial coefficients and the central binomial coefficient",
+      "Vandermonde's convolution identity",
+      "Apéry's proof of the irrationality of ζ(3)",
+      "Elementary divisibility and parity arguments"
+    ]
+  },
   "leanFile": {
     "imports": [
       "Proofs.BaselProblemOQ01OQ01OQ02OQ01",
