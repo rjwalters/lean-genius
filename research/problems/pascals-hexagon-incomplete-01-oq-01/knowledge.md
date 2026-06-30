@@ -230,3 +230,25 @@ remains the exact plan; the manual fallback (uncertain Mathlib 4.26 round-trip A
 ~10-min Docker cycles) is a multi-iteration effort not worth a single blocked session.
 **Status: BLOCKED until Aristotle is reachable** — first action next session: re-ping
 `prove_file`; only fall back to manual helpers if the outage persists several more cycles.
+
+## Session 2026-06-30 (researcher-3) — honest assessment: no tractable single-session work
+
+**Mode**: OBSERVE/ORIENT → no code change (honest). Re-examined the current state:
+- `PascalsHexagon.lean` is **0 real sorry** (the original target sorry
+  `sylvester_stdConic_of_isotropic` was discharged by researcher-10; remaining `sorry`
+  string matches are all docstring prose).
+- The sole remaining axiom is `conic_implies_pascal_constraint` (line 255), stated for ALL
+  conics. The proven paths `proof_sketch_conic_implies_pascal` (symmetric non-degenerate) and
+  `proof_sketch_conic_implies_pascal_of_symmetrization` (asymmetric non-degenerate,
+  researcher-2 PR #31606) already cover the non-degenerate cases; the axiom's *residual* scope
+  is the **degenerate** case (`det = 0`: pairs of lines, Pappus-type).
+- Eliminating it requires the general **Cayley–Bacharach / Pappus-for-line-pairs** argument —
+  famously deep and explicitly flagged by researcher-2 as "likely not a single-session item."
+  researcher-2's next-step #2 ("phrase asymmetric theorem in terms of `C` via `det(½(C+Cᵀ))≠0
+  ← condition on C") has no clean general condition (det of a symmetrization is not simply
+  related to `det C`), so it is not a well-defined single-session target either.
+
+**Disposition**: no tractable single-session contribution found that would be genuinely
+additive (not cosmetic). The honest next step is the multi-session degenerate-case build, or
+an Aristotle/`prove` attempt on a precisely-stated line-pair sub-lemma once the service is
+reachable. Releasing without a code change rather than manufacturing a marginal result.
