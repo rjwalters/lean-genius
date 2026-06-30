@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1-oq-02-incomplete-01",
   "title": "erdos-1-oq-02-incomplete-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "VERIFIED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -40,7 +40,8 @@
       "anticoncentration_bound was mathematically FALSE: `2ⁿ ≤ √(2/π)·2(S+1)/√Q` fails for A={1,2} (asserts 4 ≤ 2.85) and for essentially all distinct-subset-sum sets. A false axiom makes the file logically unsound.",
       "Replaced with the rigorous Chebyshev anticoncentration bound `2ⁿ ≤ 3·√(Σaᵢ²)+2`, verified true on all test sets incl. the asymptotic extremal (powers of two: 256 ≤ 445).",
       "The file had ALSO broken on the Mathlib 4.26 bump (toolchain v4.26.0): div_le_iff→div_le_iff₀, a simp recursion in sum_sq_le_card_mul_max_sq (Finset.card_eq_sum_ones loop), an nlinarith cast-atom mismatch in sum_sq_cauchy_schwarz (ih not push_cast'd), and omega on the nonlinear n<n*n.",
-      "dfx_lower_bound re-derived via Σaᵢ²≤n·N² (sum_sq_le_card_mul_max_sq) → √Q≤√n·N → 2ⁿ≤3·√n·N+2; dropped the now-unnecessary hN/hA_pos hypotheses (the +2 slack covers small n)."
+      "dfx_lower_bound re-derived via Σaᵢ²≤n·N² (sum_sq_le_card_mul_max_sq) → √Q≤√n·N → 2ⁿ≤3·√n·N+2; dropped the now-unnecessary hN/hA_pos hypotheses (the +2 slack covers small n).",
+      "Session 2026-06-30 (researcher-2): AXIOM DISCHARGED. The anticoncentration_bound axiom (2^n ≤ 3√Q+2) is now a proved theorem in Erdos1OQ02.lean (0 axioms / 0 sorries, docker-verified [7744]); gallery entry erdos-1-oq-02 flipped axiomatized→verified. Combine of the prior ingredients: V = 2^n distinct same-parity doubled deviations with ΣV v²=2^n Q; split at ⌈2√Q⌉ — central-interval parity count ≤ L+1, discrete Chebyshev tail (new ℤ-indexed card_mul_le_sum_of_nonneg) ≤ 2^n/4 — gives (3/4)2^n ≤ 2√Q+1 ⇒ 2^n ≤ 3√Q+2. Q≥1 from distinct-subset-sums forcing 0∉A."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -53,3 +53,45 @@ narrow import set. Gallery meta (`erdos-835`) recorded 2 sorries.
 `Erdos835Problem.lean` compiles clean (EXIT 0); `#print axioms k_equals_2` /
 `chromaticNumber` = standard triple only (kernel `decide`, no ofReduceBool/sorryAx).
 File status stays `axiomatized` (6 axioms) but now 0 sorries and actually builds.
+
+## Session 2026-06-30 (researcher-1) — ACT: added the UPPER half (proper colouring)
+
+**Mode**: REVISIT (pool re-served the COMPLETED slug, MODERATE depth-first).
+**Outcome**: progress — new math, VERIFIED 0-axiom green build.
+
+### Finding
+The file proved only the *lower* half of `property ⇔ χ(J(2k,k)) = k+1`
+(surjectivity: no colour wasted). The complementary *upper* half — that the
+property is a genuine **proper** colouring of the Johnson graph — was absent.
+Also two stale issues: research-json `sorryCount` read 4 (actual 0, prose
+mentions of "sorry"), and the docstring referenced a nonexistent theorem
+`erdosRosenfeld_uses_all_colors` (actual name `erdosRosenfeld_range_univ`).
+
+### What I Did
+- Added `erdosRosenfeld_window_injective`: within any `(k+1)`-window `A`, χ is
+  injective on the `k`-subsets of `A`. Lift χ to a total `φ` (junk default off
+  the k-subsets); the property surjects the k-subsets of A onto `Fin(k+1)`, and
+  `|A.powersetCard k| = C(k+1,k) = k+1 = |Fin(k+1)|`, so
+  `Finset.injOn_of_surjOn_of_card_le` promotes surjection → injection.
+- Added `erdosRosenfeld_proper`: adjacent k-subsets in J(2k,k) (`|S∩T| = k-1`,
+  hence `|S∪T| = k+1` via `Finset.card_union_add_card_inter` + omega) sit in the
+  common (k+1)-window `S∪T`, so window-injectivity forces distinct colours.
+- Fixed the doc references; updated research-json + gallery meta/annotations
+  (4→6 thm, 128→207 lines, sorryCount 4→0; +1 section, +1 annotation,
+  realigned the 5 existing annotation line-ranges).
+
+### Result
+`docker-build.sh Proofs.Erdos835Incomplete01` green (7743 jobs).
+`#print axioms` of both new theorems = [propext, Classical.choice, Quot.sound]
+only (no sorryAx / ofReduceBool). File: 6 thm / 4 def / 0 sorry / 0 axiom.
+
+### GOTCHA
+After `rw [dif_pos h]` the goal `χ ⟨U.val, _⟩ = χ U` was *not* auto-closed by
+rw's reducible-transparency rfl (Subtype proof-irrelevance needs default
+transparency). Fix: `exact dif_pos ⟨U.2.1, U.2.2⟩` — `exact` checks defeq at
+default transparency and closes it directly.
+
+### Next Steps (unchanged, all hard)
+- Repair scaffold `Erdos835Problem.lean` parse error; discharge chromaticNumber.
+- Formalize the explicit k=2 colouring of J(4,2).
+- Formalize computational χ(J(2k,k)) > k+1 for 3≤k≤8 (the 6 sibling axioms).

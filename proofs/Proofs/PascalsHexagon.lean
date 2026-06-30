@@ -1346,15 +1346,19 @@ private lemma conic_eq_of_qf_eq_of_symmetric (C D : Conic)
   ext i j
   fin_cases i <;> fin_cases j <;> assumption
 
-/-- **The linear-algebra core of the Sylvester reduction (remaining gap).**
+/-- **The linear-algebra core of the Sylvester reduction (PROVED, 0-sorry).**
     A non-degenerate symmetric real conic `C` carrying a real point is *congruent to a
     nonzero scalar multiple of* `stdConic = diag(1,1,-1)`: there is an invertible `M` and
     `c ≠ 0` with `Mᵀ * stdConic * M = c • C`.
 
     Combined with `pointOnConic_projTransform_iff_of_congr` this gives the full
-    `sylvester_stdConic_of_isotropic` below — so the *only* unproved content of Pascal's
-    theorem for general symmetric non-degenerate conics is now this single, purely
-    matrix-algebraic statement (Sylvester's law of inertia + a sign/permutation correction).
+    `sylvester_stdConic_of_isotropic` below — completing the symmetric non-degenerate case of
+    Pascal's theorem with no `sorry`. The proof realises the plan below: Sylvester's law of
+    inertia (`equivalent_one_neg_one_weighted_sum_squared`) yields ±1 weights and an isometry,
+    which is turned into a *matrix* congruence at the quadratic-form level via
+    `conic_eq_of_qf_eq_of_symmetric` (avoiding the abstract `toMatrix'` round-trip); the real
+    point forces indefiniteness, and `diag_pm_one_congr_stdConic` supplies the final
+    sign/permutation correction, assembled with `M := P⁻¹ * L`.
 
     Validated proof plan (every step checked against the Mathlib 4.26 API):
     1. `mathlibQF_separatingLeft C hC_sym hC_nd` discharges the hypothesis of
@@ -1408,7 +1412,122 @@ private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
     (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
     ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
       ∃ (c : ℝ), c ≠ 0 ∧ Mᵀ * stdConic * M = c • C := by
-  sorry
+  -- Diagonal quadratic form spelled as a weighted sum of squares.
+  have hdiagQF : ∀ (v : Fin 3 → ℝ) (y : Fin 3 → ℝ),
+      conicQuadraticForm (diagonal v) y = ∑ i, v i * (y i * y i) := by
+    intro v y
+    simp only [conicQuadraticForm, Matrix.diagonal_apply]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [Finset.sum_eq_single i
+        (fun j _ hji => by rw [if_neg (fun h => hji h.symm)]; ring)
+        (fun h => absurd (Finset.mem_univ i) h)]
+    rw [if_pos rfl]; ring
+  -- Step 1: Sylvester's law of inertia gives ±1 weights and an isometry φ.
+  obtain ⟨w, hw_pm, hequiv⟩ :=
+    QuadraticForm.equivalent_one_neg_one_weighted_sum_squared
+      (Matrix.toQuadraticMap' C) (mathlibQF_separatingLeft C hC_sym hC_nd)
+  obtain ⟨φ⟩ := hequiv
+  -- Reindex `Fin (finrank ℝ (Fin 3 → ℝ)) ≃ Fin 3`.
+  have hrank : Module.finrank ℝ (Fin 3 → ℝ) = 3 := Module.finrank_fin_fun ℝ
+  set e : Fin 3 ≃ Fin (Module.finrank ℝ (Fin 3 → ℝ)) := (finCongr hrank).symm with he_def
+  set w' : Fin 3 → ℝ := fun j => w (e j) with hw'_def
+  -- The square reindexed isometry, as a linear equiv and its matrix L.
+  set ψ : (Fin 3 → ℝ) ≃ₗ[ℝ] (Fin 3 → ℝ) :=
+    φ.toLinearEquiv.trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hψ_def
+  set L : Matrix (Fin 3) (Fin 3) ℝ := LinearMap.toMatrix' ψ.toLinearMap with hL_def
+  have hLmul : ∀ x : Fin 3 → ℝ, L *ᵥ x = ψ x := by
+    intro x; rw [hL_def, LinearMap.toMatrix'_mulVec]; rfl
+  have hψ : ∀ (x : Fin 3 → ℝ) (j : Fin 3), ψ x j = φ x (e j) := by
+    intro x j
+    rw [hψ_def]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+      QuadraticMap.IsometryEquiv.coe_toLinearEquiv]
+  -- L is invertible: it is the matrix of a linear equivalence.
+  have hL_det : L.det ≠ 0 := by
+    have hid : ψ.toLinearMap ∘ₗ ψ.symm.toLinearMap = LinearMap.id := by
+      ext y; simp
+    have hmul1 : L * LinearMap.toMatrix' ψ.symm.toLinearMap = 1 := by
+      rw [hL_def, ← LinearMap.toMatrix'_comp, hid, LinearMap.toMatrix'_id]
+    intro hz
+    have hone : (1 : ℝ) = 0 := by
+      have hdm := congrArg Matrix.det hmul1
+      rw [Matrix.det_mul, hz, zero_mul, Matrix.det_one] at hdm
+      exact hdm.symm
+    exact one_ne_zero hone
+  -- Key: the quadratic form of C agrees with that of Lᵀ * diagonal w' * L.
+  have hqf : ∀ p : ProjPoint,
+      conicQuadraticForm C p = conicQuadraticForm (Lᵀ * diagonal w' * L) p := by
+    intro x
+    rw [conicQF_eq_mathlibQF, ← QuadraticMap.IsometryEquiv.map_app φ x,
+        QuadraticMap.weightedSumSquares_apply, ← conicQF_projTransform (diagonal w') L x]
+    simp only [projTransform]
+    rw [hLmul, hdiagQF, ← Equiv.sum_comp e (fun i => w i • (φ x i * φ x i))]
+    apply Finset.sum_congr rfl
+    intro j _
+    simp only [hw'_def, hψ, smul_eq_mul]
+  set D : Conic := Lᵀ * diagonal w' * L with hD_def
+  -- D is symmetric, hence C = D by the polarization lemma.
+  have hD_sym : D.symmetric := by
+    have hDt : Dᵀ = D := by
+      simp only [hD_def, Matrix.transpose_mul, Matrix.transpose_transpose,
+        Matrix.diagonal_transpose, Matrix.mul_assoc]
+    intro i j
+    calc D i j = Dᵀ i j := by rw [hDt]
+      _ = D j i := Matrix.transpose_apply D i j
+  have hC_eq : C = D := conic_eq_of_qf_eq_of_symmetric C D hC_sym hD_sym hqf
+  -- The ±1 weights w' are indefinite, using the real point p₀.
+  have hw'_pm : ∀ i, w' i = 1 ∨ w' i = -1 := fun i => (hw_pm (e i)).symm
+  have hindef' : ∃ i j, w' i ≠ w' j := by
+    by_contra hcon
+    push_neg at hcon
+    have hy0 : ψ p₀ ≠ 0 := fun h => hp₀v (ψ.map_eq_zero_iff.mp h)
+    have hsum : ∑ i, w' i * (ψ p₀ i * ψ p₀ i) = 0 := by
+      have h0 : conicQuadraticForm D p₀ = 0 := by rw [← hqf p₀]; exact hp₀
+      rw [hD_def, ← conicQF_projTransform (diagonal w') L p₀] at h0
+      simp only [projTransform] at h0
+      rw [hLmul, hdiagQF] at h0
+      exact h0
+    have hsum2 : w' 0 * ∑ i, (ψ p₀ i * ψ p₀ i) = 0 := by
+      rw [Finset.mul_sum, ← hsum]
+      apply Finset.sum_congr rfl
+      intro i _
+      rw [hcon i 0]
+    have hpos : ∑ i, (ψ p₀ i * ψ p₀ i) = 0 := by
+      rcases hw'_pm 0 with h | h
+      · rw [h, one_mul] at hsum2; exact hsum2
+      · rw [h, neg_one_mul, neg_eq_zero] at hsum2; exact hsum2
+    have hnn : ∀ i ∈ Finset.univ, 0 ≤ ψ p₀ i * ψ p₀ i := fun i _ => mul_self_nonneg _
+    have heach := (Finset.sum_eq_zero_iff_of_nonneg hnn).mp hpos
+    apply hy0
+    funext i
+    simpa using mul_self_eq_zero.mp (heach i (Finset.mem_univ i))
+  -- Step 4: permutation/sign correction carrying diagonal w' onto c • stdConic.
+  obtain ⟨P, hP_det, c, hc, hPcong⟩ := diag_pm_one_congr_stdConic w' hw'_pm hindef'
+  have hPunit : IsUnit P.det := isUnit_iff_ne_zero.mpr hP_det
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPunit
+  have hPtPt : P⁻¹ᵀ * Pᵀ = 1 := by
+    rw [← Matrix.transpose_mul, hPP, Matrix.transpose_one]
+  have e1 : P⁻¹ᵀ * (Pᵀ * diagonal w' * P) * P⁻¹ = diagonal w' := by
+    calc P⁻¹ᵀ * (Pᵀ * diagonal w' * P) * P⁻¹
+        = (P⁻¹ᵀ * Pᵀ) * diagonal w' * (P * P⁻¹) := by simp only [Matrix.mul_assoc]
+      _ = 1 * diagonal w' * 1 := by rw [hPtPt, hPP]
+      _ = diagonal w' := by rw [Matrix.one_mul, Matrix.mul_one]
+  rw [hPcong] at e1
+  have hmid : P⁻¹ᵀ * stdConic * P⁻¹ = c⁻¹ • diagonal w' := by
+    rw [mul_smul_comm, smul_mul_assoc] at e1
+    rw [← e1, smul_smul, inv_mul_cancel₀ hc, one_smul]
+  -- Assemble M := P⁻¹ * L, scalar c⁻¹.
+  refine ⟨P⁻¹ * L, ?_, c⁻¹, inv_ne_zero hc, ?_⟩
+  · rw [Matrix.det_mul]
+    refine mul_ne_zero ?_ hL_det
+    rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
+    exact inv_ne_zero hP_det
+  · rw [hC_eq, hD_def, Matrix.transpose_mul]
+    calc Lᵀ * P⁻¹ᵀ * stdConic * (P⁻¹ * L)
+        = Lᵀ * (P⁻¹ᵀ * stdConic * P⁻¹) * L := by simp only [Matrix.mul_assoc]
+      _ = Lᵀ * (c⁻¹ • diagonal w') * L := by rw [hmid]
+      _ = c⁻¹ • (Lᵀ * diagonal w' * L) := by rw [mul_smul_comm, smul_mul_assoc]
 
 /-- **Sylvester reduction to the standard conic** — the sole remaining gap in the
     elimination of `conic_implies_pascal_constraint` for non-degenerate symmetric conics.
@@ -1452,11 +1571,13 @@ theorem sylvester_stdConic_of_isotropic (C : Conic)
     exists_scaledCongr_stdConic_of_isotropic C hC_sym hC_nd p₀ hp₀v hp₀
   exact ⟨M, hM_det, fun p => pointOnConic_projTransform_iff_of_congr C M c hc hcong p⟩
 
-/-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, for the case
-    where C is a symmetric non-degenerate conic. The remaining gap — extracting an
-    explicit invertible matrix from Mathlib's `IsometryEquiv` — is now isolated in the
-    standalone lemma `sylvester_stdConic_of_isotropic` (the only `sorry` on this path);
-    everything else here is complete.
+/-- **Proof (complete, 0-sorry)**: The full proof of `conic_implies_pascal_constraint`, for the
+    case where C is a symmetric non-degenerate conic. The previously-remaining gap — extracting an
+    explicit invertible matrix from Mathlib's `IsometryEquiv` — is now fully discharged in the
+    standalone theorem `sylvester_stdConic_of_isotropic` (via
+    `exists_scaledCongr_stdConic_of_isotropic`), so this entire path is machine-checked with no
+    `sorry`. The `axiom conic_implies_pascal_constraint` above is retained only for the asymmetric
+    and degenerate cases (see below); for symmetric non-degenerate C it is now a *theorem*.
 
     **Why hC_sym and hC_nd are needed:**
     - `hC_sym`: Without symmetry, the quadratic form's zero set is the same as its symmetrization

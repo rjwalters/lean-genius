@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-fiboq06-1",
+    "proofId": "fibonacci-identities-oq-06",
+    "range": { "startLine": 3, "endLine": 27 },
+    "type": "concept",
+    "title": "The Linear Companions to the Sum of Squares",
+    "content": "**Module framing.** The parent entry proves the *quadratic* telescoping identity $F_0^2 + \\cdots + F_n^2 = F_n F_{n+1}$ and the parity-filtered linear sums (odd- and even-indexed). What was missing — from both the gallery and Mathlib's otherwise rich `Nat.fib` API — are the two most elementary *un-filtered linear* sums: the full partial sum $\\sum F_i$ and the index-weighted first moment $\\sum i\\,F_i$. This file supplies them. Both are stated additively to remain inside $\\mathbb{N}$: $(\\sum F_i) + 1 = F_{n+2}$ and $(\\sum i F_i) + F_{n+3} = n F_{n+2} + 2$.",
+    "mathContext": "$\\sum_{i=0}^{n} F_i = F_{n+2} - 1$ and $\\sum_{i=0}^{n} i\\,F_i = n F_{n+2} - F_{n+3} + 2$, using 0-indexed $\\mathtt{Nat.fib}$ ($F_0 = 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sum of squares of Fibonacci numbers (parent entry)",
+      "Telescoping summation",
+      "Discrete first moment / index-weighted sums"
+    ],
+    "prerequisites": [
+      "The 0-indexed Fibonacci sequence Nat.fib",
+      "Classical Fibonacci summation identities"
+    ],
+    "tags": ["module-header", "framing", "fibonacci"]
+  },
+  {
+    "id": "ann-fiboq06-2",
+    "proofId": "fibonacci-identities-oq-06",
+    "range": { "startLine": 33, "endLine": 44 },
+    "type": "insight",
+    "title": "The Partial Sum Telescopes",
+    "content": "**`fib_sum`** establishes $(\\sum_{i\\le n} F_i) + 1 = F_{n+2}$, i.e. $\\sum_{i\\le n} F_i = F_{n+2} - 1$. The mechanism is pure telescoping: $F_i = F_{i+2} - F_{i+1}$, so the partial sums collapse. In Lean the base case evaluates the singleton sum with `Finset.sum_range_one` and discharges $F_0 + 1 = F_2$ by `decide`; the inductive step peels the last term with `Finset.sum_range_succ`, supplies the recurrence $F_{k+3} = F_{k+1} + F_{k+2}$ (a definitional instance of `Nat.fib_add_two`) as a local hypothesis, and closes with `omega` — treating the partial sum and each Fibonacci value as opaque non-negative integers makes the step a linear consequence of the induction hypothesis.",
+    "mathContext": "$F_0 + F_1 + \\cdots + F_n = F_{n+2} - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Telescoping series",
+      "Nat.fib_add_two recurrence",
+      "omega decision procedure"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence",
+      "Induction with Finset.sum_range_succ"
+    ],
+    "tags": ["partial-sum", "telescoping", "omega"]
+  },
+  {
+    "id": "ann-fiboq06-3",
+    "proofId": "fibonacci-identities-oq-06",
+    "range": { "startLine": 46, "endLine": 68 },
+    "type": "insight",
+    "title": "The First Moment via zify and linear_combination",
+    "content": "**`fib_weighted_sum`** establishes $(\\sum_{i\\le n} i\\,F_i) + F_{n+3} = n F_{n+2} + 2$, i.e. $\\sum_{i\\le n} i\\,F_i = n F_{n+2} - F_{n+3} + 2$ — the discrete first moment, the Fibonacci analogue of $\\sum i\\,r^i$. Unlike every other Fibonacci sum in the gallery, the summand $i\\,F_i$ carries the running index as a coefficient, which is exactly why the closed form gains the linear-in-$n$ term $n F_{n+2}$. The inductive step peels $(k+1)F_{k+1}$ with `Finset.sum_range_succ`, then rewrites the three shifted Fibonacci values $F_{k+3}$, $F_{(k+1)+2}$, $F_{(k+1)+3}$ down to the two atoms $F_{k+1}, F_{k+2}$ via `Nat.fib_add_two` (including inside the induction hypothesis). The remaining goal differs from the hypothesis by an exact ring identity (coefficient $1$), so `zify` casts to $\\mathbb{Z}$ — avoiding $\\mathbb{N}$ truncated subtraction and letting the ring normalizer cancel the nonlinear term $k\\,F_{k+2}$ — and `linear_combination ih` closes it.",
+    "mathContext": "$0\\cdot F_0 + 1\\cdot F_1 + \\cdots + n\\cdot F_n = n F_{n+2} - F_{n+3} + 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Discrete first moment / weighted summation",
+      "linear_combination tactic over ℤ",
+      "Quarantining nonlinearity by casting to ℤ"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence",
+      "Induction, casting ℕ → ℤ, and the linear_combination tactic"
+    ],
+    "tags": ["weighted-sum", "first-moment", "linear_combination", "zify"]
+  }
+]

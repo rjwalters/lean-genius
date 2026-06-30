@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-03-oq-02-oq-01",
   "title": "Archimedes' Half-Angle Doubling Method: Constructive Formalization",
   "slug": "area-of-circle-oq-03-oq-02-oq-01",
-  "description": "A constructive formalization of Archimedes' half-angle polygon-doubling method for computing π. The doubling identity sin(π/(2n)) = √((1−cos(π/n))/2) is derived, the inscribed half-perimeters m·sin(π/m) are shown to increase strictly under doubling while staying below π, and the sequence is proved to converge to π. Fully verified: 0 sorries, 0 axioms.",
+  "description": "A constructive formalization of Archimedes' half-angle polygon-doubling method for computing π. The doubling identity sin(π/(2n)) = √((1−cos(π/n))/2) is derived, the inscribed half-perimeters m·sin(π/m) are shown to increase strictly under doubling while staying below π, and the sequence is proved to converge to π. An explicit O(1/m²) convergence rate π − p(m) ≤ (7/32)·π³/m² is also proved (m ≥ 4), quantifying how fast doubling approaches π. Fully verified: 0 sorries, 0 axioms.",
   "meta": {
     "author": "Archimedes (c. 250 BCE), formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Approximations_of_%CF%80#Archimedes",
@@ -59,14 +59,15 @@
       "Nested-radical realization: p(2^(n+2)) = 2^(n+1)·√(2 − sqrtTwoAddSeries 0 n), a computable closed form (fully proved)",
       "Strict monotonicity under doubling: p(n) < p(2n) for all n ≥ 1 (fully proved)",
       "Upper bound: p(m) < π for all m ≥ 1 (fully proved)",
-      "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)"
+      "Convergence: p(m) → π as m → ∞, by squeezing π·cos(π/m) ≤ p(m) < π (fully proved)",
+      "Explicit convergence rate: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4 (quadratic in 1/m), proved from the sin Taylor estimate Real.sin_bound by absorbing the quartic remainder into the cubic term — gives π − p(2ᵏ) = O(4⁻ᵏ) (fully proved)"
     ],
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "lineCount": 223,
+    "lineCount": 276,
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -129,11 +130,19 @@
       "mathContext": "Monotonicity: $p(n) = p(2n)\\cos(\\pi/2n) < p(2n)$ since $\\cos < 1$. Upper bound: $p(m) < \\pi$ from $\\sin x < x$. Convergence: $\\pi\\cos(\\pi/m) \\le p(m) < \\pi$ and $\\cos(\\pi/m) \\to 1$, so by the squeeze theorem $p(m) \\to \\pi$ — the method of exhaustion."
     },
     {
+      "id": "convergence-rate",
+      "title": "Explicit Convergence Rate",
+      "summary": "pi_sub_halfPerimeter_le: π − p(m) ≤ (7/32)·π³/m² for m ≥ 4, an explicit O(1/m²) error bound. Proved from Real.sin_bound (sin x ≥ x − x³/6 − (5/96)x⁴) by absorbing x⁴ ≤ x³ into the cubic term, then scaling by m.",
+      "startLine": 205,
+      "endLine": 257,
+      "mathContext": "With $x=\\pi/m\\le 1$, the Taylor estimate gives $\\sin x \\ge x - \\tfrac{7}{32}x^3$ (since $\\tfrac16+\\tfrac{5}{96}=\\tfrac{7}{32}$). Multiplying by $m$ and using $mx=\\pi$, $mx^3=\\pi^3/m^2$ yields $p(m)\\ge \\pi-\\tfrac{7}{32}\\pi^3/m^2$, i.e. the doubling error is $O(4^{-k})$ for $m=c\\,2^k$."
+    },
+    {
       "id": "summary",
       "title": "Summary Theorem",
       "summary": "Packaging theorem bundling the doubling identity, hexagon seed, monotonicity, upper bound, and convergence into one statement.",
-      "startLine": 205,
-      "endLine": 223,
+      "startLine": 258,
+      "endLine": 276,
       "mathContext": "The bundled result asserts the doubling radical holds for all $n \\ge 1$, $p(6) = 3$, $p(n) < p(2n)$, $p(m) < \\pi$, and $p(m) \\to \\pi$ — Archimedes' method, formalized end to end."
     }
   ],
@@ -142,7 +151,7 @@
     "implications": "Where the parent entry verified Archimedes' final numbers from Mathlib's precomputed π bounds, this entry formalizes the algorithm that generates them and proves its convergence — making the 2,300-year-old method of exhaustion a fully machine-checked, constructive computation of π.",
     "openQuestions": [
       "Can Archimedes' rational square-root bounds (how he approximated √3 and the nested radicals by hand) be formalized to recover his exact 223/71 bound purely from the doubling recurrence, without invoking Mathlib's pi_gt_d4?",
-      "Can an explicit rate of convergence be proved, e.g. π − p(2^k) = O(4^{-k}), quantifying how fast polygon doubling approaches π?"
+      "Sharpen the convergence-rate constant: the proved bound π − p(m) ≤ (7/32)·π³/m² is not tight (the true leading term is π³/(6m²)); can the (7/32) factor be reduced to 1/6 + o(1), matching the exact second-order Taylor coefficient?"
     ]
   },
   "crossReferences": [

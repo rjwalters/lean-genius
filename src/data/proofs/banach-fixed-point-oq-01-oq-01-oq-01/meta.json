@@ -67,7 +67,8 @@
       "**The hypothesis bundle is the content.** Mathlib's IsPicardLindelof packs four conditions into one structure; exposing them as named analytic hypotheses (Lipschitz in y, continuous in t, bounded, plus a single box inequality) is what makes the non-autonomous theorem usable, and is precisely the parent's first open question.",
       "**One box inequality fixes the interval.** Choosing the ball radius r = 0 collapses the interval condition to L·ε ≤ a; taking ε = a/L meets it with equality, which is exactly the classical existence-interval estimate ε ≥ a/L.",
       "**Existence has two faces.** The same fixed point is delivered in differential form (HasDerivWithinAt α (F t (α t))) and in Picard-integral form (α t = x₀ + ∫ F(τ, α τ) dτ); the latter is the successive-approximation operator whose iterates converge to the solution.",
-      "**Uniqueness is Grönwall, time-dependence and all.** The non-autonomous uniqueness statement is the set = univ specialization of Mathlib's general Grönwall comparison, requiring only a Lipschitz-in-y bound on each time slice."
+      "**Uniqueness is Grönwall, time-dependence and all.** The non-autonomous uniqueness statement is the set = univ specialization of Mathlib's general Grönwall comparison, requiring only a Lipschitz-in-y bound on each time slice.",
+      "**Choosing the ball radius r = 0 is the simplifying trick.** Mathlib's IsPicardLindelof carries a ball radius r; specializing to r = 0 (the initial point itself) collapses the geometric condition L·max(...) ≤ a − r to L·max(...) ≤ a and lets the analytic hypotheses be stated on the single ball closedBall x₀ a, which is what makes the packaging clean."
     ],
     "exampleSections": [
       {
@@ -104,12 +105,14 @@
   ],
   "crossReferences": [
     {
-      "id": "banach-fixed-point-oq-01-oq-01",
-      "reason": "The parent entry: the autonomous Picard–Lindelöf packaging y' = f(y). This entry answers its open questions by treating the non-autonomous y' = F(t, y) and quantifying the existence interval."
+      "proofId": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry: the autonomous Picard–Lindelöf packaging y' = f(y). This entry answers its open questions by treating the non-autonomous y' = F(t, y) and quantifying the existence interval."
     },
     {
-      "id": "banach-fixed-point-oq-01",
-      "reason": "The grandparent: the Banach contraction mapping theorem, of which Picard–Lindelöf is the canonical application."
+      "proofId": "banach-fixed-point-oq-01",
+      "relationship": "related",
+      "description": "The grandparent: the Banach contraction mapping theorem, of which Picard–Lindelöf is the canonical application."
     }
   ],
   "conclusion": {
@@ -137,5 +140,49 @@
     "path": "Proofs/PicardLindelofOQ01OQ01OQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: Banach space and the non-autonomous field",
+      "startLine": 38,
+      "endLine": 43,
+      "summary": "Opens the namespace over a complete normed ℝ-vector space E (the completeness needed for Banach's fixed point) and prepares to treat the time-dependent field F : ℝ → E → E for y'(t) = F(t, y(t))."
+    },
+    {
+      "id": "packaging",
+      "title": "Packaging IsPicardLindelof from explicit hypotheses (OQ 1)",
+      "startLine": 45,
+      "endLine": 60,
+      "summary": "isPicardLindelof_of_box assembles Mathlib's four-field IsPicardLindelof bundle at the initial point (r = 0) from three named analytic hypotheses (K-Lipschitz in y, continuous in t, norm bound L) plus the explicit box inequality L·max(tmax−t₀, t₀−tmin) ≤ a."
+    },
+    {
+      "id": "existence-differential",
+      "title": "Local existence in differential form (OQ 1)",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "exists_local_solution_Icc feeds the packaged bundle to Mathlib's existence engine to produce an integral curve α on [tmin,tmax] with α t₀ = x₀ and α'(t) = F(t, α t) in HasDerivWithinAt form."
+    },
+    {
+      "id": "existence-integral",
+      "title": "The Picard integral fixed-point form (OQ 2)",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "exists_local_solution_integral exhibits the same solution as a fixed point of the Picard operator: α t = x₀ + ∫_{t₀}^{t} F(τ, α τ) dτ, the successive-approximation form, by rewriting ODE.picard via picard_apply."
+    },
+    {
+      "id": "open-interval-estimate",
+      "title": "Open-interval existence with ε = a/L (OQ 3)",
+      "startLine": 92,
+      "endLine": 114,
+      "summary": "exists_local_solution sets the half-width ε = a/L, meets the box condition L·ε = a with equality via mul_div_cancel₀, and converts the closed-interval HasDerivWithinAt solution to HasDerivAt on the open interval (t₀−a/L, t₀+a/L) using Icc_mem_nhds — realising the classical estimate ε ≥ a/L."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Grönwall uniqueness (non-autonomous)",
+      "startLine": 116,
+      "endLine": 131,
+      "summary": "solution_unique derives uniqueness from ODE_solution_unique_of_mem_Ioo with set ≡ univ: two integral curves on an open interval agreeing at one interior point coincide, for a field globally K-Lipschitz in y on each time slice, via Grönwall's inequality."
+    }
+  ]
 }

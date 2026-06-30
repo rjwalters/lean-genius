@@ -29,24 +29,30 @@ So `nonCrossingCount = catalan` follows by strong induction the moment we know
   `nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i * nonCrossingCount j`.
   This is the genuine combinatorial content — the classical Catalan decomposition of a
   non-crossing partition of `{0,…,n}` according to the block structure around a distinguished
-  point — and is **not** in Mathlib in any form. It remains a `sorry` here (HARD,
-  bijection-level formalization; see `## Status` below).
+  point. It is split here into its *counting* and *combinatorial* halves (see below): the
+  counting half is proved, and the combinatorial half — a first-return **bijection** — is the
+  sole remaining `sorry`. The decomposition is **not** in Mathlib in any form.
 
-Given those two, `nonCrossingCount_eq_catalan` is a four-line strong induction matching the
-`antidiagonal` shape of `catalan_succ'`. The point of this file is that it isolates the
-*entire* difficulty of `nonCrossing = Catalan` into the one recurrence lemma: a reduction in
-the spirit of "one structural theorem in place of an explicit bijection".
+Given the base case and recurrence, `nonCrossingCount_eq_catalan` is a four-line strong
+induction matching the `antidiagonal` shape of `catalan_succ'`. The point of this file is that
+it isolates the *entire* difficulty of `nonCrossing = Catalan` into one explicit bijection: a
+reduction in the spirit of "one structural theorem in place of an explicit bijection".
 
 ## Status
 
-**Sorry count**: 1 (`nonCrossingCount_recurrence`). **Axiom count**: 0 literal `axiom`
-declarations; the reduction and base case use only the foundational
-`propext`/`Classical.choice`/`Quot.sound`. Because a `sorry` remains, the gallery status of
-this entry is `formalized`, not `verified`.
+**Sorry count**: 1 (`nonempty_firstReturnEquiv` — the first-return bijection). The numeric
+recurrence `nonCrossingCount_recurrence` and its counting reduction
+`nonCrossingCount_recurrence_of_equiv` are now **proved (0 `sorry`)**; the open content is
+exactly the existence of the bijection, with all cardinality arithmetic discharged.
 
-The outstanding recurrence is the natural target for proof search: it is *known* mathematics
-(the non-crossing-partition Catalan recurrence) requiring a delicate but standard
-decomposition, exactly the regime where automated formalization is appropriate.
+**Axiom count**: 0 literal `axiom` declarations; the proved results use only the foundational
+`propext`/`Classical.choice`/`Quot.sound` (the latter via `.some` on the bijection's
+`Nonempty`). Because a `sorry` remains, the gallery status of this entry is `formalized`, not
+`verified`.
+
+The outstanding bijection is the natural target for proof search: it is *known* mathematics
+(the non-crossing-partition Catalan decomposition) requiring a delicate but standard
+construction, exactly the regime where automated formalization is appropriate.
 -/
 
 import Mathlib
@@ -71,21 +77,69 @@ theorem nonCrossingCount_zero : nonCrossingCount 0 = 1 := by
   simp only [hbot]
   exact Fintype.card_unique
 
-/-! ## The combinatorial recurrence (HARD — outstanding `sorry`) -/
+/-! ## The combinatorial recurrence (HARD)
 
-/-- **Catalan recurrence for non-crossing partitions.** The non-crossing partitions of
-`Fin (n+1)` split — according to the classical "first return" / block decomposition of a
-non-crossing partition of a linearly ordered set — into pairs of independent non-crossing
-partitions whose sizes `(i, j)` run over `antidiagonal n`. Equivalently:
-`nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i * nonCrossingCount j`.
+The recurrence is now split into two parts that separate its *counting* content from its
+*combinatorial* content:
 
-This is the same convolution that defines `catalan` (`catalan_succ'`); proving it for
-`nonCrossingCount` is the entire combinatorial content of `nonCrossing = Catalan`, and is not
-available in Mathlib. **Outstanding `sorry`** (HARD, bijection-level). -/
-theorem nonCrossingCount_recurrence (n : ℕ) :
+* `nonempty_firstReturnEquiv` — the genuine, still-open obligation: the existence of a
+  first-return bijection that decomposes a non-crossing partition of `Fin (n+1)` into a pair of
+  independent non-crossing partitions of sizes `(i, j) ∈ antidiagonal n`. This is the entire
+  combinatorial heart and the **sole outstanding `sorry`**.
+* `nonCrossingCount_recurrence_of_equiv` — the counting half, **proved here (0 `sorry`)**: any
+  such bijection already forces the Catalan convolution, by a pure cardinality computation
+  (`Fintype.card_congr` ∘ `card_sigma` ∘ `card_prod`).
+
+`nonCrossingCount_recurrence` is then a corollary of the two. -/
+
+/-- **First-return bijection (the sole open obligation).** A non-crossing partition of the
+linearly ordered set `Fin (n+1)` decomposes — via the classical "first return" of the block
+structure around a distinguished point — into an independent pair of non-crossing partitions of
+an `i`-element and a `j`-element interval, with `(i, j)` ranging over `antidiagonal n`. We
+record the decomposition as a bijection (existence suffices for the count).
+
+This is the genuine combinatorial content of `nonCrossing = Catalan`; the analogous
+decomposition is *not* available in Mathlib in any form (Mathlib has no theory of non-crossing
+partitions, nor of restricting a `Finpartition` of `Fin (n+1)` to the gaps cut out by a
+distinguished block). **Outstanding `sorry`** (HARD, bijection-level). -/
+theorem nonempty_firstReturnEquiv (n : ℕ) :
+    Nonempty ({P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P} ≃
+      Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+        {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) := by
+  sorry
+
+/-- **Counting half of the recurrence (proved, 0 `sorry`).** Any first-return bijection
+splitting the non-crossing partitions of `Fin (n+1)` over `antidiagonal n` already forces the
+Catalan convolution: it is a pure cardinality computation. This isolates the counting content
+of `nonCrossingCount_recurrence` from its combinatorial content (`nonempty_firstReturnEquiv`),
+and is the reusable bridge a future construction of the bijection plugs into. -/
+theorem nonCrossingCount_recurrence_of_equiv (n : ℕ)
+    (e : {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P} ≃
+      Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+        {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) :
     nonCrossingCount (n + 1)
       = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 := by
-  sorry
+  unfold nonCrossingCount
+  rw [Fintype.card_congr e, Fintype.card_sigma]
+  simp only [Fintype.card_prod]
+  exact Finset.sum_coe_sort (antidiagonal n)
+    (fun ij => Fintype.card {P : Finpartition (univ : Finset (Fin ij.1)) // IsNonCrossingFp P} *
+               Fintype.card {P : Finpartition (univ : Finset (Fin ij.2)) // IsNonCrossingFp P})
+
+/-- **Catalan recurrence for non-crossing partitions.** The non-crossing partitions of
+`Fin (n+1)` split into pairs of independent non-crossing partitions whose sizes `(i, j)` run
+over `antidiagonal n`:
+`nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i * nonCrossingCount j`.
+
+This is the same convolution that defines `catalan` (`catalan_succ'`). It is now a corollary of
+the (still open) first-return bijection `nonempty_firstReturnEquiv` and the (proved) counting
+reduction `nonCrossingCount_recurrence_of_equiv`. -/
+theorem nonCrossingCount_recurrence (n : ℕ) :
+    nonCrossingCount (n + 1)
+      = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 :=
+  nonCrossingCount_recurrence_of_equiv n (nonempty_firstReturnEquiv n).some
 
 /-! ## The counting theorem -/
 

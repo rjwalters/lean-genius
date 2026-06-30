@@ -32,13 +32,20 @@ already carries the orientation, so no absolute values are needed.
   current Docker/Aristotle blackout by name-checking every Mathlib
   dependency of the parent proof against the pinned Mathlib v4.26 source
   (all 8 identifiers present with matching signatures).
-* **`b < a` case: `sorry`**, with the complete reflection recipe recorded
-  below. This is the sole remaining obligation; it requires the compiler
-  (the reflection rewrites are too fragile to land blind under the
-  blackout).
+* **`b < a` case: PROVED** (2026-06-30), by the reflection argument
+  recorded below. The key step is the iterated-derivative reflection
+  identity `iteratedDeriv k (fun s => f (a + b - s)) t =
+  (-1)^k • iteratedDeriv k f (a + b - t)`, obtained by composing
+  `iteratedDeriv_comp_neg` with `iteratedDeriv_comp_const_add` after
+  writing `a + b - s = (a + b) + (-s)`. With this identity both the
+  reflected Taylor polynomial and the remainder term translate back to the
+  centred-at-`a` statement; the sign `(-1)^{n+1}` is absorbed into
+  `(b - a)^{n+1} = (-1)^{n+1} (a - b)^{n+1}`. Verified: `docker-build.sh
+  Proofs.MeanValueTheoremOQ02OQ02UIcc` builds green (3070 jobs), 0 sorries,
+  0 axioms.
 
-This file is intentionally **not** registered in the gallery aggregate
-until the `b < a` sorry is discharged and the file compiles.
+The file is discovered automatically by the Lake glob `Proofs.*`, so no
+manual aggregate registration is needed.
 
 ## Reflection recipe for the `b < a` case (for the next live session)
 
@@ -125,6 +132,47 @@ theorem taylor_lagrange_remainder_orientation_free
     exact MeanValueTheoremOQ02.taylor_lagrange_remainder f a b hlt n hf
   · -- b < a : reflection through `t ↦ a + b - t`. See module docstring.
     rw [min_eq_right hgt.le, max_eq_left hgt.le]
-    sorry
+    -- Reflection identity for iterated derivatives of `g t = f (a + b - t)`.
+    have key : ∀ (k : ℕ) (t : ℝ),
+        iteratedDeriv k (fun s => f (a + b - s)) t
+          = (-1 : ℝ) ^ k • iteratedDeriv k f (a + b - t) := by
+      intro k t
+      have e1 : (fun s => f (a + b - s))
+          = (fun x => (fun z => f (a + b + z)) (-x)) := by
+        funext s; simp [sub_eq_add_neg]
+      rw [e1, iteratedDeriv_comp_neg k (fun z => f (a + b + z)) t]
+      simp only [iteratedDeriv_comp_const_add, sub_eq_add_neg]
+    -- Smoothness of the reflected function.
+    have hinner : ContDiff ℝ (n + 1) (fun t : ℝ => a + b - t) := by fun_prop
+    have hg : ContDiff ℝ (n + 1) (fun t => f (a + b - t)) := hf.comp hinner
+    -- Apply the parent theorem on the correctly-oriented interval `(b, a)`.
+    obtain ⟨c', hc', heq⟩ :=
+      MeanValueTheoremOQ02.taylor_lagrange_remainder
+        (fun t => f (a + b - t)) b a hgt n hg
+    -- The reflected Taylor polynomial centred at `b` matches the original at `a`.
+    have hpoly : MeanValueTheoremOQ02.taylorPolynomial (fun t => f (a + b - t)) b n a
+        = MeanValueTheoremOQ02.taylorPolynomial f a n b := by
+      simp only [MeanValueTheoremOQ02.taylorPolynomial]
+      refine Finset.sum_congr rfl (fun k _ => ?_)
+      rw [key k b, show a + b - b = a from by ring, smul_eq_mul,
+        show (b - a) ^ k = (-1) ^ k * (a - b) ^ k from by
+          rw [← neg_sub a b, neg_pow]]
+      ring
+    refine ⟨a + b - c', ⟨?_, ?_⟩, ?_⟩
+    · obtain ⟨h1, h2⟩ := hc'; linarith
+    · obtain ⟨h1, h2⟩ := hc'; linarith
+    · calc
+        f b - MeanValueTheoremOQ02.taylorPolynomial f a n b
+            = (fun t => f (a + b - t)) a
+              - MeanValueTheoremOQ02.taylorPolynomial (fun t => f (a + b - t)) b n a := by
+              rw [hpoly]; show f b - _ = f (a + b - a) - _; rw [show a + b - a = b from by ring]
+        _ = iteratedDeriv (n + 1) (fun t => f (a + b - t)) c'
+              / ((n + 1).factorial : ℝ) * (a - b) ^ (n + 1) := heq
+        _ = iteratedDeriv (n + 1) f (a + b - c')
+              / ((n + 1).factorial : ℝ) * (b - a) ^ (n + 1) := by
+              rw [key (n + 1) c', smul_eq_mul,
+                show (b - a) ^ (n + 1) = (-1) ^ (n + 1) * (a - b) ^ (n + 1) from by
+                  rw [← neg_sub a b, neg_pow]]
+              ring
 
 end MeanValueTheoremOQ02OQ02UIcc

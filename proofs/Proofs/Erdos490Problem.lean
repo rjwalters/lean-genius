@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.Primorial
+import Mathlib.NumberTheory.PrimeCounting
 
 open Finset Real
 open scoped Classical
@@ -152,6 +153,43 @@ lower-bound derivation (`bound_is_optimal`) is fully verified from it. -/
 axiom primes_upper_half_lower_bound :
   ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
     c * N / Real.log N ≤ ((optimalB N).card : ℝ)
+
+/-- **Bridge to Mathlib's prime-counting function** (0-axiom). The optimal `B` is exactly
+the set of primes in `(N/2, N]`, so its cardinality is `π(N) − π(N/2)`, where
+`π = Nat.primeCounting` counts the primes `≤ ·`. This pins the analytic axiom
+`primes_upper_half_lower_bound` to Mathlib's `Nat.primeCounting` API: eliminating the axiom
+is now *exactly* the problem of supplying a Chebyshev-strength lower bound for
+`π(N) − π(N/2)`, with the combinatorial cardinality identity already discharged here. -/
+theorem optimalB_card_eq_primeCounting (N : ℕ) :
+    (optimalB N).card = N.primeCounting - (N / 2).primeCounting := by
+  -- `π m` as the cardinality of the prime-filtered range `[0, m]`.
+  have hπ : ∀ m : ℕ, m.primeCounting
+      = ((Finset.range (m + 1)).filter Nat.Prime).card := by
+    intro m
+    unfold Nat.primeCounting Nat.primeCounting'
+    rw [Nat.count_eq_card_filter_range]
+  -- `optimalB` drops the `p ≤ N` conjunct, which is automatic inside `range (N + 1)`.
+  have hB : optimalB N
+      = (Finset.range (N + 1)).filter (fun p => Nat.Prime p ∧ N / 2 < p) := by
+    ext p
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨hr, hp, hlt, _⟩; exact ⟨hr, hp, hlt⟩
+    · rintro ⟨hr, hp, hlt⟩; exact ⟨hr, hp, hlt, by omega⟩
+  -- The primes `≤ N/2` are exactly the prime-filtered range `[0, N/2]`.
+  have hlow : (Finset.range (N + 1)).filter (fun p => Nat.Prime p ∧ ¬ N / 2 < p)
+      = (Finset.range (N / 2 + 1)).filter Nat.Prime := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨_, hp, hle⟩; exact ⟨by omega, hp⟩
+    · rintro ⟨hlt, hp⟩; exact ⟨by omega, hp, by omega⟩
+  -- Partition the primes `≤ N` by whether they exceed `N/2`.
+  have hpart := Finset.filter_card_add_filter_neg_card_eq_card
+    (s := (Finset.range (N + 1)).filter Nat.Prime) (p := fun p => N / 2 < p)
+  rw [Finset.filter_filter, Finset.filter_filter, ← hB, hlow] at hpart
+  rw [hπ N, hπ (N / 2)]
+  omega
 
 /- The optimal example achieves |A||B| ~ N²/(2 log N). -/
 /-- Why it works: products `a·p` are distinct because each prime `p > N/2` exceeds

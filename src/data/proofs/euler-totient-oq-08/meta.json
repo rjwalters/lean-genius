@@ -89,7 +89,8 @@
       "**Coprimality is only needed to avoid the pre-period.** The single hypothesis k ≥ e replaces gcd(a, p^e) = 1: it guarantees that bases divisible by p have already collapsed to 0, so the same period φ(p^e) governs both invertible and non-invertible bases.",
       "**Two regimes, one period.** A unit base cycles through a^φ(p^e) ≡ 1; a base divisible by p is eventually 0. In both cases shifting the exponent by φ(p^e) (for k ≥ e) is invisible mod p^e — the proof is a clean two-branch case analysis.",
       "**Eventual vs. pure periodicity.** Mathlib's coprime `pow_totient_mod` reduces to k mod φ(n) with no offset; the non-coprime reduction keeps an e-length pre-period, reducing to e + (k−e) mod φ(p^e). The offset e is exactly the length of the transient before the sequence becomes periodic.",
-      "**Prime powers are the right granularity.** For p ∣ a the valuation argument needs a single prime, so the clean statement lives at prime-power moduli; the general composite modulus follows by CRT but already reduces to this prime-power core."
+      "**Prime powers are the right granularity.** For p ∣ a the valuation argument needs a single prime, so the clean statement lives at prime-power moduli; the general composite modulus follows by CRT but already reduces to this prime-power core.",
+      "**This is eventual periodicity made exact.** Modular exponentiation of any base is eventually periodic; the contribution here is the explicit pre-period length (e) and period (φ(p^e)) for prime-power moduli, turning a qualitative dynamical-systems fact into a closed-form exponent-reduction usable for computation."
     ],
     "prerequisites": [
       "Euler's totient φ and the Fermat–Euler theorem (coprime case)",
@@ -112,29 +113,36 @@
       "id": "header-overview",
       "title": "Module Overview, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 52,
-      "summary": "Module docstring framing the goal — extend Euler's exponent reduction to the non-coprime case for prime-power moduli, quoting Mathlib's own TODO — with imports (`Mathlib`), the main-results list, and the `EulerTotientOQ08` namespace (with `φ` denoting `Nat.totient`)."
+      "endLine": 37,
+      "summary": "Module docstring framing the goal — extend Euler's exponent reduction to the non-coprime case for prime-power moduli, quoting Mathlib's own TODO — with imports, the main-results list, and the EulerTotientOQ08 namespace (φ = Nat.totient)."
     },
     {
       "id": "headline-periodicity",
       "title": "Non-Coprime Prime-Power Periodicity",
-      "startLine": 53,
-      "endLine": 75,
-      "summary": "`pow_add_totient_modEq_primePow`: the headline `a^(k + φ(p^e)) ≡ a^k [MOD p^e]` for any base, by `by_cases p ∣ a` — the divisible branch shows both sides `≡ 0` via `p^e ∣ a^k`, the coprime branch invokes `Nat.ModEq.pow_totient`."
+      "startLine": 39,
+      "endLine": 61,
+      "summary": "pow_add_totient_modEq_primePow: the headline a^(k + φ(p^e)) ≡ a^k [MOD p^e] for any base, by by_cases p ∣ a — the divisible branch shows both sides ≡ 0 via p^e ∣ a^k (pow_dvd_pow_of_dvd, pow_dvd_pow), the coprime branch invokes Nat.ModEq.pow_totient."
     },
     {
       "id": "multi-period",
       "title": "The Multi-Period Form",
-      "startLine": 76,
-      "endLine": 92,
-      "summary": "`pow_add_mul_totient_modEq_primePow`: adding any multiple `l · φ(p^e)` to the exponent leaves `a^k` unchanged mod `p^e`, proved by induction on `l` chaining the headline single-period step."
+      "startLine": 62,
+      "endLine": 77,
+      "summary": "pow_add_mul_totient_modEq_primePow: adding any multiple l · φ(p^e) to the exponent leaves a^k unchanged mod p^e, proved by induction on l chaining the headline single-period step."
     },
     {
       "id": "full-reduction",
       "title": "Full Exponent Reduction",
-      "startLine": 93,
-      "endLine": 115,
-      "summary": "`pow_modEq_primePow`: the non-coprime analogue of `Nat.pow_totient_mod`, `a^k ≡ a^(e + (k−e) mod φ(p^e))`, via the division algorithm `Nat.mod_add_div'`; plus worked `decide`/instantiation examples on `2^k mod 8` and `6^k mod 16`."
+      "startLine": 78,
+      "endLine": 98,
+      "summary": "pow_modEq_primePow: the non-coprime analogue of Nat.pow_totient_mod, a^k ≡ a^(e + (k−e) mod φ(p^e)), splitting k−e by the division algorithm Nat.mod_add_div' into remainder + quotient·period and applying the multi-period form."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Worked Examples (non-coprime bases)",
+      "startLine": 99,
+      "endLine": 117,
+      "summary": "Genuinely non-coprime data outside Euler's coprime theorem: 2^k mod 8 (constant ≡ 0 from k = e = 3), the decide check 2^7 ≡ 2^3 ≡ 0, and 6^k mod 16 (e = 4, φ(16) = 8) with the collapse 6^100 ≡ 6^4 ≡ 0 verified by decide."
     }
   ],
   "crossReferences": [

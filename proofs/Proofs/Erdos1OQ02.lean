@@ -110,8 +110,9 @@ This step requires probability theory (Berry–Esseen theorem or direct
 anticoncentration bounds) which is axiomatized here.
 -/
 
-/-- **Chebyshev anticoncentration bound** [Axiom]: If A has n elements with
-    distinct subset sums and Q = Σaᵢ², then:
+/-! **Chebyshev anticoncentration bound** (formerly an axiom; now the THEOREM
+    `anticoncentration_bound`, proved below from the verified ingredients).
+    If A has n elements with distinct subset sums and Q = Σaᵢ², then:
       2ⁿ ≤ 3·√Q + 2
 
     This is the rigorous (Chebyshev) form of the Dubroff–Fox–Xu anticoncentration
@@ -134,10 +135,10 @@ anticoncentration bounds) which is axiomatized here.
     (Chebyshev) plus the variance computation for the {0,aᵢ} sum. The earlier
     formulation `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE (e.g. A = {1,2} gives 4 ≤ 2.85);
     this corrected statement holds for every distinct-subset-sums set, including
-    the asymptotic extremal (powers of two). -/
-axiom anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
-    (hpos : 0 < A.card) :
-    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2
+    the asymptotic extremal (powers of two).
+
+    **This is now proved (0 axioms) as `anticoncentration_bound` below**, after the
+    verified ingredients it is assembled from. -/
 
 /-! ## Verified ingredients toward discharging `anticoncentration_bound`
 
@@ -292,6 +293,152 @@ theorem card_le_of_sameParity_interval (V : Finset ℤ) (p L : ℤ) (hL : 0 ≤ 
   have : (V.card : ℤ) ≤ ((L + 1).toNat : ℤ) := by exact_mod_cast hcard
   rw [Int.toNat_of_nonneg (by omega)] at this
   exact this
+
+/-- **Discrete tail count over any index type (0 axioms).**  The `Finset ℕ`-indexed
+`card_mul_le_second_moment` generalised to an arbitrary index type — needed to count the
+far integer deviations `v ∈ V ⊆ ℤ`.  Same elementary proof. -/
+theorem card_mul_le_sum_of_nonneg {ι : Type*} (s : Finset ι) (g : ι → ℤ)
+    (hg : ∀ i ∈ s, 0 ≤ g i) (t : ℤ) :
+    ((s.filter (fun i => t ≤ g i)).card : ℤ) * t ≤ ∑ i ∈ s, g i := by
+  calc ((s.filter (fun i => t ≤ g i)).card : ℤ) * t
+      = ∑ _i ∈ s.filter (fun i => t ≤ g i), t := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ∑ i ∈ s.filter (fun i => t ≤ g i), g i :=
+        Finset.sum_le_sum (fun i hi => (Finset.mem_filter.mp hi).2)
+    _ ≤ ∑ i ∈ s, g i :=
+        Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+          (fun i hi _ => hg i hi)
+
+/-- **Chebyshev anticoncentration bound (0 axioms).**  For a distinct-subset-sums set `A`
+with `n = |A| ≥ 1` and `Q = Σaᵢ²`, the count of subsets satisfies `2ⁿ ≤ 3√Q + 2`.
+
+This **discharges the former `anticoncentration_bound` axiom** by assembling the verified
+ingredients above, with no probability theory:
+
+* the `2ⁿ` doubled deviations `dₜ = 2·Σ_{i∈T} i − S` are `2ⁿ` **distinct integers**
+  (`card_doubledDrop_image_of_distinct`) all of one **parity** (`≡ S mod 2`), with second
+  moment `Σ dₜ² = 2ⁿ·Q` (`second_moment_identity`);
+* split them at a radius `L + 1 = ⌈2√Q⌉`: the central band `|dₜ| ≤ L` holds `≤ L + 1` of them
+  (`card_le_of_sameParity_interval`, the parity count), while the tail `|dₜ| ≥ L + 1` holds
+  `≤ 2ⁿQ/(L+1)²` of them (`card_mul_le_sum_of_nonneg`, discrete Chebyshev);
+* with `(L+1)² ≥ 4Q` the tail is `≤ 2ⁿ/4`, so `(3/4)·2ⁿ ≤ L + 1 ≤ 2√Q + 1`, giving
+  `2ⁿ ≤ (8√Q + 4)/3 ≤ 3√Q + 2`. -/
+theorem anticoncentration_bound (A : Finset ℕ) (hDSS : hasDistinctSubsetSums A)
+    (hpos : 0 < A.card) :
+    (2 : ℝ) ^ A.card ≤ 3 * Real.sqrt (↑(A.sum (fun a => a ^ 2))) + 2 := by
+  classical
+  set S : ℤ := ∑ i ∈ A, (i : ℤ) with hSdef
+  set f : Finset ℕ → ℤ := fun T => 2 * (∑ i ∈ T, (i : ℤ)) - S with hfdef
+  set V : Finset ℤ := A.powerset.image f with hVdef
+  set Q : ℤ := ∑ i ∈ A, (i : ℤ) ^ 2 with hQdef
+  -- (1) `f` is injective on the powerset; `|V| = 2^n`.
+  have hinj : Set.InjOn f (A.powerset : Set (Finset ℕ)) := by
+    rw [hfdef]; exact doubledDrop_injOn_of_distinct hDSS
+  have hVcard : V.card = 2 ^ A.card := by
+    rw [hVdef, hfdef]; exact card_doubledDrop_image_of_distinct hDSS
+  -- (2) second moment of the deviations: `Σ_{v∈V} v² = 2^n · Q`.
+  have hsum : ∑ v ∈ V, v ^ 2 = 2 ^ A.card * Q := by
+    rw [hVdef, Finset.sum_image hinj, hfdef]
+    exact second_moment_identity A
+  -- (3) every deviation has parity `S mod 2`.
+  have hVpar : ∀ v ∈ V, v % 2 = S % 2 := by
+    intro v hv
+    rw [hVdef, Finset.mem_image] at hv
+    obtain ⟨T, _, rfl⟩ := hv
+    simp only [hfdef]; omega
+  -- (4) `Q ≥ 1`: distinct subset sums force `0 ∉ A`, so some element is `≥ 1`.
+  have h0 : (0 : ℕ) ∉ A := by
+    intro h0A
+    have : (∅ : Finset ℕ) = {0} :=
+      hDSS ∅ {0} (Finset.empty_subset _)
+        (by simpa [Finset.singleton_subset_iff] using h0A) (by simp)
+    simp at this
+  obtain ⟨a, haA⟩ := Finset.card_pos.mp hpos
+  have ha1 : 1 ≤ a := Nat.one_le_iff_ne_zero.mpr (fun h => h0 (h ▸ haA))
+  have hQ1 : (1 : ℤ) ≤ Q := by
+    rw [hQdef]
+    calc (1 : ℤ) ≤ (a : ℤ) ^ 2 := by
+            have : (1 : ℤ) ≤ (a : ℤ) := by exact_mod_cast ha1
+            nlinarith
+      _ ≤ ∑ i ∈ A, (i : ℤ) ^ 2 :=
+            Finset.single_le_sum (fun i _ => sq_nonneg _) haA
+  have hQpos : (0 : ℝ) < (Q : ℝ) := by
+    have h1 : (1 : ℝ) ≤ (Q : ℝ) := by exact_mod_cast hQ1
+    linarith
+  -- rewrite the goal's `Q` (over ℕ→ℝ) as `(Q : ℝ)`.
+  have hQcast : ((A.sum (fun a => a ^ 2) : ℕ) : ℝ) = (Q : ℝ) := by
+    rw [hQdef]; push_cast; rfl
+  rw [hQcast]
+  -- abbreviations on the real side
+  have hsqrtQ_nonneg : (0 : ℝ) ≤ Real.sqrt (Q : ℝ) := Real.sqrt_nonneg _
+  have hsqrtQ_ge_one : (1 : ℝ) ≤ Real.sqrt (Q : ℝ) := by
+    rw [show (1 : ℝ) = Real.sqrt 1 by simp]
+    exact Real.sqrt_le_sqrt (by exact_mod_cast hQ1)
+  have hsqQ : Real.sqrt (Q : ℝ) ^ 2 = (Q : ℝ) := Real.sq_sqrt (le_of_lt hQpos)
+  -- (5) split radius `L + 1 = ⌈2√Q⌉`.
+  set L : ℤ := ⌈2 * Real.sqrt (Q : ℝ)⌉ - 1 with hLdef
+  have hceil_ge : 2 * Real.sqrt (Q : ℝ) ≤ ((⌈2 * Real.sqrt (Q : ℝ)⌉ : ℤ) : ℝ) :=
+    Int.le_ceil _
+  have hLnn : 0 ≤ L := by
+    have h2 : (2 : ℝ) ≤ ((⌈2 * Real.sqrt (Q : ℝ)⌉ : ℤ) : ℝ) := by
+      have : (2 : ℝ) ≤ 2 * Real.sqrt (Q : ℝ) := by nlinarith [hsqrtQ_ge_one]
+      linarith [hceil_ge]
+    have h2z : (2 : ℤ) ≤ ⌈2 * Real.sqrt (Q : ℝ)⌉ := by exact_mod_cast h2
+    omega
+  have hLr1 : 2 * Real.sqrt (Q : ℝ) ≤ (L : ℝ) + 1 := by
+    rw [hLdef]; push_cast; linarith [hceil_ge]
+  have hLr2 : (L : ℝ) + 1 ≤ 2 * Real.sqrt (Q : ℝ) + 1 := by
+    rw [hLdef]; push_cast; linarith [Int.ceil_lt_add_one (2 * Real.sqrt (Q : ℝ))]
+  have hw4 : 4 * (Q : ℝ) ≤ ((L : ℝ) + 1) ^ 2 := by
+    nlinarith [hLr1, hsqQ, hsqrtQ_nonneg]
+  -- (6) the central / tail split of `V`.
+  have hsplit :
+      (V.filter (fun v => -L ≤ v ∧ v ≤ L)).card
+        + (V.filter (fun v => ¬ (-L ≤ v ∧ v ≤ L))).card = V.card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  -- central band: parity count `≤ L + 1`.
+  have hnear : ((V.filter (fun v => -L ≤ v ∧ v ≤ L)).card : ℤ) ≤ L + 1 :=
+    card_le_of_sameParity_interval (V.filter (fun v => -L ≤ v ∧ v ≤ L)) S L hLnn
+      (fun v hv => hVpar v (Finset.mem_filter.mp hv).1)
+      (fun v hv => (Finset.mem_filter.mp hv).2)
+  -- tail ⊆ `{(L+1)² ≤ v²}`.
+  have hfar_sub :
+      V.filter (fun v => ¬ (-L ≤ v ∧ v ≤ L))
+        ⊆ V.filter (fun v => (L + 1) ^ 2 ≤ v ^ 2) := by
+    intro v hv
+    obtain ⟨hvV, hnp⟩ := Finset.mem_filter.mp hv
+    refine Finset.mem_filter.mpr ⟨hvV, ?_⟩
+    have hcases : v ≤ -(L + 1) ∨ L + 1 ≤ v := by omega
+    rcases hcases with h | h <;> nlinarith [hLnn]
+  -- discrete Chebyshev on the tail.
+  have htail :
+      ((V.filter (fun v => (L + 1) ^ 2 ≤ v ^ 2)).card : ℤ) * (L + 1) ^ 2
+        ≤ 2 ^ A.card * Q := by
+    have := card_mul_le_sum_of_nonneg V (fun v => v ^ 2) (fun v _ => sq_nonneg v) ((L + 1) ^ 2)
+    rwa [hsum] at this
+  -- (7) integer assembly: `2^n ≤ (L+1) + far`, and `far·(L+1)² ≤ 2^n·Q`.
+  set farc : ℤ := ((V.filter (fun v => (L + 1) ^ 2 ≤ v ^ 2)).card : ℤ) with hfarc
+  have hI : (2 ^ A.card : ℤ) ≤ (L + 1) + farc := by
+    have hsplitz :
+        ((V.filter (fun v => -L ≤ v ∧ v ≤ L)).card : ℤ)
+          + ((V.filter (fun v => ¬ (-L ≤ v ∧ v ≤ L))).card : ℤ)
+          = (V.card : ℤ) := by exact_mod_cast hsplit
+    have hnegfar :
+        ((V.filter (fun v => ¬ (-L ≤ v ∧ v ≤ L))).card : ℤ) ≤ farc := by
+      rw [hfarc]; exact_mod_cast Finset.card_le_card hfar_sub
+    have hVz : (V.card : ℤ) = (2 ^ A.card : ℤ) := by exact_mod_cast hVcard
+    rw [hVz] at hsplitz
+    linarith [hnear, hnegfar, hsplitz]
+  have hII : farc * (L + 1) ^ 2 ≤ (2 ^ A.card : ℤ) * Q := by rw [hfarc]; exact htail
+  -- (8) cast to ℝ and finish.
+  have hI_r : (2 : ℝ) ^ A.card ≤ ((L : ℝ) + 1) + (farc : ℝ) := by exact_mod_cast hI
+  have hII_r : (farc : ℝ) * ((L : ℝ) + 1) ^ 2 ≤ (2 : ℝ) ^ A.card * (Q : ℝ) := by
+    exact_mod_cast hII
+  have hfcnn : (0 : ℝ) ≤ (farc : ℝ) := by rw [hfarc]; positivity
+  have key : (4 * (farc : ℝ)) * (Q : ℝ) ≤ (2 : ℝ) ^ A.card * (Q : ℝ) := by
+    nlinarith [hII_r, hw4, hfcnn, mul_nonneg hfcnn (show (0 : ℝ) ≤ ((L : ℝ) + 1) ^ 2 - 4 * (Q : ℝ) by linarith [hw4])]
+  have hfc4 : 4 * (farc : ℝ) ≤ (2 : ℝ) ^ A.card := le_of_mul_le_mul_right key hQpos
+  nlinarith [hI_r, hLr2, hfc4, hsqrtQ_nonneg]
 
 /-- **DFX Lower Bound Statement** (Chebyshev constant): If A ⊆ {1,...,N} has n ≥ 1
     elements with distinct subset sums, then:
