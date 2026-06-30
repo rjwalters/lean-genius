@@ -42,14 +42,15 @@
       "Cross-product-based line-through and intersection operations",
       "Hexagon inscribed in conic structure with validity conditions",
       "Pascal line construction via opposite-side intersections",
-      "Formalization of Brianchon's dual theorem structures"
+      "Formalization of Brianchon's dual theorem structures",
+      "conicQuadraticForm_eq_symmetrized / pointOnConic_iff_symmetrized / symmetrizedConic_symmetric (0-axiom): the conic quadratic form depends only on the symmetric part of C, so any conic has the same zero set as its symmetrization ½·(C+Cᵀ) — discharges the 'same zero set' half of step 1 of the roadmap to eliminating the conic_implies_pascal_constraint axiom"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
-    "lineCount": 1633,
+    "lineCount": 1680,
     "assumptions": "1 axiom (conic_implies_pascal_constraint), retained only for the asymmetric/degenerate conic case. The Sylvester's-law reduction for the standard conic is now fully proved (0 sorries).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 46,
+    "theoremCount": 49,
     "definitionCount": 28
   },
   "overview": {
@@ -314,10 +315,10 @@
   ],
   "leanFile": {
     "path": "Proofs/PascalsHexagon.lean",
-    "lineCount": 1633,
+    "lineCount": 1680,
     "axiomCount": 1,
     "sorries": 0,
-    "theoremCount": 46,
+    "theoremCount": 49,
     "definitionCount": 28,
     "imports": [
       "import Mathlib.Data.Real.Basic",
