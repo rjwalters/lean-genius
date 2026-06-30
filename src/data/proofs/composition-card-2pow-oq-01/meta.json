@@ -101,7 +101,15 @@
       "summary": "The examples specialise card_composition_eq to n = 1,…,5, computing 2^(n−1) = 1, 2, 4, 8, 16 by norm_num, and a final example checks the doubling recurrence concretely at n = 5 (16 = 2·8) by invoking card_composition_two_mul."
     }
   ],
-  "conclusion": "The enumerative identity 'there are 2^(n−1) compositions of n' is formalised sorry-free and axiom-free. The headline count is Mathlib's composition_card (hence the mathlib badge), given a named gallery home; beyond the re-export the entry derives the structural content Mathlib omits — the doubling recurrence card(Composition (n+2)) = 2·card(Composition (n+1)) and its n ≥ 1 form, positivity of the count, the count as an explicit bijection with the boundary-set model, and the cardinalities 1,2,4,8,16 for n = 1..5. The doubling recurrence is the combinatorial engine of the closed form, and its genuine dependence on n ≥ 1 (the truncated-subtraction edge case at n = 0) is made explicit. A natural follow-up is the refinement by number of parts — that compositions of n into exactly k parts number C(n−1,k−1), summing to 2^(n−1) via the binomial theorem.",
+  "conclusion": {
+    "summary": "The enumerative identity 'there are 2^(n−1) compositions of n' is formalised sorry-free and axiom-free. The headline count is Mathlib's composition_card (hence the mathlib badge), given a named gallery home; beyond the re-export the entry derives the structural content Mathlib omits — the doubling recurrence card(Composition (n+2)) = 2·card(Composition (n+1)) and its n ≥ 1 form, positivity of the count, the count as an explicit bijection with the boundary-set model, and the cardinalities 1,2,4,8,16 for n = 1..5.",
+    "implications": "The doubling recurrence is the combinatorial engine of the closed form — each extra unit either opens a new singleton part or extends the last part, the two choices that produce the factor of two — and its genuine dependence on n ≥ 1 (the truncated-subtraction edge case at n = 0, where card(Composition 0) = 2^0 = 1 ≠ 2·1) is made explicit. The bijective restatement against the boundary-set model exposes why the count is a power of two: a composition is the same data as a subset of the n−1 internal gaps.",
+    "openQuestions": [
+      "Can the count be refined by number of parts — that compositions of n into exactly k parts number C(n−1,k−1), summing to 2^(n−1) via the binomial theorem?",
+      "Does Mathlib admit a clean named statement of the doubling recurrence or the per-part refinement upstream, so these structural facts need not live only in the gallery?",
+      "How do analogous closed-form counts and recurrences extend to related ordered structures, such as compositions with restricted part sizes or weak compositions allowing zero parts?"
+    ]
+  },
   "crossReferences": [
     "dyck-catalan-count-oq-01"
   ]

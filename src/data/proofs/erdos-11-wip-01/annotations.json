@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-erdos11-overview",
+    "proofId": "erdos-11-wip-01",
+    "range": { "startLine": 1, "endLine": 25 },
+    "type": "concept",
+    "title": "A Bounded, Decidable Characterization for Erdős #11",
+    "content": "The docstring states Erdős Problem #11 (OPEN): is every odd n > 1 the sum of a squarefree number and a power of two? The gallery parent Erdos11Problem set up the predicates and checked 3,5,7,9 by hand but bit-rotted against the current Mathlib. This file re-establishes that content self-contained and adds the key reusable tool — a bounded characterization isSquarefreePlusPow2_iff that reduces the unbounded existential over (squarefree, power-of-two) pairs to a finite search ∃ k ∈ range (n+1), using the bound k < 2^k ≤ n. It also proves the easy construction direction and verifies the odd cases 3..17 with explicit squarefree witnesses. An honest decidability caveat: a kernel decide over a whole range is unavailable because the Squarefree instance routes through Nat.minSqFac, which the kernel does not reduce — so the worked cases use explicit witnesses, separating 'decidable in principle' from 'kernel-reducible'.",
+    "mathContext": "Erdős #11: $\\forall$ odd $n > 1,\\ n = s + 2^k$ with $s$ squarefree? This file proves the bounded equivalence $\\exists k \\le n,\\ 2^k \\le n \\wedge \\mathrm{Squarefree}(n - 2^k)$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős problems", "squarefree numbers", "powers of two", "additive number theory", "decidability"],
+    "prerequisites": ["squarefree integers", "number theory"]
+  },
+  {
+    "id": "ann-erdos11-defs",
+    "proofId": "erdos-11-wip-01",
+    "range": { "startLine": 33, "endLine": 42 },
+    "type": "definition",
+    "title": "Self-Contained Predicates",
+    "content": "Three definitions re-declared self-contained (the parent no longer builds): IsSquarefree n := Squarefree n, IsPowerOfTwo n := ∃ k, n = 2^k, and IsSquarefreePlusPow2 n := ∃ s p, IsSquarefree s ∧ IsPowerOfTwo p ∧ n = s + p. The headline existential is a two-variable one over the pair (s, p); the whole point of the characterization below is to collapse it to a one-variable search over the exponent.",
+    "mathContext": "$\\mathrm{IsSquarefreePlusPow2}(n) \\equiv \\exists s\\,p,\\ \\mathrm{Squarefree}(s) \\wedge p = 2^k \\wedge n = s + p$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Squarefree predicate", "power of two", "self-contained re-declaration"],
+    "prerequisites": ["Lean predicates"]
+  },
+  {
+    "id": "ann-erdos11-easy",
+    "proofId": "erdos-11-wip-01",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "theorem",
+    "title": "The Easy Construction Direction",
+    "content": "squarefreePlusPow2_of_witness is the reverse direction: a witnessing exponent k with 2^k ≤ n and n − 2^k squarefree yields the representation n = (n − 2^k) + 2^k, by taking s = n − 2^k and p = 2^k (the subtraction reconciled by omega). A single good exponent suffices — this is the building block both for the characterization's reverse implication and for the worked examples.",
+    "mathContext": "$2^k \\le n,\\ \\mathrm{Squarefree}(n - 2^k) \\Rightarrow n = (n - 2^k) + 2^k$ is a valid representation.",
+    "significance": "key",
+    "relatedConcepts": ["construction direction", "ℕ subtraction", "omega", "witness"],
+    "prerequisites": ["natural-number subtraction"]
+  },
+  {
+    "id": "ann-erdos11-characterization",
+    "proofId": "erdos-11-wip-01",
+    "range": { "startLine": 50, "endLine": 63 },
+    "type": "theorem",
+    "title": "The Bounded Decidable Characterization",
+    "content": "isSquarefreePlusPow2_iff is the key reusable tool: IsSquarefreePlusPow2 n ↔ ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k). The forward direction extracts the exponent k from a representation n = s + 2^k and bounds it: k < 2^k (Nat.lt_two_pow_self) and 2^k ≤ s + 2^k = n, so k < n+1 places k ∈ range (n+1); the squarefree summand survives Nat.add_sub_cancel. The reverse is squarefreePlusPow2_of_witness. Two reductions happen at once: the unbounded exponent search becomes finite (via k < 2^k), and the two-variable existential ∃(s,p) collapses to a one-variable ∃k (since s = n − 2^k is determined once p = 2^k is fixed). This finite form is what underlies the Decidable instance and the child entry's structural consequences.",
+    "mathContext": "$k < 2^k \\le n \\Rightarrow k < n+1$, so $\\exists(s,p)$ collapses to $\\exists k \\in \\mathrm{range}(n+1),\\ 2^k \\le n \\wedge \\mathrm{Squarefree}(n-2^k)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.lt_two_pow_self", "Finset.mem_range", "finite search", "Nat.add_sub_cancel", "decidability"],
+    "prerequisites": ["bounded existentials", "the exponential bound k < 2^k"]
+  },
+  {
+    "id": "ann-erdos11-examples",
+    "proofId": "erdos-11-wip-01",
+    "range": { "startLine": 65, "endLine": 96 },
+    "type": "context",
+    "title": "Verified Odd Cases 3 Through 17",
+    "content": "Eight theorems (three_works … seventeen_works) verify that 3, 5, 7, 9, 11, 13, 15, 17 are each a sum of a squarefree number and a power of two, by exhibiting explicit witnesses: e.g. 3 = 1 + 2 (squarefree_one), 7 = 5 + 2 ((Nat.Prime 5).squarefree), 17 = 1 + 16. Explicit witnesses are used rather than a kernel decide over a range because the Squarefree decidability instance routes through Nat.minSqFac, which the kernel cannot reduce — an honest separation of 'decidable in principle' from 'kernel-reducible'. These are concrete instances of the still-open conjecture.",
+    "mathContext": "$3 = 1 + 2,\\ 5 = 1 + 4,\\ 7 = 5 + 2,\\ 9 = 1 + 8,\\ 11 = 3 + 8,\\ 13 = 5 + 8,\\ 15 = 7 + 8,\\ 17 = 1 + 16$.",
+    "significance": "supporting",
+    "relatedConcepts": ["squarefree_one", "Nat.Prime.squarefree", "Nat.minSqFac", "kernel reduction", "explicit witnesses"],
+    "prerequisites": ["primality of small numbers", "squarefreeness witnesses"]
+  }
+]

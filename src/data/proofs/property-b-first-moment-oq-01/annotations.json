@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "propb-upper-oq01-ann-header",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Bracketing m(k) from above with explicit witnesses",
+    "content": "Property B asks whether a hypergraph is 2-colorable; $m(k)$ is the minimum number of edges in a non-2-colorable $k$-uniform hypergraph. The parent first-moment entry (Erdős 1963) proves the lower bound $m(k) \\ge 2^{k-1}$. This file supplies matching upper bounds via explicit non-2-colorable hypergraphs: the complete $k$-uniform hypergraph on $2k-1$ vertices ($m(k) \\le \\binom{2k-1}{k}$, all $k$) and, sharply at $k=3$, the Fano plane ($m(3) \\le 7$). The docstring is honest that $\\binom{2k-1}{k} \\approx 4^k/\\sqrt{\\pi k}$ is exponentially weaker than Erdős–Lovász $O(k^2 2^k)$ — these are elementary unconditional witnesses, not the optimal probabilistic construction.",
+    "mathContext": "$2^{k-1} \\le m(k) \\le \\binom{2k-1}{k}$; sharp: $4 \\le m(3) \\le 7$.",
+    "significance": "key",
+    "relatedConcepts": ["Property B", "hypergraph 2-colorability", "Erdős–Lovász", "Fano plane"],
+    "prerequisites": ["hypergraphs", "graph colouring"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-defs",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 35, "endLine": 53 },
+    "type": "definition",
+    "title": "Mono and NotTwoColorable",
+    "content": "`Mono e c` says a 2-coloring $c : V \\to \\mathrm{Bool}$ is constant on edge $e$ ($\\exists b, \\forall x \\in e, c\\,x = b$), matching the parent's notion, with a `Decidable` instance enabling the Fano `decide`. `NotTwoColorable E` is the negation of Property B: *every* 2-coloring leaves some edge of $E$ monochromatic. A $k$-uniform such $E$ witnesses $m(k) \\le |E|$.",
+    "mathContext": "$\\mathrm{NotTwoColorable}(E) \\iff \\forall c,\\ \\exists e \\in E,\\ \\mathrm{Mono}(e,c)$",
+    "significance": "supporting",
+    "relatedConcepts": ["monochromatic edge", "2-coloring", "decidability"],
+    "prerequisites": ["Boolean colourings", "Finset"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-complete-def",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "definition",
+    "title": "The complete k-uniform hypergraph and its size",
+    "content": "`completeHypergraph k` is all $k$-element subsets of $\\mathrm{Fin}(2k-1)$ (`powersetCard k`). `completeHypergraph_uniform` confirms every edge has $k$ vertices, and `completeHypergraph_card` computes the edge count $\\binom{2k-1}{k}$ via `card_powersetCard` and `Fintype.card_fin`. The vertex count $2k-1$ is the pigeonhole sweet spot: just small enough that two colour classes cannot both avoid size $k$.",
+    "mathContext": "$|\\mathrm{completeHypergraph}\\,k| = \\binom{2k-1}{k}$, each edge of size $k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["powerset by cardinality", "binomial coefficients"],
+    "prerequisites": ["Finset.powersetCard"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-complete-nc",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 73, "endLine": 108 },
+    "type": "insight",
+    "title": "Pigeonhole: the complete hypergraph is not 2-colorable",
+    "content": "`completeHypergraph_notTwoColorable`: any 2-coloring of $2k-1$ vertices has a colour class of size $\\ge k$ (the two class sizes sum to $2k-1$, so `omega` forces one $\\ge k$), and any $k$ vertices of that class form a monochromatic edge (extracted by `exists_subset_card_eq`). The two classes partition the vertices via `filter_card_add_filter_neg_card_eq_card`, with a `filter_congr` identifying $\\neg(c\\,x = \\text{true})$ with $c\\,x = \\text{false}$. This is the pure pigeonhole heart of the general upper bound.",
+    "mathContext": "$|S_{\\text{true}}| + |S_{\\text{false}}| = 2k-1 \\Rightarrow \\max \\ge k \\Rightarrow$ a mono $k$-edge.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "colour classes", "partition cardinality"],
+    "prerequisites": ["pigeonhole", "Finset.filter cardinalities"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-general-bound",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 110, "endLine": 117 },
+    "type": "concept",
+    "title": "The general upper bound m(k) ≤ C(2k−1, k)",
+    "content": "`exists_notTwoColorable_le_choose` packages the three facts into the existence statement: a $k$-uniform, not-2-colorable hypergraph with exactly $\\binom{2k-1}{k}$ edges, hence $m(k) \\le \\binom{2k-1}{k}$. With the parent's $2^{k-1} \\le m(k)$ this brackets $m(k)$ for every $k$.",
+    "mathContext": "$m(k) \\le \\binom{2k-1}{k}$ for all $k$.",
+    "significance": "key",
+    "relatedConcepts": ["upper bound", "existence witness"],
+    "prerequisites": ["the complete-hypergraph lemmas"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-fano",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 119, "endLine": 139 },
+    "type": "insight",
+    "title": "The Fano plane PG(2,2) is not 2-colorable",
+    "content": "`fanoLines` lists the 7 lines of the Fano plane on $\\mathrm{Fin}\\,7$. `fano_uniform` and `fano_card` (each `decide`) confirm it is 3-uniform with 7 lines. `fano_notTwoColorable` is the crux: kernel `decide` over all $2^7 = 128$ colorings shows every one monochromatizes some line — using `decide` (not `native_decide`), so it stays axiom-free (`maxRecDepth` is raised to let the kernel finish). The Fano plane is the smallest non-2-colorable 3-uniform hypergraph.",
+    "mathContext": "$\\forall c : \\mathrm{Fin}\\,7 \\to \\mathrm{Bool},\\ \\exists \\text{ line } \\ell,\\ \\mathrm{Mono}(\\ell, c)$; checked over $2^7$ colourings.",
+    "significance": "key",
+    "relatedConcepts": ["Fano plane", "projective plane PG(2,2)", "kernel decide", "finite verification"],
+    "prerequisites": ["finite projective planes", "decidable enumeration"]
+  },
+  {
+    "id": "propb-upper-oq01-ann-sharp",
+    "proofId": "property-b-first-moment-oq-01",
+    "range": { "startLine": 141, "endLine": 152 },
+    "type": "concept",
+    "title": "Sharp bound m(3) ≤ 7 and why it beats the general bound",
+    "content": "`exists_notTwoColorable_three` packages the Fano plane into $m(3) \\le 7$, and `fano_beats_general` (`decide`) records $7 < \\binom{5}{3} = 10$, so the Fano witness strictly improves the general bound at $k=3$. In fact $m(3) = 7$, so the Fano plane is extremal — the upper bound meets the truth here, while the parent's $2^{3-1}=4$ lower bound is not tight.",
+    "mathContext": "$m(3) \\le 7 < \\binom{5}{3} = 10$; indeed $m(3) = 7$.",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal hypergraph", "sharp bound", "Fano plane optimality"],
+    "prerequisites": ["the Fano lemmas"]
+  }
+]

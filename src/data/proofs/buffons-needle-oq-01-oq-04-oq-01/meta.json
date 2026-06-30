@@ -1,0 +1,192 @@
+{
+  "id": "buffons-needle-oq-01-oq-04-oq-01",
+  "title": "The Convex 0-or-2 Line/Boundary Dichotomy",
+  "slug": "buffons-needle-oq-01-oq-04-oq-01",
+  "description": "Builds the convex-geometry bearer the parent Buffon's-coin entry had to encode definitionally: a line ℓ(t) = p + t·v (direction v ≠ 0) passing through the interior of a compact convex body K meets the boundary ∂K in exactly two points. The proof is purely convex-geometric, with no analytic Buffon machinery. lineParams_convex shows the line meets a convex set in a convex subset of the parameter line ℝ (an interval — the 'no gaps' content: a line cannot leave and re-enter a convex set). For a compact convex body this interval is a closed segment Icc a b (lineParams_eq_Icc). Through an interior crossing every parameter in the open segment maps into interior K (line_Ioo_mem_interior, via Mathlib's Convex.combo_interior_self_mem_interior), so the boundary-crossing parameter set {t | ℓ(t) ∈ frontier K} equals exactly the two endpoints {a, b} with a < b (line_through_interior_meets_frontier_in_two), hence has ncard = 2 (line_through_interior_frontier_ncard_two). The interior hypothesis is what distinguishes the count 2 from the supporting-line case (a line meeting only ∂K may share a whole flat edge): this is the '0-or-2' dichotomy. 14 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-7",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01OQ04OQ01.lean",
+    "tags": [
+      "convex-geometry",
+      "integral-geometry",
+      "buffon-coin",
+      "cauchy-crofton",
+      "convex-bodies",
+      "frontier",
+      "line-intersection",
+      "geometric-probability",
+      "research",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 276,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "assumptions": "None. All theorems proved, 0 axioms. Verified axiom-free: #print axioms on line_through_interior_meets_frontier_in_two, line_through_interior_frontier_ncard_two, lineParams_convex, lineParams_eq_Icc reports only propext, Classical.choice, Quot.sound. Hypotheses are explicit: K convex and compact, direction v ≠ 0, and an interior crossing (∃ t₀, ℓ(t₀) ∈ interior K). The interior-crossing hypothesis is essential and is exactly the condition separating the count 2 from the supporting-line (0-or-flat-edge) case.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Convex.combo_interior_self_mem_interior",
+        "description": "x ∈ interior s, y ∈ s, 0 < a, 0 ≤ b, a + b = 1 ⟹ a·x + b·y ∈ interior s — the engine turning 'between an interior point and a boundary point' into 'interior', i.e. the open segment of the line stays inside K",
+        "module": "Mathlib.Analysis.Convex.Topology"
+      },
+      {
+        "theorem": "Convex.ordConnected",
+        "description": "A convex subset of a linearly ordered field is order-connected (an interval) — converts convexity of the parameter set into the closed-segment Icc form lineParams_eq_Icc",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      },
+      {
+        "theorem": "IsClosed.csInf_mem / IsClosed.csSup_mem",
+        "description": "A nonempty closed bounded-below (resp. above) set in ℝ contains its infimum (resp. supremum) — gives the segment endpoints a = sInf, b = sSup as genuine parameters of K",
+        "module": "Mathlib.Topology.Order.Monotone"
+      },
+      {
+        "theorem": "Metric.isBounded_iff_subset_closedBall",
+        "description": "IsBounded s ↔ ∃ r, s ⊆ closedBall p r — combined with ‖ℓ(t) − p‖ = |t|·‖v‖ confines the parameters to a bounded interval, so the parameter set is compact",
+        "module": "Mathlib.Topology.MetricSpace.Bounded"
+      },
+      {
+        "theorem": "interior_Icc",
+        "description": "interior (Icc a b) = Ioo a b in a densely ordered space with no min/max — locates the interior crossing strictly inside (a, b), forcing a < b, and excludes the endpoints from the interior",
+        "module": "Mathlib.Topology.Order.DenselyOrdered"
+      },
+      {
+        "theorem": "mem_interior",
+        "description": "a ∈ interior s ↔ ∃ U ⊆ s, IsOpen U ∧ a ∈ U — used with the open preimage ℓ⁻¹(interior K) to show an interior parameter is interior to the segment, and that an endpoint cannot be interior (else it would not be the inf/sup)",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "frontier (closure s \\ interior s) / IsClosed.closure_eq",
+        "description": "The boundary is closure minus interior; for closed K closure K = K, so ℓ(t) ∈ frontier K ↔ ℓ(t) ∈ K ∧ ℓ(t) ∉ interior K — the membership form driving the endpoint characterization",
+        "module": "Mathlib.Topology.Closure"
+      },
+      {
+        "theorem": "Set.ncard_pair",
+        "description": "a ≠ b → ({a, b}).ncard = 2 — turns the exact two-element parameter set into the cardinality statement",
+        "module": "Mathlib.Data.Set.Card"
+      }
+    ],
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "In integral geometry the Cauchy–Crofton formula and Buffon's coin both rest on a deceptively elementary fact: a line that genuinely cuts a convex body crosses its boundary in exactly two points. This is the geometric reason the perimeter of a convex body is proportional to the expected number of grid lines it meets (each cutting line contributes two boundary crossings). The parent entry buffons-needle-oq-01-oq-04 (Buffon's coin) formalized the expected boundary-crossing and cut-line counts but could only encode the factor-of-two — the 0-or-2 dichotomy — definitionally, noting in its own assumptions that 'Mathlib v4.26.0 has no Convex.line_intersection_card_le_two bearer.' Its first open question asks to derive the dichotomy from a convex-geometry API rather than by definition. This entry supplies that missing bearer as a standalone, fully verified theorem of convex geometry.",
+    "problemStatement": "Let K be a compact convex body in a real normed space and let ℓ(t) = p + t·v be a line with direction v ≠ 0. Prove, from convex-geometry first principles, that if ℓ passes through the interior of K then it meets the boundary ∂K in exactly two points: the parameter set {t | ℓ(t) ∈ frontier K} equals {a, b} for two reals a < b, ℓ meets K itself in the closed segment Icc a b, and hence the boundary-crossing count is 2. Exhibit the interior-crossing hypothesis as the precise condition separating the count 2 from the supporting-line case (0 crossings, or a shared flat edge).",
+    "proofStrategy": "Work with the parameter set S = {t | ℓ(t) ∈ K}. (1) S is convex: ℓ is affine, so a convex combination of parameters maps to the convex combination of line points, which lies in K by convexity — this is lineParams_convex, the 'a line meets a convex set in an interval' content. (2) For compact K, S is closed (preimage of closed under the continuous ℓ) and bounded (since ‖ℓ(t) − p‖ = |t|·‖v‖ and v ≠ 0), hence S = Icc a b with a = sInf S, b = sSup S genuine parameters (lineParams_eq_Icc). (3) An interior crossing ℓ(t₀) ∈ interior K gives, via the open preimage ℓ⁻¹(interior K) ⊆ S, that t₀ ∈ interior S = Ioo a b, forcing a < b. (4) Every t ∈ Ioo a b maps into interior K: write ℓ(t) as a convex combination of the interior point ℓ(t₀) (positive weight) and an endpoint ℓ(a) or ℓ(b) ∈ K, then apply Convex.combo_interior_self_mem_interior (line_Ioo_mem_interior). (5) Therefore an interior parameter is never a boundary point, while each endpoint is (an endpoint in interior K would force the preimage open neighbourhood past sInf/sSup), giving {t | ℓ(t) ∈ frontier K} = {a, b} and ncard = 2.",
+    "keyInsights": [
+      "**A line meets a convex set in an interval — that is the whole 'no gaps' content.** Because t ↦ p + t·v is affine, the parameter set S = {t | ℓ(t) ∈ K} is the affine preimage of a convex set, hence convex, hence order-connected: an interval. A line literally cannot leave a convex body and re-enter it. Everything downstream is reading off the two endpoints of this interval.",
+      "**The interior crossing is exactly what makes the count 2 rather than 0-or-flat.** A supporting line meets ∂K but never the interior, and can share an entire flat edge with the boundary — infinitely many boundary points. The honest theorem therefore conditions on an interior crossing; this single hypothesis both forces a < b (a nondegenerate segment) and pins the boundary crossings to the two segment endpoints. It is the precise dividing line of the 0-or-2 dichotomy.",
+      "**'Stays inside until it exits' is Convex.combo_interior_self_mem_interior.** The open segment of the line maps into interior K because every interior point of the parameter segment is a convex combination — with positive weight on the known interior point ℓ(t₀) — of ℓ(t₀) and a boundary-side endpoint of K. Mathlib's combination lemma delivers interior membership directly; no separating-hyperplane or dimension machinery is needed.",
+      "**The endpoints are boundary points by extremality of inf and sup.** If ℓ(sInf S) were interior to K, the open preimage ℓ⁻¹(interior K) would be an open neighbourhood of sInf S contained in S, contradicting that sInf S is the infimum. So both endpoints lie in K but not its interior — i.e. on the boundary — which is exactly frontier membership for a closed K.",
+      "**The result is the missing Convex.line_intersection_card_le_two bearer.** The parent Buffon's-coin file had to encode the factor-of-two definitionally for lack of this lemma. Here it is derived from the convex-geometry API as ncard = 2, so the integral-geometry factor of two (boundary crossings = 2 × cut lines) now rests on a theorem rather than a definition."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "The line and its parameter set",
+      "startLine": 57,
+      "endLine": 92,
+      "summary": "Defines line p v t = p + t·v and lineParams K p v = {t | ℓ(t) ∈ K}, proves continuity of the line and the affine key line_combo (a convex combination of parameters maps to the convex combination of line points), then lineParams_convex: the line meets a convex set in a convex subset of ℝ.",
+      "mathContext": "$\\ell(t) = p + t\\,v,\\qquad S = \\{t : \\ell(t) \\in K\\}\\ \\text{convex}.$"
+    },
+    {
+      "id": "interval",
+      "title": "The line meets a compact convex body in a closed segment",
+      "startLine": 90,
+      "endLine": 138,
+      "summary": "lineParams_isClosed (preimage of closed K), lineParams_subset_Icc / bddAbove / bddBelow (‖ℓ(t) − p‖ = |t|·‖v‖ bounds the parameters when v ≠ 0), and lineParams_eq_Icc: for a compact convex body the parameter set equals Icc (sInf) (sSup), with both endpoints genuine parameters of K.",
+      "mathContext": "$S = \\mathrm{Icc}\\,(\\inf S)\\,(\\sup S),\\qquad \\lVert \\ell(t) - p\\rVert = |t|\\,\\lVert v\\rVert.$"
+    },
+    {
+      "id": "interior",
+      "title": "The open segment maps into the interior",
+      "startLine": 140,
+      "endLine": 188,
+      "summary": "line_mem_interior_right / _left: a parameter between an interior parameter and a K-parameter maps into interior K (Convex.combo_interior_self_mem_interior with positive weight on the interior endpoint). line_Ioo_mem_interior assembles these: with an interior witness t₀ ∈ [a, b], every t ∈ Ioo a b maps into interior K.",
+      "mathContext": "$t \\in (a,b) \\;\\Rightarrow\\; \\ell(t) \\in \\mathrm{int}\\,K.$"
+    },
+    {
+      "id": "dichotomy",
+      "title": "Exactly two boundary crossings",
+      "startLine": 190,
+      "endLine": 276,
+      "summary": "line_through_interior_meets_frontier_in_two: a line through interior K meets ∂K in exactly the two endpoints, {t | ℓ(t) ∈ frontier K} = {a, b} with a < b, and meets K in Icc a b. The interior witness forces a < b; the open segment is interior (so not boundary), and each endpoint is boundary by extremality of inf/sup. line_through_interior_frontier_ncard_two records ncard = 2.",
+      "mathContext": "$\\{t : \\ell(t) \\in \\partial K\\} = \\{a, b\\},\\qquad \\#\\{t : \\ell(t) \\in \\partial K\\} = 2.$"
+    }
+  ],
+  "conclusion": {
+    "summary": "A line ℓ(t) = p + t·v with v ≠ 0 passing through the interior of a compact convex body K meets the boundary ∂K in exactly two points: {t | ℓ(t) ∈ frontier K} = {a, b} with a < b, ℓ meets K in the closed segment Icc a b, and the boundary-crossing count is ncard = 2. The proof is purely convex-geometric: the parameter set is a convex subset of ℝ (an interval), compact for a convex body, with the open segment mapping into interior K via Convex.combo_interior_self_mem_interior and the endpoints on the boundary by extremality of inf and sup. This is the Convex.line_intersection_card_le_two bearer the parent Buffon's-coin entry lacked. 14 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "Replaces the parent Buffon's-coin entry's definitional factor-of-two with a derived theorem: the integral-geometry identity 'boundary crossings = 2 × cut lines' now rests on convex geometry rather than a definition. The interior-crossing hypothesis is exhibited as the exact condition of the 0-or-2 dichotomy, cleanly separating cutting lines (2 crossings) from supporting lines (which may share a flat edge). The reusable bearers — a line meets a convex set in an interval (lineParams_convex), in a closed segment for a convex body (lineParams_eq_Icc), and crosses the boundary in two points through an interior crossing — are stated over an arbitrary real normed space and feed the Cauchy–Crofton / Buffon-coin development.",
+    "openQuestions": [
+      "Promote the parameter-level statement to a body-level one: for a compact convex body K and a line L meeting interior K, the set L ∩ frontier K (as a subset of the ambient space, not of parameters) has exactly two elements, via injectivity of t ↦ p + t·v.",
+      "Use the two endpoints to define the chord ℓ(a) — ℓ(b) and prove its length equals the support-function difference, connecting the dichotomy to Convex.meanWidth and the Cauchy mean-width formula targeted by the grandparent's third open question."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ04OQ01",
+    "lineCount": 276,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 2,
+    "path": "Proofs/BuffonsNeedleOQ01OQ04OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-04",
+      "relationship": "ancestor",
+      "description": "Parent Buffon's-coin entry models the convex 0-or-2 dichotomy definitionally as a factor-of-two halving and poses, as its first open question, deriving it from a convex-geometry API; this entry supplies that bearer as ncard = 2"
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent smooth Buffon–Barbier theorem whose coin specialization needs the two-boundary-crossings fact"
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "ancestor",
+      "description": "Root Buffon's needle entry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lineParams_convex",
+      "type": "core",
+      "statement": "Convex ℝ K → Convex ℝ {t : ℝ | line p v t ∈ K}",
+      "description": "A line meets a convex set in a convex subset of the parameter line ℝ — an interval. The 'no gaps' content: a line cannot leave a convex set and re-enter it.",
+      "significance": "The structural core of the dichotomy; every endpoint count downstream reads off this interval"
+    },
+    {
+      "name": "lineParams_eq_Icc",
+      "type": "core",
+      "statement": "Convex ℝ K → IsCompact K → v ≠ 0 → (lineParams K p v).Nonempty → lineParams K p v = Icc (sInf (lineParams K p v)) (sSup (lineParams K p v))",
+      "description": "For a compact convex body the line meets K in the closed segment between the inf and sup parameters, both genuine points of K.",
+      "significance": "Upgrades the interval to a concrete closed segment, exposing the two endpoints that will be the boundary crossings"
+    },
+    {
+      "name": "line_through_interior_meets_frontier_in_two",
+      "type": "core",
+      "statement": "Convex ℝ K → IsCompact K → v ≠ 0 → line p v t₀ ∈ interior K → ∃ a b, a < b ∧ lineParams K p v = Icc a b ∧ {t | line p v t ∈ frontier K} = {a, b}",
+      "description": "A line through the interior of a compact convex body meets the boundary ∂K in exactly two points, the endpoints of the chord segment Icc a b, with a < b.",
+      "significance": "The headline 0-or-2 dichotomy — the convex-geometry bearer the parent entry had to encode definitionally"
+    },
+    {
+      "name": "line_through_interior_frontier_ncard_two",
+      "type": "core",
+      "statement": "Convex ℝ K → IsCompact K → v ≠ 0 → line p v t₀ ∈ interior K → {t : ℝ | line p v t ∈ frontier K}.ncard = 2",
+      "description": "The boundary-crossing parameter set has cardinality exactly two — the explicit count form of the dichotomy.",
+      "significance": "Delivers the factor-of-two of integral geometry (boundary crossings = 2 × cut lines) as a derived cardinality rather than a definition"
+    }
+  ],
+  "sorries": 0
+}

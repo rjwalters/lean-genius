@@ -1,0 +1,78 @@
+{
+  "slug": "erdos-978-oq-01",
+  "title": "erdos-978-oq-01: Squarefree values of n⁴ + 2",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "S1",
+    "since": "2026-06-14 (S1 ORIENT)",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: erdos-978-oq-01 (n⁴ + 2 squarefree infinitely often)\n\n## Established this session (S1 ORIENT, build-free, sympy-verified)\n\n`verify_squarefree_density.py` certifies by exact integer/rational computation:\n\n- **No local square obstruction.** For every prime `p < 200`,\n  `ρ(p²) = #{n mod p² : p² | n⁴+2} ≤ 4` (the degree bound), so `ρ(p²) < p²` always.\n  Hence there is **no fixed square dividing `n⁴+2` for all `n`** — the trivial \"NO\"\n  route (a covering square) is ruled out. A degree-4 congruence mod `p²` has at most\n  4 roots, so `ρ(p²) = p²` is impossible for `p² > 4`; the data confirms the bound is\n  attained (`ρ = 4`) only at `p ∈ {73, 89, 113, …}`.\n\n- **Contributing primes.** `ρ(p²) > 0` (i.e. `x⁴ ≡ −2 mod p²` solvable) for\n  `p ∈ {3, 11, 19, 43, 59, 67, 73, 83, 89, 107, 113, 131, 139, 163, 179, …}`. Each has\n  `x⁴ ≡ −2 mod p` solvable and Hensel-lifts (cross-checked). `ρ(p²) = 4` exactly when\n  `−2` is a fourth power with 4 distinct fourth roots mod `p` (e.g. `p = 73, 89, 113`).\n\n- **Positive conjectural density.** `C = ∏_p (1 − ρ(p²)/p²)`:\n  - over `p < 200`:  `C ≈ 0.757273`\n  - over `p < 2000`: `C ≈ 0.756728`  (tail shift `5.4×10⁻⁴` ⇒ converged, `C > 0`).\n  So the standard squarefree-sieve heuristic predicts a **positive density** of\n  squarefree values of `n⁴+2`, hence **infinitely many** — consistent with the\n  (open) conjecture.\n\n- **Empirical match.** Actual squarefree fraction of `{n⁴+2 : n ≤ N}`:\n  `N=2000 → 0.7570`, `N=10⁴ → 0.7564`, `N=5·10⁴ → 0.75668`, vs heuristic `0.756728`\n  (`|diff| ≈ 5×10⁻⁵` at `N=5·10⁴`). The sieve model matches the true behaviour.\n\n## Literature anchors\n\n- Hooley 1967: `(k−1)`-power-free values have positive density (⇒ `n⁴+2` cubefree\n  infinitely often — already an axiom `n4_plus_2_cubefree` in the gallery file).\n- Heath-Brown 2006 / Browning 2011: `(k−2)`-power-free infinitely often for `k ≥ 9`\n  (with asymptotic). The `k = 4` squarefree case is **not** reached by these methods.\n\n## Open / blocked\n\n- **The conjecture itself is open** — not a Lean proof target. The analytic gap is the\n  large-prime square-sieve (`p` up to `~N²`), beyond Mathlib and beyond current\n  number theory for `k = 4`.\n- **Formalizable residue (future ACT, Docker-gated):** Lean defs/lemmas for `ρ(p²)`\n  (decidable, `Finset.filter` over `ZMod (p²)`), the no-obstruction statement\n  `∀ p prime, ρ(p²) < p²` (follows from `Polynomial.card_roots`/degree ≤ 4), and the\n  positivity of the local-factor product. These are genuine, self-contained, and do\n  not require resolving the open analytic problem.\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "erdos-9",
+    "erdos-97",
+    "erdos-978",
+    "erdos-978-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:40:01.663Z",
+  "lastUpdate": "2026-06-23T00:01:40.535Z",
+  "completed": "2026-06-23T00:01:40.534Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos978OQ01.lean",
+      "filename": "Erdos978OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos978OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos978Problem.lean",
+      "filename": "Erdos978Problem.lean",
+      "lineCount": 283,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos978Problem.lean"
+    }
+  ]
+}

@@ -351,6 +351,7 @@ theorem stdConicPoint_on_conic (t : ℝ) : pointOnConic (stdConicPoint t) stdCon
   simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply]
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- **Pascal's theorem for the standard conic** — proved by polynomial identity.
 
     When all 6 points are rationally parametrized on x₀² + x₁² = x₂², the
@@ -358,14 +359,14 @@ theorem stdConicPoint_on_conic (t : ℝ) : pointOnConic (stdConicPoint t) stdCon
     Verified computationally: ~3500 terms cancel to 0 via `ring`.
 
     This is the core computational step for eliminating `conic_implies_pascal_constraint`. -/
-set_option maxHeartbeats 2000000 in
 theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   -- Unfold to cross products and determinant (same pattern as DesarguesTheorem.lean)
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   -- The resulting degree-12 polynomial in 6 variables is identically 0
   -- (verified independently via sympy: ~3500 terms cancel)
@@ -458,14 +459,14 @@ theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠
   · intro h; exact (mul_eq_zero.mp h).resolve_left hM
   · intro h; rw [h, mul_zero]
 
+-- The cross product identity is a degree-3 polynomial in 15 variables; needs extra heartbeats.
+set_option maxHeartbeats 2000000 in
 /-- **Cross product transformation law (adjugate form):**
     cross(M·u, M·v) = adj(M)ᵀ · cross(u, v)
 
     Equivalently, cross(M·u, M·v) = det(M) · M⁻ᵀ · cross(u, v) when M is invertible.
     This identity says cross products transform contravariantly under linear maps.
     Verified computationally: degree-3 polynomial identity in 15 variables. -/
--- The cross product identity is a degree-3 polynomial in 15 variables; needs extra heartbeats.
-set_option maxHeartbeats 2000000 in
 theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (projTransform M u) (projTransform M v) =
     projTransform M.adjugate.transpose (crossProduct u v) := by
@@ -477,7 +478,8 @@ theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3
   fin_cases i <;>
   simp only [cross_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.isValue,
              Matrix.adjugate_fin_three, Matrix.transpose_apply, Matrix.of_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons,
              Nat.reduceAdd, Fin.reduceFinMk] <;>
   ring
 
@@ -542,10 +544,11 @@ theorem stdConicInfinity_on_conic : pointOnConic stdConicInfinity stdConic := by
 theorem stdConic_infinity_char (p : ProjPoint) (hp : pointOnConic p stdConic)
     (h02 : p 0 + p 2 = 0) : p 1 = 0 := by
   unfold pointOnConic conicQuadraticForm stdConic at hp
-  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply, mul_comm, mul_one,
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply, one_mul, neg_mul,
              zero_mul, mul_zero, add_zero, zero_add] at hp
   have h : p 2 = -(p 0) := by linarith
-  nlinarith [sq_nonneg (p 1), sq_nonneg (p 0), mul_self_nonneg (p 1)]
+  rw [h] at hp
+  nlinarith [sq_nonneg (p 1), hp]
 
 /-- **Parametric coverage**: Every point on stdConic with p₀+p₂ ≠ 0 is a scalar
     multiple of stdConicPoint(p₁/(p₀+p₂)).
@@ -559,7 +562,16 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
     unfold pointOnConic conicQuadraticForm stdConic at hp
     simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
     nlinarith
-  intro i; fin_cases i <;> simp only [stdConicPoint] <;> field_simp <;> nlinarith [hconic]
+  have h0 : p 0 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 0 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp; nlinarith [hconic]
+  have h1 : p 1 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 1 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp
+  have h2 : p 2 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 2 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp; nlinarith [hconic]
+  intro i; fin_cases i
+  · exact h0
+  · exact h1
+  · exact h2
 
 /-
 ### Roadmap for Full Axiom Elimination
@@ -598,15 +610,11 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 
 theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (c • u) v = c • crossProduct u v := by
-  ext i; fin_cases i <;>
-    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
+  rw [map_smul, LinearMap.smul_apply]
 
 theorem crossProduct_smul_right (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct u (c • v) = c • crossProduct u v := by
-  ext i; fin_cases i <;>
-    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
+  rw [map_smul]
 
 -- ============================================================
 -- PART 15: Pascal's Theorem — Point at Infinity Cases
@@ -628,7 +636,8 @@ theorem pascal_std_conic_infinity_F (a b c d e : ℝ) :
       (stdConicPoint d) (stdConicPoint e) stdConicInfinity := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -638,7 +647,8 @@ theorem pascal_std_conic_infinity_A (b c d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -648,7 +658,8 @@ theorem pascal_std_conic_infinity_B (a c d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -658,7 +669,8 @@ theorem pascal_std_conic_infinity_C (a b d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -668,7 +680,8 @@ theorem pascal_std_conic_infinity_D (a b c e f : ℝ) :
       stdConicInfinity (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -678,7 +691,8 @@ theorem pascal_std_conic_infinity_E (a b c d f : ℝ) :
       (stdConicPoint d) stdConicInfinity (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -717,13 +731,9 @@ theorem pascalConstraint_smul
   rw [det_threeVectorMatrix_smul]
   constructor
   · intro h
-    have hprod : k₁ * k₂ * (k₄ * k₅) * (k₂ * k₃ * (k₅ * k₆)) *
-      (k₃ * k₄ * (k₆ * k₁)) ≠ 0 := by
-      apply mul_ne_zero; apply mul_ne_zero
-      · exact mul_ne_zero (mul_ne_zero h1 h2) (mul_ne_zero h4 h5)
-      · exact mul_ne_zero (mul_ne_zero h2 h3) (mul_ne_zero h5 h6)
-      · exact mul_ne_zero (mul_ne_zero h3 h4) (mul_ne_zero h6 h1)
-    exact (mul_eq_zero.mp h).resolve_left hprod
+    refine (mul_eq_zero.mp h).resolve_left ?_
+    simp only [mul_eq_zero, not_or, ne_eq]
+    tauto
   · intro h; rw [h, mul_zero]
 
 -- ============================================================
@@ -774,9 +784,17 @@ theorem stdConic_point_classification (p : ProjPoint) (hp : pointOnConic p stdCo
       intro h0
       apply hv
       ext i; fin_cases i <;> simp_all
-    exact ⟨p 0, hp0_ne, fun i => by fin_cases i <;>
-      simp only [stdConicInfinity, Fin.isValue, mul_one, mul_zero, mul_neg] <;>
-      linarith⟩
+    have e0 : p 0 = p 0 * stdConicInfinity 0 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_one]
+    have e1 : p 1 = p 0 * stdConicInfinity 1 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_zero]; exact hp1
+    have e2 : p 2 = p 0 * stdConicInfinity 2 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_neg, mul_one]; linarith [hp2]
+    refine ⟨p 0, hp0_ne, fun i => ?_⟩
+    fin_cases i
+    · exact e0
+    · exact e1
+    · exact e2
   · left; exact stdConicPoint_covers p hp h02
 
 /-- **Pascal for stdConic (all finite vertices)**: When all 6 points have
@@ -828,7 +846,8 @@ private theorem pascalConstraint_A_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C A E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -836,7 +855,8 @@ private theorem pascalConstraint_B_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D B F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -844,7 +864,8 @@ private theorem pascalConstraint_C_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E C := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -853,7 +874,8 @@ private theorem pascalConstraint_A_eq_B (A C D E F : ProjPoint) :
     pascalConstraint A A C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -861,7 +883,8 @@ private theorem pascalConstraint_B_eq_C (A B D E F : ProjPoint) :
     pascalConstraint A B B D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -869,7 +892,8 @@ private theorem pascalConstraint_C_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C C E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -877,7 +901,8 @@ private theorem pascalConstraint_D_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D D F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -885,7 +910,8 @@ private theorem pascalConstraint_E_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E E := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -893,7 +919,8 @@ private theorem pascalConstraint_F_eq_A (A B C D E : ProjPoint) :
     pascalConstraint A B C D E A := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -902,7 +929,8 @@ private theorem pascalConstraint_A_eq_C (A B D E F : ProjPoint) :
     pascalConstraint A B A D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -910,7 +938,8 @@ private theorem pascalConstraint_B_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C B E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -918,7 +947,8 @@ private theorem pascalConstraint_C_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D C F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -926,7 +956,8 @@ private theorem pascalConstraint_D_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E D := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -934,7 +965,8 @@ private theorem pascalConstraint_E_eq_A (A B C D F : ProjPoint) :
     pascalConstraint A B C D A F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -942,7 +974,8 @@ private theorem pascalConstraint_F_eq_B (A B C D E : ProjPoint) :
     pascalConstraint A B C D E B := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -1150,11 +1183,11 @@ private lemma conicQF_eq_mathlibQF (C : Conic) (p : Fin 3 → ℝ) :
     4. Therefore `(associated Q).SeparatingLeft`. -/
 private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
     (hC_nd : Conic.nondegenerate C) :
-    (associated (R := ℝ) (Matrix.toQuadraticMap' C)).SeparatingLeft := by
+    (QuadraticMap.associated (Matrix.toQuadraticMap' C)).SeparatingLeft := by
   -- Step 1: Show associated Q = Matrix.toLinearMap₂' ℝ C using symmetry of C
-  have h_assoc : associated (R := ℝ) (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
+  have h_assoc : QuadraticMap.associated (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
     unfold Matrix.toQuadraticMap'
-    exact QuadraticMap.associated_left_inverse (fun x y => by
+    exact QuadraticMap.associated_left_inverse ℝ (fun x y => by
       -- Prove: (Matrix.toLinearMap₂' ℝ C) x y = (Matrix.toLinearMap₂' ℝ C) y x
       -- i.e., x ⬝ᵥ (C *ᵥ y) = y ⬝ᵥ (C *ᵥ x), using symmetry of C
       simp only [Matrix.toLinearMap₂'_apply', dotProduct, Matrix.mulVec]
@@ -1182,6 +1215,200 @@ private lemma projTransform_valid_of_det_ne_zero {M : Matrix (Fin 3) (Fin 3) ℝ
     rw [← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]
   rw [Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h0
   exact (smul_eq_zero.mp h0).resolve_left hM
+
+/-- **Quadratic form under a projective transform = matrix congruence.**
+    `conicQuadraticForm S (M *ᵥ p) = conicQuadraticForm (Mᵀ * S * M) p`.
+    This is the algebraic identity `(Mp)ᵀ S (Mp) = pᵀ (Mᵀ S M) p`. -/
+private lemma conicQF_projTransform (S M : Conic) (p : ProjPoint) :
+    conicQuadraticForm S (projTransform M p) = conicQuadraticForm (Mᵀ * S * M) p := by
+  rw [conicQF_eq_dotProduct, conicQF_eq_dotProduct]
+  unfold projTransform
+  -- (M *ᵥ p) ⬝ᵥ (S *ᵥ (M *ᵥ p)) = p ⬝ᵥ ((Mᵀ * S * M) *ᵥ p); rewrite the RHS to the LHS
+  -- (mulVec_mulVec : M *ᵥ N *ᵥ v = (M * N) *ᵥ v)
+  rw [mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
+      Matrix.dotProduct_mulVec p Mᵀ (S *ᵥ (M *ᵥ p)), Matrix.vecMul_transpose]
+
+/-- **Congruence reduction for projective equivalence of conics.**
+    If `M` is invertible and `Mᵀ * stdConic * M = c • C` with `c ≠ 0`, then `M` realises the
+    projective equivalence `pointOnConic p C ↔ pointOnConic (M·p) stdConic`.
+
+    This isolates the *projective-geometry* content of `sylvester_stdConic_of_isotropic`
+    (now fully proved): the only remaining task is the *linear-algebra* fact that such an
+    `M`/`c` exist (`exists_scaledCongr_stdConic_of_isotropic`). The scalar `c` is needed
+    because Sylvester's law yields a congruence to `±stdConic`, and `-stdConic` has the same
+    zero locus as `stdConic`. -/
+private lemma pointOnConic_projTransform_iff_of_congr
+    (C M : Conic) (c : ℝ) (hc : c ≠ 0)
+    (hcong : Mᵀ * stdConic * M = c • C) (p : ProjPoint) :
+    pointOnConic p C ↔ pointOnConic (projTransform M p) stdConic := by
+  unfold pointOnConic
+  rw [conicQF_projTransform, hcong]
+  have hsmul : conicQuadraticForm (c • C) p = c * conicQuadraticForm C p := by
+    simp only [conicQuadraticForm, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
+    apply Finset.sum_congr rfl; intro i _
+    apply Finset.sum_congr rfl; intro j _
+    ring
+  rw [hsmul]
+  constructor
+  · intro h; rw [h, mul_zero]
+  · intro h; exact (mul_eq_zero.mp h).resolve_left hc
+
+/-- **Permutation/sign correction — Sylvester step 4 (proved, 0-axiom).**
+    A `±1`-valued *indefinite* weight vector `w : Fin 3 → ℝ` has its diagonal
+    `Matrix.diagonal w` congruent, via an invertible permutation matrix `P`, to a
+    nonzero scalar multiple of `stdConic = diag(1,1,-1)`:
+    `Pᵀ * diagonal w * P = c • stdConic` with `c = ±1`.
+
+    This discharges step 4 of the `exists_scaledCongr_stdConic_of_isotropic` plan: once
+    Sylvester's law gives a congruence `C ≅ diagonal w` with `w` indefinite (steps 1–3),
+    this lemma rotates/signs the inertia form `diagonal w` onto `c • stdConic`. The proof
+    is a finite case split on the eight `±1` patterns: the two *definite* patterns are
+    excluded by `hindef`, and each of the six *indefinite* patterns is handled by an
+    explicit `3×3` permutation matrix (identity, swap `(1 2)`, or swap `(0 2)`) together
+    with `c = ±1`. -/
+private lemma diag_pm_one_congr_stdConic (w : Fin 3 → ℝ)
+    (hw : ∀ i, w i = 1 ∨ w i = -1)
+    (hindef : ∃ i j, w i ≠ w j) :
+    ∃ (P : Matrix (Fin 3) (Fin 3) ℝ), P.det ≠ 0 ∧
+      ∃ (c : ℝ), c ≠ 0 ∧ Pᵀ * Matrix.diagonal w * P = c • stdConic := by
+  rcases hw 0 with h0 | h0 <;> rcases hw 1 with h1 | h1 <;> rcases hw 2 with h2 | h2
+  · -- (+,+,+): definite, excluded by indefiniteness
+    exfalso; obtain ⟨i, j, hij⟩ := hindef; fin_cases i <;> fin_cases j <;> simp_all
+  · -- (+,+,-): identity, c = 1
+    refine ⟨!![1,0,0; 0,1,0; 0,0,1], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (+,-,+): swap (1 2), c = 1
+    refine ⟨!![1,0,0; 0,0,1; 0,1,0], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (+,-,-): swap (0 2), c = -1
+    refine ⟨!![0,0,1; 0,1,0; 1,0,0], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,+,+): swap (0 2), c = 1
+    refine ⟨!![0,0,1; 0,1,0; 1,0,0], by simp [Matrix.det_fin_three], 1, one_ne_zero, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,+,-): swap (1 2), c = -1
+    refine ⟨!![1,0,0; 0,0,1; 0,1,0], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,-,+): identity, c = -1
+    refine ⟨!![1,0,0; 0,1,0; 0,0,1], by simp [Matrix.det_fin_three], -1, by norm_num, ?_⟩
+    ext i j; fin_cases i <;> fin_cases j <;>
+      simp [stdConic, Matrix.mul_apply, Fin.sum_univ_three, Matrix.diagonal_apply,
+        Matrix.transpose_apply, h0, h1, h2]
+  · -- (-,-,-): definite, excluded by indefiniteness
+    exfalso; obtain ⟨i, j, hij⟩ := hindef; fin_cases i <;> fin_cases j <;> simp_all
+
+/-- **Polarization: pointwise-equal quadratic forms ⟹ equal symmetric conics
+    (Sylvester step 2.3, proved, 0-axiom).**
+    Two symmetric `3×3` real conics whose quadratic forms agree at every point are
+    the same matrix.  Evaluating at the basis vectors `eᵢ` pins the diagonal
+    (`C i i = conicQuadraticForm C eᵢ`), and at the sums `eᵢ + eⱼ` pins the
+    off-diagonal via symmetry (`conicQuadraticForm C (eᵢ+eⱼ) = C i i + C j j + 2·C i j`).
+
+    This discharges the final algebraic step of the matrix-congruence extraction in
+    `exists_scaledCongr_stdConic_of_isotropic` (step 2.3 of its plan): once the
+    `IsometryEquiv` from Sylvester's law gives the *pointwise* identity
+    `∀ p, conicQuadraticForm C p = conicQuadraticForm (Lᵀ · diagonal w · L) p`
+    (with both matrices symmetric), this lemma upgrades it to the matrix equality
+    `C = Lᵀ · diagonal w · L`.  The remaining gap is then only steps 2.1–2.2 (the
+    `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast and isometry→pointwise bridge). -/
+private lemma conic_eq_of_qf_eq_of_symmetric (C D : Conic)
+    (hC : C.symmetric) (hD : D.symmetric)
+    (h : ∀ p : ProjPoint, conicQuadraticForm C p = conicQuadraticForm D p) : C = D := by
+  have d0 := h ![1, 0, 0]
+  have d1 := h ![0, 1, 0]
+  have d2 := h ![0, 0, 1]
+  have o01 := h ![1, 1, 0]
+  have o02 := h ![1, 0, 1]
+  have o12 := h ![0, 1, 1]
+  simp only [conicQuadraticForm, Fin.sum_univ_three, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons]
+    at d0 d1 d2 o01 o02 o12
+  ring_nf at d0 d1 d2 o01 o02 o12
+  have c00 : C 0 0 = D 0 0 := d0
+  have c11 : C 1 1 = D 1 1 := d1
+  have c22 : C 2 2 = D 2 2 := d2
+  have c01 : C 0 1 = D 0 1 := by linarith [o01, d0, d1, hC 1 0, hD 1 0]
+  have c02 : C 0 2 = D 0 2 := by linarith [o02, d0, d2, hC 2 0, hD 2 0]
+  have c12 : C 1 2 = D 1 2 := by linarith [o12, d1, d2, hC 2 1, hD 2 1]
+  have c10 : C 1 0 = D 1 0 := by linarith [c01, hC 1 0, hD 1 0]
+  have c20 : C 2 0 = D 2 0 := by linarith [c02, hC 2 0, hD 2 0]
+  have c21 : C 2 1 = D 2 1 := by linarith [c12, hC 2 1, hD 2 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;> assumption
+
+/-- **The linear-algebra core of the Sylvester reduction (remaining gap).**
+    A non-degenerate symmetric real conic `C` carrying a real point is *congruent to a
+    nonzero scalar multiple of* `stdConic = diag(1,1,-1)`: there is an invertible `M` and
+    `c ≠ 0` with `Mᵀ * stdConic * M = c • C`.
+
+    Combined with `pointOnConic_projTransform_iff_of_congr` this gives the full
+    `sylvester_stdConic_of_isotropic` below — so the *only* unproved content of Pascal's
+    theorem for general symmetric non-degenerate conics is now this single, purely
+    matrix-algebraic statement (Sylvester's law of inertia + a sign/permutation correction).
+
+    Validated proof plan (every step checked against the Mathlib 4.26 API):
+    1. `mathlibQF_separatingLeft C hC_sym hC_nd` discharges the hypothesis of
+       `QuadraticForm.equivalent_one_neg_one_weighted_sum_squared (Matrix.toQuadraticMap' C)`,
+       yielding `w : Fin (Module.finrank ℝ (Fin 3 → ℝ)) → ℝ` with `w i = ±1` and an isometry
+       `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)`.
+    2. Transport `w` along `Module.finrank ℝ (Fin 3 → ℝ) = 3` to obtain a `Fin 3`-indexed
+       weight vector and turn the abstract isometry into a **matrix congruence**
+       `C = Lᵀ * Matrix.diagonal w * L` with `L = LinearMap.toMatrix' φ` invertible
+       (this `Fin (finrank) ↔ Fin 3` cast is the main remaining technical obstacle).
+    3. The real point `p₀ ≠ 0` with `conicQuadraticForm C p₀ = 0` forces `w` *indefinite*
+       (a definite `±diag(1,1,1)` form vanishes only at `0`, while `φ p₀ ≠ 0`).
+    4. For an indefinite `±1` weight vector there is a permutation/sign matrix `P` and
+       `c = ±1` with `Pᵀ * diagonal w * P = c • stdConic`; set `M := P * L`.
+       **Step 4 is now discharged by `diag_pm_one_congr_stdConic` (proved above, 0-axiom).**
+       The sole remaining obstacle is step 2: extracting the matrix congruence
+       `C = Lᵀ * diagonal w * L` from the abstract `IsometryEquiv` across the
+       `Fin (finrank ℝ (Fin 3 → ℝ)) ↔ Fin 3` cast.
+
+    CONCRETE SKELETON for step 2 (researcher-3, 2026-06-28 — the central bridge lemma
+    `QuadraticMap.toMatrix'_comp` was not previously identified; it removes the need to
+    reason about the abstract isometry directly):
+
+      Let `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)` from step 1.
+      a. `IsometryEquiv.map_app φ : ∀ x, weightedSumSquares ℝ w (φ x) = toQuadraticMap' C x`,
+         i.e. `toQuadraticMap' C = (weightedSumSquares ℝ w).comp φ.toLinearEquiv.toLinearMap`
+         (by `QuadraticMap.ext`).
+      b. Apply `QuadraticMap.toMatrix'` to both sides and rewrite the RHS with
+         `QuadraticMap.toMatrix'_comp` :
+           `(toQuadraticMap' C).toMatrix' = (LinearMap.toMatrix' φ)ᵀ
+                                              * (weightedSumSquares ℝ w).toMatrix'
+                                              * (LinearMap.toMatrix' φ)`.
+      c. Two round-trip rewrites collapse the endpoints to plain matrices:
+           - `(toQuadraticMap' C).toMatrix' = C`  — because `mathlibQF_separatingLeft`'s
+             internal computation already shows `associated (toQuadraticMap' C)
+             = toLinearMap₂' C`, and `toMatrix' Q = toMatrix₂' (associated Q)`, so this is
+             the `toMatrix₂'`/`toLinearMap₂'` round trip on the symmetric `C`.
+           - `(weightedSumSquares ℝ w).toMatrix' = Matrix.diagonal w`  — prove a standalone
+             helper from `weightedSumSquares_apply` + `QuadraticMap.associated`'s diagonal
+             form (the off-diagonal mixed terms vanish).
+      d. The ONLY genuinely type-dependent step is making `L := LinearMap.toMatrix' φ`
+         **square**: its column index is `Fin 3` but its row index is `Fin (finrank …)`.
+         Reindex via `e := finCongr Module.finrank_fin_fun : Fin (finrank ℝ (Fin 3 → ℝ)) ≃ Fin 3`
+         (so `diagonal w` becomes `diagonal (w ∘ e.symm)` and `L` becomes `L.submatrix e id`),
+         after which `L'.det ≠ 0` follows from `LinearMap.toMatrix'` of the equiv `φ` being a
+         unit (`Matrix.isUnit_iff_isUnit_det`, `LinearEquiv.toMatrix'`-style). Then step 3
+         gives indefiniteness of `w ∘ e.symm` and step 4 (`diag_pm_one_congr_stdConic`)
+         finishes. This is the right Aristotle target once the service is reachable. -/
+private lemma exists_scaledCongr_stdConic_of_isotropic (C : Conic)
+    (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
+    (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
+    ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
+      ∃ (c : ℝ), c ≠ 0 ∧ Mᵀ * stdConic * M = c • C := by
+  sorry
 
 /-- **Sylvester reduction to the standard conic** — the sole remaining gap in the
     elimination of `conic_implies_pascal_constraint` for non-degenerate symmetric conics.
@@ -1219,7 +1446,11 @@ theorem sylvester_stdConic_of_isotropic (C : Conic)
     ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
       ∀ (p : ProjPoint), pointOnConic p C ↔
         pointOnConic (projTransform M p) stdConic := by
-  sorry
+  -- The projective-geometry content is fully discharged by the congruence reduction;
+  -- the remaining linear-algebra core is isolated in `exists_scaledCongr_stdConic_of_isotropic`.
+  obtain ⟨M, hM_det, c, hc, hcong⟩ :=
+    exists_scaledCongr_stdConic_of_isotropic C hC_sym hC_nd p₀ hp₀v hp₀
+  exact ⟨M, hM_det, fun p => pointOnConic_projTransform_iff_of_congr C M c hc hcong p⟩
 
 /-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, for the case
     where C is a symmetric non-degenerate conic. The remaining gap — extracting an

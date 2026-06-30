@@ -82,5 +82,25 @@
       "descFactorial_two",
       "descFactorial_three"
     ]
+  },
+  {
+    "id": "sanity-checks",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-01",
+    "range": { "startLine": 149, "endLine": 162 },
+    "type": "technique",
+    "title": "Axiom-Free Numeric Sanity Checks, Including the r > n Boundary",
+    "content": "Four concrete `decide` checks verify the general formula at (r,n) = (1,4), (2,5), (3,7), and — crucially — the degenerate case (r,n) = (5,3) where r > n and both sides are 0. The last check confirms the unconditional vanishing that lets the theorem dispense with any n ≥ r hypothesis. All use kernel `decide` rather than `native_decide`, so no `Lean.ofReduceBool` is introduced and the file stays axiom-free (propext, Classical.choice, Quot.sound only). Beyond catching transcription errors in the closed-form constants, the r > n check is genuine coverage of the boundary behaviour that the truncated-subtraction discussion in the docstring relies on.",
+    "mathContext": "Checks: $\\sum_k k^{\\underline{1}}\\binom{4}{k}=4\\cdot2^3=32$, $\\sum_k k^{\\underline{2}}\\binom{5}{k}=20\\cdot2^3=160$, $\\sum_k k^{\\underline{3}}\\binom{7}{k}=210\\cdot2^4$, and $\\sum_k k^{\\underline{5}}\\binom{3}{k}=0$ (since $r=5>3=n$).",
+    "significance": "technical",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom-free verification",
+      "boundary case r > n"
+    ],
+    "prerequisites": [
+      "the decide tactic",
+      "Lean.ofReduceBool and the axiom-integrity policy",
+      "vanishing of n^(r) for r > n"
+    ]
   }
 ]

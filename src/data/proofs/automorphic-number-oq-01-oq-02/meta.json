@@ -166,5 +166,45 @@
       "summary": "automorphic_complementary_pair: the parent's count = 4 with |{0,1}| = 2 yields (card_le_card) an idempotent a ∉ {0,1}; its complement 1-a is the other nontrivial idempotent, with a+(1-a)=1, a·(1-a)=0, and a ≠ 1-a (else a=1). The four distinct idempotents 0,1,a,1-a fill the 4-element set, so the idempotent set equals {0,1,a,1-a}.",
       "mathContext": "Beyond counting, the residues organize into two orthogonal complementary pairs {0,1} and {…5,…6}; the concrete examples 5/6, 25/76, 376/625 exhibit a+b=1, ab=0."
     }
+  ],
+  "overview": {
+    "historicalContext": "Automorphic numbers — whose squares end in the number itself (5²=25, 6²=36, 25²=625, 76²=5776, 625²=390625, …) — are a piece of recreational number theory with a long pedigree, appearing in the work of recreational mathematicians and in puzzle collections well before their modern algebraic framing. The decisive structural observation is that an automorphic residue mod 10^k is exactly an idempotent of the ring ℤ/10^k: n²≡n means n is a fixed point of squaring. The Chinese Remainder Theorem splits ℤ/10^k ≅ ℤ/2^k × ℤ/5^k, and the idempotents of a product of two local rings are precisely the four pairs (0,0),(1,1),(1,0),(0,1) — explaining both the count of four and why the two nontrivial ones (the …5 and …6 families) are 2-adic/5-adic complements. This entry sits in a tower of automorphic-number formalizations: the parent counts the idempotents, the sibling oq-01-oq-01 explains the count as 2^ω(n), and oq-01-oq-03 develops the unique lifting of idempotents up the reduction tower. The result here pins down the *structure* of the four residues as two orthogonal complementary pairs.",
+    "problemStatement": "For k ≥ 1, identify the four idempotents of ℤ/10^k (the automorphic residues n²≡n mod 10^k) as a set with structure: show they are exactly {0, 1, a, 1−a} for a nontrivial idempotent a, that the nontrivial pair a, 1−a are orthogonal complements (a+(1−a)=1, a·(1−a)=0), and that each residue is uniquely determined by its last digit.",
+    "proofStrategy": "Three ingredients. (1) Orthogonal-complement algebra: in any commutative ring, e²=e ⟹ (1−e)²=1−e, with e·(1−e)=0 and e+(1−e)=1 (each a one-line `linear_combination`/`ring`). (2) Uniqueness of idempotent lifts over a nil ideal, proved from scratch: a difference of idempotents is tripotent, (e−f)³=e−f; if e−f is nilpotent then (e−f)² is idempotent and nilpotent, hence 0, forcing e=f. (3) Specialization: 10 is nilpotent in ℤ/10^k (10^k=0), so the kernel of reduction mod 10 is a nil ideal — automorphic residues sharing a last digit coincide. Counting (parent's card = 4) plus |{0,1}| = 2 forces a nontrivial idempotent a to exist; its complement supplies the second, and a cardinality squeeze (`eq_of_subset_of_card_le`) gives the exact set {0,1,a,1−a}.",
+    "keyInsights": [
+      "**Automorphic = idempotent**: n²≡n (mod 10^k) is exactly the idempotent equation in ℤ/10^k, turning a recreational curiosity into a question about a ring's Boolean algebra of idempotents.",
+      "**Two complementary pairs, not four loose numbers**: the four residues are {0,1} and the nontrivial {a, 1−a}; the …5 and …6 families (5/6, 25/76, 376/625, …) are orthogonal complements with a+b=1 and ab=0.",
+      "**Tripotent identity is the engine**: (e−f)³=e−f for any two idempotents — a single `linear_combination` — is all that is needed to prove uniqueness of idempotent lifts, bypassing any Mathlib lifting machinery.",
+      "**Last digit is a complete invariant**: because (10) is a nil ideal, reduction mod 10 is injective on idempotents, so an automorphic number is pinned down by its final digit (0, 1, 5, or 6).",
+      "**CRT explains everything**: ℤ/10^k ≅ ℤ/2^k × ℤ/5^k makes the four idempotents the four corners (0,0),(1,1),(1,0),(0,1), with complementation swapping the two nontrivial corners — the structural reason behind the elementary proofs."
+    ],
+    "prerequisites": [
+      "Idempotents in a commutative ring and the Boolean algebra they form",
+      "Nilpotent elements and nil ideals",
+      "The ring ℤ/10^k and reduction maps ℤ/10^k → ℤ/10",
+      "Chinese Remainder Theorem for ℤ/10^k ≅ ℤ/2^k × ℤ/5^k",
+      "Automorphic numbers (the parent count = 4)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The four automorphic residues mod 10^k are not an unstructured quartet but two orthogonal complementary pairs: the trivial {0,1} and the nontrivial {a, 1−a} formed by the classic …5 and …6 automorphic numbers, with a+(1−a)=1 and a·(1−a)=0 (5+6=1, 5·6=0 mod 10; 25+76=1, 25·76=0 mod 100; 376+625=1, 376·625=0 mod 1000). A self-contained proof of the uniqueness of idempotent lifts modulo a nil ideal — driven by the tripotent identity (e−f)³=e−f — yields as a corollary that an automorphic number is completely determined by its last digit. Everything is machine-checked with no axioms, no sorries, and no Mathlib idempotent-lifting lemma.",
+    "implications": "Recasting automorphic numbers as idempotents exposes the Boolean-algebra structure underlying their familiar patterns and connects an elementary recreational topic to the general theory of idempotent lifting (Hensel-style) over nil ideals. The from-scratch tripotent argument is a clean, reusable template for proving idempotents lift uniquely modulo a nilpotent obstruction, applicable far beyond ℤ/10^k. The last-digit uniqueness result also rigorously justifies the standard recursive construction of automorphic numbers digit by digit.",
+    "openQuestions": [
+      "Generalize the complementary-pairing theorem to ℤ/m^k for arbitrary m, where the number of idempotents is 2^ω(m) and they form a Boolean algebra of rank ω(m) — describe the pairing/complementation structure explicitly.",
+      "Formalize the digit-by-digit (Hensel) lifting that produces the infinite 5-adic and 6-adic automorphic sequences as the unique nontrivial idempotents of the inverse limit ℤ₂ × ℤ₅, connecting this finite result to the p-adic picture.",
+      "Quantify the convergence: show the …5 and …6 idempotents stabilize each new digit uniquely, giving an effective bound on how the k-th automorphic number determines the (k+1)-th."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "automorphic-number-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling follow-up that explains the count of automorphic residues as 2^ω(n); this entry describes the structure of those residues rather than their number."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Develops the unique lifting of idempotents up the reduction tower ℤ/10^(k+1) → ℤ/10^k, the inductive counterpart of the last-digit uniqueness proved here."
+    }
   ]
 }

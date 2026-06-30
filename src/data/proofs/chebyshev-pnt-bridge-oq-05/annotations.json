@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "chebyshev-pnt-bridge-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "context",
+    "title": "From the Even Subsequence to All m",
+    "content": "The parent bridge proves the Chebyshev lower bound 4^n ≤ (2n+1)·(2n)^{π(2n)} only along even arguments x = 2n — the natural home of the central binomial coefficient C(2n,n) whose prime factorisation drives Chebyshev's 1852 estimate. The parent's fifth open question asks to spread this to every m. Since π is a step function (π(x) = π(⌊x⌋)), the missing ingredient is purely the monotonicity π(m) ≥ π(2⌊m/2⌋): a lower bound at the largest even integer ≤ m already controls π(m). This file performs that elementary 'fill the gaps' step, valid for odd and even m alike. 0 axioms, 0 sorries.",
+    "mathContext": "$\\pi(x) = \\pi(\\lfloor x\\rfloor)$ is non-decreasing; a bound at $2\\lfloor m/2\\rfloor \\le m$ transfers to $m$.",
+    "significance": "context",
+    "relatedConcepts": ["prime-counting function π", "Chebyshev's theorem", "central binomial coefficient", "monotone step function"],
+    "prerequisites": ["the parent even-only Chebyshev bound", "π as a step function", "monotonicity of π"]
+  },
+  {
+    "id": "ann-nat-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-05",
+    "range": {
+      "startLine": 55,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "The All-m Natural-Number Bound: Three Monotone Collapses",
+    "content": "four_pow_half_le_mul_pow_primeCounting proves 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for every m ≥ 2. Set n = ⌊m/2⌋, so 2n ≤ m is the even integer just below m and n ≥ 1. Feed n into the parent's even-only bound to get 4^n ≤ (2n+1)·(2n)^{π(2n)}, then make three collapses, each moving the even integer 2n up to m in the right direction: prefactor 2n+1 ≤ m+1 (omega), base (2n)^{π(2n)} ≤ m^{π(2n)} (Nat.pow_le_pow_left from 2n ≤ m), and exponent m^{π(2n)} ≤ m^{π(m)} (Nat.pow_le_pow_right from π(2n) ≤ π(m), i.e. monotonicity of π). Multiplying (Nat.mul_le_mul) gives the bound. Because all three moves are monotone, the transfer is a pure inequality chain with no error term to track.",
+    "mathContext": "$4^{\\lfloor m/2\\rfloor} \\le (m+1)\\,m^{\\pi(m)}$, via $2\\lfloor m/2\\rfloor \\le m$ collapsed on prefactor, base, exponent.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.pow_le_pow_left / pow_le_pow_right", "monotone_primeCounting", "inequality chain", "floor function"],
+    "prerequisites": ["the parent even-only bound", "monotonicity of powers in base and exponent", "monotonicity of π"]
+  },
+  {
+    "id": "ann-log-form",
+    "proofId": "chebyshev-pnt-bridge-oq-05",
+    "range": {
+      "startLine": 94,
+      "endLine": 132
+    },
+    "type": "technique",
+    "title": "Taking Logs: the Chebyshev Lower Density Appears",
+    "content": "primeCounting_mul_log_lower applies Real.log to the cast Nat inequality to get ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m. The work is bookkeeping: cast the Nat bound to ℝ (push_cast, exact_mod_cast), confirm both sides positive (positivity), apply Real.log_le_log (monotonicity), then expand the right side with Real.log_mul and Real.log_pow into log(m+1) + π(m)·log m, and rearrange (linarith). Since log 4 = 2 log 2 and ⌊m/2⌋/m → 1/2 while log(m+1)/log m → 0, the leading term is m·log 2 — so π(m)·log(m)/m ≥ log 2 − o(1) along the FULL integer sequence, the Chebyshev lower density answering OQ-05.",
+    "mathContext": "$\\lfloor m/2\\rfloor \\log 4 - \\log(m+1) \\le \\pi(m)\\log m$; with $\\log 4 = 2\\log 2$, density $\\ge \\log 2 - o(1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.log monotonicity", "log_mul / log_pow", "Chebyshev lower density log 2", "little-o error term"],
+    "prerequisites": ["monotonicity and additivity of Real.log", "casting Nat inequalities to ℝ", "log 4 = 2 log 2"]
+  },
+  {
+    "id": "ann-quotient",
+    "proofId": "chebyshev-pnt-bridge-oq-05",
+    "range": {
+      "startLine": 134,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Quotient Form: π(m) Bounded Below Directly",
+    "content": "primeCounting_ge_div_log divides the logarithmic bound by log m (positive for m ≥ 2, Real.log_pos) to record the lower density in the clean denominator-free form π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m. The step is div_le_iff₀ turning the quotient inequality into the product form already proved. This is the shape most directly comparable to the prime number theorem's π(x) ~ x/log x: the right side is asymptotically (½ log 4)·m/log m = (log 2)·m/log m, the elementary lower half of π(x) = Θ(x/log x). The sharper constant 0.921 and the full PNT limit remain separate open questions of the parent.",
+    "mathContext": "$\\pi(m) \\ge \\dfrac{\\lfloor m/2\\rfloor \\log 4 - \\log(m+1)}{\\log m} \\sim (\\log 2)\\dfrac{m}{\\log m}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime number theorem π(x) ~ x/log x", "div_le_iff₀", "Θ(x/log x)", "Chebyshev constants"],
+    "prerequisites": ["the logarithmic lower bound", "positivity of log m for m ≥ 2", "the PNT asymptotic form"]
+  }
+]

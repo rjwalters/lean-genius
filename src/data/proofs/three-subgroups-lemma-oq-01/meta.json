@@ -98,6 +98,14 @@
       "summary": "commutator_eq_bot_of_rotate specialises N = ⊥ and reproduces Subgroup.commutator_commutator_eq_bot_of_rotate, confirming the generalization is faithful. commutator_commutator_le_of_both is the standard corollary: if H commutes with both K and L modulo the normal N, then H commutes with ⁅K,L⁆ modulo N, proved by forcing two iterated commutators into N (commutator_mono plus commutator_le_left) and invoking the lemma for the third."
     }
   ],
-  "conclusion": "The three subgroups lemma is formalised sorry-free and axiom-free in its classical normal-subgroup form ⁅⁅H,K⁆,L⁆ ≤ N ∧ ⁅⁅K,L⁆,H⁆ ≤ N ⟹ ⁅⁅L,H⁆,K⁆ ≤ N, which Mathlib does not record (it has only the N = ⊥ Hall–Witt case). The proof transports Mathlib's bottom-case lemma across the quotient projection G ⧸ N, using that subgroup map distributes over the commutator bracket and that the kernel of the projection is exactly N. The entry also packages the full cyclic symmetry, the symmetric ⁅H,⁅K,L⁆⁆ notation, the recovery of Mathlib's lemma as N = ⊥, and the centralizing corollary. A natural follow-up is the inductive payoff this form was built for: ⁅γᵢ(G), γⱼ(G)⁆ ≤ γ₍ᵢ₊ⱼ₎(G) for the lower central series, where the relative three subgroups lemma is applied at each step.",
+  "conclusion": {
+    "summary": "The three subgroups lemma is formalised sorry-free and axiom-free in its classical normal-subgroup form ⁅⁅H,K⁆,L⁆ ≤ N ∧ ⁅⁅K,L⁆,H⁆ ≤ N ⟹ ⁅⁅L,H⁆,K⁆ ≤ N, which Mathlib does not record (it has only the N = ⊥ Hall–Witt case). The proof transports Mathlib's bottom-case lemma across the quotient projection G ⧸ N, using that subgroup map distributes over the commutator bracket and that the kernel of the projection is exactly N. The entry also packages the full cyclic symmetry, the symmetric ⁅H,⁅K,L⁆⁆ notation, the recovery of Mathlib's lemma as N = ⊥, and the centralizing corollary.",
+    "implications": "The relative '≤ N' form — not the absolute N = ⊥ case Mathlib provides — is the version group theory actually uses to build the lower central series and prove ⁅Gᵢ,Gⱼ⁆ ≤ G₍ᵢ₊ⱼ₎, the engine behind much of nilpotency theory. By filling this gap and recovering Mathlib's lemma as the special case N = ⊥, the entry shows the general statement is faithful while supplying the form needed for inductive commutator calculus. The quotient-transport technique (X ≤ N ⟺ X.map (mk' N) = ⊥) is itself reusable for lifting other 'equals trivial subgroup' results to their relative 'contained in a normal subgroup' counterparts.",
+    "openQuestions": [
+      "Can the inductive payoff this form was built for — ⁅γᵢ(G), γⱼ(G)⁆ ≤ γ₍ᵢ₊ⱼ₎(G) for the lower central series — be formalised by applying the relative three subgroups lemma at each step?",
+      "Does the same quotient-transport pattern generalise other Hall–Witt-derived = ⊥ identities in Mathlib to their classical ≤ N relative forms?",
+      "Can the centralizing corollary be packaged into reusable nilpotency/solvability infrastructure, for example tools relating membership in successive terms of the lower central series?"
+    ]
+  },
   "crossReferences": []
 }

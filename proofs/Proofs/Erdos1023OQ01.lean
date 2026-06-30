@@ -24,8 +24,11 @@ import Mathlib.Tactic
 import Mathlib.Data.Nat.Choose.Central
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib
 
 open Finset
+open Filter Asymptotics
+open scoped Topology Real Nat
 
 namespace Erdos1023OQ01
 
@@ -366,10 +369,206 @@ axiom problem_447_solution :
   ∀ n : ℕ, sSup { m : ℕ | ∃ F : SetFamily n, isTwoUnionFree F ∧ F.card = m } =
     Nat.choose n (n / 2)
 
-/-- Stirling's approximation for central binomials (deep result). -/
-axiom stirling_central_approx :
-  ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |(Nat.choose n (n / 2) : ℝ) / (stirlingConstant * 2^n / Real.sqrt n) - 1| < ε
+-- ----------------------------------------------------------------------------
+-- Stirling's approximation for central binomials, **proved** (no longer an axiom)
+-- from Mathlib's Stirling equivalence via
+-- `BetaDiagAsymptotic.centralBinom_isEquivalent` (`C(2n, n) ~ 4ⁿ / √(πn)`).
+-- ----------------------------------------------------------------------------
+
+/-- `C(2n,n) = (2n)! / (n!·n!)` as a real quotient. -/
+private lemma centralBinom_cast (n : ℕ) :
+    (Nat.centralBinom n : ℝ)
+      = (Nat.factorial (2 * n) : ℝ) / ((Nat.factorial n : ℝ) * (Nat.factorial n : ℝ)) := by
+  have hfac : Nat.centralBinom n * (Nat.factorial n * Nat.factorial n)
+      = Nat.factorial (2 * n) := by
+    have h := Nat.choose_mul_factorial_mul_factorial (show n ≤ 2 * n by omega)
+    rw [show 2 * n - n = n by omega] at h
+    rw [Nat.centralBinom_eq_two_mul_choose, ← mul_assoc]
+    exact h
+  rw [eq_div_iff (by positivity)]
+  exact_mod_cast hfac
+
+/-- **Wallis ratio identity.** The ratio of Stirling expressions for `(2k)!` and
+    `(k!)²` collapses to `4ᵏ / √(πm)` (the `4ᵏ` is `(2m/e)^{2k}/(m/e)^{2k}`). -/
+private lemma stirling_ratio_identity {m e : ℝ} (hm : 0 < m) (he : 0 < e) (k : ℕ) :
+    Real.sqrt (2 * (2 * m) * Real.pi) * ((2 * m) / e) ^ (2 * k) /
+        (Real.sqrt (2 * m * Real.pi) * (m / e) ^ k
+          * (Real.sqrt (2 * m * Real.pi) * (m / e) ^ k))
+      = 4 ^ k / Real.sqrt (Real.pi * m) := by
+  have hpi : 0 < Real.pi := Real.pi_pos
+  have hA : Real.sqrt (2 * (2 * m) * Real.pi) = 2 * Real.sqrt (Real.pi * m) := by
+    rw [show 2 * (2 * m) * Real.pi = (2 : ℝ) ^ 2 * (Real.pi * m) by ring,
+      Real.sqrt_mul (by positivity), Real.sqrt_sq (by norm_num)]
+  have hC : ((2 * m) / e) ^ (2 * k) = 4 ^ k * ((m / e) ^ k) ^ 2 := by
+    have h2 : (2 : ℝ) ^ (2 * k) = 4 ^ k := by rw [pow_mul]; norm_num
+    rw [show (2 * m) / e = 2 * (m / e) by rw [mul_div_assoc], mul_pow, h2, ← pow_mul,
+      Nat.mul_comm k 2]
+  have hrsq : Real.sqrt (Real.pi * m) * Real.sqrt (Real.pi * m) = Real.pi * m :=
+    Real.mul_self_sqrt (by positivity)
+  have hsq2 : Real.sqrt (2 * m * Real.pi) * Real.sqrt (2 * m * Real.pi) = 2 * m * Real.pi :=
+    Real.mul_self_sqrt (by positivity)
+  have hr0 : Real.sqrt (Real.pi * m) ≠ 0 := (Real.sqrt_pos.2 (by positivity)).ne'
+  rw [hA, hC, div_eq_div_iff (by positivity) hr0]
+  linear_combination (2 * 4 ^ k * ((m / e) ^ k) ^ 2) * hrsq - (4 ^ k * ((m / e) ^ k) ^ 2) * hsq2
+
+/-- **Central binomial asymptotic.** `C(2n, n) ~ 4ⁿ / √(πn)`, from Mathlib's
+    `Stirling.factorial_isEquivalent_stirling`. -/
+private lemma centralBinom_isEquivalent :
+    (fun n : ℕ => (Nat.centralBinom n : ℝ)) ~[atTop]
+      (fun n : ℕ => (4 : ℝ) ^ n / Real.sqrt (Real.pi * n)) := by
+  have hstir := Stirling.factorial_isEquivalent_stirling
+  have hk : Tendsto (fun n : ℕ => 2 * n) atTop atTop :=
+    tendsto_atTop_atTop.2 (fun b => ⟨b, fun a ha => by omega⟩)
+  have h2n := hstir.comp_tendsto hk
+  have hmul := hstir.mul hstir
+  have hdiv := h2n.div hmul
+  have hcb : (fun n : ℕ => (Nat.centralBinom n : ℝ)) ~[atTop]
+      (fun n : ℕ => (Nat.factorial (2 * n) : ℝ) /
+        ((Nat.factorial n : ℝ) * (Nat.factorial n : ℝ))) :=
+    Filter.EventuallyEq.isEquivalent (Filter.Eventually.of_forall centralBinom_cast)
+  refine (hcb.trans hdiv).trans (Filter.EventuallyEq.isEquivalent ?_)
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  have hm : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
+  simp only [Pi.div_apply, Function.comp_apply]
+  rw [show ((2 * n : ℕ) : ℝ) = 2 * (n : ℝ) by push_cast; ring]
+  exact stirling_ratio_identity hm (Real.exp_pos 1) n
+
+/-- Key identity `√(2/π) · √(π·x) = √(2·x)`. -/
+private lemma stirlingConstant_sqrt (x : ℝ) :
+    stirlingConstant * Real.sqrt (Real.pi * x) = Real.sqrt (2 * x) := by
+  have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+  rw [stirlingConstant, ← Real.sqrt_mul (by positivity) (Real.pi * x)]
+  congr 1
+  rw [div_mul_eq_mul_div, mul_comm Real.pi x, ← mul_assoc, mul_div_assoc, div_self hpi, mul_one]
+
+/-- The normalized central binomial ratio `C(2n, n) / (4ⁿ/√(πn))` tends to `1`. -/
+private lemma centralBinom_ratio_tendsto :
+    Tendsto (fun n : ℕ => (Nat.centralBinom n : ℝ) / ((4 : ℝ) ^ n / Real.sqrt (Real.pi * n)))
+      atTop (𝓝 1) := by
+  have hz : ∀ᶠ n : ℕ in atTop, (4 : ℝ) ^ n / Real.sqrt (Real.pi * n) ≠ 0 := by
+    filter_upwards [eventually_ge_atTop 1] with n hn
+    have hn' : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+    refine ne_of_gt (div_pos (by positivity) ?_)
+    rw [Real.sqrt_pos]; positivity
+  exact (isEquivalent_iff_tendsto_one hz).mp centralBinom_isEquivalent
+
+/-- Even subsequence: at `n = 2m` the target ratio equals the central-binomial
+    ratio exactly (because `√(2m)/√(πm) = √(2/π)`), hence tends to `1`. -/
+private lemma even_ratio_tendsto :
+    Tendsto (fun m : ℕ => (Nat.choose (2 * m) ((2 * m) / 2) : ℝ)
+        / (stirlingConstant * (2 : ℝ) ^ (2 * m) / Real.sqrt ((2 * m : ℕ) : ℝ)))
+      atTop (𝓝 1) := by
+  refine Tendsto.congr' ?_ centralBinom_ratio_tendsto
+  filter_upwards [eventually_ge_atTop 1] with m _
+  have hch : Nat.choose (2 * m) ((2 * m) / 2) = Nat.centralBinom m := by
+    rw [show (2 * m) / 2 = m from by omega, Nat.centralBinom_eq_two_mul_choose]
+  have e1 : ((2 * m : ℕ) : ℝ) = 2 * (m : ℝ) := by push_cast; ring
+  have e2 : (2 : ℝ) ^ (2 * m) = (4 : ℝ) ^ m := by rw [pow_mul]; norm_num
+  rw [hch, e1, e2, ← stirlingConstant_sqrt (m : ℝ),
+      mul_div_mul_left _ _ (ne_of_gt stirlingConstant_pos)]
+
+/-- `C(2m+1, m) = ½·C(2m+2, m+1)` (Pascal + symmetry of the two central terms). -/
+private lemma odd_choose_eq (m : ℕ) :
+    2 * Nat.choose (2 * m + 1) m = Nat.centralBinom (m + 1) := by
+  rw [Nat.centralBinom_eq_two_mul_choose, show 2 * (m + 1) = (2 * m + 1) + 1 from by ring,
+      Nat.choose_succ_succ' (2 * m + 1) m, Nat.choose_symm_half]
+  ring
+
+/-- Odd subsequence: at `n = 2m+1`, `C(2m+1, m) = ½·centralBinom (m+1)` and the
+    target ratio is the central-binomial ratio times a correction
+    `√((2m+1)/(2m+2)) → 1`, hence tends to `1`. -/
+private lemma odd_ratio_tendsto :
+    Tendsto (fun m : ℕ => (Nat.choose (2 * m + 1) ((2 * m + 1) / 2) : ℝ)
+        / (stirlingConstant * (2 : ℝ) ^ (2 * m + 1) / Real.sqrt ((2 * m + 1 : ℕ) : ℝ)))
+      atTop (𝓝 1) := by
+  have hcbr1 : Tendsto (fun m : ℕ => (Nat.centralBinom (m + 1) : ℝ)
+      / ((4 : ℝ) ^ (m + 1) / Real.sqrt (Real.pi * ((m + 1 : ℕ) : ℝ)))) atTop (𝓝 1) :=
+    centralBinom_ratio_tendsto.comp (tendsto_add_atTop_nat 1)
+  have hrat : Tendsto (fun m : ℕ => (2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2)) atTop (𝓝 1) := by
+    have hden : Tendsto (fun m : ℕ => 2 * (m : ℝ) + 2) atTop atTop := by
+      refine tendsto_atTop_mono (fun m => ?_) tendsto_natCast_atTop_atTop
+      have : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
+      linarith
+    have hinv : Tendsto (fun m : ℕ => (2 * (m : ℝ) + 2)⁻¹) atTop (𝓝 0) := hden.inv_tendsto_atTop
+    have hsub : Tendsto (fun m : ℕ => 1 - (2 * (m : ℝ) + 2)⁻¹) atTop (𝓝 (1 - 0)) :=
+      tendsto_const_nhds.sub hinv
+    rw [sub_zero] at hsub
+    refine hsub.congr' ?_
+    filter_upwards [eventually_ge_atTop 0] with m _
+    have h2 : (2 * (m : ℝ) + 2) ≠ 0 := by positivity
+    field_simp
+    ring
+  have hsqrt1 : Tendsto (fun m : ℕ => Real.sqrt ((2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2)))
+      atTop (𝓝 1) := by
+    have hc := (Real.continuous_sqrt.tendsto 1).comp hrat
+    simpa using hc
+  have hprod : Tendsto (fun m : ℕ => (Nat.centralBinom (m + 1) : ℝ)
+        / ((4 : ℝ) ^ (m + 1) / Real.sqrt (Real.pi * ((m + 1 : ℕ) : ℝ)))
+      * Real.sqrt ((2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2))) atTop (𝓝 (1 * 1)) :=
+    hcbr1.mul hsqrt1
+  rw [one_mul] at hprod
+  refine Tendsto.congr' ?_ hprod
+  filter_upwards [eventually_ge_atTop 0] with m _
+  rw [eq_comm]
+  -- Pointwise: the target ratio equals `centralBinom-ratio · √((2m+1)/(2m+2))`.
+  set A := (Nat.choose (2 * m + 1) ((2 * m + 1) / 2) : ℝ)
+      / (stirlingConstant * (2 : ℝ) ^ (2 * m + 1) / Real.sqrt ((2 * m + 1 : ℕ) : ℝ)) with hAdef
+  set B := (Nat.centralBinom (m + 1) : ℝ)
+        / ((4 : ℝ) ^ (m + 1) / Real.sqrt (Real.pi * ((m + 1 : ℕ) : ℝ)))
+      * Real.sqrt ((2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2)) with hBdef
+  have hcast : (Nat.choose (2 * m + 1) m : ℝ) = (Nat.centralBinom (m + 1) : ℝ) / 2 := by
+    have h := odd_choose_eq m
+    have h' : (2 : ℝ) * (Nat.choose (2 * m + 1) m : ℝ) = (Nat.centralBinom (m + 1) : ℝ) := by
+      exact_mod_cast h
+    linarith
+  have hA0 : 0 ≤ A := by
+    rw [hAdef]
+    refine div_nonneg (by positivity) (div_nonneg ?_ (Real.sqrt_nonneg _))
+    exact mul_nonneg stirlingConstant_pos.le (by positivity)
+  have hB0 : 0 ≤ B := by rw [hBdef]; positivity
+  have hsq : A ^ 2 = B ^ 2 := by
+    rw [hAdef, hBdef, show (2 * m + 1) / 2 = m from by omega, hcast,
+        show (2 : ℝ) ^ (2 * m + 1) = 2 * (4 : ℝ) ^ m from by rw [pow_succ, pow_mul]; ring,
+        show (4 : ℝ) ^ (m + 1) = 4 * (4 : ℝ) ^ m from by rw [pow_succ]; ring]
+    simp only [div_pow, mul_pow]
+    rw [Real.sq_sqrt (show (0 : ℝ) ≤ ((2 * m + 1 : ℕ) : ℝ) from by positivity),
+        Real.sq_sqrt (show (0 : ℝ) ≤ Real.pi * ((m + 1 : ℕ) : ℝ) from by positivity),
+        Real.sq_sqrt (show (0 : ℝ) ≤ (2 * (m : ℝ) + 1) / (2 * (m : ℝ) + 2) from by positivity),
+        stirlingConstant_sq]
+    have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
+    have h4 : (4 : ℝ) ^ m ≠ 0 := by positivity
+    have h2m2 : (2 * (m : ℝ) + 2) ≠ 0 := by positivity
+    push_cast
+    field_simp
+    ring
+  exact (Real.sqrt_sq hA0).symm.trans ((congrArg Real.sqrt hsq).trans (Real.sqrt_sq hB0))
+
+/-- **Stirling's approximation for central binomials.**
+    `C(n, ⌊n/2⌋) / (√(2/π) · 2ⁿ/√n) → 1`. Proved from Mathlib's Stirling
+    equivalence; the even and odd subsequences are handled separately. -/
+theorem stirling_central_approx :
+    ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
+      |(Nat.choose n (n / 2) : ℝ) / (stirlingConstant * 2^n / Real.sqrt n) - 1| < ε := by
+  have hmain : Tendsto (fun n : ℕ => (Nat.choose n (n / 2) : ℝ)
+      / (stirlingConstant * (2 : ℝ) ^ n / Real.sqrt (n : ℝ))) atTop (𝓝 1) := by
+    rw [Metric.tendsto_atTop]
+    intro ε hε
+    obtain ⟨Na, hNa⟩ := Metric.tendsto_atTop.mp even_ratio_tendsto ε hε
+    obtain ⟨Nb, hNb⟩ := Metric.tendsto_atTop.mp odd_ratio_tendsto ε hε
+    refine ⟨2 * max Na Nb + 1, fun n hn => ?_⟩
+    have hNa' : Na ≤ max Na Nb := le_max_left _ _
+    have hNb' : Nb ≤ max Na Nb := le_max_right _ _
+    rcases Nat.even_or_odd n with ⟨m, rfl⟩ | ⟨m, rfl⟩
+    · have hm : Na ≤ m := by omega
+      have hd := hNa m hm
+      rwa [show m + m = 2 * m from (two_mul m).symm]
+    · have hm : Nb ≤ m := by omega
+      exact hNb m hm
+  intro ε hε
+  obtain ⟨N, hN⟩ := Metric.tendsto_atTop.mp hmain ε hε
+  refine ⟨N, fun n hn => ?_⟩
+  have hd := hN n hn
+  rwa [Real.dist_eq] at hd
 
 /-- F(n) = C(n, n/2) exactly (Erdős-Kleitman + Hunter).
     This follows from Problem 447 and the observation that
@@ -444,15 +643,18 @@ theorem erdos_1023_asymptotic :
 
 5. **Computational Verification**: Middle layer sizes for n = 0, 2, 4, 6.
 
-### Axioms Used (2 deep results)
+### Axioms Used (1 deep result)
 - `problem_447_solution`: 2-union-free max = C(n, n/2)
-- `stirling_central_approx`: Stirling approximation for central binomials
 
 ### Axioms Eliminated (vs main file's 5 axioms)
 - `asymptoticConstant` → concrete `stirlingConstant = √(2/π)`
 - `asymptoticConstant_pos` → proved `stirlingConstant_pos`
 - `unionFreeMax_asymptotic` → proved `erdos_1023_asymptotic`
   (from `unionFreeMax_eq_middle` + `stirling_central_approx`)
+- `stirling_central_approx` → **proved** from Mathlib's
+  `Stirling.factorial_isEquivalent_stirling` via the central-binomial
+  asymptotic `C(2n, n) ~ 4ⁿ/√(πn)` (even/odd subsequence split).
+  `#print axioms` ⇒ `[propext, Classical.choice, Quot.sound]`.
 -/
 
 end Erdos1023OQ01

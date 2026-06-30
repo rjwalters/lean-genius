@@ -502,15 +502,38 @@ theorem independent_implies_zero_mixing
     ∀ k n, n ≥ 1 →
       alphaMixingCoeff μ (σ_k k) (σ_k (k + n)) = 0 := by
   intro k n hn
-  simp only [alphaMixingCoeff]
-  -- Each term = 0 by independence: μ(A∩B) = μ(A)·μ(B)
-  -- For all measurable A ∈ σ_k(k), B ∈ σ_k(k+n):
-  --   k + n = k + (n-1) + 1, so hIndep applies with gap (n-1)
-  --   |μ(A∩B).toReal - μ(A).toReal · μ(B).toReal| = |0| = 0
-  -- The nested ciSup of all-zero nonneg terms over ℝ (ConditionallyCompleteLattice)
-  -- requires showing sSup of range = 0, which is technically involved due to
-  -- the interaction of Prop-indexed sups and missing CompleteLattice on ℝ.
-  sorry
+  -- Every term in the defining supremum vanishes: for measurable `A ∈ σ_k k`
+  -- and `B ∈ σ_k (k+n)`, independence (gap `n-1`) gives `μ (A ∩ B) = μ A * μ B`,
+  -- so `|(μ (A∩B)).toReal - (μ A).toReal * (μ B).toReal| = 0`.
+  have hbody : ∀ (A : Set Ω), @MeasurableSet Ω (σ_k k) A →
+      ∀ (B : Set Ω), @MeasurableSet Ω (σ_k (k + n)) B →
+      |(μ (A ∩ B)).toReal - (μ A).toReal * (μ B).toReal| = 0 := by
+    intro A hA B hB
+    have hk : k + n = k + (n - 1) + 1 := by omega
+    have hB' : @MeasurableSet Ω (σ_k (k + (n - 1) + 1)) B := by rw [← hk]; exact hB
+    have hind : μ (A ∩ B) = μ A * μ B := hIndep k (n - 1) A B hA hB'
+    rw [hind, ENNReal.toReal_mul]
+    simp
+  -- A Prop-indexed supremum of the constant `0` is `0` (both when the Prop
+  -- holds and when it is empty), sidestepping the lack of a `CompleteLattice`
+  -- instance on `ℝ`.
+  have h0p : ∀ (p : Prop), (⨆ (_ : p), (0 : ℝ)) = 0 := by
+    intro p
+    by_cases h : p
+    · haveI : Nonempty p := ⟨h⟩; simp
+    · haveI : IsEmpty p := ⟨h⟩; simp
+  -- Rewrite the whole nested supremum as a nested supremum of `0`, then collapse.
+  have collapse : alphaMixingCoeff μ (σ_k k) (σ_k (k + n))
+      = ⨆ (A : Set Ω), ⨆ (_ : @MeasurableSet Ω (σ_k k) A),
+          ⨆ (B : Set Ω), ⨆ (_ : @MeasurableSet Ω (σ_k (k + n)) B), (0 : ℝ) := by
+    simp only [alphaMixingCoeff]
+    apply iSup_congr; intro A
+    apply iSup_congr; intro hA
+    apply iSup_congr; intro B
+    apply iSup_congr; intro hB
+    exact hbody A hA B hB
+  rw [collapse]
+  simp only [h0p, ciSup_const]
 
 /-
 ## Part IX: Relationship Between Generalizations
@@ -719,11 +742,10 @@ theorem iid_satisfies_lyapunov
     have hd : (0 : ℝ) < (n : ℝ) ^ (δ / 2) := Real.rpow_pos_of_pos hn_pos _
     rw [hpow, hsplit]
     field_simp [hnne, hd.ne']
-    ring
   -- The closed form tends to 0 since δ/2 > 0.
   have hlim : Tendsto (fun n : ℕ => C / (n : ℝ) ^ (δ / 2)) atTop (nhds 0) := by
     have hpow_tendsto : Tendsto (fun n : ℕ => (n : ℝ) ^ (δ / 2)) atTop atTop :=
-      (Real.tendsto_rpow_atTop (by positivity : (0 : ℝ) < δ / 2)).comp
+      (tendsto_rpow_atTop (by positivity : (0 : ℝ) < δ / 2)).comp
         tendsto_natCast_atTop_atTop
     simpa using hpow_tendsto.const_div_atTop C
   -- Transfer the limit back to the Lyapunov sum via eventual equality.

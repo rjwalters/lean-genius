@@ -1,0 +1,124 @@
+[
+  {
+    "id": "ann-frob-pow-apply",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 75
+    },
+    "type": "technique",
+    "title": "The d-fold Frobenius is the p^d-power map (frob_pow_apply)",
+    "content": "frob_pow_apply is the mechanical bridge of the entry: the abstract Galois power frob^d, an opaque element of the automorphism group, is the honest map x ↦ x^(p^d). The proof is an induction on d generalizing x: the base case is the identity automorphism (simp); the step rewrites frob^(d+1) = frob^d · frob (pow_succ), evaluates the composite with AlgEquiv.mul_apply and the parent's frob_apply to (frob^d)(x^p), applies the inductive hypothesis at x^p to get (x^p)^(p^d), and finishes the exponent arithmetic (x^p)^(p^d) = x^(p·p^d) = x^(p^(d+1)) with pow_mul and pow_succ'. Generalizing x is essential — the hypothesis must be reapplied at x^p, not the original x. With this identity in hand, every later statement about the abstract fixed field of ⟨frob^d⟩ becomes a statement about the concrete solution set of x^(p^d) = x.",
+    "mathContext": "$(\\mathrm{frob}^d)\\,x = x^{p^d}$, by induction with $\\mathrm{frob}^{d+1} = \\mathrm{frob}^d\\cdot\\mathrm{frob}$ and $(x^p)^{p^d} = x^{p^{d+1}}$.",
+    "significance": "key",
+    "prerequisites": [
+      "Powers of a group element and pow_succ",
+      "AlgEquiv.mul_apply: composition of algebra automorphisms",
+      "The parent's frob_apply: frob x = x^p",
+      "Induction generalizing the point x"
+    ],
+    "relatedConcepts": [
+      "Frobenius automorphism",
+      "iterated endomorphism",
+      "finite field",
+      "p-power map"
+    ]
+  },
+  {
+    "id": "ann-mem-fixedfield-zpowers",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Fixed by ⟨frob^d⟩ ⟺ fixed by frob^d (mem_fixedField_zpowers_frob_pow_iff)",
+    "content": "Mathlib's mem_fixedField_iff characterizes membership in fixedField H as being fixed by EVERY element of the subgroup H. For H = ⟨frob^d⟩ that is, a priori, an infinite family of conditions (all integer powers). mem_fixedField_zpowers_frob_pow_iff collapses it to the single condition (frob^d) x = x. The forward direction just evaluates at the generator; the backward direction is the work: any g ∈ ⟨frob^d⟩ is a nat-power (frob^d)^k (zpowers reduces to powers in a finite group, mem_powers_iff_mem_zpowers + Submonoid.mem_powers_iff), and pow_fixed promotes 'fixed by frob^d' to 'fixed by (frob^d)^k'. This is the generator-to-group promotion of the parent, now applied to an arbitrary power frob^d rather than the Frobenius itself — the step that lets Artin's index count be read on the concrete fixed-point set.",
+    "mathContext": "$x\\in\\mathrm{fixedField}\\langle\\mathrm{frob}^d\\rangle \\iff (\\mathrm{frob}^d)\\,x = x$.",
+    "significance": "key",
+    "prerequisites": [
+      "IntermediateField.mem_fixedField_iff",
+      "pow_fixed: fixed by a ⟹ fixed by every a^k",
+      "Reduction of zpowers to nat-powers in a finite group"
+    ],
+    "relatedConcepts": [
+      "fixed field",
+      "cyclic subgroup",
+      "Galois correspondence",
+      "generator of a group"
+    ]
+  },
+  {
+    "id": "ann-finrank-fixedfield",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 134,
+      "endLine": 165
+    },
+    "type": "insight",
+    "title": "The Degree Drop via Artin + the Tower Law (finrank_fixedField_frob_pow)",
+    "content": "finrank_fixedField_frob_pow is the heart of the divisor-lattice correspondence: [fixedField⟨frob^d⟩ : 𝔽_p] = d for d ∣ n. The subfield is never built by hand. Artin's theorem (IntermediateField.finrank_fixedField_eq_card) gives the degree ABOVE the fixed field, [K : fixedField⟨frob^d⟩] = #⟨frob^d⟩ = orderOf(frob^d) = n/d (the last equality is orderOf_frob_pow). The tower law Module.finrank_mul_finrank then reads n = [fixedField : 𝔽_p]·[K : fixedField] = [fixedField : 𝔽_p]·(n/d). Since d ∣ n also gives d·(n/d) = n, and n/d > 0 (finrank_pos + Nat.div_pos), cancelling the common factor n/d (Nat.eq_of_mul_eq_mul_right) forces [fixedField : 𝔽_p] = d. The degree of the subfield is thus a consequence of the index of the subgroup — pure arithmetic, no explicit field construction.",
+    "mathContext": "$n = [\\mathrm{fixedField} : \\mathbb{F}_p]\\cdot(n/d)$ and $d\\cdot(n/d) = n$, so $[\\mathrm{fixedField} : \\mathbb{F}_p] = d$.",
+    "significance": "key",
+    "prerequisites": [
+      "IntermediateField.finrank_fixedField_eq_card (Artin)",
+      "Module.finrank_mul_finrank (tower law)",
+      "orderOf_frob_pow: orderOf(frob^d) = n/d",
+      "Nat.mul_div_cancel' and cancellation of a positive factor"
+    ],
+    "relatedConcepts": [
+      "Artin's theorem",
+      "tower law",
+      "degree of a field extension",
+      "subfield lattice"
+    ]
+  },
+  {
+    "id": "ann-card-pow-eq-self",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 167,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "The Point Count p^d in Three Guises (card_*)",
+    "content": "The degree drop converts to a point count via Module.card_eq_pow_finrank: a d-dimensional 𝔽_p-vector space has p^d elements (ZMod.card gives #𝔽_p = p). The count is recorded three ways, transported along Equiv.subtypeEquivRight: card_fixedField_frob_pow for the intermediate field, card_frob_pow_fixedPoints for the fixed-point subtype {x // (frob^d) x = x}, and card_pow_eq_self for the solution set {x // x^(p^d) = x}. The last is the classical statement that x^(p^d) − x splits with exactly p^d distinct roots in K precisely when 𝔽_{p^d} ⊆ K, i.e. when d ∣ n. This generalizes the parent's card_frob_fixedPoints = p from the single d = n endpoint to every rung d ∣ n of the lattice.",
+    "mathContext": "$\\#\\{x : x^{p^d} = x\\} = (\\#\\mathbb{F}_p)^{[\\,\\cdot\\,:\\mathbb{F}_p]} = p^d$ for $d\\mid n$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Module.card_eq_pow_finrank and ZMod.card",
+      "The degree drop finrank_fixedField_frob_pow",
+      "Equiv.subtypeEquivRight for transporting the count"
+    ],
+    "relatedConcepts": [
+      "roots of x^(p^d) − x",
+      "cardinality of a finite field",
+      "separable polynomial",
+      "subfield"
+    ]
+  },
+  {
+    "id": "ann-injon-divisors",
+    "proofId": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 190,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "Injectivity over the Divisor Lattice (fixedField_frob_pow_injOn_divisors)",
+    "content": "The capstone: d ↦ fixedField⟨frob^d⟩ is injective on the divisors of n — the forward half of the bijection {subfields of 𝔽_{p^n}} ↔ {divisors of n}. The proof is a pure cardinality argument: if fixedField⟨frob^a⟩ = fixedField⟨frob^b⟩ then their point counts agree, p^a = p^b (card_fixedField_frob_pow), and since p ≥ 2 (p prime), Nat.pow_right_injective forces a = b. The divisors of the positive n are nonzero (a divisibility hypothesis a ∣ n with n ≠ 0 rules out a = 0), supplying the side conditions for the count. No subgroup-level comparison is needed — the distinct sizes p^d alone witness that distinct divisors carve out distinct subfields.",
+    "mathContext": "Equal fixed fields $\\Rightarrow p^a = p^b \\Rightarrow a = b$ (since $p\\ge 2$); hence $d\\mapsto\\mathrm{fixedField}\\langle\\mathrm{frob}^d\\rangle$ is injective on $\\{d\\mid n\\}$.",
+    "significance": "key",
+    "prerequisites": [
+      "card_fixedField_frob_pow: the count p^d",
+      "Nat.pow_right_injective for 2 ≤ p",
+      "Divisors of a positive number are nonzero"
+    ],
+    "relatedConcepts": [
+      "fundamental theorem of Galois theory",
+      "subfield ↔ divisor bijection",
+      "injectivity",
+      "finite field"
+    ]
+  }
+]

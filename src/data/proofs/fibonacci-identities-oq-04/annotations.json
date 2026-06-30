@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-fiboq04-1",
+    "proofId": "fibonacci-identities-oq-04",
+    "range": { "startLine": 3, "endLine": 36 },
+    "type": "context",
+    "title": "Vajda's Identity: the Master of the Product Hierarchy",
+    "content": "**Module framing.** The Fibonacci *product* identities form a hierarchy: Cassini (1680, no free parameter), Catalan (one parameter), and at the top **Vajda's identity** with *two* free offsets $i, j$. Mathlib's integer-Fibonacci file (`Int.fib`, Monica Omar 2025) records Cassini and Catalan but stops short of Vajda — and lacks **d'Ocagne's identity** entirely. This entry supplies both, working over the two-sided `Int.fib` so every statement holds at negative indices, and re-derives Catalan and Cassini as corollaries — one proof yielding the whole classical family.",
+    "mathContext": "$F_{x+i}F_{x+j} - F_x F_{x+i+j} = (-1)^{|x|} F_i F_j$ over $\\mathbb{Z}$; Catalan is $i=j$, Cassini $i=j=1$, d'Ocagne $j=1,\\,x=n,\\,i=m-n$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fibonacci product-identity hierarchy",
+      "Cassini / Catalan / Vajda / d'Ocagne",
+      "Two-sided integer Fibonacci (Int.fib)"
+    ],
+    "prerequisites": [
+      "Integer Fibonacci sequence at negative indices",
+      "The classical Fibonacci identities"
+    ],
+    "tags": ["module-header", "framing", "vajda"]
+  },
+  {
+    "id": "ann-fiboq04-2",
+    "proofId": "fibonacci-identities-oq-04",
+    "range": { "startLine": 42, "endLine": 72 },
+    "type": "insight",
+    "title": "Vajda's Identity: Expand, Substitute Cassini, ring",
+    "content": "**`fib_vajda`** is the master theorem, proved by the same reduction Mathlib uses for Catalan, now with two parameters. The recipe: (1) expand the three shifted terms $F_{x+i}, F_{x+j}, F_{x+(i+j)}$ and the inner $F_{i+j}, F_{i+(j+1)}$ with the integer addition formula `Int.fib_add` (five applications); (2) **substitute Cassini's identity** $F_{x+1}F_{x-1} - F_x^2 = (-1)^{|x|}$ *backwards* (`rw [← hc]`) to eliminate the only non-polynomial atom, the alternating sign; (3) normalise indices with the recurrence and close by `ring`. The subtlety is purely syntactic: `Int.fib_add` emits indices like $i+(j+1)$ and $j+1+1$, and the recurrence rewrites (`rx`, `ri`, `rj`) must target *exactly* those forms — built via `show ... by ring` index-normalisation lemmas — for the final `ring` to fire.",
+    "mathContext": "After expansion the goal reduces to $(F_{x-1}^2 + F_{x-1}F_x - F_x^2)\\cdot F_iF_j$, with the Cassini coefficient equal to $(-1)^{|x|}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.fib_add (addition formula)",
+      "Cassini's identity as sign source",
+      "Index normalization (show ... by ring)",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "Integer Fibonacci addition formula",
+      "Int.fib_succ_mul_fib_pred_sub_fib_sq"
+    ],
+    "tags": ["main-theorem", "vajda", "ring", "beyond-mathlib"]
+  },
+  {
+    "id": "ann-fiboq04-3",
+    "proofId": "fibonacci-identities-oq-04",
+    "range": { "startLine": 74, "endLine": 83 },
+    "type": "concept",
+    "title": "d'Ocagne's Identity as a Vajda Specialization",
+    "content": "**`fib_dOcagne`**: $F_m F_{n+1} - F_{m+1} F_n = (-1)^{|n|} F_{m-n}$, absent from Mathlib, obtained as the instance `fib_vajda n (m-n) 1`. The substitution $x=n,\\ i=m-n,\\ j=1$ makes $n+(m-n) = m$ (rewritten by `show ... by ring`) and collapses the $F_j = F_1 = 1$ factor (`Int.fib_one`); `linear_combination h` then matches the rearranged Vajda instance to the d'Ocagne goal. A clean demonstration that the two-parameter freedom of Vajda contains the asymmetric d'Ocagne form.",
+    "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^{|n|} F_{m-n}$ from $\\mathrm{fib\\_vajda}\\,n\\,(m-n)\\,1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "d'Ocagne's identity",
+      "linear_combination",
+      "Specialization of a master identity"
+    ],
+    "prerequisites": [
+      "Vajda's identity",
+      "Int.fib_one"
+    ],
+    "tags": ["docagne", "corollary", "beyond-mathlib"]
+  },
+  {
+    "id": "ann-fiboq04-4",
+    "proofId": "fibonacci-identities-oq-04",
+    "range": { "startLine": 85, "endLine": 92 },
+    "type": "concept",
+    "title": "Catalan's Identity Recovered",
+    "content": "**`fib_catalan`**: $F_{x+a}^2 - F_x F_{x+2a} = (-1)^{|x|} F_a^2$, the diagonal $i=j=a$ case of Vajda (`fib_vajda x a a`), with $x+a+a$ normalised to $x+2a$ and closed by `linear_combination`. This recovers the *statement* of Mathlib's independently-proved `Int.fib_add_sq_sub_fib_mul_fib_add_two_mul` — but here as a one-line corollary of the master identity rather than a separate expansion, exhibiting Catalan as the symmetric specialization.",
+    "mathContext": "$F_{x+a}^2 - F_x F_{x+2a} = (-1)^{|x|} F_a^2$ from $\\mathrm{fib\\_vajda}\\,x\\,a\\,a$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Catalan's identity",
+      "Diagonal specialization (i = j)",
+      "Int.fib_add_sq_sub_fib_mul_fib_add_two_mul"
+    ],
+    "prerequisites": [
+      "Vajda's identity"
+    ],
+    "tags": ["catalan", "corollary", "diagonal"]
+  },
+  {
+    "id": "ann-fiboq04-5",
+    "proofId": "fibonacci-identities-oq-04",
+    "range": { "startLine": 94, "endLine": 100 },
+    "type": "concept",
+    "title": "Cassini's Identity Recovered",
+    "content": "**`fib_cassini`**: $F_{x+1}^2 - F_x F_{x+2} = (-1)^{|x|}$, the $i=j=1$ case of Vajda (`fib_vajda x 1 1`), with both $F_1 = 1$ factors collapsed and the index $x+1+1$ normalised to $x+2$. Although Cassini is the very identity *used* inside the Vajda proof (to supply the sign), recovering it here as a special case closes the circle: the entire hierarchy — Cassini, Catalan, d'Ocagne — is exhibited as uniform specializations of the single two-parameter theorem.",
+    "mathContext": "$F_{x+1}^2 - F_x F_{x+2} = (-1)^{|x|}$ from $\\mathrm{fib\\_vajda}\\,x\\,1\\,1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "Base case of the hierarchy",
+      "Uniform specialization"
+    ],
+    "prerequisites": [
+      "Vajda's identity"
+    ],
+    "tags": ["cassini", "corollary", "base-case"]
+  }
+]

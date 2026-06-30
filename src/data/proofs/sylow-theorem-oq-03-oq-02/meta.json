@@ -1,0 +1,213 @@
+{
+  "id": "sylow-theorem-oq-03-oq-02",
+  "title": "Counting Forces a Normal Sylow Subgroup: the Unconditional Splitting G = Q ⋊ K for Order pq",
+  "slug": "sylow-theorem-oq-03-oq-02",
+  "description": "Combines the Sylow counting bounds (n_q ≡ 1 mod q, n_q ∣ p) with the Schur–Zassenhaus complement theorem to show that for distinct primes p < q, EVERY group of order pq is an internal semidirect product G = Q ⋊ K — a normal Sylow q-subgroup Q (cyclic of order q) complemented by a subgroup K of order p (cyclic of order p). The counting congruences force the Sylow q-subgroup to be unique (n_q = 1); the Hall property of Sylow subgroups makes Schur–Zassenhaus apply with no extra hypothesis. Unlike the sibling pq-classification (which proves cyclicity only when p ∤ q-1), the splitting here is unconditional: it covers the nonabelian groups of order 6 and 21 as well as the cyclic ones.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sylow_theorems",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ03OQ02.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "sylow-theory",
+      "schur-zassenhaus",
+      "semidirect-product",
+      "group-classification",
+      "complements",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "card_sylow_modEq_one",
+        "description": "Sylow III: the number of Sylow p-subgroups is ≡ 1 mod p",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_dvd_index",
+        "description": "The number of Sylow p-subgroups divides the index of any one of them",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_eq_multiplicity",
+        "description": "A Sylow p-subgroup has order p^(multiplicity of p in |G|)",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.normal_of_subsingleton",
+        "description": "A unique Sylow subgroup is normal (in fact characteristic)",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_coprime_index",
+        "description": "Sylow subgroups are Hall subgroups: |P| is coprime to its index",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Subgroup.exists_right_complement'_of_coprime",
+        "description": "Schur–Zassenhaus (existence): a normal subgroup of coprime order/index has a complement",
+        "module": "Mathlib.GroupTheory.SchurZassenhaus"
+      },
+      {
+        "theorem": "IsComplement'.isCompl / card_mul",
+        "description": "A complement pair is internally complementary (⊓ = ⊥, ⊔ = ⊤) and multiplies cardinalities",
+        "module": "Mathlib.GroupTheory.Complement"
+      },
+      {
+        "theorem": "isCyclic_of_prime_card",
+        "description": "A group of prime order is cyclic",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      }
+    ],
+    "originalContributions": [
+      "card_sylow_q / index_sylow_q: in a group of order pq, a Sylow q-subgroup has order exactly q and index exactly p (the q-part of pq is q¹)",
+      "card_sylow_q_eq_one: the counting heart — n_q ∣ p and n_q ≡ 1 mod q force n_q = 1 (since n_q = p would give the impossible q ∣ p-1 with 0 < p-1 < q)",
+      "sylow_q_normal: the resulting unique Sylow q-subgroup is normal",
+      "exists_normal_sylow_complement: the main structural theorem — every group of order pq splits as G = Q ⋊ K with Q ⊓ K = ⊥, Q ⊔ K = ⊤, |Q| = q, |K| = p, obtained by feeding the forced normality into Schur–Zassenhaus via the automatic Hall coprimality",
+      "exists_cyclic_semidirect: the two factors are cyclic of prime order, so G = ℤ/q ⋊ ℤ/p",
+      "not_isSimpleGroup: a group of order pq is never simple (the normal Sylow q-subgroup is proper and nontrivial)",
+      "order_six_splits / order_twentyone_splits / order_fifteen_splits: concrete specializations covering the nonabelian cases (S₃ at order 6, ℤ/7 ⋊ ℤ/3 at order 21) as well as the cyclic ones"
+    ],
+    "axiomCount": 0,
+    "lineCount": 211,
+    "assumptions": "None. All 10 theorems are fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound] for every result. The existence half of Schur–Zassenhaus and the Sylow counting theorems are invoked from Mathlib; the counting elimination forcing n_q = 1, the assembly of the splitting, and the concrete order specializations are proved here.",
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Sylow's theorems (especially the third: n_p ≡ 1 mod p and n_p ∣ [G:P])",
+      "Sylow subgroups as Hall subgroups (|P| coprime to its index)",
+      "Schur–Zassenhaus existence (coprime normal subgroup has a complement)",
+      "Subgroup complements / internal semidirect products (IsComplement')",
+      "Cardinality and factorization of natural numbers"
+    ],
+    "relatedProblems": [
+      {
+        "id": "sylow-theorem-oq-03",
+        "relationship": "Parent: Schur–Zassenhaus as an extension of Sylow theory. This entry realizes that entry's open question — 'combine the Sylow counting to force a Sylow subgroup normal, so Schur–Zassenhaus yields the full semidirect-product structure of every group of order n' — for the family n = pq."
+      },
+      {
+        "id": "sylow-theorem-oq-01",
+        "relationship": "Sibling: classification of groups of order pq. That entry proves G is cyclic when p ∤ q-1 and stubs the nonabelian case. This entry instead proves the unconditional semidirect SPLITTING (valid for the nonabelian groups too), of which cyclicity is the special case where the complement is also normal."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Two classical pillars of finite group theory meet in the analysis of small-order groups. Sylow's third theorem (1872) constrains the number n_p of Sylow p-subgroups: n_p ≡ 1 (mod p) and n_p divides the index [G:P]. For a group of order pq with p < q prime, these constraints are rigid enough to force n_q = 1 — there is a unique, hence normal, Sylow q-subgroup. The Schur–Zassenhaus theorem (Schur 1904, Zassenhaus 1937) then takes over: a normal subgroup whose order is coprime to its index always has a complement, so the group is an internal semidirect product. Because every Sylow subgroup is automatically a Hall subgroup (|P| is coprime to [G:P]), the coprimality hypothesis of Schur–Zassenhaus is free, and the forced normality of the Sylow q-subgroup is the only ingredient needed. The conclusion — every group of order pq is ℤ/q ⋊ ℤ/p — is the prototype of the structure theory of small-order groups, and the dichotomy 'cyclic vs. nonabelian semidirect product' (governed by whether p ∣ q-1) is the first nontrivial example in any group-theory course.",
+    "problemStatement": "For distinct primes p < q, show that the Sylow counting congruences force the Sylow q-subgroup of any group of order pq to be normal, and combine this with Schur–Zassenhaus to conclude that every such group is an internal semidirect product G = Q ⋊ K with Q cyclic of order q and K cyclic of order p — unconditionally in whether p divides q-1. Specialize to the concrete orders 6, 15, and 21, including their nonabelian groups.",
+    "proofStrategy": "Counting first: a Sylow q-subgroup Q has order q (the q-part of pq is q¹, via Sylow.card_eq_multiplicity and factorization of pq) and hence index p (Lagrange). Sylow.card_dvd_index gives n_q ∣ p, and card_sylow_modEq_one gives n_q ≡ 1 mod q. Since p is prime, n_q ∈ {1, p}; the value p is excluded because it would give q ∣ p-1, impossible as 0 < p-1 < q. So n_q = 1, the Sylow q-subgroup is unique, and Sylow.normal_of_subsingleton makes it normal. Splitting second: a normal Sylow subgroup satisfies Schur–Zassenhaus for free because Sylow.card_coprime_index supplies the coprimality of |Q| with its index; Subgroup.exists_right_complement'_of_coprime then yields a complement K. The complement data (Q ⊓ K = ⊥, Q ⊔ K = ⊤, |K| = p) is read off from IsComplement', and isCyclic_of_prime_card makes both factors cyclic. Concrete orders 6, 15, 21 are instances of the general theorem with explicit primes.",
+    "keyInsights": [
+      "Sylow III is rigid at order pq: among the divisors {1, p} of the index that are ≡ 1 mod q, only 1 survives, because p ≡ 1 mod q would force q ≤ p-1, contradicting p < q. Hence the larger prime's Sylow subgroup is always normal.",
+      "Sylow subgroups are Hall subgroups, so the coprimality hypothesis of Schur–Zassenhaus is automatic. The only thing standing between 'normal Sylow subgroup' and 'the group splits' is normality — which the counting just supplied.",
+      "The resulting splitting G = Q ⋊ K is UNCONDITIONAL in p ∣ q-1: it holds for the nonabelian groups (S₃ of order 6, the order-21 group ℤ/7 ⋊ ℤ/3) exactly as for the cyclic ones. Cyclicity is the special case where the complement K is also normal (which needs p ∤ q-1); the semidirect structure needs nothing extra.",
+      "Both factors are cyclic of prime order, so the classification reads G ≅ ℤ/q ⋊ ℤ/p — the entire structure is determined by a single action ℤ/p → Aut(ℤ/q).",
+      "Everything is stated for an arbitrary finite group via Nat.card, so the results apply uniformly to every group of the given order without choosing a presentation."
+    ],
+    "prerequisites": [
+      "Sylow's theorems and the counting congruence n_p ≡ 1 mod p, n_p ∣ [G:P]",
+      "Sylow subgroups as Hall subgroups",
+      "Schur–Zassenhaus existence and internal semidirect products",
+      "Lagrange's theorem |H| · [G:H] = |G| and prime factorization of ℕ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "counting",
+      "title": "Section I: Counting Forces n_q = 1 and Normality",
+      "startLine": 52,
+      "endLine": 127,
+      "summary": "card_sylow_q computes |Q| = q from the q-part of pq; index_sylow_q gives [G:Q] = p by Lagrange. card_sylow_q_eq_one is the counting heart: n_q ∣ p and n_q ≡ 1 mod q leave only n_q = 1 (n_q = p ruled out by q ∤ p-1). sylow_q_normal converts uniqueness into normality.",
+      "mathContext": "Sylow III is rigid enough at order pq to pin down n_q = 1, so the larger prime's Sylow subgroup is always normal."
+    },
+    {
+      "id": "splitting",
+      "title": "Section II: Schur–Zassenhaus Splits the Normal Sylow Subgroup",
+      "startLine": 128,
+      "endLine": 177,
+      "summary": "exists_normal_sylow_complement assembles the main theorem: feed the forced normality plus the automatic Hall coprimality (Sylow.card_coprime_index) into Schur–Zassenhaus to get a complement K, with the full splitting data Q ⊓ K = ⊥, Q ⊔ K = ⊤, |Q| = q, |K| = p. exists_cyclic_semidirect makes both factors cyclic of prime order; not_isSimpleGroup records that order-pq groups are never simple.",
+      "mathContext": "Every group of order pq is an internal semidirect product ℤ/q ⋊ ℤ/p; the only input beyond Mathlib's Schur–Zassenhaus is the forced normality from Section I."
+    },
+    {
+      "id": "concrete",
+      "title": "Section III: Concrete Orders 6, 15, 21 (Nonabelian Cases Included)",
+      "startLine": 178,
+      "endLine": 211,
+      "summary": "order_six_splits, order_fifteen_splits, order_twentyone_splits specialize the general theorem to |G| ∈ {6, 15, 21}, exhibiting the normal Sylow subgroup and its complement. These cover the nonabelian groups (S₃ at order 6, ℤ/7 ⋊ ℤ/3 at order 21) as well as the cyclic groups ℤ/6, ℤ/15, ℤ/21.",
+      "mathContext": "The splitting is uniform across abelian and nonabelian groups of the same order — the distinction lives entirely in the action defining the semidirect product."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) formalization in 211 lines with 10 theorems: the Sylow counting congruences force the Sylow q-subgroup of any group of order pq (p < q prime) to be normal, and Schur–Zassenhaus then exhibits every such group as an internal semidirect product G = Q ⋊ K with Q cyclic of order q and K cyclic of order p. #print axioms reports only [propext, Classical.choice, Quot.sound] for all results.",
+    "implications": "This realizes the parent Schur–Zassenhaus entry's open question for the family n = pq: counting forces a Sylow subgroup normal, and the Hall property makes Schur–Zassenhaus split it automatically. The contribution beyond the sibling pq-classification is that the SPLITTING is unconditional — it holds for the nonabelian groups of order 6 and 21, where the sibling's cyclicity result does not apply. The general theorem and its concrete instances are reusable building blocks for the structure theory of small-order groups, where a forced-normal Sylow subgroup repeatedly reduces a group to a semidirect product of smaller pieces.",
+    "openQuestions": [
+      "Extend the forced-normality + Schur–Zassenhaus pipeline to order p²q: count to force one Sylow subgroup normal, then split, classifying all groups of order p²q up to the action data.",
+      "Pin down the action: for order pq with p ∣ q-1, show the nonabelian group is unique up to isomorphism by classifying the nontrivial homomorphisms ℤ/p → Aut(ℤ/q) ≅ ℤ/(q-1) up to conjugacy."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.GroupTheory.SchurZassenhaus",
+      "Mathlib.GroupTheory.Complement",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "SylowTheoremOQ03OQ02",
+    "lineCount": 211,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/SylowTheoremOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Parent: Schur–Zassenhaus and the splitting of normal Sylow subgroups. This entry supplies the missing ingredient — the counting that forces a Sylow subgroup normal — so that the parent's splitting theorem applies to every group of order pq unconditionally."
+    },
+    {
+      "targetId": "sylow-theorem-oq-01",
+      "relationship": "related",
+      "description": "Sibling: classification of groups of order pq. That entry proves cyclicity when p ∤ q-1; this entry proves the unconditional semidirect-product splitting, covering the nonabelian groups it leaves as a stub."
+    },
+    {
+      "targetId": "sylow-theorem",
+      "relationship": "related",
+      "description": "Root Sylow entry. This entry uses the third Sylow theorem (counting congruence) as the engine that forces normality at order pq."
+    }
+  ],
+  "references": [
+    {
+      "key": "Sy1872",
+      "citation": "Sylow, L., Théorèmes sur les groupes de substitutions, Math. Ann. 5 (1872), 584–594.",
+      "type": "paper"
+    },
+    {
+      "key": "Za37",
+      "citation": "Zassenhaus, H., Lehrbuch der Gruppentheorie, Teubner (1937).",
+      "type": "book"
+    },
+    {
+      "key": "DF04",
+      "citation": "Dummit, D.S. and Foote, R.M., Abstract Algebra, 3rd ed., Wiley (2004), §4.5 (Sylow) and §5.5 (semidirect products).",
+      "type": "book"
+    },
+    {
+      "key": "Ro96",
+      "citation": "Robinson, D.J.S., A Course in the Theory of Groups, 2nd ed., Springer GTM 80 (1996), §9.1 (Schur–Zassenhaus).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

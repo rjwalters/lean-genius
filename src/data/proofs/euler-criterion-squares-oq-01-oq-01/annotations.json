@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ecsoq0101-ann-overview",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Counting Residues via the Squaring Map",
+    "content": "The docstring frames the whole strategy: instead of counting residues analytically as the +1-values of Euler's criterion $a^{(p-1)/2}$ (the parent entry's route), this file counts them structurally as the image of the squaring endomorphism on the unit group. Because squaring is exactly 2-to-1 (its kernel is $\\{1,-1\\}$), the first isomorphism theorem gives $|{\\rm image}| = |(\\mathbb{Z}/p)^\\times| / 2 = (p-1)/2$. The image is precisely the set of nonzero quadratic residues.",
+    "mathContext": "$|\\{a \\ne 0 : a \\text{ is a square}\\}| = \\dfrac{|(\\mathbb{Z}/p)^\\times|}{|\\ker(u \\mapsto u^2)|} = \\dfrac{p-1}{2}$.",
+    "significance": "context",
+    "relatedConcepts": ["quadratic residues", "Euler's criterion", "first isomorphism theorem", "Legendre symbol"],
+    "prerequisites": ["modular arithmetic", "group theory"]
+  },
+  {
+    "id": "ecsoq0101-ann-sqhom",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 35 },
+    "type": "definition",
+    "title": "The Squaring Endomorphism",
+    "content": "`sqHom` is the squaring map $u \\mapsto u^2$ on the unit group $(\\mathbb{Z}/p)^\\times$, packaged as a monoid homomorphism via Mathlib's `powMonoidHom 2`. It is a homomorphism precisely because the units of a commutative ring form a commutative group, so $(uv)^2 = u^2 v^2$. Treating squaring as a structured homomorphism — rather than a bare function — is what unlocks the kernel/image counting machinery used throughout the file.",
+    "mathContext": "$\\mathrm{sqHom} : (\\mathbb{Z}/p)^\\times \\to (\\mathbb{Z}/p)^\\times,\\quad u \\mapsto u^2$, a group homomorphism on the abelian unit group.",
+    "significance": "key",
+    "relatedConcepts": ["group homomorphism", "unit group", "powMonoidHom", "abelian groups"],
+    "prerequisites": ["monoid homomorphisms"]
+  },
+  {
+    "id": "ecsoq0101-ann-oddness",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "technique",
+    "title": "Oddness Enters: 1 ≠ −1",
+    "content": "`one_ne_neg_one_units` is the single place the hypothesis $p$ odd (i.e. $2 < p$) is used. If $1 = -1$ in $(\\mathbb{Z}/p)^\\times$ then $1 = -1$ in $\\mathbb{Z}/p$, which forces $(2 : \\mathbb{Z}/p) = 0$, i.e. $p \\mid 2$ — impossible for $p > 2$. This distinctness is exactly what makes the kernel have two elements rather than one; for $p = 2$ the kernel collapses and the $(p-1)/2$ formula degenerates.",
+    "mathContext": "$1 = -1 \\text{ in } \\mathbb{Z}/p \\Rightarrow 2 \\equiv 0 \\pmod p \\Rightarrow p \\mid 2$, contradicting $p > 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["characteristic of a field", "divisibility", "square roots of unity"],
+    "prerequisites": ["ZMod arithmetic", "proof by contradiction"]
+  },
+  {
+    "id": "ecsoq0101-ann-ker",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 74 },
+    "type": "insight",
+    "title": "The Kernel Is {1, −1}",
+    "content": "`mem_sqHom_ker` identifies the kernel of squaring with the square roots of unity: $u^2 = 1$ iff $u = \\pm 1$, using that a field has only the two solutions $\\pm 1$ to $x^2 = 1$ (`sq_eq_one_iff`). `card_sqHom_ker` then rewrites the kernel as the set $\\{1, -1\\}$ and applies `Set.ncard_pair` with the distinctness $1 \\ne -1$ to conclude the kernel has cardinality exactly 2. This factor of 2 is the entire reason the unit count is halved.",
+    "mathContext": "$\\ker(u \\mapsto u^2) = \\{u : u^2 = 1\\} = \\{1, -1\\}$, and $|\\{1,-1\\}| = 2$ since $1 \\ne -1$.",
+    "significance": "key",
+    "relatedConcepts": ["kernel of a homomorphism", "roots of unity", "field of integers mod p", "finite cardinality"],
+    "prerequisites": ["kernels", "quadratic equations over fields"]
+  },
+  {
+    "id": "ecsoq0101-ann-range",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 84 },
+    "type": "insight",
+    "title": "First Isomorphism Theorem: |range| = (p−1)/2",
+    "content": "`card_sqHom_range` is the structural heart of the count. The first isomorphism theorem in cardinality form — `Subgroup.card_mul_index` together with `Subgroup.index_ker` — gives $|\\ker| \\cdot |{\\rm range}| = |(\\mathbb{Z}/p)^\\times|$. Substituting $|\\ker| = 2$ and $|(\\mathbb{Z}/p)^\\times| = p - 1$ (`ZMod.card_units`) reduces to $2 \\cdot x = p - 1$, which `omega` solves as $x = (p-1)/2$. No analytic input is needed — the count is purely the index of the squares subgroup.",
+    "mathContext": "$|\\ker(\\mathrm{sqHom})| \\cdot |\\operatorname{range}(\\mathrm{sqHom})| = |(\\mathbb{Z}/p)^\\times| = p-1$, so $|\\operatorname{range}| = (p-1)/2$.",
+    "significance": "key",
+    "relatedConcepts": ["first isomorphism theorem", "subgroup index", "Lagrange's theorem", "index-2 subgroup"],
+    "prerequisites": ["quotient groups", "cardinality arithmetic"]
+  },
+  {
+    "id": "ecsoq0101-ann-bridge",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 86, "endLine": 105 },
+    "type": "technique",
+    "title": "Bridging Units to Field Squares",
+    "content": "`isSquare_coe_iff_mem_range` connects two notions of 'square': for a unit $u$, the field element $\\uparrow u$ is a square in $\\mathbb{Z}/p$ iff $u$ lies in the image of the squaring map on units. The forward direction lifts a nonzero square root $r$ (nonzero because $u$ is a unit) to a unit via `isUnit_iff_ne_zero`; the reverse maps an image element back. This is the link that lets the unit-group cardinality transfer to the field's nonzero quadratic residues.",
+    "mathContext": "For a unit $u$: $\\mathrm{IsSquare}(\\uparrow u) \\iff u \\in \\operatorname{range}(\\mathrm{sqHom})$, since every nonzero field square root is itself a unit.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsSquare", "units vs nonzero elements", "isUnit_iff_ne_zero", "image of a homomorphism"],
+    "prerequisites": ["units of a ring", "existential lifting"]
+  },
+  {
+    "id": "ecsoq0101-ann-main",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 117 },
+    "type": "insight",
+    "title": "Main Theorem: Transporting the Count to the Field",
+    "content": "`card_nonzero_quadratic_residues` is the headline result: an odd prime $p$ has exactly $(p-1)/2$ nonzero quadratic residues in $\\mathbb{Z}/p$. The proof rewrites the goal to $|\\operatorname{range}(\\mathrm{sqHom})|$ and builds an explicit chain of equivalences — `subtypeEquivRight` (via the bridge lemma), `subtypeEquiv` (via `unitsEquivNeZero`), and `subtypeSubtypeEquivSubtypeInter` — to identify $\\{a \\ne 0 \\wedge \\mathrm{IsSquare}\\,a\\}$ with the squaring map's image, then transports cardinality along it with `Nat.card_congr`.",
+    "mathContext": "$\\mathrm{Nat.card}\\,\\{a : \\mathbb{Z}/p \\mid a \\ne 0 \\wedge \\mathrm{IsSquare}\\,a\\} = (p-1)/2$.",
+    "significance": "key",
+    "relatedConcepts": ["cardinality transport", "Equiv chains", "subtype equivalences", "quadratic residues"],
+    "prerequisites": ["equivalences (bijections)", "subtypes in Lean"]
+  },
+  {
+    "id": "ecsoq0101-ann-mod7",
+    "proofId": "euler-criterion-squares-oq-01-oq-01",
+    "range": { "startLine": 119, "endLine": 128 },
+    "type": "concept",
+    "title": "Concrete Witness: 3 Residues mod 7",
+    "content": "`card_residues_mod_seven` confirms the formula at $p = 7$: there are $(7-1)/2 = 3$ nonzero quadratic residues, namely $\\{1, 2, 4\\}$ (the squares $1^2, 2^2, 3^2 \\bmod 7$). Crucially this is obtained by *specializing the general theorem* at $p = 7$ (supplying the `Fact` instances), not by a separate `decide` computation — so it introduces no `native_decide` and no `Lean.ofReduceBool` axiom, keeping the file genuinely 0-axiom.",
+    "mathContext": "Squares mod 7: $1^2=1,\\ 2^2=4,\\ 3^2=2,\\ 4^2=2,\\ 5^2=4,\\ 6^2=1$, giving residues $\\{1,2,4\\}$ — exactly 3.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked example", "axiom-free numerics", "specialization", "ZMod 7"],
+    "prerequisites": ["modular squares", "typeclass instances"]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "The Foundational Mellin Pair and Its Two Missing Companions",
+    "content": "The Mellin transform mellin f s = ∫₀^∞ t^{s-1} f(t) dt is the multiplicative analogue of the Laplace/Fourier transforms — it turns scaling t ↦ at into multiplication by a^{-s}, the natural tool for Dirichlet series, the Gamma function, and the analytic continuation behind the Riemann zeta functional equation. Its simplest non-trivial instance is the indicator of (0,1], whose transform is the meromorphic kernel 1/s. Mathlib proves only the forward base case hasMellin_one_Ioc; this entry re-exports it (badge 'mathlib') and adds two results Mathlib does NOT state: the sharp convergence strip (iff) and the dilation/scaling law a^s/s.",
+    "mathContext": "$\\mathrm{mellin}\\,f\\,s = \\int_0^\\infty t^{s-1} f(t)\\,dt$; $\\int_0^1 t^{s-1}\\,dt = 1/s$ for $\\mathrm{Re}\\,s > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Mellin transform", "integral transform", "1/s kernel", "Dirichlet series", "Gamma function"],
+    "prerequisites": ["complex analysis", "improper integrals", "Lebesgue integration"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 38, "endLine": 39 },
+    "type": "definition",
+    "title": "The Unit Indicator 𝟙_{(0,1]}",
+    "content": "unitIndicator is the ℂ-valued indicator of the half-open unit interval (0,1], Set.indicator (Set.Ioc 0 1) (fun _ => 1). The half-open choice (0,1] rather than [0,1] or (0,1) is immaterial to the integral (endpoints have measure zero) but matches Mathlib's hasMellin_one_Ioc and keeps the dilation membership transfer clean. It is the function whose Mellin transform the whole entry computes.",
+    "mathContext": "$\\mathbb{1}_{(0,1]}(t) = 1$ if $t\\in(0,1]$, else $0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["indicator function", "Set.Ioc", "Lebesgue measure"],
+    "prerequisites": ["indicator functions", "intervals"]
+  },
+  {
+    "id": "ann-base-case",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 43, "endLine": 52 },
+    "type": "theorem",
+    "title": "Base Case: the Transform Equals 1/s",
+    "content": "hasMellin_unitIndicator and mellin_unitIndicator re-export Mathlib's hasMellin_one_Ioc: for Re s > 0 the transform of 𝟙_{(0,1]} exists and equals 1/s, i.e. ∫₀¹ t^{s-1} dt = 1/s. These provide the named base case on which the convergence strip and the scaling law are both built — every elementary Mellin computation descends from this one pair.",
+    "mathContext": "$\\mathrm{HasMellin}\\,\\mathbb{1}_{(0,1]}\\,s\\,(1/s)$ and $\\mathrm{mellin}\\,\\mathbb{1}_{(0,1]}\\,s = 1/s$ for $\\mathrm{Re}\\,s>0$.",
+    "significance": "key",
+    "relatedConcepts": ["hasMellin_one_Ioc", "HasMellin", "1/s kernel"],
+    "prerequisites": ["Mellin transform", "complex powers"]
+  },
+  {
+    "id": "ann-convergence-strip",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 56, "endLine": 73 },
+    "type": "insight",
+    "title": "mellinConvergent_unitIndicator_iff: The Sharp Convergence Strip",
+    "content": "The first new result: the Mellin integral of 𝟙_{(0,1]} converges IF AND ONLY IF Re s > 0. Mathlib only gives the ← direction (via the base case); the → direction pins the boundary Re s = 0, where the integrand has modulus t^{-1} and ∫₀¹ dt/t = +∞ diverges. The proof pulls the scalar t^{s-1} inside the indicator (hfun: t^{s-1}•𝟙_{(0,1]}(t) = 𝟙_{(0,1]}(t^{s-1})), reducing MellinConvergent over (0,∞) to integrability on (0,1] (integrable_indicator_iff + Measure.restrict_restrict_of_subset), passes from (0,1] to the open (0,1) (measure-zero endpoint), and applies intervalIntegral.integrableOn_Ioo_cpow_iff to get the exact threshold −1 < Re(s−1) ⇔ 0 < Re s (linarith).",
+    "mathContext": "$\\mathrm{MellinConvergent}\\,\\mathbb{1}_{(0,1]}\\,s \\iff \\mathrm{Re}\\,s > 0$; boundary $\\mathrm{Re}\\,s=0$ is the divergence of $\\int_0^1 dt/t$.",
+    "significance": "key",
+    "relatedConcepts": ["integrableOn_Ioo_cpow_iff", "convergence strip", "indicator_smul", "harmonic divergence"],
+    "prerequisites": ["improper integrals", "complex powers", "integrability"]
+  },
+  {
+    "id": "ann-scaling-law",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 77, "endLine": 108 },
+    "type": "theorem",
+    "title": "hasMellin_indicator_Ioc: The Scaling Law a^s / s",
+    "content": "The second new result: for any cut-off a > 0 and Re s > 0, mellin 𝟙_{(0,a]} s = a^s / s, with the transform existing. This is the defining virtue of the Mellin transform — dilating the argument multiplies the transform by a power of a. The proof writes 𝟙_{(0,a]} as a literal rescaling 𝟙_{(0,a]}(t) = 𝟙_{(0,1]}(a⁻¹·t) (hfun, via the membership transfer a⁻¹·t ∈ (0,1] ⇔ t ∈ (0,a] using a > 0), then applies the dilation rule mellin_comp_mul_left and the base case — no new integration. The constant (a⁻¹)^{-s} = a^s is resolved with Complex.cpow_neg and Complex.inv_cpow, whose principal-branch hypothesis holds because a is a positive real (arg ↑a = 0 ≠ π).",
+    "mathContext": "$\\mathrm{mellin}\\,\\mathbb{1}_{(0,a]}\\,s = a^s/s$; dilation by $a$ multiplies the transform by $a^s$.",
+    "significance": "key",
+    "relatedConcepts": ["mellin_comp_mul_left", "Complex.cpow_neg", "Complex.inv_cpow", "dilation"],
+    "prerequisites": ["Mellin transform", "complex powers", "principal branch"]
+  },
+  {
+    "id": "ann-measure-interpretation",
+    "proofId": "mellin-power-convergence-oq-01",
+    "range": { "startLine": 110, "endLine": 127 },
+    "type": "context",
+    "title": "Measure Interpretation at s = 1",
+    "content": "mellin_indicator_Ioc is the value form of the scaling law; mellin_indicator_Ioc_one specialises it to s = 1, where a¹/1 = a (Complex.cpow_one, div_one): the transform returns the Lebesgue LENGTH of the interval (0,a]. This is the identity mellin f 1 = ∫₀^∞ f, so a^s/s is a one-parameter analytic deformation of the elementary fact that (0,a] has length a; mellin_unitIndicator_one is the a = 1 instance giving length 1.",
+    "mathContext": "$\\mathrm{mellin}\\,f\\,1 = \\int_0^\\infty f$, so $\\mathrm{mellin}\\,\\mathbb{1}_{(0,a]}\\,1 = a$ (the interval length).",
+    "significance": "supporting",
+    "relatedConcepts": ["Lebesgue measure", "Complex.cpow_one", "analytic deformation"],
+    "prerequisites": ["Lebesgue integration", "Mellin transform"]
+  }
+]

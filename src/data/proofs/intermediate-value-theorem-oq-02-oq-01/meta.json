@@ -81,18 +81,28 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, open question, and imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring stating the inherited open question (recover the exact IVT from the parent's approximate bisection) and the strategy (monotone bounded endpoints with vanishing width → common limit c, continuity gives f c = 0). Imports Mathlib and the parent Proofs.IntermediateValueTheoremOQ02, opens Set / Filter / Topology, and enters the ConstructiveIVT namespace."
+    },
+    {
+      "id": "endpoint-monotone",
       "title": "Endpoint sequences are monotone",
       "startLine": 44,
       "endLine": 64,
       "summary": "bisect_left_seq_mono and bisect_right_seq_anti promote the parent's per-step monotonicity to the full sequences of left/right endpoints."
     },
     {
+      "id": "convergence-exact-zero",
       "title": "Convergence to an exact zero",
       "startLine": 66,
       "endLine": 128,
       "summary": "bisect_tendsto_root: monotone bounded convergence gives the left limit c; the width (b−a)/2ⁿ → 0 forces the right endpoints and midpoints to c ∈ [a,b]; continuity transports the sign invariant to give f c = 0."
     },
     {
+      "id": "recovering-classical-ivt",
       "title": "Recovering the classical IVT",
       "startLine": 130,
       "endLine": 137,

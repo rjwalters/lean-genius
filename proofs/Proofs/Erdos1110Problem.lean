@@ -29,13 +29,7 @@ References:
 Tags: number-theory, additive-combinatorics, representations
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Pow
-import Mathlib.Data.Nat.Log
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Image
-import Mathlib.Data.Real.Basic
-import Mathlib.NumberTheory.Divisors
+import Mathlib
 
 open Finset
 
@@ -123,6 +117,7 @@ lemma sum_image_mul_two {S : Finset ℕ} (hinj : Set.InjOn (· * 2) (↑S)) :
 /-- Multiplication by 2 is injective on S (always true on ℕ). -/
 lemma mul_two_injOn (S : Finset ℕ) : Set.InjOn (· * 2) (↑S) := by
   intro a _ b _ h
+  dsimp only at h
   omega
 
 /-- 3^k is a power form. -/
@@ -153,7 +148,7 @@ lemma image_mul_two_even {S : Finset ℕ} {x : ℕ} (hx : x ∈ S.image (· * 2)
 theorem case_2_3_all_representable :
     ∀ n : ℕ, n ≥ 1 → IsRepresentable 3 2 n := by
   intro n
-  induction n using Nat.strong_rec_on with
+  induction n using Nat.strong_induction_on with
   | _ n ih =>
   intro hn
   by_cases hn1 : n = 1
@@ -184,15 +179,15 @@ theorem case_2_3_all_representable :
       have hn3 : n ≥ 3 := by omega
       -- Let k = ⌊log₃ n⌋, so 3^k ≤ n < 3^(k+1)
       let k := Nat.log 3 n
-      have h3k_le : 3 ^ k ≤ n := Nat.pow_log_le_self 3 n
-      have hn_lt : n < 3 ^ (k + 1) := Nat.lt_pow_succ_log_self (by norm_num : 1 < 3) (by omega)
+      have h3k_le : 3 ^ k ≤ n := Nat.pow_log_le_self 3 (by omega)
+      have hn_lt : n < 3 ^ (k + 1) := Nat.lt_pow_succ_log_self (by norm_num : 1 < 3) n
       -- n - 3^k is even (odd - odd = even)
       have h3k_odd : ¬ 2 ∣ 3 ^ k := three_pow_odd k
       have hn_odd : ¬ 2 ∣ n := heven
       have hdiff_even : 2 ∣ (n - 3 ^ k) := by omega
       by_cases heq : n = 3 ^ k
-      · -- Subcase: n = 3^k exactly
-        subst heq
+      · -- Subcase: n = 3^k exactly (rw rather than subst: `k := Nat.log 3 n` depends on n)
+        rw [heq]
         exact ⟨{3 ^ k}, by simp, fun s hs => by simp at hs; subst hs; exact isPowerForm_pow_three k,
           fun a ha b hb hab => by simp at ha hb; omega, by simp⟩
       · -- Subcase: n > 3^k, so n - 3^k is positive and even
@@ -223,13 +218,13 @@ theorem case_2_3_all_representable :
             rw [Finset.mem_image] at hs; obtain ⟨a, ha, rfl⟩ := hs
             exact Nat.mul_pos (hpos a ha) (by norm_num)
           have hs_le : s ≤ S'.sum id :=
-            Finset.single_le_sum (fun _ _ => Nat.zero_le _) hs
+            Finset.single_le_sum (f := id) (fun _ _ => Nat.zero_le _) hs
           have hs_ge : 3 ^ k ≤ s := Nat.le_of_dvd hs_pos hdvd
           have hs_lt : s < 2 * 3 ^ k := by
             calc s ≤ S'.sum id := hs_le
               _ = n - 3 ^ k := hS'_sum
               _ < 3 ^ (k + 1) - 3 ^ k := by omega
-              _ = 2 * 3 ^ k := by ring
+              _ = 2 * 3 ^ k := by rw [pow_succ]; omega
           -- s ∈ [3^k, 2·3^k) and 3^k | s, so s = 3^k
           -- But s is even (in image (· * 2)) and 3^k is odd — contradiction
           have hs_eq : s = 3 ^ k := by
@@ -243,7 +238,9 @@ theorem case_2_3_all_representable :
               push_neg at hc2
               have : 3 ^ k * 2 ≤ 3 ^ k * c := Nat.mul_le_mul_left _ hc2
               linarith
-            omega
+            have hc1 : c = 1 := by omega
+            rw [hc1, mul_one] at hc
+            exact hc
           rw [hs_eq] at hs
           exact three_pow_odd k (image_mul_two_even hs)
         refine ⟨insert (3 ^ k) S', ?_, ?_, ?_, ?_⟩
@@ -262,30 +259,583 @@ theorem case_2_3_all_representable :
           | inl ha =>
             subst ha
             cases hb with
-            | inl hb => exact absurd hb hab
+            | inl hb => exact absurd hb.symm hab
             | inr hb => exact h_3k_not_dvd b hb
           | inr ha =>
             cases hb with
             | inl hb => subst hb; exact h_not_dvd_3k a ha
             | inr hb => exact noOneDividesAnother_image_mul_two hac hpos a ha b hb hab
         · rw [Finset.sum_insert h3k_notin, hS'_sum]
+          simp only [id_eq]
           omega
 
-/--
-**Key lemma: Representing even numbers with even summands:**
-If n is even and representable, it has a representation with all even summands.
+/-
+## Part IIb: The Easy Direction of Erdős–Lewin (unconditional, 0-axiom)
+
+The original development axiomatised the full Erdős–Lewin *iff*
+`Finite (NonRepresentable p q) ↔ {p,q} = {2,3}`. Only the forward
+direction (`Finite ⟹ {2,3}`, equivalently `{p,q} ≠ {2,3} ⟹ Infinite`) is
+the deep theorem. The backward direction (`{2,3} ⟹ Finite`) is an immediate
+corollary of `case_2_3_all_representable`, which we already proved by
+induction. We discharge it here so it is no longer assumed, and in fact pin
+down the non-representable set exactly: `NonRepresentable 3 2 = {0}`.
 -/
+
+/-- Power forms are commutative in the base pair: `p^k q^l` and `q^l p^k` range
+over the same set, so `IsPowerForm p q = IsPowerForm q p` as predicates. -/
+lemma isPowerForm_comm {p q n : ℕ} : IsPowerForm p q n ↔ IsPowerForm q p n := by
+  constructor <;> · rintro ⟨k, l, rfl⟩; exact ⟨l, k, by ring⟩
+
+/-- Representability only depends on the (symmetric) set of power forms, so it is
+invariant under swapping the two bases. -/
+lemma isRepresentable_comm {p q n : ℕ} :
+    IsRepresentable p q n ↔ IsRepresentable q p n := by
+  constructor
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    exact ⟨S, hne, fun s hs => isPowerForm_comm.mp (hpf s hs), hac, hsum⟩
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    exact ⟨S, hne, fun s hs => isPowerForm_comm.mp (hpf s hs), hac, hsum⟩
+
+/-- Zero is never representable: a nonempty antichain of positive power forms has
+strictly positive sum. -/
+lemma not_isRepresentable_zero {p q : ℕ} (hp : 0 < p) (hq : 0 < q) :
+    ¬ IsRepresentable p q 0 := by
+  rintro ⟨S, hne, hpf, _, hsum⟩
+  obtain ⟨s, hs⟩ := hne
+  obtain ⟨k, l, rfl⟩ := hpf s hs
+  have hpos : 0 < p ^ k * q ^ l := mul_pos (pow_pos hp k) (pow_pos hq l)
+  have hle : p ^ k * q ^ l ≤ S.sum id :=
+    Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+  omega
+
+/-- **Exact characterisation of the {3,2} case:** the only non-representable
+number is `0`. Every `n ≥ 1` is representable (`case_2_3_all_representable`) and
+`0` is not (`not_isRepresentable_zero`). -/
+theorem nonRepresentable_three_two : NonRepresentable 3 2 = {0} := by
+  ext n
+  simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · intro hn
+    by_contra hne
+    exact hn (case_2_3_all_representable n (by omega))
+  · rintro rfl
+    exact not_isRepresentable_zero (by norm_num) (by norm_num)
+
+/-- Same characterisation with the bases written in the other order. -/
+theorem nonRepresentable_two_three : NonRepresentable 2 3 = {0} := by
+  ext n
+  simp only [NonRepresentable, Set.mem_setOf_eq, Set.mem_singleton_iff,
+    isRepresentable_comm (p := 2) (q := 3)]
+  constructor
+  · intro hn
+    by_contra hne
+    exact hn (case_2_3_all_representable n (by omega))
+  · rintro rfl
+    exact not_isRepresentable_zero (by norm_num) (by norm_num)
+
+/-- **Easy direction of Erdős–Lewin (unconditional).** If `{p,q} = {2,3}` then the
+set of non-representable numbers is finite — indeed it is the singleton `{0}`.
+This needs no axiom. -/
+theorem finite_nonRepresentable_of_two_three {p q : ℕ}
+    (h : (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3)) :
+    Set.Finite (NonRepresentable p q) := by
+  rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · rw [nonRepresentable_three_two]; exact Set.finite_singleton 0
+  · rw [nonRepresentable_two_three]; exact Set.finite_singleton 0
+
+/-
+## Part IIc: Existence of a positive non-representable (unconditional, 0-axiom)
+
+The deep direction `erdos_lewin_infinite` (axiomatised below) asserts that every
+coprime pair `{p,q} ≠ {2,3}` leaves *infinitely many* non-representable numbers.
+Its existence shadow — that there is *at least one positive* non-representable
+number — is far more elementary and can be proved unconditionally. We exhibit a
+universal small witness:
+
+* if both bases are `≥ 3`, then `2` is non-representable (the only power form
+  `≤ 2` is `1`, and a distinct-element antichain of `1`s sums to at most `1`);
+* if `q = 2` (so `p ≥ 4`, since `p > 2` and `p ≠ 3`), then `3` is
+  non-representable (power forms `≤ 3` are exactly `{1,2}`, and `{1,2}` is not an
+  antichain because `1 ∣ 2`).
+
+This sharpens the contrast with `nonRepresentable_three_two = {0}`: the `{2,3}`
+pair has **no** positive non-representable number, while **every** other coprime
+pair has one. It is the (unconditional) existence version of the open infinitude
+statement, and needs no axiom.
+-/
+
+/-- When both bases are `≥ 3`, the only power form that is `≤ 2` is `1`:
+any positive exponent on a base `≥ 3` already pushes the value to `≥ 3`. -/
+lemma isPowerForm_eq_one_of_le_two {p q n : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q)
+    (h : IsPowerForm p q n) (hle : n ≤ 2) : n = 1 := by
+  obtain ⟨k, l, rfl⟩ := h
+  have hpk : 1 ≤ p ^ k := Nat.one_le_pow _ _ (by omega)
+  have hql : 1 ≤ q ^ l := Nat.one_le_pow _ _ (by omega)
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · rcases Nat.eq_zero_or_pos l with hl | hl
+    · simp [hk, hl]
+    · have hqge : 3 ≤ q ^ l := le_trans hq (Nat.le_self_pow (by omega) q)
+      have : 3 ≤ p ^ k * q ^ l :=
+        le_trans hqge (Nat.le_mul_of_pos_left (q ^ l) hpk)
+      omega
+  · have hpge : 3 ≤ p ^ k := le_trans hp (Nat.le_self_pow (by omega) p)
+    have : 3 ≤ p ^ k * q ^ l :=
+      le_trans hpge (Nat.le_mul_of_pos_right (p ^ k) hql)
+    omega
+
+/-- **`2` is non-representable when both bases are `≥ 3`.** Every summand is a
+power form `≤ 2`, hence equal to `1`; a `Finset` of distinct `1`s is at most the
+singleton `{1}`, whose sum is `1`, never `2`. -/
+theorem two_nonRepresentable_of_three_le {p q : ℕ} (hp : 3 ≤ p) (hq : 3 ≤ q) :
+    ¬ IsRepresentable p q 2 := by
+  rintro ⟨S, hne, hpf, _, hsum⟩
+  have hle : ∀ s ∈ S, s ≤ 2 := by
+    intro s hs
+    have hb := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+    rw [hsum] at hb
+    exact hb
+  have hone : ∀ s ∈ S, s = 1 := fun s hs =>
+    isPowerForm_eq_one_of_le_two hp hq (hpf s hs) (hle s hs)
+  have hsub : S ⊆ {1} := fun s hs => Finset.mem_singleton.mpr (hone s hs)
+  rcases Finset.subset_singleton_iff.mp hsub with h0 | h1
+  · exact (Finset.nonempty_iff_ne_empty.mp hne) h0
+  · rw [h1] at hsum; simp at hsum
+
+/-- When `q = 2` and `p ≥ 4`, the only power forms that are `≤ 3` are `1` and
+`2`: a positive exponent on `p ≥ 4` gives a value `≥ 4`, so the form is a pure
+power of `2`, and `2 ^ l ≤ 3` forces `l ≤ 1`. -/
+lemma isPowerForm_le_two_or_eq {p n : ℕ} (hp : 4 ≤ p)
+    (h : IsPowerForm p 2 n) (hle : n ≤ 3) : n = 1 ∨ n = 2 := by
+  obtain ⟨k, l, rfl⟩ := h
+  have hk0 : k = 0 := by
+    by_contra hk
+    have hpge : 4 ≤ p ^ k := le_trans hp (Nat.le_self_pow hk p)
+    have hql : 1 ≤ 2 ^ l := Nat.one_le_pow _ _ (by omega)
+    have : 4 ≤ p ^ k * 2 ^ l :=
+      le_trans hpge (Nat.le_mul_of_pos_right (p ^ k) hql)
+    omega
+  subst hk0
+  simp only [pow_zero, one_mul] at hle ⊢
+  match l with
+  | 0 => left; simp
+  | 1 => right; simp
+  | (m + 2) =>
+    exfalso
+    have h4 : (4 : ℕ) ≤ 2 ^ (m + 2) := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+        _ ≤ 2 ^ (m + 2) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+
+/-- **`3` is non-representable when `q = 2` and `p ≥ 4`.** Each summand is a
+power form `≤ 3`, hence `1` or `2`. To reach the sum `3` the antichain would have
+to contain both `1` and `2`, but `1 ∣ 2` violates the antichain condition; a set
+of `1`s alone sums to `≤ 1` and a set of `2`s alone to `≤ 2`. -/
+theorem three_nonRepresentable_of_q_two {p : ℕ} (hp : 4 ≤ p) :
+    ¬ IsRepresentable p 2 3 := by
+  rintro ⟨S, _, hpf, hac, hsum⟩
+  have hle : ∀ s ∈ S, s ≤ 3 := by
+    intro s hs
+    have hb := Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hs
+    rw [hsum] at hb
+    exact hb
+  have hmem : ∀ s ∈ S, s = 1 ∨ s = 2 := fun s hs =>
+    isPowerForm_le_two_or_eq hp (hpf s hs) (hle s hs)
+  by_cases h1 : (1 : ℕ) ∈ S
+  · by_cases h2 : (2 : ℕ) ∈ S
+    · exact hac 1 h1 2 h2 (by norm_num) (by norm_num)
+    · -- no `2`s: `S ⊆ {1}`, sum `≤ 1`
+      have hsub : S ⊆ {1} := by
+        intro s hs
+        rcases hmem s hs with h | h
+        · exact Finset.mem_singleton.mpr h
+        · exact absurd (h ▸ hs) h2
+      have hb : S.sum id ≤ ({1} : Finset ℕ).sum id := Finset.sum_le_sum_of_subset hsub
+      rw [hsum] at hb
+      simp at hb
+  · -- no `1`s: `S ⊆ {2}`, sum `≤ 2`
+    have hsub : S ⊆ {2} := by
+      intro s hs
+      rcases hmem s hs with h | h
+      · exact absurd (h ▸ hs) h1
+      · exact Finset.mem_singleton.mpr h
+    have hb : S.sum id ≤ ({2} : Finset ℕ).sum id := Finset.sum_le_sum_of_subset hsub
+    rw [hsum] at hb
+    simp at hb
+
+/-- **Unconditional existence of a positive non-representable number** for every
+coprime pair `p > q ≥ 2` with `{p,q} ≠ {2,3}`. This is the existence shadow of
+the deep infinitude statement `erdos_lewin_infinite`, proved here with **no
+axiom**. Contrast with `nonRepresentable_three_two`: the `{2,3}` pair has the
+non-representable set `{0}` (no *positive* witness), whereas here every other
+coprime pair admits one — the universal witness `2` (when `q ≥ 3`) or `3`
+(when `q = 2`). -/
+theorem exists_positive_nonRepresentable_of_ne_two_three
+    {p q : ℕ} (hp : p > q) (hq : q ≥ 2) (_hcop : Nat.Coprime p q)
+    (hne : ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))) :
+    ∃ n, 1 ≤ n ∧ n ∈ NonRepresentable p q := by
+  rcases Nat.lt_or_ge q 3 with hq2 | hq3
+  · -- `q = 2`; then `p > 2` and `p ≠ 3`, so `p ≥ 4`
+    have hq2' : q = 2 := by omega
+    subst hq2'
+    have hp3 : p ≠ 3 := fun h => hne (Or.inl ⟨h, rfl⟩)
+    have hp4 : 4 ≤ p := by omega
+    exact ⟨3, by norm_num, three_nonRepresentable_of_q_two hp4⟩
+  · -- `q ≥ 3`, so `p > q ≥ 3` and both bases are `≥ 3`
+    exact ⟨2, by norm_num, two_nonRepresentable_of_three_le (by omega) hq3⟩
+
+/-
+## Part IId: Window Characterization (unconditional, 0-axiom)
+
+The two ad-hoc witnesses above (`2` when `q ≥ 3`, `3` when `q = 2`) are special
+cases of a single structural fact: because the unit power form `1 = p^0 q^0`
+divides *every* other power form, it can never sit in a representing antichain
+alongside another summand. Hence for `n ≥ 2` **every summand is `≥ q`** (the
+smallest power form exceeding `1`). Two or more such summands already sum past
+`2q`, so on the window `[q, 2q)` a representation can only be the singleton `{n}`
+— i.e. `n` is representable iff it is itself a power form. This *characterises*
+representability on the whole window (not just exhibits one witness) and
+uniformly recovers both special cases above.
+-/
+
+/-- The smallest power form exceeding `1` is `q`: any `p^k q^l ≥ 2` (necessarily
+with a positive exponent, given `p > q ≥ 2`) is at least `q`. -/
+lemma isPowerForm_ge_q_of_ge_two {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (h : IsPowerForm p q n) (hn : 2 ≤ n) : q ≤ n := by
+  obtain ⟨k, l, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · subst hk
+    simp only [pow_zero, one_mul] at hn ⊢
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; simp only [pow_zero] at hn; omega
+    · calc q = q ^ 1 := (pow_one q).symm
+        _ ≤ q ^ l := Nat.pow_le_pow_right (by omega) hl
+  · have hpk : p ≤ p ^ k := Nat.le_self_pow (by omega) p
+    have hql : 1 ≤ q ^ l := Nat.one_le_pow _ _ (by omega)
+    calc q ≤ p := by omega
+      _ ≤ p ^ k := hpk
+      _ ≤ p ^ k * q ^ l := Nat.le_mul_of_pos_right (p ^ k) hql
+
+/-- **Every summand of a representation of `n ≥ 2` is at least `q`.** The unit
+power form `1` cannot appear alongside any other summand (it divides everything,
+breaking the antichain) nor on its own (it would sum to `1 < 2 ≤ n`); so every
+summand is `≥ 2`, hence `≥ q` by `isPowerForm_ge_q_of_ge_two`. -/
+lemma representable_summands_ge_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hn : 2 ≤ n) {S : Finset ℕ}
+    (hpf : ∀ s ∈ S, IsPowerForm p q s)
+    (hac : NoOneDividesAnother S) (hsum : S.sum id = n) :
+    ∀ s ∈ S, q ≤ s := by
+  have hpos : ∀ s ∈ S, 1 ≤ s := by
+    intro s hs
+    obtain ⟨k, l, rfl⟩ := hpf s hs
+    have : 0 < p ^ k * q ^ l := mul_pos (pow_pos (by omega) k) (pow_pos (by omega) l)
+    omega
+  -- `1 ∉ S`: it would divide a distinct second element, or be the lone summand.
+  have h1 : (1 : ℕ) ∉ S := by
+    intro h1mem
+    by_cases hcard : S = {1}
+    · rw [hcard] at hsum; simp at hsum; omega
+    · obtain ⟨b, hbmem, hbne⟩ : ∃ b ∈ S, b ≠ 1 := by
+        by_contra hcon
+        push_neg at hcon
+        exact hcard (Finset.eq_singleton_iff_unique_mem.mpr ⟨h1mem, hcon⟩)
+      exact hac 1 h1mem b hbmem (Ne.symm hbne) (one_dvd b)
+  intro s hs
+  have hsne1 : s ≠ 1 := by rintro rfl; exact h1 hs
+  have h1le := hpos s hs
+  have hs2 : 2 ≤ s := by omega
+  exact isPowerForm_ge_q_of_ge_two hp hq (hpf s hs) hs2
+
+/-- **Every power form is representable** (unconditional, 0-axiom). A power form
+`n = p^k q^l` is represented by the singleton antichain `{n}`: a one-element set is
+vacuously an antichain (`NoOneDividesAnother`), its sole element is a power form, and it
+sums to `n`. This is the base fact underlying the backward direction of the window
+characterisation, and generalises `example_1_representable` (the `{3,2}` unit) to every
+pair and every power form. -/
+theorem isRepresentable_of_isPowerForm {p q n : ℕ} (h : IsPowerForm p q n) :
+    IsRepresentable p q n :=
+  ⟨{n}, Finset.singleton_nonempty n, by simpa using h,
+    by intro a ha b hb hab; simp only [Finset.mem_singleton] at ha hb
+       exact absurd (ha.trans hb.symm) hab,
+    by simp⟩
+
+/-- **The unit `1` is representable for every pair** — it is the power form `p^0 q^0`.
+Generalises `example_1_representable` from `{3,2}` to all `p, q`. -/
+theorem isRepresentable_one {p q : ℕ} : IsRepresentable p q 1 :=
+  isRepresentable_of_isPowerForm ⟨0, 0, by simp⟩
+
+/-- **Every power form `p^a q^b` is representable.** The representable set contains the
+whole multiplicative monoid of power forms — immediate from `isRepresentable_of_isPowerForm`. -/
+theorem isRepresentable_powerForm {p q : ℕ} (a b : ℕ) :
+    IsRepresentable p q (p ^ a * q ^ b) :=
+  isRepresentable_of_isPowerForm ⟨a, b, rfl⟩
+
+/-- **Representability window characterization (unconditional, 0-axiom).**
+For `q ≤ n < 2q`, the number `n` is representable iff it is itself a single power
+form `p^k q^l`. Forward: every summand is `≥ q` (`representable_summands_ge_q`),
+so two or more summands already exceed `2q > n`; the representation must be the
+singleton `{n}`, forcing `n` to be a power form. Backward: a power form `n` is
+represented by `{n}`. -/
+theorem isRepresentable_iff_isPowerForm_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hlo : q ≤ n) (hhi : n < 2 * q) :
+    IsRepresentable p q n ↔ IsPowerForm p q n := by
+  constructor
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    have hn2 : 2 ≤ n := by omega
+    have hge : ∀ s ∈ S, q ≤ s := representable_summands_ge_q hp hq hn2 hpf hac hsum
+    have hcard1 : S.card = 1 := by
+      rcases Nat.lt_or_ge S.card 2 with hc | hc
+      · have : 1 ≤ S.card := Finset.card_pos.mpr hne
+        omega
+      · exfalso
+        obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp hc
+        have hsub : ({a, b} : Finset ℕ) ⊆ S := by
+          intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;> assumption
+        have hpair : ({a, b} : Finset ℕ).sum id ≤ S.sum id :=
+          Finset.sum_le_sum_of_subset hsub
+        rw [Finset.sum_pair hab, hsum] at hpair
+        simp only [id_eq] at hpair
+        have hqa := hge a ha
+        have hqb := hge b hb
+        omega
+    obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp hcard1
+    rw [Finset.sum_singleton, id_eq] at hsum
+    rw [← hsum]
+    exact hpf x (Finset.mem_singleton_self x)
+  · intro h
+    exact isRepresentable_of_isPowerForm h
+
+/-- **Non-power-forms in the window `[q, 2q)` are non-representable
+(unconditional, 0-axiom).** Contrapositive of the window characterization. This
+furnishes, for *every* pair `p > q ≥ 2`, an explicit family of non-representable
+numbers (each non-power-form strictly between `q` and `2q`), uniformly subsuming
+the ad-hoc witnesses `two_nonRepresentable_of_three_le` (take `n = 2`, `q ≥ 3`)
+and `three_nonRepresentable_of_q_two` (take `n = 3`, `q = 2`). -/
+theorem nonRepresentable_of_window {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hlo : q ≤ n) (hhi : n < 2 * q) (hnp : ¬ IsPowerForm p q n) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_window hp hq hlo hhi]
+  exact hnp
+
+/-- **Sharp criterion for the canonical candidate `q + 1` (unconditional, 0-axiom).**
+For every pair `p > q ≥ 2` the number `q + 1` always lies in the window `[q, 2q)`,
+so by the window characterization it is non-representable *exactly* when it is not
+a power of `p`:
+
+    `q + 1 ∈ NonRepresentable p q  ↔  ¬ ∃ k, q + 1 = p ^ k`.
+
+The only power form `q + 1` could be is a pure power of `p`: a factor `q ^ l` with
+`l ≥ 1` would force `q ∣ q + 1`, hence `q ∣ 1`, impossible for `q ≥ 2`. For `q = 2`
+this says `q + 1 = 3` is non-representable unless `3 = p ^ k`, i.e. unless `p = 3` —
+pinpointing the excluded `{2,3}` pair as the *unique* `q = 2` exception, the case
+where the canonical witness `3` happens to be the power form `3 = 3 ^ 1`. -/
+theorem add_one_nonRepresentable_iff {p q : ℕ} (hp : p > q) (hq : q ≥ 2) :
+    (q + 1) ∈ NonRepresentable p q ↔ ¬ ∃ k : ℕ, q + 1 = p ^ k := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_window hp hq (by omega) (by omega)]
+  simp only [IsPowerForm]
+  refine not_congr ⟨?_, ?_⟩
+  · rintro ⟨k, l, hkl⟩
+    refine ⟨k, ?_⟩
+    rcases Nat.eq_zero_or_pos l with hl | hl
+    · subst hl; simpa using hkl
+    · exfalso
+      have hqdvd : q ∣ q + 1 := by
+        rw [hkl]; exact (dvd_pow_self q hl.ne').mul_left (p ^ k)
+      have h1 : q ∣ 1 := (Nat.dvd_add_right (dvd_refl q)).mp hqdvd
+      have := Nat.le_of_dvd one_pos h1
+      omega
+  · rintro ⟨k, hk⟩
+    exact ⟨k, 0, by simpa using hk⟩
+
+/-- **Easy sufficient condition: `q + 1` is non-representable whenever `p > q + 1`
+(unconditional, 0-axiom).** If `p` overshoots `q + 1` then `q + 1` cannot be any
+power `p ^ k` (`p ^ 0 = 1 < q + 1` and `p ^ k ≥ p > q + 1` for `k ≥ 1`), so the
+criterion `add_one_nonRepresentable_iff` fires. This hands every pair with
+`p ≥ q + 2` an explicit, trivially checkable non-representable number. -/
+theorem add_one_nonRepresentable_of_lt {p q : ℕ} (hq : q ≥ 2) (hp : q + 1 < p) :
+    (q + 1) ∈ NonRepresentable p q := by
+  rw [add_one_nonRepresentable_iff (by omega) hq]
+  rintro ⟨k, hk⟩
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0; simp at hk; omega
+  · have hple : p ≤ p ^ k := Nat.le_self_pow hk0.ne' p
+    omega
+
+/-- The pair `(5, 2)`: `3 = q + 1` is non-representable (3 is not a power of 5). -/
+example : (3 : ℕ) ∈ NonRepresentable 5 2 :=
+  add_one_nonRepresentable_of_lt (by norm_num) (by norm_num)
+
+/-
+## Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)
+
+The `{2,3}` induction (`case_2_3_all_representable`) rested on a *doubling* step:
+multiplying a representing antichain by `2` keeps it a representing antichain
+(`isPowerForm_mul_two`, `noOneDividesAnother_image_mul_two`, …). That doubling is
+the `c = 2` instance of a single structural fact valid for **either base**: scaling
+a representation by `p` (or `q`) is again a representation. We record the general
+statement here.
+
+The key algebraic point is that the antichain ("no element divides another")
+relation is *invariant under scaling by a fixed positive constant*: `c·a ∣ c·b ↔
+a ∣ b`. Combined with the fact that `c · p^k q^l` is still a power form (with the
+exponent of the relevant base raised by one), this yields:
+
+* `IsRepresentable p q n ⟹ IsRepresentable p q (p·n)` and `(q·n)`;
+* by iteration, `IsRepresentable p q n ⟹ IsRepresentable p q (p^a q^b · n)` — the
+  set of representable numbers is closed under multiplication by every power form;
+* contrapositively, **non-representability propagates to power-form divisors**: if
+  `p^a q^b · n` is non-representable, then so is `n`.
+
+This is genuine structural theory (a `ℕ`-action of the multiplicative monoid of
+power forms on the representable set), 0-axiom, and it subsumes the ad-hoc doubling
+machinery. It does **not** resolve the open infinitude direction: the propagation
+goes *downward* (to divisors), so it cannot manufacture infinitely many
+non-representables from a single witness — the deep axiom `erdos_lewin_infinite`
+remains untouched.
+-/
+
+/-- Multiplying a power form by `p` stays a power form: `p · p^k q^l = p^{k+1} q^l`. -/
+lemma isPowerForm_mul_base_left {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * p) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k + 1, l, by ring⟩
+
+/-- Multiplying a power form by `q` stays a power form: `q · p^k q^l = p^k q^{l+1}`. -/
+lemma isPowerForm_mul_base_right {p q s : ℕ} (h : IsPowerForm p q s) :
+    IsPowerForm p q (s * q) := by
+  obtain ⟨k, l, rfl⟩ := h
+  exact ⟨k, l + 1, by ring⟩
+
+/-- Scaling every element of an antichain by a fixed positive `c` preserves the
+antichain property, since `c·a ∣ c·b ↔ a ∣ b`. (Generalises
+`noOneDividesAnother_image_mul_two`, the `c = 2` case.) -/
+lemma noOneDividesAnother_image_mul_const {S : Finset ℕ} {c : ℕ} (hc : 0 < c)
+    (hS : NoOneDividesAnother S) :
+    NoOneDividesAnother (S.image (· * c)) := by
+  intro a ha b hb hab
+  rw [Finset.mem_image] at ha hb
+  obtain ⟨a', ha', rfl⟩ := ha
+  obtain ⟨b', hb', rfl⟩ := hb
+  have hne : a' ≠ b' := by intro heq; subst heq; exact hab rfl
+  intro hdvd
+  exact hS a' ha' b' hb' hne ((Nat.mul_dvd_mul_iff_right hc).mp hdvd)
+
+/-- Multiplication by a positive constant is injective on a `Finset` of naturals. -/
+lemma mul_const_injOn (S : Finset ℕ) {c : ℕ} (hc : 0 < c) :
+    Set.InjOn (· * c) (↑S) := by
+  intro a _ b _ h
+  exact Nat.eq_of_mul_eq_mul_right hc h
+
+/-- Scaling the antichain by `c` scales its sum by `c`. -/
+lemma sum_image_mul_const {S : Finset ℕ} {c : ℕ} (hinj : Set.InjOn (· * c) (↑S)) :
+    (S.image (· * c)).sum id = c * S.sum id := by
+  rw [Finset.sum_image (fun a ha b hb => hinj ha hb)]
+  simp [Finset.mul_sum, mul_comm]
+
+/-- **Representability is closed under multiplication by `p`** (unconditional,
+0-axiom). Scale a representing antichain of `n` by `p`: each summand `p^k q^l`
+becomes `p^{k+1} q^l` (still a power form), the antichain property is preserved
+(`noOneDividesAnother_image_mul_const`), and the sum scales to `p·n`. -/
+theorem isRepresentable_mul_base_left {p q n : ℕ} (hp : 0 < p)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * p), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_left (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hp hac
+  · rw [sum_image_mul_const (mul_const_injOn S hp), hsum]
+
+/-- **Representability is closed under multiplication by `q`** (unconditional,
+0-axiom). Same argument scaling by `q`; each summand `p^k q^l` becomes
+`p^k q^{l+1}`. -/
+theorem isRepresentable_mul_base_right {p q n : ℕ} (hq : 0 < q)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q * n) := by
+  obtain ⟨S, hne, hpf, hac, hsum⟩ := h
+  refine ⟨S.image (· * q), Finset.Nonempty.image hne _, ?_, ?_, ?_⟩
+  · intro s hs
+    rw [Finset.mem_image] at hs
+    obtain ⟨a, ha, rfl⟩ := hs
+    exact isPowerForm_mul_base_right (hpf a ha)
+  · exact noOneDividesAnother_image_mul_const hq hac
+  · rw [sum_image_mul_const (mul_const_injOn S hq), hsum]
+
+/-- Closure under multiplication by `p^a` (iterating `isRepresentable_mul_base_left`). -/
+theorem isRepresentable_mul_pow_left {p q n : ℕ} (hp : 0 < p) (a : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (p ^ a * n) := by
+  induction a with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_left hp ih
+    have heq : p ^ (k + 1) * n = p * (p ^ k * n) := by ring
+    rwa [heq]
+
+/-- Closure under multiplication by `q^b` (iterating `isRepresentable_mul_base_right`). -/
+theorem isRepresentable_mul_pow_right {p q n : ℕ} (hq : 0 < q) (b : ℕ)
+    (h : IsRepresentable p q n) : IsRepresentable p q (q ^ b * n) := by
+  induction b with
+  | zero => simpa using h
+  | succ k ih =>
+    have h2 := isRepresentable_mul_base_right hq ih
+    have heq : q ^ (k + 1) * n = q * (q ^ k * n) := by ring
+    rwa [heq]
+
+/-- **Representability is closed under multiplication by every power form**
+(unconditional, 0-axiom). If `n` is representable then so is `p^a q^b · n`: the
+representable set is invariant under the multiplicative monoid action of the power
+forms. This is the full structural generalisation of the `{2,3}` doubling step. -/
+theorem isRepresentable_mul_powerForm {p q n : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (a b : ℕ) (h : IsRepresentable p q n) :
+    IsRepresentable p q (p ^ a * q ^ b * n) := by
+  have h1 := isRepresentable_mul_pow_left hp a h
+  have h2 := isRepresentable_mul_pow_right hq b h1
+  have heq : p ^ a * q ^ b * n = q ^ b * (p ^ a * n) := by ring
+  rwa [heq]
+
+/-- **Non-representability propagates to power-form divisors** (unconditional,
+0-axiom). Contrapositive of `isRepresentable_mul_powerForm`: if `p^a q^b · n` is
+non-representable, then `n` itself is non-representable. (The implication runs
+*downward* to smaller divisors, so it does not generate new non-representables —
+the open infinitude direction is unaffected.) -/
+theorem nonRepresentable_of_mul_powerForm {p q n a b : ℕ} (hp : 0 < p) (hq : 0 < q)
+    (h : (p ^ a * q ^ b * n) ∈ NonRepresentable p q) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq] at h ⊢
+  exact fun hrep => h (isRepresentable_mul_powerForm hp hq a b hrep)
+
 /-
 ## Part III: General Case (p,q) ≠ (2,3)
 -/
 
 /--
-**Erdős-Lewin Theorem (1996):**
-The set of non-representable numbers is finite if and only if {p,q} = {2,3}.
+**Erdős-Lewin Theorem (1996), deep direction:**
+If `{p,q} ≠ {2,3}` (with `p > q ≥ 2` coprime), there are infinitely many
+non-representable numbers. This is the genuinely hard half of the
+characterisation — the converse (`{2,3} ⟹ finite`) is proved unconditionally
+above in `finite_nonRepresentable_of_two_three`. Not available in Mathlib 4.26.
 -/
-axiom erdos_lewin_theorem (p q : ℕ) :
+axiom erdos_lewin_infinite (p q : ℕ) :
     p > q → q ≥ 2 → Nat.Coprime p q →
-    (Set.Finite (NonRepresentable p q) ↔ (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))
+    ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3)) →
+    Set.Infinite (NonRepresentable p q)
+
+/--
+**Erdős-Lewin Theorem (1996), full iff** — now a *theorem*: the backward
+direction is the unconditional `finite_nonRepresentable_of_two_three`, and only
+the forward direction rests on the deep axiom `erdos_lewin_infinite`.
+The set of non-representable numbers is finite iff `{p,q} = {2,3}`.
+-/
+theorem erdos_lewin_theorem (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
+    (hcop : Nat.Coprime p q) :
+    Set.Finite (NonRepresentable p q) ↔ (p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3) := by
+  constructor
+  · intro hfin
+    by_contra hne
+    exact (erdos_lewin_infinite p q hp hq hcop hne) hfin
+  · exact finite_nonRepresentable_of_two_three
 
 /--
 **Infinitely many non-representable for most (p,q):**
@@ -293,30 +843,94 @@ If {p,q} ≠ {2,3}, there are infinitely many non-representable numbers.
 -/
 theorem infinitely_many_non_rep (p q : ℕ) (hp : p > q) (hq : q ≥ 2)
     (hcop : Nat.Coprime p q) (hne : ¬((p = 3 ∧ q = 2) ∨ (p = 2 ∧ q = 3))) :
-    Set.Infinite (NonRepresentable p q) := by
-  have h := erdos_lewin_theorem p q hp hq hcop
-  intro hfin
-  exact hne (h.mp hfin)
+    Set.Infinite (NonRepresentable p q) :=
+  erdos_lewin_infinite p q hp hq hcop hne
 
 /-
 ## Part IV: Yu-Chen Results (2022)
 -/
 
-/--
+/-
 **Natural density of a set:**
 d(A) = lim_{n→∞} |A ∩ {1,...,n}| / n
 -/
+open scoped Classical in
 def HasDensity (A : Set ℕ) (d : ℝ) : Prop :=
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     |((Finset.filter (· ∈ A) (Finset.range (n + 1))).card : ℝ) / n - d| < ε
 
 /--
+**The {2,3} non-representables have natural density zero (unconditional, 0-axiom).**
+
+In the solved `{2,3}` case every positive integer is representable
+(`case_2_3_all_representable`), so the non-representable set is exactly `{0}`
+(`nonRepresentable_three_two`).  A single point has natural density `0`: for every
+`n ≥ 1` precisely one element of `{0,…,n}` lies in `{0}`, so the counting ratio is
+`1/n → 0`.  This is the density statement of Erdős #1110's *settled* case and the
+first theorem to exercise the `HasDensity` definition.  (The open content of the
+problem is the density in the *non*-`{2,3}` cases — zero in many cases by Yu-Chen
+2022, open in general.) -/
+theorem nonRepresentable_three_two_hasDensity_zero :
+    HasDensity (NonRepresentable 3 2) 0 := by
+  rw [nonRepresentable_three_two]
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  refine ⟨N + 1, fun n hn => ?_⟩
+  have hn1 : 1 ≤ n := le_trans (Nat.le_add_left 1 N) hn
+  -- Exactly one element of `{0,…,n}` lies in the singleton `{0}`, so the count is `1`.
+  have hmem : (0 : ℕ) ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  simp only [Set.mem_singleton_iff, Finset.filter_eq', hmem, if_true,
+    Finset.card_singleton, Nat.cast_one, sub_zero]
+  -- `|1/n| = 1/n < ε`, since `n ≥ N+1 > 1/ε`.
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn1
+  rw [abs_of_pos (by positivity), div_lt_iff₀ hn0]
+  have hNn : (1 / ε) < (n : ℝ) := by
+    refine hN.trans_le ?_
+    exact_mod_cast (by omega : (N : ℕ) ≤ n)
+  rw [div_lt_iff₀ hε] at hNn
+  rw [mul_comm]
+  exact hNn
+
+/-
 **Yu-Chen Density Zero Theorem:**
 The non-representable numbers have density zero for many parameter choices:
 - q > 3, or
 - q = 3 and p > 6, or
 - q = 2 and p > 10
 -/
+
+/-- A single point has natural density `0`: for `n ≥ N` the count
+`|{0} ∩ {0,…,n}| = 1`, so the ratio `1/n → 0`. (Helper for the `{2,3}` density-zero
+instance below.) -/
+theorem hasDensity_singleton_zero : HasDensity {0} 0 := by
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  refine ⟨N + 1, fun n hn => ?_⟩
+  have h0mem : (0 : ℕ) ∈ Finset.range (n + 1) := Finset.mem_range.mpr (by omega)
+  simp only [Set.mem_singleton_iff, Finset.filter_eq', h0mem, if_true,
+    Finset.card_singleton, Nat.cast_one, sub_zero]
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
+  have hcast : (1 : ℝ) / ε < (n : ℝ) := by
+    have : (N : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : N < n)
+    linarith
+  rw [abs_of_nonneg (by positivity), div_lt_iff₀ hnpos]
+  rw [div_lt_iff₀ hε] at hcast
+  linarith [mul_comm (n : ℝ) ε]
+
+/-- **Yu-Chen density zero, `{2,3}` case (unconditional, 0-axiom).** For the base
+pair `{2,3}` the non-representable set is the single point `{0}` (see
+`nonRepresentable_two_three`), hence has natural density `0` — the sharpest possible
+instance of the Yu-Chen density-zero phenomenon. No axiom needed. -/
+theorem nonRepresentable_two_three_density_zero :
+    HasDensity (NonRepresentable 2 3) 0 := by
+  rw [nonRepresentable_two_three]; exact hasDensity_singleton_zero
+
+/-- **Yu-Chen density zero, `{3,2}` case (unconditional, 0-axiom).** Same statement for
+the reversed base pair (`NonRepresentable 3 2 = {0}`). -/
+theorem nonRepresentable_three_two_density_zero :
+    HasDensity (NonRepresentable 3 2) 0 := by
+  rw [nonRepresentable_three_two]; exact hasDensity_singleton_zero
+
 /--
 **Yu-Chen Coprime Non-Representables:**
 There are infinitely many coprime non-representable numbers for most (p,q):
@@ -326,6 +940,66 @@ There are infinitely many coprime non-representable numbers for most (p,q):
 -/
 def CoprimeNonRepresentable (p q : ℕ) : Set ℕ :=
   {n ∈ NonRepresentable p q | Nat.Coprime n (p * q)}
+
+/-- The empty set has natural density `0`: the counting numerator is always `0`,
+so the ratio is `0` for every `n ≥ 1`. (Helper for the `{2,3}` coprime
+density-zero instances below.) -/
+theorem hasDensity_empty : HasDensity (∅ : Set ℕ) 0 := by
+  intro ε hε
+  refine ⟨1, fun n _ => ?_⟩
+  simp only [Set.mem_empty_iff_false, Finset.filter_false, Finset.card_empty,
+    Nat.cast_zero, zero_div, sub_zero, abs_zero]
+  exact hε
+
+/-- **The `{2,3}` coprime non-representables are empty (unconditional, 0-axiom).**
+
+`CoprimeNonRepresentable` is the Yu-Chen object whose infinitude is asserted "for
+most `(p,q)`" — explicitly excluding `{2,3}`. This theorem makes that exclusion
+*sharp* for `{2,3}`: there are not merely finitely many coprime non-representables,
+there are **none**. Indeed `NonRepresentable 2 3 = {0}` and `0` is not coprime to
+`2·3 = 6` (`gcd 0 6 = 6 ≠ 1`), so the only non-representable is filtered out. This
+gives the first content to the previously-unused `CoprimeNonRepresentable`
+definition. -/
+theorem coprimeNonRepresentable_two_three_eq_empty :
+    CoprimeNonRepresentable 2 3 = ∅ := by
+  rw [CoprimeNonRepresentable, nonRepresentable_two_three]
+  ext n
+  constructor
+  · rintro ⟨hn, hcop⟩
+    rw [Set.mem_singleton_iff] at hn
+    subst hn
+    rw [Nat.coprime_zero_left] at hcop
+    norm_num at hcop
+  · intro h; exact absurd h (Set.notMem_empty n)
+
+/-- **The `{3,2}` coprime non-representables are empty (unconditional, 0-axiom).**
+Same statement for the reversed base pair (`NonRepresentable 3 2 = {0}`, and `0` is
+not coprime to `3·2 = 6`). -/
+theorem coprimeNonRepresentable_three_two_eq_empty :
+    CoprimeNonRepresentable 3 2 = ∅ := by
+  rw [CoprimeNonRepresentable, nonRepresentable_three_two]
+  ext n
+  constructor
+  · rintro ⟨hn, hcop⟩
+    rw [Set.mem_singleton_iff] at hn
+    subst hn
+    rw [Nat.coprime_zero_left] at hcop
+    norm_num at hcop
+  · intro h; exact absurd h (Set.notMem_empty n)
+
+/-- **Yu-Chen coprime density zero, `{2,3}` case (unconditional, 0-axiom).** Since the
+`{2,3}` coprime non-representable set is empty, it has natural density `0` — the
+degenerate extreme of the Yu-Chen coprime-density phenomenon, complementing the
+infinitude that holds for the non-`{2,3}` pairs. -/
+theorem coprimeNonRepresentable_two_three_density_zero :
+    HasDensity (CoprimeNonRepresentable 2 3) 0 := by
+  rw [coprimeNonRepresentable_two_three_eq_empty]; exact hasDensity_empty
+
+/-- **Yu-Chen coprime density zero, `{3,2}` case (unconditional, 0-axiom).** Reversed
+base pair; the coprime non-representable set is again empty. -/
+theorem coprimeNonRepresentable_three_two_density_zero :
+    HasDensity (CoprimeNonRepresentable 3 2) 0 := by
+  rw [coprimeNonRepresentable_three_two_eq_empty]; exact hasDensity_empty
 
 /-
 ## Part V: Minimum Summand Size
@@ -340,11 +1014,11 @@ noncomputable def minSummandBound (n : ℕ) : ℝ :=
   sSup {f : ℝ | ∃ S : Finset ℕ, (∀ s ∈ S, IsPowerForm 3 2 s ∧ (s : ℝ) > f) ∧
     NoOneDividesAnother S ∧ S.sum id = n}
 
-/--
+/-
 **Yu-Chen bounds (2022):**
 n / (log n)^{log₂ 3} ≪ f(n) ≪ n / log n
 -/
-/--
+/-
 **Yang-Zhao improvement (2025):**
 The lower bound improves to f(n) ≫ n / log n.
 -/
@@ -352,7 +1026,7 @@ The lower bound improves to f(n) ≫ n / log n.
 ## Part VI: Related Problems
 -/
 
-/--
+/-
 **Related Problems:**
 - Problem #123: The analog with three coprime bases (p, q, r)
 - Problem #845: Additional questions about the {2,3} representation
@@ -367,23 +1041,9 @@ The lower bound improves to f(n) ≫ n / log n.
 **Example: 1 = 2^0 · 3^0:**
 The number 1 is trivially representable (single summand).
 -/
-theorem example_1_representable : IsRepresentable 3 2 1 := by
-  use {1}
-  constructor
-  · simp
-  constructor
-  · intro s hs
-    simp at hs
-    subst hs
-    use 0, 0
-    simp
-  constructor
-  · intro a ha b hb hab
-    simp at ha hb
-    omega
-  · simp
+theorem example_1_representable : IsRepresentable 3 2 1 := isRepresentable_one
 
-/--
+/-
 **Example: Small cases for {3,2}:**
 All of 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 are representable.
 -/

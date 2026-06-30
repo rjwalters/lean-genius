@@ -187,7 +187,11 @@ theorem gal_card_ne_5 : Fintype.card q.Gal ≠ 5 := by
 -- § 5. Factorization mod 7
 -- ============================================================================
 
-private noncomputable def q_ℤ : ℤ[X] :=
+/-- The degree-5 integer polynomial `q` whose splitting field realises `A₅`.
+Made public (mirroring the sibling `InverseGaloisOQ06OQ02P11.q_ℤ`) so the
+mod-7 factorization identity can be carried in the packaged Dedekind input
+`InverseGaloisOQ06OQ02.q_mod7_factor_type`. -/
+noncomputable def q_ℤ : ℤ[X] :=
   X ^ 5 - C 5 * X ^ 4 + C 10 * X ^ 3 - C 10 * X ^ 2 + C 25 * X - C 5
 
 /-- The cubic factor X³ + 6X² + 4X + 1 over 𝔽₇. -/

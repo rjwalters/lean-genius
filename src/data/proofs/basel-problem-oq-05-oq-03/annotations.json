@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-summable-neg-sq-div",
+    "proofId": "basel-problem-oq-05-oq-03",
+    "range": { "startLine": 53, "endLine": 64 },
+    "type": "theorem",
+    "title": "Summability of the scaled reciprocal squares",
+    "content": "The factors of the Euler product are `1 - x²/(n+1)²`. To prove the product converges we first show the perturbations `-x²/(n+1)²` are summable. This is the convergent p-series `∑ 1/n²` (p = 2), index-shifted by one to drop the `n = 0` term and scaled by the constant `-x²`. The shift uses `summable_nat_add_iff` and the scaling uses `Summable.mul_left`; the final `field_simp` reconciles the two algebraic forms.",
+    "mathContext": "Summability holds for **every** real `x`, not just `|x| < 1`, because `∑ x²/n² = x² · ζ(2) < ∞` for all `x`. This is what lets the multipliability argument run on the whole real line.",
+    "significance": "supporting",
+    "relatedConcepts": ["p-series", "summability", "index shift"],
+    "prerequisites": ["convergence of ∑ 1/n²", "Summable API"]
+  },
+  {
+    "id": "ann-multipliable-euler-factors",
+    "proofId": "basel-problem-oq-05-oq-03",
+    "range": { "startLine": 70, "endLine": 74 },
+    "type": "theorem",
+    "title": "Multipliability of the Euler factors",
+    "content": "The family `n ↦ 1 - x²/(n+1)²` is multipliable for every real `x`. Mathlib's `Real.multipliable_one_add_of_summable` says that if `f` is summable then `n ↦ 1 + f n` is multipliable; applying it to `f n = -x²/(n+1)²` (summable by the previous lemma) and rewriting `1 + (-x²/(n+1)²) = 1 - x²/(n+1)²` gives the result. Multipliability is the analytic content the parent axiom was hiding: it guarantees the partial products have a genuine limit.",
+    "mathContext": "`Multipliable f` means the net of partial products `∏_{j<n} f j` converges to a finite, well-defined limit `∏' f`. Without it, writing `∏'(1 - x²/n²)` would be meaningless.",
+    "significance": "critical",
+    "relatedConcepts": ["infinite products", "multipliability", "Multipliable"],
+    "prerequisites": ["Real.multipliable_one_add_of_summable", "summability of the factors"]
+  },
+  {
+    "id": "ann-euler-sin-tprod-shifted",
+    "proofId": "basel-problem-oq-05-oq-03",
+    "range": { "startLine": 88, "endLine": 107 },
+    "type": "theorem",
+    "title": "Bridge: partial-product limit ⟶ infinite product",
+    "content": "This is the heart of the contribution. Mathlib provides `Real.tendsto_euler_sin_prod`, which says the *partial products* `π·x·∏_{j<n}(1 - x²/(j+1)²)` converge to `sin(πx)`. Separately, multipliability gives that the same partial products converge to the `tprod` `∏'(1 - x²/(n+1)²)`. Two limits of one convergent sequence must agree (`tendsto_nhds_unique`), so `π·x·∏'(...) = sin(πx)`, i.e. `sin(πx)/(πx) = ∏'(...)`. The final `field_simp`/`linarith` step divides through by `π·x ≠ 0`.",
+    "mathContext": "Mathlib's `Real.tendsto_euler_sin_prod` is proved via the recursion for the Wallis-type integrals ∫₀^{π/2} cos^{2n}(t)·cos(2zt) dt — an **elementary** route that avoids the Weierstrass factorization theorem and complex contour integration (though it routes through the complex sine internally as bookkeeping).",
+    "significance": "critical",
+    "relatedConcepts": ["uniqueness of limits", "Euler sine product", "Wallis integrals", "tprod"],
+    "prerequisites": ["Real.tendsto_euler_sin_prod", "Multipliable.tendsto_prod_tprod_nat", "tendsto_nhds_unique"]
+  },
+  {
+    "id": "ann-weierstrass-sin-product",
+    "proofId": "basel-problem-oq-05-oq-03",
+    "range": { "startLine": 121, "endLine": 143 },
+    "type": "theorem",
+    "title": "The parent's axiom, discharged",
+    "content": "This reproduces `BaselOQ05.weierstrass_sin_product` **verbatim** — `sin(πx)/(πx) = ∏' n, if n = 0 then 1 else (1 - x²/n²)` for `x ≠ 0` — now as a fully verified, axiom-free theorem. The `if n = 0 then 1` factor encodes the convention that the product runs over `n ≥ 1`; a first-term split of the `tprod` (`tprod_eq_zero_mul'`) peels off the `n = 0` factor (which is `1`), and the remaining shifted family is exactly the Euler factors handled by `euler_sin_tprod_shifted`.",
+    "mathContext": "Because the statement matches the parent axiom character-for-character, this theorem can be dropped in to eliminate that axiom: the parent's `axiom weierstrass_sin_product` becomes a consequence of Mathlib rather than an assumption.",
+    "significance": "critical",
+    "relatedConcepts": ["Weierstrass product", "first-term split", "axiom elimination"],
+    "prerequisites": ["tprod_eq_zero_mul'", "euler_sin_tprod_shifted"]
+  },
+  {
+    "id": "ann-basel-sum",
+    "proofId": "basel-problem-oq-05-oq-03",
+    "range": { "startLine": 155, "endLine": 156 },
+    "type": "theorem",
+    "title": "Basel corollary: ∑ 1/n² = π²/6",
+    "content": "With the product formula now a theorem, the classical Euler argument (compare the `x²` coefficients of the Taylor side `sin(πx)/(πx)` and of the product side) yields the Basel identity. We record the identity itself via Mathlib's `hasSum_zeta_two`, which proves `∑ 1/n² = π²/6` through Bernoulli-polynomial / Fourier theory.",
+    "mathContext": "The coefficient comparison is the historical Euler route: `[x²] sin(πx)/(πx) = -π²/6` from the Taylor series, while `[x²] ∏(1 - x²/n²) = -∑ 1/n²`; equating gives `∑ 1/n² = π²/6`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Basel problem", "ζ(2)", "coefficient comparison"],
+    "prerequisites": ["hasSum_zeta_two"]
+  }
+]

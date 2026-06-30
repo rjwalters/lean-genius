@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "The analytic heart of Pólya–Vinogradov",
+    "content": "The Pólya–Vinogradov inequality (1918) bounds an incomplete Dirichlet character sum: `|∑_{n=M+1}^{M+N} χ(n)| ≤ √q·log q`. Its standard proof expands `χ` through its Gauss-sum Fourier series, which converts the character sum into a combination of *partial exponential sums* `∑ e^{2πiθn}`. This file isolates and fully verifies the one ingredient of that argument that is a clean, self-contained classical estimate — the bound `|∑_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/|sin(πθ)|` for non-integer `θ`. The companion WIP file `BoundedPrimeGapsOQ04OQ01` states the full inequality with four analytic sorries and does not currently parse (it uses the retired `∑ x in s` syntax); this standalone, 0-axiom entry re-establishes the supporting lemmas and the headline bound from scratch in modern syntax.",
+    "mathContext": "$\\left|\\sum_{n=M+1}^{M+N} e^{2\\pi i\\theta n}\\right| \\le \\dfrac{1}{|\\sin(\\pi\\theta)|}$, $\\;\\theta\\notin\\mathbb{Z}$ — uniform in both the offset $M$ and the length $N$.",
+    "significance": "key",
+    "relatedConcepts": ["Pólya–Vinogradov inequality", "Dirichlet characters", "Gauss sums", "exponential sums", "analytic number theory"],
+    "prerequisites": ["Dirichlet characters", "Fourier analysis on ℤ/qℤ", "geometric series"]
+  },
+  {
+    "id": "ann-sin-ne-zero",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 42, "endLine": 50 },
+    "type": "technique",
+    "title": "Non-degeneracy: sin(πθ) ≠ 0 for non-integer θ",
+    "content": "`sin_pi_mul_ne_zero` establishes that `sin(πθ) ≠ 0` precisely when `θ ∉ ℤ`. This is the hypothesis that keeps the bound `1/|sin(πθ)|` finite (and the geometric ratio `z ≠ 1`). The proof unfolds `Real.sin_eq_zero_iff` — `sin x = 0 ⟺ x = kπ` for some integer `k` — so `sin(πθ) = 0` forces `πθ = kπ`, hence `θ = k ∈ ℤ` after cancelling `π ≠ 0` (`mul_left_cancel₀`), contradicting the hypothesis. The non-integrality of `θ` is exactly the condition under which the partial sum fails to be a full period and so does not vanish trivially.",
+    "mathContext": "$\\sin(\\pi\\theta)=0 \\iff \\pi\\theta = k\\pi \\iff \\theta = k\\in\\mathbb{Z}$; contrapositive gives $\\theta\\notin\\mathbb{Z}\\Rightarrow\\sin(\\pi\\theta)\\neq0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["zeros of sine", "Real.sin_eq_zero_iff", "cancellation in a field"],
+    "prerequisites": ["zeros of the sine function", "integer multiples of π"]
+  },
+  {
+    "id": "ann-num-bound",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "technique",
+    "title": "Numerator bound: |1 − zⁿ| ≤ 2 on the unit circle",
+    "content": "`norm_one_sub_pow_le_two` bounds the geometric numerator: for any `z` with `|z| = 1`, `|1 − zⁿ| ≤ 2`. This is the triangle inequality at its crudest and most effective — `|1 − zⁿ| ≤ |1| + |zⁿ| = 1 + 1 = 2`, using `norm_pow` and `|z| = 1` to get `|zⁿ| = 1`. The bound is uniform in `n`: no matter how many terms the partial sum has, the numerator `zᴺ − 1` never exceeds the diameter `2` of the unit circle. This uniformity is exactly why the final estimate is independent of `N`.",
+    "mathContext": "$|1 - z^n| \\le |1| + |z^n| = 1 + 1 = 2$ since $|z|=1 \\Rightarrow |z^n|=1$ (diameter of the unit circle).",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle inequality", "unit circle", "norm_pow", "uniform bound"],
+    "prerequisites": ["triangle inequality for norms", "multiplicativity of complex modulus"]
+  },
+  {
+    "id": "ann-chord-length",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 60, "endLine": 78 },
+    "type": "insight",
+    "title": "The chord-length identity: |1 − e^{2πiθ}| = 2|sin(πθ)|",
+    "content": "`norm_one_sub_exp_two_pi_I` is the geometric crux: the straight-line distance from `1` to `e^{2πiθ}` on the unit circle is exactly `2|sin(πθ)|`, twice the sine of the half-angle. The proof writes `e^{2πiθ} = cos(2πθ) + i·sin(2πθ)` (Euler via `Complex.exp_mul_I`), so `1 − e^{2πiθ} = (1−cos 2πθ) − i·sin 2πθ`; then `Complex.norm_add_mul_I` gives the modulus as `√((1−cos 2πθ)² + sin²2πθ)`. The radicand simplifies to `(2|sin πθ|)²` via the Pythagorean identity and the double-angle formula `cos 2x = 1 − 2sin²x` (assembled by `linear_combination` of `sin²+cos²=1`, `cos_two_mul`, and a second Pythagorean identity). This `2|sin(πθ)|` is precisely the denominator of the geometric series `|z − 1|`, and the source of the `1/|sin|` in the final bound.",
+    "mathContext": "$|1-e^{2\\pi i\\theta}|^2 = (1-\\cos 2\\pi\\theta)^2 + \\sin^2 2\\pi\\theta = 2(1-\\cos 2\\pi\\theta) = 4\\sin^2(\\pi\\theta)$, so $|1-e^{2\\pi i\\theta}| = 2|\\sin(\\pi\\theta)|$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's formula", "double-angle identity", "chord length", "half-angle formula", "Complex.exp_mul_I"],
+    "prerequisites": ["Euler's formula e^{ix}=cos x + i sin x", "trigonometric identities", "complex modulus"]
+  },
+  {
+    "id": "ann-main-bound",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 79, "endLine": 122 },
+    "type": "insight",
+    "title": "The headline bound: geometric closed form meets chord length",
+    "content": "`geom_partial_sum_bound` assembles the pieces into `|∑_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/|sin(πθ)|`. With `z = e^{2πiθ}`: each summand is `zⁿ` (`Complex.exp_nat_mul`), and the partial sum factors as `z^{M+1}·∑_{k<N} zᵏ` (reindex `Icc (M+1) (M+N)` to `range N` via `sum_Ico_eq_sum_range`). The geometric closed form `geom_sum_eq hz1` — valid since `z ≠ 1`, which follows from the chord-length identity and `sin(πθ) ≠ 0` — gives `∑_{k<N} zᵏ = (zᴺ − 1)/(z − 1)`. Taking norms: `|z^{M+1}| = 1` (unit circle), `|zᴺ − 1| ≤ 2` (numerator bound), `|z − 1| = 2|sin(πθ)|` (chord length), so the whole sum is `≤ 2/(2|sin πθ|) = 1/|sin(πθ)|`. The estimate is uniform in both `M` (the prefactor `z^{M+1}` has modulus 1, contributing nothing) and `N` (the numerator bound is `N`-free).",
+    "mathContext": "$\\left|z^{M+1}\\dfrac{z^N-1}{z-1}\\right| = \\dfrac{|z^N-1|}{|z-1|} \\le \\dfrac{2}{2|\\sin\\pi\\theta|} = \\dfrac{1}{|\\sin(\\pi\\theta)|}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series closed form", "geom_sum_eq", "Finset.sum_Ico_eq_sum_range", "uniform estimate", "Complex.exp_nat_mul"],
+    "prerequisites": ["geometric series", "reindexing finite sums", "multiplicativity of modulus"]
+  },
+  {
+    "id": "ann-zero-case",
+    "proofId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+    "range": { "startLine": 124, "endLine": 129 },
+    "type": "context",
+    "title": "The M = 0 special case over Icc 1 N",
+    "content": "`geom_partial_sum_bound_zero` specializes the headline bound to `M = 0`, giving `|∑_{n=1}^{N} e^{2πiθn}| ≤ 1/|sin(πθ)|`. It is a one-line `simpa` from `geom_partial_sum_bound θ hθ 0 N`. This is the form most directly invoked in the Pólya–Vinogradov argument, where the inner exponential sum `∑ e^{2πian/q}` runs over a residue interval starting at `1`. Keeping both the general-offset and the `M = 0` versions makes the lemma drop-in usable without re-deriving the offset bookkeeping at the call site.",
+    "mathContext": "$\\left|\\sum_{n=1}^{N} e^{2\\pi i\\theta n}\\right| \\le \\dfrac{1}{|\\sin(\\pi\\theta)|}$ — the $M=0$ instance.",
+    "significance": "context",
+    "relatedConcepts": ["specialization", "character sum over a residue interval"],
+    "prerequisites": ["the general geom_partial_sum_bound"]
+  }
+]

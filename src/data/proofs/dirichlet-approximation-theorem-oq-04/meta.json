@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: Kronecker Density and Its Diophantine Corollary",
+      "startLine": 1,
+      "endLine": 44,
+      "mathContext": "$\\operatorname{DenseRange}(n \\mapsto n\\cdot a) \\iff a \\notin \\mathbb{Q}$, with the homogeneous corollary $\\exists n>0,\\ |na - \\operatorname{round}(na)| < \\varepsilon$.",
+      "summary": "Module docstring: frames OQ-04 as the TOPOLOGICAL precursor of equidistribution underlying the rest of the dirichlet-approximation family (existence/counting in the parent and siblings). States both results — density iff irrationality, and the homogeneous one-sided approximation — and the proof idea: specialize Mathlib's AddCircle.denseRange_zsmul_coe_iff to period 1, then feed density a punctured ball B(0,ε)∖{0} to extract a nonzero witness. Imports Mathlib, opens Metric."
+    },
+    {
       "id": "kronecker-density",
       "title": "Kronecker Density: Multiples of an Irrational are Dense mod 1",
       "startLine": 46,
@@ -110,11 +118,35 @@
       "summary": "exists_pos_nat_mul_sub_round_lt turns density into a concrete approximation. A nonzero circle point ↑δ with δ = min(ε,1)/2 ∈ (0,1/2] has norm exactly δ (AddCircle.norm_coe_eq_abs_iff), so it populates the open punctured ball B(0,ε) ∖ {0}. DenseRange.exists_mem_open meets this ball at some ↑(k·a) with ‖↑(k·a)‖ < ε and ↑(k·a) ≠ 0, forcing k ≠ 0. Setting n = |k| > 0 and reading the circle norm back as distance to the nearest integer (AddCircle.norm_eq at period 1, ‖(x:AddCircle 1)‖ = |x − round x|) — with a short sign case-split via Nat.cast_natAbs / abs_choice / AddCircle.coe_neg / norm_neg to align n·a with k·a — yields |n·a − round(n·a)| < ε."
     }
   ],
-  "conclusion": "Kronecker's density theorem is formalised sorry-free and axiom-free: the integer multiples of a are dense on ℝ/ℤ iff a is irrational, the period-1 case of Mathlib's general AddCircle density criterion. Density at 0 yields the homogeneous form of Dirichlet's approximation theorem — for irrational a and any ε > 0 a positive integer n makes n·a within ε of an integer — by reading the circle norm as distance to the nearest integer. This supplies the topological/equidistribution precursor that the rest of the dirichlet-approximation family quantifies; sharpening 'dense' to 'equidistributed' (Weyl's theorem) is the natural follow-up.",
+  "conclusion": {
+    "summary": "Kronecker's density theorem is formalised sorry-free and axiom-free: the integer multiples of a are dense on ℝ/ℤ iff a is irrational, the period-1 case of Mathlib's general AddCircle density criterion. Density at 0 yields the homogeneous form of Dirichlet's approximation theorem — for irrational a and any ε > 0 a positive integer n makes n·a within ε of an integer — by reading the circle norm as distance to the nearest integer.",
+    "implications": "This supplies the topological/equidistribution precursor that the rest of the dirichlet-approximation family quantifies: the irrational rotation x ↦ x + a is minimal (every orbit dense), the qualitative fact that the counting (oq-01), geometry-of-numbers (oq-03), and sharp-lower-bound (oq-05) entries each sharpen. The reduction of a metric circle statement to a Diophantine one — ‖(x : AddCircle 1)‖ = |x − round x| — is the reusable bridge between topological dynamics and approximation theory.",
+    "openQuestions": [
+      "Sharpen 'dense' to 'equidistributed': formalize Weyl's equidistribution theorem, that {n·a} visits each subinterval [b, c) ⊆ [0,1) with asymptotic frequency c − b, via the Weyl criterion on exponential sums.",
+      "Generalize to the multidimensional Kronecker theorem: {n·(a₁,…,a_k)} is dense in the torus (ℝ/ℤ)^k iff 1, a₁,…,a_k are linearly independent over ℚ.",
+      "Quantify the rate of density (how large n must be to approximate within ε) and connect it back to the parent's pigeonhole bound |qα − p| < 1/N and to oq-05's badly-approximable lower bound for φ."
+    ]
+  },
   "crossReferences": [
-    "dirichlet-approximation-theorem",
-    "dirichlet-approximation-theorem-oq-01",
-    "dirichlet-approximation-theorem-oq-03",
-    "dirichlet-approximation-theorem-oq-05"
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "Parent entry: proves EXISTENCE of good approximations |qα − p| < 1/N (1 ≤ q ≤ N) by pigeonhole. This OQ-04 proves the underlying TOPOLOGICAL fact — the orbit {n·a} is dense mod 1 exactly when a is irrational — from which the homogeneous approximation statement follows directly."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Counts the ~1/q² good approximations; this entry supplies the orbit-density seed that such counting refines into asymptotic frequency."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Re-derives Dirichlet's bound via Minkowski's geometry of numbers; OQ-04 gives the complementary topological-dynamics route to the same approximation phenomenon."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-05",
+      "relationship": "sibling",
+      "description": "The dual SHARPNESS lower bound (the golden ratio is badly approximable). OQ-04 shows every irrational's multiples come arbitrarily close to integers; OQ-05 shows that for φ they cannot come too close too fast — bounding the irrational rotation's orbit from both qualitative and quantitative sides."
+    }
   ]
 }

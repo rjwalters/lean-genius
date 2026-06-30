@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-vas-overview",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 5, "endLine": 63 },
+    "type": "context",
+    "title": "Certificate abstraction: verified isolation without re-importing Budan's axioms",
+    "content": "The docstring sets out the central design idea answering Budan OQ-04. The VAS algorithm isolates real roots by recursive bisection guided by sign-variation counts, using two certificates from the parent (root-free: V a = V b ⟹ no roots; unique-root: V a = V b + 1 ⟹ one root). The key observation: VAS correctness depends ONLY on these certificate *properties*, not on the analytic (axiomatized) proof of Budan's theorem. So the algorithm is developed abstractly over an arbitrary count V : ℝ → ℕ and root count N : ℝ → ℝ → ℕ with the certificate hypotheses hEq/hOne/hSplit — making this development genuinely axiom-free: every Budan axiom becomes an explicit hypothesis, and correctness is a *reduction* (certificates ⟹ verified isolation).",
+    "mathContext": "Abstract interface: $hEq: V a = V b \\Rightarrow N a b = 0$; $hOne: V a = V b + 1 \\Rightarrow N a b = 1$; $hSplit: N a b = N a c + N c b$. The parent instantiates $V=\\mathrm{budanCount}\\,p$, $N=\\mathrm{rootsInInterval}\\,p$.",
+    "significance": "key",
+    "relatedConcepts": ["VAS algorithm", "Budan–Fourier theorem", "certificate-based verification", "axiom-free reduction", "sign variations"],
+    "prerequisites": ["real-root isolation", "Descartes' rule of signs", "interface abstraction"]
+  },
+  {
+    "id": "ann-vas-result",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "definition",
+    "title": "IsolationResult: isolated vs. unresolved intervals",
+    "content": "The output structure splits a run's work into two lists: `isolated`, intervals each certified to contain exactly one root, and `unresolved`, intervals where the fuel budget ran out before the sign-variation gap shrank to ≤ 1. Keeping unresolved intervals explicit (rather than failing) is what lets every theorem be stated unconditionally — soundness/disjointness hold for any fuel, and completeness is conditioned on `unresolved = []`.",
+    "mathContext": "$\\mathrm{IsolationResult} = \\{\\text{isolated} : \\mathrm{List}(\\mathbb{R}\\times\\mathbb{R}),\\ \\text{unresolved} : \\mathrm{List}(\\mathbb{R}\\times\\mathbb{R})\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["structure", "partial result", "fuel-bounded computation"],
+    "prerequisites": ["inductive structures in Lean"]
+  },
+  {
+    "id": "ann-vas-procedure",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 80, "endLine": 105 },
+    "type": "insight",
+    "title": "The VAS procedure: fuel-bounded bisection on sign-variation counts",
+    "content": "vasIsolate decides each interval (a, b] using only V at the endpoints: V a = V b returns nothing; V a = V b + 1 returns the single interval (a, b); otherwise it bisects at the midpoint and recurses on both halves, consuming one unit of fuel. The fuel parameter bounds the bisection depth and guarantees termination structurally; when fuel = 0 an undecided interval is recorded as *unresolved* rather than bisected. Crucially the semantic root count N appears nowhere in the algorithm — it enters only in the correctness proofs — so the program is driven purely by the cheap sign-variation count.",
+    "mathContext": "Decision: $V a = V b \\to \\emptyset$; $V a = V b + 1 \\to \\{(a,b)\\}$; else bisect at $(a+b)/2$. Fuel $\\in\\mathbb{N}$ bounds recursion depth.",
+    "significance": "key",
+    "relatedConcepts": ["bisection", "structural recursion", "fuel pattern", "termination"],
+    "prerequisites": ["recursive definitions", "well-founded recursion via fuel"]
+  },
+  {
+    "id": "ann-vas-containment",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 111, "endLine": 145 },
+    "type": "technique",
+    "title": "Containment: isolated intervals stay inside (a, b]",
+    "content": "vasIsolate_isolated_subset proves every isolated interval (l, r) satisfies a ≤ l and r ≤ b, by induction on fuel. The base and singleton cases are immediate; the bisection case uses the midpoint inequalities lt_mid / mid_lt and chains the induction hypotheses on the two halves through the midpoint. This containment lemma is reused as the geometric core of the disjointness argument.",
+    "mathContext": "Every isolated $(l,r)$ has $a\\le l$ and $r\\le b$; the midpoint $(a+b)/2$ strictly separates the two recursive halves.",
+    "significance": "supporting",
+    "relatedConcepts": ["induction on fuel", "interval containment", "midpoint inequalities"],
+    "prerequisites": ["structural induction", "linarith"]
+  },
+  {
+    "id": "ann-vas-soundness",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 147, "endLine": 175 },
+    "type": "theorem",
+    "title": "Soundness: each isolated interval has exactly one root",
+    "content": "vasIsolate_isolated_one_root is the soundness statement: every isolated (l, r) is nondegenerate (l < r) and contains exactly one root (N l r = 1). The only certificate used is hOne (the unique-root certificate), applied at the singleton case; the bisection case just inherits from the recursive calls. Notably the root-free and additivity certificates are NOT needed for soundness — they are required only for completeness, a clean separation of which hypotheses do which work.",
+    "mathContext": "$\\forall (l,r)\\in\\text{isolated}: l < r \\land N\\,l\\,r = 1$, using only $hOne$.",
+    "significance": "key",
+    "relatedConcepts": ["soundness", "unique-root certificate", "induction on fuel"],
+    "prerequisites": ["the certificate interface", "structural induction"]
+  },
+  {
+    "id": "ann-vas-disjoint",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 177, "endLine": 211 },
+    "type": "theorem",
+    "title": "Pairwise disjointness via the midpoint barrier",
+    "content": "IntDisjoint q r := q.2 ≤ r.1 ∨ r.2 ≤ q.1 is the half-open disjointness predicate. vasIsolate_isolated_disjoint proves the isolated intervals are pairwise disjoint, by induction with List.pairwise_append. The cross-term — every left-half interval is disjoint from every right-half interval — follows from containment: left intervals end ≤ the midpoint and right intervals begin ≥ the midpoint, so the midpoint is a separating barrier. This is where vasIsolate_isolated_subset is consumed.",
+    "mathContext": "Left intervals end $\\le (a+b)/2 \\le$ start of right intervals, so $q.2 \\le r.1$ — disjoint. Within each half, the induction hypothesis applies.",
+    "significance": "key",
+    "relatedConcepts": ["List.Pairwise", "List.pairwise_append", "interval disjointness", "separating point"],
+    "prerequisites": ["pairwise predicates on lists", "the containment lemma"]
+  },
+  {
+    "id": "ann-vas-complete",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 213, "endLine": 245 },
+    "type": "insight",
+    "title": "Completeness: when fully resolved, #isolated = N a b",
+    "content": "vasIsolate_complete shows that once nothing is left unresolved, the number of isolated intervals equals the total root count N a b — so combined with soundness, *every* root is isolated into its own interval. The induction uses all three certificates: hEq for the no-root leaf (length 0 = N a b), hOne for the single-root leaf (length 1 = N a b), and hSplit for the bisection step, where List.length_append plus the additivity N a b = N a c + N c b matches the recursive counts. The `unresolved = []` hypothesis propagates to both halves via List.append_eq_nil_iff.",
+    "mathContext": "$\\text{unresolved} = [] \\Rightarrow \\#\\text{isolated} = N a b$, via $N a b = N a c + N c b$ at each split.",
+    "significance": "key",
+    "relatedConcepts": ["completeness", "root-count additivity", "List.length_append", "all three certificates"],
+    "prerequisites": ["the certificate interface", "list length arithmetic"]
+  },
+  {
+    "id": "ann-vas-packaged",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-04",
+    "range": { "startLine": 247, "endLine": 285 },
+    "type": "theorem",
+    "title": "Packaged correctness and a sanity instance",
+    "content": "vasIsolate_correct bundles the three guarantees into one statement: when (a, b] is fully resolved within budget, the output is a list of pairwise-disjoint subintervals of (a, b], each containing exactly one root, of length exactly N a b. It is assembled directly from containment + soundness + disjointness + completeness. The closing `example` is a degenerate sanity check: with V ≡ 0 the certificates hold vacuously and the procedure isolates nothing, confirming the interface is satisfiable and the definitions compute.",
+    "mathContext": "Resolved $(a,b] \\Rightarrow$ disjoint one-root subintervals, count $= N a b$ — every root isolated. Sanity: $V\\equiv 0 \\Rightarrow \\text{isolated} = []$.",
+    "significance": "key",
+    "relatedConcepts": ["packaged correctness", "specification", "sanity check", "vacuous certificates"],
+    "prerequisites": ["the preceding four lemmas"]
+  }
+]

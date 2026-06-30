@@ -1,35 +1,50 @@
 [
   {
+    "id": "ann-lawofcosines-defs",
+    "proofId": "isosceles-triangle-oq-02",
+    "range": { "startLine": 38, "endLine": 44 },
+    "type": "definition",
+    "title": "Solving the Non-Euclidean Laws of Cosines for cos A",
+    "content": "sphCosA and hypCosA are the cosines of the angle opposite side a, obtained by solving each non-Euclidean law of cosines for cos A. The spherical law cos a = cos b·cos c + sin b·sin c·cos A rearranges to sphCosA = (cos a − cos b·cos c)/(sin b·sin c); the hyperbolic law cosh a = cosh b·cosh c − sinh b·sinh c·cos A rearranges to hypCosA = (cosh b·cosh c − cosh a)/(sinh b·sinh c). These two definitions are the entire bridge from side lengths to angles in constant-curvature geometry — no coordinates, metric model, or inner product appears.",
+    "mathContext": "$\\cos A = \\dfrac{\\cos a - \\cos b\\cos c}{\\sin b\\sin c}\\ (\\text{sphere}),\\qquad \\cos A = \\dfrac{\\cosh b\\cosh c - \\cosh a}{\\sinh b\\sinh c}\\ (\\text{hyperbolic}).$",
+    "significance": "key",
+    "relatedConcepts": ["spherical law of cosines", "hyperbolic law of cosines", "constant curvature", "trigonometric vs hyperbolic functions"],
+    "prerequisites": ["spherical trigonometry", "hyperbolic trigonometry"]
+  },
+  {
     "id": "ann-no-inner-product",
     "proofId": "isosceles-triangle-oq-02",
-    "range": {
-      "startLine": 38,
-      "endLine": 53
-    },
+    "range": { "startLine": 46, "endLine": 53 },
     "type": "insight",
-    "title": "Replacing the Inner Product with the Law of Cosines",
-    "content": "The parent's Euclidean proof used Mathlib's inner-product-space triangle API, which is unavailable on the sphere and in the hyperbolic plane. Here the side–angle relationship is carried entirely by the laws of cosines. sphCosA a b c = (cos a − cos b·cos c)/(sin b·sin c) and hypCosA a b c = (cosh b·cosh c − cosh a)/(sinh b·sinh c) solve them for the cosine of the angle opposite side a. The key observation is symmetry in the two adjacent sides: sph_isosceles_cos / hyp_isosceles_cos show that with a = b the base-angle cosines collapse to the same value (subst + rfl), with no analysis at all."
+    "title": "Symmetry of the Adjacent Sides Collapses the Base Cosines",
+    "content": "The parent's Euclidean proof used Mathlib's inner-product-space triangle API, which is unavailable on the sphere and in the hyperbolic plane. Here the side–angle relationship is carried entirely by the laws of cosines, and the isosceles condition is purely structural: sph_isosceles_cos / hyp_isosceles_cos show that with a = b the two base-angle cosines sphCosA a b c and sphCosA b a c are definitionally equal — the proof is just subst + rfl, no analysis at all. The defining expression is symmetric in the two adjacent sides, so swapping the equal legs leaves cos A unchanged.",
+    "mathContext": "$a = b \\;\\Rightarrow\\; \\mathrm{sphCosA}(a,b,c) = \\mathrm{sphCosA}(b,a,c)$ by symmetry of $(\\cos a - \\cos b\\cos c)$ under $a\\leftrightarrow b$.",
+    "significance": "key",
+    "relatedConcepts": ["definitional equality", "symmetry argument", "isosceles condition", "law of cosines"],
+    "prerequisites": ["substitution in Lean", "function symmetry"]
   },
   {
     "id": "ann-pons",
     "proofId": "isosceles-triangle-oq-02",
-    "range": {
-      "startLine": 55,
-      "endLine": 68
-    },
+    "range": { "startLine": 55, "endLine": 68 },
     "type": "insight",
     "title": "Pons Asinorum from Equal Cosines and cos Injectivity",
-    "content": "spherical_isosceles and hyperbolic_isosceles prove the isosceles theorem: equal legs a = b imply equal base angles A = B. The proof is two steps — reduce A = B to cos A = cos B via Real.injOn_cos (cos is injective on [0, π], exactly where triangle angles live), then close cos A = cos B by the equal-cosines lemma. The spherical and hyperbolic cases are identical arguments differing only in cos/sin vs cosh/sinh, so one structural idea covers both constant-curvature geometries without any inner product space, metric model, or coordinates."
+    "content": "spherical_isosceles and hyperbolic_isosceles prove Euclid I.5 in each geometry: equal legs a = b imply equal base angles A = B. The proof is two steps — reduce A = B to cos A = cos B via Real.injOn_cos (cosine is injective on [0, π], exactly the range where triangle angles live), then close cos A = cos B with the equal-cosines lemma. The spherical and hyperbolic cases are byte-for-byte identical arguments differing only in cos/sin vs cosh/sinh, so one structural idea — symmetry plus injectivity — covers both non-Euclidean constant-curvature geometries with no inner product space, metric model, or coordinates.",
+    "mathContext": "$A,B\\in[0,\\pi],\\ \\cos A = \\cos B \\xRightarrow{\\ \\cos\\ \\text{inj. on }[0,\\pi]\\ } A = B$; with $\\cos A = \\cos B$ from $a=b$.",
+    "significance": "key",
+    "relatedConcepts": ["Pons Asinorum", "Euclid I.5", "injectivity of cosine", "non-Euclidean geometry"],
+    "prerequisites": ["injectivity on an interval", "triangle angle ranges"]
   },
   {
     "id": "ann-equilateral",
     "proofId": "isosceles-triangle-oq-02",
-    "range": {
-      "startLine": 70,
-      "endLine": 87
-    },
+    "range": { "startLine": 70, "endLine": 87 },
     "type": "concept",
     "title": "Equilateral ⟹ Equiangular",
-    "content": "spherical_equilateral and hyperbolic_equilateral specialize to all-sides-equal: applying the equal-cosines step to the pairs (A,B) and (B,C) gives A = B = C. A regular (equilateral) spherical or hyperbolic triangle is therefore equiangular — the natural corollary of Pons Asinorum, again proved purely from the law of cosines and cos injectivity."
+    "content": "spherical_equilateral and hyperbolic_equilateral specialize to all-sides-equal: applying the equal-cosines step to the pairs (A,B) and (B,C) gives A = B = C. Here the cosines coincide on the nose (all three are sphCosA a a a), so each injectivity goal closes by rw alone. A regular (equilateral) spherical or hyperbolic triangle is therefore equiangular — the natural corollary of Pons Asinorum. Note that, unlike in Euclidean geometry, the common angle is not 60°: on the sphere it exceeds π/3 (angle excess), in the hyperbolic plane it falls short (angle defect), and it varies with the side length.",
+    "mathContext": "$a=b=c \\Rightarrow A=B=C$; non-Euclidean angle $\\ne \\tfrac{\\pi}{3}$ — sphere has excess, hyperbolic plane has defect, both depending on side length.",
+    "significance": "supporting",
+    "relatedConcepts": ["equilateral triangle", "angle excess and defect", "regular polygons", "curvature"],
+    "prerequisites": ["isosceles theorem", "spherical/hyperbolic area-angle relations"]
   }
 ]

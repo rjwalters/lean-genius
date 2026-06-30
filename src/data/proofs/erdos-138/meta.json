@@ -46,10 +46,11 @@
       "Coloring-extension lemmas (ap_must_end, extend_one_step, extend_j_steps) yielding the unconditional bound W(k+1) − W(k) ≥ k",
       "Theorem W_difference_diverges_nat formalizing the resolved difference variant via Filter.tendsto_atTop_mono",
       "Axiomatized Berlekamp, Gowers, and Kozik-Shabanov bounds plus exact values W(3)…W(6)",
-      "Filter.Tendsto formulation of Erdős's k-th root conjecture (still OPEN) and the strict implication Erdos138Conjecture → ExponentialDiverges"
+      "Filter.Tendsto formulation of Erdős's k-th root conjecture (still OPEN) and the strict implication Erdos138Conjecture → ExponentialDiverges",
+      "main_conjecture_implies_exponential: proved (was the file's only sorry) — W(k)^{1/k}→∞ ⟹ W(k)/2^k→∞, via eventually W(k)^{1/k}≥4 ⟹ W(k)≥4^k ⟹ W(k)/2^k≥2^k→∞"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 138,
     "erdosUrl": "https://erdosproblems.com/138",
     "erdosProblemStatus": "open",
@@ -160,7 +161,7 @@
     "theoremCount": 23,
     "definitionCount": 13,
     "path": "Proofs/Erdos138Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Stubs/Erdos138Aristotle.lean"
     ]
@@ -228,5 +229,5 @@
       "description": "Related Erdős problem sharing themes: arithmetic-progressions, combinatorics, ramsey-theory, van-der-waerden"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
