@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-overview",
+    "proofId": "descartes-rule-of-signs-oq-02-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "The Open Question: Grounding budan_parity in the FTA",
+    "content": "The parent Budan's-theorem file (descartes-rule-of-signs-oq-02) leaves a budan_parity axiom and asks whether the fact it depends on — complex roots of a real polynomial come in conjugate pairs — can be derived from Mathlib. The parity of real-root counts is forced by exactly this conjugate-pairing: non-real roots split into {z, z̄} pairs, so their number is even and the real-root count has the same parity as deg p. This file derives the conjugate-pair content (membership symmetry, multiset invariance, equal multiplicity, distinct pairing) from Mathlib's FTA machinery.",
+    "mathContext": "For $p \\in \\mathbb{R}[X]$: $\\#\\{\\text{real roots}\\} \\equiv \\deg p \\pmod 2$ because non-real roots pair as $\\{z, \\bar z\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["budan_parity axiom", "Fundamental Theorem of Algebra", "parity of real-root count", "Descartes' rule of signs"],
+    "prerequisites": ["polynomials over ℝ and ℂ", "complex conjugation", "roots with multiplicity"]
+  },
+  {
     "id": "ann-complexroots-def",
     "proofId": "descartes-rule-of-signs-oq-02-oq-03",
     "range": {
