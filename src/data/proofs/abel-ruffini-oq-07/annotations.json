@@ -73,7 +73,7 @@
     "title": "Anchoring the Polynomial: Monic of Prime Degree 5",
     "content": "The quintic f := X⁵ − X − 1 ∈ ℚ[X] is defined and its basic invariants verified by automation: f_natDegree (degree 5, via compute_degree!), f_monic (via monicity!), and natDegree_prime (degree is prime, via norm_num). The prime degree is the hypothesis that makes the prime-degree Galois machinery (subgroup_eq_top_of_swap_mem, prime_degree_dvd_card) applicable, tying the concrete polynomial back to the abstract assembly criterion.",
     "mathContext": "$f = X^5 - X - 1$, $\\deg f = 5$ prime, $f$ monic.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["minimal polynomial", "monic polynomial", "prime degree", "compute_degree tactic"],
     "prerequisites": ["polynomial degree", "polynomials over ℚ"]
   }

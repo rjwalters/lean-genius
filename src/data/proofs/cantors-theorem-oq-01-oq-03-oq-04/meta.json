@@ -2,6 +2,27 @@
   "id": "cantors-theorem-oq-01-oq-03-oq-04",
   "title": "Generalised Cofinality Exclusion for |𝒫(ℝ)|: cf ≠ κ for κ ≤ 𝔠",
   "slug": "cantors-theorem-oq-01-oq-03-oq-04",
+  "leanFile": {
+    "imports": [
+      "Proofs.CantorsTheoremOQ01",
+      "Proofs.CantorsTheoremOQ01OQ03",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Continuum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "CantorsTheoremOQ01OQ03OQ04",
+    "lineCount": 248,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CantorsTheoremOQ01OQ03OQ04.lean",
+    "sorries": 0
+  },
   "description": "Generalises the parent's `cf(|𝒫(ℝ)|) ≠ ℵ₀` corollary uniformly to `cf(|𝒫(ℝ)|) ≠ κ` for *every* cardinal κ ≤ 𝔠. The general lemma is a one-line reduction to König's `𝔠 < cf(|𝒫(ℝ)|)`; specialisations to ℵ₀, 𝔠, ℵ_α (with ℵ_α ≤ 𝔠), and ℶ_α (with ℶ_α ≤ 𝔠) follow uniformly. 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",

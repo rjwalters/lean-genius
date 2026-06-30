@@ -1,0 +1,129 @@
+{
+  "id": "ballot-problem-oq-03-oq-02-oq-01",
+  "title": "Weighted Lindström–Gessel–Viennot — Multiplicativity of the LGV Determinant under Path-System Composition",
+  "slug": "ballot-problem-oq-03-oq-02-oq-01",
+  "description": "Answers the open question inherited from the parent r×r LGV lemma (ballot-problem-oq-03-oq-02) and its weighted algebraic-core sibling (ballot-problem-oq-03-oq-02-oq-03): 'Connect to applications via the product structure of LGV determinants.' Many headline applications of the Lindström–Gessel–Viennot lemma — Schur polynomials via Jacobi–Trudi, MacMahon's box formula for plane partitions, the 2^{n(n+1)/2} count of Aztec-diamond tilings — rest on one algebraic fact: the LGV generating-function determinant is MULTIPLICATIVE under composition of path systems. Reusing the sibling's WeightedLGV abstraction (paths between a source i and target j form an arbitrary finite type Path i j, weights are arbitrary R-valued functions over a commutative ring), this file defines the composite system comp W₁ W₂ — a composite path is a choice of intermediate sink k, a first-layer path i→k of W₁, and a second-layer path k→j of W₂, with multiplicative weight — and proves: (★) the generating-function matrix is multiplicative, H(W₁∘W₂) = H(W₁)·H(W₂) (comp_matrix), via the distributive law Fintype.sum_mul_sum summed over the intermediate layer; and (★★) det H(W₁∘W₂) = det H(W₁)·det H(W₂) (det_comp), via Matrix.det_mul. It further derives the iterated product law for a stack of layers (det_comp_list), determinant-level commutativity (det_comp_comm), the unweighted counting specialisation (comp_card_matrix), and the bridge back to the sibling's signed family-sum core (det_comp_signed_family_sum). Everything is unconditional and fully machine-checked: no axiom, no sorry. The combinatorial Gessel–Viennot collapse to non-intersecting families is NOT needed — multiplicativity is a statement about the determinants alone.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "Lindstrom-Gessel-Viennot",
+      "LGV",
+      "determinant",
+      "generating-functions",
+      "weighted-paths",
+      "multiplicativity",
+      "matrix-product",
+      "Cauchy-Binet",
+      "transfer-matrix",
+      "commutative-ring",
+      "ballot-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 154,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None. Imports only Mathlib and the verified sibling entry Proofs.BallotProblemOQ03OQ02OQ03 (the weighted LGV algebraic core, itself 0-axiom). The theorems use standard Mathlib API: Matrix.mul_apply / Matrix.det_mul (the matrix product and Cauchy–Binet determinant-of-product law), Fintype.sum_sigma / Fintype.sum_prod_type / Fintype.sum_mul_sum (the distributive expansion over the intermediate layer), List.foldr/List.map/List.prod recursors (the iterated stack law), and Finset.sum_const / Finset.card_univ / nsmul_eq_mul (the unweighted specialisation). No axiom declarations, no structure-encoded assumptions, no native_decide, no sorry. Kernel-verified on Mathlib v4.26.0: comp_matrix, det_comp, det_comp_list, and det_comp_signed_family_sum each depend on exactly the standard [propext, Classical.choice, Quot.sound] triple (confirmed via #print axioms).",
+    "originalContributions": [
+      "comp (definition): composition of two weighted path systems. A composite path from source i to sink j is a dependent choice of an intermediate sink k, a first-layer path i→k of W₁, and a second-layer path k→j of W₂ — path type Σ k, W₁.Path i k × W₂.Path k j — with weight the product W₁.weight · W₂.weight. This is the generating-function abstraction of 'concatenate a path through an intermediate lattice layer', the operation underlying every multi-layer LGV product formula.",
+      "comp_matrix (★, VERIFIED 0-axiom): the generating-function matrix is multiplicative, H(W₁∘W₂) = H(W₁)·H(W₂). Entrywise this is the distributive law (Σ_p w₁ p)(Σ_q w₂ q) = Σ_{(p,q)} w₁ p · w₂ q summed over the intermediate sink k; the Lean proof is Matrix.mul_apply + Fintype.sum_sigma + Fintype.sum_mul_sum.",
+      "det_comp (★★, VERIFIED 0-axiom): multiplicativity of the LGV determinant, det H(W₁∘W₂) = det H(W₁)·det H(W₂), an immediate consequence of comp_matrix and the Cauchy–Binet law Matrix.det_mul. This is the algebraic engine behind the LGV product formulas (Schur polynomials, MacMahon's box formula, Aztec-diamond tilings).",
+      "det_comp_list (VERIFIED 0-axiom): iterated multiplicativity for a stack of layers — folding composition over a list Ws with base layer W₀ gives det H(W₁∘⋯∘Wₙ∘W₀) = (∏ᵢ det H(Wᵢ))·det H(W₀). A transfer-matrix stack of length n has LGV determinant equal to the product of its n single-step determinants.",
+      "det_comp_comm (VERIFIED 0-axiom): determinant-level commutativity of composition — stacking the two layers in either order yields the same LGV determinant (the underlying matrices need not commute, but their determinants do).",
+      "comp_card_matrix (VERIFIED 0-axiom): the unweighted (every weight 1) specialisation — the composite matrix entry counts length-two concatenated paths, H(W₁∘W₂) i j = #(Σ k, Path₁ i k × Path₂ k j).",
+      "det_comp_signed_family_sum (VERIFIED 0-axiom): bridge to the sibling's algebraic core — combining multiplicativity with the sibling's Leibniz/family expansion det_matrix_eq_signed_family_sum, the composite determinant is the PRODUCT of two signed family sums, making explicit that each layer contributes its own signed sum over path families."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lindström–Gessel–Viennot lemma (Lindström 1973; Gessel–Viennot 1985) expresses a determinant of path counts as a signed sum over families of lattice paths that collapses, via a sign-reversing involution, to the non-intersecting families. Its applications in algebraic combinatorics — Jacobi–Trudi identities for Schur functions, MacMahon's box formula for plane partitions, dimer models and the Aztec diamond — almost always invoke the WEIGHTED (generating-function) form AND the fact that LGV determinants MULTIPLY when path systems are stacked in layers. The parent entry ballot-problem-oq-03-oq-02 formalises the unweighted general r×r lemma; the weighted sibling ballot-problem-oq-03-oq-02-oq-03 supplies the algebraic core (det H as a signed sum over all path families). Both leave open the 'product structure' connecting LGV to its applications. This entry closes that gap: it proves the LGV determinant is multiplicative under path-system composition, the single algebraic fact behind the LGV product formulas.",
+    "problemStatement": "Establish the product structure of LGV determinants: define composition of weighted path systems (concatenating paths through an intermediate layer with multiplicative weights) and prove that the generating-function matrix of the composite is the matrix product of the two layers' matrices, hence — by Cauchy–Binet — that the composite LGV determinant is the product of the two layers' determinants. Extend to an arbitrary stack of layers and bridge to the sibling's signed family-sum expansion.",
+    "proofStrategy": "Reuse the sibling's WeightedLGV abstraction. Define comp W₁ W₂ with path type Σ k, W₁.Path i k × W₂.Path k j and weight W₁.weight·W₂.weight. For multiplicativity (★): expand (W₁∘W₂).matrix i j = Σ_{(k,p,q)} w₁(p)·w₂(q); regroup with Fintype.sum_sigma over k and Fintype.sum_prod_type over (p,q), then collapse the inner double sum with Fintype.sum_mul_sum back to (Σ_p w₁ p)(Σ_q w₂ q) = H(W₁) i k · H(W₂) k j = (H(W₁)·H(W₂)) i j via Matrix.mul_apply. From (★), determinant multiplicativity (★★) is a one-line consequence of Matrix.det_mul. The iterated law det_comp_list is a List.foldr induction (base: empty stack is W₀; step: det_comp + the inductive hypothesis + ring). The bridge det_comp_signed_family_sum substitutes the sibling's det_matrix_eq_signed_family_sum into both factors of det_comp.",
+    "keyInsights": [
+      "The 'connection to applications' that the parent asks for is, at bottom, ONE algebraic fact: LGV generating-function determinants are multiplicative under stacking of path layers. Schur-function products, plane-partition product formulas, and the Aztec-diamond 2^{n(n+1)/2} count are all instances of det H(stack) = ∏ det H(layer).",
+      "Multiplicativity is purely a statement about the determinants — it needs NO Gessel–Viennot involution and NO non-intersection hypothesis. The combinatorial collapse to non-intersecting families happens layer by layer; the product law sits one level above it, at the matrix-algebra level.",
+      "Composition of path systems corresponds EXACTLY to matrix multiplication of generating-function matrices: the dependent sum Σ k over intermediate sinks is the matrix-product contraction index, and Fintype.sum_mul_sum is precisely the distributive law that turns concatenated-path weights into the product of layer generating functions.",
+      "Cauchy–Binet (here in the square form Matrix.det_mul) is the bridge from matrix multiplicativity to determinant multiplicativity; the LGV interpretation makes det_mul a statement about counting non-intersecting families through an intermediate layer.",
+      "The iterated law det_comp_list is the transfer-matrix viewpoint: a length-n stack of path layers is a product of n transfer matrices, and its LGV determinant factors as the product of n single-layer determinants — the structural reason multi-layer enumeration problems have product formulas."
+    ],
+    "prerequisites": [
+      "Matrix.mul_apply and Matrix.det_mul (matrix product and the Cauchy–Binet determinant-of-product law) — Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Fintype.sum_sigma, Fintype.sum_prod_type, Fintype.sum_mul_sum (distributive expansion of a double/dependent sum) — Mathlib.Algebra.BigOperators",
+      "List.foldr / List.map / List.prod and their cons recursors (the iterated stack law)",
+      "Finset.sum_const, Finset.card_univ, nsmul_eq_mul (the unweighted specialisation)",
+      "The weighted LGV algebraic core (ballot-problem-oq-03-oq-02-oq-03): WeightedLGV, WeightedLGV.matrix, Family, familyWeight, det_matrix_eq_signed_family_sum",
+      "Mathlib v4.26.0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module Docstring: Product Structure of LGV Determinants",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "States the inherited open question ('connect to applications via the product structure of LGV determinants'), names the headline applications (Schur/Jacobi–Trudi, MacMahon's box formula, Aztec-diamond tilings), and the central identities (★) H(W₁∘W₂)=H(W₁)·H(W₂) and (★★) det H(W₁∘W₂)=det H(W₁)·det H(W₂). Records the scope: everything abstract over a commutative ring, no axiom, no sorry, no Gessel–Viennot involution needed."
+    },
+    {
+      "id": "composition",
+      "title": "Composition of Weighted Path Systems",
+      "startLine": 61,
+      "endLine": 79,
+      "summary": "The comp definition: a composite path from i to j is a choice of intermediate sink k, a first-layer path i→k, and a second-layer path k→j, with multiplicative weight W₁.weight·W₂.weight. The ∘w infix notation. This is the generating-function abstraction of concatenating paths through an intermediate lattice layer."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Multiplicativity: Matrix Product (★) and Determinant Product (★★)",
+      "startLine": 80,
+      "endLine": 114,
+      "summary": "comp_matrix: H(W₁∘W₂)=H(W₁)·H(W₂) via Matrix.mul_apply + Fintype.sum_sigma + Fintype.sum_mul_sum (the distributive law over the intermediate layer). det_comp: det H(W₁∘W₂)=det H(W₁)·det H(W₂) via Matrix.det_mul (Cauchy–Binet). det_comp_comm: determinant-level commutativity of composition."
+    },
+    {
+      "id": "iterated-and-bridges",
+      "title": "Iterated Stack Law, Unweighted Specialisation, and Family-Sum Bridge",
+      "startLine": 115,
+      "endLine": 154,
+      "summary": "det_comp_list: the iterated product law det H(W₁∘⋯∘Wₙ∘W₀)=(∏ᵢ det H(Wᵢ))·det H(W₀) by List.foldr induction. comp_card_matrix: the unweighted (weight-1) entry counts length-two concatenated paths. det_comp_signed_family_sum: the composite determinant as a product of two signed family sums, bridging to the sibling's det_matrix_eq_signed_family_sum."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves 6 theorems and 1 definition with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only). It establishes the product structure of weighted (generating-function) Lindström–Gessel–Viennot determinants over an arbitrary commutative ring: composition of path systems corresponds to matrix multiplication of generating-function matrices (comp_matrix, ★), so by Cauchy–Binet the composite LGV determinant is the product of the layer determinants (det_comp, ★★). It further proves the iterated stack law (det_comp_list), determinant-level commutativity (det_comp_comm), the unweighted counting specialisation (comp_card_matrix), and the bridge to the sibling's signed family-sum core (det_comp_signed_family_sum). This answers the parent/sibling open question 'connect to applications via the product structure of LGV determinants'.",
+    "implications": "Multiplicativity is the single algebraic fact behind the LGV product formulas used throughout algebraic combinatorics — Schur polynomials via Jacobi–Trudi, MacMahon's box formula for plane partitions, the 2^{n(n+1)/2} count of Aztec-diamond tilings. Because the result is proved abstractly over arbitrary finite path types and arbitrary ring-valued weights, it instantiates to monomial weights (multivariate generating functions), q-weights, or the unweighted count, and composes to arbitrary transfer-matrix stacks. Crucially, the product law needs no Gessel–Viennot involution: it is a determinant identity that sits one level above the combinatorial non-intersection collapse.",
+    "openQuestions": [
+      "Instantiate comp with the parent's concrete grid lattice paths and a fixed intermediate layer of sinks to recover the classical transfer-matrix product for non-intersecting families, then specialise to the Jacobi–Trudi identity expressing a Schur polynomial as a determinant of complete homogeneous symmetric functions (a product of single-row generating-function layers).",
+      "Combine det_comp_list with the weighted Gessel–Viennot collapse (the sibling's open WeightedLGVConjecture) to derive a fully machine-checked product formula for a specific multi-layer model — e.g. MacMahon's box formula for plane partitions in an a×b×c box as a determinant/product over stacked path layers.",
+      "Generalise comp_matrix to a NON-square Cauchy–Binet form (rectangular layers W₁ : r×m, W₂ : m×r), giving det H(W₁∘W₂) = Σ_{S} det H(W₁)_{·,S} · det H(W₂)_{S,·} as a sum over m-subsets S of the intermediate layer — the genuine Cauchy–Binet expansion underlying minors-of-products identities."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-03-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Sibling: the weighted LGV algebraic core (det H as a signed sum over all path families). This entry reuses its WeightedLGV abstraction and bridges to its det_matrix_eq_signed_family_sum, expressing the composite determinant as a product of two signed family sums."
+    },
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the fully-proved unweighted general r×r LGV determinant lemma. This entry answers the parent's open question 'connect to applications via the product structure of LGV determinants' by proving multiplicativity of the LGV determinant under path-system composition."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BallotOQ03OQ02OQ01",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/BallotProblemOQ03OQ02OQ01.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib",
+      "Proofs.BallotProblemOQ03OQ02OQ03"
+    ]
+  },
+  "sorries": 0
+}

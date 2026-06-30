@@ -16,7 +16,11 @@
       "partition",
       "representation-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases",
+      "representation function",
+      "asymptotic growth conditions"
+    ]
   },
   {
     "id": "ann-871-repfunc",
@@ -35,7 +39,11 @@
       "counting",
       "pairs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "representation function",
+      "set cardinality",
+      "ordered pairs"
+    ]
   },
   {
     "id": "ann-871-sumset",
@@ -54,7 +62,11 @@
       "sumset",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets",
+      "additive combinatorics",
+      "set-builder notation"
+    ]
   },
   {
     "id": "ann-871-basis",
@@ -73,7 +85,11 @@
       "coverage",
       "finite-exception"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases",
+      "sumsets",
+      "cofinite sets"
+    ]
   },
   {
     "id": "ann-871-equiv",
@@ -92,7 +108,11 @@
       "complement",
       "bounded"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cofinite sets",
+      "bounded above (BddAbove)",
+      "logical equivalence proofs"
+    ]
   },
   {
     "id": "ann-871-tendsto",
@@ -111,7 +131,11 @@
       "growth",
       "eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto",
+      "atTop filter",
+      "representation function"
+    ]
   },
   {
     "id": "ann-871-implication",
@@ -130,7 +154,11 @@
       "threshold",
       "filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "atTop filter",
+      "limit witnesses",
+      "fixed thresholds"
+    ]
   },
   {
     "id": "ann-871-partition",
@@ -149,7 +177,11 @@
       "disjoint",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set partition",
+      "disjoint union",
+      "additive bases"
+    ]
   },
   {
     "id": "ann-871-conjecture",
@@ -168,7 +200,11 @@
       "quantifier",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantifiers",
+      "additive bases",
+      "partition into bases"
+    ]
   },
   {
     "id": "ann-871-nathanson-neg",
@@ -187,7 +223,11 @@
       "counterexample",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős-Nathanson blocking technique",
+      "counterexample construction",
+      "threshold growth"
+    ]
   },
   {
     "id": "ann-871-nathanson-pos",
@@ -206,7 +246,11 @@
       "logarithmic",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "logarithmic growth",
+      "partition into bases"
+    ]
   },
   {
     "id": "ann-871-counterexample",
@@ -225,7 +269,11 @@
       "disproof",
       "ai-assisted"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counterexample as existence axiom",
+      "r_A(n) → ∞ growth",
+      "blocking property"
+    ]
   },
   {
     "id": "ann-871-disproved",
@@ -244,7 +292,11 @@
       "contradiction",
       "negation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by contradiction",
+      "negation of conjecture",
+      "Larsen counterexample"
+    ]
   },
   {
     "id": "ann-871-blocking",
@@ -263,7 +315,11 @@
       "frequently",
       "obstruction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Frequently (∃ᶠ)",
+      "set partition",
+      "sumset coverage failure"
+    ]
   },
   {
     "id": "ann-871-blocking-thm",
@@ -282,7 +338,11 @@
       "contradiction",
       "coverage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Frequently vs eventually",
+      "proof by contradiction",
+      "basis coverage property"
+    ]
   },
   {
     "id": "ann-871-larsen-blocking",
@@ -301,6 +361,10 @@
       "combination",
       "technique"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Larsen construction",
+      "blocking property",
+      "unbounded representation growth"
+    ]
   }
 ]

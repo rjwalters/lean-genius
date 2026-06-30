@@ -17,7 +17,11 @@
       "additive decomposition",
       "inverse problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Goldbach's conjecture",
+      "prime number distribution",
+      "set arithmetic (Minkowski sums)"
+    ]
   },
   {
     "id": "ann-431-definitions",
@@ -36,7 +40,11 @@
       "symmetric difference",
       "finite exceptions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation",
+      "finite vs. infinite sets",
+      "set difference operations"
+    ]
   },
   {
     "id": "ann-431-conjecture",
@@ -55,7 +63,11 @@
       "conjecture",
       "infinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential and negation quantifiers",
+      "predicates on sets",
+      "Lean axiom declarations"
+    ]
   },
   {
     "id": "ann-431-growth",
@@ -74,7 +86,11 @@
       "growth rate",
       "prime number theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation (≪, ~)",
+      "logarithm growth rates",
+      "limits and filters (Filter.Tendsto)"
+    ]
   },
   {
     "id": "ann-431-elsholtz",
@@ -93,7 +109,11 @@
       "restricted sumset",
       "Tao-Ziegler"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set inclusion vs. equality",
+      "pseudorandomness of primes",
+      "iterated sumsets"
+    ]
   },
   {
     "id": "ann-431-goldbach",
@@ -112,7 +132,11 @@
       "parity constraint",
       "structural necessity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "parity (even/odd numbers)",
+      "subset relations",
+      "definitional unfolding in Lean"
+    ]
   },
   {
     "id": "ann-431-summary",
@@ -131,6 +155,10 @@
       "summary",
       "known results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical equivalence (↔)",
+      "conjunction of statements",
+      "open vs. resolved problems"
+    ]
   }
 ]

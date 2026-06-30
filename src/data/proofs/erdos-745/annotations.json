@@ -17,7 +17,11 @@
       "Connected components",
       "Probabilistic combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "probability theory",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e745-random-graph",
@@ -36,7 +40,11 @@
       "Binomial distribution"
     ],
     "mathContext": "See annotation content for formal details of random graph model g(n, p)",
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "graph theory",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-e745-critical",
@@ -55,7 +63,11 @@
       "Phase transition",
       "Expected degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "graph theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e745-components",
@@ -73,7 +85,11 @@
       "Graph structure"
     ],
     "mathContext": "See annotation content for formal details of component size functions",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "order statistics"
+    ]
   },
   {
     "id": "ann-e745-subcritical",
@@ -92,7 +108,11 @@
       "Logarithmic size"
     ],
     "mathContext": "See annotation content for formal details of subcritical regime (p < 1/n)",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "graph theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e745-supercritical",
@@ -111,7 +131,11 @@
       "Linear size"
     ],
     "mathContext": "See annotation content for formal details of supercritical regime (p > 1/n)",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "graph theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e745-giant-size",
@@ -130,7 +154,11 @@
       "Scaling theory",
       "Percolation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "statistical physics"
+    ]
   },
   {
     "id": "ann-e745-kss",
@@ -150,7 +178,11 @@
       "Szemerédi",
       "Hungarian school"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "concentration inequalities",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e745-main-theorem",
@@ -168,7 +200,11 @@
       "Big-Theta notation"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #745: solved",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic combinatorics",
+      "asymptotic notation",
+      "Lean 4 tactic mode"
+    ]
   },
   {
     "id": "ann-e745-distribution",
@@ -187,7 +223,11 @@
       "Order statistics"
     ],
     "mathContext": "See annotation content for formal details of component size distribution",
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "asymptotic analysis",
+      "order statistics"
+    ]
   },
   {
     "id": "ann-e745-percolation",
@@ -206,7 +246,11 @@
       "Mean-field theory",
       "Critical phenomena"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "percolation theory",
+      "statistical physics",
+      "probability theory"
+    ]
   },
   {
     "id": "ann-e745-window",
@@ -225,7 +269,11 @@
       "Transition width"
     ],
     "mathContext": "See annotation content for formal details of the critical window",
-    "prerequisites": []
+    "prerequisites": [
+      "probability theory",
+      "real analysis",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e745-summary",
@@ -244,6 +292,10 @@
       "Polynomial gap"
     ],
     "mathContext": "See annotation content for formal details of summary and comparison",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "probability theory",
+      "asymptotic notation"
+    ]
   }
 ]

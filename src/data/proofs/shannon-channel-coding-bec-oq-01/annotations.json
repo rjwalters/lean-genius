@@ -39,7 +39,11 @@
       "joint distribution",
       "law of total probability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Marginal Distribution",
+      "Joint Distribution",
+      "Finset.sum_eq_single"
+    ]
   },
   {
     "id": "ann-qec-conditional-entropy",

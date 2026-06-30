@@ -40,7 +40,11 @@
       "noise model",
       "AWGN"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Additive Noise Channel",
+      "Conditional Probability Density",
+      "Density Of A Shift"
+    ]
   },
   {
     "id": "ann-conditional-entropy-eq",
@@ -127,7 +131,11 @@
       "KL divergence",
       "conditional entropy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mutual Information",
+      "Differential Entropy",
+      "Entropy Chain Rule"
+    ]
   },
   {
     "id": "ann-decomposition",

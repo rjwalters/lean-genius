@@ -18,7 +18,11 @@
       "finset-fold",
       "number-theory"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Least Common Multiple",
+      "Finset.range",
+      "Fold Over Finsets"
+    ],
     "range": {
       "startLine": 40,
       "endLine": 95
@@ -41,7 +45,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Finset.Icc",
+      "Closed Integer Intervals",
+      "Least Common Multiple"
+    ],
     "range": {
       "startLine": 40,
       "endLine": 95
@@ -64,7 +72,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Empty Product Identity",
+      "Lcm Of Singleton",
+      "Definitional Unfolding"
+    ],
     "range": {
       "startLine": 40,
       "endLine": 95
@@ -116,7 +128,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Predicate Definition",
+      "Interval LCM",
+      "Disjoint Integer Intervals"
+    ],
     "range": {
       "startLine": 97,
       "endLine": 128
@@ -140,7 +156,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Consecutive Integer Intervals",
+      "Native Decide",
+      "Lcm Computation"
+    ],
     "range": {
       "startLine": 97,
       "endLine": 128
@@ -163,7 +183,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Selfridge Examples",
+      "Native Decide",
+      "Lcm Inequality"
+    ],
     "range": {
       "startLine": 129,
       "endLine": 167
@@ -187,7 +211,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Native Decide",
+      "Kernel Reduction",
+      "Lcm Computation"
+    ],
     "range": {
       "startLine": 129,
       "endLine": 167
@@ -239,7 +267,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Sufficiently Large Quantifiers",
+      "Formal Verification",
+      "Erdos Problems"
+    ],
     "range": {
       "startLine": 169,
       "endLine": 187
@@ -263,7 +295,11 @@
       "number-theory"
     ],
     "mathContext": "See annotation content for formal details of prime power divisibility",
-    "prerequisites": [],
+    "prerequisites": [
+      "Prime Power Divisibility",
+      "Prime Factorization",
+      "Lcm Structure"
+    ],
     "range": {
       "startLine": 169,
       "endLine": 187
@@ -287,7 +323,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Prime Distribution In Intervals",
+      "Prime Powers",
+      "Large Prime Factors"
+    ],
     "range": {
       "startLine": 169,
       "endLine": 187
@@ -310,7 +350,11 @@
       "prime-number-theorem"
     ],
     "mathContext": "See annotation content for formal details of lcm growth bounds",
-    "prerequisites": [],
+    "prerequisites": [
+      "Chebyshev Bounds",
+      "Prime Number Theorem",
+      "Asymptotic Estimates"
+    ],
     "range": {
       "startLine": 126,
       "endLine": 187
@@ -334,7 +378,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": [],
+    "prerequisites": [
+      "Minimal Witness",
+      "Asymptotic Growth Rate",
+      "Upper Bound Estimates"
+    ],
     "range": {
       "startLine": 126,
       "endLine": 187

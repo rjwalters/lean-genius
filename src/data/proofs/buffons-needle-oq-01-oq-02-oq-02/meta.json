@@ -131,6 +131,16 @@
       "targetId": "buffons-needle-oq-01-oq-02",
       "relationship": "answers-open-question",
       "description": "Resolves the stated open question of the parent (higher-dimensional Buffon constant): the large-dimension decay rate c_n ~ √(2/(πn)). The parent supplies the closed Gamma-function form of c_n and the small-dimension values; this file supplies the asymptotic."
+    },
+    {
+      "targetId": "buffons-needle-oq-02-oq-01",
+      "relationship": "related",
+      "description": "N-Dimensional Buffon Noodle crossing factor — the **structural twin** of this entry's Gamma-ratio asymptotic. That entry studies $\\alpha_n = \\mathbb{E}_{S^{n-1}}[|u_1|] = \\Gamma(n/2)/(\\sqrt{\\pi}\\,\\Gamma((n+1)/2))$ with the recurrence $\\alpha_{n+2} = \\tfrac{n}{n+1}\\alpha_n$; this entry studies the closely related ratio $s_n = \\Gamma(n/2)/\\Gamma((n-1)/2)$ governing the hyperplane constant $c_n = 2\\Gamma(n/2)/((n-1)\\sqrt{\\pi}\\,\\Gamma((n-1)/2))$ via the product recurrence $s_n s_{n+1} = (n-1)/2$. Both are quotients of Gamma values at half-integer arguments differing by $1/2$, both are pinned by a first-order multiplicative recurrence rather than Stirling's formula, and both exhibit the same $\\sqrt{2/(\\pi n)}$ decay: the squeeze $s_n s_{n+1} = (n-1)/2$ here is the exact analogue of the $\\alpha_{n+2}/\\alpha_n$ telescoping there. The two constants are linked by an index shift, so the asymptotic proved here ($\\sqrt{n}\\,c_n \\to \\sqrt{2/\\pi}$) transfers directly to the large-dimension behaviour of the noodle crossing factor."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "foundational",
+      "description": "Buffon's Needle (1733) — the **$n=2$ base case** of the hyperplane-constant family asymptotically analyzed here. The dimensional constant specializes to $c_2 = 2\\Gamma(1)/((2-1)\\sqrt{\\pi}\\,\\Gamma(1/2)) = 2/(\\sqrt{\\pi}\\cdot\\sqrt{\\pi}) = 2/\\pi$, recovering exactly the classical crossing probability $2\\ell/(\\pi d)$ for a unit needle on a grid of spacing $d$. This entry asks what happens to that constant as the ambient dimension grows: rather than the fixed $2/\\pi$ of the plane, the normalized constant decays like $c_n \\sim \\sqrt{2/(\\pi n)}$, so a randomly oriented needle becomes ever less likely (per unit length, after the $\\sqrt n$ rescaling) to meet a hyperplane as dimension increases — a quantitative high-dimensional dilution of the original planar phenomenon."
     }
   ],
   "conclusion": {

@@ -63,7 +63,7 @@
     ],
     "assumptions": "Two axioms: (1) `brouwer_unit_ball` — Brouwer's FPT on the closed unit ball in EuclideanSpace ℝ (Fin n) (S11.A strict-weakening 2026-05-09: the previous axiom asserted FPT for any nonempty compact convex S; the unit-ball-only form is strictly weaker — identical axiom count, smaller mathematical commitment); (2) `approx_selection_exists` — existence of continuous ε-graph-approximate selections (Cellina–Browder form) for UHC maps with convex values. The general-compact-convex Brouwer form is recovered in-house as `theorem brouwer_fpt` via the nearest-point retraction reduction (S8/S11.A; S11.A.body landed S13/2026-05-09, so the theorem's body is sorry-free; the `exists_continuous_proj_convex` helper it depends on landed in S14 and is itself sorry-free, so `brouwer_fpt` is end-to-end machine-checked modulo the two axioms — see s11-strict-weakening-spec.md). Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved. S6 analysis showed that the strictly stronger pointwise form `∀ x, ∃ y ∈ F x, dist (f x) y < ε` is FALSE under USC + convex values alone, so the selection axiom must be stated in the graph form; `kakutani_from_brouwer` threads a triangle-inequality `ε ↦ 2·(ε/2) = ε` step to recover the diagonal-distance witness expected by `approx_fixedpoint_implies_fixedpoint`.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
+    "theoremCount": 19,
     "definitionCount": 4
   },
   "overview": {
@@ -221,7 +221,7 @@
     "namespace": "KakutaniFromBrouwer",
     "lineCount": 1531,
     "axiomCount": 2,
-    "theoremCount": 7,
+    "theoremCount": 19,
     "definitionCount": 4,
     "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
     "sorries": 0

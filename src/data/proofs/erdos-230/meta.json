@@ -17,13 +17,13 @@
       "ultraflat"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 230,
     "erdosUrl": "https://erdosproblems.com/230",
     "erdosProblemStatus": "solved",
-    "axiomCount": 1,
-    "lineCount": 230,
-    "assumptions": "1 axiom: kahane_ultraflat. 3 sorries.",
+    "axiomCount": 2,
+    "lineCount": 263,
+    "assumptions": "2 axioms: kahane_ultraflat (Kahane's 1980 existence theorem for ultraflat unimodular polynomials) and supNorm_ge_l2norm (the standard L∞ ≥ L² comparison on the circle, requiring Lebesgue integration to prove). 0 sorries. The disproof of the Erdős–Newman conjecture (erdos_newman_false / kahane_disproves) is fully derived from kahane_ultraflat.",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,
     "definitionCount": 7,
@@ -146,12 +146,12 @@
       "Finset"
     ],
     "namespace": "Erdos230",
-    "lineCount": 230,
-    "axiomCount": 1,
+    "lineCount": 263,
+    "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 7,
     "path": "Proofs/Erdos230Problem.lean",
-    "sorries": 3,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos230ProblemAristotle.lean"
     ]
@@ -183,5 +183,5 @@
       "description": "Related Erdős problem sharing themes: analysis, polynomials"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }

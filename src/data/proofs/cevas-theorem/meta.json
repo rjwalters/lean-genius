@@ -211,6 +211,21 @@
       "targetId": "triangle-angle-sum",
       "relationship": "foundational",
       "description": "The triangle angle sum theorem (angles sum to 180 degrees) is the foundational result of Euclidean triangle geometry upon which Ceva's theorem builds: the signed ratio formulation of Ceva's theorem relies on the Euclidean parallel postulate, which is equivalent to the angle sum property"
+    },
+    {
+      "targetId": "cevas-theorem-oq-01",
+      "relationship": "extended-by",
+      "description": "Gives a geometric proof of Ceva's theorem in ℝ² via affine coordinates (concurrency iff d·e·f = (1−d)(1−e)(1−f)), generalizes to arbitrary triangles by affine invariance, and derives Routh's theorem as a corollary."
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends Ceva's theorem to non-Euclidean geometries — spherical (sin-ratios) and hyperbolic (sinh-ratios) — with Menelaus duality (signed product = −1) and the Gauss–Bonnet connection between angle excess and area."
+    },
+    {
+      "targetId": "cevas-theorem-oq-04",
+      "relationship": "extended-by",
+      "description": "Provides a constructive mass-point-geometry certificate for concurrent cevians: positive vertex masses mA, mB, mC induce ratios automatically satisfying Ceva's relation, and any Ceva configuration admits an explicit mass assignment."
     }
   ],
   "mainTheorems": [

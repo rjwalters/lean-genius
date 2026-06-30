@@ -51,7 +51,8 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-12",
-    "erdos-129"
+    "erdos-129",
+    "erdos-129-wip-01"
   ],
   "references": {
     "papers": [],
@@ -73,6 +74,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos129Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos129WIP01.lean",
+      "filename": "Erdos129WIP01.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos129WIP01.lean"
     }
   ]
 }

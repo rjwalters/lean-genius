@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-e1023if-1",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "Erdős #1023 Beyond Union: Intersection and Difference",
+    "content": "**Module framing.** The parent problem #1023 solves the *union-free* extremal question: among families $F$ of subsets of $\\{1,\\dots,n\\}$ where no member is the union of $\\ge 2$ others, the maximum size is $F(n) = \\binom{n}{\\lfloor n/2\\rfloor}$, realised by the middle layer. The seeker-stated follow-up asks for the analogues with the *other* Boolean operations — intersection and (symmetric) difference. This file answers it not by re-solving anything but by locating the structural relationship: complementation $A \\mapsto A^c$ is a cardinality-preserving involution that, by De Morgan, swaps $\\cup$ and $\\cap$. So the intersection-free problem is *literally the same problem* ($F_\\cap(n) = F(n)$), while the difference operations behave differently and the transport provably stops.",
+    "mathContext": "$F(n) = \\binom{n}{\\lfloor n/2\\rfloor} \\sim \\sqrt{2/\\pi}\\,2^n/\\sqrt{n}$; the file proves $F_\\cap(n) = F(n)$ and isolates why $\\Delta$ and $\\setminus$ resist the same transport.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős Problem #1023",
+      "Union-free families",
+      "Extremal set theory",
+      "De Morgan duality"
+    ],
+    "prerequisites": [
+      "Boolean algebra of subsets",
+      "Extremal family functions"
+    ],
+    "tags": ["module-header", "framing", "erdos-1023"]
+  },
+  {
+    "id": "ann-e1023if-2",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 59, "endLine": 84 },
+    "type": "definition",
+    "title": "Self-Contained Set-Family Infrastructure",
+    "content": "**The vocabulary, re-declared.** `SetFamily n := Finset (Finset (Fin n))`, with `familyUnion = F.sup id` and `familyInter = F.inf id` (so the empty family unions to $\\emptyset = \\bot$ and intersects to $\\mathrm{univ} = \\top$). `isUnionOf A F` / `isInterOf A F` say $A$ is the union / intersection of a subfamily $G \\subseteq F$ of size $\\ge 2$ with $A \\notin G$; `isUnionFree` / `isInterFree` forbid any member from being so generated (tested against `F.erase A`). Crucially these are **re-declared in this namespace** rather than imported from the parent — the parent's asymptotic section carries 5 axioms routing the union *upper* bound through Problem 447, and re-declaring keeps this file's proved results axiom-free.",
+    "mathContext": "$\\mathrm{familyUnion}\\,G = \\bigvee_{S\\in G} S,\\ \\mathrm{familyInter}\\,G = \\bigwedge_{S\\in G} S$; free $\\iff \\forall A\\in F,\\ A$ is not a $\\ge 2$-fold union/intersection of the rest.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sup / Finset.inf",
+      "Lattice operations on a Boolean algebra",
+      "Axiom isolation via re-declaration"
+    ],
+    "prerequisites": [
+      "Finsets and Finset.sup/inf with id",
+      "Fin n as the ground set"
+    ],
+    "tags": ["definitions", "set-family", "axiom-free"]
+  },
+  {
+    "id": "ann-e1023if-3",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 86, "endLine": 114 },
+    "type": "technique",
+    "title": "Complementation as a Cardinality-Preserving Involution",
+    "content": "**The engine of the duality.** Four facts establish that member-wise complementation $F \\mapsto F.\\mathrm{image}(\\cdot^c)$ is a well-behaved bijection: `compl_inj` (complementation is injective on $\\mathrm{Finset}(\\mathrm{Fin}\\,n)$), `card_image_compl` (it preserves cardinality, via `card_image_of_injective`), `image_compl_compl` (it is an involution: $(F^c)^c = F$, by `image_image` + `compl_compl`), and `erase_image_compl` (it commutes with `Finset.erase`: $(F^c).\\mathrm{erase}(A^c) = (F.\\mathrm{erase}\\,A)^c$). The last is the technical linchpin — the free-family predicates test against `erase A`, so transport needs erase to pass through complementation cleanly.",
+    "mathContext": "$|F^c| = |F|$, $(F^c)^c = F$, and $(F^c)\\setminus\\{A^c\\} = (F\\setminus\\{A\\})^c$ at the member-wise level.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Involution",
+      "Cardinality-preserving bijection",
+      "Finset.image_of_injective",
+      "Finset.erase"
+    ],
+    "prerequisites": [
+      "Injectivity and Finset.card_image",
+      "compl_compl in a Boolean algebra"
+    ],
+    "tags": ["complementation", "involution", "bijection"]
+  },
+  {
+    "id": "ann-e1023if-4",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 116, "endLine": 138 },
+    "type": "concept",
+    "title": "De Morgan's Laws at the Subfamily Level",
+    "content": "**`compl_familyUnion` / `compl_familyInter`** lift De Morgan from pairs to whole subfamilies: $(\\bigcup G)^c = \\bigcap (G^c)$ and $(\\bigcap G)^c = \\bigcup (G^c)$. Both are proved by `Finset.induction` on $G$: the empty case is `simp`, and the insert step rewrites with `Finset.sup_insert` / `inf_insert`, the Boolean-algebra laws `compl_sup` / `compl_inf` ($(a \\sqcup b)^c = a^c \\sqcap b^c$), and `Finset.image_insert`, then closes by the induction hypothesis. These are exactly the identities that turn a union witness into an intersection witness under complementation.",
+    "mathContext": "$\\left(\\bigcup_{S\\in G} S\\right)^c = \\bigcap_{S\\in G} S^c$ and $\\left(\\bigcap_{S\\in G} S\\right)^c = \\bigcup_{S\\in G} S^c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "De Morgan's laws",
+      "Finset.induction",
+      "compl_sup / compl_inf",
+      "Boolean algebra"
+    ],
+    "prerequisites": [
+      "Finset induction",
+      "Lattice complement laws"
+    ],
+    "tags": ["de-morgan", "induction", "duality"]
+  },
+  {
+    "id": "ann-e1023if-5",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 140, "endLine": 184 },
+    "type": "insight",
+    "title": "The Bijection of Free Families",
+    "content": "**Transport and inversion.** `isUnionOf_to_isInterOf` turns a union witness $G$ for $A$ in $F$ into an intersection witness $G^c$ for $A^c$ in $F^c$ — same cardinality (`card_image_compl`), still missing the target ($A^c \\notin G^c$ via `compl_inj`), and $\\bigcap G^c = (\\bigcup G)^c = A^c$ by `compl_familyUnion`. Its dual is symmetric. Feeding these through, `unionFree_compl` shows complementation sends union-free families to intersection-free ones (and `interFree_compl` the converse), using the involution `image_compl_compl` and `compl_compl` to discharge the double complement. Because the two maps are mutually inverse, this is an **exact bijection of free families**, not merely an inequality of maxima.",
+    "mathContext": "$F$ union-free $\\iff F^c$ intersection-free, an involutive bijection preserving $|F|$; a witness $G$ maps to $G^c$ with $\\bigcap G^c = (\\bigcup G)^c$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bijective transport",
+      "Involution",
+      "Union-free / intersection-free families",
+      "Witness transformation"
+    ],
+    "prerequisites": [
+      "De Morgan subfamily laws",
+      "Complementation involution"
+    ],
+    "tags": ["transport", "bijection", "free-families"]
+  },
+  {
+    "id": "ann-e1023if-6",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 186, "endLine": 216 },
+    "type": "concept",
+    "title": "Antichains are Intersection-Free (Axiom-Free)",
+    "content": "**`antichain_interFree`** is the dual of the parent's `antichain_unionFree`. The key step is `familyInter_subset`: every member $B$ of a subfamily $G$ contains the intersection $\\bigcap G$ (just `Finset.inf_le`, the dual of `le_sup`). So if $A = \\bigcap G$ and $G$ lives in an antichain, each $B \\in G$ satisfies $A \\subseteq B$ with both in the antichain, forcing $A = B$ — every member of $G$ equals $A$, so $|G| \\le 1$ (via `one_lt_card` + `omega`), contradicting $|G| \\ge 2$. This gives the constructive lower bound completely independently of the duality and **without any axiom** — the only place the parent's axiomatised upper bound is *not* needed.",
+    "mathContext": "$A \\subseteq B$ for all $B \\in G$ (since $A = \\bigcap G$) and antichain $\\Rightarrow A = B\\ \\forall B \\Rightarrow |G| \\le 1$, contradicting $|G| \\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Antichain",
+      "Finset.inf_le",
+      "Sperner-type lower bounds",
+      "Duality of antichain freeness"
+    ],
+    "prerequisites": [
+      "Antichains in a poset",
+      "Finset.inf_le / one_lt_card"
+    ],
+    "tags": ["antichain", "lower-bound", "axiom-free"]
+  },
+  {
+    "id": "ann-e1023if-7",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 218, "endLine": 256 },
+    "type": "insight",
+    "title": "Equal Achievable Sizes ⇒ Equal Extremal Functions",
+    "content": "**`interFreeMax_eq_unionFreeMax`.** With both achievable-size sets bounded by $2^n$ (`*_bddAbove`), the extremal functions are defined as `sSup` of $\\{k : \\exists F\\ \\text{free},\\ |F| = k\\}$. The bijection of free families upgrades to **set equality** of these size-sets (`interFree_sizes_eq_unionFree_sizes`): each direction sends a witnessing $F$ to $F^c$, which is free of the dual type and has the same cardinality. Equal sets have equal suprema, so $\\mathrm{interFreeMax}\\,n = \\mathrm{unionFreeMax}\\,n$. Combined with the parent's $F(n) = \\binom{n}{\\lfloor n/2\\rfloor}$, the intersection analogue is solved for free.",
+    "mathContext": "$\\{k : \\exists\\,\\text{inter-free}\\ F,\\ |F|=k\\} = \\{k : \\exists\\,\\text{union-free}\\ F,\\ |F|=k\\} \\Rightarrow \\sup = \\sup$, i.e. $F_\\cap(n) = F(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup over ℕ",
+      "BddAbove",
+      "Extremal function",
+      "Reduction by bijection"
+    ],
+    "prerequisites": [
+      "Conditionally complete lattice sSup",
+      "Set equality from a bijection"
+    ],
+    "tags": ["extremal-function", "sSup", "main-theorem"]
+  },
+  {
+    "id": "ann-e1023if-8",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 258, "endLine": 292 },
+    "type": "technique",
+    "title": "The Middle-Layer Lower Bound",
+    "content": "**Constructive $\\binom{n}{\\lfloor n/2\\rfloor} \\le F_\\cap(n)$.** `layer n k` is the family of $k$-subsets; `layer_card` computes $|{\\rm layer}\\,n\\,k| = \\binom{n}{k}$ via `powersetCard_eq_filter` and `card_powersetCard`. The `middleLayer` ($k = \\lfloor n/2\\rfloor$) is an antichain (`middleLayer_antichain`, since equal-size subsets with $A \\subseteq B$ are equal by `eq_of_subset_of_card_le`), hence intersection-free (`middleLayer_interFree`), so `interFreeMax_ge_middle` follows by `le_csSup`. This bound is fully constructive and axiom-free, matching the (axiomatised) upper bound to give the exact value.",
+    "mathContext": "$|{\\rm middleLayer}\\,n| = \\binom{n}{\\lfloor n/2\\rfloor}$; it is an antichain $\\Rightarrow$ intersection-free $\\Rightarrow F_\\cap(n) \\ge \\binom{n}{\\lfloor n/2\\rfloor}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Middle layer / Sperner's theorem",
+      "Binomial coefficient",
+      "powersetCard",
+      "le_csSup"
+    ],
+    "prerequisites": [
+      "Layers of the Boolean lattice",
+      "Central binomial coefficient"
+    ],
+    "tags": ["lower-bound", "middle-layer", "constructive"]
+  },
+  {
+    "id": "ann-e1023if-9",
+    "proofId": "erdos-1023-oq-02",
+    "range": { "startLine": 294, "endLine": 325 },
+    "type": "insight",
+    "title": "Why the Duality Stops at Intersection: ∆ Stable, ∖ Reversing",
+    "content": "**The operation-level dichotomy.** Membership computations (`mem_symmDiff`, `mem_sdiff`, `mem_compl`, closed by `tauto`) yield: symmetric difference is **complement-stable**, $A^c \\,\\Delta\\, B^c = A \\,\\Delta\\, B$ (`symmDiff_compl_compl`), with `symmDiff_compl_left` ($A^c \\Delta B = (A \\Delta B)^c$) and `symmDiff_self_compl` ($A \\Delta A^c = \\mathrm{univ}$) as companions; set difference is **complement-reversing**, $A^c \\setminus B^c = B \\setminus A$ (`compl_sdiff_compl`). Because $\\Delta$ is *invariant* under complementing both arguments (not De Morgan-dual to $\\cup$), complementation fixes the $\\Delta$-structure instead of dualising it — so the clean transport that solved the intersection case provably cannot produce a bijection of $\\Delta$-free families. This trichotomy (dual / stable / reversing) is the structural answer to the difference part of the question.",
+    "mathContext": "$A^c \\Delta B^c = A \\Delta B$ (stable), $A^c \\setminus B^c = B \\setminus A$ (reversing) vs. $(A \\cup B)^c = A^c \\cap B^c$ (dual) — only the dual operation transports.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Symmetric difference",
+      "Set difference",
+      "Complement invariance vs duality",
+      "Sunflower / Δ-system lemma"
+    ],
+    "prerequisites": [
+      "Finset.mem_symmDiff / mem_sdiff",
+      "Boolean operation identities"
+    ],
+    "tags": ["symmetric-difference", "dichotomy", "obstruction"]
+  }
+]

@@ -16,7 +16,11 @@
       "uniform distribution",
       "irregularities of distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Discrepancy Theory",
+      "Uniform Distribution Mod 1",
+      "Limit Superior"
+    ]
   },
   {
     "id": "ann-e255-definitions",
@@ -35,7 +39,11 @@
       "Finset.filter",
       "absolute value"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counting Function",
+      "Lebesgue Measure Of Interval",
+      "Absolute Value"
+    ]
   },
   {
     "id": "ann-e255-schmidt",
@@ -54,7 +62,11 @@
       "countability",
       "contradiction proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Contradiction",
+      "Countable Sets",
+      "Axioms In Lean"
+    ]
   },
   {
     "id": "ann-e255-tijdeman-wagner",
@@ -73,7 +85,11 @@
       "Lebesgue measure",
       "van der Corput sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Almost Everywhere Convergence",
+      "Lebesgue Measure",
+      "Van Der Corput Sequence"
+    ]
   },
   {
     "id": "ann-e255-connections",
@@ -92,7 +108,11 @@
       "uniform distribution",
       "star discrepancy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Uniform Distribution Mod 1",
+      "Weyl's Equidistribution Theorem",
+      "Star Discrepancy"
+    ]
   },
   {
     "id": "ann-e255-summary",
@@ -111,6 +131,10 @@
       "axiom combination",
       "discrepancy theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Discrepancy Theory",
+      "Logarithmic Growth Rate",
+      "Existential Quantifiers"
+    ]
   }
 ]

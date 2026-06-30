@@ -1,0 +1,205 @@
+{
+  "id": "pell-equation-oq-01-oq-04-oq-02-oq-01",
+  "title": "The Pell Regulator Counts Subgroup Index: [⟨a₁⟩ : ⟨a₁ᵏ⟩] = R(a₁ᵏ)/R₀",
+  "slug": "pell-equation-oq-01-oq-04-oq-02-oq-01",
+  "description": "Answers the parent chain's open question by pinning Mathlib's fundamental Pell solution against the regulator. Writing R₀ = R(a₁) for the regulator of a fundamental solution a₁ (Pell.IsFundamental), three facts make R₀ the canonical unit of the regulator: positivity (a fundamental solution has ‖a₁‖ > 1, so R₀ > 0), quantization (every solution b has R(b) = n·R₀ for some n : ℤ, since b = ±a₁ⁿ by IsFundamental.eq_zpow_or_neg_zpow and the regulator ignores sign), and minimality (R₀ is the least positive regulator). The regulator spectrum is the lattice R₀·ℤ. Combining quantization with the cyclic-subgroup structure, the index of ⟨a₁ᵏ⟩ inside ⟨a₁⟩ is exactly k (transported across the injective power homomorphism zpowersHom : Multiplicative ℤ →* ⟨a₁⟩ via Subgroup.relIndex_map_map_of_injective and Int.index_zmultiples), and this combinatorial index equals the real-analytic ratio R(a₁ᵏ)/R₀. 8 theorems, 0 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-9",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ01OQ04OQ02OQ01.lean",
+    "tags": [
+      "pell-equation",
+      "number-theory",
+      "regulator",
+      "real-quadratic-field",
+      "fundamental-solution",
+      "subgroup-index",
+      "cyclic-subgroup",
+      "zpowers",
+      "euler-totient"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 185,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None. All theorems proved, 0 axioms. Verified axiom-free: #print axioms on all eight theorems (pellNorm_fundamental_gt_one, pellRegulator_fundamental_pos, pellRegulator_neg, exists_regulator_eq_zsmul, pellRegulator_fundamental_le, index_zpowers_ofAdd, relindex_zpowers_pow, relindex_eq_regulator_ratio) reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Pell.IsFundamental",
+        "description": "Mathlib's predicate for a fundamental Pell solution, bundling 1 < a.x and 0 < a.y. Supplies positivity of the fundamental regulator and, via eq_zpow_or_neg_zpow, the ±a₁ⁿ structure theorem driving quantization",
+        "module": "Mathlib.NumberTheory.Pell"
+      },
+      {
+        "theorem": "Pell.IsFundamental.eq_zpow_or_neg_zpow",
+        "description": "Every solution b equals ±a₁ⁿ for a fundamental a₁ — the structure theorem read through the regulator to give the quantization R(b) = n·R₀",
+        "module": "Mathlib.NumberTheory.Pell"
+      },
+      {
+        "theorem": "Subgroup.relIndex_map_map_of_injective",
+        "description": "For an injective hom f, the relative index of map f H in map f K equals the relative index of H in K — transports the index computation across the power homomorphism zpowersHom",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Int.index_zmultiples",
+        "description": "The index of the additive subgroup k·ℤ in ℤ is k.natAbs — the base index computation, transported across the order isomorphism AddSubgroup.toSubgroup",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Subgroup.range_zpowersHom / range_zpowersHom",
+        "description": "The range of zpowersHom G g : Multiplicative ℤ →* G is Subgroup.zpowers g — identifies map f ⊤ with the cyclic subgroup ⟨a₁⟩",
+        "module": "Mathlib.Algebra.Group.Subgroup.ZPowers.Lemmas"
+      },
+      {
+        "theorem": "injective_zpow_iff_not_isOfFinOrder",
+        "description": "n ↦ aⁿ is injective iff a is not of finite order — gives injectivity of the power homomorphism from the parent's not_isOfFinOrder (a torsion-free since ‖a₁‖ > 1)",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Real.log_neg_eq_log",
+        "description": "log(-t) = log t — the regulator ignores the sign ±1, collapsing the ±a₁ⁿ structure theorem to a single integer multiple of R₀",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "dateAdded": "2026-06-25"
+  },
+  "overview": {
+    "historicalContext": "The solutions of Pell's equation x² − d·y² = 1 form an infinite group generated up to sign by a fundamental solution a₁; the embedding (x, y) ↦ x + y√d realizes it inside the units of the real quadratic order ℤ[√d], and the logarithm of that embedding is the regulator R. The grandparent chain built R as an additive invariant with the linear scaling law R(aⁿ) = n·R(a); the parent pell-equation-oq-01-oq-04-oq-02 used positivity of R(a) to make ⟨a⟩ the ordered group ℤ. What was still open is the arithmetic normalization: which solution gives the smallest positive regulator, and how the regulator measures the index of one cyclic subgroup inside another. This entry resolves both by anchoring the regulator to Mathlib's fundamental solution.",
+    "problemStatement": "Combine the regulator with Mathlib's Pell.IsFundamental to show the fundamental solution realizes the minimal positive regulator R₀, and that this R₀ pins the index of the cyclic subgroup ⟨a₁ᵏ⟩ inside ⟨a₁⟩ as the regulator ratio R(a₁ᵏ)/R₀ = k.",
+    "proofStrategy": "Four steps. (1) Positivity: IsFundamental bundles 1 < a₁.x and 0 < a₁.y, so the real embedding ‖a₁‖ = x + y√d ≥ 2 > 1 (pellNorm_fundamental_gt_one), giving R₀ = R(a₁) > 0 via the parent's pellRegulator_pos. (2) Sign-invariance: the regulator ignores ±1 because log(-t) = log t (pellRegulator_neg). (3) Quantization and minimality: IsFundamental.eq_zpow_or_neg_zpow writes any solution b as ±a₁ⁿ, so R(b) = n·R₀ (parent pellRegulator_zpow plus sign-invariance); with R₀ > 0 this forces n ≥ 1 whenever R(b) > 0, so R₀ is the least positive regulator. (4) Index: the power homomorphism zpowersHom : Multiplicative ℤ →* Solution₁ d is injective (a₁ is torsion-free since ‖a₁‖ > 1), carrying ⊤ to ⟨a₁⟩ and ⟨ofAdd k⟩ to ⟨a₁ᵏ⟩; Subgroup.relIndex_map_map_of_injective reduces [⟨a₁⟩ : ⟨a₁ᵏ⟩] to the index of k·ℤ in ℤ (Int.index_zmultiples), which is k. Chaining with R(a₁ᵏ) = k·R₀ gives the index = R(a₁ᵏ)/R₀.",
+    "keyInsights": [
+      "**The fundamental solution is the regulator's unit.** Pell.IsFundamental forces ‖a₁‖ ≥ 2, so R₀ = R(a₁) > 0; together with quantization R(b) = n·R₀ this makes R₀ the least positive value of the regulator — the canonical lattice generator of the spectrum R₀·ℤ.",
+      "**Sign-invariance collapses the structure theorem.** Mathlib's eq_zpow_or_neg_zpow gives b = ±a₁ⁿ; the two cases would normally produce different regulators, but log(-t) = log t erases the sign, so the regulator spectrum is the single lattice R₀·ℤ rather than a coset union.",
+      "**The combinatorial index is read off a real number.** [⟨a₁⟩ : ⟨a₁ᵏ⟩] is a count; R(a₁ᵏ)/R₀ is a ratio of lengths on the line ℝ. The injective power homomorphism makes them equal: the regulator is the unique normalization for which the analytic ratio counts the algebraic index.",
+      "**Torsion-freeness is what makes the index computation legal.** The power homomorphism zpowersHom is injective precisely because a₁ is not of finite order (‖a₁‖ > 1); injectivity is the hypothesis of Subgroup.relIndex_map_map_of_injective, which transports the index from the model ℤ ⊃ k·ℤ to the Pell subgroups.",
+      "**Everything reduces to ℤ ⊃ k·ℤ.** The index [⟨a₁⟩ : ⟨a₁ᵏ⟩] is transported across zpowersHom to the index of the additive subgroup k·ℤ in ℤ, which Mathlib computes as k.natAbs (Int.index_zmultiples). The Pell-specific input is only the injectivity of the embedding."
+    ]
+  },
+  "sections": [
+    {
+      "id": "norm-positive",
+      "title": "The fundamental solution lies beyond 1, so R₀ > 0",
+      "startLine": 52,
+      "endLine": 72,
+      "summary": "pellNorm_fundamental_gt_one: IsFundamental bundles 1 < a₁.x and 0 < a₁.y, so the real embedding ‖a₁‖ = x + y√d ≥ 2 > 1. pellRegulator_fundamental_pos: hence R₀ = R(a₁) > 0 via the parent's pellRegulator_pos.",
+      "mathContext": "$\\lVert a_1\\rVert = x + y\\sqrt d \\ge 2 > 1 \\Rightarrow R_0 = \\log\\lVert a_1\\rVert > 0$."
+    },
+    {
+      "id": "sign-invariance",
+      "title": "The regulator ignores the sign ±1",
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "pellRegulator_neg: R(-b) = R(b). The norm of -b is the negative of the norm of b, and Real.log_neg_eq_log gives log(-t) = log t. This collapses the ±a₁ⁿ structure theorem to a single integer multiple of R₀.",
+      "mathContext": "$R(-b) = \\log\\lvert{-\\lVert b\\rVert}\\rvert = \\log\\lVert b\\rVert = R(b)$."
+    },
+    {
+      "id": "quantization-minimality",
+      "title": "Quantization R(b) = n·R₀ and minimality of R₀",
+      "startLine": 91,
+      "endLine": 122,
+      "summary": "exists_regulator_eq_zsmul: every solution b has R(b) = n·R₀ for some n : ℤ, from IsFundamental.eq_zpow_or_neg_zpow (b = ±a₁ⁿ), the parent's pellRegulator_zpow and sign-invariance. pellRegulator_fundamental_le: R₀ is the least positive regulator — R(b) = n·R₀ with R₀ > 0 forces n ≥ 1 whenever R(b) > 0.",
+      "mathContext": "$\\mathrm{Spec}(R) = R_0\\cdot\\mathbb{Z},\\quad 0 < R(b) \\Rightarrow R(b) \\ge R_0$."
+    },
+    {
+      "id": "index-helper",
+      "title": "Index of ⟨ofAdd k⟩ in Multiplicative ℤ is k.natAbs",
+      "startLine": 124,
+      "endLine": 143,
+      "summary": "index_zpowers_ofAdd: in Multiplicative ℤ the cyclic subgroup generated by ofAdd k has index k.natAbs, by transporting Int.index_zmultiples across the order isomorphism AddSubgroup.toSubgroup.",
+      "mathContext": "$[\\,\\mathrm{Multiplicative}\\,\\mathbb{Z} : \\langle\\mathrm{ofAdd}\\,k\\rangle\\,] = |k|$."
+    },
+    {
+      "id": "index-equals-ratio",
+      "title": "The index equals k and equals the regulator ratio",
+      "startLine": 145,
+      "endLine": 184,
+      "summary": "relindex_zpowers_pow: [⟨a₁⟩ : ⟨a₁ᵏ⟩] = k, via the injective power homomorphism zpowersHom (a₁ torsion-free) and Subgroup.relIndex_map_map_of_injective reducing to index_zpowers_ofAdd. relindex_eq_regulator_ratio: [⟨a₁⟩ : ⟨a₁ᵏ⟩] = R(a₁ᵏ)/R₀, chaining the index with R(a₁ᵏ) = k·R₀.",
+      "mathContext": "$[\\langle a_1\\rangle : \\langle a_1^k\\rangle] = k = R(a_1^k)/R_0$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Anchoring the Pell regulator against Mathlib's fundamental solution a₁: the fundamental regulator R₀ = R(a₁) is positive (pellRegulator_fundamental_pos), every solution's regulator is an integer multiple of R₀ (exists_regulator_eq_zsmul), and R₀ is the least positive regulator (pellRegulator_fundamental_le), so the regulator spectrum is the lattice R₀·ℤ. The index of the cyclic subgroup ⟨a₁ᵏ⟩ inside ⟨a₁⟩ is exactly k (relindex_zpowers_pow) and equals the real-analytic ratio R(a₁ᵏ)/R₀ (relindex_eq_regulator_ratio). 8 theorems, 0 definitions, 0 sorries, 0 axioms.",
+    "implications": "Completes the bridge between the real-analytic regulator (a length on ℝ) and the combinatorial subgroup index (a count): R₀ is the unique normalization for which it is minimal positive and for which R(b)/R₀ counts index. This identifies the regulator as a faithful order-preserving character whose lattice R₀·ℤ encodes the entire subgroup structure of the Pell solution group.",
+    "openQuestions": [
+      "Compute the regulator R₀ explicitly for the fundamental solution of a specific d (e.g. via the continued-fraction expansion of √d), turning the abstract minimality into a closed-form value and connecting to the class-number formula h·R = √d·L(1,χ).",
+      "Package the index/regulator correspondence k ↦ ⟨a₁ᵏ⟩ as a lattice isomorphism between the subgroup lattice of ⟨a₁⟩ and the divisibility lattice of ℕ, with index multiplicativity [⟨a₁⟩ : ⟨a₁^{jk}⟩] = jk realized as a product of regulator ratios."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PellEquationOQ01OQ04OQ02"
+    ],
+    "opens": [
+      "Pell",
+      "PellEquationOQ01OQ04OQ02"
+    ],
+    "namespace": "PellEquationOQ01OQ04OQ02OQ01",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/PellEquationOQ01OQ04OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-01-oq-04-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Sibling under the same parent: that entry makes ⟨a⟩ the ordered group ℤ via the regulator order; its second open question — anchor against Pell.IsFundamental so R₀ is minimal and R(a)/R₀ is the index — is exactly what this entry proves"
+    },
+    {
+      "targetId": "pell-equation-oq-01-oq-04-oq-02",
+      "relationship": "extends",
+      "description": "Parent proves n ↦ R(aⁿ) strictly monotone, n ↦ aⁿ injective and a torsion-free for ‖a‖ > 1; this entry uses that injectivity/torsion-freeness to compute the subgroup index and anchors the regulator to the fundamental solution"
+    },
+    {
+      "targetId": "pell-equation-oq-01-oq-04-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent extends the regulator scaling law R(aⁿ) = n·R(a) to all integer exponents (pellRegulator_zpow)"
+    },
+    {
+      "targetId": "pell-equation-oq-01-oq-04",
+      "relationship": "ancestor",
+      "description": "Builds the Pell norm homomorphism (Brahmagupta) and the additive regulator R(a) = log‖a‖"
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "ancestor",
+      "description": "Root Pell equation entry"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "relindex_eq_regulator_ratio",
+      "type": "core",
+      "statement": "IsFundamental a₁ → ∀ k, ((⟨a₁ᵏ⟩.relIndex ⟨a₁⟩ : ℕ) : ℝ) = R(a₁ᵏ) / R(a₁)",
+      "description": "The combinatorial index of ⟨a₁ᵏ⟩ in ⟨a₁⟩ equals the real-analytic ratio R(a₁ᵏ)/R₀, combining the index computation relindex_zpowers_pow with the scaling R(a₁ᵏ) = k·R₀.",
+      "significance": "The headline bridge: a length ratio on ℝ counts an algebraic subgroup index"
+    },
+    {
+      "name": "relindex_zpowers_pow",
+      "type": "core",
+      "statement": "IsFundamental a₁ → ∀ k : ℕ, (Subgroup.zpowers (a₁ ^ k)).relIndex (Subgroup.zpowers a₁) = k",
+      "description": "The index of ⟨a₁ᵏ⟩ in ⟨a₁⟩ is exactly k, transported across the injective power homomorphism zpowersHom via Subgroup.relIndex_map_map_of_injective to the model index [ℤ : k·ℤ] = k.",
+      "significance": "Identifies the Pell subgroup tower with the divisor tower of ℤ"
+    },
+    {
+      "name": "exists_regulator_eq_zsmul",
+      "type": "core",
+      "statement": "IsFundamental a₁ → ∀ b, ∃ n : ℤ, R(b) = n · R(a₁)",
+      "description": "Quantization of the regulator spectrum: every solution's regulator is an integer multiple of R₀, from the ±a₁ⁿ structure theorem and sign-invariance of the regulator. The spectrum is the lattice R₀·ℤ.",
+      "significance": "Pins the regulator spectrum as a single discrete lattice generated by R₀"
+    },
+    {
+      "name": "pellRegulator_fundamental_le",
+      "type": "supporting",
+      "statement": "IsFundamental a₁ → 0 < R(b) → R(a₁) ≤ R(b)",
+      "description": "R₀ is the least positive regulator: R(b) = n·R₀ with R₀ > 0 forces n ≥ 1 whenever R(b) > 0.",
+      "significance": "Makes R₀ the canonical minimal generator of the regulator lattice"
+    }
+  ],
+  "sorries": 0
+}

@@ -16,7 +16,11 @@
       "Arithmetic means",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the arithmetic mean of two elements",
+      "non-averaging sets",
+      "growth of order N^{1/4}"
+    ]
   },
   {
     "id": "ann-e186-nonaveraging",
@@ -35,7 +39,10 @@
       "Means",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the arithmetic mean (a+c)/2",
+      "distinct triples within a set"
+    ]
   },
   {
     "id": "ann-e186-alt-def",
@@ -54,7 +61,11 @@
       "extremal problems"
     ],
     "mathContext": "See annotation content for formal details of alternative formulation",
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions",
+      "common differences b−a and c−b",
+      "ordered triples a < b < c"
+    ]
   },
   {
     "id": "ann-e186-F-def",
@@ -72,7 +83,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-averaging subsets of {1,…,N}",
+      "the supremum of cardinalities"
+    ]
   },
   {
     "id": "ann-e186-empty",
@@ -90,7 +104,10 @@
       "proof technique",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the non-averaging definition",
+      "vacuous truth"
+    ]
   },
   {
     "id": "ann-e186-singleton",
@@ -108,7 +125,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the non-averaging definition",
+      "the need for three distinct elements"
+    ]
   },
   {
     "id": "ann-e186-pair",
@@ -126,7 +146,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the non-averaging definition",
+      "the need for three distinct elements"
+    ]
   },
   {
     "id": "ann-e186-bosznay",
@@ -144,7 +167,11 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-averaging sets",
+      "the N^{1/4} lower-bound construction",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e186-lower",
@@ -162,7 +189,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bosznay's construction",
+      "the bound F(N) ≥ ½·N^{1/4}"
+    ]
   },
   {
     "id": "ann-e186-erdos-sarkozy",
@@ -180,7 +210,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum size F(N)",
+      "the (N log N)^{1/2} upper bound",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e186-cfp",
@@ -198,7 +232,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum size F(N)",
+      "the N^{1/4}(log N)^c upper bound (Conlon–Fox–Pham 2023)",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e186-pham-zakharov",
@@ -216,7 +254,11 @@
       "polynomial theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum size F(N)",
+      "the sharp N^{1/4+ε} upper bound (Pham–Zakharov 2024)",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "ann-e186-main",
@@ -234,7 +276,11 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Bosznay's lower bound",
+      "the sharp upper bound",
+      "two-sided bounds on F(N)"
+    ]
   },
   {
     "id": "ann-e186-erdos186",
@@ -252,7 +298,11 @@
       "asymptotics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum size F(N)",
+      "the N^{1/4+o(1)} asymptotic form",
+      "eventual (large-N) statements"
+    ]
   },
   {
     "id": "ann-e186-subset",
@@ -270,7 +320,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-averaging sets",
+      "the subset relation B ⊆ A",
+      "hereditary properties"
+    ]
   },
   {
     "id": "ann-e186-centered-ap",
@@ -288,7 +342,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the midpoint condition 2b = a + c",
+      "centered 3-term arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e186-roth",
@@ -307,6 +364,11 @@
       "3-term arithmetic progressions",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Roth's theorem on 3-term progressions",
+      "the bound N/log N",
+      "comparison with non-averaging sets",
+      "axioms as stated assumptions in the formalization"
+    ]
   }
 ]

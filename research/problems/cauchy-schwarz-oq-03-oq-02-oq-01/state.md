@@ -1,49 +1,51 @@
 # Research State: cauchy-schwarz-oq-03-oq-02-oq-01
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-14
-**Iteration**: 1
+**Since**: 2026-06-14 (ORIENT) → 2026-06-19 (ACT, completed)
+**Iteration**: 2
 
 ## Current Focus
 Reverse Minkowski inequality for `0 < p < 1`:
-`(∑(a_i+b_i)^p)^(1/p) ≥ (∑a_i^p)^(1/p) + (∑b_i^p)^(1/p)` (nonneg a,b). Statement,
-equality locus (proportional), and proof route pinned and numerically certified.
+`(∑(a_i+b_i)^p)^(1/p) ≥ (∑a_i^p)^(1/p) + (∑b_i^p)^(1/p)` (nonneg a,b).
+FORMALIZED and verified (0 sorry / 0 axiom).
 
-## Active Approach
-**Route 1 — reverse Hölder** (mirrors the parent's "Minkowski from Hölder"):
-prove `reverse_holder` (negative conjugate `q=p/(p-1)<0`, `v>0`) from forward
-`NNReal.inner_le_Lp_mul_Lq` by exponent substitution, then derive
-`reverse_minkowski` via the two-Hölder split + division by `(∑(a+b)^p)^{1/q}`.
-~150–250 LOC, Docker-gated. Route 2 (quasi-norm concavity) is the fallback.
+## Result (Session 2, 2026-06-19, researcher-2)
+New file `Proofs/CauchySchwarzOQ03OQ02OQ01.lean` (namespace `ReverseMinkowski`,
+199 LOC, 0 sorries, 0 axioms — only propext/Choice/Quot.sound):
+
+1. `reverse_holder` — reverse Hölder for `0<p<1`, `v>0`:
+   `(∑u^p)^(1/p)·(∑v^(p/(p-1)))^(1/(p/(p-1))) ≤ ∑ u·v`.
+   Proved from forward `NNReal.inner_le_Lp_mul_Lq` via the substitution
+   `P=1/p`, `P'=1/(1-p)` (HolderConjugate, `Real.HolderConjugate.inv_one_sub_inv`)
+   on `f=(uv)^p`, `g=v^(-p)`. The negative conjugate `q=p/(p-1)` appears only in
+   the conclusion. Final inequality discharged by `NNReal.rpow_le_rpow_iff` (raise
+   to power p) + `rpow_add`.
+2. `reverse_minkowski` — reverse (super-additive) Minkowski for `0<p<1`,
+   `a_i+b_i>0`. Riesz split + two reverse-Hölder applications with weight
+   `w=(a+b)^(p-1)` (so `w^q=(a+b)^p`), divide by `(∑(a+b)^p)^(1/q)` using
+   `1/p+1/q=1`.
+3. `reverse_minkowski_half` — p=1/2 instance `(∑√a)²+(∑√b)² ≤ (∑√(a+b))²`.
+
+Registered in `proofs/Proofs.lean`. Gallery entry
+`src/data/proofs/cauchy-schwarz-oq-03-oq-02-oq-01/meta.json` added.
+Numerical cert `verify_reverse_minkowski.py` re-run: ALL CHECKS PASSED.
 
 ## Attempt Count
-- Total attempts: 0 (survey only; no Lean built)
-- Current approach attempts: 0
-- Approaches tried: 1 (reverse-Hölder route — viable, numerically validated)
+- Total attempts: 1 (Route 1 — reverse Hölder; succeeded)
+- Approaches tried: 1
 
 ## Blockers
-- **Verification blackout (2026-06-14)**: Docker daemon down (`docker info` 15s
-  timeout) and Aristotle MCP `prove` → "Resource not found" (probed). No Lean
-  build possible, so the ~150–250 LOC formalisation is build-gated. The ORIENT
-  (statement, Mathlib survey at pin v4.26.0, numerical cert, ACT plan) is
-  build-free and complete.
-- **Mathlib gap (genuine, not wiring)**: no reverse Hölder / reverse Minkowski /
-  `0<p<1` quasi-norm concavity in Mathlib; every Hölder lemma is gated on
-  `HolderConjugate` (⇒ p,q>1). The reverse direction must be built.
+- None remaining. (The 2026-06-14 Docker/Aristotle blackout that gated the build
+  is resolved: file compiled via `lake env lean` against the pinned Mathlib oleans.)
 
-## Next Action (when Docker recovers)
-1. Implement Route 1 in `Proofs/CauchySchwarzOQ03OQ02OQ01.lean`
-   (namespace `ReverseMinkowski`): `reverse_holder` → `reverse_minkowski`,
-   `p=1/2` instance, signed-real corollary. Confirm at build: negative-exponent
-   casts (`v_i^{p/(p-1)}`, keep `v_i>0`) and the `1/q<0` division flip.
-2. Build: `./proofs/scripts/docker-build.sh Proofs.CauchySchwarzOQ03OQ02OQ01`.
-3. Add gallery entry `src/data/proofs/cauchy-schwarz-oq-03-oq-02-oq-01/`.
-4. Re-run `verify_reverse_minkowski.py` to re-confirm artifacts.
+## Notes / Mathlib gap confirmed
+Mathlib (pin v4.26.0) has NO `0<p<1` Hölder / Minkowski / quasi-norm concavity —
+every Hölder lemma is gated on `HolderConjugate` (⇒ p,q>1). This file supplies the
+reverse direction by substitution. `rpow_add_le_add_rpow` gives only the wrong
+(outer upper) bound (caveat C4 in knowledge.md).
 
 ## Dead Ends
-- `rpow_add_le_add_rpow` ((a+b)^p≤a^p+b^p, 0≤p≤1) does **not** prove reverse
-  Minkowski — it gives the outer **upper** bound `LHS ≤ (X+Y)^(1/p)`, wrong
-  direction (see knowledge.md (C4)).
-- Instantiating `NNReal.Lp_add_le` with `p<1` is impossible (`hp : 1 ≤ p`).
+- `rpow_add_le_add_rpow` ((a+b)^p≤a^p+b^p) → outer UPPER bound, wrong direction.
+- Instantiating `NNReal.Lp_add_le` with `p<1` impossible (`hp : 1 ≤ p`).

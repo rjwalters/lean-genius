@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-union-sums",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 71, "endLine": 100 },
+    "type": "definition",
+    "title": "The union and the two Bonferroni terms",
+    "content": "Defines unionSet A as the positive-degree elements and proves unionSet_eq_biUnion (it really is ⋃ᵢ Aᵢ). Sets S1 = Σᵢ|Aᵢ| (first term) and S2 = sieveLayer A 2 (second term), both as ℤ to avoid ℕ-subtraction. interCard_pair is the transparency lemma showing each size-2 sieve layer term |⋂_{l∈{i,j}}Aₗ| equals the honest pairwise intersection |Aᵢ∩Aⱼ| for i≠j.",
+    "mathContext": "$U=\\{x:\\deg x>0\\}=\\bigcup_i A_i$, $\\;S_1=\\sum_i|A_i|$, $\\;S_2=\\sum_{i<j}|A_i\\cap A_j|$. Here $\\deg x=\\#\\{i:x\\in A_i\\}$. Casting to $\\mathbb Z$ keeps $S_1-S_2$ an honest subtraction rather than a truncated $\\mathbb N$ difference.",
+    "significance": "supporting",
+    "relatedConcepts": ["indexed union (biUnion)", "inclusion–exclusion layers", "pairwise intersection", "element degree"],
+    "prerequisites": ["Finset", "Finset.card", "indexed unions"]
+  },
+  {
+    "id": "ann-degrees",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 106, "endLine": 157 },
+    "type": "technique",
+    "title": "Double counting: layers via degrees",
+    "content": "Re-expresses the sieve layers through element degrees. sum_card_eq_sum_deg is the double-counting identity Σᵢ|Aᵢ| = Σ_x deg x (swap the order of summation over the indicator x∈Aᵢ via Finset.sum_comm). Then S1_eq_sieveLayer (S1 = sieveLayer A 1), sieveLayer_zero (S₀ = |α|), bonf_two_eq (the m=2 truncated sieve equals |α| − S₁ + S₂), and the partition unionSet_card_add_noneCard (|U| + noneCard = |α|).",
+    "mathContext": "Double counting: $\\sum_i|A_i|=\\sum_i\\sum_x[x\\in A_i]=\\sum_x\\sum_i[x\\in A_i]=\\sum_x\\deg x$. The truncated sieve $\\mathrm{bonf}\\,A\\,2=S_0-S_1+S_2=|\\alpha|-S_1+S_2$, and the universe splits as $|U|+\\#\\{\\deg=0\\}=|\\alpha|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["double counting", "Finset.sum_comm", "truncated sieve", "complement partition"],
+    "prerequisites": ["indicator-function summation", "Finset.filter_card_add_filter_neg_card_eq_card"]
+  },
+  {
+    "id": "ann-term-two",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 163, "endLine": 174 },
+    "type": "lemma",
+    "title": "term_two — the per-element truncation error at m = 2",
+    "content": "Evaluates the per-element error altPartial(deg x) 2 − [deg x = 0] to C(deg x − 1, 2): zero when the element lies in no set, and C(deg − 1, 2) when its degree is f+1 ≥ 1. Proved by case-splitting on deg x = 0 vs deg x = f+1 and unfolding altPartial via the Pascal-telescoping lemmas from the sibling file.",
+    "mathContext": "For $\\deg x=f+1\\ge 1$ the alternating partial sum telescopes: $\\mathrm{altPartial}(f+1)\\,2-0=\\binom{f}{2}=\\binom{\\deg x-1}{2}$; for $\\deg x=0$ both the partial sum and the indicator give $0$.",
+    "significance": "technical",
+    "relatedConcepts": ["alternating partial sum", "Pascal's rule (telescoping)", "binomial coefficient"],
+    "prerequisites": ["altPartial_succ / altPartial_zero (sibling file)", "Nat.choose"]
+  },
+  {
+    "id": "ann-gap",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 176, "endLine": 201 },
+    "type": "theorem",
+    "title": "union_card_sub_eq_gap — the exact Bonferroni defect",
+    "content": "The heart of the file: |U| − (S₁ − S₂) = Σ_{x∈U} C(deg x − 1, 2). Combines the sibling's per-element identity bonf_sub_noneCard, the term_two evaluation, the restriction of the sum to the union (terms with deg = 0 vanish), bonf_two_eq, and the universe partition, finished by linarith over ℤ. This single identity makes both the inequality and the sharp tightness criterion immediate.",
+    "mathContext": "$|U|-(S_1-S_2)=\\sum_{x\\in U}\\binom{\\deg x-1}{2}$. Each summand is a binomial coefficient $\\ge 0$, and vanishes exactly when $\\deg x\\le 2$ — so the defect both bounds and characterises the gap.",
+    "significance": "key",
+    "relatedConcepts": ["exact defect identity", "per-element reindexing", "binomial coefficients", "integer linarith"],
+    "prerequisites": ["bonf_sub_noneCard (sibling file)", "term_two", "bonf_two_eq"]
+  },
+  {
+    "id": "ann-inequality",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 207, "endLine": 234 },
+    "type": "theorem",
+    "title": "second_bonferroni & the sharp tightness criterion",
+    "content": "second_bonferroni reads S₁ − S₂ ≤ |U| straight off the defect identity (a sum of binomial coefficients is ≥ 0, via Finset.sum_nonneg + positivity). second_bonferroni_eq_iff is the sharp tightness criterion: equality |U| = S₁ − S₂ holds iff ∀ x, deg x ≤ 2, using Finset.sum_eq_zero_iff_of_nonneg (a nonnegative sum vanishes iff every term does) and Nat.choose_eq_zero_iff (C(d−1,2)=0 ⟺ d ≤ 2).",
+    "mathContext": "$S_1-S_2\\le|U|$ since $\\sum_{x\\in U}\\binom{\\deg x-1}{2}\\ge 0$; and equality $\\iff$ every summand is $0\\iff\\forall x,\\ \\deg x\\le 2$ — every element lies in at most two of the sets.",
+    "significance": "key",
+    "relatedConcepts": ["second Bonferroni inequality", "Boole's inequality (dual)", "tightness / equality criterion", "Nat.choose_eq_zero_iff"],
+    "prerequisites": ["union_card_sub_eq_gap", "Finset.sum_eq_zero_iff_of_nonneg"]
+  },
+  {
+    "id": "ann-three-faces",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 236, "endLine": 282 },
+    "type": "insight",
+    "title": "Three equivalent faces of the sharp criterion",
+    "content": "deg_le_two_iff_no_triple recasts 'every degree ≤ 2' geometrically as 'all triple intersections Aᵢ∩Aⱼ∩Aₖ (distinct i,j,k) are empty' — a degree-≥3 point would put x in three sets (extracted via Finset.two_lt_card_iff), and conversely. deg_le_two_iff_sieveLayer_three recasts it algebraically as the vanishing of the third sieve layer sieveLayer A 3 = 0, since that layer is Σ_x C(deg x, 3).",
+    "mathContext": "Combinatorial: $\\forall x,\\deg x\\le 2$. Geometric: $A_i\\cap A_j\\cap A_k=\\varnothing$ for distinct $i,j,k$. Algebraic: $S_3=\\sum_x\\binom{\\deg x}{3}=0$. All three equivalent — pairwise overlaps are harmless; only triple coverage breaks tightness.",
+    "significance": "key",
+    "relatedConcepts": ["triple intersections", "third sieve layer S₃", "Finset.two_lt_card_iff", "equivalent characterisations"],
+    "prerequisites": ["second_bonferroni_eq_iff", "sieveLayer_eq_sum_choose"]
+  },
+  {
+    "id": "ann-disjoint-witness",
+    "proofId": "inclusion-exclusion-oq-01-oq-01-oq-02",
+    "range": { "startLine": 288, "endLine": 320 },
+    "type": "context",
+    "title": "Disjointness sufficient but not necessary (with witness)",
+    "content": "disjoint_imp_tight: a pairwise-disjoint family is tight — disjointness forces every degree ≤ 1 (a degree-≥2 point would lie in two disjoint sets), so it is the classical sufficient condition, recovered as a special case. exFam over Fin 3 ({0,1} and {1,2}, overlapping in 1) is a concrete counterexample to necessity: not disjoint, yet every degree ≤ 2, so |U| = 3 = 4 − 1 = S₁ − S₂, all by decide. This corrects the folklore 'tight iff disjoint' claim.",
+    "mathContext": "Disjoint $\\Rightarrow\\forall x,\\deg x\\le 1\\Rightarrow\\binom{\\deg x-1}{2}=0$, but $\\deg\\le 2$ already suffices. Witness: $A_0=\\{0,1\\},A_1=\\{1,2\\}$ over $\\mathrm{Fin}\\,3$ has $\\deg(1)=2$, $|U|=3$, $S_1=4$, $S_2=1$: tight despite the overlap.",
+    "significance": "supporting",
+    "relatedConcepts": ["pairwise-disjoint families", "counterexample by decide", "sufficient vs necessary", "folklore correction"],
+    "prerequisites": ["second_bonferroni_eq_iff", "the decide tactic"]
+  }
+]

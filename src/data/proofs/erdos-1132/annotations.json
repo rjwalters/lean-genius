@@ -17,7 +17,12 @@
       "approximation-theory",
       "Bernstein-1931"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "approximation theory",
+      "measure theory",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-1132-lagrange",
@@ -36,7 +41,11 @@
       "Finset.prod",
       "Vandermonde"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "Finset products in Mathlib",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-1132-lebesgue",
@@ -55,7 +64,11 @@
       "best-approximation",
       "iSup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "supremum and order theory",
+      "Lean 4 Mathlib iSup"
+    ]
   },
   {
     "id": "ann-1132-growth",
@@ -74,7 +87,12 @@
       "Chebyshev-polynomials",
       "optimal-interpolation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "trigonometric functions",
+      "asymptotic analysis",
+      "real analysis",
+      "logarithms"
+    ]
   },
   {
     "id": "ann-1132-questions",
@@ -94,7 +112,12 @@
       "volume.restrict",
       "ae-filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "measure theory",
+      "filters and limsup in Mathlib",
+      "Lean 4 subtypes",
+      "almost-everywhere quantifier"
+    ]
   },
   {
     "id": "ann-1132-partial",
@@ -114,7 +137,11 @@
       "Bernstein-1931",
       "Erdős-1961"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "point-set topology",
+      "measure theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-1132-equidistant",
@@ -133,7 +160,11 @@
       "exponential-growth",
       "equidistant-interpolation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "real analysis",
+      "exponential growth asymptotics"
+    ]
   },
   {
     "id": "ann-1132-summary",
@@ -152,6 +183,10 @@
       "open-problem",
       "dense-vs-ae"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "anonymous constructor syntax",
+      "approximation theory"
+    ]
   }
 ]

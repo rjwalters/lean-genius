@@ -186,6 +186,16 @@
       "targetId": "cauchy-schwarz-integral",
       "relationship": "complementary",
       "description": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq (\\int f^2)^{1/2}(\\int g^2)^{1/2}$ implies the triangle inequality in $L^2$ spaces, generalizing the finite-dimensional version to function spaces"
+    },
+    {
+      "targetId": "triangle-inequality-oq-03",
+      "relationship": "extended-by",
+      "description": "Strengthens the inequality to the ultrametric form d(x,z) ≤ max(d(x,y), d(y,z)) of non-Archimedean spaces, forcing isosceles triangles, clopen balls, and disjoint distinct balls — the geometry realized by p-adic norms."
+    },
+    {
+      "targetId": "triangle-inequality-oq-04",
+      "relationship": "extended-by",
+      "description": "Recovers the triangle inequality for intrinsic geodesic/path metrics, where d(p,q) = inf of path lengths: concatenating paths and adding arc lengths yields d(p,r) ≤ d(p,q) + d(q,r) in any length space."
     }
   ],
   "leanFile": {

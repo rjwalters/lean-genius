@@ -32,6 +32,18 @@
   - `abs_index_le_genPent`   — index bound `|k| ≤ g(k)`
   - `indexSet_finite`        — only finitely many `g(k) ≤ n` (Euler's recurrence
                                is a finite sum)
+  - `pentSeriesCoeff`        — the RHS coefficient `[Xⁿ] ∑ₖ(-1)ᵏ X^{g(k)}`, well
+                               defined by injectivity; supported on the pentagonal
+                               numbers, value `(-1)ᵏ` at `g(k)`, everywhere `0`/`±1`
+  - `genFun_pent_eq_tprod`   — both ends of Euler's identity via Mathlib's `genFun`:
+                               the PRODUCT side `genFun pentChar = ∏_{m≥1}(1 - Xᵐ)`
+  - `coeff_genFun_pent`      — the COEFFICIENT side `[Xⁿ] genFun pentChar =
+                               ∑_{p∈distincts n}(-1)^{#parts} = p_even(n)-p_odd(n)`
+  - `staircase_sum_eq_genPent` (and `_neg`) — the staircases `{k,…,2k-1}` and
+                               `{k+1,…,2k}` sum to `g(k)` resp. `g(-k)`
+  - `franklin_fixed_point` (and `_neg`) — Franklin's fixed points: each staircase
+                               is `k` distinct positive parts summing to a
+                               pentagonal number, with sign `(-1)^k = pentSign`
   - concrete values `g(0..±4) = 0,1,2,5,7,12,15,22,26` matching the OEIS A001318.
 -/
 
@@ -119,6 +131,40 @@ theorem isGenPent_iff_isSquare (m : ℤ) :
       have h12 : (12 : ℤ) * (2 * m) = 12 * ((k + 1) * (3 * (k + 1) - 1)) := by
         rw [hs1] at hs; linear_combination hs
       exact mul_left_cancel₀ (by norm_num) h12
+
+/-! ## Part 2b: Explicit discriminant roots and the ±-pairing
+
+The forward half of the recognition criterion is the algebraic identity
+`24·g(k)+1 = (6k-1)²`.  Where `isGenPent_iff_isSquare` only asserts that *some*
+square equals the discriminant, an enumerator of pentagonal exponents actually
+needs the *explicit* root, so we record it (and its negative-index companion) as
+named witnesses.  The two roots `6k∓1` of the `±k` pair straddle `6k`
+symmetrically, and the values themselves satisfy `g(k)+g(-k) = 3k²` (their
+difference being `k`, by `genPent_neg`). -/
+
+/-- **Explicit discriminant root (positive index).**  `24·g(k)+1 = (6k-1)²` — the
+concrete square witnessing `IsGenPent (g k)` in the recognition criterion, with
+its root named explicitly rather than existentially. -/
+theorem disc_genPent (k : ℤ) : 24 * genPent k + 1 = (6 * k - 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent k
+
+/-- **Explicit discriminant root (negative index).**  `24·g(-k)+1 = (6k+1)²`; the
+two roots `6k-1` and `6k+1` of the `±k` pair straddle `6k`. -/
+theorem disc_genPent_neg (k : ℤ) : 24 * genPent (-k) + 1 = (6 * k + 1) ^ 2 := by
+  linear_combination 12 * two_mul_genPent (-k)
+
+/-- **The `±k` pairing sum.**  `g(k)+g(-k) = 3k²`: the two pentagonal shifts that
+appear together in Euler's recurrence sum to `3k²` (their difference is `k`, by
+`genPent_neg`), since `2(g(k)+g(-k)) = k(3k-1)+k(3k+1) = 6k²`. -/
+theorem genPent_add_neg (k : ℤ) : genPent k + genPent (-k) = 3 * k ^ 2 := by
+  have h : 2 * (genPent k + genPent (-k)) = 2 * (3 * k ^ 2) := by
+    linear_combination two_mul_genPent k + two_mul_genPent (-k)
+  exact mul_left_cancel₀ (by norm_num) h
+
+/-- Sanity check on the explicit root: `24·g(3)+1 = 17²` with `17 = 6·3-1`,
+strengthening `twelve_isGenPent` (Part 4) to exhibit the concrete square root. -/
+theorem disc_genPent_three : 24 * genPent 3 + 1 = 17 ^ 2 := by
+  rw [disc_genPent 3]; norm_num
 
 /-! ## Part 3: Structural facts -/
 
@@ -264,7 +310,343 @@ theorem genPent_neg_four : genPent (-4) = 26 := by have := two_mul_genPent (-4);
 theorem twelve_isGenPent : IsGenPent 12 :=
   (isGenPent_iff_isSquare 12).mpr ⟨17, by norm_num⟩
 
-/-! ## OPEN CORE (not formalized here)
+/-! ## Part 5: The series-side coefficient (RHS of Euler's identity)
+
+The right-hand side of the pentagonal number theorem is the lacunary series
+`∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.  Here we construct its coefficient function explicitly,
+which is the precise object the OPEN CORE must prove equal to the product
+`∏_{n≥1}(1 - Xⁿ)`.
+
+The sign `(-1)ᵏ` depends only on the parity of `k`, so we record it as
+`pentSign k = (-1)^{|k|}`.  Because the index map `g` is injective
+(`genPent_injective`), each exponent `n` is hit by **at most one** index, so the
+coefficient `[Xⁿ] ∑_k (-1)ᵏ X^{g(k)}` is the well-defined function
+
+    `pentSeriesCoeff n = (-1)ᵏ`  if `n = g(k)` for the (unique) `k`,  else `0`.
+
+We prove it is supported exactly on the generalized pentagonal numbers, takes the
+value `pentSign k` at `g(k)`, and is everywhere `0` or `±1`. -/
+
+/-- The pentagonal sign `(-1)ᵏ`.  As `(-1)^{·}` only sees parity, we phrase it via
+`k.natAbs`; this matches `(-1)ᵏ` since `k` and `|k|` have the same parity. -/
+def pentSign (k : ℤ) : ℤ := (-1) ^ k.natAbs
+
+/-- The sign is `±1`. -/
+theorem pentSign_eq_one_or_neg_one (k : ℤ) : pentSign k = 1 ∨ pentSign k = -1 := by
+  unfold pentSign
+  rcases Nat.even_or_odd k.natAbs with he | ho
+  · exact Or.inl he.neg_one_pow
+  · exact Or.inr ho.neg_one_pow
+
+/-- The sign is never zero. -/
+theorem pentSign_ne_zero (k : ℤ) : pentSign k ≠ 0 := by
+  rcases pentSign_eq_one_or_neg_one k with h | h <;> rw [h] <;> norm_num
+
+/-- The `±k` pairing has matching sign: `pentSign (-k) = pentSign k` (both indices
+in a recurrence pair carry the same `(-1)ᵏ`), since `|-k| = |k|`. -/
+@[simp] theorem pentSign_neg (k : ℤ) : pentSign (-k) = pentSign k := by
+  unfold pentSign; rw [Int.natAbs_neg]
+
+open Classical in
+/-- **The coefficient of `Xⁿ` in `∑_{k∈ℤ} (-1)ᵏ X^{g(k)}`.**  If `n` is a
+generalized pentagonal number it equals `pentSign k` for the unique index `k` with
+`g(k) = n`; otherwise it is `0`.  Well-defined by `genPent_injective`. -/
+noncomputable def pentSeriesCoeff (n : ℤ) : ℤ :=
+  if h : IsGenPent n then pentSign (Classical.choose h) else 0
+
+/-- Off the pentagonal numbers the coefficient vanishes. -/
+theorem pentSeriesCoeff_of_not {n : ℤ} (h : ¬ IsGenPent n) : pentSeriesCoeff n = 0 := by
+  unfold pentSeriesCoeff; rw [dif_neg h]
+
+/-- **Value at a pentagonal exponent.** `[X^{g(k)}] ∑_j (-1)ʲ X^{g(j)} = (-1)ᵏ`.
+The chosen witness for `IsGenPent (g k)` must be `k` itself by injectivity. -/
+theorem pentSeriesCoeff_genPent (k : ℤ) : pentSeriesCoeff (genPent k) = pentSign k := by
+  have hex : IsGenPent (genPent k) := genPent_isGenPent k
+  unfold pentSeriesCoeff
+  rw [dif_pos hex]
+  have hspec := Classical.choose_spec hex
+  have h2 := two_mul_genPent (Classical.choose hex)
+  have hval : genPent (Classical.choose hex) = genPent k := by linarith [hspec, h2]
+  rw [genPent_injective hval]
+
+/-- The coefficient is supported exactly on the generalized pentagonal numbers:
+it is nonzero iff `n` is one (the value there is `±1` by `pentSign_ne_zero`). -/
+theorem pentSeriesCoeff_ne_zero_iff (n : ℤ) : pentSeriesCoeff n ≠ 0 ↔ IsGenPent n := by
+  constructor
+  · intro h
+    by_contra hn
+    exact h (pentSeriesCoeff_of_not hn)
+  · rintro ⟨k, hk⟩
+    have hval : genPent k = n := by
+      have h2 := two_mul_genPent k; linarith [hk, h2]
+    rw [← hval, pentSeriesCoeff_genPent]
+    exact pentSign_ne_zero k
+
+/-- Every coefficient is `0` or `±1`. -/
+theorem pentSeriesCoeff_eq_zero_or (n : ℤ) :
+    pentSeriesCoeff n = 0 ∨ pentSeriesCoeff n = 1 ∨ pentSeriesCoeff n = -1 := by
+  by_cases h : IsGenPent n
+  · obtain ⟨k, hk⟩ := h
+    have hval : genPent k = n := by have h2 := two_mul_genPent k; linarith [hk, h2]
+    rw [← hval, pentSeriesCoeff_genPent]
+    exact Or.inr (pentSign_eq_one_or_neg_one k)
+  · exact Or.inl (pentSeriesCoeff_of_not h)
+
+/-- Concrete: the constant term `[X⁰]` of the series is `+1` (matching the leading
+`1` of the product `∏(1-Xⁿ)`), since `0 = g(0)` and `(-1)⁰ = 1`. -/
+theorem pentSeriesCoeff_zero : pentSeriesCoeff 0 = 1 := by
+  have h : pentSeriesCoeff (genPent 0) = pentSign 0 := pentSeriesCoeff_genPent 0
+  rw [genPent_zero] at h
+  rw [h]; rfl
+
+/-- Concrete: `[X¹] = -1` (the `-X` term of the product), since `1 = g(1)` and
+`(-1)¹ = -1`. -/
+theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
+  have h : pentSeriesCoeff (genPent 1) = pentSign 1 := pentSeriesCoeff_genPent 1
+  rw [genPent_one] at h
+  rw [h]; rfl
+
+/-- **The series coefficient as a finite sum over the computable enumerator.**
+Although `pentSeriesCoeff` is `noncomputable` (it picks the matching index via
+`Classical.choose`), it agrees with the *explicit* finite sum over `pentIndices n`
+(Part 3c) that keeps only the index landing on `n` exactly.  Since `genPent` is
+injective, at most one summand survives, so the right-hand side is `pentSign k`
+when `n = g(k)` and `0` otherwise — precisely `pentSeriesCoeff`.  This turns the
+abstract `[Xⁿ]` coefficient into a `Finset`-evaluable expression: the form
+Euler's recurrence `p(n) = ∑ₖ (-1)ᵏ⁻¹ p(n - g_k)` ranges over. -/
+theorem pentSeriesCoeff_eq_sum_pentIndices (n : ℤ) :
+    pentSeriesCoeff n
+      = ∑ k ∈ pentIndices n, if genPent k = n then pentSign k else 0 := by
+  by_cases h : IsGenPent n
+  · obtain ⟨k₀, hk₀⟩ := h
+    have hval : genPent k₀ = n := by
+      have h2 := two_mul_genPent k₀; linarith [hk₀, h2]
+    rw [Finset.sum_eq_single k₀]
+    · rw [if_pos hval, ← hval, pentSeriesCoeff_genPent]
+    · intro b _ hb
+      have hbne : genPent b ≠ n := fun hbn =>
+        hb (genPent_injective (hbn.trans hval.symm))
+      rw [if_neg hbne]
+    · intro hmem
+      exact absurd (mem_pentIndices.mpr hval.le) hmem
+  · rw [pentSeriesCoeff_of_not h]
+    refine (Finset.sum_eq_zero ?_).symm
+    intro k _
+    have hkne : genPent k ≠ n := fun hkn =>
+      h ⟨k, by have h2 := two_mul_genPent k; linarith [hkn, h2]⟩
+    rw [if_neg hkne]
+
+/-! ## Part 6: The Mathlib power-series bridges (both ends of Euler's identity)
+
+Mathlib's 2025 `Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang) supplies
+the partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the proved
+product form `genFun_eq_tprod` and coefficient formula `coeff_genFun`.  We
+instantiate the **Euler character** `f i c = if c = 1 then (-1 : ℤ) else 0` and
+recover BOTH ends of Euler's pentagonal identity as fully machine-checked facts:
+
+* `genFun_pent_eq_tprod` — the PRODUCT side `∏_{m≥1}(1 - Xᵐ)` (each inner factor
+  collapses to `1 - X^{i+1}` because the character is supported on multiplicity `1`);
+* `coeff_genFun_pent`     — the COEFFICIENT side `∑_{p∈distincts n}(-1)^{#parts}`,
+  i.e. `p_even(n) - p_odd(n)` (a partition with a repeated part has a `0` factor and
+  drops out; a distinct-part partition contributes `(-1)^{#parts}`).
+
+With both ends now verified here, the entire pentagonal number theorem collapses to
+the single identity `∑_{p∈distincts n}(-1)^{#parts} = pentSeriesCoeff (n : ℤ)` —
+Franklin's involution — recorded in the OPEN CORE note below. -/
+
+section Bridges
+
+open PowerSeries Finset
+open scoped PowerSeries.WithPiTopology
+
+/-- The Euler character driving `∏(1-Xⁿ)`: weight `-1` on a part used exactly once,
+`0` on any part used more than once. -/
+private def pentChar : ℕ → ℕ → ℤ := fun _ c => if c = 1 then (-1 : ℤ) else 0
+
+/-- **Product side of Euler's identity (free from Mathlib's `genFun`).**  With the
+Euler character, Mathlib's partition generating function is exactly Euler's product
+`∏_{m≥1}(1 - Xᵐ)`. -/
+theorem genFun_pent_eq_tprod :
+    Nat.Partition.genFun pentChar = ∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1)) := by
+  rw [Nat.Partition.genFun_eq_tprod]
+  refine tprod_congr (fun i => ?_)
+  have hsingle :
+      (∑' j : ℕ, pentChar (i + 1) (j + 1) • (X : ℤ⟦X⟧) ^ ((i + 1) * (j + 1)))
+        = -(X : ℤ⟦X⟧) ^ (i + 1) := by
+    rw [tsum_eq_single 0]
+    · simp [pentChar]
+    · intro b hb
+      simp only [pentChar]
+      rw [if_neg (show ¬ (b + 1 = 1) by omega), zero_smul]
+  rw [hsingle]; ring
+
+/-- **Coefficient side of Euler's identity.**  The `n`-th coefficient of the same
+generating function is the signed count of partitions of `n` into distinct parts,
+`∑_{p∈distincts n}(-1)^{#parts} = p_even(n) - p_odd(n)`. -/
+theorem coeff_genFun_pent (n : ℕ) :
+    (Nat.Partition.genFun pentChar).coeff n
+      = ∑ p ∈ Nat.Partition.distincts n, (-1 : ℤ) ^ p.parts.card := by
+  rw [Nat.Partition.coeff_genFun]
+  -- A distinct-part partition contributes `(-1)^{#parts}`...
+  have hdist : ∀ p : n.Partition, p.parts.Nodup →
+      p.parts.toFinsupp.prod pentChar = (-1 : ℤ) ^ p.parts.card := by
+    intro p hp
+    simp only [Finsupp.prod, Multiset.toFinsupp_support]
+    have hval : ∀ a ∈ p.parts.toFinset, pentChar a (p.parts.toFinsupp a) = (-1 : ℤ) := by
+      intro a ha
+      have hcount : p.parts.count a = 1 :=
+        Multiset.count_eq_one_of_mem hp (Multiset.mem_toFinset.mp ha)
+      simp [pentChar, Multiset.toFinsupp_apply, hcount]
+    rw [Finset.prod_congr rfl hval, Finset.prod_const,
+      Multiset.toFinset_card_of_nodup hp]
+  -- ...while a partition with a repeated part has a `0` factor and drops out.
+  have hnodup : ∀ p : n.Partition, ¬ p.parts.Nodup →
+      p.parts.toFinsupp.prod pentChar = 0 := by
+    intro p hp
+    simp only [Finsupp.prod, Multiset.toFinsupp_support]
+    rw [Multiset.nodup_iff_count_eq_one] at hp
+    push_neg at hp
+    obtain ⟨a, ha_mem, ha_count⟩ := hp
+    refine Finset.prod_eq_zero (Multiset.mem_toFinset.mpr ha_mem) ?_
+    simp [pentChar, Multiset.toFinsupp_apply, ha_count]
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun p => p.parts.Nodup)]
+  rw [Finset.sum_eq_zero (fun p hp => hnodup p (Finset.mem_filter.mp hp).2), add_zero,
+    Nat.Partition.distincts]
+  exact Finset.sum_congr rfl (fun p hp => hdist p (Finset.mem_filter.mp hp).2)
+
+/-- **Both ends joined — the directly-citable headline.**  Composing the product
+side `genFun_pent_eq_tprod` with the coefficient side `coeff_genFun_pent`, the
+`n`-th coefficient of Euler's product `∏_{m≥1}(1 - Xᵐ)` is itself the signed count
+of partitions of `n` into distinct parts, with no `genFun` intermediary visible:
+`[Xⁿ] ∏(1-Xᵐ) = ∑_{p∈distincts n}(-1)^{#parts}`. -/
+theorem coeff_tprod_pent (n : ℕ) :
+    (∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1))).coeff n
+      = ∑ p ∈ Nat.Partition.distincts n, (-1 : ℤ) ^ p.parts.card := by
+  rw [← genFun_pent_eq_tprod, coeff_genFun_pent]
+
+/-- **The coefficient is literally `p_even(n) - p_odd(n)`.**  Splitting the signed
+sum by the parity of the number of parts, the coefficient of `∏(1-Xᵐ)` equals the
+number of distinct-part partitions of `n` with an even number of parts minus those
+with an odd number of parts — Euler's `p_even(n) - p_odd(n)` made explicit. -/
+theorem coeff_tprod_pent_eq_evenOdd_diff (n : ℕ) :
+    (∏' i : ℕ, (1 - (X : ℤ⟦X⟧) ^ (i + 1))).coeff n
+      = ((Nat.Partition.distincts n).filter (fun p => Even p.parts.card)).card
+        - ((Nat.Partition.distincts n).filter (fun p => Odd p.parts.card)).card := by
+  rw [coeff_tprod_pent, ← Finset.sum_filter_add_sum_filter_not
+    (Nat.Partition.distincts n) (fun p => Even p.parts.card)]
+  have heven : ∑ p ∈ (Nat.Partition.distincts n).filter (fun p => Even p.parts.card),
+      (-1 : ℤ) ^ p.parts.card
+      = ((Nat.Partition.distincts n).filter (fun p => Even p.parts.card)).card := by
+    rw [Finset.sum_congr rfl fun p hp => (Finset.mem_filter.mp hp).2.neg_one_pow,
+      Finset.sum_const, nsmul_eq_mul, mul_one]
+  have hodd : ∑ p ∈ (Nat.Partition.distincts n).filter (fun p => ¬ Even p.parts.card),
+      (-1 : ℤ) ^ p.parts.card
+      = -((Nat.Partition.distincts n).filter (fun p => Odd p.parts.card)).card := by
+    rw [Finset.filter_congr fun p _ => Nat.not_even_iff_odd,
+      Finset.sum_congr rfl fun p hp => (Finset.mem_filter.mp hp).2.neg_one_pow,
+      Finset.sum_const, nsmul_eq_mul, mul_neg_one]
+  rw [heven, hodd, sub_eq_add_neg]
+
+end Bridges
+
+/-! ## Part 7: Franklin's fixed points — the pentagonal staircase partitions
+
+Franklin's sign-reversing involution (the OPEN CORE below) acts on partitions of
+`n` into *distinct* parts; its only fixed points are the "staircases"
+`{k, k+1, …, 2k-1}` and `{k+1, …, 2k}`, which sum to the generalized pentagonal
+numbers `g(k)` and `g(-k)` respectively.  The involution itself is not formalized
+(it is the deep, Mathlib-absent development described below), but its *fixed-point
+data* is elementary, and we record it here in this file's own
+`genPent` / `IsGenPent` / `pentSign` vocabulary: each staircase is a set of exactly
+`k` distinct positive integers whose sum is a generalized pentagonal number, and
+whose part-count parity is the pentagonal sign `(-1)^k`.  This is precisely the
+residual term that Franklin's cancellation leaves behind — the right-hand side of
+the FRANKLIN identity below — now pinned down arithmetically. -/
+
+/-- Gauss's sum `∑_{j<k} j` in `ℤ`, in the division-free doubled form. -/
+private theorem gauss_int (k : ℕ) :
+    (∑ j ∈ Finset.range k, (j : ℤ)) * 2 = (k : ℤ) * ((k : ℤ) - 1) := by
+  induction k with
+  | zero => simp
+  | succ n ih => rw [Finset.sum_range_succ, add_mul, ih]; push_cast; ring
+
+/-- The descending staircase `{k, k+1, …, 2k-1}`, re-indexed as `range k` via
+`i ↦ k + i`. -/
+theorem staircase_ico_eq_range (k : ℕ) :
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = ∑ j ∈ Finset.range k, ((k : ℤ) + j) := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  have h : 2 * k - k = k := by omega
+  rw [h]
+  exact Finset.sum_congr rfl (fun j _ => by push_cast; ring)
+
+/-- The ascending staircase `{k+1, …, 2k}`, re-indexed as `range k` via
+`i ↦ k + 1 + i`. -/
+theorem staircase_ico_eq_range_neg (k : ℕ) :
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ))
+      = ∑ j ∈ Finset.range k, ((k : ℤ) + 1 + j) := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  have h : 2 * k + 1 - (k + 1) = k := by omega
+  rw [h]
+  exact Finset.sum_congr rfl (fun j _ => by push_cast; ring)
+
+/-- **Staircase sum = pentagonal number (positive arm).** The `k` consecutive
+integers `k, k+1, …, 2k-1` sum to the generalized pentagonal number `g(k)`. -/
+theorem staircase_sum_eq_genPent (k : ℕ) :
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = genPent (k : ℤ) := by
+  have h2 : 2 * (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = 2 * genPent (k : ℤ) := by
+    rw [two_mul_genPent, staircase_ico_eq_range]
+    have hsplit : (∑ j ∈ Finset.range k, ((k : ℤ) + j))
+        = (k : ℤ) * k + ∑ j ∈ Finset.range k, (j : ℤ) := by
+      rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    rw [hsplit]; linear_combination gauss_int k
+  exact mul_left_cancel₀ (by norm_num) h2
+
+/-- **Staircase sum = pentagonal number (negative arm).** The `k` consecutive
+integers `k+1, …, 2k` sum to the generalized pentagonal number `g(-k)`. -/
+theorem staircase_sum_eq_genPent_neg (k : ℕ) :
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ)) = genPent (-(k : ℤ)) := by
+  have h2 : 2 * (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ))
+      = 2 * genPent (-(k : ℤ)) := by
+    rw [two_mul_genPent, staircase_ico_eq_range_neg]
+    have hsplit : (∑ j ∈ Finset.range k, ((k : ℤ) + 1 + j))
+        = (k : ℤ) * (k + 1) + ∑ j ∈ Finset.range k, (j : ℤ) := by
+      rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    rw [hsplit]; linear_combination gauss_int k
+  exact mul_left_cancel₀ (by norm_num) h2
+
+/-- **Franklin fixed point (positive arm).** For `k ≥ 1`, the staircase
+`{k, …, 2k-1}` is a partition of the generalized pentagonal number `g(k)` into
+exactly `k` distinct positive parts; its part-count parity gives sign
+`(-1)^k = pentSign k`.  These are the fixed points of Franklin's involution on
+which the cancellation fails — the source of the `(-1)^k X^{g(k)}` terms. -/
+theorem franklin_fixed_point (k : ℕ) (hk : 1 ≤ k) :
+    (Finset.Ico k (2 * k)).card = k ∧
+    (∀ i ∈ Finset.Ico k (2 * k), 0 < i) ∧
+    (∑ i ∈ Finset.Ico k (2 * k), (i : ℤ)) = genPent (k : ℤ) ∧
+    ((-1 : ℤ)) ^ (Finset.Ico k (2 * k)).card = pentSign (k : ℤ) := by
+  refine ⟨?_, ?_, staircase_sum_eq_genPent k, ?_⟩
+  · rw [Nat.card_Ico]; omega
+  · intro i hi; rw [Finset.mem_Ico] at hi; omega
+  · rw [Nat.card_Ico]
+    have h : 2 * k - k = k := by omega
+    rw [h, pentSign, Int.natAbs_natCast]
+
+/-- **Franklin fixed point (negative arm).** For `k ≥ 1`, the staircase
+`{k+1, …, 2k}` is a partition of `g(-k)` into exactly `k` distinct positive parts,
+with sign `(-1)^k = pentSign (-k)`. -/
+theorem franklin_fixed_point_neg (k : ℕ) (hk : 1 ≤ k) :
+    (Finset.Ico (k + 1) (2 * k + 1)).card = k ∧
+    (∀ i ∈ Finset.Ico (k + 1) (2 * k + 1), 0 < i) ∧
+    (∑ i ∈ Finset.Ico (k + 1) (2 * k + 1), (i : ℤ)) = genPent (-(k : ℤ)) ∧
+    ((-1 : ℤ)) ^ (Finset.Ico (k + 1) (2 * k + 1)).card = pentSign (-(k : ℤ)) := by
+  refine ⟨?_, ?_, staircase_sum_eq_genPent_neg k, ?_⟩
+  · rw [Nat.card_Ico]; omega
+  · intro i hi; rw [Finset.mem_Ico] at hi; omega
+  · rw [Nat.card_Ico]
+    have h : 2 * k + 1 - (k + 1) = k := by omega
+    rw [h, pentSign, Int.natAbs_neg, Int.natAbs_natCast]
+
+/-! ## OPEN CORE (not formalized here) — sharply reduced by Mathlib's `Partition.genFun`
 
 The deep content of the pentagonal number theorem is the *identity*
 
@@ -276,10 +658,48 @@ where `p_even`/`p_odd` count partitions of `n` into an even/odd number of
 on partitions into distinct parts, whose only fixed points are the staircase
 partitions of generalized pentagonal numbers.
 
-Mathlib (as of this writing) has `Nat.Partition` but neither partitions into
-distinct parts with a parity sign, nor Franklin's involution, nor the requisite
-formal-power-series infinite-product manipulation.  Building that is a
-multi-file development; this file supplies the index-set theory it would consume
-(notably `isGenPent_iff_isSquare` and `genPent_injective`). -/
+**UPDATE (Session 6, 2026-06-19): both ends of Euler's identity are now MACHINE-
+CHECKED in this file** (Part 6 above), building on Mathlib's 2025
+`Mathlib.Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang).  That module
+defines the partition generating function `Nat.Partition.genFun f : R⟦X⟧` with the
+proved product form
+
+    `genFun_eq_tprod : genFun f = ∏' i, (1 + ∑' j, f (i+1) (j+1) • X^((i+1)*(j+1)))`
+
+and coefficient formula
+
+    `coeff_genFun : (genFun f).coeff n = ∑ p : n.Partition, p.parts.toFinsupp.prod f`,
+
+while `Partition.Basic` supplies `distincts n` / `odds n`.  Instantiating the
+character `pentChar i c = if c = 1 then (-1 : ℤ) else 0`, Part 6 proves
+
+    `genFun_pent_eq_tprod : genFun pentChar = ∏_{m≥1} (1 - Xᵐ)`                   (PRODUCT side)
+    `coeff_genFun_pent : (genFun pentChar).coeff n
+                            = ∑_{p ∈ distincts n} (-1)^{p.parts.card}`           (COEFFICIENT side)
+
+— the second being exactly `p_even(n) - p_odd(n)`.
+
+Hence both the product `∏(1-Xⁿ)` AND its combinatorial coefficient are now verified
+here; the ENTIRE remaining open core collapses to the single identity
+
+    `∑_{p ∈ distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n : ℤ)`           (FRANKLIN)
+
+— Franklin's sign-reversing involution (pair the smallest part with the longest
+terminal staircase; fixed points ⟺ pentagonal staircases) — plus the bookkeeping
+that aligns this file's `ℤ`-valued `pentSeriesCoeff` / `genPent` index theory
+(`isGenPent_iff_isSquare`, `genPent_injective`, `pentSeriesCoeff_genPent`) with the
+`ℕ`-indexed `genFun` coefficient.  Franklin's involution itself is still absent from
+Mathlib and remains the deep, multi-file development; this file supplies the
+index-set theory it consumes (notably `isGenPent_iff_isSquare` and
+`genPent_injective`).
+
+**The fixed-point side IS now formalized (Part 7).** The *only* term Franklin's
+cancellation leaves behind is the contribution of the fixed points — the pentagonal
+staircases.  `franklin_fixed_point` / `franklin_fixed_point_neg` prove, with 0
+axioms, that the staircases `{k, …, 2k-1}` and `{k+1, …, 2k}` are partitions of
+`g(k)` and `g(-k)` into exactly `k` distinct positive parts carrying sign
+`(-1)^k = pentSign`.  So the RHS of the FRANKLIN identity is now accounted for
+arithmetically; what remains genuinely open is the *involution on the non-fixed
+partitions* witnessing the cancellation of all other terms. -/
 
 end PentagonalNumberTheoremOQ01

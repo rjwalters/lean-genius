@@ -1,0 +1,178 @@
+{
+  "id": "sum-of-kth-powers-oq-05-oq-01-oq-01",
+  "title": "Power-Sum Congruence for Composite Modulus via CRT: ∑_{i<a·b} iᵏ from its factor residues",
+  "slug": "sum-of-kth-powers-oq-05-oq-01-oq-01",
+  "description": "Extends the parent's prime-modulus power-sum congruence to a composite modulus using the Chinese Remainder Theorem. The bridge is a single periodicity fact: modulo m the summand i ↦ iᵏ depends only on i mod m, and as i ranges over 0,…,m·n−1 each residue class is hit exactly n times, so ∑_{i<m·n} iᵏ ≡ n·∑_{i<m} iᵏ (mod m). Proved by casting to ZMod m, where the congruence becomes an equality established by induction on n via Finset.sum_range_add and (↑(m·n+x):ZMod m)=↑x. Reading the composite sum modulo each coprime factor and feeding the two residues into Mathlib's Nat.modEq_and_modEq_iff_modEq_mul gives a complete CRT characterization of ∑_{i<a·b} iᵏ mod a·b; specializing the factors to distinct primes and inserting the parent's dichotomy yields the fully explicit composite formula. Verified, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem",
+    "date": "2026-06-23",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "power-sums",
+      "modular-arithmetic",
+      "chinese-remainder-theorem",
+      "nat-modeq",
+      "zmod",
+      "congruences",
+      "periodicity",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SumOfKthPowersOQ05OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_add",
+        "description": "∑_{x<n+m} f x = ∑_{x<n} f x + ∑_{x<m} f (n+x) — splits range (m·n+m) into the first m·n terms plus a trailing block of length m, the inductive step of the periodicity lemma",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_self",
+        "description": "(↑m : ZMod m) = 0 — collapses (↑(m·n+x):ZMod m) to ↑x, the period-m identity making each trailing block equal to one period",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_natCast_iff",
+        "description": "(↑a : ZMod c) = ↑b ↔ a ≡ b [MOD c] — converts the ℕ-valued replication congruence into the ZMod m equality proved by induction",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.modEq_and_modEq_iff_modEq_mul",
+        "description": "for coprime a, b: (x ≡ y [MOD a] ∧ x ≡ y [MOD b]) ↔ x ≡ y [MOD a·b] — the CRT for Nat.ModEq, which assembles the two factor residues into the residue mod a·b",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.coprime_primes",
+        "description": "for primes p, q: Nat.Coprime p q ↔ p ≠ q — supplies the coprimality hypothesis in the two-distinct-primes specialization",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "SumOfKthPowersOQ05OQ01.sum_pow_modEq",
+        "description": "the parent gallery result ∑_{i<p} iᵏ ≡ (if k≠0 ∧ (p−1)∣k then p−1 else 0) (mod p) — the prime dichotomy fed into the CRT bridge to produce the explicit two-primes formula",
+        "module": "Proofs.SumOfKthPowersOQ05OQ01"
+      }
+    ],
+    "originalContributions": [
+      "sum_pow_zmod_range_mul: in ZMod m, ∑_{i<m·n} (↑i)ᵏ = (↑n)·∑_{i<m} (↑i)ᵏ — the periodicity engine, proved by induction on n with Finset.sum_range_add and the period-m identity (↑(m·n+x):ZMod m)=↑x",
+      "sum_pow_range_mul_modEq: the replication congruence ∑_{i<m·n} iᵏ ≡ n·∑_{i<m} iᵏ (mod m) for an arbitrary modulus m, obtained by casting the ZMod m equality back to Nat.ModEq",
+      "sum_pow_modEq_left / sum_pow_modEq_right: reading the composite sum ∑_{i<a·b} iᵏ modulo the left factor a (≡ b·∑_{i<a} iᵏ) and the right factor b (≡ a·∑_{i<b} iᵏ)",
+      "sum_pow_crt: the full CRT characterization — for coprime a,b, x ≡ ∑_{i<a·b} iᵏ (mod a·b) iff x matches both factor residues; pins the composite residue down from the two factor sums",
+      "sum_pow_crt_two_primes: the fully explicit composite formula for distinct primes p≠q, combining the CRT bridge with the parent's prime dichotomy",
+      "Concrete decide-checked Nat.ModEq instances over mod 6 = 2·3 and a three-period mod-4 replication (0-axiom, no native_decide)"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 133,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Concrete instances use kernel decide (not native_decide), so no Lean.ofReduceBool dependency.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The prime-modulus congruence for ∑ iᵏ is classical (Ireland–Rosen, Ch. 4). Moving to a composite modulus is exactly where the Chinese Remainder Theorem earns its keep: a congruence modulo a product of coprime factors is equivalent to the pair of congruences modulo each factor. The remaining ingredient is purely combinatorial — over a complete range of length m·n the summand i ↦ iᵏ is periodic mod m with period m, so the long sum is n copies of one period. Together these reduce the composite power sum, modulo each factor, to a scalar multiple of a shorter power sum, and for prime factors to the parent's explicit dichotomy.",
+    "problemStatement": "**Open Question (sum-of-kth-powers-oq-05-oq-01-oq-01)**: Extend the Nat-congruence power-sum dichotomy from a prime modulus to a composite modulus n by combining the prime case with the Chinese Remainder Theorem.\n\n**Result**: The replication congruence sum_pow_range_mul_modEq reduces ∑_{i<m·n} iᵏ mod m to n·∑_{i<m} iᵏ; sum_pow_crt assembles the two coprime-factor readings into a complete characterization of ∑_{i<a·b} iᵏ mod a·b; sum_pow_crt_two_primes specializes to distinct primes with the parent's explicit values.",
+    "text": "For any modulus m, the sum of k-th powers over a range whose length is a multiple m·n is congruent mod m to n times the sum over a single period of length m. Consequently, for coprime factors a and b the residue of ∑_{i<a·b} iᵏ modulo a·b is exactly the value the Chinese Remainder Theorem builds from the two factor residues b·∑_{i<a} iᵏ (mod a) and a·∑_{i<b} iᵏ (mod b); for distinct primes these residues are given by the parent's (p−1)∣k dichotomy.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `sum_pow_zmod_range_mul` works in the ring ZMod m, where the target congruence becomes the equality ∑_{i<m·n} (↑i)ᵏ = (↑n)·∑_{i<m} (↑i)ᵏ. Induct on n. Base: range 0 is empty. Step: split range (m·n+m) with Finset.sum_range_add into the first m·n terms (the induction hypothesis) plus a trailing block ∑_{x<m} (↑(m·n+x))ᵏ; since (↑(m·n+x):ZMod m) = ↑x by ZMod.natCast_self, the block equals one full period ∑_{x<m} (↑x)ᵏ, and (↑n + 1)·S = ↑n·S + S closes by ring.\n2. `sum_pow_range_mul_modEq` casts step 1 back to ℕ: ZMod.natCast_eq_natCast_iff turns the Nat.ModEq goal into the cast equality, push_cast distributes over the sum and the product n·∑, and the ZMod identity finishes it.\n3. `sum_pow_modEq_left` is the lemma at m=a, n=b; `sum_pow_modEq_right` is the lemma at m=b, n=a after Nat.mul_comm.\n4. `sum_pow_crt` rewrites x ≡ ∑ [MOD a·b] as the conjunction of the two factor congruences (Nat.modEq_and_modEq_iff_modEq_mul) and transports each side along the two readings from step 3.\n5. `sum_pow_crt_two_primes` derives coprimality of distinct primes (Nat.coprime_primes), applies sum_pow_crt, and composes each factor reading with the parent's sum_pow_modEq via Nat.ModEq.mul_left.",
+    "keyInsights": [
+      "**Periodicity is the whole content.** Modulo m the summand i ↦ iᵏ has period m, so summing over a length-m·n range is literally n repetitions of one period. Casting to ZMod m turns this from a congruence-bookkeeping problem into a one-line induction, with (↑(m·n+x):ZMod m)=↑x (ZMod.natCast_self) as the only arithmetic input.",
+      "**CRT is the assembly, not the work.** Once the composite sum is understood modulo each coprime factor, Nat.modEq_and_modEq_iff_modEq_mul reconstructs the residue mod a·b for free. The mathematical step is the replication lemma; the CRT step is purely structural.",
+      "**The factor residues carry a scalar.** Reading ∑_{i<a·b} iᵏ modulo a gives b·∑_{i<a} iᵏ, not ∑_{i<a} iᵏ: the cofactor b counts how many periods fit. This multiplicity is exactly what the explicit two-primes formula records.",
+      "**Generic modulus, prime payoff.** The replication lemma holds for every modulus m (it never uses primality), so the framework applies to prime powers and arbitrary composites alike; primality enters only at the last step, where the parent's dichotomy supplies the closed-form factor residues."
+    ],
+    "prerequisites": [
+      "The parent prime-modulus power-sum congruence (sum-of-kth-powers-oq-05-oq-01)",
+      "Nat.ModEq, its cast characterization ZMod.natCast_eq_natCast_iff, and the CRT form Nat.modEq_and_modEq_iff_modEq_mul",
+      "Summation over an initial segment of ℕ and Finset.sum_range_add"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring laying out the periodicity-plus-CRT strategy, the imports (Mathlib and the parent file), and the namespace.",
+      "mathContext": "$\\sum_{i<a\\cdot b} i^k \\pmod{a\\cdot b}$ from its factor residues."
+    },
+    {
+      "id": "periodicity",
+      "title": "Periodicity in ZMod m and the Replication Congruence",
+      "startLine": 42,
+      "endLine": 69,
+      "summary": "sum_pow_zmod_range_mul (the ZMod m equality ∑_{i<m·n}(↑i)ᵏ = ↑n·∑_{i<m}(↑i)ᵏ by induction on n) and sum_pow_range_mul_modEq (its Nat.ModEq cast).",
+      "mathContext": "$\\sum_{i<m\\cdot n} i^k \\equiv n\\,\\sum_{i<m} i^k \\pmod m$."
+    },
+    {
+      "id": "crt",
+      "title": "Factor Readings and the CRT Characterization",
+      "startLine": 70,
+      "endLine": 114,
+      "summary": "sum_pow_modEq_left / sum_pow_modEq_right (the two factor readings) and sum_pow_crt (the complete CRT characterization for coprime a,b), plus sum_pow_crt_two_primes (the explicit distinct-primes formula via the parent dichotomy).",
+      "mathContext": "$x \\equiv \\sum_{i<a b} i^k \\pmod{ab} \\iff x \\equiv b\\sum_{i<a} i^k \\pmod a \\wedge x \\equiv a\\sum_{i<b} i^k \\pmod b$."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "startLine": 115,
+      "endLine": 133,
+      "summary": "decide-verified Nat.ModEq instances for mod 6 = 2·3 (∑_{i<6} i² = 55 ≡ 1, recovered from both factor residues) and a three-period mod-4 replication.",
+      "mathContext": "$\\sum_{i<6} i^2 = 55 \\equiv 1 \\pmod 6$, consistent with the factor residues mod 2 and mod 3."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Extends the parent's prime-modulus congruence ∑_{i<p} iᵏ ≡ (p−1 or 0) (mod p) to a composite modulus via CRT, directly answering the parent's first listed open question; the parent's sum_pow_modEq supplies the explicit factor residues in the two-primes formula"
+    },
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "related",
+      "description": "Complements the base family's integer closed forms with the composite-modulus congruence evaluation of the same power sum"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) extension of the power-sum congruence from prime to composite modulus. The replication lemma ∑_{i<m·n} iᵏ ≡ n·∑_{i<m} iᵏ (mod m) holds for every modulus; the CRT bridge sum_pow_crt assembles the two coprime-factor readings into the residue mod a·b; and sum_pow_crt_two_primes gives the fully explicit value for distinct primes by inserting the parent dichotomy.",
+    "implications": "Reduces any composite power-sum residue to shorter power sums modulo the coprime factors, and to the explicit (p−1)∣k dichotomy when the factors are prime. The periodicity lemma sum_pow_range_mul_modEq is reusable for any periodic summand over a complete range, independent of primality.",
+    "openQuestions": [
+      "Iterate the replication lemma over a prime factorization n = ∏ pᵢ^{eᵢ} to obtain a single explicit closed form for ∑_{i<n} iᵏ mod n in terms of the prime-power power sums.",
+      "Evaluate the prime-power factor residue ∑_{i<p^e} iᵏ mod p^e directly (lifting the exponent), completing the composite formula for non-squarefree moduli."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SumOfKthPowersOQ05OQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "SumOfKthPowersOQ05OQ01OQ01",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/SumOfKthPowersOQ05OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ireland, Kenneth and Rosen, Michael",
+      "title": "A Classical Introduction to Modern Number Theory",
+      "year": "1990",
+      "venue": "Springer Graduate Texts in Mathematics 84, 2nd ed.",
+      "note": "Chapter 4: ∑ iᵏ mod p; the Chinese Remainder Theorem for congruences"
+    },
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "note": "The Chinese Remainder Theorem and congruences modulo composite moduli"
+    }
+  ],
+  "sorries": 0
+}

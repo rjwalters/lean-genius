@@ -22,10 +22,10 @@ This file focuses on the **lower-bound construction direction**:
   without introducing a permanent axiom.  Path B in
   `research/problems/erdos101-problem-oq-04/state.md`.
 * `Erdos101OQ04.solymosi_stojakovic_lower_bound` — the modern
-  n^{2−O(1/√(log n))} bound.  Strengthens
-  `Erdos101OQ01.solymosi_stojakovic_lower_bound` only cosmetically
-  (re-named here for OQ-04 provenance); reduces to it by
-  `solymosi_stojakovic_lower_bound_via_oq01`.
+  n^{2−O(1/√(log n))} bound.  Re-states
+  `Erdos101OQ01.solymosi_stojakovic_lower_bound` in OQ-04's
+  `IsLowerBoundConstruction` packaging (re-named here for OQ-04
+  provenance); both remain deferred proof obligations.
 * `Erdos101OQ04.exists_four_collinear_subset_of_count_pos` —
   unconditional: a no-five-collinear `P` with at least one four-point
   line admits an explicit 4-element collinear subset of `P.points`.
@@ -77,6 +77,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.LinearCombination
 
 namespace Erdos101OQ04
 
@@ -133,7 +134,7 @@ theorem isLowerBoundConstruction_threshold_eq_zero_of_small
     IsLowerBoundConstruction P 0 := by
   refine ⟨hP, ?_⟩
   rw [fourPointLineCount_lt_four P h]
-  exact le_refl 0
+  norm_num
 
 /- ## Grünbaum's Ω(n^{3/2}) lower bound (recorded as deferred proof)
 
@@ -144,12 +145,16 @@ the *parabola modulo p*:
 
     $G_p = \{(i, j) \in (\mathbb{F}_p)^2 : 4j \equiv -i^2 \pmod p\}$
 
-For `p` prime, $|G_p| = p$, and the construction admits
-$\Omega(p^{3/2})$ four-point lines (each "secant line" of the parabola
-hits at most four points by the degree-two polynomial-roots bound).
-The result `grunbaum_lower_bound_three_halves` below records the
-asymptotic statement; the construction itself is deferred to Path B
-of the state.md S2 inventory.
+For `p` prime, $|G_p| = p$.  The bare parabola is itself a
+*general-position* set: every affine line meets it in **at most two**
+points (the degree-two polynomial-roots bound — see
+`parabola_inter_line_card_le_two` below), so it has *no* four-point
+lines on its own.  Grünbaum's $\Omega(p^{3/2})$ four-point-line witness
+is built *from* this no-three-collinear base by a further sumset /
+grid construction; the parabola's general-position property is the
+foundational input.  The result `grunbaum_lower_bound_three_halves`
+below records the asymptotic statement; the construction itself is
+deferred to Path B of the state.md S2 inventory.
 
 Note: this statement was refuted as a *tight* lower bound by
 Solymosi–Stojaković, but remains valid as a *weaker* lower bound;
@@ -186,9 +191,8 @@ Re-states the Solymosi–Stojaković existential lower bound in OQ-04's
 namespace, with `IsLowerBoundConstruction`-flavoured packaging.  The
 statement is *cosmetically* different from
 `Erdos101OQ01.solymosi_stojakovic_lower_bound` but mathematically
-equivalent; the bridge lemma
-`solymosi_stojakovic_lower_bound_via_oq01` shows that OQ-04's
-formulation reduces to OQ-01's.
+equivalent (the inner `IsLowerBoundConstruction P threshold` unfolds
+to exactly OQ-01's `NoFiveCollinear P ∧ threshold ≤ fourPointLineCount P`).
 
 Note: the construction itself is OPEN (Path A in state.md, ~600-1000
 LOC of measure-theoretic Lean infrastructure to formalise the random
@@ -207,36 +211,12 @@ Reference: J. Solymosi and M. Stojaković, *Combinatorica* 33 (2013),
 Recorded as `theorem ... := by sorry`; the construction is OPEN
 (Path A in `state.md`, deferred to multi-session ACT).  This statement
 is mathematically equivalent to
-`Erdos101OQ01.solymosi_stojakovic_lower_bound`; the bridge is
-`solymosi_stojakovic_lower_bound_via_oq01` below. -/
+`Erdos101OQ01.solymosi_stojakovic_lower_bound`. -/
 theorem solymosi_stojakovic_lower_bound :
     ∀ C : ℝ, 0 < C → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
       ∃ P : PlanarPointSet, P.points.card = n ∧
         IsLowerBoundConstruction P ((n : ℝ) ^ (2 - C / Real.sqrt (Real.log n))) := by
   sorry
-
-/-- **Bridge**: OQ-04's `IsLowerBoundConstruction`-flavoured re-statement
-reduces directly to OQ-01's `solymosi_stojakovic_lower_bound`.  This
-lemma is the asymptotic equivalence between the two formulations and
-shows that OQ-04's `solymosi_stojakovic_lower_bound` is a deferred
-proof obligation only because OQ-01's is.
-
-Recorded *unconditionally* (no sorry): the implication holds even
-when both sides are open. -/
-theorem solymosi_stojakovic_lower_bound_via_oq01 :
-    Erdos101OQ01.solymosi_stojakovic_lower_bound →
-      Erdos101OQ04.solymosi_stojakovic_lower_bound := by
-  -- Both are `Prop`-typed; the OQ-01 statement directly produces the
-  -- witness `P` with `fourPointLineCount P ≥ n^{2 - C / √(log n)}`,
-  -- which is precisely the `IsLowerBoundConstruction` payload.
-  intro h C hC
-  obtain ⟨N, hN⟩ := h C hC
-  refine ⟨N, fun n hn => ?_⟩
-  obtain ⟨P, hcard, hno5, hlb⟩ := hN n hn
-  -- The OQ-04 existential unfolds to `∃ P, P.points.card = n ∧
-  -- IsLowerBoundConstruction P threshold`, where the inner predicate
-  -- is `NoFiveCollinear P ∧ threshold ≤ (fourPointLineCount P : ℝ)`.
-  exact ⟨P, hcard, hno5, hlb⟩
 
 /- ## Asymptotic comparison: Solymosi–Stojaković strictly beats Grünbaum
 
@@ -277,7 +257,7 @@ theorem solymosi_stojakovic_exponent_gt_three_halves
   have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (n : ℝ)) := by linarith
   -- `C / √(log n) < C < 1/2`.
   have h_frac_lt_C : C / Real.sqrt (Real.log (n : ℝ)) < C := by
-    rw [div_lt_iff hsqrt_pos]
+    rw [div_lt_iff₀ hsqrt_pos]
     nlinarith [hsqrt_gt_one, hC_pos]
   linarith
 
@@ -396,6 +376,297 @@ theorem parabola_card (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
       Finset.card_image_of_injective _ (param_injective p),
       Finset.card_univ]
   exact ZMod.card p
+
+/- ## S3-B2 (parabola secant bound — general position / no three collinear)
+
+The Grünbaum parabola is a *general-position* set: over the field
+`ZMod p` (`p` an odd prime), every affine line
+`{(x,y) : α·x + β·y = γ}` with `(α,β) ≠ (0,0)` meets the parabola in
+**at most two** points.  Equivalently, no three points of the parabola
+are collinear.
+
+This is the foundational "no three in a line" property that any
+sumset/grid lower-bound construction built on top of the parabola
+needs as input.  The proof is purely elementary (no `Polynomial`
+machinery): substituting `y = -x²·4⁻¹` into the line equation yields a
+quadratic `(-β)·x² + (4α)·x + (-4γ) = 0` whose leading pair `(-β, 4α)`
+is nonzero, and a field-theoretic three-roots argument shows it has at
+most two solutions. -/
+
+/-- A nonzero quadratic over any field has at most two roots: there is
+no triple of pairwise-distinct field elements all satisfying
+`a·t² + b·t + c = 0` when `(a, b) ≠ (0, 0)`.  Elementary divided-
+difference argument, no `Polynomial` import. -/
+private theorem no_three_quadratic_roots {F : Type*} [Field F]
+    (a b c : F) (hab : ¬ (a = 0 ∧ b = 0)) (i j k : F)
+    (hi : a * i ^ 2 + b * i + c = 0) (hj : a * j ^ 2 + b * j + c = 0)
+    (hk : a * k ^ 2 + b * k + c = 0)
+    (hij : i ≠ j) (hik : i ≠ k) (hjk : j ≠ k) : False := by
+  -- Divided differences: `(i - j)·(a·(i+j) + b) = 0`, and `i ≠ j`.
+  have e1 : a * (i + j) + b = 0 := by
+    have hd : (i - j) * (a * (i + j) + b) = 0 := by linear_combination hi - hj
+    rcases mul_eq_zero.mp hd with h | h
+    · exact absurd (sub_eq_zero.mp h) hij
+    · exact h
+  have e2 : a * (j + k) + b = 0 := by
+    have hd : (j - k) * (a * (j + k) + b) = 0 := by linear_combination hj - hk
+    rcases mul_eq_zero.mp hd with h | h
+    · exact absurd (sub_eq_zero.mp h) hjk
+    · exact h
+  -- Subtracting the two: `a·(i - k) = 0`, and `i ≠ k`, so `a = 0`.
+  have ha : a = 0 := by
+    have hd : a * (i - k) = 0 := by linear_combination e1 - e2
+    rcases mul_eq_zero.mp hd with h | h
+    · exact h
+    · exact absurd (sub_eq_zero.mp h) hik
+  -- Then `e1` forces `b = 0`, contradicting `(a, b) ≠ (0, 0)`.
+  have hb : b = 0 := by rw [ha, zero_mul, zero_add] at e1; exact e1
+  exact hab ⟨ha, hb⟩
+
+/-- **Parabola secant bound** (S3-B2 deliverable).
+
+For `p` an odd prime, every affine line `{(x,y) : α·x + β·y = γ}` with
+`(α, β) ≠ (0, 0)` meets the Grünbaum parabola in at most two points.
+Equivalently: the parabola is in general position — no three of its
+points are collinear.  This is the no-three-in-a-line property that
+underpins any lower-bound construction built on the parabola; the bare
+parabola has *no* four-point lines. -/
+theorem parabola_inter_line_card_le_two (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (α β γ : ZMod p) (hαβ : ¬ (α = 0 ∧ β = 0)) :
+    ((parabola p).filter (fun x => α * x.1 + β * x.2 = γ)).card ≤ 2 := by
+  by_contra hcon
+  rw [not_le] at hcon
+  obtain ⟨x, y, z, hx, hy, hz, hxy, hxz, hyz⟩ := Finset.two_lt_card_iff.mp hcon
+  simp only [Finset.mem_filter] at hx hy hz
+  have h4 := four_ne_zero p hp
+  have h44 : (4 : ZMod p) * (4 : ZMod p)⁻¹ = 1 := mul_inv_cancel₀ h4
+  -- On the parabola the second coordinate is determined by the first.
+  have second : ∀ w : ZMod p × ZMod p, w ∈ parabola p →
+      w.2 = -(w.1 * w.1) * (4 : ZMod p)⁻¹ := by
+    intro w hw
+    have h := (mem_parabola_iff_eq_param p hp w).mp hw
+    have h2 := congrArg Prod.snd h
+    simpa [param] using h2
+  -- The first coordinate is injective on the parabola.
+  have firstInj : ∀ u v : ZMod p × ZMod p, u ∈ parabola p → v ∈ parabola p →
+      u.1 = v.1 → u = v := by
+    intro u v hu hv h1
+    rw [(mem_parabola_iff_eq_param p hp u).mp hu,
+        (mem_parabola_iff_eq_param p hp v).mp hv, h1]
+  -- Substituting `w.2` into the line equation gives a quadratic in `w.1`.
+  have quad : ∀ w : ZMod p × ZMod p, w ∈ parabola p →
+      α * w.1 + β * w.2 = γ →
+      (-β) * w.1 ^ 2 + (4 * α) * w.1 + (-(4 * γ)) = 0 := by
+    intro w hw hline
+    rw [second w hw] at hline
+    have step : (4 : ZMod p) * (β * (-(w.1 * w.1) * (4 : ZMod p)⁻¹))
+        = -(β * (w.1 * w.1)) := by
+      rw [show (4 : ZMod p) * (β * (-(w.1 * w.1) * (4 : ZMod p)⁻¹))
+            = -(β * (w.1 * w.1)) * ((4 : ZMod p) * (4 : ZMod p)⁻¹) from by ring,
+          h44, mul_one]
+    have e4 : (4 : ZMod p) * (α * w.1) + (4 : ZMod p) * (β * (-(w.1 * w.1)
+        * (4 : ZMod p)⁻¹)) = (4 : ZMod p) * γ := by rw [← mul_add, hline]
+    rw [step] at e4
+    linear_combination e4
+  have qx := quad x hx.1 hx.2
+  have qy := quad y hy.1 hy.2
+  have qz := quad z hz.1 hz.2
+  -- The first coordinates are pairwise distinct (else the points coincide).
+  have hx1 : x.1 ≠ y.1 := fun h => hxy (firstInj x y hx.1 hy.1 h)
+  have hx2 : x.1 ≠ z.1 := fun h => hxz (firstInj x z hx.1 hz.1 h)
+  have hy2 : y.1 ≠ z.1 := fun h => hyz (firstInj y z hy.1 hz.1 h)
+  -- The leading pair `(-β, 4α)` is nonzero.
+  have hab : ¬ ((-β : ZMod p) = 0 ∧ (4 * α : ZMod p) = 0) := by
+    rintro ⟨hb, ha⟩
+    exact hαβ ⟨(mul_eq_zero.mp ha).resolve_left h4, neg_eq_zero.mp hb⟩
+  exact no_three_quadratic_roots (-β) (4 * α) (-(4 * γ)) hab x.1 y.1 z.1
+    qx qy qz hx1 hx2 hy2
+
+/-- **No three collinear** (corollary restatement).  For `p` an odd
+prime, the Grünbaum parabola contains no three points on a common
+affine line with direction `(α, β) ≠ (0, 0)`. -/
+theorem parabola_no_three_collinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (α β γ : ZMod p) (hαβ : ¬ (α = 0 ∧ β = 0))
+    (S : Finset (ZMod p × ZMod p)) (hS : S ⊆ parabola p)
+    (hline : ∀ w ∈ S, α * w.1 + β * w.2 = γ) :
+    S.card ≤ 2 := by
+  refine le_trans (Finset.card_le_card ?_) (parabola_inter_line_card_le_two p hp α β γ hαβ)
+  intro w hw
+  rw [Finset.mem_filter]
+  exact ⟨hS hw, hline w hw⟩
+
+/- ## S3-B3 — realizing the mod-`p` arc as a concrete `PlanarPointSet` in ℝ²
+
+The parent gallery's incidence framework (`PlanarPointSet`, `collinear`,
+`NoFiveCollinear`, `fourPointLineCount`) lives over **ℝ²**, whereas the
+general-position result above ("no three collinear") is proved over the
+finite field `ZMod p`.  This section bridges the two: the Grünbaum
+parabola lifts to an explicit `p`-point set in ℝ² that is in general
+position in the gallery's *own* determinant-collinearity sense, hence
+satisfies `NoFiveCollinear`.
+
+The lift is the coordinatewise canonical-representative map
+`embed (i, j) = (i.val, j.val) : ℝ × ℝ`, with `ZMod.val` taking values
+in `{0, …, p-1}`.  The key arithmetic fact is that collinearity over ℝ
+of three lifted points is an **integer** determinant vanishing
+(`= 0` in ℤ, since all coordinates are integers), which reduces mod `p`
+to collinearity over `ZMod p`.  Thus the proven `ZMod p` arc property
+transfers to a *bona fide* real arc — no new geometry, only a
+ℝ → ℤ → `ZMod p` cast chain.
+
+Honest scope: the resulting set is an **arc** (no three collinear), so
+its `fourPointLineCount` is `0`.  It is the verified general-position
+base in ℝ² on top of which a four-point-line lower-bound construction
+must be built — it is not itself a lower-bound witness. -/
+
+/-- The canonical-representative embedding `ZMod p × ZMod p ↪ ℝ × ℝ`,
+sending each coordinate to its `ZMod.val` representative in `{0,…,p-1}`
+cast into ℝ. -/
+noncomputable def embed {p : ℕ} (w : ZMod p × ZMod p) : ℝ × ℝ :=
+  ((w.1.val : ℝ), (w.2.val : ℝ))
+
+/-- `embed` is injective: `ZMod.val` is injective and `ℕ ↪ ℝ`. -/
+theorem embed_injective (p : ℕ) [NeZero p] :
+    Function.Injective (embed : ZMod p × ZMod p → ℝ × ℝ) := by
+  intro x y h
+  simp only [embed, Prod.mk.injEq] at h
+  obtain ⟨h1, h2⟩ := h
+  have e1 : x.1.val = y.1.val := by exact_mod_cast h1
+  have e2 : x.2.val = y.2.val := by exact_mod_cast h2
+  exact Prod.ext (ZMod.val_injective p e1) (ZMod.val_injective p e2)
+
+/-- **ℝ → `ZMod p` collinearity transfer.**  If three lifted parabola
+points are collinear in ℝ² (gallery determinant sense), then the
+underlying `ZMod p` points satisfy the same determinant relation.  The
+ℝ-determinant of integer coordinates is an integer that vanishes, hence
+vanishes mod `p`. -/
+theorem embed_collinear_imp_zdet (p : ℕ) [NeZero p]
+    (a b c : ZMod p × ZMod p) (h : collinear (embed a) (embed b) (embed c)) :
+    (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2) := by
+  simp only [collinear, embed] at h
+  -- The ℝ equation between integer-casts forces the integer equation.
+  have hint : ((b.1.val : ℤ) - a.1.val) * ((c.2.val : ℤ) - a.2.val)
+            = ((c.1.val : ℤ) - a.1.val) * ((b.2.val : ℤ) - a.2.val) := by
+    exact_mod_cast h
+  -- Reduce mod `p`; canonical representatives cast back to themselves.
+  have hz := congrArg (fun n : ℤ => (n : ZMod p)) hint
+  push_cast at hz
+  simpa [ZMod.natCast_zmod_val] using hz
+
+/-- **No three collinear over `ZMod p`, determinant form.**  Three
+distinct parabola points cannot satisfy the gallery determinant
+collinearity relation over `ZMod p`.  Derived from
+`parabola_no_three_collinear`: the determinant relation places the
+three points on the common affine line through `a` and `b`. -/
+theorem parabola_no_three_collinear_zdet (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (a b c : ZMod p × ZMod p)
+    (ha : a ∈ parabola p) (hb : b ∈ parabola p) (hc : c ∈ parabola p)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hdet : (b.1 - a.1) * (c.2 - a.2) = (c.1 - a.1) * (b.2 - a.2)) : False := by
+  -- Line through `a`, `b`: direction `(α, β) = (b.2 - a.2, a.1 - b.1)`.
+  have hαβ : ¬ ((b.2 - a.2 : ZMod p) = 0 ∧ (a.1 - b.1 : ZMod p) = 0) := by
+    rintro ⟨h1, h2⟩
+    exact hab (Prod.ext (sub_eq_zero.mp h2) (sub_eq_zero.mp h1).symm)
+  have hsub : ({a, b, c} : Finset (ZMod p × ZMod p)) ⊆ parabola p := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl <;> assumption
+  have hline : ∀ w ∈ ({a, b, c} : Finset (ZMod p × ZMod p)),
+      (b.2 - a.2) * w.1 + (a.1 - b.1) * w.2
+        = (b.2 - a.2) * a.1 + (a.1 - b.1) * a.2 := by
+    intro w hw
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hw
+    rcases hw with rfl | rfl | rfl
+    · ring
+    · ring
+    · linear_combination -hdet
+  have hcard : ({a, b, c} : Finset (ZMod p × ZMod p)).card = 3 :=
+    Finset.card_eq_three.mpr ⟨a, b, c, hab, hac, hbc, rfl⟩
+  have hle := parabola_no_three_collinear p hp (b.2 - a.2) (a.1 - b.1)
+      ((b.2 - a.2) * a.1 + (a.1 - b.1) * a.2) hαβ {a, b, c} hsub hline
+  rw [hcard] at hle
+  omega
+
+/-- The lifted parabola: the image of the `ZMod p` parabola under
+`embed`, an explicit `p`-point subset of ℝ². -/
+noncomputable def realParabola (p : ℕ) [NeZero p] : Finset (ℝ × ℝ) :=
+  (parabola p).image embed
+
+/-- The lifted parabola has exactly `p` points (`embed` injective,
+`parabola` has `p` points). -/
+theorem realParabola_card (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
+    (realParabola p).card = p := by
+  rw [realParabola, Finset.card_image_of_injective _ (embed_injective p),
+      parabola_card p hp]
+
+/-- **No three collinear in ℝ².**  Three distinct points of the lifted
+parabola are never collinear in the gallery's determinant sense — the
+real arc property, transferred from `ZMod p` via `embed_collinear_imp_zdet`
+and `parabola_no_three_collinear_zdet`. -/
+theorem realParabola_no_three_collinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (A B C : ℝ × ℝ)
+    (hA : A ∈ realParabola p) (hB : B ∈ realParabola p) (hC : C ∈ realParabola p)
+    (hAB : A ≠ B) (hAC : A ≠ C) (hBC : B ≠ C) :
+    ¬ collinear A B C := by
+  intro hcol
+  rw [realParabola, Finset.mem_image] at hA hB hC
+  obtain ⟨a, ha, rfl⟩ := hA
+  obtain ⟨b, hb, rfl⟩ := hB
+  obtain ⟨c, hc, rfl⟩ := hC
+  have hab : a ≠ b := fun h => hAB (by rw [h])
+  have hac : a ≠ c := fun h => hAC (by rw [h])
+  have hbc : b ≠ c := fun h => hBC (by rw [h])
+  exact parabola_no_three_collinear_zdet p hp a b c ha hb hc hab hac hbc
+    (embed_collinear_imp_zdet p a b c hcol)
+
+/-- **The lifted parabola as a `PlanarPointSet`** (S3-B3 deliverable).
+An explicit `p`-point planar set realizing the mod-`p` Grünbaum arc in
+the gallery's ℝ² incidence framework. -/
+noncomputable def realParabolaSet (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) : PlanarPointSet where
+  points := realParabola p
+  size_pos := by
+    rw [realParabola_card p hp]; exact (Fact.out : p.Prime).pos
+
+/-- **The lifted parabola has no five collinear points** — indeed no
+three.  Thus it is a valid input to the gallery's four-point-line
+machinery (`NoFiveCollinear`), realized in ℝ² with `0` axioms. -/
+theorem realParabolaSet_noFiveCollinear (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) : NoFiveCollinear (realParabolaSet p hp) := by
+  intro A B C _ _ hA hB hC _ _ hAB hAC _ _ hBC _ _ _ _ _
+  rintro ⟨hcol, -, -⟩
+  exact realParabola_no_three_collinear p hp A B C hA hB hC hAB hAC hBC hcol
+
+/-- **The lifted parabola has zero four-point lines** — formalizing the
+honest scope.  Being an arc (no three collinear), a fortiori no four of
+its points lie on a common line, so `fourPointLineCount` is `0`.  This
+makes explicit that the bare arc is *not* a four-point-line lower-bound
+witness: the Ω(p^{3/2}) count must come from the sumset/grid
+construction built on top of this general-position base. -/
+theorem realParabolaSet_fourPointLineCount_zero (p : ℕ) [NeZero p]
+    [Fact p.Prime] (hp : p ≠ 2) :
+    fourPointLineCount (realParabolaSet p hp) = 0 := by
+  rw [fourPointLineCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro S hS
+  simp only [Finset.mem_powerset] at hS
+  rintro ⟨hScard, a, b, ha, hb, hab, hline⟩
+  -- A four-element set on a common line through `a ≠ b` contains a third
+  -- point `c`, giving three collinear points of the arc — impossible.
+  -- `S` has four points, so it is not contained in `{a, b}`: a third
+  -- point `c ∈ S` exists, distinct from both `a` and `b`.
+  have hthird : ∃ c ∈ S, c ∉ ({a, b} : Finset (ℝ × ℝ)) := by
+    by_contra hcon
+    push_neg at hcon
+    have hSsub : S ⊆ ({a, b} : Finset (ℝ × ℝ)) := fun x hx => hcon x hx
+    have hle := Finset.card_le_card hSsub
+    rw [hScard, Finset.card_pair hab] at hle
+    omega
+  obtain ⟨c, hcS, hcab⟩ := hthird
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hcab
+  push_neg at hcab
+  exact realParabola_no_three_collinear p hp a b c (hS ha) (hS hb) (hS hcS)
+    hab (fun h => hcab.1 h.symm) (fun h => hcab.2 h.symm)
+    (hline c hcS)
 
 end Grunbaum
 

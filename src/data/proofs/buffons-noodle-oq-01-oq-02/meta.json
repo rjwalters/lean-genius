@@ -1,0 +1,228 @@
+{
+  "id": "buffons-noodle-oq-01-oq-02",
+  "title": "General Buffon–Laplace for k Line Families (Cauchy–Crofton Discretization)",
+  "slug": "buffons-noodle-oq-01-oq-02",
+  "description": "Extends the Buffon–Laplace grid identity from two perpendicular line families to k families with arbitrary spacings d₁,…,d_k. For a polygonal noodle of total length L, the expected total number of crossings is (2L/π)·Σⱼ 1/dⱼ, depending only on the total length and the spacings — never on the noodle's shape nor on the families' orientations. Proved by additivity of expectation: each family contributes 2L/(πdⱼ) via the parent single-family theorem, and the total is their sum by linearity. The two-family grid is recovered as the k=2 case, and equal spacings give 2kL/(πd). Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNoodleOQ01OQ02.lean",
+    "tags": [
+      "geometric-probability",
+      "integral-geometry",
+      "buffon",
+      "buffon-laplace",
+      "cauchy-crofton",
+      "linearity-of-expectation"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "Distributes the common factor 2L/π over the sum Σⱼ 1/dⱼ, reducing the k-family identity to a per-family rewrite",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_congr",
+        "description": "Rewrites each family's term with the parent single-family theorem under the sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Fin.sum_univ_add",
+        "description": "Splits Σ over Fin (k+m) into the first-k subsum plus the last-m subsum, used for monotonicity in the number of families",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "Real.pi_ne_zero",
+        "description": "π ≠ 0, used to clear the spacing factor π in the closed-form crossing count",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "PolygonalNoodle.expectedMultiCrossings: DEFINED the expected total number of crossings against k line families as Σⱼ N.expectedCrossings (dⱼ) — additivity of expectation across an arbitrary index set Fin k",
+      "buffon_noodle_multi_family: PROVED the general Buffon–Laplace / Cauchy–Crofton identity E = (2L/π)·Σⱼ 1/dⱼ for positive spacings, for a polygonal noodle of any shape",
+      "expectedGridCrossings_eq_multi: PROVED the parent's two-family perpendicular grid is exactly the k=2 case with spacings ![dₕ, dᵥ]",
+      "buffon_noodle_multi_family_const: PROVED the equal-spacing count 2kL/(πd), so the expected crossings scale linearly in the number of families",
+      "buffon_noodle_multi_family_nonneg: PROVED nonnegativity of the k-family functional",
+      "buffon_noodle_multi_family_mono: PROVED monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) — adding more families can only increase the expected crossings"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Buffon's Noodle (polygonal case): expected single-family crossings 2L/(πd) — the parent theorem buffon_noodle_polygon",
+      "Buffon–Laplace two-family grid (parent buffons-noodle-oq-01)",
+      "Additivity of expectation over a finite index set (no independence needed)",
+      "Elementary field algebra and finite-sum manipulation"
+    ],
+    "lineCount": 179,
+    "relatedProblems": [
+      {
+        "id": "buffons-noodle-oq-01",
+        "relationship": "Direct parent: the two-family grid identity, recovered here as the k=2 specialization. This file answers its openQuestions[1] (extend to k non-parallel families)."
+      },
+      {
+        "id": "buffons-noodle",
+        "relationship": "Grandparent: supplies the single-family polygonal theorem buffon_noodle_polygon reused once per family."
+      }
+    ],
+    "assumptions": "None. 0 axioms, 0 sorries (depends only on the foundational propext / Classical.choice / Quot.sound). The per-segment crossing probability 2ℓ/(πd) is inherited from the grandparent's segmentCrossingProb definition (Buffon's Needle); this file adds no new axioms and proves the k-family identity as an algebraic corollary of the machine-checked buffon_noodle_polygon. Scope is polygonal noodles; the smooth/C¹ generalization (depending on the grandparent's still-axiomatized kinematic-measure functional) is deliberately out of scope.",
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "structureCount": 0
+  },
+  "overview": {
+    "historicalContext": "Georges-Louis Leclerc, Comte de Buffon (1777), computed the probability 2ℓ/(πd) that a needle of length ℓ crosses one family of parallel lines spaced d apart. Joseph Barbier (1860) reframed it through the additivity/invariance principle: the expected number of crossings of any rectifiable curve depends only on its length, so a bent wire — a 'noodle' — crosses as often as a straight needle of equal length. Pierre-Simon Laplace (1812) dropped the curve on a GRID of two perpendicular rulings, lowering the variance of the resulting Monte-Carlo estimate of π. The natural endpoint of this lineage is the general Buffon–Laplace problem: k families of parallel lines at arbitrary angles and spacings. The orientation-independence built into Barbier's theorem makes the answer strikingly clean — the family angles drop out entirely, leaving (2L/π)·Σⱼ 1/dⱼ. This is exactly the discrete shadow of the Cauchy–Crofton formula of integral geometry, which expresses a curve's length as an integral of its intersection counts against all lines in the plane. This entry formalizes the k-family identity for polygonal noodles as a corollary of the gallery's two-family grid theorem, by additivity of expectation across the families.",
+    "problemStatement": "Prove that a polygonal noodle of total length L dropped against k families of parallel lines with positive spacings d₁,…,d_k has expected total crossings (2L/π)·Σⱼ 1/dⱼ, recovering the two-family grid as k=2 and the equal-spacing count 2kL/(πd).",
+    "text": "A 179-line file that defines the k-family expected-crossing functional and proves the general Buffon–Laplace identity (2L/π)·Σⱼ 1/dⱼ, the recovery of the parent's perpendicular grid as the k=2 case, the equal-spacing count 2kL/(πd), nonnegativity, and monotonicity in the number of families — all as corollaries of the parent's buffon_noodle_polygon via additivity of expectation across the families.",
+    "proofStrategy": "Additivity of expectation across an arbitrary finite index set. expectedMultiCrossings is defined as Σⱼ N.expectedCrossings (dⱼ); the headline theorem distributes the common factor 2L/π over the sum (Finset.mul_sum), then rewrites each summand with the parent single-family theorem buffon_noodle_polygon (Finset.sum_congr) and clears denominators (field_simp). Every downstream result — grid recovery, equal-spacing count, nonnegativity, monotonicity — is a short rewrite through the headline identity plus finite-sum algebra.",
+    "keyInsights": [
+      "**The angles vanish.** Although the candidate poses k families 'at angles θ₁,…,θ_k', the formula carries no angle dependence. Each single-family expected count depends only on length and spacing (Barbier orientation-invariance), so by linearity the total is Σⱼ 2L/(πdⱼ) regardless of how the families are angled. Modelling families by their spacings d : Fin k → ℝ loses no information.",
+      "**Additivity needs no independence.** The k crossing tallies come from the same drop of the same noodle and are strongly correlated, yet E[ΣXⱼ] = ΣE[Xⱼ] holds unconditionally — so the k-family expectation is literally a sum of k single-family theorems.",
+      "**The grid is the k=2 case.** The parent's perpendicular two-family grid is recovered exactly by instantiating the index set with ![dₕ, dᵥ], unifying the earlier result into the general framework.",
+      "**Linear scaling in the family count.** With equal spacings the count is 2kL/(πd) — k families give exactly k times the single-family count.",
+      "**Cauchy–Crofton discretization.** Summing intersection counts over finitely many line families is the discrete analogue of integrating intersection counts over the full kinematic measure on lines; the formula (2L/π)·Σⱼ 1/dⱼ is the integral-geometric content made elementary."
+    ],
+    "prerequisites": [
+      "Buffon's Noodle polygonal theorem (grandparent)",
+      "Buffon–Laplace two-family grid (parent)",
+      "Additivity of expectation",
+      "Finite-sum algebra"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-noodle-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the two-family perpendicular grid to k families with arbitrary spacings; the parent identity is recovered as the k=2 case (expectedGridCrossings_eq_multi). Answers the parent's openQuestions[1]."
+    },
+    {
+      "targetId": "buffons-noodle",
+      "relationship": "extends",
+      "description": "Reuses the grandparent's single-family polygonal theorem buffon_noodle_polygon (2L/(πd)) once per family; the k-family result is the additive composition of k instances of it."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 179,
+    "namespace": "BuffonsNoodleOQ01OQ02",
+    "opens": [
+      "Real",
+      "Finset",
+      "BigOperators",
+      "BuffonsNoodle",
+      "BuffonsNoodleOQ01"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 5,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Proofs.BuffonsNoodleOQ01",
+      "Mathlib.Tactic"
+    ],
+    "path": "Proofs/BuffonsNoodleOQ01OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "buffon_noodle_multi_family",
+      "type": "core",
+      "description": "General Buffon–Laplace / Cauchy–Crofton identity: for k families with positive spacings, E[crossings] = (2L/π)·Σⱼ 1/dⱼ (PROVED, 0 axioms)",
+      "leanType": "∀ {n k : ℕ} (N : PolygonalNoodle n) (d : Fin k → ℝ), (∀ j, 0 < d j) → N.expectedMultiCrossings d = 2 * N.totalLength / π * ∑ j, (d j)⁻¹"
+    },
+    {
+      "name": "expectedGridCrossings_eq_multi",
+      "type": "core",
+      "description": "Recovery of the parent's perpendicular two-family grid as the k=2 case with spacings ![dₕ, dᵥ] (PROVED, 0 axioms)",
+      "leanType": "∀ {n : ℕ} (N : PolygonalNoodle n) (dh dv : ℝ), N.expectedGridCrossings dh dv = N.expectedMultiCrossings ![dh, dv]"
+    },
+    {
+      "name": "buffon_noodle_multi_family_const",
+      "type": "core",
+      "description": "Equal-spacing count: k families all of spacing d give 2kL/(πd) — linear scaling in the family count (PROVED, 0 axioms)",
+      "leanType": "∀ {n k : ℕ} (N : PolygonalNoodle n) (d : ℝ), 0 < d → N.expectedMultiCrossings (fun _ : Fin k => d) = 2 * k * N.totalLength / (π * d)"
+    },
+    {
+      "name": "buffon_noodle_multi_family_mono",
+      "type": "supporting",
+      "description": "Monotonicity in the family set: adding families over a larger index set (Fin k ↪ Fin (k+m)) can only increase the expected crossings (PROVED, 0 axioms)",
+      "leanType": "∀ {n k m : ℕ} (N : PolygonalNoodle n) (d : Fin (k + m) → ℝ), (∀ j, 0 < d j) → N.expectedMultiCrossings (fun j : Fin k => d (Fin.castAdd m j)) ≤ N.expectedMultiCrossings d"
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Overview: General Buffon–Laplace and Why the Angles Vanish",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Frames the extension from the two-family perpendicular grid (E = 2L/(πdₕ) + 2L/(πdᵥ)) to k families with arbitrary spacings (E = (2L/π)·Σⱼ 1/dⱼ, the general Buffon–Laplace / Cauchy–Crofton discretization). Explains the crux: the family angles θⱼ do not appear because each single-family expected count is orientation-free (Barbier), so by linearity the total depends only on length and spacings. Scope is polygonal noodles (0 axioms, 0 sorries)."
+    },
+    {
+      "id": "multi-definition",
+      "title": "§1 Definition: expectedMultiCrossings",
+      "startLine": 55,
+      "endLine": 80,
+      "summary": "Defines PolygonalNoodle.expectedMultiCrossings N d := Σⱼ N.expectedCrossings (d j) over the index set Fin k, encoding additivity of expectation across the families. Declared in the BuffonsNoodle namespace (alongside the parent's expectedGridCrossings) so dot-notation N.expectedMultiCrossings resolves. expectedMultiCrossings_eq_sum records the definitional additivity by rfl."
+    },
+    {
+      "id": "multi-formula",
+      "title": "§2 The General Buffon–Laplace Formula",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "buffon_noodle_multi_family: for positive spacings, E = (2L/π)·Σⱼ 1/dⱼ. The proof distributes the factor 2L/π over the sum (Finset.mul_sum), rewrites each term with the parent buffon_noodle_polygon under Finset.sum_congr, and clears denominators with field_simp using π ≠ 0 and dⱼ ≠ 0."
+    },
+    {
+      "id": "specializations",
+      "title": "§3 Specializations and Structural Properties",
+      "startLine": 106,
+      "endLine": 154,
+      "summary": "expectedGridCrossings_eq_multi recovers the parent's perpendicular grid as the k=2 case with ![dₕ, dᵥ]; buffon_noodle_multi_family_const gives the equal-spacing count 2kL/(πd) (linear in k); buffon_noodle_multi_family_nonneg proves nonnegativity; buffon_noodle_multi_family_mono proves monotonicity under the canonical inclusion Fin k ↪ Fin (k+m) via Fin.sum_univ_add and nonnegativity of the dropped terms."
+    },
+    {
+      "id": "examples",
+      "title": "§4 Worked Instances",
+      "startLine": 156,
+      "endLine": 179,
+      "summary": "Two concrete checks: three families with spacings 1,2,3 give (2L/π)(1 + 1/2 + 1/3); a square grid (k=2, equal spacing d) gives 4L/(πd), matching the parent."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) formalization of the general Buffon–Laplace / Cauchy–Crofton crossing identity (2L/π)·Σⱼ 1/dⱼ for a polygonal noodle against k line families, obtained by additivity of expectation across the families. Includes recovery of the two-family grid as the k=2 case, the equal-spacing count 2kL/(πd), nonnegativity, monotonicity in the number of families, and worked instances.",
+    "implications": "Closes the parent's open question of extending the grid identity to k non-parallel families, and exhibits the orientation-independence that makes the family angles drop out — the elementary, discrete face of the Cauchy–Crofton formula. The linearity-of-expectation machinery composes cleanly over an arbitrary finite index set, a reusable pattern for integral-geometry formalizations.",
+    "openQuestions": [
+      "Generalize the k-family identity to the smooth/C¹ case once the grandparent's kinematic-measure functional smoothExpectedCrossings is discharged.",
+      "Take the continuum limit over family angles to recover the full Cauchy–Crofton formula length = (1/2)∫ n(θ,p) dθ dp as an integral rather than a finite sum.",
+      "Quantify the variance reduction of the k-family estimator of π versus the single-family and two-family estimators for a fixed number of trials."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Barbier, Joseph-Émile",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, tome 5",
+      "note": "Establishes the orientation-invariance (length-only dependence) that makes the family angles drop out of the k-family formula."
+    },
+    {
+      "authors": "Laplace, Pierre-Simon",
+      "title": "Théorie analytique des probabilités",
+      "year": "1812",
+      "venue": "Courcier, Paris",
+      "note": "Introduces the doubly-ruled grid variant generalized here to k families."
+    },
+    {
+      "authors": "Santaló, Luis A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "2004",
+      "venue": "Cambridge Mathematical Library, 2nd edition",
+      "note": "Standard reference for the Cauchy–Crofton formula and the kinematic measure on lines, of which the k-family sum is the discretization."
+    }
+  ],
+  "sorries": 0
+}

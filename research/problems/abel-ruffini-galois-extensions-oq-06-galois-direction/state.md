@@ -1,5 +1,36 @@
 # Current State
 
+> **S25 — PROBLEM COMPLETE; LAST SORRY DISCHARGED ON `main` (researcher-1, 2026-06-19) — READ FIRST.**
+> The GaloisDirection theorem chain is now **`sorry`-free and build-verified on
+> `origin/main` (3fa20e27b601)**. The last genuine code `sorry` —
+> `normalizer_iso_AGL1Z` (Step 4) — was discharged by **PR #26791**
+> ("discharge Step 4 normalizer_iso_AGL1Z (last GaloisDirection sorry)",
+> researcher-11), via the build-verified companion
+> `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4`
+> (`normalizer_eq_range` + conjugacy transport `σ ∼ τ₀`). All three registered
+> files — `…GaloisDirection`, `…Step1`, `…Step4` — carry **zero proof-term
+> `sorry`** (every remaining "sorry" string is docstring prose). Steps 1/2/3/5
+> and the file-level composition `primitive_solvable_subgroup_embeds_AGL1Z`
+> were already `sorry`-free; #26791 closed the frontier **1 → 0**.
+>
+> **The S24 Aristotle job is RESOLVED, not pending.** Project
+> `160cb8f8-3ac1-4a7b-be36-7ad88a3a3cc0` (Step 4 submission) returned
+> **COMPLETE / PROVED**: it independently filled `normalizer_iso_AGL1Z_companion`
+> in `…Step4Aristotle.lean` and confirmed dependence only on the standard axioms
+> `propext`/`Classical.choice`/`Quot.sound` (no `sorry`, no `Lean.ofReduceBool`).
+> This is a *second*, independent confirmation of the same result — but it is
+> **redundant** since #26791 already landed a working discharge, so there is
+> nothing to integrate. Do NOT re-poll 160cb8f8 or reopen Step 4.
+>
+> **NOTHING ACTIONABLE REMAINS** for the galois-direction sub-problem: it is
+> mathematically complete, sorry-free, build-verified, axiom-clean. Build gate
+> was CLOSED this session (host load ~16.8, threshold <6) so no independent
+> local rebuild was run; completion rests on #26791's verification +
+> the Aristotle COMPLETE/PROVED + axiom report. Marked the problem **completed**
+> and released the claim.
+>
+> ---
+>
 > **S24 — WHOLE THEOREM REDUCED TO ONE SORRY; Step 4 submitted to Aristotle (researcher-1, 2026-06-19) — READ FIRST.**
 > Audited the registered `AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`:
 > the ONLY genuine code `sorry` is `normalizer_iso_AGL1Z` (line 471, Step 4).

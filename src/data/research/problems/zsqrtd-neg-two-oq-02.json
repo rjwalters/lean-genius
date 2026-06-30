@@ -21,32 +21,37 @@
       "ℤ[√−2] bridge x^2+2y^2 = x^2+y^2+y^2; every non-excluded PRIME is a sum of three squares via p≡1(mod4)→Fermat two-square and p≡3(mod8)→x^2+2y^2 (verified exact)."
     ],
     "open": [
-      "Eliminate the axiom not_excluded_form_is_sum_three_sq (ThreeSquares.lean:1720): the deep converse for squarefree-composite primitives. (Companion axiom dirichlet_key_lemma at ThreeSquares.lean:648 — the Minkowski-descent step — also remains; its Minkowski input is now proved, only the Davenport–Cassels descent remains.)",
+      "Eliminate the axiom not_excluded_form_is_sum_three_sq (ThreeSquares.lean:1665): the deep converse for squarefree-composite primitives.",
       "ℤ[√−2] alone is insufficient (x^2+2y^2 covers only 42.5% of non-excluded n; three-squares is non-multiplicative): the deep step needs Dirichlet primes-in-AP + a ternary-form reduction (the latter absent from Mathlib and the gallery)."
     ],
     "goal": "Upgrade legendre_three_squares from axiomatized to verified by discharging not_excluded_form_is_sum_three_sq; as a first step prove the prime cases via ℤ[√−2] + Fermat and isolate a smaller squarefree-primitive hypothesis."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-19T05:35:00-07:00",
-    "iteration": 4,
-    "focus": "STATE-SYNC (researcher-12, 2026-06-19): the prior currentState was STALE. The slice-Minkowski core is DONE — exists_sheared_point_lt_two_mul_d2 was discharged by Aristotle (job 8feb596c) and ThreeSquaresSliceMinkowski.lean is now 0-sorry AND REGISTERED in Proofs.lean (#26160 fixed the build, #26172 closed the d=2 sorry). The whole three-squares Lean family is 0-sorry; the ONLY remaining proof obligations are the two axioms in ThreeSquares.lean: dirichlet_key_lemma (L648) and not_excluded_form_is_sum_three_sq (L1720). The assembled bridge exists_dirichlet_vector_lt_two_mul (ThreeSquaresSliceMinkowski.lean:520) is proved: it yields a nonzero v:Fin 3→ℤ with p∣(v0−r·v1), p∣v2, and v0²+d·v1²+d·v2² < 2p. What remains for dirichlet_key_lemma is the DESCENT from that lattice vector to n=x²+y²+z².",
+    "since": "2026-06-19T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Whole three-squares development has ONE code sorry. researcher-1 (S12) factored exists_slice_point_lt_two_mul_d2 into proved arithmetic glue (slice_point_of_sheared_d2) + the irreducible Minkowski core exists_sheared_point_lt_two_mul_d2 (now the sole sorry). All on UNREGISTERED ThreeSquaresSliceMinkowski.lean.",
     "blockers": [
-      "Aristotle submission backend STILL DOWN as of 2026-06-19 ~05:35-07:00 (re-probed: both MCP prove and check_proof return 'Resource not found' / HTTP 404 on the project endpoint — same outage researcher-10/12 hit at ~05:00Z). Auto-prove unavailable. Docker build IS available (0 containers, ~6GB free), but the remaining descent is a non-trivial hand-formalization, not a turnkey port."
+      "Both backends down (Docker docker info rc=124 hung; Aristotle MCP prove returns Resource not found 404). Cannot build or auto-prove this session."
     ],
-    "nextAction": "Convert dirichlet_key_lemma (ThreeSquares.lean:648) axiom→theorem. The Minkowski INPUT is already proved (exists_dirichlet_vector_lt_two_mul, ThreeSquaresSliceMinkowski.lean:520): nonzero v with p∣(v0−r·v1), p∣v2, Q:=v0²+d·v1²+d·v2²<2p. Descent skeleton: (1) from r²≡−d (mod p) [the legendreSym(-d)=1 hypothesis] + the two divisibilities, show p∣Q; (2) Q>0 (positive-definite form, d>0, v≠0) and Q<2p ⇒ Q=p=d·n−1. CAUTION — do NOT assume Q=p directly gives n: for d=1, Q=p=n−1, which is a sum of three squares of n−1, NOT n. The genuine remaining content is the classical Davenport–Cassels / Aubry descent that converts the form value back to a representation of n itself; this is exactly why the lemma is still an axiom. Either hand-write that descent (build-capable) or submit dirichlet_key_lemma as a self-contained companion to a RECOVERED Aristotle. The deeper not_excluded_form_is_sum_three_sq additionally needs Dirichlet primes-in-AP + a ternary-form reduction absent from Mathlib.",
+    "nextAction": "Backend-up session: discharge exists_sheared_point_lt_two_mul_d2 (nonzero ℤ² point in sheared open ellipse, vol √2·π>4 p-independent) via the turnkey shear-the-set port of dirichlet_approximation, OR submit it to a recovered Aristotle. Then dirichlet_key_lemma axiom→theorem.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-19T05:35:00-07:00"
+    "lastUpdate": "2026-06-19T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "ACT (build-/Aristotle-gated): d=2 slice-Minkowski step pinned to a TURNKEY recipe -- a near-verbatim port of the proved axiom-free dirichlet_approximation, with the key simplification that shearing the SET (not the lattice) makes the Minkowski volume margin sqrt(2)*pi>4 p-INDEPENDENT. Target re-verified true (p<1500); elementary box/small-ellipse shortcuts re-ruled-out numerically. No verified Lean written (no local build; Aristotle backend down). Remaining work = the measure-theory port (2D ellipse volume + Measure.map change of variables).",
+    "progressSummary": "PROGRESS (S18): built+registered the SQUAREFREE REDUCTION three_sq_of_squarefree_rat (0 ax/0 sorry, source-verified; Docker unresponsive this session so the new file's compile was not re-confirmed) — the lone remaining axiom now reduces to 'squarefree non-excluded n is a sum of three RATIONAL squares' (Dirichlet's classical first step). Davenport–Cassels (rational⇒integral) and the d≤2 Minkowski key lemma are proved; ThreeSquares.lean = 1 axiom. Remaining frontier: Hasse–Minkowski ternary solvability over ℚ for squarefree n (absent from Mathlib, ≫500 LOC).",
     "builtItems": [
       "research/problems/zsqrtd-neg-two-oq-02/verify_three_squares_via_zsqrtd.py - sympy exact verifier: C1 full iff n<=20000; C2 ℤ[√−2] bridge + every non-excluded prime 3-squares via the route; C3 the limitation (553 composite witnesses, 42.5% norm-form coverage); C4 descent reductions 4n<=>n and k^2*n. All PASS.",
-      "S7 (researcher-7): APPLIED the turnkey IsSquare-reformulation fix in ThreeSquaresSufficiencyCorrected.lean — DirichletWitnessNe3 witness Prop now states IsSquare ((-d:ℤ):ZMod p) (instance-free); consumer three_sq_of_corrected_witnesses:138-161 converts back to legendreSym=1 via legendreSym.eq_one_iff, with the ((-d):ZMod p)≠0 side-goal derived from ¬p∣d (p∣d ⟹ p∣d*n=p+1 ⟹ p∣1). Build-pending (Docker daemon hung)."
+      "S7 (researcher-7): APPLIED the turnkey IsSquare-reformulation fix in ThreeSquaresSufficiencyCorrected.lean — DirichletWitnessNe3 witness Prop now states IsSquare ((-d:ℤ):ZMod p) (instance-free); consumer three_sq_of_corrected_witnesses:138-161 converts back to legendreSym=1 via legendreSym.eq_one_iff, with the ((-d):ZMod p)≠0 side-goal derived from ¬p∣d (p∣d ⟹ p∣d*n=p+1 ⟹ p∣1). Build-pending (Docker daemon hung).",
+      "theorem dirichlet_key_lemma (ThreeSquares.lean) — REPLACES the former axiom for d∈{1,2}; build-verified (7745 jobs). Consumes exists_dirichletSublattice_dvd_form + ThreeSquaresSlice.exists_dirichlet_vector_lt_two_mul + dirichletForm_eq_p_of_lt_two_mul.",
+      "Propagated honest d≤2 into DirichletWitnessNe3 / DirichletWitnessProperty + both call sites + not_dirichletWitnessProperty obstruction.",
+      "ThreeSquaresDavenportCassels.exists_sq_of_scaled: Davenport-Cassels descent for x²+y²+z² via Int.bmod (ThreeSquaresDavenportCassels.lean:57), axiom-free/sorry-free",
+      "ThreeSquaresDavenportCassels.exists_int_sq_of_rat_sq: sum of 3 rational squares ⇒ sum of 3 integer squares (ThreeSquaresDavenportCassels.lean:124)",
+      "ThreeSquaresSquarefreeReduction.three_sq_of_squarefree_rat — reduces the lone sufficiency axiom from all non-excluded n to the SQUAREFREE case over ℚ (0 ax/0 sorry, registered; source-verified: all referenced lemmas exist with matching signatures, Docker unresponsive this session so the new file's compile was not re-confirmed)"
     ],
     "insights": [
       "The gallery three-square theorem legendre_three_squares (ThreeSquares.lean:1672) is PROVEN modulo the bare axiom not_excluded_form_is_sum_three_sq (line 1665) = the entire deep converse. Forward obstruction + 4^a descent + square-factor descent are sorry-free. The slug's real target is eliminating this one axiom.",
@@ -60,22 +65,28 @@
       "S-2026-06-18 (researcher-12): the sole open Lean step exists_slice_point_lt_two_mul_d2 (ThreeSquaresSliceMinkowski.lean) is a KNOWN Minkowski result, not OPEN math; re-verified TRUE for all p<1500, all r (0 counterexamples).",
       "Elementary shortcuts for d=2 RULED OUT numerically: the box pigeonhole min bound is 2*sqrt(2)*p > 2p, and the strict small-ellipse count #{x^2+2y^2 < p/2} > p FAILS for many p (1,2,3,4,5,6,11,12,15,16,17,18,31,32,33,34,...). No box/pigeonhole reduction works; genuine area/Minkowski needed.",
       "TURNKEY d=2 recipe pinned: keep STANDARD Z^2 lattice (covolume 1) and shear the SET to E'={(a,b)|(p*a+r*b)^2+2*b^2<2p}=S^{-1}(ellipse), S=[[p,r],[0,1]] (det p). Then vol(E')=vol(ellipse)/det(S)=(sqrt(2)*pi*p)/p=sqrt(2)*pi~=4.443>4 is p-INDEPENDENT, so Minkowski applies uniformly; returned (a,b) gives (x,y)=(a*p+b*r,b) with p|(x-r*y)=a*p automatic. Near-verbatim port of the proved axiom-free dirichlet_approximation (MinkowskiTheoremOQ02OQ01.lean:161).",
-      "S-2026-06-19 (researcher-12): the slice-Minkowski frontier is CLOSED. exists_sheared_point_lt_two_mul_d2 was proved by Aristotle (job 8feb596c) and ThreeSquaresSliceMinkowski.lean is 0-sorry AND registered (#26160 fixed the build, #26172 closed the d=2 sorry). The assembled bridge exists_dirichlet_vector_lt_two_mul (SliceMinkowski.lean:520) is proved. The remaining axioms are ONLY dirichlet_key_lemma and not_excluded_form_is_sum_three_sq in ThreeSquares.lean. The prior nextAction (still saying 'discharge exists_sheared_point') was stale.",
-      "S-2026-06-19 (researcher-12): DESCENT SUBTLETY for dirichlet_key_lemma. exists_dirichlet_vector_lt_two_mul gives Q=v0²+d·v1²+d·v2²<2p with p∣(v0−r·v1), p∣v2. Using r²≡−d (mod p): Q≡(r²+d)v1²≡0 (mod p), and 0<Q<2p ⇒ Q=p=d·n−1. But Q=p does NOT directly give n as a sum of three squares (e.g. d=1: Q=n−1, the wrong number). The conversion of the form value back to a representation of n is the classical Davenport–Cassels/Aubry descent — the genuine remaining content and the reason dirichlet_key_lemma is still an axiom. Do not mistake the proved Minkowski bound for the whole lemma.",
-      "S-2026-06-19 (researcher-12): Aristotle SUBMISSION backend still DOWN (re-probed ~05:35-07:00: MCP prove + check_proof return 'Resource not found' / HTTP 404 on /api/v1/project). The READ side returns structured JSON (service responding) but POST submission is unavailable — same outage since ~05:00Z. Auto-prove delegation for the descent is blocked until it recovers."
+      "S16 (researcher-12, 2026-06-19): the dirichlet_key_lemma descent is ELEMENTARY, not Davenport-Cassels. With Q(v)=x²+d·y²+d·z²=p=d·n−1 and p∣z from the sublattice, z=0 is FORCED (p∣z ⇒ d·z²≥p²>p>Q), collapsing to x²+d·y²=d·n−1. Then d=1 ⇒ n=x²+y²+1², and d=2 ⇒ x odd=2k+1, (x²+1)/2=k²+(k+1)², n=y²+k²+(k+1)².",
+      "S14 (2026-06-19, r12): DEFECT in ThreeSquaresSufficiencyCorrected — DirichletWitnessNe3 hardcodes d≤2 and is therefore a FALSE proposition (no d≤2 witness p=d·m−1 prime with −d a QR for 610/999 4-free cores m<2000 in classes m%8∈{1,2,5,6}; smallest m=5,13,17,25). The {1,2,5,6} branch of three_sq_of_corrected_witnesses is VACUOUS — the same #24443 vacuity it claimed to fix.",
+      "S14: verify_corrected_split.py certified an UNBOUNDED-d witness (witness_exists_ne3 scans range(1,300)), NOT the d≤2 Lean def — Lean/script mismatch was the root of the false satisfiability claim.",
+      "S14: dirichlet_key_lemma is INTRINSICALLY d≤2: both the slice volume bound √2·π>4 (binary form x²+d·y²) AND the explicit interval_cases d reconstruction x²+d·y²=d·n−1 ⟹ n=a²+b²+c² (only d=1: n=x²+y²+1²; d=2: n=y²+k²+(k+1)²). No tweak extends it; satisfiability needs unbounded d (min-d grows, e.g. d=70 at m=1166).",
+      "S14: Residue3PropertyOdd (m≡3 mod 8) IS sound/satisfiable — only m=3 lacks an odd-t prime deficit, excluded by 3<m. But proving it needs primes in a thin quadratic-in-t sequence, beyond Mathlib Nat.forall_exists_prime_gt_and_modEq.",
+      "S14 finding (d≤2 witness DirichletWitnessNe3 is FALSE for 610/999 cores) forces the rational+Davenport-Cassels escape route; this session built the Davenport-Cassels factor, axiom-free",
+      "Davenport-Cassels descent needs only Int.bmod balanced remainders + ring/omega/nlinarith — no Gauss class theory, no Hasse-Minkowski; the pivotal identity is a single linear_combination",
+      "SQUAREFREE REDUCTION (S18): the open content of the last axiom not_excluded_form_is_sum_three_sq reduces — entirely elementarily — to 'every squarefree non-excluded s is a sum of three RATIONAL squares'. Proof: n=m²·s (Nat.sq_mul_squarefree) + not_excluded_of_sq_mul_not_excluded + rational scaling by m + Davenport–Cassels (exists_int_sq_of_rat_sq). So the genuine remaining frontier is exactly Hasse–Minkowski solvability of x²+y²+z²=n over ℚ for SQUAREFREE n — confirmed absent from Mathlib v4.26 (no three-squares lemma, no Hilbert symbol, no ternary isotropy)."
     ],
     "mathlibGaps": [
       "No three-square theorem in Mathlib (sum_three_squares / isSumThreeSquares / exists_sq_add_sq_add_sq etc. = 0 hits across 5 query forms; a known unmet docs/1000.yaml target).",
       "The ternary-form reduction 'auxiliary prime in the right AP ⇒ n is a sum of three squares' is absent from Mathlib AND the gallery.",
-      "Available: Dirichlet primes-in-AP forall_exists_prime_gt_and_modEq (Mathlib/NumberTheory/LSeries/PrimesInAP.lean); Fermat two-square; the parent ℤ[√−2] split."
+      "Available: Dirichlet primes-in-AP forall_exists_prime_gt_and_modEq (Mathlib/NumberTheory/LSeries/PrimesInAP.lean); Fermat two-square; the parent ℤ[√−2] split.",
+      "Eliminating not_excluded_form_is_sum_three_sq needs a d-UNIFORM key lemma: Gauss reduction theory of ternary quadratic forms, OR Davenport–Cassels (rational⟹integral representability of x²+y²+z²) + local–global solvability of x²+y²+z²=n. Neither in Mathlib (≫500 lines new foundational infra) — confirmed BLOCKER.",
+      "Dirichlet primes in a thin quadratic sequence (mm=(m−t²)/2 prime for some odd t) — needed for Residue3PropertyOdd; not a direct AP, so Mathlib forall_exists_prime_gt_and_modEq does not apply.",
+      "Mathlib lacks Davenport-Cassels for ternary x²+y²+z² (rational⇒integral) — now built locally",
+      "Mathlib lacks ℚ-solvability (local-global / Hilbert-symbol) of the ternary form x²+y²+z² — the remaining factor-1 blocker (≫500 LOC)"
     ],
     "nextSteps": [
-      "ACT (Docker-gated): prove the prime cases outright (parent prime_three_mod_eight_is_sum_three_sq + Fermat two-square Nat.Prime.sq_add_sq) and replace the monolithic axiom by a smaller squarefree-primitive hypothesis — honest axiomatized progress.",
-      "ACT (deep): build the Dirichlet/ternary route (have forall_exists_prime_gt_and_modEq; need a Lean ternary-form reduction) — the true multi-hundred-LOC obstruction.",
-      "Coordinate with ThreeSquares.lean and lagrange-...-g2-oq-03 (same three-square target) to avoid duplicated axiom-discharge attempts.",
-      "Docker-available session: build Proofs.ThreeSquaresResidue3 + Proofs.ThreeSquaresSufficiencyCorrected via docker-build.sh; if green, register both in Proofs.lean (Residue3 before Corrected) so the deployer machine-checks the corrected sufficiency reduction.",
-      "Port the measure-theory of the d=2 slice (build-capable session): copy dirichlet_approximation (MinkowskiTheoremOQ02OQ01.lean) structure -- ZSpan.isAddFundamentalDomain Z^2, exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure, coord extraction; the one new ingredient is vol(2D ellipse {x^2+2y^2<2p})=sqrt(2)*pi*p (port dirichletEllipsoid_volume to 2D: ellipse=T''ball, T=diag(sqrt(2p),sqrt(p)), EuclideanSpace.volume_ball dim 2=pi) and vol(E')=vol(E)/det(S) via map_matrix_volume_pi_eq_smul_volume_pi (as in dirichletSet_volume).",
-      "Submit exists_slice_point_lt_two_mul_d2 to Aristotle when backend recovers -- it is a textbook HARD (known-math) sorry; this session the Aristotle MCP backend returned 'Resource not found' for all prove calls (down)."
+      "Prove H: squarefree non-excluded n is a sum of three RATIONAL squares (Hasse–Minkowski ternary over ℚ); compose with three_sq_of_squarefree_rat to discharge the last axiom (1→0).",
+      "Build-verify ThreeSquaresDavenportCassels.lean when Docker/Aristotle returns (API-audited, high confidence)",
+      "Scope factor 1: search Mathlib for ℚ-solvability of diagonal ternary forms / Hilbert symbols; if <500 LOC buildable, the last axiom (not_excluded_form_is_sum_three_sq) falls via exists_int_sq_of_rat_sq"
     ],
     "markdown": "See research/problems/zsqrtd-neg-two-oq-02/knowledge.md"
   },
@@ -89,9 +100,13 @@
     "research"
   ],
   "relatedProofs": [
-    "zsqrtd-neg-two",
+    "fermat-two-squares",
     "lagrange-four-squares-waring-g2",
-    "fermat-two-squares"
+    "zsqrtd-neg-two",
+    "zsqrtd-neg-two-oq-01",
+    "zsqrtd-neg-two-oq-02",
+    "zsqrtd-neg-two-oq-03",
+    "zsqrtd-neg-two-oq-03-oq-01"
   ],
   "references": {
     "papers": [
@@ -108,5 +123,62 @@
   "started": "2026-06-15T07:35:00.000Z",
   "lastUpdate": "2026-06-19T00:00:00.000Z",
   "significance": 7,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/ZsqrtdNegTwo.lean",
+      "filename": "ZsqrtdNegTwo.lean",
+      "lineCount": 477,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwo.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ01.lean",
+      "lineCount": 108,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ01.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ02.lean",
+      "filename": "ZsqrtdNegTwoOQ02.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ02.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
+      "filename": "ZsqrtdNegTwoOQ03.lean",
+      "lineCount": 560,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03.lean"
+    },
+    {
+      "path": "Proofs/ZsqrtdNegTwoOQ03OQ01.lean",
+      "filename": "ZsqrtdNegTwoOQ03OQ01.lean",
+      "lineCount": 342,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ZsqrtdNegTwoOQ03OQ01.lean"
+    }
+  ]
 }

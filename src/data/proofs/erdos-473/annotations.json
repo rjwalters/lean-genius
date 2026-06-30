@@ -17,7 +17,11 @@
       "Hamilton paths",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers and the infinitude of primes",
+      "Hamilton paths in infinite graphs",
+      "permutations of the positive integers"
+    ]
   },
   {
     "id": "ann-e473-definitions",
@@ -36,7 +40,11 @@
       "Nat.Prime",
       "Positive integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Function.Bijective in Mathlib",
+      "Nat.Prime predicate",
+      "permuting positive integers versus ℕ"
+    ]
   },
   {
     "id": "ann-e473-main-question",
@@ -55,7 +63,11 @@
       "Back-and-forth constructions",
       "Infinitude of primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence proofs by back-and-forth construction",
+      "priority arguments for infinite permutations",
+      "infinitude of primes"
+    ]
   },
   {
     "id": "ann-e473-greedy",
@@ -75,7 +87,11 @@
       "Surjectivity",
       "Prime distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy algorithms and well-foundedness",
+      "OEIS A055265 sequence",
+      "surjectivity onto the positive integers"
+    ]
   },
   {
     "id": "ann-e473-finite",
@@ -95,7 +111,11 @@
       "Probabilistic arguments",
       "Prime density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bijections on Fin n",
+      "Set.Infinite for sets of naturals",
+      "prime density and probabilistic heuristics"
+    ]
   },
   {
     "id": "ann-e473-graph",
@@ -115,7 +135,11 @@
       "Parity",
       "Even and Odd"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bipartite graph structure",
+      "parity of sums and odd primes",
+      "Hamilton paths versus compactness in infinite graphs"
+    ]
   },
   {
     "id": "ann-e473-summary",
@@ -134,6 +158,10 @@
       "Conjunction introduction",
       "State of knowledge"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conjunction introduction with refine",
+      "packaging axioms into a proved statement",
+      "logical consistency of axioms"
+    ]
   }
 ]

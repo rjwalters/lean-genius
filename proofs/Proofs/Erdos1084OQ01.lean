@@ -13,15 +13,24 @@ This file extends the base Erdős #1084 formalization with:
 ## Axiom Count
 
 4 axioms total (was 9; handshaking lemma proved, kissingNumber now a def):
-- 1 degree ≤ kissing number bound
+- 1 degree ≤ kissing number bound — **now narrowed to d ≥ 2 only**
 - 1 FCC cluster lower bound
 - 1 Bezdek-Reid upper bound
 - 1 Harborth formula
+
+The degree bound `degree_le_kissing` is now a *theorem*: the cases d = 0, 1
+are proved outright (so `f₁_upper_from_kissing` is axiom-free), and only the
+genuinely hard cases d ≥ 2 (the classical kissing numbers τ(2)=6, τ(3)=12)
+are deferred to the axiom `degree_le_kissing_dim_ge_two`. The reduction is
+made explicit by the proved lemma `unit_neighbor_inner_le_half`: the
+unit-distance neighbours of a point form unit vectors with pairwise inner
+products ≤ 1/2, which is exactly a kissing configuration.
 
 Eliminated axioms:
 - kissingNumber: now a concrete definition with known values
 - kissing_1d, kissing_2d, kissing_3d: proved by rfl from the definition
 - degree_sum_eq_twice_pairs: proved (handshaking lemma)
+- degree_le_kissing for d = 0, 1: proved (spherical-code argument)
 
 ## References
 
@@ -302,15 +311,115 @@ theorem kissing_2d : kissingNumber 2 = 6 := rfl
     can touch a central unit sphere (Newton, Schütte-van der Waerden 1953). -/
 theorem kissing_3d : kissingNumber 3 = 12 := rfl
 
-/-- Degree bound from kissing number: each point in a separated
-    configuration has at most τ(d) unit-distance neighbors.
+/-- **Spherical-code reformulation (the mathematical core).**
 
-    Proof sketch: The k neighbors at distance 1 from point p
-    lie on the unit sphere centered at p, with pairwise
-    distances ≥ 1 (by the separation property). This is exactly
-    a kissing configuration, so k ≤ τ(d). -/
-axiom degree_le_kissing (d n : ℕ) (C : SepConfig d n) (i : Fin n) :
-  unitDegree C i ≤ kissingNumber d
+    If `j` and `k` are two *distinct* points, each at unit distance from
+    the center `i`, then the displacement vectors `vⱼ = pⱼ - pᵢ` and
+    `vₖ = pₖ - pᵢ` are unit vectors whose inner product is at most `1/2`.
+
+    This is exactly the angular-separation condition (angle ≥ 60°) that
+    defines a *kissing configuration*: it reduces the degree bound
+    `unitDegree ≤ τ(d)` to the classical kissing-number problem, because
+    the unit-distance neighbours of `i` form a set of unit vectors with
+    pairwise inner products ≤ 1/2, and the maximum size of such a set is
+    precisely the kissing number τ(d).
+
+    Proof: `‖vⱼ - vₖ‖ = dist pⱼ pₖ ≥ 1` (separation), and
+    `‖vⱼ - vₖ‖² = ‖vⱼ‖² - 2⟪vⱼ,vₖ⟫ + ‖vₖ‖² = 2 - 2⟪vⱼ,vₖ⟫`. -/
+theorem unit_neighbor_inner_le_half {d n : ℕ} (C : SepConfig d n) {i j k : Fin n}
+    (hjk : j ≠ k)
+    (huj : dist (C.points i) (C.points j) = 1)
+    (huk : dist (C.points i) (C.points k) = 1) :
+    inner ℝ (C.points j - C.points i) (C.points k - C.points i) ≤ 1 / 2 := by
+  set a := C.points j - C.points i with ha
+  set b := C.points k - C.points i with hb
+  have hna : ‖a‖ = 1 := by rw [ha, ← dist_eq_norm, dist_comm]; exact huj
+  have hnb : ‖b‖ = 1 := by rw [hb, ← dist_eq_norm, dist_comm]; exact huk
+  have hnab : (1 : ℝ) ≤ ‖a - b‖ := by
+    have hab : a - b = C.points j - C.points k := by rw [ha, hb]; abel
+    rw [hab, ← dist_eq_norm]
+    exact C.separated j k hjk
+  have hsq : ‖a - b‖ ^ 2 = ‖a‖ ^ 2 - 2 * inner ℝ a b + ‖b‖ ^ 2 := norm_sub_sq_real a b
+  have h1 : (1 : ℝ) ≤ ‖a - b‖ ^ 2 := by nlinarith [hnab, norm_nonneg (a - b)]
+  rw [hna, hnb] at hsq
+  nlinarith [hsq, h1]
+
+/-- In `EuclideanSpace ℝ (Fin 1)` the distance is the absolute difference
+    of the single coordinate. -/
+private theorem dist_fin_one (x y : EuclideanSpace ℝ (Fin 1)) :
+    dist x y = |x 0 - y 0| := by
+  rw [EuclideanSpace.dist_eq, Fin.sum_univ_one, Real.dist_eq, sq_abs]
+  exact Real.sqrt_sq_eq_abs _
+
+/-- **Degree bound, dimension 0.** In `ℝ⁰` all points coincide, so no two
+    points can be at distance 1; the unit-degree is 0 ≤ τ(0). -/
+theorem unitDegree_le_kissing_zero (n : ℕ) (C : SepConfig 0 n) (i : Fin n) :
+    unitDegree C i ≤ kissingNumber 0 := by
+  have h0 : unitDegree C i = 0 := by
+    unfold unitDegree
+    rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    intro j _ hp
+    obtain ⟨-, hd⟩ := hp
+    have : dist (C.points i) (C.points j) = 0 := by rw [EuclideanSpace.dist_eq]; simp
+    rw [this] at hd; norm_num at hd
+  rw [h0]; exact Nat.zero_le _
+
+/-- **Degree bound, dimension 1 (fully proved).** On the line, a point has
+    at most 2 = τ(1) unit-distance neighbours: each neighbour lies at one of
+    the two coordinates `pᵢ ± 1`, and the separation hypothesis forbids two
+    neighbours sharing a coordinate. -/
+theorem unitDegree_le_kissing_one (n : ℕ) (C : SepConfig 1 n) (i : Fin n) :
+    unitDegree C i ≤ kissingNumber 1 := by
+  show unitDegree C i ≤ 2
+  unfold unitDegree
+  set c := (C.points i) 0 with hc
+  set N := Finset.filter
+    (fun j : Fin n => j ≠ i ∧ dist (C.points i) (C.points j) = 1) Finset.univ with hN
+  have hmem : Set.MapsTo (fun j => (C.points j) 0) ↑N ({c - 1, c + 1} : Finset ℝ) := by
+    intro j hj
+    rw [Finset.mem_coe, hN, Finset.mem_filter] at hj
+    obtain ⟨-, -, hd⟩ := hj
+    rw [dist_fin_one] at hd
+    rcases (abs_eq (by norm_num : (0 : ℝ) ≤ 1)).mp hd with h | h
+    · simp only [Finset.mem_coe, Finset.mem_insert, Finset.mem_singleton]; left; linarith
+    · simp only [Finset.mem_coe, Finset.mem_insert, Finset.mem_singleton]; right; linarith
+  have hinj : Set.InjOn (fun j => (C.points j) 0) ↑N := by
+    intro j hj k hk hjk
+    simp only at hjk
+    by_contra hne
+    have hsep := C.separated j k hne
+    rw [dist_fin_one, hjk, sub_self, abs_zero] at hsep
+    linarith
+  calc N.card
+      ≤ ({c - 1, c + 1} : Finset ℝ).card := Finset.card_le_card_of_injOn _ hmem hinj
+    _ ≤ 2 := by
+        refine le_trans (Finset.card_insert_le _ _) ?_
+        simp
+
+/-- **Degree bound for dimension d ≥ 2 (axiomatized).**
+
+    For `d ≥ 2` the bound `unitDegree ≤ τ(d)` is the *classical kissing
+    number theorem*, whose content lies entirely in the value of τ(d):
+    τ(2) = 6 (the hexagonal packing bound) and τ(3) = 12
+    (Schütte–van der Waerden 1953). These are not yet formalized here.
+
+    The reduction to this theorem is `unit_neighbor_inner_le_half` above:
+    the neighbours form a unit-vector system with pairwise inner products
+    ≤ 1/2, and τ(d) is by definition the maximum size of such a system. -/
+axiom degree_le_kissing_dim_ge_two (d n : ℕ) (hd : 2 ≤ d)
+    (C : SepConfig d n) (i : Fin n) :
+    unitDegree C i ≤ kissingNumber d
+
+/-- Degree bound from kissing number: each point in a separated
+    configuration has at most τ(d) unit-distance neighbours. The
+    elementary cases `d = 0, 1` are proved; `d ≥ 2` invokes the classical
+    kissing-number theorem (`degree_le_kissing_dim_ge_two`). -/
+theorem degree_le_kissing (d n : ℕ) (C : SepConfig d n) (i : Fin n) :
+    unitDegree C i ≤ kissingNumber d := by
+  match d, C, i with
+  | 0, C, i => exact unitDegree_le_kissing_zero n C i
+  | 1, C, i => exact unitDegree_le_kissing_one n C i
+  | (d + 2), C, i => exact degree_le_kissing_dim_ge_two (d + 2) n (by omega) C i
 
 /- ============================================================
    Part IV: Double-Counting and Upper Bounds
@@ -351,15 +460,18 @@ theorem degree_sum_eq_twice_pairs (d n : ℕ) (C : SepConfig d n) :
       S.card := by
     rw [← Finset.card_sigma]
     apply Finset.card_bij (fun (p : (i : Fin n) × Fin n) _ => (p.1, p.2))
-    · intro ⟨i, j⟩ hm
-      simp only [Finset.mem_sigma, Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢
-      exact hm.2
+    · rintro ⟨i, j⟩ hm
+      rw [Finset.mem_sigma, Finset.mem_filter] at hm
+      rw [hS_def, Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, hm.2.2⟩
     · intro ⟨i₁, j₁⟩ _ ⟨i₂, j₂⟩ _ h
       simp only [Prod.mk.injEq] at h
       exact Sigma.ext h.1 (heq_of_eq h.2)
-    · intro ⟨i, j⟩ hm
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm
-      exact ⟨⟨i, j⟩, by simp [Finset.mem_sigma, Finset.mem_filter, hm], rfl⟩
+    · rintro ⟨i, j⟩ hm
+      rw [hS_def, Finset.mem_filter] at hm
+      refine ⟨⟨i, j⟩, ?_, rfl⟩
+      rw [Finset.mem_sigma, Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, Finset.mem_univ _, hm.2⟩
   -- Step 2: S.card = 2 * T.card (partition into i < j and j < i halves)
   have h2 : S.card = 2 * T.card := by
     set T' := Finset.univ.filter (fun p : Fin n × Fin n =>
@@ -395,22 +507,29 @@ theorem degree_sum_eq_twice_pairs (d n : ℕ) (C : SepConfig d n) :
     rw [hunion, Finset.card_union_of_disjoint hdisj, hcard, two_mul]
   linarith
 
+/-- Generic double-counting bound: if every point has unit-degree ≤ B, then
+    2·pairs ≤ B·n. This isolates the handshaking step from the source of the
+    per-point degree bound, so callers can supply either the proved cases
+    (d = 0, 1) or the axiomatized cases (d ≥ 2) without dragging in the
+    kissing-number axiom unnecessarily. -/
+theorem pairs_le_of_degree_bound {d n : ℕ} (C : SepConfig d n) (B : ℕ)
+    (hdeg : ∀ i, unitDegree C i ≤ B) :
+    2 * unitPairs C ≤ B * n := by
+  have h_sum : (Finset.univ.sum fun i => unitDegree C i) ≤ B * n := by
+    calc (Finset.univ.sum fun i => unitDegree C i)
+        ≤ Finset.univ.sum fun _ => B := Finset.sum_le_sum (fun i _ => hdeg i)
+      _ = B * n := by
+          simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_comm]
+  rw [← degree_sum_eq_twice_pairs]
+  exact h_sum
+
 /-- Upper bound on unit pairs from kissing number: pairs ≤ τ(d)·n/2.
 
     Proof: By the handshaking lemma,
     2·pairs = Σ deg(i) ≤ Σ τ(d) = τ(d)·n. -/
 theorem pairs_le_kissing_bound {d n : ℕ} (C : SepConfig d n) :
-    2 * unitPairs C ≤ kissingNumber d * n := by
-  have h_sum : (Finset.univ.sum fun i => unitDegree C i) ≤ kissingNumber d * n := by
-    calc (Finset.univ.sum fun i => unitDegree C i)
-        ≤ Finset.univ.sum fun _ => kissingNumber d := by
-          apply Finset.sum_le_sum
-          intro i _
-          exact degree_le_kissing d n C i
-      _ = kissingNumber d * n := by
-          simp [Finset.sum_const, Finset.card_univ, Fintype.card_fin, mul_comm]
-  rw [← degree_sum_eq_twice_pairs]
-  exact h_sum
+    2 * unitPairs C ≤ kissingNumber d * n :=
+  pairs_le_of_degree_bound C (kissingNumber d) (degree_le_kissing d n C)
 
 /-- In 2D, each separated configuration has ≤ 3n unit pairs.
     This is the trivial kissing number bound: τ(2) = 6 gives
@@ -430,11 +549,13 @@ theorem f3_upper_6n (n : ℕ) (C : SepConfig 3 n) :
   omega
 
 /-- In 1D, each separated configuration has ≤ n unit pairs.
-    The kissing bound τ(1) = 2 gives 2·pairs ≤ 2n. -/
+    The kissing bound τ(1) = 2 gives 2·pairs ≤ 2n.
+
+    This bound is **axiom-free**: it routes through the *proved* degree bound
+    `unitDegree_le_kissing_one` rather than the d ≥ 2 kissing-number axiom. -/
 theorem f1_upper_from_kissing (n : ℕ) (C : SepConfig 1 n) :
     unitPairs C ≤ n := by
-  have h := pairs_le_kissing_bound C
-  rw [kissing_1d] at h
+  have h := pairs_le_of_degree_bound C 2 (fun i => unitDegree_le_kissing_one n C i)
   omega
 
 /- ============================================================
@@ -542,7 +663,7 @@ theorem iso_exponent_monotone (d₁ d₂ : ℕ) (hd₁ : d₁ ≥ 2) (hd₂ : d�
   have hd₁_pos : (0 : ℝ) < d₁ := Nat.cast_pos.mpr (by omega)
   have hd₂_pos : (0 : ℝ) < d₂ := Nat.cast_pos.mpr (by omega)
   -- (d₁-1)/d₁ < (d₂-1)/d₂ ⟺ 1 - 1/d₁ < 1 - 1/d₂ ⟺ 1/d₂ < 1/d₁
-  rw [div_lt_div_iff hd₁_pos hd₂_pos]
+  rw [div_lt_div_iff₀ hd₁_pos hd₂_pos]
   -- (d₁ - 1) * d₂ < (d₂ - 1) * d₁ ⟺ d₁*d₂ - d₂ < d₁*d₂ - d₁ ⟺ d₁ < d₂
   have hd₁_cast : (1 : ℝ) ≤ d₁ := by exact_mod_cast (show 1 ≤ d₁ by omega)
   have hd₂_gt : (d₁ : ℝ) < (d₂ : ℝ) := Nat.cast_lt.mpr hd₂
@@ -574,6 +695,7 @@ theorem sqrt_12n_factored (n : ℕ) (hn : n ≥ 1) :
   have h4 : Real.sqrt 4 = 2 := by
     rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 2)]
   rw [h4, Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 3)]
+  ring
 
 /- ============================================================
    Part IX: Summary of Progress
@@ -593,9 +715,13 @@ theorem sqrt_12n_factored (n : ℕ) (hn : n ≥ 1) :
    - harborth_correction_order, sqrt_12n_factored
    - degree_sum_eq_twice_pairs: handshaking lemma (was axiom, now proved)
    - pairs_le_kissing_bound (from axioms)
+   - unit_neighbor_inner_le_half: spherical-code reformulation (NEW, 0-axiom)
+   - degree_le_kissing: now a theorem; d = 0, 1 proved, d ≥ 2 axiomatized
+   - unitDegree_le_kissing_zero, unitDegree_le_kissing_one (NEW, 0-axiom)
+   - f1_upper_from_kissing is now AXIOM-FREE (uses the proved d = 1 case)
 
    Axioms (4 total, was 9 → 8 → 4):
-   - degree_le_kissing (degree ≤ τ(d) for all d)
+   - degree_le_kissing_dim_ge_two (degree ≤ τ(d) for d ≥ 2; was: all d)
    - fcc_cluster_pairs (FCC cluster lower bound)
    - bezdek_reid (Bezdek-Reid 2013 upper bound)
    - harborth_formula (Harborth 1974 exact 2D formula)
@@ -604,4 +730,8 @@ theorem sqrt_12n_factored (n : ℕ) (hn : n ≥ 1) :
    - kissingNumber: now a concrete def with known values + safe upper bound
    - kissing_1d, kissing_2d, kissing_3d: proved by rfl from definition
    - degree_sum_eq_twice_pairs: handshaking lemma proved by double-counting
+
+   Narrowed axioms (1):
+   - degree_le_kissing: was "all d"; now only d ≥ 2 is assumed
+     (d = 0, 1 proved via the spherical-code argument)
 -/

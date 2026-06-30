@@ -1,0 +1,175 @@
+{
+  "id": "denumerability-rationals-oq-05",
+  "title": "Closure of ℵ₀ — and Where It Breaks: ℚ², List ℚ, Finset ℚ Stay Denumerable but ℕ → ℚ Is the Continuum",
+  "slug": "denumerability-rationals-oq-05",
+  "description": "Finite products, finite subsets, and finite sequences of rationals are all still denumerable (cardinality ℵ₀): #(ℚ × ℚ) = #(List ℚ) = #(Finset ℚ) = ℵ₀. But the countably infinite power #(ℕ → ℚ) = 𝔠 jumps to the continuum, so ℕ → ℚ is uncountable. The boundary case of ℵ₀-absorption, sharpening the ℵ₀ < 𝔠 cardinality gap. Routes through mk_eq_aleph0, aleph0_mul_aleph0, mk_list_eq_aleph0, mk_finset_of_infinite, and aleph0_power_aleph0.",
+  "meta": {
+    "author": "Cantor (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Aleph_number",
+    "date": "1874",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "denumerability",
+      "rationals",
+      "cardinal-arithmetic",
+      "aleph-null",
+      "continuum",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DenumerabilityRationalsOQ05.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.mk_eq_aleph0",
+        "description": "[Countable α] [Infinite α] → #α = ℵ₀ — gives #ℚ = ℵ₀, the engine of the entry",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph0_mul_aleph0",
+        "description": "ℵ₀ · ℵ₀ = ℵ₀ — denumerability is preserved by finite products (the ℵ₀-analogue of 𝔠 · 𝔠 = 𝔠)",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_list_eq_aleph0",
+        "description": "[Countable α] [Nonempty α] → #(List α) = ℵ₀ — finite sequences of a countable type stay denumerable",
+        "module": "Mathlib.SetTheory.Cardinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.mk_finset_of_infinite",
+        "description": "[Infinite α] → #(Finset α) = #α — finite subsets of an infinite type match its cardinality",
+        "module": "Mathlib.SetTheory.Cardinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.aleph0_power_aleph0",
+        "description": "ℵ₀ ^ ℵ₀ = 𝔠 — the countable power escapes ℵ₀ to the continuum; the boundary of denumerability",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.aleph0_lt_continuum",
+        "description": "ℵ₀ < 𝔠 — Cantor's cardinality gap, used to deduce ℕ → ℚ is uncountable",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      }
+    ],
+    "originalContributions": [
+      "mk_rat: #ℚ = ℵ₀, the rationals are denumerable (re-exported engine)",
+      "mk_rat_prod: #(ℚ × ℚ) = ℵ₀, pairs of rationals stay denumerable",
+      "mk_rat_prod_eq_mk_rat: #(ℚ × ℚ) = #ℚ, the plane and line of rationals are equinumerous",
+      "nonempty_equiv_prod_rat: Nonempty (ℚ × ℚ ≃ ℚ), an explicit bijection",
+      "mk_list_rat: #(List ℚ) = ℵ₀, finite sequences of rationals stay denumerable",
+      "mk_finset_rat: #(Finset ℚ) = ℵ₀, finite subsets of ℚ stay denumerable",
+      "mk_seq_rat: #(ℕ → ℚ) = 𝔠, the countable power jumps to the continuum (boundary case)",
+      "not_countable_seq_rat: ¬ Countable (ℕ → ℚ), rational sequences are uncountable"
+    ],
+    "dateAdded": "2026-06-19",
+    "lineCount": 73,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1874 enumeration of ℚ showed the rationals are denumerable, and his 1891 diagonal argument showed ℝ is not — the gap ℵ₀ < 𝔠. Between these two poles lies a precise question: which set-forming operations keep a denumerable set denumerable? The answer is that ℵ₀ is an absorbing element for every *finite* operation — products, finite subsets, finite sequences — but not for a *countably infinite* power. The rational sequences ℕ → ℚ already have the cardinality of the continuum. This entry makes the boundary explicit for ℚ, complementing the gallery's continuum-stability results (𝔠 · 𝔠 = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠) one level down at ℵ₀, and sharpening the cardinality-gap entry oq-01.",
+    "problemStatement": "**Open Question (denumerability-rationals-oq-05)**: Determine which constructions preserve denumerability of ℚ. Show #(ℚ × ℚ) = #(List ℚ) = #(Finset ℚ) = ℵ₀ (finite operations preserve it) but #(ℕ → ℚ) = 𝔠 (the countable power does not).\n\n**Result**: mk_rat_prod, mk_list_rat, mk_finset_rat (all ℵ₀), the bijection nonempty_equiv_prod_rat, and the boundary mk_seq_rat (#(ℕ → ℚ) = 𝔠) with not_countable_seq_rat.",
+    "text": "Pairs, finite lists, and finite subsets of rationals are still denumerable (ℵ₀); but sequences of rationals ℕ → ℚ form an uncountable set of cardinality 𝔠.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `mk_rat`: ℚ is countable and infinite, so `Cardinal.mk_eq_aleph0` gives #ℚ = ℵ₀.\n2. `mk_rat_prod`: `mk_prod` rewrites #(ℚ × ℚ) to #ℚ · #ℚ (lifts vanish), `mk_rat` makes each factor ℵ₀, and `aleph0_mul_aleph0` collapses ℵ₀ · ℵ₀ to ℵ₀.\n3. `mk_list_rat`: `mk_list_eq_aleph0` directly (countable nonempty base).\n4. `mk_finset_rat`: `mk_finset_of_infinite` gives #(Finset ℚ) = #ℚ, then `mk_rat`.\n5. `mk_seq_rat`: `mk_arrow` rewrites #(ℕ → ℚ) to #ℚ ^ #ℕ = ℵ₀ ^ ℵ₀, collapsed by `aleph0_power_aleph0` to 𝔠.\n6. `not_countable_seq_rat`: `mk_le_aleph0_iff` turns countability into #(ℕ → ℚ) ≤ ℵ₀; `mk_seq_rat` and `aleph0_lt_continuum` (ℵ₀ < 𝔠) refute it.",
+    "keyInsights": [
+      "**ℵ₀ absorbs finite operations but not countable powers.** ℵ₀ · ℵ₀ = ℵ₀ (products), #(List ℚ) = ℵ₀ (finite sequences), #(Finset ℚ) = ℵ₀ (finite subsets) — but ℵ₀ ^ ℵ₀ = 𝔠. Finiteness of the operation is exactly the dividing line.",
+      "**The ℵ₀-shadow of the continuum results.** This entry is the level-down companion to 𝔠 · 𝔠 = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠: the same absorption laws govern both the smallest infinite cardinal and the continuum, but the *power* operation lifts ℵ₀ strictly up to 𝔠.",
+      "**Cantor's gap, made operational.** ℵ₀ < 𝔠 (oq-01) becomes concrete: the rationals are denumerable, yet the rational sequences ℕ → ℚ are not — an uncountable object built entirely from ℚ.",
+      "**Bijection from cardinal arithmetic.** #(ℚ × ℚ) = #ℚ unpacks via `Cardinal.eq` to ℚ × ℚ ≃ ℚ — a pairing of rationals, the ℵ₀ analogue of Cantor's line-plane bijection."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic in Mathlib (ℵ₀, 𝔠, multiplication, exponentiation)",
+      "ℵ₀ absorption laws (aleph0_mul_aleph0, aleph0_power_aleph0)",
+      "Cardinality of lists, finsets, and function types (mk_list_eq_aleph0, mk_finset_of_infinite, mk_arrow)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring framing ℵ₀-closure and its breakdown at the countable power, the Mathlib import, namespace, and Cardinal open.",
+      "mathContext": "$\\#(\\mathbb{Q} \\times \\mathbb{Q}) = \\aleph_0$ but $\\#(\\mathbb{N} \\to \\mathbb{Q}) = \\mathfrak{c}$."
+    },
+    {
+      "id": "finite",
+      "title": "Finite Operations Preserve ℵ₀",
+      "startLine": 36,
+      "endLine": 62,
+      "summary": "mk_rat (#ℚ = ℵ₀), mk_rat_prod (#(ℚ × ℚ) = ℵ₀), mk_rat_prod_eq_mk_rat, nonempty_equiv_prod_rat (ℚ × ℚ ≃ ℚ), mk_list_rat (#(List ℚ) = ℵ₀), mk_finset_rat (#(Finset ℚ) = ℵ₀).",
+      "mathContext": "$\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$, and finite sequences/subsets of ℚ stay $\\aleph_0$."
+    },
+    {
+      "id": "boundary",
+      "title": "The Boundary: Countable Powers Reach 𝔠",
+      "startLine": 64,
+      "endLine": 73,
+      "summary": "mk_seq_rat (#(ℕ → ℚ) = 𝔠 via mk_arrow + aleph0_power_aleph0) and not_countable_seq_rat (¬ Countable (ℕ → ℚ) via aleph0_lt_continuum).",
+      "mathContext": "$\\aleph_0^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$, so $\\mathbb{N} \\to \\mathbb{Q}$ is uncountable."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "extends",
+      "description": "Extends the base denumerability of ℚ to the closure question: which operations preserve ℵ₀ (finite ones) and which break it (the countable power)"
+    },
+    {
+      "targetId": "denumerability-rationals-oq-01",
+      "relationship": "related",
+      "description": "Makes the ℵ₀ < 𝔠 cardinality gap operational: ℚ is denumerable but ℕ → ℚ is an uncountable continuum-sized set built from ℚ"
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-07",
+      "relationship": "related",
+      "description": "The ℵ₀-level shadow of the continuum-stability results: 𝔠 · 𝔠 = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠 mirror ℵ₀ · ℵ₀ = ℵ₀, but the power lifts ℵ₀ strictly to 𝔠"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) determination of which constructions preserve denumerability of ℚ: finite products, finite sequences (List ℚ), and finite subsets (Finset ℚ) all stay ℵ₀, with an explicit bijection ℚ × ℚ ≃ ℚ; but the countable power ℕ → ℚ has cardinality 𝔠 and is therefore uncountable.",
+    "implications": "Locates the exact boundary of ℵ₀-absorption — finiteness of the operation — and exhibits a concrete uncountable set (ℕ → ℚ) constructed purely from the rationals, sharpening Cantor's ℵ₀ < 𝔠 gap.",
+    "openQuestions": [
+      "Generalize to any countable ring: #R[X] = ℵ₀ and #(ℕ → R) = 𝔠 for countable infinite R.",
+      "Characterize all index types I for which #(I → ℚ) = ℵ₀ (exactly the finite I) versus = 𝔠 (any countably infinite I)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "DenumerabilityRationalsOQ05",
+    "lineCount": 73,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/DenumerabilityRationalsOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Denumerability of ℚ (and the algebraic numbers); uncountability of ℝ"
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics, 3rd ed.",
+      "note": "Cardinal arithmetic: κ · κ = κ and the power 2^κ; ℵ₀^ℵ₀ = 2^ℵ₀ = 𝔠"
+    }
+  ],
+  "sorries": 0
+}

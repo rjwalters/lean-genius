@@ -1,0 +1,119 @@
+{
+  "id": "ballot-problem-oq-03-oq-02-oq-03",
+  "title": "Weighted (Generating-Function) Lindström–Gessel–Viennot — Algebraic Core",
+  "slug": "ballot-problem-oq-03-oq-02-oq-03",
+  "description": "Extends the parent's general r×r LGV determinant lemma to WEIGHTED lattice paths (the generating-function version). Over an arbitrary commutative ring R, each path P carries a weight w(P) ∈ R and the plain path count e(Aᵢ,Bⱼ) is replaced by the generating function h(Aᵢ,Bⱼ) = Σ_{P:Aᵢ→Bⱼ} w(P). This file proves, fully and abstractly (paths = arbitrary finite types, weights = arbitrary R-valued functions), the ALGEBRAIC CORE of the weighted LGV identity: det H = Σ_σ sign(σ) • Σ_{f : ∏ᵢ Path i (σ i)} ∏ᵢ w(fᵢ) — the Leibniz expansion of the determinant with each product of generating-function entries expanded into a sum over path families (via Fintype.prod_sum after a transpose to the column Leibniz form). A corollary specialises every weight to 1, recovering the unweighted counting form det = Σ_σ sign(σ) • #(σ-families) used by the parent, confirming this genuinely generalises it. The remaining COMBINATORIAL core — the Gessel–Viennot sign-reversing involution collapsing the signed sum onto non-intersecting identity-permutation families — is stated as the entry's open goal (WeightedLGVConjecture) and is neither proved nor assumed (no axiom, no sorry): everything in the file is the unconditional algebraic half.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ03OQ02OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "lattice-paths",
+      "Lindstrom-Gessel-Viennot",
+      "LGV",
+      "determinant",
+      "generating-functions",
+      "weighted-paths",
+      "permutations",
+      "Leibniz-expansion",
+      "commutative-ring",
+      "ballot-problem"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 163,
+    "theoremCount": 2,
+    "definitionCount": 6,
+    "assumptions": "None. Imports only Mathlib. The two theorems use standard Mathlib API: `Matrix.det_apply` and `Matrix.det_transpose` (column form of the Leibniz determinant expansion), `Fintype.prod_sum` (a product of finite sums equals a sum of products over the pi type), and `Finset.sum_const`/`Finset.card_univ`/`nsmul_eq_mul` (the weight-1 specialisation). No `axiom` declarations, no structure-encoded assumptions, no `native_decide`, no `sorry`. Kernel-verified on Mathlib v4.26.0: both theorems depend on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (confirmed via `#print axioms`). The headline weighted LGV lemma itself (`WeightedLGVConjecture`) is a stated `def : Prop`, explicitly NOT proved or assumed here.",
+    "originalContributions": [
+      "WeightedLGV (structure): an abstract weighted-path LGV configuration over a commutative ring R — for each source i and target j a finite path type Path i j with an R-valued weight. This is the generating-function abstraction of the parent's concrete LGVConfig (lattice paths in a grid), letting the algebraic content be proved once for all weight schemes (monomials, q-counting, multivariate, etc.).",
+      "WeightedLGV.matrix: the generating-function matrix H i j = Σ_{P:i→j} w(P), the weighted replacement for the parent's binomial path-count matrix.",
+      "WeightedLGV.Family / familyWeight: σ-path families (a path i → σ(i) for each i) and their multiplicative weight ∏ᵢ w(fᵢ).",
+      "det_matrix_eq_signed_family_sum (algebraic core, VERIFIED 0-axiom): det H = Σ_σ sign(σ) • Σ_{f : Family σ} familyWeight f. Proof: transpose to the column Leibniz form (Matrix.det_transpose + Matrix.det_apply), then expand the product of generating-function entries into a sum over path families with Fintype.prod_sum. This is the unconditional generating-function identity 'before cancellation'.",
+      "det_matrix_eq_signed_card_sum (VERIFIED 0-axiom): specialising every weight to 1 recovers the unweighted counting form det H = Σ_σ sign(σ) • #(σ-families), proving the weighted statement generalises the parent's det_pathMatrix_eq_signed_sum.",
+      "WeightedLGVConjecture (open goal, stated not proved): the full weighted LGV lemma det H = Σ_{non-intersecting identity families} ∏ w, reduced by the algebraic core to weight-invariance of the Gessel–Viennot tail-swap involution (already proved unweighted in the parent's gv_involution_cancellation / lgv_lemma_rxr)."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lindström–Gessel–Viennot lemma (Lindström 1973; Gessel–Viennot 1985) expresses a determinant of path counts as a signed sum over families of lattice paths that collapses, via a sign-reversing involution, to the non-intersecting families. Its WEIGHTED form — where each path carries a monomial weight and counts become generating functions — is the version actually used in algebraic combinatorics (Jacobi–Trudi identities for Schur functions, plane partitions, the Aztec diamond). The parent entry `ballot-problem-oq-03-oq-02` formalises the unweighted general r×r lemma; its open-question list asks to extend it to the weighted/generating-function setting. This entry supplies the algebraic core of that extension over an arbitrary commutative ring.",
+    "problemStatement": "Formalise the weighted (generating-function) LGV lemma: over a commutative ring R with path weights w(P), det[Σ_{P:Aᵢ→Bⱼ} w(P)] = Σ over non-intersecting r-tuples of products of weights. This file proves the unconditional algebraic half (the signed sum over ALL path families) and states the full lemma (collapse to non-intersecting families) as the open goal.",
+    "proofStrategy": "Work abstractly: a WeightedLGV bundles, for each (i,j), a finite path type and an R-weight; the generating-function matrix is H i j = Σ_p w(i,j,p). For the determinant expansion, rewrite det H = det Hᵀ and apply Matrix.det_apply to get the column form Σ_σ sign(σ) • ∏ᵢ H i (σ i). Then ∏ᵢ (Σ_p w i (σ i) p) = Σ_{f : ∏ᵢ Path i (σ i)} ∏ᵢ w i (σ i) (fᵢ) by Fintype.prod_sum (a product of finite sums is the sum of products over the dependent-function type), which is exactly Σ_{f : Family σ} familyWeight f. The weight-1 corollary follows since each familyWeight collapses to ∏ 1 = 1, turning the inner sum into the cardinality of Family σ.",
+    "keyInsights": [
+      "The 'generating function version' of LGV factors cleanly into an ALGEBRAIC half (det = signed sum over all path families, pure multilinearity of the determinant) and a COMBINATORIAL half (the sign-reversing involution). The algebraic half needs no lattice geometry at all and holds over any commutative ring — so it is proved once, abstractly.",
+      "Fintype.prod_sum (∏ᵢ Σⱼ fᵢⱼ = Σ_{x:∀i,κi} ∏ᵢ fᵢ(xᵢ)) is exactly the distributivity that turns a product of entrywise generating functions into the generating function of path families.",
+      "Transposing first (det H = det Hᵀ) gives the column Leibniz form Σ_σ sign(σ) ∏ᵢ H i (σ i), matching the natural indexing of σ-families (path i runs to target σ(i)).",
+      "Specialising weights to 1 recovers the unweighted theorem verbatim, which is the litmus test that the abstraction is a genuine generalisation rather than a divergent restatement.",
+      "The involution that finishes the proof is weight-PRESERVING because the tail swap only redistributes existing steps among the paths of a family; the multiset of all steps — hence the product of monomial weights — is invariant. This is why the parent's unweighted involution transfers to the weighted setting."
+    ],
+    "prerequisites": [
+      "Matrix.det_apply and Matrix.det_transpose (Leibniz determinant expansion) — Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Fintype.prod_sum (product of sums = sum of products over the pi type) — Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Finset.sum_const, Finset.card_univ, nsmul_eq_mul (weight-1 specialisation)",
+      "The parent unweighted general r×r LGV lemma (ballot-problem-oq-03-oq-02): LGVConfig, pathMatrix, det_pathMatrix_eq_signed_sum, gv_involution_cancellation, lgv_lemma_rxr",
+      "Mathlib v4.26.0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module Docstring: Weighted LGV, Algebraic vs Combinatorial Halves, Scope",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States the open question (weighted/generating-function LGV), the full theorem det[Σ w] = Σ_{non-intersecting} ∏ w, the split into the algebraic core (proved here) and the combinatorial involution (open), and the explicit scope: no axiom, no sorry, nothing depends on the unproved conjecture."
+    },
+    {
+      "id": "weighted-lgv-structure",
+      "title": "WeightedLGV: Abstract Weighted-Path Configuration",
+      "startLine": 52,
+      "endLine": 100,
+      "summary": "The WeightedLGV structure (finite path types Path i j with R-weights), the generating-function matrix H i j = Σ_p w(p), σ-path families Family σ = ∀ i, Path i (σ i), and their multiplicative weight familyWeight = ∏ᵢ w(fᵢ)."
+    },
+    {
+      "id": "algebraic-core",
+      "title": "Algebraic Core: Determinant = Signed Generating Function of Path Families",
+      "startLine": 101,
+      "endLine": 138,
+      "summary": "det_matrix_eq_signed_family_sum: det H = Σ_σ sign(σ) • Σ_{f:Family σ} familyWeight f, via det_transpose + det_apply + Fintype.prod_sum. det_matrix_eq_signed_card_sum: the weight-1 specialisation recovering the unweighted counting determinant expansion. IsNonIntersecting: abstract placeholder predicate for family non-intersection."
+    },
+    {
+      "id": "open-goal",
+      "title": "WeightedLGVConjecture: The Full Weighted LGV Lemma (Open Goal)",
+      "startLine": 139,
+      "endLine": 163,
+      "summary": "The full statement det H = Σ_{non-intersecting identity families} ∏ w, recorded as a def : Prop for downstream work. Reduced by the algebraic core to weight-invariance of the Gessel–Viennot involution; neither proved nor assumed here."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves 2 theorems and 6 definitions/structures with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only). It formalises the algebraic core of the weighted (generating-function) Lindström–Gessel–Viennot lemma over an arbitrary commutative ring: the determinant of the generating-function matrix equals the signed sum, over all permutations, of the generating function of path families (det_matrix_eq_signed_family_sum), with the weight-1 specialisation recovering the parent's unweighted counting determinant (det_matrix_eq_signed_card_sum). The full weighted lemma — the collapse onto non-intersecting families — is stated as an open goal.",
+    "implications": "The weighted LGV identity, used throughout algebraic combinatorics (Jacobi–Trudi, plane partitions, dimer models), now has its unconditional algebraic half machine-checked in full generality. Because the abstraction is over arbitrary finite path types and arbitrary ring-valued weights, the same theorem instantiates to monomial weights (multivariate generating functions), q-weights, or the unweighted count. Completing the entry requires only transferring the parent's already-proved tail-swap involution and showing it preserves familyWeight.",
+    "openQuestions": [
+      "Weighted Gessel–Viennot involution (the entry's core open goal): prove WeightedLGVConjecture by showing the parent's tail-swap involution (gv_involution_cancellation) preserves familyWeight — the swap redistributes steps among a family's paths but preserves their total multiset, hence ∏ w. Combined with det_matrix_eq_signed_family_sum this gives det H = Σ_{non-intersecting identity families} ∏ w.",
+      "Instantiate the abstract WeightedLGV with the parent's concrete LPath/LGVConfig and monomial step-weights to obtain the classical weighted LGV for grid lattice paths, then connect to Schur polynomials via the Jacobi–Trudi identity (a parent open question).",
+      "Refine IsNonIntersecting from the abstract placeholder to the genuine pairwise non-intersection predicate once a concrete path geometry is supplied, so WeightedLGVConjecture states the geometrically meaningful theorem."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the fully-proved unweighted general r×r LGV determinant lemma (lgv_lemma_rxr). This entry extends it to weighted/generating-function paths, proving the algebraic core over an arbitrary commutative ring and recovering the parent's counting determinant as the weight-1 case."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BallotOQ03OQ02OQ03",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 6,
+    "path": "Proofs/BallotProblemOQ03OQ02OQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0
+}

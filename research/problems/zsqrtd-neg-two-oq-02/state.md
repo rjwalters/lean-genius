@@ -1,5 +1,183 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S19 — ORIENT: record corrections + lattice-framework dead-end map (researcher-1, 2026-06-19)
+
+**Phase**: OBSERVE/ORIENT (build-free; Docker `docker ps` timeout, Aristotle CLI up
+but no good target). No `.lean` touched. New cert `verify_lattice_d_ceiling.py`.
+Axiom count unchanged at 1.
+
+**Two corrections to the knowledge base:**
+1. **Dirichlet's theorem on primes in AP IS in Mathlib v4.26** —
+   `Nat.forall_exists_prime_gt_and_modEq` / `…_zmodEq` / `…_eq_mod`,
+   `Nat.infinite_setOf_prime_and_eq_mod` (`NumberTheory/LSeries/PrimesInAP.lean`).
+   Prior "analytic input absent" notes meant only Hilbert-symbol/Hasse–Minkowski.
+2. **"Drop `hd2` to kill the axiom" is provably a dead end.** Certified:
+   (A) the sublattice-Minkowski key lemma is geometrically capped at `d ≤ 2`
+   (`√d < π/2 ⟹ d < π²/4 = 2.467`); (B) the `d·n−1` selection needs UNBOUNDED `d`
+   (35% of non-excluded `n≤1200` need `d>2`, max smallest `d=70`) and admits **NO
+   witness at all for `n ≡ 3 (mod 8)`** (structural 0%). So Dirichlet-AP, though now
+   available, does not rescue the lattice route.
+
+**FRONTIER (unchanged, now fully mapped)**: the lone axiom
+`not_excluded_form_is_sum_three_sq` is genuinely the Hasse–Minkowski
+three-RATIONAL-squares input `H` for squarefree `n` (absent from Mathlib v4.26).
+Every elementary vehicle (ℤ[√−2] 36%; `d·n−1` Minkowski; monolithic witness;
+two-square deficit) is now provably insufficient. Reuse the proved scaffolding
+(forward obstruction, `d≤2` key lemma, Davenport–Cassels, squarefree reduction);
+do NOT re-attempt the dead routes.
+
+## S18 — SQUAREFREE REDUCTION of the last axiom; source-verified + registered (researcher-1, 2026-06-19)
+
+**Phase**: ACT. New axiom-free/sorry-free companion
+`proofs/Proofs/ThreeSquaresSquarefreeReduction.lean` (registered). **Build status**:
+source-verified only — every referenced lemma (`Nat.sq_mul_squarefree`,
+`not_excluded_of_sq_mul_not_excluded`, `ThreeSquaresDC.exists_int_sq_of_rat_sq`) was
+checked to exist with a matching signature, but Docker was unresponsive this session
+(`docker version` timed out) so the file's compile was NOT re-confirmed. The deployer
+gates on a green build before merge.
+
+**`three_sq_of_squarefree_rat`**: if every squarefree non-excluded `s` is a sum of
+three RATIONAL squares, then every non-excluded `n` is a sum of three INTEGER squares.
+Combines `Nat.sq_mul_squarefree` (`n=m²·s`) + the in-file contrapositive
+`not_excluded_of_sq_mul_not_excluded` + rational scaling by `m` +
+`ThreeSquaresDC.exists_int_sq_of_rat_sq` (Davenport–Cassels). The `m=0`(⇒`n=0`) corner
+is the trivial `⟨0,0,0⟩`. **This reduces the lone axiom's open content from all
+non-excluded `n` to the SQUAREFREE case over ℚ** (the classical first step of
+Dirichlet's proof). Axiom count unchanged at 1 (reduction, not elimination).
+
+**State correction**: knowledge was stale at S17 — DavenportCassels is registered &
+GREEN since #26800/#26806. Re-verified: `Proofs.ThreeSquares` GREEN (7745 jobs), 1
+axiom (`not_excluded_form_is_sum_three_sq`), 0 real sorries (the `grep sorry` hits are
+doc-comment prose).
+
+**FRONTIER (now sharper)**: prove `H` — squarefree non-excluded `n` is a sum of three
+RATIONAL squares (Hasse–Minkowski ternary over ℚ; confirmed ABSENT from Mathlib v4.26
+— no three-squares lemma, no Hilbert symbol, no ternary isotropy). Compose with
+`three_sq_of_squarefree_rat` ⇒ axiom 1→0. GOTCHA: `exists_int_sq_of_rat_sq` is in
+`namespace ThreeSquaresDC`, must be fully qualified.
+
+## S15 — Minkowski slice build-verified GREEN + SingleAP docstring overstatement corrected (researcher-1, 2026-06-19)
+
+**Phase**: ACT (verify + research-hygiene). Docker AVAILABLE (`docker info` OK);
+built two leaf modules under the safety wrapper. No math changed; frontier unchanged.
+
+**1. `ThreeSquaresSliceMinkowski.lean` BUILD-VERIFIED GREEN.** The previously
+"build-pending" `d = 2` Minkowski core is now machine-checked:
+`./proofs/scripts/docker-build.sh Proofs.ThreeSquaresSliceMinkowski`
+→ `Build completed successfully (7743 jobs)` (one benign `unusedSimpArgs` linter
+warning on `hB@263`, no error). The file is sorry-free/axiom-free: the geometry-of-
+numbers input `exists_sheared_point_lt_two_mul_d2` (nonzero `ℤ²` point in the sheared
+open ellipse, `vol = √2·π ≈ 4.443 > 4` independent of `p`, via
+`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) and the arithmetic glue
+`slice_point_of_sheared_d2` compile against the project's Mathlib. NOTE: this slice
+belongs to the *relaxed*-key-lemma route; the key lemma actually proved in
+`ThreeSquares.lean:1440` is the elementary `p = d·n − 1` descent, so the slice is
+currently a self-contained, verified-but-unconsumed companion (see item 2).
+
+**2. `ThreeSquaresSingleAP.lean` docstring OVERSTATEMENT corrected (S13 TODO).**
+S13 flagged that the header claimed the file "removes that carve-out at the source"
+and that `dirichlet_key_lemma` "never uses the rigid tie `p = d·n − 1`" — true only
+of a hypothetical relaxed engine that was never proved. The ACTUALLY-proved key lemma
+(`ThreeSquares.lean:1440`) uses the tie essentially (`p ∣ z` + `d·z² ≥ p² > p` ⟹
+`z = 0`), and the large Dirichlet prime `p ≡ 1 (mod 4n)` produced here is not of that
+form, so `legendreSym_neg_n_eq_one` / `exists_prime_eq_one_mod_four_mul` are ORPHAN
+(grep-confirmed: called nowhere outside the file). The header now states this
+accurately and labels the two theorems a reusable witness held in reserve for a future
+relaxed-key-lemma route. STATUS line updated build-pending → build-verified.
+Comment-only on a registered file; BUILD-VERIFIED:
+`docker-build.sh Proofs.ThreeSquaresSingleAP` → `Build completed successfully`.
+
+**FRONTIER UNCHANGED.** `ThreeSquares.lean` still carries the lone sufficiency axiom
+`not_excluded_form_is_sum_three_sq` (`:1838`). Both factors of the eventual
+elimination are now machine-checked or build-verified EXCEPT factor (1): every
+non-`4ᵃ(8b+7)` `n` is a sum of three *rational* squares (Hasse–Minkowski for ternary
+forms, absent from Mathlib). That remains the deep, multi-session open piece. Factor
+(2) Davenport–Cassels (rational ⟹ integral) is build-verified (S14); the Minkowski
+slice and the SingleAP witness are verified support for the relaxed route.
+
+## S14 — `ThreeSquaresDavenportCassels.lean` REPAIRED + REGISTERED (build-verified GREEN, researcher-3, 2026-06-19)
+
+**Phase**: ACT. Docker AVAILABLE this session (`docker ps` OK); built under the 8GB cap.
+
+**The Davenport–Cassels factor is now machine-checked.** PR #26643 (`768a303d50c`)
+merged `proofs/Proofs/ThreeSquaresDavenportCassels.lean` — the rational⇒integral
+descent for `x²+y²+z²`, the S13-recommended "build it first" stepping-stone — but
+left it **UNREGISTERED** in `proofs/Proofs.lean`, so the build never compiled it and a
+**latent elaboration error shipped to main undetected**:
+
+- `exists_sq_of_scaled` ended with `refine IH s.toNat hmt (by omega) _ _ _ ?_`; the
+  three `_` placeholders for `v1 v2 v3` cannot be synthesized because the `?_`
+  hypothesis is elaborated *after* them and never back-fills (`don't know how to
+  synthesize placeholder for argument v1/v2/v3` at `:117:41/43/45`).
+- **FIX (S14)**: supply the reflected-vector coordinates explicitly —
+  `IH s.toNat hmt (by omega) (s*w1+(Σw²−n)*r1) (s*w2+(Σw²−n)*r2) (s*w3+(Σw²−n)*r3) ?_`,
+  then `rw [hcast]; exact hV` closes the descent goal. Pure plumbing; no math changed.
+- **REGISTERED** `import Proofs.ThreeSquaresDavenportCassels` in `proofs/Proofs.lean`.
+- **BUILD-VERIFIED**: `./proofs/scripts/docker-build.sh Proofs.ThreeSquaresDavenportCassels`
+  → `Build completed successfully (7743 jobs)`. 0 axioms / 0 sorries in the file
+  (`grep` clean); it now ships `exists_sq_of_scaled` and `exists_int_sq_of_rat_sq`
+  (rational three-squares ⇒ integer three-squares) as machine-checked, reusable lemmas.
+
+**FRONTIER UNCHANGED.** `ThreeSquares.lean` still carries the lone sufficiency axiom
+`not_excluded_form_is_sum_three_sq` (`:1838`). The axiom factors as
+(rational solvability / local-global) + (Davenport–Cassels). S14 nails down the
+SECOND factor in the build; the FIRST (every non-`4ᵃ(8b+7)` `n` is a sum of three
+*rational* squares — Hasse–Minkowski for ternary forms, absent from Mathlib) remains
+the deep, multi-session open piece. Next: build rational three-squares, then feed
+`exists_int_sq_of_rat_sq` to discharge the axiom.
+
+## S13 — `dirichlet_key_lemma` ELIMINATED (now 1 axiom); sufficiency frontier re-pinned to Davenport–Cassels (researcher-12, 2026-06-19)
+
+**Phase**: ACT
+remaining frontier). Docker AVAILABLE this session (`docker ps` OK) — re-verified
+the headline PR builds; Aristotle MCP server reachable but not used (axiom, not a
+`sorry`; far beyond auto-search).
+
+**AXIOM COUNT IS NOW 1.** `proofs/Proofs/ThreeSquares.lean` carries exactly one
+`axiom` (`not_excluded_form_is_sum_three_sq@1821`, the SUFFICIENCY direction) and
+0 sorries. The former second axiom `dirichlet_key_lemma` is a **proved theorem**
+(`ThreeSquares.lean:1430`), shipped in **OPEN PR #26313** (commit `9b77173c3ab`,
+branch `research/zsqrtd-oq02-dirichlet-key-theorem`, awaiting deployer merge). The
+descent is ELEMENTARY: `p = d·n−1` prime forces `z = 0` (since `p ∣ z` and
+`d·z² ≥ p² > p`), then `x²+d·y² = d·n−1` reconstructs `n` (`d=1 → n=x²+y²+1²`;
+`d=2 → x` odd `→ n=y²+k²+(k+1)²`). NOT Davenport–Cassels — that special descent is
+self-contained because `p < d·n`.
+
+**WHY SUFFICIENCY DOES NOT FOLLOW FROM THE PROVED KEY LEMMA (trap for next session).**
+The proved `dirichlet_key_lemma` REQUIRES `p = d·n − 1` to be **prime** — a single
+fixed number. For general non-excluded `n`, neither `n−1` nor `2n−1` need be prime,
+so the lemma simply does not fire. Dirichlet's theorem on primes-in-AP gives NO
+freedom here: `d·n−1` is not a free residue class.
+
+The companion `ThreeSquaresSingleAP.lean` (0 ax / 0 sorry, registered) supplies the
+QR witness `legendreSym p (−n) = 1` for a **large** Dirichlet prime `p ≡ 1 (mod 4n)`
+— but (a) such `p ≠ d·n−1`, so it does NOT slot into the proved key lemma, and
+(b) SingleAP contains NO descent connecting that `p` back to `n = x²+y²+z²`. Its two
+theorems (`legendreSym_neg_n_eq_one`, `exists_prime_eq_one_mod_four_mul`) are
+currently ORPHAN (called nowhere). **Its docstring overstates** ("the Minkowski
+construction never uses the tie `p = d·n−1`") — true only of a hypothetical relaxed
+key lemma that was never proved; the ACTUAL proved lemma uses the tie essentially.
+A future session should soften that docstring (comment-only, registered file → rebuild).
+
+**RECOMMENDED ROUTE for the sufficiency axiom (verified absent from Mathlib this
+session — `grep` over the pinned clone: no three-square thm, no three-rational-square,
+no Davenport–Cassels lemma, no Hasse–Minkowski for ternary forms):**
+1. **Davenport–Cassels lemma** for `f = x²+y²+z²`: a positive-definite integral form
+   with the nearest-integer approximation property (`f(x−round x) ≤ 3·(1/2)² = 3/4 < 1`)
+   represents `n ∈ ℤ` integrally whenever it represents it rationally. Self-contained,
+   elementary descent on the denominator — ~100–200 Lean lines, NO deep number theory.
+   This is the tractable, reusable stepping-stone; build it first.
+2. **Rational three-squares**: `n` is a sum of three RATIONAL squares ⟺ `n > 0` and
+   `n` not `4^a(8b+7)` (local-global / Hasse–Minkowski for ternary; this is the deep
+   piece — genus/Dirichlet enter HERE, not in the key lemma). Then (1)+(2) discharge
+   the axiom. Multi-session; (2) is the real open work.
+
+**Files touched (S13)**: `state.md`, `registry.json` (timestamps). No `.lean` edited.
+Build-verification of `Proofs.ThreeSquares` run under Docker (8GB cap) to confirm
+PR #26313 is mergeable. Claim remains active.
+
+---
+
 ## S11 — 2D-slice Minkowski lemma CERTIFIED true + formalization route pinned (researcher-4, 2026-06-17)
 
 **Phase**: ACT
@@ -231,14 +409,16 @@ to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (m
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-18T06:39:36-07:00
+**Since**: 2026-06-19T07:35:17-07:00
 **Iteration**: 3
 
 ## Current Focus
-Axiom reduction. `ThreeSquares.lean` has 2 axioms; this session shrinks the
-SUFFICIENCY axiom `not_excluded_form_is_sum_three_sq` to a single isolated
-Dirichlet-witness existence statement, discharging all the surrounding
-descent/assembly with no new axioms or sorries.
+Axiom reduction. **`ThreeSquares.lean` now has 1 axiom** (was 2; `dirichlet_key_lemma`
+ELIMINATED — proved theorem, PR #26313). The lone remaining axiom is the SUFFICIENCY
+direction `not_excluded_form_is_sum_three_sq`. See S13 (top of file) for the pinned
+route: Davenport–Cassels (rational→integer for `x²+y²+z²`) + rational three-squares
+(local-global), both absent from Mathlib. The proved key lemma does NOT close it
+(requires `p=d·n−1` prime, not general).
 
 ## Active Approach
 Numerical OBSERVE (no Docker): verify the target iff, measure the `x²+2y²`

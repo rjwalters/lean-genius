@@ -2,6 +2,21 @@
   "id": "spherical-law-of-cosines-oq-03",
   "title": "Dual (Angles) Spherical Law of Cosines",
   "slug": "spherical-law-of-cosines-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "SphericalLawOfCosinesOQ03",
+    "lineCount": 424,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 4,
+    "path": "Proofs/SphericalLawOfCosinesOQ03.lean",
+    "sorries": 0
+  },
   "description": "A radical-free, division-free Lean 4 formalization of the dual (angles) spherical law of cosines: cos C = −cos A·cos B + sin A·sin B·cos c, the polar dual of the side law cos c = cos a·cos b + sin a·sin b·cos C. The minus sign in front of cos A·cos B is the hallmark of spherical duality (the polar triangle has angles π−a and sides π−A). Working with three unit vectors u,v,w in ℝ³ via dot and cross products, the dual law is reduced to a polynomial identity (dual_poly, by ring) after clearing the radicals sin a, sin b, sin c, then lifted to the cleared geometric form, the trig form, a cross-product form, and finally the polar-triangle form establishing dual(T) = primal(polar T).",
   "meta": {
     "author": "Lean Genius",

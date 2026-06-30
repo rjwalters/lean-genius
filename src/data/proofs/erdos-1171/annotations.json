@@ -39,7 +39,11 @@
       "ordinal multiplication",
       "cofinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "First Uncountable Ordinal",
+      "Ordinal Multiplication",
+      "Limit Ordinals"
+    ]
   },
   {
     "id": "ann-e1171-partition-defs",
@@ -80,7 +84,11 @@
       "limit ordinals",
       "aleph numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cardinal-Ordinal Correspondence",
+      "Aleph Numbers",
+      "Ordinal Order Monotonicity"
+    ]
   },
   {
     "id": "ann-e1171-conjecture",
@@ -99,7 +107,11 @@
       "universal quantification",
       "partition relations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Partition Calculus Notation",
+      "Universal Quantification",
+      "Multicolor Ramsey Relations"
+    ]
   },
   {
     "id": "ann-e1171-monotonicity",
@@ -118,7 +130,11 @@
       "monotonicity",
       "color merging"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Partition Relations",
+      "Color Merging",
+      "Order Type Embeddings"
+    ]
   },
   {
     "id": "ann-e1171-ch-resolution",
@@ -183,7 +199,11 @@
       "left-cancellation",
       "ordinal inequalities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ordinal Multiplication",
+      "Left-Cancellation Law",
+      "Ordinal Inequalities"
+    ]
   },
   {
     "id": "ann-e1171-erdos-rado",

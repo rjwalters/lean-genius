@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "context",
+    "title": "Promoting the Parity Obstruction to All k ≥ 3",
+    "content": "Erdős #866 studies, for $k \\ge 3$, the minimal threshold $g_k(N)$ such that every $A \\subseteq \\{1,\\dots,2N\\}$ with $|A| \\ge N + g_k(N)$ contains all pairwise sums of some $k$-tuple. The basic lower bound $g_k(N) \\ge 1$ is witnessed by the $N$ odd numbers in $\\{1,\\dots,2N\\}$: no $k$ integers can have *all* pairwise sums odd. The companion file proved this obstruction only for $k = 3$; this entry promotes it to every $k \\ge 3$ and records elementary facts about the upper-bound exponent $1 - 2^{-k}$. The honest-scope note is explicit — the hard rates ($g_4$, $g_5 \\asymp \\log N$, $g_6 \\asymp \\sqrt N$, the true exponent $\\alpha_k$) are the untouched open frontier.",
+    "mathContext": "$g_k(N) \\ge 1$ for all $k \\ge 3$; general upper bound $g_k(N) \\ll N^{1 - 2^{-k}}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős problems",
+      "pairwise sums",
+      "threshold functions",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "sumsets",
+      "extremal set theory"
+    ]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "The Self-Contained Setup",
+    "content": "Four definitions re-declared so the file depends only on the base entry, not the companion. `Interval N` is $\\{1,\\dots,2N\\}$ (the range filtered by $\\ge 1$). `HasAllPairwiseSums A b` says $b_i + b_j \\in A$ (via `.toNat`) for all $i < j$ — the predicate the obstruction negates. `oddNumbers N` is the odd elements of the interval, the extremal set. `upperExponent k = 1 - 2^{-k}` is the exponent in the general upper bound. Keeping these local makes the entry independently machine-checkable.",
+    "mathContext": "$\\mathrm{HasAllPairwiseSums}(A, b) \\equiv \\forall i < j,\\ (b_i + b_j) \\in A$; $\\mathrm{oddNumbers}(N) = \\{n \\in \\{1,\\dots,2N\\} : n\\ \\mathrm{odd}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.filter",
+      "Fin k → ℤ",
+      "extremal set",
+      "self-contained formalization"
+    ],
+    "prerequisites": [
+      "finite sets",
+      "tuples indexed by Fin k"
+    ]
+  },
+  {
+    "id": "ann-no-triple",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Base Case k = 3: the Parity Pigeonhole",
+    "content": "`oddNumbers_no_triple`: no three integers can have all three pairwise sums in the odd set. This is the parity pigeonhole — among any three integers, two share parity (by the pigeonhole principle on $\\{$even, odd$\\}$), so their sum is even and cannot be odd. The Lean proof extracts the oddness of each pairwise sum (`aesop` after unfolding `oddNumbers`), then discharges the finite parity case analysis with `simp_all +decide [Fin.forall_fin_succ]` and `grind +ring`.",
+    "mathContext": "Among $b_0, b_1, b_2 \\in \\mathbb{Z}$, two share parity $\\Rightarrow$ their sum is even $\\Rightarrow$ not in the odd set.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "parity",
+      "grind tactic"
+    ],
+    "prerequisites": [
+      "parity arguments",
+      "pigeonhole"
+    ]
+  },
+  {
+    "id": "ann-no-ktuple",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 99
+    },
+    "type": "theorem",
+    "title": "The Generalization: Restrict to the First Three Coordinates",
+    "content": "`oddNumbers_no_ktuple` is the headline: for every $k \\ge 3$, no $k$-tuple has all pairwise sums odd — exactly $g_k(N) \\ge 1$ for all $k \\ge 3$. The proof is a clean reduction: an alleged $k$-tuple $b$ is restricted to its first three coordinates via the order-embedding `Fin.castLE` (using $3 \\le k$). Because `Fin.castLE` preserves the underlying value, $i < j$ transports verbatim and the restricted triple still has all pairwise sums in the odd set — contradicting the base case. The whole obstruction for arbitrary $k$ thus reduces to the $k = 3$ parity argument.",
+    "mathContext": "Any $k$-tuple with all pairwise sums odd restricts (via $\\mathrm{Fin.castLE}: \\mathrm{Fin}\\,3 \\hookrightarrow \\mathrm{Fin}\\,k$) to three integers with the same property — impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fin.castLE",
+      "order embedding",
+      "reduction to base case"
+    ],
+    "prerequisites": [
+      "Fin coercions",
+      "proof by restriction"
+    ]
+  },
+  {
+    "id": "ann-exponent-bounds",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "The Exponent Lies in [0, 1): Sub-Linearity",
+    "content": "`upperExponent_nonneg` ($1 - 2^{-k} \\ge 0$, since $2^{-k} \\le 1$) and `upperExponent_lt_one` ($1 - 2^{-k} < 1$, since $2^{-k} > 0$) together place the exponent in $[0, 1)$. The consequence: the general upper bound $g_k(N) \\ll N^{1 - 2^{-k}}$ is genuinely *sub-linear* in $N$ for every $k$ — the threshold never reaches the trivial linear barrier. Both proofs are `positivity`/`pow_le_one₀` plus `linarith`.",
+    "mathContext": "$0 \\le 1 - 2^{-k} < 1$, so $N^{1 - 2^{-k}} = o(N)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sub-linear growth",
+      "geometric sequence",
+      "pow_le_one₀"
+    ],
+    "prerequisites": [
+      "real exponentiation",
+      "inequalities"
+    ]
+  },
+  {
+    "id": "ann-exponent-mono-limit",
+    "proofId": "erdos-866-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "The Exponent is StrictMono and Tends to 1",
+    "content": "`upperExponent_strictMono` upgrades the companion's consecutive-step lemma to a full `StrictMono`: $i < j \\Rightarrow 1 - 2^{-i} < 1 - 2^{-j}$, because the geometric sequence $2^{-k}$ is strictly decreasing (`pow_lt_pow_right_of_lt_one₀`). `upperExponent_tendsto_one` shows $1 - 2^{-k} \\to 1$ as $k \\to \\infty$ (from `tendsto_pow_atTop_nhds_zero_of_lt_one`). Together they quantify how the upper bound degrades toward linearity as $k$ grows — the exponent monotonically climbs to but never reaches 1.",
+    "mathContext": "$\\mathrm{upperExponent}$ is strictly increasing with $\\lim_{k\\to\\infty} (1 - 2^{-k}) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "StrictMono",
+      "Tendsto",
+      "geometric decay",
+      "limiting exponent"
+    ],
+    "prerequisites": [
+      "monotonicity",
+      "limits of sequences"
+    ]
+  }
+]

@@ -17,10 +17,10 @@
       "partition calculus"
     ],
     "prerequisites": [
-      "Ramsey’s theorem (finite version)",
-      "complete graph K_ω on ℕ",
-      "edge 2-coloring",
-      "monochromatic clique"
+      "graph theory",
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite cardinals"
     ]
   },
   {
@@ -41,9 +41,9 @@
       "induced subgraph"
     ],
     "prerequisites": [
-      "SimpleGraph.Adj (adjacency relation)",
-      "complete subgraph K_k",
-      "definition of a clique as a set of pairwise-adjacent vertices"
+      "graph theory",
+      "Lean 4 syntax",
+      "first-order logic quantifiers"
     ]
   },
   {
@@ -64,10 +64,9 @@
       "forbidden subgraph"
     ],
     "prerequisites": [
-      "clique definition (preceding)",
-      "complete graph K₄",
-      "forbidden-subgraph constraint",
-      "the 6 edges among 4 vertices"
+      "graph theory",
+      "extremal graph theory",
+      "Lean 4 syntax"
     ]
   },
   {
@@ -88,10 +87,9 @@
       "set theory"
     ],
     "prerequisites": [
-      "Cardinal.mk and cardinal comparison",
-      "ℵ₁ as the first uncountable cardinal",
-      "clique definition",
-      "strict cardinal inequality < κ"
+      "cardinal arithmetic",
+      "axiomatic set theory",
+      "Mathlib Cardinal type"
     ]
   },
   {
@@ -111,9 +109,9 @@
     ],
     "mathContext": "See annotation content for formal details of symmetric coloring structure",
     "prerequisites": [
-      "function type V → V → C",
-      "symmetry condition f(v,w)=f(w,v)",
-      "unordered edges {v,w}"
+      "graph theory",
+      "Lean 4 structures",
+      "equivalence relations"
     ]
   },
   {
@@ -134,10 +132,9 @@
       "countable coloring"
     ],
     "prerequisites": [
-      "SimpleGraph.Adj",
-      "triangle as a 3-clique",
-      "symmetric coloring f",
-      "equality of three edge colors"
+      "graph theory",
+      "Ramsey theory",
+      "Lean 4 syntax"
     ]
   },
   {
@@ -158,10 +155,9 @@
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal finite property",
     "prerequisites": [
-      "K₄-free definition",
-      "HasMonochromaticTriangle",
-      "countably many colors (ℵ₀ colors)",
-      "conjunction of two predicates"
+      "graph theory",
+      "Ramsey theory",
+      "extremal graph theory"
     ]
   },
   {
@@ -182,9 +178,9 @@
     ],
     "mathContext": "See annotation content for formal details of problem 1174 part (a)",
     "prerequisites": [
-      "existential quantification over Type*",
-      "SimpleGraph G on V",
-      "Erdős–Hajnal finite property predicate"
+      "mathematical logic",
+      "Lean 4 existential statements",
+      "graph theory"
     ]
   },
   {
@@ -205,9 +201,9 @@
       "infinite Ramsey theory"
     ],
     "prerequisites": [
-      "ℵ₀ and Set.Countable / Set.Infinite",
-      "clique definition",
-      "constant color c on all edges of S"
+      "cardinal arithmetic",
+      "infinite combinatorics",
+      "Mathlib Cardinal type"
     ]
   },
   {
@@ -228,10 +224,9 @@
     ],
     "mathContext": "See annotation content for formal details of erdős-hajnal infinite property and part (b)",
     "prerequisites": [
-      "IsCliqueFreeCardinal G ℵ₁",
-      "countable edge coloring",
-      "HasMonochromaticAleph0Clique",
-      "transfinite analog of the finite property"
+      "infinite combinatorics",
+      "cardinal arithmetic",
+      "Ramsey theory"
     ]
   },
   {
@@ -252,9 +247,9 @@
       "infinite combinatorics"
     ],
     "prerequisites": [
-      "infinite Ramsey theorem for 2 colors",
-      "axiom declaration in Lean",
-      "monochromatic countably infinite clique"
+      "Ramsey theory",
+      "infinite combinatorics",
+      "König's lemma"
     ]
   },
   {
@@ -275,10 +270,9 @@
       "constructive mathematics"
     ],
     "prerequisites": [
-      "complete graph (⊤ : SimpleGraph ℕ)",
-      "proof by contradiction",
-      "K₄-free definition",
-      "the explicit 4-clique {0,1,2,3}"
+      "graph theory",
+      "Lean 4 tactic mode",
+      "proof by contradiction"
     ]
   },
   {
@@ -299,10 +293,9 @@
       "arrow notation"
     ],
     "prerequisites": [
-      "arrow notation G → (k)²_c",
       "partition calculus",
-      "edge coloring with numColors colors",
-      "monochromatic clique of size k"
+      "Ramsey theory",
+      "infinite combinatorics"
     ]
   },
   {
@@ -324,9 +317,8 @@
     ],
     "prerequisites": [
       "structural Ramsey theory",
-      "partitionProperty predicate",
-      "axiomatization of a deep theorem",
-      "K₄-free graphs with G → (3)²_{k+1}"
+      "graph theory",
+      "model-theoretic amalgamation"
     ]
   },
   {
@@ -347,9 +339,9 @@
       "set-theoretic independence"
     ],
     "prerequisites": [
-      "ZFC consistency statements",
+      "axiomatic set theory (ZFC)",
       "forcing",
-      "distinction between a comment and a formal axiom"
+      "mathematical logic"
     ]
   },
   {
@@ -370,9 +362,9 @@
     ],
     "mathContext": "See annotation content for formal details of open status summary",
     "prerequisites": [
-      "independence from ZFC",
-      "the Nešetřil–Rödl and Shelah results above",
-      "open-problem status"
+      "Ramsey theory",
+      "axiomatic set theory (ZFC)",
+      "infinite combinatorics"
     ]
   }
 ]

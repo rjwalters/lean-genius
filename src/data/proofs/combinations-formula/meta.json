@@ -235,6 +235,16 @@
       "targetId": "prob-method-lovasz-local",
       "relationship": "used-by",
       "description": "The Lovász Local Lemma and many probabilistic method arguments use C(n,k) to count configurations — the k-SAT application bounds clause dependencies using binomial coefficient estimates"
+    },
+    {
+      "targetId": "combinations-formula-oq-02",
+      "relationship": "extended-by",
+      "description": "Extended by a verified development of Catalan numbers $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ built on central binomial coefficients, including the bound $\\binom{2n}{n} \\le 4^n$ and the identity $C_n(n+1) = \\binom{2n}{n}$."
+    },
+    {
+      "targetId": "combinations-formula-oq-03",
+      "relationship": "extended-by",
+      "description": "Extended by a verified theory of q-analog (Gaussian) binomial coefficients $[n,k]_q$ over arbitrary commutative rings, recovering $\\binom{n}{k}$ at $q=1$ via q-Pascal recurrences, the product formula, and symmetry $[n,k]_q = [n,n-k]_q$."
     }
   ],
   "references": [

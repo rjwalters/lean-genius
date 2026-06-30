@@ -1,0 +1,160 @@
+{
+  "id": "niven-theorem-oq-03",
+  "title": "Niven's Theorem for Tangent: the only rational tangents at rational multiples of π are 0, ±1",
+  "slug": "niven-theorem-oq-03",
+  "description": "The tangent companion to Niven's theorem: if θ is a rational multiple of π and tan θ is rational, then tan θ ∈ {0, 1, −1}. The admissible set shrinks from the five values {0, ±1/2, ±1} of the sine/cosine case to just three. The proof reduces to cosine Niven (niven-theorem-oq-01) via the double-angle identity cos(2θ) = (1 − tan²θ)/(1 + tan²θ): cos(2θ) is rational and 2θ is again a rational multiple of π, so cos(2θ) ∈ {0, ±1/2, ±1}, and solving for tan θ leaves only {0, ±1} — the two ±1/2 branches are killed because no rational squares to 3 (√3 ∉ ℚ). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Ivan Niven (1956), formalized in Lean 4 presenting Mathlib's Niven theorem (Meiburg–Broshi 2025)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Niven%27s_theorem",
+    "date": "1956",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NivenTheoremOQ03.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-integers",
+      "trigonometry",
+      "rational-multiples-of-pi",
+      "double-angle-identity",
+      "diophantine"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. The hypotheses are inputs to the statement: θ = (m/n)·π with n ≠ 0 (θ is a rational multiple of π) and tan θ rational. All three lemmas (cos_niven, no_rat_sq_eq_three, tan_niven) and the main theorem are fully machine-checked. The algebraic-integer core is cited from Mathlib (via the restated cosine helper) and the irrationality of √3 from Mathlib's Nat.Prime.irrational_sqrt; no assumptions are introduced by those delegations.",
+    "lineCount": 143,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.isIntegral_two_mul_cos_rat_mul_pi",
+        "description": "The deep step (via the cosine helper): for any rational q, 2·cos(q·π) is integral over ℤ. The tangent argument applies this to the doubled angle 2θ, which is again a rational multiple of π.",
+        "module": "Mathlib.NumberTheory.Niven"
+      },
+      {
+        "theorem": "Real.cos_two_mul",
+        "description": "The double-angle identity cos(2θ) = 2·cos²θ − 1, the backbone of the reduction: combined with the Pythagorean identity it yields cos(2θ) = (1 − tan²θ)/(1 + tan²θ), converting the tangent question into a cosine question on 2θ.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.tan_eq_sin_div_cos / Real.sin_sq_add_cos_sq",
+        "description": "tan θ = sin θ / cos θ and sin²θ + cos²θ = 1. The first also gives, by Lean's division-by-zero convention, tan θ = 0 when cos θ = 0 (so that degenerate branch already lands in the target set).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.irrational_sqrt",
+        "description": "For a prime p, √p is irrational. Applied to p = 3 (Nat.prime_three) it rules out the two cos(2θ) = ±1/2 branches, which would force tan²θ = 1/3 or 3 — neither possible for a rational tangent.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      },
+      {
+        "theorem": "Real.sqrt_sq_eq_abs / Rat.cast_abs / Rat.not_irrational",
+        "description": "Bridge from a hypothetical rational s with s² = 3 to a rational value of √3 = |s|, contradicting its irrationality.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "The tangent companion tan_niven: rational tan at a rational multiple of π forces tan θ ∈ {0, ±1}, a statement absent from the gallery (which had cosine and sine only) and not stated standalone in Mathlib",
+      "A self-contained double-angle reduction proving cos(2θ) = (1 − tan²θ)/(1 + tan²θ) directly from cos_two_mul and the Pythagorean identity, then transporting it through cosine Niven on the doubled angle 2θ = (2m/n)·π",
+      "An explicit Diophantine obstruction no_rat_sq_eq_three: (s : ℝ)² ≠ 3 for every rational s, derived from √3 ∉ ℚ, which is exactly what collapses the cosine-Niven value set {0, ±1/2, ±1} down to the tangent set {0, ±1}",
+      "Correct handling of the cos θ = 0 pole using Lean's tan = sin/cos convention (tan = 0 there), so the statement needs no side condition excluding odd multiples of π/2"
+    ],
+    "relatedProblems": [
+      {
+        "id": "niven-theorem-oq-01",
+        "relationship": "Direct parent — proves the cosine classification cos θ ∈ {0, ±1/2, ±1}, restated here as cos_niven and applied to the doubled angle 2θ."
+      },
+      {
+        "id": "niven-theorem-oq-02",
+        "relationship": "Sibling — the sine companion. Its open questions explicitly request this tangent companion ('rational tan θ at a rational multiple of π forces tan θ ∈ {0, ±1} — sharper than the sine/cosine case and requiring its own argument since tan is unbounded')."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Niven's 1956 theorem (Irrational Numbers, Carus Mathematical Monographs) classifies the rational values of cosine at rational multiples of π as exactly {0, ±1/2, ±1}; the same set holds for sine. For the tangent the answer is sharper still — only {0, ±1}. The standard derivation runs through the rational double-angle map cos(2θ) = (1 − t²)/(1 + t²): a rational tangent t makes cos(2θ) rational at the rational-multiple-of-π angle 2θ, so Niven's cosine theorem applies, and the resulting five possible values of cos(2θ) pull back to only t ∈ {0, ±1}; the two ±1/2 values demand t² = 1/3 or t² = 3, impossible over ℚ. The tangent form is the one behind facts like 'tan(π/k) is rational only for the degenerate k', and it is the unbounded sibling that the gallery's sine entry flagged as needing its own argument.",
+    "problemStatement": "**Niven's Theorem for tangent** (Niven, 1956): If θ is a rational multiple of π (θ = (m/n)·π with m, n integers, n ≠ 0) and tan θ is rational, then\n$$\\tan\\theta \\in \\{0,\\ 1,\\ -1\\}.$$",
+    "proofStrategy": "Reduce to the cosine theorem via the double-angle identity, then clear the borderline cases with an irrationality obstruction.\n1. **Restated cosine core** (`cos_niven`): the cosine classification, identical to niven-theorem-oq-01 — write θ = q·π, get 2·cos θ integral over ℤ via Mathlib, force it to be an integer in [−2,2], and `interval_cases`.\n2. **Rational obstruction** (`no_rat_sq_eq_three`): (s : ℝ)² ≠ 3 for every rational s, since otherwise √3 = |s| would be rational.\n3. **Tangent corollary** (`tan_niven`): if cos θ = 0 then tan θ = 0 (Lean convention) and we are done. Otherwise set t = tan θ (rational). Prove cos(2θ) = (1 − t²)/(1 + t²) via `cos_two_mul` + the Pythagorean identity; this is rational, and 2θ = (2m/n)·π, so `cos_niven` gives cos(2θ) ∈ {0, ±1/2, ±1}. Case analysis: value 1 ⇒ t = 0; value 0 ⇒ t = ±1; value −1 is impossible; values ±1/2 ⇒ t² ∈ {1/3, 3}, excluded by no_rat_sq_eq_three.",
+    "keyInsights": [
+      "**The double-angle map is the bridge.** cos(2θ) = (1 − tan²θ)/(1 + tan²θ) turns a tangent question into a cosine question at the doubled — still rational-multiple-of-π — angle 2θ, so Niven's cosine theorem can be reused.",
+      "**The tangent set is strictly smaller, and an irrationality fact is what shrinks it.** Cosine Niven offers five values for cos(2θ); the two ±1/2 values force tan²θ = 1/3 or 3, and √3 ∉ ℚ removes them, leaving exactly {0, ±1}.",
+      "**The pole needs no side condition.** At cos θ = 0 Lean's tan = sin/cos convention makes tan θ = 0, which is already in the target set, so the theorem holds with no exclusion of odd multiples of π/2.",
+      "**Unbounded but still finite.** Unlike sine/cosine, tangent is unbounded, so the direct 'integer in [−2,2]' enumeration does not apply to tan itself; routing through cos(2θ) restores boundedness and makes the classification finite again."
+    ],
+    "prerequisites": [
+      "Niven's cosine theorem (niven-theorem-oq-01) and its algebraic-integer core",
+      "The double-angle identity cos 2θ = 2cos²θ − 1 and the Pythagorean identity",
+      "Irrationality of √3 (Nat.Prime.irrational_sqrt at p = 3)",
+      "Elementary rational arithmetic with π (field_simp / nlinarith over ℝ)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Imports (Trigonometric.Basic/Bounds, NumberTheory.Niven, Tactic), the module docstring stating the tangent companion, the double-angle reduction, and the five-case solution table, and `namespace NivenTheoremOQ03` / `open Real`.",
+      "mathContext": "θ a rational multiple of π and tan θ ∈ ℚ ⇒ tan θ ∈ {0, 1, −1}."
+    },
+    {
+      "id": "cos-helper",
+      "title": "Cosine Niven (restated helper)",
+      "startLine": 59,
+      "endLine": 84,
+      "summary": "`cos_niven`: the cosine classification, restated so the tangent corollary is self-contained. Writes θ = q·π (q = m/n : ℚ), invokes `Real.isIntegral_two_mul_cos_rat_mul_pi` and `IsIntegral.exists_int_iff_exists_rat` to get 2·cos θ = k ∈ ℤ, bounds k to {−2,…,2} via the cosine bounds, and closes the five `interval_cases` branches by `linarith`.",
+      "mathContext": "θ = (m/n)π, cos θ ∈ ℚ ⇒ cos θ ∈ {0, ±1/2, ±1}."
+    },
+    {
+      "id": "rational-obstruction",
+      "title": "No Rational Squares to 3",
+      "startLine": 86,
+      "endLine": 93,
+      "summary": "`no_rat_sq_eq_three`: for every rational s, (s : ℝ)² ≠ 3. If it did, then √3 = √(s²) = |s| would be a rational value, contradicting `Nat.prime_three.irrational_sqrt`. Uses `Real.sqrt_sq_eq_abs`, `Rat.cast_abs`, `Rat.not_irrational`.",
+      "mathContext": "√3 ∉ ℚ ⇒ no rational t has t² = 3 (or, rescaling, t² = 1/3)."
+    },
+    {
+      "id": "tangent-corollary",
+      "title": "Tangent Companion via the Double-Angle Identity",
+      "startLine": 95,
+      "endLine": 142,
+      "summary": "`tan_niven`: handle cos θ = 0 (then tan θ = 0). Otherwise put t = tan θ; prove cos(2θ) = (1 − t²)/(1 + t²) from `cos_two_mul` and the Pythagorean identity via `field_simp`/`nlinarith`; observe cos(2θ) is rational and 2θ = (2m/n)·π, apply `cos_niven`, and resolve the five branches — value 1 ⇒ t = 0, value 0 ⇒ t = ±1, value −1 impossible, values ±1/2 ⇒ t² ∈ {1/3, 3} excluded by `no_rat_sq_eq_three`.",
+      "mathContext": "cos 2θ = (1 − tan²θ)/(1 + tan²θ) ∈ {0, ±1/2, ±1} ⇒ tan θ ∈ {0, ±1}."
+    }
+  ],
+  "conclusion": {
+    "summary": "The tangent companion to Niven's theorem is presented in Lean 4 with zero sorries and zero axioms. The cosine classification is restated (delegating the algebraic-integer step to Mathlib), the double-angle identity cos(2θ) = (1 − tan²θ)/(1 + tan²θ) is proved in place, and cosine Niven on the doubled angle 2θ — together with the obstruction that no rational squares to 3 — collapses the admissible tangents to tan θ ∈ {0, ±1}.",
+    "implications": "With the cosine (oq-01) and sine (oq-02) entries this completes the sin/cos/tan triad of Niven's classification, and demonstrates the sharper tangent bound. It also illustrates two reusable patterns: routing an unbounded trig function through a bounded double-angle image to restore a finite Niven enumeration, and using an elementary irrationality fact (√3 ∉ ℚ) as the precise obstruction that shrinks one classification to another.",
+    "openQuestions": [
+      "Package the cotangent / arctangent corollaries, e.g. that arctan(p/q) is an irrational multiple of π except for the slopes 0, ±1 (the rational-angle / rational-slope dichotomy underlying the Gaussian-integer argument).",
+      "Formalize the unified statement: for θ a rational multiple of π, the triple (sin θ, cos θ, tan θ) is rational only at the finitely many classified angles, packaging oq-01/02/03 into one theorem."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "niven-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Sibling sine entry whose open questions explicitly request this tangent companion ('rational tan θ at a rational multiple of π forces tan θ ∈ {0, ±1} … requiring its own argument since tan is unbounded'). This entry supplies it via the double-angle reduction."
+    },
+    {
+      "targetId": "niven-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent cosine entry. Its algebraic-integer core is reused through the restated cos_niven helper, applied here to the doubled angle 2θ."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/NivenTheoremOQ03.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "NivenTheoremOQ03",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}

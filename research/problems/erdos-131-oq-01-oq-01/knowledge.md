@@ -78,6 +78,48 @@ do NOT spawn enumeration-theater sessions chasing the exponent.
 
 ---
 
+## Session 2026-06-20 (S2) — ACT: EGZ structural bound (verified, 0-axiom)
+
+**Mode**: REVISIT · **Outcome**: progress — shipped a verified gallery entry.
+
+### What I did
+- Recognized the parent's parity bound `two_in_nondividing_bound` (2 ∈ A ⟹ |A| ≤ 3)
+  is exactly the prime case `p = 2` of **Erdős–Ginzburg–Ziv** (among any `2p−1`
+  integers, `p` have sum divisible by `p`).
+- Mathlib has EGZ for every modulus: `Int.erdos_ginzburg_ziv`
+  (Mathlib.Combinatorics.Additive.ErdosGinzburgZiv), a Chevalley–Warning corollary.
+- Generalized to: **`a ∈ A, a ≥ 2, IsNonDividing A ⟹ |A| ≤ 2a − 1`**
+  (`egz_nondividing_card_bound`). Proof: if `|A| ≥ 2a` then `|A.erase a| ≥ 2a−1`, so
+  EGZ at modulus `a` on the integer-cast sequence over `A.erase a` gives an
+  `a`-element subset `t ⊆ A\{a}` with `a ∣ ∑_{i∈t} i`; since `a ≥ 2`, `|t| ≥ 2`,
+  contradicting non-dividing at `a`. ℤ→ℕ divisibility via push_cast / exact_mod_cast.
+- Corollaries: smallest-element bound `|A| ≤ 2·min(A) − 1`
+  (`nondividing_card_le_two_min`); recovers parent `|A| ≤ 3` as a=2
+  (`two_in_card_le_three`); contrapositive filter (`not_nondividing_of_card_gt`);
+  sharpness at a=2 via {2,4,5} (`egz_bound_sharp_at_two`).
+
+### Key findings
+- The per-element bound makes precise "small elements force small non-dividing sets",
+  the qualitative reason F(N) grows slowly. Structural, not asymptotic — the right kind
+  of progress for this OQ (the exponent stays open).
+- Build: `Proofs/Erdos131EGZBound.lean`, 153 lines, 7 thm/lemma, 1 def, 0 sorries.
+  `#print axioms` → only propext/Classical.choice/Quot.sound (0-axiom verified).
+- **Parent bit-rot discovered**: `Proofs/Erdos131Problem.lean` fails to build on
+  Mathlib v4.26.0 (orphan docstrings before `axiom` at 127/173; `Finset.card_sdiff`
+  pre-v4.26 arg order at 479 → omega fail at 488). Made my file SELF-CONTAINED
+  (re-stated `IsNonDividing` verbatim) to decouple. Parent needs mechanic repair;
+  the erdos-131 gallery entry currently overclaims "verified".
+
+### Files
+- proofs/Proofs/Erdos131EGZBound.lean (new)
+- src/data/proofs/erdos-131-oq-01-oq-01/meta.json (new gallery entry)
+
+### Next steps
+- Sharpness of `2a−1` for a > 2; characterize extremal non-dividing sets.
+- Aggregate per-element EGZ bounds into a global F(N) bound (averaging / residue EGZ).
+
+---
+
 ## Dead Ends
 
 - **Empirical exponent fitting**: ruled out as dishonest — effective exponent at N=54 is

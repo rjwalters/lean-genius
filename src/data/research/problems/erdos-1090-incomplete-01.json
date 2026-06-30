@@ -2,7 +2,7 @@
   "slug": "erdos-1090-incomplete-01",
   "title": "Complete proof of Erdős Problem #1090: Monochromatic Collinear Points",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED & VERIFIED (0 axioms, 0 sorries): Eliminated BOTH axioms (graham_selfridge, hunter_observation) by proving erdos1090_construction from Mathlib's Hales-Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension) via an explicit linear projection of the combinatorial cube [k]^ι into ℝ². Also repaired the file's pre-existing non-compiling state (orphan /-- docstrings, invalid ∀ p q r ∈ A multi-binders, SylvesterGallai DecidablePred). #print axioms: [propext, Classical.choice, Quot.sound] only.",
+    "builtItems": [
+      "erdos1090_construction (Erdos1090Problem.lean:155): general k≥3 Ramsey set built from Hales-Jewett combinatorial line via linear projection φ p = ∑ j (p j:ℝ)•v j, v j=!₂[1,w j]; direction nonzero since first coord = |varying|≥1.",
+      "graham_selfridge, hunter_observation: converted from axiom to theorem (both = instances of erdos1090_construction).",
+      "Repaired 7 orphan /-- docstrings → /- block comments; expanded 2 invalid multi-binders ∀ p q r ∈ A; added open Classical in before SylvesterGallai for filter DecidablePred."
+    ],
+    "insights": [
+      "Erdős #1090 general case is provable axiom-free in Lean: Mathlib's Hales-Jewett (Combinatorics.Line.exists_mono_in_high_dimension) + a linear 'generic projection' suffices. No genericity argument needed — taking the projection's first coordinate as the coordinate-SUM makes any combinatorial line's direction have first coord = |V| ≥ 1 > 0, so it is automatically nonzero and the k image points are distinct.",
+      "Affine identity φ(l a) = φ(l 0) + (a:ℝ)•dir proved at the module level (add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum) from the per-coordinate fact emb(l a j)=emb(l 0 j)+emb a*[varying]; nonzeroness pushed through WithLp.ofLp (linear) to a positive Finset sum.",
+      "The committed file at HEAD never compiled (last commit was 'UNVERIFIED — build host down'); a prior knowledge note claimed the build was fixed but that fix was not in the committed state."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional follow-up: prove a quantitative upper bound on ramseyNumber k (currently only ramsey_lower_bound ≥ k is proved).",
+      "Optional: prove Erdos1090Generalized (r-coloring) from the same Hales-Jewett projection (Mathlib HJ already allows arbitrary finite color type)."
+    ]
   },
   "tags": [
     "seeker-selected",

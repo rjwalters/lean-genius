@@ -1,0 +1,202 @@
+{
+  "id": "geometric-series-oq-01-oq-03",
+  "slug": "geometric-series-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "GeometricSeriesOQ01OQ03",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "title": "Geometric Series at the Boundary: Abel Summability",
+  "description": "At the critical boundary |r| = 1 of the geometric series, this entry develops Abel summability — the third regularization lens after divergence analysis and the parent's Cesàro mean. A sequence is Abel summable to L when its power series ∑ₙ aₙ xⁿ converges on [0,1) and tends to L as x → 1⁻. Three boundary outcomes: Grandi's series 1 − 1 + 1 − ⋯ has Abel function 1/(1+x) → 1/2 (matching Euler and Cesàro); r = 1 has Abel function 1/(1−x) → +∞ (no Abel sum); and for |r| < 1 the Abel sum 1/(1−r) equals the ordinary sum (regularity). 205 lines, 10 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "Niels Henrik Abel proved in 1826 (in his memoir on the binomial series, Crelle's Journal vol. 1) what is now called Abel's continuity theorem: if ∑ₙ aₙ converges to L, then the power series ∑ₙ aₙ xⁿ tends to L as x → 1⁻. Reading this implication backwards turns it into a summation method — Abel summation — that can assign finite values to certain divergent series. Like Cesàro's method of arithmetic means, Abel's method is regular (it reproduces ordinary sums) and assigns Grandi's series 1 − 1 + 1 − ⋯ the value 1/2, the same value Euler had defended on formal grounds via 1/(1+x) at x = 1. Frobenius (1880) showed Abel summation strictly dominates Cesàro: every Cesàro-summable series is Abel summable to the same value, but not conversely. The classical theory of these regular linear summation methods and their inclusions is the subject of G. H. Hardy's Divergent Series (1949). This entry formalizes the Abel lens on the geometric boundary |r| = 1, complementing the parent entry's Cesàro treatment.",
+    "problemStatement": "Define Abel summability at the boundary and determine the Abel behaviour of the geometric sequence rⁿ at |r| = 1: show Grandi's series (r = −1) is Abel summable to 1/2, that r = 1 is Abel summable to no value, and that for |r| < 1 the method is regular (Abel sum = ordinary sum 1/(1−r)).",
+    "proofStrategy": "Each Abel function is a geometric power series in the auxiliary variable x, summed in closed form by Mathlib's hasSum_geometric_of_abs_lt_one: ∑(−x)ⁿ = 1/(1+x), ∑xⁿ = 1/(1−x), ∑(rx)ⁿ = 1/(1−rx), all valid on the eventual set |x| < 1 near x = 1⁻ (the helper abs_lt_one_eventually). The radial limits x → 1⁻ are then computed on the left-neighborhood filter 𝓝[<] 1: continuity of inversion (Tendsto.inv₀) gives the finite limits 1/2 and 1/(1−r), while x ↦ 1−x mapping 𝓝[<] 1 to 𝓝[>] 0 plus tendsto_inv_nhdsGT_zero gives the +∞ divergence at r = 1. Uniqueness of the Abel sum follows from Hausdorffness and the NeBot of 𝓝[<] 1; non-summability at r = 1 from not_tendsto_nhds_of_tendsto_atTop.",
+    "keyInsights": [
+      "Abel summation is built from a different object than Cesàro — the radial limit of a power series rather than the average of partial sums — yet agrees with it on Grandi's series, both giving 1/2. Distinct constructions, same regularized value.",
+      "Abel summation discriminates between the two boundary ratios: r = −1 regularizes to 1/2, but r = 1 stays divergent (its Abel function 1/(1−x) blows up). This refines the parent's blanket '|r| ≥ 1 ⇒ not summable' into a finer classification.",
+      "Regularity (geom_abel_regular) is the crucial sanity check: for |r| < 1 the Abel sum equals the ordinary sum 1/(1−r), so the method extends ordinary convergence without ever contradicting it.",
+      "The proofs are entirely filter-theoretic: the boundary limit x → 1⁻ is the left-neighborhood filter 𝓝[<] 1, and every result is a Tendsto statement, sidestepping any explicit sequence of partial sums.",
+      "The whole development reduces to one Mathlib lemma (the geometric sum) plus continuity of inversion — the analytic content of Abel's method on the geometric family is exactly the boundary behaviour of x ↦ 1/(1−rx)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Overview: Abel summability at the boundary",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "The file docstring: the geometric series at |r| = 1, the three regularization lenses (divergence, the parent's Cesàro mean, and Abel summability), the definition of Abel summability, the three outcomes proved (Grandi → 1/2, r = 1 divergent, |r| < 1 regular), and the historical context (Abel 1826, Frobenius, Hardy)."
+    },
+    {
+      "id": "setup",
+      "title": "Filter setup",
+      "startLine": 47,
+      "endLine": 63,
+      "summary": "Namespace, open Filter Topology, and the helper abs_lt_one_eventually: near 1 from below, eventually |x| < 1 — the hypothesis that makes every geometric Abel function converge, expressed on the left-neighborhood filter 𝓝[<] 1."
+    },
+    {
+      "id": "predicate",
+      "title": "The Abel-summability predicate",
+      "startLine": 65,
+      "endLine": 82,
+      "summary": "AbelSummableTo a L: the power series ∑ₙ aₙ xⁿ converges on [0,1) and tends to L as x → 1⁻. abelSummableTo_unique proves the assigned value is unique (Hausdorff + NeBot of 𝓝[<] 1)."
+    },
+    {
+      "id": "grandi",
+      "title": "Grandi's series is Abel summable to 1/2",
+      "startLine": 84,
+      "endLine": 118,
+      "summary": "grandi_abel_hasSum: ∑ₙ (−1)ⁿ xⁿ = 1/(1+x); grandi_abel_tendsto: its left-limit at 1 is 1/2 (continuity of inversion); grandi_abelSummableTo_half: Grandi is Abel summable to 1/2, matching Euler and the parent's Cesàro mean."
+    },
+    {
+      "id": "r-equals-one",
+      "title": "r = 1 is not Abel summable",
+      "startLine": 120,
+      "endLine": 155,
+      "summary": "one_abel_tendsto_atTop: ∑ₙ xⁿ = 1/(1−x) → +∞ as x → 1⁻ (via tendsto_inv_nhdsGT_zero); one_not_abelSummable: no finite Abel sum exists, refining the parent's blanket non-summability and discriminating r = 1 from r = −1."
+    },
+    {
+      "id": "regularity",
+      "title": "Abel summability is regular for |r| < 1",
+      "startLine": 157,
+      "endLine": 205,
+      "summary": "geom_abel_hasSum / geom_abel_tendsto: ∑ₙ rⁿ xⁿ = 1/(1−rx) → 1/(1−r); geom_abelSummableTo and the capstone geom_abel_regular: the Abel sum equals the ordinary sum ∑ₙ rⁿ, so Abel summation extends ordinary convergence without contradicting it."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "geometric-series",
+      "abel-summability",
+      "summability-theory",
+      "grandi-series",
+      "regularization",
+      "divergent-series",
+      "power-series",
+      "boundary",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 205,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "AbelSummableTo: the Abel-summability predicate at the boundary — a sequence a is Abel summable to L when its power series ∑ₙ aₙ xⁿ converges for every x ∈ [0,1) and its value tends to L as x → 1⁻. The boundary regularization that complements the parent's Cesàro mean.",
+      "abelSummableTo_unique: the Abel sum is unique, since the left-neighborhood filter 𝓝[<] 1 is nontrivial (NeBot) — Abel summation assigns at most one value.",
+      "grandi_abel_hasSum / grandi_abel_tendsto: the Abel function of Grandi's series 1 − 1 + 1 − ⋯ is ∑ₙ (−1)ⁿ xⁿ = 1/(1+x), whose left-limit at 1 is 1/2 — recovering Euler's value along Abel's path, in agreement with the parent's Cesàro mean.",
+      "grandi_abelSummableTo_half: Grandi's series is Abel summable to 1/2 — the headline regularization result at the boundary.",
+      "one_abel_tendsto_atTop / one_not_abelSummable: at r = 1 the Abel function ∑ₙ xⁿ = 1/(1−x) diverges to +∞ as x → 1⁻ (via tendsto_inv_nhdsGT_zero), so r = 1 is Abel summable to no value. Abel summability still separates the genuinely divergent r = 1 from the regularizable r = −1, refining the parent's blanket '|r| ≥ 1 ⇒ not summable'.",
+      "geom_abel_hasSum / geom_abel_tendsto: for |r| < 1 the Abel function ∑ₙ rⁿ xⁿ = 1/(1−rx) tends to 1/(1−r) as x → 1⁻.",
+      "geom_abelSummableTo / geom_abel_regular: regularity of Abel summation — for |r| < 1 the Abel sum of rⁿ equals its ordinary sum ∑ₙ rⁿ. Abel summation extends ordinary convergence without ever contradicting it."
+    ],
+    "prerequisites": [
+      "hasSum_geometric_of_abs_lt_one (Mathlib): for |r| < 1, HasSum (fun n ↦ rⁿ) (1 − r)⁻¹ — the closed form of each Abel function on the open disc",
+      "tendsto_inv_nhdsGT_zero (Mathlib): x⁻¹ → +∞ as x → 0⁺ — drives the r = 1 divergence",
+      "Tendsto.inv₀ (Mathlib): continuity of inversion away from 0 — supplies the left-limits 1/2 and 1/(1−r)",
+      "tendsto_nhds_unique (Mathlib): uniqueness of limits in a Hausdorff space — behind the uniqueness of the Abel sum",
+      "not_tendsto_nhds_of_tendsto_atTop (Mathlib): along a nontrivial filter a function cannot tend both to +∞ and to a finite limit — behind one_not_abelSummable",
+      "Parent: geometric-series-oq-01 (boundary |r| = 1: divergence at r = 1, Grandi oscillation at r = −1, Cesàro mean → 1/2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_geometric_of_abs_lt_one",
+        "description": "For |r| < 1, HasSum (fun n ↦ rⁿ) (1 − r)⁻¹. Specialized at r ↦ −x, x, and r·x to give the closed forms 1/(1+x), 1/(1−x), 1/(1−rx) of the three Abel functions on [0,1).",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "tendsto_inv_nhdsGT_zero",
+        "description": "Tendsto (fun x ↦ x⁻¹) (𝓝[>] 0) atTop. Composed with x ↦ 1 − x (which sends 𝓝[<] 1 to 𝓝[>] 0) to show the r = 1 Abel function 1/(1−x) diverges to +∞.",
+        "module": "Mathlib.Topology.Algebra.Order.Field"
+      },
+      {
+        "theorem": "Tendsto.inv₀",
+        "description": "If f → a ≠ 0 then f⁻¹ → a⁻¹. Gives the left-limits (1+x)⁻¹ → 1/2 and (1−rx)⁻¹ → (1−r)⁻¹ by continuity at x = 1.",
+        "module": "Mathlib.Topology.Algebra.GroupWithZero"
+      },
+      {
+        "theorem": "not_tendsto_nhds_of_tendsto_atTop",
+        "description": "Along a NeBot filter, a function tending to atTop cannot also tend to any 𝓝 L. Turns the divergence of 1/(1−x) into the non-Abel-summability of r = 1.",
+        "module": "Mathlib.Order.Filter.AtTopBot.Basic"
+      },
+      {
+        "theorem": "tendsto_nhds_unique",
+        "description": "Limits in a Hausdorff space are unique. Gives abelSummableTo_unique: at most one Abel sum.",
+        "module": "Mathlib.Topology.Separation.Hausdorff"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-01-oq-03-oq-01",
+      "question": "Prove Abel's theorem in the regular direction at full strength: if ∑ₙ aₙ converges to L (not only for geometric aₙ = rⁿ), then the power series ∑ₙ aₙ xⁿ tends to L as x → 1⁻. The geometric case here is the consistency check; the general theorem (summation by parts plus a uniform tail estimate) would give regularity for every convergent series.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-01-oq-03-oq-02",
+      "question": "Establish the Abel ⊋ Cesàro hierarchy at the boundary by exhibiting a sequence Abel summable but not Cesàro summable (e.g. aₙ = (−1)ⁿ (n+1), whose Abel function is 1/(1+x)² → 1/4 while its Cesàro means diverge), formalizing Frobenius's theorem that Abel summation dominates Cesàro.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-01-oq-03-oq-03",
+      "question": "Extend Abel summability of the geometric series to complex ratios r = e^{iθ} on the unit circle (θ ≠ 0), where the Abel function ∑ₙ rⁿ xⁿ = 1/(1−rx) tends to 1/(1−r) — assigning Euler's regularized value 1/(1−e^{iθ}) to every boundary point except r = 1.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: the boundary |r| = 1, where it analyzed divergence at r = 1, Grandi oscillation at r = −1, and the Cesàro mean → 1/2. This entry adds the third regularization lens, Abel summability, recovering the same 1/2 for Grandi along a different route, keeping r = 1 divergent, and proving the method regular for |r| < 1."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "depends-on",
+      "description": "Base entry recording the closed form ∑ₙ rⁿ = 1/(1−r) for |r| < 1. The Abel functions here are exactly these geometric sums in the auxiliary variable x, and regularity says the Abel limit reproduces this value."
+    }
+  ],
+  "references": [
+    {
+      "title": "Untersuchungen über die Reihe 1 + (m/1)x + …",
+      "author": "Niels Henrik Abel",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik",
+      "description": "Abel's continuity theorem: if ∑ aₙ converges to L then ∑ aₙ xⁿ → L as x → 1⁻. The regular direction whose geometric instance this entry formalizes, and whose converse defines Abel summation."
+    },
+    {
+      "title": "Divergent Series",
+      "author": "G. H. Hardy",
+      "year": "1949",
+      "venue": "Oxford University Press",
+      "description": "Standard reference for summability methods, their regularity, and the inclusions Cesàro ⊊ Abel among the classical regular methods that all assign 1/2 to Grandi's series."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "At the boundary |r| = 1 the geometric series is studied through Abel summation: a sequence a is Abel summable to L when ∑ₙ aₙ xⁿ converges on [0,1) and tends to L as x → 1⁻ (AbelSummableTo), a value that is unique because 𝓝[<] 1 is NeBot (abelSummableTo_unique). Three boundary outcomes follow. Grandi's series 1 − 1 + 1 − ⋯ has Abel function ∑ₙ (−1)ⁿ xⁿ = 1/(1+x) → 1/2, so it is Abel summable to 1/2 (grandi_abelSummableTo_half), matching the parent's Cesàro mean and Euler's value. The constant 1 (r = 1) has Abel function ∑ₙ xⁿ = 1/(1−x) → +∞, so it is Abel summable to no value (one_not_abelSummable). For |r| < 1 the Abel function ∑ₙ rⁿ xⁿ = 1/(1−rx) → 1/(1−r), which equals the ordinary sum ∑ₙ rⁿ — Abel summation is regular (geom_abel_regular). 205 lines, 10 theorems, 1 definition, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "Abel summation is the third regularization lens on the |r| = 1 boundary, after the parent's divergence analysis and Cesàro mean. It agrees with Cesàro on Grandi (both give 1/2) yet is built from a genuinely different object — the radial limit of a power series rather than the average of partial sums — and its regularity (Abel sum = ordinary sum for |r| < 1) shows it never contradicts convergence; it only extends it. Crucially, Abel summation still refuses r = 1: the boundary point where the series truly diverges stays divergent under regularization, so the method discriminates between the two boundary ratios r = ±1 exactly as one would want. This sets up the open questions: full Abel's theorem for arbitrary convergent series, the Abel ⊋ Cesàro hierarchy, and the complex unit circle.",
+    "openQuestions": [
+      "Prove Abel's theorem in full: ∑ aₙ → L ⇒ ∑ aₙ xⁿ → L as x → 1⁻ for arbitrary (not only geometric) convergent series.",
+      "Exhibit a sequence Abel summable but not Cesàro summable (e.g. (−1)ⁿ(n+1) → 1/4), formalizing the Frobenius hierarchy Cesàro ⊊ Abel.",
+      "Extend Abel summability of the geometric series to complex boundary ratios r = e^{iθ}, θ ≠ 0, regularizing to 1/(1−e^{iθ})."
+    ]
+  }
+}

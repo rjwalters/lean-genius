@@ -168,6 +168,16 @@
       "relationship": "extension",
       "description": "√2+√3 is irrational — builds on the degree-2 extensions ℚ(√2) and ℚ(√3); its minimal polynomial over ℚ is X⁴-10X²+1 (degree 4)",
       "targetId": "sqrt2-plus-sqrt3-irrational"
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-01",
+      "relationship": "extended-by",
+      "description": "Generalizes from √2 to √n for ALL non-perfect-square n: minpoly ℚ(√n) = X² − n, including cases where Eisenstein's criterion fails (n=8, n=27)."
+    },
+    {
+      "targetId": "sqrt2-minpoly-oq-02",
+      "relationship": "extended-by",
+      "description": "Extends to k-th roots: minpoly ℚ(m^(1/k)) = Xᵏ − m via Eisenstein when m has a prime p with p∣m but p²∤m, with degree and field-extension theorems."
     }
   ],
   "references": [

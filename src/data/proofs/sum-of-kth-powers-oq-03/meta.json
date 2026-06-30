@@ -118,6 +118,16 @@
       "targetId": "sum-of-kth-powers",
       "relationship": "alternative-proof",
       "description": "Gives a combinatorial (odd-number tiling) proof of Nicomachus's theorem, which the parent SumOfKthPowers.lean proves algebraically via closed-form power-sum formulas. The two proofs share no lemma beyond the Gauss sum."
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 unifies the parent's algebraic route into a single Bernoulli-number closed form for ∑_{i<n} i^k; the k=3 instance of that formula, ∑_{i≤n} i³ = (n(n+1)/2)², is exactly Nicomachus's identity. OQ-01 reaches it by pure computation over Bernoulli numbers, this entry by a subtraction-free combinatorial tiling — two structurally independent derivations of the same closed form."
+    },
+    {
+      "targetId": "sum-of-kth-powers-oq-04",
+      "relationship": "related",
+      "description": "Sibling open-question exploration of the same power-sum family: OQ-04 studies the asymptotics ∑_{i<n} i^k / n^{k+1} → 1/(k+1), while this entry proves the exact closed identity for the k=3 case. Together they exhibit both the exact and the limiting behavior of ∑ i^k."
     }
   ],
   "conclusion": {

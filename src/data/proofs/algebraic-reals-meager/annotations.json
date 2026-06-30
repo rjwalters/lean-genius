@@ -40,7 +40,7 @@
     "title": "A Nowhere-Dense Set is Meagre (the Trivial One-Element Cover)",
     "content": "isMeagre_of_isNowhereDense records the base case of the category hierarchy: a single nowhere-dense set t is itself meagre, witnessed by the one-element family {t}. The proof uses isMeagre_iff_countable_union_isNowhereDense, supplying the singleton family {t} (countable via Set.countable_singleton), checking every member of the family is nowhere dense, and verifying ⋃{t} ⊇ t via Set.sUnion_singleton. This is logically trivial — every nowhere-dense set is a one-term union of nowhere-dense sets — but isolating it as a named lemma lets the main argument cover a countable set by a countable union of these atoms without re-deriving the meagreness API each time.",
     "mathContext": "If $t$ is nowhere dense, then $t = \\bigcup_{u \\in \\{t\\}} u$ is a union over a one-element (hence countable) family of nowhere-dense sets, so $t$ is meagre by definition. Formally $\\operatorname{int}(\\overline{t}) = \\varnothing \\Rightarrow t \\in \\mathcal{M}$.",
-    "significance": "technical",
+    "significance": "supporting",
     "relatedConcepts": [
       "isMeagre_iff_countable_union_isNowhereDense",
       "Set.countable_singleton",

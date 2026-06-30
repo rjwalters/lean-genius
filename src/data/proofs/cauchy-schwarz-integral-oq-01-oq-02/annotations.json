@@ -17,7 +17,11 @@
       "complex analysis",
       "operator theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lp Spaces",
+      "Bounded Linear Operators",
+      "Complex Analysis"
+    ]
   },
   {
     "id": "ann-rt-interp-recip",
@@ -36,7 +40,11 @@
       "convex combination",
       "Lebesgue exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue Exponents",
+      "Convex Combination",
+      "Reciprocal Exponent"
+    ]
   },
   {
     "id": "ann-rt-conjugate-preservation",
@@ -77,7 +85,11 @@
       "AEStronglyMeasurable",
       "Mathlib measure theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Operator Norm",
+      "Lp Seminorm",
+      "Strong Measurability"
+    ]
   },
   {
     "id": "ann-rt-log-convexity",
@@ -98,7 +110,11 @@
       "Real.rpow",
       "submultiplicativity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Weighted Geometric Mean",
+      "AM-GM Inequality",
+      "Real Power Function"
+    ]
   },
   {
     "id": "ann-rt-three-lines",

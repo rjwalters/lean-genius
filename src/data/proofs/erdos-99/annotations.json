@@ -17,7 +17,11 @@
       "Thue's theorem",
       "discrete geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Discrete Geometry",
+      "Circle Packing",
+      "Equilateral Triangle"
+    ]
   },
   {
     "id": "ann-e99-distances",
@@ -37,7 +41,11 @@
       "Finset.sup'",
       "metric space"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Space",
+      "Metric Space Distance",
+      "Finset Infimum Supremum"
+    ]
   },
   {
     "id": "ann-e99-triangles",
@@ -56,7 +64,11 @@
       "unit distance",
       "packing constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise Distance",
+      "Equilateral Triangle",
+      "Existential Quantification"
+    ]
   },
   {
     "id": "ann-e99-optimal",
@@ -75,7 +87,11 @@
       "extremal sets",
       "compactness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Set",
+      "Diameter Minimization",
+      "Compactness Argument"
+    ]
   },
   {
     "id": "ann-e99-lattice",
@@ -95,7 +111,11 @@
       "Delaunay triangulation",
       "Voronoi tessellation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Triangular Lattice",
+      "Basis Vectors",
+      "Voronoi Tessellation"
+    ]
   },
   {
     "id": "ann-e99-thue",
@@ -114,7 +134,11 @@
       "packing density",
       "asymptotic structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Thue's Theorem",
+      "Packing Density",
+      "Asymptotic Approximation"
+    ]
   },
   {
     "id": "ann-e99-n4",
@@ -133,7 +157,11 @@
       "optimal packing",
       "Bezdek-Fodor"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Optimal Configuration",
+      "Unit Square",
+      "Exhaustive Case Analysis"
+    ]
   },
   {
     "id": "ann-e99-conjecture",
@@ -152,6 +180,10 @@
       "lattice approximation",
       "packing density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open Conjecture",
+      "Triangular Lattice",
+      "Packing Density"
+    ]
   }
 ]

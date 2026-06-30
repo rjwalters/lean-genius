@@ -17,7 +17,11 @@
       "ramsey-theory",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graphs and induced subgraphs",
+      "Ramsey theory",
+      "the Erd\u0151s\u2013Hajnal conjecture"
+    ]
   },
   {
     "id": "ann-e61-imports",
@@ -36,7 +40,11 @@
       "simple-graph",
       "filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib SimpleGraph",
+      "filters and limits",
+      "graph-theory imports"
+    ]
   },
   {
     "id": "ann-e61-background",
@@ -55,7 +63,11 @@
       "induced-subgraph",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory and Ramsey numbers",
+      "induced subgraphs",
+      "cliques and independent sets"
+    ]
   },
   {
     "id": "ann-e61-main-definition",
@@ -75,7 +87,11 @@
       "independent-set",
       "comap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "induced subgraphs (graph.comap)",
+      "cliques and independent sets",
+      "the clique-or-independent-set quantity hom(H,G)"
+    ]
   },
   {
     "id": "ann-e61-conjecture",
@@ -94,7 +110,11 @@
       "polynomial",
       "universal-quantification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "H-free graphs (forbidden induced subgraph)",
+      "polynomial-size cliques/independent sets",
+      "universally quantified conjecture"
+    ]
   },
   {
     "id": "ann-e61-1989-axiom",
@@ -113,7 +133,11 @@
       "partial-result",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the exp(c\u221alog n) lower bound",
+      "the probabilistic method",
+      "the Erd\u0151s\u2013Hajnal 1989 partial result"
+    ]
   },
   {
     "id": "ann-e61-2023-axiom",
@@ -132,7 +156,11 @@
       "partial-result",
       "state-of-the-art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erd\u0151s\u2013Hajnal bound",
+      "recent improvements",
+      "the BNSS 2023 state-of-the-art"
+    ]
   },
   {
     "id": "ann-e61-comparison",
@@ -150,7 +178,11 @@
       "complexity-comparison",
       "bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the 1989 vs 2023 lower bounds",
+      "comparing growth rates",
+      "bound complexity"
+    ]
   },
   {
     "id": "ann-e61-examples",
@@ -169,6 +201,10 @@
       "path-graph",
       "special-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graphs and paths",
+      "H-free special cases",
+      "worked example graphs"
+    ]
   }
 ]

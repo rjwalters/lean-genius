@@ -16,7 +16,11 @@
       "central-binomial",
       "prime-divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reciprocal sums of primes",
+      "central binomial coefficient C(2n, n)",
+      "Erdős open conjectures on prime divisibility"
+    ]
   },
   {
     "id": "ann-e377-imports",
@@ -35,7 +39,11 @@
       "filters"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib namespace structure",
+      "arithmetic functions and primality predicates",
+      "infinite sums over the reals and the cofinite filter"
+    ]
   },
   {
     "id": "ann-e377-function",
@@ -54,7 +62,11 @@
       "kummer-theorem",
       "central-binomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes p ≤ n dividing C(2n, n)",
+      "Kummer's theorem on carries in base-p addition",
+      "base-p digit expansions of integers"
+    ]
   },
   {
     "id": "ann-e377-conjecture",
@@ -73,7 +85,11 @@
       "boundedness",
       "uniform-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over a uniform bound C",
+      "uniform boundedness of a sequence",
+      "the exceptional primes not dividing C(2n, n)"
+    ]
   },
   {
     "id": "ann-e377-main",
@@ -92,7 +108,11 @@
       "open-problem",
       "formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "definitional equality and rfl proofs in Lean",
+      "logical equivalence as a problem statement",
+      "BoundedConjectureHolds as the formal predicate"
+    ]
   },
   {
     "id": "ann-e377-gamma0",
@@ -111,7 +131,11 @@
       "series",
       "average-behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convergent series ∑ log(k)/2^k",
+      "the constant γ₀ ≈ 0.7943",
+      "average behavior of f(n) in EGRS75"
+    ]
   },
   {
     "id": "ann-e377-first-moment",
@@ -130,7 +154,11 @@
       "convergence",
       "egrs75"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cesàro mean of an arithmetic function",
+      "convergence of (1/x)∑ f(n) to γ₀",
+      "distinction between average and maximum values"
+    ]
   },
   {
     "id": "ann-e377-second-moment",
@@ -149,7 +177,11 @@
       "variance",
       "concentration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "second moment (1/x)∑ f(n)²",
+      "variance as E[f²] − E[f]²",
+      "concentration of f(n) around γ₀"
+    ]
   },
   {
     "id": "ann-e377-ae",
@@ -168,7 +200,11 @@
       "cofinite",
       "concentration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vanishing variance implying concentration",
+      "the cofinite filter and 'all but finitely many' n",
+      "little-o asymptotic notation f(n) = γ₀ + o(1)"
+    ]
   },
   {
     "id": "ann-e377-upper-bound",
@@ -187,7 +223,11 @@
       "mertens",
       "improvement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mertens' theorem ∑_{p≤n} 1/p ~ log(log n)",
+      "improving the leading constant to c < 1",
+      "asymptotic upper bounds for large n"
+    ]
   },
   {
     "id": "ann-e377-complement",
@@ -206,7 +246,11 @@
       "partition",
       "prime-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes dividing C(2n, n)",
+      "complementary sum to f(n)",
+      "partitioning ∑_{p≤n} 1/p into two subsums"
+    ]
   },
   {
     "id": "ann-e377-complementary",
@@ -225,6 +269,10 @@
       "complementary",
       "prime-decomposition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "every prime p ≤ n either divides C(2n, n) or does not",
+      "additive decomposition f(n) + g(n) = ∑_{p≤n} 1/p",
+      "partition of primes by a divisibility property"
+    ]
   }
 ]

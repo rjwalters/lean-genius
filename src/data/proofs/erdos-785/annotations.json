@@ -16,7 +16,11 @@
       "Sumsets",
       "Counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "additive combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-785-sumset",
@@ -34,7 +38,11 @@
       "Additive combinatorics",
       "Schnirelmann density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-785-counting",
@@ -53,7 +61,11 @@
       "Prime counting function",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-covers",
@@ -71,7 +83,11 @@
       "Additive bases",
       "Cofinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "number theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-additive-complement",
@@ -90,7 +106,11 @@
       "Complement sets",
       "Sum-free sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "number theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-product-asymptotic",
@@ -108,7 +128,11 @@
       "Asymptotic notation",
       "Minimal density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and filters",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-exact-complement",
@@ -126,7 +150,11 @@
       "Optimal density",
       "Extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-question",
@@ -144,7 +172,11 @@
       "Error terms",
       "Fine asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and filters",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-785-danzer",
@@ -163,7 +195,11 @@
       "Greedy algorithms",
       "Probabilistic method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "probabilistic method",
+      "combinatorial constructions"
+    ]
   },
   {
     "id": "ann-785-sarkozy-szemeredi",
@@ -181,7 +217,11 @@
       "Variance method",
       "Representation function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "probability theory",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-785-main-theorem",
@@ -199,7 +239,11 @@
       "Problem solution",
       "Main result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 syntax",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-785-ruzsa",
@@ -217,7 +261,11 @@
       "Tight bounds",
       "Rate of growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "real analysis",
+      "limits and filters"
+    ]
   },
   {
     "id": "ann-785-representation",
@@ -235,7 +283,11 @@
       "Representation numbers",
       "Additive problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-785-average-representation",
@@ -253,6 +305,10 @@
       "Average value",
       "Sum formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "combinatorics",
+      "limits and filters"
+    ]
   }
 ]

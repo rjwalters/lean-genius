@@ -2,6 +2,45 @@
   "id": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MeanValueTheoremOQ02",
+      "Proofs.MeanValueTheoremOQ02OQ04"
+    ],
+    "opens": [
+      "interval",
+      "`(a",
+      "−",
+      "R,",
+      "a",
+      "+",
+      "R)`",
+      "and",
+      "`|f",
+      "y|",
+      "≤",
+      "M`",
+      "for",
+      "`y`",
+      "in",
+      "that",
+      "interval,",
+      "Real",
+      "Set",
+      "NNReal",
+      "ENNReal",
+      "Topology",
+      "Filter"
+    ],
+    "namespace": "MeanValueTheoremOQ02OQ04OQ01",
+    "lineCount": 771,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "path": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
+    "sorries": 0
+  },
   "description": "Answers OQ-01 of mean-value-theorem-oq-02-oq-04 with NO: the parent file's axiom analytic_taylor_remainder_uniform_bound is mathematically false as stated. The Runge function f(x)=1/(1+x²), with a=0, R=100, M=1, r=1, n=0, x=1 satisfies every hypothesis (analytic on the open real interval, |f|≤1 uniformly) yet violates the conclusion: |f(1)−f(0)|=1/2 vastly exceeds the claimed bound 1/99. The root cause is the Runge phenomenon: real-analyticity plus a real sup bound does not yield Cauchy coefficient estimates—those require a complex sup bound on a complex disk. The corrected statement replaces AnalyticOn ℝ + real Ioo with a complex HasFPowerSeriesOnBall + Metric.ball hypothesis; it is now fully proven sorry-free (theorem analytic_taylor_remainder_uniform_bound_complex, §3b), the residual Cauchy-coefficient sub-lemma having been discharged at S7 (PR #19063) via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le.",
   "meta": {
     "author": "Lean Genius researchers (refutation by Runge counterexample, formalized 2026)",
@@ -90,7 +129,7 @@
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
       "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap). (S7 follow-on: the Cauchy-coefficient gap was discharged in PR #19063 via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le; the file is now sorry-free.)"
     ],
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 3
   },
   "overview": {

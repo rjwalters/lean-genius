@@ -1,0 +1,186 @@
+{
+  "id": "maschke-theorem-oq-01-oq-01-oq-01",
+  "slug": "maschke-theorem-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MonoidAlgebra"
+    ],
+    "namespace": "MaschkeAugmentationNoSplit",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/MaschkeAugmentationNoSplitOQ010101.lean",
+    "sorries": 0
+  },
+  "title": "The Augmentation Sequence of 𝔽ₚ[ℤ/p] Does Not Split",
+  "description": "A named-witness refinement of the modular counterexample to Maschke's theorem. Define the augmentation ε : 𝔽_p[ℤ/p] → 𝔽_p, ∑ a_h h ↦ ∑ a_h, and exhibit the augmentation ideal ker ε as a subrepresentation with NO complement: the short exact sequence 0 → ker ε → 𝔽_p[ℤ/p] → 𝔽_p → 0 does not split. The obstruction is the cyclic-shift structure of the regular representation: a complement would supply a g-invariant element b with ε b = 1, but a g-invariant element has constant coefficients, so ε b = p · c = 0 in characteristic p — a contradiction. This recovers the parent's exists_submodule_no_complement with the explicit witness ker ε, uniform in the prime p.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MaschkeAugmentationNoSplitOQ010101.lean",
+    "tags": [
+      "algebra",
+      "representation-theory",
+      "group-algebra",
+      "maschke",
+      "augmentation-ideal",
+      "short-exact-sequence",
+      "modular-representation-theory",
+      "semisimple",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 183,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "augmentation_no_complement: the headline result — the augmentation ideal ker ε of 𝔽_p[ℤ/p] has NO 𝔽_p[ℤ/p]-module complement, i.e. the short exact sequence 0 → ker ε → 𝔽_p[ℤ/p] → 𝔽_p → 0 does not split. This upgrades the parent's anonymous exists_submodule_no_complement to a named, structural witness, uniform in the prime p",
+      "aug_zero_of_g_mul_self: the heart of the obstruction — a g-invariant element y (g * y = y) of the regular representation has augmentation ε y = 0. Its p coefficients are all equal (cyclic shift) and p · c = 0 in characteristic p; this is precisely what forbids a section of ε",
+      "coeff_const: a g-invariant element has the SAME coefficient at every group element, proved by iterating the one-step cyclic shift from 0 and using that 1 generates ℤ/p (induction on ℕ through ZMod.natCast_rightInverse)",
+      "coeff_shift: the cyclic-shift identity — if g * y = y then y((ofAdd 1)⁻¹ * h) = y h for every h, extracted from MonoidAlgebra.single_mul_apply",
+      "ε / ε_eq_sum: the augmentation algebra hom ε = lift 1 realised concretely as the sum of all coefficients ε y = ∑_{h} y h via MonoidAlgebra.lift_apply and Finsupp.sum_fintype, the bridge between the module-theoretic ker ε and the arithmetic p · c = 0",
+      "exists_submodule_no_complement: the parent's conclusion re-derived with ker ε exhibited as the explicit subrepresentation lacking a complement"
+    ],
+    "prerequisites": [
+      "MonoidAlgebra.single_mul_apply: (single g r * x) h = r * x (g⁻¹ * h) over a group — the source of the cyclic shift of coordinates by the generator",
+      "MonoidAlgebra.lift / lift_apply: the augmentation as the algebra hom sending every group element to 1, applied as y.sum (fun _ b => b)",
+      "Finsupp.sum_fintype: rewriting a Finsupp sum over the support as a sum over the finite index type, giving ε y = ∑_h y h",
+      "ZMod.natCast_rightInverse: every element of ZMod p is the cast of its value, used to lift the one-step shift to constancy over all of ℤ/p",
+      "IsCompl.sup_eq_top / IsCompl.inf_eq_bot: a complement J of ker ε gives ker ε ⊔ J = ⊤ and ker ε ⊓ J = ⊥, producing the section value b and forcing g * b - b = 0",
+      "ZMod.card, ZMod.natCast_self: |ℤ/p| = p and (p : ZMod p) = 0, the characteristic-p arithmetic killing the sum of p equal coefficients"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MonoidAlgebra.single_mul_apply",
+        "description": "Coefficientwise formula for left multiplication by a single-supported element over a group: (single g r * x) h = r * x (g⁻¹ * h). Specialised to the generator g = single (ofAdd 1) 1 it becomes the cyclic shift of coordinates that drives the constancy argument.",
+        "module": "Mathlib.Algebra.MonoidAlgebra.Defs"
+      },
+      {
+        "theorem": "MonoidAlgebra.lift_apply",
+        "description": "Evaluates the algebra hom lift F at y as y.sum (fun a b => b • F a); with F the trivial monoid hom this gives the augmentation as the sum of coefficients.",
+        "module": "Mathlib.Algebra.MonoidAlgebra.Basic"
+      },
+      {
+        "theorem": "Finsupp.sum_fintype",
+        "description": "Turns the Finsupp sum y.sum (fun _ b => b) into the finite sum ∑ h, y h over the group, the form on which the cyclic-shift constancy collapses to p · c.",
+        "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_rightInverse",
+        "description": "The cast ℕ → ZMod p is a right inverse of val; lets the one-step shift y(ofAdd (s+1)) = y(ofAdd s) be iterated to y(ofAdd t) = y(ofAdd 0) for every t ∈ ℤ/p.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Maschke's theorem (1899) says a finite group's representations over a field k are completely reducible whenever char k ∤ |G|; equivalently k[G] is semisimple. The parent entry already certifies the sharpness of this hypothesis by exhibiting a nonzero nilpotent g − 1 in 𝔽_p[ℤ/p], proving the ring is not reduced and hence not semisimple. But non-semisimplicity, derived through the abstract 'commutative semisimple ⟹ reduced' instance, leaves the failing subrepresentation anonymous. The conceptual home of the obstruction in modular representation theory is the augmentation ideal — the kernel of the trivial-representation quotient ε : k[G] → k — and the statement that the augmentation short exact sequence does not split. This entry makes that identification explicit and proves the non-splitting directly from the cyclic-shift geometry of the regular representation, rather than reading it off an abstract lattice-theoretic instance.",
+    "problemStatement": "Let $p$ be prime, $A = \\mathbb{F}_p[\\mathbb{Z}/p]$, and $\\varepsilon : A \\to \\mathbb{F}_p$, $\\sum_h a_h\\, h \\mapsto \\sum_h a_h$, the augmentation. Exhibit the augmentation ideal $\\ker \\varepsilon$ as an explicit subrepresentation with no $A$-module complement — equivalently, show the short exact sequence $0 \\to \\ker\\varepsilon \\to A \\to \\mathbb{F}_p \\to 0$ does not split — recovering the parent's $\\texttt{exists\\_submodule\\_no\\_complement}$ with $\\ker\\varepsilon$ as the named witness, uniformly in $p$.",
+    "proofStrategy": "Suppose ker ε had a complement J, so A = ker ε ⊕ J. Decompose 1 = a + b with a ∈ ker ε and b ∈ J; applying ε gives ε b = 1. Now show b is g-invariant: g·b − b lies in ker ε (because ε(g·b − b) = ε g · ε b − ε b = 1·1 − 1 = 0) and also in J (an ideal containing b), hence in ker ε ⊓ J = ⊥, so g·b = b. Finally invoke the structural lemma aug_zero_of_g_mul_self: multiplication by g = single (ofAdd 1) 1 cyclically shifts coordinates (MonoidAlgebra.single_mul_apply), so a g-invariant element has constant coefficients (coeff_const, by induction since 1 generates ℤ/p); its augmentation is then a sum of p equal coefficients, ε b = p·c = 0 in 𝔽_p (ZMod.card, ZMod.natCast_self). This contradicts ε b = 1.",
+    "keyInsights": [
+      "The non-splitting is the precise representation-theoretic content of non-semisimplicity, but proving it requires the cyclic-shift geometry, not just the existence of a nilpotent. A complement would yield a g-fixed vector of augmentation 1; the whole proof is the demonstration that g-fixed vectors of the regular representation cannot have augmentation 1.",
+      "Invariance forces constancy. Multiplication by the generator g = [1] permutes the standard basis cyclically, so a g-invariant element repeats a single coefficient c across all p coordinates. This is the regular-representation analogue of 'a translation-invariant function on a cyclic group is constant'.",
+      "Characteristic p delivers the contradiction at the last step: the augmentation of a constant element is p·c, and p = 0 in 𝔽_p. In characteristic 0 the same element would have augmentation p·c ≠ 0, and indeed the averaging idempotent (1/p)∑ g splits the sequence — exactly Maschke's theorem.",
+      "The witness is named, not abstract. Where the parent produces 'some submodule with no complement' by unwinding a ComplementedLattice instance, here the submodule is ker ε itself, constructed from the explicit augmentation algebra hom, so exists_submodule_no_complement is recovered as ⟨ker ε, augmentation_no_complement⟩.",
+      "The argument is uniform in the prime p: one cyclic-shift computation and one characteristic-p collapse handle every prime simultaneously, with no per-p decidability check."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: the Group Algebra, Generator, and Augmentation",
+      "startLine": 53,
+      "endLine": 69,
+      "summary": "Fixes a prime p, writes G = Multiplicative (ZMod p) and A = 𝔽_p[ℤ/p], and defines the generator g = single (ofAdd 1) 1 and the augmentation ε : A →ₐ[𝔽_p] 𝔽_p as the algebra hom MonoidAlgebra.lift 1 sending every group element to 1."
+    },
+    {
+      "id": "augmentation-basics",
+      "title": "The Augmentation as a Sum of Coefficients",
+      "startLine": 71,
+      "endLine": 88,
+      "summary": "ε_single and ε_g compute ε on basis elements (ε (single a b) = b, ε g = 1). ε_eq_sum rewrites the augmentation as the finite sum ∑_h y h via lift_apply and Finsupp.sum_fintype, and mem_ker_iff identifies membership in ker ε with having augmentation 0."
+    },
+    {
+      "id": "cyclic-shift",
+      "title": "Cyclic Shift: g-Invariant ⟹ Constant Coefficients",
+      "startLine": 90,
+      "endLine": 127,
+      "summary": "coeff_shift extracts the coordinate shift y((ofAdd 1)⁻¹ * h) = y h from g * y = y using MonoidAlgebra.single_mul_apply. coeff_const iterates the resulting one-step identity y(ofAdd (s+1)) = y(ofAdd s) from 0, using that 1 generates ℤ/p (induction on ℕ and ZMod.natCast_rightInverse), to conclude all coefficients are equal."
+    },
+    {
+      "id": "heart",
+      "title": "The Heart of the Obstruction: Invariant ⟹ Augmentation Zero",
+      "startLine": 129,
+      "endLine": 141,
+      "summary": "aug_zero_of_g_mul_self assembles the pieces: a g-invariant element has constant coefficients, so ε y = ∑_h y h = (|ℤ/p|) • c = p • c = 0 in 𝔽_p (Finset.sum_const, ZMod.card, ZMod.natCast_self). This is the structural fact that no g-fixed vector can have nonzero augmentation."
+    },
+    {
+      "id": "no-split",
+      "title": "The Augmentation Sequence Does Not Split",
+      "startLine": 143,
+      "endLine": 183,
+      "summary": "augmentation_no_complement assumes a complement J of ker ε, extracts the section value b ∈ J with ε b = 1 from 1 = a + b (IsCompl.sup_eq_top), shows g * b = b via g*b − b ∈ ker ε ⊓ J = ⊥ (IsCompl.inf_eq_bot), and derives the contradiction ε b = 0 ≠ 1 from aug_zero_of_g_mul_self. exists_submodule_no_complement then packages ⟨ker ε, …⟩ as the named witness."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "maschke-theorem-oq-01-oq-01-oq-01-oq-01",
+      "question": "Identify ker ε explicitly as the principal ideal generated by g − 1 (ker ε = Ideal.span {g − 1}) and compute its 𝔽_p-dimension as p − 1, exhibiting the full composition series 0 ⊂ (g−1)^{p−1} ⊂ … ⊂ (g−1) = ker ε ⊂ A of the uniserial module 𝔽_p[ℤ/p].",
+      "significance": "medium"
+    },
+    {
+      "id": "maschke-theorem-oq-01-oq-01-oq-01-oq-02",
+      "question": "Show that in characteristic 0 (or char k ∤ p) the same sequence DOES split, by verifying the averaging idempotent e = (1/p) ∑_{i} g^i satisfies ε e = 1 and g · e = e, making 𝔽 · e a complementary trivial subrepresentation — the contrast that is exactly Maschke's theorem.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "maschke-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Refines the parent's exists_submodule_no_complement by naming the witness: the submodule with no complement is the augmentation ideal ker ε, and the non-splitting is proved directly from the cyclic-shift structure rather than from an abstract lattice instance."
+    },
+    {
+      "targetId": "maschke-theorem-oq-01",
+      "relationship": "sharpens",
+      "description": "Gives the representation-theoretic form of the failure of Maschke's theorem: when char k ∣ |G| the augmentation short exact sequence does not split."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Algebra.MonoidAlgebra.Defs and Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of MonoidAlgebra.single_mul_apply (the cyclic shift) and MonoidAlgebra.lift (the augmentation algebra hom)."
+    },
+    {
+      "title": "Representations and Characters of Groups",
+      "author": "Gordon James and Martin Liebeck",
+      "year": "2001",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "description": "Standard reference for Maschke's theorem, the augmentation ideal, and the averaging idempotent that splits the augmentation sequence in the coprime characteristic."
+    },
+    {
+      "title": "A Course in Finite Group Representation Theory",
+      "author": "Peter Webb",
+      "year": "2016",
+      "venue": "Cambridge Studies in Advanced Mathematics 161",
+      "description": "Modular representation theory: the augmentation ideal, the radical of k[G] in characteristic p, and the uniserial structure of k[ℤ/p]."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The augmentation ideal ker ε of the modular group algebra 𝔽_p[ℤ/p] is proved to have NO module complement: the short exact sequence 0 → ker ε → 𝔽_p[ℤ/p] → 𝔽_p → 0 does not split, uniformly in the prime p. A hypothetical complement would supply a g-invariant element b with ε b = 1, but multiplication by the generator g = [1] cyclically shifts coordinates, so a g-invariant element has constant coefficients and its augmentation is p · c = 0 in characteristic p — contradicting ε b = 1. This names the witness in the parent's exists_submodule_no_complement as ker ε. 183 lines, 9 theorems, 2 definitions, 0 axioms, 0 sorries.",
+    "implications": "This is the representation-theoretic refinement of the modular counterexample to Maschke's theorem. Where the parent proves non-semisimplicity through an abstract nilpotent and the 'commutative semisimple ⟹ reduced' instance, this entry constructs the augmentation map ε, the cyclic-shift invariance lemma, and the direct non-splitting argument — original assembly with no single Mathlib analogue. The same machinery makes the contrast with the coprime case visible: in characteristic 0 the averaging idempotent (1/p) ∑ g_i splits the sequence, which is Maschke's theorem itself.",
+    "openQuestions": [
+      "Identify ker ε with the principal ideal (g − 1) and exhibit the full uniserial composition series of 𝔽_p[ℤ/p].",
+      "Verify that the averaging idempotent splits the sequence in characteristic coprime to p, recovering Maschke's theorem."
+    ]
+  }
+}

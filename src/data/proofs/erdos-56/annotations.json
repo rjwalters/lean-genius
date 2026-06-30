@@ -16,7 +16,11 @@
       "coprimality",
       "extremal-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "pairwise coprimality",
+      "prime numbers"
+    ]
   },
   {
     "id": "ann-e56-imports",
@@ -35,7 +39,11 @@
       "finset",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "finite set cardinality",
+      "indexed prime enumeration"
+    ]
   },
   {
     "id": "ann-e56-weakly-divisible",
@@ -54,7 +62,11 @@
       "finset",
       "pigeonhole"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality",
+      "fixed-size subsets",
+      "pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e56-empty-singleton",
@@ -72,7 +84,11 @@
       "vacuous-truth",
       "boundary-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth",
+      "set cardinality bounds",
+      "boundary cases"
+    ]
   },
   {
     "id": "ann-e56-max-weakly-divisible",
@@ -91,7 +107,11 @@
       "optimization",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum of a set",
+      "combinatorial optimization",
+      "noncomputable definitions"
+    ]
   },
   {
     "id": "ann-e56-first-primes-multiples",
@@ -110,7 +130,11 @@
       "inclusion-exclusion",
       "pigeonhole"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime divisibility",
+      "pigeonhole principle",
+      "inclusion-exclusion"
+    ]
   },
   {
     "id": "ann-e56-main-axiom",
@@ -129,7 +153,11 @@
       "counterexample",
       "erdos"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal counterexamples",
+      "k-th prime growth",
+      "logical negation of quantifiers"
+    ]
   },
   {
     "id": "ann-e56-boundary-theorems",
@@ -147,7 +175,11 @@
       "boundary-cases",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum of empty set",
+      "edge-case verification",
+      "weak divisibility"
+    ]
   },
   {
     "id": "ann-e56-examples",
@@ -166,6 +198,10 @@
       "gcd",
       "coprime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greatest common divisor",
+      "coprimality",
+      "kernel decision procedures"
+    ]
   }
 ]

@@ -1,0 +1,107 @@
+[
+  {
+    "id": "ann-gpsq-overview",
+    "proofId": "group-order-prime-squared-abelian-oq-01",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Groups of Order p² Are Abelian — and the Cyclic / Elementary-Abelian Split",
+    "content": "The docstring frames both the classical result and the file's added structure. The first nontrivial step in classifying finite p-groups: every group of order p² (p prime) is abelian. Mathlib supplies the bare commutativity (IsPGroup.commutative_of_card_eq_prime_sq, whose proof uses that the center is nontrivial, so G/Z(G) has order 1 or p, hence cyclic, hence G abelian). This entry restates that from the order hypothesis alone and then goes further with the STRUCTURAL classification Mathlib omits: |G| = p² forces G to be either cyclic (≅ ℤ/p²) or elementary abelian with exponent p (≅ (ℤ/p)²) — and these are mutually exclusive. All elementary finite group theory, no axioms, no sorries.",
+    "mathContext": "$|G| = p^2 \\Rightarrow G$ abelian, and $G \\cong \\mathbb{Z}/p^2$ (cyclic) XOR $\\forall g,\\ g^p = 1$ ($G \\cong (\\mathbb{Z}/p)^2$).",
+    "significance": "context",
+    "relatedConcepts": [
+      "finite p-groups",
+      "classification of small groups",
+      "center of a group",
+      "exponent of a group"
+    ],
+    "prerequisites": [
+      "Lagrange's theorem",
+      "cyclic groups",
+      "the center and central quotient"
+    ]
+  },
+  {
+    "id": "ann-gpsq-abelian",
+    "proofId": "group-order-prime-squared-abelian-oq-01",
+    "range": { "startLine": 36, "endLine": 46 },
+    "type": "technique",
+    "title": "The Abelian Theorem from the Order Hypothesis",
+    "content": "mul_comm_of_card_eq_prime_sq states commutativity from just Nat.card G = p² and p prime. The proof supplies the Fact p.Prime instance and delegates to Mathlib's IsPGroup.commutative_of_card_eq_prime_sq. The mathematical content of that delegate is the classic argument: a nontrivial p-group has nontrivial center Z(G), so |G/Z(G)| ∈ {1, p}; a group whose central quotient is cyclic is itself abelian; hence G is abelian. Repackaging it to take only the cardinality and primality hypotheses makes it the clean baseline the rest of the file builds on.",
+    "mathContext": "Center nontrivial $\\Rightarrow |G/Z(G)| \\in \\{1,p\\} \\Rightarrow G/Z(G)$ cyclic $\\Rightarrow G$ abelian.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsPGroup.commutative_of_card_eq_prime_sq",
+      "nontrivial center of a p-group",
+      "central quotient cyclic ⇒ abelian",
+      "Fact instances"
+    ],
+    "prerequisites": [
+      "p-groups have nontrivial center",
+      "the G/Z(G) cyclic criterion",
+      "Nat.card"
+    ]
+  },
+  {
+    "id": "ann-gpsq-orders",
+    "proofId": "group-order-prime-squared-abelian-oq-01",
+    "range": { "startLine": 48, "endLine": 60 },
+    "type": "technique",
+    "title": "Trichotomy of Element Orders: 1, p, or p²",
+    "content": "orderOf_eq_of_card_eq_prime_sq shows every element of a group of order p² has order 1, p, or p². The order divides the group order p² (Lagrange, orderOf_dvd_natCard), and the divisors of a prime square are exactly 1, p, p² — extracted via Nat.dvd_prime_pow (which gives orderOf g = pᵏ with k ≤ 2) followed by interval_cases k. This trichotomy is the combinatorial engine of the structural dichotomy: the presence or absence of an element of order p² decides which case G falls into.",
+    "mathContext": "$\\mathrm{ord}(g) \\mid p^2$ and the divisors of $p^2$ are $\\{1, p, p^2\\}$, so $\\mathrm{ord}(g) \\in \\{1, p, p^2\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "orderOf_dvd_natCard",
+      "Nat.dvd_prime_pow",
+      "interval_cases"
+    ],
+    "prerequisites": [
+      "order of an element divides group order",
+      "divisors of prime powers",
+      "case analysis on exponents"
+    ]
+  },
+  {
+    "id": "ann-gpsq-dichotomy",
+    "proofId": "group-order-prime-squared-abelian-oq-01",
+    "range": { "startLine": 62, "endLine": 80 },
+    "type": "insight",
+    "title": "The Structural Dichotomy: Cyclic or Exponent p",
+    "content": "isCyclic_or_exponent_p is the new structural content: G is cyclic OR g^p = 1 for every g. The proof splits on whether an element of order p² exists. If one does, it generates G (isCyclic_of_orderOf_eq_card, since its order equals |G|), so G is cyclic. If none does, the trichotomy forces every element to have order 1 or p, both of which divide p, so g^p = 1 for all g (via orderOf_dvd_iff_pow_eq_one). This is exactly the cyclic (≅ ℤ/p²) versus elementary-abelian (exponent p, ≅ (ℤ/p)²) split.",
+    "mathContext": "Element of order $p^2$ exists $\\Rightarrow$ it generates $G$ (cyclic); otherwise all orders divide $p$, so $g^p = 1$ for all $g$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isCyclic_of_orderOf_eq_card",
+      "exponent p / elementary abelian",
+      "orderOf_dvd_iff_pow_eq_one",
+      "case split on a generator"
+    ],
+    "prerequisites": [
+      "cyclic ⟺ element of order |G|",
+      "the order trichotomy above",
+      "by_cases reasoning"
+    ]
+  },
+  {
+    "id": "ann-gpsq-sharp",
+    "proofId": "group-order-prime-squared-abelian-oq-01",
+    "range": { "startLine": 82, "endLine": 102 },
+    "type": "insight",
+    "title": "The Non-cyclic Case and Sharpness of the Dichotomy",
+    "content": "Two theorems finish the classification. pow_prime_eq_one_of_not_isCyclic is the immediate corollary: a non-cyclic group of order p² has exponent p (resolve_left applied to the dichotomy). isCyclic_iff_not_forall_pow_prime shows the two cases are MUTUALLY EXCLUSIVE, so the dichotomy is sharp: G is cyclic iff it does NOT have exponent p. Forward direction: a cyclic group of order p² has a generator of order p², which cannot satisfy g^p = 1 (that would force orderOf g ∣ p, i.e. p² ≤ p, impossible for p ≥ 2 — closed by nlinarith). Reverse: just resolve_right on the dichotomy. Together with the abelian theorem this pins the structure of every order-p² group to exactly two isomorphism types.",
+    "mathContext": "$G$ cyclic $\\iff \\neg(\\forall g,\\ g^p = 1)$: a generator of order $p^2$ violates $g^p=1$ since $p^2 \\nmid p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Or.resolve_left / resolve_right",
+      "isCyclic_iff_exists_orderOf_eq_natCard",
+      "mutually exclusive cases",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "generators of cyclic groups",
+      "order and divisibility",
+      "negation and iff"
+    ]
+  }
+]

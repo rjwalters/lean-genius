@@ -16,7 +16,11 @@
       "difference sets",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "set theory",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e757-sidon-def",
@@ -35,7 +39,11 @@
       "sum-free sets",
       "distinct sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "abstract algebra",
+      "Fourier analysis"
+    ]
   },
   {
     "id": "ann-e757-almost-sidon",
@@ -53,7 +61,11 @@
       "local-to-global"
     ],
     "mathContext": "See annotation content for formal details of almost-sidon property",
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "finite set theory",
+      "counting arguments"
+    ]
   },
   {
     "id": "ann-e757-admissible",
@@ -71,7 +83,11 @@
       "extremal constants",
       "guaranteed subsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "real analysis",
+      "finite set theory"
+    ]
   },
   {
     "id": "ann-e757-conjecture",
@@ -90,7 +106,11 @@
       "extremal combinatorics"
     ],
     "mathContext": "See annotation content for formal details of main conjecture (open)",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "extremal combinatorics",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e757-lower-bound",
@@ -108,7 +128,11 @@
       "greedy algorithms",
       "constructive bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy algorithms",
+      "additive combinatorics",
+      "combinatorial proof techniques"
+    ]
   },
   {
     "id": "ann-e757-upper-bound",
@@ -127,7 +151,11 @@
       "counterexamples",
       "upper bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "recurrence sequences",
+      "combinatorial constructions"
+    ]
   },
   {
     "id": "ann-e757-difference-count",
@@ -145,7 +173,11 @@
       "counting arguments"
     ],
     "mathContext": "See annotation content for formal details of difference set cardinality",
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "counting arguments",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e757-sidon-properties",
@@ -163,7 +195,11 @@
       "base cases"
     ],
     "mathContext": "See annotation content for formal details of basic sidon properties",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "mathematical induction",
+      "Lean 4 proof tactics"
+    ]
   },
   {
     "id": "ann-e757-difference-sets",
@@ -181,7 +217,11 @@
       "difference set structure"
     ],
     "mathContext": "See annotation content for formal details of difference set properties",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "group theory",
+      "Lean 4 proof tactics"
+    ]
   },
   {
     "id": "ann-e757-condition-bounds",
@@ -199,7 +239,11 @@
       "arithmetic progressions",
       "extremal configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "arithmetic progressions",
+      "case analysis"
+    ]
   },
   {
     "id": "ann-e757-admissible-props",
@@ -217,7 +261,11 @@
       "supremum existence"
     ],
     "mathContext": "See annotation content for formal details of properties of admissible constants",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "order theory",
+      "Lean 4 proof tactics"
+    ]
   },
   {
     "id": "ann-e757-b2-sequence",
@@ -236,6 +284,10 @@
       "Sidon extraction",
       "asymptotic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "asymptotic analysis",
+      "extremal combinatorics"
+    ]
   }
 ]

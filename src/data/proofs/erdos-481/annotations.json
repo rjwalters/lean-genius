@@ -17,7 +17,11 @@
       "iteration",
       "pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "affine maps on the natural numbers",
+      "iterated function sequences",
+      "Erdős-Graham problems"
+    ]
   },
   {
     "id": "ann-481-2",
@@ -35,7 +39,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "affine functions of the form x ↦ ax + b",
+      "natural number arithmetic"
+    ]
   },
   {
     "id": "ann-481-3",
@@ -53,7 +60,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "indexed families of affine maps",
+      "structures bundling parameters in Lean",
+      "non-degeneracy from aᵢ > 0"
+    ]
   },
   {
     "id": "ann-481-4",
@@ -73,7 +84,11 @@
       "covering lemma",
       "harmonic series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the series Σ(1/aᵢ)",
+      "pigeonhole principle",
+      "covering [0, N] by intervals of length N/aᵢ"
+    ]
   },
   {
     "id": "ann-481-5",
@@ -91,7 +106,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "applying a family of maps to every element",
+      "exponential growth of sequence length"
+    ]
   },
   {
     "id": "ann-481-6",
@@ -109,7 +127,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sequences as a starting seed",
+      "lists of natural numbers"
+    ]
   },
   {
     "id": "ann-481-7",
@@ -127,7 +148,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "iterating an operator k-1 times",
+      "compositions of affine maps applied to 1",
+      "exponential length growth r^{k-1}"
+    ]
   },
   {
     "id": "ann-481-8",
@@ -145,7 +170,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "detecting duplicate elements in a sequence",
+      "the existence of repeated values"
+    ]
   },
   {
     "id": "ann-481-9",
@@ -164,7 +192,11 @@
       "density condition",
       "pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "free semigroups and their relations",
+      "the density condition Σ(1/aᵢ) > 1",
+      "Klarner's 1982 semigroup characterization"
+    ]
   },
   {
     "id": "ann-481-10",
@@ -183,7 +215,11 @@
       "Kolpakov-Talambutsa extension"
     ],
     "mathContext": "See annotation content for formal details of klarner's theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "formalizing the Erdős-Graham conjecture as a theorem",
+      "Klarner's free-semigroup result",
+      "Kolpakov-Talambutsa extension to the real line"
+    ]
   },
   {
     "id": "ann-481-11",
@@ -201,6 +237,10 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "necessary and sufficient conditions",
+      "the density threshold Σ(1/aᵢ) > 1",
+      "resolution of Erdős Problem #481"
+    ]
   }
 ]

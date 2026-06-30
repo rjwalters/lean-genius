@@ -16,7 +16,11 @@
       "IP sets",
       "Partition regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "finite colorings of the integers",
+      "Schur's theorem"
+    ]
   },
   {
     "id": "ann-e532-coloring-def",
@@ -35,7 +39,11 @@
       "Fin type",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functions ℕ → Fin k",
+      "set partitions",
+      "partition regularity"
+    ]
   },
   {
     "id": "ann-e532-monochromatic-def",
@@ -53,7 +61,11 @@
       "Coloring",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite colorings",
+      "existential quantification",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e532-finite-sums",
@@ -72,7 +84,11 @@
       "Subset sums",
       "BigOperators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite subsets (Finset)",
+      "Finset.sum / BigOperators",
+      "subset sums"
+    ]
   },
   {
     "id": "ann-e532-ip-set",
@@ -91,7 +107,11 @@
       "Set.Infinite",
       "Partition regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums FS(A)",
+      "infinite sets (Set.Infinite)",
+      "partition regularity"
+    ]
   },
   {
     "id": "ann-e532-ip-star",
@@ -110,7 +130,12 @@
       "Ultrafilters",
       "Topological dynamics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IP sets",
+      "filters on ℕ",
+      "idempotent ultrafilters",
+      "syndetic/thick duality"
+    ]
   },
   {
     "id": "ann-e532-hindman-theorem",
@@ -129,7 +154,11 @@
       "FiniteSums",
       "IsMonochromatic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IP sets and finite sums",
+      "monochromatic colorings",
+      "Galvin-Glazer ultrafilter proof"
+    ]
   },
   {
     "id": "ann-e532-color-class",
@@ -148,7 +177,11 @@
       "IsIPSet",
       "IsMonochromatic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hindman's theorem",
+      "IP sets",
+      "Set.mem_setOf_eq / set comprehension"
+    ]
   },
   {
     "id": "ann-e532-two-colors",
@@ -166,7 +199,11 @@
       "hindman_color_class",
       "Graham-Rothschild"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hindman color class form",
+      "2-colorings",
+      "Graham-Rothschild question"
+    ]
   },
   {
     "id": "ann-e532-singleton",
@@ -184,7 +221,11 @@
       "FiniteSums",
       "Finset.singleton"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums FS(A)",
+      "Finset.singleton",
+      "subset inclusion A ⊆ FS(A)"
+    ]
   },
   {
     "id": "ann-e532-ip-infinite",
@@ -202,7 +243,11 @@
       "Set.Infinite.mono",
       "singleton_in_finite_sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IP sets",
+      "Set.Infinite.mono",
+      "singleton membership A ⊆ FS(A)"
+    ]
   },
   {
     "id": "ann-e532-disjoint-closure",
@@ -221,7 +266,11 @@
       "Disjoint",
       "FiniteSums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sums FS(A)",
+      "Finset.sum_union",
+      "disjoint finsets"
+    ]
   },
   {
     "id": "ann-e532-ultrafilter",
@@ -240,7 +289,12 @@
       "Ellis's lemma",
       "Idempotent ultrafilter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Stone-Čech compactification βℕ",
+      "compact right-topological semigroups",
+      "Ellis's idempotent lemma",
+      "idempotent ultrafilters"
+    ]
   },
   {
     "id": "ann-e532-hales-jewett",
@@ -259,7 +313,11 @@
       "Van der Waerden's theorem",
       "Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hales-Jewett theorem",
+      "combinatorial lines",
+      "Van der Waerden's theorem"
+    ]
   },
   {
     "id": "ann-e532-hindman-numbers",
@@ -278,7 +336,11 @@
       "Finite Ramsey theory",
       "Nat.find"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite Ramsey theory",
+      "Schur numbers",
+      "Nat.find / least-witness definitions"
+    ]
   },
   {
     "id": "ann-e532-summary",
@@ -296,6 +358,10 @@
       "erdos_532_two_colors",
       "hindman_theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hindman's theorem",
+      "IP sets",
+      "2-coloring color class form"
+    ]
   }
 ]

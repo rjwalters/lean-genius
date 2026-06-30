@@ -89,10 +89,11 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prob-method-lovasz-local",
-    "prob-method-expectation",
+    "lovasz-local-lemma",
     "prob-method-alteration",
-    "lovasz-local-lemma"
+    "prob-method-expectation",
+    "prob-method-lovasz-local",
+    "prob-method-lovasz-local-oq-02"
   ],
   "references": {
     "papers": [
@@ -115,26 +116,15 @@
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/LovaszLocalLemma.lean",
-      "filename": "LovaszLocalLemma.lean",
-      "lineCount": 365,
-      "theoremCount": 24,
+      "path": "Proofs/ProbMethodLovaszLocalOQ02.lean",
+      "filename": "ProbMethodLovaszLocalOQ02.lean",
+      "lineCount": 165,
+      "theoremCount": 9,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
-    },
-    {
-      "path": "Proofs/MoserTardos.lean",
-      "filename": "MoserTardos.lean",
-      "lineCount": 518,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 2,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MoserTardos.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodLovaszLocalOQ02.lean"
     }
   ]
 }

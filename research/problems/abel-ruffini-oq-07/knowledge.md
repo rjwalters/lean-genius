@@ -249,3 +249,152 @@ strategy correction that supersedes the S1 "Aristotle backend 404" note:
 
 **Verdict:** released; not closeable this session without the bridge. Highest-leverage
 move is the self-contained extraction + Aristotle-CLI submission of `exists_gal_order_three`.
+
+---
+
+## Session 2026-06-19 (researcher-3) — Dedekind–Frobenius bridge PROVED abstractly (Aristotle 9c006ee6), verified file landed
+
+**Mode**: ACT | **Outcome**: progress (the shared open bridge is now a verified, axiom-free lemma)
+
+### What I Did
+- Retrieved the completed Aristotle job `9c006ee6` (submitted by the PR #26162 session):
+  it **proved** the abstract bridge `orderOf_arithFrobAt_eq_inertiaDegIn` — at a prime `Q`
+  unramified over `p = Q.under R`, `orderOf (arithFrobAt R G Q) = inertiaDegIn p S` —
+  with `#print axioms` showing only `propext / Classical.choice / Quot.sound`.
+- Aristotle ran against Mathlib **v4.28.0**, where the inertia subgroup is `Ideal.inertia`.
+  Our repo is pinned to **v4.26.0**, where that spelling does not exist (build RED:
+  "environment does not contain `Submodule.inertia`"). I re-derived the one affected lemma
+  `stabilizerHom_injective` against the v4.26.0 API: `Q.toAddSubgroup.inertia G`,
+  `Ideal.Quotient.ker_stabilizerHom`, `Ideal.card_inertia_eq_ramificationIdxIn`,
+  `Subgroup.eq_bot_of_card_eq`, `Subgroup.bot_subgroupOf`. The other three declarations
+  are Aristotle's verbatim.
+- New file `proofs/Proofs/DedekindFrobeniusBridge.lean` (148 lines, 4 decls), registered in
+  `Proofs.lean`. **Build GREEN** (`✔ [7743/7743]`, 394s), 0 sorry, 0 axiom, no `native_decide`.
+
+### Key Findings
+- The genuine Mathlib gap that blocked BOTH `abel-ruffini-oq-07` (transposition input) and
+  `inverse-galois-a5-oq-01` (`exists_gal_order_three`) — the order of the arithmetic
+  Frobenius at an unramified prime equals the inertia degree — is now a **verified,
+  reusable, axiom-free lemma** in the repo. The bridge is no longer "open" at the abstract
+  level; what remains is the concrete *instantiation* (`R = ℤ`, `S = 𝓞 K`, `G = Gal`,
+  `Q` over a chosen prime), which constructs the ring of integers, exhibits a prime of the
+  required inertia degree, and supplies `unramified` + `IsGaloisGroup`.
+- The toolchain-version gap (v4.28 `Ideal.inertia` vs v4.26 `AddSubgroup.inertia`) is the
+  recurring failure mode when integrating Aristotle output; only one of four declarations
+  needed re-spelling.
+
+### Files Modified
+- proofs/Proofs/DedekindFrobeniusBridge.lean (new, verified)
+- proofs/Proofs.lean (+import)
+
+### Next Steps
+- **Instantiate** `orderOf_arithFrobAt_eq_inertiaDegIn` to discharge `exists_gal_order_three`
+  in `InverseGaloisA5Dedekind.lean` (prime over 7, inertia degree 3) and the transposition
+  hypothesis in `AbelRuffiniOQ07.lean` (prime over 2, Frobenius of order 6). This is the
+  remaining substantial work: building `𝓞 K`, the `IsGaloisGroup` instance, an unramified
+  prime of the target inertia degree, and matching the abstract `arithFrobAt` order to the
+  cycle type in `Gal`. Candidate for a follow-up Aristotle submission once the concrete
+  scaffold compiles.
+
+---
+
+## Session 2026-06-19 (researcher-1) — bridge now PROVED ⟹ exact instantiation plan + Aristotle target for the order-6→swap step
+
+**Mode**: ACT | **Outcome**: progress (turned "bridge open" into a concrete 4-step plan; submitted the one missing group lemma to Aristotle). No build (gate closed: 5 `lean-build` containers vs VM ~7.65 GiB).
+
+### State recap
+- Gallery entry `AbelRuffiniOQ07.lean` is **verified, 0-sorry/0-axiom** as a *reduction*:
+  `gal_eq_top_of_five_dvd_and_swap` + concrete `frob2`/`frob3` witnesses +
+  `closure_frobenii_eq_top`. `5 ∣ |f.Gal|` is **unconditional** via Selmer
+  (`five_dvd_card_gal_unconditional`). The **sole** open input is a *transposition in the
+  real `f.Gal`* (exposed as a hypothesis, not an axiom — honest).
+- **Key change since prior sessions:** the shared Dedekind–Frobenius bridge is no longer
+  open. `DedekindFrobeniusBridge.lean` (researcher-3, build-verified, axiom-free) proves
+  `orderOf_arithFrobAt_eq_inertiaDegIn`: at an unramified prime `Q` over `p = Q.under R`,
+  `orderOf (arithFrobAt R G Q) = Ideal.inertiaDegIn p S`.
+
+### The exact 4-step instantiation that now closes OQ-07
+Let `K = f.SplittingField`, `S = 𝓞 K`, `R = ℤ`, `G = (K ≃ₐ[ℚ] K)` acting on `S`.
+1. **Build the Galois-action instance** `IsGaloisGroup G ℤ (𝓞 K)` (+ `IsDedekindDomain`,
+   `Module.Finite`, `NoZeroSMulDivisors` — all standard for number fields). This is the
+   main plumbing cost.
+2. **Exhibit a prime `Q | 2` with `inertiaDegIn 2 S = 6` and `ramificationIdxIn 2 S = 1`.**
+   `2 ∤ disc(f) = 2869 = 19·151`, so `2` is unramified. In the *splitting* field every
+   prime over `2` has residue degree = order of the Frobenius conjugacy class = `lcm` of the
+   mod-2 factor degrees = `lcm(2,3) = 6` (Dedekind: `f ≡ (X²+X+1)(X³+X²+1) mod 2`, both
+   irreducible — already verified in the gallery file). So `inertiaDegIn 2 S = 6`.
+3. **Bridge ⟹ `∃ σ : f.Gal, orderOf σ = 6`** (= `orderOf (arithFrobAt ℤ G Q)`), then transport
+   along the iso `f.Gal ≃ (K ≃ₐ[ℚ] K)` / through `galActionHom` (injective for separable `f`)
+   to a permutation of the 5 roots of order 6.
+4. **`orderOf = 6 ⟹ (σ³).IsSwap`** (the generic S₅ form of the file's concrete
+   `frob2_pow_three_isSwap`) gives the transposition; feed it + `5 ∣ |Gal|` into
+   `gal_eq_top_of_five_dvd_and_swap` ⟹ image `= ⊤` ⟹ `f.Gal ≅ S₅`. ∎
+
+Steps 1–2 are the genuine remaining work (number-theoretic; same `𝓞 K`/`inertiaDegIn`
+plumbing the sibling `inverse-galois-a5-oq-01` needs for its order-3 element at `p = 7`).
+Step 4 is pure `S₅` combinatorics.
+
+### This session's artifact
+- New **unregistered** companion `proofs/Proofs/AbelRuffiniOQ07Order6Aristotle.lean`
+  (Mathlib-only, NOT in `Proofs.lean`, so CI is untouched) stating step 4 generically:
+  `orderOf_eq_six_pow_three_isSwap (σ : Perm (Fin 5)) : orderOf σ = 6 → (σ^3).IsSwap`
+  plus the consumer `gal_eq_top_of_five_dvd_and_order6`.
+- **Submitted to Aristotle CLI**, job `ddd818e2-e934-4fd9-b389-15d56a22b49a`.
+  Math: in `S₅` the only order-6 cycle type is `(2,3)` (partition of 5 with `lcm 6`),
+  cube kills the 3-cycle and leaves the transposition.
+- Next session: retrieve job `ddd818e2`; if green, fold the two lemmas into
+  `AbelRuffiniOQ07.lean` (registered) and build-verify when the gate opens — this makes the
+  open gap *exactly* steps 1–2 (the `𝓞 K`/inertia computation). If Aristotle stalls, the
+  lemma is provable by hand via `Equiv.Perm.lcm_cycleType` + `sum_cycleType` +
+  `two_le_of_mem_cycleType` (multiset {parts ≥2, sum ≤5, lcm 6} = {2,3}).
+
+## Session 2026-06-19 (researcher-3) — folded the order-6 lemmas into the registered file (BUILD-PENDING, Docker down)
+
+**Mode**: ACT | **Outcome**: progress staged (folded the proved order-6 route into the
+gallery-verified build) — **NOT machine-verified this session: the Docker daemon would not
+start** (host load ~12–19; 4 `open -a Docker` + daemon-poll attempts over ~8 min all
+failed). PR gated `loom:review-requested` so it will not auto-merge until built.
+
+### What I did
+- Retrieved Aristotle job `ddd818e2` (status COMPLETE): it proved both previously-`sorry`
+  lemmas in the unregistered companion `AbelRuffiniOQ07Order6Aristotle.lean`
+  (`orderOf_eq_six_pow_three_isSwap`, `gal_eq_top_of_five_dvd_and_order6`) with no
+  remaining `sorry`. Note Aristotle ran against Mathlib **v4.28.0**; our repo is pinned
+  **v4.26.0**.
+- **Folded both lemmas into the registered `proofs/Proofs/AbelRuffiniOQ07.lean`** (as a
+  sibling order-6 assembly criterion right after `gal_eq_top_of_five_dvd_and_swap`),
+  adapting `Equiv.Perm (Fin 5)` → the file's `S5` abbrev. The main file already
+  `open`s `Equiv Equiv.Perm Polynomial`, so the proof's unqualified cycleType lemma names
+  resolve unchanged. File now 485 L / 25 thms / 0 sorry / 0 axiom (was 378/23).
+- **Removed the now-redundant unregistered companion** `AbelRuffiniOQ07Order6Aristotle.lean`
+  (nothing imports it; never in `Proofs.lean`). Net effect: the order-6→swap route moves
+  from an unregistered scratch file into the CI/gallery-verified build.
+- **Verified-by-inspection (NOT a build):** confirmed all 9 cycleType API names the proof
+  uses exist in our pinned v4.26.0 Mathlib
+  (`.lake/.../GroupTheory/Perm/Cycle/Type.lean`): `sum_cycleType_le`,
+  `dvd_of_mem_cycleType`, `two_le_of_mem_cycleType`, `lcm_cycleType`, `sign_of_cycleType`,
+  `cycleType_of_pow_prime_eq_one`, `card_cycleType_pos`, `isSwap_iff_cycleType`,
+  `subgroup_eq_top_of_swap_mem`. The worktree `.lake` Mathlib is itself v4.26.0 (not
+  v4.28.0 as Aristotle's sandbox), so the v4.28→v4.26 risk is low for these stable lemmas
+  — but it is *unconfirmed* without a build.
+- Updated `meta.json` stats (lineCount 378→485, theoremCount 23→25). Status stays
+  `verified` (the lemmas are Aristotle-proved); the *registered-build* confirmation under
+  v4.26.0 is the pending item.
+
+### Why gated, not auto-merged
+A normal `research`-labelled PR is auto-merged by the deployer **without** a build. Since
+this touches a registered Lean file and I could not run the build, merging it blind would
+risk breaking the gallery build if any v4.26↔v4.28 spelling differs. The PR is therefore
+gated `loom:review-requested` (per CLAUDE.md, the deployer skips such PRs until approved).
+
+### Next steps
+- **Run the build when the gate opens:** `LEAN_MEMORY_LIMIT=8192
+  ./proofs/scripts/docker-build.sh Proofs.AbelRuffiniOQ07`. If green (expected), drop the
+  `loom:review-requested` label so the deployer merges it. If any lemma name fails under
+  v4.26.0, re-spell it (same failure mode the `DedekindFrobeniusBridge` session handled).
+- The genuine remaining open gap is unchanged: **steps 1–2** — build `𝓞 K` for
+  `f.SplittingField`, the `IsGaloisGroup ℤ (𝓞 K)` instance, and exhibit a prime over `2`
+  with `inertiaDegIn 2 (𝓞 K) = 6` (2 ∤ disc = 2869). Feed that order-6 element into the
+  now-registered `gal_eq_top_of_five_dvd_and_order6` + the proved bridge
+  `DedekindFrobeniusBridge.orderOf_arithFrobAt_eq_inertiaDegIn` to close `Gal ≅ S₅`.
+  Shared `𝓞 K`/inertia plumbing with `inverse-galois-a5-oq-01`.

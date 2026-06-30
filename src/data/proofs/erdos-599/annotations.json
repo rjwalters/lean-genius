@@ -16,7 +16,11 @@
       "menger-theorem",
       "infinite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-599-graph",
@@ -34,7 +38,11 @@
       "graph-theory",
       "independent-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-599-path",
@@ -52,7 +60,11 @@
       "path",
       "connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "list data structures",
+      "Lean 4 inductive definitions"
+    ]
   },
   {
     "id": "ann-599-disjoint",
@@ -70,7 +82,10 @@
       "vertex-disjoint",
       "path-separation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory"
+    ]
   },
   {
     "id": "ann-599-pathfamily",
@@ -88,7 +103,10 @@
       "disjoint-paths"
     ],
     "mathContext": "See annotation content for formal details of path families",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory"
+    ]
   },
   {
     "id": "ann-599-transversal-separator",
@@ -107,7 +125,11 @@
       "separator",
       "max-flow-min-cut"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorial optimization",
+      "duality theory"
+    ]
   },
   {
     "id": "ann-599-conjecture",
@@ -126,7 +148,11 @@
       "conjecture"
     ],
     "mathContext": "See annotation content for formal details of the erdős-menger conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 existential statements"
+    ]
   },
   {
     "id": "ann-599-menger",
@@ -144,7 +170,10 @@
       "menger-theorem",
       "finite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite graph theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-599-aharoniberger",
@@ -162,7 +191,11 @@
       "aharoni-berger",
       "infinite-matroid"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "matroid theory",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-599-techniques",
@@ -180,7 +213,11 @@
       "well-quasi-ordering"
     ],
     "mathContext": "See annotation content for formal details of proof techniques",
-    "prerequisites": []
+    "prerequisites": [
+      "matroid theory",
+      "order theory",
+      "compactness arguments"
+    ]
   },
   {
     "id": "ann-599-klinked",
@@ -198,7 +235,10 @@
       "k-linkage",
       "connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "connectivity theory"
+    ]
   },
   {
     "id": "ann-599-maxflow",
@@ -216,7 +256,11 @@
       "vertex-separator"
     ],
     "mathContext": "See annotation content for formal details of max-flow min-cut (vertex version)",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "network flow theory",
+      "linear programming duality"
+    ]
   },
   {
     "id": "ann-599-summary",
@@ -235,6 +279,10 @@
       "infinite-combinatorics"
     ],
     "mathContext": "See annotation content for formal details of summary and status",
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "graph theory",
+      "history of mathematics"
+    ]
   }
 ]

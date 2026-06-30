@@ -16,7 +16,11 @@
       "sumsets",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of the natural numbers",
+      "sumsets A+B",
+      "asymptotic density of a set"
+    ]
   },
   {
     "id": "ann-e109-counting-fn",
@@ -35,7 +39,11 @@
       "density",
       "intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function |A ∩ [1,n]|",
+      "cardinality of finite sets",
+      "density via counting in intervals"
+    ]
   },
   {
     "id": "ann-e109-upper-density",
@@ -54,7 +62,11 @@
       "liminf",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limsup and liminf of a sequence",
+      "the ratio |A∩[1,n]|/n",
+      "upper and lower asymptotic density"
+    ]
   },
   {
     "id": "ann-e109-density-ordering",
@@ -73,7 +85,11 @@
       "bounded sequences",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "liminf ≤ limsup for bounded sequences",
+      "filters / eventual behavior",
+      "comparing lower and upper density"
+    ]
   },
   {
     "id": "ann-e109-sumset",
@@ -92,7 +108,11 @@
       "additive combinatorics",
       "pointwise operations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A+B = {a+b}",
+      "additive combinatorics basics",
+      "pointwise set operations"
+    ]
   },
   {
     "id": "ann-e109-conjecture",
@@ -111,7 +131,11 @@
       "density",
       "infinite sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sets of positive upper density",
+      "infinite sumsets B+C",
+      "the Erdős sumset conjecture statement"
+    ]
   },
   {
     "id": "ann-e109-axiom",
@@ -130,7 +154,11 @@
       "Furstenberg correspondence",
       "IP-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ergodic theory and measure-preserving systems",
+      "the Furstenberg correspondence principle",
+      "IP-sets (the Moreira–Richter–Robertson theorem)"
+    ]
   },
   {
     "id": "ann-e109-infinite-consequence",
@@ -149,7 +177,11 @@
       "injection",
       "corollaries"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite sets and injections",
+      "the sumset conjecture",
+      "drawing corollaries from an existence theorem"
+    ]
   },
   {
     "id": "ann-e109-naturals-density",
@@ -168,7 +200,11 @@
       "verification",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density",
+      "the density of ℕ being 1",
+      "limsup of a constant-ish ratio"
+    ]
   },
   {
     "id": "ann-e109-even-example",
@@ -187,6 +223,10 @@
       "examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of even numbers",
+      "computing its density (1/2)",
+      "worked density examples"
+    ]
   }
 ]

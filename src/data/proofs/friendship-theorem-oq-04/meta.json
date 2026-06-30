@@ -2,6 +2,22 @@
   "id": "friendship-theorem-oq-04",
   "title": "Friendship Theorem: The Infinite Case",
   "slug": "friendship-theorem-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.FriendshipTheorem"
+    ],
+    "opens": [
+      "SimpleGraph"
+    ],
+    "namespace": "FriendshipTheoremOQ04",
+    "lineCount": 627,
+    "axiomCount": 0,
+    "theoremCount": 26,
+    "definitionCount": 1,
+    "path": "Proofs/FriendshipTheoremOQ04.lean",
+    "sorries": 0
+  },
   "description": "The finite Friendship Theorem (Erdős–Rényi–Sós 1966) fails for infinite graphs (Chvátal–Kotzig–Rosenberg–Davies 1976). This Lean 4 file pins down the sharp hypothesis that restores the conclusion, without the spectral argument that has no infinite analogue: every friendship graph (finite or infinite) has diameter ≤ 2 (friendship_diameter_two, purely local), so a locally finite friendship graph is finite (locally_finite_is_finite) and hence has a universal vertex (locally_finite_friendship_has_universal). Local finiteness is therefore the exact restoring condition — the sole obstruction to finiteness is an infinite-degree vertex.",
   "meta": {
     "author": "Lean Genius",

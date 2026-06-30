@@ -1,0 +1,97 @@
+[
+  {
+    "id": "second-moment-context",
+    "proofId": "combinations-formula-oq-07-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "From First to Second Moment: Why Reflection Stops Working",
+    "content": "The parent entry weights the central sum of squares C(2n,n) = ∑ C(n,k)² by the index k (first moment, mean n/2). This entry weights by k² — the raw second moment. The parent's whole proof was a reflection: averaging the k-weighted and (n−k)-weighted sums constantises the weight to k+(n−k)=n. That trick FAILS for k²: averaging k² with (n−k)² gives n²−2nk+2k², which still contains an irreducible ∑ k·C(n,k)² term. A genuinely different idea is required — and a single absorption supplies it, giving the clean closed form ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1).",
+    "mathContext": "$\\sum_{k=0}^{n} k^2\\binom{n}{k}^2 = n^2\\binom{2n-2}{n-1}$ for $n\\ge 1$. Probabilistically, with $p_k = \\binom{n}{k}^2/\\binom{2n}{n}$ the hypergeometric law, this is $\\binom{2n}{n}\\,\\mathbb{E}[X^2]$; with the parent's mean $n/2$ it gives the variance $n^2/(4(2n-1))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "second moment / weighted sum",
+      "absorption identity",
+      "hypergeometric distribution",
+      "central binomial coefficient",
+      "variance"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "the absorption identity (n+1)C(n,k) = C(n+1,k+1)(k+1)",
+      "the grandparent identity C(2n,n) = ∑ C(n,k)²",
+      "the parent first moment ∑ k·C(n,k)² = n·C(2n−1,n−1)"
+    ]
+  },
+  {
+    "id": "term-absorb-thm",
+    "proofId": "combinations-formula-oq-07-oq-03-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 83
+    },
+    "type": "theorem",
+    "title": "The Single-Absorption Term Identity",
+    "content": "term_absorb proves (j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)². Its engine is the absorption law (j+1)·C(m+1,j+1) = (m+1)·C(m,j), which is Nat.add_one_mul_choose_eq ((m+1)·C(m,j) = C(m+1,j+1)·(j+1)) rearranged by commutativity. Squaring both sides via mul_pow turns the j-weighted binomial square into a constant (m+1)² times a single C(m,j)². This one line is the entire content of the proof — it is to the second moment what the reflection symmetry was to the first.",
+    "mathContext": "From $(j+1)\\binom{m+1}{j+1} = (m+1)\\binom{m}{j}$, squaring gives $(j+1)^2\\binom{m+1}{j+1}^2 = (m+1)^2\\binom{m}{j}^2$. The index weight $(j+1)^2$ has been absorbed into the constant $(m+1)^2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.add_one_mul_choose_eq",
+      "absorption / subset-of-a-subset identity",
+      "mul_pow"
+    ],
+    "prerequisites": [
+      "Nat.add_one_mul_choose_eq",
+      "mul_pow (a·b)^n = a^n·b^n"
+    ]
+  },
+  {
+    "id": "subtraction-free-thm",
+    "proofId": "combinations-formula-oq-07-oq-03-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "The Second Moment, Subtraction-Free",
+    "content": "sum_sq_weighted_sq_succ proves ∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m). Writing the moment with n = m+1 keeps every step free of natural-number subtraction. The k=0 term vanishes (k²=0), so Finset.sum_range_succ' peels it and reindexes the rest by k = j+1 over j ∈ {0,…,m}. Applying term_absorb to every summand (Finset.sum_congr) makes the sum (m+1)²·∑ C(m,j)²; Finset.mul_sum factors out the constant, and the grandparent identity central_binom_eq_sum_sq evaluates ∑_{j=0}^{m} C(m,j)² = C(2m,m). The second moment thus bootstraps off the grandparent — one Pascal level below where the first moment landed.",
+    "mathContext": "$\\sum_{k=0}^{m+1} k^2\\binom{m+1}{k}^2 = \\sum_{j=0}^{m} (m+1)^2\\binom{m}{j}^2 = (m+1)^2\\sum_{j=0}^{m}\\binom{m}{j}^2 = (m+1)^2\\binom{2m}{m}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_range_succ'",
+      "Finset.sum_congr",
+      "Finset.mul_sum",
+      "central_binom_eq_sum_sq",
+      "reindexing a sum"
+    ],
+    "prerequisites": [
+      "term_absorb",
+      "the grandparent identity C(2m,m) = ∑ C(m,j)²",
+      "peeling and reindexing finite sums"
+    ]
+  },
+  {
+    "id": "classical-form-thm",
+    "proofId": "combinations-formula-oq-07-oq-03-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "The Classical Form and Numeric Check",
+    "content": "sum_sq_weighted_sq states the result in classical form: for n ≥ 1, ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1). It is the subtraction-free theorem re-expressed by writing n = m+1 and simplifying 2(m+1)−2 = 2m and (m+1)−1 = m (discharged by omega). The n ≥ 1 hypothesis is exactly what lets these truncated subtractions behave; the closed form C(2n−2,n−1) is the central binomial coefficient of the (n−1)-th row. The worked check ∑_{k=0}^{3} k²·C(3,k)² = 0+9+36+9 = 54 = 3²·C(4,2) confirms the identity by kernel `decide`.",
+    "mathContext": "At $n=3$: $0\\cdot1 + 1\\cdot9 + 4\\cdot9 + 9\\cdot1 = 54 = 9\\cdot\\binom{4}{2} = 9\\cdot 6$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "natural-number subtraction",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "sum_sq_weighted_sq_succ",
+      "omega for linear arithmetic over ℕ"
+    ]
+  }
+]

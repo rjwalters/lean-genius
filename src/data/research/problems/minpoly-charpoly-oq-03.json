@@ -108,10 +108,13 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "minpoly-charpoly",
     "cayley-hamilton",
+    "cayley-hamilton-cyclic-vector-all-fields",
     "cayley-hamilton-reduction-oq-02-oq-01",
-    "cayley-hamilton-cyclic-vector-all-fields"
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-02",
+    "minpoly-charpoly-oq-03",
+    "minpoly-charpoly-oq-03-oq-01"
   ],
   "references": {
     "papers": [
@@ -137,7 +140,7 @@
     {
       "path": "Proofs/MinpolyCharpoly.lean",
       "filename": "MinpolyCharpoly.lean",
-      "lineCount": 246,
+      "lineCount": 247,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 0,
@@ -146,15 +149,59 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpoly.lean"
     },
     {
-      "path": "Proofs/MinpolyCharpolyOQ03.lean",
-      "filename": "MinpolyCharpolyOQ03.lean",
-      "lineCount": 377,
-      "theoremCount": 10,
+      "path": "Proofs/MinpolyCharpolyOQ01.lean",
+      "filename": "MinpolyCharpolyOQ01.lean",
+      "lineCount": 525,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02.lean",
+      "filename": "MinpolyCharpolyOQ02.lean",
+      "lineCount": 280,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02Incomplete01.lean",
+      "filename": "MinpolyCharpolyOQ02Incomplete01.lean",
+      "lineCount": 104,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ03.lean",
+      "filename": "MinpolyCharpolyOQ03.lean",
+      "lineCount": 640,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 6,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ03.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ03OQ01.lean",
+      "filename": "MinpolyCharpolyOQ03OQ01.lean",
+      "lineCount": 259,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean"
     }
   ]
 }

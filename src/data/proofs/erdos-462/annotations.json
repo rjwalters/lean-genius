@@ -42,7 +42,11 @@
       "Finset.Icc",
       "Real.log"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Lean 4 module and import system",
+      "the Mathlib library structure",
+      "Nat.minFac and Finset.Icc API"
+    ]
   },
   {
     "id": "erdos-462-lpf",

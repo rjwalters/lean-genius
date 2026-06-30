@@ -17,7 +17,11 @@
       "Value distribution",
       "Counting function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e1116-entire",
@@ -36,7 +40,12 @@
       "Taylor series",
       "Meromorphic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "complex differentiability",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1116-counting",
@@ -55,7 +64,12 @@
       "Zeros",
       "Multiplicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "set theory",
+      "finiteness and cardinality",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-unbounded-ratio",
@@ -74,7 +88,12 @@
       "Asymptotic behavior",
       "Ratio comparison"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and limsup",
+      "logical quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-extreme",
@@ -93,7 +112,12 @@
       "Oscillation",
       "Equidistribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "value distribution theory",
+      "logical quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-goldberg-toppila",
@@ -112,7 +136,11 @@
       "Weierstrass products",
       "Constructive proofs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "value distribution theory",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e1116-main",
@@ -130,7 +158,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1116-deficiency",
@@ -149,7 +181,12 @@
       "Second main theorem",
       "Exceptional values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "real analysis",
+      "integration"
+    ]
   },
   {
     "id": "ann-e1116-surprise",
@@ -168,7 +205,12 @@
       "Smoothing",
       "Oscillations vs averages"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Nevanlinna theory",
+      "real analysis",
+      "integration"
+    ]
   },
   {
     "id": "ann-e1116-lacunary",
@@ -187,7 +229,12 @@
       "Hadamard gaps",
       "Power series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "power series",
+      "sequences and series",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1116-exp-not-extreme",
@@ -206,7 +253,11 @@
       "Picard's theorem",
       "Deficiency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "entire functions",
+      "Nevanlinna theory"
+    ]
   },
   {
     "id": "ann-e1116-summary",
@@ -224,6 +275,10 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex analysis",
+      "Lean 4 tactic mode",
+      "Mathlib library structure"
+    ]
   }
 ]

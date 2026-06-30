@@ -23,7 +23,7 @@
     "axiomCount": 1,
     "assumptions": "Depends on the `Lean.ofReduceBool` axiom (1 assumption) introduced by `native_decide`; 0 literal `axiom` declarations, 0 sorries, no assumption-carrying structures. All 5 original axioms are discharged across S1–S4 of burnside-counting-oq-01: rotatedIndex_add (S1 / PR #21148, full Nat-modular proof); coloringSetoid + coloringQuotientFintype (S2, AddAction.orbitRel + Quotient.fintype with a decidable-orbit-relation instance); fixed_point_sum_binary_4 (S3, native_decide); binary_necklaces_4 (S4, native_decide on the computable orbit-quotient cardinality). NOTE: the two finite counts (fixed_point_sum_binary_4, binary_necklaces_4) close by `native_decide`, which trusts the Lean compiler (Lean.ofReduceBool) rather than performing kernel reduction; everything else is kernel-checked. burnside_lemma is a re-export of Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (a theorem, not an assumption).",
     "lineCount": 404,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 9,
     "originalContributions": [
       "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
@@ -74,7 +74,7 @@
     "namespace": "BurnsideCounting",
     "lineCount": 404,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 9,
     "path": "Proofs/BurnsideCounting.lean",
     "sorries": 0

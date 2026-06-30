@@ -16,7 +16,11 @@
       "Topological cliques",
       "Complete graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e718-subdivision-def",
@@ -35,7 +39,11 @@
       "Topological graphs",
       "Graph minors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "predicate definitions"
+    ]
   },
   {
     "id": "ann-e718-mader-conjecture",
@@ -53,7 +61,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e718-historical",
@@ -71,7 +83,11 @@
       "field theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "mathematical history"
+    ]
   },
   {
     "id": "ann-e718-solution",
@@ -89,7 +105,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "mathematical proof methods"
+    ]
   },
   {
     "id": "ann-e718-k-linked",
@@ -108,7 +128,11 @@
       "Disjoint paths",
       "Menger's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e718-minors",
@@ -126,7 +150,11 @@
       "Graph Minor Theorem",
       "Wagner's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e718-main-results",
@@ -144,6 +172,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

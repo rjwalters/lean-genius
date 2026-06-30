@@ -16,7 +16,11 @@
       "Orthogonality",
       "Combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Latin squares",
+      "combinatorial design theory",
+      "asymptotic growth rates"
+    ]
   },
   {
     "id": "ann-e724-latin-square",
@@ -35,7 +39,11 @@
       "Quasigroups",
       "Sudoku"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "bijective functions",
+      "permutations",
+      "finite index types (Fin n)"
+    ]
   },
   {
     "id": "ann-e724-orthogonality",
@@ -54,7 +62,11 @@
       "Superposition",
       "Bijectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Latin squares",
+      "bijectivity on product types",
+      "Graeco-Latin squares"
+    ]
   },
   {
     "id": "ann-e724-mols-function",
@@ -73,7 +85,11 @@
       "Projective planes",
       "Prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mutual orthogonality",
+      "supremum over finite sets",
+      "extended natural numbers (ℕ∞)"
+    ]
   },
   {
     "id": "ann-e724-upper-bound",
@@ -92,7 +108,11 @@
       "Affine planes",
       "Finite fields"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mutually orthogonal Latin squares",
+      "counting arguments",
+      "affine and projective planes"
+    ]
   },
   {
     "id": "ann-e724-prime-power",
@@ -111,7 +131,11 @@
       "Vector spaces",
       "Affine planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite fields GF(p^k)",
+      "affine planes",
+      "vector spaces over finite fields"
+    ]
   },
   {
     "id": "ann-e724-bose-parker-shrikhande",
@@ -129,7 +153,11 @@
       "Euler's conjecture",
       "36 officers problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's conjecture on orthogonal Latin squares",
+      "pairwise orthogonality",
+      "combinatorial constructions"
+    ]
   },
   {
     "id": "ann-e724-special-cases",
@@ -147,7 +175,11 @@
       "Order 6"
     ],
     "mathContext": "See annotation content for formal details of special cases: f(2)=1 and f(6)=1",
-    "prerequisites": []
+    "prerequisites": [
+      "36 officers problem",
+      "exhaustive counting arguments",
+      "orthogonal Latin squares"
+    ]
   },
   {
     "id": "ann-e724-chowla-erdos-straus",
@@ -165,7 +197,11 @@
       "Prime factorization",
       "Asymptotic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "asymptotic lower bounds",
+      "MOLS constructions"
+    ]
   },
   {
     "id": "ann-e724-wilson",
@@ -182,7 +218,10 @@
       "Asymptotic improvements"
     ],
     "mathContext": "See annotation content for formal details of wilson's improvement",
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic exponent improvements",
+      "lower bounds for f(n)"
+    ]
   },
   {
     "id": "ann-e724-beth",
@@ -200,7 +239,11 @@
       "Sieve methods",
       "Current state of the art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sieve methods",
+      "asymptotic lower bounds",
+      "MOLS counting techniques"
+    ]
   },
   {
     "id": "ann-e724-conjecture",
@@ -218,7 +261,11 @@
       "Open problems",
       "Asymptotic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic growth (≫ notation)",
+      "open problems in combinatorics",
+      "MOLS function f(n)"
+    ]
   },
   {
     "id": "ann-e724-example-order-3",
@@ -236,7 +283,11 @@
       "Prime case"
     ],
     "mathContext": "See annotation content for formal details of example: mols of order 3",
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic mod n",
+      "explicit MOLS constructions",
+      "prime-order finite fields"
+    ]
   },
   {
     "id": "ann-e724-projective-plane",
@@ -255,7 +306,11 @@
       "Affine planes",
       "Order 10"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "projective planes",
+      "affine planes",
+      "order-10 non-existence (Lam-Thiel-Swiercz)"
+    ]
   },
   {
     "id": "ann-e724-macneish",
@@ -273,7 +328,11 @@
       "Lower bounds"
     ],
     "mathContext": "See annotation content for formal details of macneish's conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "prime power factorization",
+      "direct product constructions",
+      "lower bounds for MOLS"
+    ]
   },
   {
     "id": "ann-e724-status-theorem",
@@ -291,6 +350,10 @@
       "Known results"
     ],
     "mathContext": "See annotation content for formal details of summary of known results",
-    "prerequisites": []
+    "prerequisites": [
+      "upper and lower bounds on f(n)",
+      "prime power MOLS theorem",
+      "Bose-Parker-Shrikhande theorem"
+    ]
   }
 ]

@@ -1,0 +1,145 @@
+{
+  "id": "euler-totient-oq-06",
+  "title": "Parity of Euler's Totient: $\\varphi(n)$ Is Even for $n>2$, and Odd Exactly at $\\{1,2\\}$",
+  "slug": "euler-totient-oq-06",
+  "description": "Answers the open question on the `euler-totient` gallery family: Euler's totient φ(n) is even for every n > 2. Mathlib supplies the one-directional `Nat.totient_even` (2 < n → Even n.totient), proved via the unit −1 ∈ (ZMod n)ˣ having order 2 and Lagrange's theorem. Rather than restate that one-liner, this file uses it to establish the complete parity classification that Mathlib does not package: `totient_odd_iff : Odd (φ n) ↔ n = 1 ∨ n = 2` and its complement `totient_even_iff : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`. Thus φ takes an odd value at exactly n = 1 and n = 2 (φ 1 = φ 2 = 1), and is even everywhere else, including φ 0 = 0. The new direction `le_two_of_odd_totient` (an odd totient forces n ≤ 2) is the contrapositive of the even theorem; combined with a finite `interval_cases`/`decide` check on n ∈ {0,1,2} it yields the sharp iff. The file also records the divisibility restatement `two_dvd_totient_of_two_lt` and a `3 ≤ n` convenience form. Fully machine-checked: 0 sorries, 0 axioms (the `decide` calls are kernel reductions over concrete small naturals, not `native_decide`).",
+  "meta": {
+    "author": "Euler (1763); classification formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ06.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "parity",
+      "classification",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 82,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The even direction is `Nat.totient_even` from Mathlib (order of −1 in the unit group plus Lagrange); the classification adds only elementary case analysis. The `decide` calls evaluate `φ` at concrete naturals 0, 1, 2 in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_even",
+        "description": "`2 < n → Even n.totient`. The even direction of the parity classification; Mathlib proves it via `-1 ∈ (ZMod n)ˣ` having order 2 (since `-1 ≠ 1` for `n > 2`) and `orderOf_dvd_card` (Lagrange), giving `2 ∣ |(ZMod n)ˣ| = φ(n)`.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.not_odd_iff_even",
+        "description": "`¬ Odd n ↔ Even n`, used both to turn the even theorem into the contrapositive `Odd (φ n) → n ≤ 2` and to convert the odd classification into the even one.",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Even.two_dvd",
+        "description": "`Even a → 2 ∣ a`, giving the divisibility restatement `two_dvd_totient_of_two_lt` from the parity statement.",
+        "module": "Mathlib.Algebra.Group.Even"
+      }
+    ],
+    "originalContributions": [
+      "`totient_odd_iff`: the complete odd-totient classification `Odd (φ n) ↔ n = 1 ∨ n = 2`, sharpening Mathlib's one-directional `Nat.totient_even` into a biconditional that pins down the exact set of arguments where φ is odd. Mathlib does not provide this iff.",
+      "`totient_even_iff`: the complement `Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`, the cleanest statement of 'φ is even except at 1 and 2', covering the boundary case φ 0 = 0 (even).",
+      "`le_two_of_odd_totient`: the new direction — an odd totient forces n ≤ 2 — obtained as the contrapositive of `totient_even`, which together with a finite check on {0,1,2} closes the classification.",
+      "`two_dvd_totient_of_two_lt` and `even_totient_of_three_le`: the divisibility restatement `2 ∣ φ(n)` and the `3 ≤ n` convenience form, packaging the headline parity fact for downstream use."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n) = |(ℤ/nℤ)ˣ|",
+      "The unit group of ℤ/nℤ and the element −1",
+      "Lagrange's theorem (order of an element divides the group order)",
+      "Even/odd parity and divisibility by 2"
+    ],
+    "dateAdded": "2026-06-19",
+    "relatedProblems": [
+      {
+        "id": "euler-totient",
+        "relationship": "Parent: the gallery family on Euler's totient and his generalization of Fermat's little theorem; this entry settles the parity-structure open question (φ(n) even for n > 2) and adds the full odd/even classification."
+      },
+      {
+        "id": "euler-totient-oq-05",
+        "relationship": "Sibling: oq-05 is Euler's theorem a^φ(n) ≡ 1 (mod n); this entry is the orthogonal parity-structure result on φ itself rather than its exponent role."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 82,
+    "path": "Proofs/EulerTotientOQ06.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 6
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Leonhard Euler introduced the totient function φ(n) — the count of integers in {1, …, n} coprime to n, equivalently the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem. A basic structural fact is that φ(n) is even for all n > 2. The cleanest reason is group-theoretic: the unit group (ℤ/nℤ)ˣ contains the element −1, which differs from 1 precisely when n > 2 and squares to 1, hence has order 2; by Lagrange's theorem 2 divides |(ℤ/nℤ)ˣ| = φ(n). The only exceptions n = 1 and n = 2 have φ = 1 (and n = 0 has φ = 0, still even). Mathlib formalizes the even direction as `Nat.totient_even`; the sharp biconditional classification — φ is odd at exactly 1 and 2 — is the complete parity picture this entry records.",
+    "problemStatement": "**Open Question (euler-totient-oq-06):** prove that Euler's totient φ(n) is even for every n > 2, equivalently that |(ℤ/nℤ)ˣ| is even. This entry proves that and the full classification of when φ is odd.",
+    "text": "Euler's totient φ(n) is even for every n > 2; it is odd exactly at n = 1 and n = 2 (where φ = 1).",
+    "proofStrategy": "The even direction is `Nat.totient_even` (order of −1 in the unit group plus Lagrange). The classification is then elementary: `le_two_of_odd_totient` takes the contrapositive (an odd totient cannot have 2 < n, so n ≤ 2); `totient_odd_iff` finishes by `interval_cases n` over n ∈ {0, 1, 2} with a `decide` evaluating φ at each (φ 0 = 0 even, φ 1 = φ 2 = 1 odd); `totient_even_iff` is the De Morgan complement via `Nat.not_odd_iff_even` and `not_or`.",
+    "keyInsights": [
+      "**The obstruction to 'always even' is exactly {1, 2}.** φ(1) = φ(2) = 1 are the only odd values; the biconditional `totient_odd_iff` makes this precise rather than merely asserting evenness for large n.",
+      "**−1 is the witness of evenness.** In (ℤ/nℤ)ˣ the element −1 has order 2 whenever n > 2 (it is distinct from 1 and self-inverse), so Lagrange forces 2 ∣ φ(n). This is the structural heart behind `Nat.totient_even`.",
+      "**The classification is just a contrapositive plus a finite check.** Once evenness for n > 2 is known, oddness forces n ≤ 2, and the three residual values 0, 1, 2 are decided outright — no further number theory is needed.",
+      "**φ 0 = 0 sits on the even side.** Treating n = 0 explicitly (it is even, not odd) is what makes `totient_even_iff : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2` correct across all naturals, including the degenerate argument."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
+      "Order of a group element and Lagrange's theorem",
+      "Parity (even/odd) and divisibility by 2",
+      "Finite case analysis (`interval_cases`, `decide`)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Euler's totient φ(n) is even for every n > 2, and the complete parity classification `Odd (φ n) ↔ n ∈ {1, 2}` (with even complement) is established. 6 theorems, 82 lines, 0 sorries, 0 axioms; the even direction rests on Mathlib's `Nat.totient_even`, the classification on elementary case analysis.",
+    "implications": "The biconditional fixes the exact failure set of 'totient is always even', a small but frequently-used parity fact (e.g. it underlies the evenness of cyclotomic field degrees [ℚ(ζ_n):ℚ] = φ(n) for n > 2). The packaging `two_dvd_totient_of_two_lt` makes the divisibility directly available to downstream arguments.",
+    "openQuestions": [
+      "Quantify the parity refinement: determine the 2-adic valuation v₂(φ(n)) in terms of the factorization of n (φ(n) = ∏ p^(k−1)(p−1), so v₂ accumulates one factor of 2 per odd prime divisor plus the contribution of the power of 2 dividing n).",
+      "Characterize when φ(n) ≡ 2 (mod 4) versus ≡ 0 (mod 4), i.e. when n has exactly one odd prime factor to the first power and small 2-part.",
+      "Relate the evenness witness −1 to the full 2-torsion subgroup of (ℤ/nℤ)ˣ, whose size 2^(number of distinct odd primes, adjusted for the 2-part) gives a stronger lower bound on v₂(φ(n))."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring framing the goal — prove φ(n) even for n > 2 and upgrade it to the full odd/even classification — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Tactic`), the contents list, and the namespace opening `Nat` (so `φ` denotes `Nat.totient`)."
+    },
+    {
+      "id": "even-direction",
+      "title": "The Even Direction for n > 2",
+      "startLine": 42,
+      "endLine": 57,
+      "summary": "`totient_even_of_two_lt` (the headline `2 < n → Even (φ n)`, from `Nat.totient_even`), its divisibility restatement `two_dvd_totient_of_two_lt` via `Even.two_dvd`, and the `3 ≤ n` convenience form `even_totient_of_three_le`."
+    },
+    {
+      "id": "classification",
+      "title": "The Odd-Totient Classification",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "`le_two_of_odd_totient` (odd totient ⟹ n ≤ 2, contrapositive of the even theorem), `totient_odd_iff` (`Odd (φ n) ↔ n = 1 ∨ n = 2`, closed by `interval_cases`/`decide` on {0,1,2}), and `totient_even_iff` (`Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`, the De Morgan complement)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "parent",
+      "description": "The parent gallery family develops Euler's totient and his generalization of Fermat's little theorem. This entry settles its parity-structure open question — φ(n) even for n > 2 — and adds the complete odd/even classification."
+    },
+    {
+      "targetId": "euler-totient-oq-05",
+      "relationship": "sibling",
+      "description": "oq-05 proves Euler's theorem a^φ(n) ≡ 1 (mod n), using φ as an exponent. This entry studies the arithmetic of φ itself — its parity — an orthogonal structural property."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The evenness of φ(n) for n > 2 is exactly the statement that the unit group (ℤ/nℤ)ˣ has even order, which underlies the existence of the order-2 quadratic character that quadratic reciprocity studies."
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "id": "hockey-stick-context",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "The Hockey-Stick Identity and Figurate Numbers",
+    "content": "Fix a column k in Pascal's triangle and walk down the diagonal C(k,k), C(k+1,k), C(k+2,k), …. The hockey-stick (Christmas-stocking) identity states the partial sums land one row below and one column right: ∑_{m=k}^{n} C(m,k) = C(n+1,k+1). Reading this column by column reproduces the figurate numbers: column 1 gives the triangular numbers, column 2 the tetrahedral numbers, and so on. This entry formalizes the identity and its figurate specializations.",
+    "mathContext": "The hockey-stick identity $\\sum_{m=k}^{n} \\binom{m}{k} = \\binom{n+1}{k+1}$ is a telescoping consequence of Pascal's rule $\\binom{m+1}{k+1} = \\binom{m}{k} + \\binom{m}{k+1}$. Specializing the column index $k$ recovers the simplicial figurate numbers: $k=1$ gives $\\sum_{m=0}^{n} m = \\binom{n+1}{2} = \\tfrac{n(n+1)}{2}$ (triangular), and $k=2$ gives $\\sum_{m=0}^{n} \\binom{m}{2} = \\binom{n+1}{3}$ (tetrahedral).",
+    "significance": "key",
+    "relatedConcepts": [
+      "hockey-stick identity",
+      "Pascal's triangle",
+      "binomial coefficients",
+      "triangular numbers",
+      "tetrahedral numbers",
+      "figurate numbers"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "Finset.Icc and Finset.range sums",
+      "Pascal's rule"
+    ]
+  },
+  {
+    "id": "hockey-stick-icc-anchor",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 56, "endLine": 62 },
+    "type": "theorem",
+    "title": "Hockey-Stick Identity (Interval Form)",
+    "content": "hockey_stick_Icc restates Mathlib's Nat.sum_Icc_choose: ∑_{m∈Icc k n} C(m,k) = C(n+1,k+1). Summing column k from row k down to row n collapses to the single entry one row lower and one column to the right. This serves as the anchor that the range form and the figurate specializations build on.",
+    "mathContext": "$\\sum_{m \\in [k, n]} \\binom{m}{k} = \\binom{n+1}{k+1}$. The interval $[k,n]$ starts at $m = k$ because $\\binom{m}{k} = 0$ for $m < k$; Mathlib's lemma is stated over this exact support.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sum_Icc_choose", "closed interval sums"],
+    "prerequisites": ["Finset.Icc", "Nat.choose"]
+  },
+  {
+    "id": "hockey-stick-range-thm",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "theorem",
+    "title": "Hockey-Stick Identity (Range Form)",
+    "content": "hockey_stick_range transports the identity to a sum over Finset.range (n+1) = {0,1,…,n}: ∑_{m<n+1} C(m,k) = C(n+1,k+1). Extending the index range down to 0 changes nothing because C(m,k) = 0 whenever m < k. The proof uses Finset.sum_subset with Icc k n ⊆ range (n+1), discharging the membership arithmetic with omega and the vanishing terms with Nat.choose_eq_zero_of_lt.",
+    "mathContext": "Since $\\binom{m}{k} = 0$ for $m < k$, the sums over $[k,n]$ and over $\\{0,\\dots,n\\}$ agree. Finset.sum_subset $s \\subseteq t$ requires the extra elements of $t$ to be zeroed by the summand, which is exactly $\\binom{m}{k}=0$ for $m<k$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_subset", "Nat.choose_eq_zero_of_lt"],
+    "prerequisites": ["Finset.range", "Finset subset sums"]
+  },
+  {
+    "id": "triangular-thm",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 80, "endLine": 95 },
+    "type": "theorem",
+    "title": "Triangular Numbers as Binomial Coefficients",
+    "content": "triangular_eq_choose is the k=1 slice: 0+1+⋯+n = C(n+1,2). Because C(m,1) = m (Nat.choose_one_right), the column-1 hockey stick is exactly Gauss's sum of the first n integers, exhibited as a binomial coefficient. triangular_closed_form then gives the familiar C(n+1,2) = n(n+1)/2 via Nat.choose_two_right.",
+    "mathContext": "$\\sum_{m=0}^{n} m = \\binom{n+1}{2} = \\tfrac{n(n+1)}{2}$. The $n$-th triangular number $T_n$ is the count of points in a triangular array, equal to the number of 2-element subsets of an $(n+1)$-element set.",
+    "significance": "key",
+    "relatedConcepts": ["triangular numbers", "Gauss summation", "Nat.choose_one_right", "Nat.choose_two_right"],
+    "prerequisites": ["Nat.choose", "Finset.sum_congr"]
+  },
+  {
+    "id": "tetrahedral-thm",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "theorem",
+    "title": "Tetrahedral Numbers as Binomial Coefficients",
+    "content": "tetrahedral_eq_choose is the k=2 slice: ∑_{m≤n} C(m,2) = C(n+1,3), a direct instance of hockey_stick_range. The tetrahedral numbers are the running totals of the triangular column of Pascal's triangle, just as the triangular numbers are the running totals of the natural numbers.",
+    "mathContext": "$\\sum_{m=0}^{n} \\binom{m}{2} = \\binom{n+1}{3}$. The tetrahedral number $\\binom{n+1}{3} = \\tfrac{(n-1)n(n+1)}{6}$ counts points in a triangular pyramid and equals the number of 3-element subsets of an $(n+1)$-element set.",
+    "significance": "key",
+    "relatedConcepts": ["tetrahedral numbers", "simplicial numbers", "partial sums"],
+    "prerequisites": ["hockey-stick range form", "Nat.choose"]
+  },
+  {
+    "id": "figurate-tower-thm",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 103, "endLine": 109 },
+    "type": "theorem",
+    "title": "The Figurate Tower",
+    "content": "sum_triangular_eq_tetrahedral assembles the hierarchy: the sum of the first n+1 triangular numbers T_m = C(m+1,2) is the tetrahedral number C(n+2,3). It follows from the column-2 hockey stick after Finset.sum_range_succ' peels off and discards the vanishing head term C(0,2) = 0. This is the literal statement that the tetrahedral numbers are the partial sums of the triangular numbers.",
+    "mathContext": "With $T_m = \\binom{m+1}{2}$, we have $\\sum_{m=0}^{n} T_m = \\binom{n+2}{3}$. Reindexing $\\sum_{m=0}^{n+1}\\binom{m}{2}$ by stripping the $m=0$ term (which is $0$) yields $\\sum_{m=0}^{n}\\binom{m+1}{2}$, and the hockey stick evaluates the former to $\\binom{n+2}{3}$.",
+    "significance": "key",
+    "relatedConcepts": ["figurate number tower", "Finset.sum_range_succ'", "partial sums"],
+    "prerequisites": ["tetrahedral numbers", "reindexing finite sums"]
+  },
+  {
+    "id": "verification-examples",
+    "proofId": "combinations-formula-oq-06",
+    "range": { "startLine": 110, "endLine": 116 },
+    "type": "example",
+    "title": "Worked Verifications",
+    "content": "Three concrete checks via kernel decide: 1+2+3+4 = 10 = C(5,2) (triangular); C(2,2)+C(3,2)+C(4,2) = 1+3+6 = 10 = C(5,3) (tetrahedral as running totals); and T_0+⋯+T_4 = 0+1+3+6+10 = 20 = C(6,3) (the figurate tower). Using decide rather than native_decide keeps the verification kernel-checked and free of the Lean.ofReduceBool axiom.",
+    "mathContext": "These instantiate the general theorems at small $n$, confirming the figurate identities numerically against Pascal's triangle.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide", "kernel verification"],
+    "prerequisites": ["Nat.choose evaluation"]
+  }
+]

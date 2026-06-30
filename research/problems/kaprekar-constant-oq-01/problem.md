@@ -123,6 +123,3 @@ difficulty: medium
 source: gallery-gap
 created: 2026-06-16
 ```
-
-**Significance**: 5/10
-**Tractability**: 6/10

@@ -16,7 +16,11 @@
       "Arithmetic functions",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "arithmetic functions",
+      "asymptotic density"
+    ]
   },
   {
     "id": "ann-e1061-sigma-def",
@@ -35,7 +39,11 @@
       "Perfect numbers",
       "Multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility and divisors",
+      "finite sums over sets",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e1061-sigma-values",
@@ -54,7 +62,11 @@
       "extremal problems"
     ],
     "mathContext": "See annotation content for formal details of basic sigma values",
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility and divisors",
+      "Lean 4 native_decide",
+      "decidable arithmetic"
+    ]
   },
   {
     "id": "ann-e1061-pair-def",
@@ -72,7 +84,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "predicate logic",
+      "Lean 4 Prop and definitions"
+    ]
   },
   {
     "id": "ann-e1061-counting",
@@ -90,7 +106,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset cardinality and filtering",
+      "counting functions in number theory",
+      "Lean 4 Mathlib Finset API"
+    ]
   },
   {
     "id": "ann-e1061-s-base",
@@ -108,7 +128,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural number arithmetic",
+      "Lean 4 tactic mode",
+      "definitional unfolding"
+    ]
   },
   {
     "id": "ann-e1061-solution-1-2",
@@ -126,7 +150,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor sum computation",
+      "natural number arithmetic",
+      "Lean 4 proof verification"
+    ]
   },
   {
     "id": "ann-e1061-non-solutions",
@@ -144,7 +172,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor sum computation",
+      "natural number arithmetic",
+      "Lean 4 decidable verification"
+    ]
   },
   {
     "id": "ann-e1061-structure",
@@ -162,7 +194,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic functions",
+      "subadditivity and superadditivity",
+      "divisor function properties"
+    ]
   },
   {
     "id": "ann-e1061-asymptotic",
@@ -180,7 +216,11 @@
       "asymptotics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis and limits",
+      "sequence convergence",
+      "Mathlib Filter and Tendsto"
+    ]
   },
   {
     "id": "ann-e1061-bounds",
@@ -198,7 +238,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper and lower bounds",
+      "monotone functions",
+      "Lean 4 inequality proofs"
+    ]
   },
   {
     "id": "ann-e1061-open",
@@ -216,7 +260,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems in number theory",
+      "asymptotic equivalence notation",
+      "Lean 4 axioms and sorry"
+    ]
   },
   {
     "id": "ann-e1061-oeis",
@@ -234,7 +282,11 @@
       "OEIS",
       "Integer sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer sequences",
+      "set-builder notation",
+      "divisor sum identities"
+    ]
   },
   {
     "id": "ann-e1061-summary",
@@ -252,6 +304,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set membership",
+      "conjunction in propositional logic",
+      "Lean 4 theorem proving"
+    ]
   }
 ]
