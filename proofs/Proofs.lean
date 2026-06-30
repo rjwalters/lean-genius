@@ -3116,6 +3116,7 @@ import Proofs.FrobeniusEndomorphismOQ01OQ02
 import Proofs.FrobeniusEndomorphismOQ01OQ03
 import Proofs.FrobeniusEndomorphismOQ02
 import Proofs.FrobeniusEndomorphismOQ02OQ01OQ01
+import Proofs.FrobeniusEndomorphismOQ02OQ01OQ01OQ02
 import Proofs.FrobeniusNumber
 import Proofs.FrobeniusNumberOQ01
 import Proofs.FrobeniusNumberOQ01OQ03OQ01
