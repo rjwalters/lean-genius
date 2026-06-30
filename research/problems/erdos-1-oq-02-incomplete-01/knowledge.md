@@ -153,3 +153,35 @@ Added `card_le_of_sameParity_interval` (0-axiom): a `Finset ℤ` whose elements 
 - src/data/proofs/erdos-1-oq-02/meta.json (counts 367/13 → 399/14 + highlight)
 
 ### Status: IN-PROGRESS (axiom not yet discharged; only the sqrt assembly remains).
+
+## Session 2026-06-30 (researcher-2) — AXIOM DISCHARGED: anticoncentration_bound is now a THEOREM (0-axiom)
+
+**Completed the multi-session axiom-elimination.** All four ingredients were in place
+(second_moment_identity, card_mul_le_second_moment, card_doubledDrop_image_of_distinct,
+card_le_of_sameParity_interval). This session wrote the **combine** and deleted the axiom:
+
+`Erdos1OQ02.lean` is now **0 axioms / 0 sorries / 0 native_decide**, 399→546 lines,
+docker `[7744]` VERIFIED. Gallery entry `erdos-1-oq-02` flipped **axiomatized → verified**.
+
+### The discharge (theorem anticoncentration_bound, ~110 lines)
+For distinct-subset-sums `A`, `n=|A|≥1`, `Q=Σaᵢ²`: `2ⁿ ≤ 3√Q + 2`.
+- `V := image (T ↦ 2·Σ_T − S) A.powerset` — the 2ⁿ doubled deviations; `|V|=2ⁿ`
+  (card_doubledDrop_image), `ΣV v² = 2ⁿ·Q` (sum_image hinj + second_moment_identity), all `≡ S (mod 2)`.
+- `Q ≥ 1`: distinct subset sums ⇒ `0∉A` (else ∅,{0} collide) ⇒ some `a≥1` ⇒ `Q ≥ a² ≥ 1`.
+- Split radius `L+1 = ⌈2√Q⌉` (so `(L+1)² ≥ 4Q` via `Int.le_ceil` + `Real.sq_sqrt`, and
+  `L+1 ≤ 2√Q+1` via `Int.ceil_lt_add_one`; `L≥0` since `2√Q≥2`).
+- Central band `|v|≤L`: `≤ L+1` (card_le_of_sameParity_interval, parity).
+- Tail `|v|≥L+1` ⊆ `{(L+1)²≤v²}`: discrete Chebyshev `far·(L+1)² ≤ ΣV v² = 2ⁿQ`
+  (new `card_mul_le_sum_of_nonneg`, the ℤ-indexed generalization of card_mul_le_second_moment).
+- `filter_card_add_filter_neg_card_eq_card` ⇒ `2ⁿ ≤ (L+1) + far`; with `4·far ≤ 2ⁿ`
+  (from tail ÷ (L+1)²≥4Q, `le_of_mul_le_mul_right`) ⇒ `(3/4)2ⁿ ≤ L+1 ≤ 2√Q+1` ⇒ `2ⁿ ≤ (8√Q+4)/3 ≤ 3√Q+2`.
+
+### GOTCHAs
+- `simp only [hfdef]` (NOT `rw [hfdef]`) before `omega` for the parity goal — rw leaves an
+  unreduced β-redex `(fun T => …) T` that omega treats as an opaque atom.
+- Integer→real casts of `2^n` inequalities: `exact_mod_cast hI` works directly; the manual
+  `rw [←hmcast]; push_cast` route fights push_cast (it re-normalizes `((2^n:ℤ):ℝ)`→`(2:ℝ)^n`).
+- `have h : P := by exact_mod_cast x; linarith` is a bug — the `;` runs linarith on the
+  already-closed goal ("no goals"); split into two `have`s.
+
+STATUS: COMPLETE. The axiom-discharge goal of this slug is fully achieved; `erdos-1-oq-02` is verified.
