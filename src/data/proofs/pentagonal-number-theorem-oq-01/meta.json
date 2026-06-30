@@ -13,10 +13,10 @@
       "PowerSeries.WithPiTopology"
     ],
     "namespace": "PentagonalNumberTheoremOQ01",
-    "lineCount": 809,
+    "lineCount": 904,
     "axiomCount": 0,
     "theoremCount": 61,
-    "definitionCount": 10,
+    "definitionCount": 9,
     "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
     "sorries": 0
   },
@@ -90,10 +90,10 @@
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 705,
+    "lineCount": 904,
     "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. pentSeriesCoeff is a noncomputable def using Classical.choice (a foundational axiom that the project's axiom policy does not count toward axiomCount). The genFun bridges genFun_pent_eq_tprod, coeff_genFun_pent and the two composed tprod headlines coeff_tprod_pent, coeff_tprod_pent_eq_evenOdd_diff each #print axioms to [propext, Classical.choice, Quot.sound] — only the standard foundational axioms, none counted. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0).",
-    "theoremCount": 47,
-    "definitionCount": 6
+    "theoremCount": 61,
+    "definitionCount": 9
   },
   "overview": {
     "historicalContext": "Euler discovered the pentagonal number theorem in 1740s correspondence with Goldbach and proved it in 1750: the infinite product ∏_{n≥1}(1-xⁿ) equals the lacunary series ∑_{k∈ℤ}(-1)ᵏ x^{k(3k-1)/2}. The exponents are the generalized pentagonal numbers (OEIS A001318), and the theorem yields Euler's celebrated recurrence for the partition function p(n). Franklin (1881) gave the bijective proof via a sign-reversing involution on partitions into distinct parts. Mathlib's 2025 Partition.GenFun (Weiyi Wang) now supplies the partition generating function with its proved product (genFun_eq_tprod) and coefficient (coeff_genFun) forms; this entry instantiates it at the Euler character to machine-check BOTH ends of Euler's identity (Part 6), leaving only Franklin's involution — the identity ∑(-1)^{#parts} = pentSeriesCoeff(n) — unformalized. The entry also supplies the index-set theory that any such formalization consumes.",
@@ -192,6 +192,14 @@
       "endLine": 647,
       "summary": "franklin_fixed_point (and _neg): for k≥1 the staircases {k,…,2k-1} and {k+1,…,2k} are partitions of g(k) resp. g(-k) into exactly k distinct positive parts, with part-count parity (-1)^k = pentSign. Built from staircase_sum_eq_genPent(_neg) (the consecutive-integer sums equal the pentagonal numbers, via a division-free Gauss sum and the parent's two_mul_genPent) and the reindexing staircase_ico_eq_range(_neg). These are exactly the fixed points of Franklin's involution — the residual terms its cancellation leaves behind.",
       "mathContext": "∑_{i=k}^{2k-1} i = g(k) and ∑_{i=k+1}^{2k} i = g(-k); each is a set of k distinct positive integers, sign (-1)^k."
+    },
+    {
+      "id": "franklin-fixed-point-invariant",
+      "title": "Part 9: Franklin's Fixed-Point Invariant — Smallest Part vs. Number of Parts",
+      "startLine": 809,
+      "endLine": 904,
+      "summary": "franklin_fixed_point_invariant: the two Franklin fixed-point families are exactly the contiguous blocks of distinct parts on which the smallest part s and the number of parts ℓ are tied — s=ℓ on the positive staircase {k,…,2k-1}, s=ℓ+1 on the negative staircase {k+1,…,2k}. Pins the invariants arithmetically via min'_Ico (the smallest element of Ico a b is its left endpoint a) and Nat.card_Ico, and proves the converses: a block Ico a b with s=ℓ is forced to b=2a (positive arm), with s=ℓ+1 forced to b=2a-1 (negative arm). interval_fixed_point_sum then sends any s=ℓ block to its generalized pentagonal number g(a) via Part 7's staircase_sum_eq_genPent. This isolates the precise arithmetic condition under which both of Franklin's moves fail — the residual its open-core involution leaves behind.",
+      "mathContext": "On a distinct-part partition Franklin's involution pairs the smallest part s(λ) with the maximal descending top run of length ℓ(λ); both moves fail exactly when s=ℓ (positive) or s=ℓ+1 (negative), the staircases. For a contiguous block, min'(Ico a b)=a and card(Ico a b)=b-a, so s=ℓ ⇔ a=b-a ⇔ b=2a and s=ℓ+1 ⇔ a=b-a+1 ⇔ b=2a-1."
     }
   ],
   "openQuestions": [
