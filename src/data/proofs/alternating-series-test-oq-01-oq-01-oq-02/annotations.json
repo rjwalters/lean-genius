@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ast-oq010102-ann-header",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 38 },
+    "type": "context",
+    "title": "From Global to Eventual Antitonicity",
+    "content": "The parent entry traps the truncation error of S_N = ∑_{i<N} (−1)ⁱ f(i) between two consecutive omitted terms, f(N) − f(N+1) ≤ |S_N − l| ≤ f(N), but assumes f is antitone on all of ℕ. In practice coefficients often misbehave on a finite initial segment (transients, a startup bump, reindexing artifacts) and only settle into a monotone tail. The parent flagged this as open question index 1. This file answers it: the same two-sided trap survives verbatim for every N ≥ M when f is only antitone on [M, ∞). The mechanism is a shift reduction — discard the finite head and apply the monotone theory to the tail g(j) = f(j+M).",
+    "mathContext": "$f(N) - f(N+1) \\le |S_N - l| \\le f(N) \\quad (N \\ge M),\\ \\ S_N = \\sum_{i<N}(-1)^i f(i)$",
+    "significance": "context",
+    "relatedConcepts": ["alternating series test", "Leibniz criterion", "eventual monotonicity", "shift reduction", "truncation error"],
+    "prerequisites": ["convergence of series", "antitone sequences", "the parent two-term trap"]
+  },
+  {
+    "id": "ast-oq010102-ann-shift-coeffs",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 46, "endLine": 56 },
+    "type": "definition",
+    "title": "The Shifted Tail Coefficients g(j) = f(j+M)",
+    "content": "antitone_shift shows that the index-shifted coefficients g(j) = f(j+M) are GLOBALLY antitone whenever f is antitone on [M, ∞): for j ≤ k both j+M and k+M lie in [M, ∞), so the eventual-antitonicity hypothesis applies directly (via Set.mem_Ici and omega). tendsto_shift_zero shows g still tends to 0 by precomposing f's limit with the index translation n ↦ n+M (tendsto_add_atTop_nat). Together these are exactly the two hypotheses the parent's globally-antitone theorem demands, so the tail series is a legitimate input to the parent machinery.",
+    "mathContext": "$g(j) = f(j+M),\\quad f|_{[M,\\infty)} \\text{ antitone} \\Rightarrow g \\text{ antitone},\\quad f \\to 0 \\Rightarrow g \\to 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["index shift", "AntitoneOn vs Antitone", "Set.Ici", "Filter.tendsto_add_atTop_nat"],
+    "prerequisites": ["antitone functions", "limits along atTop", "function composition of filters"]
+  },
+  {
+    "id": "ast-oq010102-ann-split",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 58, "endLine": 74 },
+    "type": "technique",
+    "title": "The Exact Shift Splitting of Partial Sums",
+    "content": "partialSum_shift is the structural heart of the reduction: S_{n+M} = S_M + (−1)^M · T_n, where T_n = ∑_{j<n} (−1)ʲ g(j) is the shifted series' partial sum. It is proved by induction on n. The inductive step peels the last term off both range(n+M) and range(n) with Finset.sum_range_succ, and the new term (−1)^{n+M} f(n+M) on the left matches (−1)^M · (−1)ⁿ f(n+M) on the right because (−1)^{n+M} = (−1)^M (−1)ⁿ (pow_add), after which ring closes it. This identity is what makes the head S_M a fixed constant and the tail a clean ±-copy of the monotone series.",
+    "mathContext": "$\\sum_{i<n+M}(-1)^i f(i) = \\sum_{i<M}(-1)^i f(i) + (-1)^M\\sum_{j<n}(-1)^j f(j+M)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_range_succ", "induction on partial sums", "pow_add", "(−1)^{n+M} factoring", "telescoping head/tail"],
+    "prerequisites": ["finite sums over Finset.range", "proof by induction", "laws of exponents for (−1)ⁿ"]
+  },
+  {
+    "id": "ast-oq010102-ann-convergence",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 87 },
+    "type": "theorem",
+    "title": "Convergence Is Derived, Not Assumed",
+    "content": "tendsto_partialSum_of_eventually_antitone proves the full series converges using ONLY eventual antitonicity and f → 0 — no separate convergence hypothesis is needed. Mathlib's Leibniz theorem (Antitone.tendsto_alternating_series_of_tendsto_zero) supplies a limit t for the globally-antitone tail g. The explicit limit of S_N is then exhibited as l = S_M + (−1)^M t: the shift splitting rewrites S_{n+M} as the constant S_M plus (−1)^M T_n, and tendsto_add_atTop_iff_nat transports the limit of the index-shifted sequence back to S_N itself. This is genuinely new content — the parent took convergence as a given.",
+    "mathContext": "$l = S_M + (-1)^M t,\\quad t = \\lim_n T_n \\ (\\text{Leibniz limit of the tail})$",
+    "significance": "key",
+    "relatedConcepts": ["Antitone.tendsto_alternating_series_of_tendsto_zero", "Filter.tendsto_add_atTop_iff_nat", "existence of limit", "const_mul / const_add of Tendsto"],
+    "prerequisites": ["Leibniz convergence theorem", "limits of shifted sequences", "uniqueness of limits"]
+  },
+  {
+    "id": "ast-oq010102-ann-trap",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 89, "endLine": 132 },
+    "type": "theorem",
+    "title": "The Eventually-Antitone Two-Term Trap",
+    "content": "abs_partialSum_sub_limit_trapped_eventually is the main result: for every N ≥ M, f(N) − f(N+1) ≤ |S_N − l| ≤ f(N). The proof reduces to the parent theorem applied to the shifted series g. First the limit is pinned to l = S_M + (−1)^M t by uniqueness (tendsto_nhds_unique). Writing N = m + M, the shift splitting yields the key identity S_N − l = (−1)^M (T_m − t), so taking absolute values and using |(−1)^M| = 1 gives |S_N − l| = |T_m − t| EXACTLY — no slack. The parent's trap for g at index m reads g(m) − g(m+1) ≤ |T_m − t| ≤ g(m), and since g(m) = f(N), g(m+1) = f(N+1), this is precisely the desired trap.",
+    "mathContext": "$S_N - l = (-1)^M(T_m - t)\\ \\Rightarrow\\ |S_N - l| = |T_m - t|,\\quad g(m)=f(N),\\ g(m{+}1)=f(N{+}1)$",
+    "significance": "key",
+    "relatedConcepts": ["reduction to parent theorem", "tendsto_nhds_unique", "abs_mul / abs_pow", "sign of modulus one", "error transfer with no slack"],
+    "prerequisites": ["the shift splitting", "uniqueness of limits", "absolute value identities", "the parent two-term trap"]
+  },
+  {
+    "id": "ast-oq010102-ann-halves",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 134, "endLine": 148 },
+    "type": "technique",
+    "title": "Upper and Lower Halves as Standalone Lemmas",
+    "content": "The two directions of the trap are extracted as named lemmas for downstream reuse. abs_partialSum_sub_limit_le_eventually is the upper (Leibniz) half |S_N − l| ≤ f(N) — the classical statement, now valid from the threshold M. sub_le_abs_partialSum_sub_limit_eventually is the lower (sharpness) half f(N) − f(N+1) ≤ |S_N − l|, certifying the Leibniz estimate cannot be improved beyond the consecutive-term gap even in the eventual setting. Each is just the corresponding projection (.1 / .2) of the combined trap.",
+    "mathContext": "$|S_N - l| \\le f(N)\\ \\text{(Leibniz)};\\quad f(N) - f(N+1) \\le |S_N - l|\\ \\text{(sharpness)}$",
+    "significance": "supporting",
+    "relatedConcepts": ["lemma extraction", "Leibniz upper bound", "sharpness lower bound", "conjunction projection"],
+    "prerequisites": ["the combined two-term trap"]
+  },
+  {
+    "id": "ast-oq010102-ann-bumped",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 150, "endLine": 173 },
+    "type": "definition",
+    "title": "The Bumped Witness: Antitone Only From Index 1",
+    "content": "To show the eventual hypothesis is strictly weaker than the global one, the file builds an explicit sequence: bumped(0) = 0 and bumped(i) = 1/(i+1) for i ≥ 1 — the alternating-harmonic profile with an upward bump planted at the origin. antitoneOn_bumped proves it is antitone on [1, ∞): there the if-branch is uniformly in its i ≠ 0 case, leaving the standard decreasing 1/(i+1) (via one_div_le_one_div_of_le). This is a clean separating example — the eventual machinery's hypothesis is satisfiable in cases the parent's global hypothesis is not.",
+    "mathContext": "$b_0 = 0,\\quad b_i = \\tfrac{1}{i+1}\\ (i \\ge 1);\\quad b \\text{ antitone on } [1,\\infty)$",
+    "significance": "supporting",
+    "relatedConcepts": ["separating example", "one_div_le_one_div_of_le", "piecewise definition", "harmonic decay 1/(i+1)"],
+    "prerequisites": ["AntitoneOn", "reciprocal of increasing positives", "case analysis on i = 0"]
+  },
+  {
+    "id": "ast-oq010102-ann-not-antitone",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 175, "endLine": 190 },
+    "type": "insight",
+    "title": "The Bump Breaks Global Antitonicity",
+    "content": "tendsto_bumped_zero confirms bumped → 0 (it eventually agrees with 1/(i+1), via congr' on the atTop filter and tendsto_one_div_add_atTop_nhds_zero_nat). not_antitone_bumped then shows bumped is NOT globally antitone: it rises from b(0) = 0 to b(1) = 1/2, contradicting any antitone hypothesis at 0 ≤ 1. This is the crux of the strict-weakening claim — the parent theorem's global hypothesis genuinely fails on bumped, so the parent cannot bound its error, whereas this file's eventual trap applies with M = 1.",
+    "mathContext": "$b_0 = 0 < \\tfrac12 = b_1 \\Rightarrow b \\text{ not antitone};\\quad b \\to 0$",
+    "significance": "key",
+    "relatedConcepts": ["strict generalization", "Tendsto.congr'", "eventually_ge_atTop", "counterexample to monotonicity"],
+    "prerequisites": ["filters and eventual equality", "negating an antitone hypothesis"]
+  },
+  {
+    "id": "ast-oq010102-ann-capstone",
+    "proofId": "alternating-series-test-oq-01-oq-01-oq-02",
+    "range": { "startLine": 192, "endLine": 206 },
+    "type": "theorem",
+    "title": "Capstone: The Trap Applies Where the Parent Cannot",
+    "content": "bumped_error_trapped ties everything together. Convergence of ∑ (−1)ⁱ bumped(i) to some l is obtained from tendsto_partialSum_of_eventually_antitone (derived, not assumed), and the full two-term trap holds for every N ≥ 1 — even though bumped is not globally antitone, so the parent result does not cover this series. This concretely demonstrates the generalization is not vacuous: there is an actual alternating series the eventual trap controls and the parent's global trap does not.",
+    "mathContext": "$\\forall N \\ge 1:\\ b_N - b_{N+1} \\le \\Big|\\sum_{i<N}(-1)^i b_i - l\\Big| \\le b_N$",
+    "significance": "key",
+    "relatedConcepts": ["non-vacuous generalization", "witness theorem", "derived convergence", "applicability beyond the parent"],
+    "prerequisites": ["the eventual trap", "the bumped lemmas", "existential packaging of the limit"]
+  }
+]

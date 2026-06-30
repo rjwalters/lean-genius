@@ -72,11 +72,11 @@
       "startLine": 1,
       "endLine": 27
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Codomain-Matching Obstruction",
     "content": "The opening docstring isolates the one real friction point of the formalization, flagged explicitly as a TYPING NOTE. Mathematically the Gauss sum $g = \\sum_n \\chi(n)\\,\\psi(n)$ pairs a multiplicative character $\\chi$ with an additive character $\\psi$, but Lean's `gaussSum χ ψ` is only well-typed when both characters land in the *same* ring `F'`: the product $\\chi(n)\\cdot\\psi(n)$ must make sense. Mathlib's `quadraticChar (ZMod p)` is ℤ-valued while our $\\psi$ is ℂ-valued, so the summand pairs ℤ with ℂ and does not typecheck until the character is pushed into ℂ. The whole file is organised around removing this single obstruction and then quoting `gaussSum_sq`. The blanket `import Mathlib` is the gallery convention (not the stricter Mathlib-bound import discipline), giving access to `gaussSum`, `quadraticChar`, and the χ₄ machinery in one line.",
     "mathContext": "$g = \\displaystyle\\sum_{n \\in \\mathbb{Z}/p\\mathbb{Z}} \\chi(n)\\,\\psi(n)$ requires $\\chi : \\mathbb{Z}/p\\mathbb{Z} \\to F'$ and $\\psi : \\mathbb{Z}/p\\mathbb{Z} \\to F'$ with a common codomain $F'$ so that each product $\\chi(n)\\psi(n) \\in F'$ is defined; here $F' = \\mathbb{C}$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Gauss sum",
       "codomain matching",
@@ -95,7 +95,7 @@
       "startLine": 41,
       "endLine": 47
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Nontriviality via Injectivity of ℤ → ℂ",
     "content": "`gaussSum_sq` requires the character to be *nontrivial* — otherwise the sum degenerates and the $g^2 = \\chi(-1)\\,\\#F$ identity fails. The lemma `chiC_ne_one` supplies this. The key observation is that transporting a character along an injective ring hom cannot collapse it to the trivial character, captured by `MulChar.ringHomComp_ne_one_iff` applied to `(Int.castRingHom ℂ).injective_int` (injectivity is automatic because ℂ has characteristic zero). Nontriviality of the *original* ℤ-valued quadratic character then reduces to `quadraticChar_ne_one`, which holds precisely when the residue field has odd characteristic: `ringChar (ZMod p) = p ≠ 2`, rewritten via `ZMod.ringChar_zmod_n`. This is exactly where the odd-prime hypothesis `hp : p ≠ 2` is consumed.",
     "mathContext": "$\\chi_{\\mathbb{C}} \\neq 1 \\iff \\left(\\tfrac{\\cdot}{p}\\right) \\neq 1$, valid because $\\iota : \\mathbb{Z} \\hookrightarrow \\mathbb{C}$ is injective; and $\\left(\\tfrac{\\cdot}{p}\\right) \\neq 1$ because $\\operatorname{ringChar}(\\mathbb{Z}/p\\mathbb{Z}) = p \\neq 2$.",

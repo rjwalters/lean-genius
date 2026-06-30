@@ -1,10 +1,118 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT — M1 + crux + Zolotarev headline ALL VERIFIED & MERGED (0 sorry / 0 axiom); only M2 (grid-transpose reciprocity) remains in Lean
+**Phase**: ACT — M1 + headline MERGED. M2 **NOW FULLY VERIFIED (0 sorry / 0 axiom)**: the grid-transpose inversion-count lemma `sign_gridTranspose_eq_choose` (the S10–S23 blocker) is proved. REMAINING: the reciprocity capstone (connect `sign_gridTranspose` to the Legendre product `(p/q)(q/p)` via M1 Zolotarev + CRT).
 **Path**: full
-**Since**: 2026-06-16 (S16 — crux + headline merged to main via #24903)
-**Iteration**: 18
+**Since**: 2026-06-25 (S24 — M2 sorry closed)
+**Iteration**: 24
+
+## Session 24 (2026-06-25, researcher-9) — **M2 SORRY CLOSED (0 sorry / 0 axiom), 13-session blocker broken**
+The single isolated sorry `sign_gridTranspose_eq_choose` (`sign (gridTranspose p q) = (-1)^(C(p,2)·C(q,2))`) is **proved and kernel-verified**.
+
+**Unblocker (the real lesson):** both backends were "down" exactly as in S10–S23 — Aristotle `prove` live-probed **404 "Resource not found"**, `docker info` **hangs** (host load ~19) — BUT host `./bin/lake env lean Proofs/<file>.lean` **works** against the cached Mathlib oleans (`proofs/.lake` → main). Single-file verification needs **no Docker**. The "must be build-verified, not blind-written" obligation was satisfiable all along without Docker. ~2–3 min/compile.
+
+**Proof route (genuinely new content; Mathlib has no grid-transpose sign/inversion count):**
+- `Equiv.Perm.sign_eq_prod_prod_Ioi` (Mathlib `GroupTheory/Perm/Fin.lean:489`) writes `sign σ = ∏ᵢ ∏_{j>i} (if σi<σj then 1 else -1)` — the high-level inversion product. This **bypasses the painful `signAux` bridge** that S22 flagged as the only path; that bridge is NOT needed.
+- `gridTranspose_val`: `(gridTranspose p q x).val = x/q + p·(x%q)` (one `simp`).
+- `inv_char` (pure mixed-radix arithmetic, `Nat.mul_le_mul`+`omega`, no nonlinear-solver): row-major `<` ∧ column-major `≥` ⟺ `a<c ∧ d<b`.
+- `Finset.prod_sigma'`+`Finset.prod_ite`+`Finset.prod_const` ⟹ `(-1)^(#inversions)`; `Finset.card_nbij'` bijects inversions with `{a<c}×{d<b}` through `finProdFinEquiv`; `card_lt_pairs` counts each side `C(·,2)`.
+
+**Gotcha:** `lake env lean` serves **stale per-session linter diagnostics** (spurious `declaration uses 'sorry'` at a stale line number, and unused-var warnings on pre-edit lines). It is NOT a real sorry — busted by building a fresh-named copy; `#print axioms` is authoritative and shows only `propext, Classical.choice, Quot.sound` for all 12 theorems.
+
+## Session 23 (2026-06-17, researcher-8) — both backends re-confirmed down; **entire `sign` product API ruled out** for the lone sorry
+No verifiable discharge possible this session; **both backends down for `sign_gridTranspose_eq_choose`**:
+- **Aristotle**: `prove` live-probed **404 "Resource not found"** (single-lemma async submit with the
+  pinned `signAux/finPairsLT` hint) — continues the S10–S22 blackout, unchanged.
+- **Docker**: daemon **up** but **8 `lean-build` containers running, host load avg 25.6** on the VM —
+  far over the ≤2-container good-citizen threshold (OOM risk). No build started (would starve ~6 peers).
+  (NB: this worktree's `proofs/.lake` is a symlink to the **main** repo `.lake`, not circular this
+  time — but still no local mathlib `.lean` under `packages/`, so audits use the standalone checkout.)
+
+**Genuinely-new audit result (beyond S18/S22):** walked the *complete* `Equiv.Perm.sign` product API at
+the pin (`Mathlib/GroupTheory/Perm/Sign.lean`, rev `2df2f0150c`) and **explicitly ruled out every
+block-permutation sign lemma** as inapplicable to the coordinate-swap grid-transpose shuffle:
+- `sign_prodCongrRight` (Sign.lean:535) `= ∏ k, sign (σ k)` and `sign_prodCongrLeft` (:545) — these are
+  **fibre-wise block** perms `(a,b) ↦ (a, σ a b)`; gridTranspose mixes both coordinates → N/A.
+- `sign_prodExtendRight` (:528), `sign_sumCongr` (:555) `= sign σa * sign σb`, `sign_subtypeCongr` (:571)
+  — all **block-diagonal / disjoint-support**; gridTranspose has no such block structure → N/A.
+- `sign_permCongr` (:551), `sign_eq_sign_of_equiv` (:467) — only **transport** sign across a conjugating
+  equiv; conjugating gridTranspose by `finProdFinEquiv` yields the map
+  `(i,j) ↦ decode_rowmajor(encode_colmajor(j,i))` on `Fin p × Fin q` — **still the inversion shuffle**,
+  not `prodComm` (the two encodings differ), so the conjugate is no easier. Confirmed not a one-liner.
+**Conclusion (hardened):** the ONLY honest closed-form path remains the low-level inversion count
+`sign = signAux3 _ mem_univ = ∏_{finPairsLT(pq)} (±1)` (Sign.lean:174,357) reduced via
+`signAux_eq_signAux2` (:290) + a `card_bij` identifying inversions with {row-pairs i<i′}×{col-pairs
+j>j′} ⟹ `C(p,2)·C(q,2)`. ~100 LOC of delicate Lean — **must be build-verified, not blind-written**
+(file + role + S18–S22 all warn). **Next live-backend session:** Aristotle non-404 one-shot, OR Docker
+≤2 containers → build-iterate the `card_bij` route. Claim released no-churn; headline M2 still open.
+
+## Session 22 (2026-06-17, researcher-11) — offline-mathlib bearer audit for the lone sorry (closes the S21 source gap)
+Backends still down for a verified discharge (Aristotle `prove` live-probed **404 "Resource not
+found"**; this worktree's `proofs/.lake` is a **circular self-symlink** → 0 oleans, no safe build).
+But the S21 blocker — *"no local Mathlib source to check the `signAux=∏finPairsLT → card_bij` route"* —
+is now **resolved**: the standalone checkout `/Users/rwalters/GitHub/mathlib4` is at the exact build
+pin (`2df2f0150c` = v4.26.0). Audited it for `sign_gridTranspose_eq_choose` and pinned every bearer
+for the inversion-count route at `Mathlib/GroupTheory/Perm/Sign.lean` (build pin):
+
+**Inversion-count route (the only honest closed-form path — confirmed no upstream closed form):**
+- `Equiv.Perm.sign` def `= signAux3 f mem_univ` — Sign.lean:357 (general fintype entry point).
+- `Equiv.Perm.signAux {n} (a : Perm (Fin n)) : ℤˣ := ∏ x ∈ finPairsLT n, if a x.1 ≤ a x.2 then -1 else 1`
+  — Sign.lean:174 — **this is the inversion product** the `card_bij` plan targets.
+- `Equiv.Perm.finPairsLT n` — Sign.lean:165; `mem_finPairsLT : a ∈ finPairsLT n ↔ a.2 < a.1` — Sign.lean:168.
+- `Equiv.Perm.signBijAux` — Sign.lean:184 (the perm action on ordered pairs used by `card_bij`).
+- **GAP found (key audit result):** there is **no public lemma `sign (f : Perm (Fin n)) = signAux f`**
+  at the pin. The reduction must be reconstructed via `signAux3 → signAux2` (`signAux_eq_signAux2`,
+  Sign.lean:290) — so the inversion route is workable but **low-level, not a one-liner**. This is the
+  concrete reason the lemma is "genuinely new content" beyond a name-discovery gap.
+
+**Conjugation/assembly bearers (already used by the VERIFIED parts of the M2 file):**
+- `sign_eq_sign_of_equiv (f : Perm α)(g : Perm β)(e : α ≃ β)(∀ x, e (f x) = g (e x)) : sign f = sign g` — Sign.lean:467.
+- `sign_permCongr (e : α ≃ β)(p : Perm α) : sign (e.permCongr p) = sign p` — Sign.lean:551; `sign_symm_trans_trans` — Sign.lean:402.
+
+**Alternative route (possibly the better Aristotle target):** factor `gridTranspose` into transpositions
+and use `sign_prod_list_swap {l}(∀ g ∈ l, IsSwap g) : sign l.prod = (-1)^l.length` — Sign.lean:~411.
+Discharges to controlling the *count* `l.length ≡ C(p,2)·C(q,2) [2]` rather than a raw inversion bijection.
+
+**Negative results pinned (de-risk: nothing slicker exists at pin):** Mathlib has **no** commutation /
+Kronecker-swap matrix (`kroneckerComm` absent; only CategoryTheory `commShift`, irrelevant), **no**
+`finProdFinEquiv` sign lemma, and **no** closed-form sign for any p×q transpose/shuffle. Confirms S8/S18.
+
+No Lean written (role + file both warn against blind-writing this finicky lemma, and no build is
+available to verify). **Next live-backend session:** submit `sign_gridTranspose_eq_choose` to Aristotle
+(non-404) with the pinned bearers, or build-iterate the `card_bij`-over-`finPairsLT` route (Sign.lean:174
++ 184) under Docker (≤2 containers). Claim released; headline M2 still open.
+
+## Session 21 (2026-06-16, researcher-7) — backend re-probe; no safe path to the lone sorry this session
+Re-confirmed the M2 status is unchanged: the sole remaining obligation is `sign_gridTranspose_eq_choose`
+(inversion count `C(p,2)·C(q,2)`), with the four surrounding pieces (`choose_two_mod_two`,
+`neg_one_units_pow_mod_two`, `neg_one_pow_choose_two`, assembly `sign_gridTranspose`) all VERIFIED at
+S20 and **unchanged on current main** since. Backend reality this session:
+- **Aristotle**: `prove` live-probed **404 ("Resource not found")** twice — the designated single-lemma
+  tool for this exact sorry is down (matches S10–S20).
+- **Docker**: daemon up but **heavily contended** (~19 `lean-build` containers, ~6 concurrent agent
+  builds on the host). A scaffold re-verify build was started but ran >30 min under contention with no
+  result; **stopped to relieve the host** (good-citizen ≤2-container guidance) rather than starve peers.
+- **No local Mathlib source** in the worktree (`proofs/.lake/packages/mathlib` ships oleans only, 0
+  `.lean`), so lemma names for the `signAux=∏finPairsLT` → `card_bij` route cannot be cheaply checked —
+  blind-write under a 7.5-min/iter contended host is not justified (and the file/role both warn against
+  blind-writing this finicky permutation-sign lemma).
+- **Active competing claim**: researcher-22283 holds an active claim on this same problem (no PR/branch
+  output yet) — another reason not to burn the contended host racing the same hard lemma.
+No Lean written, no result fabricated. **Next live-backend session** (Aristotle non-404 OR Docker ≤2
+containers): submit `sign_gridTranspose_eq_choose` to Aristotle as a one-shot, or discharge via the S20
+`card_bij` plan (inversions ↔ {row-pairs i<i′}×{col-pairs j>j′}, exactly one inversion per 2-rows×2-cols
+choice ⟹ `C(p,2)·C(q,2)`).
+
+## Session 20 (2026-06-16, researcher-8) — M2 materialized; parity reduction VERIFIED, one isolated sorry
+Aristotle `prove` still 404 (live-probed). Docker drained 7→2 containers → built
+`Proofs.QuadraticReciprocityAlgorithmOQ03M2` GREEN (`[7743/7743]`, 453s, exit 0; only warning = the
+intended sorry). New UNREGISTERED file splits `sign_gridTranspose` into: `gridTranspose` (def),
+`choose_two_mod_two` + `neg_one_units_pow_mod_two` + `neg_one_pow_choose_two` (all VERIFIED parity
+reduction), `sign_gridTranspose_eq_choose` (THE one sorry = inversion count `C(p,2)·C(q,2)`), and
+`sign_gridTranspose` (VERIFIED assembly). Supersedes CONFLICTING scaffold PR #24990. Gotcha pinned:
+Mathlib's `neg_one_pow_eq_pow_mod_two` needs `[Ring R]` (ℤˣ is not a ring) — used `neg_one_sq` route.
+**Next**: discharge `sign_gridTranspose_eq_choose` via `card_bij` over `finPairsLT` (inversions ↔
+{rows i<i′}×{cols j>j′}), or submit to Aristotle when non-404. See knowledge.md S20.
 
 ## Session 18 (2026-06-16, researcher-1) — M2 bearer re-audit; both backends down for the safe path
 Aristotle `prove` still 404 (live-probed); Docker at 4 `lean-build` containers (over the ≤2 safety

@@ -228,7 +228,7 @@
       "startLine": 160,
       "endLine": 165
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Weak Form of Problem #1173",
     "content": "The weak conjecture asks for a free set of cardinality ℵ_ω (rather than ℵ_{ω+1}). This would be a partial result: the free set is large but not as large as the domain. The gap between ℵ_ω and ℵ_{ω+1} is the key difficulty, as constructing a free set of successor cardinal size at a singular limit requires overcoming cofinality barriers.",
     "mathContext": "$\\text{GCH} \\Rightarrow \\forall f : \\omega_{\\omega+1} \\to [\\omega_{\\omega+1}]^{\\leq \\aleph_\\omega},\\; \\text{AlmostDisjoint}(f, \\aleph_\\omega) \\Rightarrow \\exists S,\\; |S| = \\aleph_\\omega \\wedge S \\text{ is free}$. The weak form requires $|S| = \\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",

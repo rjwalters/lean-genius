@@ -61,7 +61,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.divisors",
+      "Sum Of Divisors",
+      "Divisors Of One"
+    ]
   },
   {
     "id": "ann-e1060-sigma-prime",
@@ -79,7 +83,11 @@
       "prime numbers",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Divisors Of Primes",
+      "Sum Of Divisors"
+    ]
   },
   {
     "id": "ann-e1060-g",
@@ -97,7 +105,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sum Of Divisors",
+      "Multiplicative Functions",
+      "Lean Definitions"
+    ]
   },
   {
     "id": "ann-e1060-g-prime",
@@ -137,7 +149,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set-Builder Notation",
+      "Diophantine Equations",
+      "Product Function g"
+    ]
   },
   {
     "id": "ann-e1060-f",
@@ -155,7 +171,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Cardinality",
+      "Set.ncard",
+      "Counting Functions"
+    ]
   },
   {
     "id": "ann-e1060-finite",
@@ -173,7 +193,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sets",
+      "Sum Of Divisors Bounds",
+      "Divisor Counting"
+    ]
   },
   {
     "id": "ann-e1060-weak-conj",
@@ -191,7 +215,11 @@
       "mathematical insight",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Notation",
+      "Iterated Logarithm",
+      "Growth Rates"
+    ]
   },
   {
     "id": "ann-e1060-strong-conj",
@@ -209,7 +237,11 @@
       "mathematical insight",
       "polynomial theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polylogarithmic Bounds",
+      "Asymptotic Notation",
+      "Big-O Notation"
+    ]
   },
   {
     "id": "ann-e1060-oeis",
@@ -227,7 +259,11 @@
       "Integer sequences"
     ],
     "mathContext": "See annotation content for formal details of oeis a327153",
-    "prerequisites": []
+    "prerequisites": [
+      "Range Of A Function",
+      "Integer Sequences",
+      "Counting Function f"
+    ]
   },
   {
     "id": "ann-e1060-ex-6",
@@ -245,7 +281,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sum Of Divisors",
+      "native_decide",
+      "Product Function g"
+    ]
   },
   {
     "id": "ann-e1060-ex-12",
@@ -263,7 +303,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sum Of Divisors",
+      "Product Function g",
+      "Prime Numbers"
+    ]
   },
   {
     "id": "ann-e1060-ex-72",
@@ -281,7 +325,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sum Of Divisors",
+      "Composite Numbers",
+      "Product Function g"
+    ]
   },
   {
     "id": "ann-e1060-primes",
@@ -299,6 +347,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Numbers",
+      "Oblong Numbers",
+      "Range Of A Function"
+    ]
   }
 ]

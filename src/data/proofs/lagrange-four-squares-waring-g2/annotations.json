@@ -126,7 +126,7 @@
       "startLine": 85,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Witness 7: Ruling Out 1, 2, and 3 Squares",
     "content": "To certify that 7 needs exactly four squares, the file rules out every smaller count. `seven_not_sum_three_sq` (the mod-8 obstruction) immediately implies `seven_not_sum_two_sq` and the single-square case, because a representation with fewer squares is a special case of a three-square representation with the extra slots set to 0: `⟨x, y, 0, _⟩`. The single-square impossibility `seven_not_sq` is closed by the bound x ≤ 2 (`nlinarith`) followed by `interval_cases`. `seven_needs_four_squares` then bundles the positive witness 7 = 1²+1²+1²+2² with the three-square impossibility — an exact lower-bound certificate, not just an upper bound on the count.",
     "mathContext": "$7 = 1^2+1^2+1^2+2^2$ but $7 \\neq x^2+y^2+z^2$. Padding with zeros gives the monotone chain: not a sum of 3 squares $\\Rightarrow$ not a sum of $\\le 2$ $\\Rightarrow$ not a single square. Hence $\\min\\{s : 7 = \\sum_{i<s} a_i^2\\} = 4$.",
@@ -172,7 +172,7 @@
       "startLine": 126,
       "endLine": 151
     },
-    "type": "technique",
+    "type": "insight",
     "title": "From One Witness to an Arithmetic Progression: 8b + 7",
     "content": "Rather than stopping at n = 7, `seven_mod_eight_needs_four` generalizes the mod-8 obstruction to every n ≡ 7 (mod 8): the residue argument never used the actual value 7, only its residue class. The concrete cases 15, 23, 31 are then one-liners delegating to this lemma with `norm_num`, and `eight_b_plus_seven_needs_four` closes the general arithmetic progression {8b+7 : b ∈ ℕ} with `omega`. This already exhibits an infinite, explicitly parameterized family of integers needing four squares — the seed for both the descent argument (Part 5) and the asymptotic G(2) = 4 statement (Part 8).",
     "mathContext": "$n \\equiv 7 \\pmod 8 \\Rightarrow n \\neq x^2+y^2+z^2$, since $x^2+y^2+z^2 \\not\\equiv 7 \\pmod 8$. The family $\\{8b+7\\}_{b\\ge 0} = \\{7,15,23,31,39,\\ldots\\}$ all need four squares.",
@@ -195,7 +195,7 @@
       "startLine": 362,
       "endLine": 401
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Multiplicative Structure: Scaling and the Essential Fourth Square",
     "content": "The descent lemma has a forward companion: `four_mul_sum_three_sq` shows that if n is a sum of three squares then so is 4n (scale each root by 2), and `sq_mul_sum_three_sq` generalizes to k²n (scale by k). Together with the descent direction, these establish that being a sum of three squares is invariant under multiplication by perfect squares — the structural reason the excluded set is closed under the 4^a factor. `fourth_square_essential` packages the dichotomy for excluded numbers: a four-square representation always exists (Lagrange) yet no three-square one does, so the fourth square is genuinely indispensable, not merely convenient.",
     "mathContext": "If $n = x^2+y^2+z^2$ then $k^2 n = (kx)^2+(ky)^2+(kz)^2$. Conversely the descent removes a factor of 4. Hence three-square representability is stable under multiplication by squares, and for $n = 4^a(8b+7)$ the fourth square cannot be dropped.",

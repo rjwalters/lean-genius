@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-strategy",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "type": "context",
+    "title": "Wallis Is the Whole Story",
+    "content": "The header sets out the plan: rather than extract the central binomial asymptotic from the full Stirling sequence (which would force manipulation of (n/e)ⁿ and √(2n) as real powers), the proof routes through Mathlib's exact factorial form of the Wallis sequence W n = 2^{4n}(n!)⁴/((2n)!²(2n+1)). The elementary factorization (2n)! = C(2n,n)·(n!)² collapses this to the clean identity (4ⁿ/C(2n,n))² = W n·(2n+1). Everything downstream is limit algebra on top of the single analytic input W n → π/2 — so the √π in the asymptotic is literally Wallis' 1656 constant. Mathlib has central-binomial bounds (Bertrand) but not this asymptotic.",
+    "mathContext": "$\\binom{2n}{n} \\sim \\dfrac{4^n}{\\sqrt{\\pi n}}$, with $\\sqrt\\pi$ inherited from Wallis' product $W_n \\to \\pi/2$.",
+    "significance": "context",
+    "relatedConcepts": ["Wallis product", "Stirling's formula", "asymptotic equivalence", "central binomial coefficient"],
+    "prerequisites": ["asymptotic notation ~", "Wallis' product for π", "sequence limits"]
+  },
+  {
+    "id": "ann-cb-def",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 45,
+      "endLine": 51
+    },
+    "type": "definition",
+    "title": "The Real-Cast Central Binomial Coefficient",
+    "content": "cb n = (Nat.centralBinom n : ℝ) lifts C(2n,n) into ℝ so it can appear in limits and quotients. cb_pos transfers Nat.centralBinom_pos through the cast, and cb_ne_zero records the nonvanishing needed to divide by cb n throughout the file. Mathlib's Nat.centralBinom n is defined as (2n).choose n, the largest entry of row 2n of Pascal's triangle.",
+    "mathContext": "$\\mathrm{cb}\\,n = \\binom{2n}{n} > 0$, cast to $\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["central binomial coefficient", "natural number cast", "positivity"],
+    "prerequisites": ["Nat.centralBinom", "Nat → ℝ coercion"]
+  },
+  {
+    "id": "ann-factorization",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "The Factorization Bridge: (2n)! = C(2n,n)·(n!)²",
+    "content": "factorial_two_mul is the identity that lets Wallis' factorial ratio and the central binomial coefficient meet. It starts from Mathlib's Nat.choose_mul_factorial_mul_factorial — (2n).choose n · n! · (2n−n)! = (2n)! — simplifies 2n−n = n (omega) and rewrites choose into centralBinom, giving C(2n,n)·n!·n! = (2n)! over ℕ. Casting to ℝ (push_cast) and rearranging (linear_combination) yields (2n)! = C(2n,n)·(n!)². Without this, the (n!)⁴/(2n)!² in Wallis' formula never simplifies to a power of 4ⁿ/C.",
+    "mathContext": "$\\binom{2n}{n}\\,n!\\,(2n-n)! = (2n)!$ with $2n-n=n \\;\\Rightarrow\\; (2n)! = \\binom{2n}{n}(n!)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["factorial identity", "central binomial coefficient", "cast lemmas"],
+    "prerequisites": ["Nat.choose_mul_factorial_mul_factorial", "push_cast", "linear_combination"]
+  },
+  {
+    "id": "ann-exact-identity",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "The Exact Wallis–Central-Binomial Identity",
+    "content": "four_pow_div_centralBinom_sq proves (4ⁿ/C(2n,n))² = W n·(2n+1) — exact for every n, no error term. It rewrites Mathlib's W_eq_factorial_ratio, substitutes the factorization (2n)! = C·(n!)² so the (n!)⁴ cancels against the (2n)!² = C²(n!)⁴, and uses (4ⁿ)² = 2^{4n} to match the numerator; field_simp closes the resulting rational identity. This single equation is the hinge of the whole proof: it converts an analytic limit (Wallis) into an exact algebraic relation about C(2n,n), so all three asymptotic forms below are just limit algebra.",
+    "mathContext": "$W_n = \\dfrac{2^{4n}(n!)^4}{(2n)!^2(2n+1)}$; substituting $(2n)! = \\binom{2n}{n}(n!)^2$ gives $\\Big(\\dfrac{4^n}{\\binom{2n}{n}}\\Big)^2 = W_n(2n+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["exact identity", "Wallis sequence", "field_simp", "power laws"],
+    "prerequisites": ["Real.Wallis.W_eq_factorial_ratio", "exponent arithmetic", "field_simp"]
+  },
+  {
+    "id": "ann-sq-div",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 97
+    },
+    "type": "concept",
+    "title": "Dividing by n: the Limit Becomes π",
+    "content": "centralBinom_sq_div_tendsto shows (4ⁿ/C(2n,n))²/n → π. Dividing the exact identity by n turns the right side into W n·(2n+1)/n = W n·(2 + 1/n). Since W n → π/2 (Mathlib's tendsto_W_nhds_pi_div_two) and 2 + 1/n → 2, the product tends to (π/2)·2 = π by Tendsto.mul; the eventual pointwise equality of the two sequences is discharged by field_simp under filter_upwards. This is where the single analytic input W n → π/2 enters the asymptotics.",
+    "mathContext": "$\\dfrac{(4^n/\\binom{2n}{n})^2}{n} = W_n\\Big(2+\\tfrac1n\\Big) \\to \\tfrac\\pi2\\cdot 2 = \\pi$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product of limits", "Wallis limit", "Filter.Tendsto.mul"],
+    "prerequisites": ["Real.Wallis.tendsto_W_nhds_pi_div_two", "tendsto_one_div_atTop_nhds_zero_nat", "eventual equality"]
+  },
+  {
+    "id": "ann-sqrt-asymptotic",
+    "proofId": "stirling-formula-oq-03-oq-02",
+    "range": {
+      "startLine": 99,
+      "endLine": 127
+    },
+    "type": "concept",
+    "title": "Taking the Square Root: C(2n,n) ~ 4ⁿ/√(πn)",
+    "content": "Two steps finish the asymptotic. four_pow_div_centralBinom_sqrt_tendsto applies continuity of √ (Tendsto.sqrt) to the previous limit: √((4ⁿ/C)²/n) = 4ⁿ/(C·√n) → √π, using √(a²/n) = a/√n for nonnegative a. Then centralBinom_asymptotic forms the quotient √π / (4ⁿ/(C·√n)) → √π/√π = 1, which after √(πn) = √π·√n rewrites equals C(2n,n)·√(πn)/4ⁿ. The result is the textbook statement C(2n,n) ~ 4ⁿ/√(πn) — the asymptotic governing random-walk return probabilities and the arcsine law.",
+    "mathContext": "$\\dfrac{4^n}{\\binom{2n}{n}\\sqrt n} \\to \\sqrt\\pi \\;\\Rightarrow\\; \\dfrac{\\binom{2n}{n}\\sqrt{\\pi n}}{4^n} \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": ["continuity of sqrt", "quotient of limits", "random walk return probability", "arcsine law"],
+    "prerequisites": ["Filter.Tendsto.sqrt", "Real.sqrt_div / Real.sqrt_sq", "quotient limit at nonzero limit"]
+  }
+]

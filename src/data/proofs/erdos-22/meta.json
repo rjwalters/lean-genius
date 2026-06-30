@@ -47,11 +47,11 @@
     "originalContributions": [
       "Graph structure with adj, symm, loopless fields",
       "IsIndependent, ContainsClique, IsCliqueFree predicates",
-      "rt(n, k, ℓ) Ramsey-Turán number axiomatization with achievability and maximality",
+      "rt(n, k, ℓ) Ramsey-Turán number axiomatization with rt_lower_bound (existence-to-rt) axiom",
       "BollobasErdosConjecture formal definition",
       "fox_loh_zhao_2015 axiom with polylogarithmic independence bound",
       "conjecture_resolved: fully proved theorem deriving BollobasErdosConjecture from axioms",
-      "Ramsey-Turán densities ρ₃=0, ρ₄=1/4, ρ₅=1/4",
+      "density_interpretation: ρ₄ = 1/4 computed as the n²/8 edge bound relative to the maximum n²/2",
       "edge_density_gap and density_interpretation computational verifications",
       "erdos_22_summary combining all main results"
     ],
@@ -107,25 +107,25 @@
       "id": "rt-numbers",
       "title": "Ramsey-Turán Numbers",
       "startLine": 81,
-      "endLine": 103,
-      "summary": "rt(n, k, ℓ) definition with achievability and maximality axioms.",
-      "mathContext": "Formal definition: rt(n, k, ℓ) definition with achievability and maximality axioms."
+      "endLine": 87,
+      "summary": "rt(n, k, ℓ) Ramsey-Turán number defined axiomatically.",
+      "mathContext": "Formal definition: rt(n, k, ℓ) Ramsey-Turán number defined axiomatically."
     },
     {
-      "id": "turan",
-      "title": "Turán's Theorem",
-      "startLine": 104,
-      "endLine": 127,
-      "summary": "Classical Turán number ex(n, K_r) and K₄-free bound.",
-      "mathContext": "Bound: Classical Turán number ex(n, K_r) and K₄-free bound."
+      "id": "axioms-conjecture",
+      "title": "Axioms and the Conjecture",
+      "startLine": 89,
+      "endLine": 119,
+      "summary": "BollobasErdosConjecture definition with the fox_loh_zhao_2015 axiom, rt_lower_bound, and fox_loh_zhao_sublinear axioms.",
+      "mathContext": "Formal definition and axioms: BollobasErdosConjecture, fox_loh_zhao_2015, rt_lower_bound, fox_loh_zhao_sublinear."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture and Solution",
-      "startLine": 128,
+      "startLine": 121,
       "endLine": 182,
-      "summary": "BollobasErdosConjecture, Fox-Loh-Zhao axiom, conjecture_resolved proof.",
-      "mathContext": "Verified: BollobasErdosConjecture, Fox-Loh-Zhao axiom, conjecture_resolved proof."
+      "summary": "conjecture_resolved proof deriving the conjecture from the axioms, plus density summary theorems.",
+      "mathContext": "Verified: conjecture_resolved derives BollobasErdosConjecture from the axioms; edge_density_gap, density_interpretation, erdos_22_summary."
     }
   ],
   "conclusion": {

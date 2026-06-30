@@ -76,7 +76,8 @@
   ],
   "relatedProofs": [
     "hilbert-22",
-    "hilbert-22-oq-01"
+    "hilbert-22-oq-01",
+    "hilbert-22-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -89,8 +90,8 @@
     {
       "path": "Proofs/Hilbert22OQ01.lean",
       "filename": "Hilbert22OQ01.lean",
-      "lineCount": 155,
-      "theoremCount": 1,
+      "lineCount": 168,
+      "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -98,9 +99,42 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01.lean"
     },
     {
+      "path": "Proofs/Hilbert22OQ01OQ03.lean",
+      "filename": "Hilbert22OQ01OQ03.lean",
+      "lineCount": 264,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert22OQ01OQ03Pseudohyperbolic.lean",
+      "filename": "Hilbert22OQ01OQ03Pseudohyperbolic.lean",
+      "lineCount": 158,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01OQ03Pseudohyperbolic.lean"
+    },
+    {
+      "path": "Proofs/Hilbert22OQ01OQ03Universal.lean",
+      "filename": "Hilbert22OQ01OQ03Universal.lean",
+      "lineCount": 151,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert22OQ01OQ03Universal.lean"
+    },
+    {
       "path": "Proofs/Hilbert22Uniformization.lean",
       "filename": "Hilbert22Uniformization.lean",
-      "lineCount": 305,
+      "lineCount": 306,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 6,

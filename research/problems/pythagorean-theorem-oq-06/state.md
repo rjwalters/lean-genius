@@ -1,30 +1,25 @@
-# Current State
+# Research State: pythagorean-theorem-oq-06
 
-**Phase**: ACT
-**Since**: 2026-06-16
+## Current State
+**Phase**: OBSERVE
+**Path**: full
+**Since**: 2026-06-16T04:23:11-07:00
 **Iteration**: 1
 
 ## Current Focus
-
-de Gua's theorem formalized in `proofs/Proofs/DeGuaTheorem.lean` (0 sorry / 0 axiom).
-Build-verifying `Proofs.DeGuaTheorem`, then register + add gallery data.
+Initial problem understanding. Read problem.md and gather context.
 
 ## Active Approach
+None yet.
 
-Cross-product / Binet–Cauchy reduction to a single polynomial identity, discharged
-by `linear_combination` (coefficients numerically verified over 10⁵ samples).
-Three theorems: `de_gua_core` (edge-vector), `de_gua` (vertex form), `de_gua_axis_aligned`.
+## Attempt Count
+- Total attempts: 0
+- Current approach attempts: 0
+- Approaches tried: 0
 
 ## Blockers
-
-None mathematically. Verification gated on Docker build completing (in progress).
+None.
 
 ## Next Action
-
-Confirm green build → register in `Proofs.lean` → add gallery data → PR.
-
-## Attempt Counts
-
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1
+Read problem.md thoroughly and acquire full context.
+Then move to ORIENT phase to explore literature and related proofs.

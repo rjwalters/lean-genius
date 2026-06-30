@@ -30,11 +30,11 @@
       "startLine": 44,
       "endLine": 51
     },
-    "type": "context",
+    "type": "concept",
     "title": "Imports: Parent Gallery Proof as Black-Box Dependency",
     "content": "The four-line import block exposes a deliberate gallery-architecture choice. Three imports are standard Mathlib (`Mathlib.Data.Real.Irrational` for the `Irrational` predicate and `irrational_sqrt_natCast_iff`; `Mathlib.Data.Real.Sqrt` for `Real.sqrt`, `sqrt_nonneg`, `sqrt_pos`, `Real.sq_sqrt`, `Real.sqrt_mul`; `Mathlib.Tactic` for `linarith`, `ring`, `norm_num`, `push_cast`, `native_decide`). The fourth, `import Proofs.Sqrt2PlusSqrt3Irrational`, pulls in the parent gallery proof and exposes its public lemma `sqrt2_plus_sqrt3_sq : (sqrt 2 + sqrt 3) ^ 2 = 5 + 2 * sqrt 6` for use in `alpha_quartic_identity` Step 1. The `open Real` then short-circuits `Real.sqrt` to just `sqrt` for readability. This import-and-reuse pattern is the gallery's preferred mechanism for compositional theorem chaining: the parent identity is the natural unit of reuse (not the underlying squaring computation), and re-importing it keeps both gallery entries decoupled from each other's internal proof tactics.",
     "mathContext": "Compositional reuse across formal libraries follows the same mathematical principle as composing lemmas in pen-and-paper proofs: the cleanest dependency is on the *statement* of a previously proved fact, not on the *proof technique*. Here the parent's $(\\sqrt{2}+\\sqrt{3})^2 = 5 + 2\\sqrt{6}$ is a stable interface — even if the parent's proof is later refactored (e.g., via `nlinarith` cleanup or a different normalisation), this child proof remains valid because it depends only on the exported equality.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Mathlib.Data.Real.Irrational",
       "Mathlib.Data.Real.Sqrt",
@@ -99,7 +99,7 @@
       "startLine": 66,
       "endLine": 69
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Cross-Radical Bridge: √5 · √6 = √30",
     "content": "The private theorem sqrt5_mul_sqrt6 is the structural keystone of the second squaring. Real.sqrt_mul requires a non-negativity hypothesis (here 0 ≤ 5, discharged by norm_num); the rewrite ← Real.sqrt_mul then transforms sqrt 5 * sqrt 6 to sqrt (5 * 6), and norm_num evaluates 5 * 6 = 30 to finish. This bridge is what makes 2·√5 · 2·√6 collapse to 8·√30 in the alpha_quartic_identity proof — without it, the second squaring would leave a residual product of two distinct surds rather than a single √30, and the proof would not close.",
     "mathContext": "For non-negative reals $a, b$: $\\sqrt{a} \\cdot \\sqrt{b} = \\sqrt{ab}$. This identity, while elementary, is sensitive to sign: it fails for negative reals (e.g. $\\sqrt{-1} \\cdot \\sqrt{-1} = -1 \\neq \\sqrt{1} = 1$ in the principal-branch convention). Mathlib's Real.sqrt is non-negative on non-negative inputs and zero on negatives, so the identity holds unconditionally when at least one factor is non-negative.",

@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Repunit",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "modular-arithmetic",
@@ -17,7 +17,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/DivisibilityByThreeOQ02OQ01.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,9 +43,9 @@
       "Verified concrete examples: ord_7(10)=6, ord_11(10)=2, ord_13(10)=6, ord_37(10)=3 via native_decide"
     ],
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 65,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "The headline biconditional repunit_dvd_iff_orderOf and the supporting ZMod identity repunit_ZMod_aux are fully symbolic and native_decide-free. However, the four concrete verification examples (7∣R(6), ¬7∣R(5), 11∣R(2), ¬11∣R(1), 37∣R(3), ¬37∣R(2) — advertised as originalContribution #3) are discharged solely by native_decide, which depends on the Lean.ofReduceBool axiom (trusts the compiler's kernel reduction). Per the project's axiom-integrity policy, this is counted as 1 axiom. No literal axiom declarations or sorries.",
     "theoremCount": 2,
     "definitionCount": 1
   },

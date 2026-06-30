@@ -314,3 +314,147 @@ injectivity uses that two preimages are common neighbours of `(f w₁, u)` with 
 Negative half **construction** — the explicit C₅ free-amalgamation friendship graph with
 no universal vertex (now known to be ℵ₀-regular) — still needs an inductive-limit /
 colimit build; not single-session-tractable, confirmed across S1–S7.
+
+## Session (researcher-11, 2026-06-18) — local windmill: edge ⟹ unique triangle
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 new theorems, still 0 sorry / 0
+axiom). Docker **blackout** (`docker info` rc=124, overloaded 7GB VM); build-free,
+deployer-gated. Aristotle still 404. Fresh worktree off `origin/main`.
+
+### Context first (avoided a near-duplicate)
+On entry, `origin/main`'s `FriendshipTheoremOQ04.lean` was already 414 lines (newer than
+knowledge.md): the **regularity engine** I had planned —
+`neighborSet_equinum_of_common_nonneighbor` (compose `N(u)≃N(z)≃N(v)` for a common
+non-neighbour `z`) plus the dichotomy wrapper
+`neighborSet_equinum_of_nonadj_or_common_nonneighbor` — was landed by a prior session
+(#25865-era). Re-scoped to a non-overlapping increment.
+
+### Added to `FriendshipTheoremOQ04.lean` (2 theorems)
+- `common_neighbor_unique`: every two **distinct** vertices have *exactly one* common
+  neighbour, as the reusable `∃!` form (the file previously had only existence via
+  `exists_common_neighbor`). Direct from `Set.ncard_eq_one` + `mem_commonNeighbors`,
+  mirroring the existing `exists_common_neighbor` pattern (lines 90–96).
+- `edge_unique_triangle`: for an adjacent pair `u, v`, a **unique** `w` adjacent to
+  both — every edge lies in exactly one triangle. Equivalently **`N(u)` induces a
+  perfect matching** (each neighbour of `u` has exactly one neighbour inside `N(u)`,
+  the triangle apex). One-line corollary of `common_neighbor_unique` via `huv.ne`.
+
+**Why this is on-theme (not cosmetic).** The result is *unconditional* — it needs
+neither a universal vertex nor finiteness — so it is the **local windmill structure
+that survives in the hub-free C₅ counterexample**: the negative-half graph is still
+"every edge in one triangle / locally a matching," the residual trace of the windmill
+shape after the global hub is destroyed. It complements the *conditional* global
+regularity engine (`neighborSet_equinum_of_*`) with the unconditional *local* triangle
+geometry. `common_neighbor_unique` is also reusable infrastructure for future
+negative-half work (e.g. the bridge lemma below).
+
+**Verification (build-free).** Both proofs are short compositions of in-file idioms
+already compiling on `main` (`Set.ncard_eq_one`, `SimpleGraph.mem_commonNeighbors`,
+`Set.mem_singleton_iff`, `SimpleGraph.Adj.ne`); high static confidence. Machine-check
+deferred to the next Docker-up deployer build (deployer-gated → a compile error blocks
+the PR, never reaches `main`).
+
+### The remaining hard frontier (scoped, not attempted blind)
+Upgrading the *conditional* regularity to unconditional "**no universal vertex ⟹
+regular**" needs the **bridge**: in a hub-free friendship graph, every *adjacent* pair
+`u, v` admits a common non-neighbour `z`. Worked the case analysis on paper (both `u`
+and `v` non-universal give non-neighbours `a, b`; the easy cases give `z` immediately,
+but the residual case where every non-neighbour of `u` is adjacent to `v` and vice
+versa is the classical "complement-connectivity" step and branches several levels).
+This is genuinely multi-case and **not safe to write without a compiler** under
+blackout — it is the same multi-session blocker flagged since S1. Deferred. Next
+session with Docker up: formalize the bridge using `common_neighbor_unique`, then
+`neighborSet_equinum_of_common_nonneighbor` closes unconditional regularity.
+
+---
+
+## Session 2026-06-18 (researcher-2) — frontier assessment (no new lemma; record the regularity-bridge obstruction)
+
+Claimed (RICH, score 30). Positive half is done/verified/merged; the genuinely-open
+work is the negative-half C₅ free-amalgamation counterexample (inductive limit,
+confirmed not single-session-tractable S1–S7). Assessed the one obvious-looking next
+target — promoting the **non-adjacent** equinumerosity `nonadjacent_neighborSet_equinum`
+(S8) to a full **regularity** theorem (any two vertices have equinumerous neighbourhoods
+when there is no universal vertex) — and found why it is NOT a clean single-session add.
+Recording so future sessions don't re-derive it.
+
+**The adjacent-vertices bridge and its obstruction.** To go from "non-adjacent ⟹ equinumerous"
+to full regularity we must handle an *adjacent* pair `u ~ v`. Let `z` be their unique common
+neighbour (friendship axiom). Key structural fact (clean, finiteness-free, provable):
+
+> every vertex `w ≠ z` is non-adjacent to `u` **or** non-adjacent to `v`
+> (otherwise `w` is a second common neighbour of `u,v`, contradicting uniqueness of `z`).
+
+So via S8 every vertex's neighbourhood is equinumerous to `N(u)` **or** to `N(v)` (with `z`
+the only possible exception). In the **finite** Erdős–Rényi–Sós proof one now closes
+`deg(u) = deg(v)` by a degree-sum / double-counting argument over the two degree-classes —
+**this is exactly the step that does not transfer to the infinite (OQ-04) setting**, where
+the target counterexample is ℵ₀-regular (`ncard = 0`, all content carried by `Set.BijOn`)
+and there is no finite degree-sum to count. Bridging `u`/`v` themselves would need an
+*explicit* `Set.BijOn (N u) (N v)` for the adjacent case, e.g. via a common non-neighbour
+`p` (non-adjacent to both `u` and `v`, giving `N(u) ≈ N(p) ≈ N(v)`); but a common
+non-neighbour need not exist in general (`v` may be adjacent to every non-neighbour of `u`),
+and ruling that out is itself the finite counting argument. **Conclusion: the full-regularity
+theorem is not single-session-clean; it is entangled with the same finite↔infinite gap that
+blocks the negative half.** No marginal lemma added this session (honesty: the easy structural
+facts are already harvested across 10 iterations). Status stays **in-progress**.
+
+---
+
+## Insights (Session S14, 2026-06-19 — researcher-2, ACT scaffold)
+
+### Amalgamation STEP lemma isolated (the colimit's inductive core)
+
+The negative-half counterexample (C₅ free-amalgamation, infinite friendship
+graph with no universal vertex) has been flagged "multi-session, needs an
+inductive limit" since S1. That framing conflates two things:
+
+1. The ω-indexed **direct limit** itself (needs colimit machinery) — still open.
+2. The **single amalgamation step** that the limit iterates — this is a *finitary*
+   lemma and is single-session-tractable.
+
+This session isolates (2) as a build-ready Lean statement in
+`proofs/Proofs/FriendshipTheoremOQ04Amalgam.lean` (BUILD-PENDING SCAFFOLD, 3
+`sorry`s, NOT registered — authored under a closed build gate, host load ~24,
+and Aristotle 404, so it could not be discharged this cycle).
+
+**Setup.** `commonNeighbors G a b := {x | G.Adj a x ∧ G.Adj b x}`;
+`Linear G := ∀ a b, a ≠ b → (commonNeighbors G a b).Subsingleton` (the friendship
+*upper* bound). One step `amalgam G u v : SimpleGraph (Option V)` adds a fresh
+vertex `none` adjacent to exactly `some u, some v`.
+
+**Three theorems (statements final, proofs pending):**
+- `amalgam_new_common` — `none` is a common neighbour of `some u, some v`.
+- `amalgam_new_common_unique` — under `commonNeighbors G u v = ∅`, `none` is the
+  *unique* common neighbour, so the deficient pair gains exactly one.
+- `amalgam_linear` — under `u ≠ v`, `Linear G`, and `commonNeighbors G u v = ∅`,
+  the step preserves `Linear`.
+
+**Proof of `amalgam_linear` (verified by hand, the `sorry` just needs the Lean
+case bash):** distinct `p, q : Option V`.
+- `some a, some b` (`a ≠ b`): `some c` common ⟹ `c ∈ commonNeighbors G a b`
+  (subsingleton); `none` common ⟹ `a, b ∈ {u, v}` ⟹ `{a,b} = {u,v}` (since
+  `a ≠ b`) ⟹ `commonNeighbors G a b = ∅`, so `none` is then the unique common
+  neighbour.
+- `none, some b`: `some c` common ⟹ `c ∈ {u,v} ∧ G.Adj b c`; if **both** `u, v`
+  were adjacent to `b` then `b ∈ commonNeighbors G u v = ∅` (contradiction), so
+  ≤ 1 qualifies. (`some, none` symmetric.)
+Every distinct pair keeps ≤ 1 common neighbour. ∎
+
+This is the exact preservation invariant the Python check
+`verify_infinite_friendship.py` confirmed numerically across 4 rounds; it is now
+captured as a precise Lean obligation.
+
+### Revised tractability of the negative half
+- **Amalgamation step** (`amalgam_*` above): single-session, finitary —
+  ready to land the moment a build gate opens or Aristotle returns.
+- **ω-colimit / full counterexample**: still multi-session (direct-limit on the
+  step, plus the "every deficient pair eventually repaired" fairness argument
+  giving the *lower* bound `≥ 1` in the limit, and "no universal vertex"
+  persisting through the limit).
+
+### Next-session recipe
+1. Gate open (`uptime` load < 6, ≤ 2 `lean-build` containers) → `docker-build.sh
+   Proofs.FriendshipTheoremOQ04Amalgam` after registering it, OR
+2. Aristotle up → `prove_file` on the scaffold (statements are self-contained).
+3. On green: register in `Proofs.lean`, mark verified, then attack the colimit.

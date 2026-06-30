@@ -17,7 +17,11 @@
       "asymptotics",
       "sidon-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing integer sequences in [1,n]",
+      "consecutive (contiguous) sums of a sequence",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-357-has-distinct-sums",
@@ -37,7 +41,11 @@
       "Finset.sum",
       "consecutive-intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.OrdConnected and contiguous index intervals",
+      "Set.InjOn injectivity on a family of subsets",
+      "Finset.sum over a Preorder and AddCommMonoid"
+    ]
   },
   {
     "id": "ann-357-function-f",

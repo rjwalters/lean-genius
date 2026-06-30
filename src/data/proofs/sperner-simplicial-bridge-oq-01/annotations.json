@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "context",
+    "type": "concept",
     "title": "File Header: Mixed-Dimension Sperner",
     "content": "The module docstring (lines 8-48) names the structural payoff explicitly: *door dimensions are graded*. A codimension-1 face of a `(d+1)`-simplex has cardinality `d`, so faces of different cardinalities cannot pair as doors. The classical pseudomanifold condition therefore decomposes stratum by stratum.\n\nThe single `import` (line 6, `Proofs.SpernerSimplicialBridge`) is the entirety of the dependency surface — no new Mathlib modules are imported beyond what the parent already brings. The `namespace Sperner.SimplicialComplex` opening (line 50) places every new declaration in the parent's namespace, so unqualified references to `vertexEnum`, `exists_panchromatic`, `IsDoor`, `IsPanchromatic`, and `adjFn` resolve against the parent without qualification.\n\nThe `open Finset` directive (line 52) is essential: every use of `filter`, `mem_filter`, `filter_eq_self`, `filter_eq_empty_iff`, and `filter_empty` resolves to the `Finset` namespace without explicit prefixes, keeping the proof bodies compact.",
     "mathContext": "The mathematical content of the file is concentrated in three predicate-level observations, summarised in the *Main definitions* and *Main results* sections of the docstring: (i) the dimension-graded stratification `topCellsOfDim`; (ii) the per-stratum pseudomanifold predicate `MixedPseudomanifold`; (iii) the pure-to-mixed coercion `MixedPseudomanifold.of_pure` witnessing that the new framework subsumes the parent. The headline theorem `sperner_mixed_panchromatic_at_dim` is then a *bookkeeping* application of the parent's `exists_panchromatic` to the chosen stratum.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "module-level docstring conventions",
       "namespace inheritance",
@@ -55,7 +55,7 @@
       "startLine": 70,
       "endLine": 109
     },
-    "type": "theorem",
+    "type": "definition",
     "title": "Pure → Mixed Coercion (`topCellsOfDim_eq_of_pure`, `topCellsOfDim_eq_empty_of_pure`, `MixedPseudomanifold.of_pure`)",
     "content": "Three theorems witness that the mixed framework strictly generalises the parent's pure setting.\n\n* `topCellsOfDim_eq_of_pure` (lines 74-79): given `hcard : ∀ s ∈ K, s.card = d + 1`, the dimension-`d` stratum *is* `K`. Proof: `unfold topCellsOfDim`, then apply `Finset.filter_eq_self.mpr hcard`.\n* `topCellsOfDim_eq_empty_of_pure` (lines 83-91): under the same uniform-cardinality hypothesis, strata at other dimensions are empty. Proof: rewrite via `Finset.filter_eq_empty_iff`, then any `s` in the stratum would have cardinality both `d + 1` and `d' + 1`, contradicting `omega`.\n* `MixedPseudomanifold.of_pure` (lines 97-109): a pure pseudomanifold lifts to a mixed pseudomanifold. Proof: `by_cases hd : d' = d`. For `d' = d`, rewrite the stratum to `K` via `topCellsOfDim_eq_of_pure` and apply the parent's `hpseudo`. For `d' ≠ d`, rewrite the stratum to `∅` via `topCellsOfDim_eq_empty_of_pure`, simplify the filter, and conclude `0 ≤ 2` via `Nat.zero_le _`.\n\nThe lift is vacuous at strata of other dimensions — the predicate's universal quantification over `d` is precisely what makes the generalisation a faithful extension rather than a parallel framework.",
     "mathContext": "A *pure* pseudomanifold is a `MixedPseudomanifold` in which exactly one stratum is non-empty. The coercion `MixedPseudomanifold.of_pure` shows the predicate inclusion `Pure ⊆ Mixed`, which together with the per-stratum main theorem implies that any result derivable from `MixedPseudomanifold` is at least as strong as the parent's. The vacuous behaviour at off-stratum dimensions is essential: without the universal quantification, one would need an explicit disjunction `(∀ d, pseudomanifold on stratum d) ∨ (only stratum d non-empty)`, which is structurally less clean.",

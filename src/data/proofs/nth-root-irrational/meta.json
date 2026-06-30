@@ -201,6 +201,16 @@
       "targetId": "hermite-lindemann",
       "relationship": "related",
       "description": "The Hermite-Lindemann theorem proves that e^alpha is transcendental for nonzero algebraic alpha. Since nth roots are algebraic, this creates a sharp divide: nth roots of integers are algebraic irrationals (this file), while exponentials of algebraic numbers are transcendental (Hermite-Lindemann). The two results together characterize much of classical transcendence theory."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01",
+      "relationship": "extended-by",
+      "description": "Recasts the elementary irrationality argument in the language of irreducible polynomials: roots of degree-≥2 irreducibles over ℚ are irrational, and Eisenstein's criterion shows Xⁿ − p is irreducible for prime p, recovering irrationality of ⁿ√p as a special case."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-02",
+      "relationship": "extended-by",
+      "description": "Generalizes the base file's per-value 'not a perfect power' lemmas to a single uniform prime-factorization criterion: if a prime divides m to an exponent not divisible by n, then m is not a perfect nth power, so ⁿ√m is irrational for arbitrary non-perfect-power m."
     }
   ],
   "leanFile": {

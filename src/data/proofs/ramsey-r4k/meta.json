@@ -2,10 +2,10 @@
   "id": "ramsey-r4k",
   "title": "Ramsey R(4,k): Structural Bounds and Cubic Growth",
   "slug": "ramsey-r4k",
-  "description": "Formalizes structural results for the off-diagonal Ramsey numbers R(4,k): upper bound R(4,k) ≤ C(k+2,3) via the classical Erdős-Szekeres binomial bound, the fundamental Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) proved via vertex neighborhood splitting, concrete upper bound values for k=3..10, strict monotonicity, cubic growth rate R(4,k) ≤ (k+2)³, and a probabilistic lower bound counting framework. 30 theorems, 0 sorries, 0 axioms.",
+  "description": "Formalizes structural results for the off-diagonal Ramsey numbers R(4,k): upper bound R(4,k) ≤ C(k+2,3) via the classical Erdős-Szekeres binomial bound, the fundamental Pascal recursion R(r,s) ≤ R(r-1,s) + R(r,s-1) proved via vertex neighborhood splitting, concrete upper bound values for k=3..10, strict monotonicity, cubic growth rate R(4,k) ≤ (k+2)³, and a probabilistic lower bound counting framework. 30 theorems, 0 sorries; the concrete numeric bounds use `native_decide`, so they depend on the `Lean.ofReduceBool` axiom.",
   "meta": {
     "author": "Lean Genius RamseyR4k",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/RamseyR4k.lean",
     "tags": [
       "combinatorics",
@@ -15,12 +15,12 @@
       "number-theory",
       "upper-bounds"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 587,
     "theoremCount": 30,
-    "assumptions": "None. All 30 theorems proved. Concrete values via native_decide. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers.",
+    "assumptions": "The concrete upper-bound theorems (`r4_3_upper`..`r4_7_upper`, `r3_3_le`/`r3_4_le`/`r3_5_le`, `r4_bounds_table`, `r4_growth_examples`, `complete_edges_*`, `r4_red_term`, `prob_bound_r4_example`) discharge fixed numeric `ramseyUpperBound`/`completeEdges`/`Nat.choose` evaluations via `native_decide`, so they depend on the `Lean.ofReduceBool` axiom (which trusts the compiler's kernel reduction; `#print axioms r4_3_upper` lists it). The structural results (monotonicity, Pascal recursion, cubic-growth bounds) are fully machine-verified. The formalized bounds are classical upper bounds (C(k+2,3)), not exact Ramsey numbers. `leanFile.axiomCount` remains 0 since there are no literal `axiom` declarations.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",

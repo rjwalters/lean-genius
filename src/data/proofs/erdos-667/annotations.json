@@ -17,7 +17,12 @@
       "graph density"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-667-edge-count",
@@ -36,7 +41,11 @@
       "Ramsey multiplicity"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite set combinatorics",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "erdos-667-clique-guarantee",
@@ -55,7 +64,12 @@
       "clique number guarantees"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Ramsey theory",
+      "monotonic functions",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "erdos-667-boundary-values",
@@ -74,7 +88,11 @@
       "boundary analysis"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "binomial coefficients",
+      "mathematical induction"
+    ]
   },
   {
     "id": "erdos-667-cpq",
@@ -93,7 +111,12 @@
       "asymptotic analysis"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "limits and lim inf",
+      "logarithms"
+    ]
   },
   {
     "id": "erdos-667-ramsey-bounds",
@@ -112,7 +135,12 @@
       "entropy methods"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "probabilistic method",
+      "entropy methods",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-667-efrs",
@@ -131,7 +159,11 @@
       "extremal density thresholds"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "erdos-667-proved-theorems",
@@ -150,7 +182,12 @@
       "Lean 4 tactics"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "real analysis",
+      "Ramsey theory",
+      "order theory"
+    ]
   },
   {
     "id": "erdos-667-small-cases",
@@ -169,7 +206,12 @@
       "native_decide tactic"
     ],
     "significance": "supporting",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "case analysis",
+      "Lean 4 tactic mode",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "erdos-667-conjecture",
@@ -188,6 +230,11 @@
       "open Erdos problems"
     ],
     "significance": "key",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "real analysis",
+      "Lean 4 syntax"
+    ]
   }
 ]

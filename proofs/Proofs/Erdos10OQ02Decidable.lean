@@ -34,19 +34,20 @@ in `research/problems/erdos-10-oq-02/verify_decidable_membership.py`
 (`RepWithAtMost k n ⟺ bounded-distinct ⟺ popcount n ≤ k`; the bounded prime
 form reproduces the `905`/`906` caps and the Grechuk witness).
 
-**Build status.** Authored under a Docker/Aristotle blackout, so this file is
-**not yet registered in `Proofs.lean`**. The proofs use only elementary
-`Multiset` algebra plus the S3 lemmas; they are a verified-on-paper drop-in.
+**Build status.** Registered in `Proofs.lean` and machine-checked under the
+pinned Lean toolchain. The proofs use only elementary `Multiset` algebra plus
+the S3 lemmas.
 
-### Remaining mechanical step (next build-enabled session)
+### The explicit decidable instance (delivered in S5)
 
-The explicit `Decidable (RepWithAtMost k n)` instance: encode a `Nodup`
-exponent multiset bounded by `n` as a `Finset ⊆ Finset.range (n+1)`, so that
+The bounded characterization here makes `Decidable (RepWithAtMost k n)` an
+exercise, but the actual instance shipped in `Erdos10OQ02Popcount.lean` (S5)
+takes a sharper route: rather than the `2^(n+1)`-candidate powerset search
 `RepWithAtMost k n ↔ ∃ F ∈ (Finset.range (n+1)).powerset, F.card ≤ k ∧
-(∑ a ∈ F, 2^a) = n`, the right side being decidable by `Finset` search. The
-bridge needs `Multiset.toFinset` (sum/card preserved on `Nodup` multisets) and
-`Finset.sum`-as-`Multiset.sum`. With that instance in place, the witnesses
-`906 ∉ S_3`-style facts close by `decide`/`native_decide`.
+(∑ a ∈ F, 2^a) = n`, it identifies the minimal distinct-power count with the
+binary popcount (`(Nat.bitIndices n).length`), giving an `O(log n)` instance.
+With that instance the witnesses `906 ∉ S_3`-style facts close by
+`decide`/`native_decide`.
 
 ## References
 
@@ -153,13 +154,13 @@ theorem isPrimePlusKPowers_iff_bounded_distinct (k n : ℕ) :
 #check @repWithAtMost_iff_repBoundedDistinct
 #check @isPrimePlusKPowers_iff_bounded_distinct
 
-/-! ## Part VIII: Decidability recipe (verified lemma names, build-pending)
+/-! ## Part VIII: Decidability recipe (the powerset route, superseded by S5)
 
 The explicit `Decidable (RepWithAtMost k n)` instance is the last mechanical
-step. The bridge below is fully name-checked against the Mathlib pin `v4.26.0`
-(sibling checkout); only an end-to-end Lean build (Docker-gated) remains to
-confirm elaboration. The target equivalence, with the search pinned to a finite
-`Finset`:
+step. This section records the direct powerset route; the instance actually
+shipped in `Erdos10OQ02Popcount.lean` (S5) uses the sharper `O(log n)` popcount
+characterization instead. The target equivalence, with the search pinned to a
+finite `Finset`:
 
   `RepWithAtMost k n ↔
      ∃ F ∈ (Finset.range (n + 1)).powerset, F.card ≤ k ∧ (∑ a ∈ F, 2 ^ a) = n`

@@ -4,7 +4,7 @@
   "slug": "euler-totient-oq-02-oq-01",
   "description": "Formalizes the Euler product formula φ(n) = n·∏_{p|n}(1−1/p) in three equivalent forms using Mathlib's prime factorization infrastructure. Derives the formula from multiplicativity + prime power formula, proves totient density φ(n)/n = ∏(1−1/p), and shows density depends only on the radical of n. 0 sorries, 0 axioms.",
   "meta": {
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "multiplicative-functions",
@@ -12,10 +12,10 @@
       "totient"
     ],
     "proofRepoPath": "Proofs/EulerTotientOQ02OQ01.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. All results from Mathlib's Nat.totient API and Finsupp infrastructure.",
+    "axiomCount": 1,
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. Formula-level results use Mathlib's Nat.totient API and Finsupp infrastructure.",
     "lineCount": 207,
     "theoremCount": 10,
     "definitionCount": 0,

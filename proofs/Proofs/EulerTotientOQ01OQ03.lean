@@ -193,4 +193,47 @@ theorem rsa_decrypt_encrypt {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
   rw [← pow_mul, hed, Nat.add_comm 1 (k * carmichael (p * q))]
   exact rsa_correct_carmichael hcop a (dvd_mul_left _ k)
 
+/-! ### Key generation: discharging the congruence `e·d ≡ 1 (mod λ(n))`
+
+The round-trip `rsa_decrypt_encrypt` above *assumes* a private exponent `d`
+satisfying `e·d = 1 + k·λ(n)`.  RSA key generation must produce such a `d` from
+the public exponent `e`, and it can do so precisely when `gcd(e, λ(n)) = 1`.
+We discharge this hypothesis **constructively**: by Euler's theorem
+`e^φ(λ) ≡ 1 (mod λ)`, so the explicit exponent `d = e^(φ(λ) − 1)` satisfies
+`e·d = e^φ(λ) ≡ 1 (mod λ)`, i.e. `e·d = 1 + k·λ`.  This turns the conditional
+round-trip into an unconditional *existence of a working key pair*. -/
+
+/-- **Existence of a private exponent (modular inverse).**  If `gcd(e, λ) = 1`
+    (with `e ≥ 1` and `λ ≥ 1`) then there are `d, k` with `e·d = 1 + k·λ` — i.e.
+    `e` is invertible modulo `λ`, with inverse `d` realised explicitly as
+    `e^(φ(λ) − 1)` via Euler's theorem.  This is the number-theoretic core of RSA
+    key generation. -/
+theorem exists_inverse_exponent {e lam : ℕ} (he : 1 ≤ e) (hlam : 1 ≤ lam)
+    (hcop : Nat.Coprime e lam) : ∃ d k : ℕ, e * d = 1 + k * lam := by
+  have htot : 1 ≤ Nat.totient lam := Nat.totient_pos.mpr hlam
+  have hed : e * e ^ (Nat.totient lam - 1) = e ^ Nat.totient lam := by
+    rw [← pow_succ']; congr 1; omega
+  have hmod : e * e ^ (Nat.totient lam - 1) ≡ 1 [MOD lam] := by
+    rw [hed]; exact Nat.ModEq.pow_totient hcop
+  have hge : 1 ≤ e * e ^ (Nat.totient lam - 1) := by
+    rw [hed]; exact Nat.one_le_pow _ _ he
+  obtain ⟨k, hk⟩ := (Nat.modEq_iff_dvd' hge).mp hmod.symm
+  exact ⟨e ^ (Nat.totient lam - 1), k, by rw [Nat.mul_comm k lam]; omega⟩
+
+/-- **RSA key generation works (unconditional round-trip).**  For `n = p·q`
+    (distinct primes) and a public exponent `e ≥ 1` coprime to `λ(n)`, there
+    *exists* a private exponent `d` for which decryption inverts encryption on
+    every message `a : ZMod n`:
+        `rsaDecrypt d (rsaEncrypt e a) = a`   for all `a`.
+    The congruence hypothesis of `rsa_decrypt_encrypt` is discharged by
+    `exists_inverse_exponent`, so a usable RSA key pair always exists once
+    `gcd(e, λ(n)) = 1`. -/
+theorem exists_rsa_keypair {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcop : Nat.Coprime p q) (e : ℕ) (he : 1 ≤ e)
+    (hlam : 1 ≤ carmichael (p * q))
+    (hecop : Nat.Coprime e (carmichael (p * q))) :
+    ∃ d : ℕ, ∀ a : ZMod (p * q), rsaDecrypt d (rsaEncrypt e a) = a := by
+  obtain ⟨d, k, hed⟩ := exists_inverse_exponent he hlam hecop
+  exact ⟨d, fun a => rsa_decrypt_encrypt hcop a hed⟩
+
 end EulerTotientOQ01OQ03

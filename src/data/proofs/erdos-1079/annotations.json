@@ -17,7 +17,11 @@
       "Neighborhood density",
       "Complete graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Turán's Theorem",
+      "Graph Neighborhoods",
+      "Complete Graphs"
+    ]
   },
   {
     "id": "ann-e1079-definitions",
@@ -37,7 +41,11 @@
       "Edge counting",
       "Induced subgraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Edge Counting",
+      "Floor Function"
+    ]
   },
   {
     "id": "ann-e1079-bollobas-thomason",
@@ -57,7 +65,11 @@
       "Extremal graph theory",
       "Turán stability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Clique Counting",
+      "Edge Density"
+    ]
   },
   {
     "id": "ann-e1079-bondy",
@@ -77,7 +89,11 @@
       "Local structure",
       "Extremal results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Maximum Degree",
+      "Vertex Degree",
+      "Edge Counting"
+    ]
   },
   {
     "id": "ann-e1079-turan",
@@ -97,7 +113,11 @@
       "Extremal graphs",
       "CliqueFree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Clique-Free Graphs",
+      "Complete Multipartite Graphs",
+      "Integer Partitions"
+    ]
   },
   {
     "id": "ann-e1079-summary",
@@ -116,6 +136,10 @@
       "Local-global principles",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Logical Conjunction",
+      "Extremal Bounds",
+      "Local-Global Principles"
+    ]
   }
 ]

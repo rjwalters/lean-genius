@@ -2,12 +2,12 @@
   "id": "erdos-1047-oq-02",
   "title": "Erdős #1047 OQ-02: Soundness of the Grunsky-Conjecture Axiom",
   "slug": "erdos-1047-oq-02",
-  "description": "A soundness-correction companion for Erdős #1047. An earlier flagship formalization stated Grunsky's conjecture with a spurious small-c restriction and posited its negation as a false axiom. That patch has now been APPLIED in the flagship (Erdos1047Problem.lean): grunskyConjecture was redefined to the faithful (∀ c > 0) form and grunskyConjecture_false is now a theorem from Goodman's counterexample, leaving goodman_counterexample as the single remaining axiom. This entry mirrors the corrected statement (grunskyConjectureFaithful, now definitionally equal to the flagship's grunskyConjecture) and re-derives its negation, standing as a redundant-but-consistent record of the repair.",
+  "description": "An axiom-free resolution-and-soundness entry for Erdős #1047. An earlier flagship stated Grunsky's conjecture with a spurious small-c restriction and posited its negation as a false axiom; that patch was applied (grunskyConjecture redefined to the faithful ∀ c > 0 form, grunskyConjecture_false proved as a theorem), leaving goodman_counterexample as the sole axiom. That last axiom is now DISCHARGED: Erdos1047OQ02Certificate.lean proves the Goodman counterexample (non-convex lemniscate component of (z²+1)(z-2)² at c=5^(3/2)/4) with no sorry and no axiom, via a preconnected arc whose chord escapes the lemniscate. This entry imports the certificate so its negation theorem grunsky_false_faithful rests on no problem-specific axiom (#print axioms = propext/Classical.choice/Quot.sound only).",
   "meta": {
     "author": "researcher agents (Lean Genius); Grunsky (question), Goodman (1966, counterexample)",
     "sourceUrl": "https://erdosproblems.com/1047",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1047OQ02.lean",
     "tags": [
       "erdos",
@@ -19,7 +19,7 @@
       "soundness",
       "axiom-integrity"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 1047,
     "erdosUrl": "https://erdosproblems.com/1047",
@@ -37,14 +37,14 @@
       }
     ],
     "originalContributions": [
-      "Faithful formalization of Grunsky's question with no spurious small-c restriction (grunskyConjectureFaithful, ∀ c > 0), now definitionally equal to the flagship's repaired grunskyConjecture",
-      "Proof that the faithful statement's negation is a THEOREM (grunsky_false_faithful), derived directly from goodman_counterexample — not a standalone axiom",
-      "faithful_imp_grunsky: records that the faithful statement now coincides with the flagship's grunskyConjecture (the implication is the identity, since the flagship was redefined to the ∀-c form)",
-      "Documents the parent soundness patch (PR #24613, applied) that reduced the flagship axiom count from 2 to 1 by replacing the false axiom grunskyConjecture_false with a theorem"
+      "Faithful formalization of Grunsky's question with no spurious small-c restriction (grunskyConjectureFaithful, ∀ c > 0), definitionally equal to the flagship's repaired grunskyConjecture",
+      "AXIOM-FREE proof that the faithful statement's negation is a THEOREM (grunsky_false_faithful), now derived from the machine-checked Goodman certificate (goodman_counterexample_proof) instead of the parent's goodman_counterexample axiom — no problem-specific axiom in the dependency chain",
+      "Discharge of the last analytic axiom: the Goodman counterexample is proved with no sorry/axiom in Erdos1047OQ02Certificate.lean (4 degree-8 segment inequalities ‖f(z(s))‖≤c via a sympy-verified SOS/Bernstein certificate + the topological chord-exit bridge)",
+      "faithful_imp_grunsky: records that the faithful statement coincides with the flagship's grunskyConjecture (the implication is the identity)"
     ],
-    "axiomCount": 1,
-    "lineCount": 94,
-    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1047OQ02` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 3059 jobs; verified 2026-06-15, researcher-4). Registered in Proofs.lean (import Proofs.Erdos1047OQ02). The parent axiom-elimination patch (PR #24613) landed: Erdos1047Problem.lean defines grunskyConjecture in the faithful ∀ c > 0 form and proves grunskyConjecture_false as a theorem. The only assumption is the inherited goodman_counterexample axiom (Goodman's polynomial (z²+1)(z-2)² has a non-convex lemniscate component at c = 5^(3/2)/4) — the single genuine analytic input. This entry adds NO axioms of its own; goodman_counterexample is the sole axiom in the dependency chain (axiomCount = 1).",
+    "axiomCount": 0,
+    "lineCount": 110,
+    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1047OQ02` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 3061 jobs; verified 2026-06-17, researcher-5). Registered in Proofs.lean. **AXIOM-FREE**: the last analytic assumption (goodman_counterexample) has been discharged in Proofs/Erdos1047OQ02Certificate.lean, which proves `goodman_counterexample_proof` (the exact statement) with no sorry and no axiom — the Goodman polynomial (z²+1)(z-2)² at c = 5^(3/2)/4 has a non-convex lemniscate component, witnessed by a preconnected 4-segment arc inside the lemniscate whose chord midpoint (0, |f|=4>c) escapes it, via the topological reduction bridge componentContaining_lemniscate_not_convex_of_chord_exits. This entry imports that certificate, so `grunsky_false_faithful` no longer depends on any problem-specific axiom. `#print axioms grunsky_false_faithful` = [propext, Classical.choice, Quot.sound] (Mathlib standard, non-counting). axiomCount = 0.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
     "definitionCount": 1
@@ -97,33 +97,32 @@
       "id": "faithful-statement",
       "title": "The Faithful Grunsky Question",
       "summary": "grunskyConjectureFaithful: convexity for every c > 0, with no small-c restriction",
-      "startLine": 65,
-      "endLine": 72,
+      "startLine": 73,
+      "endLine": 80,
       "mathContext": "$\\\\forall f$ monic of positive degree, $\\\\forall c > 0$, every component of $\\\\{|f(z)| \\\\le c\\\\}$ is convex. The statement the #1047 docstring actually describes; it is FALSE."
     },
     {
       "id": "strictly-stronger",
       "title": "Faithful Coincides with the Flagship",
       "summary": "faithful_imp_grunsky: the ∀-c statement now coincides with the flagship's repaired grunskyConjecture (the implication is the identity)",
-      "startLine": 74,
-      "endLine": 81,
+      "startLine": 82,
+      "endLine": 89,
       "mathContext": "Since the flagship was redefined to the faithful $\\\\forall c > 0$ form, `grunskyConjectureFaithful` is definitionally equal to its `grunskyConjecture` and the implication is `fun h => h`."
     },
     {
       "id": "negation-theorem",
       "title": "The Corrected Axiom, as a Theorem",
       "summary": "grunsky_false_faithful: the faithful statement is false, proved from goodman_counterexample",
-      "startLine": 83,
-      "endLine": 93,
+      "startLine": 91,
+      "endLine": 104,
       "mathContext": "Destructs Goodman's counterexample at $f = (z^2+1)(z-2)^2$, $c = 5^{3/2}/4$ to refute convexity for all c > 0 — no standalone negation axiom needed."
     }
   ],
   "conclusion": {
-    "summary": "An earlier flagship Erdős #1047 file negated a spurious small-c restriction of Grunsky's conjecture via a false axiom (grunskyConjecture_false). That patch has now been applied (PR #24613): the flagship was redefined to the faithful ∀-c statement and proves its negation as a theorem directly from Goodman's counterexample, reducing its axiom count from 2 to 1. This open-question entry mirrors the corrected faithful statement (now definitionally equal to the flagship's grunskyConjecture) and re-derives the negation, standing as a redundant-but-consistent record of the repair.",
-    "implications": "Improves the integrity of the #1047 formalization: the falsity of Grunsky's conjecture becomes a machine-checkable consequence of the single genuine analytic input (Goodman's counterexample), rather than a posited axiom that, as stated, was unsound.",
+    "summary": "Erdős #1047 OQ-02 is now AXIOM-FREE. An earlier flagship negated a spurious small-c Grunsky statement via a false axiom; the applied patch made the negation a theorem from goodman_counterexample, and this work discharges that last axiom too — the Goodman counterexample is fully proved (no sorry/axiom) in Erdos1047OQ02Certificate.lean. grunsky_false_faithful now derives the answer NO from a machine-checked certificate; axiomCount 1 → 0.",
+    "implications": "The falsity of Grunsky's conjecture (and the Erdős #1047 answer NO along this route) is now a fully machine-checked consequence with no posited analytic axiom — the Goodman non-convexity is certified by an explicit preconnected arc and a chord-exit estimate, both proved in Lean.",
     "openQuestions": [
-      "Confirm the deployer machine-check of Erdos1047OQ02.lean and the repaired flagship on the next green build.",
-      "Formalize goodman_counterexample itself (the remaining genuine axiom) from explicit complex-analytic estimates.",
+      "Retire the parent flagship's own goodman_counterexample axiom and its 4 downstream consumers by moving the headline theorems downstream of the certificate (mechanical restructure; the analytic content is done).",
       "Goodman's open question: the maximum number of non-convex lemniscate components as a function of degree (a lower bound ⌊d/3⌋ is numerically certified in this problem's research notes)."
     ]
   },
@@ -165,6 +164,7 @@
   "leanFile": {
     "imports": [
       "Proofs.Erdos1047Problem",
+      "Proofs.Erdos1047OQ02Certificate",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -173,8 +173,8 @@
       "Erdos1047"
     ],
     "namespace": "Erdos1047OQ02",
-    "lineCount": 94,
-    "axiomCount": 1,
+    "lineCount": 110,
+    "axiomCount": 0,
     "theoremCount": 2,
     "definitionCount": 1,
     "path": "Proofs/Erdos1047OQ02.lean",

@@ -16,7 +16,11 @@
       "binary counting"
     ],
     "mathContext": "See annotation content for formal details of counting subsets",
-    "prerequisites": []
+    "prerequisites": [
+      "sets and subsets",
+      "the power set 𝒫(S)",
+      "counting / basic combinatorics"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -35,7 +39,11 @@
       "powerset",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets (Finset) and cardinality",
+      "the power set of a finite set",
+      "the formula |𝒫(S)| = 2^|S|"
+    ]
   },
   {
     "id": "ann-binary-bijection",
@@ -54,7 +62,11 @@
       "binary representation",
       "bijection"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "characteristic (indicator) functions of subsets",
+      "binary strings of length n",
+      "bijections and counting"
+    ]
   },
   {
     "id": "ann-empty-set",
@@ -72,7 +84,11 @@
       "empty set",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the empty set and its unique subset",
+      "the base case of an induction",
+      "2⁰ = 1"
+    ]
   },
   {
     "id": "ann-singleton",
@@ -90,7 +106,11 @@
       "singleton",
       "binary choice"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sets {a}",
+      "the two subsets ∅ and {a}",
+      "binary choice (include/exclude)"
+    ]
   },
   {
     "id": "ann-three-elements",
@@ -108,7 +128,11 @@
       "enumeration",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "enumerating all subsets",
+      "the count 2³ = 8",
+      "explicit verification"
+    ]
   },
   {
     "id": "ann-doubling",
@@ -126,7 +150,11 @@
       "induction",
       "recursive counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by induction on set size",
+      "subsets with vs without a new element",
+      "the doubling recurrence 2^{n+1}=2·2ⁿ"
+    ]
   },
   {
     "id": "ann-binomial",
@@ -145,7 +173,11 @@
       "binomial theorem",
       "Pascal's triangle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficients C(n,k)",
+      "subsets of fixed size k",
+      "the identity Σ_k C(n,k) = 2ⁿ (binomial theorem)"
+    ]
   },
   {
     "id": "ann-fintype",
@@ -164,7 +196,11 @@
       "type theory",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Fintype typeclass and Fintype.card",
+      "types as finite sets",
+      "cardinality in type theory"
+    ]
   },
   {
     "id": "ann-powerset-properties",
@@ -182,7 +218,11 @@
       "subset relation",
       "membership"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the subset relation ⊆",
+      "membership in the power set (A∈𝒫(S) ⟺ A⊆S)",
+      "Finset.powerset"
+    ]
   },
   {
     "id": "ann-nonempty",
@@ -200,6 +240,10 @@
       "nonempty sets",
       "lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nonempty finite sets",
+      "the empty set as a member of every power set",
+      "positive lower bounds on cardinality"
+    ]
   }
 ]

@@ -93,6 +93,16 @@
       "targetId": "pythagorean-theorem",
       "relationship": "related",
       "description": "The British Flag theorem generalizes the Pythagorean relation; when P is a corner it reduces to the Pythagorean identity on the rectangle's sides and diagonal"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both results expand squared distances via the dot product; the British Flag theorem is the special case where the relevant angle is a right angle, so the cosine term 2(u·v) vanishes"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Another classical identity relating distances among the vertices of a cyclic quadrilateral; like the British Flag theorem it constrains the four corner-to-point distances, but multiplicatively rather than as a sum of squares"
     }
   ],
   "references": [

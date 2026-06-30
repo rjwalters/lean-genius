@@ -1,0 +1,169 @@
+{
+  "id": "cauchy-schwarz-oq-02-oq-05",
+  "title": "The Riesz Representation Theorem in L²: every bounded functional is inner product with a unique element",
+  "slug": "cauchy-schwarz-oq-02-oq-05",
+  "description": "Answers the parent's fifth open question verbatim: every bounded linear functional g on L² = Lp 𝕜 2 μ (RCLike 𝕜) is g h = ⟪f, h⟫ for a unique f ∈ L² (riesz_L2_existsUnique). Since L² is a complete inner product space, the result specializes Mathlib's abstract Fréchet–Riesz representation InnerProductSpace.toDual; the witness is (toDual 𝕜 _).symm g and uniqueness is inner-product extensionality (riesz_L2_inner_ext). Beyond the abstract statement, the file gives the concrete L² form g h = ∫ a, ⟪f a, h a⟫ ∂μ (riesz_L2_integral, via L2.inner_def) and shows the representation is isometric, ‖f‖ = ‖g‖ (riesz_L2_norm), since toDual is a linear isometry. This is the inner-product (Hilbert) route to Riesz in L², complementary to the general-Lp duality entries in this tree that use the harder Radon–Nikodým / Hölder route. Fully verified: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ02OQ05.lean",
+    "tags": [
+      "functional-analysis",
+      "hilbert-space",
+      "riesz-representation",
+      "L2-space",
+      "inner-product-space",
+      "duality",
+      "measure-theory"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "InnerProductSpace.toDual",
+        "description": "The Fréchet–Riesz representation E ≃ₗᵢ⋆[𝕜] StrongDual 𝕜 E for a complete inner product space E; the headline result, specialized here to E = L² = α →₂[μ] 𝕜",
+        "module": "Mathlib.Analysis.InnerProductSpace.Dual"
+      },
+      {
+        "theorem": "InnerProductSpace.toDual_symm_apply",
+        "description": "⟪(toDual 𝕜 E).symm y, x⟫ = y x; gives the representation g h = ⟪(toDual).symm g, h⟫ directly, supplying the existence witness and its defining property",
+        "module": "Mathlib.Analysis.InnerProductSpace.Dual"
+      },
+      {
+        "theorem": "ext_inner_right",
+        "description": "(∀ w, ⟪x, w⟫ = ⟪y, w⟫) → x = y; inner-product extensionality, used to prove uniqueness of the representing element",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.L2.inner_def",
+        "description": "⟪f, g⟫ = ∫ a, ⟪f a, g a⟫ ∂μ for f, g ∈ L²; unfolds the L² inner product into a pointwise integral, yielding the concrete integral form of Riesz",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "LinearIsometryEquiv.norm_map",
+        "description": "‖e x‖ = ‖x‖ for a linear isometry equivalence e; applied to (toDual).symm to show the Riesz representation preserves norms (‖f‖ = ‖g‖)",
+        "module": "Mathlib.Analysis.Normed.Operator.LinearIsometry"
+      },
+      {
+        "theorem": "MeasureTheory.L2.innerProductSpace",
+        "description": "α →₂[μ] E is an inner product space for RCLike 𝕜 and inner-product-space E; with E = 𝕜 it makes L² a complete inner product space so toDual applies",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      }
+    ],
+    "originalContributions": [
+      "riesz_L2_existsUnique: the Riesz representation theorem in L² in ∃! form — every bounded linear functional g on L² is g h = ⟪f, h⟫ for a unique f — assembled by specializing InnerProductSpace.toDual to L² and adding uniqueness. This is the parent open question verbatim.",
+      "riesz_L2_integral: the concrete L² form g h = ∫ a, ⟪f a, h a⟫ ∂μ, obtained by composing the abstract representation with L2.inner_def. This integral statement (functional = integration against the representing element) is the form in which Riesz is classically stated for L² and is not the abstract Hilbert-space lemma.",
+      "riesz_L2_norm: the representation is isometric, ‖(toDual).symm g‖ = ‖g‖, recording that Riesz identifies L² with its dual norm-preservingly — a property of the Hilbert (p=2) case specifically.",
+      "riesz_L2_exists, riesz_L2_inner_ext: the existence and uniqueness halves stated standalone for L²."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). No native_decide, so no Lean.ofReduceBool dependency. The headline theorem (Fréchet–Riesz representation) is Mathlib's InnerProductSpace.toDual — hence badge 'mathlib'; the contribution is its specialization to L², the integral form, and the isometry. Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 90,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Frigyes Riesz proved in 1907 that every continuous linear functional on L²[a,b] is given by integration against a fixed L² function — one of the founding theorems of functional analysis, and the prototype of the duality (L²)* ≅ L². In modern terms it is the special case p = 2 of Lp–Lq duality, but it is far more elementary than the general case: because L² is a Hilbert space, the representing element is produced by orthogonal projection onto the kernel of the functional (the Fréchet–Riesz argument), with no Radon–Nikodým theorem required. Mathlib packages this as InnerProductSpace.toDual, an isometric conjugate-linear equivalence between any complete inner product space and its dual. This entry specializes it to L² = Lp 𝕜 2 μ and records the concrete consequences — the integral representation and the norm identity — that distinguish the L² statement.",
+    "problemStatement": "Formalize the Riesz representation theorem in L²: prove that for any measure μ and RCLike scalar field 𝕜, every bounded linear functional g : (α →₂[μ] 𝕜) →L[𝕜] 𝕜 equals h ↦ ⟪f, h⟫ for a unique f ∈ L², exhibit the integral form g h = ∫ a, ⟪f a, h a⟫ ∂μ, and show ‖f‖ = ‖g‖.",
+    "proofStrategy": "L² = α →₂[μ] 𝕜 is, for RCLike 𝕜, a complete inner product space (MeasureTheory.L2.innerProductSpace together with Lp completeness and Fact (1 ≤ 2)), so Mathlib's Fréchet–Riesz equivalence InnerProductSpace.toDual 𝕜 (α →₂[μ] 𝕜) : L² ≃ₗᵢ⋆[𝕜] StrongDual 𝕜 L² applies with no extra hypotheses. Existence: take f = (toDual).symm g; then toDual_symm_apply gives g h = ⟪f, h⟫ directly. Uniqueness: if ⟪f₁, h⟫ = ⟪f₂, h⟫ for all h then f₁ = f₂ by ext_inner_right (inner-product extensionality). Integral form: rewrite ⟪f, h⟫ with L2.inner_def to get ∫ a, ⟪f a, h a⟫ ∂μ. Isometry: (toDual).symm is a linear isometry equivalence, so LinearIsometryEquiv.norm_map yields ‖f‖ = ‖g‖.",
+    "keyInsights": [
+      "**In L² the representing element is free.** For general Lp the duality (Lp)* ≅ Lq requires the Radon–Nikodým theorem and Hölder's inequality (the route taken by the sibling Lp-Riesz entries). At p = 2 the inner product structure supplies the representing element directly: f = (toDual).symm g, with no measure-theoretic machinery. This is why the Hilbert case is both the oldest and the easiest.",
+      "**toDual is conjugate-linear and isometric, not just a bijection.** Mathlib's InnerProductSpace.toDual is a LinearIsometryEquiv (semilinear for the star ring hom), so the Riesz correspondence automatically preserves norms — ‖f‖ = ‖g‖ — and conjugate-linearly identifies L² with its dual. The norm identity riesz_L2_norm is a one-line consequence (LinearIsometryEquiv.norm_map) but is genuine L²/Hilbert content absent from a bare existence-uniqueness statement.",
+      "**The classical form is the integral form.** Riesz's 1907 statement is that the functional is integration against f: g h = ∫ a, ⟪f a, h a⟫ ∂μ. Mathlib's abstract lemma gives the inner product ⟪f, h⟫; L2.inner_def unfolds it to the pointwise integral, recovering the historically original statement. The bridge from abstract to concrete is exactly L2.inner_def.",
+      "**Uniqueness is inner-product extensionality.** Two L² elements with the same inner products against everything coincide (ext_inner_right). Combined with existence this packages the theorem as a clean ∃!, matching the parent's phrasing 'a unique element'.",
+      "**RCLike covers both ℝ and ℂ uniformly.** Stating everything over an RCLike field 𝕜 gives the real-L² and complex-L² Riesz theorems simultaneously, with the conjugate-linearity handled by Mathlib's star-semilinear toDual."
+    ],
+    "prerequisites": [
+      "Hilbert spaces and the inner product structure of L²",
+      "Bounded (continuous) linear functionals and the dual space",
+      "The Fréchet–Riesz representation theorem",
+      "Mathlib's Lp / L² spaces and the integral form of the L² inner product"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: L² as a complete inner product space",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "File docstring framing the parent open question and the inner-product (Hilbert) route to Riesz. Sets up variables: a measure μ on α and an RCLike scalar field 𝕜, so that L² = α →₂[μ] 𝕜 is automatically a complete inner product space and Mathlib's InnerProductSpace.toDual applies by typeclass resolution.",
+      "mathContext": "L² = Lp 𝕜 2 μ; for RCLike 𝕜 it is a Hilbert space, so (L²)* ≅ L² via the inner product."
+    },
+    {
+      "id": "exists-unique",
+      "title": "Existence and uniqueness of the representing element",
+      "startLine": 50,
+      "endLine": 75,
+      "summary": "riesz_L2_exists produces the witness (toDual 𝕜 _).symm g with g h = ⟪f, h⟫ from toDual_symm_apply. riesz_L2_inner_ext is inner-product extensionality (ext_inner_right): an L² element is determined by its inner products. riesz_L2_existsUnique packages these into the parent's ∃! statement.",
+      "mathContext": "Every bounded functional on L² is inner product with a unique element."
+    },
+    {
+      "id": "integral-norm",
+      "title": "The concrete integral form and the isometry",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "riesz_L2_integral rewrites ⟪f, h⟫ via L2.inner_def to the classical integral form g h = ∫ a, ⟪f a, h a⟫ ∂μ. riesz_L2_norm records that the representation preserves norms, ‖f‖ = ‖g‖, since toDual is a linear isometry (LinearIsometryEquiv.norm_map).",
+      "mathContext": "Functional = integration against f; the L² ≅ (L²)* identification is isometric."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Riesz, Frigyes",
+      "title": "Sur une espèce de géométrie analytique des systèmes de fonctions sommables",
+      "year": "1907",
+      "note": "C. R. Acad. Sci. Paris 144, 1409–1411. The original representation theorem for continuous functionals on L²."
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Real and Complex Analysis",
+      "year": "1987",
+      "note": "Chapter 4: the Riesz representation theorem for Hilbert spaces and its specialization to L²."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry ('Hölder, L² Theory, and Minkowski'). This leaf answers its fifth open question — formalizing the Riesz representation theorem in L² — verbatim."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling 'Riesz Representation for Lp Spaces' takes the general-p Radon–Nikodým / Hölder route. This entry is the complementary inner-product route valid only at p = 2, which is far more elementary."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Bessel's inequality for Hilbert spaces; part of the same L²/Hilbert-space circle of ideas underlying the inner-product route to duality."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every bounded linear functional g on L² = α →₂[μ] 𝕜 (RCLike 𝕜) is given by inner product with a unique element f, g h = ⟪f, h⟫ (riesz_L2_existsUnique), equivalently by integration g h = ∫ a, ⟪f a, h a⟫ ∂μ (riesz_L2_integral), and the correspondence is isometric, ‖f‖ = ‖g‖ (riesz_L2_norm). The proof specializes Mathlib's Fréchet–Riesz representation InnerProductSpace.toDual to L², using L2.inner_def for the integral form and the linear-isometry structure of toDual for the norm identity. All five theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Completes the L² duality picture in this tree via the inner-product route, complementary to the harder general-Lp Radon–Nikodým entries. The isometric, conjugate-linear identification (L²)* ≅ L² is the basis for the adjoint of operators on L², the weak topology, and the spectral theorem in the L² setting.",
+    "openQuestions": [
+      "Can the integral form be strengthened to identify f explicitly for concrete functionals (e.g. evaluation-type or convolution functionals)?",
+      "How does this inner-product route relate quantitatively to the general-Lp Radon–Nikodým route at p = 2 (do the representing elements provably coincide)?",
+      "Can the adjoint of a bounded operator on L² be constructed from riesz_L2_existsUnique as the next step?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "InnerProductSpace",
+      "ENNReal"
+    ],
+    "namespace": "CauchySchwarzOQ02OQ05",
+    "lineCount": 90,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ02OQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

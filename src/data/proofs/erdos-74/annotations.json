@@ -17,7 +17,11 @@
       "bipartite",
       "graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Chromatic Number",
+      "Bipartite Graphs",
+      "Erdős Problems"
+    ]
   },
   {
     "id": "ann-e74-background",
@@ -36,7 +40,11 @@
       "chromatic-number",
       "coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proper Graph Coloring",
+      "Odd Cycles",
+      "Two-Colorability"
+    ]
   },
   {
     "id": "ann-e74-edge-dist",
@@ -55,7 +63,11 @@
       "edge-deletion",
       "bipartite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Deletion",
+      "Infimum (sInf)",
+      "Bipartite Graphs"
+    ]
   },
   {
     "id": "ann-e74-infinite-counterexample",
@@ -75,7 +87,11 @@
       "infinite-graphs",
       "ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Graphs",
+      "Set.ncard Cardinality",
+      "Complete Graphs"
+    ]
   },
   {
     "id": "ann-e74-max-dist",
@@ -94,7 +110,11 @@
       "induced-subgraph",
       "worst-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Induced Subgraphs",
+      "Supremum (sSup)",
+      "Worst-Case Bounds"
+    ]
   },
   {
     "id": "ann-e74-almost-bipartite",
@@ -113,7 +133,11 @@
       "subgraph",
       "bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Edge Distance To Bipartite",
+      "Growth Rate Functions",
+      "Subgraph Constraints"
+    ]
   },
   {
     "id": "ann-e74-main-question",
@@ -132,7 +156,11 @@
       "universal-quantifier",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite Chromatic Number",
+      "Universal Quantification",
+      "Existential Statements"
+    ]
   },
   {
     "id": "ann-e74-rodl",
@@ -151,7 +179,11 @@
       "rodl",
       "probabilistic-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Infinite Chromatic Number",
+      "Linear Bounds"
+    ]
   },
   {
     "id": "ann-e74-sqrt",
@@ -170,7 +202,11 @@
       "sqrt",
       "barrier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Square-Root Growth",
+      "Edge Deletion Bounds",
+      "Infinite Chromatic Number"
+    ]
   },
   {
     "id": "ann-e74-uncountable",
@@ -190,7 +226,11 @@
       "cardinality",
       "aleph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Cardinal Numbers",
+      "Aleph-One (ℵ₁)",
+      "Uncountable Sets"
+    ]
   },
   {
     "id": "ann-e74-bounds",
@@ -209,6 +249,10 @@
       "trivial-bound",
       "aristotle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complete Graph Edge Count",
+      "Empty Graph",
+      "Bipartite Chromatic Bound"
+    ]
   }
 ]

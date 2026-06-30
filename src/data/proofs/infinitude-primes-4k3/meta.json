@@ -86,6 +86,16 @@
       "targetId": "dirichlets-theorem",
       "relationship": "related",
       "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) — the full generalization of this result to all APs a+nd with gcd(a,d)=1, requiring L-functions."
+    },
+    {
+      "targetId": "infinitude-primes-4k3-oq-01",
+      "relationship": "extended-by",
+      "description": "Specializes the Dirichlet theorem to moduli q∈{12,24}: infinitely many primes p ≡ −1 (mod q), each given in elementary (%q) and analytic (ZMod q) forms."
+    },
+    {
+      "targetId": "infinitude-primes-4k3-oq-03",
+      "relationship": "extended-by",
+      "description": "Companion classification: infinitely many primes ≡ 1 (mod 4) via Euler's criterion, completing the mod-4 dichotomy (every odd prime is ≡1 or ≡3, both infinite)."
     }
   ],
   "sections": [

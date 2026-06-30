@@ -16,7 +16,11 @@
       "gaps in sequences",
       "ABC conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers",
+      "gaps between consecutive terms of a sequence",
+      "Erdős problems in number theory"
+    ]
   },
   {
     "id": "ann-e208-squarefree-def",
@@ -35,7 +39,11 @@
       "divisibility",
       "Mathlib Squarefree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of integers",
+      "divisibility by perfect squares",
+      "Mathlib's Squarefree predicate"
+    ]
   },
   {
     "id": "ann-e208-sequence",
@@ -54,7 +62,11 @@
       "enumeration",
       "infinite sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.nth enumeration of a predicate",
+      "ordering squarefree numbers",
+      "indexing infinite sequences"
+    ]
   },
   {
     "id": "ann-e208-q1",
@@ -73,7 +85,11 @@
       "subpolynomial growth",
       "asymptotic bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "big-O (IsBigO) asymptotic notation",
+      "subpolynomial growth rates",
+      "quantifying over all positive ε"
+    ]
   },
   {
     "id": "ann-e208-q2",
@@ -92,7 +108,11 @@
       "little-o notation",
       "optimal bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o asymptotic notation",
+      "log/log-log bound expressions",
+      "density constant π²/6"
+    ]
   },
   {
     "id": "ann-e208-filaseta",
@@ -111,7 +131,11 @@
       "unconditional bounds",
       "polynomial exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sieve methods",
+      "polynomial gap exponents",
+      "unconditional upper bounds"
+    ]
   },
   {
     "id": "ann-e208-pandey",
@@ -130,7 +154,11 @@
       "breaking barriers",
       "state of the art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Filaseta-Trifonov 1/5 exponent",
+      "improving asymptotic exponents",
+      "unconditional gap bounds"
+    ]
   },
   {
     "id": "ann-e208-lower",
@@ -149,7 +177,11 @@
       "lower bounds",
       "infinitely many"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lower bounds achieved infinitely often",
+      "intervals with many square-divisible integers",
+      "little-o asymptotic notation"
+    ]
   },
   {
     "id": "ann-e208-abc",
@@ -168,7 +200,11 @@
       "conditional results",
       "Granville"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ABC conjecture",
+      "radical rad(abc) of coprime integers",
+      "conditional results in number theory"
+    ]
   },
   {
     "id": "ann-e208-density",
@@ -187,7 +223,11 @@
       "zeta function",
       "product formulas"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of a set of integers",
+      "Euler product ∏_p (1 - 1/p²)",
+      "the Riemann zeta value ζ(2)"
+    ]
   },
   {
     "id": "ann-e208-examples",
@@ -206,7 +246,11 @@
       "decidability",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide tactic",
+      "decidability of Squarefree",
+      "perfect squares dividing small integers"
+    ]
   },
   {
     "id": "ann-e208-gaps",
@@ -225,6 +269,10 @@
       "concrete examples",
       "square divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing consecutive squarefree gaps",
+      "divisibility by 2² and 3²",
+      "concrete enumeration of squarefree numbers"
+    ]
   }
 ]

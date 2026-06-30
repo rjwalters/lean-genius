@@ -17,7 +17,11 @@
       "sieve of Eratosthenes",
       "greedy algorithms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality (gcd = 1)",
+      "greedy sequence construction",
+      "reciprocal sums Σ 1/aᵢ"
+    ]
   },
   {
     "id": "erdos-460-sieve-def",
@@ -37,7 +41,11 @@
       "Nat.Coprime",
       "sieve sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the greedy sieve construction",
+      "indexing the k-th term",
+      "coprimality of a with n − a"
+    ]
   },
   {
     "id": "erdos-460-sieve-initial",
@@ -55,7 +63,10 @@
       "sieve methods",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieve definition",
+      "the base cases a₀ = 0, a₁ = 1"
+    ]
   },
   {
     "id": "erdos-460-sieve-greedy",
@@ -73,7 +84,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "greedy minimality of the next term",
+      "coprimality conditions",
+      "the active vs sentinel state of the sieve"
+    ]
   },
   {
     "id": "erdos-460-sieve-count",
@@ -91,7 +106,11 @@
       "formal definition",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieve sequence",
+      "counting terms below n",
+      "monotonicity of the sequence"
+    ]
   },
   {
     "id": "erdos-460-reciprocal-sum",
@@ -109,7 +128,10 @@
       "formal definition",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieve terms aᵢ",
+      "finite reciprocal sums Σ 1/aᵢ"
+    ]
   },
   {
     "id": "erdos-460-conjecture",
@@ -128,7 +150,10 @@
       "Filter.Tendsto",
       "reciprocal sum criteria"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the reciprocal sum",
+      "divergence in the ∀M ∃N₀ form"
+    ]
   },
   {
     "id": "erdos-460-ees-bound",
@@ -146,7 +171,12 @@
       "sieve methods",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieve growth aₖ",
+      "the bound aₖ < k^{2+ε}",
+      "the Eggleton–Erdős–Selfridge result",
+      "axioms as stated assumptions in the formalization"
+    ]
   },
   {
     "id": "erdos-460-conjectured-bound",
@@ -164,7 +194,11 @@
       "integration",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sieve growth aₖ",
+      "the conjectured bound aₖ ≪ k log k",
+      "the implication to divergence"
+    ]
   },
   {
     "id": "erdos-460-least-prime",
@@ -182,7 +216,10 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the least prime factor P⁻(n)",
+      "Nat.minFac"
+    ]
   },
   {
     "id": "erdos-460-filtered-sum",
@@ -202,7 +239,10 @@
       "Ψ(x,y) counting function",
       "rough numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the least prime factor P⁻(n − a)",
+      "the filtered reciprocal sum f(n)"
+    ]
   },
   {
     "id": "erdos-460-filtered-implies",
@@ -220,7 +260,11 @@
       "prime numbers",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the filtered sum f(n)",
+      "divergence of f(n) implying Problem #460",
+      "lower-bounding the full sieve sum"
+    ]
   },
   {
     "id": "erdos-460-small-prime-sum",
@@ -239,7 +283,10 @@
       "prime numbers",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the least prime factor",
+      "sieve terms where n − aₖ has a prime factor p ≤ aₖ"
+    ]
   },
   {
     "id": "erdos-460-large-prime-sum",
@@ -258,7 +305,10 @@
       "prime numbers",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the least prime factor",
+      "sieve terms where all prime factors of n − aₖ exceed aₖ"
+    ]
   },
   {
     "id": "erdos-460-restricted-question",
@@ -276,6 +326,9 @@
       "prime numbers",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the small-prime and large-prime restricted sums",
+      "divergence of either one implying #460"
+    ]
   }
 ]

@@ -50,8 +50,8 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Imports Mathlib's `Combinatorics.Additive.Dissociated` module along with `Finset.Card`, `Data.Real.Basic`, logarithmic functions, and general tactics; opens the working namespace.",
-      "mathContext": "Sets up the environment for studying dissociated subsets (subset-sum-injective sets) of finite real sets."
+      "summary": "Imports the concrete Finset machinery used throughout — `Finset.Card` and `Finset.Powerset` for the 2^|B| counting, `Data.Real.Basic` for the real ambient set, `Nat.Log` and `Analysis.SpecialFunctions.Log.Basic` for the logarithmic bounds, and `Mathlib.Tactic`. The dissociated predicate is defined from scratch, not imported from `Combinatorics.Additive.Dissociated`.",
+      "mathContext": "Sets up a self-contained environment for studying dissociated subsets (subset-sum-injective sets) of finite real sets, built directly on Finset primitives rather than Mathlib's abstract additive-combinatorics API."
     },
     {
       "id": "definitions",

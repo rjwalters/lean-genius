@@ -2,12 +2,12 @@
   "id": "abel-ruffini-oq-04-oq-01",
   "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
   "slug": "abel-ruffini-oq-04-oq-01",
-  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
+  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved (modulo native_decide / Lean.ofReduceBool) via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
     "date": "1824",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
     "tags": [
       "algebra",
@@ -18,10 +18,10 @@
       "eisenstein-criterion",
       "wiedijk-100"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool via native_decide. The proof chain is load-bearing on native_decide: the three computational group-theory lemmas (perm_fin5_order5_order3_not_commute, perm_fin5_order_dvd5_sign_one, transposition_not_normalizing_5cycle, lines 63-91) and the Sylow order-exclusion steps inside no_subgroup_order_15 (lines 381, 395), a5_card/no_subgroup_order_30 (line 450), and three_dvd_gal_card (lines 942, 1038, 1134) are all discharged by native_decide. Since three_dvd_gal_card feeds gal_card_eq_120 → gal_iso_s5 → gal_not_solvable, the headline unsolvability result depends on the Lean compiler's kernel reduction (Lean.ofReduceBool); #print axioms lists it, so the result is not axiom-free. No literal axiom declarations and no sorries remain (former axioms B1/B2 and axiom A were proved); leanFile.axiomCount is 0.",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [

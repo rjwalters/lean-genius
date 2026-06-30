@@ -11,6 +11,7 @@
 #   --dry-run       Show what would be cleaned without making changes
 #   -f, --force     Non-interactive mode (auto-confirm all prompts)
 #   --keep-no-pr    Preserve branches that have no associated PR
+#   --remote        Also delete merged/closed branches on origin (for CI use)
 #   -h, --help      Show this help message
 #
 # Safety:
@@ -18,6 +19,8 @@
 #   - Never deletes branches checked out in active worktrees
 #   - Branches with no PR: deleted if 0 commits ahead of main, preserved if ahead
 #   - --keep-no-pr overrides to preserve all branches without PRs
+#   - --remote only deletes origin branches whose PR is MERGED or CLOSED
+#     (OPEN-PR and no-PR remote branches are always preserved)
 
 set -euo pipefail
 
@@ -55,6 +58,13 @@ REPO_ROOT="$(find_repo_root)"
 DRY_RUN=false
 FORCE=false
 KEEP_NO_PR=false
+REMOTE=false
+
+# Age threshold (in days) for reclaiming scratch worktrees under
+# .loom/worktrees/* that have no merged/closed PR. A worktree older than this
+# (by mtime) with a clean tree and no unpushed commits is eligible for removal.
+# Overridable via the WORKTREE_MAX_AGE_DAYS environment variable.
+WORKTREE_MAX_AGE_DAYS="${WORKTREE_MAX_AGE_DAYS:-30}"
 
 for arg in "$@"; do
     case $arg in
@@ -75,6 +85,10 @@ for arg in "$@"; do
             KEEP_NO_PR=true
             shift
             ;;
+        --remote)
+            REMOTE=true
+            shift
+            ;;
         --help|-h)
             cat << 'HELPEOF'
 Comprehensive Branch & Worktree Cleanup
@@ -85,6 +99,7 @@ Options:
   --dry-run       Show what would be cleaned without making changes
   -f, --force     Non-interactive mode (auto-confirm all prompts)
   --keep-no-pr    Preserve branches that have no associated PR
+  --remote        Also delete merged/closed branches on origin (for CI use)
   -h, --help      Show this help message
 
 Branch cleanup:
@@ -95,11 +110,28 @@ Branch cleanup:
   - If no PR exists and branch has commits ahead: PRESERVE (or delete with prompt)
   - --keep-no-pr: always preserve branches with no PR
 
+Remote cleanup (--remote):
+  For every branch on origin (except main/master):
+  - If a merged/closed PR exists: DELETE on origin
+  - Otherwise (open PR or no PR): PRESERVE
+  Intended for CI/scheduled runs where a fresh checkout has no local
+  branches but origin has accumulated merged-PR branches.
+
 Worktree cleanup:
   - .claude/worktrees/agent-* without a running claude process: REMOVE
   - .loom/worktrees/issue-* for closed GitHub issues: REMOVE
   - .loom/worktrees/temp-* (temporary rebase worktrees): REMOVE
+  - .loom/worktrees/* (scratch: audit-*, auditor-*, mechanic-*,
+    researcher-*, enricher-*, …): REMOVE when the tree is clean, has no
+    unpushed commits, is not the current checkout, is not locked, has no
+    active owning process, AND its branch is merged/closed/gone on origin
+    OR its mtime exceeds WORKTREE_MAX_AGE_DAYS (default 30). Preserved
+    otherwise.
   - git worktree prune (clean orphaned references)
+
+Environment:
+  WORKTREE_MAX_AGE_DAYS   Age threshold (days) for reclaiming stale scratch
+                          worktrees with no merged/closed PR (default 30).
 
 HELPEOF
             exit 0
@@ -206,9 +238,13 @@ cat "$PR_MAP_FILE.closed" "$PR_MAP_FILE.open" > "$PR_MAP_FILE"
 # Returns: MERGED, CLOSED, OPEN, or NONE
 get_pr_status() {
     local branch="$1"
-    # Get the LAST matching entry (open overrides closed if both exist)
+    # Exact, literal field match on the tab-separated <branch>\t<status> map.
+    # Using awk (not grep) avoids interpreting regex metacharacters in the
+    # branch name as a BRE pattern, which could false-match another branch's
+    # PR status. The END{print s} form keeps the LAST matching status, so the
+    # open-overrides-closed semantics (open entries appended last) are preserved.
     local status
-    status=$(grep "^${branch}	" "$PR_MAP_FILE" | tail -1 | cut -f2)
+    status=$(awk -F'\t' -v b="$branch" '$1==b {s=$2} END{print s}' "$PR_MAP_FILE")
     echo "${status:-NONE}"
 }
 
@@ -264,6 +300,11 @@ preserved_no_pr=0
 failed=0
 total_branches=0
 
+# Remote branch counters (--remote)
+remote_deleted=0
+remote_preserved=0
+remote_failed=0
+
 # Get all local branches
 all_branches=$(git branch | sed 's/^[*+ ]*//' | sort)
 total_local=$(echo "$all_branches" | wc -l | tr -d ' ')
@@ -271,11 +312,97 @@ total_local=$(echo "$all_branches" | wc -l | tr -d ' ')
 info "  Processing $total_local local branches..."
 echo ""
 
+# -----------------------------------------------------------------------------
+# Batch precomputation (performance: avoids O(branches) subprocess spawns)
+# -----------------------------------------------------------------------------
+# The per-branch loop below used to spawn, for EACH local branch:
+#   - one `awk` over the whole PR_MAP_FILE (get_pr_status), and
+#   - in the NONE case, `git merge-base` + `git rev-list --count`.
+# On a ~3k-branch backlog that is ~100-230s of process overhead and times out
+# before Phase 4. We replace both with two one-shot passes whose results are
+# looked up cheaply inside the loop.
+#
+# bash 3.2 (macOS) has no associative arrays, so we precompute newline-delimited
+# set files and a single resolved TSV, then read them back. No `declare -A`.
+
+# (1) PR status for every local branch in ONE awk-join pass.
+#     Joins the branch list against PR_MAP_FILE; last map entry per branch wins
+#     (open-overrides-closed, since PR_MAP_FILE appends .open after .closed),
+#     matching get_pr_status's END{print s} last-wins semantics exactly. Absent
+#     branches resolve to NONE. Output: "<branch>\t<STATUS>" per branch.
+RESOLVED_STATUS_FILE=$(mktemp)
+NOPR_DELETE_SET_FILE="${RESOLVED_STATUS_FILE}.nopr_delete"
+trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "${RESOLVED_STATUS_FILE}.shares" "$NOPR_DELETE_SET_FILE"' EXIT
+printf '%s\n' "$all_branches" \
+    | awk -F'\t' '
+        NR==FNR { if ($1 != "") m[$1]=$2; next }
+        { print $0 "\t" (($1 in m) ? m[$1] : "NONE") }
+      ' "$PR_MAP_FILE" - > "$RESOLVED_STATUS_FILE"
+
+# (2) Precompute, in O(1) git calls, the set of no-PR branches the OLD per-branch
+#     ahead-count would DELETE, so the NONE fallback is byte-identical.
+#
+#     OLD logic (lines 408-415 of the pre-change script):
+#         merge_base = git merge-base main "$branch"   # EMPTY if no common ancestor
+#         ahead = (merge_base != "") ? rev-list --count merge_base..branch : 0
+#         DELETE iff ahead == 0
+#     So OLD DELETEs a no-PR branch IFF:
+#         (a) it is reachable into main (merge-base non-empty, count 0) — i.e.
+#             `--merged main`; OR
+#         (b) it has NO common ancestor with main (merge-base empty) — the
+#             `ahead` default of 0 makes the old code delete orphan-history
+#             branches too. In this repo those are the retired-master-root
+#             branches from the #13577 divergence (root ecb47b3…, disjoint from
+#             main's root). Reproducing this exactly is REQUIRED: a perf refactor
+#             must not change which branches get deleted, even where the old rule
+#             is surprising.
+#
+#     Both are computable without per-branch git spawns:
+#       MERGED  set = `git for-each-ref --merged main`        (case a)
+#       SHARES  set = branches containing one of main's root commits. A branch
+#                     shares history with main (non-empty merge-base) IFF its
+#                     tip descends from a main root, i.e. it is `--contains
+#                     <root>` for some root of main. Its complement is exactly
+#                     the empty-merge-base (orphan) set (case b). Verified on the
+#                     full 2.9k-branch backlog: contains-root partitions the
+#                     branches by merge-base emptiness with zero exceptions.
+#     OLD-DELETE(no-PR) = MERGED ∪ (ALL \ SHARES) = MERGED ∪ orphans.
+MERGED_SET_FILE="${RESOLVED_STATUS_FILE}.merged"
+SHARES_SET_FILE="${RESOLVED_STATUS_FILE}.shares"
+git for-each-ref --format='%(refname:short)' --merged main refs/heads 2>/dev/null \
+    | sort -u > "$MERGED_SET_FILE" || : > "$MERGED_SET_FILE"
+
+# Branches sharing history with main = union of `--contains <root>` over every
+# root commit of main (handles the multi-root case; main has a single root here).
+: > "$SHARES_SET_FILE"
+while IFS= read -r _root; do
+    [[ -z "$_root" ]] && continue
+    git for-each-ref --format='%(refname:short)' --contains "$_root" refs/heads 2>/dev/null >> "$SHARES_SET_FILE"
+done < <(git rev-list --max-parents=0 main 2>/dev/null)
+sort -u -o "$SHARES_SET_FILE" "$SHARES_SET_FILE"
+
+# Old-DELETE(no-PR) set = MERGED ∪ (all local branches NOT in SHARES).
+# Built once with set ops; membership tested with grep -qxF (literal, exact).
+{
+    cat "$MERGED_SET_FILE"
+    printf '%s\n' "$all_branches" | sort -u | comm -23 - "$SHARES_SET_FILE"
+} | sort -u > "$NOPR_DELETE_SET_FILE"
+
+is_nopr_deletable() {
+    # Reproduces the old `ahead == 0` (incl. empty-merge-base) DELETE decision.
+    grep -qxF "$1" "$NOPR_DELETE_SET_FILE"
+}
+
 # Progress tracking
 processed=0
 progress_interval=20
 
-for branch in $all_branches; do
+# Iterate the resolved "<branch>\t<status>" TSV so the PR status is already
+# joined (no per-branch awk). Field 1 = branch, field 2 = resolved PR status.
+# The list is read from FD 3 (not stdin), so the interactive `read -r -p`
+# prompts inside the loop still consume from the terminal in non-force mode.
+while IFS=$'\t' read -r branch pr_status <&3; do
+    [[ -z "$branch" ]] && continue
     ((processed++)) || true
 
     # Show progress every N branches
@@ -291,9 +418,8 @@ for branch in $all_branches; do
 
     ((total_branches++)) || true
 
-    # Look up PR status
-    pr_status=$(get_pr_status "$branch")
-
+    # PR status was resolved in the batch awk-join pass above (read from the
+    # resolved TSV's second field). No per-branch awk spawn here.
     case "$pr_status" in
         MERGED)
             ((deleted_merged++)) || true
@@ -364,14 +490,13 @@ for branch in $all_branches; do
                 continue
             fi
 
-            # Count commits ahead of main (use merge-base for accuracy)
-            ahead=0
-            merge_base=$(git merge-base main "$branch" 2>/dev/null || echo "")
-            if [[ -n "$merge_base" ]]; then
-                ahead=$(git rev-list --count "$merge_base..$branch" 2>/dev/null || echo "0")
-            fi
-
-            if [[ "$ahead" -eq 0 ]]; then
+            # Reproduce the old `ahead == 0` DELETE decision via the precomputed
+            # NOPR_DELETE set (built with a couple of one-shot git calls above)
+            # instead of per-branch `git merge-base` + `git rev-list --count`.
+            # The set is byte-identical to the old test: it is exactly the no-PR
+            # branches the old code would delete (merged-into-main OR
+            # empty-merge-base orphan).
+            if is_nopr_deletable "$branch"; then
                 # Branch is even with main - safe to delete
                 ((deleted_no_pr_even++)) || true
                 if [[ "$DRY_RUN" == true ]]; then
@@ -400,17 +525,100 @@ for branch in $all_branches; do
                 # Branch has unique commits - preserve by default
                 ((preserved_ahead++)) || true
                 if [[ "$DRY_RUN" == true ]]; then
-                    warning "  [KEEP]   $branch (no PR, $ahead commits ahead)"
+                    warning "  [KEEP]   $branch (no PR, commits ahead of main)"
                 fi
             fi
             ;;
     esac
-done
+done 3< "$RESOLVED_STATUS_FILE"
 
 # Clear progress line
 printf "                                                          \r"
 
 echo ""
+
+# =============================================================================
+# PHASE 3b: Process remote branches (--remote)
+# =============================================================================
+# On a fresh CI checkout `git branch` only lists the default branch, so the
+# local-branch phase above is a no-op there. This phase deletes branches on
+# origin whose PR is MERGED or CLOSED, reusing the PR map from Phase 1 and the
+# same safety rules (never touch main; preserve OPEN-PR and no-PR branches).
+
+if [[ "$REMOTE" == true ]]; then
+    header "Phase 3b: Processing remote branches on origin..."
+    echo ""
+
+    # Make sure we have an up-to-date view of origin's branches.
+    git fetch --prune origin &>/dev/null || warning "  git fetch failed; using cached remote refs"
+
+    # List remote-tracking branches under origin/, stripping the prefix.
+    # Skip the symbolic origin/HEAD entry.
+    remote_branches=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin \
+        | sed 's|^origin/||' \
+        | grep -v '^HEAD$' \
+        | sort -u)
+
+    remote_total=$(echo "$remote_branches" | grep -c . || true)
+    info "  Processing $remote_total remote branches..."
+    echo ""
+
+    # Resolve PR status for every remote branch in ONE awk-join pass (same
+    # technique as Phase 3) instead of a per-branch awk scan of PR_MAP_FILE.
+    # Output: "<branch>\t<STATUS>" per branch; last map entry wins (open
+    # overrides closed); absent branches resolve to NONE.
+    REMOTE_RESOLVED_FILE=$(mktemp)
+    trap 'rm -f "$PR_MAP_FILE" "${PR_MAP_FILE}.open" "${PR_MAP_FILE}.closed" "$PROTECTED_BRANCHES_FILE" "$RESOLVED_STATUS_FILE" "${RESOLVED_STATUS_FILE}.merged" "${RESOLVED_STATUS_FILE}.shares" "$NOPR_DELETE_SET_FILE" "$REMOTE_RESOLVED_FILE"' EXIT
+    printf '%s\n' "$remote_branches" \
+        | awk -F'\t' '
+            NR==FNR { if ($1 != "") m[$1]=$2; next }
+            { print $0 "\t" (($1 in m) ? m[$1] : "NONE") }
+          ' "$PR_MAP_FILE" - > "$REMOTE_RESOLVED_FILE"
+
+    rprocessed=0
+    while IFS=$'\t' read -r branch pr_status; do
+        [[ -z "$branch" ]] && continue
+        ((rprocessed++)) || true
+
+        if [[ $((rprocessed % progress_interval)) -eq 0 ]]; then
+            printf "  Progress: %d/%d remote branches processed...\r" "$rprocessed" "$remote_total"
+        fi
+
+        # Never delete the protected default branch on origin.
+        if [[ "$branch" == "main" || "$branch" == "master" ]]; then
+            ((remote_preserved++)) || true
+            continue
+        fi
+
+        case "$pr_status" in
+            MERGED|CLOSED)
+                if [[ "$DRY_RUN" == true ]]; then
+                    info "  [DELETE] origin/$branch (PR $pr_status)"
+                    ((remote_deleted++)) || true
+                else
+                    if git push origin --delete "$branch" &>/dev/null; then
+                        success "  Deleted: origin/$branch (PR $pr_status)"
+                        ((remote_deleted++)) || true
+                    else
+                        warning "  Failed to delete: origin/$branch"
+                        ((remote_failed++)) || true
+                    fi
+                fi
+                ;;
+            *)
+                # OPEN PR or NONE: preserve.
+                ((remote_preserved++)) || true
+                if [[ "$DRY_RUN" == true ]]; then
+                    info "  [KEEP]   origin/$branch (PR ${pr_status:-NONE})"
+                fi
+                ;;
+        esac
+    done < "$REMOTE_RESOLVED_FILE"
+
+    # Clear progress line
+    printf "                                                          \r"
+    echo ""
+fi
 
 # =============================================================================
 # PHASE 4: Worktree cleanup
@@ -542,6 +750,201 @@ done
 
 echo ""
 
+# --- .loom/worktrees/* (generic scratch sweep) ---
+#
+# The issue-* and temp-* passes above only cover two naming conventions. The
+# bulk of accumulated disk lives under workflow-scratch names that match
+# neither (audit-*, auditor-*, mechanic-*, researcher-*, enricher-*, …). This
+# generic pass reclaims them SAFELY, mirroring the .claude/worktrees/* pass:
+# a worktree is removed only when it is provably disposable.
+#
+# A worktree is REMOVED only when ALL of these hold:
+#   - it is NOT the current checkout
+#   - it is NOT locked (`git worktree list` does not flag it `locked`)
+#   - no active owning process (pgrep on the worktree path)
+#   - clean working tree (`git status --porcelain` empty)
+#   - no commits that exist on no remote. With an upstream, `@{u}..HEAD` must
+#     be empty. WITHOUT an upstream, HEAD must be reachable from some remote
+#     ref (`git branch -r --contains HEAD` non-empty) — "no upstream" is NOT
+#     treated as "nothing to lose", since a never-pushed branch can carry
+#     local-only commits.
+#   - its branch's PR is NOT OPEN (an OPEN PR is always preserved)
+#   - AND it is reclaimable: its branch's PR is MERGED/CLOSED, OR its upstream
+#     branch is gone on origin, OR its mtime exceeds WORKTREE_MAX_AGE_DAYS.
+# Anything failing a single guard is PRESERVED. Default stays interactive;
+# --force is non-interactive.
+#
+# Decision table for the reclaim path (after the structural guards pass):
+#   PR OPEN              + stale         => PRESERVE (open-PR guard)
+#   PR OPEN              + recent        => PRESERVE (open-PR guard)
+#   PR MERGED/CLOSED                     => REMOVE   (reason: PR <status>)
+#   no upstream + HEAD on no remote ref  => PRESERVE (unbacked local commits)
+#   no upstream + HEAD on a remote ref + stale  => REMOVE (reason: stale)
+#   no upstream + HEAD on a remote ref + recent => PRESERVE (unmerged, recent)
+#   upstream gone on origin              => REMOVE   (reason: upstream gone)
+#   upstream present + stale             => REMOVE   (reason: stale)
+#   upstream present + recent            => PRESERVE (unmerged, recent)
+
+header "  Checking .loom/worktrees/* (scratch)..."
+
+# Resolve the current checkout's worktree path so we never remove ourselves.
+current_wt_path="$(git rev-parse --show-toplevel 2>/dev/null || echo "")"
+
+# Build the set of locked worktree paths once (porcelain marks them `locked`).
+locked_wt_paths=$(git worktree list --porcelain 2>/dev/null \
+    | awk '/^worktree /{p=$2} /^locked/{print p}')
+
+is_locked_wt() {
+    local path="$1"
+    [[ -n "$locked_wt_paths" ]] && grep -qxF "$path" <<< "$locked_wt_paths"
+}
+
+if [[ -d "$REPO_ROOT/.loom/worktrees" ]]; then
+    for wt_dir in "$REPO_ROOT/.loom/worktrees"/*/; do
+        [[ ! -d "$wt_dir" ]] && continue
+        wt_name=$(basename "$wt_dir")
+
+        # Skip names handled by the dedicated passes above.
+        case "$wt_name" in
+            issue-*|temp-*) continue ;;
+        esac
+
+        # Normalize trailing slash for path comparisons.
+        wt_path="${wt_dir%/}"
+        wt_real="$(cd "$wt_path" 2>/dev/null && pwd -P || echo "$wt_path")"
+
+        # GUARD: never remove the current checkout.
+        if [[ -n "$current_wt_path" && "$wt_real" == "$(cd "$current_wt_path" 2>/dev/null && pwd -P || echo "$current_wt_path")" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (current checkout)"
+            continue
+        fi
+
+        # GUARD: never remove a locked worktree.
+        if is_locked_wt "$wt_path"; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (locked)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree with an active owning process.
+        if pgrep -f "$wt_path" &>/dev/null; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (active process)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree with a dirty working tree.
+        if [[ -n "$(git -C "$wt_path" status --porcelain 2>/dev/null)" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (uncommitted changes)"
+            continue
+        fi
+
+        # GUARD: never remove a worktree carrying commits that exist on no
+        # remote. Two cases must both be covered:
+        #   - upstream IS configured: preserve if `@{u}..HEAD` is non-empty
+        #     (real commits ahead of the tracked remote branch).
+        #   - upstream is NOT configured (@{u} unresolved): "no upstream" is
+        #     NOT "nothing to lose". A never-pushed branch can carry local-only
+        #     exploratory commits. Preserve unless HEAD is reachable from some
+        #     remote ref (`git branch -r --contains HEAD` non-empty ⇒ backed up
+        #     on a remote ⇒ safe). If no remote branch contains HEAD, the
+        #     commits are unbacked ⇒ preserve.
+        if git -C "$wt_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' &>/dev/null; then
+            unpushed=$(git -C "$wt_path" log --oneline '@{u}..HEAD' 2>/dev/null || echo "")
+            if [[ -n "$unpushed" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (unpushed commits)"
+                continue
+            fi
+        else
+            # No upstream configured: is HEAD backed up on any remote ref?
+            remote_containing=$(git -C "$wt_path" branch -r --contains HEAD 2>/dev/null \
+                | grep -v '\->' | sed 's/^[[:space:]]*//' | head -n 1)
+            if [[ -z "$remote_containing" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (no upstream; HEAD not on any remote)"
+                continue
+            fi
+        fi
+
+        # Determine reclaim eligibility. Removed only if at least one of:
+        #   (a) the branch's PR is MERGED/CLOSED,
+        #   (b) the upstream branch is gone on origin, or
+        #   (c) the worktree mtime exceeds WORKTREE_MAX_AGE_DAYS.
+        wt_branch=$(git -C "$wt_path" symbolic-ref --short HEAD 2>/dev/null || echo "")
+        reclaim_reason=""
+
+        if [[ -n "$wt_branch" ]]; then
+            pr_status=$(get_pr_status "$wt_branch")
+            # GUARD: an OPEN PR must ALWAYS be preserved, regardless of mtime.
+            # Without this, a long-lived feature branch under active review
+            # whose dir mtime drifts past WORKTREE_MAX_AGE_DAYS would fall
+            # through to path (c) and be removed. Preserve before any mtime
+            # check.
+            if [[ "$pr_status" == "OPEN" ]]; then
+                ((worktrees_preserved++)) || true
+                info "    Preserving: .loom/worktrees/$wt_name (open PR)"
+                continue
+            fi
+            if [[ "$pr_status" == "MERGED" || "$pr_status" == "CLOSED" ]]; then
+                reclaim_reason="PR $pr_status"
+            fi
+        fi
+
+        # (b) Upstream gone on origin: branch tracks origin but the remote ref
+        # no longer exists (a fetch --prune would drop it).
+        if [[ -z "$reclaim_reason" && -n "$wt_branch" ]]; then
+            upstream=$(git -C "$wt_path" rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || echo "")
+            if [[ -n "$upstream" ]] && ! git -C "$wt_path" rev-parse --verify --quiet "refs/remotes/$upstream" &>/dev/null; then
+                reclaim_reason="upstream gone on origin"
+            fi
+        fi
+
+        # (c) Stale by mtime.
+        if [[ -z "$reclaim_reason" ]]; then
+            now_epoch=$(date +%s)
+            wt_mtime=$(stat -f %m "$wt_path" 2>/dev/null || stat -c %Y "$wt_path" 2>/dev/null || echo "$now_epoch")
+            age_days=$(( (now_epoch - wt_mtime) / 86400 ))
+            if [[ "$age_days" -gt "$WORKTREE_MAX_AGE_DAYS" ]]; then
+                reclaim_reason="stale ${age_days}d > ${WORKTREE_MAX_AGE_DAYS}d"
+            fi
+        fi
+
+        if [[ -z "$reclaim_reason" ]]; then
+            ((worktrees_preserved++)) || true
+            info "    Preserving: .loom/worktrees/$wt_name (unmerged, recent)"
+            continue
+        fi
+
+        ((worktrees_removed++)) || true
+        if [[ "$DRY_RUN" == true ]]; then
+            info "    [REMOVE] .loom/worktrees/$wt_name ($reclaim_reason)"
+        elif [[ "$FORCE" == true ]]; then
+            git worktree remove "$wt_path" --force 2>/dev/null && \
+                success "    Removed: .loom/worktrees/$wt_name ($reclaim_reason)" || \
+                { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; }
+        else
+            echo -e "    ${YELLOW}.loom/worktrees/$wt_name${NC} ($reclaim_reason)"
+            read -r -p "      Remove? [Y/n] " -n 1 CONFIRM
+            echo ""
+            if [[ ! $CONFIRM =~ ^[Nn]$ ]]; then
+                git worktree remove "$wt_path" --force 2>/dev/null && \
+                    success "    Removed: .loom/worktrees/$wt_name" || \
+                    { warning "    Fallback: rm -rf"; rm -rf "$wt_path"; }
+            else
+                ((worktrees_removed--)) || true
+                ((worktrees_preserved++)) || true
+            fi
+        fi
+    done
+else
+    info "    No .loom/worktrees/ directory found"
+fi
+
+echo ""
+
 # --- git worktree prune ---
 
 header "  Pruning orphaned worktree references..."
@@ -601,6 +1004,16 @@ if [[ $failed -gt 0 ]]; then
 fi
 echo -e "    ${BOLD}Total deleted:${NC}            $total_deleted / $((total_branches + preserved_protected)) branches"
 echo ""
+
+if [[ "$REMOTE" == true ]]; then
+    echo -e "  ${BOLD}Remote branches (origin):${NC}"
+    echo -e "    ${GREEN}Deleted (PR merged/closed):${NC} $remote_deleted"
+    echo -e "    ${BLUE}Preserved:${NC}                  $remote_preserved"
+    if [[ $remote_failed -gt 0 ]]; then
+        echo -e "    ${RED}Failed:${NC}                     $remote_failed"
+    fi
+    echo ""
+fi
 
 echo -e "  ${BOLD}Worktrees:${NC}"
 echo -e "    ${GREEN}Removed:${NC}    $worktrees_removed"

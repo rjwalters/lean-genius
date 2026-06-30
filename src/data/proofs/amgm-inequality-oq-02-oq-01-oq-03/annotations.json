@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ann-ng3-header",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Newton-Girard k=3: From the Recurrence to the Reduced Closed Form",
+    "content": "The third Newton-Girard identity is the symmetric-function form of the classical sum-of-cubes factorization. The sibling AmgmInequalityOQ02OQ01OQ02OQ01 derives the recurrence form p₃ = e₁p₂ − e₂p₁ + 3e₃ from Mathlib's general MvPolynomial.psum_eq_mul_esymm_sub_sum. This file closes the loop: substituting the proven closed forms p₂ = e₁² − 2e₂ and p₁ = e₁ into that recurrence and ring-normalising yields the fully reduced identity p₃ = e₁³ − 3e₁e₂ + 3e₃, expressed purely in the elementary symmetric polynomials. The companion file then carries this universal statement down to concrete Finsets over any CommRing.",
+    "mathContext": "$p_3 = e_1 p_2 - e_2 p_1 + 3 e_3$ together with $p_2 = e_1^2 - 2e_2$ and $p_1 = e_1$ gives $p_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$. Concretely $a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "power sums",
+      "Newton-Girard identities",
+      "sum of cubes"
+    ],
+    "prerequisites": [
+      "multivariate polynomials",
+      "symmetric polynomials",
+      "ring theory"
+    ]
+  },
+  {
+    "id": "ann-ng3-universal",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 59
+    },
+    "type": "proof-technique",
+    "title": "psum_three_closed: Substitute-and-Ring over Any CommRing",
+    "content": "The universal identity is proved in four lines: pull in the recurrence (psum_three_eq) and the two closed forms (psum_two_eq, psum_one_eq_esymm_one) as hypotheses, rewrite the recurrence with them, and close with ring. Because the statement lives in MvPolynomial σ R for an arbitrary [CommRing R] [Fintype σ], the resulting identity is a polynomial identity with integer coefficients and specializes to every concrete finite family of values in any commutative ring by evaluation.",
+    "mathContext": "In $\\text{MvPolynomial}(\\sigma, R)$: rewriting $p_3 = e_1 p_2 - e_2 p_1 + 3 e_3$ via $p_2 = e_1^2 - 2e_2$, $p_1 = e_1$ gives $p_3 = e_1(e_1^2 - 2e_2) - e_2 e_1 + 3 e_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$, closed by `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MvPolynomial",
+      "ring tactic",
+      "base change"
+    ],
+    "prerequisites": [
+      "polynomial identities",
+      "CommRing"
+    ]
+  },
+  {
+    "id": "ann-ng3-cube",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 65,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Concrete 3-Variable Instance: The Sum-of-Cubes Factorization",
+    "content": "cube_sum_three records the smallest concrete Finset instance: a³ + b³ + c³ = (a+b+c)³ − 3(a+b+c)(ab+ac+bc) + 3abc over any CommRing, closed by ring. Here e₁ = a+b+c, e₂ = ab+ac+bc, e₃ = abc, p₃ = a³+b³+c³. This is the everyday face of the abstract identity and is exactly the n=3 specialization of psum_three_closed.",
+    "mathContext": "$a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$; equivalently $a^3+b^3+c^3 - 3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sum of cubes",
+      "factorization"
+    ],
+    "prerequisites": [
+      "CommRing"
+    ]
+  },
+  {
+    "id": "ann-ng3-bridge",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "proof-technique",
+    "title": "The aeval Bridge and the Characteristic-2 Obstruction (companion file)",
+    "content": "The companion AmgmInequalityOQ02OQ01OQ03Finset.lean defines e₁, e₂, e₃, p₂, p₃ directly over a Finset via powersetCard, and proves the same closed form over an arbitrary CommRing. The crux is an aeval transport: aeval_esymm_subtype and aeval_psum_subtype identify the concrete powersetCard / power-sum definitions over s with the aeval of MvPolynomial.esymm / MvPolynomial.psum on the membership subtype {x // x ∈ s} (using aeval_esymm_eq_multiset_esymm, Finset.esymm_map_val, and Multiset.attach_map_val'). Transporting the universal psum_three_closed across this bridge gives the concrete closed form WITHOUT any characteristic hypothesis. This matters: the direct ordered-triple coincidence partition only proves 2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃), which fails to determine p₃ when 2 is a zero-divisor. The aeval route — operating at the level of polynomial coefficients, before evaluation — avoids the doubled factor, so cube_partition and two_e2_eq_offPairs become algebraic corollaries valid even in characteristic 2.",
+    "mathContext": "Bridge: $\\text{aeval}(f|_s)\\,(\\text{esymm}\\,\\{x \\in s\\}\\,R\\,n) = \\sum_{t \\subseteq s,\\,|t|=n} \\prod_{i \\in t} f_i$ and likewise for psum. Char-2 obstruction: the direct partition gives $e_1^3 = p_3 + 3 D_{\\text{off}} + 6 e_3$ and $D_{\\text{off}} = e_1 p_2 - p_3$, combining to $2 p_3 = 2(e_1^3 - 3 e_1 e_2 + 3 e_3)$; cancelling 2 needs 2 to be a non-zero-divisor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MvPolynomial.aeval",
+      "powersetCard",
+      "subtype evaluation",
+      "characteristic two",
+      "symmetric function transport"
+    ],
+    "prerequisites": [
+      "MvPolynomial evaluation",
+      "Finset.powersetCard",
+      "multiset symmetric functions"
+    ]
+  }
+]

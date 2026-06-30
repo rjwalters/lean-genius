@@ -1,0 +1,194 @@
+{
+  "id": "british-flag-theorem-oq-01-oq-02",
+  "title": "British Flag Defect Identity for Orthotopes in n Dimensions",
+  "slug": "british-flag-theorem-oq-01-oq-02",
+  "description": "Generalizes the British Flag Theorem from a rectangle (2 dimensions, 4 vertices) to an axis-aligned box (orthotope) in n dimensions with 2ⁿ vertices. A vertex is indexed by the set t ⊆ {0,…,n−1} of coordinates taking the far value bᵢ (the rest take aᵢ); splitting the 2ⁿ vertices by the parity of |t|, the sum of squared distances from any observer P to the even-parity vertices equals the sum over the odd-parity vertices, for every n ≥ 2. The structural heart is the alternating identity ∑_t (−1)^{|t|}·sqDist(t) = 0, which holds because each coordinate contributes a factor ∑_{s ⊆ univ∖{i}} (−1)^{|s|} = 0 — vanishing precisely because the box is non-degenerate. For n = 2 this recovers the classical British Flag Theorem |PA|²+|PC|² = |PB|²+|PD|².",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BritishFlagOrthotopeOQ0102.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "british-flag-theorem",
+      "orthotope",
+      "inclusion-exclusion",
+      "powerset",
+      "alternating-sum",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. All four results are fully machine-checked over the reals. The squared distance is the explicit coordinate sum ∑ᵢ (Pᵢ − vertexᵢ)² on Fin n → ℝ. The only axioms used are the foundational propext, Classical.choice, Quot.sound (confirmed via #print axioms); there are no axiom declarations, no native_decide, and no sorries.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 170,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "originalContributions": [
+      "british_flag_orthotope (PROVED, MAIN): for an axis-aligned box with opposite corners a, b : Fin n → ℝ and any observer P, with n ≥ 2, the sum of squared distances to the even-parity vertices equals the sum over the odd-parity vertices — the n-dimensional British Flag Theorem, directly answering the parent entry's open question about orthotopes and their 2ⁿ vertices",
+      "alternating_sqDist_zero (PROVED, structural heart): the signed sum ∑_t (−1)^{|t|}·sqDist(t) over all 2ⁿ vertices is identically zero for n ≥ 2; proved by swapping the order of summation and reducing to a per-coordinate alternating sum",
+      "alt_sum_ite_eq_zero (PROVED, key lemma): for a coordinate i whose removal leaves a nonempty index set, any summand depending on t only through the predicate i ∈ t has vanishing alternating sum over the powerset — the inclusion-exclusion mechanism that makes the box non-degeneracy (n ≥ 2) the exact hypothesis",
+      "real_alt_powerset_zero (PROVED, support): the real-coefficient alternating sum ∑_{u ⊆ s} (−1)^{|u|} = 0 for nonempty s, obtained by casting Mathlib's integer Finset.sum_powerset_neg_one_pow_card_of_nonempty"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_powerset_neg_one_pow_card_of_nonempty",
+        "description": "∑_{m ⊆ x} (−1)^{|m|} = 0 for nonempty x (over ℤ) — the inclusion-exclusion vanishing cast to ℝ in real_alt_powerset_zero",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Finset.powerset_insert",
+        "description": "(insert a s).powerset = s.powerset ∪ s.powerset.image (insert a) — splits the powerset of univ by membership of the fixed coordinate i",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Swaps the order of the double sum ∑_t ∑_i = ∑_i ∑_t, reducing the box identity to one coordinate at a time",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splits the powerset sum into even-card and odd-card parts to convert the signed identity into the even-vs-odd equality",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The British Flag Theorem states that for any point P and any rectangle ABCD, |PA|² + |PC|² = |PB|² + |PD|² — the squared distances to one diagonal's corners sum to the same value as the other diagonal's. The four corners of a rectangle are exactly the 2² points whose i-th coordinate is one of two values aᵢ or bᵢ, and the two diagonals are the vertices reached by an even / odd number of 'far' choices. This entry takes that parity reading seriously and lifts the theorem to an axis-aligned box (orthotope) in n dimensions, where there are 2ⁿ vertices. The parent entry british-flag-theorem-oq-01-oq-01 generalized in a different direction — to non-rectangular parallelograms in 2 dimensions, exposing a defect 2⟪u,v⟫ — and explicitly posed the orthotope question as its first open problem. The answer here is clean: for a right-angled box the alternating-parity defect is exactly zero in every dimension.",
+    "problemStatement": "**OQ-01-02 of british-flag-theorem**\n\nDoes a British-Flag-type identity hold for an axis-aligned box in n dimensions? Summing squared distances over the 2ⁿ vertices split by the parity of the number of 'far' coordinate choices, are the even-parity and odd-parity sums equal? Identify the exact hypothesis under which the identity holds.",
+    "text": "For a, b, P : Fin n → ℝ with n ≥ 2, indexing each vertex by the set t of coordinates taking the far value bᵢ, ∑_{|t| even} ∑ᵢ (Pᵢ − vertexᵢ(t))² = ∑_{|t| odd} ∑ᵢ (Pᵢ − vertexᵢ(t))².",
+    "proofStrategy": "Expand sqDist(t) = ∑ᵢ (Pᵢ − vertexᵢ(t))² and prove the equivalent signed identity ∑_t (−1)^{|t|}·sqDist(t) = 0. Distribute the sign into the coordinate sum and swap the order of summation (Finset.sum_comm), reducing to: for each fixed coordinate i, ∑_t (−1)^{|t|}·(Pᵢ − vertexᵢ(t))² = 0. Since vertexᵢ(t) depends on t only through whether i ∈ t, the summand is an if-then-else, and the alternating sum factors. Concretely, write univ = insert i (univ∖{i}) and split the powerset (Finset.powerset_insert) into subsets avoiding i and their insert-i images; on each piece the surviving factor is ∑_{s ⊆ univ∖{i}} (−1)^{|s|}, which is 0 because univ∖{i} is nonempty exactly when n ≥ 2. Finally convert the signed identity to the even-vs-odd equality by splitting the powerset on the parity of the card (Finset.sum_filter_add_sum_filter_not), using (−1)^{even} = 1 and (−1)^{odd} = −1.",
+    "keyInsights": [
+      "The right organizing principle is inclusion–exclusion: the British Flag identity for a box is the statement that the alternating sum of squared distances over the vertex hypercube vanishes, and it vanishes coordinate-by-coordinate.",
+      "Each coordinate i contributes the factor ∑_{s ⊆ univ∖{i}} (−1)^{|s|}. This is 0 precisely when univ∖{i} is nonempty, i.e. when n ≥ 2 — so the non-degeneracy of the box is not a technical convenience but the exact hypothesis that powers the theorem. For n = 1 (a segment, 2 vertices) the two parity classes are single points and the sums genuinely differ.",
+      "The squared distance need not be expanded into inner products: working directly with the coordinate sum ∑ᵢ (Pᵢ − vertexᵢ)² and pushing the sign inside lets the entire result rest on one combinatorial fact about powersets, with no inner-product machinery.",
+      "Mathlib supplies the alternating powerset sum over ℤ (Finset.sum_powerset_neg_one_pow_card_of_nonempty); a one-line cast lifts it to ℝ, after which the geometry is a bookkeeping exercise in splitting the powerset by membership of a fixed coordinate.",
+      "For n = 2 the even-parity vertices are {a,b-corner pattern} forming one diagonal and the odd-parity vertices the other, so the statement specializes exactly to |PA|² + |PC|² = |PB|² + |PD|² — the classical theorem is the n = 2 slice of a single dimension-free identity."
+    ],
+    "prerequisites": [
+      "Finset powersets and the alternating sum ∑_{u ⊆ s} (−1)^{|u|} = 0 for nonempty s",
+      "Splitting a powerset by membership of a fixed element (Finset.powerset_insert) and reindexing by insert",
+      "Swapping double sums (Finset.sum_comm) and splitting a sum by a predicate's parity",
+      "Basic real arithmetic (ring) for the per-vertex squared-distance algebra"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Definitions",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring stating the n-dimensional orthotope identity, the parity splitting of the 2ⁿ vertices, and the inclusion-exclusion strategy. Imports Mathlib, opens Finset, and defines `vertex a b t i = if i ∈ t then b i else a i` and `sqDist a b P t = ∑ i, (P i − vertex a b t i)²`.",
+      "mathContext": "Vertices of the box are indexed by t : Finset (Fin n); t records which coordinates take the far value bᵢ. The squared distance is the explicit Euclidean coordinate sum."
+    },
+    {
+      "id": "sec-alt-powerset",
+      "title": "Real Alternating Powerset Sum",
+      "startLine": 58,
+      "endLine": 67,
+      "summary": "real_alt_powerset_zero: ∑_{u ⊆ s} (−1)^{|u|} = 0 for nonempty s over ℝ, obtained by casting Mathlib's integer-valued Finset.sum_powerset_neg_one_pow_card_of_nonempty through push_cast.",
+      "mathContext": "This is the inclusion–exclusion identity ∑_{u ⊆ s} (−1)^{|u|} = ∏_{x ∈ s}(1 − 1) = 0 for s ≠ ∅, the engine of the whole proof."
+    },
+    {
+      "id": "sec-per-coord",
+      "title": "Per-Coordinate Vanishing",
+      "startLine": 69,
+      "endLine": 115,
+      "summary": "alt_sum_ite_eq_zero: for a coordinate i with univ∖{i} nonempty, ∑_{t ⊆ univ} (−1)^{|t|}·(if i ∈ t then β else α) = 0. Proof writes univ = insert i (univ∖{i}), splits the powerset (powerset_insert) into the disjoint pieces of subsets avoiding i and their insert-i images, and reduces each to real_alt_powerset_zero.",
+      "mathContext": "Because the summand depends on t only through i ∈ t, the alternating sum factors as (α − β)·∑_{s ⊆ univ∖{i}} (−1)^{|s|} = 0; the reindexing by `insert i` flips the sign via (−1)^{|u|+1}."
+    },
+    {
+      "id": "sec-heart",
+      "title": "Structural Heart: Alternating Squared-Distance Sum",
+      "startLine": 117,
+      "endLine": 137,
+      "summary": "alternating_sqDist_zero: ∑_t (−1)^{|t|}·sqDist(t) = 0 for n ≥ 2. Distributes the sign into the coordinate sum (mul_sum), swaps summation order (sum_comm), and applies alt_sum_ite_eq_zero to each coordinate after rewriting (Pᵢ − ite)² as ite of squares.",
+      "mathContext": "The double sum over (vertex, coordinate) is reorganized as coordinate-outer, vertex-inner; each inner sum vanishes by the per-coordinate lemma, the nonempty-erase hypothesis coming from n ≥ 2."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: British Flag Identity for Orthotopes",
+      "startLine": 139,
+      "endLine": 170,
+      "summary": "british_flag_orthotope: the even-parity vertex sum equals the odd-parity vertex sum for n ≥ 2. Splits the powerset by the parity of the card (sum_filter_add_sum_filter_not), uses Even.neg_one_pow / Odd.neg_one_pow to collapse the signs, and finishes with linarith against the structural-heart identity.",
+      "mathContext": "Converting ∑_t (−1)^{|t|}·sqDist = 0 into ∑_{even} sqDist − ∑_{odd} sqDist = 0 gives the equality; for n = 2 this is the classical British Flag Theorem."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sibling generalization: oq-01-oq-01 keeps 4 vertices but drops the right angle, exposing the defect 2⟪u,v⟫ in any inner product space. This entry instead keeps right angles but raises the dimension to n, summing over 2ⁿ vertices with alternating parity — directly answering that entry's first stated open question about orthotopes."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: the British Flag Theorem in the coordinate plane ℝ². The n = 2 case of british_flag_orthotope reproduces |PA|²+|PC|² = |PB|²+|PD|²."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified over the reals: for an axis-aligned box in n ≥ 2 dimensions, the sum of squared distances from any observer to the even-parity vertices equals the sum over the odd-parity vertices. The proof rests on a single inclusion–exclusion fact — ∑_{s ⊆ univ∖{i}} (−1)^{|s|} = 0 — applied coordinate by coordinate. Zero sorries, zero extra axioms.",
+    "implications": "**Dimension-free British Flag Theorem**: the classical rectangle identity is the n = 2 slice of one statement valid in every dimension, organized by vertex parity rather than by diagonals.\\n\\n**Non-degeneracy is the exact hypothesis**: the identity holds iff each coordinate can be removed leaving a nonempty index set, i.e. iff n ≥ 2; the n = 1 segment is the sharp boundary where it fails.\\n\\n**Inclusion–exclusion as geometry**: recasting the squared-distance sum as an alternating powerset sum turns a metric identity into pure combinatorics, suggesting the same template for other vertex-sum identities on hypercubes.",
+    "openQuestions": [
+      "Non-orthogonal parallelepipeds: for a box sheared into a general parallelepiped with edge vectors u₁,…,uₙ, the alternating vertex sum should equal a fixed defect Σ_{i<j} ±2⟪uᵢ, uⱼ⟫ independent of P — unifying this entry (all inner products zero) with oq-01-oq-01 (n = 2). Prove the general defect formula.",
+      "Higher moments: replacing squared distance by ‖P − vertex‖^{2k} or by other symmetric functions, for which exponents does the even-vs-odd parity sum still vanish, and what is the defect otherwise?",
+      "Weighted vertices / affine combinations: assign weights to the 2ⁿ vertices and characterize exactly which weightings preserve the parity identity, linking to discrete Fourier analysis on the hypercube (−1)^{|t|} being the top Walsh character."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "british_flag_orthotope",
+      "type": "core",
+      "description": "The n-dimensional British Flag Theorem for an axis-aligned box: the even-parity and odd-parity vertex squared-distance sums coincide for n ≥ 2.",
+      "leanType": "(hn : 2 ≤ n) → (a b P : Fin n → ℝ) → ∑ t ∈ univ.powerset.filter (fun t => Even t.card), sqDist a b P t = ∑ t ∈ univ.powerset.filter (fun t => Odd t.card), sqDist a b P t"
+    },
+    {
+      "name": "alternating_sqDist_zero",
+      "type": "core",
+      "description": "Structural heart: the signed sum of squared distances over all 2ⁿ vertices, weighted by (−1)^{|t|}, vanishes for n ≥ 2.",
+      "leanType": "(hn : 2 ≤ n) → (a b P : Fin n → ℝ) → ∑ t ∈ univ.powerset, (-1)^t.card * sqDist a b P t = 0"
+    },
+    {
+      "name": "alt_sum_ite_eq_zero",
+      "type": "supporting",
+      "description": "Per-coordinate vanishing: an alternating powerset sum of a summand depending on t only through i ∈ t is zero when univ∖{i} is nonempty.",
+      "leanType": "(i : Fin n) → (univ.erase i).Nonempty → (α β : ℝ) → ∑ t ∈ univ.powerset, (-1)^t.card * (if i ∈ t then β else α) = 0"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "BritishFlagOrthotopeOQ0102",
+    "lineCount": 170,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/BritishFlagOrthotopeOQ0102.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Martin Gardner",
+      "title": "Mathematical Games",
+      "year": "1970",
+      "venue": "Scientific American",
+      "note": "Popularized the British Flag Theorem; the rectangle identity |PA|²+|PC|²=|PB|²+|PD|² is the n = 2 case of the orthotope identity formalized here."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press",
+      "note": "Inclusion–exclusion and the alternating sum ∑_{S} (−1)^{|S|} over subsets; the combinatorial engine that makes the coordinate-wise vanishing work."
+    }
+  ]
+}

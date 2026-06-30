@@ -1,0 +1,163 @@
+{
+  "id": "euler-totient-oq-09",
+  "title": "The Totient Under Powers: $\\varphi(n^k) = n^{k-1}\\,\\varphi(n)$ via Prime-Saturated Products",
+  "slug": "euler-totient-oq-09",
+  "description": "Answers an open question on the `euler-totient` gallery family: how does Euler's totient behave under the power map n ↦ n^k? Mathlib has the coprime multiplicative law `Nat.totient_mul` and the prime-power values `Nat.totient_prime_pow`, but no closed form for φ(n^k) at a general base — and since n and n^k are far from coprime, `totient_mul` does not apply. This entry proves the classical φ(n^k) = n^(k−1)·φ(n) for all n and all k ≥ 1, isolating the underlying mechanism as a reusable engine Mathlib does not state: `totient_mul_of_primeFactors_subset`, namely φ(m·n) = m·φ(n) whenever every prime factor of m already divides n. This generalises `Nat.totient_mul_of_prime_of_dvd` (the single-prime case φ(p·n) = p·φ(n)) to an arbitrary prime-saturated multiplier; the power law, the recurrence φ(n^{k+1}) = n·φ(n^k), the square case φ(n²) = n·φ(n), the divisibility facts n^{k−1} ∣ φ(n^k) and φ(n) ∣ φ(n^k), and the n ↦ 2n parity dichotomy all follow as corollaries. The engine is proved through Euler's rational product formula φ(n) = n·∏_{p∣n}(1−1/p): the subset hypothesis forces (m·n) and n to share the same prime support, so the products agree and only the leading factor differs. Fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (Euler); power law for the totient formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ09.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "prime-factorization",
+      "product-formula",
+      "multiplicative-functions",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 121,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (no native_decide). The proof rests on Euler's product formula `Nat.totient_eq_mul_prod_factors` together with `Nat.primeFactors_mul`, `Nat.primeFactors_pow`, and the single-prime scaling lemma `Nat.totient_mul_of_prime_of_dvd`, all from Mathlib; everything else is elementary exponent and divisibility algebra. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_eq_mul_prod_factors",
+        "description": "Euler's product formula over ℚ: `(φ n : ℚ) = n * ∏ p ∈ n.primeFactors, (1 - p⁻¹)`. The engine of the file: comparing the products for `m * n` and `n` (which share prime support) reduces the totient identity to leading-factor arithmetic.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.primeFactors_mul",
+        "description": "`a ≠ 0 → b ≠ 0 → (a * b).primeFactors = a.primeFactors ∪ b.primeFactors`. Combined with the subset hypothesis it collapses `(m * n).primeFactors` onto `n.primeFactors`.",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.primeFactors_pow",
+        "description": "`k ≠ 0 → (n ^ k).primeFactors = n.primeFactors`. Supplies the subset hypothesis for the power and recurrence corollaries: a power has exactly the prime factors of its base.",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.totient_mul_of_prime_of_dvd",
+        "description": "`p.Prime → p ∣ n → φ(p * n) = p * φ(n)`. The single-prime special case that `totient_mul_of_primeFactors_subset` generalises; reused directly for the even half of the n ↦ 2n dichotomy.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_mul_of_prime_of_not_dvd",
+        "description": "`p.Prime → ¬ p ∣ n → φ(p * n) = (p − 1) * φ(n)`. Gives the odd half of the n ↦ 2n dichotomy: φ(2n) = φ(n) when n is odd.",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "`totient_mul_of_primeFactors_subset`: the reusable engine `φ(m·n) = m·φ(n)` whenever `m.primeFactors ⊆ n.primeFactors` — a clean generalisation of Mathlib's single-prime `Nat.totient_mul_of_prime_of_dvd` to an arbitrary prime-saturated multiplier, which Mathlib does not state.",
+      "`totient_pow`: the headline closed form `φ(n^k) = n^(k−1)·φ(n)` for k ≥ 1, valid for every base n including 0 — a general-base power law absent from Mathlib (which only has the prime-power case `Nat.totient_prime_pow`).",
+      "`totient_pow_succ`: the recurrence `φ(n^{k+1}) = n·φ(n^k)` for k ≥ 1, exhibiting the constant ratio n between successive totient powers.",
+      "`totient_sq`, `pow_pred_dvd_totient_pow`, `totient_dvd_totient_pow`: the quadratic case and the divisibility consequences n^{k−1} ∣ φ(n^k) and φ(n) ∣ φ(n^k).",
+      "`totient_two_mul_of_even`, `totient_two_mul_of_odd`: the n ↦ 2n parity dichotomy, φ(2n) = 2φ(n) for n even and φ(2n) = φ(n) for n odd."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n) = |(ℤ/nℤ)ˣ|",
+      "Euler's product formula φ(n) = n·∏_{p∣n}(1 − 1/p)",
+      "Prime factor sets and that n and n^k share the same prime support",
+      "Elementary exponent arithmetic and divisibility of naturals"
+    ],
+    "dateAdded": "2026-06-22",
+    "relatedProblems": [
+      {
+        "id": "euler-totient",
+        "relationship": "Parent: the gallery family on Euler's totient and his generalization of Fermat's little theorem; this entry settles the open question of how φ behaves under powers, supplying the general-base closed form φ(n^k) = n^(k−1)·φ(n)."
+      },
+      {
+        "id": "euler-totient-oq-06",
+        "relationship": "Sibling: oq-06 is the parity classification φ(n) even ⟺ n ∉ {1, 2}. The n ↦ 2n dichotomy here (φ(2n) = 2φ(n) vs φ(n)) refines how doubling interacts with that parity."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 121,
+    "path": "Proofs/EulerTotientOQ09.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 8
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Euler introduced the totient φ(n) — the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem, and derived the product formula φ(n) = n·∏_{p∣n}(1 − 1/p) from the multiplicativity of φ over coprime factors. A basic consequence of that formula is the behaviour of φ under powers: because n and n^k have exactly the same prime factors, the product ∏(1 − 1/p) is unchanged and only the leading n versus n^k differs, giving φ(n^k) = n^(k−1)·φ(n). Mathlib formalizes the coprime multiplicative law and the prime-power values but, somewhat surprisingly, not this general-base power law — and the coprime law cannot supply it, since n and n^k are maximally non-coprime. This entry fills that gap and, more usefully, isolates the structural reason as a standalone lemma.",
+    "problemStatement": "**Open Question (euler-totient-oq-09):** how does Euler's totient behave under the power map n ↦ n^k? Establish a closed form for φ(n^k) at a general base n.",
+    "text": "For every base n and every exponent k ≥ 1, φ(n^k) = n^(k−1)·φ(n). The mechanism is that multiplying by any factor whose primes already divide n scales the totient by exactly that factor: φ(m·n) = m·φ(n) whenever m.primeFactors ⊆ n.primeFactors.",
+    "proofStrategy": "The engine `totient_mul_of_primeFactors_subset` is proved through Euler's rational product formula `Nat.totient_eq_mul_prod_factors`. After dispatching the n = 0 and m = 0 cases by `simp`, the subset hypothesis and `Nat.primeFactors_mul` force `(m·n).primeFactors = n.primeFactors`, so the two products coincide; casting to ℚ and `ring` finish φ(m·n) = m·φ(n), which `exact_mod_cast` returns to ℕ. The power law `totient_pow` writes n^k = n^(k−1)·n and applies the engine with the subset `(n^(k−1)).primeFactors ⊆ n.primeFactors` from `Nat.primeFactors_pow` (or the empty-set inclusion when k = 1). The recurrence `totient_pow_succ` applies the engine to n^{k+1} = n·n^k; `totient_sq` specializes to k = 2; the divisibility facts read off `dvd_mul_right`/`dvd_mul_left`; and the n ↦ 2n dichotomy is the p = 2 case of `Nat.totient_mul_of_prime_of_dvd` / `Nat.totient_mul_of_prime_of_not_dvd`.",
+    "keyInsights": [
+      "**The product ∏(1 − 1/p) is a function of the prime support only.** Since n and n^k share every prime factor, φ(n^k)/n^k = φ(n)/n, and the power law is just clearing the n^k versus n factor — no induction on the exponent is needed.",
+      "**The right level of generality is 'prime-saturated multiplier', not 'power'.** The single lemma φ(m·n) = m·φ(n) for m.primeFactors ⊆ n.primeFactors subsumes the power law, the recurrence, the square case, and Mathlib's single-prime φ(p·n) = p·φ(n) all at once.",
+      "**The coprime multiplicative law is the wrong tool here.** `Nat.totient_mul` needs gcd(m, n) = 1, but n and n^k are maximally non-coprime; the product-formula route sidesteps coprimality entirely and works precisely because the prime supports coincide.",
+      "**The identity holds for every base, including 0.** φ(0^k) = φ(0) = 0 = 0^{k−1}·φ(0), so no positivity hypothesis on n is required — only k ≥ 1, which is genuinely necessary (the k = 0 statement φ(1) = n^{−1}·φ(n) is meaningless)."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
+      "Euler's product formula φ(n) = n·∏_{p∣n}(1 − 1/p)",
+      "Prime factor sets; powers share the prime support of their base",
+      "Elementary exponent and divisibility arithmetic over ℕ"
+    ]
+  },
+  "conclusion": {
+    "summary": "For every base n and exponent k ≥ 1, φ(n^k) = n^(k−1)·φ(n). The result is derived from a single reusable engine — φ(m·n) = m·φ(n) when every prime factor of m divides n — which generalises Mathlib's single-prime scaling law and yields the recurrence φ(n^{k+1}) = n·φ(n^k), the square case φ(n²) = n·φ(n), the divisibilities n^{k−1} ∣ φ(n^k) and φ(n) ∣ φ(n^k), and the n ↦ 2n parity dichotomy. 8 theorems, 121 lines, 0 sorries, 0 axioms (no native_decide); the engine rests on Euler's product formula `Nat.totient_eq_mul_prod_factors`.",
+    "implications": "The general-base power law is the workhorse form for order and unit-group computations where a modulus is a perfect power: knowing φ(n) immediately gives φ(n^k) without refactoring, and the recurrence makes the ratio of successive totient powers exactly the base. The engine `totient_mul_of_primeFactors_subset` is the more broadly applicable export — any time a factor is multiplied in whose primes already appear, the totient scales linearly, a fact that streamlines arguments about totients of products sharing prime support.",
+    "openQuestions": [
+      "Extend the engine to a sharp two-sided statement: for general m, n, express φ(m·n) in terms of φ(m), φ(n), and gcd(m, n) (Mathlib has `Nat.totient_gcd_mul_totient_mul`); characterize exactly when φ(m·n) = m·φ(n) holds (precisely m.primeFactors ⊆ n.primeFactors, modulo the m = 0 edge case).",
+      "Quantify growth: combine φ(n^k) = n^(k−1)·φ(n) with φ(n) ≥ √n / √2 to get explicit lower bounds on φ(n^k), and study the ratio φ(n^k)/n^k = ∏_{p∣n}(1 − 1/p) as a k-independent invariant of n.",
+      "Iterate the totient on prime powers: describe the trajectory of the iterated totient φ(φ(…φ(n^k)…)) and its stopping time, using the power law to reduce to the radical of n."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring framing the goal — a general-base closed form for φ(n^k) — and explaining the product-formula mechanism and the engine lemma. Imports `Mathlib.Data.Nat.Totient`, `Mathlib.Data.Nat.PrimeFin`, and `Mathlib.Tactic`; opens namespace `EulerTotientOQ09` and `Nat` so `φ` denotes `Nat.totient`."
+    },
+    {
+      "id": "engine",
+      "title": "The Engine: Prime-Saturated Scaling",
+      "startLine": 50,
+      "endLine": 78,
+      "summary": "`totient_mul_of_primeFactors_subset`: φ(m·n) = m·φ(n) whenever m.primeFactors ⊆ n.primeFactors. Proof dispatches the zero cases, collapses (m·n).primeFactors onto n.primeFactors via `Nat.primeFactors_mul` and the subset hypothesis, then compares totients through Euler's product formula `Nat.totient_eq_mul_prod_factors`, finishing with `push_cast`, `ring`, and `exact_mod_cast`."
+    },
+    {
+      "id": "power-law",
+      "title": "Power Law, Recurrence, and Square Case",
+      "startLine": 79,
+      "endLine": 100,
+      "summary": "`totient_pow` (φ(n^k) = n^(k−1)·φ(n) for k ≥ 1, via n^k = n^(k−1)·n and `Nat.primeFactors_pow`), `totient_pow_succ` (the recurrence φ(n^{k+1}) = n·φ(n^k) via n^{k+1} = n·n^k), and `totient_sq` (the k = 2 specialization φ(n²) = n·φ(n))."
+    },
+    {
+      "id": "divisibility-and-dichotomy",
+      "title": "Divisibility Consequences and the n ↦ 2n Dichotomy",
+      "startLine": 101,
+      "endLine": 121,
+      "summary": "`pow_pred_dvd_totient_pow` (n^{k−1} ∣ φ(n^k)) and `totient_dvd_totient_pow` (φ(n) ∣ φ(n^k)) read off the power law; `totient_two_mul_of_even` (φ(2n) = 2φ(n) for 2 ∣ n, the p = 2 case of `Nat.totient_mul_of_prime_of_dvd`) and `totient_two_mul_of_odd` (φ(2n) = φ(n) for n odd) record the doubling dichotomy."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient",
+      "relationship": "parent",
+      "description": "The parent gallery family develops Euler's totient and his generalization of Fermat's little theorem. This entry settles its open question on the behaviour of φ under powers, supplying the general-base closed form φ(n^k) = n^(k−1)·φ(n)."
+    },
+    {
+      "targetId": "euler-totient-oq-06",
+      "relationship": "sibling",
+      "description": "oq-06 establishes the parity classification φ(n) even ⟺ n ∉ {1, 2}. The n ↦ 2n dichotomy proved here — φ(2n) = 2φ(n) when n is even versus φ(2n) = φ(n) when n is odd — refines how the doubling map interacts with that parity."
+    },
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "related",
+      "description": "oq-03 records structural properties of φ including the product formula. This entry leverages exactly that product formula (in its Mathlib ℚ form) to derive the power law, an orthogonal consequence about the power map."
+    }
+  ]
+}

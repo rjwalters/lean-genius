@@ -23,7 +23,11 @@
       "erdos-problem",
       "solved-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "number theory",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e698-binom-def",
@@ -48,7 +52,11 @@
       "gcd",
       "lean4-formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficients",
+      "greatest common divisor",
+      "Lean 4 Nat"
+    ]
   },
   {
     "id": "ann-e698-valid-pair",
@@ -73,7 +81,11 @@
       "index-constraints",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pascal's triangle symmetry",
+      "integer inequalities",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e698-erdos-szekeres",
@@ -98,7 +110,11 @@
       "exponential-growth",
       "counting-argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility",
+      "counting arguments",
+      "binomial identities"
+    ]
   },
   {
     "id": "ann-e698-gcd-gt-one",
@@ -123,7 +139,11 @@
       "pascal-triangle",
       "verified-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proof by inequality chains",
+      "exponential lower bounds",
+      "gcd properties"
+    ]
   },
   {
     "id": "ann-e698-sharpness",
@@ -148,7 +168,11 @@
       "prime-numbers",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "extremal examples",
+      "p-adic valuation"
+    ]
   },
   {
     "id": "ann-e698-question",
@@ -173,7 +197,11 @@
       "uniform-bound",
       "real-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits to infinity",
+      "quantifiers",
+      "uniform bounds"
+    ]
   },
   {
     "id": "ann-e698-bergman-bound",
@@ -198,7 +226,11 @@
       "number-theory",
       "asymptotic-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic bounds",
+      "square-root growth"
+    ]
   },
   {
     "id": "ann-e698-resolution",
@@ -223,7 +255,11 @@
       "noncomputable",
       "existence-proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "floor function",
+      "real analysis",
+      "existence proofs"
+    ]
   },
   {
     "id": "ann-e698-sorry1",
@@ -248,7 +284,11 @@
       "floor-function",
       "proof-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits to infinity",
+      "floor function bounds"
+    ]
   },
   {
     "id": "ann-e698-sorry2",
@@ -273,7 +313,11 @@
       "floor-bound",
       "proof-gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural-real coercion",
+      "floor function",
+      "inequality manipulation"
+    ]
   },
   {
     "id": "ann-e698-pascal",
@@ -298,7 +342,11 @@
       "divisibility",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pascal's triangle",
+      "prime factorization",
+      "divisibility"
+    ]
   },
   {
     "id": "ann-e698-multinomial",
@@ -323,7 +371,11 @@
       "bergman",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multinomial coefficients",
+      "combinatorics",
+      "generalization"
+    ]
   },
   {
     "id": "ann-e698-kummer",
@@ -348,7 +400,11 @@
       "base-representation",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "base-p representation",
+      "Kummer's theorem"
+    ]
   },
   {
     "id": "ann-e698-lucas",
@@ -373,7 +429,11 @@
       "base-p-digits",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "base-p digits",
+      "Lucas' theorem"
+    ]
   },
   {
     "id": "ann-e698-summary",
@@ -398,7 +458,11 @@
       "combinatorics",
       "gcd"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "gcd bounds",
+      "theorem composition"
+    ]
   },
   {
     "id": "ann-e698-main",
@@ -423,7 +487,11 @@
       "solved-problem",
       "binomial-coefficient"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence proofs",
+      "asymptotic growth",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e698-historical",
@@ -448,7 +516,11 @@
       "bergman-2011",
       "timeline"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "history of mathematics",
+      "Erdős problems",
+      "combinatorial number theory"
+    ]
   },
   {
     "id": "ann-e698-imports",
@@ -473,7 +545,11 @@
       "discrete-continuous-bridge",
       "dependencies"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4",
+      "Mathlib",
+      "discrete and continuous mathematics"
+    ]
   },
   {
     "id": "ann-e698-number-theory",
@@ -498,6 +574,10 @@
       "modular-arithmetic",
       "prime-distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "p-adic valuation",
+      "modular arithmetic",
+      "prime distribution"
+    ]
   }
 ]

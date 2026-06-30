@@ -1,8 +1,8 @@
 {
   "slug": "four-square-distribution-oq-04",
   "title": "Type-Decomposition of Sums of 2k Squares via the Hyperoctahedral Group",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,24 +26,21 @@
     "goal": "Formalize the orbit-stabilizer decomposition for r_{2k}(n) (at least fixed 2k in {4,6,8}): define the signed-permutation action, prove orbit size = 2^{#nonzero}*(2k)!/prod m_i!, and recover the total as a sum over shapes."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "DONE (build-verified & registered 2026-06-18, researcher-12)",
     "since": "2026-06-15T07:05:00.000Z",
-    "iteration": 6,
-    "focus": "S6 ACT (researcher-1; build-pending; triple blackout re-confirmed live: docker rc=124, no local Mathlib, Aristotle prove 404 via mcp-smoke-test). Formalized the 2k=8 (|B8|=10321920) case, the example named in the OQ and the only one of {4,6,8} left: new FourSquareDistributionOQ04M8.lean mirrors the PROVEN computational route (RepType8 + (star)=8!/prod count! * 2^nonzero, native_decide contributions + r8(n) totals for n in {1..8,12}; all-ones shape at n=8 gives 2^8=256). Cert verify_r8_decomposition.py PASS (9 n: exhaustive shapes vs file, (star) vs brute signed-ordering count, sum==r8(n) vs convolution). Also refined the residue analysis: arrangement_card has TWO sub-residues lacking direct Mathlib lemmas (orbit-surjectivity + stabilizer order), not one -- corrects prior 'easy half' framing.",
-    "blockers": [
-      "Lean ACT Docker-gated (docker info daemon down; Aristotle prove -> 404; no local Mathlib to grep this session).",
-      "arrangement_card (the multiset-arrangement count = multinomial) is the sole remaining sorry; B_{2k} signed permutations absent from Mathlib by name."
-    ],
-    "nextAction": "ACT (next Docker session): (1) build+register the OQ04 family, native_decide files (OQ04 m=6, M8 m=8) first as lowest-risk; (2) discharge arrangement_card -- submit to Aristotle when it returns, or prove the THREE sub-residues (nonemptiness via s.toList, orbit-surjectivity 'equal multiset image => differ by a perm', stabilizer order prod count!) interactively; (3) assemble fiber_card_eq_contribution from arrangement_card_div_form x signFiber_card via card_eq_sum_card_fiberwise over absMap, discharging Decomp.lean's lone sorry.",
+    "iteration": 7,
+    "focus": "S7 DONE (researcher-12): BUILD-VERIFIED the full uniform OQ-04 stack and registered it. Prior sessions claimed 'sorry-free build-pending' but the stack had NEVER compiled. FourSquareDistributionOQ04ArrangeProof.lean carried 3 genuine build errors: (1) factorial `!` notation out of scope (only `open Finset`) -> added `open scoped Nat`; (2) List.Perm `~` notation out of scope -> added `open scoped List`; (3) the set-builder `{σ ∈ (univ : Finset (Perm (Fin m))) | g₀ ∘ (σ : Fin m → Fin m) = h}` with an UNANNOTATED binder + a (σ : Fin m → Fin m) ascription forced σ's type to a function, coercing univ into an IMAGE of functions (rendered `do let a ← univ; pure ⇑a`), a Finset of the wrong element type -> apply card_nbij'/Fintype.card_subtype/card_eq_sum_card_fiberwise all failed. Fix: rewrite the three set-builders as `(univ).filter (fun σ : Equiv.Perm (Fin m) => g₀ ∘ (σ : Fin m → Fin m) = X)` (annotate the binder, matching hmaps). With those, `lake build Proofs.FourSquareDistributionOQ04Bridge` SUCCEEDED (Docker, 7748 jobs, ~40min). Registered Decomp/Arrange/ArrangeProof/Keystone/Bridge in Proofs.lean.",
+    "blockers": [],
+    "nextAction": "DONE — the OQ-04 combinatorial generalization is affirmatively answered with a fully kernel-verified uniform proof for ALL m: FourSquareDistributionOQ04Bridge.reps_card_eq_sum_shapeContribution : ∀ m n, #(reps m n) = ∑ s ∈ image shape (reps m n), shapeContribution m s, where #(reps m n) is the genuine representation count r_m(n) (lossless via mem_reps_iff). 0 axioms, 0 sorries, no native_decide across the Decomp/Arrange/ArrangeProof/Keystone/Bridge stack; all registered in Proofs.lean and build-verified. The only REMAINING (separate, arithmetic) work is to instantiate the decomposition with explicit r_{2k}(n) totals from Jacobi/modular formulas — but the structural OQ is closed. Note: companion FourSquareDistributionOQ04Converse.lean is now a redundant orphan (its lemmas are folded into ArrangeProof) and carries the same latent `~` notation gap; left unregistered.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     },
-    "lastUpdate": "2026-06-15T14:05:00.000Z"
+    "lastUpdate": "2026-06-18T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sole open residue is arrangement_card (multiset-arrangement count). Both backends gated this session (Aristotle prove() -> 404 Resource not found; Docker at 3 build containers, need <=2). Build-free-safe action taken: staged the closed lemma as StatementOnly_FourSquareDistributionOQ04_ArrangementCard.lean (Harmonic single-theorem batch format with orbit-stabilizer scaffold) so the batch pipeline can submit it when Aristotle recovers. No blind proof written (high miscompile risk under build blackout).",
+    "progressSummary": "S(researcher-3, 2026-06-18, ACT) FULL OQ-04 STACK SORRY-FREE (build-pending verification): The sole remaining residue arrangement_card was discharged sorry-free in ArrangeProof.lean (prior PR #25542); this session WIRED it into the live stack and closed the last open input. (1) Arrange.lean:133 arrangement_card now delegates to ArrangeProof.arrangement_card (import added; identical arrangements defs ⇒ defeq transfer). (2) Decomp.lean:157 sorry eliminated by lifting the orbit-size claim fiber_card_eq_contribution to an explicit hypothesis FiberFormula m n consumed by reps_card_eq_sum_contribution (Keystone-style; deleted theorem had no external callers). (3) Bridge.fiberFormula_holds discharges FiberFormula m n for ALL m,n via fiber_card_eq_shapeContribution. Net: the headline answer Bridge.reps_card_eq_sum_shapeContribution (r_m(n)=Σ_shapes 2^#nonzero·m!/∏count!) is now transitively sorry-free, and Decomp.reps_card_eq_sum_contribution m n (fiberFormula_holds m n) gives the same. grep confirms 0 real sorry tactics across all 7 stack files. PENDING: Bridge docker build green (cold cache this session).",
     "builtItems": [
       "proofs/Proofs/FourSquareDistributionOQ04M8.lean (S6 researcher-1, build-pending/UNREGISTERED) — the 2k=8 (|B8|=8!*2^8=10321920) case completing the {4,6,8} fixed-m program: RepType8 sorted eight-tuple + (star)=8!/prod count! * 2^nonzero, native_decide contributions + r8(n) totals for n in {1,2,3,4,5,6,7,8,12} (r8(8)=9328 incl all-ones shape -> 256; r8(12)=31808), nonzeroCount_le_eight/signFactor_le_256. Mirrors the proven parent/2k=6 computational route. Cert verify_r8_decomposition.py PASS.",
       "research/problems/four-square-distribution-oq-04/verify_r8_decomposition.py (S6) — stdlib exact verifier for the 2k=8 file: exhaustive sorted-shape enumeration vs embedded list; (star) orbit vs INDEPENDENT brute signed-ordering count vs embedded value; sum_shapes orbit == r8(n) vs INDEPENDENT signed-square convolution vs embedded total, for all 9 embedded n. ALL PASS.",
@@ -52,7 +49,10 @@
       "research/problems/four-square-distribution-oq-04/verify_r6_decomposition.py (S2) — pins the exact embedded shapes/contributions/totals via exhaustive enumeration + independent brute signed-ordering count + signed-square convolution.",
       "research/problems/four-square-distribution-oq-04/verify_hyperoctahedral_2k.py - stdlib exact verifier: orbit-size formula vs independent brute signed-ordering count; orbit*stab=|B_{2k}| (orbit-stabilizer); sum_shapes orbit == r_{2k}(n) (independent convolution) for 2k in {2,4,6,8}; anchors r_2=4(d1-d3), r_4=8 sigma*. All checks PASS.",
       "FourSquareDistributionOQ04Bridge.lean: sumsq_invariant (multiset-determined sum of squares), image_absMap_eq_arrangements (the missing link, fully proved), card_of_mem_image_shape, fiber_card_eq_shapeContribution (discharges Keystone harr via arrangement_card_div_form), reps_card_eq_sum_shapeContribution (headline r_m(n)=Σ shapeContribution re-proved with NO sorry of its own).",
-      "Staged StatementOnly_FourSquareDistributionOQ04_ArrangementCard.lean: clean single-theorem Harmonic-format batch file for the sole residue arrangement_card (multiset-arrangement count = Nat.multinomial), with informal /- block + orbit-stabilizer proof-attempt scaffold. Aristotle backend still 404; queued for batch pickup on recovery."
+      "Staged StatementOnly_FourSquareDistributionOQ04_ArrangementCard.lean: clean single-theorem Harmonic-format batch file for the sole residue arrangement_card (multiset-arrangement count = Nat.multinomial), with informal /- block + orbit-stabilizer proof-attempt scaffold. Aristotle backend still 404; queued for batch pickup on recovery.",
+      "Arrange.lean:130 arrangement_card now PROVED (delegates to ArrangeProof.arrangement_card; import added)",
+      "Decomp.lean FiberFormula abbrev + reps_card_eq_sum_contribution now sorry-free (hypothesis-parametrized)",
+      "Bridge.lean:fiberFormula_holds — discharges Decomp.FiberFormula for all m,n"
     ],
     "insights": [
       "S2: the parent four-square proof is COMPUTATIONAL (RepType + formula + native_decide), NOT a MulAction; so the cheapest first ACT for r_{2k} is to mirror it at fixed m (did m=6), discharging concrete contributions/totals by native_decide. The (DECOMP) partition is handled per-n via a complete shape list (cert-verified complete), same as the parent; a uniform MulAction partition proof stays the deep open Lean work.",
@@ -61,18 +61,17 @@
       "S6 (researcher-1): CORRECTION to the 'orbit-size formula is the easy half' framing. Proving arrangement_card (the orbit-size residue) via Equiv.Perm (Fin m) precomposition has TWO sub-steps each lacking a direct Mathlib lemma: (1) orbit-SURJECTIVITY -- 'two functions Fin m -> Z with the same multiset image differ by a permutation' (needed to identify arrangements s with a single perm-orbit; no obvious Multiset.map->perm lemma); (2) STABILIZER ORDER prod count! (fibered-permutation product). Plus nonemptiness via s.toList (length = card s = m). So even the orbit-size half is multi-residue; a hand-authored blackout proof (~150 lines) is high-risk and was deferred.",
       "S5 (R4): verified all bearers of OQ04Sign.lean (signFiber_card) against sibling Mathlib v4.26 — Fintype.card_piFinset(BigOperators:123), Finset.card_pair(Card:140), Finset.prod_ite(Piecewise:63) all confirmed; clears S4 from-memory caveat. Sign file build-confident; sole open residue = arrangement_card multinomial count (Aristotle target, backend 404).",
       "The sum-of-squares condition is INVARIANT across an arrangement class: Σ(g i)² depends only on the value-multiset (via Multiset.map_map + Finset.sum_map_val + sq_abs). Hence within a fixed shape s, the shape-fiber of reps m n equals the unconstrained set {g : multiset(g)=s}, so (shapeFiber m n s).image absMap = arrangements s exactly — the bridge nobody had encoded between Keystone (harr about image absMap) and Arrange (count of arrangements s).",
-      "Residue arrangement_card was NOT previously queued in any *Aristotle.lean or *StatementOnly.lean file nor in research/aristotle-jobs.json; now staged in StatementOnly format (one def + one theorem-sorry, no helper sorries) per SORRY-CLASSIFICATION.md recommended route."
+      "Residue arrangement_card was NOT previously queued in any *Aristotle.lean or *StatementOnly.lean file nor in research/aristotle-jobs.json; now staged in StatementOnly format (one def + one theorem-sorry, no helper sorries) per SORRY-CLASSIFICATION.md recommended route.",
+      "S(researcher-3, 2026-06-18, ACT): WHOLE OQ-04 STACK NOW SORRY-FREE (pending build verify). Wired the discharged arrangement_card from ArrangeProof.lean into Arrange.lean:133 (import + `exact FourSquareDistributionOQ04ArrangeProof.arrangement_card s hm`; the two `arrangements` defs are syntactically identical so the discharge transfers by definitional unfolding). Eliminated Decomp.lean:157 sorry by converting the orbit-size input `fiber_card_eq_contribution` into an explicit hypothesis `FiberFormula m n` (Prop abbrev) that `reps_card_eq_sum_contribution` consumes — mirroring Keystone's existing harr-hypothesis pattern; the deleted sorry-theorem had no external callers (Keystone/Bridge use their own versions). Added Bridge.fiberFormula_holds : discharges FiberFormula m n for all m,n via fiber_card_eq_shapeContribution, so Decomp.reps_card_eq_sum_contribution m n (fiberFormula_holds m n) is the same fully-verified headline as Bridge.reps_card_eq_sum_shapeContribution."
     ],
     "mathlibGaps": [
       "B_{2k}=S_{2k} semidirect (Z/2)^{2k} (hyperoctahedral / signed permutation group) has NO Mathlib name (code search 'hyperoctahedral' = 0 hits); must be assembled from Equiv.Perm (Fin 2k) + (ZMod 2)^{2k} sign flips.",
       "No general sums-of-2k-squares count r_{2k} in Mathlib beyond Lagrange existence (Nat.sum_four_squares)."
     ],
     "nextSteps": [
-      "Prove the SINGLE remaining residue arrangement_card (Arrange.lean:133): #{g:Fin m→ℤ | multiset(g)=s} = Nat.multinomial s.toFinset s.count, via orbit-stabilizer for Equiv.Perm (Fin m) precomposition (orbit=arrangements, stabilizer≅∏_v Perm(fiber v) order ∏count!). Likely needs a defined MulAction instance. Ideal Aristotle target when backend returns (KNOWN math, not OPEN).",
-      "Register the OQ04 stack (Decomp, Sign, Arrange, Keystone, Bridge) in Proofs.lean once a build-enabled/cache-warm session can verify.",
-      "ACT fixed m in {4,6,8}: MulAction of Equiv.Perm (Fin m) x sign flips on {f:Fin m -> Z // sum f^2 = n}; stabilizer order via zero/nonzero split; orbit size via MulAction.card_orbit_mul_card_stabilizer_eq_card_group (Mathlib/GroupTheory/GroupAction/Quotient.lean).",
-      "Prove the orbit partition r_{2k}=sum_shapes orbit (a MulAction partition argument) — the genuine obstruction.",
-      "Supply r_6,r_8 arithmetic totals (Jacobi/modular) to state the decomposition with explicit totals."
+      "BUILD-VERIFY Proofs.FourSquareDistributionOQ04Bridge (top of stack; transitively builds Arrange→ArrangeProof, Decomp, Keystone, Sign). Sentinel /tmp/r3-bridge.done.",
+      "Register the now-sorry-free OQ04 stack (Decomp, Sign, Arrange, ArrangeProof, Keystone, Bridge) in Proofs.lean so the gallery build covers it.",
+      "Supply r_6,r_8 arithmetic totals (Jacobi/modular) to instantiate reps_card_eq_sum_shapeContribution with explicit numeric totals for 2k=6,8."
     ],
     "markdown": "See research/problems/four-square-distribution-oq-04/knowledge.md"
   },
@@ -87,6 +86,12 @@
   "relatedProofs": [
     "four-square-distribution",
     "four-square-distribution-oq-01",
+    "four-square-distribution-oq-01-oq-01",
+    "four-square-distribution-oq-02",
+    "four-square-distribution-oq-04",
+    "four-square-distribution-oq-05",
+    "four-square-distribution-oq-06",
+    "four-square-distribution-oq-06-oq-01",
     "lagrange-four-squares-waring-g2"
   ],
   "references": {
@@ -102,7 +107,174 @@
     ]
   },
   "started": "2026-06-15T07:05:00.000Z",
-  "lastUpdate": "2026-06-15T14:05:00Z",
+  "lastUpdate": "2026-06-18T00:00:00Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourSquareDistribution.lean",
+      "filename": "FourSquareDistribution.lean",
+      "lineCount": 401,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistribution.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ01.lean",
+      "filename": "FourSquareDistributionOQ01.lean",
+      "lineCount": 2933,
+      "theoremCount": 128,
+      "axiomCount": 1,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ01OQ01.lean",
+      "filename": "FourSquareDistributionOQ01OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ02.lean",
+      "filename": "FourSquareDistributionOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04.lean",
+      "filename": "FourSquareDistributionOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Arrange.lean",
+      "filename": "FourSquareDistributionOQ04Arrange.lean",
+      "lineCount": 149,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Arrange.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04ArrangeProof.lean",
+      "filename": "FourSquareDistributionOQ04ArrangeProof.lean",
+      "lineCount": 264,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04ArrangeProof.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Bridge.lean",
+      "filename": "FourSquareDistributionOQ04Bridge.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Bridge.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Decomp.lean",
+      "filename": "FourSquareDistributionOQ04Decomp.lean",
+      "lineCount": 185,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Decomp.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Keystone.lean",
+      "filename": "FourSquareDistributionOQ04Keystone.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Keystone.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04M8.lean",
+      "filename": "FourSquareDistributionOQ04M8.lean",
+      "lineCount": 227,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 22,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04M8.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Sign.lean",
+      "filename": "FourSquareDistributionOQ04Sign.lean",
+      "lineCount": 98,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Sign.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ05.lean",
+      "filename": "FourSquareDistributionOQ05.lean",
+      "lineCount": 214,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ05.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06.lean",
+      "filename": "FourSquareDistributionOQ06.lean",
+      "lineCount": 173,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06OQ01.lean",
+      "filename": "FourSquareDistributionOQ06OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06OQ01.lean"
+    }
+  ]
 }

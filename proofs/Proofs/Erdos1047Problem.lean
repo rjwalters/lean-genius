@@ -180,11 +180,17 @@ theorem goodmanPolynomial_natDegree : goodmanPolynomial.natDegree = 4 := by
 noncomputable def goodmanCriticalValue : ℝ :=
   5 ^ (3/2 : ℝ) / 4
 
-/-- At Goodman's critical value, the lemniscate has a non-convex component -/
-axiom goodman_counterexample :
-    ∃ z₀ ∈ lemniscate goodmanPolynomial goodmanCriticalValue,
-      ¬IsConvexComplex (componentContaining
-        (lemniscate goodmanPolynomial goodmanCriticalValue) z₀)
+/-
+At Goodman's critical value, the lemniscate has a non-convex component.
+
+    Formerly an `axiom`; now a machine-checked **theorem**
+    `Erdos1047OQ02Cert.goodman_counterexample_proof` (geometric chord-exits
+    certificate, 0 sorry / 0 axiom) in `Proofs/Erdos1047OQ02Certificate.lean`.
+    Because that certificate's reduction bridge imports this file, the headline
+    results that consume the counterexample (`grunskyConjecture_false`,
+    `erdos_1047`, `erdos_1047_counterexample`, `erdos_1047_answer`) live downstream
+    of the certificate in `Proofs/Erdos1047Main.lean`, reopening `namespace
+    Erdos1047` so their public names are unchanged. -/
 
 /-
 ## Part VIII: Referee's Example
@@ -247,35 +253,13 @@ Summary of Erdős Problem #1047.
 theorem goodmanPolynomial_degree_pos : goodmanPolynomial.natDegree > 0 := by
   rw [goodmanPolynomial_natDegree]; omega
 
-/-- Grunsky's conjecture is FALSE — there exist non-convex lemniscate components.
-
-    Formerly an `axiom`.  With the faithful `∀ c > 0` statement of
-    `grunskyConjecture` (Part V), the negation is a genuine **theorem**: it follows
-    directly from `goodman_counterexample`, the one remaining analytic input.  The
-    counterexample `f = (z²+1)(z−2)²` at `c = 5^{3/2}/4` exhibits a non-convex
-    component, contradicting universal convexity. -/
-theorem grunskyConjecture_false : ¬grunskyConjecture := by
-  intro h
-  obtain ⟨z₀, hz₀, hnc⟩ := goodman_counterexample
-  exact hnc (h goodmanPolynomial goodmanPolynomial_monic goodmanPolynomial_degree_pos
-    goodmanCriticalValue (by unfold goodmanCriticalValue; positivity) z₀ hz₀)
-
-/-- Erdős Problem #1047: SOLVED (Answer: NO)
-    Not all lemniscate components need be convex. -/
-theorem erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false
-
-/-- Existence of non-convex lemniscate components via Goodman's example -/
-theorem erdos_1047_counterexample :
-    ∃ f : ℂ[X], f.Monic ∧ f.natDegree > 0 ∧
-      ∃ c > 0, ∃ z₀ ∈ lemniscate f c,
-        ¬IsConvexComplex (componentContaining (lemniscate f c) z₀) :=
-  ⟨goodmanPolynomial, goodmanPolynomial_monic, goodmanPolynomial_degree_pos,
-   goodmanCriticalValue, by unfold goodmanCriticalValue; positivity, goodman_counterexample⟩
-
-/-- The answer to Erdős Problem #1047 is NO -/
-theorem erdos_1047_answer : ∃ f : ℂ[X], ∃ c > 0, ∃ z₀ ∈ lemniscate f c,
-    ¬IsConvexComplex (componentContaining (lemniscate f c) z₀) := by
-  obtain ⟨f, _, _, c, hc, z₀, hz₀, hconv⟩ := erdos_1047_counterexample
-  exact ⟨f, c, hc, z₀, hz₀, hconv⟩
+/-
+The headline results (`grunskyConjecture_false`, `erdos_1047`,
+`erdos_1047_counterexample`, `erdos_1047_answer`) consume the now-discharged
+counterexample and therefore live in `Proofs/Erdos1047Main.lean`, downstream of the
+certificate `Proofs/Erdos1047OQ02Certificate.lean` (this file cannot import the
+certificate — the certificate's reduction bridge imports this file).  They reopen
+`namespace Erdos1047`, so `Erdos1047.erdos_1047` and the others keep their names.
+-/
 
 end Erdos1047

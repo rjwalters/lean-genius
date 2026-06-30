@@ -2,11 +2,11 @@
   "id": "lagrange-four-squares-oq-02",
   "title": "Distribution of Four-Square Representations Among Orderings",
   "slug": "lagrange-four-squares-oq-02",
-  "description": "Studies how representations n = a²+b²+c²+d² distribute among orderings, classifying all contribution patterns (trivial, all-equal, three-equal, two-pair, two-equal, two-distinct types) and proving each type family has a fixed contribution size. Complete contribution value set {1,8,16,24,32,48,64,96,192,384} determined. Orbit-stabilizer structure for all types proved. 105 theorems, 0 axioms.",
+  "description": "Studies how representations n = a²+b²+c²+d² distribute among orderings, classifying all contribution patterns (trivial, all-equal, three-equal, two-pair, two-equal, two-distinct types) and proving each type family has a fixed contribution size. Complete contribution value set {1,8,16,24,32,48,64,96,192,384} determined. Orbit-stabilizer structure for all types proved. 105 theorems; computational results (contribution sizes, multinomials, type counts, r₄ checks) are discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ02.lean",
     "tags": [
       "number-theory",
@@ -16,11 +16,11 @@
       "orbit-stabilizer",
       "combinatorics"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "The substantive computational results (per-type contribution sizes, multinomial signatures, type counts, and r₄(n) checks for n ≤ 16) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom (visible via `#print axioms`). No `axiom` declarations and no sorries; the literal `axiom` count in the Lean source is 0.",
     "lineCount": 651,
     "theoremCount": 105,
     "definitionCount": 17,
@@ -60,7 +60,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Complete combinatorial classification of four-square representation distributions: 6 type families (trivial, all-equal, three-equal, two-pair, two-equal, two-nonzero-distinct) with universal contributions {8,16,32,96,24,48}, full contribution value set {1,8,16,24,32,48,64,96,192,384}, orbit-stabilizer structure for all types, decidable enumeration verified for n ≤ 16. 105 theorems, 17 definitions, 651 lines, 0 axioms.",
+    "summary": "Complete combinatorial classification of four-square representation distributions: 6 type families (trivial, all-equal, three-equal, two-pair, two-equal, two-nonzero-distinct) with universal contributions {8,16,32,96,24,48}, full contribution value set {1,8,16,24,32,48,64,96,192,384}, orbit-stabilizer structure for all types, decidable enumeration verified for n ≤ 16. 105 theorems, 17 definitions, 651 lines; computational results discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom.",
     "implications": "This provides a machine-verified combinatorial analysis of how four-square representations distribute among orderings. The type classification is the structural prerequisite for deriving Jacobi's formula r₄(n) = 8·Σ_{4∤d|n} d — each divisor d corresponds to a type contribution, and the sum organizes the 6 type families. The orbit-stabilizer verification connects the number-theoretic result to finite group theory.",
     "openQuestions": [
       "Derive Jacobi's formula $r_4(n) = 8 \\sum_{4 \\nmid d,\\, d \\mid n} d$ from the type contribution analysis: prove that `totalFromEnum n = 8 * σ*(n)` where $\\sigma^*(n) = \\sum_{4 \\nmid d \\mid n} d$. This requires connecting the combinatorial type enumeration to divisor sums, likely via a multiplicative function argument.",
@@ -235,7 +235,7 @@
       "title": "Summary",
       "startLine": 617,
       "endLine": 651,
-      "summary": "Tabulated recap of all results (0 axioms, 0 sorries) and key insights: per-family constant contributions, the contribution value set, orbit-stabilizer structure, and the 24:1 symmetry ratio."
+      "summary": "Tabulated recap of all results (0 sorries; computational results via `native_decide`, which depends on `Lean.ofReduceBool`) and key insights: per-family constant contributions, the contribution value set, orbit-stabilizer structure, and the 24:1 symmetry ratio."
     }
   ],
   "sorries": 0

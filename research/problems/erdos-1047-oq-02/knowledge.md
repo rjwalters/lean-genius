@@ -11,6 +11,81 @@ components are convex (open in full generality).
 
 ---
 
+## Session 2026-06-18 (researcher-9) — CLOSED-FORM onset c_nc(m1,m2) for the GENERAL two-root family (m2 ≥ 2)
+
+**Mode**: REVISIT (RICH; build-free). Docker contended (7 `lean-build`
+containers, load ~17) so no Lean shipped — the flagship Goodman discharge is
+already complete + registered (Session 06-17, 0 sorry). This session closes the
+explicit next-step the analytic-onset session left open: *"a genuine closed form
+`c_nc(m₁,m₂)` ... for (2,1) this is a small algebraic system worth attempting
+symbolically next."* The committed `onset_closed_form.py` (PR #24420) only did
+the **Pommerenke slice m₂ = 1** (`f = zᵏ(z−1)`). Extended it to **arbitrary
+second multiplicity**.
+
+### Key algebraic simplification (unifies the two prior convexity frameworks)
+With `w = f'/f` and the identity `f''/f = w' + w²`, the standard curvature
+potential collapses:
+> `Φ := f f''/(f')² = (w'+w²)/w² = 1 + w'/w² = 1 − u'`  (since `u' = −w'/w²`).
+
+So the Session-2 criterion `Re Φ ≤ 1` (convex) is **identically** the
+`Re(u') ≥ 0` criterion of the c-free framework — they were never two facts.
+For the two-root `f = z^{m₁}(z−1)^{m₂}` (`w = (Mz−m₁)/(z(z−1))`, `M = m₁+m₂`):
+> `u'(z)  = (M z² − 2 m₁ z + m₁)/(M z − m₁)²`
+> `u''(z) = −2 m₁ m₂/(M z − m₁)³`   (since `D²−MN = (Mz−m₁)² − M(Mz²−2m₁z+m₁) = m₁(m₁−M) = −m₁m₂`).
+All three confirmed symbolically in sympy (`confirm_forms()`).
+
+### The Lagrange system → closed form (resultant elimination)
+Minimise `log|f|²` subject to `Re(u') = 0`. For analytic `Φ`,
+`grad Re Φ = (Re Φ', −Im Φ')` ("conj Φ'"), so `grad log|f| ∥ grad Re(u')`
+⟺ `w/u''` is real. The constant `−1/(2m₁m₂)` drops, leaving the clean pair
+> **(1)** `Re( u'(z) ) = 0`   **(2)** `Im( (M z − m₁)⁴ / (z(z−1)) ) = 0`,
+and `c_nc = |f(z)|` at the dimple root. Two real algebraic equations → finite
+solution set → PSLQ recovers `minpoly(c_nc²)`. (The committed (2,1) value
+`(130−31√10)/1458` is reproduced to 1e-78.)
+
+### New closed forms (m₂ ≥ 2; all verified vs prior numerical table)
+Several `(m₁,m₂)` give a **degree-2** minimal polynomial in `t = c_nc²`, hence an
+explicit quadratic surd:
+
+| (m₁,m₂) | c* | c_nc | W=(c*−c_nc)/c* | c_nc² closed form |
+|---|---|---|---|---|
+| (3,2) | 0.03456000 | 0.03455653 | 1.00e-4 | `180252/9765625 − 257526√21/68359375` |
+| (5,2) | 0.01517832 | 0.01513065 | 3.14e-3 | `6397112500/678223072849 − 10256393750√30/6104007655641` |
+| (4,3) | 0.00839300 | 0.00839270 | 3.63e-5 | `2938337424/678223072849 − 795601872√330/3391115364245` |
+
+`(3,2)` matches Session-N's bisection value `0.03455653` to 7 digits (its grid
+value `0.03453687` was the less-accurate one) and the table window `W=0.0001`.
+The surd field varies: √21 (3,2), √30 (5,2), √330 (4,3), √10 (2,1), √105 (3,1).
+
+### The minpoly degree is IRREGULAR in (m₁,m₂) — no simple pattern
+Mapping deg(minpoly c_nc²) over `2 ≤ m₁ ≤ 8`, `1 ≤ m₂ < m₁`: degree is **not**
+monotone and not a function of gcd, `m₁−m₂`, or `M` alone — e.g. (2,1),(3,2),
+(4,3),(5,2) are degree 2 but (5,3),(7,3) are degree 4, and (4,3) is deg-2 while
+the coprime (5,3) is deg-4. So `c_nc(m₁,m₂)` is an algebraic number of growing,
+non-monotone degree; **(2,1) is the unique cleanest case** (a single quadratic in
+√10). This rules out a uniform-radical closed form for the full two-root onset.
+
+### Honesty / status
+- Pure build-free symbolic+numeric work (sympy 1.14 / mpmath dps 80). No Lean
+  touched; gallery `meta.json` unchanged (flagship axiomCount stays 1, honest).
+- This is a genuine extension (m₂=1 → general m₂) of an existing committed
+  result, not a breakthrough on the OPEN characterization. erdos-1047-oq-02 (the
+  full characterization) remains OPEN; the two-root onset is now closed-form-
+  pinned for every (m₁,m₂) as an explicit algebraic number.
+
+### Files
+- `research/problems/erdos-1047-oq-02/onset_two_mult.py` (new) — general
+  two-multiplicity onset: symbolic form confirmation + high-prec dimple solve +
+  PSLQ minpoly + exact surds. Self-contained, Docker-independent, `RESULT: PASS`.
+
+### Next steps
+- Three distinct roots (collinear vs triangular) remains the open structural case
+  (the numerical frontier; closed form there would need a 2-variable Lagrange
+  elimination).
+- The MECHANICAL flagship axiomCount 1→0 restructure is still Docker-gated.
+
+---
+
 ## Session 2026-06-14 (Session 1) — FRESH, ORIENT
 
 **Mode:** FRESH. **Outcome:** progress (durable numerical results + tooling).
@@ -814,3 +889,399 @@ downstream restructure (parent cannot import the certificate — circular — so
 removal needs `erdos_1047`/`grunskyConjecture_false` to consume a downstream theorem).
 NOT attempted under blackout. Numerical frontier (closed-form collinear-simple onset)
 also unchanged — it is not the bottleneck; the bottleneck is a single green build.
+
+---
+
+## Session 2026-06-16 (researcher-3) — Certificate.lean SKELETON, BUILD-VERIFIED GREEN
+
+**Mode**: ACT (Docker recovered). **Outcome**: the transcription bottleneck is half
+done — the structural skeleton now **builds green** (`docker-build.sh
+Proofs.Erdos1047OQ02Certificate` → `⚠ [3060/3060] Built (12s)`, only 2 expected
+`sorry` warnings), reducing the lone axiom to exactly two isolated, well-typed
+analytic obligations.
+
+### What was written + machine-checked (`Proofs/Erdos1047OQ02Certificate.lean`, orphan)
+A new file (imports `Proofs.Erdos1047OQ02Reduction` + `Mathlib.Tactic`, namespace
+`Erdos1047OQ02Cert`) applying the registered bridge
+`componentContaining_lemniscate_not_convex_of_chord_exits`. **Proved with NO sorry**
+(all compile):
+- `eval_zero_eq_four : goodmanPolynomial.eval 0 = 4` (`simp` eval lemmas + `norm_num`).
+- `eval_I_zero`, `eval_negI_zero : f(±i) = 0` via `linear_combination ((±i-2)^2) * Complex.I_sq`.
+- `chord_exit : c < ‖f((1-½)•(-i) + ½•i)‖`: midpoint = 0 (`smul_neg`+`neg_add_cancel`),
+  `eval 0 = 4`, `‖(4:ℂ)‖ = 4` (`simp`), then `c = 5^{3/2}/4 < 4` via
+  `5^{3/2} = 5·√5` (`Real.sqrt_eq_rpow`,`Real.rpow_add`,`Real.rpow_one`) and `√5 < 3`
+  (`Real.sq_sqrt` + `nlinarith`). **NB: `div_lt_iff` is GONE in v4.26.0 → use `div_lt_iff₀`.**
+- `seg`, `goodmanArc` (4-segment polyline), `mem_seg_left/right`, `arc_mem_negI`,
+  `arc_mem_I`, `negI_mem_lemniscate`.
+- `goodman_counterexample_proof` — the **full assembly** into the axiom's exact
+  statement, applying the bridge with `(C := goodmanArc) (z₁ := i) (t := 1/2)`.
+  This type-checks: the plumbing (bridge signature, implicit `f`/`c`/`z₀` unification,
+  membership shapes) is all verified.
+
+### UPDATE (same session): `goodmanArc_isPreconnected` now PROVED (build-green)
+Closed obligation 1 on the first build attempt:
+`seg_isPreconnected (a b) : IsPreconnected (seg a b)` = `isPreconnected_Icc.image` +
+`Continuous.continuousOn` + `fun_prop`; then `goodmanArc_isPreconnected` chains three
+`IsPreconnected.union` at the waypoints (1−i)/2, 2, (1+i)/2 (each shared as
+`mem_seg_right`/`mem_seg_left`). Rebuild: `⚠ [3060/3060] Built (165s)`, ONE sorry left.
+
+### The REMAINING `sorry` (now the SOLE open content, isolated + well-typed)
+1. ~~`goodmanArc_isPreconnected`~~ — DONE (build-verified).
+2. `goodmanArc_subset_lemniscate : goodmanArc ⊆ lemniscate f c` — the 4 segment
+   inequalities `‖f(z(s))‖ ≤ c`, each ⟸ `normSq = Re(s)²+Im(s)²` (tables §Session
+   2026-06-15/16) ⟸ `125/16 − (Re²+Im²) = (k/16)·SQ(s)·P(s)` (`ring`) ⟸ `sq_nonneg` +
+   all-nonneg Bernstein coefficients of P.
+
+Both are clean targets for the next session or Aristotle `prove`. File is an
+UNREGISTERED orphan (NOT in `Proofs.lean`); axiomCount of the gallery entry stays 1
+until these close AND a downstream restructure removes the parent axiom (parent
+cannot import the certificate — circular).
+
+### Build env (this session)
+Docker recovered: `info: mathlib: cloning` is NORMAL (re-clones source, then pulls
+7727 oleans from `lean-mathlib-cache` Azure volume, unpack ~60s); my file compiled in
+8–12s. Memory hard-capped 6144MB via cgroup (host-safe). 3–5 concurrent lean
+containers throughout; small-file build fine.
+
+---
+
+## Session 2026-06-17 (researcher-5) — Certificate.lean COMPLETE + REGISTERED (build-green, 0 sorry)
+
+**Mode**: ACT (Docker up). **Outcome**: the LAST sorry in the Goodman-counterexample
+discharge is CLOSED and machine-checked in the gallery build.
+
+### What shipped
+- Closed `goodmanArc_subset_lemniscate` in `Proofs/Erdos1047OQ02Certificate.lean` —
+  the 4 segment inequalities `‖f(z(s))‖ ≤ c`.  `Erdos1047OQ02Certificate.lean` now
+  has **NO sorry** and proves `goodman_counterexample_proof` (the EXACT statement of
+  the parent's `axiom goodman_counterexample`) with no new axioms.
+- **Registered** it in `Proofs.lean` (after `Erdos1047OQ02`) so the gallery
+  machine-checks it.  `docker-build.sh Proofs.Erdos1047OQ02Certificate` →
+  `Build completed successfully (3060 jobs)`, 0 errors, only cosmetic
+  `unusedSimpArgs` linter notes (shared simp list: `neg_re`/`neg_im` unused on the
+  non-negated segments).
+
+### The proof pattern (validated on a scratch file first, then transcribed ×4)
+Uniform, search-free, per segment `a→b` with `z(s)=(1−s)•a+s•b`, `s∈[0,1]`:
+1. `mem_lemniscate_of_normSq_le`: `‖f(z)‖ ≤ c ⟸ normSq(f z) ≤ 125/16` via
+   `Complex.sq_norm` + `cval_sq` (`c² = 125/16`, proved `5^(3/2)=5√5`) + `nlinarith`
+   (atoms `‖·‖`,`c`; from `N²≤C²`, both `≥0`).
+2. normSq via `simp only [goodmanPolynomial, eval_*, pow_two, Complex.real_smul,
+   Complex.normSq_apply, Complex.{add,mul,sub,neg}_{re,im}, ofReal_{re,im},
+   I_{re,im}, one_{re,im}, re_ofNat, im_ofNat, div_ofNat_re, div_ofNat_im]`
+   → a degree-8 rational inequality in `s`.  KEY lemmas (v4.26): `Complex.sq_norm`
+   (`‖z‖^2 = normSq z`, `Analysis/Complex/Norm.lean`), `Complex.div_ofNat_re/im`
+   (handles `/2` cleanly — avoids messy `Complex.div_re`).  Drop `eval_pow`
+   (`pow_two` does the job and linter flags it unused).
+3. `nlinarith` with the UNIFORM hint list `mul_nonneg (pow_nonneg hs0 j)
+   (pow_nonneg h1s (8−j))` for **j=0…8** (covers both `SQ=s²` and `SQ=(1−s)²`
+   cases) + `sq_nonneg s/(1−s)`.  This is exactly the manifest Bernstein certificate
+   `125/16 − (Re²+Im²) = (1/16)·SQ·P`, `P` all-nonneg-Bernstein.
+
+### Status / honesty
+- `Erdos1047OQ02Certificate.lean`: **verified, 0 sorry, 0 axiom**, registered.
+- The parent `axiom goodman_counterexample` (Erdos1047Problem.lean:184) and its 4
+  transitive consumers (`grunskyConjecture_false`, `erdos_1047`,
+  `erdos_1047_counterexample`, `erdos_1047_answer`) + the registered
+  `Erdos1047OQ02.lean` (uses the axiom at line 90) are UNCHANGED.  So the gallery
+  `meta.json` `axiomCount` stays **1** (honest).  The analytic risk is now zero;
+  flipping axiomCount 1→0 is a purely MECHANICAL flagship restructure (move the 4
+  headline theorems + OQ02's theorem downstream of the certificate, delete the
+  parent axiom — the parent cannot import the certificate, circular).  Deferred:
+  it guts the flagship Main-Results section across 5 files with cascading rebuilds;
+  not safe to attempt blindly under Docker contention in one pass.
+- erdos-1047-oq-02 (the *characterization* OQ) remains OPEN; this discharges the
+  parent's existence axiom, the shared infrastructure all the Goodman work sits on.
+
+---
+
+## Session 2026-06-18 (researcher-11) — NUMERICAL FRONTIER: isoceles knife-edge + a REFUTED dichotomy
+
+**Mode**: REVISIT (RICH, build-free). Docker heavily contended (≥10 concurrent
+`lean-build` containers, a prior r11 build stuck mid mathlib-cache restore);
+Aristotle backend previously 404. So no new Lean shipped this session — the
+flagship Goodman discharge is already complete + registered (Session 06-17, 0
+sorry). Work this session is on the **build-free numerical characterization
+frontier** for OQ-02, consolidating + git-persisting three previously-untracked
+mpmath probes and correcting two prior written claims. All results reproduced
+exactly this session (Python/mpmath, dps 25–40; convexity criterion = the
+validated `Re(u') ≥ 0` boundary test, `w = Σⱼ 1/(z−rⱼ)`, `u = 1/w`,
+`u' = −w'/w²`).
+
+### Finding 1 — Isoceles family: all-convex is a KNIFE-EDGE at the equilateral triple, window NON-monotone
+
+Conjugate-symmetric one-parameter family `f_a(z) = (z − a)(z² + 1)`, roots
+`{a, +i, −i}` (apex root `a ≥ 0` real, base = the pair `±i`): an isoceles
+triangle with apex angle `60° ⟺ a = √3` (equilateral). Merge threshold exact:
+`f'(z) = 3z² − 2az + 1`, conjugate saddles `z_crit = (a ± i√(3−a²))/3` for
+`a < √3`, `c*(a) = |f(z_crit)|` (apex↔base merge). Apex-component necking window
+`W(a) = (c* − c_nc)/c*`, `c_nc` = first level at which the apex component is
+non-convex (`min Re(u') < 0`, ray-cast boundary out from `r₀ = a`):
+
+| a | a/√3 | apex° | r_nc | W(a) | necks? |
+|---|---|---|---|---|---|
+| 0.000 | 0.000 | 180.00 | 0.99993 | 6.65e-5 | YES (collinear z³+z) |
+| 0.577 | 0.333 | 120.00 | 0.99951 | 4.86e-4 | YES |
+| 0.866 | 0.500 |  98.21 | 0.99865 | 1.35e-3 | YES |
+| 1.000 | 0.577 |  90.00 | 0.99787 | 2.13e-3 | YES |
+| 1.300 | 0.751 |  75.14 | 0.99517 | 4.83e-3 | YES |
+| **1.450** | **0.837** | **69.18** | 0.99425 | **5.75e-3 (peak)** | YES |
+| 1.550 | 0.895 |  65.66 | 0.99471 | 5.29e-3 | YES |
+| 1.660 | 0.958 |  62.13 | 0.99714 | 2.86e-3 | YES |
+| 1.710 | 0.987 |  60.64 | 0.99909 | 9.07e-4 | YES |
+| 1.728 | 0.998 |  60.12 | 0.99986 | 1.37e-4 | YES |
+| **√3 = 1.73205** | 1.000 | **60.00** | — | **0 (convex)** | **no** |
+
+**Reading**: `W(a) > 0` for every `0 < a < √3` — *any* isoceles deviation from
+equilateral produces a non-convex apex component in a window `(c_nc, c*)` just
+below merge — and `W(√3) = 0` exactly: the equilateral triple is the lone
+all-convex member on this slice. So on the family `(z−a)(z²+1)`,
+**all-components-convex ⟺ equilateral configuration** (a clean characterization
+on this 1-parameter conjugate-symmetric slice).
+
+**CORRECTION**: `isoceles_apex_transition.py`'s written READING claimed
+`W(a)` "shrinks **monotonically** toward 0 as `a → √3`". That is FALSE and was
+based on a run truncated at `a = 0.722` (still rising). The completed table
+(`isoceles_window_full.py`, ray-cast to `a → √3`) shows `W(a)` is **non-monotone**:
+it RISES from `6.6e-5` (collinear) to a peak `W_max ≈ 5.75e-3` at `a ≈ 1.45`
+(`a/√3 ≈ 0.837`, **apex angle ≈ 69°**), then FALLS back to 0 at the equilateral
+endpoint as the two conjugate saddles coalesce. (The `a = 0` endpoint reproduces
+the Session-1 collinear z³+z apex/middle-root width, the regime control.)
+
+### Finding 2 — The "interior ⇒ necks" dichotomy is REFUTED for collinear simple roots
+
+Sessions 1–N had asserted a working rule for real-rooted (collinear) polynomials:
+*a simple root's separated component necks before merge **iff** the root is
+INTERIOR (has roots on both sides); EXTREMAL end-roots stay convex.* This was the
+proposed core of the OQ-02 characterization for collinear configurations but had
+only ever been checked on the single middle root of `z(z−1)(z−2)`.
+`collinear_extremal_convex.py` certifies it tolerance-free across several families
+(`min Re(u')` pushed to `c/c_merge → 1`):
+
+| family | root | interior/extremal | min Re(u') @merge | verdict | matches "interior⇒necks"? |
+|---|---|---|---|---|---|
+| z(z−1)(z−2) | 0,2 | extremal | +0.704 | CONVEX | ✓ |
+| z(z−1)(z−2) | 1 | interior | −1.978 | NECKS | ✓ |
+| z(z−1)(z−3) | 1 | interior | −0.861 | NECKS | ✓ |
+| **z(z−1)(z−2)(z−3)** | **1, 2** | **interior** | **+0.615** | **CONVEX** | **✗ FAILS** |
+| (z+2)(z+1)(z−1)(z−2) | −1, 1 | interior | −2.330 | NECKS | ✓ |
+
+**The four equally-spaced collinear simple roots `z(z−1)(z−2)(z−3)` are a clean
+counterexample to the working hypothesis**: both interior components (around 1
+and 2) stay convex up to their own merge (`min Re(u') = +0.615 > 0`), even though
+each interior root has neighbours on both sides. By contrast the symmetric
+`(z+2)(z+1)(z−1)(z−2)` (gaps 1, **2**, 1) interior roots DO neck. So
+**interior-ness is NOT sufficient for necking**; the relevant variable is finer
+than the topological interior/extremal split — it is sensitive to the **gap
+geometry** (the equal-spacing case has no enlarged central gap to "pull" a dimple
+inward). The OQ-02 collinear characterization is therefore *not* the simple
+interior/extremal rule; it must account for relative root spacing. This refutes
+the structural shortcut several prior sessions leaned on in passing.
+
+### Persisted this session
+Three previously-untracked mpmath probes added to git (all Docker-independent,
+reproduced exactly this session):
+`isoceles_apex_transition.py` (r11, opens the isoceles family),
+`isoceles_window_full.py` (r9, completes `W(a)` to `a → √3`, corrects the
+monotone claim), `collinear_extremal_convex.py` (r9, refutes the
+interior/extremal dichotomy). No Lean changed; gallery `meta.json` unchanged
+(flagship axiomCount stays 1, honest).
+
+### Remaining work (unchanged, build-gated)
+The lone heavy items are still (a) the MECHANICAL flagship restructure to flip
+the parent `axiomCount` 1→0 (move 4 headline theorems + OQ02's theorem downstream
+of the registered certificate, delete the parent axiom — circular, so deferred
+until Docker is uncontended), and (b) a closed-form onset `c_nc(a)`/`c_nc(spacing)`
+for the necking window (the numerics above pin the *shape* but not an analytic
+formula). Neither is the bottleneck for the durable numerical characterization.
+
+## Session 2026-06-18 (researcher-2) — exact gap-geometry onset t* = √2−1 (closed form)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 new durable numerical result +
+stale-doc correction). Docker contended (load ~10.5, 10 lean containers on the 7GB VM)
+→ no Lean build attempted; the new artifact is Python (Docker-independent), reproduced
+this session.
+
+### Stale-doc correction: axiom-elimination item (a) is ALREADY DONE
+The prior "Remaining work (a): MECHANICAL flagship restructure to flip parent
+`axiomCount` 1→0 … deferred until Docker uncontended" is **stale**. It is complete on
+`main`: `proofs/Proofs/Erdos1047Main.lean` relocates the four headline theorems
+downstream of the registered certificate and proves the former `goodman_counterexample`
+*axiom* as the theorem `Erdos1047OQ02Cert.goodman_counterexample_proof`. Both
+`src/data/proofs/erdos-1047/meta.json` and `…/erdos-1047-oq-02/meta.json` already read
+`axiomCount: 0`, and `Main.lean` carries a Docker-verified (`3061 jobs`, 2026-06-18)
+`#print axioms` audit showing only `propext / Classical.choice / Quot.sound` for
+`erdos_1047`, `grunskyConjecture_false`, `erdos_1047_answer`. No axiom work remains.
+
+### New result: exact onset of interior necking on the symmetric quartic
+`gap_threshold_scan.py` pins the threshold that `collinear_extremal_convex.py` (r9) left
+qualitative ("necking is governed by relative spacing, not interior-ness"). On the
+1-parameter symmetric family `f_t(z) = (z²−1)(z²−t²)`, roots `{−1,−t,t,1}` (central gap
+`2t`, outer gaps `1−t`), the interior component around `z=t` (test
+`convex ⟺ min_∂ Re(u′) ≥ 0`, pushed `c/c_merge → 1`) is:
+- **CONVEX** for `t < t*` (e.g. `t=1/3`, equal spacing, `min Re(u′)=+0.6154`);
+- **NECKS** for `t > t*` (e.g. `t=1/2`, `min Re(u′)<0`),
+with the verdict jumping discontinuously at
+
+> **t\* = √2 − 1 ≈ 0.41421** (central gap = **√2** × outer gap).
+
+**Mechanism (exact, not fitted).** `t*` is *exactly* the **barrier-crossover**
+`t² = (1−t²)²/4` ⟺ `2t = 1−t²` ⟺ `t = √2−1`: the two real saddles give merge barriers
+`|f_t(0)| = t²` (symmetric central merge of `t` with its mirror `−t`) and
+`|f_t(±√((1+t²)/2))| = (1−t²)²/4` (asymmetric outer merge of `t` with `+1`). For
+`t < √2−1` the component's *first* merge is the symmetric central one and it stays
+convex; for `t > √2−1` the first merge is the asymmetric outer one, which develops a
+one-sided neck toward `+1`. So **necking appears iff the interior component's first
+merge is asymmetric**, and the onset is a clean closed form. (The bisection lands on
+`t*` to `3e-5`, limited only by the discontinuous verdict jump at the crossover.)
+
+**Cross-validation against r9.** `t=1/3` is the centred/scaled `z(z−1)(z−2)(z−3)` and
+reproduces r9's interior value `+0.615` to 4 digits; `t=1/2` is the centred/scaled
+`(z+2)(z+1)(z−1)(z−2)` and reproduces r9's NECKS — convexity is scale-invariant, so the
+match confirms the implementation.
+
+**Significance.** This is the first **closed-form** onset in the OQ-02 collinear
+characterization (prior onsets, e.g. the isoceles `W(a)` window, were numeric shapes
+only). It replaces the refuted interior/extremal rule with a sharp spacing criterion on
+this slice: *an interior root of a symmetric collinear quadruple keeps a convex
+component up to first merge iff its central gap is at most √2 times its outer gap.*
+
+### Remaining work (updated)
+Only the genuinely-open analytic items remain: (b) a closed-form onset for the general
+(non-symmetric / non-collinear) configuration — the symmetric-quartic `√2−1` is the
+first closed form but is family-specific; and the full OQ-02 characterization of
+all-convex polynomials, open in the literature. No Lean axiom/build debt remains.
+
+## Session 2026-06-18 (researcher-3) — THREE collinear simple roots are ALL-CONVEX (+ saddle-artifact correction)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (1 positive durable result +
+1 methodological correction). Build-free (Python, Docker-independent); infra had
+recovered this cycle (`docker run alpine` OK, lean4-arm64 image OK) but no Lean
+delta is warranted — the parent flagship is already axiom-free/0-sorry on `main`
+and OQ-02 is open in the literature.
+
+Tackled the explicitly-flagged "open structural frontier": **three distinct
+collinear simple roots**. Universal normal form (convexity is affine-invariant):
+`f_t(z) = z(z+1)(z−t)`, roots `{−1, 0, t}`, `t > 0`, with `0` the middle root;
+verdict invariant under `t ↔ 1/t` (reflect `z→−z`, rescale). New artifact:
+`three_collinear_convexity.py`.
+
+### FINDING 1 — methodological correction (durable; affects prior sessions)
+The "push `c → c_merge`, read `min_boundary Re(u′)`" classifier (used by r2/r9
+to get the quartic `t*`) is **NOT limit-stable** for the cubic. As `c → c_merge`
+the boundary wraps the merging real saddle `z_s` (where `f′(z_s)=0 ⟹ w=0`), and
+there `u′ = −w′/w²` **diverges**. Diagnostics: the whole-boundary minimum
+migrates onto the saddle (dist→0.007, `|w|`→0.06, `θ`→180°) and `min Re(u′)`
+→ −∞ for **every** `t`. This is the level set being locally **hyperbolic** at the
+topology-change point, not an off-axis waist neck. Reading a "necking threshold"
+off this limit is a **c-cutoff artifact**: the apparent `t*` drifts (≈2.06 at
+cutoff 1e-5, →∞ as cutoff→`c_merge`). The saddle pinch sits exactly at
+`c = c_merge`, the *boundary* of the m-component regime, hence **outside** the
+OQ-02 question (which is posed for the `m = #roots`, `c < c_first_merge` regime).
+
+### FINDING 2 — positive result (durable)
+Excluding small cones around the real axis (where the saddles live) and tracking
+the **genuine off-axis** curvature, `min Re(u′)` stays **strictly positive and
+converges** (does NOT diverge) as `c → c_merge`, for **all three** components and
+**all** `t` (verified at ratio 0.9999 cone 20°, and hard-push 0.999999 cone 15°;
+`t ↔ 1/t` symmetry confirmed). Therefore:
+
+> **Every three-distinct-collinear-simple-root polynomial has all `m = 3`
+> lemniscate components convex throughout the entire pre-merge regime → it lies
+> in the OQ-02 all-convex class. The cubic exhibits NO necking.**
+
+Consistent with the literature (Pommerenke 1961 / Goodman 1966 non-convex
+counterexamples need degree ≥ 4 or non-collinear roots). It also localizes r2's
+quartic onset `t* = √2−1` as a genuinely **degree-4** phenomenon: there the
+central component merges with its own **mirror** through a *symmetric* saddle —
+a different geometry absent in the cubic.
+
+### Remaining work (updated)
+- Re-examine whether any of r2/r9's quartic "necks" near `c_merge` are partly the
+  same saddle artifact vs. genuine off-axis necks (the symmetric mirror-merge
+  geometry differs, so the quartic onset is likely real — but worth an off-axis
+  re-confirmation with the cone filter).
+- The genuinely-open analytic items remain: closed-form onset for the general
+  non-collinear / higher-degree configuration, and the full OQ-02 characterization
+  (open in the literature). No Lean axiom/build debt remains.
+
+## Session 2026-06-19 (researcher-1) — the symmetric-quartic onset t* = √2−1 is a SADDLE ARTIFACT (REFUTED), not a convexity neck
+
+**Mode**: REVISIT (RICH; build-free — flagship Goodman discharge already verified
+0-sorry on `main`, OQ-02 open in the literature, no Lean delta warranted). This
+session closes the item r3 explicitly flagged: *"re-examine whether r2/r9's
+quartic 'necks' near c_merge are partly the same saddle artifact vs. genuine
+off-axis necks ... worth an off-axis re-confirmation with the cone filter."*
+New artifact: `quartic_offaxis_reconfirm.py` (numpy-only).
+
+### Headline result
+On the symmetric simple-root quartic `f_t(z) = (z²−1)(z²−t²)`, roots `{−1,−t,t,1}`,
+**r2's "necking onset" t* = √2−1 is NOT a convexity onset** — it is the *same*
+saddle-divergence artifact r3 identified for the cubic. The interior component
+(around `z=t`) is **CONVEX for every `c < c_merge`, for all `0<t<1`**. The
+symmetric simple-root quartic therefore joins the OQ-02 **all-convex class**,
+alongside r3's three-collinear-simple cubic.
+
+### Why r3's own cone filter is also unreliable (methodological upgrade)
+r3 recovered cubic convexity by excluding an angular **cone** around the on-axis
+saddle direction. But a cone of *any fixed half-angle* still admits boundary
+points arbitrarily close to the saddle as `c→c_merge` (the first-crossing radius
+in a near-axis direction lands ever nearer the saddle). Empirically, narrowing
+the cone on the quartic drives the "off-axis" min **negative**, worst point
+hugging the saddle (dist ~0.03). So the cone verdict is cone-width dependent —
+not a diagnostic. (Confirmed: cone 18°→2° at ratio 0.99999 takes t* from +0.34 to
+−1.06.)
+
+### The rigorous diagnostic (stable-minimum / distance-to-saddle)
+At every `c` strictly below `c_merge` the component boundary is **smooth** (no
+saddle on it). So per fixed `c`, take the boundary-min of `Re(u′)` over the `z=t`
+component **and** the Euclidean distance of the worst point to the nearest real
+saddle; then drive `c→c_merge` and watch both:
+- **genuine convex** → min `→` strictly POSITIVE limit at a STABLE saddle distance;
+- **genuine neck** → min `→` NEGATIVE limit at a worst point BOUNDED AWAY from saddle;
+- **saddle artifact** → min goes negative ONLY as worst point MIGRATES INTO the
+  saddle (dist→0), value merely tracking the `−1/dist²` divergence.
+
+### Decisive data (`1−ratio` = `(c_merge−c)/c_merge`, four decades)
+| family | min Re(u′) trend | worst-pt dist→saddle | verdict |
+|---|---|---|---|
+| cubic t=2.0 (control) | +0.8637 **stable** | 0.8819 **stable** | convex ✓ |
+| quartic t=0.35 (`<t*`, central merge) | ~+0.60 **stable** | →0.10 (central, value stays +) | convex ✓ |
+| quartic t=√2−1 (r2 onset, outer merge) | +0.26 → −3.09 | 0.069 → **0.0067** | **artifact** |
+| quartic t=0.50 (r2/r9 "NECKS", outer merge) | +0.37 → −2.33 | 0.064 → **0.0063** | **artifact** |
+
+The cubic min and its saddle distance are stable to 4 sig figs across `1−ratio` =
+1e−3…1e−6 — a real geometric feature. The quartic min goes negative *only* while
+the worst point chases the outer saddle `s=√((1+t²)/2)`, value `~ −1/dist²`. No
+stable off-saddle concave arc exists at any `c<c_merge`.
+
+### What t* = √2−1 actually marks (corrected interpretation)
+It is the crossover of **which merge happens first**: central-symmetric (with the
+mirror `−t`, barrier `t²`) for `t<t*`, vs. outer-asymmetric (with `+1`, barrier
+`(1−t²)²/4`) for `t>t*`. This changes the *limiting* saddle geometry — symmetric
+merges have **finite positive** limiting curvature (t=0.35: value stays +0.60 as
+its worst point approaches `z=0`), asymmetric merges have **divergent** curvature
+— but neither is a neck at `c<c_merge`. r2's bisection locked onto the `t²
+= (1−t²)²/4` barrier-crossover (real), then *mislabelled* the post-crossover
+saddle divergence as "necking."
+
+### Consistency with the verified counterexamples (no contradiction)
+Goodman `(z²+1)(z−2)²` (off-line conjugate pair `±i` + double root) and
+Pommerenke `zᵏ(z−a)` (high-multiplicity root) are genuinely non-convex — the
+flagship 0-sorry discharge stands. Real non-convexity needs a **repeated root or
+an off-line root**; four *distinct simple collinear real* roots do not neck. This
+sharpens the emerging structural picture toward a candidate OQ-02 sub-criterion:
+*distinct simple collinear real roots ⇒ all-convex* (now verified for the cubic
+and the symmetric quartic; the general non-symmetric collinear case remains the
+open frontier).
+
+### Remaining work (updated)
+- Test the **general (non-symmetric) collinear simple quartic** with the
+  stable-minimum/distance-to-saddle diagnostic (the asymmetric `s` could in
+  principle host a genuine bounded-away concave arc — not seen in the symmetric
+  family, worth confirming on `z(z−a)(z−b)(z−1)`).
+- Retire `gap_threshold_scan.py`'s "NECKS" labels in any downstream summary: the
+  symmetric quartic does not neck. (The script's *barrier-crossover* math is
+  correct; only its convexity verdict was a saddle artifact.)
+- The full OQ-02 characterization remains open in the literature. No Lean
+  axiom/build debt remains.

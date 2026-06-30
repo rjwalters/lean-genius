@@ -295,16 +295,18 @@ over a PID `R`:
   `R`-linear endomorphism `T`) is cyclic iff its order ideal equals its
   "characteristic" ideal — the PID analogue of `minpoly = charpoly`.
 
-This requires the structure theorem for finitely generated modules over a PID
-(`Mathlib`: `Module.equiv_directSum_of_isTorsion` and the invariant-factor /
-elementary-divisor decompositions) together with a cyclic-recombination lemma
-(coprime cyclic summands recombine into a single cyclic generator via CRT).
+This is most cleanly stated as the isomorphism form `M ≃ₗ[R] R ⧸ Module.annihilator R M`,
+avoiding a from-scratch "characteristic ideal" definition.
 
-Infrastructure assessment:
-  - Needed: invariant-factor decomposition ⟹ single cyclic generator when the
-    invariant factors are pairwise coprime, plus the order-ideal = char-ideal
-    bridge for the nonderogatory hypothesis.
-  - Size estimate: > 500 lines on top of Mathlib's PID structure theory.
-  - Decision: deferred (BLOCKED on a focused future session); the field-operator
-    case above is the tractable, high-value half and is delivered in full.
+Infrastructure assessment (revised 2026-06-16, S2 — names checked vs Mathlib v4.26.0):
+  - The CRT cyclic-recombination is ALREADY in Mathlib:
+    `Module.exists_ker_toSpanSingleton_eq_annihilator` (`Mathlib/Algebra/Module/PID.lean`)
+    produces `x : M` with `ker (toSpanSingleton R M x) = Module.annihilator R M` — i.e.
+    the cyclic-generator candidate whose order ideal already matches the module's. Its
+    proof internally runs `equiv_free_prod_directSum` + prime-power decomposition + CRT.
+  - Remaining gap is small: close `R ∙ x = ⊤` from `R ∙ x ≃ₗ M` via a length argument
+    (`Module.length`, `Module.length_eq_add_of_exact`, `Module.length_eq_zero_iff`).
+  - Size estimate: ~150–250 lines (NOT >500). Single Docker-up session is plausible.
+  - Decision: deferred only on a Docker build blackout; see this problem's `state.md`
+    for the full build-ready recipe. Field-operator case above is delivered in full.
 -/

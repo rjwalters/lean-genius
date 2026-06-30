@@ -17,9 +17,9 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 222,
+    "lineCount": 484,
     "assumptions": "None. All results proved from Mathlib's multinomial theorem.",
-    "theoremCount": 11,
+    "theoremCount": 14,
     "mathlib_version": "4.26.0",
     "definitionCount": 1
   },
@@ -33,7 +33,8 @@
       "The MGF formula is just the multinomial theorem applied to f(i) = p(i)*exp(t(i))",
       "The algebraic factorization (p*g)^k = p^k * g^k separates probability weights from expectation terms",
       "The binomial distribution is the 2-outcome (Bool-indexed) special case",
-      "The algebraic framework works over any CommSemiring — not just ℝ — making the MGF derivation applicable to formal power series (ordinary generating functions), polynomial rings, and NNReal (for measure-theory probability). This generality is formalized in `multinomial_weighted_sum` and `multinomial_mgf_factored`."
+      "The algebraic framework works over any CommSemiring — not just ℝ — making the MGF derivation applicable to formal power series (ordinary generating functions), polynomial rings, and NNReal (for measure-theory probability). This generality is formalized in `multinomial_weighted_sum` and `multinomial_mgf_factored`.",
+      "Differentiating the one-variable MGF identity (p_i e^t + (1-p_i))^n = ∑_k P(k) e^{t k_i} twice at t=0 yields the second moment E[Xi²] = n²p_i² + n p_i(1-p_i); subtracting the squared mean gives the variance Var(Xi) = n p_i(1-p_i) — the multinomial generalization of the binomial variance np(1-p)."
     ],
     "prerequisites": [
       "Multinomial theorem (Mathlib)",
@@ -85,6 +86,9 @@
       "summary": "A fair-coin numerical sanity check (3 flips sum to 1) plus multinomial_mean, a genuine moment formula E[Xi] = n·pi derived by differentiating the MGF at t=0 (replacing the former rfl placeholder)."
     },
     {
+      "title": "Second Moment and Variance via the Second MGF Derivative"
+    },
+    {
       "id": "counting",
       "title": "Counting Identity (Multinomial Analog of ∑C(n,k)=2ⁿ)",
       "startLine": 259,
@@ -98,8 +102,8 @@
     "openQuestions": [
       "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean — construction via Composition type + ENNReal normalization",
       "Can marginal distributions be formally derived as binomials?",
-      "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?",
-      "RESOLVED: `multinomial_mean` now proves E[Xi] = n·pi by differentiating the MGF (∑ pj·e^{tj})^n at t = 0 (specializing multinomial_mgf_real to g_j = if j=i then e^t else 1, then HasDerivAt.unique), replacing the former vacuous `rfl` placeholder. Open follow-up: variance Var(Xi) = n·pi·(1-pi) and covariance Cov(Xi,Xj) = -n·pi·pj via second MGF derivatives."
+      "RESOLVED (variance): `multinomial_variance` proves Var(Xi) = n·pi·(1-pi) by differentiating the MGF a second time (`multinomial_second_moment`: E[Xi²] = n²pi² + n·pi·(1-pi)). The off-diagonal covariance Cov(Xi,Xj) = -n·pi·pj (i≠j) remains open.",
+      "RESOLVED: `multinomial_mean` proves E[Xi] = n·pi and `multinomial_variance` proves Var(Xi) = n·pi·(1-pi), both by differentiating the MGF identity (p_i e^t + (1-p_i))^n = ∑_k P(k) e^{t k_i} at t = 0 (once for the mean, twice for the variance via `multinomial_second_moment`) and applying HasDerivAt.unique. Open follow-up: covariance Cov(Xi,Xj) = -n·pi·pj via mixed second MGF derivatives."
     ]
   },
   "leanFile": {
@@ -114,9 +118,9 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01",
-    "lineCount": 222,
+    "lineCount": 484,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ02OQ01.lean",
     "sorries": 0

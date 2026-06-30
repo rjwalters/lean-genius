@@ -151,7 +151,7 @@
       "startLine": 166,
       "endLine": 187
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Lattice Point Selector Function",
     "content": "Given a Steinhaus set $S$, the function `steinhausSelector S hS T hT` extracts the unique lattice point from any congruent copy $T$. Defined via `ExistsUnique.choose` from the Steinhaus property. Two theorems: (1) `steinhausSelector_mem`: the selected point lies in $T \\cap \\mathbb{Z}^2$. (2) `steinhausSelector_unique`: any point in $T \\cap \\mathbb{Z}^2$ equals the selected one. This gives a well-defined function from congruent copies to lattice points — a canonical choice function that, remarkably, selects exactly one lattice point from every rigid motion of $S$.",
     "mathContext": "$\\text{steinhausSelector}(S, T) \\in T \\cap \\mathbb{Z}^2$ and $\\forall p \\in T \\cap \\mathbb{Z}^2,\\, p = \\text{steinhausSelector}(S, T)$. Defined via $\\exists!$ elimination.",

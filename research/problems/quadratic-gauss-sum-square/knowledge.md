@@ -90,3 +90,51 @@ Docker build verification was pending at session end (build host saturated).
 2. Create the gallery entry `src/data/proofs/quadratic-gauss-sum-square/` with badge
    `mathlib`, axiomCount 0, cross-referenced to `elementary-quadratic-reciprocity*`
    (headline application: `g^p` two-ways gives reciprocity).
+
+---
+
+## Session 2026-06-18 (s02) — OQ-01 dichotomy MERGED + sign-frontier survey
+
+**Mode**: FRESH (follow-up after SOLVED) · **Outcome**: completed (OQ-01) + scouted (sign)
+
+### What I did
+- Confirmed the follow-up **OQ-01 real/imaginary dichotomy** (`QuadraticGaussSumSquareOQ01.lean`,
+  116L / 5 thm / 0 sorry / 0 axiom) is **merged to main as PR #26018**
+  (commit `e79e8699219`). It derives, purely from the parent square identity
+  `g² = (-1)^((p-1)/2)·p`, the elementary half of Gauss's evaluation:
+  - `p ≡ 1 (4)` ⟹ `g² = +p > 0` ⟹ `g.im = 0` (g real);
+  - `p ≡ 3 (4)` ⟹ `g² = −p < 0` ⟹ `g.re = 0` (g imaginary);
+  - magnitude `normSq g = p` (so `g = ±√p` resp. `±i√p`).
+  Reusable lemmas: `im_eq_zero_of_sq_eq_pos_real`, `re_eq_zero_of_sq_eq_neg_real`.
+
+### Frontier: the sign determination (`±`) — buildability assessment
+The only remaining gap is the leading **sign** — Gauss's hard 1805 theorem:
+`g = +√p` (p≡1 mod 4), `g = +i√p` (p≡3 mod 4), with the *positive* root in both cases.
+Web-confirmed (June 2026) that **Mathlib still has only the square** (`gaussSum_sq`);
+no sign/exact-value lemma exists.
+
+Three known routes, all large:
+1. **Schur eigenvalue argument** — the order-4 DFT matrix `F` on `ZMod p` has
+   eigenvalues in `{±√p, ±i√p}`; `tr F` equals the Gauss sum, and a *second*
+   computation of `tr F` via eigenvalue multiplicities (which split by `p mod 4`)
+   pins the sign. **Mathlib gap**: multiplicity decomposition of the finite Fourier
+   transform / its characteristic polynomial. Est. >800 L.
+2. **Poisson summation / theta functional equation** (Dirichlet) — limiting argument
+   from the Jacobi theta transformation. **Mathlib gap**: the specialized theta
+   functional equation + the limit. Heavy analysis, est. >1000 L.
+3. **Finite Weil representation** (arXiv:0808.2447) — elegant but needs Weil-rep infra
+   Mathlib entirely lacks.
+
+**Decision: SURVEYED (large-infra, not a single-session target, NOT an Aristotle
+quick-win).** The Schur route is the most self-contained; the realistic next step is to
+isolate sub-lemma "the `p×p` DFT matrix satisfies `F⁴ = p²·I`" as standalone
+infrastructure before attempting multiplicities. Until that infra exists the sign stays
+blocked-by-scale (>500 L), not blocked-by-impossibility.
+
+### Files
+- (merged) `proofs/Proofs/QuadraticGaussSumSquareOQ01.lean`, `Proofs.lean`,
+  `src/data/proofs/quadratic-gauss-sum-square-oq-01/`
+
+### Next steps
+- If revisiting the sign: start with the standalone DFT lemma `F⁴ = p²·I` (Schur route).
+- Fleet was saturated (load ~120) this session → no new builds attempted; survey only.

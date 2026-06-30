@@ -7,7 +7,7 @@
     "author": "Montmort, Euler (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
     "date": "1708",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "combinatorics",
       "probability",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/Derangements.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -49,7 +49,7 @@
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 88,
     "mathlib_version": "4.26.0",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 227,
     "relatedProblems": [
       {
@@ -61,7 +61,7 @@
         "relationship": "Extension of derangements"
       }
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Depends on Lean.ofReduceBool. The advertised originalContribution 'Concrete computations D(2)-D(6) via native_decide' is discharged solely by native_decide (numDerangements 2 = 1, 3 = 2, 4 = 9, 5 = 44, 6 = 265, lines 131-143), which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom rather than producing an axiom-free kernel proof. The symbolic derangement deliverables are axiom-free. No literal axiom declarations and 0 sorries.",
     "theoremCount": 10,
     "definitionCount": 0
   },

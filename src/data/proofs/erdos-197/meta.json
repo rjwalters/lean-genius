@@ -106,57 +106,57 @@
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "erdos_197_conjecture axiom - the open two-set question",
+      "summary": "erdos_197_conjecture theorem - the open two-set question (disjunction by excluded middle)",
       "startLine": 123,
-      "endLine": 142,
-      "mathContext": "Axiomatized: erdos_197_conjecture axiom - the open two-set question"
+      "endLine": 151,
+      "mathContext": "Theorem: erdos_197_conjecture states the open two-set question as a disjunction proved by excluded middle (it does not resolve which disjunct holds)"
     },
     {
       "id": "three-set-case",
       "title": "The Three-Set Case (Solved)",
       "summary": "isThreePartition and erdos_graham_three_sets axiom",
-      "startLine": 143,
-      "endLine": 163,
+      "startLine": 152,
+      "endLine": 172,
       "mathContext": "Axiomatized: isThreePartition and erdos_graham_three_sets axiom"
     },
     {
       "id": "properties",
       "title": "Properties of 3-AP Avoidance",
-      "summary": "constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing",
-      "startLine": 164,
-      "endLine": 191,
-      "mathContext": "Mathematical content: constant_avoids_3AP, StrictlyIncreasing, StrictlyDecreasing"
+      "summary": "constant_has_3AP theorem, StrictlyIncreasing and StrictlyDecreasing definitions",
+      "startLine": 173,
+      "endLine": 196,
+      "mathContext": "Mathematical content: constant_has_3AP theorem (a constant sequence has trivial 3-APs), StrictlyIncreasing and StrictlyDecreasing definitions"
     },
     {
       "id": "examples",
       "title": "Small Examples",
-      "summary": "identity_has_3AP theorem and powers_of_2_avoid_3AP axiom",
-      "startLine": 192,
-      "endLine": 215,
-      "mathContext": "Verified: identity_has_3AP theorem and powers_of_2_avoid_3AP axiom"
+      "summary": "identity_has_3AP and powers_of_2_avoid_3AP theorems",
+      "startLine": 197,
+      "endLine": 239,
+      "mathContext": "Verified: identity_has_3AP and powers_of_2_avoid_3AP theorems (both proved, not axiomatized)"
     },
     {
       "id": "computational",
       "title": "Computational Intractability",
-      "summary": "erdos_197_not_finite_checkable axiom",
-      "startLine": 216,
-      "endLine": 230,
-      "mathContext": "Axiomatized: erdos_197_not_finite_checkable axiom"
+      "summary": "Prose discussion of why finite computation cannot resolve the problem (no formal declaration)",
+      "startLine": 240,
+      "endLine": 248,
+      "mathContext": "Documentation only: meta-mathematical observation, no axiom or theorem (the former erdos_197_not_finite_checkable axiom was removed as malformed)"
     },
     {
       "id": "related-sequences",
       "title": "Related Sequences",
       "summary": "Stanley sequence definition and properties",
-      "startLine": 231,
-      "endLine": 255,
+      "startLine": 249,
+      "endLine": 278,
       "mathContext": "Formal definition: Stanley sequence definition and properties"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_197_status and erdos_197_open_question theorems",
-      "startLine": 256,
-      "endLine": 287,
+      "startLine": 279,
+      "endLine": 307,
       "mathContext": "Verified: erdos_197_status and erdos_197_open_question theorems"
     }
   ],

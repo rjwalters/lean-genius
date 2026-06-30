@@ -104,7 +104,7 @@
       "startLine": 164,
       "endLine": 164
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Certificate Axiom 1: 84 ∣ |Gal| from Dedekind cycle types",
     "content": "The first deferred analytic input. Reducing f modulo unramified primes and reading off the factorization (Dedekind's theorem) yields Galois elements with prescribed cycle types: f mod 2 = x⁷+x+1 is irreducible ⟹ a 7-cycle (order 7); f mod 13 has type (1,2,4) ⟹ an order-4 element; f mod 17 has type (1,3,3) ⟹ an order-3 element. Hence lcm(7,4,3) = 84 divides |Gal|. Verified exactly in verify_trinks_psl27.py; the Lean discharge needs Dedekind's theorem, which is absent from Mathlib 4.26.0.",
     "mathContext": "$f \\bmod 2 \\text{ irred.} \\Rightarrow 7\\mid|G|;\\ (1,2,4)\\bmod 13 \\Rightarrow 4\\mid|G|;\\ (1,3,3)\\bmod 17 \\Rightarrow 3\\mid|G|;\\ \\mathrm{lcm}(7,4,3)=84\\mid|G|$",
@@ -129,7 +129,7 @@
       "startLine": 177,
       "endLine": 179
     },
-    "type": "axiom",
+    "type": "warning",
     "title": "Certificate Axiom 2: the geometric embedding Gal ↪ PSL(2,7)",
     "content": "The single honest analytic input that replaced two earlier axioms (PR #24436). It states that Gal(f/ℚ) injects into a finite simple group of order 168 (PSL(2,7)): irreducibility gives transitivity, the square discriminant gives Gal ⊆ A₇, and the rational root of the degree-15 PSL(2,7)-resolvent ([A₇:PSL(2,7)] = 15) gives the injection. This is strictly stronger than the bare divisibility |Gal| ∣ 168 (mere Lagrange), and — crucially — it lets the proven simplicity collapse discharge the former separate |Gal| ≠ 84 axiom as a theorem. Net axiom economy: 3 → 2.",
     "mathContext": "$\\exists\\,P\\ \\text{simple},\\ |P|=168,\\ \\exists\\,\\varphi:\\mathrm{Gal}(f/\\mathbb{Q})\\hookrightarrow P.\\qquad [A_7:\\mathrm{PSL}(2,7)] = 2520/168 = 15$",

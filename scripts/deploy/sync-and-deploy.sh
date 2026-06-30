@@ -222,15 +222,63 @@ label_unlabeled_prs() {
     fi
 }
 
+# ----------------------------------------------------------------------------
+# Destructive-merge guard
+# ----------------------------------------------------------------------------
+# A PR branch built on an ancient/divergent base — or one whose remote tip was
+# corrupted by a bad rebase+force-push earlier in this very pipeline — can carry
+# a near-empty tree. Merging it deletes most of the repository: on 2026-06-23,
+# PR #27891 merged such a branch and wiped 20,866 files from main. GitHub's
+# additions/deletions are computed against the PR's own (ancient) merge-base, so
+# they look harmless; the only reliable tell is the branch TIP's top-level entry
+# count vs main's. Refuse to merge a branch missing a large fraction of the tree.
+pr_branch_safe() {
+    local pr="$1"
+    local branch
+    branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName' 2>/dev/null) || return 0
+    [[ -z "$branch" ]] && return 0
+    git fetch -q origin "$branch" 2>/dev/null || return 0  # can't verify → don't block
+    local main_n branch_n
+    main_n=$(git ls-tree origin/main --name-only 2>/dev/null | wc -l | tr -d ' ')
+    branch_n=$(git ls-tree FETCH_HEAD --name-only 2>/dev/null | wc -l | tr -d ' ')
+    # If counts are unreadable, do not block (fail open on inspection errors).
+    [[ -z "$main_n" || -z "$branch_n" || "$main_n" -eq 0 ]] && return 0
+    # Refuse if the branch tip has fewer than 75% of main's top-level entries.
+    if (( branch_n * 4 < main_n * 3 )); then
+        print_warning "  #$pr: branch '$branch' tip has $branch_n top-level entries vs main's $main_n — corrupted/ancient base; REFUSING to merge (would delete files)"
+        return 1
+    fi
+    return 0
+}
+
+# Assert origin/main still holds a full tree. Call after the merge loop; if main
+# has collapsed, something merged a destructive branch — abort before deploying.
+assert_main_intact() {
+    git fetch -q origin main 2>/dev/null || return 0
+    local n
+    n=$(git ls-tree origin/main --name-only 2>/dev/null | wc -l | tr -d ' ')
+    [[ -z "$n" || "$n" -eq 0 ]] && return 0
+    if (( n < 30 )); then
+        print_error "origin/main has only $n top-level entries — a destructive merge corrupted main. ABORTING deploy. Recover by reverting the offending merge commit."
+        exit 1
+    fi
+    print_success "main integrity OK ($n top-level entries)"
+}
+
 # ============================================================================
 # Step 1: Merge PRs
 # ============================================================================
 merge_prs() {
     print_header "Merging Pull Requests"
 
-    # Update main first
+    # Update main first. Retry once and never abort on the benign
+    # "unable to update local ref" race: when a prior merge in this same loop
+    # just advanced origin/main, a concurrent fetch can fail to lock the
+    # remote-tracking ref even though the data is fetched into FETCH_HEAD and
+    # the ref ends up current. Under `set -e` an unguarded fetch would kill the
+    # whole merge step after merging only ~1 PR (see issue: deploy fetch race).
     print_info "Updating main branch..."
-    git fetch origin main
+    git fetch origin main --quiet || git fetch origin main --quiet || true
     # Stash before checkout — dirty files block branch switch
     git stash 2>/dev/null || true
     git checkout main 2>/dev/null || git checkout -b main origin/main 2>/dev/null || true
@@ -262,7 +310,10 @@ merge_prs() {
             ((++merged))
         else
             echo -n "  #$pr: "
-            if gh pr merge "$pr" --squash 2>/dev/null; then
+            if ! pr_branch_safe "$pr"; then
+                echo "skipped (unsafe tree)"
+                ((++failed))
+            elif gh pr merge "$pr" --squash 2>/dev/null; then
                 echo "merged"
                 ((++merged))
             else
@@ -282,7 +333,9 @@ merge_prs() {
                 ((++merged))
             else
                 echo -n "  #$pr: "
-                if gh pr merge "$pr" --squash 2>/dev/null; then
+                if ! pr_branch_safe "$pr"; then
+                    echo "skipped (unsafe tree)"
+                elif gh pr merge "$pr" --squash 2>/dev/null; then
                     echo "merged"
                     ((++merged))
                 else
@@ -328,15 +381,30 @@ merge_prs() {
             # which is shared across all worktrees and serialized via a single
             # lockfile. With ~60 worktrees doing concurrent rebases this lock
             # is the dominant failure mode ("could not lock config file").
-            (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch")
+            #
+            # The checkout fails fatally ("branch is already used by worktree")
+            # when this branch is checked out in an active agent worktree that
+            # our find-worktree scan missed (e.g. a race, or a detached state at
+            # scan time). Under `set -e` that would crash the whole merge loop
+            # before build/deploy, so guard it: clean up the temp worktree, mark
+            # the PR failed, and continue with the rest.
+            if ! (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch") 2>/dev/null; then
+                print_warning "Branch $branch is checked out elsewhere; skipping rebase for #$pr"
+                git worktree remove "$worktree_path" --force 2>/dev/null || true
+                ((++failed))
+                continue
+            fi
             temp_worktree=true
         fi
 
         (
             cd "$worktree_path"
             git stash 2>/dev/null || true
-            git fetch origin main
-            git fetch origin "$branch"
+            # Tolerate the benign "unable to update local ref" race (a prior
+            # merge in this loop just moved origin/main); FETCH_HEAD is still
+            # populated and the ref ends up current, so don't let set -e abort.
+            git fetch origin main --quiet || git fetch origin main --quiet || true
+            git fetch origin "$branch" --quiet || true
             git reset --hard "origin/$branch" 2>/dev/null || true
 
             if git rebase origin/main 2>/dev/null; then
@@ -385,6 +453,25 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
                                 # For stub-claims, take ours (main wins)
                                 git checkout --ours "$conflict_file" 2>/dev/null && git add "$conflict_file"
                                 ;;
+                            proofs/Proofs.lean)
+                                # Auto-generated module index (pure `import Proofs.X`
+                                # lines, regenerated by generate-proofs-imports.sh).
+                                # Every research/enrichment PR appends to it, so it
+                                # conflicts whenever a sibling lands first. Union-merge
+                                # the import lines — safe because it carries no proof
+                                # math. This is what unblocks the research backlog.
+                                print_info "  Union-merging proofs/Proofs.lean (auto-generated import index)..."
+                                git show :2:"$conflict_file" > /tmp/proofs-ours.lean 2>/dev/null || true
+                                git show :3:"$conflict_file" > /tmp/proofs-theirs.lean 2>/dev/null || true
+                                {
+                                    printf -- '-- Auto-generated file - do not edit manually\n'
+                                    printf -- '-- Run: ./.lean/scripts/generate-proofs-imports.sh\n\n'
+                                    cat /tmp/proofs-ours.lean /tmp/proofs-theirs.lean 2>/dev/null \
+                                        | grep -E '^import Proofs\.' | sort -u
+                                } > "$conflict_file"
+                                rm -f /tmp/proofs-ours.lean /tmp/proofs-theirs.lean
+                                git add "$conflict_file"
+                                ;;
                             *.lean)
                                 # Lean files need careful handling - don't auto-resolve
                                 print_warning "  Lean file conflict: $conflict_file (needs manual review)"
@@ -427,7 +514,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
         sleep 3
         local new_status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
         echo -n "  #$pr (after rebase): "
-        if [[ "$new_status" == "MERGEABLE" ]] && gh pr merge "$pr" --squash 2>/dev/null; then
+        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
             echo "merged"
             ((++merged))
         else
@@ -438,9 +525,12 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
 
     print_success "Merged $merged PRs ($failed failed/skipped)"
 
-    # Update main again after merges
-    git fetch origin main
+    # Update main again after merges (tolerate the ref-lock race, see above)
+    git fetch origin main --quiet || git fetch origin main --quiet || true
     git reset --hard origin/main
+
+    # Safety net: confirm the merges did not collapse main's tree.
+    assert_main_intact
 }
 
 # ============================================================================
@@ -498,8 +588,22 @@ for problem_file in problems_dir.glob("*.json"):
         continue
 
     knowledge = problem.get("knowledge", {})
-    insights = len(knowledge.get("insights", []))
-    built = len(knowledge.get("builtItems", []))
+    if not isinstance(knowledge, dict):
+        knowledge = {}
+
+    # Some problem files store insights/builtItems as a literal count (int)
+    # rather than a list of entries. Tolerate both shapes.
+    def _count(v):
+        if isinstance(v, (list, str, dict)):
+            return len(v)
+        if isinstance(v, bool):
+            return 0
+        if isinstance(v, (int, float)):
+            return int(v)
+        return 0
+
+    insights = _count(knowledge.get("insights", []))
+    built = _count(knowledge.get("builtItems", []))
 
     if insights == 0 and built == 0:
         continue

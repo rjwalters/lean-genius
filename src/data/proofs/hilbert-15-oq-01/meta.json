@@ -7,7 +7,7 @@
     "author": "Schubert (1879), Hilbert (1900); Chow ring formalized 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Schubert_calculus",
     "date": "1879",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Hilbert15OQ01.lean",
     "tags": [
       "algebraic-geometry",
@@ -20,7 +20,7 @@
       "poincare-duality",
       "hilbert-problems"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -39,9 +39,9 @@
       "mul_comm_basis: commutativity of basis multiplication verified by decide"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 351,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. All results follow from the explicit multiplication table.",
+    "assumptions": "All results follow from the explicit multiplication table, but the Schubert-class products (Littlewood-Richardson table, sigma1_fourth = 2, Poincare duality, Giambelli) are discharged by native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free).",
     "mathlib_version": "4.26.0",
     "theoremCount": 22,
     "definitionCount": 9

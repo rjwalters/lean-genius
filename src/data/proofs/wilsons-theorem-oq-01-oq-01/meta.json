@@ -2,7 +2,7 @@
   "id": "wilsons-theorem-oq-01-oq-01",
   "title": "Wilson Primes: The Infinite Conjecture",
   "slug": "wilsons-theorem-oq-01-oq-01",
-  "description": "Are there infinitely many Wilson primes? Formalizes the open conjecture that the Wilson prime set {p prime | p² | (p-1)!+1} is infinite. All three known Wilson primes (5, 13, and 563) are verified by native_decide. The 563 verification proves 562! ≡ -1 (mod 563²) using GMP-backed native evaluation. Derives unboundedness consequences from the infinite conjecture. Includes verified Wieferich prime analogues (1093, 3511). 1 axiom, 9 theorems, 3 definitions (IsWilsonPrime, wilsonQuotient, IsWieferichPrime).",
+  "description": "Are there infinitely many Wilson primes? Formalizes the open conjecture that the Wilson prime set {p prime | p² | (p-1)!+1} is infinite. All three known Wilson primes (5, 13, and 563) are verified by native_decide. The 563 verification proves 562! ≡ -1 (mod 563²) using GMP-backed native evaluation. Derives unboundedness consequences from the infinite conjecture. Includes verified Wieferich prime analogues (1093, 3511). 1 literal axiom (the open conjecture) plus Lean.ofReduceBool from native_decide, 9 theorems, 3 definitions (IsWilsonPrime, wilsonQuotient, IsWieferichPrime).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-04",
@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 1,
-    "assumptions": "infinitely_many_wilson_primes: there are infinitely many Wilson primes — the main open conjecture (open since ~1900). Most theorems beyond the three known Wilson primes depend on this axiom.",
+    "axiomCount": 2,
+    "assumptions": "Two assumptions. (1) infinitely_many_wilson_primes: there are infinitely many Wilson primes — the main open conjecture (open since ~1900), a literal `axiom` declaration; the unboundedness consequences (wilson_primes_unbounded, exists_large_wilson_prime) depend on it. (2) Lean.ofReduceBool: the five concrete verifications (five_is_wilson_prime, thirteen_is_wilson_prime, fiveHundredSixtyThree_is_wilson_prime, wieferich_1093, wieferich_3511) are discharged by `native_decide`, which relies on the kernel-trusted compiler reduction axiom Lean.ofReduceBool. The proof is therefore not axiom-free. leanFile.axiomCount = 1 counts only the literal `axiom` declaration; meta.axiomCount = 2 includes Lean.ofReduceBool.",
     "lineCount": 123,
     "theoremCount": 9,
     "definitionCount": 3,
@@ -59,7 +59,7 @@
   },
   "conclusion": {
     "summary": "This entry verifies all three known Wilson primes (5, 13, and 563) via native_decide and axiomatizes the open conjecture that there are infinitely many. The 563 verification proves 562! ≡ -1 (mod 563²) using GMP-backed native evaluation, confirming Goldberg (1953). Consequences of the conjecture (unboundedness) are proved. The Wieferich primes 1093 and 3511 are also verified by native_decide as an analogy. Whether the infinite conjecture is true remains one of the simplest-to-state open problems in number theory.",
-    "implications": "First Lean 4 formalization of all three known Wilson primes and the infinite Wilson prime conjecture. The 563 verification demonstrates that factorial modular arithmetic (O(p) multiplications) is feasible for native_decide when intermediates stay small. Reduces axiom count from 2 to 1 — only the genuinely open conjecture remains as an axiom.",
+    "implications": "First Lean 4 formalization of all three known Wilson primes and the infinite Wilson prime conjecture. The 563 verification demonstrates that factorial modular arithmetic (O(p) multiplications) is feasible for native_decide when intermediates stay small. Only one open mathematical conjecture remains as a literal axiom (infinitely_many_wilson_primes); the five concrete verifications are discharged by native_decide and therefore rely on Lean.ofReduceBool rather than being purely kernel-checked.",
     "openQuestions": [
       "Are there infinitely many Wilson primes? (The axiomatized conjecture, open since at least 1900)",
       "Is there a fourth Wilson prime? The search has reached 2×10¹³ without finding one",

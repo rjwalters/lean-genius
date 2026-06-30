@@ -200,7 +200,7 @@
       "startLine": 1713,
       "endLine": 1956
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Odd-Dimension Impossibility via a Skew-Symmetric Orthogonal Matrix",
     "content": "The general obstruction (PART 8b). From an NSquareIdentity n one builds colMat, whose columns mul(e_k, e_{j₀}) are orthonormal (colMat_transMul: colMatᵀ·colMat = I), and crossMat M_{jk} = ⟨mul(e_j,e_{j₁}), mul(e_k,e_{j₂})⟩. For distinct j₁ ≠ j₂, crossMat is orthogonal (crossMat_transMul) and skew-symmetric (crossMat_skewSym: Mᵀ = −M), and crossMat_anticommute supplies the compatibility that yields crossMat_sq_neg_one: M² = −I. Thus M is a real complex structure on ℝⁿ. Taking determinants, det(M)² = det(−I) = (−1)ⁿ, which is negative for odd n — impossible since det(M)² ≥ 0 (no_odd_nsquare). This rules out every odd n ≥ 3 and feeds hurwitz_only_if and the headline hurwitz_theorem biconditional. hurwitz_only_if is a theorem (not an axiom): the n = 3 case is fully proved, and the only remaining sorry covers the even n ∉ {2,4,8} case, which needs Clifford-algebra / Bott-periodicity input.",
     "mathContext": "A real matrix with $M^\\top = -M$ and $M^\\top M = I$ satisfies $M^2 = -I$, so $\\det(M)^2 = \\det(-I) = (-1)^n$. For odd $n$, $(-1)^n = -1 < 0$ contradicts $\\det(M)^2 \\ge 0$. Equivalently, $\\mathbb{R}^n$ admits a complex structure only for even $n$, which is the linear-algebra shadow of Hurwitz's classification.",
@@ -251,11 +251,11 @@
       "startLine": 1999,
       "endLine": 2042
     },
-    "type": "context",
+    "type": "concept",
     "title": "Physical/Topological Significance and Final Verification",
     "content": "PART 10 records why the dimensions 1,2,4,8 recur across mathematics: the four normed division algebras underlie the reals, complex analysis, quaternionic rotations of ℝ³, and octonionic exceptional structures, with each step ℝ→ℂ→ℍ→𝕆 sacrificing a property (ordering, commutativity, associativity). Topologically the same list governs which spheres are parallelizable — only S⁰, S¹, S³, S⁷ (Adams, 1962). The closing #check statements confirm that the named constructions and the main theorems type-check, acting as a machine-verified table of contents for the file.",
     "mathContext": "The Hopf-invariant-one / parallelizable-sphere problem (Adams 1960-62, via secondary cohomology operations and K-theory) shows $S^{n-1}$ is parallelizable iff $n \\in \\{1,2,4,8\\}$ — the topological counterpart of Hurwitz's algebraic classification.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "normed division algebras",
       "parallelizable spheres",

@@ -352,3 +352,20 @@ re-attempting a cold local build that cannot succeed in this checkout.
 ### Next Steps
 - None on the formal side: the entry is complete and verified modulo the open-conjecture axiom.
 - (Unchanged) Proving the axiom itself = a cubeful analogue of Heath-Brown's r=2 theorem; open.
+
+## Session 2026-06-18 (researcher-2) — Registry-JSON integrity sync (metadata-only)
+
+**Mode**: REVISIT — claim-random handed me this already-COMPLETE+VERIFIED slug.
+**Outcome**: doc-integrity fix; no new math.
+
+The slug is saturated and machine-verified (S4 researcher-4: `Erdos1107OQ02OQ01.lean`
+compiled clean, 220 LOC, 0 sorry / 1 axiom = the open r=3 asymptotic `cubeful_sum_threshold`,
+18 theorems). Registered at `proofs/Proofs.lean:944`; gallery `meta.json` is
+`axiomatized` / `axiom` / axiomCount 1 / 18 thm / 220 LOC — all consistent.
+
+**Defect found & fixed:** the *research registry* JSON still read `status: in-progress`,
+`phase: ACT`, and `leanFiles: []` — i.e. it did not even record the verified, registered
+Lean file, and presented a finished entry as mid-ACT. Synced to reality: `status→completed`,
+`phase→COMPLETED`, `leanFiles→[Proofs/Erdos1107OQ02OQ01.lean]`. No Lean/meta content changed;
+the OQ deliverable (threshold N₃=2040 + the 45-element exceptional set, ≤3-fails-unconditionally)
+is settled and verified — the lone axiom is the intrinsic open conjecture, not a gap.

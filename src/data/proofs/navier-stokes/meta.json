@@ -54,8 +54,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 5,
-    "assumptions": "5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion). 0 Lean axiom declarations, but the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion). These structure fields are mathematically equivalent to axiom declarations -- the assumptions were reorganized, not eliminated. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional. The Millennium Prize problem remains unsolved.",
+    "axiomCount": 6,
+    "assumptions": "6 assumptions: 5 structure-encoded assumptions in NSAxioms (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) plus `Lean.ofReduceBool`. There are 0 Lean `axiom` declarations, but (a) the 3D regularity theorem is conditional on the NSAxioms structure (5 fields encoding physical hypotheses: Type II exponent, spectral gap, theta dynamics, blowup rate, and BKM criterion) — these structure fields are mathematically equivalent to axiom declarations, so the assumptions were reorganized, not eliminated; and (b) the credited hyperdissipation-hierarchy theorems (lions_3d, lions_2d, critical_at_lions_is_zero, standard_ns_gap, standard_2d_gap) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this is counted in meta.axiomCount. The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The 2D global existence theorem (Ladyzhenskaya 1969) is genuinely unconditional and uses no native_decide. The Millennium Prize problem remains unsolved.",
     "mathlibDependencies": [
       {
         "theorem": "Real",
@@ -151,7 +151,7 @@
       "repairability": "REVISED ASSESSMENT: The θₖ refactor makes the missing hypothesis MORE PRECISE and potentially MORE TRACTABLE. The question 'is bubble count K bounded?' is a sharper target than 'does single-ball concentration hold?'"
     },
     "whatLeanActuallyVerified": "The Lean file proves: (1) 3D conditional regularity — IF the NSAxioms hypotheses hold THEN no blowup (the hypotheses encode the hard open problem), (2) ESS backward uniqueness and Type I exclusion, (3) Type II stability and beta to 0, (4) CKN dimension/capacity framework, (5) 2D global existence and enstrophy bound (Ladyzhenskaya 1969 — genuinely proven, no assumptions), (6) 2D exponential decay under Poincare inequality. NOTE: The 3D result uses NSAxioms structure fields which are mathematically equivalent to axiom declarations — the assumptions were reorganized, not eliminated.",
-    "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. The Lean file achieves 0 axioms and 0 sorries by encoding physical hypotheses via the NSAxioms structure (not axiom declarations). The 3D conditional theorem shows: NSAxioms implies no blowup. The 2D case is fully proven (axiom-free).",
+    "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. The Lean file has 0 `axiom` declarations and 0 sorries, encoding the physical hypotheses via the NSAxioms structure (not axiom declarations); it is not fully axiom-free, however, because the credited hyperdissipation-hierarchy theorems (lions_3d, lions_2d, critical_at_lions_is_zero, standard_ns_gap, standard_2d_gap) are dispatched by `native_decide` and so depend on `Lean.ofReduceBool`. The 3D conditional theorem shows: NSAxioms implies no blowup. The 2D global existence theorem (Ladyzhenskaya 1969) is fully proven without any axioms or native_decide (genuinely axiom-free).",
     "axiomEliminationNote": "The Lean file uses 0 axiom declarations, but this is a technical distinction, not a mathematical one. The physical hypotheses were moved from Lean `axiom` declarations into an NSAxioms structure — the mathematical assumptions are unchanged. The 3D theorem is conditional on these structure fields. The 2D theorem (Ladyzhenskaya) is genuinely unconditional."
   },
   "overview": {
@@ -182,7 +182,7 @@
       "title": "Part I-VII: Foundations and Enstrophy Identity",
       "startLine": 1,
       "endLine": 715,
-      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are genuinely proven via native_decide.",
+      "summary": "Establishes the Navier-Stokes solution structure, enstrophy E = ∫|ω|², palinstrophy P, and the fundamental identity E' = 2S - 2νP. Numerical constants like κ·c_FK > 2 are proven via `norm_num`/`nlinarith` over the reals (no native_decide here). The hyperdissipation-hierarchy constants (lions_3d, lions_2d, etc., much later in the file) are the ones discharged by native_decide and so depend on `Lean.ofReduceBool`.",
       "mathContext": "Enstrophy $E(t) = \\int |\\omega|^2\\, dx$ (total squared vorticity), palinstrophy $P(t) = \\int |\\nabla\\omega|^2\\, dx$, stretching $S = \\int \\omega \\cdot (\\nabla u)\\omega\\, dx$. The fundamental identity: $E'(t) = 2S - 2\\nu P$. The NSAxioms structure encodes 5 physical hypotheses (Type II exponent, spectral gap, theta dynamics, blowup rate, BKM criterion) — these are the unsolved parts."
     },
     {

@@ -1,0 +1,182 @@
+{
+  "id": "stirling-second-kind-oq-01-oq-01",
+  "title": "Stirling Numbers of the Second Kind: the three-block column S(n,3) = (3ⁿ⁻¹ + 1)/2 − 2ⁿ⁻¹",
+  "slug": "stirling-second-kind-oq-01-oq-01",
+  "description": "The textbook closed form for the third column of the Stirling triangle, S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3, derived by exactly the recurrence-to-geometric-sum method the parent used for S(n,2) = 2^(n-1) − 1. The driving recursion is Pascal specialised to a fixed column, S(m+1,3) = 3·S(m,3) + S(m,2), an inhomogeneous geometric recursion whose forcing term is the previously-solved two-block column. To stay inside ℕ the proof works with the subtraction-free invariant 2·S(n,3) + 2^n = 3^(n-1) + 1, from which the halved closed form follows since the right side is always even.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingSecondKindOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "set-partitions",
+      "closed-form",
+      "geometric-recurrence",
+      "induction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond_succ_succ",
+        "description": "Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k); specialised at k=2 it gives the third-column recursion S(m+1,3) = 3·S(m,3) + S(m,2)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingSecond_one_right",
+        "description": "S(n+1,1) = 1, the forcing term of the two-block recursion re-derived inline",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.one_le_two_pow",
+        "description": "1 ≤ 2^k, guarding the ℕ-subtractions 2^(n+1) − 1 and 2^(n+2) − 1 against truncation",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.one_le_pow",
+        "description": "1 ≤ 3^k, supplying nonnegativity for the 2 ≤ 3 multiplier in the exponential-dominance induction 2^(n+3) ≤ 3^(n+2)",
+        "module": "Mathlib.Algebra.GroupPower.Order"
+      }
+    ],
+    "originalContributions": [
+      "two_mul_stirlingSecond_three_add: the subtraction-free invariant 2·S(n+3,3) + 2^(n+3) = 3^(n+2) + 1, proved by induction using the Pascal recurrence with the two-block column as forcing term — the third-column analogue of the parent's geometric solution, absent from Mathlib",
+      "stirlingSecond_three_closed: the textbook closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3, obtained by halving the (provably even) invariant",
+      "two_pow_le_three_pow: the exponential dominance 2^(n+3) ≤ 3^(n+2) (equivalently 2^n ≤ 3^(n-1) for n ≥ 3) that forces the column to be strictly positive",
+      "stirlingSecond_three_pos: existence of a three-block partition for n ≥ 3, i.e. S(n,3) > 0",
+      "stirlingSecond_two_add: an inline re-derivation of the parent two-block column S(n+2,2) = 2^(n+1) − 1, keeping the file self-contained as the forcing term"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. All theorems depend only on propext, Classical.choice, Quot.sound (no native_decide, hence no Lean.ofReduceBool). Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 142,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Stirling number of the second kind S(n,k) counts partitions of an n-element set into k nonempty blocks. The first two columns are classical: S(n,1) = 1 and S(n,2) = 2^(n-1) − 1. The third column, S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), is the next case of the general finite-difference formula and is the standard textbook exercise illustrating how each column of the Stirling triangle solves an inhomogeneous geometric recurrence whose forcing term is the column to its left. The parent entry proved the two-block column by this method and asked (open question #1) whether the third column admits a comparably clean closed form by the same route; this entry answers yes.",
+    "problemStatement": "Prove in Lean the closed form for the three-block column of Stirling numbers of the second kind, S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3, derived by the same recurrence-to-geometric-sum method that yields S(n,2) = 2^(n-1) − 1, and confirm the column is positive.",
+    "text": "Pascal's recurrence specialised to the third column reads S(m+1,3) = 3·S(m,3) + S(m,2). Substituting the solved two-block column S(m,2) = 2^(m-1) − 1 turns this into the inhomogeneous geometric recursion a(m+1) = 3·a(m) + (2^(m-1) − 1) on a(m) = S(m,3), whose solution is the displayed closed form. Working with the subtraction-free invariant 2·S(n,3) + 2^n = 3^(n-1) + 1 keeps the entire argument inside ℕ.",
+    "proofStrategy": "1. Re-derive the forcing term inline: stirlingSecond_two_add proves S(n+2,2) = 2^(n+1) − 1 from the Pascal recurrence S(m+1,2) = 2·S(m,2) + 1 (an induction closed by omega).\n2. two_pow_le_three_pow: prove 2^(n+3) ≤ 3^(n+2) by induction, the step multiplying the hypothesis by 2 ≤ 3 (nlinarith).\n3. two_mul_stirlingSecond_three_add: induct on n to establish the invariant 2·S(n+3,3) + 2^(n+3) = 3^(n+2) + 1. The step rewrites with Nat.stirlingSecond_succ_succ (third column), substitutes the two-block forcing term, supplies the power relations 2^(n+4)=2·2^(n+3), 2^(n+3)=2·2^(n+2), 3^(n+3)=3·3^(n+2), and closes by omega.\n4. two_mul_stirlingSecond_three: re-index n = m+3 to state the invariant in the textbook range n ≥ 3.\n5. stirlingSecond_three_closed: since 3^(n-1)+1 = 2·(S(n,3) + 2^(n-1)) is even, omega halves it to recover S(n,3) = (3^(n-1)+1)/2 − 2^(n-1).\n6. stirlingSecond_three_pos: the invariant plus 2^n ≤ 3^(n-1) gives 2·S(n,3) ≥ 1, hence S(n,3) > 0.",
+    "keyInsights": [
+      "**Each column solves a geometric recursion forced by the previous column.** Pascal specialised to a fixed third column is S(m+1,3) = 3·S(m,3) + S(m,2): ratio 3, forcing term the already-solved two-block value 2^(m-1) − 1. This is the same template that gave S(n,2) from S(n,1) = 1, now run one column further.",
+      "**A subtraction-free invariant makes it an omega problem.** Rather than carry the division and subtraction of (3^(n-1)+1)/2 − 2^(n-1) through an induction over ℕ, the proof tracks the integer identity 2·S(n,3) + 2^n = 3^(n-1) + 1. Each inductive step is then linear arithmetic in the power atoms, closed by omega once the doubling relations 2^(k+1) = 2·2^k and 3^(k+1) = 3·3^k are supplied.",
+      "**The halving is exact because the invariant exhibits the factor of 2.** 3^(n-1)+1 = 2·(S(n,3) + 2^(n-1)), so the ℕ-division by 2 loses nothing and (3^(n-1)+1)/2 = S(n,3) + 2^(n-1) on the nose — letting omega read off the textbook closed form directly.",
+      "**Positivity is exponential dominance, not a partition argument.** S(n,3) > 0 reduces to 3^(n-1) ≥ 2^n for n ≥ 3 (i.e. 2^(n+3) ≤ 3^(n+2)), a clean two-line induction whose step is just (3/2)^k ≥ 2 for k ≥ 2 in disguise."
+    ],
+    "prerequisites": [
+      "Stirling numbers of the second kind and set partitions",
+      "Pascal's recurrence for S(n,k)",
+      "Inhomogeneous geometric recurrences",
+      "Induction on the natural numbers",
+      "Natural-number subtraction and division by a constant"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Overview and Strategy",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "File docstring: the third-column closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), the Pascal-specialised geometric recursion S(m+1,3) = 3·S(m,3) + S(m,2), and the plan to track the subtraction-free invariant 2·S(n,3) + 2^n = 3^(n-1) + 1.",
+      "mathContext": "S(n,3) = (3^(n-1) + 1)/2 − 2^(n-1), forced by S(m+1,3) = 3·S(m,3) + S(m,2)."
+    },
+    {
+      "id": "forcing-term",
+      "title": "The Two-Block Forcing Term S(n+2,2) = 2ⁿ⁺¹ − 1",
+      "startLine": 47,
+      "endLine": 63,
+      "summary": "stirlingSecond_two_add re-derives the parent column inline from S(m+1,2) = 2·S(m,2) + S(m,1) and S(m,1) = 1, an induction closed by omega. This is the forcing term of the third-column recursion, included so the file is self-contained.",
+      "mathContext": "S(n+2,2) = 2^(n+1) − 1, the previous column that drives the third."
+    },
+    {
+      "id": "dominance",
+      "title": "Exponential Dominance 2ⁿ⁺³ ≤ 3ⁿ⁺²",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "two_pow_le_three_pow proves 2^(n+3) ≤ 3^(n+2) by induction; the step multiplies the hypothesis by 2 ≤ 3 via nlinarith. Equivalent to 2^n ≤ 3^(n-1) for n ≥ 3, the comparison behind positivity.",
+      "mathContext": "2^(n+3) ≤ 3^(n+2) ⟺ 2^n ≤ 3^(n-1) for n ≥ 3."
+    },
+    {
+      "id": "invariant",
+      "title": "The Subtraction-Free Invariant",
+      "startLine": 77,
+      "endLine": 102,
+      "summary": "two_mul_stirlingSecond_three_add: 2·S(n+3,3) + 2^(n+3) = 3^(n+2) + 1, by induction on n. The step rewrites with Nat.stirlingSecond_succ_succ (third column), substitutes the two-block forcing term S(n+3,2) = 2^(n+2) − 1, supplies the power doubling relations, and closes by omega.",
+      "mathContext": "2·S(n+3,3) + 2^(n+3) = 3^(n+2) + 1, the integer form of the closed solution."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Closed Form S(n,3) = (3ⁿ⁻¹ + 1)/2 − 2ⁿ⁻¹",
+      "startLine": 104,
+      "endLine": 129,
+      "summary": "two_mul_stirlingSecond_three re-indexes the invariant to the range n ≥ 3; stirlingSecond_three_closed halves the (provably even) right-hand side with omega to produce the textbook closed form.",
+      "mathContext": "S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3."
+    },
+    {
+      "id": "positivity",
+      "title": "Existence of a Three-Block Partition",
+      "startLine": 131,
+      "endLine": 142,
+      "summary": "stirlingSecond_three_pos: combine the invariant with 2^n ≤ 3^(n-1) (two_pow_le_three_pow) so that 2·S(n,3) ≥ 1, giving S(n,3) > 0 for n ≥ 3.",
+      "mathContext": "S(n,3) > 0 for n ≥ 3."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Origin of the Stirling numbers; the column closed forms as connection coefficients"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6: the Stirling triangle, column recurrences, and the closed forms S(n,2) and S(n,3)"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "note": "Stirling numbers of the second kind and the inclusion–exclusion surjection count"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry; answers its open question #1 by carrying the recurrence-to-geometric-sum method one column further, from S(n,2) = 2^(n-1) − 1 to S(n,3) = (3^(n-1)+1)/2 − 2^(n-1)"
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling entry proving the general finite-difference formula k!·S(n,k) = ∑(−1)^j C(k,j)(k−j)^n; specialising it at k=3 gives the same third-column value obtained here directly from the column recurrence"
+    }
+  ],
+  "conclusion": {
+    "summary": "The three-block column of Stirling numbers of the second kind has the closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3 (stirlingSecond_three_closed), derived by the parent's recurrence-to-geometric-sum method: Pascal specialised to the third column gives S(m+1,3) = 3·S(m,3) + S(m,2), an inhomogeneous geometric recursion forced by the solved two-block column. The argument is carried inside ℕ via the subtraction-free invariant 2·S(n,3) + 2^n = 3^(n-1) + 1 (two_mul_stirlingSecond_three_add), and positivity follows from exponential dominance 2^n ≤ 3^(n-1). All theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Completes the next column of the Stirling triangle in directly citable closed form and demonstrates that the column-recurrence template scales: each column is the geometric recursion forced by its predecessor. Together with the sibling finite-difference entry it pins S(n,3) from two independent directions (column recurrence and inclusion–exclusion).",
+    "openQuestions": [
+      "Does the fourth column S(n,4) yield to the same method, giving S(n,4) = (4^(n-1) − 3^n + 3·2^(n-1) − 1)/6 from the forced recursion S(m+1,4) = 4·S(m,4) + S(m,3)?",
+      "Can the column closed forms be packaged uniformly as the partial-fraction decomposition S(n,k) = ∑_{i=1}^{k} (−1)^{k-i} i^(n-1)/((i−1)!(k−i)!), exhibiting each column as a fixed ℚ-combination of the geometric sequences i^n?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "StirlingSecondKindOQ01OQ01",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingSecondKindOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-imports-docstring",
+    "proofId": "stirling-second-kind-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Stirling Numbers of the Second Kind",
+    "content": "Nat.stirlingSecond n k counts the partitions of an n-element set into exactly k nonempty, unlabeled blocks. Mathlib develops the Pascal-style recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) together with the boundary columns S(n,1) = 1, S(n,n) = 1, and S(n,n-1) = C(n,2). The one column it omits is k = 2, the first with a genuinely nontrivial closed form, 2^(n-1) − 1. This file supplies it. The header records both the algebraic route (solving the recurrence) and the combinatorial meaning of the count.",
+    "mathContext": "$S(n,k)$ = number of partitions of an $n$-set into $k$ nonempty blocks; $S(n,2) = 2^{n-1}-1$ for $n \\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "set partitions",
+      "Pascal recurrence",
+      "Nat.stirlingSecond"
+    ],
+    "prerequisites": [
+      "natural-number recursion",
+      "finite set partitions"
+    ]
+  },
+  {
+    "id": "ann-shifted-form",
+    "proofId": "stirling-second-kind-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 60
+    },
+    "type": "key-step",
+    "title": "Solving the Second-Column Recurrence by Induction",
+    "content": "stirlingSecond_two_add proves the shifted form S(n+2,2) = 2^(n+1) − 1 by induction on n. The base case S(2,2) = 1 = 2^1 − 1 is closed by kernel `decide`. In the step, Mathlib's Pascal recurrence specialised to k = 1 gives S(n+3,2) = 2·S(n+2,2) + S(n+2,1); substituting S(n+2,1) = 1 (stirlingSecond_one_right) and the induction hypothesis S(n+2,2) = 2^(n+1) − 1 reduces the goal to 2·(2^(n+1) − 1) + 1 = 2^(n+2) − 1. Over ℕ this is handled by `omega` once the facts 1 ≤ 2^(n+1) and 2^(n+2) = 2·2^(n+1) are in context — the only care needed for the truncated subtraction.",
+    "mathContext": "The second column satisfies $a(n+1) = 2a(n) + 1$ with $a(0)=1$, whose solution is $a(n) = 2^{n+1}-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "induction",
+      "inhomogeneous linear recurrence",
+      "Nat.stirlingSecond_succ_succ",
+      "natural subtraction"
+    ],
+    "prerequisites": [
+      "Pascal recurrence for Stirling numbers",
+      "omega for linear arithmetic over ℕ"
+    ]
+  },
+  {
+    "id": "ann-textbook-form",
+    "proofId": "stirling-second-kind-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "The Closed Form S(n,2) = 2^(n-1) − 1",
+    "content": "stirlingSecond_two restates the result in its standard textbook indexing: for n ≥ 2, S(n,2) = 2^(n-1) − 1. Writing n = m + 2 (possible since n ≥ 2) turns the goal into the shifted form, and because m + 2 − 1 reduces definitionally to m + 1, the proof is exactly stirlingSecond_two_add m with no further rewriting. This is the first nontrivial entry of the Stirling-second-kind triangle expressed as a closed form.",
+    "mathContext": "$S(n,2) = 2^{n-1} - 1$ for $n \\ge 2$ — e.g. $S(3,2)=3$, $S(4,2)=7$, $S(5,2)=15$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "closed-form enumeration",
+      "Stirling triangle",
+      "set partitions into two blocks"
+    ],
+    "prerequisites": [
+      "definitional reduction of natural subtraction",
+      "reindexing n = m + 2"
+    ]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "stirling-second-kind-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 80
+    },
+    "type": "key-step",
+    "title": "Two-Block Partitions Always Exist",
+    "content": "stirlingSecond_two_pos records the qualitative consequence: for n ≥ 2 there is at least one way to split an n-set into two nonempty blocks, i.e. S(n,2) > 0. Rewriting by the closed form, the claim becomes 2^(n-1) − 1 > 0, which follows from 2 ≤ 2^(n-1) (because n − 1 ≥ 1) via `omega`. A small but honest corollary confirming the closed form is consistent with the obvious combinatorial fact.",
+    "mathContext": "For $n \\ge 2$, $2^{n-1} - 1 \\ge 1 > 0$, so a two-block partition always exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity",
+      "monotonicity of 2^n",
+      "existence of partitions"
+    ],
+    "prerequisites": [
+      "Nat.pow_le_pow_right",
+      "omega"
+    ]
+  }
+]

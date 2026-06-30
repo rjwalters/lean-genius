@@ -1,0 +1,253 @@
+[
+  {
+    "id": "ann-abs-eval-le-one",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 50,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "The Sup-Norm Envelope |Tₙ(x)| ≤ 1 on [-1,1]",
+    "content": "The analytic backbone of the minimax theorem: every Chebyshev polynomial of the first kind stays inside the band [-1, 1] over the interval [-1, 1]. The proof is pure De Moivre and needs no calculus of extrema. For x ∈ [-1, 1] write x = cos(arccos x) — this is exactly Real.cos_arccos, valid precisely because -1 ≤ x ≤ 1 (the two interval hypotheses h1, h2 are consumed here). Substituting and applying the defining identity T_real_cos turns Tₙ(x) into cos(n · arccos x), whose absolute value is ≤ 1 because cosine lands in [-1, 1] (Real.neg_one_le_cos and Real.cos_le_one). The geometry: parametrizing [-1,1] by the cosine wraps the polynomial onto a pure cosine wave, which automatically obeys the envelope.",
+    "mathContext": "$x = \\cos(\\arccos x),\\quad T_n(x) = \\cos(n\\arccos x),\\quad |T_n(x)| \\le 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "De Moivre's identity",
+      "equioscillation envelope",
+      "Chebyshev polynomials of the first kind",
+      "sup-norm bound"
+    ],
+    "prerequisites": [
+      "Real.cos_arccos",
+      "Polynomial.Chebyshev.T_real_cos",
+      "Real.cos_le_one"
+    ]
+  },
+  {
+    "id": "ann-eval-node",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Equioscillation at the n+1 Extreme Nodes",
+    "content": "The engine of the minimax theorem: at the Chebyshev extreme nodes xₖ = cos(kπ/n), the polynomial attains its extreme values ±1 with strictly alternating sign, Tₙ(xₖ) = (-1)^k. After applying T_real_cos the value becomes cos(n · kπ/n). The argument simplification harg cancels the n (using n ≠ 0, supplied by the hypothesis hn) to leave cos(kπ), and Real.cos_nat_mul_pi evaluates cos(kπ) = (-1)^k. These n+1 alternations (k = 0, …, n) are the combinatorial content that forces minimality: a competitor with smaller sup-norm would have to cross the monic Chebyshev polynomial at each of the n+1 nodes, producing too many roots.",
+    "mathContext": "$x_k = \\cos\\!\\big(\\tfrac{k\\pi}{n}\\big),\\qquad T_n(x_k) = \\cos\\!\\big(n\\cdot\\tfrac{k\\pi}{n}\\big) = \\cos(k\\pi) = (-1)^k$",
+    "significance": "key",
+    "relatedConcepts": [
+      "equioscillation",
+      "Chebyshev extreme nodes",
+      "alternation",
+      "De Moivre's identity"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T_real_cos",
+      "Real.cos_nat_mul_pi"
+    ]
+  },
+  {
+    "id": "ann-eval-one",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 72
+    },
+    "type": "theorem",
+    "title": "Sharpness at the Endpoint: Tₙ(1) = 1",
+    "content": "A one-line witness that the envelope bound |Tₙ| ≤ 1 is attained: at the right endpoint Tₙ(1) = 1 for every n, by the Mathlib lemma T_eval_one. This is the k = 0 case of the equioscillation nodes (cos 0 = 1) and confirms the band [-1,1] is the tightest possible — the polynomial actually touches the top of its envelope.",
+    "mathContext": "$T_n(1) = 1 \\quad\\text{for all } n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "endpoint sharpness",
+      "Chebyshev polynomials",
+      "envelope attainment"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T_eval_one"
+    ]
+  },
+  {
+    "id": "ann-recurrence-step",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 79,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "One Recurrence Step: Degree d+1, Leading Coefficient 2c",
+    "content": "The reusable algebraic heart of the degree infrastructure, isolating a single application of the Chebyshev recurrence Tₙ₊₂ = 2X·Tₙ₊₁ − Tₙ. Given a polynomial a of degree d with nonzero leading coefficient c, and a polynomial b of degree ≤ d, it shows 2X·a − b has degree d+1 and leading coefficient 2c. The proof first pins down 2X (degree 1, leading coefficient 2) via C_ofNat to rewrite the literal 2 as C 2, then computes that 2X·a has degree d+1 and leading coefficient 2c by natDegree_mul and leadingCoeff_mul. The decisive observation is that the subtracted term b sits strictly below the top degree (degree b < degree(2X·a)), so leadingCoeff_sub_of_degree_lt and natDegree_sub_eq_left_of_natDegree_lt guarantee the −b is harmless to both the degree and the leading coefficient.",
+    "mathContext": "$\\deg a = d,\\ \\operatorname{lead} a = c \\ne 0,\\ \\deg b \\le d \\;\\Rightarrow\\; \\deg(2Xa - b) = d+1,\\ \\operatorname{lead}(2Xa - b) = 2c$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev recurrence",
+      "leading coefficient",
+      "polynomial degree",
+      "leadingCoeff_sub_of_degree_lt"
+    ],
+    "prerequisites": [
+      "Polynomial.natDegree_mul",
+      "Polynomial.leadingCoeff_mul",
+      "Polynomial.leadingCoeff_sub_of_degree_lt"
+    ]
+  },
+  {
+    "id": "ann-deg-lead-pair",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 109,
+      "endLine": 146
+    },
+    "type": "theorem",
+    "title": "Paired Induction for Degree and Leading Coefficient",
+    "content": "Because the Chebyshev recurrence is second-order, the degree and leading-coefficient facts cannot be proved by ordinary induction on a single index — the step from n+1 needs information about both Tₙ₊₁ and Tₙ. The fix is to carry a paired invariant for two consecutive indices simultaneously: 'natDegree Tₙ₊₁ = n+1 ∧ lead Tₙ₊₁ = 2ⁿ, and natDegree Tₙ₊₂ = n+2 ∧ lead Tₙ₊₂ = 2ⁿ⁺¹'. The base case n = 0 uses T_one (T₁ = X) and T_two (T₂ = 2X² − 1), the latter handled by compute_degree! and a leadingCoeff_add_of_degree_lt rewrite. The successor case feeds the inductive data into the single-step lemma deg_lead_recurrence_step via the recurrence T_add_two, doubling the leading coefficient at each step to build 2ⁿ.",
+    "mathContext": "$\\deg T_{n+1} = n+1,\\ \\operatorname{lead} T_{n+1} = 2^{n};\\quad \\deg T_{n+2} = n+2,\\ \\operatorname{lead} T_{n+2} = 2^{n+1}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "paired induction",
+      "second-order recurrence",
+      "Chebyshev polynomials",
+      "leading coefficient"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T_add_two",
+      "Polynomial.Chebyshev.T_one",
+      "Polynomial.Chebyshev.T_two"
+    ]
+  },
+  {
+    "id": "ann-natdegree",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 149,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "Degree of Tₙ is Exactly n (Mathlib Gap)",
+    "content": "A degree lemma that Mathlib's Chebyshev file does not provide: natDegree(Tₙ) = n. The n = 0 case is T₀ = 1 (a degree-0 constant) via T_zero; the positive case unpacks the first component of the paired induction chebyshev_deg_lead_pair and re-indexes m+1 to match. This is exactly the kind of infrastructure flagged as a TODO in Mathlib's RingTheory/Polynomial/Chebyshev.lean ('Compute zeroes and extrema'), and is a candidate for upstreaming.",
+    "mathContext": "$\\deg T_n = n \\quad\\text{for all } n \\ge 0$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial degree",
+      "Mathlib gap",
+      "Chebyshev polynomials",
+      "upstreaming candidate"
+    ],
+    "prerequisites": [
+      "Polynomial.Chebyshev.T_zero",
+      "chebyshev_deg_lead_pair"
+    ]
+  },
+  {
+    "id": "ann-leadingcoeff",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 158,
+      "endLine": 166
+    },
+    "type": "theorem",
+    "title": "Leading Coefficient of Tₙ is 2^(n-1) (Mathlib Gap)",
+    "content": "The companion leading-coefficient lemma, also absent from Mathlib: for n ≥ 1, lead(Tₙ) = 2^(n-1). The n = 0 case is impossible under the hypothesis 0 < n and is discharged by absurd; the positive case reads off the second component of chebyshev_deg_lead_pair and simplifies the index. This 2^(n-1) is precisely the factor that the monic normalization divides out, and together with chebyshev_natDegree it supplies everything needed to build the monic Chebyshev polynomial.",
+    "mathContext": "$\\operatorname{lead} T_n = 2^{\\,n-1} \\quad\\text{for } n \\ge 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "leading coefficient",
+      "monic normalization",
+      "Mathlib gap",
+      "Chebyshev polynomials"
+    ],
+    "prerequisites": [
+      "chebyshev_deg_lead_pair"
+    ]
+  },
+  {
+    "id": "ann-monic-def",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 171,
+      "endLine": 172
+    },
+    "type": "definition",
+    "title": "The Monic Chebyshev Polynomial Mₙ = Tₙ / 2^(n-1)",
+    "content": "The protagonist of the minimax theorem, defined by dividing Tₙ by its leading coefficient 2^(n-1) (multiplying by C of the inverse). This is the unique scaling that makes the top coefficient 1 while preserving the equioscillation shape. All three achievability facts below — monicity, the sup-norm bound 2^(1-n), and equioscillation between ±2^(1-n) — follow by scaling the core results for Tₙ by this constant factor.",
+    "mathContext": "$M_n = \\frac{T_n}{2^{\\,n-1}} = C\\big((2^{\\,n-1})^{-1}\\big)\\cdot T_n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monic polynomial",
+      "normalization",
+      "Chebyshev polynomials",
+      "minimax"
+    ],
+    "prerequisites": [
+      "chebyshev_leadingCoeff"
+    ]
+  },
+  {
+    "id": "ann-monic-monic",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 175,
+      "endLine": 183
+    },
+    "type": "theorem",
+    "title": "Mₙ is Monic of Degree n",
+    "content": "The normalization works as intended: monicChebyshev_monic shows the leading coefficient of Mₙ is 1 (Monic.def), by computing lead(C c · Tₙ) = c · lead(Tₙ) = (2^(n-1))⁻¹ · 2^(n-1) = 1 through leadingCoeff_mul, leadingCoeff_C, chebyshev_leadingCoeff, and inv_mul_cancel₀. The companion monicChebyshev_natDegree confirms the degree is unchanged at n, since multiplying by a nonzero constant C does not alter the degree (natDegree_C_mul). Together these place Mₙ in the competition class of the minimax problem — monic real polynomials of degree exactly n.",
+    "mathContext": "$\\operatorname{lead} M_n = (2^{\\,n-1})^{-1}\\cdot 2^{\\,n-1} = 1,\\qquad \\deg M_n = n$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monic polynomial",
+      "leading coefficient",
+      "minimax competition class",
+      "degree"
+    ],
+    "prerequisites": [
+      "Polynomial.Monic",
+      "chebyshev_leadingCoeff",
+      "chebyshev_natDegree"
+    ]
+  },
+  {
+    "id": "ann-monic-abs-le",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 186,
+      "endLine": 192
+    },
+    "type": "theorem",
+    "title": "Achievability: Sup-Norm of Mₙ is ≤ 2^(1-n)",
+    "content": "The upper (achievability) half of the minimax theorem: on [-1, 1] the monic Chebyshev polynomial never exceeds 2^(1-n) in absolute value. Evaluating Mₙ = C c · Tₙ at x factors |Mₙ(x)| = (2^(n-1))⁻¹ · |Tₙ(x)| (eval_mul, eval_C, abs_mul, with the constant positive by positivity). The core envelope bound chebyshev_abs_eval_le_one pins |Tₙ(x)| ≤ 1, so the product is ≤ (2^(n-1))⁻¹ = 2^(1-n). This proves a monic degree-n polynomial exists whose sup-norm is exactly 2^(1-n) — the value the full minimax theorem claims is optimal.",
+    "mathContext": "$|M_n(x)| = (2^{\\,n-1})^{-1}\\,|T_n(x)| \\le (2^{\\,n-1})^{-1} = 2^{\\,1-n}\\quad (x \\in [-1,1])$",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimax achievability",
+      "sup-norm",
+      "monic polynomial",
+      "approximation theory"
+    ],
+    "prerequisites": [
+      "chebyshev_abs_eval_le_one"
+    ]
+  },
+  {
+    "id": "ann-monic-eval-node",
+    "proofId": "de-moivre-oq-02-oq-03",
+    "range": {
+      "startLine": 195,
+      "endLine": 198
+    },
+    "type": "theorem",
+    "title": "Mₙ Equioscillates Between ±2^(1-n)",
+    "content": "The achievability bound is sharp at the same n+1 nodes: Mₙ(cos(kπ/n)) = (-1)^k · 2^(1-n). Scaling the equioscillation identity chebyshev_eval_node by the constant (2^(n-1))⁻¹ gives the alternating values ±2^(1-n) at the extreme nodes. This alternation is the engine of both halves of the minimax theorem — it makes the upper bound tight here, and (in the open continuation) forces any monic competitor to have sup-norm ≥ 2^(1-n) by a root-counting argument on the difference Mₙ − competitor.",
+    "mathContext": "$M_n\\!\\big(\\cos\\tfrac{k\\pi}{n}\\big) = (-1)^k\\,(2^{\\,n-1})^{-1} = (-1)^k\\,2^{\\,1-n}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "equioscillation",
+      "minimax",
+      "alternation",
+      "root counting"
+    ],
+    "prerequisites": [
+      "chebyshev_eval_node"
+    ]
+  }
+]

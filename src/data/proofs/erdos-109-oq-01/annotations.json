@@ -135,7 +135,7 @@
       "startLine": 84,
       "endLine": 94
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Gap-Controlled Sumset Conjecture",
     "content": "States the strengthened sumset conjecture: for any set A of positive upper density and any gap function f, there exist infinite B, C with B + C \u2286 A and consecutive elements of B separated by at least f(b). This was proved by Moreira-Richter-Robertson (2019).",
     "mathContext": "$\\forall A$ with $\\bar{d}(A) > 0$, $\\forall f : \\mathbb{N} \\to \\mathbb{N}^+$, $\\exists B, C$ infinite with $B + C \\subseteq A$ and $b_2 - b_1 \\geq f(b_1)$ for consecutive $b_1 < b_2 \\in B$.",
@@ -179,7 +179,7 @@
       "startLine": 121,
       "endLine": 131
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "IP Sets and Hindman's Theorem",
     "content": "Defines IP sets as sets containing all finite sums FS(x_1, x_2, ...) from some positive, strictly monotone sequence. Axiomatizes Hindman's theorem (1974): every finite coloring of N has a monochromatic IP set. This is one of the deepest results in Ramsey theory.",
     "mathContext": "$S$ is IP if $\\exists (x_i)_{i \\geq 0}$ with $x_i > 0$, $x_i$ strictly increasing, and $\\mathrm{FS}(x_0, x_1, \\ldots) = \\{\\sum_{i \\in F} x_i : F \\subseteq \\mathbb{N} \\text{ finite, nonempty}\\} \\subseteq S$. Hindman: $\\forall k$-coloring of $\\mathbb{N}$, $\\exists$ monochromatic IP set.",

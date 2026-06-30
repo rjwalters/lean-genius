@@ -76,7 +76,7 @@ this property but cannot fully discharge the sufficiency axiom until the split i
 made. -/
 def DirichletWitnessProperty : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → 1 < m →
-    ∃ d p : ℕ, 0 < d ∧ p = d * m - 1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1
+    ∃ d p : ℕ, 0 < d ∧ d ≤ 2 ∧ p = d * m - 1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1
 
 /-- **Sufficiency from the Dirichlet witness.**
 
@@ -122,9 +122,9 @@ theorem three_sq_of_dirichlet_witness
         · exact ⟨1, 0, 0, by norm_num⟩
       · -- n > 1 and 4 ∤ n: invoke the Dirichlet witness
         push_neg at hle
-        obtain ⟨d, p, hd, hp, hpp, hqr⟩ := Hwit hne h4 hle
+        obtain ⟨d, p, hd, hd2, hp, hpp, hqr⟩ := Hwit hne h4 hle
         haveI : Fact (Nat.Prime p) := ⟨hpp⟩
-        exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hp hqr
+        exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hd2 hp hqr
 
 /-- **The sufficiency axiom is redundant given the Dirichlet witness.**
 

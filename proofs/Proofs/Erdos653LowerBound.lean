@@ -37,8 +37,8 @@ namespace Erdos653
 open Finset Real
 
 /-- The `n` collinear points `(0,0), (1,0), …, (n-1,0)` on the x-axis. -/
-def collinearConfig (n : ℕ) : Finset (Fin 2 → ℝ) :=
-  (Finset.range n).image (fun i => ![(i : ℝ), 0])
+noncomputable def collinearConfig (n : ℕ) : Finset (Fin 2 → ℝ) :=
+  (Finset.range n).image (fun i : ℕ => ![(i : ℝ), 0])
 
 /-- The collinear configuration has exactly `n` distinct points. -/
 theorem collinearConfig_card (n : ℕ) : (collinearConfig n).card = n := by
@@ -110,7 +110,7 @@ combinatorial Lean proof is the deferred next step). -/
 theorem euclidDist_collinearPoint (i j : ℝ) :
     euclidDist ![i, 0] ![j, 0] = |i - j| := by
   unfold euclidDist
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
   rw [show ((0 : ℝ) - 0) = 0 by ring, show (0 : ℝ) ^ 2 = 0 by ring, add_zero,
     Real.sqrt_sq_eq_abs]
 
@@ -165,7 +165,7 @@ theorem distinctDistCount_collinearConfig (n i : ℕ) (hi : i < n) :
     · have hr : (a : ℝ) ≤ b := by exact_mod_cast h
       rw [max_eq_right h, min_eq_left h, Nat.cast_sub h, abs_of_nonpos (by linarith)]; ring
     · have hr : (b : ℝ) ≤ a := by exact_mod_cast h
-      rw [max_eq_left h, min_eq_right h, Nat.cast_sub h, abs_of_nonneg (by linarith)]; ring
+      rw [max_eq_left h, min_eq_right h, Nat.cast_sub h, abs_of_nonneg (by linarith)]
   -- The distance set is the cast image of the ℕ abs-difference set.
   have hset : distanceSet (collinearConfig n) ![(i : ℝ), 0]
       = (((Finset.range n).erase i).image (fun j => max i j - min i j)).image
@@ -255,5 +255,39 @@ theorem g_ge_half (n : ℕ) : (n + 1) / 2 ≤ g n := by
   exact le_csSup (gSet_bddAbove n)
     (mem_gSet.mpr ⟨collinearConfig n, collinearConfig_card n,
       numDistinctRValues_collinearConfig n⟩)
+
+/-! ## Exact small values of `g`
+
+The merged upper bounds (`g_le_n`, `g_le_n_sub_one`) and lower bounds (`g_ge_one`,
+`g_ge_half`) coincide at the smallest arguments, pinning down the *exact* values of `g`
+there. These are the first formalized exact values of `g`; each is a one-line `omega`
+corollary (`omega` discharges the `Nat` subtraction `n-1` and the division `(n+1)/2`).
+`g(4)` does NOT close this way — `g_le_n_sub_one` gives only `g 4 ≤ 3` while `g_ge_half`
+gives only `g 4 ≥ 2` — so pinning `g(4) = 3` needs the certified construction. -/
+
+/-- `g(0) = 0`: no points, no distinct distances. From `g_le_n 0` (`g 0 ≤ 0`). -/
+theorem g_zero : g 0 = 0 := by
+  have h := g_le_n 0
+  omega
+
+/-- `g(1) = 1`: from `g_le_n 1` (`g 1 ≤ 1`) and `g_ge_one 1` (`1 ≤ g 1`). -/
+theorem g_one : g 1 = 1 := by
+  have h₁ := g_le_n 1
+  have h₂ := g_ge_one 1 (by norm_num)
+  omega
+
+/-- `g(2) = 1`: the first place the sharp ceiling `g(n) ≤ n-1` meets `g(n) ≥ 1`.
+From `g_le_n_sub_one 2` (`g 2 ≤ 1`) and `g_ge_one 2` (`1 ≤ g 2`). -/
+theorem g_two : g 2 = 1 := by
+  have h₁ := g_le_n_sub_one 2 (by norm_num)
+  have h₂ := g_ge_one 2 (by norm_num)
+  omega
+
+/-- `g(3) = 2`: the sharp ceiling `g(n) ≤ n-1` meets `g(n) ≥ ⌈n/2⌉`.
+From `g_le_n_sub_one 3` (`g 3 ≤ 2`) and `g_ge_half 3` (`(3+1)/2 = 2 ≤ g 3`). -/
+theorem g_three : g 3 = 2 := by
+  have h₁ := g_le_n_sub_one 3 (by norm_num)
+  have h₂ := g_ge_half 3
+  omega
 
 end Erdos653

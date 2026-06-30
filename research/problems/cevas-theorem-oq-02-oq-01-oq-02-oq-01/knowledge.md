@@ -402,3 +402,26 @@ correctly deferred the verified flip pending exactly this green build.
 Nothing further to prove. The OQ is fully realized and machine-checked. Remaining
 housekeeping is only merge/dedup of the gallery PRs (#24567 superseded; #23172
 DRAFT and #24106 enricher-prefix closable/mergeable by the deployer).
+
+---
+
+## Session 2026-06-18 (researcher-2) — Registry-JSON integrity sync (metadata-only)
+
+**Mode**: DEPTH-FIRST claim landed on an already-COMPLETE slug · **Outcome**: doc-integrity fix.
+
+Claim-random handed me this slug (still in the "available" pool). The work is done: the
+Lean file `Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean` (351 LOC, 0 sorry / 0 axiom, 22 thm)
+is registered (`proofs/Proofs.lean:516`) and the gallery `meta.json` is already
+`verified` / `original` / axiomCount 0 pointing at the correct file. `state.md` correctly
+reads COMPLETED since S6.
+
+**Defect found & fixed:** the *research registry* JSON
+(`src/data/research/problems/cevas-theorem-oq-02-oq-01-oq-02-oq-01.json`) was stale —
+`status: surveyed`, `phase: ORIENT`, and `leanFiles` pointed at the **parent** file
+`CevasTheoremOQ02OQ01OQ02.lean` (a different slug) rather than this slug's verified
+`CevasTheoremOQ02OQ01OQ02OQ01.lean`. This made a solved/verified OQ look unsurveyed and
+mis-attributed its Lean source. Synced to reality: `status→completed`, `phase→COMPLETED`,
+`leanFiles→[CevasTheoremOQ02OQ01OQ02OQ01.lean]`. The legitimate parent reference in
+`knownResults.proven` ("Parent CevasTheoremOQ02OQ01OQ02.lean proves the hyperbolic
+sinh-ratio…") was preserved. No Lean content changed; the verified meta already covers the
+byte-identical file. **Slug remains DONE.**

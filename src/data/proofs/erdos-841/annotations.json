@@ -145,7 +145,7 @@
       "startLine": 142,
       "endLine": 153
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Smooth Numbers and Square Completion",
     "content": "**IsSmooth(n, y)**: $\\forall p,\\, p \\text{ prime} \\wedge p \\mid n \\Rightarrow p \\leq y$. This is the standard definition of $y$-smooth (or $y$-friable) numbers \u2014 integers whose prime factorization uses only 'small' primes.\n\n**smooth_numbers_small_t**: For $y$-smooth $n$ with $y \\geq 2$, $t_n \\leq y$. This is a direct consequence of the smooth-number regime: if all prime factors are $\\leq y$, the interval $\\{n+1,\\ldots,n+y\\}$ contains multiples of every prime dividing $n$, providing enough material for square completion.",
     "mathContext": "The count of $y$-smooth numbers up to $x$ is $\\Psi(x,y) \\sim x\\rho(\\log x/\\log y)$ by the Hildebrand-Tenenbaum theorem. The bound $t_n \\leq y$ for $y$-smooth $n$ connects directly to the quadratic sieve: the sieve's factor base consists of primes $\\leq B = L(n)^{1/\\sqrt{2}}$, and it finds square products among $B$-smooth values of $Q(a) = a^2 - n$. The efficiency of the sieve depends on exactly how many $B$-smooth integers appear in short intervals \u2014 the same question as Problem #841 in disguise.",

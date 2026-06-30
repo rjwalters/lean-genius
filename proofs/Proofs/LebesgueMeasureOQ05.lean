@@ -22,7 +22,32 @@ statement for σ-finite measures, together with:
 5. the total-mass specialization,
 6. uniqueness of the density `ν`-a.e.,
 7. the general Lebesgue decomposition (no absolute continuity assumed):
-   `μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν)`.
+   `μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν)`,
+8. the **Radon–Nikodym chain rule** `(dμ/dν)·(dν/dλ) = dμ/dλ` (`λ`-a.e.),
+9. the **self-derivative** `dμ/dμ = 1` (`μ`-a.e.),
+10. the **reciprocal relation** `(dμ/dν)·(dν/dμ) = 1` (`μ`-a.e.) for `μ ≪ ν` —
+   the chain rule specialised at `λ = μ`, the density analogue of `(dx/dy)(dy/dx)=1`.
+
+Results 8–10 form an elementary *calculus of densities*: the chain rule is the
+multiplicative composition law for Radon–Nikodym derivatives, the self-derivative
+is its identity, and the reciprocal relation is the resulting inverse law.
+
+The package is rounded out by the basic pointwise regularity of the density and
+the probabilistic identification of the derivative:
+11. **finiteness** `dμ/dν < ∞` and `dμ/dν ≠ ∞` (`ν`-a.e.) for σ-finite `μ` — the
+    density is finite almost everywhere;
+12. **positivity** `0 < dμ/dν` (`μ`-a.e.) for `μ ≪ ν` — the density does not
+    vanish on the support of `μ`;
+13. **inverse law** `(dμ/dν)⁻¹ = dν/dμ` (`μ`-a.e.) for σ-finite `μ ≪ ν` — the
+    pointwise-inverse form of the reciprocal relation (10);
+14. **conditional expectation as a Radon–Nikodym derivative**: for a sub-σ-algebra
+    `m ≤ m₀` with `μ.trim` σ-finite and `f` integrable, the conditional expectation
+    `μ[f|m]` agrees `μ`-a.e. with the signed Radon–Nikodym derivative of the
+    `f`-weighted measure trimmed to `m`. This identifies `E[f|m]` as a density and
+    is the measure-theoretic foundation of conditioning.
+15. **change of variables** `∫⁻ g dμ = ∫⁻ (dμ/dν)·g dν` for σ-finite `μ ≪ ν`, with
+    its set-restricted form `∫_s g dμ = ∫_s (dμ/dν)·g dν` — the defining property of a
+    density and the principal *use* of the theorem (item 4 is the case `g = 1`).
 
 ## Honest scope
 
@@ -88,5 +113,116 @@ Radon–Nikodym derivative. -/
 theorem lebesgue_decomposition [SigmaFinite μ] [SigmaFinite ν] :
     μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) :=
   Measure.haveLebesgueDecomposition_add μ ν
+
+/-! ### Calculus of densities
+
+The Radon–Nikodym derivative behaves like a derivative: it composes multiplicatively
+(chain rule), has the constant function `1` as its identity (self-derivative), and
+consequently obeys a reciprocal law for mutually related measures. -/
+
+variable {lam : Measure α}
+
+/-- **Radon–Nikodym chain rule (σ-finite).** For σ-finite `μ, ν, λ` with `μ ≪ ν`,
+the Radon–Nikodym derivatives compose multiplicatively, `λ`-almost everywhere:
+`(dμ/dν)·(dν/dλ) = dμ/dλ`. This is the measure-theoretic analogue of the calculus
+chain rule and underlies change-of-variables between densities. -/
+theorem rnDeriv_chain [SigmaFinite μ] [SigmaFinite ν] [SigmaFinite lam]
+    (h : μ ≪ ν) :
+    μ.rnDeriv ν * ν.rnDeriv lam =ᵐ[lam] μ.rnDeriv lam :=
+  Measure.rnDeriv_mul_rnDeriv h
+
+/-- **Self-derivative.** A σ-finite measure has constant Radon–Nikodym derivative `1`
+with respect to itself, `μ`-almost everywhere: `dμ/dμ = 1`. This is the identity of
+the chain rule's multiplicative composition law. -/
+theorem rnDeriv_self_ae_one [SigmaFinite μ] :
+    μ.rnDeriv μ =ᵐ[μ] (fun _ ↦ 1 : α → ℝ≥0∞) :=
+  Measure.rnDeriv_self μ
+
+/-- **Reciprocal relation.** For σ-finite `μ ≪ ν`, the forward and backward densities
+multiply to `1`, `μ`-almost everywhere: `(dμ/dν)·(dν/dμ) = 1`. This is the chain rule
+specialised to `λ = μ` followed by the self-derivative — the density analogue of the
+inverse-function relation `(dx/dy)(dy/dx) = 1`. -/
+theorem rnDeriv_mul_symm_ae_one [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    μ.rnDeriv ν * ν.rnDeriv μ =ᵐ[μ] (fun _ ↦ 1 : α → ℝ≥0∞) :=
+  (Measure.rnDeriv_mul_rnDeriv (κ := μ) h).trans (Measure.rnDeriv_self μ)
+
+/-! ### Pointwise regularity of the density
+
+Basic almost-everywhere properties of the Radon–Nikodym derivative as a function:
+it is finite, and (on the support of `μ`) strictly positive, with a pointwise
+inverse law refining the reciprocal relation above. -/
+
+/-- **Finiteness (`< ∞`).** The Radon–Nikodym derivative of a σ-finite measure is
+finite `ν`-almost everywhere. -/
+theorem rnDeriv_lt_top_ae [SigmaFinite μ] : ∀ᵐ x ∂ν, μ.rnDeriv ν x < ∞ :=
+  Measure.rnDeriv_lt_top μ ν
+
+/-- **Finiteness (`≠ ∞`).** Equivalent `≠ ∞` form of the finiteness statement. -/
+theorem rnDeriv_ne_top_ae [SigmaFinite μ] : ∀ᵐ x ∂ν, μ.rnDeriv ν x ≠ ∞ :=
+  Measure.rnDeriv_ne_top μ ν
+
+/-- **Positivity.** For σ-finite `μ ≪ ν`, the Radon–Nikodym derivative is strictly
+positive `μ`-almost everywhere — it does not vanish on the support of `μ`. -/
+theorem rnDeriv_pos_ae [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    ∀ᵐ x ∂μ, 0 < μ.rnDeriv ν x :=
+  Measure.rnDeriv_pos h
+
+/-- **Inverse law (pointwise).** For σ-finite `μ ≪ ν`, the pointwise inverse of the
+forward density is the backward density, `μ`-almost everywhere: `(dμ/dν)⁻¹ = dν/dμ`.
+This is the inverse form of the reciprocal relation `rnDeriv_mul_symm_ae_one`. -/
+theorem inv_rnDeriv_ae [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν) :
+    (μ.rnDeriv ν)⁻¹ =ᵐ[μ] ν.rnDeriv μ :=
+  Measure.inv_rnDeriv h
+
+/-! ### Change of variables: integration against the density
+
+The defining purpose of a density: integrating a function against `μ` is the same as
+integrating it weighted by `dμ/dν` against `ν`. This is the principal *use* of the
+Radon–Nikodym theorem and the integral that the chain rule above is built to transport.
+The measure-of-a-set characterization `rnDeriv_setLIntegral` is the special case `g = 1`. -/
+
+/-- **Change of variables (integration against the density).** For σ-finite `μ ≪ ν`,
+integrating `g` against `μ` equals integrating it weighted by the Radon–Nikodym
+derivative against `ν`: `∫⁻ g dμ = ∫⁻ (dμ/dν)·g dν`. -/
+theorem lintegral_density [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν)
+    {g : α → ℝ≥0∞} (hg : AEMeasurable g ν) :
+    ∫⁻ x, μ.rnDeriv ν x * g x ∂ν = ∫⁻ x, g x ∂μ :=
+  lintegral_rnDeriv_mul h hg
+
+/-- **Change of variables on a set.** The set-restricted form of `lintegral_density`:
+for σ-finite `μ ≪ ν` and measurable `s`, `∫_s g dμ = ∫_s (dμ/dν)·g dν`. Taking `g = 1`
+recovers `rnDeriv_setLIntegral`. -/
+theorem setLIntegral_density [SigmaFinite μ] [SigmaFinite ν] (h : μ ≪ ν)
+    {g : α → ℝ≥0∞} (hg : AEMeasurable g ν) {s : Set α} (hs : MeasurableSet s) :
+    ∫⁻ x in s, μ.rnDeriv ν x * g x ∂ν = ∫⁻ x in s, g x ∂μ :=
+  setLIntegral_rnDeriv_mul h hg hs
+
+end LebesgueRadonNikodym
+
+/-! ### Conditional expectation as a Radon–Nikodym derivative
+
+The conditional expectation `μ[f|m]` onto a sub-σ-algebra `m ≤ m₀` is itself a
+density: it is the (signed) Radon–Nikodym derivative of the `f`-weighted measure
+`μ.withDensityᵥ f`, trimmed to `m`, with respect to `μ` trimmed to `m`. This places
+conditioning inside the Radon–Nikodym calculus of this file. -/
+
+namespace LebesgueRadonNikodym
+
+section ConditionalExpectation
+
+variable {β : Type*} {m m₀ : MeasurableSpace β} {ρ : Measure β}
+
+/-- **Conditional expectation as a Radon–Nikodym derivative.** For a sub-σ-algebra
+`m ≤ m₀` with `ρ.trim hm` σ-finite and `f` integrable, the conditional expectation
+`ρ[f|m]` equals, `ρ`-almost everywhere, the signed Radon–Nikodym derivative of the
+`f`-weighted measure trimmed to `m`. Thin wrapper over Mathlib's
+`MeasureTheory.rnDeriv_ae_eq_condExp`; recorded here as the probabilistic face of
+the σ-finite Radon–Nikodym package. -/
+theorem condExp_ae_eq_signed_rnDeriv {hm : m ≤ m₀} [SigmaFinite (ρ.trim hm)]
+    {f : β → ℝ} (hf : Integrable f ρ) :
+    SignedMeasure.rnDeriv ((ρ.withDensityᵥ f).trim hm) (ρ.trim hm) =ᵐ[ρ] ρ[f|m] :=
+  rnDeriv_ae_eq_condExp hf
+
+end ConditionalExpectation
 
 end LebesgueRadonNikodym

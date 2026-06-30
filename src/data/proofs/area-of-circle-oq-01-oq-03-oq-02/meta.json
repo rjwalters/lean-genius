@@ -19,16 +19,17 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 6,
+    "sorries": 4,
     "axiomCount": 2,
-    "theoremCount": 15,
-    "lineCount": 565,
+    "theoremCount": 17,
+    "lineCount": 604,
     "defCount": 4,
-    "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. 6 technical sorries remain: lip_x/lip_y (MVT bound for periodic C¹ → Lipschitz), hdx_int/hdy_int (derivative-squared integrability from LipschitzWith), harea_zero (area=0 from circumference=0), hf_int (integrability of xy'−yx' for Lipschitz curves).",
+    "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. The smooth→Lipschitz embedding (lip_x/lip_y) is now fully proved via the genuine lemma contDiff_periodic_lipschitz (a 2π-periodic C¹ function is globally Lipschitz with an honest constant sup|f'| on the compact period, axiom-free). 4 technical sorries remain: hdx_int/hdy_int (derivative-squared integrability from LipschitzWith), harea_zero (area=0 from circumference=0), hf_int (integrability of xy'−yx' for Lipschitz curves) — all reducible to Rademacher / LipschitzWith.norm_deriv_le in Mathlib.",
     "originalContributions": [
       "LipschitzClosedCurve structure: Lipschitz-component closed curves (generalizes SmoothClosedCurve)",
       "LipschitzClosedCurve.circumference and .area via Lebesgue integrals of a.e. derivatives",
-      "SmoothClosedCurve.toLipschitz embedding: smooth → Lipschitz with circumference and area preserved by rfl",
+      "contDiff_periodic_lipschitz: a 2π-periodic C¹ function is globally Lipschitz with an honest constant (sup|f'| on the compact period [0,2π] via lipschitzWith_of_nnnorm_deriv_le + Function.Periodic.exists_mem_Ico₀); axiom-free, replaces the earlier invalid |f'(0)| witness",
+      "SmoothClosedCurve.toLipschitz embedding: smooth → Lipschitz with circumference and area preserved by rfl; lip_x/lip_y now fully discharged via contDiff_periodic_lipschitz (no sorries)",
       "circleLipCurve: circle as Lipschitz curve via toLipschitz embedding",
       "Square examples: square_isoperimetric_ratio, square_strict_isoperimetric, square_a_strict_isoperimetric fully proved",
       "wirtinger_sum_sq_bound_lip: ∫(x²+y²) ≤ 2πc² from Wirtinger axiom applied to x and y + constant-speed a.e.",
@@ -41,6 +42,11 @@
         "theorem": "LipschitzWith",
         "description": "Lipschitz continuity with constant K",
         "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "lipschitzWith_of_nnnorm_deriv_le",
+        "description": "A differentiable function whose derivative is bounded in norm by K is LipschitzWith K",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
       },
       {
         "theorem": "intervalIntegral.integral_add",
@@ -66,7 +72,7 @@
       "Rademacher's theorem (Lipschitz → differentiable a.e.) underpins all the integrability claims, but is used implicitly via the Wirtinger axiom",
       "LipschitzWith K f → f is continuous → f² is integrable on compact intervals; the derivative squared requires more care",
       "The unit square (piecewise-linear, Lipschitz not smooth) is the canonical non-circular example: C=4a, A=a², ratio 4πA/C² = π/4 < 1, fully proved without sorries",
-      "The SmoothClosedCurve → LipschitzClosedCurve embedding preserves circumference and area by definitional equality (rfl)",
+      "The SmoothClosedCurve → LipschitzClosedCurve embedding preserves circumference and area by definitional equality (rfl); its Lipschitz-constant obligation is met rigorously by contDiff_periodic_lipschitz, which extracts an honest global bound sup|f'| from compactness of the period plus periodicity (the naive |f'(0)| witness is not in general valid)",
       "Lipschitz regularity (W^{1,∞}) is the natural level for the isoperimetric inequality: it covers polygons, convex bodies, and all piecewise-smooth boundaries while still supporting Fourier analysis via Sobolev embedding W^{1,∞} ↪ H¹(S¹)",
       "The two axioms (wirtinger_ac, exists_lip_nice_reparam) are exactly the Mathlib gaps — both are classical results whose absence is a Mathlib infrastructure issue, not a mathematical open question",
       "The degenerate case sorry (harea_zero: C=0 → A=0) has a clean measure-theoretic proof: if ∫|γ'|=0 then |γ'|=0 a.e., so γ is a.e. constant; a constant curve encloses no area by Green's theorem",
@@ -100,64 +106,64 @@
       "id": "embedding-smooth",
       "title": "Embedding Smooth Curves as Lipschitz Curves",
       "startLine": 84,
-      "endLine": 120,
-      "summary": "SmoothClosedCurve.toLipschitz embedding (C¹ curves are Lipschitz on a compact period) and the structural nonnegativity bounds lip_circumference_nonneg and lip_area_nonneg.",
-      "mathContext": "A periodic $C^1$ curve is Lipschitz with constant $\\sup|f'|$ on $[0,2\\pi+1]$; this realizes SmoothClosedCurve as a special case of LipschitzClosedCurve."
+      "endLine": 148,
+      "summary": "contDiff_periodic_lipschitz (a 2π-periodic C¹ function is globally Lipschitz with an honest constant sup|f'| on the compact period); SmoothClosedCurve.toLipschitz embedding (lip_x/lip_y discharged via that lemma, no sorries); and the structural nonnegativity bounds lip_circumference_nonneg and lip_area_nonneg.",
+      "mathContext": "A periodic $C^1$ curve is Lipschitz with constant $\\sup_{[0,2\\pi]}|f'|$: the continuous derivative attains a max on the compact period, and periodicity reduces any point to that period (Function.Periodic.exists_mem_Ico₀), giving a global bound fed to lipschitzWith_of_nnnorm_deriv_le. This realizes SmoothClosedCurve as a special case of LipschitzClosedCurve."
     },
     {
       "id": "examples",
       "title": "Circle and Square Examples",
-      "startLine": 121,
-      "endLine": 184,
+      "startLine": 149,
+      "endLine": 211,
       "summary": "circleLipCurve via toLipschitz embedding; circle circumference = 2πr and area = πr² by inheritance; square examples: isoperimetric ratio = π/4 < 1 for unit and a×a squares, all proved without sorries.",
       "mathContext": "The circle achieves equality C² = 4πA; the unit square gives 4πA/C² = π/4 < 1 (strict inequality since π < 4)."
     },
     {
       "id": "axioms",
       "title": "Core Axioms",
-      "startLine": 185,
-      "endLine": 247,
+      "startLine": 213,
+      "endLine": 275,
       "summary": "wirtinger_ac: Wirtinger inequality for LipschitzWith K functions; exists_lip_nice_reparam: arc-length reparametrization producing constant-speed (a.e.) zero-mean Lipschitz curve.",
       "mathContext": "Wirtinger holds for W^{1,1}(S¹) ⊂ W^{1,2}(S¹) via Fourier. Reparametrization uses inverse function theorem for monotone AC maps (Banach theorem)."
     },
     {
       "id": "wirtinger-bound",
       "title": "Wirtinger Sum-of-Squares Bound",
-      "startLine": 248,
-      "endLine": 310,
+      "startLine": 276,
+      "endLine": 338,
       "summary": "wirtinger_sum_sq_bound_lip: ∫(x²+y²) ≤ 2πc². Applies wirtinger_ac to x and y, adds results, bounds ∫(x'²+y'²) = 2πc² via a.e. constant-speed. 2 technical sorries for derivative-squared integrability.",
       "mathContext": "∫(x²+y²) ≤ ∫(x'²) + ∫(y'²) ≤ ∫(x'²+y'²) = 2πc² (last equality from constant speed a.e.)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Lipschitz Isoperimetric Inequality",
-      "startLine": 311,
-      "endLine": 467,
+      "startLine": 339,
+      "endLine": 495,
       "summary": "lipschitz_isoperimetric: 4πA ≤ C² for Lipschitz closed curves with positive speed a.e. Degenerate case (C=0 → A=0) has 1 sorry; non-degenerate case uses reparametrization + Wirtinger + Cauchy-Schwarz + arithmetic kernel; 1 sorry for hf_int.",
       "mathContext": "Proof: reparametrize → wirtinger_sum_sq_bound_lip → area_bound → integral Cauchy-Schwarz → isoperimetric_from_wirtinger_bounds."
     },
     {
       "id": "corollaries",
       "title": "Corollaries",
-      "startLine": 468,
-      "endLine": 505,
+      "startLine": 496,
+      "endLine": 533,
       "summary": "smooth_case_follows_from_lipschitz: smooth isoperimetric is subsumed; lip_isoperimetric_scale_invariant: ratio 4πA/C² is scale-invariant; lip_minimum_circumference: C ≥ 2√(πA).",
       "mathContext": "All three corollaries follow from lipschitz_isoperimetric without sorries."
     },
     {
       "id": "summary",
       "title": "Sorry Inventory and Summary",
-      "startLine": 506,
-      "endLine": 565,
-      "summary": "Inventory of the 13 sorry-free results (square/circle examples, structural bounds, scale invariance, minimum circumference), the 2 axioms (wirtinger_ac, exists_lip_nice_reparam), and the 6 remaining technical sorries (derivative integrability / MVT bounds for Lipschitz functions, all ultimately reducible to Rademacher's theorem), with a note on mathematical significance.",
+      "startLine": 534,
+      "endLine": 604,
+      "summary": "Inventory of the 14 sorry-free results (the new contDiff_periodic_lipschitz embedding lemma, square/circle examples, structural bounds, scale invariance, minimum circumference), the 2 axioms (wirtinger_ac, exists_lip_nice_reparam), and the 4 remaining technical sorries (derivative integrability / degenerate-area facts for Lipschitz functions, all ultimately reducible to Rademacher's theorem), with a note on mathematical significance.",
       "mathContext": "The remaining sorries are technical regularity facts (e.g. $\\mathrm{LipschitzWith}\\,K\\,f \\Rightarrow |f'| \\le K$ a.e.), not additional mathematical assumptions; the one blocking the main theorem is integrability of $xy'-yx'$ for Lipschitz curves."
     }
   ],
   "conclusion": {
-    "summary": "This formalization extends the isoperimetric inequality to Lipschitz closed curves, covering all piecewise-smooth curves (polygons, convex bodies). The proof is structurally identical to the smooth case, demonstrating that Lipschitz regularity is the natural level for the isoperimetric inequality. Two axioms (Wirtinger-AC and arc-length reparametrization) capture the deep analytical content; 6 technical sorries remain for derivative integrability (blocked on Rademacher/LipschitzWith.norm_deriv_le in Mathlib).",
+    "summary": "This formalization extends the isoperimetric inequality to Lipschitz closed curves, covering all piecewise-smooth curves (polygons, convex bodies). The proof is structurally identical to the smooth case, demonstrating that Lipschitz regularity is the natural level for the isoperimetric inequality. The smooth→Lipschitz embedding is now fully rigorous: contDiff_periodic_lipschitz discharges lip_x/lip_y with an honest Lipschitz constant. Two axioms (Wirtinger-AC and arc-length reparametrization) capture the deep analytical content; 4 technical sorries remain for derivative integrability and the degenerate area case (blocked on Rademacher/LipschitzWith.norm_deriv_le in Mathlib).",
     "implications": "The Lipschitz isoperimetric inequality strictly generalizes the smooth version and applies to the unit square, regular polygons, and any Lipschitz boundary. The proof strategy — Wirtinger + Cauchy-Schwarz + arithmetic kernel — is fully modular and reuses all infrastructure from the parent smooth proof.",
     "openQuestions": [
-      "Can the 6 technical sorries be closed using Rademacher's theorem (Lipschitz → differentiable a.e.) once it is formalized in Mathlib?",
+      "Can the 4 remaining technical sorries be closed using Rademacher's theorem (Lipschitz → differentiable a.e.) once it is formalized in Mathlib?",
       "Does Mathlib 4.26 have LipschitzWith.norm_deriv_le or an analogue for bounding derivative norms?",
       "Can the degenerate case (harea_zero: circumference=0 implies area=0) be proved from Mathlib's integral_eq_zero_iff machinery?"
     ]
@@ -175,13 +181,13 @@
       "IsoperimetricOQ"
     ],
     "namespace": "LipschitzIsoperimetric",
-    "lineCount": 565,
+    "lineCount": 604,
     "axiomCount": 2,
-    "theoremCount": 15,
+    "theoremCount": 17,
     "lemmaCount": 1,
     "definitionCount": 4,
-    "substantiveTheoremCount": 5,
-    "sorries": 6,
+    "substantiveTheoremCount": 6,
+    "sorries": 4,
     "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
     "additionalFiles": [
       "Proofs/AreaOfCircleOQ01OQ03OQ02Aristotle.lean"
@@ -192,6 +198,11 @@
       "name": "lipschitz_isoperimetric",
       "type": "core",
       "description": "Isoperimetric inequality 4πA ≤ C² for Lipschitz closed curves with positive speed a.e."
+    },
+    {
+      "name": "contDiff_periodic_lipschitz",
+      "type": "supporting",
+      "description": "A 2π-periodic C¹ function is globally Lipschitz with an honest constant sup|f'| on the compact period; discharges the smooth→Lipschitz embedding (axiom-free)"
     },
     {
       "name": "wirtinger_ac",
@@ -247,5 +258,5 @@
       "description": "oq-03-oq-02 explores geometric measure theory extensions; both address generalizations of the classical isoperimetric result beyond smooth curves"
     }
   ],
-  "sorries": 6
+  "sorries": 4
 }

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Researcher",
     "date": "2026-05-06",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChineseRemainderConstructiveOQ04OQ02.lean",
     "tags": [
       "number-theory",
@@ -15,7 +15,7 @@
       "connection",
       "chinese-remainder-theorem"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -57,10 +57,10 @@
     ],
     "references": [],
     "dateAdded": "2026-05-06",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 180,
     "mathlib_version": "4.26.0",
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "No literal `axiom` declarations and 0 sorries. However, the named contribution `example_8_mod3_mod5` discharges its `Satisfies` congruence checks (x ≡ 2 mod 3, x ≡ 3 mod 5) solely via `native_decide`, which trusts the Lean compiler's kernel reduction and therefore depends on the `Lean.ofReduceBool` axiom. The 8 symbolic bridge contributions (`satisfies_pair_iff` through `crt_unique_two_fold`) are `native_decide`-free and fully kernel-checked.",
     "theoremCount": 12,
     "definitionCount": 0
   },
@@ -136,7 +136,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization resolves the open question from OQ-04: the list-based CRT (`CRTList.Satisfies`) and Mathlib's ring-theoretic CRT (`ZMod.chineseRemainder`) are equivalent. The unification relies on three key facts: `map_natCast` (ring homs commute with ℕ casts), `ZMod.natCast_eq_natCast_iff` (ZMod equality ↔ modular congruence), and `ZMod.natCast_zmod_val` (val is right-inverse of nat cast). All 12 theorems are proved with 0 sorries and 0 axioms.",
+    "summary": "This formalization resolves the open question from OQ-04: the list-based CRT (`CRTList.Satisfies`) and Mathlib's ring-theoretic CRT (`ZMod.chineseRemainder`) are equivalent. The unification relies on three key facts: `map_natCast` (ring homs commute with ℕ casts), `ZMod.natCast_eq_natCast_iff` (ZMod equality ↔ modular congruence), and `ZMod.natCast_zmod_val` (val is right-inverse of nat cast). All 12 theorems are proved with 0 sorries and no literal `axiom` declarations; the concrete regression test `example_8_mod3_mod5` uses `native_decide` for its congruence checks, which depends on the `Lean.ofReduceBool` axiom.",
     "implications": "This unification has practical significance: algorithms proven correct in the constructive (ℕ-based) setting automatically carry over to the ring-theoretic (ZMod) setting and vice versa. For example, verified implementations of Garner's algorithm (efficient CRT reconstruction) or residue number systems can use whichever formulation is more convenient for each step.",
     "openQuestions": [
       "Can this bridge extend to the k-fold case, connecting CRTList with the k-fold ZMod isomorphism from BezoutIdentityOQ03OQ01OQ01?",

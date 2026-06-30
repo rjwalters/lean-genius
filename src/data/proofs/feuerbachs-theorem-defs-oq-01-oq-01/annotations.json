@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-feuoq0101-header",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "concept",
+    "title": "The open question: is the formula-defined H really the orthocenter?",
+    "content": "The parent `FeuerbachsTheoremDefs` *defines* the orthocenter by the Euler formula H = A + B + C − 2O (O the circumcenter) and uses it throughout the nine-point-circle proof, but never verifies that this point actually lies on the altitudes. Until that is shown, 'orthocenter' is just a name for an opaque circumcenter expression. This file supplies the defining characterization: H lies on all three altitudes (concurrency), is collinear with each vertex and its altitude foot, and is the unique common point of any two altitudes — answering the first open question of the altitude-feet sibling entry.",
+    "mathContext": "Orthocenter: $H = A + B + C - 2O$. Goal: $(H-A)\\cdot(C-B) = 0$ and cyclic — i.e. $AH \\perp BC$, $BH \\perp CA$, $CH \\perp AB$.",
+    "significance": "key",
+    "relatedConcepts": ["orthocenter", "altitude", "concurrency", "Euler line", "circumcenter", "nine-point circle"],
+    "prerequisites": ["coordinate geometry", "dot product", "triangle centers"]
+  },
+  {
+    "id": "ann-feuoq0101-foot-perp",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 104 },
+    "type": "lemma",
+    "title": "Altitude-foot perpendicularity (self-contained)",
+    "content": "`foot_a_perp`, `foot_b_perp`, `foot_c_perp` restate the defining perpendicularity of each altitude foot: the vector from a vertex to its foot is perpendicular to the opposite side, e.g. (foot_a − A)·(C − B) = 0. Reproved here (also in the sibling FeuerbachsTheoremDefsOQ01) so the file builds independently against the parent. Each unfolds the foot definition and closes by clearing the nonzero side-length-squared denominator (bc_sq_ne_zero etc.) then `field_simp; ring`. These feed the collinearity proofs in Part III.",
+    "mathContext": "$(H_a - A)\\cdot(C-B) = 0$. The foot $H_a$ is the orthogonal projection of $A$ onto line $BC$; its existence needs $|C-B|^2 \\ne 0$ (non-degenerate side).",
+    "significance": "supporting",
+    "relatedConcepts": ["altitude foot", "orthogonal projection", "field_simp", "non-degeneracy"],
+    "prerequisites": ["dot product", "perpendicularity", "polynomial identities"]
+  },
+  {
+    "id": "ann-feuoq0101-perp",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 106, "endLine": 169 },
+    "type": "theorem",
+    "title": "Part I: the orthocenter lies on each altitude",
+    "content": "`orthocenter_perp_a/b/c` prove (H − A)·(C − B) = 0 and the two cyclic analogues. The key idea: writing H − A = (B − O) + (C − O), the dot product with C − B = (C − O) − (B − O) telescopes to |C − O|² − |B − O|², which vanishes exactly because O (the circumcenter) is equidistant from B and C — so 'H on the altitude from A' is dual to 'O on the perpendicular bisector of BC'. Crucially the relation is LINEAR in O, so after substituting the explicit circumcenter fraction and clearing the single nonzero denominator d = 2((A−C)×(B−C)), it closes by `field_simp [hd_ne]; ring` with no quadratic distance reasoning.",
+    "mathContext": "$(H-A)\\cdot(C-B) = ((B-O)+(C-O))\\cdot((C-O)-(B-O)) = |C-O|^2 - |B-O|^2 = 0$. Circumcenter denominator $d = 2((A-C)\\times(B-C)) \\ne 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["perpendicular bisector", "circumcenter", "telescoping", "linear in O", "duality"],
+    "prerequisites": ["dot product expansion", "circumcenter formula", "field_simp/ring"]
+  },
+  {
+    "id": "ann-feuoq0101-concurrent",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 171, "endLine": 185 },
+    "type": "theorem",
+    "title": "Part II: concurrency capstone",
+    "content": "`altitudes_concurrent` bundles the three perpendicularity facts into a single conjunction: the orthocenter H lies on all three altitudes simultaneously. This is the defining property of the orthocenter the parent never verified — concurrency of the altitudes, here grounded entirely in the coordinate formula.",
+    "mathContext": "$(H-A)\\cdot(C-B)=0 \\;\\wedge\\; (H-B)\\cdot(A-C)=0 \\;\\wedge\\; (H-C)\\cdot(B-A)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["concurrency", "orthocenter", "altitude", "triangle centers"],
+    "prerequisites": ["conjunction", "perpendicularity"]
+  },
+  {
+    "id": "ann-feuoq0101-collinear",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 187, "endLine": 224 },
+    "type": "theorem",
+    "title": "Part III: H on the altitude line through each foot",
+    "content": "`orthocenter_collinear_a/b/c` prove H is collinear with each vertex and its altitude foot — H sits on the very line determined by a vertex and its foot. No fresh computation is needed: both foot_a − A and H − A are perpendicular to side BC, and in the plane two vectors perpendicular to a common nonzero vector must be parallel. The reusable lemma `cross_eq_zero_of_perp_perp` packages this: from u·w = 0, v·w = 0, w ≠ 0 it derives the cross product u₁v₂ − u₂v₁ = 0 via a single `linear_combination` identity (cross times |w|²) followed by `mul_eq_zero`.",
+    "mathContext": "If $u \\perp w$ and $v \\perp w$ with $w \\ne 0$ in $\\mathbb{R}^2$, then $u \\parallel v$, i.e. $u_1 v_2 - u_2 v_1 = 0$. Key identity: $(u_1 v_2 - u_2 v_1)\\,|w|^2 = (w_1 v_2 - w_2 v_1)(u\\cdot w) + (w_2 u_1 - w_1 u_2)(v\\cdot w)$.",
+    "significance": "critical",
+    "relatedConcepts": ["collinearity", "cross product", "parallel vectors", "linear_combination", "plane geometry"],
+    "prerequisites": ["cross product test for collinearity", "perpendicularity"]
+  },
+  {
+    "id": "ann-feuoq0101-unique",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 226, "endLine": 269 },
+    "type": "theorem",
+    "title": "Part IV: uniqueness — two altitudes determine H",
+    "content": "`orthocenter_unique` shows any point P on the altitudes from A and B equals the orthocenter, so two altitudes already determine H (and the third necessarily passes through it). `altitude_det_ne_zero` first proves the 2×2 determinant of the two altitude directions equals the nonzero triangle nondegeneracy form (via `linear_combination`). Then subtracting the orthocenter's own perpendicularity relations shows P − H is perpendicular to two independent side directions; two `linear_combination` eliminations (Cramer's rule) give (P−H)·det = 0 in each coordinate, and `mul_eq_zero` against the nonzero determinant forces P = H.",
+    "mathContext": "The system $(P-H)\\cdot(C-B)=0,\\ (P-H)\\cdot(A-C)=0$ has matrix determinant $= (C-B)\\times(A-C) = $ nondegeneracy form $\\ne 0$, so $P - H = 0$ by Cramer's rule.",
+    "significance": "key",
+    "relatedConcepts": ["Cramer's rule", "uniqueness", "2x2 determinant", "nondegeneracy", "linear system"],
+    "prerequisites": ["linear algebra in R^2", "determinants", "Cramer's rule"]
+  },
+  {
+    "id": "ann-feuoq0101-example",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01",
+    "range": { "startLine": 271, "endLine": 282 },
+    "type": "theorem",
+    "title": "Part V: worked example — the 3-4-5 right triangle",
+    "content": "`triangle_345_orthocenter_eq_A` shows the orthocenter of the 3-4-5 right triangle (A = (0,0), B = (3,0), C = (0,4)) is the right-angle vertex A. This exhibits the correct, initially surprising fact that in a right triangle the orthocenter coincides with the right-angle vertex — because the two legs AB and AC are themselves altitudes. Proved by rewriting with the parent's `triangle_345_orthocenter` computation then `rfl`.",
+    "mathContext": "For a right triangle with the right angle at $A$, the legs $AB$, $AC$ are altitudes, so $H = A$. Here $H = (0,0) = A$.",
+    "significance": "supporting",
+    "relatedConcepts": ["right triangle", "orthocenter", "worked example", "degenerate configuration"],
+    "prerequisites": ["right triangles", "altitudes"]
+  }
+]

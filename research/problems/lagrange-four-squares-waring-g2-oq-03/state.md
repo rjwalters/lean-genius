@@ -1,10 +1,132 @@
 # Research State: lagrange-four-squares-waring-g2-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (infra-blocked)
 **Path**: full
-**Since**: 2026-06-14T17:42:09-07:00
-**Iteration**: 5
+**Since**: 2026-06-20 (S7 landscape-resync; was 2026-06-16 S6)
+**Iteration**: 7
+
+## Session 2026-06-21 (researcher-9) — S8 ACT: shipped rational-necessity slice (oq-03-oq-05)
+
+Landscape moved on since S7: `dirichlet_key_lemma` is **no longer an axiom** in
+`ThreeSquares.lean` (line 668 is now only a comment); the file has **exactly ONE
+axiom left**, `not_excluded_form_is_sum_three_sq` (:1838). New 0-axiom infra on
+main since S7: **`ThreeSquaresDavenportCassels.lean`** (the full DC descent
+`exists_int_sq_of_rat_sq`, rational⇒integral, via `Int.bmod` rounding — no GoN!),
+**`ThreeSquaresRationalBridge.lean`** (isolates the whole open content to one Prop
+`ThreeSquaresRationalSolvability`), **`ThreeSquaresSquarefreeReduction.lean`**
+(reduces it to the squarefree case over ℚ). So the open frontier is now cleanly:
+"every squarefree non-excluded n is a sum of three **rational** squares"
+(Hasse-Minkowski; still absent from Mathlib).
+
+**Shipped this session (PR pending):** `ThreeSquaresRationalNecessity.lean`
+(115L, 5 thm, 0 def, **0 axiom**, verified `#print axioms` = only
+propext/Classical/Quot), registered in `Proofs.lean`, gallery entry
+`lagrange-four-squares-waring-g2-oq-03-oq-06`. Records the UNCONDITIONAL half of
+the rational characterization, built from the two 0-axiom pillars (integral
+necessity + DC descent):
+  - `three_rat_sq_iff_three_int_sq` — DC packaged as an honest `Iff` (ℚ⇔ℤ).
+  - `excluded_form_not_sum_three_rat_sq` — **rational necessity**: 4^a(8b+7) is
+    not even a sum of three rational squares (descent + integral necessity).
+  - `three_rat_sq_iff_sq_mul` / `_natSq_mul` — square-class invariance (so only
+    squarefree n matter; the conceptual basis of the squarefree reduction).
+  - `three_rat_sq_iff_not_excluded` — full ℚ characterization, conditional only on
+    `ThreeSquaresRationalSolvability`; necessity half unconditional.
+No attempt on the core axiom (genuinely infra-blocked: needs Dirichlet-in-AP /
+Hasse-Minkowski). Next real lever unchanged: discharge `ThreeSquaresRationalSolvability`
+on squarefree n via `PrimesInAP`.
+
+## Session 2026-06-20 (researcher-2) — S7 LANDSCAPE-RESYNC (READ FIRST; Aristotle UP)
+
+OBSERVE-only re-survey against Mathlib v4.26. No `.lean` change (no scaffolding).
+Released. Key landscape updates vs S6:
+
+- **All three S6 "cleanest Aristotle targets" are now PROVED** — kernel-verified,
+  0-sorry/0-axiom, all registered/reachable in `Proofs.lean`:
+  `ThreeSquaresSliceMinkowski.lean` (was the line-51 slice target),
+  `ThreeSquaresSufficiencyCorrected.lean` (the d≤2 audit), and
+  `ThreeSquaresSingleAP.lean` (the single-AP quadratic witness). **Do NOT
+  re-submit these to Aristotle — nothing to prove there.**
+- **`ThreeSquares.lean` is now 0-sorry** (2152 lines) with **exactly ONE axiom
+  remaining**: `not_excluded_form_is_sum_three_sq` (line 1838) — the full
+  sufficiency direction. (S6/06-14 knowledge listing 2 axioms + 1 sorry is stale.)
+- **Mathlib v4.26 still has NO three-squares / Davenport–Cassels theorem**
+  (grep'd the pin: only Dedekind / CauchyDavenport false hits). No off-the-shelf
+  wrap available.
+- **Precise gap, restated from the now-complete companions:** the proved
+  `dirichlet_key_lemma` is the *binary z=0 descent* and rigidly needs
+  `p = d·n − 1` with `d ∈ {1,2}` (intrinsic cap). The ready single-AP witness
+  (`legendreSym p (−n)=1` for `p ≡ 1 mod 4n`, ThreeSquaresSingleAP) is **orphan**
+  because no descent reconnects such a large Dirichlet prime to `n = x²+y²+z²`.
+  Closing it needs a **relaxed/3D key lemma**: direct ternary geometry-of-numbers
+  (isotropy mod n ⟹ covolume-n sublattice ⟹ Minkowski on ball √(2n) ⟹ Q(v)=n,
+  plus the Q(v)=2n boundary), i.e. Gauss reduction or Davenport–Cassels — ≫500
+  lines, not in Mathlib. The 3D GoN pieces partially exist (`dirichletSublattice`,
+  `minkowski_ellipsoid_has_lattice_point`) but are NOT assembled over the general
+  (non-d≤2) form. This is the same blocker as `zsqrtd-neg-two-oq-02`.
+- **Verdict:** genuinely infra-blocked across S1–S7; not a one-iteration target.
+  Next real lever = build the relaxed 3D `dirichlet_key_lemma` (multi-session), or
+  upstream Davenport–Cassels into Mathlib first.
+
+## Session 2026-06-16 (researcher-2) — S6 FRONTIER-SHARPEN (both backends down)
+
+Dual blackout re-confirmed (Aristotle 404 ×2; `docker run` rc=124 hang). ORIENT
+triage only. See knowledge.md §"S6 FRONTIER-SHARPEN" for detail. Key updates:
+- **Both axioms now reduce to a TOTAL of 2 `sorry`s in companions.**
+  `dirichlet_key_lemma` is FULLY isolated to ONE self-contained, project-dep-free
+  statement `ThreeSquaresSlice.exists_slice_point_lt_two_mul`
+  (`ThreeSquaresSliceMinkowski.lean:51`) — bridge + assembly already PROVED.
+  Cleanest Aristotle target in the slug. `not_excluded_form_is_sum_three_sq`
+  reduces to 1 sorry in `ThreeSquaresSufficiencyCorrected.lean`.
+- `ThreeSquaresSingleAP` is now REGISTERED (0/0); 06-15 state's companion list
+  was stale (SliceMinkowski + SingleAP are newer, 06-16).
+- **Recorded WHY the elementary Thue/pigeonhole route fails** (bound
+  `≤ (1+d)p`: non-strict for d=1 at perfect-square p, ≤3p for d=2) ⇒ line 51
+  genuinely needs Mathlib GoN, not pigeonhole. Do not attempt the shortcut.
+Infra-blocked, not math-blocked; no `.lean` change (no blind GoN write). Released.
+
+## Session 2026-06-16 (researcher-2) — universal single-AP QR seed (build-free cert)
+
+Docker daemon down host-wide this cycle (`docker ps` 60s timeout), so no Lean
+build/verify possible — the two remaining axioms (`dirichlet_key_lemma` :648,
+`not_excluded_form_is_sum_three_sq` :1720) are intricate Minkowski/sublattice
+assembly that must not be written blind. Did the one genuinely-new build-free
+delta available: **generalized the residue-3 single-AP repair to the whole
+theorem.**
+
+`verify_single_ap_residue3.py` (researcher-3, S2026-06-15) showed that dropping
+the rigid `p = d·n − 1` tie and asking only for a prime `p ≡ 1 (mod 4n)` repairs
+the `n ≡ 3 (mod 8)` class via one linear AP. This session's new certificate
+`verify_universal_single_ap.py` extends that to **every non-excluded square-free
+core across all residues** `n % 8 ∈ {1,2,3,5,6}`:
+
+> For `p ≡ 1 (mod 4n)`, the Kronecker character `χ_{−n}` (conductor | 4n)
+> evaluates at residue 1, so `(−n | p) = 1` — independent of `n mod 8` and of
+> `n`'s parity. (Even `n`: `8 | 4n ⟹ p ≡ 1 mod 8 ⟹ (2|p)=1`; odd part via
+> reciprocity. Odd `n`: reciprocity directly.) Hence `−n` is a QR mod `p` — the
+> isotropy seed `r² ≡ −n (mod p)` the Dirichlet sublattice construction needs.
+
+Certified PASS: substantive checks (universal `(−n|p)=1`, concrete prime exists,
+genuine sum-of-three-squares cross-check) hold for all **2024** non-excluded
+square-free cores in [2,4000) with 0 universal-QR violations; the full
+certificate including character periodicity (1) was run to PASS for all 1008
+cores in [2,2000) (periodicity scan is the cost driver, hence the smaller range
+for that single check).
+
+**Architectural consequence (the useful part).** The mod-8 case split inside
+`not_excluded_form_is_sum_three_sq` is currently choosing a different `d` per
+residue class to supply the QR seed. This shows ONE class — primes
+`p ≡ 1 (mod 4n)`, with `gcd(1, 4n) = 1` always so Mathlib's `PrimesInAP` applies
+unconditionally — supplies the seed uniformly. So that 5-way seed split can
+collapse to a single `PrimesInAP` instantiation when the axiom is refactored off
+the rigid `p = d·n − 1` form (the refactor researcher-3 recommended).
+
+**SCOPE / HONESTY.** This certifies only the QR seed `(−n|p)=1` from a fixed AP.
+It does NOT discharge `dirichlet_key_lemma`: the representation `n = x²+y²+z²`
+still needs the Minkowski step on the congruence sublattice — the distinct
+build-gated Lean work (`minkowski_ellipsoid_has_lattice_point` :983 is over the
+standard ℤ³ lattice; the sublattice instance is still missing). No Lean changed;
+the axiom count is unchanged at 2.
 
 ## Session 2026-06-15 (researcher-9) — FRONTIER RE-MAP (corrects stale "Remaining Gap")
 
@@ -242,3 +364,16 @@ Davenport–Cassels (`G1-dirichlet-bearer.md`). Details: `G2-minkowski-2p-gap.md
 **Already-done / do-NOT-redo reminders (unchanged):** `needs_four_iff_excluded` sorry
 is discharged on main; file is 0 sorries / 2 axioms (`dirichlet_key_lemma :648`,
 `not_excluded_form_is_sum_three_sq :1720`).
+
+## Session 2026-06-16 (researcher-1) — slice leaf splits on d (d=1 elementary, d=2 needs Gauss)
+
+ORIENT/SURVEY (dual blackout: Docker `docker ps` exit 124, Aristotle smoke test 404).
+No Lean changed. New build-free result on the sole open leaf
+`exists_slice_point_lt_two_mul` (`ThreeSquaresSliceMinkowski.lean`): the elementary
+box-pigeonhole route SUCCEEDS for d=1 (box A=B=⌊√p⌋, `(⌊√p⌋+1)²>p` via
+`Nat.lt_succ_sqrt`, gives `x²+y² ≤ 2⌊√p⌋² < 2p` strict for non-square p ⊇ all primes)
+but PROVABLY FAILS for d=2 (AM-GM floor `2√2·p > 2p`; 540/550 primes <4000 have box
+bound ≥ 2p). So the leaf should `interval_cases d`: d=1 = elementary Finset pigeonhole
+into `ZMod p` (high-confidence target); d=2 = the genuinely-hard Gauss-reduction /
+2D convex-body case (`G3-slice-constructive-route.md`). Certificate:
+`verify_pigeonhole_insufficient.py` (PASS). `ThreeSquares.lean` still 0 sorry / 2 axioms.

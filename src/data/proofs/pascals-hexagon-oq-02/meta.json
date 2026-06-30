@@ -2,6 +2,22 @@
   "id": "pascals-hexagon-oq-02",
   "title": "Brianchon's Theorem via Projective Duality",
   "slug": "pascals-hexagon-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Proofs.PascalsHexagon"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "Brianchon",
+    "lineCount": 199,
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 7,
+    "path": "Proofs/PascalsHexagonOQ02.lean",
+    "sorries": 0
+  },
   "description": "Brianchon's theorem — the three main diagonals of a hexagon circumscribed about a conic are concurrent — derived as the projective dual of Pascal's hexagon theorem in the self-dual homogeneous-coordinate model.",
   "meta": {
     "author": "Charles-Julien Brianchon (1806); formalization derived from Pascal",
@@ -134,5 +150,32 @@
       "Formalize the converse (Brianchon ⇒ the hexagon is circumscribed about a conic) and the degenerate cases (the hexagon's sides tangent to a degenerate conic / a conic pair), again via the duality bridge.",
       "Package the point↔line duality and the adjugate dual-conic correspondence as a reusable Lean transfer principle so future incidence results dualize automatically."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "pascals-hexagon",
+      "relationship": "parent",
+      "description": "The direct source of this result: brianchon_theorem is proved by applying pascal_hexagon_theorem to the dual configuration. Brianchon's theorem (circumscribed hexagon ⇒ concurrent main diagonals) is the exact projective dual of Pascal's theorem (inscribed hexagon ⇒ collinear opposite-side intersections), and in the self-dual ℝ³ model the dual statement is the same algebra reinterpreted through the point↔line correspondence."
+    },
+    {
+      "targetId": "pascals-hexagon-oq-03",
+      "relationship": "sibling",
+      "description": "A second extension of the same parent Pascal formalization, exploring the Hexagrammum Mysticum (the 60-Pascal-line configuration with its Steiner and Kirkman points). Where this entry dualizes Pascal's single hexagon into Brianchon's, oq-03 studies the full combinatorial orbit of the 60 hexagon relabelings under the dihedral group."
+    },
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "related",
+      "description": "Both are foundational incidence theorems of the projective plane that interact cleanly with duality. Desargues's theorem is essentially self-dual (its converse is its own dual), and like Brianchon it exchanges collinearity and concurrency under the point↔line correspondence — making it a natural companion in any duality-based treatment of projective geometry."
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Brianchon's conclusion is a concurrency statement — the three main diagonals pass through the Brianchon point — placing it alongside Ceva's theorem, the classical criterion for the concurrency of three cevians of a triangle. Both express concurrency as a single algebraic condition (a vanishing determinant here, a product-of-ratios equal to one for Ceva)."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Both are classical results about configurations inscribed in or circumscribed about conics. Ptolemy's theorem constrains a cyclic quadrilateral via a product relation on its sides and diagonals, while Pascal/Brianchon constrain hexagons in/around a conic via incidence conditions — together illustrating the recurring theme of conic configurations forcing global geometric constraints."
+    }
+  ]
 }

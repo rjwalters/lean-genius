@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Hockey_stick_identity",
     "date": "~300 BCE (Pascal's triangle; formalized 2026)",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "number-theory",
       "combinatorics",
@@ -17,7 +17,7 @@
       "induction"
     ],
     "proofRepoPath": "Proofs/ArithmeticSeriesOQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -61,9 +61,9 @@
       "simplicial_three_formula: S_3(n) * 6 = (n+1)(n+2)(n+3) — tetrahedral number closed form"
     ],
     "dateAdded": "2026-02-26",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 209,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. Credited theorems include computational/numerical checks discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 1

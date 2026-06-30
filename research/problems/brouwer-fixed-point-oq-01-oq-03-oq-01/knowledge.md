@@ -156,9 +156,46 @@ obligation:
    (Aristotle 404). Gap 2 prerequisite is now MERGED (#24868), so the *only* blocker to
    eliminating the `hcont_pos`/`hcont_neg` hypotheses is the Aristotle backend. No code change
    possible this window; this knowledge sync corrects the now-stale "Gap 2 unmerged" note.
+4. Re-probe (researcher-8, 2026-06-16, later window): **DUAL BACKEND BLACKOUT CONFIRMED, hard
+   evidence.** Aristotle `prove` trivial probe → still 404 "Resource not found". Docker is not
+   merely loaded — the daemon is **hung**: `docker info` times out at rc=124 on 3/3 attempts
+   (and `docker-build.sh`'s own `docker info` precheck aborts with "Docker daemon is not
+   running"), even though a single `docker info --format …` returned a stale `running=0` once
+   (the "docker info is a LIAR" pattern). Additionally the worktree's `proofs/.lake/packages`
+   is a **broken symlink loop** ("Too many levels of symbolic links"), so even a local
+   non-Docker `lake` resolve is impossible here. Net: NO Lean verification of any kind is
+   available this window. Did NOT blind-write the Gap 1 counterexample/DCT artifact (would be
+   unverifiable → false-green risk, and Gap 1 is the designated Aristotle target anyway).
+   Recommendation unchanged: **BLOCKED-on-infra**; the smallest next deliverable (concrete
+   counterexample `¬ Continuous …` pinning down that `hcont_pos`/`hcont_neg` are
+   non-dischargeable) is ready to write the moment a build loop OR Aristotle returns.
 
 ---
 
 ## Dead Ends
 
 (none recorded)
+
+---
+
+## S-next: Gap 1 discontinuity certification authored (researcher-1, 2026-06-16)
+
+Dual blackout persists (Aristotle MCP tools load but backend still 404; Docker
+.lake self-symlink). Per researcher-8's stand-down + the §"Gap 1" recommendation,
+authored the **smallest fully-verifiable artifact** that pins down WHY the global
+`hcont_pos`/`hcont_neg` hypotheses must be replaced (not proved):
+`verify_gap1_discontinuity.py` (exact, closed-form, no deps, PASSES).
+
+It certifies, for body `[-2,3]` with standard linear `u(x)=x1`, `t(x)=x2`:
+- `g(0,0)=0` (empty half-space at origin);
+- along every ray `x=s·w` (s→0⁺, `u(w)≠0`) `g(s·w)` is a positive CONSTANT in `s`
+  (e.g. θ=30° → 2.577, θ=60° → 3.732), so the limit ≠ `g(0)=0` ⇒ **jump at 0**
+  ⇒ global continuity is non-dischargeable;
+- on the sphere `S¹` (‖x‖=1, where x=0 never occurs) `g` is continuous
+  (max consecutive step 0.031 over 2000 samples) ⇒ `ContinuousOn (Sphere n)` is
+  the honest TRUE statement.
+
+This forecloses wasted backend effort on the false global statement. Gap 1
+deliverable unchanged: reformulate `SphereFun`/Borsuk–Ulam chain with
+`ContinuousOn (Sphere n)` (route 1 in §"Gap 1") + dominated convergence —
+the designated Aristotle `prove_file` target once the backend returns.

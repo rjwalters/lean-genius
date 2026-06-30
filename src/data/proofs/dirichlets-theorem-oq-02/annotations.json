@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 16
     },
-    "type": "context",
+    "type": "concept",
     "title": "Setup: Elementary Dirichlet via Euclid's Argument",
     "content": "The header frames the result as the special case $q=4,\\, a=3$ of Dirichlet's theorem on primes in arithmetic progressions. The general theorem (1837) requires analytic machinery — Dirichlet $L$-functions and the nonvanishing $L(1,\\chi) \\neq 0$ — but the residue class $3 \\pmod 4$ admits a purely elementary proof because the units mod 4 form the two-element group $\\{1,3\\}$, so a number $\\equiv 3$ cannot factor entirely into primes $\\equiv 1$. The single `import Mathlib` pulls in `Nat.exists_prime_and_dvd`, `Nat.Prime.dvd_factorial`, and `Set.infinite_iff_exists_gt`; `open Finset Nat` brings factorial and primality lemmas into scope, and everything lives in the `DirichletsTheoremOQ02` namespace.",
     "mathContext": "Special case of $\\{a + nq : n \\in \\mathbb{N}\\}$ with $\\gcd(a,q)=1$: here $q=4,\\, a=3$, provable without $L(s,\\chi)$",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Dirichlet's theorem",
       "arithmetic progressions",

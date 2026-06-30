@@ -34,10 +34,10 @@ Mathlib bearer name-checked @ pinned rev 2df2f01:
 (Mathlib/Algebra/Order/BigOperators/Group/Finset.lean:512):
 `(h : ∀ i ∈ s, f i ≤ g i) : (∑ i ∈ s, f i = ∑ i ∈ s, g i) ↔ ∀ i ∈ s, f i = g i`.
 
-NOTE: build-pending — written under a Docker blackout (host `lake`/Docker
-unavailable). Deliberately UNREGISTERED in `Proofs.lean` so it cannot affect the
-registered build until a post-blackout session verifies it via
-`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Rigidity`.
+Build-verified (researcher-8, 2026-06-19) and registered in `Proofs.lean` via
+`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Rigidity`:
+`✔ [7745/7745] Built Proofs.Erdos1179OQ02Rigidity` — 0 sorries, 0 axioms (the
+prior build-pending note, written under a Docker blackout, is now discharged).
 -/
 
 import Proofs.Erdos1179OQ02

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-cauchyschwarzoq0501-overview",
+    "proofId": "cauchy-schwarz-oq-05-oq-01",
+    "range": { "startLine": 5, "endLine": 51 },
+    "type": "concept",
+    "title": "Weighted Lagrange identity: the exact weighted Cauchy-Schwarz defect",
+    "content": "Weighted Cauchy-Schwarz says (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for non-negative weights w. The weighted Lagrange identity says exactly by how much: (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² = ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)². This file proves that identity over an arbitrary Finset on a linearly ordered index type and reads off two corollaries: the inequality (the right side is a weighted sum of squares, hence ≥ 0 when wᵢ ≥ 0) and the exact equality case (the gap is 0 iff every weighted minor vanishes). It directly answers the open question posed by the unweighted parent (cauchy-schwarz-oq-05) and sharpens its conjecture: the weighted minor is the polynomial wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)², with no square roots, so the identity itself holds for arbitrary real weights.",
+    "mathContext": "$(\\sum_i w_i a_i^2)(\\sum_i w_i b_i^2) - (\\sum_i w_i a_ib_i)^2 = \\sum_{i<j} w_i w_j (a_ib_j - a_jb_i)^2$.",
+    "significance": "context",
+    "relatedConcepts": ["weighted Lagrange identity", "weighted Cauchy-Schwarz", "2×2 minors", "weighted inner product", "weighted least squares"],
+    "prerequisites": ["finite sums over a Finset", "nonnegativity of squares", "linear orders"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq0501-triangle",
+    "proofId": "cauchy-schwarz-oq-05-oq-01",
+    "range": { "startLine": 53, "endLine": 75 },
+    "type": "key-step",
+    "title": "Triangle-doubling for symmetric kernels (weight-agnostic, reused)",
+    "content": "sum_offDiag_eq_two_mul_sum_filter_lt is the combinatorial engine, reused verbatim from the unweighted parent because it knows nothing about weights. For ANY symmetric kernel F (F i j = F j i), summing over all distinct ordered pairs (the off-diagonal of s ×ˢ s) counts each unordered pair twice, so it equals 2·∑_{i<j} F. The proof splits the off-diagonal on the predicate p.1 < p.2 via Finset.sum_filter_add_sum_filter_not, then matches the not-< half against the < half through the swap involution (i,j) ↦ (j,i) using Finset.sum_nbij'. The membership conditions come from LinearOrder trichotomy (lt_of_le_of_ne ∘ not_lt); the value condition is exactly the symmetry hypothesis. The weighted kernel F i j = wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² is symmetric, so this lemma applies unchanged.",
+    "mathContext": "$\\sum_{(i,j)\\in\\mathrm{offDiag}} F\\,i\\,j = 2\\sum_{i<j} F\\,i\\,j$ when $F\\,i\\,j = F\\,j\\,i$.",
+    "significance": "key",
+    "relatedConcepts": ["swap involution", "Finset.sum_nbij'", "Finset.sum_filter_add_sum_filter_not", "LinearOrder trichotomy", "off-diagonal sum"],
+    "prerequisites": ["reindexing sums along bijections", "filtering finite sums by a predicate", "trichotomy of a linear order"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq0501-identity",
+    "proofId": "cauchy-schwarz-oq-05-oq-01",
+    "range": { "startLine": 77, "endLine": 132 },
+    "type": "key-step",
+    "title": "The weighted Lagrange identity",
+    "content": "weighted_lagrange_identity is the headline result. The entire weighted content is isolated in one pointwise `ring` fact: wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = (wᵢaᵢ²)(wⱼbⱼ²) + (wᵢbᵢ²)(wⱼaⱼ²) − 2(wᵢaᵢbᵢ)(wⱼaⱼbⱼ), which splits the weighted kernel into three rank-one blocks. Each block is collapsed by Finset.sum_mul_sum into a product of weighted sums, giving the doubled form ∑ᵢ∑ⱼ wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·[(∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)²]. Splitting s ×ˢ s into diagonal (kernel = 0) and off-diagonal (= 2·upper triangle via the triangle-doubling lemma) gives the same double sum as 2·∑_{i<j} F. Equating and cancelling the 2 (mul_left_cancel₀ two_ne_zero) yields the identity. No hypothesis on the weights is used.",
+    "mathContext": "Doubled form $\\sum_i\\sum_j w_iw_j(a_ib_j - a_jb_i)^2 = 2\\big[(\\sum w_ia_i^2)(\\sum w_ib_i^2) - (\\sum w_ia_ib_i)^2\\big]$, then halve over $i<j$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_mul_sum", "rank-one factorisation", "doubled identity", "mul_left_cancel₀", "polynomial identity"],
+    "prerequisites": ["expanding a product of finite sums", "diagonal/off-diagonal decomposition", "ring normalization"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq0501-cs",
+    "proofId": "cauchy-schwarz-oq-05-oq-01",
+    "range": { "startLine": 134, "endLine": 146 },
+    "type": "key-step",
+    "title": "Weighted Cauchy-Schwarz as a corollary",
+    "content": "weighted_cauchy_schwarz: (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for non-negative weights. This is where the hypothesis wᵢ ≥ 0 enters — exactly once. The defect equals the upper-triangle weighted sum ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)²; each term is a product of non-negatives (mul_nonneg of the two weights and sq_nonneg of the minor), so Finset.sum_nonneg makes the defect ≥ 0 and the inequality is one linarith step away.",
+    "mathContext": "$(\\sum w_ia_ib_i)^2 \\le (\\sum w_ia_i^2)(\\sum w_ib_i^2)$ since the defect is a sum of $w_iw_j(\\cdot)^2 \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["weighted Cauchy-Schwarz", "Finset.sum_nonneg", "mul_nonneg", "sq_nonneg"],
+    "prerequisites": ["nonnegativity of a sum of nonnegative terms"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq0501-equality",
+    "proofId": "cauchy-schwarz-oq-05-oq-01",
+    "range": { "startLine": 148, "endLine": 163 },
+    "type": "key-step",
+    "title": "Equality characterization",
+    "content": "weighted_cauchy_schwarz_eq_iff: with non-negative weights, weighted Cauchy-Schwarz is tight iff every weighted minor wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over a strictly increasing pair vanishes. Rewriting the equality as defect = 0 and identifying the defect with the weighted sum of non-negative terms, Finset.sum_eq_zero_iff_of_nonneg forces every term to vanish. On the support where both weights are positive this is exactly the proportionality condition aᵢbⱼ = aⱼbᵢ; on pairs where a weight is zero the term is automatically zero, so the characterization correctly ignores zero-weight indices.",
+    "mathContext": "$(\\sum w_ia_ib_i)^2 = (\\sum w_ia_i^2)(\\sum w_ib_i^2) \\iff \\forall i<j,\\ w_iw_j(a_ib_j - a_jb_i)^2 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["equality case", "Finset.sum_eq_zero_iff_of_nonneg", "proportionality", "linear dependence", "support of the weights"],
+    "prerequisites": ["sum of nonnegatives is zero iff each term is zero"]
+  }
+]

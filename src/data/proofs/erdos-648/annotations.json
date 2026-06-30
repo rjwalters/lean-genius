@@ -22,37 +22,15 @@
     ]
   },
   {
-    "id": "ann-648-gpf-axiom",
-    "proofId": "erdos-648",
-    "range": {
-      "startLine": 57,
-      "endLine": 58
-    },
-    "type": "concept",
-    "title": "GPF Axiom",
-    "content": "**gpfAx n**: Axiomatized greatest prime factor function.\n\nThe greatest prime factor $P(n)$ is axiomatized rather than computed from `Nat.primeFactors` for simplicity. In Mathlib, one could define $P(n) = \\max(n.\\text{primeFactors})$, but axiomatization avoids decidability complications with `Finset.sup`.",
-    "mathContext": "The greatest prime factor $P(n) = \\max\\{p \\in \\mathbb{P} : p \\mid n\\}$ is a fundamental arithmetic function studied since Ramanujan's work on highly composite numbers (1915).",
-    "significance": "key",
-    "relatedConcepts": [
-      "prime factorization",
-      "arithmetic functions",
-      "Ramanujan's work on highly composite numbers"
-    ],
-    "prerequisites": [
-      "prime numbers",
-      "divisibility"
-    ]
-  },
-  {
     "id": "ann-648-gpf-def",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 60,
-      "endLine": 62
+      "startLine": 51,
+      "endLine": 58
     },
     "type": "definition",
     "title": "Greatest Prime Factor Function",
-    "content": "**gpf n**: Defines $P(n)$ as the greatest prime factor of $n$.\n\nReturns 0 for $n \\le 1$ (convention), otherwise delegates to the axiomatized `gpfAx`. The convention $P(0) = P(1) = 0$ is standard in analytic number theory, ensuring $P(n) > 0$ iff $n > 1$.",
+    "content": "**gpf n**: Defines $P(n)$ as the greatest prime factor of $n$.\n\nComputed directly from Mathlib as the last element of `n.primeFactorsList` (which is sorted ascending): `gpf n = n.primeFactorsList.getLast?.getD 0`. Returns 0 for $n \\le 1$ (the empty-list default). The convention $P(0) = P(1) = 0$ is standard in analytic number theory, ensuring $P(n) > 0$ iff $n > 1$.",
     "mathContext": "$P(n) = \\begin{cases} 0 & \\text{if } n \\le 1 \\\\ \\max\\{p \\text{ prime} : p \\mid n\\} & \\text{if } n > 1 \\end{cases}$",
     "significance": "key",
     "relatedConcepts": [
@@ -69,8 +47,8 @@
     "id": "ann-648-gpf-base-cases",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 64,
-      "endLine": 68
+      "startLine": 60,
+      "endLine": 64
     },
     "type": "concept",
     "title": "GPF Base Cases",
@@ -89,12 +67,12 @@
     "id": "ann-648-gpf-properties",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 70,
-      "endLine": 80
+      "startLine": 108,
+      "endLine": 124
     },
     "type": "concept",
     "title": "Fundamental GPF Properties",
-    "content": "**Four axiomatized properties of $P(n)$:**\n\n1. **gpf_prime**: $P(p) = p$ for prime $p$ — a prime's only prime factor is itself\n2. **gpf_dvd**: $P(n) \\mid n$ for $n > 1$ — the GPF divides the number\n3. **gpf_is_prime**: $P(n)$ is prime for $n > 1$ — GPF is always prime\n4. **gpf_max**: If $p$ is prime and $p \\mid n$, then $p \\le P(n)$ — GPF is maximal\n\nThese four properties completely characterize $P(n)$ for $n > 1$.",
+    "content": "**Four proved properties of $P(n)$** (each derived from Mathlib's `primeFactorsList` API, not axiomatized):\n\n1. **gpf_prime**: $P(p) = p$ for prime $p$ — a prime's only prime factor is itself\n2. **gpf_dvd**: $P(n) \\mid n$ for $n > 1$ — the GPF divides the number\n3. **gpf_is_prime**: $P(n)$ is prime for $n > 1$ — GPF is always prime\n4. **gpf_max**: If $p$ is prime and $p \\mid n$, then $p \\le P(n)$ — GPF is maximal\n\nThese four properties completely characterize $P(n)$ for $n > 1$. They rest on the supporting lemmas `gpf_eq_getLast`, `gpf_mem_pfl`, and `sorted_le_getLast` (every element of an ascending-sorted list is ≤ its last).",
     "mathContext": "These properties encode: $P(n) \\in \\mathbb{P}$, $P(n) \\mid n$, and $\\forall p \\in \\mathbb{P},\\, p \\mid n \\Rightarrow p \\le P(n)$. Together they define $P(n)$ uniquely as $\\max(\\text{supp}(n))$ where $\\text{supp}(n)$ is the prime support of $n$.",
     "significance": "key",
     "relatedConcepts": [
@@ -112,8 +90,8 @@
     "id": "ann-648-examples",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 86,
-      "endLine": 117
+      "startLine": 130,
+      "endLine": 161
     },
     "type": "concept",
     "title": "Concrete GPF Values",
@@ -134,8 +112,8 @@
     "id": "ann-648-descending-def",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 130,
-      "endLine": 132
+      "startLine": 167,
+      "endLine": 168
     },
     "type": "definition",
     "title": "GPF-Descending Sequence",
@@ -157,8 +135,8 @@
     "id": "ann-648-valid-seq",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 138,
-      "endLine": 140
+      "startLine": 170,
+      "endLine": 171
     },
     "type": "definition",
     "title": "Valid GPF Sequence",
@@ -179,8 +157,8 @@
     "id": "ann-648-g-def",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 146,
-      "endLine": 147
+      "startLine": 173,
+      "endLine": 174
     },
     "type": "definition",
     "title": "The Extremal Function g(n)",
@@ -202,8 +180,8 @@
     "id": "ann-648-example-3-4",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 158,
-      "endLine": 161
+      "startLine": 180,
+      "endLine": 181
     },
     "type": "concept",
     "title": "Example: [3, 4] is GPF-Descending",
@@ -224,8 +202,8 @@
     "id": "ann-648-example-7-9-16",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 175,
-      "endLine": 181
+      "startLine": 183,
+      "endLine": 187
     },
     "type": "concept",
     "title": "Example: [7, 9, 16] of Length 3",
@@ -247,7 +225,7 @@
     "proofId": "erdos-648",
     "range": {
       "startLine": 189,
-      "endLine": 198
+      "endLine": 195
     },
     "type": "concept",
     "title": "Example: [7, 10, 27, 64] of Length 4",
@@ -268,12 +246,12 @@
     "id": "ann-648-g-lower-bounds",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 204,
-      "endLine": 218
+      "startLine": 219,
+      "endLine": 254
     },
     "type": "concept",
     "title": "Lower Bounds on g(n)",
-    "content": "**g_ge_one through g_ge_four**: Explicit lower bounds via concrete witness sequences.\n\n- $g(n) \\ge 1$ for $n \\ge 3$: sequence $[2]$\n- $g(n) \\ge 2$ for $n \\ge 5$: sequence $[3, 4]$\n- $g(n) \\ge 3$ for $n \\ge 17$: sequence $[7, 9, 16]$\n- $g(n) \\ge 4$ for $n \\ge 65$: sequence $[7, 10, 27, 64]$\n\nAll four are `sorry`-ed; proving them requires showing the witness sequences are valid.",
+    "content": "**g_ge_one through g_ge_four**: Explicit lower bounds via concrete witness sequences.\n\n- $g(n) \\ge 1$ for $n \\ge 3$: sequence $[2]$\n- $g(n) \\ge 2$ for $n \\ge 5$: sequence $[3, 4]$\n- $g(n) \\ge 3$ for $n \\ge 17$: sequence $[7, 9, 16]$\n- $g(n) \\ge 4$ for $n \\ge 65$: sequence $[7, 10, 27, 64]$\n\nAll four are fully proved (no `sorry`): each applies the helper `g_ge_of_witness` to its explicit witness list, then discharges the strictly-increasing-values and strictly-decreasing-GPF conditions by `omega` together with the concrete `gpf` evaluations.",
     "mathContext": "The thresholds $3, 5, 17, 65$ are the smallest $n$ for each length. For $g(n) \\ge k$, we need $k$ distinct primes $p_1 > \\cdots > p_k$ and representatives $a_1 < \\cdots < a_k < n$ with $P(a_i) = p_i$. The minimum $n$ is $a_k + 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -291,8 +269,8 @@
     "id": "ann-648-smooth",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 230,
-      "endLine": 230
+      "startLine": 260,
+      "endLine": 260
     },
     "type": "definition",
     "title": "Smooth Numbers",
@@ -314,8 +292,8 @@
     "id": "ann-648-smooth-theorems",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 232,
-      "endLine": 240
+      "startLine": 262,
+      "endLine": 282
     },
     "type": "concept",
     "title": "Smoothness of Prime Powers",
@@ -336,8 +314,8 @@
     "id": "ann-648-cambie-lower",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 252,
-      "endLine": 254
+      "startLine": 288,
+      "endLine": 290
     },
     "type": "concept",
     "title": "Cambie's Lower Bound",
@@ -360,8 +338,8 @@
     "id": "ann-648-cambie-upper",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 260,
-      "endLine": 262
+      "startLine": 292,
+      "endLine": 294
     },
     "type": "concept",
     "title": "Cambie's Upper Bound",
@@ -385,8 +363,8 @@
     "id": "ann-648-cambie-main",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 268,
-      "endLine": 278
+      "startLine": 296,
+      "endLine": 306
     },
     "type": "concept",
     "title": "Cambie's Main Theorem",
@@ -407,8 +385,8 @@
     "id": "ann-648-asymptotic-conjecture",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 291,
-      "endLine": 294
+      "startLine": 312,
+      "endLine": 315
     },
     "type": "concept",
     "title": "Cambie's Asymptotic Conjecture",
@@ -430,8 +408,8 @@
     "id": "ann-648-constant-bounds",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 296,
-      "endLine": 309
+      "startLine": 317,
+      "endLine": 326
     },
     "type": "definition",
     "title": "The Constant Question",
@@ -453,8 +431,8 @@
     "id": "ann-648-construction",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 315,
-      "endLine": 334
+      "startLine": 328,
+      "endLine": 333
     },
     "type": "concept",
     "title": "Construction Strategy",
@@ -475,8 +453,8 @@
     "id": "ann-648-related-functions",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 344,
-      "endLine": 352
+      "startLine": 335,
+      "endLine": 346
     },
     "type": "definition",
     "title": "Smallest Prime Factor and Duality",
@@ -497,8 +475,8 @@
     "id": "ann-648-summary",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 370,
-      "endLine": 376
+      "startLine": 352,
+      "endLine": 357
     },
     "type": "concept",
     "title": "Summary Theorem",
@@ -518,8 +496,8 @@
     "id": "ann-648-main",
     "proofId": "erdos-648",
     "range": {
-      "startLine": 378,
-      "endLine": 378
+      "startLine": 359,
+      "endLine": 364
     },
     "type": "concept",
     "title": "Main Result: Erdős #648 Solved",

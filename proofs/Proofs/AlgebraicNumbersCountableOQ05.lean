@@ -87,7 +87,7 @@ lemma cantorHeight_coeff_le {p : Polynomial ℤ} {h : ℕ} (hp : cantorHeight p 
   by_cases hi : i ≤ p.natDegree
   · calc (p.coeff i).natAbs
         ≤ (Finset.range (p.natDegree + 1)).sum (fun j => (p.coeff j).natAbs) :=
-          Finset.single_le_sum (fun j _ => Nat.zero_le _) _
+          Finset.single_le_sum (f := fun j => (p.coeff j).natAbs) (fun j _ => Nat.zero_le _)
             (Finset.mem_range.mpr (Nat.lt_succ_of_le hi))
       _ ≤ h := cantorHeight_sum_le hp
   · have : p.coeff i = 0 := Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
@@ -95,17 +95,20 @@ lemma cantorHeight_coeff_le {p : Polynomial ℤ} {h : ℕ} (hp : cantorHeight p 
 
 /-- Every nonzero polynomial has positive Cantor height. -/
 lemma cantorHeight_pos_of_ne_zero {p : Polynomial ℤ} (hp : p ≠ 0) : 0 < cantorHeight p := by
-  simp only [cantorHeight]
-  by_contra h
-  push_neg at h
-  have hdeg : p.natDegree = 0 := by omega
-  have hsum : (Finset.range (p.natDegree + 1)).sum (fun i => (p.coeff i).natAbs) = 0 := by omega
-  simp [Finset.sum_eq_zero_iff] at hsum
-  have hc0 : p.coeff 0 = 0 := Int.natAbs_eq_zero.mp (hsum 0 (by simp [hdeg]))
-  exact hp (Polynomial.ext fun n => by
-    cases n with
-    | zero => exact hc0
-    | succ n => exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega))
+  rcases Nat.eq_zero_or_pos (cantorHeight p) with h0 | hpos
+  · exfalso
+    simp only [cantorHeight] at h0
+    have hdeg : p.natDegree = 0 := by omega
+    have hsum : (Finset.range (p.natDegree + 1)).sum (fun i => (p.coeff i).natAbs) = 0 := by omega
+    apply hp
+    ext n
+    rw [Polynomial.coeff_zero]
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · have h00 : (p.coeff 0).natAbs = 0 :=
+        (Finset.sum_eq_zero_iff).mp hsum 0 (Finset.mem_range.mpr (by omega))
+      exact Int.natAbs_eq_zero.mp h00
+    · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
+  · exact hpos
 
 -- ============================================================================
 -- § 3. Finiteness of Polynomials of Bounded Height (Key Theorem)
@@ -114,18 +117,11 @@ lemma cantorHeight_pos_of_ne_zero {p : Polynomial ℤ} (hp : p ≠ 0) : 0 < cant
 /-- Auxiliary: a polynomial of degree ≤ h equals the finite sum of its terms through h. -/
 private lemma poly_eq_fin_sum (p : Polynomial ℤ) (h : ℕ) (hdeg : p.natDegree ≤ h) :
     p = ∑ i : Fin (h + 1), Polynomial.C (p.coeff i.val) * Polynomial.X ^ i.val := by
-  ext n
-  simp only [Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow,
-             mul_ite, mul_one, mul_zero]
-  -- ∑ i : Fin(h+1), if n = ↑i then p.coeff ↑i else 0
-  -- = ∑ i in range(h+1), if n = i then p.coeff i else 0  [Fin.sum_univ_eq_sum_range]
-  -- = if n ∈ range(h+1) then p.coeff n else 0             [sum_ite_eq']
-  -- = if n < h+1 then p.coeff n else 0                    [mem_range]
-  rw [Fin.sum_univ_eq_sum_range (fun i => if n = i then p.coeff i else 0),
-      Finset.sum_ite_eq', Finset.mem_range]
-  split_ifs with h_lt
-  · rfl
-  · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
+  -- `p` equals the sum of its terms up to degree `h` (since natDegree p < h+1),
+  -- and that range-sum equals the `Fin (h+1)` sum.
+  rw [Fin.sum_univ_eq_sum_range (fun i => Polynomial.C (p.coeff i) * Polynomial.X ^ i) (h + 1)]
+  simp only [Polynomial.C_mul_X_pow_eq_monomial]
+  exact p.as_sum_range' (h + 1) (by omega)
 
 /-- **Key Theorem**: For each h, only finitely many integer polynomials have Cantor height ≤ h.
 
@@ -145,11 +141,15 @@ theorem finite_polys_of_height (h : ℕ) :
   intro p hp
   simp only [Set.mem_range]
   -- Witness: the coefficient tuple f i = p.coeff i (which lies in [-h, h])
-  refine ⟨fun i => ⟨p.coeff i.val,
-    Set.mem_Icc.mpr (Int.natAbs_le.mp (cantorHeight_coeff_le hp i.val))⟩, ?_⟩
-  -- p equals the sum ∑ i, C(p.coeff i) * X^i (since natDegree ≤ h)
-  simp only [Subtype.coe_mk]
-  exact poly_eq_fin_sum p h (cantorHeight_degree_le hp)
+  refine ⟨fun i => ⟨p.coeff i.val, ?_⟩, ?_⟩
+  · -- each coefficient lies in the interval [-h, h]
+    rw [Set.mem_Icc]
+    have hb : (p.coeff i.val).natAbs ≤ h := cantorHeight_coeff_le hp i.val
+    have hcast : |p.coeff i.val| ≤ (h : ℤ) := by
+      rw [Int.abs_eq_natAbs]; exact_mod_cast hb
+    exact abs_le.mp hcast
+  · -- p equals the sum ∑ i, C(p.coeff i) * X^i (since natDegree ≤ h)
+    exact (poly_eq_fin_sum p h (cantorHeight_degree_le hp)).symm
 
 -- ============================================================================
 -- § 4. Finite Real Roots per Polynomial
@@ -160,10 +160,13 @@ theorem finite_polys_of_height (h : ℕ) :
 A nonzero polynomial of degree n has at most n roots (fundamental theorem of algebra). -/
 theorem finite_real_roots (p : Polynomial ℤ) (hp : p ≠ 0) :
     Set.Finite {x : ℝ | Polynomial.aeval x p = 0} := by
-  have hfin := Polynomial.setOf_isRoot_finite (p.map (algebraMap ℤ ℝ)) (Polynomial.map_ne_zero hp)
+  have hmap : p.map (algebraMap ℤ ℝ) ≠ 0 :=
+    (Polynomial.map_ne_zero_iff (algebraMap ℤ ℝ).injective_int).mpr hp
+  have hfin := Polynomial.finite_setOf_isRoot hmap
   convert hfin using 1
   ext x
-  simp [Polynomial.IsRoot, Polynomial.aeval_def]
+  simp only [Set.mem_setOf_eq, Polynomial.IsRoot.def, Polynomial.aeval_def,
+             Polynomial.eval_map]
 
 -- ============================================================================
 -- § 5. Height-Stratified Algebraic Reals
@@ -180,14 +183,14 @@ This is the key finiteness result: not merely countable, but actually finite.
 The index set is finite (by `finite_polys_of_height`) and each root set is finite. -/
 theorem finite_algebraicRealsOfHeight (h : ℕ) :
     Set.Finite (algebraicRealsOfHeight h) := by
-  apply Set.Finite.iUnion
-  · -- Index type {q // q ≠ 0 ∧ cantorHeight q ≤ h} is finite
-    haveI : Finite {q : Polynomial ℤ // q ≠ 0 ∧ cantorHeight q ≤ h} :=
-      Set.finite_coe_iff.mpr ((finite_polys_of_height h).subset fun p ⟨_, hp⟩ => hp)
-    infer_instance
-  · -- Each root set is finite
-    intro ⟨p, hp_ne, _⟩
-    exact finite_real_roots p hp_ne
+  -- Index type {q // q ≠ 0 ∧ cantorHeight q ≤ h} is finite
+  haveI : Finite {q : Polynomial ℤ // q ≠ 0 ∧ cantorHeight q ≤ h} :=
+    Set.finite_coe_iff.mpr ((finite_polys_of_height h).subset fun q hq => hq.2)
+  -- A finite union of finite root sets is finite
+  unfold algebraicRealsOfHeight
+  apply Set.finite_iUnion
+  rintro ⟨p, hp_ne, _⟩
+  exact finite_real_roots p hp_ne
 
 -- ============================================================================
 -- § 6. Cantor's Height Decomposition Theorem
@@ -205,20 +208,24 @@ giving a nonzero rational polynomial with the same zeros at x : ℝ. -/
 theorem algebraic_reals_eq_iUnion_height :
     {x : ℝ | IsAlgebraic ℚ x} = ⋃ h : ℕ, algebraicRealsOfHeight h := by
   ext x
-  simp only [Set.mem_setOf_eq, Set.mem_iUnion, algebraicRealsOfHeight, Set.mem_iUnion,
-             Subtype.exists, exists_and_left]
+  rw [Set.mem_setOf_eq, Set.mem_iUnion]
   constructor
   · rintro ⟨q, hq_ne, hq_eval⟩
     -- Clear denominators: rational polynomial → integer polynomial with same roots
-    set p := IsLocalization.integerNormalization (nonZeroDivisors ℤ) q
+    set p := IsLocalization.integerNormalization (nonZeroDivisors ℤ) q with hp_def
     have hp_ne : p ≠ 0 :=
       mt IsFractionRing.integerNormalization_eq_zero_iff.mp hq_ne
     have hp_eval : Polynomial.aeval x p = 0 :=
       IsLocalization.integerNormalization_aeval_eq_zero (nonZeroDivisors ℤ) q hq_eval
-    exact ⟨cantorHeight p, p, hp_ne, le_refl _, hp_eval⟩
-  · rintro ⟨_, p, hp_ne, _, hp_eval⟩
+    refine ⟨cantorHeight p, ?_⟩
+    simp only [algebraicRealsOfHeight, Set.mem_iUnion, Set.mem_setOf_eq]
+    exact ⟨⟨p, hp_ne, le_refl _⟩, hp_eval⟩
+  · rintro ⟨n, hn⟩
+    simp only [algebraicRealsOfHeight, Set.mem_iUnion, Set.mem_setOf_eq] at hn
+    obtain ⟨⟨p, hp_ne, _⟩, hp_eval⟩ := hn
     -- Map integer polynomial to ℚ[X]: still nonzero, and x is still a root
-    refine ⟨p.map (algebraMap ℤ ℚ), Polynomial.map_ne_zero hp_ne, ?_⟩
+    refine ⟨p.map (algebraMap ℤ ℚ),
+      (Polynomial.map_ne_zero_iff (algebraMap ℤ ℚ).injective_int).mpr hp_ne, ?_⟩
     -- aeval x (p.map (algebraMap ℤ ℚ)) = aeval x p (via scalar tower ℤ → ℚ → ℝ)
     rwa [Polynomial.aeval_map_algebraMap]
 
@@ -248,7 +255,9 @@ theorem algebraic_reals_countable_via_height :
 /-- The height strata form an increasing filtration. -/
 theorem algebraicRealsOfHeight_mono (h : ℕ) :
     algebraicRealsOfHeight h ⊆ algebraicRealsOfHeight (h + 1) := by
-  intro x ⟨⟨p, hp_ne, hp_height⟩, hroot⟩
+  intro x hx
+  simp only [algebraicRealsOfHeight, Set.mem_iUnion, Set.mem_setOf_eq] at hx ⊢
+  obtain ⟨⟨p, hp_ne, hp_height⟩, hroot⟩ := hx
   exact ⟨⟨p, hp_ne, Nat.le_succ_of_le hp_height⟩, hroot⟩
 
 /-- Algebraic reals of bounded height have the same cardinality property. -/

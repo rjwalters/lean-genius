@@ -1,0 +1,158 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02",
+  "title": "Thomae's Function and Baire Category: the continuity set is a dense Gδ",
+  "slug": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02",
+  "description": "The Baire-category dual of the measure-theoretic smallness of Thomae's discontinuity set. After recovering the sharp characterization that Thomae is continuous exactly at the irrationals (proving discontinuity at every rational via the irrational sequence r + √2/(n+1) → r, complementing the green base module's continuity-at-irrationals), the entry shows: the continuity set equals the irrationals — a dense Gδ, hence comeagre (residual); the discontinuity set equals ℚ — meagre, and not a Gδ. The headline is the classical impossibility theorem, obtained from Baire: since the continuity set of ANY function is a Gδ (IsGδ.setOf_continuousAt) but ℚ is not a Gδ, no function ℝ → ℝ can be continuous exactly at the rationals. Thomae realizes the irrationals (a Gδ) as a continuity set precisely because that is permitted; the rational mirror is forbidden by topology. 15 theorems, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "namespace": "LebesgueMeasureOQ01OQ01OQ02OQ02",
+    "lineCount": 216,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-21",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02.lean",
+    "tags": [
+      "measure-theory",
+      "baire-category",
+      "thomae-function",
+      "popcorn-function",
+      "gdelta",
+      "meagre",
+      "comeagre",
+      "residual",
+      "continuity",
+      "real-analysis",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Fully kernel-checked (Docker build, 7744 jobs, Lean v4.26.0). Uses only the ordinary foundational axioms (propext, Classical.choice, Quot.sound) via Mathlib and the parent's classical `thomae` definition; no `axiom` declarations, no structure-encoded assumptions, no `native_decide`. Builds on the green merged module `LebesgueMeasureOQ01OQ01OQ01` (lebesgue-measure-oq-01-oq-01-oq-01), which re-derived Thomae's continuity at the irrationals self-contained — chosen over the sibling continuity module `LebesgueMeasureOQ01OQ01OQ02`, which has bit-rotted against the current Mathlib pin (deprecated `div_lt_iff`, changed `Set.Finite.ofFinset`/`Finset.induction_on` signatures). The discontinuity-at-rationals direction is re-proved here from scratch so the sharp continuity characterization is available without depending on the rotted module.",
+    "lineCount": 216,
+    "theoremCount": 15,
+    "definitionCount": 0,
+    "originalContributions": [
+      "no_continuousAt_setOf_eq_rat: no function f : ℝ → ℝ is continuous exactly at the rationals — the headline impossibility theorem, from 'continuity sets are Gδ' (IsGδ.setOf_continuousAt) plus 'ℚ is not a Gδ'",
+      "not_isGδ_range_rat: ℚ is not a Gδ subset of ℝ — a dense Gδ would be non-meagre by Baire, but range ℚ is countable hence meagre",
+      "thomae_continuitySet_residual: the set of continuity points of Thomae is comeagre (residual) — a dense Gδ in the Baire space ℝ",
+      "thomae_discontinuitySet_isMeagre: the discontinuity set of Thomae (= ℚ) is meagre, the Baire-category dual of its being Lebesgue-null",
+      "thomae_discontinuitySet_not_isGδ: the discontinuity set is not a Gδ, the sharp asymmetry with the continuity set",
+      "thomae_realizes_irrational_continuitySet: Thomae realizes the irrationals as a continuity set, possible exactly because the irrationals form a Gδ",
+      "thomae_discontinuous_at_rat: discontinuity at every rational via the irrational sequence r + √2/(n+1) → r (re-derived to complete the sharp characterization on the green base module)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Thomae's function (the 'popcorn' function) is the textbook example of a function continuous at every irrational and discontinuous at every rational. The measure-theoretic story — its discontinuity set ℚ is Lebesgue-null, hence Thomae is Riemann integrable — was treated in the parent lineage (lebesgue-measure-oq-01-oq-01-oq-01 and ...-oq-02-oq-01). 'ℚ is small' has a second, independent meaning: in the sense of Baire category, ℚ is meagre (first category) and the irrationals are comeagre. This entry records that topological side, and connects it to the classical impossibility theorem — there is no function continuous exactly on ℚ — which explains why Thomae's irrational-continuity has no rational mirror.",
+    "problemStatement": "Describe the Baire-category structure of Thomae's continuity and discontinuity sets, and determine which sets can arise as the continuity set of a function ℝ → ℝ.",
+    "text": "Thomae is continuous exactly on the irrationals, a dense Gδ set, hence its continuity set is comeagre; its discontinuity set is ℚ, which is meagre and not a Gδ. The continuity set of any function is a Gδ (a general theorem), so since ℚ is not a Gδ, no function can be continuous exactly at the rationals. The irrationals, being a Gδ, can serve as a continuity set — and Thomae exhibits this.",
+    "proofStrategy": "First the sharp characterization. The green base module supplies thomae, thomae_irrational, thomae_rat, and thomae_continuous_at_irrational (continuity at every irrational). The complementary direction, thomae_discontinuous_at_rat, is proved here: the sequence yₙ = r + √2/(n+1) consists of irrationals (irrational_sqrt_two.div_natCast then irrational_add_ratCast_iff) and tends to r; thomae yₙ = 0 for all n while thomae r = 1/r.den > 0, so by uniqueness of limits Thomae is discontinuous at r. Combining gives thomae_continuous_iff : ContinuousAt thomae x ↔ Irrational x. Then: the continuity set equals {x | Irrational x}, which is Gδ (IsGδ.setOf_irrational), dense (dense_irrational), and therefore residual (residual_of_dense_Gδ). The discontinuity set equals range ℚ (¬ Irrational x ↔ x ∈ range ℚ by not_not), which is meagre (countable_isMeagre, an elementary Baire-category lemma reproved here: countable = countable union of nowhere-dense singletons in a perfect T1 space). Finally, ℚ is not a Gδ: a dense Gδ is non-meagre (not_isMeagre_of_isGδ_of_dense) but range ℚ is meagre; and the continuity set of any f is Gδ (IsGδ.setOf_continuousAt), so no f has continuity set exactly range ℚ.",
+    "keyInsights": [
+      "Two senses of 'ℚ is small' coincide on Thomae but are logically independent. Lebesgue-null (measure) and meagre (category) are different notions; here both hold, and this entry supplies the category half complementing the measure half already in the gallery.",
+      "The continuity set of any function is a Gδ. This single general fact (IsGδ.setOf_continuousAt) is what makes the impossibility theorem possible: the question 'which sets are continuity sets?' is answered, on one side, by 'only Gδ sets'.",
+      "ℚ is not a Gδ — a Baire-category fact, not a measure fact. If range ℚ were Gδ it would be a dense Gδ, hence non-meagre; but countable sets in a perfect space are meagre. This is the crux that forbids rational continuity sets.",
+      "Thomae is not a lucky accident but a realization. The irrationals ARE a Gδ, so they can be a continuity set; Thomae demonstrates the realization. The 'mirror' function (continuous exactly on ℚ) cannot exist for purely topological reasons.",
+      "The sharp characterization needed the rational direction, re-derived to dodge bit-rot. The green base module only had continuity-at-irrationals and the inclusion disc ⊆ ℚ; the exact equality required discontinuity-at-rationals, supplied here via a concrete irrational sequence rather than by importing the bit-rotted sibling continuity module."
+    ],
+    "prerequisites": [
+      "Thomae's function and its continuity at the irrationals (LebesgueMeasureOQ01OQ01OQ01)",
+      "Gδ sets and IsGδ.setOf_continuousAt (continuity points are a Gδ) / IsGδ.setOf_irrational",
+      "Baire category: meagre sets, residual filter, not_isMeagre_of_isGδ_of_dense, residual_of_dense_Gδ",
+      "Irrationality of √2 and closure of irrationality under rational shift / nat division",
+      "Uniqueness of limits for sequences (tendsto_nhds_unique)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Thomae's continuity set is a dense Gδ (comeagre) equal to the irrationals; its discontinuity set is ℚ, meagre and not a Gδ. Because continuity sets are always Gδ and ℚ is not, no function is continuous exactly at the rationals — while Thomae realizes the irrationals (a Gδ) as a continuity set. 15 theorems, 0 axioms, 216 lines, fully kernel-checked.",
+    "implications": "Completes the 'ℚ is small' picture for Thomae by adding the Baire-category half to the measure-theoretic half already in the gallery, and frames the classical impossibility theorem (no continuity set equal to ℚ) as the structural reason Thomae's irrational-continuity cannot be mirrored. Demonstrates the idiom for transporting Gδ/dense/residual/meagre structure across a continuity characterization and reusing Mathlib's Baire machinery.",
+    "openQuestions": [
+      "Characterize precisely which subsets of ℝ arise as continuity sets of some function — the converse direction (every Gδ is the continuity set of some function), of which Thomae is the irrationals instance.",
+      "State the analogous category/measure dichotomy for the Dirichlet function 1_ℚ (nowhere continuous: continuity set empty, discontinuity set all of ℝ), contrasting with Thomae."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Docstring, Imports, and Strategy",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "States the Baire-category dual and the impossibility theorem. Imports Mathlib and the green base module LebesgueMeasureOQ01OQ01OQ01 (not the bit-rotted sibling continuity module); opens Set, Filter, Topology, Real and the base namespace."
+    },
+    {
+      "id": "sharp-characterization",
+      "title": "The Sharp Continuity Characterization",
+      "startLine": 60,
+      "endLine": 109,
+      "summary": "thomae_discontinuous_at_rat: discontinuity at every rational via yₙ = r + √2/(n+1) → r (irrationality from irrational_sqrt_two.div_natCast and irrational_add_ratCast_iff; uniqueness of limits forces thomae r = 0, contradicting 1/r.den > 0). thomae_continuous_iff assembles ContinuousAt thomae x ↔ Irrational x."
+    },
+    {
+      "id": "meagre-infra",
+      "title": "Meagreness of Countable Sets",
+      "startLine": 111,
+      "endLine": 139,
+      "summary": "Self-contained Baire-category infrastructure: isMeagre_of_isNowhereDense, isNowhereDense_singleton, and countable_isMeagre (a countable set in a perfect T1 space is a countable union of nowhere-dense singletons)."
+    },
+    {
+      "id": "continuity-set",
+      "title": "The Continuity Set is a Dense Gδ",
+      "startLine": 141,
+      "endLine": 165,
+      "summary": "thomae_continuitySet_eq_irrational (= irrationals), thomae_continuitySet_isGδ, thomae_continuitySet_dense, and thomae_continuitySet_residual (comeagre, via residual_of_dense_Gδ)."
+    },
+    {
+      "id": "discontinuity-set",
+      "title": "The Discontinuity Set is ℚ and Meagre",
+      "startLine": 167,
+      "endLine": 182,
+      "summary": "thomae_discontinuitySet_eq_rat (= range ℚ, using not_not on the definition of Irrational) and thomae_discontinuitySet_isMeagre (countable_isMeagre)."
+    },
+    {
+      "id": "impossibility",
+      "title": "ℚ is Not a Gδ; No Rational Continuity Set",
+      "startLine": 184,
+      "endLine": 216,
+      "summary": "not_isGδ_range_rat (Baire: dense Gδ is non-meagre, but ℚ is meagre), thomae_discontinuitySet_not_isGδ, the headline no_continuousAt_setOf_eq_rat (continuity sets are Gδ, ℚ is not), and thomae_realizes_irrational_continuitySet."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-01",
+      "relationship": "depends-on",
+      "description": "Supplies thomae, thomae_irrational, thomae_rat, and thomae_continuous_at_irrational (continuity at the irrationals), the green base this entry builds on. This entry adds the complementary discontinuity-at-rationals direction."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02",
+      "relationship": "parent-problem",
+      "description": "The continuity/discontinuity classification of Thomae. This entry is the Baire-category companion to that classification; it re-derives the sharp characterization independently because that sibling module has bit-rotted against the current Mathlib pin."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Riemann integrability of Thomae (integral 0) via the measure-theoretic a.e.-zero route; this entry provides the parallel Baire-category structure of the same continuity/discontinuity sets."
+    }
+  ],
+  "references": [
+    {
+      "title": "Thomae's function",
+      "url": "https://en.wikipedia.org/wiki/Thomae%27s_function",
+      "description": "The popcorn function: continuous exactly at the irrationals, discontinuous exactly at the rationals."
+    },
+    {
+      "title": "Gδ set — continuity sets",
+      "url": "https://en.wikipedia.org/wiki/G%CE%B4_set",
+      "description": "The set of continuity points of any function is a Gδ; ℚ is not a Gδ, so no function is continuous exactly at the rationals."
+    },
+    {
+      "title": "Meagre set and the Baire category theorem",
+      "url": "https://en.wikipedia.org/wiki/Meagre_set",
+      "description": "First-category (meagre) sets and the Baire category theorem, the topological notion of smallness dual to Lebesgue-null."
+    }
+  ]
+}

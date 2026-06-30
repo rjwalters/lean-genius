@@ -34,7 +34,7 @@
     "title": "Perpendicular Distance and the One Irrational Fact",
     "content": "`distToLine a b c x y` is the perpendicular distance from the point (x,y) to the line a·X + b·Y + c = 0, defined by the standard formula |a·x + b·y + c| / √(a²+b²). It is marked `noncomputable` because it uses `Real.sqrt`.\n\nThe private lemma `sqrt3_sq` records (√3)² = 3 via `Real.sq_sqrt`. This is the only fact about irrational numbers needed anywhere in the proof: every normalization constant that appears (√(0²+1²) = 1 and √((√3)²+1²) = √4 = 2) reduces to a rational once (√3)² = 3 is known.",
     "mathContext": "$\\operatorname{distToLine}(a,b,c,x,y) = \\dfrac{|a x + b y + c|}{\\sqrt{a^2+b^2}}$, and $(\\sqrt3)^2 = 3$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Real.sqrt",
       "Real.sq_sqrt",

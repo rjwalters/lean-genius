@@ -1,0 +1,165 @@
+{
+  "id": "basel-problem-oq-08-oq-02",
+  "title": "ζ(6) = π⁶/945: the Degree-6 Basel Value and the π-free Ratio ζ(6)/ζ(2)³ = 8/35",
+  "slug": "basel-problem-oq-08-oq-02",
+  "description": "The value ζ(6) = ∑' n, 1/n⁶ = π⁶/945, the next even-argument zeta value after ζ(2) = π²/6 and ζ(4) = π⁴/90, obtained by instantiating Mathlib's even-argument zeta formula at k = 3. Because Mathlib provides no bernoulli'_six, the sixth Bernoulli number B₆ = 1/42 is computed from the defining recurrence. Includes the riemannZeta 6 value and Euler's dimensionless ratio ζ(6)/ζ(2)³ = 8/35.",
+  "meta": {
+    "author": "Euler (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function",
+    "date": "1740",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "basel-problem",
+      "riemann-zeta",
+      "bernoulli-numbers",
+      "euler",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BaselProblemOQ08OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_zeta_nat",
+        "description": "HasSum (fun n => 1/n^(2k)) ((-1)^(k+1)·2^(2k-1)·π^(2k)·B_{2k}/(2k)!) — the general even-argument zeta formula",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "riemannZeta_two_mul_nat",
+        "description": "riemannZeta (2k) = (-1)^(k+1)·2^(2k-1)·π^(2k)·B_{2k}/(2k)! — the same formula for the analytically continued zeta",
+        "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
+      },
+      {
+        "theorem": "bernoulli'_eq_zero_of_odd",
+        "description": "Odd Bernoulli numbers greater than 1 vanish — used to compute B₆ via the recurrence",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "HasSum (fun n => 1/n²) (π²/6) — the classical Basel value, used in the ratio",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      }
+    ],
+    "originalContributions": [
+      "bernoulli_six: the sixth Bernoulli number B₆ = 1/42, computed from the bernoulli'_def recurrence (Mathlib packages only bernoulli'_two and bernoulli'_four)",
+      "hasSum_one_div_nat_pow_six: HasSum (fun n => 1/n⁶) (π⁶/945), the k = 3 instance of the even-zeta formula",
+      "tsum_one_div_nat_pow_six: the headline tsum value ∑' n, 1/n⁶ = π⁶/945",
+      "riemannZeta_six_eq: the riemannZeta 6 = π⁶/945 value over ℂ via riemannZeta_two_mul_nat",
+      "tsum_six_div_tsum_two_cube: Euler's dimensionless ratio ζ(6)/ζ(2)³ = 8/35, π cancelling between the even-zeta values"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 76,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euler solved the Basel problem ζ(2) = ∑ 1/n² = π²/6 in 1735 and by 1740 had the full even family ζ(2k) = (−1)^{k+1} B_{2k} (2π)^{2k} / (2(2k)!), where B_{2k} are the Bernoulli numbers. At k = 3 this gives ζ(6) = π⁶/945, with B₆ = 1/42. Each even-zeta value is a rational multiple of a power of π and hence transcendental; the odd values ζ(2k+1) remain far less understood (ζ(3) was proved irrational by Apéry in 1978, but ζ(5), ζ(7), … are still open). The dimensionless ratio ζ(6)/ζ(2)³ = 8/35 is the π-free shadow of the formula at degree 6, depending only on the Bernoulli numbers B₂ = 1/6 and B₆ = 1/42.",
+    "problemStatement": "**Open Question (basel-problem-oq-08-oq-02)**: Formalize ∑' n, 1/n⁶ = π⁶/945 — the degree-6 even-zeta value requested by the parent ζ(4) entry — by instantiating Mathlib's even-argument zeta formula at k = 3, together with the ratio chain ζ(2k)/π^{2k}.\n\n**Result**: tsum_one_div_nat_pow_six proves ∑' n, 1/n⁶ = π⁶/945. The companion riemannZeta_six_eq gives riemannZeta 6 = π⁶/945, and tsum_six_div_tsum_two_cube derives Euler's dimensionless ratio ζ(6)/ζ(2)³ = 8/35.",
+    "text": "The value ζ(6) = ∑' n, 1/n⁶ = π⁶/945, the degree-6 analogue of the Basel problem, with the riemannZeta 6 value and the π-free Euler ratio ζ(6)/ζ(2)³ = 8/35.",
+    "proofStrategy": "**Proof Strategy: compute B₆, then specialise the even-zeta formula.**\n\n1. Mathlib packages `bernoulli'_two` (= 1/6) and `bernoulli'_four` (= −1/30) but no `bernoulli'_six`. We compute `bernoulli 6 = 1/42` from the defining recurrence `bernoulli'_def`, expanding the range-6 sum and using that `bernoulli' 5 = 0` (an odd index > 1, via `bernoulli'_eq_zero_of_odd`) together with the explicit binomial coefficients C(6,k).\n2. `hasSum_zeta_nat` at k = 3 gives `HasSum (fun n => 1/n⁶) ((−1)⁴·2⁵·π⁶·B₆/6!)`. Substituting B₆ = 1/42 and 6! = 720 reduces 2⁵·(1/42)/720 = 32/30240 = 1/945, so the sum is π⁶/945; `.tsum_eq` gives the tsum value.\n3. `riemannZeta_two_mul_nat` at k = 3 gives the same value for the analytically-continued zeta at 6.\n4. For the ratio, rewrite ∑ 1/n⁶ = π⁶/945 and ∑ 1/n² = π²/6; the cubed denominator is π⁶/216, and (π⁶/945)/(π⁶/216) = 216/945 = 8/35 after `field_simp` (π ≠ 0) and `ring`.",
+    "keyInsights": [
+      "**Even zeta values are rational multiples of powers of π.** ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!); at k = 3, B₆ = 1/42 yields ζ(6) = π⁶/945.",
+      "**The missing Bernoulli number is the real work.** Mathlib stops its packaged Bernoulli evaluations at B₄; computing B₆ = 1/42 from the recurrence (using that B₅ = 0) is the one step the gallery adds over a pure Mathlib lookup.",
+      "**The ratio ζ(6)/ζ(2)³ is π-free.** Dividing the even-zeta values cancels π entirely, leaving the rational 8/35 — a structural fact about the Bernoulli numbers, not about π. It generalises the parent's ζ(4)/ζ(2)² = 2/5."
+    ],
+    "prerequisites": [
+      "Infinite sums / tsum and HasSum in Mathlib",
+      "The Riemann zeta function and its even-argument values",
+      "Bernoulli numbers and their defining recurrence",
+      "The classical Basel value ζ(2) = π²/6"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring stating the open question and approach, Mathlib import, BaselProblemOQ08OQ02 namespace, and Real/BigOperators opens.",
+      "mathContext": "The degree-6 Basel value ζ(6) = ∑_{n≥1} 1/n⁶ = π⁶/945, the k=3 case of Euler's even-zeta formula."
+    },
+    {
+      "id": "bernoulli-six",
+      "title": "The Sixth Bernoulli Number B₆ = 1/42",
+      "startLine": 31,
+      "endLine": 43,
+      "summary": "bernoulli_six computes B₆ = 1/42 from the defining recurrence bernoulli'_def, using bernoulli'_eq_zero_of_odd for B₅ = 0 and the explicit binomial coefficients C(6,k).",
+      "mathContext": "$B_6 = 1/42$, the first Bernoulli number beyond Mathlib's packaged $B_2, B_4$, computed from $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$."
+    },
+    {
+      "id": "zeta-six",
+      "title": "The Value ζ(6) = π⁶/945",
+      "startLine": 44,
+      "endLine": 65,
+      "summary": "hasSum_one_div_nat_pow_six (HasSum form), tsum_one_div_nat_pow_six (the headline tsum value ∑' n, 1/n⁶ = π⁶/945), and riemannZeta_six_eq (the riemannZeta 6 value over ℂ).",
+      "mathContext": "$\\sum_{n=1}^\\infty 1/n^6 = \\pi^6/945$ and $\\zeta(6) = \\pi^6/945$, from Mathlib's `hasSum_zeta_nat` and `riemannZeta_two_mul_nat` at k = 3."
+    },
+    {
+      "id": "ratio",
+      "title": "Euler's π-free Ratio ζ(6)/ζ(2)³ = 8/35",
+      "startLine": 67,
+      "endLine": 76,
+      "summary": "tsum_six_div_tsum_two_cube divides ζ(6) by ζ(2)³, cancelling π to leave the rational 8/35.",
+      "mathContext": "$\\zeta(6)/\\zeta(2)^3 = (\\pi^6/945)/(\\pi^2/6)^3 = (\\pi^6/945)/(\\pi^6/216) = 216/945 = 8/35$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-08",
+      "relationship": "extends",
+      "description": "The parent entry proves ζ(4) = π⁴/90 and lists 'Formalize ζ(6) = π⁶/945 and the ratio chain ζ(2k)/π^{2k}' as an open question; this entry answers it"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem proves ζ(2) = π²/6; this entry is the degree-6 analogue ζ(6) = π⁶/945, and the ratio theorem combines both even-zeta values"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of ζ(6) = ∑' n, 1/n⁶ = π⁶/945, the degree-6 Basel value, together with the sixth Bernoulli number B₆ = 1/42, the riemannZeta 6 value, and Euler's π-free ratio ζ(6)/ζ(2)³ = 8/35. Directly answers the open question posed by the parent ζ(4) entry.",
+    "implications": "Establishes the next even-zeta value in the gallery after ζ(2) and ζ(4). Computing B₆ from the recurrence shows how to push past Mathlib's packaged Bernoulli evaluations, the template for ζ(8), ζ(10), …. The π-free ratio ζ(6)/ζ(2)³ = 8/35 isolates the Bernoulli-number content of the even-zeta formula, independent of the transcendence of π.",
+    "openQuestions": [
+      "Formalize the general even-zeta formula ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!) as a single Lean statement, removing the need to compute each B_{2k} separately.",
+      "Formalize ζ(8) = π⁸/9450 by computing B₈ = −1/30 from the recurrence."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "BigOperators"
+    ],
+    "namespace": "BaselProblemOQ08OQ02",
+    "lineCount": 76,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/BaselProblemOQ08OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "De summis serierum reciprocarum",
+      "year": "1740",
+      "venue": "Commentarii academiae scientiarum Petropolitanae 7, pp. 123–134",
+      "note": "Derives the even-zeta values ζ(2k) as rational multiples of π^{2k}, including ζ(6) = π⁶/945"
+    },
+    {
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
+      "year": "1979",
+      "venue": "Astérisque 61, pp. 11–13",
+      "note": "Highlights the contrast: odd zeta values are arithmetically hard, while even ones (like ζ(6)) are explicit rational multiples of powers of π"
+    }
+  ],
+  "sorries": 0
+}

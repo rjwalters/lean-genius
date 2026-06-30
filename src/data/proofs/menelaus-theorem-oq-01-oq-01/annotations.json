@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-menOQ0101-overview",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Signed/Unsigned Menelaus and the External-Segment Parity",
+    "content": "Menelaus's theorem is classically stated in two superficially different forms: a SIGNED version (product of signed side ratios = −1) and an UNSIGNED version (product of unsigned ratios = 1, with a side condition fixing the parity of external divisions). This entry, building on the parent's affine formalization, reconciles the two and makes precise the folklore noted by 19th-century projective geometers: a straight transversal must cut an ODD number of a triangle's three sides externally, whereas three concurrent cevians (Ceva, product +1) cut an EVEN number. The sign of the product is exactly the parity of the number of external division points.",
+    "mathContext": "Signed: $\\frac{t}{1-t}\\frac{u}{1-u}\\frac{v}{1-v} = -1$; unsigned: $\\bigl|\\frac{t}{1-t}\\bigr|\\bigl|\\frac{u}{1-u}\\bigr|\\bigl|\\frac{v}{1-v}\\bigr| = 1$; $\\mathrm{sign}(\\text{product}) = (-1)^{\\#\\text{external}}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Menelaus's theorem",
+      "Ceva's theorem",
+      "signed vs unsigned ratios",
+      "external/internal division"
+    ],
+    "prerequisites": [
+      "transversals of a triangle",
+      "signed ratios",
+      "parent Menelaus formalization"
+    ]
+  },
+  {
+    "id": "ann-menOQ0101-signedratios",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 71
+    },
+    "type": "definition",
+    "title": "The three signed side ratios and their product",
+    "content": "The three signed division ratios are isolated as named quantities: rX = t/(1−t), rY = u/(1−u), rZ = v/(1−v), where t, u, v parameterize the division points along the three sides via the parent's MenelausConfig. product_eq proves rX·rY·rZ = menelausProduct definitionally — tying these named ratios to the parent's product expression so the sign and parity analysis can proceed on the factored form.",
+    "mathContext": "$r_X = \\frac{t}{1-t},\\ r_Y = \\frac{u}{1-u},\\ r_Z = \\frac{v}{1-v}$, and $r_X r_Y r_Z = \\mathrm{menelausProduct}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MenelausConfig",
+      "division ratio t/(1−t)",
+      "menelausProduct"
+    ],
+    "prerequisites": [
+      "barycentric division points",
+      "the parent product"
+    ]
+  },
+  {
+    "id": "ann-menOQ0101-signdetect",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Sign of the ratio detects external vs internal division",
+    "content": "The geometric heart: the sign of s/(1−s) is a faithful external/internal-division detector. ratio_neg_iff proves s/(1−s) < 0 ↔ s < 0 ∨ s > 1 (via div_neg_iff) — a negative ratio means the division point lies OUTSIDE its segment (external division). ratio_pos_iff proves 0 < s/(1−s) ↔ 0 < s < 1 (via div_pos_iff) — a positive ratio means the point lies strictly BETWEEN the endpoints (internal division). external_X_iff / external_Y_iff / external_Z_iff specialize these to the three configuration parameters, grounding the sign criterion in the parameter ranges of MenelausConfig.",
+    "mathContext": "$\\frac{s}{1-s} < 0 \\iff s < 0 \\lor s > 1$ (external); $0 < \\frac{s}{1-s} \\iff 0 < s < 1$ (internal).",
+    "significance": "key",
+    "relatedConcepts": [
+      "div_neg_iff / div_pos_iff",
+      "external division",
+      "internal division",
+      "sign analysis"
+    ],
+    "prerequisites": [
+      "sign rules for division",
+      "the division ratio definition"
+    ]
+  },
+  {
+    "id": "ann-menOQ0101-unsigned",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "Reconciliation: signed −1 ⟹ unsigned 1",
+    "content": "unsigned_product_eq_one closes the signed/unsigned gap: when menelausProduct = −1, the unsigned product |rX|·|rY|·|rZ| equals 1. The proof pushes absolute value through the product with abs_mul and evaluates |−1| = 1 — immediate from multiplicativity of |·|. This exhibits the textbook unsigned Menelaus form as simply |signed product| = 1, while making clear the signed statement carries strictly MORE information: the sign, which the parity dichotomy then exploits.",
+    "mathContext": "$|r_X||r_Y||r_Z| = |r_X r_Y r_Z| = |{-1}| = 1$ by $\\mathrm{abs\\_mul}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abs_mul",
+      "multiplicativity of absolute value",
+      "unsigned Menelaus"
+    ],
+    "prerequisites": [
+      "absolute value of products",
+      "the signed criterion"
+    ]
+  },
+  {
+    "id": "ann-menOQ0101-parity",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 179
+    },
+    "type": "insight",
+    "title": "The external-segment parity dichotomy (Menelaus odd / Ceva even)",
+    "content": "The headline parity results follow from the sign rule for products of nonzero reals. external_parity_odd: since the Menelaus product is −1 < 0, an ODD number of the three signed ratios are negative — so the transversal crosses an odd number of sides externally (all three, or exactly one). external_parity_even: the Ceva concurrency value +1 > 0 forces an EVEN number of external points (none, or exactly two). Each ratio is nonzero (the product is ±1 ≠ 0), so each splits into < 0 or > 0 via lt_or_gt_of_ne; across the eight sign patterns the proof either selects the matching parity disjunct or refutes the inconsistent ones via nlinarith with an explicit signed-product witness. This is the quantitative form of the classical Menelaus/Ceva contrast.",
+    "mathContext": "$r_X r_Y r_Z = -1 < 0 \\Rightarrow$ odd # of negative factors; $= +1 > 0 \\Rightarrow$ even #. Eight-case sign enumeration.",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "parity of negative factors",
+      "Menelaus vs Ceva",
+      "lt_or_gt_of_ne / nlinarith",
+      "sign of a product"
+    ],
+    "prerequisites": [
+      "the sign-detection lemmas",
+      "product sign rules",
+      "case enumeration"
+    ]
+  },
+  {
+    "id": "ann-menOQ0101-example",
+    "proofId": "menelaus-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 180,
+      "endLine": 191
+    },
+    "type": "context",
+    "title": "Concrete all-external witness",
+    "content": "example_all_external grounds the general theory in the parent's collinear instance: the triangle (0,0), (1,0), (0,1) with t = u = 2, v = −1/3 realizes the all-three-external case. All three signed ratios are negative (rX = rY = −2, rZ = −1/4), their product is (−2)(−2)(−1/4) = −1 (signed Menelaus), and the unsigned product |−2|·|−2|·|−1/4| = 1. This is the simplest concrete configuration in which a transversal crosses all three sides externally — the 'odd parity = 3' extreme.",
+    "mathContext": "$t=u=2,\\ v=-\\tfrac13$: $r_X=r_Y=-2,\\ r_Z=-\\tfrac14$, product $=-1$, unsigned $=1$ — all three external.",
+    "significance": "context",
+    "relatedConcepts": [
+      "concrete witness",
+      "all-external case",
+      "collinear transversal"
+    ],
+    "prerequisites": [
+      "the parity theorems",
+      "the parent's collinear instance"
+    ]
+  }
+]

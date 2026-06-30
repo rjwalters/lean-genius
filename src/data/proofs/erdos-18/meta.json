@@ -59,14 +59,15 @@
     "originalContributions": [
       "IsPractical definition: m >= 1 and every k < m is sum of distinct divisors",
       "IsRepresentable definition for divisor subset sums",
+      "divisors and divisorSubsetSum helper definitions",
+      "PracticalNumbers set definition",
       "one_practical theorem: 1 is practical (verified)",
       "two_practical theorem: 2 is practical (verified)",
-      "three_not_practical, five_not_practical axioms",
-      "stewart_sierpinski_characterization axiom (simplified)",
       "h(m) function definition for minimum divisors needed",
       "conjecture_part1: h(m) < (log log m)^O(1) for infinitely many m?",
       "conjecture_part2_weak: h(n!) < n^o(1)?",
       "conjecture_part2_strong: h(n!) < (log n)^O(1)?",
+      "practicalCount definition for the density counting function",
       "knownPracticalNumbers: first 17 practical numbers (OEIS A005153)"
     ],
     "axiomCount": 0,
@@ -85,13 +86,13 @@
     "historicalContext": "Practical numbers were introduced by Srinivasan in 1948. The name reflects their 'practical' use: if m is practical, any weight k < m can be measured using denominations 1, d_2, d_3, ... where each d_i divides m. Stewart (1954) and Sierpinski (1955) independently characterized practical numbers via prime factorization: m is practical iff m=1 or m=2^a * p_2^{a_2} * ... * p_k^{a_k} where each prime p_i <= sigma(m/p_i^{a_i})+1.\n\nErdos studied practical numbers extensively, proving their density is 0 and showing h(n!) < n. Vose (1985) improved this for special numbers, showing infinitely many m have h(m) = O(sqrt(log m)). The main conjecture asks whether h(n!) can be subpolynomial in n.",
     "problemStatement": "**Definition:** A positive integer m is **practical** if every integer 1 <= k < m can be expressed as a sum of distinct divisors of m.\n\n**Function h(m):** The minimum number of divisors of m needed so that every k < m is representable.\n\n**Questions:**\n1. Are there infinitely many practical m where h(m) < (log log m)^{O(1)}?\n2. Is h(n!) < n^{o(1)}? (Prize: $250)\n3. Even stronger: is h(n!) < (log n)^{O(1)}?",
     "text": "Is h(n!) < n^o(1), where h(m) is the minimum number of divisors of m needed to represent all integers k < m? A number m is practical if every k < m is a sum of distinct divisors of m. Prize: $250.",
-    "proofStrategy": "We formalize:\n\n1. **Core definitions:** IsPractical, IsRepresentable, h(m), PracticalNumbers\n2. **Small examples:** Prove 1, 2 are practical; axiomatize 4, 6, 12, powers of 2\n3. **Non-examples:** 3 and 5 are not practical\n4. **Characterization:** Stewart-Sierpinski theorem (simplified)\n5. **Bounds:** Erdos's h(n!) < n, Vose's h(m) <= C*sqrt(log m)\n6. **Main conjectures:** Both weak and strong forms\n7. **Related results:** Practical Goldbach, practical twins, density bounds\n8. **Egyptian fractions:** Fibonacci's historical connection",
+    "proofStrategy": "The Lean file formalizes:\n\n1. **Core definitions:** divisors, divisorSubsetSum, IsRepresentable, IsPractical, PracticalNumbers, h(m), practicalCount\n2. **Small examples (proved):** one_practical and two_practical verify that 1 and 2 are practical (by omega / interval_cases)\n3. **Main conjectures (stated as Props):** conjecture_part1, conjecture_part2_weak, conjecture_part2_strong\n4. **OEIS data:** knownPracticalNumbers lists the first 17 practical numbers\n\nThe remaining topics — non-examples (3, 5), the Stewart-Sierpiński characterization, the Erdős/Vose bounds on h(m), practical Goldbach and twins, density, and Egyptian fractions — appear as documented comment-header sections that provide mathematical context. They are not formalized as declarations and are not axiomatized (the file contains 0 axioms).",
     "keyInsights": [
       "**Practical = divisor completeness:** Every k < m is a subset sum of divisors of m",
       "**Powers of 2 are practical:** Binary representation using {1, 2, 4, ..., 2^n}",
       "**Stewart-Sierpinski criterion:** Efficient test via prime factorization and sigma function",
-      "**Practical Goldbach (PROVEN):** Every even n is sum of two practical numbers",
-      "**Practical twins (PROVEN):** Unlike twin primes, infinitely many (p, p+2) both practical",
+      "**Practical Goldbach (proven in literature, Melfi 1996):** Every even n is sum of two practical numbers",
+      "**Practical twins (proven in literature):** Unlike twin primes, infinitely many (p, p+2) both practical",
       "**The h(m) question:** How few divisors suffice? Known: h(n!) < n (Erdos), h(m) <= C*sqrt(log m) for some m (Vose)",
       "**Why hard:** Finding minimum representing subset is computationally difficult; factorials have special structure"
     ],
@@ -122,7 +123,7 @@
     {
       "id": "examples",
       "title": "Basic Examples",
-      "summary": "1, 2 practical (proved); 4, 6, 12, powers of 2 (axioms)",
+      "summary": "1, 2 practical (proved by omega/interval_cases)",
       "startLine": 68,
       "endLine": 84,
       "mathContext": "$1$ is practical (vacuously: no $k$ in $[1, 0)$). $2$ is practical: only $k = 1$ to represent, and $1 \\mid 2$. Both proved by `omega` and `interval_cases`."

@@ -74,54 +74,54 @@
       "id": "section-header",
       "title": "Header and Imports",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 36,
       "summary": "Docstring stating the central identity dV_n/dr = S_{n-1}(r), three Mathlib imports (Deriv.Pow, Gamma.Basic, Tactic), and the parent file import. Opens `Real`, `MeasureTheory`, declares `noncomputable section`.",
       "mathContext": "File-level setup: imports the power rule, Gamma recursion, and parent CircumferenceViaDifferentiation theorem."
     },
     {
       "id": "section-unit-volume",
       "title": "Unit Ball Volume and Half-Integer Gamma",
-      "startLine": 33,
-      "endLine": 75,
+      "startLine": 38,
+      "endLine": 76,
       "summary": "`unitBallVolume n = π^(n/2)/Γ(n/2+1)`, plus helpers for Γ(3/2)=√π/2, Γ(5/2)=3√π/4, and the special values ω_2=π, ω_3=4π/3.",
       "mathContext": "ω_n = π^(n/2)/Γ(n/2+1); half-integer Gamma values via Γ(1/2)=√π and the Gamma recursion."
     },
     {
       "id": "section-framework",
       "title": "n-Dimensional Framework Definitions",
-      "startLine": 77,
-      "endLine": 90,
+      "startLine": 82,
+      "endLine": 91,
       "summary": "Three uniform definitions: `nBallVolumeFn n r = ω_n · rⁿ`, `nSphereSurfaceConst n = n · ω_n`, `nSphereSurfaceFn n r = (n·ω_n) · r^(n-1)`. Same formulas for all n.",
       "mathContext": "V_n(r) = ω_n r^n, C_n = n·ω_n, S_{n-1}(r) = C_n · r^(n-1)."
     },
     {
       "id": "section-main-deriv",
       "title": "Main Derivative Theorem",
-      "startLine": 92,
-      "endLine": 117,
+      "startLine": 97,
+      "endLine": 118,
       "summary": "`nBallVolumeFn_hasDerivAt`: The n-ball volume V_n(r) = ω_n·rⁿ has derivative n·ω_n·r^(n-1) at every r. Uses `hasDerivAt_pow` + `const_mul` + ring.",
       "mathContext": "HasDerivAt (nBallVolumeFn n) (nSphereSurfaceFn n r) r, proved by combining the power rule with scalar multiplication."
     },
     {
       "id": "section-gamma",
       "title": "Gamma Recursion for Surface Area",
-      "startLine": 119,
-      "endLine": 134,
+      "startLine": 124,
+      "endLine": 139,
       "summary": "`nSphereSurfaceConst_eq_gamma`: For n ≥ 1, the surface constant n·ω_n = 2π^(n/2)/Γ(n/2). Uses `Gamma_add_one` and `field_simp`.",
       "mathContext": "The Gamma recursion Γ(x+1) = x·Γ(x) allows cancellation: n / Γ(n/2+1) = n / ((n/2)·Γ(n/2)) = 2/Γ(n/2)."
     },
     {
       "id": "section-special",
       "title": "Special Cases (n=2,3)",
-      "startLine": 136,
-      "endLine": 168,
+      "startLine": 140,
+      "endLine": 169,
       "summary": "Surface constants: n=2 gives 2π (circumference), n=3 gives 4π (sphere surface). Verified using unitBallVolume_two/three.",
       "mathContext": "nSphereSurfaceConst 2 = 2π, nSphereSurfaceConst 3 = 4π."
     },
     {
       "id": "section-connection",
       "title": "Connection to Parent Theorem",
-      "startLine": 170,
+      "startLine": 175,
       "endLine": 190,
       "summary": "`nBallVolumeFn_two_eq_areaFn` and `disk_area_matches_parent` show that the n=2 case recovers the parent file's circumference derivation.",
       "mathContext": "nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn, so the parent theorem is a special case."
@@ -129,7 +129,7 @@
     {
       "id": "section-closure",
       "title": "Volume and Surface Closure Properties",
-      "startLine": 192,
+      "startLine": 196,
       "endLine": 213,
       "summary": "Three closure lemmas: `nSphereSurface_unit` (S(1)=C_n), `unitBallVolume_from_surface` (ω_n = C_n/n for n≥1), and `nBallVolumeFn_nonneg` (V_n(r) ≥ 0 for r ≥ 0).",
       "mathContext": "S_{n-1}(1) = C_n; ω_n = C_n/n; V_n is monotone in r ≥ 0 because ω_n ≥ 0 and r ↦ rⁿ preserves nonnegativity."
@@ -137,7 +137,7 @@
     {
       "id": "section-examples",
       "title": "Examples and Sanity Checks",
-      "startLine": 215,
+      "startLine": 222,
       "endLine": 240,
       "summary": "Closing `example` block reducing the framework to textbook formulas: V_2(r) = πr², V_3(r) = (4π/3)r³, deriv(V_2)(1) = 2π, plus type-check of the main theorem signature.",
       "mathContext": "Concrete instantiations confirming the abstraction composes correctly to the formulas every calculus student already knows."

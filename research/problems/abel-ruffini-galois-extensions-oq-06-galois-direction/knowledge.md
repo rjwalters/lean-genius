@@ -628,3 +628,203 @@ Medium-confidence (?) names to check: `MulAction.card_orbit_mul_card_stabilizer_
 `Nat.Prime.factorization_factorial`. High-confidence (★): the Step-5-shared
 idioms (`P.card_eq_multiplicity`, `Nat.Prime.factorization_pos_of_dvd`,
 `orderOf_injective`, `IsCycle.orderOf`, `map_zpow`, `Subgroup.mem_zpowers_iff`).
+
+## S17 lemma-name resolution (researcher-5, 2026-06-16) — Step-3 companion corrected
+
+Checked the `?`-flagged Step-3 calls against the Mathlib source mirror
+(`/private/tmp/mathlib-grep`, v4.26.0) and corrected the companion
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3.lean`. Resolved signatures:
+
+- **`Nat.factorization_factorial`** (`Data/Nat/Choose/Factorization.lean:42`) — namespace
+  `Nat` (NOT `Nat.Prime`), signature `(hp : p.Prime) {n b} (h : log p n < b) :
+  (n)!.factorization p = ∑ i ∈ Ico 1 b, n / p^i`. **Takes an explicit bound.** The old
+  `rw [hp.factorization_factorial]` was broken; fixed to
+  `rw [Nat.factorization_factorial hp hlog]` with `hlog : log p p < p` via
+  `Nat.log_lt_self p hp.pos.ne'` (`Data/Nat/Log.lean:196`). The `sum_eq_single 1` body
+  is valid for any bound `b ≥ 2` (only the `i=1` term survives), so `b = p` works.
+- **`isCyclic_of_prime_card`** (`SpecificGroups/Cyclic.lean:185`) — `[Fact p.Prime]
+  (h : Nat.card α = p) : IsCyclic α`. Uses **`Nat.card`**; fixed to pass `hcardP`
+  (was `hcardP_ft : Fintype.card = p`).
+- **`Equiv.Perm.isCycle_of_prime_order`** (`Perm/Cycle/Type.lean:230`) —
+  `(h1 : (orderOf σ).Prime) (h2 : #σ.support < 2 * orderOf σ) : σ.IsCycle`. **Two args,
+  stated over `orderOf σ`**; old `(hp) (hords) (hsupp_lt)` (3 args, over `p`) was wrong.
+  Fixed: `hprime : (orderOf (ι a)).Prime := hords ▸ hp`, `hsupp_lt` restated over
+  `2 * orderOf (ι a)` (rw `hords`), then `isCycle_of_prime_order hprime hsupp_lt`.
+
+Confirmed present (★): `card_subgroup_dvd_card` (`Subgroup`, `Coset/Card.lean:69`,
+`Nat.card s ∣ Nat.card α`), `card_orbit_mul_card_stabilizer_eq_card_group`
+(`GroupAction/Quotient.lean:180`, but `[Fintype α] [Fintype (orbit α b)]` — Step-A/B
+Fintype-vs-`Nat.card` plumbing still wants a first build), `factorization_le_iff_dvd`
+(`Factorization/Defs.lean:161`), `orderOf_eq_card_of_forall_mem_zpowers`
+(`Cyclic.lean:217`, returns `Fintype.card`).
+
+Status: companion is now **source-verified** on these three signatures (was
+best-effort). Still BUILD-PENDING (dual blackout). On recovery:
+`docker-build Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3`; if green,
+fold the body verbatim into the registered `sylow_p_is_pcycle` (signatures match).
+
+## S19 capstone assembly + integration-gap fix (researcher-1, 2026-06-16)
+
+Dual blackout persists: Aristotle MCP `prove`/`prove_file` now LOAD (schemas
+available) but the backend still returns 404 "Resource not found"; host
+`proofs/.lake` is the self-referential symlink, so no Docker/Mathlib build.
+
+**State reconciliation (registered file):** Step 2 (`sylow_p_normal`) and Step 5
+(`H_le_normalizer`) are DONE (Step 5 Docker-verified GREEN by researcher-4
+2026-06-16, sorry-free). Remaining `sorry`s: Step 1 (`sylow_p_unique`, the true
+blocker), Step 3 (`sylow_p_is_pcycle`, has source-verified companion), Step 4
+(`normalizer_iso_AGL1Z`), and the main theorem
+(`primitive_solvable_subgroup_embeds_AGL1Z`).
+
+**INTEGRATION GAP FOUND & FIXED.** The registered main theorem's intended
+5-step composition CANNOT be assembled as the steps are currently stated:
+`H_le_normalizer` (Step 5) requires `hσH : σ ∈ H`, but `sylow_p_is_pcycle`
+(Step 3) returns only `IsCycle ∧ support.card=p ∧ hgen` — it does NOT expose
+`σ ∈ H`, and the witness `σ = ι a` is hidden in the existential, so `σ ∈ H`
+is unrecoverable from the Step-3 statement without re-running Step-5 cardinality
+work. **Fix:** strengthen Step 3 to also return `σ ∈ H` (free: `σ = ι a =
+↑((P:Subgroup H).subtype a) ∈ H` by `SetLike.coe_mem`). When folding the Step-3
+companion into the registered file, ADD the `σ ∈ H` conjunct to its statement.
+
+**Authored orphan** `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean`
+(NOT registered, zero gallery risk):
+- `sylow_p_is_pcycle_strong` = source-verified Step-3 body + `σ ∈ H` conjunct.
+- `primitive_solvable_subgroup_embeds_AGL1Z_capstone` = the full composition:
+  `Sylow.nonempty` → `sylow_p_normal` → `sylow_p_is_pcycle_strong` →
+  `H_le_normalizer` → `normalizer_iso_AGL1Z`, closing via `Subgroup.inclusion` +
+  `Subgroup.inclusion_injective` + `MonoidHom.coe_comp`. Only the surjective half
+  of Step 4 is unused (embedding needs injectivity only).
+This proves the 5-step plan DOES close the main goal — conditional only on the
+still-`sorry` Steps 1 and 4. Mirror-verified (pin `2df2f015`):
+`Subgroup.inclusion`/`inclusion_injective` (Subgroup/Defs.lean:585,593),
+`Sylow.nonempty` (Sylow.lean:175, Zorn — needs only `[Group G]`, NO `[Finite]`).
+
+**Next backend-up session:** build the assembly orphan; if green, (a) fold
+`sylow_p_is_pcycle_strong` into registered Step 3 (statement gains `σ ∈ H`),
+(b) fold the capstone body into registered `primitive_solvable_subgroup_embeds_AGL1Z`.
+Remaining real blockers unchanged: Step 1 (~70-110 LOC derived-series/blocks
+route) and Step 4 (~80-150 LOC conjugation iso); both numerically certified, no
+Lean draft yet.
+
+## S17 Step-1 decomposition orphan (researcher-2, 2026-06-16)
+
+Step 1 (`sylow_p_unique`) is the file's true blocker and had **no draft** before
+this session (Steps 3/4/5 + main all had orphans/certs; Step 1 did not). Under
+the persisting dual blackout (Aristotle 404; `docker run` rc=124 hang) I produced
+a turnkey ORPHAN `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep1.lean`
+that **decomposes** the ~70–110 LOC monolith into individually-attackable pieces:
+
+- **Lemma A `exists_nontrivial_isMulComm_characteristic_of_solvable` — PROVED**
+  (drafted, build-pending). Generic over any `[Group G] [Nontrivial G]
+  [IsSolvable G]`: returns `∃ A, A.Characteristic ∧ Nontrivial A ∧
+  IsMulCommutative A` (the last nontrivial derived-series term). Proof spine:
+  `Nat.find` on `IsSolvable.solvable`; `d>0` via `derivedSeries_zero` + `top_ne_bot`;
+  characteristic via the `derivedSeries_characteristic` instance; nontrivial via
+  `Subgroup.nontrivial_iff_ne_bot` + `Nat.find_min`; abelian via
+  `derivedSeries_succ` ⇒ `⁅A,A⁆=⊥` ⇒ `commutator_eq_bot_iff_le_centralizer` ⇒
+  `le_centralizer_iff_isMulCommutative`. **Reusable across sibling solvable-group
+  slugs** (OQ-07 etc.) — it is the generic "minimal nontrivial abelian
+  characteristic subgroup" extraction. This collapses route steps 1+4 of Risk R4.
+- **Lemma B `normalSubgroup_isTransitive_of_nontrivial` — `sorry`.** Nontrivial
+  `A ⊴ H`, faithful primitive ⇒ `IsPretransitive ↥A (ZMod p)`. Bearers in scope
+  (`IsBlock.orbit_of_normal` Blocks.lean:475; `IsBlock.subsingleton_or_eq_univ`
+  Primitive.lean:115; `isPretransitive_iff_orbit_eq_univ` Transitive.lean:54).
+  Only nontrivial wiring: exhibit the moved point from `Nontrivial ↥A` +
+  `FaithfulSMul ↥H (ZMod p)`.
+- **Lemma C `prime_dvd_card_of_isPretransitive` — `sorry`.** Orbit–stabilizer
+  (`card_orbit_mul_card_stabilizer_eq_card_group` Quotient.lean:180), transported
+  from `↥H` (Step-3 orphan Step A) to `↥A`.
+- **Assembly `sylow_p_unique` — `sorry`.** From A–C: `A` abelian ⇒ Sylow `Q ⊴ ↥A`
+  (`CommGroup.ofIsMulCommutative` + `normal_of_comm`) ⇒ char
+  (`Sylow.characteristic_of_normal`); `A` char ⇒ normal in `↥H` ⇒
+  `(Q.map A.subtype).Normal` via instance `ConjAct.normal_of_characteristic_of_normal`
+  (ConjAct.lean:260, 0-LOC); `|Q|=p` via `p∣|A|∣|H|` + Legendre
+  (`padicValNat_factorial_self`); `Sylow.ofCard` (Sylow.lean:102) packages it;
+  `Sylow.unique_of_normal` (Sylow.lean:710) ⇒ `Subsingleton`.
+
+All 16 bearers re-verified against offline `/Users/rwalters/GitHub/mathlib4` @
+pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. NOTE `Sylow.unique_of_normal`
+returns `Unique` (→ `Subsingleton` free) and `characteristic_of_normal`/`ofCard`
+need `[Finite (Sylow p ↥H)]` / `[Finite ↥H]` (present, `H ≤ S_p` finite).
+UNVERIFIED — no build backend; first Docker-up session: build the orphan, fix
+elaboration on the `?`-marked spots, discharge B/C/assembly, fold into the
+registered stub. 5 sorries on the registered file intact (no `.lean` change there).
+
+## S19 build-diagnosis correction (researcher-1, 2026-06-18)
+
+**The "dual blackout — `proofs/.lake` self-symlink breaks all builds" claim
+(repeated in this knowledge base and several orphan docstrings) is WRONG for
+Docker.** The tracked self-referential symlink `proofs/.lake` (→ its own
+absolute path, committed in #22746) does *not* prevent `docker-build.sh`:
+the cache-volume bind-mount at `/workspace/proofs/.lake/build` shadows the
+link *inside the container*, so `.lake` is a real directory there. Empirical
+proof: a full 7743-job Docker build (`mantel-theorem-oq-01`) succeeded earlier
+today **with the symlink present on `main`**. The per-build re-clone of the
+dependency git repos (proofwidgets/aesop/Qq/batteries) seen in build logs is
+**normal** — only `.lake/build` (oleans) is volume-mounted, not
+`.lake/packages`. The symlink only breaks *host-side* tooling (`pnpm`, host
+`lake`, IDE). Fix shipped: **PR #25509** removes the tracked symlink fleet-wide.
+
+**Real blockers this session:** (1) **Aristotle still 404** —
+`mcp-smoke-test.sh` hits `HTTPStatusError 404` on
+`…/api/v1/project?project_type=2`, so `prove()`/`prove_file()` are unusable;
+(2) **severe host IO-load** (load avg 17–21, 10+ concurrent `lean-build-*`
+containers, `docker volume du` probes time out >25 s). Builds are **possible,
+not blocked** — just slow and contended.
+
+**Action:** launched a properly-detached (`nohup`+`disown`+sentinel) Docker
+build of the *complete* Step-3 orphan
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3` (0 real sorries) →
+`/tmp/r1-step3-verify.{log,done}`. If green, fold `sylow_p_is_pcycle` verbatim
+into the registered file (signatures match) to take the frontier from 4 sorries
+→ 3 (Steps 1/4 + main remain). **Next session: check the sentinel before
+relaunching** (don't start a second concurrent build).
+
+## S20 (researcher-2, 2026-06-19) — registered file is down to ONE sorry; squeeze plan for it
+
+**Frontier correction.** The registered file
+`AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` (656 LOC) now has exactly
+**ONE** real `sorry`: line 471, `normalizer_iso_AGL1Z` (Step 4). All other
+`sorry`-mentions in the file are prose in docstrings — `sylow_p_unique`,
+`sylow_p_normal`, `sylow_p_is_pcycle`, `H_le_normalizer`,
+`primitive_solvable_subgroup_embeds_AGL1Z`, the centralizer lemmas are all
+`sorry`-free now. So the whole Galois-direction embedding reduces to the single
+Step-4 isomorphism `N_{S_p}(⟨σ⟩) ≅ AGL(1,p)`.
+
+**Backends still down:** Aristotle MCP 404 (unbroken since S4); Docker host
+OOM-saturated (~14 containers, ~1 GiB headroom on the 7.65 GiB VM) — a blind
+tactic discharge of a ~100 LOC group-iso into the *auto-merged, no-CI* registered
+file is unsafe (the file's own line-504 docstring says so). No Lean shipped to the
+registered file this session.
+
+**NEW — cardinality-SQUEEZE discharge plan (avoids the hard surjectivity).**
+The numerically-certified S11 plan proves φ surjective by showing *every*
+automorphism of ⟨σ⟩ is realised by conjugation — the genuinely hard ~100 LOC
+direction. It can be replaced by a finite-cardinality squeeze using pieces that
+ALREADY EXIST:
+
+  Let `A := (AGL1Z.toPerm p).range ≤ Equiv.Perm (ZMod p)` (the affine subgroup).
+  1. `|A| = p(p-1)`: `AGL1Z.toPerm_injective` ⇒ `A ≃* AGL1Z p`, and parent
+     `AGL1Z.nat_card_eq : Nat.card (AGL1Z p) = p*(p-1)` (proved, OQ06.lean:157).
+  2. `A ≤ (zpowers σ).normalizer` (EASY direction): each affine map `x ↦ a+u·x`
+     conjugates `σ : x↦x+1` to `x ↦ x+u = σ^u ∈ ⟨σ⟩`, so it normalises ⟨σ⟩.
+     (This is the inclusion the S7 step-5 script already certified numerically.)
+  3. `|N| ≤ p(p-1)` (the bound that makes the squeeze close): the conjugation
+     action gives `N/C(σ) ↪ Aut(⟨σ⟩)`, and `|Aut(⟨σ⟩)| = |Aut(ℤ/p)| = p-1`
+     (cyclic of prime order); `C(σ) = ⟨σ⟩` with `|C| = p` is ALREADY proved here
+     (`centralizer_pcycle_eq_zpowers` + `centralizer_pcycle_card`). So
+     `|N| = |C|·[N:C] = p·[N:C] ≤ p·(p-1)`.
+  4. SQUEEZE: `p(p-1) = |A| ≤ |N| ≤ p(p-1)` ⇒ `|N| = p(p-1)` and `A = N`
+     (`Subgroup.eq_of_le_of_card_ge`, already used at line 446). Then
+     `N = A ≃* AGL1Z p` gives φ **both injective and surjective for free** — no
+     separate surjectivity proof needed.
+
+  Net: the only non-trivial new Mathlib wiring is step 3's `N/C ↪ Aut` bound and
+  `|Aut(ℤ/p)| = p-1` (cyclic-automorphism count). Steps 1,2,4 are short and lean
+  entirely on already-proved lemmas (`AGL1Z.nat_card_eq`, `toPerm_injective`,
+  `centralizer_pcycle_eq_zpowers`, `eq_of_le_of_card_ge`).
+
+**Status: BLOCKED on backends** (lone hard sorry, ~19 sessions, no Aristotle, no
+safe build window). Next backend-up session: implement the squeeze (steps 1–4
+above) and build-verify, OR submit `normalizer_iso_AGL1Z` to Aristotle once the
+404 clears. Moving on per the 3+-sessions-stuck rule.

@@ -4,7 +4,7 @@
     "proofId": "lebesgue-measure-oq-05",
     "range": {
       "startLine": 1,
-      "endLine": 42
+      "endLine": 64
     },
     "type": "concept",
     "title": "Setup: Packaging Mathlib's HaveLebesgueDecomposition Theory",
@@ -27,8 +27,8 @@
     "id": "ann-lebesgueoq05-witness",
     "proofId": "lebesgue-measure-oq-05",
     "range": {
-      "startLine": 44,
-      "endLine": 52
+      "startLine": 66,
+      "endLine": 74
     },
     "type": "insight",
     "title": "Measurability and the Canonical Density",
@@ -51,8 +51,8 @@
     "id": "ann-lebesgueoq05-existence",
     "proofId": "lebesgue-measure-oq-05",
     "range": {
-      "startLine": 54,
-      "endLine": 58
+      "startLine": 76,
+      "endLine": 80
     },
     "type": "concept",
     "title": "Existence of a Density",
@@ -73,8 +73,8 @@
     "id": "ann-lebesgueoq05-integral",
     "proofId": "lebesgue-measure-oq-05",
     "range": {
-      "startLine": 60,
-      "endLine": 71
+      "startLine": 82,
+      "endLine": 93
     },
     "type": "insight",
     "title": "Integral Characterization and Total Mass",
@@ -97,8 +97,8 @@
     "id": "ann-lebesgueoq05-uniqueness",
     "proofId": "lebesgue-measure-oq-05",
     "range": {
-      "startLine": 73,
-      "endLine": 83
+      "startLine": 95,
+      "endLine": 105
     },
     "type": "insight",
     "title": "ν-a.e. Uniqueness of the Density",
@@ -121,8 +121,8 @@
     "id": "ann-lebesgueoq05-decomposition",
     "proofId": "lebesgue-measure-oq-05",
     "range": {
-      "startLine": 85,
-      "endLine": 91
+      "startLine": 107,
+      "endLine": 112
     },
     "type": "insight",
     "title": "General Lebesgue Decomposition",
@@ -139,6 +139,78 @@
       "singular part of a measure",
       "mutual singularity μ ⊥ ν",
       "decomposition into a.c. + singular parts"
+    ]
+  },
+  {
+    "id": "ann-lebesgueoq05-calculus",
+    "proofId": "lebesgue-measure-oq-05",
+    "range": {
+      "startLine": 114,
+      "endLine": 144
+    },
+    "type": "insight",
+    "title": "Calculus of Densities: Chain Rule, Self-Derivative, Reciprocal",
+    "content": "The calculus-of-densities section treats `μ.rnDeriv ν` as a genuine derivative obeying algebraic composition laws. `rnDeriv_chain` is the **chain rule**: for σ-finite `μ, ν, λ` with `μ ≪ ν`, `(dμ/dν)·(dν/dλ) = dμ/dλ` holds `λ`-a.e. (`Measure.rnDeriv_mul_rnDeriv`). `rnDeriv_self_ae_one` is the **self-derivative** `dμ/dμ = 1` (`μ`-a.e., `Measure.rnDeriv_self`) — the multiplicative identity of the chain rule. `rnDeriv_mul_symm_ae_one` is the **reciprocal relation** `(dμ/dν)·(dν/dμ) = 1` (`μ`-a.e. for `μ ≪ ν`), obtained by specialising the chain rule to `λ = μ` and composing with the self-derivative via `.trans`.",
+    "mathContext": "The three laws make $d\\mu/d\\nu$ behave like a Leibniz differential: $\\frac{d\\mu}{d\\nu}\\frac{d\\nu}{d\\lambda} = \\frac{d\\mu}{d\\lambda}$ ($\\lambda$-a.e.), $\\frac{d\\mu}{d\\mu} = 1$ ($\\mu$-a.e.), and the inverse law $\\frac{d\\mu}{d\\nu}\\frac{d\\nu}{d\\mu} = 1$ ($\\mu$-a.e.) — the measure-theoretic analogue of $\\frac{dx}{dy}\\frac{dy}{dx} = 1$. The reciprocal law is a *derived* corollary: chain rule at $\\lambda = \\mu$ gives $\\frac{d\\mu}{d\\nu}\\frac{d\\nu}{d\\mu} =^{ae}_\\mu \\frac{d\\mu}{d\\mu}$, then the self-derivative collapses the right side to $1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasureTheory.Measure.rnDeriv_mul_rnDeriv",
+      "MeasureTheory.Measure.rnDeriv_self",
+      "chain rule",
+      "change of variables for measures"
+    ],
+    "prerequisites": [
+      "Radon–Nikodym derivative as a density",
+      "almost-everywhere equality =ᵐ[λ]",
+      "transitivity of a.e. equality"
+    ]
+  },
+  {
+    "id": "ann-lebesgueoq05-regularity",
+    "proofId": "lebesgue-measure-oq-05",
+    "range": {
+      "startLine": 146,
+      "endLine": 172
+    },
+    "type": "insight",
+    "title": "Pointwise Regularity of the Density",
+    "content": "Basic almost-everywhere regularity of `μ.rnDeriv ν` as a function. `rnDeriv_lt_top_ae` / `rnDeriv_ne_top_ae` record **finiteness**: for σ-finite `μ`, the derivative is finite `ν`-a.e. (`Measure.rnDeriv_lt_top` / `Measure.rnDeriv_ne_top`). `rnDeriv_pos_ae` records **positivity**: for σ-finite `μ ≪ ν`, the derivative is strictly positive `μ`-a.e. (`Measure.rnDeriv_pos`) — it cannot vanish on the support of `μ`. `inv_rnDeriv_ae` is the **pointwise inverse law** `(dμ/dν)⁻¹ = dν/dμ` (`μ`-a.e., `Measure.inv_rnDeriv`), the pointwise refinement of the reciprocal relation `rnDeriv_mul_symm_ae_one`.",
+    "mathContext": "Finiteness $\\frac{d\\mu}{d\\nu} < \\infty$ ($\\nu$-a.e.) ensures the density is a genuine $[0,\\infty)$-valued function a.e.; positivity $0 < \\frac{d\\mu}{d\\nu}$ ($\\mu$-a.e., for $\\mu \\ll \\nu$) is what makes the inverse $\\left(\\frac{d\\mu}{d\\nu}\\right)^{-1}$ meaningful $\\mu$-a.e. The pointwise inverse law $\\left(\\frac{d\\mu}{d\\nu}\\right)^{-1} = \\frac{d\\nu}{d\\mu}$ ($\\mu$-a.e.) upgrades the multiplicative reciprocal relation to an explicit reciprocal of functions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MeasureTheory.Measure.rnDeriv_lt_top",
+      "MeasureTheory.Measure.rnDeriv_pos",
+      "MeasureTheory.Measure.inv_rnDeriv",
+      "almost-everywhere properties"
+    ],
+    "prerequisites": [
+      "extended non-negative reals ℝ≥0∞",
+      "almost-everywhere quantifier ∀ᵐ",
+      "the reciprocal relation (previous section)"
+    ]
+  },
+  {
+    "id": "ann-lebesgueoq05-condexp",
+    "proofId": "lebesgue-measure-oq-05",
+    "range": {
+      "startLine": 176,
+      "endLine": 202
+    },
+    "type": "insight",
+    "title": "Conditional Expectation as a Radon–Nikodym Derivative",
+    "content": "`condExp_ae_eq_signed_rnDeriv` identifies the **conditional expectation** with a Radon–Nikodym derivative, placing conditioning inside the calculus of this file. For a sub-σ-algebra `m ≤ m₀` with `ρ.trim hm` σ-finite and `f` integrable, the conditional expectation `ρ[f|m]` equals, `ρ`-a.e., the *signed* Radon–Nikodym derivative of the `f`-weighted measure `ρ.withDensityᵥ f` trimmed to `m`, with respect to `ρ` trimmed to `m`. It is a thin wrapper over Mathlib's `MeasureTheory.rnDeriv_ae_eq_condExp`, exposing the probabilistic face of the package: conditional expectation *is* a density.",
+    "mathContext": "$\\rho[f\\mid m] =^{ae}_\\rho \\mathrm{rnDeriv}\\big((\\rho.\\mathrm{withDensity}_v\\, f).\\mathrm{trim}\\, m,\\ \\rho.\\mathrm{trim}\\, m\\big)$. The signed Radon–Nikodym derivative extends the non-negative theory to signed measures (the $f$-weighted measure $\\rho.\\mathrm{withDensity}_v f$ is signed because $f$ may take negative values). This is the measure-theoretic *definition* of conditional expectation underlying martingale theory: $E[f\\mid m]$ is the density of the conditioned measure relative to the base measure on the coarser σ-algebra $m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasureTheory.rnDeriv_ae_eq_condExp",
+      "MeasureTheory.condExp",
+      "MeasureTheory.SignedMeasure.rnDeriv",
+      "MeasureTheory.Measure.trim"
+    ],
+    "prerequisites": [
+      "conditional expectation E[f|m]",
+      "signed measures and withDensityᵥ",
+      "trimming a measure to a sub-σ-algebra"
     ]
   }
 ]

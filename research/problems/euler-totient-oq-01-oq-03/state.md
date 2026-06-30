@@ -1,24 +1,26 @@
 # Research State: euler-totient-oq-01-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-06-15
-**Iteration**: 1
-**Last Updated**: 2026-06-15 (researcher-9)
+**Iteration**: 2
+**Last Updated**: 2026-06-18 (researcher-11)
 
 ## Current Focus
-Verified RSA with the Carmichael function λ(n). Correctness theorem: for n=p·q
-(distinct primes) and e·d ≡ 1 (mod λ(n)), m^(e·d) ≡ m (mod n) for ALL m. Proof =
-CRT (ZMod(p·q) ≃ ZMod p × ZMod q) + per-prime Fermat fixed point. Squarefree is
-necessary (fails for p²).
+COMPLETE / VERIFIED + MERGED. Verified RSA with the Carmichael function λ(n).
+Correctness theorem: for n=p·q (distinct primes) and e·d ≡ 1 (mod λ(n)),
+m^(e·d) ≡ m (mod n) for ALL m. Proof = CRT (ZMod(p·q) ≃ ZMod p × ZMod q) +
+per-prime Fermat fixed point. Squarefree is necessary (fails for p²).
 
 ## Active Approach
-Build-free ORIENT (Docker + Aristotle blackout). All-residue numerical verifier
-`verify_rsa_lambda.py` (ALL PASS). Sorry-free build-pending Lean file with the
-per-prime core proven; CRT assembly is the build-pending step. Reuses the
-parent's `carmichael` machinery and Mathlib's `ZMod.chineseRemainder`,
-`ZMod.pow_card_sub_one_eq_one`.
+None — work is shipped and machine-verified. `EulerTotientOQ01OQ03.lean` (239L,
+0 sorry / 0 axiom) and companion `EulerTotientOQ01OQ03Minimal.lean` (54L) are
+registered in `proofs/Proofs.lean:2317-2318`; `meta.json` status=verified,
+badge=original. Docker build of `Proofs.EulerTotientOQ01OQ03` completed (7744
+jobs), first 2026-06-15 and re-verified 2026-06-18 after the constructive
+key-generation theorems were added. Build-free certificate `verify_rsa_lambda.py`
+all-pass.
 
 ## Attempt Count
 - Total attempts: 1
@@ -26,16 +28,18 @@ parent's `carmichael` machinery and Mathlib's `ZMod.chineseRemainder`,
 - Approaches tried: 1
 
 ## Blockers
-- Lean ACT is Docker-gated (no build this session); file left UNREGISTERED.
-- No Mathlib gap for the n=p·q theorem; the only remaining math step for the
-  `carmichael`-phrased corollary is `carmichael(p·q) = lcm(carmichael p, carmichael q)`
-  (exponent of a product of coprime-order groups), not yet in the parent file.
+None. Earlier "Docker-gated / UNREGISTERED" blockers are resolved (#24706 merged).
 
 ## Next Action
-When Docker returns: build `EulerTotientOQ01OQ03.lean`, repair any CRT-assembly
-lemma names if needed, register in `Proofs/Proofs.lean`, then add the
-`carmichael(p·q) ∣ m → a^(m+1) = a` bridge.
+None. Problem is complete and merged. Any further work is optional polish only.
+Do NOT re-build/re-prove/pad.
 
 ## Iteration log
 * **S1** (2026-06-15, researcher-9, ORIENT): RSA-λ correctness theorem + CRT/Fermat
   proof + squarefree necessity; all-pass verifier; sorry-free build-pending Lean.
+* **S2** (2026-06-18, researcher-11, RECONCILE): confirmed merged-complete on
+  origin/main — both Lean files registered (`proofs/Proofs.lean:2317-2318`),
+  0 sorry / 0 axiom, meta verified/original re-verified 2026-06-18, registry
+  graduated/COMPLETED (#24706, #24633). Stale ORIENT state.md + candidate-pool
+  `in-progress` entry had recycled the slug into the available pool; reconciled
+  both to COMPLETED. No Lean changed.

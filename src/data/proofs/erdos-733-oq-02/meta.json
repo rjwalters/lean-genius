@@ -1,0 +1,178 @@
+{
+  "id": "erdos-733-oq-02",
+  "title": "The Elementary Rich-Line Bound (Erdős #733)",
+  "slug": "erdos-733-oq-02",
+  "description": "Fills the unproved 'Part III' claim of the Erdős #733 formalization: that the number of k-rich lines (lines through at least k of n points) is bounded. The registered file states the Szemerédi–Trotter corollary O(n²/k³ + n/k) only as a docstring, with no proof. This entry proves the elementary, unconditional baseline #{lines with ≥ k points} · C(k,2) ≤ C(n,2), hence #{k-rich lines} ≤ C(n,2)/C(k,2) = O(n²/k²), by pure double counting of point-pairs: each line carries the C(|L|,2) two-element subsets of its points, distinct lines share at most one point so these pair-families are disjoint, and there are only C(n,2) pairs in all. The single hypothesis is the defining 'linear space' property of lines (two distinct lines meet in ≤ 1 point); no incidence theorem and no real-analytic input is used. Self-contained, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Erdős (problem); classical double-counting bound — formalized in Lean 4",
+    "sourceUrl": "https://www.erdosproblems.com/733",
+    "date": "1983",
+    "status": "verified",
+    "tags": [
+      "combinatorial-geometry",
+      "incidences",
+      "double-counting",
+      "extremal-combinatorics",
+      "szemeredi-trotter",
+      "erdos",
+      "rich-lines"
+    ],
+    "proofRepoPath": "Proofs/Erdos733RichLines.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "Finset.powersetCard",
+      "Finset.card_powersetCard",
+      "Finset.card_biUnion",
+      "Finset.card_le_card",
+      "Finset.sum_le_sum",
+      "Finset.sum_le_sum_of_subset",
+      "Finset.sum_const_nat",
+      "Nat.choose_le_choose",
+      "Nat.choose_pos",
+      "Nat.le_div_iff_mul_le"
+    ],
+    "originalContributions": [
+      "Machine-checked proof of the elementary rich-line bound #{lines with ≥ k points} · C(k,2) ≤ C(n,2), the unconditional baseline that Szemerédi–Trotter later sharpens — the registered Erdős #733 file states the corresponding corollary only as an unproved docstring",
+      "A clean double-counting argument: distinct lines (sharing ≤ 1 point) carry pairwise-disjoint families of two-element point-subsets, all contained in the C(n,2) pairs of the point set (sum_choose_two_le, disjoint_pairs)",
+      "Division form #{k-rich lines} ≤ C(n,2)/C(k,2) = O(n²/k²) and the de Bruijn–Erdős-style corollary #{proper lines} ≤ C(n,2) (rich_line_count_le, num_proper_lines_le)",
+      "Stated with the linear-space property as an explicit hypothesis rather than a structure-encoded axiom, so the result is genuinely 0-axiom and applies verbatim to honest lines in ℝ²"
+    ],
+    "dateAdded": "2026-06-21",
+    "axiomCount": 0,
+    "lineCount": 185,
+    "assumptions": "None encoded as axioms or structure fields. Every theorem takes the configuration data (point set P, family of lines) and the linear-space hypotheses hsub (each line ⊆ P) and hlin (two distinct lines meet in ≤ 1 point) as ordinary universally-quantified arguments. #print axioms reports only the standard foundational axioms (propext / Classical.choice / Quot.sound); no sorryAx, no Lean.ofReduceBool. The bound proved is the elementary O(n²/k²) estimate, strictly weaker than the Szemerédi–Trotter O(n²/k³ + n/k) that the parent file axiomatizes — this is disclosed explicitly in the file and is not claimed to discharge those axioms.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #733 asks for the number f(n) of 'line-compatible' multiplicity sequences realizable by n points in the plane; the answer f(n) = exp(Θ(√n)) was completed by Szemerédi and Trotter in 1983, whose incidence theorem controls how many lines can be rich (pass through many points). The registered formalization Erdos733Problem.lean encodes the two sharp bounds as axioms and, in its 'Part III', states the Szemerédi–Trotter corollary on rich lines — 'the number of k-rich lines is O(n²/k³ + n/k)' — purely as a docstring, proving nothing about it. Yet a weaker rich-line bound predates Szemerédi–Trotter by decades and is completely elementary: it follows from the single fact that two distinct lines meet in at most one point. This entry formalizes that elementary baseline.",
+    "problemStatement": "Let P be a finite set of n points and let `lines` be a family of subsets of P such that any two distinct lines meet in at most one point (the linear-space property of honest lines in ℝ²). Prove that for every threshold k, the number of lines containing at least k points satisfies #{L : |L| ≥ k} · C(k,2) ≤ C(n,2), and therefore #{L : |L| ≥ k} ≤ C(n,2)/C(k,2).",
+    "text": "The file is built around one double-counting identity. For a line L, its C(|L|,2) two-element subsets are the point-pairs it covers; in Lean these are L.powersetCard 2, whose cardinality is |L| choose 2 (Finset.card_powersetCard). The geometric content lives in disjoint_pairs: if two lines meet in at most one point, no pair of points lies on both, so their pair-families are disjoint. The core bound sum_choose_two_le then rewrites each C(|L|,2) as a cardinality, uses Finset.card_biUnion over the disjoint families, and bounds the union by the pairs of P to get ∑_{L} C(|L|,2) ≤ C(n,2). The headline rich_line_bound sums the trivial estimate C(k,2) ≤ C(|L|,2) over the k-rich lines (Nat.choose_le_choose) to obtain #{k-rich lines} · C(k,2) ≤ C(n,2). Two corollaries follow: rich_line_count_le divides through (Nat.le_div_iff_mul_le) to the familiar O(n²/k²) form, and num_proper_lines_le specializes to k = 2 (C(2,2) = 1) to bound the number of lines with at least two points by C(n,2). A monotonicity lemma rich_lines_antitone records that raising the threshold can only shrink the rich-line count.",
+    "proofStrategy": "Charge each k-rich line to the C(k,2) point-pairs it contains. Because distinct lines share at most one point, no point-pair is charged twice, so the total charge #{k-rich lines} · C(k,2) cannot exceed the C(n,2) available pairs. Formally this is a disjoint biUnion of two-element subsets sitting inside the two-element subsets of P; everything else is monotonicity of binomial coefficients and a Nat division step.",
+    "keyInsights": [
+      "The whole bound rests on one geometric fact — two distinct lines meet in at most one point — entered as the explicit hypothesis hlin, not as an incidence theorem. This is what makes it elementary and unconditional.",
+      "Counting point-pairs is the right currency: a k-rich line is worth C(k,2) pairs, and the budget of pairs is exactly C(n,2), so the rich lines are bounded by a clean ratio.",
+      "Disjointness of the pair-families (disjoint_pairs) is where linearity is used: a shared pair would force two lines to meet in two points, contradicting hlin.",
+      "The result is honestly weaker than Szemerédi–Trotter — O(n²/k²) versus O(n²/k³ + n/k) — and the file says so. It is the baseline the deep theorem improves, and it is the part that can be fully machine-checked with no axioms.",
+      "Stating the linear-space property as a hypothesis rather than a structure field keeps the entry genuinely 0-axiom under the project's axiom-integrity policy, while still applying verbatim to the geometric setting of the parent #733 file."
+    ],
+    "prerequisites": [
+      "Binomial coefficients and the identity that an m-set has C(m,2) two-element subsets",
+      "Double counting / the handshake principle in extremal combinatorics",
+      "Linear spaces (partial linear spaces): families of lines pairwise meeting in at most one point",
+      "Finset.powersetCard and disjoint biUnion cardinality in Lean/Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "core-double-counting",
+      "title": "The core double-counting inequality",
+      "startLine": 60,
+      "endLine": 112,
+      "summary": "disjoint_pairs shows that two lines meeting in ≤ 1 point carry disjoint families of two-element point-subsets. sum_choose_two_le then sums their sizes via a disjoint biUnion and bounds the result by the two-element subsets of P, giving ∑_{L} C(|L|,2) ≤ C(n,2).",
+      "mathContext": "Each line covers $\\binom{|L|}{2}$ point-pairs; distinct lines share at most one point, so the pair-families are disjoint and $\\sum_L \\binom{|L|}{2} \\le \\binom{n}{2}$."
+    },
+    {
+      "id": "rich-line-bound",
+      "title": "The rich-line bound",
+      "startLine": 114,
+      "endLine": 155,
+      "summary": "rich_line_bound charges each k-rich line C(k,2) pairs and sums: #{L : |L| ≥ k} · C(k,2) ≤ C(n,2). rich_line_count_le divides through to #{k-rich lines} ≤ C(n,2)/C(k,2), the O(n²/k²) estimate.",
+      "mathContext": "$\\#\\{L : |L| \\ge k\\}\\cdot \\binom{k}{2} \\le \\binom{n}{2}$, hence $\\#\\{L : |L| \\ge k\\} \\le \\binom{n}{2}/\\binom{k}{2} = O(n^2/k^2)$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Proper lines and monotonicity",
+      "startLine": 157,
+      "endLine": 185,
+      "summary": "num_proper_lines_le specializes to k = 2 (C(2,2) = 1): the number of lines with at least two points is at most C(n,2), the easy de Bruijn–Erdős direction. rich_lines_antitone records that raising the threshold only shrinks the rich-line count.",
+      "mathContext": "$k=2$: $\\#\\{L : |L| \\ge 2\\} \\le \\binom{n}{2}$. Monotonicity: $k \\le k' \\Rightarrow \\#\\{|L| \\ge k'\\} \\le \\#\\{|L| \\ge k\\}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-733",
+      "relationship": "extends",
+      "description": "The parent entry formalizes the count of line-compatible sequences and axiomatizes the sharp Szemerédi–Trotter bounds. Its Part III states the rich-line corollary O(n²/k³ + n/k) only as an unproved docstring; this entry supplies the elementary unconditional baseline #{k-rich lines} = O(n²/k²), fully machine-checked."
+    },
+    {
+      "targetId": "erdos-733-oq-01",
+      "relationship": "related",
+      "description": "OQ-01 addresses the limit constant λ = lim log f(n)/√n of the parent's count; this entry instead proves the elementary combinatorial estimate underlying the rich-line side of the Szemerédi–Trotter machinery."
+    }
+  ],
+  "conclusion": {
+    "summary": "The number of k-rich lines in an n-point configuration is at most C(n,2)/C(k,2) = O(n²/k²), proved by charging each rich line the C(k,2) point-pairs it covers and noting that distinct lines share at most one point, so no pair is double-charged against the C(n,2) available pairs. This fills the unproved Part III claim of the Erdős #733 formalization with a fully verified, 0-axiom statement.",
+    "implications": "The bound is the elementary baseline that Szemerédi–Trotter improves (to O(n²/k³ + n/k)), and it requires nothing beyond the linear-space property of lines. It pins down precisely how much of the rich-line corollary used in #733 is elementary double counting versus genuinely deep incidence geometry, and provides reusable Lean infrastructure (disjoint pair-families, the ∑ C(|L|,2) ≤ C(n,2) inequality) for further incidence-combinatorics formalization."
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+      "Mathlib.Data.Nat.Choose.Basic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos733RichLines",
+    "lineCount": 185,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/Erdos733RichLines.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Szemerédi, Endre; Trotter, William T.",
+      "title": "Extremal problems in discrete geometry",
+      "year": "1983",
+      "venue": "Combinatorica 3, 381–392",
+      "note": "The sharp incidence theorem behind Erdős #733; its rich-line corollary O(n²/k³ + n/k) improves the elementary O(n²/k²) bound proved here."
+    },
+    {
+      "authors": "de Bruijn, Nicolaas G.; Erdős, Paul",
+      "title": "On a combinatorial problem",
+      "year": "1948",
+      "venue": "Indagationes Mathematicae 10, 421–423",
+      "note": "Classical linear-space counting; the k = 2 corollary here (#proper lines ≤ C(n,2)) is the easy direction of this circle of ideas."
+    },
+    {
+      "authors": "Erdős, Paul",
+      "title": "Problem #733",
+      "year": "n.d.",
+      "venue": "erdosproblems.com",
+      "note": "Counting line-compatible multiplicity sequences; answer exp(Θ(√n)) via Szemerédi–Trotter."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "rich_line_bound",
+      "type": "core",
+      "description": "Elementary rich-line bound: with n = |P|, the number of lines containing at least k points satisfies #{L : |L| ≥ k} · C(k,2) ≤ C(n,2). The unconditional baseline Szemerédi–Trotter later sharpens.",
+      "leanType": "∀ {V} [DecidableEq V] (P : Finset V) (lines : Finset (Finset V)), (∀ L ∈ lines, L ⊆ P) → (∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card ≤ 1) → ∀ k, (lines.filter (fun L => k ≤ L.card)).card * k.choose 2 ≤ (P.card).choose 2"
+    },
+    {
+      "name": "sum_choose_two_le",
+      "type": "core",
+      "description": "Core double-counting inequality: the total number of point-pairs covered by all lines is at most the C(n,2) pairs of the point set. Drives every rich-line bound.",
+      "leanType": "∀ {V} [DecidableEq V] (P : Finset V) (lines : Finset (Finset V)), (∀ L ∈ lines, L ⊆ P) → (∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card ≤ 1) → ∑ L ∈ lines, (L.card).choose 2 ≤ (P.card).choose 2"
+    },
+    {
+      "name": "rich_line_count_le",
+      "type": "corollary",
+      "description": "Division form: for k ≥ 2 the number of k-rich lines is at most C(n,2)/C(k,2), the familiar O(n²/k²) estimate.",
+      "leanType": "∀ {V} [DecidableEq V] (P : Finset V) (lines : Finset (Finset V)), (∀ L ∈ lines, L ⊆ P) → (∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card ≤ 1) → ∀ k, 2 ≤ k → (lines.filter (fun L => k ≤ L.card)).card ≤ (P.card).choose 2 / k.choose 2"
+    },
+    {
+      "name": "num_proper_lines_le",
+      "type": "corollary",
+      "description": "k = 2 specialization: the number of lines through at least two points is at most C(n,2) — each is charged to a distinct point-pair (de Bruijn–Erdős easy direction).",
+      "leanType": "∀ {V} [DecidableEq V] (P : Finset V) (lines : Finset (Finset V)), (∀ L ∈ lines, L ⊆ P) → (∀ L₁ ∈ lines, ∀ L₂ ∈ lines, L₁ ≠ L₂ → (L₁ ∩ L₂).card ≤ 1) → (lines.filter (fun L => 2 ≤ L.card)).card ≤ (P.card).choose 2"
+    }
+  ],
+  "sorries": 0
+}

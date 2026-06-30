@@ -26,8 +26,8 @@
     "proofId": "erdos-175",
     "type": "definition",
     "range": {
-      "startLine": 41,
-      "endLine": 42
+      "startLine": 38,
+      "endLine": 39
     },
     "title": "Central Binomial Coefficient",
     "content": "centralBinom(n) = $\\binom{2n}{n} = \\frac{(2n)!}{(n!)^2}$. These are the middle entries in Pascal's triangle and appear in Catalan numbers, random walk probabilities, and generating functions throughout combinatorics.",
@@ -49,8 +49,8 @@
     "proofId": "erdos-175",
     "type": "definition",
     "range": {
-      "startLine": 44,
-      "endLine": 46
+      "startLine": 41,
+      "endLine": 42
     },
     "title": "Squarefreeness Predicate",
     "content": "A number $m$ is squarefree if no prime square $p^2$ divides it. Equivalently, in its prime factorization $m = \\prod p_i^{a_i}$, all exponents $a_i \\le 1$. The density of squarefree numbers is $6/\\pi^2 \\approx 0.608$.",
@@ -72,8 +72,8 @@
     "proofId": "erdos-175",
     "type": "definition",
     "range": {
-      "startLine": 48,
-      "endLine": 50
+      "startLine": 45,
+      "endLine": 46
     },
     "title": "Maximum Prime Power Exponent (Placeholder)",
     "content": "maxPrimePowerExp(n) is a placeholder for $f(n) = \\max_p v_p\\binom{2n}{n}$. The actual definition uses `Nat.find` as a stub; the real function $f$ is defined later.",
@@ -93,8 +93,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 58,
-      "endLine": 62
+      "startLine": 55,
+      "endLine": 57
     },
     "title": "Kummer's Theorem (1852)",
     "content": "Kummer's theorem: $v_p\\binom{m+n}{m}$ equals the number of carries when adding $m$ and $n$ in base $p$. This foundational result connects the prime factorization of binomial coefficients to digit arithmetic, and is the key tool for analyzing $\\binom{2n}{n}$.",
@@ -116,8 +116,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 64,
-      "endLine": 66
+      "startLine": 55,
+      "endLine": 57
     },
     "title": "2-adic Valuation of Central Binomials",
     "content": "$v_2\\binom{2n}{n} = s_2(n)$, the number of 1s in the binary expansion of $n$ (popcount/Hamming weight). When $n = 2^k$, $s_2(n) = 1$, so $2 \\| \\binom{2n}{n}$ exactly.",
@@ -140,8 +140,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 68,
-      "endLine": 71
+      "startLine": 55,
+      "endLine": 57
     },
     "title": "Divisibility by 4 Criterion",
     "content": "$4 \\mid \\binom{2n}{n}$ if and only if $n$ is not a power of 2. Since $v_2\\binom{2n}{n} = s_2(n) \\ge 2$ when $n$ has two or more 1-bits, this handles most cases of the main theorem immediately.",
@@ -184,8 +184,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 83,
-      "endLine": 85
+      "startLine": 66,
+      "endLine": 67
     },
     "title": "Granville–Ramaré Theorem (1996)",
     "content": "For all $n \\ge 5$, $\\binom{2n}{n}$ is not squarefree. Granville and Ramaré completed the proof by handling the remaining small cases and the power-of-2 case, where they showed odd prime squares must divide the central binomial coefficient.",
@@ -207,8 +207,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 87,
-      "endLine": 89
+      "startLine": 66,
+      "endLine": 67
     },
     "title": "Sárközy's Theorem (1985)",
     "content": "Sárközy first proved that $\\binom{2n}{n}$ is not squarefree for all sufficiently large $n$. His analytic approach used estimates on the distribution of prime power factors but left finitely many cases unchecked.",
@@ -251,8 +251,8 @@
     "proofId": "erdos-175",
     "type": "definition",
     "range": {
-      "startLine": 101,
-      "endLine": 104
+      "startLine": 76,
+      "endLine": 78
     },
     "title": "The Function f(n)",
     "content": "$f(n) = \\max\\{v_p\\binom{2n}{n} : p \\text{ prime}\\}$ measures the maximum prime power exponent dividing the central binomial coefficient. Its growth rate is a deeper refinement of the squarefreeness question.",
@@ -273,8 +273,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 106,
-      "endLine": 108
+      "startLine": 81,
+      "endLine": 82
     },
     "title": "f(n) Unbounded (Sander 1992)",
     "content": "Sander proved $f(n) \\to \\infty$: the maximum prime power exponent grows without bound. For large enough $n$, $\\binom{2n}{n}$ is divisible by arbitrarily high prime powers.",
@@ -294,8 +294,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 110,
-      "endLine": 112
+      "startLine": 85,
+      "endLine": 86
     },
     "title": "Upper Bound: f(n) = O(log n)",
     "content": "The upper bound $f(n) \\ll \\log n$ follows from Kummer's theorem: for any prime $p$, $v_p\\binom{2n}{n}$ counts carries in base-$p$ addition, which is at most $\\log_p(2n)$.",
@@ -316,8 +316,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 125,
-      "endLine": 128
+      "startLine": 89,
+      "endLine": 91
     },
     "title": "Erdős–Kolesnik Lower Bound (1999)",
     "content": "Erdős and Kolesnik improved the lower bound to $f(n) \\gg (\\log n)^{1/4}$ for all $n$, sharpening Sander's $(\\log n)^{1/10}$. The gap between exponents $1/4$ and $1$ remains the central open question about $f(n)$.",
@@ -382,8 +382,8 @@
     "proofId": "erdos-175",
     "type": "concept",
     "range": {
-      "startLine": 181,
-      "endLine": 182
+      "startLine": 131,
+      "endLine": 134
     },
     "title": "Example: C(10,5) = 252 Not Squarefree",
     "content": "$\\binom{10}{5} = 252 = 2^2 \\times 3^2 \\times 7$ is divisible by both $4$ and $9$, hence not squarefree. This is the smallest case ($n = 5$), proved by `native_decide` and `norm_num`.",

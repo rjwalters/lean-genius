@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.FourSquareDistributionOQ04ArrangeProof
 
 /-
 # Four-Square Distribution — OQ-04: the arrangement-count residue in `Nat.multinomial` form
@@ -117,20 +118,19 @@ theorem mem_arrangements_iff {m : ℕ} (s : Multiset ℤ) (g : Fin m → ℤ) :
 arrangements of a size-`m` multiset `s` is the multinomial coefficient
 `Nat.multinomial s.toFinset s.count = m! / ∏_v (count_v)!`.
 
-This is the sign-free combinatorial heart of the orbit-size formula. The
-recommended proof is the orbit–stabilizer argument for the `Equiv.Perm (Fin m)`
-action by precomposition: the orbit of an arrangement is all arrangements, and
-its stabilizer `{σ | g ∘ σ = g}` is isomorphic to the product over values `v` of
-`Equiv.Perm (g⁻¹ {v})`, of order `∏_v (count_v s)!`. Then
-`MulAction.card_orbit_mul_card_stabilizer_eq_card_group` gives
-`|arrangements s| · ∏count! = m!`, and `Nat.multinomial_spec` rewrites the right
-side, yielding the claim. (The stabilizer-order computation is the genuine
-residue; `Mathlib.Combinatorics.Enumerative.Bell` is the factorial-bookkeeping
-precedent.) -/
+This is the sign-free combinatorial heart of the orbit-size formula. It is
+**discharged** (no `sorry`) in `FourSquareDistributionOQ04ArrangeProof.lean` by an
+elementary fiberwise count on the precomposition map `σ ↦ g₀ ∘ σ :
+Equiv.Perm (Fin m) → arrangements s`: each fiber is a stabilizer coset of size
+`∏_v (count_v s)!`, so `m! = |arrangements s| · ∏count!`, and `Nat.multinomial_spec`
+cancels the product. This avoids `MulAction.orbit` and its `Fintype`-instance
+synthesis (the documented blocker for the orbit–stabilizer route). The proof
+file uses the identical `arrangements` definition, so the discharge transfers by
+definitional unfolding. -/
 theorem arrangement_card {m : ℕ} (s : Multiset ℤ) (hm : Multiset.card s = m) :
     (arrangements (m := m) s).card
-      = Nat.multinomial s.toFinset (fun v => s.count v) := by
-  sorry
+      = Nat.multinomial s.toFinset (fun v => s.count v) :=
+  FourSquareDistributionOQ04ArrangeProof.arrangement_card s hm
 
 /-- The arrangement count in the `m! / ∏count!` shape used by `shapeContribution`,
 obtained from `arrangement_card` through the proved reformulation bridge. -/

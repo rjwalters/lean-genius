@@ -105,6 +105,14 @@
   ],
   "sections": [
     {
+      "id": "statement-formalization",
+      "title": "Statement and Coordinate Formalization",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "The header docstring states Viviani's theorem and fixes the formalization: the unit-side triangle A=(0,0), B=(1,0), C=(1/2,√3/2), the three side-lines in normal form, the point-to-line distance formula, and the interior as the intersection of three half-planes. It also records that the proof is axiom- and sorry-free and lists the four main results.",
+      "mathContext": "Sides: $AB: Y=0$, $AC: \\sqrt3 X - Y = 0$, $BC: \\sqrt3 X + Y - \\sqrt3 = 0$. Interior: $y \\ge 0 \\wedge \\sqrt3 x - y \\ge 0 \\wedge \\sqrt3 x + y - \\sqrt3 \\le 0$. Distance to $aX+bY+c=0$: $\\dfrac{|ax+by+c|}{\\sqrt{a^2+b^2}}$."
+    },
+    {
       "id": "setup",
       "title": "Coordinate Setup and Distance Formula",
       "startLine": 48,
@@ -122,11 +130,19 @@
     },
     {
       "id": "main",
-      "title": "Viviani's Theorem and the Altitude",
+      "title": "Viviani's Theorem: the Exact Cancellation",
       "startLine": 91,
+      "endLine": 104,
+      "summary": "The theorem viviani rewrites the three perpendicular distances to their interior linear forms (dist_AB, dist_AC, dist_BC) and closes by a single ring identity: the x- and y-dependence cancels exactly, leaving the point-independent constant √3/2.",
+      "mathContext": "$d_{AB}+d_{AC}+d_{BC} = y + \\tfrac{\\sqrt3 x - y}{2} + \\tfrac{\\sqrt3 - \\sqrt3 x - y}{2} = \\tfrac{\\sqrt3}{2}$, the altitude — independent of $(x,y)$. The cancellation is exact, not an estimate, so `ring` discharges it."
+    },
+    {
+      "id": "altitude-nonvacuity",
+      "title": "Altitude Identification and Non-Vacuity",
+      "startLine": 106,
       "endLine": 123,
-      "summary": "Summing the three distances gives √3/2 by a single ring identity; altitude_eq identifies √3/2 as the altitude and interior_nonempty witnesses the centroid.",
-      "mathContext": "$d_{AB}+d_{AC}+d_{BC} = y + \\tfrac{\\sqrt3 x - y}{2} + \\tfrac{\\sqrt3 - \\sqrt3 x - y}{2} = \\tfrac{\\sqrt3}{2}$, the altitude — independent of $(x,y)$."
+      "summary": "altitude_eq identifies the constant √3/2 as the genuine altitude — the apex-to-base distance from C=(1/2,√3/2) to AB:Y=0 — justifying the right-hand side of viviani. interior_nonempty checks the centroid (1/2, √3/6) satisfies all three interior constraints, so the hypothesis set is non-vacuous (the theorem is not vacuously true).",
+      "mathContext": "Altitude: $\\operatorname{dist}((1/2,\\sqrt3/2), AB) = \\sqrt3/2$. Centroid $(1/2, \\sqrt3/6)$ satisfies $y\\ge0$, $\\sqrt3 x - y \\ge 0$, $\\sqrt3 x + y - \\sqrt3 \\le 0$ (closed by `positivity`/`nlinarith`)."
     }
   ],
   "crossReferences": [

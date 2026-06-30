@@ -1,0 +1,141 @@
+{
+  "id": "cantor-diagonalization-oq-01-oq-03",
+  "title": "König's Constraint on the Continuum, Axiom-Free",
+  "slug": "cantor-diagonalization-oq-01-oq-03",
+  "description": "The parent CH entry states that cf(2^ℵ₀) > ℵ₀ (hence 2^ℵ₀ ≠ ℵ_ω) but discharges it with two axioms. This entry eliminates both: König's cofinality bound is derived from Mathlib's Cardinal.lt_cof_power, and cf(ℵ_ω) = ℵ₀ from Ordinal.cof_omega/cof_omega0. Fully machine-checked, 0 axioms. Also proves the sharp form: 2^ℵ₀ differs from every cardinal of countable cofinality.",
+  "meta": {
+    "author": "Set Theory",
+    "sourceUrl": "https://en.wikipedia.org/wiki/K%C5%91nig%27s_theorem_(set_theory)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ03.lean",
+    "tags": [
+      "set-theory",
+      "continuum-hypothesis",
+      "cardinal-arithmetic",
+      "cofinality",
+      "konig-theorem",
+      "diagonalization"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": null,
+    "axiomCount": 0,
+    "assumptions": "None. Verified from Mathlib (only propext, Classical.choice, Quot.sound — the standard foundational axioms). The two axioms used by the parent entry cantor-diagonalization-oq-01 (konig_cofinality_bound, aleph_omega_cofinality_is_aleph_zero) are here proved as theorems.",
+    "lineCount": 173,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "originalContributions": [
+      "continuum definition (2^ℵ₀) and continuum_def",
+      "konig_cofinality_general: for every infinite κ, κ < cf(2^κ) — the cofinality form of König's theorem, via Cardinal.lt_cof_power with 1 < 2",
+      "continuum_cofinality_gt_aleph0: ℵ₀ < cf(2^ℵ₀), discharging the parent's axiom konig_cofinality_bound",
+      "continuum_uncountable_cofinality: ¬ (cf(2^ℵ₀) ≤ ℵ₀), the narrative restatement",
+      "cof_aleph_omega: cf(ℵ_ω) = ℵ₀, discharging the parent's axiom aleph_omega_cofinality_is_aleph_zero, via Cardinal.ord_aleph + Ordinal.cof_omega (Ordinal.isSuccLimit_omega0) + Ordinal.cof_omega0",
+      "continuum_ne_aleph_omega: 2^ℵ₀ ≠ ℵ_ω, now a theorem rather than a consequence of two axioms",
+      "continuum_ne_of_cof_aleph0: the sharp obstruction — 2^ℵ₀ differs from every cardinal of countable cofinality (ℵ_ω is one instance; ℵ_{ω+ω}, ℵ_{ω·ω}, … are equally excluded)",
+      "konig_constraint_summary: bundles ℵ₀ < 2^ℵ₀ (Cantor) ∧ ℵ₀ < cf(2^ℵ₀) (König) ∧ 2^ℵ₀ ≠ ℵ_ω, all axiom-free"
+    ],
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Cantor's diagonal argument (1891) proves ℵ₀ < 2^ℵ₀ but is silent on the value of the continuum within the aleph hierarchy. The one nontrivial ZFC-provable restriction on that value comes from König's inequality (1905): for families with κᵢ < λᵢ, Σ κᵢ < Π λᵢ. Its cardinal corollary is that cf(2^κ) > κ for every infinite κ — so the continuum has uncountable cofinality and cannot be a singular aleph of countable cofinality such as ℵ_ω. The parent entry recorded this constraint but axiomatized it; this entry shows it is fully provable in Mathlib.",
+    "problemStatement": "Can König's constraint on the continuum — cf(2^ℵ₀) > ℵ₀ and hence 2^ℵ₀ ≠ ℵ_ω — be proved in Lean without axioms, replacing the two axioms used by the parent CH entry?",
+    "text": "Yes. Mathlib's Cardinal.lt_cof_power gives κ < cf(b^κ) for infinite κ and 1 < b, instantly yielding ℵ₀ < cf(2^ℵ₀). Mathlib's Ordinal.cof_omega together with cof_omega0 and Cardinal.ord_aleph gives cf(ℵ_ω) = ℵ₀. Combining them proves 2^ℵ₀ ≠ ℵ_ω, and more generally that the continuum differs from every cardinal of countable cofinality.",
+    "proofStrategy": "Define continuum = 2^ℵ₀. (I) Derive the general cofinality bound κ < cf(2^κ) from Cardinal.lt_cof_power and specialize to κ = ℵ₀. (II) Compute cf(ℵ_ω) = ℵ₀ by rewriting (aleph ω).ord = ω_ ω (Cardinal.ord_aleph), applying Ordinal.cof_omega at the succ-limit ω (Ordinal.isSuccLimit_omega0), then Ordinal.cof_omega0. (III) Combine: equality 2^ℵ₀ = ℵ_ω would force cf(2^ℵ₀) = ℵ₀, contradicting (I); generalize to any cardinal of countable cofinality. (IV) Summary theorem bundling Cantor's gap with König's constraint, all axiom-free.",
+    "keyInsights": [
+      "König's theorem, in Mathlib as Cardinal.lt_cof_power, is exactly the engine the parent entry assumed: ℵ₀ ≤ a → 1 < b → a < (b^a).ord.cof",
+      "The cofinality of a singular aleph at a limit ordinal reduces to the cofinality of that ordinal: cf(ℵ_ω) = cf(ω) = ℵ₀, via Ordinal.cof_omega and cof_omega0",
+      "Cardinal.ord_aleph : (ℵ_ o).ord = ω_ o bridges the aleph (cardinal) and omega (initial-ordinal) hierarchies, letting the ordinal cofinality lemmas apply",
+      "The continuum's uncountable cofinality is sharp: it excludes not just ℵ_ω but every ℵ_α with cf(α) = ω — a single general theorem (continuum_ne_of_cof_aleph0) captures all such cases",
+      "This is the precise boundary of the diagonal argument: it proves a gap exists and (with König) that the gap has uncountable cofinality, but it cannot pin down 2^ℵ₀ in the hierarchy"
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic",
+      "Cofinality of cardinals and ordinals",
+      "König's theorem for cardinals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header-setup",
+      "title": "Module Header and Setup",
+      "summary": "File header stating the open question — can the parent's two König-related axioms be eliminated? — and the answer: yes, both are Mathlib theorems. Imports Mathlib cardinal/ordinal/cofinality/aleph theory, sets linters, opens Cardinal and Ordinal, defines continuum = 2^ℵ₀.",
+      "startLine": 1,
+      "endLine": 86,
+      "mathContext": "König's inequality Σ κᵢ < Π λᵢ underlies the cofinality bound cf(2^κ) > κ. The parent entry cantor-diagonalization-oq-01 assumed two consequences as axioms; this file discharges them."
+    },
+    {
+      "id": "konig-cofinality",
+      "title": "König's Cofinality Bound",
+      "summary": "konig_cofinality_general (κ < cf(2^κ) for infinite κ) from Cardinal.lt_cof_power; continuum_cofinality_gt_aleph0 (ℵ₀ < cf(2^ℵ₀)) specializing it — the parent's first axiom, now proved; continuum_uncountable_cofinality as the narrative restatement.",
+      "startLine": 87,
+      "endLine": 121,
+      "mathContext": "$\\operatorname{cf}(2^{\\aleph_0}) > \\aleph_0$: the continuum is not a countable supremum of smaller cardinals."
+    },
+    {
+      "id": "cof-aleph-omega",
+      "title": "Cofinality of ℵ_ω",
+      "summary": "cof_aleph_omega: cf(ℵ_ω) = ℵ₀ — the parent's second axiom, now proved via Cardinal.ord_aleph, Ordinal.cof_omega at the succ-limit ω, and Ordinal.cof_omega0.",
+      "startLine": 122,
+      "endLine": 138,
+      "mathContext": "$\\operatorname{cf}(\\aleph_\\omega) = \\operatorname{cf}(\\omega) = \\aleph_0$: $\\aleph_\\omega$ is the first singular aleph."
+    },
+    {
+      "id": "continuum-skips-singular-alephs",
+      "title": "The Continuum Skips the Singular Alephs",
+      "summary": "continuum_ne_aleph_omega (2^ℵ₀ ≠ ℵ_ω) and the sharp continuum_ne_of_cof_aleph0 (2^ℵ₀ differs from every cardinal of countable cofinality), with ℵ_ω recovered as a special case.",
+      "startLine": 139,
+      "endLine": 162,
+      "mathContext": "$2^{\\aleph_0} \\neq \\aleph_\\omega$, and indeed $2^{\\aleph_0} \\neq \\aleph_\\alpha$ for every $\\alpha$ with $\\operatorname{cf}(\\alpha) = \\omega$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary — The Diagonal Argument's Axiom-Free Reach",
+      "summary": "konig_constraint_summary bundles ℵ₀ < 2^ℵ₀ (Cantor), ℵ₀ < cf(2^ℵ₀) (König), and 2^ℵ₀ ≠ ℵ_ω, with the latter two no longer axioms.",
+      "startLine": 163,
+      "endLine": 173,
+      "mathContext": "All cofinality facts the diagonal argument plus ZFC establish about the continuum, with no axioms beyond Mathlib's foundations."
+    }
+  ],
+  "conclusion": {
+    "summary": "Eliminates the two axioms (konig_cofinality_bound, aleph_omega_cofinality_is_aleph_zero) used by the parent CH entry, proving cf(2^ℵ₀) > ℵ₀ and cf(ℵ_ω) = ℵ₀ from Mathlib, hence 2^ℵ₀ ≠ ℵ_ω. 0 sorries, 0 axioms, 8 theorems, 1 definition. Adds the sharp form: the continuum differs from every cardinal of countable cofinality.",
+    "implications": "König's constraint is the unique nontrivial ZFC-provable restriction on the size of the continuum, and it is fully constructible inside Mathlib's cardinal/cofinality API — no assumptions required. The diagonal argument establishes that a gap exists; König's theorem establishes that the gap has uncountable cofinality, forbidding the singular alephs while leaving CH and most ¬CH values open.",
+    "openQuestions": [
+      "Can the general singular-cardinal hypothesis (SCH) constraints on 2^κ for singular κ be formalized in the same style?",
+      "Does Mathlib admit a clean formalization of Easton's theorem (the freedom of 2^κ at regular κ subject only to monotonicity and König)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Ordinal",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Aleph",
+      "Mathlib.Logic.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "CantorDiagOQ01OQ03",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/CantorDiagonalizationOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-01",
+      "relationship": "extends",
+      "description": "Discharges the two axioms (konig_cofinality_bound, aleph_omega_cofinality_is_aleph_zero) that OQ01 used to state König's constraint on the continuum, proving them from Mathlib."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "OQ01OQ02 covers large cardinal axioms and CH; this sibling covers the ZFC-provable cofinality constraint on the continuum."
+    }
+  ],
+  "sorries": 0
+}

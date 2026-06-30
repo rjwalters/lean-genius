@@ -11,7 +11,7 @@
   3. **Zero-collision count**: #{f | X(f) = 0} = descFactorial d n
   4. **Probability formula**: Pr(X = 0) = descFactorial(d,n) / d^n
   5. **Indicator decomposition**: X = Σ_{i<j} I_{ij}
-  6. **Expected value**: E[X] = C(n,2)/d (with one HARD sorry)
+  6. **Expected value**: E[X] = C(n,2)/d (fully proved via exact double counting)
 
   ## Mathematical Insight
 
@@ -31,10 +31,10 @@
   - Pr(X = 0) formula: PROVED
   - Indicator decomposition: PROVED
   - X ≤ C(n,2): PROVED
-  - card {f | f(i)=f(j)} = d^{n-1}: SORRY (core counting lemma)
-  - card {(i,j) | i < j} = C(n,2): SORRY (ordered pair count)
-  - Σ_f X(f) = C(n,2)·d^{n-1}: SORRY (double counting, depends on above)
-  - E[X] = C(n,2)/d: PROVED assuming double counting
+  - card {f | f(i)=f(j)} = d^{n-1}: PROVED (core counting lemma)
+  - card {(i,j) | i < j} = C(n,2): PROVED (ordered pair count)
+  - Σ_f X(f) = C(n,2)·d^{n-1}: PROVED (double counting)
+  - E[X] = C(n,2)/d: PROVED (via double counting)
 -/
 
 import Mathlib.Data.Fintype.Card
@@ -191,7 +191,7 @@ theorem collisionCount_le_choose_two (f : Fin n → Fin d) :
 -- PART VII: Double Counting and Expected Value
 -- ============================================================
 
-/-- **Core counting lemma** (SORRY):
+/-- **Core counting lemma** (proved):
     #{f : Fin n → Fin d | f(i) = f(j)} = d^{n-1} for i ≠ j.
 
     Proof idea: Biject {f | f(i) = f(j)} with Fin d × (Fin(n-1) → Fin d):
@@ -222,7 +222,7 @@ theorem card_funs_shared_birthday (n d : ℕ) (i j : Fin n) (hij : i ≠ j) :
          ({j} : Finset (Fin n)).compl from by ext k; simp [Finset.mem_compl]]
   rw [Finset.card_compl, Fintype.card_fin, Finset.card_singleton]
 
-/-- **Σ_f X(f) = C(n,2) · d^{n-1}** (double counting, SORRY):
+/-- **Σ_f X(f) = C(n,2) · d^{n-1}** (double counting, proved):
 
     Swap the summation order (Fubini for finite sums):
       Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} Σ_f I_{ij}(f) = Σ_{i<j} d^{n-1} = C(n,2)·d^{n-1} -/

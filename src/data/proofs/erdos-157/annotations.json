@@ -38,7 +38,11 @@
       "b2 sequence",
       "sum free structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pairwise Sums",
+      "Unique Representation",
+      "Set Predicates"
+    ]
   },
   {
     "id": "ann-e157-sidon-alt",
@@ -189,7 +193,11 @@
       "density-argument",
       "impossibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Density Arguments",
+      "Counting Bounds",
+      "Asymptotic Basis Order"
+    ]
   },
   {
     "id": "ann-e157-counting",
@@ -207,7 +215,11 @@
       "erdos turan",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős–Turán Bound",
+      "Pairwise Sum Counting",
+      "Singer Difference Sets"
+    ]
   },
   {
     "id": "ann-e157-basis-lower",
@@ -225,7 +237,11 @@
       "density-lower-bound",
       "compatibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-fold Sumset Counting",
+      "Density Lower Bounds",
+      "Covering Arguments"
+    ]
   },
   {
     "id": "ann-e157-powers-sidon",
@@ -244,7 +260,11 @@
       "verified",
       "2-adic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Powers of Two",
+      "2-adic Valuation",
+      "Exponent Case Analysis"
+    ]
   },
   {
     "id": "ann-e157-example",

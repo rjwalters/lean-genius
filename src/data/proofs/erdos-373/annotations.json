@@ -17,7 +17,11 @@
       "diophantine",
       "abc-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorial notation n!",
+      "the ABC conjecture",
+      "Diophantine equations over the natural numbers"
+    ]
   },
   {
     "id": "ann-e373-factorial-product",
@@ -36,7 +40,10 @@
       "list",
       "product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the factorial function Nat.factorial",
+      "mapping a function over a list and taking its product"
+    ]
   },
   {
     "id": "ann-e373-solution-def",
@@ -55,7 +62,11 @@
       "predicate",
       "equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorial of a natural number",
+      "equality of natural numbers as a predicate",
+      "the factorialProduct of a list"
+    ]
   },
   {
     "id": "ann-e373-nontrivial",
@@ -74,7 +85,11 @@
       "non-trivial",
       "sorted"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lists sorted in descending order",
+      "the trivial identity n! = (n-1)! * n",
+      "bounding list entries with inequality constraints"
+    ]
   },
   {
     "id": "ann-e373-set-s",
@@ -93,7 +108,11 @@
       "solutions",
       "finiteness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation",
+      "the IsNontrivialSolution predicate",
+      "finiteness of a set"
+    ]
   },
   {
     "id": "ann-e373-solution-9",
@@ -112,7 +131,10 @@
       "native-decide",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide for closed numerical computation",
+      "computing factorial products by hand"
+    ]
   },
   {
     "id": "ann-e373-solution-10",
@@ -131,7 +153,10 @@
       "two-factor",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating 6! and 7!",
+      "uniqueness of a two-factor factorial representation"
+    ]
   },
   {
     "id": "ann-e373-solution-10-alt",
@@ -150,7 +175,10 @@
       "representation",
       "10"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating 3!, 5! and 7!",
+      "multiple factorial representations of the same number"
+    ]
   },
   {
     "id": "ann-e373-solution-16",
@@ -169,7 +197,10 @@
       "hickerson",
       "16"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the value 16! = 20922789888000",
+      "a largest factor a_1 close to n"
+    ]
   },
   {
     "id": "ann-e373-finiteness",
@@ -188,7 +219,11 @@
       "finiteness",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set S of non-trivial solutions",
+      "Set.Finite",
+      "conditional results under the ABC conjecture"
+    ]
   },
   {
     "id": "ann-e373-prime-factor",
@@ -207,7 +242,11 @@
       "reduction",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the largest prime factor P(n) of an integer",
+      "axiomatizing a function in Lean",
+      "the growth bound P(n(n-1)) > 4 log n"
+    ]
   },
   {
     "id": "ann-e373-erdos-reduction",
@@ -226,7 +265,11 @@
       "prime-bounds",
       "implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "largest prime factor bounds",
+      "logical implication between hypotheses",
+      "reducing a combinatorial problem to analytic number theory"
+    ]
   },
   {
     "id": "ann-e373-abc",
@@ -245,7 +288,11 @@
       "luca",
       "conditional"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ABC conjecture and the radical rad(abc)",
+      "Luca's 2007 conditional theorem",
+      "finiteness of the solution set S"
+    ]
   },
   {
     "id": "ann-e373-hickerson",
@@ -264,7 +311,11 @@
       "complete-list",
       "maximum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the four conjectured solutions as a finite set",
+      "set equality S = hickersonSolutions",
+      "an upper bound n <= 16"
+    ]
   },
   {
     "id": "ann-e373-suranyi",
@@ -283,6 +334,10 @@
       "uniqueness",
       "computational"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "two-factor equations n! = a!b!",
+      "uniqueness of 10! = 6!7!",
+      "large-scale computational verification"
+    ]
   }
 ]

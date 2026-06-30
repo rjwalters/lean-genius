@@ -168,6 +168,15 @@ theorem reps_card_eq_sum_shapeContribution (m n : ℕ) :
   refine Finset.sum_congr rfl (fun s hs => ?_)
   exact fiber_card_eq_shapeContribution s hs
 
+/-- The orbit-size hypothesis `FiberFormula m n` that `Decomp`'s
+`reps_card_eq_sum_contribution` consumes is **discharged** for every `m, n`. This
+closes the last open input of the `Decomp` blueprint, so
+`Decomp.reps_card_eq_sum_contribution m n (fiberFormula_holds m n)` is the same
+fully-verified headline as `reps_card_eq_sum_shapeContribution`. -/
+theorem fiberFormula_holds (m n : ℕ) :
+    FourSquareDistributionOQ04Decomp.FiberFormula m n :=
+  fun s hs => fiber_card_eq_shapeContribution s hs
+
 #check @sumsq_invariant
 #check @image_absMap_eq_arrangements
 #check @fiber_card_eq_shapeContribution

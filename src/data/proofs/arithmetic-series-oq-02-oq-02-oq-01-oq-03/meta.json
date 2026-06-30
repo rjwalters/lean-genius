@@ -1,0 +1,141 @@
+{
+  "id": "arithmetic-series-oq-02-oq-02-oq-01-oq-03",
+  "title": "Multivariate Generating-Function Proof of the k-Dimensional Hockey Stick",
+  "slug": "arithmetic-series-oq-02-oq-02-oq-01-oq-03",
+  "description": "Proves the multivariate generating-function identity ∏_j (∑_i C(a_j+i,a_j) z^i) = 1/(1-z)^{∑a_j+k} in Lean's PowerSeries ring, giving an alternative proof of the k-dimensional hockey stick via generating functions rather than convolution induction. The one-variable factor 1/(1-z)^{a+1} is identified with Mathlib's invOneSubPow S (a+1), and the entire identity collapses to the additivity of invOneSubPow in its exponent (invOneSubPow_add). The k=2 Cauchy product recovers the parent's parallel Vandermonde convolution as a one-line corollary, over any commutative ring and over ℕ. 13 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hockey-stick_identity",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "hockey-stick",
+      "generating functions",
+      "formal power series",
+      "Vandermonde",
+      "Cauchy product"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None beyond Mathlib's foundational axioms. `#print axioms` on the headline results (`multiGF_eq`, `multiGF_mul_one_sub_pow`, `parallel_vandermonde_nat`) reports only `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`. No `native_decide`, no literal `axiom` declarations, 0 sorries. Fully machine-checked. Self-contained over `Mathlib.RingTheory.PowerSeries.WellKnown` (the `invOneSubPow` API); does not import the parent combinatorial file.",
+    "lineCount": 268,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "originalContributions": [
+      "geomGF: the one-variable generating function ∑_i C(a+i,a) X^i identified with invOneSubPow S (a+1), with its coefficient formula geomGF_coeff",
+      "multiGFUnit_eq / multiGF_eq: the multivariate generating-function identity ∏_j geomGF a_j = invOneSubPow S (∑a_j + k), proved by one-line list induction whose engine is invOneSubPow_add — replacing the parent's induction on a numerical bound",
+      "multiGF_mul_one_sub_pow: the cleared-denominator form (∏_j geomGF a_j) · (1-X)^{∑a_j+k} = 1, certifying the product is exactly 1/(1-z)^{∑a_j+k}",
+      "multiGF_coeff: closed form of the GF coefficients as diagonal simplicial numbers C(n+∑a_j+k-1, ∑a_j+k-1)",
+      "parallel_vandermonde_gf / parallel_vandermonde_nat: the k=2 Cauchy product recovers the parent's parallel Vandermonde convolution ∑_{p+q=n} C(a+p,a)C(b+q,b) = C(a+b+1+n, a+b+1) via generating functions, over any CommRing and over ℕ"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The hockey stick identity $\\sum_{j=0}^n \\binom{j+k}{k} = \\binom{n+k+1}{k+1}$ and its higher-dimensional generalizations admit two classical proof styles. The **combinatorial / inductive** style (used by the parent file) folds dimensions one at a time using a convolution identity (parallel Vandermonde). The **generating-function** style, championed in Graham–Knuth–Patashnik's *Concrete Mathematics* (1994, Chapters 5 and 7), encodes each one-dimensional sequence as a power series and replaces convolution by multiplication.\n\nThe cornerstone is the formal power series identity $\\sum_{n \\geq 0} \\binom{n+k}{k} z^n = \\dfrac{1}{(1-z)^{k+1}}$. In Mathlib this is precisely `PowerSeries.invOneSubPow S (k+1)`: the chosen unit of `S⟦X⟧ˣ` whose value is `mk (fun n => Nat.choose (k+n) k)` and whose inverse is `(1 - X)^{k+1}` (file `Mathlib.RingTheory.PowerSeries.WellKnown`).\n\nOnce one-dimensional sequences become inverse powers of $(1-z)$, the multivariate hockey stick is a statement about a **product of power series**: $\\prod_{j=1}^k \\dfrac{1}{(1-z)^{a_j+1}} = \\dfrac{1}{(1-z)^{\\sum a_j + k}}$. This is exactly the open question arithmetic-series-oq-02-oq-02-oq-01-oq-03, the third open question raised by the parent k-dimensional hockey stick entry, which asked for the generating-function proof as an alternative to convolution induction.",
+    "problemStatement": "Prove, in Lean's formal power series ring $S\\llbracket X \\rrbracket$ over a commutative ring $S$, the multivariate generating-function identity\n$$\\prod_{j=1}^{k} \\left( \\sum_{i \\geq 0} \\binom{a_j + i}{a_j} z^{i} \\right) \\;=\\; \\frac{1}{(1-z)^{\\sum_j a_j + k}},$$\nwhose left-hand side expands to $\\sum_{i_1,\\dots,i_k \\geq 0} \\prod_j \\binom{i_j + a_j}{a_j}\\, z^{\\sum_j i_j}$. Derive from it the k-dimensional hockey stick (the coefficient identity) and, in the case $k=2$, recover the parent's parallel Vandermonde convolution.",
+    "proofStrategy": "Encode the dimension $k$ as the **length** of a parameter list `as = [a₁,…,aₖ]` and the offset $\\sum a_j$ as its **sum**.\n\n**Step 1 — one-dimensional factor.** Define `geomGF S a := (invOneSubPow S (a+1)).val`. By `invOneSubPow_val_succ_eq_mk_add_choose`, its $n$-th coefficient is $\\binom{a+n}{a}$ (lemma `geomGF_coeff`).\n\n**Step 2 — list induction.** `multiGFUnit_eq` proves $\\prod_j \\text{invOneSubPow}(a_j+1) = \\text{invOneSubPow}(\\sum a_j + k)$ by induction on the list. The base case is `invOneSubPow_zero`; the inductive step is a **single** application of `invOneSubPow_add` (additivity of the exponent) plus an `omega` bookkeeping step matching $(a+1) + (\\text{as.sum}+\\text{as.length}) = (a::as).\\text{sum} + (a::as).\\text{length}$.\n\n**Step 3 — series and coefficient forms.** Taking `.val` gives `multiGF_eq`; multiplying by `(1-X)^{…}` and using `val_inv` gives the division-free `multiGF_mul_one_sub_pow`; reading off coefficients via `invOneSubPow_val_eq_mk_sub_one_add_choose_of_pos` gives `multiGF_coeff`.\n\n**Step 4 — k=2 Cauchy product.** `coeff_mul` (the power-series Cauchy product over `Finset.antidiagonal`) turns the $n$-th coefficient of `geomGF a * geomGF b` into the convolution $\\sum_{p+q=n} \\binom{a+p}{a}\\binom{b+q}{b}$ (`twoDim_cauchy`); the closed form $\\binom{a+b+1+n}{a+b+1}$ comes from `multiGF_coeff` specialized to $[a,b]$ (`twoDim_closed`). Equating them yields parallel Vandermonde over any `CommRing` (`parallel_vandermonde_gf`); casting through `ℤ` and `exact_mod_cast` gives the `ℕ` form (`parallel_vandermonde_nat`).",
+    "keyInsights": [
+      "**Convolution becomes multiplication.** The parent proves the k-dimensional hockey stick by an induction whose every step invokes the parallel Vandermonde convolution. In the generating-function world that convolution *is* the product of two power series, so the entire induction is replaced by the single algebraic fact that `invOneSubPow` is additive in its exponent: `invOneSubPow_add : invOneSubPow S (d+e) = invOneSubPow S d * invOneSubPow S e`.",
+      "**The list encodes geometry.** The dimension $k$ is `as.length`, the weight offset $\\sum a_j$ is `as.sum`, and the total inverse power is `as.sum + as.length`. Peeling one element `a` off the list bumps the exponent by exactly $a+1$, which is precisely the exponent of that element's generating factor — so the induction step is pure bookkeeping (`omega`).",
+      "**invOneSubPow is the right Mathlib abstraction.** Rather than build `1/(1-z)^m` by hand, the proof reuses Mathlib's unit `invOneSubPow S m ∈ S⟦X⟧ˣ`. Its `.val` is the power series with coefficients $\\binom{m-1+n}{m-1}$ and its `.inv` is `(1-X)^m`; the unit structure makes `multiGF_mul_one_sub_pow` a one-liner via `val_inv`.",
+      "**One generating-function identity contains all dimensions and all parameters.** `multiGF_eq` is quantified over an arbitrary list `as`, so 1-D, 2-D, 3-D, … are uniform specializations (`oneDim_multiGF`, `twoDim_multiGF`, `threeDim_multiGF`) rather than separate proofs.",
+      "**Same theorem, two proofs.** `parallel_vandermonde_nat` reproves the parent's `parallel_vandermonde` (modulo `simplicial k n = C(n+k,k)` and the `range`↔`antidiagonal` reindexing) with no induction at all — a concrete demonstration that the generating-function method is genuinely an *alternative* proof, not a repackaging of the convolution argument."
+    ],
+    "prerequisites": [
+      "Mathlib.RingTheory.PowerSeries.WellKnown: invOneSubPow, invOneSubPow_add, invOneSubPow_zero, invOneSubPow_val_succ_eq_mk_add_choose, invOneSubPow_val_eq_mk_sub_one_add_choose_of_pos, invOneSubPow_inv_eq_one_sub_pow",
+      "PowerSeries.coeff_mk and PowerSeries.coeff_mul (Cauchy product over Finset.antidiagonal)",
+      "Units API: Units.val_mul and (u).val_inv for the group of units of S⟦X⟧",
+      "List operations: List.sum_cons, List.length_cons, List.map_cons, List.prod_cons",
+      "norm_cast / exact_mod_cast for transferring the ring identity over ℤ down to ℕ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble-imports",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring framing the open question (the multivariate generating-function identity) and the key observation that the one-variable factor 1/(1-z)^{a+1} is Mathlib's invOneSubPow S (a+1). Imports only Mathlib.RingTheory.PowerSeries.WellKnown; opens PowerSeries, Finset, and the PowerSeries / BigOperators scopes; fixes a commutative ring S.",
+      "mathContext": "The file is self-contained over Mathlib and deliberately does not import the parent combinatorial development — the link to parallel Vandermonde is re-derived in Part IV, demonstrating independence of the two proofs."
+    },
+    {
+      "id": "one-dim-gf",
+      "title": "Part I — The One-Dimensional Generating Function",
+      "startLine": 55,
+      "endLine": 73,
+      "summary": "Defines geomGF S a := (invOneSubPow S (a+1)).val, the generating function ∑_i C(a+i,a) X^i = 1/(1-X)^{a+1}. geomGF_def exposes the definition for rewriting; geomGF_coeff proves coeff n (geomGF S a) = C(a+n, a) via invOneSubPow_val_succ_eq_mk_add_choose and coeff_mk.",
+      "mathContext": "$G_a(z) = \\sum_{i \\geq 0} \\binom{a+i}{a} z^i = (1-z)^{-(a+1)}$. The coefficient $\\binom{a+n}{a}$ is the simplicial number $\\text{simplicial}\\,a\\,n$ of the parent file (there written $\\binom{n+a}{a}$; equal by commutativity of $+$ inside the binomial)."
+    },
+    {
+      "id": "unit-level-identity",
+      "title": "Part II — The Multivariate Identity at the Unit Level",
+      "startLine": 75,
+      "endLine": 97,
+      "summary": "multiGFUnit_eq: ∏_j invOneSubPow S (a_j+1) = invOneSubPow S (as.sum + as.length), by list induction. Base case via invOneSubPow_zero (empty product = 1); inductive step via invOneSubPow_add and an omega step matching (a+1)+(as.sum+as.length) with (a::as).sum+(a::as).length.",
+      "mathContext": "Working in the group of units S⟦X⟧ˣ lets the proof use the exponent-additivity law `invOneSubPow_add` directly, before taking values. The product of units is a single unit invOneSubPow S (∑a_j + k)."
+    },
+    {
+      "id": "series-level-identity",
+      "title": "Part III — The Multivariate Identity at the Series Level",
+      "startLine": 99,
+      "endLine": 146,
+      "summary": "multiGF_eq: ∏_j geomGF a_j = (invOneSubPow S (∑a_j+k)).val — the open question. multiGF_mul_one_sub_pow: (∏_j geomGF a_j)·(1-X)^{∑a_j+k} = 1, the division-free form, proved with invOneSubPow_inv_eq_one_sub_pow and val_inv. multiGF_coeff: coeff n (∏) = C(n+∑a_j+k-1, ∑a_j+k-1) when the total exponent is positive.",
+      "mathContext": "The series-level statement is the literal open question: the left side is the product of the one-variable generating functions, the right side is $1/(1-z)^{\\sum a_j + k}$. The coefficient form is the k-dimensional hockey stick over the *boundary* simplex $\\{\\sum i_j = n\\}$: $\\sum_{i_1+\\dots+i_k=n} \\prod_j \\binom{i_j+a_j}{a_j} = \\binom{n + \\sum a_j + k - 1}{\\sum a_j + k - 1}$."
+    },
+    {
+      "id": "k2-parallel-vandermonde",
+      "title": "Part IV — k=2 Recovers Parallel Vandermonde",
+      "startLine": 148,
+      "endLine": 204,
+      "summary": "twoDim_multiGF collapses the list [a,b] to geomGF a * geomGF b. twoDim_cauchy expands coeff n (geomGF a * geomGF b) via coeff_mul into the convolution ∑_{p+q=n} C(a+p,a)C(b+q,b). twoDim_closed gives the same coefficient as C(a+b+1+n, a+b+1). parallel_vandermonde_gf equates them over any CommRing; parallel_vandermonde_nat transfers to ℕ via ℤ and exact_mod_cast.",
+      "mathContext": "$\\sum_{p+q=n} \\binom{a+p}{a}\\binom{b+q}{b} = \\binom{a+b+1+n}{a+b+1}$. This is the parent's parallel_vandermonde (with simplicial $a\\,i = \\binom{i+a}{a}$ and Finset.antidiagonal in place of range), now obtained with zero induction — the Cauchy product of two geometric factors equals a single one."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part V — Special Cases and Summary",
+      "startLine": 206,
+      "endLine": 268,
+      "summary": "oneDim_multiGF: the single-parameter product is geomGF a itself. threeDim_multiGF: the product over [a,b,c] is invOneSubPow S (a+b+c+3), the generating function over a tetrahedron. Closing summary recaps the five parts and the key insight that exponent-additivity of invOneSubPow replaces the parent's convolution induction.",
+      "mathContext": "1-D recovers the classical hockey stick generating function; 3-D gives $1/(1-z)^{a+b+c+3}$, whose coefficients $\\binom{n+a+b+c+2}{a+b+c+2}$ count weighted lattice points in a tetrahedron."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multivariate generating-function identity ∏_j (∑_i C(a_j+i,a_j) z^i) = 1/(1-z)^{∑a_j+k} is proved in Lean's PowerSeries ring, answering the parent's third open question. The one-variable factor is Mathlib's invOneSubPow S (a+1); the whole identity is a one-line list induction whose engine is the exponent-additivity law invOneSubPow_add. The k=2 Cauchy product recovers the parent's parallel Vandermonde convolution with no induction. 13 theorems, 1 definition, 0 axioms, 0 sorries, fully machine-checked (only propext / Classical.choice / Quot.sound).",
+    "implications": "The entry makes precise the textbook slogan that 'convolution of sequences is multiplication of generating functions.' Where the parent file performs a dimension-by-dimension induction driven by parallel Vandermonde, this file performs no numerical induction at all: the dimension count is a list length, the weight offset is a list sum, and folding the simplex is multiplication of inverse powers of (1-z). Reusing Mathlib's invOneSubPow unit means the proof's mathematical content reduces to a single additivity lemma, illustrating how the right algebraic abstraction (the group of units of a power series ring) can compress a combinatorial induction into a homomorphism computation.",
+    "openQuestions": [
+      "Lift the boundary-simplex coefficient identity to the parent's full ≤-simplex statement inside the power series ring directly, by multiplying by the extra factor 1/(1-z) (which performs the partial-sum / prefix-sum operation on coefficients) and comparing with multiHockeySum.",
+      "Formalize the k-fold Cauchy product explicitly: prove coeff n ((as.map geomGF).prod) = ∑ over compositions i₁+…+iₖ=n of ∏_j C(i_j+a_j, a_j), generalizing twoDim_cauchy from k=2 to arbitrary k via List/Finset.antidiagonal.",
+      "Replace the single variable z by k independent variables z₁,…,z_k (MvPowerSeries) to obtain the genuinely multivariate generating function ∏_j 1/(1-z_j)^{a_j+1}, recovering the diagonal specialization z_j = z used here.",
+      "Generalize the base 1/(1-z) to other rational generating functions (e.g. cube faces 1/(1-z^{m+1})) and identify which polytope identities still reduce to exponent arithmetic in a unit group."
+    ]
+  },
+  "leanFile": {
+    "namespace": "ArithmeticSeriesOQ02OQ02OQ01OQ03",
+    "lineCount": 268,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01OQ03.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib.RingTheory.PowerSeries.WellKnown"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the k-dimensional hockey stick proved by induction on dimension. This file answers its third open question by giving the generating-function proof and recovering its parallel Vandermonde step (k=2) as a corollary."
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Grandparent entry providing the original parallel Vandermonde convolution and simplicial numbers, reproved here via the Cauchy product of generating functions."
+    }
+  ],
+  "sorries": 0
+}

@@ -1,7 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
-import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
-import Mathlib.RingTheory.RootsOfUnity.Basic
+import Mathlib.NumberTheory.Niven
 import Mathlib.Tactic
 
 /-
@@ -31,12 +30,21 @@ The proof has two parts:
 
 ## Status
 - [x] Enumeration tail proved from Mathlib trig bounds
-- [ ] Algebraic-integer core (Chebyshev / integrally-closed) — Aristotle target
+- [x] Algebraic-integer core discharged via Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi`
+
+## Note on Mathlib coverage
+Mathlib (as of v4.26.0) already contains a complete Niven's theorem in
+`Mathlib/NumberTheory/Niven.lean` (Alex Meiburg, Snir Broshi, 2025), including the
+algebraic-integer core `Real.isIntegral_two_mul_cos_rat_mul_pi` and a top-level
+`niven : cos θ ∈ {-1, -1/2, 0, 1/2, 1}`. This gallery entry is therefore a
+*presentation*, not original formalization: it keeps the explicit enumeration
+argument (`interval_cases` over `2 cos θ ∈ {-2,…,2}`) for pedagogy and discharges
+the deep algebraic-integer step by citing Mathlib.
 
 ## Mathlib Dependencies
-- `Real.cos_le_one`, `Real.neg_one_le_cos` — cosine bounds
-- `Polynomial.Chebyshev.T` — Chebyshev polynomials (for the core)
-- `IsIntegrallyClosed` — `ℤ` integrally closed in `ℚ` (for the core)
+- `Real.cos_le_one`, `Real.neg_one_le_cos` — cosine bounds (enumeration tail)
+- `Real.isIntegral_two_mul_cos_rat_mul_pi` — `2 cos(q π)` is integral over `ℤ`
+- `IsIntegral.exists_int_iff_exists_rat` — a rational algebraic integer is an integer
 -/
 
 namespace NivenTheorem
@@ -46,17 +54,24 @@ open Real
 /-- **Core lemma (Niven's key step).**
 If `θ` is a rational multiple of `π` and `cos θ` is rational, then `2·cos θ` is an integer.
 
-Reasoning: writing `θ = (m/n)·π` with `n ≠ 0`, we have `n·θ = m·π`, so
-`cos(n θ) = (-1)^m ∈ ℤ`. By the monic integer Chebyshev recurrence
-`2 cos(n θ) = Cₙ(2 cos θ)` (where `Cₙ` is monic over `ℤ`), the number `2 cos θ`
-is a root of the monic integer polynomial `Cₙ(X) - 2 cos(n θ)`, hence an algebraic
-integer. A rational algebraic integer is a rational integer (`ℤ` is integrally
-closed in `ℚ`), so `2 cos θ ∈ ℤ`. -/
+`θ = (m/n)·π = q·π` with `q := m/n : ℚ`, so by Mathlib's
+`Real.isIntegral_two_mul_cos_rat_mul_pi` the number `2 cos θ` is an algebraic integer
+over `ℤ`. Being also rational, it is a rational integer
+(`IsIntegral.exists_int_iff_exists_rat`, i.e. `ℤ` is integrally closed in `ℚ`),
+so `2 cos θ ∈ ℤ`.
+
+The classical from-scratch argument (2 cos θ is a root of the monic integer
+Vieta–Lucas/Chebyshev polynomial `Cₙ(X) - 2cos(nθ)`) is equivalent; we delegate to
+Mathlib's roots-of-unity proof of the same fact. -/
 theorem two_cos_int_of_rational
     (θ : ℝ) (m n : ℤ) (hn : n ≠ 0) (hθ : θ = (m / n : ℝ) * π)
     (hcos : ∃ r : ℚ, Real.cos θ = r) :
     ∃ k : ℤ, 2 * Real.cos θ = k := by
-  sorry
+  obtain ⟨r, hr⟩ := hcos
+  have hq : θ = ((m / n : ℚ) : ℝ) * π := by rw [hθ]; push_cast; ring
+  have hint : IsIntegral ℤ (2 * Real.cos θ) := by
+    rw [hq]; exact Real.isIntegral_two_mul_cos_rat_mul_pi (m / n)
+  exact hint.exists_int_iff_exists_rat.mp ⟨2 * r, by rw [hr]; push_cast; ring⟩
 
 /-- **Niven's Theorem.**
 If `θ` is a rational multiple of `π` and `cos θ` is rational, then

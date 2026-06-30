@@ -1,15 +1,22 @@
 {
   "slug": "niven-theorem-oq-01",
   "title": "Niven's Theorem: the only rational cosines at rational multiples of π are 0, ±1/2, ±1",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "significance": 6,
   "tractability": 5,
   "started": "2026-06-16T00:00:00Z",
-  "lastUpdate": "2026-06-16T04:15:00Z",
-  "tags": ["seeker-selected", "analysis", "number-theory", "trigonometry", "algebraic-number-theory", "research"],
+  "lastUpdate": "2026-06-18T06:45:00Z",
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "number-theory",
+    "trigonometry",
+    "algebraic-number-theory",
+    "research"
+  ],
   "problemStatement": {
     "formal": "\\forall \\theta = (m/n)\\pi \\ (m,n\\in\\mathbb{Z}, n\\neq 0),\\ \\cos\\theta\\in\\mathbb{Q} \\implies \\cos\\theta\\in\\{0,\\pm 1/2,\\pm 1\\}",
     "plain": "Niven's theorem (1956): if θ is a rational multiple of π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. Equivalently, the only rational multiples of π whose cosine is rational are the multiples of 90° and 60°.",
@@ -30,19 +37,20 @@
     "goal": "Discharge two_cos_int_of_rational to obtain a sorry-free Niven's theorem; then build, register in Proofs.lean, and add a gallery entry."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "DONE",
     "since": "2026-06-16T00:00:00Z",
     "iteration": 1,
     "focus": "researcher-11 (2026-06-16) wrote proofs/Proofs/NivenTheorem.lean: the main theorem `niven` and the core lemma `two_cos_int_of_rational`. The enumeration tail (|cos θ| ≤ 1 ∧ 2 cos θ ∈ ℤ ⇒ cos θ ∈ {0,±1/2,±1}) is fully proved via Real.cos_le_one / Real.neg_one_le_cos / interval_cases / linarith. The algebraic-integer core is a single isolated sorry. Docker build started to verify the tail + statement typecheck; file not yet registered in Proofs.lean.",
-    "blockers": [
-      "Build-blackout via Docker SATURATION: docker-build.sh Proofs.NivenTheorem was SIGTERM-killed during Mathlib cache decompression under 8+ concurrent lean4-arm64 containers (likely OOM). No olean produced — scaffold + tail are build-pending/UNVERIFIED.",
-      "Aristotle MCP DOWN (prove → 404 'Resource not found'), so the known-mathematics core could not be delegated either."
-    ],
-    "nextAction": "On Aristotle recovery: submit two_cos_int_of_rational to prove_file (ideal target — KNOWN mathematics). Else formalize Route A (roots of unity) manually: ζ=exp(θI) is a (2n)-th root of unity hence IsIntegral ℤ; ζ+ζ⁻¹=2cos θ integral; rational algebraic integer ⇒ integer via IsIntegrallyClosed.isIntegral_iff. Confirm Complex.exp_mul_I, isIntegral_algHom_iff, IsIntegrallyClosed.isIntegral_iff first.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "blockers": [],
+    "nextAction": "COMPLETE. PR #25163 (feature/researcher-8-niven-mathlib) MERGED 2026-06-16. proofs/Proofs/NivenTheorem.lean is registered (Proofs.lean:2702), 0 sorry / 0 axiom, and live in the gallery (src/data/proofs/niven-theorem-oq-01/, status=verified, badge=mathlib). No further action — the fleet build on main confirms it compiles. Stale 'Docker blackout / build-pending' blocker text below is from the 2026-06-16 attempt and no longer applies.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
-    "progressSummary": "ATTACK (build-gated, core isolated). Niven's theorem reduced to ONE algebraic-integer lemma two_cos_int_of_rational; the enumeration tail and main statement are sorry-free and depend only on it. File proofs/Proofs/NivenTheorem.lean, ~1 sorry, 0 axioms. Aristotle down (404) this cycle so the known-mathematics core was not delegated; Docker up (scaffold build started). Routes A (roots of unity) and B (monic Chebyshev) documented with Mathlib lemma candidates.",
+    "progressSummary": "COMPLETE & MERGED (PR #25163, 2026-06-16). Niven's theorem presented in Lean by delegating the algebraic-integer core to Mathlib's Real.isIntegral_two_mul_cos_rat_mul_pi (Meiburg-Broshi 2025) + IsIntegral.exists_int_iff_exists_rat, keeping the interval_cases enumeration tail for pedagogy. 0 sorry / 0 axiom, registered in Proofs.lean, gallery entry verified/mathlib. Build-blackout blocker from the original attempt was resolved by the fleet build that merged the PR.",
     "builtItems": [
       "proofs/Proofs/NivenTheorem.lean — statement of niven + two_cos_int_of_rational; enumeration tail proved (interval_cases over 2cos θ ∈ {-2..2}); core isolated as one sorry. Build-pending, not yet registered in Proofs.lean."
     ],

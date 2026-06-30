@@ -59,9 +59,9 @@
       "sigma_ratio_2a_3b: σ(2^a·3^b) = (2^(a+1)-1)·((3^(b+1)-1)/2) via multiplicativity",
       "sigma_ratio_2a_3b_bound: σ(2^a·3^b) ≤ 3·2^a·3^b"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 352,
-    "assumptions": "2 axiom(s): erdos_1054_almost_all (open conjecture), tao_counterexample_1054 (Tao's result). All theorems fully proved.",
+    "assumptions": "3 assumptions: 2 axioms — erdos_1054_almost_all (open conjecture) and tao_counterexample_1054 (Tao's result) — plus Lean.ofReduceBool, introduced by native_decide. The concrete σ-witness theorems (f_12_le_6 … f_19344_le_5040), inf_many_small_ratio_one_third, and coprime_pow2_pow3 (feeding sigma_ratio_2a_3b) are discharged by native_decide, which trusts the compiler's kernel reduction (Lean.ofReduceBool) rather than being kernel-checked axiom-free. All other theorems are fully proved.",
     "theoremCount": 24,
     "definitionCount": 4
   },

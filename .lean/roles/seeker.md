@@ -21,6 +21,48 @@ Problems are extracted from the lean-genius proof gallery:
 | **Millennium** | Millennium Prize Problems | `millenniumProblem` field |
 | **Hilbert** | Hilbert's 23 Problems | `hilbertNumber` field |
 
+## CRITICAL: OQ-Chain Guardrails (MANDATORY)
+
+Open-question (OQ) problems spawn a **new gallery entry** from an existing entry's open question; that child then exposes its *own* open questions, which can be spawned again — recursively, with no natural stopping point. Unbounded, this produces degenerate chains like `abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01` (eleven levels deep, with seven consecutive `-oq-01` segments re-spawning the same "first open question" forever).
+
+**Before selecting or initializing ANY problem whose slug contains `-oq-`, apply all three guards. REJECT the candidate if it fails any of them.**
+
+```bash
+SLUG="$PROBLEM_ID"
+
+# Guard 1 — Recursion-depth cap: at most 3 -oq- segments in a chain.
+DEPTH=$(echo "$SLUG" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
+if [ "$DEPTH" -gt 3 ]; then
+  echo "REJECT $SLUG: OQ chain depth $DEPTH exceeds cap of 3"
+  # skip this candidate; pick another problem
+fi
+
+# Guard 2 — Same-index repetition: refuse a slug whose tail repeats one OQ index.
+# e.g. ...-oq-01-oq-01-oq-01 is a single question being re-spawned in a loop.
+# Portable + backreference-free (POSIX ERE has no backrefs; the agents' `grep`
+# resolves to ugrep, which errors on `\1`): list each -oq-NN one per line, then
+# flag 3+ consecutive identical indices via `uniq -c` + `awk`.
+if echo "$SLUG" | grep -oE -- '-oq-[0-9]+' | uniq -c | awk '$1>=3{f=1} END{exit !f}'; then
+  echo "REJECT $SLUG: repeats the same -oq-NN index 3+ times in a row"
+  # skip this candidate
+fi
+
+# Guard 3 — Sibling dedupe: refuse a child whose math content duplicates an
+# existing sibling. Compare the proposed problem statement against siblings
+# sharing the same parent prefix.
+PARENT=$(echo "$SLUG" | sed 's/-oq-[0-9]*$//')
+ls -d src/data/proofs/"$PARENT"-oq-* 2>/dev/null   # inspect existing siblings
+# If any sibling's conclusion/problemStatement is substantively the same
+# question, REJECT and pick a different open question.
+```
+
+**Rules:**
+- **Depth cap:** never spawn a child at depth > 3 (`-oq-` appears at most 3 times in the slug). Past depth 3, the marginal mathematical value is essentially zero and the page tree becomes unreadable.
+- **No same-index loops:** never spawn a child whose slug tail repeats the same `-oq-NN` index three or more times consecutively. A genuinely new question gets a new index; a repeated index signals the loop is re-asking the same question.
+- **Dedupe siblings:** never spawn a child whose mathematical content duplicates an existing sibling under the same parent. Prefer a distinct open question, or skip.
+
+These guards also belong in the Candidate Quality Gate below — reject violators there too, so they never reach `research.sh init`.
+
 ## The Problem Registry
 
 Run the extractor to generate the problem list:
@@ -55,7 +97,7 @@ This creates `.lean/research/problems.json` with all 400+ open problems.
 
 Before selecting problems, refresh the candidate pool to include newly enriched gallery proofs:
 
-1. Extract problems from gallery: `npx tsx .lean/scripts/extract-problems.ts --json > .lean/research/problems.json`
+1. Extract problems from gallery: `npx tsx .lean/scripts/extract-problems.ts --json` (the script writes `.lean/research/problems.json` itself — do **not** add a `> .lean/research/problems.json` redirect, which clobbers the file and corrupts the reservoir)
 2. Sync to candidate pool: `python3 research/db/sync_pool.py`
 3. Proceed with selection from the refreshed pool
 
@@ -148,6 +190,14 @@ python3 research/db/sync_pool.py
 jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" .lean/state/candidate-pool.json > /dev/null
 
 # Step 4e: Initialize research workspace
+# GUARD: re-check OQ chain depth before spawning (never init past depth 3).
+OQ_DEPTH=$(echo "$PROBLEM_ID" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
+# Same-index re-check: backreference-free (ugrep rejects `\1` in ERE). List each
+# -oq-NN one per line, then flag 3+ consecutive identical indices.
+if [ "$OQ_DEPTH" -gt 3 ] || echo "$PROBLEM_ID" | grep -oE -- '-oq-[0-9]+' | uniq -c | awk '$1>=3{f=1} END{exit !f}'; then
+  echo "ABORT: $PROBLEM_ID violates OQ-chain guardrails (depth=$OQ_DEPTH). Pick a shallower problem."
+  exit 1
+fi
 ./.lean/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
 
 # Update problem.md with the specific question
@@ -207,6 +257,9 @@ function select_problem():
 Before returning any candidate, apply these rejection criteria:
 
 **REJECT if:**
+- **OQ chain depth > 3** (slug contains more than three `-oq-` segments) — see OQ-Chain Guardrails above
+- **Slug repeats the same `-oq-NN` index 3+ times in a row** (e.g. `-oq-01-oq-01-oq-01`) — a re-spawn loop
+- **Content duplicates an existing sibling** under the same parent prefix
 - Problem is a near-duplicate of any problem completed in the last 30 days
   (check `research/problems/*/knowledge.md` for similar titles/descriptions)
 - Problem is a shallow specialization or notation variant of an existing gallery proof

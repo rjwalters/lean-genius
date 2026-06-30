@@ -304,3 +304,62 @@ untouched.
 
 Files: `verify_birthday_oq03_g1_saddle_symbolic.py`, `verify_birthday_oq03_g1_solve.py`,
 `verify_birthday_oq03_g1_confirm.py` (all new).
+
+## Session 2026-06-18 (researcher-2) — SATURATION CONFIRMED (analytic frontier fully closed)
+
+**Mode**: REVISIT (RICH; build-free audit). **Outcome**: no new advance — confirmed the
+analytic expansion is exhausted and recorded the closures the session log was missing.
+
+The full gap expansion `gap(d) = g_inf + g1·d^{-1/3} + c·d^{-2/3} + g3·d^{-1} + …` now has
+**every coefficient in closed form, all merged**:
+- `g_inf = -(3/2)ln2 = -c₀³/4` — #24414 (S5).
+- `g1 = (5/24)c₀ln2 = (5/144)c₀⁴` — #24729 (S9).
+- `c = c₀²(3/4 - (61/120)ln2) = 6^{2/3}(ln2)^{2/3}(90 - 61 ln2)/120 ≈ 1.0283769358` and the
+  bonus `g3 = 21 ln2(19 ln2 - 40)/160 ≈ -2.4408929945` — #24806 (S10, researcher-7), via
+  `verify_birthday_oq03_c_coefficient.py` (the `c`-was-open caveat from S7/S8/S9 is RESOLVED;
+  S9's `c` was contaminated by un-back-substituted n_W coefficients, fixed in S10).
+
+**This closes the open thread S9 left.** There is no remaining build-free analytic advance:
+the de-Poissonization series is pinned to 4 orders and the registered file
+`BirthdayProblemOQ03OQ01OQ02.lean` (2263 L, 1 sound axiom `p_no_triple_tendsto`, 0 sorries)
+is complete. The **sole** remaining advance is the Docker-gated M2 Lean formalization of the
+elementary `E[W]` binomial-tail expansion to the `c₀/4` term (leading `Θ(d^{-1/3})` only —
+the `1/c₀` sub-coefficient is heuristic for the integer median per Insight 5). Deferred this
+session: host build farm severely oversubscribed (9+ concurrent Docker builds). Lone axiom
+untouched; no Lean changed. Released without a redundant PR-of-record beyond this note.
+
+## S11 (researcher-2, 2026-06-18) — ENRICH: sharp decimal bounds on the leading-order constant (2 axiom-free thms)
+
+**Mode**: REVISIT → ACT-enrich. The Lean track is genuinely ACT-blocked (sole
+axiom `p_no_triple_tendsto` = deep Chen-Stein Poisson limit, not in Mathlib 4.26,
+not single-session-tractable — confirmed by S2/S10 + Aristotle 404). No axiom
+elimination possible. The analytic track is closed-form complete through `d^{-1}`.
+Found and filled a genuine *axiom-free* gap in the registered file instead.
+
+### Gap identified
+`asympThreshold_ratio` already pins the leading-order scaling constant to the
+EXACT symbolic value `(6 ln 2)^{1/3}`, but nothing gave a numerical handle on it,
+and `asympThreshold_order` only crudely bracketed the threshold in
+`[d^{2/3}, 3·d^{2/3}]` (constant in `[1,3]`, true value ≈ 1.6081460).
+
+### Added (`BirthdayProblemOQ03OQ01OQ02.lean` 2263→2311 L, theoremCount 59→61, axiomCount unchanged 1)
+1. `asympThreshold_const_bounds : 1.608 < (6 ln 2)^{1/3} < 1.609`. Same
+   rpow-monotonicity route as `asympThreshold_d365_bounds`: rewrite
+   `1.608 = (1.608³)^{1/3}` / `1.609 = (1.609³)^{1/3}`, compare cubes via
+   `Real.rpow_lt_rpow`, close numerics with `Real.log_two_gt_d9` (0.6931471803)
+   / `Real.log_two_lt_d9` (0.6931471808). Arithmetic: `1.608³ = 4.157747712 <
+   6·0.6931471803 = 4.1588830818 ≤ 6 ln 2`; `6 ln 2 ≤ 6·0.6931471808 =
+   4.1588830848 < 4.165510729 = 1.609³`. (margins ~1e-3, comfortable for nlinarith.)
+2. `asympThreshold_sharp_bounds (d) (hd : 1 ≤ d) :
+   1.608·d^{2/3} < asympThreshold d < 1.609·d^{2/3}`. Multiplies (1) through the
+   positive factor `d^{2/3}` after the verbatim `asympThreshold_ratio` rewrite
+   from `asympThreshold_order` (`mul_lt_mul_of_pos_right`). Refines the [1,3]
+   bracket to the true 3-decimal constant.
+
+### Provenance / notes
+- Verify-by-construction primary (proofs are verbatim-pattern clones of compiling
+  siblings `asympThreshold_d365_bounds`/`asympThreshold_order` in the SAME file;
+  `Real.rpow_lt_rpow` signature + `Real.log_two_{gt,lt}_d9` confirmed used in-file/in-repo;
+  arithmetic checked as exact rationals). Docker build attempted under contention
+  (5 lean containers, load ~14, cold worktree cache); deployer build-gate authoritative.
+- The deep axiom and all prior content are untouched; status stays axiomatized/axiom.

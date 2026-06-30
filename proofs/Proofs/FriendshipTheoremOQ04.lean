@@ -66,6 +66,35 @@ that has no infinite analogue:
   `Set.BijOn` so it carries content on infinite neighbourhoods (where `ncard = 0`),
   with no finiteness used.
 
+* `edge_unique_triangle` — **every edge lies in a unique triangle (local windmill,
+  unconditional).** For any adjacent pair the apex of their triangle is the unique
+  common neighbour, so `N(u)` induces a *perfect matching*: each neighbour of `u` has
+  exactly one neighbour inside `N(u)`. This holds with or without a universal vertex,
+  so it is the residual windmill trace surviving in the hub-free C₅ counterexample.
+  A corollary of the reusable `∃!` form `common_neighbor_unique`. No finiteness used.
+
+* `adjacent_dominating_implies_universal` / `no_universal_regular` — **the bridge to
+  unconditional regularity.** If an adjacent pair `u`, `v` *dominates* (every vertex is
+  adjacent to one of them, i.e. the edge has no common non-neighbour) then `u` or `v`
+  is universal. Contrapositively, in a *hub-free* friendship graph every edge has a
+  common non-neighbour, so — combining the non-adjacent bijection with the
+  common-non-neighbour bijection — the graph is **regular**: *every* pair of vertices
+  has equinumerous neighbourhoods (`no_universal_regular`). This upgrades the earlier
+  *conditional* regularity engine (`neighborSet_equinum_of_common_nonneighbor`) to an
+  unconditional "no universal ⟹ regular", the exact ℵ₀-regular shape of the C₅
+  free-amalgamation counterexample. Finiteness-free throughout; the spectral step the
+  finite proof would invoke next has no infinite analogue.
+
+* `no_universal_infinite_aleph0_regular` — **the counterexample shape, assembled.** An
+  *infinite* hub-free friendship graph is **ℵ₀-regular**: every neighbourhood is infinite
+  *and* all neighbourhoods are pairwise equinumerous. Combines
+  `infinite_friendship_has_infinite_degree` (some infinite-degree vertex) with
+  `no_universal_regular` (all neighbourhoods equinumerous) to push infiniteness onto
+  *every* vertex. Together with `unique_infinite_degree_vertex` (with a hub: exactly one
+  infinite-degree vertex) this completes the structural dichotomy — a friendship graph is
+  either a windmill with a single hub, or hub-free and ℵ₀-regular — entirely without the
+  spectral argument.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -314,5 +343,285 @@ theorem nonadjacent_neighborSet_equinum (hF : IsFriendshipGraph G)
     obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp (hF w v hwv)
     rw [ha, Set.mem_singleton_iff] at hy_mem hfw_mem
     rw [hfw_mem, hy_mem]
+
+/-- **Partnership is symmetric (the windmill is a perfect matching off the centre).**
+In a friendship graph with universal vertex `c`, if a non-centre vertex `u` has
+`N(u) = {c, w}` then its partner `w` satisfies `N(w) = {c, u}` in turn. So the
+"partner" relation on non-centre vertices is an involution: the graph with the
+centre deleted is a disjoint union of edges (the windmill spokes), each triangle
+`{c, u, w}` meeting the others only at the hub `c`. This sharpens
+`universal_noncentral_neighborSet`, which gives each vertex a partner but does not
+say the pairing is mutual. No `[Fintype V]` assumption is used. -/
+theorem universal_partner_symm (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    ∃ w, w ≠ c ∧ G.neighborSet u = {c, w} ∧ G.neighborSet w = {c, u} := by
+  obtain ⟨w, hwc, _, hadj_uw, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  obtain ⟨u', _, _, _, hset_w⟩ := universal_noncentral_neighborSet hF c hc w hwc
+  -- `u` is a neighbour of `w` and is not the centre, so it is `w`'s unique partner `u'`.
+  have hu_mem : u ∈ G.neighborSet w := (G.mem_neighborSet w u).mpr hadj_uw.symm
+  rw [hset_w] at hu_mem
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hu_mem
+  rcases hu_mem with h | h
+  · exact absurd h hu
+  · rw [← h] at hset_w
+    exact ⟨w, hwc, hset_u, hset_w⟩
+
+/-- **Each non-centre vertex has a unique partner.** In a friendship graph with a
+universal vertex `c`, every vertex `u ≠ c` is adjacent to *exactly one* non-centre
+vertex. Combined with `universal_partner_symm` this is the perfect-matching
+description of the windmill spokes. -/
+theorem universal_noncentral_unique_partner (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    ∃! w, w ≠ c ∧ G.Adj u w := by
+  obtain ⟨w, hwc, _, hadj_uw, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  refine ⟨w, ⟨hwc, hadj_uw⟩, ?_⟩
+  rintro w' ⟨hw'c, hadj_uw'⟩
+  have hmem : w' ∈ G.neighborSet u := (G.mem_neighborSet u w').mpr hadj_uw'
+  rw [hset_u] at hmem
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+  rcases hmem with h | h
+  · exact absurd h hw'c
+  · exact h
+
+/-- **Off-centre adjacency is partnership.** For two non-centre vertices `u`, `u'`
+of a friendship graph with universal vertex `c`, they are adjacent iff they are each
+other's partners (`N(u) = {c, u'}`). This pins down the entire edge set: the hub `c`
+is joined to everything, and the only other edges pair partners — exactly the
+windmill. No `[Fintype V]` assumption is used. -/
+theorem universal_noncentral_adj_iff (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c)
+    {u u' : V} (hu : u ≠ c) (hu' : u' ≠ c) :
+    G.Adj u u' ↔ G.neighborSet u = {c, u'} := by
+  obtain ⟨w, _, _, _, hset_u⟩ := universal_noncentral_neighborSet hF c hc u hu
+  constructor
+  · intro hadj
+    have hmem : u' ∈ G.neighborSet u := (G.mem_neighborSet u u').mpr hadj
+    rw [hset_u] at hmem
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+    rcases hmem with h | h
+    · exact absurd h hu'
+    · rw [h]; exact hset_u
+  · intro hset
+    have hmem : u' ∈ G.neighborSet u := by rw [hset]; simp
+    exact (G.mem_neighborSet u u').mp hmem
+
+/-- **Regularity across an adjacent pair (finiteness-free, conditional).** If two
+vertices `u`, `v` of a friendship graph share a common *non-neighbour* `z` — a vertex
+adjacent to neither — then their neighbourhoods are equinumerous. The proof composes
+the two non-adjacent bijections `N(u) ≃ N(z) ≃ N(v)` supplied by
+`nonadjacent_neighborSet_equinum`, bridging the *adjacent* case that lemma cannot
+reach on its own (`nonadjacent_neighborSet_equinum` needs `u`, `v` themselves
+non-adjacent). This is the missing step toward full regularity of a hub-free
+friendship graph: in the C₅ free-amalgamation counterexample every pair of vertices —
+adjacent or not — admits a common non-neighbour, so the graph is ℵ₀-regular. No
+finiteness is used; the conclusion is a `Set.BijOn`, carrying content even on infinite
+neighbourhoods. -/
+theorem neighborSet_equinum_of_common_nonneighbor (hF : IsFriendshipGraph G)
+    {u v z : V} (hzu : ¬ G.Adj u z) (hzv : ¬ G.Adj v z) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  -- `N(u) ≃ N(z)` since `u` and `z` are non-adjacent.
+  obtain ⟨f, hf⟩ := nonadjacent_neighborSet_equinum hF hzu
+  -- `N(z) ≃ N(v)` since `z` and `v` are non-adjacent.
+  obtain ⟨g, hg⟩ := nonadjacent_neighborSet_equinum hF (fun h => hzv h.symm)
+  exact ⟨g ∘ f, hg.comp hf⟩
+
+/-- **Regularity dichotomy of a friendship graph (conditional, finiteness-free).** Any
+two vertices `u`, `v` have equinumerous neighbourhoods whenever they are *either*
+non-adjacent *or* share a common non-neighbour. Combined with the windmill structure
+(`universal_noncentral_neighborSet`), this frames the structural dichotomy behind
+OQ-04: a friendship graph *with* a universal vertex is a windmill (every off-hub vertex
+has degree two), while one *without* a hub is regular on every pair admitting a common
+non-neighbour — precisely the ℵ₀-regular shape of the C₅ free-amalgamation
+counterexample. No finiteness is used. -/
+theorem neighborSet_equinum_of_nonadj_or_common_nonneighbor (hF : IsFriendshipGraph G)
+    {u v : V} (h : ¬ G.Adj u v ∨ ∃ z, ¬ G.Adj u z ∧ ¬ G.Adj v z) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  rcases h with hnadj | ⟨z, hzu, hzv⟩
+  · exact nonadjacent_neighborSet_equinum hF hnadj
+  · exact neighborSet_equinum_of_common_nonneighbor hF hzu hzv
+
+/-- **Common neighbours are unique (finiteness-free `∃!`).** Every two *distinct*
+vertices of a friendship graph have *exactly one* common neighbour. This upgrades
+`exists_common_neighbor` (which only gives existence) to the full unique-existence
+statement directly from `ncard = 1`, packaging the defining property in the
+reusable `∃!` form. No `[Fintype V]` assumption is used. -/
+theorem common_neighbor_unique (hF : IsFriendshipGraph G) {a b : V} (hab : a ≠ b) :
+    ∃! x, G.Adj a x ∧ G.Adj b x := by
+  obtain ⟨x, hx⟩ := Set.ncard_eq_one.mp (hF a b hab)
+  refine ⟨x, ?_, ?_⟩
+  · have hmem : x ∈ G.commonNeighbors a b := by
+      rw [hx]; exact Set.mem_singleton_iff.mpr rfl
+    rwa [SimpleGraph.mem_commonNeighbors] at hmem
+  · intro y hy
+    have hymem : y ∈ G.commonNeighbors a b :=
+      (SimpleGraph.mem_commonNeighbors G).mpr hy
+    rw [hx, Set.mem_singleton_iff] at hymem
+    exact hymem
+
+/-- **Every edge lies in a unique triangle (the local windmill, finiteness-free).**
+For an adjacent pair `u`, `v`, there is a *unique* vertex `w` adjacent to both — the
+apex of the one triangle on the edge `{u, v}`. Equivalently, the subgraph induced on
+`N(u)` is a **perfect matching**: each neighbour `v` of `u` has exactly one neighbour
+inside `N(u)`, namely that apex. This local triangle structure holds *unconditionally*
+— with or without a universal vertex — so it persists in the hub-free C₅
+free-amalgamation counterexample, where it is the residual "every edge in one
+triangle" trace of the windmill shape. A direct corollary of `common_neighbor_unique`
+(`u ≠ v` from `G.Adj u v`); no `[Fintype V]` assumption is used. -/
+theorem edge_unique_triangle (hF : IsFriendshipGraph G) {u v : V} (huv : G.Adj u v) :
+    ∃! w, G.Adj u w ∧ G.Adj v w :=
+  common_neighbor_unique hF huv.ne
+
+/-- **The bridge lemma: a dominating edge forces a hub (finiteness-free).** If an
+adjacent pair `u`, `v` of a friendship graph *dominates* the graph — every vertex `z`
+is adjacent to `u` or to `v` (equivalently the edge `{u, v}` has no common
+non-neighbour) — then `u` or `v` is a **universal vertex**. The proof is
+finiteness-free: if *neither* were universal there would be a vertex `p` non-adjacent
+to `u` (hence, by domination, adjacent to `v`) and a vertex `q` non-adjacent to `v`
+(hence adjacent to `u`); their unique common neighbour `m` is, by domination again,
+adjacent to `u` or to `v`, but either case makes `m` a *second* common neighbour of an
+already-determined pair (`{u, p}` has common neighbour `v`; `{v, q}` has common
+neighbour `u`), contradicting uniqueness. This is the structural core of OQ-04's
+negative side: it is the obstruction that, in a *hub-free* graph, every edge must avoid
+— giving the common non-neighbour the regularity engine needs. No `[Fintype V]`
+assumption is used. -/
+theorem adjacent_dominating_implies_universal (hF : IsFriendshipGraph G)
+    {u v : V} (huv : G.Adj u v) (hdom : ∀ z : V, G.Adj u z ∨ G.Adj v z) :
+    FriendshipTheorem.IsUniversalVertex G u ∨ FriendshipTheorem.IsUniversalVertex G v := by
+  by_contra hcon
+  push_neg at hcon
+  obtain ⟨hnu, hnv⟩ := hcon
+  simp only [FriendshipTheorem.IsUniversalVertex, not_forall, not_imp] at hnu hnv
+  obtain ⟨p, hpu, hup⟩ := hnu   -- `p ≠ u`, `¬ G.Adj u p`
+  obtain ⟨q, hqv, hvq⟩ := hnv   -- `q ≠ v`, `¬ G.Adj v q`
+  -- Domination forces `p ∈ N(v)` and `q ∈ N(u)`.
+  have hpv : G.Adj v p := (hdom p).resolve_left hup
+  have hqu : G.Adj u q := (hdom q).resolve_right hvq
+  have hpq : p ≠ q := by rintro rfl; exact hup hqu
+  -- `m` is the unique common neighbour of `p` and `q`.
+  obtain ⟨m, ⟨hpm, hqm⟩, _⟩ := common_neighbor_unique hF hpq
+  have hmu : m ≠ u := by rintro rfl; exact hup hpm.symm
+  have hmv : m ≠ v := by rintro rfl; exact hvq hqm.symm
+  rcases hdom m with hum | hvm
+  · -- `m` and `v` are both common neighbours of `u`, `p` ⟹ `m = v`, contradiction.
+    have huniq := common_neighbor_unique hF (Ne.symm hpu)
+    exact hmv (huniq.unique ⟨hum, hpm⟩ ⟨huv, hpv.symm⟩)
+  · -- `m` and `u` are both common neighbours of `v`, `q` ⟹ `m = u`, contradiction.
+    have huniq := common_neighbor_unique hF (Ne.symm hqv)
+    exact hmu (huniq.unique ⟨hvm, hqm⟩ ⟨huv.symm, hqu.symm⟩)
+
+/-- **Contrapositive: a hub-free edge always has a common non-neighbour.** In a
+friendship graph with *no universal vertex*, every adjacent pair `u`, `v` admits a
+vertex `z` adjacent to neither — the common non-neighbour required to bridge the
+*adjacent* case of regularity (which `nonadjacent_neighborSet_equinum` cannot reach on
+its own). Directly contraposes `adjacent_dominating_implies_universal`. This closes the
+gap flagged as the OQ-04 "next step": it upgrades the *conditional* regularity engine
+to an *unconditional* statement for hub-free graphs (`no_universal_regular`). No
+`[Fintype V]` assumption is used. -/
+theorem no_universal_adjacent_has_common_nonneighbor (hF : IsFriendshipGraph G)
+    (hnouniv : ∀ c : V, ¬ FriendshipTheorem.IsUniversalVertex G c)
+    {u v : V} (huv : G.Adj u v) :
+    ∃ z, ¬ G.Adj u z ∧ ¬ G.Adj v z := by
+  by_contra h
+  push_neg at h
+  have hdom : ∀ z : V, G.Adj u z ∨ G.Adj v z := fun z => by
+    by_cases hz : G.Adj u z
+    · exact Or.inl hz
+    · exact Or.inr (h z hz)
+  rcases adjacent_dominating_implies_universal hF huv hdom with hu | hv
+  · exact hnouniv u hu
+  · exact hnouniv v hv
+
+/-- **Hub-free ⟹ regular (unconditional, finiteness-free).** A friendship graph with
+*no universal vertex* is **regular**: *every* pair of vertices `u`, `v` — adjacent or
+not — has equinumerous neighbourhoods, via a `Set.BijOn N(u) → N(v)`. Non-adjacent
+pairs use `nonadjacent_neighborSet_equinum` directly; adjacent pairs route through the
+common non-neighbour produced by `no_universal_adjacent_has_common_nonneighbor` and the
+two-step bijection `neighborSet_equinum_of_common_nonneighbor`. This is the headline
+structural theorem for OQ-04's negative side: where the finite proof would now invoke
+the spectral argument (impossible on infinite graphs), the structure stops at
+"hub-free ⟹ regular" — exactly the ℵ₀-regular shape of the C₅ free-amalgamation
+counterexample. The conclusion is a `Set.BijOn`, retaining content on infinite
+neighbourhoods; no finiteness is used. -/
+theorem no_universal_regular (hF : IsFriendshipGraph G)
+    (hnouniv : ∀ c : V, ¬ FriendshipTheorem.IsUniversalVertex G c) (u v : V) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  by_cases hadj : G.Adj u v
+  · obtain ⟨z, hzu, hzv⟩ := no_universal_adjacent_has_common_nonneighbor hF hnouniv hadj
+    exact neighborSet_equinum_of_common_nonneighbor hF hzu hzv
+  · exact nonadjacent_neighborSet_equinum hF hadj
+
+/-- **Infinite + hub-free ⟹ ℵ₀-regular (the counterexample shape).** An *infinite*
+friendship graph with *no universal vertex* is ℵ₀-regular: **every** neighbourhood is
+infinite, and all neighbourhoods are pairwise equinumerous (`Set.BijOn`). This is the
+precise structural shape of the C₅ free-amalgamation counterexample described in the
+file header ("every vertex there has infinite degree"), assembled here as a single
+theorem. The proof combines the two existing pillars: `no_universal_regular` (hub-free
+⟹ regular) supplies, for any vertex `w`, a `Set.BijOn` from the neighbourhood of some
+infinite-degree vertex `w₀` (furnished by `infinite_friendship_has_infinite_degree`)
+onto `N(w)`; the injective image of an infinite set is infinite and sits inside `N(w)`,
+forcing `N(w)` infinite too. Contrast `unique_infinite_degree_vertex`: *with* a hub
+exactly one vertex is infinite-degree, *without* a hub every vertex is. The dichotomy
+"a friendship graph is either a (possibly infinite) windmill with a single hub, or
+hub-free and ℵ₀-regular" is thus complete on the structural (non-spectral) side. No
+`[Fintype V]` is used; finiteness enters only through the ambient `[Infinite V]`. -/
+theorem no_universal_infinite_aleph0_regular (hF : IsFriendshipGraph G) [Infinite V]
+    (hnouniv : ∀ c : V, ¬ FriendshipTheorem.IsUniversalVertex G c) :
+    (∀ w : V, (G.neighborSet w).Infinite) ∧
+      ∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  refine ⟨fun w => ?_, no_universal_regular hF hnouniv⟩
+  obtain ⟨w₀, hw₀⟩ := infinite_friendship_has_infinite_degree hF
+  obtain ⟨f, hf⟩ := no_universal_regular hF hnouniv w₀ w
+  -- `f` maps `N(w₀)` into `N(w)`, injectively; the image is infinite and `⊆ N(w)`.
+  have hsub : f '' (G.neighborSet w₀) ⊆ G.neighborSet w := Set.mapsTo'.mp hf.mapsTo
+  have himg : (f '' (G.neighborSet w₀)).Infinite :=
+    fun hfin => hw₀ (Set.Finite.of_finite_image hfin hf.injOn)
+  intro hwfin
+  exact himg (hwfin.subset hsub)
+
+/-- **The windmill case is *not* regular (infinite).** An *infinite* friendship graph
+with a universal vertex `c` fails to be regular: the hub `c` has infinite degree
+(`universal_vertex_infinite_degree`) while every off-hub vertex `u` has exactly two
+neighbours (`universal_noncentral_ncard_two`), so no bijection `N(c) → N(u)` can exist
+(an injection out of an infinite set has infinite image, but `N(u)` is a two-element
+set). This is the missing exclusivity half of the structural dichotomy: it shows the
+"has a hub" and "ℵ₀-regular" branches are genuinely *disjoint* for infinite graphs, not
+merely jointly exhaustive. No `[Fintype V]` is used. -/
+theorem universal_infinite_not_regular (hF : IsFriendshipGraph G) [Infinite V]
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) :
+    ¬ ∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  intro hreg
+  -- The hub has infinite degree; pick a distinct (off-hub) vertex of degree two.
+  have hc_inf : (G.neighborSet c).Infinite := universal_vertex_infinite_degree hF c hc
+  obtain ⟨u, hu⟩ := exists_ne c
+  have hu2 : (G.neighborSet u).ncard = 2 := universal_noncentral_ncard_two hF c hc u hu
+  -- A bijection `N(c) → N(u)` would force `N(u)` infinite (injective image of infinite),
+  -- contradicting `ncard = 2`.
+  obtain ⟨f, hf⟩ := hreg c u
+  have himg : (f '' (G.neighborSet c)).Infinite :=
+    fun hfin => hc_inf (Set.Finite.of_finite_image hfin hf.injOn)
+  rw [hf.image_eq] at himg
+  rw [himg.ncard] at hu2
+  omega
+
+/-- **Exclusive structural dichotomy for infinite friendship graphs (capstone).** Every
+*infinite* friendship graph satisfies **exactly one** of:
+- it has a universal vertex (an infinite *windmill* with a single infinite-degree hub
+  and every other vertex of degree two — `unique_infinite_degree_vertex`), or
+- it is hub-free and **regular** (all neighbourhoods pairwise equinumerous, i.e.
+  ℵ₀-regular — the C₅ free-amalgamation shape, `no_universal_infinite_aleph0_regular`).
+Exhaustiveness is `no_universal_regular` (excluded middle on the hub); exclusivity is
+`universal_infinite_not_regular`. This is the complete non-spectral characterization
+behind OQ-04: the finite theorem's "universal *or* `k`-regular" dichotomy, transported
+to infinite graphs, becomes a genuine `Xor'` — the regular branch is no longer vacuous
+(it is realised by the counterexample) and is mutually exclusive with the windmill
+branch. No `[Fintype V]` is used. -/
+theorem friendship_infinite_exclusive_dichotomy (hF : IsFriendshipGraph G) [Infinite V] :
+    Xor' (∃ c, FriendshipTheorem.IsUniversalVertex G c)
+      (∀ u v : V, ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v)) := by
+  by_cases h : ∃ c, FriendshipTheorem.IsUniversalVertex G c
+  · obtain ⟨c, hc⟩ := h
+    exact Or.inl ⟨⟨c, hc⟩, universal_infinite_not_regular hF c hc⟩
+  · have h' : ∀ c, ¬ FriendshipTheorem.IsUniversalVertex G c := fun c hc => h ⟨c, hc⟩
+    exact Or.inr ⟨no_universal_regular hF h', h⟩
 
 end FriendshipTheoremOQ04

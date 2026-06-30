@@ -128,7 +128,7 @@
       "startLine": 79,
       "endLine": 100
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Formalization Architecture: Axiomatized Reduction",
     "content": "The formalization is complete with 0 sorries but is `axiomatized`: the two hard analytic facts are stated as axioms and the gallery result is derived from them. `sidon_in_cubes` (line 82) takes `gabdullin_konyagin_2024` as a hypothesis (a Sidon set `nearTopCubes N k` of size ≥ c√N exists for N ≥ 2) and packages it into the eventual-in-N form `∀ᶠ N in Filter.atTop, ∃ S ⊆ cubeSet N, IsSidon S ∧ S.card ≥ c√N`; the small-N branch is discharged with the empty set (vacuously Sidon). `erdos_1206` (line 97) is then definitionally `sidon_in_cubes`. The only genuine Lean reasoning here is the bookkeeping reduction — `nearTopCubes N k ⊆ cubeSet N` via `simp` and the cardinality bound via `Finset.card_image_le` — while the combinatorial substance (that the short-interval cube set is Sidon) is imported as the axiom. This honestly separates 'what is proved in Lean' from 'what is assumed from the literature'.",
     "mathContext": "`sidon_in_cubes : ∃ c > 0, ∀ᶠ N in atTop, ∃ S ⊆ cubeSet N, IsSidon S ∧ (S.card : ℝ) ≥ c * Real.sqrt N`, proved from the axiom `gabdullin_konyagin_2024`. Reduction uses `Finset.card_image_le` and `nearTopCubes N k ⊆ cubeSet N`. The set lives in `Finset ℕ`, not `Finset ℤ`.",
@@ -176,7 +176,7 @@
       "startLine": 56,
       "endLine": 77
     },
-    "type": "context",
+    "type": "concept",
     "title": "The Two Axioms: Erdős–Turán Bound and Gabdullin–Konyagin",
     "content": "The file's two assumptions (axiomCount = 2) are both deep results imported rather than reproved. `sidon_upper_bound` (line 61) states the Erdős–Turán upper bound in the convenient form |S| ≤ 2√M + 1 for a Sidon set S ⊆ {1,…,M}; this follows from counting the C(|S|,2) distinct pairwise differences, all lying in [1, M], but the clean Lean proof is nontrivial and is taken as an axiom here. `gabdullin_konyagin_2024` (line 74) is the genuine research input: ∃ c > 0 such that for every N ≥ 2 there is k ≥ c√N with `nearTopCubes N k` Sidon. Its proof rests on the short-interval estimate for n²+nm+m², far beyond what is reconstructed in this file. Stating these as `axiom` declarations (rather than `sorry`) is the honest convention for results whose proofs live in the literature: the badge is `axiom` and status `axiomatized`, not `verified`.",
     "mathContext": "Axiom 1: $S \\subseteq [1,M]$ Sidon $\\Rightarrow |S| \\leq 2\\sqrt M + 1$ (Erdős–Turán shape). Axiom 2: $\\exists c>0,\\ \\forall N\\geq 2,\\ \\exists k \\geq c\\sqrt N,\\ \\mathrm{IsSidon}(\\mathrm{nearTopCubes}\\,N\\,k)$ (Gabdullin–Konyagin 2024).",

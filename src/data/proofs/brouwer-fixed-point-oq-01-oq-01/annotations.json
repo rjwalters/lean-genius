@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "brouwer-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "1D Sperner Lemma: Scope and the Sperner → Brouwer Program",
+    "content": "Sperner's lemma is the combinatorial counterpart of Brouwer's fixed point theorem, proved by induction on dimension; its base case is this 1-dimensional parity statement. The module docstring is honest about scope: full 2D Brouwer via Sperner needs simplicial complexes, triangulations and vertex labelings that Mathlib lacks (its Combinatorics.SetFamily 'Sperner' is the unrelated antichain theorem). This file formalizes only the 1D heart — color a path 0,…,n by c : ℕ → Bool, call an edge {i,i+1} bichromatic when c i ≠ c(i+1) — and does NOT claim the 2D theorem.",
+    "mathContext": "An edge $\\{i, i+1\\}$ is bichromatic when $c(i) \\ne c(i+1)$; the 1D Sperner lemma is the discrete IVT: a $\\mathit{false}\\to\\mathit{true}$ path has a bichromatic edge.",
+    "significance": "context",
+    "relatedConcepts": ["Sperner's lemma", "Brouwer fixed point theorem", "discrete IVT", "combinatorial topology"],
+    "prerequisites": ["graph paths", "two-colorings", "Brouwer's theorem"]
+  },
+  {
+    "id": "ann-edges",
+    "proofId": "brouwer-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 70 },
+    "type": "definition",
+    "title": "Bichromatic Edges and the Count Recurrence",
+    "content": "spernerEdges c n = {i < n : c i ≠ c(i+1)} is the finite set of bichromatic edges among the first n edges; colorChanges c n is its cardinality. colorChanges_succ proves the one-step recurrence: extending the path by one vertex adds a bichromatic edge iff the new vertex differs in color from the previous one. The proof rewrites range (n+1) as insert n (range n) and uses Finset.filter_insert: a monochromatic step drops n from the filter (+0), a bichromatic step inserts a fresh n (card_insert_of_notMem, +1).",
+    "mathContext": "$\\mathrm{colorChanges}(c, n+1) = \\mathrm{colorChanges}(c, n) + [\\,c(n) \\ne c(n+1)\\,]$, where $[\\cdot]$ is the Iverson bracket.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "Finset.card", "Finset.filter_insert", "recurrence relation"],
+    "prerequisites": ["finite sets", "filtering and cardinality"]
+  },
+  {
+    "id": "ann-parity",
+    "proofId": "brouwer-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 99 },
+    "type": "insight",
+    "title": "The Parity Identity: Endpoints Determine Everything",
+    "content": "even_colorChanges_iff is the crux: Even (colorChanges c n) ↔ c 0 = c n — the bichromatic-edge count is even exactly when the two endpoints share a color, regardless of all interior structure. The induction has two cases on the recurrence: a monochromatic step preserves both the count parity and the endpoint equality; a bichromatic step flips the count parity (Nat.even_add_one) AND flips the endpoint-equality predicate, the latter a finite Boolean tautology closed by cases … decide. oddColorChanges_of_ne then reads off: differing endpoints ⟹ odd count. This is the discrete telescoping that mirrors 'a function returns to its starting sign iff it crosses zero an even number of times'.",
+    "mathContext": "$\\mathrm{Even}(\\mathrm{colorChanges}(c,n)) \\iff c(0) = c(n)$; all interior colors cancel, leaving only the two endpoints.",
+    "significance": "key",
+    "relatedConcepts": ["parity", "telescoping", "Nat.even_add_one", "induction invariant", "Boolean tautology"],
+    "prerequisites": ["parity of natural numbers", "induction", "Bool case analysis"]
+  },
+  {
+    "id": "ann-sperner",
+    "proofId": "brouwer-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 101, "endLine": 130 },
+    "type": "theorem",
+    "title": "The 1D Sperner Lemma = Discrete IVT",
+    "content": "exists_sperner_edge is the 1D Sperner lemma: a path colored false at 0 and true at n has a bichromatic edge {i,i+1}. Since the endpoints differ, oddColorChanges_of_ne makes the count odd, hence positive (an odd number is nonzero), so by Finset.card_pos the edge set is nonempty and yields an explicit crossing index i. colorChanges_pos_of_ne records the quantitative positivity. Read analytically, this is the discrete intermediate value theorem: a walk from region 0 to region 1 must cross the boundary an odd — hence nonzero — number of times, the exact combinatorial shadow of the analytic IVT the parent used for continuous 1D Brouwer.",
+    "mathContext": "$c(0)=\\mathit{false},\\ c(n)=\\mathit{true} \\Rightarrow \\exists\\, i < n,\\ c(i)\\ne c(i+1)$ — odd count $\\Rightarrow$ positive $\\Rightarrow$ nonempty edge set.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "Finset.card_pos", "Odd implies nonzero", "boundary crossing"],
+    "prerequisites": ["nonemptiness from positive cardinality", "parity to positivity"]
+  },
+  {
+    "id": "ann-toward-2d",
+    "proofId": "brouwer-fixed-point-oq-01-oq-01",
+    "range": { "startLine": 101, "endLine": 136 },
+    "type": "context",
+    "title": "Why This Is Genuine Progress Toward 2D Brouwer",
+    "content": "This base case is non-cosmetic: the inductive step of the full Sperner lemma counts bichromatic edges on the boundary of a 2D triangulation and feeds exactly this 1D parity argument across that boundary. Establishing it honestly (0 axioms, 0 sorries, no native_decide) supplies the combinatorial engine — boundary parity counting — on which the Sperner → Brouwer program runs, without overclaiming the 2D theorem. The remaining blockers are the missing triangulation/labeling infrastructure and the 2D Sperner lemma itself.",
+    "mathContext": "2D Sperner: a Sperner coloring of a triangulation of a triangle has an odd number of fully-colored cells, proved by inducting this 1D boundary parity over the triangulation's edges.",
+    "significance": "context",
+    "relatedConcepts": ["dimension induction", "triangulations", "Sperner coloring", "mesh refinement"],
+    "prerequisites": ["simplicial complexes", "Sperner's lemma in higher dimension"]
+  }
+]

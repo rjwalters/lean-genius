@@ -28,8 +28,8 @@
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
     "type": "concept",
     "range": {
-      "startLine": 66,
-      "endLine": 99
+      "startLine": 75,
+      "endLine": 90
     },
     "title": "The Topological Core: ham_sandwich_reduction",
     "content": "**ham_sandwich_reduction** is the entire topological content of Ham Sandwich. Given a continuous odd $F : S^n \\to \\mathbb{R}^n$ (a `SphereFun`) and a bridge predicate where $F(x) = 0 \\Rightarrow \\mathrm{Bisected}(x)$, it produces a point of $S^n$ satisfying $\\mathrm{Bisected}$. The proof is a one-liner: `borsuk_ulam_antipodal_collapse` forces the odd map to vanish, and the bridge converts the vanishing into a bisection.",
@@ -47,7 +47,7 @@
   {
     "id": "hs-discrepancy-odd",
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-    "type": "proof-technique",
+    "type": "insight",
     "range": {
       "startLine": 100,
       "endLine": 130
@@ -69,7 +69,7 @@
   {
     "id": "hs-capstone",
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-    "type": "proof-technique",
+    "type": "insight",
     "range": {
       "startLine": 131,
       "endLine": 175
@@ -91,7 +91,7 @@
   {
     "id": "hs-scalar-continuity",
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-    "type": "proof-technique",
+    "type": "insight",
     "range": {
       "startLine": 176,
       "endLine": 222
@@ -114,7 +114,7 @@
   {
     "id": "hs-standard",
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-    "type": "proof-technique",
+    "type": "insight",
     "range": {
       "startLine": 223,
       "endLine": 345
@@ -137,10 +137,10 @@
   {
     "id": "hs-remaining-gap",
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-    "type": "context",
+    "type": "concept",
     "range": {
-      "startLine": 339,
-      "endLine": 369
+      "startLine": 503,
+      "endLine": 541
     },
     "title": "The Exact Dichotomy: What Was Proved vs. the Lone Input",
     "content": "The closing note makes the file's contribution precise. The parent's `ham_sandwich_theorem` axiom was justified solely by the difficulty of the continuity step, and this file confirms that diagnosis is exact: every other ingredient — the topological reduction, the oddness of the discrepancy, the 'zero ⇒ bisected' bridge, the antipodal swap, and volume finiteness — is dispatched here by elementary means, and two of the three originally-listed side conditions become theorems for the linear parameterization. What remains is a single, self-contained measure-theory fact, and `ham_sandwich_standard_of_scalar_continuity` states the conclusion with exactly that fact (plus finiteness) as its only hypotheses.",

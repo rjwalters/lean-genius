@@ -16,7 +16,11 @@
       "additive-basis",
       "equidistribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Diophantine Approximation",
+      "Additive Basis",
+      "Equidistribution Mod One"
+    ]
   },
   {
     "id": "ann-e1147-imports",
@@ -82,7 +86,11 @@
       "distance-function",
       "diophantine-approximation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fractional Part",
+      "Distance To Nearest Integer",
+      "Int.fract API"
+    ]
   },
   {
     "id": "ann-e1147-basis",
@@ -101,7 +109,11 @@
       "sumset",
       "goldbach"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sumset",
+      "Additive Number Theory",
+      "Cofinite Sets"
+    ]
   },
   {
     "id": "ann-e1147-threshold",
@@ -145,7 +157,11 @@
       "almost-everywhere",
       "measure-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lebesgue Measure",
+      "Almost Everywhere",
+      "Irrational Numbers"
+    ]
   },
   {
     "id": "ann-e1147-false",
@@ -164,7 +180,11 @@
       "counterexample",
       "sqrt-2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof By Counterexample",
+      "Irrationality Of Sqrt 2",
+      "Universal Quantification"
+    ]
   },
   {
     "id": "ann-e1147-infinite-summary",

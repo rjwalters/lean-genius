@@ -115,3 +115,59 @@ currently match nothing due to casing) and the rest only shed misattributed sibl
 real root fix but has a large blast radius and cannot be render-verified during the Docker
 blackout — left as a recommendation rather than shipped. Per-slug `SPECIAL_CASES` remains the
 safe interim patch.
+
+---
+
+## Session 2026-06-28 (researcher-1) — ACT: eliminated the redundant Bourgain axiom
+
+**Mode**: REVISIT (axiom elimination) · **Outcome**: progress (1 axiom removed from the gallery).
+
+### Stale-knowledge correction
+This KB previously recorded "no `RothTheoremOQ01*.lean` exists" and `leanFiles = []`. That was
+**out of date**: `proofs/Proofs/RothTheoremOQ01.lean` exists (researcher-10, 2026-06-25) and
+carried a **separate `axiom rothNumberNat_bourgain`** — the exact thing the M1 plan flagged as
+avoidable, since its own docstring noted "OQ-01 is implied by OQ-02".
+
+### What I did
+Replaced `axiom rothNumberNat_bourgain` with a **theorem** of the same statement, **derived from
+the Bloom–Sisask axiom** of OQ-02. Bloom–Sisask (`N/(log N)^{1+c}`) decays strictly faster than
+Bourgain (`N(loglog N/log N)^{1/2}`), so it implies it. The whole quantitative landscape now
+rests on the *single* gallery assumption `RothTheoremOQ02.rothNumberNat_bloom_sisask` instead of
+two redundant axioms.
+- Registered the file in `proofs/Proofs.lean` (its sibling OQ02 was already registered; OQ01 was
+  orphaned from the aggregate build).
+- Host-verified: `lake env lean Proofs/RothTheoremOQ01.lean` exit 0 (built OQ02 olean dep via
+  `lake env lean -o` first; Docker host down). `#print axioms rothNumberNat_bourgain` =
+  `[propext, Classical.choice, Quot.sound, RothTheoremOQ02.rothNumberNat_bloom_sisask]` — **no
+  Bourgain axiom**, no `sorryAx`, no `Lean.ofReduceBool`.
+
+### The analytic core (Bloom–Sisask ⟹ Bourgain) — what worked
+After cancelling `N>0` and writing `L=log N`, `LL=loglog N`:
+- `Real.rpow_add h_logN_pos`: `L^(1+c) = L^(1/2)·L^(1/2+c)` (close exponent equality with
+  `congr 1; ring`, NOT `norm_num` — norm_num won't combine `1/2+(1/2+c)` under rpow).
+- `Real.div_rpow LL.le L.le`: `(LL/L)^(1/2) = LL^(1/2)/L^(1/2)` (apply via `rw`, the lemma is
+  `∀ z`-quantified).
+- Reduce to `1 ≤ (LL^(1/2)·L^(1/2+c))/(B·E)` with `B=(loglog 3)^(1/2)`, `E=(log 3)^(1/2+c)`,
+  `C := 1/(B·E)`. Both `LL^(1/2)≥B`, `L^(1/2+c)≥E` by `Real.rpow_le_rpow` (base monotone:
+  `log 3 ≤ log N`, `loglog 3 ≤ loglog N`).
+- GOTCHAS: `div_le_iff₀` (not `div_le_iff`, deprecated in 4.26); `Real.log_le_log (0<x) (x≤y)`
+  takes the *inner* positivity `0 < log 3` for `log(log 3) ≤ log(log N)` (NOT `0 < log log 3`);
+  `field_simp` closed the algebra identity alone, so guard the trailing `ring` with `try`.
+- Constant ≥1 step via `le_mul_of_one_le_left hNpos.le (one_le_div ...).mpr hat`.
+
+### Honest status
+Still **axiomatized** — rests on the BS axiom (the full Bloom–Sisask/Bourgain proofs are
+thousands of lines of Bohr-set/Fourier infrastructure not in Mathlib). But the file now declares
+**0 axioms of its own**: net gallery axiom count for the Roth quantitative landscape drops by 1.
+
+### Files modified
+- proofs/Proofs/RothTheoremOQ01.lean (axiom → derived theorem; docstring updated)
+- proofs/Proofs.lean (registered RothTheoremOQ01)
+- research/problems/roth-theorem-oq-01/knowledge.md (this entry; corrected stale leanFiles claim)
+- src/data/research/problems/roth-theorem-oq-01.json (leanFiles, lastUpdate)
+
+### Next steps
+- Same `≤` derivation could eliminate the Kelley–Meka or other "weaker-than-BS" quantitative
+  axioms if any are added (KM is actually *stronger* than BS in a different regime — not derivable
+  this way). The remaining genuine open work is the from-scratch Bourgain/BS proof (BLOCKED on
+  Mathlib Bohr-set infrastructure, >1000 LOC).

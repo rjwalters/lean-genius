@@ -16,7 +16,11 @@
       "density",
       "bloom-2021"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Set Density",
+      "Additive Combinatorics"
+    ]
   },
   {
     "id": "ann-e298-background",
@@ -35,7 +39,11 @@
       "natural-density",
       "upper-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Natural Density",
+      "Limit Superior"
+    ]
   },
   {
     "id": "ann-e298-definitions",
@@ -54,7 +62,11 @@
       "density",
       "unit-fraction-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Membership",
+      "Finset Sums",
+      "Rational Numbers"
+    ]
   },
   {
     "id": "ann-e298-examples",
@@ -73,7 +85,11 @@
       "egyptian-fractions",
       "sum-to-one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Fraction Addition",
+      "Least Common Denominator"
+    ]
   },
   {
     "id": "ann-e298-conjecture",
@@ -92,7 +108,11 @@
       "erdos-prize",
       "positive-density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Positive Natural Density",
+      "Finite Subsets",
+      "Universal Quantification"
+    ]
   },
   {
     "id": "ann-e298-bloom",
@@ -111,7 +131,11 @@
       "probabilistic-method",
       "fourier-analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Probabilistic Method",
+      "Fourier Analysis",
+      "Density Increment Argument"
+    ]
   },
   {
     "id": "ann-e298-upper",
@@ -130,7 +154,11 @@
       "stronger-result",
       "implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Upper Density",
+      "Limit Superior",
+      "Logical Implication"
+    ]
   },
   {
     "id": "ann-e298-density-props",
@@ -149,7 +177,11 @@
       "monotone",
       "finite-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Density",
+      "Monotonicity",
+      "Finite Sets"
+    ]
   },
   {
     "id": "ann-e298-egyptian",
@@ -168,7 +200,11 @@
       "classical-theorem",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Positive Rationals",
+      "Existential Quantification"
+    ]
   },
   {
     "id": "ann-e298-quantitative",
@@ -187,6 +223,10 @@
       "finitary",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Density Threshold",
+      "Finitary Statements",
+      "Counterexamples"
+    ]
   }
 ]

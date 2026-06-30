@@ -646,3 +646,88 @@ grid-transpose / commutation-matrix permutation sign directly:
 `sign_permCongr`; no shorter bearer route exists. Bijective characterization of the inversions
 (choose 2 rows × 2 columns → exactly one inversion) is the cleanest count to aim the Lean proof at.
 No Lean written this session.
+
+### Session 2026-06-16 (S20, researcher-8) — M2 materialized in Lean: parity reduction VERIFIED, sorry isolated to the lone inversion count
+
+**Mode:** CONTINUE → ACT (build-verified). Aristotle `prove` still **404** (live-probed on the M2
+crux snippet). Docker **recovered to a usable slot** this session: host drained from 7 → 2
+`lean-build` containers (background until-loop, `LEAN_MEMORY_LIMIT=6144`); built the new file by name
+**GREEN**: `⚠ [7743/7743] Built Proofs.QuadraticReciprocityAlgorithmOQ03M2 (453s)`, exit 0, the only
+warning being the single intended `sorry`.
+
+**New file** `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean` (UNREGISTERED — carries one
+sorry). Supersedes the CONFLICTING scaffold PR #24990 (same filename, but that one had only the def +
+a monolithic sorry). Structure splits M2's `sign_gridTranspose` into:
+
+- `gridTranspose p q` — the permutation (verbatim from #24990's verified scaffold). **complete**
+- `choose_two_mod_two (hn : Odd n) : Nat.choose n 2 % 2 = ((n-1)/2) % 2` — **VERIFIED**. Proof: write
+  `n = 2m+1` (`obtain ⟨m, rfl⟩`), `Nat.choose_two_right`, `Nat.mul_div_cancel_left _ (two-pos)`,
+  `Nat.mul_mod`, `omega`. (This is S8's parity-reduction step III, now machine-checked.)
+- `neg_one_units_pow_mod_two (n) : (-1:ℤˣ)^n = (-1:ℤˣ)^(n%2)` — **VERIFIED**. **KEY GOTCHA:** Mathlib's
+  `neg_one_pow_eq_pow_mod_two` is in `section Ring` (`Algebra/Ring/Commute.lean:171`, needs `[Ring R]`)
+  — **ℤˣ is NOT a ring**, so it does not apply. Derived directly from `neg_one_sq : (-1:R)^2=1`
+  (`Commute.lean:154`, holds for `[Monoid R][HasDistribNeg R]`, and `ℤˣ` has `HasDistribNeg` via
+  `Algebra/Ring/Units.lean:46`): `nth_rewrite 1 [← Nat.mod_add_div n 2]; rw [pow_add, pow_mul,
+  neg_one_sq, one_pow, mul_one]`.
+- `neg_one_pow_choose_two (hp hq : Odd) : (-1:ℤˣ)^(C(p,2)*C(q,2)) = (-1:ℤˣ)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED**. `Nat.mul_mod` + the two `choose_two_mod_two` rewrites give the exponents are ≡ mod 2,
+  then the units helper. **This is the entire elementary half of M2, now proven.**
+- `sign_gridTranspose_eq_choose (p q) : sign (gridTranspose p q) = (-1)^(C(p,2)*C(q,2))` — **the ONE
+  remaining sorry**. Primality-free; the genuinely-new combinatorial content (no upstream bearer, S18).
+- `sign_gridTranspose (hp hq : Odd) : sign (gridTranspose p q) = (-1)^((p-1)/2*((q-1)/2))` —
+  **VERIFIED assembly** of the two above.
+
+**Net:** M2's open obligation is now a *single isolated, build-verified-context* lemma —
+`sign_gridTranspose_eq_choose` — exactly the inversion count `inv(σ)=C(p,2)·C(q,2)` via
+`signAux=∏finPairsLT` (S8). Everything around it (parity reduction + assembly) compiles. This is the
+ideal self-contained Aristotle target the moment the backend stops 404'ing; until then it needs the
+explicit `card_bij` (inversions ↔ {row-pairs i<i′} × {col-pairs j>j′}) — finicky but the cleanest count.
+M1/headline unchanged (merged #24903). PR opened with `research` label.
+
+### Session 2026-06-16 (S21, researcher-5) — FieldBridge build-pending file audited: every bearer pinned, repair points classified low-risk
+
+**Mode:** CONTINUE → build-free bearer audit. **Dual blackout reconfirmed live this session**
+(not assumed): `docker info` times out (>20s); Aristotle MCP `prove` returned `"Resource not
+found"` on a trivial `n+0=n` ping. So no build, no Aristotle. Used the **full offline mathlib4
+checkout at the exact pin** (`/Users/rwalters/GitHub/mathlib4` @ `2df2f0150c` / v4.26.0) for the
+audit.
+
+**State of the OQ (re-confirmed):** M1 + the units-form headline `legendreSym_eq_sign_mulLeft`
+(merged #24903, on `(ZMod p)ˣ`) are done/verified/galleried. M2 file
+`QuadraticReciprocityAlgorithmOQ03M2.lean` (merged #25053, UNREGISTERED) still carries its lone
+sorry `sign_gridTranspose_eq_choose` (`sign σ = (-1)^(C(p,2)·C(q,2))`). The field-form completion
+`QuadraticReciprocityAlgorithmOQ03FieldBridge.lean` (merged #25101, UNREGISTERED, 0 sorry/0 axiom)
+was BUILD-PENDING/UNVERIFIED with three flagged-but-unconfirmed `rfl` repair points.
+
+**This session's deliverable — FieldBridge converted from "UNVERIFIED, repair points unknown" to
+"all bearers pinned & signature-checked, repair points classified low-risk" (same category as the
+S11/S12 M1 audits).** Confirmed at the pin via the offline checkout (file:line + exact signature +
+hypothesis direction):
+- `sign_subtypePerm (f) (h₁ : ∀ x, p (f x) ↔ p x) (h₂ : ∀ x, f x ≠ x → p x) : sign (subtypePerm f h₁) = sign f` — `Sign.lean:453`. FieldBridge's `h₁ : ∀ x, mulLeft₀ a ha x ≠ 0 ↔ x ≠ 0` is exactly `∀ x, p (f x) ↔ p x` with `p = (· ≠ 0)`. ✓
+- `sign_eq_sign_of_equiv (f) (g) (e) (h : ∀ x, e (f x) = g (e x)) : sign f = sign g` — `Sign.lean:467`. ✓
+- `subtypePerm (f) (h : ∀ x, p (f x) ↔ p x)` — `Algebra/Group/End.lean:373` (NOT `∀ x, p x ↔ p (f x)` — direction matches FieldBridge). ✓
+- `unitsEquivNeZero : G₀ˣ ≃ {a // a ≠ 0}`, `@[simps]`, `a ↦ ⟨↑a, a.ne_zero⟩` ⇒ `.val = ↑a` by rfl — `GroupWithZero/Units/Equiv.lean:27`. ✓
+- `Equiv.mulLeft₀ a ha := (Units.mk0 a ha).mulLeft`, `@[simps! -fullyApplied]` (so the apply lemma exists for the `happ` fallback) — same file `:33`. ✓
+- `Units.val_mk0 : (mk0 a h : G₀) = a` (rfl-level) — `GroupWithZero/Units/Basic.lean:173`. ✓
+- parent `legendreSym_eq_sign_mulLeft (hp : 2 < p) (u : (ZMod p)ˣ)` — call `legendreSym_eq_sign_mulLeft hp u` is exact. ✓
+
+**Risk classification of the 3 documented repair points:** all LOW. (1) `happ : mulLeft₀ a ha x = a * x := rfl` reduces through `(mk0 a ha).mulLeft x = ↑(mk0 a ha) * x` and `val_mk0` (rfl-level), fallback `simp [Equiv.mulLeft₀]`/`Equiv.mulLeft₀_apply` exists. (2)/(3) the `Subtype.ext`/`show` step in `hstep2` relies on `unitsEquivNeZero`'s `@[simps]` defeq and `subtypePerm`'s val reduction — both definitional, fallback `simp` documented in-file. **No dead names; no signature mismatches; no wrong-direction hypotheses.** Updated the FieldBridge header to record the audit (BUILD-PENDING → BUILD-PENDING, BEARERS AUDITED).
+
+**M2 sorry — confirmed NOT blackout-safe to write, and why (re-audited this session).** Searched
+the offline checkout for any public `sign = (-1)^(inversion count)` / `sign = (-1)^card` lemma for a
+general (non-cycle) permutation: **none exists** — `Sign.lean` exposes only `signAux`/`signBijAux`/
+`finPairsLT` machinery (private-ish) and the cycle-specific `IsCycle.sign`. The block-diagonal
+family (`sign_prodCongrRight/Left` = `∏ sign`, `sign_sumCongr`) does NOT apply (S18: transpose is a
+coordinate-swap, not block-diagonal). `finProdFinEquiv` packs `(i,j) ↦ j + q*i` (row-major; `i`
+slow) — confirmed at `Logic/Equiv/Fin/Basic.lean:329`. So the only route is the `card_bij`
+inversion count (inversions `↔ {i<i′} × {j>j′}`, card `C(p,2)·C(q,2)`) unfolded from `signAux` —
+genuinely ~100+ LOC and intricate. Blind-writing it under blackout risks a non-compiling file
+mislabeled as ACT (the standing prior-session prohibition). It remains the ideal single-lemma
+**Aristotle** target the moment the backend stops 404'ing; until then it stays a sorry.
+
+**Net:** FieldBridge is now build-ready with high confidence — the first Docker session can
+`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge`, then register it (it lands
+the exact OQ-pinned field-form statement `legendreSym p a.val = sign (mulLeft₀ a ha)`, completing
+the Milestone-1 headline in the field form the OQ asks for). M2's lone sorry is unchanged and
+correctly deferred to Aristotle/Docker. Problem stays **in-progress** (M2 open). No Lean proof
+written this session (the only edit is the FieldBridge status header).

@@ -1,8 +1,8 @@
 {
   "slug": "pythagorean-theorem-oq-06",
   "title": "de Gua's theorem: the 3D Pythagorean theorem",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -20,12 +20,12 @@
     "goal": "Area(ABC)^2 = Area(OAB)^2 + Area(OBC)^2 + Area(OCA)^2 for a trirectangular tetrahedron"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-06-16T12:27:51.320Z",
     "iteration": 1,
-    "focus": "de Gua proved in DeGuaTheorem.lean (0 sorry/0 axiom, Docker build GREEN); registered in Proofs.lean; PR open",
+    "focus": "de Gua proved in DeGuaTheorem.lean (0 sorry/0 axiom, Docker build GREEN); registered in Proofs.lean; merged to main via PR #24992",
     "blockers": [],
-    "nextAction": "Merge PR; add gallery data (enricher)",
+    "nextAction": "None for researcher track; gallery data delegated to enricher",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,11 +33,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (build-pending): de Gua proved in DeGuaTheorem.lean, 0 sorry/0 axiom",
+    "progressSummary": "COMPLETE + GALLERIED: de Gua proved (PR #24992), gallery entry src/data/proofs/pythagorean-theorem-oq-06 added (meta + annotations)",
     "builtItems": [
       "de_gua_core (edge-vector form) in Proofs/DeGuaTheorem.lean — crossSq identity under mutual orthogonality, via linear_combination",
       "de_gua (vertex form) — full tetrahedron statement reduced to de_gua_core",
-      "de_gua_axis_aligned — canonical axis-aligned model, pure ring"
+      "de_gua_axis_aligned — canonical axis-aligned model, pure ring",
+      "Gallery entry created: src/data/proofs/pythagorean-theorem-oq-06/ (meta.json + 6 annotations), resolver-validated 0 misaligned"
     ],
     "insights": [
       "de Gua reduces to one polynomial identity: (v-u)x(w-u) = uxv+vxw+wxu, then Binet-Cauchy cross terms vanish under orthogonality",
@@ -64,7 +65,9 @@
   ],
   "relatedProofs": [
     "pythagorean-theorem",
-    "pythagorean-theorem-oq-03"
+    "pythagorean-theorem-oq-03",
+    "pythagorean-theorem-oq-03-oq-02",
+    "pythagorean-theorem-oq-06"
   ],
   "references": {
     "papers": [],
@@ -97,6 +100,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PythagoreanTheoremOQ03OQ02.lean",
+      "filename": "PythagoreanTheoremOQ03OQ02.lean",
+      "lineCount": 191,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PythagoreanTheoremOQ03OQ02.lean"
     },
     {
       "path": "Proofs/PythagoreanTheoremOQ05.lean",
