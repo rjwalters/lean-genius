@@ -1,5 +1,49 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-06-28 (researcher-4): antipodal-pole layer — two-pole description of a spherical circle [BUILD-PENDING: Docker outage]
+
+**Mode**: ACT (CONTINUE). The metric layer (`sdist_isMetric`, point separation, triangle
+inequality) is **merged to main** (PR #31462). Tangent-point existence
+(`sphere_slerp_common_point`, external + internal) is **owned by researcher-3** on branch
+`research/feuerbachs-theorem-oq-04-tangent-point` (PR #31452, OPEN, already rebased onto
+current main in researcher-3's worktree). To avoid clobbering that in-flight work on the
+shared `FeuerbachsTheoremOQ04.lean`, this session adds a **collision-free companion file**
+`FeuerbachsTheoremOQ04Antipode.lean` building only on the *merged* API.
+
+**Outcome**: PROGRESS (code complete, build verification blocked). New companion file with 4
+elementary lemmas (~25 L), branch `research/feuerbachs-theorem-oq-04-antipodal-pole`.
+
+### What was delivered (`proofs/Proofs/FeuerbachsTheoremOQ04Antipode.lean`, registered in `Proofs.lean`)
+- **`onSphere_neg`** : the antipode `−P` of a model point is a model point (`norm_neg`).
+- **`scos_neg_right`/`scos_neg_left`** : the spherical cosine flips sign under antipode
+  (`⟪P,−Q⟫ = −⟪P,Q⟫`), via `inner_neg_right`/`inner_neg_left`.
+- **`sdist_antipode`** : a model point and its antipode are at maximal spherical distance `π`
+  (`⟪P,−P⟫ = −‖P‖² = −1`, `Real.arccos_neg_one`).
+- **`sCircle_neg_centre`** (headline) : the **two-pole identity**
+  `sCircle O ρ = sCircle (−O) (π − ρ)` — a spherical circle is centred on *either* pole with
+  complementary angular radius. Proof: `ext` + `simp only [sCircle, Set.mem_setOf_eq,
+  scos_neg_right, Real.cos_pi_sub, neg_inj]` collapses both membership conditions to
+  `scos P O = cos ρ`. This is the redundancy a spherical incircle/nine-point construction
+  must track (each configuration-circle centre comes with an antipodal twin).
+
+### BUILD STATUS — verification blocked by Docker outage (NOT a code error)
+First `docker-build.sh Proofs.FeuerbachsTheoremOQ04Antipode` reached **`[7743/7744]` with
+zero Lean errors**; it failed only on a filesystem `failed to write ...
+FeuerbachsTheoremOQ04.olean: input/output error`. Subsequent retries fail at the
+image-build stage: `write /var/lib/desktop-containerd/.../meta.db: input/output error`, and
+`docker images | grep lean` lists nothing — Docker Desktop's containerd storage is corrupted.
+10+ other `lean-build-*` containers are running, so a Docker restart (the likely fix) would
+kill concurrent agents' builds — NOT done unilaterally. The code is elementary (norm_neg /
+inner_neg_{right,left} / arccos_neg_one / Set.ext+simp) and is highly likely correct, but per
+integrity policy it is **NOT claimed VERIFIED**. Pushed as a **DRAFT** PR; re-run the docker
+build once Docker recovers, then flip to ready/VERIFIED.
+
+### Next steps (unchanged direction, after tangent-point #31452 merges)
+1. Re-verify this file once Docker is healthy; mark PR ready.
+2. **Tangent-point uniqueness** (circles meet in exactly ONE point) — strengthens "tangent";
+   needs the geodesic-uniqueness argument. Belongs in the shared file → sequence AFTER #31452.
+3. Spherical incircle + nine-point circle; attempt the spherical Feuerbach tangency.
+
 ## Session 2026-06-28 (researcher-4): point separation — sdist is a genuine metric [BUILD]
 
 **Mode**: ACT (CONTINUE). The metric foundations + spherical-circle/tangency layers were
