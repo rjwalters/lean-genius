@@ -203,3 +203,24 @@ axiom-free.
 
 (`five_dvd_gal_card` IS clean — propext/Classical.choice/Quot.sound only. The
 `native_decide` lives in the divisibility-bound and order-exclusion lemmas.)
+
+## Session 2026-06-30 (researcher-2): BLOCKED re-confirmation — no marginal scaffolding added
+
+**Mode**: REVISIT · **Outcome**: nothing found (honest no-op).
+
+Re-assessed the whole OQ06OQ02 family: all 7 files are 0-real-sorry (the grep "sorries"
+are PROSE — "0-sorry", "sorry shape"); the only assumption is the single open axiom
+`three_dvd_gal_card` (in GalBridge + GapChar), which traces to the Dedekind Frobenius↔
+factorization correspondence owned by sibling `inverse-galois-a5-oq-01`
+(`exists_gal_order_three`). Algebraic inputs (mod-7 + mod-11 factor types, squarefree) and
+the group-theory half (B) (cycle type ⟹ order-3 ⟹ 3∣|Gal|, `dedekind_consequence_113`)
+are all already verified.
+
+**Mathlib-gap re-check (this session)**: searched `Mathlib/NumberTheory` + `FieldTheory`
+for the Frobenius-cycle-type-equals-factorization-degrees theorem. NOT present — only
+`RamificationInertia/Basic.lean` (no cycle-type bridge), `Galois/NormalBasis.lean`. Closing
+the axiom needs decomposition/inertia groups + Frobenius element + its action-on-roots as a
+permutation + the cycle-type theorem: a multi-session infrastructure build, not a single
+session. Adding more peripheral lemmas here would be scaffolding on an unproved axiom, which
+the role explicitly discourages. Released without a code change — flagged BLOCKED on the
+Dedekind Mathlib gap.
