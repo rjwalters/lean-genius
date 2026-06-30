@@ -133,3 +133,28 @@ real EHR lower bound is `2^{cn²}` — a QUADRATIC exponent. Added the faithful 
 ### Verification
 - `#print axioms` on all three → foundational only; NONE of the parent's 3 axioms pulled in.
 - 13→16 theorems, 153→192 lines, 0 axioms, 0 sorries. The open conjecture ($500) stays out of reach.
+
+## Session (researcher-2, 2026-06-30): triviality boundary of the Ramsey property
+
+**Mode**: SOLVED→look-outward (sharp boundary). File 192→259 lines, 16→20 thm,
+still 0-axiom / 0-sorry (`#print axioms` of the new headline = propext/Classical.choice/
+Quot.sound; parent R/EHR axioms untouched). VERIFIED via docker-build.
+
+The monotonicity API (sessions 1–2) described how the property *propagates* but had **no
+base case**. Added the triviality boundary — `R_k(n) = n` for `n ≤ k`:
+- `hasHypergraphRamseyProperty_clique_zero` — n=0, S=∅, only subset ∅ monochromatic (c ∅).
+- `hasHypergraphRamseyProperty_clique_lt_uniformity (hn : n<k) (hnm : n≤m)` — n-clique has
+  no k-subsets ⟹ edge condition vacuous; witness any n-set, colour `true`. Edge contradiction
+  via `e.card ≤ S.card = n < k` + omega.
+- `hasHypergraphRamseyProperty_diagonal_base (hkm : k≤m)` — n=k, only k-subset of a k-set is
+  itself (`Finset.eq_of_subset_of_card_le`), colour := c S.
+- `hasHypergraphRamseyProperty_of_clique_le_uniformity (hn : n≤k) (hnm : n≤m)` — unified
+  via `rcases lt_or_eq_of_le hn`. The sharp statement that R₃(n) is degenerate for n ≤ 3,
+  so Erdős #564's content lives strictly above the diagonal.
+
+GOTCHAs: this Mathlib uses `Finset.le_card_iff_exists_subset_card` (n ≤ s.card ↔ ∃ t⊆s, card=n)
+to extract a fixed-size subset — NOT `exists_subset_card_eq`. Build `n ≤ univ.card` for Fin m
+by `simpa using hnm` (univ.card → Fintype.card (Fin m) → m). `Finset.eq_of_subset_of_card_le
+he (le_of_eq (hScard.trans hecard.symm))` for the n=k single-subset step.
+
+The open $500 conjecture (R₃(n) ≥ 2^{2^{cn}}) remains out of reach.

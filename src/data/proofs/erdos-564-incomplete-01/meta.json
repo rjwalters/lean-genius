@@ -32,11 +32,14 @@
       "tower_two_eq: tower 2 n = 2 ^ (2 ^ n), the doubly-exponential height in both the EHR upper bound and the conjectured lower bound",
       "tower_one_lt_tower_two: THE CRUX of Erdős #564 made precise — the singly-exponential known lower bound (tower height 1) is strictly below the doubly-exponential conjectured lower bound (tower height 2) for every n; the exact height gap the open conjecture asks to close",
       "Concrete sanity checks: tower 2 3 = 256, tower 3 1 = 16, 5 ≤ tower 4 5",
-      "Parent fix: repaired six dangling /-- doc comments (lines 65, 66, 153, 154, 164, 186) in Erdos564Problem.lean that caused 'unexpected token /--; expected lemma' parse errors — the parent file did not compile at all on main"
+      "Parent fix: repaired six dangling /-- doc comments (lines 65, 66, 153, 154, 164, 186) in Erdos564Problem.lean that caused 'unexpected token /--; expected lemma' parse errors — the parent file did not compile at all on main",
+      "ehr_lower_lt_tower_two / nsq_lt_two_pow_self: the faithful QUADRATIC crux — the real EHR lower bound 2^{n²} (quadratic exponent) is still a whole tower level below the conjectured 2^{2^n}, since n² < 2^n for n ≥ 5",
+      "hasHypergraphRamseyProperty_mono / _antitone_clique: the first theory of the property predicate itself — vertex monotonicity (good-m set upward closed) and clique-size antitonicity (R k · monotone in clique size)",
+      "hasHypergraphRamseyProperty_clique_zero / _clique_lt_uniformity / _diagonal_base / _of_clique_le_uniformity: the TRIVIALITY BOUNDARY — the property is trivially true for n ≤ k (clique no larger than edge size): n < k makes the k-subset condition vacuous, n = k leaves a single self-monochromatic k-subset. Equivalently R_k(n) = n for n ≤ k, so the genuine content of R₃(n) lives strictly above the diagonal (n > 3)"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 192,
-    "theoremCount": 11,
+    "lineCount": 259,
+    "theoremCount": 20,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   },
@@ -86,6 +89,13 @@
     }
   ],
   "mainTheorems": [
+    {
+      "name": "hasHypergraphRamseyProperty_of_clique_le_uniformity",
+      "type": "theorem",
+      "statement": "$n \\le k \\to n \\le m \\to \\text{HasHypergraphRamseyProperty}\\,k\\,m\\,n$",
+      "significance": "The triviality boundary of the Ramsey property: it holds automatically whenever the target clique is no larger than the edge size (n ≤ k). Equivalently R_k(n) = n for n ≤ k — the Ramsey number is degenerate on and below the diagonal, so the genuine combinatorial content of R₃(n) (the Erdős #564 regime) appears only for n > 3. This is the base case the threshold/monotonicity picture rests on.",
+      "description": "Case split on n < k vs n = k. For n < k an n-clique has no k-subsets, so the monochromaticity condition is vacuous; for n = k the unique k-subset of a k-set is itself, monochromatic for the colour the colouring assigns it (c S)."
+    },
     {
       "name": "tower_lt_succ_height",
       "type": "theorem",
@@ -158,9 +168,9 @@
       "Proofs.Erdos564Problem"
     ],
     "namespace": "Erdos564.Incomplete01",
-    "lineCount": 192,
+    "lineCount": 259,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 20,
     "definitionCount": 0,
     "path": "Proofs/Erdos564Incomplete01.lean",
     "sorries": 0
