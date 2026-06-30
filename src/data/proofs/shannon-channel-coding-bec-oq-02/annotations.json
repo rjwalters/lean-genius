@@ -1,5 +1,17 @@
 [
     {
+        "id": "ann-bec-oq02-overview",
+        "proofId": "shannon-channel-coding-bec-oq-02",
+        "range": { "startLine": 1, "endLine": 51 },
+        "type": "concept",
+        "title": "From Information-Theoretic to Operational BEC Capacity (Honestly Axiomatized)",
+        "content": "The base entry proves the binary erasure channel's INFORMATION-theoretic capacity axiom-free: channelCapacity(bec p) = (1−p)·log 2 nats = (1−p) bits, a supremum of mutual informations over input distributions. That says nothing about codes. This OQ bridges to the OPERATIONAL layer — rates achievable by block codes with vanishing error, plus a matching converse forbidding reliable communication above capacity. It does so by specialising the gallery's abstract discrete-memoryless-channel theorems channel_coding_achievability and channel_coding_converse to the concrete BEC, substituting the proved capacity value. Crucially those two abstract theorems are AXIOMS in this gallery (the deep random-coding / Fano arguments are taken as given), so every operational result here is honestly axiomatized: status 'axiomatized', badge 'axiom', axiomCount 2. The BEC capacity value itself remains axiom-free. The four results (achievability/converse, each in nats and bits) together pin the BEC's operational capacity to exactly (1−p)·log 2.",
+        "mathContext": "$\\mathrm{channelCapacity}(\\mathrm{bec}\\,p) = (1-p)\\log 2$ nats $= (1-p)$ bits; operational achievability for $R < C$ and converse for $R > C$ inherited from the axiomatized abstract coding theorems.",
+        "significance": "supporting",
+        "relatedConcepts": ["binary erasure channel", "Shannon channel coding theorem", "operational vs information-theoretic capacity", "achievability and converse", "random coding / Fano"],
+        "prerequisites": ["the base BEC capacity entry", "discrete memoryless channels", "block codes and rate"]
+    },
+    {
         "id": "ann-bec-achievability",
         "proofId": "shannon-channel-coding-bec-oq-02",
         "range": {
