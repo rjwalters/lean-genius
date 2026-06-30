@@ -2,12 +2,12 @@
   "id": "erdos-1-oq-02",
   "title": "Dubroff–Fox–Xu Subset Sum Lower Bound Framework",
   "slug": "erdos-1-oq-02",
-  "description": "Formalizes the algebraic framework for the Dubroff–Fox–Xu (2021) lower bound N ≥ √(2/π) · 2ⁿ/√n for the distinct subset sums problem (Erdős #1). Proves variance bounds (sum of squares ≤ n·N², sum ≤ n·N) and axiomatizes the anticoncentration step from Berry–Esseen.",
+  "description": "Formalizes the Dubroff–Fox–Xu (2021) lower bound N = Ω(2ⁿ/√n) for the distinct subset sums problem (Erdős #1). Proves variance bounds (Σaᵢ² ≤ n·N², Σaᵢ ≤ n·N) and the Chebyshev anticoncentration step 2ⁿ ≤ 3√Q + 2 — formerly axiomatized, now PROVED in-file (0 axioms) via a probability-free discharge: second-moment identity over the powerset + parity-aware central-interval count + discrete Chebyshev tail.",
   "meta": {
     "author": "Dubroff, Fox, Xu (2021); framework formalized 2026",
     "sourceUrl": "https://erdosproblems.com/1",
     "date": "2021",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos1OQ02.lean",
     "tags": [
       "additive-combinatorics",
@@ -17,11 +17,11 @@
       "anticoncentration",
       "berry-esseen"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 399,
-    "assumptions": "One axiom: anticoncentration_bound (Berry-Esseen anticoncentration for subset sums). dfx_lower_bound and pow2_dss proved in 2026-04-26 commit. sum_sq_cauchy_schwarz proved via induction in Z.",
+    "axiomCount": 0,
+    "lineCount": 546,
+    "assumptions": "0 axioms. The former anticoncentration_bound axiom (2^n ≤ 3√Q + 2 for distinct-subset-sums sets) is now PROVED in-file (theorem anticoncentration_bound) by an elementary, probability-free discharge: the second-moment identity over the powerset, a parity-aware central-interval count, and a discrete Chebyshev tail. dfx_lower_bound and pow2_dss proved; sum_sq_cauchy_schwarz proved. Fully machine-checked, 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -211,16 +211,17 @@
       "Mathlib"
     ],
     "namespace": "Erdos1OQ02",
-    "lineCount": 399,
-    "axiomCount": 1,
-    "theoremCount": 14,
+    "lineCount": 546,
+    "axiomCount": 0,
+    "theoremCount": 16,
     "definitionCount": 0,
     "path": "Proofs/Erdos1OQ02.lean",
     "sorries": 0
   },
   "sorries": 0,
-  "assumptions": "One axiom: anticoncentration_bound — the Chebyshev anticoncentration bound 2ⁿ ≤ 3·√(Σaᵢ²) + 2 for distinct-subset-sum sets. It is unconditionally true (Chebyshev's inequality applied to X = Σ εᵢaᵢ, plus the distinctness counting argument) and in principle dischargeable from Mathlib's `ProbabilityTheory` Chebyshev lemmas. dfx_lower_bound and the variance/Cauchy–Schwarz lemmas are fully proved (0 sorries). NOTE: the earlier axiom `2ⁿ ≤ √(2/π)·2(S+1)/√Q` was FALSE and has been corrected. Progress (2026-06-28): the probability-free core of the axiom's discharge is now proved in-file with 0 axioms — second_moment_identity (∑_{T⊆A}(2·ΣT−S)² = 2^|A|·Σaᵢ²) and card_mul_le_second_moment (discrete Chebyshev tail count). The only remaining step to eliminate the axiom is the same-parity distinct-integer central-interval count.",
+  "assumptions": "None — the file is fully verified (0 axioms, 0 sorries). The anticoncentration bound is now a proved theorem.",
   "highlights": [
+    "Anticoncentration axiom DISCHARGED (0-axiom, fully verified): the former anticoncentration_bound axiom 2^n <= 3*sqrt(Q)+2 is now a proved theorem. Combine: the 2^n doubled deviations are 2^n distinct same-parity integers with second moment 2^n*Q; splitting at radius ceil(2*sqrt Q) the central-interval count bounds the near band by L+1 and discrete Chebyshev bounds the tail by 2^n/4, giving (3/4)2^n <= 2*sqrt(Q)+1 <= 3*sqrt(Q)+2. The entry is now status=verified.",
     "Central-interval count landed (card_le_of_sameParity_interval, 0-axiom): a finite set of integers all of one parity confined to [-L,L] has <= L+1 elements (via v |-> (v+L)/2 injecting into Icc 0 L). This is the LAST combinatorial input to discharging anticoncentration_bound with the sharp constant 3 -- joins second_moment_identity, the 2^|A|-distinct-integers image, and the Chebyshev tail. Only the real-sqrt optimization assembly remains.",
     "Verified inputs toward discharging the anticoncentration axiom (0-axiom): subset sums are injective on the powerset for a distinct-subset-sums set (subsetSum_injOn_of_distinct), hence the 2^|A| doubled deviations 2*Sum_T - S are 2^|A| DISTINCT integers (card_doubledDrop_image_of_distinct) -- the precise 'distinct integers' input to the central-interval count that recovers the sharp constant 3. Joins second_moment_identity + card_mul_le_second_moment; only the parity-aware interval count + real-sqrt combine remain."
   ]
