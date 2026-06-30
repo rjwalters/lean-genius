@@ -103,7 +103,8 @@
       "**One notion controls everything: non-unitality.** An argument is non-unital (n ∉ {1,2}) exactly when φ(n) ≠ 1, and exactly then 2 ∣ φ(n). Pairwise coprimality and family-gcd parity both reduce to counting non-unital indices.",
       "**Pairwise coprime ⟺ at most one non-unital argument.** Coprimality is a property of pairs; the only obstruction is two non-unital arguments sharing the factor 2, so the whole family is pairwise coprime precisely when the non-unital indices number ≤ 1.",
       "**The n = 0 boundary merges with n ≥ 3.** φ(0) = 0 is even, so the clean statement is in terms of {1, 2} (the φ = 1 set), not in terms of a size threshold — covering 0 and all of n ≥ 3 uniformly.",
-      "**The power-of-2 question is a divisor-of-prime-power fact.** Once every φ(n_i) is a power of 2, the family gcd divides one of them and is therefore a power of 2 — no further arithmetic of the n_i is needed. This holds for products of distinct Fermat primes, where φ is always a power of 2."
+      "**The power-of-2 question is a divisor-of-prime-power fact.** Once every φ(n_i) is a power of 2, the family gcd divides one of them and is therefore a power of 2 — no further arithmetic of the n_i is needed. This holds for products of distinct Fermat primes, where φ is always a power of 2.",
+      "**`decide`, not `native_decide`, keeps the examples axiom-free.** The worked examples evaluate $\\varphi$ and `Finset.gcd` at concrete small tuples by kernel reduction (`decide`), which is checked by the Lean kernel itself and so introduces no extra axioms — unlike `native_decide`, which would pull in `Lean.ofReduceBool`. This is why the entry can honestly claim 0 axioms while still shipping fully computed examples."
     ],
     "prerequisites": [
       "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
