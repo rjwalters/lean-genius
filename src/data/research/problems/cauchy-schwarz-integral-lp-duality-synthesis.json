@@ -41,7 +41,7 @@
   ],
   "phase": "ACT",
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED 0-axiom): added converse-Hölder ingredient layer on the buildable Ingredients file — extremizer f=g^{q-1} attains equality in Hölder (sharpness), the missing-from-Mathlib converse to lintegral_mul_le_Lp_mul_Lq. Dual-norm identity ‖g‖_q = sup pairing now one iSup-assembly step away. Riesz/Lᵖ-duality OQ itself still open.",
+    "progressSummary": "PROGRESS: dual-norm = Lᵠ-seminorm identity (Lᵖ-duality core) now proved for all g∈Lᵠ, VERIFIED 0-axiom; only g∉Lᵠ (∫⁻gᵠ=∞) remains.",
     "insights": [
       "The previously-flagged Lean infrastructure gaps are RESOLVED. Mathlib supplies the sigma-finite support of any Lp function (0<p<inf) via MeasureTheory.MemLp.aefinStronglyMeasurable (Mathlib/MeasureTheory/Function/StronglyMeasurable/Lp.lean:59) -> AEFinStronglyMeasurable, whose .sigmaFiniteSet / .measurableSet / .ae_eq_zero_compl / sigmaFinite_restrict instance (StronglyMeasurable/AEStronglyMeasurable.lean:892-916) give a measurable set S with mu.restrict S sigma-finite and f=0 a.e. off S.",
       "The verified chain ALREADY contains the restriction/extension infrastructure once thought to be a ~150-line gap: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean proves eLpNorm (S.indicator f) p mu = eLpNorm f p (mu.restrict S) (line 246), MemLp f p (mu.restrict S) -> MemLp (S.indicator f) p mu (line 260), and the extension-by-zero ISOMETRY extByZeroCLM : Lp p (mu.restrict S) ->L Lp p mu (line 266, currently private).",
@@ -55,7 +55,9 @@
       "Step 3 gluing rests on q-POWER additivity of eLpNorm over disjoint supports (the seminorm itself is only Minkowski-subadditive); the q-th power splits exactly via Measure.restrict_union + lintegral_add_measure, with the outer (·)^(1/q) cancelled by ENNReal.rpow_mul + one_div_mul_cancel",
       "CORRECTION: remaining work is NOT just plumbing/bookkeeping. The maximality step 2 needs a norm bound ‖g_S‖_q ≤ ‖φ‖ to make c = ⨆_S ‖g_S‖_q finite, but riesz_lp_surjective_sigma_finite returns only existence+representation with no norm control.",
       "The missing bound is the converse-Hölder dual-norm ‖g‖_q ≤ ⨆_{‖f‖_p≤1}|∫f·g|, which Mathlib lacks (Holder.lean has only forward ‖B.holderL‖≤‖B‖ + pairing CLM).",
-      "Mathlib has the Hölder UPPER bound (ENNReal.lintegral_mul_le_Lp_mul_Lq) but NOT the converse sharpness: the explicit extremizer f=g^{q-1} attaining equality. The ℝ≥0∞ lintegral setting (∫⁻ g^q = ‖g‖_q^q) sidesteps the real-valued sign/integrability drift that blocks the synthesis file."
+      "Mathlib has the Hölder UPPER bound (ENNReal.lintegral_mul_le_Lp_mul_Lq) but NOT the converse sharpness: the explicit extremizer f=g^{q-1} attaining equality. The ℝ≥0∞ lintegral setting (∫⁻ g^q = ‖g‖_q^q) sidesteps the real-valued sign/integrability drift that blocks the synthesis file.",
+      "Dual-norm characterization (analytic core of Lᵖ-duality) proved for g∈Lᵠ: lpDualNorm p g = (∫⁻gᵠ)^{1/q}=‖g‖_q when ∫⁻gᵠ≠∞. ≤ is Hölder (unconditional); ≥ via NORMALIZED extremizer (∫⁻gᵠ)^{-1/p}·g^{q-1} attaining the sup. Only ∫⁻gᵠ=∞ (g∉Lᵠ) left open (needs truncation).",
+      "Normalization arithmetic in ℝ≥0∞: extremizer rescaled by c=(I^{1/p})⁻¹ has Lᵖ-mass cᵖ·I=I⁻¹·I=1 (inv_mul_cancel needs 0<I<∞) and pairs to c·I=I^{1/q} via -(1/p)+1=1/q. KEY GOTCHA: HolderConjugate.inv_add_inv_eq_one gives p⁻¹+q⁻¹=1 (NOT 1/p+1/q) → simp only[one_div] before linarith."
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
@@ -67,7 +69,8 @@
       "lintegral_extremizer_rpow: ∫⁻ ((g)^{q-1})^p = ∫⁻ (g)^q via (q-1)·p=q (HolderConjugate.sub_one_mul_conj) + ENNReal.rpow_mul — CauchySchwarzIntegralLpDualityIngredients.lean",
       "lintegral_extremizer_mul: ∫⁻ (g)^{q-1}·g = ∫⁻ (g)^q via (q-1)+1=q + ENNReal.rpow_add_of_nonneg (conv_rhs targeting) — Ingredients.lean",
       "lintegral_extremizer_holder_eq: converse-Hölder SHARPNESS — extremizer attains Hölder equality; RHS (∫⁻g^q)^{1/p}·(∫⁻g^q)^{1/q} collapses via 1/p+1/q=1, edge-case-free (rpow_add_of_nonneg) — Ingredients.lean",
-      "exists_holder_extremizer: packaged ∃-form (witness g^{q-1}, measurable via Measurable.pow_const) — converse to lintegral_mul_le_Lp_mul_Lq — Ingredients.lean"
+      "exists_holder_extremizer: packaged ∃-form (witness g^{q-1}, measurable via Measurable.pow_const) — converse to lintegral_mul_le_Lp_mul_Lq — Ingredients.lean",
+      "lintegral_scaled_extremizer_rpow/_mul (constant-rescale laws for q-power mass + pairing), normalizedExtremizer def + measurability, lpDualNorm def (iSup over Lᵖ unit ball), lpDualNorm_le (Hölder ≤), lpDualNorm_eq_of_lintegral_ne_top (full identity for g∈Lᵠ) — CauchySchwarzIntegralLpDualityIngredients.lean, VERIFIED 0-axiom"
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
@@ -82,7 +85,8 @@
       "ALT: prove standalone converse-Hölder dual-norm lemma (extremizer f=|g|^{q-1}sgn g/‖g‖^{q/p}); candidate for Aristotle (KNOWN math).",
       "Then assemble maximality: maximizing sequence Sₙ, g_T via sigmaFinite_restrict_iUnion, glue with eLpNorm_rpow_restrict_union/iUnion, identify g_U=g_T a.e., swap parent axiom.",
       "Full in-graph kernel check needs the chain oleans built (Docker or sanctioned build path); only logic-level lake env lean check was possible this session.",
-      "Assemble the dual-norm iSup identity (∫⁻ g^q)^{1/q} = ⨆_{∫⁻ f^p ≤ 1} ∫⁻ f·g by combining lintegral_extremizer_holder_eq (≥, normalized extremizer) with ENNReal.lintegral_mul_le_Lp_mul_Lq (≤); handle ∫⁻g^q ∈ {0,∞} normalization edge cases."
+      "Assemble the dual-norm iSup identity (∫⁻ g^q)^{1/q} = ⨆_{∫⁻ f^p ≤ 1} ∫⁻ f·g by combining lintegral_extremizer_holder_eq (≥, normalized extremizer) with ENNReal.lintegral_mul_le_Lp_mul_Lq (≤); handle ∫⁻g^q ∈ {0,∞} normalization edge cases.",
+      "Handle the ∫⁻gᵠ=∞ case of the dual-norm identity (lpDualNorm=∞) via truncation g_n=g·1_{g≤n}∩Sₙ exhaustion + monotone convergence, removing the ∫⁻gᵠ≠∞ hypothesis."
     ]
   },
   "leanFiles": [

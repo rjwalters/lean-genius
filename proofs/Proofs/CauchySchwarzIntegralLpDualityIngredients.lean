@@ -267,6 +267,133 @@ theorem exists_holder_extremizer {p q : ℝ} (hpq : p.HolderConjugate q)
         = (∫⁻ x, (f x) ^ p ∂μ) ^ (1 / p) * (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) :=
   ⟨fun x => (g x) ^ (q - 1), hg.pow_const _, lintegral_extremizer_holder_eq hpq⟩
 
+/-! ## The dual-norm characterization (the analytic core of Lᵖ-duality)
+
+The sharpness layer above upgrades the Hölder *upper* bound to an *identity* for the
+dual pairing. Define the `Lᵖ`-dual norm of `g` as the supremum of the pairing
+`∫⁻ f·g` over the `Lᵖ` unit ball `{f : ‖f‖_p ≤ 1}`:
+
+  `lpDualNorm p g = ⨆_{f aemeasurable, ∫⁻ fᵖ ≤ 1} ∫⁻ f·g`.
+
+The content of `Lᵖ`-`Lᵠ` duality is that this equals `‖g‖_q = (∫⁻ gᵠ)^{1/q}`. We prove
+the full identity for every `g ∈ Lᵠ` (`∫⁻ gᵠ ≠ ∞`):
+
+* `lpDualNorm_le` — the `≤` direction is Hölder
+  (`ENNReal.lintegral_mul_le_Lp_mul_Lq`); it holds unconditionally.
+* `lpDualNorm_eq_of_lintegral_ne_top` — the `≥` direction is realized by the
+  *normalized* extremizer `(∫⁻ gᵠ)^{-1/p}·g^{q-1}`, which lies on the unit sphere
+  `‖f‖_p = 1` and pairs to exactly `‖g‖_q`.
+
+Only `∫⁻ gᵠ = ∞` (`g ∉ Lᵠ`) is left open — it needs a separate truncation/exhaustion
+argument and is not the regime relevant to the duality. The two scaling lemmas
+`lintegral_scaled_extremizer_rpow/_mul` (how the `q`-power norm and the pairing
+transform under a constant rescaling `g^{q-1} ↦ c·g^{q-1}`) isolate the only
+analytic input beyond the unscaled extremizer identities. -/
+
+/-- **Scaling of the extremizer's `Lᵖ`-mass.** For Hölder-conjugate `p, q` and any
+    `c` with `cᵖ ≠ ∞`, the `p`-th power lower integral of the rescaled extremizer
+    `c·g^{q-1}` is `cᵖ·∫⁻ gᵠ`. Pulls the constant `cᵖ` out of the lower integral
+    (`mul_rpow_of_nonneg` pointwise, then `lintegral_const_mul'`) and reuses the
+    unscaled `lintegral_extremizer_rpow`. -/
+theorem lintegral_scaled_extremizer_rpow {p q : ℝ} (hpq : p.HolderConjugate q)
+    {c : ℝ≥0∞} (hc : c ^ p ≠ ∞) :
+    ∫⁻ x, (c * (g x) ^ (q - 1)) ^ p ∂μ = c ^ p * ∫⁻ x, (g x) ^ q ∂μ := by
+  have hp : (0 : ℝ) < p := lt_trans one_pos hpq.lt
+  rw [← lintegral_extremizer_rpow hpq, ← lintegral_const_mul' _ _ hc]
+  exact lintegral_congr fun x => by rw [ENNReal.mul_rpow_of_nonneg _ _ hp.le]
+
+/-- **Scaling of the extremizer's pairing with `g`.** For `1 ≤ q` and any finite `c`,
+    pairing the rescaled extremizer `c·g^{q-1}` against `g` scales the unscaled pairing
+    by `c`: `∫⁻ (c·g^{q-1})·g = c·∫⁻ gᵠ`. Constant pulled out via
+    `lintegral_const_mul'`, reusing `lintegral_extremizer_mul`. -/
+theorem lintegral_scaled_extremizer_mul {q : ℝ} (hq : 1 ≤ q)
+    {c : ℝ≥0∞} (hc : c ≠ ∞) :
+    ∫⁻ x, c * (g x) ^ (q - 1) * g x ∂μ = c * ∫⁻ x, (g x) ^ q ∂μ := by
+  rw [← lintegral_extremizer_mul hq, ← lintegral_const_mul' _ _ hc]
+  exact lintegral_congr fun x => by rw [mul_assoc]
+
+/-- The normalized Hölder extremizer `c·g^{q-1}` with `c = (∫⁻ gᵠ)^{-1/p}`, scaled to
+    lie on the `Lᵖ` unit sphere `∫⁻ fᵖ = 1` (for `g ∈ Lᵠ` with `‖g‖_q ≠ 0`). -/
+def normalizedExtremizer (p q : ℝ) (μ : Measure α) (g : α → ℝ≥0∞) : α → ℝ≥0∞ :=
+  fun x => ((∫⁻ y, (g y) ^ q ∂μ) ^ (1 / p))⁻¹ * (g x) ^ (q - 1)
+
+/-- The normalized extremizer is measurable when `g` is. -/
+theorem measurable_normalizedExtremizer {p q : ℝ} (hg : Measurable g) :
+    Measurable (normalizedExtremizer p q μ g) :=
+  measurable_const.mul (hg.pow_const _)
+
+/-- **The `Lᵖ`-dual norm of `g`**: the supremum of the dual pairing `∫⁻ f·g` over the
+    `Lᵖ` unit ball `{f aemeasurable : ∫⁻ fᵖ ≤ 1}`. Duality (below) identifies it with
+    the `Lᵠ`-seminorm `(∫⁻ gᵠ)^{1/q}` for `g ∈ Lᵠ`. -/
+def lpDualNorm (p : ℝ) (μ : Measure α) (g : α → ℝ≥0∞) : ℝ≥0∞ :=
+  ⨆ (f : α → ℝ≥0∞) (_ : AEMeasurable f μ) (_ : ∫⁻ x, (f x) ^ p ∂μ ≤ 1),
+    ∫⁻ x, f x * g x ∂μ
+
+/-- **Dual norm `≤` Lᵠ-seminorm (Hölder, unconditional).** Every admissible `f`
+    (`∫⁻ fᵖ ≤ 1`) pairs to at most `(∫⁻ gᵠ)^{1/q}`, by Hölder's inequality with the
+    unit-ball normalization `(∫⁻ fᵖ)^{1/p} ≤ 1`. Hence the supremum is `≤ ‖g‖_q`. -/
+theorem lpDualNorm_le {p q : ℝ} (hpq : p.HolderConjugate q) (hg : AEMeasurable g μ) :
+    lpDualNorm p μ g ≤ (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by
+  have hp : (0 : ℝ) < p := lt_trans one_pos hpq.lt
+  refine iSup_le fun f => iSup_le fun hf => iSup_le fun hfp => ?_
+  calc ∫⁻ x, f x * g x ∂μ
+      ≤ (∫⁻ x, (f x) ^ p ∂μ) ^ (1 / p) * (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) :=
+        ENNReal.lintegral_mul_le_Lp_mul_Lq μ hpq hf hg
+    _ ≤ (1 : ℝ≥0∞) ^ (1 / p) * (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) :=
+        mul_le_mul' (ENNReal.rpow_le_rpow hfp (one_div_nonneg.2 hp.le)) le_rfl
+    _ = (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by rw [ENNReal.one_rpow, one_mul]
+
+/-- **Lᵖ-duality dual-norm identity for `g ∈ Lᵠ`.** For Hölder-conjugate `p, q` and
+    measurable `g` with `∫⁻ gᵠ ≠ ∞`:
+
+      `lpDualNorm p g = (∫⁻ gᵠ)^{1/q} = ‖g‖_q`.
+
+    The `≤` is `lpDualNorm_le` (Hölder). The `≥` splits on `‖g‖_q`:
+    * `∫⁻ gᵠ = 0`: then `‖g‖_q = 0 ≤ lpDualNorm` trivially.
+    * `0 < ∫⁻ gᵠ < ∞`: the *normalized* extremizer `(∫⁻ gᵠ)^{-1/p}·g^{q-1}` is
+      admissible — its `Lᵖ`-mass is `cᵖ·∫⁻ gᵠ = (∫⁻ gᵠ)⁻¹·∫⁻ gᵠ = 1` — and pairs to
+      `c·∫⁻ gᵠ = (∫⁻ gᵠ)^{-1/p}·∫⁻ gᵠ = (∫⁻ gᵠ)^{1/q}` (since `-1/p + 1 = 1/q`),
+      realizing the supremum. This is the converse to Hölder: the dual pairing
+      attains the full `Lᵠ`-seminorm, not merely a lower bound for it. -/
+theorem lpDualNorm_eq_of_lintegral_ne_top {p q : ℝ} (hpq : p.HolderConjugate q)
+    (hg : Measurable g) (hItop : (∫⁻ x, (g x) ^ q ∂μ) ≠ ∞) :
+    lpDualNorm p μ g = (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by
+  have hp : (0 : ℝ) < p := lt_trans one_pos hpq.lt
+  have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+  refine le_antisymm (lpDualNorm_le hpq hg.aemeasurable) ?_
+  rcases eq_or_ne (∫⁻ x, (g x) ^ q ∂μ) 0 with hI0 | hI0
+  · -- ‖g‖_q = 0
+    rw [hI0, ENNReal.zero_rpow_of_pos (one_div_pos.2 hq)]
+    exact zero_le _
+  · -- 0 < ‖g‖_q < ∞ : the normalized extremizer attains the supremum
+    set I := ∫⁻ x, (g x) ^ q ∂μ with hIdef
+    have hIpos : (0 : ℝ≥0∞) < I := lt_of_le_of_ne (zero_le _) (Ne.symm hI0)
+    have hIp0 : I ^ (1 / p) ≠ 0 := (ENNReal.rpow_pos hIpos hItop).ne'
+    have hIptop : I ^ (1 / p) ≠ ∞ := ENNReal.rpow_ne_top_of_nonneg (one_div_nonneg.2 hp.le) hItop
+    have hc_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ≠ ∞ := ENNReal.inv_ne_top.2 hIp0
+    have hcp : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ^ p = I⁻¹ := by
+      rw [ENNReal.inv_rpow, ← ENNReal.rpow_mul, one_div_mul_cancel hp.ne', ENNReal.rpow_one]
+    have hcp_ne_top : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) ^ p ≠ ∞ := by rw [hcp]; exact ENNReal.inv_ne_top.2 hI0
+    -- the normalized extremizer lies on the unit sphere
+    have hf_norm : ∫⁻ x, (normalizedExtremizer p q μ g x) ^ p ∂μ = 1 := by
+      simp only [normalizedExtremizer, ← hIdef]
+      rw [lintegral_scaled_extremizer_rpow hpq hcp_ne_top, ← hIdef, hcp,
+        ENNReal.inv_mul_cancel hI0 hItop]
+    -- and pairs to exactly ‖g‖_q
+    have hexp : -(1 / p) + 1 = 1 / q := by
+      have h := hpq.inv_add_inv_eq_one
+      simp only [one_div]; linarith
+    have hcI : ((I ^ (1 / p))⁻¹ : ℝ≥0∞) * I = I ^ (1 / q) := by
+      rw [← hexp, ENNReal.rpow_add _ _ hI0 hItop, ENNReal.rpow_neg, ENNReal.rpow_one]
+    have hf_pair : ∫⁻ x, normalizedExtremizer p q μ g x * g x ∂μ = I ^ (1 / q) := by
+      simp only [normalizedExtremizer, ← hIdef]
+      rw [lintegral_scaled_extremizer_mul hpq.symm.lt.le hc_ne_top, ← hIdef, hcI]
+    -- realize the supremum at the normalized extremizer
+    rw [← hf_pair]
+    exact le_iSup_of_le (normalizedExtremizer p q μ g)
+      (le_iSup_of_le (measurable_normalizedExtremizer hg).aemeasurable
+        (le_iSup_of_le hf_norm.le (le_refl _)))
+
 end RieszLpDualityIngredients
 
 end
