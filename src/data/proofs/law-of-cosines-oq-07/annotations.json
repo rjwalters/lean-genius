@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-loc07-overview",
+    "proofId": "law-of-cosines-oq-07",
+    "range": { "startLine": 3, "endLine": 38 },
+    "type": "concept",
+    "title": "Apollonius in Coordinate-Free Metric Form",
+    "content": "This OQ states Apollonius's median theorem directly over an arbitrary real inner-product affine space (a NormedAddTorsor over an InnerProductSpace ℝ) and derives the parallelogram law from it — no coordinates, no scalar side-length parametrization. Three results are packaged: apollonius (the median identity dist² a b + dist² a c = 2(median² + (½·bc)²)), median_length (the explicit rearrangement 4mₐ² = 2b² + 2c² − a²), and parallelogram_law (‖x+y‖² + ‖x−y‖² = 2(‖x‖²+‖y‖²) as a vector-space special case, since a parallelogram's diagonals bisect each other at a common midpoint). It is deliberately DISTINCT from the sibling law-of-cosines-oq-04, whose median formula is a scalar identity in ℝ-valued side lengths from Stewart's algebra — here the objects are genuine points and midpoints.",
+    "mathContext": "Apollonius (metric): $\\mathrm{dist}(a,b)^2+\\mathrm{dist}(a,c)^2=2\\big(\\mathrm{dist}(a,\\mathrm{mid}(b,c))^2+(\\tfrac12\\mathrm{dist}(b,c))^2\\big)$; parallelogram law follows.",
+    "significance": "supporting",
+    "relatedConcepts": ["Apollonius's theorem", "median identity", "parallelogram law", "inner-product affine space", "coordinate-free geometry"],
+    "prerequisites": ["NormedAddTorsor / affine spaces", "inner product spaces", "midpoints"]
+  },
+  {
     "id": "ann-apollonius",
     "proofId": "law-of-cosines-oq-07",
     "range": {
