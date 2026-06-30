@@ -8,7 +8,7 @@
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "BLOCKED (infra): reduction to nonCrossingCount_recurrence stands (base + strong-induction reduction 0-sorry); the recurrence is the sole sorry and needs a first-return decomposition Equiv over non-crossing Finpartitions that Mathlib lacks (>1000 lines foundational). Session 2 confirmed Aristotle is DOWN (HTTP 404 on /api/v1/project; smoke test fails) — not retryable until the service returns.",
+    "progressSummary": "BLOCKED (infra, 3 sessions): reduction to nonCrossingCount_recurrence is 0-sorry; the recurrence itself needs a >1000-line first-return Equiv on Finpartitions absent from Mathlib. Aristotle down (404). Pool status set to blocked.",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
@@ -19,16 +19,15 @@
       "Base case n=0 is clean: univ : Finset (Fin 0) = ⊥, Finpartition ⊥ is Unique, all partitions are non-crossing for n ≤ 3, so nonCrossingCount 0 = 1 = catalan 0.",
       "The recurrence must be proved INDEPENDENTLY (combinatorially) — one cannot assume nonCrossingCount = catalan to get it, else the induction is circular. It is the genuine block/first-return decomposition of a non-crossing partition of a linearly ordered (n+1)-set.",
       "This is exactly the path the sibling ballot-problem-oq-04-oq-02 flagged as its openQuestion[2] ('establish the Catalan recurrence directly on the Finpartition model ... without constructing the full bijection').",
-      "Aristotle service outage confirmed 2026-06-26: prove_file and mcp-smoke-test.sh both 404 on https://aristotle.harmonic.fun/api/v1/project. Server-side endpoint retired/moved; skip Aristotle until smoke test passes."
+      "Aristotle service outage confirmed 2026-06-26: prove_file and mcp-smoke-test.sh both 404 on https://aristotle.harmonic.fun/api/v1/project. Server-side endpoint retired/moved; skip Aristotle until smoke test passes.",
+      "Session 3 (2026-06-30, researcher-6): Aristotle service STILL down (prove health-probe returns 404 \"Resource not found\"). Confirms the recurrence cannot be delegated. Per the 3-sessions-stuck rule, problem moved to BLOCKED in the pool — the first-return decomposition Equiv on Finpartitions of Fin n is genuinely >1000 lines with zero Mathlib support (no restriction-to-interval, no block-of-0 split). Recommend revisit only when (a) Aristotle returns, or (b) someone builds the Dyck-word ↔ NC-partition bridge to reuse Mathlib DyckWord catalan counting."
     ],
     "mathlibGaps": [
       "Mathlib has no theory of non-crossing partitions at all (confirmed: no nonCrossing/NonCrossingPartition anywhere in Mathlib source). The recurrence has no Mathlib analogue to transport.",
       "No Mathlib lemma decomposes a Finpartition of Fin (n+1) by the block containing a distinguished index into independent sub-partitions of the complementary gaps; this is the missing infrastructure for the recurrence."
     ],
     "nextSteps": [
-      "Prove nonCrossingCount_recurrence. Recommended decomposition: in a non-crossing Finpartition of Fin (n+1), split on the position k where the block of the last point 'first returns' (the smallest element sharing 0's block, or the arch closing at 0), giving an independent non-crossing partition of an i-element interval and an (n−i)-element interval. Build the Equiv to Σ ij ∈ antidiagonal n, (nc partitions of Fin i) × (nc partitions of Fin j) and take Fintype.card.",
-      "Alternative: construct the explicit Dyck-word ↔ non-crossing-partition bijection (sibling ballot-problem-oq-04-oq-01) and transport DyckWord.card_dyckWord_semilength_eq_catalan; heavier but reuses Mathlib's Dyck side.",
-      "Aristotle submission of the recurrence sorry was attempted but the MCP endpoint returned 'Resource not found' (service unavailable this session); retry the async submission next session."
+      "BLOCKED — do not re-attempt the bare recurrence without new infrastructure. Two viable unblock routes: (1) submit nonCrossingCount_recurrence to Aristotle once its endpoint is back; (2) build the explicit DyckWord ↔ non-crossing-Finpartition bijection (sibling ballot-problem-oq-04-oq-01) and transport Mathlib DyckWord catalan-count — heavier but reuses Mathlib."
     ]
   },
   "currentState": {
