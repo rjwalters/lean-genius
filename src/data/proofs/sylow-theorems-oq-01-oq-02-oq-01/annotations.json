@@ -1,0 +1,86 @@
+[
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-header",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "concept",
+    "range": { "startLine": 3, "endLine": 42 },
+    "title": "The pq classification: the cyclic direction",
+    "content": "Groups of order $pq$ ($p > q$ prime) split into two regimes by an arithmetic condition on the primes. When $q \\nmid (p-1)$ the only group is the cyclic $\\mathbb{Z}/pq$; when $q \\mid (p-1)$ there is in addition a unique nonabelian semidirect product $\\mathbb{Z}/p \\rtimes \\mathbb{Z}/q$. This file settles the **$q \\nmid (p-1)$ direction** — exactly one isomorphism class — leaving the $q \\mid (p-1)$ case (which needs an isomorphism classification of semidirect products, not yet in Mathlib) open. The method deliberately avoids constructing the group structure by hand: it routes through Z-group and nilpotency theory.",
+    "mathContext": "$|G| = pq,\\ p>q\\ \\text{prime},\\ q \\nmid (p-1) \\implies G \\cong \\mathbb{Z}/pq.$",
+    "significance": "context",
+    "relatedConcepts": ["Sylow theorems", "groups of order pq", "semidirect product", "classification of finite groups"],
+    "prerequisites": ["Sylow theorems", "cyclic groups", "group order and Lagrange's theorem"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-setup",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "definition",
+    "range": { "startLine": 44, "endLine": 48 },
+    "title": "Setup: a finite group G",
+    "content": "The development opens the `SylowOrderPQ` namespace, opens `Classical` (so every proposition is decidable — convenient for the case splits below), and fixes an arbitrary group `G`. Finiteness, the primes `p`, `q`, and the order/divisibility hypotheses are attached per-theorem rather than as section variables, keeping each statement self-contained.",
+    "mathContext": "$G$ a group; hypotheses $p,q$ prime, $p>q$, $|G|=pq$, $q \\nmid (p-1)$ supplied per theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["classical logic", "finite groups", "Nat.card"],
+    "prerequisites": ["group theory basics"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-sylow-count-divisor",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 50, "endLine": 73 },
+    "title": "Sylow count is one for every prime: the arithmetic core",
+    "content": "`card_sylow_eq_one_of_card_pq` proves $n_r = 1$ for **every** prime $r$, where $n_r = $ `Nat.card (Sylow r G)`. The three Sylow constraints are loaded up front: $n_r \\equiv 1 \\pmod r$ (`card_sylow_modEq_one`), $r \\nmid n_r$ (`not_dvd_card_sylow`), and — after a case split on whether $r \\mid |G|$ — the divisibility $n_r \\mid pq$ obtained from `Sylow.card_dvd_index` chained with `Subgroup.index_dvd_card`.",
+    "mathContext": "$n_r \\equiv 1 \\pmod r,\\quad r \\nmid n_r,\\quad n_r \\mid pq.$",
+    "significance": "critical",
+    "relatedConcepts": ["Sylow's third theorem", "card_sylow_modEq_one", "Sylow.card_dvd_index", "number of Sylow subgroups"],
+    "prerequisites": ["Sylow theorems", "divisibility in ℕ", "congruences mod r"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-rp-rq",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "tactic",
+    "range": { "startLine": 74, "endLine": 101 },
+    "title": "The two dividing primes r = p and r = q",
+    "content": "When $r \\mid pq$, primality gives $r = p$ or $r = q$. From $r \\nmid n_r$ and $r$ prime, $n_r$ is coprime to $r$, so $n_r \\mid pq$ collapses to $n_r \\mid q$ (case $r=p$) or $n_r \\mid p$ (case $r=q$). Each divisor is $1$ or the prime itself; the prime value is ruled out by the congruence. For $r=p$: $n_p = q$ would force $p \\mid q-1$, impossible since $q < p$ (so $q-1 < p$). For $r=q$: $n_q = p$ would force $q \\mid p-1$, **exactly the excluded hypothesis** $q \\nmid (p-1)$. Both contradictions are closed by `omega` / the hypothesis.",
+    "mathContext": "$n_p = q \\Rightarrow p \\mid q-1$ (false, $q<p$);\\ \\ $n_q = p \\Rightarrow q \\mid p-1$ (excluded).",
+    "significance": "critical",
+    "relatedConcepts": ["coprimality", "Nat.dvd_prime", "Nat.modEq_iff_dvd'", "Sylow normality"],
+    "prerequisites": ["coprime divides product", "prime divisor of a prime", "modular arithmetic"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-trivial-sylow",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "insight",
+    "range": { "startLine": 102, "endLine": 112 },
+    "title": "Primes not dividing |G|: trivial Sylow subgroup",
+    "content": "For a prime $r \\nmid |G|$, every Sylow $r$-subgroup is a $p$-group whose order $r^k$ divides $|G|$; since $r \\nmid |G|$ this forces $k = 0$, i.e. the subgroup is trivial $\\bot$. With all Sylow $r$-subgroups equal to $\\bot$, the type `Sylow r G` is a `Subsingleton`, hence $n_r = 1$. This is the step that lets the count be stated for *every* prime — essential because the nilpotency criterion quantifies over all primes, not just those dividing $|G|$.",
+    "mathContext": "$r \\nmid |G| \\Rightarrow$ every Sylow $r$-subgroup $= \\bot \\Rightarrow n_r = 1.$",
+    "significance": "key",
+    "relatedConcepts": ["p-group", "Subgroup.eq_bot_iff_card", "Subsingleton", "Sylow subgroups"],
+    "prerequisites": ["Lagrange's theorem", "order of a p-group", "trivial subgroup"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-cyclic",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 114, "endLine": 137 },
+    "title": "Cyclicity via Z-group + nilpotency",
+    "content": "`isCyclic_of_card_pq` assembles the headline in four moves: (1) $|G| = pq$ is squarefree (coprime product of two squarefree primes), so $G$ is a **Z-group** — every Sylow subgroup cyclic — via `IsZGroup.of_squarefree`; (2) the Sylow count $n_s = 1$ makes every Sylow subgroup normal (`Sylow.normal_of_subsingleton`); (3) all Sylow subgroups normal $\\Rightarrow$ $G$ nilpotent, by the finite-group nilpotency TFAE `isNilpotent_of_finite_tfae`; (4) a finite nilpotent Z-group is cyclic — supplied by a Mathlib instance, so the proof closes with `infer_instance`.",
+    "mathContext": "squarefree $|G| \\Rightarrow$ Z-group; all Sylow normal $\\Rightarrow$ nilpotent; nilpotent Z-group $\\Rightarrow$ cyclic.",
+    "significance": "critical",
+    "relatedConcepts": ["Z-group", "nilpotent group", "IsZGroup.of_squarefree", "isNilpotent_of_finite_tfae", "squarefree integer"],
+    "prerequisites": ["nilpotent groups", "Z-groups (cyclic Sylow subgroups)", "squarefree numbers"]
+  },
+  {
+    "id": "sylow-theorems-oq-01-oq-02-oq-01-uniqueness",
+    "proofId": "sylow-theorems-oq-01-oq-02-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 139, "endLine": 151 },
+    "title": "Uniqueness of the isomorphism class",
+    "content": "`unique_isoclass_of_card_pq`: any two groups $G$, $H$ of order $pq$ with $q \\nmid (p-1)$ are isomorphic. Both are cyclic by the previous theorem, and two cyclic groups of equal cardinality are isomorphic (`mulEquivOfCyclicCardEq`). This packages the 'exactly one isomorphism class' statement — every such group is $\\cong \\mathbb{Z}/pq$ — as a concrete `Nonempty (G ≃* H)`.",
+    "mathContext": "$G, H$ cyclic, $|G| = |H| = pq \\Rightarrow G \\cong H \\cong \\mathbb{Z}/pq.$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic group isomorphism", "mulEquivOfCyclicCardEq", "isomorphism class", "MulEquiv"],
+    "prerequisites": ["cyclic groups of equal order are isomorphic", "group isomorphism"]
+  }
+]

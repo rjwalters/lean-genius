@@ -1,0 +1,133 @@
+{
+  "id": "minkowski-fundamental-theorem-oq-05",
+  "title": "Dirichlet's Simultaneous Approximation Theorem from Minkowski",
+  "slug": "minkowski-fundamental-theorem-oq-05",
+  "description": "Derives Dirichlet's simultaneous Diophantine approximation theorem as a corollary of the parent Minkowski convex body theorem. For any finite family of reals α : Fin d → ℝ and any integer N ≥ 1, there exist an integer q with 1 ≤ q ≤ Nᵈ and integers p : Fin d → ℤ with |αᵢ·q - pᵢ| ≤ 1/N for all i. Mathlib contains only the one-dimensional Dirichlet theorem (via pigeonhole); the multi-dimensional version, obtained here from the geometry of numbers, is new.",
+  "meta": {
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiFundamentalTheoremOQ05.lean",
+    "author": "Lean Genius",
+    "date": "2026",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "geometry-of-numbers",
+      "lattices",
+      "minkowski-theorem",
+      "dirichlet"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 327,
+    "theoremCount": 12,
+    "definitionCount": 7,
+    "dateAdded": "2026-06-25",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.volume_Icc_pi",
+        "description": "Lebesgue volume of an axis-aligned box ∏ Icc aᵢ bᵢ equals ∏ ofReal(bᵢ - aᵢ)",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Matrix.det_of_upperTriangular",
+        "description": "Determinant of an upper-triangular (BlockTriangular id) matrix is the product of its diagonal",
+        "module": "Mathlib.LinearAlgebra.Matrix.Block"
+      },
+      {
+        "theorem": "abs_sub_round",
+        "description": "|x - round x| ≤ 1/2 — used for the trivial N = 1 base case",
+        "module": "Mathlib.Algebra.Order.Round"
+      },
+      {
+        "theorem": "MinkowskiFundamentalTheorem.minkowski_fundamental",
+        "description": "Parent entry's Minkowski convex body theorem: a symmetric convex body of volume > 2ⁿ·covolume contains a nonzero lattice point",
+        "module": "Proofs.MinkowskiFundamentalTheorem"
+      }
+    ],
+    "originalContributions": [
+      "shearMatrix: the unipotent (d+1)×(d+1) shear matrix encoding simultaneous approximation; shearMatrix_det proves its determinant is 1 (covolume 1)",
+      "dirichletLattice: the lattice whose integer points are (q, p₀-α₀q, …, p_{d-1}-α_{d-1}q)",
+      "dirichletBox / boxVolume_eq: the symmetric box |x₀| ≤ Nᵈ+½, |xᵢ| ≤ 1/N with Lebesgue volume computed exactly via Real.volume_Icc_pi",
+      "boxVolume_gt_critical: the box volume 2^{d+1}(1 + 1/(2Nᵈ)) strictly exceeds the critical volume 2^{d+1}",
+      "dirichlet_minkowski_core: applies minkowski_fundamental and reads off a nonzero approximating lattice point with |q| ≤ Nᵈ (using integrality of Nᵈ to sharpen |q| ≤ Nᵈ+½)",
+      "dirichlet_simultaneous: the simultaneous Dirichlet theorem with 0 < q ≤ Nᵈ, obtained by a sign flip and a rounding base case at N = 1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Dirichlet introduced his approximation theorem in 1842, and its simultaneous (multi-dimensional) form is one of the founding results of Diophantine approximation. Minkowski's 1889 geometry of numbers gave a geometric proof: the existence of good simultaneous rational approximations to α₁, …, α_d follows from the existence of a nonzero lattice point in a suitable symmetric convex box. This entry realizes exactly that derivation on top of the parent Minkowski formalization, answering its fifth open question.",
+    "problemStatement": "Open Question 5 of the parent entry asks: can Dirichlet's simultaneous-approximation theorem be derived as a corollary in this formalization, by applying minkowski_fundamental to the box {x : |xᵢ - αᵢx₀| < 1/Q for i ≥ 1, |x₀| ≤ Qⁿ} of covolume 1?",
+    "proofStrategy": "Work in ℝ^{d+1}. Build the unipotent shear matrix whose rows generate a covolume-1 lattice whose integer points are (q, p₀ - α₀q, …, p_{d-1} - α_{d-1}q). Form the symmetric box with half-widths Nᵈ+½ in coordinate 0 and 1/N in the rest; its Lebesgue volume is 2^{d+1}(1 + 1/(2Nᵈ)) > 2^{d+1} = 2^{d+1}·covolume. Minkowski's theorem yields a nonzero lattice point; reading off its coordinates and using that q and Nᵈ are integers sharpens |q| ≤ Nᵈ+½ to |q| ≤ Nᵈ. A sign flip makes q positive, and the degenerate N = 1 case is settled by rounding.",
+    "keyInsights": [
+      "The skew of the lattice does the work: by using a unipotent shear lattice (determinant 1) against an axis-aligned box, the box volume is a trivial product ∏ widths via Real.volume_Icc_pi, while the lattice encodes the approximation geometry.",
+      "Slightly enlarging coordinate 0 to half-width Nᵈ+½ makes the box volume strictly exceed the critical 2^{d+1}, so the strict Minkowski theorem (rather than the harder boundary/compact version) suffices — and because Nᵈ is an integer, |q| ≤ Nᵈ+½ still forces the clean bound |q| ≤ Nᵈ.",
+      "The case q = 0 can only occur when N = 1: a nonzero lattice point with q = 0 has some integer pᵢ with 1 ≤ |pᵢ| ≤ 1/N, impossible for N ≥ 2. This isolates the only degenerate case, handled directly by rounding.",
+      "Mathlib already has the one-variable Dirichlet theorem (Real.exists_int_int_abs_mul_sub_le) proved by the pigeonhole principle; the genuinely new content here is the simultaneous version and its derivation from the convex body theorem."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-shear",
+      "title": "The Shear Matrix and Its Lattice",
+      "startLine": 71,
+      "endLine": 109,
+      "summary": "Defines the unipotent shear matrix (identity except row 0, off-diagonal -αⱼ), proves it is upper triangular and has determinant 1, and packages it as dirichletLattice with covolume 1."
+    },
+    {
+      "id": "sec-box",
+      "title": "The Symmetric Box and Its Volume",
+      "startLine": 111,
+      "endLine": 197,
+      "summary": "Defines boxHi (half-widths Nᵈ+½ and 1/N), the ConvexBody dirichletBox = Icc(-boxHi, boxHi), computes its Lebesgue volume exactly via Real.volume_Icc_pi, and proves it exceeds the critical volume 2^{d+1}."
+    },
+    {
+      "id": "sec-core",
+      "title": "Minkowski Core: A Nonzero Approximating Point",
+      "startLine": 199,
+      "endLine": 283,
+      "summary": "Helper lemmas evaluate the shear-matrix entries; dirichlet_minkowski_core applies minkowski_fundamental, reads off the lattice point's coordinates as q and p, derives |q| ≤ Nᵈ and the approximation bounds, and proves the point is nonzero."
+    },
+    {
+      "id": "sec-dirichlet",
+      "title": "Dirichlet's Simultaneous Approximation Theorem",
+      "startLine": 285,
+      "endLine": 327,
+      "summary": "dirichlet_simultaneous handles N = 1 by rounding, and for N ≥ 2 uses the core point with a sign flip to deliver 0 < q ≤ Nᵈ and |αᵢ·q - pᵢ| ≤ 1/N."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves Dirichlet's simultaneous Diophantine approximation theorem with 0 sorries and 0 axioms (depending only on propext, Classical.choice, Quot.sound), as a genuine corollary of the parent Minkowski convex body theorem. The result extends Mathlib's one-dimensional Dirichlet theorem to arbitrarily many simultaneous approximations.",
+    "implications": "The derivation confirms that the parent's custom Minkowski infrastructure is strong enough to recover classical number-theoretic consequences of the geometry of numbers. The same construction (shear lattice + axis-aligned box) is the template for further corollaries such as the Hurwitz/Liouville-type bounds and the theory of best simultaneous approximations.",
+    "openQuestions": [
+      "Can the boundary (compact) Minkowski theorem be used to obtain the sharper bound with strict inequality |αᵢ·q - pᵢ| < 1/N for the inhomogeneous case?",
+      "Can the badly-approximable / Khintchine transference principles be formalized on top of this simultaneous statement?",
+      "Can the dual form (simultaneous approximation of a single linear form) be derived by transposing the shear lattice?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "minkowski-fundamental-theorem",
+      "relationship": "extends",
+      "description": "Parent entry. OQ-05 asks whether Dirichlet's simultaneous approximation theorem can be derived from minkowski_fundamental; this entry does so."
+    },
+    {
+      "proofId": "minkowski-fundamental-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ developing the successive-minima infrastructure (Minkowski's second theorem) on the same parent API."
+    },
+    {
+      "proofId": "minkowski-fundamental-theorem-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling OQ comparing the custom Lattice API with Mathlib's ZLattice infrastructure."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/MinkowskiFundamentalTheoremOQ05.lean",
+    "lineCount": 327,
+    "theoremCount": 12,
+    "definitionCount": 7,
+    "axiomCount": 0,
+    "sorries": 0
+  }
+}

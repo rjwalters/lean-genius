@@ -19,6 +19,45 @@
     "sorries": 0
   },
   "title": "Identifying the Limit: the Geometric Sum from First Principles",
+  "description": "The capstone of the Cauchy-criterion lineage: identifying the geometric series' limit as (1−r)⁻¹ from first principles and recovering HasSum/tsum without ever quoting hasSum_geometric. The truncation defect ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r) (a pure geom_sum_eq rearrangement) shows the partial sums converge to (1−r)⁻¹ because rⁿ/(1−r) → 0. Independently, completeness of ℝ turns the sibling's CauchySeq into the existence of SOME limit L, and uniqueness of limits pins L = (1−r)⁻¹. Combined with the sibling's Summable, this yields HasSum (fun n ↦ rⁿ) (1−r)⁻¹ and ∑' n, rⁿ = (1−r)⁻¹ — the sum is earned, not quoted.",
+  "overview": {
+    "historicalContext": "The textbook structure of a convergence proof in a complete space has two separate halves: completeness guarantees that a Cauchy sequence HAS a limit, and a separate computation IDENTIFIES that limit (Rudin, Principles of Mathematical Analysis). The gallery's geometric-series Cauchy lineage was built to honour exactly this separation: geometric-series-oq-08-oq-03 gave the ε–N block estimate, geometric-series-oq-08-oq-03-oq-01 promoted it to the abstract CauchySeq and Summable predicates (deliberately avoiding the closed form), leaving the limit VALUE open. This entry closes the arc — it pins the limit to (1−r)⁻¹ and reconstructs Mathlib's hasSum_geometric_of_lt_one and tsum_geometric_of_lt_one along a path that never assumes the closed form it concludes. The result is a self-contained, first-principles re-derivation of the most basic convergent series.",
+    "problemStatement": "Identify the limit of the geometric series for 0 ≤ r < 1 from first principles, and recover HasSum/tsum without invoking hasSum_geometric. Prove the truncation defect ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r), that the partial sums converge to (1−r)⁻¹, that completeness + uniqueness pins the abstract Cauchy limit to (1−r)⁻¹, and assemble HasSum (fun n ↦ rⁿ) (1−r)⁻¹ and ∑' n, rⁿ = (1−r)⁻¹.",
+    "proofStrategy": "Two independent identifications of the limit, then assembly. geometric_truncation_defect rearranges geom_sum_eq (field_simp; ring) into the head-vs-limit form ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r). geometric_partialSum_tendsto reads this as n → ∞: the tail rⁿ/(1−r) → 0 (tendsto_pow_atTop_nhds_zero_of_lt_one divided by the constant), so the partial sums tend to (1−r)⁻¹. geometric_limit_from_completeness makes the abstract route explicit: cauchySeq_tendsto_of_complete (on the sibling's CauchySeq) yields some L by completeness alone, and tendsto_nhds_unique against the defect limit forces L = (1−r)⁻¹. Finally geometric_hasSum uses Summable.hasSum_iff_tendsto_nat (with the sibling's Summable) to convert the partial-sum limit into HasSum, and geometric_tsum takes tsum_eq.",
+    "keyInsights": [
+      "Existence and identity are supplied by different mechanisms: completeness of ℝ guarantees the Cauchy partial sums HAVE a limit knowing nothing about its value, while the truncation defect IDENTIFIES that value as (1−r)⁻¹ — the classic two-step structure of convergence proofs, made fully explicit.",
+      "The truncation defect is pure finite-sum algebra: ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r) is just geom_sum_eq rearranged, with no analysis — so the limit identification rests on a single algebraic identity plus rⁿ → 0.",
+      "The whole lineage reconstructs hasSum_geometric_of_lt_one from below: block estimate → abstract CauchySeq/Summable → limit value, an independent derivation that never assumes the closed form it concludes. The sum (1−r)⁻¹ is earned, not quoted.",
+      "Uniqueness of limits is the glue: the same partial-sum sequence converges to both the abstract completeness-limit L and the concrete defect-limit (1−r)⁻¹, so tendsto_nhds_unique in the Hausdorff space ℝ forces them equal.",
+      "The closed form appears only as the OUTPUT: throughout the lineage (1−r)⁻¹ is a consequence of convergence, used as a ceiling or a target, never as an input — a deliberate inversion of the usual quote-the-sum derivation."
+    ]
+  },
+  "sections": [
+    {
+      "id": "defect-and-limit",
+      "title": "The Truncation Defect and the Partial-Sum Limit",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "geometric_truncation_defect: ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r) for 1−r ≠ 0, a pure geom_sum_eq rearrangement (field_simp; ring, no analysis). geometric_partialSum_tendsto reads it as n → ∞: the tail rⁿ/(1−r) → 0 (tendsto_pow_atTop_nhds_zero_of_lt_one, div_const), so the partial sums converge to (1−r)⁻¹ — computed directly from the defect, not from hasSum_geometric.",
+      "mathContext": "$\\sum_{k<n}r^k=(1-r)^{-1}-\\frac{r^n}{1-r}\\xrightarrow{n\\to\\infty}(1-r)^{-1}$ since $\\frac{r^n}{1-r}\\to 0$."
+    },
+    {
+      "id": "completeness-route",
+      "title": "The Abstract Route via Completeness",
+      "startLine": 87,
+      "endLine": 96,
+      "summary": "geometric_limit_from_completeness makes the abstract argument explicit and answers the sibling's open question: cauchySeq_tendsto_of_complete applied to the sibling's geometric_partialSum_cauchySeq yields SOME limit L by completeness of ℝ alone (existence before value), and tendsto_nhds_unique against the defect limit pins L = (1−r)⁻¹. Existence from completeness, identity from the defect.",
+      "mathContext": "$\\exists L:\\ S_n\\to L$ (completeness) $\\wedge\\ L=(1-r)^{-1}$ (uniqueness vs. the defect limit)."
+    },
+    {
+      "id": "hassum-tsum",
+      "title": "HasSum, tsum, and a Concrete Instance",
+      "startLine": 98,
+      "endLine": 124,
+      "summary": "geometric_hasSum: HasSum (fun n ↦ rⁿ) (1−r)⁻¹, from the sibling's Summable via Summable.hasSum_iff_tendsto_nat applied to the partial-sum limit — an independent derivation of hasSum_geometric_of_lt_one. geometric_tsum: ∑' n, rⁿ = (1−r)⁻¹ by tsum_eq. A concrete r = 1/2 instance confirms partial sums → 2 and ∑' (1/2)ⁿ = 2.",
+      "mathContext": "$\\mathrm{HasSum}(n\\mapsto r^n)\\,(1-r)^{-1}$ and $\\sum'_n r^n=(1-r)^{-1}$, recovered along the Cauchy/completeness path."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

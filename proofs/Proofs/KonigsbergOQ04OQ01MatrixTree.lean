@@ -69,4 +69,117 @@ theorem spanningTreeCofactor_K4 :
     (!![(3 : ℤ), -1, -1; -1, 3, -1; -1, -1, 3]).det = 16 := by
   simp [Matrix.det_fin_three]
 
+/-! ## M1a-i: the oriented-incidence ⇒ Laplacian identity (`B Bᵀ = D − A`)
+
+The base cases above are concrete determinant oracles. The first *general* milestone
+toward Matrix-Tree is the substrate identity that the classical (undirected) proof
+rides on: for the oriented incidence matrix `B` of a loopless multigraph, `B Bᵀ` is
+the graph Laplacian `D − A`.
+
+This is precisely the gap flagged in the OQ-04-OQ-01 knowledge base (Insight 5) and,
+independently, in Mathlib itself: `Mathlib/Combinatorics/SimpleGraph/IncMatrix.lean`
+lists as future-work TODOs (lines 41–42)
+
+  * "Define the oriented incidence matrices for oriented graphs."
+  * "Define the graph Laplacian of a simple graph using the oriented incidence matrix."
+
+Mathlib's existing `incMatrix` is the *unsigned* 0/1 incidence matrix, for which
+`N Nᵀ = D + A` (the *signless* Laplacian) — the wrong sign for Matrix-Tree. So the
+oriented object below cannot be obtained from `incMatrix` directly; it is built here
+from `head`/`tail` functions (a multigraph presentation: each edge `e` is an oriented
+pair `tail e → head e`).
+
+What this milestone does **not** do: it does not discharge the parent
+`konigsberg-oq-04` axiom. That still needs Cauchy–Binet (`det (B_S B_Sᵀ) = …`, M1a-ii),
+which remains absent upstream, plus the directed Tutte cofactor (M2). This is the
+verified substrate those build on. -/
+
+section IncidenceLaplacian
+
+variable {V E : Type*} [Fintype V] [DecidableEq V] [Fintype E] [DecidableEq E]
+
+/-- Oriented incidence matrix of a multigraph given by `head`/`tail`: column `e` has
+`+1` at its head and `-1` at its tail. -/
+def incidence (head tail : E → V) : Matrix V E ℤ := fun i e =>
+  (if i = head e then 1 else 0) - (if i = tail e then 1 else 0)
+
+/-- Degree of `i`: the number of edges incident to `i`. -/
+def deg (head tail : E → V) (i : V) : ℤ :=
+  (Finset.univ.filter (fun e => i = head e ∨ i = tail e)).card
+
+/-- Edge multiplicity between `i` and `j` (either orientation). -/
+def adjc (head tail : E → V) (i j : V) : ℤ :=
+  (Finset.univ.filter
+    (fun e => (i = head e ∧ j = tail e) ∨ (j = head e ∧ i = tail e))).card
+
+/-- The integer Laplacian `D − A` of the multigraph: degree on the diagonal, negative
+edge-multiplicity off-diagonal. -/
+def lap (head tail : E → V) : Matrix V V ℤ := fun i j =>
+  if i = j then deg head tail i else - adjc head tail i j
+
+omit [Fintype V] [DecidableEq E] in
+/-- Diagonal of `B Bᵀ` is the degree (loopless ⇒ the two indicators never overlap, so
+`(a − b)² = a + b`). -/
+theorem incidence_mul_transpose_diag
+    (head tail : E → V) (hloop : ∀ e, head e ≠ tail e) (i : V) :
+    (incidence head tail * (incidence head tail)ᵀ) i i = deg head tail i := by
+  simp only [Matrix.mul_apply, incidence, Matrix.transpose_apply, deg]
+  rw [Finset.card_filter]
+  push_cast
+  apply Finset.sum_congr rfl
+  intro e _
+  by_cases hh : i = head e <;> by_cases ht : i = tail e
+  · exact absurd (hh.symm.trans ht) (hloop e)
+  all_goals simp [hh, ht, hloop e, (hloop e).symm]
+
+omit [Fintype V] [DecidableEq E] in
+/-- Off-diagonal `(i,j)` of `B Bᵀ` is `−` the edge multiplicity between `i` and `j`
+(`i ≠ j` ⇒ only the cross terms `±1` survive). -/
+theorem incidence_mul_transpose_offdiag
+    (head tail : E → V) (i j : V) (hij : i ≠ j) :
+    (incidence head tail * (incidence head tail)ᵀ) i j = - adjc head tail i j := by
+  simp only [Matrix.mul_apply, incidence, Matrix.transpose_apply, adjc]
+  rw [Finset.card_filter]
+  push_cast
+  rw [← Finset.sum_neg_distrib]
+  apply Finset.sum_congr rfl
+  intro e _
+  by_cases hi_h : i = head e <;> by_cases hi_t : i = tail e <;>
+    by_cases hj_h : j = head e <;> by_cases hj_t : j = tail e <;>
+    simp_all
+
+omit [Fintype V] [DecidableEq E] in
+/-- **Oriented incidence ⇒ Laplacian** (M1a-i). For a loopless multigraph,
+`B Bᵀ = D − A`. -/
+theorem incidence_mul_transpose (head tail : E → V) (hloop : ∀ e, head e ≠ tail e) :
+    incidence head tail * (incidence head tail)ᵀ = lap head tail := by
+  ext i j
+  by_cases h : i = j
+  · subst h; simp [lap, incidence_mul_transpose_diag head tail hloop]
+  · simp [lap, h, incidence_mul_transpose_offdiag head tail i j h]
+
+/-! ### Concrete K₃ bridge
+
+Realizes the general identity on a base case: the oriented incidence of K₃ (edges
+`0→1`, `1→2`, `0→2`) satisfies `B Bᵀ = ` the full K₃ Laplacian, whose reduced
+`(0,0)`-cofactor `[[2,-1],[-1,2]]` has determinant `3` — exactly
+`spanningTreeCofactor_K3`. This closes the loop from the incidence substrate to the
+base-case determinant oracle. -/
+
+/-- K₃ edges as `head`/`tail` over `Fin 3`: `0→1`, `1→2`, `0→2`. -/
+def k3head : Fin 3 → Fin 3 := ![1, 2, 2]
+/-- K₃ edge tails (companion to `k3head`). -/
+def k3tail : Fin 3 → Fin 3 := ![0, 1, 0]
+
+theorem k3_loopless : ∀ e, k3head e ≠ k3tail e := by decide
+
+/-- The oriented incidence of K₃ realizes the full K₃ Laplacian. -/
+theorem k3_incidence_mul_transpose :
+    incidence k3head k3tail * (incidence k3head k3tail)ᵀ =
+      !![(2 : ℤ), -1, -1; -1, 2, -1; -1, -1, 2] := by
+  rw [incidence_mul_transpose k3head k3tail k3_loopless]
+  decide
+
+end IncidenceLaplacian
+
 end KonigsbergMatrixTree

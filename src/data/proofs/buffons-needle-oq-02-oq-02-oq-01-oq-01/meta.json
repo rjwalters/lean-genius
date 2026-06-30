@@ -53,5 +53,72 @@
       "Concrete higher values drop out by expanding the product over a small range: alpha_4 = 4/(3pi), alpha_6 = 16/(15pi) on the even side, alpha_5 = 3/8, alpha_7 = 5/16 on the odd side.",
       "Self-containment is forced by upstream bit-rot in the companion crossing-factor file, but the recurrence is a one-line definition, so the closed form is fully reproducible."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "recurrence-def",
+      "title": "The Crossing Factor and Its Recurrence",
+      "startLine": 48,
+      "endLine": 65,
+      "summary": "Re-declares the crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|] by the two-step recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2} with bases α₂ = 2/π, α₃ = 1/2, and exposes the bases and the recurrence step as simp lemmas (crossingFactor_two/three/succ_succ).",
+      "mathContext": "α_{n+2} = (n/(n+1))·αₙ, α₂ = 2/π, α₃ = 1/2."
+    },
+    {
+      "id": "closed-forms",
+      "title": "The Closed-Form Product Formulas",
+      "startLine": 67,
+      "endLine": 102,
+      "summary": "Solves the recurrence by induction on the subsequence index: crossingFactor_even gives α_{2m+2} = (2/π)·∏_{j<m}(2j+2)/(2j+3) and crossingFactor_odd gives α_{2m+3} = (1/2)·∏_{j<m}(2j+3)/(2j+4) — finite Wallis-type partial products, with the empty product recovering the base value.",
+      "mathContext": "α_{2m+2} = (2/π)∏(2j+2)/(2j+3); α_{2m+3} = (1/2)∏(2j+3)/(2j+4)."
+    },
+    {
+      "id": "positivity-maximum",
+      "title": "Positivity and the Maximum, From the Product",
+      "startLine": 104,
+      "endLine": 136,
+      "summary": "From the factor bounds 0 < (2j+2)/(2j+3) ≤ 1 (evenFactor_pos, evenFactor_le_one), re-derives 0 < α_{2m+2} (Finset.prod_pos) and the maximum α_{2m+2} ≤ 2/π (Finset.prod_le_prod against the constant-1 product) directly from the closed form.",
+      "mathContext": "0 < α_{2m+2} ≤ 2/π, since every product factor lies in (0,1]."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Higher Values",
+      "startLine": 138,
+      "endLine": 168,
+      "summary": "Expands the product over a small range to evaluate the first dimensions past the bases: crossingFactor_four (4/(3π)), crossingFactor_six (16/(15π)), crossingFactor_five (3/8), crossingFactor_seven (5/16) — none computed in the parent.",
+      "mathContext": "α₄ = 4/(3π), α₆ = 16/(15π), α₅ = 3/8, α₇ = 5/16."
+    }
+  ],
+  "conclusion": {
+    "summary": "Solves the two-step recurrence α_{n+2} = (n/(n+1))·αₙ (bases α₂ = 2/π, α₃ = 1/2) defining the n-dimensional Buffon crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|] in the noodle formula E[crossings] = αₙ·L/d. The even subsequence is α_{2m+2} = (2/π)·∏_{j<m}(2j+2)/(2j+3) and the odd subsequence is α_{2m+3} = (1/2)·∏_{j<m}(2j+3)/(2j+4) — finite Wallis-type partial products underlying the analytic value αₙ = Γ(n/2)/(√π Γ((n+1)/2)). From the closed form it re-derives positivity (0 < α_{2m+2}) and the maximum 2/π (each product factor lies in (0,1]), and evaluates the first higher values α₄ = 4/(3π), α₆ = 16/(15π), α₅ = 3/8, α₇ = 5/16. 190 lines, 10 theorems/lemmas, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "Where the parent entry establishes only the qualitative monotone behaviour of αₙ from the recurrence, this entry gives the exact telescoping products, turning structural facts (positivity, the maximum) into transparent consequences of the factors lying in (0,1] and making every concrete dimension computable. The even and odd products are precisely the finite truncations of the Wallis product for π, so the high-dimensional Buffon constant is tied directly to the classical π-product; the decay αₙ → 0 like √(2/(πn)) (from Γ-asymptotics) is the analytic continuation of this elementary picture."
+  },
+  "openQuestions": [
+    {
+      "id": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+      "question": "Establish the precise asymptotic αₙ ~ √(2/(πn)) directly from the telescoping products by bounding the partial Wallis products, rather than via Stirling's formula for Γ(n/2)/(√π Γ((n+1)/2)). What are the sharp two-sided rational bounds on αₙ obtainable purely from the factor product?",
+      "significance": "medium"
+    },
+    {
+      "id": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-02",
+      "question": "Formalize the limit of the ratio α_{2m+2}/α_{2m+3} (even-over-odd interleaving) and connect it explicitly to the Wallis product π/2 = ∏ (2k)²/((2k−1)(2k+1)), recovering Wallis's identity as a corollary of the closed forms.",
+      "significance": "medium"
+    },
+    {
+      "id": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-03",
+      "question": "Does an analogous closed-form product solve the crossing-factor recurrence for affine subspaces of intermediate codimension k (k-flats meeting a curve in Rⁿ), where the spherical average is of a k-dimensional projection norm rather than |u₁|?",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-02-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Direct sequel: the parent proves the qualitative monotone behaviour of the crossing factor αₙ (strict two-step decrease, maximum 2/π, uniform sub-one bound) from the recurrence but never solves it. This entry solves the recurrence in closed form (telescoping Wallis-type products) and re-derives positivity and the maximum from that closed form, plus the first concrete higher values."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "related",
+      "description": "The classical Buffon's needle problem (n = 2), whose crossing constant 2/π is the base value α₂ that anchors the even-subsequence product here."
+    }
+  ]
 }

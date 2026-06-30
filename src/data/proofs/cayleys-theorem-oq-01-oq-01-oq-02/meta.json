@@ -1,0 +1,196 @@
+{
+  "id": "cayleys-theorem-oq-01-oq-01-oq-02",
+  "title": "Cayley's Image is a Regular (Sharply Transitive) Subgroup of Sₙ",
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02",
+  "description": "The image of the finite Cayley embedding cayleyFinHom e : G →* Equiv.Perm (Fin n) (from the parent cayleys-theorem-oq-01-oq-01) is a regular permutation group of degree n: a subgroup of Sₙ of order n that acts freely and transitively on the n points. Writing H := (cayleyFinHom e).range and recalling cayleyFinHom e g i = e (g * e.symm i), this entry proves the three classical facts characterising a regular (simply transitive) permutation group, answering the parent's second open question. (1) Transitivity: for any points i j : Fin n some σ ∈ H carries i ↦ j, with explicit witness the Cayley image of g = e.symm j * (e.symm i)⁻¹. (2) Freeness (semiregularity): any σ ∈ H fixing even a single point is the identity — equivalently every point stabiliser is trivial — because cayleyFinHom e g i = i forces g = 1. (3) Sharp transitivity: combining the two, for all i j there is a unique σ ∈ H with σ i = j (regSubgroup_sharplyTransitive), the defining property of a regular group. The order count Nat.card H = n follows from the parent's range isomorphism G ≃* H together with G ≃ Fin n. Transitivity is also packaged as a MulAction.IsPretransitive instance for the natural action of H on Fin n, and freeness is restated at the action level (a subgroup element fixing a point is 1).",
+  "meta": {
+    "author": "Arthur Cayley (1854); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Regular_representation",
+    "date": "1854",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "cayley",
+      "permutation-group",
+      "regular-representation",
+      "sharply-transitive",
+      "group-action",
+      "symmetric-group",
+      "transitive-action",
+      "free-action",
+      "finite-group",
+      "algebra",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MonoidHom.mem_range",
+        "description": "membership σ ∈ f.range ↔ ∃ g, f g = σ — used to extract the group element witnessing membership in the regular subgroup and to exhibit transitivity witnesses",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "MulAction.IsPretransitive",
+        "description": "the predicate that an action has a single orbit (∀ x y, ∃ g, g • x = y) — used to package transitivity of the regular subgroup acting on Fin n as a typeclass instance",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      },
+      {
+        "theorem": "inv_mul_eq_one",
+        "description": "a⁻¹ * b = 1 ↔ a = b — converts the freeness conclusion τ⁻¹ * σ = 1 into the equality σ = τ underlying uniqueness in sharp transitivity",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "Nat.card_congr",
+        "description": "an equivalence of types preserves Nat.card — chains the parent's range isomorphism G ≃* H and the numbering G ≃ Fin n to compute the order |H| = n",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "regSubgroup_transitive: the image H = (cayleyFinHom e).range acts transitively on Fin n — for all i j some σ ∈ H sends i ↦ j, via the explicit witness g = e.symm j * (e.symm i)⁻¹",
+      "regSubgroup_free: H acts freely (semiregularly) — any σ ∈ H fixing a single point of Fin n is the identity, so every point stabiliser is trivial",
+      "regSubgroup_eq_of_apply_eq: an element of H is determined by its value at one point (two members agreeing anywhere are equal) — the rigidity behind uniqueness",
+      "regSubgroup_sharplyTransitive: H is sharply (simply) transitive — for all i j a unique σ ∈ H satisfies σ i = j, the defining property of a regular permutation group",
+      "regSubgroup_card: |H| = n, the order of the regular subgroup, from the parent's G ≃* H and the numbering G ≃ Fin n",
+      "regSubgroup_isPretransitive: transitivity packaged as a MulAction.IsPretransitive (cayleyFinHom e).range (Fin n) instance for the natural subgroup action",
+      "cayley_regular_subgroup: the combined statement — |H| = n and H is sharply transitive — identifying H as the regular permutation group of degree n"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 163,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Cayley's theorem realises an abstract group of order n as a subgroup of the symmetric group Sₙ. The image is not an arbitrary subgroup: it is the left-regular representation, the prototype of a regular (or simply transitive) permutation group. A permutation group acting on a set is regular when it is both transitive (one orbit) and free (only the identity has a fixed point); equivalently it acts sharply transitively, with exactly one element carrying any chosen point to any other. Regular permutation groups are precisely the images of the left-regular representation, so order n ⟹ degree n with the action looking like the group acting on itself by left multiplication. This regularity is what makes Cayley's embedding canonical, and underlies the classification of transitive actions as coset actions (the regular action being the case of the trivial stabiliser).",
+    "problemStatement": "**Open Question (cayleys-theorem-oq-01-oq-01, second follow-up)**: Show the image of cayleyFinHom is a regular (sharply transitive) subgroup of Sₙ — a subgroup of order n acting freely and transitively on the n points.\n\n**Result**: regSubgroup_transitive (transitive), regSubgroup_free (free/semiregular), regSubgroup_sharplyTransitive (a unique element maps i ↦ j), regSubgroup_card (|H| = n), and the packaged MulAction.IsPretransitive instance — assembled in cayley_regular_subgroup.",
+    "text": "Let e : G ≃ Fin n number the elements of a finite group G, and let H = (cayleyFinHom e).range ≤ Sₙ be the image of the finite Cayley embedding, where cayleyFinHom e g i = e (g · e⁻¹ i). Then H has order n and acts on the n points Fin n freely and transitively: for any two points there is exactly one element of H carrying one to the other. Thus H is the regular permutation group of degree n.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Transitivity. Given points i, j, set g = e.symm j * (e.symm i)⁻¹. Then cayleyFinHom e g i = e (g * e.symm i) = e (e.symm j * (e.symm i)⁻¹ * e.symm i) = e (e.symm j) = j (using inv_mul_cancel_right and Equiv.apply_symm_apply). So the Cayley image of g lies in H and maps i ↦ j.\n2. Freeness. Suppose σ = cayleyFinHom e g ∈ H fixes a point i, i.e. e (g * e.symm i) = i. Applying e.symm gives g * e.symm i = e.symm i, hence g = 1 (cancel e.symm i on the right), so σ = cayleyFinHom e 1 = 1. Every point stabiliser is therefore trivial.\n3. Rigidity and sharp transitivity. If σ, τ ∈ H agree at one point i then τ⁻¹ * σ ∈ H fixes i, so by freeness τ⁻¹ * σ = 1 and σ = τ (inv_mul_eq_one). Combined with transitivity, for each i, j there is a unique σ ∈ H with σ i = j — sharp (simple) transitivity.\n4. Order. The parent supplies the isomorphism cayleyFinRangeEquiv : G ≃* H; with the numbering e : G ≃ Fin n, Nat.card_congr gives |H| = |G| = |Fin n| = n.\n5. Packaging. Transitivity is recorded as a MulAction.IsPretransitive (cayleyFinHom e).range (Fin n) instance, and freeness is restated for the subgroup action (σ • i = i ⟹ σ = 1). cayley_regular_subgroup bundles |H| = n with sharp transitivity.",
+    "keyInsights": [
+      "**Regular = transitive + free.** The two halves are independent and elementary here: transitivity is solved by an explicit group element (a 'translation' e.symm j * (e.symm i)⁻¹), while freeness reduces to the cancellativity of the group (a left-multiplication fixing a point must be the identity).",
+      "**Freeness is rigidity.** Because only the identity fixes a point, an element of the regular subgroup is pinned down by its value at a single point. This single fact yields uniqueness in sharp transitivity directly, with no orbit-counting.",
+      "**Order n from the parent's isomorphism.** No new cardinality argument is needed: the regular subgroup is isomorphic to G (parent's cayleyFinRangeEquiv) and G is numbered by Fin n, so |H| = n is a transport of cardinality.",
+      "**Sharp transitivity is the structural payoff.** 'Unique element mapping i ↦ j' is exactly the defining property of a regular permutation group and the reason the regular action is the universal free transitive action — every transitive action is a quotient of it."
+    ],
+    "prerequisites": [
+      "The finite Cayley embedding cayleyFinHom e : G →* Equiv.Perm (Fin n) and its range isomorphism cayleyFinRangeEquiv : G ≃* range (parent entry cayleys-theorem-oq-01-oq-01)",
+      "Group actions of permutation groups and subgroups: MulAction (Equiv.Perm (Fin n)) (Fin n), the restricted subgroup action, and MulAction.IsPretransitive",
+      "Elementary group cancellation (inv_mul_cancel_right, mul_inv_cancel_right, inv_mul_eq_one) and Nat.card transport along equivalences"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating the regular-subgroup result and the transitive + free = regular strategy, imports (including the parent module Proofs.CayleysTheoremOQ01OQ01 and Cardinal.Finite for Nat.card), and the namespace with the group variable G and numbering e : G ≃ Fin n.",
+      "mathContext": "$H = \\mathrm{im}(\\hat\\lambda) \\le S_n$ acting on the $n$ points $\\mathrm{Fin}\\,n$."
+    },
+    {
+      "id": "membership",
+      "title": "The Regular Subgroup and its Action Formula",
+      "startLine": 51,
+      "endLine": 68,
+      "summary": "regSubgroup e := (cayleyFinHom e).range as an abbreviation, the membership characterisation mem_regSubgroup (σ ∈ H ↔ ∃ g, cayleyFinHom e g = σ), and cayleyFinHom_apply_relabel (cayleyFinHom e g (e x) = e (g * x)) showing the action is left multiplication after relabelling.",
+      "mathContext": "$\\hat\\lambda(g)(e\\,x) = e(g\\,x)$ — left translation transported along $e$."
+    },
+    {
+      "id": "transitive",
+      "title": "Transitivity",
+      "startLine": 69,
+      "endLine": 78,
+      "summary": "regSubgroup_transitive: for any i j some σ ∈ H carries i ↦ j, with explicit witness the Cayley image of g = e.symm j * (e.symm i)⁻¹, closed by inv_mul_cancel_right and Equiv.apply_symm_apply.",
+      "mathContext": "$\\forall i\\,j,\\ \\exists \\sigma \\in H,\\ \\sigma(i) = j$ — single orbit."
+    },
+    {
+      "id": "free",
+      "title": "Freeness and Rigidity",
+      "startLine": 79,
+      "endLine": 108,
+      "summary": "regSubgroup_free: an element of H fixing a single point is the identity (cayleyFinHom e g i = i forces g = 1); regSubgroup_eq_of_apply_eq: members of H agreeing at one point are equal (τ⁻¹ * σ fixes the point, hence equals 1 by freeness).",
+      "mathContext": "$\\sigma(i)=i \\Rightarrow \\sigma = \\mathrm{id}$ — trivial point stabilisers."
+    },
+    {
+      "id": "sharp-and-order",
+      "title": "Sharp Transitivity and Order",
+      "startLine": 109,
+      "endLine": 129,
+      "summary": "regSubgroup_sharplyTransitive: for all i j a unique σ ∈ H satisfies σ i = j (existence from transitivity, uniqueness from rigidity); regSubgroup_card: |H| = n via the parent's range isomorphism G ≃* H and the numbering G ≃ Fin n.",
+      "mathContext": "$\\forall i\\,j,\\ \\exists! \\sigma \\in H,\\ \\sigma(i)=j$ and $|H| = n$."
+    },
+    {
+      "id": "action-packaging",
+      "title": "Action Packaging and Conclusion",
+      "startLine": 130,
+      "endLine": 163,
+      "summary": "regSubgroup_isPretransitive: the MulAction.IsPretransitive (cayleyFinHom e).range (Fin n) instance; regSubgroup_smul_free: freeness restated at the action level (σ • i = i ⟹ σ = 1); cayley_regular_subgroup: |H| = n with sharp transitivity bundled; plus a concrete S₃ example (order-3 regular subgroup).",
+      "mathContext": "$H$ is the regular permutation group of degree $n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: builds the finite Cayley embedding cayleyFinHom e : G →* Equiv.Perm (Fin n) and the range isomorphism cayleyFinRangeEquiv : G ≃* range. This entry studies that range as a permutation group and proves it is regular (sharply transitive) of order n, answering the parent's second open question."
+    },
+    {
+      "targetId": "cayleys-theorem-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent entry: the abstract left-regular representation G ↪ Sym(G). The regularity proved here is the concrete-degree-n manifestation of the regular representation acting freely and transitively on G."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof that the image H of the finite Cayley embedding is a regular permutation group of degree n: H ≤ Sₙ has order n (regSubgroup_card) and acts freely (regSubgroup_free) and transitively (regSubgroup_transitive, packaged as MulAction.IsPretransitive) on the n points, equivalently sharply transitively — a unique element maps any point to any other (regSubgroup_sharplyTransitive). The combined statement is cayley_regular_subgroup.",
+    "implications": "Identifies the codomain of Cayley's theorem precisely: not just 'a subgroup of Sₙ' but the regular subgroup, the prototype of all transitive actions. Freeness reduces to group cancellation and transitivity to an explicit translation, while the order count is transported from the parent's range isomorphism — so the regularity is obtained with no orbit–stabiliser counting.",
+    "openQuestions": [
+      "Characterise abstractly: a subgroup of Sₙ that acts freely and transitively on n points has order n and is isomorphic to the abstract group whose regular representation it is (a converse to Cayley realising every regular subgroup as a left-regular image).",
+      "Relate the regular subgroup to its centraliser in Sₙ: the centraliser of the left-regular image is the right-regular image, and the two coincide iff G is abelian — formalize this normaliser/centraliser structure."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Perm.Basic",
+      "Mathlib.Algebra.Group.Action.Basic",
+      "Mathlib.Algebra.Group.Action.End",
+      "Mathlib.GroupTheory.GroupAction.Defs",
+      "Mathlib.GroupTheory.GroupAction.Basic",
+      "Mathlib.Logic.Equiv.Fin.Basic",
+      "Mathlib.Data.Fintype.Perm",
+      "Mathlib.SetTheory.Cardinal.Finite",
+      "Mathlib.Tactic",
+      "Proofs.CayleysTheoremOQ01OQ01"
+    ],
+    "opens": [
+      "Equiv",
+      "CayleyFin"
+    ],
+    "namespace": "CayleyFinRegular",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/CayleysTheoremOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "On the theory of groups, as depending on the symbolic equation θⁿ = 1",
+      "year": "1854",
+      "venue": "Philosophical Magazine, Series 4, 7(42)",
+      "note": "Original statement that every group is a group of permutations — the regular representation"
+    },
+    {
+      "authors": "Dixon, John D.; Mortimer, Brian",
+      "title": "Permutation Groups",
+      "year": "1996",
+      "venue": "Springer GTM 163",
+      "note": "Regular permutation groups, sharp/simple transitivity, and the structure of transitive actions"
+    }
+  ],
+  "sorries": 0
+}

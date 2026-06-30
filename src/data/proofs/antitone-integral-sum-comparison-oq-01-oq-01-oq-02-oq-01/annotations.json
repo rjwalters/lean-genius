@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-isc-oq01010201-partial-ge",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 94 },
+    "type": "theorem",
+    "title": "Tail Partial-Sum Lower Bound via the Left Riemann Sum",
+    "content": "pseries_tail_partial_ge is the left-endpoint dual of the parent's tail bound. Since 1/xᵖ is antitone on [N+1, N+1+m], AntitoneOn.integral_le_sum gives ∫_{N+1}^{N+1+m} x^{−p} dx ≤ ∑_{i<m} 1/(N+1+i)ᵖ: a decreasing function over-estimates its integral when sampled at left endpoints, so the integral underestimates the sum. The integral is evaluated by integral_rpow (after rewriting 1/xᵖ = x^{−p}) and matched, via field_simp; ring, to ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1).",
+    "mathContext": "\\frac{(N+1)^{1-p} - (N+1+m)^{1-p}}{p-1} \\;=\\; \\int_{N+1}^{N+1+m} x^{-p}\\,dx \\;\\le\\; \\sum_{i<m} \\frac{1}{(N+1+i)^p}",
+    "significance": "key",
+    "relatedConcepts": ["integral test", "left Riemann sums", "antitone functions", "AntitoneOn.integral_le_sum", "integral_rpow"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-isc-oq01010201-tsum-ge",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 105, "endLine": 131 },
+    "type": "theorem",
+    "title": "The Tail Floor in the Limit",
+    "content": "pseries_tail_tsum_ge passes the uniform partial-sum lower bound to the limit. Each lower bound u m = ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1) is ≤ the partial tail (previous theorem) and hence ≤ the full tsum (Summable.sum_le_tsum, with summability of the shifted series from summable_nat_add_iff). As m → ∞ the subtracted term (N+1+m)^{1−p} → 0 because 1−p < 0 (tendsto_rpow_neg_atTop composed with N+1+m → ∞), so u m → (N+1)^{1−p}/(p−1). Since every u m ≤ tsum, le_of_tendsto' forces the limit (N+1)^{1−p}/(p−1) ≤ tsum.",
+    "mathContext": "\\frac{(N+1)^{1-p}}{p-1} \\;\\le\\; \\sum_{i=0}^{\\infty} \\frac{1}{(N+1+i)^p}",
+    "significance": "key",
+    "relatedConcepts": ["tsum", "le_of_tendsto'", "tendsto_rpow_neg_atTop", "monotone convergence", "lower bound"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-isc-oq01010201-explicit",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 138, "endLine": 149 },
+    "type": "theorem",
+    "title": "Explicit Lower Bound, Textbook Form",
+    "content": "pseries_tail_ge_explicit rewrites the floor (N+1)^{1−p}/(p−1) as 1/((p−1)·(N+1)^{p−1}) using Real.rpow_neg ((N+1)^{1−p} = 1/(N+1)^{p−1}) and field_simp, exhibiting the matching O(N^{1−p}) order from below.",
+    "mathContext": "\\frac{1}{(p-1)\\,(N+1)^{p-1}} \\;\\le\\; \\sum_{i=0}^{\\infty} \\frac{1}{(N+1+i)^p}",
+    "significance": "standard",
+    "relatedConcepts": ["rate of convergence", "Real.rpow_neg", "asymptotic order"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-isc-oq01010201-sandwich",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 159, "endLine": 165 },
+    "type": "theorem",
+    "title": "The Two-Sided Remainder Sandwich",
+    "content": "pseries_tail_sandwich pairs the new lower bound (pseries_tail_tsum_ge, ∫_{N+1}^∞) with the parent's upper bound (pseries_tail_tsum_le, ∫_N^∞), pinning the tail between two consecutive values of the primitive x ↦ x^{1−p}/(p−1): (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1). Both flanks have leading order N^{1−p}, so the remainder's asymptotic order is exactly N^{1−p}.",
+    "mathContext": "\\frac{(N+1)^{1-p}}{p-1} \\;\\le\\; \\sum_{n>N} \\frac{1}{n^p} \\;\\le\\; \\frac{N^{1-p}}{p-1}",
+    "significance": "key",
+    "relatedConcepts": ["two-sided bound", "remainder estimate", "asymptotic order", "integral test"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-isc-oq01010201-basel",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 169, "endLine": 185 },
+    "type": "example",
+    "title": "Basel-Exponent Sandwich",
+    "content": "For p = 2 the sandwich collapses to the textbook estimate 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N: both (N+1)^{1−2}/(2−1) and N^{1−2}/(2−1) simplify to 1/(N+1) and 1/N via Real.rpow_neg and Real.rpow_one.",
+    "mathContext": "\\frac{1}{N+1} \\;\\le\\; \\sum_{n>N} \\frac{1}{n^2} \\;\\le\\; \\frac{1}{N}",
+    "significance": "standard",
+    "relatedConcepts": ["Basel problem", "worked example", "rate of convergence"],
+    "prerequisites": []
+  }
+]

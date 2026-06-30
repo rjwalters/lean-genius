@@ -1,0 +1,105 @@
+[
+  {
+    "id": "ann-overview",
+    "title": "From Bounds to a Projector",
+    "type": "concept",
+    "startLine": 1,
+    "endLine": 38,
+    "mathContext": "The parent (cauchy-schwarz-oq-01-oq-02) proved the Gram-Schmidt projection orthProj v u = (⟪v,u⟫/⟪v,v⟫)•v is bounded, has an orthogonal residual, and obeys Pythagoras. It did not establish that u ↦ orthProj v u is an orthogonal projector. This file supplies the projector axioms: idempotency, complementary idempotency, identity reconstruction, kernel annihilation, and the exact projection norm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal projection",
+      "idempotent operator",
+      "Gram-Schmidt",
+      "Cauchy-Schwarz"
+    ],
+    "prerequisites": [
+      "inner product spaces over an RCLike field",
+      "projection onto a line"
+    ],
+    "content": "The single Gram-Schmidt step is exactly the rank-one orthogonal projector onto span{v}; this file proves the operator identities that justify calling it a projector.",
+    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 38 }
+  },
+  {
+    "id": "ann-field-explicit",
+    "title": "Why 𝕜 is an Explicit Argument",
+    "type": "proof_technique",
+    "startLine": 40,
+    "endLine": 56,
+    "mathContext": "InnerProductSpace 𝕜 E does not have 𝕜 as an outParam, so a term like orthProj v u : E cannot determine 𝕜 from E alone. The projector statements (orthProj v (orthProj v u) = orthProj v u, etc.) do not mention 𝕜, so leaving it implicit makes typeclass resolution stuck. Making 𝕜 an explicit argument of orthProj/projCoeff/gsStep keeps every statement unambiguous.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "typeclass resolution",
+      "outParam",
+      "definitional API design"
+    ],
+    "prerequisites": [
+      "Lean elaboration and implicit arguments"
+    ],
+    "content": "A small but essential design choice: the scalar field is threaded explicitly so that field-free operator identities elaborate without ambiguity.",
+    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01",
+    "range": { "startLine": 40, "endLine": 56 }
+  },
+  {
+    "id": "ann-idempotency",
+    "title": "Idempotency P² = P",
+    "type": "proof_technique",
+    "startLine": 71,
+    "endLine": 85,
+    "mathContext": "orthProj_smul_self: orthProj v (c•v) = c•v, because ⟪v, c•v⟫/⟪v,v⟫ = c·⟪v,v⟫/⟪v,v⟫ = c (inner_smul_right, div_self). Since orthProj v u = projCoeff v u • v lies in span{v}, orthProj v (orthProj v u) = orthProj v u.",
+    "significance": "key",
+    "relatedConcepts": [
+      "idempotent operator",
+      "range of a projector",
+      "inner_smul_right"
+    ],
+    "prerequisites": [
+      "scalar multiplication in inner product spaces"
+    ],
+    "content": "The projector fixes its own range: projecting twice equals projecting once.",
+    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 85 }
+  },
+  {
+    "id": "ann-kernel",
+    "title": "Kernel: the projector kills the residual",
+    "type": "proof_technique",
+    "startLine": 86,
+    "endLine": 106,
+    "mathContext": "Since ⟪v, gsStep v u⟫ = 0 (residual orthogonality), orthProj v (gsStep v u) = (0/⟪v,v⟫)•v = 0. Hence the complement gsStep v = 1 − P satisfies gsStep v (gsStep v u) = gsStep v u − 0 = gsStep v u: (1−P)² = 1−P.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kernel of a projector",
+      "orthogonal complement",
+      "complementary idempotents"
+    ],
+    "prerequisites": [
+      "orthogonality of the Gram-Schmidt residual"
+    ],
+    "content": "The residual lives in (span{v})^⊥, the kernel of P; equivalently 1−P is also a projector.",
+    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01",
+    "range": { "startLine": 86, "endLine": 106 }
+  },
+  {
+    "id": "ann-exact-norm",
+    "title": "Cauchy-Schwarz as an Equality",
+    "type": "proof_technique",
+    "startLine": 117,
+    "endLine": 140,
+    "mathContext": "orthProj_norm_eq: ‖orthProj v u‖ = ‖⟪v,u⟫/⟪v,v⟫‖·‖v‖ = (‖⟪v,u⟫‖/‖v‖²)·‖v‖ = ‖⟪v,u⟫‖/‖v‖ (norm_smul, norm_div, inner_self_eq_norm_sq_to_K). The parent's bound ‖orthProj v u‖ ≤ ‖u‖ is then exactly ‖⟪v,u⟫‖/‖v‖ ≤ ‖u‖, i.e. norm_inner_le_norm.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "projection norm",
+      "norm_smul"
+    ],
+    "prerequisites": [
+      "norm of a scalar multiple",
+      "inner_self_eq_norm_sq_to_K"
+    ],
+    "content": "The exact projection norm shows the Cauchy-Schwarz inequality is the upper bound ‖⟪v,u⟫‖/‖v‖ ≤ ‖u‖ on this quantity.",
+    "proofId": "cauchy-schwarz-oq-01-oq-02-oq-01",
+    "range": { "startLine": 117, "endLine": 140 }
+  }
+]

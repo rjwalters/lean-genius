@@ -19,6 +19,45 @@
     "sorries": 0
   },
   "title": "Mean and Variance of the Descent Statistic via the Eulerian Polynomial",
+  "description": "The classical facts that a uniformly random permutation of {1,…,m} has mean number of descents (m−1)/2 and variance (m+1)/12, derived NOT from the combinatorial definition of the Eulerian numbers but mechanically from the analytic differential recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ defining the Eulerian polynomial. Because the factor X(1−X) vanishes at X = 1, differentiating the recurrence once or twice and evaluating at 1 collapses to clean linear recurrences for the moments E'ₘ(1) and E''ₘ(1), giving the denominator-free integral identities 2·E'ₘ(1) = (m+1)! and 12·E''ₘ(1) = (3m−2)(m+1)! over any commutative ring; dividing by the row sum Eₘ(1) = m! recovers the mean and variance over ℚ.",
+  "overview": {
+    "historicalContext": "The Eulerian numbers ⟨m,k⟩ — the number of permutations of {1,…,m} with exactly k descents — were introduced by Leonhard Euler in his 1755 study of the series ∑ nᵐ rⁿ, the same geometric-moment lineage this entry's grandparent formalizes. Their generating polynomial Eₘ(X) = ∑ₖ ⟨m,k⟩ Xᵏ is the descent generating function of the symmetric group Sₘ, and the moments of the descent statistic — mean (m−1)/2, variance (m+1)/12 — are textbook results (Graham–Knuth–Patashnik, Bóna) underpinning the classical theorem that the number of descents is asymptotically normal. Standard derivations argue combinatorially from the descent-counting definition or manipulate the closed-form generating function. The contribution here is methodological: working purely from the parent entry's analytic differential-recurrence definition of Eₘ, the moments fall out by formal differentiation, with no bijective or combinatorial input. Mathlib formalizes neither the Eulerian numbers nor these moments.",
+    "problemStatement": "Given the Eulerian polynomial Eₘ defined by E₀ = 1, E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ (parent entry) with row sum Eₘ(1) = m!, compute the first two moments of the descent statistic on Sₘ. Prove the integral identities 2·E'ₘ(1) = (m+1)! (m ≥ 1) and 12·E''ₘ(1) = (3m−2)(m+1)! (m ≥ 2) over an arbitrary commutative ring, and deduce over ℚ that the descent count has mean (m−1)/2 and variance (m+1)/12.",
+    "proofStrategy": "Differentiate-and-evaluate. The descent moments are derivatives of Eₘ at X = 1: E'ₘ(1) = ∑ₖ k·⟨m,k−1⟩ is the first factorial moment of k = des+1, and E''ₘ(1) = ∑ₖ k(k−1)·⟨m,k−1⟩ the second. Differentiating the recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ once (resp. twice) and evaluating at X = 1 — where X(1−X) = 0 kills the unwanted higher-derivative term — yields the linear recurrences E'_{m+1}(1) = (m+1)Eₘ(1) + m·E'ₘ(1) and E''_{m+1}(1) = 2m·E'ₘ(1) + (m−1)·E''ₘ(1). Nat.le_induction lifts these to the closed forms 2·E'ₘ(1) = (m+1)! and 12·E''ₘ(1) = (3m−2)(m+1)!, each inductive step closed by linear_combination. Specializing to ℚ and dividing by Eₘ(1) = m! gives the mean (m+1)/2 of k = des+1 and, via E[k²] − E[k]² = E[k(k−1)] + E[k] − E[k]², the variance (m+1)/12.",
+    "keyInsights": [
+      "The vanishing of the structural factor X(1−X) at X = 1 is the entire mechanism: it makes each differentiated recurrence close in low order, so the n-th moment recurrence never references derivatives above order n. This is why an analytic definition can compute combinatorial moments with no combinatorics.",
+      "The moments are read off as formal derivatives evaluated at a point: E'ₘ(1) and E''ₘ(1) are exactly the first and second falling-factorial moments of k = des+1, so differentiation of the generating function literally computes the statistics.",
+      "The integral identities 2·E'ₘ(1) = (m+1)! and 12·E''ₘ(1) = (3m−2)(m+1)! hold over ANY commutative ring — they are denominator-free statements about the Eulerian polynomial's derivatives, with the rational mean/variance only a specialization obtained after dividing by m!.",
+      "Variance is recovered through the falling-factorial bridge E[k²] − E[k]² = E[k(k−1)] + E[k] − E[k]²: the second factorial moment plus the first, minus the square of the first, equals the ordinary variance — and the variance of k = des+1 equals the variance of the descent count itself.",
+      "The mean (m−1)/2 is the symmetry center of the Eulerian distribution: the palindromicity ⟨m,k⟩ = ⟨m,m−1−k⟩ (sibling entry) forces the descent distribution to be symmetric about (m−1)/2, consistent with the mean computed here directly."
+    ]
+  },
+  "sections": [
+    {
+      "id": "moment-recurrences",
+      "title": "Part 1: The One-Step Moment Recurrences",
+      "startLine": 53,
+      "endLine": 82,
+      "summary": "Differentiates the Eulerian differential recurrence E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ once (deriv_eulerPoly_eval_one_succ: E'_{m+1}(1) = (m+1)Eₘ(1) + m·E'ₘ(1)) and twice (deriv2_eulerPoly_eval_one_succ: E''_{m+1}(1) = 2m·E'ₘ(1) + (m−1)E''ₘ(1)), evaluating at X = 1. The factor X(1−X) = 0 at X = 1 drops the unwanted higher-derivative term; Mathlib's derivative/eval simp set plus ring close each.",
+      "mathContext": "$E'_{m+1}(1)=(m{+}1)E_m(1)+mE'_m(1)$ and $E''_{m+1}(1)=2mE'_m(1)+(m{-}1)E''_m(1)$, from $\\frac{d}{dX}\\bigl[X(1{-}X)\\bigr]\\big|_{X=1}$ killing higher terms."
+    },
+    {
+      "id": "closed-forms",
+      "title": "Part 2: Closed Forms (Denominator-Free, Any Ring)",
+      "startLine": 84,
+      "endLine": 127,
+      "summary": "Lifts the one-step recurrences to closed form by Nat.le_induction over a commutative ring: two_mul_deriv_eulerPoly_eval_one gives 2·E'ₘ(1) = (m+1)! for m ≥ 1, and twelve_mul_deriv2_eulerPoly_eval_one gives 12·E''ₘ(1) = (3m−2)(m+1)! for m ≥ 2 (the latter using the first-moment identity in its step). Factorial algebra via Nat.factorial_succ; each step closed by linear_combination.",
+      "mathContext": "$2E'_m(1)=(m{+}1)!\\ (m\\ge 1)$ and $12E''_m(1)=(3m{-}2)(m{+}1)!\\ (m\\ge 2)$ — integral identities over any commutative ring."
+    },
+    {
+      "id": "mean-variance",
+      "title": "Part 3: Mean and Variance Over ℚ",
+      "startLine": 129,
+      "endLine": 175,
+      "summary": "Specializes to ℚ and divides by the row sum Eₘ(1) = m!. mean_descents_succ: E'ₘ(1)/Eₘ(1) = (m+1)/2, so the mean number of descents is (m−1)/2. variance_descents_succ: E''ₘ(1)/Eₘ(1) + E'ₘ(1)/Eₘ(1) − (E'ₘ(1)/Eₘ(1))² = (m+1)/12, the variance via the falling-factorial identity E[k²] − E[k]² = E[k(k−1)] + E[k] − E[k]². Closed by field_simp and ring.",
+      "mathContext": "Mean of descents $=\\frac{m-1}{2}$, variance $=\\frac{m+1}{12}$, via $\\mathrm{Var}(k)=E[k(k{-}1)]+E[k]-E[k]^2$ for $k=\\mathrm{des}+1$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

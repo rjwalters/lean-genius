@@ -91,3 +91,73 @@ asymptotic constant, not just a few data points.
 ### Files
 - `research/erdos-574-oq-01/verify_lower_bound.py` (new, runs clean)
 - `research/erdos-574-oq-01/knowledge.md` (this file)
+
+---
+
+## Session 2026-06-25 (Session 2) — ACT
+
+**Mode:** continue from Session 1
+**Outcome:** progress (ACT — formalized the reusable "odd cycle is free"
+core; 3 verified theorems, 0 axioms, 0 sorries)
+
+### What was done
+
+Took Session 1's flagged next step ("Generalize the 'bipartite ⟹
+`C_{2k-1}`-free' lemma to all `k` — the reusable core, `O(50)` LOC") and
+formalized it in `proofs/Proofs/Erdos574Problem.lean` against the file's
+own lightweight `SimpleGraph'` / `HasCycle` definitions (no PG(2,q)
+construction needed — that is the heavier, separable lower-bound witness
+project deferred for later).
+
+New declarations (all machine-checked, `#print axioms` shows only
+`propext`/`Classical.choice`/`Quot.sound`, which do not count):
+
+- `def IsBipartite` — vertices 2-colourable (`Fin n → Bool`) with no
+  monochromatic edge.
+- `theorem bipartite_not_hasCycle_odd` — **a bipartite graph has no cycle
+  of any odd length.** Proof: lift the cycle to a closed walk on ℕ via
+  wrap-around `w j = cycle ⟨j % ℓ, _⟩`; the 2-colouring flips at each
+  step (`c (w (j+1)) = !(c (w j))`), so by induction
+  `c (w j) = (!·)^[j] (c (w 0))`; the walk closes (`w ℓ = w 0`), giving
+  `c (w 0) = (!·)^[ℓ] (c (w 0))`, and for odd `ℓ` the iterate flips,
+  contradiction. Injectivity of the cycle is **not used** — only the
+  closed-walk adjacencies.
+- `theorem bipartite_no_odd_consecutive` — bipartite ⟹ no `C_{2k-1}` for
+  `k ≥ 1` (since `2k-1` is odd).
+- `theorem bipartite_evenFree_consecutiveFree` — bipartite + `C_{2k}`-free
+  ⟹ `{C_{2k-1}, C_{2k}}`-free. **This is the lower-bound transfer**: on
+  bipartite witnesses the even-cycle condition already gives the whole
+  consecutive-pair constraint, so the lower bound for
+  `ex(n; {C_{2k-1}, C_{2k}})` matches `ex(n; C_{2k})` with no loss.
+
+Supporting `private lemma not_iterate_eq`: `(!·)^[m] b = if Even m then b
+else !b`.
+
+### Gotchas / build notes
+- **Docker still down.** Typechecked with the explicitly-safe
+  `lake env lean <file>` (single file, bounded memory — *not* the blocked
+  runaway `lake build`), using the main repo's prebuilt Mathlib oleans.
+- `Mathlib.Data.Nat.Parity` olean does **not exist** in this v4.26 build;
+  use `Mathlib.Algebra.Ring.Parity` instead. `Nat.odd_iff_not_even` is
+  also gone — derive `¬ Even ℓ` via `Nat.even_iff` + `Nat.odd_iff` +
+  `omega`.
+- The pre-existing `edgeCount'` needed `open Classical in` (predicate over
+  `G.adj` is not decidable). `open Classical in` must precede the
+  docstring, not sit between docstring and `def`.
+- The pre-existing `HasCycle` `(by omega)` for `0 < ℓ` couldn't see the
+  bound; `(by have := i.isLt; omega)` fixes it.
+- Floating `/-- … -/` doc-comments (no following declaration) are parse
+  errors — the trailing commentary blocks must be `/- … -/`.
+
+### Status
+Headline conjecture **still OPEN** (only the matching upper bound is the
+open content). Entry kept `status: axiomatized`, `badge: wip` per the
+open-conjecture rule; the conjecture is stated only as commentary, never
+claimed proven. The three new theorems are genuinely verified.
+
+### Next steps
+- (Optional, larger) Formalize the `PG(2,q)` incidence-graph witness as a
+  concrete `SimpleGraph'` and prove it `IsBipartite` + `C_4`-free + edge
+  count, then feed `bipartite_evenFree_consecutiveFree` to get an explicit
+  `k = 2` lower-bound graph. Few-hundred-LOC finite-geometry project.
+- Upper bound stays OPEN; do not submit to Aristotle.

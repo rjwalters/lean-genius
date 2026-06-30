@@ -80,10 +80,26 @@
   ],
   "leanFiles": [
     {
-      "path": "proofs/Proofs/CyclotomicPolynomialsOQ02.lean",
-      "status": "verified",
+      "path": "Proofs/CyclotomicPolynomialsOQ01.lean",
+      "filename": "CyclotomicPolynomialsOQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "sorryCount": 0
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CyclotomicPolynomialsOQ01.lean"
+    },
+    {
+      "path": "Proofs/CyclotomicPolynomialsOQ02.lean",
+      "filename": "CyclotomicPolynomialsOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CyclotomicPolynomialsOQ02.lean"
     }
   ],
   "significanceNote": "Prime-power companion to the cyclotomic topic entry: geometric-sum form Φ_{p^k}=∑X^{i·p^{k-1}}, degree p^{k-1}(p−1), and the eval-at-one dichotomy Φ_n(1) ∈ {p,1} (the von Mangoldt prime-power detector)."

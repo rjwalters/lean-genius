@@ -47,6 +47,36 @@
       "Logarithm monotonicity, the limit (log n)/n → 0, and the squeeze theorem for sequences"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview & Scope",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring: the parent pins the sub-exponential exponent 3/2; this entry pins the leading exponential rate 4 via (1/n)·log(catalan n) → log 4 and (catalan n)^{1/n} → 4, i.e. radius of convergence 1/4. Two elementary central-binomial brackets, no Stirling."
+    },
+    {
+      "id": "positivity-brackets",
+      "title": "Positivity and the Two Brackets",
+      "startLine": 49,
+      "endLine": 89,
+      "summary": "catalan_pos (Catalan numbers are positive), the upper bracket catalan n ≤ 4ⁿ (via (2n choose n) ≤ 2^{2n}), and the lower bracket 4ⁿ ≤ 2n²·catalan n for n ≥ 4 (via Erdős's 4ⁿ < n·centralBinom n and n(n+1) ≤ 2n²)."
+    },
+    {
+      "id": "growth-rate",
+      "title": "The Exponential Growth Rate",
+      "startLine": 91,
+      "endLine": 146,
+      "summary": "catalan_log_div_tendsto_log_four: log of the two brackets, divide by n, squeeze between log 4 − O((log n)/n) and log 4 using (log n)/n → 0 (Real.isLittleO_log_id_atTop) and the sequence squeeze theorem."
+    },
+    {
+      "id": "nth-root",
+      "title": "n-th Root Form and Radius of Convergence",
+      "startLine": 148,
+      "endLine": 160,
+      "summary": "catalan_rpow_tendsto_four: compose the log-limit with continuity of exp to get (catalan n)^{1/n} → 4, the Cauchy–Hadamard radius of convergence 1/4 for ∑ catalan n · xⁿ."
+    }
+  ],
   "conclusion": {
     "summary": "(1/n)·log(catalan n) → log 4, and equivalently (catalan n)^{1/n} → 4: the exponential growth rate of the Catalan numbers is exactly 4. The proof brackets catalan n between 4^n/(2n²) and 4^n using only central-binomial bounds, passes to logarithms, and squeezes with (log n)/n → 0. All five theorems are fully machine-checked with no axioms or sorries.",
     "implications": "The result establishes, by elementary means, the leading exponential order of Catalan growth and hence that the Catalan generating function has radius of convergence exactly 1/4. Together with the parent entry — which pins the polynomial exponent 3/2 — it reconstructs both layers of the Stirling asymptotic catalan n ∼ 4^n/(n^{3/2}√π) except for the constant 1/√π, and does so without any factorial/Stirling input.",

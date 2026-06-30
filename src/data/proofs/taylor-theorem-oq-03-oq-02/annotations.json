@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ann-ttoq0302-cycle",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "The Four-Fold Derivative Cycle of cos",
+    "content": "iteratedDeriv_cos_cycle proves that iteratedDeriv k cos is one of cos, -sin, -cos, sin by a single induction on k. The step uses the function-level derivative identities (deriv cos = -sin, deriv (-sin) = -cos, deriv (-cos) = sin, deriv sin = cos), each obtained from Real.hasDerivAt_cos / Real.hasDerivAt_sin via HasDerivAt.deriv. This four-way disjunction replaces the period-4 modular bookkeeping one might expect, and is exactly what makes the uniform bound below a one-liner.",
+    "mathContext": "$\\dfrac{d^k}{dx^k}\\cos x \\in \\{\\cos, -\\sin, -\\cos, \\sin\\}$, the rotation $\\cos \\to -\\sin \\to -\\cos \\to \\sin \\to \\cos$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "iterated derivative",
+      "trigonometric functions",
+      "induction",
+      "derivative cycle"
+    ],
+    "prerequisites": [
+      "derivative of sin and cos",
+      "iterated derivatives"
+    ]
+  },
+  {
+    "id": "ann-ttoq0302-uniform-bound",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "theorem",
+    "title": "Uniform Derivative Bound |iteratedDeriv k cos| <= 1",
+    "content": "abs_iteratedDeriv_cos_le_one casts each branch of the cycle to the corresponding +/- cos or +/- sin and closes with Real.abs_cos_le_one or Real.abs_sin_le_one (abs_neg absorbing the sign). This single constant C = 1 is the entire reason the cos remainder is cleaner than the exp remainder: it bounds the (n+1)-th derivative uniformly, with no dependence on x.",
+    "mathContext": "$|\\operatorname{iteratedDeriv} k\\,\\cos\\,y| \\le 1$ for all $k \\in \\mathbb{N}$, $y \\in \\mathbb{R}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "uniform bound",
+      "bounded derivatives",
+      "absolute value"
+    ],
+    "prerequisites": [
+      "bounds on sin and cos",
+      "derivative cycle"
+    ]
+  },
+  {
+    "id": "ann-ttoq0302-local-to-global",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 127
+    },
+    "type": "technique",
+    "title": "The Local-to-Global Bridge for cos",
+    "content": "norm_iteratedDerivWithin_cos_Icc_le transfers the global cycle bound to the derivative-within on Icc 0 x. iteratedDerivWithin_eq_iteratedDeriv converts iteratedDerivWithin (which only sees cos on the interval) into the global iteratedDeriv, under the two hypotheses uniqueDiffOn_Icc (the interval is a unique-differentiability set) and ContDiffAt (cos is smooth). This is the lone technical step, and it produces exactly the uniform hypothesis taylor_mean_remainder_bound consumes.",
+    "mathContext": "On the UniqueDiffOn set $[0,x]$, $\\lVert\\operatorname{iteratedDerivWithin} k\\,\\cos\\,[0,x]\\,y\\rVert = |\\operatorname{iteratedDeriv} k\\,\\cos\\,y| \\le 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "iteratedDerivWithin",
+      "unique differentiability",
+      "ContDiffAt",
+      "local vs global derivative"
+    ],
+    "prerequisites": [
+      "derivative within a set",
+      "UniqueDiffOn",
+      "smoothness"
+    ]
+  },
+  {
+    "id": "ann-ttoq0302-lagrange-bound",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 135,
+      "endLine": 151
+    },
+    "type": "theorem",
+    "title": "The Lagrange Remainder Bound for cos",
+    "content": "cos_lagrange_remainder_pos applies taylor_mean_remainder_bound with C = 1, a = 0, b = x. Because the uniform-bound form of the theorem already carries the denominator n! (not (n+1)!), the conclusion is exactly ||cos x - taylorWithinEval cos n (Icc 0 x) 0 x|| <= 1 * x^(n+1)/n!, simplified to x^(n+1)/n!. cos_lagrange_remainder then adds the degenerate x = 0 endpoint (both sides vanish) by simp, giving the bound for all x >= 0.",
+    "mathContext": "$\\bigl\\lVert \\cos x - \\operatorname{taylorWithinEval}(\\cos, n, [0,x], 0, x) \\bigr\\rVert \\le \\dfrac{x^{n+1}}{n!}$ for $x \\ge 0$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lagrange remainder",
+      "Taylor polynomial",
+      "taylor_mean_remainder_bound",
+      "error bound"
+    ],
+    "prerequisites": [
+      "Taylor's theorem",
+      "uniform derivative bound"
+    ]
+  },
+  {
+    "id": "ann-ttoq0302-axiom-discharge",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 160,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "Discharging the Sibling File's Axiom",
+    "content": "cos_taylor_remainder_bound_thm has the exact statement that TaylorSinCosConvergence.lean postulates as the axiom cos_taylor_remainder_bound (||cos x - cosPartialSum n x|| <= |x|^(n+1)/n!), here proved for x >= 0. taylorWithinEval_cos_eq_partialSum identifies the Mathlib Taylor polynomial with the explicit partial sum sum_{k<=n} (iteratedDeriv k cos 0) x^k/k! (the sibling's cosPartialSum), and substituting it into the Lagrange bound turns the postulated estimate into a Mathlib-derived theorem. The gallery's cos convergence is thus no longer axiom-dependent.",
+    "mathContext": "$\\lVert\\cos x - \\sum_{k\\le n}\\tfrac{(\\operatorname{iteratedDeriv} k\\,\\cos\\,0)\\,x^k}{k!}\\rVert \\le \\dfrac{|x|^{n+1}}{n!}$, axiom-free for $x \\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom elimination",
+      "partial sum",
+      "taylorWithinEval",
+      "de-axiomatization"
+    ],
+    "prerequisites": [
+      "Taylor partial sums",
+      "taylor_within_apply"
+    ]
+  },
+  {
+    "id": "ann-ttoq0302-convergence",
+    "proofId": "taylor-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 191,
+      "endLine": 218
+    },
+    "type": "theorem",
+    "title": "Convergence by Squeezing the Remainder",
+    "content": "pow_succ_div_factorial_tendsto shows x^(n+1)/n! -> 0 (from summability of x^n/n!). cos_taylorWithinEval_tendsto then squeezes the remainder ||cos x - T_n(x)|| <= x^(n+1)/n! to zero and concludes T_n(x) -> cos x; cosPartialSum_tendsto restates this for the explicit partial sum, the axiom-free counterpart of TaylorSinCosConvergence.cosPartialSum_tendsto.",
+    "mathContext": "$\\operatorname{taylorWithinEval}(\\cos, n, [0,x], 0, x) \\to \\cos x$ as $n \\to \\infty$ for $x \\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence",
+      "squeeze theorem",
+      "factorial decay",
+      "Taylor series"
+    ],
+    "prerequisites": [
+      "limits of sequences",
+      "summability of the exponential series"
+    ]
+  }
+]

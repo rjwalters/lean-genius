@@ -1,0 +1,184 @@
+{
+  "id": "schur-lemma-oq-01-oq-02",
+  "title": "Irreducible representations of abelian groups are one-dimensional",
+  "slug": "schur-lemma-oq-01-oq-02",
+  "description": "The parent entry proves the scalar form of Schur's Lemma: every A-linear endomorphism of a finite-dimensional simple A-module over an algebraically closed field is multiplication by a scalar. That controls the endomorphisms commuting with the action; this entry turns it into a dimension count in the one case where the algebra itself supplies those commuting endomorphisms — when A is commutative. For a commutative k-algebra A acting on a simple module M finite-dimensional over an algebraically closed field k, every element a ∈ A acts as the A-linear map m ↦ a • m (this is exactly where commutativity is used), so Schur forces each to be a scalar; the whole algebra acts by scalars, a single nonzero vector spans an A-submodule, and simplicity collapses M to a line: finrank k M = 1. Specializing A to the group algebra k[G] of an abelian group G (which is commutative) yields the classical classification — every finite-dimensional irreducible complex representation of an abelian group is one-dimensional — directly answering the parent's open question.",
+  "meta": {
+    "author": "Classical (Schur 1905; Serre); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchursLemmaOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "representation-theory",
+      "module-theory",
+      "simple-module",
+      "schur-lemma",
+      "abelian-group",
+      "character-theory",
+      "irreducible-representation",
+      "group-algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearMap.lsmul",
+        "description": "For a commutative ring A and an A-module M, multiplication by a fixed a ∈ A is the A-linear endomorphism LinearMap.lsmul A M a; this is the construction that requires A to be commutative and feeds each algebra element into Schur's scalar form",
+        "module": "Mathlib.Algebra.Module.LinearMap.Defs"
+      },
+      {
+        "theorem": "IsSimpleModule.nontrivial",
+        "description": "A simple module is nontrivial, supplying the nonzero vector used to build the spanning line",
+        "module": "Mathlib.RingTheory.SimpleModule.Basic"
+      },
+      {
+        "theorem": "eq_bot_or_eq_top",
+        "description": "In a simple module (IsSimpleOrder on the submodule lattice) every submodule is ⊥ or ⊤; collapses the A-submodule carried by the k-line to all of M",
+        "module": "Mathlib.Order.Atoms"
+      },
+      {
+        "theorem": "finrank_span_singleton",
+        "description": "The span of a single nonzero vector is one-dimensional; gives finrank k M = 1 once the line is shown to be everything",
+        "module": "Mathlib.LinearAlgebra.Dimension.Finrank"
+      },
+      {
+        "theorem": "algebraMap_smul",
+        "description": "Compatibility (algebraMap k A t) • m = t • m under IsScalarTower k A M; routes the commutation of the k- and A-actions through commutativity of A",
+        "module": "Mathlib.Algebra.Algebra.Bilinear"
+      },
+      {
+        "theorem": "MonoidAlgebra.commRing",
+        "description": "The group algebra k[G] of a commutative monoid G is a commutative ring; supplies the CommRing instance that makes the abelian-group corollary an instance of the commutative-algebra theorem",
+        "module": "Mathlib.Algebra.MonoidAlgebra.Basic"
+      }
+    ],
+    "parentDependencies": [
+      {
+        "theorem": "SchursLemma.schur_endomorphism_scalar",
+        "description": "The parent entry's headline: over an algebraically closed field k, every A-linear endomorphism of a finite-dimensional simple A-module is multiplication by a scalar. Applied to LinearMap.lsmul A M a for each a ∈ A to show a commutative algebra acts by scalars.",
+        "proof": "schur-lemma-oq-01"
+      }
+    ],
+    "originalContributions": [
+      "exists_scalar_smul: for a commutative k-algebra A acting on a finite-dimensional simple module M over an algebraically closed field, each a ∈ A acts as a single scalar: ∃ c : k, ∀ m, a • m = c • m. This is where the parent's scalar form is fed the commuting endomorphisms that commutativity makes available.",
+      "simple_module_over_commutative_finrank_eq_one: the algebraic heart — a simple module over a commutative k-algebra A, finite-dimensional over an algebraically closed field k, satisfies finrank k M = 1. Proof: a nonzero vector v spans a k-line that is A-invariant (because A acts by scalars), hence the carrier of an A-submodule; simplicity forces it to be all of M.",
+      "irreducible_rep_abelian_group_finrank_eq_one: specialization to A = k[G] for an abelian group G, using that the group algebra of an abelian group is commutative — every finite-dimensional simple k[G]-module is one-dimensional over k.",
+      "irreducible_complex_rep_abelian_one_dim: the headline complex case k = ℂ — every finite-dimensional irreducible complex representation of an abelian group is one-dimensional, the classification underlying the character theory of abelian groups."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas and the parent entry's schur_endomorphism_scalar.",
+    "lineCount": 173,
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "That an irreducible complex representation of an abelian group is one-dimensional is the first structural theorem of character theory: it is why the irreducible characters of a finite abelian group are exactly its homomorphisms to ℂˣ, and why the dual group and Fourier analysis on abelian groups work as they do. The statement is the canonical first corollary of Schur's Lemma, appearing in Serre §3.1 and Fulton–Harris §1.3 immediately after the lemma itself.",
+    "problemStatement": "The parent entry asked (open question 2): does the scalar form of Schur's Lemma specialize cleanly to recover the classical statement that an irreducible complex representation of an abelian group is one-dimensional? This entry answers yes, and isolates the precise algebraic content: the only ingredient beyond the scalar form is that an abelian group's algebra is commutative, so the algebra elements themselves are the commuting endomorphisms Schur turns into scalars.",
+    "text": "For a commutative k-algebra A acting on a simple module M that is finite-dimensional over an algebraically closed field k, one has finrank k M = 1. Specializing A to the group algebra k[G] of an abelian group G gives the classical result that finite-dimensional irreducible representations of abelian groups are one-dimensional, with the complex case k = ℂ as the headline. Verified in Lean with no axioms.",
+    "proofStrategy": "1. exists_scalar_smul: for each a ∈ A, the map m ↦ a • m is LinearMap.lsmul A M a, an A-linear endomorphism of M precisely because A is commutative (a • (b • m) = (ab) • m = (ba) • m = b • (a • m)). The parent's schur_endomorphism_scalar then yields c : k with a • m = c • m for all m.\n2. simple_module_over_commutative_finrank_eq_one: pick a nonzero v (M is nontrivial by simplicity). The k-line span k {v} is closed under the A-action, since a • (t • v) = t • (a • v) = t • (c • v) ∈ span k {v}; package it as a Submodule A M with carrier span k {v}. Because v ≠ 0 the submodule is not ⊥, so by simplicity it is ⊤, i.e. span k {v} = ⊤. Hence finrank k M = finrank k (span k {v}) = 1.\n3. irreducible_rep_abelian_group_finrank_eq_one / irreducible_complex_rep_abelian_one_dim: instantiate A = k[G] (commutative because G is abelian), then k = ℂ.",
+    "keyInsights": [
+      "**Commutativity is the whole point.** Schur's scalar form needs an endomorphism that commutes with the action to conclude it is a scalar. For a general algebra those commuting endomorphisms form the (small) centralizer; for a commutative algebra *every* algebra element is one. This is the single hypothesis that separates the one-dimensional classification from the general theory.",
+      "**Scalars make every line invariant.** Once each a ∈ A acts as a scalar on M, any k-line is automatically an A-submodule. Irreducibility then has no room to maneuver: a proper nonzero submodule exists unless the module is already a line.",
+      "**Algebraic closure is inherited from the parent, not re-used.** The eigenvalue argument lives entirely in schur_endomorphism_scalar; this entry only consumes its conclusion. The result is therefore as sharp as the parent — it fails over ℝ, where an abelian group like ℤ/4 has an irreducible 2-dimensional real representation (rotation by 90°).",
+      "**Abelian group ⇒ commutative group algebra.** The bridge from representations to commutative algebras is the single instance MonoidAlgebra.commRing: a representation of G is a k[G]-module, and k[G] is commutative exactly when G is. No representation-specific machinery is needed beyond this."
+    ],
+    "prerequisites": [
+      "Modules over a commutative algebra; simple (irreducible) modules and the submodule lattice",
+      "Schur's Lemma in scalar form (the parent entry): endomorphisms of a finite-dimensional irreducible representation over an algebraically closed field are scalars",
+      "The group algebra k[G] and the equivalence between representations of G and k[G]-modules",
+      "finrank and the dimension of the span of a single vector"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "File docstring explaining how the commutative case turns the parent's scalar form into a one-dimensionality classification, and listing the three headline statements. Imports the simple-module API, eigenspace/finrank lemmas, the group-algebra API, and the parent file Proofs.SchursLemma.",
+      "mathContext": "From the scalar form of Schur's lemma to the dimension of irreducibles of abelian groups."
+    },
+    {
+      "id": "commutative-core",
+      "title": "The Commutative Core",
+      "startLine": 73,
+      "endLine": 133,
+      "summary": "smul_k_comm (the k- and A-actions commute via algebraMap), exists_scalar_smul (each algebra element acts as a scalar, by feeding LinearMap.lsmul A M a into the parent's schur_endomorphism_scalar), and simple_module_over_commutative_finrank_eq_one (a simple module over a commutative algebra, finite-dimensional over an algebraically closed field, is one-dimensional).",
+      "mathContext": "A commutative algebra acting simply and finite-dimensionally over an algebraically closed field forces dimension one."
+    },
+    {
+      "id": "group-rep",
+      "title": "Group Representations",
+      "startLine": 135,
+      "endLine": 160,
+      "summary": "irreducible_rep_abelian_group_finrank_eq_one: instantiates the commutative core at A = k[G] for an abelian group G, using MonoidAlgebra.commRing, to conclude that a finite-dimensional simple k[G]-module is one-dimensional.",
+      "mathContext": "Irreducible representations of abelian groups over an algebraically closed field."
+    },
+    {
+      "id": "complex-case",
+      "title": "The Complex Case",
+      "startLine": 162,
+      "endLine": 173,
+      "summary": "irreducible_complex_rep_abelian_one_dim: the headline k = ℂ specialization — every finite-dimensional irreducible complex representation of an abelian group is one-dimensional.",
+      "mathContext": "The classification underlying the character theory of abelian groups."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schur, Issai",
+      "title": "Neue Begründung der Theorie der Gruppencharaktere",
+      "year": "1905",
+      "note": "Schur's Lemma, of which the one-dimensionality of abelian irreducibles is the first corollary"
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "Linear Representations of Finite Groups",
+      "year": "1977",
+      "note": "§3.1: the irreducible representations of an abelian group are one-dimensional"
+    },
+    {
+      "authors": "Fulton, William; Harris, Joe",
+      "title": "Representation Theory: A First Course",
+      "year": "1991",
+      "note": "§1.3: Schur's Lemma over ℂ and the immediate corollary for abelian groups"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "schur-lemma-oq-01",
+      "reason": "The parent entry proving the scalar form of Schur's Lemma; this entry consumes its schur_endomorphism_scalar and answers its open question on the abelian-group specialization."
+    }
+  ],
+  "conclusion": {
+    "summary": "Specializing the parent's scalar form of Schur's Lemma to a commutative algebra collapses every finite-dimensional simple module over an algebraically closed field to a line (simple_module_over_commutative_finrank_eq_one), and instantiating the algebra as the group algebra of an abelian group recovers the classical classification: finite-dimensional irreducible complex representations of abelian groups are one-dimensional (irreducible_complex_rep_abelian_one_dim). Verified with 0 axioms and 0 sorries.",
+    "implications": "Pins down the exact algebraic content of the abelian-group classification — commutativity supplies the commuting endomorphisms that Schur turns into scalars — and provides the module-language form used to set up the character theory and Pontryagin duality of abelian groups.",
+    "openQuestions": [
+      "Does the converse hold in the form: if every finite-dimensional irreducible representation of a finite group over an algebraically closed field is one-dimensional, then the group is abelian? (True for finite groups via the sum-of-squares of degrees; can it be formalized from the one-dimensionality count?)",
+      "Can the result be packaged directly against Mathlib's Representation k G V / FDRep k G interface, exhibiting the irreducible as a k[G]-module to discharge the IsSimpleModule hypothesis automatically?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.SimpleModule.Basic",
+      "Mathlib.LinearAlgebra.Eigenspace.Triangularizable",
+      "Mathlib.LinearAlgebra.Dimension.Finrank",
+      "Mathlib.Algebra.MonoidAlgebra.Basic",
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Tactic",
+      "Proofs.SchursLemma"
+    ],
+    "opens": [
+      "Module"
+    ],
+    "namespace": "SchursLemmaOQ01OQ02",
+    "lineCount": 173,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/SchursLemmaOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

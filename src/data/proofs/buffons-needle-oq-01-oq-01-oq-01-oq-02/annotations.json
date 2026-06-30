@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-bnoq3oq2-functional",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "The Concrete Expected-Crossing Functional, Reproduced",
+    "content": "`angularIntegrand γ t` is the inner angular integral ∫_0^π |γ'ₓ(t)·sinθ + γ'_y(t)·cosθ| dθ — the per-point contribution to expected crossings, depending only on the velocity γ'(t). `expectedCrossings γ a b d` wraps it as (1/(πd)) · ∫_a^b angularIntegrand γ t dt. These are reproduced *verbatim* from the parent `BuffonsNeedleOQ01OQ01.concreteSmoothExpectedCrossings` so this file depends only on Mathlib, not on the project's internal proof chain. This is a deliberate verification choice: external checkers need only Mathlib to confirm the result.",
+    "mathContext": "$E(\\gamma, a, b, d) = \\frac{1}{\\pi d} \\int_a^b \\left( \\int_0^\\pi |\\gamma'_x(t)\\sin\\theta + \\gamma'_y(t)\\cos\\theta|\\,d\\theta \\right) dt$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "expected crossings",
+      "angular average",
+      "interval integral",
+      "Buffon-Barbier"
+    ],
+    "prerequisites": [
+      "intervalIntegral",
+      "Lean 4 noncomputable def"
+    ]
+  },
+  {
+    "id": "ann-bnoq3oq2-outer-additivity",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Additivity Lives in the Outer Integral",
+    "content": "The single-split lemma `expectedCrossings_additive` is the crux. Its proof is two steps: `simp only [expectedCrossings]` unfolds the definition, then `rw [← mul_add, integral_add_adjacent_intervals hac hcb]`. The `← mul_add` factors the shared constant 1/(πd) out of the sum, reducing the goal to additivity of the bare outer integral ∫_a^b = ∫_a^c + ∫_c^b — which is exactly `intervalIntegral.integral_add_adjacent_intervals`. The inner angular integral never enters the argument; neither does the geometric normalization. This is why the entry is honestly framed as a *structural* lemma rather than a deep theorem: all the mathematical content is borrowed from the interval-integral API.",
+    "mathContext": "$E(\\gamma,a,b,d) = E(\\gamma,a,c,d) + E(\\gamma,c,b,d)$ reduces, after factoring out $1/(\\pi d)$, to $\\int_a^b = \\int_a^c + \\int_c^b$. No ordering of $a, c, b$ is needed — oriented interval integrals handle the sign bookkeeping.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intervalIntegral.integral_add_adjacent_intervals",
+      "mul_add",
+      "additivity",
+      "interval integral orientation"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_add_adjacent_intervals",
+      "IntervalIntegrable",
+      "ring lemmas"
+    ]
+  },
+  {
+    "id": "ann-bnoq3oq2-integrability-from-continuity",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 103,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Discharging Integrability from Continuity",
+    "content": "`expectedCrossings_additive_of_continuous` is the user-facing form: it replaces the two raw `IntervalIntegrable` hypotheses with a single `Continuous (angularIntegrand γ)`, the natural condition for a C¹ curve with continuous velocity. The bridge is `Continuous.intervalIntegrable`, which produces interval-integrability on any [a,b] from continuity. Providing both the raw and the continuity form mirrors standard Mathlib practice — the raw lemma is maximally general, the specialized one is convenient.",
+    "mathContext": "A continuous function on $\\mathbb{R}$ is interval-integrable on every compact $[a,b]$; for C¹ curves the angular integrand is continuous in $t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Continuous.intervalIntegrable",
+      "C¹ curves",
+      "interval integrability"
+    ],
+    "prerequisites": [
+      "Continuous.intervalIntegrable"
+    ]
+  },
+  {
+    "id": "ann-bnoq3oq2-partition-membership-bridge",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 125,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Noodle = Σ Needles, and a Finset/Set Membership Seam",
+    "content": "`expectedCrossings_partition` is the general 'a noodle is a sum of needles' statement: for parameter points pts m ≤ … ≤ pts n, expected crossings over the whole interval equal the sum over the n−m consecutive pieces. The proof unfolds the functional, then rewrites with `sum_integral_adjacent_intervals_Ico` and pushes the constant through with `Finset.mul_sum`. The subtlety: that Mathlib lemma quantifies its integrability hypothesis over membership in `Set.Ico m n`, but its conclusion sums over `Finset.Ico m n`. The public statement here keeps the hypothesis in terms of `Finset.Ico` (matching the visible sum), so the application must convert: `fun k hk => hint k (Finset.mem_Ico.mpr (Set.mem_Ico.mp hk))`. This one-line bridge is exactly the kind of definitional seam that hand-verification missed and machine-checking with `lake env lean` caught.",
+    "mathContext": "$E(\\gamma, p_m, p_n, d) = \\sum_{k=m}^{n-1} E(\\gamma, p_k, p_{k+1}, d)$. `Set.Ico m n` and `Finset.Ico m n` have propositionally equivalent membership ($m \\le k \\land k < n$) but are not definitionally equal, forcing an explicit conversion.",
+    "significance": "key",
+    "relatedConcepts": [
+      "intervalIntegral.sum_integral_adjacent_intervals_Ico",
+      "Finset.mul_sum",
+      "Finset.mem_Ico",
+      "Set.mem_Ico",
+      "partition additivity"
+    ],
+    "prerequisites": [
+      "Finset.Ico vs Set.Ico",
+      "intervalIntegral.sum_integral_adjacent_intervals_Ico",
+      "Finset.mul_sum"
+    ]
+  }
+]

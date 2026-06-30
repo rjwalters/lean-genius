@@ -1,0 +1,116 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Cassini, the Matrix Way",
+    "content": "Cassini's identity F(n+1)·F(n-1) − F(n)² = (−1)ⁿ (Cassini, 1680) is one of the oldest Fibonacci relations. This file answers the third open question of the parent fibonacci-identities-oq-01 by deriving it matrix-theoretically through the Fibonacci Q-matrix Q = [[1,1],[1,0]]. The whole proof is the single observation that det(Qⁿ⁺¹) can be computed two ways: by multiplicativity of the determinant it is (det Q)ⁿ⁺¹ = (−1)ⁿ⁺¹, and by the explicit entries of Qⁿ⁺¹ it is F(n+2)·F(n) − F(n+1)². Equating them is Cassini. Mathlib has the scalar identity but no Q-matrix power lemma, so the engine Q_pow_succ here is the original contribution.",
+    "mathContext": "$Q=\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix},\\quad \\det(Q^{n+1}) = (\\det Q)^{n+1} = (-1)^{n+1}.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fibonacci Q-matrix",
+      "Cassini's identity",
+      "determinant multiplicativity",
+      "linear recurrences"
+    ],
+    "prerequisites": [
+      "Fibonacci recurrence",
+      "2×2 matrices and determinants"
+    ]
+  },
+  {
+    "id": "ann-qmatrix",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 41, "endLine": 52 },
+    "type": "definition",
+    "title": "The Q-matrix and Its Determinant",
+    "content": "Q = [[1,1],[1,0]] over ℤ is the companion matrix of the Fibonacci recurrence: multiplying the vector (F(n+1), F(n)) by Q produces (F(n+2), F(n+1)). Its determinant det_Q = 1·0 − 1·1 = −1 (via Matrix.det_fin_two_of) is the entire arithmetic source of Cassini's alternating sign (−1)ⁿ. The helper mateq reduces an equality of two explicit 2×2 matrices to equality of the four entries, used to drive the induction below.",
+    "mathContext": "$\\det Q = 1\\cdot 0 - 1\\cdot 1 = -1.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "companion matrix",
+      "determinant of a 2×2 matrix",
+      "Matrix.det_fin_two_of"
+    ],
+    "prerequisites": [
+      "matrix determinant"
+    ]
+  },
+  {
+    "id": "ann-power-law",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 81 },
+    "type": "insight",
+    "title": "The Engine: Qⁿ⁺¹ Carries Consecutive Fibonacci Numbers",
+    "content": "Q_pow_succ is the heart of the file: Qⁿ⁺¹ = [[F(n+2), F(n+1)],[F(n+1), F(n)]]. This is the matrix fact missing from Mathlib. Proved by one induction on n: the base case n=0 evaluates Q¹ = Q against F(0)=0, F(1)=1, F(2)=1; the successor step rewrites Qⁿ⁺² = Qⁿ⁺¹·Q with the induction hypothesis and the explicit product Matrix.mul_fin_two, then matches each of the four entries using the Fibonacci recurrence F(n+2) = F(n) + F(n+1) (cast to ℤ as e2, e3). Note the rewrite `show n+1+2 = n+3 from rfl` normalizes the index before applying the recurrence, so the ring atoms line up. Once this holds, Cassini is pure determinant bookkeeping.",
+    "mathContext": "$Q^{n+1} = \\begin{pmatrix} F_{n+2} & F_{n+1} \\\\ F_{n+1} & F_n \\end{pmatrix}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix power",
+      "induction",
+      "Fibonacci recurrence",
+      "Matrix.mul_fin_two"
+    ],
+    "prerequisites": [
+      "matrix multiplication",
+      "Nat.fib_add_two",
+      "induction on ℕ"
+    ]
+  },
+  {
+    "id": "ann-cassini-matrix",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 83, "endLine": 94 },
+    "type": "insight",
+    "title": "Cassini from Two Determinant Computations",
+    "content": "det_Q_pow computes det(Qⁿ⁺¹) = (det Q)ⁿ⁺¹ = (−1)ⁿ⁺¹ by Matrix.det_pow. fib_cassini_matrix then takes the OTHER value of the same determinant: substituting Q_pow_succ and expanding the 2×2 determinant (Matrix.det_fin_two_of) gives det(Qⁿ⁺¹) = F(n+2)·F(n) − F(n+1)². Equating the two expressions yields F(n+2)·F(n) − F(n+1)² = (−1)ⁿ⁺¹ — Cassini's identity in its matrix-derived form. The alternating sign is exactly the propagation of det Q = −1 through n+1 powers.",
+    "mathContext": "$F_{n+2}\\,F_n - F_{n+1}^2 = (-1)^{n+1}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "determinant multiplicativity",
+      "Matrix.det_pow",
+      "Cassini's identity"
+    ],
+    "prerequisites": [
+      "the Q-matrix power law",
+      "det of a 2×2 matrix"
+    ]
+  },
+  {
+    "id": "ann-cassini-named",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 102 },
+    "type": "technique",
+    "title": "Recovering the Parent's Named Form",
+    "content": "fib_cassini re-indexes the matrix form into the parent entry's classical statement F(n+1)·F(n−1) − F(n)² = (−1)ⁿ for n ≥ 1. Writing n = m+1 (Nat.exists_eq_succ_of_ne_zero) turns F(n−1) into F(m) and the exponent (−1)ⁿ into (−1)ᵐ⁺¹, so the goal becomes exactly fib_cassini_matrix m after simplifying the natural-number subtraction (Nat.add_sub_cancel). This confirms the matrix derivation reproduces the named identity the parent stated.",
+    "mathContext": "$F_{n+1}\\,F_{n-1} - F_n^2 = (-1)^n,\\quad n \\ge 1.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "re-indexing",
+      "natural number subtraction",
+      "Cassini's identity"
+    ],
+    "prerequisites": [
+      "the matrix form fib_cassini_matrix",
+      "Nat.exists_eq_succ_of_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "fibonacci-identities-oq-01-oq-03",
+    "range": { "startLine": 104, "endLine": 110 },
+    "type": "context",
+    "title": "Numeric Sanity Checks",
+    "content": "Three decidable examples confirm the identity at small n: det(Q³) = (−1)³ = −1, and the explicit entry computations F(4)·F(2) − F(3)² = 3·1 − 2² = −1 = (−1)³ and F(5)·F(3) − F(4)² = 5·2 − 3² = 1 = (−1)⁴. Discharged by `decide` (kernel evaluation, not native_decide), so they add no axioms.",
+    "mathContext": "$\\det(Q^3) = 3\\cdot 1 - 2^2 = -1,\\qquad 5\\cdot 2 - 3^2 = 1 = (-1)^4.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "decidable evaluation",
+      "sanity check"
+    ],
+    "prerequisites": [
+      "the Cassini identity"
+    ]
+  }
+]

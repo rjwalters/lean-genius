@@ -81,7 +81,7 @@ def erdos_4_conjecture : Prop :=
 
 /- ## Historical Results -/
 
-/--
+/-
 **Rankin's Theorem** (1938):
 There exists C > 0 such that for infinitely many n,
   p_{n+1} - p_n > C · erdosFunction(n).
@@ -103,7 +103,7 @@ This proves Erdős Problem 4 in the affirmative.
 -/
 axiom maynard_theorem : erdos_4_conjecture
 
-/--
+/-
 **Ford-Green-Konyagin-Tao Theorem** (2016):
 Independent proof of the same result as Maynard.
 -/
@@ -125,7 +125,7 @@ noncomputable def improvedErdosFunction (n : ℕ) : ℝ :=
 
 /- ## Upper Bounds -/
 
-/--
+/-
 **Baker-Harman-Pintz Theorem** (2001):
 For all sufficiently large n,
   p_{n+1} - p_n ≤ n^{0.525}.
@@ -162,9 +162,57 @@ noncomputable def cramer_granville_constant : ℝ := 2 * Real.exp (-0.5772156649
 /-- The improved bound is stronger (larger). -/
 theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :
     erdosFunction n ≤ improvedErdosFunction n := by
-  unfold erdosFunction improvedErdosFunction
-  -- The improved has lg3 n in denominator vs (lg3 n)^2
-  sorry -- Technical inequality
+  -- Write both bounds in terms of nested `Real.log`s.
+  simp only [erdosFunction, improvedErdosFunction, lg, lg2, lg3, lg4]
+  -- Numeric anchor: for n ≥ 100 we have log n > 3 (> e), hence the iterated
+  -- logs are well-behaved: log(log n) > 1 and log(log(log n)) > 0.
+  have hn' : (100 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have he3 : Real.exp 3 < 100 := by
+    have he : Real.exp 1 < 2.7182818286 := Real.exp_one_lt_d9
+    have h3 : Real.exp 3 = Real.exp 1 ^ 3 := by
+      rw [← Real.exp_nat_mul]; norm_num
+    have hb : Real.exp 1 ^ 3 ≤ (2.7182818286 : ℝ) ^ 3 := by gcongr
+    have hc100 : (2.7182818286 : ℝ) ^ 3 < 100 := by norm_num
+    rw [h3]; linarith
+  have hc3 : (3 : ℝ) < Real.log (n : ℝ) := by
+    have h100 : (3 : ℝ) < Real.log (100 : ℝ) := by
+      have := Real.log_lt_log (Real.exp_pos 3) he3
+      rwa [Real.log_exp] at this
+    have hmono : Real.log (100 : ℝ) ≤ Real.log (n : ℝ) :=
+      Real.log_le_log (by norm_num) hn'
+    linarith
+  have hc : (0 : ℝ) < Real.log (n : ℝ) := by linarith
+  have ha : (1 : ℝ) < Real.log (Real.log (n : ℝ)) := by
+    have hexp1n : Real.exp 1 < Real.log (n : ℝ) := by
+      have := Real.exp_one_lt_d9; linarith
+    have := Real.log_lt_log (Real.exp_pos 1) hexp1n
+    rwa [Real.log_exp] at this
+  have hr : (0 : ℝ) < Real.log (Real.log (Real.log (n : ℝ))) := Real.log_pos ha
+  -- Abbreviate the four iterated logarithms.
+  set L1 := Real.log (n : ℝ) with hL1def
+  set L2 := Real.log L1 with hL2def
+  set L3 := Real.log L2 with hL3def
+  set L4 := Real.log L3 with hL4def
+  have hL1pos : 0 < L1 := hc
+  have hL2pos : 0 < L2 := by linarith
+  have hL3pos : 0 < L3 := hr
+  -- Core sign fact: L4 · (1 - L3) ≤ 0, since log L3 and (L3 - 1) share a sign.
+  have key : L4 * (1 - L3) ≤ 0 := by
+    rw [hL4def]
+    rcases le_total L3 1 with h | h
+    · have hlog : Real.log L3 ≤ 0 := Real.log_nonpos hL3pos.le h
+      nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 1 - L3)
+        (by linarith : (0 : ℝ) ≤ -Real.log L3)]
+    · have hlog : 0 ≤ Real.log L3 := Real.log_nonneg h
+      nlinarith [mul_nonneg hlog (by linarith : (0 : ℝ) ≤ L3 - 1)]
+  -- The two bounds differ only by a factor 1/L3 vs 1/L3², so the claim reduces
+  -- to (L2·L1·L3) · (-(L4·(1-L3))) ≥ 0.
+  have hL3sq : (0 : ℝ) < L3 ^ 2 := by positivity
+  rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_le_div_iff₀ hL3sq hL3pos]
+  have hfac : 0 ≤ (L2 * L1 * L3) * (-(L4 * (1 - L3))) :=
+    mul_nonneg (mul_nonneg (mul_nonneg hL2pos.le hL1pos.le) hL3pos.le)
+      (neg_nonneg.mpr key)
+  nlinarith [hfac]
 
 /- ## Related Conjectures -/
 

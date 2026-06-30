@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-gamma-refl-oq010101-docstring",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "From One Beta Value to the Whole Family",
+    "content": "The docstring answers the parent's open question: generalize the single symmetric Beta value B(1/2,1/2) = π to the full family B(s,1−s) = π/sin(πs). The method puts together Euler's two Gamma identities. The Beta–Gamma relation B(x,y) = Γ(x)Γ(y)/Γ(x+y), applied on the diagonal y = 1−x, has argument sum x + (1−x) = 1, so the normalising factor Γ(1) = 1 vanishes and B(s,1−s) = Γ(s)Γ(1−s). Euler's reflection formula then evaluates Γ(s)Γ(1−s) = π/sin(πs). Mathlib has both inputs but not the symmetric Beta value they produce.",
+    "mathContext": "$B(s,1-s) = \\Gamma(s)\\Gamma(1-s)/\\Gamma(1) = \\pi/\\sin(\\pi s)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Beta function",
+      "Gamma function",
+      "Euler reflection formula",
+      "Beta–Gamma relation",
+      "special functions"
+    ],
+    "prerequisites": [
+      "the Gamma and Beta functions",
+      "Euler's Beta–Gamma relation",
+      "Euler's reflection formula"
+    ]
+  },
+  {
+    "id": "ann-gamma-refl-oq010101-general",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 72
+    },
+    "type": "key-step",
+    "title": "B(s,1−s) = π/sin(πs) and the Recovered Midpoint",
+    "content": "betaIntegral_one_sub_eq instantiates the Beta–Gamma relation Γ(s)·Γ(t) = Γ(s+t)·B(s,t) at t = 1−s. The hypotheses 0 < Re s and Re s < 1 give 0 < Re(1−s); the argument sum s + (1−s) = 1 makes Γ(s+t) = Γ(1) = 1, so the relation reads Γ(s)·Γ(1−s) = B(s,1−s). Rewriting the left side by Euler's reflection formula Complex.Gamma_mul_Gamma_one_sub yields B(s,1−s) = π/sin(πs). betaIntegral_half_half then specializes s = 1/2: π·(1/2) = π/2 (recast through Complex.ofReal_sin), sin(π/2) = 1, so B(1/2,1/2) = π/1 = π — exactly the parent's value.",
+    "mathContext": "$\\Gamma(s)\\Gamma(1-s) = \\Gamma(1)B(s,1-s)$, $\\Gamma(1)=1$, $\\Gamma(s)\\Gamma(1-s)=\\pi/\\sin(\\pi s)$; at $s=1/2$, $\\sin(\\pi/2)=1$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "Beta–Gamma relation",
+      "Euler reflection formula",
+      "complex Beta integral",
+      "special values"
+    ],
+    "prerequisites": [
+      "Complex.Gamma_mul_Gamma_eq_betaIntegral",
+      "Complex.Gamma_mul_Gamma_one_sub",
+      "sin(π/2) = 1"
+    ]
+  },
+  {
+    "id": "ann-gamma-refl-oq010101-ratio-concrete",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 95
+    },
+    "type": "key-step",
+    "title": "Real Ratio Form and Γ(1/3)·Γ(2/3) = 2π/√3",
+    "content": "beta_gamma_ratio_reflection states the identity in the textbook ratio form B(s,1−s) = Γ(s)Γ(1−s)/Γ(1) = π/sin(πs) over the real Gamma function, immediate from Real.Gamma_one and the real reflection formula Real.Gamma_mul_Gamma_one_sub. gamma_one_third_mul_two_thirds evaluates the family away from the symmetric midpoint: at s = 1/3 the reflection formula gives π/sin(π/3), and sin(π/3) = √3/2, so Γ(1/3)·Γ(2/3) = π/(√3/2) = 2π/√3. This non-trivial sine denominator shows the family genuinely depends on s.",
+    "mathContext": "$B(s,1-s)=\\Gamma(s)\\Gamma(1-s)/\\Gamma(1)=\\pi/\\sin(\\pi s)$; $\\Gamma(1/3)\\Gamma(2/3)=\\pi/(\\sqrt3/2)=2\\pi/\\sqrt3$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "Euler reflection formula",
+      "real Gamma function",
+      "special values",
+      "sin(π/3)"
+    ],
+    "prerequisites": [
+      "Real.Gamma_mul_Gamma_one_sub",
+      "sin(π/3) = √3/2"
+    ]
+  }
+]

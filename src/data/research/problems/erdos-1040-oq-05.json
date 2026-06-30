@@ -112,7 +112,10 @@
     "erdos-1",
     "erdos-10",
     "erdos-104",
-    "erdos-1040"
+    "erdos-1040",
+    "erdos-1040-oq-03",
+    "erdos-1040-oq-03-oq-01",
+    "erdos-1040-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -134,6 +137,50 @@
       "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1040Convex.lean",
+      "filename": "Erdos1040Convex.lean",
+      "lineCount": 185,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040Convex.lean"
+    },
+    {
+      "path": "Proofs/Erdos1040OQ03.lean",
+      "filename": "Erdos1040OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos1040OQ03OQ01.lean",
+      "filename": "Erdos1040OQ03OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1040OQ03OQ02.lean",
+      "filename": "Erdos1040OQ03OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1040OQ03OQ02.lean"
     },
     {
       "path": "Proofs/Erdos1040Problem.lean",

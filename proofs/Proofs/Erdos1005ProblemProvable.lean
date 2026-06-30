@@ -122,9 +122,37 @@ f(n) is the largest length of a consecutive similarly ordered run.
 -/
 
 /-- f(n) = max length of consecutive similarly ordered Farey fractions.
-    This is the supremum over all i of the longest run starting at i. -/
+    This is the supremum over all i of the longest run starting at i.
+
+    The constraint `i + k < (fareyList n).length` is essential: without it the
+    set is unbounded and the supremum collapses to `0`. Indeed, for any `k`, the
+    start index `i := (fareyList n).length` makes every index `j ≥ i` satisfy
+    `(fareyList n)[j]? = none`, so `isSimOrdered n i k` holds *vacuously* (its
+    `… = some f₁` hypotheses are unsatisfiable). Hence `{k | ∃ i, isSimOrdered n i k}`
+    would equal all of `ℕ`, and `sSup` of an unbounded `Set ℕ` is `0` — a degenerate
+    `f(n) ≡ 0` that makes the lower bounds (`mayer_theorem`, `erdos_1943_linear`,
+    `vanDoorn_lower_bound`) false-as-stated and `vanDoorn_upper_bound` vacuously
+    true. Requiring the whole run window `[i, i+k]` to consist of present indices
+    (`i + k < length`) restores the intended finite maximum. See
+    `mayerErdosF_mem_bddAbove`. -/
 noncomputable def mayerErdosF (n : ℕ) : ℕ :=
-  sSup { k : ℕ | ∃ i, isSimOrdered n i k }
+  sSup { k : ℕ | ∃ i, i + k < (fareyList n).length ∧ isSimOrdered n i k }
+
+/-- The defining set of `mayerErdosF` is bounded above by the Farey list length —
+    the property the unconstrained `sSup { k | ∃ i, isSimOrdered n i k }` lacked
+    (that set is unbounded, forcing `sSup = 0`). Every admissible run length `k`
+    satisfies `k < (fareyList n).length`, so the supremum is a genuine maximum. -/
+theorem mayerErdosF_run_lt_length (n : ℕ) :
+    ∀ k ∈ { k : ℕ | ∃ i, i + k < (fareyList n).length ∧ isSimOrdered n i k },
+      k < (fareyList n).length := by
+  rintro k ⟨i, hik, _⟩
+  omega
+
+/-- Consequently the defining set is bounded above, so `mayerErdosF` is a true
+    maximum rather than the junk value `0` of an unbounded supremum. -/
+theorem mayerErdosF_mem_bddAbove (n : ℕ) :
+    BddAbove { k : ℕ | ∃ i, i + k < (fareyList n).length ∧ isSimOrdered n i k } :=
+  ⟨(fareyList n).length, fun k hk => le_of_lt (mayerErdosF_run_lt_length n k hk)⟩
 
 /-
 ## Historical Results

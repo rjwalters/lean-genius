@@ -1,0 +1,74 @@
+[
+  {
+    "id": "products-and-closed-forms",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 132 },
+    "type": "definition",
+    "title": "The Even and Odd Telescoping Products",
+    "content": "Re-declares (verbatim from the parent) the crossing factor αₙ by its two-step recurrence, and introduces the two telescoping products E_m = ∏_{j<m} (2j+2)/(2j+3) (even, `evenProd`) and O_m = ∏_{j<m} (2j+3)/(2j+4) (odd, `oddProd`). The successor lemmas `evenProd_succ`/`oddProd_succ` peel one factor (by `Finset.prod_range_succ`), and positivity is immediate since every factor is positive. The closed forms `crossingFactor_even` (αₙ for n=2m+2 equals (2/π)·E_m) and `crossingFactor_odd` (αₙ for n=2m+3 equals (1/2)·O_m) are re-proved by induction, recasting the crossing factor entirely in terms of the products that the asymptotic analysis acts on.",
+    "mathContext": "$\\alpha_{2m+2}=\\tfrac{2}{\\pi}E_m,\\quad \\alpha_{2m+3}=\\tfrac12 O_m,\\quad E_m=\\prod_{j<m}\\tfrac{2j+2}{2j+3},\\ O_m=\\prod_{j<m}\\tfrac{2j+3}{2j+4}.$",
+    "significance": "standard",
+    "relatedConcepts": ["telescoping product", "Wallis-type product", "spherical average", "Buffon noodle"],
+    "prerequisites": ["finite products", "recursively defined functions"]
+  },
+  {
+    "id": "telescoping-identity",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 138, "endLine": 158 },
+    "type": "theorem",
+    "title": "The Telescoping Identity E_m · O_m = 1/(m+1)",
+    "content": "The product of the even and odd partial products collapses exactly: pairing the factors at index j gives (2j+2)/(2j+3) · (2j+3)/(2j+4) = (2j+2)/(2j+4) = (j+1)/(j+2), so the combined product telescopes to 1/(m+1). Proved by induction: the successor step rearranges (E_k·a)·(O_k·b) into (E_k·O_k)·(a·b) via `mul_mul_mul_comm`, substitutes the inductive hypothesis 1/(k+1), and closes with `field_simp`/`ring`. This identity is the purely combinatorial content of the products — no analysis, no π — and already pins the order of magnitude of E_m, since E_m < O_m forces E_m² < 1/(m+1).",
+    "mathContext": "$E_m\\,O_m=\\prod_{j<m}\\frac{(2j+2)(2j+3)}{(2j+3)(2j+4)}=\\prod_{j<m}\\frac{j+1}{j+2}=\\frac{1}{m+1}.$",
+    "significance": "key",
+    "relatedConcepts": ["telescoping product", "induction"],
+    "prerequisites": ["Finset.prod_range_succ", "field arithmetic"]
+  },
+  {
+    "id": "wallis-bridge",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 160, "endLine": 190 },
+    "type": "theorem",
+    "title": "The Wallis Bridge W m = (2m+1)·E_m²",
+    "content": "The exact algebraic link from the elementary factor product to π. Mathlib's Wallis partial product is W m = ∏_{i<m} (2i+2)/(2i+1)·(2i+2)/(2i+3); its second factor is exactly the even-product factor, and the first factor accumulates the ratio that, telescoped, equals 2m+1. The identity W m = (2m+1)·E_m² is proved by induction (successor step: `W_succ`, the inductive hypothesis, `evenProd_succ`, then `field_simp`/`ring`). Because Mathlib proves W m → π/2 (`tendsto_W_nhds_pi_div_two`) WITHOUT Stirling — via the ratio of ∫sinⁿ integrals — this bridge transfers the limit verbatim to (2m+1)·E_m² → π/2, giving E_m² = W m/(2m+1) and hence the entire asymptotic with no Gamma-function expansion.",
+    "mathContext": "$W_m=\\prod_{i<m}\\frac{2i+2}{2i+1}\\cdot\\frac{2i+2}{2i+3}=(2m+1)E_m^2,\\qquad E_m^2=\\frac{W_m}{2m+1}\\xrightarrow{}\\frac{\\pi/2}{2m+1}.$",
+    "significance": "key",
+    "relatedConcepts": ["Wallis product", "induction", "Wallis integrals"],
+    "prerequisites": ["Real.Wallis.W", "Finset.prod_range_succ"]
+  },
+  {
+    "id": "sharp-bounds",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 196, "endLine": 240 },
+    "type": "theorem",
+    "title": "Sharp Two-Sided Bounds and the Rational Bound",
+    "content": "Three bounds on E_m². The purely rational `evenProd_sq_lt`: E_m² < 1/(m+1) for m ≥ 1, from E_m < O_m (each even factor is strictly below the odd factor, since (2j+2)(2j+4) < (2j+3)²) combined with the telescoping identity — no π involved, but with a non-sharp constant. The sharp pair from Mathlib's integral Wallis bounds: `evenProd_sq_le` gives E_m² ≤ π/(4m+2) (from W m ≤ π/2) and `le_evenProd_sq` gives π/(4(m+1)) ≤ E_m² (from le_W), both via `div_le_div_iff` and `nlinarith`. The two sharp sides squeeze to π/(4m), already revealing the √(π)/(2√m) order of E_m that drives the asymptotic. The odd analogue O_m² = (2m+1)/((m+1)²·W m) is derived from the telescoping identity and the bridge.",
+    "mathContext": "$\\frac{\\pi}{4(m+1)}\\le E_m^2\\le\\frac{\\pi}{4m+2},\\qquad E_m^2<\\frac{1}{m+1}\\ (m\\ge1).$",
+    "significance": "key",
+    "relatedConcepts": ["Wallis inequality", "two-sided bounds", "monotone factors"],
+    "prerequisites": ["Real.Wallis.W_le", "Real.Wallis.le_W", "Finset.prod_lt_prod_of_nonempty"]
+  },
+  {
+    "id": "subsequence-asymptotics",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 250, "endLine": 320 },
+    "type": "theorem",
+    "title": "Even and Odd Subsequence Asymptotics",
+    "content": "Each parity satisfies αₙ·√n → √(2/π). For the even subsequence, the squared sequence (α_{2m+2}·√(2m+2))² equals (4/π²)·W m·((2m+2)/(2m+1)) (using α_{2m+2} = (2/π)E_m and E_m² = W m/(2m+1)); since W m → π/2 and (2m+2)/(2m+1) → 1, this tends to (4/π²)(π/2) = 2/π, and taking continuous square roots (`Real.continuous_sqrt`, `Real.sqrt_sq` on the nonnegative sequence) gives the limit √(2/π). The odd case is analogous with squared sequence ((2m+1)(2m+3)/(4(m+1)²))·(1/W m) → 1·(2/π); the rational prefactor → 1 because it equals 1 − 1/(4(m+1)²), and 1/W m → (π/2)⁻¹ = 2/π by `Tendsto.inv₀`.",
+    "mathContext": "$\\big(\\alpha_{2m+2}\\sqrt{2m+2}\\big)^2=\\frac{4}{\\pi^2}W_m\\frac{2m+2}{2m+1}\\to\\frac{2}{\\pi},\\quad\\text{so }\\alpha_{2m+2}\\sqrt{2m+2}\\to\\sqrt{2/\\pi}.$",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic equivalence", "Filter.Tendsto", "continuity of sqrt"],
+    "prerequisites": ["Tendsto algebra", "Real.sqrt_sq", "Tendsto.inv₀"]
+  },
+  {
+    "id": "full-asymptotic",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "range": { "startLine": 322, "endLine": 333 },
+    "type": "theorem",
+    "title": "The Full Asymptotic αₙ ~ √(2/(πn))",
+    "content": "Merges the two subsequence limits into αₙ·√n → √(2/π) over all n, i.e. αₙ ~ √(2/(πn)). The proof is an ε–N argument (`Metric.tendsto_atTop`): given ε, take the thresholds from the even and odd limits and the bound 2·max+2; for n past it, split on parity (`Nat.even_or_odd`), write n = 2m+2 or 2m+3 with m past the appropriate threshold, push the natural-cast through √, and apply the matching subsequence estimate. The even-over-odd index asymmetry washes out in the limit, leaving the single constant √(2/π).",
+    "mathContext": "$\\alpha_n\\sqrt{n}\\to\\sqrt{2/\\pi}\\quad\\Longleftrightarrow\\quad \\alpha_n\\sim\\sqrt{\\frac{2}{\\pi n}}.$",
+    "significance": "key",
+    "relatedConcepts": ["subsequence merging", "asymptotic equivalence", "even/odd partition"],
+    "prerequisites": ["Metric.tendsto_atTop", "Nat.even_or_odd"]
+  }
+]

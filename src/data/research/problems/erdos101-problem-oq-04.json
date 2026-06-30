@@ -44,7 +44,17 @@
     "nextAction": "S3-B4: build the sumset/grid four-point-line construction on top of the now-realized ℝ² general-position base `realParabolaSet` (this is where the Ω(p^{3/2}) four-point-line COUNT comes from — the bare arc has zero). The mod-p→ℝ² `embed` + `embed_collinear_imp_zdet` cast-transfer machinery is now reusable for ANY ZMod p construction (grids, sumsets) → lift to gallery `PlanarPointSet` for free. ALTERNATIVE: S3-A1 (Path A pivot) — d-dim grid `G_d := (Fin k → Fin d → ℤ)` + cardinality `k^d`, then 4-AP enumeration. The S4-S5 random-projection genericity (measure theory) remains deferred to a dedicated multi-session ACT."
   },
   "leanFiles": [
-    "proofs/Proofs/Erdos101OQ04.lean"
+    {
+      "path": "Proofs/Erdos101Problem.lean",
+      "filename": "Erdos101Problem.lean",
+      "lineCount": 759,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101Problem.lean"
+    }
   ],
   "knowledge": {
     "lastKnowledgeUpdate": "2026-05-12T16:55:00.000Z",
@@ -140,5 +150,9 @@
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
   },
-  "lastUpdate": "2026-06-22T13:00:00.000Z"
+  "lastUpdate": "2026-06-22T13:00:00.000Z",
+  "relatedProofs": [
+    "erdos-101",
+    "erdos101-problem"
+  ]
 }

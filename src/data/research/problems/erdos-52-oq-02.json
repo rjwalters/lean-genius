@@ -41,6 +41,7 @@
   "relatedProofs": [
     "erdos-5",
     "erdos-52",
+    "erdos-52-oq-02",
     "erdos-520",
     "erdos-521",
     "erdos-522",
@@ -110,9 +111,9 @@
     {
       "path": "Proofs/Erdos524Problem.lean",
       "filename": "Erdos524Problem.lean",
-      "lineCount": 318,
+      "lineCount": 323,
       "theoremCount": 22,
-      "axiomCount": 0,
+      "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
@@ -183,6 +184,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos529Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos52OQ02CommRing.lean",
+      "filename": "Erdos52OQ02CommRing.lean",
+      "lineCount": 225,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos52OQ02CommRing.lean"
     },
     {
       "path": "Proofs/Erdos52Problem.lean",

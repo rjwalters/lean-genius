@@ -1,0 +1,201 @@
+{
+  "id": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+  "title": "Converse to Cayley: a free transitive subgroup of Sₙ is regular of order n",
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+  "description": "The parent entry (cayleys-theorem-oq-01-oq-01-oq-02) proves that the image of the finite Cayley embedding is a regular (sharply transitive) subgroup of Sₙ. This entry proves the converse, answering the parent's first open question: ANY subgroup H ≤ Sₙ = Equiv.Perm α over a finite nonempty type α that acts freely and transitively on the n points is regular of order n. 'Regular' means transitive + free (only the identity fixes a point). Two structural payoffs are established. (1) Order n: Nat.card H = Fintype.card α. The orbit map σ ↦ σ a from H to α at any basepoint a is a bijection — surjective by transitivity, injective by freeness (an element of a free permutation group is determined by its value at a single point, the rigidity lemma eq_of_free_of_eq_at_point). This bijection is packaged as the equivalence regularEquiv : H ≃ α. (2) Sharp (simple) transitivity: for all i j there is a unique σ ∈ H with σ i = j (existsUnique_of_free_transitive). The packaged statement regular_iff_card_and_sharp records both. The argument is orbit–stabiliser specialised to a free action and repackaged as one explicit bijection, with no dependence on the parent's Cayley construction — the statement is about an arbitrary subgroup. Combined with the parent (Cayley images are regular), this closes the loop: the regular subgroups of Sₙ are precisely the free transitive ones, and they all have order n.",
+  "meta": {
+    "author": "Arthur Cayley (1854); converse formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Regular_representation",
+    "date": "1854",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "cayley",
+      "permutation-group",
+      "regular-representation",
+      "sharply-transitive",
+      "free-action",
+      "transitive-action",
+      "group-action",
+      "symmetric-group",
+      "orbit-stabilizer",
+      "converse",
+      "finite-group",
+      "algebra",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.ofBijective",
+        "description": "packages a bijective function as an equivalence — used to turn the orbit map σ ↦ σ a (proved bijective) into the regular equivalence H ≃ α",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Nat.card_congr",
+        "description": "an equivalence of types preserves Nat.card — transports the regular equivalence H ≃ α to the order count Nat.card H = Nat.card α",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Nat.card_eq_fintype_card",
+        "description": "Nat.card α = Fintype.card α for a Fintype — restates the order count for a finite type of degree n",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "inv_mul_eq_one",
+        "description": "a⁻¹ * b = 1 ↔ a = b — converts the freeness conclusion τ⁻¹ * σ = 1 into the equality σ = τ underlying both injectivity of the orbit map and uniqueness in sharp transitivity",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "Equiv.symm_apply_apply",
+        "description": "e.symm (e x) = x — applied to a permutation τ to show τ⁻¹ (τ i) = i, the cancellation at the heart of the rigidity lemma",
+        "module": "Mathlib.Logic.Equiv.Defs"
+      },
+      {
+        "theorem": "Equiv.Perm.mul_apply",
+        "description": "(f * g) x = f (g x) for permutations — unfolds composition in the rigidity computation (τ⁻¹ * σ) i",
+        "module": "Mathlib.GroupTheory.Perm.Basic"
+      }
+    ],
+    "originalContributions": [
+      "eq_of_free_of_eq_at_point: rigidity from freeness — two elements of a free subgroup that agree at a single point are equal; the converse engine pinning an element down by one value",
+      "orbitMap_bijective: for a free transitive subgroup and any basepoint a, the orbit map σ ↦ σ a from H to α is a bijection (surjective by transitivity, injective by rigidity)",
+      "regularEquiv: the resulting explicit equivalence H ≃ α realising the regular subgroup as the set it acts on",
+      "card_eq_of_free_transitive: the order count Nat.card H = Nat.card α for a free transitive subgroup — the converse to Cayley, order equals degree",
+      "fintypeCard_eq_of_free_transitive: the finite restatement Nat.card H = Fintype.card α = n",
+      "existsUnique_of_free_transitive: sharp (simple) transitivity — for all i j a unique σ ∈ H with σ i = j, the defining property of a regular permutation group",
+      "regular_iff_card_and_sharp: the packaged converse — a regular (free transitive) subgroup of Sₙ has order n and is sharply transitive, identifying it as the regular permutation group of degree n"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 119,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used. α is assumed finite and nonempty for the order/degree statements, as required for the conclusion to hold.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Cayley's theorem (1854) realises an abstract group of order n inside the symmetric group Sₙ as the left-regular representation. The image is not an arbitrary subgroup but a regular (simply transitive) permutation group: it acts both transitively (one orbit) and freely (only the identity fixes a point). The parent entry proves the Cayley image is regular. The natural converse — that regularity already forces a subgroup to have degree-many elements and act sharply transitively — is the abstract characterisation of regular permutation groups: order equals degree, and there is exactly one element carrying any point to any other. This is the structural reason the regular action is universal among transitive actions (every transitive action is a quotient of it), and it identifies the codomain of Cayley's embedding intrinsically.",
+    "problemStatement": "**Open Question (cayleys-theorem-oq-01-oq-01-oq-02, first follow-up)**: Characterise abstractly — a subgroup of Sₙ that acts freely and transitively on n points has order n and is sharply transitive (a converse to Cayley realising every regular subgroup as a free transitive action of degree n).\n\n**Result**: For any subgroup H ≤ Equiv.Perm α over a finite nonempty type α, ActsTransitively H ∧ ActsFreely H implies Nat.card H = Fintype.card α and ∀ i j, ∃! σ ∈ H with σ i = j — assembled in regular_iff_card_and_sharp, with the orbit bijection regularEquiv : H ≃ α as the engine.",
+    "text": "Let α be a finite nonempty type (the n points) and H ≤ Equiv.Perm α a subgroup. Call H transitive if ∀ i j, ∃ σ ∈ H with σ i = j, and free (semiregular) if any σ ∈ H fixing a single point is the identity. Then H is regular of degree n: its order Nat.card H equals Fintype.card α, and for every pair of points there is a unique element of H carrying one to the other. The proof exhibits, for any basepoint a, the orbit map σ ↦ σ a : H → α as an explicit bijection — surjective because H is transitive, injective because freeness makes an element determined by its value at one point — and transports cardinality along the resulting equivalence H ≃ α.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Rigidity (eq_of_free_of_eq_at_point). If σ, τ ∈ H agree at a point i, then τ⁻¹ * σ ∈ H and (τ⁻¹ * σ) i = τ⁻¹ (σ i) = τ⁻¹ (τ i) = i (Equiv.Perm.mul_apply and Equiv.symm_apply_apply). Freeness gives τ⁻¹ * σ = 1, hence σ = τ (inv_mul_eq_one). So an element of a free subgroup is pinned down by one value.\n2. Orbit bijection (orbitMap_bijective). Fix a basepoint a and consider f : H → α, f σ = σ a. Injectivity is exactly rigidity at the point a. Surjectivity is transitivity: given j, some σ ∈ H has σ a = j, i.e. f ⟨σ, _⟩ = j.\n3. Order n (card_eq_of_free_transitive). Package f as regularEquiv : H ≃ α via Equiv.ofBijective, then Nat.card_congr gives Nat.card H = Nat.card α, and Nat.card_eq_fintype_card restates it as Fintype.card α = n.\n4. Sharp transitivity (existsUnique_of_free_transitive). For points i j, existence is transitivity; uniqueness is rigidity at i applied to two candidate elements. Hence a unique σ ∈ H with σ i = j.\n5. Packaging (regular_iff_card_and_sharp). IsRegular H = ActsTransitively H ∧ ActsFreely H yields both the order count and sharp transitivity — the converse to Cayley.",
+    "keyInsights": [
+      "**Freeness is rigidity.** Because only the identity fixes a point, an element of a free permutation group is determined by its value at a single point. This one fact powers both halves: injectivity of the orbit map and uniqueness in sharp transitivity.",
+      "**Orbit–stabiliser becomes a bijection.** For a free transitive action the orbit map σ ↦ σ a is literally a bijection H ≃ α — transitivity is surjectivity, freeness is injectivity — so order equals degree with no quotient or counting machinery, just Equiv.ofBijective.",
+      "**The converse is self-contained.** Unlike the parent, this entry assumes nothing about the Cayley construction: it characterises ALL regular subgroups of Sₙ, so it pairs with the parent (Cayley images are regular) to give the biconditional 'regular ⟺ free transitive, of order n'.",
+      "**Sharp transitivity is the defining payoff.** 'Unique element mapping i ↦ j' is exactly what makes a permutation group regular and the reason the regular action is universal among transitive actions."
+    ],
+    "prerequisites": [
+      "Subgroups of a permutation group Equiv.Perm α and their elements: membership, products and inverses (Subgroup.mul_mem, Subgroup.inv_mem), and the coercion of a subgroup element to a permutation",
+      "Permutation arithmetic: Equiv.Perm.mul_apply ((f * g) x = f (g x)) and the inverse-cancellation Equiv.symm_apply_apply (τ⁻¹ (τ i) = i), with inv_mul_eq_one",
+      "Bijections and cardinality: Equiv.ofBijective, Nat.card_congr and Nat.card_eq_fintype_card for transporting |H| = |α| along an equivalence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Definitions",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring stating the converse-to-Cayley result and the free + transitive = regular strategy, imports (Perm.Basic, Fintype.Perm, Cardinal.Finite for Nat.card, Tactic), and the namespace with the subgroup H ≤ Equiv.Perm α together with the predicates ActsTransitively, ActsFreely and IsRegular.",
+      "mathContext": "$H \\le S_n = \\mathrm{Perm}(\\alpha)$ acting on the $n$ points $\\alpha$; regular $=$ transitive $+$ free."
+    },
+    {
+      "id": "rigidity",
+      "title": "Rigidity from Freeness",
+      "startLine": 56,
+      "endLine": 67,
+      "summary": "eq_of_free_of_eq_at_point: two elements σ, τ ∈ H agreeing at one point are equal. From σ i = τ i, the element τ⁻¹ * σ ∈ H fixes i (Equiv.Perm.mul_apply, Equiv.symm_apply_apply), so freeness forces τ⁻¹ * σ = 1 and inv_mul_eq_one gives σ = τ.",
+      "mathContext": "$\\sigma i = \\tau i \\Rightarrow \\tau^{-1}\\sigma \\in H_i = \\{1\\} \\Rightarrow \\sigma = \\tau$."
+    },
+    {
+      "id": "orbit-bijection",
+      "title": "The Orbit Map is a Bijection",
+      "startLine": 69,
+      "endLine": 84,
+      "summary": "orbitMap_bijective: for a basepoint a, the orbit map σ ↦ σ a : H → α is bijective — injective by rigidity at a, surjective by transitivity (htrans a j). regularEquiv packages it as the equivalence H ≃ α via Equiv.ofBijective.",
+      "mathContext": "$f : H \\to \\alpha,\\ \\sigma \\mapsto \\sigma a$ is a bijection; $H \\simeq \\alpha$."
+    },
+    {
+      "id": "order",
+      "title": "Order Equals Degree",
+      "startLine": 86,
+      "endLine": 97,
+      "summary": "card_eq_of_free_transitive: Nat.card H = Nat.card α via Nat.card_congr on regularEquiv (basepoint Classical.arbitrary α). fintypeCard_eq_of_free_transitive restates it as Nat.card H = Fintype.card α = n using Nat.card_eq_fintype_card.",
+      "mathContext": "$|H| = |\\alpha| = n$ — the converse to Cayley: order equals degree."
+    },
+    {
+      "id": "sharp",
+      "title": "Sharp Transitivity",
+      "startLine": 99,
+      "endLine": 108,
+      "summary": "existsUnique_of_free_transitive: for all i j there is a unique σ ∈ H with σ i = j. Existence is transitivity; uniqueness is rigidity (eq_of_free_of_eq_at_point) applied to two candidates agreeing at i.",
+      "mathContext": "$\\forall i\\,j,\\ \\exists!\\,\\sigma \\in H,\\ \\sigma i = j$ — simple transitivity."
+    },
+    {
+      "id": "conclusion",
+      "title": "Packaged Converse",
+      "startLine": 110,
+      "endLine": 119,
+      "summary": "regular_iff_card_and_sharp: from IsRegular H (transitive ∧ free) over a finite nonempty α, both the order count Nat.card H = Fintype.card α and sharp transitivity follow — identifying H as the regular permutation group of degree n.",
+      "mathContext": "Regular $H \\Rightarrow |H| = n \\wedge$ sharply transitive."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: proves the image of the finite Cayley embedding is a regular subgroup of Sₙ. This entry answers its first open question with the converse — every free transitive subgroup of Sₙ has order n and is sharply transitive — so the two together characterise regular subgroups as exactly the free transitive ones."
+    },
+    {
+      "targetId": "cayleys-theorem-oq-01-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent entry: the finite Cayley embedding and its range. The converse proved here applies to an arbitrary subgroup, abstractly characterising the kind of subgroup the Cayley image is."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of the converse to Cayley: a subgroup H ≤ Sₙ = Equiv.Perm α over a finite nonempty type α that acts freely and transitively has order n (card_eq_of_free_transitive, fintypeCard_eq_of_free_transitive) and is sharply transitive — a unique element maps any point to any other (existsUnique_of_free_transitive). The orbit map σ ↦ σ a is exhibited as an explicit bijection regularEquiv : H ≃ α, and the combined statement is regular_iff_card_and_sharp.",
+    "implications": "Characterises regular permutation groups intrinsically and pairs with the parent (Cayley images are regular) to give the biconditional regular ⟺ free transitive, of order n. The order count is obtained as orbit–stabiliser specialised to a free action — the orbit map is literally a bijection — so no quotient construction or counting is needed. Freeness appears throughout as rigidity: an element is determined by its value at one point.",
+    "openQuestions": [
+      "Realise every regular subgroup as a left-regular image: build a group isomorphism between a free transitive H ≤ Sₙ and the abstract group whose regular representation it is, completing the converse to a full structural classification.",
+      "Drop finiteness: for an infinite set α, a free transitive subgroup H ≤ Sym(α) is in bijection with α via the same orbit map (the argument never used finiteness except to read |H| = n) — record the cardinal equality #H = #α."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Perm.Basic",
+      "Mathlib.Data.Fintype.Perm",
+      "Mathlib.SetTheory.Cardinal.Finite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "CayleyConverse",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cayley, Arthur",
+      "title": "On the theory of groups, as depending on the symbolic equation θⁿ = 1",
+      "year": "1854",
+      "venue": "Philosophical Magazine, Series 4, 7(42)",
+      "note": "Original statement that every group is a group of permutations — the regular representation"
+    },
+    {
+      "authors": "Dixon, John D.; Mortimer, Brian",
+      "title": "Permutation Groups",
+      "year": "1996",
+      "venue": "Springer GTM 163",
+      "note": "Regular permutation groups, sharp/simple transitivity, and the orbit–stabiliser structure of transitive actions"
+    }
+  ],
+  "sorries": 0
+}

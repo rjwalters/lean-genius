@@ -20,6 +20,56 @@
     "sorries": 0
   },
   "title": "Frobenius' Identity: the Geometric Moment Numerator is the Eulerian Polynomial",
+  "description": "Clearing the denominator (1−r)^{m+1} in the geometric moment formula ∑ₙ nᵐ rⁿ turns its numerator into a single polynomial, the Eulerian polynomial Eₘ(X). This entry proves Frobenius' identity over any commutative ring: the Eulerian polynomial defined by its first-order differential recurrence E₀=1, E_{m+1}=X(1−X)E'ₘ+(m+1)X·Eₘ equals the Stirling closed form ∑ₖ S(m,k)·k!·Xᵏ·(1−X)^{m−k}. The core is that the Stirling form satisfies the same recurrence (a term-by-term formal-derivative computation matched against the Stirling recurrence). It records the row sum Eₘ(1)=m!, the low orders E₁=X, E₂=X+X², E₃=X+4X²+X³, and the compact generating identity ∑ₙ nᵐ rⁿ = Eₘ(r)/(1−r)^{m+1}. 247 lines, 10 theorems, 2 definitions, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "Eulerian numbers ⟨m,k⟩ count permutations of an m-element set with exactly k descents; their generating polynomials Eₘ(X) = ∑ₖ ⟨m,k⟩ Xᵏ are the Eulerian polynomials, introduced by Leonhard Euler in his 1755 study of the alternating-sign evaluation of ∑ nᵐ xⁿ. The identity proved here — that the moment numerator equals the Eulerian polynomial — is essentially Frobenius' (1910) reformulation, who connected the Eulerian polynomials to the Stirling numbers of the second kind and to the representation theory of the symmetric group. The bridge between the two descriptions is Worpitzky's identity (1883), nᵐ = ∑ₖ ⟨m,k⟩·(n+k choose m). The closed form ∑ₙ nᵐ Xⁿ = Eₘ(X)/(1−X)^{m+1} is the standard 'geometric' normalisation found in Graham–Knuth–Patashnik's Concrete Mathematics and in Comtet's Advanced Combinatorics. Mathlib has the Stirling numbers but neither the Eulerian numbers nor this identity, so the entry builds the Eulerian polynomial from scratch (via its differential recurrence) to make the identification.",
+    "problemStatement": "Identify the numerator of the geometric moment closed form with the Eulerian polynomial: prove that ∑_{k=0}^{m} S(m,k)·k!·Xᵏ·(1−X)^{m−k} equals the Eulerian polynomial Eₘ(X) (defined by its classical differential recurrence) over any commutative ring, and deduce the single-fraction generating identity ∑ₙ nᵐ rⁿ = Eₘ(r)/(1−r)^{m+1} for |r| < 1.",
+    "proofStrategy": "Define eulerPoly by the recurrence E₀ = 1, E_{m+1} = X(1−X)E'ₘ + (m+1)X·Eₘ and stirlingForm by the Stirling sum, both in R[X]. The lemma key_term computes the per-summand action X(1−X)·d/dX(a·Xᵏ(1−X)ᵖ), clearing boundary factors so the result stays in the Xᵏ basis. stirlingForm_succ then shows the Stirling form obeys the same differential recurrence, by collecting the differentiated terms and matching coefficients through the Stirling recurrence S(m+1,k+1) = (k+1)S(m,k+1) + S(m,k) with vanishing boundary terms. Since both polynomials satisfy the same first-order recurrence with the same initial value, eulerPoly_eq_stirlingForm follows by induction. Evaluating the Stirling form at X = 1 (where 0^{m−k} kills all but k = m) gives the row sum Eₘ(1) = m!; substituting X = r and combining with the imported analytic moment formula gives the generating identity over ℝ.",
+    "keyInsights": [
+      "Two classically different descriptions of the Eulerian polynomial — a first-order differential recurrence and a Stirling-number sum — define the same object; the proof is a uniqueness-of-recurrence-solution argument, not a coefficient comparison.",
+      "The technical crux is that X(1−X)·d/dX preserves the Xᵏ·(1−X)ᵖ basis (key_term): the derivative of each basis element re-expands cleanly, so the differential recurrence can be checked summand by summand.",
+      "The matching of differentiated terms is exactly the Stirling recurrence S(m+1,k+1) = (k+1)S(m,k+1) + S(m,k) — the same recurrence that drove the sibling entry's monomial expansion, now appearing on the numerator side.",
+      "The row sum Eₘ(1) = m! is immediate from the Stirling form (only the k = m term survives at X = 1), recovering the combinatorial fact that the Eulerian numbers of order m partition the m! permutations by descent count.",
+      "The result is ring-agnostic: Frobenius' identity is proved over an arbitrary commutative ring, and the analytic moment identity over ℝ is then just the specialization X = r — separating the algebraic content from the convergence question."
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: the Eulerian polynomial and Frobenius' identity",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "The file docstring: clearing (1−r)^{m+1} in the sibling moment formula yields the Eulerian polynomial numerator; the goal is to identify the Stirling closed form with the Eulerian polynomial (defined by its differential recurrence) over any commutative ring, plus imports and the ring variable."
+    },
+    {
+      "id": "definitions",
+      "title": "Part 1: the two definitions",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "eulerPoly — the Eulerian polynomial by its first-order differential recurrence E₀=1, E_{m+1}=X(1−X)E'ₘ+(m+1)X·Eₘ; and stirlingForm — the Stirling closed form ∑ₖ S(m,k)·k!·Xᵏ·(1−X)^{m−k}. Both in R[X]."
+    },
+    {
+      "id": "frobenius",
+      "title": "Part 2: Frobenius' identity eulerPoly = stirlingForm",
+      "startLine": 75,
+      "endLine": 182,
+      "summary": "key_term (the per-summand derivative, clearing boundary factors), stirlingForm_succ (the Stirling form satisfies the Eulerian differential recurrence, via the Stirling recurrence with vanishing boundaries), and eulerPoly_eq_stirlingForm (the two agree, by induction on matching recurrences)."
+    },
+    {
+      "id": "low-orders-rowsum",
+      "title": "Part 3: low-order values and the row sum",
+      "startLine": 183,
+      "endLine": 215,
+      "summary": "eulerPoly_one/two/three (E₁=X, E₂=X+X², E₃=X+4X²+X³, coefficients the Eulerian numbers 1; 1,1; 1,4,1) and eval_eulerPoly_one (the row sum Eₘ(1)=m!, from evaluating the Stirling form at X=1)."
+    },
+    {
+      "id": "generating-identity",
+      "title": "Part 4: the moment generating identity over ℝ",
+      "startLine": 216,
+      "endLine": 247,
+      "summary": "hasSum_pow_mul_geometric_eulerPoly combines Frobenius' identity with the imported analytic moment formula to give ∑ₙ nᵐ rⁿ = Eₘ(r)/(1−r)^{m+1} for |r| < 1 — the compact single-fraction form anticipated by oq-07, oq-10, and oq-07-oq-01."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

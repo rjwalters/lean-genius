@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Docstring reframing the parent's cyclic/elementary-abelian dichotomy through the single invariant Monoid.exponent G, stating exponent = p² ⟺ cyclic and exponent = p ⟺ non-cyclic; imports Mathlib and the parent file, opens its namespace, and fixes a group variable G.",
+      "mathContext": "exponent G = p² ⟺ G ≅ ℤ/p²; exponent G = p ⟺ G ≅ (ℤ/p)²."
+    },
+    {
       "id": "helpers",
       "title": "Finiteness and Nontriviality",
       "startLine": 42,

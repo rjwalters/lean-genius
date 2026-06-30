@@ -1,0 +1,86 @@
+[
+  {
+    "id": "sylowchar-overview",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "Normal vs characteristic, and why they coincide here",
+    "content": "The docstring sets up the distinction the entry exploits. A subgroup is *normal* if it is invariant under all *inner* automorphisms (conjugation), and *characteristic* if invariant under *every* automorphism — strictly stronger in general. The entry's thesis: for a Sylow p-subgroup of a finite group the two notions coincide, because a normal Sylow subgroup is the *unique* Sylow p-subgroup and every automorphism merely permutes the Sylow p-subgroups, so it must fix the unique one. This per-prime collapse, lifted over all primes, inserts a 'characteristic' tier into the parent's nilpotency equivalences.",
+    "mathContext": "$\\text{characteristic} \\Rightarrow \\text{normal}$ always; for Sylow subgroups the converse holds via uniqueness.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic subgroup", "normal subgroup", "Sylow p-subgroup", "automorphism group", "nilpotent group"],
+    "prerequisites": ["Sylow's theorems", "inner vs outer automorphisms", "group nilpotency"]
+  },
+  {
+    "id": "sylowchar-selfcontained",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 60, "endLine": 84 },
+    "type": "theorem",
+    "title": "Self-contained nilpotency criteria",
+    "content": "Two parent results are re-derived from Mathlib's `isNilpotent_of_finite_tfae` so the file needs no parent olean. `nilpotent_iff_forall_sylow_normal` is the TFAE slice (1)↔(4): a finite group is nilpotent iff every Sylow subgroup is normal. `nilpotent_iff_forall_card_sylow_eq_one` translates normality into the counting form `#(Sylow p G) = 1` via `Sylow.unique_of_normal` (normal ⇒ unique) and `Sylow.normal_of_subsingleton` (unique ⇒ normal) — the same uniqueness lever the characteristic result uses.",
+    "mathContext": "$\\mathrm{IsNilpotent}(G) \\iff \\forall p\\,P,\\ P \\trianglelefteq G \\iff \\forall p,\\ \\#\\mathrm{Syl}_p(G) = 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["nilpotent group", "TFAE", "Sylow count", "normal Sylow uniqueness"],
+    "prerequisites": ["Group.IsNilpotent", "Mathlib finite-group TFAE", "Nat.card of a Unique type"]
+  },
+  {
+    "id": "sylowchar-coincidence",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 86, "endLine": 96 },
+    "type": "theorem",
+    "title": "The coincidence: characteristic ⟺ normal for a Sylow subgroup",
+    "content": "`sylow_characteristic_iff_normal` is the technical heart. Forward is the generic instance `characteristic ⇒ normal`. The reverse is `Sylow.characteristic_of_normal`: a normal Sylow subgroup is unique (`Sylow.unique_of_normal`), and since any automorphism φ carries P to another Sylow p-subgroup φ(P), uniqueness forces φ(P) = P — invariance under *every* automorphism. This is exactly where global uniqueness upgrades inner-automorphism invariance to full-automorphism invariance.",
+    "mathContext": "$(P : \\mathrm{Subgroup}\\,G).\\mathrm{Characteristic} \\iff (P : \\mathrm{Subgroup}\\,G).\\mathrm{Normal}$",
+    "significance": "critical",
+    "relatedConcepts": ["Sylow.characteristic_of_normal", "uniqueness of normal Sylow", "characteristic subgroup", "automorphism permutes Sylow subgroups"],
+    "prerequisites": ["normal_of_characteristic instance", "Sylow.unique_of_normal"]
+  },
+  {
+    "id": "sylowchar-nilpotent-aut",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 98, "endLine": 109 },
+    "type": "theorem",
+    "title": "Nilpotent consequence and explicit automorphism form",
+    "content": "Composing the headline (nilpotent ⇒ all Sylow normal) with the coincidence gives `sylow_characteristic_of_nilpotent`: in a finite nilpotent group every Sylow p-subgroup is characteristic. `sylow_map_aut_eq_of_nilpotent` then unwraps the typeclass into the concrete equality `P.map φ.toMonoidHom = P` for every φ : G ≃* G, via `Subgroup.characteristic_iff_map_eq` — the form most directly usable in downstream arguments.",
+    "mathContext": "$\\mathrm{IsNilpotent}(G) \\Rightarrow \\forall \\varphi : G \\simeq^* G,\\ (P : \\mathrm{Subgroup}\\,G).\\mathrm{map}\\,\\varphi = P$",
+    "significance": "key",
+    "relatedConcepts": ["characteristic_iff_map_eq", "setwise invariance", "MulEquiv (G ≃* G)", "nilpotent group structure"],
+    "prerequisites": ["Subgroup.map", "group automorphism G ≃* G"]
+  },
+  {
+    "id": "sylowchar-converse",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 111, "endLine": 118 },
+    "type": "theorem",
+    "title": "The converse direction",
+    "content": "`nilpotent_of_forall_sylow_characteristic`: if every Sylow subgroup is characteristic then G is nilpotent. The proof feeds `characteristic ⇒ normal` pointwise into `nilpotent_iff_forall_sylow_normal.mpr`. Trivial once the coincidence is in hand, but it is the half that makes the biconditional — and the new TFAE tier — actually closed.",
+    "mathContext": "$(\\forall p\\,P,\\ P\\ \\mathrm{characteristic}) \\Rightarrow \\mathrm{IsNilpotent}(G)$",
+    "significance": "supporting",
+    "relatedConcepts": ["normal_of_characteristic", "nilpotency criterion", "biconditional closure"],
+    "prerequisites": ["characteristic ⇒ normal", "the normality criterion above"]
+  },
+  {
+    "id": "sylowchar-biconditional",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "theorem",
+    "title": "Characteristic-tier biconditional",
+    "content": "`nilpotent_iff_forall_sylow_characteristic` packages both directions: a finite group is nilpotent iff every Sylow p-subgroup is characteristic. It places an a-priori-*stronger* condition (characteristic) into a position logically equivalent to the weaker one (normal), a clean instance of a stronger property collapsing onto a weaker one under the structural constraint of being Sylow.",
+    "mathContext": "$\\mathrm{IsNilpotent}(G) \\iff \\forall p\\,P,\\ (P : \\mathrm{Subgroup}\\,G).\\mathrm{Characteristic}$",
+    "significance": "key",
+    "relatedConcepts": ["biconditional", "nilpotency characterization", "characteristic subgroup"],
+    "prerequisites": ["the forward and converse directions above"]
+  },
+  {
+    "id": "sylowchar-tfae",
+    "proofId": "sylow-theorem-oq-02-oq-01-oq-01",
+    "range": { "startLine": 129, "endLine": 147 },
+    "type": "theorem",
+    "title": "Four-way TFAE characterization",
+    "content": "`nilpotent_tfae` assembles the equivalences into one list: nilpotent ⟺ all Sylow normal ⟺ all Sylow characteristic ⟺ all Sylow counts one. The proof is three `tfae_have` links (1↔2, 1↔3, 1↔4) closed by `tfae_finish`. The new content over the parent is tier (3), 'characteristic', wedged between normality (2) and the counting condition (4) — strictly stronger as a property yet equivalent here.",
+    "mathContext": "$(1)\\,\\mathrm{nilpotent} \\iff (2)\\,\\text{all normal} \\iff (3)\\,\\text{all characteristic} \\iff (4)\\,\\text{all counts one}$",
+    "significance": "key",
+    "relatedConcepts": ["TFAE", "tfae_finish tactic", "structure theorem for finite nilpotent groups"],
+    "prerequisites": ["List.TFAE", "the three biconditionals above"]
+  }
+]

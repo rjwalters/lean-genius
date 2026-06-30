@@ -26,6 +26,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Sqrt
 import Mathlib.Data.Finset.Card
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Tactic
 
 /-
 # Erdős Problem 659: Point Configurations with Constrained Distances
@@ -59,6 +60,49 @@ noncomputable def latticePoint (a b : ℤ) : ℝ × ℝ :=
     This is a positive definite quadratic form x² + 2y². -/
 noncomputable def latticeDistSq (a₁ b₁ a₂ b₂ : ℤ) : ℤ :=
   (a₁ - a₂)^2 + 2 * (b₁ - b₂)^2
+
+/-! ### Positive-definiteness of the defining quadratic form
+
+The squared distance on the Moree–Osburn lattice is the binary quadratic form
+`x² + 2y²` (discriminant `-8`). The three lemmas below verify that it is a genuine
+positive-definite form: symmetric, non-negative, and vanishing only on the diagonal.
+The last property (`latticeDistSq_eq_zero_iff`) is exactly what guarantees the
+truncated lattice consists of *distinct* points, so that `moreeOsburnLattice n`
+realises `n` honest points with positive pairwise distances. These are fully
+verified (no axioms, no sorries) and are independent of the deep analytic input
+(`moreeOsburnWorks`). -/
+
+/-- The squared lattice distance is symmetric in its two points. -/
+theorem latticeDistSq_symm (a₁ b₁ a₂ b₂ : ℤ) :
+    latticeDistSq a₁ b₁ a₂ b₂ = latticeDistSq a₂ b₂ a₁ b₁ := by
+  unfold latticeDistSq; ring
+
+/-- The form `x² + 2y²` is non-negative. -/
+theorem latticeDistSq_nonneg (a₁ b₁ a₂ b₂ : ℤ) :
+    0 ≤ latticeDistSq a₁ b₁ a₂ b₂ := by
+  unfold latticeDistSq
+  have h1 := sq_nonneg (a₁ - a₂)
+  have h2 := sq_nonneg (b₁ - b₂)
+  linarith
+
+/-- **Positive-definiteness**: the form `x² + 2y²` vanishes exactly on the diagonal.
+    Hence two lattice points coincide iff their squared distance is zero — the
+    property that makes the truncated lattice a set of distinct points. -/
+theorem latticeDistSq_eq_zero_iff (a₁ b₁ a₂ b₂ : ℤ) :
+    latticeDistSq a₁ b₁ a₂ b₂ = 0 ↔ a₁ = a₂ ∧ b₁ = b₂ := by
+  unfold latticeDistSq
+  constructor
+  · intro h
+    have h1 := sq_nonneg (a₁ - a₂)
+    have h2 := sq_nonneg (b₁ - b₂)
+    have hx : (a₁ - a₂) ^ 2 = 0 := by linarith
+    have hy : (b₁ - b₂) ^ 2 = 0 := by linarith
+    have hx' : a₁ - a₂ = 0 := by
+      exact pow_eq_zero_iff (by norm_num) |>.mp hx
+    have hy' : b₁ - b₂ = 0 := by
+      exact pow_eq_zero_iff (by norm_num) |>.mp hy
+    exact ⟨by omega, by omega⟩
+  · rintro ⟨rfl, rfl⟩; ring
 
 /-- The integer lattice points in a box [-k, k] × [-k, k] -/
 noncomputable def latticeBox (k : ℕ) : Finset (ℤ × ℤ) :=
@@ -162,28 +206,22 @@ def isConfiguration (S : Finset (ℝ × ℝ)) (config : TwoDistanceConfig) : Pro
         let dists := (S.product S).image (fun ⟨p, q⟩ => dist p q) |>.filter (· > 0)
         dists = {a, a * φ}
 
-/-- The Moree-Osburn lattice avoids all six configurations -/
 /-
 ## Key Properties of the Moree-Osburn Lattice
 
 The lattice {(a, b√2) : a,b ∈ ℤ} has remarkable properties due to the
-irrationality of √2.
+irrationality of √2. The following informal notes record the geometric facts
+that the (deep, axiomatised) `moreeOsburnWorks` packages:
+
+* Distance formula: dist((a₁, b₁√2), (a₂, b₂√2))² = (a₁-a₂)² + 2(b₁-b₂)²,
+  the form `x² + 2y²` (see the verified `latticeDistSq_*` lemmas above).
+* No equilateral triangles: a 1:1:1 distance ratio forces
+  (a₁-a₂)² + 2(b₁-b₂)² = (a₂-a₃)² + 2(b₂-b₃)² = (a₃-a₁)² + 2(b₃-b₁)²,
+  which leads to irrational constraints.
+* No squares: equal sides and diagonals at ratio √2:1 would require
+  x² + 2y² = 2(u² + 2v²) in integers, which has no generic solutions.
 -/
 
-/-- The distance formula for Moree-Osburn lattice points.
-    dist((a₁, b₁√2), (a₂, b₂√2))² = (a₁-a₂)² + 2(b₁-b₂)².
-
-    This follows from the Euclidean distance formula:
-    d² = (a₁-a₂)² + (b₁√2 - b₂√2)² = (a₁-a₂)² + 2(b₁-b₂)² -/
-/-- The Moree-Osburn lattice contains no equilateral triangles.
-    This follows from the fact that if three points form an equilateral triangle,
-    they would require a distance ratio of 1:1:1, which would force
-    (a₁-a₂)² + 2(b₁-b₂)² = (a₂-a₃)² + 2(b₂-b₃)² = (a₃-a₁)² + 2(b₃-b₁)²
-    in a way that leads to irrational constraints. -/
-/-- The Moree-Osburn lattice contains no squares.
-    A square would require four points with equal sides and equal diagonals
-    at ratio √2:1, but this would require solutions to
-    x² + 2y² = 2(u² + 2v²) in integers that don't exist generically. -/
 /-- The set of positive integers representable as x² + 2y² -/
 def representable_x2_2y2 : Set ℕ :=
   { d | ∃ x y : ℤ, (d : ℤ) = x^2 + 2*y^2 }
@@ -192,29 +230,51 @@ def representable_x2_2y2 : Set ℕ :=
 noncomputable def B2 (N : ℕ) : ℕ :=
   (representable_x2_2y2 ∩ Set.Icc 1 N).ncard
 
-/-- **Landau's Theorem (1908)**: The counting function for x² + 2y² grows as N/√(log N).
+/-
+**Landau's Theorem (1908)**: The counting function for x² + 2y² grows as N/√(log N).
 
-    The number of positive integers ≤ N representable as x² + 2y² is
-    asymptotically c₂ · N / √(log N) where c₂ is an explicit constant.
+The number of positive integers ≤ N representable as x² + 2y² is
+asymptotically c₂ · N / √(log N) where c₂ is an explicit constant.
 
-    This is a special case of Landau's theorem for positive definite binary
-    quadratic forms of discriminant -8.
+This is a special case of Landau's theorem for positive definite binary
+quadratic forms of discriminant -8.
 
-    The representable integers are exactly those whose prime factorization has
-    all primes ≡ 5, 7 (mod 8) appearing to even powers. -/
-/-- The 4-point property follows from avoiding all six two-distance configurations -/
+The representable integers are exactly those whose prime factorization has
+all primes ≡ 5, 7 (mod 8) appearing to even powers.
+-/
+
+/-- The 4-point property follows from avoiding all six two-distance configurations,
+    **together with** the geometric lower bound that no 4-point subset collapses to
+    fewer than two distinct distances.
+
+    The lower bound `hlb` is a genuine hypothesis, not a triviality: with the ambient
+    metric on `ℝ × ℝ` (the product/Chebyshev metric), four *distinct* points can be
+    mutually equidistant — e.g. the corners `(0,0), (1,0), (0,1), (1,1)` all lie at
+    distance `1`, so `distinctDistances = 1`. Such a configuration vacuously avoids
+    every named two-distance pattern, yet violates the 4-point property. Ruling it out
+    is precisely the content of `hlb`; without it the conclusion is false. (For the
+    Moree–Osburn lattice, `hlb` is supplied by the deep input `moreeOsburnWorks`.)
+
+    Given `hlb`, avoiding the configurations forces `distinctDistances T ≠ 2`
+    (instantiating the hypothesis at any single configuration suffices, since the
+    `isConfiguration` predicate carries `T.card = 4 ∧ distinctDistances T = 2` as its
+    first two conjuncts), and `2 ≤ distinctDistances T < 3` together with
+    `distinctDistances T ≠ 2` is impossible. -/
 theorem fourPointProperty_from_avoiding_configs (S : Finset (ℝ × ℝ))
-    (h : ∀ T ⊆ S, T.card = 4 → ∀ config : TwoDistanceConfig, ¬ isConfiguration T config) :
+    (h : ∀ T ⊆ S, T.card = 4 → ∀ config : TwoDistanceConfig, ¬ isConfiguration T config)
+    (hlb : ∀ T : Finset (ℝ × ℝ), T ⊆ S → T.card = 4 → 2 ≤ distinctDistances T) :
     fourPointProperty S := by
   intro T hT hT4
+  have hge : 2 ≤ distinctDistances T := hlb T hT hT4
+  -- Instantiate the "avoid configs" hypothesis at the isoTrap1 pattern. Its predicate
+  -- unfolds to `T.card = 4 ∧ distinctDistances T = 2 ∧ True`, so avoiding it rules out
+  -- `distinctDistances T = 2`.
+  have hcfg : ¬ isConfiguration T TwoDistanceConfig.isoTrap1 := h T hT hT4 _
+  have hne2 : distinctDistances T ≠ 2 := by
+    intro he
+    exact hcfg ⟨hT4, he, trivial⟩
   by_contra hContra
-  push_neg at hContra
-  -- If distinctDistances T < 3, then T has at most 2 distances
-  -- If T has exactly 2 distances, it must be one of the six configurations
-  -- This contradicts h
-  -- We state this as the contrapositive
-  have : distinctDistances T ≤ 2 := by omega
-  -- The complete case analysis shows T must match one of the six patterns
-  sorry  -- Would need the complete classification theorem
+  push_neg at hContra  -- distinctDistances T < 3
+  omega
 
 end Erdos659

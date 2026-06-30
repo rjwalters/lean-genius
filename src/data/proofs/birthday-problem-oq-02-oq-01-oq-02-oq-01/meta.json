@@ -1,0 +1,123 @@
+{
+  "id": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+  "title": "Collision Probability: Sharp Upper Bound and the Smoothing Mechanism",
+  "slug": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+  "description": "The complementary half of the two-draw collision extremality. The parent bounds C(p) = ∑ pᵢ² from below by the uniform value 1/d; this proves the sharp upper bound C(p) ≤ maxᵢ pᵢ, characterizes equality (mass spread uniformly over its support, i.e. every pᵢ ∈ {0, M}), assembles the two-sided bound 1/d ≤ C(p) ≤ maxᵢ pᵢ, and isolates the smoothing/transfer atom: averaging two coordinates weakly decreases C, strictly unless they were equal — the Schur-convexity local step driving the minimization.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "extremal",
+      "schur-convexity",
+      "majorization",
+      "collision-probability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 189,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "None. Fully machine-verified from Mathlib.",
+    "originalContributions": [
+      "collision_le_of_le: C(p) = ∑ pᵢ² ≤ M for any dominating value M ≥ pᵢ — the upper-bound engine, complementing the parent's lower bound 1/d ≤ C(p)",
+      "collision_le_max: the sharp form C(p) ≤ maxᵢ pᵢ — collision never exceeds the most likely outcome's probability",
+      "collision_eq_of_le_iff: C(p) = M iff every pᵢ ∈ {0, M} — equality is the *concentration* extreme (mass uniform over its support), the opposite of the lower bound's global uniformity",
+      "collision_two_sided: the two-sided picture 1/d ≤ C(p) ≤ maxᵢ pᵢ with a self-contained re-derivation of the lower bound via the variance identity",
+      "two_avg_sq_le / two_avg_sq_lt: the smoothing atom 2·((a+b)/2)² ≤ a² + b² (strict iff a ≠ b) — the elementary Robin Hood/Muirhead transfer inequality",
+      "smoothing_sum_sq_le: replacing the values at two coordinates by their average weakly decreases ∑ f² — the Schur-convexity local step that, iterated, drives any distribution toward uniform and collision toward its minimum"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The textbook birthday problem assumes uniform birthdays; the parent entry (OQ-02-OQ-01-OQ-02) proved that uniformity *minimizes* the two-draw collision probability C(p) = ∑ pᵢ², bounding it below by 1/d. That tells only half the story of where collision probability lives on the simplex. The natural complementary questions — raised in the parent's own open-question list — are: how large can collision get, and what is the local mechanism that makes spreading mass out lower it? This entry answers both. The upper extreme is *concentration*: collision is maximized when mass piles onto equal-weight atoms, and is bounded by the single most likely outcome. The mechanism is the classical 'Robin Hood' transfer (Muirhead/Hardy–Littlewood–Pólya): equalizing two coordinates can only decrease ∑ pᵢ², which is exactly the statement that C is Schur-convex.",
+    "problemStatement": "For every probability vector p on d outcomes (∑ᵢ pᵢ = 1, pᵢ ≥ 0, d > 0): (1) prove the sharp upper bound C(p) = ∑ᵢ pᵢ² ≤ maxᵢ pᵢ, and more generally C(p) ≤ M for any M ≥ pᵢ; (2) characterize the equality C(p) = M as pᵢ ∈ {0, M} for all i; (3) assemble the two-sided bound 1/d ≤ C(p) ≤ maxᵢ pᵢ; and (4) prove that replacing the values at two coordinates by their common average weakly decreases ∑ pᵢ², strictly unless they were already equal.",
+    "proofStrategy": "**Upper bound.** Since 0 ≤ pᵢ ≤ M, write ∑ pᵢ² = ∑ pᵢ·pᵢ ≤ ∑ pᵢ·M = M·∑ pᵢ = M (pointwise mul_le_mul_of_nonneg_left, then factor the sum and apply ∑ pᵢ = 1). Taking M = maxᵢ pᵢ (the attained supremum, via Finset.exists_mem_eq_sup') gives the sharp form.\n\n**Equality.** The slack is M − ∑ pᵢ² = ∑ᵢ pᵢ·(M − pᵢ), a sum of nonnegative terms; it vanishes iff each pᵢ·(M − pᵢ) = 0, i.e. pᵢ = 0 or pᵢ = M (Finset.sum_eq_zero_iff_of_nonneg, then mul_eq_zero).\n\n**Lower bound.** Re-derived self-contained from the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² ≥ 0, so the file does not depend on the parent.\n\n**Smoothing.** The whole mechanism reduces to a²+b² − 2·((a+b)/2)² = (a−b)²/2 ≥ 0 (an exact ring identity), strict when a ≠ b. Lifted to a sum: the averaging operator g = update f at the two coordinates agrees with f off {i,j}, so ∑ g² − ∑ f² collapses (Finset.sum_eq_add_of_mem) to (g i² − f i²) + (g j² − f j²) = 2·avg² − (f i² + f j²) ≤ 0.",
+    "keyInsights": [
+      "Collision probability is pinned on *both* sides: 1/d ≤ ∑ pᵢ² ≤ maxᵢ pᵢ. The lower bound is achieved by global uniformity; the upper bound by the opposite extreme — concentration on equal-mass atoms (pᵢ ∈ {0, M}).",
+      "The upper bound C(p) ≤ maxᵢ pᵢ has a one-line proof from pᵢ² ≤ pᵢ·M and ∑ pᵢ = 1, with the equality case falling out of the same slack identity M − ∑ pᵢ² = ∑ pᵢ(M − pᵢ).",
+      "A single exact identity a²+b² − 2·((a+b)/2)² = (a−b)²/2 is the atom of Schur-convexity: it makes 'equalize two coordinates' a strictly collision-decreasing move unless the coordinates already agree.",
+      "Iterating the smoothing transfer is exactly the majorization route to the parent's minimization theorem: every step toward uniform lowers ∑ pᵢ², so uniform — the bottom of the majorization order — is the unique minimizer. This entry supplies that mechanism, addressing the parent's Schur-convexity open question at the local-step level."
+    ],
+    "prerequisites": [
+      "Finset.sum_le_sum and mul_le_mul_of_nonneg_left: monotonicity of finite sums",
+      "Finset.sum_mul / Finset.sum_sub_distrib: linearity of finite sums",
+      "Finset.sum_eq_zero_iff_of_nonneg and mul_eq_zero: vanishing of a nonnegative sum",
+      "Finset.exists_mem_eq_sup' and Finset.le_sup': the maximum of a function over a nonempty finite set is attained",
+      "Finset.sum_eq_add_of_mem: a finite sum supported on two points equals the sum of those two values",
+      "Function.update_self / Function.update_of_ne: evaluating a doubly-updated function",
+      "Birthday problem OQ-02-OQ-01-OQ-02 (the parent: the matching lower bound and its Schur-convexity open question)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports Mathlib. Module docstring contrasting this upper-half result with the parent's lower bound and laying out the four contributions. Opens Finset and the BirthdayCollisionBounds namespace."
+    },
+    {
+      "id": "smoothing-atom",
+      "title": "The Smoothing Atom (Schur-Convexity Local Step)",
+      "startLine": 50,
+      "endLine": 69,
+      "summary": "sq_add_sq_sub_two_avg_sq: the exact identity a²+b² − 2·((a+b)/2)² = (a−b)²/2. two_avg_sq_le and two_avg_sq_lt: twice the squared average is ≤ (resp. < when a ≠ b) the sum of squares."
+    },
+    {
+      "id": "upper-bound",
+      "title": "Sharp Upper Bound on Collision Probability",
+      "startLine": 70,
+      "endLine": 123,
+      "summary": "collision_le_of_le: ∑ pᵢ² ≤ M for any dominating M, via pᵢ² ≤ pᵢ·M and ∑ pᵢ = 1. collision_eq_of_le_iff: equality iff every pᵢ ∈ {0, M}, from the slack ∑ pᵢ(M − pᵢ). collision_le_max: the sharp form ∑ pᵢ² ≤ maxᵢ pᵢ."
+    },
+    {
+      "id": "lower-and-two-sided",
+      "title": "Self-Contained Lower Bound and the Two-Sided Picture",
+      "startLine": 124,
+      "endLine": 155,
+      "summary": "one_div_card_le_collision: 1/d ≤ ∑ pᵢ² re-derived from the variance identity so the file stands alone. collision_two_sided: the combined 1/d ≤ ∑ pᵢ² ≤ M."
+    },
+    {
+      "id": "smoothing-operator",
+      "title": "The Smoothing Operator Lowers Collision",
+      "startLine": 156,
+      "endLine": 189,
+      "summary": "smoothing_sum_sq_le: replacing the values at two distinct coordinates by their average weakly decreases ∑ f². The sum difference collapses (off {i,j} the values are unchanged) to the smoothing atom evaluated at the two coordinates."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proved the complementary half of the two-draw collision extremality: the sharp upper bound ∑ᵢ pᵢ² ≤ maxᵢ pᵢ with equality iff the distribution is supported on equal-mass atoms (pᵢ ∈ {0, M}); the two-sided bound 1/d ≤ ∑ pᵢ² ≤ maxᵢ pᵢ (lower bound re-derived self-contained); and the smoothing/transfer atom showing that equalizing two coordinates weakly decreases collision, strictly unless they were equal. 189 lines, 9 theorems, 0 sorries, 0 axioms.",
+    "implications": "Collision probability lives in [1/d, maxᵢ pᵢ] on the simplex, with the two endpoints realized by the two opposite extremes — global uniformity (minimum) and concentration on equal-mass atoms (maximum). The smoothing inequality identifies the exact local move that decreases collision: any 'Robin Hood' transfer that equalizes two outcomes. Iterating it is the majorization proof that uniform is the unique minimizer, so this entry supplies the Schur-convexity mechanism behind the parent's result rather than re-stating the bound.",
+    "openQuestions": [
+      "Globalize the local step: assemble smoothing_sum_sq_le into a full Schur-convexity statement — p majorized by q implies ∑ pᵢ² ≤ ∑ qᵢ² — recovering both the parent's minimum (uniform) and this entry's maximum (concentration) as the two endpoints of the majorization order.",
+      "Sharpen the upper bound's equality: with pᵢ ∈ {0, M} and ∑ pᵢ = 1, the number of atoms is 1/M, forcing M = 1/k for some k ≤ d; characterize exactly which collision values M are attainable as the maxima."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-02-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent. Proves the lower bound 1/d ≤ ∑ pᵢ² (uniform minimizes collision) and lists Schur-convexity as an open question; this entry supplies the matching upper bound and the smoothing/Schur-convexity mechanism."
+    },
+    {
+      "targetId": "birthday-problem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Grandparent in the non-uniform birthday chain."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BirthdayCollisionBounds",
+    "lineCount": 189,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/BirthdayProblemOQ02OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
