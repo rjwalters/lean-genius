@@ -96,8 +96,38 @@
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
-    "proofs/Proofs/Erdos340GreedyGrowth.lean",
-    "proofs/Proofs/Erdos340GreedySidon.lean",
-    "proofs/Proofs/Erdos340GreedyCountUpper.lean"
+    {
+      "path": "Proofs/Erdos340GreedySidon.lean",
+      "filename": "Erdos340GreedySidon.lean",
+      "lineCount": 649,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidon.lean"
+    },
+    {
+      "path": "Proofs/Erdos340GreedySidonExtension.lean",
+      "filename": "Erdos340GreedySidonExtension.lean",
+      "lineCount": 126,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonExtension.lean"
+    },
+    {
+      "path": "Proofs/Erdos340GreedySidonOQ02.lean",
+      "filename": "Erdos340GreedySidonOQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos340GreedySidonOQ02.lean"
+    }
   ]
 }

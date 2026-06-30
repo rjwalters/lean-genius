@@ -15,6 +15,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, motivation, and imports",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Docstring stating the general recursion (★) and its factored form (★★), explaining why it is the right object (the uniform degree-lowering mechanism the parent/grandparent computed instance-by-instance), and listing the three ladder specializations. Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic, opens Finset, enters the SummationByPartsOQ01OQ01OQ01 namespace.",
+      "mathContext": "(★) holds with NO hypotheses over any commutative ring — both sides are polynomial in r and the sequence values, so r ≠ 1 is not required until the division form."
+    },
+    {
       "id": "general-recursion",
       "title": "The General Recursion over a Commutative Ring",
       "startLine": 75,

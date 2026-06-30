@@ -1,0 +1,139 @@
+{
+  "id": "area-of-circle-oq-02-oq-03",
+  "title": "Surface Area of the Unit Sphere: Sₙ = n·Vₙ",
+  "slug": "area-of-circle-oq-02-oq-03",
+  "description": "Defines the (n−1)-sphere surface measure by its own Gamma closed form Sₙ = 2·π^(n/2)/Γ(n/2) — the half-dimension-down analogue of the parent's ball-volume formula Vₙ = π^(n/2)/Γ(n/2+1) — and proves the scaling/divergence-theorem identity Sₙ = n·Vₙ. Unlike an earlier gallery file that defines surface area differentially as n·ωₙ·r^(n−1) (making Sₙ=n·Vₙ true by definition), here the identity carries genuine content: it is exactly the Gamma functional equation Γ(n/2+1)=(n/2)·Γ(n/2). The n=0 edge case is handled by Mathlib's junk-value convention Γ(0)=0 (both sides are 0).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "n-ball-volume",
+      "sphere-surface-area",
+      "gamma-function",
+      "special-functions",
+      "divergence-theorem"
+    ],
+    "proofRepoPath": "Proofs/AreaOfCircleOQ02OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 164,
+    "originalContributions": [
+      "unitSphereSurface: the (n−1)-sphere surface measure defined by its own Gamma closed form 2·π^(n/2)/Γ(n/2), independent of the volume formula",
+      "surface_eq_n_mul_volume: Sₙ = n·Vₙ for all n ≥ 0, proved via the Gamma functional equation Γ(n/2+1)=(n/2)·Γ(n/2), with the n=0 case via Γ(0)=0",
+      "surface_div_volume: the surface-to-volume ratio Sₙ/Vₙ equals exactly n",
+      "unitSphereSurface_one/two/three: special values S₁=2, S₂=2π, S₃=4π recovering endpoint count, circumference, and sphere area",
+      "unitSphereSurface_two_direct: S₂=2π straight from the Gamma closed form (Γ(1)=1), independent of the main identity"
+    ],
+    "assumptions": "0 axiom(s) and 0 sorry(s). #print axioms reports only propext, Classical.choice, Quot.sound. Fully verified.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "The Gamma functional equation Γ(s+1)=s·Γ(s) for s≠0 — the algebraic heart of Sₙ=n·Vₙ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2)=√π, used for the odd-dimensional special values S₁ and S₃",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_zero",
+        "description": "Γ(0)=0 (junk value), making the n=0 edge case 2/Γ(0)=0=0·V₀ hold",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      }
+    ],
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The closed forms for the volume of the unit n-ball, Vₙ = π^(n/2)/Γ(n/2+1), and the surface measure of the unit (n−1)-sphere, Sₙ = 2π^(n/2)/Γ(n/2), were obtained in the 19th century via Gaussian-integral techniques and the Gamma function (Liouville). They are linked by the elementary scaling identity Sₙ = n·Vₙ, the integral form of the divergence theorem applied to the radial vector field on the ball: the boundary of the n-ball of radius r has measure dVₙ(r)/dr, and at r=1 this is n·Vₙ. Equivalently, integrating shells, Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr = Sₙ/n.\n\nThe parent entry (area-of-circle-oq-02) established the volume closed form Vₙ = π^(n/2)/Γ(n/2+1). A separate gallery file (area-of-circle-oq-01-oq-02-oq-01) defines a radius-dependent surface function differentially, nSphereArea n r = n·ωₙ·r^(n−1), as the derivative of the volume; with that definition Sₙ = n·Vₙ holds by construction and so contains no Gamma-theoretic content. The present entry instead gives the surface area its own independent Gamma closed form and proves Sₙ = n·Vₙ as a genuine theorem, namely a restatement of the Gamma functional equation Γ(n/2+1) = (n/2)·Γ(n/2).",
+    "problemStatement": "Building on the closed form for the volume Vₙ of the unit n-ball, define the unit (n−1)-sphere surface measure by its own Gamma closed form Sₙ = 2π^(n/2)/Γ(n/2) and prove the surface-area relation Sₙ = n·Vₙ — the scaling/divergence-theorem identity underlying the Gamma-function formulas for sphere area.",
+    "proofStrategy": "Unfold both Gamma closed forms. For n ≥ 1, since n/2 ≠ 0, rewrite Γ(n/2+1) = (n/2)·Γ(n/2) with Real.Gamma_add_one; the goal 2π^(n/2)/Γ(n/2) = n·π^(n/2)/((n/2)·Γ(n/2)) then closes by field_simp (Γ(n/2) > 0). The degenerate n=0 case is handled separately: Γ(0)=0 makes the surface formula 2/Γ(0)=0, which equals 0·V₀. Special values S₁,S₂,S₃ follow from the identity together with the parent's volume values V₁=2, V₂=π, V₃=4π/3; S₂=2π is additionally checked straight from the surface closed form via Γ(1)=1.",
+    "text": "The parent entry proved Vₙ = π^(n/2)/Γ(n/2+1). This entry supplies the companion (n−1)-sphere surface closed form Sₙ = 2π^(n/2)/Γ(n/2) and proves Sₙ = n·Vₙ. The identity is exactly the Gamma functional equation Γ(n/2+1) = (n/2)·Γ(n/2) in geometric disguise — genuine content, since the surface area here is defined independently of the volume (not as its derivative). Special values recover S₁=2 (two endpoints), S₂=2π (circumference), and S₃=4π (sphere area).",
+    "keyInsights": [
+      "Defining Sₙ via its own Gamma closed form 2π^(n/2)/Γ(n/2) makes Sₙ=n·Vₙ a theorem, not a definitional tautology — it reduces precisely to Γ(n/2+1)=(n/2)·Γ(n/2)",
+      "The half-dimension shift between the volume denominator Γ(n/2+1) and the surface denominator Γ(n/2) is exactly one application of the Gamma recurrence, which is why the proportionality constant is n",
+      "Mathlib's junk value Γ(0)=0 makes the n=0 case work automatically: the surface formula gives 2/0=0, matching 0·V₀=0, so no hypothesis n≥1 is needed",
+      "The surface-to-volume ratio Sₙ/Vₙ = n is the dimensional signature of the divergence theorem on the ball",
+      "S₂ = 2π can be read straight off the closed form (Γ(1)=1), independently confirming the formula gives the unit-circle circumference"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header, Imports, and Definitions",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Documentation header contrasting the Gamma-closed-form surface area with the earlier differential definition. Imports Mathlib, opens MeasureTheory/Real, namespace NSphereSurface. Defines unitBallVolume = π^(n/2)/Γ(n/2+1) and unitSphereSurface = 2π^(n/2)/Γ(n/2).",
+      "mathContext": "$V_n = \\pi^{n/2}/\\Gamma(n/2+1)$ (parent's form) and $S_n = 2\\pi^{n/2}/\\Gamma(n/2)$ (this entry's independent surface form)."
+    },
+    {
+      "id": "gamma-half",
+      "title": "Helper: Γ(3/2) = √π/2 and Positivity",
+      "startLine": 67,
+      "endLine": 94,
+      "summary": "Private lemma gamma_three_div_two (Γ(3/2)=√π/2 via Gamma_add_one + Gamma_one_half_eq). Positivity lemmas: unitBallVolume_pos (all n) and unitSphereSurface_pos (n≥1).",
+      "mathContext": "$\\Gamma(3/2) = \\tfrac12\\Gamma(1/2) = \\tfrac{\\sqrt\\pi}{2}$; both closed forms are positive (the volume for all $n$, the surface for $n\\ge 1$)."
+    },
+    {
+      "id": "main-identity",
+      "title": "Main Theorem: Sₙ = n·Vₙ",
+      "startLine": 96,
+      "endLine": 114,
+      "summary": "surface_eq_n_mul_volume: Sₙ = n·Vₙ for all n. The n=0 branch uses Γ(0)=0 (both sides 0); the n≥1 branch rewrites Γ(n/2+1)=(n/2)·Γ(n/2) and closes by field_simp. surface_div_volume: the ratio Sₙ/Vₙ = n.",
+      "mathContext": "$2\\pi^{n/2}/\\Gamma(n/2) = n\\cdot\\pi^{n/2}/\\Gamma(n/2+1)$ iff $\\Gamma(n/2+1)=(n/2)\\Gamma(n/2)$ — the Gamma functional equation."
+    },
+    {
+      "id": "volume-values",
+      "title": "Volume Special Values V₁, V₂, V₃",
+      "startLine": 115,
+      "endLine": 143,
+      "summary": "unitBallVolume_one (=2), unitBallVolume_two (=π), unitBallVolume_three (=4π/3), mirroring the parent's verified computations using Γ(3/2)=√π/2, Γ(2)=1, and rpow laws.",
+      "mathContext": "$V_1=2,\\ V_2=\\pi,\\ V_3=\\tfrac{4\\pi}{3}$ — the line segment, disk, and ball."
+    },
+    {
+      "id": "surface-values",
+      "title": "Surface Special Values S₁, S₂, S₃",
+      "startLine": 144,
+      "endLine": 164,
+      "summary": "unitSphereSurface_one (=2), unitSphereSurface_two (=2π), unitSphereSurface_three (=4π) derived from the main identity and the volume values; unitSphereSurface_two_direct re-derives S₂=2π straight from the surface closed form via Γ(1)=1.",
+      "mathContext": "$S_1=2$ (two endpoints), $S_2=2\\pi$ (circumference), $S_3=4\\pi$ (sphere surface)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) proof that the unit (n−1)-sphere surface measure Sₙ = 2π^(n/2)/Γ(n/2) equals n times the unit n-ball volume Vₙ = π^(n/2)/Γ(n/2+1). Defining surface area by its own Gamma closed form makes Sₙ=n·Vₙ a genuine theorem — a restatement of the Gamma functional equation Γ(n/2+1)=(n/2)·Γ(n/2) — rather than a definitional identity. Special values recover S₁=2, S₂=2π, S₃=4π.",
+    "implications": "Completes the volume–surface pair of Gamma closed forms for the n-ball/sphere, exhibiting the divergence-theorem scaling Sₙ=n·Vₙ at the level of the explicit formulas. The half-dimension shift Γ(n/2+1)↔Γ(n/2) is identified as the source of the proportionality constant n.",
+    "openQuestions": [
+      "Connect this algebraic identity to a measure-theoretic statement: that 2π^(n/2)/Γ(n/2) is the actual (n−1)-Hausdorff measure of the unit sphere in ℝⁿ, via Mathlib's surface-measure API.",
+      "Derive the radial-shell integral Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr directly, recovering Sₙ=n·Vₙ from the Fundamental Theorem of Calculus rather than the Gamma recurrence."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-02",
+      "relationship": "extends",
+      "description": "Builds on the parent's unit n-ball volume closed form Vₙ = π^(n/2)/Γ(n/2+1), adding the companion sphere surface closed form and the relation Sₙ=n·Vₙ."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01",
+      "relationship": "complements",
+      "description": "That file defines surface area differentially (n·ωₙ·r^(n−1)); this file defines it via an independent Gamma closed form, so Sₙ=n·Vₙ becomes a theorem rather than a definition."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "NSphereSurface",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/AreaOfCircleOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

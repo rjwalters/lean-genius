@@ -21,9 +21,9 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 0,
     "axiomCount": 4,
-    "assumptions": "4 axioms: totient_sum_mertens_error (elementary Mertens O(N log N) error), totient_sum_walfisz_error (Walfisz 1963 O(N(logN)^(2/3)(loglogN)^(4/3))), rangeTotientSum_walfisz_error (Abel summation from Walfisz to range sum), convergence_rate_sharp (EST reduction to range sum with Walfisz bound). 4 sorries: walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero — all real-analysis rpow comparisons, Aristotle candidates.",
+    "assumptions": "4 axioms (all deep number-theoretic inputs beyond Mathlib v4.26): totient_sum_mertens_error (elementary Mertens O(N log N) totient-sum error), totient_sum_walfisz_error (Walfisz 1963, O(N(logN)^(2/3)(loglogN)^(4/3)) via Vinogradov exponential sums), rangeTotientSum_walfisz_error (Abel-summation propagation of Walfisz to the range sum), convergence_rate_sharp (EST-regime reduction to the range sum). 0 sorries: all four real-analysis rpow/little-o comparisons (walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero) are now fully PROVED with 0 axioms (#print axioms = propext/Classical.choice/Quot.sound), verified 2026-06-27. The main result oq02_rate_not_sharp rests only on convergence_rate_sharp.",
     "erdosNumber": 1001,
     "erdosUrl": "https://erdosproblems.com/1001",
     "mathlibDependencies": [
@@ -63,8 +63,8 @@
       "improvement_factor_tends_to_zero: the factor 1/(logN)^(1/3) → 0",
       "erdos_1001_oq02_oq01_summary: existential witness for the sharper rate"
     ],
-    "lineCount": 313,
-    "theoremCount": 6,
+    "lineCount": 360,
+    "theoremCount": 7,
     "defCount": 3,
     "definitionCount": 7,
     "additionalFiles": [
@@ -100,10 +100,10 @@
   "leanFile": {
     "path": "Proofs/Erdos1001OQ02OQ01.lean",
     "namespace": "Erdos1001OQ02OQ01",
-    "sorries": 4,
+    "sorries": 0,
     "axiomCount": 4,
-    "lineCount": 313,
-    "theoremCount": 6,
+    "lineCount": 360,
+    "theoremCount": 7,
     "definitionCount": 7,
     "additionalFiles": [
       "Proofs/Erdos1001OQ02OQ01Aristotle.lean"
@@ -188,5 +188,5 @@
       "mathContext": "Summary: OQ-02 rate improvable; 4 axioms, 4 sorries remain."
     }
   ],
-  "sorries": 4
+  "sorries": 0
 }

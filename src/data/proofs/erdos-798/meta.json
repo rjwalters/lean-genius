@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 7,
+    "sorries": 6,
     "erdosNumber": 798,
     "erdosUrl": "https://erdosproblems.com/798",
     "erdosProblemStatus": "solved",
@@ -44,6 +44,11 @@
         "theorem": "Real.rpow",
         "description": "Real exponentiation",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.isLittleO_log_rpow_atTop",
+        "description": "log x = o(x^r) for r>0, the key asymptotic for t(n)=o(n)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
       }
     ],
     "originalContributions": [
@@ -61,8 +66,8 @@
       "Explicit bounds for small n: t(2), t(3)"
     ],
     "axiomCount": 3,
-    "lineCount": 311,
-    "assumptions": "3 axiom(s) and 7 sorry(s). See the Lean source for details.",
+    "lineCount": 345,
+    "assumptions": "3 axiom(s) and 6 sorry(s). See the Lean source for details.",
     "theoremCount": 11,
     "definitionCount": 7,
     "additionalFiles": [
@@ -170,19 +175,22 @@
       "Mathlib.Data.Set.Card",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
     ],
     "opens": [
       "Set",
       "Real",
-      "Finset"
+      "Finset",
+      "Filter",
+      "Asymptotics"
     ],
     "namespace": "Erdos798",
-    "lineCount": 311,
+    "lineCount": 345,
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 7,
-    "sorries": 7,
+    "sorries": 6,
     "path": "Proofs/Erdos798Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos798Aristotle.lean",
@@ -206,5 +214,5 @@
       "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
     }
   ],
-  "sorries": 7
+  "sorries": 6
 }

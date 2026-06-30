@@ -74,7 +74,7 @@
         "axioms": 0,
         "sorries": 0,
         "dockerJobs": 3062,
-        "buildSeconds": 9.0,
+        "buildSeconds": 9,
         "description": "Realization function bridging GL syntax to PA syntax. 4 recursive cases + 5 simp-equation theorems all rfl-discharged."
       },
       "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)"
@@ -120,9 +120,9 @@
     "solovay"
   ],
   "relatedProofs": [
-    "godel-second-incompleteness-oq02",
+    "godel-first-incompleteness-oq01",
     "godel-incompleteness",
-    "godel-first-incompleteness-oq01"
+    "godel-second-incompleteness-oq02"
   ],
   "references": {
     "papers": [

@@ -1,0 +1,108 @@
+[
+  {
+    "id": "general-parity-split",
+    "proofId": "basel-problem-oq-09-oq-01",
+    "range": {
+      "startLine": 72,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "hasSum_odd_pow — The Exponent-Uniform Parity Split",
+    "content": "The single lemma that carries the whole entry. For any natural exponent s and any value Z with HasSum (fun n => 1/nˢ) Z, the odd-index subseries sums to (1 − 1/2ˢ)·Z. The proof has three moves and no analysis: (1) the even subseries fun k ↦ 1/(2k)ˢ equals (1/2ˢ)·(1/kˢ) termwise — mul_pow turns (2k)ˢ into 2ˢ·kˢ, and the rewrite is valid even at k = 0 where both sides are 1/0 = 0 in ℝ — so HasSum.mul_left evaluates it to (1/2ˢ)·Z; (2) the odd subseries is summable because k ↦ 2k+1 is injective (Summable.comp_injective); (3) HasSum.even_add_odd reassembles the full series and HasSum.unique forces (1/2ˢ)·Z + (odd) = Z, pinning the odd value to (1 − 1/2ˢ)·Z. This is exactly the reusable lemma the parent open question requested; the parent proved only the s = 2 instance by hand.",
+    "mathContext": "$\\lambda(s) = \\sum_{k\\ge 0} \\dfrac{1}{(2k+1)^s} = \\left(1 - 2^{-s}\\right)\\zeta(s)$ for every convergent exponent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet lambda function",
+      "even/odd decomposition",
+      "uniqueness of sums",
+      "p-series"
+    ],
+    "prerequisites": [
+      "HasSum API",
+      "infinite series"
+    ]
+  },
+  {
+    "id": "lambda-nat",
+    "proofId": "basel-problem-oq-09-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "hasSum_lambda_nat — λ(2m) = (1 − 2^{−2m})·ζ(2m)",
+    "content": "The general even-exponent value, obtained by feeding Mathlib's hasSum_zeta_nat (the explicit Bernoulli closed form for ζ(2m)) into hasSum_odd_pow. No work beyond the specialization: the parity fraction 1 − 2^{−2m} multiplies whatever value ζ(2m) takes. This is the full Dirichlet lambda formula at even integers, stated for arbitrary m ≥ 1.",
+    "mathContext": "$\\lambda(2m) = \\left(1 - 2^{-2m}\\right)\\zeta(2m)$, with $\\zeta(2m)$ the Bernoulli closed form.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Bernoulli numbers",
+      "zeta values at even integers",
+      "Dirichlet lambda function"
+    ],
+    "prerequisites": [
+      "hasSum_zeta_nat",
+      "Bernoulli numbers"
+    ]
+  },
+  {
+    "id": "lambda-four",
+    "proofId": "basel-problem-oq-09-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 154
+    },
+    "type": "theorem",
+    "title": "hasSum_lambda_four — λ(4) = π⁴/96 (the new value)",
+    "content": "The headline new result: ∑_{k≥0} 1/(2k+1)⁴ = 1 + 1/3⁴ + 1/5⁴ + ⋯ = π⁴/96. A one-line specialization of hasSum_odd_pow to Mathlib's hasSum_zeta_four (ζ(4) = π⁴/90) through the parity fraction 1 − 2^{−4} = 15/16: (15/16)·(π⁴/90) = π⁴/96. The 'no new analytic input' the open question asked for is literal — the only step is a norm_num/ring rewrite of the constant.",
+    "mathContext": "$\\sum_{k=0}^{\\infty} \\dfrac{1}{(2k+1)^4} = \\dfrac{15}{16}\\cdot\\dfrac{\\pi^4}{90} = \\dfrac{\\pi^4}{96}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dirichlet lambda function",
+      "zeta of 4",
+      "odd fourth-power series"
+    ],
+    "prerequisites": [
+      "hasSum_zeta_four"
+    ]
+  },
+  {
+    "id": "lambda-two",
+    "proofId": "basel-problem-oq-09-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "hasSum_lambda_two — λ(2) = π²/8 (recovers the parent)",
+    "content": "A consistency check: specializing the general lemma to hasSum_zeta_two through the fraction 1 − 2^{−2} = 3/4 reproduces the parent entry's odd-square value π²/8. That the exponent-uniform lemma reproduces the hand-built parent result confirms the abstraction is faithful.",
+    "mathContext": "$\\sum_{k=0}^{\\infty} \\dfrac{1}{(2k+1)^2} = \\dfrac{3}{4}\\cdot\\dfrac{\\pi^2}{6} = \\dfrac{\\pi^2}{8}$.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "Basel problem",
+      "odd-square series"
+    ],
+    "prerequisites": [
+      "hasSum_zeta_two"
+    ]
+  },
+  {
+    "id": "parity-fraction-mono",
+    "proofId": "basel-problem-oq-09-oq-01",
+    "range": {
+      "startLine": 180,
+      "endLine": 182
+    },
+    "type": "theorem",
+    "title": "parity_fraction_mono — The Odd Share Grows with the Exponent",
+    "content": "Records the structural fact behind the values: the parity fraction 1 − 2^{−s} increases in s, so a larger share of ζ(s) concentrates on the odd indices as the exponent grows — three quarters at s = 2, fifteen sixteenths at s = 4. Paired with lambda_four_gt_even_part (the odd part exceeds the even part at s = 4) and the ζ(4) decomposition.",
+    "mathContext": "$1 - 2^{-2} = \\tfrac34 < \\tfrac{15}{16} = 1 - 2^{-4}$.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "monotonicity",
+      "even/odd mass distribution"
+    ],
+    "prerequisites": [
+      "elementary inequalities"
+    ]
+  }
+]

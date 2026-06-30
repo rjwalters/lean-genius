@@ -32,7 +32,7 @@
     },
     "type": "concept",
     "title": "Entropy Non-Negativity",
-    "content": "Shannon entropy is non-negative: $H(X) \\geq 0$. This follows from the fact that $0 \\leq p(x) \\leq 1$ implies $\\ln p(x) \\leq 0$, so $-p(x) \\ln p(x) \\geq 0$ for each term. The proof requires showing that $p(x) \\leq 1$ (from $p(x) \\geq 0$ and $\\sum p = 1$) and then using `Real.log_nonpos` for $0 < p(x) \\leq 1$. Currently sorry'd.",
+    "content": "Shannon entropy is non-negative: $H(X) \\geq 0$. This follows from the fact that $0 \\leq p(x) \\leq 1$ implies $\\ln p(x) \\leq 0$, so $-p(x) \\ln p(x) \\geq 0$ for each term. The proof requires showing that $p(x) \\leq 1$ (from $p(x) \\geq 0$ and $\\sum p = 1$) and then using `Real.log_nonpos` for $0 < p(x) \\leq 1$. Fully proved as `entropy_nonneg`.",
     "mathContext": "$H(X) \\geq 0$ with equality iff $X$ is deterministic ($p(x_0) = 1$ for some $x_0$)",
     "significance": "key",
     "relatedConcepts": [
@@ -54,7 +54,7 @@
     },
     "type": "concept",
     "title": "Maximum Entropy Principle",
-    "content": "The uniform distribution maximizes entropy: $H(X) \\leq \\ln |\\mathcal{X}|$ for any distribution on $\\mathcal{X}$. This is the information-theoretic formulation of 'maximum uncertainty = maximum entropy'. The proof follows from the Gibbs inequality with $q = $ uniform: $D(p \\| \\text{unif}) \\geq 0$ gives $H(p) \\leq -\\sum p(x) \\ln(1/|\\mathcal{X}|) = \\ln |\\mathcal{X}|$. Currently sorry'd.",
+    "content": "The uniform distribution maximizes entropy: $H(X) \\leq \\ln |\\mathcal{X}|$ for any distribution on $\\mathcal{X}$. This is the information-theoretic formulation of 'maximum uncertainty = maximum entropy'. The proof follows from the Gibbs inequality with $q = $ uniform: $D(p \\| \\text{unif}) \\geq 0$ gives $H(p) \\leq -\\sum p(x) \\ln(1/|\\mathcal{X}|) = \\ln |\\mathcal{X}|$. Fully proved as `entropy_le_log_card`.",
     "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p(x) = 1/|\\mathcal{X}|$ for all $x$",
     "significance": "key",
     "relatedConcepts": [
@@ -77,7 +77,7 @@
     },
     "type": "concept",
     "title": "Gibbs Inequality (KL Divergence Non-Negativity)",
-    "content": "The Gibbs inequality states $H(p) \\leq -\\sum p(x) \\ln q(x)$, equivalently $D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x)) \\geq 0$. This is the master inequality of information theory — essentially all entropy inequalities follow from it. The proof uses Jensen's inequality: $-\\ln$ is convex, so $\\sum p(x) (-\\ln q(x)) \\geq -\\ln(\\sum p(x) q(x))$, but actually the standard proof uses $\\ln t \\leq t - 1$ (equivalent to Jensen for $-\\ln$). The requirement $q(x) > 0$ for all $x$ avoids division by zero. Currently sorry'd.",
+    "content": "The Gibbs inequality states $H(p) \\leq -\\sum p(x) \\ln q(x)$, equivalently $D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x)) \\geq 0$. This is the master inequality of information theory — essentially all entropy inequalities follow from it. The proof uses Jensen's inequality: $-\\ln$ is convex, so $\\sum p(x) (-\\ln q(x)) \\geq -\\ln(\\sum p(x) q(x))$, but actually the standard proof uses $\\ln t \\leq t - 1$ (equivalent to Jensen for $-\\ln$). The requirement $q(x) > 0$ for all $x$ avoids division by zero. Fully proved as `gibbs_inequality` (with `kl_divergence_nonneg`).",
     "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality / information inequality)",
     "significance": "key",
     "relatedConcepts": [
@@ -101,7 +101,7 @@
     },
     "type": "concept",
     "title": "Log-Sum Inequality",
-    "content": "The log-sum inequality: $\\sum a_i \\ln(a_i/b_i) \\geq (\\sum a_i) \\ln((\\sum a_i)/(\\sum b_i))$ for non-negative $a_i$ and positive $b_i$. This is a generalization of the Gibbs inequality and is proved using the convexity of $f(t) = t \\ln t$ (or equivalently, Jensen's inequality). It implies Gibbs when $a_i = p(x_i)$ and $b_i = q(x_i)$. The log-sum inequality is the key tool for proving the data processing inequality and strong subadditivity. Currently sorry'd.",
+    "content": "The log-sum inequality: $\\sum a_i \\ln(a_i/b_i) \\geq (\\sum a_i) \\ln((\\sum a_i)/(\\sum b_i))$ for non-negative $a_i$ and positive $b_i$. This is a generalization of the Gibbs inequality and is proved using the convexity of $f(t) = t \\ln t$ (or equivalently, Jensen's inequality). It implies Gibbs when $a_i = p(x_i)$ and $b_i = q(x_i)$. The log-sum inequality is the key tool for proving the data processing inequality and strong subadditivity. Fully proved as `log_sum_inequality`.",
     "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$",
     "significance": "key",
     "relatedConcepts": [

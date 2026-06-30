@@ -110,6 +110,36 @@
     }
   ],
   "crossReferences": [],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Docstring contrasting Mathlib's homogeneous Polynomial.abc (with its char-p derivative-vanishing escape clause, illustrated by Xᵖ+1 = (X+1)ᵖ over 𝔽_p) with the two repackagings this file provides. Imports Mathlib, opens Polynomial / UFM / UFD, and fixes a field k with DecidableEq."
+    },
+    {
+      "id": "sec-add",
+      "title": "The Additive a + b = c Form",
+      "startLine": 46,
+      "endLine": 75,
+      "summary": "mason_stothers_add: the textbook inhomogeneous statement, derived by applying Polynomial.abc to the triple (a, b, -c) with a + b + (-c) = 0 and translating radical (radical_neg, since a·b·(-c) = -(a·b·c)), natDegree (natDegree_neg) and derivative (derivative_neg + neg_eq_zero) of -c back to c."
+    },
+    {
+      "id": "sec-charzero",
+      "title": "The Characteristic-Zero Bound",
+      "startLine": 77,
+      "endLine": 99,
+      "summary": "mason_stothers_charZero: over a CharZero field the escape clause is impossible for a non-constant factor (natDegree_eq_zero_of_derivative_eq_zero), so the disjunction collapses to the unconditional degree bound max{deg a, deg b, deg c} + 1 ≤ deg(rad(a·b·c)) given any non-constant factor."
+    },
+    {
+      "id": "sec-headline-rigidity",
+      "title": "Headline Inequality and Rigidity",
+      "startLine": 101,
+      "endLine": 131,
+      "summary": "natDegree_lt_radical_charZero (deg c < deg(rad(a·b·c)) for non-constant c, definitionally the c-component of the charZero bound) and mason_stothers_rigidity (the contrapositive: deg(rad(a·b·c)) ≤ deg c forces a, b, c all constant, via the impossible c.natDegree + 1 ≤ deg rad ≤ c.natDegree)."
+    }
+  ],
   "conclusion": {
     "summary": "Mathlib's polynomial ABC theorem Polynomial.abc (homogeneous form a + b + c = 0, with a derivative-vanishing escape clause) is repackaged into the classical inhomogeneous form a + b = c (mason_stothers_add) and sharpened over characteristic-zero fields, where the escape clause is eliminated: a non-constant coprime triple obeys the unconditional degree bound max{deg a, deg b, deg c} + 1 ≤ deg(rad(a·b·c)) (mason_stothers_charZero), with headline inequality deg c < deg(rad(a·b·c)) (natDegree_lt_radical_charZero) and rigidity corollary (mason_stothers_rigidity). All results are verified with 0 axioms and 0 sorries.",
     "implications": "Provides the textbook a + b = c statement of Mason–Stothers and a clean characteristic-zero degree bound — the polynomial analogue of the abc inequality — as reusable lemmas, complementing Mathlib's homogeneous formulation and its downstream polynomial Fermat theorem.",

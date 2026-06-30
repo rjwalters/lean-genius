@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "title": "The Half-Integer Thread, One Structural Step Further",
+    "content": "The parent GammaReflectionFormulaOQ01 established Euler's reflection formula and the special value Γ(1/2) = √π; the sibling OQ01OQ01 evaluated the symmetric Beta value B(1/2,1/2) = π. This file produces the explicit closed form of Γ at EVERY half-integer: Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!). Mathlib holds the two ingredients only in isolation — Real.Gamma_one_half_eq (the base value) and Real.Gamma_add_one (the functional equation) — but never records the resulting closed form nor its central-binomial packaging. The whole development is a single induction off the base value.",
+    "mathContext": "$\\Gamma\\!\\left(n+\\tfrac12\\right) = \\dfrac{(2n)!\\,\\sqrt{\\pi}}{4^{n}\\,n!}$ — the half-integer analogue of $\\Gamma(n+1)=n!$.",
+    "significance": "context",
+    "relatedConcepts": ["Gamma function", "half-integer values", "functional equation", "central binomial coefficient"],
+    "prerequisites": ["Euler Gamma function", "mathematical induction"]
+  },
+  {
+    "id": "ann-closed-form-statement",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 43, "endLine": 56 },
+    "type": "theorem",
+    "title": "gamma_nat_add_half: Statement and Base Case",
+    "content": "gamma_nat_add_half is the main result: Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) for every n : ℕ. The proof is induction on n. The base case n = 0 reduces the closed form to Γ(1/2) = √π after simp normalises (2·0)! = 1, 4⁰ = 1, 0! = 1, div_one — discharged by Real.Gamma_one_half_eq, itself a consequence of the Gaussian integral ∫₀^∞ e^{−x²}dx = √π/2.",
+    "mathContext": "Base case: $\\Gamma(1/2)=\\sqrt{\\pi}$ (equivalently the Gaussian integral $\\int_{0}^{\\infty} e^{-x^2}\\,dx=\\tfrac{\\sqrt\\pi}{2}$).",
+    "significance": "key",
+    "relatedConcepts": ["Real.Gamma_one_half_eq", "Gaussian integral", "induction base case"],
+    "prerequisites": ["Gamma function", "Gaussian integral"]
+  },
+  {
+    "id": "ann-inductive-step",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 57, "endLine": 76 },
+    "type": "insight",
+    "title": "The Inductive Step: the Recursion Factor n+1/2 IS the Ratio of Consecutive Closed Forms",
+    "content": "The succ case is the mathematical heart. Rewriting the argument as ((k+1)+1/2) = (k+1/2)+1 (harg) lets Real.Gamma_add_one peel off the functional-equation factor: Γ((k+1)+1/2) = (k+1/2)·Γ(k+1/2). Substituting the inductive hypothesis ih for Γ(k+1/2) leaves a pure algebraic identity. It closes because the half-integer recursion factor k+1/2 equals exactly (2k+2)(2k+1)/(4(k+1)) — the ratio of the (k+1)-th and k-th closed forms. The factorial recursions (2(k+1))! = (2k+2)(2k+1)(2k)! (e2) and (k+1)! = (k+1)·k! (efk) are transported to ℝ via push_cast, then field_simp (using the nonvanishing facts hk, h4, hk1, hs) and ring discharge the consecutive-ratio identity. pow_succ expands 4^{k+1}.",
+    "mathContext": "$k+\\tfrac12 = \\dfrac{(2k+2)(2k+1)}{4(k+1)}$, the ratio of the $(k{+}1)$-th to $k$-th closed form, reducing the step to a factorial identity.",
+    "significance": "key",
+    "relatedConcepts": ["Real.Gamma_add_one", "Nat.factorial_succ", "field_simp", "push_cast"],
+    "prerequisites": ["functional equation", "factorial recursion", "field arithmetic"]
+  },
+  {
+    "id": "ann-ratio",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 80, "endLine": 88 },
+    "type": "technique",
+    "title": "gamma_nat_add_half_div_sqrt_pi: The Rational Quotient",
+    "content": "Dividing the closed form by √π = Γ(1/2) cancels the only irrational factor, exhibiting Γ(n+1/2)/√π = (2n)!/(4ⁿ·n!) as a pure rational number. This is the clean half-integer analogue of Γ(n+1)/Γ(1) = n!. The proof rewrites with gamma_nat_add_half and clears √π ≠ 0 (positivity) via field_simp.",
+    "mathContext": "$\\dfrac{\\Gamma(n+\\tfrac12)}{\\sqrt{\\pi}} = \\dfrac{(2n)!}{4^{n}\\,n!}\\in\\mathbb{Q}$ — analogue of $\\Gamma(n+1)/\\Gamma(1)=n!$.",
+    "significance": "supporting",
+    "relatedConcepts": ["rational number", "Gamma quotient", "field_simp"],
+    "prerequisites": ["Gamma function", "field arithmetic"]
+  },
+  {
+    "id": "ann-central-binom",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 90, "endLine": 109 },
+    "type": "insight",
+    "title": "gamma_nat_add_half_centralBinom: Half-Integer Gamma Values are Central Binomials in Disguise",
+    "content": "The factorisation (2n)! = C(2n,n)·(n!)² (Nat.choose_mul_factorial_mul_factorial at (2n, n), after rewriting 2n−n = n via omega) repackages the closed form as Γ(n+1/2) = C(2n,n)·n!·√π/4ⁿ. This ties the half-integer Gamma values directly to the central binomial coefficients C(2n,n) = {1, 2, 6, 20, 70, …}, the same coefficients governing random-walk return probabilities and the Catalan numbers. The cast identity hcast moves the Nat factorisation to ℝ; field_simp and ring finish.",
+    "mathContext": "$(2n)! = \\dbinom{2n}{n}(n!)^2 \\Rightarrow \\Gamma(n+\\tfrac12) = \\dbinom{2n}{n}\\dfrac{n!\\,\\sqrt{\\pi}}{4^{n}}$.",
+    "significance": "key",
+    "relatedConcepts": ["central binomial coefficient", "Nat.choose_mul_factorial_mul_factorial", "Catalan numbers", "random walk"],
+    "prerequisites": ["binomial coefficients", "factorial identities"]
+  },
+  {
+    "id": "ann-spot-checks",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 125 },
+    "type": "context",
+    "title": "Spot Checks: Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4",
+    "content": "gamma_three_half and gamma_five_half evaluate the two smallest non-trivial half-integers directly from the functional equation rather than the general closed form, giving an independent cross-check: Γ(3/2) = (1/2)·Γ(1/2) = √π/2 (matching n = 1) and Γ(5/2) = (3/2)·Γ(3/2) = 3√π/4 (matching n = 2). These are the values that normalise the n-ball volume and the Gaussian/Student moments, so the closed form is the engine behind those concrete constants.",
+    "mathContext": "$\\Gamma(3/2)=\\tfrac{\\sqrt\\pi}{2}$, $\\Gamma(5/2)=\\tfrac{3\\sqrt\\pi}{4}$; matches the closed form at $n=1,2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["n-ball volume", "Gaussian moments", "Real.Gamma_add_one"],
+    "prerequisites": ["Gamma function", "functional equation"]
+  }
+]

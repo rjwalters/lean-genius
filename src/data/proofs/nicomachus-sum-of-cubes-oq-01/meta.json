@@ -1,0 +1,100 @@
+{
+  "id": "nicomachus-sum-of-cubes-oq-01",
+  "title": "Nicomachus's Theorem: ∑ k³ = (∑ k)²",
+  "slug": "nicomachus-sum-of-cubes-oq-01",
+  "description": "A fully machine-checked, self-contained proof that the sum of the first n cubes equals the square of the sum of the first n natural numbers (the square of the nth triangular number): ∑_{k<n} k³ = (∑_{k<n} k)². Proved by induction in ℕ, with the single truncated subtraction in the closed-form triangular number handled by a case split so `ring` never sees it. Mathlib has the Gauss triangular-number identity but not this sum-of-cubes identity.",
+  "meta": {
+    "author": "Nicomachus of Gerasa (c. 100 AD); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Squared_triangular_number",
+    "date": "c. 100",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "sum-of-cubes",
+      "power-sums",
+      "triangular-numbers",
+      "induction",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/NicomachusSumOfCubes.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Peels the top term off a range-sum: ∑_{i<n+1} f i = (∑_{i<n} f i) + f n. The engine of both inductive steps.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_id_mul_two",
+        "description": "Gauss's triangular-number identity in multiplicative form: (∑_{i<n} i)·2 = n·(n−1). Supplies the closed form for the triangular number without division.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      }
+    ],
+    "originalContributions": [
+      "Nicomachus's identity ∑_{k<n} k³ = (∑_{k<n} k)², proved by a clean induction whose step reduces exactly to m³ = m²·(m−1) + m², machine-checked over ℕ with 0 axioms and 0 sorries (Mathlib has the triangular-number identity but not this one)",
+      "The elementary cube lemma m³ = m²·(m−1) + m²: a single case split on m removes the truncated ℕ subtraction so each branch closes by `ring`, keeping the whole development inside ℕ with no integer casts",
+      "The 1-indexed 'first n cubes' corollary ∑_{k=0}^{n} k³ = (∑_{k=0}^{n} k)² over range (n+1)",
+      "The division-free closed form 4·∑_{k<n} k³ = (n·(n−1))², connecting the cube-sum directly to the doubled triangular number squared"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 86,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "cube-lemma",
+      "title": "The Cube Lemma (subtraction-free step)",
+      "startLine": 36,
+      "endLine": 46,
+      "summary": "The algebraic heart of the induction: m³ = m²·(m−1) + m². A case split on m = 0 / m = p+1 eliminates the truncated ℕ subtraction (m−1 becomes p), after which each branch is closed by `ring`. This keeps the whole proof inside ℕ — no casting to ℤ."
+    },
+    {
+      "id": "main-identity",
+      "title": "Nicomachus's Theorem",
+      "startLine": 48,
+      "endLine": 66,
+      "summary": "∑_{k<n} k³ = (∑_{k<n} k)² by induction. The step peels the top cube and the top triangular term with sum_range_succ, expands the square by `ring`, and substitutes the Gauss identity 2·∑k = m·(m−1) together with the cube lemma; a final `ring` (treating m−1 as an atom) closes it."
+    },
+    {
+      "id": "corollaries",
+      "title": "First-n-cubes and closed-form corollaries",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "Two consequences: the 1-indexed 'first n cubes' form over range (n+1) (the k=0 term vanishes), and the division-free closed form 4·∑k³ = (n·(n−1))² obtained by squaring the Gauss identity."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**The Squared Triangular Number**\n\nNicomachus of Gerasa (c. 100 AD), in his *Introduction to Arithmetic*, observed that the sum of the first $n$ cubes is always a perfect square — and not just any square, but the square of the $n$-th triangular number $T_n = 1 + 2 + \\cdots + n$:\n$$1^3 + 2^3 + \\cdots + n^3 = (1 + 2 + \\cdots + n)^2.$$\nThe identity has dozens of proofs — visual dissections, telescoping, and induction among them. Mathlib already contains Gauss's companion result $1 + 2 + \\cdots + n = \\tfrac{n(n+1)}{2}$ (as the division-free `sum_range_id_mul_two`), but not the cube identity. This entry supplies it.",
+    "problemStatement": "**Nicomachus's Theorem**\n\nFor every natural number $n$,\n$$\\sum_{k<n} k^3 = \\Big(\\sum_{k<n} k\\Big)^2.$$\nEquivalently, the sum of the first $n$ cubes equals the square of the $n$-th triangular number. The goal is a fully machine-checked proof with no axioms, no sorries, and no escape to $\\mathbb{Z}$.",
+    "proofStrategy": "**Induction, reduced to one algebraic identity**\n\nWrite $S_m = \\sum_{k<m} k$. The inductive step for $\\sum_{k<m} k^3 = S_m^2$ unfolds, via `sum_range_succ`, to\n$$S_m^2 + m^3 = (S_m + m)^2 = S_m^2 + 2 S_m m + m^2,$$\nso everything reduces to $m^3 = 2 S_m\\, m + m^2$. Gauss's identity gives $2 S_m = m(m-1)$, turning the goal into $m^3 = m^2(m-1) + m^2$ — the **cube lemma**. That lemma is proved by a case split on $m$ (so the truncated subtraction $m-1$ disappears) and `ring`. Substituting both facts and a final `ring` (treating $m-1$ as an opaque atom) closes the step.",
+    "keyInsights": [
+      "**The whole step is one scalar identity.** Expanding the square collapses Nicomachus's induction to $m^3 = m^2(m-1) + m^2$ — a fact about a single number $m$, completely independent of the sums.",
+      "**Case-split, don't cast.** The only obstacle in $\\mathbb{N}$ is the truncated subtraction $m-1$. Splitting $m = 0$ vs $m = p+1$ replaces $m-1$ by $p$, letting `ring` finish each branch — so the proof never leaves $\\mathbb{N}$ and needs no integer coercions.",
+      "**Reuse Gauss.** Rather than re-deriving the triangular number, the step plugs in Mathlib's `sum_range_id_mul_two`; the new mathematical content is exactly the cube lemma.",
+      "**Division-free closed form.** Stating $4\\sum k^3 = (n(n-1))^2$ multiplicatively keeps the corollary axiom- and division-free, mirroring how Mathlib states the Gauss sum."
+    ],
+    "prerequisites": [
+      "Mathematical induction",
+      "Finite sums over `Finset.range`",
+      "Triangular numbers"
+    ]
+  },
+  "conclusion": {
+    "summary": "Nicomachus's theorem $\\sum_{k<n} k^3 = (\\sum_{k<n} k)^2$ is established by a short induction whose inductive step reduces to the single elementary identity $m^3 = m^2(m-1) + m^2$. The proof stays entirely within $\\mathbb{N}$ — the only truncated subtraction is dissolved by a case split — and depends on just two Mathlib lemmas (`sum_range_succ`, `sum_range_id_mul_two`). 0 axioms, 0 sorries.",
+    "implications": [
+      "Supplies the sum-of-cubes / squared-triangular-number identity that Mathlib's `BigOperators` library does not currently provide, in a form (`sum_cubes`) directly reusable by other gallery proofs.",
+      "Demonstrates the 'case-split over cast' technique for keeping power-sum identities inside ℕ, avoiding the overhead of moving to ℤ purely to satisfy `ring`.",
+      "The division-free closed form `four_mul_sum_cubes` packages the result for downstream use without ℕ-division artifacts."
+    ],
+    "openQuestions": [
+      "Does the same case-split-then-ring pattern extend cleanly to Faulhaber's formula for ∑ k^p with general p, or does the growing degree force a different (e.g. Bernoulli-number) approach?",
+      "Can the squared-triangular identity be promoted to a bijective / combinatorial proof in Lean (counting ordered pairs in an n×n grid), matching the classic visual dissection?"
+    ]
+  }
+}

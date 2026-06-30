@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-erdos101-overview",
+    "proofId": "erdos-101-oq-01-incomplete-01",
+    "range": { "startLine": 5, "endLine": 56 },
+    "type": "concept",
+    "title": "Pinpointing the Frontier of a $100 Open Problem",
+    "content": "The docstring states Erdős Problem #101 OQ-01 (OPEN, $100 prize): for a planar point set P with no five collinear, is fourPointLineCount P (the number of lines through exactly four points) o(n²)? The trivial double-counting bound is O(n²); no o(n²) is known, and the Solymosi–Stojaković (2013) lower bound n^{2−o(1)} shows the gap lives entirely in a slowly-varying o(1) factor. This file does NOT attack the open part. Instead it asks the sharp delineating question — for which ε is the conjecture already an unconditional theorem? — and answers it: every ε > 1/12. The whole point is to certify exactly where the elementary method stops, isolating 0 < ε ≤ 1/12 as the open content.",
+    "mathContext": "OQ-01: $\\forall\\varepsilon>0\\ \\exists N\\ \\forall P\\,(|P|\\ge N,\\text{no 5 collinear}),\\ \\mathrm{fourPointLineCount}(P) < \\varepsilon n^2$. This file settles all $\\varepsilon > 1/12$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős problems", "incidence geometry", "four-point lines", "little-oh", "Solymosi–Stojaković bound"],
+    "prerequisites": ["extremal combinatorics", "asymptotic notation"]
+  },
+  {
+    "id": "ann-erdos101-realform",
+    "proofId": "erdos-101-oq-01-incomplete-01",
+    "range": { "startLine": 62, "endLine": 83 },
+    "type": "theorem",
+    "title": "Clearing the ℕ-Division from the Packing Bound",
+    "content": "twelve_mul_fourPointLineCount_le_sq takes the framework's elementary packing bound improved_upper_bound (fourPointLineCount P ≤ n(n−1)/12 in ℕ, from a pair-packing double count) and converts it to a clean real inequality 12·fourPointLineCount P ≤ n². The delicate part is the natural-number floor division: multiplying by 12 and using Nat.div_mul_le_self recovers 12·count ≤ n(n−1) without the floor loss, then n(n−1) ≤ n·n (Nat.sub_le) and exact_mod_cast lift to ℝ. This real-form bound is the single ingredient every later theorem rests on.",
+    "mathContext": "$12\\cdot\\mathrm{fourPointLineCount}(P) \\le n(n-1) \\le n^2$ over $\\mathbb{R}$, clearing $\\lfloor n(n-1)/12\\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": ["improved_upper_bound", "Nat.div_mul_le_self", "floor division", "exact_mod_cast", "pair packing"],
+    "prerequisites": ["natural-number division", "ℕ→ℝ casting"]
+  },
+  {
+    "id": "ann-erdos101-density",
+    "proofId": "erdos-101-oq-01-incomplete-01",
+    "range": { "startLine": 85, "endLine": 102 },
+    "type": "theorem",
+    "title": "The Uniform Density Ceiling of 1/12",
+    "content": "fourPointLineCount_le_sq_div_twelve restates the real-form bound as the density bound fourPointLineCount P ≤ n²/12 (one linarith step) — the four-point-line density never exceeds 1/12, with no asymptotics. fourPointLineCount_div_sq_le gives the ratio form fourPointLineCount P / n² ≤ 1/12 for nonempty P, via div_le_iff₀ on the positive n². The crucial feature is uniformity: this ceiling holds for every n, which is exactly what lets the next step dispense with any size threshold.",
+    "mathContext": "$\\mathrm{fourPointLineCount}(P) \\le \\frac{n^2}{12}$, equivalently $\\frac{\\mathrm{fourPointLineCount}(P)}{n^2} \\le \\frac{1}{12}$ for $n \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["density bound", "div_le_iff₀", "uniform bound", "linarith"],
+    "prerequisites": ["real division inequalities"]
+  },
+  {
+    "id": "ann-erdos101-headline",
+    "proofId": "erdos-101-oq-01-incomplete-01",
+    "range": { "startLine": 104, "endLine": 120 },
+    "type": "theorem",
+    "title": "The Headline: OQ-01 Holds for Every ε > 1/12",
+    "content": "fourPointLineCount_lt_eps_sq is the headline: for every ε > 1/12, every P with |P| ≥ 1 and no five collinear satisfies fourPointLineCount P < ε·n² — with NO size threshold N at all. The reason is that the uniform density ceiling n²/12 already beats ε·n² strictly for every n ≥ 1 as soon as ε > 1/12 (since n² > 0). The proof feeds the real-form bound, n² > 0, and the positivity of n²·(ε − 1/12) to nlinarith, which closes the strict inequality. The absence of a threshold is what makes this an unconditional theorem rather than an asymptotic statement.",
+    "mathContext": "$\\varepsilon > \\tfrac{1}{12},\\ n \\ge 1 \\Rightarrow \\mathrm{fourPointLineCount}(P) \\le \\tfrac{n^2}{12} < \\varepsilon n^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["nlinarith", "strict inequality", "threshold-free bound", "unconditional theorem"],
+    "prerequisites": ["the density bound", "nonlinear arithmetic"]
+  },
+  {
+    "id": "ann-erdos101-packaged",
+    "proofId": "erdos-101-oq-01-incomplete-01",
+    "range": { "startLine": 122, "endLine": 152 },
+    "type": "insight",
+    "title": "Packaging the Settled Half and Isolating the Open Content",
+    "content": "oq01_holds_above_one_twelfth packages the headline as the universally-quantified statement that the OQ-01 little-oh conjecture is an unconditional theorem for every ε above the threshold 1/12. The consequence, spelled out in the significance note, is that the entire open content of the $100 problem is the single regime 0 < ε ≤ 1/12: replacing the explicit constant 1/12 by a factor that tends to 0. The Solymosi–Stojaković n^{2−o(1)} lower bound forbids any polynomial-rate improvement, so the remaining work is a slowly-varying o(1) refinement. Cleanly certifying exactly where the elementary double-counting method stops — and that it stops precisely at density 1/12 — is itself the formal contribution.",
+    "mathContext": "Open content $= \\{0 < \\varepsilon \\le \\tfrac{1}{12}\\}$: sharpen the constant $\\tfrac{1}{12}$ to an $o(1)$ factor, which (by Solymosi–Stojaković) cannot decay polynomially.",
+    "significance": "critical",
+    "relatedConcepts": ["frontier delineation", "Solymosi–Stojaković", "o(1) factor", "elementary method boundary"],
+    "prerequisites": ["the headline theorem", "asymptotic lower bounds"]
+  }
+]

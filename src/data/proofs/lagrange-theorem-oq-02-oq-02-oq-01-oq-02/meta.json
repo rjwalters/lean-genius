@@ -41,7 +41,8 @@
       "A single congruence — fixed points ≡ |α| (mod p) — is the engine behind the entire structure theory of p-groups; everything else is a specialization of the acting set",
       "Choosing the conjugation action converts the abstract fixed-point set into the center, turning the counting congruence into the class equation mod p",
       "Nontriviality of the center is what lets one induct: quotienting by the center gives a smaller p-group, yielding nilpotency and a complete normal series",
-      "The same fixed-point congruence, applied to other actions, gives Cauchy's theorem and the Sylow theorems — the local-structure backbone of finite group theory"
+      "The same fixed-point congruence, applied to other actions, gives Cauchy's theorem and the Sylow theorems — the local-structure backbone of finite group theory",
+      "The quantitative refinement p ∣ |Z(G)| (not just Z(G) ≠ 1) is what the induction actually consumes: it guarantees the center is large enough that the quotient G/Z(G) is a strictly smaller p-group, so the descent terminates and never stalls on a center of coprime order"
     ],
     "prerequisites": [
       "Lagrange's theorem and the orbit–stabilizer theorem",
@@ -80,16 +81,30 @@
     {
       "id": "congruence",
       "title": "Part I: Burnside's fixed-point congruence",
-      "startLine": 47,
-      "endLine": 64,
-      "summary": "card_modEq_card_fixedPoints: a p-group acting on a finite set has fixed-point count ≡ |α| (mod p), since non-trivial orbits have p-power size. nonempty_fixedPoints_of_not_dvd: if p ∤ |α|, a fixed point must exist."
+      "startLine": 53,
+      "endLine": 59,
+      "summary": "card_modEq_card_fixedPoints: a p-group acting on a finite set has fixed-point count ≡ |α| (mod p), since non-trivial orbits have p-power size."
+    },
+    {
+      "id": "existence",
+      "title": "Part I (cont.): Existence of a fixed point",
+      "startLine": 60,
+      "endLine": 69,
+      "summary": "nonempty_fixedPoints_of_not_dvd: if p ∤ |α| then the action has a fixed point — the counting argument behind Cauchy- and Cayley-style existence results."
     },
     {
       "id": "center",
-      "title": "Part II: The class equation and the center",
-      "startLine": 65,
+      "title": "Part II: The class equation and center nontriviality",
+      "startLine": 71,
+      "endLine": 82,
+      "summary": "Applying the congruence to conjugation gives the class equation mod p. center_nontrivial and bot_lt_center: a nontrivial finite p-group has nontrivial center (⊥ < Z(G))."
+    },
+    {
+      "id": "p-divides-center",
+      "title": "Part II (cont.): p divides |Z(G)|",
+      "startLine": 83,
       "endLine": 90,
-      "summary": "Applying the congruence to conjugation gives the class equation mod p. center_nontrivial and bot_lt_center: a nontrivial finite p-group has nontrivial center (⊥ < Z(G)). p_dvd_card_center: p divides |Z(G)|, since the center is itself a nontrivial p-group."
+      "summary": "p_dvd_card_center: p divides |Z(G)|, since the center is itself a nontrivial p-group, so |Z(G)| = pⁿ with n > 0."
     },
     {
       "id": "summary",

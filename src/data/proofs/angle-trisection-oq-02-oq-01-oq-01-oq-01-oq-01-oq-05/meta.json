@@ -1,0 +1,219 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
+  "title": "The Automorphism Bound: |Aut_F(K)| ≤ [K : F]_s",
+  "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
+  "description": "Answers the parent entry's fifth open question by supplying the separable-degree bound |Aut_F(K)| ≤ [K:F]_s as a clean lemma — Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K — which Mathlib v4.26 does not package. The whole proof is one injection: an F-automorphism becomes an F-embedding into the algebraic closure by post-composing with the structure map. Corollaries: the finrank bound |Aut| ≤ [K:F], and the purely-inseparable boundary case Subsingleton (K ≃ₐ[F] K), making the parent's gal_card_one_of_purelyInseparable_splitting a one-liner.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "field-extensions",
+      "separability",
+      "separable-degree",
+      "purely-inseparable",
+      "automorphism-group"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlibDependencies": [
+      {
+        "theorem": "Field.finSepDegree",
+        "description": "The separable degree [K:F]_s, defined as Nat.card (Field.Emb F K) where Field.Emb F K := K →ₐ[F] AlgebraicClosure K. The target inequality is definitionally an inequality of Nat.card's.",
+        "module": "Mathlib.FieldTheory.SeparableDegree"
+      },
+      {
+        "theorem": "minpoly.AlgHom.fintype",
+        "description": "For a finite extension, the type of F-algebra homomorphisms E →ₐ[F] K is finite. This instance makes Field.Emb F K finite, which Nat.card_le_card_of_injective requires on the codomain.",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "Nat.card_le_card_of_injective",
+        "description": "Nat.card α ≤ Nat.card β given an injection α → β with [Finite β]. The counting step of the bound.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Field.finSepDegree_le_finrank",
+        "description": "[K:F]_s ≤ [K:F] for a finite extension; composed with the main bound to give the finrank corollary.",
+        "module": "Mathlib.FieldTheory.SeparableDegree"
+      },
+      {
+        "theorem": "IsPurelyInseparable.finSepDegree_eq_one",
+        "description": "A purely inseparable extension has separable degree 1; combined with the bound to force a trivial automorphism group.",
+        "module": "Mathlib.FieldTheory.PurelyInseparable.Basic"
+      },
+      {
+        "theorem": "Finite.card_le_one_iff_subsingleton",
+        "description": "For a finite type, Nat.card α ≤ 1 ↔ Subsingleton α; turns the cardinality bound into the Subsingleton conclusion.",
+        "module": "Mathlib.Data.Finite.Card"
+      }
+    ],
+    "originalContributions": [
+      "Resolves the open question: Mathlib v4.26 does NOT package the automorphism bound |Aut_F(K)| ≤ [K:F]_s, and the spelling `Module.finSepDegree` in the question does not exist — the separable degree lives as `Field.finSepDegree F K := Nat.card (Field.Emb F K)`. So the question's second branch applies: supply the lemma.",
+      "card_algEquiv_le_finSepDegree: Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K for finite K/F. The entire content is one injection (K ≃ₐ[F] K) ↪ Field.Emb F K given by e ↦ (structure map K → AlgebraicClosure K) ∘ e, injective because the structure map is injective (a ring map out of a field into a nonzero ring), counted by Nat.card_le_card_of_injective with finiteness from minpoly.AlgHom.fintype; the target is definitionally Nat.card (Field.Emb F K).",
+      "card_algEquiv_le_finrank: the finrank form |Aut_F(K)| ≤ [K:F], obtained by composing the separable-degree bound with Field.finSepDegree_le_finrank.",
+      "subsingleton_algEquiv_of_isPurelyInseparable: a finite purely inseparable extension has a subsingleton automorphism group — this is exactly the parent entry's second open question (Mathlib has no such direct theorem) and the abstract reason its gal_card_one_of_purelyInseparable_splitting holds: purely inseparable ⟹ finSepDegree = 1 ⟹ Nat.card ≤ 1.",
+      "card_algEquiv_eq_one_of_isPurelyInseparable: the boundary case as an equality, Nat.card (K ≃ₐ[F] K) = 1.",
+      "Demonstrates that the parent entry's Frobenius-based algEquiv_eq_refl_of_isPurelyInseparable can be replaced by a separable-degree counting argument, factoring the boundary case through a general, reusable bound rather than a char-p-specific identity."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked over Mathlib v4.26; #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no axiom declarations, no structure-encoded assumptions, no native_decide).",
+    "lineCount": 105,
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05.lean",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "lineCount": 105,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The bound |Aut_F(K)| ≤ [K:F]_s is the cardinality face of Artin's theorem on linear independence of characters (Artin, *Galois Theory*, 1942) and is the standard route to the inequality |Gal| ≤ [K:F] with equality characterising the Galois (normal + separable) case (Lang, *Algebra*, V §4, §6). The separable degree [K:F]_s counts F-embeddings of K into an algebraic closure, and every F-automorphism of K is such an embedding once composed with the inclusion K ↪ \\bar K; the bound is therefore the trivial observation that automorphisms are a subset of embeddings, made precise by counting. Mathlib formalised the separable degree as `Field.finSepDegree F K = Nat.card (Field.Emb F K)` (field-theory team, 2023–2024) and proved the divisibility [K:F]_s | [K:F], but — as this entry confirms — never recorded the automorphism-side bound as a named lemma. The boundary instance, where K/F is purely inseparable so [K:F]_s = 1, recovers the parent entry's corrected statement that a purely inseparable extension has a trivial automorphism group, here without the explicit Frobenius computation.",
+    "problemStatement": "**Question** (parent entry, 5th open question): Does Mathlib formalise the separable-degree bound |Aut_F(K)| ≤ [K:F]_s in the form `Nat.card (K ≃ₐ[F] K) ≤ Module.finSepDegree F K`? If so, `gal_card_one_of_purelyInseparable_splitting` becomes a one-liner. If not, supply the clean lemma `Nat.card_alg_equiv_le_finSepDegree`.\n\n**Answer**: Mathlib v4.26 does NOT have this bound, and `Module.finSepDegree` is not the name in this toolchain (the separable degree is `Field.finSepDegree`). So we take the second branch and supply the lemma: `card_algEquiv_le_finSepDegree : Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K` for any finite extension. We then derive the finrank bound and the purely-inseparable boundary case (a Subsingleton automorphism group), which is also the parent's open question on a direct `Subsingleton (K ≃ₐ[F] K)` theorem.",
+    "keyInsights": [
+      "The bound is literally a subset-counting statement: Aut_F(K) ↪ Emb_F(K) := (K →ₐ[F] \\bar K) by post-composition with the structure map K → \\bar K, and [K:F]_s is *defined* as Nat.card (Emb_F(K)). No deep theory is needed — only injectivity of the embedding and finiteness of the codomain.",
+      "Injectivity is the one nontrivial step, and it is elementary: if (algMap ∘ e₁) = (algMap ∘ e₂) as algebra homs then algMap (e₁ x) = algMap (e₂ x) for all x, and algMap : K → \\bar K is injective because any ring homomorphism out of a field into a nonzero ring is injective.",
+      "Finiteness of Emb_F(K) for a finite extension is already an instance in Mathlib (`minpoly.AlgHom.fintype`), so the counting lemma `Nat.card_le_card_of_injective` applies directly.",
+      "The purely-inseparable boundary case falls out for free: [K:F]_s = 1 (IsPurelyInseparable.finSepDegree_eq_one) plus the bound gives Nat.card ≤ 1, hence Subsingleton. This replaces the parent's char-p Frobenius argument (σ(x)−x)^{p^n}=0 with a one-line consequence of a general degree bound.",
+      "The false axiom the grandparent chain disproved — `insep_gal_trivial`, which would put [K:F] (not [K:F]_s) on the right — fails exactly because the separable degree, not the full degree, controls |Aut|; the X⁴+X²+a counterexample has [K:F]_s = 2 < 4 = [K:F] and |Gal| = 2."
+    ],
+    "proofStrategy": "1. Define `toEmb : (K ≃ₐ[F] K) → Field.Emb F K` by `e ↦ (IsScalarTower.toAlgHom F K (AlgebraicClosure K)).comp e.toAlgHom`.\n2. Prove `toEmb_injective`: from equality of the composed algebra homs, apply both sides to x, then use injectivity of `algebraMap K (AlgebraicClosure K)` (ring map out of a field) and `AlgEquiv.ext`.\n3. `card_algEquiv_le_finSepDegree` := `Nat.card_le_card_of_injective toEmb toEmb_injective`; the codomain is finite via `minpoly.AlgHom.fintype` and `Field.finSepDegree` is definitionally its Nat.card.\n4. `card_algEquiv_le_finrank` := compose with `Field.finSepDegree_le_finrank`.\n5. `subsingleton_algEquiv_of_isPurelyInseparable`: combine the bound with `IsPurelyInseparable.finSepDegree_eq_one` to get Nat.card ≤ 1, then `Finite.card_le_one_iff_subsingleton`.\n6. `card_algEquiv_eq_one_of_isPurelyInseparable`: subsingleton + nonempty (identity) gives Nat.card = 1.",
+    "prerequisites": [
+      "Separable degree: [K:F]_s as the number of F-embeddings of K into an algebraic closure; Mathlib's Field.finSepDegree and Field.Emb",
+      "Algebra homomorphisms and algebra equivalences: K →ₐ[F] L, K ≃ₐ[F] K, and the structure map via IsScalarTower.toAlgHom",
+      "Injectivity of ring homomorphisms out of a field into a nonzero ring",
+      "Nat.card and counting under injections (Nat.card_le_card_of_injective) with finiteness of hom-types for finite extensions",
+      "Purely inseparable extensions: IsPurelyInseparable and the fact that they have separable degree 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "file-header",
+      "title": "File Header — Reading the Open Question",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Explains that Mathlib v4.26 lacks the bound and that `Module.finSepDegree` is a misnomer for `Field.finSepDegree`, so the open question's second branch (supply the lemma) is the right reading; sketches the one-injection proof and its consequences."
+    },
+    {
+      "id": "embedding",
+      "title": "The Automorphism-to-Embedding Map",
+      "startLine": 49,
+      "endLine": 70,
+      "summary": "Defines toEmb (post-composition of an automorphism with the structure map K → AlgebraicClosure K) and proves it injective using injectivity of algebraMap K (AlgebraicClosure K)."
+    },
+    {
+      "id": "main-bound",
+      "title": "The Bound and the finrank Corollary",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "card_algEquiv_le_finSepDegree (the headline bound via Nat.card_le_card_of_injective) and card_algEquiv_le_finrank (composing with finSepDegree_le_finrank)."
+    },
+    {
+      "id": "purely-inseparable",
+      "title": "Purely Inseparable Boundary Case",
+      "startLine": 87,
+      "endLine": 105,
+      "summary": "subsingleton_algEquiv_of_isPurelyInseparable and card_algEquiv_eq_one_of_isPurelyInseparable: the bound at [K:F]_s = 1 forces a trivial automorphism group, recovering the parent's purely-inseparable conclusion without the Frobenius computation."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. Answers its fifth open question (the separable-degree bound) and its second open question (a direct Subsingleton (K ≃ₐ[F] K) theorem for purely inseparable extensions), and shows its gal_card_one_of_purelyInseparable_splitting is the boundary instance of a general bound."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "context",
+      "description": "Companion entry computing |Gal(8X³−6X−1/ℚ)| = 3 in characteristic 0; the bound |Aut| ≤ [K:F]_s is the general principle behind such cardinality computations, with equality in the separable/normal case."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "context",
+      "description": "Galois-theoretic infrastructure that consumes |Gal(f)| bounds; the automorphism-vs-separable-degree inequality is a reusable building block for any characteristic-p extension of the Abel-Ruffini program."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "card_algEquiv_le_finSepDegree",
+      "type": "theorem",
+      "statement": "For a finite extension K/F: Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K",
+      "significance": "The headline result and direct answer to the open question: the automorphism bound |Aut_F(K)| ≤ [K:F]_s, packaged as the clean lemma Mathlib lacks. Proof is one injection of automorphisms into embeddings.",
+      "description": "The number of F-algebra automorphisms of a finite extension is at most its separable degree. Proved by injecting (K ≃ₐ[F] K) into Field.Emb F K via post-composition with the structure map and counting with Nat.card_le_card_of_injective."
+    },
+    {
+      "name": "card_algEquiv_le_finrank",
+      "type": "theorem",
+      "statement": "For a finite extension K/F: Nat.card (K ≃ₐ[F] K) ≤ Module.finrank F K",
+      "significance": "The classical |Aut_F(K)| ≤ [K:F] bound, obtained by composing the separable-degree bound with [K:F]_s ≤ [K:F].",
+      "description": "Corollary: the automorphism count is bounded by the full degree, via card_algEquiv_le_finSepDegree and Field.finSepDegree_le_finrank."
+    },
+    {
+      "name": "subsingleton_algEquiv_of_isPurelyInseparable",
+      "type": "theorem",
+      "statement": "For a finite purely inseparable extension K/F: Subsingleton (K ≃ₐ[F] K)",
+      "significance": "Answers the parent's second open question (Mathlib has no direct Subsingleton (K ≃ₐ[F] K) for purely inseparable K/F) and is the abstract reason gal_card_one_of_purelyInseparable_splitting holds: [K:F]_s = 1 plus the bound forces a trivial automorphism group, with no char-p Frobenius computation.",
+      "description": "A finite purely inseparable extension has a subsingleton automorphism group. Combines the separable-degree bound with IsPurelyInseparable.finSepDegree_eq_one and Finite.card_le_one_iff_subsingleton."
+    },
+    {
+      "name": "card_algEquiv_eq_one_of_isPurelyInseparable",
+      "type": "theorem",
+      "statement": "For a finite purely inseparable extension K/F: Nat.card (K ≃ₐ[F] K) = 1",
+      "significance": "The boundary case as an equality — exactly the conclusion of the parent's gal_card_one_of_purelyInseparable_splitting, now a corollary of a general degree bound.",
+      "description": "A finite purely inseparable extension has exactly one F-algebra automorphism (the identity). Subsingleton plus the nonempty identity gives Nat.card = 1."
+    },
+    {
+      "name": "toEmb_injective",
+      "type": "lemma",
+      "statement": "Function.Injective (toEmb F K), where toEmb e = (structure map K → AlgebraicClosure K) ∘ e",
+      "significance": "The single nontrivial step of the bound: post-composition with the structure map is injective because algebraMap K (AlgebraicClosure K) is injective (a ring map out of a field).",
+      "description": "Distinct automorphisms give distinct embeddings into the algebraic closure. Proof: equality of the composed algebra homs gives algebraMap (e₁ x) = algebraMap (e₂ x), and algebraMap K (AlgebraicClosure K) is injective."
+    },
+    {
+      "name": "toEmb",
+      "type": "definition",
+      "statement": "toEmb (e : K ≃ₐ[F] K) : Field.Emb F K := (IsScalarTower.toAlgHom F K (AlgebraicClosure K)).comp e.toAlgHom",
+      "significance": "The map realising an automorphism as an embedding into the algebraic closure; its injectivity is the heart of the bound.",
+      "description": "Sends an F-algebra automorphism of K to the F-embedding of K into AlgebraicClosure K obtained by following it with the structure map."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Artin, E. (1942). Galois Theory. Notre Dame Mathematical Lectures.",
+      "relevance": "Linear independence of characters and the resulting bound on the number of field automorphisms / embeddings — the classical source of |Aut_F(K)| ≤ [K:F]_s."
+    },
+    {
+      "type": "textbook",
+      "citation": "Lang, S. (2002). Algebra (3rd ed.), Chapter V (Algebraic Extensions), §4 (Galois Theory) and §6 (Inseparable Extensions). Springer GTM 211.",
+      "relevance": "States the separable-degree bound |Aut_F(K)| ≤ [K:F]_s with equality iff K/F is Galois, and treats the purely inseparable boundary case [K:F]_s = 1."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.FieldTheory.SeparableDegree.\" (accessed 2026).",
+      "relevance": "Defines Field.finSepDegree and Field.Emb and proves [K:F]_s | [K:F]; the present entry adds the missing automorphism-side bound on top of this API."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.FieldTheory.PurelyInseparable.Basic.\" (accessed 2026).",
+      "relevance": "Provides IsPurelyInseparable.finSepDegree_eq_one, the input to the purely-inseparable boundary case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Mathlib v4.26 does not package the automorphism bound |Aut_F(K)| ≤ [K:F]_s, and the open question's `Module.finSepDegree` is `Field.finSepDegree` in this toolchain. This entry supplies the lemma `card_algEquiv_le_finSepDegree : Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K`, whose entire content is the injection of automorphisms into embeddings of K into its algebraic closure, counted with `Nat.card_le_card_of_injective`. From it we derive the finrank bound |Aut| ≤ [K:F] and, at the purely-inseparable boundary [K:F]_s = 1, a Subsingleton automorphism group — answering a second open question of the parent and recovering its gal_card_one_of_purelyInseparable_splitting as a one-line corollary of a general degree bound rather than a char-p Frobenius identity. Fully verified, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "The lemma is a clean, self-contained upstream candidate for Mathlib.FieldTheory.SeparableDegree (the automorphism-side companion to the existing finSepDegree_le_finrank). Its boundary instance gives the purely-inseparable Galois-triviality conclusion uniformly, decoupling it from the explicit Frobenius computation used in the parent entry.",
+    "openQuestions": [
+      "Can the bound be sharpened to an equality criterion in Mathlib's API — Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K iff K/F is normal — recovering the Galois characterisation |Gal| = [K:F] for normal separable extensions?",
+      "Does the injection toEmb extend to a bijection onto the normal embeddings, giving a Mathlib-level proof that |Aut_F(K)| equals the number of F-embeddings of K into K (rather than into the algebraic closure) for normal K/F?"
+    ]
+  },
+  "sorries": 0
+}

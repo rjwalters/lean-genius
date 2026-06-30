@@ -54,6 +54,32 @@
       "Basic integer reasoning: bounding and interval_cases, casting ℤ → ℚ"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Docstring stating the Rational Root Theorem (numerator divides the constant term, denominator divides the leading coefficient), the monic corollary that rational roots are integers (Z integrally closed in Q), and the irrationality application to √2. Notes the file specializes Mathlib's integrally-closed-domain results to Z ⊂ Q. Fully verified (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$r=a/b$ root of $p\\in\\mathbb{Z}[X]\\Rightarrow a\\mid p(0),\\ b\\mid p_{\\deg}$; monic $\\Rightarrow r\\in\\mathbb{Z}$."
+    },
+    {
+      "id": "sec-divisibility",
+      "title": "The Rational Root Theorem over Z ⊂ Q",
+      "startLine": 30,
+      "endLine": 47,
+      "summary": "num_dvd_of_root (numerator of a rational root divides p.coeff 0) and den_dvd_of_root (denominator divides p.leadingCoeff), specializing Mathlib's num_dvd_of_is_root / den_dvd_of_is_root to Z ⊂ Q via IsFractionRing.num/.den. Also isInteger_of_monic_root and monic_root_isInteger: a rational root of a monic integer polynomial is an integer.",
+      "mathContext": "$a\\mid p.\\mathrm{coeff}\\,0$, $b\\mid p.\\mathrm{leadingCoeff}$; monic $\\Rightarrow \\exists z\\in\\mathbb{Z},(z:\\mathbb{Q})=r$."
+    },
+    {
+      "id": "sec-sqrt2",
+      "title": "Application: Irrationality of √2",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "no_int_sq_eq_two (∀ z : ℤ, z² ≠ 2, via nlinarith bounds + interval_cases) and no_rat_sq_eq_two (√2 irrational): a rational r with r² = 2 is a root of the monic X² − 2, hence an integer z with z² = 2, contradicting no_int_sq_eq_two. The template generalizes to ⁿ√p for any prime p.",
+      "mathContext": "$r^2=2\\Rightarrow r$ is a monic root $\\Rightarrow r=z\\in\\mathbb{Z}\\Rightarrow z^2=2$, impossible."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "eisenstein-criterion-oq-01",

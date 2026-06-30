@@ -1,0 +1,154 @@
+{
+  "id": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+  "slug": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+  "sorries": 0,
+  "title": "Tightness of the Binary-GCD Step-Count Constant: It Is 1, Not 2",
+  "description": "The parent gallery proof `bezout-identity-oq-01-oq-01-oq-01` (Binary GCD O(log² n) Bit Complexity) proves that Stein's binary GCD on positive inputs a, b terminates in at most 2·(log₂ a + log₂ b) + 2 recursive calls. Its fourth open question asks whether the constant 2 in this bound is asymptotically tight — i.e., whether some explicit input family forces the step count up to ≈ 2·(log₂ a + log₂ b). This entry answers NO: the tight constant is 1, not 2. It proves, axiom-free, the sharp bound binaryGcdSteps a b ≤ log₂ a + log₂ b + 1 (halving the parent's leading constant) by carrying out the parent's measure-drop induction with the slack removed, and then shows the constant 1 is best possible by exhibiting the worst-case family (1, 2^k): binaryGcdSteps 1 (2^k) = k + 1 = log₂ 1 + log₂ (2^k) + 1, attaining the sharp bound with equality for every k. Consequently the parent's envelope 2·M + 2 (M = log₂ a + log₂ b) overcounts the true worst case M + 1 by an asymptotic factor of 2; the parent's constant 2 is not tight, and this file pins the tight constant at 1. The phenomenon (worst-case step count = M + 1, attained at (1, 2^k)) was confirmed exhaustively for all a, b < 2^11 and on 3·10^5 random pairs up to 10^9 before formalization.",
+  "leanFile": {
+    "lineCount": 247,
+    "axiomCount": 0,
+    "path": "Proofs/BezoutIdentityOQ01OQ01OQ01OQ04.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "meta": {
+    "author": "Formalization original to Lean Genius (binary GCD step-count tightness)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ01OQ01OQ04.lean",
+    "tags": [
+      "number-theory",
+      "binary-gcd",
+      "complexity",
+      "step-count",
+      "tightness",
+      "lower-bound",
+      "logarithm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-25",
+    "lineCount": 247,
+    "originalContributions": [
+      "binaryGcdSteps_le_log_sharp: the sharp step-count bound — for positive a, b, binaryGcdSteps a b ≤ log₂ a + log₂ b + 1. This halves the leading constant of the parent's bound 2·(log₂ a + log₂ b) + 2. Proved by the parent's strong induction on a + b, but with the tight target: in each recursive branch at least one argument loses a bit (log₂ drops by ≥ 1), and the omega arithmetic is tightened to the +1 envelope instead of the parent's 2×+2",
+      "binaryGcdSteps_one_pow: the worst-case family value — binaryGcdSteps 1 (2^k) = k + 1. With a = 1 (odd) and b = 2^k (even), every step takes the 'a odd, b even' branch and halves b, peeling exactly one bit per step for k steps down to binaryGcdSteps 1 1 = 1. Proved by induction on k with explicit if-branch resolution",
+      "sharp_bound_tight: exact tightness of the constant 1 — binaryGcdSteps 1 (2^k) = log₂ 1 + log₂ (2^k) + 1. The family (1, 2^k) attains the sharp bound with equality for every k, so the leading constant 1 in binaryGcdSteps_le_log_sharp cannot be reduced",
+      "parent_constant_not_tight: the parent's constant 2 is not asymptotically tight — for the family (1, 2^k), binaryGcdSteps 1 (2^k) = k + 1 while the parent's envelope equals 2k + 2, a factor-2 overcount; the sharp bound (constant 1) is the tight one",
+      "sharp_refines_parent: the sharp bound implies the parent's — log₂ a + log₂ b + 1 ≤ 2·(log₂ a + log₂ b) + 2, so binaryGcdSteps_le_log_sharp recovers the parent's binaryGcdSteps_le_log as a corollary"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all five theorems (binaryGcdSteps_le_log_sharp, binaryGcdSteps_one_pow, sharp_bound_tight, parent_constant_not_tight, sharp_refines_parent). No native_decide is used (so no Lean.ofReduceBool); the worked examples are discharged by the proven theorems rather than by kernel evaluation. The step counter binaryGcdSteps and its O(log) upper bound are imported from the verified parent entry bezout-identity-oq-01-oq-01-oq-01.",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Stein's binary GCD algorithm (1967) replaces Euclid's divisions with subtractions and halvings, and its step count is classically O(log a + log b) — see Knuth, TAOCP Vol. 2, §4.5.2, and Sørenson (1994). The parent gallery entry formalizes the upper bound binaryGcdSteps a b ≤ 2·(log₂ a + log₂ b) + 2 in Lean 4. A natural question, recorded as the parent's fourth open follow-up, is whether the constant 2 in that bound is the true asymptotic rate or merely an artifact of the inductive bookkeeping.",
+    "problemStatement": "Is the constant 2 in the binary-GCD step-count bound 2·(log₂ a + log₂ b) + 2 asymptotically tight? Equivalently, is there an explicit input family (aₙ, bₙ) whose step count grows like 2·(log₂ aₙ + log₂ bₙ), matching the bound's leading constant?",
+    "proofStrategy": "Two halves. (1) Sharp upper bound: re-run the parent's strong induction on a + b, but target log₂ a + log₂ b + 1 instead of 2·(log₂ a + log₂ b) + 2. The measure M = log₂ a + log₂ b drops by ≥ 1 in every recursive branch (both-even drops it by 2; each single-even or both-odd subtract branch drops it by ≥ 1), and the +1 envelope survives the omega arithmetic in every case — the only slack in the parent's proof was in the constants, not the structure. (2) Matching lower bound: evaluate the algorithm on the family (1, 2^k). Since 1 is odd and 2^k is even, every step halves the second argument, giving binaryGcdSteps 1 (2^k) = 1 + binaryGcdSteps 1 (2^{k-1}) = … = k + 1. As log₂ 1 + log₂ (2^k) = k, this equals the sharp bound exactly. The two halves together pin the worst-case step count at M + 1, so the tight constant is 1 and the parent's 2 overcounts by a factor of 2.",
+    "keyInsights": [
+      "The worst case over all inputs with log₂ a + log₂ b = M is exactly M + 1, attained at (1, 2^M). The measure can never drop by less than 1 per step, so M + 1 steps is the most you can buy; the family (1, 2^k) spends exactly that budget.",
+      "The parent's constant 2 was an artifact of the inductive arithmetic, not of the algorithm. Removing the slack — keeping the target at M + 1 rather than 2M + 2 — leaves every branch's omega goal still solvable, because each branch already drops M by at least 1.",
+      "The extremal family is the simplest imaginable: a = 1 fixed, b a power of two. No Fibonacci-style worst case is needed (Fibonacci inputs are the Euclidean worst case, not the binary-GCD one). Halving a power of two peels one bit per step with no subtraction interference.",
+      "Tightness here is a genuine matching lower bound on a concrete recursive cost function — binaryGcdSteps 1 (2^k) = k + 1 exactly — not merely an order-of-magnitude Ω(log) statement, so it certifies the constant, not just the rate.",
+      "Empirical search guided the formalization: scanning all a, b < 2^11 revealed the clean law max-steps = M + 1 and identified (1, 2^k) as extremal, turning a vague 'is 2 tight?' question into a precise provable equality."
+    ]
+  },
+  "conclusion": {
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (247 lines, 5 theorems) resolving the parent's fourth open question on the tightness of the binary-GCD step-count constant. It proves the sharp bound binaryGcdSteps a b ≤ log₂ a + log₂ b + 1 (constant 1, half the parent's 2) and shows it is attained with equality by the explicit family (1, 2^k), where binaryGcdSteps 1 (2^k) = k + 1. Hence the worst-case step count is exactly M + 1 (M = log₂ a + log₂ b), the tight constant is 1, and the parent's constant 2 is not asymptotically tight.",
+    "implications": "The result upgrades the parent's O(log) step-count bound from an order statement to a sharp one with the exact leading constant, and supplies a reusable template for proving complexity bounds tight: pair the existing upper-bound induction (run with the constant slack removed) against an explicit extremal family whose recursive cost is computed in closed form. The extremal witness (1, 2^k) and the closed-form value k + 1 are the cleanest possible certificate. The sharp bound also strengthens the parent's downstream O(log²) bit-complexity corollary by a constant factor.",
+    "openQuestions": [
+      "Does the sharp constant 1 transfer to the bit-operation count? The parent's total bit complexity multiplies steps by a per-step cost of 3·(log₂(max a b) + 1); substituting the sharp step bound improves the leading constant of the O(log²) bound, but the optimal bit-level constant (accounting for the actual per-step cost on the extremal family) is not pinned here.",
+      "Is the additive '+1' itself optimal, or can the worst case be characterized exactly as M + 1 for every M with a full description of all extremal pairs (not just (1, 2^k))? The empirical data suggests M + 1 is the universal maximum, but a complete classification of equality cases is open.",
+      "Does an analogous sharp constant exist for the extended binary GCD (tracking Bézout coefficients) and for the half-GCD variant (parent oq-02), whose step-count recurrences differ?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "The question: is the constant 2 tight?",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring framing the parent's bound 2·(log₂ a + log₂ b) + 2 and the fourth open question. States the answer (the tight constant is 1, not 2) and previews both halves: the sharp upper bound and the extremal family (1, 2^k)."
+    },
+    {
+      "id": "helpers",
+      "title": "§I Log-monotonicity helpers",
+      "startLine": 54,
+      "endLine": 85,
+      "summary": "Restates the handful of Nat.log facts the sharp induction needs (the parent's analogues are private): log halves under division by 2 (log_div_two), monotonicity (log_mono), and the two both-odd subtraction drops log_odd_sub_half / log_odd_sub_half_left."
+    },
+    {
+      "id": "sharp-bound",
+      "title": "§II Sharp upper bound (constant 1)",
+      "startLine": 87,
+      "endLine": 177,
+      "summary": "binaryGcdSteps_le_log_sharp: binaryGcdSteps a b ≤ log₂ a + log₂ b + 1 for positive a, b. The parent's strong induction on a + b carried out with the tight target; each branch drops the measure by ≥ 1 and the +1 envelope survives every omega goal. sharp_refines_parent records that this implies the parent's 2×+2 bound."
+    },
+    {
+      "id": "worst-case-family",
+      "title": "§III Worst-case family (1, 2^k): exact value",
+      "startLine": 179,
+      "endLine": 211,
+      "summary": "binaryGcdSteps_one_pow: binaryGcdSteps 1 (2^k) = k + 1, by induction on k — with a = 1 odd and b = 2^k even, every step halves b. sharp_bound_tight: this equals log₂ 1 + log₂ (2^k) + 1, so the sharp bound is attained with equality and the constant 1 is best possible."
+    },
+    {
+      "id": "not-tight",
+      "title": "§IV The parent's constant 2 is not tight",
+      "startLine": 213,
+      "endLine": 229,
+      "summary": "parent_constant_not_tight: on the family (1, 2^k) the actual count k + 1 sits against the parent's envelope 2k + 2 — an asymptotic factor-2 overcount. The sharp constant 1 is therefore the tight one."
+    },
+    {
+      "id": "examples",
+      "title": "§V Worked examples",
+      "startLine": 231,
+      "endLine": 247,
+      "summary": "Axiom-free worked instances: binaryGcdSteps 1 (2^5) = 6 and = 11 at k = 10 via the general theorem; equality with the sharp bound at k = 7; and the sharp bound beating the parent's at k = 10. No native_decide is used."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Resolves the parent's fourth open question (tightness of the step-count constant 2). Reuses the parent's binaryGcdSteps definition and the structure of its binaryGcdSteps_le_log induction, sharpens the bound from 2·(log₂ a + log₂ b) + 2 to log₂ a + log₂ b + 1, and proves the new constant 1 is tight via the explicit family (1, 2^k)."
+    },
+    {
+      "targetId": "bezout-identity-oq-01-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent entry defining the binary GCD algorithm whose recursion the step counter mirrors."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "binaryGcdSteps_le_log_sharp",
+      "type": "headline",
+      "description": "Sharp step-count bound: for positive a, b, binary GCD terminates in at most log₂ a + log₂ b + 1 recursive calls — half the leading constant of the parent's bound. Proved by the parent's measure-drop induction with the slack removed.",
+      "leanType": "∀ (a b : ℕ), 0 < a → 0 < b → binaryGcdSteps a b ≤ Nat.log 2 a + Nat.log 2 b + 1"
+    },
+    {
+      "name": "binaryGcdSteps_one_pow",
+      "type": "core",
+      "description": "Worst-case family value: binaryGcdSteps 1 (2^k) = k + 1. With a = 1 odd and b = 2^k even, every step halves b, peeling one bit per step.",
+      "leanType": "∀ (k : ℕ), binaryGcdSteps 1 (2 ^ k) = k + 1"
+    },
+    {
+      "name": "sharp_bound_tight",
+      "type": "core",
+      "description": "Exact tightness of the constant 1: the family (1, 2^k) attains the sharp bound with equality, binaryGcdSteps 1 (2^k) = log₂ 1 + log₂ (2^k) + 1, so the leading constant 1 cannot be reduced.",
+      "leanType": "∀ (k : ℕ), binaryGcdSteps 1 (2 ^ k) = Nat.log 2 1 + Nat.log 2 (2 ^ k) + 1"
+    },
+    {
+      "name": "parent_constant_not_tight",
+      "type": "core",
+      "description": "The parent's constant 2 is not asymptotically tight: on (1, 2^k) the actual step count k + 1 sits against the parent's envelope 2k + 2, an asymptotic factor-2 overcount.",
+      "leanType": "∀ (k : ℕ), binaryGcdSteps 1 (2 ^ k) = k + 1 ∧ 2 * (Nat.log 2 1 + Nat.log 2 (2 ^ k)) + 2 = 2 * k + 2 ∧ binaryGcdSteps 1 (2 ^ k) ≤ 2 * (Nat.log 2 1 + Nat.log 2 (2 ^ k)) + 2"
+    },
+    {
+      "name": "sharp_refines_parent",
+      "type": "supporting",
+      "description": "The sharp bound implies the parent's: log₂ a + log₂ b + 1 ≤ 2·(log₂ a + log₂ b) + 2, so the sharp result recovers the parent's binaryGcdSteps_le_log.",
+      "leanType": "∀ (a b : ℕ), 0 < a → 0 < b → binaryGcdSteps a b ≤ Nat.log 2 a + Nat.log 2 b + 1 ∧ Nat.log 2 a + Nat.log 2 b + 1 ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2"
+    }
+  ]
+}

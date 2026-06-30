@@ -16,7 +16,7 @@
       "lattices"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 659,
     "erdosUrl": "https://erdosproblems.com/659",
     "erdosProblemStatus": "proved",
@@ -41,13 +41,15 @@
     "originalContributions": [
       "Formalization of the 4-point distance property",
       "Definition of distinct distances for finite point sets",
+      "Verified positive-definiteness of the defining quadratic form x²+2y² (latticeDistSq_symm / _nonneg / _eq_zero_iff), guaranteeing distinct lattice points",
+      "Resolved the former classification sorry: fourPointProperty_from_avoiding_configs is now a fully verified conditional, with the necessary geometric lower bound made explicit (the original statement was false under the product/Chebyshev metric — mutually-equidistant 4-point sets exist)",
       "Partial classification of 6 two-distance configurations: square, 60° rhombus, and pentagon subset formally characterized; isosceles trapezoid (2 types) and kite left as True placeholders",
       "Educational explanation of Moree-Osburn lattice construction"
     ],
     "axiomCount": 1,
-    "lineCount": 220,
-    "assumptions": "1 axiom: moreeOsburnWorks. 1 sorry.",
-    "theoremCount": 2,
+    "lineCount": 280,
+    "assumptions": "1 axiom: moreeOsburnWorks (encodes Landau's 1908 theorem on the count of integers representable as x²+2y², together with the full 4-point classification; not available in Mathlib 4.26). 0 sorries.",
+    "theoremCount": 5,
     "definitionCount": 10
   },
   "overview": {
@@ -74,35 +76,42 @@
       "title": "Imports and Definitions",
       "startLine": 24,
       "endLine": 43,
-      "summary": "Import Mathlib dependencies for real analysis and metric spaces"
+      "summary": "Import Mathlib dependencies for real analysis, metric spaces, and tactics"
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 44,
-      "endLine": 58,
-      "summary": "Define distinct distances and the 4-point property"
+      "endLine": 62,
+      "summary": "Define distinct distances, the 4-point property, and the lattice quadratic form latticeDistSq"
+    },
+    {
+      "id": "quadratic-form",
+      "title": "Positive-Definiteness of x²+2y²",
+      "startLine": 64,
+      "endLine": 113,
+      "summary": "Verified algebraic lemmas: latticeDistSq is symmetric, non-negative, and vanishes only on the diagonal (positive-definite)"
     },
     {
       "id": "axiom",
       "title": "Main Axiom",
-      "startLine": 59,
-      "endLine": 94,
-      "summary": "State the Moree-Osburn construction works (requires deep number theory); axiom moreeOsburnWorks declared at lines 89–94"
+      "startLine": 120,
+      "endLine": 138,
+      "summary": "State the Moree-Osburn construction works (requires deep number theory: Landau's theorem + classification); axiom moreeOsburnWorks at lines 133–138"
     },
     {
       "id": "theorem",
       "title": "Main Theorem",
-      "startLine": 96,
-      "endLine": 113,
-      "summary": "Derive the answer to Erdős #659 from the axiom; theorem erdos_659 at lines 100–113"
+      "startLine": 140,
+      "endLine": 157,
+      "summary": "Derive the answer to Erdős #659 from the axiom; theorem erdos_659 at lines 144–157"
     },
     {
       "id": "configurations",
       "title": "Two-Distance Configurations",
-      "startLine": 96,
-      "endLine": 220,
-      "summary": "Enumerate the 6 configurations with only 2 distances among 4 points"
+      "startLine": 162,
+      "endLine": 280,
+      "summary": "Enumerate the 6 two-distance configurations and prove fourPointProperty_from_avoiding_configs (verified, 0 sorries)"
     }
   ],
   "conclusion": {
@@ -122,18 +131,19 @@
       "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.Data.Real.Sqrt",
       "Mathlib.Data.Finset.Card",
-      "Mathlib.Topology.MetricSpace.Basic"
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
     ],
     "opens": [
       "Real"
     ],
     "namespace": "Erdos659",
-    "lineCount": 220,
+    "lineCount": 280,
     "axiomCount": 1,
-    "theoremCount": 2,
+    "theoremCount": 5,
     "definitionCount": 10,
     "path": "Proofs/Erdos659Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -191,5 +201,5 @@
       "note": "Studies the combinatorial geometry of repeated patterns in point configurations, including the classification of configurations with few distances that appears in the 4-point property verification of Problem 659."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

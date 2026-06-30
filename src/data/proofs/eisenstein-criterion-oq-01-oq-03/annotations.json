@@ -8,29 +8,41 @@
       "endLine": 41
     },
     "title": "Module Header: General Eisenstein Polynomials over ℤ and ℚ",
-    "content": "Answers the third open question of `eisenstein-criterion-oq-01`. The parent restated the abstract criterion and handled the single family $X^n - p$ over $\\mathbb{Z}$. This file does three new things: (1) a **concrete divisibility-form** criterion over $\\mathbb{Z}$ — monic $f$, $p \\mid f_k$ for all $k$ below the degree, $p^2 \\nmid f_0$ $\\Rightarrow$ irreducible; (2) the **general family** $X^n + p\\,g$ for arbitrary $g$ with $\\deg g < n$ and $p \\nmid g(0)$ — the genuine 'arbitrary lower coefficients' case; (3) **irreducibility over $\\mathbb{Q}$** via Gauss's lemma, the form in which Eisenstein is actually used."
+    "content": "Answers the third open question of `eisenstein-criterion-oq-01`. The parent restated the abstract criterion and handled the single family $X^n - p$ over $\\mathbb{Z}$. This file does three new things: (1) a **concrete divisibility-form** criterion over $\\mathbb{Z}$ — monic $f$, $p \\mid f_k$ for all $k$ below the degree, $p^2 \\nmid f_0$ $\\Rightarrow$ irreducible; (2) the **general family** $X^n + p\\,g$ for arbitrary $g$ with $\\deg g < n$ and $p \\nmid g(0)$ — the genuine 'arbitrary lower coefficients' case; (3) **irreducibility over $\\mathbb{Q}$** via Gauss's lemma, the form in which Eisenstein is actually used.",
+    "mathContext": "$f = X^n + \\sum_{k<n} a_k X^k,\\quad p \\mid a_k\\ (k<n),\\ p^2 \\nmid a_0 \\;\\Rightarrow\\; f \\text{ irreducible}.$",
+    "significance": "context",
+    "relatedConcepts": ["Eisenstein's criterion", "irreducibility", "Gauss's lemma", "open question"],
+    "prerequisites": ["polynomial rings", "prime divisibility"]
   },
   {
     "id": "eisenstein-criterion-oq-01-oq-03-int-criterion",
     "proofId": "eisenstein-criterion-oq-01-oq-03",
     "type": "theorem",
     "range": {
-      "startLine": 64,
-      "endLine": 90
+      "startLine": 56,
+      "endLine": 85
     },
     "title": "Concrete Eisenstein Criterion over ℤ",
-    "content": "`irreducible_int_of_eisenstein`: trades the abstract prime ideal of the parent for plain divisibility by a prime integer $p$. For a monic $f$ of positive degree with $p \\mid f.\\mathrm{coeff}\\,k$ for every $k$ below the degree and $p^2 \\nmid f.\\mathrm{coeff}\\,0$, $f$ is irreducible over $\\mathbb{Z}$. The proof takes $P = $ `Ideal.span {p}` and converts the four hypotheses via `Ideal.mem_span_singleton` (membership $\\iff$ divisibility) and `Ideal.span_singleton_pow` ($(p)^2 = (p^2)$); primitivity is `Monic.isPrimitive`. The lower coefficients are now arbitrary subject only to divisibility by $p$."
+    "content": "`irreducible_int_of_eisenstein`: trades the abstract prime ideal of the parent for plain divisibility by a prime integer $p$. For a monic $f$ of positive degree with $p \\mid f.\\mathrm{coeff}\\,k$ for every $k$ below the degree and $p^2 \\nmid f.\\mathrm{coeff}\\,0$, $f$ is irreducible over $\\mathbb{Z}$. The proof takes $P = $ `Ideal.span {p}` and converts the four hypotheses via `Ideal.mem_span_singleton` (membership $\\iff$ divisibility) and `Ideal.span_singleton_pow` ($(p)^2 = (p^2)$); primitivity is `Monic.isPrimitive`. The lower coefficients are now arbitrary subject only to divisibility by $p$.",
+    "mathContext": "$P=(p)$ prime; $x\\in(p)\\iff p\\mid x$, $(p)^2=(p^2)$, monic $\\Rightarrow$ primitive. Hypotheses become $p\\mid f_k\\ (k<\\deg f),\\ p^2\\nmid f_0$.",
+    "significance": "key",
+    "relatedConcepts": ["prime ideal", "span singleton", "primitive polynomial", "integral domain"],
+    "prerequisites": ["ideal arithmetic", "Ideal.mem_span_singleton", "Monic.isPrimitive"]
   },
   {
     "id": "eisenstein-criterion-oq-01-oq-03-rat-criterion",
     "proofId": "eisenstein-criterion-oq-01-oq-03",
     "type": "theorem",
     "range": {
-      "startLine": 92,
+      "startLine": 87,
       "endLine": 98
     },
     "title": "Irreducibility over ℚ via Gauss's Lemma",
-    "content": "`irreducible_rat_of_eisenstein`: the operative form of Eisenstein's criterion. Because the polynomial is **monic** and $\\mathbb{Q}$ is the **fraction field** of $\\mathbb{Z}$, Gauss's lemma (`Monic.irreducible_iff_irreducible_map_fraction_map`) lifts irreducibility over $\\mathbb{Z}$ to irreducibility over $\\mathbb{Q}$. It is over $\\mathbb{Q}$ that an irreducible monic polynomial is the minimal polynomial of each of its roots, giving $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg f$. The parent stopped at $\\mathbb{Z}$."
+    "content": "`irreducible_rat_of_eisenstein`: the operative form of Eisenstein's criterion. Because the polynomial is **monic** and $\\mathbb{Q}$ is the **fraction field** of $\\mathbb{Z}$, Gauss's lemma (`Monic.irreducible_iff_irreducible_map_fraction_map`) lifts irreducibility over $\\mathbb{Z}$ to irreducibility over $\\mathbb{Q}$. It is over $\\mathbb{Q}$ that an irreducible monic polynomial is the minimal polynomial of each of its roots, giving $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\deg f$. The parent stopped at $\\mathbb{Z}$.",
+    "mathContext": "$f \\text{ monic irreducible in } \\mathbb{Z}[X] \\iff f \\text{ irreducible in } \\mathbb{Q}[X]$ (Gauss's lemma, $\\mathbb{Q}=\\mathrm{Frac}\\,\\mathbb{Z}$); then $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=\\deg f$.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss's lemma", "fraction field", "minimal polynomial", "field extension degree", "integrally closed domain"],
+    "prerequisites": ["Gauss's lemma", "fraction fields", "field extensions"]
   },
   {
     "id": "eisenstein-criterion-oq-01-oq-03-general-family",
@@ -41,7 +53,11 @@
       "endLine": 151
     },
     "title": "The General Family Xⁿ + p·g",
-    "content": "`irreducible_int_X_pow_add_CP_mul` (with helpers `monic_X_pow_add_CP_mul`, `natDegree_X_pow_add_CP_mul`): for any $g$ with $\\deg g < n$ ($0 < n$) and $p \\nmid g(0)$, the polynomial $X^n + p\\,g$ is irreducible over $\\mathbb{Z}$, and over $\\mathbb{Q}$ (`irreducible_rat_X_pow_add_CP_mul`). This is the direct answer to the open question: the coefficient formula $\\mathrm{coeff}\\,k = [k = n] + p\\cdot g.\\mathrm{coeff}\\,k$ makes every lower coefficient $p\\cdot g.\\mathrm{coeff}\\,k$ (divisible by $p$), while the constant coefficient $p\\cdot g(0)$ avoids $p^2$ exactly when $p \\nmid g(0)$ (cancelling one factor of $p$ via `mul_dvd_mul_iff_left`). Monicity and $\\deg = n$ follow from `monic_X_pow_add` and `degree_add_eq_left_of_degree_lt` since $\\deg(p\\,g) < n$."
+    "content": "`irreducible_int_X_pow_add_CP_mul` (with helpers `monic_X_pow_add_CP_mul`, `natDegree_X_pow_add_CP_mul`): for any $g$ with $\\deg g < n$ ($0 < n$) and $p \\nmid g(0)$, the polynomial $X^n + p\\,g$ is irreducible over $\\mathbb{Z}$, and over $\\mathbb{Q}$ (`irreducible_rat_X_pow_add_CP_mul`). This is the direct answer to the open question: the coefficient formula $\\mathrm{coeff}\\,k = [k = n] + p\\cdot g.\\mathrm{coeff}\\,k$ makes every lower coefficient $p\\cdot g.\\mathrm{coeff}\\,k$ (divisible by $p$), while the constant coefficient $p\\cdot g(0)$ avoids $p^2$ exactly when $p \\nmid g(0)$ (cancelling one factor of $p$ via `mul_dvd_mul_iff_left`). Monicity and $\\deg = n$ follow from `monic_X_pow_add` and `degree_add_eq_left_of_degree_lt` since $\\deg(p\\,g) < n$.",
+    "mathContext": "$(X^n + p\\,g)_k = [k=n] + p\\,g_k$; lower coeffs $p\\,g_k$ are $\\equiv 0 \\pmod p$, and $p^2 \\nmid p\\,g_0 \\iff p \\nmid g_0$. $X^n - p$ is the $g=-1$ case.",
+    "significance": "key",
+    "relatedConcepts": ["coefficient extraction", "degree of a sum", "monic polynomial", "divisibility cancellation"],
+    "prerequisites": ["polynomial degree arithmetic", "coeff_X_pow / coeff_C_mul", "mul_dvd_mul_iff_left"]
   },
   {
     "id": "eisenstein-criterion-oq-01-oq-03-recover-xn-p",
@@ -52,7 +68,11 @@
       "endLine": 175
     },
     "title": "Recovering Xⁿ − p (over ℤ and ℚ)",
-    "content": "`irreducible_int_X_pow_sub_C` and `irreducible_rat_X_pow_sub_C`: the parent's flagship $X^n - p$ is the $g = -1$ member of the family, since $X^n - p = X^n + p\\cdot(-1)$ and $p \\nmid -1$ (as $p$ is not a unit). The $\\mathbb{Q}$ version is what underlies $[\\mathbb{Q}(\\sqrt[n]{p}):\\mathbb{Q}] = n$ — the parent only had the $\\mathbb{Z}$ statement."
+    "content": "`irreducible_int_X_pow_sub_C` and `irreducible_rat_X_pow_sub_C`: the parent's flagship $X^n - p$ is the $g = -1$ member of the family, since $X^n - p = X^n + p\\cdot(-1)$ and $p \\nmid -1$ (as $p$ is not a unit). The $\\mathbb{Q}$ version is what underlies $[\\mathbb{Q}(\\sqrt[n]{p}):\\mathbb{Q}] = n$ — the parent only had the $\\mathbb{Z}$ statement.",
+    "mathContext": "$X^n - p = X^n + p\\cdot(-1)$, $g=-1$, $g(0)=-1$, $p\\nmid -1$. Over $\\mathbb{Q}$: $[\\mathbb{Q}(\\sqrt[n]{p}):\\mathbb{Q}]=n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["radical extension", "unit divisibility", "specialization", "nth roots"],
+    "prerequisites": ["units in ℤ", "the general family"]
   },
   {
     "id": "eisenstein-criterion-oq-01-oq-03-instances",
@@ -60,9 +80,13 @@
     "type": "example",
     "range": {
       "startLine": 177,
-      "endLine": 213
+      "endLine": 214
     },
     "title": "Concrete Instances with Nonzero Middle Coefficients",
-    "content": "`irreducible_int_X_sq_add_two_X_add_two` ($X^2 + 2X + 2$, Eisenstein at $2$), `irreducible_int_X_cube_add_three_X_add_three` ($X^3 + 3X + 3$, at $3$), and `irreducible_rat_X_sq_add_two_X_add_two` (the first over $\\mathbb{Q}$). Each is the $g = X + 1$ member of the family at the relevant prime: $C\\,p \\cdot (X + 1) = pX + p$, so $g(0) = 1$ is not divisible by $p$. These are genuine Eisenstein polynomials with **nonzero middle coefficients** — exactly the cases the parent's $X^n - p$ form could not express."
+    "content": "`irreducible_int_X_sq_add_two_X_add_two` ($X^2 + 2X + 2$, Eisenstein at $2$), `irreducible_int_X_cube_add_three_X_add_three` ($X^3 + 3X + 3$, at $3$), and `irreducible_rat_X_sq_add_two_X_add_two` (the first over $\\mathbb{Q}$). Each is the $g = X + 1$ member of the family at the relevant prime: $C\\,p \\cdot (X + 1) = pX + p$, so $g(0) = 1$ is not divisible by $p$. These are genuine Eisenstein polynomials with **nonzero middle coefficients** — exactly the cases the parent's $X^n - p$ form could not express.",
+    "mathContext": "$X^2+2X+2 = X^2 + 2(X+1)$ at $p=2$; $\\;X^3+3X+3 = X^3 + 3(X+1)$ at $p=3$; here $g=X+1,\\ g(0)=1,\\ p\\nmid 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "Eisenstein at p=2,3", "nonzero middle coefficient"],
+    "prerequisites": ["the general family", "concrete coefficient computation"]
   }
 ]

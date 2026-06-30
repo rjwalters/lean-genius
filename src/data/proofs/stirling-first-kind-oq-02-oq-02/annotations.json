@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-imports-docstring",
+    "proofId": "stirling-first-kind-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "The Other Unit: Evaluating the Generating Function at X = −1",
+    "content": "The parent entry proved the rising-factorial generating identity X(X+1)⋯(X+n−1) = ∑ₖ c(n,k) Xᵏ and recovered the ordinary row sum ∑ₖ c(n,k) = n! by evaluating at X=1. A rising factorial has exactly two integer units available as evaluation points, 1 and −1. This file uses the other one: at X=−1 every Xᵏ becomes (−1)ᵏ, so the polynomial value is the alternating row sum ∑ₖ (−1)ᵏ c(n,k). Since the rising factorial contains the factor (X+1) as soon as n ≥ 2, and that factor is zero at X=−1, the alternating row sum vanishes for all n ≥ 2; the rows n=0 and n=1 are exceptional (values 1 and −1).",
+    "mathContext": "$\\left.\\sum_k c(n,k)X^k\\right|_{X=-1} = \\sum_k (-1)^k c(n,k) = (\\text{ascPochhammer}\\,\\mathbb{Z}\\,n)(-1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Stirling numbers of the first kind",
+      "rising factorial (ascPochhammer)",
+      "generating functions",
+      "alternating sums"
+    ],
+    "prerequisites": [
+      "polynomials and their coefficients",
+      "the parent generating identity c(n,k) = [Xᵏ] ascPochhammer ℤ n"
+    ]
+  },
+  {
+    "id": "ann-generating-identity",
+    "proofId": "stirling-first-kind-oq-02-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "c(n,k) is the Xᵏ-Coefficient of the Rising Factorial (self-contained)",
+    "content": "stirlingFirst_eq_ascPochhammer_coeff reproves the parent's generating identity c(n,k) = [Xᵏ] ascPochhammer ℤ n so this file stands alone. Induction on n (generalizing k): the base uses ascPochhammer ℤ 0 = 1; the step rewrites ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) and extracts the Xᵏ-coefficient with Polynomial.coeff_mul_X (index shift, giving c(n,k−1)) and Polynomial.coeff_mul_C (constant n, giving n·c(n,k)), reproducing the Pascal recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k).",
+    "mathContext": "$c(n,k) = (\\text{ascPochhammer}\\,\\mathbb{Z}\\,n).\\mathrm{coeff}\\,k$, by coefficient extraction from $(X+n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ascPochhammer_succ_right",
+      "Polynomial.coeff_mul_X",
+      "Polynomial.coeff_mul_C",
+      "Nat.stirlingFirst_succ_succ"
+    ],
+    "prerequisites": [
+      "polynomial coefficient lemmas",
+      "the rising-factorial recurrence in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-alternating-as-eval",
+    "proofId": "stirling-first-kind-oq-02-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 109
+    },
+    "type": "key-step",
+    "title": "Alternating Row Sum = Value at X = −1",
+    "content": "alternating_row_sum_eq_eval shows ∑ₖ (−1)ᵏ c(n,k) = (ascPochhammer ℤ n).eval (−1). Polynomial.eval_eq_sum_range expands the evaluation as ∑_{k < natDegree+1} coeff k · (−1)ᵏ; ascPochhammer_natDegree fixes natDegree = n, so the range is range (n+1). Substituting coeff k = (c(n,k):ℤ) from the generating identity gives the alternating row sum. This is the exact X=−1 analogue of the parent's X=1 reduction of the evaluation to a coefficient sum.",
+    "mathContext": "$\\sum_k (-1)^k c(n,k) = \\sum_{k<n+1} \\mathrm{coeff}\\,k\\cdot(-1)^k = (\\text{ascPochhammer}\\,\\mathbb{Z}\\,n)(-1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.eval_eq_sum_range",
+      "ascPochhammer_natDegree",
+      "alternating sums"
+    ],
+    "prerequisites": [
+      "polynomial evaluation as a sum over coefficients"
+    ]
+  },
+  {
+    "id": "ann-vanishing",
+    "proofId": "stirling-first-kind-oq-02-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "The Rising Factorial Vanishes at −1 for n ≥ 2",
+    "content": "ascPochhammer_eval_neg_one proves (ascPochhammer ℤ (m+2)).eval (−1) = 0 by induction on m. The base m=0 is ascPochhammer ℤ 2 = X·(X+1), whose value at −1 is (−1)·0 = 0 — the decisive (X+1) factor. The step uses ascPochhammer ℤ (m+3) = ascPochhammer ℤ (m+2)·(X+(m+2)): the new factor only multiplies the already-zero value, so the product stays 0. The vanishing is structural — one factor (X+1) is zero at −1 — not a term-by-term cancellation.",
+    "mathContext": "$(\\text{ascPochhammer}\\,\\mathbb{Z}\\,(m+2))(-1)=0$ because the factor $(X+1)$ vanishes at $X=-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ascPochhammer_succ_right",
+      "induction on the recurrence",
+      "vanishing factor"
+    ],
+    "prerequisites": [
+      "the rising-factorial recurrence",
+      "polynomial evaluation of products"
+    ]
+  },
+  {
+    "id": "ann-headline-and-small-rows",
+    "proofId": "stirling-first-kind-oq-02-oq-02",
+    "range": {
+      "startLine": 120,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "Headline Vanishing and the Exceptional Small Rows",
+    "content": "alternating_row_sum_eq_zero is the headline: ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2, obtained by writing n = m+2 and combining the reduction (value at −1) with the vanishing lemma. The two exceptional rows are computed directly: alternating_row_sum_zero gives n=0 ↦ 1 (the empty product) and alternating_row_sum_one gives n=1 ↦ −1 (the single factor X at −1). alternating_row_four is a numeric sanity check, 0 − 6 + 11 − 6 + 1 = 0, closed by simp on the recursive definition (kernel reduction, no native_decide). The complete sequence of alternating row sums is 1, −1, 0, 0, 0, ….",
+    "mathContext": "$\\sum_k (-1)^k c(n,k) = 0$ for $n\\ge 2$; values $1,-1$ for $n=0,1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "alternating row sum",
+      "signed Stirling numbers s(n,k) = (−1)^{n−k} c(n,k)",
+      "Finset.sum_range_succ"
+    ],
+    "prerequisites": [
+      "the reduction to the value at −1",
+      "evaluating the Stirling recurrence on small rows"
+    ]
+  }
+]

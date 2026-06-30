@@ -1,0 +1,194 @@
+{
+  "id": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+  "slug": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GammaReflectionFormulaOQ01OQ03"
+    ],
+    "opens": [
+      "scoped Real Nat"
+    ],
+    "namespace": "GammaReflectionFormulaOQ01OQ03OQ01OQ01",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "An Analytic Reproof of (2n)! = (2n-1)‼·2ⁿ·n! from the Legendre Duplication Formula",
+  "description": "Answers the sibling's open question: rather than proving the integer identity (2n)! = (2n-1)‼·2ⁿ·n! combinatorially (the factorial split (2n)! = (2n)‼·(2n-1)‼ with (2n)‼ = 2ⁿ·n!) and using it to convert the central Gamma form into the double-factorial form, this entry runs the deduction in reverse — recovering the combinatorial identity from the analytic side, with no appeal to the combinatorial bridge. First, the double-factorial closed form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ is proved standalone by a fresh induction on the functional equation Γ(s+1) = s·Γ(s) and Γ(1/2) = √π, routed through the odd-double-factorial recursion (2(k+1)-1)‼ = (2k+1)·(2k-1)‼ rather than the central binomial form. Equating this with the parent's independently-derived central form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) cancels √π and yields the rational identity (2n-1)‼/2ⁿ = (2n)!/(4ⁿ·n!); clearing denominators and casting back to ℕ via injectivity gives (2n)! = (2n-1)‼·2ⁿ·n!. The same identity is then obtained a second, fully independent way directly from Legendre's duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π (Real.Gamma_mul_Gamma_add_half) evaluated at s = n+1/2, where all three Gamma factors are elementary half-integer values. 194 lines, 8 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "gamma-function",
+      "factorial",
+      "double-factorial",
+      "duplication-formula",
+      "combinatorial-identity",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 194,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "gamma_nat_add_half_oddDF: the double-factorial half-integer Gamma form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ proved standalone by induction on the functional equation Γ(s+1) = s·Γ(s), with no use of the factorial identity (2n)! = (2n-1)‼·2ⁿ·n! — unlike the sibling, which derived this form from the central form using the very identity reproved here. This makes the subsequent deduction genuinely non-circular.",
+      "two_mul_factorial_eq_real / two_mul_factorial_eq: an analytic reproof of the integer identity (2n)! = (2n-1)‼·2ⁿ·n!, obtained by equating two independently-telescoped closed forms of Γ(n+1/2) (the standalone double-factorial form and the parent's central form), cancelling √π, clearing denominators over ℝ, and lifting back to ℕ via Nat.cast injectivity — an analytic proof of a combinatorial fact.",
+      "two_mul_factorial_eq_via_duplication: the same integer identity obtained a second, independent way directly from Legendre's duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π (Real.Gamma_mul_Gamma_add_half) at s = n+1/2, substituting the three elementary half-integer Gamma values and cancelling the common √π — the route requested verbatim by the open question.",
+      "oddDoubleFactorial_succ: the odd-double-factorial recursion (2(k+1)-1)‼ = (2k+1)·(2k-1)‼, the engine of the standalone induction, obtained from Nat.doubleFactorial_add_one after rewriting 2(k+1)-1 = 2k+1 over ℕ.",
+      "oddDoubleFactorial_eq_factorial_div: the divisibility consequence (2n-1)‼ = (2n)!/(2ⁿ·n!), reading the integer identity as an exact natural-number quotient via Nat.div_eq_of_eq_mul_left."
+    ],
+    "prerequisites": [
+      "The parent's central half-integer closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) and its √π-free ratio (GammaReflectionFormulaOQ01OQ03.gamma_nat_add_half, gamma_nat_add_half_div_sqrt_pi)",
+      "The Gamma functional equation Γ(s+1) = s·Γ(s) (Real.Gamma_add_one) and Γ(1/2) = √π (Real.Gamma_one_half_eq)",
+      "Legendre's duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π (Real.Gamma_mul_Gamma_add_half) and Γ(n+1) = n! (Real.Gamma_nat_eq_factorial)",
+      "Nat.doubleFactorial with notation n‼ and its recursion (m+1)‼ = (m+1)·(m-1)‼ (Nat.doubleFactorial_add_one)",
+      "Real-field manipulation (field_simp / linear_combination / mul_right_cancel₀) and Nat.cast injectivity to lift the real identity to ℕ"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_mul_Gamma_add_half",
+        "description": "Legendre's duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π — the single analytic identity carrying the duplication-route derivation.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "The Gamma functional equation Γ(s+1) = s·Γ(s) for s ≠ 0 — the engine of the standalone induction for the double-factorial form.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_nat_eq_factorial",
+        "description": "Γ(n+1) = n! — collapses the two elementary Gamma factors Γ(n+1) and Γ(2n+1) in the duplication route to n! and (2n)!.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Nat.doubleFactorial_add_one",
+        "description": "(m+1)‼ = (m+1)·(m-1)‼ — at m = 2k yields the odd-double-factorial recursion (2k+1)‼ = (2k+1)·(2k-1)‼ used in the standalone induction.",
+        "module": "Mathlib.Data.Nat.Factorial.DoubleFactorial"
+      },
+      {
+        "theorem": "GammaReflectionFormulaOQ01OQ03.gamma_nat_add_half_div_sqrt_pi",
+        "description": "The parent's √π-free central ratio Γ(n+1/2)/√π = (2n)!/(4ⁿ·n!), equated with the standalone double-factorial ratio to recover the integer identity analytically.",
+        "module": "Proofs.GammaReflectionFormulaOQ01OQ03"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01-oq-01",
+      "question": "Use the standalone double-factorial form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ to evaluate the half-line Gaussian moments ∫₀^∞ x^(2n) e^(-x²) dx = (2n-1)‼·√π/2^(n+1) via the substitution u = x², closing the loop between the analytic Gamma value and its integral representation.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gamma-reflection-formula-oq-01-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "The sibling proves the same integer identity (2n)! = (2n-1)‼·2ⁿ·n! combinatorially and uses it to reach the double-factorial Gamma form; this entry inverts the logic, proving the double-factorial form standalone and recovering the integer identity analytically (and again from Legendre duplication), answering the sibling's stated open question."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "The grandparent proves the central-binomial closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!); its √π-free ratio is equated here with the standalone double-factorial ratio to recover the integer identity without the combinatorial bridge."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "extends",
+      "description": "The root entry establishes Euler's reflection formula and Γ(1/2) = √π, the base case of the standalone induction for the double-factorial Gamma form."
+    }
+  ],
+  "references": [
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press",
+      "description": "Classical reference for half-integer values of the Gamma function, Legendre duplication, and the double-factorial bookkeeping (§12.14, §12.15)."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Beta",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_mul_Gamma_add_half (Legendre duplication), Real.Gamma_add_one, and Real.Gamma_nat_eq_factorial used in both analytic routes."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The half-integer values Γ(n+1/2) = (2n-1)‼·√π/2ⁿ are usually derived combinatorially: one proves the integer identity (2n)! = (2n-1)‼·2ⁿ·n! (the even/odd double-factorial split (2n)! = (2n)‼·(2n-1)‼ composed with (2n)‼ = 2ⁿ·n!) and substitutes it into the central-binomial Gamma form. The sibling entry takes exactly this route. This entry asks the converse question: can the same combinatorial identity be read off the analytic theory of Γ itself? The answer is yes, in two independent ways — by equating two telescopings of Γ(n+1/2), and directly from Legendre's duplication formula — turning a combinatorial fact into a corollary of special-function analysis.",
+    "problemStatement": "Reprove the integer identity (2n)! = (2n-1)‼·2ⁿ·n! from the analytic side, in particular from the Legendre duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π at half-integer argument, without appeal to the combinatorial even/odd double-factorial split.",
+    "proofStrategy": "Step 1: prove the double-factorial Gamma form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ standalone, by induction on n — base Γ(1/2) = √π, step Γ((k+1)+1/2) = (k+1/2)·Γ(k+1/2) combined with the odd-double-factorial recursion (2k+1)‼ = (2k+1)·(2k-1)‼ and field_simp. This avoids the central form entirely. Step 2 (two-closed-forms route): equate the √π-free ratio of this form with the parent's central ratio Γ(n+1/2)/√π = (2n)!/(4ⁿ·n!), cross-multiply, expand 4ⁿ = 2ⁿ·2ⁿ, cancel one 2ⁿ, and lift the resulting real identity to ℕ via Nat.cast injectivity. Step 3 (duplication route): substitute the three elementary values Γ(n+1/2) = (2n-1)‼·√π/2ⁿ, Γ((n+1/2)+1/2) = Γ(n+1) = n!, Γ(2(n+1/2)) = Γ(2n+1) = (2n)! and 2^(1-2(n+1/2)) = 2^(-2n) into Real.Gamma_mul_Gamma_add_half (n+1/2), collect both sides as (…)·√π, cancel √π, and cancel one 2ⁿ to recover the same integer identity.",
+    "keyInsights": [
+      "The standalone double-factorial induction is the crux: deriving Γ(n+1/2) = (2n-1)‼·√π/2ⁿ directly from Γ(s+1) = s·Γ(s) — rather than from the central form — is what makes the subsequent recovery of (2n)! = (2n-1)‼·2ⁿ·n! non-circular.",
+      "The integer identity is the statement that two independent telescopings of the half-integer Gamma recursion agree: the central form telescopes (2n)!/(4ⁿ·n!), the double-factorial form telescopes (2n-1)‼/2ⁿ, and their equality is exactly the bridge.",
+      "Legendre duplication carries the whole deduction in a single analytic identity: at s = n+1/2 its three Gamma factors are all elementary half-integer or integer values, so substituting and cancelling √π gives the combinatorial identity with no induction beyond the standalone Gamma form.",
+      "Over ℝ the only non-formal step is 4ⁿ = 2ⁿ·2ⁿ (equivalently 2^(2n) = 2ⁿ·2ⁿ): ring treats the powers as independent atoms, so the factorisation must be supplied explicitly before cancelling.",
+      "The badge is original: neither the standalone odd-double-factorial Gamma induction nor the analytic/duplication lift of (2n)! = (2n-1)‼·2ⁿ·n! is in Mathlib, which records only the combinatorial double-factorial facts."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: An Analytic Reproof",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Contrasts the sibling's combinatorial route with this file's reverse, analytic route: prove the double-factorial Gamma form standalone, then recover (2n)! = (2n-1)‼·2ⁿ·n! by equating two closed forms and, independently, from Legendre duplication. Explains why the deduction is non-circular.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$ recovers $(2n)! = (2n-1)!!\\cdot 2^{n}\\cdot n!$."
+    },
+    {
+      "id": "odd-recursion",
+      "title": "The Odd Double-Factorial Recursion",
+      "startLine": 57,
+      "endLine": 66,
+      "summary": "oddDoubleFactorial_succ proves (2(k+1)-1)‼ = (2k+1)·(2k-1)‼ from Nat.doubleFactorial_add_one after rewriting 2(k+1)-1 = 2k+1 — the recursion driving the standalone Gamma induction.",
+      "mathContext": "$(2k+1)!! = (2k+1)\\,(2k-1)!!$."
+    },
+    {
+      "id": "standalone-gamma",
+      "title": "The Standalone Double-Factorial Half-Integer Gamma Value",
+      "startLine": 67,
+      "endLine": 92,
+      "summary": "gamma_nat_add_half_oddDF proves Γ(n+1/2) = (2n-1)‼·√π/2ⁿ directly by induction on the functional equation Γ(s+1) = s·Γ(s) — base Γ(1/2) = √π, step via the odd-double-factorial recursion and field_simp — with no use of the central form or the factorial identity.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$, by induction on $\\Gamma(s+1)=s\\,\\Gamma(s)$."
+    },
+    {
+      "id": "two-closed-forms",
+      "title": "The Analytic Reproof via Two Closed Forms",
+      "startLine": 94,
+      "endLine": 137,
+      "summary": "gamma_nat_add_half_oddDF_div_sqrt_pi gives the √π-free ratio (2n-1)‼/2ⁿ. two_mul_factorial_eq_real equates it with the parent's central ratio (2n)!/(4ⁿ·n!), cross-multiplies, and cancels one 2ⁿ; two_mul_factorial_eq lifts the real identity to ℕ via Nat.cast injectivity.",
+      "mathContext": "$\\dfrac{(2n-1)!!}{2^{n}} = \\dfrac{(2n)!}{4^{n} n!} \\implies (2n)! = (2n-1)!!\\cdot 2^{n}\\cdot n!$."
+    },
+    {
+      "id": "duplication-route",
+      "title": "The Legendre-Duplication Route",
+      "startLine": 139,
+      "endLine": 178,
+      "summary": "two_mul_factorial_eq_via_duplication recovers the same integer identity directly from Real.Gamma_mul_Gamma_add_half (n+1/2): substitute the three elementary Gamma values, expand 2^(2n) = 2ⁿ·2ⁿ, collect both sides as (…)·√π, cancel √π, and cancel one 2ⁿ. A single analytic identity carries the whole deduction.",
+      "mathContext": "$\\Gamma(s)\\Gamma(s+\\tfrac12) = 2^{1-2s}\\sqrt{\\pi}\\,\\Gamma(2s)$ at $s = n+\\tfrac12$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Spot Check",
+      "startLine": 180,
+      "endLine": 194,
+      "summary": "oddDoubleFactorial_eq_factorial_div reads the identity as the exact natural-number quotient (2n-1)‼ = (2n)!/(2ⁿ·n!); two_mul_factorial_eq_three verifies 6! = 5‼·2³·3! = 720 by decide.",
+      "mathContext": "$(2n-1)!! = \\dfrac{(2n)!}{2^{n} n!}$; $6! = 5!!\\cdot 2^{3}\\cdot 3! = 720$."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The integer identity (2n)! = (2n-1)‼·2ⁿ·n! is reproved from the analytic theory of Γ in two independent ways: by equating the standalone double-factorial Gamma form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ (proved here by a fresh induction on Γ(s+1) = s·Γ(s)) with the parent's central form and cancelling √π, and directly from Legendre's duplication formula at s = n+1/2. The divisibility consequence (2n-1)‼ = (2n)!/(2ⁿ·n!) and the spot check 6! = 5‼·2³·3! follow. 194 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib records the combinatorial double-factorial facts but neither the standalone odd-double-factorial Gamma induction nor the analytic/duplication recovery of (2n)! = (2n-1)‼·2ⁿ·n! — hence the original badge. The result demonstrates that a combinatorial identity can be obtained as a corollary of special-function analysis, the converse of the usual derivation.",
+    "openQuestions": [
+      "Use the standalone double-factorial form to evaluate the half-line Gaussian moments ∫₀^∞ x^(2n) e^(-x²) dx = (2n-1)‼·√π/2^(n+1) via u = x²."
+    ]
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01",
+  "title": "The Eulerian Row Sum ∑ⱼ ⟨m,j⟩ = m! as a Forward Difference of Worpitzky's Identity",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ03"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "fwdDiff",
+      "GeometricSeriesOQ07OQ01OQ01OQ01",
+      "GeometricSeriesOQ07OQ01OQ01OQ01OQ03"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01OQ03OQ01",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ03OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "worpitzky-identity",
+      "finite-differences",
+      "forward-difference",
+      "binomial-coefficients",
+      "descent-statistic",
+      "factorial",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 133,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "eulerian_row_sum: THE MAIN RESULT — the Eulerian row sum ∑_{j=0}^{m} ⟨m,j⟩ = m!, deduced from the parent's Worpitzky identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference operator Δ_[1]^[m] at 0. This is the transform-based proof requested by the parent's open question oq-01, and is a genuinely different derivation from the sibling geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01, which obtains the same identity analytically by evaluating the Eulerian polynomial Eₘ at X = 1. Here the row sum is read off the finite-difference calculus applied to a combinatorial identity, exhibiting Worpitzky's identity as the change of basis whose leading coefficient is the descent count.",
+      "fwdDiff_iter_pow_self: the left-hand input — the m-th forward difference of n ↦ nᵐ at 0 equals m! on the natural-number domain. Mathlib's fwdDiff_iter_eq_factorial states this on the domain ℤ; this lemma transports it to ℕ → ℤ by expanding both sides through fwdDiff_iter_eq_sum_shift to the same alternating binomial sum ∑ₖ (-1)^{m-k}·C(m,k)·kᵐ and identifying them termwise, so that it can be applied to Worpitzky's identity (which is stated over ℕ).",
+      "fwdDiff_iter_choose_shift: the right-hand input — the m-th forward difference of the shifted binomial n ↦ C(n+j, m) at 0 equals 1 for every shift j. Built from Mathlib's fwdDiff_iter_choose (Δ_[1]^[m] of C(·, m) is the constant C(·, 0) = 1) composed with the shift n ↦ n + j via fwdDiff_iter_comp_add, which evaluates the constant at j, still C(j, 0) = 1. These are the exact values Δ_[1]^[m] reads off the two bases on either side of Worpitzky's identity.",
+      "worpitzky_int: Worpitzky's identity cast to ℤ, (n:ℤ)ᵐ = ∑_j ⟨m,j⟩·C(n+j,m), so that the forward-difference operator (which needs the abelian group ℤ for its alternating signs) can be applied to the function n ↦ nᵐ. The assembly then uses linearity of Δ_[1]^[m] over the finite sum (fwdDiff_iter_finset_sum) and over each scalar ⟨m,j⟩ (fwdDiff_iter_const_smul) to reduce m! = Δ_[1]^[m](nᵐ)(0) to ∑_j ⟨m,j⟩·1."
+    ],
+    "prerequisites": [
+      "Parent: geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03 (Worpitzky's identity) — supplies worpitzky, the identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) on which the forward difference acts",
+      "Grandparent: geometric-series-oq-07-oq-01-oq-01-oq-01 (the combinatorial Eulerian numbers) — supplies the eulerian triangle ⟨m,j⟩ whose row sum is computed",
+      "Mathlib's forward-difference calculus (Mathlib.Algebra.Group.ForwardDiff): the operator Δ_[h], its iterates, Newton's shift formula fwdDiff_iter_eq_sum_shift, the factorial value fwdDiff_iter_eq_factorial, the binomial differences fwdDiff_iter_choose, the shift-composition rule fwdDiff_iter_comp_add, and linearity (fwdDiff_iter_finset_sum, fwdDiff_iter_const_smul)",
+      "Casting ℕ identities to ℤ (exact_mod_cast, Nat.cast_sum) so the alternating-sign operator can act, and casting the final equality back to ℕ"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "fwdDiff_iter_eq_factorial",
+        "description": "The m-th forward difference of x ↦ xᵐ over a commutative ring is the constant m!. Supplies the value of Δ_[1]^[m] on the left-hand side n ↦ nᵐ of Worpitzky's identity (transported here from the domain ℤ to ℕ via the shared shift-sum expansion).",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_choose",
+        "description": "Δ_[1]^[k] applied to x ↦ C(x, k+j) equals x ↦ C(x, j). Specialised at j = 0, k = m it gives Δ_[1]^[m] C(·, m) = C(·, 0) = 1, the value of the forward difference on each shifted-binomial summand of Worpitzky's identity.",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_eq_sum_shift",
+        "description": "Newton's formula expressing the m-th forward difference at y as the alternating binomial sum ∑ₖ (-1)^{m-k}·C(m,k)·f(y + k·h). Used to identify the ℕ-domain and ℤ-domain forward differences of n ↦ nᵐ termwise, transporting Mathlib's factorial value to the domain on which Worpitzky's identity lives.",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_comp_add",
+        "description": "Δ_[h]^[n] of a precomposition with the shift r ↦ r + m equals (Δ_[h]^[n] f) evaluated at the shifted point. Composes the constant Δ_[1]^[m] C(·, m) with the shift n ↦ n + j to evaluate the difference of C(·+j, m) at 0.",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_finset_sum",
+        "description": "The iterated forward difference is additive over finite sums, Δ_[h]^[n] (∑ k, f k) = ∑ k, Δ_[h]^[n] (f k). Distributes Δ_[1]^[m] over the Worpitzky sum so each Eulerian summand is differenced independently.",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_const_smul",
+        "description": "The iterated forward difference commutes with scalar multiplication, Δ_[h]^[n] (r • f) = r • Δ_[h]^[n] f. Pulls each Eulerian coefficient ⟨m,j⟩ out of the difference, leaving Δ_[1]^[m] acting on the bare shifted binomial.",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01OQ01OQ03.worpitzky",
+        "description": "The parent's Worpitzky identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m). The single combinatorial input to which the forward-difference operator is applied; everything else is the Mathlib finite-difference calculus.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ03"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Parent (Worpitzky's identity). This entry answers the parent's open question oq-01: it deduces the Eulerian row sum ∑_j ⟨m,j⟩ = m! from Worpitzky's identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference of nᵐ, the transform-based argument the parent left open."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Proves the SAME identity ∑_j ⟨m,j⟩ = m! by a different method: that entry evaluates the Eulerian polynomial Eₘ at X = 1 (the analytic / generating-function route, eulerPoly_eq_eulerianNumbers + eval_eulerPoly_one), whereas this entry reads the row sum off the finite-difference calculus applied to Worpitzky's combinatorial identity. The two are complementary proofs of the descent count, exactly the comparison the parent's open question requested."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Grandparent (the combinatorial Eulerian numbers). Supplies the eulerian triangle ⟨m,j⟩ whose row sum is shown to be m! — the statement that the descent statistic partitions the m! permutations of {1,…,m}."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Worpitzky's identity, Eulerian numbers, finite differences)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for Worpitzky's identity, the Eulerian-number row sum ∑_k ⟨n,k⟩ = n!, and the finite-difference calculus (the m-th difference of a degree-m polynomial reads off m! times its leading coefficient)."
+    },
+    {
+      "title": "Mathlib4: Algebra.Group.ForwardDiff",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the forward-difference operator Δ_[h] and the lemmas fwdDiff_iter_eq_factorial, fwdDiff_iter_choose, fwdDiff_iter_eq_sum_shift, fwdDiff_iter_comp_add, and the linearity lemmas used to apply the m-th forward difference to Worpitzky's identity."
+    }
+  ],
+  "sorries": 0,
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01-oq-01",
+      "question": "Generalise the finite-difference reading of Worpitzky's identity to the higher differences: show that for r ≤ m the r-th forward difference Δ_[1]^[r](nᵐ)(0) equals m!/(m−r)!·S(m,r)-type combinations, i.e. extract the full alternating-sum / Stirling-number content of Worpitzky's identity rather than only the top (r = m) row sum.",
+      "significance": "low"
+    }
+  ],
+  "description": "Deduces the Eulerian row sum ∑_{j=0}^{m} ⟨m,j⟩ = m! from the parent's Worpitzky identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference operator at 0: the left side n ↦ nᵐ contributes m! (Mathlib's fwdDiff_iter_eq_factorial) and each shifted-binomial summand contributes 1 (Mathlib's fwdDiff_iter_choose), so m! = ∑_j ⟨m,j⟩. A transform-based proof of the descent count, complementary to the analytic Eₘ(1) = m! route of the sibling oq-01. 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "That the Eulerian numbers in row m sum to m! is the most basic identity of the descent statistic: every permutation of {1,…,m} has between 0 and m−1 descents, so the rows of Euler's 1755 triangle partition the m! permutations. Worpitzky's identity (1883), nᵐ = ∑_j ⟨m,j⟩·C(n+j,m), expresses the power basis nᵐ in the shifted-binomial basis with the Eulerian numbers as connection coefficients; applying the calculus of finite differences — the discrete analogue of differentiation, whose m-th iterate annihilates polynomials of degree < m and reads off m! times the leading coefficient of a degree-m polynomial — turns this change of basis into the row-sum identity. This is the textbook 'transform' proof (Graham–Knuth–Patashnik); the parent's open question oq-01 asked for exactly this argument, as a counterpart to the generating-function proof Eₘ(1) = m! recorded in the sibling oq-01. Mathlib4 has the full forward-difference calculus (Algebra.Group.ForwardDiff) but neither the Eulerian numbers nor Worpitzky's identity, so the combinatorial input is the parent's and the analytic engine is Mathlib's.",
+    "problemStatement": "Using the parent's Worpitzky identity nᵐ = ∑_{j=0}^{m} ⟨m,j⟩·C(n+j,m), prove the Eulerian row sum ∑_{j=0}^{m} ⟨m,j⟩ = m! by applying the m-th forward difference of n ↦ nᵐ, rather than by the triangle-recurrence induction or the generating-function evaluation used elsewhere in the gallery.",
+    "proofStrategy": "Let Δ = Δ_[1] be the forward difference (Δf)(n) = f(n+1) − f(n) on functions ℕ → ℤ, with Δ_[1]^[m] its m-fold iterate. (1) LEFT INPUT (fwdDiff_iter_pow_self): Δ_[1]^[m](n ↦ nᵐ)(0) = m!. Mathlib's fwdDiff_iter_eq_factorial gives this over ℤ; both the ℕ- and ℤ-domain differences expand by Newton's shift formula fwdDiff_iter_eq_sum_shift to the same sum ∑ₖ (-1)^{m-k}·C(m,k)·kᵐ, so the value transfers to the ℕ domain on which Worpitzky lives. (2) RIGHT INPUT (fwdDiff_iter_choose_shift): Δ_[1]^[m](n ↦ C(n+j,m))(0) = 1 for every j, from fwdDiff_iter_choose (Δ_[1]^[m] C(·,m) = C(·,0) = 1) composed with the shift via fwdDiff_iter_comp_add. (3) ASSEMBLY (eulerian_row_sum): cast Worpitzky to ℤ, apply Δ_[1]^[m] at 0, distribute over the finite sum (fwdDiff_iter_finset_sum) and over each Eulerian coefficient (fwdDiff_iter_const_smul); the left side becomes m! and the right becomes ∑_j ⟨m,j⟩·1, and casting back to ℕ gives ∑_j ⟨m,j⟩ = m!.",
+    "keyInsights": [
+      "The m-th forward difference at 0 is the discrete linear functional that extracts m! times the leading coefficient of a degree-m polynomial. Worpitzky's identity writes nᵐ as a combination of the shifted binomials C(n+j,m), each a degree-m polynomial in n with leading coefficient 1/m!; applying Δ_[1]^[m] therefore reads the row sum ∑_j ⟨m,j⟩ directly off the change-of-basis coefficients.",
+      "The two sides of Worpitzky's identity are differenced by two ready-made Mathlib values: Δ_[1]^[m](nᵐ) = m! (fwdDiff_iter_eq_factorial) and Δ_[1]^[m](C(·,m)) = C(·,0) = 1 (fwdDiff_iter_choose). The entire proof is the linearity bookkeeping that connects them through the identity.",
+      "Forward differences need an additive group for their alternating signs, so the identity must be cast from ℕ to ℤ before Δ acts. The one friction point is that Mathlib's factorial value is stated on the domain ℤ while Worpitzky lives on ℕ; both expand to the identical alternating binomial sum via Newton's shift formula, which bridges the domains without re-proving the surjection identity by hand.",
+      "This finite-difference derivation is genuinely distinct from the sibling oq-01's generating-function proof (evaluate Eₘ at X = 1). One reads the row sum from the analytic side (the Eulerian polynomial), the other from the discrete-calculus side (forward differences of a combinatorial identity); together they realise the comparison the parent's open question requested."
+    ]
+  },
+  "sections": [
+    {
+      "id": "inputs",
+      "title": "The Two Forward-Difference Inputs",
+      "startLine": 44,
+      "endLine": 75,
+      "summary": "fwdDiff_iter_pow_self: Δ_[1]^[m](n ↦ nᵐ)(0) = m!, transporting Mathlib's fwdDiff_iter_eq_factorial from ℤ to the ℕ domain by identifying both shift-sums termwise. fwdDiff_iter_choose_shift: Δ_[1]^[m](n ↦ C(n+j,m))(0) = 1 for every shift j, from fwdDiff_iter_choose composed with the shift via fwdDiff_iter_comp_add.",
+      "mathContext": "$\\Delta^m(n^m)(0)=m!$ and $\\Delta^m\\binom{\\cdot+j}{m}(0)=\\binom{j}{0}=1$."
+    },
+    {
+      "id": "worpitzky-int",
+      "title": "Worpitzky's Identity over ℤ",
+      "startLine": 77,
+      "endLine": 82,
+      "summary": "worpitzky_int casts the parent's Worpitzky identity to ℤ, (n:ℤ)ᵐ = ∑_j ⟨m,j⟩·C(n+j,m), so the alternating-sign forward-difference operator can be applied to the function n ↦ nᵐ.",
+      "mathContext": "$(n)^m=\\sum_{j=0}^{m}\\langle m,j\\rangle\\binom{n+j}{m}$ over $\\mathbb{Z}$."
+    },
+    {
+      "id": "row-sum",
+      "title": "The Eulerian Row Sum",
+      "startLine": 84,
+      "endLine": 123,
+      "summary": "eulerian_row_sum applies Δ_[1]^[m] at 0 to worpitzky_int: the left side becomes m! (fwdDiff_iter_pow_self) and the right side, after distributing over the sum (fwdDiff_iter_finset_sum) and pulling out each coefficient (fwdDiff_iter_const_smul) and using fwdDiff_iter_choose_shift = 1, becomes ∑_j ⟨m,j⟩; casting back to ℕ yields ∑_j ⟨m,j⟩ = m!.",
+      "mathContext": "$\\sum_{j=0}^{m}\\langle m,j\\rangle=m!$."
+    },
+    {
+      "id": "checks",
+      "title": "Low-Order Sanity Checks",
+      "startLine": 125,
+      "endLine": 131,
+      "summary": "The row-3 instance ∑_j ⟨3,j⟩ = 1 + 4 + 1 = 6 = 3! discharged by kernel decide, and the general row sum restated as the permutation count m!.",
+      "mathContext": "$\\langle 3,0\\rangle+\\langle 3,1\\rangle+\\langle 3,2\\rangle=1+4+1=6=3!$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Deduces the Eulerian row sum ∑_{j=0}^{m} ⟨m,j⟩ = m! from the parent's Worpitzky identity nᵐ = ∑_j ⟨m,j⟩·C(n+j,m) by applying the m-th forward difference operator Δ_[1]^[m] at 0. Two ready-made Mathlib values do the work on either side of the identity: Δ_[1]^[m](n ↦ nᵐ)(0) = m! (fwdDiff_iter_eq_factorial, transported from ℤ to ℕ via Newton's shift formula in fwdDiff_iter_pow_self) and Δ_[1]^[m](n ↦ C(n+j,m))(0) = 1 (fwdDiff_iter_choose composed with a shift in fwdDiff_iter_choose_shift); linearity of the iterated difference over the finite sum and over each Eulerian coefficient connects them, giving m! = ∑_j ⟨m,j⟩·1. 133 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound; the low-order check uses kernel decide, not native_decide).",
+    "implications": "The row sum being m! is the statement that the descent statistic partitions the m! permutations of {1,…,m}. Realising it through finite differences exhibits Worpitzky's identity as a polynomial change of basis whose top (m-th) difference is exactly the row sum, complementary to the analytic Eₘ(1) = m! route of the sibling oq-01: the same combinatorial fact is read off the discrete-calculus side rather than the generating-function side. Because the proof reuses Mathlib's complete forward-difference calculus, only the combinatorial Worpitzky input is gallery-specific.",
+    "openQuestions": [
+      "Generalise to the higher forward differences: for r ≤ m, compute Δ_[1]^[r](nᵐ)(0) and extract the full alternating-sum / Stirling-number content of Worpitzky's identity, of which the row sum is the top (r = m) case."
+    ]
+  }
+}

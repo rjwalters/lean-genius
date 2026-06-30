@@ -81,7 +81,8 @@
     "marquee-phase-3"
   ],
   "relatedProofs": [
-    "szemeredi-counting"
+    "szemeredi-counting",
+    "szemeredi-counting-oq-01"
   ],
   "references": {
     "papers": [],
@@ -96,13 +97,24 @@
     {
       "path": "Proofs/SzemerediCounting.lean",
       "filename": "SzemerediCounting.lean",
-      "lineCount": 1197,
+      "lineCount": 1231,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCounting.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCountingOQ01.lean",
+      "filename": "SzemerediCountingOQ01.lean",
+      "lineCount": 315,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCountingOQ01.lean"
     }
   ]
 }

@@ -18,6 +18,45 @@
     "sorries": 0
   },
   "title": "Urysohn's Lemma and the Explicit Metric Urysohn Function",
+  "description": "Urysohn's lemma — the cornerstone separation theorem of point-set topology: in a normal space any two disjoint closed sets are functionally separated by a continuous [0,1]-valued function. This entry re-exports Mathlib's abstract statement (normal and locally-compact-Hausdorff forms, plus point-from-closed-set separation) and then supplies the content absent from Mathlib: the explicit metric Urysohn function f(x) = d(x,s)/(d(x,s)+d(x,t)) for disjoint nonempty closed sets, proved continuous, identically 0 on s and 1 on t, and [0,1]-valued — entirely from the Metric.infDist API, with no appeal to the abstract Urysohn machinery.",
+    "overview": {
+    "historicalContext": "Urysohn's lemma, proved by Pavel Urysohn in 1925, is the foundational functional-separation result of general topology: it shows that normality — a purely set-theoretic separation condition on closed sets — is equivalent to the ability to separate disjoint closed sets by continuous real functions. It is the linchpin of the Urysohn metrization theorem and the Tietze extension theorem, and its locally-compact-Hausdorff form underlies partitions of unity and the Riesz representation theorem. The abstract proof is delicate (a dyadic-rational interpolation of nested open sets), and Mathlib formalizes it as exists_continuous_zero_one_of_isClosed. In a metric space, however, the separating function has a famous closed form — the normalized distance d(x,s)/(d(x,s)+d(x,t)) — that bypasses the abstract construction entirely. This entry re-exports the abstract lemma (hence the mathlib badge) and contributes the explicit metric witness, which is not a named result in Mathlib.",
+    "problemStatement": "Present Urysohn's lemma and construct the explicit metric Urysohn function. Re-export Mathlib's abstract statement (normal-space and locally-compact-Hausdorff forms, and point-from-closed-set separation), and for disjoint nonempty closed sets s, t in a metric space define urysohnFn s t x = d(x,s)/(d(x,s)+d(x,t)) and prove it continuous, equal to 0 on s and 1 on t, and valued in [0,1], packaged as a bundled continuous separator.",
+    "proofStrategy": "Two parts. The abstract part is direct re-export: urysohn_normal and urysohn_locallyCompact wrap Mathlib's existence theorems, and urysohn_point_isClosed applies the normal-space form to the closed singleton {x₀}. The explicit metric part is built from the Metric.infDist API: infDist_add_pos shows the denominator d(x,s)+d(x,t) is strictly positive everywhere (a point with both distances zero would lie in s ∩ t, contradicting disjointness, via IsClosed.mem_iff_infDist_zero and notMem_iff_infDist_pos); continuous_urysohnFn is then Continuous.div of the continuous distance maps with this nowhere-vanishing denominator; urysohnFn_eq_zero/eq_one use infDist_zero_of_mem and closed-set distance positivity; urysohnFn_mem_Icc bounds the numerator by the positive denominator. urysohn_metric bundles these into a C(X,ℝ) separator.",
+    "keyInsights": [
+      "Urysohn's lemma is the equivalence between a set-theoretic separation property (normality) and an analytic one (separation by continuous functions) — it is what makes 'normal space' a useful hypothesis throughout topology and analysis.",
+      "In a metric space the separating function is explicit and constructive: f(x) = d(x,s)/(d(x,s)+d(x,t)) sidesteps the abstract dyadic-interpolation construction entirely, with continuity, boundary values, and range all read off the distance-to-a-set API.",
+      "Denominator positivity is the crux: d(x,s)+d(x,t) > 0 everywhere precisely because s and t are disjoint closed sets — a point where both distances vanish would lie in s ∩ t = ∅. This single fact powers continuity (no division by zero), the value 1 on t, and the [0,1] bound.",
+      "The boundary values invert the closed-set distance characterisation: infDist x s = 0 ⇔ x ∈ s for closed s, so the function is 0 exactly on s; and on t (disjoint from the closed s) the distance to s is positive, forcing the value 1.",
+      "The locally-compact-Hausdorff form (compact set vs. disjoint closed set) is the version that powers partitions of unity and the Riesz representation theorem — the same separation principle specialised to where measure theory needs it."
+    ]
+  },
+  "sections": [
+    {
+      "id": "abstract-lemma",
+      "title": "Part (a): The Abstract Lemma in a Normal Space",
+      "startLine": 40,
+      "endLine": 75,
+      "summary": "Direct re-exports of Mathlib's Urysohn lemma (the mathlib-badged content). urysohn_normal: disjoint closed sets in a NormalSpace are separated by a continuous [0,1]-valued f (exists_continuous_zero_one_of_isClosed). urysohn_locallyCompact: the LCH form separating a compact set from a disjoint closed set. urysohn_point_isClosed: a point outside a closed set is separated from it in a normal T1 space, by applying the lemma to the closed singleton {x₀}.",
+      "mathContext": "Normal space: disjoint closed $s,t$ $\\Rightarrow$ $\\exists f\\in C(X,\\mathbb{R})$, $f|_s=0$, $f|_t=1$, $0\\le f\\le 1$."
+    },
+    {
+      "id": "explicit-metric",
+      "title": "Part (b): The Explicit Metric Urysohn Function",
+      "startLine": 77,
+      "endLine": 158,
+      "summary": "Defines urysohnFn s t x = d(x,s)/(d(x,s)+d(x,t)) and proves, from the Metric.infDist API alone: infDist_add_pos (denominator > 0 everywhere, from disjointness), continuous_urysohnFn (Continuous.div with nowhere-vanishing denominator), urysohnFn_eq_zero (= 0 on s), urysohnFn_eq_one (= 1 on t), urysohnFn_mem_Icc ([0,1]-valued). urysohn_metric bundles these into a C(X,ℝ) separator; urysohn_metric_of_normalSpace notes the abstract lemma applies verbatim since every metric space is normal.",
+      "mathContext": "$f(x)=\\dfrac{d(x,s)}{d(x,s)+d(x,t)}$: continuous, $f|_s=0$, $f|_t=1$, $f(x)\\in[0,1]$, denominator $>0$."
+    },
+    {
+      "id": "concrete-evaluation",
+      "title": "Part (c): A Concrete Evaluation",
+      "startLine": 160,
+      "endLine": 169,
+      "summary": "urysohnFn_half_at_midpoint: on ℝ, the explicit function separating {0} and {1} takes the value 1/2 at the midpoint 1/2, as symmetry demands. Computed via infDist_singleton and Real.dist_eq, finished by norm_num — a concrete anchor for the abstract construction.",
+      "mathContext": "On $\\mathbb{R}$: $f(\\tfrac12)=\\dfrac{d(\\tfrac12,\\{0\\})}{d(\\tfrac12,\\{0\\})+d(\\tfrac12,\\{1\\})}=\\dfrac{1/2}{1/2+1/2}=\\tfrac12$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",

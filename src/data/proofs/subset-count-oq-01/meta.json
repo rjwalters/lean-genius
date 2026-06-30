@@ -66,6 +66,43 @@
       "description": "Both formalize Cantor's theorem; this entry approaches it from the subset-counting lineage (finite 2^n strictly dominates n, generalized to every cardinal) and supplies an explicit diagonal-set witness."
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Lineage: from the finite count 2^n to Cantor's theorem",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring framing the file as the infinite analogue of the parent's finite subset count Fintype.card (Finset α) = 2^n. Two facts hide in 2^n: it already strictly exceeds n, and that strict gap persists at every cardinality — which is Cantor's theorem. Imports Mathlib, opens Function and scoped Cardinal, and opens the SubsetCountOQ01 namespace with universe-polymorphic α."
+    },
+    {
+      "id": "diagonal-set",
+      "title": "The Explicit Diagonal Set and the Diagonal Argument",
+      "startLine": 37,
+      "endLine": 50,
+      "summary": "diagonalSet f := {x | x ∉ f x} is the set of elements not contained in their own image under a candidate enumeration f : α → Set α. diagonalSet_not_mem_range proves it never lies in the range of f: if f a = diagonalSet f then a ∈ f a ↔ a ∉ f a, a contradiction discharged by tauto. This is the self-contained core of the whole file."
+    },
+    {
+      "id": "cantor-maps",
+      "title": "Cantor's Theorem: Surjection and Injection Forms",
+      "startLine": 52,
+      "endLine": 61,
+      "summary": "not_surjective_to_set: no f : α → Set α is surjective, since surjectivity would place the diagonal set in the range, contradicting diagonalSet_not_mem_range. not_injective_from_set: no g : Set α → α is injective, re-exporting Mathlib's cantor_injective — the dual labelling form."
+    },
+    {
+      "id": "cardinal-form",
+      "title": "The Cardinal Form #α < #(Set α) = 2^#α",
+      "startLine": 63,
+      "endLine": 74,
+      "summary": "mk_set_eq_two_pow records #(Set α) = 2^#α (Cardinal.mk_set) — the literal infinite analogue of the parent's 2^n. mk_lt_mk_set rewrites with it and applies Cardinal.cantor to give the strict inequality #α < #(Set α); mk_lt_two_pow_mk states the same in exponential form #α < 2^#α."
+    },
+    {
+      "id": "finite-shadow",
+      "title": "The Finite Shadow n < 2^n",
+      "startLine": 76,
+      "endLine": 90,
+      "summary": "card_lt_card_finset: Fintype.card α < Fintype.card (Finset α) for finite α, via Fintype.card_finset (= 2^n) and Nat.lt_two_pow_self — the parent's count already strictly dominates the element count. card_lt_two_pow states the arithmetic shadow n < 2^n directly. These are the finite case of Cantor, anchoring the infinite result to the parent's lineage."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"

@@ -1,0 +1,192 @@
+[
+  {
+    "id": "ann-caycon-1",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "context",
+    "title": "The Converse to Cayley: Closing the Loop",
+    "content": "**Module framing.** The parent showed the *image* of the finite Cayley embedding is a regular (sharply transitive) subgroup of $S_n$. This file proves the **converse**: *any* subgroup $H \\le S_n = \\mathrm{Perm}(\\alpha)$ (with $\\alpha$ finite nonempty) that acts **freely** and **transitively** is regular of order $n$.\n\nTwo structural payoffs pin such an $H$ down:\n- **Order $n$**: $\\mathrm{Nat.card}\\,H = |\\alpha|$, via the orbit map $\\sigma \\mapsto \\sigma\\bullet a$ being a bijection $H \\simeq \\alpha$;\n- **Sharp transitivity**: a unique $\\sigma \\in H$ with $\\sigma i = j$.\n\nCombined with the parent, this closes the loop: *the regular subgroups of $S_n$ are exactly the free transitive ones, and they all have order $n$.* The argument is orbit–stabiliser specialised to a free action — no dependence on the Cayley construction.",
+    "mathContext": "For a transitive action, orbit–stabiliser gives $|H| = |\\alpha|\\cdot|H_a|$; freeness makes the stabiliser $H_a$ trivial, so $|H| = |\\alpha|$. This is the abstract characterisation of a regular (simply transitive) action as a torsor.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Regular permutation group",
+      "Orbit–stabiliser theorem",
+      "Free transitive action / torsor",
+      "Converse of Cayley's theorem"
+    ],
+    "prerequisites": [
+      "Subgroups of Equiv.Perm",
+      "Group actions"
+    ],
+    "tags": [
+      "module-header",
+      "converse",
+      "framing"
+    ]
+  },
+  {
+    "id": "ann-caycon-2",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
+    "type": "definition",
+    "title": "Transitive, Free, Regular — the Three Predicates",
+    "content": "**`ActsTransitively H`**: $\\forall i\\,j,\\ \\exists \\sigma \\in H,\\ \\sigma i = j$ — every point reaches every other.\n\n**`ActsFreely H`** (semiregular): $\\forall \\sigma \\in H\\,\\forall i,\\ \\sigma i = i \\to \\sigma = 1$ — only the identity has a fixed point, i.e. all stabilisers are trivial.\n\n**`IsRegular H := ActsTransitively H ∧ ActsFreely H`**: transitive *and* free.\n\nStating the hypotheses as bare propositions about an *arbitrary* subgroup (rather than reusing a `MulAction` typeclass) keeps the converse self-contained and independent of the parent's Cayley map.",
+    "mathContext": "A permutation group is **regular** iff it is transitive with trivial point stabilisers. Equivalently it is sharply transitive: exactly one element realises each ordered pair $(i, j)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Transitive action",
+      "Free / semiregular action",
+      "Trivial stabiliser"
+    ],
+    "prerequisites": [
+      "Equiv.Perm application",
+      "Subgroup membership"
+    ],
+    "tags": [
+      "definitions",
+      "predicates",
+      "regular"
+    ]
+  },
+  {
+    "id": "ann-caycon-3",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "The Converse Engine: Freeness ⇒ Determined by One Point",
+    "content": "**`eq_of_free_of_eq_at_point`**: in a *free* subgroup, two elements agreeing at a single point are equal.\n\nProof: if $\\sigma i = \\tau i$ then $\\tau^{-1}\\sigma$ fixes $i$, so freeness forces $\\tau^{-1}\\sigma = 1$, hence $\\sigma = \\tau$. This single rigidity lemma is the workhorse — it powers both the injectivity of the orbit map (order $n$) and the uniqueness half of sharp transitivity.",
+    "mathContext": "Trivial stabilisers mean the action is **faithful in a strong sense**: the orbit map $\\sigma \\mapsto \\sigma a$ is injective. This is exactly the property that distinguishes a regular action from a merely transitive one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Faithful / free action",
+      "inv_mul_eq_one",
+      "Stabiliser triviality"
+    ],
+    "prerequisites": [
+      "ActsFreely",
+      "Subgroup.mul_mem / inv_mem"
+    ],
+    "tags": [
+      "rigidity",
+      "converse-engine",
+      "determined-by-one-point"
+    ]
+  },
+  {
+    "id": "ann-caycon-4",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The Orbit Map is a Bijection H ≃ α",
+    "content": "**`orbitMap_bijective`** + **`regularEquiv`**: for a free transitive $H$ and a basepoint $a$, the orbit map $\\sigma \\mapsto \\sigma a$ from $H$ to $\\alpha$ is bijective, and `Equiv.ofBijective` packages it as an explicit equivalence $H \\simeq \\alpha$.\n\n- **Surjective** by transitivity (some $\\sigma$ sends $a$ to any target $j$);\n- **Injective** by `eq_of_free_of_eq_at_point` (freeness).\n\nThis single bijection is the heart of the converse: it is the formal content of 'a regular action makes $H$ a torsor over $\\alpha$'.",
+    "mathContext": "The orbit map $H \\to \\alpha,\\ \\sigma \\mapsto \\sigma\\cdot a$ is the canonical torsor trivialisation: a choice of basepoint $a$ identifies the principal homogeneous space $\\alpha$ with the group $H$ itself.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Orbit map",
+      "Equiv.ofBijective",
+      "Torsor trivialisation",
+      "Principal homogeneous space"
+    ],
+    "prerequisites": [
+      "eq_of_free_of_eq_at_point",
+      "ActsTransitively"
+    ],
+    "tags": [
+      "orbit-map",
+      "bijection",
+      "regularEquiv"
+    ]
+  },
+  {
+    "id": "ann-caycon-5",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 97
+    },
+    "type": "insight",
+    "title": "Order Equals Degree: |H| = n",
+    "content": "**`card_eq_of_free_transitive`** / **`fintypeCard_eq_of_free_transitive`**: a free transitive subgroup of $\\mathrm{Sym}(\\alpha)$ has order $|\\alpha|$.\n\nImmediate from the bijection: `Nat.card_congr (regularEquiv ...)` transports cardinality across $H \\simeq \\alpha$, with a basepoint supplied by `Classical.arbitrary α` (needs `Nonempty α`). The finite restatement just rewrites `Nat.card α` as `Fintype.card α`. This is the quantitative converse to Cayley — *order equals degree* — the same numerical fact the parent proved for Cayley images, now for arbitrary regular subgroups.",
+    "mathContext": "Orbit–stabiliser $|H| = |\\mathrm{orbit}(a)|\\cdot|H_a|$ collapses to $|H| = |\\alpha|$ once the orbit is all of $\\alpha$ (transitive) and the stabiliser is trivial (free).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Orbit–stabiliser theorem",
+      "Nat.card_congr",
+      "Order = degree"
+    ],
+    "prerequisites": [
+      "regularEquiv",
+      "Classical.arbitrary"
+    ],
+    "tags": [
+      "order",
+      "cardinality",
+      "converse"
+    ]
+  },
+  {
+    "id": "ann-caycon-6",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 108
+    },
+    "type": "insight",
+    "title": "Sharp Transitivity: Existence ∧ Uniqueness",
+    "content": "**`existsUnique_of_free_transitive`**: for a free transitive $H$ and any $i, j$, a *unique* $\\sigma \\in H$ has $\\sigma i = j$.\n\nExistence is transitivity; uniqueness is `eq_of_free_of_eq_at_point` applied to two such witnesses (they agree at $i$). The `∃!` is the defining property of a regular permutation group and the formal statement that the action is a torsor — every ordered pair $(i, j)$ is realised by exactly one element.",
+    "mathContext": "Sharp (simple) transitivity is equivalent to 'transitive + free': the map $H \\to \\alpha,\\ \\sigma \\mapsto \\sigma i$ is a bijection for each fixed $i$, so each target $j$ has a unique preimage.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sharp / simple transitivity",
+      "ExistsUnique",
+      "Torsor"
+    ],
+    "prerequisites": [
+      "ActsTransitively",
+      "eq_of_free_of_eq_at_point"
+    ],
+    "tags": [
+      "sharp-transitivity",
+      "uniqueness"
+    ]
+  },
+  {
+    "id": "ann-caycon-7",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Converse to Cayley, Packaged",
+    "content": "**`regular_iff_card_and_sharp`**: a regular (free transitive) subgroup of $\\mathrm{Sym}(\\alpha)$ over finite nonempty $\\alpha$ has order $n = |\\alpha|$ **and** is sharply transitive — i.e. it is *the* regular permutation group of degree $n$.\n\nThe conjunction of `fintypeCard_eq_of_free_transitive` and `existsUnique_of_free_transitive`. Together with the parent (Cayley images are regular) this gives the clean characterisation: regular subgroups of $S_n$ ⇔ free transitive subgroups, all of order $n$.",
+    "mathContext": "This bidirectional picture is the structural content of Cayley's theorem at the level of *subgroups*: regularity, sharp transitivity, and 'order = degree' are three faces of the same torsor condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Characterisation of regular subgroups",
+      "Cayley's theorem (forward + converse)",
+      "Conjunction of results"
+    ],
+    "prerequisites": [
+      "card_eq_of_free_transitive",
+      "existsUnique_of_free_transitive"
+    ],
+    "tags": [
+      "conclusion",
+      "main-theorem",
+      "characterisation"
+    ]
+  }
+]

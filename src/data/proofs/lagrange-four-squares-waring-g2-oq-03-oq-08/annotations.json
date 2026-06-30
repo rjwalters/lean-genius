@@ -1,0 +1,50 @@
+[
+  {
+    "id": "waringg2-ann-header",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Waring's g(2) = 4 as a Sharp, Axiom-Free Least Element",
+    "content": "The header contrasts this entry with its parent umbrella, which stated Waring's theorem for squares only as the conjunction '4 suffices and 7 needs 4' and was tagged `axiomatized` because it evaluated worked examples with `native_decide` (trusting `Lean.ofReduceBool`). Here the result is stated sharply: defining `Sufficient k` = 'every natural is a sum of k squares', the *least* such k — Waring's g(2) — is exactly 4, packaged as both `IsLeast` and `sInf = 4`. The upper bound is Lagrange's four-square theorem; the lower bound is the mod-8 obstruction at 7. Everything stays inside `decide`/`omega`, so the file is genuinely 0-axiom. Single import `Mathlib` brings `Nat.sum_four_squares`, `ZMod`, `Fin.snoc`, and `IsLeast`/`sInf`.",
+    "mathContext": "$g(2) = \\min\\{k : \\forall n,\\ n = \\textstyle\\sum_{i<k} x_i^2\\} = 4.$ The lower bound is witnessed by $7$, and more generally by the forms $4^a(8b+7)$ (Legendre/Gauss three-square theorem).",
+    "significance": "context",
+    "relatedConcepts": ["Waring's problem", "Lagrange four-square theorem", "three-square theorem", "native_decide vs decide"],
+    "prerequisites": ["sums of squares", "least element / infimum"]
+  },
+  {
+    "id": "waringg2-ann-def-mono",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
+    "range": { "startLine": 38, "endLine": 56 },
+    "type": "definition",
+    "title": "Representability and Its Monotonicity in k",
+    "content": "`IsSumOfSquares k n` is defined as the existence of a tuple $f : \\mathrm{Fin}\\,k \\to \\mathbb{N}$ with $\\sum_i (f i)^2 = n$. The key structural fact is monotonicity: `IsSumOfSquares.succ` pads a $k$-square representation with one zero square (`Fin.snoc f 0`, then `Fin.sum_univ_castSucc` to peel the last entry), and `IsSumOfSquares.mono` iterates this by induction on the difference $l - k$. Monotonicity is exactly what makes the 'sufficient' set $\\{k \\mid \\text{Sufficient } k\\}$ upward closed, and what later promotes 'no $k \\le 3$ representation of 7' into the sharp lower bound $4 \\le k$.",
+    "mathContext": "$n = \\sum_{i<k} x_i^2 \\Rightarrow n = \\sum_{i<k} x_i^2 + 0^2 = \\sum_{i<k+1} x_i'^2$. Hence $k \\le l$ and IsSumOfSquares $k$ $n$ ⟹ IsSumOfSquares $l$ $n$.",
+    "significance": "key",
+    "relatedConcepts": ["Fin.snoc", "zero-padding", "upward-closed set", "Fin.sum_univ_castSucc"],
+    "prerequisites": ["tuples over Fin", "induction"]
+  },
+  {
+    "id": "waringg2-ann-bounds",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
+    "range": { "startLine": 58, "endLine": 71 },
+    "type": "insight",
+    "title": "Upper Bound (Lagrange) and the Sharp Mod-8 Obstruction",
+    "content": "`four_squares_universal` is the upper bound $4 \\in \\{k \\mid \\text{Sufficient}\\}$: it wraps Mathlib's `Nat.sum_four_squares` into the `IsSumOfSquares 4` shape via the explicit 4-tuple `![a,b,c,d]` and `Fin.sum_univ_four`. `seven_not_three` is the sharp lower-bound witness: 7 is not a sum of three squares. The proof casts the hypothetical equation $x^2+y^2+z^2 = 7$ into $\\mathrm{ZMod}\\,8$ and finishes with a finite `decide` check that no three elements of $\\{0,1,4\\}$ (the squares mod 8) sum to 7. Using `decide` (kernel reduction) rather than `native_decide` is what keeps the whole development 0-axiom.",
+    "mathContext": "Squares mod 8 are $\\{0, 1, 4\\}$; the 27 ordered triples are checked exhaustively and none gives $a^2+b^2+c^2 \\equiv 7 \\pmod 8$. So $7 \\ne x^2+y^2+z^2$ over $\\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.sum_four_squares", "quadratic residues mod 8", "decide", "ZMod"],
+    "prerequisites": ["modular arithmetic", "finite decision procedures"]
+  },
+  {
+    "id": "waringg2-ann-isleast",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
+    "range": { "startLine": 73, "endLine": 98 },
+    "type": "theorem",
+    "title": "g(2) = 4 as IsLeast and as an Infimum",
+    "content": "`Sufficient k` collects the square-counts that represent every natural. `g2_isLeast` proves `IsLeast {k | Sufficient k} 4`: membership is `four_squares_universal`, and the lower-bound half assumes some sufficient $k$ and derives a contradiction if $k < 4$ — then $k \\le 3$, so the (assumed) representation of 7 promotes via `IsSumOfSquares.mono` to a 3-square representation, contradicting `seven_not_three`. `waring_g2` converts the least element to the infimum form $\\sInf\\{k \\mid \\text{Sufficient } k\\} = 4$ via `IsLeast.csInf_eq`. The closing `four_squares_suffice` / `three_squares_insufficient` give the human-readable two halves.",
+    "mathContext": "$\\mathrm{IsLeast}\\,S\\,4 \\iff 4 \\in S \\land \\forall k \\in S,\\ 4 \\le k$. With $S = \\{k \\mid \\text{Sufficient } k\\}$: $4 \\in S$ (Lagrange) and any $k \\in S$ has $k \\ge 4$ (else 7 fails), so $g(2) = \\min S = \\sInf S = 4$.",
+    "significance": "key",
+    "relatedConcepts": ["IsLeast", "sInf", "IsLeast.csInf_eq", "proof by contradiction"],
+    "prerequisites": ["least element in ℕ", "infimum over ℕ"]
+  }
+]

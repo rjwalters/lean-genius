@@ -1,0 +1,127 @@
+{
+  "id": "intermediate-value-theorem-oq-03-oq-01",
+  "title": "2D Brouwer via Sperner: the Compactness Discharge",
+  "slug": "intermediate-value-theorem-oq-03-oq-01",
+  "description": "Isolates and rigorously verifies the analytic half of the standard Sperner-lemma route to the 2D Brouwer fixed point theorem — the step the combinatorics alone do not provide. The parent entry (intermediate-value-theorem-oq-03) proves 1D Brouwer from the IVT and then states the 2D case as an axiom. This entry proves a general compactness-discharge lemma: a continuous self-map of any nonempty compact subset of ℝ^d that admits ε-approximate fixed points for every ε > 0 has an exact fixed point (the displacement x ↦ dist(f x) x attains its minimum on the compact set; if that minimum were positive an ε-approximate fixed point would beat it). Specialised to the compact, nonempty 2-simplex this yields a fully verified conditional 2D Brouwer theorem whose only remaining hypothesis is exactly the Sperner approximate-fixed-point property — the verified combinatorial output of SpernerNDim.lean and the displacement colouring. The implication is fully machine-checked, 0 axioms (only propext, Classical.choice, Quot.sound). It reduces the parent's brouwer_2d axiom to the combinatorial Sperner lemma; supplying that combinatorial input for d = 2 is left explicit as the next open question.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IntermediateValueTheoremOQ03OQ01.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "sperner",
+      "compactness",
+      "intermediate-value-theorem",
+      "extreme-value-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None added. #print axioms reports only propext, Classical.choice, Quot.sound for every result (exists_fixed_of_approx, brouwer_2d_of_sperner_approx, brouwer_1d_via_ivt, simplex_isCompact). NOTE on scope: brouwer_2d_of_sperner_approx is a fully verified IMPLICATION, not an unconditional proof of 2D Brouwer — it takes as a hypothesis the Sperner approximate-fixed-point property (for each ε > 0 a point of the 2-simplex moved < ε in each coordinate). That hypothesis is the combinatorial output of the n-dimensional Sperner lemma (verified separately in SpernerNDim.lean) together with the displacement colouring; deriving it for d = 2 from SpernerNDim.sperner_ndim (Kuhn triangulation + boundary-oddness induction) remains open.",
+    "lineCount": 202,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "exists_fixed_of_approx: a general compactness-discharge lemma — a continuous self-map of any nonempty compact K ⊆ (Fin d → ℝ) admitting ε-approximate fixed points for all ε > 0 has an exact fixed point. This is the analytic core of Sperner ⟹ Brouwer: combinatorics supply the approximate fixed points, compactness supplies the limit.",
+      "brouwer_2d_of_sperner_approx: a fully verified conditional 2D Brouwer fixed point theorem on the standard 2-simplex, reducing the parent entry's brouwer_2d axiom to the Sperner approximate-fixed-point property.",
+      "simplex_isCompact / simplex_nonempty: the standard d-simplex is a nonempty compact subset of (Fin d → ℝ), exhibited as a closed subset of the cube [0,1]^d.",
+      "brouwer_1d_via_ivt: the unconditional 1D Brouwer fixed point theorem from the IVT (intermediate_value_Icc' on g = f − id), recorded for contrast — in 1D no Sperner lemma is needed."
+    ]
+  },
+  "leanFile": {
+    "namespace": "IVTBrouwerDischarge",
+    "lineCount": 202,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/IntermediateValueTheoremOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "Brouwer's fixed point theorem (1911) has no elementary proof from the intermediate value theorem in dimension ≥ 2: the IVT detects sign changes, a one-dimensional phenomenon, whereas Brouwer is governed by topological degree. The combinatorial route through Sperner's lemma (Sperner 1928; Knaster–Kuratowski–Mazurkiewicz) is the standard elementary path: a Sperner colouring of a fine triangulation always has a fully-coloured cell, and as the mesh refines these cells localise an approximate fixed point. Turning the resulting family of approximate fixed points into a single exact one is a compactness (extreme value theorem) argument. The parent gallery entry intermediate-value-theorem-oq-03 formalises the 1D equivalence IVT ⟺ Brouwer and deliberately leaves the 2D case as an axiom (`brouwer_2d`), citing degree theory, homology, or 'Sperner's lemma + simplicial approximation' as the missing machinery.",
+    "problemStatement": "Discharge the parent's `brouwer_2d` axiom via Sperner's lemma. Concretely: supply, with full machine verification, the analytic step that converts Sperner's combinatorial approximate fixed points into an exact 2D Brouwer fixed point, and state 2D Brouwer as a verified theorem conditional only on the (separately verified) combinatorial Sperner output.",
+    "text": "The contribution is the compactness lemma exists_fixed_of_approx. For a continuous f and a nonempty compact K ⊆ (Fin d → ℝ), the displacement map x ↦ dist(f x) x is continuous, so by the extreme value theorem (IsCompact.exists_isMinOn) it attains a minimum at some x₀ ∈ K. If that minimum were strictly positive, instantiating the ε-approximate hypothesis at ε = dist(f x₀) x₀ produces a point of K with strictly smaller displacement, contradicting minimality; hence the minimum is 0 and f x₀ = x₀. Specialising to the standard 2-simplex — shown compact (a closed subset of the cube [0,1]²) and nonempty (it contains 0) — and converting the coordinatewise Sperner bound |f x i − x i| < ε into the sup-metric bound dist(f x) x < ε via dist_pi_lt_iff, gives brouwer_2d_of_sperner_approx: every continuous self-map of the 2-simplex with the Sperner approximate-fixed-point property has a fixed point. For contrast the file also records brouwer_1d_via_ivt, the unconditional 1D theorem obtained directly from the IVT, underscoring that the Sperner detour is needed only from dimension 2 onward.",
+    "proofStrategy": "Prove the analytic half abstractly and reusably (extreme value theorem + a one-line minimality contradiction), then specialise to the compact 2-simplex and bridge the coordinatewise Sperner output to the sup metric. The combinatorial half (existence of fine fully-coloured cells / approximate fixed points) is taken as a hypothesis, matching the verified content of SpernerNDim.lean.",
+    "keyInsights": [
+      "Once Sperner's lemma supplies ε-approximate fixed points for every ε, the only remaining content is analytic: the extreme value theorem turns the infimum of the displacement into an attained minimum, and minimality forces that minimum to be 0.",
+      "The argument is dimension-agnostic: exists_fixed_of_approx is stated for arbitrary d and any nonempty compact set, so the same lemma discharges the approximate-to-exact step for Brouwer in every dimension, not just d = 2.",
+      "The 2-simplex is handled entirely with elementary topology — it is a closed subset of the compact cube [0,1]^d — so no manifold or degree-theoretic input enters the analytic half.",
+      "Dimension 1 is genuinely special: brouwer_1d_via_ivt needs only the IVT, which is exactly why the parent could prove it outright while the 2D case required this combinatorial-plus-compactness detour."
+    ],
+    "prerequisites": [
+      "The extreme value theorem (IsCompact.exists_isMinOn) and basic metric-space facts (dist_nonneg, dist_eq_zero, Continuous.dist)",
+      "Compactness of products and intervals (isCompact_univ_pi, isCompact_Icc) and closedness of half-spaces",
+      "The sup metric on (Fin d → ℝ) and dist_pi_lt_iff",
+      "The intermediate value theorem on ℝ (intermediate_value_Icc') for the 1D case",
+      "Sperner's lemma and the displacement colouring (SpernerNDim.lean) as the source of the approximate-fixed-point hypothesis"
+    ]
+  },
+  "conclusion": {
+    "summary": "The analytic half of the Sperner route to 2D Brouwer is fully machine-checked: exists_fixed_of_approx upgrades ε-approximate fixed points on any compact set to an exact one, and brouwer_2d_of_sperner_approx specialises this to the 2-simplex, giving a verified 2D Brouwer theorem conditional only on the Sperner approximate-fixed-point property. All results are 0-axiom (propext, Classical.choice, Quot.sound only). 5 theorems, 1 definition, 202 lines.",
+    "implications": "The parent's brouwer_2d axiom is reduced to a purely combinatorial statement — that Sperner's lemma yields arbitrarily fine approximate fixed points — which is the verified content of SpernerNDim.lean modulo a concrete triangulation instance. The compactness lemma is reusable verbatim for Brouwer in any dimension and for any compact domain, cleanly separating the topological/combinatorial input from the analytic limit step.",
+    "openQuestions": [
+      "Derive the hypothesis happrox for d = 2 from SpernerNDim.sperner_ndim: build the Kuhn/Freudenthal triangulation of the grid as a SpernerTriangulation instance, prove the boundary-door-oddness by induction on dimension, and feed the displacement colouring through, yielding an UNCONDITIONAL 2D Brouwer theorem.",
+      "Transfer the simplex statement to the closed Euclidean disk { x : ‖x‖ ≤ 1 } via the standard homeomorphism, matching the exact shape of the parent's brouwer_2d axiom.",
+      "Generalise brouwer_2d_of_sperner_approx to arbitrary dimension d by combining exists_fixed_of_approx (already general) with a verified n-dimensional approximate-fixed-point construction."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and imports",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Docstring framing the goal (discharge the parent's brouwer_2d axiom via Sperner's lemma by supplying the analytic compactness step), the list of verified results, and an explicit honesty note that brouwer_2d_of_sperner_approx is a verified implication whose hypothesis is the combinatorial Sperner output. Imports Mathlib and opens Set / Finset."
+    },
+    {
+      "id": "compactness-discharge",
+      "title": "Section I — the compactness discharge (general dimension)",
+      "startLine": 62,
+      "endLine": 96,
+      "summary": "exists_fixed_of_approx: for a continuous f and a nonempty compact K ⊆ (Fin d → ℝ), if ε-approximate fixed points exist for every ε > 0 then f has an exact fixed point in K. The displacement x ↦ dist(f x) x attains its minimum on K (IsCompact.exists_isMinOn); a positive minimum would be beaten by an ε-approximate fixed point at ε = that minimum, so the minimum is 0."
+    },
+    {
+      "id": "simplex-compact",
+      "title": "Section II — the d-simplex is compact and nonempty",
+      "startLine": 98,
+      "endLine": 131,
+      "summary": "InSimplex d (coordinates ≥ 0, sum ≤ 1); simplex_isCompact exhibits it as a closed subset of the compact cube [0,1]^d (intersection of half-spaces); simplex_nonempty notes the origin lies in it."
+    },
+    {
+      "id": "brouwer-2d",
+      "title": "Section III — conditional 2D Brouwer (axiom discharge)",
+      "startLine": 133,
+      "endLine": 173,
+      "summary": "brouwer_2d_of_sperner_approx: a continuous self-map of the 2-simplex with the Sperner approximate-fixed-point property (coordinatewise |f x i − x i| < ε for all ε) has a fixed point. The coordinatewise bound is converted to the sup metric via dist_pi_lt_iff and fed to exists_fixed_of_approx on the compact 2-simplex."
+    },
+    {
+      "id": "brouwer-1d",
+      "title": "Section IV — the unconditional 1D case",
+      "startLine": 175,
+      "endLine": 202,
+      "summary": "brouwer_1d_via_ivt: the 1D Brouwer fixed point theorem from the IVT (intermediate_value_Icc' applied to g = f − id), recorded for contrast — in one dimension no Sperner lemma is needed."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Parent: proves 1D Brouwer from the IVT and states the 2D case as the axiom brouwer_2d. This entry supplies the verified compactness step that, together with the combinatorial Sperner lemma, discharges that axiom."
+    },
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "depends",
+      "description": "Source of the approximate-fixed-point hypothesis: the n-dimensional Sperner parity theorem (0 axioms) guarantees fully-coloured cells, which the displacement colouring turns into the ε-approximate fixed points consumed here."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The IVT itself, used unconditionally in the 1D case (brouwer_1d_via_ivt) and the phenomenon whose higher-dimensional failure motivates the Sperner detour."
+    }
+  ],
+  "sorries": []
+}

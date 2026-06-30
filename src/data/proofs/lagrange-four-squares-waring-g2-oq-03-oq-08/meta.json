@@ -86,22 +86,32 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Docstring contrasting this sharp, 0-axiom formulation with the parent umbrella (which stated only the conjunction and used native_decide for examples). States the plan: define Sufficient k, prove g(2) = 4 as IsLeast and sInf, upper bound by Lagrange and lower bound by the mod-8 obstruction at 7, all within decide/omega. Imports Mathlib and opens the WaringG2Sharp namespace / Finset."
+    },
+    {
+      "id": "def-monotonicity",
       "title": "Representability and monotonicity",
-      "startLine": 42,
-      "endLine": 64,
-      "summary": "IsSumOfSquares k n and its monotonicity in k via zero-padding (Fin.snoc), making the sufficient set upward closed."
+      "startLine": 38,
+      "endLine": 56,
+      "summary": "IsSumOfSquares k n (def) and its monotonicity in k: IsSumOfSquares.succ pads with a zero square (Fin.snoc f 0, Fin.sum_univ_castSucc) and IsSumOfSquares.mono iterates by induction, making the sufficient set upward closed."
     },
     {
+      "id": "bounds",
       "title": "Upper and lower bounds",
-      "startLine": 66,
-      "endLine": 84,
-      "summary": "four_squares_universal (Lagrange upper bound) and seven_not_three (sharp lower-bound witness, mod-8 obstruction by decide over ZMod 8)."
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "four_squares_universal (Lagrange upper bound, wrapping Nat.sum_four_squares via ![a,b,c,d]) and seven_not_three (sharp lower-bound witness: 7 ≠ x²+y²+z² by decide over ZMod 8, since squares are 0,1,4 mod 8)."
     },
     {
+      "id": "g2-isleast",
       "title": "g(2) = 4, sharp and axiom-free",
-      "startLine": 86,
+      "startLine": 73,
       "endLine": 98,
-      "summary": "Sufficient k, g2_isLeast (IsLeast {k | Sufficient k} 4), waring_g2 (sInf = 4), and the human-readable four_squares_suffice / three_squares_insufficient."
+      "summary": "Sufficient k (def), g2_isLeast (IsLeast {k | Sufficient k} 4 — lower half by contradiction via mono + seven_not_three), waring_g2 (sInf = 4 via IsLeast.csInf_eq), and the human-readable four_squares_suffice / three_squares_insufficient."
     }
   ],
   "sorries": []

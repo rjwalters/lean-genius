@@ -1,0 +1,173 @@
+{
+  "id": "cube-root-2-irrational-oq-05-oq-01-oq-01",
+  "title": "Rational Radicands: q^(1/n) ∈ ℚ ⟺ Numerator and Denominator Are Perfect n-th Powers",
+  "slug": "cube-root-2-irrational-oq-05-oq-01-oq-01",
+  "description": "Extends the parent's natural-number rationality criterion to rational radicands. For q : ℚ with q > 0 and n ≥ 1, the real n-th root q^(1/n) is rational if and only if both the numerator and the denominator of q (in lowest terms) are perfect n-th powers. The proof reduces rationality of the root to q = sⁿ for a positive rational s, then uses uniqueness of the reduced fraction representation — encoded in Mathlib as Rat.num_pow / Rat.den_pow — to split the condition coordinatewise across q.num and q.den. The parent's natural-number criterion is recovered as the special case q.den = 1.",
+  "meta": {
+    "author": "classical (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nth_root#Irrationality",
+    "date": "antiquity",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "nth-root",
+      "perfect-power",
+      "rational",
+      "rational-radicand",
+      "real-analysis",
+      "rpow",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CubeRoot2IrrationalOQ05OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Rat.num_pow",
+        "description": "(q ^ n).num = q.num ^ n — the numerator of a rational power is the power of the numerator; encodes that cⁿ/dⁿ stays in lowest terms when c/d is",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Rat.den_pow",
+        "description": "(q ^ n).den = q.den ^ n — the denominator of a rational power is the power of the denominator",
+        "module": "Mathlib.Data.Rat.Defs"
+      },
+      {
+        "theorem": "Rat.num_div_den",
+        "description": "(q.num : ℚ) / (q.den : ℚ) = q — reconstructs q from its reduced numerator and denominator",
+        "module": "Mathlib.Algebra.Ring.Rat"
+      },
+      {
+        "theorem": "Real.rpow_mul",
+        "description": "0 ≤ x → x ^ (y * z) = (x ^ y) ^ z — collapses (q^(1/n))^n to q^(n⁻¹·n) = q, and (sⁿ)^(1/n) to s",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Rat.not_irrational",
+        "description": "(s : ℝ) is not irrational for s : ℚ — closes the ⟸ direction once the root simplifies to a rational s",
+        "module": "Mathlib.NumberTheory.Real.Irrational"
+      }
+    ],
+    "originalContributions": [
+      "rational_rpow_inv_iff_rat: the main criterion — ¬Irrational (q^(1/n)) ↔ (IsPerfectNthPow q.num.toNat n ∧ IsPerfectNthPow q.den n), for q > 0 and n ≥ 1",
+      "irrational_rpow_inv_iff_rat: the contrapositive form — q^(1/n) is irrational iff q lacks a perfect-n-th-power numerator or denominator",
+      "rational_rpow_inv_iff_exists_rat: the real-analytic bridge — q^(1/n) is rational iff q = sⁿ for some positive rational s",
+      "exists_rat_pow_iff_perfect: the arithmetic core — q = sⁿ iff q.num and q.den are perfect n-th powers, via uniqueness of the reduced fraction",
+      "rat_rpow_inv_pow: the root identity (q^(1/n))ⁿ = q for q ≥ 0, n ≥ 1",
+      "rational_rpow_inv_iff_natCast: the parent's natural-number criterion recovered as the special case q.den = 1"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 144,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on Lean's foundational propext / Classical.choice / Quot.sound). No native_decide.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The irrationality of n-th roots of non-perfect-power integers is the general form of the Greek discovery that √2 is irrational (Hardy & Wright, Theorem 44; Niven, Irrational Numbers). The rational-radicand version is the natural completion: a positive rational q = a/b in lowest terms has a rational n-th root iff a and b are separately perfect n-th powers, because coprimality is preserved by powers and reduced fractions are unique. The parent entry settled the integer case via integral closedness; this entry pushes the same idea one floor up to ℚ using the uniqueness already packaged in Mathlib's Rat.num_pow / Rat.den_pow.",
+    "problemStatement": "**Open Question (cube-root-2-irrational-oq-05-oq-01, first listed)**: Extend the criterion to rational radicands — q^(1/n) for q : ℚ⁺ is rational iff both numerator and denominator of q (in lowest terms) are perfect n-th powers.\n\n**Result**: rational_rpow_inv_iff_rat establishes ¬Irrational (q^(1/n)) ↔ (IsPerfectNthPow q.num.toNat n ∧ IsPerfectNthPow q.den n) for q > 0, n ≥ 1, with the irrationality form irrational_rpow_inv_iff_rat and the integer special case rational_rpow_inv_iff_natCast.",
+    "text": "For a positive rational q and n ≥ 1, the real n-th root q^(1/n) is rational exactly when the numerator and denominator of q (in lowest terms) are both perfect n-th powers.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Root identity.** rat_rpow_inv_pow: for q ≥ 0, n ≥ 1, (q^(1/n))ⁿ = q via Real.rpow_natCast and Real.rpow_mul (q^(n⁻¹·n) = q).\n2. **Bridge to a rational power.** rational_rpow_inv_iff_exists_rat: q^(1/n) is rational iff q = sⁿ for some s : ℚ, s > 0. (⇒) a rational value s of the root satisfies sⁿ = (q^(1/n))ⁿ = q after casting; (⇐) (sⁿ)^(1/n) = s by the same rpow law, and a rational is never irrational.\n3. **Arithmetic core via reduced fractions.** exists_rat_pow_iff_perfect: if q = sⁿ then q.num = s.numⁿ and q.den = s.denⁿ by Rat.num_pow / Rat.den_pow — exactly the statement that cⁿ/dⁿ is the reduced form of (c/d)ⁿ. Hence q.num.toNat = (s.num.toNat)ⁿ and q.den = s.denⁿ are perfect n-th powers. Conversely, given q.num.toNat = cⁿ and q.den = dⁿ, the rational s = c/d satisfies sⁿ = cⁿ/dⁿ = q.num/q.den = q (Rat.num_div_den).\n4. **Assembly.** rational_rpow_inv_iff_rat composes the two equivalences; irrational_rpow_inv_iff_rat negates it.\n5. **Integer special case.** rational_rpow_inv_iff_natCast: for q = (m : ℚ) the denominator is 1 (automatically a perfect power), so the criterion collapses to the parent's 'm is a perfect n-th power'."
+    ,
+    "keyInsights": [
+      "**Rationality of the root is rationality of an n-th power.** The real-analytic content is entirely in the one-line bridge q^(1/n) ∈ ℚ ⟺ q ∈ (ℚ⁺)ⁿ; everything afterward is pure arithmetic of fractions.",
+      "**Uniqueness of reduced fractions does all the work.** That cⁿ/dⁿ is automatically in lowest terms when c/d is — i.e. coprimality survives taking powers — is exactly what lets the single condition q = sⁿ split into two independent coordinate conditions. Mathlib's Rat.num_pow / Rat.den_pow are this fact in usable form.",
+      "**The numerator and denominator decouple.** Unlike the integer case (one condition), the rational case is a conjunction: a single non-perfect-power coordinate — numerator OR denominator — already forces irrationality.",
+      "**Strictly generalizes the parent.** Setting q.den = 1 recovers the natural-number criterion verbatim, so this entry subsumes cube-root-2-irrational-oq-05-oq-01 rather than merely paralleling it."
+    ],
+    "prerequisites": [
+      "Real power (rpow) arithmetic: rpow_mul, rpow_natCast for nonnegative base",
+      "Rational numbers in lowest terms: Rat.num, Rat.den, and the power lemmas Rat.num_pow / Rat.den_pow",
+      "Reconstruction of a rational from its reduced form: Rat.num_div_den"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Predicate, and Root Identity",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring stating the rational-radicand criterion, the IsPerfectNthPow predicate, and rat_rpow_inv_pow: (q^(1/n))ⁿ = q for q ≥ 0, n ≥ 1 via rpow composition.",
+      "mathContext": "$\\left(q^{1/n}\\right)^n = q$ for $q \\ge 0,\\ n \\ge 1$."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Rational n-th Powers",
+      "startLine": 51,
+      "endLine": 73,
+      "summary": "rational_rpow_inv_iff_exists_rat: ¬Irrational (q^(1/n)) ↔ ∃ s : ℚ, 0 < s ∧ sⁿ = q. Both directions use the root identity; the ⟸ direction closes with Rat.not_irrational.",
+      "mathContext": "$q^{1/n} \\in \\mathbb{Q} \\iff \\exists s \\in \\mathbb{Q}_{>0},\\ s^n = q$."
+    },
+    {
+      "id": "arithmetic-core",
+      "title": "The Arithmetic Core",
+      "startLine": 75,
+      "endLine": 111,
+      "summary": "exists_rat_pow_iff_perfect: q = sⁿ ⟺ q.num and q.den are perfect n-th powers, using Rat.num_pow / Rat.den_pow for ⇒ and constructing s = c/d for ⟸ via Rat.num_div_den.",
+      "mathContext": "$q \\in (\\mathbb{Q}_{>0})^n \\iff q.\\mathrm{num},\\ q.\\mathrm{den}$ are perfect $n$-th powers."
+    },
+    {
+      "id": "criterion-and-corollary",
+      "title": "Criterion, Irrationality Form, and Integer Special Case",
+      "startLine": 113,
+      "endLine": 144,
+      "summary": "rational_rpow_inv_iff_rat (the assembled criterion), irrational_rpow_inv_iff_rat (its contrapositive), and rational_rpow_inv_iff_natCast recovering the parent's natural-number criterion at q.den = 1.",
+      "mathContext": "$q^{1/n} \\in \\mathbb{Q} \\iff (\\exists k,\\ k^n = q.\\mathrm{num}) \\wedge (\\exists k,\\ k^n = q.\\mathrm{den})$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cube-root-2-irrational-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent's first open question: lifts the natural-number criterion to rational radicands, recovering it as the special case q.den = 1 (rational_rpow_inv_iff_natCast)"
+    },
+    {
+      "targetId": "cube-root-2-irrational-oq-05",
+      "relationship": "related",
+      "description": "The grandparent prime-root result is subsumed twice over: a prime is a non-perfect-power integer, hence an integer radicand whose root is irrational"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the rational-radicand rationality criterion for n-th roots: q^(1/n) is rational iff the numerator and denominator of q are both perfect n-th powers. The real-analytic step is a one-line bridge to q = sⁿ; the substance is the coordinatewise split provided by uniqueness of reduced fractions (Rat.num_pow / Rat.den_pow).",
+    "implications": "Closes the rational-radicand line opened by the parent: rationality of every n-th root of every positive rational is now decided, with the integer criterion recovered as the q.den = 1 specialization. The decoupling of numerator and denominator conditions makes irrationality the generic case.",
+    "openQuestions": [
+      "Drop positivity: handle q < 0 and even/odd n uniformly (for odd n the real root of a negative rational is defined; for even n it is not real).",
+      "Quantify: for a rational q with a non-perfect-power numerator or denominator, give an effective irrationality measure for q^(1/n)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CubeRoot2IrrationalOQ05OQ01OQ01",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/CubeRoot2IrrationalOQ05OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hardy, G. H. and Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed.",
+      "note": "Theorem 44: a rational n-th root of an integer is an integer — the integer-case backbone the rational case builds on"
+    },
+    {
+      "authors": "Niven, Ivan",
+      "title": "Irrational Numbers",
+      "year": "1956",
+      "venue": "Carus Mathematical Monographs, MAA",
+      "note": "Classical treatment of irrationality of n-th roots via unique factorization"
+    }
+  ],
+  "sorries": 0
+}

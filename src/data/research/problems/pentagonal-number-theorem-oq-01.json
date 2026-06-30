@@ -10,7 +10,8 @@
       "Working with the doubling relation 2m = k(3k-1) as the membership predicate (instead of g(k)=k(3k-1)/2) sidesteps integer division entirely; exactness of the division is a one-line even/odd case split.",
       "Mathlib's 2025 Partition.GenFun (Weiyi Wang) already provides the formal power-series infinite product: genFun f = ∏'_i (1 + ∑'_j f(i+1)(j+1)·X^{(i+1)(j+1)}) (genFun_eq_tprod) with coeff_genFun giving the n-th coefficient as ∑_{p:n.Partition} ∏_i f(i,#i). distincts/odds live in Partition.Basic. Only Franklin's involution is still missing.",
       "Euler's partition recurrence is a FINITE sum because the pentagonal value grows quadratically in its index: k² ≤ g(k) (since 2g(k)-2k² = k(k-1) ≥ 0), hence |k| ≤ g(k) and only finitely many g(k) ≤ n (the contributing indices lie in [-n,n]). This finiteness is the prerequisite that lets the recurrence p(n)=∑(-1)^{k-1}p(n-g_k) be evaluated/inducted on.",
-      "Instantiating the genFun character f i c = (if c=1 then (-1:ℤ) else 0) yields inner term 1 - X^{i+1}, so genFun f = ∏_{m≥1}(1-Xᵐ) (product side, free) while coeff_genFun evaluates the same series to ∑_{p∈distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n) (coefficient side, free). Both ends of Euler's identity are thus in Mathlib; the whole open core collapses to the single Franklin identity ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ)."
+      "Instantiating the genFun character f i c = (if c=1 then (-1:ℤ) else 0) yields inner term 1 - X^{i+1}, so genFun f = ∏_{m≥1}(1-Xᵐ) (product side, free) while coeff_genFun evaluates the same series to ∑_{p∈distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n) (coefficient side, free). Both ends of Euler's identity are thus in Mathlib; the whole open core collapses to the single Franklin identity ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ).",
+      "Session 2026-06-28 (researcher-2): formalized the FIXED POINTS of Franklin's involution (Part 7, 0-axiom). The staircases {k,…,2k-1} and {k+1,…,2k} sum to g(k) and g(-k) (staircase_sum_eq_genPent[_neg]) and are partitions into exactly k distinct positive parts with sign (-1)^k = pentSign (franklin_fixed_point[_neg]). Only the involution on the NON-fixed partitions remains open."
     ],
     "builtItems": [
       "genPent, IsGenPent (def): generalized pentagonal number value and the doubling-relation membership predicate [PentagonalNumberTheoremOQ01.lean]",
@@ -21,7 +22,8 @@
       "genPent_sq_le_self (k²≤g(k)), index_le_genPent / neg_index_le_genPent / abs_index_le_genPent (|k|≤g(k)), mul_pred_nonneg / mul_succ_nonneg (consecutive-integer products ≥0) [PentagonalNumberTheoremOQ01.lean]",
       "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]",
       "pentIndices (def) + mem_pentIndices + coe_pentIndices: COMPUTABLE Finset enumerator of contributing indices {k | g(k) ≤ n} filtered from [-n,n]; membership ⟺ g(k) ≤ n, and its Set coercion is exactly the index set indexSet_finite proves finite [PentagonalNumberTheoremOQ01.lean]",
-      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]"
+      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]",
+      "pentSeriesCoeff_eq_sum_pentIndices: the noncomputable [Xⁿ] series coefficient pentSeriesCoeff n = ∑_{k∈pentIndices n} (if genPent k = n then pentSign k else 0) — a finite, Finset-evaluable expression over the computable enumerator; genPent_injective leaves at most one surviving summand [PentagonalNumberTheoremOQ01.lean]"
     ],
     "mathlibGaps": [
       "Franklin's sign-reversing involution on partitions into distinct parts is still absent from Mathlib — the genuine combinatorial heart.",
@@ -29,10 +31,62 @@
       "RESOLVED 2026-06-19 (was an open gap S1–S4): the formal-power-series infinite product ∏(1-Xⁿ) IS now in Mathlib via Combinatorics.Enumerative.Partition.GenFun (genFun, genFun_eq_tprod, coeff_genFun) + Partition.Glaisher; distincts/odds are in Partition.Basic."
     ],
     "nextSteps": [
-      "State the two now-FREE bridges as lemmas (when a backend recovers): (a) genFun (fun i c => if c=1 then (-1:ℤ) else 0) = ∏'_i (1 - X^{i+1}) via genFun_eq_tprod, and (b) coeff n (genFun f) = ∑_{p∈distincts n} (-1)^{p.parts.card} via coeff_genFun (show the character weight is 0 on repeated-part partitions, (-1)^{#parts} on distinct-part ones).",
-      "State the lone remaining open identity as a single sorry: ∑_{p∈distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) (the ℕ↔ℤ bookkeeping aligns genFun's coefficient with pentSeriesCoeff_genPent/genPent_injective).",
-      "Frontier: prove that sorry via Franklin's involution (pair smallest part with longest terminal staircase; fixed points ⟺ pentagonal staircases) — the deep multi-file development now isolated as the ONLY remaining gap."
+      "FRONTIER (only remaining gap): prove the Franklin identity ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) via Franklin's sign-reversing involution (pair smallest part with longest terminal staircase; fixed points ⟺ pentagonal staircases). A DEEP multi-file development still absent from Mathlib — NOT a bounded-session task and NOT yet attempted. Everything tractable below it is already done.",
+      "Bookkeeping for the Franklin identity: align this file's ℤ-valued pentSeriesCoeff/genPent index theory (isGenPent_iff_isSquare, genPent_injective, pentSeriesCoeff_genPent) with the ℕ-indexed genFun coefficient ∑_{p∈distincts n}(-1)^{#parts}."
     ],
-    "progressSummary": "MATHLIB-SURVEY CORRECTION (Session 5, 2026-06-19, researcher-9): the S1–S4 claim that Mathlib lacks the formal-power-series infinite product ∏(1-Xⁿ) is now FALSE. Mathlib's 2025 Combinatorics.Enumerative.Partition.GenFun (genFun, genFun_eq_tprod, coeff_genFun) + Partition.Glaisher + distincts/odds supply BOTH ends of Euler's identity: with the character f i c = (if c=1 then (-1:ℤ) else 0), genFun f = ∏_{m≥1}(1-Xᵐ) (product) and coeff n (genFun f) = ∑_{p∈distincts n}(-1)^{p.parts.card} (coefficient). The entire remaining open core therefore collapses to ONE identity — ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) — i.e. Franklin's sign-reversing involution, still absent from Mathlib. Corrected the OPEN CORE note in the .lean (comment-only) + mathlibGaps/nextSteps/insights. No build this cycle: Aristotle 404 + Docker gate closed (verification-independent OBSERVE work). PRIOR: BUILD-VERIFIED (Session 3, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) merged via PR #25893; Session 2 added the index-bound/finiteness layer (k²≤g(k), |k|≤g(k), indexSet_finite). Session 3 adds the COMPUTABLE enumerator pentIndices (Finset of {k | g(k) ≤ n} filtered from [-n,n]) with mem_pentIndices / coe_pentIndices tying it to the abstract finite set, plus genPent_neg (the ±k pairing g(-k)=g(k)+k) — the recurrence's support is now an explicit Finset ready to index a Finset.sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
-  }
+    "progressSummary": "BRIDGES ALREADY DONE (corrected 2026-06-24, researcher-1): BOTH ends of Euler's pentagonal identity are VERIFIED in PentagonalNumberTheoremOQ01.lean section Bridges — genFun_pent_eq_tprod (product side ∏(1-Xⁿ)), coeff_genFun_pent (signed-count side ∑_{p∈distincts n}(-1)^{#parts}), plus joined headline coeff_tprod_pent and coeff_tprod_pent_eq_evenOdd_diff (= p_even(n)-p_odd(n)). The Session-5 note below calling these 'now-free bridges to state when a backend recovers' was STALE — a later session already added them (0 sorry, 0 axiom, build-green). The ONLY remaining open core is the Franklin identity ∑_{p∈distincts n}(-1)^{#parts} = pentSeriesCoeff (n:ℤ) — Franklin's sign-reversing involution, a deep multi-file development absent from Mathlib. MATHLIB-SURVEY CORRECTION (Session 5, 2026-06-19, researcher-9): the S1–S4 claim that Mathlib lacks the formal-power-series infinite product ∏(1-Xⁿ) is now FALSE. Mathlib's 2025 Combinatorics.Enumerative.Partition.GenFun (genFun, genFun_eq_tprod, coeff_genFun) + Partition.Glaisher + distincts/odds supply BOTH ends of Euler's identity: with the character f i c = (if c=1 then (-1:ℤ) else 0), genFun f = ∏_{m≥1}(1-Xᵐ) (product) and coeff n (genFun f) = ∑_{p∈distincts n}(-1)^{p.parts.card} (coefficient). The entire remaining open core therefore collapses to ONE identity — ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) — i.e. Franklin's sign-reversing involution, still absent from Mathlib. Corrected the OPEN CORE note in the .lean (comment-only) + mathlibGaps/nextSteps/insights. No build this cycle: Aristotle 404 + Docker gate closed (verification-independent OBSERVE work). PRIOR: BUILD-VERIFIED (Session 3, 2026-06-19): foundation file (headline 24m+1-square recognition criterion) merged via PR #25893; Session 2 added the index-bound/finiteness layer (k²≤g(k), |k|≤g(k), indexSet_finite). Session 3 adds the COMPUTABLE enumerator pentIndices (Finset of {k | g(k) ≤ n} filtered from [-n,n]) with mem_pentIndices / coe_pentIndices tying it to the abstract finite set, plus genPent_neg (the ±k pairing g(-k)=g(k)+k) — the recurrence's support is now an explicit Finset ready to index a Finset.sum. Build green (7743 jobs), 0 sorry, 0 axiom, warning-clean. Deep identity (Franklin's involution) remains the open core."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
+      "filename": "PentagonalNumberTheoremOQ01.lean",
+      "lineCount": 595,
+      "theoremCount": 42,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PentagonalNumberTheoremOQ01OQ01.lean",
+      "filename": "PentagonalNumberTheoremOQ01OQ01.lean",
+      "lineCount": 205,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PentagonalNumberTheoremOQ01OQ02.lean",
+      "filename": "PentagonalNumberTheoremOQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PentagonalNumberTheoremOQ01OQ03.lean",
+      "filename": "PentagonalNumberTheoremOQ01OQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PentagonalNumberTheoremOQ01OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "pentagonal-number-theorem-oq-01",
+    "pentagonal-number-theorem-oq-01-oq-01",
+    "pentagonal-number-theorem-oq-01-oq-02",
+    "pentagonal-number-theorem-oq-01-oq-03"
+  ],
+  "lastUpdate": "2026-06-28"
 }

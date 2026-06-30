@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "context",
+    "title": "The Continuum Is Stable Under Countable Powers: #(ℕ→ℝ) = #ℝ",
+    "content": "This is the countable-power strengthening of OQ-07 (which showed #(ℝ×ℝ)=𝔠). Here passing from ℝ to the full sequence space ℕ→ℝ still does not raise cardinality: 𝔠^ℵ₀ = 𝔠. `Cardinal.mk_arrow` expands #(ℕ→ℝ) to #ℝ^#ℕ, rewritten to 𝔠^ℵ₀ and collapsed by `continuum_power_aleph0`. The same engine yields Baire space #(ℕ→ℕ)=𝔠 and, generally, #(ℕ→α)=𝔠 for 2 ≤ #α ≤ 𝔠.",
+    "mathContext": "$\\mathfrak{c}^{\\aleph_0} = (2^{\\aleph_0})^{\\aleph_0} = 2^{\\aleph_0\\cdot\\aleph_0} = 2^{\\aleph_0} = \\mathfrak{c}$, so $\\#(\\mathbb{N}\\to\\mathbb{R}) = \\mathfrak{c} = \\#\\mathbb{R}$.",
+    "significance": "context",
+    "relatedConcepts": ["cardinal arithmetic", "continuum", "cardinal exponentiation", "Cantor diagonalization"],
+    "prerequisites": ["cardinal numbers", "cardinal exponentiation", "ℵ₀ and 𝔠"]
+  },
+  {
+    "id": "ann-engine",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 34, "endLine": 39 },
+    "type": "theorem",
+    "title": "The Engine: 𝔠^ℵ₀ = 𝔠",
+    "content": "The continuum is fixed by countable exponentiation, via Mathlib's `continuum_power_aleph0`: (2^ℵ₀)^ℵ₀ = 2^(ℵ₀·ℵ₀) = 2^ℵ₀. This single cardinal identity drives every statement below — the countable-power analogue of OQ-07's 𝔠·𝔠 = 𝔠.",
+    "mathContext": "$\\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}$, since $(2^{\\aleph_0})^{\\aleph_0} = 2^{\\aleph_0\\cdot\\aleph_0} = 2^{\\aleph_0}$.",
+    "significance": "key",
+    "relatedConcepts": ["cardinal exponentiation", "continuum_power_aleph0", "ℵ₀·ℵ₀=ℵ₀"],
+    "prerequisites": ["cardinal exponent laws"]
+  },
+  {
+    "id": "ann-seq-real",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 41, "endLine": 45 },
+    "type": "theorem",
+    "title": "#(ℕ→ℝ) = 𝔠",
+    "content": "The space of real sequences has cardinality the continuum: `mk_arrow` expands #(ℕ→ℝ) to #ℝ^#ℕ, `mk_real`/`mk_nat` give base 𝔠 and exponent ℵ₀, and the engine collapses 𝔠^ℵ₀ to 𝔠.",
+    "mathContext": "$\\#(\\mathbb{N}\\to\\mathbb{R}) = \\#\\mathbb{R}^{\\#\\mathbb{N}} = \\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}.$",
+    "significance": "key",
+    "relatedConcepts": ["sequence space", "Cardinal.mk_arrow", "continuum"],
+    "prerequisites": ["the engine 𝔠^ℵ₀=𝔠", "mk_arrow"]
+  },
+  {
+    "id": "ann-equinumerous",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 47, "endLine": 58 },
+    "type": "theorem",
+    "title": "Equinumerous: #(ℕ→ℝ) = #ℝ, and a Bijection Exists",
+    "content": "Since both sides equal 𝔠, the sequence space and the line are equinumerous (`mk_seq_real`) — the strong companion to Cantor's diagonal result that ℝ strictly exceeds ℕ. By `Cardinal.eq`, this cardinal equality unpacks to the existence of a bijection (ℕ→ℝ) ≃ ℝ (`nonempty_equiv_seq_real`), though the witness is non-constructive (from cardinal arithmetic, not an explicit coding).",
+    "mathContext": "$\\#(\\mathbb{N}\\to\\mathbb{R}) = \\#\\mathbb{R}$, hence $\\mathrm{Nonempty}\\,((\\mathbb{N}\\to\\mathbb{R}) \\simeq \\mathbb{R})$ via $\\mathrm{Cardinal.eq}$.",
+    "significance": "key",
+    "relatedConcepts": ["equinumerosity", "Cardinal.eq", "bijection", "non-constructive existence"],
+    "prerequisites": ["#(ℕ→ℝ)=𝔠", "cardinal equality ⟺ bijection"]
+  },
+  {
+    "id": "ann-baire",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "theorem",
+    "title": "Baire Space: #(ℕ→ℕ) = 𝔠",
+    "content": "Even the smallest infinite base reaches the continuum: #(ℕ→ℕ) = ℵ₀^ℵ₀ = 𝔠 (`aleph0_power_aleph0`). So ℕ→ℕ, ℕ→ℝ, and ℝ are all equinumerous — a striking instance of how countable sequences of naturals already form a continuum-sized space.",
+    "mathContext": "$\\#(\\mathbb{N}\\to\\mathbb{N}) = \\aleph_0^{\\aleph_0} = \\mathfrak{c}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Baire space", "aleph0_power_aleph0", "continuum"],
+    "prerequisites": ["mk_arrow", "ℵ₀^ℵ₀=𝔠"]
+  },
+  {
+    "id": "ann-general",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "theorem",
+    "title": "The General Principle: 2 ≤ #α ≤ 𝔠 ⟹ #(ℕ→α) = 𝔠",
+    "content": "The unifying statement: for any type α with cardinality sandwiched between 2 and 𝔠, the countable power collapses to 𝔠 (`power_aleph0_of_le_continuum` across `mk_arrow`). Both ℝ (base 𝔠) and ℕ (base ℵ₀) are instances. The lower bound 2 ≤ #α is needed so the power is genuinely continuum-sized (a one-element base would give 1).",
+    "mathContext": "$2 \\le \\#\\alpha \\le \\mathfrak{c} \\implies \\#(\\mathbb{N}\\to\\alpha) = \\mathfrak{c}.$",
+    "significance": "key",
+    "relatedConcepts": ["squeeze on cardinality", "power_aleph0_of_le_continuum", "general principle"],
+    "prerequisites": ["the engine", "cardinal sandwiching"]
+  },
+  {
+    "id": "ann-subsumes",
+    "proofId": "cantor-diagonalization-oq-05",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "theorem",
+    "title": "Subsumes OQ-07: #(ℕ→ℝ) = #(ℝ×ℝ)",
+    "content": "A countable power dominates any finite product, so the sequence space and the plane have the same cardinality — both 𝔠. The right side reuses OQ-07's `mk_prod` and `continuum_mul_self`. This confirms the present result strictly contains the finite-product result.",
+    "mathContext": "$\\#(\\mathbb{N}\\to\\mathbb{R}) = \\mathfrak{c} = \\mathfrak{c}\\cdot\\mathfrak{c} = \\#(\\mathbb{R}\\times\\mathbb{R}).$",
+    "significance": "supporting",
+    "relatedConcepts": ["finite product vs countable power", "continuum_mul_self", "subsuming OQ-07"],
+    "prerequisites": ["#(ℕ→ℝ)=𝔠", "𝔠·𝔠=𝔠"]
+  }
+]

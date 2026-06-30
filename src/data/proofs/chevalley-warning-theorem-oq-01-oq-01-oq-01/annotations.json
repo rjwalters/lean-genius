@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cw3-overview",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "concept",
+    "title": "Reifying a Cardinality into an Explicit Finite Set",
+    "content": "The docstring frames this third-generation entry: the parents establish the Chevalley–Warning divisibility and its cardinality consequences (0-or-≥-p, no-unique-solution, one second zero), but those all live at the level of cardinals and existence. Downstream pigeonhole arguments — above all the Erdős–Ginzburg–Ziv proof — need to iterate over an explicit Finset of common zeros, not just know how many there are. This file supplies that reification: an explicit Finset of ≥ p common zeros, an explicit Finset of ≥ p−1 zeros avoiding any given x₀, and (origin-vanishing case) an explicit Finset of ≥ p−1 nonzero common zeros — answering the parent's open question of an effective count of p−1 additional zeros. All by reifying char_le_card_of_exists through Finset.map / Finset.erase.",
+    "mathContext": "From the abstract bound $p \\le \\#\\{x // \\dots\\}$ to a concrete $T : \\mathrm{Finset}(\\sigma\\to K)$ with $|T| \\ge p$ of common zeros.",
+    "significance": "context",
+    "relatedConcepts": ["reification", "Erdős–Ginzburg–Ziv", "pigeonhole", "Finset", "Chevalley–Warning"],
+    "prerequisites": ["finite fields", "Finset operations"]
+  },
+  {
+    "id": "ann-cw3-explicit-set",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 98 },
+    "type": "theorem",
+    "title": "The Explicit Solution Set of at Least p Zeros",
+    "content": "exists_finset_common_zeros (family) and exists_finset_common_zeros_single produce a concrete Finset (σ → K) of at least p common zeros whenever one exists. The construction is the image of the solution subtype's universal Finset under the coercion embedding Function.Embedding.subtype: (Finset.univ : Finset S).map ↑. Its cardinality is Fintype.card S ≥ p by Finset.card_map + Finset.card_univ, and membership unfolds via Finset.mem_map to each element's y.property (it really is a common zero). This is the bridge from 'how many solutions' to 'which solutions' that combinatorial applications require.",
+    "mathContext": "$T = (\\mathrm{univ} : \\mathrm{Finset}\\,S).\\mathrm{map}\\,\\uparrow$, $|T| = \\#S \\ge p$, every $x \\in T$ a common zero.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.map", "Finset.card_map", "Function.Embedding.subtype", "Finset.mem_map"],
+    "prerequisites": ["Finset images", "subtype coercion"]
+  },
+  {
+    "id": "ann-cw3-p-minus-one",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 136 },
+    "type": "theorem",
+    "title": "The p − 1 Other Zeros via Erase",
+    "content": "exists_finset_other_common_zeros and its single-polynomial form strengthen the parent's single second-solution into p − 1 of them at once: delete a known zero x₀ from the explicit p-element set. Finset.notMem_erase gives x₀ ∉ T.erase x₀; the cardinality bound p − 1 ≤ |T.erase x₀| is discharged by casing on x₀ ∈ T — Finset.card_erase_of_mem when present, Finset.erase_eq_of_notMem (a no-op, slack bound) otherwise — each branch closed by omega. Membership is preserved by Finset.mem_of_mem_erase. A key subtlety: the erase lower bound needs no membership hypothesis, so the proof never has to know in advance whether x₀ landed in the constructed set.",
+    "mathContext": "$|T \\setminus \\{x_0\\}| \\ge |T| - 1 \\ge p - 1$, regardless of whether $x_0 \\in T$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.erase", "Finset.card_erase_of_mem", "Finset.erase_eq_of_notMem", "omega", "membership-free bound"],
+    "prerequisites": ["Finset deletion", "natural-number arithmetic"]
+  },
+  {
+    "id": "ann-cw3-nonzero",
+    "proofId": "chevalley-warning-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 138, "endLine": 157 },
+    "type": "theorem",
+    "title": "The Nonzero Solution Set: the EGZ-Shaped Output",
+    "content": "exists_finset_nonzero_common_zeros instantiates the previous theorem at x₀ = 0: for an origin-vanishing system, it returns an explicit Finset of at least p − 1 nonzero common zeros. Each member x ≠ 0 because the deleted point was the origin (fun hc => hT0 (hc ▸ hx) derives a contradiction from x = 0 ∈ T). This is the explicit-set form of the parent's nontrivial_of_origin and precisely the object the Erdős–Ginzburg–Ziv pigeonhole consumes after Chevalley–Warning produces the common zeros of the two degree-(p−1) forms in 2p−1 variables.",
+    "mathContext": "Origin-vanishing $\\Rightarrow \\exists\\,T,\\ 0 \\notin T,\\ |T| \\ge p-1,\\ \\forall x \\in T,\\ x \\ne 0 \\wedge x$ a common zero.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős–Ginzburg–Ziv", "origin-vanishing system", "nonzero zeros", "specialization"],
+    "prerequisites": ["the p−1-others theorem", "EGZ setup"]
+  }
+]

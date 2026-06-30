@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-qroq0302-header",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Module Overview: the mod-4 Decision Rule",
+    "content": "This module turns the reciprocity swap sign — carried by the parent's Legendre-symbol algorithm as the opaque exponent (-1)^((p/2)(q/2)) — into a proved, branch-free mod-4 decision rule. It imports only Mathlib (the LegendreSymbol/QuadraticReciprocity development and Mathlib.Tactic), so it is decoupled from the parent file. The convention is modulus-first: legendreSym n a denotes (a/n), hence legendreSym q p is (p/q) and legendreSym p q is (q/p).",
+    "mathContext": "Quadratic reciprocity relates (p/q) and (q/p) by the sign (-1)^{((p-1)/2)((q-1)/2)}; the textbook rule reads that sign mod 4.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic reciprocity",
+      "Legendre symbol",
+      "decision procedure",
+      "mod 4 residues"
+    ],
+    "prerequisites": [
+      "Legendre symbol basics",
+      "the Law of Quadratic Reciprocity"
+    ]
+  },
+  {
+    "id": "ann-qroq0302-sign-lemma",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 50, "endLine": 76 },
+    "type": "key_step",
+    "title": "The Standalone Sign Lemma",
+    "content": "reciprocity_sign_eq_neg_one_iff proves, for odd p and q, that (-1)^((p/2)(q/2)) = -1 ↔ (p % 4 = 3 ∧ q % 4 = 3). The power equals -1 exactly when the exponent is odd (Even.neg_one_pow gives 1, Odd.neg_one_pow gives -1); the exponent (p/2)(q/2) is odd iff both factors are (Nat.odd_mul); and for an odd number p the half p/2 is odd iff p ≡ 3 (mod 4). The residue bookkeeping is discharged by omega after rewriting through Nat.odd_iff.",
+    "mathContext": "This is the purely arithmetic heart of the decision rule: it pins the swap sign to the joint condition p ≡ q ≡ 3 (mod 4).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Odd.neg_one_pow",
+      "Nat.odd_mul",
+      "Nat.odd_iff",
+      "omega"
+    ],
+    "prerequisites": [
+      "parity of integer powers of -1",
+      "natural-number division and modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-qroq0302-helpers",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 79, "endLine": 100 },
+    "type": "key_step",
+    "title": "Helper Lemmas: Oddness and Non-Vanishing",
+    "content": "Two private helpers support the biconditionals. mod_two_one shows an odd prime satisfies p % 2 = 1 (resolving Nat.Prime.eq_two_or_odd against p ≠ 2). legendre_ne_zero shows that for distinct primes p and q the cast (q : ZMod p) is nonzero — because p ∤ q (Nat.prime_dvd_prime_iff_eq turns divisibility into equality), so the Legendre symbol (q/p) is a unit.",
+    "mathContext": "Non-vanishing of the symbol is what makes the forward directions of the biconditionals work: in {±1}, x = -x has no solution.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Nat.Prime.eq_two_or_odd",
+      "Nat.prime_dvd_prime_iff_eq",
+      "ZMod.natCast_eq_zero_iff"
+    ],
+    "prerequisites": [
+      "primes and divisibility",
+      "ZMod and the Legendre symbol"
+    ]
+  },
+  {
+    "id": "ann-qroq0302-biconditionals",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 102, "endLine": 164 },
+    "type": "key_step",
+    "title": "The Agree / Disagree Biconditionals",
+    "content": "reciprocity_disagree_iff proves (p/q) = -(q/p) ↔ (p % 4 = 3 ∧ q % 4 = 3), and reciprocity_agree_iff proves (p/q) = (q/p) ↔ (p % 4 = 1 ∨ q % 4 = 1). Both start from Mathlib's exponent swap legendreSym.quadratic_reciprocity' and split on whether the swap exponent is even or odd. When the sign is +1 the swap preserves the symbol; when -1 it negates it. Using that the symbols are ±1 (legendreSym.eq_one_or_neg_one), an accidental equality x = -x is impossible, so each one-directional Mathlib special case is upgraded to a full iff; omega closes the residue-class reasoning.",
+    "mathContext": "(p/q) = -(q/p) ⟺ p ≡ q ≡ 3 (mod 4); (p/q) = (q/p) ⟺ p ≡ 1 ∨ q ≡ 1 (mod 4). Mathlib provides only the backward implications.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "legendreSym.quadratic_reciprocity'",
+      "legendreSym.eq_one_or_neg_one",
+      "even/odd case split",
+      "quadratic_reciprocity_three_mod_four"
+    ],
+    "prerequisites": [
+      "the standalone sign lemma",
+      "values of the Legendre symbol are ±1 for units"
+    ]
+  },
+  {
+    "id": "ann-qroq0302-branch-dichotomy",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 166, "endLine": 199 },
+    "type": "key_step",
+    "title": "Branch Form and Exhaustive/Exclusive Dichotomy",
+    "content": "reciprocity_swap_value packages the sign as a decidable branch: (q/p) = (if p % 4 = 3 ∧ q % 4 = 3 then -1 else 1) * (p/q), proved by congr onto the sign lemma plus an even/odd split for the else-branch. agree_iff_not_disagree proves that for distinct odd primes the agree predicate is exactly the negation of the disagree predicate, by rewriting through both biconditionals and finishing with omega over the residue classes {1,3}.",
+    "mathContext": "The branch form is what a recursive symbol computer evaluates; the dichotomy theorem certifies the rule is both exhaustive and exclusive.",
+    "significance": "important",
+    "relatedConcepts": [
+      "if-then-else decision",
+      "complementary predicates",
+      "omega"
+    ],
+    "prerequisites": [
+      "the agree/disagree biconditionals"
+    ]
+  },
+  {
+    "id": "ann-qroq0302-examples",
+    "proofId": "quadratic-reciprocity-oq-03-oq-02",
+    "range": { "startLine": 201, "endLine": 227 },
+    "type": "example",
+    "title": "Verified Corroboration via decide",
+    "content": "In a section with local Fact (Nat.Prime n) instances for 3,5,7,11,13, five kernel-decide checks corroborate the rule: (7/3) = -(3/7) and (7/11) = -(11/7) disagree (3,7,11 ≡ 3 mod 4); (5/13) = (13/5) and (3/5) = (5/3) agree (13,5 ≡ 1 mod 4); and the sign lemma holds at p = q = 3. These use Lean's kernel decide (not native_decide), so they add no axioms.",
+    "mathContext": "Each example exercises a residue configuration: both ≡ 3 flips the sign, a partner ≡ 1 (mod 4) preserves it.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "Euler's criterion in ZMod p",
+      "Fact (Nat.Prime n) instances"
+    ],
+    "prerequisites": [
+      "decidable evaluation of Legendre symbols"
+    ]
+  }
+]
