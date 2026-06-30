@@ -237,4 +237,32 @@ example (p : ℕ) (hp : p.Prime) :
   have h := mul_totient_dvd_gal_card_of_coprime 5 p (by norm_num) hp (by decide)
   simpa [ht] using h
 
+-- ============================================================================
+-- Part VI: Exact order in the smallest fully determined case (n = 3)
+-- ============================================================================
+
+/-- **Exact order `|Gal(X³-p/ℚ)| = 6` for every prime `p`.**  The two outer bounds of
+this file close to an *equality* in the case `n = 3`: the factorial embedding gives the
+upper bound `|Gal| ∣ 3! = 6`, while the coprime metacyclic lower bound gives
+`6 = 3·φ(3) ∣ |Gal|` (here `gcd(3, φ(3)) = gcd(3, 2) = 1`).  Divisibility antisymmetry
+forces `|Gal| = 6`, matching the known `Gal(X³-p/ℚ) ≅ S₃`.
+
+This is the first `n` for which the divisibility bracket of this file pins the order
+exactly with no extra hypotheses: `n·φ(n) = 6 = n!`, so the metacyclic lower bound and the
+`Sₙ`-embedding upper bound coincide.  (For `n = 5` the lower bound `20` and upper bound
+`120 = 5!` leave a gap, so equality there needs the genericity upper bound `|Gal| ≤ n·φ(n)`
+— the remaining open question; for `n = 4` the factors are not coprime.) -/
+theorem gal_card_X3_sub_prime (p : ℕ) (hp : p.Prime) :
+    Fintype.card (X ^ 3 - C (p : ℚ) : ℚ[X]).Gal = 6 := by
+  -- Upper bound: |Gal| ∣ 3! = 6 from the symmetric-group embedding.
+  have hupper : Fintype.card (X ^ 3 - C (p : ℚ) : ℚ[X]).Gal ∣ 6 := by
+    have h := gal_card_dvd_factorial 3 p (by norm_num) hp
+    rwa [show (3 : ℕ).factorial = 6 from rfl] at h
+  -- Lower bound: 6 = 3·φ(3) ∣ |Gal| from the coprime metacyclic bracket.
+  have hlower : (6 : ℕ) ∣ Fintype.card (X ^ 3 - C (p : ℚ) : ℚ[X]).Gal := by
+    have ht : (3 : ℕ).totient = 2 := by decide
+    have h := mul_totient_dvd_gal_card_of_coprime 3 p (by norm_num) hp (by decide)
+    simpa [ht] using h
+  exact Nat.dvd_antisymm hupper hlower
+
 end InverseGaloisExtensions
