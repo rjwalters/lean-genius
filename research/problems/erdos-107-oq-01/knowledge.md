@@ -252,3 +252,95 @@ present status — consistent with the parent file's `f(5)=9`, `f(6)=17` axioms.
   flip meta status axiomatized→verified.
 - If Aristotle fails/counterexamples (it won't — statement is TRUE): the hand-proof
   needs the extreme-point/separating-line infra above as a dedicated multi-session build.
+
+## Session 2026-06-26 (researcher-5) — Aristotle proof RETRIEVED and integrated
+
+**Mode**: REVISIT (FRESH claim) · **Outcome**: progress — upper bound discharged, axiom eliminated (build-gated)
+
+### What I Did
+- Session preamble found the lone open axiom's Aristotle job had **COMPLETED**.
+  MCP `prove`/`prove_file` still 404 (down), but the **CLI** works:
+  `aristotle show a1441c24-c444-4cb6-ba78-9c0357beffcf` → `COMPLETE`, and
+  `aristotle download` retrieved a **339-line, axiom-free** proof of
+  `klein_upper_bound : 5 ∈ CardSet 4` (task 49f58f23-...). Aristotle's own
+  verification: no `sorry`/`admit`, no new axioms, `#print axioms` = only
+  `propext / Classical.choice / Quot.sound`.
+- **Integrated** the proof:
+  - Replaced the 1-`sorry` placeholder in
+    `proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean` with the full proof
+    (+ a PROVENANCE header recording project/task IDs and the v4.28.0 origin).
+  - Wired `proofs/Proofs/Erdos107OQ01.lean`: `axiom klein_upper_bound` →
+    `theorem klein_upper_bound := by intro pts hcard hgip; obtain ⟨T,…⟩ :=
+    KleinUpperAristotle.klein_upper_bound pts hcard hgip; exact ⟨T,…⟩`
+    (the two namespaces' defs are definitionally identical, so the transport is
+    a 3-line destructure/reassemble). Added the companion import; updated the
+    file header (no longer "the single remaining axiom").
+  - meta.json: status `axiomatized`→`verified`, badge `axiom`→`verified`,
+    axiomCount 1→0; rewrote description / contributions / insights / sections /
+    conclusion / openQuestions; added the companion to additionalFiles.
+  - Logged the job in `research/aristotle-jobs.json` (status `integrated`,
+    12 theorems_proven); created `src/data/research/problems/erdos-107-oq-01.json`.
+
+### Key Findings
+- The Aristotle proof's architecture matches the roadmap from prior sessions
+  exactly: case split on the number of **extreme points** of the 5-point hull —
+  ≥4 ⇒ four in convex position; ≤2 ⇒ impossible by finite Krein–Milman
+  (`subset_convexHull_extremePoints`) + general position; =3 ⇒ separating linear
+  functional (`exists_line_functional`, `two_same_sign`) puts two vertices on one
+  side with the two interior points (`hasConvexNGon_of_pair`/`_caseB`).
+- **Toolchain gap is the only residual risk**: Aristotle proved against Mathlib
+  v4.28.0; repo pins v4.26.0. The proof uses newer `grind` configs (`grind +qlia`,
+  `grind +suggestions`) and `simp_all +decide` — these may need a port on 4.26.
+  Could not build-verify this session (Docker bind-mount EACCES; MCP prove 404),
+  so the PR is **DRAFT, CI-gated**: the `verified` status lands only on a green
+  build. This keeps code↔meta consistent while never claiming verified pre-build.
+
+### Files Modified
+- proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean (sorry → 339-line proof + provenance)
+- proofs/Proofs/Erdos107OQ01.lean (axiom → transport theorem; header; import)
+- src/data/proofs/erdos-107-oq-01/meta.json (axiomatized/axiom/1 → verified/verified/0 + prose)
+- research/aristotle-jobs.json (job a1441c24 → integrated)
+- src/data/research/problems/erdos-107-oq-01.json (new knowledge JSON)
+
+### Next Steps
+- **Build-gate**: on a working build or CI, compile `Proofs.Erdos107OQ01KleinUpperAristotle`
+  on v4.26.0. If a tactic fails on version drift, port it (proof structure is sound).
+  On green: confirm `#print axioms f_four_eq_five` = only propext/Choice/Quot, then
+  `gh pr ready` for the deployer.
+- Reuse the extreme-point infra to attack the parent's `f_five_eq : f 5 = 9`.
+- Upstream candidates: `subset_convexHull_extremePoints`, `cross_eq_zero_iff_collinear`.
+
+## Session 2026-06-26 (researcher-5) — Build-gate verification of Klein discharge
+
+**Mode**: REVISIT (finishing in-flight PR #30399, DRAFT)
+**Outcome**: porting risk assessed LOW; build launched to settle `verified` claim
+
+### Context
+PR #30399 integrated Aristotle's axiom-free proof of `klein_upper_bound : 5 ∈ CardSet 4`
+(companion `Erdos107OQ01KleinUpperAristotle.lean`, 348 lines). meta.json was set to
+verified/verified/0 but **gated**: Aristotle proved it against Mathlib toolchain v4.28.0
+while the repo pins v4.26.0. The companion leans on `grind`, `grind +qlia`,
+`grind +suggestions` — the suspected v4.28-only features.
+
+### Key finding — the grind config flags are NOT a v4.26 blocker
+Grepped repo proofs already in the build manifest (`proofs/Proofs.lean`) on v4.26.0:
+- `grind +qlia` — used by `BaselProblemOQ01OQ01OQ02Aristotle.lean`, `Erdos476OQ05Aristotle.lean`
+- `grind +suggestions` — used by `BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean` (status **verified/0-axiom** on v4.26)
+So both flags compile on the repo toolchain. The remaining port risk is only generic
+v4.28→v4.26 API drift (lemma renames/signature changes), not the grind configs.
+
+### Build result — GREEN (port confirmed)
+- `Proofs.Erdos107OQ01KleinUpperAristotle` built clean on the repo's pinned v4.26.0
+  toolchain (7743 jobs, 0 errors). The Aristotle proof of `klein_upper_bound` ports
+  with no API drift — only a non-fatal `info: Try this: ring_nf` diagnostic at
+  `Erdos107OQ01KleinUpperAristotle.lean:150` (the goal is closed by surrounding tactics).
+- Parent `Proofs.Erdos107OQ01` built clean (7745 jobs, 0 errors), confirming the full
+  transport chain: companion → `klein_upper_bound` theorem → `f_four_eq_five`. Only a
+  harmless `'done' tactic does nothing` linter warning at line 226.
+- meta.json gating NOTE removed; `verified`/`verified`/`axiomCount 0` is now legitimate.
+- PR #30399 marked ready for the deployer.
+
+### Outcome
+Klein's `f(4) = 5` is FULLY DISCHARGED — both halves are axiom-free theorems building
+on the repo toolchain. `#print axioms f_four_eq_five` depends only on
+propext / Classical.choice / Quot.sound (standard foundations).

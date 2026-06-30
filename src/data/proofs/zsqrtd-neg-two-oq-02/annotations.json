@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-zsq02-mod8",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "theorem",
+    "title": "Mod-8 Obstruction: a Sum of Three Squares Is Never ≡ 7",
+    "content": "sumThreeSq_ne_seven_mod_eight is the base obstruction. Squares in ZMod 8 lie in {0,1,4}, and no three of those sum to 7 — a finite fact discharged by `decide` over the 8³ triples (kernel reduction, so the result stays axiom-free; not native_decide). push_cast moves the integer statement into ZMod 8.",
+    "mathContext": "$x^2+y^2+z^2 \\not\\equiv 7 \\pmod 8$, since squares mod 8 are $\\{0,1,4\\}$.",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic residues mod 8", "decide", "ZMod"],
+    "prerequisites": ["modular arithmetic", "quadratic residues"]
+  },
+  {
+    "id": "ann-zsq02-descent",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 72, "endLine": 91 },
+    "type": "theorem",
+    "title": "Descent: x²+y²+z² ≡ 0 (mod 4) Forces x,y,z All Even",
+    "content": "descent_even is the engine of the induction. Squares in ZMod 4 are {0,1}, so three of them summing to 0 mod 4 must be 0+0+0 (decide). Parity is read off through the ring map ZMod 4 → ZMod 2 (ZMod.castHom), with map_intCast aligning f(x : ZMod 4) = (x : ZMod 2), and ZMod.intCast_zmod_eq_zero_iff_dvd converting each vanishing residue to 2 ∣ x.",
+    "mathContext": "$x^2+y^2+z^2 \\equiv 0 \\pmod 4 \\implies 2\\mid x,\\,2\\mid y,\\,2\\mid z$.",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic residues mod 4", "infinite descent", "ring homomorphism ZMod 4 → ZMod 2"],
+    "prerequisites": ["modular arithmetic", "ZMod ring maps"]
+  },
+  {
+    "id": "ann-zsq02-main",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 97, "endLine": 128 },
+    "type": "theorem",
+    "title": "Main Obstruction: 4ᵃ(8b+7) Is Never a Sum of Three Squares",
+    "content": "not_sumThreeSq_four_pow_mul is the headline necessity result, by induction on a. Base case a=0: 8b+7 ≡ 7 (mod 8), excluded by the mod-8 obstruction. Step a+1: 4^(a+1)(8b+7) ≡ 0 (mod 4), so descent_even makes x,y,z all even; substituting x=2x' etc. and cancelling the factor 4 (mul_left_cancel₀) yields a representation of 4^a(8b+7), contradicting the induction hypothesis.",
+    "mathContext": "$\\nexists\\,x,y,z:\\ x^2+y^2+z^2 = 4^a(8b+7)$, by descent on $a$.",
+    "significance": "critical",
+    "relatedConcepts": ["Legendre–Gauss three-square theorem", "infinite descent", "induction"],
+    "prerequisites": ["the mod-8 and mod-4 facts", "induction"]
+  },
+  {
+    "id": "ann-zsq02-contrapositive",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 133, "endLine": 137 },
+    "type": "theorem",
+    "title": "Contrapositive: Sums of Three Squares Avoid 4ᵃ(8b+7)",
+    "content": "sumThreeSq_ne_four_pow_mul restates the obstruction in the form used in the three-square theorem: if n is a sum of three squares then n ≠ 4^a(8b+7). A direct rintro rfl reduction to the main theorem. This is the necessity half of n = x²+y²+z² ⟺ n ≠ 4^a(8b+7) (sufficiency needs Dirichlet and is not formalized here).",
+    "mathContext": "$n = x^2+y^2+z^2 \\implies n \\ne 4^a(8b+7)$.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "three-square theorem", "necessity direction"],
+    "prerequisites": ["the main obstruction theorem"]
+  },
+  {
+    "id": "ann-zsq02-norm-incl",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 150, "endLine": 152 },
+    "type": "theorem",
+    "title": "Bridge: ℤ[√−2] Norm-Form Values Are Sums of Three Squares",
+    "content": "normForm_isSumThreeSq connects to the parent ℤ[√−2] entry: every norm-form value x²+2y² is a sum of three squares via the trivial splitting x²+2y² = x²+y²+y². So the ℤ[√−2]-representable numbers sit inside the sums of three squares (a proper ~36% subset, never the full converse).",
+    "mathContext": "$x^2 + 2y^2 = x^2 + y^2 + y^2$, a sum of three squares.",
+    "significance": "supporting",
+    "relatedConcepts": ["ℤ[√−2] norm form", "x²+2y²", "subset inclusion"],
+    "prerequisites": ["quadratic forms"]
+  },
+  {
+    "id": "ann-zsq02-norm-avoid",
+    "proofId": "zsqrtd-neg-two-oq-02",
+    "range": { "startLine": 158, "endLine": 160 },
+    "type": "theorem",
+    "title": "Consistency: Norm-Form Values Avoid the Excluded Shape",
+    "content": "normForm_ne_four_pow_mul composes the inclusion with the obstruction: x²+2y² is never of the form 4^a(8b+7). This is a consistency check tying the parent norm-form development to the necessity direction proved here — the ℤ[√−2] representable numbers respect the Legendre obstruction.",
+    "mathContext": "$x^2 + 2y^2 \\ne 4^a(8b+7)$ for all $x,y,a,b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["consistency check", "Legendre obstruction", "composition of results"],
+    "prerequisites": ["the norm-form inclusion", "the obstruction theorem"]
+  }
+]

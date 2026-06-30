@@ -1,24 +1,107 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "OQ-04: Eisenstein in the UFD/Euclidean-Domain Framework",
+    "content": "**Module framing.** The parent (bezout-identity-oq-02-oq-01-oq-02, 'FTA Generalization to Euclidean Domains') asks as its fourth open question whether Eisenstein's criterion — a key application of the UFD framework — is in Mathlib and usable here. The answer is yes, and at greater generality than UFDs: Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` works at any prime ideal of any commutative ring. This file packages it into the clean headline that $X^n - p$ is irreducible over $R[X]$ for any integral domain $R$ and prime $p$, then specializes the domain to exhibit the criterion over $\\mathbb{Z}$ and over the Euclidean domain $\\mathbb{Q}[X]$ (the parent's own theme). Zero axioms, imports only Mathlib.",
+    "mathContext": "Eisenstein at a prime ideal $\\mathfrak{p}$: if all non-leading coefficients lie in $\\mathfrak{p}$, the leading does not, and the constant is not in $\\mathfrak{p}^2$, then the primitive polynomial is irreducible.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Eisenstein's criterion",
+      "UFD / Euclidean domain framework",
+      "Prime ideals",
+      "Irreducibility of polynomials"
+    ],
+    "prerequisites": [
+      "Integral domains and prime elements",
+      "Polynomial rings R[X]"
+    ],
+    "tags": ["module-header", "framing", "open-question"]
+  },
+  {
     "id": "ann-general",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
-    "range": {
-      "startLine": 46,
-      "endLine": 84
-    },
+    "range": { "startLine": 40, "endLine": 67 },
     "type": "insight",
     "title": "Eisenstein at the Right Generality",
-    "content": "irreducible_X_pow_sub_C_of_prime proves Xⁿ − p irreducible over R[X] for ANY integral domain R and prime p. Eisenstein's criterion is usually stated over ℤ, but the argument only ever touches a prime ideal — here (p) — so it works over any domain. The four hypotheses: leading coefficient 1 ∉ (p) (the ideal is proper); lower coefficients 0 or −p, both in (p); constant −p ∉ (p)² because p² ∤ p (cancel one factor: p² ∣ p ⟹ p ∣ 1, impossible for a prime); monic ⟹ primitive. No property of ℤ is used beyond being a domain with a prime element."
+    "content": "irreducible_X_pow_sub_C_of_prime proves Xⁿ − p irreducible over R[X] for ANY integral domain R and prime p. Eisenstein's criterion is usually stated over ℤ, but the argument only ever touches a prime ideal — here (p) — so it works over any domain. The four hypotheses: leading coefficient 1 ∉ (p) (the ideal is proper); lower coefficients 0 or −p, both in (p); constant −p ∉ (p)² because p² ∤ p (cancel one factor: p² ∣ p ⟹ p ∣ 1, impossible for a prime); monic ⟹ primitive. No property of ℤ is used beyond being a domain with a prime element.",
+    "mathContext": "$X^n - p$ over $R[X]$: leadingCoeff $= 1 \\notin (p)$; for $m < n$, $\\mathrm{coeff}_m \\in \\{0, -p\\} \\subseteq (p)$; primitive since monic.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irreducible_of_eisenstein_criterion",
+      "Ideal.span_singleton_prime",
+      "Monic ⟹ primitive",
+      "degree_X_pow_sub_C"
+    ],
+    "prerequisites": [
+      "Ideal membership and span of a singleton",
+      "Coefficients of Xⁿ − C p"
+    ],
+    "tags": ["theorem", "generality", "core-result"]
+  },
+  {
+    "id": "ann-constant-crux",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
+    "range": { "startLine": 68, "endLine": 81 },
+    "type": "technique",
+    "title": "The Crux: Constant Coefficient −p ∉ (p)²",
+    "content": "The non-square-divisibility condition — the part of Eisenstein that fails for, e.g., X² − p² — is the only step with real content. The constant coefficient is −p; membership −p ∈ (p)² would (via `Ideal.span_singleton_pow` + `Ideal.mem_span_singleton`) give p² ∣ p, hence p·p ∣ p·1, and cancelling the nonzero p (`mul_dvd_mul_iff_left`) yields p ∣ 1 — so p would be a unit, contradicting primality. Primitivity is then free from monicity (`hmonic.isPrimitive`). This single divisibility cancellation is precisely where 'prime' (not merely 'irreducible' or 'nonzero') is used.",
+    "mathContext": "$-p \\in (p)^2 \\Rightarrow p^2 \\mid p \\Rightarrow p \\cdot p \\mid p \\cdot 1 \\Rightarrow p \\mid 1$, contradicting $p$ prime (not a unit).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Square-free / (p)² condition",
+      "mul_dvd_mul_iff_left cancellation",
+      "Prime ⟹ not a unit",
+      "Ideal.span_singleton_pow"
+    ],
+    "prerequisites": [
+      "Divisibility in an integral domain",
+      "Powers of a principal ideal"
+    ],
+    "tags": ["technique", "eisenstein-crux", "primality"]
   },
   {
     "id": "ann-instances",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
-    "range": {
-      "startLine": 86,
-      "endLine": 107
-    },
+    "range": { "startLine": 83, "endLine": 101 },
     "type": "concept",
     "title": "The Same Criterion in Different Domains",
-    "content": "Supplying different prime elements instantiates the one theorem across settings. Over ℤ: Yⁿ − 2 and Yⁿ − 3 (Eisenstein at 2, 3). Over the Euclidean domain ℚ[X] — exactly the parent entry's framework — Eisenstein at the prime element X gives Yⁿ − X irreducible in ℚ[X][Y]. Its root is an n-th root of the variable, so it generates the function-field extension ℚ(X)(X^{1/n}), the geometric analogue of a radical number-field extension. One Eisenstein argument, two genuinely different domains."
+    "content": "Supplying different prime elements instantiates the one theorem across settings. Over ℤ: Yⁿ − 2 and Yⁿ − 3 (Eisenstein at 2, 3). Over the Euclidean domain ℚ[X] — exactly the parent entry's framework — Eisenstein at the prime element X gives Yⁿ − X irreducible in ℚ[X][Y]. Its root is an n-th root of the variable, so it generates the function-field extension ℚ(X)(X^{1/n}), the geometric analogue of a radical number-field extension. One Eisenstein argument, two genuinely different domains.",
+    "mathContext": "Over $\\mathbb{Z}$: $Y^n - 2$, $Y^n - 3$ (primes $2,3$). Over $\\mathbb{Q}[X]$: $Y^n - X$ (prime element $X$), root $X^{1/n}$ generating $\\mathbb{Q}(X)(X^{1/n})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Function-field extensions ℚ(X)(X^{1/n})",
+      "Prime element X in ℚ[X]",
+      "Int.prime_two / Int.prime_three",
+      "Radical extensions analogy"
+    ],
+    "prerequisites": [
+      "Prime elements in ℤ and in ℚ[X]",
+      "Iterated polynomial rings R[X][Y]"
+    ],
+    "tags": ["instances", "domains", "function-field"]
+  },
+  {
+    "id": "ann-cubic",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-04",
+    "range": { "startLine": 103, "endLine": 108 },
+    "type": "concept",
+    "title": "Cubic Specialization: Y³ − X over ℚ[X]",
+    "content": "irreducible_Y_cubed_sub_X_ratPoly is the n = 3 instance, the function-field mirror of the classical ∛3 irrationality (entry cube-root-3-irrational-oq-01): there Eisenstein at the prime 2 (or 3) over ℤ shows X³ − 3 irreducible, giving an irrational cube root; here Eisenstein at the prime X over ℚ[X] shows Y³ − X irreducible, giving the cube root X^{1/3} of the variable. Same argument, arithmetic vs. geometric incarnation — concretely illustrating why stating Eisenstein over an arbitrary domain (rather than just ℤ) pays off.",
+    "mathContext": "$Y^3 - X$ irreducible over $\\mathbb{Q}[X][Y]$; the geometric analogue of $X^3 - 3$ irreducible over $\\mathbb{Z}[X]$ (irrational $\\sqrt[3]{3}$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cube root ∛3 irrationality",
+      "Geometric vs. arithmetic analogy",
+      "Specialization n = 3",
+      "Algebraic function fields"
+    ],
+    "prerequisites": [
+      "Cube-root irrationality via Eisenstein",
+      "Specializing a parametrized theorem"
+    ],
+    "tags": ["cubic", "specialization", "cross-reference"]
   }
 ]

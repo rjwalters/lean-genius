@@ -44,7 +44,8 @@
     "research"
   ],
   "relatedProofs": [
-    "happy-number-oq-01"
+    "happy-number-oq-01",
+    "narcissistic-number-oq-01"
   ],
   "references": [
     "Armstrong (1966): popularized base-10 narcissistic (Armstrong) numbers",
@@ -55,6 +56,16 @@
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
-    "proofs/Proofs/NarcissisticNumberOQ01.lean"
+    {
+      "path": "Proofs/NarcissisticNumberOQ01.lean",
+      "filename": "NarcissisticNumberOQ01.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/NarcissisticNumberOQ01.lean"
+    }
   ]
 }

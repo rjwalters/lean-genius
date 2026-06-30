@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-birthdayoq02010201-overview",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 42 },
+    "type": "concept",
+    "title": "The upper half of collision extremality",
+    "content": "The two-draw collision probability of a distribution p on d outcomes is C(p) = ∑ pᵢ² — the chance two independent draws coincide. The parent entry proved the LOWER half: the uniform distribution minimizes C, so C(p) ≥ 1/d. This file supplies the complementary UPPER half and the mechanism behind both. (1) Sharp upper bound C(p) ≤ maxᵢ pᵢ (more generally ≤ any M ≥ pᵢ): collision never exceeds the most likely outcome. (2) Equality C(p) = M iff every pᵢ ∈ {0, M} — the CONCENTRATION extreme (mass uniform over its support), opposite to the lower bound's global uniformity. (3) The two-sided bound 1/d ≤ C(p) ≤ maxᵢ pᵢ. (4) The smoothing atom: averaging two coordinates weakly decreases C — the Robin Hood / Muirhead transfer that is the local step of Schur-convexity. Everything reduces to (a−b)²/2 ≥ 0 and is axiom-free.",
+    "mathContext": "$C(p)=\\sum_i p_i^2$; $\\frac1d\\le C(p)\\le \\max_i p_i$, equality above iff $p_i\\in\\{0,M\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["collision probability", "Schur-convexity", "majorization", "Robin Hood transfer", "birthday problem"],
+    "prerequisites": ["probability vectors on the simplex", "the parent lower bound 1/d ≤ C(p)", "finite sums"]
+  },
+  {
+    "id": "ann-birthdayoq02010201-atom",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 50, "endLine": 69 },
+    "type": "key-step",
+    "title": "The smoothing atom (Schur-convexity local step)",
+    "content": "sq_add_sq_sub_two_avg_sq is the single exact identity driving the whole development: a² + b² − 2·((a+b)/2)² = (a−b)²/2, proved by ring. two_avg_sq_le derives 2·((a+b)/2)² ≤ a² + b² (twice the squared average never exceeds the sum of squares) via nlinarith on sq_nonneg (a−b); two_avg_sq_lt is the strict version when a ≠ b (the squared difference is strictly positive). This elementary atom is exactly why equalizing two values lowers the sum of squares — the Muirhead/Hardy–Littlewood–Pólya transfer inequality at the level of two coordinates.",
+    "mathContext": "$a^2+b^2-2\\left(\\tfrac{a+b}2\\right)^2=\\tfrac{(a-b)^2}2\\ge 0$, strict iff $a\\ne b$.",
+    "significance": "key",
+    "relatedConcepts": ["transfer inequality", "ring identity", "nlinarith", "sq_nonneg", "Muirhead"],
+    "prerequisites": ["basic real algebra", "squares are nonnegative"]
+  },
+  {
+    "id": "ann-birthdayoq02010201-upper",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 70, "endLine": 123 },
+    "type": "key-step",
+    "title": "The sharp upper bound and its equality case",
+    "content": "collision_le_of_le proves ∑ pᵢ² ≤ M for any dominating M ≥ pᵢ in one calc: pᵢ² = pᵢ·pᵢ ≤ pᵢ·M pointwise (mul_le_mul_of_nonneg_left), then ∑ pᵢ·M = (∑ pᵢ)·M = M using ∑ pᵢ = 1. collision_eq_of_le_iff characterizes equality through the SAME slack identity M − ∑ pᵢ² = ∑ pᵢ(M − pᵢ): a sum of nonnegative terms, zero iff each pᵢ(M − pᵢ) = 0 (Finset.sum_eq_zero_iff_of_nonneg + mul_eq_zero), i.e. pᵢ ∈ {0, M}. collision_le_max instantiates M at the attained maximum maxᵢ pᵢ (via Finset.exists_mem_eq_sup' on a nonempty Fin d), giving the sharp form ∑ pᵢ² ≤ p k for some index k.",
+    "mathContext": "$\\sum p_i^2\\le M$ from $p_i^2\\le p_iM$ and $\\sum p_i=1$; slack $M-\\sum p_i^2=\\sum p_i(M-p_i)$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_le_sum", "mul_le_mul_of_nonneg_left", "Finset.sum_eq_zero_iff_of_nonneg", "Finset.exists_mem_eq_sup'", "equality characterization"],
+    "prerequisites": ["monotonicity and linearity of finite sums", "the normalization ∑ pᵢ = 1", "the max over a nonempty finite set is attained"]
+  },
+  {
+    "id": "ann-birthdayoq02010201-twosided",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 124, "endLine": 155 },
+    "type": "technique",
+    "title": "Self-contained lower bound and the two-sided picture",
+    "content": "one_div_card_le_collision re-derives the parent's lower bound 1/d ≤ ∑ pᵢ² from scratch via the variance identity ∑ pᵢ² − 1/d = ∑ (pᵢ − 1/d)² ≥ 0 — expanding the square, using ∑ pᵢ = 1 and ∑ (1/d) = 1, then linarith on the nonnegativity of a sum of squares — so this file does not depend on the parent. collision_two_sided then bundles both halves into 1/d ≤ ∑ pᵢ² ≤ M, the complete localization of collision probability on the simplex: the lower endpoint realized by global uniformity, the upper by concentration on equal-mass atoms.",
+    "mathContext": "$\\sum p_i^2-\\tfrac1d=\\sum\\left(p_i-\\tfrac1d\\right)^2\\ge0$; hence $\\tfrac1d\\le\\sum p_i^2\\le M$.",
+    "significance": "supporting",
+    "relatedConcepts": ["variance identity", "Finset.sum_sub_distrib", "self-contained re-derivation", "two-sided bound", "uniform vs concentration extremes"],
+    "prerequisites": ["the upper bound", "the variance / sum-of-squares decomposition", "linearity of finite sums"]
+  },
+  {
+    "id": "ann-birthdayoq02010201-smoothing",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 156, "endLine": 189 },
+    "type": "insight",
+    "title": "The smoothing operator lowers collision",
+    "content": "smoothing_sum_sq_le lifts the two-coordinate atom to the whole vector: replacing the values at two distinct coordinates i ≠ j by their common average (f i + f j)/2 weakly decreases ∑ f². The proof sets g to the doubly-updated function, computes g i = g j = (f i + f j)/2 (Function.update_self / update_of_ne) and g k = f k off {i,j}, so the difference ∑ g² − ∑ f² collapses (Finset.sum_eq_add_of_mem, since the off-support terms vanish) to (g i² − f i²) + (g j² − f j²) = 2·avg² − (f i² + f j²) ≤ 0 by the atom two_avg_sq_le. This is the exact local move — any Robin Hood transfer equalizing two outcomes — that decreases collision; iterating it is the majorization proof that uniform is the unique minimizer, supplying the Schur-convexity mechanism behind the parent's result.",
+    "mathContext": "$\\sum g^2-\\sum f^2=2\\left(\\tfrac{f_i+f_j}2\\right)^2-(f_i^2+f_j^2)\\le0$.",
+    "significance": "key",
+    "relatedConcepts": ["smoothing operator", "Function.update", "Finset.sum_eq_add_of_mem", "Schur-convexity", "majorization order"],
+    "prerequisites": ["the smoothing atom", "evaluating a doubly-updated function", "a sum supported on two points"]
+  }
+]

@@ -72,7 +72,9 @@
   ],
   "relatedProofs": [
     "perfect-numbers",
+    "perfect-numbers-oq-02",
     "perfect-numbers-oq-03",
+    "perfect-numbers-oq-05",
     "triangular-reciprocals"
   ],
   "references": {
@@ -91,6 +93,50 @@
   "significance": 6,
   "tractability": 8,
   "leanFiles": [
+    {
+      "path": "Proofs/PerfectNumbers.lean",
+      "filename": "PerfectNumbers.lean",
+      "lineCount": 203,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbers.lean"
+    },
+    {
+      "path": "Proofs/PerfectNumbersOQ02.lean",
+      "filename": "PerfectNumbersOQ02.lean",
+      "lineCount": 109,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/PerfectNumbersOQ03.lean",
+      "filename": "PerfectNumbersOQ03.lean",
+      "lineCount": 260,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ03.lean"
+    },
+    {
+      "path": "Proofs/PerfectNumbersOQ05.lean",
+      "filename": "PerfectNumbersOQ05.lean",
+      "lineCount": 146,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ05.lean"
+    },
     {
       "path": "Proofs/PerfectNumbersOQ06.lean",
       "filename": "PerfectNumbersOQ06.lean",

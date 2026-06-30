@@ -1,0 +1,138 @@
+[
+  {
+    "id": "ann-collatz-oq01-header",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "concept",
+    "title": "Module Header: Backward Collatz Dynamics",
+    "content": "The header (lines 1-32) states the four verified results and stresses that they are unconditional — independent of the Collatz conjecture. Lines 34-39 set up the module: `import Mathlib.Tactic`, `import Proofs.CollatzStructured` (to reuse the parent's `collatz`, `collatzIter`, and `ReachesOne`), `namespace CollatzBackward`, and `open Collatz`. By importing the parent rather than redefining the map, this entry adds genuinely new content (the backward structure) on top of the existing forward formalization.",
+    "mathContext": "The Collatz graph has vertices ℕ and edges n → collatz(n). Reading edges backwards makes the conjecture a reachability question: it holds iff every vertex lies in the basin of 1. The backward map is set-valued — each m has the even predecessor 2m and, conditionally, an odd predecessor.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Collatz conjecture",
+      "backward dynamics",
+      "Collatz graph",
+      "basin of attraction"
+    ],
+    "prerequisites": [
+      "Collatz map background",
+      "Lean 4 imports and namespaces"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq01-preimage",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Exact Preimage Characterization (collatz_eq_iff)",
+    "content": "`collatz_eq_iff` states `collatz a = m ↔ a = 2*m ∨ (a % 2 = 1 ∧ 3*a + 1 = m)`. The proof unfolds `collatz` and uses `split_ifs` on the parity test `a % 2 = 0`. In the even branch, `collatz a = a/2`, so `a/2 = m` together with `a` even forces `a = 2m` — discharged by `omega`, which reasons about `/2` and `%2` natively. In the odd branch, `collatz a = 3a+1`, giving the right disjunct directly. `preimage_collatz` restates this as the set equality `collatz ⁻¹' {m} = {a | a = 2*m ∨ (a%2=1 ∧ 3a+1=m)}`, and `even_pred` records the always-present even predecessor `collatz (2m) = m`.",
+    "mathContext": "A predecessor a of m is even (then a = 2m, the 'even predecessor') or odd (then 3a+1 = m, the 'odd predecessor'). These cases are exhaustive and exclusive, so the fiber of collatz over m is completely described. Phrasing oddness as `a % 2 = 1` (rather than `Odd a`) keeps the whole argument inside omega's linear-arithmetic-with-mod fragment.",
+    "significance": "key",
+    "relatedConcepts": [
+      "preimage",
+      "parity case analysis",
+      "omega tactic",
+      "Collatz map"
+    ],
+    "prerequisites": [
+      "Lean split_ifs and omega",
+      "natural number division and modulo"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq01-branching",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 108
+    },
+    "type": "theorem",
+    "title": "The Branching Law (odd_pred_exists_iff) and In-degree Dichotomy",
+    "content": "`odd_pred_exists_iff` proves `(∃ a, a%2=1 ∧ 3a+1=m) ↔ m % 6 = 4`. Forward: substituting an odd a and applying omega gives (3a+1) % 6 = 4. Backward: from m % 6 = 4 the explicit witness `2*(m/6)+1` is odd and satisfies 3a+1 = m. `two_preds_of_mod` then exhibits two distinct predecessors when m ≡ 4 (mod 6): the even 2m and the odd witness, distinct by parity (omega). `unique_pred_of_not_mod` shows that otherwise 2m is the sole predecessor — the odd disjunct of `collatz_eq_iff` is impossible by the branching law.",
+    "mathContext": "Writing an odd a = 2t+1 gives 3a+1 = 6t+4, so odd predecessors exist exactly for m ≡ 4 (mod 6), and the odd predecessor is (m-1)/3 = 2(m/6)+1. Combined with the universal even predecessor 2m, the Collatz graph has in-degree 2 precisely on residue 4 mod 6 and in-degree 1 elsewhere — one residue in six branches.",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "in-degree",
+      "Collatz tree branching",
+      "explicit witness"
+    ],
+    "prerequisites": [
+      "residues mod 6",
+      "existential witnesses in Lean"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq01-closure",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Backward Closure of the Basin (reaches_one_of_collatz)",
+    "content": "`reaches_one_of_collatz` shows that if `collatz a = m` and `m` reaches 1 in k steps, then `a` reaches 1 in k+1 steps. After `simp only [collatzIter]`, `Function.iterate_succ_apply` rewrites `collatz^[k+1] a` to `collatz^[k] (collatz a)`, then `rw [h]` replaces `collatz a` with `m`, reducing to the hypothesis `collatz^[k] m = 1`. `reaches_one_odd_pred` is the odd-predecessor specialization, and `basin_closed_under_pred` packages the result as the set inclusion `collatz ⁻¹' {n | ReachesOne n} ⊆ {n | ReachesOne n}`.",
+    "mathContext": "Reaching 1 is preserved backwards along edges: a → m and m → 1 implies a → 1. Hence the basin of 1 is closed under the (set-valued) predecessor map and equals the set generated from 1 by repeatedly taking predecessors — the Collatz tree rooted at 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "function iteration",
+      "basin of attraction",
+      "closure under preimage",
+      "Collatz tree"
+    ],
+    "prerequisites": [
+      "Function.iterate lemmas",
+      "ReachesOne predicate"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq01-infinite",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 148,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "The Basin of 1 is Infinite (basin_infinite)",
+    "content": "`basin_infinite` proves `{n : ℕ | ReachesOne n}.Infinite`. It applies `Set.infinite_of_injective_forall_mem` with the map `k ↦ 2^(k+1)`. Injectivity follows from `Nat.pow_right_injective (le_refl 2)` (base ≥ 2), reducing `2^(x+1) = 2^(y+1)` to `x+1 = y+1` and then omega. Membership is `pow_two_reaches_one (k+1)` from the parent file: every power of two reaches 1.",
+    "mathContext": "The component of 1 contains 2, 4, 8, 16, …, an infinite family, so it is infinite — unconditionally. This is a provable sub-statement strictly weaker than the Collatz conjecture (which would assert the component is all of ℕ≥1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Infinite",
+      "injectivity of exponentials",
+      "powers of two",
+      "unconditional result"
+    ],
+    "prerequisites": [
+      "Set.infinite_of_injective_forall_mem",
+      "Nat.pow_right_injective"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq01-examples",
+    "proofId": "collatz-structured-oq-01",
+    "range": {
+      "startLine": 159,
+      "endLine": 176
+    },
+    "type": "concept",
+    "title": "Computed Examples of the Branching Structure",
+    "content": "Small instances verified by `decide` (kernel-checked, axiom-free): 16 ≡ 4 (mod 6) has predecessors 32 (even) and 5 (odd, 3·5+1 = 16); 10 ≡ 4 (mod 6) has predecessors 20 and 3; 8 ≢ 4 (mod 6) has only the even predecessor 16. These confirm the branching law on concrete numbers.",
+    "mathContext": "Illustrates the in-degree dichotomy: vertices congruent to 4 mod 6 branch (two predecessors), all others do not (the even predecessor alone). Using `decide` rather than `native_decide` keeps these checks within the kernel and free of the Lean.ofReduceBool axiom.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "branching examples",
+      "residue 4 mod 6"
+    ],
+    "prerequisites": [
+      "decidable equality on ℕ"
+    ]
+  }
+]

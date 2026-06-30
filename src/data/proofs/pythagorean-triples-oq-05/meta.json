@@ -51,7 +51,9 @@
     "keyInsights": [
       "**The identity IS norm multiplicativity.** N(z)N(w) = N(zw) for the Gaussian-integer norm N(a+bi) = a²+b²; the explicit witnesses (ac−bd, ad+bc) are the real and imaginary parts of the product (a+bi)(c+di).",
       "**Closure reduces the two-squares theorem to primes.** Because sums of two squares form a multiplicatively closed set, deciding which integers are sums of two squares reduces to the prime factors — the structural reason Fermat's theorem on primes ≡ 1 mod 4 suffices.",
-      "**Ring-level generality.** Stated over an arbitrary CommRing, the identity applies uniformly to ℤ, ℝ, ℂ, polynomial rings, and finite rings — wherever a 'sum of two squares' makes sense."
+      "**Ring-level generality.** Stated over an arbitrary CommRing, the identity applies uniformly to ℤ, ℝ, ℂ, polynomial rings, and finite rings — wherever a 'sum of two squares' makes sense.",
+      "**A purely formal identity.** Both forms are dispatched by a single `ring` call because the equality holds in the polynomial ring ℤ[a,b,c,d] and then specializes to every commutative ring by the universal property of polynomial rings; there is no number-theoretic content in the identity itself — that content appears only when it is combined with Fermat's prime theorem.",
+      "**The two conjugate forms encode the two factorizations.** The witnesses (ac−bd, ad+bc) come from the product (a+bi)(c+di), while (ac+bd, ad−bc) come from (a+bi)(c−di); when a number has several representations as a sum of two squares, these distinct witness pairs are the algebraic shadow of distinct Gaussian-integer factorizations, the mechanism behind non-unique representations like 50 = 1²+7² = 5²+5²."
     ],
     "prerequisites": [
       "Commutative rings and the `ring` tactic",

@@ -543,7 +543,7 @@ theorem n_roots_implies_derivative_roots (p : ℝ[X]) (n : ℕ)
     ∀ i : Fin n, ∃ c, rootsF i.castSucc < c ∧ c < rootsF i.succ ∧
       (derivative p).eval c = 0 := by
   intro i
-  have hi : rootsF i.castSucc < rootsF i.succ := hstrict (Fin.castSucc_lt_succ i)
+  have hi : rootsF i.castSucc < rootsF i.succ := hstrict i.castSucc_lt_succ
   exact rolle_polynomial p (rootsF i.castSucc) (rootsF i.succ) hi
     (heval i.castSucc) (heval i.succ)
 
@@ -552,21 +552,21 @@ theorem n_roots_implies_derivative_roots (p : ℝ[X]) (n : ℕ)
 theorem countPositiveRoots_le_natDegree (p : ℝ[X]) (hp : p ≠ 0) :
     countPositiveRoots p ≤ p.natDegree := by
   rw [countPositiveRoots_eq_roots_countP p hp]
-  exact le_trans (Multiset.countP_le_card _) (Polynomial.card_roots_le_degree p)
+  exact le_trans (Multiset.countP_le_card _ p.roots) (Polynomial.card_roots' p)
 
 /-- The number of non-zero roots is bounded by the degree.
     Since filter (· ≠ 0) gives a sub-multiset of roots, its cardinality is ≤ roots.card,
     and roots.card ≤ natDegree by the polynomial root bound. -/
 theorem nonzero_root_count_le_degree (p : ℝ[X]) (hp : p ≠ 0) :
     Multiset.card (p.roots.filter (· ≠ 0)) ≤ p.natDegree :=
-  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots_le_degree p)
+  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots' p)
 
 /-- The number of negative roots is bounded by the degree.
     Since filter (· < 0) gives a sub-multiset of roots, its cardinality is ≤ roots.card,
     and roots.card ≤ natDegree. -/
 theorem negative_root_count_le_natDegree (p : ℝ[X]) (hp : p ≠ 0) :
     Multiset.card (p.roots.filter (· < 0)) ≤ p.natDegree :=
-  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots_le_degree p)
+  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots' p)
 
 /-- The number of negative roots of p is bounded by signChangesInCoeffs (negSubst p). -/
 theorem negative_roots_le_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :

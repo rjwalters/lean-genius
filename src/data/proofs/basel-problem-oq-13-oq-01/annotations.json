@@ -1,0 +1,73 @@
+[
+  {
+    "id": "eta-even",
+    "proofId": "basel-problem-oq-13-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "Even Part: ∑ (-1)^(2k+1)/(2k)⁴ = -π⁴/1440",
+    "content": "hasSum_eta_four_even isolates the even-indexed terms of the alternating series f n = (-1)^(n+1)/n⁴. At an even index the exponent is (2k)+1 = 2k+1, which is odd, so (-1)^(2k+1) = -1 (collapsed by pow_succ, pow_mul, norm_num). Hence f(2k) = -1/(2k)⁴, and the subseries is exactly the negation of the parent's even-fourth-power sum: HasSum.neg applied to hasSum_even_zeta_four gives -π⁴/1440. This negative sign is precisely what distinguishes the alternating eta value from the lambda value.",
+    "mathContext": "$\\displaystyle\\sum_{k}\\frac{(-1)^{2k+1}}{(2k)^4} = -\\sum_{k\\ge 1}\\frac{1}{(2k)^4} = -\\frac{\\pi^4}{1440}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.neg",
+      "even-indexed subseries",
+      "alternating sign by parity",
+      "even-fourth-power sum π⁴/1440"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "parity of exponents",
+      "negation of convergent sums"
+    ]
+  },
+  {
+    "id": "eta-odd",
+    "proofId": "basel-problem-oq-13-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "Odd Part: ∑ (-1)^(2k+2)/(2k+1)⁴ = π⁴/96",
+    "content": "hasSum_eta_four_odd isolates the odd-indexed terms. At an odd index the exponent is (2k+1)+1 = 2k+2, which is even, so (-1)^(2k+2) = +1. Hence f(2k+1) = +1/(2k+1)⁴, and the subseries is exactly the parent's lambda value: hasSum_odd_zeta_four gives π⁴/96 with no sign change. The odd terms of an alternating series ∑(-1)^(n+1)/n⁴ are the ones that stay positive.",
+    "mathContext": "$\\displaystyle\\sum_{k}\\frac{(-1)^{2k+2}}{(2k+1)^4} = \\sum_{k}\\frac{1}{(2k+1)^4} = \\lambda(4) = \\frac{\\pi^4}{96}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lambda value λ(4)",
+      "odd-indexed subseries",
+      "alternating sign by parity",
+      "odd-fourth-power sum π⁴/96"
+    ],
+    "prerequisites": [
+      "infinite series",
+      "parity of exponents"
+    ]
+  },
+  {
+    "id": "eta-value",
+    "proofId": "basel-problem-oq-13-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "The Main Result: η(4) = ∑ (-1)^(n+1)/n⁴ = 7π⁴/720",
+    "content": "hasSum_eta_four recombines the two signed subseries via HasSum.even_add_odd with f n = (-1)^(n+1)/n⁴ supplied explicitly (so the even/odd reconstruction unifies without higher-order search). The resulting value is (-π⁴/1440) + π⁴/96, and a single `ring` step evaluates it: π⁴/96 = 15π⁴/1440, so the total is 14π⁴/1440 = 7π⁴/720. The n = 0 term (-1)^1/0⁴ is 0 under Lean's division-by-zero convention, so it does not perturb the value. tsum_eta_four records the ∑' form. This is the s = 4 case of η(s) = (1 - 2^{1-s})ζ(s) = λ(s) - 2^{-s}ζ(s).",
+    "mathContext": "$\\displaystyle\\eta(4) = \\sum_{n=1}^{\\infty}\\frac{(-1)^{n+1}}{n^4} = \\lambda(4) - \\frac{\\pi^4}{1440} = \\frac{\\pi^4}{96} - \\frac{\\pi^4}{1440} = \\frac{7\\pi^4}{720}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasSum.even_add_odd",
+      "Dirichlet eta function",
+      "η(s) = (1 - 2^{1-s})ζ(s)",
+      "parity decomposition"
+    ],
+    "prerequisites": [
+      "even/odd splitting of infinite sums",
+      "uniqueness of sums",
+      "tsum API"
+    ]
+  }
+]

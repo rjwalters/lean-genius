@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "cevas-theorem-non-euclidean-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 32
+    },
+    "type": "context",
+    "title": "The Open Question: One Curvature Parameter for Ceva",
+    "content": "The parent entry (cevas-theorem-non-euclidean) proves Ceva's theorem in Euclidean, spherical, and hyperbolic geometry, unified through an abstract distance function ρ in ceva_unified_principle, and asks whether the framework extends to arbitrary curvature κ via the curvature sine sin_κ. This file answers yes: defining sin_κ and instantiating the parent's principle at ρ = sin_κ collapses the three classical theorems into a single curvature-parametrised statement, with κ = 1, −1, 0 recovering the spherical, hyperbolic, and Euclidean cases.",
+    "mathContext": "$\\sin_\\kappa(x) = \\begin{cases} \\sin(\\sqrt{\\kappa}\\,x)/\\sqrt{\\kappa} & \\kappa>0 \\\\ x & \\kappa=0 \\\\ \\sinh(\\sqrt{-\\kappa}\\,x)/\\sqrt{-\\kappa} & \\kappa<0 \\end{cases}$; one Ceva theorem $\\forall\\kappa$.",
+    "significance": "context",
+    "relatedConcepts": ["constant-curvature geometry", "Ceva's theorem", "unified distance function ρ", "curvature parameter κ"],
+    "prerequisites": ["Ceva's theorem (Euclidean)", "spherical and hyperbolic geometry", "the parent's ceva_unified_principle"]
+  },
+  {
     "id": "ann-curvature-sine",
     "proofId": "cevas-theorem-non-euclidean-oq-01",
     "range": {
@@ -8,18 +23,11 @@
     },
     "type": "insight",
     "title": "One Function for All Three Geometries",
-    "content": "sinKappa κ x is the curvature sine: sin(√κ·x)/√κ when κ > 0 (spherical), x when κ = 0 (Euclidean), and sinh(√(−κ)·x)/√(−κ) when κ < 0 (hyperbolic). It is the single interpolant that ties the abstract distance function ρ of the parent to a genuine curvature parameter. The specialization lemmas sinKappa_one (= sin), sinKappa_neg_one (= sinh), sinKappa_zero (= id) — each a short reduction of the if-then-else with √1 = 1 — confirm it reproduces the three classical distance functions."
-  },
-  {
-    "id": "ann-unified",
-    "proofId": "cevas-theorem-non-euclidean-oq-01",
-    "range": {
-      "startLine": 76,
-      "endLine": 89
-    },
-    "type": "insight",
-    "title": "The Unified Theorem Is the Parent's Principle at ρ = sin_κ",
-    "content": "kappa_ceva is proved in one line: ceva_unified_principle (sinKappa κ) … . The deep content — that the ratio product equals 1 iff the cross products are equal — is the parent's curvature-independent algebraic core; all the geometry of curvature κ is packed into the choice of distance function ρ = sin_κ. This makes precise that the three constant-curvature Ceva theorems are not three separate facts but one statement evaluated at different κ, and that the √κ normalizations cancel inside the ratios so the concurrency criterion keeps its form."
+    "content": "sinKappa κ x is the curvature sine: sin(√κ·x)/√κ when κ > 0 (spherical), x when κ = 0 (Euclidean), and sinh(√(−κ)·x)/√(−κ) when κ < 0 (hyperbolic). It is the single interpolant that ties the abstract distance function ρ of the parent to a genuine curvature parameter. The specialization lemmas sinKappa_one (= sin), sinKappa_neg_one (= sinh), sinKappa_zero (= id) — each a short reduction of the if-then-else with √1 = 1 — confirm it reproduces the three classical distance functions.",
+    "mathContext": "$\\sin_1(x) = \\sin x,\\ \\sin_{-1}(x) = \\sinh x,\\ \\sin_0(x) = x$. As $\\kappa\\to 0$, $\\sin(\\sqrt{\\kappa}x)/\\sqrt{\\kappa}\\to x$ — the curvature sine is continuous in $\\kappa$.",
+    "significance": "key",
+    "relatedConcepts": ["curvature/Jacobi sine sin_κ", "spherical/hyperbolic law of sines", "if-then-else definitions in Lean", "√1 = 1 reductions"],
+    "prerequisites": ["sin and sinh", "Real.sqrt", "piecewise definitions"]
   },
   {
     "id": "ann-positivity",
@@ -30,7 +38,26 @@
     },
     "type": "concept",
     "title": "The Spherical Range Condition",
-    "content": "sinKappa_pos shows sin_κ(x) > 0 for x > 0, splitting on the sign of κ. The hyperbolic (sinh) and Euclidean (identity) cases are unconditional, but the spherical case κ > 0 needs √κ·x < π — the segment must be shorter than half a great circle, beyond which sin turns negative and the geometric picture breaks down. This asymmetry mirrors the geometry: great circles close up, so spherical distances are bounded, while hyperbolic and Euclidean geodesics extend without bound."
+    "content": "sinKappa_pos shows sin_κ(x) > 0 for x > 0, splitting on the sign of κ. The hyperbolic (sinh) and Euclidean (identity) cases are unconditional, but the spherical case κ > 0 needs √κ·x < π — the segment must be shorter than half a great circle, beyond which sin turns negative and the geometric picture breaks down. This asymmetry mirrors the geometry: great circles close up, so spherical distances are bounded, while hyperbolic and Euclidean geodesics extend without bound.",
+    "mathContext": "$x > 0 \\Rightarrow \\sin_\\kappa(x) > 0$; spherical case requires $\\sqrt{\\kappa}\\,x < \\pi$ (via $\\sin$ positive on $(0,\\pi)$). hyperbolic/Euclidean: unconditional ($\\sinh x > 0$, $x > 0$).",
+    "significance": "supporting",
+    "relatedConcepts": ["sin_pos_of_pos_of_lt_pi", "great-circle distance bound", "split_ifs case analysis", "geodesic completeness"],
+    "prerequisites": ["positivity of sin on (0,π)", "positivity of sinh", "sign-based case splitting"]
+  },
+  {
+    "id": "ann-unified",
+    "proofId": "cevas-theorem-non-euclidean-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "insight",
+    "title": "The Unified Theorem Is the Parent's Principle at ρ = sin_κ",
+    "content": "kappa_ceva is proved in one line: ceva_unified_principle (sinKappa κ) … . The deep content — that the ratio product equals 1 iff the cross products are equal — is the parent's curvature-independent algebraic core; all the geometry of curvature κ is packed into the choice of distance function ρ = sin_κ. This makes precise that the three constant-curvature Ceva theorems are not three separate facts but one statement evaluated at different κ, and that the √κ normalizations cancel inside the ratios so the concurrency criterion keeps its form.",
+    "mathContext": "$\\dfrac{\\sin_\\kappa(BD)}{\\sin_\\kappa(DC)}\\cdot\\dfrac{\\sin_\\kappa(CE)}{\\sin_\\kappa(EA)}\\cdot\\dfrac{\\sin_\\kappa(AF)}{\\sin_\\kappa(FB)} = 1 \\iff \\sin_\\kappa(BD)\\sin_\\kappa(CE)\\sin_\\kappa(AF) = \\sin_\\kappa(DC)\\sin_\\kappa(EA)\\sin_\\kappa(FB)$.",
+    "significance": "key",
+    "relatedConcepts": ["ceva_unified_principle", "concurrency of cevians", "ratio-product = 1 criterion", "normalization cancellation"],
+    "prerequisites": ["the parent's unified principle", "the positivity hypotheses", "the curvature sine"]
   },
   {
     "id": "ann-cases",
@@ -41,6 +68,10 @@
     },
     "type": "concept",
     "title": "The Three Classical Theorems as κ = 1, −1, 0",
-    "content": "kappa_ceva_spherical, kappa_ceva_hyperbolic, and kappa_ceva_euclidean each instantiate the unified theorem at a specific curvature and rewrite sin_κ via its specialization lemma (simp only [sinKappa_one] etc.), recovering the classical sine, hyperbolic-sine, and length forms of Ceva's condition. This closes the loop with the parent: its three separately proved geometries are now corollaries of the single curvature-parametrised statement."
+    "content": "kappa_ceva_spherical, kappa_ceva_hyperbolic, and kappa_ceva_euclidean each instantiate the unified theorem at a specific curvature and rewrite sin_κ via its specialization lemma (simp only [sinKappa_one] etc.), recovering the classical sine, hyperbolic-sine, and length forms of Ceva's condition. This closes the loop with the parent: its three separately proved geometries are now corollaries of the single curvature-parametrised statement.",
+    "mathContext": "$\\kappa=1$: spherical $\\sin$ form; $\\kappa=-1$: hyperbolic $\\sinh$ form; $\\kappa=0$: Euclidean length form $\\tfrac{BD}{DC}\\tfrac{CE}{EA}\\tfrac{AF}{FB}=1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization by simp only", "spherical/hyperbolic/Euclidean Ceva", "corollaries of a parametrised theorem", "law of sines in each geometry"],
+    "prerequisites": ["the unified kappa_ceva", "the specialization lemmas sinKappa_one/neg_one/zero"]
   }
 ]

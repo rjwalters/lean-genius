@@ -1,0 +1,62 @@
+[
+  {
+    "id": "dyck-oq0101-ann-header",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 48 },
+    "type": "context",
+    "title": "The open question and why plane trees are a genuinely new family",
+    "content": "The parent entry counts Dyck words and asks for another Catalan family not yet in Mathlib, with an explicit bijection to Dyck words. Plane trees (ordered rooted trees) answer it: a root carrying an ordered list of subtrees of arbitrary arity. This is different from Mathlib's Tree Unit, where every node has exactly two possibly-empty children. The bridge is the first-child/next-sibling correspondence, a recursive arity-changing bijection — not a relabeling of the U/D symbols of a Dyck word.",
+    "mathContext": "$\\mathrm{PlaneTree} = \\mathrm{node}\\,(\\mathrm{List}\\,\\mathrm{PlaneTree})$; plane trees with $n+1$ nodes are counted by $C_n$.",
+    "significance": "context",
+    "relatedConcepts": ["plane trees", "ordered rooted trees", "Catalan family", "binary trees", "Dyck words"],
+    "prerequisites": ["the Catalan numbers", "bijective enumeration"]
+  },
+  {
+    "id": "dyck-oq0101-ann-type",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 78 },
+    "type": "concept",
+    "title": "Plane trees and forests as a nested inductive type",
+    "content": "PlaneTree is defined by node : List PlaneTree → PlaneTree, with PlaneForest := List PlaneTree. numNodes counts nodes (a tree node contributes 1 plus the nodes of its child forest). encode is the first-child/next-sibling encoding into a binary tree: the empty forest becomes nil, and a forest (node cs :: rest) becomes a binary node whose left child encodes the children cs of the first tree and whose right child encodes the remaining forest rest. Because List PlaneTree is a nested inductive, encode and numNodes are well-founded recursions (their defining equations are recovered as the simp lemmas encode_nil/encode_cons rather than holding definitionally).",
+    "mathContext": "$\\mathrm{encode}(\\mathrm{node}\\,cs :: rest) = \\mathrm{node}\\,()\\,(\\mathrm{encode}\\,cs)\\,(\\mathrm{encode}\\,rest)$.",
+    "significance": "key",
+    "relatedConcepts": ["nested inductive types", "well-founded recursion", "left-child right-sibling representation", "node count"],
+    "prerequisites": ["inductive types over List", "recursion and termination in Lean"]
+  },
+  {
+    "id": "dyck-oq0101-ann-bijection",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 140 },
+    "type": "insight",
+    "title": "Both round-trips, and size preservation",
+    "content": "Tree.decodeForest inverts the encoding by structural recursion on the binary tree. decode_encode (left inverse) is proved by recursion that descends into both the children of the head tree and the rest of the forest — each strictly smaller than the input — exactly the two recursive calls that make the nested type behave. encode_decode (right inverse) is a structural induction on the binary tree. Together they give forestEquivTree : PlaneForest ≃ Tree Unit. numNodes_encode shows the encoding is size-preserving: each plane-tree root becomes one binary internal node, so a forest of n nodes maps to a binary tree with numNodes = n. This single statistic alignment is what lets the global bijection refine to every fixed size.",
+    "mathContext": "$\\mathrm{numNodes}(\\mathrm{encode}\\,f) = \\#\\text{nodes}(f)$; $\\mathrm{decode}\\circ\\mathrm{encode}=\\mathrm{id}$, $\\mathrm{encode}\\circ\\mathrm{decode}=\\mathrm{id}$.",
+    "significance": "key",
+    "relatedConcepts": ["bijection", "Equiv", "structural induction", "size-preserving map", "first-child/next-sibling"],
+    "prerequisites": ["building an Equiv from inverse functions", "induction on binary trees"]
+  },
+  {
+    "id": "dyck-oq0101-ann-todyck",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 142, "endLine": 190 },
+    "type": "technique",
+    "title": "Composing to Dyck words and reading off the count",
+    "content": "forestEquivDyck composes forestEquivTree with Mathlib's DyckWord.equivTree.symm to give the explicit plane-forest/Dyck-word bijection the open question asks for. forestEquivTreeSubtype uses Equiv.subtypeEquiv with numNodes_encode to match forests of n nodes with binary trees of n internal nodes; forestEquivDyckSubtype then matches them with Dyck words of semilength n, using semilength_eq_numNodes_equivTree to align the statistics. card_planeForest_numNodes_eq_catalan transports Fintype.card along this equivalence and rewrites with the parent's headline count to conclude catalan n. card_planeForest_eq_card_dyckWord records that the two families literally have equal cardinality at every size.",
+    "mathContext": "$\\#\\{f\\mid\\#\\text{nodes}(f)=n\\} = \\#\\{p\\mid\\mathrm{semilength}\\,p=n\\} = C_n$.",
+    "significance": "key",
+    "relatedConcepts": ["composition of equivalences", "Equiv.subtypeEquiv", "Fintype.card_congr", "transport of counts"],
+    "prerequisites": ["subtype equivalences", "Fintype.card along an Equiv"]
+  },
+  {
+    "id": "dyck-oq0101-ann-tree",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 192, "endLine": 248 },
+    "type": "concept",
+    "title": "From forests back to a single tree, and sanity checks",
+    "content": "A single plane tree is exactly a root over a forest of its children, so the constructor node gives an equivalence equivForest : PlaneTree ≃ PlaneForest. Since the root adds one node, plane trees with n+1 nodes correspond to plane forests with n nodes (equivForestSubtype), and card_planeTree_numNodes_eq_catalan reads off catalan n. The closing examples check the counts against catalan 0 = 1 (the unique empty forest) and catalan 3 = 5 (five plane forests of 3 nodes; five plane trees of 4 nodes), using catalan_zero/catalan_three rather than decide.",
+    "mathContext": "$\\#\\{t\\mid\\#\\text{nodes}(t)=n+1\\}=C_n$; $C_0=1$, $C_3=5$.",
+    "significance": "supporting",
+    "relatedConcepts": ["constructor equivalence", "root deletion", "small-case verification", "Catalan numbers"],
+    "prerequisites": ["equivalences from constructors", "Fintype.card"]
+  }
+]

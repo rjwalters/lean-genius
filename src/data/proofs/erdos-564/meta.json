@@ -17,7 +17,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 564,
     "erdosUrl": "https://erdosproblems.com/564",
     "erdosProblemStatus": "open",
@@ -44,7 +44,7 @@
     ],
     "axiomCount": 3,
     "lineCount": 207,
-    "assumptions": "3 axioms: R, erdos_hajnal_rado_upper, erdos_hajnal_rado_lower. 1 sorry.",
+    "assumptions": "3 axioms: R, erdos_hajnal_rado_upper, erdos_hajnal_rado_lower. 0 sorries (bounds_gap_enormous fully proved as of #31293).",
     "theoremCount": 6,
     "definitionCount": 5
   },
@@ -136,8 +136,8 @@
       "title": "The 4-Colour Case",
       "startLine": 191,
       "endLine": 207,
-      "summary": "bounds_gap_enormous (sorry) states the enormous gap between known bounds; 4-colour doubly exponential result is mentioned in a docstring only, with no associated Lean declaration",
-      "mathContext": "Sorry: bounds_gap_enormous captures the bounds gap; 4-colour content is docstring-only"
+      "summary": "bounds_gap_enormous (fully proved) states the enormous gap between known bounds; 4-colour doubly exponential result is mentioned in a docstring only, with no associated Lean declaration",
+      "mathContext": "Proved: bounds_gap_enormous captures the bounds gap (no sorry); 4-colour content is docstring-only"
     }
   ],
   "conclusion": {
@@ -166,7 +166,7 @@
     "theoremCount": 6,
     "definitionCount": 5,
     "path": "Proofs/Erdos564Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -185,5 +185,5 @@
       "description": "Related Erdős problem sharing themes: combinatorics, hypergraphs"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

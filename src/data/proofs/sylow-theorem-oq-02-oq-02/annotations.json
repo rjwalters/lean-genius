@@ -1,0 +1,124 @@
+[
+  {
+    "id": "ann-sylmp-overview",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "concept",
+    "title": "The Cofactor-Below-the-Prime Setup",
+    "content": "The file works inside namespace SylowLargePrimeFactor with the minimal ambient assumptions [Group G] [Finite G]. Every theorem then adds the arithmetic hypotheses Nat.card G = p ^ a * m, [Fact p.Prime], ¬ p ∣ m, and (for the normality results) m < p. The factorization is canonical: because p ∤ m, the power p ^ a is exactly the p-part of |G| and m is the p'-cofactor — there is no hidden divisibility relating the two. No restriction is placed on the exponent a, so the criterion covers arbitrarily large p-power Sylow subgroups.",
+    "mathContext": "$$|G| = p^{a}\\,m,\\qquad p\\nmid m,\\qquad m < p.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sylow p-subgroup",
+      "p-part and p'-cofactor",
+      "prime factorization of group order"
+    ],
+    "prerequisites": [
+      "finite group order",
+      "Nat.card",
+      "Fact p.Prime"
+    ]
+  },
+  {
+    "id": "ann-sylmp-card",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 53, "endLine": 72 },
+    "type": "lemma",
+    "title": "Sylow Order Equals the Full p-Part p^a",
+    "content": "sylow_card_eq pins |P| = p ^ a. Sylow.card_eq_multiplicity gives |P| = p ^ ((Nat.card G).factorization p), so the work is purely arithmetic: compute (p ^ a * m).factorization p = a. Nat.factorization_mul splits the product additively (both factors nonzero), (p ^ a).factorization p = a comes from factorization_pow and the prime's own factorization single, and m.factorization p = 0 is exactly the content of p ∤ m via Nat.factorization_eq_zero_of_not_dvd. The hypothesis p ∤ m is what guarantees p ^ a is the entire p-part rather than a proper p-power divisor.",
+    "mathContext": "$$|P| = p^{\\,v_p(|G|)} = p^{\\,v_p(p^{a}m)} = p^{\\,a},\\qquad v_p(m)=0 \\iff p\\nmid m.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "Sylow.card_eq_multiplicity",
+      "Nat.factorization",
+      "multiplicity of a prime"
+    ],
+    "prerequisites": [
+      "Sylow.card_eq_multiplicity",
+      "Nat.factorization_mul",
+      "Nat.factorization_eq_zero_of_not_dvd"
+    ]
+  },
+  {
+    "id": "ann-sylmp-index",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "lemma",
+    "title": "Index of the Sylow Subgroup Equals the Cofactor m",
+    "content": "sylow_index_eq turns the order computation into the index [G : P] = m. The Lagrange identity Subgroup.card_mul_index reads |P| * [G : P] = |G|; substituting |P| = p ^ a (from sylow_card_eq) and |G| = p ^ a * m gives p ^ a * [G : P] = p ^ a * m, and cancelling the strictly positive factor p ^ a (Nat.eq_of_mul_eq_mul_left, pow_pos) leaves [G : P] = m. This is the bridge that lets the next step apply the Sylow divisibility theorem against the concrete number m.",
+    "mathContext": "$$|P|\\cdot[G:P] = |G| \\ \\Longrightarrow\\ p^{a}\\,[G:P] = p^{a}\\,m \\ \\Longrightarrow\\ [G:P] = m.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange's theorem",
+      "subgroup index",
+      "Subgroup.card_mul_index"
+    ],
+    "prerequisites": [
+      "Subgroup.card_mul_index",
+      "Nat.eq_of_mul_eq_mul_left"
+    ]
+  },
+  {
+    "id": "ann-sylmp-collapse",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 83, "endLine": 106 },
+    "type": "insight",
+    "title": "The Divisibility/Congruence Pinch Forcing n_p = 1",
+    "content": "card_sylow_eq_one is the mathematical heart. Two Mathlib facts about the Sylow count n_p = #(Sylow p G) are played against each other. First, Sylow.card_dvd_index gives n_p ∣ [G : P], and with [G : P] = m this yields n_p ∣ m, hence n_p ≤ m < p by Nat.le_of_dvd (m > 0 from finiteness). Second, card_sylow_modEq_one (Sylow's third theorem) gives n_p ≡ 1 (mod p). Reading the congruence below p — both n_p mod p = n_p (since n_p < p) and 1 mod p = 1 (since p > 1) via Nat.mod_eq_of_lt — collapses it to n_p = 1. The only natural number that is both < p and ≡ 1 (mod p) is 1 itself.",
+    "mathContext": "$$n_p \\mid m \\Rightarrow n_p \\le m < p,\\qquad n_p \\equiv 1 \\ (\\mathrm{mod}\\ p)\\ \\xrightarrow{\\,n_p<p\\,}\\ n_p = 1.$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Sylow's third theorem",
+      "counting Sylow subgroups",
+      "modular arithmetic",
+      "divisibility pinch"
+    ],
+    "prerequisites": [
+      "Sylow.card_dvd_index",
+      "card_sylow_modEq_one",
+      "Nat.mod_eq_of_lt",
+      "Nat.le_of_dvd"
+    ]
+  },
+  {
+    "id": "ann-sylmp-normal",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "theorem",
+    "title": "Uniqueness Promotes to Normality",
+    "content": "sylow_normal is the headline. Once n_p = 1, Nat.card_eq_one_iff_unique produces Unique (Sylow p G), whose Subsingleton component is installed as an instance. Sylow.normal_of_subsingleton then converts 'there is at most one Sylow p-subgroup' into normality of that subgroup. The deep reason is that all Sylow p-subgroups are conjugate (Sylow's second theorem); a unique one is fixed by every conjugation, i.e. normal. So the entire structural conclusion P ◁ G is reached purely by counting, with no examination of the internal structure of G.",
+    "mathContext": "$$n_p = 1 \\iff \\mathrm{Syl}_p(G)\\ \\text{is a subsingleton} \\ \\Longrightarrow\\ P \\trianglelefteq G.$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "normal subgroup",
+      "Sylow uniqueness",
+      "conjugacy of Sylow subgroups",
+      "Sylow.normal_of_subsingleton"
+    ],
+    "prerequisites": [
+      "Nat.card_eq_one_iff_unique",
+      "Sylow.normal_of_subsingleton",
+      "Subsingleton"
+    ]
+  },
+  {
+    "id": "ann-sylmp-exists",
+    "proofId": "sylow-theorem-oq-02-oq-02",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "theorem",
+    "title": "Existence Packaging of the Normal Sylow Subgroup",
+    "content": "exists_normal_sylow restates the result existentially: such a group has a normal Sylow p-subgroup. Sylow.nonempty (a consequence of Sylow's first/existence theorem) supplies a witness P, and sylow_normal certifies its normality. This existential form is the convenient hypothesis to feed downstream structural arguments — for instance, that G has a nontrivial proper normal subgroup whenever 1 < p ^ a < |G|, a stepping stone toward solvability/non-simplicity conclusions.",
+    "mathContext": "$$\\exists\\, P \\in \\mathrm{Syl}_p(G),\\ P \\trianglelefteq G.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existence of Sylow subgroups",
+      "normal subgroup",
+      "non-simplicity criteria"
+    ],
+    "prerequisites": [
+      "Sylow.nonempty",
+      "Sylow's first theorem"
+    ]
+  }
+]

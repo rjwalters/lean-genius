@@ -6,6 +6,14 @@ Insights accumulated during research on this problem.
 
 ## Problem Understanding
 
+**Phase: ORIENT→PRE-ACT (iteration 3, researcher-3, 2026-06-26).** Verification
+blackout STILL in force (Docker daemon flapping + containerd "unexpected EOF" crash,
+exit 125; Aristotle MCP returns 404 "Resource not found"). No gallery `.lean` committed;
+instead this iteration produced a **name-checked, ACT-ready Lean scaffold**
+`draft-ShapleyFolkmanOQ02.lean` (research dir only — NOT in `proofs/Proofs/`, so it is
+not built by CI until it compiles). See "Session 3" below for the API corrections that
+de-risk the eventual build.
+
 **Phase: ORIENT (iteration 2, researcher-3, 2026-06-14).** Build-free session
 under the Docker + Aristotle verification blackout — no `.lean` committed.
 
@@ -118,3 +126,65 @@ squared-deviation aggregation.
   weaker `diam`-based bound used for a first pass).
 - (No Lean attempted this session — blocked by the verification blackout; the
   above is ORIENT only.)
+
+---
+
+## Session 3 (researcher-3, 2026-06-26) — API-verified scaffold
+
+Blackout persists (Docker + Aristotle both down — see header). Built the ACT-ready
+scaffold `draft-ShapleyFolkmanOQ02.lean` and **verified the bearer API against actual
+source** (parent file + local Mathlib v4.26.0). Two corrections to the prior plan that
+would otherwise have made the eventual Lean fail to elaborate:
+
+### Correction A — the parent context is module-only, not normed
+`proofs/Proofs/ShapleyFolkman.lean` opens with
+`variable {E : Type*} [AddCommGroup E] [Module ℝ E]` (open `Set Finset Pointwise`,
+`namespace ShapleyFolkman`). There is **no norm** in scope. So OQ-02 cannot extend the
+parent namespace unchanged; it must introduce
+`[NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]` itself and
+re-invoke `sum_close_to_convexHull` (which still applies — a normed ℝ-space is an
+ℝ-module). Exact parent conclusion to build on (line 1184):
+`∃ f, (∀ i ∈ t, f i ∈ convexHull ℝ (S i)) ∧ ∑ i ∈ t, f i = x ∧ (t.filter (fun i => f i ∉ S i)).card ≤ Module.finrank ℝ E`.
+
+### Correction B — Cassels, not "Cauchy–Schwarz", is the √n source
+The prior note said "the ℓ²/Cauchy–Schwarz route" yields `√n·L`. On inspection that is
+**not** quite right and the distinction matters for the Lean:
+- `norm_sum_le` (triangle) gives `‖Σvᵢ‖ ≤ Σ‖vᵢ‖ ≤ card·L`.
+- Cauchy–Schwarz on the *scalar* sum `Σ‖vᵢ‖ = Σ 1·‖vᵢ‖ ≤ √card · √(Σ‖vᵢ‖²) ≤ √card·√(card·L²) = card·L` — **also only `card·L`**.
+So neither generic route beats the triangle bound. The `√n` improvement is a genuine
+**convex-geometry** fact (Cassels 1975 / Starr): it uses that each `vᵢ = fᵢ − sᵢ` is a
+deviation of a hull point of `Sᵢ` from a nearest point of `Sᵢ`, not an arbitrary
+vector. Without that structural hypothesis `‖Σvᵢ‖ ≤ √card·L` is **FALSE** (aligned
+vectors saturate `card·L`). The scaffold's `cassels_starr_aggregation` therefore carries
+a placeholder structural hypothesis to be pinned during ACT — this is the open core.
+
+### Correction C — no general circumradius API (confirmed)
+Mathlib v4.26.0 has only `Affine.Simplex.circumradius`/`circumcenter` (simplices). No
+min-enclosing-ball radius for arbitrary bounded sets. `rad` is defined in the scaffold
+as `⨅ c, ⨆ x∈S, ‖x−c‖` (packaging TBD); the diam surrogate (`Metric.diam`, with
+`rad_le_diam`) gives a correct non-sharp first pass.
+
+### Bearer reference sheet (exact, from source)
+| Need | Lemma (v4.26.0) | File |
+|------|-----------------|------|
+| combinatorial SF | `ShapleyFolkman.sum_close_to_convexHull` | repo `proofs/Proofs/ShapleyFolkman.lean:1184` |
+| Carathéodory (pos convex span) | `eq_pos_convex_span_of_mem_convexHull` | `Mathlib/Analysis/Convex/Caratheodory.lean` |
+| convex combination form | `convexHull_eq`, `Finset.centerMass_mem_convexHull` | `Mathlib/Analysis/Convex/Combination.lean` |
+| CS for inner product | `norm_inner_le_norm`, `real_inner_le_norm` | `Mathlib/Analysis/InnerProductSpace/Basic.lean` |
+| diameter | `Metric.diam`, `diam_le_of_forall_dist_le`, `diam_nonneg` | `Mathlib/Topology/MetricSpace/Bounded.lean` |
+| Hausdorff dist | `Metric.hausdorffDist`, `hausdorffDist_le_of_mem_dist`, `hausdorffDist_le_diam` | `Mathlib/Topology/MetricSpace/HausdorffDistance.lean` |
+| finrank bound | `Module.finrank`, `fintype_card_le_finrank` | `Mathlib/LinearAlgebra/Dimension/*` |
+
+### ACT plan (when a backend returns), easiest → hardest
+1. `rad_nonneg`, `rad_le_diam`, `exists_nearby_point` (Carathéodory + nearest point).
+2. `hausdorff_bound_linear` — the **routine `card·rad` (= finrank·rad) bound**; a
+   complete correct theorem, good first verified deliverable, needs no Cassels.
+3. `shapley_folkman_starr` packaging via `hausdorffDist_le_of_mem_dist` (reverse
+   direction trivial: `Σ Sᵢ ⊆ conv Σ Sᵢ`).
+4. `cassels_starr_aggregation` — the √n crux (open core; the rest is plumbing).
+
+**Recommended honest milestone:** land the `finrank·rad` (triangle) Hausdorff bound as a
+*verified* gallery entry first, with the sharp √n constant flagged as the remaining
+Cassels step — mirrors the erdos-633 "prove what's honestly provable, document the hard
+core" pattern. Do NOT ship the √n statement as verified until `cassels_starr_aggregation`
+is genuinely proved.

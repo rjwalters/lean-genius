@@ -46,24 +46,25 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of additive arithmetic functions",
-      "Definition of unbounded growth on prime powers",
-      "Axiomatization of both OPEN conjectures (Parts I and II)",
-      "Statement of Wirsing's theorem (1970) as axiom",
-      "Restricted variants for strongly/completely additive functions",
-      "Definitions of omega, bigOmega, and log as examples"
+      "Formal definitions of additive, strongly additive, and completely additive arithmetic functions",
+      "Definition of unbounded growth on prime powers (the limsup hypothesis of #897)",
+      "Documentation of both OPEN conjectures (Parts I and II) and Wirsing's 1970 converse",
+      "Verified instances: log is completely additive, ω is strongly additive (non-vacuity of the predicates)",
+      "Reduction theorem: for completely additive f, the prime-power hypothesis is equivalent to f(p)/log p being unbounded over primes (the multiplier k cancels)",
+      "Basic properties: f(1) = 0 and the prime-power value formulas",
+      "Definitions of omega, bigOmega, and log as concrete examples"
     ],
     "axiomCount": 0,
-    "lineCount": 141,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 3,
+    "lineCount": 210,
+    "assumptions": "None. The supporting theory is fully machine-checked with 0 axioms and 0 sorries. The two main questions of Erdős #897 remain OPEN and are stated only as documentation, not asserted as theorems.",
+    "theoremCount": 6,
     "definitionCount": 7
   },
   "overview": {
     "historicalContext": "This problem explores the behavior of additive arithmetic functions—functions satisfying f(ab) = f(a) + f(b) whenever gcd(a,b) = 1. Classic examples include ω(n) (distinct prime factors), Ω(n) (total prime factors with multiplicity), and log(n).\n\nErdős asked: if an additive function f grows unboundedly fast on prime powers (specifically, if limsup f(p^k)/log(p^k) = ∞), does this force the consecutive differences f(n+1) - f(n) to also be unbounded when normalized by log(n)?\n\nThe converse direction was settled by Wirsing in 1970, who proved that if consecutive differences are BOUNDED (|f(n+1) - f(n)| ≤ C), then f must behave like c·log(n) + O(1). This characterizes the logarithm as essentially the unique additive function with bounded consecutive differences.",
     "problemStatement": "Let $f(n)$ be an additive function (so that $f(ab) = f(a) + f(b)$ when $(a,b) = 1$) such that\n$$\\limsup_{p,k} \\frac{f(p^k)}{\\log(p^k)} = \\infty$$\n\n**Part I**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1) - f(n)}{\\log n} = \\infty$?\n\n**Part II**: Is it true that $\\displaystyle\\limsup_n \\frac{f(n+1)}{f(n)} = \\infty$?\n\n**Status**: Both parts remain **OPEN**.\n\n**Known** (Wirsing 1970): If $|f(n+1) - f(n)| \\leq C$, then $f(n) = c\\log n + O(1)$.",
     "text": "For an additive function f with unbounded growth on prime powers, must consecutive differences f(n+1) - f(n) also be unbounded when normalized by log(n)?",
-    "proofStrategy": "We formalize this problem by:\n\n1. **Defining additive functions**: IsAdditive f means f(ab) = f(a) + f(b) when gcd(a,b) = 1\n\n2. **Defining unbounded growth**: UnboundedOnPrimePowers captures the limsup condition on prime powers\n\n3. **Stating both conjectures as axioms**: Parts I and II about consecutive differences\n\n4. **Stating Wirsing's theorem**: The solved converse direction\n\n5. **Defining restricted variants**: StronglyAdditive (f(p^k) = f(p)) and CompletelyAdditive (f(p^k) = k·f(p))\n\n6. **Providing examples**: omega, bigOmega, and log as concrete additive functions",
+    "proofStrategy": "We formalize this problem by:\n\n1. **Defining additive functions**: IsAdditive f means f(ab) = f(a) + f(b) when gcd(a,b) = 1\n\n2. **Defining unbounded growth**: UnboundedOnPrimePowers captures the limsup condition on prime powers\n\n3. **Documenting both conjectures**: Parts I and II about consecutive differences remain OPEN and are recorded as prose, not asserted as theorems\n\n4. **Documenting Wirsing's theorem**: The solved converse direction\n\n5. **Defining restricted variants**: StronglyAdditive (f(p^k) = f(p)) and CompletelyAdditive (f(p^k) = k·f(p))\n\n6. **Verifying instances**: log is completely additive and ω is strongly additive, so the predicates are non-vacuous\n\n7. **Proving a reduction**: for completely additive f, the prime-power hypothesis collapses to a condition on primes alone since the multiplier k cancels in f(p^k)/log(p^k)",
     "keyInsights": [
       "**Additive vs multiplicative**: Additive functions add on coprime products; multiplicative functions multiply. The logarithm is additive: log(ab) = log(a) + log(b).",
       "**Why prime powers matter**: For additive f, the value f(n) is determined by f on prime powers. If f grows fast on prime powers, it should affect consecutive values.",
@@ -115,9 +116,23 @@
     {
       "id": "examples",
       "title": "Classical Examples",
-      "startLine": 125,
-      "endLine": 141,
-      "summary": "Definitions of omega, bigOmega, and log as additive functions."
+      "startLine": 107,
+      "endLine": 139,
+      "summary": "Definitions of omega, bigOmega, log; basic properties (f(1)=0, prime-power formulas)."
+    },
+    {
+      "id": "instances",
+      "title": "The Classical Examples Are Genuine Instances",
+      "startLine": 141,
+      "endLine": 173,
+      "summary": "Verified: log is completely additive and ω is strongly additive, so the predicates are non-vacuous."
+    },
+    {
+      "id": "reduction",
+      "title": "Reduction for Completely Additive Functions",
+      "startLine": 175,
+      "endLine": 210,
+      "summary": "Reduction theorem: for completely additive f, the prime-power hypothesis is equivalent to f(p)/log p being unbounded over primes."
     }
   ],
   "conclusion": {
@@ -139,11 +154,11 @@
       "Filter"
     ],
     "namespace": "Erdos897",
-    "lineCount": 141,
+    "lineCount": 210,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 7,
-    "theoremCount": 3
+    "theoremCount": 6
   },
   "crossReferences": [
     {

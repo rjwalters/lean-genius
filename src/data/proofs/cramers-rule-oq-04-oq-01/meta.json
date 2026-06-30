@@ -94,6 +94,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview: One Adjugate Identity Behind Two Theorems",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports and module docstring. States the parent chain's open question (formalize the algebraic Cayley–Hamilton proof via the adjugate-reflexive property adj(xI−A)·(xI−A) = χ_A(x)·I) and the unifying observation: both Cramer's rule and Cayley–Hamilton are instances of the single adjugate identity adjugate B · B = (det B)·I — Cramer's rule with the scalar matrix B = A, Cayley–Hamilton with the characteristic matrix B = xI−A over R[X], where det(xI−A) = χ_A(x). Lists the main results and sets up a commutative ring R with a finite index type n.",
+      "mathContext": "Common source: $\\operatorname{adj}(B)\\,B = (\\det B)\\,I$. Cramer: $B = A$. Cayley–Hamilton: $B = xI - A$, $\\det(xI-A) = \\chi_A(x)$, then evaluate at $A$."
+    },
+    {
       "id": "adjugate-identity",
       "title": "Section I: The Adjugate-Reflexive Identity",
       "startLine": 37,

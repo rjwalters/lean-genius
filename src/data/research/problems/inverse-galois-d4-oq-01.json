@@ -54,5 +54,57 @@
   "started": "2026-06-15T00:00:00Z",
   "lastUpdate": "2026-06-18T00:00:00Z",
   "significance": 5,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisD4.lean",
+      "filename": "InverseGaloisD4.lean",
+      "lineCount": 683,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01.lean",
+      "filename": "InverseGaloisD4OQ01.lean",
+      "lineCount": 203,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ01External.lean",
+      "filename": "InverseGaloisD4OQ01External.lean",
+      "lineCount": 172,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ01External.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisD4OQ03.lean",
+      "filename": "InverseGaloisD4OQ03.lean",
+      "lineCount": 236,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 15,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-d4",
+    "inverse-galois-d4-oq-01",
+    "inverse-galois-d4-oq-03"
+  ]
 }

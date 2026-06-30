@@ -62,8 +62,12 @@
     "subset-count",
     "subset-count-multiset",
     "subset-count-multiset-oq-01",
+    "subset-count-multiset-oq-02",
+    "subset-count-oq-01",
     "subset-count-oq-02",
-    "subset-count-oq-02-oq-01"
+    "subset-count-oq-02-oq-01",
+    "subset-count-oq-02-oq-02",
+    "subset-count-oq-04"
   ],
   "references": {
     "papers": [],
@@ -98,6 +102,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountMultisetOQ01.lean"
     },
     {
+      "path": "Proofs/SubsetCountMultisetOQ02.lean",
+      "filename": "SubsetCountMultisetOQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountMultisetOQ02.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ01.lean",
+      "filename": "SubsetCountOQ01.lean",
+      "lineCount": 91,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ01.lean"
+    },
+    {
       "path": "Proofs/SubsetCountOQ02.lean",
       "filename": "SubsetCountOQ02.lean",
       "lineCount": 121,
@@ -118,6 +144,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ02OQ02.lean",
+      "filename": "SubsetCountOQ02OQ02.lean",
+      "lineCount": 162,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/SubsetCountOQ04.lean",
+      "filename": "SubsetCountOQ04.lean",
+      "lineCount": 230,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SubsetCountOQ04.lean"
     }
   ]
 }

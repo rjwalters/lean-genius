@@ -65,6 +65,52 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Beta integral B(u,v) = ∫₀¹ t^(u−1)(1−t)^(v−1) dt was studied by Euler and Legendre in the 18th–19th centuries as the 'Eulerian integral of the first kind' (the Gamma function being the second kind). Its defining relation to Gamma, B(u,v) = Γ(u)Γ(v)/Γ(u+v), makes it the continuous interpolation of the reciprocal binomial coefficients: B(m+1,n+1) = m!·n!/(m+n+1)! = 1/((m+n+1)·C(m+n,m)). The Beta function is ubiquitous — it is the normalizing constant of the Beta probability distribution (conjugate prior to the binomial in Bayesian statistics), it appears in the Veneziano amplitude that launched string theory, and its half-integer values encode the volumes of balls and the arcsine law. The parameter recurrence u·B(u,v+1) = v·B(u+1,v) is the analogue of the Gamma recurrence and, with the Beta–Gamma relation, determines the function on the integer lattice. Mathlib has the recurrence, the Beta–Gamma relation, and the one-sided integer evaluation, but not the symmetric two-integer factorial closed form; this entry supplies it.",
+    "problemStatement": "Starting from Mathlib's Beta parameter recurrence u·B(u,v+1) = v·B(u+1,v) and the Beta–Gamma relation B(u,v) = Γ(u)Γ(v)/Γ(u+v), establish the symmetric two-integer closed form B(m+1,n+1) = m!·n!/(m+n+1)! for all m, n : ℕ (which Mathlib records only in the asymmetric one-argument form B(u,n+1) = n!/∏(u+j)), read off the integer-lattice symmetry B(m+1,n+1) = B(n+1,m+1), and instantiate concrete values B(1,1) = 1, B(2,3) = 1/12, B(3,3) = 1/30.",
+    "proofStrategy": "beta_recurrence re-exports Complex.betaIntegral_recurrence. The centerpiece betaIntegral_nat_nat rewrites B(m+1,n+1) with the Beta–Gamma relation betaIntegral_eq_Gamma_mul_div (real parts positive, via positivity), rewrites the summed argument (m+1)+(n+1) as (m+n+1)+1 (push_cast; ring), and collapses each of the three Gamma values Γ(m+1), Γ(n+1), Γ(m+n+2) to factorials with Complex.Gamma_nat_eq_factorial. betaIntegral_nat_nat_symm reads the m ↔ n symmetry off the factorial quotient (Nat.add_comm). The numeric corollaries instantiate the closed form at small m, n and finish with norm_num [Nat.factorial] and linear_combination.",
+    "keyInsights": [
+      "The Beta function interpolates reciprocal binomial coefficients: B(m+1,n+1) = m!·n!/(m+n+1)! = 1/((m+n+1)·C(m+n,m)). The closed form is thus the continuous shadow of the discrete binomial world, the bridge the entry makes explicit.",
+      "The factorial value is bought entirely through Gamma: each integer Beta value becomes Γ(m+1)Γ(n+1)/Γ(m+n+2), and Γ(k+1) = k! turns the three Gamma factors into the factorial quotient. No integration is performed — the Beta–Gamma relation does all the work.",
+      "Symmetry B(u,v) = B(v,u) comes from the substitution t ↦ 1−t in the integral, but on the integer lattice it is simply the visible m ↔ n symmetry of m!·n!/(m+n+1)! — a clean illustration of an analytic symmetry becoming algebraic after evaluation.",
+      "Mathlib's gap is real and specific: it has the asymmetric one-argument evaluation B(u,n+1) = n!/∏(u+j) but not the symmetric two-integer form, so deriving the latter (and its numeric instances) is genuine added content over the library.",
+      "The 'mathlib' badge is honest: the recurrence and Beta–Gamma relation are imported deep theorems; the original content is the symmetric closed form and the Gamma-to-factorial collapse, packaging the textbook 'Beta of two integers' value in machine-checked form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Recurrence and Integer Closed Form",
+      "startLine": 4,
+      "endLine": 43,
+      "summary": "States the Beta integral, its parameter recurrence u·B(u,v+1) = v·B(u+1,v) (Mathlib), and the Beta–Gamma relation, then announces the centerpiece B(m+1,n+1) = m!·n!/(m+n+1)!. Explains Mathlib has only the asymmetric one-argument evaluation, and outlines the derivation (Beta–Gamma + Gamma_nat_eq_factorial) and the numeric corollaries.",
+      "mathContext": "$B(u,v) = \\int_0^1 t^{u-1}(1-t)^{v-1}\\,dt$; goal $B(m+1,n+1) = m!\\,n!/(m+n+1)!$."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Beta Recurrence",
+      "startLine": 49,
+      "endLine": 57,
+      "summary": "beta_recurrence re-exports Complex.betaIntegral_recurrence: u·B(u,v+1) = v·B(u+1,v) for Re u, Re v > 0 — the headline functional equation, analogue of the Gamma recurrence.",
+      "mathContext": "$u\\,B(u,v+1) = v\\,B(u+1,v)$."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Integer Closed Form and Symmetry",
+      "startLine": 59,
+      "endLine": 85,
+      "summary": "betaIntegral_nat_nat: B(m+1,n+1) = m!·n!/(m+n+1)!, via betaIntegral_eq_Gamma_mul_div, the argument rewrite (m+1)+(n+1) = (m+n+1)+1, and Gamma_nat_eq_factorial on all three Gamma values. betaIntegral_nat_nat_symm: B(m+1,n+1) = B(n+1,m+1), the m ↔ n symmetry of the closed form.",
+      "mathContext": "$B(m+1,n+1) = \\dfrac{m!\\,n!}{(m+n+1)!} = B(n+1,m+1)$."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Evaluations",
+      "startLine": 87,
+      "endLine": 103,
+      "summary": "betaIntegral_one_one (B(1,1)=1), betaIntegral_two_three (B(2,3)=1/12), betaIntegral_three_three (B(3,3)=1/30): instances of the closed form at small m, n, finished by norm_num [Nat.factorial] and linear_combination.",
+      "mathContext": "$B(1,1)=1,\\ B(2,3)=1/12,\\ B(3,3)=1/30$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "beta-integral-recurrence-oq-01-oq-01",

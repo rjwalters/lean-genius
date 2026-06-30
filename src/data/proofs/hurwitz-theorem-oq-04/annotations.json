@@ -227,7 +227,7 @@
       "endLine": 586
     },
     "type": "definition",
-    "title": "OctonionDerSubmodule: Der(𝕆) as Vector Subspace + G₂ Dimension Axiom",
+    "title": "OctonionDerSubmodule: Der(𝕆) as Vector Subspace + G₂ Dimension Theorem",
     "content": "`OctonionDerSubmodule` realises Der(𝕆) as a `Submodule ℝ` of `End_ℝ(ℝ⁸)` — the ℝ-linear maps D satisfying the Leibniz rule D(a·b) = D(a)·b + a·D(b) for octonion multiplication. Packaging the derivations as a submodule equips Der(𝕆) with an inherited finite-dimensional vector-space structure, so `FiniteDimensional.finrank` can measure its dimension. Crucially, `G2_der_dimension` is a **fully proved theorem** (not an axiom): `finrank ℝ OctonionDerSubmodule = 14`, established in PART IV-c.3 by exhibiting 14 explicit Baez derivations that are linearly independent (lower bound) together with an injective 14-coordinate evaluation map (upper bound). This makes the dimension count Der(𝕆) ≅ 𝔤₂ machine-checked rather than assumed.",
     "mathContext": "$\\mathrm{Der}(\\mathbb{O}) = \\{\\, D \\in \\mathrm{End}_\\mathbb{R}(\\mathbb{R}^8) : D(ab) = D(a)\\,b + a\\,D(b) \\,\\}$, an ℝ-submodule. **Proved**: $\\operatorname{finrank}_\\mathbb{R} \\mathrm{Der}(\\mathbb{O}) = 14 = \\dim \\mathfrak{g}_2$.",
     "significance": "key",
@@ -325,7 +325,7 @@
       "endLine": 1490
     },
     "type": "insight",
-    "title": "Freudenthal-Tits Magic Square Axioms: F₄=52, E₆=78, E₇=133, E₈=248",
+    "title": "Freudenthal-Tits Magic Square Dimensions: F₄=52, E₆=78, E₇=133, E₈=248",
     "content": "The Freudenthal-Tits construction 𝔏(A,B) = Der(A) ⊕ (Im A ⊗ Im B) ⊕ Der(B) produces exceptional Lie algebras from pairs of normed division algebras. This section proves dimension facts (rfl): F₄=52, E₆=78, E₇=133, E₈=248. The docstring explains D₄ triality — the S₃ outer automorphism group of the D₄ Dynkin diagram (which is the unique Dynkin diagram with a 3-fold symmetry) — as the source of the magic square symmetry 𝔏(A,B) ≅ 𝔏(B,A). The construction of E₈ (dimension 248) uses a doubled version of the Tits formula to enforce the Jacobi identity. The section also proves exceptional_dims_strict_mono (14<52<78<133<248 by decide) and G2_unique_low_rank (G₂ is the unique exceptional type with rank < 4, proved by case analysis).",
     "mathContext": "Magic square building block dimensions: $\\mathfrak{der}(\\mathbb{R})=0$, $\\mathfrak{der}(\\mathbb{C})=0$, $\\mathfrak{der}(\\mathbb{H})=\\mathfrak{su}(2)=3$, $\\mathfrak{der}(\\mathbb{O})=\\mathfrak{g}_2=14$; $\\text{Im}(\\mathbb{R})=0$, $\\text{Im}(\\mathbb{C})=1$, $\\text{Im}(\\mathbb{H})=3$, $\\text{Im}(\\mathbb{O})=7$. D₄ triality: $\\text{SO}(8)$ has an outer automorphism group $S_3$ permuting the three 8-dimensional representations (vector, spinor+, spinor−). This $S_3$ acts on the magic square rows/columns, giving $\\mathfrak{L}(A,B) \\cong \\mathfrak{L}(B,A)$. Rank of exceptional types: G₂ has rank 2, F₄ has rank 4, E₆ has rank 6, E₇ has rank 7, E₈ has rank 8 (matching the Dynkin diagram node counts).",
     "significance": "key",
@@ -351,7 +351,7 @@
       "endLine": 1517
     },
     "type": "concept",
-    "title": "The Freudenthal-Tits Magic Square Axioms",
+    "title": "The Freudenthal-Tits Magic Square Dimensions (Proved by rfl)",
     "content": "PART V records the four magic-square corner dimensions as theorems, each proved definitionally by `rfl`: `freudenthal_tits_f4` (F₄ = 52), `freudenthal_tits_e6` (E₆ = 78), `freudenthal_tits_e7` (E₇ = 133), `freudenthal_tits_e8` (E₈ = 248). These are *not* axioms — they hold by `rfl` because each `ExceptionalType.dim` value is defined to be the stated number, so the file only does dimension bookkeeping here. The mathematically deep claim each docstring records — that the Tits construction gives 𝔏(𝕆,ℝ) = F₄, 𝔏(𝕆,ℂ) = E₆, 𝔏(𝕆,ℍ) = E₇, 𝔏(𝕆,𝕆) = E₈ as Lie algebras — requires Lie-group theory not yet in Mathlib. (E₈ is the lattice behind Viazovska's 2016 Fields-Medal solution of 8-dimensional sphere packing.)",
     "mathContext": "$\\dim F_4 = 52,\\ \\dim E_6 = 78,\\ \\dim E_7 = 133,\\ \\dim E_8 = 248$ — each a `rfl` theorem from `ExceptionalType.dim`. Tits formula: $\\mathfrak{L}(A,B) = \\mathfrak{der}(A) \\oplus (\\mathrm{Im}\\,A \\otimes \\mathrm{Im}\\,B) \\oplus \\mathfrak{der}(B)$.",
     "significance": "key",

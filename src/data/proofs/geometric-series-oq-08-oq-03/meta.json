@@ -20,6 +20,7 @@
     "sorries": 0
   },
   "title": "The Ico-slice of a Geometric Series and the Cauchy Criterion",
+  "description": "Turns the parent's one-sided truncation defect rⁿ/(1 − r) into the two-sided slice estimate that convergence proofs actually invoke. For 0 ≤ r < 1 an arbitrary middle block ∑_{k ∈ Ico m n} rᵏ equals the m-tail minus the n-tail and is bounded by the endpoint-free envelope rᵐ/(1 − r) → 0, packaged as the explicit ε–N Cauchy criterion uniform in the right endpoint — the reusable engine behind the comparison test, ratio-test remainder, and geometric-majorant dominated convergence.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -78,6 +79,55 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Augustin-Louis Cauchy's 1821 Cours d'analyse made the convergence of a series rest on the behaviour of its tail blocks: a series converges iff its partial sums form a Cauchy sequence, i.e. arbitrarily late finite blocks become arbitrarily small. The geometric series is the canonical worked example — Cauchy himself used the geometric majorant to formulate what became the comparison and ratio tests, where one dominates an unknown series' tail blocks by those of a convergent geometric series. This entry formalises exactly that block estimate. Where the classical statement bounds a tail block ∑_{k=m}^{n} rᵏ, the modern Lean formulation works with the half-open index set Ico m n (= {m, m+1, …, n−1}), so the empty-slice case n ≤ m is handled uniformly and the bound rᵐ/(1 − r) holds for all m, n with no ordering hypothesis — the form Mathlib's geom_sum_Ico_le_of_lt_one provides and the comparison/ratio tests consume.",
+    "problemStatement": "For $0 \\le r < 1$, control an arbitrary middle block of the geometric series, $\\sum_{k \\in [m, n)} r^k$, by a bound independent of the right endpoint $n$. Concretely: prove the difference-of-tails identity $\\sum_{k \\in [m,n)} r^k = \\frac{r^m}{1-r} - \\frac{r^n}{1-r}$, the self-similar factorisation $\\sum_{k \\in [m,n)} r^k = r^m \\sum_{k < n-m} r^k$, the endpoint-free estimate $\\left|\\sum_{k \\in [m,n)} r^k\\right| \\le \\frac{r^m}{1-r} \\to 0$, and package these as the $\\varepsilon$–$N$ Cauchy criterion: $\\forall \\varepsilon > 0\\ \\exists N\\ \\forall m \\ge N\\ \\forall n,\\ \\left|\\sum_{k \\in [m,n)} r^k\\right| \\le \\varepsilon$.",
+    "proofStrategy": "The closed form geometric_slice_closed wraps Mathlib's geom_sum_Ico'; sub_div then splits it into the difference of two parent tails (geometric_slice_eq_tail_sub). The self-similar factorisation geometric_slice_factor reindexes Ico m n to range (n − m) via Finset.sum_Ico_eq_sum_range and pulls out rᵐ with pow_add, needing no order hypothesis. The slice bound geometric_slice_le wraps Mathlib's geom_sum_Ico_le_of_lt_one (valid for all m, n since an empty slice is 0); geometric_slice_abs_le drops the absolute value because every term is nonnegative. The envelope rᵐ/(1 − r) → 0 follows from tendsto_pow_atTop_nhds_zero_of_lt_one divided by the constant 1 − r. The capstone geometric_slice_cauchy extracts the threshold N from exists_pow_lt_of_lt_one (applied to ε·(1 − r)), then for m ≥ N chains the absolute bound, the monotonicity rᵐ ≤ rᴺ (pow_le_pow_of_le_one), and div_le_iff₀ to reach ≤ ε — uniformly in n.",
+    "keyInsights": [
+      "The defining feature of the Cauchy criterion is that the block bound rᵐ/(1 − r) does NOT depend on the right endpoint n. This endpoint-uniformity is what lets the comparison and ratio tests dominate an unknown series' arbitrarily long tail blocks by a single geometric quantity that shrinks with the left endpoint alone.",
+      "The slice is literally the difference of two parent tails: ∑_{k ∈ Ico m n} rᵏ = rᵐ/(1 − r) − rⁿ/(1 − r). This difference-of-tails identity is the structural bridge from this two-sided estimate back to the parent entry's one-sided truncation defect, showing the two viewpoints are the same arithmetic.",
+      "Self-similarity ∑_{k ∈ Ico m n} rᵏ = rᵐ·∑_{k < n−m} rᵏ — a block starting at m is rᵐ times a fresh partial sum — is the geometric series' scale invariance, and it holds with NO ordering hypothesis on m, n (the empty-slice degeneracy is automatic), which is exactly why the bound extends to all index pairs.",
+      "Using the half-open interval Ico m n rather than a closed sum range is not cosmetic: it makes the n ≤ m case the empty sum 0, so geometric_slice_le and the Cauchy criterion need no m ≤ n hypothesis — a small formalisation choice that removes case splits throughout.",
+      "The entry deliberately bottoms out at the elementary ε–N statement rather than Mathlib's abstract CauchySeq predicate; the open question asks to bridge to cauchySeq_finset and thereby re-derive summability of the geometric series without invoking hasSum_geometric — an alternative, self-contained convergence proof."
+    ]
+  },
+  "sections": [
+    {
+      "id": "slice-closed-and-tails",
+      "title": "Slice Closed Form and Difference of Tails",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "geometric_slice_closed wraps Mathlib's geom_sum_Ico' to record the slice closed form (rᵐ − rⁿ)/(1 − r) for r ≠ 1, m ≤ n. geometric_slice_eq_tail_sub then splits it (via sub_div) into the parent's m-tail minus n-tail, rᵐ/(1 − r) − rⁿ/(1 − r) — the bridge back to GeometricSeriesOQ08.geometric_sum_tail."
+    },
+    {
+      "id": "self-similarity",
+      "title": "Self-Similar Factorisation",
+      "startLine": 76,
+      "endLine": 81,
+      "summary": "geometric_slice_factor proves ∑_{k ∈ Ico m n} rᵏ = rᵐ·∑_{k < n−m} rᵏ for all m, n (no order hypothesis), reindexing with Finset.sum_Ico_eq_sum_range and factoring out rᵐ via pow_add. A block starting at m is rᵐ times a fresh partial sum — the series' scale invariance."
+    },
+    {
+      "id": "slice-bounds",
+      "title": "Slice Bounds and Vanishing Envelope",
+      "startLine": 83,
+      "endLine": 104,
+      "summary": "geometric_slice_le (wrapping geom_sum_Ico_le_of_lt_one) bounds the block by rᵐ/(1 − r) for 0 ≤ r < 1, independently of n; geometric_slice_abs_le drops the absolute value since all terms are nonnegative. geometric_slice_bound_tendsto shows the envelope rᵐ/(1 − r) → 0 from tendsto_pow_atTop_nhds_zero_of_lt_one divided by 1 − r."
+    },
+    {
+      "id": "cauchy-criterion",
+      "title": "The ε–N Cauchy Criterion",
+      "startLine": 106,
+      "endLine": 123,
+      "summary": "geometric_slice_cauchy is the capstone: for 0 ≤ r < 1 and any ε > 0 there is an N past which every slice with left endpoint m ≥ N has |∑_{k ∈ Ico m n} rᵏ| ≤ ε, uniformly in n. The threshold comes from exists_pow_lt_of_lt_one (applied to ε·(1 − r)), chained with the monotonicity pow_le_pow_of_le_one and div_le_iff₀."
+    },
+    {
+      "id": "concrete-instance",
+      "title": "Concrete Instance r = 1/2",
+      "startLine": 125,
+      "endLine": 141,
+      "summary": "Worked example at r = 1/2, slice Ico 2 5: the block (1/2)² + (1/2)³ + (1/2)⁴ = 7/16 equals the tail difference 1/2 − 1/16 and is bounded by the endpoint-free envelope (1/2)²/(1−1/2) = 1/2, exercising the difference-of-tails identity and the slice bound on numbers."
+    }
+  ],
   "openQuestions": [
     {
       "id": "geometric-series-oq-08-oq-03-oq-01",

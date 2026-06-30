@@ -76,20 +76,31 @@
   "tractability": 8,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos729Problem.lean",
-      "filename": "Erdos729Problem.lean",
-      "lineCount": 218,
-      "theoremCount": 6,
-      "axiomCount": 4,
-      "defCount": 8,
+      "path": "Proofs/Erdos729LegendreGeneral.lean",
+      "filename": "Erdos729LegendreGeneral.lean",
+      "lineCount": 93,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729Problem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendreGeneral.lean"
+    },
+    {
+      "path": "Proofs/Erdos729LegendrePrimeRecurrence.lean",
+      "filename": "Erdos729LegendrePrimeRecurrence.lean",
+      "lineCount": 136,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendrePrimeRecurrence.lean"
     },
     {
       "path": "Proofs/Erdos729LegendreRecurrence.lean",
       "filename": "Erdos729LegendreRecurrence.lean",
-      "lineCount": 132,
+      "lineCount": 133,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
@@ -98,15 +109,15 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendreRecurrence.lean"
     },
     {
-      "path": "Proofs/Erdos729LegendrePrimeRecurrence.lean",
-      "filename": "Erdos729LegendrePrimeRecurrence.lean",
-      "lineCount": 135,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
+      "path": "Proofs/Erdos729Problem.lean",
+      "filename": "Erdos729Problem.lean",
+      "lineCount": 235,
+      "theoremCount": 7,
+      "axiomCount": 3,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729LegendrePrimeRecurrence.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729Problem.lean"
     }
   ]
 }

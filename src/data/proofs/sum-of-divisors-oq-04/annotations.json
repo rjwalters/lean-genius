@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 1, "endLine": 24 },
+    "type": "context",
+    "title": "General Structural Laws of the Divisor-Sum Function σₖ",
+    "content": "Where the base entry verified σ(p) = p + 1 for specific primes and classified particular perfect/abundant/amicable numbers, this entry proves the general structural identities once and for all: σ on an arbitrary prime, the closed geometric form on prime powers, multiplicativity on a product of distinct primes, and the σ-form of perfection. All are read off Mathlib's `ArithmeticFunction.sigma` API. These are the foundational identities underlying the base entry's numerical classifications.",
+    "mathContext": "$\\sigma_k(n) = \\sum_{d\\mid n} d^k$. Multiplicative with $\\sigma_1(p^i) = \\tfrac{p^{i+1}-1}{p-1}$; $\\sigma_1(n)=2n \\iff n$ perfect.",
+    "significance": "context",
+    "relatedConcepts": ["divisor-sum function σ", "arithmetic functions", "multiplicativity", "perfect numbers"],
+    "prerequisites": ["divisors of n", "prime factorization", "multiplicative functions"]
+  },
+  {
+    "id": "ann-sigma-prime",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "theorem",
+    "title": "σ(p) = p + 1 for Every Prime",
+    "content": "The general theorem behind the base entry's case-by-case checks: a prime's only divisors are 1 and p, so σ₁(p) = 1 + p. Proved by specializing `sigma_one_apply_prime_pow` at i = 1 and collapsing the two-term sum.",
+    "mathContext": "$\\sigma_1(p) = \\sum_{d\\mid p} d = 1 + p = p+1$ (divisors of a prime are exactly $1$ and $p$).",
+    "significance": "key",
+    "relatedConcepts": ["divisor sum", "prime divisors", "σ₁"],
+    "prerequisites": ["divisors of a prime", "ArithmeticFunction.sigma"]
+  },
+  {
+    "id": "ann-tau-prime",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 39, "endLine": 43 },
+    "type": "theorem",
+    "title": "τ(p) = σ₀(p) = 2 for Every Prime",
+    "content": "The divisor-counting function: a prime has exactly two divisors, so σ₀(p) = 2. The companion to σ₁(p) = p + 1, obtained from `sigma_zero_apply_prime_pow` at i = 1. σ₀ = τ counts divisors (each weighted by d⁰ = 1).",
+    "mathContext": "$\\tau(p) = \\sigma_0(p) = \\sum_{d\\mid p} 1 = 2$ (the two divisors $1, p$).",
+    "significance": "supporting",
+    "relatedConcepts": ["divisor-counting function τ", "σ₀", "number of divisors"],
+    "prerequisites": ["divisors of a prime", "σ₀ = τ"]
+  },
+  {
+    "id": "ann-prime-pow",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "theorem",
+    "title": "Closed Geometric Form on Prime Powers",
+    "content": "σ(pⁱ)·(p−1) = pⁱ⁺¹ − 1 over ℤ — equivalently σ(pⁱ) = (pⁱ⁺¹−1)/(p−1). `sigma_one_apply_prime_pow` writes σ(pⁱ) as the open geometric sum ∑_{k≤i} pᵏ, and `geom_sum_mul` collapses it. Multiplying by (p−1) avoids division in ℕ; this is the engine for computing σ on any number via its prime factorization.",
+    "mathContext": "$\\sigma_1(p^i) = \\sum_{k=0}^{i} p^k = \\dfrac{p^{i+1}-1}{p-1}$, stated as $\\sigma_1(p^i)(p-1) = p^{i+1}-1$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "prime power", "geom_sum_mul", "closed form"],
+    "prerequisites": ["geometric sums", "σ on prime powers"]
+  },
+  {
+    "id": "ann-two-primes",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "theorem",
+    "title": "Multiplicativity: σ(p·q) = (p+1)(q+1)",
+    "content": "Distinct primes are coprime (`coprime_primes`), and σ is multiplicative (`isMultiplicative_sigma`), so σ(p·q) = σ(p)·σ(q) = (p+1)(q+1). This is the two-factor instance of the multiplicativity that, combined with the prime-power formula, computes σ(n) for any n.",
+    "mathContext": "$p\\ne q$ primes $\\Rightarrow \\gcd(p,q)=1$, so $\\sigma_1(pq) = \\sigma_1(p)\\sigma_1(q) = (p+1)(q+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative arithmetic function", "coprimality of distinct primes", "divisor sum"],
+    "prerequisites": ["multiplicative functions", "coprime primes"]
+  },
+  {
+    "id": "ann-perfect",
+    "proofId": "sum-of-divisors-oq-04",
+    "range": { "startLine": 62, "endLine": 67 },
+    "type": "theorem",
+    "title": "Perfection in σ-Form: n Perfect ⟺ σ(n) = 2n",
+    "content": "Recasts perfection as σ₁(n) = 2n (the sum of all divisors, including n, is twice n). This ties the divisor-sum function to the base entry's perfect numbers — σ(6) = 12 = 2·6, σ(28) = 56 = 2·28 — and is the standard analytic handle on perfect numbers (e.g. the Euclid–Euler theorem).",
+    "mathContext": "For $n>0$: $n$ perfect $\\iff \\sigma_1(n) = 2n$ (equivalently the proper divisors sum to $n$).",
+    "significance": "supporting",
+    "relatedConcepts": ["perfect numbers", "Euclid–Euler theorem", "σ(n) = 2n", "divisor sum"],
+    "prerequisites": ["definition of perfect number", "σ₁ as sum of divisors"]
+  }
+]

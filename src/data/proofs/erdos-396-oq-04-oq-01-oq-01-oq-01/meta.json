@@ -45,6 +45,43 @@
       "Real logarithm of a product (Real.log_prod)"
     ]
   },
+  "sections": [
+    {
+      "id": "telescoping-product",
+      "title": "The telescoping product",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "catalan_eq_prod_ratio: (catalan n : ℝ) = ∏_{k<n} r k by a one-line induction (Finset.prod_range_succ + the grandparent's catalan_succ_eq_ratio_mul, closed by ring). prod_ratio_pos gives strict positivity (Finset.prod_pos, ratio_pos), and catalan_div_four_pow_pos records catalan n / 4^n > 0."
+    },
+    {
+      "id": "sum-product-bridge",
+      "title": "The sum–product bridge",
+      "startLine": 77,
+      "endLine": 86,
+      "summary": "log_catalan_eq_sum_log_ratio: log(catalan n) = ∑_{k<n} log(r k) via Real.log_prod on the telescoping product (each factor nonzero by ratio_pos), tying this multiplicative identity to the parent's additive running total of the ratios."
+    },
+    {
+      "id": "normalized-sequence",
+      "title": "The normalized sequence catalan n / 4^n",
+      "startLine": 88,
+      "endLine": 123,
+      "summary": "ratio_div_four_lt_one (r n / 4 < 1 from ratio_lt_four); catalan_div_four_pow_eq_prod (= ∏_{k<n} r k/4 by Finset.prod_div_distrib + ∏ 4 = 4^n); catalan_div_four_pow_succ factors out one step; catalan_div_four_pow_strictAnti concludes strict decrease via mul_lt_mul_of_pos_right."
+    },
+    {
+      "id": "growth-bound-product",
+      "title": "Growth bound, product form",
+      "startLine": 125,
+      "endLine": 144,
+      "summary": "prod_ratio_lt_four_pow: ∏_{k<n} r k < 4^n (n ≥ 1) via Finset.prod_lt_prod_of_nonempty (every factor positive and < 4); catalan_lt_four_pow_of_prod recovers the grandparent's catalan n < 4^n multiplicatively rather than by induction."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity checks",
+      "startLine": 146,
+      "endLine": 160,
+      "summary": "Two worked examples confirm the identities numerically: ∏_{k<3} r k = 1·2·(5/2) = 5 = catalan 3, and catalan 3 / 4^3 = 5/64."
+    }
+  ],
   "conclusion": {
     "summary": "The Catalan recurrence multiplies by r k = (4k+2)/(k+2) at each step, so it telescopes into the closed product (catalan n : ℝ) = ∏_{k<n} r k. Logarithms bridge this to the parent's additive identity: log(catalan n) = ∑_{k<n} log(r k). Dividing by 4^n gives catalan n / 4^n = ∏_{k<n} (r k / 4), where each factor r k / 4 < 1, so the normalized sequence catalan n / 4^n is strictly decreasing. The product form also recovers catalan n < 4^n (n ≥ 1) as a strict product inequality, since every factor r k < 4. All eight theorems are fully machine-checked with no axioms or sorries.",
     "implications": "The result completes the multiplicative reading of the Catalan recurrence requested by the grandparent's open question: the same step ratios whose additive total is harmonic have a multiplicative total that is exactly the Catalan number. The strictly decreasing normalized sequence catalan n / 4^n is the recurrence-level reason Catalan growth sits below the bare exponential 4^n, obtained without Stirling or any central-binomial estimate. The logarithmic identity ties the additive (parent) and multiplicative (this entry) views together.",

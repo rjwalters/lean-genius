@@ -1,0 +1,122 @@
+{
+  "id": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+  "slug": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+  "title": "The Explicit Isomorphism Gal(ℂ/ℝ) ≃* Multiplicative (ZMod 2)",
+  "description": "Constructs the explicit, fully spelled-out multiplicative isomorphism between the Galois group of ℂ/ℝ and Multiplicative (ZMod 2), naming the generator: the identity maps to the unit and complex conjugation Complex.conjAe maps to the nontrivial element ofAdd 1. This upgrades the parent's abstract 'Gal(ℂ/ℝ) is cyclic of order 2' to a labelled isomorphism, answering the parent's first open question.",
+  "meta": {
+    "author": "Lean Genius (researcher-3)",
+    "sourceUrl": "https://erdosproblems.com",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
+    "tags": [
+      "galois-theory",
+      "complex-conjugation",
+      "cyclic-groups",
+      "group-isomorphism",
+      "complex-numbers",
+      "field-extensions"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "lineCount": 164,
+    "mathlib_version": "4.26.0",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). The two finite checks (ofAdd_one_ne_one, zmod2_eq_one_or) use kernel `decide`, not `native_decide`, so no `Lean.ofReduceBool` is introduced.",
+    "originalContributions": [
+      "galoisGroupEquivZMod2: the explicit MulEquiv (ℂ ≃ₐ[ℝ] ℂ) ≃* Multiplicative (ZMod 2), with every component (toFun, invFun, both inverse laws, map_mul) spelled out — no generator chosen by Classical.choice, unlike Mathlib's zmodCyclicMulEquiv",
+      "galoisGroupEquivZMod2_conjAe: the iso sends complex conjugation Complex.conjAe to the nontrivial element Multiplicative.ofAdd 1",
+      "galoisGroupEquivZMod2_symm_ofAdd_one: conversely, the nontrivial element of Multiplicative (ZMod 2) is realized by complex conjugation",
+      "eq_one_or_conjAe: the structure theorem — the only ℝ-automorphisms of ℂ are the identity and complex conjugation (a three-distinct-elements count against Fintype.card = 2)",
+      "conjAe_ne_one: complex conjugation is a nontrivial automorphism (it sends I to -I ≠ I)",
+      "conjAe_mul_self: complex conjugation is an involution, conjAe * conjAe = 1 (Complex.conj_conj)",
+      "card_galoisGroup_eq_two: |Gal(ℂ/ℝ)| = 2 via IsGalois.card_aut_eq_finrank and [ℂ:ℝ] = 2"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry (fundamental-theorem-algebra-oq-04-oq-03, 'The Galois Correspondence for ℂ/ℝ') proved that Gal(ℂ/ℝ) is cyclic of order 2 — i.e. abstractly isomorphic to ℤ/2ℤ — and used this to recover the no-intermediate-fields theorem. Cyclicity is an existence statement: it does not name which automorphism plays the role of the generator. This entry answers the parent's first open question by building the isomorphism explicitly and pinning the generator to complex conjugation.",
+    "problemStatement": "Construct an explicit multiplicative isomorphism Gal(ℂ/ℝ) ≃* Multiplicative (ZMod 2) that sends complex conjugation Complex.conjAe to the nontrivial element ofAdd 1 (and the identity to the unit).",
+    "proofStrategy": "Three ingredients. (1) Identify the group: eq_one_or_conjAe shows the only ℝ-automorphisms of ℂ are 1 and conjAe, by a counting argument — a third distinct automorphism would give three elements in {1, conjAe, g} ⊆ Gal(ℂ/ℝ), contradicting Fintype.card = 2 (which comes from IsGalois.card_aut_eq_finrank and [ℂ:ℝ] = 2). (2) Record the multiplication: conjAe ≠ 1 (it sends I to -I) and conjAe * conjAe = 1 (Complex.conj_conj). (3) Assemble the MulEquiv by hand, mapping g ↦ (if g = 1 then 1 else ofAdd 1) with inverse x ↦ (if x = 1 then 1 else conjAe); the two inverse laws and the map_mul law each reduce to the finite case split over {1, conjAe} (resp. {1, ofAdd 1}), closed by decide in the one nontrivial multiplication case conjAe·conjAe = 1 ↦ ofAdd 1 · ofAdd 1 = 1.",
+    "keyInsights": [
+      "Cyclicity is existence; the explicit iso is structure. Mathlib's zmodCyclicMulEquiv produces a Multiplicative (ZMod 2) ≃* G but only after Classical.choice-ing a generator, so it cannot tell you the generator is conjugation.",
+      "The Galois group of ℂ/ℝ has exactly two elements, 1 and complex conjugation, recovered by a pure cardinality count rather than from the abstract cyclic structure.",
+      "Complex conjugation is the canonical generator: it is the unique nontrivial automorphism, it is an involution, and naming it makes the isomorphism canonical.",
+      "Once the group is reduced to {1, conjAe}, every equivariance obligation (left/right inverse, multiplicativity) is a finite check decidable by case analysis."
+    ],
+    "prerequisites": [
+      "Galois theory of ℂ/ℝ (the Galois group, its order)",
+      "Group isomorphisms (MulEquiv) and Multiplicative (ZMod n)",
+      "Complex conjugation as an ℝ-algebra automorphism (Complex.conjAe)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: IsGalois ℝ ℂ and |Gal(ℂ/ℝ)| = 2",
+      "summary": "Re-establishes IsAlgClosure ℝ ℂ and IsGalois ℝ ℂ (self-contained), and computes the order of the Galois group as 2.",
+      "startLine": 51,
+      "endLine": 68
+    },
+    {
+      "id": "two-automorphisms",
+      "title": "The two automorphisms: identity and conjugation",
+      "summary": "conjAe_ne_one (sends I to -I), conjAe_mul_self (involution), and eq_one_or_conjAe: the only ℝ-automorphisms of ℂ are 1 and complex conjugation.",
+      "startLine": 70,
+      "endLine": 108
+    },
+    {
+      "id": "zmod2-helpers",
+      "title": "Helper facts in Multiplicative (ZMod 2)",
+      "summary": "ofAdd_one_ne_one and zmod2_eq_one_or: the target group has exactly the two elements 1 and ofAdd 1.",
+      "startLine": 110,
+      "endLine": 117
+    },
+    {
+      "id": "explicit-iso",
+      "title": "The explicit isomorphism",
+      "summary": "galoisGroupEquivZMod2 (the hand-built MulEquiv) plus the characterizing lemmas: conjAe ↦ ofAdd 1, 1 ↦ 1, and the symm direction ofAdd 1 ↦ conjAe.",
+      "startLine": 119,
+      "endLine": 163
+    }
+  ],
+  "conclusion": {
+    "summary": "Gal(ℂ/ℝ) is explicitly isomorphic to Multiplicative (ZMod 2) via a hand-built MulEquiv that sends the identity to the unit and complex conjugation to the nontrivial element ofAdd 1. The construction names the generator and spells out every component, turning the parent's abstract cyclicity into a concrete labelled isomorphism.",
+    "implications": "Naming the generator is what makes the isomorphism canonical and usable: any computation in Gal(ℂ/ℝ) can now be transported to arithmetic in ZMod 2 with conjugation as the explicit witness of the nontrivial class. The same hand-built template — identify the finite group, record its multiplication, assemble the MulEquiv by case analysis — applies to the Galois group of any quadratic or, more generally, prime-degree extension, and to the Artin–Schreier setting Gal(R(√-1)/R) for a real-closed field R.",
+    "openQuestions": [
+      "Generalize to an arbitrary real-closed field R: build the explicit iso Gal(R(√-1)/R) ≃* Multiplicative (ZMod 2) with the Artin–Schreier conjugation as generator.",
+      "Identify galoisGroupEquivZMod2 with Mathlib's zmodCyclicMulEquiv up to the choice of generator, exhibiting that the canonical generator there can be taken to be conjugation."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry: the Galois correspondence for ℂ/ℝ, proving Gal(ℂ/ℝ) is cyclic of order 2. This entry answers its first open question by constructing the explicit isomorphism to Multiplicative (ZMod 2) and naming complex conjugation as the generator."
+    }
+  ],
+  "references": [
+    {
+      "key": "Artin1942",
+      "authors": ["E. Artin"],
+      "title": "Galois Theory",
+      "venue": "Notre Dame Mathematical Lectures",
+      "year": "1942",
+      "note": "Classical reference for the Galois theory of ℂ/ℝ."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
+    "filePath": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
+    "imports": ["Mathlib"],
+    "opens": ["Complex", "Classical"],
+    "namespace": "FTAGaloisIso",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "sorries": 0
+  },
+  "sorries": 0
+}

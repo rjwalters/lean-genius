@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview-capstone",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 51 },
+    "type": "context",
+    "title": "The Capstone of the Cauchy-Criterion Lineage",
+    "content": "The lineage oq-08-oq-03 → …-oq-01 → …-oq-01-oq-01 rebuilds the geometric series' convergence theory from the Cauchy criterion upward: first the ε–N block estimate, then the abstract CauchySeq/Summable predicates (deliberately avoiding the closed form), and now the limit VALUE. Completeness of ℝ supplies the existence of a limit knowing only that the partial sums are Cauchy; the truncation defect supplies its identity. Together they reproduce Mathlib's hasSum_geometric_of_lt_one and tsum_geometric_of_lt_one along a path that never assumes the closed form it concludes.",
+    "mathContext": "Block estimate $\\to$ $\\mathrm{CauchySeq}$/$\\mathrm{Summable}$ $\\to$ limit $(1-r)^{-1}$; the sum is earned, not quoted.",
+    "significance": "context",
+    "relatedConcepts": ["completeness", "Cauchy criterion", "limit identification", "first principles"],
+    "prerequisites": ["completeness", "series convergence"]
+  },
+  {
+    "id": "ann-truncation-defect",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 59, "endLine": 68 },
+    "type": "theorem",
+    "title": "The Truncation Defect (Algebraic Form)",
+    "content": "`geometric_truncation_defect`: ∑_{k<n} rᵏ = (1−r)⁻¹ − rⁿ/(1−r) for 1−r ≠ 0. A pure rearrangement of geom_sum_eq (finite-sum algebra: field_simp; ring), with NO analysis. This head-vs-limit form is the algebraic engine of the limit identification: the n-th partial sum is the full limit (1−r)⁻¹ minus a tail factor rⁿ/(1−r) that will vanish.",
+    "mathContext": "$\\sum_{k<n}r^k=(1-r)^{-1}-\\frac{r^n}{1-r}$, a rearrangement of $\\sum_{i<n}x^i=\\frac{x^n-1}{x-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["geom_sum_eq", "truncation defect", "finite-sum algebra"],
+    "prerequisites": ["geometric sum", "field arithmetic"]
+  },
+  {
+    "id": "ann-partialsum-tendsto",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "theorem",
+    "title": "The Partial Sums Converge to (1−r)⁻¹",
+    "content": "`geometric_partialSum_tendsto`: the partial sums tend to (1−r)⁻¹. Reading the truncation defect as n → ∞, the tail rⁿ/(1−r) → 0 (tendsto_pow_atTop_nhds_zero_of_lt_one divided by the constant 1−r), so the partial sums — rewritten via funext into (1−r)⁻¹ − rⁿ/(1−r) — converge to (1−r)⁻¹ − 0. Computed directly from the defect, not from hasSum_geometric.",
+    "mathContext": "$S_n=(1-r)^{-1}-\\frac{r^n}{1-r}\\to(1-r)^{-1}$ since $r^n\\to 0$ for $0\\le r<1$.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_pow_atTop_nhds_zero_of_lt_one", "limit", "vanishing tail"],
+    "prerequisites": ["limits", "geometric decay"]
+  },
+  {
+    "id": "ann-completeness",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 96 },
+    "type": "theorem",
+    "title": "The Abstract Route via Completeness",
+    "content": "`geometric_limit_from_completeness` makes the abstract argument explicit, answering the sibling's open question. cauchySeq_tendsto_of_complete applied to the sibling's geometric_partialSum_cauchySeq yields SOME limit L by completeness of ℝ alone — existence before the value is known — and tendsto_nhds_unique against the defect limit pins L = (1−r)⁻¹. This is the textbook two-step: existence from completeness, identity from a separate computation (the defect).",
+    "mathContext": "$\\exists L:\\ S_n\\to L$ (completeness) and $L=(1-r)^{-1}$ (uniqueness of limits in Hausdorff $\\mathbb{R}$).",
+    "significance": "critical",
+    "relatedConcepts": ["cauchySeq_tendsto_of_complete", "tendsto_nhds_unique", "completeness", "existence vs identity"],
+    "prerequisites": ["completeness", "uniqueness of limits"]
+  },
+  {
+    "id": "ann-hassum",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 98, "endLine": 111 },
+    "type": "theorem",
+    "title": "HasSum and tsum Recovered",
+    "content": "`geometric_hasSum`: HasSum (fun n ↦ rⁿ) (1−r)⁻¹, assembled from the sibling's geometric_summable via Summable.hasSum_iff_tendsto_nat applied to the partial-sum limit — an independent derivation of hasSum_geometric_of_lt_one that never invokes it. `geometric_tsum`: ∑' n, rⁿ = (1−r)⁻¹ by tsum_eq. The value is the consequence of the identified limit, recovering tsum_geometric_of_lt_one along the Cauchy/completeness path.",
+    "mathContext": "$\\mathrm{HasSum}(n\\mapsto r^n)\\,(1-r)^{-1}$ via $\\mathrm{Summable.hasSum\\_iff\\_tendsto\\_nat}$; $\\sum'_n r^n=(1-r)^{-1}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Summable.hasSum_iff_tendsto_nat", "HasSum", "tsum", "independent derivation"],
+    "prerequisites": ["HasSum", "summability"]
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "geometric-series-oq-08-oq-03-oq-01-oq-01",
+    "range": { "startLine": 113, "endLine": 124 },
+    "type": "technique",
+    "title": "Concrete Instance r = 1/2",
+    "content": "Two examples at r = 1/2 anchor the abstract results: the partial sums converge to (1−1/2)⁻¹ = 2, and ∑' n, (1/2)ⁿ = 2. They instantiate geometric_partialSum_tendsto and geometric_tsum on the canonical example, confirming the symbolic limit against the familiar value.",
+    "mathContext": "$\\sum_{k<n}(1/2)^k\\to 2$ and $\\sum'_n(1/2)^n=2$.",
+    "significance": "technical",
+    "relatedConcepts": ["concrete instance", "numerical verification"],
+    "prerequisites": ["arithmetic"]
+  }
+]
