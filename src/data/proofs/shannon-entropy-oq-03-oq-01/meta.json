@@ -59,6 +59,57 @@
       "Can the quantum (von Neumann) equality case be formalized, characterizing saturation by short quantum Markov chains?"
     ]
   },
+  "sections": [
+    {
+      "id": "overview-docstring",
+      "title": "Statement of the equality condition",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring fixing the goal: SSA H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) holds with equality iff X–Y–Z is a Markov chain, p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z). Outlines the two-step reduction (deficit = CMI, then CMI = 0 iff factorization) and notes the file is self-contained over Mathlib."
+    },
+    {
+      "id": "entropy-marginals",
+      "title": "Shannon entropy and three-variable marginals",
+      "startLine": 44,
+      "endLine": 70,
+      "summary": "Self-contained definitions: shannonEntropy' p = −Σ p log p with the 0·log 0 = 0 convention, and the three marginals marginalXY (sum over z), marginalYZ (sum over x), marginalY_3 (sum over x and z). These mirror the parent SSA formalization so the equality file stands alone."
+    },
+    {
+      "id": "telescope-kl-bounds",
+      "title": "Marginal telescoping and pointwise KL bounds",
+      "startLine": 72,
+      "endLine": 122,
+      "summary": "Helper lemmas: marginal_telescope (S log S = Σ_i a_i log S for S = Σ a_i, used to align marginal-entropy terms), rlog_lt_sub_one (log y < y − 1 strictly for y ≠ 1), the non-strict KL bound kl_lb (p log(p/q) ≥ p − q), and its strict refinement kl_lb_strict (p log(p/q) > p − q when p ≠ q) — the engine of the equality case."
+    },
+    {
+      "id": "cmisum-definition",
+      "title": "Conditional mutual information as a relative entropy",
+      "startLine": 124,
+      "endLine": 137,
+      "summary": "cmiSum pXYZ = Σ_{x,y,z} p(x,y,z)·log( p(x,y,z)·p_Y(y) / (p_{XY}(x,y)·p_{YZ}(y,z)) ), the relative entropy D(p ‖ q) against the conditional-independence law q = p_{XY}·p_{YZ}/p_Y, written division-free so zero-probability slices contribute 0."
+    },
+    {
+      "id": "deficit-equals-cmi",
+      "title": "ssa_deficit_eq_cmi: the SSA deficit is exactly I(X;Z|Y)",
+      "startLine": 139,
+      "endLine": 251,
+      "summary": "Entropy-algebra identity: H(X,Y)+H(Y,Z)−H(X,Y,Z)−H(Y) = cmiSum. Each entropy is expanded as a nested sum over (x,y,z); marginal_telescope rewrites the marginal entropies; log p(x,y,z) splits into the conditional-MI term plus three marginal logs that cancel, collapsing the deficit to the single relative-entropy sum."
+    },
+    {
+      "id": "cmi-zero-iff-markov",
+      "title": "ssa_cmi_eq_zero_iff: vanishing CMI ⟺ Markov factorization",
+      "startLine": 252,
+      "endLine": 428,
+      "summary": "cmiSum = 0 ↔ p(x,y,z)·p_Y(y) = p_{XY}(x,y)·p_{YZ}(y,z) for all x,y,z. Forward: every summand p·log(p/q) dominates p − q and Σ(p − q) = 0, so each must equal p − q; the strict KL bound then forces p = q everywhere. Backward: substituting the factorization makes each log(p/q) = log 1 = 0."
+    },
+    {
+      "id": "ssa-equality-iff",
+      "title": "strong_subadditivity_eq_iff: SSA equality ⟺ Markov chain",
+      "startLine": 429,
+      "endLine": 446,
+      "summary": "Combining the two reductions: H(X,Y,Z)+H(Y) = H(X,Y)+H(Y,Z) iff X and Z are conditionally independent given Y, i.e. X–Y–Z is a Markov chain — the sharp boundary of the deepest classical entropy inequality."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "shannon-entropy-oq-03",

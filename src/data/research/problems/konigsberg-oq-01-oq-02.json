@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5→2 axioms (#15170 Session 2). #15212 Session 3 added 478 lines of Hierholzer infrastructure: maxTrail construction, maxTrail_closed PROVED, circuit_exists PROVED, open-walk counting lemmas PROVED. #16153 Session 4 proved maxTrail_steps_in_E and maxTrail_steps_distinct (sorries 6→4). #16675 Session 5 proved maxTrail_used_eq and maxTrail_last_exhausted by direct strong induction on E.card (sorries 4→2). Session 6 (2026-05-08) strengthened HasEulerianPath def to mirror HasEulerianCircuit (∃! unique coverage + step constraint), added open_walk_interior_balanced private lemma, and wrote a proof of euler_path_implies_degree_balance via the walk-position bijection + open-walk counting trilogy. **BUILD BLOCKER (Session 6 discovery): the file currently does NOT build under the latest Mathlib (~80 errors, all pre-existing in main: `simp made no progress` on Finset.sum_ite_eq', and dozens of `omega could not prove` failures on `walk.get ⟨i, by omega⟩` patterns inside Finset.filter where i is unbounded). PR #16675 was apparently auto-merged without successful build verification.** Sorries can therefore not be reduced 2→1 in metadata until the API drift is repaired (substantial refactor of all `walk.get` calls across the file, ~50+ sites). Current state: 1202 lines (objective), 26 theorems/lemmas (objective), 15 defs (13 def + 2 structure), 2 axioms, 1 sorry remaining (remove_circuit_balanced L1104; euler_path_implies_degree_balance is fully proved) -- file does not compile (pre-existing Mathlib API drift from #16675). Session 9 (2026-05-08) created KonigsbergOQ01OQ02Recipe.lean — companion validation file with bridge lemma get?_eq_some_iff_of_lt and worked closed_walk_balance' template, verified to compile under v4.26.0. Validates the Session 7+8 refactor recipe ahead of in-place application. Session 10 will transcribe these into the main file. S20 (analysis-only spec, researcher-3, 2026-05-09): added `s20-walkedges-hcov-list-of-nodup-spec.md` (the `Nodup`-conditional `hcov_list` lemma + S20a–S20c sub-lemmas + proof skeleton + 10-symbol Mathlib API audit). The same session shipped PR #17637 (S20 generic step-witness derivation lemmas). STATE-SYNC observation (researcher-12, this PR, 2026-05-14): PRs #17596 (S17), #17623 (S18), #17637 (S20) — all marked 'build verified' in their session log — are CONFLICTING/DIRTY as of 2026-05-14, 5 days stale; the recipe file's shared final `end` line is the likely cause. S21 next-action set: doctor-scope rebase OR orthogonal Recipe extension. JSON iteration bumped 19 → 20 to match state.md. S23 STATE-SYNC (researcher-1, 2026-06-05): +5d steady from S22; no Recipe/main/JSON deltas; Path B still recommended. S24 STATE-SYNC (researcher-2, 2026-06-13): meta.json<->source audit CLEAN -- meta.json (lineCount 1202, axiomCount 2, sorries 1, theoremCount 26, definitionCount 15, status axiomatized, badge axiom) matches KonigsbergOQ01OQ02.lean exactly. Corrected the stale 'Current state: ... 2 sorries' figure above; the file has exactly 1 sorry (remove_circuit_balanced, L1104) and meta.json + currentState.focus already recorded 1 -- only this narrative lagged. Docker daemon down repo-wide 2026-06-13 -> no build verification possible; no Lean/meta.json edits this session.",
+    "progressSummary": "BLOCKED: main Lean file comprehensively broken on current Mathlib (full >1000-line transcription to walk[i]? form required); Recipe template builds; corrected remove_circuit_balanced designed (recorded, not yet buildable).",
     "builtItems": [
       "sum_outDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:79",
       "sum_inDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:91",
@@ -79,16 +79,22 @@
       "Session 9 (2026-05-08): created KonigsbergOQ01OQ02Recipe.lean as a separate validation file containing get?_eq_some_iff_of_lt (bridge lemma) and a fully worked-out generic closed_walk_balance' in the walk.get? = some v form. File builds independently of the broken main file under Mathlib v4.26.0.",
       "Validated: List.get?_eq_get and Option.some_inj are still current Mathlib API names — the bridge lemma compiles. The recipe approach is sound.",
       "Validated: congr 1; omega proof patterns transfer UNCHANGED from `walk.get ⟨n - 1 + 1, _⟩` to `walk.get? (n - 1 + 1)` — only the lemma signatures and `obtain` types change. Session 10 in-place refactor is mostly mechanical.",
-      "S24 STATE-SYNC (researcher-2, 2026-06-13): meta.json<->source audit CLEAN for konigsberg-oq-01-oq-02 -- all published counts (lines 1202, axioms 2, sorries 1, theorems 26, defs 15, status axiomatized, badge axiom) match KonigsbergOQ01OQ02.lean exactly. Sole remaining drift was knowledge.progressSummary's 'Current state: ... 2 sorries' (corrected to 1; the file's only sorry is remove_circuit_balanced at L1104). Docker down 2026-06-13 -> build-free STATE-SYNC session."
+      "S24 STATE-SYNC (researcher-2, 2026-06-13): meta.json<->source audit CLEAN for konigsberg-oq-01-oq-02 -- all published counts (lines 1202, axioms 2, sorries 1, theorems 26, defs 15, status axiomatized, badge axiom) match KonigsbergOQ01OQ02.lean exactly. Sole remaining drift was knowledge.progressSummary's 'Current state: ... 2 sorries' (corrected to 1; the file's only sorry is remove_circuit_balanced at L1104). Docker down 2026-06-13 -> build-free STATE-SYNC session.",
+      "2026-06-27 (S20): proofs/Proofs/KonigsbergOQ01OQ02.lean does NOT build on current Mathlib pin (~40 errors from L118 to EOF, incl. the core definitions HasEulerianCircuit/HasEulerianPath); meta.json axiomatized/axiomCount2/sorries1 is STALE.",
+      "Root cause: pervasive walk.get ⟨i, by omega⟩ pattern where i is an unconstrained lambda/∃!-bound variable, so omega cannot prove i < walk.length. Correct form is walk[i]? (getElem?, no proof obligation) as already used in the building KonigsbergOQ01OQ02Recipe.lean.",
+      "parent remove_circuit_balanced was FALSE (sibling Incomplete01.parent_statement_false refutes it): needs IsEulerianBalanced G AND circuit-balance of the walk edge-set (DirectedCircuit has no edge-distinctness field, so a closed walk may reuse an edge). Designed+recorded the corrected, verified-by-construction proof."
     ],
     "mathlibGaps": [
       "No Mathlib gap for handshaking or necessity: all proved from scratch.",
-      "Hierholzer circuit-splicing not in Mathlib4 — the remaining step to close both axioms' sufficiency directions."
+      "Hierholzer circuit-splicing not in Mathlib4 — the remaining step to close both axioms' sufficiency directions.",
+      "Mathlib API drift in maxTrail section: ↓reduceDite→↓reduceDIte, List.length_ne_zero.mpr removed, List.getLast?_eq_getLast deprecated→List.getLast?_eq_some_getLast."
     ],
     "nextSteps": [
       "Prove remove_circuit_balanced (L~1101) circuit-balance sub-lemma: for each vertex v, deg-decrease = (#times C visits v as src) = (#times C visits v as tgt) by closed_walk_balance applied to C.walk; bridge to (walkEdges C.walk).toFinset cardinality (likely needs adding edges_distinct field to DirectedCircuit so toFinset deduplication is trivial).",
       "After remove_circuit_balanced lands: build the full Hierholzer recursion (induct on |E|; splice the circuit-pair using circuit_exists + remove_circuit_balanced). This will replace both axioms (directed_eulerian_iff, directed_euler_path_iff) with theorems.",
-      "Session 10: transcribe KonigsbergOQ01OQ02Recipe.lean's bridge lemma + closed_walk_balance' into KonigsbergOQ01OQ02.lean (in-place refactor); apply same pattern to walk_source_eq_outDegree, walk_target_eq_inDegree, open_walk_last_target_excess, open_walk_first_source_excess, open_walk_interior_balanced. Refactor HasEulerianCircuit, HasEulerianPath definitions and the 3 consumer theorems. Apply Finset.sum_ite_eq' simp fix at L87, L99. Run Docker build. Once build passes, delete KonigsbergOQ01OQ02Recipe.lean and meta.json sorries already at 1; reduce 1 → 0 once remove_circuit_balanced lands."
+      "Session 10: transcribe KonigsbergOQ01OQ02Recipe.lean's bridge lemma + closed_walk_balance' into KonigsbergOQ01OQ02.lean (in-place refactor); apply same pattern to walk_source_eq_outDegree, walk_target_eq_inDegree, open_walk_last_target_excess, open_walk_first_source_excess, open_walk_interior_balanced. Refactor HasEulerianCircuit, HasEulerianPath definitions and the 3 consumer theorems. Apply Finset.sum_ite_eq' simp fix at L87, L99. Run Docker build. Once build passes, delete KonigsbergOQ01OQ02Recipe.lean and meta.json sorries already at 1; reduce 1 → 0 once remove_circuit_balanced lands.",
+      "Repair roadmap: (1) maxTrail API renames; (2) convert HasEulerianCircuit/HasEulerianPath defs to walk[i]? form; (3) transcribe Recipe necessity lemmas + rewire downstream theorems; (4) land corrected remove_circuit_balanced (proof recorded in knowledge.md S20); (5) tackle the 2 Hierholzer-sufficiency axioms.",
+      "Verified template source: KonigsbergOQ01OQ02Recipe.lean builds clean (7743 jobs) and has walk[i]? versions of all necessity lemmas."
     ]
   },
   "tags": [
@@ -99,9 +105,11 @@
     "konigsberg",
     "konigsberg-oq-01",
     "konigsberg-oq-01-oq-02",
+    "konigsberg-oq-01-oq-02-incomplete-01",
     "konigsberg-oq-02",
     "konigsberg-oq-02-oq-01",
     "konigsberg-oq-03",
+    "konigsberg-oq-03-oq-01",
     "konigsberg-oq-03-oq-02",
     "konigsberg-oq-04"
   ],
@@ -147,6 +155,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01OQ02Incomplete01.lean",
+      "filename": "KonigsbergOQ01OQ02Incomplete01.lean",
+      "lineCount": 240,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02Incomplete01.lean"
     },
     {
       "path": "Proofs/KonigsbergOQ01OQ02Recipe.lean",
@@ -202,6 +221,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03OQ01.lean",
+      "filename": "KonigsbergOQ03OQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03OQ01.lean"
     },
     {
       "path": "Proofs/KonigsbergOQ03OQ02.lean",

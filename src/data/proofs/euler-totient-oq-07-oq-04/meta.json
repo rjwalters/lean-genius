@@ -1,0 +1,152 @@
+{
+  "id": "euler-totient-oq-07-oq-04",
+  "title": "Setwise Coprimality of a Finite Family of Totients: $\\gcd_i \\varphi(a_i)=1$ Iff Some $a_i\\in\\{1,2\\}$",
+  "slug": "euler-totient-oq-07-oq-04",
+  "description": "Generalizes the pairwise coprimality criterion for Euler totients (parent `euler-totient-oq-07`) to an arbitrary finite family. For a family a : ι → ℕ indexed by a Finset s, the setwise gcd of the totients satisfies `s.gcd (fun i ↦ φ (a i)) = 1 ↔ ∃ i ∈ s, a i = 1 ∨ a i = 2`: the family of totients is setwise coprime exactly when at least one argument lands in {1,2}, where φ = 1 is a unit. The engine is the parity of the totient — φ(0) = 0 and φ(k) is even for every k > 2 (`Nat.totient_even`), so {1,2} are the only naturals with an odd totient — combined with `Finset.dvd_gcd`/`Finset.gcd_dvd`: once every argument avoids {1,2} the whole family shares the factor 2. Mathlib has the pairwise `Nat.totient_coprime_totient_iff` but no finite-family form; this entry supplies it and directly answers a follow-up question posed in the parent's open-questions list. Fully machine-checked: 0 sorries, 0 axioms (the `decide` calls reduce concrete small naturals in the kernel, not `native_decide`).",
+  "meta": {
+    "author": "Euler (1763, totient function); finite-family coprimality criterion formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_totient_function",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ07OQ04.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "coprimality",
+      "gcd",
+      "parity",
+      "finite-family",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 135,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The parity input is `Nat.totient_even` (φ(k) even for k > 2, via the order-2 unit −1 and Lagrange); the finite-family gcd reasoning uses `Finset.dvd_gcd` and `Finset.gcd_dvd`. The `decide` calls evaluate φ at concrete naturals (2, 3, 4, 9) and finite Fin 3 quantifications in the kernel (not `native_decide`), so the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_even",
+        "description": "`2 < n → Even n.totient`. The parity engine: every argument outside {1,2} (i.e. 0 or ≥ 3) has an even totient, so the family shares the factor 2.",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Finset.dvd_gcd",
+        "description": "`(∀ i ∈ s, k ∣ f i) → k ∣ s.gcd f`. Lifts the per-element divisibility 2 ∣ φ(a i) to 2 ∣ s.gcd (fun i ↦ φ (a i)).",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Finset.gcd_dvd",
+        "description": "`i ∈ s → s.gcd f ∣ f i`. Gives the converse direction: a single argument with φ = 1 forces the whole setwise gcd to divide 1, hence to equal 1.",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Nat.totient_coprime_totient_iff",
+        "description": "Pairwise criterion `(φ m).Coprime (φ n) ↔ (m ∈ {1,2}) ∨ (n ∈ {1,2})`. The two-argument special case this entry generalizes to families; recovered as the Fin 2 specialization.",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "`gcd_totient_family_eq_one_iff`: the finite-family criterion `s.gcd (fun i ↦ φ (a i)) = 1 ↔ ∃ i ∈ s, a i = 1 ∨ a i = 2` — the headline generalization of the pairwise `Nat.totient_coprime_totient_iff`, which Mathlib does not state for families.",
+      "`two_dvd_totient_of_ne_one_two`: the clean parity statement `a ≠ 1 → a ≠ 2 → 2 ∣ φ a`, packaging φ(0) = 0 and `Nat.totient_even` into a single divisibility usable element-by-element.",
+      "`two_dvd_gcd_totient_family`: the shared-factor fact `(∀ i ∈ s, a i ∉ {1,2}) → 2 ∣ s.gcd (fun i ↦ φ (a i))` — the explicit common divisor of an entire totient family.",
+      "`gcd_totient_family_ne_one_of_forall`: the contrapositive stated directly — a family all of whose arguments avoid {1,2} is never setwise coprime."
+    ],
+    "prerequisites": [
+      "Euler's totient function φ(n) = |(ℤ/nℤ)ˣ|",
+      "Parity of φ: φ(n) even for n > 2 (the unit −1 of order 2 plus Lagrange), and φ(0) = 0",
+      "Setwise gcd over a Finset (Finset.gcd) and its universal/divisibility properties",
+      "Divisibility reasoning (dvd_gcd, gcd_dvd, dvd_one)"
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "euler-totient-oq-07",
+        "relationship": "Parent: proves the pairwise criterion gcd(φ m, φ n) = 1 ↔ one of m, n ∈ {1,2} and the shared-factor bound 2 ≤ gcd for m, n ≥ 3. This entry lifts both to an arbitrary finite family and answers the parent's explicit open question on generalizing to families."
+      },
+      {
+        "id": "euler-totient-oq-06",
+        "relationship": "Sibling: establishes the parity classification φ(n) even ⟺ n ∉ {1,2}. This entry applies that exact dichotomy across a whole family: every argument outside {1,2} contributes an even totient, so the family shares the factor 2."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 135,
+    "path": "Proofs/EulerTotientOQ07OQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Euler introduced the totient φ(n) — the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem. A sharp parity constraint governs its values: for k > 2 the element −1 ∈ (ℤ/kℤ)ˣ has order 2, so Lagrange forces 2 ∣ φ(k); together with φ(0) = 0 this means {1,2} are the only naturals where φ is odd (and there φ = 1). The pairwise consequence — two totients are coprime iff some argument is 1 or 2 — is Mathlib's `Nat.totient_coprime_totient_iff`. The parent gallery entry recorded this and the explicit shared factor 2; its open-questions list then asks for the finite-family form. This entry supplies it: a family of totients is setwise coprime iff a single argument hits the odd-totient set {1,2}.",
+    "problemStatement": "**Open Question (euler-totient-oq-07-oq-04):** extend the pairwise coprimality criterion for Euler totients to a finite family. For a family a : ι → ℕ indexed by a Finset s, when is the setwise gcd of the totients {φ(a i)} equal to 1?",
+    "text": "s.gcd (fun i ↦ φ(a i)) = 1 iff at least one argument a i lies in {1,2} (where φ = 1). Equivalently, the moment every argument avoids {1,2} the whole family shares the factor 2 and the setwise gcd is at least 2.",
+    "proofStrategy": "The parity engine `two_dvd_totient_of_ne_one_two` splits on a i: if a i = 0 then φ(a i) = 0 is even; otherwise a i ≥ 3 (being ≠ 1, ≠ 2, > 0) and `Nat.totient_even` applies — so a i ∉ {1,2} ⟹ 2 ∣ φ(a i). The forward direction of the biconditional is the contrapositive: if no argument is in {1,2}, `Finset.dvd_gcd` lifts the uniform 2 ∣ φ(a i) to 2 ∣ s.gcd, contradicting gcd = 1. The reverse direction uses `Finset.gcd_dvd`: an argument with φ(a i) = 1 makes the setwise gcd divide 1, so it equals 1 by `Nat.dvd_one`. The pairwise parent is recovered as the Fin 2 specialization; worked examples evaluate the setwise gcd over Fin 3 families by kernel `decide`.",
+    "keyInsights": [
+      "**Setwise coprimality of a totient family is an all-or-nothing parity phenomenon.** A single unit value φ = 1 (from an argument in {1,2}) collapses the entire setwise gcd to 1; absent any such argument, every totient is even and 2 is a guaranteed common divisor.",
+      "**The {1,2} escape hatch is exactly the odd-totient set.** φ is odd only at 1 and 2; 0 and every k ≥ 3 give even totients. The criterion is therefore literally 'some argument has odd totient', uniform across families of any size.",
+      "**The generalization is genuinely stronger, not cosmetic.** The pairwise `Nat.totient_coprime_totient_iff` is the Fin 2 case; the family form covers arbitrary index sets (including the empty family, where the setwise gcd is 0 ≠ 1) and is what callers reasoning about products or simultaneous coprimality of many orders actually need.",
+      "**The proof is two one-directional Finset.gcd facts.** `Finset.dvd_gcd` (a common divisor of all entries divides the gcd) handles the no-escape direction; `Finset.gcd_dvd` (the gcd divides each entry) handles the escape direction — no induction on the family is required."
+    ],
+    "prerequisites": [
+      "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
+      "Parity of the totient (even for n > 2; φ(0) = 0) and divisibility by 2",
+      "Setwise gcd over a Finset and its divisibility characterization",
+      "Finite evaluation by kernel `decide`"
+    ]
+  },
+  "conclusion": {
+    "summary": "A finite family of Euler totients {φ(a i) : i ∈ s} is setwise coprime (s.gcd = 1) iff at least one argument a i lies in {1,2}; otherwise every totient is even and the setwise gcd is at least 2. 4 theorems, 135 lines, 0 sorries, 0 axioms. The criterion rests on the parity of φ (`Nat.totient_even`) and the two divisibility directions of `Finset.gcd`.",
+    "implications": "This is the form needed whenever many totients must be simultaneously coprime — e.g. CRT-style decompositions of unit groups or coprimality of several orders at once. The parity obstruction makes the answer immediate: simultaneous coprimality is possible only if all but at most the {1,2}-arguments are absent; any two arguments ≥ 3 already kill it via the shared factor 2.",
+    "openQuestions": [
+      "Pairwise vs setwise: characterize when the family {φ(a i)} is pairwise coprime (a strictly stronger condition than setwise gcd = 1), and relate it to the multiset of arguments avoiding {1,2}.",
+      "Quantify the setwise gcd's 2-adic valuation: for a family all of whose arguments are ≥ 3, is v₂(s.gcd) determined by the minimum of v₂(φ(a i)), and when does it exceed 1?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring framing the goal — lift the pairwise totient-coprimality criterion to a finite family — with imports (`Mathlib.Data.Nat.Totient`, `Mathlib.Algebra.GCDMonoid.Finset`, `Mathlib.Tactic`), the contents list, the `EulerTotientOQ07OQ04` namespace, `open Nat` (so `φ` is `Nat.totient`), and the `{ι : Type*}` index variable."
+    },
+    {
+      "id": "parity-engine",
+      "title": "The Parity Engine and the Shared Family Factor",
+      "startLine": 55,
+      "endLine": 78,
+      "summary": "`two_dvd_totient_of_ne_one_two` (a ∉ {1,2} ⟹ 2 ∣ φ a, by casing a = 0 vs a ≥ 3 and `Nat.totient_even`) and `two_dvd_gcd_totient_family` (every argument outside {1,2} ⟹ 2 ∣ s.gcd of the totients, via `Finset.dvd_gcd`)."
+    },
+    {
+      "id": "headline-criterion",
+      "title": "The Finite-Family Coprimality Criterion",
+      "startLine": 79,
+      "endLine": 105,
+      "summary": "`gcd_totient_family_eq_one_iff` — the headline biconditional s.gcd (fun i ↦ φ (a i)) = 1 ↔ ∃ i ∈ s, a i = 1 ∨ a i = 2 (forward: contrapositive via the shared factor 2; reverse: `Finset.gcd_dvd` plus `Nat.dvd_one`) — and `gcd_totient_family_ne_one_of_forall`, its contrapositive stated directly."
+    },
+    {
+      "id": "parent-recovery-examples",
+      "title": "Pairwise Recovery and Worked Examples",
+      "startLine": 106,
+      "endLine": 135,
+      "summary": "The Fin 2 specialization recovering the pairwise parent criterion, and worked Fin 3 families: one hitting {1,2} (φ 2 = 1 forces gcd = 1), one avoiding {1,2} (gcd ≠ 1), and the concrete value gcd(φ3, φ4, φ9) = gcd(2,2,6) = 2 by kernel `decide`."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-07",
+      "relationship": "parent",
+      "description": "The parent proves the pairwise criterion gcd(φ m, φ n) = 1 ↔ one of m, n ∈ {1,2} and the shared-factor bound for m, n ≥ 3. This entry generalizes both to an arbitrary finite family — recovering the pairwise case as the Fin 2 specialization — and answers the parent's stated open question on families."
+    },
+    {
+      "targetId": "euler-totient-oq-06",
+      "relationship": "sibling",
+      "description": "oq-06 proves the parity classification φ(n) even ⟺ n ∉ {1,2}. This entry uses that dichotomy uniformly across a family: every argument outside {1,2} has an even totient, so the family shares the factor 2 and is never setwise coprime."
+    }
+  ]
+}

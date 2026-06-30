@@ -51,17 +51,22 @@
       "IsRepresentable definition: sums with non-divisibility",
       "NonRepresentable set definition",
       "case_2_3_all_representable theorem: complete solution for {2,3} (proved by strong induction)",
-      "erdos_lewin_theorem axiom: finite exceptions iff {2,3}",
-      "Yu-Chen density zero theorem axiomatization",
+      "Easy Erdős–Lewin direction proved unconditionally (0-axiom): nonRepresentable_three_two / nonRepresentable_two_three pin NonRepresentable to the singleton {0}, giving finite_nonRepresentable_of_two_three",
+      "exists_positive_nonRepresentable_of_ne_two_three theorem (0-axiom): unconditional EXISTENCE shadow of the deep infinitude axiom — every coprime pair {p,q}≠{2,3} admits a positive non-representable number (universal witness 2 when q≥3, 3 when q=2), via two_nonRepresentable_of_three_le / three_nonRepresentable_of_q_two and the power-form bounds isPowerForm_eq_one_of_le_two / isPowerForm_le_two_or_eq",
+      "Yu-Chen density-zero {2,3} instance proved unconditionally (0-axiom): hasDensity_singleton_zero ⟹ nonRepresentable_two_three_density_zero / nonRepresentable_three_two_density_zero",
+      "Yu-Chen COPRIME non-representables, {2,3} case proved unconditionally (0-axiom): coprimeNonRepresentable_two_three_eq_empty / _three_two_eq_empty — the coprime non-representable set is EMPTY for {2,3} (the only non-representable is 0, which is not coprime to 2·3=6), sharpening Yu-Chen's '{2,3}-excluded' infinitude to 'zero coprime non-representables'; hasDensity_empty gives the corresponding density-zero corollaries and supplies the first content to the previously-unused CoprimeNonRepresentable definition",
+      "Window characterization proved unconditionally (0-axiom): the structural lemma representable_summands_ge_q shows every summand of a representation of n≥2 is ≥q (the unit power form 1 divides everything, so it can sit neither alongside another summand nor alone). This yields isRepresentable_iff_isPowerForm_window — for q ≤ n < 2q, IsRepresentable p q n ↔ IsPowerForm p q n — and the corollary nonRepresentable_of_window, an explicit non-representable family (every non-power-form in [q,2q)) for EVERY pair p>q≥2, uniformly subsuming the ad-hoc witnesses two_nonRepresentable_of_three_le (n=2,q≥3) and three_nonRepresentable_of_q_two (n=3,q=2). Helper isPowerForm_ge_q_of_ge_two.",
+      "Sharp criterion for the canonical candidate q+1 proved unconditionally (0-axiom): add_one_nonRepresentable_iff — for every p>q≥2, q+1 (which always lies in the window [q,2q)) is non-representable EXACTLY when q+1 is not a power of p (q+1 ∈ NonRepresentable p q ↔ ¬∃k, q+1=p^k). The only obstruction is a q^l factor with l≥1, which would force q∣q+1 hence q∣1. For q=2 this isolates the excluded {2,3} pair as the unique q=2 exception: the canonical witness 3 is non-representable unless 3=p^k, i.e. unless p=3 (where 3=3^1 is itself a power form). Corollary add_one_nonRepresentable_of_lt: whenever p>q+1 (p≥q+2), q+1 is non-representable, handing every such pair a trivially-checkable explicit witness; verified instance 3 ∈ NonRepresentable 5 2.",
+      "erdos_lewin_infinite axiom: the genuinely deep forward direction (infinitely many non-representables for {p,q}≠{2,3}); only the infinitude — not finiteness or existence — is now assumed",
       "Yu-Chen coprime infinite theorem",
       "Minimum summand bounds (Yu-Chen, Yang-Zhao)",
       "example_1_representable theorem with constructive proof",
       "Connections to Problems #123, #845, #246"
     ],
     "axiomCount": 1,
-    "lineCount": 437,
-    "assumptions": "1 axiom: erdos_lewin_theorem (Erdős-Lewin 1996: non-representable set is finite iff {p,q}={2,3}). The {2,3} case (case_2_3_all_representable) is now fully proved by strong induction.",
-    "theoremCount": 13,
+    "lineCount": 951,
+    "assumptions": "1 axiom: erdos_lewin_infinite (Erdős-Lewin 1996, deep forward direction: {p,q}≠{2,3} ⟹ infinitely many non-representable numbers). The backward direction ({2,3} ⟹ finite, in fact NonRepresentable = {0}) is proved unconditionally (finite_nonRepresentable_of_two_three), and the EXISTENCE of a positive non-representable for every other coprime pair is also proved unconditionally (exists_positive_nonRepresentable_of_ne_two_three) — only the infinitude itself remains axiomatized.",
+    "theoremCount": 39,
     "definitionCount": 7
   },
   "overview": {
@@ -251,19 +256,15 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Nat.Pow",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.NumberTheory.Divisors"
+      "Mathlib"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos1110",
-    "lineCount": 437,
+    "lineCount": 1090,
     "axiomCount": 1,
-    "theoremCount": 13,
+    "theoremCount": 51,
     "definitionCount": 7,
     "path": "Proofs/Erdos1110Problem.lean",
     "sorries": 0

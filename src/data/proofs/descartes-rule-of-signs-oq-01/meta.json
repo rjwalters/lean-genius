@@ -145,7 +145,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures the full Descartes' Rule — both the upper bound and the (formerly open) parity result, now proved. The upper bound is proved with zero axioms, zero sorries directly from Mathlib's `roots_countP_pos_le_signVariations`. The negative root framework via `negSubst p = p.comp(−X)` extends the result to negative roots. The parity result — that the difference between sign variations and positive root count is always even — is now proved from scratch in this file (no axiom). The linear case is tight and proved exactly.",
-    "implications": "**Theoretical Significance**: **If the parity result were proved (formalized in Lean)**:\n\n**For exact root counting**: `one_sign_variation_one_positive_root` gives EXACT root count when signVariations = 1. Similarly, signVariations = 2 means exactly 0 or 2 positive roots. This makes Descartes' rule a practical tool for exact counting, not just bounds.\n\n**For Sturm's theorem comparison**: Sturm's sequence gives exact counts but requires computing a GCD chain.\n\nDescartes' parity result gives exact counts modulo 2 for free. Combined: if Sturm gives N roots and Descartes gives signVariations ≡ N [MOD 2], this is a consistency check.\n\n**For Mathlib**: The parity proof would require formalizing how complex conjugate root pairs affect sign variations — a beautiful algebraic argument that would enrich Mathlib's polynomial root theory.\n\n**For Wiedijk's 100 Theorems**: Currently #100 (Descartes' Rule) has only the upper bound in Mathlib. The full theorem (with parity) would complete the formalization.",
+    "implications": "**Theoretical Significance** (with the parity result now proved in this file):\n\n**For exact root counting**: `one_sign_variation_one_positive_root` gives EXACT root count when signVariations = 1. Similarly, signVariations = 2 means exactly 0 or 2 positive roots. This makes Descartes' rule a practical tool for exact counting, not just bounds.\n\n**For Sturm's theorem comparison**: Sturm's sequence gives exact counts but requires computing a GCD chain.\n\nDescartes' parity result gives exact counts modulo 2 for free. Combined: if Sturm gives N roots and Descartes gives signVariations ≡ N [MOD 2], this is a consistency check.\n\n**For Mathlib**: This file's parity proof is real-only — it uses an `eraseLead` sign-recursion plus the intermediate value theorem rather than the classical Fundamental-Theorem-of-Algebra / complex-conjugate-pair argument; either route would be a candidate enrichment of Mathlib's polynomial root theory, which currently has only the upper bound.\n\n**For Wiedijk's 100 Theorems**: #100 (Descartes' Rule) currently has only the upper bound in Mathlib; the parity half (the difference is even) is the part proved here from scratch.",
     "openQuestions": [
       "Can the parity result be proved using Mathlib's existing complex root theory (Polynomial.aeval_complex_conj, etc.)?",
       "What is the minimal infrastructure needed: just the complex conjugate pairing, or also the exact sign variation change under each root type?",
@@ -177,12 +177,12 @@
     {
       "targetId": "descartes-rule-of-signs",
       "relationship": "extends",
-      "description": "Extends the base Descartes rule formalization by developing the parity conjecture, the negSubst framework for negative roots, and the linear tight-bound case"
+      "description": "Extends the base Descartes rule formalization by proving the parity result, the negSubst framework for negative roots, and the linear tight-bound case"
     },
     {
       "targetId": "fundamental-theorem-algebra",
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra (complex roots come in conjugate pairs) is the key tool needed to prove the parity result axiomatized here"
+      "description": "The Fundamental Theorem of Algebra (complex roots come in conjugate pairs) is the tool behind Gauss's classical proof of the parity result; this file instead proves the parity result by a real-only eraseLead sign-recursion plus the intermediate value theorem, with no FTA/complex machinery"
     },
     {
       "targetId": "e-transcendental",
@@ -210,7 +210,7 @@
       "title": "Formalizing 100 Theorems",
       "year": "2008",
       "venue": "http://www.cs.ru.nl/~freek/100/",
-      "note": "Theorem #100 in the list of 100 theorems to formalize; Mathlib has the upper bound, the parity result remains open in Lean"
+      "note": "Theorem #100 in the list of 100 theorems to formalize; Mathlib has the upper bound, and the parity result is proved from scratch in this file"
     }
   ],
   "sorries": 0

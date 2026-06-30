@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-crt-mod-overview",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "concept",
+    "title": "From Elements to Modules: What the Module CRT Says",
+    "content": "The parent chain proved the Chinese Remainder Theorem for elements of a Euclidean domain — a solvability criterion for systems of congruences. This file lifts the statement one level: for comaximal ideals I, J in a commutative ring R and any R-module M, the quotient M/(I⊓J)M splits as the product (M/IM) × (M/JM). The denominator IM abbreviates the submodule I • (⊤ : Submodule R M). Crucially the core theorem needs no PID — comaximality I ⊔ J = ⊤ is the entire hypothesis — and the PID/coprime-element version is just a corollary that manufactures comaximality from IsCoprime a b. This strictly generalises Mathlib's ring-level Ideal.quotientInfRingEquivPiQuotient, recovered at M = R.",
+    "mathContext": "For comaximal ideals $I, J$ ($I + J = R$) and an $R$-module $M$: $M/(I\\cap J)M \\;\\cong\\; M/IM \\times M/JM$. The map is induced by $m \\mapsto (m + IM,\\; m + JM)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "comaximal ideals",
+      "quotient modules",
+      "structure theorem over a PID"
+    ],
+    "prerequisites": [
+      "Ideal action I • N on submodules",
+      "Quotient module M/N and projection mkQ"
+    ]
+  },
+  {
+    "id": "ann-crt-mod-kernel",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-03",
+    "range": { "startLine": 58, "endLine": 71 },
+    "type": "technique",
+    "title": "The CRT Map and Its Kernel (No Hypothesis Needed)",
+    "content": "crtMap is defined as (IM).mkQ.prod (JM).mkQ — the pairing of the two canonical quotient projections into a single linear map M → (M/IM) × (M/JM). Its kernel falls out structurally: LinearMap.ker_prod gives ker(f.prod g) = ker f ⊓ ker g, and Submodule.ker_mkQ identifies each factor as ker (N.mkQ) = N. Hence ker crtMap = IM ⊓ JM with no appeal to comaximality. Isolating the kernel computation this way means the comaximal hypothesis is confined entirely to the surjectivity lemma — a clean separation that keeps each step short.",
+    "mathContext": "$\\ker\\big(\\mathrm{mk}_{IM} \\times \\mathrm{mk}_{JM}\\big) = \\ker \\mathrm{mk}_{IM} \\cap \\ker \\mathrm{mk}_{JM} = IM \\cap JM$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "LinearMap.ker_prod",
+      "Submodule.ker_mkQ",
+      "product of linear maps"
+    ],
+    "prerequisites": [
+      "Kernel of a product map",
+      "Kernel of a quotient projection"
+    ]
+  },
+  {
+    "id": "ann-crt-mod-surjectivity",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-03",
+    "range": { "startLine": 73, "endLine": 100 },
+    "type": "key-step",
+    "title": "Surjectivity: Where Comaximality Is Spent",
+    "content": "This is the only step using I ⊔ J = ⊤. Extracting from 1 ∈ I ⊔ J a decomposition 1 = i + j with i ∈ I, j ∈ J, the proof lifts the two target residues to module elements m₁, m₂ and exhibits the preimage j·m₁ + i·m₂. The two checks reduce to module identities once j (resp. i) is replaced by 1 − i (resp. 1 − j) via linear_combination on i + j = 1: (j·m₁ + i·m₂) − m₁ = i·(m₂ − m₁), which lies in IM since i ∈ I; symmetrically (j·m₁ + i·m₂) − m₂ = j·(m₁ − m₂) ∈ JM. The module tactic discharges each algebraic identity, and Submodule.smul_mem_smul certifies membership. Thus crtMap sends j·m₁ + i·m₂ to exactly (m̄₁, m̄₂).",
+    "mathContext": "With $i + j = 1$, $i \\in I$, $j \\in J$: the element $x = j m_1 + i m_2$ satisfies $x \\equiv m_1 \\pmod{IM}$ and $x \\equiv m_2 \\pmod{JM}$, because $x - m_1 = i(m_2 - m_1) \\in IM$ and $x - m_2 = j(m_1 - m_2) \\in JM$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "comaximal decomposition 1 = i + j",
+      "Submodule.smul_mem_smul",
+      "module tactic",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "Submodule.mem_sup (witness extraction)",
+      "Quotient equality via mk_eq_zero",
+      "r ∈ I → r • m ∈ I • N"
+    ]
+  },
+  {
+    "id": "ann-crt-mod-equiv",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-03",
+    "range": { "startLine": 102, "endLine": 110 },
+    "type": "key-step",
+    "title": "Assembling the Isomorphism via the First Isomorphism Theorem",
+    "content": "crtEquiv combines the two prior facts. LinearMap.quotKerEquivOfSurjective turns the surjective crtMap into an isomorphism M/(ker crtMap) ≅ (M/IM) × (M/JM). Since ker crtMap = IM ⊓ JM was already computed, Submodule.quotEquivOfEq transports the domain to M/(IM ⊓ JM), giving the core module CRT. No new mathematics enters here — it is pure assembly, which is exactly why the kernel and surjectivity were proved separately.",
+    "mathContext": "First isomorphism theorem: a surjective $\\varphi : M \\to N$ induces $M/\\ker\\varphi \\cong N$. Here $\\ker\\varphi = IM \\cap JM$ and $N = (M/IM)\\times(M/JM)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "first isomorphism theorem",
+      "LinearMap.quotKerEquivOfSurjective",
+      "Submodule.quotEquivOfEq"
+    ],
+    "prerequisites": [
+      "Surjective linear map induces quotient isomorphism",
+      "Rewriting the quotient along an equality of submodules"
+    ]
+  },
+  {
+    "id": "ann-crt-mod-denominator-pid",
+    "proofId": "chinese-remainder-non-coprime-oq-03-oq-03",
+    "range": { "startLine": 112, "endLine": 160 },
+    "type": "technique",
+    "title": "Collapsing the Denominator and the PID Corollary",
+    "content": "The natural kernel IM ⊓ JM and the textbook denominator (I⊓J)M agree only under comaximality. inf_smul_top proves the equality: the inclusion (I⊓J)M ⊆ IM ⊓ JM is automatic by monotonicity, while ⊇ uses x = i·x + j·x and the bound I·(J·M) = (I*J)·M ≤ (I⊓J)·M (from Ideal.mul_le_inf), so each summand lands in (I⊓J)M. crtEquiv' then rewrites the core isomorphism into the textbook form M/(I⊓J)M ≅ (M/IM) × (M/JM). Finally crtEquivPID specialises to principal ideals: IsCoprime a b gives IsCoprime (span{a}) (span{b}) (Ideal.isCoprime_span_singleton_iff), and Ideal.isCoprime_iff_sup_eq turns that into the comaximality span{a} ⊔ span{b} = ⊤ the theorem consumes.",
+    "mathContext": "Comaximality forces $(I\\cap J)M = IM \\cap JM$ because $I\\cdot J\\cdot M \\subseteq (I\\cap J)M$ and any $x \\in IM\\cap JM$ is $x = ix + jx$ with $ix \\in I(JM)$, $jx \\in J(IM)$. Over a PID, $\\gcd(a,b)=1 \\Rightarrow (a)+(b)=R$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Ideal.mul_le_inf",
+      "(I*J)•N = I•(J•N)",
+      "Ideal.isCoprime_span_singleton_iff",
+      "Ideal.isCoprime_iff_sup_eq"
+    ],
+    "prerequisites": [
+      "Product of ideals acting on a module",
+      "Coprime elements generate comaximal ideals"
+    ]
+  }
+]

@@ -74,6 +74,11 @@
       "targetId": "pythagorean-triples-oq-04",
       "relationship": "extends",
       "description": "The parent entry proves Fermat's two-square theorem for primes and the two-factor Brahmagupta–Fibonacci identity. This entry runs those two ingredients through a strong induction to obtain the sufficiency direction of the full characterization, directly addressing the parent's first listed open question."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-square theorem for primes (p = a²+b² iff p = 2 or p ≡ 1 mod 4) is the base case of this entry's induction, supplied here through Mathlib's Nat.Prime.sq_add_sq at the least prime factor."
     }
   ],
   "sections": [

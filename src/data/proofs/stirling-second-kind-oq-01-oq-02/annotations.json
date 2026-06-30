@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "concept",
+    "title": "The Finite-Difference Closed Form",
+    "content": "Mathlib defines Nat.stirlingSecond n k by its Pascal recurrence and records the boundary columns, but no closed form. This file proves the canonical one, k!·S(n,k) = ∑_{j=0}^{k} (−1)^j C(k,j)(k−j)^n — the number of surjections from an n-set onto a k-set, counted by inclusion–exclusion over the k events 'value i is never hit'. The whole proof works with the factorial-cleared integer T(n,k), an induction on n whose only hard step is a single surjection recurrence.",
+    "mathContext": "$k!\\,S(n,k) = \\sum_{j=0}^{k} (-1)^j \\binom{k}{j}(k-j)^n$, the surjection count $[n]\\twoheadrightarrow[k]$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "inclusion-exclusion",
+      "surjection counting",
+      "finite differences"
+    ],
+    "prerequisites": [
+      "set partitions",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-definition-T",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 59 },
+    "type": "definition",
+    "title": "The Factorial-Cleared Sum T(n,k)",
+    "content": "T n k = ∑_{j∈range(k+1)} (−1)^j C(k,j)(k−j)^n is defined over ℤ so that the alternating signs and the base k−j are integral — no rational division anywhere. Combinatorially T(n,k) is exactly k!·S(n,k), the surjection count; the file proves that equality.",
+    "mathContext": "$T(n,k) := \\sum_{j=0}^{k} (-1)^j \\binom{k}{j}(k-j)^n \\in \\mathbb{Z}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "integer-valued sum",
+      "factorial clearing"
+    ],
+    "prerequisites": [
+      "Finset.range sums"
+    ]
+  },
+  {
+    "id": "ann-absorption",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 61, "endLine": 84 },
+    "type": "technique",
+    "title": "The Absorption Identity",
+    "content": "nat_absorb proves (k+1)·C(k,j) = (k+1−j)·C(k+1,j) over ℕ — unconditional, since both sides vanish once j > k+1 — by chaining Nat.add_one_mul_choose_eq with Nat.choose_succ_right_eq. absorbZ casts it to ℤ in the precise shape ((k:ℤ)+1−j)·C(k+1,j) = ((k:ℤ)+1)·C(k,j) for j ≤ k+1 (using Nat.cast_sub). This is the lever that converts a base factor (k+1−j) into the leading multiplier (k+1) while lowering the binomial's upper index from k+1 to k.",
+    "mathContext": "$(k+1-j)\\binom{k+1}{j} = (k+1)\\binom{k}{j}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial absorption",
+      "ℕ to ℤ casting"
+    ],
+    "prerequisites": [
+      "Pascal's triangle identities"
+    ]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 86, "endLine": 152 },
+    "type": "key-step",
+    "title": "The Surjection Recurrence (heart of the proof)",
+    "content": "rec_lemma establishes T(n+1,k+1) = (k+1)(T(n,k+1)+T(n,k)). Step A writes (k+1−j)^{n+1} = (k+1−j)^n·(k+1−j) and applies absorption via linear_combination, collapsing T(n+1,k+1) to (k+1)·W where W = ∑_{j∈range(k+2)} (−1)^j C(k,j)(k+1−j)^n. Step B shows W = T(n,k+1)+T(n,k): peel the j=0 term of both T(n,k+1) and W with Finset.sum_range_succ' (so the troublesome j−1 in Pascal becomes i over ℕ), then Pascal's rule C(k+1,i+1)=C(k,i)+C(k,i+1) merges the shifted tails termwise, each index closed by ring.",
+    "mathContext": "$T(n+1,k+1) = (k+1)\\big(T(n,k+1)+T(n,k)\\big)$ — the cleared image of Pascal's rule for $S$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "surjection recurrence",
+      "Finset.sum_range_succ'",
+      "Pascal's rule",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "reindexing finite sums",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 154, "endLine": 180 },
+    "type": "key-step",
+    "title": "The Main Closed Form",
+    "content": "factorial_mul_stirlingSecond proves k!·S(n,k) = T(n,k) by induction on n, generalizing k. The base n=0 reduces (via pow_zero) to Int.alternating_sum_range_choose, which equals 1 if k=0 and 0 otherwise — exactly S(0,k). The step splits on k: the k=0 column gives 0^{n+1}=0=S(n+1,0) on both sides; for k+1, rewrite the goal with rec_lemma, apply the induction hypothesis at k+1 and k, expand the Pascal recurrence for S together with (k+1)! = (k+1)·k!, and finish with push_cast; ring.",
+    "mathContext": "$k!\\,S(n,k) = \\sum_{j=0}^{k} (-1)^j \\binom{k}{j}(k-j)^n$ for all $n,k$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "induction on n",
+      "Int.alternating_sum_range_choose",
+      "Nat.stirlingSecond_succ_succ"
+    ],
+    "prerequisites": [
+      "strong use of the induction hypothesis",
+      "factorial identities"
+    ]
+  },
+  {
+    "id": "ann-column-two",
+    "proofId": "stirling-second-kind-oq-01-oq-02",
+    "range": { "startLine": 182, "endLine": 211 },
+    "type": "key-step",
+    "title": "Recovering the Parent Column",
+    "content": "T_two evaluates the three-term sum T(n,2) = 2^n − 2 for n ≥ 1 (the j=2 term carries 0^n, killed by zero_pow). two_mul_stirlingSecond_two then reads off 2·S(n,2) = 2^n − 2, and stirlingSecond_two cancels the factor 2 using 2^n = 2·2^(n-1) to recover the parent entry's textbook result S(n,2) = 2^(n-1) − 1 — now a one-line corollary of the general law rather than an isolated computation.",
+    "mathContext": "$S(n,2) = 2^{n-1} - 1$, recovered from the general formula at $k=2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization",
+      "geometric closed form"
+    ],
+    "prerequisites": [
+      "evaluating finite sums"
+    ]
+  }
+]

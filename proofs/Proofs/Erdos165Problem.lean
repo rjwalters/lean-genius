@@ -156,9 +156,19 @@ theorem erdos_165 :
   use 1/4, 2
   refine ⟨by norm_num, by norm_num, ?_⟩
   obtain ⟨k₀, hk₀⟩ := current_best_bounds (1/4) (by norm_num)
-  exact ⟨k₀, fun k hk => by
-    obtain ⟨hl, hu⟩ := hk₀ k hk
-    exact ⟨by linarith, by linarith⟩⟩
+  -- Past `max k₀ 2` we also have `k ≥ 2`, hence `log k > 0` and `k²/log k ≥ 0`;
+  -- this nonnegativity is what lets us widen the constant `5/4` up to `2`.
+  refine ⟨max k₀ 2, fun k hk => ?_⟩
+  have hk0 : k ≥ k₀ := le_of_max_le_left hk
+  have hk2 : k ≥ 2 := le_of_max_le_right hk
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk2
+  have hlog : 0 < log k := Real.log_pos (by linarith)
+  have hatom : 0 ≤ (k:ℝ)^2 / log k := le_of_lt (div_pos (by positivity) hlog)
+  obtain ⟨hl, hu⟩ := hk₀ k hk0
+  rw [mul_div_assoc] at hl hu
+  refine ⟨?_, ?_⟩
+  · rw [mul_div_assoc]; linarith
+  · rw [mul_div_assoc]; linarith [hatom]
 
 /- ## Part V: The Triangle-Free Process -/
 
@@ -215,9 +225,83 @@ For large k (where log k > 0) and ε = 1/16:
   HHKP: R(3,k) ≥ (7/16)k²/log k
   PGM:  R(3,k) ≤ (5/16)k²/log k
 These are incompatible since 7/16 > 5/16 and k²/log k > 0.
-Therefore ¬pgmConjecture follows from hhkp_bound (the formal proof requires
-careful handling of the k²/log k positivity argument, using div_pos and log_pos).
+Therefore ¬pgmConjecture follows from hhkp_bound. The formal proof is given
+below (`pgm_conjecture_refuted`); its core is the axiom-free incompatibility
+lemma `asymptotic_constant_le`, which handles the k²/log k positivity argument
+once and for all via `div_pos` and `Real.log_pos`.
 -/
+
+/-- **Axiom-free incompatibility lemma.** Suppose a real sequence `f` is, for
+    *every* `ε > 0`, eventually bounded below by `(a - ε)·k²/log k` and eventually
+    bounded above by `(b + ε)·k²/log k`. Then necessarily `a ≤ b`.
+
+    In words: two asymptotic constants that simultaneously lower- and upper-bound
+    the same sequence (to first order, in the `k²/log k` scale) cannot be in the
+    wrong order. This is the structural fact underlying every "conjectured
+    constant refuted by a better bound" argument for `R(3,k)`. The proof contains
+    no Ramsey theory and no axioms: it is pure real analysis.
+
+    Strategy: if `b < a`, take `ε = (a-b)/4`, so `a - ε > b + ε`. Pick any
+    `k ≥ 2` past both thresholds; then `k²/log k > 0`, and the two bounds force
+    `(a - ε)·k²/log k ≤ (b + ε)·k²/log k`, i.e. `a - ε ≤ b + ε`, contradiction. -/
+theorem asymptotic_constant_le
+    (f : ℕ → ℝ) (a b : ℝ)
+    (lower : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → (a - ε) * k^2 / log k ≤ f k)
+    (upper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ → f k ≤ (b + ε) * k^2 / log k) :
+    a ≤ b := by
+  by_contra h
+  push_neg at h          -- h : b < a
+  set ε := (a - b) / 4 with hε_def
+  have hε : ε > 0 := by rw [hε_def]; linarith
+  obtain ⟨k₁, hk₁⟩ := lower ε hε
+  obtain ⟨k₂, hk₂⟩ := upper ε hε
+  -- a witness index past both thresholds and ≥ 2 (so log k > 0 and k² > 0)
+  set k := max (max k₁ k₂) 2 with hk_def
+  have hk1 : k ≥ k₁ := le_trans (le_max_left _ _) (le_max_left _ _)
+  have hk2 : k ≥ k₂ := le_trans (le_max_right _ _) (le_max_left _ _)
+  have hk_ge2 : k ≥ 2 := le_max_right _ _
+  have h2k : (2:ℝ) ≤ (k:ℝ) := by exact_mod_cast hk_ge2
+  have hkpos : (0:ℝ) < (k:ℝ) := by linarith
+  have h1k : (1:ℝ) < (k:ℝ) := by linarith
+  have hlogpos : 0 < log k := Real.log_pos h1k
+  have hksq : (0:ℝ) < (k:ℝ)^2 := pow_pos hkpos 2
+  have hg : 0 < (k:ℝ)^2 / log k := div_pos hksq hlogpos
+  -- chain the two bounds at this k
+  have hcomb : (a - ε) * k^2 / log k ≤ (b + ε) * k^2 / log k :=
+    le_trans (hk₁ k hk1) (hk₂ k hk2)
+  rw [mul_div_assoc, mul_div_assoc] at hcomb
+  have hle : a - ε ≤ b + ε := le_of_mul_le_mul_right hcomb hg
+  -- a - ε ≤ b + ε with ε = (a-b)/4 forces a ≤ b, contradicting b < a
+  rw [hε_def] at hle
+  linarith
+
+/-- **No asymptotic upper constant below `1/2`.** If `R(3,k) ≤ (b + ε)·k²/log k`
+    holds eventually for every `ε > 0`, then `b ≥ 1/2`. This is the HHKP lower
+    bound (`c ≥ 1/2`) phrased as an obstruction: any *valid* first-order upper
+    constant for `R(3,k)` is at least `1/2`. -/
+theorem R3_upper_constant_ge_half (b : ℝ)
+    (hb : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (R3 k : ℝ) ≤ (b + ε) * k^2 / log k) :
+    (1:ℝ)/2 ≤ b := by
+  refine asymptotic_constant_le (fun k => (R3 k : ℝ)) (1/2) b ?_ hb
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := hhkp_bound ε hε
+  exact ⟨k₀, fun k hk => hk₀ k hk⟩
+
+/-- **PGM Conjecture refuted.** The conjecture `R(3,k) ~ (1/4)·k²/log k`
+    (Pontiveros–Griffiths–Morris 2020) is false. Its upper half asserts an
+    asymptotic constant `1/4`, but `R3_upper_constant_ge_half` forces any valid
+    upper constant to be at least `1/2`, and `1/2 ≤ 1/4` is absurd. The only
+    Ramsey input is `hhkp_bound`; the rest is the axiom-free lemma above. -/
+theorem pgm_conjecture_refuted : ¬ pgmConjecture := by
+  intro h
+  have hupper : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (R3 k : ℝ) ≤ (1/4 + ε) * k^2 / log k := by
+    intro ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).2⟩
+  have : (1:ℝ)/2 ≤ 1/4 := R3_upper_constant_ge_half (1/4) hupper
+  norm_num at this
 
 /- ## Part VII: Related Problems -/
 

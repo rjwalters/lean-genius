@@ -220,29 +220,225 @@ For infinite graphs, chromatic number interacts with cardinal arithmetic.
 **Countable chromatic number:**
 For graphs with χ(G) = ℵ₀, the Taylor question is easier.
 -/
-/--
-**Finite case:**
-For finite chromatic number `k`, every value `m ≤ k` is itself realized *as a
-subgraph of `G`*, so the finite-subgraph inheritance is automatic.
 
-This is true and not deep: the witness `H` is an induced subgraph of `G`, so every
-finite subgraph of `H` is a finite subgraph of `G` for free, and a subgraph of `G`
-with chromatic number exactly `m` exists by the discrete intermediate-value
-principle — deleting vertices one at a time lowers the chromatic number by at most
-one, so it passes through every value between `k` and `0`.
+/-!
+### Discharging the finite case
 
-The remaining `sorry` is the formalization of that intermediate-value argument for
-the (custom, `Cardinal`-valued) `chromaticNumber` used here; it is a self-contained
-side result rather than part of the open conjecture itself. See `knowledge.md` for
-the proof sketch.
+The remaining ingredient for `finite_case` (below) is a *discrete intermediate value
+theorem* for chromatic number: in a finite graph of chromatic number `k`, every value
+`m ≤ k` is realized exactly by an induced subgraph. Adding one vertex changes the
+chromatic number by at most one, so the value passes through every integer between
+`0` and `k`.
+
+We first bridge the custom `Cardinal`-valued `chromaticNumber` to Mathlib's
+`SimpleGraph.Colorable` predicate (valid because the cardinals are well-ordered, so the
+defining infimum is attained), then run the intermediate-value argument with a
+natural-number chromatic number `chiN` for finite induced subgraphs.
 -/
+
+/-- The set defining `chromaticNumber` is always nonempty: the identity function is a
+proper coloring of `G` with `#V` colors. -/
+theorem chromSet_nonempty (V : Type) (G : SimpleGraph V) :
+    { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) }.Nonempty :=
+  ⟨#V, V, rfl, ⟨G.selfColoring⟩⟩
+
+/-- **Bridge (⇐).** If `G` is `m`-colorable but not `j`-colorable for any `j < m`, then the
+custom cardinal-valued chromatic number is exactly `m`. -/
+theorem chromaticNumber_eq_of_colorable (V : Type) (G : SimpleGraph V) (m : ℕ)
+    (hcol : G.Colorable m) (hmin : ∀ j < m, ¬ G.Colorable j) :
+    chromaticNumber V G = (m : Cardinal.{0}) := by
+  apply le_antisymm
+  · apply csInf_le (OrderBot.bddBelow _)
+    exact ⟨Fin m, by simp, hcol⟩
+  · apply le_csInf (chromSet_nonempty V G)
+    rintro κ ⟨α, rfl, ⟨C⟩⟩
+    by_contra hlt
+    push_neg at hlt
+    have hfin : #α < ℵ₀ := lt_of_lt_of_le hlt (by exact_mod_cast (nat_lt_aleph0 m).le)
+    have : Finite α := lt_aleph0_iff_finite.mp hfin
+    have := Fintype.ofFinite α
+    have hcolα : G.Colorable (Fintype.card α) := C.colorable
+    have hcard : (Fintype.card α : Cardinal.{0}) = #α := by simp [Cardinal.mk_fintype]
+    have : (Fintype.card α : Cardinal.{0}) < (m : Cardinal.{0}) := by rw [hcard]; exact hlt
+    have hjm : Fintype.card α < m := by exact_mod_cast this
+    exact hmin _ hjm hcolα
+
+/-- **Bridge (⇒, colorability).** If the custom chromatic number equals the natural number
+`k`, then `G` is `k`-colorable. The cardinals are well-ordered, so the defining infimum is
+attained and is realized by some color type of cardinality `k`. -/
+theorem colorable_of_chromaticNumber_eq (V : Type) (G : SimpleGraph V) (k : ℕ)
+    (h : chromaticNumber V G = (k : Cardinal.{0})) : G.Colorable k := by
+  have h' : sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) } =
+      (k : Cardinal.{0}) := h
+  have hmem : sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) } ∈
+      { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) } :=
+    csInf_mem (chromSet_nonempty V G)
+  rw [h'] at hmem
+  obtain ⟨α, hα, ⟨C⟩⟩ := hmem
+  have : #α = #(Fin k) := by rw [hα]; simp
+  obtain ⟨e⟩ := Cardinal.eq.mp this
+  exact ⟨Coloring.mk (fun v => e (C v)) (fun {v w} hvw => by
+    simp only [ne_eq, EmbeddingLike.apply_eq_iff_eq]; exact C.valid hvw)⟩
+
+/-- **Bridge (⇒, minimality).** If the custom chromatic number equals `k`, then `G` is not
+`j`-colorable for any `j < k`. -/
+theorem not_colorable_of_chromaticNumber_eq (V : Type) (G : SimpleGraph V) (k : ℕ)
+    (h : chromaticNumber V G = (k : Cardinal.{0})) :
+    ∀ j < k, ¬ G.Colorable j := by
+  intro j hjk hcol
+  have h' : sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) } =
+      (k : Cardinal.{0}) := h
+  have hle : sInf { κ : Cardinal.{0} | ∃ (α : Type), #α = κ ∧ Nonempty (G.Coloring α) } ≤
+      (j : Cardinal.{0}) :=
+    csInf_le (OrderBot.bddBelow _) ⟨Fin j, by simp, hcol⟩
+  rw [h'] at hle
+  have : (k : Cardinal.{0}) ≤ (j : Cardinal.{0}) := hle
+  have : k ≤ j := by exact_mod_cast this
+  omega
+
+open Classical in
+/-- Natural-number chromatic number, `sInf` of the colorable numbers. Well-behaved for
+finite graphs (where the set is nonempty). -/
+noncomputable def chiN {V : Type*} (G : SimpleGraph V) : ℕ := sInf { n : ℕ | G.Colorable n }
+
+theorem colorable_chiN {V : Type*} [Finite V] (G : SimpleGraph V) : G.Colorable (chiN G) := by
+  have : Fintype V := Fintype.ofFinite V
+  have hne : { n : ℕ | G.Colorable n }.Nonempty := ⟨Fintype.card V, colorable_of_fintype G⟩
+  exact Nat.sInf_mem hne
+
+theorem chiN_le_of_colorable {V : Type*} (G : SimpleGraph V) {n : ℕ} (h : G.Colorable n) :
+    chiN G ≤ n := Nat.sInf_le h
+
+theorem not_colorable_of_lt_chiN {V : Type*} (G : SimpleGraph V) {j : ℕ} (h : j < chiN G) :
+    ¬ G.Colorable j := Nat.notMem_of_lt_sInf h
+
+/-- Colorings restrict to induced subgraphs on smaller vertex sets. -/
+theorem colorable_induce_mono {V : Type*} (G : SimpleGraph V) {s s' : Set V} (h : s ⊆ s')
+    {n : ℕ} (hc : (G.induce s').Colorable n) : (G.induce s).Colorable n :=
+  Colorable.of_hom (SimpleGraph.induceHomOfLE G h).toHom hc
+
+/-- `chiN` is monotone in the induced vertex set. -/
+theorem chiN_induce_mono {V : Type*} (G : SimpleGraph V) {s s' : Set V} (h : s ⊆ s')
+    [Finite s'] : chiN (G.induce s) ≤ chiN (G.induce s') := by
+  have : Finite s := ((Set.toFinite s').subset h).to_subtype
+  exact chiN_le_of_colorable _ (colorable_induce_mono G h (colorable_chiN _))
+
+/-- **Adding one vertex raises colorability by at most one.** Extend a coloring of the
+induced subgraph on `s'` by giving the new vertex `a` a fresh color. -/
+theorem colorable_induce_insert {V : Type*} (G : SimpleGraph V) (s' : Set V) (a : V) {n : ℕ}
+    (hc : (G.induce s').Colorable n) : (G.induce (insert a s')).Colorable (n + 1) := by
+  classical
+  obtain ⟨c⟩ := hc
+  refine ⟨Coloring.mk
+    (fun w => if h : (w : V) ∈ s' then (c ⟨w, h⟩).castSucc else Fin.last n) ?_⟩
+  intro w₁ w₂ hadj
+  have hG : G.Adj (w₁ : V) (w₂ : V) := hadj
+  dsimp only
+  by_cases h₁ : (w₁ : V) ∈ s' <;> by_cases h₂ : (w₂ : V) ∈ s'
+  · rw [dif_pos h₁, dif_pos h₂, ne_eq, Fin.castSucc_inj]
+    have hadj' : (G.induce s').Adj ⟨(w₁ : V), h₁⟩ ⟨(w₂ : V), h₂⟩ := hG
+    exact c.valid hadj'
+  · simp only [dif_pos h₁, dif_neg h₂]
+    exact (Fin.castSucc_lt_last _).ne
+  · simp only [dif_neg h₁, dif_pos h₂]
+    exact (Fin.castSucc_lt_last _).ne'
+  · exfalso
+    have e1 : (w₁ : V) = a := (Set.mem_insert_iff.mp w₁.2).resolve_right h₁
+    have e2 : (w₂ : V) = a := (Set.mem_insert_iff.mp w₂.2).resolve_right h₂
+    rw [e1, e2] at hG
+    exact G.loopless a hG
+
+theorem chiN_induce_insert_le {V : Type*} (G : SimpleGraph V) (s' : Set V) (a : V) [Finite s'] :
+    chiN (G.induce (insert a s')) ≤ chiN (G.induce s') + 1 :=
+  chiN_le_of_colorable _ (colorable_induce_insert G s' a (colorable_chiN _))
+
+/-- **Discrete intermediate value theorem for chromatic number.**
+For a finite vertex set `s`, every value `m` up to `chiN (G.induce s)` is realized
+*exactly* by some induced subgraph on a subset `t ⊆ s`. Proof by induction on `s`: adding
+a vertex changes the chromatic number by at most one, so all intermediate values occur. -/
+theorem exists_induce_chiN_eq {V : Type*} (G : SimpleGraph V) (s : Finset V) :
+    ∀ m, m ≤ chiN (G.induce (↑s : Set V)) →
+      ∃ t : Finset V, t ⊆ s ∧ chiN (G.induce (↑t : Set V)) = m := by
+  classical
+  induction s using Finset.induction with
+  | empty =>
+    intro m hm
+    refine ⟨∅, subset_refl _, ?_⟩
+    have h0 : chiN (G.induce (↑(∅ : Finset V) : Set V)) = 0 := by
+      haveI : IsEmpty ↥(↑(∅ : Finset V) : Set V) := by rw [Finset.coe_empty]; infer_instance
+      exact Nat.le_zero.mp (chiN_le_of_colorable _ (colorable_of_isEmpty _ 0))
+    rw [h0] at hm ⊢; omega
+  | @insert a s' ha ih =>
+    intro m hm
+    by_cases hm' : m ≤ chiN (G.induce (↑s' : Set V))
+    · obtain ⟨t, hts, hchi⟩ := ih m hm'
+      exact ⟨t, hts.trans (Finset.subset_insert a s'), hchi⟩
+    · push_neg at hm'
+      refine ⟨insert a s', subset_refl _, ?_⟩
+      have hcoe : (↑(insert a s') : Set V) = insert a (↑s' : Set V) := Finset.coe_insert a s'
+      have hle : chiN (G.induce (↑(insert a s') : Set V)) ≤ chiN (G.induce (↑s' : Set V)) + 1 := by
+        rw [hcoe]; exact chiN_induce_insert_le G (↑s' : Set V) a
+      have hmono : chiN (G.induce (↑s' : Set V)) ≤ chiN (G.induce (↑(insert a s') : Set V)) :=
+        chiN_induce_mono G (Finset.coe_subset.mpr (Finset.subset_insert a s'))
+      omega
+
+/-- If `G` is not `n`-colorable, some finite *induced* subgraph already is not
+`n`-colorable (de Bruijn–Erdős, induced form). -/
+theorem exists_finite_induce_not_colorable {V : Type*} (G : SimpleGraph V) (n : ℕ)
+    (h : ¬ G.Colorable n) :
+    ∃ s : Finset V, ¬ (G.induce (↑s : Set V)).Colorable n := by
+  obtain ⟨G', hfin, hnc⟩ := exists_finite_subgraph_not_colorable G n h
+  refine ⟨hfin.toFinset, ?_⟩
+  intro hcol
+  rw [Set.Finite.coe_toFinset] at hcol
+  exact hnc (Colorable.of_hom
+    (⟨id, @fun u v hh => G'.adj_sub hh⟩ : G'.coe →g G.induce G'.verts) hcol)
+
+/-- There is a finite induced subgraph whose chromatic number is at least `k`. -/
+theorem exists_finite_chiN_ge {V : Type*} (G : SimpleGraph V) (k : ℕ)
+    (hmin : ∀ j < k, ¬ G.Colorable j) :
+    ∃ s : Finset V, k ≤ chiN (G.induce (↑s : Set V)) := by
+  cases k with
+  | zero => exact ⟨∅, Nat.zero_le _⟩
+  | succ p =>
+    obtain ⟨s, hnc⟩ := exists_finite_induce_not_colorable G p (hmin p (Nat.lt_succ_self p))
+    refine ⟨s, ?_⟩
+    by_contra hlt
+    push_neg at hlt
+    exact hnc (Colorable.mono (Nat.lt_succ_iff.mp hlt) (colorable_chiN _))
+
+/--
+**Finite case (now fully proved):**
+For finite chromatic number `k`, every value `m ≤ k` is realized *as an induced subgraph
+of `G`*, so the finite-subgraph inheritance is automatic: the witness `H` is an induced
+subgraph of `G`, hence every finite subgraph of `H` is already a subgraph of `G`.
+
+Existence of an induced subgraph with chromatic number *exactly* `m` is the discrete
+intermediate-value theorem `exists_induce_chiN_eq`: starting from a finite subgraph of
+chromatic number `k` (obtained from de Bruijn–Erdős), deleting vertices one at a time
+lowers the chromatic number by at most one, so it passes through every value between `k`
+and `0`. The custom `Cardinal`-valued `chromaticNumber` is matched to the natural-number
+chromatic number via the bridge lemmas above. This side result is fully machine-checked
+(no `sorry`). -/
 theorem finite_case (V : Type) (G : SimpleGraph V) (k : ℕ) :
     chromaticNumber V G = k →
     ∀ m ≤ k, ∃ (W : Type) (H : SimpleGraph W),
       chromaticNumber W H = m ∧
       ∀ (n : ℕ) (F : SimpleGraph (Fin n)),
         isSubgraphOf F H → isSubgraphOf F G := by
-  intro _ _ _
-  sorry
+  intro hχ m hmk
+  have hmin : ∀ j < k, ¬ G.Colorable j := not_colorable_of_chromaticNumber_eq V G k hχ
+  obtain ⟨s, hs⟩ := exists_finite_chiN_ge G k hmin
+  obtain ⟨t, _hts, hchi⟩ := exists_induce_chiN_eq G s m (le_trans hmk hs)
+  refine ⟨↥(↑t : Set V), G.induce (↑t : Set V), ?_, ?_⟩
+  · apply chromaticNumber_eq_of_colorable
+    · rw [← hchi]; exact colorable_chiN _
+    · intro j hj; rw [← hchi] at hj; exact not_colorable_of_lt_chiN _ hj
+  · rintro n F ⟨f, hf_inj, hf_adj⟩
+    refine ⟨fun x => ((f x : ↥(↑t : Set V)) : V), ?_, ?_⟩
+    · intro x y hxy
+      exact hf_inj (Subtype.ext hxy)
+    · intro v₁ v₂ hadj
+      exact hf_adj v₁ v₂ hadj
 
 end Erdos736

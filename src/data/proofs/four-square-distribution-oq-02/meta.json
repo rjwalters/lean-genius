@@ -1,0 +1,149 @@
+{
+  "id": "four-square-distribution-oq-02",
+  "title": "Orbit-Counting Bounds on the Number of Four-Square Representation Types",
+  "slug": "four-square-distribution-oq-02",
+  "description": "The number of four-square representation types of n — the orbits of the hyperoctahedral group B₄ = (ℤ/2)⁴⋊S₄ (sign changes and reorderings, |B₄| = 384) acting on the solution vectors — is squeezed between r₄(n)/384 and r₄(n). Proved from a general finite-group orbit-counting double bound, fully verified, 0 axioms.",
+  "meta": {
+    "author": "Researcher (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi%27s_four-square_theorem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "sum-of-squares",
+      "group-action",
+      "orbit-counting",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.selfEquivSigmaOrbits",
+        "description": "A G-set decomposes as the disjoint union of its orbits",
+        "module": "Mathlib.GroupTheory.GroupAction.Defs"
+      },
+      {
+        "theorem": "Nat.card_le_card_of_surjective",
+        "description": "A surjection from a finite type does not increase cardinality",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Fintype.card_perm",
+        "description": "The order of the symmetric group is the factorial",
+        "module": "Mathlib.Data.Fintype.Perm"
+      }
+    ],
+    "originalContributions": [
+      "card_le_card_group_mul_numOrbits: |X| ≤ |G| · (number of orbits) for any finite group acting on a finite type, via the orbit decomposition",
+      "numOrbits_le_card: number of orbits ≤ |X| (orbit quotient map is surjective)",
+      "card_orbit_le: each orbit has at most |G| elements (image of g ↦ g·a)",
+      "card_hyperoctahedral_four: |B₄| = |S₄ × (ℤ/2)⁴| = 4!·2⁴ = 384 computed concretely",
+      "fourSquare_numTypes_bounds: r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n) for the number of representation types t(n)",
+      "fourSquare_numTypes_ge: the divided lower bound r₄(n)/384 ≤ t(n)"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 154,
+    "assumptions": "0 axioms, 0 sorries. The general orbit-counting bounds are proved from Mathlib's MulAction API. The four-square corollary is stated for an arbitrary finite group of order 384 acting on the (finite) solution set S with r₄(n) = card S; the semidirect-product structure of B₄ on ℤ⁴ and Jacobi's exact value of r₄(n) are not re-derived here (the bound depends only on the group order, which is pinned by the concrete |B₄| = 384 computation).",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Jacobi's four-square theorem (1834) gives the exact number of ordered, signed representations of n as a sum of four squares: r₄(n) = 8·∑_{d|n, 4∤d} d. The parent entry four-square-distribution studies how these representations distribute across types under the natural symmetries — permuting the four coordinates and flipping their signs. Those symmetries form the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄ of order 2⁴·4! = 384, the symmetry group of the 4-cube, and a 'representation type' of n is exactly a B₄-orbit of solution vectors. The orbit-counting (Burnside / orbit–stabilizer) viewpoint converts the analytic exact count r₄(n) into a bound on the number of genuinely distinct types.",
+    "problemStatement": "**Open question (four-square-distribution-oq-02)**: can the distribution of r₄(n) be used to bound the number of distinct representation types of n — relating the B₄-orbit structure of {x₁²+···+x₄² = n} to arithmetic data of n?\n\n**Result**: a fully finite, machine-checked double bound. For the hyperoctahedral group B₄ (|B₄| = 384) acting on the solution set S of n (with r₄(n) = |S|), the number of types t(n) = #(B₄-orbits) satisfies r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n), i.e. r₄(n)/384 ≤ t(n) ≤ r₄(n).",
+    "text": "The number of B₄-representation-types of n lies between r₄(n)/384 and r₄(n), where 384 = |B₄| = 2⁴·4! is the order of the hyperoctahedral group of sign changes and reorderings.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **Orbit ≤ group**: every orbit is the image of G under g ↦ g·a, so |orbit| ≤ |G| (a surjection from a finite type does not increase cardinality).\n\n2. **Upper bound**: the orbit quotient map X → X/∼ is surjective, so #orbits ≤ |X|.\n\n3. **Lower bound**: decompose X as the disjoint union of its orbits (MulAction.selfEquivSigmaOrbits), so |X| = ∑_orbits |orbit| ≤ #orbits · |G|.\n\n4. **Pin the constant**: compute |B₄| = |S₄ × (ℤ/2)⁴| = 4!·2⁴ = 384 (Fintype.card_perm, Fintype.card_fun, ZMod.card).\n\n5. **Specialize**: substitute |G| = 384 and X = S (the four-square solution set, |S| = r₄(n)) to obtain r₄(n) ≤ 384·t(n) ≤ 384·r₄(n) and t(n) ≤ r₄(n).",
+    "keyInsights": [
+      "**A representation type is a group orbit**: identifying the up-to-symmetry classes with B₄-orbits turns a counting question into orbit–stabilizer accounting, fully inside Mathlib's MulAction API.",
+      "**The bound depends only on the group order**: every orbit has size at most |G| = 384, so the exact count r₄(n) forces at least r₄(n)/384 distinct types regardless of the fine stabilizer structure — a clean, assumption-free squeeze.",
+      "**384 is the symmetry of the 4-cube**: |B₄| = 2⁴·4! counts the 16 sign patterns times the 24 coordinate permutations; this is the maximal orbit size (achieved by vectors with four distinct nonzero coordinates).",
+      "**Finite and analytic-dependency-free**: unlike the underlying Jacobi formula, the orbit-counting bound needs no analytic input — it is a finite statement about a group action, proved with 0 axioms."
+    ],
+    "prerequisites": [
+      "Group actions, orbits and stabilizers (MulAction)",
+      "Orbit decomposition / Burnside counting",
+      "Jacobi's four-square theorem (for the value of r₄(n))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "orbit-bounds",
+      "title": "General Orbit-Counting Bounds",
+      "startLine": 56,
+      "endLine": 110,
+      "summary": "For any finite group G acting on a finite type X: each orbit has ≤ |G| elements, the number of orbits is ≤ |X|, and |X| ≤ |G|·(number of orbits). Packaged as a double bound, with positivity of the orbit count for nonempty X.",
+      "mathContext": "Orbit–stabilizer and the orbit decomposition X ≃ Σ_orbits orbit give |X| = ∑|orbit| with each |orbit| ≤ |G|, hence |X|/|G| ≤ #orbits ≤ |X|."
+    },
+    {
+      "id": "hyperoctahedral-order",
+      "title": "The Order of the Hyperoctahedral Group B₄",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "Computes |B₄| = |S₄ × (ℤ/2)⁴| = 4!·2⁴ = 384 concretely.",
+      "mathContext": "B₄ = (ℤ/2)⁴ ⋊ S₄ is the group of signed permutations of four coordinates; its underlying set has 24·16 = 384 elements, the symmetry group of the 4-dimensional hypercube."
+    },
+    {
+      "id": "four-square-bounds",
+      "title": "Four-Square Representation-Type Bounds",
+      "startLine": 132,
+      "endLine": 154,
+      "summary": "Specializes the orbit-counting bound to |G| = 384 acting on the solution set S (r₄(n) = |S|): r₄(n) ≤ 384·t(n), t(n) ≤ r₄(n), and the divided form r₄(n)/384 ≤ t(n).",
+      "mathContext": "With t(n) the number of B₄-orbits (representation types) of n, the exact count r₄(n) squeezes t(n) into [r₄(n)/384, r₄(n)]."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "extends",
+      "description": "Parent entry on the distribution of r₄(n) across orderings/types; this entry bounds the number of types via orbit counting under the full hyperoctahedral group B₄."
+    },
+    {
+      "targetId": "fermat-two-squares-oq-01",
+      "relationship": "related",
+      "description": "Lagrange/Euler four-squares and the composition-algebra context for sums of four squares."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) orbit-counting double bound on the number of four-square representation types: for the hyperoctahedral group B₄ (|B₄| = 384) acting on the solution set S of n with r₄(n) = |S|, the number of types t(n) satisfies r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n). The engine is a general finite-group bound |X|/|G| ≤ #orbits ≤ |X|, with the constant 384 = 2⁴·4! pinned by a concrete cardinality computation.",
+    "implications": "**Theoretical Significance**: converts Jacobi's analytic exact count r₄(n) into a clean arithmetic-free statement about the symmetry structure of the representations. The lower bound r₄(n)/384 is sharp in the regime where the generic orbit (vectors with four distinct nonzero coordinates, stabilizer trivial) dominates; the upper bound r₄(n) is attained only by the most symmetric n. The general bounds are reusable for any orbit-counting question over a finite group action.",
+    "openQuestions": [
+      "Build the semidirect-product B₄-action on ℤ⁴ explicitly and prove it preserves the quadratic form, removing the abstract order-384 hypothesis.",
+      "Compute the exact number of types via Burnside's lemma (sum of fixed points), refining the lower bound by accounting for stabilizers of vectors with zero or repeated coordinates.",
+      "Express t(n) in closed arithmetic form (in terms of the divisors of n) and compare with the r₄(n)/384 bound."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MulAction"
+    ],
+    "namespace": "FourSquareDistributionOQ02",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/FourSquareDistributionOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "C. G. J. Jacobi",
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": "1829",
+      "venue": "",
+      "note": "The exact four-square count r₄(n) = 8 ∑_{d|n, 4∤d} d"
+    },
+    {
+      "authors": "W. Burnside",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "",
+      "note": "Orbit-counting lemma; orbit–stabilizer accounting"
+    }
+  ],
+  "sorries": 0
+}

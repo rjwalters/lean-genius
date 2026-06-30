@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-fiboq0201-1",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 60 },
+    "type": "context",
+    "title": "The Lucas Analogue: Strong Divisibility Fails",
+    "content": "**Module framing.** The parent entry showed the Fibonacci numbers are a *strong divisibility sequence*: $\\gcd(F_m,F_n)=F_{\\gcd(m,n)}$, equivalently $F_m\\mid F_n\\iff m\\mid n$ for $m\\ge 3$. The companion **Lucas numbers** $L_n$ ($L_0=2,L_1=1,L_{n+2}=L_n+L_{n+1}$: $2,1,3,4,7,11,18,29,47,76,\\dots$) share the recurrence but **not** the divisibility structure. This module proves the contrast: $\\gcd(L_2,L_4)=\\gcd(3,7)=1\\neq 3=L_{\\gcd(2,4)}$, so the strong law fails; and $2\\mid 4$ but $L_2=3\\nmid 7=L_4$, so the Fibonacci transfer law $m\\mid n\\Rightarrow F_m\\mid F_n$ has no Lucas analogue. The correct law is the *odd-quotient rule* $L_m\\mid L_n\\iff m\\mid n\\wedge n/m\\text{ odd}$ (for $m\\ge 2$).",
+    "mathContext": "$L_0=2,\\ L_1=1,\\ L_{n+2}=L_n+L_{n+1}$; strong divisibility is $\\gcd(a_m,a_n)=a_{\\gcd(m,n)}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lucas numbers",
+      "Strong divisibility sequence",
+      "Lucas sequences Uₙ, Vₙ",
+      "2-adic valuation and parity obstruction"
+    ],
+    "prerequisites": [
+      "gcd and divisibility on ℕ",
+      "The Fibonacci/Lucas recurrence and base values"
+    ],
+    "tags": ["module-header", "framing", "counterexample", "strong-divisibility"]
+  },
+  {
+    "id": "ann-fiboq0201-2",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 66, "endLine": 82 },
+    "type": "concept",
+    "title": "A Decidable Definition of the Lucas Numbers",
+    "content": "Mathlib defines `Nat.fib` but **not** the Lucas numbers. We supply them via a structural pair recursion `lucasPair n = (Lₙ, Lₙ₊₁)` with `lucasPair (n+1) = ((lucasPair n).2, (lucasPair n).1 + (lucasPair n).2)`, so `lucas n := (lucasPair n).1` reduces by `rfl`/`decide` — essential for the concrete divisibility witnesses below. `lucas_add_two : Lₙ₊₂ = Lₙ + Lₙ₊₁` (by `rfl`) certifies that this is genuinely the Lucas sequence.",
+    "mathContext": "$(L_n, L_{n+1}) \\mapsto (L_{n+1}, L_n + L_{n+1})$, starting $(2,1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Structural recursion",
+      "Definitional reduction (rfl/decide)",
+      "Companion Lucas sequence"
+    ],
+    "prerequisites": [
+      "Pair-accumulator recursion (as in Nat.fib's fast form)"
+    ],
+    "tags": ["definition", "lucas-numbers", "decidable"]
+  },
+  {
+    "id": "ann-fiboq0201-3",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 84, "endLine": 117 },
+    "type": "concept",
+    "title": "The Fibonacci Bridge and the Product Identity F₂ₙ = Fₙ·Lₙ",
+    "content": "**`two_mul_fib_succ`** proves the subtraction-free bridge $2F_{n+1}=L_n+F_n$ by two-step induction (`Nat.twoStepInduction`), from which **`lucas_eq`** gives the closed form $L_n=2F_{n+1}-F_n$ (the truncated subtraction is exact since $2F_{n+1}=L_n+F_n\\ge F_n$). Substituting this into Mathlib's `Nat.fib_two_mul` collapses the doubling identity to the **headline product identity** $F_{2n}=F_n\\,L_n$ (**`fib_two_mul_eq`**). Its corollary **`lucas_dvd_fib_two_mul`** ($L_n\\mid F_{2n}$) embeds the Lucas numbers in the Fibonacci divisibility lattice at the even indices.",
+    "mathContext": "$2F_{n+1}=L_n+F_n,\\quad L_n=2F_{n+1}-F_n,\\quad F_{2n}=F_n\\,L_n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.fib_two_mul",
+      "Nat.twoStepInduction",
+      "Product identity F₂ₙ = Fₙ·Lₙ"
+    ],
+    "prerequisites": [
+      "The Fibonacci doubling identity",
+      "Two-step induction on second-order recurrences"
+    ],
+    "tags": ["bridge", "product-identity", "headline"]
+  },
+  {
+    "id": "ann-fiboq0201-4",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 119, "endLine": 126 },
+    "type": "concept",
+    "title": "Concrete Lucas Values",
+    "content": "The values $L_2=3, L_3=4, L_4=7, L_5=11, L_6=18, L_9=76$, each by `rfl` on the structural definition. These feed the decidable divisibility witnesses: e.g. $\\gcd(3,7)$ for the failure of strong divisibility, and $3\\mid 18$, $4\\mid 76$ for the odd-quotient instances.",
+    "mathContext": "$L_2=3,\\ L_3=4,\\ L_4=7,\\ L_5=11,\\ L_6=18,\\ L_9=76.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Definitional evaluation"],
+    "prerequisites": [],
+    "tags": ["values", "computation"]
+  },
+  {
+    "id": "ann-fiboq0201-5",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 128, "endLine": 151 },
+    "type": "concept",
+    "title": "Strong Divisibility Fails — the Core Result",
+    "content": "**`lucas_not_strong_divisibility`**: there exist $m,n$ with $L_{\\gcd(m,n)}\\neq\\gcd(L_m,L_n)$. The witness $m=2,n=4$ gives $\\gcd(L_2,L_4)=\\gcd(3,7)=1$ while $L_{\\gcd(2,4)}=L_2=3$. **`index_dvd_not_imp_lucas_dvd`** is the decisive contrast with Fibonacci: $2\\mid 4$ yet $L_2=3\\nmid 7=L_4$ — the implication $m\\mid n\\Rightarrow F_m\\mid F_n$ (Mathlib's `Nat.fib_dvd`) simply has no Lucas counterpart. The doubling step $n\\mapsto 2n$ is exactly where $L_n\\mid F_{2n}$ holds but $L_n\\mid L_{2n}$ fails.",
+    "mathContext": "$\\gcd(L_2,L_4)=1\\neq 3=L_{\\gcd(2,4)}$; $2\\mid 4$ but $3\\nmid 7$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Strong divisibility sequence",
+      "Counterexample",
+      "Parity obstruction at the doubling step"
+    ],
+    "prerequisites": ["Decidability of gcd and divisibility on ℕ"],
+    "tags": ["counterexample", "main-result", "strong-divisibility"]
+  },
+  {
+    "id": "ann-fiboq0201-6",
+    "proofId": "fibonacci-identities-oq-02-oq-01",
+    "range": { "startLine": 153, "endLine": 179 },
+    "type": "concept",
+    "title": "The Correct Law: the Odd-Quotient Rule",
+    "content": "The exact characterization is $L_m\\mid L_n\\iff m\\mid n\\wedge n/m\\text{ odd}$ for $m\\ge 2$ — divisibility detects not just the index ratio but its **parity**. We verify it on the decisive instances: $L_2\\mid L_6$ (quotient $6/2=3$ odd) vs $L_2\\nmid L_4$ (quotient $4/2=2$ even); $L_3\\mid L_9$ (quotient $9/3=3$ odd) vs $L_3\\nmid L_6$ (quotient $6/3=2$ even). The degenerate index $L_1=1$ divides every $L_n$, excluded by the $m\\ge 2$ hypothesis. The general biconditional (via the integer Lucas addition law $L_{a+2m}=L_{a+m}L_m-(-1)^mL_a$) is recorded as an open question.",
+    "mathContext": "For $m\\ge 2$: $L_m\\mid L_n\\iff m\\mid n\\text{ and }n/m\\text{ odd}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Odd-quotient divisibility rule",
+      "2-adic valuation",
+      "Integer Lucas addition law"
+    ],
+    "prerequisites": ["Parity and divisibility on ℕ"],
+    "tags": ["characterization", "odd-quotient", "main-result"]
+  }
+]

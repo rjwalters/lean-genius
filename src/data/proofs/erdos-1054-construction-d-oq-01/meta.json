@@ -63,6 +63,80 @@
     "dateAdded": "2026-06-22",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "Erdős Problem #1054 concerns numbers that arise as partial sums of the increasingly-sorted list of a number's divisors — 'Construction D' in the problem's taxonomy. The parent gallery entry verifies that particular values are representable: 1 + p + p² (= σ(p²) for small primes p) and the Mersenne numbers 2^{k+1} − 1 (= σ(2^k)), each by a separate native_decide computation. native_decide discharges a goal by trusted compiled kernel reduction, which pulls in the Lean.ofReduceBool axiom — so those concrete checks, while correct, are not axiom-free. This entry asks: is there a structural reason all of them hold? The sum-of-divisors function σ(m) = ∑_{d∣m} d is one of the oldest objects in number theory (perfect numbers, Mersenne primes, Euler's σ), and the answer turns out to be a one-line observation about cumulative sums.",
+    "problemStatement": "Replace the parent's case-by-case representability checks with a single general theorem, and do so without native_decide (hence free of Lean.ofReduceBool). Concretely: prove that for every m ≥ 1 the divisor sum σ(m) = ∑_{d∣m} d is representable — it appears as a partial sum of m's sorted divisor list — and derive the prime-square and Mersenne families as corollaries.",
+    "proofStrategy": "The single observation: the LAST partial sum of the sorted divisor list [d₁ < d₂ < ⋯ < d_t] is d₁ + d₂ + ⋯ + d_t = σ(m). Formally, partialDivisorSums m is the tail of scanl (·+·) 0 (sortedDivisors m), and Batteries' List.getLast_scanl identifies its last entry with foldl (·+·) 0 (sortedDivisors m), the running total. A small accumulator-generalized lemma foldl_add_acc (foldl (+) a L = a + L.sum) converts that fold to the list sum, and Finset.sort_perm_toList equates the list sum with the finset sum σ(m). Membership of σ(m) in partialDivisorSums m (nonempty since 1 ∣ m) gives sum_divisors_representable with witness m. Specializing m = p^k and applying Nat.sum_divisors_prime_pow yields geom_sum_representable for ∑_{i=0}^k p^i; k = 2 recovers 1 + p + p², and p = 2 recovers the Mersenne family.",
+    "keyInsights": [
+      "**Representability of σ(m) is automatic, not a coincidence.** Every concrete check in the parent file is an instance of one structural fact — σ(m) is the final cumulative sum of the increasing divisor sequence — so the whole image of the σ function lands inside the representable set.",
+      "**Eliminating native_decide is a genuine axiom strengthening.** The parent's native_decide witnesses depend on Lean.ofReduceBool; this file proves strictly more (an infinite family, uniformly) with only propext / Classical.choice / Quot.sound, so the results are honestly axiom-free.",
+      "**Generalizing the fold accumulator is the technical crux.** The naive foldl (+) 0 L = L.sum does not strengthen the induction hypothesis, because the recursive call threads a non-zero accumulator; foldl_add_acc with a free accumulator a closes the induction.",
+      "**One theorem, two classical families.** The prime-power corollary ∑_{i=0}^k p^i unifies the parent's prime-square witnesses (k = 2) and the entire Mersenne family (p = 2), each previously checked individually, into a single statement valid for all primes and all exponents."
+    ],
+    "prerequisites": [
+      "Divisors of a natural number and the sum-of-divisors function σ (Mathlib.NumberTheory.Divisors)",
+      "Sorted lists from a Finset, and that the sort is a permutation of the finset (Finset.sort, Finset.sort_perm_toList)",
+      "Cumulative-sum lists: scanl / foldl and List.getLast_scanl"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: One Structural Theorem",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring: the parent verifies specific representable values (1+p+p², Mersenne 2^{k+1}−1) case by case via native_decide; this file isolates the structural reason — σ(m) is the last partial sum of the sorted divisor list — into one axiom-free theorem, and lists the seven results. Imports the Divisors / Finset.Sort APIs and opens Nat, Finset.",
+      "mathContext": "For every m ≥ 1, σ(m) = ∑_{d∣m} d is representable, witnessed by m itself — native_decide-free."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: Sorted Divisors, Partial Sums, Representability",
+      "startLine": 45,
+      "endLine": 61,
+      "summary": "sortedDivisors m = m.divisors.sort (≤); partialDivisorSums m = tail of scanl (·+·) 0 (sortedDivisors m); IsRepresentable n = ∃ m ≥ 1, n ∈ partialDivisorSums m. Mirrored from the parent so the file is self-contained while avoiding the parent's native_decide.",
+      "mathContext": "Partial sums of [d₁<⋯<d_t] are [d₁, d₁+d₂, …, d₁+⋯+d_t]; n is representable if it is one of these for some m."
+    },
+    {
+      "id": "foldl-helper",
+      "title": "Accumulator Identity for foldl",
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "foldl_add_acc: foldl (·+·) a L = a + L.sum, proved by induction on L with the accumulator a generalized. This is the lemma that turns the scanl running total into the list sum.",
+      "mathContext": "foldl (+) a [x₁,…,xₙ] = a + (x₁ + ⋯ + xₙ); generalizing a is essential for the induction."
+    },
+    {
+      "id": "sum-membership",
+      "title": "σ(m) Is the Final Partial Sum",
+      "startLine": 81,
+      "endLine": 136,
+      "summary": "sortedDivisors_sum equates the sorted-list sum with the finset sum σ(m) via Finset.sort_perm_toList. sum_divisors_mem_partialSums shows σ(m) ∈ partialDivisorSums m for m ≥ 1 (the list is nonempty since 1 ∣ m; the getLast of the scanl is in the list and equals the total by foldl_add_acc). sum_divisors_representable then packages the headline with witness m.",
+      "mathContext": "The last scanl entry carries the total of all divisors, so σ(m) is automatically a partial divisor sum."
+    },
+    {
+      "id": "corollaries",
+      "title": "Prime-Power Corollary and Recovered Families",
+      "startLine": 138,
+      "endLine": 168,
+      "summary": "geom_sum_representable: ∑_{i=0}^k p^i is representable for every prime p (witness p^k), via Nat.sum_divisors_prime_pow. prime_sq_sum_representable' recovers the parent's 1+p+p² (k=2); mersenne_representable recovers ∑ 2^i = 2^{k+1}−1 (p=2). Both now without native_decide.",
+      "mathContext": "∑_{i=0}^k p^i = σ(p^k); k=2 gives 1+p+p², p=2 gives the Mersenne numbers."
+    }
+  ],
+  "conclusion": {
+    "summary": "A single axiom-free theorem replaces the parent's case-by-case native_decide checks: for every m ≥ 1 the sum of divisors σ(m) is representable, because it is always the last partial sum of m's sorted divisor list. Specializing m = p^k gives that every geometric sum 1 + p + ⋯ + p^k is representable, subsuming the prime-square witnesses (k = 2) and the entire Mersenne family (p = 2). Seven theorems, zero sorries, zero axioms beyond propext / Classical.choice / Quot.sound — no Lean.ofReduceBool.",
+    "implications": "Shows that representability under Construction D is not a sequence of numerical coincidences but a structural property of the σ function: the whole image of σ lies in the representable set. Replacing native_decide by a uniform proof both strengthens the result to an infinite family and removes the Lean.ofReduceBool dependency, an honest improvement in axiom hygiene. The accumulator-generalization technique (foldl_add_acc) is a reusable idiom for any 'last cumulative sum equals total' argument.",
+    "openQuestions": [
+      "Characterize the FULL set of representable numbers under Construction D (not just the image of σ): which n appear as some intermediate partial divisor sum, and what is its density?",
+      "Determine which numbers are representable in multiple ways, and whether σ(m)-representability interacts with multiplicativity of σ to give a sieve for the representable set.",
+      "Extend the native_decide-elimination program to the other constructions in Erdős #1054, replacing concrete checks with structural theorems wherever a closed-form divisor identity exists."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1054-construction-d",
+      "relationship": "extends",
+      "description": "Parent Construction D entry: verifies specific representable values (1+p+p² for small primes, Mersenne numbers) case by case via native_decide. This OQ-01 isolates the structural reason — σ(m) is the last partial divisor sum — into one general, native_decide-free theorem that subsumes all of them."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "sum_divisors_representable",

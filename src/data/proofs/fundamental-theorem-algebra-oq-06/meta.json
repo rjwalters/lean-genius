@@ -1,0 +1,213 @@
+{
+  "id": "fundamental-theorem-algebra-oq-06",
+  "slug": "fundamental-theorem-algebra-oq-06",
+  "title": "Every Odd-Degree Real Polynomial Has a Real Root",
+  "description": "Proves the intermediate-value step of Gauss's algebraic proof of the Fundamental Theorem of Algebra: every polynomial in ℝ[X] of odd degree has a real root. The end behaviour of an odd-degree polynomial is opposite at +∞ and −∞ (an odd power flips sign), so the polynomial takes both a strictly negative and a strictly positive value; the intermediate value theorem then produces a root. Corollaries: an odd-degree real polynomial has a linear factor X − C x, and every irreducible real polynomial of degree > 1 has even degree.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "FTAOddDegreeRoot",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "odd_natDegree_has_real_root",
+        "type": "original",
+        "description": "Every real polynomial of odd degree has a real root (the odd-degree IVT step of Gauss's FTA proof)",
+        "leanType": "(P : ℝ[X]) → Odd P.natDegree → ∃ x : ℝ, P.IsRoot x"
+      },
+      {
+        "name": "exists_neg_and_pos_eval",
+        "type": "original",
+        "description": "An odd-degree real polynomial takes both a strictly negative and a strictly positive value, via opposite end behaviour at ±∞",
+        "leanType": "(P : ℝ[X]) → Odd P.natDegree → (∃ a : ℝ, P.eval a < 0) ∧ (∃ b : ℝ, 0 < P.eval b)"
+      },
+      {
+        "name": "odd_natDegree_has_linear_factor",
+        "type": "original",
+        "description": "An odd-degree real polynomial splits off a linear factor X − C x",
+        "leanType": "(P : ℝ[X]) → Odd P.natDegree → ∃ x : ℝ, (X - C x) ∣ P"
+      },
+      {
+        "name": "natDegree_even_of_irreducible_of_one_lt",
+        "type": "original",
+        "description": "Every irreducible real polynomial of degree > 1 has even degree (quadratics like X²+1 are the obstruction to ℝ being algebraically closed)",
+        "leanType": "(P : ℝ[X]) → Irreducible P → 1 < P.natDegree → Even P.natDegree"
+      }
+    ],
+    "path": "Proofs/FundamentalTheoremAlgebraOQ06.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ06.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "intermediate-value-theorem",
+      "fundamental-theorem-of-algebra",
+      "real-analysis",
+      "field-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 124,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound). The proof builds on Mathlib's polynomial end-behaviour lemmas (tendsto_atTop_of_leadingCoeff_nonneg, tendsto_atBot_of_leadingCoeff_nonpos) and the intermediate value theorem (intermediate_value_uIcc); Mathlib has no standalone odd-degree-root theorem, so the result is assembled here.",
+    "originalContributions": [
+      "odd_natDegree_has_real_root: every odd-degree real polynomial has a real root — original, the IVT step of Gauss's FTA proof",
+      "exists_neg_and_pos_eval: an odd-degree polynomial takes both signs, via the reflected polynomial P(−x) = P.comp(−X) and leadingCoeff(P∘(−X)) = (−1)^deg · leadingCoeff(P) — original",
+      "odd_natDegree_has_linear_factor: linear factor X − C x via dvd_iff_isRoot — original corollary",
+      "natDegree_even_of_irreducible_of_one_lt: irreducible real polynomials of degree > 1 have even degree — original corollary"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.tendsto_atTop_of_leadingCoeff_nonneg",
+        "description": "A polynomial with positive degree and nonnegative leading coefficient tends to +∞ at +∞",
+        "module": "Mathlib.Analysis.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.tendsto_atBot_of_leadingCoeff_nonpos",
+        "description": "A polynomial with positive degree and nonpositive leading coefficient tends to −∞ at +∞",
+        "module": "Mathlib.Analysis.Polynomial.Basic"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_comp",
+        "description": "leadingCoeff (p ∘ q) = leadingCoeff p · (leadingCoeff q)^(natDegree p) when natDegree q ≠ 0",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "intermediate_value_uIcc",
+        "description": "Intermediate value theorem on an unordered interval [[a,b]]",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "Polynomial.dvd_iff_isRoot",
+        "description": "X − C a divides p iff a is a root of p",
+        "module": "Mathlib.Algebra.Polynomial.Div"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "Polynomial evaluation, degree, and leading coefficient",
+      "Limits of functions at infinity (Filter.Tendsto, atTop/atBot)",
+      "The intermediate value theorem for continuous real functions",
+      "Familiarity with Lean 4 and Mathlib"
+    ],
+    "wiedijkNumber": 2,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra",
+    "date": "1849",
+    "relatedProblems": [
+      {
+        "id": "fundamental-theorem-algebra",
+        "relationship": "Proves the odd-degree intermediate-value step singled out in the parent entry's open question on Gauss's purely algebraic proof of FTA"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "problemStatement": "Does every real polynomial of odd degree have a real root? This is the intermediate-value ingredient of Gauss's (1849) algebraic proof of the Fundamental Theorem of Algebra, which reduces the analytic content of FTA to two facts: every odd-degree real polynomial has a real root, and every complex number has a complex square root.",
+    "text": "An odd-degree real polynomial $P$ behaves like its leading term $c\\,x^n$ near $\\pm\\infty$. Because $n$ is odd, $x^n$ has opposite signs at $+\\infty$ and $-\\infty$, so $P$ runs from one infinity to the other and must cross zero. Formalising this requires (a) the end-behaviour of polynomials, expressed through Mathlib's `tendsto` lemmas governed by the sign of the leading coefficient, and (b) the intermediate value theorem. The sign flip at $-\\infty$ is captured by the reflected polynomial $Q(x) = P(-x) = P \\circ (-X)$, whose leading coefficient is $(-1)^{\\deg P}\\,\\mathrm{lc}(P) = -\\mathrm{lc}(P)$ for odd degree, so $P$ and $Q$ have opposite limits along `atTop`.",
+    "proofStrategy": "Reduce to producing a point where $P$ is negative and a point where $P$ is positive, then apply the intermediate value theorem on the unordered interval between them. Whatever the sign of $\\mathrm{lc}(P)$, exactly one of $P$ and the reflected polynomial $Q(x)=P(-x)$ tends to $+\\infty$ along `atTop` and the other to $-\\infty$; reading $Q.\\mathrm{eval}\\,x = P.\\mathrm{eval}(-x)$ back yields both a positive and a negative value of $P$.",
+    "keyInsights": [
+      "Oddness of the degree is exactly what makes the leading term flip sign between $+\\infty$ and $-\\infty$ — this is the entire content of the theorem.",
+      "The sign flip at $-\\infty$ need not be proved by a separate atBot argument: composing with $-X$ converts $-\\infty$ behaviour into $+\\infty$ behaviour, and $\\mathrm{leadingCoeff}(P\\circ(-X)) = (-1)^{\\deg P}\\,\\mathrm{leadingCoeff}(P)$.",
+      "Using the unordered interval `[[a,b]]` and `intermediate_value_uIcc` removes any need to track whether $a \\le b$ or $b \\le a$.",
+      "The result explains the asymmetry in ℝ: odd-degree polynomials always have roots, so the obstruction to ℝ being algebraically closed lives entirely in even degree (e.g. $X^2+1$)."
+    ],
+    "historicalContext": "Gauss gave several proofs of the Fundamental Theorem of Algebra. His 1849 proof is the most algebraic, isolating the order structure of ℝ to two ingredients: the intermediate value property for odd-degree polynomials (proved here) and the existence of complex square roots. The general order-theoretic version — every odd-degree polynomial over a real-closed field has a root — is part of the Artin–Schreier theory of real-closed fields (1927).",
+    "prerequisites": [
+      "Polynomial evaluation, degree, and leading coefficient",
+      "Limits at infinity and the Filter.Tendsto API",
+      "The intermediate value theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Module Overview and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports Mathlib and opens Polynomial, Filter, and Topology. The docstring frames the result as the odd-degree IVT step of Gauss's algebraic FTA proof.",
+      "mathContext": "Goal: $\\forall P \\in \\mathbb{R}[X],\\ \\mathrm{Odd}(\\deg P) \\Rightarrow \\exists x,\\ P(x)=0$."
+    },
+    {
+      "id": "both-signs",
+      "title": "Both Signs via End Behaviour",
+      "startLine": 45,
+      "endLine": 85,
+      "summary": "Proves exists_neg_and_pos_eval: an odd-degree polynomial takes a strictly negative and a strictly positive value. Uses the reflected polynomial Q = P.comp(−X) with leadingCoeff Q = −leadingCoeff P, and case-splits on the sign of the leading coefficient.",
+      "mathContext": "$\\mathrm{leadingCoeff}(P\\circ(-X)) = (-1)^{\\deg P}\\,\\mathrm{leadingCoeff}(P) = -\\mathrm{leadingCoeff}(P)$; one of $P, Q$ tends to $+\\infty$ and the other to $-\\infty$ along `atTop`, and $Q(x)=P(-x)$."
+    },
+    {
+      "id": "ivt-root",
+      "title": "Root via the Intermediate Value Theorem",
+      "startLine": 87,
+      "endLine": 95,
+      "summary": "Proves odd_natDegree_has_real_root: feeds the negative and positive values into intermediate_value_uIcc to obtain c with P(c) = 0.",
+      "mathContext": "$0 \\in [[P(a), P(b)]] \\subseteq P([[a,b]])$ since $P(a) < 0 < P(b)$, giving a root $c$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Structural Corollaries",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "odd_natDegree_has_linear_factor extracts a linear factor X − C x via dvd_iff_isRoot. natDegree_even_of_irreducible_of_one_lt deduces that an irreducible real polynomial of degree > 1 must have even degree.",
+      "mathContext": "A linear factor of an irreducible $P$ with $\\deg P > 1$ forces a contradiction, so irreducibility above degree 1 lives in even degree; $X^2+1$ is the prototypical irreducible quadratic."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every odd-degree real polynomial has a real root, proved from polynomial end behaviour and the intermediate value theorem with 0 axioms and 0 sorries. Corollaries give a linear factor and show that irreducibility of real polynomials above degree 1 is confined to even degree.",
+    "implications": [
+      "Supplies the intermediate-value half of Gauss's algebraic FTA proof, isolating exactly where the order completeness of ℝ enters.",
+      "Explains why the obstruction to ℝ being algebraically closed is even-degree: odd-degree polynomials always factor off a real root.",
+      "Provides reusable infrastructure (both-signs-from-odd-degree, IVT root extraction) for downstream real-root arguments."
+    ],
+    "openQuestions": [
+      "Generalise to real-closed fields: every odd-degree polynomial over a real-closed field has a root (the Artin–Schreier order-theoretic version), using an abstract IVT for the order topology.",
+      "Quantify the root: produce an explicit bound on $|x|$ for a root in terms of the coefficients (e.g. a Cauchy root bound), making the existence proof effective.",
+      "Combine with 'every complex number has a square root' to assemble a fully formal version of Gauss's 1849 algebraic proof of FTA, minimising the analytic prerequisites."
+    ]
+  },
+  "references": [
+    {
+      "title": "Fundamental theorem of algebra",
+      "url": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra",
+      "description": "Overview of FTA and its proofs, including Gauss's algebraic argument reducing to odd-degree real roots and complex square roots."
+    },
+    {
+      "title": "Real closed field",
+      "url": "https://en.wikipedia.org/wiki/Real_closed_field",
+      "description": "Artin–Schreier theory: the order-theoretic generalisation in which every odd-degree polynomial has a root."
+    },
+    {
+      "title": "Intermediate value theorem",
+      "url": "https://en.wikipedia.org/wiki/Intermediate_value_theorem",
+      "description": "The analytic ingredient used to convert a sign change into a root."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-algebra",
+      "relationship": "extends",
+      "description": "Proves the odd-degree intermediate-value step that the parent entry names as the key ingredient of Gauss's algebraic proof of FTA."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04",
+      "relationship": "complementary",
+      "description": "That entry shows ℝ is not algebraically closed via X²+1 (even degree); this entry shows odd-degree polynomials always have roots, so the obstruction is exactly even degree."
+    }
+  ],
+  "sorries": []
+}

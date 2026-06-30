@@ -30,8 +30,9 @@ import Mathlib.Data.Set.Card
 import Mathlib.Data.Finset.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 
-open Set Real Finset
+open Set Real Finset Filter Asymptotics
 
 namespace Erdos798
 
@@ -197,16 +198,49 @@ theorem t_is_o_n :
     ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n ≥ N, (t n : ℝ) < ε * n := by
   intro ε hε
   obtain ⟨C, hC, hbound⟩ := alon_upper_bound
-  -- For large n, C · n^{2/3} · log n < ε · n
-  -- Equivalent to C · log n < ε · n^{1/3}
-  -- This holds for large enough n
-  sorry
+  -- The upper-bound majorant `C · x^{2/3} · log x` is `o(x)`, because
+  -- `log x = o(x^{1/3})`, hence `x^{2/3} · log x = o(x^{2/3} · x^{1/3}) = o(x)`.
+  have hlog : Real.log =o[atTop] fun x : ℝ => x ^ (1 / 3 : ℝ) :=
+    isLittleO_log_rpow_atTop (by norm_num)
+  have hmul : (fun x : ℝ => x ^ (2 / 3 : ℝ) * Real.log x) =o[atTop]
+      fun x : ℝ => x ^ (2 / 3 : ℝ) * x ^ (1 / 3 : ℝ) :=
+    (isBigO_refl (fun x : ℝ => x ^ (2 / 3 : ℝ)) atTop).mul_isLittleO hlog
+  have hEq : (fun x : ℝ => x ^ (2 / 3 : ℝ) * x ^ (1 / 3 : ℝ)) =ᶠ[atTop] fun x : ℝ => x := by
+    filter_upwards [eventually_gt_atTop (0 : ℝ)] with x hx
+    have hsum : (2 / 3 : ℝ) + 1 / 3 = 1 := by norm_num
+    rw [← Real.rpow_add hx, hsum, Real.rpow_one]
+  have hmul' : (fun x : ℝ => x ^ (2 / 3 : ℝ) * Real.log x) =o[atTop] fun x : ℝ => x :=
+    hmul.congr' (EventuallyEq.refl _ _) hEq
+  -- Scale by the constant `C`.
+  have key : (fun x : ℝ => C * x ^ (2 / 3 : ℝ) * Real.log x) =o[atTop] fun x : ℝ => x := by
+    refine (hmul'.const_mul_left C).congr' ?_ (EventuallyEq.refl _ _)
+    filter_upwards with x using by ring
+  -- Turn the `o(x)` bound into a pointwise estimate `≤ (ε/2)·x` eventually.
+  have hReal : ∀ᶠ x : ℝ in atTop, C * x ^ (2 / 3 : ℝ) * Real.log x ≤ ε / 2 * x := by
+    filter_upwards [key.def (half_pos hε), eventually_gt_atTop (0 : ℝ)] with x hxb hx0
+    calc C * x ^ (2 / 3 : ℝ) * Real.log x
+        ≤ ‖C * x ^ (2 / 3 : ℝ) * Real.log x‖ := le_abs_self _
+      _ ≤ ε / 2 * ‖x‖ := hxb
+      _ = ε / 2 * x := by rw [Real.norm_eq_abs, abs_of_pos hx0]
+  -- Transfer the eventual bound from `ℝ` to `ℕ`.
+  have hNat : ∀ᶠ n : ℕ in atTop, C * (n : ℝ) ^ (2 / 3 : ℝ) * Real.log n ≤ ε / 2 * n :=
+    tendsto_natCast_atTop_atTop.eventually hReal
+  rw [Filter.eventually_atTop] at hNat
+  obtain ⟨N₀, hN₀⟩ := hNat
+  refine ⟨max N₀ 2, fun n hn => ?_⟩
+  have hn0 : N₀ ≤ n := le_trans (le_max_left _ _) hn
+  have hn2 : 2 ≤ n := le_trans (le_max_right _ _) hn
+  have hnpos : (0 : ℝ) < n := by exact_mod_cast lt_of_lt_of_le (by norm_num : 0 < 2) hn2
+  calc (t n : ℝ)
+      ≤ C * (n : ℝ) ^ (2 / 3 : ℝ) * Real.log n := hbound n hn2
+    _ ≤ ε / 2 * n := hN₀ n hn0
+    _ < ε * n := by nlinarith [mul_pos hε hnpos]
 
 /-
 ## Part VI: Examples and Explicit Bounds
 -/
 
-/--
+/-
 **Example: Small n**
 For small n, we can compute or bound t(n) explicitly.
 -/
@@ -230,7 +264,7 @@ theorem t_3_bound : t 3 ≤ 4 := by
 t(n) ≥ ceiling(n^{2/3})
 -/
 theorem explicit_lower (n : ℕ) (hn : n ≥ 1) :
-    t n ≥ Nat.ceil (n ^ (2/3 : ℝ)) := by
+    t n ≥ Nat.ceil ((n : ℝ) ^ (2/3 : ℝ)) := by
   sorry
 
 /-

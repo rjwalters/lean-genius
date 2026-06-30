@@ -2,7 +2,7 @@
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01-oq-01",
   "title": "Cyclic Vector Theorem: Full Biconditional — OQ extension (01)",
   "phase": "BLOCKED",
-  "status": "blocked",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -42,11 +42,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-9, 2026-05-14): the biconditional bifurcates over commutative rings. Backward direction expected to extend to any nontrivial CommRing R; forward direction fails over ZMod 4 with explicit M = !![0, 2; 0, 0] counterexample (charpoly = minpoly = X^2 but no cyclic vector exists). S2 PREP (researcher-1, 2026-05-16): doc-only refinement closing two S1-deferred questions (closing-lemma name pin + namespace decision); refined ~46-LOC S2 ACT skeleton with 5 fallback recipes. S2 ACT (researcher-3, 2026-05-16): substantive Lean PR — first Lean delta on slug. New file `proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean` (~95 LOC) introduces sibling namespace `GeneralCyclicVectorRing` over `[CommRing R] [Nontrivial R]` with predicates `IsCyclicVector` and `IsNonderogatory`, and proves the backward direction `cyclic_implies_nonderogatory_commring` build-verified at 7743 jobs, 0 sorries, 0 axioms, 0 warnings (v2 build). Two upstream-typeclass mismatches in S2 PREP's bearer audit caught and corrected: (1) `Polynomial.minpoly.dvd` is `Field`-only (Field.lean:72), not CommRing as S2 PREP §3 claimed; (2) `Polynomial.natDegree_le_of_dvd` requires `[NoZeroDivisors R]` (Domain.lean:61), missed in S2 PREP §3. Both bypassed via `Polynomial.minpoly.unique'` (Basic.lean:139, `[CommRing A]`), which proves `M.charpoly = minpoly R M` directly from monicness + Cayley-Hamilton + the cyclic-vector degree bound. Final 7-bearer audit in sessions/2026-05-16-s2-act-… §3. S3 STATE-SYNC (researcher-8, 2026-05-16T04:10Z, this PR): doc-only post-S2-ACT-merge catch-up. Bumps iteration 3→4, refreshes JSON `lastUpdate` + `currentState.{since,focus}`, appends new `leanFiles[]` entry for the S2-ACT'd file (96 LOC, 1 thm, 2 defs, 0 sorries/axioms), 7-bearer drift recheck at unchanged Mathlib SHA `2df2f0150c…` (0 substantive drifts), S3 ACT-readiness gate 7/7 GREEN (sessions/2026-05-16-s3-statesync-post-s2-act-merge.md §3.3). S3 ACT picker (Approach B, ZMod 4 counterexample formalisation) is unblocked: ~40-60 LOC new file `CayleyHamiltonCyclicVectorZMod4Counterexample.lean` with three theorems `charpoly_eq_X_sq`, `minpoly_eq_X_sq`, `no_cyclic_vector` (re-using `IsCyclicVector` from S2 ACT's namespace via `import Proofs.CayleyHamiltonCyclicVectorCommRingOQ01`).",
+    "progressSummary": "RESOLVED (degree form): forward direction REFUTED over ZMod 4 via nonderogatory_deg_and_no_cyclic_vector; backward holds over any nontrivial CommRing (cyclic_implies_nonderogatory_commring) and downgrades via isNonderogatory_imp_deg. File sorry-free/axiom-free, verified offline (lake env lean, EXIT 0). Docker still down.",
     "builtItems": [
       "Wrote research/problems/<slug>/problem.md (~260 lines) with three approaches (A=backward extension, B=ZMod 4 counterexample, C=UFD forward extension), Mathlib API map at pinned commit.",
       "Wrote research/problems/<slug>/state.md with phase OBSERVE, S2 next action (Approach A), suggested ACT skeleton (~60 LOC of Lean for cyclic_implies_nonderogatory_commring).",
-      "Wrote research/problems/<slug>/knowledge.md with full counterexample case analysis (b = 0 vs b ≠ 0), Mathlib API verification log, S2/S3 risk inventory."
+      "Wrote research/problems/<slug>/knowledge.md with full counterexample case analysis (b = 0 vs b ≠ 0), Mathlib API verification log, S2/S3 risk inventory.",
+      "IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree — degree-form predicate, generic [CommRing R] (CayleyHamiltonCyclicVectorZMod4Counterexample.lean)",
+      "isNonderogatory_imp_deg : IsNonderogatory M → IsNonderogatoryDeg M (congrArg natDegree) — shows poly-equality form is strictly stronger, so backward direction downgrades",
+      "nonderogatory_deg_and_no_cyclic_vector : IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v — the STATED negative answer to the forward direction over ZMod 4 (packages minpoly_natDegree_eq_two + charpoly_eq_X_sq + no_cyclic_vector)"
     ],
     "insights": [
       "S3 ACT-1 BUILD OUTCOME (researcher-1, 2026-06-10T05:00Z): three build attempts — v1 / v2 / v3. v1 failed with two errors. (a) `failed to synthesize Nontrivial (ZMod 4)` at the `M.charpoly_fin_two` rewrite line — Matrix.charpoly_fin_two (Charpoly/Coeff.lean:226) implicitly carries a `[Nontrivial R]` constraint via its leading-coefficient handling; ZMod 4's Nontrivial instance is not auto-synthesised in this context. Resolution (v2): added `private theorem nontrivial_zmod_four : Nontrivial (ZMod 4) := ⟨0, 1, by decide⟩` + `haveI : Nontrivial (ZMod 4) := nontrivial_zmod_four` at the start of `charpoly_eq_X_sq`. (b) Unused simp arg `Matrix.head_cons` linter warning in `M_pow_two_eq_zero`'s simp call — simp's elaboration of `!![0, 2; 0, 0]` entries does NOT exercise `Matrix.head_cons` for the Fin 2 / 2x2 case; `Matrix.cons_val_zero` + `Matrix.cons_val_one` suffice. Resolution (v2): removed `Matrix.head_cons` from the simp list. v2 then failed with (c) `No goals to be solved` at the trailing `ring` line of `charpoly_eq_X_sq` — the preceding `simp [M, trace_fin_two_of, det_fin_two_of]` already closed the goal `X^2 - C 0 * X + C 0 = X^2` (Polynomial ring-simp lemmas swept by simp made `ring` redundant). Resolution (v3): removed the trailing `ring` line. The S3 PREP-2 §1 4-line discharge sketch over-specified by one step; the 3-line tail (`haveI + rw + simp`) is the minimal sorry-free body at this Mathlib pin. v3 verified clean (only the two declared `sorry` warnings). Lessons for ACT-2: (i) `ZMod 4` operands at proof entry should immediately `haveI : Nontrivial (ZMod 4)` (or use the file-scope `nontrivial_zmod_four`); (ii) after a `simp` close, never tail-append `ring` defensively — check goal state with `--`-comment probe first or just omit it.",
@@ -64,17 +67,15 @@
       "Polynomial.Monic.natDegree_mul' at Mathlib/Algebra/Polynomial/Monic.lean:154 requires only the leading factor to be monic and the other factor nonzero. Over a CommRing R that is not a domain, this is the right replacement for Polynomial.natDegree_mul (which needs both nonzero in a domain).",
       "Matrix.isIntegral at Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.lean:44 already works over [CommRing R]; the proof is just ⟨charpoly_monic, aeval_self_charpoly⟩. The existing gallery proof uses this implicitly via Field K instances; no change needed for the CommRing extension.",
       "minpoly over a CommRing A (FieldTheory/Minpoly/Basic.lean:41) is the monic generator of the annihilator ideal of an integral element. For matrices, charpoly always provides a monic annihilator (Cayley-Hamilton), so Matrix.isIntegral is automatic and minpoly is always well-defined.",
-      "Counterexample M = !![0, 2; 0, 0] over ZMod 4: charpoly = X^2 (det of upper triangular = X^2). minpoly = X^2 (M^2 = 0 gives upper bound; no X-c monic deg-1 annihilator since the [0,1]-entry 2 ≠ 0 in ZMod 4 cannot be killed by adding cI). IsNonderogatory ✓. For every v=(a,b), p = 2X annihilates if b ≠ 0 (since 2M = 0 as a matrix because the only nonzero entry is 2 in position [0,1] and 2·2=4=0 in ZMod 4), p = X annihilates if b = 0 (since Mv = (2b, 0) = 0). So no cyclic vector. Forward direction FAILS."
+      "Counterexample M = !![0, 2; 0, 0] over ZMod 4: charpoly = X^2 (det of upper triangular = X^2). minpoly = X^2 (M^2 = 0 gives upper bound; no X-c monic deg-1 annihilator since the [0,1]-entry 2 ≠ 0 in ZMod 4 cannot be killed by adding cI). IsNonderogatory ✓. For every v=(a,b), p = 2X annihilates if b ≠ 0 (since 2M = 0 as a matrix because the only nonzero entry is 2 in position [0,1] and 2·2=4=0 in ZMod 4), p = X annihilates if b = 0 (since Mv = (2b, 0) = 0). So no cyclic vector. Forward direction FAILS.",
+      "S4 (2026-06-27, researcher-6): the earlier-flagged lone sorry minpoly_natDegree_eq_two was ALREADY discharged sorry-free in the file (knowledge note was stale); the only genuine remaining gap was the PACKAGING theorem (PREP-3 §4.4), now added."
     ],
     "mathlibGaps": [
       "Mathlib Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.lean:47 states minpoly_dvd_charpoly only for [Field K]; the lemma extends cleanly to [CommRing R] using minpoly.dvd + aeval_self_charpoly. Small gap-fill opportunity."
     ],
     "nextSteps": [
-      "S3 ACT-2 (discharge the two paste-ready sorries from ACT-1): (a) `minpoly_natDegree_eq_two` — upper bound via `minpoly.min (ZMod 4) M (X^2 monic) (X^2 annihilates by M_pow_two_eq_zero)`, then coerce `degree` to `natDegree` via `natDegree_le_natDegree_of_degree_le` (or the modern Mathlib variant). Lower bound via `by_contra hlt; push_neg; interval_cases (minpoly (ZMod 4) M).natDegree`: the natDegree-0 case forces `minpoly = C c` with c ∈ ZMod 4; monicness gives c = 1, but `aeval M (C 1) = I ≠ 0`. The natDegree-1 case forces `minpoly = X + c` (monic), but `aeval M (X + c) = M + c·I = !![c, 2; 0, c]` is nonzero because the [0,1]-entry is 2 ≠ 0 in ZMod 4. ~10-15 LOC. (b) `no_cyclic_vector` — take `q := (2 : (ZMod 4)[X]) * X`; show `q.natDegree = 1 < 2` via `natDegree_C_mul_X` or `natDegree_mul_X` + `natDegree_C 2`; show `(aeval M q).mulVec v = 0` via `aeval_C_mul_X` (or `map_mul`) + `aeval_X = M` + `2 • M = 0` (ACT-1's `two_smul_M_eq_zero`) + `Matrix.zero_mulVec`; `IsCyclicVector M v` applied to `q` then forces `q = 0`, but `coeff q 1 = 2 ≠ 0` (decidable in ZMod 4) — contradiction. ~25 LOC. Both discharges develop against ACT-1's known-good build base.",
-      "S3 ACT-3 (after ACT-2): optionally upstream `IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree` predicate from local to the `GeneralCyclicVectorRing` namespace in `CayleyHamiltonCyclicVectorCommRingOQ01.lean`, plus the `IsNonderogatory ↔ IsNonderogatoryDeg over Field` equivalence (~5-10 LOC). Independent of ACT-2; lower priority.",
-      "S4 PREP (optional): upstream IsNonderogatoryDeg + `IsNonderogatory ↔ IsNonderogatoryDeg over Field` equivalence to `CayleyHamiltonCyclicVectorCommRingOQ01.lean`'s `GeneralCyclicVectorRing` namespace. The forward direction is trivial (equal polynomials have equal degrees); the converse over a Field uses that monic-poly-of-same-degree dividing each other forces equality (true over an integral domain). Net ~5-10 LOC + 1 def. Independent of S3 ACT.",
-      "S4 ACT (Approach C, optional): attempt forward direction over UFDs by generalizing parent file CayleyHamiltonCyclicVectorAllFields.lean from [Field K] to [CommRing R] [UniqueFactorizationMonoid R] [IsDomain R]. Higher risk, ~150-300 LOC; defer until S3 lands.",
-      "S4 KNOWN-2-SET (optional): prove `minpoly (ZMod 4) M ∈ ({X^2, X^2 + 2*X} : Set (ZMod 4)[X])` as a 2-element set membership without committing to either branch — strictly weaker than minpoly_eq_X_sq but still informative. Discharge via `minpoly.aeval` + `minpoly.monic` + monic-deg-2-enumeration from PREP-3 §2.2. ~15 LOC."
+      "Optional S5 upstream: localise IsNonderogatoryDeg + the over-Field equivalence IsNonderogatory ↔ IsNonderogatoryDeg into GeneralCyclicVectorRing (CommRingOQ01).",
+      "Optional: add a gallery entry (src/data/proofs/...) presenting the CommRing biconditional in degree form (backward holds, forward fails on ZMod 4)."
     ]
   },
   "tags": [
@@ -93,6 +94,7 @@
     "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
     "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
     "cayley-hamilton-cyclic-vector-all-fields-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
     "cayley-hamilton-cyclic-vector-all-fields-oq-03"
   ],
   "references": {
@@ -168,6 +170,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
+      "lineCount": 331,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",

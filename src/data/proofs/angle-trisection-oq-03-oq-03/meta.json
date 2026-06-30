@@ -2,11 +2,12 @@
   "id": "angle-trisection-oq-03-oq-03",
   "title": "Origami Constructibility and 3-Smooth Degrees",
   "slug": "angle-trisection-oq-03-oq-03",
-  "description": "Generalizes the parent's compass-and-straightedge degree criterion (constructible ⟺ degree is a power of 2) to origami (Huzita–Hatori) constructions, which solve cubics. The admissible degrees become the 3-smooth numbers 2^a·3^b. Proves the prime-factor characterization (3-smooth ⟺ all prime factors are 2 or 3) with a decidability instance, that compass ⊆ origami, and the headline separation: degree 3 — angle trisection and cube doubling — is origami-constructible but not compass-constructible. Also shows origami's limit: a degree divisible by 5 (e.g. the regular 11-gon) is not origami-constructible.",
+  "description": "Formalizes the *degree-criterion* layer of origami (Huzita–Hatori) constructibility: it takes the constructibility↔degree correspondence as a definition (compass = power of 2, origami = 3-smooth 2^a·3^b) and proves the number theory of those admissible-degree sets. Proves the prime-factor characterization (3-smooth ⟺ all prime factors are 2 or 3) with a decidability instance, that compass ⊆ origami, and — at the level of degrees — that the integer 3 is 3-smooth (origami-admissible) but not a power of 2 (the degree-3 trisection / cube-doubling separation). Also shows origami's degree limit: a degree divisible by 5 (e.g. the regular 11-gon) is not 3-smooth. The underlying Galois / Huzita–Hatori theory that justifies the constructibility↔degree correspondence is assumed (definitional), not formalized here; see the assumptions field.",
   "meta": {
     "author": "Humiaki Huzita, Koshiro Hatori (origami axioms, 1989–1991); formalized in Lean 4",
     "date": "1991",
     "status": "verified",
+    "assumptions": "The constructibility↔degree correspondence is taken as a *definition*, not proven: CompassConstructibleDegree d := 0 < d ∧ ∃ k, d = 2^k, and IsOrigamiConstructible α d := 0 < d ∧ ThreeSmooth d. The Galois / Huzita–Hatori theory establishing that a real is compass- (resp. origami-) constructible iff its minimal-polynomial degree is a power of 2 (resp. 3-smooth) is not formalized here. The α : ℝ parameter of IsOrigamiConstructible is unused — every result is a statement about the degree d alone (no minimal polynomial, cos 20°, or Galois degree appears). The number-theoretic content (closure of 3-smooth numbers, threeSmooth_iff_primeFactors, decidability, 5 ∤ 2^a·3^b) is fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
     "proofRepoPath": "Proofs/AngleTrisectionOQ03OQ03.lean",
     "tags": [
       "geometry",

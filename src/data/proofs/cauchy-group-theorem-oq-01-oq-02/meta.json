@@ -1,0 +1,169 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-02",
+  "title": "From Cauchy to Sylow: the maximal p-power subgroup as a named corollary",
+  "slug": "cauchy-group-theorem-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.GroupTheory.Perm.Cycle.Type",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "CauchyGroupTheoremOQ01OQ02",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Completes the Cauchy-to-Sylow arc begun in the parent. The parent file CauchyGroupTheoremOQ01 packages Cauchy's theorem in subgroup form (cauchy_subgroup): p ∣ |G| yields a subgroup of order exactly p, the first rung of the Sylow ladder. This entry climbs the whole ladder, packaging Sylow's first theorem as the natural completion of Cauchy — none of these corollaries are in Mathlib. The tower form (exists_subgroup_card_pow_prime) gives a subgroup of order pⁿ whenever pⁿ ∣ |G|, and the parent's cauchy_subgroup is literally recovered as its n=1 slice. The Sylow p-subgroup itself (exists_sylow_subgroup) has order p^k where k is the multiplicity of p in |G| — the maximal p-power — obtained from Mathlib's Sylow type via card_eq_multiplicity. That it is genuinely the FULL Sylow subgroup, not merely a large p-subgroup, is certified by sylow_index_not_dvd: its index [G:H] is coprime to p, the defining maximality property. A nontriviality boundary (sylow_nontrivial_iff_dvd) shows the Sylow p-subgroup is nontrivial iff p ∣ |G|, pinning down exactly when the tower fires. Concrete S₃ instances exhibit the order-2 and order-3 Sylow subgroups, with the 2- and 3-adic multiplicities of 6 computed via pow_dvd_iff_le_factorization, keeping the file genuinely 0-axiom.",
+  "overview": {
+    "historicalContext": "Augustin-Louis Cauchy proved in 1845 that a prime p dividing |G| forces an element — hence a cyclic subgroup — of order p. Ludwig Sylow's 1872 theorems extended this decisively: G contains a subgroup whose order is the full p-part of |G| (a Sylow p-subgroup), all such subgroups are conjugate, and their number is ≡ 1 mod p. The two results form a single arc — Cauchy is the base case, and the standard inductive proof of Sylow's first theorem builds the prime-power tower one rung at a time, each step a Cauchy-style extension performed inside a normalizer. So Cauchy is not merely the bottom of the ladder but the engine of the induction that climbs it. Mathlib formalizes the existence statements (Sylow.exists_subgroup_card_pow_prime, Sylow.card_eq_multiplicity) but, as with Cauchy, records none of the classical packaged corollaries that working group theorists cite.",
+    "problemStatement": "Package the iterated form of Cauchy's theorem: starting from the parent's cauchy_subgroup (a subgroup of order p), build the full p-Sylow subgroup of order p^k — where p^k is the exact p-part of |G| — as an explicit named corollary, making the Cauchy-to-Sylow bridge precise. Establish the defining maximality property (index coprime to p), recover Cauchy as the n=1 slice of the tower, characterize when the Sylow subgroup is nontrivial, and exhibit concrete Sylow subgroups in S₃.",
+    "proofStrategy": "Everything is assembled over Mathlib's Sylow machinery. The tower form is Sylow.exists_subgroup_card_pow_prime restated with Nat.card; the parent's cauchy_subgroup falls out as its n=1 case via pow_one. The Sylow p-subgroup of order p^(factorization |G| p) comes from a chosen term of the Sylow p G type together with card_eq_multiplicity. Maximality is the crux: writing |H|·[G:H] = |G| (card_mul_index) with |H| = ordProj[p]|G|, cancellation against ordProj·ordCompl = |G| identifies [G:H] = ordCompl[p]|G|, whose coprimality to p is Nat.not_dvd_ordCompl. The nontriviality boundary translates 1 < p^k to k ≠ 0 and back via factorization positivity (dvd_of_factorization_pos and Prime.factorization_pos_of_dvd). The S₃ witnesses apply the tower at p=2,3 to |S₃|=6, and pin the multiplicities by pow_dvd_iff_le_factorization (p ∣ 6 but p² ∤ 6) rather than kernel decide, which does not reduce Nat.factorization — keeping the file 0-axiom.",
+    "keyInsights": [
+      "Cauchy and Sylow I are one theorem at two scales: the parent's order-p subgroup is exactly the n=1 slice of the prime-power tower exists_subgroup_card_pow_prime, so 'Cauchy ⟹ Sylow' is a literal specialization, not an analogy.",
+      "What makes a p-subgroup a genuine Sylow subgroup is not its size in isolation but the coprimality of its index to p; sylow_index_not_dvd isolates this defining maximality property via the clean number-theoretic identity [G:H] = ordCompl[p]|G|.",
+      "The multiplicity p^(factorization |G| p) is the right invariant for 'the maximal p-power dividing |G|', and Sylow.card_eq_multiplicity says the Sylow subgroup realizes it exactly — turning an existence statement into an exact order computation.",
+      "Nat.factorization is not kernel-reducible, so concrete multiplicities like factorization 6 2 = 1 cannot be closed by decide; the squeeze 'p ∣ 6 and p² ∤ 6' via pow_dvd_iff_le_factorization gives the value while keeping the file free of Lean.ofReduceBool.",
+      "The Sylow p-subgroup is nontrivial precisely when p ∣ |G| (sylow_nontrivial_iff_dvd), so the entire Sylow tower fires under exactly the same hypothesis that triggers Cauchy — a single divisibility condition governs the whole arc."
+    ]
+  },
+  "sections": [
+    {
+      "id": "tower",
+      "title": "The Prime-Power Tower and Cauchy as Base Case",
+      "startLine": 68,
+      "endLine": 86,
+      "summary": "exists_subgroup_card_pow_prime: pⁿ ∣ |G| yields a subgroup of order pⁿ (Sylow I, strongest form). cauchy_subgroup recovers the parent's order-p subgroup as the n=1 slice via pow_one.",
+      "mathContext": "Sylow's first theorem in tower form; Cauchy's subgroup theorem is its n=1 specialization."
+    },
+    {
+      "id": "sylow",
+      "title": "The Maximal p-Power Subgroup and Its Maximality",
+      "startLine": 88,
+      "endLine": 150,
+      "summary": "exists_sylow_subgroup: a subgroup of order p^(factorization |G| p) from Mathlib's Sylow type via card_eq_multiplicity. sylow_card_dvd_card (order divides |G|) and sylow_index_not_dvd (index coprime to p, via [G:H] = ordCompl[p]|G|) certify it is a full Sylow subgroup. sylow_nontrivial_iff_dvd: nontrivial iff p ∣ |G|.",
+      "mathContext": "|H| = ordProj[p]|G|, [G:H] = ordCompl[p]|G| with ¬ p ∣ [G:H] — the defining maximality of a Sylow subgroup."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Sylow Subgroups in S₃",
+      "startLine": 152,
+      "endLine": 203,
+      "summary": "card_perm_fin3 (|S₃| = 6); factorization_six_two/three pin the 2- and 3-adic multiplicities of 6 to 1 via pow_dvd_iff_le_factorization; sylow2_perm_fin3 and sylow3_perm_fin3 produce the order-2 and order-3 Sylow subgroups of S₃ from the tower at p=2,3.",
+      "mathContext": "S₃ (order 6 = 2·3) has Sylow 2-subgroup of order 2 and Sylow 3-subgroup of order 3 (the alternating A₃)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Cauchy-to-Sylow arc is completed as an explicit chain of named corollaries over Mathlib's Sylow machinery: a prime-power tower of subgroups of every order pⁿ ∣ |G| (with the parent's Cauchy subgroup as its n=1 base), the Sylow p-subgroup of order equal to the full p-part p^(factorization |G| p), and the certifying maximality property that its index is coprime to p. A nontriviality boundary shows the tower fires exactly when p ∣ |G|, and concrete S₃ witnesses exhibit the order-2 and order-3 Sylow subgroups — all genuinely 0-axiom.",
+    "implications": [
+      "Makes precise the textbook slogan 'Cauchy is the base case of Sylow' by exhibiting cauchy_subgroup as a literal n=1 specialization of the prime-power tower, rather than as a separate result.",
+      "Supplies the coprime-index maximality certificate (sylow_index_not_dvd) that distinguishes a true Sylow subgroup from an arbitrary large p-subgroup, a packaging Mathlib does not record.",
+      "Demonstrates a robust 0-axiom route to concrete prime multiplicities — the squeeze via pow_dvd_iff_le_factorization — when kernel decide cannot reduce Nat.factorization."
+    ],
+    "openQuestions": [
+      "Can the conjugacy of Sylow p-subgroups (Sylow II) and the congruence n_p ≡ 1 mod p (Sylow III) be packaged as the same kind of named corollaries continuing this arc?",
+      "Is there a clean formalized statement that every p-subgroup is contained in some Sylow p-subgroup (the maximality-as-containment form), bridged explicitly from the tower built here?",
+      "How sharp is the nontriviality boundary in the non-prime-power direction — e.g. a packaged statement that |G| squarefree forces every Sylow subgroup to be cyclic of prime order, recovering this entry's S₃ picture in general?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Completes the parent's Cauchy arc: the parent's cauchy_subgroup (order-p subgroup) is recovered here as the n=1 slice of the Sylow prime-power tower, which is then climbed to the full Sylow p-subgroup of order equal to the p-part of |G|."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "A sibling open-question of the same Cauchy parent: that entry develops the odd-order/involution boundary (the p=2 face of Cauchy), while this entry develops the Sylow tower for all primes."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (structural follow-up to Cauchy's theorem)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cauchy-theorem",
+      "sylow",
+      "p-subgroup",
+      "prime-power",
+      "order-of-element",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Sylow.exists_subgroup_card_pow_prime",
+        "description": "pⁿ ∣ |G| yields a subgroup of order exactly pⁿ; the engine of the prime-power tower and, at n=1, of the recovered Cauchy subgroup.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_eq_multiplicity",
+        "description": "The order of a Sylow p-subgroup equals p ^ (Nat.factorization (Nat.card G) p); turns the Sylow type into an exact order computation for exists_sylow_subgroup.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.nonempty",
+        "description": "Nonempty (Sylow p G): a Sylow p-subgroup always exists; supplies the witness whose order card_eq_multiplicity computes.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Subgroup.card_mul_index",
+        "description": "Nat.card H * H.index = Nat.card G (Lagrange with index); identifies [G:H] = ordCompl[p]|G| in the maximality argument.",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Nat.not_dvd_ordCompl",
+        "description": "For p prime and n ≠ 0, p does not divide ordCompl[p] n = n / p^(factorization); gives the coprime-index maximality certificate.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.ordProj_mul_ordCompl_eq_self",
+        "description": "ordProj[p] n * ordCompl[p] n = n; combined with card_mul_index and left cancellation identifies the Sylow index as ordCompl.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.pow_dvd_iff_le_factorization",
+        "description": "p^k ∣ n ↔ k ≤ n.factorization p (n ≠ 0); the squeeze that pins factorization 6 2 = factorization 6 3 = 1 without kernel decide.",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.factorization_pos_of_dvd",
+        "description": "p prime, n ≠ 0, p ∣ n ⟹ 0 < n.factorization p; the backward direction of the nontriviality boundary.",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Cauchy, Augustin-Louis",
+        "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+        "year": "1845",
+        "note": "Exercices d'analyse et de physique mathématique 3, 151–252 — the original element-of-order-p theorem, the base case of the Sylow tower."
+      },
+      {
+        "authors": "Sylow, Ludwig",
+        "title": "Théorèmes sur les groupes de substitutions",
+        "year": "1872",
+        "note": "Mathematische Annalen 5, 584–594 — the existence of a subgroup of order equal to the full p-part of |G|, with all such subgroups conjugate."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — the inductive proof of Sylow I that climbs the prime-power tower one Cauchy-style rung at a time."
+      }
+    ]
+  }
+}

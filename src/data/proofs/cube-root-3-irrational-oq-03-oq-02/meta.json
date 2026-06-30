@@ -1,0 +1,125 @@
+{
+  "id": "cube-root-3-irrational-oq-03-oq-02",
+  "slug": "cube-root-3-irrational-oq-03-oq-02",
+  "title": "∛3 is not ruler-and-compass constructible: doubling the cube is impossible",
+  "description": "Draws the classical geometric corollary of [ℚ(∛3):ℚ] = 3: ∛3 cannot be constructed with straightedge and compass, so the cube cannot be doubled. The fully-verified content is the algebraic degree obstruction — every field reachable from ℚ by a tower of quadratic extensions has degree a power of 2, hence its elements have 2-power degree over ℚ, while ∛3 has degree 3 ≠ 2ⁿ. Constructibility is taken in its standard algebraic characterization (membership in a quadratic tower); the geometry⟺algebra reduction is the only unformalized, classical step.",
+  "overview": {
+    "historicalContext": "Doubling the cube (the Delian problem) asks for a straightedge-and-compass construction of a cube with twice the volume of a given one — equivalently, of the length ∛2 (here ∛3, the analogous prime case). Greek geometers could not solve it; the impossibility was only settled in 1837 by Pierre Wantzel, who reduced ruler-and-compass constructibility to field theory: a constructible number lies in a tower of quadratic extensions of ℚ, so its degree over ℚ must be a power of 2. Since ∛3 has degree 3 (the parent entry, oq-03), and 3 is not a power of 2, ∛3 is non-constructible. This entry is the field-theory payoff explicitly anticipated by the parent's open questions.",
+    "problemStatement": "Formalize the non-constructibility of ∛3 by ruler and compass as a direct corollary of [ℚ(∛3):ℚ] = 3 not being a power of 2 — the classical resolution of doubling the cube.",
+    "proofStrategy": "Model the algebraic characterization of constructibility directly. Define IsQuadraticTower : IntermediateField ℚ ℝ → Prop inductively — the base field ℚ (⊥) is a tower, and any L obtained from a tower K by a degree-2 step (relfinrank K L = 2) is again a tower. A short induction (IsQuadraticTower.finrank_eq_two_pow), using the multiplicativity of degrees in a field tower (IntermediateField.finrank_bot_mul_relfinrank: [K:ℚ]·[L:K] = [L:ℚ]), shows every tower has degree 2ⁿ over ℚ. A real number is constructible (IsConstructible) if it lies in some tower. For constructible α, the simple extension ℚ⟮α⟯ sits inside the ambient tower K, so [ℚ⟮α⟯:ℚ] divides [K:ℚ] = 2ⁿ; a divisor of 2ⁿ is a power of 2 (Nat.dvd_prime_pow), giving finrank_adjoin_eq_two_pow_of_constructible. The general obstruction not_constructible_of_finrank_ne_two_pow follows, and the headline cbrt3_not_constructible plugs in the parent's finrank_adjoin_cbrt3 ([ℚ(∛3):ℚ] = 3) together with the arithmetic fact 3 ≠ 2ⁿ (three_ne_two_pow: a power of 2 divisible by the prime 3 would force 3 ∣ 2).",
+    "keyInsights": [
+      "The geometric impossibility is entirely an arithmetic statement about field degrees: constructible numbers have 2-power degree over ℚ, and 3 is not a power of 2. No geometry appears in the proof — only the tower-of-quadratics characterization, which is the content of Wantzel's reduction.",
+      "Multiplicativity of degrees in a field tower ([L:ℚ] = [K:ℚ]·[L:K]) turns 'each step is quadratic' into 'the total degree is 2ⁿ' by a one-line induction; Mathlib's relfinrank API (IntermediateField.finrank_bot_mul_relfinrank) supplies exactly this.",
+      "Passing from the ambient tower K to the minimal field ℚ⟮α⟯ is a divisibility argument: [ℚ⟮α⟯:ℚ] divides [K:ℚ] = 2ⁿ, and divisors of a prime power are prime powers (Nat.dvd_prime_pow), so the degree of any constructible number is itself a power of 2 — the cleanest form of the obstruction.",
+      "The obstruction is stated generally (not_constructible_of_finrank_ne_two_pow): ANY real number whose degree over ℚ is not a power of 2 is non-constructible. ∛3 (degree 3) is one instance; the same lemma rules out, e.g., roots of any irreducible cubic, recovering the impossibility of angle trisection in the same framework.",
+      "The single unformalized step is the geometry⟺algebra equivalence (each ruler/compass step adjoins at most a square root). It is taken as the definition of IsConstructible; everything downstream of that definition is fully machine-checked with no axioms or sorries."
+    ]
+  },
+  "conclusion": {
+    "summary": "∛3 is not ruler-and-compass constructible: it lies in no tower of quadratic extensions of ℚ, because every such tower has 2-power degree while [ℚ(∛3):ℚ] = 3. Hence the cube cannot be doubled. The five theorems and the degree obstruction are fully machine-checked with no sorries and no axioms beyond Lean/Mathlib's foundational propext / Classical.choice / Quot.sound (no native_decide). Constructibility is formalized via its standard algebraic characterization (membership in a quadratic tower); the classical geometry⟺algebra equivalence is the only step taken as definitional rather than proved.",
+    "implications": "The degree obstruction not_constructible_of_finrank_ne_two_pow is reusable: any algebraic real whose degree over ℚ is not a power of 2 is non-constructible, which simultaneously resolves doubling the cube (degree-3 ∛3, ∛2) and, with the appropriate degree computation, the trisection of a general angle and the construction of a regular n-gon for non-Fermat n. It also isolates exactly what a full Mathlib treatment of constructibility would need to add: the geometry⟺algebra equivalence on top of this already-verified algebraic core.",
+    "openQuestions": [
+      "Formalize the geometry⟺algebra equivalence itself: define constructible points of ℝ² via intersections of lines and circles through previously-constructed points and prove their coordinates generate exactly the quadratic-tower fields, upgrading IsConstructible from a definition to a theorem.",
+      "Deduce the impossibility of trisecting a 60° angle in this framework by computing [ℚ(cos 20°):ℚ] = 3 (the minimal polynomial 8x³ − 6x − 1) and invoking not_constructible_of_finrank_ne_two_pow verbatim."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 128,
+    "path": "Proofs/CubeRoot3IrrationalOQ03OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 5,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Researcher)",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ03OQ02.lean",
+    "tags": [
+      "constructibility",
+      "doubling-the-cube",
+      "field-theory",
+      "galois-theory",
+      "ruler-and-compass",
+      "number-theory",
+      "cube-roots",
+      "field-extensions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib's foundational propext / Classical.choice / Quot.sound (0 axiom declarations, 0 sorries, no native_decide). DEFINITIONAL SCOPE: 'constructible' is formalized via its standard algebraic characterization — IsConstructible α means α lies in an IntermediateField ℚ ℝ reachable from ℚ by a finite tower of degree-2 extensions (IsQuadraticTower). The classical equivalence between this algebraic notion and the geometric ruler-and-compass notion (Wantzel's reduction: each construction step adjoins at most a square root) is NOT formalized; it is taken as the definition. Every result downstream of the definition — the 2-power-degree theorem, the divisibility obstruction, and the non-constructibility of ∛3 — is fully machine-verified. Builds on CubeRoot3IrrationalOQ03 (finrank_adjoin_cbrt3: [ℚ(∛3):ℚ] = 3) and uses Mathlib's IntermediateField.finrank_bot_mul_relfinrank and Nat.dvd_prime_pow.",
+    "lineCount": 128,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "originalContributions": [
+      "IsQuadraticTower: an inductive predicate on IntermediateField ℚ ℝ capturing the fields reachable from ℚ by a finite tower of degree-2 extensions — the algebraic shape of ruler-and-compass-generated fields.",
+      "IsQuadraticTower.finrank_eq_two_pow: every quadratic tower has degree a power of 2 over ℚ, by induction using multiplicativity of degrees in a field tower (IntermediateField.finrank_bot_mul_relfinrank).",
+      "IsConstructible: a real number is constructible iff it lies in some quadratic tower over ℚ (the algebraic characterization).",
+      "finrank_adjoin_eq_two_pow_of_constructible: the degree [ℚ⟮α⟯:ℚ] of any constructible α is a power of 2 — ℚ⟮α⟯ sits inside the ambient tower so its degree divides 2ⁿ, and divisors of 2ⁿ are powers of 2 (Nat.dvd_prime_pow).",
+      "not_constructible_of_finrank_ne_two_pow: the general obstruction — any real whose degree over ℚ is not a power of 2 is non-constructible.",
+      "three_ne_two_pow: 3 is not a power of 2 (a power of 2 divisible by the prime 3 would force 3 ∣ 2).",
+      "cbrt3_not_constructible: ∛3 is not ruler-and-compass constructible — the cube cannot be doubled — from [ℚ(∛3):ℚ] = 3 and 3 ≠ 2ⁿ."
+    ]
+  },
+  "references": [
+    {
+      "title": "Doubling the cube (the Delian problem)",
+      "url": "https://en.wikipedia.org/wiki/Doubling_the_cube"
+    },
+    {
+      "title": "Pierre Wantzel — constructibility and the degree criterion",
+      "url": "https://en.wikipedia.org/wiki/Pierre_Wantzel"
+    },
+    {
+      "title": "Constructible number",
+      "url": "https://en.wikipedia.org/wiki/Constructible_number"
+    },
+    {
+      "title": "Mathlib: IntermediateField relative rank (finrank_bot_mul_relfinrank)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Relrank.html"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry proving X³ − 3 irreducible, minpoly ℚ ∛3 = X³ − 3, and [ℚ(∛3):ℚ] = 3. This child consumes finrank_adjoin_cbrt3 as the single field-degree input and draws the geometric corollary anticipated by the parent's open question on doubling the cube."
+    },
+    {
+      "targetId": "cube-root-3-irrational",
+      "relationship": "related",
+      "description": "Grandparent entry establishing ∛3 ∉ ℚ. Non-constructibility (degree 3 ≠ 2ⁿ) is the sharp strengthening of irrationality (degree > 1) in the constructibility hierarchy."
+    }
+  ],
+  "sections": [
+    {
+      "id": "quadratic-towers",
+      "title": "Quadratic Towers over ℚ and Their Degree",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "Defines IsQuadraticTower : IntermediateField ℚ ℝ → Prop inductively (base field ⊥ = ℚ; a degree-2 step relfinrank K L = 2 extends a tower). IsQuadraticTower.finrank_eq_two_pow proves by induction that every tower has degree a power of 2 over ℚ: the base has degree 1 = 2⁰, and each quadratic step multiplies the degree by 2 via IntermediateField.finrank_bot_mul_relfinrank ([K:ℚ]·[L:K] = [L:ℚ]).",
+      "mathContext": "Tower $\\mathbb{Q}=K_0\\subset K_1\\subset\\dots\\subset K_n$ with $[K_{i+1}:K_i]=2$ has $[K_n:\\mathbb{Q}]=2^n$."
+    },
+    {
+      "id": "constructible-degree",
+      "title": "Constructible Numbers Have 2-Power Degree",
+      "startLine": 82,
+      "endLine": 111,
+      "summary": "IsConstructible α means α lies in some quadratic tower. finrank_adjoin_eq_two_pow_of_constructible: for constructible α the minimal field ℚ⟮α⟯ lies inside the tower K (adjoin_simple_le_iff), so [ℚ⟮α⟯:ℚ] divides [K:ℚ] = 2ⁿ (finrank_bot_mul_relfinrank), and a divisor of 2ⁿ is a power of 2 (Nat.dvd_prime_pow). not_constructible_of_finrank_ne_two_pow packages the contrapositive as the general obstruction.",
+      "mathContext": "$\\alpha$ constructible $\\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\mid 2^n \\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}]=2^j$."
+    },
+    {
+      "id": "doubling-the-cube",
+      "title": "∛3 Is Not Constructible — Doubling the Cube",
+      "startLine": 113,
+      "endLine": 128,
+      "summary": "three_ne_two_pow shows 3 ≠ 2ⁿ (a power of 2 divisible by the prime 3 forces 3 ∣ 2, false). cbrt3_not_constructible then combines the parent's finrank_adjoin_cbrt3 ([ℚ(∛3):ℚ] = 3) with the general obstruction: since 3 is not a power of 2, ∛3 is non-constructible, so the cube cannot be doubled.",
+      "mathContext": "$[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}]=3\\neq 2^n \\Rightarrow \\sqrt[3]{3}$ not constructible."
+    }
+  ]
+}

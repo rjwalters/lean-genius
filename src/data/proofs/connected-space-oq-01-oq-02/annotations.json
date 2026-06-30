@@ -1,0 +1,61 @@
+[
+  {
+    "id": "ann-connoq0102-1",
+    "proofId": "connected-space-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 35 },
+    "type": "context",
+    "title": "A Concrete Dense-Skeleton Space",
+    "content": "**Module framing.** The parent entry proves that connectedness survives closure, and the sharper 'bark and tree' corollary: any set $t$ with $s \\subseteq t \\subseteq \\overline{s}$ for connected $s$ is itself connected. Its open question asks to deploy this on a concrete space built from a dense connected skeleton. The canonical such space is the **topologist's sine curve** $T = \\{(x, \\sin x^{-1}) : x > 0\\} \\cup (\\{0\\} \\times [-1,1])$ — the textbook witness that *connected* does not imply *path-connected*. This file formalizes the connectedness half, exactly what the corollary delivers.",
+    "mathContext": "$T = \\{(x, \\sin x^{-1}) : x > 0\\} \\cup (\\{0\\} \\times [-1,1])$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Closure-stability of connectedness (parent entry)",
+      "Bark-and-tree corollary IsConnected.subset_closure",
+      "Connected vs path-connected"
+    ],
+    "prerequisites": [
+      "Connectedness and the closure operator",
+      "The graph of an oscillatory function near a singularity"
+    ],
+    "tags": ["module-header", "framing", "topology"]
+  },
+  {
+    "id": "ann-connoq0102-2",
+    "proofId": "connected-space-oq-01-oq-02",
+    "range": { "startLine": 50, "endLine": 63 },
+    "type": "technique",
+    "title": "The Graph Is a Connected Skeleton",
+    "content": "**Continuous image of a ray.** The oscillating graph $G = \\{(x, \\sin x^{-1}) : x > 0\\}$ is the image of the connected ray $(0,\\infty)$ (`isConnected_Ioi`) under the parametrization $x \\mapsto (x, \\sin x^{-1})$, which is continuous on $(0,\\infty)$ — there $x^{-1}$ is continuous (`ContinuousOn.inv₀`, since $x \\neq 0$), $\\sin$ is continuous, and the pairing is `ContinuousOn.prodMk`. By `IsConnected.image`, $G$ is connected. This is the dense skeleton the rest of the argument hangs on.",
+    "mathContext": "$G = (x \\mapsto (x,\\sin x^{-1}))(\\,(0,\\infty)\\,)$ is connected.",
+    "significance": "foundational",
+    "relatedConcepts": ["Continuous image of connected is connected", "Continuity away from a singularity"],
+    "prerequisites": ["isConnected_Ioi", "IsConnected.image", "ContinuousOn.inv₀"],
+    "tags": ["connectedness", "continuous-image"]
+  },
+  {
+    "id": "ann-connoq0102-3",
+    "proofId": "connected-space-oq-01-oq-02",
+    "range": { "startLine": 65, "endLine": 90 },
+    "type": "key-step",
+    "title": "The Segment Lies in the Closure",
+    "content": "**Exact-height approximants.** The heart of the proof: every $(0,y)$ with $y \\in [-1,1]$ is a limit of graph points. Set $a_n = \\arcsin y + n\\cdot 2\\pi$; then $\\sin a_n = \\sin(\\arcsin y) = y$ *exactly* (2π-periodicity via `Real.sin_add_nat_mul_two_pi`, plus `Real.sin_arcsin`), and $a_n > 0$ because $\\arcsin y \\ge -\\pi/2$ (`Real.arcsin_mem_Icc`). So $(a_n^{-1}, \\sin a_n) = (a_n^{-1}, y)$, and an Archimedean choice (`exists_nat_gt`) makes $a_n^{-1} < \\varepsilon$. The product distance to $(0,y)$ collapses (`Prod.dist_eq`, second coordinate equal) to $a_n^{-1}$, which is $< \\varepsilon$ by `inv_lt_comm₀`. `Metric.mem_closure_iff` then places $(0,y)$ in $\\overline{G}$.",
+    "mathContext": "$(0,y) = \\lim_n (a_n^{-1}, y)$, $a_n = \\arcsin y + 2\\pi n$.",
+    "significance": "foundational",
+    "relatedConcepts": ["ε-characterization of closure", "2π-periodicity of sin", "Archimedean property", "Product metric"],
+    "prerequisites": ["Metric.mem_closure_iff", "Real.sin_add_nat_mul_two_pi", "Real.sin_arcsin", "inv_lt_comm₀"],
+    "tags": ["closure", "approximation", "main-step"]
+  },
+  {
+    "id": "ann-connoq0102-4",
+    "proofId": "connected-space-oq-01-oq-02",
+    "range": { "startLine": 92, "endLine": 104 },
+    "type": "result",
+    "title": "Connectedness via Bark and Tree",
+    "content": "**Closing the argument.** With $G$ connected and $G \\subseteq T \\subseteq \\overline{G}$ (the first inclusion trivial, the second from `subset_closure` on the graph and the segment-in-closure step), the parent's bark-and-tree corollary `IsConnected.subset_closure` gives `IsConnected T` directly — no separation argument needed. `isPreconnected_topologistSineCurve` records the preconnected consequence. Path-connectedness, by contrast, fails for $T$ (left as a follow-up).",
+    "mathContext": "$G \\subseteq T \\subseteq \\overline{G} \\Rightarrow T \\text{ connected}$.",
+    "significance": "foundational",
+    "relatedConcepts": ["Bark-and-tree corollary", "Connected but not path-connected"],
+    "prerequisites": ["IsConnected.subset_closure", "subset_closure"],
+    "tags": ["result", "connectedness", "counterexample"]
+  }
+]

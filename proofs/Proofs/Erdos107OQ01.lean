@@ -11,9 +11,11 @@
 
     * UPPER BOUND  (Klein 1931, the hard half):  any 5 points in general
       position contain a convex quadrilateral, i.e. `5 ∈ CardSet 4`.
-      In current Mathlib this needs a full convex-hull case analysis
-      (~1000+ lines); we keep it as the single, sharply-stated axiom
-      `klein_upper_bound`.
+      This needs a full convex-hull vertex-count case analysis.  It is now
+      PROVED in the self-contained companion module
+      `Proofs.Erdos107OQ01KleinUpperAristotle` (an Aristotle proof-search
+      result, verified axiom-free), and `klein_upper_bound` below transports
+      that statement into the `Erdos107` definitions.
 
     * LOWER BOUND  (elementary):  there exist 4 points in general position
       that do NOT contain a convex quadrilateral, i.e. `4 ∉ CardSet 4`.
@@ -21,17 +23,19 @@
       discharge it here with an explicit witness — a triangle together with
       its centroid — and derive `f 4 = 5` from the two halves.
 
-  Net effect: the monolithic `f 4 = 5` axiom is replaced by the strictly
-  weaker, sharper axiom `klein_upper_bound : 5 ∈ CardSet 4`; the lower bound
-  is now a genuine (axiom-free) theorem.
+  Net effect: the parent's monolithic `f 4 = 5` axiom is fully discharged here.
+  Both halves are now genuine, axiom-free theorems, so `f 4 = 5` itself is
+  axiom-free (modulo the standard foundations) and no longer depends on the
+  parent's bundled `f_four_eq`.
 
-  `#print axioms Erdos107OQ01.f_four_eq_five` should list only
-  `klein_upper_bound` alongside the standard `propext / Classical.choice /
-  Quot.sound` foundations (NOT the parent's `f_four_eq`).
+  `#print axioms Erdos107OQ01.f_four_eq_five` should list only the standard
+  `propext / Classical.choice / Quot.sound` foundations (NOT the parent's
+  `f_four_eq`, and NO `klein_upper_bound` axiom — it is now a theorem).
 -/
 
 import Mathlib
 import Proofs.Erdos107Problem
+import Proofs.Erdos107OQ01KleinUpperAristotle
 
 open Finset
 open scoped BigOperators
@@ -265,20 +269,31 @@ theorem four_notin_cardSet : (4 : ℕ) ∉ CardSet 4 := by
   intro h
   exact not_hasConvexNGon_W (h W W_card general_position_W)
 
-/-! ## Klein's upper bound — the single remaining axiom
+/-! ## Klein's upper bound — now discharged
 
 The genuinely hard half of `f 4 = 5`: any five points in general position
-contain a convex quadrilateral.  A full Lean proof requires the convex-hull
-vertex-count case analysis (hull is a triangle / quadrilateral / pentagon),
-which is not yet available in Mathlib.  We isolate exactly this statement. -/
+contain a convex quadrilateral.  The full convex-hull vertex-count case
+analysis (hull is a triangle / quadrilateral / pentagon) is carried out in the
+self-contained companion module `Proofs.Erdos107OQ01KleinUpperAristotle`
+(proof produced by Aristotle proof search, verified axiom-free).  Its inlined
+definitions are *definitionally identical* to the `Erdos107` ones used here, so
+the statement transports across by destructuring and re-assembling the existence
+witness. -/
 
 /-- **Klein 1931 (upper bound).** Any 5 points in general position contain a
-    convex quadrilateral. -/
-axiom klein_upper_bound : (5 : ℕ) ∈ CardSet 4
+    convex quadrilateral.  Transported from
+    `KleinUpperAristotle.klein_upper_bound` (the `Erdos107` and
+    `KleinUpperAristotle` definitions of `InGeneralPosition` / `HasConvexNGon` /
+    `IsConvexNGon` / `CardSet` share the same body, hence are defeq). -/
+theorem klein_upper_bound : (5 : ℕ) ∈ CardSet 4 := by
+  intro pts hcard hgip
+  obtain ⟨T, hTsub, hTcard, hTvert⟩ :=
+    KleinUpperAristotle.klein_upper_bound pts hcard hgip
+  exact ⟨T, hTsub, hTcard, hTvert⟩
 
 /-- **Klein's theorem, `f(4) = 5`,** derived from the proved lower bound and the
-    isolated upper-bound axiom — *without* using the parent's bundled
-    `Erdos107.f_four_eq`. -/
+    now-proved upper bound `klein_upper_bound` — *without* using the parent's
+    bundled `Erdos107.f_four_eq`, and with no axioms of its own. -/
 theorem f_four_eq_five : f 4 = 5 := by
   have hge : (5 : ℕ) ≤ f 4 := by
     have hne : (CardSet 4).Nonempty := ⟨5, klein_upper_bound⟩

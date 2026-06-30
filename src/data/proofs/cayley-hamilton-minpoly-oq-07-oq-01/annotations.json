@@ -1,0 +1,78 @@
+[
+  {
+    "id": "ann-chmoq0701-1",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 67
+    },
+    "type": "key-step",
+    "title": "Invertibility ⟺ Nonzero Constant Term of the Minimal Polynomial",
+    "content": "The single place invertibility is used. Writing $m = \\mathrm{minpoly}_K A$, suppose $m.\\mathrm{coeff}\\ 0 = 0$. Then $m = (\\mathrm{div}_X m)\\cdot X$, so $m(A) = (\\mathrm{div}_X m)(A)\\cdot A = 0$. Since $\\det A \\neq 0$, $A$ is a unit, so cancelling it gives $(\\mathrm{div}_X m)(A) = 0$ — a nonzero annihilating polynomial of degree $< \\deg m$. By `minpoly.dvd`, $m \\mid \\mathrm{div}_X m$, which is impossible by degrees. Hence $m.\\mathrm{coeff}\\ 0 \\neq 0$: equivalently, $0$ is not a root of the minimal polynomial.",
+    "mathContext": "For a square matrix over a field, $A$ is invertible iff $X \\nmid \\mathrm{minpoly}_K A$, i.e. iff the minimal polynomial has a nonzero constant term. This is the minimal-polynomial analogue of the parent's $c_0 = \\pm\\det A$ identity.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Minimal polynomial",
+      "Unit cancellation",
+      "Divisibility and minimality"
+    ],
+    "prerequisites": [
+      "minpoly.dvd",
+      "Nonsingular inverse"
+    ],
+    "tags": [
+      "minpoly",
+      "invertibility",
+      "key-step"
+    ]
+  },
+  {
+    "id": "ann-chmoq0701-2",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 140
+    },
+    "type": "key-step",
+    "title": "Dividing by the Unit to Exhibit the Inverse",
+    "content": "From the additive relation $(\\mathrm{div}_X m)(A)\\cdot A + c_0\\cdot 1 = 0$ with $c_0 = m.\\mathrm{coeff}\\ 0 \\neq 0$, dividing by the unit $-c_0$ gives $\\big((-c_0)^{-1}\\cdot(\\mathrm{div}_X m)(A)\\big)\\cdot A = 1$. The left factor is exactly $(\\mathrm{aeval}\\ A)(\\mathrm{minInvPoly}\\ A)$, so it is a polynomial in $A$; `Matrix.inv_eq_left_inv` identifies it with $A^{-1}$.",
+    "mathContext": "$A^{-1} = (-c_0)^{-1}\\cdot(\\mathrm{div}_X m)(A)$ is a polynomial in $A$, hence commutes with $A$ and lives in $K[A]$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "Left inverse",
+      "Polynomial evaluation at a matrix"
+    ],
+    "prerequisites": [
+      "Matrix.inv_eq_left_inv"
+    ],
+    "tags": [
+      "inverse",
+      "key-step"
+    ]
+  },
+  {
+    "id": "ann-chmoq0701-3",
+    "proofId": "cayley-hamilton-minpoly-oq-07-oq-01",
+    "range": {
+      "startLine": 156,
+      "endLine": 175
+    },
+    "type": "insight",
+    "title": "Sharp Minimal Degree, Refining the Parent Bound",
+    "content": "The inverse polynomial has degree $< \\deg(\\mathrm{minpoly}_K A)$, and since $\\mathrm{minpoly}_K A \\mid \\mathrm{charpoly}\\ A$ we have $\\deg(\\mathrm{minpoly}_K A) \\le \\deg(\\mathrm{charpoly}\\ A) = n$. The parent's degree-$<n$ existence is recovered as `exists_inv_eq_aeval_card`, now witnessed by the minimal-degree polynomial. When $\\deg(\\mathrm{minpoly})$ is much smaller than $n$ (e.g. $A = I$, where it is $1$), the refinement is dramatic.",
+    "mathContext": "$\\deg(\\mathrm{minpoly}_K A)$ is the genuine minimal degree of a polynomial expression for $A^{-1}$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "minpoly ∣ charpoly",
+      "Degree bound"
+    ],
+    "prerequisites": [
+      "Matrix.minpoly_dvd_charpoly"
+    ],
+    "tags": [
+      "degree-bound",
+      "refinement",
+      "insight"
+    ]
+  }
+]

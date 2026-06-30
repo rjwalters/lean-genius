@@ -1,0 +1,156 @@
+{
+  "id": "pythagorean-triples-oq-10",
+  "title": "Hypotenuse of a Primitive Pythagorean Triple is ≡ 1 (mod 4)",
+  "slug": "pythagorean-triples-oq-10",
+  "description": "For a primitive Pythagorean triple x²+y²=z² with coprime legs and positive hypotenuse, the hypotenuse satisfies z ≡ 1 (mod 4) — in particular z is odd. This sharpens the sibling 'hypotenuse is odd' result: oddness follows from z² ≡ 1 (mod 4) alone, but pinning the residue to 1 (rather than 3) requires the actual parametrization z = m²+n² with m,n of opposite parity. Consequently no integer ≡ 3 (mod 4) is ever a primitive hypotenuse.",
+  "meta": {
+    "author": "classical; Euclid / Fermat",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ10.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "modular-arithmetic",
+      "parity",
+      "diophantine",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple.isPrimitiveClassified_of_coprime_of_pos",
+        "description": "A primitive triple with 0 < z admits the parametrization x = m²−n², y = 2mn (or legs swapped) with m,n coprime of opposite parity",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "Int.odd_iff",
+        "description": "Odd n ↔ n % 2 = 1",
+        "module": "Mathlib.Algebra.Ring.Int.Parity"
+      },
+      {
+        "theorem": "Int.even_iff",
+        "description": "Even n ↔ n % 2 = 0",
+        "module": "Mathlib.Algebra.Group.Int.Even"
+      },
+      {
+        "theorem": "mul_eq_zero",
+        "description": "a * b = 0 ↔ a = 0 ∨ b = 0 (no zero divisors), used to take the positive square root",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "sq_emod_four_of_even / sq_emod_four_of_odd: the residues of even and odd squares mod 4 (0 and 1)",
+      "hypotenuse_one_mod_four: the main result — z ≡ 1 (mod 4) for a primitive triple with 0 < z, via z = m²+n² and opposite parity",
+      "hypotenuse_odd: oddness recovered as a corollary of the sharper mod-4 statement",
+      "not_primitive_hypotenuse_of_three_mod_four: structural consequence — no integer ≡ 3 (mod 4) is a primitive hypotenuse",
+      "example_3_4_5 / example_20_21_29: concrete primitive triples confirming 5 ≡ 1 and 29 ≡ 1 (mod 4)"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 126,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Every primitive Pythagorean triple has the form x = m²−n², y = 2mn, z = m²+n² with m,n coprime of opposite parity (Euclid's Elements, Book X). A direct corollary, already known to Fermat and central to his work on sums of two squares, is that the hypotenuse z = m²+n² is a sum of two coprime squares, hence ≡ 1 (mod 4) and a product of primes ≡ 1 (mod 4). This is strictly stronger than the bare statement that the hypotenuse is odd: the residue 3 (mod 4) is impossible, so numbers like 3, 7, 11, 19, 23, … never occur as a primitive hypotenuse even though they are odd.",
+    "problemStatement": "Can we machine-check that the hypotenuse of a primitive Pythagorean triple (with positive z) is ≡ 1 (mod 4), not merely odd?\n\n**Answer: Yes.** Extracting the parametrization z = m²+n² and using that m,n have opposite parity, one square is 0 (mod 4) and the other 1 (mod 4), so z ≡ 1 (mod 4).",
+    "text": "The hypotenuse of a primitive Pythagorean triple is ≡ 1 (mod 4) — a sharpening of mere oddness that needs the parametrization, not just z².",
+    "proofStrategy": "Invoke Mathlib's isPrimitiveClassified_of_coprime_of_pos to obtain m,n with x = m²−n², y = 2mn (or legs swapped), coprime and of opposite parity. Substituting into the Pythagorean identity gives z² = (m²+n²)². Since 0 < z and m²+n² ≥ 0, factor (z−(m²+n²))(z+(m²+n²)) = 0 and use no-zero-divisors plus positivity to take the positive root z = m²+n². Finally, opposite parity makes one of m², n² ≡ 0 and the other ≡ 1 (mod 4) (sq_emod_four_of_even / sq_emod_four_of_odd), so z ≡ 1 (mod 4) by omega.",
+    "keyInsights": [
+      "z² ≡ 1 (mod 4) alone is NOT enough: both 1 and 3 square to 1 mod 4, so oddness is all z² can give. The residue is determined only by the explicit value z = m²+n².",
+      "The positivity hypothesis 0 < z is load-bearing — it picks the positive square root z = +(m²+n²) over z = −(m²+n²); the latter would give z ≡ 3 (mod 4).",
+      "Opposite parity of m,n is exactly what forces z = m²+n² ≡ 0+1 = 1 (mod 4); if m,n could share parity the residue would change.",
+      "Taking the square root is done algebraically with no `sqrt`: (z−w)(z+w)=0 with w ≥ 0 < z forces z = w via mul_eq_zero and linarith.",
+      "omega finishes the modular bookkeeping over the opaque atoms m², n² once their residues mod 4 are supplied."
+    ],
+    "prerequisites": [
+      "Modular arithmetic (residues mod 4)",
+      "Parity of integers",
+      "Pythagorean triples, primitivity, and the Euclidean parametrization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "squares-mod-four",
+      "title": "Squares modulo 4",
+      "startLine": 39,
+      "endLine": 54,
+      "summary": "An even square is 0 mod 4 and an odd square is 1 mod 4 — the two residue facts the result rests on.",
+      "mathContext": "$a$ even $\\Rightarrow a^2 \\equiv 0$, $\\;a$ odd $\\Rightarrow a^2 \\equiv 1 \\pmod 4$."
+    },
+    {
+      "id": "main",
+      "title": "The Hypotenuse is 1 (mod 4)",
+      "startLine": 56,
+      "endLine": 89,
+      "summary": "Extract z = m²+n² from the primitive parametrization (using 0 < z to pick the positive root), then opposite parity gives z ≡ 1 mod 4.",
+      "mathContext": "$z = m^2+n^2$ with $m,n$ opposite parity $\\Rightarrow z \\equiv 0+1 = 1 \\pmod 4$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "startLine": 91,
+      "endLine": 126,
+      "summary": "The hypotenuse is odd (corollary), no integer ≡ 3 mod 4 is a primitive hypotenuse, and the (3,4,5) and (20,21,29) examples.",
+      "mathContext": "$z \\equiv 1 \\pmod 4 \\Rightarrow z$ odd and $z \\not\\equiv 3 \\pmod 4$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Euclid",
+      "title": "Elements, Book X",
+      "year": "c. 300 BCE",
+      "note": "Classical parametrisation of primitive Pythagorean triples"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "note": "Primitive-triple parametrisation; hypotenuse as a sum of two coprime squares ≡ 1 mod 4"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-07",
+      "relationship": "extends",
+      "description": "OQ-07 proves the hypotenuse is odd (z % 2 = 1); this entry sharpens it to z ≡ 1 (mod 4), which requires the explicit parametrization rather than z² alone."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-06",
+      "relationship": "related",
+      "description": "OQ-06 establishes the coprime-parameter classification (m²−n², 2mn, m²+n²) used here to extract z = m²+n²."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "Refines the structure of Pythagorean triples by pinning the hypotenuse residue mod 4."
+    }
+  ],
+  "conclusion": {
+    "summary": "The hypotenuse of a primitive Pythagorean triple with 0 < z is ≡ 1 (mod 4), machine-checked with 0 axioms. The proof extracts z = m²+n² from Mathlib's classification, takes the positive square root algebraically, and reads off the residue from the opposite parity of m,n.",
+    "implications": "Strengthens the classical 'hypotenuse is odd' to the sharp residue z ≡ 1 (mod 4), excluding all z ≡ 3 (mod 4). This is the parity face of the deeper fact that a primitive hypotenuse is a sum of two coprime squares, hence a product of primes ≡ 1 (mod 4).",
+    "openQuestions": [
+      "Can one formalise the converse direction — that every integer all of whose prime factors are ≡ 1 (mod 4) is the hypotenuse of some primitive triple?",
+      "Does the even leg's stronger divisibility (4 ∣ even leg) combine with this to characterise hypotenuse residues mod 8?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "PythagoreanTriple"
+    ],
+    "namespace": "PythagoreanTriplesOQ10",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/PythagoreanTriplesOQ10.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -91,3 +91,133 @@ bulk; steps 2 and 4 are short congruence arguments).
   proof plan, and a populated numerical certificate. No Lean file written
   (dual-backend blackout: Docker down, Aristotle "Resource not found") to
   avoid shipping an unbuildable stub.
+
+## Session 2026-06-27 (researcher-7, Session 2) — ACT: local prime-power engine verified
+
+**Mode**: FRESH (claimed; was OBSERVE) · **Outcome**: progress (verified, 0-sorry/0-axiom)
+
+### What I Did
+- Created `proofs/Proofs/SumOfDivisorsOQ01.lean` (133 LOC, 5 theorems, 0 sorry, 0 axiom),
+  built green in Docker (`Proofs.SumOfDivisorsOQ01`, mathlib 4.26.0).
+- Proved the **local prime-power engine** of Euler's odd-perfect form:
+  - `sigma_prime_pow_odd_iff` (L1): odd prime `p` ⇒ (`σ(p^a)` odd ⟺ `a` even).
+  - `odd_perfect_sigma_eq_two_mul`: odd `Perfect N` ⇒ `σ(N) = 2N` (source of `v₂=1`).
+  - `geom_sum_odd_eq_factor`: `∑_{j≤2t+1} p^j = (1+p)·∑_{k≤t} p^{2k}` (pairing identity).
+  - `even_geom_sum_parity`: `∑_{k<m} p^{2k} ≡ m (mod 2)` for odd `p`.
+  - `sigma_prime_pow_mod_four` (**L2, headline**): odd prime `p`, odd `a` ⇒
+    `σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4)`.
+- Added gallery entry `src/data/proofs/sum-of-divisors-oq-01/{meta.json,annotations.json}`
+  (status verified, badge mathlib, 5 annotations).
+
+### Key Findings
+- **L2 without `padicValNat`**: stating `v₂=1` as `σ(p^a) ≡ 2 (mod 4)` turns the whole
+  characterization into `omega`-closable modular arithmetic once `(1+p)·S` is exposed and
+  `p mod 4` is case-split. This dodged the entire finicky `padicValNat` API (risk R1).
+- **`conv_rhs` for the pairing induction**: a bare `sum_range_succ` rewrote the LHS
+  `ih`-sum (creating `range n`) and `ring` failed; `conv_rhs => rw [sum_range_succ]` fixes it.
+- Aristotle MCP was DOWN this session ("Resource not found") — all proofs done manually
+  via Docker builds. Docker host itself was UP (image `lean4-arm64:v4.26.0`).
+- Build gotcha: oleans are NOT written back to the host worktree path (sibling oleans also
+  absent); judge build success by the script's `=== Build succeeded ===` line + exit code,
+  not by an olean file. Backgrounding the build with `&` makes the wrapper exit 0
+  prematurely — capture `echo EXITCODE=$?` inside the same subshell instead.
+
+### Files Modified
+- proofs/Proofs/SumOfDivisorsOQ01.lean (new)
+- src/data/proofs/sum-of-divisors-oq-01/meta.json (new)
+- src/data/proofs/sum-of-divisors-oq-01/annotations.json (new)
+- src/data/research/problems/sum-of-divisors-oq-01.json (knowledge accumulation)
+
+### Next Steps
+- **Global assembly** (the remaining gap): `v₂(σ N) = Σ_{p∈N.primeFactors} v₂(σ(p^{N.factorization p}))`
+  via `isMultiplicative_sigma`; each summand ≥1 ⟺ exponent odd (L1); total `=1` isolates a
+  unique odd-exponent special prime `p₀`; remaining factor is `IsSquare`. Then L2 supplies
+  `p₀ ≡ a₀ ≡ 1 (mod 4)`.
+- Submit that assembly sorry to Aristotle as a HARD job once the MCP is back (known classical
+  result — Hardy–Wright Thm 277).
+
+## Session 2026-06-27 (researcher-2) — square-packaging half drafted [BUILD-PENDING]
+
+**State on entry:** local prime-power engine (L1, L2, pairing, parity) merged &
+verified (PR #30852, 0-sorry/0-axiom). SOLVED-with-followup: the global assembly
+is the open gap. Picked the **square-packaging half** of that assembly.
+
+**New work** — `proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean` (4 theorems,
+isolated companion that `import Proofs.SumOfDivisorsOQ01` so it CANNOT regress the
+verified main entry):
+
+1. `isSquare_iff_even_factorization {N} (hN : N ≠ 0) : IsSquare N ↔ ∀ p, Even (N.factorization p)`
+   — pure factorization fact. Reverse builds the witness `∏ p^(e_p/2)` and shows
+   its square is `N` via `Nat.factorization_prod_pow_eq_self` + `Finset.prod_pow`.
+2. `odd_sigma_iff_even_factorization {N} (hodd) (hN) : Odd (σ 1 N) ↔ ∀ p ∈ N.primeFactors, Even (N.factorization p)`
+   — L1 spread by `isMultiplicative_sigma` over the factorization product; parity
+   of a product handled by `Nat.prime_two.prime.dvd_finset_prod_iff` + `push_neg`.
+3. `odd_sigma_odd_iff_isSquare {N} (hodd) (hN) : Odd (σ 1 N) ↔ IsSquare N`
+   — **headline**: odd case of "σ(n) odd ⟺ n is a square or twice a square".
+   This is exactly the `m²` packaging: the part of `N` where `σ` stays odd is a
+   square. Bridges (1)↔(2) via `factorization = 0` off `primeFactors`.
+4. `odd_perfect_not_isSquare {N} (hodd) (hperf) : ¬ IsSquare N`
+   — corollary: an odd perfect number is never a square (`σ N = 2N` is even).
+
+**Status: BUILD-PENDING (NOT machine-verified).** Docker was hard-down all
+session: host disk `/System/Volumes/Data` at 100% (≤8 GiB free of 926 GiB, ~6
+concurrent agent Mathlib builds) and `containerd` `meta.db` throwing
+`input/output error` on every new image/container build. 4 build attempts all
+failed at the Docker daemon layer (never reached Lean). Every Mathlib lemma name
+WAS statically checked against the local checkout `proofs/.lake/packages/mathlib`
+(e.g. `even_iff_two_dvd`, `not_even_iff_odd`, `Nat.factorization_mul`,
+`Prime.dvd_finset_prod_iff`, `Finset.prod_pow`, `multiplicative_factorization`),
+but tactic-level success is unconfirmed. **Do not promote to `verified` or update
+the gallery meta until a Docker-up build of `Proofs.SumOfDivisorsOQ01SquarePacking`
+returns `=== Build succeeded ===`.** Risk spots if it fails: the `simp only
+[Finsupp.prod]` unfolds, the `forall_congr'`/`imp_congr_right` shape after
+`push_neg`, and the `dvd_finset_prod_iff` rewrite unification.
+
+**Remaining gap (the harder half):** the mod-4 *counting* that `σ(N)=2N` forces
+*exactly one* odd-exponent prime (so the non-special part is the `m²` above), then
+L2 pins `p ≡ a ≡ 1 (mod 4)`. Approach: two even σ-factors would put `4 ∣ σ(N)`,
+contradicting `σ(N) = 2·odd ≡ 2 (mod 4)`; combine with theorem (2) "at least one"
+to get exactly one. Then `Nat.factorization_prod_pow_eq_self` packages the rest.
+
+## Session 2026-06-27 (researcher-4) — COMPLETE: global assembly + verified square-packing
+
+**Mode**: REVISIT (claimed; was ACT) · **Outcome**: COMPLETE (verified, 0-sorry/0-axiom)
+
+### What I Did
+- **Verified the previously BUILD-PENDING `SumOfDivisorsOQ01SquarePacking.lean`** by fixing
+  5 real errors that had never been machine-checked:
+  `rw[← key]; ring` self-referential rewrite → `rw[pow_two] at key; exact key.symm`;
+  `(σ 1).multiplicative_factorization` (ZeroHom dot, no such lemma) →
+  `ArithmeticFunction.IsMultiplicative.multiplicative_factorization (σ 1) …`;
+  `even_zero` → `⟨0, rfl⟩`; `not_odd_iff_even` → `Nat.not_odd_iff_even`;
+  `not_even_iff_odd` → `Nat.not_even_iff_odd`.
+- **Wrote and verified the global assembly** `proofs/Proofs/SumOfDivisorsOQ01Assembly.lean`:
+  `odd_perfect_euler_form` — the COMPLETE Euler theorem: odd `Perfect N` ⇒
+  `∃ p a m, p.Prime ∧ p%4=1 ∧ a%4=1 ∧ ¬p∣m ∧ N = p^a * m^2`.
+- All three files compile 0-sorry; `#print axioms odd_perfect_euler_form` = only
+  `[propext, Classical.choice, Quot.sound]` ⇒ **0-axiom** per policy.
+
+### Key Findings
+- **Two-factor mod-4 split** avoids the general "exactly one odd-exponent prime" v₂ count:
+  split `N = p₀^e · m` with `m = ordCompl[p₀] N` (the special prime p₀ has odd exponent
+  because N is not a square). `σ(N)=σ(p₀^e)·σ(m)` (multiplicativity, coprime).
+  `σ(p₀^e)` even (L1, e odd) and `σ(N)≡2 (mod 4)` (N odd) ⇒ `σ(m)` odd ⇒ m a square
+  (SquarePacking) ⇒ residue 2 (mod 4) transfers to `σ(p₀^e)` ⇒ L2 gives p₀≡e≡1 (mod 4).
+- **omega gotcha**: omega abstracts nonlinear products as opaque atoms but does NOT
+  ring-normalize. Had to `have hexp : (u+u)*(2*w+1) = 4*(u*w)+2*u := by ring; rw [hexp]`
+  BEFORE omega so that `4*(u*w)` reads as linear in the atom `u*w`.
+- **Build infra**: Docker daemon up but host disk 100% (6 GiB free) → avoided Docker.
+  Verified via **direct host lean v4.26.0** with hand-built `LEAN_PATH` over the cached
+  package oleans in `/Users/rwalters/GitHub/lean-genius/proofs/.lake/packages/*/.lake/build/lib/lean`
+  (compile main → olean in /tmp, add to LEAN_PATH, compile companions). Mathlib aggregate
+  olean present; each file compiles in ~15s.
+
+### Files Modified
+- proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean (fixed → verified)
+- proofs/Proofs/SumOfDivisorsOQ01Assembly.lean (new — completes the theorem)
+- src/data/proofs/sum-of-divisors-oq-01/meta.json (title/description/contributions/conclusion)
+- src/data/research/problems/sum-of-divisors-oq-01.json (knowledge)
+
+### Next Steps
+COMPLETE. Follow-ups (optional): characterize the special prime vs the count of distinct
+prime factors; recover the further known constraints (N > 10^1500, ≥ k distinct primes).

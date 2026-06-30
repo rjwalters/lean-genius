@@ -1,0 +1,183 @@
+{
+  "id": "euler-totient-oq-01-oq-02-oq-01",
+  "slug": "euler-totient-oq-01-oq-02-oq-01",
+  "title": "The Carmichael Function on Odd Prime Powers: λ(pᵏ) = pᵏ⁻¹(p − 1)",
+  "status": "verified",
+  "badge": "original",
+  "description": "Sibling of euler-totient-oq-01-oq-02 (verified). The parent records only the coincidence λ(pᵏ) = φ(pᵏ) for odd primes, leaving λ implicit. This entry supplies the explicit closed form λ(pᵏ) = pᵏ⁻¹(p − 1) and the structural reason it holds: (ℤ/pᵏℤ)ˣ is cyclic, so its exponent (which is λ) equals its order (which is φ). Every link of the chain cyclic ⟹ exponent = order ⟹ λ(pᵏ) = φ(pᵏ) = pᵏ⁻¹(p − 1) is made explicit, a primitive root (a unit of order exactly φ(pᵏ)) is exhibited, and concrete values λ(9)=6, λ(27)=18, λ(25)=20, λ(7)=6, λ(49)=42 are derived. 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "The Carmichael function λ(n) is the reduced totient — the exponent of the unit group (ℤ/nℤ)ˣ — and always divides Euler's totient φ(n), the group's order, with equality exactly when the group is cyclic. The two prime-power regimes are opposite. For powers of two with k ≥ 3 the group (ℤ/2ᵏℤ)ˣ ≅ ℤ/2 × ℤ/2ᵏ⁻² is non-cyclic and λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 (the parent entry's headline). For an odd prime p the group (ℤ/pᵏℤ)ˣ is cyclic — Gauss's primitive-root theorem — so λ(pᵏ) = φ(pᵏ), and the totient prime-power formula φ(pᵏ) = pᵏ⁻¹(p − 1) turns this into a closed polynomial in p and k. The existence of a primitive root mod pᵏ (an element whose powers exhaust all units) is the classical companion fact, governing the period of base-p reciprocals and the structure of every cyclic discrete logarithm.",
+    "problemStatement": "For an odd prime p and k ≥ 1, prove λ(pᵏ) = pᵏ⁻¹(p − 1), exhibiting the mechanism: (ℤ/pᵏℤ)ˣ is cyclic, hence its exponent equals its order, hence λ(pᵏ) = φ(pᵏ) = pᵏ⁻¹(p − 1). Establish the k = 1 case λ(p) = p − 1, the existence of a primitive root (a unit of order exactly pᵏ⁻¹(p − 1)), and concrete evaluations.",
+    "proofStrategy": "The engine is Mathlib's ZMod.isCyclic_units_of_prime_pow (the odd prime-power unit group is cyclic) combined with IsCyclic.iff_exponent_eq_card (a finite cyclic group's exponent equals its cardinality). Since λ = ArithmeticFunction.Carmichael is by definition that exponent (carmichael_eq_exponent') and φ(pᵏ) = #(ℤ/pᵏℤ)ˣ (ZMod.card_units_eq_totient), this gives λ(pᵏ) = φ(pᵏ); the totient prime-power formula Nat.totient_prime_pow then yields pᵏ⁻¹(p − 1). The primitive root comes from IsCyclic.exists_ofOrder_eq_natCard, transporting the generator's order through the same card = totient identity. Concrete values instantiate the formula and reduce powers by norm_num.",
+    "keyInsights": [
+      "The single fact doing the work is exponent = order, which holds precisely because (ℤ/pᵏℤ)ˣ is cyclic; everything else is bookkeeping (λ = exponent, φ = order).",
+      "Odd prime powers are the cyclic regime, opposite to the 2-power case of the parent: there λ = φ/2 because the group splits as ℤ/2 × ℤ/2ᵏ⁻², here λ = φ because the group is a single cycle.",
+      "Making λ(pᵏ) an explicit polynomial pᵏ⁻¹(p − 1) — rather than the implicit value φ(pᵏ) — is what the parent left undone; it is the honest answer to 'what is λ on an odd prime power'.",
+      "Cyclicity is constructive enough to name a witness: a primitive root mod pᵏ is an actual unit of order exactly φ(pᵏ), recovered from the cyclic generator.",
+      "λ(p) = p − 1 is the k = 1 corollary: (ℤ/pℤ)ˣ is the multiplicative group of a finite field, cyclic of order p − 1."
+    ],
+    "prerequisites": [
+      "The unit group (ℤ/nℤ)ˣ, its order φ(n), and the Carmichael function λ as its exponent",
+      "Cyclic groups: a finite cyclic group's exponent equals its order, and it has a generator of that order",
+      "Gauss's theorem that (ℤ/pᵏℤ)ˣ is cyclic for an odd prime p (primitive roots exist)",
+      "The totient prime-power formula φ(pᵏ) = pᵏ⁻¹(p − 1)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "mechanism",
+      "title": "Section I: The Cyclic Mechanism",
+      "startLine": 44,
+      "endLine": 57,
+      "summary": "isCyclic_units_odd_prime_pow ((ℤ/pᵏℤ)ˣ is cyclic) and exponent_units_odd_prime_pow (exponent = order for that cyclic group) — the structural engine behind λ = φ.",
+      "mathContext": "Cyclic ⟹ exponent equals cardinality; since λ is the exponent and φ the cardinality, this is the whole reason λ(pᵏ) = φ(pᵏ)."
+    },
+    {
+      "id": "closed-form",
+      "title": "Section II: The Closed Form λ(pᵏ) = pᵏ⁻¹(p − 1)",
+      "startLine": 59,
+      "endLine": 90,
+      "summary": "carmichael_eq_totient (λ(pᵏ) = φ(pᵏ)), carmichael_odd_prime_pow (the explicit formula pᵏ⁻¹(p − 1), the OQ target), carmichael_odd_prime (λ(p) = p − 1), and exists_primitiveRoot_odd_prime_pow (a unit of order exactly φ(pᵏ)).",
+      "mathContext": "Combining the cyclic coincidence with the totient prime-power formula makes λ an explicit polynomial; cyclicity also names a primitive root."
+    },
+    {
+      "id": "concrete",
+      "title": "Section III: Concrete Values",
+      "startLine": 92,
+      "endLine": 121,
+      "summary": "carmichael_nine (λ(9)=6), carmichael_twentyseven (λ(27)=18), carmichael_twentyfive (λ(25)=20), carmichael_seven (λ(7)=6), carmichael_fortynine (λ(49)=42), instantiating the closed form.",
+      "mathContext": "Worked values across two odd primes and several exponents illustrating λ(pᵏ) = pᵏ⁻¹(p − 1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 122 lines and 11 theorems giving the Carmichael function on odd prime powers in closed form: λ(pᵏ) = pᵏ⁻¹(p − 1) for an odd prime p and k ≥ 1, with the cyclic mechanism (exponent = order), the k = 1 case λ(p) = p − 1, the existence of a primitive root of order exactly φ(pᵏ), and the concrete values λ(9)=6, λ(27)=18, λ(25)=20, λ(7)=6, λ(49)=42.",
+    "implications": "This completes the odd half of the parent's prime-power Carmichael analysis: where the parent stopped at the implicit λ(pᵏ) = φ(pᵏ), λ is now an explicit polynomial, and the structural cause (cyclicity ⟹ exponent = order) is exhibited rather than asserted. Together with the parent's λ(2ᵏ) = 2ᵏ⁻² and Mathlib's lcm formula carmichael_factorization, λ is now determined in closed form at every prime power, hence (by lcm) at every n. The primitive-root existence result partially answers the parent's own follow-up question on characterizing n with primitive roots.",
+    "openQuestions": [
+      "Assemble the full closed form for λ(n) at arbitrary n by feeding the prime-power values pᵏ⁻¹(p − 1) (odd p) and 2ᵏ⁻² (p = 2, k ≥ 3) into carmichael_factorization's lcm.",
+      "Characterize exactly the moduli n admitting a primitive root (n ∈ {1, 2, 4, pᵏ, 2pᵏ} for odd primes p), using the cyclic/non-cyclic dichotomy between odd prime powers and powers of two."
+    ]
+  },
+  "references": [
+    {
+      "key": "Carmichael1910",
+      "citation": "Carmichael, R.D., Note on a new number theory function, Bull. Amer. Math. Soc. 16 (1910), 232–238.",
+      "type": "paper"
+    },
+    {
+      "key": "HardyWright",
+      "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), §6 (primitive roots).",
+      "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Sibling: the parent records only λ(pᵏ) = φ(pᵏ) (value implicit) and focuses on the non-cyclic 2-power case λ(2ᵏ) = 2ᵏ⁻². This entry supplies the explicit odd-prime-power closed form λ(pᵏ) = pᵏ⁻¹(p − 1), the cyclic mechanism, and a primitive root."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Grandparent: Euler's totient φ. This entry answers the OQ-01-OQ-02-OQ-01 thread on the Carmichael function λ at odd prime powers in closed form."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Carmichael",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "ArithmeticFunction",
+      "Nat"
+    ],
+    "namespace": "EulerTotientOQ01OQ02OQ01",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ01OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "carmichael-function",
+      "euler-totient",
+      "unit-group",
+      "prime-powers",
+      "cyclic-group",
+      "primitive-root",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.isCyclic_units_of_prime_pow",
+        "description": "(ℤ/pⁿℤ)ˣ is cyclic for an odd prime p",
+        "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
+      },
+      {
+        "theorem": "IsCyclic.iff_exponent_eq_card",
+        "description": "A finite commutative group is cyclic iff its exponent equals its cardinality",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "IsCyclic.exists_ofOrder_eq_natCard",
+        "description": "A finite cyclic group has an element (generator) of order equal to its cardinality",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_pow_of_prime_ne_two",
+        "description": "λ(pⁿ) = φ(pⁿ) for an odd prime p",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(pⁿ) = pⁿ⁻¹(p − 1) for a prime p and n ≥ 1",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "ZMod.card_units_eq_totient",
+        "description": "#(ℤ/nℤ)ˣ = φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ],
+    "originalContributions": [
+      "carmichael_odd_prime_pow: the explicit closed form λ(pᵏ) = pᵏ⁻¹(p − 1) for odd primes — a composition (cyclic coincidence λ(pᵏ)=φ(pᵏ) ∘ totient prime-power formula) that is not any single Mathlib lemma; the parent stopped at the implicit value φ(pᵏ)",
+      "exists_primitiveRoot_odd_prime_pow: existence of a primitive root mod pᵏ (a unit of order exactly pᵏ⁻¹(p − 1)), derived by transporting a cyclic generator's order through #(ℤ/pᵏℤ)ˣ = φ(pᵏ) = pᵏ⁻¹(p − 1)",
+      "exponent_units_odd_prime_pow: the explicit exponent = order identity for the odd prime-power unit group, exposing the mechanism the parent's λ = φ statement only implied",
+      "carmichael_odd_prime (λ(p) = p − 1) and the five concrete evaluations λ(9)=6, λ(27)=18, λ(25)=20, λ(7)=6, λ(49)=42, derived from the closed form by norm_num"
+    ],
+    "axiomCount": 0,
+    "lineCount": 122,
+    "assumptions": "0 axioms, 0 sorries; all 11 theorems machine-checked (no native_decide — the concrete λ(9), λ(27), λ(25), λ(7), λ(49) follow from the closed form by norm_num). #print axioms reports only [propext, Classical.choice, Quot.sound] for the main results. The cyclicity of (ℤ/pᵏℤ)ˣ, the exponent-equals-card lemma for cyclic groups, the totient prime-power formula, and λ = exponent are all from Mathlib; the original content is their composition into the explicit closed form λ(pᵏ) = pᵏ⁻¹(p − 1) (no single Mathlib lemma) and the primitive-root existence statement, neither of which is a one-line restatement.",
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "prerequisites": [
+      "The unit group (ℤ/nℤ)ˣ, its order φ(n), and the Carmichael function λ as its exponent",
+      "Finite cyclic groups: exponent = order, and existence of a generator of that order",
+      "Cyclicity of (ℤ/pᵏℤ)ˣ for odd primes (Gauss, primitive roots)",
+      "The totient prime-power formula φ(pᵏ) = pᵏ⁻¹(p − 1)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "euler-totient-oq-01-oq-02",
+        "relationship": "Sibling: supplies the explicit odd-prime-power closed form λ(pᵏ) = pᵏ⁻¹(p − 1) and primitive root, complementing the parent's non-cyclic 2-power case λ(2ᵏ) = 2ᵏ⁻²."
+      },
+      {
+        "id": "euler-totient",
+        "relationship": "Grandparent: Euler's totient φ; this thread treats the Carmichael function λ at odd prime powers."
+      }
+    ]
+  }
+}
