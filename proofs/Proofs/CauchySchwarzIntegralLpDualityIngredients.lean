@@ -29,6 +29,19 @@ resulting monotonicity over set inclusion.
   `B = A ⊔ (B \ A)` (the decomposition the maximality *gluing* actually uses).
 * `eLpNorm_rpow_restrict_mono` — monotonicity of the `q`-power Lᵠ-seminorm under
   set inclusion `A ⊆ B` (the maximizing sequence's norms increase with the set).
+
+Beyond the σ-finite-reduction ingredients, the file develops the **dual-norm
+characterization** that is the analytic core of `Lᵖ`-duality:
+
+* `lintegral_extremizer_*` / `exists_holder_extremizer` — converse Hölder: the
+  explicit extremizer `f = g^{q-1}` attains *equality* in Hölder's inequality.
+* `lpDualNorm` / `lpDualNorm_le` / `lpDualNorm_eq_of_lintegral_ne_top` — the dual
+  norm `⨆_{‖f‖_p ≤ 1} ∫⁻ f·g` equals `‖g‖_q` for `g ∈ Lᵠ`.
+* `lqTruncation` + `iSup_lqTruncation` / `lpDualNorm_eq_top_of_lintegral_top` — the
+  `g ∉ Lᵠ` direction via monotone truncation over the spanning sets.
+* `lpDualNorm_eq` — the **unconditional** dual-norm identity
+  `lpDualNorm p g = (∫⁻ gᵠ)^{1/q} = ‖g‖_q` for a σ-finite measure and any
+  measurable `g` (no integrability hypothesis).
 -/
 
 import Mathlib
@@ -420,6 +433,144 @@ theorem lpDualNorm_ge_of_le {p q : ℝ} (hpq : p.HolderConjugate q)
     (∫⁻ x, (h x) ^ q ∂μ) ^ (1 / q) ≤ lpDualNorm p μ g := by
   rw [← lpDualNorm_eq_of_lintegral_ne_top hpq hh hhtop]
   exact lpDualNorm_mono hle
+
+/-! ## Completing the dual-norm identity: the `g ∉ Lᵠ` direction (σ-finite `μ`)
+
+The finite-seminorm case (`lpDualNorm_eq_of_lintegral_ne_top`) together with the
+truncation bridge (`lpDualNorm_ge_of_le`) close the remaining `∫⁻ gᵠ = ∞`
+(`g ∉ Lᵠ`) regime **for a σ-finite measure**. Truncate `g` to
+`tₙ = (g ⊓ n) · 1_{Aₙ}` over the finite-measure spanning sets `Aₙ = spanningSets μ n`:
+the `tₙ` are measurable, increase pointwise to `g`, and each has finite Lᵠ-mass
+(`∫⁻ tₙᵠ ≤ nᵠ · μ(Aₙ) < ∞`). By monotone convergence their masses exhaust
+`∫⁻ gᵠ = ∞`, and the bridge turns each finite mass into a lower bound
+`(∫⁻ tₙᵠ)^{1/q} ≤ lpDualNorm`; the supremum of the left sides is `∞`. This yields
+the **unconditional** dual-norm identity `lpDualNorm p g = ‖g‖_q` (σ-finite `μ`,
+*no* integrability hypothesis on `g`) — the full analytic core of `Lᵖ`-duality. -/
+
+/-- A positive real power commutes with suprema on `ℝ≥0∞`: the power map
+    `x ↦ x^q` (`q > 0`) is an order isomorphism (`ENNReal.orderIsoRpow`), so it
+    preserves `⨆`. -/
+private theorem rpow_iSup {ι : Sort*} (f : ι → ℝ≥0∞) {q : ℝ} (hq : 0 < q) :
+    (⨆ i, f i) ^ q = ⨆ i, (f i) ^ q := by
+  have h := map_iSup (ENNReal.orderIsoRpow q hq) f
+  simpa only [ENNReal.orderIsoRpow_apply] using h
+
+/-- The Lᵠ-truncation of `g` to the `n`-th finite-measure spanning set:
+    `tₙ = (g ⊓ n) · 1_{spanningSets μ n}`. -/
+def lqTruncation (μ : Measure α) [SigmaFinite μ] (g : α → ℝ≥0∞) (n : ℕ) : α → ℝ≥0∞ :=
+  (spanningSets μ n).indicator fun y => min (g y) (n : ℝ≥0∞)
+
+/-- The truncation is measurable. -/
+theorem measurable_lqTruncation [SigmaFinite μ] (hg : Measurable g) (n : ℕ) :
+    Measurable (lqTruncation μ g n) :=
+  (hg.min measurable_const).indicator (measurableSet_spanningSets μ n)
+
+/-- The truncation is dominated by `g`. -/
+theorem lqTruncation_le [SigmaFinite μ] (n : ℕ) (x : α) :
+    lqTruncation μ g n x ≤ g x := by
+  by_cases hx : x ∈ spanningSets μ n
+  · simp only [lqTruncation, Set.indicator_of_mem hx]; exact min_le_left _ _
+  · simp only [lqTruncation, Set.indicator_of_notMem hx]; exact zero_le _
+
+/-- The truncations increase pointwise in `n`. -/
+theorem lqTruncation_mono [SigmaFinite μ] {m n : ℕ} (hmn : m ≤ n) (x : α) :
+    lqTruncation μ g m x ≤ lqTruncation μ g n x := by
+  by_cases hxm : x ∈ spanningSets μ m
+  · have hxn : x ∈ spanningSets μ n := monotone_spanningSets μ hmn hxm
+    simp only [lqTruncation, Set.indicator_of_mem hxm, Set.indicator_of_mem hxn]
+    exact min_le_min le_rfl (by exact_mod_cast hmn)
+  · simp only [lqTruncation, Set.indicator_of_notMem hxm]; exact zero_le _
+
+/-- The truncations increase to `g`: `⨆ₙ tₙ = g` pointwise. The `≤` is dominance;
+    the `≥` finds a spanning set `Aₖ ∋ x` and exhausts the cap (`g x = ∞`: the cap
+    `min ∞ n = n ↑ ∞`; `g x < ∞`: pick `n ≥ g x`, then `min (g x) n = g x`). -/
+theorem iSup_lqTruncation [SigmaFinite μ] (x : α) :
+    ⨆ n, lqTruncation μ g n x = g x := by
+  refine le_antisymm (iSup_le fun n => lqTruncation_le n x) ?_
+  have hxU : x ∈ ⋃ n, spanningSets μ n := by rw [iUnion_spanningSets]; exact Set.mem_univ x
+  obtain ⟨k, hk⟩ := Set.mem_iUnion.1 hxU
+  rcases eq_or_ne (g x) ∞ with hgx | hgx
+  · rw [hgx, top_le_iff, iSup_eq_top]
+    intro b hb
+    obtain ⟨m, hm⟩ := ENNReal.exists_nat_gt hb.ne
+    refine ⟨max k m, ?_⟩
+    have hxmem : x ∈ spanningSets μ (max k m) := monotone_spanningSets μ (le_max_left k m) hk
+    simp only [lqTruncation, Set.indicator_of_mem hxmem, hgx]
+    rw [min_eq_right le_top]
+    exact lt_of_lt_of_le hm (by exact_mod_cast Nat.le_max_right k m)
+  · obtain ⟨m, hm⟩ := ENNReal.exists_nat_gt hgx
+    refine le_iSup_of_le (max k m) ?_
+    have hxmem : x ∈ spanningSets μ (max k m) := monotone_spanningSets μ (le_max_left k m) hk
+    simp only [lqTruncation, Set.indicator_of_mem hxmem]
+    exact le_min le_rfl (le_of_lt (lt_of_lt_of_le hm (by exact_mod_cast Nat.le_max_right k m)))
+
+/-- Each truncation has finite Lᵠ-mass: `∫⁻ tₙᵠ ≤ nᵠ · μ(Aₙ) < ∞`. -/
+theorem lintegral_lqTruncation_rpow_ne_top [SigmaFinite μ] {q : ℝ} (hq : 0 < q) (n : ℕ) :
+    (∫⁻ x, (lqTruncation μ g n x) ^ q ∂μ) ≠ ∞ := by
+  have hbound : ∫⁻ x, (lqTruncation μ g n x) ^ q ∂μ
+      ≤ (n : ℝ≥0∞) ^ q * μ (spanningSets μ n) := by
+    rw [← lintegral_indicator_const (measurableSet_spanningSets μ n)]
+    refine lintegral_mono fun x => ?_
+    by_cases hx : x ∈ spanningSets μ n
+    · rw [Set.indicator_of_mem hx]
+      simp only [lqTruncation, Set.indicator_of_mem hx]
+      exact ENNReal.rpow_le_rpow (min_le_right _ _) hq.le
+    · rw [Set.indicator_of_notMem hx]
+      have hz : lqTruncation μ g n x = 0 := by
+        simp only [lqTruncation, Set.indicator_of_notMem hx]
+      rw [hz]; simp [ENNReal.zero_rpow_of_pos hq]
+  exact ne_top_of_le_ne_top
+    (ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg hq.le (ENNReal.natCast_ne_top n))
+      (measure_spanningSets_lt_top μ n).ne) hbound
+
+/-- **Dual norm is `∞` when `g ∉ Lᵠ` (σ-finite `μ`).** If `∫⁻ gᵠ = ∞` then
+    `lpDualNorm p g = ∞ = (∫⁻ gᵠ)^{1/q}`. The truncation masses `∫⁻ tₙᵠ` exhaust
+    `∫⁻ gᵠ = ∞` (monotone convergence: `⨆ₙ tₙᵠ = gᵠ`), and each finite mass yields
+    `(∫⁻ tₙᵠ)^{1/q} ≤ lpDualNorm` via `lpDualNorm_ge_of_le`; their supremum
+    `(⨆ₙ ∫⁻ tₙᵠ)^{1/q} = ∞^{1/q} = ∞` forces the dual norm up to `∞`. -/
+theorem lpDualNorm_eq_top_of_lintegral_top [SigmaFinite μ] {p q : ℝ}
+    (hpq : p.HolderConjugate q) (hg : Measurable g) (hI : (∫⁻ x, (g x) ^ q ∂μ) = ∞) :
+    lpDualNorm p μ g = ∞ := by
+  have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+  have hmeas : ∀ n, Measurable (fun x => (lqTruncation μ g n x) ^ q) :=
+    fun n => (measurable_lqTruncation hg n).pow_const q
+  have hmono : Monotone (fun n => fun x => (lqTruncation μ g n x) ^ q) := by
+    intro m n hmn x
+    exact ENNReal.rpow_le_rpow (lqTruncation_mono hmn x) hq.le
+  -- monotone convergence: truncation masses exhaust ∫⁻ gᵠ = ∞
+  have hmass : ⨆ n, ∫⁻ x, (lqTruncation μ g n x) ^ q ∂μ = ∞ := by
+    rw [← lintegral_iSup hmeas hmono, ← hI]
+    refine lintegral_congr fun x => ?_
+    rw [← rpow_iSup _ hq, iSup_lqTruncation x]
+  -- sup of the truncation lower bounds is ∞
+  refine le_antisymm le_top ?_
+  calc (∞ : ℝ≥0∞)
+      = (⨆ n, ∫⁻ x, (lqTruncation μ g n x) ^ q ∂μ) ^ (1 / q) := by
+        rw [hmass, ENNReal.top_rpow_of_pos (one_div_pos.2 hq)]
+    _ = ⨆ n, (∫⁻ x, (lqTruncation μ g n x) ^ q ∂μ) ^ (1 / q) := rpow_iSup _ (one_div_pos.2 hq)
+    _ ≤ lpDualNorm p μ g :=
+        iSup_le fun n => lpDualNorm_ge_of_le hpq (measurable_lqTruncation hg n)
+          (lqTruncation_le n) (lintegral_lqTruncation_rpow_ne_top hq n)
+
+/-- **The `Lᵖ`-duality dual-norm identity (σ-finite `μ`, unconditional).** For
+    Hölder-conjugate `p, q`, a σ-finite measure `μ`, and any measurable `g`:
+
+      `lpDualNorm p g = (∫⁻ gᵠ)^{1/q} = ‖g‖_q`,
+
+    with *no* integrability hypothesis on `g`. This is the capstone of the
+    reduction: the dual norm of the pairing functional `g ↦ ∫⁻ f·g` over the `Lᵖ`
+    unit ball is exactly the `Lᵠ`-seminorm — the analytic heart of the `Lᵖ` Riesz
+    representation theorem. Combines the finite case
+    (`lpDualNorm_eq_of_lintegral_ne_top`) with the `g ∉ Lᵠ` case
+    (`lpDualNorm_eq_top_of_lintegral_top`). -/
+theorem lpDualNorm_eq [SigmaFinite μ] {p q : ℝ} (hpq : p.HolderConjugate q)
+    (hg : Measurable g) :
+    lpDualNorm p μ g = (∫⁻ x, (g x) ^ q ∂μ) ^ (1 / q) := by
+  rcases eq_or_ne (∫⁻ x, (g x) ^ q ∂μ) ∞ with hI | hI
+  · have hq : (0 : ℝ) < q := lt_trans one_pos hpq.symm.lt
+    rw [lpDualNorm_eq_top_of_lintegral_top hpq hg hI, hI,
+      ENNReal.top_rpow_of_pos (one_div_pos.2 hq)]
+  · exact lpDualNorm_eq_of_lintegral_ne_top hpq hg hI
 
 end RieszLpDualityIngredients
 
