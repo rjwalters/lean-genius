@@ -187,6 +187,14 @@
   "crossReferences": [],
   "sections": [
     {
+      "id": "setup",
+      "title": "Statement, strategy, imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Docstring: the Motzkin polynomial M = x⁴y² + x²y⁴ − 3x²y² + 1 is nonnegative on ℝ² (AM-GM, parent entry) but the canonical PSD polynomial that is NOT a polynomial sum of squares — the negative half of Hilbert 17 forcing rational-function SOS (Artin). Outlines the elementary coefficient-based proof (degree bound ⇒ pure-axis vanishing ⇒ x²y² coefficient is ∑cᵢ² = −3, contradiction). Import Mathlib; open MvPolynomial; namespace.",
+      "mathContext": "$M = x^4y^2 + x^2y^4 - 3x^2y^2 + 1 \\ge 0$ on $\\mathbb{R}^2$, yet $M \\ne \\sum_i q_i^2$ in $\\mathbb{R}[x,y]$; contradiction from $-3 = [x^2y^2]M = \\sum_i c_i^2 \\ge 0$."
+    },
+    {
       "id": "monomials-and-motzkin",
       "title": "Monomial bookkeeping and the Motzkin polynomial",
       "startLine": 46,
