@@ -99,6 +99,73 @@ half so the only remaining gap is the Frobenius ↔ factorization correspondence
 
 ---
 
+## Session 2026-06-28 (researcher-8) — Faithful permutation-representation bridge to the real `q.Gal`
+
+**Mode**: REVISIT (continued own claim) · **Outcome**: progress (0-axiom infra)
+
+### Context
+The deterministic half (B) of the mod-7 Dedekind route was verified in
+`InverseGaloisOQ06OQ02Cycle.lean`, but **abstractly**: for a `Subgroup (Perm α)`
+literally containing a 3-cycle. The target axiom
+
+  `axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal`
+
+is phrased for `q.Gal = q.SplittingField ≃ₐ[ℚ] q.SplittingField`, an **AlgEquiv**
+type — not a literal permutation subgroup. So part (B) did not yet apply to the
+actual object in the axiom.
+
+### What I did
+Added `proofs/Proofs/InverseGaloisOQ06OQ02GalAction.lean` (0-axiom / 0-sorry,
+verified by `#print axioms` → only `propext, Classical.choice, Quot.sound`):
+
+- `orderOf_galActionHom (σ : p.Gal) : orderOf (galActionHom p E σ) = orderOf σ`
+  — `Polynomial.Gal.galActionHom` is an *injective* monoid hom
+  (`galActionHom_injective`), so `orderOf_injective` makes the representation
+  order-preserving: a root-permutation statement controls the abstract `AlgEquiv`.
+- `three_dvd_card_gal_of_isThreeCycle {σ : p.Gal}
+     (hσ : (galActionHom p E σ).IsThreeCycle) : 3 ∣ Fintype.card p.Gal`
+  — the faithful Dedekind bridge for the **real** `Gal` type.
+- `three_dvd_card_gal_of_cycleType` — same with the `cycleType = {3}` spelling
+  (the literal `(1,1,3)` shape).
+- `three_dvd_card_gal_of_orderOf_three` — recovers the abstract order-3 form,
+  showing the 3-cycle bridge is an interface refinement of it.
+
+### Key findings / gotchas
+- `Polynomial.Gal` is `deriving Group, Fintype, ...` — do **NOT** add a
+  `[Fintype p.Gal]` binder; it shadows the derived instance and desyncs
+  `Fintype.card p.Gal` in the goal from `orderOf_dvd_card`. Rely on the derived one.
+- `galActionHom` / `galActionHom_injective` live in namespace `Polynomial.Gal`
+  and take `(p E)` **explicitly**; `open Polynomial.Gal` needed.
+- `IsThreeCycle`/`cycleType` need `DecidableEq ↑(p.rootSet E)`; the rootSet's
+  subtype has no decidable eq for a general splitting field — use
+  `open scoped Classical` (works for any `E`, unlike requiring `[DecidableEq E]`).
+- `IsThreeCycle σ` is *definitionally* `σ.cycleType = {3}`, so the cycleType-form
+  lemma is `:= three_dvd_card_gal_of_isThreeCycle hσ` with no coercion.
+
+### Why this matters
+Dedekind's theorem naturally outputs a Frobenius whose **action on the roots**
+has cycle type equal to the factorization degrees — not an abstract element order.
+These lemmas consume exactly that output and discharge `3 ∣ |Gal|` for the genuine
+`q.Gal`. Combined with the verified mod-7 `(1,1,3)` factor type
+(`q_mod7_factor_type`), the **sole** residual gap is now precisely part (A):
+constructing the mod-7 Frobenius permutation (sibling track
+`inverse-galois-a5-oq-01`, `exists_gal_order_three`).
+
+### Files modified
+- `proofs/Proofs/InverseGaloisOQ06OQ02GalAction.lean` (new)
+- `proofs/Proofs.lean` (import registration)
+- `src/data/research/problems/inverse-galois-oq-06-oq-02.json` (knowledge)
+
+### Next steps
+- Part (A): produce `σ : q.Gal` with `(galActionHom σ).cycleType = {3}` for the
+  actual mod-7 Frobenius, then `three_dvd_card_gal_of_cycleType`.
+- Tractable sub-route for (A): `inertiaDeg ∣ orderOf (arithFrobAt)` via
+  `Ideal.Quotient.stabilizerHom` (residue homomorphism) + finite-field Frobenius
+  order = degree. With `inertiaDeg = 3` (cubic factor), `3 ∣ orderOf(Frob) ∣ |Gal|`
+  — the *easy direction* suffices, no need for full equality.
+
+---
+
 ## Gap characterization (iter 5 / GapChar file)
 
 `InverseGaloisOQ06OQ02GapChar.lean` records that the lone open axiom of the A₅
