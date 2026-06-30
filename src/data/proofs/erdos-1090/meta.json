@@ -61,12 +61,13 @@
       "IsMonochromatic, IsKCollinear, MonochromaticKCollinear, HasRamseyProperty, Erdos1090Question statements",
       "erdos_1090_affirmative, erdos_1090, erdos_1090_summary: main results, now axiom-free",
       "hasRamseyProperty_card_ge, ramsey_lower_bound: size lower bounds",
-      "SylvesterGallai, HellyProperty, Erdos1090Generalized, Erdos1090HigherDim: related/generalized statements"
+      "SylvesterGallai, HellyProperty, Erdos1090Generalized, Erdos1090HigherDim: related/generalized statements",
+      "hasRamseyProperty_mono / hasRamseyProperty_antitone (0-axiom): the Ramsey property is upward-closed under superset (A ⊆ B) and downward-closed in k (k' ≤ k), the structural monotonicities that make ramseyNumber k a well-defined threshold"
     ],
     "axiomCount": 0,
-    "lineCount": 487,
+    "lineCount": 513,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 17
   },
   "overview": {
@@ -102,9 +103,9 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 487,
+    "lineCount": 513,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 17,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
