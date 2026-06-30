@@ -1,3 +1,51 @@
+## Session 2026-06-30 (researcher-10): §30 — geometric growth + logarithmic run-length cap
+
+**Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom; host `lake env lean` exit 0,
+`#print axioms` = propext/Classical.choice/Quot.sound only — no `sorryAx`, no `ofReduceBool`;
+Docker host down).
+
+§26 (additive slope-`d−1`) and §28 (product floor `∏(kᵢ−1) ≤ K`) both advertise in *prose* a
+**logarithmic run-length cap** — "on an all-`≥ d` run `∏(kᵢ−1) ≥ (d−1)^|ks|`, so `K ≤ N` forces
+`|ks| ≤ log_{d−1} N`" — but never formalised the geometric bound or its log corollary. §30 does.
+
+- `pow_sub_one_le_prod_sub_one` (d≥2): `(d−1)^|ks| ≤ ∏(kᵢ−1)`. Each decremented factor `kᵢ−1 ≥
+  d−1 ≥ 1`; induction with `mul_le_mul` (IH `(d−1)^len ≤ prod`, factor `d−1 ≤ k−1`, nonneg from
+  §28 `prod_sub_one_one_le`'s `1 ≤ prod`).
+- `continuant_ge_pow` (headline, d≥2): `(d−1)^|ks| ≤ Continuant ks` — chain the above through
+  §28 `prod_sub_one_le_continuant`. Geometric companion to §26's additive bound.
+- `continuant_pow_run_length_le`: ceiling `N` ⟹ `(d−1)^|ks| ≤ N` (power form).
+- `continuant_run_length_le_log` (d≥3, so base `d−1 ≥ 2`): `|ks| ≤ Nat.log (d−1).toNat N.toNat`
+  — the actual logarithmic cap. exponential improvement over §26's `(N−1)/(d−1)`.
+- `continuant_ge_pow_example`: `2³=8 ≤ K[3,3,3]=21`.
+
+### Key findings / gotchas
+- After casting `↑(d−1).toNat ^ len ≤ ↑N.toNat`, the cast is ALREADY pushed past the power
+  (`↑(d−1).toNat` is the atom, not `↑(... ^ len)`), so `Nat.cast_pow` rewrite fails — just
+  `rw [Int.toNat_of_nonneg hdpos, Int.toNat_of_nonneg hN0]` to recover `(d−1)^len ≤ N = hpow`.
+- `Nat.pow_le_iff_le_log` is DEPRECATED → `Nat.le_log_iff_pow_le (hb) (hy≠0) : x ≤ log b y ↔
+  b^x ≤ y`; use `.mpr`. `omega` discharges `1 < (d−1).toNat` and `N.toNat ≠ 0` directly (it
+  understands `Int.toNat`).
+- `one_le_pow₀ (1 ≤ d−1)` gives `1 ≤ (d−1)^len`, hence `1 ≤ N` (so `0 ≤ N` for the toNat cast).
+
+### Honest boundary (unchanged)
+Bites only on the `d ≥ 3` tail; at the density bottleneck `d = 2` the base `d−1 = 1` makes
+`(d−1)^|ks| = 1` vacuous (matches `K[2,…,2] = m+1`, linear). The open `1/12`–`1/4` constant —
+governed by the small-quotient regime — is untouched. This is the metric/geometric half made
+explicit, not a density statement.
+
+### Files Modified
+- `proofs/Proofs/Erdos1005ProblemOQ02.lean` (§30, 5 new theorems, builds clean, 0-axiom)
+- `src/data/proofs/erdos-1005-oq-02/meta.json` (leanFile counts 168→177 thm, 2814→2990 lines — were drifted)
+- `src/data/research/problems/erdos-1005-oq-02.json` (insights)
+
+### Next Steps (unchanged frontier)
+- Density aggregation toward `1/12` still the open hard step: combine §17/§26 large-quotient
+  growth, §21–25 period-6 1-run laws, and now §30's geometric cap to model `1ᵃ ++ ms ++ 1ᵇ`
+  and count similar-ordering windows against the order-`n` denominator cap. Interior junctions
+  via §17 `continuant_append` remain the gap.
+
+---
+
 ## Session 2026-06-30 (researcher-8, cont.): §24 trailing-1s — period-6 law transfers to suffixes via reversal
 
 **Mode**: REVISIT · **Outcome**: progress (VERIFIED, 0-axiom, builds clean docker 3058 jobs).

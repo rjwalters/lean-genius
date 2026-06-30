@@ -2891,4 +2891,100 @@ theorem continuant_lt_prod_example :
   refine continuant_lt_prod (ks := [3, 3]) ?_ (by decide)
   intro k hk; fin_cases hk <;> norm_num
 
+/-! ## §30: Geometric growth and the logarithmic run-length cap
+
+§26 reads off an **additive** run-length cap from the slope-`(d−1)` lower bound
+`(d−1)·|ks| + 1 ≤ Continuant ks`: a continuant ceiling `K ≤ N` forces
+`|ks| ≤ (N−1)/(d−1)`, an `O(N/d)` bound.  §28's product floor `∏(kᵢ−1) ≤ K` is the
+sharper *multiplicative* statement, and its prose repeatedly advertises the
+consequence — on an all-`≥ d` run `∏(kᵢ−1) ≥ (d−1)^|ks|`, so `K ≤ N` forces
+`|ks| ≤ log_{d−1} N`, a **logarithmic** cap — but only informally.  This section
+formalises that consequence.
+
+* **Geometric floor (headline).** `(d − 1)^|ks| ≤ Continuant ks` on an all-`≥ d`
+  run: the continuant grows at least geometrically with ratio `d − 1`, by chaining
+  the elementary `(d−1)^|ks| ≤ ∏(kᵢ−1)` (each decremented factor is `≥ d − 1`)
+  through §28's `prod_sub_one_le_continuant`.
+* **Logarithmic run-length cap.** For `d ≥ 3` (so the ratio `d − 1 ≥ 2` is a genuine
+  base) a continuant ceiling `N` caps the run length at `Nat.log (d−1) N` — the
+  exponential sharpening of §26's `(N−1)/(d−1)`, the precise sense in which a
+  large-quotient run is *logarithmically* short.
+
+**Honest boundary** (unchanged from §26/§28): the base `d − 1` collapses to `1` at
+the density bottleneck `d = 2`, where `(d−1)^|ks| = 1` is vacuous and the run grows
+only linearly (`K[2,…,2] = m + 1`).  The geometric cap bites only on the `d ≥ 3`
+tail, which carries negligible mass toward the open `1/12`–`1/4` constant. -/
+
+/-- **Geometric floor on the product of decremented quotients.**  On an all-`≥ d`
+run (`d ≥ 2`) every factor `kᵢ − 1 ≥ d − 1 ≥ 1`, so the product of the decremented
+quotients dominates the pure power: `(d − 1)^|ks| ≤ ∏ᵢ (kᵢ − 1)`. -/
+theorem pow_sub_one_le_prod_sub_one (d : ℤ) (hd : 2 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) :
+    (d - 1) ^ ks.length ≤ (ks.map (· - 1)).prod := by
+  induction ks with
+  | nil => simp
+  | cons k rest ih =>
+      have hrest : ∀ j ∈ rest, d ≤ j := fun j hj => h j (List.mem_cons_of_mem k hj)
+      have hk : d ≤ k := h k (by simp)
+      have hrest2 : ∀ j ∈ rest, (2 : ℤ) ≤ j := fun j hj => le_trans hd (hrest j hj)
+      have hIH := ih hrest
+      have hprod1 : 1 ≤ (rest.map (· - 1)).prod := prod_sub_one_one_le rest hrest2
+      have hpownn : (0 : ℤ) ≤ (d - 1) ^ rest.length := pow_nonneg (by linarith) _
+      simp only [List.length_cons, List.map_cons, List.prod_cons, pow_succ]
+      calc (d - 1) ^ rest.length * (d - 1)
+          ≤ (rest.map (· - 1)).prod * (k - 1) :=
+            mul_le_mul hIH (by linarith) (by linarith) (le_trans hpownn hIH)
+        _ = (k - 1) * (rest.map (· - 1)).prod := by ring
+
+/-- **Geometric continuant floor (headline).**  On the large-quotient regime with
+every entry `≥ d` (`d ≥ 2`) the continuant grows at least geometrically with ratio
+`d − 1`: `(d − 1)^|ks| ≤ Continuant ks`.  Chains the elementary power-vs-product
+bound `pow_sub_one_le_prod_sub_one` through §28's product floor
+`prod_sub_one_le_continuant`.  This is the multiplicative/geometric companion to
+§26's additive slope-`(d−1)` bound. -/
+theorem continuant_ge_pow (d : ℤ) (hd : 2 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) :
+    (d - 1) ^ ks.length ≤ Continuant ks := by
+  have h2 : ∀ k ∈ ks, (2 : ℤ) ≤ k := fun k hk => le_trans hd (h k hk)
+  exact le_trans (pow_sub_one_le_prod_sub_one d hd ks h)
+    (prod_sub_one_le_continuant ks h2)
+
+/-- **Geometric run-length bound (power form).**  Any continuant ceiling `N` on an
+all-`≥ d` run caps the *power* `(d − 1)^|ks| ≤ N` — the exponential sharpening of
+§26's additive `(d−1)·|ks| + 1 ≤ N`. -/
+theorem continuant_pow_run_length_le {d N : ℤ} (hd : 2 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) (hcap : Continuant ks ≤ N) :
+    (d - 1) ^ ks.length ≤ N :=
+  le_trans (continuant_ge_pow d hd ks h) hcap
+
+/-- **Logarithmic run-length cap.**  For a genuine large-quotient floor `d ≥ 3`
+(ratio `d − 1 ≥ 2`), a continuant ceiling `N` caps the run length *logarithmically*:
+`|ks| ≤ Nat.log (d − 1) N`.  This is the exponential improvement over §26's
+`O(N/d)` additive cap, and the precise formalisation of the "logarithmic run-length
+cap" the §28 product floor was advertised to deliver. -/
+theorem continuant_run_length_le_log {d N : ℤ} (hd : 3 ≤ d) (ks : List ℤ)
+    (h : ∀ k ∈ ks, d ≤ k) (hcap : Continuant ks ≤ N) :
+    ks.length ≤ Nat.log (d - 1).toNat N.toNat := by
+  have hd2 : (2 : ℤ) ≤ d := by linarith
+  have hpow : (d - 1) ^ ks.length ≤ N := continuant_pow_run_length_le hd2 ks h hcap
+  have hdpos : (0 : ℤ) ≤ d - 1 := by linarith
+  have hge1 : (1 : ℤ) ≤ (d - 1) ^ ks.length := one_le_pow₀ (by linarith)
+  have hN0 : (0 : ℤ) ≤ N := le_trans (by linarith) hpow
+  have hb : 1 < (d - 1).toNat := by omega
+  have hcast : (d - 1).toNat ^ ks.length ≤ N.toNat := by
+    have hZ : ((d - 1).toNat ^ ks.length : ℤ) ≤ (N.toNat : ℤ) := by
+      rw [Int.toNat_of_nonneg hdpos, Int.toNat_of_nonneg hN0]
+      exact hpow
+    exact_mod_cast hZ
+  exact (Nat.le_log_iff_pow_le hb (by omega)).mpr hcast
+
+/-- **Concrete geometric floor.**  For the all-`3` run `[3, 3, 3]`:
+`(3 − 1)^3 = 8 ≤ Continuant [3,3,3] = 21`, and the logarithmic cap at ceiling
+`N = 21` gives `|ks| ≤ Nat.log 2 21 = 4`.  Both discharged through the general
+bounds. -/
+theorem continuant_ge_pow_example :
+    (3 - 1 : ℤ) ^ ([3, 3, 3] : List ℤ).length ≤ Continuant [3, 3, 3] := by
+  refine continuant_ge_pow 3 (by norm_num) [3, 3, 3] ?_
+  intro k hk; fin_cases hk <;> norm_num
+
 end Erdos1005OQ02
