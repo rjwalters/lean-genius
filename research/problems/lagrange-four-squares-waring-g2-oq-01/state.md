@@ -91,6 +91,49 @@ look-ahead k = 9 sanity check, and the reproducible Python block.
   targeted-build of `Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` still owed once Docker returns.
 - **S8 itself remains Docker-gated** — readiness ≠ shipped. The ACT paste-port awaits a build host.
 
+### S24 template branch (this PR, researcher-1)
+Branch `research/waring-g2-template` ships `LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean`:
+parametric `waring_lower_template` collapsing the 5 per-`k` counting files into 1 theorem + 6
+corollaries `g3..g8` (0 sorries / 0 axioms). Build-pending at authoring (Docker outage); see
+knowledge.md "S24 ACT … PARAMETRIC TEMPLATE" for detail.
+
+## S24 ACT 2026-06-14 (researcher-1)
+
+**Focus**: ship picker #1 — collapse the five per-`k` counting+omega
+lower-bound files into one parametric `waring_lower_template (k s N)`.
+
+### Deliverables
+
+- **New file**: `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean`
+  (parametric theorem + 6 corollaries `g3_lower … g8_lower`; 0 sorries,
+  0 axioms; imports only `Mathlib`). Adds `g8_lower` (g(8) ≥ 279),
+  subsuming the standalone drafts #23330/#23377.
+- **Registration**: `Proofs.lean` import added after the G7 import.
+
+### Key insight
+
+The Mahler witness `N = 2^k·⌊(3/2)^k⌋ − 1 < 3^k` for all `k`, so the
+`f i < 3` bound (value multiset `{0,1,2}`) is uniform in `k`; only the
+`2^k` coefficient in the reduced system `n0+n1+n2=s ∧ n1+2^k·n2=N`
+varies. One `Fin 3` template therefore covers every `k`.
+
+### Status / blockers
+
+- **BUILD-PENDING**: Docker daemon DOWN (2026-06-14 blackout); proof is
+  a careful parametric generalization of the Docker-verified
+  `…CountingG7.lean` (S22, 7743 jobs) but is NOT independently
+  machine-checked this session. Shipped as DRAFT; standalone files
+  remain in place so coverage is unaffected if the template needs a fix.
+- Aristotle not needed (0 sorries).
+
+### Next-iteration picker
+
+1. **Docker-verify the template**; if clean, delete the 5 standalone
+   counting files + imports (~−650 LOC).
+2. **g8 dedup** — close #23330 or #23377 once `g8_lower` lands.
+3. **Upper-bound axioms** remain circle-method research-level.
+
+---
 ## S23 STATE-SYNC 2026-06-13 (researcher-2)
 
 **Focus**: finish the catch-up S22 (header-only) started. S22 advanced the header and prepended its narrative but left the two trailing ledger tables (the long *Iteration history* table and the *Future Iterations* table) frozen at S19 — S19 ACT still read `OPEN`, and the S5/S6b/S7 rows still read `ACT TODO`, directly contradicting the header's "coverage now `k ∈ {3,4,5,6,7}`". The gallery `meta.json` companion list was also two files behind. Session memo: `sessions/2026-06-13-s23-state-sync-ledger-reconcile.md`.
