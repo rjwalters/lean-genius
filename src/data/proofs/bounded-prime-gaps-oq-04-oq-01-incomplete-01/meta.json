@@ -1,0 +1,139 @@
+{
+  "id": "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+  "title": "The Distance-to-Nearest-Integer Cosecant Bound: |sin(πθ)| ≥ 2‖θ‖ (Pólya–Vinogradov ingredient)",
+  "slug": "bounded-prime-gaps-oq-04-oq-01-incomplete-01",
+  "description": "Proves the cosecant→distance conversion |sin(πθ)| ≥ 2‖θ‖ (where ‖θ‖ = |θ − round θ| is the distance to the nearest integer), the bridge that turns the sibling WIP01's geometric exponential sum bound |∑ e^{2πiθn}| ≤ 1/|sin(πθ)| into its standard analytic-number-theory form 1/(2‖θ‖). Built from Mathlib's Jordan inequality and π·ℤ-periodicity of |sin|. 4 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+    "tags": [
+      "analytic-number-theory",
+      "character-sums",
+      "polya-vinogradov",
+      "exponential-sum",
+      "cosecant-bound",
+      "jordan-inequality",
+      "distance-to-integer"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 92,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. All 4 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.mul_abs_le_abs_sin",
+        "description": "2/π·|x| ≤ |sin x| for |x| ≤ π/2 (the Jordan inequality), the engine of the cosecant bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.le_sin_mul",
+        "description": "x ≤ sin(π/2·x) for x ∈ [0,1] (concavity chord bound)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.sin_sub_int_mul_pi",
+        "description": "sin(x − n·π) = (−1)^n · sin x — π·ℤ-periodicity (up to sign) of sin, giving |sin(πθ)| = |sin(π(θ−round θ))|",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "abs_sub_round",
+        "description": "|θ − round θ| ≤ 1/2 — the distance to the nearest integer is at most 1/2",
+        "module": "Mathlib.Algebra.Order.Round"
+      }
+    ],
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "The Pólya–Vinogradov inequality bounds incomplete character sums |∑_{n≤N} χ(n)| ≤ √q·log q. Its proof passes through bounds on geometric exponential sums ∑ e^{2πiθn}, which the sibling file BoundedPrimeGapsOQ04OQ01WIP01 controls by 1/|sin(πθ)|. In practice one always replaces 1/|sin(πθ)| by 1/(2‖θ‖), where ‖θ‖ is the distance from θ to the nearest integer, because the resulting sum ∑_{a} 1/(2‖a/q‖) over residues is what the cotangent/cosecant aggregation in Pólya–Vinogradov sums to O(q log q). The conversion rests on the elementary inequality |sin(πθ)| ≥ 2‖θ‖, a sharp form of the Jordan inequality periodized over the integers.",
+    "problemStatement": "Prove |sin(πθ)| ≥ 2‖θ‖ for all real θ (with ‖θ‖ = |θ − round θ|), and the cosecant form 1/|sin(πθ)| ≤ 1/(2‖θ‖) for θ ∉ ℤ — the bridge converting the geometric exponential sum bound into the standard distance-to-integer form.",
+    "proofStrategy": "On [−1/2,1/2], apply Mathlib's Jordan inequality Real.mul_abs_le_abs_sin with x = πθ: |πθ| ≤ π/2 ⟺ |θ| ≤ 1/2, and 2/π·|πθ| = 2|θ|, giving 2|θ| ≤ |sin(πθ)|. (A concavity chord bound 2θ ≤ sin(πθ) on [0,1/2] is recorded as a companion.) For general θ, write m = round θ; then |θ − m| ≤ 1/2 (abs_sub_round) and sin(π(θ−m)) = (−1)^m sin(πθ) (sin_sub_int_mul_pi), so |sin(π(θ−m))| = |sin(πθ)|, and the [−1/2,1/2] bound applied to θ−m yields 2‖θ‖ ≤ |sin(πθ)|. The cosecant form follows by one_div_le_one_div_of_le.",
+    "keyInsights": [
+      "**|sin(πθ)| ≥ 2‖θ‖ is the sharp periodized Jordan inequality.** On [−1/2,1/2] it is Mathlib's 2/π·|x| ≤ |sin x| at x = πθ (the factor π cancels exactly), and π·ℤ-periodicity of |sin| extends it to all θ via the distance to the nearest integer.",
+      "**The factor of 2 is exact at θ = 1/2.** sin(π/2) = 1 = 2·(1/2), so the bound is tight at the boundary — the cosecant 1/(2‖θ‖) is the right size, not merely an order-of-magnitude estimate.",
+      "**This is the conversion that makes Pólya–Vinogradov work.** Combined with the sibling's |∑ e^{2πiθn}| ≤ 1/|sin(πθ)|, it gives |∑ e^{2πiθn}| ≤ 1/(2‖θ‖); summing 1/(2‖a/q‖) over residues a is exactly the cotangent sum that aggregates to O(q log q).",
+      "**round / distance-to-nearest-integer is the natural variable.** Using Mathlib's round and abs_sub_round keeps the statement coordinate-free and matches the standard ‖·‖ notation of analytic number theory."
+    ]
+  },
+  "sections": [
+    {
+      "id": "chord",
+      "title": "Concavity chord bound and the [−1/2,1/2] cosecant bound",
+      "startLine": 40,
+      "endLine": 66,
+      "summary": "two_mul_le_sin_pi_mul: 2θ ≤ sin(πθ) on [0,1/2] (via Real.le_sin_mul). two_mul_abs_le_abs_sin_pi_mul: 2|θ| ≤ |sin(πθ)| for |θ| ≤ 1/2 (via Real.mul_abs_le_abs_sin at x = πθ).",
+      "mathContext": "$2|\\theta| \\leq |\\sin(\\pi\\theta)|$ for $|\\theta| \\leq 1/2$, the Jordan inequality with the $\\pi$ cancelled."
+    },
+    {
+      "id": "distance",
+      "title": "The distance-to-nearest-integer bound and cosecant form",
+      "startLine": 67,
+      "endLine": 92,
+      "summary": "two_mul_dist_round_le_abs_sin: 2‖θ‖ ≤ |sin(πθ)| for all θ (π·ℤ-periodicity via sin_sub_int_mul_pi + abs_sub_round). one_div_abs_sin_le_one_div_two_mul_dist: 1/|sin(πθ)| ≤ 1/(2‖θ‖) for θ ∉ ℤ.",
+      "mathContext": "$2\\|\\theta\\| \\leq |\\sin(\\pi\\theta)|$, hence $1/|\\sin(\\pi\\theta)| \\leq 1/(2\\|\\theta\\|)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The cosecant→distance conversion |sin(πθ)| ≥ 2‖θ‖ (and its reciprocal form) is fully formalized, supplying the bridge that puts the sibling's geometric exponential sum bound into the standard 1/(2‖θ‖) form used throughout Pólya–Vinogradov. 4 theorems, 0 sorries, 0 axioms.",
+    "implications": "Together with BoundedPrimeGapsOQ04OQ01WIP01's geometric sum bound, this gives |∑_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/(2‖θ‖), the exact input the Pólya–Vinogradov cotangent aggregation consumes. It is the second self-contained classical ingredient of that inequality.",
+    "openQuestions": [
+      "Aggregate the bound over residues: prove ∑_{a=1}^{q−1} 1/(2‖a/q‖) = O(q log q), the cotangent sum that finishes Pólya–Vinogradov.",
+      "Combine with the Gauss-sum Fourier expansion of a Dirichlet character to assemble the full |∑_{n≤N} χ(n)| ≤ √q·log q bound."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "BoundedPrimeGapsOQ04OQ01Incomplete01",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+      "relationship": "complements",
+      "description": "Sibling proves the geometric exponential sum bound |∑ e^{2πiθn}| ≤ 1/|sin(πθ)|; this file supplies the cosecant→distance conversion |sin(πθ)| ≥ 2‖θ‖ that turns it into the standard 1/(2‖θ‖) form"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-04-oq-01",
+      "relationship": "ancestor",
+      "description": "Parent sets up the Pólya–Vinogradov inequality, of which both the geometric sum bound and this cosecant bound are ingredients"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "two_mul_dist_round_le_abs_sin",
+      "type": "core",
+      "statement": "∀ θ, 2·|θ − round θ| ≤ |sin(πθ)|",
+      "description": "The distance-to-nearest-integer cosecant bound |sin(πθ)| ≥ 2‖θ‖, valid for every real θ.",
+      "significance": "The bridge converting the geometric exponential sum bound into the standard distance-to-integer form"
+    },
+    {
+      "name": "one_div_abs_sin_le_one_div_two_mul_dist",
+      "type": "corollary",
+      "statement": "θ ∉ ℤ → 1/|sin(πθ)| ≤ 1/(2·|θ − round θ|)",
+      "description": "The reciprocal (cosecant) form, directly composable with the sibling's 1/|sin(πθ)| bound.",
+      "significance": "Yields |∑ e^{2πiθn}| ≤ 1/(2‖θ‖), the Pólya–Vinogradov input"
+    },
+    {
+      "name": "two_mul_abs_le_abs_sin_pi_mul",
+      "type": "lemma",
+      "statement": "|θ| ≤ 1/2 → 2·|θ| ≤ |sin(πθ)|",
+      "description": "The Jordan inequality with x = πθ, the local form on [−1/2,1/2].",
+      "significance": "The base estimate periodized to give the distance bound"
+    }
+  ],
+  "sorries": 0
+}

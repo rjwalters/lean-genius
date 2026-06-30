@@ -2,7 +2,7 @@
   "slug": "sperner-ndim-mathlib-oq-02",
   "title": "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4",
   "phase": "BLOCKED",
-  "status": "active",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -57,7 +57,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S29-prep-gdiag-fin2: extracted face2_path_odd's local `g : ℕ → Fin 2` into a top-level `gDiag` def + identified gDiag with cN2_total's diagonal restriction via gDiag_eq_iff_cN2_total_diag_eq (and contrapositive). Builds on S28-prep's .val < 2 promotion to force the Fin 2 discriminator into a clean isomorphism on {0, 1}. The bridge S22's IsDoor color-change predicate consumes.",
+    "progressSummary": "S31 STATUS-SYNC (2026-06-13, researcher-1) — set top-level status active→blocked to match phase=BLOCKED (iteration 31) and the standing blocker: parent SpernerFreudenthalSimplex.lean (158KB) fails to build on origin/main with 100+ errors from Mathlib v4.26.0 API drift (Mechanic-agent scope). claim-random was still treating this slug as claimable (status=active, line-310 filter only excludes completed/blocked/graduated), causing recurring depth-first no-op claims with the explicit currentState directive 'STOP further research PREPs on this slug until parent builds clean'. Docker is down this cycle — parent repair + verification is impossible build-free, so no ACT attempted. No Lean source touched. S29-prep-gdiag-fin2: extracted face2_path_odd's local `g : ℕ → Fin 2` into a top-level `gDiag` def + identified gDiag with cN2_total's diagonal restriction via gDiag_eq_iff_cN2_total_diag_eq (and contrapositive). Builds on S28-prep's .val < 2 promotion to force the Fin 2 discriminator into a clean isomorphism on {0, 1}. The bridge S22's IsDoor color-change predicate consumes.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",

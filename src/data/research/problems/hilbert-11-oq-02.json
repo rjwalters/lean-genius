@@ -1,8 +1,8 @@
 {
   "slug": "hilbert-11-oq-02",
   "title": "When exactly does the Hasse principle fail for higher-degree forms",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -40,13 +40,20 @@
     "goal": "Three layers of partial answers: (1) For each degree n and number of variables k, give a sharp bound below which Hasse can fail and above which it must hold (cubic forms: Davenport bound). (2) Identify a uniform obstruction theory (Brauer-Manin / étale-Brauer-Manin) and prove it is the ONLY obstruction for natural classes. (3) Make this effective/algorithmic for explicit families (cubic surfaces, del Pezzo, K3)."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-06-03T15:00:00Z",
     "iteration": 25,
     "focus": "Section 28 conditional Case-B closure: selmer_padic_solubility_from_caseB makes the residual ℚ_[p]-solubility axiom assumption transparent by decomposing it into Case-A (Section 27) + special primes {2,3,5} (Sections 17/19) + Case-B (the only remaining hypothesis). Tautological recovery via selmer_padic_solubility_recovered closes the type-check loop and verifies decomposition exhaustiveness.",
     "blockers": [
       "Hasse-Weil for genus-1 curves over F_p (Mathlib gap)",
-      "host disk capacity (S25 docker build skipped at 1.1 Gi avail vs ~10 Gi needed for fresh Mathlib clone via proofs/.lake self-symlink)"
+      "host disk capacity (S25 docker build skipped at 1.1 Gi avail vs ~10 Gi needed for fresh Mathlib clone via proofs/.lake self-symlink)",
+      {
+        "id": "BLACKOUT",
+        "kind": "verification-blackout+deep-gap",
+        "severity": "high",
+        "since": "2026-06-13",
+        "description": "Hilbert11OQ02.lean is 0-sorry / 2-axiom (deep Selmer axioms: selmer_no_rational_solution @157, selmer_padic_solubility @183). The S26 forward options are both unavailable: (1) full unconditional Case-B universal theorem needs Hasse-Weil for genus-1 curves over F_p — a multi-thousand-line Mathlib gap (math-blocked regardless of infra); (3) the ~-40 LOC Hensel*.Gint dedup refactor is build-dependent and unbuildable under the 2026-06-13 verification blackout (Docker hung + Aristotle 404). Flagged blocked to stop depth-first re-claim churn on this RICH (score 64) slug."
+      }
     ],
     "nextAction": "S26: prefer (1) full unconditional Case-B universal theorem (requires Hasse-Weil for genus-1 curves over F_p — multi-session, multi-thousand-line Mathlib gap), or (3) cleanup refactor of duplicated Hensel*.Gint definitions (~-40 LOC, no semantic change, deferred from iter 17). Option (2) in-place axiom replacement requires ~1700-line file reorganization and is deferred.",
     "attemptCounts": {
@@ -143,7 +150,7 @@
   ],
   "relatedProofs": [
     "hilbert-11",
-    "hilbert-11-oq-01"
+    "hilbert-11-oq-02"
   ],
   "references": {
     "papers": [
@@ -169,7 +176,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-16T14:05:00Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -183,6 +190,17 @@
       "sorryCount": 14,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11_QuadraticFormsAristotle.lean",
+      "filename": "Hilbert11_QuadraticFormsAristotle.lean",
+      "lineCount": 288,
+      "theoremCount": 51,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticFormsAristotle.lean"
     },
     {
       "path": "Proofs/Hilbert11OQ01.lean",
@@ -231,9 +249,9 @@
     {
       "path": "Proofs/Hilbert11OQ02.lean",
       "filename": "Hilbert11OQ02.lean",
-      "lineCount": 1975,
-      "theoremCount": 88,
-      "axiomCount": 2,
+      "lineCount": 2093,
+      "theoremCount": 64,
+      "axiomCount": 4,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,

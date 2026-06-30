@@ -31,9 +31,11 @@ for some c between a and b.
 - `taylorPolynomial`: The n-th Taylor polynomial of f centered at a
 - `taylorPolynomial_zero`: The 0th Taylor polynomial is the constant f(a)
 - `taylorPolynomial_one`: The 1st Taylor polynomial is f(a) + f'(a)(x-a)
+- `taylor_lagrange_remainder`: Taylor's theorem with the Lagrange remainder,
+  proved (not axiomatized) by bridging Mathlib's `taylorWithinEval` form
 - `mvt_is_first_order_taylor`: MVT is Taylor's theorem with n=0
 
-Theorems: 4, Axioms: 1, Sorries: 0
+Theorems: 5, Axioms: 0, Sorries: 0
 -/
 
 noncomputable section
@@ -78,23 +80,45 @@ then there exists c between a and b such that:
 This is the higher-order generalization of the MVT (which is the n=0 case).
 -/
 
-/-- **Taylor's Theorem with Lagrange Remainder** (axiomatized).
+/-- **Taylor's Theorem with Lagrange Remainder**.
 
-    If f is (n+1)-times differentiable on [a,b], then there exists
+    If f is (n+1)-times continuously differentiable, then there exists
     c ∈ (a,b) such that:
       f(b) - taylorPolynomial f a n b = iteratedDeriv (n+1) f c / (n+1)! · (b-a)^{n+1}
 
-    This is axiomatized because converting between Mathlib's integral
-    remainder form and the classical Lagrange form requires the
-    generalized MVT for integrals, which involves substantial infrastructure.
+    Discharged from Mathlib's `taylor_mean_remainder_lagrange_iteratedDeriv`,
+    which already states the Lagrange remainder with the *global* iterated
+    derivative. The only gap is a formulation bridge: Mathlib's `taylorWithinEval`
+    (built from `iteratedDerivWithin` on `Set.Icc a b`) agrees term-by-term with
+    this file's `taylorPolynomial` (built from the global `iteratedDeriv`),
+    because on the unique-differentiability set `Icc a b` the within-derivative
+    equals the global one (`iteratedDerivWithin_eq_iteratedDeriv`). No integral
+    remainder or MVT-for-integrals machinery is needed.
 
     Reference: Rudin "Principles of Mathematical Analysis" Theorem 5.15. -/
-axiom taylor_lagrange_remainder
+theorem taylor_lagrange_remainder
     (f : ℝ → ℝ) (a b : ℝ) (hab : a < b) (n : ℕ)
     (hf : ContDiff ℝ (n + 1) f) :
     ∃ c ∈ Set.Ioo a b,
       f b - taylorPolynomial f a n b =
-      iteratedDeriv (n + 1) f c / ((n + 1).factorial : ℝ) * (b - a) ^ (n + 1)
+      iteratedDeriv (n + 1) f c / ((n + 1).factorial : ℝ) * (b - a) ^ (n + 1) := by
+  have hu : UniqueDiffOn ℝ (Set.Icc a b) := uniqueDiffOn_Icc hab
+  have hmem : a ∈ Set.Icc a b := ⟨le_refl a, le_of_lt hab⟩
+  -- The within-Taylor polynomial on `Icc a b` matches `taylorPolynomial`.
+  have hpoly : taylorWithinEval f n (Set.Icc a b) a b = taylorPolynomial f a n b := by
+    rw [taylor_within_apply]
+    simp only [taylorPolynomial]
+    refine Finset.sum_congr rfl (fun k hk => ?_)
+    have hk' : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+    have hcda : ContDiffAt ℝ k f a :=
+      hf.contDiffAt.of_le (by exact_mod_cast Nat.le_succ_of_le hk')
+    rw [iteratedDerivWithin_eq_iteratedDeriv hu hcda hmem, smul_eq_mul]
+    ring
+  obtain ⟨c, hc, heq⟩ :=
+    taylor_mean_remainder_lagrange_iteratedDeriv hab hf.contDiffOn
+  refine ⟨c, hc, ?_⟩
+  rw [hpoly] at heq
+  rw [heq]; ring
 
 /-!
 ## Part III: MVT as First-Order Taylor

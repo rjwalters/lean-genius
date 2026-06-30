@@ -161,11 +161,6 @@
       "description": "Structural Properties of φ: parity, divisibility, and the product formula φ(n) = n·∏_{p|n}(1-1/p). These structural results, combined with λ(n) | φ(n) proved here, determine when Carmichael's function equals Euler's totient: λ(n) = φ(n) iff (ℤ/nℤ)* is cyclic, which can be detected from n's prime factorization structure."
     },
     {
-      "targetId": "fermat-little-theorem",
-      "relationship": "generalization-of",
-      "description": "Fermat's Little Theorem: a^(p-1) ≡ 1 (mod p) for prime p and gcd(a,p)=1. This is the special case λ(p) = p-1, proved here as carmichael_prime. The Carmichael function unifies Fermat's little theorem (prime case), Euler's theorem (λ(n) | φ(n)), and the exact minimal exponent — all as consequences of the group exponent Monoid.exponent."
-    },
-    {
       "targetId": "bezout-identity-oq-03",
       "relationship": "related",
       "description": "Chinese Remainder Theorem — CRT gives the product formula λ(p₁^k₁ · p₂^k₂ · ... ) = lcm(λ(p₁^k₁), λ(p₂^k₂), ...), which follows because (ℤ/nℤ)* ≅ ∏(ℤ/pᵢ^kᵢ ℤ)* and the exponent of a direct product is the lcm of component exponents. The CRT isomorphism (formalized in bezout-identity-oq-03) is the structural bridge between the component-wise computation of λ and the global value."

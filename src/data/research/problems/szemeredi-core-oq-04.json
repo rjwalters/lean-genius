@@ -38,8 +38,8 @@
     "blockers": [],
     "nextAction": "Iter 22+: prove the step-2 Markov averaging bound `(A_bad G eps A B).card <= eps * A.card` from `IsWitnessRegular` via the per-vertex vertexBias grid-family argument (mem_witnessFamilyB_nhd/_compl), then assemble step 4 density transfer feeding `three_quarters_good_of_markov` into `witness_regular_symmetric_implies_epsilon_regular_small_eps` (line 831).",
     "attemptCounts": {
-      "total": 20,
-      "currentApproach": 5,
+      "total": 21,
+      "currentApproach": 6,
       "approachesTried": 2
     }
   },
@@ -108,7 +108,9 @@
       "Iter 13 (Part 8): `B_good_eq_self_of_one_le_eps` — B-side dual (Proofs/SzemerediCoreOQ04.lean:1045)",
       "Iter 12 (PR #19238): S7c PREP lint-cleanup recipe — 24+11+3 unusedSectionVars sites inventoried + `omit [TC] in <kw> <name>` recipe drafted per Mathlib precedent (sessions/2026-05-15-s7c-prep-build-log-lint-cleanup.md, +305 LOC, doc-only)",
       "Iter 14 (this STATE-SYNC): bearer drift recheck against Iter 11 PREP API pins → 0/6 drifted (lake SHA 2df2f015... byte-stable since 2026-05-12T13:21Z) + ACT-readiness gate (G1-G8) for S7 ACT-α step 4",
-      "Iter 20 PREP-r2 G8 unblock (researcher-1, 2026-06-10, this PR, doc-only): 3-file PR confirming G8 RED-INFRA disk-pressure regression CLEARED at re-probe (5.5 Gi → 75 Gi, +69.5 Gi passive recovery over 7 days; Docker daemon bumped 29.4.1 → 29.5.3 in same window; both GREEN). ACT-readiness gate refreshed 7/8 → 8/8. Iter 19 §2 + §3 pre-paste asks carry-forward stable by G1+G2+G7 transitivity (slug file SHA byte-stable, lake-manifest byte-stable, Mathlib pin byte-stable). Iter 21 ACT mechanically unblocked: paste Iter 17 §6 Part 9 first-moment skeleton + Iter 19 §3 Route A helper, total ~108-110 LOC at 3-5 transient sorries, 1 Docker iter. Pre-flight requirement: re-probe `df -h` immediately before invoking docker-build.sh. Files modified: state.md (head block + Iter 20 entry; existing Iter 19/18/17/16/15/14/13/12/11/10/9/8/6 narrative preserved verbatim), JSON tracker (~6 fields: lastUpdate, iteration 19→20, phase PREP-r1-blocked→ACT-ready, focus/nextAction rewrites, attemptCounts.total 19→20, builtItems += 1, insights += 1), new session memo `sessions/2026-06-10-s13-prep-r2-g8-unblock-act-ready.md` with §0-§7."
+      "Iter 20 PREP-r2 G8 unblock (researcher-1, 2026-06-10, this PR, doc-only): 3-file PR confirming G8 RED-INFRA disk-pressure regression CLEARED at re-probe (5.5 Gi → 75 Gi, +69.5 Gi passive recovery over 7 days; Docker daemon bumped 29.4.1 → 29.5.3 in same window; both GREEN). ACT-readiness gate refreshed 7/8 → 8/8. Iter 19 §2 + §3 pre-paste asks carry-forward stable by G1+G2+G7 transitivity (slug file SHA byte-stable, lake-manifest byte-stable, Mathlib pin byte-stable). Iter 21 ACT mechanically unblocked: paste Iter 17 §6 Part 9 first-moment skeleton + Iter 19 §3 Route A helper, total ~108-110 LOC at 3-5 transient sorries, 1 Docker iter. Pre-flight requirement: re-probe `df -h` immediately before invoking docker-build.sh. Files modified: state.md (head block + Iter 20 entry; existing Iter 19/18/17/16/15/14/13/12/11/10/9/8/6 narrative preserved verbatim), JSON tracker (~6 fields: lastUpdate, iteration 19→20, phase PREP-r1-blocked→ACT-ready, focus/nextAction rewrites, attemptCounts.total 19→20, builtItems += 1, insights += 1), new session memo `sessions/2026-06-10-s13-prep-r2-g8-unblock-act-ready.md` with §0-§7.",
+      "Iter 21 ACT (researcher-2, 2026-06-12, this PR): `vertexBias_sum_le` -- first-moment bound `∑_{a∈A} vertexBias G a A B ≤ 2·eps·#A` under IsWitnessRegular_symmetric (Proofs/SzemerediCoreOQ04.lean:1085); aggregation tail proved (Finset.sum_le_sum + sum_const + nsmul_eq_mul + ring), 1 transient sorry (per-`a` triangle envelope `hper`). Build-verified 7744 Docker jobs.",
+      "Iter 21 ACT (researcher-2, 2026-06-12, this PR): `A_bad_card_first_moment_markov` -- Markov corollary `|A_bad|·eps ≤ 2·eps·#A` (Proofs/SzemerediCoreOQ04.lean:1112); 1 transient sorry (A_bad-filter chain via Finset.sum_le_sum_of_subset_of_nonneg)."
     ],
     "insights": [
       "**(Iter 9 STATE-SYNC, 2026-05-13)** The slack-4 implication `IsWitnessRegular G eps A B → IsEpsilonRegular G (4·eps) A B` is **literally false** under the current one-sided `witnessFamilyB` definition. Concrete counterexample at #V=16 (PR #18679 §1): bipartite graph with B-regularity + bimodal A-degrees causes `witnessFamilyB` to collapse to 2 elements both of density 1/2 = d (antecedent vacuously holds for every eps ≥ 0), while pair (A₊, B_left) has density 1 and deviation 1/2 > 4·eps for eps < 1/8 (conclusion fails). The structural cause: `witnessFamilyB` tests A-side averages over B-subsets, not single-vertex spreads. Fix: strengthen the surrogate via Option A (`witnessFamilyA` + symmetric variant). The original ADLRY 1994 Lemma 3.4 is stated for two-sided bi-regular pairs; the gallery's one-sided formalization quietly dropped this hypothesis. Implication for `_small_eps` sorry: mathematically unprovable as currently stated; must be replaced by `_small_eps_via_symmetric` with antecedent `IsWitnessRegular_symmetric`.",
@@ -131,6 +133,8 @@
       "Bridge IsEpsilonRegular (gallery) ↔ SimpleGraph.IsEpsilonRegular (Mathlib) — gallery has the edge-density bridge but not the predicate bridge."
     ],
     "nextSteps": [
+      "Iter 22+ (~25-35 LOC, sorry-discharge): prove `hper` in vertexBias_sum_le -- the per-`a` triangle envelope `vertexBias G a A B ≤ 2·eps`. Needs a product-filter density-decomposition helper (NOT Mathlib interedges; gallery edgeDensity is ((A.product B).filter (G.Adj ·.1 ·.2)).card based). Derive helper from Finset.filter_card_add_filter_neg_card_eq_card, then apply htoB at mem_witnessFamilyB_nhd/_compl.",
+      "Iter 22+ (~10-15 LOC, sorry-discharge): prove A_bad_card_first_moment_markov via Finset.sum_le_sum_of_subset_of_nonneg (A_bad_subset + vertexBias_nonneg) + A_bad membership lower bound.",
       "S7 ACT-α step 4 (~60-80 LOC, sorry-bearing): vertexBias_sq_sum_le proper — second-moment Cauchy-Schwarz applied to pair-product family via IsWitnessRegular_symmetric. All prerequisites (Part 6 vertexBias + Part 7 symmetric API + Part 8 B-side bias / biased Finsets) built. Only proof body missing.",
       "S7 ACT-α step 5 (~10 LOC, sorry-free): derive ∑ vertexBias² ≤ 4·eps²·#A from step 4 + A_bad_add_A_good_card_eq (line 999) algebra. Blocked on step 4 only.",
       "S7 ACT-β (~150-200 LOC, sorry-free): vertexBias_A_average + vertexBias_B_average + markov_bad_count_squared + slack4_assemble — full slack-4 discharge of line 831. Blocked on step 4/5; G7 slack-constant scope decision needed (4·eps ≤ 1/4 vs current 4·eps < 1).",
@@ -173,5 +177,66 @@
     "mathlib-gap",
     "scaffold"
   ],
-  "lastUpdate": "2026-06-12"
+  "lastUpdate": "2026-06-12",
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediCore.lean",
+      "filename": "SzemerediCore.lean",
+      "lineCount": 111,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCore.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ01.lean",
+      "filename": "SzemerediCoreOQ01.lean",
+      "lineCount": 844,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ01.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ01Aristotle.lean",
+      "filename": "SzemerediCoreOQ01Aristotle.lean",
+      "lineCount": 380,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ03.lean",
+      "filename": "SzemerediCoreOQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 0,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ03.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ04.lean",
+      "filename": "SzemerediCoreOQ04.lean",
+      "lineCount": 1112,
+      "theoremCount": 61,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 21,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-core",
+    "szemeredi-core-oq-01"
+  ]
 }

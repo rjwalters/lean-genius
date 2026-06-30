@@ -30,7 +30,7 @@
         "relationship": "Proves the budan_upper_bound_axiom from OQ-02"
       }
     ],
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 1
   },
   "overview": {
@@ -41,7 +41,7 @@
       "Rolle's theorem is the inductive engine: between consecutive roots of p lies a root of p'. This interleaving means #{roots of p in (a,b]} ≤ 1 + #{roots of p' in (a,b]}, giving room for the IH on p'.",
       "The sign-variation count V_p(x) is defined via the iterated derivative sequence p, p', p'', ..., p^(n). At each root r of p, V_p changes by at least 1 going from a to r, accounting for the root — this is the sign-change accounting that remains to be formalized.",
       "linear_at_most_one_root is proved via a counting argument: if x ≠ y are both roots, then {x,y} ⊂ roots(p) as a finset, giving card ≥ 2 > 1 = natDegree, contradicting card_roots_le_degree. This avoids polynomial division.",
-      "The placeholder theorems sign_changes_factor and inductive_step_derivative prove `True := trivial` — they document the proof structure and identify the remaining gaps without introducing unsound axioms.",
+      "budan_upper_bound_natDegree_zero discharges the degree-0 base case: a nonzero constant has no roots, so the bound holds trivially. The remaining sign-change accounting and inductive step are documented in comment blocks rather than placeholder theorems, keeping the file axiom- and sorry-free.",
       "root_of_sign_change uses IVT (intermediate_value_Icc): since p is continuous and changes sign from negative to positive, it must cross zero. The proof carefully excludes the endpoints by using the sign condition."
     ]
   },
@@ -49,7 +49,7 @@
     "namespace": "BudanUpperBound",
     "lineCount": 257,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "sorries": 0,
     "mainTheorems": [
       {
@@ -98,14 +98,9 @@
         "description": "Beyond natDegree p, all iterated derivatives vanish; controls the entire derivative tower"
       },
       {
-        "name": "sign_changes_factor",
-        "type": "placeholder",
-        "description": "Sign-change accounting when factoring out a root (documented as comment block — gap remains)"
-      },
-      {
-        "name": "inductive_step_derivative",
-        "type": "placeholder",
-        "description": "Inductive step framework (documented as comment block — architecture remains)"
+        "name": "budan_upper_bound_natDegree_zero",
+        "type": "proved",
+        "description": "Base case of the Budan bound: a nonzero degree-0 (constant) polynomial has no roots, so the root count is ≤ the sign-variation difference"
       }
     ],
     "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
@@ -116,17 +111,23 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 57,
+      "endLine": 53,
       "summary": "Module header with imports, docstring, and namespace setup."
     },
     {
       "title": "§ 1. Building Blocks: Degree and Derivative Properties",
-      "startLine": 58,
-      "endLine": 95,
-      "description": "Two foundational theorems. constant_no_roots shows degree-0 polynomials have no roots (proved via eq_C_of_natDegree_eq_zero and simp). linear_at_most_one_root proves degree-1 polynomials have at most 1 root in any interval (a,b], using a card counting argument: if x ≠ y are both roots, {x,y} ⊂ roots(p) gives card ≥ 2 > 1 = natDegree, contradicting card_roots_le_degree.",
+      "startLine": 54,
+      "endLine": 158,
+      "description": "Iterated-derivative infrastructure and elementary root bounds. iterDeriv defines the k-th derivative; iterDeriv_natDegree_le bounds its degree by natDegree p - k and iterDeriv_eq_zero_of_natDegree_lt shows it vanishes past natDegree p. constant_no_roots shows degree-0 polynomials have no roots; linear_at_most_one_root proves degree-1 polynomials have at most one root via a card-counting argument; rolle_polynomial gives a Rolle's-theorem root of the derivative between two roots.",
       "theorems": [
+        "iterDeriv_zero_eq",
+        "iterDeriv_succ",
+        "iterDeriv_of_zero",
+        "iterDeriv_natDegree_le",
+        "iterDeriv_eq_zero_of_natDegree_lt",
         "constant_no_roots",
-        "linear_at_most_one_root"
+        "linear_at_most_one_root",
+        "rolle_polynomial"
       ],
       "tactics": [
         "rw",
@@ -135,18 +136,17 @@
         "intro",
         "calc",
         "omega",
-        "by_contra"
+        "by_contra",
+        "induction"
       ]
     },
     {
       "title": "§ 2. Sign Change Properties",
-      "startLine": 109,
-      "endLine": 142,
-      "description": "rolle_polynomial (proved) applies Mathlib's exists_deriv_eq_zero to polynomials: if p(r₁) = p(r₂) = 0 with r₁ < r₂, then p' has a root in (r₁,r₂). Uses p.continuous.continuousOn and Polynomial.deriv to translate between Mathlib's calculus deriv and the algebraic polynomial derivative. sign_changes_factor is a placeholder proving True — it identifies where the sign-change accounting lemma needs to go.",
+      "startLine": 159,
+      "endLine": 191,
+      "description": "root_of_sign_change (proved): if a polynomial changes sign across an interval (p(a) and p(b) have opposite signs), then it has a root strictly inside, via the intermediate value theorem applied to the polynomial's continuous evaluation.",
       "theorems": [
-        "rolle_polynomial",
-        "root_of_sign_change",
-        "sign_changes_factor"
+        "root_of_sign_change"
       ],
       "tactics": [
         "obtain",
@@ -160,21 +160,20 @@
     },
     {
       "title": "§ 3. The Induction Framework",
-      "startLine": 144,
-      "endLine": 164,
-      "description": "inductive_step_derivative documents the induction structure for the main Budan bound. It takes the inductive hypothesis (IH: bound holds for all polynomials of degree ≤ n) and outlines how to apply it to p' on sub-intervals. Currently proves True — it is a scaffold identifying the types and dependencies needed for the real inductive step.",
-      "theorems": [
-        "inductive_step_derivative"
-      ],
-      "tactics": [
-        "exact"
-      ]
+      "startLine": 192,
+      "endLine": 200,
+      "description": "A documentation block outlining the induction structure for the main Budan bound: the inductive hypothesis (bound holds for all polynomials of degree ≤ n) and how it would be applied to the derivative p' on sub-intervals, combined with the sign-change root count.",
+      "theorems": [],
+      "tactics": []
     },
     {
-      "title": "§ 4. Proof Completion Roadmap",
-      "startLine": 166,
-      "endLine": 191,
-      "description": "A detailed comment documenting the remaining 240-410 lines needed: (1) formalize sign-change counting connecting budanCount from OQ-02 with the derivative sequence (80-120 lines), (2) complete base cases (40-60 lines), (3) inductive step via Rolle with sign-change accounting (100-200 lines), (4) assembly (20-30 lines). Lists key Mathlib dependencies: exists_deriv_eq_zero, natDegree_derivative_le, IVT."
+      "title": "§ 4. What Remains: Base Case and Roadmap",
+      "startLine": 201,
+      "endLine": 257,
+      "description": "Proves the base case budan_upper_bound_natDegree_zero (a nonzero constant polynomial has zero roots, so the bound holds at degree 0), followed by a detailed comment documenting the remaining work: (1) sign-change counting connecting budanCount from OQ-02 with the derivative sequence, (2) the remaining base/inductive cases via Rolle with sign-change accounting, (3) assembly. Lists key Mathlib dependencies: exists_deriv_eq_zero, natDegree_derivative_le, IVT.",
+      "theorems": [
+        "budan_upper_bound_natDegree_zero"
+      ]
     }
   ],
   "conclusion": {

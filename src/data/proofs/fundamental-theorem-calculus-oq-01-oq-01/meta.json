@@ -20,11 +20,12 @@
     "dateAdded": "2026-05-05",
     "axiomCount": 0,
     "assumptions": "None — fully verified from definitions.",
-    "lineCount": 185,
-    "theoremCount": 6,
+    "lineCount": 233,
+    "theoremCount": 7,
     "definitionCount": 0,
     "originalContributions": [
-      "ac_implies_bv: BoundedVariationOn F (Icc a b) proved from AbsolutelyContinuousOn via the ε-δ definition"
+      "ac_implies_bv: BoundedVariationOn F (Icc a b) proved from AbsolutelyContinuousOn via the ε-δ definition",
+      "lebesgue_ftc_differentiable: AC function on [a,b] is differentiable a.e. on (a,b), discharging the former axiom in the parent Lebesgue FTC entry (AC → BV → BoundedVariationOn.ae_differentiableAt_of_mem_uIcc)"
     ]
   },
   "overview": {
@@ -169,12 +170,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 185,
+    "lineCount": 233,
     "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 0,
-    "theoremCount": 6
+    "theoremCount": 7
   },
   "references": [
     {

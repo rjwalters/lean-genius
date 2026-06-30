@@ -16,7 +16,11 @@
       "Turan theory",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Ramsey theory",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e615-independent-set",
@@ -35,7 +39,11 @@
       "Vertex cover",
       "NP-completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "finite set cardinality"
+    ]
   },
   {
     "id": "ann-e615-rt-graph",
@@ -53,7 +61,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "logic and quantifiers"
+    ]
   },
   {
     "id": "ann-e615-rt-number",
@@ -71,7 +83,11 @@
       "Turan number",
       "Extremal function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e615-threshold",
@@ -89,7 +105,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "Turan-type extremal problems"
+    ]
   },
   {
     "id": "ann-e615-conjecture",
@@ -107,7 +127,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e615-ehss",
@@ -125,7 +149,11 @@
       "Asymptotic bounds"
     ],
     "mathContext": "See annotation content for formal details of ehss upper bound (1983)",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e615-sudakov",
@@ -143,7 +171,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e615-flz",
@@ -161,7 +193,11 @@
       "Critical phenomena",
       "Phase transitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e615-disproof",
@@ -179,7 +215,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e615-critical-window",
@@ -197,7 +237,11 @@
       "Iterated logarithm",
       "Phase transitions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e615-phase-transition",
@@ -215,7 +259,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "real analysis",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e615-turan",
@@ -233,7 +281,11 @@
       "Turan graph",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e615-construction",
@@ -251,6 +303,10 @@
       "Random graphs"
     ],
     "mathContext": "See annotation content for formal details of construction",
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "graph theory",
+      "combinatorics"
+    ]
   }
 ]

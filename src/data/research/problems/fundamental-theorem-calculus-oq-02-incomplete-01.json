@@ -1,8 +1,8 @@
 {
   "slug": "fundamental-theorem-calculus-oq-02-incomplete-01",
   "title": "Generalized Stokes theorem: concrete mixed-partial bridge",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "PREP",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -33,7 +33,9 @@
     "since": "2026-06-06T07:50:00Z",
     "iteration": 4,
     "focus": "Iteration 4 (researcher-1, 2026-06-06, S4 PREP Fragment-1 skeleton, doc-only PR pending): paste-ready ~165 LOC Lean skeleton for `iteratedFDeriv_symmetric_of_contDiff` drafted in `sessions/2026-06-06-s4-prep-frag1-skeleton.md`. Three declarations: (1) private `Fin.adjacentSwap_set_isPretransitive` (B10 hand-roll, ~25 LOC), (2) private `iteratedFDeriv_swap_adjacent_of_contDiff` (analytic-core helper; case-split on `i.castSucc = 0`), (3) main `iteratedFDeriv_symmetric_of_contDiff` (base n=0/1 + inductive closure decomposition for n=k+2). Mathlib pin SHA `2df2f0150c…` re-confirmed unchanged (T+4d since S3); bearer audit B1-B10 stays valid. Design decisions committed: reduce arbitrary σ to adjacent transpositions as separate lemma; **B6 does NOT help for case i=0** (it extracts the *last* argument, not the *first*) — committed to B4-twice + B1 + `continuousMultilinearCurryLeftEquiv` unfolding instead. Skeleton file location: `proofs/Proofs/IteratedFDerivSymmetric.lean` (new). Honesty update: case-(d) upper bound raised 50-80 → 65-100 LOC; total post-ACT estimate **~145-200 LOC** (mid ~170). Sorry sequencing by ascending difficulty: n=0/1 base → adjacency-pretransitivity → case i≥1 → closure decomposition → case i=0. S4 PREP is doc-only: 0 Lean edits, 0 leanFiles[] edits, 0 gallery meta.json edits. Phase flips ORIENT → PREP.",
-    "blockers": [],
+    "blockers": [
+      "BLOCKED (researcher-1, 2026-06-13): S5 ACT requires creating proofs/Proofs/IteratedFDerivSymmetric.lean (~165 LOC skeleton with sorries) and Docker-verifying it type-checks. Docker daemon is DOWN (verification blackout) — the S4 INFRA note 'G8 Docker 29.4.1 GREEN' is stale. No own Lean file exists yet, so the skeleton cannot be soundly shipped without a build (blind-shipping unverified ~165 LOC risks breaking the build for the fleet). 3 doc-only sessions already banked (S2 OBSERVE, S3 ORIENT, S4 PREP); further PREP is churn. Unblock when Docker returns: paste the S4 skeleton, verify the sorried shell, then discharge sorries."
+    ],
     "nextAction": "S5 ACT (next iteration): create `proofs/Proofs/IteratedFDerivSymmetric.lean` from the S4 PREP skeleton (sorries kept). Docker-verify the type-checked-with-sorries shell first (~12 min cold start; subsequent ~3-5 min if ccache keeps Mathlib precompiled). Then discharge sorries in ascending-difficulty order: (1) n=0/1 base cases (5-10 LOC, no risk); (2) `Fin.adjacentSwap_set_isPretransitive` (20-25 LOC, low risk — pure combinatorics on `Equiv.swap_apply_*`); (3) case (c) i≥1 (20-40 LOC, medium risk — `Fin.tail` re-indexing); (4) inductive closure decomposition (20-30 LOC, medium risk — B9 + `Subgroup.closure_induction`); (5) case (d) i=0 (65-100 LOC, HIGH risk — `continuousMultilinearCurryLeftEquiv` unfolding; budget 2-3 Docker round-trips). Aristotle MCP candidate for sorries 2-4; case (d) likely needs hand-tactics. S6 PR-prep after S5 ACT: upstream-prep to `Mathlib/Analysis/Calculus/IteratedDeriv/Symmetric.lean` (new file) per [[mathlib-contribution]] skill. Anti-scope: no `meta.json` edit (gallery integration deferred to post-ACT landing); no Fragment 2-6 design.",
     "attemptCounts": {
       "total": 3,

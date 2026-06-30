@@ -16,7 +16,11 @@
       "Graph diameter",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-618-definitions",
@@ -35,7 +39,11 @@
       "Diameter"
     ],
     "mathContext": "See annotation content for formal details of core definitions",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-618-h2",
@@ -54,7 +62,11 @@
       "Edge augmentation",
       "Diameter reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "real analysis",
+      "order theory"
+    ]
   },
   {
     "id": "ann-618-egr",
@@ -73,7 +85,11 @@
       "Partial results"
     ],
     "mathContext": "See annotation content for formal details of erdős-gyárfás-ruszinkó results (1998)",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-618-alon",
@@ -92,7 +108,11 @@
       "Probabilistic method",
       "Main conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "probabilistic method",
+      "extremal combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-618-asymptotic",
@@ -111,7 +131,11 @@
       "Formal conjecture"
     ],
     "mathContext": "See annotation content for formal details of asymptotic formulation",
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "asymptotic notation",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-618-threshold",
@@ -130,7 +154,11 @@
       "Sharp threshold",
       "Critical scale"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-618-summary",
@@ -149,6 +177,10 @@
       "SOLVED"
     ],
     "mathContext": "See annotation content for formal details of complete resolution",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Lean 4 tactic mode",
+      "mathematical logic"
+    ]
   }
 ]

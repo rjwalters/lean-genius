@@ -1,9 +1,28 @@
 # Current State
 
-**Phase**: ACT — S20 cascade-repair complete + parent file fully repaired. `ShannonChannelCodingOQ02OQ01.lean` AND `ShannonChannelCoding.lean` (the slug's primary file) both build clean under Docker (7748 jobs, exit 0). Net delta: +5 LOC in OQ02OQ01 + −4 LOC in parent = +1 LOC overall. Total 10 latent errors closed (7 cascade + 3 parent-file). The 4 transitively-affected slugs are now unblocked. Next: S21 ACT = S18a-2 paste (`output_marginal_uniform_of_uniform_input_and_column_sum_const`) per S17 PREP §6.2.
-**Since**: 2026-06-05T08:30:00Z
-**Iteration**: 20 (S20 ACT — OQ02OQ01 cascade-repair; Docker-verified clean)
-**Last Updated**: 2026-06-05T08:30Z
+**Phase**: BLOCKED (verification blackout) — S22 flags the slug `blocked`. Primary goal is COMPLETE on `origin/main`: `fano_inequality` is a `theorem` @ `ShannonChannelCoding.lean:200` (discharged via `FanoFromConditionalEntropy.fano_inequality_proved`); parent `axiomCount 3` (channel_coding_achievability, channel_coding_converse, bsc_capacity_eq), `sorries 0`, `status axiomatized` — all accurate, no meta fix needed. The only remaining work is the **Docker-gated** capacity bundle (S18a-2/S18b/S18c: uniform-input-achieves-capacity for weakly symmetric channels). Both verification routes are down this session: `docker info` exit 124 (daemon down); Aristotle MCP backend returns `Resource not found` (404). No build-free progress remains (stale `lineCount`/`theoremCount` in meta are deployer-owned auto-sync, not a semantic fix). Re-open when Docker recovers.
+**Since**: 2026-06-13T00:00:00Z
+**Iteration**: 22 (S22 BLOCKED — Docker exit124 + Aristotle 404; primary goal already complete on main)
+**Last Updated**: 2026-06-13Z
+
+## Iteration 21 (researcher-1, 2026-06-13) — S21 STATE-SYNC (Docker-down, meta-accuracy)
+
+**Outcome**: Build-free, source-grounded documentation correction. Discovered the slug's `meta.json` understated the achievement: it claimed the `fano_inequality` axiom "would discharge once ShannonEntropy.lean's strong_subadditivity is fixed", but the discharge **already landed** via the OQ-03 route. `ShannonChannelCoding.lean:199` defines `fano_inequality` as a `theorem := FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum`; the parent file header self-documents "Axioms: 3" and lists `fano_inequality` among 13 theorems; parent `axiomCount: 3`. Corrected the `assumptions` and `description` fields accordingly. No Lean files touched (Docker down → unverifiable, and no Lean change is needed). See `sessions/2026-06-13-s21-statesync-docker-down-meta-fano-discharge.md` for full preflight + discovery.
+
+### What I did
+- Infra preflight: disk 15%/67 Gi free (recovered); `docker info` times out (exit 124) → daemon down → ACT blocked on infra; HEAD `fa1c4d27aa8` carries S20 fixes; 0 open PRs on slug; session-specific branch.
+- Verified the Fano axiom is discharged by reading the parent source (line 199 + header + axiomCount).
+- Corrected two stale fields in `src/data/proofs/shannon-channel-coding-oq-02-oq-01/meta.json` (`assumptions`, `description`); validated JSON.
+
+### Files Modified
+- `src/data/proofs/shannon-channel-coding-oq-02-oq-01/meta.json` (`assumptions` + `description` accuracy)
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/sessions/2026-06-13-s21-statesync-docker-down-meta-fano-discharge.md` (new)
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/state.md` (this entry + header)
+
+### Knowledge Added
+- **Insight**: the slug's primary goal (Fano axiom elimination) was completed earlier via the OQ-03 route (bypassing the ShannonEntropy strong_subadditivity blocker), but the gallery `meta.json` still described it as pending — a doc/source divergence now corrected. The capacity thread (IsWeaklySymmetric → uniform-input-achieves-capacity) targets the *remaining* axioms and is a separate, Docker-gated workstream.
+- **Risks retired**: 1 — the stale "Fano blocked on ShannonEntropy fix" framing in gallery metadata.
+- **Next steps**: S22 ACT (Docker-up) = paste S17 PREP §6.2 capacity bundle into the **parent** `ShannonChannelCoding.lean`; re-pin insertion point (S17's "line 466" predates parent-file edits).
 
 ## Iteration 20 (researcher-1, 2026-06-05) — S20 ACT (OQ02OQ01 cascade-repair)
 

@@ -1,16 +1,17 @@
 # Current State
 
-**Phase**: ACT (S5 — `door_count_parity_hyper` equality case closed; 1 sorry remaining: `sperner_parity_hyper` chain)
+**Phase**: ACT (S6 — `sperner_parity_hyper` closed; **file at 0 sorries, 0 axioms, Docker-verified**)
 **Since**: 2026-05-12T20:45:00Z (S1 OBSERVE)
-**Iteration**: 14
-**Last update**: 2026-06-05 (researcher-1) — **S5 ACT**: `door_count_parity_hyper` equality case closed (line ~189, ~80-LOC body) via `Fintype.equivFinOfCardEq` transport + `Equiv.swap` `top`-normalisation, then parent invocation `SpernerMathlib.door_count_parity n f'`. Bridges: LHS via `Finset.card_equiv` + bidirectional predicate iff; RHS via direct surjectivity iff (Equiv injective + apply_symm_apply). Deviation from S2d PREP recipe: replaced `Fin.eq_castSucc_of_ne_last` with explicit `(eP p).val < n` pigeonhole (worktree `.lake` is recursive symlink so the named lemma could not be locally verified). File 382 → 462 LOC. Sorries 2 → 1. See `sessions/2026-06-05-s5-act-door-count-parity-equality-case.md`. Docker verification PENDING (concurrent-checkout race lost the first attempt; will re-run after commit lands).
+**Iteration**: 15
+**Last update**: 2026-06-12 (researcher-2) — **S6 ACT**: closed the final sorry `sperner_parity_hyper` by adding three Σ-type bookkeeping lemmas (`per_cell_door_parity_hyper`, `card_doors_eq_sum_hyper`, `doors_partition_hyper`) mirroring the verified parent helpers, then transcribing the parent `sperner_parity` calc. Only non-mechanical step: product→Σ bridge uses `Fintype.sum_sigma` (forward) in place of parent's `← Fintype.sum_prod_type'`. **Also fixed a latent S5 compile bug**: line 203 referenced `SpernerMathlib.door_count_parity`, but the parent declares it in `namespace Sperner` (no `SpernerMathlib` namespace exists) — S5 was never Docker-verified so the broken reference never surfaced; corrected to `Sperner.door_count_parity`. File 462 → 557 LOC. Sorries 1 → 0. **Docker-verified** (`Proofs.SpernerMathlibHyper`, 7744 jobs, exit 0). See `sessions/2026-06-12-s6-act-sperner-parity-hyper-closed-zero-sorries.md`.
 
 | Session | Date | Mode | PR | Title / focus | LOC |
 |---|---|---|---|---|---|
 | **S2 ACT** | 2026-05-31 | ACT | #21489 | Ship `SpernerMathlibHyper.lean` 289 LOC / 3 sorries / 0 axioms — hypergraph API with `IsDoorHyper`, `IsPanchromaticHyper`, `adjMapHyper`, door-transfer lemmas, structural sorries per S2c/S2d/S2e PREP. | +289 |
 | **S3 ACT** | 2026-06-01 | ACT | #21683 | Close strict case of `door_count_parity_hyper` (~38 LOC pigeonhole). Equality case remains as the sole sorry inside the by_cases. | +55/-2 |
 | **S4 ACT** | 2026-06-04 | ACT | (#22???) | Close `even_card_interior_doors_hyper` via `Sperner.even_card_fpf_invol` on `adjMapHyper adj`. 41-LOC body; +40 LOC net. Sorries 3 → 2. Two PREP-unanticipated elaboration quirks (match non-reduction under `simp only`; structure-eta as rfl). | +40 |
-| **S5 ACT** | 2026-06-05 | ACT | (this PR) | Close `door_count_parity_hyper` equality case via `Fintype.equivFinOfCardEq` + `Equiv.swap` transport to `SpernerMathlib.door_count_parity n f'`. ~80-LOC body; bearers from S2d PREP except `Fin.eq_castSucc_of_ne_last` replaced with explicit pigeonhole. Sorries 2 → 1. | +80 |
+| **S5 ACT** | 2026-06-05 | ACT | (merged) | Close `door_count_parity_hyper` equality case via `Fintype.equivFinOfCardEq` + `Equiv.swap` transport to `Sperner.door_count_parity n f'`. ~80-LOC body; bearers from S2d PREP except `Fin.eq_castSucc_of_ne_last` replaced with explicit pigeonhole. Sorries 2 → 1. (Shipped with a broken `SpernerMathlib.door_count_parity` ref — never Docker-verified; fixed in S6.) | +80 |
+| **S6 ACT** | 2026-06-12 | ACT | (this PR) | Close `sperner_parity_hyper` (final sorry) via 3 Σ-type bookkeeping lemmas mirroring parent helpers + `Fintype.sum_sigma` product→Σ bridge; fix S5 `Sperner`-namespace ref. **File at 0 sorries, 0 axioms, Docker-verified (7744 jobs).** Sorries 1 → 0. | +95 |
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-1)
 

@@ -401,7 +401,7 @@
       "startLine": 2857,
       "endLine": 2958
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Iwasawa Theory for Elliptic Curves",
     "content": "**Iwasawa theory** provides a completely independent approach to BSD through p-adic analysis. The Selmer group over the cyclotomic $\\mathbb{Z}_p$-extension is a module over the Iwasawa algebra $\\Lambda = \\mathbb{Z}_p\\llbracket T \\rrbracket$, described by $\\mu$ and $\\lambda$ invariants. The **Iwasawa Main Conjecture** (Kato 2004 + Skinner-Urban 2014) equates the characteristic ideal of the dual Selmer group with the p-adic L-function: $\\text{char}_\\Lambda(X^\\vee) = (L_p(E))$.\n\nThis recovers BSD for rank 0 and 1 via an entirely different method, and additionally controls the p-part of $|\\text{III}|$.",
     "mathContext": "$$\\text{char}_\\Lambda(X(E/\\mathbb{Q}_\\infty)^\\vee) = (L_p(E)) \\quad \\text{as ideals of } \\Lambda$$\n$\\mu = 0$ conjecture (known in many cases). $\\lambda \\geq \\text{rank}(E(\\mathbb{Q}))$. The `IwasawaMainConjecture` structure combines both Kato's and Skinner-Urban's divisibilities.",

@@ -72,40 +72,60 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 27,
-      "summary": "Module header with imports, docstring, and namespace setup."
+      "endLine": 32,
+      "summary": "Module docstring (Hilbert's 17th problem OQ-01: minimum squares for PSD polynomials, improving Pfister's 2^n bound), imports, opens, and namespace setup."
     },
     {
       "id": "definitions",
       "title": "SOS Definitions",
-      "startLine": 28,
-      "endLine": 48,
-      "summary": "Defines IsPSD (nonneg for all inputs), IsSumOfKSquares (sum of exactly k polynomial squares), IsSOS (sum of some number of squares).",
+      "startLine": 33,
+      "endLine": 46,
+      "summary": "Defines IsPSD (nonneg for all inputs), IsSumOfKSquares (sum of exactly k polynomial squares), and IsSOS (sum of some number of squares).",
       "mathContext": "A polynomial $p$ is PSD if $p(x) \\geq 0$ for all $x \\in \\mathbb{R}$. It is $k$-SOS if $p = \\sum_{i=1}^k q_i^2$."
     },
     {
-      "id": "basic-results",
-      "title": "Basic SOS Results",
-      "startLine": 49,
+      "id": "univariate-two-squares",
+      "title": "Univariate Case: Two Squares Suffice",
+      "startLine": 47,
       "endLine": 115,
-      "summary": "Proves concrete examples (x², x²+1), PSD addition closure, SOS implies PSD, and SOS monotonicity.",
-      "mathContext": "If $p = \\sum q_i^2$ then $p(x) = \\sum q_i(x)^2 \\geq 0$. If $p$ is $k$-SOS then it is $m$-SOS for any $m \\geq k$ by adding $0^2$ terms."
+      "summary": "Univariate building blocks: nonneg constants and x² are SOS, (x²+1) is a sum of two squares, sums of PSD polynomials are PSD, every sum of k squares is PSD, and k-SOS implies m-SOS for any m ≥ k (monotonicity).",
+      "mathContext": "For univariate PSD polynomials, two squares always suffice via the factorization $p = c\\prod(x-r_i)^{2e_i}\\prod((x-a_j)^2+b_j^2)$ grouped using the Gaussian norm identity."
     },
     {
-      "id": "brahmagupta",
-      "title": "Brahmagupta-Fibonacci Identity",
-      "startLine": 116,
-      "endLine": 145,
-      "summary": "Proves the Brahmagupta-Fibonacci identity for reals and polynomials, then uses it to show 2-SOS is closed under multiplication.",
-      "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$. This is the norm multiplicativity of Gaussian integers: $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$."
-    },
-    {
-      "id": "pfister-structure",
+      "id": "pfister-bound",
       "title": "Pfister Bound Structure",
-      "startLine": 99,
-      "endLine": 114,
-      "summary": "Records Pfister bound values 2^n for small n and proves monotonicity.",
-      "mathContext": "Pfister's theorem: $2^n$ squares suffice for $n$-variate PSD polynomials. Values: $2, 4, 8$ for $n = 1, 2, 3$."
+      "startLine": 116,
+      "endLine": 130,
+      "summary": "Monotonicity of Pfister's 2^n bound in the number of variables n, with concrete values 2^1=2, 2^2=4, 2^3=8 for the univariate, bivariate, and trivariate cases."
+    },
+    {
+      "id": "brahmagupta-fibonacci",
+      "title": "Brahmagupta–Fibonacci Identity",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "The two-square identity (a²+b²)(c²+d²)=(ac-bd)²+(ad+bc)², stated over ℝ and in polynomial form, showing sums of two squares are closed under multiplication.",
+      "mathContext": "This closure is the key to two squares sufficing in the univariate case."
+    },
+    {
+      "id": "product-preservation",
+      "title": "Product Preservation of SOS",
+      "startLine": 148,
+      "endLine": 158,
+      "summary": "sos2_mul: if p and q are each sums of two squares, then p·q is a sum of two squares, with an explicit witness built from the Brahmagupta–Fibonacci identity."
+    },
+    {
+      "id": "examples",
+      "title": "Specific Polynomial Examples",
+      "startLine": 159,
+      "endLine": 173,
+      "summary": "Concrete witnesses: X²+C(y²) is PSD, and (X²+1)² is a sum of one square."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 174,
+      "endLine": 190,
+      "summary": "Recap of proved results (0 axioms): SOS definitions and properties, monotonicity, SOS⟹PSD, Brahmagupta–Fibonacci closure, Pfister values, and concrete examples; plus the structural insight on improving Pfister's bound."
     }
   ],
   "conclusion": {

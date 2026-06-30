@@ -16,7 +16,11 @@
       "Natural density",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Superior",
+      "Asymptotic Density",
+      "Counting Function"
+    ]
   },
   {
     "id": "ann-e656-lower-density",
@@ -97,7 +101,11 @@
       "Shifted sumset",
       "Minkowski sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Comprehension",
+      "Minkowski Sum",
+      "Additive Combinatorics"
+    ]
   },
   {
     "id": "ann-e656-shifted-sumset",
@@ -136,7 +144,11 @@
       "IP sets"
     ],
     "mathContext": "$\\text{FS}(B) = \\{\\sum_{i \\in I} b_i : I \\subseteq B, I \\text{ finite nonempty}\\}$",
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Subsets",
+      "Indexed Sums",
+      "IP Sets"
+    ]
   },
   {
     "id": "ann-e656-coloring",
@@ -197,7 +209,11 @@
       "Ramsey theory",
       "Ergodic Ramsey theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Colorings",
+      "Ramsey Theory",
+      "Finite Sums Set"
+    ]
   },
   {
     "id": "ann-e656-conjecture",

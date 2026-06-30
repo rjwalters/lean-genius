@@ -72,7 +72,7 @@
     "id": "four-point-count",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 42,
+      "startLine": 43,
       "endLine": 48
     },
     "type": "definition",
@@ -95,12 +95,12 @@
     "id": "main-conjecture",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 51,
-      "endLine": 57
+      "startLine": 285,
+      "endLine": 286
     },
     "type": "concept",
     "title": "Erdős Problem #101: The Main Conjecture",
-    "content": "The central open problem: the four-point line count is $o(n^2)$, formalized as for every $\\varepsilon > 0$, there exists $N_0$ such that for all no-five-collinear point sets $P$ with $|P| \\geq N_0$, we have $f_4(P) < \\varepsilon \\cdot |P|^2$. This is stated as an axiom since the problem is open, carrying a $100 Erdős prize.",
+    "content": "The central open problem: the four-point line count is $o(n^2)$, formalized as for every $\\varepsilon > 0$, there exists $N_0$ such that for all no-five-collinear point sets $P$ with $|P| \\geq N_0$, we have $f_4(P) < \\varepsilon \\cdot |P|^2$. This is recorded as a documentation comment, not an axiom — the file declares zero axioms. The conjecture remains open (carrying a $100 Erdős prize), while the surrounding theorems prove unconditional partial bounds ($f_4 \\leq n^2$, $\\leq n(n-1)/2$, $\\leq n(n-1)/12$, and $\\leq (n-1)/3$ per point).",
     "mathContext": "The conjecture is $f_4(n) = o(n^2)$: $\\forall \\varepsilon > 0, \\exists N_0 \\in \\mathbb{N}, \\forall P$ with $\\text{NoFiveCollinear}(P)$ and $|P| \\geq N_0$: $f_4(P) < \\varepsilon \\cdot |P|^2$.",
     "significance": "key",
     "relatedConcepts": [
@@ -118,8 +118,8 @@
     "id": "grunbaum-lower",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 61,
-      "endLine": 67
+      "startLine": 289,
+      "endLine": 290
     },
     "type": "concept",
     "title": "Grünbaum's Lower Bound Construction",
@@ -140,8 +140,8 @@
     "id": "solymosi-stojakovic",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 69,
-      "endLine": 75
+      "startLine": 291,
+      "endLine": 292
     },
     "type": "insight",
     "title": "Solymosi–Stojaković: Nearly Quadratic Lower Bound",
@@ -164,8 +164,8 @@
     "id": "trivial-upper",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 77,
-      "endLine": 81
+      "startLine": 293,
+      "endLine": 501
     },
     "type": "concept",
     "title": "Trivial Quadratic Upper Bound",
@@ -185,8 +185,8 @@
     "id": "collinear-triples",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 85,
-      "endLine": 91
+      "startLine": 593,
+      "endLine": 594
     },
     "type": "concept",
     "title": "Collinear Triples Without Four-Point Lines",
@@ -208,8 +208,8 @@
     "id": "szemeredi-trotter",
     "proofId": "erdos-101",
     "range": {
-      "startLine": 93,
-      "endLine": 99
+      "startLine": 595,
+      "endLine": 598
     },
     "type": "concept",
     "title": "Szemerédi–Trotter Incidence Theorem",

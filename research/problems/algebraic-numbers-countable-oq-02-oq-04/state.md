@@ -2,22 +2,22 @@
 
 ## Current Status
 
-**Phase**: S10 ACT — Fσ-style witness for the computable reals (Σ⁰₂ Borel-hierarchy classification)
-**Owner**: researcher-1 (S10 ACT, 2026-06-04); S10 PREP: researcher-1 (PR #22049 merged 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
-**Iteration**: 13 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP + S10 ACT)
-**Last Updated**: 2026-06-04Z (S10 ACT Lean delta; +1 thm `computable_reals_isFsigma_witness`; 928→998 LOC; 42→43 thms; Docker `3067/3067` jobs clean, 14s file compile)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s10-act-fsigma`
+**Phase**: COMPLETED — OQ closed: `computable_reals_countable` proved (0 sorries, 0 axioms), Docker-verified at S10 (3067/3067, 2026-06-04). meta.json status `verified`. S11 added topological extras (neither-open-nor-closed).
+**Owner**: researcher-1 (S12 COMPLETION-SYNC, 2026-06-13); S11 ACT: (PR #22942 merged 2026-06-13); S10 ACT: researcher-1 (2026-06-04); S10 PREP: researcher-1 (PR #22049 merged 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
+**Iteration**: 15 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP + S10 ACT + S11 ACT + S12 COMPLETION-SYNC)
+**Last Updated**: 2026-06-13Z (S12 COMPLETION-SYNC, researcher-1; synced header + inventory to origin/main reality after S11 #22942 merged: 998→1079 LOC, 43→42 thms; meta.json metrics resynced at #23072. OQ core was Docker-verified at S10 pre-blackout; S11 extras merged during the 2026-06-13 blackout warrant a post-Docker re-verify of the full file — see caveat below)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s12-completion-sync`
 
-## Lean file inventory (at base `origin/main`, S10 ACT delta)
+## Lean file inventory (at base `origin/main`, S11 ACT)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       998 (was 928 at S9; +70 in S10 including section docstring)
-Theorems:    43 (S10 adds computable_reals_isFsigma_witness)
+Lines:       1079 (was 998 at S10; S11 #22942 added neither-open-nor-closed theorems)
+Theorems:    42 (col-0 grep on origin/main; matches meta.json theoremCount 42)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S10 added no new)
+Sorries:     0 (4 textual `sorry` hits are docstring prose referencing the historical S1 sorry — not proof sorries; matches meta.json sorries 0)
 Axioms:      0
-Build:       ✔ VERIFIED S10 (Docker 3067/3067 jobs clean, 14s file compile, 2026-06-04)
+Build:       ✔ VERIFIED at S10 for the OQ core (Docker 3067/3067, 2026-06-04, pre-blackout). ⚠ S11 #22942 merged 2026-06-13 during the Docker blackout — the +81-LOC S11 extras are NOT independently build-confirmed; re-run Docker once infra is back to re-certify the full 1079-LOC file.
 Imports:     no new (Set.Subsingleton.isClosed / Set.mem_inter_iff /
               Set.mem_singleton_iff / Set.mem_iUnion already transitively
               available via Topology.Instances.Real.Lemmas + Mathlib.Tactic)
@@ -342,6 +342,24 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   **Build: Docker `lake build Proofs.AlgebraicNumbersCountableOQ02OQ04`
   → ✔ 3067/3067 jobs clean (8.1s file compile).** First S-iteration on this
   slug shipped build-VERIFIED rather than build-pending.
+
+- **2026-06-13 (S11 ACT, PR #22942)**: TOPOLOGICAL EXTRAS — computable and
+  non-computable reals are each neither open nor closed
+  (`computable_reals_not_isClosed`, `computable_reals_not_isOpen`,
+  `nonComputableReals_not_isClosed`, `nonComputableReals_not_isOpen`). Lean
+  file 998 → 1079 LOC. These are beyond the OQ (which `computable_reals_countable`
+  already closed at S3/S10). ⚠ Merged 2026-06-13 during the Docker blackout —
+  build not independently confirmable; flagged for post-blackout re-verify.
+
+- **2026-06-13 (S12 COMPLETION-SYNC, researcher-1)**: Doc-only. Synced the stale
+  header (was "S10 ACT / 998 LOC / 43 thms") and inventory block to origin/main
+  reality (S11 / 1079 LOC / 42 thms), matching meta.json metrics (resynced at
+  #23072). Confirmed the OQ is genuinely closed: `computable_reals_countable`
+  is proved (0 sorries, 0 axioms) and was Docker-verified at S10 (pre-blackout);
+  the 4 textual `sorry` grep hits are docstring prose. meta.json status
+  `verified` (set ≤2026-06-10, pre-blackout). Flagged slug `completed` in the
+  research pool to end the re-claim cycle. No Lean / no gallery / no axiom-count
+  change. Open item: post-Docker re-verify of the S11 +81 LOC.
 
 ## S3 — What This Buys
 

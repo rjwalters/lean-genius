@@ -7,7 +7,7 @@
     "author": "Füredi (1991), Alon-Krivelevich-Sudakov (2003)",
     "sourceUrl": "https://erdosproblems.com/926",
     "date": "1991",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos926Problem.lean",
     "tags": [
       "erdos",
@@ -15,14 +15,14 @@
       "turan-number",
       "probabilistic-method"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 926,
     "erdosUrl": "https://erdosproblems.com/926",
     "erdosProblemStatus": "solved",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 235,
-    "assumptions": "None. 3 theorems fully verified with 0 axioms and 0 sorries (numerical examples via native_decide). Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib.",
+    "assumptions": "Depends on Lean.ofReduceBool: all 3 verified theorems (h4_vertex_count, h5_vertex_count, h4_edge_count) are proved by native_decide, which trusts the compiler's kernel reduction, so #print axioms lists Lean.ofReduceBool (the proofs are not axiom-free). 0 sorries. Main result (ex(n; H_k) ≪ n^(3/2)) documented as a comment; full formalization requires probabilistic method not in Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
     "definitionCount": 3

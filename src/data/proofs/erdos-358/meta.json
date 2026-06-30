@@ -83,67 +83,75 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Core Definitions",
+      "title": "Part I: Definitions",
       "summary": "IntSequence, consecutiveSumCount function f(n)",
-      "startLine": 35,
+      "startLine": 31,
       "endLine": 45,
       "mathContext": "Mathematical content: IntSequence, consecutiveSumCount function f(n)"
     },
     {
       "id": "naturals-case",
-      "title": "The Natural Numbers Case",
-      "summary": "naturalsSeq, consecutiveSum, odd divisor connection",
+      "title": "Part II: The Natural Numbers Case",
+      "summary": "The fully-proved natural-numbers case: naturalsSeq and consecutiveSum, the closed-form consecutive_sum_formula, the power-of-2 obstruction (not_pow2_representable), the characterization consecutive_sum_char, and naturals_count_odd_divisors — establishing that f(n) equals the number of odd divisors of n via an explicit bijection between odd divisors and consecutive-sum representations.",
       "startLine": 46,
-      "endLine": 71,
+      "endLine": 394,
       "mathContext": "Mathematical content: naturalsSeq, consecutiveSum, odd divisor connection"
     },
     {
       "id": "main-conjectures",
-      "title": "The Main Conjectures",
+      "title": "Part III: The Main Conjectures",
       "summary": "Erdos358Strong (f -> infinity) and Erdos358Weak (f >= 2)",
-      "startLine": 72,
-      "endLine": 92,
+      "startLine": 395,
+      "endLine": 418,
       "mathContext": "Erdos358Strong (f -> $\\infty$) and Erdos358Weak (f >= 2)"
     },
     {
       "id": "observations",
-      "title": "Known Observations",
+      "title": "Part IV: Known Observations",
       "summary": "Trivial f >= 1, power of 2 obstruction for >=2 term sums",
-      "startLine": 93,
-      "endLine": 111,
+      "startLine": 419,
+      "endLine": 526,
       "mathContext": "Mathematical content: Trivial f >= 1, power of 2 obstruction for >=2 term sums"
     },
     {
       "id": "prime-case",
-      "title": "The Prime Case",
+      "title": "Part V: The Prime Case",
       "summary": "primesSeq, Erdos-Moser conjecture about consecutive prime sums",
-      "startLine": 112,
-      "endLine": 124,
+      "startLine": 527,
+      "endLine": 549,
       "mathContext": "Mathematical content: primesSeq, Erdos-Moser conjecture about consecutive prime sums"
     },
     {
       "id": "density",
-      "title": "Density Questions",
+      "title": "Part VI: Weaker Questions",
       "summary": "representableCount, PositiveDensityConjecture for primes",
-      "startLine": 125,
-      "endLine": 144,
+      "startLine": 550,
+      "endLine": 569,
       "mathContext": "Mathematical content: representableCount, PositiveDensityConjecture for primes"
     },
     {
       "id": "connections",
-      "title": "Related Problems",
+      "title": "Part VII: Connection to Related Problems",
       "summary": "Connection to Problem #356, convex sumsets",
-      "startLine": 145,
-      "endLine": 155,
+      "startLine": 570,
+      "endLine": 580,
       "mathContext": "Mathematical content: Connection to Problem #356, convex sumsets"
     },
     {
       "id": "status",
-      "title": "Current Status",
+      "title": "Part VIII: Current Status",
       "summary": "Both questions OPEN, what is known, Erdos quote",
-      "startLine": 156,
-      "endLine": 183,
+      "startLine": 581,
+      "endLine": 599,
       "mathContext": "Mathematical content: Both questions OPEN, what is known, Erdos quote"
+    },
+    {
+      "id": "summary-theorems",
+      "title": "Part IX: Summary Theorems",
+      "startLine": 600,
+      "endLine": 608,
+      "summary": "The packaged status theorem erdos_358_status: the strong conjecture implies the weak one (strong_implies_weak) and the strong conjecture is decidable-in-principle (excluded middle), tying the formalization together.",
+      "mathContext": "$\\texttt{Erdos358Strong} \\Rightarrow \\texttt{Erdos358Weak}$, and $\\texttt{Erdos358Strong} \\lor \\lnot\\texttt{Erdos358Strong}$."
     }
   ],
   "conclusion": {

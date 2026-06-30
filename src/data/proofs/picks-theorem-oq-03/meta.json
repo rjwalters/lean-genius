@@ -67,9 +67,9 @@
       "Proofs/PicksTheoremOQ03CrossPoly.lean",
       "Proofs/PicksTheoremOQ03.lean"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 710,
-    "assumptions": "3 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization).",
+    "assumptions": "4 axioms: 3 axiom declarations — ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization) — plus `Lean.ofReduceBool`. The credited h*-vector sum theorems (unitCube_hstar_sum, simplex_hstar_sum, octahedron_hstar_sum, in EhrhartPolynomialOQ03.lean) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy these credited theorems are counted in meta.axiomCount (the literal axiom-declaration counts in leanFile remain unchanged). The ordinary foundational axioms propext / Classical.choice / Quot.sound are not counted. The cross-polytope companion file (PicksTheoremOQ03CrossPoly.lean) uses no native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 45,
     "definitionCount": 23
@@ -98,22 +98,22 @@
       "id": "lattice-polytopes",
       "title": "Lattice Polytopes",
       "startLine": 39,
-      "endLine": 81,
+      "endLine": 80,
       "summary": "Defines `LatticePolytope` structure with dimension, normalized/Euclidean volume, interior/boundary/total point counts, and consistency axioms.",
       "mathContext": "$P \\subset \\mathbb{R}^d$ lattice polytope: $\\dim = d$, $\\mathrm{vol}(P)$, $L(P, n) = |nP \\cap \\mathbb{Z}^d|$, $L^*(P, n)$ (interior), $B(P, n)$ (boundary), with consistency $L = L^* + B$."
     },
     {
       "id": "ehrhart-theorem",
       "title": "Ehrhart's Theorem",
-      "startLine": 82,
-      "endLine": 132,
+      "startLine": 81,
+      "endLine": 129,
       "summary": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP ∩ ℤ^d| for positive n.",
       "mathContext": "$L(P, n) = \\mathrm{vol}(P) n^d + \\cdots + 1$ is a polynomial of degree $d$ in $n$, with leading coefficient $\\mathrm{vol}(P)$ and constant term $L(P, 0) = 1$ (Euler characteristic)."
     },
     {
       "id": "reciprocity",
       "title": "Ehrhart-Macdonald Reciprocity",
-      "startLine": 133,
+      "startLine": 130,
       "endLine": 156,
       "summary": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d · L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes.",
       "mathContext": "$L^*(P, n) = (-1)^d L(P, -n)$: interior count from Ehrhart polynomial via sign change. Example: cube $L^*(n) = (n-1)^3 = (-1)^3(1-n)^3 = -L(-n)$."
@@ -122,65 +122,73 @@
       "id": "unit-cube",
       "title": "Unit Cube Example",
       "startLine": 157,
-      "endLine": 204,
+      "endLine": 210,
       "summary": "Defines unitCube3 and verifies L(t) = (t+1)³ at t = 0,1,2,3. Shows expanded form t³ + 3t² + 3t + 1.",
       "mathContext": "$L_{\\square_3}(n) = (n+1)^3 = n^3 + 3n^2 + 3n + 1$. Verified: $L(0) = 1, L(1) = 8, L(2) = 27, L(3) = 64$. Volume $= 1$, boundary $= 26$, interior $= 0$ at $n = 1$."
     },
     {
       "id": "simplex",
       "title": "Standard Simplex Example",
-      "startLine": 205,
-      "endLine": 255,
+      "startLine": 211,
+      "endLine": 260,
       "summary": "Defines standardSimplex3 with volume 1/6 and verifies L(t) = (t+1)(t+2)(t+3)/6 at t = 0,1,2,3.",
       "mathContext": "$L_{\\Delta_3}(n) = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$. Volume $= 1/6$. Verified: $L(0) = 1, L(1) = 4, L(2) = 10, L(3) = 20$."
     },
     {
       "id": "picks-specialization",
       "title": "Pick's Theorem as Ehrhart Specialization",
-      "startLine": 256,
-      "endLine": 346,
+      "startLine": 261,
+      "endLine": 337,
       "summary": "Shows the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1.",
       "mathContext": "2D Ehrhart: $L(n) = An^2 + \\frac{b}{2}n + 1$. At $n = 1$: $i + b = A + b/2 + 1$, rearranging to Pick's formula $A = i + b/2 - 1$."
     },
     {
       "id": "reeve-tetrahedra",
       "title": "Reeve Tetrahedra via Ehrhart Theory",
-      "startLine": 347,
-      "endLine": 427,
+      "startLine": 338,
+      "endLine": 429,
       "summary": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T₁,t) ≠ L(T₂,t) despite L(T₁,1) = L(T₂,1).",
       "mathContext": "Reeve tetrahedra $T_r$: vertices $(0,0,0), (1,0,0), (0,1,0), (1,1,r)$. All have $i = 0, b = 4$, but $\\mathrm{vol}(T_r) = r/6$. Different volumes $\\Rightarrow$ different Ehrhart polynomials despite $L(T_r, 1) = 5$."
     },
     {
       "id": "reciprocity-examples",
       "title": "Reciprocity Examples",
-      "startLine": 428,
-      "endLine": 501,
+      "startLine": 430,
+      "endLine": 494,
       "summary": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)³) and standard simplex, with concrete interior point counts.",
       "mathContext": "Cube reciprocity: $L^*_{\\square}(n) = (n-1)^3$ and $(-1)^3 L_{\\square}(-n) = -(1-n)^3 = (n-1)^3$ ✓. Interior counts: $L^*(1) = 0, L^*(2) = 1, L^*(3) = 8$."
     },
     {
       "id": "octahedron",
       "title": "Cross-Polytope (Octahedron)",
-      "startLine": 502,
-      "endLine": 543,
+      "startLine": 495,
+      "endLine": 539,
       "summary": "Defines the 3D cross-polytope with volume 4/3 and verifies Ehrhart polynomial at several points.",
       "mathContext": "3D cross-polytope $\\beta_3 = \\{x \\in \\mathbb{R}^3 : |x_1| + |x_2| + |x_3| \\leq 1\\}$. Volume $= 4/3$. Dual to the cube $\\square_3$. Ehrhart polynomial verified at several dilations."
     },
     {
       "id": "hstar-vectors",
       "title": "h*-Vectors and Stanley Nonnegativity",
-      "startLine": 544,
-      "endLine": 621,
+      "startLine": 540,
+      "endLine": 616,
       "summary": "Defines HStarVector framework, proves Stanley nonnegativity. Verifies h*-vectors for cube (1,4,1,0), simplex (1,0,0,0), and octahedron (1,3,3,1).",
       "mathContext": "Defines HStarVector framework, proves Stanley nonnegativity. Verifies h*-vectors for cube (1,4,1,0), simplex (1,0,0,0), and octahedron (1,3,3,1)."
     },
     {
       "id": "dimensional-hierarchy",
       "title": "Dimensional Hierarchy",
-      "startLine": 622,
+      "startLine": 617,
+      "endLine": 656,
+      "summary": "Tabulates the Ehrhart polynomial by dimension (d=0 point, d=1 segment, d=2 Pick's theorem, d=3 no simple formula). Defines `segmentEhrhart` with verified counts and proves `picks_ehrhart_consistency`: the 2D Ehrhart leading coefficient equals Pick's formula.",
+      "mathContext": "Dimensional hierarchy: $d = 0$ (point, $L = 1$), $d = 1$ (segment, $L = \\ell t + 1$), $d = 2$ (Pick: $A = i + b/2 - 1$), $d = 3$ (degree-3, no formula from $i,b$ alone). Each dimension adds one coefficient undetermined by single-dilation counts."
+    },
+    {
+      "id": "picks-2d-derivation",
+      "title": "2D Pick's from Ehrhart — Complete Derivation",
+      "startLine": 657,
       "endLine": 710,
-      "summary": "Shows the progression from d=0 (point) through d=1 (segment), d=2 (Pick's theorem), to d=3 (Ehrhart). Derives Pick's formula from the 2D case.",
-      "mathContext": "Dimensional hierarchy: $d = 0$ (point, $L = 1$), $d = 1$ (segment, $L = n + 1$), $d = 2$ (Pick's theorem: $A = i + b/2 - 1$), $d = 3$ (full Ehrhart with $d+1 = 4$ coefficients beyond $i, b$)."
+      "summary": "Carries out the full chain Ehrhart-2D ⇒ Pick: degree-2 polynomial with leading coefficient = area and constant term 1, evaluated at t=1 with the half-boundary identity c = b/2. Proves `picks_theorem_from_ehrhart`, `interior_from_ehrhart`, and `twice_area_integer`, then exports the main results.",
+      "mathContext": "For a 2D lattice polygon: $L(t) = A t^2 + c t + 1$ with $A = \\mathrm{Area}$, and at $t=1$, $i + b = A + c + 1$. The half-boundary theorem gives $c = b/2$, yielding Pick's formula $A = i + b/2 - 1$; equivalently $i = A - b/2 + 1$ and $2A = 2i + b - 2 \\in \\mathbb{Z}$."
     },
     {
       "id": "cross-polytope",

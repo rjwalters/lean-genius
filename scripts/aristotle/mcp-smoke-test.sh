@@ -101,13 +101,24 @@ MCP_CMD=(uvx --from "git+https://github.com/septract/lean-aristotle-mcp@${PINNED
 # project id in the response, or after 30 seconds total (10s for the
 # project id alone, but uvx may need extra time to fetch the package on
 # first run).
+# JSON-encode the snippet portably. We previously used ${SNIPPET@Q}, but the
+# @Q parameter transform requires bash 4.4+, while macOS ships bash 3.2 — there
+# it expands to "bad substitution", corrupting the request stream and faking a
+# handshake failure. Escape backslashes then double quotes by hand instead.
+json_escape() {
+    local s=$1
+    s=${s//\\/\\\\}
+    s=${s//\"/\\\"}
+    printf '"%s"' "$s"
+}
 SNIPPET='example : 1 + 1 = 2 := by sorry'
+SNIPPET_JSON=$(json_escape "$SNIPPET")
 
 REQUESTS=$(cat <<JSON
 {"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"mcp-smoke-test","version":"0.1.0"}}}
 {"jsonrpc":"2.0","method":"notifications/initialized","params":{}}
 {"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}
-{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"prove","arguments":{"code":${SNIPPET@Q},"wait":false}}}
+{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"prove","arguments":{"code":${SNIPPET_JSON},"wait":false}}}
 JSON
 )
 

@@ -1,8 +1,8 @@
 {
   "slug": "erdos-565-incomplete-01",
   "title": "Erdős #565: Induced Ramsey Numbers — Complete `induced_ramsey_ge_ordinary`",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,24 +16,31 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:17:22-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-06-16",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Complete: target sorry discharged and merged via #24707.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None. Research deliverable merged; pool record marked completed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: induced_ramsey_ge_ordinary (R*(G) ≥ R(G)) discharged + ill-typed EdgeColoring fixed, merged #24707. File now 0 sorries, 3 legitimate deep axioms (Aragão 2025 upper bound, Deuber/EHP/Rödl existence, exponential lower bound). Gallery meta correct: axiomatized/axiom/3. Build-verification Docker-gated.",
+    "builtItems": [
+      "Proved induced_ramsey_ge_ordinary in Erdos565Problem.lean:231 via Nat.sInf_le/Nat.sInf_mem monotonicity (host graph H ≤ ⊤ = completeGraph, so induced mono copy ⟹ ordinary mono copy); merged #24707"
+    ],
+    "insights": [
+      "R*(G) ≥ R(G) reduces to sInf monotonicity: the realizing set for the induced property is contained in the realizing set for the ordinary property, since H ≤ completeGraph means restricting a K_M coloring to H's edgeSet preserves the monochromatic induced copy as an ordinary monochromatic copy.",
+      "EdgeColoring must index over G.edgeSet ({e : Sym2 V // e ∈ G.edgeSet} → EdgeColor) so c ⟨⟦(f u, f v)⟧, he⟩ typechecks via mem_edgeSet (Iff.rfl); the earlier Sym2.out-based predicate did not match the Adj-typed witnesses."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "None for this OQ. Build-verification of the merged proof remains Docker-gated (local olean cache circular-symlink unavailable)."
+    ],
     "markdown": "# Knowledge: erdos-565-incomplete-01\n\n## Overview\n\nCompletion problem for Erdős #565. One sorry in the Lean formalization.\n\n## Gallery Proof Summary\n\n- Gallery: `erdos-565`\n- Lean: `proofs/Proofs/Erdos565Problem.lean`\n- Sorries: 1, Axioms: multiple (open problem axiomatized)\n\n## What Needs Proving\n\nSee `problem.md` for the specific sorry and approach.\n\n## Known Results\n\n(To be populated during OBSERVE phase)\n\n## Key References\n\n- Gallery: `src/data/proofs/erdos-565/`\n"
   },
   "tags": [],

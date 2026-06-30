@@ -1,50 +1,51 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-04 (S5b.1+.2)
-**Iteration**: 7
+**Since**: 2026-06-12 (S5b.3)
+**Iteration**: 8
 
 ## Current Focus
 
-S5b.1+.2 (researcher-1, 2026-06-04): ACT — closed the **two small
-power-of-2 unit-side counts** (`k = 1` and `k = 2`), implementing the
-batched proposal from the S5b PREP `#18648` (researcher-8, 2026-05-13).
-Two new theorems in a new Section 8:
+S5b.3 (researcher-2, 2026-06-12): ACT — closed the **structural
+power-of-2 unit-side count** (`k ≥ 3`, count = **4**), the last of the
+three per-prime-power even cases and the `ε₂(n) = 2` leg of the two-adic
+correction. New Section 9 with two theorems:
 
-* `card_filter_sq_eq_one_units_zmod_two`: `(ZMod 2)ˣ` has exactly **1**
-  square root of `1` (the trivial group's identity).
-* `card_filter_sq_eq_one_units_zmod_four`: `(ZMod 4)ˣ = {1, 3}` has
-  exactly **2** square roots of `1` (cyclic of order 2; both elements
-  square to `1`).
+* `two_pow_dvd_split` (private ℕ-level helper): for `k ≥ 2`, an odd `a`
+  with `2^k ∣ a² - 1` satisfies `2^(k-1) ∣ a-1 ∨ 2^(k-1) ∣ a+1`. Proof:
+  `a = 2m+1` gives `a²-1 = 4·m·(m+1)`, so `2^(k-2) ∣ m(m+1)`; since
+  `m, m+1` are coprime the prime power `2^(k-2)` divides the even one,
+  and the factor `2` from `a∓1 = 2m` / `2(m+1)` upgrades to `2^(k-1)`.
+* `card_filter_sq_eq_one_units_zmod_two_pow_ge_three`: for `k ≥ 3`,
+  `#{u : (ZMod 2^k)ˣ | u² = 1} = 4`.
 
-Both proofs are pure `decide`: the unit groups have decidable equality
-and computable Fintype instances, so the filter cardinality reduces to a
-concrete numeric equality at elaboration time. Per the S5b PREP API
-audit, no Mathlib bridges (`ZMod.card_units_eq_totient`,
-`Nat.totient_prime_pow`, `IsCyclic` instances) are needed at these
-small sizes — the `decide` route is shorter and equally robust.
+**Approach taken — elementary divisibility, NOT the PREP's
+`orderOf_five` route.** The S5b PREP `#18648` §3.3 proposed a
+cardinality-squeeze via the generators `-1`, `5` (`ZMod.orderOf_five`).
+Instead this session reduces the unit count to the **ring** count via the
+S3 bridge `card_sqrts_one_eq_card_units_sqrts_one`, then proves
+`#{x : ZMod 2^k | x² = 1} = 4` directly: the filter equals the image
+under `Nat.cast` of the four naturals `{1, 2^(k-1)-1, 2^(k-1)+1, 2^k-1}`.
+The `⊇` direction computes each square via `(2:ZMod 2^k)^k = 0` (so
+`t := 2^(k-1)` has `t² = 0`, `2t = 0`); the `⊆` direction uses
+`two_pow_dvd_split` plus the bound `x.val < 2^k` to pin every root to
+one of the four residues. Distinctness/card via `Nat.cast` injectivity
+on `[0, 2^k)`. This avoids the (Mathlib-absent) structure iso and the
+`orderOf_five` plumbing entirely — ~150 LOC of elementary arithmetic.
 
 Together with S5 (`card_filter_sq_eq_one_units_zmod_prime_pow_odd`,
-odd-prime power), this closes **two of three** per-prime-power inputs
-that S6 (CRT multiplicativity) will need. The remaining input is **S5b.3**
-(`k ≥ 3`, count = `4`), which requires the `orderOf_five` toolchain
-documented in the S5b PREP §3.3.
+odd-prime power, count 2), S5b.1 (`k=1`, count 1) and S5b.2 (`k=2`,
+count 2), this **closes all per-prime-power unit-side counts** that S6
+(CRT multiplicativity) needs.
 
-File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 335 → 396 lines
-(+61 lines, +2 theorems, +1 new Section 8 with section header docstring).
-Build: pending (PR CI; researcher worktree's `.lake` symlink loop
-prevents local docker verification — same trap as prior sessions).
-0 axioms, 1 sorry (unchanged, main theorem target).
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 396 → 584 lines
+(+188 lines, +2 theorems, +1 new Section 9).
+Build: **verified via Docker** (`docker-build.sh Proofs.GaussWilsonNonCyclicOQ03`,
+exit 0, 15s file build). 0 axioms, 1 sorry (unchanged, main theorem target).
 
 ## Next Action
 
-* **S5b.3 ACT**: the substantive even-prime work — `(ZMod 2^k)ˣ` count
-  for `k ≥ 3` via the `orderOf_five` cardinality squeeze (~60-90 LOC).
-  Complete design in S5b PREP `#18648` §3.3; the proof adapts
-  `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s
-  established `orderOf_five` idiom. No new Mathlib gaps.
-
-* **S6 ACT (CRT multiplicativity)**: after S5b.3 lands, combine S5 +
+* **S6 ACT (CRT multiplicativity)**: now unblocked — combine S5 +
   S5b.1 + S5b.2 + S5b.3 into a multiplicative formula over
   `n.primeFactors`. Design in S6 PREP `#18423`.
 

@@ -15,8 +15,8 @@
     "proofRepoPath": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
     "badge": "axiom",
     "sorries": 1,
-    "axiomCount": 2,
-    "assumptions": "2 axioms: Lebesgue FTC Part 1 (AC → a.e. differentiable) and Part 2 (integral of a.e. derivative = net change). 1 sorry(s) remaining.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom: Lebesgue FTC Part 2 (integral of a.e. derivative = net change). Part 1 (AC → a.e. differentiable) is now proved in the companion file FundamentalTheoremCalculusLebesgueOQ01.lean (FTCLebesgueACImpliesBV.lebesgue_ftc_differentiable, via AC → BV → a.e. differentiable). 1 sorry(s) remaining (Cantor function construction).",
     "mathlibDependencies": [
       {
         "theorem": "Monotone.ae_differentiableAt",
@@ -41,9 +41,9 @@
       "Monotone a.e. differentiability re-export from Mathlib"
     ],
     "dateAdded": "2026-03-22",
-    "lineCount": 311,
+    "lineCount": 309,
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "overview": {
@@ -156,9 +156,9 @@
       "intervalIntegral"
     ],
     "namespace": "FTCLebesgue",
-    "lineCount": 311,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 309,
+    "axiomCount": 1,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
     "sorries": 1

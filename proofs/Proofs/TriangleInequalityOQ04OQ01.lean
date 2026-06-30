@@ -203,4 +203,100 @@ private lemma chartArcLength_comp_mul_left_shift {γ : ℝ → E}
     show (2 : ℝ) * 1 - 1 = 1 from by norm_num] at h
   exact h
 
+omit [NormedSpace ℝ E] in
+/-- On the open interval `(0, 1/2)`, the concatenated path `f.trans g`
+agrees with `f.extend ∘ (· * 2)`. Stated on the *open* `Ioo` (not the closed
+`Icc` of the parent's `eqOn_first`) because S3c only needs interior agreement:
+each `t ∈ (0, 1/2)` has a neighborhood inside `(0, 1/2)`, which upgrades this
+pointwise agreement to `Filter.EventuallyEq` and hence to a `deriv` identity. -/
+private lemma eqOn_trans_first {p q r : E} (f : Path p q) (g : Path q r) :
+    Set.EqOn (f.trans g).extend (f.extend ∘ (· * 2)) (Set.Ioo (0 : ℝ) (1 / 2)) := by
+  intro t ht
+  have ht01 : t ∈ Set.Icc (0 : ℝ) 1 := ⟨ht.1.le, by linarith [ht.2]⟩
+  have h2t : t * 2 ∈ Set.Icc (0 : ℝ) 1 := ⟨by linarith [ht.1], by linarith [ht.2]⟩
+  simp only [Function.comp_apply]
+  rw [Path.extend_apply _ ht01, Path.trans_apply]
+  simp only [dif_pos ht.2.le]
+  rw [Path.extend_apply f h2t]
+  congr 1; ext; ring
+
+omit [NormedSpace ℝ E] in
+/-- On the open interval `(1/2, 1)`, the concatenated path `f.trans g` agrees
+with `g.extend ∘ (· * 2 - 1)`. Open-interval analogue of the parent's
+`eqOn_second`, sidestepping the `t = 1/2` midpoint case entirely. -/
+private lemma eqOn_trans_second {p q r : E} (f : Path p q) (g : Path q r) :
+    Set.EqOn (f.trans g).extend (g.extend ∘ (· * 2 - 1)) (Set.Ioo (1 / 2 : ℝ) 1) := by
+  intro t ht
+  have ht01 : t ∈ Set.Icc (0 : ℝ) 1 := ⟨by linarith [ht.1], ht.2.le⟩
+  have h2t : t * 2 - 1 ∈ Set.Icc (0 : ℝ) 1 := ⟨by linarith [ht.1], by linarith [ht.2]⟩
+  have hnotle : ¬ t ≤ 1 / 2 := by linarith [ht.1]
+  simp only [Function.comp_apply]
+  rw [Path.extend_apply _ ht01, Path.trans_apply, dif_neg hnotle, Path.extend_apply g h2t]
+  congr 1; ext; ring
+
+/-- **Concatenation additivity for `chartArcLength` along `Path.trans`** (S3c).
+
+For paths `f : Path p q` and `g : Path q r` whose chart maps `f.extend`,
+`g.extend` are differentiable on `[0, 1]`, and whose concatenated speed is
+interval-integrable on `[0, 1/2]` and `[1/2, 1]`, the chart-local arc length of
+`f.trans g` over `[0, 1]` is the sum of the arc lengths of `f` and `g`.
+
+Proof: split `[0, 1]` at the midpoint via `chartArcLength_trans`; on each half
+the concatenated speed agrees a.e. with the reparametrised single-path speed
+(equal on the open interior by `eqOn_trans_first`/`eqOn_trans_second`, lifted to
+a `deriv` identity through `Filter.EventuallyEq`, and the lone boundary point
+`1/2` is Lebesgue-null), reducing each half to the adapters
+`chartArcLength_comp_mul_left` / `chartArcLength_comp_mul_left_shift`. -/
+theorem chartArcLength_pathTrans {p q r : E} (f : Path p q) (g : Path q r)
+    (hf : ∀ t ∈ Set.Icc (0 : ℝ) 1, DifferentiableAt ℝ f.extend t)
+    (hg : ∀ t ∈ Set.Icc (0 : ℝ) 1, DifferentiableAt ℝ g.extend t)
+    (hint_left : IntervalIntegrable (fun t => ‖deriv (f.trans g).extend t‖)
+      MeasureTheory.volume 0 (1 / 2))
+    (hint_right : IntervalIntegrable (fun t => ‖deriv (f.trans g).extend t‖)
+      MeasureTheory.volume (1 / 2) 1) :
+    chartArcLength (f.trans g).extend 0 1
+      = chartArcLength f.extend 0 1 + chartArcLength g.extend 0 1 := by
+  rw [← chartArcLength_trans (f.trans g).extend hint_left hint_right]
+  have hleft : chartArcLength (f.trans g).extend 0 (1 / 2) = chartArcLength f.extend 0 1 := by
+    rw [← chartArcLength_comp_mul_left hf]
+    simp only [chartArcLength]
+    apply intervalIntegral.integral_congr_ae
+    have key : ∀ t ∈ Set.Ioo (0 : ℝ) (1 / 2),
+        ‖deriv (f.trans g).extend t‖ = ‖deriv (f.extend ∘ (· * 2)) t‖ := fun t ht => by
+      have hEv : (f.trans g).extend =ᶠ[nhds t] (f.extend ∘ (· * 2)) :=
+        Filter.eventuallyEq_of_mem (isOpen_Ioo.mem_nhds ht) (eqOn_trans_first f g)
+      rw [hEv.deriv_eq]
+    rw [MeasureTheory.ae_iff]
+    have hnull : MeasureTheory.volume ({(1 / 2 : ℝ)} : Set ℝ) = 0 := by simp
+    refine measure_mono_null ?_ hnull
+    intro t ht
+    simp only [Set.mem_setOf_eq] at ht
+    push_neg at ht
+    obtain ⟨htmem, htne⟩ := ht
+    rw [Set.uIoc_of_le (by norm_num : (0 : ℝ) ≤ 1 / 2)] at htmem
+    rcases lt_or_eq_of_le htmem.2 with hlt | heq
+    · exact absurd (key t ⟨htmem.1, hlt⟩) htne
+    · exact heq
+  have hright : chartArcLength (f.trans g).extend (1 / 2) 1 = chartArcLength g.extend 0 1 := by
+    rw [← chartArcLength_comp_mul_left_shift hg]
+    simp only [chartArcLength]
+    apply intervalIntegral.integral_congr_ae
+    have key : ∀ t ∈ Set.Ioo (1 / 2 : ℝ) 1,
+        ‖deriv (f.trans g).extend t‖ = ‖deriv (g.extend ∘ (· * 2 - 1)) t‖ := fun t ht => by
+      have hEv : (f.trans g).extend =ᶠ[nhds t] (g.extend ∘ (· * 2 - 1)) :=
+        Filter.eventuallyEq_of_mem (isOpen_Ioo.mem_nhds ht) (eqOn_trans_second f g)
+      rw [hEv.deriv_eq]
+    rw [MeasureTheory.ae_iff]
+    have hnull : MeasureTheory.volume ({(1 : ℝ)} : Set ℝ) = 0 := by simp
+    refine measure_mono_null ?_ hnull
+    intro t ht
+    simp only [Set.mem_setOf_eq] at ht
+    push_neg at ht
+    obtain ⟨htmem, htne⟩ := ht
+    rw [Set.uIoc_of_le (by norm_num : (1 / 2 : ℝ) ≤ 1)] at htmem
+    rcases lt_or_eq_of_le htmem.2 with hlt | heq
+    · exact absurd (key t ⟨htmem.1, hlt⟩) htne
+    · exact heq
+  rw [hleft, hright]
+
 end TriangleInequalityOQ04OQ01

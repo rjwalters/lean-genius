@@ -22,7 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 998,
+    "lineCount": 1079,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
@@ -89,7 +89,7 @@
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       }
     ],
-    "theoremCount": 43,
+    "theoremCount": 47,
     "definitionCount": 3,
     "relatedProblems": [
       {
@@ -138,41 +138,113 @@
       "id": "introduction",
       "title": "§1: Introduction, Hierarchy, and Iteration Plan",
       "startLine": 1,
-      "endLine": 99,
+      "endLine": 118,
       "summary": "Module-level docstring framing the open question, locating computable reals in the hierarchy `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`, recording the per-iteration scaffolding (S1 SCAFFOLD → S2 lower bound → S3 upper bound → S4 exact equality), and citing Turing 1936 and the relevant Mathlib modules (`Computability.Partrec`, `Computability.PartrecCode`, `Data.Rat.Denumerable`).",
       "mathContext": "Cardinality hierarchy: each strict inclusion (ℚ⊊algebraic, algebraic⊊computable) is a non-cardinality strict inclusion — sets differ qualitatively but share cardinality ℵ₀. The final inclusion computable⊊ℝ is strict by cardinality (ℵ₀<𝔠). The intro frames the goal: prove the countability of {r : ℝ | IsComputable r}."
     },
     {
       "id": "definition",
       "title": "§2: Namespace, Opens, and IsComputable Definition",
-      "startLine": 100,
-      "endLine": 113,
+      "startLine": 119,
+      "endLine": 133,
       "summary": "Opens `namespace AlgebraicNumbersCountableOQ02OQ04`, brings `Cardinal Filter Classical` into scope, and defines `IsComputable (r : ℝ) : Prop := ∃ f : ℕ → ℚ, Computable f ∧ Tendsto (fun n => (f n : ℝ)) atTop (nhds r)`. Captures Turing's original notion via Mathlib's `Computable` predicate on `ℕ → ℚ`.",
       "mathContext": "The `Computable` predicate in Mathlib is one canonical formalization of TM-computable functions; alternatives include `Primrec` (primitive recursive) and `Partrec` (partial recursive). For this entry's purposes, `Computable` is the appropriate level — total recursive functions that produce rational approximations whose real images converge."
     },
     {
       "id": "upper-bound",
       "title": "§3 (S3): Upper Bound — codeReal Pipeline",
-      "startLine": 114,
-      "endLine": 227,
+      "startLine": 134,
+      "endLine": 247,
       "summary": "S3 (researcher follow-up). Defines `decodeReal : Nat.Partrec.Code → ℝ` (noncomputable, via `Classical.choose`) decoding each code to the limit of its evaluated rational sequence (0 when undefined). Proves the two pipeline lemmas `exists_code_of_computable_rat_seq` (every `Computable (ℕ → ℚ)` is the eval of some `Nat.Partrec.Code`) and `computable_real_mem_range_decodeReal` (every `IsComputable` real is in `Set.range decodeReal`). Closes the main theorems `computable_reals_countable : Set.Countable {r | IsComputable r}` and `card_computable_reals_le_aleph0 : #{r | IsComputable r} ≤ ℵ₀` via `Set.countable_range` + `Set.Countable.mono`.",
       "mathContext": "The pipeline factorization is `{r | IsComputable r} ⊆ Set.range decodeReal ⊆ ℝ`, with `Nat.Partrec.Code` countable by `Encodable.countable`. Set-countability transfers across `Set.range` then `Set.Countable.mono` to give `Set.Countable {r | IsComputable r}`, which converts to the cardinal bound `#·≤ℵ₀` via `le_aleph0_iff_set_countable`."
     },
     {
       "id": "lower-bound",
       "title": "§4 (S2): Lower Bound — ℚ ↪ Computable Reals",
-      "startLine": 229,
-      "endLine": 298,
+      "startLine": 249,
+      "endLine": 318,
       "summary": "S2 (researcher follow-up). Proves five concrete computable witnesses (`rat_isComputable`, `int_isComputable`, `nat_isComputable`, `zero_isComputable`, `one_isComputable`) each by exhibiting a Computable constant sequence converging to the named rational. Combines these into `aleph0_le_card_computable_reals : ℵ₀ ≤ #({r | IsComputable r} : Set ℝ)` via the embedding `ℚ ↪ {r | IsComputable r}`, lifting through `Cardinal.mk_le_of_injective` and `Cardinal.mk_rat = ℵ₀`.",
       "mathContext": "The five-witness pattern is overkill for `IsComputable q : IsComputable (q : ℝ)` alone, but the explicit `int`/`nat`/`zero`/`one` corollaries serve downstream consumers wanting to exhibit specific elements without re-routing through `rat`. The ℵ₀ lower bound completes one half of `#{r | IsComputable r} = ℵ₀`."
     },
     {
       "id": "exact-equality",
-      "title": "§5 (S4): Exact ℵ₀ Equality",
-      "startLine": 300,
-      "endLine": 316,
-      "summary": "S4 (research synthesis). Combines the §3 upper bound `≤ ℵ₀` with the §4 lower bound `ℵ₀ ≤ ·` via `le_antisymm` to prove `card_computable_reals_eq_aleph0 : #({r | IsComputable r} : Set ℝ) = ℵ₀`. This is the precise cardinal statement: computable reals are *exactly* countably infinite, matching ℚ and the algebraic reals.",
+      "title": "§5: Exact ℵ₀ Equality",
+      "startLine": 320,
+      "endLine": 334,
+      "summary": "Combines the §3 upper bound `≤ ℵ₀` with the §4 lower bound `ℵ₀ ≤ ·` via `le_antisymm` to prove `card_computable_reals_eq_aleph0 : #({r | IsComputable r} : Set ℝ) = ℵ₀`. This is the precise cardinal statement: computable reals are *exactly* countably infinite, matching ℚ and the algebraic reals.",
       "mathContext": "`le_antisymm` of the two bounds gives the exact cardinality. The final form `#·= ℵ₀` is the cleanest cardinal statement: computable reals are not finite (the ℚ-embedding rules that out), not larger than ℵ₀ (the code pipeline rules that out), so exactly ℵ₀. This completes the cardinality picture: ℚ, algebraic, and computable all sit at ℵ₀ in the layered hierarchy below 𝔠 = #ℝ."
+    },
+    {
+      "id": "strict-inclusion",
+      "title": "§6 (S4): Strict Inclusion computable ⊊ ℝ and #non-computable = 𝔠",
+      "startLine": 336,
+      "endLine": 512,
+      "summary": "Defines `nonComputableReals := {r : ℝ | ¬ IsComputable r}` and pins its cardinality at the continuum. The argument is purely cardinal — no explicit Cantor diagonal or Chaitin-Ω construction: from the partition `𝔠 = #ℝ ≤ #computable + #nonComputable ≤ ℵ₀ + #nonComputable = #nonComputable` (cardinal absorption, via the bootstrap `ℵ₀ ≤ #nonComputable`). Delivers `card_nonComputableReals_eq_continuum`, Turing's negative result `exists_non_computable_real`, the strict inclusion `computable_reals_strict_ssubset_univ`, and the strict cardinal inequalities `card_computable_reals_lt_card_reals` and `card_computable_lt_card_nonComputable`.",
+      "mathContext": "Counting argument: `𝔠 = #ℝ ≤ #computable + #nonComputable`. With `#computable = ℵ₀` and absorption `ℵ₀ + κ = κ` for `ℵ₀ ≤ κ`, this forces `#nonComputable = 𝔠`. The bootstrap `ℵ₀ ≤ #nonComputable` is by contradiction: `#nonComputable < ℵ₀ ⟹ #ℝ ≤ ℵ₀ + ℵ₀ = ℵ₀`, against `ℵ₀ < 𝔠`. Parallels the sibling transcendentals result `continuum_le_card_transcendentals`."
+    },
+    {
+      "id": "cross-cardinal",
+      "title": "§7 (S5): Cross-Cardinal Consolidation Across Hierarchy Layers",
+      "startLine": 514,
+      "endLine": 585,
+      "summary": "Packages three consolidation theorems pinning the exact cardinal coordinates of every layer of `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`: `card_computable_reals_eq_card_algebraic_reals` (algebraic and computable reals share cardinality ℵ₀ despite the strict qualitative inclusion), `card_nonComputableReals_eq_card_reals` (non-computable reals match ℝ cardinally), and `cardinality_trichotomy` (a compact summary of the three cardinalities). The constructive inclusion `algebraic ⊆ computable` is deferred; only its cardinal coordinate is recorded here.",
+      "mathContext": "Cardinal coordinates: `#algebraic = #computable = ℵ₀` and `#nonComputable = #ℝ = 𝔠`. The cardinal equality `#algebraic = #computable` is the cardinal shadow of the (classical) inclusion `algebraic ⊆ computable`; equal cardinality coexists with strict set inclusion — the hallmark of infinite sets."
+    },
+    {
+      "id": "structural-api",
+      "title": "§8 (S6): Set-Theoretic Structural API — Nonempty, Infinite, Uncountable",
+      "startLine": 587,
+      "endLine": 655,
+      "summary": "Extracts the standard Set-level predicates across the partition, each as a one-liner citing the corresponding S2–S4 cardinal result. Computable side (cardinality ℵ₀): `computable_reals_nonempty` (0 is computable) and `computable_reals_infinite` (ℚ embeds). Non-computable side (cardinality 𝔠): `nonComputableReals_nonempty`, `nonComputableReals_uncountable`, and `nonComputableReals_infinite`. These give downstream consumers Set-level facts without round-tripping through `Cardinal.mk`.",
+      "mathContext": "Translating cardinal facts to Set predicates: `ℵ₀ ≤ #S ⟹ S.Infinite`; `𝔠 = #S > ℵ₀ ⟹ ¬ S.Countable` (uncountable); uncountable ⟹ infinite. The API form is what measure theory / descriptive set theory consumers expect."
+    },
+    {
+      "id": "topology-dense",
+      "title": "§9 (S7): Topological Structure — Computable Reals Are Dense",
+      "startLine": 657,
+      "endLine": 694,
+      "summary": "Proves `computable_reals_dense : Dense {r | IsComputable r}` and its closure form `closure_computable_reals_eq_univ`. Immediate from density of ℚ in ℝ plus `rat_isComputable`. Combined with countability (S3), this exhibits the computable reals as a *countable dense subset* of ℝ — a constructive separability witness using only computable points: small in cardinality (ℵ₀) yet large topologically (dense).",
+      "mathContext": "Density: `closure {r | IsComputable r} = ℝ` since `ℚ ⊆ {r | IsComputable r}` and `closure ℚ = ℝ`. A countable dense subset is exactly a separability witness for ℝ; here it is built from computable points only, the topological counterpart of the ℵ₀ cardinality."
+    },
+    {
+      "id": "noncomputable-dense",
+      "title": "§10 (S8-prep): Topological Complement — Non-Computable Reals Are Dense",
+      "startLine": 696,
+      "endLine": 755,
+      "summary": "Proves `nonComputableReals_dense : Dense nonComputableReals` and `closure_nonComputableReals_eq_univ`. Argument is cardinality-vs-countability: any nonempty open `U` contains an interval `Ioo a b` of cardinality 𝔠; if `U` missed the non-computable reals then `Ioo a b ⊆ computable` would inherit countability from S3, forcing `𝔠 ≤ ℵ₀` — contradiction. Together with S7, ℝ is the disjoint union of two simultaneously dense sets.",
+      "mathContext": "If `U ∩ nonComputable = ∅` then `Ioo a b ⊆ {r | IsComputable r}` (countable), but `#(Ioo a b) = 𝔠` (`Cardinal.mk_Ioo_real`), so `𝔠 ≤ ℵ₀`, contradicting `aleph0_lt_continuum`. Hence every open set meets the non-computable reals: density."
+    },
+    {
+      "id": "baire-category",
+      "title": "§11 (S8): Baire-Category Sharpening — Meagre vs Residual",
+      "startLine": 757,
+      "endLine": 867,
+      "summary": "Sharpens countability into category-theoretic smallness. `computable_reals_meagre`: the computable reals are meagre (first Baire category) — a countable union of nowhere-dense singletons. `nonComputableReals_isGδ` and `nonComputableReals_residual`: the non-computable reals contain a dense Gδ, hence are topologically generic (comeagre). Empty-interior corollaries `interior_computable_reals_eq_empty` and `interior_nonComputableReals_eq_empty` are recorded. The computable reals are countable, dense, and meagre — the exact profile of ℚ.",
+      "mathContext": "Meagre = countable union of nowhere-dense sets; in a T1 space singletons are nowhere dense, and a countable set `⋃ {xₙ}` is meagre. Residual = complement of meagre = contains a dense Gδ (Baire genericity). This is strictly stronger than countability: it fixes Baire category, not merely cardinality. Mirrors Mathlib's `Irrational`/`eventually_residual_irrational` story."
+    },
+    {
+      "id": "boundary",
+      "title": "§12 (S9): Boundary Characterization — Every Real Is a Boundary Point",
+      "startLine": 869,
+      "endLine": 959,
+      "summary": "Combines closure = univ (S7/S8-prep) with interior = ∅ (S8 corollaries) to compute the frontier of both halves exactly: `frontier_computable_reals_eq_univ` and `frontier_nonComputableReals_eq_univ`. Since `frontier s = closure s \\ interior s = univ \\ ∅ = univ`, every real is a boundary point of both the computable and non-computable reals — no real sits cleanly on either side. This refines the rational/irrational boundary profile to the finer computable/non-computable split.",
+      "mathContext": "`frontier s := closure s \\ interior s`. With `closure = univ` and `interior = ∅` on both halves, `frontier = univ \\ ∅ = univ`. Every point is approached from both sides simultaneously — the same profile as `frontier {q : ℝ | q ∈ range ((↑):ℚ→ℝ)} = univ`."
+    },
+    {
+      "id": "fsigma",
+      "title": "§13 (S10): Fσ-Style Structure — Countable Union of Closed Sets",
+      "startLine": 961,
+      "endLine": 996,
+      "summary": "Provides an explicit Fσ-style witness `computable_reals_isFsigma_witness` for the computable reals via the family `s c := {decodeReal c} ∩ {r | IsComputable r}` indexed by `Nat.Partrec.Code`. Each `s c` is a subsingleton (subset of a singleton), hence closed in the T1 space ℝ; and `{r | IsComputable r} = ⋃ c, s c` by S3's `computable_real_mem_range_decodeReal`. The intersection formulation absorbs the case-analysis into the membership predicate, avoiding any Computable-on-`decodeReal c` argument.",
+      "mathContext": "Fσ = countable union of closed sets. `s c ⊆ {decodeReal c}` is a subsingleton ⟹ closed (`Set.Subsingleton.isClosed`). Forward inclusion uses that every computable real has a decoding code (S3); reverse uses the right factor of the intersection. Countability of the index `Nat.Partrec.Code` makes the union countable."
+    },
+    {
+      "id": "open-closed-status",
+      "title": "§14 (S11): Open/Closed Status — Neither Half Is Open or Closed",
+      "startLine": 998,
+      "endLine": 1079,
+      "summary": "Draws the headline consequence of the topological invariants: `computable_reals_not_isClosed`, `computable_reals_not_isOpen`, `nonComputableReals_not_isClosed`, `nonComputableReals_not_isOpen`. A closed set equals its closure (= univ for both halves), contradicted by a witness on the other side; an open set equals its interior (= ∅ for both halves), contradicted by nonemptiness. Each half is thus a proper, dense, boundaryless subset of ℝ that is simultaneously not open and not closed — the canonical signature of a countable-dense set sharing the line with its residual complement.",
+      "mathContext": "A closed half would satisfy `closure = self`, but `closure = univ` and both halves are proper (each omits a witness from the other), so not closed. An open half would satisfy `interior = self`, but `interior = ∅` and both halves are nonempty, so not open. Uses only `IsClosed.closure_eq` and `IsOpen.interior_eq`."
     }
   ],
   "conclusion": {
@@ -315,9 +387,9 @@
       "Classical"
     ],
     "namespace": "AlgebraicNumbersCountableOQ02OQ04",
-    "lineCount": 998,
+    "lineCount": 1079,
     "axiomCount": 0,
-    "theoremCount": 43,
+    "theoremCount": 47,
     "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"

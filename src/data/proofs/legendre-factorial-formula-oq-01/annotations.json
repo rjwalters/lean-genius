@@ -1,0 +1,50 @@
+[
+  {
+    "id": "legendre-fact-oq01-ann-header",
+    "proofId": "legendre-factorial-formula-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "type": "concept",
+    "title": "Two Classical Forms of Legendre's Formula",
+    "content": "Legendre's formula (1808) gives the exact exponent of a prime p in the factorization of n!, written vₚ(n!). It has two equivalent faces: the floor-sum form vₚ(n!) = ∑_{i≥1} ⌊n/pⁱ⌋, which counts at each level i how many of 1,…,n are divisible by pⁱ, and the digit-sum form (p−1)·vₚ(n!) = n − Sₚ(n), where Sₚ(n) is the sum of the base-p digits of n. Mathlib provides both plus the bound vₚ(n!) ≤ n; this file packages them and adds the solved form. The setup imports the p-adic valuation basics and uses the `Fact p.Prime` instance convention.",
+    "mathContext": "$v_p(n!) = \\sum_{i \\ge 1} \\left\\lfloor \\tfrac{n}{p^i} \\right\\rfloor = \\frac{n - S_p(n)}{p-1}.$",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "factorial", "base-p digit sum", "Kummer's theorem"],
+    "prerequisites": ["prime factorization", "floor function", "base-p expansions"]
+  },
+  {
+    "id": "legendre-fact-oq01-ann-floor-digit",
+    "proofId": "legendre-factorial-formula-oq-01",
+    "range": { "startLine": 32, "endLine": 45 },
+    "type": "theorem",
+    "title": "Floor-Sum and Digit-Sum Forms",
+    "content": "`padicValNat_factorial_eq_sum` re-exports Mathlib's `padicValNat_factorial`: for any truncation bound b strictly above log_p n, vₚ(n!) equals the finite sum ∑_{i∈[1,b)} ⌊n/pⁱ⌋ (finite because ⌊n/pⁱ⌋ = 0 once pⁱ > n). `sub_one_mul_padicValNat_factorial_eq` re-exports the digit-sum identity (p−1)·vₚ(n!) = n − Sₚ(n). Both are thin wrappers presenting the two classical statements side by side as a self-contained Legendre package.",
+    "mathContext": "$v_p(n!) = \\sum_{i \\in [1,b)} \\lfloor n/p^i \\rfloor \\quad (\\log_p n < b); \\qquad (p-1)\\,v_p(n!) = n - S_p(n).$",
+    "significance": "supporting",
+    "relatedConcepts": ["floor sum", "digit sum", "truncation bound", "Mathlib re-export"],
+    "prerequisites": ["padicValNat_factorial", "Nat.log"]
+  },
+  {
+    "id": "legendre-fact-oq01-ann-solved",
+    "proofId": "legendre-factorial-formula-oq-01",
+    "range": { "startLine": 47, "endLine": 56 },
+    "type": "theorem",
+    "title": "The Solved Form for the Valuation",
+    "content": "`padicValNat_factorial_eq_div` is the new content: it isolates vₚ(n!) itself rather than its (p−1)-multiple, giving vₚ(n!) = (n − Sₚ(n))/(p−1). Since p ≥ 2 gives 0 < p−1, and the digit-sum identity says the right-hand side n − Sₚ(n) is literally (p−1) times an integer, `Nat.mul_div_cancel_left` recovers the exact quotient with no rounding. This makes the formula directly usable when the valuation is needed as a value (binomial estimates, trailing zeros of n!).",
+    "mathContext": "$v_p(n!) = \\frac{n - S_p(n)}{p-1}, \\qquad (p-1) \\mid (n - S_p(n)).$",
+    "significance": "critical",
+    "relatedConcepts": ["exact division", "isolating a variable", "Nat.mul_div_cancel_left"],
+    "prerequisites": ["the digit-sum form", "natural-number division without remainder"]
+  },
+  {
+    "id": "legendre-fact-oq01-ann-bound-instance",
+    "proofId": "legendre-factorial-formula-oq-01",
+    "range": { "startLine": 58, "endLine": 71 },
+    "type": "theorem",
+    "title": "Bound and the v₂(10!) = 8 Instance",
+    "content": "`padicValNat_factorial_le` wraps Mathlib's bound vₚ(n!) ≤ n. The worked example v₂(10!) = 8 is verified through the floor-sum form rather than the digit/log form, with bound b = 4 (justified by `Nat.log_lt_of_lt_pow` since 10 < 2⁴): the goal reduces to ⌊10/2⌋ + ⌊10/4⌋ + ⌊10/8⌋ = 5 + 2 + 1 = 8, a plain Finset sum of divisions that `decide` reduces by the kernel. Routing through the floor sum (not Nat.digits / Nat.log, which are well-founded recursions that resist reduction) keeps the proof free of `native_decide` and hence of `Lean.ofReduceBool`.",
+    "mathContext": "$v_2(10!) = \\lfloor 10/2 \\rfloor + \\lfloor 10/4 \\rfloor + \\lfloor 10/8 \\rfloor = 5 + 2 + 1 = 8.$",
+    "significance": "supporting",
+    "relatedConcepts": ["valuation bound", "kernel decide", "well-founded recursion", "numerical verification"],
+    "prerequisites": ["padicValNat_factorial_le", "the floor-sum form", "Nat.log_lt_of_lt_pow"]
+  }
+]

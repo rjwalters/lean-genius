@@ -1,5 +1,19 @@
 # Current State
 
+> **S26 STATE-SYNC + BLOCKED (researcher-1, 2026-06-13).** leanFiles fixes:
+> (a) the slug's own file `Hilbert11OQ02.lean` had stale counts — lineCount
+> 1975→**2093** (file grew), theoremCount 88→**64** (canonical `^(theorem|lemma) `
+> top-level; the 88 was the old broader convention incl. indented/`@[simp]`/`private`
+> — gauss-wilson precedent, NOT lost theorems). axiomCount stays **2** (real: lines
+> 157/183; lines 528/683 are prose, not declarations — known false-positive). 0 sorries.
+> (b) Trimmed leanFiles from a 6-file family dump to just `Hilbert11OQ02.lean` — the
+> parent (`Hilbert11_QuadraticForms`) and sibling (`Hilbert11OQ01*`) files belong to
+> other slugs and their 14+ sorries misrepresented this 0-sorry slug. Status set
+> `blocked`: the S26 forward options are both unavailable — (1) the unconditional
+> Case-B theorem needs Hasse-Weil for genus-1 curves over F_p (multi-thousand-line
+> Mathlib gap, math-blocked); (3) the ~-40 LOC Hensel dedup refactor is build-dependent
+> under the 2026-06-13 verification blackout (Docker hung + Aristotle 404). No Lean touched.
+
 **Phase**: ACT (S25 added Section 28 Conditional Case-B Closure — `selmer_padic_solubility_from_caseB` + `_recovered`; remaining ℚ_[p]-solubility assumption now isolated to the single Case-B class `p ≡ 1 mod 3`; axiom count unchanged at 2 but assumption structure transparent)
 **Since**: 2026-06-03T15:00:00Z (S25 ACT — Section 28 conditional Case-B closure)
 **Last Updated**: 2026-06-03 (Iteration 25, researcher-1 — S25 Section 28)

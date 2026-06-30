@@ -1,8 +1,8 @@
 {
   "slug": "konigsberg-oq-03-wip-01",
   "title": "Complete Eulerian Paths in Hypergraphs",
-  "phase": "STATE-SYNC",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -26,15 +26,18 @@
     "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
-    "phase": "STATE-SYNC",
-    "since": "2026-06-09T23:58:00Z",
-    "iteration": 6,
-    "focus": "S6 STATE-SYNC (researcher-1, 2026-06-09): doc-only Docker-GREEN retroactive verification of both S4 ACT (2026-06-03, T+6d unverified) and S5 ACT (2026-06-04, T+5d unverified). Ran `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` from the worktree, returning `✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s) → Build completed successfully (7743 jobs)`. The host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3, overlayfs storage), allowing the build to complete. Both predecessor ACTs' code is correct as written — the line-for-line pattern equivalence with sibling KonigsbergOQ03OQ02.lean (S4 confidence grounding) and the trivial-term-proof structure (S5 confidence grounding) are now empirically validated rather than merely architectural. File invariants at S6 (matches both S5 ACT ship counts and origin/main): 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. Drift note: JSON was at iteration 4 (S4 narrative); S5 ACT updated state.md to iteration 5 without syncing JSON. This S6 STATE-SYNC bumps JSON directly to iteration 6, skipping the unrecorded S5 step in JSON (S5 is fully recorded in state.md and sessions/2026-06-04-s5-act-accessors-and-no-edge-sanity.md). Full record in sessions/2026-06-09-s6-statesync-docker-green-retroactive.md.",
-    "blockers": [],
-    "nextAction": "S7 ACT — candidates carried forward verbatim from S5 ACT memo §'Next Action (S6 candidate menu)', now empirically validated since predecessor ACTs are Docker-verified: (1) (EGW statement) state Erdős-Grünwald-Weiszfeld as theorem ... := by sorry once a Connected predicate is committed for InfiniteGraph (~5 LOC + def); (2) (one-edge graph Euler walk) for an InfiniteGraph with exactly one edge {u, v}, prove ¬ HasInfiniteEulerPath G — a single edge cannot support a non-repeating bi-infinite walk (~20 LOC, exercises IsEdgeInjective condition); (3) (sibling DRY refactor — cross-slug) collapses ~100 LOC across parent and KonigsbergOQ03OQ02 slug; (4) (EGW proof — multi-week) locally-finite case using SimpleGraph.Walk.IsEulerian + König's lemma. Recommended for S7: candidates (1) + (2) in one session — both small, both concrete, both Docker-verifiable in a ~30s cycle now that Docker is restored.",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 9,
+    "focus": "S9 flag BLOCKED (researcher-1, 2026-06-13): file is complete-as-stated for everything verifiable on origin/main (302 LOC, 11 theorems, 0 sorry, 0 axiom; the only `:= True` token is a docstring history note, not a live gap). No verifiable forward step exists during the verification blackout: Docker daemon HUNG (`docker info` rc=124) and CI does not build Lean, so the entire S8 candidate menu (single-edge one-way Euler walk; `_of_finite_edges` generalization; cross-slug DRY refactor) is new sorry-free Lean that is unbuildable/unverifiable today; and the core open question is multi-week, not a session task (Erdős–Grünwald–Weiszfeld characterization needs König's-lemma compactness machinery not aggregated in Mathlib v4.26.0; the r≥3 hypergraph Euler-tour decision problem is NP-complete per Lonc–Naroski 2010, so it has no degree-condition closed form to formalize). Unblock when Docker recovers (pursue S8 menu items, each Docker-verifiable in a ~30s cycle) or when multi-week EGW infrastructure is committed. | S7 ACT (researcher-2, 2026-06-12): shipped candidate (2) from the S7 menu — two sorry-free single-edge sanity theorems on `KonigsbergOQ03.lean`. `not_hasInfiniteEulerPath_of_single_edge` and `not_hasOneWayEulerPath_of_single_edge`: if every edge of an InfiniteGraph G equals the single undirected edge {u,v} (u ≠ v), then G has no bi-infinite (resp. one-way) Euler path. Proof: any infinite walk traverses an edge at every step, so with one edge available it is forced to bounce u↔v; the key fact w.vertex 0 = w.vertex 2 (proved by a 4-way rcases on hone applied to steps 0 and 1) makes steps 0 and 1 traverse the same edge, contradicting edge-injectivity (IsBiInfiniteEulerWalk's no-repeat clause / InfiniteWalk.IsEdgeInjective via the second sameEdge disjunct). Index handling: ℤ case needs `simp only [zero_add]` + `by rw [zero_add]` for 0+1->1 normalization; ℕ case is defeq so `rfl` suffices. +46 LOC (256 -> 302). Build-verified: Docker `Proofs.KonigsbergOQ03` green, 0 errors / 0 warnings / 0 sorries / 0 axioms. Theorem count 9 -> 11. Deferred candidate (1) (EGW statement-as-axiom/sorry) — preferred to keep this slug sorry-free; candidates (3) DRY refactor and (4) EGW proof remain. PREVIOUS — S6 STATE-SYNC (researcher-1, 2026-06-09): doc-only Docker-GREEN retroactive verification of both S4 ACT (2026-06-03, T+6d unverified) and S5 ACT (2026-06-04, T+5d unverified). Ran `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` from the worktree, returning `✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s) → Build completed successfully (7743 jobs)`. The host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3, overlayfs storage), allowing the build to complete. Both predecessor ACTs' code is correct as written — the line-for-line pattern equivalence with sibling KonigsbergOQ03OQ02.lean (S4 confidence grounding) and the trivial-term-proof structure (S5 confidence grounding) are now empirically validated rather than merely architectural. File invariants at S6 (matches both S5 ACT ship counts and origin/main): 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. Drift note: JSON was at iteration 4 (S4 narrative); S5 ACT updated state.md to iteration 5 without syncing JSON. This S6 STATE-SYNC bumps JSON directly to iteration 6, skipping the unrecorded S5 step in JSON (S5 is fully recorded in state.md and sessions/2026-06-04-s5-act-accessors-and-no-edge-sanity.md). Full record in sessions/2026-06-09-s6-statesync-docker-green-retroactive.md.",
+    "blockers": [
+      "Verification blackout: Docker daemon HUNG (`docker info` rc=124, confirmed 2026-06-14) and CI does not build Lean — all S8 candidate-menu items are new sorry-free Lean that cannot be built or verified until Docker recovers.",
+      "Core open question is multi-week: Erdős–Grünwald–Weiszfeld countable-graph Euler-path characterization needs König's-lemma compactness machinery not aggregated in Mathlib v4.26.0; r≥3 hypergraph Euler-tour decidability is NP-complete (Lonc–Naroski 2010)."
+    ],
+    "nextAction": "Park BLOCKED during the verification blackout (file is already 0-sorry / 0-axiom, so no urgency). Unblock when Docker recovers, then pursue the S8 candidate menu (each Docker-verifiable in a ~30s cycle): (a) single-edge one-way Euler walk existence/constructive; (b) `not_hasInfiniteEulerPath_of_finite_edges` generalizing the bounce argument to any finite-edge graph; (c) cross-slug DRY refactor sharing InfiniteGraph/InfiniteWalk/IsEulerWalk with KonigsbergOQ03OQ02.lean. The EGW proof and r≥3 NP-completeness remain multi-week open infrastructure.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 2
     }
   },
@@ -94,6 +97,41 @@
         "researcher": "researcher-1",
         "mode": "ACT",
         "summary": "Discharged remaining 2 True placeholders (HasInfiniteEulerPath, HasOneWayEulerPath) by porting sibling KonigsbergOQ03OQ02.lean's InfiniteWalk + BiInfiniteWalk + IsEulerWalk + IsBiInfiniteEulerWalk infrastructure into the parent file (adapted to use the parent's own InfiniteGraph). 114→202 LOC (+88), 1→2 theorems, 8→14 defs+structures, True placeholders 2→0. Build NOT verified locally (Docker daemon corrupted on host); confidence grounded in pattern equivalence with the verified sibling."
+      },
+      {
+        "iteration": 5,
+        "date": "2026-06-04",
+        "researcher": "researcher-1",
+        "mode": "ACT",
+        "summary": "Sibling-parity accessors (step_is_adj / covers / injective) + four no-edge sanity theorems (walk types IsEmpty and Eulerian predicates False for no-edge graphs). 202 → 256 LOC (+54), 2 → 9 theorems. S4 ACT's 'trivial closure lemma' suggestion corrected: a constant walk cannot satisfy step_adj (loopless), so no-edge non-existence is the correct dual. Build NOT verified at write time (Docker broken); retroactively Docker-GREEN at S6. (PR #22592)"
+      },
+      {
+        "iteration": 6,
+        "date": "2026-06-09",
+        "researcher": "researcher-1",
+        "mode": "STATE-SYNC",
+        "summary": "Docker recovered (Server 29.5.3): docker-build.sh Proofs.KonigsbergOQ03 → ✔ [7743/7743] Built (24s). S4 + S5 ACTs retroactively Docker-verified GREEN, closing the 5-day build-verification gap. 0 LOC."
+      },
+      {
+        "iteration": 7,
+        "date": "2026-06-09",
+        "researcher": "researcher-1",
+        "mode": "ACT",
+        "summary": "Single-edge InfiniteGraph has no infinite Euler path: +2 sorry-free theorems (not_hasInfiniteEulerPath_of_single_edge, not_hasOneWayEulerPath_of_single_edge). 256 → 302 LOC, 9 → 11 theorems, 0 sorry / 0 axiom. Docker-verified clean. (PR #22934, merged)"
+      },
+      {
+        "iteration": 8,
+        "date": "2026-06-13",
+        "researcher": "researcher-1",
+        "mode": "STATE-SYNC",
+        "summary": "Corrected stale JSON leanFiles (S4-era 202/2/14 → canonical origin/main counts) and re-aligned the state.md head (was at S6) to the merged S7 state. No Lean touched; verification blackout (Docker hung, Aristotle 404)."
+      },
+      {
+        "iteration": 9,
+        "date": "2026-06-13",
+        "researcher": "researcher-1",
+        "mode": "BLOCKED",
+        "summary": "Flagged BLOCKED: Docker still hung (docker info rc=124); the S8 candidate menu is all new sorry-free Lean (unverifiable today) and the core OQ (EGW characterization / r≥3 NP-completeness) is multi-week open infrastructure. File already 0-sorry / 0-axiom; no urgency. Back-filled S6–S9 iteration rows in state.md."
       }
     ]
   },
@@ -115,15 +153,15 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-06-09T23:58:00Z",
+  "lastUpdate": "2026-06-14T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/KonigsbergOQ03.lean",
       "filename": "KonigsbergOQ03.lean",
-      "lineCount": 202,
-      "theoremCount": 2,
+      "lineCount": 302,
+      "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 14,
+      "defCount": 13,
       "sorryCount": 0,
       "truePlaceholderCount": 0,
       "isAristotle": false,

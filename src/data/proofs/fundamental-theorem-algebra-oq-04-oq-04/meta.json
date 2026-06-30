@@ -169,11 +169,6 @@
       "proofId": "nth-root-irrational-oq-01",
       "relationship": "sibling",
       "description": "Provides `eisenstein_X_pow_sub_prime` used to prove `Xn_sub_p_irred_Q` (irreducibility of X^n - p over ℚ via Gauss's lemma from ℤ-irreducibility)."
-    },
-    {
-      "proofId": "triangle-inequality-oq-02",
-      "relationship": "related",
-      "description": "Formalizes the p-adic ultrametric inequality $|x+y|_p \\leq \\max(|x|_p, |y|_p)$, demonstrating Mathlib's ℚ_[p] infrastructure. The ultrametric is the analytic foundation underlying the Newton polygon argument used here."
     }
   ],
   "leanFile": {

@@ -27,6 +27,7 @@ S4+ deliverable.
 
 Strategic sorries: 1 (capstone `classNumber = 1`).
 Axioms: 0.
+Build-verified sub-targets: `X_sq_sub_two_ne_zero`, `Q_sqrt2_finrank = 2`.
 -/
 
 namespace Sqrt2MinpolyOQ03
@@ -58,14 +59,47 @@ instance : NumberField Q_sqrt2 where
           simp [X_sq_sub_two]
         omega)))
 
+/-- `X² − 2 ≠ 0` (it has degree 2). Factored helper, build-verified. -/
+theorem X_sq_sub_two_ne_zero : X_sq_sub_two ≠ 0 := by
+  intro h
+  have hdeg : (X_sq_sub_two : ℚ[X]).natDegree = 2 := by simp [X_sq_sub_two]
+  rw [h] at hdeg
+  simp at hdeg
+
+/-- **Sub-target (build-verified):** `[Q(√2) : ℚ] = 2`.
+
+This is the field degree `n = finrank ℚ K` appearing in the Minkowski bound
+`M K = (4/π)^(nrComplexPlaces K) · (n! / nⁿ · √|discr K|)`. For Q(√2), `n = 2`,
+`nrComplexPlaces = 0` (totally real), and `discr = 8`, giving `M K = √2 < 2`.
+The degree is computed here from the power basis of the degree-2 defining
+polynomial via `AdjoinRoot.powerBasis_dim` + `PowerBasis.finrank`. -/
+theorem Q_sqrt2_finrank : Module.finrank ℚ Q_sqrt2 = 2 := by
+  rw [(AdjoinRoot.powerBasis X_sq_sub_two_ne_zero).finrank,
+      AdjoinRoot.powerBasis_dim]
+  simp [X_sq_sub_two]
+
 /-- **Main theorem (strategic sorry, capstone):** the class number of Q(√2) is 1.
 
-Proof strategy (per S2 PREP chain, S4 ACT deliverable):
-- `disc Q_sqrt2 = 8` (Marcus Chapter 5; PREP-3/4 verbatim norm-chain).
-- Minkowski bound `M_K = (2!/2²)·√8 = √2 < 2`.
-- Every nonzero ideal class has an integral representative of norm `< √2`,
-  hence of norm 1, hence is the unit class.
-- Therefore `|Cl_K| = 1`. -/
+Proof route (real Mathlib v4.26.0 API, verified against
+`Mathlib/NumberTheory/NumberField/ClassNumber.lean` at pin `2df2f015…`):
+
+1. `classNumber_eq_one_iff : classNumber K = 1 ↔ IsPrincipalIdealRing (𝓞 K)`.
+2. `RingOfIntegers.isPrincipalIdealRing_of_isPrincipal_of_pow_le_of_mem_primesOver_of_mem_Icc`
+   reduces a PID proof to checking, for each prime `p ∈ Finset.Icc 1 ⌊M K⌋₊`,
+   the ideals above `p`. (Mathlib's standard "compute `⌊M K⌋₊` then `fin_cases`"
+   technique — Marcus 1977, discussion after Theorem 37.)
+3. Compute `⌊M K⌋₊`: with `finrank ℚ K = 2` (`Q_sqrt2_finrank` above),
+   `nrComplexPlaces K = 0` (Q(√2) totally real), and `discr K = 8`, the bound is
+   `M K = 2!/2² · √8 = √2 ≈ 1.414`, so `⌊M K⌋₊ = 1`.
+4. `Finset.Icc 1 1` contains no primes (1 is not prime), so the per-prime
+   hypothesis is vacuous and `𝓞 K` is a PID; hence `classNumber K = 1`.
+
+Remaining open sub-targets (each a separate Lean deliverable): `discr Q_sqrt2 = 8`
+(quadratic trace-form / `Algebra.discr` computation), `nrComplexPlaces Q_sqrt2 = 0`,
+and the `⌊M K⌋₊ = 1` real-arithmetic reduction.
+
+NOTE: the prior state record's assumed bearer `isPrincipalIdealRing_of_abs_discr_lt`
+does NOT exist in Mathlib v4.26.0; the route above is the actual available API. -/
 theorem Q_sqrt2_classNumber_eq_one :
     NumberField.classNumber Q_sqrt2 = 1 := by
   sorry

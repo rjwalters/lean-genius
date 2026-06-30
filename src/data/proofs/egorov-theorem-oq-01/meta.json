@@ -1,0 +1,173 @@
+{
+  "id": "egorov-theorem-oq-01",
+  "slug": "egorov-theorem-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Function.Egorov",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "EgorovTheorem",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/EgorovTheorem.lean",
+    "sorries": 0
+  },
+  "title": "Egorov's Theorem: Almost-Everywhere Convergence is Almost Uniform",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EgorovTheorem.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "convergence",
+      "uniform-convergence",
+      "real-analysis",
+      "egorov",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 153,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "pow_egorov_on_Icc: the canonical worked instance of Egorov's theorem — for every ε > 0 there is a measurable t ⊆ [0,1] with Lebesgue measure ≤ ε on which xⁿ → 0 uniformly off [0,1] \\ t. Mathlib states the abstract theorem (tendstoUniformlyOn_of_ae_tendsto) but formalizes no instance demonstrating its non-vacuity; this is the assembled application (strong measurability of x ↦ xⁿ, finiteness of vol[0,1] = 1, and the a.e.-convergence hypothesis).",
+      "pow_ae_tendsto_zero_on_Icc: xⁿ → 0 Lebesgue-almost-everywhere on [0,1] — the exceptional set is exactly the single null point x = 1, proved by bounding {x | failure} ⊆ {1} and Real.volume_singleton. This is the precise a.e. hypothesis Egorov consumes.",
+      "pow_not_tendstoUniformlyOn_Ico: the matching SHARPNESS / necessity result — xⁿ does NOT converge uniformly to 0 on the half-open interval [0,1), even though it converges to 0 at every single point of [0,1). This shows Egorov's exceptional set cannot be omitted: everywhere-pointwise convergence does not upgrade to uniform convergence. Not present in Mathlib.",
+      "exists_pow_ge_half: for every exponent N there is a point x ∈ [0,1) with xᴺ ≥ 1/2 (via the intermediate value theorem), the quantitative obstruction driving the non-uniformity.",
+      "egorov_uniform_off_small_set: a clean ℕ-indexed restatement of Mathlib's tendstoUniformlyOn_of_ae_tendsto specialized to sequences, the headline Egorov statement for the gallery."
+    ],
+    "prerequisites": [
+      "MeasureTheory.tendstoUniformlyOn_of_ae_tendsto: Egorov's theorem in Mathlib (a.e. convergence on a finite-measure set ⇒ uniform convergence off an arbitrarily small measurable subset)",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one: rⁿ → 0 for 0 ≤ r < 1",
+      "Metric.tendstoUniformlyOn_iff: the ε-characterization of uniform convergence on a set",
+      "intermediate_value_Icc: the intermediate value theorem on a closed interval",
+      "Real.volume_Icc and Real.volume_singleton: Lebesgue measure of an interval and of a point"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.tendstoUniformlyOn_of_ae_tendsto",
+        "description": "Egorov's theorem: if fₙ → g a.e. on a measurable set s of finite measure, then for every ε > 0 there is a measurable t ⊆ s with μ t ≤ ε and fₙ → g uniformly on s \\ t. The abstract vehicle, re-exported as egorov_uniform_off_small_set and instantiated by pow_egorov_on_Icc.",
+        "module": "Mathlib.MeasureTheory.Function.Egorov"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "For 0 ≤ r < 1, rⁿ → 0 as n → ∞. Supplies the a.e.-pointwise limit underlying pow_ae_tendsto_zero_on_Icc.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Metric.tendstoUniformlyOn_iff",
+        "description": "Uniform convergence on a set s is equivalent to: for every ε > 0, eventually dist (f x) (Fₙ x) < ε for all x ∈ s. Used to refute uniform convergence of xⁿ on [0,1).",
+        "module": "Mathlib.Topology.MetricSpace.Pseudo.Basic"
+      },
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "Intermediate value theorem: a continuous function on [a,b] attains every value between f a and f b. Produces, for each N, a point x ∈ [0,1) with xᴺ = 1/2.",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "egorov-theorem-oq-01-oq-01",
+      "question": "Formalize the failure of Egorov's theorem on a σ-finite-but-infinite measure space: exhibit a sequence on ℝ with Lebesgue measure (e.g. the marching indicators 1_[n,n+1]) that converges to 0 everywhere pointwise yet admits no measurable set of finite (or arbitrarily small) measure off which the convergence is uniform, proving the finiteness hypothesis μ s ≠ ∞ is essential.",
+      "significance": "high"
+    },
+    {
+      "id": "egorov-theorem-oq-01-oq-02",
+      "question": "Derive Lusin's theorem (every measurable function is continuous off a set of arbitrarily small measure) from Egorov's theorem together with the density of continuous/simple functions, giving the classical Egorov ⇒ Lusin route in formalized form.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "related",
+      "description": "The laws-of-large-numbers entry names Egorov's theorem in its related-concepts discussion of modes of convergence (a.e., in-measure, uniform). This entry supplies the formalized theorem and a concrete instance making the a.e.-versus-uniform distinction precise."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Function.Egorov",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of MeasureTheory.tendstoUniformlyOn_of_ae_tendsto and its finite-measure-space variants."
+    },
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "author": "Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Standard reference for Egorov's theorem (Thm 2.33), its finite-measure hypothesis, the canonical xⁿ example on [0,1], and the Egorov ⇒ Lusin implication."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Egorov's theorem (Dmitri Egorov, 1911; independently Carlo Severini, 1910) is one of the 'three principles of Littlewood' that organize real analysis — Littlewood's heuristic that 'every measurable function is nearly continuous, every convergent sequence of measurable functions is nearly uniformly convergent, and every measurable set is nearly a finite union of intervals'. Egorov's is the second principle: it bridges the gap between pointwise (almost-everywhere) convergence and the much stronger uniform convergence, at the cost of discarding a set of arbitrarily small measure. The finiteness of the ambient measure is essential — the theorem fails on infinite measure spaces (the marching-bump sequence $1_{[n,n+1]}$ on ℝ converges to 0 everywhere but never uniformly off a small set). Egorov is the standard route to Lusin's theorem (Littlewood's first principle) and a workhorse in the theory of $L^p$ spaces and convergence in measure. Mathlib has the abstract theorem; this entry supplies the canonical worked example $x^n$ on $[0,1]$ together with the matching sharpness witness, which Mathlib lacks.",
+    "problemStatement": "Egorov's theorem: on a measurable set $s$ of finite measure, if strongly-measurable $f_n \\to g$ almost everywhere on $s$, then for every $\\varepsilon > 0$ there is a measurable $t \\subseteq s$ with $\\mu(t) \\le \\varepsilon$ such that $f_n \\to g$ *uniformly* on $s \\setminus t$. The entry restates this for sequences (`egorov_uniform_off_small_set`), then makes it concrete and non-vacuous on $f_n(x) = x^n$ over $[0,1]$: $x^n \\to 0$ Lebesgue-a.e. (the lone exceptional point $x=1$ is null), so Egorov extracts a small exceptional set off which convergence is uniform — and crucially the exceptional set cannot be dropped, since $x^n$ does *not* converge uniformly on the whole $[0,1)$ despite converging to 0 at every point there.",
+    "proofStrategy": "Three pieces. (1) `pow_ae_tendsto_zero_on_Icc`: the failure set $\\{x \\in [0,1] : x^n \\not\\to 0\\}$ is contained in $\\{1\\}$ (for $0 \\le x < 1$, $x^n \\to 0$ by `tendsto_pow_atTop_nhds_zero_of_lt_one`), and $\\{1\\}$ is Lebesgue-null (`Real.volume_singleton`), so convergence is a.e. (2) `pow_egorov_on_Icc`: feed strong measurability of $x \\mapsto x^n$ (continuity), finiteness $\\mathrm{vol}[0,1]=1<\\infty$, and the a.e. hypothesis into Mathlib's `tendstoUniformlyOn_of_ae_tendsto`. (3) Sharpness: `exists_pow_ge_half` uses the intermediate value theorem to find, for each $N$, an $x \\in [0,1)$ with $x^N \\ge 1/2$ (since $x \\mapsto x^N$ is continuous, $0^N=0$, $1^N=1$); then `pow_not_tendstoUniformlyOn_Ico` assumes uniform convergence, instantiates the $\\varepsilon = 1/2$ definition at that bad point, and derives $1/2 \\le x^N < 1/2$, a contradiction.",
+    "keyInsights": [
+      "Egorov is the precise statement that a.e. convergence is 'almost' uniform: you can always salvage uniform convergence by deleting an arbitrarily small (but generally nonempty) set. The entry pairs the theorem with its sharpness so both halves of 'almost, but not quite' are formal.",
+      "The example $x^n$ on $[0,1]$ is the canonical illustration precisely because its non-uniformity is so concrete: $\\sup_{x \\in [0,1)} x^n = 1$ for every $n$, so the convergence is never uniform, yet the obstruction is confined to a neighborhood of the single point $x=1$ — exactly the small set Egorov removes.",
+      "Sharpness is driven by the intermediate value theorem, not by measure theory: for any exponent $N$ there is a point in $[0,1)$ where $x^N \\ge 1/2$, so no uniform $\\varepsilon$-bound can hold past any index. This cleanly separates the pointwise convergence (which is genuine) from uniformity (which fails).",
+      "The finite-measure hypothesis is doing real work and is highlighted as an open question: on $[0,1]$ it is automatic ($\\mathrm{vol} = 1$), but on an infinite measure space Egorov is false — making the worked finite-measure instance the right place to see the theorem's content.",
+      "The `mathlib` badge is honest: the abstract theorem is Mathlib's `tendstoUniformlyOn_of_ae_tendsto`. The original, non-vacuous content is assembling a concrete instance (strong measurability + finiteness + a.e. convergence) and proving the non-uniformity witness, neither of which Mathlib records."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: a.e. Convergence Is Almost Uniform",
+      "startLine": 7,
+      "endLine": 56,
+      "summary": "States Egorov's theorem (Egorov 1911 / Severini 1910), names the Mathlib vehicle tendstoUniformlyOn_of_ae_tendsto, and lays out the file's substance: the canonical xⁿ-on-[0,1] example, its a.e.-convergence verification, and the matching sharpness (non-uniformity on [0,1)). Records the axiom status (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "On a finite-measure set, $f_n \\to g$ a.e. $\\Rightarrow$ for all $\\varepsilon>0$ there is measurable $t$ with $\\mu(t)\\le\\varepsilon$ and $f_n \\to g$ uniformly on $s \\setminus t$."
+    },
+    {
+      "id": "general-theorem",
+      "title": "Egorov's Theorem, Sequential Form",
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "egorov_uniform_off_small_set restates Mathlib's tendstoUniformlyOn_of_ae_tendsto for ℕ-indexed sequences: strongly measurable fₙ → g a.e. on a finite-measure measurable s yields, for each ε > 0, a measurable t ⊆ s with μ t ≤ ENNReal.ofReal ε and uniform convergence on s \\ t.",
+      "mathContext": "The abstract theorem specialized to the index type ℕ; hypotheses are strong measurability of each $f_n$ and $g$, measurability and finiteness of $s$, and a.e. convergence on $s$."
+    },
+    {
+      "id": "canonical-example",
+      "title": "The Canonical Example: xⁿ on [0,1]",
+      "startLine": 81,
+      "endLine": 111,
+      "summary": "pow_ae_tendsto_zero_on_Icc: xⁿ → 0 Lebesgue-a.e. on [0,1], with the failure set ⊆ {1} (a null point). pow_egorov_on_Icc: applies Egorov to xⁿ — strong measurability via continuity, finiteness vol[0,1]=1, and the a.e. hypothesis — to extract, for each ε > 0, a measure-≤-ε set off which xⁿ → 0 uniformly.",
+      "mathContext": "For $0 \\le x < 1$, $x^n \\to 0$; the only exceptional point is $x=1$ with $\\mathrm{vol}\\{1\\}=0$. Hence the a.e. hypothesis holds and Egorov applies on the unit-measure interval."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: the Convergence Is Genuinely Non-Uniform",
+      "startLine": 113,
+      "endLine": 152,
+      "summary": "exists_pow_ge_half: for every N there is x ∈ [0,1) with xᴺ ≥ 1/2, via the intermediate value theorem on x ↦ xᴺ (from 0 to 1). pow_not_tendstoUniformlyOn_Ico: xⁿ does NOT converge uniformly to 0 on [0,1) — assuming it does, the ε = 1/2 definition at a bad point gives 1/2 ≤ xᴺ < 1/2, a contradiction. So Egorov's exceptional set cannot be omitted.",
+      "mathContext": "$\\sup_{x \\in [0,1)} x^N \\ge 1/2$ for every $N$, so uniform convergence (which would force $\\sup \\to 0$) fails — pointwise-everywhere convergence does not upgrade to uniform."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Egorov's theorem states that on a finite-measure set, almost-everywhere convergence of (strongly) measurable functions upgrades to uniform convergence off a measurable subset of arbitrarily small measure. The abstract theorem is Mathlib's MeasureTheory.tendstoUniformlyOn_of_ae_tendsto, restated for sequences as egorov_uniform_off_small_set. The entry's substance is the canonical worked example xⁿ on [0,1]: pow_ae_tendsto_zero_on_Icc shows xⁿ → 0 Lebesgue-a.e. (the only exceptional point is the null point x = 1), pow_egorov_on_Icc feeds this into Egorov to extract, for every ε > 0, a measure-≤-ε exceptional set off which the convergence is uniform, and pow_not_tendstoUniformlyOn_Ico proves the matching sharpness statement: xⁿ does NOT converge uniformly on [0,1) despite converging to 0 at every point there — so Egorov's exceptional set is genuinely necessary. 153 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The abstract Egorov theorem is delegated to Mathlib (hence the mathlib badge); the new content is the formalized instance demonstrating its non-vacuity and the explicit non-uniformity witness, neither of which Mathlib records. Together they make the 'a.e. convergence is almost uniform, but not uniform' phenomenon precise and machine-checked on the textbook example.",
+    "openQuestions": [
+      "Formalize the failure of Egorov on σ-finite-but-infinite measure (marching indicators on ℝ), establishing the necessity of μ s ≠ ∞.",
+      "Derive Lusin's theorem from Egorov via density of continuous functions."
+    ]
+  }
+}

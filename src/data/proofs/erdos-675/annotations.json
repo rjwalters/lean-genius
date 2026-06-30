@@ -263,7 +263,7 @@
   {
     "id": "ann-e675-smoothOver",
     "proofId": "erdos-675",
-    "type": "definition",
+    "type": "theorem",
     "title": "P-Smooth Numbers",
     "content": "Positive integers whose prime factors all lie in P. These are the 'smooth over P' integers.",
     "mathContext": "The set `smoothOver P` consists of positive integers $n$ with $p \\mid n \\implies p \\in P$ for every prime $p$. When $P$ is a proper subset of primes, this is the set of integers whose prime factorization uses only primes from $P$—a multiplicatively defined set analogous to $y$-smooth numbers (primes $\\leq y$). If $P$ has density $\\alpha$ among primes, the $P$-smooth numbers have density roughly $x^{1-\\alpha+o(1)}/x$ by Dickman's function analogy, making the translation property question highly non-trivial.",

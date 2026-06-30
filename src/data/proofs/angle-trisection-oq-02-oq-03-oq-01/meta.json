@@ -101,52 +101,132 @@
   },
   "sections": [
     {
-      "id": "roots-of-unity",
-      "title": "Cyclotomic Field Setup and Primitive Roots",
-      "summary": "Establishes CyclotomicField n ℚ as a Galois extension with [K:ℚ] = φ(n), defines abstractZeta as the canonical primitive n-th root of unity via IsCyclotomicExtension.zeta, and proves its primitive root property.",
-      "startLine": 31,
-      "endLine": 56,
-      "mathContext": "$[\\mathbb{Q}(\\zeta_n) : \\mathbb{Q}] = \\varphi(n)$. The $n$-th roots of unity form the cyclic group $\\mu_n \\cong \\mathbb{Z}/n\\mathbb{Z}$."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Imports (Mathlib cyclotomic fields, Galois theory, intermediate fields, Chebyshev polynomials), the module docstring, and the AngleTrisectionOQ02OQ03OQ01 namespace. Goal: compute [ℚ(cos(2π/n)):ℚ] = φ(n)/2, the degree that governs constructibility and angle trisection.",
+      "mathContext": "Establishes the framework for computing the degree of the maximal real subfield ℚ(cos(2π/n)) over ℚ."
     },
     {
-      "id": "galois-conjugation",
-      "title": "Complex Conjugation as Order-2 Automorphism",
-      "summary": "Defines conjAut (σ: ζ ↦ ζ⁻¹) via fromZetaAut, proves σ ≠ id for n ≥ 3 (since ζ = ζ⁻¹ would force n | 2), proves σ² = id via autEquivPow (σ corresponds to -1 ∈ (ℤ/nℤ)*), and concludes ord(σ) = 2.",
+      "id": "section-1-cyclotomic-setup",
+      "title": "§1. Cyclotomic Field Setup",
+      "startLine": 27,
+      "endLine": 56,
+      "summary": "Sets up CyclotomicField n ℚ as a finite-dimensional Galois extension of ℚ (`cyclotomic_isGalois`, `cyclotomic_finiteDimensional`, `cyclotomic_finrank` = φ(n)) and fixes a primitive n-th root of unity ζ via `abstractZeta`/`abstractZeta_isPrimRoot`.",
+      "mathContext": "$\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ is Galois of degree $\\varphi(n)$; $\\zeta$ is a primitive n-th root of unity."
+    },
+    {
+      "id": "section-2-conjugation-automorphism",
+      "title": "§2. Order-2 Automorphism via fromZetaAut",
       "startLine": 57,
       "endLine": 128,
-      "mathContext": "$\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$, acting by $\\sigma_k(\\zeta_n) = \\zeta_n^k$ for $\\gcd(k,n) = 1$."
+      "summary": "Constructs complex-conjugation as the automorphism σ = `conjAut` sending ζ ↦ ζ⁻¹, and proves `conjAut_zeta_eq_inv`, `conjAut_ne_one` (for n ≥ 3), `conjAut_sq` (σ² = 1), and `conjAut_orderOf` (order exactly 2).",
+      "mathContext": "$\\sigma(\\zeta)=\\zeta^{-1}$ is an order-2 element of $\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ (complex conjugation)."
     },
     {
-      "id": "fixed-field-degree",
-      "title": "Fixed Field of Conjugation and Degree Computation",
-      "summary": "Defines H = ⟨σ⟩ ≤ Aut(K/ℚ), proves |H| = 2, defines the maximal real subfield F = K^H, and derives [F:ℚ] = φ(n)/2 via the tower law [K:ℚ] = [K:F]·[F:ℚ].",
+      "id": "section-3-fixed-field",
+      "title": "§3. Fixed Field of ⟨σ⟩ and Degree Computation",
       "startLine": 129,
       "endLine": 167,
-      "mathContext": "$H = \\langle \\sigma \\rangle$, $|H| = 2$; $[K^H : \\mathbb{Q}] = \\varphi(n)/2$ by the fundamental theorem of Galois theory."
+      "summary": "Forms the order-2 subgroup ⟨σ⟩ (`conjSubgroup`, `conjSubgroup_card` = 2) and its fixed field `maxRealSubfield`, then proves `maximal_real_subfield_degree`: [maxRealSubfield : ℚ] = φ(n)/2 via the Galois correspondence.",
+      "mathContext": "The fixed field of $\\langle\\sigma\\rangle$ is the maximal real subfield, with $[\\,\\cdot:\\mathbb{Q}] = \\varphi(n)/2$."
     },
     {
-      "id": "alpha-field",
-      "title": "Alpha Field and IntermediateField Degree",
-      "summary": "Defines α = ζ + ζ⁻¹, proves ζ satisfies X² - αX + 1 = 0 over ℚ(α), shows ℚ(α) ⊆ K^H, bounds [K:ℚ(α)] ≤ 2 via the quadratic, and proves [ℚ(α):ℚ] = φ(n)/2 by sandwiching between ≥ and ≤ bounds.",
+      "id": "section-4-alpha-embedding",
+      "title": "§4. Alpha and Embedding into ℂ",
       "startLine": 168,
+      "endLine": 203,
+      "summary": "Defines α = ζ + ζ⁻¹ (`alpha`), proves the quadratic relation `zeta_quadratic_over_alpha` (ζ² − αζ + 1 = 0), and builds the `cyclotomicEmbedding` into ℂ with `embedding_zeta_isPrimRoot` and `embedding_alpha` (α ↦ 2cos(2π/n)).",
+      "mathContext": "$\\alpha = \\zeta + \\zeta^{-1}$ satisfies $\\zeta^2 - \\alpha\\zeta + 1 = 0$ and embeds as $2\\cos(2\\pi/n)$."
+    },
+    {
+      "id": "section-5-alpha-is-fixed-field",
+      "title": "§5. ℚ(α) = Fixed Field",
+      "startLine": 204,
+      "endLine": 237,
+      "summary": "Shows α lies in the fixed field of σ: `alpha_in_fixedField` and `alpha_adjoin_le_fixedField` (ℚ(α) ⊆ maxRealSubfield).",
+      "mathContext": "$\\alpha$ is fixed by complex conjugation, so $\\mathbb{Q}(\\alpha) \\subseteq$ the maximal real subfield."
+    },
+    {
+      "id": "section-5b-intermediatefield-degree",
+      "title": "§5b. IntermediateField Degree Computation",
+      "startLine": 238,
       "endLine": 378,
-      "mathContext": "$\\alpha = \\zeta_n + \\zeta_n^{-1}$; $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$ since $\\mathbb{Q}(\\alpha) = K^H$."
+      "summary": "Defines `alphaField` = ℚ(α) as an IntermediateField, shows membership and `alphaField_le_maxRealSubfield`, computes `finrank_over_alphaField` ([ℚ(ζ):ℚ(α)] = 2), and pins the degree with `alphaField_degree_ge`/`alphaField_degree_le`/`alphaField_degree`: [ℚ(α):ℚ] = φ(n)/2.",
+      "mathContext": "$[\\mathbb{Q}(\\zeta):\\mathbb{Q}(\\alpha)] = 2$, hence $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = \\varphi(n)/2$."
     },
     {
-      "id": "axiom-bridge",
-      "title": "Bridge to cos(2π/n) and Constructibility",
-      "summary": "Proves minpoly(ℚ, α) has degree φ(n)/2, transfers to cos(2π/n) via embedding, proves cos(2π/n) is algebraic over ℚ, and establishes ℚ(cos(2π/n)) has finrank φ(n)/2 — all formerly axiomatized, now fully proved.",
+      "id": "section-6-minpoly-degree",
+      "title": "§6. Minpoly Degree Computation",
       "startLine": 379,
-      "endLine": 511,
-      "mathContext": "Bridge: $(\\mathbb{Z}/n\\mathbb{Z})^*$ is a 2-group $\\iff \\varphi(n) = 2^k \\iff$ regular $n$-gon is constructible (Gauss-Wantzel)."
+      "endLine": 391,
+      "summary": "Proves `minpoly_alpha_natDegree`: the minimal polynomial of α over ℚ has degree φ(n)/2.",
+      "mathContext": "$\\deg_{\\mathbb{Q}} \\mathrm{minpoly}(\\alpha) = \\varphi(n)/2$."
     },
     {
-      "id": "chebyshev",
-      "title": "Chebyshev Polynomials and Galois Conjugates",
-      "summary": "Proves the algebraic Chebyshev identity T_k((x + x⁻¹)/2) = (x^k + x^{-k})/2 by strong induction, defines Galois automorphisms ζ ↦ ζ^k for coprime k, and proves cos(2kπ/n) are roots of minpoly(ℚ, cos(2π/n)).",
+      "id": "section-7-connection-to-cos",
+      "title": "§7. Connection to cos(2π/n)",
+      "startLine": 392,
+      "endLine": 439,
+      "summary": "Bridges α to the real cosine: `exists_embedding_alpha_eq_2cos`, defines `alphaCos`, and proves `alphaCosField_eq_alphaField` and `minpoly_alphaCos_natDegree` (degree φ(n)/2), transferring the degree result to 2cos(2π/n).",
+      "mathContext": "$\\alpha$ maps to $2\\cos(2\\pi/n)$; $\\mathbb{Q}(2\\cos(2\\pi/n)) = \\mathbb{Q}(\\alpha)$ with the same degree."
+    },
+    {
+      "id": "section-8-cos-minimal-poly-degree",
+      "title": "§8. Proving cos_minimal_poly_degree",
+      "startLine": 440,
+      "endLine": 476,
+      "summary": "Proves `cos_minimal_poly_degree`: [ℚ(cos(2π/n)):ℚ] = φ(n)/2, and `cos_algebraic_from_cyclotomic` (cos(2π/n) is algebraic over ℚ).",
+      "mathContext": "$[\\mathbb{Q}(\\cos(2\\pi/n)):\\mathbb{Q}] = \\varphi(n)/2$."
+    },
+    {
+      "id": "section-9-cos-extension-galois",
+      "title": "§9. cos_extension_is_galois",
+      "startLine": 477,
+      "endLine": 512,
+      "summary": "Proves `cos_extension_is_galois`: the extension ℚ(cos(2π/n))/ℚ has finrank φ(n)/2 (the real subfield is itself a well-defined extension of the stated degree).",
+      "mathContext": "$\\mathbb{Q}(\\cos(2\\pi/n))/\\mathbb{Q}$ has finrank $\\varphi(n)/2$."
+    },
+    {
+      "id": "section-10-axiom-inventory",
+      "title": "§10. Axiom Inventory",
+      "startLine": 513,
+      "endLine": 541,
+      "summary": "Documentation block inventorying the 11 results that were previously axiomatized and are now fully proved (maximal_real_subfield_degree, zeta_quadratic_over_alpha, embedding_alpha, alpha_in_fixedField, alphaField_degree, conjAut_zeta_eq_inv, conjAut_sq, conjAut_orderOf, minpoly_alpha_natDegree, cos_minimal_poly_degree, cos_extension_is_galois).",
+      "mathContext": "Audit comment: all 11 formerly-axiomatized degree/automorphism facts are now proved with 0 axioms."
+    },
+    {
+      "id": "section-11-chebyshev-identity",
+      "title": "§11. Algebraic Chebyshev Identity",
       "startLine": 542,
+      "endLine": 572,
+      "summary": "Proves `chebyshev_T_eval_half_sum_inv`: evaluating the Chebyshev polynomial T_k at (x+x⁻¹)/2 yields (xᵏ+x⁻ᵏ)/2, the algebraic identity linking Chebyshev polynomials to the conjugates of cos.",
+      "mathContext": "$T_k\\!\\left(\\tfrac{x+x^{-1}}{2}\\right) = \\tfrac{x^k + x^{-k}}{2}$ (Chebyshev/cosine identity)."
+    },
+    {
+      "id": "section-12-galois-coprime",
+      "title": "§12. Galois Automorphism for Coprime k",
+      "startLine": 573,
+      "endLine": 625,
+      "summary": "For k coprime to n, builds the Galois automorphism `galAutOfCoprime` (ζ ↦ ζᵏ) with `galAutOfCoprime_spec`, and proves `galAut_alphaCos_is_root`: applying it sends α to a conjugate that is a root of minpoly(α).",
+      "mathContext": "For $\\gcd(k,n)=1$, the automorphism $\\zeta\\mapsto\\zeta^k$ sends $\\alpha$ to a Galois conjugate."
+    },
+    {
+      "id": "section-13-embedding-transfer",
+      "title": "§13. Embedding Transfer",
+      "startLine": 626,
+      "endLine": 702,
+      "summary": "Transfers the conjugate result through the complex embedding: `galAut_alphaCos_embedding` and `minpoly_alphaCos_eq_minpoly_cos` (minpoly of α equals minpoly of cos(2π/n)).",
+      "mathContext": "The minimal polynomials of $\\alpha$ and of $\\cos(2\\pi/n)$ coincide under the embedding."
+    },
+    {
+      "id": "section-14-cos-coprime-root",
+      "title": "§14. cos(2kπ/n) is a Root of minpoly ℚ cos(2π/n)",
+      "startLine": 703,
       "endLine": 740,
-      "mathContext": "Chebyshev polynomials: $T_k(\\cos\\theta) = \\cos(k\\theta)$. For $(k,n) = 1$, $\\cos(2k\\pi/n)$ is a Galois conjugate of $\\cos(2\\pi/n)$."
+      "summary": "Concludes `cos_coprime_is_root`: for k coprime to n, cos(2kπ/n) is a root of the minimal polynomial of cos(2π/n) — i.e. the Galois conjugates of cos(2π/n) are exactly the cos(2kπ/n).",
+      "mathContext": "For $\\gcd(k,n)=1$, $\\cos(2k\\pi/n)$ is a root of $\\mathrm{minpoly}_{\\mathbb{Q}}\\cos(2\\pi/n)$."
     }
   ],
   "conclusion": {

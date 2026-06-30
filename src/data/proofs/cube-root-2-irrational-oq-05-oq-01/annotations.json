@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ann-nrtcrit-oq0501-predicate",
+    "proofId": "cube-root-2-irrational-oq-05-oq-01",
+    "range": { "startLine": 32, "endLine": 42 },
+    "type": "definition",
+    "title": "Perfect Power Predicate and the Root Identity",
+    "content": "IsPerfectNthPow m n packages the perfect-power condition ∃ k : ℕ, kⁿ = m — the exact obstruction the criterion turns on. rpow_inv_pow establishes the defining identity of the real n-th root: for n ≥ 1, (m^(1/n))^n = m. The proof converts the monoid power to rpow (Real.rpow_natCast), composes exponents (Real.rpow_mul, valid since m ≥ 0), and collapses n⁻¹·n = 1. This identity is the common hinge of both directions of the equivalence.",
+    "mathContext": "$$\\mathrm{IsPerfectNthPow}(m,n) := \\exists k,\\ k^n = m; \\qquad (m^{1/n})^n = m^{n^{-1}n} = m.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect n-th power",
+      "real power (rpow)",
+      "rpow_mul homomorphism law"
+    ],
+    "prerequisites": [
+      "Real.rpow_natCast",
+      "Real.rpow_mul",
+      "inv_mul_cancel"
+    ]
+  },
+  {
+    "id": "ann-nrtcrit-oq0501-criterion",
+    "proofId": "cube-root-2-irrational-oq-05-oq-01",
+    "range": { "startLine": 44, "endLine": 74 },
+    "type": "insight",
+    "title": "The Rationality Criterion (Both Directions)",
+    "content": "rational_rpow_inv_iff is the headline equivalence: for m, n ≥ 1, m^(1/n) is rational iff m is a perfect n-th power. The (⇐) direction is direct — if m = kⁿ then (kⁿ)^(1/n) = k via rpow composition, and a natural number is not irrational (Nat.not_irrational). The (⇒) direction is the genuinely new content: if x = m^(1/n) is rational then xⁿ = m is an integer, so the contrapositive of irrational_nrt_of_notint_nrt forces x to be an integer y; since x ≥ 0, y = k : ℕ, and xⁿ = m gives kⁿ = m. This (⇒) half is exactly integral closedness of ℤ in ℚ applied to Xⁿ − m.",
+    "mathContext": "$$\\neg\\,\\mathrm{Irrational}(m^{1/n}) \\iff \\exists k,\\ k^n = m \\qquad (m, n \\ge 1).$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral closedness of ℤ in ℚ",
+      "rational root theorem",
+      "irrational_nrt_of_notint_nrt",
+      "n-th root rationality"
+    ],
+    "prerequisites": [
+      "irrational_nrt_of_notint_nrt",
+      "rpow_inv_pow",
+      "Nat.not_irrational"
+    ]
+  },
+  {
+    "id": "ann-nrtcrit-oq0501-irrational-form",
+    "proofId": "cube-root-2-irrational-oq-05-oq-01",
+    "range": { "startLine": 76, "endLine": 81 },
+    "type": "concept",
+    "title": "The Irrationality Form",
+    "content": "irrational_rpow_inv_iff is the contrapositive packaging: m^(1/n) is irrational iff m is NOT a perfect n-th power. It follows from rational_rpow_inv_iff by not_iff_not / not_not. This is the form most directly applied to conclude irrationality — feed it any radicand known to miss the perfect-power condition.",
+    "mathContext": "$$\\mathrm{Irrational}(m^{1/n}) \\iff \\neg\\,\\mathrm{IsPerfectNthPow}(m,n).$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "contrapositive",
+      "negation of an iff"
+    ],
+    "prerequisites": [
+      "rational_rpow_inv_iff",
+      "not_iff_not"
+    ]
+  },
+  {
+    "id": "ann-nrtcrit-oq0501-prime",
+    "proofId": "cube-root-2-irrational-oq-05-oq-01",
+    "range": { "startLine": 83, "endLine": 101 },
+    "type": "insight",
+    "title": "Prime Obstruction and the Recovered Parent Result",
+    "content": "not_isPerfectNthPow_prime isolates the elementary reason primes have irrational roots: if p = kⁿ with n ≥ 2 then k ∣ p, so k = 1 (forcing p = 1, impossible) or k = p (forcing kⁿ = k¹, so n = 1 by Nat.pow_right_injective — contradiction). Feeding this into irrational_rpow_inv_iff recovers the parent OQ-05's irrational_rpow_inv_prime as a one-line corollary. The criterion thus reveals primality was never essential — only 'not a perfect power' is — and is strictly stronger.",
+    "mathContext": "$$p \\text{ prime},\\ n \\ge 2 \\;\\Rightarrow\\; \\neg\\,\\mathrm{IsPerfectNthPow}(p,n) \\;\\Rightarrow\\; p^{1/n} \\text{ irrational}.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime divisibility",
+      "Nat.pow_right_injective",
+      "recovering the parent corollary"
+    ],
+    "prerequisites": [
+      "irrational_rpow_inv_iff",
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "Nat.pow_right_injective"
+    ]
+  },
+  {
+    "id": "ann-nrtcrit-oq0501-instances",
+    "proofId": "cube-root-2-irrational-oq-05-oq-01",
+    "range": { "startLine": 103, "endLine": 124 },
+    "type": "concept",
+    "title": "Worked Instances: ∛2, ∛8, ∛6",
+    "content": "Three instances exercise both branches. irrational_cbrt_two recovers the base entry from the prime corollary. rational_cbrt_eight fires the (⇐) branch on a genuine perfect cube: 8 = 2³, so ∛8 = 2 is rational. irrational_cbrt_six is the case the prime corollary cannot reach — 6 is composite but not a perfect cube: ruling out k = 0,1 (interval_cases) and k ≥ 2 (since 2³ = 8 > 6) shows 6 is no perfect cube, hence ∛6 is irrational. Together they show the criterion decides composite radicands, not just primes.",
+    "mathContext": "$$\\sqrt[3]{2} \\notin \\mathbb{Q}, \\quad \\sqrt[3]{8} = 2 \\in \\mathbb{Q}, \\quad \\sqrt[3]{6} \\notin \\mathbb{Q}.$$",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked examples",
+      "composite radicands",
+      "perfect cubes"
+    ],
+    "prerequisites": [
+      "the rationality criterion",
+      "interval_cases / omega"
+    ]
+  }
+]

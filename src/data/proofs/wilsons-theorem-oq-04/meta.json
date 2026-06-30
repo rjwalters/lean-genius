@@ -106,7 +106,22 @@
     {
       "targetId": "wilsons-theorem",
       "relationship": "generalizes",
-      "description": "Generalizes Wilson's theorem from primes to all moduli with primitive roots"
+      "description": "Generalizes Wilson's theorem from primes to all moduli with primitive roots. Classical Wilson is the case $n = p$ prime: $(p-1)! \\equiv -1 \\pmod p$. Here the product runs over all units mod $n$, and equals $-1$ precisely when $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic ($n \\in \\{4, p^k, 2p^k\\}$)."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "foundational",
+      "description": "The cyclicity condition is exactly the primitive-root theorem: $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is cyclic — i.e. a primitive root mod $n$ exists — iff $n \\in \\{1, 2, 4, p^k, 2p^k\\}$. Gauss's generalization yields product $-1$ in precisely these cyclic cases (where a unique element of order 2 exists), and $+1$ otherwise."
+    },
+    {
+      "targetId": "gauss-wilson-non-cyclic",
+      "relationship": "complementary",
+      "description": "The complementary case: when $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ is non-cyclic it has a 'third square root of unity' $x \\neq \\pm 1$ with $x^2 = 1$, so its 2-torsion is not $\\{\\pm 1\\}$. The multiple involutions pair off in the product, forcing it to $+1$ — exactly the non-$(-1)$ branch of this entry's characterization."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Abstracts the arithmetic here into pure group theory: in any finite commutative group with a *unique* non-trivial involution $\\tau$, the product of all elements equals $\\tau$. Applied to a cyclic $(\\mathbb{Z}/n\\mathbb{Z})^\\times$ of even order (unique involution $-1$), this recovers Gauss's $-1$ result group-theoretically."
     }
   ],
   "mainTheorems": [

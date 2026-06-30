@@ -194,7 +194,7 @@
       "startLine": 203,
       "endLine": 225
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Reciprocal Sum Bounds",
     "content": "Defines `reciprocalSum A = ∑' n, (1/n if n ∈ A and n ≥ 1, else 0)` using Lean's `tsum` for conditionally convergent series. Three axioms: `erdos_reciprocal_bound` ($\\sum 1/a < 100$, Erdős's original), `sullivan_bound` ($\\sum 1/a < 4$, the current best), and `sullivan_conjecture` ($\\exists A$ with $\\sum 1/a > 2$). The gap between 2 and 4 remains unresolved.",
     "mathContext": "$\\text{reciprocalSum}(A) = \\sum_{a \\in A,\\, a \\geq 1} \\frac{1}{a}$. **Erdős:** $< 100$. **Sullivan:** $< 4$. **Conjecture:** $\\sup_A \\text{reciprocalSum}(A) \\approx 2$. The convergence of this series is guaranteed by the density-zero property: $|A \\cap [1,N]| = o(N)$ implies $\\sum_{a \\leq N} 1/a = o(\\log N)$.",

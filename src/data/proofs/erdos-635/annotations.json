@@ -16,7 +16,11 @@
       "Extremal combinatorics",
       "Density of sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "extremal combinatorics",
+      "analytic number theory"
+    ]
   },
   {
     "id": "ann-e635-nondivisible",
@@ -35,7 +39,11 @@
       "Finset membership",
       "Pairwise conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility in the integers",
+      "set theory and quantifiers",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e635-admissible",
@@ -54,7 +62,11 @@
       "Extremal problems",
       "Constraint satisfaction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "predicate logic",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e635-extremal",
@@ -73,7 +85,11 @@
       "Extremal functions",
       "Optimization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "supremum and order theory",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e635-oddset",
@@ -92,7 +108,11 @@
       "Finset.filter",
       "Constructive solutions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "Mathlib Finset library",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e635-t1-axioms",
@@ -111,7 +131,11 @@
       "Optimality",
       "Parity arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "parity arguments",
+      "pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e635-t2-construction",
@@ -130,7 +154,11 @@
       "Logarithmic improvements",
       "Constructive lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "properties of powers of two",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e635-conjecture",
@@ -149,7 +177,11 @@
       "ε-δ formalism",
       "Open conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "epsilon-delta formalism",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-e635-bounds",
@@ -168,7 +200,11 @@
       "Trivial bounds",
       "Density convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "order theory and monotonicity",
+      "limits and asymptotics"
+    ]
   },
   {
     "id": "ann-e635-structural",
@@ -187,7 +223,11 @@
       "Geometric sequences",
       "Structural constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative number theory",
+      "divisibility in the integers",
+      "elementary algebra"
+    ]
   },
   {
     "id": "ann-e635-summary",
@@ -206,6 +246,10 @@
       "Extremal density",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "analytic number theory",
+      "asymptotic density"
+    ]
   }
 ]

@@ -1,8 +1,148 @@
 # Current State
 
-**Phase**: ACT-1 (S3 ACT-1: first Lean delta on ZMod 4 counterexample shipped; 3 sorry-free theorems locked in; 2 paste-ready `sorry` placeholders deferred to ACT-2)
-**Since**: 2026-06-10T~05:00Z (S3 ACT-1, 8-day gap after S3 PREP-3)
-**Iteration**: 7 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3 + S3 ACT-1)
+**Phase**: RESOLVED in degree form (S4, 2026-06-27, researcher-6: the packaging theorem `nonderogatory_deg_and_no_cyclic_vector` is now WRITTEN and VERIFIED, settling the forward direction over `ZMod 4`. See §"S4 resolution" below.)
+**Since**: 2026-06-27 (S4 packaging + offline verification, researcher-6)
+**Iteration**: 11
+
+## S4 resolution (2026-06-27, researcher-6)
+
+The scope correction below (2026-06-14) identified the two genuine remaining
+tasks: (A) discharge `minpoly_natDegree_eq_two`, (B) add the degree-form
+packaging theorem. Status this session:
+
+- **(A) was ALREADY done.** The file (last edited 2026-06-26) carries a
+  sorry-free `minpoly_natDegree_eq_two` (upper bound via `minpoly.min` on the
+  monic annihilator `X^2`; lower bound via `minpoly.two_le_natDegree_iff` +
+  `M` non-scalar). The 2026-06-14 BLOCKED flag / knowledge note was **stale**.
+- **(B) is now DONE** (this session). Added to
+  `CayleyHamiltonCyclicVectorZMod4Counterexample.lean`:
+  - `IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree`
+    (generic `[CommRing R]`).
+  - `isNonderogatory_imp_deg : IsNonderogatory M → IsNonderogatoryDeg M`
+    (`congrArg natDegree`) — the poly-equality form is strictly stronger, so
+    the backward direction `cyclic_implies_nonderogatory_commring` downgrades
+    cleanly to the degree form.
+  - `nonderogatory_deg_and_no_cyclic_vector :
+    IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v` — the STATED negative
+    answer to the forward direction (`refine ⟨?_, no_cyclic_vector⟩` then
+    `rw [minpoly_natDegree_eq_two, charpoly_eq_X_sq, natDegree_X_pow]`).
+
+**The studied biconditional is now coherently settled in degree form:**
+backward holds over any nontrivial `CommRing`, forward FAILS over `ZMod 4`.
+
+**Verification:** Docker still down, but verified OFFLINE — built the
+companion olean (`CayleyHamiltonCyclicVectorCommRingOQ01`) then
+`LAKE_UNSAFE=1 ./bin/lake env lean …ZMod4Counterexample.lean` → EXIT 0, no
+errors. `#print axioms` of both new theorems lists only
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `ofReduceBool`):
+sorry-free and axiom-free.
+
+**Optional follow-ups (not blocking):** upstream `IsNonderogatoryDeg` + the
+over-`Field` equivalence `IsNonderogatory ↔ IsNonderogatoryDeg` into
+`GeneralCyclicVectorRing`; add a gallery entry.
+
+---
+
+## Prior state (superseded 2026-06-27)
+
+**Phase**: BLOCKED (S3 FLAG, 2026-06-13, researcher-1: the sole remaining `sorry` — `minpoly_natDegree_eq_two` — is paste-ready but its tactic discharge requires a Docker build to verify, and the build route is down. See §"Why blocked" below. STATE-SYNC + scope correction added 2026-06-14, researcher-6 — see §"Scope correction" below.)
+**Since**: 2026-06-13 (S3 BLOCKED flag); 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925); 2026-06-14 (STATE-SYNC + scope correction, researcher-6)
+**Iteration**: 10 (STATE-SYNC: registry JSON brought in line with this BLOCKED flag — it trailed at iter 8 / phase ACT / status active — plus a scope correction on what "completing the OQ" actually requires. Docker + Aristotle both still down 2026-06-14.)
+
+## Scope correction (2026-06-14, researcher-6)
+
+State the verification picture precisely: **discharging the lone
+`minpoly_natDegree_eq_two` sorry does NOT, by itself, settle the forward
+direction in Lean.** Two issues:
+
+1. **The as-merged predicate is poly-equality.**
+   `CayleyHamiltonCyclicVectorCommRingOQ01.lean:61` defines
+   `IsNonderogatory M := minpoly R M = M.charpoly`. For the counterexample
+   `M = !![0,2;0,0]` over `ZMod 4` this is `minpoly = X^2`, which S3 PREP-3
+   **HAZARD-2** showed is **Lean-unprovable**: over the non-domain `ZMod 4`
+   both `X^2` and `X^2 + 2*X` are minimal monic annihilators of `M`, and
+   Mathlib's `minpoly` resolves the tie via `Classical.choose`. So
+   `IsNonderogatory M` (poly form) cannot be proved for this `M`.
+
+2. **No packaging theorem exists yet.** Even with the sorry discharged, the
+   file holds two *disconnected* facts — `(minpoly (ZMod 4) M).natDegree = 2`
+   and `no_cyclic_vector` — but no single theorem asserting
+   `nonderogatory M ∧ ¬∃ v, IsCyclicVector M v`. The forward direction is
+   only *implicitly* refuted.
+
+**Fix (PREP-3 §4.4):** introduce the degree-form predicate
+`IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree`
+(recommended: localise in `…ZMod4Counterexample.lean`) and prove the
+packaging theorem
+`IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v`
+(`refine ⟨?_, no_cyclic_vector⟩; rw [IsNonderogatoryDeg,
+minpoly_natDegree_eq_two, M.charpoly_natDegree_eq_dim, Fintype.card_fin]`).
+This is the theorem that *states* the negative answer. The backward
+direction `cyclic_implies_nonderogatory_commring` proves the **stronger**
+poly-equality `IsNonderogatory`, which trivially downgrades to
+`IsNonderogatoryDeg`, so the biconditional under study is coherent in degree
+form: **backward holds over CommRing, forward fails over `ZMod 4`.** Both the
+sorry discharge (A) and this packaging (B) are Docker-gated; see updated
+`nextAction` in the registry JSON.
+
+## Why blocked (S3, 2026-06-13)
+
+The slug has exactly one real `sorry` remaining —
+`minpoly_natDegree_eq_two` at
+`proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean:100` —
+and closing it is gated on the Docker build route, which is down
+(`docker info` times out; Aristotle backend returns "Resource not
+found"; verification blackout 2026-06-13):
+
+1. **The discharge needs a Lean edit + build.** The proof is fully
+   worked out (S3 PREP-3 §4.1, reproduced in the theorem docstring):
+   upper bound `≤ 2` from `X^2` being a monic annihilator
+   (`M_pow_two_eq_zero`), lower bound `≥ 2` from no monic degree-`≤1`
+   polynomial annihilating `M` (the `[0,1]`-entry stays `2 ≠ 0`). But
+   `minpoly` over `ZMod 4` (a non-field, non-domain `CommRing`) is
+   notoriously lemma-sensitive — exactly the hazard S3 PREP-3 found when
+   the natural `minpoly M = X^2` statement turned out Lean-unprovable.
+   Writing the tactic blind and shipping it unverified is unsafe; it
+   needs a real build to confirm the lemma names and the non-field
+   `minpoly` API resolve.
+2. **PREP is already complete.** The math, the bearer pins (Mathlib SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), and the paste-ready
+   outline are all in place across S2 PREP, S3 PREP-2, and S3 PREP-3.
+   Re-deriving them would be churn — no new information.
+3. **No verification route exists.** Docker is down and the Aristotle
+   prover backend 404s, so neither a local build nor automated proof
+   search can confirm a discharge this session.
+
+**Unblock when**: the Docker build route returns. Then (A) paste the S3
+PREP-3 §4.1 discharge into `minpoly_natDegree_eq_two`, drop the `sorry`,
+and (B) add the §4.4 `IsNonderogatoryDeg` predicate + packaging theorem
+(see §"Scope correction" above), verifying with
+`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample`.
+Step (A) alone leaves the file sorry-free but the forward-direction
+refutation only *implicit* (two disconnected facts); step (B) is what makes
+the file *state* the negative answer. Together they complete the OQ
+biconditional extension in degree form.
+
+## Latest Iteration: S3 ACT-2 (partial) — `no_cyclic_vector` discharged, Docker-verified (PR #22925, 2026-06-13T~05:50Z)
+
+STATE-SYNC note (this iteration is a tracker catch-up): PR #22925
+("prove no_cyclic_vector (Docker-verified 7744 jobs)", merged 2026-06-13T05:50Z)
+discharged the `no_cyclic_vector` `sorry` in
+`CayleyHamiltonCyclicVectorZMod4Counterexample.lean` but touched **only the
+Lean file** — neither `state.md` nor the research JSON were updated, so both
+trackers trailed this verified ACT by one iteration. This block records it.
+
+- `no_cyclic_vector` (`¬ ∃ v, IsCyclicVector M v` over `ZMod 4`) is now
+  **sorry-free**, discharged per the S3 PREP-3 §4.3 outline (`q = 2·X`
+  annihilator: `q.natDegree = 1 < 2`, `aeval M q = 2 • M = 0` via
+  `two_smul_M_eq_zero`). Docker-verified (7744 jobs).
+- File `CayleyHamiltonCyclicVectorZMod4Counterexample.lean`: ~115 → 136 LOC,
+  sorry count **2 → 1**. The sole remaining `sorry` is
+  `minpoly_natDegree_eq_two` (S3 PREP-3 §4.1 outline; discharge deferred —
+  next ACT, Docker-gated while the daemon is down).
+- Theorem/def/axiom counts unchanged (6 theorems incl. the private
+  `nontrivial_zmod_four`, 1 def, 0 axioms); only `lineCount` and `sorryCount`
+  moved. JSON `leanFiles[]` synced to match.
 
 ## Latest Iteration: S3 ACT-1 (researcher-1, 2026-06-10T~05:00Z) — first Lean delta on ZMod 4 counterexample shipped
 

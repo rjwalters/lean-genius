@@ -2,7 +2,7 @@
   "slug": "erdos-455-oq-04",
   "title": "Prime sequences with AP-gaps (generalization of Erdős #455)",
   "phase": "S4_ACT_DONE",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "parent": "erdos-455",
@@ -33,12 +33,14 @@
     "goal": "Formalize in Lean: (1) HasAPGaps and APGapPrimeSeq d structures. (2) Equivalence apGap_zero_iff_prime_AP. (3) Monotone-gap subsumption apGap_subsumes_monotone for d ≥ 0. (4) Axiom Green-Tao for prefix-AP statements (d = 0 subcase). (5) Conjectural cubic growth axiom for d > 0. (6) Optional concrete small-case witnesses via native_decide. Gallery entry status: axiomatized (Green-Tao non-negotiable)."
   },
   "currentState": {
-    "phase": "S6c_PREP_1",
-    "since": "2026-06-02T04:30:00Z",
-    "iteration": 8,
-    "focus": "S6c PREP-1 (researcher-1, 2026-06-02, this PR, doc-only) — post-S6a STATE-SYNC after 17-day quiescence (S6a PR #19479 MERGED 2026-05-16T08:54:02Z) + Hardy-Littlewood Conjecture F encoding design for `bunyakovsky_finitary` replacement. Fixes pre-existing JSON-vs-state.md drift: `currentState.iteration` was stale at 6 (S5 ACT iter) while state.md correctly tracked iter 7 = S6a; both now synced to iter 8 = S6c PREP-1. Audits meta.json fields against `proofs/Proofs/Erdos455OQ04.lean` at HEAD `bb3cdf172a8` — 0 drift across 9 audited fields (lineCount=wc-l=166; theoremCount=5; axiomCount=2; definitionCount=2; sorries=0; status/badge=axiomatized/axiom; proofRepoPath; additionalFiles=[]; mathlib_version=4.26.0). S6 candidate decisions: S6a DONE; S6b out-of-role (defer to /peer-review); S6c SELECTED with Option B (axiomatise Hardy-Littlewood F on Polynomial ℤ, derive bunyakovsky_finitary as corollary); S6d RULED OUT (no `erdos-455-oq-03` slug exists in src/data/proofs/ or src/data/research/problems/ at HEAD). S6c ACT-readiness gate 6/8 GREEN + 1/8 AMBER (asymptotic phrasing pin needs verification) + 1/8 UNVERIFIED (Docker). Concrete S6c ACT plan: add `hardyLittlewood_F` axiom (~10-15 LOC, ε-δ asymptotic on Polynomial ℤ); refactor `bunyakovsky_finitary` axiom → `bunyakovsky_finitary_via_HLF` theorem; axiomCount stays 2, theoremCount 5→6, lineCount ~166→~220. 3 files doc-only: state.md prepend, JSON refresh, new sessions/2026-06-02-s6c-prep-1-state-sync-and-design.md ~210 LOC.",
-    "blockers": [],
-    "nextAction": "S6c ACT (Hardy-Littlewood F encoding): pick up the Option B plan from S6c PREP-1 session memo §3.3 + §3.4 + §3.5. Edit proofs/Proofs/Erdos455OQ04.lean to (1) add `hardyLittlewood_F` axiom on `Polynomial ℤ` with Irreducible + admissibility hypotheses + ε-δ asymptotic conclusion (~10-15 LOC); (2) replace `bunyakovsky_finitary` axiom (L147-149) with `bunyakovsky_finitary_via_HLF` theorem deriving the F5 form from HL F via prefix-extraction (~30-60 LOC). Re-verify `Asymptotics.IsLittleO` availability at branch creation (currently AMBER bearer pin per S6c PREP-1 §4). Update meta.json: axiomCount stays 2, theoremCount 5→6, lineCount ~166→~220; refresh `meta.assumptions` array to replace bunyakovsky_finitary entry with hardyLittlewood_F entry. Build via Docker wrapper `./proofs/scripts/docker-build.sh Proofs.Erdos455OQ04` (re-check daemon at branch creation per CLAUDE.md DANGER block).",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 9,
+    "focus": "BLOCKED (researcher-4, 2026-06-13). All trackers byte-in-sync at iter 8 (meta.json/state.md/this JSON). Sole remaining work is S6c ACT = replace bunyakovsky_finitary axiom with a hardyLittlewood_F-derived theorem, which is (1) Docker-gated (docker info times out 2026-06-13) and (2) assumption-count neutral per the Axiom Integrity Policy (still 2 effective axioms). Math is at its honest axiom floor: Bunyakovsky (open since 1857) + Green-Tao (real 2008 theorem absent from Mathlib v4.26.0). No build-free advance available; depth-first pool kept re-serving this RICH slug.",
+    "blockers": [
+      "Docker outage 2026-06-13 (docker info times out): S6c ACT axiom refactor cannot be build-verified."
+    ],
+    "nextAction": "When Docker recovers: execute S6c ACT (session memo 2026-06-02 §3.3 Option B) — add hardyLittlewood_F axiom (~10-15 LOC), refactor bunyakovsky_finitary (L147-149) into bunyakovsky_finitary_via_HLF theorem, then docker-build.sh Proofs.Erdos455OQ04. Re-check Asymptotics.IsLittleO availability (iter-8 amber gate). Note: cosmetic re-axiomatization, not assumption reduction.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 1,
@@ -91,5 +93,35 @@
   "significance": 6,
   "tractability": 4,
   "lastUpdated": "2026-06-02T04:30:00Z",
-  "lastUpdate": "2026-06-02T04:30:00Z"
+  "lastUpdate": "2026-06-02T04:30:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos455OQ04.lean",
+      "filename": "Erdos455OQ04.lean",
+      "lineCount": 167,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos455OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos455Problem.lean",
+      "filename": "Erdos455Problem.lean",
+      "lineCount": 143,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos455Problem.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-4",
+    "erdos-45",
+    "erdos-455",
+    "erdos-455-oq-04"
+  ]
 }

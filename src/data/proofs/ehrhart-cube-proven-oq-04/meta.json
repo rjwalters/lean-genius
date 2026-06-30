@@ -113,52 +113,76 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: Eulerian Numbers and the h*-Vector of the Unit Cube",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Module docstring and imports. Establishes the goal: the Ehrhart h*-vector of the unit d-cube equals the sequence of Eulerian numbers (A(d,0),…,A(d,d-1)). The companion file EhrhartCubeProven.lean proves L([0,1]^d, n) = (n+1)^d axiom-free. Summarizes the S1–S7 development (recurrence, row-sum, palindrome, Worpitzky, h*-polynomial), opens namespace EhrhartCubeProvenOQ04 and Finset.",
+      "mathContext": "$h^*([0,1]^d, t) = \\sum_{k=0}^{d-1} A(d,k)\\,t^k$, where $A(d,k)$ are the Eulerian numbers; equivalently $(n+1)^d = \\sum_{k} A(d,k)\\binom{n+1+k}{d}$ (Worpitzky)."
+    },
+    {
       "id": "section-i-recurrence",
       "title": "Section I: Eulerian Numbers via Recurrence",
-      "startLine": 76,
-      "endLine": 156,
+      "startLine": 79,
+      "endLine": 160,
       "summary": "Defines `eulerianNumber d k : ℕ → ℕ → ℕ` via the standard recurrence A(d+1, k+1) = (k+2)A(d, k+1) + (d-k)A(d, k). Concrete values A(d, k) for d ≤ 4 proved by `rfl`: A(3, 1) = 4, A(4, 1) = A(4, 2) = 11.",
       "mathContext": "$A(d+1, k+1) = (k+2) A(d, k+1) + (d-k) A(d, k)$ with $A(0, 0) = 1$, $A(0, k+1) = 0$, $A(d+1, 0) = A(d, 0) = 1$."
     },
     {
       "id": "section-ii-row-sum",
       "title": "Section II: Row-Sum Identity",
-      "startLine": 157,
-      "endLine": 261,
+      "startLine": 161,
+      "endLine": 264,
       "summary": "Proves `eulerian_row_sum_factorial`: Σ_{k < d} A(d, k) = d! (S3, by induction on d). Concrete row-sum checks at d ≤ 4 proved by `rfl`.",
       "mathContext": "$\\sum_{k=0}^{d-1} A(d, k) = d!$ — descent-count partition of $S_d$."
     },
     {
       "id": "section-iii-palindrome",
       "title": "Section III: Palindromic Symmetry",
-      "startLine": 262,
-      "endLine": 371,
+      "startLine": 265,
+      "endLine": 372,
       "summary": "Proves `eulerian_palindrome`: A(d, k) = A(d, d-1-k) for k < d (S5, by algebraic induction on d via the recurrence — descent-reversal involution not required). Concrete checks at (3, 0)↔(3, 2), (4, 0)↔(4, 3), (4, 1)↔(4, 2) by `rfl`.",
       "mathContext": "$A(d, k) = A(d, d-1-k)$ — descent-reversal involution on $S_d$."
     },
     {
       "id": "section-iv-worpitzky",
       "title": "Section IV: Worpitzky's Identity (Main Theorem)",
-      "startLine": 372,
-      "endLine": 620,
+      "startLine": 373,
+      "endLine": 626,
       "summary": "Proves the main theorem `worpitzky_identity_cube`: (n+1)^d = Σ_{k < d} A(d, k) · C(n+1+k, d) (S4, by induction on d using `worpitzky_step` and the Eulerian recurrence). The d = 1 and d = 2 cases are proved explicitly and seven concrete (d, n) instances are verified by `decide`.",
       "mathContext": "$(n+1)^d = \\sum_{k=0}^{d-1} A(d, k) \\binom{n+1+k}{d}$ — the Worpitzky identity, equivalent statement of the Eulerian-number h*-vector."
     },
     {
       "id": "section-v-hstar",
       "title": "Section V: h*-Polynomial of the Cube",
-      "startLine": 621,
-      "endLine": 655,
+      "startLine": 627,
+      "endLine": 661,
       "summary": "Defines `cubeHStarPoly d : Polynomial ℕ` as Σ_{k < d} A(d, k) · X^k. Proves `cube_h_star_eulerian`: the k-th coefficient equals A(d, k) (S2, definitional reduction).",
       "mathContext": "$h^*([0,1]^d, t) = \\sum_{k=0}^{d-1} A(d, k) t^k$ — the Eulerian polynomial of degree d."
     },
     {
       "id": "section-vi-coherence",
       "title": "Section VI: Coherence with EhrhartCubeProven",
-      "startLine": 656,
-      "endLine": 677,
+      "startLine": 662,
+      "endLine": 682,
       "summary": "Combines Worpitzky with `EhrhartCubeProven.cube_lattice_count` to prove `cube_lattice_count_eulerian`: |n·[0,1]^d ∩ ℤ^d| = Σ A(d, k) C(n+1+k, d) (S2).",
       "mathContext": "Bridging corollary: cube lattice count = Eulerian h*-vector convolution against binomials."
+    },
+    {
+      "id": "section-vii-dual-worpitzky",
+      "title": "Section VII: Palindrome-Reflected Worpitzky Identity",
+      "startLine": 683,
+      "endLine": 724,
+      "summary": "Proves worpitzky_identity_cube_palindrome: the dual (palindrome-reflected) Worpitzky identity (n+1)^d = Σ_{k<d} A(d,k)·C(n+d-k, d). Obtained from worpitzky_identity_cube by reindexing k ↦ d-1-k (Finset.sum_range_reflect), substituting the palindrome A(d,k)=A(d,d-1-k), and the binomial-argument arithmetic n+1+k = n+d-(d-1-k) by omega. Keys the sum by the descent index instead of the forward exceedance index.",
+      "mathContext": "$(n+1)^d = \\sum_{k=0}^{d-1} A(d,k)\\binom{n+d-k}{d}$ — the descent-indexed dual of the forward Worpitzky form."
+    },
+    {
+      "id": "section-viii-poly-corollaries",
+      "title": "Section VIII: Polynomial-Evaluation Corollaries",
+      "startLine": 725,
+      "endLine": 775,
+      "summary": "Two corollaries at the h*-polynomial level. cubeHStarPoly_eval_one: evaluating the h*-polynomial at X=1 gives the row sum, h*([0,1]^d)(1) = Σ A(d,k) = d! (via eulerian_row_sum_factorial) — the normalized-volume identity d!·vol([0,1]^d)=d!. cubeHStarPoly_palindromic: the h*-polynomial is palindromic of degree d-1, coeff k = coeff (d-1-k), composing cube_h_star_eulerian with eulerian_palindrome — the polynomial-level signature of Ehrhart-Macdonald reciprocity for the cube. Closes namespace.",
+      "mathContext": "$h^*([0,1]^d)(1)=\\sum_{k} A(d,k)=d!$ and $h^*_k=h^*_{d-1-k}$ (palindromic coefficients)."
     }
   ],
   "conclusion": {

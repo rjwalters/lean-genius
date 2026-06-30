@@ -1,10 +1,49 @@
 # Research State: amgm-inequality-oq-04-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: BLOCKED (S5 — renewed Docker outage; remaining discharge legs Docker-gated)
 **Path**: fast
-**Since**: 2026-06-01 (S2 ACT — researcher-1) → 2026-06-09 (S4b ACT, this session)
-**Iteration**: 5
+**Since**: 2026-06-01 (S2 ACT — researcher-1) → 2026-06-13 (S5 BLOCKED, this session)
+**Iteration**: 6
+
+## S5 — BLOCKED + JSON STATE-SYNC 2026-06-13 (researcher-2)
+
+**Mode.** STATUS-FLIP + STATE-SYNC (doc-only; no `.lean` shipped). Status
+`active`/`ACT` → `blocked`/`BLOCKED`. Base SHA `8e86e7b0527` (origin/main).
+
+**INFRA — RED.** Renewed Docker daemon outage: `timeout 5 docker info`
+exits 124 (Server section unresponsive) — fleet-wide, same pathology that
+cleared 2026-05-30 and is down again. Disk RECOVERED (17% used). Aristotle
+404s. No build route.
+
+**JSON drift corrected.** The JSON tracker
+(`src/data/research/problems/amgm-inequality-oq-04-oq-03.json`) was stale at
+iteration 3 / lastUpdate 2026-06-02 while state.md had advanced through S4a/S4b
+(2026-06-09). Synced the JSON focus/nextAction/iteration/lastUpdate forward to
+the actual S4b state and set status blocked in the same edit.
+
+**Current proof state (unchanged from S4b).** `AmgmInequalityOQ04OQ03.lean`:
+315 LOC, **1 axiom** (`ellipticK_eq_hyp2F1`, L149 — the problem's *stated*
+hypergeometric-series identity hypothesis, legitimate per the problem
+statement), **0 real sorries**. Companion `AmgmInequalityOQ04OQ03Wallis.lean`:
+100 LOC, 0 axioms, 0 sorries (S3 `wallisHalf_even` shipped via PR #22046).
+Discharge legs done: §6 `summable_hyp2F1` (S2), §7 x-independent M-test bound
+(S4a), M-test packaging on closed balls (S4b, Docker-verified).
+
+**Why blocked, not ACT.** The next leg — S5 `TendstoUniformlyOn` wrap via
+Mathlib `tendstoUniformlyOn_tsum`, then combining the legs toward the Gauss
+AGM-limit ↔ elliptic K identity — is Lean proof work; every candidate needs a
+Docker build to verify. None available during the outage.
+
+**Unblock trigger.** `timeout 10 docker info --format '{{.ServerVersion}}'`
+exits 0 → resume S5 ACT from the M-test inputs (`hyp2F1_mtest_inputs_on_closedBall`).
+
+**Ship scope.** 3 files — `state.md` (this block + markers), JSON tracker
+(status/phase/focus/nextAction/iteration 3→6/attemptCounts/lastUpdate + Docker
+blocker), new memo `sessions/2026-06-13-s5-blocked-docker-outage.md`. NO `.lean`
+edits, NO sibling edits.
+
+---
 
 ## Current Focus
 

@@ -2,12 +2,12 @@
   "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
   "title": "Gaussian Integers: Euclidean Domain and Prime Classification",
   "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
-  "description": "Formalizes unique factorization in ℤ[i] and classifies Gaussian primes. ℤ[i] is a Euclidean domain (norm = a²+b²) and UFD via Mathlib's instance chain. Gaussian prime classification (backward direction): norm-2 primes (1+i), split primes (norm = p, p≡1 mod 4), and inert primes (p≡3 mod 4 cannot be a sum of two squares). Includes concrete examples: 1+i, 2+i, 2+3i prime; 3, 7 inert; 2 ramifies; 5 and 13 split.",
+  "description": "Formalizes unique factorization in ℤ[i] and classifies Gaussian primes. ℤ[i] is a Euclidean domain (norm = a²+b²) and UFD via Mathlib's instance chain. Gaussian prime classification (backward direction): norm-2 primes (1+i), split primes (norm = p, p≡1 mod 4), and inert primes (p≡3 mod 4 cannot be a sum of two squares). Includes concrete examples: 1+i, 2+i, 2+3i prime; 3, 7 inert; 2 ramifies; 5 and 13 split. The three concrete primality examples are discharged via native_decide, so they depend on Lean.ofReduceBool (no literal axiom declarations).",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes",
     "date": "Gauss 1832; formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebra",
       "number-theory",
@@ -16,10 +16,10 @@
       "prime-classification"
     ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ02.lean",
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Uses native_decide for concrete norm primality checks (standard Lean 4 kernel verification). All structural results follow from Mathlib's GaussianInt and Zsqrtd APIs.",
+    "axiomCount": 1,
+    "assumptions": "Lean.ofReduceBool: the three concrete primality examples (one_add_I_prime, two_add_I_prime, two_add_3I_prime) — advertised deliverables establishing that 1+i, 2+i, 2+3i are prime in ℤ[i] — are proved via `prime_of_prime_natAbs_norm (by native_decide)`, where native_decide discharges the norm-primality check by trusting the Lean compiler's kernel reduction (the Lean.ofReduceBool axiom). There are no literal `axiom` declarations (leanFile.axiomCount is 0). All structural results (Euclidean-domain/UFD instances, prime_of_prime_natAbs_norm, inert_prime) and the inert/ramification/splitting examples (3 and 7 inert; the 2 = -i·(1+i)², 5 = (2+i)·(2-i), 13 = (2+3i)·(2-3i) factorizations) use plain `decide` and are axiom-free; only the three prime norm certificates depend on native_decide. 0 sorries.",
     "lineCount": 193,
     "theoremCount": 14,
     "definitionCount": 0,

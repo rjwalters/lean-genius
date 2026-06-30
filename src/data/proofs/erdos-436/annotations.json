@@ -27,18 +27,18 @@
     "proofId": "erdos-436",
     "type": "concept",
     "range": {
-      "startLine": 404,
-      "endLine": 556
+      "startLine": 417,
+      "endLine": 583
     },
-    "title": "Fermat's Little Theorem, QR Multiplicativity, and Power Residue Arithmetic",
-    "content": "A large block of proved theorems and axioms building the number-theoretic infrastructure. Key proved results: `fermat_little_theorem` ($r^{p-1} \\equiv 1 \\pmod{p}$ for $\\gcd(r,p)=1$), `kth_residue_fermat_little` (applies Fermat to power residues), `euler_criterion_forward` ($a$ is QR $\\Rightarrow a^{(p-1)/2} \\equiv 1$). Axiomatized: `qr_product_non_residues` (product of two non-residues is a residue via Legendre symbol multiplicativity), `consecutive_qr_existence_k2` (Hildebrand: consecutive pairs of $k$th power residues start bounded). The `even_k_m3_infinite` and `lambda_finite_small_m` theorems establish the parity dichotomy.",
+    "title": "Part XI — Power Residue Arithmetic, Fermat's Little Theorem, and QR Multiplicativity",
+    "content": "A block of proved supporting theorems. Key results, all proved: `kth_residue_mul` (product of kth power residues is one), `fermat_little_theorem` ($r^{p-1} \\equiv 1 \\pmod p$ for $\\gcd(r,p)=1$, via Mathlib's `ZMod.pow_card_sub_one_eq_one`), `kth_residue_fermat_little`, the `ZMod`/`IsSquare` bridge lemmas, and `qr_product_non_residues` (the product of two quadratic non-residues mod an odd prime is a residue, proved via Legendre-symbol multiplicativity `legendreSym.mul`). Also `count_kth_residues`, `half_are_qr`, and the observed $\\Lambda(k,2)$ data lemmas (`lambda_2_monotone_observed`, `all_lambda_2_values_known`, `lambda_2_gaps`, `lambda_8_2_finite`, `lambda_up_to_100_finite`, `m_2_complete_picture`, `lambda_values_positive`).",
     "mathContext": "Fermat: $r^{p-1} \\equiv 1 \\pmod{p}$ for $p \\nmid r$. Euler: $a$ is QR mod $p$ $\\iff a^{(p-1)/2} \\equiv 1 \\pmod{p}$. Legendre: $(ab/p) = (a/p)(b/p)$, so non-residue $\\times$ non-residue = residue.",
     "significance": "key",
     "relatedConcepts": [
       "Fermat's Little Theorem",
-      "Euler's criterion",
       "Legendre symbol",
-      "quadratic residues"
+      "quadratic residues",
+      "ZMod"
     ],
     "prerequisites": [
       "Nat.Prime",
@@ -51,17 +51,17 @@
     "proofId": "erdos-436",
     "type": "concept",
     "range": {
-      "startLine": 580,
-      "endLine": 634
+      "startLine": 584,
+      "endLine": 686
     },
-    "title": "Euler's Criterion and Quadratic Reciprocity Applications",
-    "content": "The closing section proves and axiomatizes the full Euler criterion ($a$ is QR mod $p$ $\\iff a^{(p-1)/2} \\equiv 1$) and applies it to specific computations. The forward direction is proved via direct computation; the backward direction (`euler_criterion_backward`) is axiomatized as it requires deeper `ZMod` machinery. The combined `euler_criterion` iff statement wraps both. Additional axioms encode specific computational results for small power residues and lambda values.",
+    "title": "Part XII — Euler's Criterion and ZMod Connections",
+    "content": "The closing part proves Euler's criterion in full. `euler_criterion_forward` ($a$ a QR $\\Rightarrow a^{(p-1)/2} \\equiv 1$) is proved via Fermat's Little Theorem; `euler_criterion_backward` is proved using Mathlib's `ZMod.euler_criterion` together with the $\\mathbb{N} \\leftrightarrow \\mathrm{ZMod}\\,p$ bridge lemmas; and `euler_criterion` wraps both as an iff. Also proved here: Legendre-symbol multiplicativity (`legendre_sym_mul`), the power lemma `pow_multiple_p_minus_one`, and the quadratic-residue counting facts `prime_sub_one_even`, `count_qr_exact`, and `qr_nonqr_equal_count`. All declarations in this part are proved theorems (no axioms).",
     "mathContext": "Euler's criterion: $a \\in (\\mathbb{Z}/p\\mathbb{Z})^{\\times 2} \\iff a^{(p-1)/2} \\equiv 1 \\pmod{p}$. Forward: if $a = b^2$, then $a^{(p-1)/2} = b^{p-1} = 1$ by Fermat. Backward: requires that $x^{(p-1)/2} = 1$ has exactly $(p-1)/2$ solutions, which are exactly the QRs.",
     "significance": "key",
     "relatedConcepts": [
       "Euler's criterion",
-      "quadratic residue computation",
-      "ZMod machinery"
+      "Legendre symbol",
+      "ZMod"
     ],
     "prerequisites": [
       "fermat_little_theorem",
@@ -373,7 +373,7 @@
     "significance": "key",
     "relatedConcepts": [
       "Legendre symbol multiplicativity",
-      "quadratic reciprocity",
+      "non-residue product rule",
       "case analysis"
     ],
     "prerequisites": [

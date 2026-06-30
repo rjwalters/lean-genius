@@ -85,3 +85,36 @@ substantive criterion the quality gate exists to enforce.
 - `.lean/state/candidate-pool.json` (gitignored, via claim-problem.sh)
 - `research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-02/knowledge.md`
   (this Session 2 entry)
+
+---
+
+## Session 2026-06-13 (Session 3) — Research-JSON status sync
+
+**Mode**: STATE-SYNC (tracker-only; no Lean touched). **Outcome**: completed.
+
+The slug was re-handed out by depth-first `claim-random` because the **tracked**
+research JSON `src/data/research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-02.json`
+was still stale at creation-time values — `status: active`, `phase: NEW`,
+`nextAction: "Begin problem exploration"`, `lastUpdate: 2026-05-05` — even though
+the problem was fully solved in Session 1 (PR #16083) and the gallery meta.json
+reads `status: verified` / 0 sorries / 0 axioms / 9 theorems. Session 2 only
+fixed the gitignored candidate-pool, not this tracked file, so the drift
+persisted.
+
+### What was done
+- Set research JSON `status: completed`, `phase: COMPLETED`,
+  `currentState.{phase, iteration: 3, since, nextAction}`, `lastUpdate`.
+- **Corrected `leanFiles`**: it was a 24-entry dump of the entire
+  `CayleyHamiltonMinpoly*` family that did **not even include** this slug's
+  actual proof file. Replaced with the single delivered file
+  `Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean` (172 LOC / 9 thm / 0 def /
+  0 sorry / 0 axiom — canonical counts vs origin/main).
+- Ran `claim-problem.sh update ... completed` (FORCE_COMPLETE) + released claim.
+
+No Lean file touched. Verification blackout 2026-06-13 (Docker hung + Aristotle
+404) does not affect this slug — it is already verified and merged.
+
+### Files Modified
+- `src/data/research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-02.json`
+- `research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-02/knowledge.md`
+  (this Session 3 entry)

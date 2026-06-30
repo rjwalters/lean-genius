@@ -52,68 +52,68 @@
   },
   "sections": [
     {
-      "id": "header-and-imports",
+      "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 34,
-      "summary": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`.",
-      "mathContext": "Module docstring stating the problem and known results. Imports `MeasureTheory.Measure.Lebesgue.Basic` for outer measure, `Topology.MetricSpace.Basic` for closedness, `Data.Set.Finite` for finiteness, and `Tactic`."
+      "endLine": 36,
+      "summary": "States Erdős #501 on independent sets for measure-bounded families of subsets of $\\mathbb{R}$ (Erdős–Hajnal independence), and the role of the continuum hypothesis. Imports.",
+      "mathContext": "Independent sets in bounded-outer-measure families on $\\mathbb{R}$."
     },
     {
-      "id": "definitions",
-      "title": "Basic Definitions",
-      "startLine": 38,
-      "endLine": 55,
-      "summary": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$).",
-      "mathContext": "Defines `SetFamily` ($\\mathbb{R} \\to \\mathcal{P}(\\mathbb{R})$), `IsBoundedSet` ($A \\subseteq [-M, M]$), `outerMeasure` via Lebesgue measure, `BoundedOuterMeasureFamily` (bounded + measure $< 1$), and `ClosedMeasureFamily` (closed + measure $< 1$)."
+      "id": "part1",
+      "title": "Part I: Basic Definitions",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "Defines `SetFamily`, `IsBoundedSet`, `outerMeasure`, `BoundedOuterMeasureFamily`, and `ClosedMeasureFamily`.",
+      "mathContext": "Set families, outer measure, bounded/closed-measure families."
     },
     {
-      "id": "independence",
-      "title": "Independence Definitions",
-      "startLine": 59,
-      "endLine": 69,
-      "summary": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set).",
-      "mathContext": "Defines `IsIndependent A X` ($\\forall x \\neq y \\in X,\\; x \\notin A_y$), `IsIndependentOfSize A n` (finite independent set of size $n$), and `HasInfiniteIndependent A` (existence of an infinite independent set)."
+      "id": "part2",
+      "title": "Part II: Independence",
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "Defines `IsIndependent`, `IsIndependentOfSize`, and `HasInfiniteIndependent`.",
+      "mathContext": "Independent sets and infinite independent families."
     },
     {
-      "id": "erdos-hajnal",
-      "title": "Erdős-Hajnal Theorem (1960)",
-      "startLine": 73,
-      "endLine": 122,
-      "summary": "Decomposes the Erdős-Hajnal theorem into `exists_independent_tuple` (product measure existence of n conflict-free distinct reals, proved for n ≤ 1, sorry for n ≥ 2) and the combinatorial reduction `erdos_hajnal_finite` (converts injective tuple to Finset, fully proved). Derives size-2 as corollary.",
-      "mathContext": "The product measure proof sketch: for L > n(n-1), the conflict set in [0,L]^n has measure < n(n-1)·L^{n-1} < L^n by Fubini section bounds, so conflict-free injective tuples exist."
+      "id": "part3",
+      "title": "Part III: Erdős-Hajnal Theorem (1960)",
+      "startLine": 72,
+      "endLine": 123,
+      "summary": "Proves `exists_independent_tuple` (1 `sorry`), `erdos_hajnal_finite`, and `independent_pair_exists`: finite independent sets always exist.",
+      "mathContext": "Erdős–Hajnal: finite independent sets exist (1 sorry)."
     },
     {
-      "id": "ch-result",
-      "title": "Continuum Hypothesis and Hechler (1972)",
-      "startLine": 86,
-      "endLine": 101,
-      "summary": "Defines CH as $\\aleph_1 = \\mathfrak{c}$ (Cardinal.aleph 1 = Cardinal.continuum) and states Hechler's 1972 theorem: under CH, $\\exists$ a bounded outer measure family with no infinite independent set.",
-      "mathContext": "CH defined as a Prop (not axiom). Hechler's theorem is conditional on CH."
+      "id": "part4",
+      "title": "Part IV: The Continuum Hypothesis Result",
+      "startLine": 124,
+      "endLine": 141,
+      "summary": "Defines `continuum_hypothesis` and proves `hechler_under_CH` (1 `sorry`): Hechler's 1972 result under CH.",
+      "mathContext": "Hechler (1972): independence behaviour under CH (1 sorry)."
     },
     {
-      "id": "closed-results",
-      "title": "Closed Set Results: Gladysz and NPS",
-      "startLine": 100,
-      "endLine": 109,
-      "summary": "Gladysz (1962): size-2 for closed families. NPS (1987): infinite independence for closed families, provable in ZFC without extra axioms.",
-      "mathContext": "Axiomatized: Gladysz (1962): size-2 for closed families. NPS (1987): infinite independence for closed families, provable in ZFC without extra axioms."
+      "id": "part5",
+      "title": "Part V: The Closed Set Result",
+      "startLine": 142,
+      "endLine": 169,
+      "summary": "Proves `nps_closed_infinite` (1 `sorry`) and `gladysz_pairs`: closed-measure families have infinite independent sets.",
+      "mathContext": "Gladysz / NPS: closed families ⇒ infinite independent sets (1 sorry)."
     },
     {
-      "id": "main-questions",
-      "title": "The Main Open Questions",
-      "startLine": 113,
-      "endLine": 139,
-      "summary": "Defines Question 1 (infinite independence for general families — independent of ZFC) and Question 2 (size-3 for closed families — open). Proves the ZFC-independence of Q1 by combining Hechler and NPS.",
-      "mathContext": "Formal definition: Defines Question 1 (infinite independence for general families — independent of ZFC) and Question 2 (size-3 for closed families — open). Proves the ZFC-independence of Q1 by combining Hechler and NPS."
+      "id": "part6",
+      "title": "Part VI: The Main Open Question",
+      "startLine": 170,
+      "endLine": 199,
+      "summary": "Defines `Question1`, `Question2` and proves `question1_independent_of_ZFC`: the main questions are independent of ZFC.",
+      "mathContext": "Main open questions; independence from ZFC."
     },
     {
-      "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 143,
-      "endLine": 206,
-      "summary": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal.",
-      "mathContext": "Proves independence is hereditary (subsets of independent sets are independent) and the insertion lemma (extending by one element). Defines `maxIndependentSize` and states it is infinite by Erdős-Hajnal."
+      "id": "part7",
+      "title": "Part VII: Structural Properties",
+      "startLine": 200,
+      "endLine": 278,
+      "summary": "Proves `independent_subset`, `independent_insert`, defines `maxIndependentSize`, and proves `max_size_infinite`.",
+      "mathContext": "Structural closure properties; max independent size."
     }
   ],
   "conclusion": {

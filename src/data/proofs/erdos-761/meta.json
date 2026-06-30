@@ -41,7 +41,7 @@
     "lineCount": 314,
     "assumptions": "2 axioms: erdos_761_question1 (OPEN), erdos_761_question2 (OPEN). Eliminated complete_dichrom (incorrect formula). Fixed IsAcyclicColoring definition from 'no monochromatic directed edge' to correct 'no monochromatic directed cycle' (Neumann-Lara 1982). Wrapped all declarations in `namespace Erdos761` to resolve the `Orientation` name collision with `Mathlib.LinearAlgebra.Orientation`; SimpleGraph.dichromNumber and SimpleGraph.cochromNumber are declared with `_root_.` prefix so dot notation `G.dichromNumber` continues to resolve. Proved: isAcyclicColoring_of_no_mono_edge, dichrom_le_chrom, cochrom_le_chrom, dichrom_le_of_colorable, cochrom_le_of_colorable, dichrom_le_chromaticNumber, cochrom_le_chromaticNumber (Iter 9: ℕ∞ lifts to Mathlib's `SimpleGraph.chromaticNumber`), bipartite_dichrom_le_two (now a 1-line corollary of dichrom_le_of_colorable), dichrom_mono, acyclic_orientation_exists.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 7,
     "additionalFiles": [
       "Proofs/Stubs/Erdos761Aristotle.lean"
@@ -52,43 +52,36 @@
       "id": "sec-761-header",
       "title": "Problem Overview",
       "startLine": 30,
-      "endLine": 36,
-      "summary": "Imports from `Mathlib.Combinatorics.SimpleGraph` for graph structure and coloring, plus `Mathlib.Data.Fintype.Basic` for finite vertex sets."
+      "endLine": 38,
+      "summary": "Imports from `Mathlib.Combinatorics.SimpleGraph` for graph structure and coloring, plus `Mathlib.Data.Fintype.Basic` for finite vertex sets. All declarations are wrapped in `namespace Erdos761` to avoid the `Orientation` name collision with `Mathlib.LinearAlgebra.Orientation`."
     },
     {
       "id": "sec-761-definitions",
       "title": "Core Definitions",
-      "startLine": 38,
-      "endLine": 99,
+      "startLine": 39,
+      "endLine": 98,
       "summary": "Defines `Orientation G` (directed edge assignment), `colorClassEdge` (directed edge relation within a color class), `IsAcyclicColoring` (no monochromatic directed **cycle** via `Relation.TransGen` — the correct mathematical definition from Neumann-Lara 1982), `HasAcyclicColoring`, `dichromNumber` $\\delta(G)$, `IsCochromatic` (each class is clique or independent set), and `cochromNumber` $\\zeta(G)$."
     },
     {
       "id": "sec-761-bridge",
       "title": "Bridge Lemma",
-      "startLine": 101,
-      "endLine": 127,
+      "startLine": 99,
+      "endLine": 122,
       "summary": "The key `isAcyclicColoring_of_no_mono_edge` theorem: if no directed edge is monochromatic (the stronger condition), then no directed cycle is monochromatic (the acyclic condition). This bridges proper-coloring arguments to the cycle-free definition."
     },
     {
       "id": "sec-761-properties",
-      "title": "Basic Properties",
-      "startLine": 129,
-      "endLine": 159,
-      "summary": "Establishes $\\delta(G) \\le |V|$ (injective colorings are acyclic), $\\zeta(G) \\le |V|$ (proper colorings are cochromatic), and the bipartite bound $\\delta(G) \\le 2$ for 2-colorable graphs."
+      "title": "Proved Properties (formerly axioms)",
+      "startLine": 123,
+      "endLine": 287,
+      "summary": "The `section ProvedProperties` block establishes the structural results, all fully proved: $\\delta(G) \\le \\chi(G)$ and $\\zeta(G) \\le \\chi(G)$ (`dichrom_le_chrom`, `cochrom_le_chrom`), the colorability bounds `dichrom_le_of_colorable` / `cochrom_le_of_colorable`, the lifts to Mathlib's `SimpleGraph.chromaticNumber` (`dichrom_le_chromaticNumber`, `cochrom_le_chromaticNumber`), the bipartite bound $\\delta(G) \\le 2$ (`bipartite_dichrom_le_two`), `acyclic_orientation_exists`, and subgraph monotonicity $H \\subseteq G \\Rightarrow \\delta(H) \\le \\delta(G)$ (`dichrom_mono`)."
     },
     {
       "id": "sec-761-conjectures",
-      "title": "Main Conjectures (OPEN)",
-      "startLine": 161,
-      "endLine": 183,
-      "summary": "States the two open questions as axioms: **Question 1** (Erdős-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
-    },
-    {
-      "id": "sec-761-structural",
-      "title": "Known Cases and Structural Results",
-      "startLine": 185,
-      "endLine": 251,
-      "summary": "Includes the odd cycle placeholder, subgraph monotonicity $H \\subseteq G \\Rightarrow \\delta(H) \\le \\delta(G)$ (fully proved), arbitrary orientation construction, and the theorem that proper colorings are acyclic for any orientation."
+      "title": "Open Conjectures (2 axioms)",
+      "startLine": 288,
+      "endLine": 314,
+      "summary": "States the two open questions as axioms: **Question 1** (Erdős-Neumann-Lara) `erdos_761_question1`: $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel) `erdos_761_question2`: $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$. These two `axiom` declarations are the only assumptions in the file."
     }
   ],
   "overview": {
@@ -131,7 +124,7 @@
     "namespace": "Erdos761",
     "lineCount": 314,
     "axiomCount": 2,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 7,
     "path": "Proofs/Erdos761Problem.lean",
     "sorries": 0,

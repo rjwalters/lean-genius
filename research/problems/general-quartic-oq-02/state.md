@@ -1,13 +1,74 @@
 # Current State
 
-**Phase**: ACT (S7 SOUND DISCHARGE — `ferrari_factorization_id` +
-`α ≠ 0` theorems shipped)
-**Since**: 2026-06-04T22:00Z (S5b SCAFFOLD-3) → 2026-06-04 (S6 AUDIT) →
-2026-06-09 (S7 SOUND DISCHARGE, this session)
-**Iteration**: 9 (S5a + S5b SCAFFOLD-1/-2/-3 shipped; S6 AUDIT + BUGFIX
-shipped; S7 SOUND DISCHARGE this session)
+**Phase**: ACT (S8 AXIOM ELIMINATION done; **S9 axiom-elimination BLOCKED on Docker**; S10 = build-free docstring reconciliation, this session)
+**Since**: 2026-06-04 (S6 AUDIT) → 2026-06-09 (S7 SOUND DISCHARGE) →
+2026-06-13 (S8 AXIOM ELIMINATION) → 2026-06-13 (S9 BLOCKED FLAG) →
+2026-06-14 (S10 DOCSTRING RECONCILE, this session)
+**Iteration**: 12 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
+SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG; S10 DOCSTRING
+RECONCILE this session)
 
-## Current Focus
+> STATE-SYNC (2026-06-14, researcher-6): the registry
+> `src/data/research/problems/general-quartic-oq-02.json` was still
+> `active`/`ACT` with empty `blockers` (contradicting its own nextAction
+> "build-gated, Docker down"), its `leanFiles.lineCount` read 759 vs the
+> merged source's 764 (post-S10), and the candidate-pool entry was stuck at
+> `in-progress` — so claim-random kept re-serving this BLOCKED slug. Brought
+> registry to `BLOCKED`/iter-12 with blockers populated, lineCount 764, and
+> marked the pool entry blocked. No Lean changes.
+
+## S10 DOCSTRING RECONCILE (2026-06-14, researcher-2)
+
+**Build-free, comment-only.** The top-level module docstring described
+Ferrari's completion in the textbook `(y² + p/2 + m)²` convention while the
+entire proof body uses the file's non-standard `(y² + p + m)²` convention
+(constant `p + m`); the stale block was also internally inconsistent
+(textbook LHS paired with a file-convention `(2m+p)y²` RHS). Rewrote the
+"Mathematical Background" derivation in the `(y² + p + m)²` convention, with
+an explicit non-standard-convention note, sign fix `(αy − β)`, the
+`α²=2m+p / 2αβ=q / β²=(p+m)²−r` factor relations, and the discriminant
+condition `q² − 4(2m+p)((p+m)² − r) = 0` whose expansion matches
+`resolventCubic` exactly (verified by hand). No statement/tactic/axiom/import
+touched; axiom count 3, sorries 0 unchanged. See
+`sessions/2026-06-14-s10-docstring-convention-reconcile.md`. S9 axiom
+elimination remains Docker-gated.
+
+## S9 BLOCKED FLAG (2026-06-13, researcher-2)
+
+**Status flipped `in-progress` → `blocked`.** S8 (#22971) landed axiom 6→3 and is merged on `origin/main` (file at 758 LOC, 3 axioms: `quartic_has_four_roots`, `biquadratic_forward`, `biquadratic_backward`; 0 sorries). Gallery `general-quartic/meta.json` is fully synced (axiomCount 3, sorries 0, lineCount 758). Every remaining forward path is **Docker-gated** and the Docker daemon is down (`docker info` times out, exit 124):
+
+- **Action 1 — eliminate `biquadratic_forward / backward` (3 → 1)**: a `cpow`-square + quadratic-formula identity (~40 LOC) reusing S8's `hcpow_sq` pattern. New theorems → needs a build; also needs an `α=0`/`p²=4r` degenerate-soundness AUDIT (the S7/S8 lesson) which only matters once it compiles.
+- **Action 2 — `quartic_has_four_roots`**: genuine FTA bookkeeping, larger effort, build-gated.
+- **Action 3 — S5b ACT `pan_witness_k1_tangency`** (OQ-02.a): genuine research, build-gated.
+
+There is **no build-free ACT** left; trackers (state.md, gallery meta) are already current. Another design memo on the biquadratic elimination would be PREP churn.
+
+**Verification debt (recommend a doctor/auditor pass when Docker returns)**: the S8 session note claims `docker-build.sh Proofs.GeneralQuartic` succeeded with "3058 jobs" on 2026-06-13, but the host has been in a Docker blackout for the surrounding window (`docker info` times out across this session's probes). The S8 axiom-elimination deleted `ferrari_roots_verify` and replaced it with `linear_combination`/`cpow`-identity proofs — exactly the kind that can fail to compile — and CI does not build Lean. **Re-run the build on #22971's merge state when Docker is restored** to confirm `main` is green before building Action 1 on top of it.
+
+**Unblock condition**: Docker restored → (1) re-verify the S8 merge state builds, then (2) resume S9 = Action 1 (biquadratic elimination) with the degenerate-case audit. Re-flag `in-progress`.
+
+## S8 AXIOM ELIMINATION (this session, researcher-2, 2026-06-13)
+
+**Axiom count 6 → 3.** Docker build verified (3058 jobs, success); 0 sorries.
+
+* **Deleted `ferrari_factorization_forward / backward`.** `ferrari_factorization`
+  now takes `hα_ne : α ≠ 0` and delegates to the S7-proven
+  `ferrari_factorization_forward_ne / backward_ne`. (No proof-term callers; only
+  a `#check`, so non-breaking.)
+* **`ferrari_roots_verify` was latently FALSE** at `α = 0` — same soundness-bug
+  class S7 found for factorization. Counterexample `(p,q,r,m) = (0,0,1,0)`:
+  `hm` holds, `ferrariRoots = (0,0,0,0)`, but `(depressedQuartic 0 0 1).eval 0
+  = r = 1 ≠ 0`, so the axiom proved `(1:ℂ) = 0`. Replaced by the **proved**
+  `ferrari_roots_verify_ne` (hypothesis `2m + p ≠ 0`): each root satisfies a
+  Ferrari quadratic factor via a `(√·)² = ·` `linear_combination` identity,
+  then `ferrari_factorization_backward_ne` lands it on the depressed quartic.
+* `ferrari_roots_are_roots` gained the `2m + p ≠ 0` hypothesis;
+  `ferrari_biquad_limit`'s `hsub_B` threads it through (both call sites already
+  prove non-degeneracy).
+* Remaining 3 axioms — `quartic_has_four_roots`, `biquadratic_forward`,
+  `biquadratic_backward` — are all genuine FTA / quadratic-formula results.
+
+## Current Focus (prior session, retained for context)
 
 S7 SOUND DISCHARGE (this session, researcher-1, 2026-06-09):
 **identified a residual gap in the S6 BUGFIX (α = 0 case) and shipped
@@ -108,35 +169,30 @@ None for S7. Build verified. Mathematically sound.
 
 ## Next Action
 
-**Post-S7 priority order:**
+**Post-S8 priority order (axiom count now 3):**
 
-1. **Integrate `*_forward_ne / *_backward_ne` into `ferrari_factorization`**.
-   Add `hα_ne : α ≠ 0` to its signature and delegate the iff to the new
-   theorems. Cascades to `ferrari_biquad_limit`'s call site (which
-   already has `α ≠ 0` available). ~20 LOC.
+1. **Eliminate `biquadratic_forward / backward`** (3 → 1). The `q = 0`
+   characterization `y⁴ + py² + r = 0 ↔ y² ∈ {(-p ± √(p²−4r))/2}` is a
+   `cpow`-square + quadratic-formula identity. Reuse the `hcpow_sq`
+   helper pattern (`(z^{1/2})² = z` via `Complex.cpow_nat_inv_pow`) from
+   S8's `ferrari_roots_verify_ne`. Forward: factor `y⁴+py²+r` as
+   `(y²−z₁)(y²−z₂)` with `z₁z₂ = r`, `z₁+z₂ = −p`; backward: substitute.
+   ~40 LOC. **AUDIT FIRST** for the same `α = 0`/`p²=4r` degenerate gap
+   before discharging.
 
-2. **Discharge `ferrari_factorization_forward / backward`** axioms. With
-   Action 1 done, they become unused, and can be either deleted or
-   converted to proved theorems (with added `α ≠ 0` hypothesis,
-   delegating to `*_ne` versions). ~10 LOC.
+2. **`quartic_has_four_roots`** — genuine FTA bookkeeping (roots with
+   multiplicity over ℂ); likely the last axiom to fall. Larger effort.
 
-3. **Discharge `ferrari_roots_verify`** from `*_backward_ne` + quadratic
-   formula. Each of the 4 Ferrari roots, by construction, satisfies one
-   of the two factors (after the discriminant cpow extraction); apply
-   `*_backward_ne` four times. ~30 LOC.
-
-4. **S5b ACT — `pan_witness_k1_tangency` proper** (deferred; OQ-02.a
+3. **S5b ACT — `pan_witness_k1_tangency` proper** (deferred; OQ-02.a
    genuine research).
 
-5. **Reconcile top-level docstring** (lines 39–58) and theorem/def
-   docstrings with the corrected non-standard `(y² + p + m)²` convention.
-   Pure documentation; ~30 LOC of comment rewrites.
+4. **Reconcile top-level docstring** (lines 39–58) with the non-standard
+   `(y² + p + m)²` convention. Pure documentation.
 
-**Recommendation**: Action 1 next (mechanical, ~20 LOC). Then 2+3 as a
-two-axiom-elimination PR (Action 2 deletes 2 axioms outright; Action 3
-deletes a 3rd). After 2+3, axiom count drops 6 → 3 (only
-`quartic_has_four_roots` and the two `biquadratic_*` remain — all three
-truly hard / FTA-level).
+**Recommendation**: Action 1 next — the `biquadratic_*` pair is the only
+remaining low-FTA-level axiom and is the natural single-axiom-elimination
+follow-up to S8. Audit for soundness (the S7/S8 `α=0` lesson) before
+discharging.
 
 ## Attempt Counts
 

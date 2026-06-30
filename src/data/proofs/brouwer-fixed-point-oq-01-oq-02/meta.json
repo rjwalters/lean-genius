@@ -86,42 +86,50 @@
   },
   "sections": [
     {
+      "id": "module-overview",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 117,
+      "summary": "File docstring (problem statement, two-part decomposition, comparison with BrouwerFixedPoint.lean) and imports.",
+      "mathContext": "Header only; no declarations. The `axiom no_retraction_axiom` shown here is inside a markdown code block illustrating the prior file's opaque axiom — it is not an actual axiom of this file (the 3 real axioms live in Parts III and V)."
+    },
+    {
       "id": "topological-setup",
       "title": "Part I: Topological Setup",
-      "startLine": 51,
-      "endLine": 95,
+      "startLine": 118,
+      "endLine": 138,
       "summary": "Defines ClosedBall n, UnitSphere n, and the Retraction structure. Matches BrouwerFixedPoint.lean for interoperability.",
       "mathContext": "B^n = Metric.closedBall 0 1 and S^{n-1} = Metric.sphere 0 1 in EuclideanSpace ℝ (Fin n). A retraction is a continuous map fixing S^{n-1} pointwise and mapping B^n into S^{n-1}."
     },
     {
       "id": "algebraic-core",
       "title": "Part II: Algebraic Foundation (0 axioms)",
-      "startLine": 96,
-      "endLine": 151,
+      "startLine": 139,
+      "endLine": 194,
       "summary": "Pure abstract algebra: id : ℤ →+ ℤ cannot factor through Unit. Includes unit_hom_sends_zero_to_zero, comp_through_unit_is_zero, id_Z_ne_zero, id_Z_not_factored_through_unit, id_Z_not_factored_explicit.",
       "mathContext": "The key fact: any composition ℤ →+ Unit →+ ℤ must be zero (since Unit has one element). But id(1) = 1 ≠ 0. So id cannot equal such a composition."
     },
     {
       "id": "homology-axioms",
       "title": "Part III: Singular Homology Axioms",
-      "startLine": 152,
-      "endLine": 313,
+      "startLine": 195,
+      "endLine": 401,
       "summary": "Refined decomposition (S5 ACT-B): H_n_minus_1_ball_zero (mock-form theorem preserved for downstream consumers), H_n_minus_1_sphere_nonzero (residual deep axiom, encoding H_{n-1}(S^{n-1}) ≠ 0 + retraction-functoriality, Mathlib gap B2), contractible_singularHomology_zero (thin B1-surrogate axiom: H_n of a contractible space is zero for n ≥ 1), H_n_minus_1_ball_zero_substantive (real-Mathlib proof of H_{n-1}(B^n) = 0 for n ≥ 2 via Convex.contractibleSpace + the B1 surrogate), and singular_homology_retraction_split (derived theorem combining the two axioms for downstream callers).",
       "mathContext": "Splits the previous composite axiom into a shallow ball-zero half (now provable in the real setting via the B1 surrogate `contractible_singularHomology_zero`) and a deep sphere-nonzero half (Mathlib gap B2: no Mayer–Vietoris, no excision, no direct sphere-homology computation). The B1 surrogate is strictly tighter than the B2 residual — a single classical fact with a known prism-operator construction blueprint slated for upstream contribution to `Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance`."
     },
     {
       "id": "main-theorem",
       "title": "Part IV: No-Retraction Theorem",
-      "startLine": 314,
-      "endLine": 343,
+      "startLine": 402,
+      "endLine": 431,
       "summary": "Main theorem and corollary: no continuous retraction B^n → S^{n-1}. Equivalence with algebraic impossibility.",
       "mathContext": "no_retraction_singular_homology: assume retraction exists → get algebraic split → algebraic contradiction. no_retraction_iff_algebraic_impossibility: the topological statement is equivalent to the algebraic one (modulo the homology axiom)."
     },
     {
       "id": "structural-lemmas",
       "title": "Part V: Structural Homology Lemmas",
-      "startLine": 344,
-      "endLine": 375,
+      "startLine": 432,
+      "endLine": 462,
       "summary": "Supporting structural results: uniqueness of hom to Unit, any hom from Unit is zero, zero composition cannot equal identity.",
       "mathContext": "unique_hom_to_unit: G →+ Unit is a subsingleton (only one element in codomain). unique_hom_from_unit_is_zero: Unit →+ ℤ must send () to 0 by map_zero. zero_comp_is_id_implies_trivial: 0 ≠ id in ℤ →+ ℤ."
     }

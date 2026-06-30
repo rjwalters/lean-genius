@@ -78,24 +78,24 @@
     "id": "ann-zero-is-jump",
     "proofId": "erdos-837-oq-05",
     "range": {
-      "startLine": 110,
-      "endLine": 121
+      "startLine": 166,
+      "endLine": 265
     },
     "type": "concept",
-    "title": "Zero is a Density Jump: The Supersaturation Phenomenon (Sorry)",
-    "content": "The theorem `zero_is_jump` claims that 0 ∈ A_k for all k ≥ 2: any k-uniform hypergraph with positive edge density contains dense subhypergraphs. This is proved with `sorry` because the full argument requires the Kruskal-Katona supersaturation theorem. The density jump set satisfies `densityJumpSet_subset_Ico`: A_k ⊆ [0,1), proved trivially by destructuring the set definition.",
+    "title": "Zero is a Density Jump: The Supersaturation Phenomenon (Proved)",
+    "content": "The theorem `zero_is_jump` proves that 0 ∈ A_k for all k ≥ 2: in the counting model, any sequence of k-uniform hypergraphs with positive liminf edge density and diverging vertex count admits subhypergraphs of liminf density exactly 1. The proof is now complete (no `sorry`). The witness jump value is β = 1. The key steps: (1) a positive liminf density 0 < L gives, via `eventually_lt_of_lt_liminf`, an eventual lower bound c = L/2 on the density; (2) since C(|Gₙ|,k) → ∞ (lemma `choose_tendsto_atTop`), the raw edge count e(Gₙ) → ∞; (3) Hₙ is taken to be the complete k-uniform hypergraph on the largest vertex count vₙ ≤ |Gₙ| with C(vₙ,k) ≤ e(Gₙ) (via `Nat.findGreatest`), which has density 1, fits inside Gₙ, and has vₙ → ∞. `#print axioms zero_is_jump` reports only propext / Classical.choice / Quot.sound. The set bound `densityJumpSet_subset_Ico`: A_k ⊆ [0,1) is proved trivially by destructuring the set definition.",
     "mathContext": "Supersaturation (Erdős-Simonovits, 1984): If a $k$-uniform hypergraph $H$ on $n$ vertices has at least $\\epsilon\\binom{n}{k}$ edges, then $H$ contains at least $c(\\epsilon)\\binom{n}{k}^t$ copies of any fixed $k$-uniform hypergraph $F$ on $t$ vertices. In particular, any positive density forces subhypergraphs with density bounded away from 0. For the density jump framework, this shows every $\\alpha \\in [0, \\pi(F))$ (below the Turán density of some $F$) is a density jump. Formalizing this requires full hypergraph theory not yet available in Mathlib.",
-    "significance": "supporting",
+    "significance": "core",
     "relatedConcepts": [
-      "supersaturation theorem",
-      "Kruskal-Katona theorem",
-      "sorry placeholder",
+      "supersaturation phenomenon",
+      "Nat.findGreatest extraction",
+      "Filter.liminf",
       "A_k density jump set"
     ],
     "prerequisites": [
-      "Erdős-Simonovits supersaturation 1984",
-      "Kruskal-Katona theorem",
-      "Lean sorry as incomplete proof"
+      "Filter.liminf and eventually_lt_of_lt_liminf",
+      "Nat.findGreatest API",
+      "binomial growth C(m,k) → ∞"
     ]
   },
   {

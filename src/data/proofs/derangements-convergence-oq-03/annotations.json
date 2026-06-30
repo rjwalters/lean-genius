@@ -154,11 +154,11 @@
       "startLine": 1,
       "endLine": 88
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why the Rounding Never Ties: Hermite's Transcendence of e",
     "content": "The Lean proof shows $|D(n) - n!/e| < 1/2$, which uniquely determines $D(n) = \\text{round}(n!/e)$ *provided* $n!/e$ is not itself a half-integer (otherwise the round could go either way and `round` returns the even choice by convention). The proof here doesn't address that edge case because it never arises: $n!/e$ is never a half-integer, for any $n$.\n\nWhy? Because $e$ is **irrational** (in fact transcendental — Hermite, 1873). If $n!/e = m + 1/2$ for some integer $m$ and natural number $n$, then $e = n!/(m + 1/2) = 2n!/(2m+1)$, a rational number. Contradiction.\n\nSo the rounding result `D(n) = round(n!/e)` is a combinatorial statement whose well-posedness depends on a non-trivial fact from analytic number theory. The Lean formalization sidesteps this entirely because the strict inequality $|D(n) - n!/e| < 1/2$ (note: strict, not $\\leq$) is sufficient on its own — but conceptually, the strictness *only* makes sense once one knows $n!/e$ is irrational.\n\nThe gallery entry `e-transcendental` (or `e-irrational`) formalizes the deeper fact. This entry's rounding result is therefore an interesting case study in 'hidden dependencies': a clean combinatorial statement whose interpretation rests on a transcendence-theoretic input that doesn't appear in the formalization.",
     "mathContext": "**Claim**: $n!/e \\notin (1/2)\\mathbb{Z}$ for any $n \\in \\mathbb{N}$. **Proof**: Assume $n!/e = (2m+1)/2$ for some integer $m$. Then $e = 2n!/(2m+1) \\in \\mathbb{Q}$, contradicting the irrationality of $e$ (Euler 1737; Hermite 1873 gives the stronger transcendence). $\\square$ This guarantees that for $n \\geq 2$, the round function in `round(n!/e)` returns a well-defined integer without ambiguity from the round-half-to-even tie-breaking rule.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "transcendence of e",
       "Hermite 1873",

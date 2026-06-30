@@ -839,11 +839,36 @@ theorem W_difference_diverges : DifferenceDiverges := by
 /-! ## Logical Relationships -/
 
 /-- If the main conjecture holds (W(k)^{1/k} → ∞), then W(k)/2^k → ∞.
-    Formal proof requires careful filter limit manipulation. -/
+
+    Proof: if `W(k)^{1/k} → ∞` then eventually `W(k)^{1/k} ≥ 4`, hence
+    `W(k) = (W(k)^{1/k})^k ≥ 4^k`, so `W(k)/2^k ≥ 4^k/2^k = 2^k → ∞`. The result
+    then follows by comparison with `2^k`. -/
 theorem main_conjecture_implies_exponential :
     Erdos138Conjecture → ExponentialDiverges := by
-  intro _hconj
-  sorry
+  intro hconj
+  unfold Erdos138Conjecture at hconj
+  unfold ExponentialDiverges
+  -- Eventually `W(k)^{1/k} ≥ 4`, and eventually `k ≥ 1`.
+  have h4 : ∀ᶠ k in atTop, (4 : ℝ) ≤ (W k : ℝ) ^ ((k : ℝ)⁻¹) :=
+    hconj.eventually_ge_atTop 4
+  have hk1 : ∀ᶠ k in atTop, 1 ≤ k := eventually_ge_atTop 1
+  -- Eventually `W(k)/2^k ≥ 2^k`.
+  have hlb : ∀ᶠ k in atTop, (2 : ℝ) ^ k ≤ (W k : ℝ) / 2 ^ k := by
+    filter_upwards [h4, hk1] with k hk4 hk1
+    have hWnonneg : (0 : ℝ) ≤ (W k : ℝ) := by positivity
+    have hkne : (k : ℝ) ≠ 0 := by exact_mod_cast Nat.one_le_iff_ne_zero.mp hk1
+    -- `(W(k)^{1/k})^k = W(k)` for `k ≥ 1`.
+    have hroot : ((W k : ℝ) ^ ((k : ℝ)⁻¹)) ^ k = (W k : ℝ) := by
+      rw [← Real.rpow_natCast ((W k : ℝ) ^ ((k : ℝ)⁻¹)) k, ← Real.rpow_mul hWnonneg,
+        inv_mul_cancel₀ hkne, Real.rpow_one]
+    have hWge : (4 : ℝ) ^ k ≤ (W k : ℝ) := by
+      rw [← hroot]
+      exact pow_le_pow_left₀ (by norm_num) hk4 k
+    rw [le_div_iff₀ (by positivity)]
+    calc (2 : ℝ) ^ k * 2 ^ k = 4 ^ k := by rw [← mul_pow]; norm_num
+      _ ≤ (W k : ℝ) := hWge
+  -- `2^k → ∞`, so by comparison `W(k)/2^k → ∞`.
+  exact tendsto_atTop_mono' atTop hlb (tendsto_pow_atTop_atTop_of_one_lt (by norm_num))
 
 theorem implication_hierarchy :
     Erdos138Conjecture → ExponentialDiverges :=

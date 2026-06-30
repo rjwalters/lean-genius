@@ -59,52 +59,60 @@
   },
   "sections": [
     {
-      "id": "sin-properties",
-      "title": "sin Properties for Signed Arcs",
+      "id": "part1-sin-props",
+      "title": "Part 1: sin Properties for Signed Arcs",
       "startLine": 40,
       "endLine": 70,
-      "summary": "Proves that sin is positive on (0,π), nonzero on (0,π) and (-π,0), and satisfies sin(-x) = -sin(x). These justify the signed-arc framework: non-degeneracy conditions are automatic for arcs in these intervals.",
-      "mathContext": "For geodesic triangle sides, arcs naturally lie in $(0,\\pi)$. For exterior division points, arcs lie in $(-\\pi, 0)$. sin is nonzero on both intervals, enabling well-defined ratios $\\sin(BD)/\\sin(DC)$."
+      "summary": "sin positivity/nonvanishing on (0,π) and (-π,0) and the odd identity sin(-x) = -sin(x), justifying the signed-arc framework."
     },
     {
-      "id": "algebraic-core",
-      "title": "Algebraic Core: Menelaus Ratio Product",
-      "startLine": 72,
-      "endLine": 97,
-      "summary": "Defines menelausRatioProduct (a/b)·(c/d)·(e/f) and proves the fundamental biconditional: this product equals -1 iff a·c·e = -(b·d·f). This is the heart of the proof, shared by all three geometries.",
-      "mathContext": "Key tactic: `rw [div_mul_div_comm, div_mul_div_comm]` reduces to a single fraction, then `div_eq_iff` converts to a ring equality, solved by `linarith`."
-    },
-    {
-      "id": "config",
-      "title": "SphericalMenelausConfig Structure",
-      "startLine": 99,
+      "id": "part2-config",
+      "title": "Part 2: Spherical Menelaus Configuration",
+      "startLine": 71,
       "endLine": 128,
-      "summary": "Defines the SphericalMenelausConfig structure with six signed arcs and three non-degeneracy hypotheses (sin ≠ 0 for the denominator arcs). Also defines sphericalMenelausProduct as a specialization of menelausRatioProduct.",
-      "mathContext": "The non-degeneracy constraints are `Real.sin dc ≠ 0` etc., rather than `dc ≠ 0` as in the hyperbolic case. This reflects that sin has zeros at multiples of π, not just at 0."
+      "summary": "The algebraic core menelaus_algebraic_core (product of ratios = -1 iff numerator product = -(denominator product)) and the SphericalMenelausConfig structure."
     },
     {
-      "id": "main-theorem",
-      "title": "Spherical Menelaus Theorem",
-      "startLine": 130,
+      "id": "part3-menelaus-theorem",
+      "title": "Part 3: Spherical Menelaus Theorem (Main Result)",
+      "startLine": 129,
       "endLine": 155,
-      "summary": "The main theorem: sphericalMenelausProduct cfg = -1 iff the sin cross-product condition holds. Proved in 2 lines by applying menelaus_algebraic_core.",
-      "mathContext": "$\\frac{\\sin(BD)}{\\sin(DC)} \\cdot \\frac{\\sin(CE)}{\\sin(EA)} \\cdot \\frac{\\sin(AF)}{\\sin(FB)} = -1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = -\\sin(DC)\\sin(EA)\\sin(FB)$"
+      "summary": "spherical_menelaus: the sin-based Menelaus condition iff sin(BD)·sin(CE)·sin(AF) = -sin(DC)·sin(EA)·sin(FB)."
     },
     {
-      "id": "interior-specialization",
-      "title": "Interior-Arc Specialization",
-      "startLine": 157,
+      "id": "part4-interior-arc",
+      "title": "Part 4: Interior-Arc Specialization",
+      "startLine": 156,
       "endLine": 217,
-      "summary": "Proves that when all six arcs lie in (0,π), the Menelaus product is strictly positive and hence cannot equal -1. This confirms the geometric content: at least one division point must be external for collinearity.",
-      "mathContext": "Geometric fact: a transversal to a triangle must cross an odd number of sides externally. All-interior configurations give a positive product, not -1."
+      "summary": "sphericalMenelausProduct_pos_of_interior (positive product when all arcs ∈ (0,π)) and not_menelaus_of_all_interior (all-interior configs cannot be Menelaus transversals)."
     },
     {
-      "id": "duality-and-examples",
-      "title": "Ceva-Menelaus Duality and Examples",
-      "startLine": 219,
+      "id": "part5-ceva-menelaus-duality",
+      "title": "Part 5: Ceva–Menelaus Duality on the Sphere",
+      "startLine": 218,
+      "endLine": 251,
+      "summary": "spherical_ceva_menelaus_duality: product = 1 (Ceva) vs product = -1 (Menelaus) on the sphere."
+    },
+    {
+      "id": "part6-midpoint-example",
+      "title": "Part 6: Example — External Midpoint Configuration",
+      "startLine": 252,
+      "endLine": 274,
+      "summary": "spherical_menelaus_midpoint_example: the midpoint specialization of the spherical Menelaus condition."
+    },
+    {
+      "id": "part7-sin-vs-direct",
+      "title": "Part 7: sin vs direct-ratio comparison (Euclidean)",
+      "startLine": 275,
       "endLine": 297,
-      "summary": "Proves the algebraic duality between spherical Ceva (product = 1) and spherical Menelaus (product = -1). Also provides a midpoint example (when BD = DC, the first ratio is 1) and a comparison with the Euclidean case (direct lengths vs sin).",
-      "mathContext": "Ceva: $P = 1 \\iff \\sin(BD)\\sin(CE)\\sin(AF) = \\sin(DC)\\sin(EA)\\sin(FB)$. Menelaus: $P = -1 \\iff$ same with negation. Both are proved by `menelaus_algebraic_core` with appropriate target."
+      "summary": "spherical_euclidean_menelaus_same_core: the sin-based and direct-length Menelaus conditions share the same algebraic core."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 298,
+      "endLine": 340,
+      "summary": "Recap of the 6 core results + 4 sin-property lemmas (0 sorries, 0 axioms), the shared algebraic core with OQ02's sinh version, and the completed Euclidean/spherical/hyperbolic × Ceva/Menelaus 2×2 matrix."
     }
   ],
   "conclusion": {

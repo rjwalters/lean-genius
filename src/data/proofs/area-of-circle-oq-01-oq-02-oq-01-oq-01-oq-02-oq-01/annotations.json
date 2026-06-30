@@ -1,0 +1,114 @@
+[
+ {
+  "id": "ann-intro",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "range": {
+   "startLine": 1,
+   "endLine": 35
+  },
+  "type": "concept",
+  "title": "From Argmax to Strict Unimodality",
+  "content": "The parent entry proves that n=5 maximizes the unit n-ball volume \u03c9_n = \u03c0^(n/2)/\u0393(n/2+1): \u03c9_n \u2264 \u03c9_5 for all n. That is a statement about the LOCATION of the maximum only \u2014 it is silent on whether the sequence climbs monotonically to that peak or wanders. This file closes that gap by proving STRICT UNIMODALITY: the sequence strictly increases \u03c9_0 < \u03c9_1 < \u03c9_2 < \u03c9_3 < \u03c9_4 < \u03c9_5, and lies strictly below \u03c9_5 for every n \u2260 5. The shape is therefore a single strict hump with no plateaus.\n\nThe file imports the parent and reuses its explicit values \u03c9_0=1, \u03c9_1=2, \u03c9_2=\u03c0, \u03c9_3=4\u03c0/3, \u03c9_4=\u03c0\u00b2/2, \u03c9_5=8\u03c0\u00b2/15, its two-step strict-decrease lemma, and its parity-subsequence bounds.",
+  "mathContext": "Argmax: \u2200 n, \u03c9_n \u2264 \u03c9_5. Strict unimodality strengthens this to (\u2200 m<n\u22645, \u03c9_m<\u03c9_n) \u2227 (\u2200 n\u22605, \u03c9_n<\u03c9_5).",
+  "significance": "Distinguishes 'where is the max' from 'what is the full monotonicity profile' \u2014 the latter is what justifies informal claims like '\u03c9_4 < \u03c9_5 strictly, with no tie'.",
+  "relatedConcepts": [
+   "unimodal sequence",
+   "argmax vs profile",
+   "Gamma function",
+   "unit ball volume"
+  ],
+  "prerequisites": [
+   "AreaOfCircleOQ01OQ02OQ01OQ01OQ02 (parent: argmax + descent)"
+  ]
+ },
+ {
+  "id": "ann-ascent-steps",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "range": {
+   "startLine": 37,
+   "endLine": 66
+  },
+  "type": "technique",
+  "title": "The Five Elementary Ascent Steps",
+  "content": "Each one-step increase \u03c9_k < \u03c9_(k+1) for k \u2208 {0,1,2,3,4} reduces, via the parent's closed forms, to an elementary inequality:\n  \u2022 \u03c9_0=1 < 2=\u03c9_1 \u2014 pure arithmetic (norm_num).\n  \u2022 \u03c9_1=2 < \u03c0=\u03c9_2 \u2014 from \u03c0 > 3 (Real.pi_gt_three).\n  \u2022 \u03c9_2=\u03c0 < 4\u03c0/3=\u03c9_3 \u2014 the gap is \u03c0/3 > 0 (only \u03c0 > 0 needed).\n  \u2022 \u03c9_3=4\u03c0/3 < \u03c0\u00b2/2=\u03c9_4 \u2014 equivalent to 8\u03c0 < 3\u03c0\u00b2, i.e. 8 < 3\u03c0, which holds since \u03c0 > 3 gives 3\u03c0 > 9 (nlinarith).\n  \u2022 \u03c9_4=\u03c0\u00b2/2 < 8\u03c0\u00b2/15=\u03c9_5 \u2014 equivalent to 15 < 16; NO bound on \u03c0 is needed (linarith with \u03c0\u00b2 > 0).\nThe crude \u03c0 > 3 suffices throughout \u2014 the same bound the parent uses for its base cases.",
+  "mathContext": "Sharpest step \u03c9_4 < \u03c9_5 \u21d4 \u03c0\u00b2/2 < 8\u03c0\u00b2/15 \u21d4 1/2 < 8/15 \u21d4 15 < 16, independent of \u03c0.",
+  "significance": "Shows the ascent is genuinely cheap: no fine \u03c0 estimate, no Gamma analysis \u2014 just the explicit values and \u03c0 > 3.",
+  "relatedConcepts": [
+   "explicit Gamma values",
+   "rational comparison",
+   "nlinarith",
+   "pi bounds"
+  ],
+  "prerequisites": [
+   "omega_zero..omega_five (parent explicit values)"
+  ]
+ },
+ {
+  "id": "ann-strict-ascent",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "range": {
+   "startLine": 68,
+   "endLine": 74
+  },
+  "type": "technique",
+  "title": "Transitivity via Finite Case Split",
+  "content": "omega_strict_ascent bundles the five concrete steps into the uniform statement: m < n \u2264 5 \u21d2 \u03c9_m < \u03c9_n. After introducing the five step inequalities as hypotheses h01,\u2026,h45, the proof does `interval_cases n <;> interval_cases m <;> linarith`. Since n \u2264 5 and m < n, both range over a finite set; each leaf goal \u03c9_a < \u03c9_b (with a < b \u2264 5) is a linear consequence of the chained steps (e.g. \u03c9_0 < \u03c9_3 follows from h01, h12, h23), which `linarith` discharges automatically. This is the cleanest way to turn a chain of adjacent strict inequalities into an order relation over an interval.",
+  "mathContext": "For a<b\u22645, \u03c9_a<\u03c9_b = sum of adjacent gaps (\u03c9_{a+1}-\u03c9_a)+\u2026+(\u03c9_b-\u03c9_{b-1}), each > 0.",
+  "significance": "Avoids a hand-written induction; the finite range makes case explosion harmless and linarith handles the transitivity bookkeeping.",
+  "relatedConcepts": [
+   "interval_cases",
+   "linarith",
+   "transitivity of <",
+   "strict monotonicity on a finite set"
+  ],
+  "prerequisites": [
+   "the five ascent-step lemmas"
+  ]
+ },
+ {
+  "id": "ann-strict-max",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "range": {
+   "startLine": 76,
+   "endLine": 92
+  },
+  "type": "key-step",
+  "title": "Strict Global Maximum: Two-Sided Closure",
+  "content": "omega_five_strict_max proves \u03c9_n < \u03c9_5 for EVERY n \u2260 5, the strict sharpening of the parent's \u03c9_n \u2264 \u03c9_5. The case split is on n \u2260 5:\n  \u2022 n < 5: directly the strict ascent.\n  \u2022 n > 5: reuse the parent's descent. Split n by parity. Even n = m+m (\u2265 6 \u21d2 m \u2265 3) is rewritten as 6 + 2(m-3) and bounded by omega_even_le_six then omega_six_lt_five. Odd n = 2m+1 (\u2265 7 \u21d2 m \u2265 3) is rewritten as 7 + 2(m-3) and bounded by omega_odd_le_seven then omega_seven_lt_five. The `omega` tactic discharges the arithmetic index rewrites.",
+  "mathContext": "n>5 even: \u03c9_n \u2264 \u03c9_6 < \u03c9_5. n>5 odd: \u03c9_n \u2264 \u03c9_7 < \u03c9_5. Both subsequences inherit the parent's two-step strict decrease.",
+  "significance": "Combines the new ascent (n<5) with inherited descent (n>5) into the clean two-sided statement: 5 is the unique strict maximizer.",
+  "relatedConcepts": [
+   "parity subsequences",
+   "strict maximum",
+   "omega_even_le_six",
+   "omega_odd_le_seven"
+  ],
+  "prerequisites": [
+   "omega_strict_ascent",
+   "parent descent lemmas"
+  ]
+ },
+ {
+  "id": "ann-unimodal",
+  "proofId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "range": {
+   "startLine": 94,
+   "endLine": 112
+  },
+  "type": "main-result",
+  "title": "Main Theorem: Strict Unimodality",
+  "content": "omega_strictly_unimodal packages the two halves into the full monotonicity profile: (\u2200 m n, m<n\u21925\u2265n \u21d2 \u03c9_m<\u03c9_n) \u2227 (\u2200 n, n\u22605 \u21d2 \u03c9_n<\u03c9_5). Read together with the parent's two-step strict decrease (\u03c9_(n+2) < \u03c9_n for n\u22655) and the sibling thin-shell limit (\u03c9_n \u2192 0), this completely settles the qualitative shape of the unit-ball-volume sequence: it rises strictly to a unique peak at the 5-ball and then declines strictly within each parity class toward 0. No plateaus, no second hump, a single strict maximizer.",
+  "mathContext": "\u03c9: \u2115 \u2192 \u211d is strictly unimodal with mode 5. Verified with 0 sorries, 0 axioms (only propext/Classical.choice/Quot.sound).",
+  "significance": "The headline structural result: upgrades 'n=5 is the argmax' to 'the sequence is strictly unimodal', the strongest elementary statement about its shape obtainable without the half-integer Gamma ratio.",
+  "relatedConcepts": [
+   "strict unimodality",
+   "mode of a sequence",
+   "concentration of measure",
+   "high-dimensional geometry"
+  ],
+  "prerequisites": [
+   "omega_strict_ascent",
+   "omega_five_strict_max"
+  ]
+ }
+]

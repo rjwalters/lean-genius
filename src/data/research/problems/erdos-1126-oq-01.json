@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (10 proved, 2 sorry), 6 axioms, 388 lines.",
+    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (all proved, 0 sorry), 6 axioms, 388 lines. The former almost-Jensen a.e.-doubling reduction is now axiom ae_double_of_almost_jensen; log_of_mul_is_additive is proved directly.",
     "builtItems": [
       "IsJensen definition in Erdos1126OQ01Problem.lean",
       "IsMultiplicative definition in Erdos1126OQ01Problem.lean",
@@ -54,7 +54,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove the 2 remaining sorries (almost_jensen reduction, log_of_mul_is_additive)",
+      "No remaining sorries; log_of_mul_is_additive proved, almost-Jensen a.e. reduction encoded as axiom ae_double_of_almost_jensen",
       "Create Aristotle companion file for routine lemmas",
       "Connect to Mathlib ConvexOn for Jensen-convexity relationship"
     ]
@@ -98,7 +98,7 @@
     {
       "path": "Proofs/Erdos1126OQ01Problem.lean",
       "filename": "Erdos1126OQ01Problem.lean",
-      "lineCount": 473,
+      "lineCount": 490,
       "theoremCount": 13,
       "axiomCount": 5,
       "defCount": 11,

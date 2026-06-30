@@ -26,21 +26,45 @@ open Finset
 def APFree {N : ℕ} (A : Finset (ZMod N)) : Prop :=
   ∀ a d : ZMod N, d ≠ 0 → a ∈ A → a + d ∈ A → a + 2 * d ∉ A
 
+/-- A single global (noncomputable, classical) decidability instance for `APFree`.
+
+    Every `Finset.filter (fun A => APFree A)` site in this file — the
+    `rothNumber` definition and the theorems that unfold it — elaborates
+    against this one instance, so the filtered sets are syntactically equal
+    and unify. Without it, instance synthesis fails on Mathlib v4.26.0
+    (`APFree` is a plain `def`, invisible to typeclass resolution), and
+    per-theorem `classical` patches produce filter terms that do NOT unify
+    with the one inside `rothNumber`. -/
+noncomputable instance {N : ℕ} : DecidablePred (@APFree N) :=
+  fun _ => Classical.dec _
+
 /-- The Roth number r₃(N): the maximum cardinality of an AP-free subset
     of ZMod N. This is the central quantity in Roth's theorem.
 
     r₃(N) = max { |A| : A ⊆ ZMod N, A is AP-free }
 
-    Note: When N = 0, ZMod 0 = ℤ and Finset.univ is not finite, so
-    this definition is only meaningful for N ≥ 1 (where ZMod N is finite). -/
+    When N = 0, ZMod 0 = ℤ is infinite, so `Finset.univ` does not exist
+    (`Fintype (ZMod N)` requires `NeZero N`); we assign the junk value 0.
+    All substantive theorems assume `NeZero N` and work through the
+    equation lemma `rothNumber_def`. -/
 noncomputable def rothNumber (N : ℕ) : ℕ :=
-  Finset.sup (Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A))
-    Finset.card
+  if h : N = 0 then 0
+  else
+    haveI : NeZero N := ⟨h⟩
+    Finset.sup (Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A))
+      Finset.card
+
+/-- Equation lemma for `rothNumber` in the meaningful case `N ≠ 0`. -/
+theorem rothNumber_def {N : ℕ} [NeZero N] :
+    rothNumber N =
+      Finset.sup (Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A))
+        Finset.card :=
+  dif_neg (NeZero.ne N)
 
 /-- The empty set is AP-free. -/
 theorem apFree_empty {N : ℕ} : APFree (∅ : Finset (ZMod N)) := by
   intro a d _ ha
-  exact absurd ha (Finset.not_mem_empty a)
+  exact absurd ha (Finset.notMem_empty a)
 
 /-- A singleton set is AP-free. -/
 theorem apFree_singleton {N : ℕ} (x : ZMod N) : APFree ({x} : Finset (ZMod N)) := by
@@ -56,17 +80,17 @@ theorem apFree_subset {N : ℕ} {A B : Finset (ZMod N)} (h : B ⊆ A) (hA : APFr
     APFree B :=
   fun a d hd ha had hadd => hA a d hd (h ha) (h had) (h hadd)
 
-/-- For N ≥ 2, ZMod N contains the 3-AP {0, 1, 2}, so is not AP-free. -/
-theorem not_apFree_univ {N : ℕ} (hN : 1 < N) :
+/-- For N ≥ 2, ZMod N contains the 3-AP {0, 1, 2}, so is not AP-free.
+    (`NeZero N` is needed for `Finset.univ` to exist in the statement.) -/
+theorem not_apFree_univ {N : ℕ} [NeZero N] (hN : 1 < N) :
     ¬APFree (Finset.univ : Finset (ZMod N)) := by
-  haveI : NeZero N := ⟨by omega⟩
   haveI : Fact (1 < N) := ⟨hN⟩
   intro h
   exact h 0 1 one_ne_zero (Finset.mem_univ _) (Finset.mem_univ _) (Finset.mem_univ _)
 
 /-- r₃(N) ≤ N: no AP-free subset of ZMod N can exceed N elements. -/
 theorem rothNumber_le (N : ℕ) [NeZero N] : rothNumber N ≤ N := by
-  unfold rothNumber
+  rw [rothNumber_def]
   apply Finset.sup_le
   intro A hA
   rw [Finset.mem_filter] at hA
@@ -76,13 +100,14 @@ theorem rothNumber_le (N : ℕ) [NeZero N] : rothNumber N ≤ N := by
 /-- r₃(N) < N for N ≥ 2: the full ZMod N is never AP-free. -/
 theorem rothNumber_lt {N : ℕ} (hN : 1 < N) : rothNumber N < N := by
   haveI : NeZero N := ⟨by omega⟩
-  unfold rothNumber
-  rw [Finset.sup_lt_iff (show (0 : ℕ) < N by omega)]
+  rw [rothNumber_def, Finset.sup_lt_iff (show (0 : ℕ) < N by omega)]
   intro A hA
   rw [Finset.mem_filter] at hA
   by_contra hge; push_neg at hge
-  have hcard : A.card = Fintype.card (ZMod N) :=
-    le_antisymm (Finset.card_le_univ A) (ZMod.card N ▸ hge)
+  have hcard : A.card = Fintype.card (ZMod N) := by
+    have h1 : A.card ≤ Fintype.card (ZMod N) := Finset.card_le_univ A
+    have h2 : Fintype.card (ZMod N) = N := ZMod.card N
+    omega
   exact absurd (Finset.eq_univ_of_card A hcard ▸ hA.2) (not_apFree_univ hN)
 
 /-- r₃(N) ≤ N - 1 for N ≥ 2 (corollary of the strict bound). -/
@@ -91,19 +116,22 @@ theorem rothNumber_le_sub_one {N : ℕ} (hN : 1 < N) : rothNumber N ≤ N - 1 :=
 
 /-- r₃(N) ≥ 1 when N ≥ 1: any singleton is AP-free. -/
 theorem rothNumber_pos (N : ℕ) [NeZero N] : 1 ≤ rothNumber N := by
-  unfold rothNumber
+  rw [rothNumber_def]
   have hset : ({0} : Finset (ZMod N)) ∈
       Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A) := by
     rw [Finset.mem_filter]
     exact ⟨Finset.mem_powerset.mpr (Finset.subset_univ _), apFree_singleton 0⟩
   calc 1 = ({0} : Finset (ZMod N)).card := by simp
-    _ ≤ Finset.sup (Finset.univ.powerset.filter (fun A => APFree A)) Finset.card :=
+    _ ≤ Finset.sup (Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A))
+          Finset.card :=
         Finset.le_sup hset
 
-/-- Any AP-free subset A of ZMod N satisfies |A| ≤ r₃(N). -/
-theorem card_le_rothNumber {N : ℕ} (A : Finset (ZMod N)) (hA : APFree A) :
+/-- Any AP-free subset A of ZMod N satisfies |A| ≤ r₃(N).
+    (`NeZero N` is required: for N = 0 the junk value `rothNumber 0 = 0`
+    is exceeded by any AP-free singleton in ZMod 0 = ℤ.) -/
+theorem card_le_rothNumber {N : ℕ} [NeZero N] (A : Finset (ZMod N)) (hA : APFree A) :
     A.card ≤ rothNumber N := by
-  unfold rothNumber
+  rw [rothNumber_def]
   apply Finset.le_sup
   rw [Finset.mem_filter]
   exact ⟨Finset.mem_powerset.mpr (Finset.subset_univ _), hA⟩
@@ -111,12 +139,13 @@ theorem card_le_rothNumber {N : ℕ} (A : Finset (ZMod N)) (hA : APFree A) :
 /-- The Roth number is achieved: there exists an AP-free set of maximum size. -/
 theorem rothNumber_achieved {N : ℕ} [NeZero N] :
     ∃ A : Finset (ZMod N), APFree A ∧ A.card = rothNumber N := by
-  set S := Finset.univ.powerset.filter (fun A : Finset (ZMod N) => APFree A)
-  have hne : S.Nonempty :=
+  have hne : (Finset.univ.powerset.filter
+      (fun A : Finset (ZMod N) => APFree A)).Nonempty :=
     ⟨∅, Finset.mem_filter.mpr ⟨Finset.mem_powerset.mpr (Finset.empty_subset _), apFree_empty⟩⟩
-  obtain ⟨A, hAS, hmax⟩ := Finset.exists_max_image S Finset.card hne
-  exact ⟨A, (Finset.mem_filter.mp hAS).2,
-    le_antisymm (Finset.le_sup hAS) (Finset.sup_le fun B hB => hmax B hB)⟩
+  obtain ⟨A, hAS, hmax⟩ := Finset.exists_max_image _ Finset.card hne
+  refine ⟨A, (Finset.mem_filter.mp hAS).2, ?_⟩
+  rw [rothNumber_def]
+  exact le_antisymm (Finset.le_sup hAS) (Finset.sup_le fun B hB => hmax B hB)
 
 /-- r₃(2) = 1: in ZMod 2, every 2-element set contains the AP {0, 1, 0}. -/
 theorem rothNumber_two : rothNumber 2 = 1 := by
@@ -129,9 +158,12 @@ theorem rothNumber_three : rothNumber 3 = 2 := by
   have hlt : rothNumber 3 < 3 := rothNumber_lt (by omega)
   suffices 2 ≤ rothNumber 3 by omega
   apply card_le_rothNumber ({0, 1} : Finset (ZMod 3))
-  intro a d hd ha had hadd
-  simp only [Finset.mem_insert, Finset.mem_singleton] at ha had hadd
-  fin_cases a <;> fin_cases d <;> simp_all
+  -- Unfold `APFree` by defeq so `decide` can use the computable
+  -- `Fintype (ZMod 3)` instances (the global `APFree` instance is
+  -- classical and does not evaluate).
+  show ∀ a d : ZMod 3, d ≠ 0 → a ∈ ({0, 1} : Finset (ZMod 3)) →
+    a + d ∈ ({0, 1} : Finset (ZMod 3)) → a + 2 * d ∉ ({0, 1} : Finset (ZMod 3))
+  decide
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART I.B: QUALITATIVE ROTH ASYMPTOTIC
@@ -171,7 +203,7 @@ theorem rothNumber_div_tendsto_zero :
   have hN_pos : (0 : ℝ) < N := by exact_mod_cast hN1_le
   -- `|rothNumber N / N - 0| = rothNumber N / N` (both numerator and denominator nonneg).
   rw [Real.dist_eq, sub_zero, abs_div, abs_of_nonneg (Nat.cast_nonneg _),
-      abs_of_pos hN_pos, div_lt_iff hN_pos]
+      abs_of_pos hN_pos, div_lt_iff₀ hN_pos]
   -- Suffices to show `rothNumber N < δ * N`, since `δ ≤ ε` and `N ≥ 0`.
   suffices h : (rothNumber N : ℝ) < δ * N by
     calc (rothNumber N : ℝ) < δ * N := h
@@ -188,35 +220,23 @@ theorem rothNumber_div_tendsto_zero :
 -- PART II: ITERATION BOUND FROM DENSITY INCREMENT
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- The density increment gives an explicit iteration bound:
-    if density starts at δ, then after k increments of δ²/100 each,
-    the density reaches δ + kδ²/100. For this to stay ≤ 1, we need
-    k ≤ ⌊100/δ²⌋. -/
-theorem max_iterations_bound (delta : ℝ) (hdelta : 0 < delta) :
-    ∀ k : ℕ, delta + k * delta ^ 2 / 100 > 1 → k > ⌊100 / delta ^ 2⌋₊ := by
-  intro k hk
-  by_contra h
-  push_neg at h
-  have hd2 : delta ^ 2 > 0 := by positivity
-  have hk_le : (k : ℝ) ≤ ⌊100 / delta ^ 2⌋₊ := Nat.cast_le.mpr h
-  have hfloor : (⌊100 / delta ^ 2⌋₊ : ℝ) ≤ 100 / delta ^ 2 := Nat.floor_le (by positivity)
-  have hk_bound : (k : ℝ) ≤ 100 / delta ^ 2 := le_trans hk_le hfloor
-  have hkd : k * delta ^ 2 / 100 ≤ 1 := by
-    rw [div_le_one (by norm_num : (100 : ℝ) > 0)]
-    calc (k : ℝ) * delta ^ 2
-        ≤ (100 / delta ^ 2) * delta ^ 2 :=
-          mul_le_mul_of_nonneg_right hk_bound (le_of_lt hd2)
-      _ = 100 := by field_simp
-  linarith
+-- NOTE: max_iterations_bound (δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊) was REMOVED.
+-- The statement is FALSE for δ > 1: with δ = 2, k = 0 the hypothesis holds
+-- (2 > 1) but the conclusion demands 0 > ⌊25⌋₊ = 25. Only the weaker bound
+-- k > 100(1-δ)/δ² follows from the hypothesis; no extra side condition
+-- (including δ ≤ 1) recovers the stated bound. See S3 session memo
+-- (research/problems/roth-theorem-k3-oq-01-incomplete-01, 2026-06-01).
 
-/-- Contrapositive form: if density δ satisfies δ + kδ²/100 ≤ 1, then
-    we can perform at least k density increments. -/
+/-- If density δ > 0 satisfies δ + kδ²/100 ≤ 1 (i.e., k increments of
+    δ²/100 starting from δ have not yet pushed the density past 1),
+    then k ≤ 100/δ². -/
 theorem iterations_before_contradiction (delta : ℝ) (hdelta : 0 < delta) (k : ℕ)
     (hk : delta + k * delta ^ 2 / 100 ≤ 1) :
     (k : ℝ) ≤ 100 / delta ^ 2 := by
-  have hd2 : delta ^ 2 > 0 := by positivity
-  rw [div_le_iff (by norm_num : (100 : ℝ) > 0)] at hk
-  linarith [mul_comm (k : ℝ) (delta ^ 2)]
+  have hd2 : (0 : ℝ) < delta ^ 2 := by positivity
+  rw [le_div_iff₀ hd2]
+  -- From the hypothesis, k·δ²/100 ≤ 1 - δ ≤ 1, hence k·δ² ≤ 100.
+  linarith
 
 -- NOTE: density_upper_bound_from_iteration (δ² ≤ 100/N) was REMOVED.
 -- The claim r₃(N) ≤ 10√N is FALSE for large N:

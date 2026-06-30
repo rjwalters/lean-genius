@@ -35,6 +35,10 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_SCRIPT="$REPO_ROOT/scripts/research/claim-problem.sh"
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5).
+# shellcheck source=lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -230,11 +234,17 @@ launch_agent() {
     tmux kill-session -t "$session_name" 2>/dev/null || true
 
     # Launch in tmux with resilient wrapper for error handling.
-    # Per-role model override: set RESEARCHER_CLAUDE_MODEL to A/B a different
-    # model (e.g. claude-fable-5) without affecting other agent roles. Falls
-    # through to the global CLAUDE_MODEL default in claude-wrapper.sh.
+    # Model resolution chain (first set wins):
+    #   1. RESEARCHER_${slot}_CLAUDE_MODEL  — per-slot pin (e.g. RESEARCHER_1_CLAUDE_MODEL=claude-fable-5)
+    #   2. RESEARCHER_CLAUDE_MODEL          — per-role override (whole pool)
+    #   3. CLAUDE_MODEL                      — global override
+    #   4. claude-opus-4-8                   — wrapper default
+    # Per-slot lets one researcher A/B a different model while peers stay on
+    # the pool default. The daemon's respawn path in scripts/lean/launch.sh
+    # honours the same chain so respawns preserve the pin.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    local researcher_model="${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+    local slot_model_var="RESEARCHER_${agent_num}_CLAUDE_MODEL"
+    local researcher_model="${!slot_model_var:-${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}}"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
         "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 CLAUDE_MODEL=$researcher_model $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
 
@@ -347,6 +357,17 @@ signal_graceful_stop() {
     fi
 }
 
+# Reclaim each researcher-N worktree using the shared safety guards. A dirty,
+# unpushed/unbacked, locked, busy, or current-checkout worktree is preserved.
+# Idempotent and quiet when there is nothing to remove.
+reclaim_worktrees() {
+    for worktree in "$WORKTREES_DIR"/researcher-*; do
+        [[ -d "$worktree" ]] || continue
+        remove_own_worktree "$worktree"
+    done
+    git worktree prune 2>/dev/null || true
+}
+
 # Force stop all agents
 force_stop() {
     print_info "Force stopping all research agents..."
@@ -362,22 +383,20 @@ force_stop() {
 
     # Clean up stale claims
     "$CLAIM_SCRIPT" cleanup 2>/dev/null || true
+
+    # Reclaim the now-idle worktrees. The sessions are killed above, so each
+    # researcher-N worktree is idle; the shared guards preserve any that are
+    # dirty / unpushed-or-unbacked / locked / current-checkout. Previously only
+    # the explicit --cleanup path removed worktrees, leaking them on --stop.
+    reclaim_worktrees
 }
 
 # Cleanup everything
 cleanup_all() {
     force_stop
 
-    print_info "Removing researcher worktrees..."
-    for worktree in "$WORKTREES_DIR"/researcher-*; do
-        if [[ -d "$worktree" ]]; then
-            git worktree remove "$worktree" --force 2>/dev/null && \
-                print_success "Removed $worktree" || \
-                print_warning "Could not remove $worktree"
-        fi
-    done
-
-    git worktree prune 2>/dev/null || true
+    print_info "Reclaiming researcher worktrees..."
+    reclaim_worktrees
     print_success "Cleanup complete"
 }
 

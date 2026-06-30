@@ -66,6 +66,7 @@ namespace AmgmInequalityOQ04OQ02
 
 open MeasureTheory intervalIntegral Real
 open AmgmInequalityOQ04OQ01 (ellipticK)
+open scoped Topology
 
 -- ============================================================================
 -- § 1. The Complete Elliptic Integral E(k) of the Second Kind
@@ -594,7 +595,7 @@ lemma dIntegrandE_abs_le_bound
     abs_of_pos hκ_sqrt_pos
   rw [abs_div, h_num, h_denom]
   -- Goal: |κ| · sin²θ / √(1 − κ² sin²θ) ≤ M · sin²θ / √(1 − M² sin²θ).
-  apply div_le_div
+  apply div_le_div₀
   · exact mul_nonneg hM_nn hsin2_nn
   · exact mul_le_mul_of_nonneg_right habs_κ hsin2_nn
   · exact hM_sqrt_pos
@@ -846,7 +847,7 @@ lemma dIntegrandK_abs_le_bound
   -- Goal:
   --   |κ| · sin²θ / [(1 − κ²sin²θ)·√(1 − κ²sin²θ)]
   --     ≤ M · sin²θ / [(1 − M²sin²θ)·√(1 − M²sin²θ)].
-  apply div_le_div
+  apply div_le_div₀
   · -- 0 ≤ numerator on RHS
     exact mul_nonneg hM_nn hsin2_nn
   · -- numerator inequality: |κ|·sin²θ ≤ M·sin²θ
@@ -930,8 +931,18 @@ lemma integral_sin_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
       Real.mul_self_sqrt
         (le_of_lt (AmgmInequalityOQ04OQ01.denom_pos hk_sq θ))
     unfold AmgmInequalityOQ04OQ01.ellipticIntegrand ellipticIntegrandE
-    field_simp
-    linear_combination hs_sq
+    -- Canonicalize all radicands to a single `sin²·k²` order so `ring`/
+    -- `linear_combination` see one sqrt atom (current Mathlib `ring_nf`
+    -- commutes `k²·sin²θ → sin²θ·k²`, splitting the atom otherwise).
+    simp only [show (1 : ℝ) - k ^ 2 * Real.sin θ ^ 2
+        = 1 - Real.sin θ ^ 2 * k ^ 2 from by ring]
+    have hs_sq' : Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2)
+        * Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2) = 1 - Real.sin θ ^ 2 * k ^ 2 := by
+      rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact hs_sq
+    have hs_ne' : Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2) ≠ 0 := by
+      rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact hs_ne
+    field_simp [hs_ne']
+    linear_combination hs_sq'
   rw [intervalIntegral.integral_congr h_pointwise]
   rw [intervalIntegral.integral_div]
   rw [intervalIntegral.integral_sub
@@ -1111,7 +1122,13 @@ lemma auxFnK_deriv_form_eq {k θ : ℝ} (hk : k ^ 2 < 1) :
     have h := Real.sin_sq_add_cos_sq θ
     linarith
   rw [hcos_sq]
-  field_simp [h_pos_ne, hs_ne]
+  simp only [show (1 : ℝ) - k ^ 2 * Real.sin θ ^ 2
+      = 1 - Real.sin θ ^ 2 * k ^ 2 from by ring]
+  have h_pos_ne' : (1 - Real.sin θ ^ 2 * k ^ 2) ≠ 0 := by
+    rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact h_pos_ne
+  have hs_ne' : Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2) ≠ 0 := by
+    rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact hs_ne
+  field_simp [h_pos_ne', hs_ne']
   ring
 
 /-- **Pointwise chain rule** for `auxFnK` in θ.
@@ -1204,7 +1221,17 @@ lemma auxFnK_hasDerivAt {k : ℝ} (hk : k ^ 2 < 1) (θ : ℝ) :
         = 1 - k ^ 2 * Real.sin θ ^ 2 := by
       rw [sq, Real.mul_self_sqrt h_pos.le]
     rw [hsq]
-    field_simp [h_pos_ne, hs_ne]
+    simp only [show (1 : ℝ) - k ^ 2 * Real.sin θ ^ 2
+        = 1 - Real.sin θ ^ 2 * k ^ 2 from by ring]
+    have h_pos_ne' : (1 - Real.sin θ ^ 2 * k ^ 2) ≠ 0 := by
+      rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact h_pos_ne
+    have hs_ne' : Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2) ≠ 0 := by
+      rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact hs_ne
+    have hsq' : Real.sqrt (1 - Real.sin θ ^ 2 * k ^ 2) ^ 2
+        = 1 - Real.sin θ ^ 2 * k ^ 2 := by
+      rw [mul_comm (Real.sin θ ^ 2) (k ^ 2)]; exact hsq
+    field_simp [h_pos_ne', hs_ne']
+    rw [hsq']
     ring
   -- Compose: target → intermediate → raw, in reverse so `exact h_div` closes.
   rw [show
@@ -1397,7 +1424,6 @@ theorem integral_dIntegrandK_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
     have hsp_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hsp.ne'
     unfold dIntegrandK
     field_simp
-    ring
   rw [intervalIntegral.integral_congr h_pw] at h_ftc
   -- Split the integral and pull the constant `(1-k²)/k` outside.
   have h_cos_int : IntervalIntegrable

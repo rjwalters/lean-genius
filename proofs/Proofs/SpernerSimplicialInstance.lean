@@ -970,6 +970,23 @@ def intervalTriangulation (m : ℕ) (hm : 0 < m) :
   adj_vertex := fun s k s' k' hadj => iadj_vertex' hadj
   adj_ne := fun s k s' k' hadj => iadj_ne' hadj
 
+/-- Computational rightward adjacency of the interval triangulation:
+from cell `i`, the face opposite vertex `0` leads to cell `i+1`
+(entered through its vertex-`1` face), provided `i+1 < m`.
+
+This is a public accessor exposing the rightward branch of the
+otherwise-`private` `iadj`. It is the missing infrastructure that
+lets a downstream file (e.g. the constructive Scarf walk in
+`SpernerSimplicialInstanceOQ05Scarf1d`) reduce one step of the walk
+without access to the private adjacency definition. -/
+lemma intervalTriangulation_adj_zero {m : ℕ} (hm : 0 < m) (i : Fin m)
+    (h : i.val + 1 < m) :
+    (intervalTriangulation m hm).adj i ⟨0, by omega⟩
+      = some (⟨i.val + 1, h⟩, ⟨1, by omega⟩) := by
+  show iadj m i ⟨0, by omega⟩ = _
+  unfold iadj
+  rw [dif_pos rfl, dif_pos h]
+
 end Interval
 
 /-! ## Trivial 2-Simplex Triangulation

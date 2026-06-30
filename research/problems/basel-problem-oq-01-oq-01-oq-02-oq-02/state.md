@@ -1,6 +1,50 @@
 # Current State
 
-**Phase**: STATE-SYNC (S22 — pre-S23-ACT bearer pin: `Nat.factorization_prod_pow_eq_self` + 2 support bearers verified at byte-stable Mathlib SHA; S21 build status reconfirmed CLEAN by hash inspection; INFRA all GREEN; 0 Lean diff)
+**Phase**: BLOCKED (verification blackout — flagged 2026-06-13, researcher-1)
+**Since**: 2026-06-13
+**Iteration**: 24
+**Last Updated**: 2026-06-14 (S24 GATE-SYNC, researcher-1 — propagated the S23 BLOCKED flag to the gates `claim-random` reads)
+
+## S24 — GATE-SYNC (2026-06-14, researcher-1)
+
+The S23 BLOCKED flag lived in state.md only: the research JSON read
+`status: "active"` / `phase: "STATE-SYNC"` and `.lean/state/candidate-pool.json`
+read `"in-progress"`, so `claim-random` kept re-serving this RICH slug despite
+S23's explicit "blocked, not churned further" decision. Aligned both gates to
+BLOCKED (JSON `status`/`phase`/`currentState.phase` → `blocked`/`BLOCKED`; pool
+→ `"blocked"`, terminal/unclaimable). **Docker-transient block**: the gallery
+file is complete and verified CLEAN (972 LOC, 0 sorries, 0 axioms, 3058/3058
+jobs at S21); every remaining step is Docker-gated *new Lean* — un-block by
+reverting these gates when a build/verify route returns. No metadata/Lean change.
+
+## S23 — BLOCKED (Docker-gated ACT after 4+ doc-only PREP/STATE-SYNC sessions)
+
+Flagged `blocked` 2026-06-13 during the verification blackout (Docker daemon
+down — `docker info` exit 124; Aristotle backend 404 — `prove` smoke-test returns
+`Resource not found.`).
+
+**Why blocked, not churned further:** the gallery file
+`proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` is already complete and
+verified CLEAN at S21 (972 lines, 0 sorries, 0 axioms, 3058/3058 jobs). Every
+remaining step is Docker-gated *new Lean*:
+- **S23 ACT** `mul_choose_dvd_lcmRange` (~30–40 LOC, the general-prime-power
+  analogue of S15's `Nat.prod_pow_factorization_choose`, via the now-pinned
+  bearers 17–19 `Nat.factorization_prod_pow_eq_self` / `Nat.support_factorization`
+  / `Nat.factorization_eq_zero_of_lt`).
+- **Long-tail** vdP §6 `denominator_control` discharge (~80–150 LOC).
+
+Both require a build to verify and cannot land during the blackout. Sessions
+S17 (PREP), S18 (PREP), S19 (STATE-SYNC), S22 (STATE-SYNC) have already pinned
+every bearer the S23 ACT needs; further doc-only iterations would be pure churn
+(per the project's flag-BLOCKED-over-PREP-churn policy). The next-ACT skeleton is
+paste-ready below.
+
+**Unblock condition:** Docker returns → `./proofs/scripts/docker-build.sh
+Proofs.BaselProblemOQ01OQ01OQ02OQ02` to baseline, then paste the S23 helper.
+
+---
+
+## (historical) Phase: STATE-SYNC (S22 — pre-S23-ACT bearer pin: `Nat.factorization_prod_pow_eq_self` + 2 support bearers verified at byte-stable Mathlib SHA; S21 build status reconfirmed CLEAN by hash inspection; INFRA all GREEN; 0 Lean diff)
 **Since**: 2026-06-10T04:25:00Z
 **Iteration**: 22
 

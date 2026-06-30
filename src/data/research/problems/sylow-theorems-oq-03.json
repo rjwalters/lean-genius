@@ -1,8 +1,8 @@
 {
   "slug": "sylow-theorems-oq-03",
   "title": "Pro-p Sylow — narrow axiom-discharge targets adjacent to completed OQ-02",
-  "phase": "PREP",
-  "status": "in-progress",
+  "phase": "ACT-REALIZED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -35,7 +35,7 @@
       "currentApproach": 15,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-09T23:51:53Z",
+    "lastUpdate": "2026-06-13T00:00:00Z",
     "leanFiles": [
       "proofs/Proofs/SylowTheoremOQ03.lean",
       "proofs/Proofs/SylowTheoremOQ03B.lean",
@@ -43,7 +43,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S8 STATE-SYNC (2026-06-09, researcher-6) — doc-only JSON catch-up after S7a (PR #22533) propagated to state.md but not to this gallery JSON. Verifies on-disk OQ-02 = 3 axioms / 0 sorries / 372 lines, OQ-03 + OQ-03B = 0 axioms / 0 sorries, gallery meta.json axiomCount=3 lineCount=372, all consistent with the §7d natural stopping point per state.md. S7a ACT (2026-06-05, researcher-1) — OQ-02 axiom drop 4 → 3 realized: deleted `axiom sylowProP_inter_trivial` L133 + `#check @sylowProP_inter_trivial` L372 in SylowTheoremOQ02.lean, gallery meta refreshed; Docker-verified Proofs.SylowTheoremOQ02 = 3061 jobs + Proofs.SylowTheoremOQ03B = 3066 jobs both clean. S6 ACT (2026-06-05) — Candidate B shipped: SylowTheoremOQ03B.lean discharges OQ-02 axiom sylowProP_inter_trivial via finite-quotient + IsPGroup + coprime-order argument, using PREP-4/5 phantom replacements (nhds_basis_clopen via ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one) and the IsTopologicalGroup typeclass bridge. Build-verified 3066 Docker jobs. OQ-02 axiom removal deferred to clean follow-on §7a (A* → S4 split precedent). S4 ACT (2026-05-16) — OQ-02 axiom drop 5→4 realized. S2 ACT (2026-05-15) — Candidate A* shipped with continuity-enhanced signature (sylowProP_projects_pgroup_continuous), build-verified 3062 Docker jobs. S1 OBSERVE doc-only: duplicate detection with completed sibling sylow-theorems-oq-02; audited OQ-02 open items (originally 5 axioms + 1 sorry); locked three candidates A/B/C with concrete Lean signatures + effort estimates.",
+    "progressSummary": "S9 COMPLETION-SYNC (2026-06-13, researcher-1) — promoted top-level status in-progress→completed and phase PREP→ACT-REALIZED to match currentState.phase (ACT-REALIZED) and the §7d natural-stopping-point declaration unanimous across state.md/knowledge.md/currentState. Build-free re-verification under Docker outage: on-disk SylowTheoremOQ02.lean = 372 lines / 3 axioms (sylowProP_existence L108, sylowProP_conjugacy L119, frattini_profinite L126) / 0 sorries; SylowTheoremOQ03.lean = 0 axioms (the lone grep hit at L60 is the word 'axiom' inside a docstring) / 0 sorries; SylowTheoremOQ03B.lean = 0 axioms / 0 sorries; gallery src/data/proofs/sylow-theorems-oq-02/meta.json leanFile.axiomCount=3 lineCount=372 sorries=0 — all consistent, zero drift. Sibling parent sylow-theorems-oq-02 already status=completed; OQ-03 had remained in-progress, causing recurring depth-first no-op claims. Remaining items (§7b Mathlib upstream, §7c frattini restatement) are explicitly out-of-researcher-scope. S8 STATE-SYNC (2026-06-09, researcher-6) — doc-only JSON catch-up after S7a (PR #22533) propagated to state.md but not to this gallery JSON. Verifies on-disk OQ-02 = 3 axioms / 0 sorries / 372 lines, OQ-03 + OQ-03B = 0 axioms / 0 sorries, gallery meta.json axiomCount=3 lineCount=372, all consistent with the §7d natural stopping point per state.md. S7a ACT (2026-06-05, researcher-1) — OQ-02 axiom drop 4 → 3 realized: deleted `axiom sylowProP_inter_trivial` L133 + `#check @sylowProP_inter_trivial` L372 in SylowTheoremOQ02.lean, gallery meta refreshed; Docker-verified Proofs.SylowTheoremOQ02 = 3061 jobs + Proofs.SylowTheoremOQ03B = 3066 jobs both clean. S6 ACT (2026-06-05) — Candidate B shipped: SylowTheoremOQ03B.lean discharges OQ-02 axiom sylowProP_inter_trivial via finite-quotient + IsPGroup + coprime-order argument, using PREP-4/5 phantom replacements (nhds_basis_clopen via ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one) and the IsTopologicalGroup typeclass bridge. Build-verified 3066 Docker jobs. OQ-02 axiom removal deferred to clean follow-on §7a (A* → S4 split precedent). S4 ACT (2026-05-16) — OQ-02 axiom drop 5→4 realized. S2 ACT (2026-05-15) — Candidate A* shipped with continuity-enhanced signature (sylowProP_projects_pgroup_continuous), build-verified 3062 Docker jobs. S1 OBSERVE doc-only: duplicate detection with completed sibling sylow-theorems-oq-02; audited OQ-02 open items (originally 5 axioms + 1 sorry); locked three candidates A/B/C with concrete Lean signatures + effort estimates.",
     "builtItems": [
       "research/problems/sylow-theorems-oq-03/problem.md (OQ-02 audit table, three S2 candidates with formal signatures)",
       "research/problems/sylow-theorems-oq-03/knowledge.md (duplicate detection, detailed candidate proof sketches, recommended order A → C → B)",
@@ -95,13 +95,13 @@
     "seeker-selected"
   ],
   "relatedProofs": [
+    "inverse-galois",
     "sylow-theorem",
     "sylow-theorems",
     "sylow-theorems-oq-01",
     "sylow-theorems-oq-02",
     "sylow-theorems-oq-04",
-    "sylow-theorems-oq-05",
-    "inverse-galois"
+    "sylow-theorems-oq-05"
   ],
   "references": {
     "papers": [
@@ -131,8 +131,20 @@
     ]
   },
   "started": "2026-05-12T20:55:00Z",
-  "lastUpdate": "2026-06-09T23:51:53.000Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "significance": 7,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheoremsOQ05.lean",
+      "filename": "SylowTheoremsOQ05.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremsOQ05.lean"
+    }
+  ]
 }

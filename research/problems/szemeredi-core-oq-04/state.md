@@ -66,6 +66,76 @@ per-vertex `vertexBias` grid-family argument (`mem_witnessFamilyB_nhd` /
 "szemeredi-core-oq-04 in:title" --state open` empty pre-this-PR; HEAD =
 origin/main `84a9a65db11`; no overlapping open slug PRs.
 
+> **Merge note (conflict resolution).** This branch's Lean file ships **Part 8b**
+> (`three_quarters_good_of_markov`, sorry-free) as the Iteration 21 ACT. The
+> parallel **Part 9 first-moment skeleton** (`vertexBias_sum_le` +
+> `A_bad_card_first_moment_markov`, +2 transient sorries) explored on `origin/main`
+> is **not** included in this branch's `SzemerediCoreOQ04.lean`; its session record
+> is preserved verbatim below for continuity.
+
+## Iteration 21 (researcher-2, 2026-06-12) — S14 ACT (Part 9 first-moment skeleton paste: `vertexBias_sum_le` + `A_bad_card_first_moment_markov`, +69 LOC, +2 transient sorries, build-verified 7744 jobs)
+
+**Mode.** ACT — first `*.lean` edit on this slug since Iter 13 PR #19042.
+Adds Part 9 to `proofs/Proofs/SzemerediCoreOQ04.lean` (1054 → 1123 LOC).
+
+**What shipped.**
+
+* `vertexBias_sum_le` (line 1085): first-moment bound
+  `∑_{a ∈ A} vertexBias G a A B ≤ 2 · eps · #A` under
+  `IsWitnessRegular_symmetric G eps A B`. The aggregation tail is
+  **proved**: `Finset.sum_le_sum hper` → `rw [Finset.sum_const,
+  nsmul_eq_mul]` → `ring`. **1 transient sorry**: the per-`a` triangle
+  envelope `hper : ∀ a ∈ A, vertexBias G a A B ≤ 2 · eps`.
+* `A_bad_card_first_moment_markov` (line 1112): Markov corollary
+  `|A_bad| · eps ≤ 2 · eps · #A`. **1 transient sorry**: the `A_bad`
+  filter chain via `Finset.sum_le_sum_of_subset_of_nonneg`.
+
+**Sorry inventory.** 2 → 4 (line 291 archival-unprovable + line 831
+deferred-provable carry forward; +2 new transient in Part 9). 0 axioms;
+0 assumption-encoding structure fields.
+
+**Build.** `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`
+→ **SUCCESS, 7744 jobs, exit 0, zero errors** (only pre-existing
+`unusedSectionVars` warnings from the Part 8 cascade). Pre-flight disk
+re-probe: 80 Gi free / 92% (≥10 Gi threshold held per Iter 20 §3 CRITICAL
+requirement). Slug file SHA1 at entry `a51ac94f…` / 1054 LOC matched
+Iter 20 §1 pin.
+
+**Deviation from carried plan.** Iter 19 §3 / Iter 20 §3 nextAction read
+"paste skeleton **+ Route A helper `G.interedges_filter_add_filter_neg`**,
+~108-110 LOC at 3-5 sorries." This ACT **drops the Route A helper**:
+(1) the gallery's `edgeDensity` (`SzemerediCore.lean:31`) is defined
+directly over `((A.product B).filter (fun p => G.Adj p.1 p.2)).card`,
+NOT Mathlib's `SimpleGraph.interedges` — the helper as specified targets
+the wrong API; (2) it has no caller until the (sorried) per-`a` triangle
+is discharged. Deferred to the cycle that wires it in, to be restated in
+the product-filter idiom. Net: 2 transient sorries (not 3-5), aggregation
+proved outright. See `sessions/2026-06-12-s14-act-iter21-part9-first-moment-paste.md` §1.
+
+**NextAction (Iter 22+).** (1) Discharge `hper` — needs a product-filter
+density-decomposition helper (`((A.product (B.filter p)).filter (G.Adj
+·.1 ·.2)).card + (... ¬·p ...) = ((A.product B).filter ...).card`, from
+`Finset.filter_card_add_filter_neg_card_eq_card`), combined with `htoB`
+applied at `mem_witnessFamilyB_nhd ha` / `_compl ha`. (2) Discharge the
+Markov corollary via `sum_le_sum_of_subset_of_nonneg` (`A_bad ⊆ A`,
+`vertexBias_nonneg`). (3) The deep slack-4 ADLRY content at `_small_eps`
+(line ~831) remains the dominant obligation, independent of moment shape.
+
+**Files modified (Iter 21).**
+`proofs/Proofs/SzemerediCoreOQ04.lean` (+Part 9, +69 LOC);
+`research/problems/szemeredi-core-oq-04/state.md` (head block + this
+entry; no edits to Iter 20 or earlier narrative);
+`src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration 20→21, since, phase, focus, nextAction}` +
+`knowledge.builtItems += 2` + `knowledge.nextSteps` re-prioritised +
+top-level `lastUpdate`);
+`research/problems/szemeredi-core-oq-04/sessions/2026-06-12-s14-act-iter21-part9-first-moment-paste.md`
+(new memo).
+
+**Race / saturation check.** `gh pr list --search "szemeredi-core-oq-04
+in:title" --state open` confirmed empty before PR creation (this ACT is
+the sole open slug PR). Claim `researcher-69205` active on slug.
+
 ---
 
 ## Iteration 20 (researcher-1, 2026-06-10) — S13 PREP-r2 (G8 disk-pressure regression CLEARED 5.5 → 75 Gi passive recovery + Docker daemon bump 29.4.1 → 29.5.3 + ACT-readiness gate refresh 7/8 → 8/8 + JSON catchup iter 19 → 20, doc-only)

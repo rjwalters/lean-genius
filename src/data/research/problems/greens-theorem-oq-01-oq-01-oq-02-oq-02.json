@@ -2,7 +2,7 @@
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-02",
   "title": "Can the integrability hypothesis be weakened from `uIcc a b × uIcc c d` to lo...",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -22,9 +22,12 @@
   "currentState": {
     "phase": "RESEARCH-COMPLETE",
     "since": "2026-05-16T15:40:00.000Z",
-    "iteration": 10,
-    "focus": "S7 STATE-SYNC tick 2026-06-04 (researcher-1, claim researcher-56176): 3-day elapse since S6 (2026-06-01). Phase RESEARCH-COMPLETE unchanged. Material event since S6: Mechanic PR #21965 (merged 2026-06-02T07:24Z, meta-only +5/-1 in src/data/proofs/greens-theorem-oq-01-oq-01-oq-02/meta.json) registered both orphan companions of the parent slug — `additionalFiles` now includes `Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean` + `Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean`. This drains the gallery-integration loose end of orphan-companion registration; no separate gallery entry needed for this OQ-only slug. Sibling OQ02OQ03 Bochner discharge remains forward-pending (sibling-slug scope). Mathlib pin still `2df2f0150c…` v4.26.0 stable ~23d. Doc-only ship this cycle.",
-    "blockers": [],
+    "iteration": 11,
+    "focus": "S8 STATE-SYNC + BLOCKED flag 2026-06-13 (researcher-4): phase RESEARCH-COMPLETE unchanged (researcher scope exhausted since S5; all forward items out-of-researcher-scope). Material event since S7: sibling slug greens-theorem-oq-01-oq-01-oq-02-OQ01 received a v4.26.0 BUILD-DRIFT REPAIR — PR #22893 (merged 2026-06-13T12:52Z, Docker-verified, 'S5 repair v4.26 build drift + add iterated-integral API', touched only Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean). This UNDERCUTS the S6/S7 assumption that this slug's Docker-verify is 'routine': the same Greens family API needed live v4.26 repairs today, and this slug's 104-LOC file (Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean) has NEVER been Docker-built (knowledge.progressSummary still flags '(build pending)'; the S3-ACT phantom-name fix was 'not yet propagated to the sibling files' per #18711). So the sole forward item (Docker-verify) is now BOTH Docker-gated (2026-06-13 blackout) AND likely to surface the same v4.26 drift the sibling needed — a Mechanic/Doctor build-gated ACT, not a routine verify. Flagging status=blocked to stop the no-op re-claim churn (S4/S6/S7 were all doc-only ticks; this slug keeps getting drawn by claim-random). Unblock when Docker returns: docker-build Proofs.GreensTheoremOQ01OQ01OQ02OQ02, apply any v4.26 repair mirroring #22893, then status→completed.",
+    "blockers": [
+      "Docker daemon DOWN (2026-06-13 verification blackout) — cannot run ./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02 to clear the slug's long-standing '(build pending)' flag.",
+      "Sibling #22893 (merged 2026-06-13) shows the Greens family has LIVE v4.26.0 build drift; this slug's never-built file likely needs the same repair before it can be verified — a Mechanic/Doctor build-gated ACT, not the 'routine' verify assumed at S6/S7."
+    ],
     "nextAction": "**No further researcher session anticipated.** All forward items remain out-of-researcher-scope (unchanged from S6): (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` — Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218 and chain-build drift fixed by Mechanic PR #21782. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` §`S5 Mathlib contribution candidates` — any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
     "attemptCounts": {
       "total": 10,
@@ -83,7 +86,10 @@
     "greens-theorem-oq-01-oq-01-oq-02-oq-03",
     "greens-theorem-oq-01-oq-01-oq-03",
     "greens-theorem-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-03",
+    "greens-theorem-oq-01-oq-03-oq-02",
     "greens-theorem-oq-02",
+    "greens-theorem-oq-02-oq-02",
     "greens-theorem-oq-02-oq-04",
     "greens-theorem-oq-03",
     "greens-theorem-oq-03-oq-04",
@@ -95,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-06-04T18:00:00.000Z",
+  "lastUpdate": "2026-06-13T20:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -146,18 +152,18 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01OQ01OQ01.lean",
-      "lineCount": 517,
+      "lineCount": 539,
       "theoremCount": 4,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
       "filename": "GreensTheoremOQ01OQ01OQ02.lean",
-      "lineCount": 232,
+      "lineCount": 233,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -168,18 +174,18 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01OQ02OQ01.lean",
-      "lineCount": 152,
-      "theoremCount": 2,
+      "lineCount": 201,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
+      "defCount": 1,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean"
     },
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean",
       "filename": "GreensTheoremOQ01OQ01OQ02OQ02.lean",
-      "lineCount": 104,
+      "lineCount": 105,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
@@ -201,8 +207,8 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
       "filename": "GreensTheoremOQ01OQ01OQ03.lean",
-      "lineCount": 229,
-      "theoremCount": 6,
+      "lineCount": 293,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -212,8 +218,8 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ02.lean",
       "filename": "GreensTheoremOQ01OQ02.lean",
-      "lineCount": 228,
-      "theoremCount": 5,
+      "lineCount": 248,
+      "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
@@ -221,9 +227,31 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ02.lean"
     },
     {
+      "path": "Proofs/GreensTheoremOQ01OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ03.lean",
+      "lineCount": 220,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ03OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ03OQ02.lean",
+      "lineCount": 200,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/GreensTheoremOQ02.lean",
       "filename": "GreensTheoremOQ02.lean",
-      "lineCount": 508,
+      "lineCount": 534,
       "theoremCount": 21,
       "axiomCount": 1,
       "defCount": 4,
@@ -232,9 +260,42 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
     },
     {
+      "path": "Proofs/GreensTheoremOQ02Corrected.lean",
+      "filename": "GreensTheoremOQ02Corrected.lean",
+      "lineCount": 59,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02Corrected.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02Counterexample.lean",
+      "filename": "GreensTheoremOQ02Counterexample.lean",
+      "lineCount": 122,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02Counterexample.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02FubiniBridge.lean",
+      "filename": "GreensTheoremOQ02FubiniBridge.lean",
+      "lineCount": 95,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02FubiniBridge.lean"
+    },
+    {
       "path": "Proofs/GreensTheoremOQ02OQ04.lean",
       "filename": "GreensTheoremOQ02OQ04.lean",
-      "lineCount": 260,
+      "lineCount": 268,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,

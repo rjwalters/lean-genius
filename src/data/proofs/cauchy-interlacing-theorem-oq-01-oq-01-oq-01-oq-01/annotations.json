@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 37 },
+    "type": "concept",
+    "title": "The corollary the parent flagged: spectrum is a unitary invariant",
+    "content": "The parent entry proved the *bridge lemma* `eigenvalues_eq_of_eigenbasis` — a self-adjoint operator's sorted eigenvalue list is determined by *any* orthonormal eigenbasis with antitone real eigenvalues — and recorded, but did not formalize, the headline corollary as its lead open question: **the sorted spectrum is invariant under unitary (isometric) conjugation.** This file isolates that corollary as a reusable lemma, which also contains the heavy elaboration the parent reported when attempting it inline. The payoff is principal-submatrix Cauchy interlacing: the orthogonal compression of a Hermitian $A$ to a coordinate hyperplane is the isometric conjugate of the principal-submatrix operator, so equal sorted spectra let interlacing be read off in the familiar form $\\lambda_{k+1}(A) \\le \\lambda_k(A^{(j)}) \\le \\lambda_k(A)$.",
+    "mathContext": "$S = e\\circ T\\circ e^{-1},\\ e \\text{ unitary} \\;\\Longrightarrow\\; \\operatorname{spec}(S) = \\operatorname{spec}(T) \\text{ (as sorted tuples)}.$",
+    "significance": "context",
+    "relatedConcepts": ["unitary invariant", "spectral theorem", "Cauchy interlacing", "principal submatrix", "compression"],
+    "prerequisites": ["self-adjoint operators", "eigenvalues of Hermitian matrices"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "definition",
+    "title": "Setup: two finite-dimensional inner-product spaces over an RCLike field",
+    "content": "The development is stated over an arbitrary `RCLike` field `𝕜` (covering both `ℝ` and `ℂ`) and two finite-dimensional inner-product spaces `E`, `F`. Working with abstract operators `T : E →ₗ[𝕜] E`, `S : F →ₗ[𝕜] F` and a linear isometry equivalence `e : E ≃ₗᵢ[𝕜] F` between them — rather than with matrices — is what lets the proof be a few lines of basis transport: the unitary is packaged as `≃ₗᵢ`, whose defining property `⟪e x, e y⟫ = ⟪x, y⟫` is exactly the inner-product preservation the argument needs.",
+    "mathContext": "$\\mathbb{K} \\in \\{\\mathbb{R}, \\mathbb{C}\\},\\quad e : E \\xrightarrow{\\ \\simeq\\ } F \\text{ with } \\langle e x, e y\\rangle = \\langle x, y\\rangle.$",
+    "significance": "technical",
+    "relatedConcepts": ["RCLike field", "inner product space", "linear isometry equivalence", "finite dimensional"],
+    "prerequisites": ["inner product spaces", "linear isometries"]
+  },
+  {
+    "id": "ann-symmetry-transport",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "insight",
+    "title": "Symmetry Rides Along the Isometry",
+    "content": "`isSymmetric_of_isometryConj`: if `S (e x) = e (T x)` for a linear isometry equivalence `e : E ≃ₗᵢ F` and `T` is symmetric, then so is `S`. The proof writes arbitrary inputs as `e x`, `e x'` (using surjectivity of `e`), rewrites both occurrences of `S` through the intertwining relation, and collapses each inner product with `LinearIsometryEquiv.inner_map_map` (`⟪e a, e b⟫ = ⟪a, b⟫`). The goal `⟪S(e x), e x'⟫ = ⟪e x, S(e x')⟫` becomes `⟪T x, x'⟫ = ⟪x, T x'⟫`, which is exactly `hT x x'`. Consequence: the symmetry hypothesis on the conjugate `S` is automatic, so the main theorem's `hS` is a convenience, not a genuine extra assumption.",
+    "mathContext": "S = e ∘ T ∘ e⁻¹ with e unitary ⟹ S* = S whenever T* = T, since unitary conjugation preserves the adjoint.",
+    "significance": "key",
+    "relatedConcepts": ["self-adjoint operator", "unitary conjugation", "adjoint"],
+    "prerequisites": ["LinearMap.IsSymmetric", "LinearIsometryEquiv.inner_map_map"]
+  },
+  {
+    "id": "ann-eigenbasis-transport",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "insight",
+    "title": "Transport the Eigenbasis, Keep the Eigenvalues",
+    "content": "`eigenvalues_isometryConj`: the sorted eigenvalue tuples of `T` and its unitary conjugate `S` coincide. The single idea is that `b := (hT.eigenvectorBasis hnE).map e` is an orthonormal eigenbasis of `S` for the SAME eigenvalue tuple `f = hT.eigenvalues hnE`: from `OrthonormalBasis.map_apply`, `b i = e (eigenvectorBasis i)`, so `S (b i) = S (e (eigenvectorBasis i)) = e (T (eigenvectorBasis i)) = e (f i • eigenvectorBasis i) = f i • b i`, using the intertwining relation, the parent's `apply_eigenvectorBasis`, and `𝕜`-linearity of `e` (`map_smul`). Feeding this eigenbasis and the antitone tuple `f` to the parent's bridge `eigenvalues_eq_of_eigenbasis` forces `hS.eigenvalues hnF = f`.",
+    "mathContext": "If T = diag(f) in basis (v_i) then S = e∘T∘e⁻¹ = diag(f) in basis (e v_i); the sorted multiset of f is unchanged, so the sorted spectra agree.",
+    "significance": "key",
+    "relatedConcepts": ["spectral theorem", "unitary invariance", "Cauchy interlacing", "principal submatrix"],
+    "prerequisites": ["OrthonormalBasis.map", "LinearMap.IsSymmetric.apply_eigenvectorBasis", "LinearMap.IsSymmetric.eigenvalues_antitone"]
+  },
+  {
+    "id": "ann-why-it-matters",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 79 },
+    "type": "context",
+    "title": "The Bridge to Principal-Submatrix Interlacing",
+    "content": "This corollary is the precise tool the Cauchy-interlacing keystone flagged as future work. The orthogonal compression of a Hermitian `A` to a coordinate hyperplane `e_jᗮ` is the isometric conjugate of the principal-submatrix operator `toEuclideanLin (A.submatrix j.succAbove j.succAbove)`. Because `eigenvalues_isometryConj` shows isometric conjugates share a sorted spectrum, it identifies the compression's eigenvalues with the submatrix's, letting the parent's compression-form interlacing be read off in the familiar principal-submatrix form `λ_{k+1}(A) ≤ λ_k(A⁽ʲ⁾) ≤ λ_k(A)`. The parent had recorded this packaging as its lead open question, noting the inline proof triggered heavy elaboration; isolating it in its own file contains that cost.",
+    "mathContext": "Cauchy interlacing: deleting one row/column of a Hermitian matrix interlaces its eigenvalues.",
+    "significance": "context",
+    "relatedConcepts": ["Cauchy interlacing theorem", "compression", "Hermitian matrix", "eigenvalue inequalities"],
+    "prerequisites": ["principal submatrix"]
+  }
+]

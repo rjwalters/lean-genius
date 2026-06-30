@@ -46,6 +46,7 @@ research/claims/*.json
 research/claims/*.lock
 research/lean-daemon.pid
 research/lean-daemon.log
+research/lean-daemon-keeper.pid
 research/stub-claims/
 research/enrichment-claims/
 research/candidate-pool.json
@@ -108,10 +109,6 @@ aristotle-results/
 .loom/manifest.json
 .loom/stuck-config.json
 .loom/metrics/
-.loom/worktrees/
-.loom/state.json
-.loom/*.log
-.loom/*.sock
 .loom-checkpoint
 .loom/issue-failures.json
 .loom/usage-cache.json
@@ -128,7 +125,11 @@ aristotle-results/
 # entry out so oxide scans the fixture.
 tmp-tailwind-repro/
 
-# Agent worktree dirs (mirror of .loom/worktrees/). Not gitignored historically
 # but accumulates in long-lived dev checkouts and contributes to #21009 scanner
 # pollution. Worktrees here are local-only working copies.
 .claude/worktrees/
+.loom/spawn-loop-state.json
+.loom/worktrees/
+.loom/state.json
+.loom/*.log
+.loom/*.sock

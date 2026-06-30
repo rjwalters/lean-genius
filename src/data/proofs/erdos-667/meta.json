@@ -110,67 +110,75 @@
   "sections": [
     {
       "id": "foundations",
-      "title": "Graph-Theoretic Foundations",
+      "title": "Part I: Graph-Theoretic Foundations",
       "startLine": 1,
-      "endLine": 53,
-      "summary": "Problem statement, imports, and definitions of edgeCount (induced edge count via filtered ordered pairs) and HasDensity (the (p,q)-density condition requiring every p-element subset to span at least q edges).",
-      "mathContext": "$\\text{edgeCount}(G, S) = |\\{(u,v) \\in S \\times S : u \\neq v, G.\\text{Adj}(u,v)\\}|/2$. $\\text{HasDensity}(G, p, q) :\\Leftrightarrow \\forall S \\subseteq V,\\ |S|=p \\Rightarrow \\text{edgeCount}(G,S) \\geq q$."
+      "endLine": 48,
+      "summary": "Problem statement and imports for Erdős #667 (clique density exponent). For $p,q\\geq1$, $H(n;p,q)$ is the largest $m$ such that every $n$-vertex graph in which every $p$-set spans $\\geq q$ edges contains a $K_m$; $c(p,q)=\\liminf\\log H/\\log n$; the conjecture asks whether $c(p,q)$ is strictly increasing in $q$. Defines `edgeCount` (induced edges via filtered ordered pairs / 2) and `HasDensity G p q` (every $p$-subset spans $\\geq q$ edges).",
+      "mathContext": "$c(p,q)=\\liminf_n\\frac{\\log H(n;p,q)}{\\log n}$. Known: $q=1$ Ramsey, $1/(p-1)\\leq c(p,1)\\leq2/(p+1)$; $q=\\binom{p-1}{2}+1\\Rightarrow c=1$; EFRS $c(p,\\binom{p-1}{2})\\leq1/2$."
     },
     {
       "id": "clique-guarantee",
-      "title": "The Function H(n; p, q)",
-      "startLine": 54,
-      "endLine": 83,
-      "summary": "Axiomatization of H(n;p,q) = cliqueGuarantee with five properties: positivity (H ≥ 1), monotonicity in n and q, upper bound (H ≤ n), and the definition as largest guaranteed clique size.",
-      "mathContext": "$H(n;p,q) = \\max\\{m : \\text{every } n\\text{-vertex graph with (p,q)-density contains } K_m\\}$. Axioms: $H \\geq 1$, $H(n) \\leq H(n+1)$, $H(q) \\leq H(q+1)$, $H \\leq n$."
+      "title": "Part II: The Function H(n; p, q)",
+      "startLine": 49,
+      "endLine": 149,
+      "summary": "Defines $H(n;p,q)=$ `cliqueGuarantee` concretely as $\\sup\\{m\\leq n\\mid \\forall G,\\text{HasDensity}\\,G\\,p\\,q\\to\\neg G.\\text{CliqueFree}\\,m\\}$ (previously axiomatized, now a `noncomputable def` via `sSup`). PROVES three structural facts: `cliqueGuarantee_mono_n` (monotone in $n$, via the `comap Fin.castSucc` pullback preserving density and lifting cliques), `cliqueGuarantee_mono_q` (monotone in $q$), and `cliqueGuarantee_le_n` ($H\\leq n$).",
+      "mathContext": "$H(n;p,q)=\\sup\\{m\\leq n: \\forall G\\,\\text{with density},\\ K_m\\subseteq G\\}$. Monotone in $n$ and $q$; $H\\leq n$ (all proved)."
     },
     {
       "id": "boundary-values",
-      "title": "Boundary Values",
-      "startLine": 84,
-      "endLine": 99,
-      "summary": "H at maximum density q = C(p-1,2)+1 equals n (forces complete graph); H at q=0 equals 1 (no constraint, trivial clique).",
-      "mathContext": "$H(n; p, \\binom{p-1}{2}+1) = n$ (complete graph forced). $H(n; p, 0) = 1$ (no constraint). These anchor the interpolation: $c(p,0) = 0$ and $c(p, q_{\\max}) = 1$."
+      "title": "Part III: Boundary Values",
+      "startLine": 150,
+      "endLine": 212,
+      "summary": "Boundary behaviour of $H$. A documented note records that the earlier claim $H(n;p,\\binom{p-1}{2}+1)=n$ was REMOVED as FALSE (counterexample $C_4$ has density $(3,2)$ but clique number $2$); the correct statement is that the *exponent* equals $1$ (captured by the axiom `cpq_at_max`). PROVES `cliqueGuarantee_zero` ($H(n;p,0)=1$), `cliqueGuarantee_mono_q_general` (monotone for $q_1\\leq q_2$), and `cliqueGuarantee_pos` ($H\\geq1$ for $n\\geq1$, derived from the $q=0$ value plus monotonicity).",
+      "mathContext": "$H(n;p,0)=1$; $H\\geq1$. The earlier $H=n$ at max density is FALSE ($C_4$); only the exponent is $1$."
     },
     {
       "id": "exponent",
-      "title": "The Exponent c(p, q) and Known Bounds",
-      "startLine": 100,
-      "endLine": 141,
-      "summary": "Axiomatization of c(p,q) with non-negativity, boundedness, weak monotonicity, Ramsey bounds for q=1, c=1 at max q, and the EFRS bound c(p, C(p-1,2)) ≤ 1/2.",
-      "mathContext": "$c(p,q) = \\liminf_{n\\to\\infty} \\frac{\\log H(n;p,q)}{\\log n} \\in [0,1]$. Ramsey: $\\frac{1}{p-1} \\leq c(p,1) \\leq \\frac{2}{p+1}$. EFRS: $c(p, \\binom{p-1}{2}) \\leq \\frac{1}{2}$."
+      "title": "Part IV: The Exponent c(p, q)",
+      "startLine": 213,
+      "endLine": 301,
+      "summary": "Defines $c(p,q)=$ `cpq` $=\\liminf_{n}\\big(\\log H(n;p,q)/\\log n\\big)$ via `Filter.liminf` (previously a ℝ-valued function with 4 structural axioms; now defined concretely, eliminating those 4 axioms). The `CpqProperties` section establishes the boundedness/coboundedness lemmas and PROVES `cpq_nonneg` ($c\\geq0$), `cpq_le_one` ($c\\leq1$), and `cpq_mono_q` ($c(p,q)\\leq c(p,q+1)$) directly from the definition.",
+      "mathContext": "$c(p,q)=\\liminf_n\\frac{\\log H}{\\log n}$ (defined). $0\\leq c\\leq1$ and $c(p,q)\\leq c(p,q+1)$ all proved from the definition."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Part V: Known Bounds",
+      "startLine": 302,
+      "endLine": 325,
+      "summary": "The file's four remaining AXIOMS, encoding established literature results on $c(p,q)$: `cpq_lower_ramsey` ($c(p,1)\\geq1/(p-1)$), `cpq_upper_ramsey` ($c(p,1)\\leq2/(p+1)$), `cpq_at_max` ($c(p,\\binom{p-1}{2}+1)=1$), and `efrs_bound` (Erdős–Faudree–Rousseau–Schelp: $c(p,\\binom{p-1}{2})\\leq1/2$).",
+      "mathContext": "Axioms: $1/(p-1)\\leq c(p,1)\\leq2/(p+1)$; $c(p,\\binom{p-1}{2}+1)=1$; $c(p,\\binom{p-1}{2})\\leq1/2$ (EFRS)."
     },
     {
       "id": "proved-consequences",
-      "title": "Proved Structural Consequences",
-      "startLine": 142,
-      "endLine": 184,
-      "summary": "Five theorems from axioms: cpq_range, cpq_strict_at_top (via EFRS + boundary), cpq_pos_at_one (c(p,1) > 0), cpq_mono_q_general (extended monotonicity by induction), cpq_ramsey_interval.",
-      "mathContext": "Key result: $c(p, \\binom{p-1}{2}) \\leq 1/2 < 1 = c(p, \\binom{p-1}{2}+1)$, proving strict increase at the last step. Also $c(p,1) > 0$ for $p \\geq 3$ via $1/(p-1) > 0$."
+      "title": "Part VI: Proved Consequences",
+      "startLine": 326,
+      "endLine": 368,
+      "summary": "Theorems derived from the Part V axioms and Part IV properties: `cpq_range` ($c(p,1)\\leq1$ and $c$ at max $q$ equals $1$), `cpq_strict_at_top` (the EFRS bound forces $c(p,\\binom{p-1}{2})<c(p,\\binom{p-1}{2}+1)$), `cpq_pos_at_one` ($c(p,1)>0$ for $p\\geq3$), `cpq_mono_q_general` (monotonicity for $q_1\\leq q_2$ by induction), and `cpq_ramsey_interval` ($c(p,1)\\in[1/(p-1),2/(p+1)]$).",
+      "mathContext": "$c(p,\\binom{p-1}{2})<c(p,\\binom{p-1}{2}+1)=1$ (strict step at top); $c(p,1)\\in[1/(p-1),2/(p+1)]$."
     },
     {
       "id": "small-cases",
-      "title": "Small Cases: p=3, p=4, p=5",
-      "startLine": 185,
-      "endLine": 261,
-      "summary": "p=3: fully resolved (`erdos667_holds_for_p3`); q ranges over {1,2}, and `p3_strict` proves $c(3,1) < c(3,2) = 1$. p=4: q ranges over {1,...,4}; `p4_efrs` gives $c(4,3) \\le 1/2$, `p4_strict_at_top` gives strict increase at top; Ramsey bounds $c(4,1) \\in [1/3, 2/5]$. p=5: q ranges over {1,...,7}; `p5_efrs` gives $c(5,6) \\le 1/2$, `p5_strict_at_top` at top; Ramsey bounds $c(5,1) \\in [1/4, 1/3]$.",
-      "mathContext": "$p=3$: $c(3,1) \\leq 1/2 < 1 = c(3,2)$, fully resolving the conjecture for $p=3$. $p=4$: $c(4,1) \\in [1/3, 2/5]$ (Ramsey), $c(4,3) \\leq 1/2 < 1 = c(4,4)$ (EFRS). $p=5$: $c(5,1) \\in [1/4, 1/3]$ (Ramsey), $c(5,6) \\leq 1/2 < 1 = c(5,7)$ (EFRS). Intermediate steps for $p \\ge 4$ remain open."
+      "title": "Part VII: Small Cases",
+      "startLine": 369,
+      "endLine": 444,
+      "summary": "Concrete small-$p$ instances. $p=3$ is FULLY resolved (`erdos667_holds_for_p3`): $q\\in\\{1,2\\}$ and `p3_strict` gives $c(3,1)<c(3,2)=1$. $p=4$: `p4_efrs` ($c(4,3)\\leq1/2$), `p4_strict_at_top`, Ramsey bounds $c(4,1)\\in[1/3,2/5]$. $p=5$: `p5_efrs` ($c(5,6)\\leq1/2$), `p5_strict_at_top`, Ramsey bounds $c(5,1)\\in[1/4,1/3]$.",
+      "mathContext": "$p=3$ fully proved: $c(3,1)<c(3,2)=1$. $c(4,1)\\in[1/3,2/5]$, $c(5,1)\\in[1/4,1/3]$; strict step at top for $p=4,5$."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture and Weak Evidence",
-      "startLine": 273,
-      "endLine": 294,
-      "summary": "Defines `ErdosProblem667`: $\\forall p \\ge 3,\\, \\forall 1 \\le q < \\binom{p-1}{2}+1,\\, c(p,q) < c(p,q+1)$. Proves `erdos667_weak_evidence`: $c(p,1) < 1 = c(p, q_{\\max})$ via Ramsey upper bound $2/(p+1) < 1$.",
-      "mathContext": "$\\text{ErdosProblem667} := \\forall p \\ge 3,\\, \\forall 1 \\le q < \\binom{p-1}{2}+1: c(p,q) < c(p,q+1)$. Weak evidence: $c(p,1) \\le 2/(p+1) < 1 = c(p, q_{\\max})$ for $p \\ge 3$, since $2/(p+1) < 1$ when $p \\ge 2$."
+      "title": "Part VIII: The Main Conjecture",
+      "startLine": 445,
+      "endLine": 467,
+      "summary": "Defines `ErdosProblem667` (OPEN): for $p\\geq3$, $c(p,q)<c(p,q+1)$ for all $1\\leq q<\\binom{p-1}{2}+1$. Proves `erdos667_weak_evidence`: $c(p,1)<1=c(p,q_{\\max})$, using the Ramsey upper bound $2/(p+1)<1$.",
+      "mathContext": "Conjecture: $c(p,\\cdot)$ strictly increasing on $1\\leq q\\leq\\binom{p-1}{2}+1$. Weak evidence: $c(p,1)<c(p,q_{\\max})=1$."
     },
     {
       "id": "structural-consequences",
-      "title": "Structural Consequences",
-      "startLine": 296,
-      "endLine": 343,
-      "summary": "Proves `cpq_total_gap` ($c(p, q_{\\max}) - c(p,1) \\ge 1 - 2/(p+1)$), `cpq_gap_pos` (gap is strictly positive), `erdos667_at_least_one_strict_step` (existence of a strict increase via EFRS at top), and `erdos667_summary` (packaging all known results: Ramsey interval, $c=1$ at max, weak monotonicity, strict increase at top). Closes namespace `Erdos667`.",
-      "mathContext": "The total gap $c(p, q_{\\max}) - c(p,1) \\ge 1 - 2/(p+1) > 0$ grows with $p$. At least one strict step exists: $c(p, \\binom{p-1}{2}) < c(p, \\binom{p-1}{2}+1)$ by EFRS. The summary theorem packages: (1) $1/(p-1) \\le c(p,1) \\le 2/(p+1)$, (2) $c(p, q_{\\max}) = 1$, (3) $c(p,q) \\le c(p,q+1)$ for all $q$, (4) strict increase at the last step."
+      "title": "Part IX: Structural Consequences",
+      "startLine": 468,
+      "endLine": 515,
+      "summary": "General gap-structure results. `cpq_total_gap` ($c(p,q_{\\max})-c(p,1)\\geq1-2/(p+1)$), `cpq_gap_pos` (the gap is strictly positive), `erdos667_at_least_one_strict_step` (there is at least one strict increase, namely at the top via EFRS), and `erdos667_summary` packaging all known results (Ramsey interval, $c$ at max $=1$, weak monotonicity, top gap).",
+      "mathContext": "$c(p,q_{\\max})-c(p,1)\\geq1-2/(p+1)>0$; at least one strict step (at $q=\\binom{p-1}{2}$)."
     }
   ],
   "conclusion": {

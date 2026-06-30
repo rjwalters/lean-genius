@@ -1,8 +1,77 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-10 (researcher-1, S7 STATE-SYNC)
-**Iteration**: 7
+**Since**: 2026-06-12 (researcher-2, S8 sharper popcount bound)
+**Iteration**: 8
+
+## S8 ACT 2026-06-12 (researcher-2) — sharper popcount factor-count bound
+
+**Mode**: ACT — proved the long-deferred sharper factor-count bound. Prior
+state (S5–S7) shipped the elementary `squareKrylovProd_factor_count_le :
+j.bitIndices.length ≤ j` and repeatedly deferred the asymptotically tight
+`≤ Nat.size j` form as "blocked pending a missing Mathlib `Nat.bitIndices`
+length API." That blocker was incorrect: the bound is provable in Mathlib
+v4.26.0 today with no new API.
+
+### What shipped
+
+`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` gains one public theorem:
+
+```lean
+theorem squareKrylovProd_factor_count_le_size (j : ℕ) :
+    j.bitIndices.length ≤ Nat.size j
+```
+
+`Nat.size j = ⌈log₂ (j+1)⌉`, so this is the genuinely O(log j) Keller–Gehrig
+matrix-multiplication factor count — exponentially sharper than the prior
+`≤ j` bound. Added `import Mathlib.Data.Nat.Size`. File 333 → 383 LOC,
+11 → 12 theorems, 3 axioms unchanged, 0 sorries.
+
+### Proof shape
+
+1. Each set-bit index `i ∈ j.bitIndices` contributes a summand `2^i` to
+   `(j.bitIndices.map (2^·)).sum = j` (`Nat.twoPowSum_bitIndices`), so
+   `2^i ≤ j` via `List.single_le_sum`, hence `i < Nat.size j`
+   (`Nat.lt_size`).
+2. `j.bitIndices` is `Nodup` (strictly sorted: `Nat.bitIndices_sorted`
+   → `List.Pairwise.nodup`).
+3. A Nodup list with all entries `< Nat.size j` embeds into
+   `Finset.range (Nat.size j)`; `List.toFinset_card_of_nodup` +
+   `Finset.card_le_card` + `Finset.card_range` close the count.
+
+### Gotchas (for the technique index)
+
+* `List.Sorted.nodup` is **deprecated** → use `List.Pairwise.nodup`
+  (a `List.Sorted` term is accepted directly, since `Sorted` reduces to
+  `Pairwise`).
+* `Nat.bitIndices_sorted` takes its `n` **implicitly** — `Nat.bitIndices_sorted j`
+  is a type error; rely on expected-type unification.
+
+### Build
+
+`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ03OQ02` —
+**Build succeeded**, 0 errors, 0 warnings (mathlib v4.26.0 / lean v4.26.0,
+3063 jobs).
+
+### Docs synced
+
+* Gallery `src/data/proofs/.../meta.json`: lineCount 383, theoremCount 12,
+  Layer 2.5 section summary + endLine, Layer 3 section line range, new
+  `originalContributions` bullet, `Mathlib.Data.Nat.Size` import, and the
+  now-answered sharper-popcount `openQuestion` removed.
+* `src/data/research/problems/cayley-hamilton-minpoly-oq-03-oq-02.json`:
+  leanFiles[9] counts, currentState (iter 8, focus, nextAction, attemptCounts),
+  knowledge (progressSummary, builtItems, insights, nextSteps[2] marked
+  RESOLVED), blockers (sharper-bound entry removed), lastUpdate.
+
+### Next action
+
+Problem is at a genuine completion-ready state: the only remaining layer
+(full O(n^ω) operation count) is gated on upstream Mathlib (complexity
+monad + fast-matmul oracle) and is not a single-problem research target.
+Recommend marking the slug `completed`.
+
+---
 
 ## S7 STATE-SYNC 2026-06-10 (researcher-1, doc-only JSON catch-up)
 

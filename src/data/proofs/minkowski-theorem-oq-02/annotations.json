@@ -16,6 +16,11 @@
       "Minkowski's lattice point theorem",
       "geometry of numbers",
       "Diophantine approximation"
+    ],
+    "prerequisites": [
+      "Diophantine approximation of reals by rationals",
+      "Minkowski's lattice point theorem",
+      "the integer lattice \u2124\u00b2 and the geometry of numbers"
     ]
   },
   {
@@ -34,6 +39,11 @@
       "parallelogram",
       "Lebesgue measure",
       "shear map"
+    ],
+    "prerequisites": [
+      "regions in \u211d\u00b2 and their Lebesgue measure",
+      "linear (shear) maps and how they preserve area",
+      "the parallelogram |q\u03b1\u2212p|<1/Q, |q|\u2264Q"
     ]
   },
   {
@@ -51,6 +61,11 @@
     "relatedConcepts": [
       "central symmetry",
       "Minkowski conditions"
+    ],
+    "prerequisites": [
+      "central symmetry of a set about the origin (S = \u2212S)",
+      "Minkowski's hypotheses (convex, symmetric, large volume)",
+      "membership x\u2208S \u27fa \u2212x\u2208S"
     ]
   },
   {
@@ -70,6 +85,11 @@
       "Fubini's theorem",
       "convex sets",
       "measurable sets"
+    ],
+    "prerequisites": [
+      "Lebesgue measure on \u211d\u00b2",
+      "Fubini's theorem for product measures",
+      "convex and measurable sets"
     ]
   },
   {
@@ -88,6 +108,11 @@
       "Minkowski threshold",
       "ENNReal arithmetic",
       "volume bound"
+    ],
+    "prerequisites": [
+      "the Minkowski volume threshold > 2\u207f (here 4)",
+      "computing the area of the parallelogram",
+      "extended nonnegative reals (ENNReal)"
     ]
   },
   {
@@ -107,6 +132,11 @@
       "\u2124-span",
       "Submodule",
       "basis extraction"
+    ],
+    "prerequisites": [
+      "the integer lattice \u2124\u00b2 as a \u2124-submodule",
+      "\u2124-spans and basis coordinates",
+      "extracting integer coordinates of a lattice point"
     ]
   },
   {
@@ -125,6 +155,11 @@
       "parity argument",
       "integer arithmetic",
       "omega tactic"
+    ],
+    "prerequisites": [
+      "lattice points in the open parallelogram",
+      "parity / integer-arithmetic reasoning",
+      "discharging arithmetic goals with omega"
     ]
   },
   {
@@ -143,6 +178,11 @@
       "absolute value",
       "sign argument",
       "integer arithmetic"
+    ],
+    "prerequisites": [
+      "absolute value of integers",
+      "negating a lattice point (using central symmetry)",
+      "normalizing the sign to make q > 0"
     ]
   }
 ]

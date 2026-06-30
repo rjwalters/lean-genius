@@ -1,8 +1,8 @@
 {
   "slug": "weak-goldbach-oq-03",
   "title": "Formalize Helfgott's proof of weak Goldbach without axioms",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -38,11 +38,13 @@
     "goal": "Eliminate the 9 axioms in Proofs/WeakGoldbach.lean by progressive replacement with Lean-level proofs or stronger constructions. Phased approach: TRACTABLE first (Approaches A-C, ~80-200 lines Lean total across 3 sessions), then INTERMEDIATE (Approach D, Schnirelmann's theorem proper, ~600-1000 lines over 3-6 sessions, also Mathlib contribution), then HEROIC deferred to long-term roadmap. S2 target: Approach A (Mathlib Schnirelmann integration), ~80 lines Lean, single session."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-10T00:00:00.000Z",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00.000Z",
     "iteration": 8,
     "focus": "S8 ACT (researcher-1, 2026-06-10): Axiom elimination second pass. Discharged the two remaining historical-attribution axioms that are provable corollaries of `helfgott_weak_goldbach`: (1) `vinogradov_ternary_goldbach` (∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n) — take N₀ := 5; Helfgott satisfies the pointwise claim. (2) `helfgott_explicit_bound` (∀ n > 5, Odd n → IsSumOfThreePrimes n) — literally WeakGoldbachConjecture unfolded; one-line proof := helfgott_weak_goldbach. Required reorder so helfgott_weak_goldbach precedes vinogradov_ternary_goldbach. Counts: axiomCount 7 → 5, theoremCount 29 → 31, lineCount 661 → 680 (+19), definitionCount 15, sorries 0. The five remaining axioms (helfgott_weak_goldbach, circle_method_asymptotic, schnirelmann_basis_theorem, chen_theorem, binary_goldbach_verified) are genuinely distinct deep results — the practical floor for this slug per S7 PREP §4.6 and S8 PREP-1/PREP-2. Builds on S6 PREP (#18368), S7 PREP (#18504), S8 PREP-1 (#18552), S8 PREP-2 (#18670). Build pending under documented parent-drift precedent.",
-    "blockers": [],
+    "blockers": [
+      "Verification blackout (2026-06-13): docker info exits 124 (daemon down) and Aristotle MCP backend returns 404. The slug is at its axiom floor (5 irreducible deep axioms per S7/S8 PREP); the only forward path (S9 Approach D — Schnirelmann sumset inequality, ~250-350 LOC) adds new Lean code that cannot be build-verified. Source/gallery-meta/research-JSON/state.md are all in sync (axiomCount 5, sorries 0, 680 LOC, status axiomatized). Flagged blocked rather than churning a PREP memo; re-open when Docker recovers."
+    ],
     "nextAction": "S9 (any researcher): Begin Approach D — Schnirelmann sumset inequality σ(A+B) ≥ σ(A) + σ(B) − σ(A)σ(B). Per S8 PREP-1 §2.1 and PREP-2 §7, this is ~250-350 LOC, the dominant cost step of the Schnirelmann basis theorem discharge. Mathlib upstream-PR candidate (module docstring explicitly TODOs Schnirelmann's theorem). After S9: S10 combines Step B (induction) + Step C (already a Mathlib theorem per PREP-2 §2) + Step D (combine) + Multiset bridge into a discharge of schnirelmann_basis_theorem (~125-190 LOC). Alternative: defer Approach D and accept axiomCount=5 as the slug's practical floor (per S7 PREP §4.6).",
     "attemptCounts": {
       "total": 8,
@@ -94,10 +96,10 @@
     ]
   },
   "relatedProofs": [
-    "weak-goldbach",
-    "prime-number-theorem",
     "infinitude-primes-4k1",
-    "infinitude-primes-4k3"
+    "infinitude-primes-4k3",
+    "prime-number-theorem",
+    "weak-goldbach"
   ],
   "tags": [
     "number-theory",
@@ -111,5 +113,18 @@
     "research"
   ],
   "createdAt": "2026-05-12T09:18:00.000Z",
-  "updatedAt": "2026-05-12T19:25:00.000Z"
+  "updatedAt": "2026-05-12T19:25:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/WeakGoldbach.lean",
+      "filename": "WeakGoldbach.lean",
+      "lineCount": 681,
+      "theoremCount": 30,
+      "axiomCount": 5,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WeakGoldbach.lean"
+    }
+  ]
 }

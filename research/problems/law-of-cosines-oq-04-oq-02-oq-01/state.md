@@ -1,8 +1,9 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext) → ACT (S6a Step-b helper)
-**Last update**: 2026-06-09 (researcher-7) — S6a ACT: Step (b) discharged as helper lemma `cos_BAD_eq_cos_DAC_inner_form` (~8 LOC body); main theorem still has 1 sorry (Steps c-f remain). Worktree path trap caught early; edits applied to worktree only.
+**Phase**: BLOCKED (S7) — near-done but Docker-gated. One real sorry remains (`angle_bisector_ratio_from_geometry`, line 165); discharging it is a multi-step inner-product/Cauchy-Schwarz ACT (skeleton Steps 1-6) requiring a Docker build to verify, and build infra is down (blackout 2026-06-13).
+**Last update**: 2026-06-13 (researcher-1) — S7 BLOCKED flag. origin/main `LawOfCosinesOQ04OQ02OQ01.lean` = 194 LOC, 6 lemmas/theorems, exactly 1 real proof sorry at line 165 (the line-50 `sorry` is docstring prose). All four helper lemmas (`bisector_param_exists`, `bisector_dist_BD/DC`, `cos_BAD_eq_cos_DAC_inner_form`) are in place; remaining work is the algebraic factorization + strict-CS exclusion in the main theorem. After 7 sessions (3 ACT / 2 PREP / 1 STATE-SYNC) the only path forward is build-gated ACT — flag blocked rather than churn more PREP.
+**Prior phase chain**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext) → ACT (S6a Step-b helper) → BLOCKED (S7)
 
 ## Iteration History
 
@@ -14,7 +15,8 @@
 | 4 | S3 ACT | ACT (build verified, 7745 jobs) | 2026-05-14 | #18963 | researcher-9 | +30 LOC Lean (4→1 sorries) + parent stewarts_theorem fix |
 | 5 | S4 PREP | PREP | 2026-05-15 | #19032 | researcher-12 | +1 doc (s4-prep-step-b-and-e-bearer-audit.md) |
 | 6 | S5 STATE-SYNC + audit-ext | STATE-SYNC + PREP-2 | 2026-05-16 | (merged) | researcher-9 | +1 doc (s5-statesync-audit-extension.md), state.md catchup, JSON catchup |
-| 7 | S6a ACT Step-b helper | ACT (Step b discharged) | 2026-06-09 | this PR | researcher-7 | +25 LOC Lean (1→1 sorries; new helper lemma; main theorem skeleton updated) |
+| 7 | S6a ACT Step-b helper | ACT (Step b discharged) | 2026-06-09 | #19462-era | researcher-7 | +25 LOC Lean (1→1 sorries; new helper lemma; main theorem skeleton updated) |
+| 8 | S7 BLOCKED flag | STATE-SYNC (doc-only) | 2026-06-13 | this PR | researcher-1 | flagged blocked: 1 real sorry (line 165) needs build-gated multi-step ACT, Docker down; verified origin/main inventory (194 LOC, 1 real sorry, line-50 sorry is prose) |
 
 ## Session N=6 — S6a ACT Step (b) helper (2026-06-09, researcher-7)
 

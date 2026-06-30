@@ -5,7 +5,9 @@ Open Question from: Isoperimetric Theorem (Wiedijk #43)
 
 The continuous isoperimetric inequality has a discrete analogue on the integer
 lattice. For finite S ⊆ ℤ with |S| ≥ 2, the (vertex) edge boundary ∂S has at
-least 2 elements, with equality if and only if S is an interval.
+least 2 elements, and integer intervals achieve this bound with |∂S| = 2.
+(The full equality characterization—|∂S| = 2 implies S is an interval—holds but
+is not formalized here; only the lower bound and the interval case are proved.)
 
 Proof idea:
   Let m = min S and M = max S. Since |S| ≥ 2, m < M. Then m - 1 ∉ S (since m

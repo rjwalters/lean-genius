@@ -17,7 +17,11 @@
       "minimum-degree",
       "extremal-graph-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal Graph Theory",
+      "Minimum Degree",
+      "Asymptotic Notation"
+    ]
   },
   {
     "id": "ann-e85-background",
@@ -36,7 +40,11 @@
       "minimum-degree",
       "extremal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Cycles",
+      "Vertex Degree",
+      "Turán-Type Problems"
+    ]
   },
   {
     "id": "ann-e85-c4-def",
@@ -55,7 +63,11 @@
       "fin",
       "modular-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Finite Types (Fin)",
+      "Modular Arithmetic"
+    ]
   },
   {
     "id": "ann-e85-contains",
@@ -74,7 +86,11 @@
       "embedding",
       "injective"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Graph Homomorphism",
+      "Subgraph Embedding",
+      "Injective Functions"
+    ]
   },
   {
     "id": "ann-e85-threshold",
@@ -93,7 +109,11 @@
       "threshold",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infimum (sInf)",
+      "Threshold Functions",
+      "Noncomputable Definitions"
+    ]
   },
   {
     "id": "ann-e85-question",
@@ -113,7 +133,11 @@
       "eventually",
       "monotone"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Eventually Filter",
+      "Filter atTop",
+      "Monotone Sequences"
+    ]
   },
   {
     "id": "ann-e85-asymptotic",
@@ -133,7 +157,11 @@
       "asymptotic",
       "square-root"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit Of Sequences",
+      "Tendsto",
+      "Little-o Notation"
+    ]
   },
   {
     "id": "ann-e85-ramsey",
@@ -152,7 +180,11 @@
       "star-graph",
       "equivalence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey Numbers",
+      "Star Graph",
+      "Logical Equivalence"
+    ]
   },
   {
     "id": "ann-e85-weaker",
@@ -171,6 +203,10 @@
       "weakening",
       "constant-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Almost Monotonicity",
+      "Existential Quantifier",
+      "Absolute Constant"
+    ]
   }
 ]

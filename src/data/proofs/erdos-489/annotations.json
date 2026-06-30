@@ -17,7 +17,11 @@
       "Gap distributions",
       "Sieve theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density of integer sequences",
+      "sieve theory and B-free numbers",
+      "second moments of gaps in number-theoretic sequences"
+    ]
   },
   {
     "id": "ann-e489-sparse",
@@ -36,7 +40,11 @@
       "Little-o notation",
       "Density of integer sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o asymptotic notation",
+      "Mathlib filters and the atTop filter",
+      "counting functions over integer sets"
+    ]
   },
   {
     "id": "ann-e489-bfree",
@@ -55,7 +63,11 @@
       "Sieve of Eratosthenes",
       "Divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility of integers",
+      "squarefree and cubefree numbers",
+      "the sieve of Eratosthenes"
+    ]
   },
   {
     "id": "ann-e489-gaps",
@@ -74,7 +86,11 @@
       "Gap distributions",
       "Convergence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive gaps in an increasing sequence",
+      "second-moment and moment methods",
+      "normalization of sums by x"
+    ]
   },
   {
     "id": "ann-e489-conjecture",
@@ -93,7 +109,11 @@
       "Topological limits",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto convergence in Mathlib",
+      "neighborhood filters and topological limits",
+      "the sparseness condition o(√x)"
+    ]
   },
   {
     "id": "ann-e489-squarefree",
@@ -112,7 +132,11 @@
       "Basel problem",
       "Euler product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "density of squarefree numbers as 1/ζ(2)",
+      "the Riemann zeta function and the Basel problem",
+      "Euler product over prime squares"
+    ]
   },
   {
     "id": "ann-e489-summary",
@@ -130,6 +154,10 @@
       "Open problems in number theory",
       "Partial results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems in number theory",
+      "axioms versus theorems in Lean formalization",
+      "propositions of type Prop"
+    ]
   }
 ]

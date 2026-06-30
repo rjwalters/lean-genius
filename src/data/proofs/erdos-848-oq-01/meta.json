@@ -38,7 +38,9 @@
       "18 = -7 in ℤ/25ℤ (since 7+18=25), so the two classes are ±√(-1) mod 25",
       "Cross-class: ab+1 ≡ 7·18+1 = 127 ≡ 2 (mod 25) — no 5-factor, no 5²-factor",
       "Classification is complete: interval_cases checks all 25 residues and only r=7,18 work",
-      "The lower bound proof for mod-18 is structurally identical to mod-7 (offset 18 vs 7)"
+      "The lower bound proof for mod-18 is structurally identical to mod-7 (offset 18 vs 7)",
+      "The two roots mod 25 are Hensel lifts of the two roots mod 5: x² ≡ -1 (mod 5) has roots {2, 3}, and 7 ≡ 2, 18 ≡ 3 (mod 5). Since the derivative 2x is a unit mod 5 at both roots, each simple root mod 5 lifts uniquely to mod 25 — so there are exactly two roots mod 25, no more, no fewer",
+      "Why 25 = 5² specifically: ab+1 must be non-squarefree, i.e., divisible by some prime square p². The smallest prime with x² ≡ -1 solvable is p = 5 (the least prime ≡ 1 mod 4), so 5² = 25 is the smallest modulus forcing same-class products ab+1 ≡ x²+1 to vanish — this is why the extremal structure lives mod 25 rather than mod 4 or mod 9"
     ],
     "prerequisites": [
       "ZMod 25 arithmetic and decide tactic for finite enumeration",
@@ -106,6 +108,21 @@
       "targetId": "elementary-quadratic-reciprocity",
       "relationship": "related",
       "description": "The condition x² ≡ -1 (mod p) has solutions iff p ≡ 1 (mod 4), connecting this problem to quadratic reciprocity"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Shares the governing criterion: a prime p is a sum of two squares iff p ≡ 1 (mod 4) iff x² ≡ -1 (mod p) is solvable. The same square-root-of-(-1) condition that makes p = 5 representable (5 = 1² + 2²) is what makes 25 the smallest modulus governing Erdős #848"
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "Wilson's theorem yields an explicit square root of -1: for p ≡ 1 (mod 4), ((p-1)/2)!² ≡ -1 (mod p). For p = 5 this gives 2!² = 4 ≡ -1 (mod 5), the root that lifts to 7 and 18 mod 25"
+    },
+    {
+      "targetId": "gauss-wilson-non-cyclic",
+      "relationship": "related",
+      "description": "The multiplicative analogue: that entry counts square roots of unity (x² = 1) in (ZMod n)×, while this one counts square roots of -1 (x² = -1). Both are governed by the group structure of (ZMod n)× — here cyclic, since 25 is a prime power, forcing exactly two roots"
     }
   ],
   "references": [

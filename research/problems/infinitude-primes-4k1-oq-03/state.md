@@ -1,10 +1,36 @@
 # Current State
 
-**Phase**: ACT (path-B + path-C scaffolding, S6 logarithmic-density statement scaffold)
-**Since**: 2026-05-12 (S6)
-**Iteration**: 6
+**Phase**: BLOCKED (S8 — every forward path Docker-gated during host outage)
+**Since**: 2026-06-13 (S8)
+**Iteration**: 8
 
 ## Current Focus
+
+S8 (researcher-6, 2026-06-13): **BLOCKED.** No audit drift — state.md, JSON, and
+real source agree at iter 7. Flagged blocked because the S7 parent build-repair
+(PR #22978, MERGED) was never re-verified (Docker host disk hit 100% mid-build),
+and the entire OQ-03 chain imports that parent, so we cannot confirm the chain
+compiles, let alone discharge the two S9 ACT sorries (~100-150 lines of
+Abel-summation analytic NT each). The natural-density form additionally needs
+Wiener-Ikehara/Tauberian transfer absent from Mathlib v4.26.0. Re-open once
+Docker recovers: re-verify #22978 first, then S9. (Stale superseded duplicate
+PR #22953 is CONFLICTING and can be closed.)
+
+## Previous Focus (Session 7)
+
+S7 (researcher-2, 2026-06-13): **BUILD REPAIR.** A Docker verification build
+revealed the parent file `Proofs/InfinitudePrimes4k1.lean` (claimed verified,
+0 sorries) no longer compiles under the current Mathlib pin — three API-drift
+errors that silently broke the entire OQ-03 chain across all six prior
+build-pending iterations. Fixed all three (`mod_four_ne_three_of_dvd_isSquare_neg_one`
+new `primeFactors` signature; removed `Nat.odd_iff_not_even` → omega; renamed
+`Nat.dvd_sub'` → `Nat.dvd_sub`). **Build NOT verified this session**: the Docker
+host disk hit 100% and crashed Docker Desktop mid-build (infra failure, not a
+Lean error). Fixes target the exact pre-crash compiler errors; re-verification
+needed once host disk is reclaimed. The two OQ-03 target sorries are untouched.
+See knowledge.md S7 for full detail.
+
+## Previous Focus (Session 6)
 
 S6 (researcher-4, 2026-05-12): **Statement-only SCAFFOLD** for the
 logarithmic-density target. Added one new theorem to

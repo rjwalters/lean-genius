@@ -6,11 +6,11 @@
       "startLine": 1,
       "endLine": 70
     },
-    "type": "context",
+    "type": "concept",
     "title": "The LP Reduction Question and Klyachko's Theorem",
     "content": "The opening docstring poses a feasibility question: what is the *minimal* Mathlib extension to formally state and prove that Littlewood-Richardson positivity $c^\\nu_{\\lambda, \\mu} > 0$ reduces to a polynomial-time linear program via Klyachko's Horn inequalities? The answer turns out to be remarkably small — exactly two new pieces of infrastructure (a general n-part LR coefficient and the recursive admissibility predicate) plus the imported axiom for Klyachko's theorem itself. Mathematically, this is a beautiful crystallization of a classical question of Weyl (1912) about possible eigenvalues of a sum $C = A + B$ of Hermitian matrices: Horn (1962) conjectured a recursive characterization, Klyachko (1998) proved it via stable vector bundles, and Knutson-Tao (1999) closed the loop by proving the saturation conjecture via the honeycomb model. Three Mathlib imports — `Tactic`, `Data.Finset.Basic`, `Data.Fin.Basic` — plus the parent `Proofs.Hilbert15OQ02` (which provides the 2-row LR coefficient `lrCoeff2` and the `LRComplexity` namespace) carry the entire framework. The file's `axiomCount = 3` is honest: every claimed result is fully proved relative to those three imported facts, with no sorries.",
     "mathContext": "Hermitian sum problem (Weyl 1912): for $A, B$ Hermitian with eigenvalues $\\alpha, \\beta$, what are the possible eigenvalues $\\gamma$ of $C = A + B$? Klyachko (1998): exactly the $\\gamma$ satisfying all *admissible* Horn inequalities $\\sum_K \\gamma_k \\le \\sum_I \\alpha_i + \\sum_J \\beta_j$ — equivalently, those with positive LR coefficient $c^\\gamma_{\\alpha, \\beta} > 0$.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "Horn conjecture",
       "Hermitian sum problem",
@@ -80,7 +80,7 @@
       "startLine": 133,
       "endLine": 173
     },
-    "type": "context",
+    "type": "concept",
     "title": "Three Axioms: lrCoeffN, admissible, klyachko_theorem",
     "content": "The file's three axioms are precisely the gap to a complete formal proof. **`lrCoeffN`** is the general $n$-row LR coefficient $c^\\gamma_{\\alpha, \\beta} \\in \\mathbb{N}$, the primary missing Mathlib ingredient (estimated ~300 lines to formalize via Mathlib's developing semistandard Young tableaux machinery: reverse-row reading word, ballot/lattice condition for skew shapes). The 2-row case `lrCoeff2` is already in the parent file. **`admissible`** is the recursive predicate on index triples: $(I, J, K)$ is admissible at rank $r$ iff the LR coefficient $c^K_{I, J}$ at rank $r$ is positive. The recursion bottoms out at $r = 1$, where every singleton triple is admissible (Weyl inequalities are unconditional). Estimated ~200 lines to formalize, depending on `lrCoeffN`. **`klyachko_theorem`** is the headline equivalence: for any partitions $\\alpha, \\beta, \\gamma$ with $|\\alpha| + |\\beta| = |\\gamma|$, $c^\\gamma_{\\alpha, \\beta} > 0$ iff every admissible Horn inequality holds. Klyachko's 1998 proof uses stable vector bundles on $\\mathbb{P}^1$, GIT quotients, and Schubert calculus on Grassmannians — none currently in Mathlib (estimated ~3000 lines). The Knutson-Tao honeycomb model gives an alternative combinatorial proof that *might* be more Lean-tractable.",
     "mathContext": "The three axioms span the entire Klyachko framework: definition of LR coefficient, definition of admissible triples, and their equivalence with positivity. Eliminating any one in Mathlib advances the gallery; eliminating all three would be a major Lean formalization milestone (~3500 lines total).",

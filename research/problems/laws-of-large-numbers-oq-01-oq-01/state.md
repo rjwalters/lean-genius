@@ -6,11 +6,16 @@
 
 ## Current Focus
 
-Initial exploration of the problem.
+RESOLVED. The converse direction of Kolmogorov's SLLN (`slln_necessity` — a.s.
+convergence of the sample mean forces `E[|X₀|] < ∞`) is proved in Mathlib.
 
 ## Active Approach
 
-None yet.
+Borel-Cantelli (BC2 under pairwise independence) + layer-cake equivalence
+`E[|X|]=∞ ↔ Σₙ P(|X|>n)=∞` + Cesàro `Xₙ/n → 0`, combined by contradiction.
+Gallery entry `laws-of-large-numbers-oq-01-oq-01` is verified/original, 0 axioms /
+0 sorries across `LawsOfLargeNumbersOQ01OQ01.lean` and its
+`LawsOfLargeNumbersOQ01Aristotle.lean` companion (`slln_necessity_statement`).
 
 ## Blockers
 
@@ -18,7 +23,7 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+None — open question answered; gallery proof machine-checked. No further work.
 
 ## Attempt Counts
 

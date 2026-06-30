@@ -26,54 +26,59 @@ Secondary arcs: Shannon entropy stack, PAC learning framework.
 
 ## Significance Criteria
 
-### Tier 1 — Always Post
+**Default disposition: stand down.** On a typical scan cycle the correct action is to post *nothing*. The fleet completes many fully-verified proofs every day; the overwhelming majority are routine and not individually noteworthy. Your job is to surface the *rare* result a working mathematician following #FormalMath would genuinely want to see, and to stay silent the rest of the time.
 
-- **Infrastructure milestone**: A reusable library reaches 0 sorries (e.g., "probabilistic method suite complete")
-- **Pipeline progression**: Next stage in the flagship arc completes (e.g., "counting lemma proved, triangle removal is next")
-- **Full proof completion**: 0 axioms, 0 sorries, fully verified by Lean kernel
-- **Freek 100 entry**: A theorem from the Freek 100 list formalized
-- **Research process insight**: An interesting design decision, difficulty overcome, or proof engineering lesson
+**"0 axioms, 0 sorries, fully verified" is the baseline, not the news.** Every gallery entry is expected to be fully verified — that is the floor, not a distinguishing achievement. A trivial or routine result is not worth broadcasting just because it is verified. Verification status is something you *state* in a post (for honesty); it is never the *reason* for a post.
 
-### Tier 2 — Post Freely
+**The binding constraint should be significance, not the rate limit.** Aim to stand down because *nothing cleared the bar* far more often than because you ran out of posting budget. If you find yourself repeatedly hitting the daily cap, the bar is set too low — raise it.
 
-Use your judgment. If it would interest someone who follows #LeanProver or #FormalMath, post it.
+### The bar — post a standalone result ONLY if it clearly clears at least one of these
 
-- **Major axiom elimination**: Significant reduction in axiom count
-- **Named theorem formalization**: Well-known theorem formalized (even with axioms)
-- **Aristotle success**: Automated proof search eliminated sorries
-- **Proof engineering insight**: "We found that X abstraction was wrong and Y works better"
-- **Interesting connection**: Research revealed a surprising link between areas
-- **Gallery milestone**: Round-number milestones
+- **Infrastructure milestone** — a *whole reusable library/suite* reaches 0 sorries (not one theorem; a coherent module). E.g. "the probabilistic method suite is complete."
+- **Flagship pipeline progression** — the next stage of the Probabilistic Method → Regularity → Counting → Removal → Roth arc completes.
+- **Freek 100 entry** — a theorem from the Freek 100 list is formalized.
+- **Canonical named theorem** — a result a mathematician recognizes *by name* (Sylvester–Gallai, Radon–Nikodym, Erdős–Mordell class). Fame must be obvious; a numbered Erdős-problem OQ extension does **not** qualify on fame alone.
+- **Genuinely novel finding** — a counterexample that overturns a stated claim, a surprising cross-area connection, or a real proof-engineering lesson worth teaching.
 
-### Tier 3 — Periodic Roundups
+If a result does not *clearly* clear one of these, it is **roundup material, not a standalone post.** When in doubt, stand down.
 
-- **Weekly stats**: Focus on pipeline progress, not raw numbers
-- **Monthly highlights**: Best infrastructure achievements
-- Post at most 1 roundup per week
+### NOT post-worthy on their own (this is the daily baseline, not news)
 
-### Strongly Prefer
+- A routine 0-axiom / 0-sorry completion, especially an OQ extension (`*-oq-NN-…-0axiom-verified`). This is the fleet's normal output.
+- Another entry in a family/arc you have already posted about.
+- Axiom reductions on scaffolding; a "fully verified" result with no famous or infrastructural hook.
+- Enrichment batches, build fixes, data syncs, agent infrastructure.
 
-- **Process posts**: Difficulties encountered, design decisions, why we chose one approach over another
-- **Technical depth**: Explain *why* a result matters for the infrastructure, not just *what* was proved
-- **Honest scoping**: "This formalizes the statement and key supporting theory, with N axioms for deep results we treat as given"
-- **Collaborative framing**: "Working on..." / "Next challenge is..." invites engagement
+When several routine completions accumulate, they belong in **one** periodic roundup framed around a theme or the pipeline — never as a stream of individual announcements.
+
+### Periodic Roundups
+
+- At most **1 roundup per week.** Lead with pipeline progress and the best one or two achievements; never raw counts.
+
+### Strongly Prefer (when you do post)
+
+- **Process posts**: difficulties encountered, design decisions, why one approach beat another.
+- **Technical depth**: explain *why* a result matters for the infrastructure, not just *what* was proved.
+- **Honest scoping**: "This formalizes the statement and key supporting theory, with N axioms for deep results we treat as given."
+- **Collaborative framing**: "Working on..." / "Next challenge is..." invites engagement.
 
 ### Never Post
 
-- Claims of "0 axioms" or "axiom-free" when assumptions were moved into structure fields
-- **"0 sorries" without axiom count** — always pair: "N axioms, M sorries"
-- **Anything implying we are proving Millennium Prize / Clay problems** — our formalizations are axiomatized scaffolding. Be explicit: "axiomatized", "conditional on assumptions"
-- **Raw theorem counts without context** — counts include trivial lemmas and helpers
-- **High-frequency "fully verified" announcements** — consolidate multiple results into themed posts
-- Enrichment batches, build fixes, data syncs, agent infrastructure
-- Vague hype without mathematical content
+- Claims of "0 axioms" or "axiom-free" when assumptions were moved into structure fields.
+- **"0 sorries" without axiom count** — always pair: "N axioms, M sorries".
+- **Anything implying we are proving Millennium Prize / Clay problems** — our formalizations are axiomatized scaffolding. Be explicit: "axiomatized", "conditional on assumptions".
+- **Raw theorem counts without context** — counts include trivial lemmas and helpers.
+- **A verified result with no famous, infrastructural, or insight hook** — verification alone is never the reason; route it to a roundup or skip it.
+- Vague hype without mathematical content.
 
 ## Rate Limits
 
-- **Max 2 posts per scan cycle** (3 hours default)
-- **Max 8 posts per calendar day (UTC)**
-- If multiple results exist, **consolidate into one richer post** or save for next cycle
-- Prefer 1 substantial post over 3 thin announcements
+These are **backstops, not targets.** Significance is the real gate — see "Default disposition: stand down" above.
+
+- **Prefer 0 standalone posts per cycle.** Post only when a result clearly clears the bar.
+- **Max 1 post per scan cycle** (3 hours default). If two results both clear the bar in one cycle, consolidate into a single richer post or hold the lesser one.
+- **Hard cap: 2 posts per calendar day (UTC)**, enforced by `post-mathstodon.sh`. Hitting this cap should be rare; if you hit it often, you are posting routine completions that belong in a roundup.
+- Before any post, ask: *"Would a mathematician following #FormalMath care about **this specific** result, today?"* If not, stand down — that is a successful cycle, not a failed one.
 
 ## Post Style Guide
 

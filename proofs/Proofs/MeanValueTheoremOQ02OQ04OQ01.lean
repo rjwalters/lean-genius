@@ -41,6 +41,18 @@ sup-bound `M` to apply on the *complex* disk `D(a, R) ⊂ ℂ`, not merely on
 the real interval `(a − R, a + R)`. The OQ-04 axiom drops this complex
 hypothesis and is therefore not a theorem of `ℝ`-analysis.
 
+## Status (S7 ACT, 2026-05-14, researcher-3): **COMPLETE**
+
+All supporting lemmas and the corrected complex theorem are now fully
+proven: the file is **0 axioms, 0 sorries** at 758 LOC, with a clean
+`docker-build` (7745 jobs, 2026-05-14, pre-blackout). The residual
+`cauchy_diag_norm_bound_at_radius` sorry was discharged via Mathlib's
+`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` Cauchy
+estimate (S6–S6f PREP pinned the v4.26.0 lemma names; S7 ACT pasted the
+drop-in and fixed three elaborator details). **The per-section "sorry" /
+"next iteration's task" notes below are historical iteration records
+(Iteration 1 – S5) superseded by this S7 completion.**
+
 ## What this file contributes (Iteration 1)
 
 * **Definition** `runge : ℝ → ℝ := fun x => 1 / (1 + x ^ 2)` — the
@@ -533,12 +545,12 @@ bounded by `M · (‖w‖ / R)^k` for every `w` with `‖w‖ < R`.
 `le_of_tendsto` then transports the eventual pointwise bound to the
 limit value, yielding the boundary bound.
 
-This is the **only remaining `sorry`** in this file (it routes through
-`cauchy_diag_norm_bound_at_radius`'s deferred Mathlib Cauchy-integral
-chain). The limit-extraction step is **fully proven** below; what
-remains is the finite-radius Cauchy estimate, which is exactly what
-Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
-infrastructure provides. -/
+As of S5 this routed through `cauchy_diag_norm_bound_at_radius`, then the
+sole residual `sorry`. **S7 (2026-05-14) discharged that lemma**, so the
+limit-extraction step here and the finite-radius Cauchy estimate it calls
+are both fully proven via Mathlib's
+`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
+infrastructure (see the §0 Status banner). -/
 theorem cauchy_diag_norm_bound
     (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
     (hR : 0 < R) (hM : 0 ≤ M)
@@ -598,10 +610,11 @@ tail begins at degree `n + 1` and the geometric sum
 `∑_{k ≥ n+1} M · (r/R)^k = M · (r/R)^(n+1) · R/(R−r) =
 M · r^(n+1) / (R^n · (R − r))` (via `geometric_tail_identity`).
 
-**Proof (S4, this iteration).** The combination is now formalized in full;
-the only residual `sorry` is the Cauchy coefficient bound
-`cauchy_diag_norm_bound` (its own statement is closed under a separate
-`sorry`). The proof chains:
+**Proof (S4, this iteration; sorry-free as of S7).** The combination is
+formalized in full. It calls the Cauchy coefficient bound
+`cauchy_diag_norm_bound`, which as of S4 was itself closed under a
+`sorry`; that gap was fully discharged at S7 (2026-05-14). The proof
+chains:
 
 1. `HasFPowerSeriesOnBall.hasSum_sub` (Mathlib): from `z` in the
    `EMetric.ball a (ENNReal.ofReal R)`, get

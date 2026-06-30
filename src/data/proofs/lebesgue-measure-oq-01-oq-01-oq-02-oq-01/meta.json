@@ -1,0 +1,130 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+  "title": "Thomae's Function is Riemann Integrable (integral 0)",
+  "slug": "lebesgue-measure-oq-01-oq-01-oq-02-oq-01",
+  "description": "Shows Thomae's (popcorn) function is integrable on [0,1] with integral 0. Rather than the textbook Lebesgue criterion (which Mathlib does not expose as a ready lemma, and Mathlib has no first-class RiemannIntegrable predicate — its intervalIntegral IS the Bochner/Lebesgue integral), the proof takes the direct route: thomae =ᵐ[volume] 0, because thomae x ≠ 0 only on the rationals, a countable (hence null) set. From a.e.-equality to 0 it derives Integrable thomae volume and ∫ x in (0:ℝ)..1, thomae x = 0. Builds on the parent entry's thomae_irrational. 5 theorems, 0 axioms.",
+  "leanFile": {
+    "namespace": "LebesgueMeasureOQ01OQ01OQ02Riemann",
+    "lineCount": 68,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02Riemann.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-16",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01OQ02Riemann.lean",
+    "tags": [
+      "measure-theory",
+      "thomae-function",
+      "popcorn-function",
+      "riemann-integral",
+      "almost-everywhere",
+      "null-set",
+      "real-analysis",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. BUILD PENDING: this is a complete hand-derived draft that has NOT yet been kernel-checked locally — the worktree Docker VM was build-saturated (9 concurrent builds, cold Mathlib cache) and Aristotle MCP was unavailable (404) this session, so verification is deferred. The file is intentionally NOT yet registered in Proofs.lean (kept as an orphan) until a green build is confirmed, since there is no CI Lean-build gate and registering an uncompiled hand draft could break the shared Proofs build on main. OFFLINE API CHECK (all 5 lemmas): every Mathlib name and signature used was cross-checked against the project pin 2df2f0150c (v4.26.0) in an offline mathlib4 checkout — ae_iff (MeasureTheory/OuterMeasure/AE.lean:77, `(∀ᵐ a ∂μ, p a) ↔ μ{a|¬p a}=0`), intervalIntegral.integral_congr_ae (Integral/IntervalIntegral/Basic.lean:1112, `∀ᵐ x ∂μ, x∈Ι a b → f x=g x`), measure_mono_null (OuterMeasure/Basic.lean:57), Set.countable_range (Data/Set/Countable.lean:117), Set.Countable.measure_zero (Measure/Typeclasses/NoAtoms.lean:56), integrable_zero (Function/L1Space/Integrable.lean:383, declared under `variable (α ε') in` so the two type args are EXPLICIT and `integrable_zero ℝ ℝ volume` is the correct application), Integrable.congr (Function/L1Space/Integrable.lean:116, `Integrable f μ → f =ᵐ[μ] g → Integrable g μ`), and intervalIntegral.integral_zero (Integral/IntervalIntegral/Basic.lean:635). The previously-flagged lemmas 3 (thomae_ae_eq_zero, via ae_iff) and 5 (thomae_intervalIntegral_zero, via integral_congr_ae) now check out exactly — no tactic tweak anticipated. The parent thomae_irrational signature (Irrational x → thomae x = 0) was likewise verified (parent registered at Proofs.lean). Residual risk is only elaboration/kernel confirmation, which needs a live Docker build. This is a formalization entry: the mathematics is the classical fact that Thomae's function is Riemann integrable; the contribution is the clean a.e.-zero route that avoids the (Mathlib-absent) Lebesgue criterion.",
+    "lineCount": 68,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "thomae_intervalIntegral_zero: ∫ x in (0:ℝ)..1, thomae x = 0 — the headline integrability result, obtained without the Lebesgue criterion",
+      "thomae_ae_eq_zero: thomae =ᵐ[volume] 0, the key reduction — the popcorn function vanishes off a null set",
+      "thomae_support_null: volume {x | thomae x ≠ 0} = 0 via containment in the countable set range((↑):ℚ→ℝ)",
+      "thomae_support_subset_rat: {x | thomae x ≠ 0} ⊆ range((↑):ℚ→ℝ), the support-localization that makes the null-set argument work",
+      "Identifies that the correct Lean target is the a.e.-zero route, not the textbook Lebesgue criterion (which Mathlib does not provide and which is unnecessary here)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Thomae's function (the 'popcorn' or 'ruler' function) is 1/q for x = p/q in lowest terms and 0 for irrational x. It is the classic example of a function continuous at every irrational and discontinuous at every rational, yet Riemann integrable with integral 0 — a standard counterpoint to the Dirichlet function (which is nowhere continuous and not Riemann integrable). The textbook proof invokes the Lebesgue criterion: a bounded function is Riemann integrable iff its set of discontinuities is null. In Lean/Mathlib the situation is different: there is no first-class RiemannIntegrable predicate, and intervalIntegral is already the Bochner/Lebesgue integral, so the right formal target is the value of that integral.",
+    "problemStatement": "Show that Thomae's function $t$ is integrable on $[0,1]$ and $\\int_0^1 t = 0$, where $t(p/q) = 1/q$ for $p/q$ in lowest terms and $t(x) = 0$ for irrational $x$.",
+    "text": "Because $t(x) \\neq 0$ only when $x$ is rational, the support of $t$ is contained in the countable set $\\{(\\uparrow q) : q \\in \\mathbb{Q}\\}$, which has Lebesgue measure zero. Hence $t =ᵐ 0$, so $t$ is integrable (it agrees a.e. with the zero function) and its integral equals that of $0$, namely $0$.",
+    "proofStrategy": "Five steps. (1) thomae_support_subset_rat: if t(x) ≠ 0 then x is rational — proved by by_contra, since Irrational x is definitionally x ∉ range((↑):ℚ→ℝ), feeding the parent's thomae_irrational. (2) thomae_support_null: the support is null, by measure_mono_null into the countable range (Set.countable_range + Set.Countable.measure_zero under NoAtoms volume). (3) thomae_ae_eq_zero: t =ᵐ 0, via ae_iff reducing to the support-null statement. (4) thomae_integrable: (integrable_zero ℝ ℝ volume).congr of the a.e.-equality. (5) thomae_intervalIntegral_zero: intervalIntegral.integral_congr_ae rewrites the integral to that of 0, closed by intervalIntegral.integral_zero.",
+    "keyInsights": [
+      "The Lebesgue criterion is the wrong Lean target. Mathlib exposes neither a RiemannIntegrable predicate nor the 'integrable ⇔ continuous a.e.' criterion as a usable lemma; since intervalIntegral is the Lebesgue integral, the natural goal is the integral's value, reached directly via a.e.-equality.",
+      "Only thomae_irrational is needed, not the continuity theorems. The integrability follows purely from 'support ⊆ ℚ ⟹ a.e. zero'; the parent's continuity-at-irrationals / discontinuity-at-rationals results are irrelevant to this route (they would only be needed for the Lebesgue-criterion phrasing).",
+      "Countability does all the measure-theoretic work. range((↑):ℚ→ℝ) is countable because ℚ is, and ℝ has no atoms, so the support is null — no fine structure of 1/q values is used.",
+      "Irrational is definitionally a non-membership. Irrational x unfolds to x ∉ Set.range ((↑):ℚ→ℝ), so the by_contra hypothesis in step 1 is exactly what thomae_irrational consumes, with no coercion bookkeeping.",
+      "Integrability and integral value are both a.e.-class facts. Once thomae =ᵐ 0 is established, integrability transfers by Integrable.congr and the integral value by intervalIntegral.integral_congr_ae — both because the Bochner integral and the Integrable predicate are invariant under a.e.-equality. The single reduction to the zero function therefore settles both the qualitative (integrable) and quantitative (= 0) claims at once."
+    ],
+    "prerequisites": [
+      "Thomae's function and the parent results (thomae, thomae_irrational) in LebesgueMeasureOQ01OQ01OQ02.lean",
+      "Countable sets are null under an atomless measure (Set.Countable.measure_zero, measure_mono_null)",
+      "Almost-everywhere equality and ae_iff",
+      "Integrable.congr and intervalIntegral.integral_congr_ae / integral_zero"
+    ]
+  },
+  "conclusion": {
+    "summary": "Thomae's function is integrable on [0,1] with integral 0, proved via the a.e.-zero route (support ⊆ countable ℚ ⟹ null) rather than the Mathlib-absent Lebesgue criterion. 5 theorems, 0 axioms, 68 lines. Build-pending (deferred to deployer build-gate).",
+    "implications": "Provides the integrability companion to the parent's continuity analysis of Thomae's function, and documents the idiom for 'Riemann integrable with integral v' in a library where intervalIntegral is the Lebesgue integral and no Lebesgue criterion is available: localize the support, show it is null, pass to a.e.-equality. The same pattern applies to any function supported on a countable (or null) set.",
+    "openQuestions": [
+      "State the analogous non-integrability of the Dirichlet function 1_ℚ in the genuine Riemann (Darboux) sense, highlighting where the Lebesgue and Riemann integrals diverge.",
+      "Formalize the Lebesgue criterion itself (bounded + a.e.-continuous ⇒ Riemann integrable) as reusable Mathlib-style infrastructure, of which this entry is currently a hand-rolled instance."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Docstring, Imports, and Strategy",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Explains why the Lebesgue-criterion framing is the wrong Lean target and states the direct thomae =ᵐ 0 route. Imports Mathlib and the parent module, opens MeasureTheory, Set, and the parent namespace."
+    },
+    {
+      "id": "support-null",
+      "title": "Support Localization and Nullity",
+      "startLine": 33,
+      "endLine": 48,
+      "summary": "thomae_support_subset_rat localizes the nonzero set inside range((↑):ℚ→ℝ) via by_contra + thomae_irrational; thomae_support_null concludes the support is null by measure_mono_null into the countable range under NoAtoms volume."
+    },
+    {
+      "id": "ae-zero",
+      "title": "Almost-Everywhere Zero",
+      "startLine": 49,
+      "endLine": 55,
+      "summary": "thomae_ae_eq_zero rewrites the a.e.-equality goal via ae_iff to the support-null statement (after simp [Pi.zero_apply, ne_eq])."
+    },
+    {
+      "id": "integrable",
+      "title": "Integrability by Transfer",
+      "startLine": 56,
+      "endLine": 58,
+      "summary": "thomae_integrable transfers integrability from the zero function by Integrable.congr applied to thomae_ae_eq_zero.symm — integrability is an a.e.-class property, so no boundedness or continuity is invoked."
+    },
+    {
+      "id": "integral-value",
+      "title": "The Integral Value is Zero",
+      "startLine": 60,
+      "endLine": 68,
+      "summary": "thomae_intervalIntegral_zero rewrites ∫ x in (0:ℝ)..1, thomae x to the integral of 0 via intervalIntegral.integral_congr_ae (using thomae_ae_eq_zero.mono to restrict the a.e.-equality to [0,1]) and closes with intervalIntegral.integral_zero."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02",
+      "relationship": "parent-problem",
+      "description": "Defines Thomae's function and proves thomae_irrational (and the continuity/discontinuity classification). This entry consumes thomae_irrational to obtain integrability, deliberately not using the continuity results."
+    }
+  ],
+  "references": [
+    {
+      "title": "Thomae's function",
+      "url": "https://en.wikipedia.org/wiki/Thomae%27s_function",
+      "description": "The popcorn function: continuous at every irrational, discontinuous at every rational, Riemann integrable with integral 0."
+    },
+    {
+      "title": "Riemann integrability and the Lebesgue criterion",
+      "url": "https://en.wikipedia.org/wiki/Riemann_integral#Lebesgue's_integrability_condition",
+      "description": "The textbook criterion (bounded + a.e.-continuous) that this entry sidesteps via the direct a.e.-zero route."
+    }
+  ]
+}

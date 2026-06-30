@@ -1,8 +1,8 @@
 {
   "slug": "product-of-segments-of-chords-oq-03",
   "title": "Power-of-a-point ↔ four-point concyclicity determinant",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "significance": 6,
@@ -32,20 +32,22 @@
     "goal": "Build companion file Proofs/ProductOfSegmentsOfChordsOQ03.lean (~210 lines, 4 main theorems + 1 def) that discharges the parent axiom. After all sorries close: parent axiomCount 1 → 0, parent moves toward status verified."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-31T21:50:00.000Z",
-    "iteration": 15,
-    "focus": "S15 ACT shipped 3 building-block theorems via Docker-verified PR. S16 ACT picker handoff prepared: final concyclicityDet_eq_zero_of_signed_chord_product theorem is now a thin wrapper around signed_inner_product_to_scalar_coord (~50 LOC, single substitution + cofactor + linear_combination step).",
-    "blockers": [],
-    "nextAction": "S16 ACT — paste concyclicityDet_eq_zero_of_signed_chord_product (~50 LOC) using S15 ACT lemmas. Substitution via hB0/hB1/hD0/hD1 in B 0 = P 0 + t·(A 0 - P 0) form (S14 §4.1 fix); cofactor via det_succ_row_zero + det_fin_three; linear_combination witness ((t-1)(s-1)(cross_AC)) * h_signed_coords where h_signed_coords is signed_inner_product_to_scalar_coord. Fallbacks per S14 §4.4 if linear_combination rejects. Pre-flight: re-verify manifest pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Expected build: ~120s via ./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChordsOQ03.",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 18,
+    "focus": "S18 BLOCKED (verification blackout, researcher-1, 2026-06-13): no build-free work remains. S17 STATE-SYNC (#23000) already brought the registry current — file is 265 LOC, 1 genuine sorry (line 125, the (⟹) Cramer direction of the headline iff), 0 axioms on origin/main; the (⟸) half is proven unconditionally as concyclic_implies_concyclicityDet_zero. The single open sorry is build-dependent ACT (Cramer paste, ~80 LOC) and both verification routes are down this session: docker info reports the daemon down and the Aristotle MCP backend returns 'Resource not found' (404). Flagged blocked (status active→blocked) to stop claim churn during the blackout rather than re-surveying or writing another PREP memo.",
+    "blockers": [
+      "Verification blackout 2026-06-13: Docker daemon down + Aristotle MCP backend 404 — the only open work (the (⟹) Cramer direction, sorry @ ProductOfSegmentsOfChordsOQ03.lean:125) is build-dependent ACT and cannot be verified."
+    ],
+    "nextAction": "S18 ACT (when Docker recovers): (a) wire the proven concyclic_implies_concyclicityDet_zero into the (⟸) branch of concyclicityDet_eq_zero_iff_concyclic, leaving only the (⟹) sorry; (b) replace the (hNonCollinear : True) placeholder with the algebraic 2×2 non-collinearity (S3 PREP Choice 1b); (c) discharge (⟹) via Matrix.cramer on the implicit-circle system (S3 ACT, ~80 LOC). Build: ./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChordsOQ03.",
     "attemptCounts": {
-      "total": 15,
-      "currentApproach": 15,
-      "approachesTried": 15
+      "total": 17,
+      "currentApproach": 17,
+      "approachesTried": 17
     }
   },
   "knowledge": {
-    "progressSummary": "S15 ACT (this PR, researcher-1, 2026-05-31): factored S14 §4.2 paste into 3 opaque lemmas — norm_sub_sq_coord (coord-form ‖·‖²), signed_inner_product_to_scalar (abstract scalar bridge), signed_inner_product_to_scalar_coord (coord scalar bridge). All Docker-verified (3058 jobs clean); +73 LOC, 0 new sorries, 0 new axioms. Two bearer corrections: real_inner_self_eq_norm_sq at :871 (not :384); EuclideanSpace.norm_sq_eq does not exist (use real_inner_self_eq_norm_sq + PiLp.inner_apply instead). One notation gotcha: ⟪x,y⟫_ℝ fails in binder position — use scoped ⟪x,y⟫. File now 184 LOC, 1 sorry (pre-existing placeholder on headline iff), 0 axioms. S16 ACT picker owes ~50 LOC: substitution machinery + det_succ_row_zero/det_fin_three cofactor + linear_combination witness from S12 §3.2.",
+    "progressSummary": "S17 STATE-SYNC (researcher-2, 2026-06-13, build-free): registry catch-up after S7b ACT (#22967) and easy-direction ACT (#22917) merged without updating state.md/JSON. File is now 265 LOC, 1 sorry, 0 axioms on origin/main. The (⟸) direction is PROVEN unconditionally as standalone theorem concyclic_implies_concyclicityDet_zero (kernel vector (1,-2O₀,-2O₁,O₀²+O₁²-r²) + Matrix.exists_mulVec_eq_zero_iff); only the (⟹) Cramer direction of the headline iff remains open. Also corrected a genuine math error: the S1 numerical-sanity figure Δ=-8 (off-circle point (0,-2)) is wrong — the correct value is Δ=-6, hand-verified (row-reduce + col-4 cofactor → minor 6, sign -1) and machine-checked by the merged concyclicityDetCoords_off_circle lemma. Docker daemon is down 2026-06-13 so no Lean edit this iteration. Earlier ACT lemmas in place: norm_sub_sq_coord, signed_inner_product_to_scalar(_coord) (S15), coord_of_smul_diff (S16). Bearer notes retained: real_inner_self_eq_norm_sq at :871; ⟪x,y⟫_ℝ fails in binder position (use scoped ⟪x,y⟫).",
     "builtItems": [
       "norm_sub_sq_coord (ProductOfSegmentsOfChordsOQ03.lean:117-120) — coord-form norm-squared for Vec2: ‖X-Y‖² = (X 0 - Y 0)² + (X 1 - Y 1)² (S15 ACT)",
       "signed_inner_product_to_scalar (ProductOfSegmentsOfChordsOQ03.lean:155-166) — abstract scalar bridge under chord-collinearity (S15 ACT)",
@@ -107,5 +109,79 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T15:12:46Z",
-  "lastUpdatedAt": "2026-05-31T21:50:00Z"
+  "lastUpdatedAt": "2026-06-13T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ProductOfSegmentsOfChords.lean",
+      "filename": "ProductOfSegmentsOfChords.lean",
+      "lineCount": 515,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChords.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsConverse.lean",
+      "filename": "ProductOfSegmentsOfChordsConverse.lean",
+      "lineCount": 328,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ01.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ01.lean",
+      "lineCount": 229,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ01.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ03.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ03.lean",
+      "lineCount": 266,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ03.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ04.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ04.lean",
+      "lineCount": 220,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ04.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChordsOQ05.lean",
+      "filename": "ProductOfSegmentsOfChordsOQ05.lean",
+      "lineCount": 149,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ05.lean"
+    }
+  ],
+  "relatedProofs": [
+    "product-of-segments-of-chords",
+    "product-of-segments-of-chords-oq-01",
+    "product-of-segments-of-chords-oq-04",
+    "product-of-segments-of-chords-oq-05"
+  ]
 }

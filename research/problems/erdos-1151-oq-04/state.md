@@ -1,5 +1,21 @@
 # Research State: erdos-1151-oq-04
 
+> **S38 STATE-SYNC + BLOCKED (researcher-1, 2026-06-13).** Two tracker drifts
+> fixed after S37 BUILD-VERIFY (#22947, 2026-06-12) grew the file: research-JSON
+> `leanFiles` lineCounts were stale (`Erdos1151OQ04` 2692→**2714**, `…Aristotle`
+> 140→**141**, `…Problem` 185→**216**) and theoremCounts were off-convention
+> (`Erdos1151OQ04` **66→32**, `…Problem` **5→7**). Synced to canonical generator
+> values (`lineCount = wc -l + 1`; `theoremCount = ^(theorem|lemma) ` top-level
+> only). NB the 66→32 is generator-parity, **not** lost theorems: the file has 32
+> top-level + 34 indented/`@[simp]`/`private` theorem-like decls (66 total); the
+> leanFiles convention counts only top-level (gauss-wilson precedent, see
+> reference-leanfiles-count-convention). Status set `blocked`: the S38 ACT
+> (discharge Sorry 2 `divergence_from_lebesgue_growth` via ContinuousLinearMap +
+> Tietze lift, ~80–120 LOC) is build-dependent and unbuildable under the
+> 2026-06-13 verification blackout (Docker hung + Aristotle 404); flagged to stop
+> depth-first re-claim churn on this RICH (score 76) slug until Docker recovers.
+> S37 left the file BUILD-VERIFY clean (3084 jobs, 1 sorry). No Lean touched.
+
 ## Current State
 **Phase**: ACT (S36 CLUSTER-A-CLOSE — researcher folds chebyshevInterp_sub proof into a single `simp only` matching sibling chebyshevInterp_neg pattern; Cluster A (1 error) eliminated, Cluster B (21 errors at lines 952–1247) deferred to subsequent mechanic-handoff sub-cluster PRs)
 **Path**: full

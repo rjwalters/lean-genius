@@ -94,72 +94,104 @@
       "title": "Problem Overview",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Header documentation: problem statement, key results ($2^{c(\\log n)^{1/9}} \\le f(n) \\le 2^{O(\\sqrt{\\log n})}$), references, and the connection to 3-AP-free sets.",
-      "mathContext": "Header documentation: problem statement, key results ($$$2^{{c(\\$\\log n$)^{1/9}$}$} \\le f(n) \\le $$2^{{$O(\\sqrt{\\$\\log n$}$}$)$}$), references, and the connection to 3-AP-free sets."
+      "summary": "Header documentation: problem statement (isosceles-free $A\\subset\\mathbb{R}^2$ must determine $\\ge f(n)\\cdot n$ distinct distances for some $f(n)\\to\\infty$?), key results ($2^{c(\\log n)^{1/9}} \\le f(n) \\le 2^{O(\\sqrt{\\log n})}$), references, and the equivalence (in $\\mathbb{R}$) to minimizing differences in 3-AP-free sets. Imports, `open Finset BigOperators Real`, and `namespace Erdos657`.",
+      "mathContext": "Module docstring (lines 1-25) states the open problem and bound history; imports (27-31) pull in `Real`, `Finset`, inner-product spaces, and `Set.Card`."
     },
     {
       "id": "point-geometry",
       "title": "Basic Definitions for Point Sets",
       "startLine": 37,
-      "endLine": 59,
-      "summary": "Defines $\\texttt{Point2} = \\mathbb{R} \\times \\mathbb{R}$, Euclidean distance $d(p,q) = \\sqrt{(\\Delta x)^2 + (\\Delta y)^2}$, and proves symmetry, non-negativity, and positive-definiteness.",
-      "mathContext": "Formal definition: Defines $\\texttt{Point2} = \\mathbb{R} \\times \\mathbb{R}$, Euclidean distance $d(p,q) = \\sqrt{(\\Delta x)^2 + (\\Delta y)^2}$, and proves symmetry, non-negativity, and positive-definiteness."
+      "endLine": 56,
+      "summary": "Defines $\\texttt{Point2}=\\mathbb{R}\\times\\mathbb{R}$ and the Euclidean distance $\\texttt{dist2}(p,q)=\\sqrt{(\\Delta x)^2+(\\Delta y)^2}$, and proves symmetry ($\\texttt{dist2\\_symm}$) and non-negativity ($\\texttt{dist2\\_nonneg}$).",
+      "mathContext": "Two definitions and two theorems; `dist2_nonneg` is `Real.sqrt_nonneg`, `dist2_symm` closes by `simp; ring_nf`."
     },
     {
       "id": "isosceles-free",
       "title": "Isosceles-Free Sets",
-      "startLine": 60,
-      "endLine": 97,
-      "summary": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equivalence with $\\texttt{AllTriplesDistinct}$.",
-      "mathContext": "Defines $\\texttt{Triple}(A)$ for three distinct points, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\; \\neg\\texttt{IsIsosceles}(t)$). Proves equivalence with $\\texttt{AllTriplesDistinct}$."
+      "startLine": 57,
+      "endLine": 90,
+      "summary": "Defines $\\texttt{Triple}(A)$ (three distinct points of $A$), $\\texttt{tripleDistances}$, $\\texttt{IsIsosceles}$ (two of three distances equal), and $\\texttt{IsIsoscelesFree}$ ($\\forall t,\\;\\neg\\texttt{IsIsosceles}(t)$), with the equivalent reformulation $\\texttt{AllTriplesDistinct}$ (every triple has exactly 3 distinct distances).",
+      "mathContext": "One structure plus four definitions; all are formal definitions, no theorems or axioms in this part."
     },
     {
       "id": "distances",
-      "title": "Distinct Distances",
-      "startLine": 98,
-      "endLine": 113,
-      "summary": "Defines $\\Delta(A) = \\{d(p,q) : p, q \\in A\\}$ via $\\texttt{Finset.image}$ on $A \\times A$, and $|\\Delta(A)|$ as the cardinality. Axiomatizes the trivial upper bound $|\\Delta(A)| \\le \\binom{n}{2} + 1$.",
-      "mathContext": "Formal definition: Defines $\\Delta(A) = \\{d(p,q) : p, q \\in A\\}$ via $\\texttt{Finset.image}$ on $A \\times A$, and $|\\Delta(A)|$ as the cardinality. Axiomatizes the trivial upper bound $|\\Delta(A)| \\le \\binom{n}{2} + 1$."
+      "title": "Distinct Distances in a Point Set",
+      "startLine": 91,
+      "endLine": 102,
+      "summary": "Defines the distance set $\\Delta(A)=\\{d(p,q):p,q\\in A\\}$ via $\\texttt{Finset.image}$ on $A\\times A$ ($\\texttt{distanceSet}$) and its cardinality $|\\Delta(A)|$ ($\\texttt{numDistinctDistances}$).",
+      "mathContext": "Two definitions only; no upper-bound lemma or axiom is declared here."
     },
     {
       "id": "question",
       "title": "The Erdős-Davies Question",
-      "startLine": 114,
-      "endLine": 135,
-      "summary": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$.",
-      "mathContext": "Defines $f(n) = \\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets. Two equivalent formulations of the question: $\\forall M,\\; \\exists N$ (epsilon-delta) and $\\exists f$ with $\\texttt{Filter.Tendsto}$."
+      "startLine": 103,
+      "endLine": 124,
+      "summary": "Defines $f(n)=\\inf\\{|\\Delta(A)|/n\\}$ over isosceles-free $n$-point sets ($\\texttt{f\\_ratio}$, with $f(n)=1$ for $n\\le 2$), and two equivalent formulations of the question: an $\\forall M,\\exists N$ statement ($\\texttt{ErdosQuestion657}$) and an $\\exists f$ with $\\texttt{Filter.Tendsto}$ formulation ($\\texttt{ErdosQuestion657'}$).",
+      "mathContext": "An infimum-valued definition plus two propositional encodings of \"does $f(n)\\to\\infty$\"; all definitions, no proofs."
     },
     {
       "id": "dumitrescu",
       "title": "Dumitrescu's Bounds (2008)",
-      "startLine": 136,
-      "endLine": 155,
-      "summary": "Axiomatizes $(\\log n)^c \\le f(n)$ (lower, via pigeonhole on distance multiplicities) and $f(n) \\le 2^{O(\\sqrt{\\log n})}$ (upper, via Behrend's 3-AP-free construction).",
-      "mathContext": "Axiomatizes $(\\$\\log n$)^c \\le f(n)$ (lower, via pigeonhole on distance multiplicities) and $f(n) \\le $$2^{{$O(\\sqrt{\\$\\log n$}$}$)$}$ (upper, via Behrend's 3-AP-free construction)."
+      "startLine": 125,
+      "endLine": 128,
+      "summary": "Section banner for Dumitrescu's bounds $(\\log n)^c \\le f(n) \\le 2^{O(\\sqrt{\\log n})}$. These bounds are documented in the module overview; this part is an exposition placeholder and declares no Lean content.",
+      "mathContext": "Empty docstring banner (no definitions, theorems, or axioms). The lower bound uses pigeonhole on distance multiplicities; the upper bound uses a Behrend-type 3-AP-free construction."
     },
     {
       "id": "kelley-meka",
-      "title": "Kelley-Meka/Bloom-Sisask (2023)",
-      "startLine": 156,
-      "endLine": 167,
-      "summary": "Axiomatizes the improved lower bound $f(n) \\ge 2^{c(\\log n)^{1/9}}$ from the Kelley-Meka breakthrough on $r_3(N) \\le N/2^{c(\\log N)^{1/9}}$.",
-      "mathContext": "Axiomatizes the improved lower bound $f(n) \\ge $$2^{{c(\\$\\log n$)^{1/9}$}$}$ from the Kelley-Meka breakthrough on $r_3(N) \\le N/$$2^{{c(\\log N)^{1/9}$}$}$."
+      "title": "Recent Progress (Kelley-Meka, Bloom-Sisask 2023)",
+      "startLine": 129,
+      "endLine": 132,
+      "summary": "Section banner for the 2023 improvement $f(n)\\ge 2^{c(\\log n)^{1/9}}$ coming from the Kelley-Meka / Bloom-Sisask bound $r_3(N)\\le N/2^{c(\\log N)^{1/9}}$. Exposition placeholder; declares no Lean content.",
+      "mathContext": "Empty docstring banner. The improvement propagates to $f$ through the 3-AP reduction in Part VII."
     },
     {
       "id": "3ap-connection",
       "title": "Connection to 3-AP Free Sets",
-      "startLine": 168,
-      "endLine": 205,
-      "summary": "Defines $\\texttt{Is3APFree}$, difference sets, and axiomatizes the key reduction: in $\\mathbb{R}$, isosceles-free $\\Leftrightarrow$ 3-AP-free, so progress on Roth-type bounds translates directly.",
-      "mathContext": "Formal definition: Defines $\\texttt{Is3APFree}$, difference sets, and axiomatizes the key reduction: in $\\mathbb{R}$, isosceles-free $\\Leftrightarrow$ 3-AP-free, so progress on Roth-type bounds translates directly."
+      "startLine": 133,
+      "endLine": 148,
+      "summary": "Defines $\\texttt{Is3APFree}$ (no three-term arithmetic progression), the difference set $\\texttt{differenceSet}$ via $\\texttt{Finset.image}$ of $|x-y|$, and its cardinality $\\texttt{numDifferences}$. In $\\mathbb{R}$ the isosceles-free condition is equivalent to 3-AP-freeness, so Roth-type bounds transfer to $f(n)$.",
+      "mathContext": "Three definitions only; the isosceles-free $\\Leftrightarrow$ 3-AP-free reduction is stated in prose, not formalized as an axiom here."
     },
     {
       "id": "straus",
       "title": "Straus's High-Dimensional Construction",
-      "startLine": 206,
+      "startLine": 149,
+      "endLine": 156,
+      "summary": "Documents Straus's observation: in $\\mathbb{R}^k$ with $2^k\\ge n$, hypercube vertices give isosceles-free sets determining at most $n-1$ distances (since $\\|e_i-e_j\\|^2$ takes only $k$ values), so the problem is nontrivial only in low dimension.",
+      "mathContext": "Exposition docstring (the Straus observation); no Lean theorem or definition is declared in this part."
+    },
+    {
+      "id": "known-examples",
+      "title": "Known Examples",
+      "startLine": 157,
+      "endLine": 160,
+      "summary": "Section banner for known isosceles-free examples (low-dimensional configurations and hypercube constructions). Exposition placeholder; declares no Lean content.",
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "gap",
+      "title": "The Gap Between Upper and Lower Bounds",
+      "startLine": 161,
+      "endLine": 174,
+      "summary": "Defines $\\texttt{currentGap}$ — the proposition that $2^{c_1(\\log n)^{1/9}}\\le f(n)\\le 2^{c_2\\sqrt{\\log n}}$ for large $n$ — and proves $\\texttt{gap\\_exists}: 1/9 < 1/2$ (by $\\texttt{norm\\_num}$), the numeric fact that the lower- and upper-bound exponents differ.",
+      "mathContext": "One definition and one fully proved theorem (`gap_exists`); no axiom here."
+    },
+    {
+      "id": "partial-answer",
+      "title": "Partial Answer",
+      "startLine": 175,
+      "endLine": 192,
+      "summary": "States the partial answer $f(n)\\to\\infty$ is TRUE as the single axiom $\\texttt{f\\_tends\\_to\\_infinity}:\\texttt{ErdosQuestion657}$ (axiomatized because the proof needs real-analysis facts about $\\log$ growth), and defines $\\texttt{refinedQuestion}$: is the true growth $2^{(\\log n)^\\theta}$ for some $1/9<\\theta<1/2$?",
+      "mathContext": "The file's only `axiom` (`f_tends_to_infinity`, line 182) lives here, plus one definition (`refinedQuestion`)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 193,
       "endLine": 222,
-      "summary": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values). Shows the problem is nontrivial only in low dimensions.",
-      "mathContext": "In $\\mathbb{R}^k$ with $2^k \\ge n$, hypercube vertices give isosceles-free sets with $\\le n - 1$ distances ($\\|e_i - e_j\\|^2$ takes at most $k$ values)."
+      "summary": "Concluding docstring: the main question is resolved YES ($f(n)\\to\\infty$) while the exact growth rate remains open between the $2^{c(\\log n)^{1/9}}$ lower bound and $2^{O(\\sqrt{\\log n})}$ upper bound. Provides the headline theorems $\\texttt{erdos\\_657}$, $\\texttt{erdos\\_657\\_main}$, and $\\texttt{erdos\\_657\\_resolved}$, each derived from the Part XI axiom.",
+      "mathContext": "Three theorems, all definitionally equal to `f_tends_to_infinity`; the refined growth-rate question stays open."
     }
   ],
   "conclusion": {

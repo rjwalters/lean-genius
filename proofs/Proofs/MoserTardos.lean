@@ -2,24 +2,29 @@
   Moser–Tardos Algorithm and Termination Theorem for the Lovász Local Lemma
   =========================================================================
 
-  This file is the OQ-01-A scaffold for `prob-method-lovasz-local-oq-01`:
-  define the variable-version Moser–Tardos resampling algorithm and state
-  (with `sorry`) the two main theorems whose proofs are deferred to
-  OQ-01-B (witness-tree construction) and OQ-01-C (Galton–Watson /
-  generating-function sum).
+  This file is the OQ-01-A/A.3 scaffold for `prob-method-lovasz-local-oq-01`:
+  it defines the variable-version Moser–Tardos resampling algorithm and ships
+  the two main theorems as *weakened placeholder* statements (algebraic-shell
+  inequalities, fully proved — the file currently has 0 `sorry`, 0 `axiom`).
+  The full convergence / expectation statements are deferred to OQ-01-B
+  (witness-tree construction) and OQ-01-C (Galton–Watson / generating-function
+  sum).
 
   Roadmap:
   * Part I  : Setup (`MTProblem`, `State`, `isViolated`, `pickBad`).
   * Part II : Algorithm (`resampleVbl`, `step`, `run`).
   * Part III: LLL admissibility predicate (`LLLAdmissible`).
-  * Part IV : Statement-only theorems
+  * Part IV : Placeholder main theorems
               (`mt_expected_step_bound`, `mt_terminates_as`).
+  * Part V  : Refined uniform-draw layer (`uniformDrawProb`, `collisionAdj`,
+              `LLLAdmissibleUniform`, `LLLAdmissibleUniform.toLLLAdmissible`).
 
-  Deferred (future S3–S9 PRs):
-  * `inductive WitnessTree`, `def isProper`             — OQ-01-B
+  Deferred (future PRs):
+  * `inductive WitnessTree`, `def isProper`             — OQ-01-B (S14 ACT;
+        encoding design complete in S13 PREP, Docker-gated build)
   * `theorem witness_valid`, `theorem witness_prob_bd`  — OQ-01-B
   * `def gwTreeProb`, `theorem gw_sum_bound`            — OQ-01-C
-  * Final integration replacing the `sorry`s below      — OQ-01-C completion
+  * Replace the Part IV placeholders with the full statements — OQ-01-C
 
   References:
   * Moser & Tardos (2010) — *A constructive proof of the general Lovász

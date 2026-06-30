@@ -16,14 +16,18 @@
       "additive-basis",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer sequences",
+      "consecutive sums",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-358-intseq",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 35,
-      "endLine": 39
+      "startLine": 36,
+      "endLine": 38
     },
     "type": "definition",
     "title": "IntSequence Structure",
@@ -34,14 +38,18 @@
       "sequences",
       "monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly increasing sequences",
+      "monotonicity",
+      "Lean 4 structures"
+    ]
   },
   {
     "id": "ann-358-count",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 40,
-      "endLine": 45
+      "startLine": 42,
+      "endLine": 44
     },
     "type": "definition",
     "title": "Consecutive Sum Count f(n)",
@@ -52,14 +60,18 @@
       "counting-functions",
       "sum-representations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive sums",
+      "Set.ncard cardinality",
+      "Finset.Icc interval sums"
+    ]
   },
   {
     "id": "ann-358-naturals",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 48,
-      "endLine": 56
+      "startLine": 49,
+      "endLine": 51
     },
     "type": "definition",
     "title": "Natural Numbers Sequence",
@@ -70,14 +82,18 @@
       "natural-numbers",
       "odd-divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural numbers sequence",
+      "odd divisors",
+      "omega tactic"
+    ]
   },
   {
     "id": "ann-358-formula",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 57,
-      "endLine": 67
+      "startLine": 81,
+      "endLine": 87
     },
     "type": "concept",
     "title": "Consecutive Sum Formula",
@@ -88,14 +104,18 @@
       "arithmetic-series",
       "gauss-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic series",
+      "Gauss sum formula",
+      "triangular numbers"
+    ]
   },
   {
     "id": "ann-358-classic",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 62,
-      "endLine": 67
+      "startLine": 198,
+      "endLine": 211
     },
     "type": "concept",
     "title": "Classical Characterization",
@@ -106,14 +126,18 @@
       "powers-of-two",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of consecutive integers",
+      "powers of two",
+      "odd divisibility"
+    ]
   },
   {
     "id": "ann-358-odd-divisors",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 68,
-      "endLine": 71
+      "startLine": 216,
+      "endLine": 230
     },
     "type": "concept",
     "title": "Odd Divisors Connection",
@@ -124,14 +148,18 @@
       "divisor-function",
       "odd-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisor function",
+      "odd divisors",
+      "consecutive-sum bijection"
+    ]
   },
   {
     "id": "ann-358-strong",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 74,
-      "endLine": 81
+      "startLine": 402,
+      "endLine": 403
     },
     "type": "definition",
     "title": "Strong Conjecture",
@@ -142,14 +170,18 @@
       "limits",
       "tendsto"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences",
+      "Filter.Tendsto",
+      "Filter.atTop"
+    ]
   },
   {
     "id": "ann-358-weak",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 83,
-      "endLine": 89
+      "startLine": 410,
+      "endLine": 411
     },
     "type": "definition",
     "title": "Weak Conjecture",
@@ -160,14 +192,18 @@
       "eventually",
       "lower-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "eventually filter",
+      "lower bounds",
+      "power-of-two obstruction"
+    ]
   },
   {
     "id": "ann-358-egami",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 95,
-      "endLine": 103
+      "startLine": 421,
+      "endLine": 425
     },
     "type": "concept",
     "title": "Egami's Observation",
@@ -177,14 +213,18 @@
     "relatedConcepts": [
       "trivial-bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "trivial representations",
+      "single-term sums",
+      "lower bounds"
+    ]
   },
   {
     "id": "ann-358-power2",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 104,
-      "endLine": 111
+      "startLine": 491,
+      "endLine": 495
     },
     "type": "concept",
     "title": "Power of 2 Obstruction",
@@ -195,14 +235,18 @@
       "powers-of-two",
       "uniqueness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two",
+      "factorization of consecutive sums",
+      "odd factors"
+    ]
   },
   {
     "id": "ann-358-primes",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 114,
-      "endLine": 124
+      "startLine": 527,
+      "endLine": 548
     },
     "type": "concept",
     "title": "The Prime Sequence Case",
@@ -213,14 +257,18 @@
       "prime-numbers",
       "erdos-moser"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime number sequence",
+      "Erdos-Moser conjecture",
+      "limsup"
+    ]
   },
   {
     "id": "ann-358-density",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 131,
-      "endLine": 144
+      "startLine": 564,
+      "endLine": 565
     },
     "type": "definition",
     "title": "Density Conjecture",
@@ -231,14 +279,18 @@
       "density",
       "prime-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper density",
+      "representation counting function",
+      "consecutive prime sums"
+    ]
   },
   {
     "id": "ann-358-related",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 145,
-      "endLine": 154
+      "startLine": 570,
+      "endLine": 579
     },
     "type": "concept",
     "title": "Related Problems",
@@ -249,14 +301,18 @@
       "problem-356",
       "convex-sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite analogue (Problem 356)",
+      "convex sumsets",
+      "convolution of indicators"
+    ]
   },
   {
     "id": "ann-358-status",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 156,
-      "endLine": 173
+      "startLine": 581,
+      "endLine": 597
     },
     "type": "concept",
     "title": "Current Status Summary",
@@ -267,14 +323,18 @@
       "open-problems",
       "erdos-quote"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "odd divisor characterization",
+      "power-of-two obstruction"
+    ]
   },
   {
     "id": "ann-358-main",
     "proofId": "erdos-358",
     "range": {
-      "startLine": 175,
-      "endLine": 183
+      "startLine": 602,
+      "endLine": 606
     },
     "type": "concept",
     "title": "Status Theorem",
@@ -285,6 +345,10 @@
       "summary",
       "implications"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical implication",
+      "strong-implies-weak",
+      "law of excluded middle"
+    ]
   }
 ]

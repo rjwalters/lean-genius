@@ -204,6 +204,31 @@ theorem sturmVariations_C (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
         derivative_C, hc]
 
 -- ============================================================================
+-- § 3a. Squarefree Root Lemma (B.1 of Sturm exact-count proof)
+-- ============================================================================
+
+/-- **B.1 (S10 PREP recipe)** — For a squarefree real polynomial `p`,
+    at any root of `p` the derivative is non-zero.
+
+    Path: `Squarefree p → p.Separable` (via `PerfectField.separable_iff_squarefree.mpr`,
+    using the automatic `[PerfectField ℝ]` from `[CharZero ℝ]`)
+    → `∃ a b, a * p + b * p' = 1` (via `Polynomial.separable_def'.mp`)
+    → contradiction at the proposed double root. -/
+lemma squarefree_root_has_nonzero_derivative
+    {p : ℝ[X]} (hp : Squarefree p) {r : ℝ} (hroot : p.eval r = 0) :
+    (Polynomial.derivative p).eval r ≠ 0 := by
+  have hsep : p.Separable :=
+    (PerfectField.separable_iff_squarefree (g := p)).mpr hp
+  -- `Separable p` is by definition `IsCoprime p (derivative p)`, i.e.
+  -- `∃ a b, a * p + b * (derivative p) = 1`; destructure it directly.
+  obtain ⟨a, b, hab⟩ := hsep
+  intro hroot'
+  have h1 : (a * p + b * Polynomial.derivative p).eval r = (1 : ℝ[X]).eval r :=
+    congrArg (Polynomial.eval r) hab
+  simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_one,
+        hroot, hroot'] at h1
+
+-- ============================================================================
 -- § 4a. Locally-Constant Lemma (Step A of Sturm exact-count proof)
 -- ============================================================================
 
@@ -437,6 +462,52 @@ theorem sturm_linear_right (x : ℝ) (hx : x > c) :
   simp [sturmVariations, sturmSeq_linear, signVariations, countSignAlts, hne, hxc]
 
 end LinearExample
+
+-- ============================================================================
+-- § 8a. Sturm's Exact Count, Verified for Linear Polynomials (axiom-free)
+-- ============================================================================
+
+/-- The roots of `X - C c` in the half-open interval `(a, b]`: exactly one
+    (namely `c`) when `a < c ≤ b`, and none otherwise. -/
+theorem rootsInInterval_X_sub_C (c a b : ℝ) :
+    rootsInInterval (X - C c) a b = if a < c ∧ c ≤ b then 1 else 0 := by
+  have hne : (X - C c : ℝ[X]) ≠ 0 := X_sub_C_ne_zero c
+  rw [rootsInInterval, if_neg hne, Polynomial.roots_X_sub_C, Multiset.filter_singleton]
+  by_cases h : a < c ∧ c ≤ b
+  · simp [h]
+  · simp [h]
+
+/-- **Sturm's exact count, verified for linear polynomials** (no axiom).
+
+    For `p = X - c`, the additive Sturm identity
+    `σ_p(a) = σ_p(b) + #{roots in (a,b]}` holds whenever `a < b`, `a ≠ c` and
+    `b ≠ c`. This is a fully machine-checked instance of `sturm_exact_count_axiom`,
+    confirming the axiom in the degree-1 base case via the explicit Sturm
+    sequence `[X - c, 1]`. -/
+theorem sturm_exact_count_linear (c a b : ℝ) (hab : a < b)
+    (ha : a ≠ c) (hb : b ≠ c) :
+    sturmVariations (X - C c) a =
+      sturmVariations (X - C c) b + rootsInInterval (X - C c) a b := by
+  rw [rootsInInterval_X_sub_C]
+  rcases lt_trichotomy c a with hca | hca | hca
+  · -- c < a < b: both endpoints exceed c, both counts 0, no root in (a,b]
+    have hva : sturmVariations (X - C c) a = 0 := sturm_linear_right c a hca
+    have hvb : sturmVariations (X - C c) b = 0 := sturm_linear_right c b (hca.trans hab)
+    have hnr : ¬ (a < c ∧ c ≤ b) := by rintro ⟨h, _⟩; linarith
+    rw [hva, hvb, if_neg hnr]
+  · exact absurd hca.symm ha
+  · -- a < c
+    have hva : sturmVariations (X - C c) a = 1 := sturm_linear_left c a hca
+    rcases lt_trichotomy c b with hcb | hcb | hcb
+    · -- a < c < b: count drops 1 → 0, exactly one root c ∈ (a,b]
+      have hvb : sturmVariations (X - C c) b = 0 := sturm_linear_right c b hcb
+      have hr : a < c ∧ c ≤ b := ⟨hca, hcb.le⟩
+      rw [hva, hvb, if_pos hr]
+    · exact absurd hcb.symm hb
+    · -- a < b < c: both endpoints below c, both counts 1, no root in (a,b]
+      have hvb : sturmVariations (X - C c) b = 1 := sturm_linear_left c b hcb
+      have hnr : ¬ (a < c ∧ c ≤ b) := by rintro ⟨_, h⟩; linarith
+      rw [hva, hvb, if_neg hnr]
 
 -- ============================================================================
 -- § 9. Squarefree Polynomials and the GCD Connection

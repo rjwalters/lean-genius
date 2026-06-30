@@ -180,6 +180,11 @@
       "targetId": "erdos-114",
       "relationship": "extends",
       "description": "Extends the main Erdős #114 formalization by defining Tao's threshold and proving finite reduction"
+    },
+    {
+      "proofId": "erdos-114-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling formalization sub-problem of Erdős #114, addressing the complementary axis. OQ-01 (this entry) handles the quantitative side — making Tao's threshold N₀ explicit and reducing the conjecture to finitely many cases — while OQ-04 handles the foundational side, de-axiomatizing the lemniscate set definitions via Mathlib's `Polynomial.eval` and complex norm. Read together they cover both 'how large is the threshold' and 'how few axioms does the formalization need.'"
     }
   ],
   "references": [

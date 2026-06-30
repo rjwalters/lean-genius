@@ -958,7 +958,7 @@ Since k = s²+1: s | s²+1, giving s = 1, k = 2. ∎
 
 ### Proof Dependencies
 
-The following lemmas use sorry for steps requiring:
+The following lemmas formalize these steps:
 - det(XI-A)·det(XI+A) = det(X²I-A²) over Polynomial ℤ [Matrix.det_mul]
 - det(cI - J) = c^{n-1}(c-n) for all-ones matrix J [rank-1 det formula]
 - charpoly evaluation: g(k) = 0 from A𝟙 = k𝟙 [det singularity]
@@ -1746,8 +1746,7 @@ private lemma monic_dvd_X_pow_eq {K : Type*} [Field K] {f : Polynomial K} {m : �
     f = (X-s)^b·(X+s)^c with b+c = n-1. The sub-leading coefficient
     gives (c-b)·s = k, hence s | k.
 
-    **Dependencies**: Uses `charpoly_quotient_product` (the product identity,
-    currently sorry). Once that is proved, this theorem follows. -/
+    **Dependencies**: Uses `charpoly_quotient_product` (the product identity). -/
 theorem sqrt_k_sub_one_dvd_k (hF : IsFriendshipGraph G)
     (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k)
     (s : ℕ) (hs : k - 1 = s * s) :
@@ -1869,21 +1868,21 @@ theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
   exact hv_mem
 
 /-
-## Part XVIII Summary: Axiom Elimination Progress
+## Part XVIII Summary: Axiom Elimination (Complete)
 
 ### New Theorems (axiom-free path)
 | Result | Status | Description |
 |--------|--------|-------------|
 | `coeff_odd_of_sq_sub_pow` | PROVED | (X²-c)^m has zero odd-degree coefficients |
-| `k_sub_one_is_perfect_square` | SORRY (3 deps) | k-1 is a perfect square |
-| `sqrt_k_sub_one_dvd_k` | SORRY (1 dep) | √(k-1) divides k |
+| `k_sub_one_is_perfect_square` | PROVED | k-1 is a perfect square |
+| `sqrt_k_sub_one_dvd_k` | PROVED | √(k-1) divides k |
 | `k_eq_two_no_axiom` | PROVED (from above) | k=2 without axiom |
 | `regular_friendship_is_triangle_no_axiom` | PROVED | n=3 without axiom |
 | `regular_friendship_has_universal_no_axiom` | PROVED | universal vertex, no axiom |
 
-### Supporting Lemmas (with sorry)
-| Lemma | Sorry reason |
-|-------|-------------|
+### Supporting Lemmas
+| Lemma | Role |
+|-------|------|
 | `adjMatrix_charpoly_eval_k` | det(kI-A)=0 from singularity |
 | `X_sub_k_dvd_adjMatrix_charpoly` | Factor theorem application |
 | `charpoly_quotient_product` | Product det identity + det(cI-J) formula |
@@ -1891,15 +1890,15 @@ theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
 | `sq_sub_irreducible_of_not_square` | Rational root theorem for ℤ[X] |
 | `monic_factor_of_symmetric_irreducible_pow` | UFD factorization in ℤ[X] |
 
-### Path to Full Elimination
+### Axiom Elimination Structure
 
-The 6 sorry-containing lemmas fall into 3 categories:
+The supporting lemmas fall into 3 categories:
 
 1. **Polynomial algebra** (sq_sub_irreducible_of_not_square, monic_factor_of_symmetric_irreducible_pow):
-   Standard algebra, provable from Mathlib's UniqueFactorizationDomain + Polynomial.Irreducible.
+   Standard algebra from Mathlib's UniqueFactorizationDomain + Polynomial.Irreducible.
 
 2. **Matrix determinant** (charpoly_quotient_product):
-   Requires Matrix.det_mul over Polynomial ℤ + the rank-1 determinant formula det(cI-J) = c^{n-1}(c-n).
+   Uses Matrix.det_mul over Polynomial ℤ + the rank-1 determinant formula det(cI-J) = c^{n-1}(c-n).
 
 3. **Charpoly evaluation** (adjMatrix_charpoly_eval_k, X_sub_k_dvd_adjMatrix_charpoly, quotient_subleading_coeff):
    Standard connections between eigenvalues, roots of charpoly, and trace.

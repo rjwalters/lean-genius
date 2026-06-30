@@ -66,10 +66,11 @@
       "The 'finite + exponent 2 ⇒ order is a power of 2' step requires assembly from `Monoid.exponent_dvd_iff` + `Sylow.card_eq_pow_card_orderOf`. A direct `Fintype.card_eq_pow_two_of_exponent_dvd_two` would shortcut Phase C's lower-bound upgrade ≥ 3 → ≥ 4."
     ],
     "nextSteps": [
-      "S8 ACT (next, any researcher): close the Phase B strategic sorry prod_univ_eq_pow_card_div_two_of_elementary at GaussWilsonNonCyclicOQ01B.lean:137. Route B (MulAction.Quotient via Subgroup.zpowers h; selfEquivSigmaOrbits at Mathlib/GroupTheory/GroupAction/Defs.lean:482 per S4b PREP) preferred; Route A (explicit transversal Finset + Finset.prod_union + Finset.prod_image) safe fallback. Estimated 60–100 Lean lines.",
-      "S9 ACT (after S8): close the Phase C non-cyclic direction sorry prod_eq_one_of_not_isCyclic_aux at GaussWilsonNonCyclicOQ01.lean:149. Apply Phase A to reduce ∏ univ to ∏ (2-torsion), use parent card_sq_eq_one_ge_three + power-of-2-cardinality upgrade to get |G[2]| ≥ 4, apply Phase B prod_univ_eq_one_of_elementary_card_ge_four. Estimated 30–50 Lean lines.",
-      "S10 closure: Docker rebuild all three files from a clean .lake, update meta.json sorry/axiom counts, close the slug as COMPLETED.",
-      "Doc-drift cleanup deferred to next ACT touch on GaussWilsonNonCyclicOQ01.lean: docstring lines 25, 33 still say `2 strategic sorries deferred to S7/S8`; only 1 remains post S7 ACT. Phase chain table on line 32 needs Phase B status updated to S3 PR #18232 and Phase C status from `proposed` to `landed S6 ACT, cyclic discharged S7 ACT`."
+      "DONE (S8 ACT PR #18957): the Phase B strategic sorry prod_univ_eq_pow_card_div_two_of_elementary at GaussWilsonNonCyclicOQ01B.lean was discharged — file is now 0-sorry/0-axiom (Route via MulAction.Quotient). Kept for record.",
+      "DONE (S12 ACT PR #19440): the Phase C non-cyclic direction sorry prod_eq_one_of_not_isCyclic_aux at GaussWilsonNonCyclicOQ01.lean was discharged via Phase A reduction to the 2-torsion subgroup + Phase B elementary-abelian product. File is now 0-sorry/0-axiom. Kept for record.",
+      "DONE (closure): Docker re-verified clean 2026-06-05 (3066/3066 jobs, all three Phase A/B/C files 0-sorry/0-axiom); slug status is completed/COMPLETED. Kept for record.",
+      "DONE (S15 ACT PR #21260): docstring drift cleared — header now reads 'Sorry-free, axiom-free, build-verified at Mathlib v4.26.0' and the Phase chain table is current (Phase B = S3 PR #18232 + S8 ACT PR #18957; Phase C = full PR chain through S14). No stale '2 strategic sorries' text remains. Kept for record.",
+      "FOLLOW-ONS already tracked as separate gallery slugs: gauss-wilson-non-cyclic-oq-02 and -oq-03. No live next step for this slug — SOLVED."
     ]
   },
   "tags": [
@@ -81,11 +82,10 @@
     "seeker-selected"
   ],
   "relatedProofs": [
+    "chinese-remainder-constructive",
+    "euler-totient",
     "gauss-wilson-non-cyclic",
-    "gauss-wilson-non-cyclic-oq-03",
-    "wilson-theorem",
-    "fermat-little-theorem",
-    "chinese-remainder-theorem"
+    "wilsons-theorem"
   ],
   "references": {
     "papers": [
@@ -111,8 +111,8 @@
     {
       "path": "Proofs/GaussWilsonNonCyclic.lean",
       "filename": "GaussWilsonNonCyclic.lean",
-      "lineCount": 323,
-      "theoremCount": 18,
+      "lineCount": 324,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -120,9 +120,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
     },
     {
+      "path": "Proofs/GaussWilsonNonCyclicOQ01.lean",
+      "filename": "GaussWilsonNonCyclicOQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ01.lean"
+    },
+    {
       "path": "Proofs/GaussWilsonNonCyclicOQ01A.lean",
       "filename": "GaussWilsonNonCyclicOQ01A.lean",
-      "lineCount": 66,
+      "lineCount": 67,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
@@ -133,13 +144,24 @@
     {
       "path": "Proofs/GaussWilsonNonCyclicOQ01B.lean",
       "filename": "GaussWilsonNonCyclicOQ01B.lean",
-      "lineCount": 165,
+      "lineCount": 245,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ03.lean",
+      "filename": "GaussWilsonNonCyclicOQ03.lean",
+      "lineCount": 585,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ03.lean"
     }
   ]
 }

@@ -16,7 +16,11 @@
       "density",
       "factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "multiplicative number theory",
+      "open problems in mathematics"
+    ]
   },
   {
     "id": "ann-e786-mulcardset",
@@ -35,7 +39,12 @@
       "Finset.prod",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "abstract algebra",
+      "monoid theory",
+      "Mathlib library structure",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e786-density",
@@ -54,7 +63,12 @@
       "atTop",
       "Set.ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "limits and sequences",
+      "filter-based limits in Mathlib",
+      "set cardinality"
+    ]
   },
   {
     "id": "ann-e786-density-conj",
@@ -73,7 +87,11 @@
       "density bounds",
       "existential quantifier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "asymptotic density",
+      "first-order logic quantifiers"
+    ]
   },
   {
     "id": "ann-e786-finite-conj",
@@ -92,7 +110,11 @@
       "o(1) notation",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "asymptotic analysis",
+      "limits of sequences"
+    ]
   },
   {
     "id": "ann-e786-mod4",
@@ -111,7 +133,11 @@
       "factor of 2",
       "density 1/4"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "modular arithmetic",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-e786-consecutive",
@@ -130,7 +156,11 @@
       "StrictMono",
       "prime gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary number theory",
+      "prime numbers",
+      "monotone sequences"
+    ]
   },
   {
     "id": "ann-e786-selfridge",
@@ -149,7 +179,12 @@
       "1/e",
       "inclusion-exclusion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "prime numbers",
+      "inclusion-exclusion principle",
+      "series of reciprocals"
+    ]
   },
   {
     "id": "ann-e786-ruzsa",
@@ -168,7 +203,11 @@
       "unpublished",
       "density barrier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorial number theory",
+      "extremal set theory",
+      "upper bound arguments"
+    ]
   },
   {
     "id": "ann-e786-log2",
@@ -187,7 +226,11 @@
       "log 2",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "analytic number theory",
+      "prime factorization",
+      "density estimates"
+    ]
   },
   {
     "id": "ann-e786-insight",
@@ -206,7 +249,11 @@
       "uniqueness",
       "signatures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "prime factorization",
+      "combinatorial reasoning"
+    ]
   },
   {
     "id": "ann-e786-examples",
@@ -225,7 +272,11 @@
       "concrete examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "modular arithmetic",
+      "Lean 4 tactic mode",
+      "decidable computation"
+    ]
   },
   {
     "id": "ann-e786-summary",
@@ -244,6 +295,10 @@
       "existence",
       "density bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "number theory",
+      "Lean 4 theorem syntax",
+      "logical conjunction"
+    ]
   }
 ]

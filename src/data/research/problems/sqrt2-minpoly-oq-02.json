@@ -1,8 +1,8 @@
 {
   "slug": "sqrt2-minpoly-oq-02",
   "title": "Minimal Polynomial of k-th Roots: minpoly ℚ (n^(1/k)) = X^k - n via Eisenstein",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T21:55:56.657Z",
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "STATE-SYNC: gallery proof Proofs/Sqrt2MinpolyOQ02.lean is verified (0 sorries, 0 axioms) and fully proves the stated question. Research tracker was stale; flipped active→completed to match published gallery verdict. minpoly_kthRoot_of_squarefree general k-th root via Eisenstein.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — completed and gallery-verified.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -46,6 +46,9 @@
   "relatedProofs": [
     "sqrt2-minpoly",
     "sqrt2-minpoly-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02",
+    "sqrt2-minpoly-oq-01-oq-02-oq-01",
+    "sqrt2-minpoly-oq-01-oq-02-oq-02",
     "sqrt2-minpoly-oq-02"
   ],
   "references": {
@@ -54,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-04-25T12:53:24.124Z",
-  "lastUpdate": "2026-04-25T12:53:24.205Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
@@ -81,6 +84,50 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01.lean"
     },
     {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02Composite.lean",
+      "lineCount": 128,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02Composite.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "filename": "Sqrt2MinpolyOQ01OQ02PrimePow.lean",
+      "lineCount": 133,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ01OQ02PrimePow.lean"
+    },
+    {
       "path": "Proofs/Sqrt2MinpolyOQ02.lean",
       "filename": "Sqrt2MinpolyOQ02.lean",
       "lineCount": 203,
@@ -90,6 +137,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2MinpolyOQ03.lean",
+      "filename": "Sqrt2MinpolyOQ03.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2MinpolyOQ03.lean"
     }
   ]
 }

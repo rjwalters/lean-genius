@@ -2,11 +2,11 @@
   "id": "erdos-249-oq-01",
   "title": "Tighter Bounds on ∑ φ(n)/2^n: (87/64, 351/256)",
   "slug": "erdos-249-oq-01",
-  "description": "Pins the value of ∑ φ(n)/2^n to the narrow interval (87/64, 351/256) ≈ (1.359, 1.371) of width 3/256 ≈ 0.012, and proves the sum is not a rational with denominator dividing 4 nor equal to 4/3. Extends the parent formalization with 21 proved theorems and 0 axioms.",
+  "description": "Pins the value of ∑ φ(n)/2^n to the narrow interval (87/64, 351/256) ≈ (1.359, 1.371) of width 3/256 ≈ 0.012, and proves the sum is not a rational with denominator dividing 4 nor equal to 4/3. Extends the parent formalization with 21 proved theorems; the exact term values φ(n)/2^n are computed via native_decide, so the bounds depend on Lean.ofReduceBool (no literal axiom declarations).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos249OQ01.lean",
     "tags": [
       "erdos",
@@ -17,17 +17,17 @@
       "bounds",
       "open"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 249,
     "erdosUrl": "https://erdosproblems.com/249",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 303,
     "theoremCount": 26,
     "definitionCount": 0,
-    "assumptions": "None. Imports Erdos249Problem.lean (0 axioms). Fully machine-verified. Open conjecture; all bounding theorems fully verified.",
+    "assumptions": "Lean.ofReduceBool: the exact term values φ(n)/2^n (termFn_four/six/eight/nine/ten) — advertised deliverables that the partial-sum and interval bounds (partial_sum_6/7/11, totientPowerSum_ge/gt_*) build on — are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction via the Lean.ofReduceBool axiom. There are no literal `axiom` declarations (leanFile.axiomCount is 0), and Erdos249Problem.lean is itself axiom-free; the only assumption is the native_decide kernel-reduction dependency. The Erdős 249 conjecture itself remains open — only the bounding theorems are formalized.",
     "originalContributions": [
       "termFn_three/four/five/six/seven/eight/nine/ten: exact term values φ(n)/2^n for n = 3–10",
       "partial_sum_6: first 6 terms sum exactly to 5/4",
@@ -53,7 +53,7 @@
       "hasSum.nat_add decomposes the series into head and tail, enabling pointwise comparison on tails",
       "The lower bound 87/64 > 4/3 rules out the simple rational 4/3 as a possible value",
       "The interval (87/64, 351/256) has width 3/256 ≈ 0.012, pinning the value to (1.359, 1.371)",
-      "All 21 public theorems proved with 0 axioms, building on the parent formalization's infrastructure"
+      "All 21 public theorems proved with no literal axiom declarations (the native_decide term-value certificates depend on Lean.ofReduceBool), building on the parent formalization's infrastructure"
     ],
     "prerequisites": [
       "totientPowerSum_summable: convergence of ∑ φ(n)/2^n (from Erdos249Problem.lean)",
@@ -111,7 +111,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proved that 87/64 < ∑ φ(n)/2^n < 351/256 with width 3/256 ≈ 0.012. 308 lines, 21 public theorems, 0 sorries, 0 axioms.",
+    "summary": "Proved that 87/64 < ∑ φ(n)/2^n < 351/256 with width 3/256 ≈ 0.012. 308 lines, 21 public theorems, 0 sorries, no literal axiom declarations (the native_decide term-value certificates depend on Lean.ofReduceBool).",
     "implications": "The narrow interval (87/64, 351/256) pins the value to approximately (1.359, 1.371). The sum cannot be an integer, half-integer, quarter-integer, or equal to 4/3. Irrationality remains open, but any proof must handle a value in this narrow range.",
     "openQuestions": [
       "Prove ∑ φ(n)/2^n is irrational (the main Erdős #249 conjecture)",

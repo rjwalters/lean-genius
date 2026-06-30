@@ -1,0 +1,172 @@
+{
+  "id": "erdos-1007-oq-05-oq-01",
+  "title": "Foundations of the Graph Dimension: Monotonicity and the Edgeless Base Case",
+  "slug": "erdos-1007-oq-05-oq-01",
+  "description": "Toward the parent's first open question (a computational approach to min_edges_dimension_4 via graph enumeration), this entry supplies the structural facts about unit-distance embeddings that any dimension-checking procedure needs but the parent never establishes: monotonicity of embeddability (a graph embeddable in ℝⁿ embeds in ℝᵐ for m≥n by padding coordinates with 0), so the admissible dimensions form an up-set; and the base case — a graph embeds in ℝ⁰ exactly when it is edgeless (an edge would need two points at distance 1 in 0 dimensions).",
+  "meta": {
+    "author": "Paul Erdős (problem #1007); formalized in Lean 4",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1007OQ05OQ01.lean",
+    "tags": [
+      "graph-theory",
+      "metric-geometry",
+      "unit-distance",
+      "graph-dimension",
+      "erdos-problem",
+      "euclidean-embedding"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 109,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "originalContributions": [
+      "embedding_mono: a unit-distance embedding in ℝⁿ extends to ℝᵐ for any m≥n by padding the new coordinates with 0 (squared distances unchanged).",
+      "hasUnitEmbedding_mono: unit-embeddability is monotone in the dimension — the admissible dimensions form an up-set, so the dimension is the minimum of an up-set.",
+      "hasUnitEmbedding_zero_of_edgeless / no_edge_of_hasUnitEmbedding_zero: a graph embeds in ℝ⁰ iff it has no edges.",
+      "hasUnitEmbedding_zero_iff_edgeless: the base case dimension 0 ⟺ edgeless."
+    ],
+    "prerequisites": [
+      "Unit-distance embeddings of graphs and the graph (Euclidean) dimension",
+      "Finset sums and coordinate padding in Lean 4/Mathlib"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.sum_univ_eq_sum_range",
+        "description": "∑ over Fin n equals ∑ over range n — converts the padded coordinate sums for comparison",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "Finset.sum_subset",
+        "description": "a sum over a subset equals the larger sum when the extra terms vanish — drops the padded (zero) coordinates",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The (Euclidean) dimension of a graph is the least n for which the graph has a unit-distance embedding in ℝⁿ — vertices placed so that adjacent ones are at distance exactly 1. Erdős, Harary, and Tutte introduced the notion, and determining the minimum number of edges of a graph of a given dimension is a hard extremal question: House (2013) proved a 4-dimensional graph has at least 9 edges, with K_{3,3} the unique minimizer, and Chaffee–Noble (2016) handled dimension 5. The gallery's Erdős #1007 thread records these as axioms.\n\nThe parent's first open question asks whether the dimension-4 bound can instead be obtained computationally, by enumerating the finitely many small graphs and checking each one's dimension. Such an enumeration rests on basic facts about the dimension that the formalization had not proved: that embeddability only improves with more ambient dimensions, and what the smallest dimension (0) means. This entry establishes exactly those foundations.",
+    "problemStatement": "**Open Question (parent erdos-1007-oq-05, OQ-01)**: can min_edges_dimension_4 be approached computationally — enumerate graphs with ≤ 8 edges and check dimensions?\n\n**This entry**: supplies the prerequisite structure of the graph dimension — monotonicity of unit-embeddability and the edgeless characterization of dimension 0.",
+    "text": "A 109-line, fully verified (0 sorries, 0 axioms, no native_decide) file. It reproduces the parent's UnitDistanceEmbedding structure and hasUnitEmbedding predicate, then proves embedding_mono (padding extends an embedding to higher dimension), hasUnitEmbedding_mono, the two directions hasUnitEmbedding_zero_of_edgeless and no_edge_of_hasUnitEmbedding_zero, and the combined hasUnitEmbedding_zero_iff_edgeless.",
+    "proofStrategy": "embedding_mono pads the embedding map: the new map sends coordinate i to the old coordinate if i < n and to 0 otherwise. The padded squared distance equals the original because the extra coordinates contribute (0−0)² = 0; formally, both coordinate sums are rewritten to Finset.range sums (Fin.sum_univ_eq_sum_range) and the range-m sum reduces to the range-n sum via Finset.sum_subset (the dropped terms vanish). For the base case, the edgeless graph embeds in ℝ⁰ with the trivial map (unit_edges is vacuous), and conversely an edge in ℝ⁰ forces √(∑ over Fin 0) = √0 = 0 = 1, a contradiction.",
+    "keyInsights": [
+      "Unit-embeddability is monotone in the ambient dimension: padding with zero coordinates never changes a distance, so ℝⁿ-embeddability implies ℝᵐ-embeddability for m ≥ n.",
+      "Hence the set of dimensions in which a graph embeds is an up-set, and the graph dimension is its minimum — the well-definedness any dimension computation relies on.",
+      "Dimension 0 is the base case: only the edgeless graph embeds in ℝ⁰, because any edge would demand two points at distance 1 where all distances are 0.",
+      "The padding argument is a clean coordinate-sum reindexing (Fin → range, then drop the vanishing tail), needing no geometry beyond 'extra zero coordinates cost nothing'.",
+      "These foundations are exactly what a computational enumeration of small graphs and their dimensions must assume."
+    ]
+  },
+  "sections": [
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity of Embeddability",
+      "startLine": 44,
+      "endLine": 76,
+      "summary": "embedding_mono (pad an ℝⁿ embedding to ℝᵐ, m≥n) and hasUnitEmbedding_mono.",
+      "mathContext": "Admissible dimensions form an up-set; the dimension is its minimum."
+    },
+    {
+      "id": "base-case",
+      "title": "The Edgeless Base Case",
+      "startLine": 78,
+      "endLine": 100,
+      "summary": "hasUnitEmbedding_zero_of_edgeless, no_edge_of_hasUnitEmbedding_zero, hasUnitEmbedding_zero_iff_edgeless.",
+      "mathContext": "A graph embeds in ℝ⁰ iff it has no edges."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry establishes the structural foundations of the graph dimension that a computational approach to min_edges_dimension_4 requires: unit-embeddability is monotone in the ambient dimension (so the admissible dimensions form an up-set), and a graph embeds in ℝ⁰ exactly when it is edgeless.",
+    "implications": "Monotonicity makes the graph dimension well-behaved as the minimum of an up-set and lets any enumeration restrict attention to the least admissible dimension; the edgeless characterization fixes the base of the dimension hierarchy. Together they are the groundwork for a verified dimension-checking procedure on small graphs, the route the parent's open question proposes toward House's 4-dimensional bound.",
+    "openQuestions": [
+      "Build a decidable dimension-checking procedure for explicit small graphs (the parent's computational route to min_edges_dimension_4).",
+      "Prove an upper bound graphDimension ≤ |V| from the scaled-basis embedding (Erdos1007OQ05.hasUnitEmbedding_exists_irr).",
+      "Characterize dimension ≤ 1 (paths/matchings) as the next case above the edgeless base."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1007-oq-05",
+      "relationship": "extends",
+      "description": "Parent: graph-dimension axiom-elimination analysis. This entry supplies the monotonicity and base-case foundations its first open question needs."
+    },
+    {
+      "targetId": "erdos-1007",
+      "relationship": "related",
+      "description": "Root: Erdős Problem #1007 on graph dimension."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1007OQ05OQ01",
+    "lineCount": 109,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "mainTheorems": [
+      {
+        "name": "hasUnitEmbedding_mono",
+        "type": "core",
+        "description": "Unit-embeddability is monotone in the ambient dimension",
+        "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → hasUnitEmbedding V adj n → hasUnitEmbedding V adj m"
+      },
+      {
+        "name": "hasUnitEmbedding_zero_iff_edgeless",
+        "type": "key",
+        "description": "A graph embeds in ℝ⁰ iff it is edgeless",
+        "leanType": "{V : Type*} → {adj : V → V → Prop} → (hasUnitEmbedding V adj 0 ↔ ∀ u v, ¬ adj u v)"
+      },
+      {
+        "name": "embedding_mono",
+        "type": "key",
+        "description": "Pad a ℝⁿ unit embedding to ℝᵐ for m ≥ n",
+        "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → UnitDistanceEmbedding V adj n → UnitDistanceEmbedding V adj m"
+      }
+    ],
+    "path": "Proofs/Erdos1007OQ05OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "hasUnitEmbedding_mono",
+      "type": "core",
+      "description": "Monotonicity of unit-embeddability in the ambient dimension",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → hasUnitEmbedding V adj n → hasUnitEmbedding V adj m"
+    },
+    {
+      "name": "hasUnitEmbedding_zero_iff_edgeless",
+      "type": "key",
+      "description": "Dimension-0 base case: embeds in ℝ⁰ iff edgeless",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → (hasUnitEmbedding V adj 0 ↔ ∀ u v, ¬ adj u v)"
+    },
+    {
+      "name": "embedding_mono",
+      "type": "key",
+      "description": "Coordinate-padding extends an embedding to higher dimension",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → UnitDistanceEmbedding V adj n → UnitDistanceEmbedding V adj m"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Harary, Frank; Tutte, William T.",
+      "title": "On the dimension of a graph",
+      "year": "1965",
+      "venue": "Mathematika 12, 118–122",
+      "note": "Introduces the Euclidean dimension of a graph"
+    },
+    {
+      "authors": "House, John",
+      "title": "A 4-dimensional graph has at least 9 edges",
+      "year": "2013",
+      "venue": "Discrete Mathematics 313(18), 1783–1789",
+      "note": "The min_edges_dimension_4 result the parent's open question targets computationally"
+    }
+  ],
+  "sorries": 0
+}

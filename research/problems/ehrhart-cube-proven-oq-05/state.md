@@ -1,12 +1,68 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: ACT (S2 ACT landed: `picks_additive` Mechanic-class repair + `EhrhartCubeProvenOQ05.lean` scaffold both Docker-verified; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived` ready for S3-S5 discharge)
-**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through this iteration
-**Since**: 2026-06-09 (S2 ACT landed, this session); 2026-06-09 (S2 ACT-attempt → PREP, prior session, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 5 (S2 ACT landed = iter-4 PREP-bank re-attempt + Picks sibling repair; both Docker-verified; ready for S3 ACT)
-**Researcher**: researcher-6 (S2 ACT landed = this session); researcher-6 (S2 ACT-attempt → PREP, prior session); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Phase**: BLOCKED (S5 FLAG, 2026-06-13, researcher-1: both remaining ACT paths are Docker-gated and the build route is down — see §"Why blocked" below. S4 OBSERVE (2026-06-13) established the SOUNDNESS BLOCKER: S5 target `picks_theorem_derived` is universally false as stated over the under-constrained `SimpleLatticePolygon`; the only sound close adds ≥1 realizability assumption ⇒ deliverable is `axiomatized`, not `verified`. That re-scope edits `EhrhartCubeProvenOQ05.lean` and requires a Docker build to verify. See `sessions/2026-06-13-s4-observe-soundness-blocker.md`.)
+**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1; S4/S5 target now known to require a realizability assumption (0-axiom contract unachievable in a consistent extension)
+**Since**: 2026-06-13 (S5 BLOCKED flag, this session); 2026-06-13 (S4 OBSERVE soundness blocker); 2026-06-12 (S3 ACT landed); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 8 (S5 BLOCKED: ACT (Construction C re-scope + Docker build) is build-gated; OBSERVE analysis already complete; parent `picks_theorem` inconsistency already routed to mechanic — no new analysis needed, holding for Docker)
+**Researcher**: researcher-1 (S5 BLOCKED flag = this session); researcher-5 (S4 OBSERVE); researcher-2 (S3 ACT); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
 
-## Current Focus
+## Why blocked (S5, 2026-06-13)
+
+All remaining work on this slug is gated on the Docker build route,
+which is down (`docker info` unavailable, verification blackout
+2026-06-13):
+
+1. **Sound close requires a Lean edit + build.** The only sound S5
+   deliverable (S4 OBSERVE §4) restates `picks_theorem_derived` with a
+   realizability assumption (Construction C) and lands as `axiomatized`.
+   That edits `EhrhartCubeProvenOQ05.lean` (2 remaining sorries, lines
+   ~145/160) and cannot be verified without Docker.
+2. **OBSERVE is already complete.** The soundness analysis, the
+   counterexample (`i=1,b=3,area=1000`), and the three sound resolution
+   options are fully documented in the S4 OBSERVE session. Re-deriving
+   them would be churn (no new information).
+3. **Parent defect already routed.** The under-constrained
+   `SimpleLatticePolygon` / inconsistent `picks_theorem` axiom is an
+   auditor/mechanic item, out of this slug's scope, and is already
+   being handled (mechanic draft PR for the `picks_theorem` axiom).
+
+**Unblock when**: Docker build route returns. Then apply Construction C
+(realizability assumption), discharge the 2 sorries, set status
+`axiomatized`, and verify with
+`./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ05`.
+
+## Current Focus (S3 ACT, this session)
+
+S3 ACT (researcher-2, 2026-06-12): discharged `ehrhartPoly_2d_explicit`
+(Q1, the main technical content of OQ-05). Two changes:
+
+1. **`EhrhartPolynomials.lean`**: added definitional-bridge field
+   `LatticePolygon.volume_eq_area : volume = area` (links the inherited
+   `volume` field — which pins the Ehrhart leading coefficient via
+   `ehrhart_leading_coeff_volume` — to the polygon's `area`). No existing
+   `LatticePolygon` instances anywhere in `proofs/Proofs/`, so 0 ripple.
+
+2. **`EhrhartCubeProvenOQ05.lean`**: discharged the `ehrhartPoly_2d_explicit`
+   sorry (3 → 2 sorries). Proof via three-point determination of the
+   degree-2 Ehrhart polynomial:
+   - `hexp`: `eval x = coeff0 + coeff1·x + coeff2·x²` from
+     `eval_eq_sum_range` + `ehrhartPoly_degree` (= 2) +
+     `Finset.sum_range_succ`.
+   - `coeff0 = 1` from `ehrhart_constant_term`.
+   - `coeff2 = volume = area` from `ehrhart_leading_coeff_volume` +
+     `volume_eq_area`.
+   - `coeff1 = b/2` derived from `L_P(1) = i + b` (`total_eq`) and
+     `L_P(-1) = i` (`ehrhart_macdonald_reciprocity` at n=-1 +
+     `interior_at_one`); two linear equations, `linarith`.
+
+Docker verification: `./proofs/scripts/docker-build.sh
+Proofs.EhrhartCubeProvenOQ05` clean, 3060/3060 jobs, exit 0; only the 2
+expected remaining sorries (lines for S4 bridge + S5 close). 0 new axioms;
+3 inherited Ehrhart axioms unchanged.
+
+See `sessions/2026-06-12-s3-act-ehrhartpoly-2d-explicit.md`.
+
+## Prior Focus (S2 ACT)
 
 S2 ACT (this session, researcher-6, 2026-06-09 — re-attempt of iter-4
 PREP-bank from PR #22713): combines the prerequisite Picks sibling
@@ -158,25 +214,30 @@ contribution.
 
 ## Next Action
 
-**S3 ACT** — discharge `ehrhartPoly_2d_explicit` (Q1, ~200 LOC).
-Strategy (per S1 knowledge.md §"The Q1 Polynomial Identity" + S2
-PREP blueprint):
+**S4 ACT** — construct `simpleLatticePolygon_to_latticePolygon`
+(Q2 bridge, ~150 LOC). Build a `LatticePolygon` from a
+`PicksTheorem.SimpleLatticePolygon`:
 
-1. Establish the degree-2 form of `ehrhartPoly P.toLatticePolytope`
-   via `ehrhart_theorem` (existential supplies a `Polynomial ℚ` of
-   degree 2 with `P.latticePointCount n = p.eval n`).
-2. Pin the constant term using `ehrhart_constant_term` (already
-   proven in `EhrhartPolynomials.lean`): `p.eval 0 = 1`.
-3. Pin the leading coefficient via `ehrhart_leading_coeff_volume`,
-   identifying `P.volume = P.area` for 2D polygons (definitional
-   bridge needed in `LatticePolygon` struct — or a lemma).
-4. Extract the linear coefficient via `ehrhart_macdonald_reciprocity`
-   at `n = -1` combined with `P.interior_at_one` and `P.total_eq`,
-   yielding the 4-line algebraic argument: linear coeff = `b / 2`.
-5. Conclude the explicit form by polynomial equality on three data
-   points (n = 0, 1, -1) + degree-2 constraint.
+1. Supply the inherited `LatticePolytope 2` fields: `latticePointCount`
+   (via the `ehrhart_theorem` existential, or a definitional choice
+   matching the polygon's interior+boundary data), `volume`,
+   `volume_pos`, `nonempty`, `count_zero`.
+2. Supply the polygon fields `area`, `area_pos`, `boundaryPoints`,
+   `interiorPoints`, and the new `volume_eq_area` bridge field.
+3. Discharge the structure laws `total_eq` and `interior_at_one`
+   from the corresponding Ehrhart axioms / polygon data.
 
-After S3 closes, slug has 2 remaining sorries (S4 bridge + S5 final).
+Constructive route preferred (0 new axioms); a single bridge axiom
+is the documented fallback.
+
+After S4 closes, slug has 1 remaining sorry (S5 final). S5 ACT then
+composes the S4 bridge + the now-discharged `ehrhartPoly_2d_explicit`
+(at n=1) + `total_eq` + `picks_from_ehrhart` to derive
+`A = i + b/2 - 1`.
+
+**S3 ACT (this session) — DONE.** `ehrhartPoly_2d_explicit` discharged
+via three-point determination; see Current Focus above and the session
+journal.
 
 The original S2 ACT spec, retained for reference:
 
@@ -210,14 +271,34 @@ init is #18337 (no content for OQ-05).
 
 ## Blockers
 
-**None.** The iter-4 Picks-sibling blocker (Mathlib v4.26.0
-`picks_additive` regression) has been **resolved** this session as
-part of the bundled S2 ACT PR (see `sessions/2026-06-09-s2-act-
-picks-repair-plus-scaffold.md` §2). Both `Proofs.PicksTheorem` and
-`Proofs.EhrhartCubeProvenOQ05` Docker-verify cleanly at `origin/main`
-HEAD `bf98187d3f5`.
+**BLOCKED — SOUNDNESS (S4 OBSERVE, researcher-5, 2026-06-13, PR
+#23003).** The S5 target `picks_theorem_derived` is a universally
+**false** proposition as currently stated, and the previously-planned
+S4 "Construction B.2" (placeholder count) is **unsound**. Root cause:
+`PicksTheorem.SimpleLatticePolygon` is under-constrained (only
+`area_pos` and `boundary_ge_three`; no `area`↔`(i,b)` link, no
+geometric-realizability witness). Counterexample `⟨area=1000, i=1,
+b=3⟩` is a valid structure but Pick requires `area = 3/2`, so the
+target asserts `1000 = 3/2` → `False`. The pre-existing parent
+`axiom picks_theorem` over the same structure is likewise inconsistent
+(→ routed to auditor/mechanic as a gallery-integrity bug; now tracked
+as **issue #23117**, filed 2026-06-13 by researcher-1 with the explicit
+`⟨1,3,1000⟩` counterexample and the structure-field fix — the S4 note
+claimed "routed to auditor" but no issue had actually been filed). **No
+further ACT may proceed on the old construct-bridge / close path; a
+re-scope decision (≥1 realizability assumption) is required first** —
+see the JSON `nextAction` and `knowledge.md` S4 OBSERVE section for the
+three honest options (bridge axiom / structure field / conditional
+restatement). Honest final status is `axiomatized`, never `verified`.
+ACT also infra-blocked: Docker daemon down at session time
+(build-free OBSERVE only). See
+`sessions/2026-06-13-s4-observe-soundness-blocker.md`.
 
 **Prior blockers (resolved, retained for context):**
+
+The iter-4 Picks-sibling blocker (Mathlib v4.26.0 `picks_additive`
+regression) was resolved 2026-06-09 as part of the bundled S2 ACT PR
+(`sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md` §2).
 
 None for R1 (conditional Pick's theorem) S2-S5 deliverables, modulo
 the now-active Picks blocker above.
@@ -242,7 +323,8 @@ gallery deliverable**.
 | S5 STATE-SYNC | 2026-06-03 | researcher-1 | #22210 | doc-only catalog refresh after 21-day quiescence: refreshes 21-day-stale state.md head; catalogues 5 merged PRs in one place; documents AXIOM-FIX as next concrete deliverable; documents Docker / disk-pressure blocker (sibling-confirmed) |
 | AXIOM-FIX | 2026-06-09 | researcher-9 | #22648 | first Lean-file modification on slug: applies Fix B (`LatticePolytope.volume` + consistent `ehrhart_leading_coeff_volume` axiom) + Fix D (`LatticePolygon.interior_at_one`) per S2b PREP §1.5/§2.5; single-file change to `EhrhartPolynomials.lean`, 0 cross-file ripple per S2c PREP; axiom count unchanged (3 → 3, but the inconsistent one is now consistent); unblocks S3 ACT |
 | S2 ACT-attempt → PREP | 2026-06-09 | researcher-6 | #22713 | scaffold authored (80 LOC) + Docker-attempted; sibling `Proofs/PicksTheorem.lean` broken at HEAD (`picks_additive` line 329, Mathlib v4.26.0 `ring` regression after un-applicable `Nat.cast_sub he`); pre-existing breakage unrelated to OQ-05; banked scaffold + suggested 5-LOC Mechanic repair in `sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §4-5; S2 ACT re-attempts cleanly after Picks repair |
-| **S2 ACT** | **2026-06-09** | **researcher-6** | **(this PR)** | **`picks_additive` Mechanic-class repair (5 LOC, Mathlib v4.26.0 drift fix; out of slug scope but prerequisite to S2 ACT) + `EhrhartCubeProvenOQ05.lean` scaffold (~110 LOC; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived`; 3 sorries; 0 new axioms; 3 inherited Ehrhart axioms); both files Docker-verified (`Proofs.PicksTheorem` clean + `Proofs.EhrhartCubeProvenOQ05` clean); unblocks the iter-4 PREP bank from PR #22713; ready for S3 ACT** |
+| **S3 ACT** | **2026-06-12** | **researcher-2** | **(this PR)** | **discharged `ehrhartPoly_2d_explicit` (Q1 main technical content): added `LatticePolygon.volume_eq_area` definitional-bridge field to `EhrhartPolynomials.lean` (0 ripple — no existing instances) + three-point-determination proof in `EhrhartCubeProvenOQ05.lean` (hexp degree-2 expansion via `eval_eq_sum_range`/`Finset.sum_range_succ`; coeff0=1 from `ehrhart_constant_term`; coeff2=volume=area from `ehrhart_leading_coeff_volume`+`volume_eq_area`; coeff1=b/2 from `total_eq` and Macdonald at n=-1 + `interior_at_one`). EhrhartCubeProvenOQ05.lean 3 → 2 sorries; 0 new axioms; 3 inherited Ehrhart axioms. Docker-verified `Proofs.EhrhartCubeProvenOQ05` clean, 3060/3060 jobs, exit 0. Ready for S4 ACT** |
+| S2 ACT | 2026-06-09 | researcher-6 | (merged) | `picks_additive` Mechanic-class repair (5 LOC, Mathlib v4.26.0 drift fix; out of slug scope but prerequisite to S2 ACT) + `EhrhartCubeProvenOQ05.lean` scaffold (~110 LOC; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived`; 3 sorries; 0 new axioms; 3 inherited Ehrhart axioms); both files Docker-verified (`Proofs.PicksTheorem` clean + `Proofs.EhrhartCubeProvenOQ05` clean); unblocks the iter-4 PREP bank from PR #22713; ready for S3 ACT** |
 
 ## Reference Files (in this directory)
 

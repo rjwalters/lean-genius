@@ -23,10 +23,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 333,
-    "assumptions": "Three axioms declare the matrix-multiplication exponent ω with its known bounds, all in the Layer 3 placeholder block: `omegaMM : ℝ` (the exponent itself, currently a major open problem in computational complexity — known only that 2 ≤ ω < 2.371552 as of Williams-Xu-Xu-Zhou 2024), `omegaMM_two_le : 2 ≤ ω` (folklore: must read all n² input entries), and `omegaMM_lt_three : ω < 3` (Strassen 1969: ω ≤ log₂ 7 ≈ 2.807). The 11 proved theorems (Layers 1 + 2 + 2.5) are entirely structural and depend on no axioms. The full operation-count theorem (Keller-Gehrig recovers μ_M in O(n^ω) field operations) is deferred pending Mathlib growing a complexity monad and an abstract fast-matmul oracle.",
+    "lineCount": 383,
+    "assumptions": "Three axioms declare the matrix-multiplication exponent ω with its known bounds, all in the Layer 3 placeholder block: `omegaMM : ℝ` (the exponent itself, currently a major open problem in computational complexity — known only that 2 ≤ ω < 2.371552 as of Williams-Xu-Xu-Zhou 2024), `omegaMM_two_le : 2 ≤ ω` (folklore: must read all n² input entries), and `omegaMM_lt_three : ω < 3` (Strassen 1969: ω ≤ log₂ 7 ≈ 2.807). The 12 proved theorems (Layers 1 + 2 + 2.5) are entirely structural and depend on no axioms. The full operation-count theorem (Keller-Gehrig recovers μ_M in O(n^ω) field operations) is deferred pending Mathlib growing a complexity monad and an abstract fast-matmul oracle.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 2,
     "originalContributions": [
       "Squared-Krylov sequence: squareKrylov M k := M^(2^k), computed by repeated squaring T_{k+1} = T_k · T_k",
@@ -35,6 +35,7 @@
       "Layer 2 correctness bridge: squareKrylovProd_eq_pow — M^j = ∏ T_i over set bits of j, via Mathlib's Nat.twoPowSum_bitIndices",
       "Vector-level Layer 2: squareKrylovProd_mulVec connects the squared-Krylov product to the OQ-03 matvec ladder",
       "Layer 2.5 factor-count bound: squareKrylovProd_factor_count_le — popcount(j) ≤ j, the matrix-multiplication count for assembling M^j",
+      "Layer 2.5 sharper factor-count bound: squareKrylovProd_factor_count_le_size — popcount(j) ≤ Nat.size(j) ≈ ⌈log₂(j+1)⌉, the asymptotically tight logarithmic matrix-multiplication count, proved by embedding the Nodup bit-index list into Finset.range (Nat.size j)",
       "Layer 3 axiomatized ω placeholder: the matrix-multiplication exponent omegaMM with its known bounds 2 ≤ ω < 3"
     ],
     "dateAdded": "2026-06-06",
@@ -68,55 +69,72 @@
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
       "Mathlib.Data.Nat.BitIndices",
+      "Mathlib.Data.Nat.Size",
       "Mathlib.Tactic"
     ],
     "namespace": "MinpolyComplexity.SubcubicKrylov",
-    "lineCount": 333,
+    "lineCount": 383,
     "axiomCount": 3,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 2,
     "sorries": 0
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Keller-Gehrig and the Three-Layer Decomposition",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File docstring, imports, and namespace setup. States the open question — can the O(n^ω) Keller-Gehrig (1985) characteristic-polynomial algorithm be formalised in Lean 4, extending the naive O(n³) Krylov framework (CayleyHamiltonMinpolyOQ03) to subcubic complexity? Lays out the three-layer decomposition: Layer 1 (structural squared-Krylov sequence T_k := M^(2^k)), Layer 2 (binary-expansion correctness M^j = ∏ T_i), and Layer 3 (the O(n^ω) operation count, out of scope and axiomatic pending a Mathlib complexity monad). Cites Keller-Gehrig, Giesbrecht-Storjohann, and Mathlib's Nat.bitIndices (Peter Nelson).",
+      "mathContext": "$T_k := M^{2^k}$ via repeated squaring; $M^j = \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$, so $\\lceil\\log_2 j\\rceil$ squarings plus $\\mathrm{popcount}(j)$ multiplications recover any Krylov power $M^j$."
+    },
+    {
       "id": "layer-1-squared-krylov",
       "title": "Layer 1: Squared-Krylov Sequence (Structural)",
       "startLine": 57,
-      "endLine": 89,
+      "endLine": 91,
       "summary": "Defines `squareKrylov M k` by repeated squaring (T_0 = M, T_{k+1} = T_k · T_k) and proves the bridge `squareKrylov M k = M^(2^k)`. The proof is a one-line induction using `congr 1 + ring` on the exponent identity 2^k + 2^k = 2^(k+1).",
       "mathContext": "$T_k := M^{2^k}$, $T_0 = M$, $T_{k+1} = T_k \\cdot T_k$. The bridge $T_k = M^{2^k}$ is the algebraic content of repeated squaring."
     },
     {
       "id": "layer-2-correctness-matrix",
       "title": "Layer 2: Correctness — Matrix-Level Binary Expansion",
-      "startLine": 91,
-      "endLine": 155,
+      "startLine": 92,
+      "endLine": 156,
       "summary": "Defines `squareKrylovProd M j` as the product of T_i over the set bits of j (the matrix the Keller-Gehrig outer loop assembles after `popcount(j)` multiplications) and proves the correctness bridge `M^j = ∏ T_i`. The proof factors through Mathlib's `Nat.twoPowSum_bitIndices`, the Layer 1 bridge, and the elementary fact that powers of a single matrix commute. Sanity checks at j = 0, 1, 2^k confirm the empty product, single-factor, and pure-power cases.",
       "mathContext": "$M^j = \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$. Combining `Nat.twoPowSum_bitIndices` ($\\sum_{i \\in \\mathrm{bitIndices}(j)} 2^i = j$) with Layer 1 gives $\\prod M^{2^i} = M^{\\sum 2^i} = M^j$."
     },
     {
       "id": "layer-2-correctness-vector",
       "title": "Layer 2 (Vector Form): Krylov Vectors via Squared-Krylov",
-      "startLine": 156,
-      "endLine": 179,
+      "startLine": 157,
+      "endLine": 181,
       "summary": "Lifts the matrix-level Layer 2 bridge to vectors: `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`. Provides the reachability corollary `krylov_in_squareKrylov_range` showing every Krylov vector $M^j v$ lies in the image of the squared-Krylov product matrix-vector map. These bridge the Keller-Gehrig matrix arithmetic into the OQ-03 matvec ladder.",
       "mathContext": "$(\\prod_{i \\in \\mathrm{bitIndices}(j)} T_i) \\cdot v = M^j v$. The Keller-Gehrig pass produces each Krylov vector by a single matrix-vector product against the squared-Krylov product matrix (assembled from $\\mathrm{popcount}(j)$ matrix multiplications)."
     },
     {
       "id": "layer-2-5-factor-count",
       "title": "Layer 2.5: Matrix-Multiplication Factor-Count Bound",
-      "startLine": 181,
-      "endLine": 219,
-      "summary": "Quantitative bound on the number of squared-Krylov factors needed to assemble M^j: `popcount(j) ≤ j` via `Nat.twoPowSum_bitIndices` + the elementary lemma `length(L) ≤ ∑ 2^L`. The bound is loose for large j (asymptotic truth is `popcount(j) ≤ Nat.size(j) ≈ log₂(j+1)`), but is the immediately verifiable elementary version — the sharper popcount bound is deferred pending Mathlib API exploration.",
+      "startLine": 182,
+      "endLine": 267,
+      "summary": "Two bounds on the number of squared-Krylov factors needed to assemble M^j. The elementary `squareKrylovProd_factor_count_le` gives `popcount(j) ≤ j` via `Nat.twoPowSum_bitIndices` + the lemma `length(L) ≤ ∑ 2^L`. The sharper `squareKrylovProd_factor_count_le_size` gives the asymptotically tight `popcount(j) ≤ Nat.size(j) ≈ ⌈log₂(j+1)⌉`: every set-bit index i satisfies 2^i ≤ j (so i < Nat.size j by `Nat.lt_size`), and the Nodup bit-index list therefore embeds into `Finset.range (Nat.size j)`, bounding its length by that range's cardinality. This is the genuinely logarithmic factor count promised by the Keller-Gehrig analysis.",
       "mathContext": "$\\mathrm{popcount}(j) = |\\mathrm{bitIndices}(j)| \\leq j$. Combined with Layer 1's $\\lceil \\log_2 j \\rceil + 1$ squarings, the total matrix-multiplication count for $M^j$ is $O(\\log j)$ — the structural source of the Keller-Gehrig speed-up."
     },
     {
       "id": "layer-3-omega-axiomatized",
       "title": "Layer 3 (Axiomatized): The Matrix-Multiplication Exponent ω",
-      "startLine": 221,
-      "endLine": 259,
+      "startLine": 268,
+      "endLine": 308,
       "summary": "Three axioms declare the matrix-multiplication exponent ω with its known bounds: `omegaMM : ℝ` (the exponent itself), `omegaMM_two_le : 2 ≤ ω` (folklore lower bound), and `omegaMM_lt_three : ω < 3` (Strassen 1969 upper bound). The corollary `omegaMM_mem_Ico` packages the two-sided bound for convenient chaining. The full O(n^ω) operation-count theorem is deferred pending Mathlib growing a complexity monad and a fast-matmul oracle — neither of which exists today.",
       "mathContext": "$\\omega \\in [2, 3)$ is the matrix-multiplication exponent: the infimum of $\\alpha$ such that two $n \\times n$ matrices can be multiplied in $O(n^\\alpha)$ field operations. Currently $2 \\leq \\omega < 2.371552$ (Williams-Xu-Xu-Zhou 2024); $\\omega = 2$ is unknown."
+    },
+    {
+      "id": "closing-summary",
+      "title": "Closing Summary: Per-Layer Theorem Inventory",
+      "startLine": 309,
+      "endLine": 383,
+      "summary": "Closing summary docstring. Recaps the problem (Layers 1 + 2 of cayley-hamilton-minpoly-oq-03-oq-02), the completion status (12 theorems, 0 sorries, 3 axioms), and a per-layer theorem inventory: Layer 1 (squareKrylov_zero/succ/eq_pow_two), Layer 2 matrix-level (squareKrylovProd + the eq_pow bridge + three sanity checks), Layer 2 vector form (mulVec corollary + krylov reachability), Layer 2.5 factor-count bounds (the elementary ≤ j and the asymptotically tight ≤ Nat.size j), and the Layer 3 axiomatized ω placeholder (3 axioms + the two-sided sanity corollary). Closes with the structural-speedup key insight and a plain-English Layer 2 proof sketch.",
+      "mathContext": "Inventory: 12 theorems, 0 sorries, 3 axioms. Factor count $\\mathrm{popcount}(j) = |\\mathrm{bitIndices}(j)| \\leq \\mathrm{Nat.size}(j) \\approx \\lceil \\log_2(j+1) \\rceil$ — the logarithmic matrix-multiplication count behind the Keller-Gehrig speed-up."
     }
   ],
   "overview": {
@@ -139,11 +157,10 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalises Layers 1, 2, and 2.5 of the Keller-Gehrig (1985) $O(n^\\omega)$ characteristic-polynomial algorithm in 333 lines of Lean 4 over Mathlib, with 11 theorems and 0 sorries. The squared-Krylov sequence $T_k := M^{2^k}$ is defined by repeated squaring; the correctness bridge $M^j = \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$ is proved via Mathlib's `Nat.twoPowSum_bitIndices`. The matrix-multiplication exponent $\\omega$ is declared as an axiomatic placeholder (Layer 3) carrying its known bounds $2 \\leq \\omega < 3$ (Strassen 1969). The full $O(n^\\omega)$ operation-count theorem is deferred pending Mathlib growing a complexity monad and a fast-matmul oracle.",
+    "summary": "Formalises Layers 1, 2, and 2.5 of the Keller-Gehrig (1985) $O(n^\\omega)$ characteristic-polynomial algorithm in 383 lines of Lean 4 over Mathlib, with 12 theorems and 0 sorries. The squared-Krylov sequence $T_k := M^{2^k}$ is defined by repeated squaring; the correctness bridge $M^j = \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$ is proved via Mathlib's `Nat.twoPowSum_bitIndices`. The matrix-multiplication exponent $\\omega$ is declared as an axiomatic placeholder (Layer 3) carrying its known bounds $2 \\leq \\omega < 3$ (Strassen 1969). The full $O(n^\\omega)$ operation-count theorem is deferred pending Mathlib growing a complexity monad and a fast-matmul oracle.",
     "implications": "The formalisation puts a stake in the ground: *here is the proof that the asymptotic Keller-Gehrig gain is structural, modulo a complexity oracle.* A future Mathlib complexity-monad PR would slot in without rewriting the linear-algebra core — the operation-count predicate would only need to be defined and connected to `omegaMM`; no axiom in this file would need revising.\n\nThe entry also demonstrates a clean separation between (a) Lean-formalisable structural mathematics, (b) Lean-formalisable elementary quantitative bounds (popcount), and (c) genuinely axiomatic mathematical constants (ω). The first two are proved unconditionally; the third is the minimum honest commitment Layer 3 admits today.",
     "openQuestions": [
       "Can a Mathlib complexity-monad framework (cost-passing, free-monad-of-arithmetic-ops, or external operation-counter predicate) be designed so that the full Keller-Gehrig operation-count theorem becomes statable in Lean?",
-      "Can the sharper popcount bound `popcount(j) ≤ Nat.size(j) ≈ ⌈log₂(j+1)⌉` be formalised once the appropriate Mathlib `Nat.bitIndices` length API is identified? This would replace the elementary `popcount(j) ≤ j` bound with the asymptotically correct form.",
       "Can Giesbrecht (1995) and Storjohann (2000)'s $O(n^\\omega)$ refinement (removing the $\\log n$ factor of Keller-Gehrig's original) be formalised on top of this entry?",
       "Can Strassen's algorithm itself be formalised as an `O(n^{\\log_2 7})` upper bound, replacing the `omegaMM_lt_three` axiom with a constructive witness?"
     ]

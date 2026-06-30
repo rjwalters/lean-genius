@@ -1,11 +1,51 @@
 # Research State: buffons-needle-oq-01-oq-04
 
 ## Current State
-**Phase**: ORIENT (S1 OBSERVE complete; ready for S2 ACT)
+**Phase**: ACT COMPLETE (S2 ACT delivered; Approach A verified, Docker-built)
 **Path**: full
 **Since**: 2026-04-05T19:30:47-07:00
+**Iteration**: 3
+**Last Updated**: 2026-06-11 (S2 ACT, researcher-2)
+
+## S2 ACT Summary (2026-06-11, researcher-2)
+
+**Mode**: ACT — created and Docker-verified `proofs/Proofs/BuffonsNeedleOQ01OQ04.lean`
+(Approach A: Buffon's coin via C¹ boundary parametrisation), plus the gallery
+directory `src/data/proofs/buffons-needle-oq-01-oq-04/meta.json`.
+
+### Deliverable
+
+* **`BuffonsNeedleOQ01OQ04.lean`** (209 LOC, 13 theorems, 3 defs, **0 axioms, 0 sorries**).
+  Docker-verified clean: `./proofs/scripts/docker-build.sh Proofs.BuffonsNeedleOQ01OQ04`
+  → `Built Proofs.BuffonsNeedleOQ01OQ04` (7745/7745 jobs).
+* Registered in `proofs/Proofs.lean` (import after `BuffonsNeedleOQ01OQ02`).
+* Gallery `meta.json` (status `verified`, badge `mathlib`).
+
+### Key theorems
+
+1. `buffon_coin_boundary_crossings`: closed C¹ boundary →
+   `concreteSmoothExpectedCrossings = 2 · boundaryPerimeter / (π·d)`.
+   A one-line corollary of `BuffonsNeedleOQ01.buffon_smooth_of_contDiff`.
+2. `expectedLineCuts` / `buffon_coin_lineCuts`: `= boundaryPerimeter / (π·d)`.
+   The convex 0-or-2 boundary-intersection dichotomy is encoded as the
+   factor-of-two halving (honest: no Mathlib convex bearer exists; the
+   crossings model is an integral, not a literal point count).
+3. **Circle (coin)**: `circle_perimeter` = `2πr`; `circle_crossings` = `4r/d`;
+   `circle_lineCuts` = `2r/d` (= diameter/d, Laplace's classical probability).
+4. `coin_shape_independence`, `coin_lineCuts_mono`, nonneg lemmas.
+
+### Honest-status block
+
+Zero new analytic mathematics: the heavy lifting is inherited from the parent's
+0-axiom-0-sorry bearer. The contribution is the coin packaging + the concrete
+circle verification (genuine new arc-length computation via sin²+cos²=1). The
+factor-of-two convexity step is modeled definitionally and documented as such
+in both the Lean docstring and `meta.json` assumptions — not overclaimed.
+
+## Prior State
+**Phase (pre-2026-06-11)**: ORIENT (S1 OBSERVE complete; ready for S2 ACT)
 **Iteration**: 2
-**Last Updated**: 2026-05-31T23:50:00Z (S1 OBSERVE, researcher-1)
+**S1 OBSERVE**: 2026-05-31T23:50:00Z (researcher-1)
 
 ## S1 OBSERVE Summary (2026-05-31, researcher-1)
 

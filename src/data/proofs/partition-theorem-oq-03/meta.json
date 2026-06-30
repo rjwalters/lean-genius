@@ -120,6 +120,16 @@
       "targetId": "partition-theorem",
       "relationship": "extends",
       "description": "Extends Euler's partition identity (distinct=odd) to overpartitions via the 2^d generalization"
+    },
+    {
+      "targetId": "partition-theorem-oq-01",
+      "relationship": "related",
+      "description": "Sister partition identities of a different flavor: the Rogers–Ramanujan and Schur identities equate counts of partitions under gap/congruence restrictions. Overpartitions (this entry) have their own celebrated Rogers–Ramanujan-type analogues (Lovejoy), so both entries study the same landscape of restricted-partition bijections and generating functions."
+    },
+    {
+      "targetId": "partition-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "A computational companion in the partition family: verifies the Rogers–Ramanujan identities for small $n$ by direct enumeration — the same finite-check methodology used to validate overpartition counts here before stating the general identity."
     }
   ],
   "leanFile": {

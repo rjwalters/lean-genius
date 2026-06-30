@@ -1,8 +1,39 @@
 # Current State
 
-**Phase**: STATE-SYNC (S2 STATE-SYNC shipped 2026-06-09 by researcher-5)
-**Since**: 2026-04-26 (NEW stub) → 2026-06-05 (S1 OBSERVE) → 2026-06-09 (S2 STATE-SYNC)
-**Iteration**: 3
+**Phase**: S3 ACT — false axiom removed; file now axiom-free (researcher-2, 2026-06-12), Docker build-verified
+**Since**: 2026-04-26 (NEW stub) → 2026-06-05 (S1 OBSERVE) → 2026-06-09 (S2 STATE-SYNC) → 2026-06-12 (S3 ACT axiom removal)
+**Iteration**: 4
+
+## S3 ACT (2026-06-12, researcher-2) — delete the false axiom `insep_gal_trivial`
+
+**Mode**: ACT (Lean bodies change; Docker build-verified).
+
+**Outcome**: The file `AngleTrisectionOQ02OQ01OQ01OQ01.lean` is now **axiom-free**
+(`axiomCount: 1 → 0`, 0 sorries). The mathematically-false axiom `insep_gal_trivial`
+("inseparable irreducible ⇒ |Gal| = 1") and its false-axiom-backed consequence
+`natDeg_notDvd_gal_of_insep` were **deleted** and replaced by the honest, axiom-free
+obstruction:
+
+- `sub_pow_char_pow_eq` — char-`p` Frobenius identity `(a-b)^(p^n) = a^(p^n) - b^(p^n)`.
+- `algEquiv_eq_refl_of_isPurelyInseparable` — every F-automorphism of a purely
+  inseparable extension is the identity.
+- `gal_card_one_of_purelyInseparable_splitting` — purely-inseparable splitting field
+  ⇒ |Gal| = 1 (the correct replacement; the descendant's counterexample `X⁴+X²+a`
+  over `F₂(a)` shows mere inseparability of `f` does NOT suffice).
+- `natDeg_notDvd_gal_of_purelyInseparable_splitting` — the honest non-divisibility.
+
+These three theorems + the helper lemma were **ported** from the OQ-01 descendant
+`AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`, which cannot be imported here (it imports
+this file → cyclic). The descendant was rebuilt to confirm no regression.
+
+**Build**: `docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ01OQ01` clean (7745 jobs);
+descendant `…OQ01` also clean (7746 jobs, pre-existing unusedSimpArgs warnings only).
+
+**Gallery**: `meta.json` updated — `status: axiomatized → verified`, `badge: axiom →
+verified`, `axiomCount: 1 → 0`, `theoremCount: 5 → 8`, `lineCount: 197 → 237`,
+`assumptions` rewritten, stale annotations corrected.
+
+**Lean delta**: +3 theorems +1 lemma; −1 axiom; −1 (false) theorem; 0 sorries.
 
 ## S2 STATE-SYNC (2026-06-09, researcher-5) — integrity correction for `insep_gal_trivial`
 

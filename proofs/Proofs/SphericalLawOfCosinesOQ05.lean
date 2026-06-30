@@ -571,7 +571,73 @@ theorem haversine_eq_zero_iff_of_mem_Icc {θ : ℝ}
   rw [haversine_zero] at h
   exact h
 
-/- ## Part X: Summary
+/- ## Part X: The haversine bijection `[0, π] ≃ [0, 1]` (S5)
+
+S4 established that `haversine` is *strictly monotone* (hence injective) on the
+principal range `[0, π]`. This part completes the picture by proving it is also
+*surjective* onto `[0, 1]`, so the forward map and the inverse
+`2 · arcsin(√·)` (S3) are mutually inverse bijections between `[0, π]` and
+`[0, 1]`.
+
+Surjectivity is *constructive* and needs no intermediate-value argument: for any
+target `y ∈ [0, 1]`, the explicit preimage `2 · arcsin(√y)` lies in `[0, π]` and
+maps to `y`, because `sin(arcsin(√y)) = √y` and `(√y)² = y`. This is the exact
+range statement underlying the navigation recovery — every admissible haversine
+value `y ∈ [0, 1]` is realised by a unique great-circle distance `c ∈ [0, π]`. -/
+
+/-- **Right inverse / realisability**: every `y ∈ [0, 1]` is the haversine of its
+explicit preimage `2 · arcsin(√y)`. Purely algebraic: `sin(arcsin √y) = √y`
+(since `0 ≤ √y ≤ 1`) and `(√y)² = y` (since `0 ≤ y`). -/
+theorem haversine_two_arcsin_sqrt {y : ℝ} (h0 : 0 ≤ y) (h1 : y ≤ 1) :
+    haversine (2 * Real.arcsin (Real.sqrt y)) = y := by
+  have hsqrt_le : Real.sqrt y ≤ 1 := by
+    rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
+    exact Real.sqrt_le_sqrt h1
+  have hhalf : (2 * Real.arcsin (Real.sqrt y)) / 2 = Real.arcsin (Real.sqrt y) := by
+    ring
+  unfold haversine
+  rw [hhalf, Real.sin_arcsin (by linarith [Real.sqrt_nonneg y]) hsqrt_le,
+      Real.sq_sqrt h0]
+
+/-- The explicit preimage `2 · arcsin(√y)` always lies in the principal range
+`[0, π]` (its half lies in `[0, π/2]` since `arcsin ≥ 0` on nonnegative inputs and
+`arcsin ≤ π/2` always). -/
+theorem two_arcsin_sqrt_mem_Icc (y : ℝ) :
+    2 * Real.arcsin (Real.sqrt y) ∈ Set.Icc (0 : ℝ) π := by
+  refine ⟨?_, ?_⟩
+  · have h := Real.arcsin_nonneg.mpr (Real.sqrt_nonneg y)
+    linarith
+  · have h := Real.arcsin_le_pi_div_two (Real.sqrt y)
+    linarith
+
+/-- **`haversine` maps `[0, π]` into `[0, 1]`** (the codomain statement). -/
+theorem haversine_mapsTo :
+    Set.MapsTo haversine (Set.Icc (0 : ℝ) π) (Set.Icc (0 : ℝ) 1) :=
+  fun θ _ => ⟨haversine_nonneg θ, haversine_le_one θ⟩
+
+/-- **`haversine` is surjective from `[0, π]` onto `[0, 1]`.** Constructive: the
+preimage of `y` is `2 · arcsin(√y)`. -/
+theorem haversine_surjOn :
+    Set.SurjOn haversine (Set.Icc (0 : ℝ) π) (Set.Icc (0 : ℝ) 1) := by
+  intro y hy
+  obtain ⟨h0, h1⟩ := hy
+  exact ⟨2 * Real.arcsin (Real.sqrt y), two_arcsin_sqrt_mem_Icc y,
+    haversine_two_arcsin_sqrt h0 h1⟩
+
+/-- **The haversine bijection.** `haversine` is a bijection from the principal
+arc-length range `[0, π]` onto the haversine range `[0, 1]`. Combined with the
+inverse `eq_two_arcsin_sqrt_haversine` (S3), this makes great-circle distance
+recovery a genuine two-sided inverse, not merely a one-sided formula. -/
+theorem haversine_bijOn :
+    Set.BijOn haversine (Set.Icc (0 : ℝ) π) (Set.Icc (0 : ℝ) 1) :=
+  ⟨haversine_mapsTo, haversine_injOn_Icc_zero_pi, haversine_surjOn⟩
+
+/-- **Image characterisation**: `haversine '' [0, π] = [0, 1]`. -/
+theorem haversine_image_Icc :
+    haversine '' (Set.Icc (0 : ℝ) π) = Set.Icc (0 : ℝ) 1 :=
+  haversine_bijOn.image_eq
+
+/- ## Part XI: Summary
 
 | Result                                | Status   |
 |---------------------------------------|----------|
@@ -607,10 +673,16 @@ theorem haversine_eq_zero_iff_of_mem_Icc {θ : ℝ}
 | `sideA_eq_of_haversine_sideA_eq`      | PROVED (S4) |
 | `sideB_eq_of_haversine_sideB_eq`      | PROVED (S4) |
 | `haversine_eq_zero_iff_of_mem_Icc`    | PROVED (S4) |
+| `haversine_two_arcsin_sqrt`           | PROVED (S5) |
+| `two_arcsin_sqrt_mem_Icc`             | PROVED (S5) |
+| `haversine_mapsTo`                    | PROVED (S5) |
+| `haversine_surjOn`                    | PROVED (S5) |
+| `haversine_bijOn`                     | PROVED (S5) |
+| `haversine_image_Icc`                 | PROVED (S5) |
 
 Axioms: 0
 Sorries: 0
-Proved theorems: 31
+Proved theorems: 37
 Definitions: 1
 -/
 

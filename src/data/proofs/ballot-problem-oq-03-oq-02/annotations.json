@@ -3,7 +3,7 @@
     "id": "ann-lgv-lpath",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 77,
+      "startLine": 82,
       "endLine": 110
     },
     "type": "definition",
@@ -27,7 +27,7 @@
     "id": "ann-lgv-nonintersect",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 111,
+      "startLine": 116,
       "endLine": 222
     },
     "type": "definition",
@@ -49,7 +49,7 @@
     "id": "ann-lgv-config",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 223,
+      "startLine": 228,
       "endLine": 251
     },
     "type": "definition",
@@ -73,7 +73,7 @@
     "id": "ann-lgv-pathmatrix",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 252,
+      "startLine": 257,
       "endLine": 261
     },
     "type": "concept",
@@ -96,7 +96,7 @@
     "id": "ann-lgv-permtuples",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 262,
+      "startLine": 267,
       "endLine": 289
     },
     "type": "concept",
@@ -118,7 +118,7 @@
     "id": "ann-lgv-swaptails",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 290,
+      "startLine": 296,
       "endLine": 338
     },
     "type": "concept",
@@ -142,7 +142,7 @@
     "id": "ann-lgv-firstnonfixed",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 339,
+      "startLine": 345,
       "endLine": 378
     },
     "type": "definition",
@@ -165,7 +165,7 @@
     "id": "ann-lgv-algebraic-bridge",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 380,
+      "startLine": 446,
       "endLine": 599
     },
     "type": "insight",
@@ -189,7 +189,7 @@
     "id": "ann-lgv-tagged-tuples",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 600,
+      "startLine": 611,
       "endLine": 648
     },
     "type": "definition",
@@ -213,7 +213,7 @@
     "id": "ann-lgv-wellformed",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 736,
+      "startLine": 745,
       "endLine": 825
     },
     "type": "concept",
@@ -237,7 +237,7 @@
     "id": "ann-lgv-prefix-lemmas",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 826,
+      "startLine": 840,
       "endLine": 1078
     },
     "type": "concept",
@@ -316,13 +316,13 @@
     "id": "ann-lgv-self-inverse",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 1886,
+      "startLine": 1888,
       "endLine": 2091
     },
     "type": "concept",
     "title": "Self-Inverse Proof and Final Cancellation",
-    "content": "The remaining gap and final assembly. `canonCrossN_preserved` (sorry, line 1982) would show that the canonical crossing code is the same for the original and swapped tuples — essential because the involution must select the same crossing point in both directions. `gvCanon_self_inverse` (sorry, line 1989) would combine this with double tail-swap = identity and $(i\\;j)^2 = \\mathrm{id}$ to show $\\iota^2 = \\mathrm{id}$. The proved `cancellable_sum_eq_zero` applies Mathlib's `Finset.sum_involution` to the canonical involution, yielding zero signed sum over cancellable tuples. `gv_involution_cancellation` then adds back the fixed-point contribution (non-intersecting identity tuples) to get $\\mathrm{niTupleCount} = \\det M$. The file concludes with corollaries: determinant non-negativity, $r=1$ vacuous NI, and an applications survey.",
-    "mathContext": "The 2 remaining sorries: (1) $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ — prefix preservation ensures the lex-minimum crossing is invariant; (2) $\\iota(\\iota(t)) = t$ — double tail-swap recovers original paths since $\\mathrm{swap}^2 = \\mathrm{id}$.",
+    "content": "The self-inverse proof and final assembly. `canonCrossN_preserved` proves that the canonical crossing code is the same for the original and swapped tuples — essential because the involution must select the same crossing point in both directions. `gvCanon_self_inverse` combines this with double tail-swap = identity and $(i\\;j)^2 = \\mathrm{id}$ to show $\\iota^2 = \\mathrm{id}$. The proved `cancellable_sum_eq_zero` applies Mathlib's `Finset.sum_involution` to the canonical involution, yielding zero signed sum over cancellable tuples. `gv_involution_cancellation` then adds back the fixed-point contribution (non-intersecting identity tuples) to get $\\mathrm{niTupleCount} = \\det M$. The file concludes with corollaries: determinant non-negativity, $r=1$ vacuous NI, and an applications survey. The full chain is machine-checked with 0 sorries and 0 axioms.",
+    "mathContext": "The two key self-inverse lemmas, both fully proved: (1) $\\mathrm{canonCrossN}(\\iota(t)) = \\mathrm{canonCrossN}(t)$ — prefix preservation ensures the lex-minimum crossing is invariant; (2) $\\iota(\\iota(t)) = t$ — double tail-swap recovers original paths since $\\mathrm{swap}^2 = \\mathrm{id}$.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.sum_involution",
@@ -362,7 +362,7 @@
     "id": "ann-lgv-crossing-lemma",
     "proofId": "ballot-problem-oq-03-oq-02",
     "range": {
-      "startLine": 649,
+      "startLine": 655,
       "endLine": 735
     },
     "type": "insight",

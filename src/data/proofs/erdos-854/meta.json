@@ -49,25 +49,25 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Setup",
-      "startLine": 17,
-      "endLine": 24,
-      "summary": "Imports Mathlib.NumberTheory.PrimeCounting (for Nat.nth Nat.Prime), Finset, and tactics.",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module docstring stating Erdős Problem #854: for the k-th primorial nₖ, study gaps between consecutive integers coprime to nₖ — (1) estimate the smallest even integer not occurring as a gap, and (2) whether ≫ max gap many even integers occur as gaps. Imports Mathlib.NumberTheory.PrimeCounting (for Nat.nth Nat.Prime), Finset, and tactics.",
       "mathContext": "Mathematical content: Imports PrimeCounting for nth prime enumeration, Finset for finite set operations."
     },
     {
       "id": "prime-enumeration",
       "title": "Prime Enumeration (Proved from Mathlib)",
-      "startLine": 28,
-      "endLine": 43,
+      "startLine": 26,
+      "endLine": 46,
       "summary": "Defines nthPrime via Mathlib's Nat.nth Nat.Prime (0-indexed). Proves primality, strict monotonicity, and values for primes 0-2 from Mathlib theorems.",
       "mathContext": "Verified: All prime enumeration properties proved from Mathlib, replacing 4 former axioms."
     },
     {
       "id": "primorial",
       "title": "Primorial Function",
-      "startLine": 45,
-      "endLine": 49,
+      "startLine": 47,
+      "endLine": 50,
       "summary": "Defines the k-th primorial recursively as the product of the first k primes (0-indexed).",
       "mathContext": "Formal definition: primorial k = p₀ · p₁ · ⋯ · pₖ₋₁."
     },
@@ -75,7 +75,7 @@
       "id": "coprime-residues",
       "title": "Coprime Residues (Proved)",
       "startLine": 51,
-      "endLine": 70,
+      "endLine": 71,
       "summary": "Defines coprime residue set computationally. Sorted list proved pairwise strictly increasing via Finset.sort properties and nodup.",
       "mathContext": "Verified: sortedCoprimes_sorted proved by combining Finset.pairwise_sort with sort_nodup."
     },
@@ -91,7 +91,7 @@
       "id": "known-bounds",
       "title": "Jacobsthal Bound and First Missing Gap",
       "startLine": 153,
-      "endLine": 173,
+      "endLine": 174,
       "summary": "Jacobsthal bound axiomatized (maxGap_bound: maxGap(primorial k) ≤ 2·pₖ₋₁). First missing gap defined with proved existence witness (sup+1 argument) and proved non-membership via Nat.find_spec.",
       "mathContext": "firstMissingGap existence and non-membership both proved; Jacobsthal bound axiomatized."
     },
@@ -99,15 +99,15 @@
       "id": "counterexample",
       "title": "Lacampagne-Selfridge Counterexample",
       "startLine": 175,
-      "endLine": 178,
+      "endLine": 179,
       "summary": "Records the computational disproof of Erdős's strong conjecture for n₆ = 30030 (axiom lacampagne_selfridge_counterexample).",
       "mathContext": "Axiomatized: Computational fact about specific primorial."
     },
     {
       "id": "conjecture-part1",
       "title": "Conjecture Part 1: Missing Gap Growth",
-      "startLine": 182,
-      "endLine": 185,
+      "startLine": 180,
+      "endLine": 186,
       "summary": "States that the smallest missing gap grows without bound (axiom ErdosProblem854_missing_gap_growth).",
       "mathContext": "Open conjecture: axiomatized."
     },
@@ -115,9 +115,25 @@
       "id": "conjecture-part2",
       "title": "Conjecture Part 2: Proportional Distinct Gaps",
       "startLine": 187,
-      "endLine": 192,
+      "endLine": 193,
       "summary": "States that the number of distinct gap values is proportional to the maximal gap (axiom ErdosProblem854_many_gaps).",
       "mathContext": "Open conjecture: axiomatized."
+    },
+    {
+      "id": "primorial-structure",
+      "title": "Primorial Structure (Proved)",
+      "startLine": 194,
+      "endLine": 214,
+      "summary": "Proves basic facts about the primorial from its recursive definition: primorial_pos (every primorial is positive), primorial_dvd_succ (primorial k divides primorial (k+1)), and nthPrime_dvd_primorial (the i-th prime divides primorial k for every i < k). All by induction on k.",
+      "mathContext": "$\\mathrm{primorial}(k) = \\prod_{i<k} p_i > 0$; $\\mathrm{primorial}(k) \\mid \\mathrm{primorial}(k+1)$ since the latter is the former times $p_k$; and $p_i \\mid \\mathrm{primorial}(k)$ for all $i < k$ by induction on $k$."
+    },
+    {
+      "id": "coprime-residue-membership",
+      "title": "Coprime Residue Membership (Proved)",
+      "startLine": 215,
+      "endLine": 233,
+      "summary": "Proves that 1 and n−1 are always coprime residues of n for n > 1: coprimeResidues_one_mem (1 ∈ coprimeResidues n), coprime_n_sub_one (gcd(n−1, n) = 1), and coprimeResidues_nminus1_mem (n−1 ∈ coprimeResidues n). These are the endpoints a₁ = 1 and a_{φ(n)} = n−1 of the coprime-residue sequence.",
+      "mathContext": "For $n > 1$: $\\gcd(1,n)=1$ so $1 \\in \\mathrm{coprimeResidues}(n)$, and $\\gcd(n-1,n)=\\gcd(n-1,1)=1$ so $n-1 \\in \\mathrm{coprimeResidues}(n)$. These are the first and last terms $a_1 = 1$ and $a_{\\varphi(n)} = n-1$ of the sorted coprime-residue sequence."
     }
   ],
   "conclusion": {

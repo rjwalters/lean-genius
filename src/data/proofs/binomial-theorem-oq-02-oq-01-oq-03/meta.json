@@ -45,36 +45,43 @@
       "id": "header",
       "title": "Module Header: Covariance of Multinomial Components",
       "startLine": 1,
-      "endLine": 46,
+      "endLine": 52,
       "summary": "Imports five Mathlib modules and two parent proof files (BinomialTheoremOQ02OQ01OQ02 for the marginal PMF, BinomialTheoremOQ03 for the binomial mean). The docblock states the open question, the answer (Cov(Xᵢ,Xⱼ) = -npᵢpⱼ), the intuition (fixed total forces negative correlation), and a three-step proof strategy: mean via fiber grouping, cross-moment via MGF differentiation (sorry), and covariance by ring arithmetic."
     },
     {
       "id": "setup",
       "title": "Multinomial PMF and Normalization",
-      "startLine": 47,
-      "endLine": 68,
+      "startLine": 53,
+      "endLine": 72,
       "summary": "Defines multinomialProb (identical to BinomialTheoremOQ02OQ01OQ02.multinomialProb via definitional equality) and proves multinomialProb_sum_one (normalization ∑ P(k) = 1 when ∑ p(i) = 1) by delegation to the parent file's theorem."
     },
     {
       "id": "mean",
       "title": "Mean E[Xᵢ] = n·pᵢ (Complete Proof)",
-      "startLine": 70,
-      "endLine": 132,
+      "startLine": 73,
+      "endLine": 136,
       "summary": "Proves multinomial_mean: ∑_k k(i₀)·P(k) = n·p(i₀). The proof uses sum_fiberwise_of_maps_to to group the sum by value j = k(i₀), then on each fiber: (1) replaces k(i₀) with j using exact_mod_cast, (2) applies multinomial_marginal_pmf from OQ02 to get the binomial PMF formula, (3) applies binomial_mean_all (which extends BinomialTheoremOQ03.binomial_mean to the n=0 case). Private helpers: binomial_mean_all (handles n=0 via rcases) and binomPMF_eq (unfolds binomPMF)."
     },
     {
       "id": "cross-moment",
       "title": "Cross-Moment E[XᵢXⱼ] = n(n-1)pᵢpⱼ (Complete Proof)",
-      "startLine": 134,
-      "endLine": 166,
-      "summary": "States multinomial_cross_moment with a detailed proof sketch: apply multinomial_mgf_real with g(l) = (1+a) if l=i, (1+b) if l=j, else 1, yielding (1+pᵢa+pⱼb)^n = ∑ P(k)·(1+a)^{k(i)}·(1+b)^{k(j)}. Differentiate w.r.t. a at 0 (using HasDerivAt.sum), then w.r.t. b at 0, to extract E[XᵢXⱼ] = n(n-1)pᵢpⱼ."
+      "startLine": 137,
+      "endLine": 332,
+      "summary": "multinomial_cross_moment: E[XᵢXⱼ] = n(n−1)pᵢpⱼ for i ≠ j, by bivariate MGF differentiation. The full proof (lines 137–332) establishes the MGF identity ∑_k P(k)(1+a)^{k_i}(1+b)^{k_j} = (1+pᵢa+pⱼb)^n (via the parent multinomial_mgf_real), then differentiates in a at 0 (hstep1) to get n·pᵢ·(1+pⱼb)^{n−1}, and in b at 0 (hstep2) to reach n(n−1)pᵢpⱼ — all via HasDerivAt.sum and chain-rule lemmas."
     },
     {
       "id": "covariance",
       "title": "Main Theorem: Cov(Xᵢ,Xⱼ) = -npᵢpⱼ",
-      "startLine": 168,
-      "endLine": 202,
-      "summary": "Proves multinomial_covariance by: (1) rewriting the raw multinomial coefficient form as multinomialProb, (2) expanding (a-b)·P via sub_mul and sum_sub_distrib, (3) applying multinomialProb_sum_one to evaluate the normalization term, (4) applying the fully proved multinomial_cross_moment for the cross-moment, (5) closing by ring arithmetic."
+      "startLine": 333,
+      "endLine": 370,
+      "summary": "multinomial_covariance: Cov(Xᵢ,Xⱼ) = −n·pᵢ·pⱼ for i ≠ j. Expands (k_i·k_j − E[Xᵢ]E[Xⱼ])·P(k) via sub_mul/sum_sub_distrib, evaluates the normalization sum (n·pᵢ·n·pⱼ) and the cross moment (n(n−1)pᵢpⱼ), and closes by ring: n(n−1)pᵢpⱼ − n²pᵢpⱼ = −npᵢpⱼ."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 371,
+      "endLine": 392,
+      "summary": "Closing docstring recording the four proved results (multinomialProb_sum_one, multinomial_mean, multinomial_cross_moment, multinomial_covariance — 0 axioms, 0 sorries) and the algebraic identity Cov = E[XᵢXⱼ] − E[Xᵢ]E[Xⱼ] = −npᵢpⱼ underlying the negative correlation."
     }
   ],
   "conclusion": {

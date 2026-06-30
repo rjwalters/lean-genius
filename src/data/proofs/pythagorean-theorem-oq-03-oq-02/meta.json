@@ -1,0 +1,208 @@
+{
+  "id": "pythagorean-theorem-oq-03-oq-02",
+  "title": "Relativistic Velocity Addition from Rapidity",
+  "slug": "pythagorean-theorem-oq-03-oq-02",
+  "description": "Answers the parent non-Euclidean Pythagorean entry's open question to 'formalize the rapidity–velocity relation β = tanh(φ) and derive relativistic velocity addition'. Building only on Mathlib's hyperbolic functions, it proves: every rapidity gives a strictly subluminal speed |tanh φ| < 1; the additivity of rapidity is exactly the velocity-addition law tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂); closure (composing two subluminal velocities stays subluminal, via 1∓velAdd = (1∓β₁)(1∓β₂)/(1+β₁β₂)); light-speed invariance (velAdd β 1 = 1); the Galilean low-speed limit; the Lorentz factor γ = cosh φ satisfying γ² = 1/(1−β²); and concrete checks ½c⊕½c = ⅘c and ⅗c⊕c = c.",
+  "meta": {
+    "author": "Albert Einstein (1905); Vladimir Varićak / Alfred Robb (rapidity); formalized in Lean 4",
+    "date": "1905",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTheoremOQ03OQ02.lean",
+    "tags": [
+      "special-relativity",
+      "minkowski-spacetime",
+      "rapidity",
+      "velocity-addition",
+      "hyperbolic-functions",
+      "lorentz-factor"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 190,
+    "theoremCount": 16,
+    "definitionCount": 1,
+    "originalContributions": [
+      "tanh_add: the additivity of rapidity IS the relativistic velocity-addition law — tanh(φ₁+φ₂) = velAdd(tanh φ₁, tanh φ₂) = (β₁+β₂)/(1+β₁β₂) — closing the gap left by the parent (which proved rapidity composition φ₁+φ₂ but not the velocity formula).",
+      "abs_tanh_lt_one (+ tanh_lt_one, neg_one_lt_tanh): every rapidity yields a strictly subluminal speed |β| = |tanh φ| < 1, from cosh φ ∓ sinh φ = exp(∓φ) > 0.",
+      "abs_velAdd_lt_one: CLOSURE / the speed of light is never exceeded — composing two subluminal velocities stays subluminal, proved algebraically via 1∓velAdd = (1∓β₁)(1∓β₂)/(1+β₁β₂) with no appeal to arctanh.",
+      "velAdd_one / one_velAdd: light-speed invariance — adding any velocity (≠ -c) to c returns c.",
+      "velAdd_sub_sum: the Galilean limit — velocity addition differs from β₁+β₂ only by the second-order term −(β₁+β₂)β₁β₂/(1+β₁β₂).",
+      "cosh_sq_eq_inv_one_sub_tanh_sq (+ one_sub_tanh_sq): the Lorentz factor γ = cosh φ obeys γ² = 1/(1−β²).",
+      "velAdd_half_half and velAdd_three_fifths_one: ½c ⊕ ½c = ⅘c and ⅗c ⊕ c = c, without native_decide."
+    ],
+    "prerequisites": [
+      "Special relativity: rapidity φ, the velocity relation β = tanh φ, and Lorentz boosts",
+      "Mathlib's Real.sinh / Real.cosh / Real.tanh and the identities cosh²−sinh²=1, sinh/cosh addition formulas",
+      "Elementary real inequalities (nlinarith / linarith)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.tanh_eq_sinh_div_cosh",
+        "description": "tanh x = sinh x / cosh x — the bridge from the velocity β to the rapidity φ.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sinh_add / Real.cosh_add",
+        "description": "The hyperbolic addition formulas, the algebraic core of the velocity-addition law.",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.cosh_sub_sinh / Real.cosh_sq_sub_sinh_sq",
+        "description": "cosh x − sinh x = exp(−x) (subluminality) and cosh²−sinh²=1 (the Lorentz factor).",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "In Minkowski's geometry of spacetime the natural coordinate along a Lorentz boost is not the velocity β but the rapidity φ, related by β = tanh φ. Rapidity is the hyperbolic analogue of an angle: boosts compose by simply ADDING rapidities, exactly as rotations compose by adding angles. The parent gallery entry ('Pythagorean Theorem in Non-Euclidean Geometry') develops this Minkowski branch — the invariant interval τ² = t² − x², Lorentz boosts parameterized by φ, interval invariance, and the additivity of rapidity under composition — and explicitly leaves open the step of converting that additivity into the velocity language.\n\nThis entry makes that conversion. Because tanh has an addition formula inherited from sinh and cosh, the additive law φ = φ₁ + φ₂ becomes Einstein's velocity-addition formula β = (β₁ + β₂)/(1 + β₁β₂) (1905). Two structural facts fall out for free: velocities from rapidities are always strictly below the speed of light (|tanh φ| < 1), and the set of subluminal velocities is CLOSED under addition — you can never reach or exceed c by composing sub-c speeds. The Galilean rule β ≈ β₁ + β₂ reappears as the low-speed limit, and the Lorentz factor γ = cosh φ satisfies the textbook γ² = 1/(1−β²).",
+    "problemStatement": "**Open Question (parent pythagorean-theorem-oq-03)**: formalize the rapidity–velocity relation β = tanh(φ) and derive relativistic velocity addition.\n\n**This entry**: proves the velocity-addition law tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂), the subluminal bound |tanh φ| < 1, closure of subluminal velocities, light-speed invariance, the Galilean limit, and the Lorentz factor identity — all with zero axioms.",
+    "text": "A 190-line, fully verified file (0 sorries, 0 axioms, no native_decide) importing only Mathlib. velAdd is the velocity-addition operation; tanh_add identifies it with rapidity addition; abs_tanh_lt_one and abs_velAdd_lt_one give the subluminal bound and its closure; velAdd_one, velAdd_sub_sum, and cosh_sq_eq_inv_one_sub_tanh_sq give light-speed invariance, the Galilean limit, and the Lorentz factor; two concrete instances illustrate the physics.",
+    "proofStrategy": "Subluminality: tanh φ < 1 ⟺ sinh φ < cosh φ ⟺ 0 < cosh φ − sinh φ = exp(−φ) (Real.cosh_sub_sinh); the lower bound −1 < tanh φ uses cosh φ + sinh φ = exp φ. The velocity-addition law is proved through tanh_add_mul, the cross-multiplied identity tanh(φ₁+φ₂)·(1 + tanh φ₁ tanh φ₂) = tanh φ₁ + tanh φ₂: rewrite each tanh as sinh/cosh KEEPING sinh(φ₁+φ₂)/cosh(φ₁+φ₂) atomic so field_simp clears only the product denominators cosh φᵢ, then expand with sinh_add/cosh_add and close by ring. The denominator 1 + tanh φ₁ tanh φ₂ > 0 is immediate from |tanh| < 1 (one_add_mul_pos). Dividing gives tanh_add, and eq_div_iff finishes. Closure abs_velAdd_lt_one rewrites with lt_div_iff₀ / div_lt_one and reduces to the positivity of (1±β₁)(1±β₂) by nlinarith — the algebraic heart 1∓velAdd = (1∓β₁)(1∓β₂)/(1+β₁β₂). Light-speed invariance is div_eq_one_iff_eq; the Galilean limit is field_simp+ring; the Lorentz factor uses cosh²−sinh²=1.",
+    "keyInsights": [
+      "Rapidity linearizes Lorentz boosts: φ adds, exactly like an angle. The velocity-addition law is just tanh's addition formula in disguise — the non-linearity of β = (β₁+β₂)/(1+β₁β₂) is the non-linearity of tanh.",
+      "Subluminality is automatic: tanh maps all of ℝ into (−1,1), because cosh φ ∓ sinh φ = exp(∓φ) > 0. No velocity built from a finite rapidity reaches c.",
+      "Closure needs no arctanh: 1 ∓ velAdd β₁ β₂ = (1∓β₁)(1∓β₂)/(1+β₁β₂), so if both factors are subluminal the result is too — a purely algebraic proof that c is an unreachable speed limit.",
+      "Light speed is the fixed point: velAdd β 1 = (β+1)/(1+β) = 1 for every β ≠ −1, encoding the second postulate of relativity.",
+      "The Galilean rule is the linearization: velAdd β₁ β₂ − (β₁+β₂) is second order in the velocities, so β ≈ β₁ + β₂ when β₁β₂ ≪ 1.",
+      "The Lorentz factor lives on the same hyperbola: γ = cosh φ and βγ = sinh φ, with γ² − (βγ)² = 1 giving γ² = 1/(1−β²)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "subluminal",
+      "title": "Rapidities Give Subluminal Speeds",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "tanh_lt_one, neg_one_lt_tanh, abs_tanh_lt_one: |tanh φ| < 1 from cosh φ ∓ sinh φ = exp(∓φ) > 0.",
+      "mathContext": "Every finite rapidity maps to a velocity strictly below the speed of light."
+    },
+    {
+      "id": "velocity-addition",
+      "title": "Velocity Addition = Rapidity Addition",
+      "startLine": 67,
+      "endLine": 112,
+      "summary": "velAdd, one_add_mul_pos, one_add_tanh_mul_pos, tanh_add_mul, tanh_add: tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂).",
+      "mathContext": "The additivity of rapidity is exactly Einstein's velocity-addition law."
+    },
+    {
+      "id": "closure",
+      "title": "Closure: the Speed of Light Is Never Exceeded",
+      "startLine": 114,
+      "endLine": 141,
+      "summary": "abs_velAdd_lt_one and velAdd_tanh_subluminal: subluminal ⊕ subluminal stays subluminal, via 1∓velAdd = (1∓β₁)(1∓β₂)/(1+β₁β₂).",
+      "mathContext": "The interval (−c, c) of physical velocities is closed under composition."
+    },
+    {
+      "id": "invariance-limit-gamma",
+      "title": "Light-Speed Invariance, Galilean Limit, Lorentz Factor",
+      "startLine": 142,
+      "endLine": 181,
+      "summary": "velAdd_one/one_velAdd (c is invariant), velAdd_sub_sum (Galilean limit), one_sub_tanh_sq and cosh_sq_eq_inv_one_sub_tanh_sq (γ² = 1/(1−β²)).",
+      "mathContext": "The second postulate, the classical limit, and the Lorentz factor."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Instances",
+      "startLine": 182,
+      "endLine": 189,
+      "summary": "velAdd_half_half (½c ⊕ ½c = ⅘c) and velAdd_three_fifths_one (⅗c ⊕ c = c).",
+      "mathContext": "Adding half-c to half-c gives 0.8c, not c; adding any speed to c gives c."
+    }
+  ],
+  "conclusion": {
+    "summary": "Starting only from Mathlib's hyperbolic functions, this entry derives the relativistic velocity-addition law as the additivity of rapidity (tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂)), proves every rapidity gives a subluminal speed and that subluminal velocities are closed under composition, establishes light-speed invariance and the Galilean limit, and records the Lorentz factor identity γ² = 1/(1−β²) — answering the parent entry's open question with zero axioms.",
+    "implications": "The velocity-addition law and the unreachability of c are now machine-checked consequences of tanh's addition formula and the bound |tanh φ| < 1, complementing the parent's rapidity-composition result. Together they give the full Minkowski kinematics in the velocity language: c is an algebraic fixed point and an unattainable speed limit, with Newtonian addition recovered in the low-speed limit.",
+    "openQuestions": [
+      "Formalize the rapidity-to-velocity map's inverse (arctanh) and prove the velocity-addition group is isomorphic to (ℝ, +) via rapidity.",
+      "Extend velocity addition to non-collinear boosts and derive Thomas–Wigner rotation.",
+      "Connect γ = cosh φ and βγ = sinh φ to the parent's lorentzBoostRapidity matrix and prove the boost is the hyperbolic rotation by φ."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem-oq-03",
+      "relationship": "extends",
+      "description": "Parent: the non-Euclidean / Minkowski Pythagorean entry proves rapidity composition φ₁+φ₂ but leaves the velocity-addition law open. This entry supplies it (β = tanh φ) and the surrounding kinematics."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "PythagoreanTheoremOQ03OQ02",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "tanh_add",
+        "type": "core",
+        "description": "Relativistic velocity addition is rapidity addition: tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂).",
+        "leanType": "(x y : ℝ) → Real.tanh (x + y) = velAdd (Real.tanh x) (Real.tanh y)"
+      },
+      {
+        "name": "abs_velAdd_lt_one",
+        "type": "key",
+        "description": "Closure: composing two subluminal velocities stays subluminal (c is never exceeded).",
+        "leanType": "{β₁ β₂ : ℝ} → |β₁| < 1 → |β₂| < 1 → |velAdd β₁ β₂| < 1"
+      },
+      {
+        "name": "cosh_sq_eq_inv_one_sub_tanh_sq",
+        "type": "key",
+        "description": "The Lorentz factor γ = cosh φ obeys γ² = 1/(1−β²).",
+        "leanType": "(x : ℝ) → Real.cosh x ^ 2 = 1 / (1 - Real.tanh x ^ 2)"
+      }
+    ],
+    "path": "Proofs/PythagoreanTheoremOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "tanh_add",
+      "type": "core",
+      "description": "The velocity-addition law tanh(φ₁+φ₂) = (β₁+β₂)/(1+β₁β₂).",
+      "leanType": "(x y : ℝ) → Real.tanh (x + y) = velAdd (Real.tanh x) (Real.tanh y)"
+    },
+    {
+      "name": "abs_velAdd_lt_one",
+      "type": "key",
+      "description": "Subluminal velocities are closed under composition — c is an unreachable speed limit.",
+      "leanType": "{β₁ β₂ : ℝ} → |β₁| < 1 → |β₂| < 1 → |velAdd β₁ β₂| < 1"
+    },
+    {
+      "name": "velAdd_one",
+      "type": "supporting",
+      "description": "Light-speed invariance: velAdd β 1 = 1 for β ≠ −1.",
+      "leanType": "(β : ℝ) → β ≠ -1 → velAdd β 1 = 1"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Einstein, Albert",
+      "title": "Zur Elektrodynamik bewegter Körper",
+      "year": "1905",
+      "venue": "Annalen der Physik 17, 891–921",
+      "note": "Original derivation of the relativistic velocity-addition law"
+    },
+    {
+      "authors": "Varićak, Vladimir",
+      "title": "Anwendung der Lobatschefskijschen Geometrie in der Relativtheorie",
+      "year": "1910",
+      "venue": "Physikalische Zeitschrift 11, 93–96",
+      "note": "Rapidity and the hyperbolic-geometry interpretation of velocity addition"
+    },
+    {
+      "authors": "Robb, Alfred A.",
+      "title": "Optical Geometry of Motion",
+      "year": "1911",
+      "venue": "Heffer, Cambridge",
+      "note": "Introduced 'rapidity' as the additive boost parameter"
+    }
+  ],
+  "sorries": 0
+}

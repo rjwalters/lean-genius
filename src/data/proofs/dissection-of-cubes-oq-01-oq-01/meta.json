@@ -2,12 +2,12 @@
   "id": "dissection-of-cubes-oq-01-oq-01",
   "title": "Minimal Collision is Achievable in Cube Dissections",
   "slug": "dissection-of-cubes-oq-01-oq-01",
-  "description": "Proves that HasMinimalCollision is achievable: there exists a CubeDissection with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — form the explicit witness, with the two equal-size cubes as the unique collision pair.",
+  "description": "Proves that HasMinimalCollision is achievable within the combinatorial formalization: there exists a CubeDissection — whose covering/tiling condition is encoded as a placeholder `covers_unit_cube : True` — with exactly 2 colliding cubes. This shows the lower bound of 2 (from OQ-01) is tight within the formalization. Three axis-aligned cubes — two of size 1/4 and one of size 1/3 — satisfy containment and pairwise-disjointness (but do not tile the unit cube), with the two equal-size cubes as the unique collision pair. Whether a genuine geometric tiling achieves this minimum remains open.",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
     "date": "2026-04-03",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ01.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "open-problem",
       "wiedijk-100"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -46,8 +46,9 @@
       "lower_bound_tight: the lower bound from OQ-01 is exactly achieved"
     ],
     "dateAdded": "2026-04-03",
+    "assumptions": "The `CubeDissection` structure encodes the covering/tiling condition as a placeholder field `covers_unit_cube : True`; only containment in the unit cube and pairwise interior-disjointness are formalized. The witness is therefore a combinatorial (not geometric) dissection — its three cubes do not actually tile the unit cube. The combinatorial achievability result (3 pairwise-disjoint, contained cubes with exactly one repeated size ⇒ collision count = 2) is fully machine-checked with 0 axioms, but whether a genuine geometric tiling of the unit cube achieves this minimum of 2 colliding cubes remains an open question.",
     "axiomCount": 0,
-    "lineCount": 328,
+    "lineCount": 324,
     "theoremCount": 29,
     "definitionCount": 5
   },
@@ -72,53 +73,81 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring for Dissection of Cubes OQ01 sub-question 01, plus Mathlib imports and the parent import `Proofs.DissectionOfCubesOQ01`."
+    },
+    {
       "id": "concrete-cubes",
       "title": "Concrete Cube Definitions",
-      "startLine": 50,
-      "endLine": 90,
+      "startLine": 53,
+      "endLine": 81,
       "summary": "Defines cubeA (0,0,0, side=1/4), cubeB (1/2,0,0, side=1/4), cubeC (0,0,1/2, side=1/3) with size lemmas."
     },
     {
       "id": "distinctness",
       "title": "Cube Distinctness",
-      "startLine": 91,
-      "endLine": 115,
+      "startLine": 82,
+      "endLine": 106,
       "summary": "Proves A≠B (different x), A≠C and B≠C (different sides)."
     },
     {
       "id": "containment",
       "title": "Containment in Unit Cube",
-      "startLine": 116,
-      "endLine": 135,
+      "startLine": 107,
+      "endLine": 125,
       "summary": "All three cubes lie in [0,1]³ by norm_num."
     },
     {
       "id": "disjointness",
       "title": "Pairwise Interior Disjointness",
-      "startLine": 136,
-      "endLine": 185,
+      "startLine": 126,
+      "endLine": 163,
       "summary": "All 6 ordered pairs are disjoint via coordinate separation."
     },
     {
       "id": "dissection",
       "title": "The Example Dissection",
-      "startLine": 186,
-      "endLine": 220,
+      "startLine": 164,
+      "endLine": 199,
       "summary": "Constructs exampleDissection from {cubeA, cubeB, cubeC} satisfying all CubeDissection fields."
+    },
+    {
+      "id": "membership-facts",
+      "title": "Membership Facts",
+      "startLine": 200,
+      "endLine": 225,
+      "summary": "cubeA_mem, cubeB_mem, cubeC_mem (each example cube belongs to the dissection) and mem_collidingCubes_iff (membership characterization of the colliding set)."
     },
     {
       "id": "collision-analysis",
       "title": "Which Cubes Collide",
-      "startLine": 221,
-      "endLine": 260,
+      "startLine": 226,
+      "endLine": 256,
       "summary": "cubeA and cubeB collide; cubeC does not (unique size 1/3)."
+    },
+    {
+      "id": "colliding-eq-pair",
+      "title": "Colliding Cubes = {A, B}",
+      "startLine": 257,
+      "endLine": 280,
+      "summary": "colliding_eq_pair: the set of colliding cubes of the example dissection is exactly {A, B}."
     },
     {
       "id": "main-result",
       "title": "Main Results",
-      "startLine": 261,
-      "endLine": 285,
-      "summary": "HasMinimalCollision for the example; existential achievability; lower bound tightness."
+      "startLine": 281,
+      "endLine": 300,
+      "summary": "example_has_minimal_collision (the example attains a minimal collision) and minimal_collision_achievable (existential achievability of a minimal-collision dissection)."
+    },
+    {
+      "id": "lower-bound-connection",
+      "title": "Connection to the Lower Bound",
+      "startLine": 301,
+      "endLine": 328,
+      "summary": "lower_bound_tight: the example dissection achieves the lower bound, establishing that the minimal collision count is tight."
     }
   ],
   "conclusion": {
@@ -143,7 +172,7 @@
       "DissectionOfCubesOQ01"
     ],
     "namespace": "DissectionOfCubesOQ01OQ01",
-    "lineCount": 328,
+    "lineCount": 324,
     "axiomCount": 0,
     "theoremCount": 29,
     "definitionCount": 5,

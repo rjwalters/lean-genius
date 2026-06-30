@@ -16,7 +16,11 @@
       "combinatorics"
     ],
     "mathContext": "See annotation content for formal details of the birth of graph theory",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathematical Abstraction",
+      "Graph Theory",
+      "Combinatorics"
+    ]
   },
   {
     "id": "ann-verts",
@@ -35,7 +39,11 @@
       "deriving",
       "simple graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Inductive Types",
+      "Finite Types",
+      "Decidable Equality"
+    ]
   },
   {
     "id": "ann-edges",
@@ -53,7 +61,11 @@
       "adjacency"
     ],
     "mathContext": "See annotation content for formal details of edge list",
-    "prerequisites": []
+    "prerequisites": [
+      "Adjacency List",
+      "Ordered Pairs",
+      "Graph Edges"
+    ]
   },
   {
     "id": "ann-adj",
@@ -71,7 +83,11 @@
       "symmetric relation"
     ],
     "mathContext": "See annotation content for formal details of symmetric adjacency",
-    "prerequisites": []
+    "prerequisites": [
+      "Undirected Graphs",
+      "Symmetric Relations",
+      "Boolean Membership"
+    ]
   },
   {
     "id": "ann-simplegraph",
@@ -90,7 +106,11 @@
       "decidability",
       "symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Simple Graphs",
+      "Irreflexive Relations",
+      "Decide Tactic"
+    ]
   },
   {
     "id": "ann-degree",
@@ -109,7 +129,11 @@
       "odd/even",
       "handshaking lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Vertex Degree",
+      "Edge Incidence",
+      "Parity"
+    ]
   },
   {
     "id": "ann-degree-proof",
@@ -127,7 +151,11 @@
       "reflexivity"
     ],
     "mathContext": "See annotation content for formal details of degree verification",
-    "prerequisites": []
+    "prerequisites": [
+      "Case Analysis",
+      "Reflexivity",
+      "Definitional Unfolding"
+    ]
   },
   {
     "id": "ann-odd-set",
@@ -146,7 +174,11 @@
       "cardinality",
       "parity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Extensionality",
+      "Set Cardinality",
+      "Odd And Even Numbers"
+    ]
   },
   {
     "id": "ann-euler-theorem",
@@ -208,6 +240,10 @@
       "applications"
     ],
     "mathContext": "See annotation content for formal details of historical impact",
-    "prerequisites": []
+    "prerequisites": [
+      "History Of Mathematics",
+      "Topology",
+      "Eulerian Paths"
+    ]
   }
 ]

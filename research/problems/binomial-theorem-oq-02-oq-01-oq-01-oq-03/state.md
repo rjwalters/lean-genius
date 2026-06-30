@@ -1,11 +1,56 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: PREP (S19 STATE-SYNC after 17-day quiet — partial INFRA recovery: disk RED→GREEN (3.8 Gi→19 Gi/39%) and Docker daemon RED→GREEN (server responding, was hung); RED blockers now × 2: (a) `proofs/.lake` circular self-symlink unchanged (still requires host-side `rm` + `lake build`); (b) NEW Docker image corruption — `lean4-arm64:v4.26.0` blob `9026c55995…` returns I/O error on `docker run`/`docker image inspect` (sibling container `lean-build-57602` Up 6 h on same image, holding what little remains usable); Lean file unchanged at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT STRUCTURALLY UNREACHABLE this session — Gate A pre-flight still fails because the image needed by `docker-build.sh` cannot be loaded; `theoremCount: 18` gallery drift re-flagged for mechanic 17 days running with no action)
+**Phase**: BLOCKED (S20 STATE-SYNC, 2026-06-14, researcher-6 — Docker still down: verification blackout; the long-pending `theoremCount: 18` gallery drift is **RESOLVED/STALE** — gallery `meta.json` now reads `theoremCount: 16`, which is correct under the public-only convention: the file has 16 public `theorem`s + 2 `private lemma`s (`standardNormalCDF_eq_zero_plus_intervalIntegral`, `piAntidiag_apply_le`). All other count/section fields re-verified CLEAN: lineCount 712, definitionCount 3, axiomCount 1, sorries 0; sections give full real-content coverage 141→712 aligned to the `/-! ##` banners post-#23526. No metadata action needed; clearing the 17-day mechanic mis-flag. Phase-4 D1 Lemma C ACT remains Docker-gated.)
 **Path**: full
 **Since**: 2026-06-02T17:00:00Z
-**Last Updated**: 2026-06-02 (Session 19, researcher-1)
-**Iteration**: 18
+**Last Updated**: 2026-06-14 (Session 21, researcher-1)
+**Iteration**: 20
+
+## Session 21 Focus (2026-06-14, researcher-1) — GATE-SYNC: propagate BLOCKED to research JSON + pool (stop re-serving an infra-blocked RICH slug)
+
+`claim-random` landed researcher-1 on this slug **again** during the Docker
+blackout — the fifth consecutive session (S18/S19/S20 all landed here too).
+Root cause: state.md correctly declares **BLOCKED**, but the gates that
+`claim-random` actually reads had drifted out of sync, so the high RICH
+knowledge score kept floating this Docker-gated slug to the top of the
+depth-first queue:
+
+- `src/data/research/problems/<slug>.json`: was `status: "active"`,
+  `phase: "PREP"` / `currentState.phase: "PREP"` → corrected to
+  `status: "blocked"`, `phase: "BLOCKED"`.
+- `.lean/state/candidate-pool.json`: was `status: "in-progress"` → set to
+  `"blocked"` (terminal, no longer claimable) via `claim-problem.sh update`.
+
+Re-confirmed the gallery is still CLEAN (no metadata change needed): meta
+`axiomCount 1`, `theoremCount 16`, `definitionCount 3`, `lineCount 712`,
+`sorries 0`; 7 sections + 8 annotations both cover 1→712 aligned to the
+`/-! ##` banners. The Phase-4 D1 Lemma C ACT and discharging the lone
+`binomial_clt_pointwise` axiom (classical de Moivre–Laplace) both require a
+Docker build and stay parked until INFRA recovers (`.lake` self-symlink +
+corrupted `lean4-arm64:v4.26.0` image, both host-side / outside worktree
+authority). When Docker is restored, un-block by reverting these gates.
+
+## Session 20 Focus (2026-06-14, researcher-6) — STATE-SYNC: clear stale `theoremCount` mechanic mis-flag; gallery re-verified CLEAN; Docker still blocked
+
+`claim-random` landed researcher-6 on this slug during the 2026-06-14 verification
+blackout. Re-verified the gallery `meta.json` vs `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+build-free:
+
+- **`theoremCount` drift RESOLVED.** S19 (and earlier) repeatedly re-flagged a
+  `theoremCount: 18` gallery drift for mechanic. The current `meta.json` reads
+  `theoremCount: 16`, which is **correct**: `grep -cE '^(theorem|lemma) '` = 16 public
+  declarations; the file additionally has 2 `private lemma`s (counted separately by the
+  public-only convention used here). The 17-day-running mechanic flag is stale — no fix
+  needed. (Likely corrected alongside the section realign in #23526.)
+- **All other fields CLEAN**: `lineCount 712` ✓, `definitionCount 3` ✓ (`binomialCDF`,
+  `multinomialMarginalCDF`, `standardNormalCDF`), `axiomCount 1` ✓ (`binomial_clt_pointwise`),
+  `sorries 0` ✓ (the "sorry" strings at lines 62/85 are docstring history, not code).
+- **Sections CLEAN**: 6 sections, ranges 141→712 map 1:1 to the `/-! ##` banners
+  (141/163/365/386/468/681); full real-content coverage. The 1–140 header docstring is
+  surfaced by the meta `overview` block.
+
+No PR-worthy metadata change. Slug remains BLOCKED on Docker for the Phase-4 ACT.
 
 ## Session 19 Focus (2026-06-02, researcher-1) — STATE-SYNC after 17-day quiet: partial INFRA recovery (Disk + Docker daemon RED→GREEN) but new Docker image-corruption blocker; bearer pin unchanged; gallery `theoremCount` drift still pending mechanic (doc-only)
 

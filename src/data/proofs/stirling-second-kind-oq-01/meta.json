@@ -1,0 +1,151 @@
+{
+  "id": "stirling-second-kind-oq-01",
+  "title": "Stirling Numbers of the Second Kind: the two-block column S(n,2) = 2ⁿ⁻¹ − 1",
+  "slug": "stirling-second-kind-oq-01",
+  "description": "The classical closed form for the second column of Stirling's triangle: the number of ways to partition an n-element set into exactly two nonempty blocks is 2^(n-1) − 1. Mathlib records the Pascal recurrences and the boundary columns S(n,n)=1, S(n+1,1)=1, S(n+1,n)=C(n+1,2), but not the k=2 column — this entry fills that gap.",
+  "meta": {
+    "author": "James Stirling (1730)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingSecondKindOQ01.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "set-partitions",
+      "enumerative",
+      "closed-form",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-20",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond_succ_succ",
+        "description": "Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) for the Stirling numbers of the second kind",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingSecond_one_right",
+        "description": "First-column value S(n+1,1) = 1 (a nonempty set has exactly one one-block partition)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingSecond_self",
+        "description": "Diagonal value S(n,n) = 1, used for the base case S(2,2) = 1",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.one_le_two_pow",
+        "description": "1 ≤ 2^n, used to discharge the natural-subtraction arithmetic in the inductive step",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "stirlingSecond_two_add: the shifted closed form S(n+2,2) = 2^(n+1) − 1, proved by induction on the Pascal recurrence",
+      "stirlingSecond_two: the textbook closed form S(n,2) = 2^(n-1) − 1 for n ≥ 2",
+      "stirlingSecond_two_pos: every set with at least two elements admits a two-block partition, i.e. S(n,2) > 0 for n ≥ 2"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. The base case uses kernel `decide` (no `native_decide`, so no `Lean.ofReduceBool`).",
+    "lineCount": 80,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Stirling numbers of the second kind S(n,k) count the partitions of an n-element set into k nonempty, unlabeled blocks; they appear in James Stirling's 1730 *Methodus Differentialis* and are the connection coefficients expressing ordinary powers x^n in terms of falling factorials. Their triangle obeys the Pascal-like recurrence S(n+1,k) = k·S(n,k) + S(n,k-1). The boundary columns are elementary — S(n,1) = 1, S(n,n) = 1, S(n,n-1) = C(n,2) — and Mathlib formalizes all of these. The very next column, k = 2, already has a clean closed form, 2^(n-1) − 1, the first nontrivial entry of the triangle, but it is absent from Mathlib's development.",
+    "problemStatement": "Determine and verify the number of partitions of an n-element set into exactly two nonempty blocks.\n\n**Answer:** S(n,2) = 2^(n-1) − 1 for every n ≥ 2.",
+    "text": "The second column of Stirling's triangle of the second kind has the closed form S(n,2) = 2^(n-1) − 1, derived from the Pascal recurrence and verified in Lean with no axioms.",
+    "proofStrategy": "1. stirlingSecond_two_add: induct on n. The base case S(2,2) = 1 = 2^1 − 1 is `decide`. The step uses Mathlib's Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) specialised to k = 1: S(n+3,2) = 2·S(n+2,2) + S(n+2,1). Substituting S(n+2,1) = 1 (stirlingSecond_one_right) and the induction hypothesis S(n+2,2) = 2^(n+1) − 1 gives 2·(2^(n+1) − 1) + 1, which equals 2^(n+2) − 1 by `omega` once 1 ≤ 2^(n+1) and 2^(n+2) = 2·2^(n+1) are supplied.\n2. stirlingSecond_two: rewrite n = m + 2 and read off the textbook form; m + 2 − 1 is definitionally m + 1, so the shifted lemma applies directly.\n3. stirlingSecond_two_pos: from S(n,2) = 2^(n-1) − 1 with 2 ≤ 2^(n-1) (since n − 1 ≥ 1), conclude positivity by `omega`.",
+    "keyInsights": [
+      "**The combinatorial count**: an unordered split of an n-set into two nonempty parts comes from one of the 2^n subsets, after discarding the two improper subsets (∅ and the whole set) and identifying each part with its complement — giving (2^n − 2)/2 = 2^(n-1) − 1.",
+      "**An inhomogeneous geometric recursion**: specialising Pascal's rule to the second column collapses it to a(n+1) = 2·a(n) + 1 (because S(n,1) = 1), the standard recurrence whose solution is 2^(n-1) − 1.",
+      "**Filling a real Mathlib gap**: Mathlib's Stirling file proves the recurrences and the columns S(n,1), S(n,n), and S(n,n-1) = C(n,2), but stops short of the k = 2 closed form. This is the first genuinely nontrivial column value.",
+      "**Natural subtraction handled cleanly**: working over ℕ, the 2^(n-1) − 1 form needs 1 ≤ 2^(n-1); supplying this single fact lets `omega` close every subtraction step without moving to ℤ."
+    ],
+    "prerequisites": [
+      "Stirling numbers of the second kind and set partitions",
+      "Induction on the natural numbers",
+      "The Pascal recurrence for Stirling numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "File-level docstring stating S(n,2) = 2^(n-1) − 1, the combinatorial meaning, and the recurrence used. Imports Mathlib and opens the Nat namespace so the stirlingSecond lemmas are in scope.",
+      "mathContext": "S(n,2) counts partitions of an n-set into two nonempty unlabeled blocks; Mathlib's Nat.stirlingSecond supplies the recurrences and boundary columns."
+    },
+    {
+      "id": "shifted-form",
+      "title": "The Shifted Closed Form S(n+2,2) = 2^(n+1) − 1",
+      "startLine": 41,
+      "endLine": 60,
+      "summary": "stirlingSecond_two_add: induction on n. Base S(2,2)=1 by decide. Step specialises the Pascal recurrence to the second column (S(n+3,2) = 2·S(n+2,2) + S(n+2,1)), substitutes S(n+2,1)=1 and the IH, and closes the natural-subtraction arithmetic with omega given 1 ≤ 2^(n+1).",
+      "mathContext": "a(n+1) = 2·a(n) + 1, a(0) = 1 ⟹ a(n) = 2^(n+1) − 1; here a(n) = S(n+2,2)."
+    },
+    {
+      "id": "textbook-form",
+      "title": "The Textbook Form S(n,2) = 2^(n-1) − 1",
+      "startLine": 62,
+      "endLine": 68,
+      "summary": "stirlingSecond_two: for n ≥ 2, write n = m + 2 and apply the shifted lemma. Since m + 2 − 1 is definitionally m + 1, the result is exactly stirlingSecond_two_add m.",
+      "mathContext": "The standard statement of the result: for n ≥ 2, S(n,2) = 2^(n-1) − 1."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of a Two-Block Partition",
+      "startLine": 70,
+      "endLine": 80,
+      "summary": "stirlingSecond_two_pos: S(n,2) > 0 for n ≥ 2. From the closed form and 2 ≤ 2^(n-1) (as n − 1 ≥ 1), omega gives 2^(n-1) − 1 > 0.",
+      "mathContext": "Any set of size ≥ 2 can be split into two nonempty parts, so the count is strictly positive."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Origin of the Stirling numbers; S(n,k) as connection coefficients between powers and falling factorials"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6 develops the Stirling triangle, including the closed form S(n,2) = 2^(n-1) − 1"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula",
+      "relationship": "related",
+      "description": "Shares the Stirling name but concerns a distinct object: Stirling numbers (combinatorial) versus Stirling's asymptotic factorial formula (analytic)"
+    }
+  ],
+  "conclusion": {
+    "summary": "The second column of Stirling's triangle of the second kind has the closed form S(n,2) = 2^(n-1) − 1 (stirlingSecond_two), obtained by solving the inhomogeneous geometric recurrence that Pascal's rule induces on that column. The shifted form (stirlingSecond_two_add) carries the induction and the existence corollary (stirlingSecond_two_pos) records that the count is always positive. All three are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the first nontrivial column value of the Stirling-second-kind triangle as a directly citable closed form, complementing Mathlib's recurrences and boundary columns.",
+    "openQuestions": [
+      "Is there a comparably clean closed form for the third column S(n,3) = (3^(n-1) + 1)/2 − 2^(n-1), and can it be derived by the same recurrence-to-geometric-sum method?",
+      "Can the general finite-difference formula S(n,k) = (1/k!)·∑_{j=0}^{k} (−1)^j C(k,j)(k−j)^n be formalized and shown to recover the k = 2 column?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "StirlingSecondKindOQ01",
+    "lineCount": 80,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingSecondKindOQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

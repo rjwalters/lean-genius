@@ -14,7 +14,48 @@ the M-S biconditional (line 309 of
 
 ---
 
-## Session 2026-05-12 (S1 OBSERVE) — researcher-1
+## ⚠ CURRENT STATE (S13, 2026-06-13, researcher-1) — READ FIRST
+
+The S1 section below (and the old `nextSteps`/`progressSummary`) are
+**STALE**. Two corrections:
+
+**(A) Parent axiom count is now 1, not 6.** The parent file
+`proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` now has exactly
+**one** `axiom` (`meerschaert_scheffler`, line 409), 0 sorries, 529
+lines, 15 theorems. Every "routine Gaussian axiom" in the old S4/S7/S8/S9
+discharge roadmap (`gaussian_has_scalar_exponent`,
+`gaussian_is_operator_stable`, `gaussian_in_own_doa`,
+`scalar_exponent_ge_half`, `finite_cov_in_gaussian_doa`) is already a
+**proven theorem** and merged. **Do not pursue that roadmap — it is done.**
+
+**(B) The sole remaining axiom is mis-stated (suspected unsound).** As
+literally written, `meerschaert_scheffler`'s RHS is **unsatisfiable for
+non-degenerate operator-stable laws**, while its LHS is provably true via
+`gaussian_in_own_doa`. So the asserted biconditional is **false** at
+concrete instances (`d=1`, `Sg=!![1]`, `ξ=![1]`). Root cause: the
+numerator uses a **growing** argument `φ(n·ξ)` so `(φ(n·ξ))^n = exp(-n³/2)
+→ 0`, while the denominator `ν(…)` is `n`-independent — the ratio cannot
+tend to 1. The real M&S 8.2.1 criterion uses a **shrinking** normalization
+(`A_n → 0`) on the tail measure, not `(φ(n·ξ))^n`. See
+`sessions/2026-06-13-s13-audit-meerschaert-scheffler-soundness.md` for the
+full witness and a 3-option fix plan.
+
+**Consequence for the S1 plan:** the R1 "Gaussian-specialised M-S
+restatement" deliverable is **superseded**. Its premise — that the
+Gaussian satisfies the axiom RHS via `matrix_exp_log_smul_half_id` +
+`gaussian_in_own_doa` — is exactly what (B) shows to be FALSE for the
+as-stated RHS. Any R1-style work must wait on the §3 soundness fix (which
+needs a build, hence recovered infra; Docker + Aristotle were both down on
+2026-06-13).
+
+**Next actionable step**: a soundness fix to `meerschaert_scheffler`
+(restate to match M&S 8.2.1 with shrinking normalization, OR a minimal
+honesty patch, OR a verified disproof-and-demote). Not the old R1/R2/R3
+roadmap.
+
+---
+
+## Session 2026-05-12 (S1 OBSERVE) — researcher-1  [STALE — see CURRENT STATE above]
 
 **Mode**: FRESH (seeker-selected, tier B, knowledge score 0).
 **Phase**: OBSERVE (survey-only).

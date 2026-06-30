@@ -76,84 +76,92 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "introduction",
       "title": "Introduction",
+      "summary": "Module header for Euler's identity $e^{i\\pi}+1=0$: states what is proved, the approach (Mathlib's `Complex.exp_pi_mul_I` as foundation, with original pedagogical exposition and alternative proofs), status, and the Mathlib dependencies. Imports the complex-exponential analysis libraries and opens `Complex`/`Real`.",
       "startLine": 1,
-      "endLine": 23,
-      "summary": "Overview of Euler's Identity and its significance as 'the most beautiful equation in mathematics.'",
-      "mathContext": "$$e^{i\\pi} + 1 = 0$$"
+      "endLine": 40,
+      "mathContext": "Euler's identity $e^{i\\pi}+1=0$ unites $e,i,\\pi,1,0$. Built on Mathlib's complex analysis (`Complex.exp_mul_I`, `Complex.exp_pi_mul_I`)."
     },
     {
-      "id": "complex-numbers",
-      "title": "Complex Numbers in Mathlib",
-      "startLine": 24,
-      "endLine": 42,
-      "summary": "Mathlib's complete development of complex numbers: Complex.I, Complex.exp, and arithmetic properties.",
-      "mathContext": "$$\\mathbb{C} = \\{a + bi \\mid a, b \\in \\mathbb{R}\\}, \\quad i^2 = -1$$"
+      "id": "part1-complex-numbers",
+      "title": "Part 1: Complex Numbers in Mathlib",
+      "summary": "Pedagogical overview of Mathlib's complex-number support — the type `Complex`, the imaginary unit `Complex.I` with $I^2=-1$, `Complex.exp`, and `Complex.cos`/`Complex.sin` — illustrated with `#check`s.",
+      "startLine": 41,
+      "endLine": 59,
+      "mathContext": "$\\mathbb{C}$ with $I^2=-1$; complex exponential and trigonometric functions are fully developed in Mathlib."
     },
     {
-      "id": "eulers-formula",
-      "title": "Euler's Formula in Mathlib",
-      "startLine": 43,
-      "endLine": 64,
-      "summary": "The foundational identity e^(ix) = cos(x) + i·sin(x), provided by Mathlib as Complex.exp_mul_I.",
-      "mathContext": "$$e^{ix} = \\cos(x) + i\\sin(x)$$"
+      "id": "part2-eulers-formula",
+      "title": "Part 2: Euler's Formula in Mathlib",
+      "summary": "Introduces Euler's formula $e^{ix}=\\cos x+i\\sin x$ as `Complex.exp_mul_I`, noting that complex exponentials trace the unit circle.",
+      "startLine": 60,
+      "endLine": 81,
+      "mathContext": "Euler's formula: $\\exp(xI)=\\cos x+\\sin x\\cdot I$ (`Complex.exp_mul_I`)."
     },
     {
-      "id": "trig-values",
-      "title": "Key Trigonometric Values",
-      "startLine": 65,
-      "endLine": 79,
-      "summary": "Mathlib's proofs that cos(π) = -1 and sin(π) = 0.",
-      "mathContext": "$$\\cos(\\pi) = -1, \\quad \\sin(\\pi) = 0$$"
+      "id": "part3-trig-values",
+      "title": "Part 3: Key Trigonometric Values",
+      "summary": "Records the trig values needed for the identity: $\\cos\\pi=-1$ (`Real.cos_pi`) and $\\sin\\pi=0$ (`Real.sin_pi`).",
+      "startLine": 82,
+      "endLine": 96,
+      "mathContext": "$\\cos\\pi=-1$, $\\sin\\pi=0$."
     },
     {
-      "id": "eulers-identity",
-      "title": "Euler's Identity - The Main Theorem",
-      "startLine": 80,
-      "endLine": 116,
-      "summary": "The complete proof: e^(iπ) = -1 and therefore e^(iπ) + 1 = 0, verified without axioms.",
-      "mathContext": "$$e^{i\\pi} = \\cos(\\pi) + i\\sin(\\pi) = -1 + 0i = -1 \\implies e^{i\\pi} + 1 = 0$$"
+      "id": "part4-main-theorem",
+      "title": "Part 4: Euler's Identity — The Main Theorem",
+      "summary": "The heart: proves `exp_i_pi_eq_neg_one` ($e^{i\\pi}=-1$, via Euler's formula plus $\\cos\\pi=-1$, $\\sin\\pi=0$), then `eulers_identity` ($e^{i\\pi}+1=0$) and the one-line `eulers_identity'` using `Complex.exp_pi_mul_I` directly.",
+      "startLine": 97,
+      "endLine": 133,
+      "mathContext": "$e^{i\\pi}=\\cos\\pi+i\\sin\\pi=-1$, hence $e^{i\\pi}+1=0$."
     },
     {
-      "id": "alternative-forms",
-      "title": "Alternative Forms",
-      "startLine": 117,
-      "endLine": 145,
-      "summary": "Full rotation e^(2πi) = 1, half rotation e^(πi) = -1, and quarter rotation e^(πi/2) = i.",
-      "mathContext": "$$e^{2\\pi i} = 1, \\quad e^{\\pi i} = -1, \\quad e^{\\pi i/2} = i$$"
+      "id": "part5-alternative-forms",
+      "title": "Part 5: Alternative Forms",
+      "summary": "Other rotations on the unit circle: `full_rotation` ($e^{2\\pi i}=1$), `half_rotation` ($e^{i\\pi}=-1$), and `quarter_rotation` ($e^{i\\pi/2}=i$).",
+      "startLine": 134,
+      "endLine": 163,
+      "mathContext": "$e^{2\\pi i}=1$, $e^{i\\pi}=-1$, $e^{i\\pi/2}=i$ — rotations by $2\\pi,\\pi,\\pi/2$."
     },
     {
-      "id": "geometric-interpretation",
-      "title": "Geometric Interpretation",
-      "startLine": 146,
-      "endLine": 168,
-      "summary": "How e^(iθ) traces the unit circle, with proof that |e^(iθ)| = 1.",
-      "mathContext": "$$|e^{i\\theta}| = 1, \\quad e^{i\\theta} \\in S^1 \\subset \\mathbb{C}$$"
+      "id": "part6-geometric",
+      "title": "Part 6: The Geometric Interpretation",
+      "summary": "$e^{i\\theta}$ as a point on the unit circle at angle $\\theta$: `exp_on_unit_circle` proves $|e^{i\\theta}|=1$ for all real $\\theta$.",
+      "startLine": 164,
+      "endLine": 186,
+      "mathContext": "$|e^{i\\theta}|=1$: the complex exponential parameterizes the unit circle."
     },
     {
-      "id": "trig-connection",
-      "title": "Connection to Trigonometry",
-      "startLine": 169,
-      "endLine": 189,
-      "summary": "Cosine and sine expressed in terms of complex exponentials.",
-      "mathContext": "$$\\cos(x) = \\frac{e^{ix} + e^{-ix}}{2}, \\quad \\sin(x) = \\frac{e^{ix} - e^{-ix}}{2i}$$"
+      "id": "part7-trig-connection",
+      "title": "Part 7: Connection to Trigonometry",
+      "summary": "Euler's formula yields the exponential expressions for trig functions; `cos_eq_exp` gives $\\cos z=(e^{iz}+e^{-iz})/2$ (definitionally, by `rfl`).",
+      "startLine": 187,
+      "endLine": 204,
+      "mathContext": "$\\cos z=(e^{iz}+e^{-iz})/2$, $\\sin z=(e^{iz}-e^{-iz})/(2i)$."
     },
     {
-      "id": "applications",
-      "title": "Why This Matters",
-      "startLine": 190,
-      "endLine": 213,
-      "summary": "Applications in physics, engineering, and the philosophical significance of the identity.",
-      "mathContext": "$$f(t) = A e^{i\\omega t} = A(\\cos(\\omega t) + i\\sin(\\omega t))$$"
+      "id": "part8-why-matters",
+      "title": "Part 8: Why This Matters",
+      "summary": "Commentary on the identity's significance across physics (quantum mechanics, signal processing, AC circuits) and mathematics (linking analysis, algebra, geometry; foundation for analytic functions).",
+      "startLine": 205,
+      "endLine": 228,
+      "mathContext": "Applications of $e^{i\\theta}$: Fourier analysis, quantum wavefunctions, AC impedance."
     },
     {
-      "id": "history",
-      "title": "Historical Context",
-      "startLine": 214,
-      "endLine": 257,
-      "summary": "From Cotes to Euler to Feynman—the identity's journey through mathematical history.",
-      "mathContext": "$$e^{i\\theta} = \\cos\\theta + i\\sin\\theta \\quad \\text{(Euler, 1748)}$$"
+      "id": "part9-historical",
+      "title": "Part 9: Historical Context",
+      "summary": "Timeline (Cotes 1714, Euler 1748, the 1988 \"most beautiful theorem\" vote) and notable admirers of the identity.",
+      "startLine": 229,
+      "endLine": 252,
+      "mathContext": "Euler published $e^{ix}=\\cos x+i\\sin x$ in 1748 (Introductio in analysin infinitorum)."
+    },
+    {
+      "id": "part10-taylor-series",
+      "title": "Part 10: Taylor Series Proof of Euler's Formula (OQ-01)",
+      "summary": "Open question OQ-01: prove Euler's formula from the Taylor series without `Complex.exp_mul_I`. Answered YES: `pow_mul_I_even`/`pow_mul_I_odd` show even/odd powers of $zI$ give the cosine/$I\\cdot$sine series (`exp_mul_I_series_term_even`/`_odd`), and `euler_formula_algebraic` proves $\\exp(zI)=\\cos z+\\sin z\\cdot I$ from the cos/sin definitions and $I^2=-1$.",
+      "startLine": 253,
+      "endLine": 341,
+      "mathContext": "$(zI)^{2k}=(-1)^k z^{2k}$ (real, cosine terms) and $(zI)^{2k+1}=(-1)^k z^{2k+1}I$ (sine terms); recovers $\\exp(zI)=\\cos z+\\sin z\\cdot I$ algebraically."
     }
   ],
   "conclusion": {

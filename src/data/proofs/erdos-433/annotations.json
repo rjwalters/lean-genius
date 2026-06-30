@@ -16,7 +16,11 @@
       "Numerical semigroups",
       "Coin problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Non-negative integer linear combinations",
+      "Greatest common divisor and coprimality",
+      "Subsets of a finite integer interval"
+    ]
   },
   {
     "id": "ann-e433-semigroup",
@@ -34,7 +38,11 @@
       "Semigroups",
       "Linear combinations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Closure under addition",
+      "Natural numbers under addition (ℕ, +)",
+      "Set-builder notation"
+    ]
   },
   {
     "id": "ann-e433-frobenius-def",
@@ -52,7 +60,11 @@
       "Supremum",
       "Non-representable integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Membership in a set of representable integers",
+      "Largest element of a set of naturals",
+      "gcd = 1 finiteness condition"
+    ]
   },
   {
     "id": "ann-e433-sylvester",
@@ -70,7 +82,11 @@
       "Two generators",
       "Closed formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Two coprime positive integers",
+      "Representability as ax + by with x,y ≥ 0",
+      "Arithmetic of products and differences"
+    ]
   },
   {
     "id": "ann-e433-g-def",
@@ -88,7 +104,11 @@
       "Coprimality"
     ],
     "mathContext": "See annotation content for formal details of the function g(k, n)",
-    "prerequisites": []
+    "prerequisites": [
+      "Frobenius number of a set",
+      "Maximum over a family of sets",
+      "k-element subsets with gcd 1"
+    ]
   },
   {
     "id": "ann-e433-erdos-graham",
@@ -107,7 +127,11 @@
       "Lower bounds",
       "Asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Frobenius number growth in n",
+      "Quadratic order n²",
+      "Upper and lower bound estimates"
+    ]
   },
   {
     "id": "ann-e433-dixmier",
@@ -125,7 +149,11 @@
       "Precise bounds",
       "Asymptotic formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Floor function ⌊·⌋",
+      "Bounding a quantity from both sides",
+      "Order of magnitude n²/(k-1)"
+    ]
   },
   {
     "id": "ann-e433-asymptotic",
@@ -143,7 +171,11 @@
       "Big-O notation"
     ],
     "mathContext": "See annotation content for formal details of asymptotic formula",
-    "prerequisites": []
+    "prerequisites": [
+      "Limit as n → ∞",
+      "Asymptotic equivalence f ~ g",
+      "Epsilon bounds on a ratio"
+    ]
   },
   {
     "id": "ann-e433-k-two",
@@ -161,7 +193,11 @@
       "Extremal sets"
     ],
     "mathContext": "See annotation content for formal details of special case k = 2",
-    "prerequisites": []
+    "prerequisites": [
+      "Sylvester-Frobenius formula ab−a−b",
+      "Consecutive integers n−1, n are coprime",
+      "Algebraic expansion of (n−1)n"
+    ]
   },
   {
     "id": "ann-e433-extremal",
@@ -179,7 +215,11 @@
       "Optimization"
     ],
     "mathContext": "See annotation content for formal details of extremal set structure",
-    "prerequisites": []
+    "prerequisites": [
+      "Maximizing the Frobenius number",
+      "Top elements of {1,...,n}",
+      "Gaps as non-representable integers"
+    ]
   },
   {
     "id": "ann-e433-mcnugget",
@@ -197,7 +237,11 @@
       "Coin problem",
       "Popular mathematics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Frobenius number with three generators",
+      "Non-representable (gap) integers",
+      "Generators 6, 9, 20"
+    ]
   },
   {
     "id": "ann-e433-gap-count",
@@ -215,7 +259,11 @@
       "Counting",
       "Symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Gaps of a numerical semigroup",
+      "Counting non-representable integers for coprime a, b",
+      "Residue classes modulo a and b"
+    ]
   },
   {
     "id": "ann-e433-np-hard",
@@ -233,7 +281,11 @@
       "NP-hardness",
       "Computational complexity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial-time vs NP-hard problems",
+      "P versus NP",
+      "Computing the Frobenius number"
+    ]
   },
   {
     "id": "ann-e433-summary",
@@ -251,6 +303,10 @@
       "Main results"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "g(k,n) and its asymptotics",
+      "Dixmier's bounds",
+      "Role of extremal sets near n"
+    ]
   }
 ]

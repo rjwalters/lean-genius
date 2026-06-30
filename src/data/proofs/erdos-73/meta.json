@@ -101,84 +101,100 @@
   },
   "sections": [
     {
-      "id": "independent-sets",
-      "title": "Independent Sets and $\\alpha(G)$",
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States Erdős Problem #73 (Reed's 'Mangoes and Blueberries' theorem). For $k\\geq0$, if every subgraph $H$ on $n$ vertices has an independent set of size $\\geq(n-k)/2$, must $G$ be a bipartite graph plus $O_k(1)$ vertices? Answer YES (Reed 1999); $k=0$ is trivial (non-bipartite $\\Rightarrow$ odd cycle violates the condition). Imports SimpleGraph; opens `SimpleGraph`/`Finset`.",
+      "mathContext": "If every subgraph has $\\alpha(H)\\geq(n-k)/2$, then $G$ is bipartite + $O_k(1)$ vertices (Reed 1999)."
+    },
+    {
+      "id": "part1",
+      "title": "Part I: Independent Sets",
       "startLine": 39,
       "endLine": 59,
-      "summary": "Defines `IsIndependentSet` and `independenceNumber` $\\alpha(G)$. Proves basic properties: empty set and singletons are independent.",
-      "mathContext": "Defines `IsIndependentSet` and `independenceNumber` $\\$\\alpha$(G)$. Proves basic properties: empty set and singletons are independent."
+      "summary": "Defines `IsIndependentSet` (no edges within $S$) and `independenceNumber` $\\alpha(G)$ (largest independent set). PROVES `exists_independent_set` (empty set works) and `singleton_independent`.",
+      "mathContext": "$\\alpha(G)$ = max independent-set size; singletons and $\\emptyset$ are independent."
     },
     {
-      "id": "independence-condition",
-      "title": "The $k$-Independence Condition",
+      "id": "part2",
+      "title": "Part II: The Independence Condition",
       "startLine": 60,
       "endLine": 71,
-      "summary": "Defines `satisfiesIndependenceCondition G k`: $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`.",
-      "mathContext": "Defines `satisfiesIndependenceCondition G k`: $\\$\\alpha$(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`."
+      "summary": "Defines `satisfiesIndependenceCondition G k` (every induced subgraph $S$ has an independent $I\\subseteq S$ with $2|I|\\geq|S|-k$) and `satisfiesStrictCondition` (the $k=0$ case).",
+      "mathContext": "$k$-condition: $\\forall S,\\exists I\\subseteq S$ independent, $2|I|\\geq|S|-k$."
     },
     {
-      "id": "bipartite",
-      "title": "Bipartite Graphs and Odd Cycles",
+      "id": "part3",
+      "title": "Part III: Bipartite Graphs",
       "startLine": 72,
-      "endLine": 87,
-      "summary": "Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles.",
-      "mathContext": "Formal definition: Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles."
+      "endLine": 84,
+      "summary": "Defines `IsBipartite` (vertex partition into two independent sets) and `hasNoOddCycle` (every cycle has even length).",
+      "mathContext": "Bipartite $=$ 2 independent parts $=$ no odd cycles."
     },
     {
-      "id": "trivial-case",
-      "title": "The Trivial $k = 0$ Case",
-      "startLine": 88,
-      "endLine": 114,
-      "summary": "Proves $2m < 2m+1$ (odd cycles violate strict condition). `trivial_case` is proved later via delegation to `strict_implies_bipartite`.",
-      "mathContext": "Proves $2m < 2m+1$ (odd cycles violate strict condition). `trivial_case` is proved later via delegation to `strict_implies_bipartite`."
+      "id": "part4",
+      "title": "Part IV: The Trivial k=0 Case",
+      "startLine": 85,
+      "endLine": 92,
+      "summary": "PROVES the arithmetic fact `odd_cycle_violates_strict` ($2m<2m+1$) underlying the odd-cycle obstruction: a $(2m{+}1)$-cycle has independence number $m<(2m+1)/2$, violating the $k=0$ condition.",
+      "mathContext": "Odd cycle $C_{2m+1}$: $\\alpha=m<(2m+1)/2$, violating the strict condition."
     },
     {
-      "id": "almost-bipartite",
-      "title": "Almost Bipartite Structure",
-      "startLine": 115,
-      "endLine": 130,
-      "summary": "Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound).",
-      "mathContext": "Formal definition: Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound)."
+      "id": "part5",
+      "title": "Part V: Almost Bipartite Structure",
+      "startLine": 93,
+      "endLine": 132,
+      "summary": "Defines `isAlmostBipartite G bound` (removing $\\leq$ bound vertices leaves bipartite) and `bipartiteDeficiency` (the minimum such removal). PROVES `bipartite_deficiency_zero` (bipartite graphs have deficiency $0$).",
+      "mathContext": "$f(k)$-almost-bipartite: remove $\\leq f(k)$ vertices to get bipartite; bipartite $\\Rightarrow$ deficiency $0$."
     },
     {
-      "id": "reed-theorem",
-      "title": "Reed's Theorem: $k$-Independence $\\Rightarrow$ Almost Bipartite",
-      "startLine": 131,
-      "endLine": 152,
-      "summary": "Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form.",
-      "mathContext": "Verified: Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form."
+      "id": "part6",
+      "title": "Part VI: Reed's Theorem",
+      "startLine": 133,
+      "endLine": 154,
+      "summary": "States Reed's 1999 theorem as AXIOMS `reed_bound` ($\\mathbb{N}\\to\\mathbb{N}$) and `reed_theorem` (the $k$-condition implies $f(k)$-almost-bipartite, $f$ depending only on $k$). PROVES `erdos_73_solved` (the packaged main result).",
+      "mathContext": "Axiom (Reed): $k$-condition $\\Rightarrow$ remove $\\leq f(k)$ vertices to get bipartite."
     },
     {
-      "id": "special-cases",
-      "title": "Special Case $k = 0$",
-      "startLine": 153,
-      "endLine": 169,
-      "summary": "Axiomatizes $f(0) = 0$ and fully proves `strict_implies_bipartite` and `trivial_case` via Reed's theorem for $k=0$.",
-      "mathContext": "Verified: Axiomatizes $f(0) = 0$ and fully proves `strict_implies_bipartite` and `trivial_case` — no sorries remain."
+      "id": "part7",
+      "title": "Part VII: Special Cases",
+      "startLine": 155,
+      "endLine": 207,
+      "summary": "States the AXIOM `reed_bound_zero` ($f(0)=0$) and PROVES `strict_implies_bipartite` (the $k=0$ condition forces bipartiteness, by transferring the bipartition through the $V\\leftrightarrow\\text{univ}$ bijection) and `trivial_case` (its restatement).",
+      "mathContext": "$f(0)=0$, so the $k=0$ condition $\\Rightarrow$ $G$ bipartite."
     },
     {
-      "id": "examples",
-      "title": "Triangle Example: $K_3$",
-      "startLine": 170,
-      "endLine": 185,
-      "summary": "Defines `triangleGraph` on `Fin 3`. Proves that $K_3$ violates the strict condition and is 1-almost-bipartite.",
-      "mathContext": "Verified: Defines `triangleGraph` on `Fin 3`. Fully proves `K3_violates_strict` and `K3_almost_bipartite`."
+      "id": "part8",
+      "title": "Part VIII: Examples",
+      "startLine": 208,
+      "endLine": 264,
+      "summary": "Defines `triangleGraph` ($K_3$). PROVES `K3_violates_strict` (any independent set in $K_3$ has $\\leq1$ vertex, so $2\\cdot1<3$) and `K3_almost_bipartite` ($K_3$ becomes bipartite after removing one vertex).",
+      "mathContext": "$K_3$ violates the $k=0$ condition but is $1$-almost-bipartite."
     },
     {
-      "id": "bounds",
-      "title": "Explicit Bounds: $f(k) \\le 2^k$",
-      "startLine": 186,
-      "endLine": 197,
-      "summary": "Axiomatizes $f(k) \\le 2^k$ from Reed's proof. Defines the open question of optimal $f(k)$.",
-      "mathContext": "Axiomatizes $f(k) \\le $2^{k}$$ from Reed's proof. Defines the open question of optimal $f(k)$."
+      "id": "part9",
+      "title": "Part IX: Bounds on f(k)",
+      "startLine": 265,
+      "endLine": 274,
+      "summary": "Defines `openQuestion_optimal_bound` (the existence of an optimal/minimal almost-bipartite bound function) — finding optimal $f(k)$ remains of interest.",
+      "mathContext": "Open: the optimal bound function $f(k)$ for almost-bipartiteness."
     },
     {
-      "id": "chromatic",
-      "title": "Chromatic Number: $\\chi(G) \\le f(k) + 2$",
-      "startLine": 198,
-      "endLine": 226,
-      "summary": "Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$.",
-      "mathContext": "Axiomatized: Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$."
+      "id": "part10",
+      "title": "Part X: Connection to Chromatic Number",
+      "startLine": 275,
+      "endLine": 280,
+      "summary": "Documentation notes (no declarations): bipartite graphs are $2$-colorable, and almost-bipartite graphs have chromatic number at most $2+$ (number of removed vertices).",
+      "mathContext": "Almost-bipartite $\\Rightarrow\\chi(G)\\leq2+f(k)$ (noted, not formalized)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 281,
+      "endLine": 314,
+      "summary": "Closing docstring recapping the problem (Reed 1999, SOLVED), the $k=0$ triviality, the general $f(k)$ bound, what is formalized, the 'Mangoes and Blueberries' name, and open questions (optimal bounds, algorithmic complexity, hypergraph extensions).",
+      "mathContext": "Recap: Reed 1999 SOLVED; open: optimal $f(k)$, algorithmics, hypergraphs."
     }
   ],
   "conclusion": {

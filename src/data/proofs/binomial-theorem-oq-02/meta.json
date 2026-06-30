@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent",
     "sourceUrl": "https://en.wikipedia.org/wiki/Multinomial_theorem",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "algebra",
       "combinatorics",
@@ -15,7 +15,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -55,9 +55,9 @@
       "Numerical examples via native_decide: C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90"
     ],
     "dateAdded": "2026-02-23",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 280,
-    "assumptions": "0 axioms, 0 sorries. Core multinomial theorem derived from Mathlib's Finset.sum_pow_eq_sum_piAntidiag; most coefficient properties also from Mathlib.",
+    "assumptions": "Depends on Lean.ofReduceBool. The symbolic core (multinomial_theorem and the coefficient/recurrence theorems) is derived from Mathlib's Finset.sum_pow_eq_sum_piAntidiag and is axiom-free, but the advertised 'Numerical examples via native_decide' contribution (C(3;1,1,1)=6, C(4;2,1,1)=12, C(6;2,2,2)=90 and the piAntidiag sum checks) is discharged by native_decide, which trusts the Lean compiler's kernel reduction and adds the Lean.ofReduceBool axiom. 0 sorries. leanFile.axiomCount remains 0 (no literal axiom declarations).",
     "theoremCount": 17,
     "definitionCount": 0
   },

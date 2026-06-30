@@ -17,7 +17,11 @@
       "Prime gaps",
       "Density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor function τ(n)",
+      "Factorials n!",
+      "Limits and asymptotic growth"
+    ]
   },
   {
     "id": "ann-e420-tau",
@@ -35,7 +39,11 @@
       "Multiplicative functions",
       "Divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisors of an integer",
+      "Counting / cardinality of finite sets",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e420-tau-factorial",
@@ -54,7 +62,11 @@
       "Prime factorization"
     ],
     "mathContext": "See annotation content for formal details of factorial divisor count",
-    "prerequisites": []
+    "prerequisites": [
+      "Definition of factorial",
+      "p-adic valuation of integers",
+      "Geometric-series / floor sums"
+    ]
   },
   {
     "id": "ann-e420-f-function",
@@ -72,7 +84,11 @@
       "Ratio analysis"
     ],
     "mathContext": "See annotation content for formal details of the f function",
-    "prerequisites": []
+    "prerequisites": [
+      "Divisor function on factorials",
+      "Real-valued ratios and division",
+      "Floor function ⌊x⌋"
+    ]
   },
   {
     "id": "ann-e420-sqrt-result",
@@ -90,7 +106,11 @@
       "Limit behavior"
     ],
     "mathContext": "See annotation content for formal details of easy result: f(√n, n) → ∞",
-    "prerequisites": []
+    "prerequisites": [
+      "Square-root growth √n",
+      "Divergence to infinity (ε–N definition)",
+      "Prime factors of consecutive integers"
+    ]
   },
   {
     "id": "ann-e420-egip-liminf",
@@ -109,7 +129,11 @@
       "Subsequences",
       "EGIP96"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Limit inferior of a sequence",
+      "Logarithm function",
+      "Frequently-often (∃ᶠ) quantifier"
+    ]
   },
   {
     "id": "ann-e420-four-ninths",
@@ -127,7 +151,11 @@
       "Critical exponent",
       "EGIP96"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Power-function growth n^α",
+      "Divergence to infinity",
+      "Comparison of growth exponents"
+    ]
   },
   {
     "id": "ann-e420-almost-all",
@@ -146,7 +174,11 @@
       "Almost all",
       "Exceptional sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural density of integer sets",
+      "Little-o asymptotic notation",
+      "(log n)² growth scale"
+    ]
   },
   {
     "id": "ann-e420-bounded-gaps",
@@ -165,7 +197,11 @@
       "Twin primes",
       "Zhang's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gaps",
+      "Limit superior of a sequence",
+      "Primes appearing in factorials"
+    ]
   },
   {
     "id": "ann-e420-zhang",
@@ -184,7 +220,11 @@
       "Polymath",
       "Prime distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Definition of prime numbers",
+      "Prime gaps and twin primes",
+      "Infinitely-often statements"
+    ]
   },
   {
     "id": "ann-e420-consequence",
@@ -202,7 +242,11 @@
       "Modern results"
     ],
     "mathContext": "See annotation content for formal details of corollary of zhang's theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "Logical implication / corollaries",
+      "Limit superior",
+      "Functions diverging to infinity"
+    ]
   },
   {
     "id": "ann-e420-cramer",
@@ -220,7 +264,11 @@
       "Cramér's conjecture",
       "Prime gap bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime gap size bounds",
+      "Big-O asymptotic notation",
+      "Conjectures vs. theorems"
+    ]
   },
   {
     "id": "ann-e420-questions",
@@ -238,7 +286,11 @@
       "Density questions"
     ],
     "mathContext": "See annotation content for formal details of open questions",
-    "prerequisites": []
+    "prerequisites": [
+      "Density of a set in an interval",
+      "Limit inferior vs. limit superior",
+      "Monotonic functions"
+    ]
   },
   {
     "id": "ann-e420-main",
@@ -256,6 +308,10 @@
       "Partial results"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #420: partially solved",
-    "prerequisites": []
+    "prerequisites": [
+      "Limit inferior and superior",
+      "Asymptotic notation (o, O)",
+      "Partial vs. complete results"
+    ]
   }
 ]

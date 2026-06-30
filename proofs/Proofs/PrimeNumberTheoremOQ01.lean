@@ -144,6 +144,39 @@ theorem zeros_symmetric_in_strip (s : ℂ) (hstrip : s ∈ criticalStrip)
   rw [riemannZeta_one_sub hne_nat hne_one]
   simp [hzero]
 
+/-- The critical strip is symmetric under the functional-equation reflection
+    `s ↦ 1 - s`: if `s` lies in the strip then so does `1 - s`, since
+    `Re(1 - s) = 1 - Re(s)` and `0 < Re(s) < 1 ↔ 0 < 1 - Re(s) < 1`. -/
+theorem reflected_mem_strip (s : ℂ) (hs : s ∈ criticalStrip) :
+    (1 - s) ∈ criticalStrip := by
+  simp only [criticalStrip, mem_setOf_eq] at hs ⊢
+  have hre : (1 - s).re = 1 - s.re := by simp
+  rw [hre]
+  exact ⟨by linarith [hs.2], by linarith [hs.1]⟩
+
+/-- **Zeros come in functional-equation pairs within the strip** (no RH needed).
+    If `ζ(s) = 0` for `s` in the critical strip, then `1 - s` is also a zero of
+    `ζ` lying in the critical strip. Combines `zeros_symmetric_in_strip`
+    (the zero is reflected) with `reflected_mem_strip` (it stays in the strip). -/
+theorem zeros_pair_in_strip (s : ℂ) (hstrip : s ∈ criticalStrip)
+    (hzero : riemannZeta s = 0) :
+    riemannZeta (1 - s) = 0 ∧ (1 - s) ∈ criticalStrip :=
+  ⟨zeros_symmetric_in_strip s hstrip hzero, reflected_mem_strip s hstrip⟩
+
+/-- **Under RH, a functional-equation pair lies entirely on the critical line.**
+    If `ζ(s) = 0` for `s` in the critical strip, then both `s` and its
+    reflection `1 - s` have real part `1/2`. (Consistent because the critical
+    line is the fixed line `Re = 1/2` of the reflection `s ↦ 1 - s`.) -/
+theorem rh_pair_on_line (h : RiemannHypothesis) (s : ℂ)
+    (hstrip : s ∈ criticalStrip) (hzero : riemannZeta s = 0) :
+    s.re = 1/2 ∧ (1 - s).re = 1/2 := by
+  have hline : s.re = 1/2 := by
+    have := h s hzero hstrip
+    simpa [criticalLine, mem_setOf_eq] using this
+  refine ⟨hline, ?_⟩
+  have hre : (1 - s).re = 1 - s.re := by simp
+  rw [hre, hline]; norm_num
+
 -- ============================================================
 -- PART IV: QUANTITATIVE ERROR BOUNDS (AXIOMATIZED)
 -- ============================================================

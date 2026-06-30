@@ -17,7 +17,11 @@
       "incidence-geometry",
       "unit-distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Distance",
+      "Extremal Combinatorics",
+      "Unit Distance Problem"
+    ]
   },
   {
     "id": "ann-e92-background",
@@ -36,7 +40,11 @@
       "distance",
       "universal-property"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean Distance",
+      "Circles And Radii",
+      "Universal Quantification"
+    ]
   },
   {
     "id": "ann-e92-maxequidistant",
@@ -55,7 +63,11 @@
       "grouping",
       "distance"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite Sets",
+      "Grouping By Distance",
+      "Supremum Of Multiset"
+    ]
   },
   {
     "id": "ann-e92-property",
@@ -74,7 +86,11 @@
       "property",
       "achievable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Universal Quantifier",
+      "Equidistant Points",
+      "Achievable Bound"
+    ]
   },
   {
     "id": "ann-e92-f",
@@ -93,7 +109,11 @@
       "supremum",
       "achievable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Supremum Of Set",
+      "Extremal Function",
+      "Existential Quantification"
+    ]
   },
   {
     "id": "ann-e92-weak",
@@ -112,7 +132,11 @@
       "subpolynomial",
       "little-o"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Little-o Notation",
+      "Subpolynomial Growth",
+      "Eventually At Infinity"
+    ]
   },
   {
     "id": "ann-e92-strong",
@@ -131,7 +155,11 @@
       "log-log",
       "precise-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic Growth Rate",
+      "Log-Log Function",
+      "Lattice Lower Bound"
+    ]
   },
   {
     "id": "ann-e92-jjmt",
@@ -150,7 +178,11 @@
       "incidence-geometry",
       "upper-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Incidence Geometry",
+      "Circle-Point Incidences",
+      "Asymptotic Upper Bound"
+    ]
   },
   {
     "id": "ann-e92-lattice",
@@ -170,7 +202,11 @@
       "lower-bound",
       "sums-of-squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer Lattice",
+      "Sums Of Two Squares",
+      "Distance Multiplicity"
+    ]
   },
   {
     "id": "ann-e92-small",
@@ -189,6 +225,10 @@
       "fishburn",
       "small-cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Small-Case Computation",
+      "Extremal Configurations",
+      "Lattice Optimality"
+    ]
   }
 ]

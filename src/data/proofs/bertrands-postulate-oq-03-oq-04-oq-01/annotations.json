@@ -30,7 +30,7 @@
       "startLine": 70,
       "endLine": 119
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Proving log²(n) = o(n^ε) via isLittleO Squaring",
     "content": "The lemma `log_sq_lt_rpow_eventually` proves: for any $C > 0$ and $\\varepsilon > 0$,\n$$C \\cdot \\log(n)^2 < n^\\varepsilon \\quad \\text{for all sufficiently large } n.$$\n\nThe proof uses Mathlib's `isLittleO_log_rpow_atTop` with exponent $\\varepsilon/4$: $\\log(n) = O(n^{\\varepsilon/4})$, so $|\\log(n)| \\leq \\frac{1}{2} n^{\\varepsilon/4}$ eventually. Squaring gives $\\log(n)^2 \\leq \\frac{1}{4} n^{\\varepsilon/2}$. For large $n$, $n^{\\varepsilon/2} \\geq C$, so $C \\cdot \\log^2(n) \\leq \\frac{C}{4} \\cdot n^{\\varepsilon/2} < n^{\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^\\varepsilon$.\n\nThe `max` threshold combines: the little-o threshold $N_1$ and $\\lceil C^{2/\\varepsilon} \\rceil$ (ensuring $n^{\\varepsilon/2} \\geq C$).",
     "mathContext": "$\\log(n) = o(n^{\\varepsilon/4})$ is `isLittleO_log_rpow_atTop hε4`. Squaring: $\\log^2 = o(n^{\\varepsilon/2})$. Since $n^{\\varepsilon/2} \\to \\infty$, it exceeds $C$ eventually. Then $C\\log^2 < n^{\\varepsilon/2} \\cdot n^{\\varepsilon/2} = n^\\varepsilon$.",
@@ -77,7 +77,7 @@
       "startLine": 165,
       "endLine": 230
     },
-    "type": "technique",
+    "type": "insight",
     "title": "Chaining Bounds: Cramér → Existence in [x, x+x^ε]",
     "content": "The main proof of `cramer_implies_primeGapConjecture` combines three ingredients:\n\n1. **Cramér bound**: nextPrime$(x) \\leq x + C\\log^2(x)$ (bridge axiom, for $x \\geq 2$)\n2. **Asymptotic**: $C\\log^2(x) < x^\\varepsilon$ for $x \\geq N$ (log-sq lemma)\n3. **BHP base case**: PrimeGapConjecture$(0.525)$ unconditionally (parent entry)\n\nFor $\\varepsilon \\geq 0.525$: `prime_gap_conjecture_monotone` gives the result directly from BHP.\n\nFor $\\varepsilon < 0.525$: `cramer_implies_primeGapConjecture_eventually` gives a threshold $N$ beyond which Cramér works. Below $N$, BHP covers all $x \\geq 2$. The case split on `x ≥ N` joins these two halves.\n\nThe proof of the eventual form is a direct `calc`:\n$$\\text{nextPrime}(x) \\leq x + C\\log^2(x) \\leq x + x^\\varepsilon.$$",
     "mathContext": "The combination `by_cases h : ε ≥ 0.525` splits into two proofs. For the sub-0.525 case, `Filter.eventually_atTop` extracts threshold $N$; `by_cases hxN : x ≥ N` handles the two regions.",
@@ -123,11 +123,11 @@
       "startLine": 1,
       "endLine": 60
     },
-    "type": "context",
+    "type": "concept",
     "title": "Why log²: Cramér's Probabilistic Model for Prime Gaps",
     "content": "The log² exponent in Cramér's conjecture is not arbitrary — it emerges from a **probabilistic model**. Cramér (1936) proposed treating integers near p as independent Bernoulli trials, each prime with probability 1/log(p). In this model, the gaps between successive 'hits' (primes) are geometrically distributed with mean log(p).\n\nThe maximum of N independent geometric(1/log p) trials, taken over N ≈ log(p) trials starting at p, concentrates around log(p) · log(log(p)) in expectation — but the maximum gap among ALL primes up to x concentrates around log²(x). This is analogous to the coupon collector problem: collecting all coupons from a set of size log(x) takes O(log(x)·log(log(x))) trials, but the last few primes in a random walk can create gaps of size O(log²(x)).\n\nNote: Cramér's model is known to be **wrong** in fine structure (it predicts too many twin primes), but the log² gap prediction is widely believed to be correct.",
     "mathContext": "Cramér model: $P(n \\text{ prime}) = 1/\\log n$, i.i.d. Maximum gap $\\max_{p_n \\leq x} (p_{n+1}-p_n) \\sim \\log^2(x)$ by extreme value theory for geometric RVs.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "probabilistic number theory",
       "Cramér model",

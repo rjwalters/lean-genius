@@ -38,7 +38,7 @@
       "Verified examples for n = 2, 5, 7, 13 using interval_cases + decide",
       "Verified counterexample n = 4 (not prime)",
       "Proof that even n > 2 never satisfies the property",
-      "Main disproof via finiteness axiom"
+      "Main disproof: erdos_1140_finite proved from the two Epure-Gica classification axioms plus the parity argument"
     ],
     "relatedProblems": [
       {
@@ -100,36 +100,36 @@
       "id": "header-setup",
       "title": "Module Header and Problem History",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 26,
       "summary": "Documents the problem statement, its disproof by Epure-Gica (2010), and the complete list of known values {2, 5, 7, 13, 31, 61, 181, 199}. Notes the connection to class numbers of imaginary quadratic fields Q(√(-2n)) and Mollin-Williams (1989). Imports Mathlib."
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Defines AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), the core predicate. Also defines KnownValues = {2, 5, 7, 13, 31, 61, 181, 199} as a Finset. The quantifier ranges over x ∈ {0, ..., ⌊√((n-1)/2)⌋}, with x = 0 forcing n itself to be prime.",
-      "startLine": 26,
-      "endLine": 40
+      "summary": "Defines AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), the core predicate, and KnownValues = {2, 5, 7, 13, 31, 61, 181, 199} as a Finset (x = 0 forces n itself to be prime). Part II then proves the structural lemmas allShiftsArePrime_implies_prime, even_case (even n > 2 fails), and allShiftsArePrime_odd.",
+      "startLine": 27,
+      "endLine": 55
     },
     {
       "id": "examples",
       "title": "Verified Examples and Counterexample",
-      "summary": "Computationally verifies AllShiftsArePrime for n = 2 (trivial: only x = 0), n = 5, 7 (x ∈ {0,1}), and n = 13 (x ∈ {0,1,2}) using interval_cases + decide. Also verifies ¬AllShiftsArePrime(4) since 4 is composite. These are fully-proved theorems with no axioms.",
-      "startLine": 41,
-      "endLine": 73
+      "summary": "Computationally verifies AllShiftsArePrime for all 8 known values n = 2, 5, 7, 13, 31, 61, 181, 199 using interval_cases + decide/norm_num (Part III), and the 5 failure cases ¬AllShiftsArePrime for n = 1, 3, 4, 9, 15 (Part IV). These are fully-proved theorems with no axioms.",
+      "startLine": 56,
+      "endLine": 121
     },
     {
       "id": "epure-gica",
       "title": "Epure-Gica Theorem (Axiomatized)",
-      "summary": "Two axioms from Epure-Gica (2010): epure_gica_mod_1 (n ≡ 1 mod 4 → n ∈ {5,13,61,181}) and epure_gica_mod_3 (n ≡ 3 mod 4 → n ∈ {7,31,199} or n > 199). Plus the fully-proved even_case theorem eliminating even n > 2 via the parity argument (n must be prime).",
-      "startLine": 74,
-      "endLine": 97
+      "summary": "Two axioms from Epure-Gica (2010): epure_gica_mod_1 (n ≡ 1 mod 4 ∧ AllShiftsArePrime → n ∈ {5,13,61,181}) and epure_gica_mod_3 (the set of n ≡ 3 mod 4 with AllShiftsArePrime is contained in some finite T). These are the only two assumptions in the file.",
+      "startLine": 122,
+      "endLine": 137
     },
     {
       "id": "main-result",
       "title": "Main Result: DISPROVED",
-      "summary": "States erdos_1140_finite (∃ B, ∀ n > B, ¬AllShiftsArePrime n) as an axiom packaging the three cases. Derives erdos_1140: ¬(∀ N, ∃ n > N, AllShiftsArePrime n) by contradiction — assuming infinitely many exist, find one above the bound B, contradicting finiteness. This is fully proved from the axiom.",
-      "startLine": 98,
-      "endLine": 200
+      "summary": "Proves erdos_1140_finite (∃ B, ∀ n > B, ¬AllShiftsArePrime n) as a theorem from the two Epure-Gica classification axioms: for n > max(181, sup T), AllShiftsArePrime n forces n odd (parity), so n % 4 ∈ {1,3}, and each case lands n in a finite set bounded by B — contradiction. Derives erdos_1140: ¬(∀ N, ∃ n > N, AllShiftsArePrime n) by contradiction. Both are fully proved (only the two mod-classification axioms remain).",
+      "startLine": 138,
+      "endLine": 227
     }
   ],
   "conclusion": {

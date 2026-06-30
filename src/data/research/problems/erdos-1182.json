@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "3 sorries remain. bigF_lower_bound_tree derivable from chvatal_tree_ramsey for connected graphs (trees have exactly n-1 edges). f_val_2/bigF_val_2 need concrete Ramsey computation infrastructure.",
+    "progressSummary": "0 sorries remain. bigF_lower_bound_tree, f_val_2, and bigF_val_2 are proved (previously sorries). 3 axioms remain as stated assumptions: chvatal_tree_ramsey (Chvátal 1977), connected_min_edges (standard), bigF_lower_linear (BEFRS 1980).",
     "builtItems": [
       "graphRamseyK3 definition: sInf-based, R(K3,G) = smallest r coloring any K_r yields red triangle or blue G"
     ],
@@ -40,11 +40,7 @@
       "f_val_2 and bigF_val_2: require computing graphRamseyK3 for K₂, which needs constructing explicit colorings and embeddings — non-trivial Lean infrastructure"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove bigF_lower_bound_tree by showing connected graph with ≤ n-1 edges is a tree",
-      "Need: Graph connectivity definition, then Chvátal applies",
-      "f_val_2/bigF_val_2 need explicit graph constructions and colorings"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1182 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-02-08*\n"
   },
   "tags": [

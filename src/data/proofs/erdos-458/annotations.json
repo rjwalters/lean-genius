@@ -102,7 +102,7 @@
       "startLine": 93,
       "endLine": 116
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The nth Prime: nthPrime",
     "content": "**`nthPrime k`** is the $k$-th prime (0-indexed), defined as `Nat.nth Nat.Prime k`. This uses Mathlib's `Nat.nth` function, which enumerates elements of an infinite set of naturals in increasing order. The existence of infinitely many primes (`Nat.infinite_setOf_prime`) guarantees `Nat.nth` is well-defined.\n\n**Axioms**: $p_0 = 2$, $p_1 = 3$, $p_2 = 5$, $p_3 = 7$ are stated as axioms rather than proved computationally. These could theoretically be proved using `native_decide` on a decidable form, but `Nat.nth` is `noncomputable` by definition.\n\n**Theorems**: `nthPrime_prime` (every $p_k$ is prime) follows directly from `Nat.nth_mem_of_infinite`. `nthPrime_strictMono` (primes are strictly increasing: $j < k \\Rightarrow p_j < p_k$) follows from `Nat.nth_strictMono`.",
     "mathContext": "$p_k = \\text{Nat.nth}\\;\\text{Nat.Prime}\\;k$, the $(k+1)$-th prime. The sequence: $p_0 = 2, p_1 = 3, p_2 = 5, p_3 = 7, p_4 = 11, \\ldots$\n\nStrict monotonicity $p_j < p_k$ for $j < k$ is immediate from `Nat.nth_strictMono` applied to the infinite set of primes. This uses the fact that any infinite subset of $\\mathbb{N}$ has a unique order-preserving enumeration.",

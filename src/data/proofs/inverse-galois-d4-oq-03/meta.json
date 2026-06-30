@@ -18,7 +18,7 @@
       "capelli-theorem",
       "research"
     ],
-    "badge": "research",
+    "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
     "lineCount": 235,
@@ -97,7 +97,7 @@
       "id": "intro-docstring",
       "title": "§0: Open Question, S1 Survey Recap, and S2 SCAFFOLD Scope",
       "startLine": 1,
-      "endLine": 59,
+      "endLine": 70,
       "summary": "Imports (Mathlib Galois/Dihedral/Polynomial + parent InverseGaloisD4) and top-level docstring summarising the S1 OBSERVE survey findings (Schinzel-Velez classification; Capelli's theorem bottleneck), the S2 SCAFFOLD scope (3 deliverables: abstract criterion def + (4, 2) specialization stmt + SV iff stmt), and references (Velez 1979, Schinzel 2000, Capelli 1897, parent gallery).",
       "mathContext": "Parent OQ: 'Is there a general criterion for when Gal(X^n - a / ℚ) is dihedral?' Answer pathway: Schinzel-Velez classification. Bottleneck: Capelli's irreducibility theorem, currently absent from Mathlib."
     },
@@ -105,7 +105,7 @@
       "id": "polynomial-helper",
       "title": "§1: xPowSub + xPowSub_def — stable name for X^n - a",
       "startLine": 71,
-      "endLine": 79,
+      "endLine": 80,
       "summary": "Defines `xPowSub n a := X^n - C a : ℚ[X]`, factored out for use throughout the dihedral-criterion development. Noncomputable due to ring structure. S3a adds `xPowSub_def : xPowSub n a = X^n - C a := rfl` — a definitional-unfolding helper that bridges the local `xPowSub` notation to the parent's explicit `(X : ℚ[X])^4 - C 2` form.",
       "mathContext": "$X^n - a \\in \\mathbb{Q}[X]$ — the central polynomial whose splitting field's Galois group is the object of study."
     },
@@ -113,7 +113,7 @@
       "id": "abstract-criterion",
       "title": "§2: IsDihedralGaloisOfXnMinusA — abstract criterion (no sorry)",
       "startLine": 81,
-      "endLine": 91,
+      "endLine": 92,
       "summary": "Defines `IsDihedralGaloisOfXnMinusA n a : Prop` as `∃ m ≥ 2, the Galois group of (xPowSub n a).SplittingField over ℚ is isomorphic (as a group) to DihedralGroup m`. Uses Mathlib's existing constructions; no new infrastructure. **Definition only (no sorry).**",
       "mathContext": "Predicate: $\\exists m \\geq 2,\\ \\mathrm{Aut}_{\\mathbb{Q}}(\\mathbb{Q}(X^n - a)_{\\mathrm{split}}) \\cong D_m$ (MulEquiv on the Galois group)."
     },
@@ -121,15 +121,23 @@
       "id": "specialization-4-2",
       "title": "§3: dihedral_galois_xPow4_sub_2 + gal_card_xPowSub_4_2 — parent (4, 2) specialization (one sorry)",
       "startLine": 93,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "States `IsDihedralGaloisOfXnMinusA 4 2`. The main theorem is sorry-guarded; the proof route is via the parent's `d4_realizable` (order 8) plus the classical fact that D_4 is the unique transitive subgroup of S_4 of order 8. S3a (researcher-12) adds the cardinality-lift helper `gal_card_xPowSub_4_2 : Fintype.card (xPowSub 4 2).Gal = 8` (no sorry, by `show ... = 8; exact InverseGaloisExtensions.x4_sub_2_gal_card`), isolating the cardinality input of the S4 bridge from the harder order-8-transitive-S₄-subgroup classification step.",
       "mathContext": "$\\mathrm{Gal}(X^4 - 2 / \\mathbb{Q}) \\cong D_4$. Parent proves order 8; this scaffold states the dihedral identification explicitly and S3a lifts the cardinality."
     },
     {
-      "id": "schinzel-velez-iff",
-      "title": "§4: schinzel_velez_characterization_exists — abstract characterization (S3a audit fix, no sorry)",
+      "id": "s3b-bridge-helpers",
+      "title": "§4: S3b bridge helpers — natDegree/irreducible/separable/monic + DihedralGroup 4 cardinality + S4 entry point (no sorry)",
       "startLine": 126,
-      "endLine": 151,
+      "endLine": 207,
+      "summary": "Seven no-sorry bridge lemmas (S3b, researcher-4) narrowing the remaining S4 work to a single `MulEquiv` construction. Polynomial-side: `xPowSub_4_2_natDegree = 4`, `xPowSub_4_2_irreducible` (Eisenstein at 2), `xPowSub_4_2_separable` (char-0 irreducible ⇒ separable), `xPowSub_4_2_monic` — together setting up the `Gal ↪ S₄` embedding context. Codomain-side: `dihedralGroup_4_card : Fintype.card (DihedralGroup 4) = 8` (via Mathlib `DihedralGroup.card`). Cardinality match: `gal_card_eq_dihedralGroup_4_card` combines the §3 lift with `dihedralGroup_4_card` (necessary condition for the eventual `MulEquiv`). S4 entry point: `dihedral_galois_xPow4_sub_2_of_mulEquiv` supplies the existential witness `m = 4`, so S4 only needs the concrete `MulEquiv Gal(X⁴−2) ≃* DihedralGroup 4`.",
+      "mathContext": "Bridge lemmas reducing $\\mathrm{Gal}(X^4-2/\\mathbb{Q}) \\cong D_4$ to a single isomorphism construction: $\\deg = 4$, irreducible (Eisenstein), separable, monic, $|D_4| = 8 = |\\mathrm{Gal}|$, and the $m=4$ witness."
+    },
+    {
+      "id": "schinzel-velez-iff",
+      "title": "§5: schinzel_velez_characterization_exists — abstract characterization (S3a audit fix, no sorry)",
+      "startLine": 208,
+      "endLine": 234,
       "summary": "States `∃ P : ℕ → ℚ → Prop, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a` — proved without sorry by taking `P := IsDihedralGaloisOfXnMinusA`. S3a audit fix replacing the prior S2 statement `dihedral_iff_schinzel_velez (n a) : IsDihedralGaloisOfXnMinusA n a ↔ True`, which was unprovable as written (false for any (n, a) outside the dihedral case, e.g., n = 1 trivial or n = 5, a = 2 with Galois group F₂₀). Future iterations should replace this trivially-true existential with the explicit Schinzel-Velez predicate once Capelli's irreducibility theorem is formalized.",
       "mathContext": "$\\exists P,\\ \\mathrm{IsDihedralGaloisOfXnMinusA}\\, n\\, a \\Leftrightarrow P(n, a)$ — content-free existential preserving the original docstring's intent; Capelli's theorem is the prerequisite for the explicit finite-case form."
     }

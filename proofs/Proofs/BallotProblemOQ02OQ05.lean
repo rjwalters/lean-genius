@@ -130,8 +130,11 @@ axiom donsker_fclt
 /-! ## Part IV: Discrete reflection identity (S6 ACT — paste-ready skeleton)
 
 This section is the S6 ACT paste-ready skeleton from S5 PREP §5, dropped
-in here so future researchers (or Aristotle) can discharge the 4
-acknowledged `sorry`s. The design is fully scoped in S5 PREP:
+in here so future researchers (or Aristotle) can discharge the
+acknowledged `sorry`s. R4 (`reflectAt_involutive`) and R5
+(`partialSumBool_reflectAt_endpoint`) are now proved; 2 `sorry`s remain
+(`reaches_iff_hits_or_above`, R6 `discrete_reflection`). The design is
+fully scoped in S5 PREP:
 
 - §3.1 Option C: `partialSumBool : (Fin n → Bool) → Fin (n+1) → ℤ` via
   bounded sum over `Fin n` with `if h : i.val < k.val` guard.
@@ -140,14 +143,10 @@ acknowledged `sorry`s. The design is fully scoped in S5 PREP:
   (non-dependent, inverse-pair form — `Mathlib/Data/Finset/Card.lean:398`),
   with `i = j = reflectAt _ a` (involutive).
 
-Build status at ACT-time: NOT verified (Docker daemon hung at
-2026-05-16T15:26Z — `timeout 8 docker info` returns no Server section;
-host disk 100% / 5.4Gi avail). Ships under
-`(build pending — Docker daemon hung)` qualifier per memory feedback
-pattern; leaf-only file (no downstream importers), bearer pins verified
-at lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
-(S5 PREP §4), recent build-verify on `cff3fd36c83` (S2 ACT #19282,
-7744 jobs successful 2026-05-15). -/
+Build status: VERIFIED 2026-06-12 (Docker, 7744 jobs successful) with R4
+and R5 proved; the only remaining `sorry` warnings are
+`reaches_iff_hits_or_above` and R6 `discrete_reflection`. Leaf-only file
+(no downstream importers). -/
 
 section DiscreteReflection
 
@@ -289,7 +288,40 @@ lemma partialSumBool_reflectAt_endpoint
     {ω : Fin n → Bool} {a : ℤ} (h : (hitSet ω a).Nonempty) :
     partialSumBool (reflectAt ω a) ⟨n, Nat.lt_succ_self n⟩
       = 2 * a - partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ := by
-  sorry  -- R5: Finset.sum_ite + min'_mem h + arithmetic
+  -- The endpoint partial sum is the full signed sum (the `i.val < n` guard
+  -- is vacuous for `i : Fin n`).
+  have key : ∀ (ψ : Fin n → Bool),
+      partialSumBool ψ ⟨n, Nat.lt_succ_self n⟩
+        = ∑ i : Fin n, (if ψ i then (1 : ℤ) else -1) := by
+    intro ψ
+    unfold partialSumBool
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    rw [if_pos i.isLt]
+  -- `S_τ(ω) = a` at the first hit time τ.
+  have hmem : firstHitFin ω a ∈ hitSet ω a := by
+    have hmin : firstHitFin ω a = (hitSet ω a).min' h := by
+      simp only [firstHitFin, dif_pos h]
+    rw [hmin]; exact (hitSet ω a).min'_mem h
+  have hPS : partialSumBool ω (firstHitFin ω a) = a := (Finset.mem_filter.mp hmem).2
+  have hA : (∑ i : Fin n, if i.val < (firstHitFin ω a).val
+       then (if ω i then (1 : ℤ) else -1) else 0) = a := by
+    have h' := hPS
+    unfold partialSumBool at h'
+    exact h'
+  -- Reduce both endpoints to full signed sums, then equate via `R + T = 2a`.
+  rw [key, key, eq_sub_iff_add_eq, ← Finset.sum_add_distrib]
+  have step : ∀ i : Fin n,
+      ((if reflectAt ω a i then (1 : ℤ) else -1) + (if ω i then (1 : ℤ) else -1))
+        = 2 * (if i.val < (firstHitFin ω a).val
+                 then (if ω i then (1 : ℤ) else -1) else 0) := by
+    intro i
+    unfold reflectAt
+    by_cases hi : (firstHitFin ω a).val ≤ i.val
+    · rw [if_pos hi, if_neg (Nat.not_lt.mpr hi)]
+      cases ω i <;> simp
+    · rw [if_neg hi, if_pos (Nat.lt_of_not_le hi)]
+      ring
+  rw [Finset.sum_congr rfl (fun i _ => step i), ← Finset.mul_sum, hA]
 
 /-- Hitting `≥ a` ⟺ `(hitSet ω a').Nonempty` for some `a' ≤ a`. For the
     bijection we need: paths reaching ≥ a partition as (ending ≥ a) ⊔

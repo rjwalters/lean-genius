@@ -1,26 +1,96 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
-(Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
-PR #18549; **parent-file blocker (87 Mathlib v4.26.0 `ord_compl` API
-errors)** status still uncleared (G9 `proofs/.lake` self-loop persists
-through S29 — Docker daemon and host disk remain GREEN); doctor-scope
-fix still required before further S18c ACT work. The mechanic-trivial
-meta drift item B from S28's Next-action menu is **closed in this PR
-(S29)** — see "S29 meta drift fix + STATE-SYNC ledger" § below.
-**Iteration**: 29 (S28 STATE-SYNC absorbed at T-1d via PR #22641 ⇒
-merged; this PR closes Next-action item B from S28's menu by syncing
-`theoremCount` 146 → 139 on a byte-stable Lean source; INFRA gates
-re-read 24 h after S28 — G7 host disk **76 Gi avail** (vs S28's
-"now GREEN"), G8 Docker client responsive (`docker info` returns
-`Client: ... Context: desktop-linux`), G9 self-loop **persistent**;
-correction to S28's "definitionCount 10 → 9" claim — actual
-`grep -cE "^def |^private def |^abbrev |^private abbrev "` returns
-10, meta already matches, **no drift on definitionCount**)
-**Last Updated**: 2026-06-10 (researcher-7; S29 meta drift fix +
-INFRA re-read; closes Next-action item B from S28; 1-line Lean-
-adjacent diff in `meta.json`, 0 Lean diff)
+**Phase**: BLOCKED — all forward progress Docker-gated during the
+2026-06-13 verification blackout. The S29-era "parent-file blocker
+(87 Mathlib v4.26.0 `ord_compl` API errors)" is **RESOLVED**: migration
+PR #22949 (`1d330722bdf`, merged 2026-06-13) cleared all 87 errors via a
+compat-notation shim + camelCase wrappers and reports a clean Docker
+build (3061 jobs, 0 errors, 0 sorries, single axiom `jacobi_r4_formula`
+unchanged) — no doctor/mechanic fix is outstanding. Trackers are fully
+synced at the post-migration source (2932 LOC / 128 col-0 theorems /
+10 defs / 1 axiom / 0 sorries): gallery `meta.json` numerics + all 32
+`sections[]` (Parts 1–33.5, tiling L60–2932) and the research JSON all
+agree. The two open work items are both currently un-actionable:
+(1) **Part-34** `combinedStabilizer_card v = z! · ∏ mₖ! · 2^z` (third
+stabilizer count toward an axiom-free `8 | r4Count`, designed in PREP
+PR #18549) is **Docker-gated** — no build/verify route while the host
+Docker daemon is DOWN (`docker info` times out); (2) the deep MATH
+blocker, the `jacobi_r4_formula` axiom (Jacobi's general 4-square
+formula), needs Mathlib q-expansion / Eisenstein-coefficient machinery
+that has not landed upstream — out of scope until it does.
+**Iteration**: 31 (S32 — propagated the S31 BLOCKED decision to the
+claim gates. The S31 flag updated only state.md; the research JSON still
+read `status: active` / `phase: ACT` and the candidate pool read
+`in-progress`, so claim-random kept re-serving the slug during the
+blackout. This edit sets `status: blocked` / `phase: BLOCKED` in the
+research JSON and the pool, and re-confirms the gallery meta is CLEAN.)
+**Last Updated**: 2026-06-14 (researcher-5; S32 BLOCKED-propagation to
+research JSON + pool; 0 Lean diff)
+
+## S32 BLOCKED-propagation to claim gates (this PR, 2026-06-14, researcher-5)
+
+**Trigger**: claim-random re-rolled onto this slug (researcher-42289,
+knowledge score 120 RICH). Docker still DOWN (`docker info` times out),
+so build-free re-audit only.
+
+**Root cause**: S31 (researcher-6) flagged the slug BLOCKED in *this
+state.md only*. The blocking decision never reached the two claim gates:
+the research JSON `src/data/research/problems/four-square-distribution-oq-01.json`
+still read `status: active` / `phase: ACT`, and the candidate pool read
+`status: in-progress`. claim-random filters out only completed / blocked /
+graduated, so active / in-progress slugs stay claimable — hence the
+slug kept being re-served during the blackout with no actionable work.
+
+**Fix**:
+  - research JSON: `status` active → blocked, `phase` ACT → BLOCKED,
+    `currentState.phase` ACT → BLOCKED, `currentState.iteration` 30 → 31,
+    nextAction prefixed with the propagation note; lastUpdate bumped.
+  - candidate pool: `claim-problem.sh update four-square-distribution-oq-01 blocked`.
+
+**Build-free meta re-audit (CLEAN, no change)**: `wc -l` = 2932; gallery
+`meta.theoremCount` = 142 is the *intentional* inclusive count (col-0
+`theorem|lemma` = 128 plus the 14 `private`/`protected`/`noncomputable`
+prefixed decls, set deliberately by PR #23460 — NOT drift); `def` 9 + 1
+structure = 10 = `definitionCount`; 1 `axiom jacobi_r4_formula` (L226) =
+`axiomCount`; 0 `\bsorry\b` = `sorries`; 32 sections contiguous
+L60–2932. Both work items remain un-actionable (Part-34 Docker-gated;
+`jacobi_r4_formula` axiom needs upstream Mathlib q-expansion machinery).
+
+## S30 meta re-sync after migration #22949 (this PR, 2026-06-13, researcher-4)
+
+**Trigger**: Random claim re-rolled onto this slug (researcher-84177,
+knowledge score 120 RICH, tier MODERATE+). Docker remains DOWN
+(`docker info` fails) so build-free meta↔source AUDIT only.
+
+**Root cause**: The S29 sync (PR #22774, 2026-06-10) set
+`theoremCount 146→139` and `lineCount 2915` against the *pre-migration*
+Lean source. Migration PR #22949 (`1d330722bdf`, "migrate to Mathlib
+v4.26.0 (build clean)") then edited `FourSquareDistributionOQ01.lean`
+*after* that sync — growing it from 2915→2932 lines and from 125→128
+col-0 `theorem|lemma` decls — leaving `meta.json` describing the
+pre-migration file. Note also that S29's `139` was never reproducible
+from any grep convention on the pre-migration source (col-0
+`^(theorem|lemma) ` = 125, all-named-decls = 136); it appears carried
+over from an even earlier manual state.
+
+**Fix** (`meta.json`, 2 fields, byte-stable Lean source at origin/main
+`8e86e7b0527`):
+  - `lineCount` 2915 → 2932 (`wc -l`, gallery convention = raw count;
+    pre-migration meta=2915 matched pre-migration `wc -l` exactly).
+  - `theoremCount` 139 → 128 (`grep -cE '^(theorem|lemma) '` col-0,
+    the documented gallery convention; include-indented gives the same
+    128, no nesting).
+  - `definitionCount` 10 unchanged (`^def `=9 + 1 structure = 10; both
+    the def-only-plus-structure and the S29 `def|private def|abbrev`
+    conventions agree at 10).
+  - `axiomCount` 1, `sorries` 0 — both verified, unchanged
+    (`axiom jacobi_r4_formula` at line 226; 0 `\bsorry\b`).
+
+**Caveat**: the `sections[]` line ranges (60–210) and `keyInsights`
+still describe only Parts 1–5/8/9; the file now runs to Part 34. That
+prose-vs-structure gap is left for a future session — this PR fixes
+only the numeric drift to keep gallery counts honest.
 
 ## S29 meta drift fix + STATE-SYNC ledger (this PR, 2026-06-10, researcher-7)
 

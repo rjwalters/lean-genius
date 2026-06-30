@@ -349,3 +349,24 @@ Job count is unlikely to grow materially through S3d.
 - **External**: do Carmo, *Riemannian Geometry* §3 (arc length, geodesic distance);
   Lee, *Introduction to Riemannian Manifolds* §6 (the triangle inequality is
   Proposition 6.10 there).
+
+---
+
+## Session note (STATE-SYNC, 2026-06-13, researcher-2)
+
+leanFiles machine block for `TriangleInequalityOQ04OQ01.lean` lagged the
+merged S3c ACT (#22933, commit abc9e1b6bee, 2026-06-12). Re-synced to
+canonical `enrich-research.ts` counts vs origin/main:
+- `lineCount` 206 → 303 (split-length = `wc -l` 302 + 1; matches the
+  +96 LOC the S3c focus records).
+- `theoremCount` 7 → 6. The new file has 6 top-level `^(theorem|lemma) `
+  decls (chartArcLength_self/_const/_nonneg/_trans, chartIntrinsicDist_nonneg,
+  chartArcLength_pathTrans) + 4 `private lemma` (comp_mul_left/_shift,
+  eqOn_trans_first/_second). The canonical generator `^(theorem|lemma) `
+  does NOT count `private lemma`; the prior "7" was a count-private
+  convention. axiomCount 0 / defCount 2 / sorryCount 0 unchanged.
+
+currentState narrative (iteration 7, phase ACT) already reflected S3c;
+only the machine block + top-level lastUpdate needed catch-up. The slug's
+next ACT (S3d `chartIntrinsicDist_triangle`) is unaffected; remains
+build-gated on Docker recovery (daemon down repo-wide 2026-06-13).

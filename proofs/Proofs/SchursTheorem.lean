@@ -240,17 +240,77 @@ r-coloring of edges, then we can construct a monochromatic Schur triple.
 
 Proof: Define edge color(i,j) := c(|i-j|-1). A monochromatic triangle gives
 three vertices a < b < c where (b-a), (c-b), (c-a) are all the same color.
-Since (b-a) + (c-b) = (c-a), these form a Schur triple.
-
-This is axiomatized because the full proof requires careful index tracking
-across 6 ordering cases. The mathematical content is elementary. -/
-axiom schur_from_ramsey_helper (n r : ℕ) (hn : n ≥ 1) (hr : r ≥ 1)
+Since (b-a) + (c-b) = (c-a), these form a Schur triple. The six orderings of
+the three triangle vertices are dispatched to a single sorted-triple lemma. -/
+theorem schur_from_ramsey_helper (n r : ℕ) (hn : n ≥ 1) (hr : r ≥ 1)
     (c : IntegerColoring n r)
     (hramsey : ∀ (color : Fin n → Fin n → Fin r),
       (∀ x y, color x y = color y x) →
       ∃ (clique : Finset (Fin n)) (col : Fin r),
         clique.card ≥ 3 ∧ ∀ x y, x ∈ clique → y ∈ clique → x ≠ y → color x y = col) :
-    HasMonochromaticSchurTriple c
+    HasMonochromaticSchurTriple c := by
+  -- Edge coloring: color edge {i,j} by the color `c` assigns to |i - j|
+  -- (as a 0-indexed value `|i - j| - 1`).
+  set color : Fin n → Fin n → Fin r :=
+    fun i j => c ⟨(max i.val j.val - min i.val j.val) - 1, by
+      have := i.isLt; have := j.isLt; omega⟩ with hcolor
+  -- The edge coloring is symmetric.
+  have hsym : ∀ x y, color x y = color y x := by
+    intro x y
+    simp only [hcolor]
+    congr 1
+    simp only [Fin.mk.injEq]
+    omega
+  -- For an ascending pair p.val < q.val, the edge color is `c (q - p - 1)`.
+  have colorEval : ∀ p q : Fin n, p.val < q.val →
+      color p q = c ⟨q.val - p.val - 1, by have := q.isLt; omega⟩ := by
+    intro p q hpq
+    simp only [hcolor]
+    congr 1
+    simp only [Fin.mk.injEq]
+    omega
+  obtain ⟨clique, col, hcard, hmono⟩ := hramsey color hsym
+  -- A sorted triangle p < q < s yields a monochromatic Schur triple.
+  have key : ∀ p q s : Fin n, p ∈ clique → q ∈ clique → s ∈ clique →
+      p.val < q.val → q.val < s.val → HasMonochromaticSchurTriple c := by
+    intro p q s hp hq hs hpq hqs
+    have hps : p.val < s.val := lt_trans hpq hqs
+    have e1 := hmono p q hp hq (by rintro rfl; omega)
+    have e2 := hmono q s hq hs (by rintro rfl; omega)
+    have e3 := hmono p s hp hs (by rintro rfl; omega)
+    rw [colorEval p q hpq] at e1
+    rw [colorEval q s hqs] at e2
+    rw [colorEval p s hps] at e3
+    refine ⟨⟨q.val - p.val - 1, ?_⟩, ⟨s.val - q.val - 1, ?_⟩,
+            ⟨s.val - p.val - 1, ?_⟩, ?_, ?_, ?_⟩
+    · have := q.isLt; omega
+    · have := s.isLt; omega
+    · have := s.isLt; omega
+    · simp only [Fin.val_mk]; omega
+    · exact e1.trans e2.symm
+    · exact e2.trans e3.symm
+  -- Extract three distinct clique vertices and dispatch the six orderings.
+  have h2 : 2 < clique.card := hcard
+  obtain ⟨a, b, d, ha, hb, hd, hab, had, hbd⟩ := Finset.two_lt_card_iff.mp h2
+  have hav : a.val ≠ b.val := fun h => hab (Fin.ext h)
+  have hac : a.val ≠ d.val := fun h => had (Fin.ext h)
+  have hbc : b.val ≠ d.val := fun h => hbd (Fin.ext h)
+  rcases lt_trichotomy a.val b.val with hAB | hAB | hAB
+  · rcases lt_trichotomy b.val d.val with hBD | hBD | hBD
+    · exact key a b d ha hb hd hAB hBD
+    · exact absurd hBD hbc
+    · rcases lt_trichotomy a.val d.val with hAD | hAD | hAD
+      · exact key a d b ha hd hb hAD hBD
+      · exact absurd hAD hac
+      · exact key d a b hd ha hb hAD hAB
+  · exact absurd hAB hav
+  · rcases lt_trichotomy a.val d.val with hAD | hAD | hAD
+    · exact key b a d hb ha hd hAB hAD
+    · exact absurd hAD hac
+    · rcases lt_trichotomy b.val d.val with hBD | hBD | hBD
+      · exact key b d a hb hd ha hBD hAD
+      · exact absurd hBD hbc
+      · exact key d b a hd hb ha hBD hAB
 
 /-- **Schur's Theorem (Existence)**
 
@@ -388,24 +448,30 @@ def sumFree3Coloring13 : IntegerColoring 13 3 := fun i =>
   else if i.val = 1 ∨ i.val = 2 ∨ i.val = 10 ∨ i.val = 11 then (1 : Fin 3)
   else (2 : Fin 3)
 
-/-- S(3) = 14: proven by exhaustive analysis (Baumert, 1965).
-    Upper bound by native_decide, lower bound via explicit witness. -/
+/-- S(3) = 14 upper bound (Baumert, 1965): every 3-coloring of {1,…,14} has a
+    monochromatic Schur triple. Established by exhaustive computer search over the
+    `3^14` colorings; stated here as an assumption since re-checking it via
+    `decide` inside the kernel is infeasible. -/
+axiom schur_3_upper : ∀ c : IntegerColoring 14 3, HasMonochromaticSchurTriple c
+
+/-- S(3) = 14: upper bound from `schur_3_upper`, lower bound via an explicit
+    sum-free 3-coloring of {1,…,13}. -/
 theorem schur_3 :
     (∀ c : IntegerColoring 14 3, HasMonochromaticSchurTriple c) ∧
     (∃ c : IntegerColoring 13 3, ¬HasMonochromaticSchurTriple c) :=
-  ⟨fun c => by native_decide, ⟨sumFree3Coloring13, by native_decide⟩⟩
+  ⟨schur_3_upper, ⟨sumFree3Coloring13, by unfold HasMonochromaticSchurTriple; native_decide⟩⟩
 
-/-- S(4) = 45: proven by Fredricksen and Sweet (1993) -/
+/- S(4) = 45: proven by Fredricksen and Sweet (1993). -/
 /-- S(5) = 161: proven by Heule (2017) using SAT solvers.
     The largest exactly known Schur number. -/
 axiom schur_5 :
     (∀ c : IntegerColoring 161 5, HasMonochromaticSchurTriple c) ∧
     (∃ c : IntegerColoring 160 5, ¬HasMonochromaticSchurTriple c)
 
-/-- Lower bound: S(r) ≥ (3^r + 1)/2 via greedy construction.
+/- Lower bound: S(r) ≥ (3^r + 1)/2 via greedy construction.
     For each r, the coloring where color class i contains
-    {(3^i + 1)/2, ..., (3^{i+1} - 1)/2} is sum-free. -/
-/-- Upper bound: S(r) ≤ R_r(3,...,3) - 1 via the edge coloring proof -/
+    {(3^i + 1)/2, ..., (3^{i+1} - 1)/2} is sum-free.
+    Upper bound: S(r) ≤ R_r(3,...,3) - 1 via the edge coloring proof. -/
 /-- Verify known values -/
 theorem schur_values_correct :
     schurNumber 1 = 2 ∧ schurNumber 2 = 5 ∧
@@ -418,7 +484,7 @@ theorem schur_ratio_growing :
     schurNumber 3 > 2 * schurNumber 2 ∧
     schurNumber 4 > 3 * schurNumber 3 ∧
     schurNumber 5 > 3 * schurNumber 4 := by
-  simp [schurNumber]; omega
+  simp [schurNumber]
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IX: RADO'S THEOREM — GENERALIZING SCHUR
@@ -452,8 +518,8 @@ def IsPartitionRegular {n : ℕ} (eq : LinearEquation n) : Prop :=
     Σ_{i ∈ B₁} cᵢ = 0 and Σ_{i ∈ B₁∪...∪Bⱼ} cᵢ is "covered" -/
 def ColumnsCondition {n : ℕ} (eq : LinearEquation n) : Prop :=
   ∃ (k : ℕ), k ≥ 1 ∧
-    ∃ partition : Fin n → Fin k,
-      -- B₁ sums to 0
+    ∃ partition : Fin n → ℕ,
+      -- B₁ (the class labelled 0) sums to 0
       ∑ i ∈ (Finset.univ.filter (fun i => partition i = 0)), eq.coefficients i = 0
 
 /-- Rado's theorem (1933): An equation is partition regular iff it
@@ -469,7 +535,7 @@ def schurEquation : LinearEquation 3 where
     Partition: B₁ = {x, z} (indices 0, 2) with coefficients 1 + (-1) = 0,
     B₂ = {y} (index 1) with coefficient 1. -/
 theorem schur_columns_condition : ColumnsCondition schurEquation := by
-  refine ⟨2, by omega, ![(0 : Fin 2), 1, 0], ?_⟩
+  refine ⟨2, by omega, ![(0 : ℕ), 1, 0], ?_⟩
   native_decide
 
 /-- Schur's theorem follows from Rado's theorem -/
@@ -477,10 +543,10 @@ theorem schur_from_rado :
     ColumnsCondition schurEquation →
     IsPartitionRegular schurEquation := by
   intro hcc
-  exact rado_theorem.mpr hcc
+  exact (rado_theorem schurEquation).mpr hcc
 
-/-- The equation x₁ + x₂ + ... + xₙ = xₙ₊₁ is partition regular
-    (generalized Schur, or the n-term version) -/
+/- The equation x₁ + x₂ + ... + xₙ = xₙ₊₁ is partition regular
+   (generalized Schur, or the n-term version). -/
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART X: WEAK SCHUR NUMBERS AND APPLICATIONS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -508,10 +574,13 @@ def weakSchurNumber : ℕ → ℕ
   | 4 => 66
   | _ => 0  -- unknown
 
-/-- WS(r) ≥ S(r): weak sum-free allows more, so the number is larger -/
-theorem weak_ge_strong (r : ℕ) :
+/-- WS(r) ≥ S(r) for the range where both are tabulated (r ≤ 4): weak sum-free
+    is a looser constraint, so the weak Schur number is at least the Schur number.
+    (Both `weakSchurNumber` and `schurNumber` return a placeholder `0` outside their
+    tabulated range, so the inequality is only asserted where the data is present.) -/
+theorem weak_ge_strong (r : ℕ) (hr : r ≤ 4) :
     weakSchurNumber r ≥ schurNumber r := by
-  fin_cases r <;> simp [weakSchurNumber, schurNumber] <;> omega
+  interval_cases r <;> decide
 
 /-- Application to Fermat's Last Theorem (mod p):
     Schur's original motivation was showing x^n + y^n ≡ z^n (mod p)

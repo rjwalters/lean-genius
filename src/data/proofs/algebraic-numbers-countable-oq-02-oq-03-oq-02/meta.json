@@ -1,0 +1,208 @@
+{
+  "id": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+  "title": "The Transcendental Reals are a Dense Gδ — and the Algebraic Reals are not Gδ",
+  "slug": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+  "description": "Sharpens the Baire-category picture of the algebraic reals from 'meagre vs comeagre' to an exact location in the Borel hierarchy. Because the algebraic reals are countable they form an Fσ set, so the transcendental reals are a genuine Gδ set — and, being residual in the Baire space ℝ, a dense Gδ. This upgrades the mem_residual witness (a residual set merely contains a dense Gδ) to the set itself. Dually, the algebraic reals are NOT Gδ: they are dense and the transcendentals are a dense Gδ disjoint from them, so were the algebraics also Gδ the two disjoint dense Gδ sets would have a dense — hence nonempty — intersection (Dense.inter_of_Gδ), which is impossible. This resolves the explicit open question flagged in the parent algebraic-reals-meager entry: 'quantify the comeagre transcendental complement as an explicit dense Gδ set.'",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/G%CE%B4_set",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "descriptive-set-theory",
+      "gdelta-set",
+      "borel-hierarchy",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "real-analysis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.isGδ_compl",
+        "description": "In a T1 space the complement of a countable set is Gδ (a countable set is Fσ)",
+        "module": "Mathlib.Topology.Separation.GDelta"
+      },
+      {
+        "theorem": "Dense.inter_of_Gδ",
+        "description": "The intersection of two dense Gδ sets is dense (in a Baire space)",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "dense_of_mem_residual",
+        "description": "Residual sets in a Baire space are dense",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "Rat.denseRange_cast",
+        "description": "The coercion ℚ → ℝ has dense range (rationals are dense in ℝ)",
+        "module": "Mathlib.Topology.Algebra.Order.Archimedean"
+      },
+      {
+        "theorem": "isAlgebraic_rat",
+        "description": "Every rational, cast into a field extension of ℚ, is algebraic over ℚ",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "AlgebraicNumbersCountable.algebraic_reals_countable",
+        "description": "The algebraic reals are countable (reuses Mathlib's Algebraic.countable)",
+        "module": "Proofs.AlgebraicNumbersCountable"
+      },
+      {
+        "theorem": "AlgebraicRealsMeager.countable_isMeagre",
+        "description": "In a T1 perfect space every countable set is meagre (from the parent entry)",
+        "module": "Proofs.AlgebraicRealsMeager"
+      },
+      {
+        "theorem": "AlgebraicRealsMeager.transcendentalReals_dense",
+        "description": "The transcendental reals are dense in ℝ (from the parent entry)",
+        "module": "Proofs.AlgebraicRealsMeager"
+      }
+    ],
+    "originalContributions": [
+      "compl_countable_isDenseGδ: PROVED that in any nonempty perfect T1 Baire space the complement of a countable set is a dense Gδ — combining the Fσ/Gδ duality with meagreness-driven density, strengthening the bare residuality statement (which only yields a dense Gδ subset)",
+      "not_isGδ_of_dense_of_disjoint_denseGδ: PROVED the abstract obstruction that a dense set disjoint from a dense Gδ set cannot itself be Gδ in a nonempty Baire space (two disjoint dense Gδ sets would have dense, hence nonempty, intersection)",
+      "transcendentalReals_isGδ / transcendentalReals_isDenseGδ: PROVED the transcendental reals are a (dense) Gδ subset of ℝ, exhibiting the residual witness from mem_residual as the set itself",
+      "algebraicReals_dense: PROVED the algebraic reals are dense in ℝ (they contain ℚ, which is dense)",
+      "algebraicReals_not_isGδ: PROVED the algebraic reals are NOT a Gδ subset of ℝ — the classical descriptive-set-theory obstruction (the same argument that ℚ is not Gδ), pinning the algebraic reals as Fσ-but-not-Gδ and the transcendentals as Gδ-but-not-Fσ"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Gδ and Fσ sets; the Borel hierarchy of ℝ",
+      "Baire category: residual sets and Dense.inter_of_Gδ",
+      "Density of ℚ in ℝ and countability of the algebraic reals"
+    ],
+    "lineCount": 136,
+    "relatedProblems": [
+      {
+        "id": "algebraic-reals-meager",
+        "relationship": "Parent: proves the algebraic reals are meagre and the transcendentals residual/dense; flagged 'quantify the comeagre transcendental complement as an explicit dense Gδ set' as an open question, resolved here"
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-02",
+        "relationship": "Grandparent: nested-interval uncountability of ℝ; the Gδ refinement complements its category-theoretic line"
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Ancestor: the algebraic reals are countable (the Fσ input reused here)"
+      }
+    ],
+    "assumptions": "0 axioms. Relies only on Mathlib's Gδ / Baire-category infrastructure, the perfect/Baire-space structure of ℝ, density of ℚ, and the countability of the algebraic reals.",
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Cantor (1874) showed the algebraic reals are countable; the Baire category theorem (Baire, 1899) then gives that they are meagre and the transcendentals comeagre. Descriptive set theory refines 'meagre vs comeagre' into the Borel hierarchy: a countable set is Fσ (a countable union of closed singletons), so its complement is Gδ. The classical fact that ℚ is not a Gδ subset of ℝ — equivalently that the irrationals are not Fσ — is the prototype of a Baire-category obstruction; the same argument applies verbatim to the algebraic reals. This entry formalizes both halves: the transcendentals are a dense Gδ, and the algebraic reals are Fσ but not Gδ.",
+    "problemStatement": "Exhibit the comeagre transcendental reals as an explicit dense Gδ set, and determine the exact Borel position of the algebraic reals: are they Gδ?",
+    "text": "A 136-line, 0-sorry, 0-axiom formalization in two layers. An abstract layer proves that the complement of a countable set is a dense Gδ in any nonempty perfect T1 Baire space, and that a dense set disjoint from a dense Gδ cannot be Gδ. A concrete layer instantiates at ℝ: the transcendental reals are a dense Gδ, the algebraic reals are dense, and — the headline — the algebraic reals are not Gδ.",
+    "proofStrategy": "Gδ of the transcendentals: the algebraic reals are countable (Algebraic.countable), and in the T1 space ℝ the complement of a countable set is Gδ (Set.Countable.isGδ_compl). Density of the transcendentals is inherited from residuality in the Baire space ℝ (parent entry). For the non-Gδ result: the algebraic reals contain ℚ (isAlgebraic_rat) which is dense (Rat.denseRange_cast), so they are dense; the transcendentals are a dense Gδ disjoint from them; if the algebraic reals were also Gδ, Dense.inter_of_Gδ would force their (empty) intersection with the transcendentals to be dense, contradicting nonemptiness of ℝ.",
+    "keyInsights": [
+      "**Borel position is sharper than category**: 'meagre' and 'residual' do not by themselves fix Gδ/Fσ status; here countability pins the algebraic reals as Fσ and the transcendentals as Gδ, a strictly finer fact.",
+      "**Residual ⇒ contains a dense Gδ; here the set IS one**: mem_residual only guarantees a dense Gδ subset, but countability makes the transcendentals themselves a dense Gδ.",
+      "**Two disjoint dense Gδ sets cannot coexist**: this single Baire-category fact (Dense.inter_of_Gδ) is the entire obstruction showing the algebraic reals are not Gδ.",
+      "**Same proof as 'ℚ is not Gδ'**: the obstruction needs only that the algebraic reals are dense, countable, and co-dense — exactly the properties of ℚ, so the classical irrationals-not-Fσ argument transfers unchanged.",
+      "**Abstract reusability**: not_isGδ_of_dense_of_disjoint_denseGδ and compl_countable_isDenseGδ hold in any (perfect T1) nonempty Baire space, so they apply to ℝⁿ, ℂ, and any nontrivial Banach space."
+    ],
+    "prerequisites": [
+      "Gδ / Fσ sets and the Set.Countable.isGδ_compl API",
+      "Baire category: residual sets, dense_of_mem_residual, Dense.inter_of_Gδ",
+      "Density of ℚ in ℝ; countability of the algebraic reals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: From Meagre to Gδ",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "File docstring and imports. States the open question inherited from the parent meagre entry — exhibit the transcendentals as an explicit dense Gδ — and frames the two results: the transcendentals are a dense Gδ, and the algebraic reals are Fσ-but-not-Gδ, distinguishing the three smallness notions at the level of the Borel hierarchy.",
+      "mathContext": "A countable set is Fσ; its complement is Gδ. Residuality only gives a dense Gδ subset, but countability promotes the complement itself to a dense Gδ."
+    },
+    {
+      "id": "abstract",
+      "title": "Abstract Layer: Countable Complements and Disjoint Dense Gδ Sets",
+      "startLine": 55,
+      "endLine": 90,
+      "summary": "compl_countable_isDenseGδ proves that in a nonempty perfect T1 Baire space the complement of a countable set is a dense Gδ (Gδ via Set.Countable.isGδ_compl, dense via meagreness and dense_of_mem_residual). not_isGδ_of_dense_of_disjoint_denseGδ proves that a dense set disjoint from a dense Gδ cannot be Gδ, using Dense.inter_of_Gδ against the empty intersection.",
+      "mathContext": "If $s$ countable then $s^c$ is Gδ and (in a perfect Baire space) dense; and two disjoint dense Gδ sets force a dense empty intersection, impossible."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete Layer: Algebraic and Transcendental Reals",
+      "startLine": 92,
+      "endLine": 136,
+      "summary": "transcendentalReals_isGδ and transcendentalReals_isDenseGδ instantiate the abstract result at ℝ. algebraicReals_dense shows the algebraic reals contain the dense rationals. algebraicReals_not_isGδ is the headline: the algebraic reals are not Gδ, derived from the abstract obstruction applied to the dense algebraics and the dense Gδ transcendentals.",
+      "mathContext": "Transcendentals $= \\{x : \\mathbb{R} \\mid \\neg\\,\\text{IsAlgebraic}\\ \\mathbb{Q}\\ x\\}$ is a dense Gδ; the algebraic reals are dense, hence not Gδ."
+    }
+  ],
+  "theorems": [
+    {
+      "name": "compl_countable_isDenseGδ",
+      "type": "supporting",
+      "description": "In a nonempty perfect T1 Baire space the complement of a countable set is a dense Gδ",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X] {s : Set X}, s.Countable → IsGδ sᶜ ∧ Dense sᶜ"
+    },
+    {
+      "name": "not_isGδ_of_dense_of_disjoint_denseGδ",
+      "type": "supporting",
+      "description": "A dense set disjoint from a dense Gδ set cannot itself be Gδ (in a nonempty Baire space)",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] [BaireSpace X] [Nonempty X] {s t : Set X}, Dense s → IsGδ s → IsGδ t → Dense t → Disjoint s t → False"
+    },
+    {
+      "name": "transcendentalReals_isGδ",
+      "type": "main",
+      "description": "The transcendental reals are a Gδ subset of ℝ",
+      "leanType": "IsGδ {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_isDenseGδ",
+      "type": "main",
+      "description": "The transcendental reals are a dense Gδ subset of ℝ",
+      "leanType": "IsGδ {x : ℝ | ¬ IsAlgebraic ℚ x} ∧ Dense {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "algebraicReals_dense",
+      "type": "supporting",
+      "description": "The algebraic reals are dense in ℝ (they contain the rationals)",
+      "leanType": "Dense {x : ℝ | IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "algebraicReals_not_isGδ",
+      "type": "main",
+      "description": "The algebraic reals are NOT a Gδ subset of ℝ — they are Fσ but not Gδ",
+      "leanType": "¬ IsGδ {x : ℝ | IsAlgebraic ℚ x}"
+    }
+  ],
+  "conclusion": {
+    "summary": "A 136-line, 0-sorry, 0-axiom formalization showing the transcendental reals are a dense Gδ in ℝ while the algebraic reals are Fσ but not Gδ, built on two reusable abstract lemmas about countable complements and disjoint dense Gδ sets in Baire spaces.",
+    "implications": "Locates the algebraic and transcendental reals exactly in the Borel hierarchy (Fσ ∖ Gδ and Gδ ∖ Fσ respectively), a strict refinement of the meagre/comeagre dichotomy. It resolves the parent entry's open question of exhibiting the comeagre transcendentals as a concrete dense Gδ, and the obstruction not_isGδ_of_dense_of_disjoint_denseGδ generalizes the classical 'ℚ is not Gδ' to any dense countable subset of a perfect Polish space.",
+    "openQuestions": [
+      "Formalize a generic 'dense countable set is Fσ but not Gδ in a perfect Polish space' theorem, abstracting algebraicReals_not_isGδ to apply uniformly to ℚ, the algebraic reals, and any countable dense set.",
+      "Pair the Gδ/Fσ classification with the measure-theoretic side (the algebraic reals are Lebesgue-null) and produce an explicit dense Gδ of full measure to witness the independence of category-smallness and measure-smallness on ℝ."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Kechris, Alexander S.",
+      "title": "Classical Descriptive Set Theory",
+      "year": "1995",
+      "venue": "Graduate Texts in Mathematics 156, Springer",
+      "note": "Borel hierarchy, Gδ/Fσ sets, and the Baire category theorem; the setting in which the abstract lemmas live."
+    },
+    {
+      "authors": "Oxtoby, John C.",
+      "title": "Measure and Category",
+      "year": "1980",
+      "venue": "Graduate Texts in Mathematics 2, Springer, 2nd edition",
+      "note": "The duality between meagre and null sets and the classical 'ℚ is not Gδ' obstruction reproduced here."
+    }
+  ],
+  "sorries": 0
+}

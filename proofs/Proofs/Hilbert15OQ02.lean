@@ -235,7 +235,11 @@ theorem lr_size_mismatch_zero (ν lam μ : Partition2)
     regardless of the content `λ`. -/
 theorem lr_no_containment_zero (ν lam μ : Partition2)
     (h : ¬ Partition2.contains ν μ) : lrCoeff2 ν lam μ = 0 := by
-  unfold lrCoeff2 Partition2.contains at h ⊢
+  -- v4.26.0 `unfold` requires every listed constant to occur at every listed
+  -- location; `lrCoeff2` does not occur in `h`, so the combined
+  -- `unfold ... at h ⊢` now fails. Split the two unfolds.
+  unfold Partition2.contains at h
+  unfold lrCoeff2
   simp only [Partition2.size]
   split_ifs <;> omega
 

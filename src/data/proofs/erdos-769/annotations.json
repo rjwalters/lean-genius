@@ -16,7 +16,11 @@
       "Homothety",
       "Packing problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Combinatorial geometry",
+      "Homothety",
+      "Packing problems"
+    ]
   },
   {
     "id": "ann-e769-decomp",
@@ -35,7 +39,11 @@
       "Geometric packing",
       "Homothetic copies"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Scaling and translation",
+      "Volume",
+      "Geometric packing"
+    ]
   },
   {
     "id": "ann-e769-c-function",
@@ -54,7 +62,11 @@
       "Threshold",
       "Axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Extremal functions",
+      "Thresholds",
+      "Axiomatization"
+    ]
   },
   {
     "id": "ann-e769-dim2",
@@ -73,7 +85,11 @@
       "Exact values",
       "Geometric constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Square tiling",
+      "Case analysis",
+      "Geometric constraints"
+    ]
   },
   {
     "id": "ann-e769-lower-bounds",
@@ -92,7 +108,11 @@
       "Connor-Marmorino 2018",
       "Exponential bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Exponential growth",
+      "Hadwiger problem",
+      "Lower bounds"
+    ]
   },
   {
     "id": "ann-e769-upper-bounds",
@@ -111,6 +131,10 @@
       "Hudelson 1998",
       "Primality dependence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Modular arithmetic",
+      "Primality",
+      "Constructive bounds"
+    ]
   }
 ]

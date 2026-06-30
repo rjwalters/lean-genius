@@ -83,6 +83,14 @@ theorem diagInter_subset_Iio (f : Ordinal → Set Ordinal) (o : Ordinal) :
     diagInter f o ⊆ Iio o :=
   fun _ h => h.1
 
+/-- The diagonal intersection is monotone in its family: if `f β ⊆ g β` for
+every `β < o`, then `diagInter f o ⊆ diagInter g o`. -/
+theorem diagInter_mono {f g : Ordinal → Set Ordinal} {o : Ordinal}
+    (h : ∀ β < o, f β ⊆ g β) : diagInter f o ⊆ diagInter g o := by
+  intro γ hγ
+  rw [mem_diagInter] at hγ ⊢
+  exact ⟨hγ.1, fun β hβ => h β (hβ.trans hγ.1) (hγ.2 β hβ)⟩
+
 /-- `Iio o` is a club below `o` when `o` is a successor-limit ordinal. -/
 theorem isClubBelow_Iio_of_isSuccLimit {o : Ordinal} (ho : IsSuccLimit o) :
     IsClubBelow (Iio o) o where
@@ -94,6 +102,18 @@ theorem isClubBelow_Iio_of_isSuccLimit {o : Ordinal} (ho : IsSuccLimit o) :
   unbounded := fun α hα => by
     have h1 : α + 1 < o := ho.succ_lt hα
     exact ⟨α + 1, h1, lt_add_one α, h1⟩
+
+/-- An unbounded-below set is nonempty whenever `0 < o` (apply unboundedness
+at `α = 0`). -/
+theorem IsUnboundedBelow.nonempty {S : Set Ordinal} {o : Ordinal}
+    (hS : IsUnboundedBelow S o) (ho : 0 < o) : S.Nonempty := by
+  obtain ⟨β, hβ, _, _⟩ := hS 0 ho
+  exact ⟨β, hβ⟩
+
+/-- A club below `o` is nonempty whenever `0 < o` (it is unbounded). -/
+theorem IsClubBelow.nonempty {S : Set Ordinal} {o : Ordinal}
+    (hS : IsClubBelow S o) (ho : 0 < o) : S.Nonempty :=
+  hS.unbounded.nonempty ho
 
 /-- **Diagonal Intersection is Closed** (0 sorries).
 
@@ -143,6 +163,16 @@ theorem IsRegressive.inter_preimage {f : Ordinal → Ordinal} {S : Set Ordinal}
     IsRegressive f (S ∩ f ⁻¹' {c}) :=
   hS.mono Set.inter_subset_left
 
+/-- Regressivity is preserved by unions: if `f` is regressive on both `S` and
+`T`, it is regressive on `S ∪ T`. -/
+theorem IsRegressive.union {f : Ordinal → Ordinal} {S T : Set Ordinal}
+    (hS : IsRegressive f S) (hT : IsRegressive f T) :
+    IsRegressive f (S ∪ T) := by
+  intro α hα hα0
+  rcases hα with h | h
+  · exact hS h hα0
+  · exact hT h hα0
+
 /-- Bridge to the bare `∀ α ∈ S, f α < α` hypothesis form used by the
 existing Fodor statement: under the standing assumption that `S` contains
 no zero, `IsRegressive f S` is equivalent to `∀ α ∈ S, f α < α`. -/
@@ -179,5 +209,22 @@ theorem IsStationaryBelow.of_subset {S T : Set Ordinal} {o : Ordinal}
     IsStationaryBelow T o := by
   intro C hC
   exact hMeet C hC (hS C hC)
+
+/-! ### Monotonicity helpers
+
+Superset-monotonicity of unboundedness and stationarity — the direction dual to
+`IsStationaryBelow.of_subset`. Enlarging a witnessing set preserves the property;
+these are the forms most sister slugs need and are universe-polymorphic. -/
+
+/-- Unboundedness below `o` is preserved under supersets. -/
+theorem IsUnboundedBelow.mono {S T : Set Ordinal} {o : Ordinal}
+    (hST : S ⊆ T) (hS : IsUnboundedBelow S o) : IsUnboundedBelow T o :=
+  fun α hα => let ⟨β, hβS, h1, h2⟩ := hS α hα; ⟨β, hST hβS, h1, h2⟩
+
+/-- Stationarity below `o` is preserved under supersets: any superset of a
+stationary set is stationary (it meets every club because the smaller set does). -/
+theorem IsStationaryBelow.mono {S T : Set Ordinal} {o : Ordinal}
+    (hST : S ⊆ T) (hS : IsStationaryBelow S o) : IsStationaryBelow T o :=
+  fun C hC => let ⟨γ, hγS, hγC⟩ := hS C hC; ⟨γ, hST hγS, hγC⟩
 
 end Ordinal

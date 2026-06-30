@@ -4,7 +4,7 @@
     "proofId": "erdos-1049",
     "range": {
       "startLine": 1,
-      "endLine": 31
+      "endLine": 24
     },
     "type": "concept",
     "title": "Module Documentation: Erdos Problem #1049",
@@ -27,7 +27,7 @@
     "proofId": "erdos-1049",
     "range": {
       "startLine": 32,
-      "endLine": 37
+      "endLine": 33
     },
     "type": "definition",
     "title": "tau: The Divisor Function",
@@ -49,7 +49,7 @@
     "proofId": "erdos-1049",
     "range": {
       "startLine": 38,
-      "endLine": 41
+      "endLine": 40
     },
     "type": "concept",
     "title": "tau_one: tau(1) = 1",
@@ -70,7 +70,7 @@
     "proofId": "erdos-1049",
     "range": {
       "startLine": 42,
-      "endLine": 49
+      "endLine": 46
     },
     "type": "concept",
     "title": "tau_prime: tau(p) = 2 for Primes",
@@ -90,8 +90,8 @@
     "id": "ann-1049-5",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 50,
-      "endLine": 68
+      "startLine": 52,
+      "endLine": 57
     },
     "type": "insight",
     "title": "tau_multiplicative: Multiplicativity of tau",
@@ -113,8 +113,8 @@
     "id": "ann-1049-6",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 69,
-      "endLine": 72
+      "startLine": 75,
+      "endLine": 77
     },
     "type": "definition",
     "title": "S: The Main Series S(t)",
@@ -135,8 +135,8 @@
     "id": "ann-1049-7",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 73,
-      "endLine": 92
+      "startLine": 79,
+      "endLine": 81
     },
     "type": "definition",
     "title": "D: The Divisor Series D(t)",
@@ -158,8 +158,8 @@
     "id": "ann-1049-8",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 93,
-      "endLine": 108
+      "startLine": 99,
+      "endLine": 107
     },
     "type": "concept",
     "title": "S_eq_D: The Classical Identity",
@@ -181,8 +181,8 @@
     "id": "ann-1049-9",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 109,
-      "endLine": 119
+      "startLine": 115,
+      "endLine": 157
     },
     "type": "insight",
     "title": "geometric_divisor: Geometric Series Step",
@@ -203,8 +203,8 @@
     "id": "ann-1049-10",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 120,
-      "endLine": 123
+      "startLine": 165,
+      "endLine": 167
     },
     "type": "insight",
     "title": "erdos_integer_irrational: Erdos's 1948 Theorem",
@@ -226,8 +226,8 @@
     "id": "ann-1049-11",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 124,
-      "endLine": 130
+      "startLine": 169,
+      "endLine": 170
     },
     "type": "definition",
     "title": "S_at_2: S(2) Definition",
@@ -247,8 +247,8 @@
     "id": "ann-1049-12",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 131,
-      "endLine": 141
+      "startLine": 172,
+      "endLine": 174
     },
     "type": "insight",
     "title": "S_at_2_irrational: Irrationality of S(2)",
@@ -269,8 +269,8 @@
     "id": "ann-1049-13",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 142,
-      "endLine": 148
+      "startLine": 188,
+      "endLine": 190
     },
     "type": "definition",
     "title": "ChowlaConjecture: The Open Conjecture",
@@ -292,10 +292,10 @@
     "id": "ann-1049-14",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 149,
-      "endLine": 158
+      "startLine": 195,
+      "endLine": 197
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "chowla_for_integers: Partial Verification",
     "content": "Proves Chowla's conjecture for the special case of integer t >= 2, directly applying Erdos's axiomatized result. This shows the conjecture is known for a substantial (but measure-zero) subset of the rationals greater than 1.",
     "mathContext": "For integer $t \\ge 2$: $S(t) \\notin \\mathbb{Q}$, confirming Chowla's conjecture on $\\{2, 3, 4, \\ldots\\} \\subset \\mathbb{Q}_{>1}$.",
@@ -313,8 +313,8 @@
     "id": "ann-1049-15",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 159,
-      "endLine": 161
+      "startLine": 205,
+      "endLine": 206
     },
     "type": "concept",
     "title": "S_at_2_approx: Numerical Bounds on S(2)",
@@ -333,8 +333,8 @@
     "id": "ann-1049-16",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 162,
-      "endLine": 185
+      "startLine": 208,
+      "endLine": 209
     },
     "type": "definition",
     "title": "erdosBorweinConstant: The Named Constant",
@@ -354,8 +354,8 @@
     "id": "ann-1049-17",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 186,
-      "endLine": 190
+      "startLine": 232,
+      "endLine": 234
     },
     "type": "definition",
     "title": "TranscendentalConjecture",
@@ -377,8 +377,8 @@
     "id": "ann-1049-18",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 191,
-      "endLine": 204
+      "startLine": 236,
+      "endLine": 245
     },
     "type": "concept",
     "title": "transcendental_implies_chowla",
@@ -400,8 +400,8 @@
     "id": "ann-1049-19",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 205,
-      "endLine": 209
+      "startLine": 257,
+      "endLine": 259
     },
     "type": "definition",
     "title": "isLambertSeries: Lambert Series Definition",
@@ -423,8 +423,8 @@
     "id": "ann-1049-20",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 210,
-      "endLine": 234
+      "startLine": 261,
+      "endLine": 264
     },
     "type": "concept",
     "title": "S_as_lambert: S(t) as Lambert Series",
@@ -445,8 +445,8 @@
     "id": "ann-1049-21",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 235,
-      "endLine": 255
+      "startLine": 289,
+      "endLine": 292
     },
     "type": "concept",
     "title": "S_bounds: Asymptotic Bounds",
@@ -468,8 +468,8 @@
     "id": "ann-1049-22",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 256,
-      "endLine": 271
+      "startLine": 300,
+      "endLine": 311
     },
     "type": "concept",
     "title": "erdos_1049_partial: Main Known Result",
@@ -488,8 +488,8 @@
     "id": "ann-1049-23",
     "proofId": "erdos-1049",
     "range": {
-      "startLine": 272,
-      "endLine": 280
+      "startLine": 321,
+      "endLine": 323
     },
     "type": "insight",
     "title": "erdos_1049: Final Statement",

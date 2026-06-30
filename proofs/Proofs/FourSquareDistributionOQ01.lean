@@ -59,6 +59,31 @@ What is **missing** for a full Lean proof:
 * numerically verified: n = 1..10
 -/
 
+-- v4.26.0 compatibility shim: the `ord_proj[p] n` / `ord_compl[p] n` notation
+-- and the `Nat.ord_proj_mul_ord_compl_eq_self` / `Nat.ord_compl_pos` /
+-- `Nat.not_dvd_ord_compl` lemmas were renamed/removed in Mathlib v4.26.0. The
+-- proof body below was authored against v4.25.x; restore the old surface here so
+-- the algebraic content stays unchanged. Definitions match the historic Mathlib
+-- ones (`ord_compl[p] n = n / p ^ n.factorization p`).
+local notation "ord_proj[" p "] " n:max => p ^ (Nat.factorization n p)
+local notation "ord_compl[" p "] " n:max => n / (p ^ (Nat.factorization n p))
+
+namespace Nat
+
+theorem ord_proj_mul_ord_compl_eq_self (n p : ℕ) :
+    p ^ n.factorization p * (n / p ^ n.factorization p) = n :=
+  Nat.mul_div_cancel' (Nat.ordProj_dvd n p)
+
+theorem ord_compl_pos (p : ℕ) {n : ℕ} (hn : n ≠ 0) :
+    0 < n / p ^ n.factorization p :=
+  Nat.ordCompl_pos p hn
+
+theorem not_dvd_ord_compl {p n : ℕ} (hp : p.Prime) (hn : n ≠ 0) :
+    ¬ p ∣ n / p ^ n.factorization p :=
+  Nat.not_dvd_ordCompl hp hn
+
+end Nat
+
 namespace FourSquareDistributionOQ01
 
 open Finset Nat
@@ -107,7 +132,7 @@ theorem jacobiR4_10 : jacobiR4 10 = 144 := by native_decide
 
 /-- Bound a tuple component to [-n, n] via offset by n. -/
 def shiftedRange (n : ℕ) : List ℤ :=
-  (List.range (2 * n + 1)).map (fun k => (k : ℤ) - n)
+  (List.range (2 * n + 1)).map (fun k => Int.ofNat k - Int.ofNat n)
 
 /-- Brute-force count of integer 4-tuples (a, b, c, d) ∈ ℤ⁴ with
     a² + b² + c² + d² = n.
@@ -1408,7 +1433,7 @@ theorem sigmaStar_pos {n : ℕ} (hn : 0 < n) : 0 < sigmaStar n := by
       _ ≤ ∑ d ∈ n.divisors, if (4 : ℕ) ∣ d then 0 else d :=
           Finset.single_le_sum
             (f := fun d => if (4 : ℕ) ∣ d then 0 else d)
-            (fun i _ => by split_ifs <;> exact Nat.zero_le _)
+            (fun i _ => Nat.zero_le _)
             h1_mem
   omega
 
@@ -1479,7 +1504,7 @@ theorem sigmaStar_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) :
   have h4_1 : ¬ (4 : ℕ) ∣ (1 : ℕ) := by decide
   have h1_ne_p : (1 : ℕ) ≠ p := hp.one_lt.ne
   unfold sigmaStar
-  rw [Nat.divisors_prime hp]
+  rw [hp.divisors]
   have h1_not_mem : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
     rw [Finset.mem_singleton]; exact h1_ne_p
   rw [show ({1, p} : Finset ℕ) = insert (1 : ℕ) {p} from rfl,
@@ -1998,9 +2023,7 @@ theorem jacobiR4_uniqueness_from_atomic_hypotheses
       exact (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mpr
         (Nat.one_le_iff_ne_zero.mpr hk_ne)
     have h_eq : ord_compl[2] n = n := by
-      have hn_factored : n = 2 ^ n.factorization 2 * ord_compl[2] n := hkm.symm
-      rw [hk_zero, pow_zero, one_mul] at hn_factored
-      exact hn_factored.symm
+      simp [hk_zero]
     rw [if_neg h2n, h_eq]
     exact Hodd n h2n
 
@@ -2167,9 +2190,7 @@ theorem sigmaStar_uniqueness_from_canonical_hypotheses
       exact (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mpr
         (Nat.one_le_iff_ne_zero.mpr hk_ne)
     have h_eq : ord_compl[2] n = n := by
-      have hn_factored : n = 2 ^ n.factorization 2 * ord_compl[2] n := hkm.symm
-      rw [hk_zero, pow_zero, one_mul] at hn_factored
-      exact hn_factored.symm
+      simp [hk_zero]
     rw [if_neg h2n, h_eq, one_mul]
     exact Hodd n h2n
 
@@ -2371,8 +2392,11 @@ private lemma r4Count_eq_nested_sum (n : ℕ) :
     to `Finset.card`. -/
 private lemma shiftedRange_nodup (n : ℕ) : (shiftedRange n).Nodup := by
   unfold shiftedRange
-  refine List.Nodup.map ?_ (List.nodup_range _)
-  intro a b hab; omega
+  apply List.Nodup.map
+  · intro a b hab
+    simp only [Int.ofNat_eq_natCast] at hab
+    omega
+  · exact List.nodup_range
 
 /-- **Sublemma 3.1 building-block.** Lifting `shiftedRange n` to a
     `Finset ℤ` recovers exactly the integer interval `[-n, n]`. The
@@ -2381,22 +2405,15 @@ private lemma shiftedRange_nodup (n : ℕ) : (shiftedRange n).Nodup := by
     using `Int.toNat_of_nonneg`. -/
 private lemma shiftedRange_toFinset_eq_Icc (n : ℕ) :
     (shiftedRange n).toFinset = Finset.Icc (-(n : ℤ)) (n : ℤ) := by
+  unfold shiftedRange
   ext x
-  simp only [List.mem_toFinset, shiftedRange, List.mem_map, List.mem_range,
+  simp only [List.mem_toFinset, List.mem_map, List.mem_range, Int.ofNat_eq_natCast,
     Finset.mem_Icc]
   constructor
   · rintro ⟨k, hk, rfl⟩
-    have hk' : k ≤ 2 * n := by omega
-    have hk_int : (k : ℤ) ≤ 2 * (n : ℤ) := by exact_mod_cast hk'
-    have hk_nn : (0 : ℤ) ≤ (k : ℤ) := by exact_mod_cast Nat.zero_le k
-    refine ⟨by linarith, by linarith⟩
+    omega
   · rintro ⟨hlo, hhi⟩
-    have hge : (0 : ℤ) ≤ x + n := by linarith
-    have h_eq : ((x + n).toNat : ℤ) = x + n := Int.toNat_of_nonneg hge
-    refine ⟨(x + n).toNat, ?_, ?_⟩
-    · have h_lt : ((x + n).toNat : ℤ) < 2 * (n : ℤ) + 1 := by linarith
-      exact_mod_cast h_lt
-    · linarith
+    exact ⟨(x + n).toNat, by omega, by omega⟩
 
 /-- **Sublemma 3.1 (inner-level Finset.card bridge, S18b).** For any
     decidable predicate `q : ℤ → Prop`, the `List.filter`-length of

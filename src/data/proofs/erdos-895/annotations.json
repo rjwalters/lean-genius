@@ -379,7 +379,7 @@
       "startLine": 137,
       "endLine": 139
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Hindman Sets: All Finite Sub-Sums of a Base",
     "content": "**`hindmanSet base`:** The set of all nonempty finite sub-sums of `base`:\n\n`{s | ∃ T : Finset ℕ, T ⊆ base ∧ T.Nonempty ∧ T.sum id = s}`\n\nExample: `hindmanSet {1, 2} = {1, 2, 3}` (singletons give 1, 2; pair gives 3).\n\n**Hindman's Theorem (1974):** For any finite coloring of ℕ, some color class contains an infinite Hindman set (all finite sums of some infinite base).",
     "mathContext": "**Hindman's Theorem** (proved via ultrafilters by Galvin-Glazer, or combinatorially by Hindman): for any $k$-coloring of $\\mathbb{N}$, $\\exists$ infinite $B$ such that $\\{\\sum_{x \\in T} x : T \\subseteq B, T \\text{ finite}, T \\neq \\emptyset\\}$ is monochromatic. These are **IP sets** (idempotent polynomial). Hajnal's conjecture asks for a GRAPH analog: an independent set containing a finite Hindman structure.",
@@ -405,7 +405,7 @@
       "startLine": 141,
       "endLine": 146
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Hajnal's Conjecture: Independent Hindman Sets (OPEN)",
     "content": "**`hajnalConjecture`:** $\\exists N$ such that for all triangle-free $G$ on $n \\geq N$ vertices, there exists a base `base` with $\\geq 2$ elements where ALL finite sub-sums form an independent set.\n\nThis dramatically strengthens Problem #895: instead of one triple $(a, b, a+b)$, an entire Hindman structure must be independent. Status: **OPEN** as of 2026.",
     "mathContext": "`hajnalConjecture` = $\\exists N, \\forall n \\geq N, \\forall G \\text{ triangle-free}: \\exists \\text{base} \\subseteq \\text{Fin}\\,n, |\\text{base}| \\geq 2 \\land \\text{hindmanSet}(\\text{base}) \\text{ is independent in } G$. The `base.image (·.val)` coerces `Fin n → ℕ` for the `hindmanSet`. The gap: Problem #895 (proved, $N=18$) vs Hajnal's conjecture (open) measures the difficulty of finding unbounded arithmetic structure in independent sets.",

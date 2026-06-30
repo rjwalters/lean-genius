@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview-moments",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 5, "endLine": 64 },
+    "type": "context",
+    "title": "The Moment Family and the Rising-Binomial Technique",
+    "content": "The weighted geometric sums ∑ nᵏ·rⁿ are the moments of the geometric distribution, arising from repeatedly applying r·d/dr to ∑ rⁿ = 1/(1−r), with Eulerian-polynomial numerators. Mathlib has only the zeroth and first moments; the sibling geometric-series-oq-07 added the second via a degree-2 rising-binomial identity, and this entry takes the next step to the third. The technique: every nᵏ lies in the finite span of {(n+j choose j) : j ≤ k} that Mathlib already sums, so each moment is a finite linear combination of known HasSum facts rather than a fresh convergence proof.",
+    "mathContext": "$\\sum r^n,\\ \\sum n r^n=\\frac{r}{(1-r)^2},\\ \\sum n^2 r^n=\\frac{r(1+r)}{(1-r)^3},\\ \\sum n^3 r^n=\\frac{r(1+4r+r^2)}{(1-r)^4}$.",
+    "significance": "context",
+    "relatedConcepts": ["moments", "Eulerian polynomials", "rising-binomial basis", "geometric distribution"],
+    "prerequisites": ["geometric series", "infinite sums"]
+  },
+  {
+    "id": "ann-cast-choose-three",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 72, "endLine": 90 },
+    "type": "theorem",
+    "title": "The Column-3 Binomial Cast",
+    "content": "`cast_choose_three`: (n+3 choose 3 : ℝ) = (n+1)(n+2)(n+3)/6. Mathlib supplies cast lemmas only up to column 2 (Nat.cast_choose_two), so this is derived from Nat.cast_choose (the factorial form b!/(a!(b−a)!)) together with the factorial expansion (n+3)! = (n+1)(n+2)(n+3)·n! (three applications of Nat.factorial_succ), then field_simp. This is the one genuinely new piece of infrastructure the degree-3 moment needs.",
+    "mathContext": "$\\binom{n+3}{3}=\\frac{(n+3)!}{3!\\,n!}=\\frac{(n+1)(n+2)(n+3)}{6}$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.cast_choose", "Nat.factorial_succ", "binomial coefficient", "column-3 cast"],
+    "prerequisites": ["binomial coefficients", "factorials"]
+  },
+  {
+    "id": "ann-cube-eq",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 92, "endLine": 99 },
+    "type": "theorem",
+    "title": "The Cube Identity in the Rising-Binomial Basis",
+    "content": "`cube_eq`: n³ = 6·(n+3 choose 3) − 12·(n+2 choose 2) + 7·(n+1 choose 1) − 1, cast to ℝ. Substituting cast_choose_three, Nat.cast_choose_two, and Nat.choose_one_right and closing by push_cast; ring. The coefficients (6,−12,7,−1) are Newton's forward-difference (binomial) transform of the cube sequence — expanding n³ against the rising-binomial basis is exactly finite-difference calculus, with Stirling-number-weighted coefficients.",
+    "mathContext": "$n^3=6\\binom{n+3}{3}-12\\binom{n+2}{2}+7\\binom{n+1}{1}-1$; coefficients $=$ forward-difference transform.",
+    "significance": "key",
+    "relatedConcepts": ["forward differences", "binomial transform", "Stirling numbers", "basis expansion"],
+    "prerequisites": ["binomial coefficients", "finite differences"]
+  },
+  {
+    "id": "ann-low-moments",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 101, "endLine": 112 },
+    "type": "context",
+    "title": "The Zeroth and First Moments",
+    "content": "tsum_geometric (∑ rⁿ = 1/(1−r), the geometric series itself) and tsum_mul_geometric (∑ n·rⁿ = r/(1−r)², restating Mathlib's tsum_coe_mul_geometric_of_norm_lt_one) are displayed to show the full low-order moment family. They are the k = 0 and k = 1 cases; the sibling oq-07 gives k = 2 and this entry adds k = 3.",
+    "mathContext": "$\\sum_n r^n=\\frac{1}{1-r}$ (zeroth), $\\sum_n n r^n=\\frac{r}{(1-r)^2}$ (first).",
+    "significance": "supporting",
+    "relatedConcepts": ["zeroth moment", "first moment", "moment family"],
+    "prerequisites": ["geometric series"]
+  },
+  {
+    "id": "ann-third-moment",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 114, "endLine": 159 },
+    "type": "theorem",
+    "title": "The Third Moment ∑ n³·rⁿ = r(1+4r+r²)/(1−r)⁴",
+    "content": "`hasSum_cube_mul_geometric`: the headline. Takes the four rising-binomial HasSum facts hasSum_choose_mul_geometric_of_norm_lt_one at k = 3,2,1,0 (values 1/(1−r)^{k+1}) and forms the linear combination 6·h₃ − 12·h₂ + 7·h₁ − 1·h₀ via HasSum.mul_left/add/sub. By cube_eq the summand equals n³·rⁿ, and the value 6/(1−r)⁴ − 12/(1−r)³ + 7/(1−r)² − 1/(1−r) collapses to r(1+4r+r²)/(1−r)⁴ by field_simp; ring (core: 6 − 12(1−r) + 7(1−r)² − (1−r)³ = r(1+4r+r²)). tsum and summability forms follow via HasSum.tsum_eq/summable.",
+    "mathContext": "$\\sum_n n^3 r^n = 6\\cdot\\frac{1}{(1-r)^4}-12\\cdot\\frac{1}{(1-r)^3}+7\\cdot\\frac{1}{(1-r)^2}-\\frac{1}{1-r}=\\frac{r(1+4r+r^2)}{(1-r)^4}$.",
+    "significance": "critical",
+    "relatedConcepts": ["hasSum_choose_mul_geometric_of_norm_lt_one", "HasSum.mul_left", "linear combination", "field_simp"],
+    "prerequisites": ["HasSum arithmetic", "field arithmetic"]
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "geometric-series-oq-10",
+    "range": { "startLine": 161, "endLine": 167 },
+    "type": "technique",
+    "title": "Concrete Value ∑ n³/2ⁿ = 26",
+    "content": "A sanity check at r = 1/2: ∑ n³·(1/2)ⁿ = 26, since r(1+4r+r²)/(1−r)⁴ = (1/2)(13/4)/(1/16) = 26. Instantiates tsum_cube_mul_geometric and finishes by norm_num, anchoring the symbolic closed form to a verifiable numerical value.",
+    "mathContext": "$\\sum_n n^3/2^n=\\frac{(1/2)(1+2+1/4)}{(1/2)^4}=\\frac{(1/2)(13/4)}{1/16}=26$.",
+    "significance": "technical",
+    "relatedConcepts": ["concrete instance", "numerical verification", "norm_num"],
+    "prerequisites": ["arithmetic"]
+  }
+]

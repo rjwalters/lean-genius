@@ -1,10 +1,108 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped — uniformDrawProb + collisionAdj defs, basic bounds, outer-measure faithful link, structure + bridge; Docker 7743 jobs clean at v4.26.0; +135 LOC, 0 new sorries, 0 new axioms)
+**Phase**: S14 BLOCKED (OQ-01-B WitnessTree ACT is Docker-gated; S13 PREP skeleton paste-ready. Build-free docstring STATE-SYNC shipped this session.)
 **Path**: full
-**Since**: 2026-06-10
-**Iteration**: 14
+**Since**: 2026-06-12
+**Iteration**: 17
+**Last Updated**: 2026-06-14 (S15 GATE-SYNC, researcher-1 — propagated the S14 BLOCKED flag to the gates `claim-random` reads)
+
+## S15 GATE-SYNC — researcher-1, 2026-06-14
+
+The S14 BLOCKED flag lived in state.md only: the research JSON read
+`status: "active"` / `phase: "OBSERVE"` and `.lean/state/candidate-pool.json`
+read `"in-progress"`, so `claim-random` kept re-serving this RICH slug.
+Aligned both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase` →
+`blocked`/`BLOCKED`; pool → `"blocked"`, terminal). **Docker-transient block**:
+the OQ-01-B WitnessTree ACT skeleton is paste-ready (S13 PREP) and buildable
+once Docker returns — un-block by reverting these gates then. No metadata/Lean
+change. (Independent of the parent-slug gallery realign in open PR #24101,
+which touches `src/data/proofs/prob-method-lovasz-local/` only.)
+
+## S14 STATE-SYNC + flag BLOCKED — researcher-1, 2026-06-13
+
+**Mode**: STATE-SYNC (comment-only `.lean` docstring fix; no code/axiom/sorry
+semantics changed) + flag `blocked`.
+
+**Trigger**: Docker daemon down (probes killed at exit 144); the only forward
+move (S14 ACT — paste the S13 WitnessTree skeleton into a new Part VI and
+Docker-verify the `isProper` recursion form) is build-gated and cannot run.
+
+**Build-free win**: the `MoserTardos.lean` header docstring was stale and
+self-contradictory:
+1. It claimed the two main theorems are stated "(with `sorry`)" and that a
+   future PR does "Final integration replacing the `sorry`s below". The file
+   in fact has **0 code `sorry`** — `mt_expected_step_bound` and
+   `mt_terminates_as` are *weakened placeholder* statements (algebraic-shell
+   inequalities), fully proved. The only `sorry` tokens in the file are these
+   two prose mentions inside the header comment.
+2. The roadmap listed Parts I–IV only; it omitted **Part V** (the S12 ACT
+   refined uniform-draw layer: `uniformDrawProb`, `collisionAdj`,
+   `LLLAdmissibleUniform`, `LLLAdmissibleUniform.toLLLAdmissible`).
+
+Corrected both: header now states "0 `sorry`, 0 `axiom`", lists Part V, and
+re-points the deferred WitnessTree item at S14 ACT / Docker-gated build.
+
+**Bearer metrics (verified against source, comment-stripped):**
+- `LovaszLocalLemma.lean` (primary): 0 sorry, 0 axiom, theoremCount 25
+  (include-private — `private theorem pow2_plus_one_le` at L83), 364 lines.
+  meta.json `leanFile` block consistent (definitionCount is deployer-owned).
+- `MoserTardos.lean` (additionalFile): 0 code sorry, 0 axiom, 14 theorems.
+
+**Honesty**: comment-only `.lean` edit — no semantics changed, so no Docker
+build is implied or claimed. Cannot machine-verify under the current blackout;
+the change cannot affect compilation (delimiters untouched, body unchanged).
+
+**Next (unblock when Docker returns)**: S14 ACT — paste the S13 PREP §3
+`inductive WitnessTree` / `labelOf` / `inclNbhd` / `isProper` skeleton into a
+new Part VI of `MoserTardos.lean`, Docker-verify the recursion form
+(`List.Forall` > `sizeOf` > mutual), add `DecidablePred isProper` + leaf/label
+sanity lemmas (~200 LOC, 0 new sorries/axioms).
+
+## S13 PREP (OQ-01-B WitnessTree encoding design) — researcher-2, 2026-06-12
+
+**Mode**: PREP (doc-only — no Lean / problem.md / knowledge.md / meta.json edits).
+
+**Outcome**: resolves the central definitional risk for OQ-01-B (witness
+trees) flagged by `knowledge.md` ("the hardest part — rooted labelled trees
+with `Finset`-valued children"). Key findings:
+
+1. **Positivity wall (resolved).** `inductive WitnessTree | node : Fin
+   numEvents → Finset (WitnessTree P) → _` is rejected by Lean's strict-
+   positivity checker: `Finset α = {s : Multiset α // s.Nodup}` and
+   `Multiset α = Quotient (List.Perm …)`; nested inductive occurrence under a
+   `Quotient` is not certifiable. **Fix (D1): children are `List`**, and the
+   "set of distinct-label children" semantics is recovered by a `Nodup`-on-
+   labels side-condition in `isProper` (which is exactly the MT requirement).
+   `inductive T | mk : List T → T` is strictly positive and compiles.
+
+2. **`isProper` recursion (narrowed to 3 ranked forms).** A literal
+   `∀ t ∈ ch, isProper t` triggers well-founded recursion; **D2 recommends
+   `List.Forall isProper ch`** (structural along the spine). Fallbacks if the
+   v4.26.0 elaborator balks: explicit `termination_by sizeOf`, then a mutual
+   `isProperList` helper. This is the one residual risk the ACT must Docker-
+   check; ranked confidence `List.Forall` > `sizeOf` > mutual.
+
+3. **Parametrise by `MTProblem` (D3), settling the S1 open question.** The
+   S12 ACT put the canonical `collisionAdj` + `uniformDrawProb` on `P`; the
+   S15 probability bound multiplies `uniformDrawProb (labelOf v)` over nodes,
+   so the tree must see `P`. The proper neighbourhood is the *inclusive*
+   `Γ⁺(i) = insert i (collisionAdj i)`.
+
+**Deliverable**: paste-ready S14 ACT skeleton (`inductive WitnessTree`,
+`labelOf`, `inclNbhd`, `isProper`) in §3 of the session memo, plus a bearer
+check (no new absences at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+
+**Honesty**: doc-only; no build claimed. Retires the positivity risk with
+certainty and narrows the recursion risk to three candidate forms for S14 to
+test empirically.
+
+**Next**: S14 ACT — paste the skeleton into a new `§ Part VI` of
+`MoserTardos.lean`, Docker-verify the recursion form, add `DecidablePred
+isProper` + leaf/label sanity lemmas (~200 LOC, 0 new sorries/axioms).
+
+See `sessions/2026-06-12-s13-prep-witnesstree-encoding.md` for the full memo
+(positivity analysis, three recursion forms, paste-ready skeleton, bearer table).
 
 ## S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped + Docker-verified) — researcher-1, 2026-06-10
 

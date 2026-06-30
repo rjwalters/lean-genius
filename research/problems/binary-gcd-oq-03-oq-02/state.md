@@ -1,8 +1,35 @@
 # Current State
 
-**Phase**: ACT (S50 BUILD-VERIFY; S47 ACT PART XXXI **VERIFIED CLEAN, 3059/3059 jobs**; G9 `proofs/.lake` self-loop empirically confirmed INERT for Docker builds — qualifier withdrawn)
-**Since**: 2026-06-01T09:21:00Z (S50 BUILD-VERIFY absorbs T+2d post-S49; G9-INERT empirical proof; 3 S47 theorems now formally verified)
-**Iteration**: 50 (S50 BUILD-VERIFY, researcher-1; tests S49's "defer until G9 clears" recommendation against empirical Docker-bypass)
+**Phase**: BLOCKED (S51 FLAG, 2026-06-13, researcher-1: the recommended next ACT — Option G4 mid-point split symmetry (~30-40 LOC, S46 PREP §3 menu) — is prepped but needs a Docker build to verify, and the build route is down today (`docker info` times out; verification blackout 2026-06-13). See §"Why blocked" below.)
+**Since**: 2026-06-13 (S51 BLOCKED flag, this session); 2026-06-01T09:21:00Z (S50 BUILD-VERIFY, 3 S47 theorems formally verified, 3059/3059 jobs)
+**Iteration**: 51 (S51 BLOCKED: next ACT track G4 is Docker-gated; PREP (S46 §3 menu) complete — holding for Docker. NB Docker was up on 2026-06-01 for S50 but is down again today — the blackout is intermittent, probe next session.)
+
+## Why blocked (S51, 2026-06-13)
+
+The slug is healthy — S50 (2026-06-01) Docker-verified the S47 PART XXXI
+firing-count theorems (3059/3059 jobs), and the sole remaining code
+`sorry` (`hgcdMatrix_row_output_le` recursive case,
+`BinaryGcdOQ03OQ02.lean:1078`) is a known dead-end already refuted as
+stated in PART XIV (not the active work front). Forward progress is the
+S50 §E recommendation, which is Docker-gated:
+
+1. **Next ACT is concrete but Docker-gated.** S50 §E recommends Option
+   G4 (mid-point split symmetry, ~30-40 LOC, LOW risk), prepped in S46
+   PREP §3 menu, feeding the eventual Schönhage half-GCD complexity
+   skeleton. It adds new Lean and must be Docker-built to verify; with
+   the daemon down today it cannot be checked.
+2. **PREP is complete.** The G4/G5 symmetry menu, bearer pins, and risk
+   acceptance are recorded across S46–S50. Re-deriving them is churn.
+3. **No verification route today.** `docker info` times out (daemon
+   down) and the Aristotle backend 404s — neither a local build nor
+   proof search can confirm a discharge this session.
+
+**Unblock when**: the Docker build route returns. Then implement S50 §E
+Option G4 (mid-point split symmetry) per S46 PREP §3, and verify with
+`./proofs/scripts/docker-build.sh Proofs.BinaryGcdOQ03OQ02PathA`.
+
+## Latest Iteration (S50 BUILD-VERIFY, HISTORICAL — preserved below)
+
 **Last session**: S50 BUILD-VERIFY — `docker-build.sh Proofs.BinaryGcdOQ03OQ02PathA` SUCCEEDED in ~440s wall-clock (3059/3059 jobs, 0 errors, 1 nuisance `simpa→simp` linter warning at PathA.lean:703). All 3 S47 ACT PART XXXI theorems (`outerGuardFiringCount_{succ,mono_hi,le_triangular}`) **formally verified**. G9 self-loop confirmed INERT — Docker `-v` mount bypasses the host symlink loop.
 
 ## Current Focus (post-S50 BUILD-VERIFY)

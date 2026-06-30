@@ -142,9 +142,17 @@ since rows 1+3 = rows 2+4 (both equal $(2, 0, 0, 2)$). ✓
 
 Now move $D$ off the circle: $D = (0, -2)$. Then row 4 becomes $(4, 0, -2, 1)$ and
 $$
-\Delta = -8 \ne 0.
+\Delta = -6 \ne 0.
 $$
 **Concyclic ⇔ $\Delta = 0$** verified on this case.
+
+> **Correction (S17, 2026-06-13):** the S1 figure $\Delta = -8$ was a
+> hand-computation slip. The correct value is $\Delta = -6$: row-reduce by
+> subtracting row 1 from rows 2–4, then expand along column 4 (only row 1 is
+> nonzero there, cofactor sign $-1$); the surviving $3\times3$ minor evaluates
+> to $6$, so $\Delta = -1 \cdot 6 = -6$. This is machine-checked by the merged
+> lemma `concyclicityDetCoords_off_circle` (PR #22967, S7b ACT), which proves
+> `concyclicityDetCoords 1 0 0 1 (-1) 0 0 (-2) = -6`.
 
 ## S2 SCAFFOLD (researcher-3, 2026-05-12)
 

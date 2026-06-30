@@ -117,76 +117,156 @@
   ],
   "sections": [
     {
-      "id": "ramsey-definition",
-      "title": "Definition and Probabilistic Lower Bound",
-      "startLine": 26,
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 39,
+      "mathContext": "Setup for Ramsey-number extensions, centered on the recursive upper bound $R(r,s)\\le\\binom{r+s-2}{r-1}$.",
+      "summary": "Module header, imports, and the `ramseyUpperBound r s = C(r+s-2, r-1)` definition used throughout as the computable diagonal/off-diagonal upper bound."
+    },
+    {
+      "id": "probabilistic-lower-bound",
+      "title": "Part I: The Probabilistic Lower Bound (Erdős 1947)",
+      "startLine": 40,
+      "endLine": 62,
+      "mathContext": "Erdős 1947: $R(k,k)>2^{k/2}$ by the probabilistic method (random 2-coloring of $K_n$).",
+      "summary": "Part I. The classical Erdős (1947) probabilistic lower bound $R(k,k)\\ge 2^{k/2}$ stated as the axiom `erdos_probabilistic_lower_bound`, the founding result of the probabilistic method in combinatorics."
+    },
+    {
+      "id": "off-diagonal-bounds",
+      "title": "Part II: Off-Diagonal Bounds",
+      "startLine": 63,
       "endLine": 90,
-      "summary": "ramseyUpperBound R(r,s) = C(r+s-2, r-1) (binomial bound). Axiomatizes Erdos probabilistic lower bound (R(k,k) > 2^(k/2)) and off-diagonal AKS/Kim bounds for R(3,k).",
-      "mathContext": "$R(r,s) \\leq \\binom{r+s-2}{r-1}$; Erdős 1947: $R(k,k) > 2^{k/2}$ (first moment, random coloring); AKS: $R(3,k) = O(k^2/\\log k)$; Kim: $R(3,k) = \\Omega(k^2/\\log k)$"
+      "mathContext": "$R(3,k)=\\Theta(k^2/\\log k)$: Ajtai-Komlós-Szemerédi upper bound and Kim's matching lower bound.",
+      "summary": "Part II. Off-diagonal $R(3,k)$ bounds: the Ajtai-Komlós-Szemerédi upper bound (`aks_r3k_upper_bound`) and Kim's matching lower bound (`kim_r3k_lower_bound`), pinning $R(3,k)=\\Theta(k^2/\\log k)$."
     },
     {
-      "id": "small-values-properties",
-      "title": "Small Values and Pascal Triangle Properties",
+      "id": "concrete-small-bounds",
+      "title": "Part III: Concrete Small Ramsey Bounds",
       "startLine": 91,
-      "endLine": 260,
-      "summary": "Computes ramseyUpperBound for R(3,3) through R(6,6) via native_decide. Proves monotonicity, symmetry R(r,s)=R(s,r), ramseyUpperBound_pascal recursion, and strict monotonicity.",
-      "mathContext": "$R(3,3)\\leq 6, R(4,4)\\leq 20, R(5,5)\\leq 70, R(6,6)\\leq 252$; Pascal: $R(r,s)\\leq R(r-1,s)+R(r,s-1)$ from $\\binom{n}{k}=\\binom{n-1}{k-1}+\\binom{n-1}{k}$"
-    },
-    {
-      "id": "r4k-bounds",
-      "title": "R(4,k) Bounds and Structural Properties",
-      "startLine": 261,
-      "endLine": 430,
-      "summary": "Axiomatizes r4k_upper_bound O(k^3/log k) and r4k_lower_bound Omega(k^2/log k). ramseyUpperBound_ge_right/left. C5 construction: explicit coloring of K_5 with no monochromatic K_3 proving R(3,3) >= 6.",
-      "mathContext": "$R(4,k) = O(k^3/\\log k)$ (upper, axiom); $R(4,k) = \\Omega(k^2/\\log k)$ (lower, axiom); C_5 construction: $R(3,3) \\geq 6$ via 2-coloring on 5 vertices with no mono-$K_3$"
-    },
-    {
-      "id": "explicit-constructions",
-      "title": "Explicit Lower Bound Constructions via Paley and Circulant Graphs",
-      "startLine": 427,
-      "endLine": 865,
-      "summary": "Constructions: Paley-17 (R(4,4) >= 18, native_decide verified), Spencer diagonal bound axiom, R(4,k) quadratic lower, R(3,4) >= 9 via K_8 coloring, Paley-13 (R(4,5) > 13), Circulant-13 (R(3,5) >= 14).",
-      "mathContext": "Paley graph $P_{17}$: vertices $\\mathbb{F}_{17}$, edge iff $(i-j)$ QR; no red $K_4$, no blue $K_4$ $\\Rightarrow R(4,4)\\geq 18$. Spencer: $R(k,k) \\geq \\sqrt{2}\\cdot k \\cdot 2^{k/2}/(e\\sqrt{2})$"
-    },
-    {
-      "id": "diagonal-upper-bounds",
-      "title": "Exponential Upper Bounds for Diagonal Ramsey",
-      "startLine": 866,
-      "endLine": 950,
-      "summary": "Proves R(k,k) <= C(2k,k) <= 4^k via central_binom_le_four_pow. ramseyUpperBound_diag_le_four_pow: R(k,k) <= 4^k. Also ramseyUpperBound_le_two_pow from Erdos-Szekeres.",
-      "mathContext": "$\\binom{2k}{k} \\leq 4^k$ (proved); $R(k,k) \\leq \\binom{2k-2}{k-1} \\leq 4^{k-1}$; Erdős-Szekeres: $R(r,s) \\leq 2^{r+s}$"
-    },
-    {
-      "id": "cgms-off-diagonal",
-      "title": "CGMS Upper Bound and Off-Diagonal Theory",
-      "startLine": 951,
-      "endLine": 1142,
-      "summary": "Axiomatizes Conlon-Fox-Sudakov (CGMS) 2009 diagonal upper bound improvement. cgms_improves_erdos_szekeres and cgms_exponentially_better theorems. Off-diagonal axioms: Bohman-Keevash R(3,t), Mattheus-Verstraete R(4,t), Burr-Erdos conjecture, Ramsey multiplicity.",
-      "mathContext": "CGMS: $R(k,k) \\leq k^{-c\\log k}\\cdot 4^k$ (exponentially better). Mattheus-Verstraete: $R(4,t) = \\Theta(t^3/\\log^2 t)$. Burr-Erdős: $R(G,H) \\leq c(\\Delta(G))\\cdot |V(H)|$ for sparse $G$"
+      "endLine": 114,
+      "mathContext": "`native_decide` evaluation of $\\binom{r+s-2}{r-1}$ for small $r,s$ (e.g. $R(3,3)\\le6$, $R(4,4)\\le20$).",
+      "summary": "Part III. Machine-checked concrete values of `ramseyUpperBound` for small parameters via `native_decide`: $R(3,3)\\le6$, $R(3,4)\\le10$, $R(3,5)\\le15$, $R(4,4)\\le20$, $R(4,5)\\le35$, $R(5,5)\\le70$."
     },
     {
       "id": "upper-bound-properties",
-      "title": "ramseyUpperBound Properties: Symmetry, Base Cases, Monotonicity",
-      "startLine": 91,
-      "endLine": 260,
-      "summary": "Proves ramseyUpperBound_symm, base cases R(1,s)=1/R(2,s)=s, positivity, mono_right/mono_left, and Pascal recursion. Native_decide verifies R(3,3)≤6 through R(5,5)≤70.",
-      "mathContext": "$R(r,s) = \\binom{r+s-2}{r-1} = \\binom{r+s-2}{s-1}$ (symmetry). $R(2,s) = s$. Pascal: $\\binom{r+s-2}{r-1} = \\binom{r+s-3}{r-2} + \\binom{r+s-3}{r-1}$."
+      "title": "Part IV: Properties of the Ramsey Upper Bound",
+      "startLine": 115,
+      "endLine": 206,
+      "mathContext": "Structural laws of $\\binom{r+s-2}{r-1}$: symmetry $R(r,s)=R(s,r)$, monotonicity, positivity, base cases.",
+      "summary": "Part IV. Structural properties of `ramseyUpperBound`: symmetry, the one- and two-argument base cases, positivity, and monotonicity in each argument — the arithmetic backbone for later bounds."
     },
     {
-      "id": "r4k-bounds-extended",
-      "title": "R(4,k) Asymptotic Bounds and Extended Computations",
-      "startLine": 261,
-      "endLine": 590,
-      "summary": "Axiomatizes R(4,k)=O(k³) (upper) and R(4,k)=Ω(k²) (lower, via coloring witnesses). Proves ramseyUpperBound_ge_right/left. Extended native_decide table: R(3,6)≤21 through R(6,6)≤252. Diagonal monotonicity and strict monotone right.",
-      "mathContext": "Gap: $\\Omega(k^2) \\leq R(4,k) \\leq O(k^3)$ (gap closed to $\\Theta(k^3/\\log^2 k)$ by Mattheus-Verstraëte 2024). Extended: $R(6,6) \\leq 252$; exact unknown."
+      "id": "pascal-recursive-bound",
+      "title": "Part IV-B: Recursive (Pascal) Bound",
+      "startLine": 207,
+      "endLine": 258,
+      "mathContext": "Pascal recursion $R(r,s)\\le R(r-1,s)+R(r,s-1)$, mirroring $\\binom{n}{k}=\\binom{n-1}{k-1}+\\binom{n-1}{k}$.",
+      "summary": "Part IV-B. The recursive Pascal-type bound `ramseyUpperBound_pascal` ($R(r,s)\\le R(r-1,s)+R(r,s-1)$) with machine-checked checks and the predecessor lower bounds `ramseyUpperBound_ge_pred_left/right`."
     },
     {
-      "id": "explicit-constructions",
-      "title": "Explicit Constructions: R(3,4)≥9 via K_8 and Paley-Based Bounds",
-      "startLine": 590,
-      "endLine": 1004,
-      "summary": "r34Color: 3-regular triangle-free K_8 coloring for R(3,4)≥9 (native_decide). R(4,4)≥18 consolidation via Paley-17 conclusion. Paley-13 constructions for R(4,5)>13. Assembly of R(r,s) exact or near-exact values.",
-      "mathContext": "$r34\\text{Color}$: 3-regular, 12 edges on 8 vertices; no red $K_3$, no blue $K_4$. Paley-13: $QR_{13} = \\{1,3,4,9,10,12\\}$; self-complementary; $R(4,5) > 13$."
+      "id": "r4k-problem",
+      "title": "Part V: The R(4,k) Problem",
+      "startLine": 259,
+      "endLine": 290,
+      "mathContext": "The central open problem: the growth rate of $R(4,k)$, between recent polynomial-improvement bounds.",
+      "summary": "Part V. The central R(4,k) problem, with the current best upper and lower bounds stated as axioms `r4k_upper_bound` and `r4k_lower_bound`."
+    },
+    {
+      "id": "structural-properties",
+      "title": "Part V-B: Additional Structural Properties",
+      "startLine": 291,
+      "endLine": 368,
+      "mathContext": "Further bound comparisons and extended concrete values $R(3,6),\\dots,R(6,6)$ via `native_decide`.",
+      "summary": "Part V-B. Additional structural inequalities (`ramseyUpperBound_ge_right/left`, diagonal and strict monotonicity) plus an extended table of machine-checked concrete values up to $R(6,6)\\le252$."
+    },
+    {
+      "id": "r33-c5-construction",
+      "title": "Part V-C: R(3,3) ≥ 6 Lower Bound via C₅ Construction",
+      "startLine": 369,
+      "endLine": 426,
+      "mathContext": "The $C_5$ 2-coloring of $K_5$ has no monochromatic triangle, proving $R(3,3)>5$.",
+      "summary": "Part V-C. An explicit lower bound $R(3,3)\\ge6$: the pentagon coloring `c5Color` of $K_5$ is shown symmetric, irreflexive, and free of red/blue $K_3$, giving `r3_3_lower_bound`."
+    },
+    {
+      "id": "r44-paley17-construction",
+      "title": "Part VI: R(4,4) ≥ 18 Lower Bound Construction",
+      "startLine": 427,
+      "endLine": 523,
+      "mathContext": "The Paley graph on $\\mathbb{F}_{17}$ (quadratic-residue coloring) has no monochromatic $K_4$, so $R(4,4)>17$.",
+      "summary": "Part VI. The explicit $R(4,4)\\ge18$ construction via the Paley graph on $\\mathbb{F}_{17}$: quadratic-residue set `qr17`, the coloring `paleyColor17`, and the no-red/no-blue $K_4$ verifications yielding `r4_4_lower_bound_17`."
+    },
+    {
+      "id": "spencer-diagonal",
+      "title": "Part VII: Spencer's Improved Diagonal Ramsey Bound",
+      "startLine": 524,
+      "endLine": 563,
+      "mathContext": "Spencer (1975): $R(k,k)\\ge\\frac{\\sqrt2}{e}k\\,2^{k/2}$ via the Lovász Local Lemma.",
+      "summary": "Part VII. Spencer's Lovász-Local-Lemma improvement of the diagonal lower bound, stated as `spencer_diagonal_lower_bound`."
+    },
+    {
+      "id": "r4k-quadratic-framework",
+      "title": "Part VIII: R(4,k) Quadratic Lower Bound Framework",
+      "startLine": 564,
+      "endLine": 606,
+      "mathContext": "Framework for the $R(4,k)=\\Omega(k^{5/2})$-type quadratic-and-beyond lower bounds.",
+      "summary": "Part VIII. The quadratic lower-bound framework for $R(4,k)$, stated as the axiom `r4k_quadratic_lower`, together with small-graph helper lemmas."
+    },
+    {
+      "id": "r34-k8-construction",
+      "title": "Part X: R(3,4) ≥ 9 via Explicit K₈ Construction",
+      "startLine": 607,
+      "endLine": 679,
+      "mathContext": "An explicit 2-coloring of $K_8$ with no red $K_3$ and no blue $K_4$ proves $R(3,4)>8$.",
+      "summary": "Part X. The explicit $R(3,4)\\ge9$ construction: coloring `r34Color` of $K_8$ verified symmetric, irreflexive, red-$K_3$-free and blue-$K_4$-free, giving `r3_4_lower_bound`."
+    },
+    {
+      "id": "r44-paley-ge18",
+      "title": "Part XI: R(4,4) ≥ 18 via Paley Graph",
+      "startLine": 680,
+      "endLine": 696,
+      "mathContext": "Repackaging the Paley-17 construction as the bound $R(4,4)\\ge18$ on `ramseyUpperBound`.",
+      "summary": "Part XI. The $R(4,4)\\ge18$ statement `r4_4_ge_18` derived from the Paley-graph construction of Part VI."
+    },
+    {
+      "id": "r45-paley13",
+      "title": "Part XII: R(4,5) > 13 via Paley Graph on F₁₃",
+      "startLine": 697,
+      "endLine": 776,
+      "mathContext": "The Paley graph on $\\mathbb{F}_{13}$ has no red $K_4$ and no blue $K_5$, so $R(4,5)>13$.",
+      "summary": "Part XII. The $R(4,5)>13$ construction via the Paley graph on $\\mathbb{F}_{13}$: `qr13`, `paleyColor13`, and the no-red-$K_4$ / no-blue-$K_5$ verifications yielding `r4_5_lower_bound`."
+    },
+    {
+      "id": "r35-circulant",
+      "title": "Part XIII: R(3,5) ≥ 14 via Cubic Residue Circulant Graph",
+      "startLine": 777,
+      "endLine": 865,
+      "mathContext": "A cubic-residue circulant graph on $\\mathbb{F}_{13}$ avoids red $K_3$ and blue $K_5$, proving $R(3,5)>13$.",
+      "summary": "Part XIII. The $R(3,5)\\ge14$ construction: cubic-residue set `cubicRes13`, circulant coloring `circulantColor13`, and the no-red-$K_3$ / no-blue-$K_5$ verifications."
+    },
+    {
+      "id": "diagonal-exponential-upper",
+      "title": "Part XIV: Exponential Upper Bound for Diagonal Ramsey Numbers",
+      "startLine": 866,
+      "endLine": 925,
+      "mathContext": "$R(k,k)\\le4^k$ (and refinements) from the central-binomial growth of $\\binom{2k-2}{k-1}$.",
+      "summary": "Part XIV. Exponential upper bounds for diagonal Ramsey numbers, bounding $R(k,k)$ via the growth of the central binomial coefficient."
+    },
+    {
+      "id": "general-upper-bound",
+      "title": "Part XV: General Upper Bound C(n,k) ≤ nᵏ / k!",
+      "startLine": 926,
+      "endLine": 950,
+      "mathContext": "The elementary estimate $\\binom{n}{k}\\le n^k/k!$ used to control `ramseyUpperBound` asymptotically.",
+      "summary": "Part XV. The general binomial estimate $\\binom{n}{k}\\le n^k/k!$, providing clean asymptotic control on the Ramsey upper bound."
+    },
+    {
+      "id": "extensions-summary",
+      "title": "Part IX: Summary of Extensions and Frontier Results",
+      "startLine": 951,
+      "endLine": 1142,
+      "mathContext": "Frontier axioms: CGMS $R(k,k)\\le(4-\\varepsilon)^k$, Bohman-Keevash, Mattheus-Verstraete $R(4,t)$, Burr-Erdős, multiplicity.",
+      "summary": "Part IX. Summary of extensions and recent frontier results stated as axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate and book-algorithm structure, off-diagonal bounds, Bohman-Keevash $R(3,t)$, Mattheus-Verstraete $R(4,t)$, the Burr-Erdős conjecture, and Ramsey multiplicity."
     }
   ],
   "sorries": 0

@@ -46,7 +46,7 @@
     "lines": 298
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 298-line formalization with 7 proved theorems, 5 axioms, 1 sorry",
+    "progressSummary": "COMPLETE: 298-line formalization with 7 proved theorems, 5 axioms, 0 sorries (sylowProP_normal_of_unique now proved)",
     "builtItems": [
       "IsProfiniteGroup structure",
       "IsProP class",
@@ -65,7 +65,6 @@
       "No pro-p group type"
     ],
     "nextSteps": [
-      "Prove sylowProP_normal_of_unique (1 sorry)",
       "Build inverse limit construction"
     ]
   },
@@ -78,7 +77,8 @@
     "inverse-galois",
     "sylow-theorem",
     "sylow-theorems",
-    "sylow-theorems-oq-02"
+    "sylow-theorems-oq-02",
+    "sylow-theorems-oq-05"
   ],
   "references": {
     "papers": [
@@ -91,5 +91,18 @@
     ]
   },
   "started": "2026-03-25T00:00:00Z",
-  "lastUpdate": "2026-03-25T02:00:00Z"
+  "lastUpdate": "2026-03-25T02:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheoremsOQ05.lean",
+      "filename": "SylowTheoremsOQ05.lean",
+      "lineCount": 158,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremsOQ05.lean"
+    }
+  ]
 }

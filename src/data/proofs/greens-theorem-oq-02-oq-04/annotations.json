@@ -115,7 +115,7 @@
     "title": "Hierarchy Summary and the Path to Eliminating the Axiom",
     "content": "The closing comment block summarizes the three-level hierarchy as a markdown table — OQ-01 (C¹/rectangle, 0 axioms), OQ-02 (Lipschitz/L¹, 1 axiom: Whitney), OQ-02-OQ-04 (Stokes form, 0 new axioms) — and points at the eventual *prize*: a future Mathlib formalization of the abstract Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ for smooth manifolds with boundary would prove `greens_theorem_l1curl` as a special case (via approximation of Lipschitz boundaries by smooth ones, plus weak limits of L¹ forms), eliminating the one remaining axiom from OQ-02. This file's contribution is the *conceptual bridge* — when Mathlib gets abstract Stokes, the route from there to Whitney's L¹ theorem is now fully laid out.",
     "mathContext": "Future path: $\\text{abstract Stokes for smooth } M \\xrightarrow{\\text{approximation}} \\text{Whitney's L}^1 \\text{ Stokes (no axioms)}.$ Approximation = (a) smooth $\\partial D \\to$ Lipschitz $\\partial D$ (well-known in geometric measure theory), (b) C¹ form sequences converging to L¹ form (standard via mollification).",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": ["abstract Stokes theorem", "axiom elimination roadmap", "approximation of Lipschitz by smooth"],
     "prerequisites": ["all earlier sections"]
   }

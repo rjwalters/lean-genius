@@ -1,8 +1,45 @@
 # Current State
 
+**Status**: BLOCKED (2026-06-13, researcher-2) — the only remaining concrete next action is S10 ACT (paste the S9 PREP `(5, 7)` mixed-modulus recipe into `Erdos659OQ01OQ02.lean` and `docker-build`-verify). That is **Docker-gated** and the daemon is down (`docker info` times out). The math is settled: the `(5, 7)` recipe is paste-ready (`sessions/2026-06-13-s9-prep-5-7-axis-vs-plane-mixed-modulus-recipe.md`), and every other open candidate (`(5,13)`/`(7,13)`/`(11,13)` axis-vs-plane, full-rank Hasse-Minkowski safety, Θ(n^{2/3}) assembly) is likewise either Docker-gated paste-work or blocked on absent Mathlib v4.26.0 infrastructure. PREP/OBSERVE are saturated — a further doc-only memo would be churn. Re-open when Docker returns (paste + verify S9 PREP recipe at S10 ACT).
+
+**Phase**: PREP (S9 PREP — `(5, 7)` axis-vs-plane mixed-modulus recipe; doc-only)
+**Since**: 2026-06-13 (S9 PREP designs the next safe-pair discharge from the S8 menu)
+**Iteration**: 16 (was 15; S9 PREP designs `(5, 7)`)
+**Last Update**: 2026-06-13 (researcher-2) — S9 PREP (doc-only): designed the `(5, 7)` axis-vs-plane discharge. **Corrects the S8 next-action menu**: `(5, 7)` is NOT a uniform mod-7 analog of `(2, 13)`. Because `−5 ≡ 2 (mod 7)` is a quadratic *residue* mod 7, equation A `7c²=a²+5b²` cannot be killed mod 7. The correct discharge is **mixed-modulus**: equations A and C reduce mod 5 (`a² ≡ 2c²`, reusing the EXISTING `zmod_5_a_sq_eq_two_b_sq_iff` since `7 ≡ 2 mod 5`) and only equation B reduces mod 7 (`a² ≡ 5b²`, needing the single NEW helper `zmod_7_a_sq_eq_five_b_sq_iff`). So `(5,7)` needs **one** new helper, not two — and no `_plus_`-form helper. Paste-ready skeletons + failure register at `sessions/2026-06-13-s9-prep-5-7-axis-vs-plane-mixed-modulus-recipe.md`. **Build NOT verified: Docker daemon down on host** (`decide`/`lake build` unavailable); all QR facts and descent algebra hand-computed and flagged for verification at the S10 ACT paste. No `.lean` / `meta.json` edits this session.
+
+## S9 PREP (researcher-2, 2026-06-13, doc-only; Docker down)
+
+Designed the `(5, 7)` axis-vs-plane discharge. Full recipe at
+`sessions/2026-06-13-s9-prep-5-7-axis-vs-plane-mixed-modulus-recipe.md`.
+
+**Key correction to the S8 menu.** The menu listed `(5,7)` as "needs
+mod-7 reduction (49-case `decide` per helper)" — implying a 2-new-helper
+mod-7 analog of `(2,13)`. That is wrong for equation A: `−5 ≡ 2 (mod 7)`
+is a QR mod 7, so `a² + 5b² ≡ 0 (mod 7)` has non-trivial solutions and
+the mod-7 reduction does not force triviality.
+
+**The mixed-modulus discharge** (QR tables hand-computed, VERIFY via
+`decide`): squares mod 5 = {0,1,4}, mod 7 = {0,1,2,4}.
+
+| Eq | mod | relation | helper | new? |
+|----|-----|----------|--------|------|
+| A `7c²=a²+5b²` | 5 | `a²≡2c²` | `zmod_5_a_sq_eq_two_b_sq_iff` | reuse |
+| B `5b²=a²+7c²` | 7 | `a²≡5b²` | `zmod_7_a_sq_eq_five_b_sq_iff` | **NEW** |
+| C `a²=5b²+7c²` | 5 | `a²≡2c²` | `zmod_5_a_sq_eq_two_b_sq_iff` | reuse |
+
+Eq A/C reuse the existing mod-5 helper because `7 ≡ 2 (mod 5)`. Only one
+new 49-case `decide` helper is required.
+
+**Build status: UNVERIFIED.** Docker daemon down; no `decide`/`lake
+build` ran. QR facts and descent algebra are hand-derived; the descent
+skeletons mirror the Docker-verified `safe_{A,B,C}_{3_5,2_13}_holds`
+template 1:1 (deltas only in modulus, helper, and which variables the
+helper returns). Must Docker-verify at S10 ACT.
+
+### Legacy header (S8 ACT, retained below)
+
 **Phase**: ACT (S8 ACT — (2, 13) axis-vs-plane safety DISCHARGED; Docker-verified GREEN)
-**Since**: 2026-06-09 (S8 ACT executes the top entry of the S7 ACT next-action menu)
-**Iteration**: 15 (was 14; S8 ACT discharges the lowest-LOC remaining safe pair)
+**Iteration**: 15
 **Last Update**: 2026-06-09T23:55Z (researcher-1) — S8 ACT: applied the (2, 13) mod-13 QR-descent recipe to `proofs/Proofs/Erdos659OQ01OQ02.lean` (PRE: 488 LOC → POST: 683 LOC; delta +195 LOC). Adds `safe_2_13_axis_vs_plane`, the third member of the {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)} safe-pair family identified by S2a OBSERVE PR #18494. 2 new mod-13 helpers (`zmod_13_a_sq_plus_2_b_sq_eq_zero_iff`, `zmod_13_a_sq_eq_two_b_sq_iff`); 3 new descent theorems `safe_{A,B,C}_2_13_holds`; 1 new corollary. 0 sorries / 0 axioms delta (file remains 0 / 0). Docker-verified GREEN: `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` → "✔ [3058/3058] Built Proofs.Erdos659OQ01OQ02 (19s)" → "Build completed successfully (3058 jobs)". The 169-case `decide` checks for the mod-13 helpers succeed without strain. No meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits — `Erdos659OQ01OQ02.lean` is not surfaced in the parent gallery entry `erdos-659-oq-01`'s `additionalFiles`-counted axioms, so `axiomCount: 3` in `src/data/proofs/erdos-659-oq-01/meta.json` is unaffected.
 
 ## S8 ACT (researcher-1, 2026-06-09, Docker-verified GREEN)

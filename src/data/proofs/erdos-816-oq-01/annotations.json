@@ -1,0 +1,104 @@
+[
+  {
+    "id": "erdos816oq01-ann-header",
+    "proofId": "erdos-816-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "The Two Structural Pillars Behind Erdős #816",
+    "content": "Erdős Problem #816 asks whether every graph with 2n+1 vertices and n²+n+1 edges has two equal-degree vertices joined by a path of length 3; the answer is YES (Chen–Ma 2025), who also show n²+n edges suffice for n ≥ 600 with the unique exception K_{n,n+1}. The parent entry axiomatizes the Chen–Ma theorem and leaves two supporting facts as prose: WHY K_{n,n+1} is the extremal counterexample (Part V) and the degree pigeonhole guaranteeing equal-degree pairs exist (Part VII). This file proves both, axiom-free and self-contained (the parent file does not compile on v4.26.0, so its few definitions are inlined).",
+    "mathContext": "$K_{n,n+1}$: $2n+1$ vertices, $n^2+n$ edges, part degrees $n+1 \\ne n$ — the extremal example at the threshold.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős Problem #816",
+      "Chen–Ma theorem",
+      "extremal counterexample",
+      "equal-degree pairs"
+    ],
+    "prerequisites": [
+      "simple graphs",
+      "bipartite graphs",
+      "degree sequences"
+    ]
+  },
+  {
+    "id": "erdos816oq01-ann-defs",
+    "proofId": "erdos-816-oq-01",
+    "range": { "startLine": 36, "endLine": 61 },
+    "type": "definition",
+    "title": "Inlined Definitions and the Bipartition as a Boolean Colouring",
+    "content": "Self-contained copies of the parent's definitions (it does not compile on v4.26.0): hasPath3 (four distinct vertices u–a–b–v with consecutive adjacencies), sameDegree, and hasEqualDegreePath3Pair (an equal-degree pair joined by such a path). The key modelling choice is IsBipartition G c, encoding a bipartition as a proper Boolean 2-colouring c : V → Bool where adjacent vertices receive opposite colours — turning the parity argument into a Boolean computation.",
+    "mathContext": "$\\mathrm{IsBipartition}(G,c) := \\forall x\\,y,\\ G.\\mathrm{Adj}\\,x\\,y \\to c\\,x \\ne c\\,y.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Boolean 2-colouring",
+      "path of length 3",
+      "proper colouring",
+      "self-contained inlining"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Adj",
+      "SimpleGraph.degree"
+    ]
+  },
+  {
+    "id": "erdos816oq01-ann-parity",
+    "proofId": "erdos-816-oq-01",
+    "range": { "startLine": 63, "endLine": 72 },
+    "type": "key-step",
+    "title": "Parity: a Length-3 Path Joins Opposite Parts",
+    "content": "hasPath3_opposite_color is the single fact behind the counterexample: in a bipartite graph a path of length 3 (an odd path) joins vertices of opposite colour, because the three edges flip the Boolean colour three times. The proof extracts the three adjacencies u–a, a–b, b–v, applies the bipartition (each flips the colour), and discharges the parity by a finite Boolean check (cases on c u, c a, c b, c v). Odd-length paths reverse colour; even-length paths preserve it.",
+    "mathContext": "$c\\,u \\ne c\\,a \\ne c\\,b \\ne c\\,v \\Rightarrow c\\,u \\ne c\\,v$ (three flips = one flip).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "path parity",
+      "bipartite colouring",
+      "Boolean case analysis",
+      "odd vs even paths"
+    ],
+    "prerequisites": [
+      "bipartite parity",
+      "Boolean reasoning"
+    ]
+  },
+  {
+    "id": "erdos816oq01-ann-counterexample",
+    "proofId": "erdos-816-oq-01",
+    "range": { "startLine": 74, "endLine": 110 },
+    "type": "theorem",
+    "title": "Why K_{n,n+1} Escapes the Property",
+    "content": "Three increasingly concrete forms of the obstruction. no_equalDegreePath3_of_bipartition: if every equal-degree pair shares a colour, there is no equal-degree path-3 pair (an odd path would need opposite colours). no_equalDegreePath3_of_distinctDegrees: same conclusion when opposite-colour vertices always have different degrees. no_equalDegreePath3_of_partDegrees: the explicit K_{n,n+1} situation — all colour-false vertices have degree d₀, all colour-true have degree d₁, and d₀ ≠ d₁ (here n+1 ≠ n). Then equal degree forces the same part, which an odd path cannot connect. This pinpoints why K_{n,n+1} is the extremal counterexample at the n²+n threshold.",
+    "mathContext": "Distinct part degrees $\\Rightarrow$ equal-degree $\\Rightarrow$ same part $\\Rightarrow$ no length-3 path (odd path joins opposite parts).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "extremal counterexample",
+      "complete bipartite graph",
+      "part degrees",
+      "threshold sharpness"
+    ],
+    "prerequisites": [
+      "the parity theorem",
+      "Bool.dichotomy"
+    ]
+  },
+  {
+    "id": "erdos816oq01-ann-pigeonhole",
+    "proofId": "erdos-816-oq-01",
+    "range": { "startLine": 112, "endLine": 161 },
+    "type": "insight",
+    "title": "The Degree Pigeonhole: Equal-Degree Pairs Always Exist",
+    "content": "exists_sameDegree_pair: any graph on ≥ 2 vertices has two distinct vertices of equal degree. This is NOT immediate (n vertices, n possible degree values 0..n−1), so the argument is by contradiction: if the degree map were injective it would, by injective-equals-surjective on a finite type of matching cardinality (Fintype.bijective_iff_injective_and_card), realize every value 0,…,card−1. But a vertex of degree card−1 (adjacent to all others) and a vertex of degree 0 (isolated) cannot coexist — the full-degree vertex would be adjacent to the isolated one. So equal-degree pairs always exist; the content of #816 is about CONNECTING such a pair by a path of length 3, not about their existence.",
+    "mathContext": "Degrees inject into $\\{0,\\dots,\\mathrm{card}-1\\}$, but $\\deg = \\mathrm{card}-1$ and $\\deg = 0$ are incompatible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "injective-implies-surjective",
+      "degree 0 vs card−1 clash",
+      "neighborFinset"
+    ],
+    "prerequisites": [
+      "SimpleGraph.degree_lt_card_verts",
+      "Fintype.bijective_iff_injective_and_card",
+      "Finset cardinality arguments"
+    ]
+  }
+]

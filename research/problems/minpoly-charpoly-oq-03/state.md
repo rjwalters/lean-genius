@@ -1,10 +1,57 @@
 # Current State
 
-**Phase**: ACT (S14 strong-form statement upgrade landed; OQ-03-OQ-02 invariant-factor decomposition + lastFactor=minpoly follow-up are the remaining sub-OQs)
-**Since**: 2026-06-04 (S14 ACT strong-form statement upgrade, researcher-1; discharges next-action option 3)
-**Iteration**: 14
+**Phase**: BLOCKED (S15 STATUS-SYNC — flagged blocked on the verification blackout; the only remaining work, OQ-03-OQ-02 regrouping, is build-gated)
+**Since**: 2026-06-13 (S15 STATUS-SYNC, researcher-1)
+**Iteration**: 15
 
-## Current Focus
+## S15 STATUS-SYNC (this iteration) — flag BLOCKED
+
+researcher-1, 2026-06-13. No Lean source touched (sorry count 1,
+axiom count 0, theoremCount 22 unchanged).
+
+**Why blocked**: the sole remaining sorry —
+`rational_canonical_form_exists` (line 232) — is dischargeable only
+through the OQ-03-OQ-02 elementary-divisors → invariant-factors
+regrouping (~340 LOC of new Lean in
+`Proofs/MinpolyCharpolyOQ03OQ02.lean`, sketched in S11 PREP §6,
+PR #18668). That is substantive build-dependent work. Both
+verification routes are down this cycle:
+
+* Docker daemon HUNG — `docker info` times out / is killed (exit 144);
+  Lean builds are unverifiable.
+* Aristotle backend 404 (MCP server connects but proof jobs fail).
+* CI does not build Lean, so a blind ACT on the 340-LOC regrouping
+  could silently break the currently-green file.
+
+Per the flag-BLOCKED-over-PREP-churn rule (14 prior iterations: 1
+OBSERVE scaffold + a long series of PREP / statement-only ACT passes
+around one build-gated sorry), this iteration flags the slug blocked
+rather than adding another doc memo. The sibling
+`minpoly-charpoly-oq-02` was flagged BLOCKED today for the identical
+reason (PR #23025).
+
+**Bundled meta-sync (build-free)**: corrected the gallery
+`meta.json` `lineCount` 631 → 639 (both the top-level `meta.lineCount`
+and `leanFile.lineCount`) to match the actual 639-line origin/main
+source of `Proofs/MinpolyCharpolyOQ03.lean`. The gallery meta line
+count had drifted 8 lines stale relative to source (`wc -l` = 639;
+parent `minpoly-charpoly` confirms the `wc -l` convention, meta 246 =
+wc 246). theoremCount (22), sorries (1) and axiomCount (0) in the
+gallery meta were already correct and are left unchanged. The
+research-JSON `leanFiles` array is intentionally NOT hand-synced here
+— the deployer's `enrich-research.ts` regenerates those counts from
+source automatically.
+
+**Unblock recipe** (for the next ACT picker, once Docker is back):
+implement OQ-03-OQ-02 Route B regrouping (S11 PREP §6 cheat-sheet in
+PR #18668). On completion the `xModule_has_invariantFactorChain` sorry
+in `MinpolyCharpolyOQ03OQ01.lean` collapses to a ~5-line glue import
+and `rational_canonical_form_exists` can be discharged. The
+`c.lastFactor = M.minpoly` follow-up (~15-30 LOC via
+`annihilator_top_eq_ker_aeval`, S11 PREP §7) becomes available once a
+chain `c` exists.
+
+## S14 Focus (prior iteration)
 
 S14 ACT (researcher-1, 2026-06-04) discharges next-action option 3
 (strong-form statement upgrade): extends `rational_canonical_form_exists`

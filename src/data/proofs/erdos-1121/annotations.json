@@ -17,7 +17,11 @@
       "convexity",
       "separating-hyperplane"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean plane geometry",
+      "discrete geometry",
+      "history of mathematics"
+    ]
   },
   {
     "id": "ann-e1121-geometry",
@@ -36,7 +40,11 @@
       "implicit-line"
     ],
     "mathContext": "See annotation content for formal details of circle and line structures",
-    "prerequisites": []
+    "prerequisites": [
+      "analytic geometry",
+      "real coordinate spaces",
+      "Lean 4 structure definitions"
+    ]
   },
   {
     "id": "ann-e1121-separating",
@@ -55,7 +63,11 @@
       "signed-distance",
       "half-planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear algebra",
+      "analytic geometry",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e1121-covering",
@@ -74,7 +86,11 @@
       "containment",
       "sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "Finset sums in Mathlib",
+      "metric spaces"
+    ]
   },
   {
     "id": "ann-e1121-goodman",
@@ -93,7 +109,11 @@
       "covering-theorem",
       "convex-hull"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "convex geometry",
+      "mathematical induction",
+      "Lean 4 axioms"
+    ]
   },
   {
     "id": "ann-e1121-special",
@@ -112,6 +132,10 @@
       "sufficient-condition"
     ],
     "mathContext": "See annotation content for formal details of special cases: two circles and overlapping",
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean geometry",
+      "the triangle inequality",
+      "Lean 4 axioms"
+    ]
   }
 ]

@@ -5,7 +5,63 @@ formalization (LawsOfLargeNumbersOQ04.lean):
   1. `thresholdIndicator_integrable`: 1_{Xᵢ ≤ x} is integrable on probability spaces
   2. `integral_thresholdIndicator_eq_cdf`: E[1_{X₀ ≤ x}] = F(x)
 
-**Status**: REDESIGN-IN-PROGRESS (S14a ACT, 2026-06-09) — main file 0 sorries / 0 axioms; refuted axiom `bracketingGrid_exists` retained in original bracketing companion pending S17 retirement; quantile-bracketing redesign substrate in place with S14a boundary helpers landed.
+**Status**: REDESIGN-IN-PROGRESS (S14a.2 ACT, 2026-06-12, PR #22958) — main file 0 sorries / 0 axioms; refuted axiom `bracketingGrid_exists` retained in original bracketing companion pending S17 retirement; quantile-bracketing redesign substrate in place with S14a boundary helpers + S14a.2 `leftLim` upper-bracket lemma landed. S14b (right-continuous half + interior existence) remains.
+
+---
+
+## Session 2026-06-12 (Session 14a.2) — `leftLim` upper-bracket lemma
+
+**Mode**: ACT
+**Outcome**: progress (+1 public monotone-`leftLim` lemma)
+**Researcher**: researcher-2
+
+### What I Did
+
+Shipped the generic monotone upper-bracket lemma `leftLim_le_of_forall_lt`
+in `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (216 → 239 lines,
++1 public lemma, 0 axioms, 0 sorries; Docker 3113 jobs clean at ship
+time, PR #22958).
+
+Statement: for `Monotone F : ℝ → ℝ`,
+`(∀ x < q, F x ≤ p) → Function.leftLim F q ≤ p`, proved via
+`le_of_tendsto (hF.tendsto_leftLim q)` on the left-neighbourhood filter.
+
+### Key Findings
+
+- This supplies the `leftLim F qⱼ₊₁ ≤ (j+1)ε` half of the S14 `step_le`
+  bound with **no continuity hypothesis** on `F` — exactly the piece the
+  quantile redesign needs at grid nodes where `F` may jump.
+- `Monotone.tendsto_leftLim` gives the left-limit convergence; the bound
+  passes through `le_of_tendsto` because the hypothesis `∀ x < q, F x ≤ p`
+  holds eventually on the `𝓝[<] q` filter.
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`:
+  216 → 239 lines, +1 public lemma `leftLim_le_of_forall_lt`.
+
+### Counts Delta
+
+- `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`: lineCount 216 →
+  239; theoremCount 3 → 4 (1 private); axioms unchanged at 0; sorries
+  unchanged at 0.
+- Chain-level axiom count: unchanged at 1 (refuted `bracketingGrid_exists`).
+- Chain-level sorry count: unchanged at 0.
+
+### Next Steps
+
+- S14b ACT (Docker-gated): prove the right-continuous half `jε ≤ F qⱼ`
+  at the quantile node `qⱼ = sInf {x | jε ≤ F x}`, combine with
+  `leftLim_le_of_forall_lt` to get the per-pair `step_le` bound, then
+  assemble `quantileBracketingGrid_exists`.
+- S15–S17 unchanged (see S14a block below).
+
+### Honesty
+
+Infrastructure-only session. No axioms eliminated, no main-theorem
+sorries closed. The lemma is a continuity-free upper bracket pre-staged
+for S14b's `step_le` assembly. Per the gallery rubric this is category 5
+("real progress; not axiom elimination or sorry reduction").
 
 ---
 
@@ -504,3 +560,26 @@ inconsistent with Mathlib. No sorries, no new axioms introduced — the file's
 entire purpose is to DERIVE `False` from the existing axiom. (Two trivial API
 fixes were needed mid-build: `Fin.castSucc_lt_succ` takes its index implicitly,
 and `Set.indicator_of_not_mem` → `Set.indicator_of_notMem` in 4.26.)
+
+## Session 2026-06-13 (Session 15) — gallery meta axiom-integrity sync
+
+**Mode**: REVISIT (audit) · **Outcome**: build-free STATE-SYNC (no proof change)
+
+### What I Did
+- Audited gallery `meta.json` against the in-repo Lean state during the Docker/Aristotle verification blackout (no build possible).
+- Found the meta internally inconsistent: the `assumptions` field (correctly updated in S10) states `bracketingGrid_exists` is FALSE, but three forward-looking fields still presented it as a true-but-unproved real-analytic lemma dischargeable via `Monotone.exists_increasing_continuity_seq`:
+  - `overview.keyInsights[4]`
+  - `conclusion.openQuestions[0]`
+  - `conclusion.implications` (the "(i) ε-cover … purely real-analytic" decomposition and the "well-defined Mathlib-side gap (CDF continuity-point density)" claim)
+- Rewrote all three to match the S10 refutation: the value-based step bound is refuted for atomic CDFs; the corrected target is the left-limit / quantile grid (the `QuantileBracketing` companion); `Monotone.exists_increasing_continuity_seq` is the wrong upstream target.
+- STATE-SYNC: added the merged 0-axiom/0-sorry `QuantileBracketing.lean` companion to curated `meta.additionalFiles` (it was already in the regenerated `leanFile.additionalFiles`).
+
+### Key Findings
+- No change to the proof: the 4 presented theorems remain axiom-free and sound; only stale forward-looking prose was corrected.
+- The `Monotone.exists_increasing_continuity_seq` plan is void (continuous-monotone only; cannot recover atomic CDFs).
+
+### Files Modified
+- `src/data/proofs/laws-of-large-numbers-oq-04-oq-03/meta.json` (3 stale fields + additionalFiles)
+
+### Next Steps
+- When Docker is back, build the `QuantileBracketing` redesign toward replacing `bracketingGrid_exists` with a left-limit grid-existence lemma.

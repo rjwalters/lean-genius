@@ -17,7 +17,11 @@
       "consecutive integers",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization and prime power divisibility",
+      "powerful (squareful) and cubeful numbers",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e366-kfull-def",
@@ -37,7 +41,11 @@
       "squarefree",
       "prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.factorization and prime multiplicities",
+      "prime factors and divisibility",
+      "squarefree versus prime-power conditions"
+    ]
   },
   {
     "id": "ann-e366-one-kfull",
@@ -56,7 +64,11 @@
       "Nat.dvd_one",
       "Nat.Prime.ne_one"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "vacuous truth over an empty quantifier",
+      "Nat.dvd_one (only 1 divides 1)",
+      "Nat.Prime.ne_one"
+    ]
   },
   {
     "id": "ann-e366-main-conjecture",
@@ -65,7 +77,7 @@
       "startLine": 107,
       "endLine": 113
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "The Main Open Conjecture",
     "content": "**Erdős Problem #366**: Does there exist n > 0 such that n is 2-full and n+1 is 3-full?\n\n```lean\ndef erdos_366_conjecture : Prop :=\n  ∃ n > 0, IsPowerful n ∧ IsCubeful (n + 1)\n\naxiom erdos_366_open :\n  ¬(erdos_366_conjecture ↔ True) ∧ ¬(erdos_366_conjecture ↔ False)\n```\n\n**Status**: OPEN as of 2024\n\n**Computational Search**: No examples found below 10²².\n\n**Heuristic Argument**: The expected number of such pairs is finite (possibly zero) based on density arguments.",
     "mathContext": "The axiom erdos_366_open formally captures that the problem is neither proved nor disproved.",
@@ -75,7 +87,11 @@
       "existence statement",
       "computational search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential statements in Lean",
+      "powerful and cubeful number definitions",
+      "axioms encoding an open problem's status"
+    ]
   },
   {
     "id": "ann-e366-known-pairs",
@@ -94,7 +110,11 @@
       "computational search",
       "OEIS A060355"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful and powerful number definitions",
+      "set-builder notation for number sets",
+      "verifying prime factorizations of specific integers"
+    ]
   },
   {
     "id": "ann-e366-weaker-question",
@@ -103,7 +123,7 @@
       "startLine": 147,
       "endLine": 154
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Weaker Question: Consecutive Cubefuls",
     "content": "**Erdős (1976)**: Are there consecutive 3-full integers?\n\n```lean\ndef ConsecutiveCubefuls : Set ℕ := { n | IsCubeful n ∧ IsCubeful (n + 1) }\n\ndef erdos_366_weaker : Prop := ∃ n > 0, IsCubeful n ∧ IsCubeful (n + 1)\n\naxiom erdos_366_weaker_open :\n  ¬(erdos_366_weaker ↔ True) ∧ ¬(erdos_366_weaker ↔ False)\n```\n\n**Status**: ALSO OPEN - no known examples!\n\nThis is strictly weaker than the main question (if n is powerful and n+1 is cubeful, then certainly n+1 is cubeful), yet even this is unsolved.",
     "mathContext": "The fact that even consecutive cubefuls are unknown shows how restrictive the 3-full condition is.",
@@ -113,7 +133,11 @@
       "consecutive integers",
       "3-full density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful (3-full) number definition",
+      "logical strength between conjectures",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e366-pell",
@@ -132,7 +156,11 @@
       "continued fractions",
       "infinite families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pell equations and their infinitely many solutions",
+      "powerful numbers",
+      "Set.Infinite"
+    ]
   },
   {
     "id": "ann-e366-asymmetry",
@@ -151,7 +179,11 @@
       "heuristics",
       "statistical reasoning"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubeful and powerful number conditions",
+      "heuristic density arguments",
+      "the (8,9) and (12167,12168) reverse-direction pairs"
+    ]
   },
   {
     "id": "ann-e366-structure",
@@ -170,7 +202,11 @@
       "canonical form",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "k-full number definition",
+      "representation as a^k times b^(k+1)",
+      "the a²b³ form of powerful numbers"
+    ]
   },
   {
     "id": "ann-e366-computational",
@@ -189,6 +225,10 @@
       "OEIS",
       "exhaustive search"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "CubefulPowerfulPairs set",
+      "exhaustive computational search bounds",
+      "powerful and cubeful divisibility conditions"
+    ]
   }
 ]

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-udft-overview",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "Normalising the DFT into a Genuine Unitary",
+    "content": "The docstring frames the final normalisation step requested by the parent's first open question. The parent proved Plancherel/Parseval for the unnormalised transform x̂(j) = ∑ₖ x(k)e^{2πijk/n}, giving ∑ⱼ|x̂(j)|² = n·∑ₖ|x(k)|² — so the bare DFT is √n times a unitary. This file divides by √n to obtain the normalised transform (Ux)(j) = x̂(j)/√n with kernel U(j,k) = e^{2πijk/n}/√n, proves it preserves Euclidean energy exactly (no scale factor), and — the operator-theoretic payoff — exhibits the n×n matrix U as a genuine element of Matrix.unitaryGroup (Fin n) ℂ via U·Uᴴ = 1. No new analysis: energy preservation is Parseval ÷ n, and unitarity is the parent's character orthonormality ÷ n; the whole content beyond the parent is the cancellation √n·√n = n.",
+    "mathContext": "$(Ux)(j) = \\hat x(j)/\\sqrt n$, $U(j,k) = e^{2\\pi i jk/n}/\\sqrt n$; $\\sum_j|(Ux)(j)|^2 = \\sum_k|x(k)|^2$ and $UU^{\\mathsf H} = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["discrete Fourier transform", "Plancherel/Parseval", "unitary group", "isometry", "FFT"],
+    "prerequisites": ["complex inner product spaces", "discrete Fourier transform"]
+  },
+  {
+    "id": "ann-udft-parseval",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 75 },
+    "type": "theorem",
+    "title": "The Normalised Transform and Its Exact Energy Law",
+    "content": "udft defines (Ux)(j) = dft n x j / (√n : ℂ). udft_parseval is the scale-free Parseval: ∑ⱼ ‖(Ux)(j)‖² = ∑ₖ ‖x(k)‖², with no n on the right. The proof's key step computes ‖(Ux)(j)‖² = ‖x̂(j)‖²/n — the denominator ‖(√n : ℂ)‖² = n comes from Real.sq_sqrt after Complex.norm_real strips the cast. Pulling the 1/n out of the sum (Finset.sum_div), substituting the parent's dft_parseval_norm (∑‖x̂‖² = n·∑‖x‖²), and cancelling n·(1/n) = 1 (div_self) leaves the exact identity. This is the precise normalisation that makes U an isometry of ℓ²-energy.",
+    "mathContext": "$\\|(Ux)(j)\\|^2 = \\|\\hat x(j)\\|^2/n$; $\\sum_j \\tfrac{\\|\\hat x(j)\\|^2}{n} = \\tfrac{1}{n}\\cdot n\\sum_k\\|x(k)\\|^2 = \\sum_k\\|x(k)\\|^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["Real.sq_sqrt", "Finset.sum_div", "dft_parseval_norm", "energy conservation"],
+    "prerequisites": ["norm of complex numbers", "real square roots"]
+  },
+  {
+    "id": "ann-udft-norm",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "theorem",
+    "title": "The ℓ²-Norm Form ‖Ux‖ = ‖x‖",
+    "content": "udft_norm_preserving takes the square root of both sides of udft_parseval to obtain the literal isometry statement √(∑ⱼ‖(Ux)(j)‖²) = √(∑ₖ‖x(k)‖²), i.e. ‖Ux‖ = ‖x‖ in the ℓ²-norm. A one-line rewrite, but it is the form 'the normalised DFT is norm-preserving' that downstream signal-processing statements actually cite.",
+    "mathContext": "$\\sqrt{\\sum_j\\|(Ux)(j)\\|^2} = \\sqrt{\\sum_k\\|x(k)\\|^2}$, i.e. $\\|Ux\\| = \\|x\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ℓ² norm", "isometry", "energy preservation"],
+    "prerequisites": ["square roots", "Euclidean norm"]
+  },
+  {
+    "id": "ann-dft-matrix",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "definition",
+    "title": "The Normalised DFT Matrix",
+    "content": "dftMatrix packages the kernel as an explicit n×n complex matrix U(j,k) = char n j k / (√n : ℂ) over Fin n, where char n j k = e^{2πijk/n}. This is the operator implementing udft on Fin n → ℂ; making it a Matrix (Fin n) (Fin n) ℂ is what lets the next theorem land the result inside Mathlib's abstract Matrix.unitaryGroup machinery rather than only as a scalar energy identity.",
+    "mathContext": "$U \\in \\mathrm{Matrix}(\\mathrm{Fin}\\,n)(\\mathrm{Fin}\\,n)\\,\\mathbb C,\\quad U(j,k) = e^{2\\pi i jk/n}/\\sqrt n.$",
+    "significance": "key",
+    "relatedConcepts": ["matrix representation", "Fourier matrix", "char kernel"],
+    "prerequisites": ["matrices over ℂ", "roots of unity"]
+  },
+  {
+    "id": "ann-unitary",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 121 },
+    "type": "theorem",
+    "title": "The DFT Matrix Is Unitary: U·Uᴴ = 1",
+    "content": "dftMatrix_mem_unitaryGroup proves U ∈ Matrix.unitaryGroup (Fin n) ℂ. By Matrix.mem_unitaryGroup_iff it suffices to show U·Uᴴ = 1. Expanding the (j,l) entry via Matrix.mul_apply and the Hermitian adjoint (Matrix.conjTranspose_apply), each summand U(j,k)·conj(U(l,k)) simplifies to char(j,k)·conj(char(l,k))/n — the two 1/√n factors combine because conj(√n) = √n (Complex.conj_ofReal) and √n·√n = n (Real.mul_self_sqrt). Pulling out 1/n, reindexing the Fintype sum over Fin n to a range-n sum (Fin.sum_univ_eq_sum_range), and applying the parent's orthonormality char_inner = n·[j=l] gives (1/n)·n·[j=l] = [j=l] — exactly Matrix.one_apply. The case split on j = l (with Fin.val_injective bridging Fin and ℕ equality) closes both branches. This is the operator-theoretic statement: the discrete Fourier transform IS a unitary map.",
+    "mathContext": "$(UU^{\\mathsf H})_{jl} = \\tfrac1n\\sum_{k<n}\\chi_j(k)\\overline{\\chi_l(k)} = \\tfrac1n\\cdot n[j=l] = [j=l] = \\mathbf{1}_{jl}.$",
+    "significance": "critical",
+    "relatedConcepts": ["Matrix.mem_unitaryGroup_iff", "conjTranspose", "char_inner", "Fin.sum_univ_eq_sum_range", "Complex.conj_ofReal"],
+    "prerequisites": ["unitary matrices", "Hermitian adjoint", "character orthonormality"]
+  }
+]

@@ -98,76 +98,84 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Problem Statement",
+      "summary": "Module docstring stating Erdős Problem #256 — estimate $f(n)$, the minimax $\\inf_a \\max_{|z|=1} |\\prod_i(1 - z^{a_i})|$ — its SOLVED status (Belov-Konyagin 1996: $\\log f(n) \\ll (\\log n)^4$), and the historical bounds timeline; imports, opens, and namespace.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "Erdős asked whether $\\log f(n) \\gg n^c$ for some $c > 0$. The answer is NO (Belov-Konyagin 1996). Header records the Erdős-Szekeres, Atkinson, Odlyzko, and Bourgain-Chang bounds as background."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization.",
       "startLine": 39,
       "endLine": 65,
-      "mathContext": "Formal definition: Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization."
+      "mathContext": "Defines `productPoly` ($\\prod_i(1 - z^{a_i})$), `maxOnUnitCircle` ($\\max_{|z|=1} |P(z)|$), and $f(n) = \\inf_a \\max_{|z|=1} |P(z;a)|$. The inf-max structure captures the minimax optimization."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
-      "summary": "Axiomatizes the historical bounds: Erdős-Szekeres $f(n) > \\sqrt{2n}$ (1959), Atkinson $\\log f(n) \\ll n^{1/2} \\log n$ (1961), Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$ (1982). Also proves $\\lim f(n)^{1/n} = 1$.",
+      "summary": "Axiomatizes the Erdős-Szekeres (1959) lower bound $f(n) > \\sqrt{2n}$ (`erdos_szekeres_lower`). The Erdős-Szekeres limit $f(n)^{1/n} \\to 1$, the Erdős probabilistic bound, Atkinson (1961), and Odlyzko (1982) are recorded as docstring notes only — no Lean declarations.",
       "startLine": 66,
-      "endLine": 104,
-      "mathContext": "Axiomatizes the historical bounds: Erdős-Szekeres $f(n) > \\sqrt{2n}$ (1959), Atkinson $\\log f(n) \\ll n^{1/2} \\log n$ (1961), Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$ (1982). Also proves $\\lim f(n)^{1/n} = 1$."
+      "endLine": 96,
+      "mathContext": "Only `erdos_szekeres_lower : f n > √(2n)` is an axiom here. Atkinson $\\log f(n) \\ll n^{1/2}\\log n$, Odlyzko $\\log f(n) \\ll n^{1/3}(\\log n)^{4/3}$, and $\\lim f(n)^{1/n} = 1$ appear as background docstrings without declarations."
     },
     {
       "id": "question",
       "title": "The Main Question",
       "summary": "Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$.",
-      "startLine": 105,
-      "endLine": 117,
-      "mathContext": "Formal definition: Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$."
+      "startLine": 97,
+      "endLine": 109,
+      "mathContext": "Defines `ErdosQuestion256`: $\\exists c > 0,\\, \\exists C > 0,\\, \\forall n \\geq 2,\\, \\log f(n) \\geq C \\cdot n^c$. Asks whether $\\log f(n)$ grows at least as a power of $n$."
     },
     {
       "id": "answer",
       "title": "The Answer",
-      "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
-      "startLine": 118,
-      "endLine": 140,
-      "mathContext": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\$\\log n$)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\$\\log n$)^4$ grows slower than $n^c$ for any $c > 0$."
+      "summary": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ (`belov_konyagin_bound`) and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$.",
+      "startLine": 110,
+      "endLine": 193,
+      "mathContext": "Axiomatizes the Belov-Konyagin bound $\\log f(n) \\leq C(\\log n)^4$ and proves `erdos_256_answer : ¬ErdosQuestion256` — the answer is NO, since $(\\log n)^4$ grows slower than $n^c$ for any $c > 0$."
     },
     {
       "id": "distinct",
       "title": "The Distinct Case",
-      "summary": "Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior.",
-      "startLine": 141,
-      "endLine": 159,
-      "mathContext": "Formal definition: Defines `fDistinct(n)` for the variant with distinct exponents. Axiomatizes the Bourgain-Chang (2018) bound for this case, which has different (potentially better) growth behavior."
+      "summary": "Defines `fDistinct(n)`, the minimax for strictly increasing (distinct) exponents. The Bourgain-Chang (2018) bound $\\log f^*(n) \\ll (n \\log n)^{1/2} \\log\\log n$ is recorded as a docstring note (no Lean declaration).",
+      "startLine": 194,
+      "endLine": 209,
+      "mathContext": "`fDistinct n = sInf {maxOnUnitCircle a | a injective}`. The Bourgain-Chang (2018) bound for the distinct case is background prose, not a declaration."
     },
     {
       "id": "chowla",
       "title": "Connection to Chowla Problem",
-      "summary": "Connects to Erdős Problem #510 via `chowlaMinimum`: the minimum of $|\\sum \\cos(a_i \\theta)|$ over $\\theta$. Atkinson observed these two minimax problems are related through the logarithm of the product.",
-      "startLine": 160,
-      "endLine": 179,
-      "mathContext": "Connects to Erdős Problem #510 via `chowlaMinimum`: the minimum of $|\\sum \\cos(a_i \\theta)|$ over $\\theta$."
+      "summary": "Connects to Erdős Problem #510 via `chowlaMinimum`: the minimum of $\\sum_{a \\in A} \\cos(a\\theta)$ over $\\theta$. Atkinson's observation relating the two minimax problems is recorded as a docstring note.",
+      "startLine": 210,
+      "endLine": 226,
+      "mathContext": "`chowlaMinimum A = sInf {∑_{a∈A} cos(aθ) | θ}`. Atkinson: if $\\sum \\cos(a\\theta) < -M_n$ is achievable then $\\log f^*(n) \\ll M_n \\log n$."
     },
     {
       "id": "properties",
       "title": "Properties of the Product",
-      "summary": "Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. documents in source comments `primitive_root_lower_bound` (no Lean declaration exists): these evaluation points provide key lower bounds on $f(n)$.",
-      "startLine": 180,
-      "endLine": 201,
-      "mathContext": "Verified: Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. documents in source comments `primitive_root_lower_bound` (no Lean declaration exists): these evaluation points provide key lower bounds on $f(n)$."
+      "summary": "Proves `product_at_root_of_unity`: evaluation at primitive $m$-th roots of unity. (`primitive_root_lower_bound` is documented in source comments only — no Lean declaration exists.)",
+      "startLine": 227,
+      "endLine": 250,
+      "mathContext": "`product_at_root_of_unity` evaluates the product at primitive roots of unity; these evaluation points provide key lower bounds on $f(n)$."
     },
     {
       "id": "summary-bounds",
       "title": "Summary of Bounds",
-      "summary": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\log n)^4$ (1996). The gap between $\\frac{1}{2}\\log n$ and $(\\log n)^4$ remains open.",
-      "startLine": 202,
-      "endLine": 226,
-      "mathContext": "Axiomatizes the complete bounds timeline in one theorem: $\\sqrt{2n} \\leq f(n)$ (1959) and $\\log f(n) \\leq C(\\$\\log n$)^4$ (1996). The gap between $\\frac{1}{2}\\$\\log n$$ and $(\\$\\log n$)^4$ remains open."
+      "summary": "Documents the complete bounds timeline (1959 Erdős-Szekeres through 1996 Belov-Konyagin) and the remaining gap between $\\frac{1}{2}\\log n$ and $(\\log n)^4$ as prose docstrings; no Lean declarations in this part (the bounds are the axioms in Parts II and IV).",
+      "startLine": 251,
+      "endLine": 272,
+      "mathContext": "Lower: $\\log f(n) \\geq \\frac{1}{2}\\log n$ (from $f(n) > \\sqrt{2n}$). Upper: $\\log f(n) \\ll (\\log n)^4$. The true growth lies between. Prose-only summary."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Packages the final result: `erdos_256` aliases `erdos_256_answer` (¬ErdosQuestion256), and `erdos_256_summary` combines the Belov-Konyagin upper bound with the Erdős-Szekeres lower bound into a single conjunction, providing a self-contained statement of what is known about $f(n)$.",
-      "startLine": 227,
-      "endLine": 262,
-      "mathContext": "Packages the final result: `erdos_256` aliases `erdos_256_answer` (¬ErdosQuestion256), and `erdos_256_summary` combines the Belov-Konyagin upper bound with the Erdős-Szekeres lower bound into a single conjunction, providing a self-contained statement of what is known about $f(n)$."
+      "startLine": 273,
+      "endLine": 308,
+      "mathContext": "`erdos_256` aliases `erdos_256_answer` (¬ErdosQuestion256); `erdos_256_summary` proves $(\\exists C>0, \\forall n\\geq2, \\log f(n) \\leq C(\\log n)^4) \\wedge (\\forall n\\geq1, f(n) > \\sqrt{2n})$."
     }
   ],
   "conclusion": {

@@ -1,5 +1,47 @@
 # Knowledge — bounded-prime-gaps-oq-03-oq-02
 
+## S23 STATE-SYNC + BLOCKED flag (2026-06-13, researcher-1)
+
+Build-free audit of `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` at current
+`origin/main` (HEAD `fb829e819f7`). Docker is down fleet-wide (verification
+blackout), so no build this session.
+
+**Actual file state (corrects stale tracker numbers):**
+- **997 LOC** (tracker said 953; S11a PR #19519 is merged into origin/main).
+- **Exactly 1 real `sorry`** — `engelsmaSearchPruned_eq_false_iff` at **line
+  969** (tracker said line 925; the other "sorry" greps at 852/964 are
+  docstring text). All other theorems are sorry-free.
+- **0 literal `axiom` declarations** in this file (the `engelsma_lower_bound`
+  axiom lives in the parent `BoundedPrimeGapsOQ03.lean`; this file aims to
+  *discharge* it). The `native_decide` calls introduce the implicit
+  `Lean.ofReduceBool` dependency, which is the "axiomCount = 1" the docstrings
+  refer to. No structure-encoded assumptions.
+- No gallery `meta.json` exists for this slug — it is research-only, so there
+  is no published-counts audit to reconcile.
+
+**Why BLOCKED.** The single remaining sorry is the crux bridge and needs the
+full S11b decomposition (`searchAux_sound` + `searchAux_complete` + combiner,
+estimated **+225–360 LOC** per S20 PREP §5). That work is gated on TWO
+independent blockers right now:
+1. **Infra:** Docker is down fleet-wide. Pasting +225–360 LOC of well-founded
+   recursion soundness/completeness proofs that cannot be build-verified would
+   be blind-shipping build-dependent ACT — explicitly disallowed.
+2. **Churn:** sessions S17–S22 (~10 sessions) produced only doc-only PREP /
+   STATE-SYNC memos circling this same sorry. Per the researcher role's
+   "3+ sessions stuck on same sorry → flag BLOCKED, move on", this slug should
+   stop being re-claimed for further PREP padding.
+
+**Unblock path (unchanged, well-specified):** once Docker recovers, execute the
+S11b α→β→γ→δ chain then S12 `native_decide`, exactly as `currentState.nextSteps`
+documents (note: the §3.1-corrected residue witness
+`(List.range p).filter (· ∉ H.image (· % p)) |>.head!` must be used, NOT the
+S18 sketch which picks an existing rather than missing residue). No new PREP
+memo is needed — the paste-ready skeletons already exist.
+
+---
+
+# (Below: original S1 survey — line/LOC references predate S11a and are stale.)
+
 S1 OBSERVE pass. No Lean code written; this document is the survey + path menu.
 Build status not changed.
 

@@ -1,0 +1,149 @@
+{
+  "id": "combinations-formula-oq-08-oq-01",
+  "title": "The Fibonacci Recurrence as a Shadow of Pascal's Rule",
+  "slug": "combinations-formula-oq-08-oq-01",
+  "description": "Derives the Fibonacci recurrence F(n+2) = F(n+1) + F(n) directly from the shallow-diagonal binomial sums, by applying Pascal's rule C(a+1,b+1) = C(a,b) + C(a,b+1) to each diagonal term — with no appeal to Nat.fib_add_two, generating functions, or matrix powers. Writing D(n) = ∑_{k} C(n-k, k) for the n-th shallow-diagonal total, the core result D_recurrence proves D(n+2) = D(n+1) + D(n) by term-by-term Pascal expansion of finite sums; combined with the parent identity D(n) = fib(n+1) this reproves the recurrence combinatorially. The file also formalizes the companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 and recasts it in terms of the diagonal totals as ∑_{i<n} D(i) = fib(n+2) - 1.",
+  "meta": {
+    "author": "Lean Genius researcher-6",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ08OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 206,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "assumptions": "None. All identities hold for every natural number n and are fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool — the decide sanity checks use kernel decidability, not native_decide).",
+    "tags": [
+      "combinatorics",
+      "fibonacci",
+      "pascals-triangle",
+      "binomial-coefficients",
+      "finset-sums",
+      "recurrence",
+      "number-theory"
+    ],
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "D_recurrence: the shallow-diagonal totals D(n) = ∑_{k<n+1} C(n-k, k) satisfy D(n+2) = D(n+1) + D(n), proved purely by term-by-term Pascal expansion and reindexing of finite sums — the combinatorial core, independent of Nat.fib_add_two",
+      "choose_shift_succ: the single Pascal step C(n+1-k, k+1) = C(n-k, k) + C(n-k, k+1) for k ≤ n that drives the whole recurrence",
+      "D_add_two_peel and D_add_one_peel: index-shift normal forms expressing D(n+2) and D(n+1) as a single sum over range(n+1) plus the constant 1, obtained via Finset.sum_range_succ' (peel k=0) and Finset.sum_range_succ (drop the vanishing top term)",
+      "fib_recurrence_via_pascal: the Fibonacci recurrence fib(n+3) = fib(n+2) + fib(n+1) reproved as a corollary of the diagonal recurrence, exhibiting it as a shadow of Pascal's rule",
+      "fib_partial_sum / fib_partial_sum_sub: the Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 (and its subtraction-free form), proved by induction using Nat.fib_add_two",
+      "shallow_diag_partial_sum: the Lucas partial-sum identity recast in terms of the diagonal totals, ∑_{i<n} D(i) = fib(n+2) - 1",
+      "fib_eq_sum_range_choose: the parent shallow-diagonal identity fib(n+1) = ∑_{k<n+1} C(n-k, k), reproved inline so the file stands alone"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule C(n+1, k+1) = C(n, k) + C(n, k+1); the arithmetic heart of choose_shift_succ and hence of the entire diagonal recurrence.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "Peels the first term: ∑_{i<n+1} f i = (∑_{i<n} f(i+1)) + f 0. Used to strip the k=0 term of the diagonal totals before applying Pascal's rule.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Peels the last term: ∑_{i<n+1} f i = (∑_{i<n} f i) + f n. Used to expose and discard the vanishing top term C(0, n+2) = 0.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.fib_succ_eq_sum_choose",
+        "description": "Fibonacci as a sum over the antidiagonal; the starting point for the inline reproof of the parent shallow-diagonal identity fib_eq_sum_range_choose.",
+        "module": "Mathlib.Combinatorics.Choose.Sum"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib(n+2) = fib(n) + fib(n+1); used only in the induction for the Lucas partial-sum identity, NOT in the combinatorial derivation D_recurrence.",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ08OQ01.lean",
+    "namespace": "CombinationsFormulaOQ08OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 206,
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "That the Fibonacci numbers are the sums along the shallow diagonals of Pascal's triangle is classical (Lucas, 1876). The parent entry combinations-formula-oq-08 formalizes that identity by reindexing Mathlib's antidiagonal form. Its first open question asked whether the companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 can be linked to the diagonal sums to give a generating-function-free derivation of the Fibonacci recurrence from binomial coefficients. This entry answers that question affirmatively: the Fibonacci recurrence is obtained directly from Pascal's rule applied to the diagonal terms.",
+    "problemStatement": "Derive F(n+2) = F(n+1) + F(n) purely from the shallow-diagonal identity F(n+1) = ∑_k C(n-k, k) by applying Pascal's rule term-by-term, and relate it to the Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1.",
+    "proofStrategy": "Define D(n) = ∑_{k<n+1} C(n-k, k). To prove D(n+2) = D(n+1) + D(n) without invoking the Fibonacci recurrence: (1) Peel the k=0 term of D(n+2) with Finset.sum_range_succ', then split off and discard the vanishing top term C(0, n+2) = 0 with Finset.sum_range_succ, yielding D(n+2) = (∑_{k<n+1} C(n+1-k, k+1)) + 1. (2) Peel the k=0 term of D(n+1) similarly, yielding D(n+1) = (∑_{k<n+1} C(n-k, k+1)) + 1, while D(n) = ∑_{k<n+1} C(n-k, k). (3) For k ≤ n we have n+1-k = (n-k)+1, so Pascal's rule (Nat.choose_succ_succ) gives C(n+1-k, k+1) = C(n-k, k) + C(n-k, k+1) term-by-term; summing over range(n+1) and using Finset.sum_add_distrib matches the two sides. The parent identity D(n) = fib(n+1) (reproved inline) then upgrades this to fib(n+3) = fib(n+2) + fib(n+1). The Lucas partial-sum identity is proved by a short induction and recast over the diagonal totals via D(i) = fib(i+1).",
+    "keyInsights": [
+      "The Fibonacci recurrence is literally a shadow of Pascal's rule: applying C(a+1,b+1) = C(a,b) + C(a,b+1) to each shallow-diagonal entry of row n+1 splits it into the two entries of row n that lie on the two adjacent diagonals, which sum to D(n+1) and D(n).",
+      "Index bookkeeping is the whole difficulty in Lean: the natural-number subtraction n+1-k is exact only for k ≤ n, exactly the range guaranteed by membership in range(n+1), so omega discharges every index identity from the membership bound.",
+      "Peeling with sum_range_succ' (first term) and sum_range_succ (last term) reduces both D(n+2) and D(n+1) to a common shape — a single sum over range(n+1) plus 1 — so the recurrence becomes a single term-by-term comparison.",
+      "The companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 transports to the diagonals as ∑_{i<n} D(i) = fib(n+2) - 1, telescoping the diagonal totals; together the two results give the fully combinatorial picture the open question requested."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Strategy",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Header stating OQ-08-OQ-01: derive the Fibonacci recurrence directly from the shallow-diagonal sums via Pascal's rule, and link to the Lucas partial-sum identity. Includes a sketch of the peeling-and-Pascal proof."
+    },
+    {
+      "id": "diagonal-total",
+      "title": "The Shallow-Diagonal Total D(n)",
+      "startLine": 62,
+      "endLine": 86,
+      "summary": "Defines D(n) = ∑_{k<n+1} C(n-k, k); reproves the parent identity fib_eq_sum_range_choose inline (so the file is self-contained) and records D_eq_fib: D(n) = fib(n+1)."
+    },
+    {
+      "id": "pascal-step",
+      "title": "The Pascal Step",
+      "startLine": 88,
+      "endLine": 96,
+      "summary": "choose_shift_succ: for k ≤ n, C(n+1-k, k+1) = C(n-k, k) + C(n-k, k+1). Rewrites n+1-k as (n-k)+1 via omega and applies Nat.choose_succ_succ."
+    },
+    {
+      "id": "peeling",
+      "title": "Index-Shift Normal Forms",
+      "startLine": 98,
+      "endLine": 123,
+      "summary": "D_add_two_peel and D_add_one_peel: express D(n+2) and D(n+1) as a single sum over range(n+1) plus the constant 1, using Finset.sum_range_succ' to peel k=0 and Finset.sum_range_succ to drop the vanishing top term."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Shallow-Diagonal Recurrence",
+      "startLine": 125,
+      "endLine": 156,
+      "summary": "D_recurrence: D(n+2) = D(n+1) + D(n) by term-by-term Pascal expansion (choose_shift_succ) and Finset.sum_add_distrib — the combinatorial core. fib_recurrence_via_pascal then recovers fib(n+3) = fib(n+2) + fib(n+1) using D_eq_fib."
+    },
+    {
+      "id": "lucas-partial-sum",
+      "title": "Link to the Lucas Partial-Sum Identity",
+      "startLine": 158,
+      "endLine": 199,
+      "summary": "fib_partial_sum / fib_partial_sum_sub: ∑_{i<n} fib(i) = fib(n+1) - 1 by induction. shallow_diag_partial_sum: the same identity recast over the diagonal totals as ∑_{i<n} D(i) = fib(n+2) - 1."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 201,
+      "endLine": 206,
+      "summary": "decide sanity checks: D 6 = 13 from C(6,0)+C(5,1)+C(4,2)+C(3,3); the recurrence D 6 = D 5 + D 4; and the partial sum D0+D1+D2+D3 = fib6-1 = 7."
+    }
+  ],
+  "conclusion": {
+    "summary": "10 theorems, 1 definition, 0 sorries, 0 axioms. The Fibonacci recurrence is derived directly from the shallow-diagonal binomial sums by applying Pascal's rule term-by-term: D_recurrence proves D(n+2) = D(n+1) + D(n) for D(n) = ∑_{k} C(n-k, k) with no use of Nat.fib_add_two, and combined with D(n) = fib(n+1) this reproves the recurrence combinatorially. The companion Lucas partial-sum identity ∑_{i<n} fib(i) = fib(n+1) - 1 is formalized and recast over the diagonal totals as ∑_{i<n} D(i) = fib(n+2) - 1.",
+    "implications": "This answers the parent entry's first open question: it exhibits the Fibonacci recurrence as a shadow of Pascal's rule, a fully constructive, generating-function-free route from binomial coefficients to the recurrence. The peeling-then-Pascal pattern (sum_range_succ' to strip the boundary term, omega to discharge natural-subtraction index identities from membership bounds, and a single term-by-term choose_succ_succ split) is reusable for any diagonal-stride binomial recurrence.",
+    "openQuestions": [
+      "Does the analogous shallow-diagonal sum with stride s (stepping s columns per row), giving D_s(n) = ∑_k C(n - (s-1)k, k), satisfy the s-step recurrence D_s(n+s) = D_s(n+s-1) + D_s(n), and can the same peeling-then-Pascal method formalize it uniformly in s?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-08",
+      "relationship": "parent — provides the shallow-diagonal Fibonacci identity fib(n+1) = ∑_k C(n-k, k) and posed this derivation of the recurrence as its first open question"
+    }
+  ],
+  "sorries": 0
+}

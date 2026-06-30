@@ -134,6 +134,7 @@
     "type": "insight",
     "title": "Surjectivity and the Full Knaster-Tarski Schroeder-Bernstein Theorem",
     "content": "Surjectivity `ktBij_surjective` proceeds by cases on `b \u2208 f '' fixedSet f g`. If b = f(a) for a \u2208 S*: then h(a) = f(a) = b, done. If b \u2209 f(S*): then g(b) \u2209 S* (by `gb_not_fixedSet`) and h(g(b)) = g\u207b\u00b9(g(b)) = b by injectivity of g. The `knasterTarski_equiv` function packages the bijection as an `Equiv` using `Equiv.ofBijective`. The `fixedSet_characterization` theorem restates T(S*) = S* as an explicit set equation for inspection \u2014 the 'explicit and inspectable' fixed point mentioned in the file header.",
+    "mathContext": "Surjectivity of $h$ (where $h(a) = f(a)$ on $S^*$ and $h(a) = g^{-1}(a)$ off $S^*$): fix $b \\in \\beta$ and split on $b \\in f(S^*)$. **Case $b = f(a)$ with $a \\in S^*$:** then $h(a) = f(a) = b$, so $b$ is hit by the left branch. **Case $b \\notin f(S^*)$:** the lemma `gb_not_fixedSet` (using $g$ injective) gives $g(b) \\notin S^*$, so $h$ acts on $g(b)$ via the right branch as $g^{-1}$, yielding $h(g(b)) = g^{-1}(g(b)) = b$. Together with `ktBij_injective`, this makes $h$ bijective, and `Equiv.ofBijective` packages it as $\\alpha \\simeq \\beta$. The witnessing fixed point is fully explicit: $S^* = (\\text{range}\\,g)^c \\cup g(f(S^*))$ (`fixedSet_characterization`), so the bijection is constructed, not merely shown to exist.",
     "significance": "supporting",
     "relatedConcepts": [
       "ktBij_surjective",

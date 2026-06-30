@@ -223,5 +223,396 @@
       "startLine": 45,
       "endLine": 52
     }
+  },
+  {
+    "id": "ann-udi-basic-indep-lemmas",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 53,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "Part II — Basic Closure Properties of Independent Sets",
+    "content": "The foundational lemmas establishing that independence is well-behaved: the empty set and every singleton are independent (`isIndepFinset_empty`, `isIndepFinset_singleton`), independence is preserved under taking subsets (`isIndepFinset_subset`, an antitone/monotone-downward property), and `isIndepFinset_iff` unfolds independence to the elementwise non-adjacency condition. These are the basic building blocks reused throughout the file.",
+    "significance": "supporting",
+    "mathContext": "A vertex set $S$ is independent in $G$ iff no two distinct $u,v\\in S$ are adjacent: $\\forall u,v\\in S,\\ u\\ne v \\Rightarrow \\lnot\\,G.\\mathrm{Adj}\\,u\\,v$. Independence is downward-closed: $T\\subseteq S$ and $S$ independent $\\Rightarrow T$ independent.",
+    "relatedConcepts": [
+      "independent set",
+      "SimpleGraph",
+      "downward-closed family",
+      "non-adjacency"
+    ],
+    "prerequisites": [
+      "graph theory: independent sets",
+      "Finset basics"
+    ]
+  },
+  {
+    "id": "ann-udi-indep-number-props",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 90,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "Part IIb — Properties of the Independence Number α(G)",
+    "content": "With $\\alpha(G)$ defined as the supremum of cardinalities of independent finsets, these lemmas give its defining inequalities: `independenceNumber_nonneg` ($\\alpha(G)\\ge 0$, trivial in ℕ) and the key `indep_card_le_alpha` — every independent set has size at most $\\alpha(G)$. The latter is the universal property that makes $\\alpha(G)$ usable as an upper bound in extremal arguments.",
+    "significance": "key",
+    "mathContext": "Independence number: $\\alpha(G) = \\max\\{|S| : S\\text{ independent}\\}$. Universal bound: $S$ independent $\\Rightarrow |S| \\le \\alpha(G)$.",
+    "relatedConcepts": [
+      "independence number",
+      "supremum/maximum over finsets",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "graph theory: independence number",
+      "Finset.sup / cardinality"
+    ]
+  },
+  {
+    "id": "ann-udi-coloring-independence",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 105,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Part III — Proper Colorings and Independent Color Classes",
+    "content": "Defines a proper $k$-coloring `IsProperColoring` (adjacent vertices receive distinct colors) and proves `color_class_independent`: each color class $c^{-1}(i)$ is an independent set. This is the bridge between the chromatic number and the independence number — a proper coloring is exactly a partition of the vertices into independent sets, which underlies every bound relating $\\chi(G)$ and $\\alpha(G)$ below.",
+    "significance": "key",
+    "mathContext": "A coloring $c:V\\to\\mathrm{Fin}\\,k$ is proper iff $G.\\mathrm{Adj}\\,u\\,v\\Rightarrow c(u)\\ne c(v)$. Then each color class $c^{-1}(i)$ is independent, so a proper $k$-coloring partitions $V$ into $\\le k$ independent sets.",
+    "relatedConcepts": [
+      "proper coloring",
+      "chromatic number",
+      "color classes",
+      "graph partition"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "independent sets"
+    ]
+  },
+  {
+    "id": "ann-udi-hn-bounds",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 136,
+      "endLine": 145
+    },
+    "type": "insight",
+    "title": "Part IV — The Hadwiger–Nelson Bounds 5 ≤ χ(ℝ²) ≤ 7",
+    "content": "The theorem `hadwiger_nelson_bounds` combines the two axiomatized endpoints — De Grey’s 2018 lower bound (the chromatic number of the plane is at least 5, via an explicit 1581-vertex unit-distance graph) and the classical hexagonal-tiling upper bound of 7 — into the headline statement $5 \\le \\chi(\\mathbb{R}^2) \\le 7$. Pinning the exact value remains a famous open problem; the gap $\\{5,6,7\\}$ is exactly what this entry frames.",
+    "significance": "key",
+    "mathContext": "Chromatic number of the plane (Hadwiger–Nelson): $5 \\le \\chi(\\mathbb{R}^2) \\le 7$, where two points are adjacent iff at unit distance. The exact value is open.",
+    "relatedConcepts": [
+      "Hadwiger–Nelson problem",
+      "chromatic number of the plane",
+      "De Grey 2018",
+      "hexagonal coloring"
+    ],
+    "prerequisites": [
+      "unit-distance graphs",
+      "chromatic number",
+      "open problems in combinatorial geometry"
+    ]
+  },
+  {
+    "id": "ann-udi-structure-theorems",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 146,
+      "endLine": 186
+    },
+    "type": "concept",
+    "title": "Part V — Independent Set Structure Theorems",
+    "content": "A cluster of structural lemmas: `isIndepFinset_insert` (conditions to grow an independent set by one vertex), `edge_leaves_indep` (an edge forces at least one endpoint out of any independent set), `exists_nonempty_indep` (nonempty graphs admit a nonempty independent set), and `indep_card_le_univ` ($|S|\\le|V|$). Together they describe how independent sets are built up and bounded.",
+    "significance": "supporting",
+    "mathContext": "Growing/shrinking independence: $S$ independent and $v$ non-adjacent to all of $S$ $\\Rightarrow S\\cup\\{v\\}$ independent; an edge $\\{u,v\\}$ cannot lie inside an independent set.",
+    "relatedConcepts": [
+      "independent set construction",
+      "edges as obstructions",
+      "maximal independence"
+    ],
+    "prerequisites": [
+      "graph theory: independent sets",
+      "Finset.insert / cardinality"
+    ]
+  },
+  {
+    "id": "ann-udi-unit-dist-graph",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 187,
+      "endLine": 213
+    },
+    "type": "definition",
+    "title": "Part VI — The Unit Distance Graph on a Finite Point Set",
+    "content": "Defines `unitDistGraph S`, the SimpleGraph on a finite set $S\\subseteq\\mathbb{R}^2$ whose edges join points at Euclidean distance exactly 1, and proves `unit_indep_iff_no_unit_dist`: a subset is independent precisely when it contains no two points at unit distance. This specializes the abstract graph machinery to the geometric setting of the Hadwiger–Nelson problem.",
+    "significance": "key",
+    "mathContext": "Unit distance graph: vertices are points of $S\\subseteq\\mathbb{R}^2$, with $u\\sim v \\iff \\|u-v\\| = 1$. A subset is independent $\\iff$ it realizes no unit distance.",
+    "relatedConcepts": [
+      "unit-distance graph",
+      "Euclidean plane",
+      "EuclideanSpace ℝ (Fin 2)",
+      "geometric graph"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "SimpleGraph construction"
+    ]
+  },
+  {
+    "id": "ann-udi-clique-duality-214",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 214,
+      "endLine": 242
+    },
+    "type": "concept",
+    "title": "Part VII — Independence–Clique Duality and Extremal Graphs",
+    "content": "Establishes the complement duality `indep_iff_compl_clique` (independent sets of $G$ are exactly the cliques of $\\overline{G}$) and the two extremal cases: in the empty graph $\\bot$ every set is independent (`isIndepFinset_of_bot`), while in the complete graph $\\top$ the largest independent set is a singleton (`indep_top_singleton`, $\\alpha=1$). These bracket the possible values of $\\alpha(G)$.",
+    "significance": "supporting",
+    "mathContext": "Complement duality: $S$ independent in $G \\iff S$ is a clique in $\\overline{G}$. Extremes: $\\alpha(\\bot_V)=|V|$ and $\\alpha(\\top_V)=1$.",
+    "relatedConcepts": [
+      "complement graph",
+      "clique",
+      "independence-clique duality",
+      "extremal cases"
+    ],
+    "prerequisites": [
+      "graph complement",
+      "cliques and independent sets"
+    ]
+  },
+  {
+    "id": "ann-udi-pigeonhole",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 243,
+      "endLine": 313
+    },
+    "type": "insight",
+    "title": "Parts VIII–IX — Counting and the Pigeonhole Bound α(G) ≥ |V|/k",
+    "content": "The heart of the chromatic→independence direction. `color_class_partition` shows each vertex lies in exactly one color class; `exists_large_color_class` applies the pigeonhole principle (via `Finset.sum_lt_sum_of_nonempty` and a contradiction) to show some color class of a proper $k$-coloring has $\\ge |V|/k$ vertices; and since color classes are independent, `indep_from_coloring` concludes $\\alpha(G)\\ge\\lfloor|V|/k\\rfloor$. This is the bound that, applied to the 7-coloring of the plane, yields $\\alpha\\ge|V|/7$ for finite unit-distance graphs.",
+    "significance": "key",
+    "mathContext": "Pigeonhole: a proper $k$-coloring of $n$ vertices has a color class of size $\\ge n/k$; that class is independent, so $\\alpha(G) \\ge \\lfloor |V|/k\\rfloor$. With $k=\\chi(G)$ this is $\\alpha(G)\\ge |V|/\\chi(G)$.",
+    "relatedConcepts": [
+      "pigeonhole principle",
+      "proper coloring",
+      "independence number lower bound",
+      "disjoint partition"
+    ],
+    "prerequisites": [
+      "pigeonhole principle",
+      "Finset sums and partitions",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "ann-udi-degree-theory",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 315,
+      "endLine": 362
+    },
+    "type": "definition",
+    "title": "Part X (a) — Degree and Maximum Degree",
+    "content": "Sets up degree theory: `degree G v` is the number of neighbors of $v$, `maxDegree` is $\\Delta(G)$ (the finset supremum of degrees). Lemmas: isolated vertices have degree 0 (`degree_isolated`), $\\deg(v)\\le|V|-1$ (`degree_le_card_sub_one`), and $\\deg(v)\\le\\Delta(G)$ (`degree_le_maxDegree`). These feed the greedy independence bound.",
+    "significance": "supporting",
+    "mathContext": "Degree $\\deg_G(v) = |\\{u : G.\\mathrm{Adj}\\,v\\,u\\}|$; maximum degree $\\Delta(G) = \\max_v \\deg_G(v)$. Bounds: $0 \\le \\deg(v) \\le \\min(|V|-1,\\ \\Delta(G))$.",
+    "relatedConcepts": [
+      "vertex degree",
+      "maximum degree Δ",
+      "neighborhood"
+    ],
+    "prerequisites": [
+      "graph theory: degrees",
+      "Finset.sup"
+    ]
+  },
+  {
+    "id": "ann-udi-maximal-indep",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 363,
+      "endLine": 383
+    },
+    "type": "concept",
+    "title": "Part X (b) — Maximal Independent Sets and Closed Neighborhoods",
+    "content": "Defines `IsMaximalIndep` (an independent set that cannot be extended) and the closed neighborhood `closedNeighborhoodIn`, proving `closedNeighborhoodIn_card_le`: $|N[v]| \\le \\Delta+1$. A maximal independent set dominates the graph — every vertex is within one step — which converts the domination structure into the greedy counting bound that follows.",
+    "significance": "supporting",
+    "mathContext": "Closed neighborhood $N[v] = \\{v\\}\\cup N(v)$ has $|N[v]| \\le \\Delta+1$. A maximal independent set is dominating: no vertex can be added without violating independence.",
+    "relatedConcepts": [
+      "maximal independent set",
+      "closed neighborhood",
+      "dominating set",
+      "greedy algorithm"
+    ],
+    "prerequisites": [
+      "graph theory: domination",
+      "independent sets"
+    ]
+  },
+  {
+    "id": "ann-udi-greedy-bound-421",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 421,
+      "endLine": 483
+    },
+    "type": "insight",
+    "title": "Part X (c) — The Greedy Bound α(G) ≥ |V|/(Δ+1)",
+    "content": "The greedy independence bound, converted here from an axiom to a proved theorem. `maximal_indep_covers` shows a maximal independent set $I$ together with the closed neighborhoods of its members covers $V$; `maximal_indep_covering_bound` turns the cover into the cardinality inequality $|V| \\le |I|\\,(\\Delta+1)$; and `greedy_bound` concludes $\\alpha(G) \\ge |V|/(\\Delta+1)$. Applied via `unit_distance_independence_from_chromatic`, this and the 7-coloring give $\\alpha \\ge |V|/7$ for finite unit-distance graphs.",
+    "significance": "key",
+    "mathContext": "Greedy / Caro–Wei-style bound: $\\alpha(G) \\ge \\dfrac{|V|}{\\Delta(G)+1}$, since a maximal independent set $I$ satisfies $|V| \\le |I|(\\Delta+1)$ (each vertex lies in some $N[v]$, $v\\in I$).",
+    "relatedConcepts": [
+      "greedy independence bound",
+      "Caro–Wei inequality",
+      "maximum degree",
+      "domination"
+    ],
+    "prerequisites": [
+      "graph theory: independence bounds",
+      "counting/covering arguments"
+    ]
+  },
+  {
+    "id": "ann-udi-additional-structural",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 511,
+      "endLine": 601
+    },
+    "type": "concept",
+    "title": "Part XI — Chromatic–Independence Product and Set Operations",
+    "content": "Structural results around $\\alpha$ and $\\chi$: `alpha_chi_ge_card` ($k\\cdot\\alpha(G)\\ge|V|$ for $k$-colorable graphs, the product form of the pigeonhole bound), together with operational lemmas — `independent_extend`, `disjoint_indep_union`, `indep_erase`, `alpha_ge_one` — and the neighborhood apparatus (`neighborhood`, `neighborhood_card_eq_degree`, `not_mem_neighborhood`, `independent_mono`, `independenceNumber_le_card`). `independent_mono` records that removing edges only enlarges the family of independent sets.",
+    "significance": "supporting",
+    "mathContext": "Product bound: if $G$ is $k$-colorable then $k\\cdot\\alpha(G) \\ge |V|$, equivalently $\\alpha(G) \\ge |V|/k$. Monotonicity: $H \\le G$ (fewer edges) $\\Rightarrow \\alpha(H) \\ge \\alpha(G)$.",
+    "relatedConcepts": [
+      "chromatic number",
+      "independence number",
+      "graph monotonicity",
+      "neighborhood"
+    ],
+    "prerequisites": [
+      "graph coloring",
+      "independence number",
+      "Finset operations"
+    ]
+  },
+  {
+    "id": "ann-udi-additional-bounds",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 602,
+      "endLine": 699
+    },
+    "type": "concept",
+    "title": "Part XIII — Further Independence Bounds",
+    "content": "A further toolkit: `common_neighbor_indep` (constraints from shared neighbors), `indep_chromatic_bound` ($\\alpha(G)\\ge|V|/\\chi(G)$, the clean chromatic lower bound), `indep_clique_intersection` ($|I\\cap K|\\le1$ for independent $I$ and clique $K$ — the duality made quantitative), `indep_neighbors_outside`, `indep_is_compl_clique`, `indep_degree_sum`, and `independenceNumber_pos` ($\\alpha(G)>0$ for nonempty $G$).",
+    "significance": "supporting",
+    "mathContext": "Chromatic bound $\\alpha(G) \\ge |V|/\\chi(G)$; clique–independent intersection $|I\\cap K| \\le 1$; positivity $\\alpha(G) > 0$ when $V \\ne \\varnothing$.",
+    "relatedConcepts": [
+      "chromatic lower bound",
+      "clique–independent intersection",
+      "common neighbors"
+    ],
+    "prerequisites": [
+      "graph theory: independence and cliques",
+      "chromatic number"
+    ]
+  },
+  {
+    "id": "ann-udi-complement-duality",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 700,
+      "endLine": 759
+    },
+    "type": "concept",
+    "title": "Part XIV — Complement Graph Independence–Clique Duality",
+    "content": "Develops the complement duality systematically: `indep_iff_compl_isClique`, `clique_iff_compl_indep`, `compl_compl_eq` (involutivity $\\overline{\\overline G}=G$), `indep_compl_compl`, and the adjacency descriptions of $\\overline{\\bot}$ and $\\overline{\\top}$. This formalizes the standard fact that independence-number questions and clique-number questions are interchangeable via complementation.",
+    "significance": "supporting",
+    "mathContext": "Duality: $S$ independent in $G \\iff S$ is a clique in $\\overline{G}$, and $\\overline{\\overline{G}} = G$. Hence $\\alpha(G) = \\omega(\\overline{G})$ (clique number of the complement).",
+    "relatedConcepts": [
+      "complement graph",
+      "clique number ω",
+      "involution",
+      "independence-clique duality"
+    ],
+    "prerequisites": [
+      "graph complement",
+      "cliques"
+    ]
+  },
+  {
+    "id": "ann-udi-handshaking",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 760,
+      "endLine": 784
+    },
+    "type": "concept",
+    "title": "Part XV — Handshaking Lemma and Edge Counting",
+    "content": "Connects the local degree machinery to Mathlib’s graph library: `degree_eq_mathlib_degree` identifies the file’s degree with `SimpleGraph.degree`, `sum_degrees_eq_twice_edges` is the handshaking lemma $\\sum_v\\deg(v)=2|E|$, and `edge_count_le_card_mul_maxDeg` bounds $|E| \\le \\tfrac12|V|\\Delta$.",
+    "significance": "supporting",
+    "mathContext": "Handshaking lemma: $\\sum_{v\\in V}\\deg(v) = 2|E(G)|$. Consequently $|E(G)| \\le \\tfrac{1}{2}|V|\\,\\Delta(G)$.",
+    "relatedConcepts": [
+      "handshaking lemma",
+      "edge counting",
+      "degree sum",
+      "SimpleGraph.degree"
+    ],
+    "prerequisites": [
+      "graph theory: handshaking lemma",
+      "summation over vertices"
+    ]
+  },
+  {
+    "id": "ann-udi-mindegree",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 785,
+      "endLine": 846
+    },
+    "type": "concept",
+    "title": "Part XVI — Minimum Degree and Edge Bounds",
+    "content": "Introduces `minDegree` ($\\delta(G)$) with `minDegree_le_degree`, `minDegree_le_maxDegree`, the lower edge bound `twice_edges_ge_card_mul_minDeg` ($2|E|\\ge|V|\\delta$), `regular_edge_count` for regular graphs, and degree-sum results inside independent sets (`indep_degree_sum_eq_cut_edges`, `indep_degree_sum_le`) — the degrees of an independent set count exactly the edges leaving it (cut edges).",
+    "significance": "supporting",
+    "mathContext": "Minimum degree $\\delta(G)$ with $\\delta \\le \\deg(v) \\le \\Delta$ and $2|E| \\ge |V|\\,\\delta$. For an independent set $I$, $\\sum_{v\\in I}\\deg(v)$ counts the edges crossing the cut $(I, V\\setminus I)$.",
+    "relatedConcepts": [
+      "minimum degree δ",
+      "regular graph",
+      "cut edges",
+      "degree-sum bounds"
+    ],
+    "prerequisites": [
+      "graph theory: degree bounds",
+      "edge counting"
+    ]
+  },
+  {
+    "id": "ann-udi-families-summary",
+    "proofId": "unit-distance-independence",
+    "range": {
+      "startLine": 847,
+      "endLine": 947
+    },
+    "type": "concept",
+    "title": "Parts XVII & XII — Specific Graph Families and Summary",
+    "content": "Closes with independence numbers of specific families — `alpha_bot` ($\\alpha(\\bot)=|V|$, the edgeless graph), and complement-of-empty lemmas (`bot_compl_adj_of_ne`, `indep_compl_bot_card_le_one`) computing independence in $\\overline{\\bot}=\\top$ — followed by the Summary section. The summary records 48 proved theorems with 0 sorries, the 2 Hadwiger–Nelson axioms (De Grey lower / hexagonal upper), and honestly states what is *not* formalized: De Grey’s explicit 1581-vertex construction, the hexagonal 7-coloring, and fractional chromatic bounds.",
+    "significance": "supporting",
+    "mathContext": "Edgeless extreme $\\alpha(\\bot_V) = |V|$; complete extreme $\\alpha(\\top_V) = 1$. The file proves 48 theorems (0 sorries) atop 2 stated axioms; the deep geometric constructions behind $5\\le\\chi(\\mathbb R^2)\\le 7$ remain axiomatized.",
+    "relatedConcepts": [
+      "edgeless graph",
+      "complete graph",
+      "axiom disclosure",
+      "formalization scope"
+    ],
+    "prerequisites": [
+      "graph families",
+      "independence number",
+      "proof transparency"
+    ]
   }
 ]

@@ -177,3 +177,48 @@ unchanged from S2 ORIENT. Activated only if B1 plumbing balloons or
 B2 proves intractable.
 
 **Approach C**: still not viable at v4.26.0; no top-level `Matrix.SmithNormalForm`.
+
+---
+
+## BLOCKER FINDING (researcher-2, 2026-06-12) — parent file does not build at current pin
+
+`proofs/Proofs/BezoutIdentityOQ04OQ01.lean` **fails to compile** under
+`./proofs/scripts/docker-build.sh` at the current Mathlib v4.26.0 pin,
+independent of any new edits (confirmed: a pristine `git checkout` of the file
+fails when compiled as a dependency; a file's own imports do not affect how its
+dependencies compile, so the breakage is intrinsic to this file). The
+`bezout_from_snf` solvability proof has drifted against Mathlib. Five error
+sites in the 1×2 helper (lines ~240–288):
+
+1. **Lines 246, 255** — `rw [hD01] at h` fails: after the `simp only [...,
+   Fin.sum_univ_two, Matrix.cons_val_*]` at 243/252, `h` contains `snf.D 0 1`
+   (bare `Fin` literals) but `hD01 : snf.D ⟨0,_⟩ ⟨1,_⟩ = 0`, so `rw` finds no
+   syntactic match. Fix: rewrite via `simp only [hD01, ...]` / add `Fin.isValue`
+   normalization so the index forms align.
+2. **Line 268** — `apply Int.dvd_gcd` no longer unifies. Current signature is
+   `@Int.dvd_gcd : ∀ {a b : ℤ} {c : ℕ}, ↑c ∣ a → ↑c ∣ b → c ∣ a.gcd b`
+   (divisor is a coerced ℕ, conclusion is ℕ-level `c ∣ a.gcd b`), but the goal
+   is `(d : ℤ) ∣ ↑(a.gcd b)`. Needs a different lemma/route (prove `d ∣ a`,
+   `d ∣ b`, then conclude `d ∣ ↑(a.gcd b)` — e.g. via `Int.natAbs` or
+   `dvd_gcd`-style ℤ lemma).
+3. **Lines 283, 286** — `dvd_neg.mp hdvd` type mismatch: `hdvd` has type
+   `↑(a.gcd b) ∣ -(d*1)` / `↑(a.gcd b) ∣ d*-1`, expected `↑(a.gcd b) ∣ -d`; the
+   preceding `simp only [neg_mul, one_mul]` no longer normalizes `-(d*1)`/`d*-1`
+   to `-d`. Fix: add `mul_one`/`mul_neg_one` (or use `ring_nf`/`omega`-friendly
+   rewrite) before `dvd_neg.mp`.
+
+**This is Mechanic/Doctor-grade repair work** (multiple Mathlib-API/simp-drift
+fixes requiring iterative builds), not researcher-frontier work.
+
+**Consequence for this slug**: the planned SNF infrastructure (elementary-op
+unimodularity: `isUnimodular_transvection` via `Matrix.det_transvection_of_ne`,
+`isUnimodular_permMatrix` via `Matrix.det_permutation` + `Int.units_eq_one_or`
+— both API-verified and individually compile-ready) is **blocked** until the
+parent builds again. A companion file `BezoutIdentityOQ04OQ01Snf.lean` was
+drafted with those two lemmas but cannot build because it must import the broken
+parent; it was removed pending the repair. Once the parent is fixed, drop the
+two lemmas into the parent (after `IsUnimodular.det_ne_zero`) — no extra imports
+needed beyond `Mathlib.LinearAlgebra.Matrix.{Transvection,Permutation}`, but
+note those imports perturb the parent's `Fin`-index simp normal form, so apply
+them together with the index-robustness fixes above (or keep them in a companion
+that imports the repaired parent).

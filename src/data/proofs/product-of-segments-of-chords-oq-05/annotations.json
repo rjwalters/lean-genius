@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-posc05-header",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 5, "endLine": 51 },
+    "type": "concept",
+    "title": "Goal: why the chord product is direction-independent",
+    "content": "The parent entry proves the classical intersecting-chords theorem PA·PB = PC·PD (Wiedijk #55). This entry explains *why* the product is the same for every chord through a fixed point P, reducing it to Vieta's formula. Substituting the parametric line P + t·d into the sphere equation yields a monic quadratic in t whose constant coefficient is the power of the point ‖P−O‖²−r² — which carries no dependence on the direction d. Vieta then makes the product of the two intersection parameters equal that constant for every line through P. Everything is proved over an arbitrary real inner product space, so the same terms cover the planar circle, the 3D sphere, and infinite-dimensional Hilbert spheres.",
+    "mathContext": "Line $P + t\\,d$ meets the sphere where $t^2 + 2\\langle P-O,d\\rangle t + (\\|P-O\\|^2 - r^2) = 0$; the constant term is $d$-independent.",
+    "significance": "key",
+    "relatedConcepts": ["power of a point", "Vieta's formulas", "intersecting chords", "inner product space", "Steiner power"],
+    "prerequisites": ["inner product spaces", "quadratic equations", "Vieta's relations"]
+  },
+  {
+    "id": "ann-posc05-power-def",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 61, "endLine": 64 },
+    "type": "definition",
+    "title": "The power of a point",
+    "content": "power O r P = ‖P − O‖² − r² is Steiner's signed power of the point P with respect to the sphere of centre O and radius r: negative strictly inside the sphere, zero on it, positive strictly outside. Defined over an arbitrary real inner product space E, it is the object that the whole entry shows equals the chord product t₁·t₂.",
+    "mathContext": "$\\mathrm{power}(O, r, P) = \\|P - O\\|^2 - r^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Steiner power", "signed distance to a sphere", "inside/outside dichotomy"],
+    "prerequisites": ["norm in an inner product space"]
+  },
+  {
+    "id": "ann-posc05-restriction",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 66, "endLine": 84 },
+    "type": "theorem",
+    "title": "The power restricted to a line is a quadratic",
+    "content": "power_along_line computes the power along t ↦ P + t·d as ‖d‖²·t² + 2⟨P−O,d⟩·t + power O r P, by writing P + t·d − O = (P−O) + t·d and expanding the squared norm with the real polarisation identity norm_add_sq_real (plus real_inner_smul_right, norm_smul, then ring). The crucial structural fact: the direction d enters only the linear coefficient; the constant term is the direction-free power. power_along_unit_line specialises to the monic quadratic t² + 2⟨P−O,d⟩·t + power O r P when ‖d‖ = 1.",
+    "mathContext": "$\\mathrm{power}(O, r, P + t\\,d) = \\|d\\|^2 t^2 + 2\\langle P-O, d\\rangle t + \\mathrm{power}(O,r,P)$; monic when $\\|d\\| = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["norm_add_sq_real", "polarisation identity", "real_inner_smul_right", "norm_smul", "monic quadratic"],
+    "prerequisites": ["the power definition", "expanding squared norms"]
+  },
+  {
+    "id": "ann-posc05-vieta",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 86, "endLine": 104 },
+    "type": "theorem",
+    "title": "Vieta: the chord product equals the power",
+    "content": "chord_product_eq_power is the heart: for two distinct on-sphere parameters t₁ ≠ t₂, the product t₁·t₂ = power O r P. The slick part is extracting Vieta's product without naming roots or invoking any polynomial API — the combination t₂·q(t₁) − t₁·q(t₂) factors as (t₁−t₂)(t₁·t₂ − power), verified by linear_combination. Since both quadratics vanish, this product is 0; distinctness t₁ ≠ t₂ kills the first factor, forcing t₁·t₂ = power. Because the right-hand side has no d, this IS the direction-independence.",
+    "mathContext": "$t_2\\,q(t_1) - t_1\\,q(t_2) = (t_1 - t_2)(t_1 t_2 - \\mathrm{power})$, and $t_1 \\ne t_2 \\Rightarrow t_1 t_2 = \\mathrm{power}(O,r,P)$.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's product formula", "linear_combination", "mul_eq_zero", "root distinctness", "polynomial-API-free"],
+    "prerequisites": ["the monic restriction", "factoring identities"]
+  },
+  {
+    "id": "ann-posc05-sum",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 106, "endLine": 116 },
+    "type": "theorem",
+    "title": "The companion sum formula",
+    "content": "chord_sum_eq is the Vieta sum: under the same hypotheses t₁ + t₂ = −2⟨P−O,d⟩. The proof mirrors the product: the subtraction q(t₁) − q(t₂) factors as (t₁−t₂)(t₁+t₂+2⟨P−O,d⟩) (linear_combination h₁ − h₂), and distinctness forces the second factor to zero. Unlike the product, the sum DOES depend on d (through the linear coefficient), which is exactly why the product — not the sum — is the direction-invariant.",
+    "mathContext": "$q(t_1) - q(t_2) = (t_1 - t_2)(t_1 + t_2 + 2\\langle P-O,d\\rangle)$, so $t_1 + t_2 = -2\\langle P-O, d\\rangle$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Vieta's sum formula", "linear_combination", "direction-dependence of the sum"],
+    "prerequisites": ["the monic restriction", "the Vieta product argument"]
+  },
+  {
+    "id": "ann-posc05-direction",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 118, "endLine": 128 },
+    "type": "theorem",
+    "title": "The headline: direction-independence",
+    "content": "chord_product_direction_independent states the payoff directly: two secant lines through P in different unit directions d, d', each meeting the sphere at distinct parameters, give the same signed product t₁·t₂ = s₁·s₂. The proof is a one-liner — rewrite both products by chord_product_eq_power, since each equals the common direction-free power O r P. This is the precise formalisation of the classical observation that PA·PB is the same for every chord through P.",
+    "mathContext": "$t_1 t_2 = \\mathrm{power}(O,r,P) = s_1 s_2$ for any two directions $d, d'$.",
+    "significance": "key",
+    "relatedConcepts": ["direction-independence", "intersecting-chords theorem", "invariance"],
+    "prerequisites": ["the Vieta product theorem"]
+  },
+  {
+    "id": "ann-posc05-sign",
+    "proofId": "product-of-segments-of-chords-oq-05",
+    "range": { "startLine": 130, "endLine": 146 },
+    "type": "insight",
+    "title": "Sign dichotomy: inside vs outside",
+    "content": "chord_product_sign records the interior/exterior dichotomy for a nonnegative radius: the signed product t₁·t₂ is negative exactly when P is strictly inside the sphere (‖P−O‖ < r) and positive exactly when P is strictly outside (r < ‖P−O‖). Since t₁·t₂ = ‖P−O‖² − r², the four iff directions all fall to nlinarith with norm_nonneg. This is the algebraic origin of the geometric distinction between the intersecting-chords configuration (P inside) and the secant–secant configuration (P outside).",
+    "mathContext": "$t_1 t_2 = \\|P-O\\|^2 - r^2$: $\\;t_1 t_2 < 0 \\iff \\|P-O\\| < r$, and $\\;0 < t_1 t_2 \\iff r < \\|P-O\\|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["interior vs exterior", "intersecting chords vs secants", "nlinarith", "sign of the power"],
+    "prerequisites": ["the Vieta product theorem", "ordered field reasoning"]
+  }
+]

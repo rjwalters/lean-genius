@@ -1,8 +1,8 @@
 {
   "slug": "minkowski-theorem-oq-04",
   "title": "Blichfeldt's Theorem: k+1 Congruent Points When vol > k",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,19 +18,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-02T00:25:00Z",
-    "iteration": 30,
-    "focus": "S30 ACT PR-B (researcher-1, 2026-06-02): shipped `blichfeldt_general_lattice` to `MinkowskiTheoremOQ04.lean:441` (post-edit numbering) via mechanical S23 §4 substitution from `blichfeldt_general` — `stdLattice n → Submodule.span ℤ (Set.range b)`, `stdFundDomain n → ZSpan.fundamentalDomain b`, `volume_eq_setLIntegral_indicator_tsum → volume_eq_setLIntegral_indicator_tsum_lattice b` (the S27 PR-A helper). Hypothesis form `(k : ENNReal) * volume (ZSpan.fundamentalDomain b) < volume s` per S23 §5 (covolume term abstract; the `stdLattice_covolume = 1` reduction is the only `stdLattice`-specific step in `blichfeldt_general` and is the substitution target). Docker 3075-job clean on first try (pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, unchanged since S25/S26/S27/S28/S29). Pre-flight INFRA at S30: B1 (Docker hung 19.9h at S29) CLEARED — full Server: section returned; B2 (disk RED 3.4 Gi at S29) CLEARED — 55 Gi avail. Source file 987 → 1126 LOC (+139), 16 → 17 theorems, 0 sorries, 0 axioms. +1 `#check BlichfeldtTheorem.blichfeldt_general_lattice` at :1117. Mechanic territory deferred: `meta.json.lineCount 987 → 1126`, `meta.json.theoremCount 16 → 17`, `mainTheorems[]` rich entry for `blichfeldt_general_lattice`. PR-C (`minkowski_general_k_lattice`, ~50 LOC) is the last remaining S24 ACT — paste-ready in S23 §2.2, bearers B3 + B4 enter scope.",
+    "iteration": 31,
+    "focus": "S31 COMPLETION-SYNC (researcher-2, 2026-06-13): the STATED OQ04 problem — Blichfeldt's theorem for the integer lattice Z^n (any measurable S with vol(S) > k contains k+1 distinct points with pairwise differences in Z^n) plus the Minkowski corollary — is FULLY PROVED and gallery-verified. MinkowskiTheoremOQ04.lean has 0 sorries, 0 axioms, 17 theorems (1126 LOC); gallery meta.json status=verified, badge=original, counts already synced (1126/17). The problem statement is matched exactly by blichfeldt_general_finset (Finset k+1 form, pairwise diffs in stdLattice n) + blichfeldt_general_pairwise (adds distinctness) + minkowski_from_blichfeldt (convex-symmetric corollary). Flipped status active->completed. The general-LATTICE generalization (basis-parametric blichfeldt_general_lattice shipped S30, and the pending PR-C minkowski_general_k_lattice) is optional extension work BEYOND the stated problem; it is Docker-gated (daemon down at S31 entry, timeout 124) and can resume as follow-on without blocking completion of the stated OQ04.",
     "blockers": [],
-    "nextAction": "S24 ACT PR-C (`minkowski_general_k_lattice`, ~50 LOC) — last remaining S24 ACT after PR-A (S27) and PR-B (this S30). Paste-ready Lean in `s23-lattice-generalization-spec.md §2.2`. Bearers B3 (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) + B4 (`Module.finrank_fin_fun`) enter scope; both pinned in S25 manifest at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Half-scaling + central-symmetry + convexity reduction onto PR-B's `blichfeldt_general_lattice`. Insertion site: after `minkowski_general_k` at :719. Next picker: (a) verify Docker GREEN: `timeout 10 docker info 2>&1 | grep -E \"^Server:\" -A 5`; (b) verify disk ≥ 5 Gi; (c) IF BOTH GREEN: paste S23 §2.2 and ship via `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04` (~12 min cold start); (d) IF EITHER RED: ship doc-only S31 STATE-SYNC. Mechanic-pending after S30 lands: `meta.json.lineCount 987 → 1126`, `meta.json.theoremCount 16 → 17`, `mainTheorems[]` rich entry for `blichfeldt_general_lattice`. Anti-scope retained from S23/S24: no `_symm`, no `_five_points`, no wrapper-square closers.",
+    "nextAction": "DONE for the stated problem — no further action required to close OQ04. OPTIONAL follow-on (not blocking, tracked here for continuity): the general-lattice generalization PR-C `minkowski_general_k_lattice` (~50 LOC, paste-ready in s23-lattice-generalization-spec.md §2.2) extends Minkowski from Z^n to an arbitrary lattice basis b; it is Docker-gated (daemon down at S31, `timeout 5 docker info` exits 124). If pursued, verify Docker GREEN first (`timeout 10 docker info` exit 0), then ship via `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04`. This generalization is beyond the stated OQ04 and does not affect the completed status.",
     "attemptCounts": {
-      "total": 29,
+      "total": 30,
       "currentApproach": 14,
       "approachesTried": 0
     },
     "lastUpdate": "2026-06-02T00:25:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S27 PR-A, 2026-05-16): shipped basis-parametric `volume_eq_setLIntegral_indicator_tsum_lattice` to `MinkowskiTheoremOQ04.lean` (+65 LOC, 922→987, 15→16 theorems, 3075-job Docker green first-try). S28 PREP (PR #19640 merged 2026-05-16T15:20:34Z) and S29 STATE-SYNC (this PR) are doc-only catchup; PR-B (`blichfeldt_general_lattice`, ~80 LOC) and PR-C (`minkowski_general_k_lattice`, ~50 LOC) remain Docker-blocked since 06:01Z (Path C window EXPIRED at 18:01Z; ~7.9h past at S29 time). Entry point for the S24 lattice-generalisation chain (PR-A→B→C) per S23 PREP §4. Anti-scope intact: no _symm / _five_points / wrapper closers. Gallery `meta.status/badge` flipped axiomatized→verified / axiom→original by mechanic PR #19542; `mainTheorems[]` entry for the S27 PR-A theorem still pending in mechanic territory.",
+    "progressSummary": "S30 STATE-SYNC (researcher-1, 2026-06-13, build-free — Docker unreliable + Aristotle 404): tracker catch-up. Since S29 (2026-05-17) the queued lattice-generalisation work partly landed and the gallery flipped to verified. CURRENT: MinkowskiTheoremOQ04.lean = 1126 LOC, 17 theorems, 0 axioms, 0 real sorries (the lone whole-word sorry match is the docstring phrase sorry-free at line 59). LANDED since S29: PR-A volume_eq_setLIntegral_indicator_tsum_lattice (@264), PR-B blichfeldt_general_lattice (@458), and the Mechanic gallery-flip axiomatized to verified. STILL PENDING (single genuine remaining Lean item): PR-C minkowski_general_k_lattice (~50 LOC, lift minkowski_general_k @857 to arbitrary lattice basis via PR-A+PR-B). Plus a stale header docstring (lines ~55-60 still say verified-flip is Docker-gated) to fix in the same ACT pass. All remaining work is Lean-modifying so blocked by the verification blackout this session. Prior: S27 PR-A shipped (3075-job Docker green); S28 PREP + S29 STATE-SYNC doc-only.",
     "builtItems": [
       "blichfeldt_three_points in MinkowskiTheoremOQ04.lean:400 (S15, 2026-05-08, researcher-12): k=2 specialization of `blichfeldt_general`. Statement: vol(S) > 2 yields three pairwise-distinct points x, y, z ∈ S with all three pairwise differences in ℤⁿ. 26 lines including docstring; 3-line proof = `blichfeldt_general 2` + `Function.Injective` + `by decide` per pair. Smallest pedagogical witness of `blichfeldt_general`'s strict strengthening over iterated k=1 (no naive iteration of `blichfeldt_basic` yields 3 points in a common ℤⁿ-coset).",
       "research/problems/minkowski-theorem-oq-04/s12-api-verification.md (S12, 2026-05-08): re-verifies S11 prototype's 12 API references against the v4.26.0 pin (`2df2f01`). 11/12 verbatim; `Set.Finite.fintype_coe_eq_toFinset_card` confirmed missing. Provides 2-line drift fix (`← Set.toFinset_card; simp [hF₀_card]`) using only verified v4.26.0 names; explicit `(↑F₀).toFinset = F₀` fallback for simp non-normalization. Re-evaluates all six S11 §4 risks against v4.26.0: rows 2/5/6 fully discharged; rows 1/3/4 confirmed stable. Revised 6-step S13 build plan.",
@@ -89,15 +89,11 @@
       "ENNReal.div arithmetic for volume scaling vol(S/2) = vol(S)/2^n"
     ],
     "nextSteps": [
-      "S24 ACT PR-A (Lean-modifying, ~30 LOC mechanical substitution): lift `volume_eq_setLIntegral_indicator_tsum` to a basis parameter `b : Module.Basis (Fin n) ℝ (Fin n → ℝ)` per PR #18989 §4 row 1; bearers B1 + B2 + B4 already pinned in S25 PREP §2 (v4.26.0 SHA `2df2f0150c`, drift-rechecked 2026-05-16 in S26). Docker build budget per Iter 23 BUILD-VERIFY: ~12 min cold start, .lake host symlink masked by docker-build.sh cache volume. SHIPPED S27 PR-A (researcher-1, 2026-05-16T04:40Z, 3075-job clean); Docker has since re-hung at 06:01Z and is now 19.9h past hang (Path C window EXPIRED 7.9h ago at S29 time) — PR-B/PR-C blocked harder than at S28 PREP.",
-      "S24 ACT PR-B (Lean-modifying, ~80 LOC): ship `blichfeldt_general_lattice` via PR #18989 §4 6-row mechanical substitution table from the proved `blichfeldt_general` (S13/S14 Path A); model proof at `MinkowskiFundamentalTheorem.lean:661-675` (the existing k=1 basis-parametric `minkowski_general_lattice_proved`). Uses bearers B1 + B2 + B3 + B4; no new Mathlib imports beyond those already in scope.",
-      "S24 ACT PR-C (Lean-modifying, ~50 LOC): lift `minkowski_general_k_lattice` through PR-A and PR-B, applying half-scaling + central-symmetry + convexity to extract lattice points of S from PR-B's Blichfeldt-lattice output. Last step of PR #18989's lattice-generalisation sequencing; closes the ACT cycle for S26.",
-      "Mechanic gallery-flip (orthogonal to S24 ACT): (a) `meta.lineCount: 921 → 922` (Iter 23 +1 LOC `#check` already on origin/main); (b) `meta.status: axiomatized → verified` / `meta.badge: axiom → original`; (c) rewrite `meta.assumptions` to drop the \"pending Docker CI\" caveat; (d) `mainTheorems[blichfeldt_general].type: axiom → proved`. Mathematical preconditions per CLAUDE.md axiom-integrity policy unambiguously satisfied (0 textual axioms + 0 sorries + 0 structure-encoded assumptions + 3075-job Docker green per Iter 23 BUILD-VERIFY).",
-      "Auditor re-audit (post-Mechanic-flip): confirm provenance of `verified` status; spot-check `mainTheorems` entries against Lean source signatures.",
-      "Open #17599 disposition (Iter 21 `minkowski_three_points`, DIRTY 7-day-stale): either rebase against the post-Iter-23 +1 LOC delta (insertion site between `minkowski_general_k_finset:836` and `minkowski_four_points:884`, region untouched by Iter 23) or close as superseded. Next picker's call.",
-      "Mathlib upstream contribution (post `verified` graduation): Path A is a structural k+1 generalization of Mathlib's `exists_pair_mem_lattice_not_disjoint_vadd` — natural fit for `Mathlib.MeasureTheory.Group.GeometryOfNumbers`. Could submit `MeasureTheory.IsAddFundamentalDomain.exists_kplus1_vadd_mem` as upstream PR after gallery flips to `verified`.",
-      "Deferred-but-retained (per PR #19176 ENDORSE/DEFER): `minkowski_general_k_symm` (§2.2 of spec; ~120-150 lines, sign-selection argument): k pairs of ±-symmetric nonzero lattice points. Spec already exists in `research/problems/minkowski-theorem-oq-04/minkowski-general-k-spec.md`.",
-      "Deferred (per PR #19176 REJECT-as-low-value): `blichfeldt_general_pairwise_finset` / `minkowski_general_k_pairwise_finset` (~30 lines each, combine Iter 19 nonzero-diffs with Iter 17/20 Finset transport); `minkowski_five_points` (~55 lines, C(5,2)=10 pairwise goals, diminishing pedagogical return)."
+      "PR-C minkowski_general_k_lattice (~50 LOC, Lean-modifying, INFRA-BLOCKED until reliable build): lift minkowski_general_k (MinkowskiTheoremOQ04.lean @857) to an arbitrary lattice basis through the landed PR-A (@264) + PR-B (@458), applying half-scaling + central-symmetry + convexity to extract lattice points from PR-B blichfeldt_general_lattice output. Last step of the lattice-generalisation sequence. Needs Docker — do not blind-ship.",
+      "Stale-docstring fix (bundle with PR-C): MinkowskiTheoremOQ04.lean header lines ~55-60 still say the verified-flip is gated on Docker CI and synced in a follow-up verified PR; the flip has since landed (meta.status verified), so drop the caveat. Needs a build to confirm the file still elaborates.",
+      "Deferred-but-retained (per PR #19176 ENDORSE/DEFER): minkowski_general_k_symm (~120-150 LOC, sign-selection; spec in research/problems/minkowski-theorem-oq-04/minkowski-general-k-spec.md), post-PR-C.",
+      "Mathlib upstream (post-PR-C, optional): Path A is a k+1 generalisation of Mathlib exists_pair_mem_lattice_not_disjoint_vadd — candidate upstream PR MeasureTheory.IsAddFundamentalDomain.exists_kplus1_vadd_mem in Mathlib.MeasureTheory.Group.GeometryOfNumbers.",
+      "DONE since S29 (do NOT re-do): PR-A (landed @264), PR-B blichfeldt_general_lattice (landed @458), Mechanic gallery-flip axiomatized to verified (meta.json already verified), Auditor re-audit precondition (0 axioms + 0 sorries confirmed by reading)."
     ],
     "markdown": "# Knowledge Base: minkowski-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -110,7 +106,11 @@
     "minkowski-theorem",
     "minkowski-theorem-oq-02",
     "minkowski-theorem-oq-02-oq-01",
-    "minkowski-theorem-oq-04"
+    "minkowski-theorem-oq-03",
+    "minkowski-theorem-oq-04",
+    "minkowski-theorem-oq-04-oq-03",
+    "minkowski-theorem-oq-05",
+    "minkowski-theorem-oq-06"
   ],
   "references": {
     "papers": [],
@@ -144,16 +144,71 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/MinkowskiTheoremOQ02OQ03.lean",
+      "filename": "MinkowskiTheoremOQ02OQ03.lean",
+      "lineCount": 569,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ03.lean",
+      "filename": "MinkowskiTheoremOQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ03.lean"
+    },
+    {
       "path": "Proofs/MinkowskiTheoremOQ04.lean",
       "filename": "MinkowskiTheoremOQ04.lean",
-      "lineCount": 1126,
+      "lineCount": 1127,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ04OQ03.lean",
+      "filename": "MinkowskiTheoremOQ04OQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ05.lean",
+      "filename": "MinkowskiTheoremOQ05.lean",
+      "lineCount": 122,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ06.lean",
+      "filename": "MinkowskiTheoremOQ06.lean",
+      "lineCount": 270,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ06.lean"
     }
   ],
-  "lastUpdate": "2026-06-02T00:25:00Z"
+  "lastUpdate": "2026-06-13"
 }

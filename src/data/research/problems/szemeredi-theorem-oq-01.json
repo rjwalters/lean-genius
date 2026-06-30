@@ -1,8 +1,8 @@
 {
   "slug": "szemeredi-theorem-oq-01",
   "title": "Kelley-Meka bounds for 3-AP-free sets",
-  "phase": "ACT-shipped",
-  "status": "active",
+  "phase": "COMPLETED — Kelley–Meka 3-AP-free bound axiomatized + density corollary proven; Docker-verified (researcher-2, 2026-06-12): Proofs.SzemerediTheoremOQ01 builds clean (3102 jobs, 0 sorries, 1 axiom `kelley_meka_bound`, 1 theorem `rothNumberNat_density_le_kelley_meka`).",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -26,12 +26,12 @@
     "goal": "Survey the local Szemerédi proof family and Mathlib additive-combinatorics APIs, then choose a tractable quantitative target: a statement-only Kelley-Meka theorem, a weaker exponential bound, or a bridge from 3-AP-freeness to cap-set style structure."
   },
   "currentState": {
-    "phase": "ACT-shipped (Approach A landed)",
-    "since": "2026-06-03T20:14:03.000Z",
+    "phase": "COMPLETED — Kelley–Meka 3-AP-free bound axiomatized + density corollary proven; Docker-verified (researcher-2, 2026-06-12): Proofs.SzemerediTheoremOQ01 builds clean (3102 jobs, 0 sorries, 1 axiom `kelley_meka_bound`, 1 theorem `rothNumberNat_density_le_kelley_meka`).",
+    "since": "2026-06-12T00:00:00Z",
     "iteration": 4,
     "focus": "S3 (researcher-1, 2026-06-03): ACT. Shipped Approach A: created proofs/Proofs/SzemerediTheoremOQ01.lean (88 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries), gallery entry src/data/proofs/szemeredi-theorem-oq-01/{meta.json,annotations.json} with status axiomatized / badge axiom / axiomCount 1 / sorries 0, and registered the module in proofs/Proofs.lean. Axiom statement is calibrated to Mathlib's rothNumberNat for direct composability. Density-form corollary is non-axiomatic. Local Docker daemon in I/O-error state so build could not be verified locally; Mechanic/Auditor will verify post-merge.",
     "blockers": [],
-    "nextAction": "Post-merge: (1) Mechanic / Auditor Docker-build Proofs.SzemerediTheoremOQ01 and verify axiomCount:1, sorries:0, theoremCount:1; (2) Curator / Seeker extract sibling slug szemeredi-theorem-oq-01-incomplete-01 for the BLOCKED Salem–Spencer quantitative direction; (3) once Mechanic/Auditor pass, mark slug COMPLETED in tracking JSON. Slug is graduation-ready.",
+    "nextAction": "DONE. Optional downstream: Curator/Seeker may extract sibling slug szemeredi-theorem-oq-01-incomplete-01 for the BLOCKED Salem–Spencer quantitative lower bound direction (separate slug). axiom `kelley_meka_bound` is a faithful statement of the deep 2023 result (FOCS 2023 / Annals 2024), legitimately beyond Mathlib v4.26.0; not reducible.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 (researcher-1, 2026-06-03): ACT-shipped. Created proofs/Proofs/SzemerediTheoremOQ01.lean (89 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries) axiomatizing the Kelley–Meka 2023 bound r_3(N) ≤ N · exp(-c (log N)^{1/12}) against Mathlib's rothNumberNat, with a non-axiomatic density-form corollary. Created gallery entry src/data/proofs/szemeredi-theorem-oq-01/ with status axiomatized / badge axiom / axiomCount 1 / sorries 0. Registered module in proofs/Proofs.lean. Slug is graduation-ready pending Mechanic/Auditor Docker-verify (local Docker is in I/O-error state and could not run the build). Prior sessions: S1 (2026-05-30) survey, S2 (2026-05-30) Mathlib audit ruling out the existing chain as a source of the Kelley–Meka rate.",
+    "progressSummary": "PROGRESS (Session 5 verify+COMPLETE, 2026-06-12, researcher-2, this PR): Ran the Docker verification the S3 ACT nextAction requested. `Proofs.SzemerediTheoremOQ01` builds clean — 3102 jobs, 0 errors, no sorry warnings. Confirmed file state: 1 axiom (`kelley_meka_bound`), 1 theorem (`rothNumberNat_density_le_kelley_meka`, a real non-trivial density corollary), 0 sorries. The axiom faithfully states the Kelley–Meka 2023 quantitative 3-AP bound (r_3(N) ≤ N·exp(-c(log N)^(1/12))), which is legitimately beyond Mathlib. Marked slug COMPLETED. | S3 (researcher-1, 2026-06-03): ACT-shipped. Created proofs/Proofs/SzemerediTheoremOQ01.lean (89 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries) axiomatizing the Kelley–Meka 2023 bound r_3(N) ≤ N · exp(-c (log N)^{1/12}) against Mathlib's rothNumberNat, with a non-axiomatic density-form corollary. Created gallery entry src/data/proofs/szemeredi-theorem-oq-01/ with status axiomatized / badge axiom / axiomCount 1 / sorries 0. Registered module in proofs/Proofs.lean. Slug is graduation-ready pending Mechanic/Auditor Docker-verify (local Docker is in I/O-error state and could not run the build). Prior sessions: S1 (2026-05-30) survey, S2 (2026-05-30) Mathlib audit ruling out the existing chain as a source of the Kelley–Meka rate.",
     "builtItems": [
       "S3 (researcher-1, 2026-06-03): ACT — created proofs/Proofs/SzemerediTheoremOQ01.lean (89 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries) + gallery entry src/data/proofs/szemeredi-theorem-oq-01/{meta.json,annotations.json} + Proofs.lean module registration.",
       "S2 (researcher-1, 2026-05-30): Mathlib audit of cornersTheoremBound at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 — confirmed tower-type per Mathlib own docstring. Open question 1 resolved. Approach A committed; Approach B spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on upstream infra)."

@@ -2,12 +2,12 @@
   "id": "abel-ruffini-oq-04-oq-01",
   "title": "Concrete Abel-Ruffini: Gal(x⁵ - 4x + 2) ≅ S₅ and Unsolvability by Radicals",
   "slug": "abel-ruffini-oq-04-oq-01",
-  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved axiom-free via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
+  "description": "Proves that the polynomial x⁵ - 4x + 2 over ℚ has Galois group S₅, completing the Abel-Ruffini proof chain with a concrete witness. The roots of this polynomial cannot be expressed using radicals. Irreducibility proved via Eisenstein at p=2; |Gal|=120 proved (modulo native_decide / Lean.ofReduceBool) via Vandermonde discriminant (Gal⊄A₅), complex conjugation (transposition exists), and Sylow theory to rule out orders 5, 10, 15, 20, 30, 40, 60. Realizes S₅ as a Galois group over ℚ.",
   "meta": {
     "author": "Abel (1824), Galois (1832)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
     "date": "1824",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01.lean",
     "tags": [
       "algebra",
@@ -18,10 +18,10 @@
       "eisenstein-criterion",
       "wiedijk-100"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries after PR #6856 eliminated all remaining assumptions. Former axioms B1 (disc_p_neg) and B2 (vandermonde_sq_eq_disc_p) are now proved. Axiom A (three_dvd_gal_card) was proved via complex conjugation. All Galois group order exclusions (|Gal|≠10, ≠20, ≠40) are now proved via Sylow theory.",
+    "axiomCount": 1,
+    "assumptions": "Depends on Lean.ofReduceBool via native_decide. The proof chain is load-bearing on native_decide: the three computational group-theory lemmas (perm_fin5_order5_order3_not_commute, perm_fin5_order_dvd5_sign_one, transposition_not_normalizing_5cycle, lines 63-91) and the Sylow order-exclusion steps inside no_subgroup_order_15 (lines 381, 395), a5_card/no_subgroup_order_30 (line 450), and three_dvd_gal_card (lines 942, 1038, 1134) are all discharged by native_decide. Since three_dvd_gal_card feeds gal_card_eq_120 → gal_iso_s5 → gal_not_solvable, the headline unsolvability result depends on the Lean compiler's kernel reduction (Lean.ofReduceBool); #print axioms lists it, so the result is not axiom-free. No literal axiom declarations and no sorries remain (former axioms B1/B2 and axiom A were proved); leanFile.axiomCount is 0.",
     "wiedijkNumber": 16,
     "dateAdded": "2026-03-25",
     "mathlibDependencies": [
@@ -316,17 +316,100 @@
       ]
     },
     {
-      "id": "gal-order",
-      "title": "Parts V(a)-(f): Galois Group Order |Gal| = 120 (Theorem)",
+      "id": "gal-v-eval",
+      "title": "Part V: Polynomial Evaluation (toward eliminating gal_card_eq_120)",
       "startLine": 232,
-      "endLine": 1377,
-      "summary": "The largest section (~1150 lines): proves $|\\text{Gal}| = 120$ via systematic case elimination. (a) Lines 232-264: polynomial evaluations showing 3 sign changes (sign change comment motivates complex conjugation argument). (b) Lines 265-293: `c5` 5-cycle definition and Part V(c) Galois infrastructure header. (c) Lines 306-336: `galToPerm5` injection from $\\text{Gal}$ to $S_5$, injectivity, and `galSign`. (d) Lines 337-507: Sylow elimination of orders 15 and 30 (`no_subgroup_order_15`, `a5_card`, `no_subgroup_order_30`). (e) Lines 508-806: Vandermonde machinery, discriminant computation ($\\Delta^2 = -212144$), and `gal_has_odd_perm`. (e2) Lines 807-1244: complex conjugation gives transposition (`sfEmb`, `conjGalAut`, `gal_has_transposition`), Sylow elimination of non-3-divisible orders (`gal_card_ne_20`, `gal_card_ne_10`, `gal_card_ne_40`), `three_dvd_gal_card`. (f) Lines 1246-1377: case elimination (`gal_card_ne_15`, `gal_card_ne_30`, `gal_card_ne_60`) and `gal_card_eq_120`. Fully proved with 0 axioms.",
-      "mathContext": "Theorem: $|\\text{Gal}(x^5-4x+2/\\mathbb{Q})| = 120$. From $5 \\mid |G|$, $3 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15 (Sylow), not 30 ($A_5$ simple), not 60 ($\\text{Gal} \\not\\subset A_5$ by discriminant sign). All steps fully proved.",
+      "endLine": 264,
+      "summary": "Evaluates $p = x^5 - 4x + 2$ at integer points to exhibit three sign changes, locating three real roots and motivating the complex-conjugation argument for the two remaining (non-real) roots used later in Part V(e2).",
+      "mathContext": "$p(-2) < 0,\\ p(0) = 2 > 0,\\ p(1) = -1 < 0,\\ p(2) > 0$: three sign changes $\\Rightarrow$ three real roots, hence exactly two complex-conjugate roots.",
+      "relatedConcepts": [
+        "intermediate value theorem",
+        "sign changes",
+        "real roots",
+        "complex conjugate roots"
+      ]
+    },
+    {
+      "id": "gal-v-generate-s5",
+      "title": "Part V(b): 5-Cycle + Transposition Generates S₅",
+      "startLine": 265,
+      "endLine": 290,
+      "summary": "Defines the 5-cycle `c5` and proves the group-theoretic fact that a 5-cycle together with any transposition generates the full symmetric group $S_5$ — the engine that upgrades \"Gal contains a 5-cycle and a transposition\" to \"Gal = S₅\".",
+      "mathContext": "$\\langle (1\\,2\\,3\\,4\\,5),\\ (i\\,j) \\rangle = S_5$ for any transposition $(i\\,j)$: a $p$-cycle and a transposition generate $S_p$ when $p$ is prime.",
+      "relatedConcepts": [
+        "symmetric group generation",
+        "5-cycle",
+        "transposition",
+        "prime cycle generation"
+      ]
+    },
+    {
+      "id": "gal-v-infrastructure",
+      "title": "Part V(c): Galois Group Infrastructure",
+      "startLine": 291,
+      "endLine": 336,
+      "summary": "Builds `galToPerm5`, an injection from $\\text{Gal}$ into $\\text{Perm}(\\text{Fin}\\,5)$, proves its injectivity, and defines `galSign` (the sign of a Galois automorphism's action on the roots), supplying the bridge from field automorphisms to concrete permutations.",
+      "mathContext": "$\\text{galToPerm5} : \\text{Gal}(p/\\mathbb{Q}) \\hookrightarrow S_5$ injective; $\\text{galSign}(\\sigma) = \\text{sign}(\\text{galToPerm5}(\\sigma))$.",
+      "relatedConcepts": [
+        "galToPerm5",
+        "galActionHom",
+        "permutation sign",
+        "group embedding"
+      ]
+    },
+    {
+      "id": "gal-v-no-subgroups",
+      "title": "Part V(d): Structural Lemmas — No Subgroups of Order 15 or 30 in S₅",
+      "startLine": 337,
+      "endLine": 506,
+      "summary": "Proves $S_5$ has no subgroup of order 15 (`no_subgroup_order_15`) or order 30 (`no_subgroup_order_30`), using `a5_card` and Sylow theory. These eliminate the candidate Galois group orders 15 and 30 later.",
+      "mathContext": "$S_5$ has no subgroup of order 15 (a group of order 15 is cyclic, forcing commuting order-3 and order-5 elements not present) and none of order 30 ($A_5$ is simple, blocking an index-4 normal structure).",
+      "relatedConcepts": [
+        "Sylow theory",
+        "A5 simplicity",
+        "no_subgroup_order_15",
+        "no_subgroup_order_30"
+      ]
+    },
+    {
+      "id": "gal-v-vandermonde",
+      "title": "Part V(e): Vandermonde Product and Discriminant → Odd Permutation",
+      "startLine": 507,
+      "endLine": 805,
+      "summary": "Root enumeration (`rootEnum_p`), the Vandermonde product $\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$, the permutation identity $\\sigma(\\Delta) = \\text{sign}(\\sigma)\\,\\Delta$, and `gal_has_odd_perm`: since $\\text{disc}(p) = \\Delta^2 = -212144 < 0$, $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma \\in \\text{Gal}$ acts with odd sign.",
+      "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$, $\\sigma(\\Delta) = \\text{sign}(\\sigma)\\,\\Delta$. If every $\\sigma$ were even then $\\Delta \\in \\mathbb{Q}$, but $\\Delta^2 = -212144 < 0$ — contradiction, so $\\text{Gal} \\not\\subset A_5$.",
       "relatedConcepts": [
         "Vandermonde determinant",
-        "complex conjugation",
-        "Sylow elimination",
         "discriminant sign",
+        "Matrix.det_permute",
+        "gal_has_odd_perm"
+      ]
+    },
+    {
+      "id": "gal-v-conjugation",
+      "title": "Part V(e2): Axiom Elimination via Complex Conjugation",
+      "startLine": 806,
+      "endLine": 1244,
+      "summary": "Complex conjugation on the splitting field (`sfEmb`, `conjGalAut`) swaps the two non-real roots and fixes the three real ones, giving a transposition in Gal (`gal_has_transposition`). Combined with Sylow elimination of orders 20, 10, 40 (`gal_card_ne_20/10/40`), this proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$. All former axioms in this region are eliminated.",
+      "mathContext": "Complex conjugation $\\Rightarrow$ a transposition $\\tau \\in \\text{Gal}$. Eliminating non-3-divisible orders $\\{5,10,20,40\\}$ leaves $|\\text{Gal}| \\in \\{15,30,60,120\\}$, all divisible by 3.",
+      "relatedConcepts": [
+        "complex conjugation",
+        "gal_has_transposition",
+        "Sylow elimination",
+        "three_dvd_gal_card"
+      ]
+    },
+    {
+      "id": "gal-v-card-120",
+      "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
+      "startLine": 1245,
+      "endLine": 1377,
+      "summary": "Proves `gal_card_eq_120`: combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with $|\\text{Gal}| \\mid 120$ leaves $\\{15,30,60,120\\}$; orders 15 (Sylow), 30 ($A_5$ simple), and 60 (odd permutation) are eliminated, so $|\\text{Gal}| = 120$.",
+      "mathContext": "$15 \\mid |G|$, $|G| \\mid 120 \\Rightarrow |G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$.",
+      "relatedConcepts": [
+        "case elimination",
+        "divisibility chain",
+        "Sylow theory",
         "gal_card_eq_120"
       ]
     },
@@ -373,50 +456,6 @@
         "radical extension",
         "IsSolvableByRad",
         "Galois bridge"
-      ]
-    },
-    {
-      "id": "three-dvd-proved",
-      "title": "Part V(e2): three_dvd_gal_card (Eliminating Non-3-Divisible Orders)",
-      "startLine": 1210,
-      "endLine": 1244,
-      "summary": "Proves `three_dvd_gal_card`: $3 \\mid |\\text{Gal}|$ by eliminating all non-3-divisible candidate orders $\\{5, 10, 20, 40\\}$. Order 5 eliminated by sign argument (order-5 permutations in $S_5$ are even). Order 20 eliminated by `gal_card_ne_20` (F₂₀ has no transpositions but Gal does). Orders 10 and 40 eliminated via Sylow theory. All cases fully proved.",
-      "mathContext": "$|\\text{Gal}| \\in \\{5,10,15,20,30,40,60,120\\}$. Not 5 (sign), not 10, 20, 40 (Sylow/transposition arguments). Remaining: $\\{15,30,60,120\\}$ — all divisible by 3.",
-      "relatedConcepts": [
-        "Sylow theory",
-        "transposition normalization",
-        "native_decide",
-        "non-3-divisible order elimination"
-      ]
-    },
-    {
-      "id": "vandermonde-infrastructure",
-      "title": "Part V(e)+(e2): Vandermonde, Complex Conjugation, and Discriminant Infrastructure",
-      "startLine": 508,
-      "endLine": 1244,
-      "summary": "Root enumeration (`rootEnum_p`), Vandermonde product $\\Delta = \\det(V(\\text{roots}))$, Galois permutation of roots, Vandermonde permutation identity ($\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$), and `gal_has_odd_perm` proved via the discriminant sign argument ($\\text{disc}(p) < 0$ implies $\\Delta \\notin \\mathbb{Q}$, so some $\\sigma$ has odd sign).",
-      "mathContext": "$\\Delta = \\prod_{i<j}(\\alpha_j - \\alpha_i)$. $\\sigma(\\Delta) = \\text{sign}(\\sigma) \\cdot \\Delta$. If all signs $+1$, $\\Delta \\in \\mathbb{Q}$ but $\\Delta^2 < 0$ — contradiction.",
-      "relatedConcepts": [
-        "Vandermonde determinant",
-        "Matrix.det_permute",
-        "root enumeration",
-        "galToPerm5",
-        "derivative product identity"
-      ]
-    },
-    {
-      "id": "gal-card-120",
-      "title": "Part V(f): |Gal(p/ℚ)| = 120 (Case Elimination)",
-      "startLine": 1246,
-      "endLine": 1377,
-      "summary": "Proves `gal_card_eq_120`: $|\\text{Gal}| = 120$ by combining $15 \\mid |\\text{Gal}|$ (from `five_dvd_gal_card` and `three_dvd_gal_card`) with elimination of orders 15 (Sylow), 30 ($A_5$ simplicity), and 60 (odd permutation). Only 120 remains.",
-      "mathContext": "$15 \\mid |G|$, $|G| \\mid 120$: $|G| \\in \\{15,30,60,120\\}$. Not 15, 30, 60 $\\Rightarrow |G| = 120$.",
-      "relatedConcepts": [
-        "case elimination",
-        "divisibility chain",
-        "Sylow theory",
-        "discriminant sign",
-        "galois group order"
       ]
     },
     {

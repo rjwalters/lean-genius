@@ -61,7 +61,7 @@
     "axiomCount": 1,
     "lineCount": 244,
     "assumptions": "1 axiom: szemeredi_trotter (deep result, kept as axiom). kRich_bound is now a theorem derived from szemeredi_trotter (modulo the existential constant being per-(P, L, k)). Structure fields are object definitions, not assumptions.",
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 14
   },
   "overview": {
@@ -85,60 +85,76 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring stating Erdős #1069 (the number of k-rich lines among n points in ℝ² is ≪ n²/k³ for k ≤ √n, solved by Szemerédi-Trotter 1983), background, key insight, and reference; imports Mathlib, opens Finset and Classical, enters a noncomputable section.",
+      "mathContext": "Given $n$ points in $\\mathbb{R}^2$, a $k$-rich line contains $\\ge k$ of them. Erdős–Croft–Purdy conjectured, and Szemerédi–Trotter proved, that the number of $k$-rich lines is $\\ll n^2/k^3$ when $k \\le \\sqrt{n}$. The bound follows from the incidence theorem $I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Point, Line, onLine, pointsOnLine, incidenceCount definitions",
+      "title": "Part 1: Basic Definitions",
       "startLine": 37,
       "endLine": 63,
-      "mathContext": "Formal definition: Point, Line, onLine, pointsOnLine, incidenceCount definitions"
+      "summary": "Defines Point = ℝ × ℝ, the Line structure (ax + by = c with a nonzero coefficient), Point.onLine incidence, pointsOnLine (points of P on a line), and incidenceCount.",
+      "mathContext": "A line is encoded as $(a,b,c)$ with $a \\ne 0 \\lor b \\ne 0$, with $p$ on the line iff $a\\,p_1 + b\\,p_2 = c$. The incidence count of $l$ is $|\\{p \\in P : p \\text{ on } l\\}|$."
     },
     {
       "id": "k-rich-lines",
-      "title": "k-Rich Lines",
-      "summary": "isKRich, kRichLines, numKRichLines definitions",
+      "title": "Part 2: k-Rich Lines",
       "startLine": 64,
       "endLine": 80,
-      "mathContext": "Formal definition: isKRich, kRichLines, numKRichLines definitions"
+      "summary": "Defines isKRich (a line with ≥ k incidences), kRichLines (the filtered finset of k-rich lines in L), and numKRichLines (its cardinality).",
+      "mathContext": "A line $l$ is $k$-rich w.r.t. $P$ if $\\mathrm{incidenceCount}(P,l) \\ge k$. The quantity of interest is $\\mathrm{numKRichLines}(P,L,k) = |\\{l \\in L : l \\text{ is } k\\text{-rich}\\}|$."
     },
     {
       "id": "total-incidences",
-      "title": "Total Incidences",
-      "summary": "totalIncidences, incidencePairs, incidences_eq axiom",
+      "title": "Part 3: Total Incidences",
       "startLine": 81,
-      "endLine": 98,
-      "mathContext": "Axiomatized: totalIncidences, incidencePairs, incidences_eq axiom"
+      "endLine": 93,
+      "summary": "Defines totalIncidences as the sum of per-line incidence counts over L, and incidencePairs as the finset of incident (point, line) pairs.",
+      "mathContext": "Total incidences $I(P,L) = \\sum_{l \\in L} \\mathrm{incidenceCount}(P,l)$, equivalently $|\\{(p,l) \\in P \\times L : p \\text{ on } l\\}|$."
     },
     {
       "id": "szemeredi-trotter",
-      "title": "The Szemerédi-Trotter Theorem",
-      "summary": "szTrBound function, szemeredi_trotter axiom, optimality axiom",
-      "startLine": 99,
-      "endLine": 118,
-      "mathContext": "Axiomatized: szTrBound function, szemeredi_trotter axiom, optimality axiom"
+      "title": "Part 4: The Szemerédi-Trotter Theorem",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "Defines szTrBound(n,m) and states the Szemerédi-Trotter incidence theorem as an axiom: total incidences are bounded by C·(n^{2/3}m^{2/3} + n + m) for some C > 0.",
+      "mathContext": "Szemerédi–Trotter (1983): $I(P,L) \\le C\\,(|P|^{2/3}|L|^{2/3} + |P| + |L|)$. This is the single axiom of the file; the $2/3$ exponents are optimal."
     },
     {
       "id": "k-rich-bound",
-      "title": "The k-Rich Lines Bound",
-      "summary": "kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem",
-      "startLine": 119,
-      "endLine": 145,
-      "mathContext": "Verified: kRichBound, kRich_incidences_lower, kRich_bound, erdos_1069 theorem"
+      "title": "Part 5: The k-Rich Lines Bound",
+      "startLine": 109,
+      "endLine": 193,
+      "summary": "Derives the k-rich bound from Szemerédi-Trotter. Defines kRichBound(n,k) = n²/k³, proves mem_kRichLines, the incidence lower bounds kRich_incidences_lower and its unrestricted form, and the main theorems kRich_bound and erdos_1069 (number of k-rich lines ≤ C·n²/k³ when k² ≤ n).",
+      "mathContext": "Each $k$-rich line forces $\\ge k$ incidences, so $\\mathrm{numKRichLines}\\cdot k \\le I(P,L)$; combined with Szemerédi–Trotter this yields $\\mathrm{numKRichLines} \\le C\\,n^2/k^3$ for $k^2 \\le n$. A documented honesty note records that $C$ is existentially quantified per $(P,L,k)$ rather than uniform."
     },
     {
       "id": "proof-strategy",
-      "title": "The Proof Strategy",
-      "summary": "dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms",
-      "startLine": 146,
-      "endLine": 168,
-      "mathContext": "Axiomatized: dyadicLines decomposition, dyadic_bound, dyadic_szTr axioms"
+      "title": "Part 6: The Proof Strategy",
+      "startLine": 194,
+      "endLine": 204,
+      "summary": "Describes the dyadic argument (partition lines by incidence level [2^i, 2^{i+1}), apply Szemerédi-Trotter to each, sum) and defines dyadicLines for that decomposition.",
+      "mathContext": "The honest derivation partitions $L$ into dyadic levels $\\{l : 2^i \\le \\mathrm{incidenceCount}(P,l) < 2^{i+1}\\}$, applies the incidence bound on each level, and sums — the route to a uniform constant $C$."
     },
     {
       "id": "lower-bounds",
-      "title": "Lower Bound Constructions",
-      "summary": "latticePoints, lattice_card, lattice_lower_bound axioms",
-      "startLine": 169,
-      "endLine": 179,
-      "mathContext": "Axiomatized: latticePoints, lattice_card, lattice_lower_bound axioms"
+      "title": "Part 7: Lower Bound Constructions",
+      "startLine": 205,
+      "endLine": 213,
+      "summary": "Introduces the lattice-point construction (an m × m grid) witnessing that the bound is close to tight.",
+      "mathContext": "The $m \\times m$ integer lattice has many $m$-rich lines; for $k = \\sqrt{n}$ lattice points give $\\ge (2+o(1))\\sqrt{n}$ many $\\sqrt{n}$-rich lines, showing the $n^2/k^3$ bound is essentially sharp."
+    },
+    {
+      "id": "special-cases-duality-summary",
+      "title": "Parts 8-10: Special Cases, Point-Line Duality, and Summary",
+      "startLine": 214,
+      "endLine": 244,
+      "summary": "Placeholder banners for special cases (Part 8) and point-line duality (Part 9), followed by the Part 10 summary documentation and the erdos_1069_summary theorem bundling the Szemerédi-Trotter axiom with the proved k-rich bound.",
+      "mathContext": "Records the solved status: $I(P,L) = O(|P|^{2/3}|L|^{2/3} + |P| + |L|)$ gives the $k$-rich bound $O(n^2/k^3)$ for $k \\le \\sqrt{n}$, with the $2/3$ exponent optimal and lattice points furnishing the matching lower bound. The summary theorem conjoins both halves."
     }
   ],
   "conclusion": {
@@ -252,7 +268,7 @@
     "namespace": "Erdos1069",
     "lineCount": 244,
     "axiomCount": 1,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 14,
     "path": "Proofs/Erdos1069Problem.lean",
     "sorries": 0

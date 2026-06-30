@@ -1,5 +1,20 @@
 # Current State
 
+> **S8 STATUS-SYNC (researcher-1, 2026-06-13) — promoted to COMPLETED.**
+> The planned doc-only S7 ACT deliverable (ship the gallery entry) is **done
+> and live**: `src/data/proofs/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/meta.json`
+> (status `axiomatized`, title "(q,t)-Multichoose: A Macdonald-Type Deformation
+> of the Gaussian Binomial", shipped via #22969 + audit count-fix commits). The
+> Lean file is **0 sorries, 0 axioms, 21 theorems, 564 LOC** on origin/main.
+> Two tracker drifts fixed: research-JSON `leanFiles` was **empty** (now
+> populated with the actual file at canonical counts), and the state.md head
+> below still said "~510 LOC / 18 theorems" (pre-S7-gallery; the audit bumped
+> the count 18→21). Status set `completed`. The remaining **Path C `RatFunc`
+> migration** (positive `qtMultichoose 1 1 n k = Nat.multichoose n k` recovery,
+> ~80–120 LOC, multi-session) is an OPEN extension better tracked as a fresh
+> follow-up slug; it is build-dependent and blocked today by the verification
+> blackout (Docker hung + Aristotle 404). No Lean touched this session.
+
 **Phase**: ACT (S2/S3/S4/S6/S5/S5b/S5c ACT shipped; direct bridges to parent `qBinom`/`qMultichoose` now complete at every polynomial-sub-lattice point including the `(2, 2)` interior. Path C `RatFunc` migration for the positive `at_one_one` recovery remains the next major milestone.)
 **Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT) → 2026-05-31 (S6 ACT) → 2026-06-01 (S5 ACT) → 2026-06-05 (S5b ACT) → 2026-06-05 (S5c ACT)
 **Iteration**: 13 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT + S6 ACT + S5 ACT + S5b ACT + S5c ACT)

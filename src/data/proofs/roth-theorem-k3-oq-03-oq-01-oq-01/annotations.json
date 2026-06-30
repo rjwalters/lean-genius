@@ -1,0 +1,74 @@
+[
+  {
+    "id": "roth-oq030101-import-parent",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 31, "endLine": 37 },
+    "type": "concept",
+    "title": "Importing the parent operator Λ_k",
+    "content": "The file builds directly on `Proofs.RothTheoremOQ03OQ01`, which defines the k-AP counting operator `kAPCount` (written Λ_k) and the Gowers norm `gowersNorm`, and proves the constant/normalization/annihilation identities. No new definitions are introduced here (definitionCount = 0); the whole file is structural theorems about an object defined elsewhere. The section opens `Finset` and `BigOperators` so that `∏ i, …`, `univ`, and `erase` are in scope, and fixes `{N : ℕ} [NeZero N]` so that `ZMod N` is a nonzero ring throughout.",
+    "mathContext": "$\\Lambda_k(f_0,\\dots,f_{k-1}) = \\mathbb{E}_{x,d\\in\\mathbb{Z}/N\\mathbb{Z}}\\;\\prod_{i<k} f_i(x+i\\cdot d)$",
+    "significance": "supporting",
+    "prerequisites": ["finite products over Fin k", "ZMod N as a finite ring", "averaging operator E"],
+    "relatedConcepts": ["k-term arithmetic progression", "Gowers norm", "counting operator"]
+  },
+  {
+    "id": "roth-oq030101-engine",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 39, "endLine": 52 },
+    "type": "theorem",
+    "title": "prod_update_factor — the factorization engine",
+    "content": "This is the single lemma that powers everything else. Replacing slot `j` of the tuple `f` by a function `v` (using `Function.update f j v`) lets you pull the j-th factor `v(x + j·d)` clean out of the k-AP product, leaving the product of the untouched factors over `univ.erase j`. Once a slot can be isolated this way, additivity and homogeneity become routine bookkeeping over the remaining product. Multilinearity properties of any indexed product are almost always reduced to exactly this 'isolate one coordinate' move.",
+    "mathContext": "$\\prod_{i<k} \\big(\\mathrm{update}\\,f\\,j\\,v\\big)_i(x+i d) = v(x+j d)\\cdot \\prod_{i\\neq j} f_i(x+i d)$",
+    "significance": "critical",
+    "prerequisites": ["Finset.mul_prod_erase", "Function.update", "products over a finite index"],
+    "relatedConcepts": ["multilinearity", "coordinate projection", "Function.update"]
+  },
+  {
+    "id": "roth-oq030101-mul-prod-erase",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 46, "endLine": 51 },
+    "type": "tactic",
+    "title": "Isolating the j-th factor with mul_prod_erase",
+    "content": "The proof rewrites the full product `∏ i ∈ univ` as `(j-th factor) * ∏ i ∈ univ.erase j` via `Finset.mul_prod_erase` (valid since `j ∈ univ`). It then splits into two `congr 1` goals: the isolated factor is evaluated with `Function.update_self` (which fires because the index *is* `j`), and the residual product is matched termwise with `Function.update_of_ne`, using `Finset.ne_of_mem_erase` to supply the proof that each surviving index differs from `j`. This is the canonical Lean idiom for 'peel one term off a Finset product'.",
+    "mathContext": "$f_a \\cdot \\prod_{i\\in s\\setminus\\{a\\}} f_i = \\prod_{i\\in s} f_i \\quad (a\\in s)$",
+    "significance": "key",
+    "prerequisites": ["Finset.erase", "Function.update_self / update_of_ne", "congr"],
+    "relatedConcepts": ["telescoping a product", "Finset.prod_congr"]
+  },
+  {
+    "id": "roth-oq030101-add-slot",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "theorem",
+    "title": "kAPCount_add_slot — additivity in one slot",
+    "content": "Λ_k is additive in its j-th argument: `Λ_k(…, a+b, …) = Λ_k(…,a,…) + Λ_k(…,b,…)`. After unfolding `kAPCount`, the engine `prod_update_factor` isolates the j-th factor; `Pi.add_apply` and `add_mul` split it as `a(x+j d)·P + b(x+j d)·P`. The double average `E_{x,d}` is then distributed over the sum with `Finset.sum_add_distrib` applied twice (once for the outer x-sum, once for the inner d-sum). This is one half of multilinearity.",
+    "mathContext": "$\\Lambda_k(\\dots,a+b,\\dots) = \\Lambda_k(\\dots,a,\\dots) + \\Lambda_k(\\dots,b,\\dots)$",
+    "significance": "critical",
+    "prerequisites": ["Finset.sum_add_distrib", "Pi.add_apply", "distributivity (add_mul)"],
+    "relatedConcepts": ["multilinear map", "generalized von Neumann inequality", "linearity in a coordinate"]
+  },
+  {
+    "id": "roth-oq030101-smul-slot",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 80 },
+    "type": "theorem",
+    "title": "kAPCount_smul_slot — homogeneity in one slot",
+    "content": "Λ_k is homogeneous in its j-th argument: `Λ_k(…, c•a, …) = c · Λ_k(…,a,…)`. The same factorization engine isolates the j-th factor; `Pi.smul_apply` and `smul_eq_mul` turn it into `c · a(x+j d) · P`. The scalar `c` is then pulled out through both layers of the double average with `Finset.mul_sum` (twice), and `ring` closes the rearrangement `mul_left_comm`. Together with `kAPCount_add_slot` this establishes that Λ_k is multilinear — additive and homogeneous in each of its k slots separately.",
+    "mathContext": "$\\Lambda_k(\\dots,c\\cdot a,\\dots) = c\\cdot\\Lambda_k(\\dots,a,\\dots)$",
+    "significance": "critical",
+    "prerequisites": ["Finset.mul_sum", "Pi.smul_apply / smul_eq_mul", "ring"],
+    "relatedConcepts": ["scalar homogeneity", "multilinear map", "linearity in a coordinate"]
+  },
+  {
+    "id": "roth-oq030101-gowers-nonneg",
+    "proofId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "gowersNorm_nonneg — the Gowers norm is nonnegative",
+    "content": "The Gowers Uˢ norm is ≥ 0. Because `gowersNorm` is defined in the parent file as a genuine modulus `‖·‖`, nonnegativity is immediate from `norm_nonneg`. This is the first of the metric properties a quantity must satisfy to be used as a control on error terms: density- and energy-increment arguments bound the multilinear cross-terms of Λ_k by Gowers norms, so those bounds are only meaningful once the norm is known to be a nonnegative quantity.",
+    "mathContext": "$\\|f\\|_{U^s} \\ge 0$",
+    "significance": "supporting",
+    "prerequisites": ["norm_nonneg", "definition of the Gowers norm as a modulus"],
+    "relatedConcepts": ["Gowers uniformity norm", "seminorm axioms", "generalized von Neumann inequality"]
+  }
+]

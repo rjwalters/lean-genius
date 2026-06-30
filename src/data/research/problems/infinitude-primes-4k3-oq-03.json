@@ -1,8 +1,8 @@
 {
   "slug": "infinitude-primes-4k3-oq-03",
   "title": "Infinitely Many Primes ≡ 1 (mod 4) — Elementary Proof",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21T21:39:52+02:00",
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "STATE-SYNC: gallery proof Proofs/InfinitudePrimes4k3OQ03.lean is verified (0 sorries, 0 axioms) and fully proves the stated question. Research tracker was stale; flipped active→completed to match published gallery verdict. infinitely_many_primes_1_mod_4 proves the harder ≡1 mod 4 direction.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — completed and gallery-verified.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -46,7 +46,10 @@
   "relatedProofs": [
     "infinitude-primes",
     "infinitude-primes-4k3",
-    "infinitude-primes-4k3-oq-03"
+    "infinitude-primes-4k3-oq-01",
+    "infinitude-primes-4k3-oq-02",
+    "infinitude-primes-4k3-oq-03",
+    "infinitude-primes-4k3-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -54,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.188Z",
-  "lastUpdate": "2026-05-29T19:14:09.237Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/InfinitudePrimes4k3.lean",
@@ -90,6 +93,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean"
     },
     {
+      "path": "Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean",
+      "filename": "InfinitudePrimes4k3OQ01Q12Q24.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean"
+    },
+    {
       "path": "Proofs/InfinitudePrimes4k3OQ01Tower.lean",
       "filename": "InfinitudePrimes4k3OQ01Tower.lean",
       "lineCount": 132,
@@ -101,6 +115,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ01Tower.lean"
     },
     {
+      "path": "Proofs/InfinitudePrimes4k3OQ02.lean",
+      "filename": "InfinitudePrimes4k3OQ02.lean",
+      "lineCount": 274,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ02.lean"
+    },
+    {
       "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
       "filename": "InfinitudePrimes4k3OQ03.lean",
       "lineCount": 104,
@@ -110,6 +135,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ03.lean"
+    },
+    {
+      "path": "Proofs/InfinitudePrimes4k3OQ03OQ01.lean",
+      "filename": "InfinitudePrimes4k3OQ03OQ01.lean",
+      "lineCount": 168,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3OQ03OQ01.lean"
     }
   ]
 }

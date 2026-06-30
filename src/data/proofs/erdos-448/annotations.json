@@ -16,7 +16,11 @@
       "Dyadic decomposition",
       "Density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Positive integers and divisibility",
+      "Asymptotic notation (≍, o(1))",
+      "Almost-all statements"
+    ]
   },
   {
     "id": "ann-e448-tau",
@@ -35,7 +39,11 @@
       "Arithmetic functions",
       "Multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility relation",
+      "Finite sets and cardinality",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e448-dyadic",
@@ -53,7 +61,11 @@
       "Dyadic decomposition",
       "Binary representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Powers of two",
+      "Base-2 logarithm",
+      "Half-open intervals"
+    ]
   },
   {
     "id": "ann-e448-tauplus",
@@ -71,7 +83,11 @@
       "Divisor distribution",
       "Interval counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set of divisors of n",
+      "Filtering finite sets by a predicate",
+      "Existential quantification over divisors"
+    ]
   },
   {
     "id": "ann-e448-basic-props",
@@ -89,7 +105,11 @@
       "Elementary properties"
     ],
     "mathContext": "See annotation content for formal details of basic properties",
-    "prerequisites": []
+    "prerequisites": [
+      "Definition of τ and τ⁺",
+      "Prime numbers",
+      "Monotonicity inequalities"
+    ]
   },
   {
     "id": "ann-e448-conjecture",
@@ -107,7 +127,11 @@
       "Natural density",
       "Concentration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Quantifiers over ε > 0",
+      "Limits of counting ratios",
+      "Subsets of ℕ as event sets"
+    ]
   },
   {
     "id": "ann-e448-disproof",
@@ -126,7 +150,11 @@
       "Upper density",
       "Counterexamples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Statement negation (¬P)",
+      "Lower vs upper density",
+      "Counterexample method"
+    ]
   },
   {
     "id": "ann-e448-hall-tenenbaum",
@@ -144,7 +172,11 @@
       "Distribution functions",
       "Refined estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic upper bounds (≪)",
+      "Cumulative distribution functions",
+      "Limits of normalized counts"
+    ]
   },
   {
     "id": "ann-e448-ford-constant",
@@ -162,7 +194,11 @@
       "Named constants",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real natural logarithm",
+      "Iterated logarithm log log",
+      "Closed-form constants"
+    ]
   },
   {
     "id": "ann-e448-ford-asymptotic",
@@ -180,7 +216,11 @@
       "Asymptotic formulas",
       "Summatory functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Summatory arithmetic functions",
+      "Logarithmic growth rates",
+      "Order-of-magnitude estimates"
+    ]
   },
   {
     "id": "ann-e448-example-six",
@@ -198,7 +238,11 @@
       "Small cases"
     ],
     "mathContext": "See annotation content for formal details of example: n = 6",
-    "prerequisites": []
+    "prerequisites": [
+      "Listing divisors of an integer",
+      "Assigning numbers to dyadic intervals",
+      "Ratio of two counts"
+    ]
   },
   {
     "id": "ann-e448-example-twelve",
@@ -215,7 +259,11 @@
       "Concrete examples"
     ],
     "mathContext": "See annotation content for formal details of example: n = 12",
-    "prerequisites": []
+    "prerequisites": [
+      "Prime power factorization",
+      "Enumerating divisors",
+      "Counting occupied intervals"
+    ]
   },
   {
     "id": "ann-e448-powers-of-two",
@@ -233,7 +281,11 @@
       "Extremal cases"
     ],
     "mathContext": "See annotation content for formal details of powers of two",
-    "prerequisites": []
+    "prerequisites": [
+      "Divisors of a prime power",
+      "Exponential spacing of powers",
+      "Extremal ratio values"
+    ]
   },
   {
     "id": "ann-e448-example-210",
@@ -251,7 +303,11 @@
       "Highly composite structure"
     ],
     "mathContext": "See annotation content for formal details of example: n = 210",
-    "prerequisites": []
+    "prerequisites": [
+      "Primorial integers",
+      "Number of divisors of squarefree numbers",
+      "Divisors sharing an interval"
+    ]
   },
   {
     "id": "ann-e448-related-problems",
@@ -270,7 +326,11 @@
       "Divisor distribution"
     ],
     "mathContext": "See annotation content for formal details of related problems",
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problems on divisors",
+      "Short intervals [y, 2y)",
+      "Divisor distribution questions"
+    ]
   },
   {
     "id": "ann-e448-summary",
@@ -288,6 +348,10 @@
       "Main results"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Conjunction of theorem claims",
+      "Universal bound τ⁺ ≤ τ",
+      "Numerical bounding of a constant"
+    ]
   }
 ]

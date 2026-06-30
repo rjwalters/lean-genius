@@ -1,11 +1,48 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT (S30 PR-B landed Docker-clean; PR-C is the only remaining S24 ACT — bearers and helpers all in scope; infra GREEN since 2026-06-02)
+**Phase**: COMPLETED (S31 COMPLETION-SYNC — stated OQ04 (Blichfeldt for ℤⁿ + Minkowski corollary) fully proved & gallery-verified; general-lattice generalization is optional Docker-gated follow-on)
 **Path**: full
-**Since**: 2026-06-02T00:25:00Z (S30 ACT PR-B — `blichfeldt_general_lattice` shipped; Docker 3075 jobs clean)
-**Last Updated**: 2026-06-02 (S30 ACT PR-B — Lean +139 LOC, 1126 lines, 17 theorems, build-verified; B1/B2 CLEARED)
-**Iteration**: 30 (S30 ACT PR-B — researcher-1)
+**Since**: 2026-06-13 (S31 COMPLETION-SYNC — status active → completed)
+**Last Updated**: 2026-06-13 (S31 COMPLETION-SYNC — researcher-2; MinkowskiTheoremOQ04.lean 0 sorries / 0 axioms / 17 theorems / 1126 LOC, gallery meta status=verified badge=original counts synced 1126/17; `blichfeldt_general_finset` + `blichfeldt_general_pairwise` + `minkowski_from_blichfeldt` match the problem statement exactly; PR-C general-lattice ext is beyond-scope + Docker-gated [daemon down, timeout 124] and does not block completion). Prior: 2026-06-02 (S30 ACT PR-B)
+**Iteration**: 31 (S31 COMPLETION-SYNC — researcher-2)
+
+## S31 — COMPLETION-SYNC 2026-06-13 (researcher-2)
+
+**Mode.** COMPLETION-SYNC (doc-only; no `.lean` shipped). Status flipped
+`active`/`ACT` → `completed`/`COMPLETED`. Base SHA `8e86e7b0527` (origin/main).
+
+**Finding.** The stated OQ04 problem is Blichfeldt's theorem (1914) for the
+integer lattice: *any measurable S ⊆ ℝⁿ with vol(S) > k contains k+1 distinct
+points whose pairwise differences lie in ℤⁿ*, plus the Minkowski corollary.
+This is **fully proved and gallery-verified**:
+- `MinkowskiTheoremOQ04.lean`: 0 sorries, 0 axioms, 17 theorems, 1126 LOC.
+- Gallery `meta.json`: status `verified`, badge `original`, counts already
+  synced (lineCount 1126, theoremCount 17 — the S30 mechanic-pending items
+  have landed).
+- `blichfeldt_general_finset` (L720, Finset k+1 form, pairwise diffs in
+  `stdLattice n`) + `blichfeldt_general_pairwise` (L683, adds distinctness)
+  match the problem statement exactly; `minkowski_from_blichfeldt` (L764)
+  gives the convex-symmetric corollary.
+
+The research tracker was lagging at `active` (last touched 2026-06-02, S30).
+Per the status-sync rule (main theorem proves the problem statement →
+completed), flipped to `completed`.
+
+**Out of scope (optional follow-on).** The general-LATTICE generalization
+(basis-parametric `blichfeldt_general_lattice` shipped S30; pending PR-C
+`minkowski_general_k_lattice`, paste-ready in
+`s23-lattice-generalization-spec.md §2.2`) extends the result from ℤⁿ to an
+arbitrary lattice basis. This is **beyond the stated OQ04** and is Docker-gated
+(daemon down at S31 entry: `timeout 5 docker info` exits 124). It can resume as
+follow-on without affecting the completed status.
+
+**Ship scope.** 3 files — `state.md` (this block + markers), JSON tracker
+(status/phase/focus/nextAction/iteration 30→31/attemptCounts/lastUpdate), new
+memo `sessions/2026-06-13-s31-completion-sync.md`. NO `.lean` edits, NO sibling
+edits, NO gallery `meta.json` touch (already verified + synced).
+
+---
 
 ## S30 — S30 ACT PR-B 2026-06-02 (researcher-1)
 

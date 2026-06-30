@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-3sl0101-header",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 6, "endLine": 50 },
+    "type": "concept",
+    "title": "Goal: the bilinear lower-central-series bound",
+    "content": "The file proves the classical bilinearity estimate for the lower central series of an arbitrary group: the commutator of the i-th and j-th terms lands at least as deep as their index sum. In Mathlib's `γ₀ = G` convention this reads `⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎`, which is the textbook `[γᵢ, γⱼ] ⊆ γ₍ᵢ₊ⱼ₎` shifted by one (the two conventions differ by `γₙ^Mathlib = γ₍ₙ₊₁₎^textbook`). Mathlib develops the lower central series and the *linear* derived-series bound `derived_le_lower_central`, but not this *bilinear* product bound. As a headline payoff the file derives the exponentially sharp `derivedSeries G n ≤ γ₍2ⁿ−1₎`, strictly strengthening the linear bound.",
+    "mathContext": "$\\lbrack \\gamma_i, \\gamma_j \\rbrack \\le \\gamma_{i+j+1}$, where $\\gamma_k = \\mathrm{lowerCentralSeries}\\,G\\,k$ with $\\gamma_0 = \\top$ and $\\gamma_{n+1} = \\lbrack \\gamma_n, \\top \\rbrack$.",
+    "significance": "key",
+    "relatedConcepts": ["lower central series", "nilpotent group", "commutator subgroup", "associated graded Lie ring", "derived series"],
+    "prerequisites": ["group theory", "commutator subgroups", "nilpotency"]
+  },
+  {
+    "id": "ann-3sl0101-three-subgroups",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 65, "endLine": 80 },
+    "type": "technique",
+    "title": "The three subgroups lemma (normal-subgroup form)",
+    "content": "`commutator_le_of_rotate` is the parent entry's relative three subgroups lemma, reproduced as a private lemma so the file is self-contained: for normal `N`, if `⁅⁅H,K⁆,L⁆ ≤ N` and `⁅⁅K,L⁆,H⁆ ≤ N` then `⁅⁅L,H⁆,K⁆ ≤ N`. The proof projects to the quotient `G ⧸ N`: `X ≤ N ↔ X.map (mk' N) = ⊥` (since `N = ker (mk' N)`), and `map` distributes over the commutator bracket, reducing the relative statement to Mathlib's `= ⊥` Hall–Witt lemma `Subgroup.commutator_commutator_eq_bot_of_rotate`. `commutator_le_of_rotate₂` is a cyclic relabelling used directly in the induction.",
+    "mathContext": "For $N \\trianglelefteq G$: $\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N \\wedge \\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N \\Rightarrow \\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$. Transport: $X \\le N \\iff X^{\\,G/N} = \\bot$, and $(\\lbrack A,B\\rbrack)^{G/N} = \\lbrack A^{G/N}, B^{G/N}\\rbrack$.",
+    "significance": "key",
+    "relatedConcepts": ["Hall–Witt identity", "three subgroups lemma", "quotient group", "normal subgroup", "commutator map distributivity"],
+    "prerequisites": ["normal subgroups", "quotient groups", "commutator subgroups"]
+  },
+  {
+    "id": "ann-3sl0101-succ-recursion",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 89 },
+    "type": "definition",
+    "title": "The successor recursion γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆",
+    "content": "`lowerCentralSeries_succ_def` names the definitional recursion of the lower central series, `γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆`, which holds by `rfl`. It is introduced purely for readable rewriting — both the base case and the inductive step of the main theorem rewrite with it to expose the `⁅·, ⊤⁆` shape the three subgroups lemma consumes.",
+    "mathContext": "$\\gamma_{n+1} = \\lbrack \\gamma_n, \\top \\rbrack$ (definitional in Mathlib's convention $\\gamma_0 = \\top$).",
+    "significance": "supporting",
+    "relatedConcepts": ["lower central series", "definitional equality", "recursion"],
+    "prerequisites": ["lower central series definition"]
+  },
+  {
+    "id": "ann-3sl0101-bilinear",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 131 },
+    "type": "theorem",
+    "title": "Headline: the bilinear bound, by induction on j uniform in i",
+    "content": "`commutator_lowerCentralSeries_le` is the headline, proved by `induction j generalizing i`. Base case `j = 0`: `γ₀ = ⊤` and `i+0+1 = i+1`, so the goal `⁅γᵢ, ⊤⁆ ≤ γ₍ᵢ₊₁₎` is exactly the successor recursion. Inductive step: rewrite `γ₍ⱼ₊₁₎ = ⁅γⱼ, ⊤⁆` and commute the bracket to the orientation `⁅⁅γⱼ, ⊤⁆, γᵢ⁆`, then apply `commutator_le_of_rotate₂` with `H = γⱼ, K = ⊤, L = γᵢ, N = γ₍ᵢ₊ⱼ₊₂₎` (normal via the `lowerCentralSeries_normal` instance). Its two hypotheses are discharged by the IH: at `i+1` (for `⁅γ₍ᵢ₊₁₎, γⱼ⁆ ≤ N`, after `⁅⊤, γᵢ⁆ = γ₍ᵢ₊₁₎`) and at `i` (for `⁅⁅γᵢ, γⱼ⁆, ⊤⁆ ≤ ⁅γ₍ᵢ₊ⱼ₊₁₎, ⊤⁆ = N`, via `commutator_mono`). Index bookkeeping closed by `omega`. Generalizing over `i` is essential — the step feeds the IH back at the shifted index `i+1`.",
+    "mathContext": "Induction on $j$: base $\\lbrack \\gamma_i, \\top \\rbrack = \\gamma_{i+1}$; step uses $\\lbrack\\lbrack\\gamma_j,\\top\\rbrack,\\gamma_i\\rbrack \\le \\gamma_{i+j+2}$ from the three subgroups lemma with $N = \\gamma_{i+j+2}$, hypotheses $\\lbrack\\gamma_{i+1},\\gamma_j\\rbrack \\le N$ (IH at $i{+}1$) and $\\lbrack\\lbrack\\gamma_i,\\gamma_j\\rbrack,\\top\\rbrack \\le N$ (IH at $i$).",
+    "significance": "key",
+    "relatedConcepts": ["induction generalizing", "three subgroups lemma", "commutator monotonicity", "lower central series normality", "uniform inductive hypothesis"],
+    "prerequisites": ["strong induction", "commutator subgroups", "lower central series"]
+  },
+  {
+    "id": "ann-3sl0101-self-commutator",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 135, "endLine": 139 },
+    "type": "theorem",
+    "title": "The diagonal self-commutator special case",
+    "content": "`sq_commutator_lowerCentralSeries_le` is the `i = j` diagonal of the bilinear bound: `⁅γᵢ, γᵢ⁆ ≤ γ₍₂ᵢ₊₁₎`, obtained by specialising the headline and simplifying `i+i+1 = 2i+1`. This diagonal is precisely what couples to the derived series, whose successor doubles a single index, so it is the bridge to the exponential bound below.",
+    "mathContext": "$\\lbrack \\gamma_i, \\gamma_i \\rbrack \\le \\gamma_{2i+1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["self-commutator", "derived series", "index doubling"],
+    "prerequisites": ["the bilinear bound"]
+  },
+  {
+    "id": "ann-3sl0101-exp-derived",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 151, "endLine": 166 },
+    "type": "theorem",
+    "title": "Exponentially sharp derived-series bound (headline consequence)",
+    "content": "`derivedSeries_le_lowerCentralSeries_two_pow` strengthens Mathlib's *linear* `derived_le_lower_central` to an *exponential* index: `derivedSeries G n ≤ γ₍2ⁿ−1₎`. Induction on `n`: the step rewrites `derivedSeries G (n+1) = ⁅derivedSeries G n, derivedSeries G n⁆`, bounds each factor by the IH (`commutator_mono ih ih`), then applies the bilinear bound, which sends the index `(2ⁿ−1)+(2ⁿ−1)+1 = 2ⁿ⁺¹−1` (the identity proved by `omega` using `2^{n+1} = 2·2ⁿ`). This is the quantitative form of 'nilpotent ⟹ solvable' and the clearest demonstration of why the bilinear bound is worth isolating: the sharper estimate follows in two lines once it is available.",
+    "mathContext": "$\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_{2^n - 1}$. Step: $\\lbrack \\gamma_{2^n-1}, \\gamma_{2^n-1} \\rbrack \\le \\gamma_{(2^n-1)+(2^n-1)+1} = \\gamma_{2^{n+1}-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["derived series", "solvable group", "nilpotent implies solvable", "exponential vs linear bound", "self-commutator recursion"],
+    "prerequisites": ["derived series", "the bilinear bound", "induction on naturals"]
+  },
+  {
+    "id": "ann-3sl0101-recover-linear",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": { "startLine": 174, "endLine": 180 },
+    "type": "insight",
+    "title": "Cross-check: recovering Mathlib's linear bound",
+    "content": "`derivedSeries_le_lowerCentralSeries` confirms the sharp bound is genuinely a strengthening by recovering Mathlib's `derived_le_lower_central` from it: since `n < 2ⁿ` (`Nat.lt_two_pow_self`), we have `n ≤ 2ⁿ − 1`, and the lower central series is antitone (`lowerCentralSeries_antitone`), so `γ₍2ⁿ−1₎ ≤ γₙ`. Composing gives `derivedSeries G n ≤ γₙ`. This is a consistency check rather than new content — but it makes precise that index `2ⁿ−1` dominates index `n`, so nothing is lost relative to Mathlib.",
+    "mathContext": "$n < 2^n \\Rightarrow n \\le 2^n - 1 \\Rightarrow \\gamma_{2^n-1} \\le \\gamma_n$ (antitone), hence $\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_n$.",
+    "significance": "context",
+    "relatedConcepts": ["antitonicity", "Nat.lt_two_pow_self", "consistency check", "monotone refinement"],
+    "prerequisites": ["antitone sequences", "n < 2ⁿ"]
+  }
+]
