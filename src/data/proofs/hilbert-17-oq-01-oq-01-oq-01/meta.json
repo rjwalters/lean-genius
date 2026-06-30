@@ -1,0 +1,194 @@
+{
+  "id": "hilbert-17-oq-01-oq-01-oq-01",
+  "title": "Sharpness of the Fejér–Riesz Bound: Every Real 2-SOS Has Degree Exactly 2·max(deg u, deg v)",
+  "slug": "hilbert-17-oq-01-oq-01-oq-01",
+  "description": "The parent entry (Hilbert17OQ01OQ01.lean) proves the Fejér–Riesz UPPER bound: every nonnegative real univariate polynomial p is u² + v² with 2·deg u ≤ deg p and 2·deg v ≤ deg p. This entry proves the matching SHARPNESS / converse, answering the parent's own first open question. The crux is a leading-term non-cancellation fact special to ordered fields: natDegree(u² + v²) = 2·max(deg u, deg v) for u, v not both zero. When deg u = deg v the top coefficient of u² + v² is (lc u)² + (lc v)², a sum of two real squares that vanishes only when both polynomials vanish — so two real squares can never cancel in top degree (contrast X² + (iX)² = 0 over ℂ). Consequences: in ANY representation p = u² + v² of a nonzero p, the larger summand has degree EXACTLY ½·deg p (two_sos_max_degree_eq), so the parent's upper bound is attained and cannot be lowered; the degree of any nonzero sum of two real squares is even (natDegree_two_sos_even); and the parent existence theorem strengthens to give witnesses with 2·max(deg u, deg v) = deg p exactly (univariate_psd_two_sos_degree_exact). Fully elementary, 0 axioms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-06-30",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17OQ01OQ01OQ01.lean",
+    "tags": [
+      "real-algebra",
+      "sum-of-squares",
+      "hilbert-17",
+      "fejer-riesz",
+      "degree-bound",
+      "sharpness",
+      "univariate-polynomials",
+      "leading-coefficient",
+      "ordered-fields"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-30",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.natDegree_add_eq_right_of_natDegree_lt",
+        "description": "If p.natDegree < q.natDegree then (p + q).natDegree = q.natDegree. Handles the deg u < deg v branch where the v² term strictly dominates the sum.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Operations"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_pow",
+        "description": "(p ^ n).leadingCoeff = p.leadingCoeff ^ n. Identifies the top coefficient of u² as (lc u)², the source of the non-cancellation in the equal-degree branch.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      },
+      {
+        "theorem": "Polynomial.le_natDegree_of_ne_zero",
+        "description": "If p.coeff n ≠ 0 then n ≤ p.natDegree. Supplies the lower bound on natDegree(u² + v²) once the coefficient at 2·max is shown nonzero.",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_ne_zero",
+        "description": "p.leadingCoeff ≠ 0 ↔ p ≠ 0. Converts the not-both-zero hypothesis into positivity of (lc u)² + (lc v)².",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
+      {
+        "theorem": "pow_two_pos_of_ne_zero",
+        "description": "a ≠ 0 → 0 < a ^ 2 in an ordered field. Drives the sum-of-two-real-squares positivity that forbids leading-term cancellation.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "natDegree_sq_add_sq: the leading-term non-cancellation theorem — natDegree(u² + v²) = 2·max(deg u, deg v) for u, v not both zero, via a trichotomy on deg u vs deg v with the equal case discharged by (lc u)² + (lc v)² ≠ 0.",
+      "two_sos_max_degree_eq: sharpness of the Fejér–Riesz bound — in ANY representation p = u² + v² with p ≠ 0, the larger summand has degree exactly ½·deg p, so the parent's upper bound 2·deg u ≤ deg p is attained and cannot be improved.",
+      "natDegree_two_sos_even: the degree of any nonzero sum of two real squares is even, an immediate structural corollary of the exact-degree formula.",
+      "univariate_psd_two_sos_degree_exact: strengthens the parent existence theorem from an upper bound to an exact one — every nonzero PSD univariate polynomial is u² + v² with 2·max(deg u, deg v) = deg p exactly.",
+      "Answers the parent entry's own first open question (degree-exact normalization) for the larger summand, using a self-contained real-coefficient argument that needs no Hilbert-17 induction infrastructure."
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "natDegree arithmetic in Mathlib: natDegree_pow, natDegree_add_le, natDegree_add_eq_left/right_of_natDegree_lt.",
+      "leadingCoeff as the coefficient at natDegree, and leadingCoeff_pow.",
+      "The order-field fact that a sum of two squares vanishes only when both terms do (pow_two_pos_of_ne_zero).",
+      "The Fejér–Riesz degree upper bound from the parent entry (for the existence-strengthening corollary)."
+    ],
+    "lineCount": 116,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17-oq-01-oq-01",
+        "relationship": "Parent: proves the Fejér–Riesz UPPER bound 2·deg u ≤ deg p, 2·deg v ≤ deg p. This entry proves the matching sharpness (the larger summand's degree is forced to be exactly ½·deg p), answering the parent's first stated open question."
+      },
+      {
+        "id": "hilbert-17-oq-01",
+        "relationship": "Grandparent: the Pfister bound on the minimum number of squares. The univariate case fixes that number at two; this entry pins down the exact degree of the two summands."
+      },
+      {
+        "id": "hilbert-17",
+        "relationship": "Great-grandparent: Hilbert's 17th problem and Artin's theorem. The univariate strand is now characterized not just by existence and an upper degree bound but by the exact certificate degree."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms on all four theorems (natDegree_sq_add_sq, two_sos_max_degree_eq, natDegree_two_sos_even, univariate_psd_two_sos_degree_exact) reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The existence-strengthening corollary reuses only the 0-axiom degree-sharp theorem from the parent file.",
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 116,
+    "namespace": "Hilbert17OQ01OQ01OQ01",
+    "opens": [
+      "Polynomial"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib",
+      "Proofs.Hilbert17OQ01OQ01"
+    ],
+    "path": "Proofs/Hilbert17OQ01OQ01OQ01.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "natDegree_sq_add_sq",
+      "type": "theorem",
+      "description": "Leading-term non-cancellation for real sums of two squares: the degree of u² + v² is exactly twice the larger of deg u, deg v. The only nontrivial case deg u = deg v has top coefficient (lc u)² + (lc v)², nonzero whenever u, v are not both zero.",
+      "leanType": "{u v : ℝ[X]} → (u ≠ 0 ∨ v ≠ 0) → (u ^ 2 + v ^ 2).natDegree = 2 * max u.natDegree v.natDegree"
+    },
+    {
+      "name": "two_sos_max_degree_eq",
+      "type": "theorem",
+      "description": "Sharpness of the Fejér–Riesz degree bound: in any representation p = u² + v² of a nonzero polynomial, the larger summand has degree exactly ½·deg p, so the parent's upper bound 2·deg u ≤ deg p is attained and cannot be lowered.",
+      "leanType": "{p u v : ℝ[X]} → p ≠ 0 → p = u ^ 2 + v ^ 2 → 2 * max u.natDegree v.natDegree = p.natDegree"
+    },
+    {
+      "name": "natDegree_two_sos_even",
+      "type": "theorem",
+      "description": "The degree of any nonzero sum of two real squares is even, an immediate structural corollary of deg p = 2·max(deg u, deg v).",
+      "leanType": "{p u v : ℝ[X]} → p ≠ 0 → p = u ^ 2 + v ^ 2 → Even p.natDegree"
+    },
+    {
+      "name": "univariate_psd_two_sos_degree_exact",
+      "type": "theorem",
+      "description": "Degree-exact Fejér–Riesz: every nonzero PSD univariate polynomial is a sum of two squares whose larger summand has degree exactly ½·deg p, strengthening the parent existence theorem from an upper bound to an equality.",
+      "leanType": "(p : ℝ[X]) → p ≠ 0 → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ 2 * max u.natDegree v.natDegree = p.natDegree"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Hilbert's 1888 classification shows nonnegative univariate real polynomials are sums of two squares; the Fejér–Riesz theorem (1916) sharpens this to a degree-controlled certificate p = u² + v² with deg u, deg v ≤ ½·deg p, the algebraic shadow of representing a nonnegative trigonometric polynomial as |g|² with g of the same degree. The parent entry formalizes that upper bound. The question of sharpness — whether the bound is actually attained or could be lowered — is what determines the true cost of a univariate SOS certificate. The answer is that two real squares cannot cancel in top degree: the leading coefficient of u² + v² is a sum of two real squares (lc u)² + (lc v)², which is positive unless both polynomials vanish. This ordered-field phenomenon is exactly what fails over ℂ, where X² + (iX)² = 0, and it is the algebraic heart of why nonnegativity over ℝ forces an even degree.",
+    "problemStatement": "Determine whether the Fejér–Riesz upper bound 2·deg u ≤ deg p, 2·deg v ≤ deg p on a univariate sum-of-two-squares certificate is sharp. Concretely: in any representation p = u² + v² of a nonzero real polynomial, what is the exact degree of the summands, and is the degree of p forced to be even?",
+    "proofStrategy": "The whole result rests on one degree identity: natDegree(u² + v²) = 2·max(deg u, deg v) for u, v not both zero. Prove it by trichotomy on deg u vs deg v. If the degrees differ, the larger square strictly dominates and natDegree_add_eq_left/right_of_natDegree_lt gives the answer directly (natDegree_pow turns deg(u²) into 2·deg u). If deg u = deg v = a, bound natDegree(u² + v²) ≤ 2a by natDegree_add_le, then show the coefficient at 2a is nonzero: it equals (lc u)² + (lc v)² (using leadingCoeff = coeff at natDegree and leadingCoeff_pow), which is positive because the not-both-zero hypothesis makes at least one leading coefficient nonzero (leadingCoeff_ne_zero), so pow_two_pos_of_ne_zero plus sq_nonneg of the other term gives strict positivity. le_natDegree_of_ne_zero then forces natDegree ≥ 2a, and omega closes equality. Sharpness (two_sos_max_degree_eq) substitutes p = u² + v² into the identity; evenness (natDegree_two_sos_even) reads off deg p = max + max; the degree-exact existence theorem composes the identity with the parent's degree-sharp witnesses.",
+    "keyInsights": [
+      "Two real squares can never cancel in top degree: when deg u = deg v the leading coefficient of u² + v² is (lc u)² + (lc v)², a sum of two real squares, nonzero unless both polynomials are zero. This is the single fact that turns the parent's upper bound into an exact one.",
+      "The phenomenon is specific to ordered fields. Over ℂ it fails — X² + (iX)² = 0 — which is precisely why complex sums of squares carry no degree information while real ones do.",
+      "The exact-degree identity makes the Fejér–Riesz upper bound visibly sharp: 2·deg u ≤ deg p holds for both summands, but equality is forced for whichever summand has the larger degree, so no representation can do better.",
+      "Evenness of deg p for any nonzero 2-SOS falls out for free: deg p = 2·max(deg u, deg v). The same convention deg 0 = 0 that makes the parent's upper bound uniform also makes max(deg u, deg v) the correct half-degree even when one summand vanishes.",
+      "The sharpness argument is self-contained — it needs no Hilbert-17 induction machinery, only natDegree and leadingCoeff arithmetic — so it applies to any real 2-SOS, not just those arising from PSD polynomials."
+    ]
+  },
+  "conclusion": {
+    "summary": "A 116-line, 0-sorry, 0-axiom companion to the degree-sharp univariate Hilbert 17 entry, proving the Fejér–Riesz bound is sharp. The engine is natDegree(u² + v²) = 2·max(deg u, deg v): two real squares cannot cancel in top degree because the leading coefficient is the sum of two real squares (lc u)² + (lc v)². Consequences: in any p = u² + v² the larger summand has degree exactly ½·deg p, the degree of any nonzero real 2-SOS is even, and the parent existence theorem upgrades to a degree-exact one. This answers the parent entry's first open question for the larger summand.",
+    "implications": "Sharpness closes the loop on the univariate certificate: the parent's degree cap is not just an upper bound but the precise degree of the larger square, so a univariate SOS solver's Gram matrix size is tight, not merely bounded. The non-cancellation argument also isolates the ordered-field content of univariate nonnegativity (evenness of the degree), separating it cleanly from the analytic FTA/even-multiplicity input used to prove existence.",
+    "openQuestions": [
+      "Strict normalization: for p ≠ 0 of degree 2n, show one square can be taken of degree exactly n and the other of degree strictly less than n (the asymmetric Fejér–Riesz form), refining the symmetric max-degree statement proved here.",
+      "Quantify the smaller summand: characterize when both squares can have degree n simultaneously (deg u = deg v) versus when the representation forces deg u ≠ deg v, in terms of the boundary behavior of p."
+    ]
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "Fejér–Riesz theorem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Fej%C3%A9r%E2%80%93Riesz_theorem"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    }
+  ],
+  "crossReferences": [],
+  "sections": [
+    {
+      "id": "non-cancellation",
+      "title": "Leading-term non-cancellation for real sums of two squares",
+      "startLine": 42,
+      "endLine": 86,
+      "summary": "natDegree_sq_add_sq: trichotomy on deg u vs deg v. The two unequal branches use natDegree_add_eq_left/right_of_natDegree_lt after natDegree_pow. The equal branch bounds the degree above by natDegree_add_le and below by showing the coefficient at 2·deg u equals (lc u)² + (lc v)² (via leadingCoeff_pow), which is nonzero because at least one leading coefficient is nonzero (leadingCoeff_ne_zero, pow_two_pos_of_ne_zero), closing with le_natDegree_of_ne_zero and omega."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness and evenness corollaries",
+      "startLine": 88,
+      "endLine": 107,
+      "summary": "two_sos_max_degree_eq substitutes p = u² + v² into the identity to conclude the larger summand has degree exactly ½·deg p (the not-both-zero side condition follows from p ≠ 0). natDegree_two_sos_even reads deg p = max + max off the same identity."
+    },
+    {
+      "id": "degree-exact-existence",
+      "title": "Degree-exact strengthening of the existence theorem",
+      "startLine": 109,
+      "endLine": 115,
+      "summary": "univariate_psd_two_sos_degree_exact composes the parent's degree-sharp witnesses (univariate_psd_is_two_sos_deg) with two_sos_max_degree_eq, upgrading the parent existence theorem from an upper degree bound to an exact one for nonzero PSD polynomials."
+    }
+  ]
+}

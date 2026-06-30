@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-h17-oq010101-noncancel",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Leading-term non-cancellation for real sums of two squares",
+    "content": "natDegree_sq_add_sq is the engine of the whole file: natDegree(u² + v²) = 2·max(deg u, deg v) whenever u, v are not both zero. The proof is a trichotomy on deg u vs deg v. In the two unequal branches one square strictly dominates (natDegree_pow turns deg(u²) into 2·deg u, and 2a ≠ 2b), so natDegree_add_eq_right/left_of_natDegree_lt reads off the answer. The equal branch deg u = deg v = a is the crux: the coefficient of u² + v² at degree 2a equals (lc u)² + (lc v)² (using that leadingCoeff is the coefficient at natDegree, and leadingCoeff_pow). Over an ordered field this sum of two squares is zero only when both leading coefficients vanish — and leadingCoeff_ne_zero turns the not-both-zero hypothesis into positivity (pow_two_pos_of_ne_zero on the nonzero one, sq_nonneg on the other). So the top coefficient survives, le_natDegree_of_ne_zero forces natDegree ≥ 2a, natDegree_add_le gives ≤ 2a, and omega closes equality. The contrast with ℂ is the whole point: X² + (iX)² = 0, so complex squares can cancel in top degree and carry no degree information."
+  },
+  {
+    "id": "ann-h17-oq010101-sharpness",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Sharpness and evenness corollaries",
+    "content": "two_sos_max_degree_eq substitutes p = u² + v² into the identity to conclude that, for any nonzero p, the larger summand has degree exactly ½·deg p. The required not-both-zero side condition is extracted from p ≠ 0 by push_neg and a ring computation. This is exactly the sharpness statement: the parent's upper bound 2·deg u ≤ deg p holds for both summands, but for whichever has the larger degree it holds with equality, so no representation can lower the certificate degree. natDegree_two_sos_even then reads deg p = max + max directly off the identity, recording that the degree of any nonzero real sum of two squares is even — the ordered-field content of univariate nonnegativity, isolated from the analytic FTA input used to prove existence."
+  },
+  {
+    "id": "ann-h17-oq010101-exact-existence",
+    "proofId": "hilbert-17-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "Degree-exact strengthening of the existence theorem",
+    "content": "univariate_psd_two_sos_degree_exact composes the parent's degree-sharp witnesses (univariate_psd_is_two_sos_deg) with the sharpness theorem two_sos_max_degree_eq. The parent guarantees a representation with both summands of degree ≤ ½·deg p; sharpness then pins the larger summand's degree to exactly ½·deg p. The net effect is to upgrade the parent existence theorem from an upper degree bound to an exact one for nonzero PSD polynomials, answering the parent entry's first open question for the larger summand. Because the sharpness engine is self-contained (only natDegree/leadingCoeff arithmetic), the result needs no extra analytic input beyond what the parent already supplies."
+  }
+]
