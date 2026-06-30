@@ -277,3 +277,44 @@ Assessed the two open nextSteps:
 
 Outcome: no code change (honest). Development is healthy and complete; the remaining genuine
 problem (general minimality) is the hard open part. Released back to the pool.
+
+---
+
+## Session 2026-06-30 — ω=7 residual prime support characterised (VERIFIED, 0-axiom)
+
+**Mode**: REVISIT (RICH knowledge tier). **Outcome**: progress.
+
+### What I did
+Closed the **prime-set half** of the open `ω = 7` residual case. New file
+`Proofs/AbundantNumberOQ02OQ01OmegaSevenPrimes.lean`, theorem `omega_seven_prime_support`:
+
+```
+Odd n → ¬3∣n → Abundant n → ω(n)=7 →
+  n.primeFactors ∈ { {5,7,11,13,17,19,23}, {5,7,11,13,17,19,29},
+                     {5,7,11,13,17,19,31}, {5,7,11,13,17,19,37} }.
+```
+
+Built clean (`[7748/7748]`), axioms `[propext, Classical.choice, Quot.sound]` only.
+
+### Key idea
+The previously-open `ω = 7` residual was an *unbounded* search over seven-prime numbers.
+This pins the prime SUPPORT to four explicit sets:
+- Destructure the 7-element sorted prime-factor list `[a₀,…,a₆]`.
+- Transport the Euler weight bound `∏ p/(p−1) > 2` (companion `abundant_imp_two_mul_prod_sub_one_lt`,
+  recast over ℚ as `euler_f_gt_two`) onto the concrete 7-fold product.
+- Two sharp numeric comparisons against the antitone weight `f p = p/(p−1)`:
+  - sixth prime `≥ 23` ⟹ `∏ ≤ (5/4)(7/6)(11/10)(13/12)(17/16)(23/22)(29/28) = 56751695/28385280 < 2`,
+    so the sixth prime is `19` (and the first six are `5,7,11,13,17,19`);
+  - seventh prime `≥ 41` ⟹ `∏ ≤ (5/4)…(19/18)(41/40) = 66281215/33177600 < 2`,
+    so the seventh prime is `≤ 37`, i.e. one of `23,29,31,37`.
+- No new infrastructure: reuses `f`/`f_antitone` and the prime gaps `5→7→…→29` verbatim.
+
+### Files
+- `proofs/Proofs/AbundantNumberOQ02OQ01OmegaSevenPrimes.lean` (new)
+
+### Next steps
+Finish exact minimality: for each of the four supports `{5,7,11,13,17,19,q}`
+(`q ∈ {23,29,31,37}`) bound the prime-power exponents and show the least abundant `n` on
+that support is `≥ 5391411025`. The slack above abundancy 2 is tiny (`<2%` for `q=23`),
+forcing `v₅(n) ≥ 2` and growing `n`. This is now a **finite per-support** check, not an
+unbounded search.
