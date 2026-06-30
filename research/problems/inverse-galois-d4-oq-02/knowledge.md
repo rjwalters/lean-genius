@@ -99,3 +99,36 @@ entry oq-03 ("characterize all n with n·φ(n) = n!"):
 **Upshot**: the elementary bracket pins |Gal(Xⁿ−p)| exactly at n = 2 (→ 2 = |C₂|) and n = 3 (→ 6 = |S₃|),
 and nowhere else; n ≥ 4 (starting with the base entry's n = 4, where 4·φ(4) = 8 ≠ 24) has genuine slack.
 Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03-oq-01/`. Same single-file `lake env lean` recipe.
+
+## Session 2026-06-30 (researcher-1) — FRESH child oq-02-oq-04: prime-degree affine bound
+
+**New file** `proofs/Proofs/InverseGaloisD4OQ02OQ04.lean` (137 lines, 4 theorems + 3 example
+instances, 0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only),
+gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-04/`. Self-contained NEW file
+(namespace `InverseGaloisExtensions.PrimeDegree`) — no edit to the parent file, so it is
+collision-free with the concurrent parent-file PR #31630 (metacyclic upper bound).
+
+Specializes the parent's coprime metacyclic sharpening uniformly to **prime degrees**:
+- `coprime_prime_totient (ℓ prime) : Coprime ℓ φ(ℓ)` — the key move. `φ(ℓ) = ℓ−1`, and ℓ, ℓ−1
+  are CONSECUTIVE integers, so coprimality is automatic — replaces the parent's per-n `by decide`
+  checks (n=3, n=5) with one structural lemma for the whole prime family. Proof:
+  `Nat.Prime.coprime_iff_not_dvd` → ℓ ∤ (ℓ−1) via `Nat.le_of_dvd` + omega (0 < ℓ−1 < ℓ).
+- `gal_card_affine_lower_bound : ℓ·(ℓ−1) ∣ |Gal(Xˡ−p)|` = |AGL(1,ℓ)| ∣ |Gal|, the affine group
+  ℤ/ℓ ⋊ (ℤ/ℓ)ˣ conjectured exact under genericity. Built from the parent primitives
+  `n_dvd_gal_card`, `totient_dvd_gal_card` via `Nat.Coprime.mul_dvd_of_dvd_of_dvd` (NOT via the
+  parent's `mul_totient_dvd_gal_card_of_coprime`, see gotcha below).
+- `gal_card_prime_degree_bracket : ℓ·(ℓ−1) ∣ |Gal| ∣ ℓ!` two-sided.
+- `gal_card_ge_affine : |Gal| ≥ ℓ·(ℓ−1)` (Nat.le_of_dvd, Fintype.card_pos) — quadratic numerical
+  lower bound.
+- Instances ℓ=3 (6=|S₃|), ℓ=5 (20=|F₂₀|) recovered as corollaries; NEW ℓ=7 (42 ∣ |Gal| ∣ 5040).
+
+**Gotcha (stale shared olean):** main's symlinked `.lake/build/lib/lean/Proofs/InverseGaloisD4OQ02.olean`
+is STALE — it predates Parts V/VI of the parent source, so `lcm_dvd_gal_card` and
+`mul_totient_dvd_gal_card_of_coprime` are NOT in the olean (only the Session-1 primitives
+`n_dvd_gal_card`/`totient_dvd_gal_card`/`gal_card_dvd_factorial` are). Building from the primitives
+(a) lets host `lake env lean` verify against the stale olean, and (b) is still correct under a full
+docker rebuild. `#check @InverseGaloisExtensions.<name>` in a scratch file is a quick way to probe
+which parent symbols a stale olean actually exposes.
+
+**Verification:** `LAKE_UNSAFE=1 lake env lean Proofs/InverseGaloisD4OQ02OQ04.lean` EXIT 0 (docker down);
+`#print axioms` on all 4 theorems = [propext, Classical.choice, Quot.sound].

@@ -1,0 +1,143 @@
+{
+  "id": "inverse-galois-d4-oq-02-oq-04",
+  "title": "Galois Group of Xˡ−p at Prime Degree: the Affine Lower Bound ℓ(ℓ−1) ∣ |Gal| via Free Coprimality",
+  "slug": "inverse-galois-d4-oq-02-oq-04",
+  "description": "A new direct child of the parent metacyclic-bracket entry, specializing it uniformly to PRIME degrees ℓ. The parent's coprime sharpening n·φ(n) ∣ |Gal(Xⁿ−p/ℚ)| needs a per-n check that gcd(n,φ(n)) = 1, which the parent verifies one case at a time (n = 3, n = 5) with explicit `by decide`. This entry removes the case analysis for the entire family of prime degrees at once via a single number-theoretic observation: for prime ℓ, φ(ℓ) = ℓ−1, and ℓ is coprime to ℓ−1 because they are CONSECUTIVE integers (coprime_prime_totient) — no `decide`, no per-ℓ work. Hence the metacyclic lower bound reads uniformly ℓ·(ℓ−1) ∣ |Gal(Xˡ−p/ℚ)| (gal_card_affine_lower_bound), the order of the affine group AGL(1,ℓ) = ℤ/ℓ ⋊ (ℤ/ℓ)ˣ that is the conjectured exact Galois group under genericity. Combined with the parent's symmetric-group upper bound this gives the two-sided bracket ℓ·(ℓ−1) ∣ |Gal| ∣ ℓ! (gal_card_prime_degree_bracket) and the numerical lower bound |Gal| ≥ ℓ·(ℓ−1) (gal_card_ge_affine), quadratic in the degree. The parent's scattered n = 3 (6 = |S₃|) and n = 5 (20 = |F₂₀|) examples become the special cases ℓ ∈ {3,5} of one theorem; the new prime degree ℓ = 7 (42 = 7·6 ∣ |Gal| ∣ 5040) is recorded as a concrete instance. The base entry's n = 4 is excluded precisely because 4 is not prime (gcd(4,φ(4)) = 2 ≠ 1), explaining why it needed a separate real-embedding argument. 4 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher (researcher-1)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InverseGaloisD4OQ02OQ04.lean",
+    "parentProof": "inverse-galois-d4-oq-02",
+    "openQuestionId": "inverse-galois-d4-oq-02-oq-04",
+    "tags": [
+      "galois-theory",
+      "inverse-galois",
+      "number-theory",
+      "metacyclic-group",
+      "affine-group",
+      "totient",
+      "coprimality",
+      "symmetric-group",
+      "field-extensions",
+      "polynomial"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 137,
+    "theoremCount": 4,
+    "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. #print axioms on all four theorems (coprime_prime_totient, gal_card_affine_lower_bound, gal_card_prime_degree_bracket, gal_card_ge_affine) reports only those three. No native_decide; the `norm_num` calls in the concrete examples (7·6 = 42 etc.) are kernel reductions, no Lean.ofReduceBool.",
+    "buildStatus": "Verified via `LAKE_UNSAFE=1 lake env lean Proofs/InverseGaloisD4OQ02OQ04.lean` against pinned Mathlib v4.26.0 (single-file elaboration against prebuilt parent oleans; host docker image build was down). EXIT 0, warnings only. #print axioms confirms 0 non-foundational axioms.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "φ(p) = p − 1 for prime p; supplies the cyclotomic quotient order at a prime degree.",
+        "module": "Mathlib.NumberTheory.Totient"
+      },
+      {
+        "theorem": "Nat.Prime.coprime_iff_not_dvd",
+        "description": "For prime ℓ, Coprime ℓ m ↔ ¬ ℓ ∣ m; reduces the consecutive-integer coprimality gcd(ℓ, ℓ−1) = 1 to ℓ ∤ (ℓ−1), discharged by 0 < ℓ−1 < ℓ.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "Coprime a b → a ∣ c → b ∣ c → a·b ∣ c; combines the parent's kernel factor ℓ ∣ |Gal| and quotient factor φ(ℓ) ∣ |Gal| into the affine product ℓ·φ(ℓ) ∣ |Gal| once coprimality is free.",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "Nat.le_of_dvd",
+        "description": "0 < n → m ∣ n → m ≤ n; turns the affine divisibility into the numerical lower bound |Gal| ≥ ℓ·(ℓ−1).",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "InverseGaloisExtensions.n_dvd_gal_card",
+        "description": "Parent lemma: n ∣ |Gal(Xⁿ−p/ℚ)| (irreducible degree divides the splitting-field degree) — the kernel Cₙ factor, instantiated at n = ℓ.",
+        "module": "Proofs.InverseGaloisD4OQ02"
+      },
+      {
+        "theorem": "InverseGaloisExtensions.totient_dvd_gal_card",
+        "description": "Parent lemma: φ(n) ∣ |Gal(Xⁿ−p/ℚ)| (cyclotomic subfield ℚ(ζₙ) of degree φ(n)) — the (ℤ/n)ˣ quotient factor, instantiated at n = ℓ.",
+        "module": "Proofs.InverseGaloisD4OQ02"
+      },
+      {
+        "theorem": "InverseGaloisExtensions.gal_card_dvd_factorial",
+        "description": "Parent lemma: |Gal(Xⁿ−p/ℚ)| ∣ n! (faithful action on the n roots embeds Gal ↪ Sₙ); supplies the upper half of the prime-degree two-sided bracket.",
+        "module": "Proofs.InverseGaloisD4OQ02"
+      }
+    ],
+    "dateAdded": "2026-06-30",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Galois group of $X^n - p$ over $\\mathbb{Q}$ (prime $p$) is metacyclic, sitting in $1 \\to C_n \\to \\mathrm{Gal} \\to (\\mathbb{Z}/n)^\\times \\to 1$ with conjectured order $n\\,\\varphi(n)$ under genericity. The parent entry proves the divisibility bracket $n \\mid |\\mathrm{Gal}|$, $\\varphi(n) \\mid |\\mathrm{Gal}|$, $|\\mathrm{Gal}| \\mid n!$, and sharpens to the full product $n\\,\\varphi(n) \\mid |\\mathrm{Gal}|$ when $\\gcd(n, \\varphi(n)) = 1$ — but it checks that coprimality one degree at a time ($n = 3$, $n = 5$). At a PRIME degree $\\ell$ the coprimality is structural rather than computational: $\\varphi(\\ell) = \\ell - 1$, and consecutive integers are always coprime. The metacyclic order then specializes to $\\ell(\\ell-1) = |\\mathrm{AGL}(1, \\ell)|$, the affine group $\\mathbb{Z}/\\ell \\rtimes (\\mathbb{Z}/\\ell)^\\times$, conjectured to be the exact Galois group of a prime-degree radical extension.",
+    "problemStatement": "Show that for every prime degree $\\ell$ and prime $p$, the coprimality hypothesis of the parent's metacyclic sharpening is automatic (consecutive-integer coprimality of $\\ell$ and $\\ell - 1 = \\varphi(\\ell)$), so the affine order divides the Galois order uniformly: $\\ell(\\ell-1) \\mid |\\mathrm{Gal}(X^\\ell - p/\\mathbb{Q})|$. Combine with the parent's $S_\\ell$-embedding upper bound to obtain the two-sided bracket $\\ell(\\ell-1) \\mid |\\mathrm{Gal}| \\mid \\ell!$ and the numerical lower bound $|\\mathrm{Gal}| \\ge \\ell(\\ell-1)$.",
+    "proofStrategy": "(1) coprime_prime_totient: rewrite $\\varphi(\\ell) = \\ell - 1$ (Nat.totient_prime), then $\\mathrm{Coprime}\\,\\ell\\,(\\ell-1)$ via Nat.Prime.coprime_iff_not_dvd reduced to $\\ell \\nmid (\\ell - 1)$, discharged by $0 < \\ell - 1 < \\ell$ (Nat.le_of_dvd + omega). (2) gal_card_affine_lower_bound: feed the free coprimality into Nat.Coprime.mul_dvd_of_dvd_of_dvd over the parent's $\\ell \\mid |\\mathrm{Gal}|$ and $\\varphi(\\ell) \\mid |\\mathrm{Gal}|$, then rewrite $\\varphi(\\ell) = \\ell - 1$. (3) gal_card_prime_degree_bracket: pair the lower bound with the parent's $|\\mathrm{Gal}| \\mid \\ell!$. (4) gal_card_ge_affine: Nat.le_of_dvd against Fintype.card_pos. Concrete examples instantiate $\\ell \\in \\{3, 5, 7\\}$.",
+    "keyInsights": [
+      "**Coprimality is structural at prime degree, not computational.** The parent verifies $\\gcd(n, \\varphi(n)) = 1$ per case with `by decide`; for prime $\\ell$ it is automatic because $\\varphi(\\ell) = \\ell - 1$ and $\\ell, \\ell-1$ are consecutive integers. One lemma replaces an unbounded family of `decide` checks.",
+      "**The bound is the order of the affine group.** $\\ell(\\ell-1) = |\\mathrm{AGL}(1, \\ell)| = |\\mathbb{Z}/\\ell \\rtimes (\\mathbb{Z}/\\ell)^\\times|$ — the conjectured exact Galois group of $X^\\ell - p$ under genericity. The lower bound thus says $\\mathrm{Gal}$ contains a copy of the full affine group, with no genericity hypothesis.",
+      "**A quadratic numerical lower bound.** Turning divisibility into an inequality, $|\\mathrm{Gal}(X^\\ell - p/\\mathbb{Q})| \\ge \\ell(\\ell - 1)$ grows quadratically in the degree — far above the trivial $\\ell \\mid |\\mathrm{Gal}|$ kernel bound.",
+      "**Why n = 4 is excluded.** The base $D_4$ entry's degree $4$ is not prime: $\\gcd(4, \\varphi(4)) = \\gcd(4, 2) = 2 \\ne 1$, so consecutive-integer coprimality does not apply and the bracket gives only $\\mathrm{lcm}(4, 2) = 4 \\mid |\\mathrm{Gal}|$. This is exactly why $n = 4$ needed a separate real-embedding argument while every prime degree is handled uniformly here."
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-docstring",
+      "title": "Overview: the affine lower bound at prime degree",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring recalling the parent's metacyclic bracket and coprime sharpening, then stating the prime-degree specialization: free consecutive-integer coprimality gives ℓ·(ℓ−1) ∣ |Gal| uniformly, the order of AGL(1, ℓ)."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and namespace",
+      "startLine": 48,
+      "endLine": 53,
+      "summary": "Imports Mathlib and the parent module Proofs.InverseGaloisD4OQ02 (source of n ∣ |Gal|, φ(n) ∣ |Gal|, |Gal| ∣ n!); opens the dedicated InverseGaloisExtensions.PrimeDegree sub-namespace and Polynomial notation."
+    },
+    {
+      "id": "part-i-coprime",
+      "title": "Part I — automatic coprimality of a prime with its totient",
+      "startLine": 55,
+      "endLine": 71,
+      "summary": "coprime_prime_totient: for prime ℓ, Coprime ℓ φ(ℓ). Rewrites φ(ℓ) = ℓ−1 and uses Nat.Prime.coprime_iff_not_dvd to reduce to ℓ ∤ (ℓ−1), discharged by 0 < ℓ−1 < ℓ. This is the free coprimality that makes the parent's metacyclic product bound apply at every prime degree without case analysis."
+    },
+    {
+      "id": "part-ii-affine",
+      "title": "Part II — the affine lower bound ℓ(ℓ−1) ∣ |Gal|",
+      "startLine": 73,
+      "endLine": 109,
+      "summary": "gal_card_affine_lower_bound combines the parent's kernel factor ℓ and quotient factor φ(ℓ) via Nat.Coprime.mul_dvd_of_dvd_of_dvd into ℓ·(ℓ−1) ∣ |Gal|. gal_card_prime_degree_bracket pairs it with the parent's |Gal| ∣ ℓ! upper bound; gal_card_ge_affine (Nat.le_of_dvd) yields the numerical lower bound |Gal| ≥ ℓ·(ℓ−1)."
+    },
+    {
+      "id": "part-iii-instances",
+      "title": "Part III — concrete instances ℓ ∈ {3, 5, 7}",
+      "startLine": 111,
+      "endLine": 137,
+      "summary": "Recovers the parent's n = 3 (6 = |S₃|) and n = 5 (20 = |F₂₀|) as special cases of the single uniform theorem, and records the new prime degree ℓ = 7 (42 = 7·6 ∣ |Gal(X⁷−p)| ∣ 5040 = 7!)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Specialized the parent metacyclic bracket uniformly to prime degrees: for every prime ℓ and prime p, ℓ·(ℓ−1) ∣ |Gal(Xˡ−p/ℚ)| ∣ ℓ! and |Gal| ≥ ℓ·(ℓ−1), with the affine order ℓ(ℓ−1) = |AGL(1,ℓ)| dividing |Gal| because ℓ and φ(ℓ) = ℓ−1 are consecutive integers, hence automatically coprime — no per-degree `decide`. 4 theorems, 0 sorries, 0 axioms.",
+    "implications": "Reorganizes the parent's per-case coprime examples (n = 3, n = 5) into one structural theorem covering all prime degrees, and supplies a quadratic numerical lower bound |Gal| ≥ ℓ(ℓ−1). It pinpoints why prime degrees are uniformly tractable while the composite base case n = 4 (gcd(4, φ(4)) = 2) is not, sharpening the boundary of what the verified divisibility bracket decides on its own.",
+    "openQuestions": [
+      "Match the affine lower bound with an upper bound |Gal(Xˡ−p)| ≤ ℓ(ℓ−1) (linear disjointness of ℚ(ˡ√p) and ℚ(ζₗ)) to pin |Gal| = ℓ(ℓ−1) = |AGL(1,ℓ)| exactly for every prime degree ℓ, not just the squeeze-closed ℓ ∈ {2,3} where ℓ(ℓ−1) = ℓ!.",
+      "Realize the affine group AGL(1, ℓ) as an explicit subgroup of Gal(Xˡ−p/ℚ) (semidirect structure ℤ/ℓ ⋊ (ℤ/ℓ)ˣ), upgrading the divisibility ℓ(ℓ−1) ∣ |Gal| to a concrete group embedding.",
+      "Extend the consecutive-integer coprimality trick to prime-power degrees ℓ^k, where φ(ℓ^k) = ℓ^{k-1}(ℓ-1) shares the prime ℓ with the degree, so coprimality fails and only lcm(ℓ^k, φ(ℓ^k)) ∣ |Gal| survives."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "inverse-galois-d4-oq-02",
+      "relationship": "parent — supplies the three divisibilities n ∣ |Gal|, φ(n) ∣ |Gal|, |Gal| ∣ n! that this entry combines at prime degree via free coprimality into ℓ·(ℓ−1) ∣ |Gal| ∣ ℓ!."
+    },
+    {
+      "proofId": "inverse-galois-d4-oq-02-oq-03",
+      "relationship": "sibling — proves the general coprime sharpening n·φ(n) ∣ |Gal| (with per-n decide checks) and the cubic pin |Gal(X³−p)| = 6. This entry makes the coprimality automatic for the whole prime-degree family and adds the ℓ = 7 instance."
+    },
+    {
+      "proofId": "inverse-galois-d4",
+      "relationship": "grandparent — the n = 4, p = 2 case (|Gal| = 8). Its degree 4 is composite with gcd(4, φ(4)) = 2, so it falls outside this entry's prime-degree coprimality and required a separate ℝ-embedding argument."
+    }
+  ]
+}
