@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-asoq010102-vandermonde",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 137
+    },
+    "type": "insight",
+    "title": "Rising Factorials Are a Sequence of Binomial Type",
+    "content": "ascPochhammer_eval_add proves (x+y)^{(k)} = Σ_{m∈range(k+1)} x^{(m)}·y^{(k-m)}·C(k,m) over any commutative semiring, with z^{(j)} realized as (ascPochhammer S j).eval z. The proof is the binomial theorem Commute.add_pow with one substitution: the recurrence ascPochhammer_succ_eval — (ascPochhammer S (n+1)).eval z = (ascPochhammer S n).eval z · (z + n) — replaces pow_succ. The only complication is that this recurrence multiplies by the index-dependent factor (z + n) where pow_succ multiplies by the constant z; that dependence is absorbed by the Pascal-rule middle lemma h_middle : t(n+1)(i+1) = (x+i)·t n i + (y+(n-(i+1)))·t n(i+1), proved with a single case split at i=n (where C(n,n+1)=0). The inductive step then reindexes the two sums with Finset.sum_range_succ'/sum_range_succ and recombines via sum_add_distrib, exactly as add_pow does.",
+    "mathContext": "A polynomial sequence $\\{p_k\\}$ is of **binomial type** when $p_k(x+y)=\\sum_{m=0}^k\\binom{k}{m}p_m(x)p_{k-m}(y)$. Monomials $x^k$ give the ordinary binomial theorem; the rising factorials $x^{\\overline{k}}=x(x+1)\\cdots(x+k-1)$ are the next example. This is the **additive (Chu–Vandermonde)** companion to Mathlib's **multiplicative** composition law `ascPochhammer_mul`, and is not in Mathlib.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ascPochhammer",
+      "ascPochhammer_succ_eval",
+      "sequence of binomial type",
+      "Chu–Vandermonde identity",
+      "umbral calculus",
+      "Commute.add_pow"
+    ],
+    "prerequisites": [
+      "ascPochhammer",
+      "ascPochhammer_succ_eval",
+      "Nat.choose_succ_succ'",
+      "Finset.sum_range_succ'"
+    ]
+  },
+  {
+    "id": "ann-asoq010102-nat",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 138,
+      "endLine": 164
+    },
+    "type": "technique",
+    "title": "ℕ Specialization via ascPochhammer_nat_eq_ascFactorial",
+    "content": "ascFactorial_add_vandermonde recovers the multiset / Chu–Vandermonde identity for Nat.ascFactorial — (a+b).ascFactorial k = Σ a.ascFactorial m · b.ascFactorial (k-m) · C(k,m) — as the S=ℕ, x=a, y=b instance of the headline. The bridge is a one-line simpa: ascPochhammer_nat_eq_ascFactorial rewrites every (ascPochhammer ℕ j).eval n into n.ascFactorial j, and Nat.cast_id erases the ℕ→ℕ cast on the binomial coefficient. ascFactorial_add_vandermonde_prod then expands each ascFactorial into its explicit rising product ∏ i ∈ range j, (n+i) by Nat.ascFactorial_eq_prod_range under a Finset.sum_congr. Because the headline is stated over a CommSemiring and uses no subtraction in S, the ℕ instance is immediate rather than requiring a separate integer detour.",
+    "mathContext": "$(a+b)^{\\overline{k}} = \\sum_{m=0}^{k}\\binom{k}{m}a^{\\overline{m}}\\,b^{\\overline{k-m}}$, the rising-factorial Chu–Vandermonde identity over $\\mathbb{N}$. This is precisely open question #2 of the parent entry, and #3 (relate to `ascPochhammer` over a commutative ring, recover the $\\mathbb{N}$ identity as a specialization) is the route taken.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Nat.ascFactorial",
+      "ascPochhammer_nat_eq_ascFactorial",
+      "Nat.ascFactorial_eq_prod_range",
+      "Chu–Vandermonde identity"
+    ],
+    "prerequisites": [
+      "ascPochhammer_nat_eq_ascFactorial",
+      "Nat.cast_id",
+      "Finset.sum_congr"
+    ]
+  },
+  {
+    "id": "ann-asoq010102-corollaries",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 165,
+      "endLine": 183
+    },
+    "type": "insight",
+    "title": "Boundary Collapse and a↔b Symmetry",
+    "content": "ascFactorial_add_vandermonde_zero_right specializes b=0: since 0^{(j)} = 0 for j≥1 and 0^{(0)} = 1, every term except m=k vanishes and the sum collapses to a^{(k)}, a consistency check that the boundary is handled uniformly with no special-casing in the main proof. ascFactorial_add_vandermonde_symm records that swapping a and b leaves the convolution invariant: both sides equal (a+b)^{(k)} = (b+a)^{(k)}, so the two reindexings (m vs k-m) agree — the commutativity of + at the level of the whole identity.",
+    "mathContext": "The convolution $\\sum_m\\binom{k}{m}a^{\\overline{m}}b^{\\overline{k-m}}$ is symmetric in $a,b$ and degenerates correctly at $b=0$ — the two sanity checks any binomial-type identity must pass.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "boundary case",
+      "symmetry",
+      "rising factorial"
+    ],
+    "prerequisites": [
+      "Nat.ascFactorial",
+      "Nat.add_comm"
+    ]
+  },
+  {
+    "id": "ann-asoq010102-checks",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 184,
+      "endLine": 222
+    },
+    "type": "technique",
+    "title": "Concrete Verification with decide (no native_decide)",
+    "content": "Three numeric instances confirm the identity by kernel computation: a=b=1,k=2 gives (2)^{(2)}=2·3=6 with RHS 2+2+2=6; a=2,b=1,k=2 gives (3)^{(2)}=3·4=12; a=1,b=2,k=3 gives (3)^{(3)}=3·4·5=60. All three use `decide` (ordinary kernel reduction over Finset.range, Nat.ascFactorial and Nat.choose), not `native_decide`, so they introduce no Lean.ofReduceBool dependency and the file stays axiom-free.",
+    "mathContext": "Small evaluations of $(a+b)^{\\overline{k}}=\\sum_m\\binom{k}{m}a^{\\overline{m}}b^{\\overline{k-m}}$ that exhibit the Pascal-weighted split of a consecutive-integer product.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide",
+      "kernel reduction",
+      "Nat.ascFactorial"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Nat.ascFactorial",
+      "Nat.choose"
+    ]
+  }
+]

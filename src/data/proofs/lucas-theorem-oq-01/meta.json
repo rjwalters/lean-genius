@@ -104,12 +104,58 @@
   ],
   "crossReferences": [
     {
-      "id": "catalan-numbers-oq-01-oq-02",
-      "reason": "Uses the same binary-digit-sum s₂ and its doubling-invariance s₂(2n)=s₂(n); there for the 2-adic valuation of Catalan numbers, here for the odd-entry count."
+      "targetId": "catalan-numbers-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Uses the same binary-digit-sum s₂ and its doubling-invariance s₂(2n)=s₂(n); there for the 2-adic valuation of Catalan numbers, here for the odd-entry count."
     },
     {
-      "id": "catalan-numbers-oq-01-oq-02-oq-01",
-      "reason": "Generalises the same Lucas/Kummer arithmetic of binomial coefficients to an arbitrary prime via Legendre's formula; this entry is the parity (p = 2) face of that family."
+      "targetId": "catalan-numbers-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Generalises the same Lucas/Kummer arithmetic of binomial coefficients to an arbitrary prime via Legendre's formula; this entry is the parity (p = 2) face of that family."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Definitions",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring framing Lucas mod 2 and Glaisher's count, then the three definitions: s2 (binary digit sum (digits 2 n).sum), oddRow (the columns k ≤ n with C(n,k) odd), and oddCount (its cardinality)."
+    },
+    {
+      "id": "sec-lucas",
+      "title": "Lucas' Theorem (Mathlib Re-export)",
+      "startLine": 49,
+      "endLine": 63,
+      "summary": "lucas_theorem re-exports Mathlib's digit-product congruence verbatim; lucas_mod_two specializes the single recursive step to p = 2 (supplying the Fact (Nat.Prime 2) instance), the engine for everything below."
+    },
+    {
+      "id": "sec-pointwise",
+      "title": "Pointwise Parity via Lucas mod 2",
+      "startLine": 64,
+      "endLine": 92,
+      "summary": "odd_choose_two_mul (C(2n,k) odd ⟺ k even ∧ C(n,k/2) odd — top digit 0, C(0,1)=0) and odd_choose_two_mul_add_one (C(2n+1,k) odd ⟺ C(n,k/2) odd — top digit 1, C(1,0)=C(1,1)=1), each by casing on k % 2 and evaluating the top-digit factor."
+    },
+    {
+      "id": "sec-doubling",
+      "title": "The Doubling Recursion for oddCount",
+      "startLine": 94,
+      "endLine": 154,
+      "summary": "oddCount_two_mul (oddRow(2n) = image (j↦2j) oddRow n, so card preserved) and oddCount_two_mul_add_one (oddRow(2n+1) splits as the disjoint union of even part j↦2j and odd part j↦2j+1, each a copy of oddRow n), via Finset.card_image_of_injective and card_union_of_disjoint."
+    },
+    {
+      "id": "sec-digitsum",
+      "title": "The Binary Digit Sum Recursion",
+      "startLine": 156,
+      "endLine": 164,
+      "summary": "s2_zero (s₂ 0 = 0) and s2_pos (s₂ n = n%2 + s₂(n/2) for n > 0, from Nat.digits_def') — the arithmetic recursion that the oddCount doubling recursion mirrors."
+    },
+    {
+      "id": "sec-closed-form",
+      "title": "Glaisher's Closed Form and Corollary",
+      "startLine": 165,
+      "endLine": 206,
+      "summary": "oddCount_eq_two_pow_s2 (oddCount n = 2^(s₂ n), strong induction casing on n % 2 and matching the two recursions), the corollary oddCount_isPowerOfTwo, and three concrete row checks (oddCount 5/4/7) by kernel decide."
     }
   ],
   "conclusion": {

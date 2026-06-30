@@ -48,6 +48,48 @@
       "Finset.sum_eq_zero_iff_of_nonneg: a finite sum of nonnegative terms is zero iff each term is zero"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Docstring stating that Mathlib proves Hölder's finite-sum inequality but not its equality case, and that this file characterizes equality as proportionality of the power-vectors (fᵢᵖ) and (gᵢ^q), in cross-multiplied form G·fᵢᵖ = F·gᵢ^q (degenerating gracefully at F = 0 or G = 0). Notes the engine is the summed equality case of Young's inequality and that ^ is Real.rpow. Verified (0 sorries, 0 axioms).",
+      "mathContext": "$\\sum f_i g_i = F^{1/p}G^{1/q}\\iff\\forall i,\\ Gf_i^p = Fg_i^q$."
+    },
+    {
+      "id": "sec-young",
+      "title": "Young Equality Case (nonnegative form)",
+      "startLine": 37,
+      "endLine": 58,
+      "summary": "young_eq_iff_nonneg: ab = aᵖ/p + b^q/q ⟺ aᵖ = b^q for a, b ≥ 0, extending the parent's a, b > 0 version by dispatching the boundary cases a = 0, b = 0 (via zero_rpow, div_eq_zero_iff). Needed because normalized vectors can have zero entries.",
+      "mathContext": "$ab=\\tfrac{a^p}{p}+\\tfrac{b^q}{q}\\iff a^p=b^q$ for $a,b\\ge 0$."
+    },
+    {
+      "id": "sec-holder-le",
+      "title": "Hölder's Inequality (re-export)",
+      "startLine": 60,
+      "endLine": 65,
+      "summary": "holder_sum_le: ∑ fᵢgᵢ ≤ (∑ fᵢᵖ)^(1/p)(∑ gᵢ^q)^(1/q) for nonnegative f, g, re-exported from Real.inner_le_Lp_mul_Lq_of_nonneg so the equality case sits alongside the inequality.",
+      "mathContext": "$\\sum f_i g_i \\le (\\sum f_i^p)^{1/p}(\\sum g_i^q)^{1/q}$."
+    },
+    {
+      "id": "sec-normalized",
+      "title": "Equality Case — Normalized Form",
+      "startLine": 67,
+      "endLine": 106,
+      "summary": "holder_sum_eq_iff_of_normalized: for ∑ fᵢᵖ = ∑ gᵢ^q = 1, equality ∑ fᵢgᵢ = 1 ⟺ fᵢᵖ = gᵢ^q ∀ i. The slack dᵢ = (fᵢᵖ/p + gᵢ^q/q) − fᵢgᵢ ≥ 0 sums to 1 − ∑ fᵢgᵢ, so equality ⟺ ∑ dᵢ = 0 ⟺ every dᵢ = 0 ⟺ each Young inequality is tight (the nonnegative-slack device).",
+      "mathContext": "$\\sum d_i = 1-\\sum f_i g_i,\\ d_i\\ge 0\\Rightarrow$ equality $\\iff\\forall i,\\ f_i^p=g_i^q$."
+    },
+    {
+      "id": "sec-general",
+      "title": "Equality Case — General Form",
+      "startLine": 108,
+      "endLine": 200,
+      "summary": "holder_sum_eq_iff: ∑ fᵢgᵢ = F^(1/p)G^(1/q) ⟺ ∀ i, G·fᵢᵖ = F·gᵢ^q (proportional power-vectors). For F, G > 0, rescale by cF = F^(1/p), cG = G^(1/q) (cF^p = F) to unit-norm vectors, apply the normalized theorem, and convert fᵢᵖ/F = gᵢ^q/G to cross-multiplied form via div_eq_div_iff. Degenerate F = 0 / G = 0 cases hold trivially.",
+      "mathContext": "$\\sum f_i g_i = F^{1/p}G^{1/q}\\iff\\forall i,\\ Gf_i^p=Fg_i^q$; rescale to unit norm."
+    }
+  ],
   "conclusion": {
     "summary": "The equality case of Hölder's inequality for finite sums is fully verified: 4 theorems, 0 definitions, 0 axioms, 0 sorries. The inequality is re-exported from Mathlib; the new content is the equality characterization — ∑ fᵢgᵢ = (∑ fᵢᵖ)^(1/p)(∑ gᵢ^q)^(1/q) iff the power-vectors (fᵢᵖ), (gᵢ^q) are proportional — proved by summing the parent entry's pointwise Young equality case over rescaled (unit-norm) vectors, with the degenerate zero-norm cases dispatched directly.",
     "implications": "This completes, for finite sums, the equality-case program initiated for Young's inequality: it pins down exactly when the Hölder estimate is tight, recovering the Cauchy–Schwarz linear-dependence condition at p = q = 2. The normalized form holder_sum_eq_iff_of_normalized is reusable infrastructure for any tightness analysis of Hölder-type bounds, and the proof exhibits the canonical pattern (sum a pointwise sharp inequality; a vanishing nonnegative slack-sum localizes equality to every index).",

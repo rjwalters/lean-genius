@@ -111,7 +111,8 @@
       "The geometric statement 'no obtuse angle' is exactly the algebraic statement '⟪a−b, c−b⟫ ≥ 0', captured once and for all by the dimension-free criterion angle_le_pi_div_two_of_inner_nonneg.",
       "The cube works for a one-line reason: a coordinate of b is 0 or 1, and in either case the corresponding coordinates of a−b and c−b have the same sign, so every coordinate contributes a non-negative product.",
       "The construction is exponentially large in the dimension (2^d points), the sharp Danzer–Grünbaum lower bound; there is no fixed absolute bound on non-obtuse sets across all dimensions.",
-      "Sharpness is exact, not asymptotic: in any dimension d ≥ 2 a right angle of measure exactly π/2 is realized at a face corner, so π/2 cannot be replaced by any smaller universal bound."
+      "Sharpness is exact, not asymptotic: in any dimension d ≥ 2 a right angle of measure exactly π/2 is realized at a face corner, so π/2 cannot be replaced by any smaller universal bound.",
+      "The proof cleanly separates the one analytic ingredient from the combinatorics: angle_le_pi_div_two_of_inner_nonneg is a dimension-free, reusable lemma (nonnegative inner product ⟹ non-obtuse), and all dimension-specific content collapses to the coordinatewise sign fact (cᵢ−bᵢ)(aᵢ−bᵢ) ≥ 0 for {0,1}-coordinates. This factoring is why the formalization is short and why only the lower-bound half is in reach — the matching upper bound (2^d+1 points force obtuseness) needs a genuinely global argument with no such coordinatewise reduction."
     ]
   },
   "conclusion": {

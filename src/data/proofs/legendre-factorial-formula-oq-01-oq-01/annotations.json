@@ -1,0 +1,91 @@
+[
+  {
+    "id": "legendre-fact-oq01-oq01-ann-header",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Kummer's Theorem: the Prime Power is a Carry Count",
+    "content": "Kummer's theorem (1852) describes the exact power of a prime p dividing C(n,k) combinatorially: it is the number of carries when k and n−k are added in base p. This is the binomial companion of Legendre's factorial formula — write vₚ(C(n,k)) = vₚ(n!) − vₚ(k!) − vₚ((n−k)!) and the digit-sum differences collapse to a carry count. A carry into base-p digit position i occurs exactly when the truncated sum (k mod pⁱ) + ((n−k) mod pⁱ) reaches pⁱ. Mathlib's Nat.factorization_choose already proves the valuation equals the cardinality of these carry positions; this entry names that cardinality carryCount and restates the theorem in the parent's padicValNat style.",
+    "mathContext": "$v_p\\!\\binom{n}{k} = \\#\\{\\text{carries when adding } k \\text{ and } n-k \\text{ in base } p\\} = \\#\\{i \\ge 1 : p^i \\le (k \\bmod p^i) + ((n-k) \\bmod p^i)\\}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "binomial coefficient",
+      "base-p carries",
+      "Legendre's formula"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "Legendre's formula"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-ann-carrycount",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 64
+    },
+    "type": "theorem",
+    "title": "The Carry Count and the Headline Identity",
+    "content": "`carryCount p a b bound` is defined as the number of digit positions i ∈ [1, bound) with pⁱ ≤ (a mod pⁱ) + (b mod pⁱ) — Kummer's carry indicator. The headline `padicValNat_choose_eq_carryCount` proves vₚ(C(n,k)) = carryCount p k (n−k) b for any b > log p n: it bridges padicValNat to Nat.factorization via Nat.factorization_def (valid for prime p), then applies Mathlib's Nat.factorization_choose, whose value #{i ∈ Ico 1 b | pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ} is definitionally carryCount, so the goal closes by rfl. The bound b is exposed exactly as in Mathlib and the parent's floor-sum form; any b > log p n captures every carry.",
+    "mathContext": "$v_p\\!\\binom{n}{k} = \\#\\{i \\in [1,b) : p^i \\le (k \\bmod p^i) + ((n-k) \\bmod p^i)\\}, \\qquad b > \\log_p n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "carry count",
+      "Nat.factorization_choose",
+      "factorization ↔ padicValNat"
+    ],
+    "prerequisites": [
+      "Nat.factorization_def",
+      "Nat.factorization_choose"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-ann-divisibility",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Divisibility Criterion and the Carry-Free (Lucas) Condition",
+    "content": "Because the valuation is a count, `prime_dvd_choose_iff_carryCount_pos` gives p ∣ C(n,k) ⟺ 0 < carryCount: the proof rewrites p ∣ C(n,k) through Nat.Prime.dvd_iff_one_le_factorization (using C(n,k) ≠ 0 from Nat.choose_pos), then factorization_def and the headline, leaving 1 ≤ carryCount ↔ 0 < carryCount, closed by omega. Its contrapositive `not_dvd_choose_iff_carryCount_eq_zero` states C(n,k) is coprime to p ⟺ the base-p addition is carry-free — the divisibility heart of Lucas' theorem: with no carries the binomial coefficient factors digit-wise into units mod p.",
+    "mathContext": "$p \\mid \\binom{n}{k} \\iff \\text{(at least one carry)}; \\qquad p \\nmid \\binom{n}{k} \\iff \\text{(carry-free addition)}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lucas' theorem",
+      "coprimality",
+      "carry-free addition"
+    ],
+    "prerequisites": [
+      "Nat.Prime.dvd_iff_one_le_factorization",
+      "Nat.choose_pos"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq01-ann-central",
+    "proofId": "legendre-factorial-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Central Binomial Coefficient and Worked Instance",
+    "content": "Specialising to C(2n,n) makes both summands equal: `padicValNat_centralBinom_eq_carryCount` proves vₚ(C(2n,n)) = carryCount p n n b (the carries in the self-addition n + n), by unfolding centralBinom n to (2n).choose n, running the factorization_choose bridge with k = n, and rewriting 2n − n = n. The divisibility form `prime_dvd_centralBinom_iff_carryCount_pos` (via Nat.centralBinom_pos) recovers the classical fact that any prime n < p ≤ 2n forces a carry (since n mod p = n and p ≤ 2n = n + n), hence divides C(2n,n) — the engine behind Erdős's elementary Bertrand-postulate proof. The instance v₂(C(4,2)) = 1 (adding 2 + 2 = 100₂ carries once) is checked by kernel decide on the concrete Finset filter card.",
+    "mathContext": "$v_p\\!\\binom{2n}{n} = \\#\\{\\text{carries in } n+n \\text{ base } p\\}; \\qquad n < p \\le 2n \\implies p \\mid \\binom{2n}{n}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Bertrand's postulate",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom",
+      "Nat.centralBinom_pos"
+    ]
+  }
+]

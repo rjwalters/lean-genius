@@ -96,12 +96,12 @@
     "id": "extremal-number",
     "proofId": "erdos-574",
     "range": {
-      "startLine": 46,
-      "endLine": 52
+      "startLine": 68,
+      "endLine": 74
     },
     "type": "definition",
     "title": "Extremal Number for Consecutive Cycle Pairs",
-    "content": "The extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$ is the maximum number of edges in a graph on $n$ vertices that is $\\{C_{2k-1}, C_{2k}\\}$-free. The formalization uses an axiomatized supremum since computing the exact extremal number requires solving the open problem.",
+    "content": "The extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$ is the maximum number of edges in a graph on $n$ vertices that is $\\{C_{2k-1}, C_{2k}\\}$-free. The formalization defines it as a genuine (non-axiomatized) supremum over the achievable edge counts; this set is bounded above by $n^2$ (`edgeCount'_le`) and nonempty, so the supremum is attained. Computing its exact *value* requires solving the open problem, but the definition itself is well-posed, and `edgeCount_le_exConsecutive` shows every admissible graph's edge count lies below it.",
     "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } G \\not\\supseteq C_{2k-1}, C_{2k}\\}$",
     "significance": "key",
     "relatedConcepts": [

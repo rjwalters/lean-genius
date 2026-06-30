@@ -104,13 +104,14 @@
     "lineCount": 169,
     "theoremCount": 5,
     "definitionCount": 1,
-    "badge": "verified",
+    "badge": "mathlib",
+    "assumptions": "0 axioms, 0 sorries. The original content is the in-file engine — urysohn_approx_step (one-step Urysohn approximation) and urysohn_approx_iterate (the quantitative geometric error bound), both proved directly from Mathlib's Urysohn lemma. The two headline extension theorems tietze_extension_of_urysohn and tietze_extension_Icc_of_urysohn are NOT assembled from this engine: they are one-line invocations of Mathlib's TietzeExtension machinery (ContinuousMap.exists_restrict_eq and exists_restrict_eq_forall_mem_of_closed), which performs its own Urysohn iteration internally. The core extension result is therefore obtained via a Mathlib theorem, hence the mathlib badge (matching the parent urysohns-lemma-oq-01 and companion tietze-extension-theorem-oq-01).",
     "originalContributions": [
       "urysohn_approx_step: the one-step Urysohn approximation lemma in elementary set form — for f : C(s, ℝ) with |f| ≤ M on a closed set s in a normal space, a globally continuous g : C(X, ℝ) with |g| ≤ M/3 and |f − g| ≤ (2/3)·M on s, proved directly from Mathlib's Urysohn lemma exists_bounded_mem_Icc_of_closed_of_le (not from Mathlib's bundled tietze_extension_step)",
       "urysohn_approx_iterate: the quantitative geometric iteration — for every n a global continuous approximant with sup-error |f − g| ≤ (2/3)ⁿ·M on s, by induction on the residual; this explicit decay statement is not exposed by Mathlib and is the precise reason the classical construction converges",
       "restrictToClosed: helper packaging the restriction of g : C(X, ℝ) to a subset s as a continuous function on the subtype, used to treat the residual f − g|_s as a genuine continuous function during the iteration",
-      "tietze_extension_of_urysohn: the assembled Tietze extension theorem (real-valued) — every continuous real function on a closed subset of a normal space extends continuously, obtained as the uniform limit of the Urysohn approximants",
-      "tietze_extension_Icc_of_urysohn: the range-constrained form — an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on X (exists_restrict_eq_forall_mem_of_closed, Icc OrdConnected)"
+      "tietze_extension_of_urysohn: the assembled Tietze extension theorem (real-valued) — every continuous real function on a closed subset of a normal space extends continuously. The convergence/limit is delegated to Mathlib's ContinuousMap.exists_restrict_eq (which runs the same Urysohn iteration internally); the in-file engine above exposes the rate explicitly but is not itself summed to build this statement",
+      "tietze_extension_Icc_of_urysohn: the range-constrained form — an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on X, delegated to Mathlib's exists_restrict_eq_forall_mem_of_closed (Icc OrdConnected)"
     ],
     "prerequisites": [
       "Normal topological spaces and the bundled continuous-map type C(X, ℝ)",
@@ -169,7 +170,7 @@
     }
   ],
   "status": "verified",
-  "badge": "verified",
+  "badge": "mathlib",
   "axiomCount": 0,
   "sorries": 0
 }

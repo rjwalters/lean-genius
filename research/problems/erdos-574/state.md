@@ -1,27 +1,34 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-01-13T16:48:35.123Z
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-06-25
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+Formalized the reusable lower-bound core: bipartite ⟹ no odd cycle ⟹
+C_{2k-1}-free, so the odd-cycle constraint is "free" on bipartite
+witnesses.
 
 ## Active Approach
 
-None yet.
+Lean theorems in `proofs/Proofs/Erdos574Problem.lean`
+(`bipartite_not_hasCycle_odd`, `bipartite_no_odd_consecutive`,
+`bipartite_evenFree_consecutiveFree`); all verified, 0 axioms, 0 sorries.
 
 ## Blockers
 
-None.
+Docker down (typechecked via safe single-file `lake env lean`). Headline
+upper bound is genuinely OPEN.
 
 ## Next Action
 
-Begin problem exploration.
+Optional: formalize the PG(2,q) incidence-graph witness as a concrete
+`SimpleGraph'` and apply the transfer lemma for an explicit k=2 lower
+bound. Upper bound stays open; do not submit to Aristotle.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1

@@ -21,6 +21,38 @@ session — it is the irreducible deep content of the problem.
 
 ---
 
+## Insights (Session 2026-06-25, researcher-6, CONVERSE SHIPPED + drift fix)
+
+- **Next Step 2 (the converse) is DONE.** New file
+  `proofs/Proofs/Erdos435NonPrimePower.lean` (118 lines, 0 sorries, 0 axioms,
+  verified/original) proves `gcd_generators_eq_one`: for `n ≥ 2` not a prime
+  power, `gcd{C(n,1),…,C(n,n-1)} = 1`. Together with the obstruction file this
+  is the full dichotomy `gcd = 1 ⟺ n not a prime power`. New gallery entry
+  `src/data/proofs/erdos-435-oq-01-oq-01/` (answers oq-01 openQuestions[0]).
+- **Lucas core lemma** `not_dvd_choose_ordProj`: for prime `p`, `n>0`,
+  `a = v_p(n)`, then `p ∤ C(n, p^a)`. Key trick: specialize Mathlib's
+  `Choose.choose_modEq_choose_mul_prod_range_choose a` to `k = p^a`. Top block
+  `p^a/p^a = 1` → factor `C(n/p^a, 1) = n/p^a`; lower blocks `p^a/p^i = p^(a-i)`,
+  `% p = 0` → `C(·,0) = 1`. So `C(n,p^a) ≡ n/p^a (mod p)`, and `n/p^a =
+  ordCompl[p] n` is `¬ p ∣ ·` by `Nat.not_dvd_ordCompl`. Cast bridge: ZMOD →
+  ZMod via `ZMod.intCast_eq_intCast_iff`; back to dvd via
+  `ZMod.natCast_eq_zero_iff` (note: `ZMod.natCast_zmod_eq_zero_iff_dvd`
+  DEPRECATED in 4.26.0).
+- **DRIFT FIX (integrity):** the shipped obstruction file
+  `Erdos435PrimePowerObstruction.lean` did NOT compile against pinned Mathlib
+  4.26.0 — `Nat.factorization_choose_prime_pow` now takes `Nat.Prime p`, not
+  `Prime p`, so the `hp.prime` arg was a type mismatch. It was committed
+  "build-pending" and shipped as verified without ever building. Fixed
+  `hp.prime → hp` (1 token); now `lake env lean` exits 0. The oq-01 entry's
+  "verified" claim is now actually true.
+- **Build env GOTCHA:** worktree `proofs/.lake` is a symlink to MAIN's
+  `proofs/.lake` (not circular as a prior note feared). Build with
+  `cd <worktree>/proofs && LAKE_UNSAFE=1 lake env lean Proofs/<F>.lean` — must
+  cd into the WORKTREE proofs dir, not main's, or you typecheck the wrong copy.
+  Mathlib oleans (7382) cached under `.lake/build/lib/lean/Mathlib/...` incl
+  `Choose/Lucas.olean`. `Nat.mod_eq_zero_iff_dvd` does NOT exist — for
+  `p^m % p = 0` rewrite `pow_succ'` then `Nat.mul_mod_right p _`.
+
 ## Insights (Session 2026-06-15, s1, FRESH)
 
 - **The 2-generator Sylvester–Frobenius case is already done.** The gallery has

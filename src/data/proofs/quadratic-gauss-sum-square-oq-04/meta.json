@@ -19,6 +19,43 @@
     "path": "Proofs/QuadraticGaussSumSquareOQ04.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: from g² = p* to a quadratic field",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Module docstring: the parent's square identity g² = p* is interpreted field-theoretically — |p*| = p prime makes g a quadratic irrational with minpoly X² − p*, [ℚ(g):ℚ] = 2, generating the unique quadratic subfield ℚ(√p*) of ℚ(ζ_p)."
+    },
+    {
+      "id": "character-and-square",
+      "title": "The character and the square formula",
+      "startLine": 38,
+      "endLine": 76,
+      "summary": "chiC p (ℂ-valued quadratic character) with its quadraticity/nontriviality and the evaluation χ(−1) = (−1)^((p−1)/2); pstar p := (−1)^((p−1)/2)·p; gaussSum_sq_eq re-derives g² = (p* : ℂ) from Mathlib's gaussSum_sq, keeping the file self-contained."
+    },
+    {
+      "id": "pstar-not-square",
+      "title": "p* is not a rational square",
+      "startLine": 78,
+      "endLine": 103,
+      "summary": "pstar_not_sq: no rational b has b² = p*. p* = ±p; p* = p contradicts irrationality of √p (prime), p* = −p < 0 contradicts sq_nonneg. Uniform across p mod 4 — the fact that forces degree 2."
+    },
+    {
+      "id": "minimal-polynomial",
+      "title": "The minimal polynomial X² − p*",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "isIntegral_gaussSum (g is a root of the monic X² − C(p*)); minpoly_gaussSum identifies minpoly ℚ g = X² − C(p*) via monicity, annihilation, and irreducibility (X_pow_sub_C_irreducible_of_prime with prime exponent 2 + pstar_not_sq)."
+    },
+    {
+      "id": "degree-irrationality",
+      "title": "Degree 2 and irrationality",
+      "startLine": 126,
+      "endLine": 142,
+      "summary": "finrank_adjoin_gaussSum: [ℚ(g):ℚ] = 2 (from natDegree of the minimal polynomial); gaussSum_not_rational: g ∉ ℚ, since g = q would give q² = p* against pstar_not_sq."
+    }
+  ],
   "description": "The parent entry proves the classical square identity g² = (−1)^((p−1)/2)·p = p* for the quadratic Gauss sum g = gaussSum(χ, ψ) of an odd prime p and a primitive additive character ψ : ZMod p → ℂ. This entry pushes that one structural step further into field theory: it identifies the minimal polynomial of g over ℚ and the degree of the field it generates. The key arithmetic input is that |p*| = p is prime, so p* is not the square of any rational (when p ≡ 1 mod 4, p* = p is prime hence not a perfect square; when p ≡ 3 mod 4, p* = −p < 0 is not a real square). Combined with g² = p*, this makes g a quadratic irrational: its minimal polynomial over ℚ is exactly X² − p* (irreducible because the prime-exponent Kummer criterion X² − a is irreducible iff a has no square root), so [ℚ(g) : ℚ] = 2 and g ∉ ℚ. Concretely, the quadratic Gauss sum generates the unique quadratic subfield ℚ(√p*) of the p-th cyclotomic field ℚ(ζ_p) — the classical bridge from Gauss sums to quadratic fields. The square identity gaussSum_sq_eq is re-derived in-file from Mathlib's generic gaussSum_sq so the file is self-contained; the minimal-polynomial, degree, and irrationality results (minpoly_gaussSum, finrank_adjoin_gaussSum, gaussSum_not_rational) are the new content. Fully machine-verified with no axioms and no sorries.",
   "meta": {
     "author": "Lean Genius",

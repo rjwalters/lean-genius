@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sbp0101-ann-header",
+    "proofId": "summation-by-parts-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "The Second Rung of the Arithmetico-Geometric Ladder",
+    "content": "The header states the target identity for $\\sum_{k<n} k^2 r^k$ over any field with $r \\neq 1$, and situates it: Mathlib has the geometric closed form (`geom_sum_eq`) and the gallery has the first-order $\\sum k r^k$ (the parent entry), but neither has the *quadratically weighted* sum. It is the finite, hypothesis-free analogue of twice-differentiating the geometric series, whose $|r|<1$ limit is the classical $r(1+r)/(1-r)^3$. The two imports are `Mathlib.Algebra.BigOperators.Module` (for `Finset.sum_range_by_parts`) and `Mathlib.Tactic` (for `field_simp`, `ring`, `push_cast`); the file fixes an arbitrary field `K` and opens `Finset`.",
+    "mathContext": "$\\sum_{k=0}^{n-1} k^2 r^k = \\dfrac{n^2 r^n - (2n^2-2n-1)r^{n+1} + (n-1)^2 r^{n+2} - r^2 - r}{(r-1)^3}.$ The integer coefficients are interpreted in $K$.",
+    "significance": "context",
+    "relatedConcepts": ["arithmetico-geometric series", "Abel summation", "generating functions", "finite differences"],
+    "prerequisites": ["finite sums", "fields", "geometric series"]
+  },
+  {
+    "id": "sbp0101-ann-closed-form",
+    "proofId": "summation-by-parts-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 69 },
+    "type": "theorem",
+    "title": "The Closed Form, by Induction",
+    "content": "`sum_range_sq_mul_geom` is the headline identity. The proof first records $r - 1 \\neq 0$ (from $r \\neq 1$) to license division, then inducts on $n$. The base case $n = 0$ is the empty sum (`simp`). For the successor step, `Finset.sum_range_succ` peels off the new term $m^2 r^m$ and the induction hypothesis supplies the closed form at $m$; `push_cast` moves the $\\mathbb{N}$-coefficients into $K$, `field_simp` clears the common denominator $(r-1)^3$, and `ring` discharges the resulting polynomial identity. This is the exact rational-function-in-$r$ statement, not a limit — valid for every $r \\neq 1$.",
+    "mathContext": "Inductive step: $\\sum_{k<m+1} k^2 r^k = \\sum_{k<m} k^2 r^k + m^2 r^m$; after clearing $(r-1)^3$, both sides are a degree-$(m+2)$ polynomial in $r$ that `ring` verifies.",
+    "significance": "key",
+    "relatedConcepts": ["induction on ℕ", "Finset.sum_range_succ", "field_simp", "ring", "polynomial identity"],
+    "prerequisites": ["mathematical induction", "Lean field tactics"]
+  },
+  {
+    "id": "sbp0101-ann-by-parts",
+    "proofId": "summation-by-parts-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 88 },
+    "type": "insight",
+    "title": "Abel Summation by Parts: Lowering the Degree",
+    "content": "`sum_range_sq_mul_geom_eq_byParts` re-derives the same sum by Abel's summation by parts, exposing the recursive structure. Taking the weight $f(k) = k^2$ and the sequence $g(k) = r^k$, `Finset.sum_range_by_parts` rewrites the sum as a boundary term $(n-1)^2 G_n$ minus a correction $\\sum_{i<n-1} (2i+1) G_{i+1}$, where $G_m = \\sum_{j<m} r^j$ is the geometric partial sum. The crucial point: the forward differences $f(k+1) - f(k) = 2k+1$ are *non-constant* (linear in $k$), so unlike the first-order case the correction is a genuine first-order weighted sum — one rung down the ladder $\\sum k^2 r^k \\rightsquigarrow \\sum(2k+1)(\\text{geom})$. The proof applies the lemma, simplifies the scalar action to multiplication, and matches the correction termwise with `sum_congr` + `ring`.",
+    "mathContext": "$\\sum_{k<n} f(k) g(k) = f(n-1) G_n - \\sum_{i<n-1} (f(i+1)-f(i)) G_{i+1}$ with $G_m = \\sum_{j<m} g(j)$. Here $f(i+1)-f(i) = (i+1)^2 - i^2 = 2i+1$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_range_by_parts", "Abel summation", "forward differences", "degree-lowering recursion"],
+    "prerequisites": ["summation by parts", "partial sums"]
+  },
+  {
+    "id": "sbp0101-ann-specialization",
+    "proofId": "summation-by-parts-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "technique",
+    "title": "Clean Specialization at r = 2",
+    "content": "`sum_range_sq_mul_geom_two` records the memorable integer-coefficient identity $\\sum_{k<n} k^2 2^k = 2^n(n^2 - 4n + 6) - 6$. Because $(2-1)^3 = 1$, the denominator disappears and no division is needed: the proof is a direct induction with `Finset.sum_range_succ`, `push_cast`, and `ring` — no `field_simp`. This gives an independent confirmation of the general formula at the most-used base $r = 2$, the version that appears in algorithm analysis and combinatorial identities.",
+    "mathContext": "At $r=2$: $\\sum_{k<n} k^2 2^k = 2^n(n^2-4n+6) - 6$. E.g. $n=3$: $0 + 1\\cdot2 + 4\\cdot4 = 18 = 2^3(9-12+6) - 6 = 24 - 6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "division-free induction", "integer closed form"],
+    "prerequisites": ["induction", "ring normalization"]
+  }
+]

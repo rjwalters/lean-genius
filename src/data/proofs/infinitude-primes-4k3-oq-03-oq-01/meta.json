@@ -1,0 +1,229 @@
+{
+  "id": "infinitude-primes-4k3-oq-03-oq-01",
+  "title": "Infinitely Many Primes ≡ 1 (mod 3) via the Cyclotomic Φ₃ Euclid Argument",
+  "slug": "infinitude-primes-4k3-oq-03-oq-01",
+  "description": "Answers OQ-03-OQ-01 from infinitude-primes-4k3: proves infinitely many primes ≡ 1 (mod 3) by the smallest genuinely cyclotomic instance of Euclid's argument. A prime p ≠ 3 dividing Φ₃(m) = m² + m + 1 forces the multiplicative order of m mod p to be exactly 3, so 3 ∣ p − 1 by Fermat's little theorem, i.e. p ≡ 1 (mod 3). Euclid's construction with N = Φ₃(3·(n+1)!) then produces arbitrarily large such primes. Self-contained and elementary — uses only the multiplicative order machinery and Fermat's little theorem, not Dirichlet's L-functions. 4 theorems/lemmas, 0 new axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "elementary",
+      "primes",
+      "modular-arithmetic",
+      "cyclotomic-polynomials",
+      "multiplicative-order"
+    ],
+    "proofRepoPath": "Proofs/InfinitudePrimes4k3OQ03OQ01.lean",
+    "parentProofId": "infinitude-primes-4k3-oq-03",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "newAxiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.orderOf_dvd_card_sub_one",
+        "description": "For a ≠ 0 in ZMod p (p prime), orderOf a ∣ p − 1 — the multiplicative-order form of Fermat's little theorem",
+        "module": "Mathlib.FieldTheory.Finite.Basic"
+      },
+      {
+        "theorem": "orderOf_dvd_of_pow_eq_one",
+        "description": "If aⁿ = 1 then orderOf a ∣ n — used to deduce orderOf m ∣ 3 from m³ = 1",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(a : ZMod b) = 0 ↔ b ∣ a — bridges natural-number divisibility and equations in ZMod p",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "Prime p ≤ n divides n! — gives p > n in the Euclid step",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.exists_prime_and_dvd",
+        "description": "Every natural number ≠ 1 has a prime factor — produces the witness prime",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "prime_dvd_phi3_mod_three: a prime p ≠ 3 dividing m² + m + 1 satisfies p ≡ 1 (mod 3), proved via the multiplicative order of m mod p being exactly 3",
+      "infinitely_many_primes_1_mod_3: ∀ n, ∃ prime p > n with p ≡ 1 (mod 3) — direct answer to OQ-03-OQ-01, witness a prime factor of Φ₃(3·(n+1)!)",
+      "primes_1_mod_3_infinite: the set {p prime | p ≡ 1 (mod 3)} is Set.Infinite",
+      "no_largest_prime_1_mod_3: there is no largest prime ≡ 1 (mod 3)"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 167,
+    "assumptions": "0 new axioms. Depends only on propext, Classical.choice, Quot.sound (the standard Lean/Mathlib foundational axioms, which do not count as assumptions). No sorryAx, no Lean.ofReduceBool.",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The infinitude of primes in a residue class a (mod q) with gcd(a, q) = 1 is **Dirichlet's theorem** (1837), whose general proof needs Dirichlet L-functions and their non-vanishing at s = 1. Many *individual* classes, however, admit fully elementary Euclid-style proofs. The cleanest family is the classes ≡ 1 (mod q), detected by the **q-th cyclotomic polynomial** Φ_q: any prime p ∤ q dividing Φ_q(k) for some integer k must satisfy p ≡ 1 (mod q). This is because such a p makes k a root of Φ_q mod p, forcing k to have multiplicative order exactly q in 𝔽_p^×, and Lagrange's theorem (Fermat's little theorem) then gives q ∣ p − 1.\n\nThis file is the smallest genuinely cyclotomic instance: q = 3, Φ₃(x) = x² + x + 1. The parent chain (infinitude-primes-4k3 and its OQ-03 sibling for ≡ 1 mod 4 via Φ₄ = x² + 1) established the mod-4 picture; the parent's own open-question list explicitly anticipated this mod-3 construction. The case ≡ 1 (mod 3) is the prototype that the mod-4 quadratic-residue argument generalizes to: instead of Euler's criterion for −1, the order argument works for any cyclotomic class ≡ 1 (mod q).",
+    "problemStatement": "**Open Question (infinitude-primes-4k3-OQ-03-OQ-01)**: The parent chain proved infinitely many primes ≡ 3 (mod 4) (product argument) and ≡ 1 (mod 4) (Euler's criterion, the Φ₄ case). Can a genuinely *cyclotomic* Euclid-style argument prove infinitely many primes ≡ 1 (mod 3) using the third cyclotomic polynomial Φ₃(x) = x² + x + 1?\n\n**Answer**: Yes. A prime p ≠ 3 dividing Φ₃(m) = m² + m + 1 forces the multiplicative order of m mod p to be exactly 3 (since (m − 1)(m² + m + 1) = m³ − 1 gives m³ ≡ 1, and order 1 would force p = 3). Then orderOf m ∣ p − 1 (Fermat) yields 3 ∣ p − 1, i.e. p ≡ 1 (mod 3). Euclid's construction with N = Φ₃(3·(n+1)!) supplies a prime factor > n in this class for every n.",
+    "proofStrategy": "**Key lemma** `prime_dvd_phi3_mod_three`: reduce p ∣ m² + m + 1 to an equation in ZMod p; multiply by (m − 1) to get m³ = 1; conclude orderOf m ∣ 3, so the order is 1 or 3. Order 1 means m ≡ 1, whence m² + m + 1 ≡ 3 ≡ 0, so p ∣ 3 and p = 3 (excluded). Hence order 3, and `ZMod.orderOf_dvd_card_sub_one` gives 3 ∣ p − 1, so p % 3 = 1 (by omega).\n\n**Main theorem** `infinitely_many_primes_1_mod_3`: set m = 3·(n+1)! and N = m² + m + 1 ≥ 2. Take any prime factor p of N. Then p ∤ m (else p ∣ N − (m² + m) = 1), which gives both p ≠ 3 (since 3 ∣ m) and p > n (since every prime ≤ n+1 divides (n+1)! ∣ m). The key lemma then gives p ≡ 1 (mod 3).\n\n**Consequences**: `primes_1_mod_3_infinite` repackages the main theorem as Set.Infinite via `Set.infinite_iff_exists_gt`; `no_largest_prime_1_mod_3` is the contrapositive form.",
+    "keyInsights": [
+      "**The order argument is the cyclotomic heart**: p ∣ m² + m + 1 ⟺ m has order dividing 3 mod p. The only way the order can fail to be 3 is order 1 (m ≡ 1), which collapses Φ₃(m) to 3 and forces p = 3. This is exactly the Φ_q mechanism specialized to q = 3.",
+      "**Why multiply by (m − 1)**: the identity (m − 1)(m² + m + 1) = m³ − 1 turns the divisibility m² + m + 1 ≡ 0 into the multiplicative statement m³ = 1, which is what the order machinery consumes. The factor (m − 1) is supplied to `linear_combination`.",
+      "**The single excluded prime is 3 itself**: Φ₃(m) ≡ 0 (mod 3) exactly when m ≡ 1 (mod 3), and 3 is the ramified prime for the cyclotomic field ℚ(ζ₃). Choosing m ≡ 0 (mod 3) in the construction sidesteps it cleanly — N ≡ 1 (mod 3), so 3 ∤ N.",
+      "**Comparison to the mod-4 siblings**: ≡ 3 (mod 4) needs only that a product of ≡ 1 numbers stays ≡ 1; ≡ 1 (mod 4) needs Euler's criterion for −1 (the Φ₄ = x² + 1 case); ≡ 1 (mod 3) needs the order argument for Φ₃. The order argument is the general template, with Euler's criterion being its q = 4 shadow.",
+      "**Not Dirichlet, no L-functions**: the whole argument is finite and elementary — multiplicative order plus Fermat's little theorem. It does not touch the analytic machinery that the general Dirichlet theorem requires, and is genuinely simpler than even the q = 4 sum-of-two-squares route."
+    ],
+    "prerequisites": [
+      "Euclid's infinitude of primes (build N with a prime factor outside any finite set)",
+      "Modular arithmetic and the ring ZMod p for p prime",
+      "Multiplicative order of an element and orderOf_dvd_of_pow_eq_one",
+      "Fermat's little theorem in the form orderOf a ∣ p − 1 for a ≠ 0 (ZMod.orderOf_dvd_card_sub_one)",
+      "The factorization (x − 1)(x² + x + 1) = x³ − 1 (the q = 3 cyclotomic identity)",
+      "The factorial and its prime-factor divisibility (Nat.dvd_factorial)",
+      "Parent/sibling files: infinitude-primes-4k3 (≡ 3 mod 4) and infinitude-primes-4k3-oq-03 (≡ 1 mod 4, the Φ₄ case)"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "prime_dvd_phi3_mod_three",
+      "type": "core",
+      "statement": "$\\forall p, m,\\; p$ prime $\\wedge\\, p \\neq 3 \\wedge p \\mid m^2 + m + 1 \\;\\Rightarrow\\; p \\equiv 1 \\pmod 3$",
+      "significance": "The arithmetic core and the genuinely cyclotomic step. A prime p ≠ 3 dividing Φ₃(m) = m² + m + 1 makes m a root of Φ₃ in 𝔽_p, so m³ = 1 (via (m − 1)(m² + m + 1) = m³ − 1) while m ≠ 1 (order 1 would force p = 3). Hence m has multiplicative order exactly 3, and Fermat (orderOf m ∣ p − 1) gives 3 ∣ p − 1. This is the q = 3 specialization of the general fact that primes dividing Φ_q(k) lie in the residue class 1 mod q.",
+      "description": "Key lemma: any prime p ≠ 3 dividing m² + m + 1 satisfies p ≡ 1 (mod 3), via the multiplicative order of m being exactly 3."
+    },
+    {
+      "name": "infinitely_many_primes_1_mod_3",
+      "type": "core",
+      "statement": "$\\forall n \\in \\mathbb{N},\\; \\exists p$ prime$,\\; p > n \\wedge p \\equiv 1 \\pmod 3$",
+      "significance": "Direct answer to OQ-03-OQ-01. The witness is a prime factor of N = Φ₃(3·(n+1)!) = (3·(n+1)!)² + 3·(n+1)! + 1. Coprimality p ∤ 3·(n+1)! gives simultaneously p ≠ 3 and p > n; the key lemma then places p in the class 1 mod 3. This is the elementary cyclotomic Euclid argument completed.",
+      "description": "Main theorem: for every n there is a prime p > n with p ≡ 1 (mod 3)."
+    },
+    {
+      "name": "primes_1_mod_3_infinite",
+      "type": "core",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 3 = 1\\}$",
+      "significance": "Repackages the main theorem in set-theoretic form using Set.infinite_iff_exists_gt: a set of naturals is infinite iff it contains elements exceeding any bound. The substantive content is entirely in infinitely_many_primes_1_mod_3.",
+      "description": "The set of primes ≡ 1 (mod 3) is infinite."
+    },
+    {
+      "name": "no_largest_prime_1_mod_3",
+      "type": "supporting",
+      "statement": "$\\neg\\,\\exists p,\\; \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 3 = 1 \\wedge \\forall q,\\; \\mathrm{Nat.Prime}\\,q \\to q \\bmod 3 = 1 \\to q \\le p$",
+      "significance": "The 'no maximal element' restatement of infinitude, dual to primes_1_mod_3_infinite. Given a putative largest such prime p, the main theorem produces a strictly larger one, contradicting maximality.",
+      "description": "There is no largest prime ≡ 1 (mod 3)."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Dirichlet, P.G.L. (1837). \"Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält.\" Abhandlungen der Königlich Preussischen Akademie der Wissenschaften, 45-81.",
+      "relevance": "The general theorem on primes in arithmetic progressions, of which 'infinitely many primes ≡ 1 (mod 3)' is the special case (q, a) = (3, 1) proved here elementarily. Dirichlet's proof uses L-functions; this file avoids all analytic machinery via the cyclotomic order argument available for the specific class a = 1."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H., and Wright, E.M. (2008). \"An Introduction to the Theory of Numbers,\" 6th ed., revised by D.R. Heath-Brown and J.H. Silverman. Oxford University Press. §2.2 (Euclid's proof and variants), §6 (Fermat's and Euler's theorems), §16.1 (Quadratic and higher residues).",
+      "relevance": "Standard reference for the Euclid-style elementary infinitude proofs in special residue classes and for the multiplicative-order / Fermat little theorem tools (§6) that drive the key lemma. §2.2 discusses the analogue for ≡ 3 (mod 4); the mod-3 cyclotomic case is the next natural example."
+    },
+    {
+      "type": "textbook",
+      "citation": "Ireland, K., and Rosen, M. (1990). \"A Classical Introduction to Modern Number Theory,\" 2nd ed. Springer GTM 84. Ch. 4 (Finite fields, multiplicative order), Ch. 13 (Cyclotomic fields and the cyclotomic polynomials Φ_n).",
+      "relevance": "Develops the cyclotomic-polynomial framework that explains *why* the argument works: any prime p ∤ n dividing Φ_n(k) satisfies p ≡ 1 (mod n) because k generates a cyclic subgroup of order n in 𝔽_p^×. This file is the n = 3 instance; the same template proves infinitely many primes ≡ 1 (mod n) for every n."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Murty, M. Ram (1988). \"Primes in certain arithmetic progressions.\" Functiones et Approximatio Commentarii Mathematici, 35, 249-259.",
+      "relevance": "Characterizes which arithmetic progressions {a + kq} admit Euclid-style elementary infinitude proofs: essentially those with a² ≡ 1 (mod q). The class a = 1 always qualifies (the cyclotomic case formalized here); classes a ≢ ±1 generally require Dirichlet's analytic method or the Selberg–Erdős elementary proof."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.FieldTheory.Finite.Basic\" — `ZMod.orderOf_dvd_card_sub_one`. (accessed 2026)",
+      "relevance": "Supplies the multiplicative-order form of Fermat's little theorem used in the key lemma: for a ≠ 0 in ZMod p, orderOf a ∣ p − 1. Combined with orderOf m = 3 this is exactly the step 3 ∣ p − 1 ⟹ p ≡ 1 (mod 3)."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.NumberTheory.PrimesCongruentOne\" — `Nat.exists_prime_gt_modEq_one`, `Nat.infinite_setOf_prime_modEq_one`. (accessed 2026)",
+      "relevance": "Mathlib's general cyclotomic infinitude theorem (infinitely many primes ≡ 1 mod k for any k ≠ 0), proved via Φ_k and the multiplicative order. This file gives the explicit, self-contained k = 3 instance with the concrete polynomial m² + m + 1 and the Euclid construction spelled out, complementing Mathlib's abstract version with a fully transparent special case."
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Open Question Statement",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports the ZMod, finite-field, and order-of-element modules. The module comment states OQ-03-OQ-01, answers it affirmatively, sketches the order argument, and gives a comparison table with the ≡ 3 (mod 4) and ≡ 1 (mod 4) siblings showing Φ₃ as the prototype cyclotomic case.",
+      "mathContext": "The table contrasts the linear (4k−1) construction, the Φ₄ = x²+1 construction (Euler's criterion), and the Φ₃ = x²+x+1 construction (multiplicative order). The order argument generalizes Euler's criterion."
+    },
+    {
+      "id": "key-lemma",
+      "title": "prime_dvd_phi3_mod_three: The Cyclotomic Order Argument",
+      "startLine": 56,
+      "endLine": 92,
+      "summary": "The arithmetic core. Reduces p ∣ m²+m+1 to (m:ZMod p)²+m+1 = 0, multiplies by (m−1) via linear_combination to get m³ = 1, deduces orderOf m ∣ 3, and case-splits: order 1 forces p = 3 (excluded), order 3 gives 3 ∣ p−1 via ZMod.orderOf_dvd_card_sub_one, hence p % 3 = 1.",
+      "mathContext": "$p \\mid m^2+m+1,\\,p\\neq 3 \\Rightarrow \\mathrm{ord}_p(m) = 3 \\Rightarrow 3 \\mid p-1 \\Rightarrow p \\equiv 1 \\pmod 3$. The identity $(m-1)(m^2+m+1)=m^3-1$ converts the additive divisibility to the multiplicative $m^3=1$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "infinitely_many_primes_1_mod_3: The Euclid Construction",
+      "startLine": 94,
+      "endLine": 128,
+      "summary": "Sets m = 3·(n+1)! and N = m²+m+1 ≥ 2, extracts a prime factor p, shows p ∤ m (else p ∣ 1), which yields p ≠ 3 (3 ∣ m) and p > n (every prime ≤ n+1 divides (n+1)! ∣ m). The key lemma then gives p ≡ 1 (mod 3).",
+      "mathContext": "$N = \\Phi_3(3 \\cdot (n+1)!)$. Coprimality $p \\nmid 3\\cdot(n+1)!$ simultaneously excludes $p = 3$ and forces $p > n$; the key lemma places $p$ in the class $1 \\pmod 3$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Set.Infinite and No Largest Prime",
+      "startLine": 130,
+      "endLine": 144,
+      "summary": "primes_1_mod_3_infinite recasts the main theorem via Set.infinite_iff_exists_gt; no_largest_prime_1_mod_3 derives the contradiction from a putative maximal prime ≡ 1 (mod 3) using the main theorem to exceed it.",
+      "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p \\mid \\mathrm{prime}\\,p \\wedge p \\bmod 3 = 1\\}$ and its dual 'no maximal element' form."
+    },
+    {
+      "id": "examples",
+      "title": "Examples: 7, 13, 19, 31, 37",
+      "startLine": 146,
+      "endLine": 165,
+      "summary": "Five concrete primes ≡ 1 (mod 3) verified by decide, illustrating the class the theorem populates.",
+      "mathContext": "The first few primes ≡ 1 (mod 3): 7, 13, 19, 31, 37, ... (note 31 skips 25 = 5² which is not prime)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered: yes, infinitely many primes ≡ 1 (mod 3) by the smallest genuinely cyclotomic Euclid argument, using Φ₃(x) = x² + x + 1. The key step is that a prime p ≠ 3 dividing Φ₃(m) forces the multiplicative order of m mod p to be exactly 3, so 3 ∣ p − 1. The proof is fully elementary, self-contained, and 0-axiom.",
+    "implications": "This file completes the cyclotomic picture the mod-4 chain pointed toward: where ≡ 1 (mod 4) used Euler's criterion (the Φ₄ = x² + 1 case), ≡ 1 (mod 3) uses the multiplicative-order argument for Φ₃, which is the general template. The same proof structure — evaluate Φ_q at q·k!, extract a coprime prime factor, read off its order — gives elementary infinitude for every class ≡ 1 (mod q). Mathlib's `Nat.infinite_setOf_prime_modEq_one` is the abstract form of this; the present file is the transparent, hand-built q = 3 instance.",
+    "openQuestions": [
+      "Can the q = 5 case ≡ 1 (mod 5) be formalized the same way with Φ₅(x) = x⁴ + x³ + x² + x + 1, and does the order argument scale cleanly to a single generic lemma parameterized by q? The obstruction is purely the algebra of Φ_q, not the Euclid step.",
+      "The companion class ≡ 2 (mod 3) admits an easy product-style proof (parallel to ≡ 3 mod 4). Can both mod-3 classes be packaged into a complete elementary classification of primes mod 3 — every prime ≠ 3 is ≡ 1 or ≡ 2 (mod 3), both classes infinite — mirroring the mod-4 classification already in the gallery?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes-4k3-oq-03",
+      "relationship": "parent",
+      "description": "Proves infinitely many primes ≡ 1 (mod 4) via the Φ₄ = x² + 1 / Euler's criterion route, and its open-question list explicitly anticipated this Φ₃ construction for ≡ 1 (mod 3)."
+    },
+    {
+      "proofId": "infinitude-primes-4k3",
+      "relationship": "ancestor",
+      "description": "The base mod-4 entry (≡ 3 mod 4 via N = 4(n+1)! − 1) whose OQ-03 chain this file extends to the cyclotomic mod-3 setting."
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "Euclid's original infinitude of primes; every variant here adapts its 'build N with a new prime factor' skeleton."
+    },
+    {
+      "proofId": "infinitude-primes-oq-03",
+      "relationship": "sibling",
+      "description": "Elementary proof of infinitely many primes ≡ 2 (mod 3) by a product argument; together with this file it covers both nontrivial residue classes mod 3."
+    }
+  ],
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k3OQ03OQ01",
+    "lineCount": 167,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/InfinitudePrimes4k3OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -265,7 +265,7 @@ theorem product_rigidity (P : Finset ℕ) (hP : IsSetOfPrimes P)
      Status: requires verified computation or Mertens-type estimates.
 
   3. no_two_three_solution: PROVED in this file (reduces to product bound).
-     The supporting lemma reciprocal_sum_three_primes_le has 1 sorry.
+     The supporting lemma reciprocal_sum_three_primes_le is fully proved.
 
   4. one_helps_balance: PROVED in this file (with slightly stronger hypothesis).
 
@@ -284,15 +284,13 @@ theorem product_rigidity (P : Finset ℕ) (hP : IsSetOfPrimes P)
   - product_rigidity: trivial iff (was unnecessarily an axiom)
   - one_helps_balance: reciprocalSum P > 1 when 1 ∈ P
   - no_two_three_solution: no |P|=2, |Q|=3 prime solution
-
-  Still sorry:
-  - reciprocal_sum_three_primes_le: tight bound for 3 primes (1 sorry)
+  - reciprocal_sum_three_primes_le: tight bound for 3 primes
 
   Remaining from parent:
   - prime_sets_disjoint: needs p-adic theory
   - prime_set_size_lower_bound: needs computational bound
 
-  1 sorry (supporting lemma), 0 axioms.
+  0 sorries, 0 axioms.
 -/
 
 end Erdos307OQ02

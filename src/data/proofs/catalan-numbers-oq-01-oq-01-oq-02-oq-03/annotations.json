@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-catoq03-1",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "The Catalan Triangle and its Generating Recurrence",
+    "content": "**Module framing.** The parent (`CatalanNumbersOQ01OQ01OQ02`) defined the generalized ballot number $\\mathrm{ballot}(p,q) = \\binom{p+q}{q} - \\binom{p+q}{p+1}$ — the Catalan-triangle entry counting lattice paths that never cross the diagonal. The subtrahend is written at index $p+1$ (the *reflected* index, André's reflection principle) so the ℕ-subtraction is never truncated when $q \\le p$. This entry proves the **defining two-term recurrence** $\\mathrm{ballot}(p,q) = \\mathrm{ballot}(p-1,q) + \\mathrm{ballot}(p,q-1)$ (for $1 \\le q \\le p$): each entry is the sum of its left and lower neighbours — the additive law that, with the boundary $\\mathrm{ballot}(p,0) = 1$, generates the whole triangle row by row. The import `Proofs.CatalanNumbersOQ01OQ01OQ02` brings `ballot`, `ballot_genuine`, and `ballot_eq_zero_of_lt`.",
+    "mathContext": "$B(p,q) = \\binom{p+q}{q} - \\binom{p+q}{p+1}$; recurrence $B(p,q) = B(p-1,q) + B(p,q-1)$ generates the Catalan triangle.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Catalan triangle / ballot numbers",
+      "André's reflection principle",
+      "Lattice paths below the diagonal",
+      "Pascal's triangle analogue"
+    ],
+    "prerequisites": [
+      "The ballot closed form (parent entry)",
+      "Binomial coefficients"
+    ],
+    "tags": ["module-header", "framing", "catalan-triangle"]
+  },
+  {
+    "id": "ann-catoq03-2",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 36, "endLine": 57 },
+    "type": "technique",
+    "title": "Setup: Substitution and Pascal's Rule",
+    "content": "**`ballot_recurrence` — opening moves.** To eliminate ℕ predecessors, substitute $p = a+1$, $q = b+1$ (via `obtain ⟨a, rfl⟩`), turning every index into a clean polynomial and reducing $1 \\le q \\le p$ to $b \\le a$. Then `Nat.add_sub_cancel` normalises $(a+1)-1 = a$. The engine is **Pascal's rule** `Nat.choose_succ_succ'` ($\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$), applied to *both* binomials of $\\mathrm{ballot}(a+1,b+1) = \\binom{a+b+2}{b+1} - \\binom{a+b+2}{a+2}$ as `key1` and `key2`. This splits the two degree-$(a+b+2)$ binomials into four degree-$(a+b+1)$ ones — the same coefficients that appear in the neighbour entries.",
+    "mathContext": "$\\binom{a+b+2}{b+1} = \\binom{a+b+1}{b} + \\binom{a+b+1}{b+1}$ and $\\binom{a+b+2}{a+2} = \\binom{a+b+1}{a+1} + \\binom{a+b+1}{a+2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_succ_succ' (Pascal's rule)",
+      "Variable substitution to remove ℕ subtraction",
+      "Add_sub_cancel"
+    ],
+    "prerequisites": [
+      "Pascal's rule",
+      "ℕ subtraction pitfalls"
+    ],
+    "tags": ["setup", "pascal", "substitution"]
+  },
+  {
+    "id": "ann-catoq03-3",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 58, "endLine": 83 },
+    "type": "insight",
+    "title": "Genuineness Bounds Tame the ℕ Subtraction, then omega",
+    "content": "**The crux.** Because `ballot` is a *difference* of binomials over ℕ, the recurrence only holds if no subtraction truncates. Three `ballot_genuine` instances (from the parent) supply exactly the needed inequalities: `hg1` ($\\binom{a+b+2}{a+2} \\le \\binom{a+b+2}{b+1}$) for $B(p,q)$ itself, `hg3` for the lower neighbour $B(p,q-1)$, and `hg2` for the left neighbour $B(p-1,q)$ — the last splitting on $b < a$ vs $b = a$ (on the diagonal the binomials are equal, `le_refl`). With Pascal's `key1`/`key2` rewriting the binomials and all three bounds in scope, the goal becomes a linear identity among six binomial coefficients with explicit ordering — and a single **`omega`** discharges it. This is the payoff of the reflected-index design: every truncated subtraction recombines cleanly.",
+    "mathContext": "Genuineness $\\binom{p+q}{p+1} \\le \\binom{p+q}{q}$ ensures $B = \\binom{p+q}{q} - \\binom{p+q}{p+1}$ is exact; the three neighbour bounds let `omega` close the linear binomial identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ballot_genuine (no-truncation bound)",
+      "Linear arithmetic over ℕ (omega)",
+      "Truncated subtraction recombination"
+    ],
+    "prerequisites": [
+      "ballot_genuine from the parent",
+      "The omega tactic"
+    ],
+    "tags": ["main-theorem", "genuineness", "omega"]
+  },
+  {
+    "id": "ann-catoq03-4",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 85, "endLine": 95 },
+    "type": "concept",
+    "title": "Diagonal Recurrence: the Catalan Edge Rule",
+    "content": "**`ballot_recurrence_diag`**: $\\mathrm{ballot}(n,n) = \\mathrm{ballot}(n,n-1)$ for $n \\ge 1$. On the diagonal the left neighbour $\\mathrm{ballot}(n-1,n)$ lies *above* the diagonal ($p < q$) and vanishes by `ballot_eq_zero_of_lt`, so the general two-term recurrence collapses to a one-term edge rule. Since $\\mathrm{ballot}(n,n) = \\mathrm{catalan}(n)$ (parent), this is exactly the rule that propagates the Catalan numbers up the edge of the triangle — each diagonal entry equals the entry just to its left.",
+    "mathContext": "$B(n,n) = B(n-1,n) + B(n,n-1) = 0 + B(n,n-1)$, and $B(n,n) = C_n$ (Catalan).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ballot_eq_zero_of_lt (above-diagonal vanishing)",
+      "Catalan numbers on the diagonal",
+      "Edge propagation"
+    ],
+    "prerequisites": [
+      "The two-term recurrence",
+      "ballot n n = catalan n (parent)"
+    ],
+    "tags": ["diagonal", "catalan", "corollary"]
+  },
+  {
+    "id": "ann-catoq03-5",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "context",
+    "title": "Worked Examples",
+    "content": "Three `by decide` sanity checks ground the recurrence in concrete triangle entries: $B(4,2) = B(3,2) + B(4,1)$, i.e. $9 = 5 + 4$; the diagonal case $B(3,3) = B(3,2)$, i.e. $5 = 5$; and $B(5,3) = B(4,3) + B(5,2)$. They use `decide` (kernel evaluation), not `native_decide`, so no `Lean.ofReduceBool` axiom is introduced — keeping the entry genuinely 0-axiom.",
+    "mathContext": "$B(4,2) = 9 = 5 + 4 = B(3,2) + B(4,1)$; $B(3,3) = 5 = B(3,2)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "decide vs native_decide (axiom hygiene)",
+      "Concrete Catalan-triangle entries"
+    ],
+    "prerequisites": [
+      "Kernel evaluation via decide"
+    ],
+    "tags": ["examples", "axiom-hygiene"]
+  }
+]

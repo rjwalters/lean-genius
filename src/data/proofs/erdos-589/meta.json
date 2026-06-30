@@ -19,16 +19,16 @@
       "partially-resolved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 589,
     "erdosUrl": "https://erdosproblems.com/589",
     "erdosProblemStatus": "solved",
     "axiomCount": 4,
-    "lineCount": 344,
-    "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "lineCount": 408,
+    "assumptions": "4 axiom(s), 0 sorry(s). The four deep results — the greedy √n lower bound, Füredi's (1991) lower bound, Füredi's o(n) upper bound (via density Hales-Jewett, Furstenberg-Katznelson 1991), and the Balogh-Solymosi (2018) n^(5/6+o(1)) upper bound — are stated as axioms. All other declarations, including the structural lemmas and the trivial √n bound, are fully verified.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
-    "definitionCount": 10,
+    "theoremCount": 14,
+    "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos589Aristotle.lean",
       "Proofs/Stubs/Erdos589Aristotle.lean"
@@ -44,7 +44,8 @@
       "Density Hales-Jewett theorem provides the key tool for o(n) upper bound",
       "Balogh-Solymosi used the container method - first application to discrete geometry",
       "Current gap: exponent between 1/2 and 5/6 is unknown",
-      "Greedy algorithm gives trivial √n lower bound by avoiding collinear triples"
+      "Greedy algorithm gives trivial √n lower bound by avoiding collinear triples",
+      "General position (no 3 collinear) is strictly stronger than almost general position (no 4 collinear) — this verified structural fact is exactly why g(n) is nontrivial: it guarantees a strong-condition subset inside a weak-condition set"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -157,12 +158,12 @@
       "Real"
     ],
     "namespace": "Erdos589",
-    "lineCount": 344,
+    "lineCount": 408,
     "axiomCount": 4,
-    "theoremCount": 7,
-    "definitionCount": 10,
+    "theoremCount": 14,
+    "definitionCount": 9,
     "path": "Proofs/Erdos589Problem.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos589Aristotle.lean",
       "Proofs/Stubs/Erdos589Aristotle.lean"
@@ -185,5 +186,5 @@
       "description": "Related Erdős problem sharing themes: combinatorics, hales-jewett"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }

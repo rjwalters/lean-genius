@@ -1,0 +1,195 @@
+{
+  "id": "catalan-numbers-oq-01-oq-01-oq-02-oq-04",
+  "title": "Catalan-triangle row sums are Catalan numbers: ∑_{q=0}^{p} B(p,q) = catalan (p+1)",
+  "slug": "catalan-numbers-oq-01-oq-01-oq-02-oq-04",
+  "description": "Proves the row-sum identity for the generalized ballot number / Catalan-triangle entry introduced by the parent: ∑_{q=0}^{p} B(p,q) = catalan (p+1), where B(p,q) = C(p+q,q) − C(p+q,p+1). In words, the q-th row of the Catalan triangle sums to a Catalan number (row 3 is 1,3,5,5 and 1+3+5+5 = 14 = catalan 4). The proof is independent of the Catalan-triangle recurrence: it splits the two binomial pieces of B(p,q) and evaluates each diagonal binomial sum in closed form with the hockey-stick (Zhu Shijie) identity Nat.sum_Icc_choose — sum_choose_diag: ∑ C(p+q,q) = C(2p+1,p+1) and sum_choose_upper: ∑ C(p+q,p+1) = C(2p+1,p+2) — then reconciles the two closed forms with a single application of Pascal's rule (catalan_succ_eq_choose_sub: catalan (p+1) + C(2p+1,p+2) = C(2p+1,p+1)). The genuine additive partition B(p,q) + C(p+q,p+1) = C(p+q,q) (valid since q ≤ p, from the parent's ballot_genuine) keeps everything inside ℕ, closed by omega. Mathlib has the Catalan numbers and the hockey-stick identity but not the Catalan triangle or this row-sum relation. Verified with 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Classical (Catalan triangle row sums, Shapiro 1976); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "catalan-triangle",
+      "ballot-problem",
+      "hockey-stick-identity",
+      "binomial-coefficients",
+      "lattice-paths",
+      "pascals-rule",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sum_Icc_choose",
+        "description": "Hockey-stick (Zhu Shijie) identity: ∑ m ∈ Icc k n, C(m,k) = C(n+1, k+1). Applied with (k,n) = (p, 2p) it gives ∑_{m=p}^{2p} C(m,p) = C(2p+1,p+1) (sum_choose_diag), and with (k,n) = (p+1, 2p) it gives ∑_{m=p+1}^{2p} C(m,p+1) = C(2p+1,p+2) (sum_choose_upper).",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Finset.sum_Ico_eq_sum_range",
+        "description": "∑ i ∈ Ico m n, f i = ∑ i ∈ range (n−m), f (m+i). Reindexes the row sum ∑_{q ∈ range (p+1)} f(p+q) into the interval form ∑_{m ∈ Ico p (2p+1)} f m needed to apply the hockey-stick identity.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Nat.choose_symm_add",
+        "description": "C(a+b, a) = C(a+b, b). Rewrites C(p+q,q) as C(p+q,p) so the diagonal sum becomes ∑ C(m,p), matching the lower index of the hockey-stick identity.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule C(n+1, k+1) = C(n,k) + C(n,k+1). Expands C(2p+2,p+1) and C(2p+2,p+2) over 2p+1 to reconcile the two hockey-stick closed forms with catalan (p+1) (catalan_succ_eq_choose_sub).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "ballot_diag / ballot_genuine (parent entry)",
+        "description": "From catalan-numbers-oq-01-oq-01-oq-02: ballot_diag (B(n,n) = catalan n) supplies the additive partition catalan (p+1) + C(2p+2,p+2) = C(2p+2,p+1) at the diagonal, and ballot_genuine (q ≤ p ⇒ C(p+q,p+1) ≤ C(p+q,q)) makes every ℕ-subtraction in the row exact so the partition sums termwise.",
+        "module": "Proofs.CatalanNumbersOQ01OQ01OQ02"
+      },
+      {
+        "theorem": "succ_mul_catalan_eq_centralBinom",
+        "description": "(n+1) · catalan n = C(2n,n), used transitively through the parent's ballot_diag to express catalan (p+1) in binomial form.",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      }
+    ],
+    "originalContributions": [
+      "ballot_row_sum: ∑_{q=0}^{p} B(p,q) = catalan (p+1). The row sums of the Catalan triangle are the Catalan numbers — a relation Mathlib does not record (it has neither the Catalan triangle B(p,q) nor this identity).",
+      "sum_choose_diag: ∑_{q=0}^{p} C(p+q,q) = C(2p+1,p+1). The diagonal binomial sum, obtained by the symmetry C(p+q,q) = C(p+q,p), reindexing q ↦ p+q into Icc p (2p), and the hockey-stick identity.",
+      "sum_choose_upper: ∑_{q=0}^{p} C(p+q,p+1) = C(2p+1,p+2). The upper-index binomial sum; the q=0 term vanishes (p < p+1), so it collapses to the hockey-stick sum ∑_{m=p+1}^{2p} C(m,p+1).",
+      "catalan_succ_eq_choose_sub: catalan (p+1) + C(2p+1,p+2) = C(2p+1,p+1). Reconciles the two hockey-stick closed forms with the Catalan number via the parent's ballot_diag and two applications of Pascal's rule, plus the central symmetry C(2p+1,p) = C(2p+1,p+1).",
+      "Proof technique: the row sum is reduced to two diagonal binomial sums by the genuine additive partition B(p,q) + C(p+q,p+1) = C(p+q,q), avoiding any appeal to the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1). Every step is additive in ℕ and closed by omega."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The two concrete sanity checks (row 3 sums to 14, row 4 sums to 42) use kernel `decide` on Nat.choose computations, hence no native_decide and no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 157,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Catalan triangle (Shapiro's ballot table) has entries B(p,q) = C(p+q,q) − C(p+q,p+1) counting monotone lattice paths from (0,0) to (q,p) that never rise above the main diagonal. Its rows are 1; 1,1; 1,2,2; 1,3,5,5; 1,4,9,14,14; … and a classical observation is that each row sums to a Catalan number: the p-th row (q running 0..p) sums to catalan (p+1). Combinatorially, a path counted in row p together with one further up-step and a closing right-step extends to a Dyck-type path of the next size, so the row total is the next Catalan number. This entry gives the arithmetic counterpart of that bijection, deriving the row sum purely from binomial closed forms and the hockey-stick identity.",
+    "problemStatement": "The parent entry catalan-numbers-oq-01-oq-01-oq-02 introduced the generalized ballot number B(p,q) = C(p+q,q) − C(p+q,p+1) with its closed form, boundary values, and diagonal B(n,n) = catalan n. A natural open direction is the global structure of a whole row of the Catalan triangle. What is ∑_{q=0}^{p} B(p,q)?\n\n**Answer:** ∑_{q=0}^{p} B(p,q) = catalan (p+1). The row sums of the Catalan triangle are exactly the Catalan numbers.",
+    "text": "Splitting B(p,q) into its two binomial pieces and summing each with the hockey-stick identity gives ∑ B(p,q) = C(2p+1,p+1) − C(2p+1,p+2); Pascal's rule identifies this with catalan (p+1). The whole argument stays inside ℕ with 0 axioms.",
+    "proofStrategy": "1. sum_choose_diag: rewrite C(p+q,q) = C(p+q,p) (Nat.choose_symm_add), reindex q ↦ p+q (Finset.sum_Ico_eq_sum_range) to turn range (p+1) into Ico p (2p+1) = Icc p (2p), and apply the hockey-stick identity Nat.sum_Icc_choose to get C(2p+1,p+1).\n2. sum_choose_upper: peel the q=0 term with Finset.sum_range_succ' (it vanishes since p < p+1), reindex the remainder into Ico (p+1) (2p+1) = Icc (p+1) (2p), and apply Nat.sum_Icc_choose to get C(2p+1,p+2).\n3. catalan_succ_eq_choose_sub: from the parent's ballot_diag at (p+1,p+1) and ballot_genuine, obtain the additive partition catalan (p+1) + C(2p+2,p+2) = C(2p+2,p+1); expand both 2p+2 coefficients with Pascal's rule (Nat.choose_succ_succ) over 2p+1 and use the central symmetry C(2p+1,p) = C(2p+1,p+1); omega yields catalan (p+1) + C(2p+1,p+2) = C(2p+1,p+1).\n4. ballot_row_sum: the termwise genuine partition B(p,q) + C(p+q,p+1) = C(p+q,q) (valid for q ≤ p, from ballot_genuine) sums via Finset.sum_add_distrib to S + C(2p+1,p+2) = C(2p+1,p+1); comparing with step 3 gives S = catalan (p+1) by omega.",
+    "keyInsights": [
+      "**Two hockey-sticks and one Pascal step.** Rather than inducting on the Catalan-triangle recurrence, the row sum splits into the two diagonal binomial sums ∑ C(p+q,q) and ∑ C(p+q,p+1), each closed by the hockey-stick identity; a single use of Pascal's rule then matches C(2p+1,p+1) − C(2p+1,p+2) with catalan (p+1).",
+      "**Genuine subtraction makes the split legal.** Because q ≤ p throughout the row, the parent's ballot_genuine guarantees C(p+q,p+1) ≤ C(p+q,q), so the additive partition B(p,q) + C(p+q,p+1) = C(p+q,q) holds termwise in ℕ and the sum of differences equals the difference of sums without leaving the natural numbers.",
+      "**Independent of the recurrence.** The proof never uses B(p,q) = B(p−1,q) + B(p,q−1); it is a direct binomial-sum evaluation, complementary to the sibling entry that establishes that recurrence.",
+      "**Reindexing is the only bookkeeping.** Finset.sum_Ico_eq_sum_range converts the running sum over range (p+1) into an interval sum starting at p (or p+1), the exact shape the hockey-stick identity consumes; the vanishing of the q=0 term in the upper sum (p < p+1) is what shifts its lower limit up by one.",
+      "**Catalan numbers as row totals.** Combined with the parent's diagonal B(n,n) = catalan n, this entry shows the Catalan numbers appear in the triangle both as the last entry of each row and as the row total of the previous row — the two classical occurrences, both now arithmetic identities."
+    ],
+    "exampleSections": [
+      {
+        "title": "Rows of the Catalan triangle and their sums",
+        "mathContext": "Row p = 3 of the Catalan triangle is B(3,0), B(3,1), B(3,2), B(3,3) = 1, 3, 5, 5, and 1 + 3 + 5 + 5 = 14 = catalan 4. Row p = 4 is 1, 4, 9, 14, 14, summing to 42 = catalan 5. The last entry B(p,p) = catalan p is the parent's diagonal value; the row total ∑_{q} B(p,q) = catalan (p+1) is the next Catalan number, exhibited here directly from C(2p+1,p+1) − C(2p+1,p+2)."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: row sums of the Catalan triangle",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports (including the parent entry for ballot, ballot_genuine, ballot_diag) and module docstring. States the row-sum identity ∑_{q=0}^{p} B(p,q) = catalan (p+1), notes its independence from the Catalan-triangle recurrence, and outlines the two-hockey-sticks-plus-Pascal strategy."
+    },
+    {
+      "id": "sum-choose-diag",
+      "title": "Diagonal binomial sum",
+      "startLine": 53,
+      "endLine": 69,
+      "summary": "sum_choose_diag: ∑_{q=0}^{p} C(p+q,q) = C(2p+1,p+1). Uses the symmetry C(p+q,q) = C(p+q,p), reindexes q ↦ p+q (Finset.sum_Ico_eq_sum_range) into Ico p (2p+1) = Icc p (2p), and applies the hockey-stick identity Nat.sum_Icc_choose."
+    },
+    {
+      "id": "sum-choose-upper",
+      "title": "Upper-index binomial sum",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "sum_choose_upper: ∑_{q=0}^{p} C(p+q,p+1) = C(2p+1,p+2). Peels off the vanishing q=0 term (p < p+1) with Finset.sum_range_succ', reindexes the remainder into Ico (p+1) (2p+1) = Icc (p+1) (2p), and applies Nat.sum_Icc_choose."
+    },
+    {
+      "id": "catalan-pascal",
+      "title": "Catalan via Pascal's rule",
+      "startLine": 92,
+      "endLine": 122,
+      "summary": "catalan_succ_eq_choose_sub: catalan (p+1) + C(2p+1,p+2) = C(2p+1,p+1). From the parent's ballot_diag and ballot_genuine at (p+1,p+1) gets catalan (p+1) + C(2p+2,p+2) = C(2p+2,p+1); expands both coefficients with Pascal's rule (Nat.choose_succ_succ) and the symmetry C(2p+1,p) = C(2p+1,p+1); omega finishes."
+    },
+    {
+      "id": "row-sum",
+      "title": "The row-sum identity",
+      "startLine": 124,
+      "endLine": 148,
+      "summary": "ballot_row_sum: ∑_{q=0}^{p} B(p,q) = catalan (p+1). The termwise genuine partition B(p,q) + C(p+q,p+1) = C(p+q,q) (q ≤ p) sums via Finset.sum_add_distrib to S + C(2p+1,p+2) = C(2p+1,p+1); comparing with catalan_succ_eq_choose_sub gives S = catalan (p+1) by omega."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete sanity checks",
+      "startLine": 150,
+      "endLine": 157,
+      "summary": "Two kernel-decide checks: row 3 sums to 14 (= catalan 4) and row 4 sums to 42 (= catalan 5). Both use kernel `decide` on Nat.choose computations — no native_decide, hence no Lean.ofReduceBool."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Shapiro, Louis W.",
+      "title": "A Catalan triangle",
+      "year": "1976",
+      "note": "Discrete Mathematics 14 — the triangle of ballot numbers B(p,q); its row sums are the Catalan numbers."
+    },
+    {
+      "authors": "Zhu Shijie (Chu Shih-Chieh)",
+      "title": "Siyuan yujian (Jade Mirror of the Four Unknowns)",
+      "year": "1303",
+      "note": "Source of the hockey-stick / Zhu Shijie identity ∑ C(m,k) = C(n+1,k+1) used to evaluate the two diagonal binomial sums."
+    },
+    {
+      "authors": "André, Désiré",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "note": "Comptes Rendus Acad. Sci. Paris 105 — the reflection principle giving the ballot count C(p+q,q) − C(p+q,p+1) that defines the triangle entries."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry: defines the generalized ballot number B(p,q) = C(p+q,q) − C(p+q,p+1) with its closed form, boundary values, and the diagonal B(n,n) = catalan n. This entry sums a whole row and obtains the next Catalan number, reusing ballot, ballot_genuine, and ballot_diag."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry establishing the Catalan-triangle recurrence B(p,q) = B(p−1,q) + B(p,q−1). This row-sum entry is independent of that recurrence, evaluating the row directly from binomial closed forms."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent entry: the central-binomial reflection form catalan n = C(2n,n) − C(2n,n+1), the n = diagonal special case underlying the whole ballot-triangle development."
+    }
+  ],
+  "conclusion": {
+    "summary": "The row sums of the Catalan triangle are the Catalan numbers: ∑_{q=0}^{p} B(p,q) = catalan (p+1) (ballot_row_sum). The proof splits B(p,q) into its two binomial pieces, evaluates each diagonal sum with the hockey-stick identity (sum_choose_diag: C(2p+1,p+1); sum_choose_upper: C(2p+1,p+2)), and reconciles them with catalan (p+1) via one application of Pascal's rule (catalan_succ_eq_choose_sub). Verified with 0 axioms, 0 sorries, no native_decide.",
+    "implications": "Adds the second classical occurrence of the Catalan numbers in the Catalan triangle — as row totals — to the parent's diagonal occurrence, with a uniform ℕ-only proof that uses only the hockey-stick identity and Pascal's rule and is independent of the triangle's additive recurrence.",
+    "openQuestions": [
+      "Bijective row sum: construct the explicit map from row-p ballot paths (plus an up/right closing pair) to Dyck-type paths counted by catalan (p+1), upgrading the arithmetic identity to a bijection.",
+      "Weighted / q-analogue row sums: evaluate ∑_{q} x^q B(p,q) or the q-deformed Catalan-triangle row sum and identify the resulting q-Catalan number.",
+      "Column and diagonal sums: determine closed forms for partial column sums ∑_{p} B(p,q) and for the shallow-diagonal sums of the Catalan triangle, complementing the row-sum result."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CatalanNumbersOQ01OQ01OQ02"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "CatalanRowSum",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ04.lean",
+    "sorries": 0
+  }
+}

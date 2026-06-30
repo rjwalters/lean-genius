@@ -44,7 +44,8 @@
     "erdos-1",
     "erdos-10",
     "erdos-102",
-    "erdos-1029"
+    "erdos-1029",
+    "erdos-1029-oq-01"
   ],
   "references": {
     "papers": [],
@@ -56,6 +57,17 @@
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1029LowerBound.lean",
+      "filename": "Erdos1029LowerBound.lean",
+      "lineCount": 170,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1029LowerBound.lean"
+    },
     {
       "path": "Proofs/Erdos1029Problem.lean",
       "filename": "Erdos1029Problem.lean",

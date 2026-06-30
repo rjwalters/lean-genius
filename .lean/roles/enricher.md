@@ -12,6 +12,46 @@ Enrich the proof gallery by deepening the quality of every entry:
 5. **Cross-references**: Link to related proofs in the gallery
 6. **Sections**: Ensure `sections` array covers the full Lean file with meaningful summaries
 
+## CRITICAL: Size Guardrails — Quality Is Curation, Not Accretion
+
+**Enrichment has an upper bound. Bigger is NOT better.** Your goal is a *readable, inviting* page, not the largest possible one. Monotonically deepening the shallowest field on every pass produces unreadable, intimidating entries that scare away users. A landing-page classic that has grown to hundreds of KB is a defect, not an achievement.
+
+Honor these hard caps on `meta.json`. Treat them as ceilings, not targets:
+
+| Limit | Cap |
+|-------|-----|
+| Whole `meta.json` file | **≤ ~60 KB** (≈3× the gallery p99 of ~34 KB) |
+| `overview.keyInsights` | **≤ 12 items** |
+| `crossReferences` | **≤ 20 items** |
+| `references` | **≤ 25 items** |
+| `relatedProblems` / `conclusion.openQuestions` | **≤ 15 items** |
+| Any single `keyInsight` / item string | **≤ ~2 KB** |
+
+### Diminishing-Returns / SKIP Rule (MANDATORY)
+
+**Before deepening anything, check the size first:**
+
+```bash
+ID=<target-id>
+SIZE=$(wc -c < "src/data/proofs/$ID/meta.json")
+echo "meta.json is $SIZE bytes"
+# Or run the guardrail check directly:
+npx tsx scripts/gallery/check-meta-size.ts "$ID"
+```
+
+Then decide:
+
+1. **If `meta.json` is already at/above ~60 KB**, OR a collection is already at its cap:
+   - **DO NOT deepen the shallowest field.** Adding more content here makes the page worse.
+   - **SKIP this entry** and move to the next target (lower-pass entries benefit far more), **or** switch to **consolidation/trimming**: merge redundant keyInsights, drop the weakest/duplicate crossReferences, tighten verbose prose. Trimming an over-cap entry back under the cap is high-value work.
+   - Log the skip: `echo "$(date +%H:%M): SKIP $ID (over size cap, $SIZE bytes)" >> "$REPO_ROOT/.loom/logs/$ENRICHER_ID.actions.log"`
+
+2. **If a collection is at its cap but the file is under 60 KB**: do not append to that collection. Either improve an *existing* item in place (without exceeding the per-item cap) or enrich a *different*, under-cap field (e.g. annotations).
+
+3. **If the entry is comfortably under all caps**: enrich normally, but stop as soon as you would cross a cap. Never split one logical insight into many items to game the per-item cap.
+
+**Reframing:** "quality" means a focused, well-curated page — not the sum of every fact you can find. When in doubt, prefer fewer, sharper insights over more, shallower ones, and prefer skipping an already-rich entry over inflating it further. The companion cleanup of already-bloated entries is tracked in #30348; do not let those entries grow further.
+
 ## Environment Setup
 
 You receive these environment variables:
@@ -90,7 +130,9 @@ For a target with id `<id>`, read:
 
 #### 3. Assess Quality Gaps
 
-Look for these common gaps:
+**First, apply the Size Guardrails / SKIP rule above.** Check `wc -c src/data/proofs/<id>/meta.json` (or `npx tsx scripts/gallery/check-meta-size.ts <id>`). If the entry is already at/above ~60 KB or any collection is at its cap, SKIP it or switch to trimming — do not deepen it.
+
+Otherwise, look for these common gaps:
 
 **In annotations.json:**
 - Missing `mathContext` field (LaTeX explanation of the math)
@@ -113,12 +155,14 @@ Look for these common gaps:
 - `sections` not covering the full Lean file
 - No `mathContext` fields
 
-**Quality target per entry:**
+**Quality target per entry** (these are *minimums to reach, then stop* — see the Size Guardrails above for the matching ceilings):
 - At least 5 annotations with `mathContext`, `significance`, and `relatedConcepts`
-- `historicalContext` > 200 characters with real historical information
-- At least 4 `keyInsights` that reveal deep mathematical understanding
-- `conclusion` with `summary`, `implications`, and 2+ `openQuestions`
+- `historicalContext` between ~200 characters and ~2 KB with real historical information
+- 4–12 `keyInsights` that reveal deep mathematical understanding (stop at 12)
+- `conclusion` with `summary`, `implications`, and 2+ `openQuestions` (≤ 15)
 - `sections` covering all major parts of the proof
+
+Once an entry meets these targets, it is **done** — do not keep deepening it on subsequent passes. Move to a lower-pass entry instead.
 
 #### 4. Make Targeted Improvements
 

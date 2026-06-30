@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-header-crtfin",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "File Header: From Existential Witness to Computable Function",
+    "content": "The header states the parent's first open question — can the existential k-moduli CRT solution be packaged as a `def`-level computable function `crtFin : (m a : Fin k → ℤ) → ℤ`? — and answers yes. The key observation recorded upfront is that no new arithmetic is needed: the grandparent's 2-moduli combinator `crtInt m n a b = a·n·gcdB(m,n) + b·m·gcdA(m,n)` is already explicit and built from Mathlib's computable Bézout coefficients `Int.gcdA`/`Int.gcdB`. The file imports both the parent (`BezoutIdentityOQ03OQ02`, for the coprimality helpers and uniqueness theorem) and the grandparent (`BezoutIdentityOQ03`, for `crtInt` and its correctness lemmas), and opens both namespaces.",
+    "mathContext": "The parent proved $\\exists x,\\ \\forall i,\\ x \\equiv a_i \\pmod{m_i}$ non-constructively. Here we build an actual function whose value is that $x$, by recursing on the modulus count with $\\mathrm{crtInt}$ as the base combinator.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "computable def vs noncomputable",
+      "crtInt",
+      "Int.gcdA / Int.gcdB"
+    ],
+    "prerequisites": [
+      "bezout-identity-oq-03-oq-02 (parent)",
+      "bezout-identity-oq-03 (grandparent crtInt)",
+      "extended Euclidean algorithm"
+    ]
+  },
+  {
+    "id": "ann-definition-crtfin",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "The Computable Function crtFin",
+    "content": "`crtFin` is defined by structural recursion on the modulus count k. With k=0 it returns 0 (no constraints). With k+1 it forms M = ∏ m(i.castSucc), recursively solves the first k congruences to obtain y, and folds in the last residue via `crtInt M (m (Fin.last k)) y (a (Fin.last k))`. Because `Finset.prod` and the `Int.gcdA`/`Int.gcdB` inside `crtInt` are all computable, this is a genuine `def` — not `noncomputable` — so it `#eval`s. The companion `crtFin_succ` exposes the successor-case defining equation (`rfl`), which the correctness proof rewrites with.",
+    "mathContext": "$\\mathrm{crtFin}(k{+}1) = \\mathrm{crtInt}\\big(\\textstyle\\prod_{i<k} m_{i.\\mathrm{castSucc}},\\ m_{\\mathrm{last}},\\ \\mathrm{crtFin}(k),\\ a_{\\mathrm{last}}\\big)$, with $\\mathrm{crtInt}\\, M\\, n\\, y\\, b = y\\,n\\,\\mathrm{gcdB}(M,n) + b\\,M\\,\\mathrm{gcdA}(M,n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural recursion",
+      "crtInt",
+      "Finset.prod",
+      "Fin.castSucc",
+      "definitional unfolding"
+    ],
+    "prerequisites": [
+      "Lean 4 recursive definitions on ℕ",
+      "Fin.castSucc / Fin.last",
+      "computability of Int.gcdA / Int.gcdB"
+    ]
+  },
+  {
+    "id": "ann-correctness-crtfin",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 111
+    },
+    "type": "insight",
+    "title": "Correctness: crtFin Satisfies Every Congruence",
+    "content": "`crtFin_modEq` proves crtFin m a ≡ a i (mod m i) for all i, by induction on k mirroring the parent's existence proof — but each step is discharged by the explicit `crtInt` correctness lemmas instead of by destructing an existential, which is exactly what makes the witness concrete. After `rw [crtFin_succ]`, `Fin.lastCases` splits: the last index is `crtInt_mod_right` directly; an earlier index j gets `crtInt_mod_left` (≡ y mod M), then `modEq_of_dvd_modulus` with m(j.castSucc) | M (`Finset.dvd_prod_of_mem`) lifts to ≡ y mod m(j.castSucc), and the IH gives y ≡ a(j.castSucc). The `crtInt` lemmas require Int.gcd = 1, obtained from IsCoprime via `Int.isCoprime_iff_gcd_eq_one`.",
+    "mathContext": "With $M = \\prod_{i<k} m_{i.\\mathrm{castSucc}}$ coprime to $m_{\\mathrm{last}}$: the last congruence is immediate; for $j < k$, $m_{j.\\mathrm{castSucc}} \\mid M$ so $\\mathrm{crtFin} \\equiv y \\equiv a_{j.\\mathrm{castSucc}} \\pmod{m_{j.\\mathrm{castSucc}}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "crtInt_mod_left / crtInt_mod_right",
+      "Int.isCoprime_iff_gcd_eq_one",
+      "Fin.lastCases",
+      "Finset.dvd_prod_of_mem",
+      "de-existentialization"
+    ],
+    "prerequisites": [
+      "crtInt correctness lemmas (grandparent)",
+      "isCoprime_last_prod / pairwise_castSucc (parent)",
+      "Int.ModEq transitivity"
+    ]
+  },
+  {
+    "id": "ann-explicit-canonical",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "Explicit Existence and Canonicality",
+    "content": "Two corollaries close the loop. `crt_finitely_many_exists_explicit` reproves the parent's existence statement, but now with the explicit witness ⟨crtFin m a, crtFin_modEq ...⟩ rather than an opaque existential. `crtFin_canonical` goes further: applying the parent's uniqueness theorem `crt_finitely_many_unique` to any solution y and to crtFin m a (both solve the system) shows y ≡ crtFin m a modulo ∏ m i. So crtFin does not merely produce *a* solution — it produces *the* canonical representative of the unique solution class, the constructive preimage under the CRT ring isomorphism.",
+    "mathContext": "For every solution $y$: $y \\equiv \\mathrm{crtFin}\\, m\\, a \\pmod{\\prod_i m_i}$. Thus $\\mathrm{crtFin}\\, m\\, a$ is a chosen representative of the residue class $\\{x : \\forall i,\\ x \\equiv a_i \\pmod{m_i}\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "crt_finitely_many_unique",
+      "canonical representative",
+      "constructive existence",
+      "CRT ring isomorphism"
+    ],
+    "prerequisites": [
+      "crt_finitely_many_unique (parent)",
+      "Int.ModEq",
+      "uniqueness modulo product"
+    ]
+  },
+  {
+    "id": "ann-example-m357",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Worked Example: crtFin Computes the Sun Tzu Answer",
+    "content": "The example instantiates the (3,5,7)/(2,3,2) system. `pairwise_coprime_m357` proves the moduli are pairwise coprime per pair via `Int.isCoprime_iff_gcd_eq_one` + `decide` — necessary because `IsCoprime` over ℤ is an existential and hence NOT decidable, so `decide` cannot prove `Pairwise (IsCoprime ...)` directly (a recurring gotcha). Then crtFin m357 a357 ≡ 2 (mod 3) follows from crtFin_modEq, and crtFin m357 a357 ≡ 23 (mod 105) from crtFin_canonical against the known solution 23. Notably `#eval crtFin m357 a357 = -82`: the algorithm returns a valid representative (-82 ≡ 23 mod 105), not necessarily the least non-negative one.",
+    "mathContext": "$\\mathrm{crtFin}([3,5,7],[2,3,2]) = -82$, and $-82 \\equiv 23 \\pmod{105}$ where $105 = 3\\cdot5\\cdot7$. Pairwise coprimality reduces to $\\gcd(3,5)=\\gcd(3,7)=\\gcd(5,7)=1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.isCoprime_iff_gcd_eq_one",
+      "decidability of IsCoprime",
+      "decide tactic",
+      "least non-negative residue",
+      "Sunzi Suanjing"
+    ],
+    "prerequisites": [
+      "Matrix.cons notation ![]",
+      "decide on Int.gcd",
+      "crtFin_modEq / crtFin_canonical"
+    ]
+  },
+  {
+    "id": "ann-summary-crtfin",
+    "proofId": "bezout-identity-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 159,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Summary Docstring",
+    "content": "The closing docstring recaps the deliverables: crtFin (computable def answering OQ #1), crtFin_modEq (correctness), crt_finitely_many_exists_explicit (existence with explicit witness), and crtFin_canonical (canonical representative). It notes the entry is built on the parent's coprimality helpers and the grandparent's explicit crtInt combinator with zero new axioms and no `noncomputable`.",
+    "mathContext": "Deliverable: an executable CRT algorithm over ℤ with a machine-checked correctness proof and a canonicality theorem, reusing existing infrastructure.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "computable CRT",
+      "crtFin",
+      "crtFin_canonical"
+    ],
+    "prerequisites": [
+      "the preceding theorems"
+    ]
+  }
+]

@@ -27,7 +27,7 @@ theorem pending the Lean FLT project completion.
 - [ ] Uses Mathlib for main result
 - [x] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Axiomatized (general case stated as axiom; 0 sorries)
 
 ## Mathlib Dependencies
 - `FermatLastTheoremFor` : Statement that n has no non-trivial solutions
@@ -35,8 +35,9 @@ theorem pending the Lean FLT project completion.
 - `fermatLastTheoremThree` : Euler's proof for n = 3
 - `NumberTheory.FLT.Basic` : FLT foundations
 
-Note: 3 sorries remain. The full theorem requires the Modularity Theorem and
-Ribet's theorem, currently being formalized by the Imperial College FLT project.
+Note: 0 sorries. The general theorem is stated as an axiom (`FLT_for_odd_primes`,
+`fermatLastTheorem`); the full proof requires the Modularity Theorem and Ribet's
+theorem, currently being formalized by the Imperial College FLT project.
 
 Historical Note: Fermat claimed a proof in 1637. Andrew Wiles proved it in
 1995 using the modularity of elliptic curves—one of mathematics' greatest

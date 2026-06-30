@@ -150,16 +150,19 @@
   },
   "crossReferences": [
     {
-      "id": "chevalley-warning-theorem-oq-01-oq-01",
-      "reason": "Direct parent: proves the abstract cardinality bound char_le_card_of_exists and the single second-solution theorem that this entry reifies into explicit finite sets, and whose open question on an effective p − 1 count this entry answers"
+      "targetId": "chevalley-warning-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves the abstract cardinality bound char_le_card_of_exists and the single second-solution theorem that this entry reifies into explicit finite sets, and whose open question on an effective p − 1 count this entry answers"
     },
     {
-      "id": "chevalley-warning-theorem-oq-01",
-      "reason": "Grandparent: the Chevalley–Warning divisibility p ∣ #solutions underlying the whole chain"
+      "targetId": "chevalley-warning-theorem-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent: the Chevalley–Warning divisibility p ∣ #solutions underlying the whole chain"
     },
     {
-      "id": "erdos-ginzburg-ziv-oq-01",
-      "reason": "The origin-vanishing explicit nonzero-solution set is the object consumed by the EGZ pigeonhole after Chevalley–Warning produces the common zeros of the two degree-(p−1) forms"
+      "targetId": "erdos-ginzburg-ziv-oq-01",
+      "relationship": "related",
+      "description": "The origin-vanishing explicit nonzero-solution set is the object consumed by the EGZ pigeonhole after Chevalley–Warning produces the common zeros of the two degree-(p−1) forms"
     }
   ]
 }

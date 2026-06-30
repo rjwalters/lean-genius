@@ -65,7 +65,8 @@
       "The 'both odd is impossible' obstruction holds for EVERY Pythagorean triple, not just primitive ones — coprimality is only needed to exclude the both-even case",
       "The whole dichotomy rests on a single residue fact: an odd square is 1 mod 4, so two odd squares sum to 2 mod 4, which Int.sq_ne_two_mod_four rules out as a square",
       "omega closes the modular contradictions once the squares are rewritten in the form 4·(…)+r: it reasons about % with a literal modulus over the atoms x·x, y·y, z·z",
-      "The hypotenuse is forced odd: with one even leg (≡0 mod 4) and one odd leg (≡1 mod 4), z² ≡ 1 mod 4, and an even z would give z² ≡ 0 mod 4"
+      "The hypotenuse is forced odd: with one even leg (≡0 mod 4) and one odd leg (≡1 mod 4), z² ≡ 1 mod 4, and an even z would give z² ≡ 0 mod 4",
+      "The two exclusions are asymmetric in strength: both-odd is a universal arithmetic obstruction (mod 4), while both-even is a structural consequence of primitivity (gcd) — only the latter uses the coprimality hypothesis"
     ],
     "prerequisites": [
       "Modular arithmetic (residues mod 4)",

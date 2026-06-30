@@ -76,11 +76,16 @@
     "Concrete Verifications"
   ],
   "sorries": [],
-  "overview": [
-    "Lamé's theorem (1844) bounds the number of steps the Euclidean algorithm takes, and is often cited as the first complexity analysis of an algorithm. The standard statement has two halves: an upper bound (no input of a given size forces more than ~5 steps per decimal digit) and a sharpness claim (consecutive Fibonacci numbers force exactly that many).",
-    "The parent gallery entry formalizes the upper half via Fibonacci growth and Binet's formula. This entry formalizes the sharp half. Working with the Euclidean step counter euclidSteps from the binary-GCD development, it proves euclidSteps(fib(n+2), fib(n+1)) = n for every n ≥ 1.",
-    "The proof rests on two elementary facts. First, a clean one-step recursion: when 0 < b < a, euclidSteps a b = 1 + euclidSteps b (a mod b). Second, the Fibonacci reduction identity: fib(n+2) mod fib(n+1) = fib n, which holds because fib(n+2) = fib(n+1) + fib n with fib n < fib(n+1). Induction from the base case (fib 3, fib 2) = (2, 1) then gives the exact count.",
-    "A companion minimality theorem shows the Fibonacci pairs are not merely worst cases but the smallest worst cases: any pair 0 < b < a taking n steps satisfies fib(n+1) ≤ b and fib(n+2) ≤ a. This is proved by strong induction on a, lifting the bound on the reduced pair (b, a mod b) through the Fibonacci recurrence.",
-    "Everything is verified from the foundational axioms only; the named theorems use no native_decide (it appears solely in anonymous example sanity checks)."
-  ]
+  "overview": {
+    "historicalContext": "Lamé's theorem (1844) bounds the number of steps the Euclidean algorithm takes, and is often cited as the first complexity analysis of an algorithm. The standard statement has two halves: an upper bound (no input of a given size forces more than ~5 steps per decimal digit, via log_φ) and a sharpness claim (consecutive Fibonacci numbers force exactly that many steps). The parent gallery entry formalizes the upper half via Fibonacci growth and Binet's formula; this entry formalizes the sharp half. The connection between the Euclidean algorithm's worst case and the Fibonacci numbers is the historical seed of the link between continued fractions, the golden ratio, and algorithmic complexity.",
+    "problemStatement": "Formalize the sharpness half of Lamé's theorem: working with the Euclidean step counter euclidSteps from the binary-GCD development, prove euclidSteps(fib(n+2), fib(n+1)) = n for every n ≥ 1, and the companion minimality statement that the Fibonacci pairs are the smallest inputs forcing n steps — any pair 0 < b < a taking n steps satisfies fib(n+1) ≤ b and fib(n+2) ≤ a.",
+    "proofStrategy": "The exact-count theorem rests on two elementary facts. First, a clean one-step recursion: when 0 < b < a, euclidSteps a b = 1 + euclidSteps b (a mod b). Second, the Fibonacci reduction identity fib(n+2) mod fib(n+1) = fib n, which holds because fib(n+2) = fib(n+1) + fib n with fib n < fib(n+1). Induction from the base case (fib 3, fib 2) = (2, 1) then gives euclidSteps(fib(n+2), fib(n+1)) = n. The minimality theorem is proved by strong induction on a, lifting the bound on the reduced pair (b, a mod b) through the Fibonacci recurrence.",
+    "keyInsights": [
+      "The Euclidean algorithm's worst case is exactly the Fibonacci sequence: euclidSteps(fib(n+2), fib(n+1)) = n, so consecutive Fibonacci numbers realize Lamé's upper bound with equality.",
+      "The whole exact count reduces to one modular identity, fib(n+2) mod fib(n+1) = fib n, which is just the Fibonacci recurrence fib(n+2) = fib(n+1) + fib n read through the bound fib n < fib(n+1).",
+      "A one-step recursion euclidSteps a b = 1 + euclidSteps b (a mod b) (for 0 < b < a) turns the step count into a structural induction matching the Fibonacci reduction step for step.",
+      "Minimality strengthens 'worst case' to 'smallest worst case': any pair taking n steps is bounded below by (fib(n+1), fib(n+2)), so Fibonacci inputs are the unique minimal witnesses — the exact converse direction of Lamé's bound.",
+      "Together with the parent's upper bound, this completes Lamé's theorem as a sharp two-sided result, the prototypical worst-case complexity analysis and the bridge from the golden ratio to algorithm analysis."
+    ]
+  }
 }

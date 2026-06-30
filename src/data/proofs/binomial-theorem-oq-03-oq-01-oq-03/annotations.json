@@ -80,5 +80,24 @@
       "two_mul",
       "Nat.add_comm"
     ]
+  },
+  {
+    "id": "sanity-checks",
+    "proofId": "binomial-theorem-oq-03-oq-01-oq-03",
+    "range": { "startLine": 108, "endLine": 141 },
+    "type": "technique",
+    "title": "Axiom-Free Numeric Sanity Checks",
+    "content": "Five concrete `decide` checks pin down the identity and its boundary behaviour: the convolution at (x,y,n) = (3,4,2) and (5,2,3), the diagonal (2·4)^(3), a base-below-order case 1^(3) = 0 that exercises truncated natural subtraction, and the range-form Chu–Vandermonde C(7,3) = 35 that underlies the whole proof. Since Nat.descFactorial is computable, each side reduces to a literal, and using kernel `decide` rather than `native_decide` keeps the file axiom-free (no Lean.ofReduceBool — only propext, Classical.choice, Quot.sound). The checks guard against transcription errors and independently confirm the range-form Vandermonde lemma that does the real work.",
+    "mathContext": "Checks include $(3+4)^{\\underline{2}} = \\sum_k\\binom{2}{k}3^{\\underline{k}}4^{\\underline{2-k}}$, $1^{\\underline{3}} = 0$ (base below order), and $\\binom{7}{3} = 35$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom-free verification",
+      "computable Nat.descFactorial"
+    ],
+    "prerequisites": [
+      "the decide tactic",
+      "Lean.ofReduceBool and the axiom-integrity policy"
+    ]
   }
 ]

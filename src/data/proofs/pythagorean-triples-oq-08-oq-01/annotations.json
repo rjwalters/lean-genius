@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ann-pythag-oq08-oq01-header",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "File Context: OQ-01 — Per-Leg Sharpening of the Parent's Product Divisibilities",
+    "content": "This file answers the first open question of PythagoreanTriplesOQ08 (which proved the product-level 3 ∣ x·y, 4 ∣ x·y, 60 ∣ x·y·z for every triple). The parent's results are agnostic about which leg carries the factor — 4 ∣ x·y is compatible with 2 ∣ x and 2 ∣ y. Under primitivity (IsCoprime x y) the obstructions localise: exactly one leg is divisible by 4 and exactly one by 3. The file imports the parent and reuses three_dvd_legs / four_dvd_legs directly.",
+    "mathContext": "Primitivity is essential and the file documents the failure mode: for the scaled triple $(9,12,15)$ both legs are divisible by $3$, so 'exactly one' is false without $\\gcd(x,y)=1$. The coprimality hypothesis forbids a common prime factor and forces each obstruction onto a single leg.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pythagorean-triples-oq-08",
+      "PythagoreanTriple",
+      "IsCoprime",
+      "PythagoreanTriplesPerLeg namespace"
+    ],
+    "prerequisites": [
+      "PythagoreanTriplesOQ08 parent proof",
+      "coprimality in ℤ",
+      "Euclid's lemma"
+    ]
+  },
+  {
+    "id": "ann-pythag-oq08-oq01-coprime-engine",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 54, "endLine": 64 },
+    "type": "key-step",
+    "title": "Coprimality Engine: No Prime Divides Both Legs",
+    "content": "not_dvd_both_of_coprime is the one place primitivity is used. If a prime p divided both legs, IsCoprime.isUnit_of_dvd' would make p a unit, contradicting Prime.not_unit. Specialised to p = 2 and p = 3 it powers both per-leg theorems.",
+    "mathContext": "IsCoprime x y means $\\exists u,v.\\ ux + vy = 1$, so any common divisor divides $1$ and is a unit. Since $2$ and $3$ are non-units in $\\mathbb{Z}$, neither can divide both coprime legs.",
+    "significance": "essential",
+    "relatedConcepts": ["IsCoprime.isUnit_of_dvd'", "Prime.not_unit", "units in ℤ"],
+    "prerequisites": ["coprimality", "units"]
+  },
+  {
+    "id": "ann-pythag-oq08-oq01-three",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 66, "endLine": 78 },
+    "type": "key-step",
+    "title": "Exactly One Leg Divisible by 3",
+    "content": "exactly_one_leg_div_three: the parent's three_dvd_legs gives 3 ∣ x·y; Prime.dvd_or_dvd (Int.prime_three) puts the factor on a leg, and not_dvd_both_of_coprime excludes the other. This is the clean prime/coprime split — Euclid's lemma for 'at least one', primitivity for 'not both'.",
+    "mathContext": "Euclid's lemma plus primitivity gives an exclusive disjunction: $(3 \\mid x \\wedge 3 \\nmid y) \\vee (3 \\nmid x \\wedge 3 \\mid y)$.",
+    "significance": "essential",
+    "relatedConcepts": ["Prime.dvd_or_dvd", "Int.prime_three", "three_dvd_legs"],
+    "prerequisites": ["Euclid's lemma", "parent product divisibility"]
+  },
+  {
+    "id": "ann-pythag-oq08-oq01-even-leg",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "key-step",
+    "title": "The Even Leg Carries the Full Factor of 4",
+    "content": "four_dvd_even_leg is the crux of the 4-sharpening. From 4 ∣ x·y and an odd leg y, Prime.coprime_iff_not_dvd gives IsCoprime 2 y, hence IsCoprime 4 y (= IsCoprime (2·2) y via IsCoprime.mul_left); then IsCoprime.dvd_of_dvd_mul_right cancels y, yielding 4 ∣ x.",
+    "mathContext": "Cancelling a coprime factor out of a divisibility is the integer analogue of clearing it from a fraction: since $\\gcd(4,y)=1$, all four factors of two in $x\\cdot y$ must reside in $x$.",
+    "significance": "essential",
+    "relatedConcepts": ["IsCoprime.dvd_of_dvd_mul_right", "Prime.coprime_iff_not_dvd", "IsCoprime.mul_left"],
+    "prerequisites": ["coprime cancellation", "prime/coprime duality"]
+  },
+  {
+    "id": "ann-pythag-oq08-oq01-four",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 93, "endLine": 114 },
+    "type": "key-step",
+    "title": "Exactly One Leg Divisible by 4",
+    "content": "exactly_one_leg_div_four: 4 ∣ x·y ⟹ 2 ∣ x·y ⟹ (prime 2) one leg even; coprimality makes the other odd; four_dvd_even_leg sends the full 4 to the even leg, while 4 ∤ (odd leg) since 2 ∤ it. The two parity branches are symmetric (mul_comm rewrites x·y for the y-even case).",
+    "mathContext": "Unlike the parent's mod-8 *product* result, this pins the entire factor of $4$ onto a specific (even) leg, with the other leg odd — the genuine per-leg statement the open question asked for.",
+    "significance": "essential",
+    "relatedConcepts": ["four_dvd_even_leg", "Int.prime_two", "four_dvd_legs"],
+    "prerequisites": ["prime divides product", "parity from coprimality"]
+  },
+  {
+    "id": "ann-pythag-oq08-oq01-capstone",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 116, "endLine": 137 },
+    "type": "result",
+    "title": "Capstone and the (3,4,5) Instance",
+    "content": "per_leg_div_four_and_three bundles both sharpenings into the exact statement of the parent's open question. coprime_345 (kernel decide via Int.isCoprime_iff_gcd_eq_one) and the worked example confirm that for (3,4,5) the factor 4 sits on leg 4 and the factor 3 on leg 3 — distinct legs, though the disjunctions allow coincidence.",
+    "mathContext": "The instance witnesses that the per-leg disjunctions are inhabited by a concrete primitive triple, guarding against a vacuous statement.",
+    "significance": "essential",
+    "relatedConcepts": ["per_leg_div_four_and_three", "triple_345", "Int.isCoprime_iff_gcd_eq_one"],
+    "prerequisites": ["the two per-leg theorems"]
+  }
+]

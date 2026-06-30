@@ -1,35 +1,77 @@
 [
   {
+    "id": "ann-exp-form",
+    "proofId": "euler-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 33,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "The Exponential Definitions of cos and sin",
+    "content": "cos_eq_exp and sin_eq_exp record the formulas Mathlib uses to DEFINE the trigonometric functions on ℂ: cos x = (e^{ix} + e^{−ix})/2 and sin x = (e^{−ix} − e^{ix})·i/2. The proofs are one-liners: rewrite by Complex.two_cos / Complex.two_sin (which package 2·cos x = e^{ix}+e^{−ix} and 2·sin x = (e^{−ix}−e^{ix})i) and close with ring. These identities are one rearrangement away from Euler's formula — adding cos x and i·sin x telescopes back to e^{ix}.",
+    "mathContext": "$\\cos x = \\dfrac{e^{ix} + e^{-ix}}{2}, \\qquad \\sin x = \\dfrac{e^{-ix} - e^{ix}}{2}\\,i = \\dfrac{e^{ix} - e^{-ix}}{2i}$",
+    "significance": "supporting",
+    "relatedConcepts": ["complex exponential", "hyperbolic functions", "even and odd parts of a function", "Euler's formula"],
+    "prerequisites": ["complex exponential function", "field arithmetic over ℂ"]
+  },
+  {
     "id": "ann-series",
     "proofId": "euler-identity-oq-01-oq-02",
     "range": {
       "startLine": 44,
-      "endLine": 64
+      "endLine": 54
     },
     "type": "insight",
     "title": "The Power Series IS the Derivation",
-    "content": "cos_eq_tsum is the OQ's target: cos z = Σ (−1)ⁿ z²ⁿ/(2n)!. In Mathlib, Complex.cos is DEFINED as (e^{iz} + e^{−iz})/2, and Complex.cos_eq_tsum derives the power series from that definition — so restating it answers the OQ exactly in Mathlib's dependency direction. The series splits the exponential expansion e^{iz} = Σ (iz)ⁿ/n! into even powers (giving cos) and odd powers (giving sin). Both the complex and real versions are recorded."
+    "content": "cos_eq_tsum is the OQ's target: cos z = Σ (−1)ⁿ z²ⁿ/(2n)!. In Mathlib, Complex.cos is DEFINED as (e^{iz} + e^{−iz})/2, and Complex.cos_eq_tsum derives the power series from that definition — so restating it answers the OQ exactly in Mathlib's dependency direction. The series arises by expanding e^{iz} = Σ (iz)ⁿ/n! and grouping by parity: the even powers n = 2k give i^{2k} = (−1)ᵏ and assemble into cos, the odd powers n = 2k+1 give i^{2k+1} = (−1)ᵏ·i and assemble into sin. The same even/odd split of one absolutely convergent series is what makes the rearrangement legitimate.",
+    "mathContext": "$\\cos z = \\sum_{n=0}^{\\infty} \\frac{(-1)^n z^{2n}}{(2n)!}, \\qquad \\sin z = \\sum_{n=0}^{\\infty} \\frac{(-1)^n z^{2n+1}}{(2n+1)!}$",
+    "significance": "key",
+    "relatedConcepts": ["Taylor series", "absolute convergence", "even/odd decomposition", "tsum / HasSum", "complex exponential series"],
+    "prerequisites": ["power series", "absolute convergence and rearrangement", "complex exponential"]
   },
   {
-    "id": "ann-exp-form",
+    "id": "ann-real-series",
     "proofId": "euler-identity-oq-01-oq-02",
     "range": {
-      "startLine": 30,
-      "endLine": 42
+      "startLine": 56,
+      "endLine": 64
     },
-    "type": "concept",
-    "title": "The Exponential Definitions",
-    "content": "cos_eq_exp and sin_eq_exp record the formulas Mathlib uses to define the trigonometric functions: cos x = (e^{ix} + e^{−ix})/2 and sin x = (e^{−ix} − e^{ix})·i/2. They follow from Complex.two_cos/two_sin by dividing by 2. These are one rearrangement away from Euler's formula — adding cos x and i·sin x recovers e^{ix}."
+    "type": "technique",
+    "title": "Casting the Series Down to ℝ",
+    "content": "real_cos_eq_tsum and real_sin_eq_tsum give the real-variable forms cos r = Σ (−1)ⁿ r²ⁿ/(2n)! and sin r = Σ (−1)ⁿ r²ⁿ⁺¹/(2n+1)!. They are not re-proved from scratch: in Mathlib the real functions are the restriction of the complex ones to the real axis (Real.cos r = (Complex.cos r).re), so Real.cos_eq_tsum follows from the complex series by pushing the real-part/coercion through the absolutely convergent sum. This is the standard pattern for transporting an analytic identity from ℂ to ℝ.",
+    "mathContext": "$\\cos r = \\sum_{n=0}^{\\infty}\\frac{(-1)^n r^{2n}}{(2n)!},\\quad \\sin r = \\sum_{n=0}^{\\infty}\\frac{(-1)^n r^{2n+1}}{(2n+1)!}\\quad (r\\in\\mathbb{R})$",
+    "significance": "technical",
+    "relatedConcepts": ["real and complex trigonometric functions", "coercion ℝ ↪ ℂ", "real part of a holomorphic function", "continuity of tsum"],
+    "prerequisites": ["real/complex coercions", "power series over ℝ"]
   },
   {
-    "id": "ann-euler",
+    "id": "ann-euler-formula",
     "proofId": "euler-identity-oq-01-oq-02",
     "range": {
       "startLine": 66,
-      "endLine": 73
+      "endLine": 69
     },
     "type": "concept",
-    "title": "Euler's Formula and Identity",
-    "content": "euler_formula (e^{ix} = cos x + sin x·i) and euler_identity (e^{iπ} = −1) close the chain. Euler's identity is the value of the exponential at x = π, equivalently cos π = −1 and sin π = 0. Together with the power series and exponential definitions, this entry assembles the trigonometric–exponential dictionary: definition (via exp) → series (Taylor) → identity (e^{iπ} = −1)."
+    "title": "Euler's Formula",
+    "content": "euler_formula states e^{ix} = cos x + sin x·i, the inverse of the exponential definitions: where cos_eq_exp/sin_eq_exp extract cos and sin from the exponential, this reassembles them. In Mathlib it is Complex.exp_mul_I. It is the keystone of the trigonometric–exponential dictionary: every trig identity (addition formulas, double-angle, De Moivre) becomes an algebraic identity about exponentials once Euler's formula is available.",
+    "mathContext": "$e^{ix} = \\cos x + i\\,\\sin x$",
+    "significance": "key",
+    "relatedConcepts": ["complex exponential", "unit circle", "De Moivre's theorem", "trigonometric addition formulas", "polar form"],
+    "prerequisites": ["complex exponential", "exponential definitions of cos/sin"]
+  },
+  {
+    "id": "ann-euler-identity",
+    "proofId": "euler-identity-oq-01-oq-02",
+    "range": {
+      "startLine": 71,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Euler's Identity",
+    "content": "euler_identity is e^{iπ} = −1 (Mathlib: Complex.exp_pi_mul_I), the value of Euler's formula at x = π, where cos π = −1 and sin π = 0. Often written e^{iπ} + 1 = 0, it links the five constants e, i, π, 1, 0 and the operations of addition, multiplication, and exponentiation in a single equation. Geometrically it says the exponential map carries iπ to the antipode of 1 on the unit circle: a half-turn.",
+    "mathContext": "$e^{i\\pi} = -1 \\quad\\Longleftrightarrow\\quad e^{i\\pi} + 1 = 0$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's formula", "unit circle", "the constant π", "roots of unity", "the exponential map of S¹"],
+    "prerequisites": ["Euler's formula", "values cos π = −1, sin π = 0"]
   }
 ]

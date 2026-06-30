@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cfs-oq0102-ann-docstring",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 51 },
+    "type": "context",
+    "title": "The FIP dual of compactness and why this is a non-wrapper",
+    "content": "The module docstring frames the goal: the open-cover characterization of compactness dualises, by complementing every open set, to the finite intersection property (FIP) — a set is compact iff every closed family whose finite subfamilies all meet the set has its whole intersection meet the set. The headline payoff is Cantor's intersection theorem. Crucially, Mathlib's ready-made nonempty_iInter_of_sequence_nonempty_isCompact_isClosed is deliberately never invoked; Cantor is rebuilt by hand from the FIP dual, mirroring the parent entry's by-hand derivations from finite subcovers.",
+    "mathContext": "$s$ compact $\\iff$ for every closed family $(t_i)$, if $s\\cap\\bigcap_{i\\in v}t_i\\neq\\varnothing$ for every finite $v$, then $s\\cap\\bigcap_i t_i\\neq\\varnothing$.",
+    "significance": "context",
+    "relatedConcepts": ["finite intersection property", "compactness duality", "Cantor's intersection theorem", "Heine-Borel"],
+    "prerequisites": ["open-cover compactness", "closed sets and complements"]
+  },
+  {
+    "id": "cfs-oq0102-ann-fip-char",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 61, "endLine": 71 },
+    "type": "concept",
+    "title": "The finite-intersection characterisation of compactness",
+    "content": "compact_iff_finite_subfamily_closed records the FIP characterisation: IsCompact s iff for every family of closed sets whose total intersection avoids s, some finite subfamily intersection already avoids s. It is a direct re-export of Mathlib's isCompact_iff_finite_subfamily_closed, recorded here as the explicit closed-set dual of the parent entry's open-cover headline compact_iff_finite_subcover — the contrapositive of 'every open cover has a finite subcover'.",
+    "mathContext": "$\\text{IsCompact }s\\iff\\forall\\text{ closed }(t_i),\\; s\\cap\\bigcap_i t_i=\\varnothing\\;\\Rightarrow\\;\\exists\\text{ finite }u,\\; s\\cap\\bigcap_{i\\in u}t_i=\\varnothing.$",
+    "significance": "supporting",
+    "relatedConcepts": ["finite intersection property", "closed sets", "compactness characterization", "duality by complementation"],
+    "prerequisites": ["compactness via finite subcovers", "De Morgan / complementation"]
+  },
+  {
+    "id": "cfs-oq0102-ann-fip-nonempty",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 81 },
+    "type": "technique",
+    "title": "The nonempty form of the FIP dual — the engine",
+    "content": "compact_inter_iInter_nonempty exposes the everyday nonempty form: to meet the intersection of a closed family, a compact set s need only meet every finite subfamily. This is Mathlib's IsCompact.inter_iInter_nonempty, and it is precisely the lemma Cantor's theorem is built from — the finite-intersection check (one finite subfamily at a time) is upgraded to a statement about the whole, possibly infinite, intersection.",
+    "mathContext": "$s$ compact, $t_i$ closed, $\\;\\forall v\\text{ finite},\\, s\\cap\\bigcap_{i\\in v}t_i\\neq\\varnothing\\;\\Rightarrow\\; s\\cap\\bigcap_i t_i\\neq\\varnothing.$",
+    "significance": "key",
+    "relatedConcepts": ["finite intersection property", "compactness", "nonempty intersection"],
+    "prerequisites": ["compactness", "intersections of set families"]
+  },
+  {
+    "id": "cfs-oq0102-ann-cantor-compact",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 85, "endLine": 108 },
+    "type": "insight",
+    "title": "Cantor's intersection theorem, by hand from the FIP dual",
+    "content": "cantor_inter_of_isCompact is the substance: a decreasing sequence of nonempty closed subsets of a compact s has nonempty intersection. The proof verifies the finite intersection property and feeds it to compact_inter_iInter_nonempty. The genuine content is antitone bookkeeping: for a finite index set v, the largest index m = v.max' satisfies t m ⊆ t i for all i ∈ v (Finset.le_max' + Antitone), so t m ⊆ ⋂_{i∈v} t i (subset_iInter₂), and t m ⊆ s; since t m is nonempty, s ∩ ⋂_{i∈v} t i is nonempty. The empty-v case reduces to t 0 ⊆ s. The FIP dual then returns a point of s ∩ ⋂ t, and inter_eq_right (using ⋂ t ⊆ t 0 ⊆ s) places it in ⋂ t.",
+    "mathContext": "For finite $v$: $t_{\\max v}\\subseteq\\bigcap_{i\\in v}t_i$ by antitonicity; nonemptiness of $t_{\\max v}\\subseteq s$ gives the FIP, hence $\\bigcap_n t_n\\neq\\varnothing.$",
+    "significance": "key",
+    "relatedConcepts": ["Cantor's intersection theorem", "antitone sequence", "Finset.max'", "nested compacts", "finite intersection property"],
+    "prerequisites": ["antitone functions", "finite sets and their maxima", "the FIP dual"]
+  },
+  {
+    "id": "cfs-oq0102-ann-cantor-space",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 110, "endLine": 115 },
+    "type": "concept",
+    "title": "The compact-space corollary",
+    "content": "cantor_inter specializes the compact-set theorem to a CompactSpace X by taking the ambient set s = univ: a decreasing sequence of nonempty closed sets in a compact space has nonempty intersection. The hypothesis t n ⊆ s becomes vacuous (subset_univ) and isCompact_univ supplies compactness. Working with a compact ambient set rather than a compact space in the main theorem is strictly more flexible and recovers the space version instantly.",
+    "mathContext": "$X$ compact, $t_n$ closed nonempty decreasing $\\Rightarrow\\bigcap_n t_n\\neq\\varnothing$; obtained from the compact-set form with $s=\\text{univ}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["CompactSpace", "isCompact_univ", "Cantor's intersection theorem"],
+    "prerequisites": ["compact spaces", "the universal set"]
+  },
+  {
+    "id": "cfs-oq0102-ann-instance",
+    "proofId": "compactness-finite-subcover-oq-01-oq-02",
+    "range": { "startLine": 119, "endLine": 133 },
+    "type": "definition",
+    "title": "A concrete nested-interval instance over ℝ",
+    "content": "The closing example instantiates the compact-set theorem at the nested intervals [0, 1/(n+1)] inside the compact ambient Icc 0 1. Antitonicity is Set.Icc_subset_Icc_right with the endpoint inequality 1/(m+1) ≤ 1/(n+1) discharged by gcongr; closedness is isClosed_Icc; nonemptiness uses 0 ∈ [0, 1/(n+1)] (positivity). The intersection is nonempty — in fact exactly {0}, the subject of the entry's first open question. Without compactness the conclusion would fail: the nested closed sets [n, ∞) are decreasing and nonempty yet have empty intersection.",
+    "mathContext": "$\\bigcap_{n}\\,[0,\\tfrac{1}{n+1}]=\\{0\\}\\neq\\varnothing$ in $\\mathbb{R}$, with ambient compact $[0,1]$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nested intervals", "isCompact_Icc", "gcongr", "real analysis", "shrinking intervals"],
+    "prerequisites": ["closed intervals in ℝ", "compactness of [a,b]"]
+  }
+]
