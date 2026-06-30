@@ -1,0 +1,77 @@
+[
+  {
+    "id": "collatzoq02-header",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Module Header and Honest Scope",
+    "content": "The Collatz map sends $n \\mapsto n/2$ when $n$ is even and $n \\mapsto 3n+1$ when $n$ is odd. A non-trivial cycle (other than $1 \\to 4 \\to 2 \\to 1$) with $J$ odd (tripling) steps and $M$ even (halving) steps must satisfy the halving constraint $3^J < 2^M$, established in `CollatzCycles.lean` and generalized in `collatz-cycles-oq-04`. This file upgrades the *specific* minimal-halving ladder (proved only for $J = 1,2,3,4$) into a *uniform* logarithmic bound valid for all $J$. The docstring is explicit about scope: this is the elementary logarithmic core, NOT Eliahou's full numerical bound (length $\\geq 17{,}087{,}915$), which additionally requires the continued-fraction expansion of $\\log_2 3$.",
+    "mathContext": "Halving constraint: $3^J < 2^M$ for any non-trivial cycle with $J$ odd steps, $M$ even steps; total length $L = M + J$.",
+    "significance": "context",
+    "relatedConcepts": ["Collatz conjecture", "3x+1 problem", "cycle length", "Eliahou's theorem", "dynamical systems"],
+    "prerequisites": ["the Collatz map", "the notion of a periodic cycle"]
+  },
+  {
+    "id": "collatzoq02-logbound",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 37,
+      "endLine": 51
+    },
+    "type": "theorem",
+    "title": "The Sharp Logarithmic Halving Bound",
+    "content": "`halvings_gt_logb` derives $M > J \\cdot \\log_2 3$ from the halving constraint $3^J < 2^M$. The proof casts the natural-number inequality to $\\mathbb{R}$ with `push_cast`, then applies strict monotonicity of $\\log_2$ (`Real.logb_lt_logb`, valid since base $2 > 1$). Rewriting with `logb_pow` turns $\\log_2(3^J)$ into $J \\cdot \\log_2 3$ and $\\log_2(2^M)$ into $M \\cdot \\log_2 2$, and `logb_self_eq_one` collapses $\\log_2 2 = 1$, leaving exactly $J \\cdot \\log_2 3 < M$. The constant $\\log_2 3 \\approx 1.585$ is sharp — it is the exact exponential growth rate of $3^J$ relative to base 2.",
+    "mathContext": "$3^J < 2^M \\implies \\log_2(3^J) < \\log_2(2^M) \\implies J\\log_2 3 < M$, with $\\log_2 3 = 1.58496\\ldots$",
+    "significance": "key",
+    "relatedConcepts": ["base-2 logarithm", "monotonicity of log", "logb_pow", "exponential growth rate"],
+    "prerequisites": ["properties of logarithms", "strict monotonicity", "casting ℕ to ℝ in Lean"]
+  },
+  {
+    "id": "collatzoq02-ceiling",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "Integer Halving Bound via Ceiling",
+    "content": "`halvings_ge_ceil` sharpens the real-valued bound to the integer statement $M \\geq \\lceil J \\cdot \\log_2 3 \\rceil_+$. Because $M$ is a natural number and strictly exceeds the real $J \\cdot \\log_2 3$, it must be at least the ceiling; `Nat.ceil_le` packages exactly this. Evaluating the ceiling at small $J$ recovers every entry of the original ladder: $J=1 \\to \\lceil 1.585 \\rceil = 2$, $J=2 \\to \\lceil 3.170 \\rceil = 4$, $J=3 \\to \\lceil 4.755 \\rceil = 5$, $J=4 \\to \\lceil 6.340 \\rceil = 7$. The finite ladder is thus subsumed as special cases of one uniform theorem.",
+    "mathContext": "$M \\in \\mathbb{N},\\ M > J\\log_2 3 \\implies M \\geq \\lceil J\\log_2 3 \\rceil_+$; e.g. $J{=}3 \\Rightarrow M \\geq 5$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ceiling function", "Nat.ceil_le", "specialization of a general bound"],
+    "prerequisites": ["the ceiling function ⌈·⌉₊", "ℕ vs ℝ inequalities"]
+  },
+  {
+    "id": "collatzoq02-length",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "General Cycle-Length Lower Bound",
+    "content": "`cycle_length_gt` converts the halving bound into a bound on the total cycle length $L = M + J$: namely $L > J \\cdot \\log_2 6 \\approx 2.585 \\cdot J$. The key algebraic step is $\\log_2 6 = \\log_2(3 \\cdot 2) = \\log_2 3 + \\log_2 2 = \\log_2 3 + 1$ (via `logb_mul` and `logb_self_eq_one`). Then $J \\log_2 6 = J \\log_2 3 + J < M + J = L$ follows by `linarith` from `halvings_gt_logb`. This exhibits the cycle length as growing at least linearly in the number of odd steps, with the explicit slope $\\log_2 6$.",
+    "mathContext": "$\\log_2 6 = 1 + \\log_2 3 \\approx 2.585$; $L = M + J > J\\log_2 3 + J = J\\log_2 6$.",
+    "significance": "key",
+    "relatedConcepts": ["logarithm of a product", "linear growth", "linarith", "cycle length"],
+    "prerequisites": ["logarithm addition law", "linear arithmetic over ℝ"]
+  },
+  {
+    "id": "collatzoq02-elementary",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Elementary Log-Free Corollaries",
+    "content": "Two weaker but fully elementary bounds avoid logarithms entirely. `halvings_gt_odd_steps` proves $M > J$ from $2^J \\leq 3^J < 2^M$ using monotonicity of $n \\mapsto 2^n$ (`Nat.pow_lt_pow_iff_right`) — there are strictly more halvings than triplings. `cycle_length_ge_two_mul` then gives $L = M + J \\geq 2J + 1$ by `omega`: a non-trivial cycle is more than twice as long as its number of odd steps. These trade the sharp slope $\\log_2 6 \\approx 2.585$ for the cruder slope $2$, but require no real-analysis — useful when only integer reasoning is available.",
+    "mathContext": "$2^J \\le 3^J < 2^M \\implies J < M \\implies L = M + J \\ge 2J + 1$ (slope 2 vs. sharp $\\log_2 6$).",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity of exponentials", "omega tactic", "elementary vs analytic proofs"],
+    "prerequisites": ["natural-number exponentiation", "the omega decision procedure"]
+  }
+]

@@ -92,67 +92,123 @@
   "sections": [
     {
       "id": "integer-bound",
-      "title": "The Key Integer Bound",
-      "startLine": 62,
-      "endLine": 134,
-      "summary": "Proves padicNorm p n ≥ 1/n for nonzero natural n — the Archimedean Complement Lemma. Three lemmas: the natural number version (padicNorm_nat_ge_inv), the integer version (padicNorm_int_ge_inv), and a corollary (padicNorm_nat_mul_self_ge_one).",
+      "title": "Part I: The Key Integer Bound",
+      "startLine": 1,
+      "endLine": 121,
+      "summary": "Module docstring, imports, and Part I: proves padicNorm p n ≥ 1/n for nonzero natural n — the Archimedean Complement Lemma in its raw form. Three results: the natural-number version padicNorm_nat_ge_inv (the heart of the proof), the integer version padicNorm_int_ge_inv via natAbs, and the corollary padicNorm_nat_mul_self_ge_one.",
       "mathContext": "Key proof: n = p^v · m with m coprime to p → p^v | n → n ≥ p^v → padicNorm p n = p^{-v} ≥ 1/n. Uses `pow_padicValNat_dvd` (Mathlib) + `one_div_le_one_div_of_le`."
     },
     {
       "id": "archimedean-complement",
-      "title": "The Archimedean Complement Lemma",
-      "startLine": 117,
-      "endLine": 145,
-      "summary": "Clean statement of the main inequality with the upper bound padicNorm p n ≤ 1 (from Mathlib's padicNorm.of_nat), giving complete bounds 1/n ≤ padicNorm p n ≤ 1.",
+      "title": "Part II: The Archimedean Complement Lemma (Isolated)",
+      "startLine": 122,
+      "endLine": 149,
+      "summary": "Re-states the key inequality as archimedean_complement and pairs it with the Mathlib upper bound padicNorm_int_le_one (padicNorm.of_nat), then bundles both as padicNorm_nat_bounds giving complete bounds 1/n ≤ padicNorm p n ≤ 1.",
       "mathContext": "Combined bounds: the p-adic norm of a nonzero natural n lies in [1/n, 1]. This interval shrinks as n grows, but equality 1/n = padicNorm p n holds exactly when n = p^k."
     },
     {
       "id": "poly-eval-bound",
-      "title": "Polynomial Evaluation Bound",
-      "startLine": 151,
-      "endLine": 180,
-      "summary": "Statement and proof for the bound |f(r/s)|_p ≥ C / H(r/s)^d. Proved via trivial witness: take C = padicNorm p (f(r/s)) * H^d, giving C/H^d = padicNorm p (f(r/s)) by div_self.",
-      "mathContext": "For f ∈ ℤ[X] of degree d: the rational evaluation f̄(r/s) (where f̄ = f.map(ℤ→ℚ)) satisfies |f̄(r/s)|_p ≥ C / max(|r|,|s|)^d. Proved with trivial witness C = |f̄(r/s)|_p * H^d."
+      "title": "Part III: Polynomial Evaluation Bound",
+      "startLine": 150,
+      "endLine": 196,
+      "summary": "Defines naiveHeight and intPairHeight (max of |num|,|den|) with positivity naiveHeight_pos, then proves padicNorm_poly_eval_bound: |f̄(r/s)|_p ≥ C/H^d. Here the witness is trivial (C = |f̄(r/s)|_p · H^d, closed by div_self); the genuinely uniform witness comes later in Part IV.9.",
+      "mathContext": "For f ∈ ℤ[X] of degree d: the rational evaluation f̄(r/s) (where f̄ = f.map(ℤ→ℚ)) satisfies |f̄(r/s)|_p ≥ C / max(|r|,|s|)^d. Proved with trivial witness C = |f̄(r/s)|_p · H^d."
     },
     {
       "id": "padic-liouville-def",
-      "title": "P-adic Liouville Condition",
-      "startLine": 184,
-      "endLine": 207,
-      "summary": "Definition of IsPadicLiouville using height max(|r|,|s|) with mathematical justification for why height replaces denominator in the p-adic setting.",
-      "mathContext": "α ∈ ℚ_[p] is p-adically Liouville if ∀ n, ∃ r/s with ‖α - r/s‖_p < 1/H^n where H = max(|r|,|s|). The height appears because v_p(r/s) = v_p(r) - v_p(s) involves both r and s."
+      "title": "Part IV: P-adic Liouville Condition",
+      "startLine": 197,
+      "endLine": 228,
+      "summary": "Defines IsPadicLiouville using height max(|r|,|s|), coprimality, height ≥ 2, and strict positivity 0 < ‖β - r/s‖ (mirroring Mathlib's Liouville to exclude the trivial r/s = β witness). Extracts the smallness/positivity form via isPadicLiouville_forall.",
+      "mathContext": "β ∈ ℚ_[p] is p-adically Liouville if ∀ n, ∃ coprime r/s with H ≥ 2 and 0 < ‖β - r/s‖_p < 1/H^n where H = max(|r|,|s|). The height appears because v_p(r/s) = v_p(r) - v_p(s) involves both r and s."
+    },
+    {
+      "id": "norm-transport",
+      "title": "Part IV.5: Norm Transport Between ℚ and ℚ_[p]",
+      "startLine": 229,
+      "endLine": 277,
+      "summary": "Discharges bridge ingredient (1), norm compatibility. norm_rat_eq_padicNorm wraps Mathlib's padicNormE.eq_padicNorm (‖(q:ℚ_[p])‖ = padicNorm p q); padic_eval_int_poly_cast transports integer-polynomial evaluation through ratCast (via Polynomial.aeval_algHom_apply); padic_norm_int_poly_eval combines them so the Part III bound bridges into ℚ_[p].",
+      "mathContext": "Ingredient (1): ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, lifting the rational p-adic estimates of Parts I–III into the analytic field ℚ_[p]."
+    },
+    {
+      "id": "height-bound",
+      "title": "Part IV.7: P-adic Height Bound on Rationals",
+      "startLine": 278,
+      "endLine": 359,
+      "summary": "Discharges bridge ingredient (2a), the height upper bound. padicNorm_rat_int_div_le_natAbs gives padicNorm p (r/s) ≤ |s| (the dual face of the Archimedean Complement, via padicNorm.div + padicNorm.of_int), padicNorm_rat_int_div_le_height upgrades to max(|r|,|s|), and padic_norm_int_div_le_height ports it to ℚ_[p] using padic_norm_intCast_eq_padicNorm.",
+      "mathContext": "Ingredient (2a): ‖(r:ℚ_[p])/s‖ ≤ H = max(|r|,|s|). The denominator's p-adic norm is ≤ 1 for integer s, so dividing only enlarges the norm up to the height."
+    },
+    {
+      "id": "cofactor-bound",
+      "title": "Part IV.8: Polynomial Evaluation Norm Bound in ℚ_[p] (Cofactor Bound)",
+      "startLine": 360,
+      "endLine": 438,
+      "summary": "Discharges bridge ingredient (2b), the cofactor upper bound. Defines coeffNormSum g = ∑ ‖coeff i‖ (with coeffNormSum_nonneg), then padic_polynomial_eval_norm_bound: ‖g.eval x‖ ≤ coeffNormSum · H^(natDegree g) when ‖x‖ ≤ H and 1 ≤ H (triangle + norm-mul + norm-pow + monotonicity). padic_cofactor_bound_rat specializes to rational points via Part IV.7.",
+      "mathContext": "Ingredient (2b): ‖g.eval x‖_p ≤ M · H^(deg g) with M = coeffNormSum p g depending only on g. Bounds the size of the cofactor in the factorization f̄ = (X - α)·g."
+    },
+    {
+      "id": "uniform-lower-bound",
+      "title": "Part IV.9: Uniform Lower Bound on ‖(f.map alg).eval (r/s)‖_p",
+      "startLine": 439,
+      "endLine": 639,
+      "summary": "Supplies bridge ingredient (3), the genuinely uniform polynomial lower bound. Defines intPolyL1 f = ∑|aᵢ| (with intPolyL1_pos) and the homogenized evaluation intPolyHomogEval f r s = ∑ aᵢ·rⁱ·s^(d-i); intPolyHomogEval_cast_eq shows its cast equals sᵈ·f̄(r/s), and intPolyHomogEval_natAbs_le bounds it by intPolyL1·H^d. The capstone padicNorm_int_poly_eval_uniform_lb gives 1/(intPolyL1 f · H^d) ≤ padicNorm p (f̄(r/s)) — witness uniform in r,s, replacing Part III's trivial witness.",
+      "mathContext": "Ingredient (3): padicNorm p (f̄(r/s)) ≥ 1/(intPolyL1 f · H^d) with constant depending only on f. Built from N = sᵈ·f̄(r/s) ∈ ℤ via the Archimedean Complement |N|_p ≥ 1/|N| and |N| ≤ intPolyL1 f · H^d."
+    },
+    {
+      "id": "bridge-algebraic-case",
+      "title": "Part IV.10: Algebraic Case of the Bridge",
+      "startLine": 640,
+      "endLine": 819,
+      "summary": "Proves padic_liouville_bridge_algebraic_case: when f̄(r/s) ≠ 0 over ℚ, the factorization f̄(x) = (x - α)·g(x) gives ‖α - r/s‖ = ‖f̄(r/s)‖/‖g(r/s)‖, and combining the uniform lower bound (Part IV.9) on the numerator with the cofactor upper bound (Part IV.8) on g yields ‖α - r/s‖ ≥ 1/(L·M·H^(2d)). All ingredients are in-file, no axioms.",
+      "mathContext": "Algebraic branch: f̄(r/s) ≠ 0 ⇒ ‖α - r/s‖ ≥ 1/(L·M·H^(2d)) with L = intPolyL1 f, M = coeffNormSum p g. The exponent doubling 2d comes from the cofactor weakening deg g ≤ d."
+    },
+    {
+      "id": "bridge-rational-roots-case",
+      "title": "Part IV.11: Rational-Roots Case for the Bridge",
+      "startLine": 820,
+      "endLine": 900,
+      "summary": "Proves padic_liouville_bridge_rational_roots_case: the complementary branch where f̄(r/s) = 0. Forms the finite Finset R' of rational roots of f.map alg' whose ℚ_[p]-image is not α (cardinality ≤ deg f); when nonempty takes δ := R'.inf' (q ↦ ‖α - q‖) > 0 (positivity via Finset.lt_inf'_iff), and δ := 1 vacuously when empty. Yields a uniform δ > 0 separating α from every such root.",
+      "mathContext": "Rational-root branch: f̄(r/s) = 0 ⇒ r/s is a root, and δ ≤ ‖α - r/s‖ where δ = min over the finite root set R' (roots distinct from α). Complements Part IV.10 to exhaust all (r,s)."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 935,
-      "endLine": 1153,
-      "summary": "The bridge theorem padic_liouville_norm_bridge (proved in Session 15 by composing Parts IV.10 and IV.11), the p-adic Liouville estimate padic_liouville_estimate (factor f̄ = (X - C α) · g over ℚ_[p] then apply the bridge), and the main theorem padic_algebraic_not_liouville showing p-adic algebraic numbers are not p-adically Liouville.",
-      "mathContext": "Bridge witness: C' := min(1/(L·M), δ) with L = intPolyL1 f, M = coeffNormSum p g, δ from the rational-roots case. Main theorem: if α is algebraic of degree d with ‖α - r/s‖_p ≥ C/H^(2d) (now proved) but also ‖α - r/s‖_p < 1/H^n for all n (Liouville condition), then C·H^n < H^(2d) for all n — contradicted by taking n large."
+      "title": "Part V: Main Theorem",
+      "startLine": 901,
+      "endLine": 1137,
+      "summary": "The bridge theorem padic_liouville_norm_bridge — fully proved in Session 15 (no axiom, no sorry) by the min-witness C' := min(1/(L·M), δ) and a single ℚ-decidable case split on f̄(r/s) ?= 0 composing Parts IV.10 and IV.11. Then padic_liouville_estimate factors f̄ = (X - C α)·g over ℚ_[p] and applies the bridge, and padic_algebraic_not_liouville derives the contradiction showing p-adic algebraic numbers are not p-adically Liouville.",
+      "mathContext": "Bridge witness C' := min(1/(L·M), δ). Main theorem: if α is algebraic of degree d with ‖α - r/s‖_p ≥ C/H^(2d) (now proved) but also ‖α - r/s‖_p < 1/H^n for all n (Liouville condition), then C·H^n < H^(2d) for all n — contradicted by taking n large."
     },
     {
       "id": "function-field",
-      "title": "Function Field Analog",
-      "startLine": 273,
-      "endLine": 302,
-      "summary": "Discussion of the F_q(t) analog: the same proof works with the t-adic absolute value, with deg(P) replacing v_p(P/P') and q^{deg} replacing p^v.",
-      "mathContext": "Over F_q(t), the Archimedean Complement Lemma becomes |P|_t ≥ q^{-deg(P)} for nonzero P ∈ F_q[t]. This is the same proof with polynomial degree playing the role of p-adic valuation."
+      "title": "Part VI: Function Field Analog",
+      "startLine": 1138,
+      "endLine": 1170,
+      "summary": "Docstring discussion of the F_q(t) analog: with the t-adic absolute value |·|_t and F_q[[t]] as the ring of integers, the Archimedean Complement Lemma becomes |P|_t ≥ q^{-deg P} for nonzero P ∈ F_q[t], and the same proof strategy yields |α - P/Q|_t ≥ C/max(q^{deg P}, q^{deg Q})^d.",
+      "mathContext": "Over F_q(t): |P|_t ≥ q^{-deg(P)} for nonzero P ∈ F_q[t]. Polynomial degree plays the role of p-adic valuation; the argument transfers verbatim."
     },
     {
       "id": "comparison",
-      "title": "Comparison with Classical Case",
-      "startLine": 304,
-      "endLine": 331,
-      "summary": "Side-by-side comparison of the real and p-adic Liouville theorems explaining why height replaces denominator and what this implies for the strength of the p-adic Liouville condition.",
-      "mathContext": "Real: |α - p/q| ≥ c/|q|^d (denominator bound). P-adic: ‖α - r/s‖_p ≥ c/max(|r|,|s|)^d (height bound). The p-adic Liouville condition is harder to satisfy because H ≥ |s|."
+      "title": "Part VII: Comparison with Classical Case",
+      "startLine": 1171,
+      "endLine": 1200,
+      "summary": "Docstring side-by-side of the real and p-adic Liouville theorems: the real proof uses |nonzero integer| ≥ 1 (Archimedean) to get the denominator bound c/q^d, while the p-adic proof uses |N|_p ≥ 1/|N| (Part I) which forces the numerator — hence the height max(|r|,|s|) — into the estimate. Concludes the p-adic Liouville notion is strictly harder to satisfy.",
+      "mathContext": "Real: |α - p/q| ≥ c/|q|^d (denominator bound). P-adic: ‖α - r/s‖_p ≥ c/max(|r|,|s|)^d (height bound). Since H ≥ |s|, the p-adic Liouville condition is stronger."
     },
     {
       "id": "examples",
-      "title": "Concrete Examples",
-      "startLine": 337,
-      "endLine": 368,
-      "summary": "Five verified examples demonstrating the bounds: (2,6), (5,25) [equality case], (3,7) [coprime case], combined bounds for (2,12).",
-      "mathContext": "padicNorm 2 6 = 1/2 (since 2 | 6 but 4 ∤ 6); padicNorm 5 25 = 1/25 (equality: 25 = 5^2); padicNorm 3 7 = 1 (3 ∤ 7). All verified without sorry."
+      "title": "Part VIII: Concrete Examples",
+      "startLine": 1201,
+      "endLine": 1238,
+      "summary": "Five verified examples for specific primes (instances for Fact (Prime 2/3/5)): example_2_6 (padicNorm 2 6 = 1/2), example_5_25 (equality case 1/25 = 1/25), example_3_7 (coprime case, norm 1), example_upper_bound (padicNorm 2 12 ≤ 1), and example_2_12_bounds (combined 1/12 ≤ padicNorm 2 12 ≤ 1). All sorry-free, instantiating the Part I/II lemmas.",
+      "mathContext": "padicNorm 2 6 = 1/2 (2 | 6 but 4 ∤ 6); padicNorm 5 25 = 1/25 (equality: 25 = 5²); padicNorm 3 7 = 1 (3 ∤ 7). Each verifies 1/n ≤ padicNorm p n with the tight case at n = p^k."
+    },
+    {
+      "id": "development-summary",
+      "title": "Part IX: Sorry/Axiom Summary",
+      "startLine": 1239,
+      "endLine": 1344,
+      "summary": "Closing docstring documenting the session-by-session discharge history (Sessions 9–15) that reduced the proof to 0 sorries and 0 axioms: Session 9 replaced a sorry with the bridge axiom, Sessions 10–14 proved the four structural ingredients (norm transport, height bound, cofactor bound, uniform lower bound) plus the algebraic and rational-roots cases, and Session 15 discharged the bridge from axiom to fully-proved theorem (padic_liouville_norm_bridge, Part V). Note: portions of this in-file log predate the Session-15 discharge and still describe the bridge as an axiom; the current state is axiom-free (see meta status: verified).",
+      "mathContext": "Final state: 0 sorries, 0 axioms. The chain Archimedean Complement → uniform lower bound (IV.9) → algebraic case (IV.10) + rational-roots case (IV.11) → bridge (V) → estimate → main theorem is fully machine-checked."
     }
   ],
   "crossReferences": [

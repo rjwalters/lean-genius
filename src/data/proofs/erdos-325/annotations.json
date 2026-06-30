@@ -16,7 +16,11 @@
       "asymptotics",
       "Waring problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Erdős problem #325 on sums of three k-th powers",
+      "big-O asymptotic density notation",
+      "the atTop filter for limits as x tends to infinity"
+    ]
   },
   {
     "id": "ann-e325-def-sumthree",
@@ -35,7 +39,11 @@
       "existential quantifier",
       "Waring problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over natural numbers",
+      "k-th powers of natural numbers",
+      "Waring-type representations as sums of powers"
+    ]
   },
   {
     "id": "ann-e325-def-counting",
@@ -54,7 +62,11 @@
       "Set.ncard",
       "Set.Iic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.ncard for counting elements of a set",
+      "the interval Set.Iic of integers at most x",
+      "noncomputable definitions relying on choice"
+    ]
   },
   {
     "id": "ann-e325-examples",
@@ -73,7 +85,11 @@
       "computational verification",
       "concrete examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "native_decide for computational verification",
+      "the convention that 0^0 equals 1 in Lean",
+      "concrete sum-of-powers identities like 29 = 3³ + 1³ + 1³"
+    ]
   },
   {
     "id": "ann-e325-main-conjecture",
@@ -92,7 +108,11 @@
       "atTop filter",
       "open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ≫ Vinogradov domination notation",
+      "stating an open conjecture as a Lean axiom",
+      "the growth rate x^{3/k} for k ≥ 3"
+    ]
   },
   {
     "id": "ann-e325-weaker",
@@ -111,7 +131,11 @@
       "weaker conjecture",
       "exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantification over ε > 0",
+      "epsilon-loss in an asymptotic exponent",
+      "the conjectured exponent 3/k"
+    ]
   },
   {
     "id": "ann-e325-wooley",
@@ -130,6 +154,10 @@
       "three cubes",
       "partial result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Trevor Wooley's 2015 bound for sums of three cubes",
+      "the Hardy-Littlewood circle method",
+      "mean value estimates in additive number theory"
+    ]
   }
 ]

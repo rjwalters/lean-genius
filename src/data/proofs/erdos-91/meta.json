@@ -54,46 +54,67 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview, Imports and Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "File header: states Erdős #91 (for large n, optimal minimal-distance n-point sets in ℝ² are non-unique up to similarity), known results (n=3,5 unique; n=4,6-9 non-unique; large n open), imports, and the `Erdos91` namespace."
+    },
+    {
       "id": "distance-defs",
-      "title": "Distance Sets in the Plane",
+      "title": "Part I: Distance Sets in the Plane",
       "startLine": 36,
       "endLine": 66,
       "summary": "Point type, dist function, distinctDistances, numDistinctDistances"
     },
     {
       "id": "optimal",
-      "title": "Optimal Configurations",
+      "title": "Part II: Optimal Configurations",
       "startLine": 67,
       "endLine": 87,
       "summary": "minDistinctDistances and IsOptimal definitions"
     },
     {
       "id": "similarity",
-      "title": "Similarity of Point Sets",
+      "title": "Part III: Similarity of Point Sets",
       "startLine": 88,
       "endLine": 110,
       "summary": "AreSimilar and AreNonSimilar definitions"
     },
     {
       "id": "small-cases",
-      "title": "Small Cases n = 3,4,5,6-9",
+      "title": "Part IV: Small Cases",
       "startLine": 111,
       "endLine": 155,
-      "summary": "Known uniqueness/non-uniqueness results"
+      "summary": "Axiomatized small-n results: n=3 unique (equilateral triangle), n=4 two non-similar optima, n=5 unique (Kovács 2024 pentagon), n=6-9 non-unique."
     },
     {
       "id": "conjecture",
-      "title": "The Conjecture for Large n",
+      "title": "Part V: The Conjecture for Large n",
       "startLine": 156,
       "endLine": 186,
       "summary": "erdos_91_conjecture and strong version (OPEN)"
     },
     {
+      "id": "partial-evidence",
+      "title": "Part VI: Partial Evidence",
+      "startLine": 187,
+      "endLine": 217,
+      "summary": "Proves known_cases combining the n=3 (unique), n=4 (non-unique), and n=5 (unique) results, with a note on the history of the mysterious n=5 case (Kovács 2024)."
+    },
+    {
+      "id": "distinct-distances",
+      "title": "Part VII: Connection to Distinct Distances Problem",
+      "startLine": 218,
+      "endLine": 236,
+      "summary": "Relates to Problem #89 (D(n) = minimum distinct distances) and axiomatizes the Guth-Katz (2015) bounds n/log n ≪ D(n) ≤ c·n/√(log n)."
+    },
+    {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 239,
+      "title": "Part VIII: Summary",
+      "startLine": 237,
       "endLine": 276,
-      "summary": "Combined results and status"
+      "summary": "Combined results and status; proves erdos_91_summary combining the n=4, n=5, and n=6-9 cases, noting the non-monotonic uniqueness pattern."
     }
   ],
   "conclusion": {

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "dm-eval-comp",
+    "proofId": "de-moivre-oq-01-oq-03-oq-02",
+    "range": { "startLine": 45, "endLine": 50 },
+    "type": "theorem",
+    "title": "Evaluation-Map Composition Law C_{mn}(x) = C_m(C_n(x))",
+    "content": "The basic semigroup law in evaluation form, over an arbitrary commutative ring R. Mathlib already proves the polynomial-level identity C_mul: C R (m·n) = (C R m).comp (C R n); this lemma applies Polynomial.eval_comp to turn polynomial composition .comp into function nesting of evaluations. The file deliberately does NOT reprove C_mul — its contribution is exactly the packaging the open question asks for, turning the polynomial identity into the usable map-nesting statement.",
+    "mathContext": "$C_{mn}(x) = C_m\\big(C_n(x)\\big)$",
+    "significance": "critical",
+    "prerequisites": ["Polynomial.Chebyshev.C_mul", "Polynomial.eval_comp", "Chebyshev polynomials of the first kind"],
+    "relatedConcepts": ["Chebyshev composition law", "functional iteration", "polynomial composition .comp", "De Moivre identity"]
+  },
+  {
+    "id": "dm-comm",
+    "proofId": "de-moivre-oq-01-oq-03-oq-02",
+    "range": { "startLine": 52, "endLine": 56 },
+    "type": "theorem",
+    "title": "Commuting Family C_m(C_n x) = C_n(C_m x)",
+    "content": "Commutativity of the Chebyshev maps under composition, derived immediately from the evaluation law applied both ways plus mul_comm on the integer indices (m·n = n·m). This C_a ∘ C_b = C_b ∘ C_a is the algebraic trapdoor behind Chebyshev / Lucas-sequence public-key exchange: two parties applying C_a and C_b in either order reach the same shared value.",
+    "mathContext": "$C_m\\big(C_n(x)\\big) = C_n\\big(C_m(x)\\big)$",
+    "significance": "key",
+    "prerequisites": ["the evaluation composition law", "commutativity of integer multiplication"],
+    "relatedConcepts": ["commuting polynomials", "Chebyshev key exchange", "Ritt's theorem on commuting polynomials", "Lucas sequences"]
+  },
+  {
+    "id": "dm-pow-conjugacy",
+    "proofId": "de-moivre-oq-01-oq-03-oq-02",
+    "range": { "startLine": 58, "endLine": 68 },
+    "type": "theorem",
+    "title": "Power-Map Conjugacy on the Unit Circle z·w = 1",
+    "content": "The genuine structural insight: on the 'unit circle' z·w = 1, the Chebyshev nesting law is the shadow of the power-law (zⁿ)ᵐ = z^{mn}. Both C_{mn}(z+w) and C_m(C_n(z+w)) equal (zⁿ)ᵐ + (wⁿ)ᵐ, because zⁿ·wⁿ = (z·w)ⁿ = 1 keeps the pair on the circle. Reusing the parent identity chebyshevC_eval_add (C_n(z+w) = zⁿ + wⁿ), this exhibits the parametrization z ↦ z + z⁻¹ as a conjugacy carrying the power monoid n ↦ (·ⁿ) onto the Chebyshev family n ↦ C_n — the abstract reason the C_n compose like exponents.",
+    "mathContext": "$z w = 1 \\;\\Rightarrow\\; C_{mn}(z + w) = (z^n)^m + (w^n)^m = z^{mn} + w^{mn}$",
+    "significance": "critical",
+    "prerequisites": ["the parent identity chebyshevC_eval_add", "exponent laws (zⁿ)ᵐ = z^{mn}", "the substitution z ↦ z + z⁻¹"],
+    "relatedConcepts": ["semiconjugacy", "z + 1/z parametrization", "cos(nθ) via De Moivre", "power monoid", "Dickson polynomials"]
+  },
+  {
+    "id": "dm-end-hom",
+    "proofId": "de-moivre-oq-01-oq-03-oq-02",
+    "range": { "startLine": 70, "endLine": 109 },
+    "type": "definition",
+    "title": "The Monoid Homomorphism (ℤ, ·) →* (End 𝔽_p, ∘)",
+    "content": "chebyshevEnd p n bundles the evaluation map x ↦ C_n(x) as an element of the composition monoid Function.End (ZMod p). chebyshevHom packages n ↦ chebyshevEnd p n into an actual MonoidHom (ℤ, ·) →* (End (ZMod p), ∘): map_one' is C_1 = X = id (the identity endomorphism), and map_mul' is precisely the evaluation composition law C_{mn} = C_m ∘ C_n. chebyshevEnd_comm restates the commuting family as an equation of endomorphisms. This is the exact 'state it as a monoid homomorphism' deliverable the open question requested; for prime p the image is the commutative submonoid behind Chebyshev key exchange.",
+    "mathContext": "$\\mathrm{chebyshevHom} : (\\mathbb{Z}, \\cdot) \\to^* (\\mathrm{End}\\,\\mathbb{F}_p, \\circ), \\quad n \\mapsto (x \\mapsto C_n(x))$",
+    "significance": "key",
+    "prerequisites": ["Function.End as a composition monoid", "MonoidHom structure (map_one, map_mul)", "ZMod p", "C_one = X"],
+    "relatedConcepts": ["monoid homomorphism", "endomorphism monoid", "structure-preserving packaging", "multiplicative monoid (ℤ, ·)"]
+  },
+  {
+    "id": "dm-finite-field-pow",
+    "proofId": "de-moivre-oq-01-oq-03-oq-02",
+    "range": { "startLine": 111, "endLine": 124 },
+    "type": "theorem",
+    "title": "Power-Map Conjugacy over the Finite Field 𝔽_p",
+    "content": "chebyshevEnd_eval_pow specializes the conjugacy to 𝔽_p = ZMod p with p prime: for z ≠ 0, the nested Chebyshev endomorphism evaluated at the unit-circle point z + z⁻¹ realizes the (m·n)-th power map, equalling (zⁿ)ᵐ + (z⁻ⁿ)ᵐ = z^{mn} + z^{-mn}. This is the step that genuinely needs the field structure — mul_inv_cancel₀ requires z ≠ 0 to be invertible — making 𝔽_p (not just an arbitrary ZMod p) the relevant setting, and matching the cryptographically interesting case.",
+    "mathContext": "$z \\ne 0 \\;\\Rightarrow\\; C_{mn}(z + z^{-1}) = z^{mn} + z^{-mn} \\text{ in } \\mathbb{F}_p$",
+    "significance": "key",
+    "prerequisites": ["mul_inv_cancel₀ (field inverse)", "Fact p.Prime ⟹ ZMod p is a field", "the unit-circle power conjugacy"],
+    "relatedConcepts": ["finite field 𝔽_p", "multiplicative group 𝔽_p^×", "discrete-log trapdoor", "Chebyshev cryptosystem"]
+  }
+]

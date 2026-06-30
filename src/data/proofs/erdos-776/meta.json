@@ -87,41 +87,73 @@
       "id": "preamble",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 27,
+      "endLine": 28,
       "summary": "Module docstring presenting Erdős Problem #776 on antichains with set-size multiplicity constraints. States the key results for $r = 1$ and $r > 1$, references Erdős–Trotter and Griggs. Imports `Finset.Basic`, `Finset.Powerset`, `Order.Antichain`, and `Tactic`. Opens the `Finset` namespace.",
       "mathContext": "Problem: for $r \\geq 2$, determine threshold $N(r)$ such that $\\forall n \\geq N(r)$, the max distinct sizes in a multiplicity-$r$ antichain in $2^{[n]}$ is $n - 3$. Key contrast: $r = 1 \\Rightarrow n - 2$, $r > 1 \\Rightarrow n - 3$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 28,
-      "endLine": 54,
+      "startLine": 29,
+      "endLine": 55,
       "summary": "Defines `SubsetFamily n` as `Finset (Finset (Fin n))`, `IsAntichain` via pairwise non-containment, `distinctSizes` via `Finset.image Finset.card`, `HasMultiplicity F r` requiring each size to appear $\\geq r$ times, and `maxDistinctSizes n r` as the supremum over all valid families.",
       "mathContext": "$\\mathcal{F} \\subseteq 2^{[n]}$, antichain $\\iff \\forall A \\neq B \\in \\mathcal{F}: A \\not\\subseteq B$, $d(\\mathcal{F}) = |\\{|A| : A \\in \\mathcal{F}\\}|$, multiplicity $\\geq r$ $\\iff$ each size appears $\\geq r$ times. $\\text{maxDistinctSizes}(n,r) = \\max_\\mathcal{F} d(\\mathcal{F})$."
     },
     {
       "id": "results",
       "title": "Erdős-Trotter Results",
-      "startLine": 55,
-      "endLine": 82,
+      "startLine": 56,
+      "endLine": 108,
       "summary": "Proves `maxDistinctSizes_le_n_sub_two` (upper bound for r=1 via `Finset.sup_le`). Axiomatizes achievability (`erdos_trotter_r1_achievable`). Combines into `erdos_trotter_r1` theorem. Axiomatizes `erdos_trotter_upper` and `erdos_trotter_achievable` for r>1. Proves `erdos_trotter_exact` via `omega`.",
       "mathContext": "$r = 1$: **Proved** $\\text{max} \\leq n-2$ via `distinctSizes\\_card\\_le\\_n\\_sub\\_two` + `card\\_image\\_le`. Achievability axiomatized. $r > 1$: $\\exists N: n \\geq N \\Rightarrow \\text{max} = n - 3$ **proved** from axiomatized bounds."
     },
     {
       "id": "conjecture",
       "title": "Threshold Conjecture",
-      "startLine": 83,
-      "endLine": 93,
+      "startLine": 109,
+      "endLine": 124,
       "summary": "Axiomatizes `erdos_776_threshold`: for each $r \\geq 2$, there exists a smallest $N(r)$ such that `maxDistinctSizes n r = n - 3` for all $n \\geq N(r)$. The minimality clause ensures $N$ is optimal.",
       "mathContext": "$\\forall r \\geq 2,\\, \\exists N(r) \\text{ minimal}: n \\geq N(r) \\Rightarrow \\text{maxDistinctSizes}(n,r) = n - 3$ and $\\forall M < N(r),\\, \\exists n \\geq M: \\text{maxDistinctSizes}(n,r) \\neq n - 3$."
     },
     {
-      "id": "structural",
-      "title": "Structural Observations",
-      "startLine": 94,
-      "endLine": 118,
-      "summary": "Proves Sperner's theorem via Mathlib bridge, the middle layer antichain (constructing powersetCard family), the size-variety tradeoff ($|\\mathcal{F}| \\geq r \\cdot d$) via partition counting, and 5 structural lemmas: empty/full set exclusion from antichains, same-size antichain property, and size-0/size-n exclusion from distinct sizes.",
-      "mathContext": "Sperner: $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2\\rfloor}$. Middle layer: $d = 1$, $|\\mathcal{F}| = \\binom{n}{\\lfloor n/2\\rfloor}$. Tradeoff: $|\\mathcal{F}| \\geq r \\cdot d$. Structural: $|F| > 1 \\Rightarrow 0, n \\notin \\text{distinctSizes}(F)$."
+      "id": "structural-observations",
+      "title": "Structural Observations: Sperner, Middle Layer, Size–Variety Tradeoff",
+      "startLine": 125,
+      "endLine": 209,
+      "summary": "Sperner-type structural results: sperner_theorem (via Mathlib's antichain cardinality bound), middle_layer_antichain (the middle binomial layer is a maximum antichain), and size_variety_tradeoff (a multiplicity-r antichain with d distinct sizes has |F| ≥ r·d, by partition counting).",
+      "mathContext": "Sperner: |F| ≤ C(n, ⌊n/2⌋). Middle layer: d = 1 with |F| = C(n, ⌊n/2⌋). Size–variety tradeoff: a multiplicity-r antichain with d distinct sizes needs |F| ≥ r·d."
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas for Axiom Elimination",
+      "startLine": 210,
+      "endLine": 286,
+      "summary": "Structural lemmas decomposing the path toward proving the Erdős–Trotter known-result axioms: empty_not_in_nontrivial_antichain and univ_not_in_nontrivial_antichain (∅ and the full set cannot belong to a nontrivial antichain), same_size_is_antichain (a same-size family is an antichain), and zero_not_in_antichain_sizes / n_not_in_antichain_sizes (sizes 0 and n are excluded from the distinct-size set).",
+      "mathContext": "For an antichain F with |F| > 1: ∅, [n] ∉ F, so 0, n ∉ distinctSizes(F). These exclusions are the combinatorial steps toward the n − 2 upper bound, narrowing what the axiomatized achievability/upper-bound results assume."
+    },
+    {
+      "id": "complement-restriction",
+      "title": "Complement Restriction Lemma",
+      "startLine": 287,
+      "endLine": 411,
+      "summary": "The complement-restriction argument toward axiom elimination. size1_and_complement_pair_only (n ≥ 3) constrains a size-1 set and its complement, and distinctSizes_card_le_n_sub_two (n ≥ 4) proves the distinct-size count is at most n − 2 — the machine-checked core of the r = 1 upper bound.",
+      "mathContext": "distinctSizes_card_le_n_sub_two: for an antichain in 2^[n] with n ≥ 4, |distinctSizes(F)| ≤ n − 2, the proved content behind maxDistinctSizes_le_n_sub_two, narrowing the gap to the achievability axiom."
+    },
+    {
+      "id": "concrete-achievability",
+      "title": "Concrete Achievability — Base Cases n = 4 and n = 5",
+      "startLine": 412,
+      "endLine": 535,
+      "summary": "Concrete achievability base cases. Helper lemmas isAntichainFamily_pair, isAntichainFamily_triple, and hasMultiplicity_one build small antichains. Explicit witnesses witness4 / witness5 with proofs witness4_antichain, witness4_distinct_two, witness5_antichain, witness5_distinct_three give maxDistinctSizes 4 1 ≥ 2 and maxDistinctSizes 5 1 ≥ 3 (erdos_trotter_r1_achievable_n4 / _n5).",
+      "mathContext": "Concrete instances of the achievability bound maxDistinctSizes n 1 ≥ n − 2: explicit families on [4] and [5] realizing 2 and 3 distinct sizes, discharging the n = 4, 5 cases of the otherwise-axiomatized achievability."
+    },
+    {
+      "id": "concrete-equality",
+      "title": "Concrete Equality Instances",
+      "startLine": 536,
+      "endLine": 558,
+      "summary": "Concrete equality instances combining the proved upper bound with the base-case achievability: erdos_trotter_r1_n4 (maxDistinctSizes 4 1 = 2) and erdos_trotter_r1_n5 (maxDistinctSizes 5 1 = 3).",
+      "mathContext": "For n = 4, 5 the r = 1 value maxDistinctSizes n 1 = n − 2 is established unconditionally (no axiom), pinning down the two smallest cases of the Erdős–Trotter r = 1 formula."
     }
   ],
   "conclusion": {

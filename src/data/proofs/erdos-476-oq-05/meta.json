@@ -91,29 +91,36 @@
       "id": "ap-definition",
       "title": "IsArithmeticProgression Definition",
       "startLine": 52,
-      "endLine": 68,
+      "endLine": 57,
       "summary": "Defines IsArithmeticProgression A a d as A = image of range(|A|) under i \u21a6 a + i\u00b7d. Image-of-range formulation avoids explicit size constraints."
     },
     {
       "id": "ap-infrastructure",
-      "title": "AP Infrastructure: Four Proved Lemmas",
-      "startLine": 69,
-      "endLine": 117,
+      "title": "Basic AP Infrastructure: Four Proved Lemmas",
+      "startLine": 58,
+      "endLine": 98,
       "summary": "shift_card_eq (|B+d| = |B|), isAP_singleton, isAP_pair (uses interval_cases), isAP_shift (uses Finset.image_image + ring). All 0 sorries."
+    },
+    {
+      "id": "ap-sum-infrastructure",
+      "title": "AP Sum Infrastructure",
+      "startLine": 99,
+      "endLine": 486,
+      "summary": "Supporting lemmas for sums of APs: d_ne_zero_of_isAP (nonzero difference), add_isAP_eq, isAP_sum (sumset of two APs with common difference is an AP), isAP_sdiff_card, and vosper_ap_sdiff_card (the AP-extension cardinality identity). All fully proved, 0 sorries."
     },
     {
       "id": "near-periodic-lemma",
       "title": "Key Sublemma: Near-Periodicity Forces AP",
-      "startLine": 118,
-      "endLine": 139,
-      "summary": "ap_of_near_periodic: |B \\ (B+d)| = 1 \u2227 d\u22600 \u2227 |B|<p \u2192 B is AP with difference d. Fully proved via backward-shift induction on |B| using well-founded recursion."
+      "startLine": 487,
+      "endLine": 639,
+      "summary": "zmod_orbit_injective (the orbit map k \u21a6 x\u2080 + k\u00b7d is injective when d\u22600) and ap_of_near_periodic: |B \\ (B+d)| = 1 \u2227 d\u22600 \u2227 |B|<p \u2192 B is AP with difference d. Fully proved via backward-shift induction on |B| using well-founded recursion."
     },
     {
       "id": "vosper-theorem",
       "title": "Vosper's Theorem: Base Case and Full Induction",
-      "startLine": 140,
-      "endLine": 177,
-      "summary": "vosper_base (|A|=2, inclusion-exclusion \u2192 ap_of_near_periodic, fully proved), vosper_ap_sdiff_card (AP extension, fully proved \u2014 Session 20), vosper (strong induction on |A|, 0 sorries, 1 axiom: vosper_case1_exists_large handles the |A|\u22654 or |B|\u22654 case)."
+      "startLine": 640,
+      "endLine": 885,
+      "summary": "vosper_base (|A|=2, inclusion-exclusion \u2192 ap_of_near_periodic, fully proved) and vosper (strong induction on |A|, 0 sorries, 1 axiom: vosper_case1_exists_large handles the |A|\u22654 or |B|\u22654 case)."
     }
   ],
   "leanFile": {

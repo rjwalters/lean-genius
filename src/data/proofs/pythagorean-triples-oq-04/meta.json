@@ -1,0 +1,117 @@
+{
+  "id": "pythagorean-triples-oq-04",
+  "title": "Pythagorean Triples OQ-04: Fermat's Two-Square Theorem for Primes",
+  "slug": "pythagorean-triples-oq-04",
+  "description": "Packages Fermat's theorem on sums of two squares for primes as a clean biconditional: a prime p is a sum of two squares a² + b² iff p ≢ 3 (mod 4). The hard forward direction is Mathlib's Nat.Prime.sq_add_sq (via the Gaussian integers); the elementary mod-4 converse — that a sum of two squares is never 3 mod 4 — is proved from scratch. Includes the p=2 and p≡1 (mod 4) cases and the Brahmagupta–Fibonacci multiplicativity identity. 8 theorems, 0 definitions, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-19",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ04.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "sum-of-two-squares",
+      "fermat",
+      "gaussian-integers",
+      "primes",
+      "modular-arithmetic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-19",
+    "axiomCount": 0,
+    "assumptions": "None. The forward (hard) direction uses Mathlib's Nat.Prime.sq_add_sq; the converse and special cases are proved from scratch. Depends only on propext, Classical.choice, and Quot.sound.",
+    "lineCount": 135,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "originalContributions": [
+      "sq_mod_four: a perfect square is 0 or 1 modulo 4 (proved by interval_cases on n mod 4)",
+      "sum_two_squares_mod_four_ne_three: a sum of two squares is never 3 mod 4 — the elementary converse of Fermat's theorem",
+      "prime_sq_add_sq_iff: the biconditional 'prime p is a sum of two squares ⟺ p ≢ 3 (mod 4)', pairing Mathlib's hard direction with the self-contained converse",
+      "mul_sum_two_squares: the Brahmagupta–Fibonacci identity packaged as 'sums of two squares are closed under multiplication'"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Albert Girard stated in 1625, and Pierre de Fermat claimed in a 1640 letter to Mersenne (his 'Christmas theorem'), that an odd prime is a sum of two squares exactly when it is congruent to 1 modulo 4. Fermat asserted a proof by infinite descent but, as usual, did not record it; the first published proof is due to Euler (1749), who labored on it for seven years. Lagrange, Gauss, and Dedekind later recast the result through the arithmetic of the Gaussian integers ℤ[i], where it becomes the statement that a rational prime p ≡ 1 (mod 4) splits, p = (a+bi)(a−bi). The two-square theorem is the prototype of class-field theory's description of which primes are represented by a quadratic form, and a cousin of Pythagorean triples a² + b² = c², which are the sums of two squares that happen to be perfect squares.",
+    "problemStatement": "Show that a prime p is a sum of two squares a² + b² if and only if p ≢ 3 (mod 4), packaging the deep Gaussian-integer direction together with the elementary mod-4 obstruction, and record the multiplicative structure of sums of two squares.",
+    "text": "A prime p is a sum of two squares iff p = 2 or p ≡ 1 (mod 4). One direction is elementary: any square is 0 or 1 mod 4, so a sum of two squares lies in {0,1,2} mod 4 and can never be 3 — hence no number ≡ 3 (mod 4), prime or not, is a sum of two squares. The converse is the hard theorem of Fermat: every prime p with p ≢ 3 (mod 4) actually is a sum of two squares, proved via unique factorization in ℤ[i] (the relevant prime splits because −1 is a quadratic residue mod p when p ≡ 1 mod 4). The Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² shows the sums of two squares form a multiplicative monoid, which combined with the prime case yields the full characterization of representable integers.",
+    "proofStrategy": "Prove sq_mod_four by reducing n² mod 4 to (n mod 4)² mod 4 via Nat.pow_mod and discharging the four residues with interval_cases. Deduce sum_two_squares_mod_four_ne_three by casing on the two square residues and closing with omega. Assemble prime_sq_add_sq_iff: the converse is this mod-4 obstruction, the forward direction is Mathlib's Nat.Prime.sq_add_sq. Read off the p=2 and p≡1 (mod 4) cases, and wrap Nat.sq_add_sq_mul for the multiplicativity statement.",
+    "keyInsights": [
+      "The 'only if' half of Fermat's theorem is completely elementary — a one-line mod-4 argument — while the 'if' half requires the full arithmetic of the Gaussian integers; isolating them clarifies exactly where the depth lies",
+      "Squares occupy only half the residues mod 4 (just 0 and 1), so a sum of two of them misses 3 entirely — this single congruence is the obstruction that makes the theorem's necessity trivial",
+      "Sums of two squares are closed under multiplication via the Brahmagupta–Fibonacci identity, so the prime case propagates to all integers through their factorizations",
+      "The result is the quadratic-form shadow of splitting in ℤ[i]: p ≡ 1 (mod 4) splits, p ≡ 3 (mod 4) stays inert, and p = 2 ramifies — the three behaviours match 1²+1²=2, representability, and non-representability"
+    ],
+    "prerequisites": [
+      "Modular arithmetic: residues of squares mod 4",
+      "Fermat's theorem on sums of two squares (Nat.Prime.sq_add_sq)",
+      "Gaussian integers ℤ[i] and the splitting of primes (background)",
+      "The Brahmagupta–Fibonacci two-square identity"
+    ]
+  },
+  "conclusion": {
+    "summary": "Fully machine-verified packaging of Fermat's two-square theorem for primes as the biconditional 'prime p is a sum of two squares ⟺ p ≢ 3 (mod 4)'. The elementary converse (a sum of two squares is never 3 mod 4) and the special cases p=2, p≡1 (mod 4) are proved from scratch; the hard direction reuses Mathlib's Gaussian-integer development. The Brahmagupta–Fibonacci identity records closure under multiplication. Zero axioms, zero sorries.",
+    "implications": "Fermat's two-square theorem is the entry point to the theory of representation by binary quadratic forms and to the arithmetic of imaginary quadratic fields. The mod-4 obstruction isolated here is the simplest example of a local obstruction (a congruence condition) deciding a global representability question — the prototype for the Hasse principle. Combined with the multiplicativity identity and the prime characterization, it gives the full description of which positive integers are sums of two squares (those whose prime factors ≡ 3 mod 4 all occur to even powers, Mathlib's Nat.eq_sq_add_sq_iff), with applications to lattice point counting (the Gauss circle problem) and the average number of representations.",
+    "openQuestions": [
+      "Derive the full characterization of sums of two squares directly from the prime case and multiplicativity, matching Nat.eq_sq_add_sq_iff",
+      "Formalize the three-prime trichotomy in ℤ[i]: p ≡ 1 (mod 4) splits, p ≡ 3 (mod 4) is inert, p = 2 ramifies",
+      "Count representations: relate r₂(n) (the number of ways n is a sum of two squares) to the divisors of n via Jacobi's two-square formula",
+      "Extend to sums of three and four squares (Legendre's and Lagrange's theorems) and contrast the obstruction patterns"
+    ]
+  },
+  "leanFile": {
+    "namespace": "PythagoreanTriplesOQ04",
+    "lineCount": 135,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/PythagoreanTriplesOQ04.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "The parent entry studies Pythagorean triples a² + b² = c² — the sums of two squares that are themselves perfect squares. This entry asks the companion question of which primes are sums of two squares, answered by Fermat's theorem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "obstruction",
+      "title": "Part I: The elementary mod-4 obstruction",
+      "startLine": 33,
+      "endLine": 60,
+      "summary": "Proves sq_mod_four (a square is 0 or 1 mod 4, via Nat.pow_mod + interval_cases) and deduces sum_two_squares_mod_four_ne_three: a sum of two squares is never 3 mod 4. Packages the contrapositive: no number ≡ 3 (mod 4) is a sum of two squares. This is the easy half of Fermat's theorem, proved from scratch."
+    },
+    {
+      "id": "biconditional",
+      "title": "Part II: Fermat's theorem for primes",
+      "startLine": 61,
+      "endLine": 86,
+      "summary": "Assembles prime_sq_add_sq_iff: a prime p is a sum of two squares iff p ≢ 3 (mod 4). The forward direction is the mod-4 obstruction; the converse is Mathlib's Nat.Prime.sq_add_sq (the deep Gaussian-integer result). Records the standalone hard direction prime_sq_add_sq."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part III: Special cases",
+      "startLine": 87,
+      "endLine": 102,
+      "summary": "The prime 2 = 1² + 1² and the odd-prime case: every prime p ≡ 1 (mod 4) is a sum of two squares."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Part IV: Multiplicative structure",
+      "startLine": 103,
+      "endLine": 120,
+      "summary": "mul_sum_two_squares wraps the Brahmagupta–Fibonacci identity (Nat.sq_add_sq_mul): the sums of two squares are closed under multiplication, the backbone that propagates the prime case to all integers."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary",
+      "startLine": 121,
+      "endLine": 135,
+      "summary": "Tabulates the results and situates the prime biconditional within the full characterization of sums of two squares (Nat.eq_sq_add_sq_iff)."
+    }
+  ],
+  "sorries": 0
+}

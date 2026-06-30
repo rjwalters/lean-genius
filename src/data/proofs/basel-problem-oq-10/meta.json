@@ -1,0 +1,204 @@
+{
+  "id": "basel-problem-oq-10",
+  "slug": "basel-problem-oq-10",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "BigOperators",
+      "Real",
+      "Finset"
+    ],
+    "namespace": "BaselOQ10",
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BaselProblemOQ10.lean",
+    "sorries": 0
+  },
+  "title": "Leibniz's Series for π — and Why It Is Only Conditional",
+  "description": "The Leibniz–Madhava–Gregory series 1 − 1/3 + 1/5 − 1/7 + ⋯ converges to π/4, but only as an ordered limit of partial sums. The series is conditionally (not absolutely) convergent, so its Mathlib tsum/HasSum value is 0, not π/4 — a subtlety this entry makes precise.",
+  "overview": {
+    "historicalContext": "The alternating series 1 − 1/3 + 1/5 − 1/7 + ⋯ = π/4 is one of the oldest infinite series for π. It was discovered by the Kerala-school mathematician Mādhava of Sangamagrāma around 1400, rediscovered by James Gregory (1671) as a special case of his arctangent series, and published by Gottfried Wilhelm Leibniz in 1676 — hence the name 'Leibniz formula', though 'Madhava–Gregory–Leibniz' is the historically faithful attribution. It is the arctangent Taylor series arctan(x) = x − x³/3 + x⁵/5 − ⋯ evaluated at x = 1, where arctan(1) = π/4. Famously, the series converges agonizingly slowly: roughly 10^k terms are needed for k correct digits, so it is of theoretical rather than computational interest. Its conditional convergence makes it a classic cautionary example, going back to Dirichlet and Riemann's 19th-century work on rearrangement of series.",
+    "problemStatement": "The naive unconditional reading $\\sum'_{k} \\frac{(-1)^k}{2k+1} = \\frac{\\pi}{4}$ is FALSE in Mathlib. The Leibniz family $k \\mapsto \\frac{(-1)^k}{2k+1}$ is only conditionally convergent — its absolute values $\\frac{1}{2k+1}$ form a divergent harmonic-type series. Since Mathlib's `Summable` / `tsum` / `HasSum` demand unconditional (net) convergence, the family is not `Summable`, and `tsum` returns the junk value $0 \\ne \\pi/4$. The task is to make this precise: prove non-summability, derive the cautionary `tsum = 0` corollaries, and state the correct ordered-limit form.",
+    "proofStrategy": "Four results pin down the situation. (1) `leibniz_tendsto_pi_div_four` re-exports Mathlib's `tendsto_sum_pi_div_four`: the ORDERED partial sums ∑_{i<k} (-1)^i/(2i+1) → π/4. (2) `not_summable_leibniz` is the substantive new lemma: via `summable_abs_iff`, summability over ℝ is equivalent to absolute summability; the absolute values simplify to 1/(2k+1); a comparison `1/(2k+2) ≤ 1/(2k+1)` against the half-harmonic series (which equals ½·∑1/(k+1), a reindexed divergent harmonic series) shows the latter would have to be summable — contradiction with `not_summable_one_div_natCast`. (3) `tsum_leibniz_eq_zero` applies `tsum_eq_zero_of_not_summable`. (4) `tsum_leibniz_ne_pi_div_four` combines 0 ≠ π/4 (positivity) with (3).",
+    "keyInsights": [
+      "The headline lesson is a formalization subtlety, not new mathematics: in Mathlib `tsum`/`HasSum` mean UNCONDITIONAL convergence (convergence of the net over all finite subsets), which for real series coincides with absolute convergence. The Leibniz series, being only conditionally convergent, is therefore NOT `Summable` and its `tsum` is the default junk value 0.",
+      "This is exactly the analytic shadow of the Riemann rearrangement theorem: a conditionally convergent series can be reordered to sum to any value (or diverge), so no order-independent 'sum' exists — which is precisely why the unordered `tsum` cannot equal π/4.",
+      "Non-summability is proved by a comparison MINORANT, not a majorant: to show 1/(2k+1) is non-summable, one bounds it BELOW by the (still divergent) half-harmonic 1/(2k+2); the contrapositive of the comparison test then forces divergence.",
+      "The correct statement is a `Tendsto` of finite partial sums over `range k`, an inherently ORDERED object, contrasting with the order-free `tsum`. The gap between `Tendsto (∑_{i<k})` and `tsum` is the whole point of the entry.",
+      "The badge is 'mathlib' because the convergence π/4 itself is Mathlib's `tendsto_sum_pi_div_four` (proved there via Abel's limit theorem on the arctan series); the original contribution is the negative/cautionary half — the non-summability and the `tsum ≠ π/4` corollaries."
+    ]
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ10.lean",
+    "tags": [
+      "analysis",
+      "infinite-series",
+      "conditional-convergence",
+      "leibniz-formula",
+      "pi",
+      "arctangent",
+      "summability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 93,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "not_summable_leibniz: the Leibniz family (-1)^k/(2k+1) is NOT Summable — its absolute values 1/(2k+1) dominate the divergent half-harmonic series, so convergence is only conditional. This is the substantive new lemma.",
+      "tsum_leibniz_eq_zero: as a consequence, the unconditional tsum ∑' k, (-1)^k/(2k+1) equals the junk value 0, not π/4",
+      "tsum_leibniz_ne_pi_div_four: the naive 'unconditional' reading 1 − 1/3 + 1/5 − ⋯ = π/4 is false (0 ≠ π/4); only the ordered limit holds",
+      "leibniz_tendsto_pi_div_four: the correct statement — the ordered partial sums ∑_{i<k} (-1)^i/(2i+1) converge to π/4 (re-exporting Mathlib's tendsto_sum_pi_div_four)"
+    ],
+    "prerequisites": [
+      "Mathlib's tendsto_sum_pi_div_four (Leibniz series via Abel's theorem on arctan)",
+      "summable_abs_iff: in ℝ, summability is equivalent to absolute summability",
+      "not_summable_one_div_natCast: the harmonic series ∑ 1/n diverges",
+      "Summable.of_nonneg_of_le (comparison test) and summable_nat_add_iff (index shift)",
+      "Parent: basel-problem (∑ 1/n² = π²/6)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "tendsto_sum_pi_div_four",
+        "description": "The ordered partial sums ∑_{i<k} (-1)^i/(2i+1) tend to π/4; proved in Mathlib via Abel's limit theorem applied to the arctan Maclaurin series at x = 1, with arctan 1 = π/4.",
+        "module": "Mathlib.Analysis.Real.Pi.Leibniz"
+      },
+      {
+        "theorem": "summable_abs_iff",
+        "description": "For real-valued families, Summable f ↔ Summable |f|; the bridge that turns the conditional-convergence question into a question about the harmonic-type series of absolute values.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "not_summable_one_div_natCast",
+        "description": "The harmonic series ∑ 1/n diverges (¬ Summable (fun n => 1/n : ℕ → ℝ)); the divergent minorant behind non-summability.",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: The Conditional-Convergence Subtlety",
+      "startLine": 3,
+      "endLine": 33,
+      "summary": "States the open question (formalize the Leibniz series for π/4) and immediately flags the trap: the naive tsum reading is false because the series is only conditionally convergent. Explains that Mathlib's Summable demands unconditional convergence, so the family is not Summable and its tsum is the junk value 0 ≠ π/4. Lists the four results and confirms 0 axioms / 0 sorries.",
+      "mathContext": "$\\sum_k \\frac{(-1)^k}{2k+1} = \\frac{\\pi}{4}$ holds only as $\\lim_k \\sum_{i<k}$; the unordered $\\sum'_k$ is $0$ because the family is not absolutely summable."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and Opens",
+      "startLine": 35,
+      "endLine": 37,
+      "summary": "Opens BaselOQ10 and the Filter, Topology, BigOperators, Real, and Finset namespaces — supplying Tendsto/atTop/𝓝 notation, π, the range-sum notation, and the summability API used throughout.",
+      "mathContext": "Brings `Tendsto`, `atTop`, `𝓝`, `π`, `∑ i ∈ range k`, and `Summable` into scope."
+    },
+    {
+      "id": "correct-form",
+      "title": "leibniz_tendsto_pi_div_four: The Correct (Ordered) Statement",
+      "startLine": 39,
+      "endLine": 44,
+      "summary": "The statement that actually holds: the ordered partial sums ∑_{i<k} (-1)^i/(2i+1) tend to π/4. A direct re-export of Mathlib's tendsto_sum_pi_div_four (proved there via Abel's limit theorem applied to the arctan Maclaurin series at x = 1).",
+      "mathContext": "$\\displaystyle \\lim_{k\\to\\infty} \\sum_{i<k} \\frac{(-1)^i}{2i+1} = \\frac{\\pi}{4} = \\arctan 1$."
+    },
+    {
+      "id": "not-summable",
+      "title": "not_summable_leibniz: The Substantive New Lemma",
+      "startLine": 46,
+      "endLine": 72,
+      "summary": "Proves the Leibniz family is not Summable. Uses summable_abs_iff to reduce to absolute summability; rewrites |(-1)^k/(2k+1)| = 1/(2k+1) via abs_div/abs_pow/abs_neg; then assumes summability and derives a contradiction by a minorant comparison: 1/(2k+2) ≤ 1/(2k+1) would make the half-harmonic series 1/(2k+2) summable, equal (after scaling by 2 and reindexing) to the harmonic series ∑1/n, contradicting not_summable_one_div_natCast.",
+      "mathContext": "$\\left|\\frac{(-1)^k}{2k+1}\\right| = \\frac{1}{2k+1} \\ge \\frac{1}{2k+2} = \\frac12\\cdot\\frac{1}{k+1}$; the harmonic minorant diverges, so the family is not summable."
+    },
+    {
+      "id": "tsum-zero",
+      "title": "tsum_leibniz_eq_zero: The Junk Value",
+      "startLine": 74,
+      "endLine": 78,
+      "summary": "Because the family is not summable, tsum_eq_zero_of_not_summable gives ∑' k, (-1)^k/(2k+1) = 0 — the default value Mathlib assigns to the tsum of a non-summable family.",
+      "mathContext": "$\\sum'_k \\frac{(-1)^k}{2k+1} = 0$ by the non-summable convention, NOT $\\pi/4$."
+    },
+    {
+      "id": "tsum-ne",
+      "title": "tsum_leibniz_ne_pi_div_four: The Naive Reading Is False",
+      "startLine": 80,
+      "endLine": 88,
+      "summary": "Concludes ∑' k, (-1)^k/(2k+1) ≠ π/4 by rewriting with the junk value 0 and noting 0 < π/4 (positivity) gives 0 ≠ π/4. This is the cautionary punchline: the unconditional reading of the Leibniz formula is literally false in Mathlib's tsum semantics.",
+      "mathContext": "$0 = \\sum'_k \\frac{(-1)^k}{2k+1} \\ne \\frac{\\pi}{4}$ since $\\frac{\\pi}{4} > 0$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "not_summable_leibniz",
+      "type": "main",
+      "description": "The Leibniz family (-1)^k/(2k+1) is not Summable: its absolute values 1/(2k+1) dominate the divergent half-harmonic series, so convergence is only conditional. The substantive original contribution.",
+      "leanType": "¬ Summable (fun k : ℕ => (-1 : ℝ) ^ k / (2 * k + 1))"
+    },
+    {
+      "name": "leibniz_tendsto_pi_div_four",
+      "type": "main",
+      "description": "The correct Leibniz statement: the ordered partial sums ∑_{i<k} (-1)^i/(2i+1) converge to π/4. Re-exports Mathlib's tendsto_sum_pi_div_four.",
+      "leanType": "Tendsto (fun k => ∑ i ∈ range k, (-1 : ℝ) ^ i / (2 * i + 1)) atTop (𝓝 (π / 4))"
+    },
+    {
+      "name": "tsum_leibniz_eq_zero",
+      "type": "corollary",
+      "description": "Because the family is not summable, its tsum collapses to the junk value 0.",
+      "leanType": "∑' k : ℕ, (-1 : ℝ) ^ k / (2 * k + 1) = 0"
+    },
+    {
+      "name": "tsum_leibniz_ne_pi_div_four",
+      "type": "corollary",
+      "description": "The naive unconditional reading 1 − 1/3 + 1/5 − ⋯ = π/4 is false: the tsum is 0 ≠ π/4; only the ordered limit holds.",
+      "leanType": "∑' k : ℕ, (-1 : ℝ) ^ k / (2 * k + 1) ≠ π / 4"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Leibniz–Madhava–Gregory series for π/4 is formalized correctly as an ordered limit of partial sums (Mathlib's tendsto_sum_pi_div_four), together with the substantive negative result that the underlying family is not Summable. The non-summability is proved by a harmonic minorant comparison after reducing to absolute summability. As corollaries, the unordered tsum equals the junk value 0 and is therefore ≠ π/4, so the naive 'unconditional' reading of the formula is literally false. Fully machine-checked, 0 axioms, 0 sorries.",
+    "implications": "The entry sharpens a recurring formalization pitfall: in Mathlib, tsum/HasSum/Summable encode UNCONDITIONAL (net) convergence, which for real series is absolute convergence — so any conditionally convergent series (Leibniz for π/4, the alternating harmonic series for ln 2, etc.) has tsum 0 and must be stated via Tendsto of ordered partial sums. This is the constructive face of the Riemann rearrangement theorem. It also sets up a clean contrast within the Basel cluster: ζ(2) = ∑1/n² = π²/6 is absolutely convergent (its tsum genuinely equals π²/6), whereas the Leibniz series is not.",
+    "openQuestions": [
+      "Quantify the conditional convergence: prove the alternating-series error bound |∑_{i<k} (-1)^i/(2i+1) − π/4| ≤ 1/(2k+1), giving an explicit (slow) rate (tracked as basel-problem-oq-10-oq-01).",
+      "Formalize a Riemann-rearrangement instance for this specific series: exhibit a permutation of ℕ for which the rearranged ordered partial sums converge to a value other than π/4, concretely witnessing why no unconditional sum exists.",
+      "State and prove the analogous cautionary pair for the alternating harmonic series ∑ (-1)^{n+1}/n (ordered limit ln 2, tsum 0), unifying the conditional-convergence pitfall into a reusable lemma.",
+      "Can a `HasSum`-style API over a fixed summation order (e.g. an ordered/Abel-summation typeclass) be introduced so conditionally convergent series have a faithful unconditional-looking statement?"
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "basel-problem-oq-10-oq-01",
+      "question": "Quantify the conditional convergence: prove the alternating-series error bound |∑_{i<k} (-1)^i/(2i+1) − π/4| ≤ 1/(2k+1), giving an explicit (slow) rate for the Leibniz approximation of π/4.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "basel-problem",
+      "relationship": "extends",
+      "description": "Companion to the Basel cluster. Where ζ(2) = ∑ 1/n² = π²/6 is absolutely convergent, the Leibniz series for π/4 is only conditionally convergent — this entry highlights the contrast and the resulting tsum subtlety."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.Real.Pi.Leibniz",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of tendsto_sum_pi_div_four, the ordered-partial-sum form of the Leibniz series for π/4."
+    },
+    {
+      "title": "Leibniz formula for π",
+      "author": "Gottfried Wilhelm Leibniz (also Madhava, Gregory)",
+      "year": "1676",
+      "venue": "Classical",
+      "description": "1 − 1/3 + 1/5 − 1/7 + ⋯ = π/4, the arctangent series at x = 1; convergence is conditional."
+    }
+  ]
+}

@@ -7,10 +7,10 @@
     "author": "Lean Genius Research (researcher-4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pick%27s_theorem",
     "date": "2026-05-12",
-    "status": "formalized",
-    "badge": "original",
+    "status": "axiomatized",
+    "badge": "axiom",
     "proofRepoPath": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "sorries": 0,
     "theoremCount": 63,
     "definitionCount": 27,
@@ -28,7 +28,7 @@
       "translation-invariance",
       "research-scaffold"
     ],
-    "assumptions": [],
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. The credited base-case agreement theorems (unitTriangle_pick_agrees, triangle_2_1_pick_agrees, triangle_3_3_pick_agrees, plus the concrete twiceArea/boundaryCount/realInteriorCount facts) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction and so adds `Lean.ofReduceBool` to `#print axioms`; per the project's native_decide policy this entry is therefore `axiomatized` with meta.axiomCount 1 (`Lean.ofReduceBool`). leanFile.axiomCount stays 0 (it counts literal `axiom` declarations only). The ordinary foundational axioms (propext, Classical.choice, Quot.sound) are not counted. The general primitive-triangle and translation-invariance results in this file do not rely on native_decide.",
     "imports": [
       "Mathlib.Data.Int.GCD",
       "Mathlib.Data.Int.Interval",
@@ -123,10 +123,58 @@
       "endLine": 425,
       "summary": "Three agreement theorems closing the base case of the future Pick induction: `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`, `triangle_3_3_pick_agrees` each prove `(realInteriorCount T : ℚ) = pickInterior T` via `native_decide` (for the count) + `norm_num` (for the rational equality). The 3-by-3 case is the first non-trivial witness: the unique interior point (1,1) satisfies all three cross-product positivity conditions, and no other point in the 4×4 bounding box does. Together, these provide Pick's theorem as a verified computation on three triangles and establish the agreement that S3+ must lift to all primitive triangles via an additivity lemma.",
       "mathContext": "$\\mathrm{realInteriorCount}(T_1) = 0 = \\mathrm{pickInterior}(T_1)$ (unit); $\\mathrm{realInteriorCount}(T_2) = 0 = \\mathrm{pickInterior}(T_2)$ (2-by-1); $\\mathrm{realInteriorCount}(T_3) = 1 = \\mathrm{pickInterior}(T_3)$ (3-by-3, interior point $(1,1)$)."
+    },
+    {
+      "id": "primitive-no-interior",
+      "title": "Section VIII (S3-prep): Primitive Case twiceArea = 1 ⇒ realInteriorCount = 0",
+      "startLine": 426,
+      "endLine": 502,
+      "summary": "Generalizes the concrete base cases to all primitive triangles. `cross2_partition_sum` (partition-sum identity): the three edge cross-products of `T` against any lattice point `p` sum to `T.det` — the discrete analogue of signed-area additivity under triangulation. `primitive_realInteriorCount_zero`: for a primitive triangle (`twiceArea = 1`), the `StrictInterior` predicate fails at every lattice point, so `realInteriorCount T = 0`. Closes with a sanity check reconciling the general statement against the S2 unit-triangle computation.",
+      "mathContext": "Partition-sum: $\\mathrm{cross2}(v_1,v_2,p) + \\mathrm{cross2}(v_2,v_3,p) + \\mathrm{cross2}(v_3,v_1,p) = \\det T$ for all $p$ (proved by `ring` after unfolding). For a primitive triangle $\\det T = \\pm 1$, so the three nonnegative sub-area cross-products cannot all be strictly positive — hence no $p$ is strictly interior and $I(T) = 0$, the geometric half of the primitive base case."
+    },
+    {
+      "id": "primitive-pickinterior-zero",
+      "title": "Section IX (S3a-plus): Primitive Case — pickInterior = 0 via Edge GCDs",
+      "startLine": 503,
+      "endLine": 646,
+      "summary": "The algebraic half of the primitive base case: shows the Pick formula also returns 0 on primitive triangles. Cyclic determinant factorisation relating each edge cross-product to `T.det`; `primitive ⇒ every edge GCD is 1` (each edge of a primitive triangle is itself primitive); boundary count `= 3` (only the three vertices); hence `pickInterior T = 0`. Concludes with the primitive base-case agreement `realInteriorCount = pickInterior` (both 0) and a sanity check against the unit triangle.",
+      "mathContext": "For a primitive triangle, each edge vector $(a,b)$ satisfies $\\gcd(a,b) = 1$ (else the edge cross-product would force $|\\det T| > 1$), so each edge contributes $\\gcd + 1 = 2$ endpoints with no interior points; the boundary count is $B = 3$. Pick's cleared form $2A = 2I + B - 2$ with $2A = 1$... gives $I = 0$, matching the geometric count — the two halves agree on every primitive triangle."
+    },
+    {
+      "id": "lattice-segment-points",
+      "title": "Section VIII (S3b-act-1): ℤ-anchored Lattice Segment Points",
+      "startLine": 647,
+      "endLine": 721,
+      "summary": "Infrastructure for the non-primitive case: an ℤ-anchored parametrisation of the lattice points lying on a triangle edge. Establishes how interior lattice points of a segment from one vertex to the next are enumerated by integer multiples of the edge's primitive direction vector — the prerequisite for detecting edge-interior witnesses when an edge has GCD ≥ 2.",
+      "mathContext": "A segment from $u$ to $v$ with edge vector $d = v - u$ and $g = \\gcd(d)$ has exactly $g - 1$ strictly-interior lattice points, namely $u + k\\cdot(d/g)$ for $1 \\le k \\le g - 1$. This ℤ-anchored description is the building block for the Case (a) edge-interior witness and its converse."
+    },
+    {
+      "id": "edge-interior-witness",
+      "title": "Section IX (S3b-act-2): Edge-Interior Witness for edgeGCD ≥ 2 (Case a)",
+      "startLine": 722,
+      "endLine": 858,
+      "summary": "`exists_nonvertex_lattice_point` (Case a): when edge `i` of `T` has `edgeGCD i ≥ 2`, there exists a non-vertex lattice point strictly interior to that edge — an explicit witness via the ℤ-anchored parametrisation of Section VIII (S3b-act-1). This is the forward direction of the edge-interior characterisation and a prerequisite for the full Pick induction (S3b PREP §4.1).",
+      "mathContext": "If $\\gcd(d) = g \\ge 2$ for edge vector $d$, the point $u + (d/g)$ is a lattice point strictly between the endpoints $u$ and $v$ (since $1 \\le 1 \\le g - 1$), witnessing that the edge carries boundary lattice points beyond its two vertices — exactly the obstruction to primitivity that the induction must subdivide away."
+    },
+    {
+      "id": "no-edge-interior-primitive",
+      "title": "Section XI (S3b-act-3): No Edge-Interior Witness When edgeGCD = 1, and Characterisation",
+      "startLine": 859,
+      "endLine": 1047,
+      "summary": "The converse: when edge `i` of `T` has `edgeGCD i = 1`, no lattice point is strictly interior to that edge (`no_strict_edge_interior_of_edgeGCD_eq_one`). Combined with the Section IX (S3b-act-2) witness, this yields a full characterisation of edge-interior witnesses: an edge carries a non-vertex lattice point iff its GCD is ≥ 2. This pins down the boundary-point count of each edge exactly, completing the GCD ↔ boundary-count bridge.",
+      "mathContext": "$\\gcd(d) = 1 \\iff$ the only lattice points on the edge are its two endpoints. Together with Case (a), edge $i$ has $\\mathrm{edgeGCD}\\,i \\ge 2 \\iff \\exists$ a strictly-interior lattice point on edge $i$ — so the boundary count $B = \\sum_i \\mathrm{edgeGCD}\\,i$ counts exactly the lattice points on $\\partial T$, the input Pick's formula needs."
+    },
+    {
+      "id": "translation-invariance",
+      "title": "Section XII (S4-prep): Translation Invariance of the Pick Bridge",
+      "startLine": 1048,
+      "endLine": 1249,
+      "summary": "A `translate` operation on triangles plus a battery of invariance lemmas. Algebraic invariances: `det`, `twiceArea`, `edgeGCD`, `boundaryCount`, `pickInterior`, `pickInteriorNum` are all unchanged by a lattice shift (proved by `ring`/`simp`). Geometric invariance: the `StrictInterior` orientation predicate transports under back-shift, and the bounding box shifts coordinate-wise. The substantive result `realInteriorCount_translate` proves `realInteriorCount` is translation-invariant via an explicit Finset bijection (`realInterior_translate`). Capstone `pick_agrees_translate_iff`: Pick's agreement is itself translation-invariant, so it suffices to prove Pick's theorem at a single canonical anchor. Unlike the S2 `native_decide` agreements (three concrete triangles), these hold for every lattice triangle and every shift.",
+      "mathContext": "For a shift $t \\in \\mathbb{Z}^2$ and the map $T \\mapsto T + t$: every Pick quantity is invariant ($\\det(T+t) = \\det T$, $B(T+t) = B(T)$, etc.), and $I(T+t) = I(T)$ via the bijection $p \\mapsto p + t$ on the strictly-interior Finset. Hence $\\big(\\mathrm{realInteriorCount}(T+t) = \\mathrm{pickInterior}(T+t)\\big) \\iff \\big(\\mathrm{realInteriorCount}(T) = \\mathrm{pickInterior}(T)\\big)$ — reducing the open induction to a single canonical position per congruence class."
     }
   ],
   "conclusion": {
-    "summary": "S2 OBSERVE extends the S1 bridge with a decidable definition of the real strictly-interior lattice-point count (`realInteriorCount` via a same-sign cross-product test on a bounding-box Finset) and proves base-case agreement `realInteriorCount T = pickInterior T` on the unit, 2-by-1, and 3-by-3 test triangles. Total file footprint: 21 definitions (12 bridge data + 9 S2 interior-count machinery) and 24 theorems (the S1 algebraic identity + 18 concrete-triangle lemmas + 3 S2 agreement witnesses + 2 supporting interior-count lemmas). Sorry-free, 0 axioms, 426 lines.",
+    "summary": "S2 OBSERVE extends the S1 bridge with a decidable definition of the real strictly-interior lattice-point count (`realInteriorCount` via a same-sign cross-product test on a bounding-box Finset) and proves base-case agreement `realInteriorCount T = pickInterior T` on the unit, 2-by-1, and 3-by-3 test triangles. The base case is then generalized to all primitive triangles (S3-prep/S3a-plus: `realInteriorCount = pickInterior = 0` whenever `twiceArea = 1`), the GCD ↔ edge-boundary-point characterisation is established (S3b-act-1/2/3), and the whole Pick bridge is shown translation-invariant (S4-prep). Total file footprint: 27 definitions and 63 theorems. Sorry-free with 0 literal axiom declarations, 1249 lines; the concrete base-case agreement theorems use `native_decide`, which adds `Lean.ofReduceBool` to `#print axioms` (see assumptions), so the entry is `axiomatized` rather than fully axiom-free.",
     "implications": "S2 closes the base-case agreement: the Pick formula does compute the true strictly-interior lattice-point count on three primitive and near-primitive triangles. Combined with S1's algebraic identity `2A = 2I + B − 2`, the bridge is now bidirectional — Pick's formula in cleared-denominator form is the natural induction target, with each primitive triangle contributing `(twiceArea, boundaryCount, pickInteriorNum) = (1, 3, 0)`, and the next sessions need only establish that the additivity step preserves Σ pickInteriorNum across primitive-triangulation joins.",
     "openQuestions": [
       "S3: Lift the base-case agreement from concrete triangles to all primitive (|det| = 1) lattice triangles. The unit-triangle case is dischargeable by direct enumeration of the bounding box; the general primitive case requires showing that any primitive triangle is `Affine`-equivalent (over ℤ²) to a small reference triangle, OR a direct argument via the cross-product orientation theorem.",
@@ -158,11 +206,11 @@
   ],
   "leanFile": {
     "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
-    "lineCount": 1048,
+    "lineCount": 1249,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 45,
-    "definitionCount": 26,
+    "theoremCount": 63,
+    "definitionCount": 27,
     "imports": [
       "import Mathlib.Data.Int.GCD",
       "import Mathlib.Data.Int.Interval",

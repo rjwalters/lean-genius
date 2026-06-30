@@ -47,52 +47,130 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring for cross-polytope (hyperoctahedron) Ehrhart theory, the OQ-03 follow-up to Pick's theorem in higher dimensions: lists the key results (Ehrhart polynomials L_{β_d}, volumes 2^d/d!, interior counts, Ehrhart-Macdonald reciprocity, palindromic h*-vectors, reflexivity, cube duality, recurrences) and references. Opens `namespace CrossPolytopeEhrhart`.",
+      "mathContext": "Cross-polytope $\\beta_d = \\{x \\in \\mathbb{R}^d : \\sum |x_i| \\le 1\\}$, the polar dual of the cube $\\square_d$. The file develops its Ehrhart theory concretely for $d = 1, 2, 3$.",
+      "relatedConcepts": [
+        "cross-polytope / hyperoctahedron",
+        "Ehrhart theory",
+        "ℓ¹ unit ball",
+        "reflexive polytope"
+      ],
+      "prerequisites": [
+        "convex polytopes and dilation",
+        "lattice ℤ^d"
+      ]
+    },
+    {
       "id": "ehrhart-polynomials",
       "title": "Parts 1–2: Ehrhart Polynomials and Evaluations",
       "startLine": 36,
-      "endLine": 153,
+      "endLine": 110,
       "summary": "Defines cross_d_L for d=1,2,3. Verifies L(0)=1, L(1)=2d+1, and further values by norm_num. All 3 polynomials stated and verified.",
-      "mathContext": "$L_{\\beta_1}(n)=2n+1$, $L_{\\beta_2}(n)=2n^2+2n+1$, $L_{\\beta_3}(n)=\\tfrac{4}{3}n^3+2n^2+\\tfrac{8}{3}n+1$."
+      "mathContext": "$L_{\\beta_1}(n)=2n+1$, $L_{\\beta_2}(n)=2n^2+2n+1$, $L_{\\beta_3}(n)=\\tfrac{4}{3}n^3+2n^2+\\tfrac{8}{3}n+1$.",
+      "relatedConcepts": [
+        "Ehrhart polynomial",
+        "lattice point counting",
+        "quasi-polynomiality"
+      ],
+      "prerequisites": [
+        "Ehrhart's theorem (1962)",
+        "polynomial evaluation",
+        "norm_num / ring tactics"
+      ]
     },
     {
       "id": "volume",
       "title": "Part 3: Volume and Leading Coefficient",
       "startLine": 111,
-      "endLine": 204,
+      "endLine": 152,
       "summary": "Proves vol(β_1)=2, vol(β_2)=2, vol(β_3)=4/3. Shows leading coefficient of L_{β_d}(n) equals vol(β_d) = 2^d/d!.",
-      "mathContext": "$\\text{vol}(\\beta_d) = 2^d/d!$: $d=1: 2$, $d=2: 2$, $d=3: 4/3$."
+      "mathContext": "$\\text{vol}(\\beta_d) = 2^d/d!$: $d=1: 2$, $d=2: 2$, $d=3: 4/3$.",
+      "relatedConcepts": [
+        "leading coefficient = volume",
+        "simplex decomposition",
+        "curse of dimensionality"
+      ],
+      "prerequisites": [
+        "volume of a polytope",
+        "factorial growth",
+        "Ehrhart leading-coefficient theorem"
+      ]
     },
     {
       "id": "interior",
       "title": "Part 4: Interior Ehrhart Polynomials",
       "startLine": 153,
-      "endLine": 238,
+      "endLine": 203,
       "summary": "Defines L*(n) = L(n-1) for all three cross-polytopes. Verifies L*(0)=0, L*(1)=1 (unique interior point = origin). Proves interior counts.",
-      "mathContext": "$L^*_{\\beta_d}(n) = L_{\\beta_d}(n-1)$. The only interior lattice point of $\\beta_d$ is the origin."
+      "mathContext": "$L^*_{\\beta_d}(n) = L_{\\beta_d}(n-1)$. The only interior lattice point of $\\beta_d$ is the origin.",
+      "relatedConcepts": [
+        "interior Ehrhart polynomial L*",
+        "open vs closed lattice points",
+        "reflexivity"
+      ],
+      "prerequisites": [
+        "strict interior of a dilated polytope",
+        "integer points with ‖x‖₁ < n"
+      ]
     },
     {
       "id": "reciprocity",
       "title": "Part 5: Ehrhart-Macdonald Reciprocity",
       "startLine": 204,
-      "endLine": 287,
+      "endLine": 237,
       "summary": "Verifies L*(n) = (-1)^d·L(-n) for d=1,2,3 by ring arithmetic. Core identity of Ehrhart theory for reflexive polytopes.",
-      "mathContext": "$L^*(n) = (-1)^d L(-n)$. For $d=1$: $L^*(n)=2n-1=-(2(-n)+1)$."
+      "mathContext": "$L^*(n) = (-1)^d L(-n)$. For $d=1$: $L^*(n)=2n-1=-(2(-n)+1)$.",
+      "relatedConcepts": [
+        "Ehrhart-Macdonald reciprocity (1971)",
+        "functional equation",
+        "dimension-parity sign"
+      ],
+      "prerequisites": [
+        "interior polynomial L*(n)=L(n-1)",
+        "ring tactic for polynomial identities"
+      ]
     },
     {
       "id": "hstar-vectors",
       "title": "Parts 6–7: h*-Vectors and Palindromy",
       "startLine": 238,
-      "endLine": 373,
+      "endLine": 326,
       "summary": "Computes h*-vectors: β₁: (1,1), β₂: (1,2,1), β₃: (1,3,3,1). Verifies palindromy and the identity h*(1) = 2^d = d!·vol(β_d).",
-      "mathContext": "$h^*_{\\beta_d}(z) = (1+z)^d$. Palindromy: $h^*_i = h^*_{d-i}$ — confirming reflexivity."
+      "mathContext": "$h^*_{\\beta_d}(z) = (1+z)^d$. Palindromy: $h^*_i = h^*_{d-i}$ — confirming reflexivity.",
+      "relatedConcepts": [
+        "h*-vector / δ-vector",
+        "Pascal's triangle row",
+        "Hibi's reflexivity theorem (1991)",
+        "binomial theorem"
+      ],
+      "prerequisites": [
+        "Ehrhart series Ehr_P(z)=h*(z)/(1-z)^{d+1}",
+        "binomial coefficients C(d,k)",
+        "palindromy ↔ reflexivity"
+      ]
     },
     {
       "id": "reflexivity-duality",
       "title": "Parts 8–9: Reflexivity and Cube Duality",
       "startLine": 327,
-      "endLine": 451,
+      "endLine": 415,
       "summary": "Proves β₁ is self-dual (β₁ = □₁). Shows β₂ Ehrhart ≠ □₂ Ehrhart. Duality: β_d is the polar dual of the hypercube □_d.",
-      "mathContext": "$\\text{vol}(\\beta_d)\\cdot\\text{vol}(\\square_d) = 4^d/d!$."
+      "mathContext": "$\\text{vol}(\\beta_d)\\cdot\\text{vol}(\\square_d) = 4^d/d!$.",
+      "relatedConcepts": [
+        "polar duality β_d = (□_d)°",
+        "Mahler volume",
+        "ℓ¹–ℓ∞ duality",
+        "self-duality in d=1"
+      ],
+      "prerequisites": [
+        "polar dual P° = {y : ⟨x,y⟩ ≤ 1}",
+        "L_□(n) = (2n+1)^d",
+        "Mahler conjecture (equality for cross-polytopes)"
+      ]
     },
     {
       "id": "recurrence-and-structure",
@@ -100,7 +178,18 @@
       "startLine": 416,
       "endLine": 695,
       "summary": "Dimension recurrence for L_{β_d}(n). Monotonicity L(n+1) > L(n). Boundary B(1)=2d. Second coefficient = half surface volume. Ehrhart series numerator h*(z) = (1+z)^d via binomial expansion.",
-      "mathContext": "$h^*_{\\beta_d}(z) = \\sum_{k=0}^d \\binom{d}{k} z^k = (1+z)^d$ — the cleanest identity in cross-polytope Ehrhart theory."
+      "mathContext": "$h^*_{\\beta_d}(z) = \\sum_{k=0}^d \\binom{d}{k} z^k = (1+z)^d$ — the cleanest identity in cross-polytope Ehrhart theory.",
+      "relatedConcepts": [
+        "dimension recurrence",
+        "monotonicity of L(n)",
+        "boundary lattice points",
+        "Ehrhart series generating function"
+      ],
+      "prerequisites": [
+        "columnar / cross-section decomposition",
+        "binomial expansion of (1+z)^d",
+        "ring / linarith tactics"
+      ]
     }
   ],
   "conclusion": {
@@ -130,6 +219,26 @@
       "targetId": "picks-theorem-oq-03",
       "relationship": "extends",
       "description": "OQ-03 cross-polytope extension: Ehrhart theory for hyperoctahedra"
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "ancestor",
+      "description": "Pick's theorem A = I + B/2 − 1 is the d=2 origin of lattice-point counting; the planar diamond β₂ is the simplest cross-polytope and its Ehrhart polynomial L(n)=2n²+2n+1 specializes Pick's formula to dilates of the ℓ¹ ball."
+    },
+    {
+      "targetId": "ehrhart-cube-proven",
+      "relationship": "complementary",
+      "description": "The unit cube □_d is the polar dual of the cross-polytope β_d (ℓ∞–ℓ¹ duality). That entry proves L_□(n)=(2n+1)^d from first principles; here the dual family yields fractional-coefficient polynomials and the volume product vol(β_d)·vol(□_d)=4^d/d!."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The signature identity h*_{β_d}(z) = (1+z)^d is exactly the binomial theorem: the h*-vector is the d-th row of Pascal's triangle (C(d,0),…,C(d,d)), and h*(1)=2^d=d!·vol(β_d)."
+    },
+    {
+      "targetId": "platonic-solids",
+      "relationship": "related",
+      "description": "The 3-dimensional cross-polytope β₃ is the regular octahedron, one of the five Platonic solids; its palindromic h*-vector (1,3,3,1) reflects the central symmetry shared by the octahedron and its dual cube."
     }
   ],
   "mainTheorems": [

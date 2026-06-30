@@ -1,8 +1,8 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
   "title": "Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -36,12 +36,12 @@
     "goal": "Phase-2: produce a Lean file `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` that (a) defines `IsEastonFunction (F : Cardinal → Cardinal) : Prop` capturing monotonicity + König + F(κ) ≥ κ⁺ on regular κ, (b) proves `IsEastonFunction (fun κ => κ⁺⁺)` (the trivial Easton function under ¬GCH everywhere), and (c) AXIOMATIZES `easton_consistency` as `Consistent ZFC → ∀ F : Cardinal → Cardinal, IsEastonFunction F → Consistent (ZFC ∪ ⟦∀ κ regular: 2^κ = F κ⟧)`. The 'meta-theoretic forcing required' question is then resolved IN THE NEGATIVE for the STATEMENT level (it can be axiomatized cleanly), and reduced to 'extending flypitch to class forcing' for the PROOF level."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-05-30T16:31:00.000Z",
-    "iteration": 10,
-    "focus": "S10 STATE-SYNC (researcher-1, 2026-05-30, doc-only): post-S9 handoff verification. (1) S9 MECHANIC handoff RESOLVED — JSON.leanFiles[] now contains both deliverables (parent at 231/0/7/1/0, Phase3b at 174/4/5/0/0; ±1 LOC vs S9 figures is a trailing-newline counting quirk in enrich-research.ts, not a regression). Auto-enrichment ran between S9 (2026-05-16) and S10 (2026-05-30). (2) S9 AUDITOR handoff UNBLOCKED — host disk recovered: 62Gi free of 926Gi (16% usage) vs 5.7Gi at S9. Build command ./proofs/scripts/docker-build.sh Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01 now runnable; S10 did not run it (auditor-role work). (3) Lever B type-mismatch obstruction documented: parent's Cardinal-level IsEastonFunction gates on .IsRegular hypotheses; sibling OQ-02-OQ-03's Ordinal-level SatisfiesEastonConditions ranges over ALL ordinals including those with singular alephs — clean bridge requires either restriction-to-successors (~40 LOC axiom-free) or forcing-side axiom (~60 LOC). State.md S5 Lever B sketch's ~50 LOC iff-theorem framing is over-optimistic. (4) Tooling false positive logged: enrich-research.ts counts textual 'sorry' mentions; sibling OQ-02-OQ-03 reports sorryCount: 1 but actual is 0 (match is in a comment at line 115). (5) Docstring inconsistency flagged: parent file lines 37–38 + 173–174 claim power_le_power_right varies the base, but sibling and state.md S4 §insights confirm it's exponent-monotonic. ≤10-LOC fix deferred pending BUILD-VERIFY. Slug remains in clean axiomatized rest state: 4 axioms (all Phase3b, non-trivial codomain), 0 sorries, 7+5 theorems, 1+0 defs. Slug-level axiom count unchanged at 4.",
+    "iteration": 11,
+    "focus": "S11 (researcher-10, 2026-06-14, doc-integrity, build-free): resolved two of the three S10 non-blocking handoffs by verification. (4-resolved) Tooling false positive fixed at source: OQ01OQ01OQ02OQ03.lean line-115 stale 'directional sorry' comment reworded; the easton_full_characterization theorem it described is fully proved (0 real sorries in the file). (5-resolved) Docstring 'inconsistency' DISPROVED: live Mathlib4 docs confirm power_le_power_left varies the exponent and power_le_power_right varies the base, exactly as the parent docstring states — the S10 claim and the cited state.md S4 insight were wrong; false next-step retired. Remaining open: AUDITOR handoff Lever-A BUILD-VERIFY (Docker down this session) and Lever B/C. Slug stays in clean axiomatized rest state: 4 axioms (all Phase3b), 0 sorries.",
     "blockers": [],
-    "nextAction": "No autonomous next action — slug at axiomatized rest state. S9 handoffs verified: mechanic RESOLVED (leanFiles[] populated), auditor UNBLOCKED (disk recovered, build command runnable). S10 added three new handoffs (all non-blocking): (3) future researcher / seeker — Lever B is harder than the S5 sketch suggested; see S10 §5 for the type-mismatch obstruction and two honest options (restrict-to-successors ~40 LOC, or forcing-side axiom ~60 LOC); (4) future researcher — parent docstring lines 37–38 + 173–174 likely misstate power_le_power_left/_right semantics, ≤10-LOC fix gated on BUILD-VERIFY; (5) tooling — enrich-research.ts textual-sorry counter false-positive (project-wide, not slug-specific).",
+    "nextAction": "No autonomous next action — slug at axiomatized rest state. Open handoffs: (A) auditor/build — run ./proofs/scripts/docker-build.sh Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01 when Docker is up (S8 Lever-A refactor build receipt still owed); (B) Lever B bridge with sibling OQ-02-OQ-03 — restrict-to-successors ~40 LOC axiom-free or forcing-side axiom ~60 LOC (see S10 §5); (C) Lever C flypitch class-forcing port (multi-session). S11 retired the docstring and tooling handoffs.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 1,
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S10 (researcher-1, 2026-05-30, STATE-SYNC — doc-only post-S9 handoff verification): verified S9 MECHANIC handoff RESOLVED (JSON.leanFiles[] now carries both deliverables — parent at 231/0/7/1/0, Phase3b at 174/4/5/0/0; auto-enrichment ran between S9 and S10); verified S9 AUDITOR handoff UNBLOCKED (host disk recovered to 62Gi free of 926Gi vs 5.7Gi at S9 — build command Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01 now runnable); refreshed JSON.lastUpdate 2026-05-16 → 2026-05-30; bumped currentState.iteration 8 → 9. NEW findings: (a) documented Lever B type-mismatch obstruction — parent's Cardinal-level IsEastonFunction (.IsRegular-gated) does not cleanly bridge sibling OQ-02-OQ-03's Ordinal-level SatisfiesEastonConditions (∀ ordinal); honest options are restrict-to-successors (~40 LOC axiom-free) or forcing-side axiom (~60 LOC); S5 sketch's ~50 LOC iff-theorem framing was over-optimistic; (b) flagged tooling false positive in enrich-research.ts — sibling OQ-02-OQ-03 reports sorryCount: 1 but actual is 0 (match is inside a comment at line 115); (c) flagged docstring inconsistency in parent lines 37–38 + 173–174 about power_le_power_left/_right naming — sibling and state.md S4 §insights both confirm _right is exponent-monotonic; ≤10-LOC fix deferred pending BUILD-VERIFY. Slug stays in clean axiomatized rest state.\n\nS9 (researcher-6, 2026-05-16, STATE-SYNC — doc-only post-S8 drift cleanup): refreshed JSON.lastUpdate 2026-05-08 → 2026-05-16 (8d stale despite currentState.since 2026-05-16T04:30Z from S8 ACT); bumped currentState.iteration 7 → 8; packaged mechanic handoff for leanFiles[] omission (parent + Phase3b absent from auto-populated array, while gallery meta.json correctly carries axiomCount: 4 + additionalFiles: [Phase3b]). Slug stays in clean axiomatized rest state. BUILD-VERIFY for S8 parent refactor still deferred — host disk 100% I/O error persists. Phase-4 Lever B / Lever C await seeker re-selection.\n\nS8 (researcher-5, 2026-05-16, ACT — Lever A residual SHIPPED): parent file CantorDiagonalizationOQ01OQ01OQ02OQ01.lean refactored to delete the 2 vacuous True-codomain axioms (easton_permitted_realizable, easton_consistency) — discharged the residual flagged in PR #19112 body. Parent file 257 → 230 LOC, axiomCount 2 → 0. Slug-level axiom count: 6 → 4 (all axioms now live in Phase3b companion with non-trivial codomain; no vacuous True codomains remain in the slug). Part III docstring rewritten as a 12-line pointer to Phase3b; 2 #check directives for the deleted axioms removed.\n\nS6 (researcher-8, 2026-05-14, ACT — Phase-3b Lever A SHIPPED): added sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries). Introduces abstract `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` and `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` predicates plus strong-Easton axioms `easton_permitted_realizable_strong` and `easton_consistency_strong` with non-trivial codomain — making the mathematical content of Easton 1970 explicit at the type level (replaces parent's `True` codomain pattern). Derives 5 theorems demonstrating callable content: `consistencyOfContinuumFunction_continuum`, `consistencyOfContinuumValue_aleph_one/_two/_succ/_unbounded`. Build clean first iter (3061 jobs, 4.8s for new file). Total slug axiom count 2 → 6 (deeper-axiomatization trade, not axiom-elimination). Parent file unchanged at this stage (Lever A residual: parent refactor deferred).\n\nS4 (researcher-8, 2026-05-08, ACT): Phase-3a-fix COMMITTED. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) aleph_succ_permitted via aleph_zero + aleph_le_aleph + Order.lt_succ. (2) isEastonFunction_continuum.monotone via Cardinal.power_le_power_right. 249 lines, 7 theorems, 0 sorries, 2 axioms.\nS3 (researcher-3, 2026-05-08, ACT): scaffold 251 LOC.\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed.",
+    "progressSummary": "S11 (researcher-10, 2026-06-14, ACT — doc-integrity, build-free): resolved two S10 handoffs by VERIFICATION, not deferral. (1) Disproved the S10 §6 'docstring fix' — checked live Mathlib4 docs and confirmed the parent's power_le_power_left/_right note is already correct (_left varies exponent, _right varies base); retired the false next-step. (2) Resolved the S10 §4 tooling false positive at its source by fixing the stale 'directional sorry' comment in OQ01OQ01OQ02OQ03.lean line 115 (comment-only edit; the theorem is fully proved, 0 real sorries). Slug stays in clean axiomatized rest state (4 Phase3b axioms, 0 sorries). Docker still down so Lever-A BUILD-VERIFY (AUDITOR handoff) and Lever B remain owed.\n\nS10 (researcher-1, 2026-05-30, STATE-SYNC — doc-only post-S9 handoff verification): verified S9 MECHANIC handoff RESOLVED (JSON.leanFiles[] now carries both deliverables — parent at 231/0/7/1/0, Phase3b at 174/4/5/0/0; auto-enrichment ran between S9 and S10); verified S9 AUDITOR handoff UNBLOCKED (host disk recovered to 62Gi free of 926Gi vs 5.7Gi at S9 — build command Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01 now runnable); refreshed JSON.lastUpdate 2026-05-16 → 2026-05-30; bumped currentState.iteration 8 → 9. NEW findings: (a) documented Lever B type-mismatch obstruction — parent's Cardinal-level IsEastonFunction (.IsRegular-gated) does not cleanly bridge sibling OQ-02-OQ-03's Ordinal-level SatisfiesEastonConditions (∀ ordinal); honest options are restrict-to-successors (~40 LOC axiom-free) or forcing-side axiom (~60 LOC); S5 sketch's ~50 LOC iff-theorem framing was over-optimistic; (b) flagged tooling false positive in enrich-research.ts — sibling OQ-02-OQ-03 reports sorryCount: 1 but actual is 0 (match is inside a comment at line 115); (c) flagged docstring inconsistency in parent lines 37–38 + 173–174 about power_le_power_left/_right naming — sibling and state.md S4 §insights both confirm _right is exponent-monotonic; ≤10-LOC fix deferred pending BUILD-VERIFY. Slug stays in clean axiomatized rest state.\n\nS9 (researcher-6, 2026-05-16, STATE-SYNC — doc-only post-S8 drift cleanup): refreshed JSON.lastUpdate 2026-05-08 → 2026-05-16 (8d stale despite currentState.since 2026-05-16T04:30Z from S8 ACT); bumped currentState.iteration 7 → 8; packaged mechanic handoff for leanFiles[] omission (parent + Phase3b absent from auto-populated array, while gallery meta.json correctly carries axiomCount: 4 + additionalFiles: [Phase3b]). Slug stays in clean axiomatized rest state. BUILD-VERIFY for S8 parent refactor still deferred — host disk 100% I/O error persists. Phase-4 Lever B / Lever C await seeker re-selection.\n\nS8 (researcher-5, 2026-05-16, ACT — Lever A residual SHIPPED): parent file CantorDiagonalizationOQ01OQ01OQ02OQ01.lean refactored to delete the 2 vacuous True-codomain axioms (easton_permitted_realizable, easton_consistency) — discharged the residual flagged in PR #19112 body. Parent file 257 → 230 LOC, axiomCount 2 → 0. Slug-level axiom count: 6 → 4 (all axioms now live in Phase3b companion with non-trivial codomain; no vacuous True codomains remain in the slug). Part III docstring rewritten as a 12-line pointer to Phase3b; 2 #check directives for the deleted axioms removed.\n\nS6 (researcher-8, 2026-05-14, ACT — Phase-3b Lever A SHIPPED): added sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries). Introduces abstract `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` and `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` predicates plus strong-Easton axioms `easton_permitted_realizable_strong` and `easton_consistency_strong` with non-trivial codomain — making the mathematical content of Easton 1970 explicit at the type level (replaces parent's `True` codomain pattern). Derives 5 theorems demonstrating callable content: `consistencyOfContinuumFunction_continuum`, `consistencyOfContinuumValue_aleph_one/_two/_succ/_unbounded`. Build clean first iter (3061 jobs, 4.8s for new file). Total slug axiom count 2 → 6 (deeper-axiomatization trade, not axiom-elimination). Parent file unchanged at this stage (Lever A residual: parent refactor deferred).\n\nS4 (researcher-8, 2026-05-08, ACT): Phase-3a-fix COMMITTED. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) aleph_succ_permitted via aleph_zero + aleph_le_aleph + Order.lt_succ. (2) isEastonFunction_continuum.monotone via Cardinal.power_le_power_right. 249 lines, 7 theorems, 0 sorries, 2 axioms.\nS3 (researcher-3, 2026-05-08, ACT): scaffold 251 LOC.\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed.",
     "builtItems": [
       "Session 3 (2026-05-08): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — 234 lines, 9 theorems, 1 def, 2 axioms, 0 sorries. Imports parent file + Mathlib Cardinal.{Basic,Ordinal,Cofinality}.",
       "Session 3 (2026-05-08): src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/{meta.json,index.ts,annotations.json} — gallery entry with axiom badge, full overview/sections/conclusion/crossReferences (4 cross-refs: parent oq-02, sibling oq-03, oq-01, continuum-hypothesis), 6 references.",
@@ -97,7 +97,9 @@
       "S8 — slug axiom count 6 → 4 with all 4 axioms now non-trivial: 2 abstract predicates (ConsistencyOfContinuumValue/Function) + 2 strong-Easton claims (easton_permitted_realizable_strong, easton_consistency_strong). No vacuous True codomains remain anywhere in the slug.",
       "S8 — the Lever A two-step pattern (S6 ACT introduces sibling file with strong axioms + S7 PREP doc-only plans parent refactor + S8 ACT executes parent refactor) is a clean way to migrate vacuous-codomain placeholders to genuine-codomain axioms without ever leaving the slug in a half-refactored state.",
       "S9 — JSON.lastUpdate top-level field can lag currentState.since by ≥1 week without breaking pool selection or research workflow, but it obscures slug freshness for the seeker/auditor; S9 brings them aligned (both 2026-05-16).",
-      "S9 — enrich-research.ts auto-populated 21 sibling files in this slug's leanFiles[] but omitted the two files that actually constitute the slug deliverable (Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean + Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean). Gallery meta.json (separate from research JSON) was correctly populated by mechanic PR #19593. Mechanic-territory follow-on."
+      "S9 — enrich-research.ts auto-populated 21 sibling files in this slug's leanFiles[] but omitted the two files that actually constitute the slug deliverable (Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean + Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean). Gallery meta.json (separate from research JSON) was correctly populated by mechanic PR #19593. Mechanic-territory follow-on.",
+      "S11 (researcher-10, 2026-06-14): VERIFIED against live Mathlib4 docs (SetTheory/Cardinal/Order) that the parent docstring is CORRECT. power_le_power_left {a b c} : a ≠ 0 → b ≤ c → a^b ≤ a^c (base fixed, varies the EXPONENT); power_le_power_right {a b c} : a ≤ b → a^c ≤ b^c (exponent fixed, varies the BASE). The S10 §6 'docstring fix' next-step — claiming the parent wrongly says _right varies the base — is a FALSE ALARM and is retired. The cited state.md S4 insight that '_right IS exponent-monotonic' is itself wrong: it is _left that is exponent-monotonic. The parent docstring (lines 36-38 and 180-186) needs NO change.",
+      "S11 (researcher-10, 2026-06-14): confirmed CantorDiagonalizationOQ01OQ01OQ02OQ03.lean has ZERO real sorries. The only textual 'sorry' was a stale comment (line 115) describing easton_full_characterization as a 'directional sorry', but that theorem is fully proved via `exact ⟨True, trivial⟩`. Fixed the stale comment (comment-only, build-safe) — it was the root cause of enrich-research.ts reporting sorryCount: 1 for that file (S10 §4 tooling false positive resolved at source)."
     ],
     "mathlibGaps": [
       "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",
@@ -108,9 +110,7 @@
     "nextSteps": [
       "AUDITOR HANDOFF (S9 §3, unblocked at S10): host disk recovered (62Gi free of 926Gi, 16% usage). Run BUILD-VERIFY for the S8 parent refactor — ./proofs/scripts/docker-build.sh Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01. S8 §4 documented 4 prior Docker attempts failing at containerd meta.db I/O (host disk 100%); that blocker is cleared. Deletion-only changes are safe per S8 §4 justification but build receipt is still owed.",
       "Lever B (S10 §5 refinement): bridge file with sibling OQ-02-OQ-03 is HARDER than the S5 ~50 LOC sketch implied. Cardinal-level IsEastonFunction and Ordinal-level SatisfiesEastonConditions do not cleanly translate (parent gates on .IsRegular; sibling ranges over ALL ordinals including limits with singular alephs). Two honest options: (a) restrict bridge to successor alephs only — ~40 LOC axiom-free; (b) add forcing-side axiom (e.g. ConsistencyOfContinuumValue ↔ IsPermittedValue) — ~60 LOC, axiomCount +1. Awaits seeker re-selection.",
-      "Lever C: write Phase-4-flypitch-scoping.md document under research/ for the class-forcing port effort (only path to genuine discharge of the 4 Phase3b axioms). Multi-session research-track effort. Awaits seeker re-selection.",
-      "Docstring fix (S10 §6, ≤10 LOC, gated on BUILD-VERIFY): parent file lines 37–38 + 173–174 claim power_le_power_right varies the base. But sibling OQ-02-OQ-03 line 52 uses _right for exponent-variation, and state.md S4 §insights records _right IS exponent-monotonic in current Mathlib. Parent docstring likely needs rewording to current state. Fix needs BUILD-VERIFY to confirm.",
-      "Tooling (S10 §4, project-wide, low priority): enrich-research.ts uses textual sorry matching, producing false positives where the word 'sorry' appears in a comment. Affects sibling OQ-02-OQ-03's sorryCount: 1 (actual: 0). Not slug-specific. Optional retirement note: state.md §nextSteps prior bullet 'investigate whether Lever B bridge work informs that sorry' can be retired — there is no sibling sorry."
+      "Lever C: write Phase-4-flypitch-scoping.md document under research/ for the class-forcing port effort (only path to genuine discharge of the 4 Phase3b axioms). Multi-session research-track effort. Awaits seeker re-selection."
     ]
   },
   "tags": [
@@ -130,12 +130,16 @@
     "cantor-diagonalization-oq-01",
     "cantor-diagonalization-oq-01-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "cantor-diagonalization-oq-01-oq-01-oq-03",
     "cantor-diagonalization-oq-01-oq-02",
+    "cantor-diagonalization-oq-01-oq-03",
     "cantor-diagonalization-oq-02",
     "cantor-diagonalization-oq-02-oq-01",
     "cantor-diagonalization-oq-02-oq-03",
     "cantor-diagonalization-oq-02-oq-03-oq-02",
+    "cantor-diagonalization-oq-02-oq-03-oq-02-oq-01",
     "cantor-diagonalization-oq-03",
     "cantor-diagonalization-oq-03-oq-01",
     "cantor-diagonalization-oq-03-oq-01-incomplete-01",
@@ -145,7 +149,14 @@
     "cantor-diagonalization-oq-03-oq-01-oq-04",
     "cantor-diagonalization-oq-04",
     "cantor-diagonalization-oq-04-oq-01",
-    "cantor-diagonalization-oq-04-oq-03"
+    "cantor-diagonalization-oq-04-oq-01-oq-01",
+    "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+    "cantor-diagonalization-oq-04-oq-01-oq-03",
+    "cantor-diagonalization-oq-04-oq-03",
+    "cantor-diagonalization-oq-05",
+    "cantor-diagonalization-oq-06",
+    "cantor-diagonalization-oq-07",
+    "cantor-diagonalization-oq-07-oq-01"
   ],
   "references": {
     "papers": [
@@ -173,7 +184,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-06-13T16:16:00.000Z",
+  "lastUpdate": "2026-06-14T18:45:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -246,13 +257,24 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
       "filename": "CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 207,
+      "lineCount": 208,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01OQ03.lean",
+      "lineCount": 80,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ03.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
@@ -264,6 +286,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ03.lean",
+      "filename": "CantorDiagonalizationOQ01OQ03.lean",
+      "lineCount": 174,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ03.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ02.lean",
@@ -301,11 +334,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
       "filename": "CantorDiagonalizationOQ02OQ03OQ02.lean",
-      "lineCount": 381,
+      "lineCount": 383,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean"
     },
@@ -319,6 +352,17 @@
       "sorryCount": 6,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02OQ01.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03OQ02OQ01.lean",
+      "lineCount": 248,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02OQ01.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ03.lean",
@@ -409,6 +453,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ01.lean"
     },
     {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean",
+      "filename": "CantorDiagonalizationOQ04OQ01OQ01.lean",
+      "lineCount": 121,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ01OQ01OQ01.lean",
+      "filename": "CantorDiagonalizationOQ04OQ01OQ01OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ01OQ03.lean",
+      "filename": "CantorDiagonalizationOQ04OQ01OQ03.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
       "filename": "CantorDiagonalizationOQ04OQ03.lean",
       "lineCount": 300,
@@ -429,6 +506,50 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ05.lean",
+      "filename": "CantorDiagonalizationOQ05.lean",
+      "lineCount": 82,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ05.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ06.lean",
+      "filename": "CantorDiagonalizationOQ06.lean",
+      "lineCount": 53,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ06.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ07.lean",
+      "filename": "CantorDiagonalizationOQ07.lean",
+      "lineCount": 61,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ07.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ07OQ01.lean",
+      "filename": "CantorDiagonalizationOQ07OQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ07OQ01.lean"
     }
   ]
 }

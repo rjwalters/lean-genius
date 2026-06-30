@@ -70,7 +70,7 @@
       "Build repair: fixed pre-existing bugs blocking compilation — conjugate_iff_same_image used wrong unit (u⁻¹ instead of u), skolemNoether_general's calc used commutative-ring `ring` on non-commutative B (replaced with explicit mul_assoc / Units.inv_mul / one_mul rewrites), and aut_is_inner's AlgHom.id required explicit type args (AlgHom.id K B)",
       "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
     ],
-    "lineCount": 394,
+    "lineCount": 393,
     "theoremCount": 14,
     "definitionCount": 2
   },
@@ -101,34 +101,42 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "File docstring laying out the four-stage proof architecture (right-B-linear ⇒ left-mul, unit extraction, the module-isomorphism axiom, and the conjugation conclusion), the Mathlib v4.26 gap for the axiom, and the base typeclass setup: a field K with K-algebras A and B.",
+      "mathContext": "The general Skolem-Noether theorem: for a field K, a finite-dimensional simple K-algebra A and a finite-dimensional central simple K-algebra B, any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit of B. The variables fix the ambient ring/algebra structures used throughout; the simple/central/finite-dimensional hypotheses are attached per-theorem as typeclass instances."
+    },
+    {
       "id": "right-linear-maps",
       "title": "Right-B-Linear Maps are Left Multiplication",
-      "startLine": 40,
-      "endLine": 65,
+      "startLine": 41,
+      "endLine": 61,
       "summary": "rightBLinear_is_leftMul and rightBLinear_symm_is_leftMul: φ(b) = φ(1)·b for any right-B-linear K-linear map, and likewise for its inverse.",
       "mathContext": "A K-linear map φ : B → B satisfying φ(bc) = φ(b)c for all b,c ∈ B is called a right B-module map. Setting b=1: φ(c) = φ(1)·c. This is the key algebraic lemma."
     },
     {
       "id": "unit-extraction",
       "title": "Unit Extraction from Right-B-Linear Equivalence",
-      "startLine": 67,
-      "endLine": 95,
+      "startLine": 62,
+      "endLine": 94,
       "summary": "isUnit_of_rightBLinear_equiv: If φ : B ≃ₗ[K] B satisfies φ(b)=u·b, then u is a unit. Proof: v=φ⁻¹(1), u·v=1 from φ(φ⁻¹(1))=1, v·u=1 from φ⁻¹(φ(1))=1.",
       "mathContext": "No finite-dimensionality needed! The bijectivity of φ directly gives both sides of the unit equation via the identity φ ∘ φ⁻¹ = id and φ⁻¹ ∘ φ = id."
     },
     {
       "id": "module-axiom",
       "title": "Core Axiom: Module Isomorphism (Wedderburn + Isotypic)",
-      "startLine": 98,
-      "endLine": 140,
+      "startLine": 95,
+      "endLine": 143,
       "summary": "axiom skolemNoether_module_iso: the two A-module structures on B (via f and g) are isomorphic via a right-B-linear K-linear bijection. Proof sketch provided; gap = 200-300 lines using Mathlib's Wedderburn-Artin and IsIsotypic.",
       "mathContext": "Via f, B is an A-module with action a·b = f(a)·b. Via g, another A-module with a·b = g(a)·b. Since A is simple and B is Artinian, both B_f and B_g are semisimple A-modules of the same K-dimension, hence isomorphic. The isomorphism extends to a (left-A, right-B)-bimodule map using centrality."
     },
     {
       "id": "main-theorem",
       "title": "General Skolem-Noether Theorem",
-      "startLine": 143,
-      "endLine": 187,
+      "startLine": 144,
+      "endLine": 188,
       "summary": "skolemNoether_general: any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit u ∈ Bˣ.",
       "mathContext": "From the module isomorphism φ: φ(f(a)·b) = g(a)·φ(b) and φ(b·c) = φ(b)·c. Setting b=1: φ(f(a)) = g(a)·φ(1). From left-mul formula: φ(f(a)) = φ(1)·f(a). So φ(1)·f(a) = g(a)·φ(1). With u=φ(1): u·f(a)=g(a)·u, hence f(a)=u⁻¹·g(a)·u."
     },
@@ -136,15 +144,23 @@
       "id": "corollaries",
       "title": "Corollaries: Inner Automorphisms and Conjugacy",
       "startLine": 189,
-      "endLine": 218,
+      "endLine": 220,
       "summary": "aut_is_inner: every K-algebra automorphism of a finite-dimensional CSA is inner (specialization A=B of skolemNoether_general). conjugate_iff_same_image: the conjugation relation between AlgHoms is symmetric (u-conjugation on one side ↔ u⁻¹-conjugation on the other).",
       "mathContext": "Setting A=B and g=id in Skolem-Noether yields Aut_K(B) = Inn(B) — every K-algebra automorphism of a CSA is conjugation by a unit. The conjugacy relation is symmetric: f = u⁻¹·g·u iff g = u·f·u⁻¹, which is just the inverse-unit substitution."
+    },
+    {
+      "id": "conjugacy-equivalence",
+      "title": "Conjugacy as an Equivalence Relation",
+      "startLine": 221,
+      "endLine": 290,
+      "summary": "Packages the conjugation relation abstractly: `IsConjugate f g` (∃ u ∈ Bˣ, f a = u⁻¹·g a·u), proved to be an equivalence relation — `IsConjugate.refl` (u=1), `.symm` (inverse unit), `.trans` (product unit) — for arbitrary rings A, B with no simple/CSA/finite-dim hypotheses. Bundled as `conjugateSetoid`. Then `skolemNoether_isConjugate` and `conjugateSetoid_single_class` repackage `skolemNoether_general` as the statement that this setoid has a single equivalence class when A is simple and B is a CSA.",
+      "mathContext": "Conjugation `f ∼ g ⟺ ∃ u∈Bˣ, f=u⁻¹·g·u` is reflexive (u=1), symmetric (u↦u⁻¹), and transitive (u,v↦v·u), so it is an equivalence relation on `A →ₐ[K] B` unconditionally. Skolem-Noether is then the statement that, for A simple and B a CSA, the resulting `conjugateSetoid` is indiscrete — a single conjugacy class."
     },
     {
       "id": "witness-ambiguity",
       "title": "Ambiguity of Skolem-Noether Witnesses (Torsor Structure)",
       "startLine": 291,
-      "endLine": 390,
+      "endLine": 393,
       "summary": "witness_diff_centralizes + witness_mul_centralizer + witness_set_torsor: characterize the set of conjugating units for a fixed pair (f, g) as a left coset of the centralizer of g(A) in Bˣ. Proved hypothesis-free (no simple/CSA/finite-dim assumptions), independent of the skolemNoether_module_iso axiom.",
       "mathContext": "A 'Skolem-Noether witness' is a unit u ∈ Bˣ realizing the conjugation f(a) = u⁻¹·g(a)·u. The forward direction says: any two witnesses u, u' differ by an element of the centralizer of g(A), since u'·u⁻¹·g(a) = g(a)·u'·u⁻¹ for all a. The converse says: multiplying a witness by a centralizing unit yields another witness. Together these establish the witness set as a left coset (torsor) of the centralizer. Skolem-Noether's existence claim (skolemNoether_general) ensures the set is nonempty when A is simple and B is a CSA, so the witness moduli space then coincides with the centralizer of g(A) as a torsor — sharpening the qualitative IsConjugate predicate into a quantitative structural result."
     }
@@ -160,18 +176,15 @@
   },
   "crossReferences": [
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-      "title": "Skolem-Noether for Matrix Algebras",
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
       "relationship": "Parent: proves Skolem-Noether for the special case B = Mₙ(K) using an elementary matrix approach. This entry extends to arbitrary central simple algebras via Wedderburn-Artin + isotypic decomposition."
     },
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
-      "title": "Minimal Polynomial Preservation",
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
       "relationship": "Grandparent: minimal polynomial preservation under algebra equivalences — the seed of the Skolem-Noether chain. Establishes the algebraic context for why automorphisms must be inner."
     },
     {
-      "id": "cayley-hamilton",
-      "title": "Cayley-Hamilton Theorem",
+      "targetId": "cayley-hamilton",
       "relationship": "Foundational: Cayley-Hamilton provides the polynomial integrality that underlies the minimal polynomial machinery used throughout this chain."
     }
   ],
@@ -182,7 +195,7 @@
     ],
     "opens": [],
     "namespace": "SkolemNoetherCSA",
-    "lineCount": 394,
+    "lineCount": 393,
     "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 2,

@@ -16,7 +16,11 @@
       "Turán numbers",
       "Cycle structures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "combinatorics",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-767-graph",
@@ -36,7 +40,11 @@
       "extremal graph theory",
       "Turán-type problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite set theory",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-767-cycle",
@@ -55,7 +63,11 @@
       "Hamiltonian paths",
       "Graph connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "list operations",
+      "modular arithmetic"
+    ]
   },
   {
     "id": "ann-767-chord",
@@ -74,7 +86,11 @@
       "Triangulations",
       "Cycle edges"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "modular arithmetic",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-767-chordsincident",
@@ -92,7 +108,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "finite cardinality",
+      "predicate logic"
+    ]
   },
   {
     "id": "ann-767-gk",
@@ -110,7 +130,11 @@
       "formal definition",
       "graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "Lean 4 axioms",
+      "optimization"
+    ]
   },
   {
     "id": "ann-767-czipszer",
@@ -128,7 +152,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorial bounds",
+      "asymptotics"
+    ]
   },
   {
     "id": "ann-767-erdos-lower",
@@ -146,7 +174,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorial constructions",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-767-posa",
@@ -164,7 +196,11 @@
       "graph theory",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "induced subgraphs",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "ann-767-special-k23",
@@ -182,7 +218,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "arithmetic"
+    ]
   },
   {
     "id": "ann-767-jiang",
@@ -200,7 +240,11 @@
       "combinatorics",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "combinatorics",
+      "extremal graph theory",
+      "asymptotics"
+    ]
   },
   {
     "id": "ann-767-formula",
@@ -219,7 +263,11 @@
       "ring theory",
       "algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elementary algebra",
+      "Lean 4 tactic mode",
+      "ring theory"
+    ]
   },
   {
     "id": "ann-767-examples",
@@ -237,7 +285,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic",
+      "Lean 4 tactic mode",
+      "decision procedures"
+    ]
   },
   {
     "id": "ann-767-main",
@@ -255,6 +307,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "combinatorics",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ChebyshevBounds.lean",
     "tags": [
       "number-theory",
@@ -15,11 +15,11 @@
       "bertrand-postulate",
       "analytic-number-theory"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-04",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 1,
+    "assumptions": "The lower-bound theorem `primeCounting_ge_log` discharges `Nat.log 2 2 = 1` via `native_decide`, so it depends on the `Lean.ofReduceBool` axiom (which trusts the compiler's kernel reduction; `#print axioms primeCounting_ge_log` lists it). All other results in the file are fully machine-verified. `leanFile.axiomCount` remains 0 since there are no literal `axiom` declarations.",
     "lineCount": 439,
     "theoremCount": 15,
     "definitionCount": 3,

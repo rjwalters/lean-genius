@@ -51,80 +51,88 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 20,
-      "summary": "Problem statement for Erdős Problem #1072 on the least factorial achieving Wilson's congruence.",
-      "mathContext": "For prime $p$, defines $f(p) = \\min\\{n \\geq 1 : n! \\equiv -1 \\pmod{p}\\}$. By Wilson's theorem $f(p) \\leq p-1$. Two open questions: (1) infinitely many $p$ with $f(p) = p-1$? (2) $f(p)/p \\to 0$ for almost all primes? References Erdős–Hardy–Subbarao and OEIS A154554."
+      "summary": "States Erdős Problem #1072: for a prime $p$, $f(p)$ is the least $n>0$ with $n!+1\\equiv0\\pmod p$ (i.e. $n!\\equiv-1$). Wilson's theorem gives $f(p)\\leq p-1$. Questions: (1) are there infinitely many primes with $f(p)=p-1$? (2) is $f(p)/p\\to0$ for almost all primes? Status OPEN; belief: maximal primes have density 0 (OEIS A154554).",
+      "mathContext": "$f(p)=\\min\\{n>0:p\\mid n!+1\\}\\leq p-1$ (Wilson). Infinitely many $f(p)=p-1$? $f(p)/p\\to0$?"
     },
     {
       "id": "imports",
       "title": "Imports",
-      "startLine": 22,
-      "endLine": 24,
-      "summary": "Imports Mathlib and opens Nat and Filter namespaces.",
-      "mathContext": "Imports full Mathlib for `Nat.Factorial.Basic`, `ZMod.wilsons_lemma`, `sInf`, `Filter`, `Real.log`. Opens `Nat` and `Filter`."
+      "startLine": 21,
+      "endLine": 25,
+      "summary": "Imports Mathlib; opens `Nat` and `Filter`.",
+      "mathContext": "Imports Mathlib (Wilson's lemma, sInf)."
     },
     {
-      "id": "core-definitions",
+      "id": "core-defs",
       "title": "Core Definitions",
       "startLine": 26,
-      "endLine": 37,
-      "summary": "Defines the least factorial Wilson function and Wilson-maximality predicate.",
-      "mathContext": "Defines `leastFactorialWilson(p) = \\inf\\{n > 0 : p \\mid n! + 1\\}$ via `sInf` (noncomputable). Defines `isWilsonMaximal(p) \\iff p$ is prime $\\wedge f(p) = p - 1$, meaning $(p-1)!$ is the first factorial achieving $-1 \\pmod{p}$."
+      "endLine": 38,
+      "summary": "Defines `leastFactorialWilson p` $=f(p)=\\inf\\{n>0:p\\mid n!+1\\}$ and `isWilsonMaximal p` ($p$ prime $\\wedge f(p)=p-1$).",
+      "mathContext": "$f(p)=\\inf\\{n>0:p\\mid n!+1\\}$; Wilson-maximal: $f(p)=p-1$."
     },
     {
       "id": "wilson-bounds",
       "title": "Wilson's Theorem and Bounds",
       "startLine": 39,
-      "endLine": 69,
-      "summary": "Proves Wilson's theorem and establishes that $f(p) \\in [1, p-1]$.",
-      "mathContext": "PROVED `wilson_theorem`: $p \\mid (p-1)! + 1$ via Mathlib's `ZMod.wilsons_lemma` (formerly an axiom). PROVED `f_le_pred`: $f(p) \\leq p-1$ from Wilson's theorem via `Nat.sInf_le`. PROVED `f_pos`: $f(p) \\geq 1$ for $p \\geq 3$ via `le_csInf` — every element of the defining set has $n > 0$."
+      "endLine": 70,
+      "summary": "PROVES `wilson_theorem` ($p\\mid(p-1)!+1$, from Mathlib's `ZMod.wilsons_lemma`), `f_le_pred` ($f(p)\\leq p-1$), and `f_pos` ($f(p)\\geq1$ for $p\\geq3$).",
+      "mathContext": "$(p-1)!\\equiv-1\\pmod p$; $1\\leq f(p)\\leq p-1$."
     },
     {
-      "id": "question-1",
+      "id": "question1",
       "title": "Question 1: Infinitely Many Maximal Primes",
       "startLine": 71,
-      "endLine": 77,
-      "summary": "States the first open conjecture: infinitely many primes with $f(p) = p-1$.",
-      "mathContext": "Axiom `erdos_1072a`: $\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid \\text{isWilsonMaximal}(p)\\}$. Asserts that there are infinitely many primes where no factorial smaller than $(p-1)!$ achieves $-1 \\pmod{p}$."
+      "endLine": 78,
+      "summary": "States the AXIOM `erdos_1072a` (OPEN): there are infinitely many primes $p$ with $f(p)=p-1$.",
+      "mathContext": "Axiom (open): $\\{p:f(p)=p-1\\}$ infinite."
     },
     {
-      "id": "question-2",
-      "title": "Question 2: $f(p)/p \\to 0$ for Almost All Primes",
+      "id": "question2",
+      "title": "Question 2: f(p)/p → 0 for Almost All Primes",
       "startLine": 79,
-      "endLine": 88,
-      "summary": "States the second open conjecture on the asymptotic density of the Wilson function.",
-      "mathContext": "Axiom `erdos_1072b`: $\\exists S \\subseteq \\text{primes}$ with density 1, such that $\\forall \\varepsilon > 0$, $\\exists N$, $\\forall p \\in S$ with $p \\geq N$: $f(p)/p < \\varepsilon$. Captures the belief that $f(p)$ is typically $o(p)$."
+      "endLine": 89,
+      "summary": "States the AXIOM `erdos_1072b` (OPEN): there is a density-1 set of primes along which $f(p)/p\\to0$.",
+      "mathContext": "Axiom (open): $f(p)/p\\to0$ for almost all primes."
     },
     {
       "id": "hardy-subbarao",
       "title": "Hardy–Subbarao Belief",
       "startLine": 90,
-      "endLine": 100,
-      "summary": "Axiomatizes the Hardy–Subbarao density conjecture on Wilson-maximal primes.",
-      "mathContext": "Axiom `hardy_subbarao_belief`: $\\forall \\varepsilon > 0$, $\\exists N$ s.t. $|\\{p \\leq x : \\text{isWilsonMaximal}(p)\\}| \\leq \\varepsilon \\cdot x / \\log x$ for $x \\geq N$. Uses `DecidablePred` via `Classical.decPred` to filter primes in `Finset.Icc`."
+      "endLine": 101,
+      "summary": "Provides a `DecidablePred isWilsonMaximal` instance and states the AXIOM `hardy_subbarao_belief` (OPEN): the count of $p\\leq x$ with $f(p)=p-1$ is $o(x/\\log x)$ (density 0 among primes).",
+      "mathContext": "Axiom (open): $\\#\\{p\\leq x:f(p)=p-1\\}=o(x/\\log x)$."
     },
     {
-      "id": "examples",
+      "id": "small-examples",
       "title": "Small Examples",
       "startLine": 102,
-      "endLine": 142,
-      "summary": "Computes $f$ for the first four primes, identifying $p=7$ as the first non-maximal prime.",
-      "mathContext": "PROVED $f(2) = 1$ ($1! + 1 = 2$, maximal). PROVED $f(3) = 2$ ($2! + 1 = 3$, maximal). PROVED $f(5) = 4$ ($4! + 1 = 25 = 5^2$, maximal; eliminates $k=1,2,3$ via `decide`). PROVED $f(7) = 3$ ($3! + 1 = 7$, first non-maximal: $f(7) = 3 < 6 = 7-1$). All use `sInf` + `le_antisymm` + `le_csInf`."
+      "endLine": 172,
+      "summary": "Computes $f$ on small primes by `sInf` + `decide`: `f_of_2` ($=1$), `f_of_3` ($=2$), `f_of_5` ($=4$), `f_of_7` ($=3<6$, first non-maximal), `f_of_11` ($=5$), `f_of_13` ($=12$).",
+      "mathContext": "$f(2)=1,f(3)=2,f(5)=4,f(7)=3,f(11)=5,f(13)=12$."
     },
     {
-      "id": "wilson-primes",
+      "id": "known-maximal",
+      "title": "Known Wilson-Maximal Primes",
+      "startLine": 173,
+      "endLine": 205,
+      "summary": "PROVES the maximality classification: `isWilsonMaximal_2`, `_3`, `_5`, `_13` (maximal) and `isNotWilsonMaximal_7`, `_11` (not maximal) — isolating $7,11$ as the first non-maximal primes (OEIS A154554).",
+      "mathContext": "Maximal: $2,3,5,13$; not maximal: $7,11$."
+    },
+    {
+      "id": "connection",
       "title": "Connection to Wilson Primes",
-      "startLine": 144,
-      "endLine": 149,
-      "summary": "Explains the relationship between Wilson primes and Wilson-maximal primes.",
-      "mathContext": "Notes that Wilson primes ($p^2 \\mid (p-1)! + 1$, known only for $p = 5, 13, 563$) are empirically Wilson-maximal ($f(p) = p-1$), but this is not proved in general. The Erdős problem concerns $f(p)$, not the strength of the congruence."
+      "startLine": 206,
+      "endLine": 212,
+      "summary": "A note: Wilson primes ($p^2\\mid(p-1)!+1$, e.g. $5,13,563$) are empirically maximal, but this is not proved in general; the problem concerns $f(p)$, not the strength of the Wilson congruence.",
+      "mathContext": "Wilson primes ($p^2\\mid(p-1)!+1$) empirically maximal, but unproven in general."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 151,
-      "endLine": 169,
-      "summary": "Recapitulates all proved theorems and remaining open axioms.",
-      "mathContext": "7 proved theorems (all formerly axioms): `wilson_theorem`, `f_le_pred`, `f_pos`, `f_of_2`, `f_of_3`, `f_of_5`, `f_of_7`. 3 remaining axioms — all OPEN conjectures: `erdos_1072a` (infinitely many maximal primes), `erdos_1072b` ($f(p)/p \\to 0$ for almost all primes), `hardy_subbarao_belief` (maximal primes have density 0)."
+      "startLine": 213,
+      "endLine": 241,
+      "summary": "Closing docstring recapping the proved theorems (Wilson bound, $f$-values, maximality of $2,3,5,13$, non-maximality of $7,11$), the 3 remaining open axioms (erdos_1072a/b, hardy_subbarao_belief), and the empirical small-prime status matching OEIS A154554.",
+      "mathContext": "Recap: 15 proved theorems, 3 open axioms; small-prime maximality sporadic (matches A154554)."
     }
   ],
   "conclusion": {
@@ -139,27 +147,27 @@
   },
   "crossReferences": [
     {
-      "slug": "wilsons-theorem",
+      "targetId": "wilsons-theorem",
       "relationship": "Wilson's theorem ($p \\mid (p-1)!+1$ iff $p$ is prime) is the direct foundation of Problem #1072: it establishes the upper bound $f(p) \\leq p-1$ and guarantees the infimum defining $f(p)$ is finite for every prime."
     },
     {
-      "slug": "erdos-1073",
+      "targetId": "erdos-1073",
       "relationship": "Immediate companion problem: #1073 asks whether composites $u$ with $u \\mid n!+1$ for some $n$ are sub-polynomial in count, while #1072 studies the least such $n$ for primes. Both probe the arithmetic of factorial residues modulo primes and composites."
     },
     {
-      "slug": "erdos-1074",
+      "targetId": "erdos-1074",
       "relationship": "Direct sibling from the same Erdős–Hardy–Subbarao (2002) paper: #1074 asks about the density of EHS numbers and Pillai primes, which are defined by the same factorial congruence $n! \\equiv -1 \\pmod{p}$ studied in #1072."
     },
     {
-      "slug": "erdos-1058",
+      "targetId": "erdos-1058",
       "relationship": "Complementary factorial-prime problem: #1058 asks which primes can divide $n!+1$ for $n$ in specific intervals, and its resolution by Luca (2001) illustrates the kind of finiteness argument that would be needed to settle #1072a."
     },
     {
-      "slug": "erdos-1056",
+      "targetId": "erdos-1056",
       "relationship": "Related modular-arithmetic problem about products of consecutive intervals modulo $p$: both #1056 and #1072 investigate when specific products (partial factorials) achieve a prescribed residue modulo a prime."
     },
     {
-      "slug": "bertrands-postulate",
+      "targetId": "bertrands-postulate",
       "relationship": "Bertrand's postulate underpins prime distribution arguments used as context for #1072: knowing that primes are 'dense enough' is relevant to understanding whether Wilson-maximal primes can be infinite or must have zero density."
     }
   ],

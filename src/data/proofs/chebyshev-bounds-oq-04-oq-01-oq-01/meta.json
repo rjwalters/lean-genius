@@ -1,0 +1,169 @@
+{
+  "id": "chebyshev-bounds-oq-04-oq-01-oq-01",
+  "title": "The Möbius–Floor Identity: Σ μ(d)⌊N/d⌋ = 1",
+  "slug": "chebyshev-bounds-oq-04-oq-01-oq-01",
+  "description": "A self-contained Lean 4 / Mathlib proof of the classical Möbius–floor identity ∑_{d=1}^{N} μ(d)·⌊N/d⌋ = 1 for N ≥ 1, the integer-valued keystone of the weak Mertens bound |∑_{d≤N} μ(d)/d| ≤ 1 on the elementary Selberg–Erdős road to the Prime Number Theorem. Proved by the hyperbola method: ⌊N/d⌋ counts multiples of d, Fubini swaps the order of summation, and ∑_{d∣n} μ(d) = [n = 1] collapses the result.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "classical (Möbius, 1832; Selberg–Erdős context 1949)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean",
+    "badge": "original",
+    "tags": [
+      "number-theory",
+      "moebius-function",
+      "dirichlet-convolution",
+      "prime-number-theorem",
+      "mertens",
+      "elementary-proof",
+      "hyperbola-method",
+      "analytic-number-theory",
+      "intermediate"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 167,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-17",
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries; imports only Mathlib. The single hypothesis is N ≥ 1. The theorem is independent of the two deep PNT axioms (chebyshevPsi_asymptotic, pnt_equivalence) carried by the parent file ChebyshevBoundsOQ04.lean — this proof does not import that file and uses only elementary Mathlib lemmas about Nat division, divisors, and the Möbius function.",
+    "originalContributions": [
+      "A clean, axiom-free Lean proof of the Möbius–floor identity ∑_{d=1}^{N} μ(d)·⌊N/d⌋ = 1, assembled from Mathlib primitives — not available as a single named Mathlib lemma.",
+      "Realises ⌊N/d⌋ as the cardinality of the multiples of d in {1,…,N} via Nat.Ioc_filter_dvd_card_eq_div, converting the floor term into an indicator sum over k ≤ N.",
+      "Executes the hyperbola / Fubini swap (Finset.sum_comm) to reindex the double sum ∑_d ∑_k [d∣k] μ(d) into ∑_k ∑_{d∣k} μ(d), then collapses the inner sum with the Dirichlet identity μ ∗ ζ = δ (ArithmeticFunction.moebius_mul_coe_zeta, ArithmeticFunction.one_apply).",
+      "Provides the reusable integer-valued half of the weak Mertens estimate: separating ⌊N/d⌋ = N/d − {N/d} immediately yields |∑_{d≤N} μ(d)/d| ≤ 1 (Iter 5a-β-2 of the parent ChebyshevBoundsOQ04OQ01 Selberg–Erdős roadmap)."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Möbius function μ and the identity ∑_{d∣n} μ(d) = [n = 1] (equivalently, μ ∗ ζ = δ, μ being the Dirichlet inverse of the constant function 1) are foundational to multiplicative number theory, dating to Möbius (1832) and Mertens (1874). The particular consequence ∑_{d=1}^{N} μ(d)·⌊N/d⌋ = 1 is a textbook identity (Apostol, Theorem 3.10; Tenenbaum §I.3) and the elementary engine behind Mertens' bounds on partial sums of μ(d)/d. Such bounds are exactly the kind of elementary, complex-analysis-free estimates that the Selberg–Erdős 1949 program parlays into a full proof of the Prime Number Theorem ψ(x)/x → 1. This entry isolates the harder, integer-valued half of the weak Mertens estimate as a standalone verified result.",
+    "problemStatement": "**Möbius–floor identity.** For every integer $N \\ge 1$,\n$$\\sum_{d=1}^{N} \\mu(d)\\,\\left\\lfloor \\frac{N}{d} \\right\\rfloor = 1,$$\nwhere $\\lfloor N/d \\rfloor$ is integer (floor) division and $\\mu$ is the Möbius function. Separating $\\lfloor N/d\\rfloor = N/d - \\{N/d\\}$ turns this into the weak Mertens bound $\\bigl|\\sum_{d\\le N} \\mu(d)/d\\bigr| \\le 1$.",
+    "text": "A Lean 4 / Mathlib formalization (167 lines, 0 sorries, 0 axioms, `import Mathlib` only) of the single theorem `moebius_mul_floor_sum_eq_one`: for `N ≥ 1`, `∑ d ∈ Finset.Icc 1 N, μ d * (↑(N / d) : ℤ) = 1`. The proof rewrites `Finset.Icc 1 N = Finset.Ioc 0 N`, identifies `⌊N/d⌋` with the number of multiples of `d` in `{1,…,N}` (`Nat.Ioc_filter_dvd_card_eq_div`), and rewrites each term `μ(d)·⌊N/d⌋` as the indicator sum `∑_{k≤N} [d∣k] μ(d)`. A `Finset.sum_comm` performs the hyperbola swap, after which the inner sum over `d` is restricted to the divisors of `k`, and the Dirichlet identity `μ ∗ ζ = δ` collapses it to `[k = 1]`. Summing the indicator over `k ∈ {1,…,N}` yields `1`.",
+    "proofStrategy": "1. **Index normalisation.** `Finset.Icc 1 N = Finset.Ioc 0 N` over ℕ (`omega` after `ext`), matching the counting lemma's interval.\n\n2. **Floor as a count.** `⌊N/d⌋ = #{k ∈ (0,N] : d ∣ k}` via `Nat.Ioc_filter_dvd_card_eq_div`. Hence `μ(d)·⌊N/d⌋ = ∑_{k∈Icc 1 N} (if d ∣ k then μ d else 0)` (`Finset.sum_ite` + `Finset.sum_const`).\n\n3. **Hyperbola / Fubini swap.** `Finset.sum_comm` turns `∑_d ∑_k [d∣k] μ(d)` into `∑_k ∑_d [d∣k] μ(d)`.\n\n4. **Restrict to divisors.** For each `k`, `∑_{d∈Icc 1 N} [d∣k] μ(d) = ∑_{d ∈ k.divisors} μ(d)` (a divisor `d∣k` with `k ≤ N` satisfies `1 ≤ d ≤ k ≤ N`).\n\n5. **Möbius inversion collapse.** `∑_{d∣k} μ(d) = (μ ∗ ζ)(k) = [k = 1]` via `ArithmeticFunction.coe_mul_zeta_apply`, `ArithmeticFunction.moebius_mul_coe_zeta`, `ArithmeticFunction.one_apply`.\n\n6. **Sum the indicator.** `∑_{k∈Icc 1 N} [k = 1] = 1` since `1 ∈ Icc 1 N` (`Finset.sum_ite_eq'`, using `N ≥ 1`).",
+    "keyInsights": [
+      "**The floor hides a count.** The only analytic-looking object, `⌊N/d⌋`, is purely combinatorial: it is the number of multiples of `d` up to `N`. Replacing it with that count (`Nat.Ioc_filter_dvd_card_eq_div`) converts the whole identity into a double sum of Möbius values over the hyperbola region `d·m ≤ N`.",
+      "**Fubini is the entire trick.** Summing the region `{(d,k) : d ∣ k ≤ N}` by `d` first gives the floor sum; summing by `k` first gives `∑_k ∑_{d∣k} μ(d)`. The two orders are equated by `Finset.sum_comm`, and the second order trivialises.",
+      "**μ ∗ ζ = δ does the collapsing.** The inner sum `∑_{d∣k} μ(d)` is the defining property of the Möbius function as the Dirichlet inverse of `ζ = 1`: it equals `1` for `k = 1` and `0` otherwise. Mathlib packages this as `moebius_mul_coe_zeta`, so the calc chain ends in one rewrite.",
+      "**Integer-valued half of weak Mertens.** Keeping everything in ℤ (rather than passing to ℝ) makes the identity exact and reusable: the real-valued bound `|∑ μ(d)/d| ≤ 1` follows by writing `⌊N/d⌋ = N/d − {N/d}` and bounding the fractional parts, with no further number theory.",
+      "**Dirichlet's hyperbola, weighted by μ.** The double sum ranges over the lattice points `(d,m)` with `d·m ≤ N` — exactly Dirichlet's hyperbola, the same region whose unweighted count gives the divisor-sum asymptotic `∑_{n≤N} d(n)`. Weighting those points by `μ(d)` and summing along the `m`-fibres telescopes the entire region down to the single point `(1,1)`, which is what makes the answer the constant `1` independent of `N`."
+    ],
+    "prerequisites": [
+      "Number theory (Möbius function, Dirichlet convolution, μ ∗ ζ = δ)",
+      "The hyperbola method / interchange of summation over a divisor region",
+      "Mathlib: ArithmeticFunction.moebius, Nat.divisors, Nat.Ioc_filter_dvd_card_eq_div, Finset.sum_comm",
+      "Parent context: chebyshev-bounds-oq-04-oq-01 (the Selberg–Erdős elementary-PNT roadmap)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring: The Identity and Its Role",
+      "startLine": 1,
+      "endLine": 92,
+      "summary": "The module docstring states the Möbius–floor identity ∑_{d≤N} μ(d)⌊N/d⌋ = 1, derives the weak Mertens bound |∑ μ(d)/d| ≤ 1 from it, gives the elementary why-it-is-true derivation (count multiples → Fubini → μ ∗ ζ = δ), and inventories the four Mathlib hooks used in the proof (all confirmed present in v4.26.0).",
+      "mathContext": "The identity is the integer-valued keystone of Iter 5a-β-2 (weak Mertens M₁ estimate) on the parent file's Selberg–Erdős road to ψ(x)/x → 1."
+    },
+    {
+      "id": "setup",
+      "title": "Imports, Options, and Namespace",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "`import Mathlib` plus `open ArithmeticFunction` / `open scoped ArithmeticFunction.Moebius` bring the `μ` and `ζ` notations and the four confirmed hooks into scope; `set_option maxHeartbeats 1000000` / `maxRecDepth 4000` give the elaborator headroom for the divisor-set `simp`/`omega` discharges, and `autoImplicit false` enforces explicit binders. No parent file is imported, so the two deep PNT axioms stay out of this proof's closure.",
+      "mathContext": "The only arithmetic input is μ ∗ ζ = δ (`moebius_mul_coe_zeta`); the rest is Finset bookkeeping."
+    },
+    {
+      "id": "theorem",
+      "title": "moebius_mul_floor_sum_eq_one",
+      "startLine": 107,
+      "endLine": 122,
+      "summary": "The single theorem: for N ≥ 1, `∑ d ∈ Finset.Icc 1 N, μ d * (↑(N / d) : ℤ) = 1`. The doc comment restates the identity, fixes notation (`N / d` is ℕ-division = ⌊N/d⌋, μ is ℤ-valued), and sketches the hyperbola/Fubini proof idea.",
+      "mathContext": "$\\sum_{d=1}^{N} \\mu(d)\\lfloor N/d\\rfloor = 1$ — exact in ℤ, holds for all $N \\ge 1$."
+    },
+    {
+      "id": "count",
+      "title": "Floor as a Cardinality, Term-by-Term",
+      "startLine": 123,
+      "endLine": 138,
+      "summary": "`hIcc` normalises `Finset.Icc 1 N = Finset.Ioc 0 N`; `hcard` proves `#{k ∈ Icc 1 N : d ∣ k} = N / d` via `Nat.Ioc_filter_dvd_card_eq_div`; `key` rewrites each term `μ(d)·⌊N/d⌋` as the indicator sum `∑_{k∈Icc 1 N} (if d ∣ k then μ d else 0)` using `Finset.sum_ite` and `Finset.sum_const`.",
+      "mathContext": "⌊N/d⌋ counts the multiples of d in {1,…,N}, so μ(d)·⌊N/d⌋ is the sum over those multiples of the constant μ(d)."
+    },
+    {
+      "id": "fubini",
+      "title": "Fubini Swap and the Möbius-Inversion Collapse",
+      "startLine": 139,
+      "endLine": 165,
+      "summary": "A four-step calc: (1) expand each term via `key`; (2) `Finset.sum_comm` swaps the order of summation (the hyperbola swap); (3) restrict the inner `d`-sum to `k.divisors` (a divisor d∣k≤N lies in Icc 1 N); (4) collapse `∑_{d∣k} μ(d)` to `[k = 1]` via `coe_mul_zeta_apply` + `moebius_mul_coe_zeta` + `one_apply`, then sum the indicator over `Icc 1 N` to get 1.",
+      "mathContext": "∑_d ∑_k [d∣k] μ(d) = ∑_k ∑_{d∣k} μ(d) = ∑_k [k = 1] = 1, using μ ∗ ζ = δ and 1 ∈ {1,…,N}."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Möbius–floor identity ∑_{d=1}^{N} μ(d)⌊N/d⌋ = 1 is fully verified in Lean 4 / Mathlib (167 lines, 0 sorries, 0 axioms, Mathlib-only). The proof is the hyperbola method in miniature: realise ⌊N/d⌋ as a count of multiples, swap the order of summation with `Finset.sum_comm`, and collapse the resulting inner sum via the Dirichlet identity μ ∗ ζ = δ.",
+    "implications": "This is the integer-valued keystone of the weak Mertens bound |∑_{d≤N} μ(d)/d| ≤ 1, which is in turn an elementary building block of the Selberg–Erdős 1949 complex-analysis-free proof of the Prime Number Theorem. The entry demonstrates how a classical analytic-number-theory identity reduces, under formalization, to a short chain of Mathlib's divisor and arithmetic-function lemmas, with the only genuinely arithmetic input being μ ∗ ζ = δ.",
+    "openQuestions": [
+      "Derive the real-valued weak Mertens bound |∑_{d≤N} μ(d)/d| ≤ 1 from this identity by writing ⌊N/d⌋ = N/d − {N/d} and bounding the fractional-part sum.",
+      "Continue Iter 5a-β-2 of the parent roadmap: combine the weak Mertens bound with Selberg's symmetry formula toward the Tauberian oscillation inequality for ψ(x)/x − 1.",
+      "Contribute the Möbius–floor identity (and the weak Mertens bound) upstream to Mathlib, where neither currently exists as a named lemma."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "The parent OQ-04-OQ-01 entry scaffolds the Selberg Λ₂ framework toward an elementary PNT proof and documents 'Iter 5a-β-2: weak Mertens M₁ estimate' as its next step. This entry supplies the integer-valued keystone of exactly that step."
+    },
+    {
+      "targetId": "chebyshev-bounds-oq-04",
+      "relationship": "related",
+      "description": "The grandparent entry axiomatizes ψ(n)/n → 1 (chebyshevPsi_asymptotic). The elementary Mertens-type estimates this identity feeds into are part of the long-term program to discharge that axiom without complex analysis."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators",
+      "ArithmeticFunction",
+      "ArithmeticFunction.Moebius"
+    ],
+    "namespace": "ChebyshevBoundsOQ04OQ01OQ01WeakMertens",
+    "lineCount": 167,
+    "axiomCount": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "path": "Proofs/ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "moebius_mul_floor_sum_eq_one",
+      "type": "core",
+      "description": "For N ≥ 1, the alternating-by-Möbius sum of the floors ⌊N/d⌋ over d ∈ {1,…,N} equals 1: ∑_{d=1}^{N} μ(d)·⌊N/d⌋ = 1.",
+      "leanType": "(N : ℕ) (hN : 1 ≤ N) : ∑ d ∈ Finset.Icc 1 N, μ d * (↑(N / d) : ℤ) = 1"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Tom M. Apostol",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer, Undergraduate Texts in Mathematics",
+      "note": "Theorem 3.10 and §3 develop the Möbius function and the floor/divisor identities, including ∑_{d≤N} μ(d)⌊N/d⌋ = 1."
+    },
+    {
+      "authors": "Gérald Tenenbaum",
+      "title": "Introduction to Analytic and Probabilistic Number Theory",
+      "year": "2015",
+      "venue": "AMS, Graduate Studies in Mathematics 163 (3rd ed.)",
+      "note": "§I.3 (Möbius function) and §I.6 (Selberg's identity) frame the role of such identities in the elementary PNT."
+    },
+    {
+      "authors": "Atle Selberg",
+      "title": "An elementary proof of the prime-number theorem",
+      "year": "1949",
+      "venue": "Annals of Mathematics 50(2), 305–313",
+      "note": "The elementary (complex-analysis-free) PNT proof whose Mertens-type estimates this identity supports."
+    }
+  ],
+  "sorries": 0
+}

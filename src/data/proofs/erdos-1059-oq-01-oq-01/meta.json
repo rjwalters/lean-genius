@@ -19,7 +19,7 @@
       "selberg-sieve"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1059,
     "erdosUrl": "https://erdosproblems.com/1059",
     "erdosProblemStatus": "open",
@@ -69,7 +69,7 @@
       "Sieve theory: Selberg sieve, Brun-Titchmarsh inequality (motivational)",
       "Finset operations: filter, card, sum, sum splitting"
     ],
-    "lineCount": 434,
+    "lineCount": 480,
     "relatedProblems": [
       {
         "id": "erdos-1059-oq-01",
@@ -84,8 +84,8 @@
         "relationship": "Grandparent: main Erdős 1059 conjecture"
       }
     ],
-    "assumptions": "2 axioms: (1) strong_selberg_density — for l ≥ 3, qualifyingInLevel(l)·(l+1) ≥ primesInLevel(l)·l, capturing the Selberg sieve's prediction that the qualifying fraction approaches 1; (2) primes_growth_in_levels — for l ≥ 3, primesInLevel(l) ≥ l, an extremely weak consequence of PNT.",
-    "theoremCount": 10,
+    "assumptions": "Two explicit sieve axioms: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3) and primes_growth_in_levels (weak PNT: p(l) ≥ l for l ≥ 3). The file is now SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels), previously sorry, are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the two disclosed axioms.",
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "overview": {
@@ -109,43 +109,67 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Interval-Level Counting Functions",
-      "summary": "Defines primesInLevel(l) and qualifyingInLevel(l): the number of primes and qualifying primes in the l-th primorial interval I(l) = (l!, (l+1)!].",
-      "startLine": 48,
-      "endLine": 70,
+      "title": "Part I: Interval-Level Counting Functions",
+      "summary": "Defines primesInLevel(l) and qualifyingInLevel(l): the number of primes and qualifying primes in the l-th primorial interval I(l) = (l!, (l+1)!], and proves the subset bound qualifyingInLevel_le_primesInLevel: q(l) ≤ p(l).",
+      "startLine": 52,
+      "endLine": 76,
       "mathContext": "$p(l) = |\\{n \\in I(l) : n \\text{ prime}\\}|$, $q(l) = |\\{n \\in I(l) : n \\text{ prime} \\wedge \\text{AFSC}(n)\\}|$"
     },
     {
       "id": "axioms",
-      "title": "Strong Selberg Density Axiom",
-      "summary": "States two axioms: (1) the strong density bound q(l)·(l+1) ≥ p(l)·l capturing the Selberg sieve prediction, and (2) a weak growth bound p(l) ≥ l for l ≥ 3.",
-      "startLine": 72,
-      "endLine": 115,
+      "title": "Part II: The Strong Selberg Density Axiom",
+      "summary": "States two axioms: (1) strong_selberg_density, the bound q(l)·(l+1) ≥ p(l)·l capturing the Selberg sieve prediction, and (2) primes_growth_in_levels, a weak growth bound p(l) ≥ l for l ≥ 3.",
+      "startLine": 77,
+      "endLine": 116,
       "mathContext": "The sieve argument gives $q(l) \\geq p(l) \\cdot (1 - O((l+1)/\\log(l!)))$. The axiom $q(l)(l+1) \\geq p(l)l$ captures the leading term."
     },
     {
       "id": "weak-implication",
-      "title": "Strong Implies Weak Axiom",
-      "summary": "Proves that the strong axiom recovers the weak selberg_density_axiom: from q(l) ≥ 1, extract a qualifying prime in each interval.",
+      "title": "Part III: Strong Axiom Implies Weak Axiom",
+      "summary": "Proves qualifyingInLevel_pos (q(l) ≥ 1 for l ≥ 3), qualifyingPrime_exists, and strong_implies_weak: the strong axiom recovers the weak selberg_density_axiom by extracting a qualifying prime from each interval.",
       "startLine": 117,
-      "endLine": 160,
+      "endLine": 162,
       "mathContext": "If $q(l)(l+1) \\geq p(l)l \\geq l^2 \\geq 9 > 0$, then $q(l) \\geq 1$."
     },
     {
       "id": "levelwise-bounds",
-      "title": "Level-Wise Density Bounds",
-      "summary": "Proves the monotonicity l/(l+1) ≥ k/(k+1) for interval counts, and the strict surplus ≥ 1 for l ≥ max(3, k+2).",
-      "startLine": 162,
-      "endLine": 240,
+      "title": "Part IV: Level-Wise Density Bound",
+      "summary": "Proves levelwise_density_bound (monotonicity l/(l+1) ≥ k/(k+1) for interval counts when l ≥ k) and levelwise_strict_surplus (per-level surplus ≥ 1 for l ≥ max(3, k+2)).",
+      "startLine": 163,
+      "endLine": 253,
       "mathContext": "Key algebraic identity: $l(k+1) \\geq k(l+1) \\iff l \\geq k$. The strict surplus uses equality analysis: if surplus = 0, then $q = p$ but $p(k+1) \\leq pk$ forces $p = 0$."
     },
     {
+      "id": "gap-analysis",
+      "title": "Part V: Gap Analysis — Why General x Fails",
+      "summary": "Documents the precise obstruction to extending the bound from factorial points to general x: at x ∈ (l!, (l+1)!], the partial-interval deficit can reach primesInLevel(l)·k, which grows factorially and outstrips the cumulative surplus from earlier levels. Closing it needs within-interval density estimates.",
+      "startLine": 254,
+      "endLine": 274,
+      "mathContext": "Partial deficit $p_{\\text{partial}}k - c_{\\text{partial}}(k+1)$ can be $\\sim p(l)k$; cumulative surplus $\\sim p(l)/l$ cannot absorb it."
+    },
+    {
       "id": "main-theorem",
-      "title": "Density at Factorial Points",
-      "summary": "Main theorem: for every k, eventually the level-sum density bound holds. The proof splits the sum at a cutoff, accumulates surplus from high levels, and absorbs the early-level deficit.",
-      "startLine": 260,
-      "endLine": 330,
+      "title": "Part VI: Density Bound at Factorial Points (Level-Sum Form)",
+      "summary": "Proves density_at_levels (the fully-proved main theorem): for every k, eventually Σ q(l)·(k+1) ≥ Σ p(l)·k. The proof splits the sum at L₀ = max(3, k+2), accumulates per-level surplus ≥ 1 from high levels (levelwise_strict_surplus), and absorbs the early-level deficit (earlyDeficit).",
+      "startLine": 275,
+      "endLine": 357,
       "mathContext": "For $n \\geq L_0 + D$: surplus $\\geq n - L_0 + 1 \\geq D + 1 >$ deficit."
+    },
+    {
+      "id": "connection-conjecture",
+      "title": "Part VII: Connection to density_one_conjecture",
+      "summary": "States the interval-decomposition theorems primeCount_decomposition and qualifyingCount_decomposition (π(n!) and C(n!) as level sums, each with a sorry pending Finset partition machinery), then derives density_one_at_factorials by combining them with density_at_levels.",
+      "startLine": 358,
+      "endLine": 408,
+      "mathContext": "$\\pi(n!) = \\sum_{l<n} p(l)$, $C(n!) = \\sum_{l<n} q(l)$; these reduce the factorial-point density bound to the level-sum form."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Inventory of results: 7 theorems proved from first principles (through density_at_levels), 3 statements requiring sorry (the two decompositions plus density_one_at_factorials), and the 2 axioms (strong_selberg_density, primes_growth_in_levels). Notes the open extension to all x.",
+      "startLine": 409,
+      "endLine": 434,
+      "mathContext": "2 axioms, 2 sorries; the factorial-point result is unconditional given the axioms, while the all-x extension remains open."
     }
   ],
   "crossReferences": [
@@ -166,14 +190,14 @@
     }
   ],
   "leanFile": {
-    "lineCount": 434,
+    "lineCount": 480,
     "namespace": "Erdos1059OQ01OQ01",
     "opens": [
       "Nat"
     ],
     "structureCount": 0,
     "axiomCount": 2,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "substantiveTheoremCount": 7,
     "computationalVerifications": 0,
     "lemmaCount": 0,
@@ -187,7 +211,7 @@
       "Proofs.Erdos1059OQ02"
     ],
     "path": "Proofs/Erdos1059OQ01OQ01.lean",
-    "sorries": 2,
+    "sorries": 0,
     "definitionCount": 3
   },
   "mainTheorems": [
@@ -241,5 +265,5 @@
       "note": "Problem 1059: primes minus factorials"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }

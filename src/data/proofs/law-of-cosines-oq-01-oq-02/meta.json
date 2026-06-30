@@ -64,49 +64,60 @@
     "definitionCount": 3,
     "path": "Proofs/LawOfCosinesOQ01OQ02.lean",
     "sorries": 0,
-    "additionalFiles": ["Proofs/SphericalLawOfCosines.lean"]
+    "additionalFiles": [
+      "Proofs/SphericalLawOfCosines.lean"
+    ]
   },
   "sorries": 0,
   "sections": [
     {
-      "id": "sec-inner-products",
-      "title": "Inner Products of Projections",
+      "id": "part1-inner-products",
+      "title": "Part I: Inner Product of Projections",
       "startLine": 35,
-      "endLine": 90,
-      "summary": "Establishes key lemmas: proj_inner_eq gives ⟨projB_A, projC_A⟩ = cos(a)-cos(b)cos(c) via inner decomposition; norm_proj_BA/CA gives ‖projB_A‖ = sin(c), ‖projC_A‖ = sin(b).",
-      "mathContext": "The inner decomposition from SphericalLawOfCosines: ⟨B,C⟩ = ⟨B,A⟩⟨C,A⟩ + ⟨projB_A, projC_A⟩. Rewriting with cos(a)=⟨B,C⟩, cos(b)=⟨A,C⟩, cos(c)=⟨A,B⟩ gives the inner product formula."
+      "endLine": 105,
+      "summary": "Dihedral-angle definitions SphericalTriangle.angleA/angleB via projectPerp + arccos, and the inner-product-of-projections lemmas underlying the Gram determinant."
     },
     {
-      "id": "sec-gram",
-      "title": "Gram Determinant",
-      "startLine": 91,
+      "id": "part2-gram-det",
+      "title": "Part II: Gram Determinant",
+      "startLine": 106,
       "endLine": 140,
-      "summary": "gramDet = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c). gramDet_expand: G = sin²b·sin²c-(cos(a)-cos(b)cos(c))² (by ring). gramDet_nonneg: G ≥ 0 via Cauchy-Schwarz on projections.",
-      "mathContext": "The Gram determinant of the 3×3 Gram matrix [[1,cos(c),cos(b)],[cos(c),1,cos(a)],[cos(b),cos(a),1]]. G ≥ 0 because G = ‖projB‖²·‖projC‖² - ⟨projB,projC⟩² by Cauchy-Schwarz."
+      "summary": "The gramDet definition and its basic algebraic properties for a spherical triangle's side vectors."
     },
     {
-      "id": "sec-angles",
-      "title": "Dihedral Angles and Cosine Formulas",
+      "id": "part3-dihedral-angles",
+      "title": "Part III: Dihedral Angles",
       "startLine": 141,
-      "endLine": 270,
-      "summary": "Defines angleA, angleB via perpendicular projections. Proves cos(A) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)) and cos(B) = (cos(b)-cos(a)cos(c))/(sin(a)sin(c)) using Cauchy-Schwarz for the arccos bounds.",
-      "mathContext": "The dihedral angle at vertex A: Real.arccos(⟨projB_A, projC_A⟩ / (‖projB_A‖·‖projC_A‖)). The argument lies in [-1,1] by Cauchy-Schwarz, so arccos is well-defined. The cosine formula follows by substituting the projection norms and inner product."
+      "endLine": 158,
+      "summary": "Dihedral-angle relations expressing the angles A, B, C in terms of projected side vectors."
     },
     {
-      "id": "sec-sinsin-gram",
-      "title": "sin²·sin²·sin² = gramDet",
-      "startLine": 271,
-      "endLine": 320,
-      "summary": "sinA_sq_times_bc: sin²(A)·sin²(b)·sin²(c) = G. sinB_sq_times_ac: sin²(B)·sin²(a)·sin²(c) = G. Both by substituting the angle formula and simplifying via field_simp + ring.",
-      "mathContext": "The key symmetric identity: all three quantities sin²(X)·(product of other two sides)² equal the same Gram determinant G. This is the algebraic heart of the proof."
+      "id": "part4-angle-formulas",
+      "title": "Part IV: Angle Formulas from Spherical Law of Cosines",
+      "startLine": 159,
+      "endLine": 227,
+      "summary": "Cosine formulas for the dihedral angles derived from the spherical law of cosines."
     },
     {
-      "id": "sec-sines-theorem",
-      "title": "The Spherical Law of Sines",
-      "startLine": 321,
-      "endLine": 389,
-      "summary": "spherical_law_of_sines_mul: sin(a)·sin(B) = sin(b)·sin(A) via cancelling sin²c and nlinarith. spherical_law_of_sines: ratio form sin(a)/sin(A) = sin(b)/sin(B). spherical_law_of_sines_all: all three ratios equal. equilateral_angles_equal: a=b → sin(A)=sin(B).",
-      "mathContext": "From sin²A·sin²b = sin²B·sin²a (after cancellation) and non-negativity (sin(A),sin(b),sin(B),sin(a)≥0): the squared equality implies the linear equality sin(A)·sin(b) = sin(B)·sin(a). The ratio form follows by division when sin(A),sin(B)>0."
+      "id": "part5-sin-sq-gramdet",
+      "title": "Part V: sin²(angle)·sin²(sides) = gramDet",
+      "startLine": 228,
+      "endLine": 263,
+      "summary": "The key identity sinA_sq_times_bc: sin²(A)·sin²(b)·sin²(c) = gramDet, linking the dihedral angle to the Gram determinant."
+    },
+    {
+      "id": "part6-main-theorems",
+      "title": "Part VI: Main Theorems",
+      "startLine": 264,
+      "endLine": 383,
+      "summary": "The spherical law of sines (spherical_law_of_sines, spherical_law_of_sines_mul) and related main theorems."
+    },
+    {
+      "id": "part7-corollaries",
+      "title": "Part VII: Corollaries",
+      "startLine": 384,
+      "endLine": 420,
+      "summary": "Non-degeneracy equivalences gramDet_pos_of_sinA_pos / sinA_pos_of_gramDet_pos and equilateral_angles_equal (equal sides give equal angles)."
     }
   ],
   "crossReferences": [

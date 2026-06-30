@@ -1,8 +1,8 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
   "title": "Multinomial CLT in Lean: does (Xᵢ - npᵢ)/√(npᵢ(1-pᵢ)) converge in distribution to N(0,1) for each coordinate as n → ∞?",
-  "phase": "PREP",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -34,8 +34,8 @@
     "goal": "Phase-2: produce `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with (a) a precise Lean statement of the marginal CLT for the i-th coordinate of Multinomial(n, p₁,…,pₖ), (b) either a proof via Mathlib's `ProbabilityTheory.iid_central_limit_theorem` applied to the indicator variables Yⱼ = 𝟙[trial j → outcome i] (which are Bernoulli(pᵢ) i.i.d.), or an axiomatized statement with full proof sketch, and (c) a coordinate-free version using Cramér-Wold for the joint vector CLT."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-02T17:00:00Z",
+    "phase": "BLOCKED",
+    "since": "2026-06-14T18:30:00Z",
     "iteration": 18,
     "focus": "S19 STATE-SYNC (researcher-1, 2026-06-02T~17:00Z, doc-only) fires 17 days after S18. INFRA picture has shifted: 2 of 3 S18 RED blockers cleared (Docker daemon RED→GREEN: `docker info` returns Server Version 29.4.1 with 1 container running, was empty Server: section; host disk RED→GREEN: 19 Gi free / 39% used, was 3.8 Gi / 100%), `proofs/.lake` circular self-symlink RED unchanged (still `→ /Users/rwalters/GitHub/lean-genius/proofs/.lake` self-loop, propagates to all worktrees). NEW S19 RED #4: Docker image `lean4-arm64:v4.26.0` is corrupted — `docker image inspect lean4-arm64:v4.26.0` and `docker run --rm lean4-arm64:v4.26.0 echo ok` both fail with `blob sha256:9026c55995f444bfdc23dc2307ba058400286252a5c35e36e51358b05bb4719a expected at /var/lib/desktop-containerd/daemon/io.containerd.content.v1.content/blobs/sha256/...: input/output error`. Sibling container `lean-build-57602` (Up 6 h on same image, holding what little remains usable in-process) pre-dates the corruption. Gate A pre-flight still cannot run because `./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03` issues `docker run … lean4-arm64:v4.26.0 /bin/bash -c \"lake build …\"` which now errors on the corrupted blob. Mathlib pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) UNCHANGED per `proofs/lake-manifest.json`. Lean file UNCHANGED on origin/main since S16 ACT (#19402, 2026-05-16T03:51:56Z merge): 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED at 3209 jobs (S12) persists across S15→S19 because zero Lean edits since S12 + S16 ACT was comment-only. Gallery `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json` `leanFile.theoremCount: 18` (stale; actual 16; drift -2) 17 days running with no mechanic action — re-flagged for next Mechanic cycle. Per S18 §4.3 and memory feedback _long_completed_slug_*_canonical_json_materially_contradicts_observe_findings_*, re-spotting Mathlib byte-stable bearers at unchanged SHA is busywork; B1/B1prime/B2/B3/B4/B5 carry forward + negative findings (CentralLimitTheorem.lean / iid_central_limit_theorem / Measure-form binomial all absent) carry forward. Phase-4 readiness gate refresh: A RED × 2 INFRA (different mix; was RED × 3); B/C/D/E remain GREEN. Content posture unchanged; INFRA posture partially recovered. Iteration JSON cs.iteration 17 → 18 catchup; since 2026-05-16T17:55Z → 2026-06-02T17:00Z bump; attemptCounts.total 17 → 18.",
     "blockers": [
@@ -139,16 +139,46 @@
     "binomial-theorem",
     "binomial-theorem-oq-01",
     "binomial-theorem-oq-01-oq-01",
+    "binomial-theorem-oq-01-oq-01-oq-02",
     "binomial-theorem-oq-02",
     "binomial-theorem-oq-02-oq-01",
     "binomial-theorem-oq-02-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-incomplete-01",
     "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
     "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-04",
     "binomial-theorem-oq-02-oq-01-oq-02",
+    "binomial-theorem-oq-02-oq-01-oq-02-oq-03",
     "binomial-theorem-oq-02-oq-01-oq-03",
+    "binomial-theorem-oq-02-oq-01-oq-04",
     "binomial-theorem-oq-02-oq-02",
+    "binomial-theorem-oq-02-oq-02-oq-01",
+    "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "binomial-theorem-oq-02-oq-02-oq-02",
+    "binomial-theorem-oq-02-oq-02-oq-02-oq-03",
     "binomial-theorem-oq-02-oq-03",
     "binomial-theorem-oq-02-oq-04",
+    "binomial-theorem-oq-03",
+    "binomial-theorem-oq-03-oq-01",
+    "binomial-theorem-oq-03-oq-01-oq-01",
+    "binomial-theorem-oq-03-oq-01-oq-02",
+    "binomial-theorem-oq-03-oq-01-oq-03",
+    "binomial-theorem-oq-03-oq-02",
+    "binomial-theorem-oq-03-oq-02-oq-03",
+    "binomial-theorem-oq-03-oq-02-oq-03-oq-01",
+    "binomial-theorem-oq-03-oq-03",
+    "binomial-theorem-oq-04",
+    "binomial-theorem-oq-04-oq-01",
+    "binomial-theorem-oq-04-oq-01-oq-03",
+    "binomial-theorem-oq-04-oq-02",
+    "binomial-theorem-oq-04-oq-02-oq-01",
+    "binomial-theorem-oq-04-oq-02-oq-03",
+    "binomial-theorem-oq-04-oq-03",
+    "binomial-theorem-oq-04-oq-04",
+    "binomial-theorem-oq-05",
+    "binomial-theorem-oq-05-oq-01",
     "central-limit-theorem"
   ],
   "references": {
@@ -173,14 +203,14 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-06-02T17:00:00Z",
+  "lastUpdate": "2026-06-14T18:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/BinomialTheorem.lean",
       "filename": "BinomialTheorem.lean",
-      "lineCount": 176,
+      "lineCount": 177,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -191,8 +221,8 @@
     {
       "path": "Proofs/BinomialTheoremOQ01.lean",
       "filename": "BinomialTheoremOQ01.lean",
-      "lineCount": 264,
-      "theoremCount": 19,
+      "lineCount": 265,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -222,6 +252,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BinomialTheoremOQ01OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 94,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ01OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/BinomialTheoremOQ02.lean",
       "filename": "BinomialTheoremOQ02.lean",
       "lineCount": 281,
@@ -235,8 +276,8 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01.lean",
       "filename": "BinomialTheoremOQ02OQ01.lean",
-      "lineCount": 223,
-      "theoremCount": 11,
+      "lineCount": 485,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -246,24 +287,24 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01.lean",
-      "lineCount": 292,
+      "lineCount": 708,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean"
     },
     {
-      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
-      "filename": "BinomialTheoremOQ02OQ01OQ01Aristotle.lean",
-      "lineCount": 70,
-      "theoremCount": 2,
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01Incomplete01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01Incomplete01.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 4,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean"
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01Incomplete01.lean"
     },
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean",
@@ -277,6 +318,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean",
+      "lineCount": 254,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01OQ02.lean",
       "lineCount": 381,
@@ -286,6 +349,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ02OQ01.lean",
+      "lineCount": 126,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "lineCount": 713,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ04.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ04.lean",
+      "lineCount": 330,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ04.lean"
     },
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ02.lean",
@@ -299,6 +395,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ02.lean"
     },
     {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ02OQ03.lean",
+      "lineCount": 272,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ03.lean",
       "lineCount": 393,
@@ -310,15 +417,301 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ03.lean"
     },
     {
-      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
-      "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
-      "lineCount": 712,
-      "theoremCount": 16,
-      "axiomCount": 1,
-      "defCount": 3,
-      "sorryCount": 2,
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ04.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ04.lean",
+      "lineCount": 152,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ01OQ03.lean",
+      "lineCount": 167,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ02.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ02.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ02OQ03.lean",
+      "lineCount": 125,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ03.lean",
+      "lineCount": 270,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ04.lean",
+      "filename": "BinomialTheoremOQ02OQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03.lean",
+      "filename": "BinomialTheoremOQ03.lean",
+      "lineCount": 589,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ01.lean",
+      "filename": "BinomialTheoremOQ03OQ01.lean",
+      "lineCount": 146,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ03OQ01OQ01.lean",
+      "lineCount": 163,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ01OQ02.lean",
+      "filename": "BinomialTheoremOQ03OQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ03OQ01OQ03.lean",
+      "lineCount": 142,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02.lean",
+      "filename": "BinomialTheoremOQ03OQ02.lean",
+      "lineCount": 216,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ03OQ02OQ03.lean",
+      "lineCount": 209,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ02OQ03OQ01.lean",
+      "filename": "BinomialTheoremOQ03OQ02OQ03OQ01.lean",
+      "lineCount": 85,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ03OQ03.lean",
+      "filename": "BinomialTheoremOQ03OQ03.lean",
+      "lineCount": 247,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04.lean",
+      "filename": "BinomialTheoremOQ04.lean",
+      "lineCount": 196,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ01.lean",
+      "lineCount": 300,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ04OQ01OQ03.lean",
+      "lineCount": 276,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02.lean",
+      "filename": "BinomialTheoremOQ04OQ02.lean",
+      "lineCount": 112,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ02OQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02OQ03.lean",
+      "filename": "BinomialTheoremOQ04OQ02OQ03.lean",
+      "lineCount": 72,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ03.lean",
+      "filename": "BinomialTheoremOQ04OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ04.lean",
+      "filename": "BinomialTheoremOQ04OQ04.lean",
+      "lineCount": 229,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ04.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ05.lean",
+      "filename": "BinomialTheoremOQ05.lean",
+      "lineCount": 110,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ05OQ01.lean",
+      "filename": "BinomialTheoremOQ05OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ05OQ01.lean"
     }
   ]
 }

@@ -16,7 +16,11 @@
       "irrational_nrt_of_notint_nrt"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Lean Mathlib Library",
+      "Irrational Numbers",
+      "Real Power Function"
+    ]
   },
   {
     "id": "ann-nrt-def",
@@ -35,7 +39,11 @@
       "noncomputable",
       "nth root"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real rpow",
+      "nth Roots",
+      "Noncomputable Definitions"
+    ]
   },
   {
     "id": "ann-nrt-pow",
@@ -54,7 +62,11 @@
       "rpow_natCast",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real Power Laws",
+      "Natural Cast Exponents",
+      "Positivity Tactic"
+    ]
   },
   {
     "id": "ann-nrt-not-int",
@@ -117,7 +129,11 @@
       "bounds checking",
       "interval analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect Powers",
+      "Integer Bounds",
+      "nlinarith Tactic"
+    ]
   },
   {
     "id": "ann-nrt-sq-pattern",
@@ -137,7 +153,11 @@
       "omega",
       "natAbs reduction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Absolute Value Squaring",
+      "interval_cases Tactic",
+      "Natural Number Coercion"
+    ]
   },
   {
     "id": "ann-nrt-corollaries",

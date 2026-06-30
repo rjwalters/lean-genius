@@ -98,53 +98,68 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Subset Sum Definitions",
-      "summary": "Defines `setSum` ($\\sum_{x \\in A} x$), `subsetsWithSum` (subsets with $\\sum S = t$), `countSubsetsWithSum` ($|\\{S \\subseteq A : \\sum S = t\\}|$), and `concentrationFunction` ($\\max_t$ count) via `Finset.sup`.",
-      "startLine": 34,
-      "endLine": 57
+      "id": "header",
+      "title": "Module Header and Overview",
+      "summary": "File header for Erdős #362 (subset-sum concentration): for a finite $A\\subseteq\\mathbb{N}$ of size $N$ and a fixed target $t$, are there $\\ll 2^N/N^{3/2}$ subsets with sum $t$ (Q1), and $\\ll 2^N/N^2$ if also $|S|=l$ is fixed (Q2)? Both YES (Sárközy–Szemerédi 1965, Halász 1977, Stanley 1980). Imports Mathlib big-operators/finset/log libraries and opens the `Erdos362` namespace.",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "Subset-sum concentration: $\\#\\{S\\subseteq A : \\sum S = t\\} \\ll 2^N/N^{3/2}$ (Q1) and $\\ll 2^N/N^2$ with $|S|$ fixed (Q2)."
     },
     {
-      "id": "question1",
-      "title": "Question 1: General Bound",
-      "summary": "Sárközy–Szemerédi sharp bound $O(2^N / N^{3/2})$ (axiom), helper lemmas `log_ge_one_of_ge_three` and `rpow_ge_one_of_ge_one`, and `erdos_moser_1965_bound` theorem proving the weaker bound with log factor from the sharp bound.",
-      "startLine": 58,
-      "endLine": 112
+      "id": "part1-definitions",
+      "title": "Part 1: Subset Sum Definitions",
+      "summary": "Core definitions: `setSum` (sum of a finite set), `subsetsWithSum`/`countSubsetsWithSum` (subsets of $A$ with a given sum and their count), and `concentrationFunction` (the maximum count over all targets).",
+      "startLine": 37,
+      "endLine": 60,
+      "mathContext": "$Q(A)=\\max_t \\#\\{S\\subseteq A : \\sum S = t\\}$, the concentration function to be bounded."
     },
     {
-      "id": "question2",
-      "title": "Question 2: Fixed Cardinality",
-      "summary": "Defines `subsetsWithSumAndCard` and `countSubsetsWithSumAndCard` for fixed $|S| = l$. Axiomatizes Halász's bound $|\\{S : \\sum S = t, |S| = l\\}| \\le C \\cdot 2^N / N^2$.",
-      "startLine": 113,
-      "endLine": 134
+      "id": "part2-question1",
+      "title": "Part 2: Question 1 — General Subset Sum Bound",
+      "summary": "The general bound. Axiom `sarkozy_szemeredi_1965` states the sharp $\\ll 2^N/N^{3/2}$ count; helper lemmas `log_ge_one_of_ge_three` and `rpow_ge_one_of_ge_one` support `erdos_moser_1965_bound`, the earlier Erdős–Moser bound carrying an extra $(\\log N)^{3/2}$ factor.",
+      "startLine": 61,
+      "endLine": 110,
+      "mathContext": "Sárközy–Szemerédi (1965): $\\#\\{S : \\sum S = t\\}\\ll 2^N/N^{3/2}$, removing the $(\\log N)^{3/2}$ of Erdős–Moser."
     },
     {
-      "id": "stanley",
-      "title": "Stanley's Extremal Result",
-      "summary": "Defines `symmetricSet(N) = \\{-\\lfloor(N-1)/2\\rfloor, \\ldots, \\lfloor N/2\\rfloor\\}`. Stanley's theorem: this set maximizes $Q_A$ via the hard Lefschetz theorem. Also proves $t = 0$ is optimal for symmetric sets.",
-      "startLine": 135,
-      "endLine": 158
+      "id": "part3-question2",
+      "title": "Part 3: Question 2 — Fixed Cardinality Bound",
+      "summary": "The fixed-cardinality refinement: `subsetsWithSumAndCard`/`countSubsetsWithSumAndCard` (subsets with given sum and size $l$) and the axiom `halasz_1977` giving the stronger $\\ll 2^N/N^2$ bound.",
+      "startLine": 111,
+      "endLine": 132,
+      "mathContext": "Halász (1977): fixing $|S|=l$ improves the bound to $\\ll 2^N/N^2$."
     },
     {
-      "id": "multidim",
-      "title": "Multi-dimensional Generalization",
-      "summary": "Defines `vectorSetSum` and `countVectorSubsetsWithSum` for $\\mathbb{Z}^d$-valued sums. Axiomatizes Halász's multi-dimensional bound $O(2^N / N^{(d+1)/2})$, unifying Q1 ($d=1$) and Q2 ($d=2$).",
-      "startLine": 159,
-      "endLine": 182
+      "id": "part4-stanley",
+      "title": "Part 4: Stanley's Extremal Result",
+      "summary": "Stanley's (1980) extremal configuration: `symmetricSet N` $=\\{-\\lfloor(N-1)/2\\rfloor,\\dots,\\lfloor N/2\\rfloor\\}$, the set maximizing the subset-sum concentration.",
+      "startLine": 133,
+      "endLine": 147,
+      "mathContext": "Stanley (1980): the symmetric interval $\\{-\\lfloor(N-1)/2\\rfloor,\\dots,\\lfloor N/2\\rfloor\\}$ maximizes concentration."
     },
     {
-      "id": "generating-function",
-      "title": "Generating Function Approach",
-      "summary": "Defines `subsetSumGF(A, z) = \\prod_{a \\in A}(1 + z^a)` and axiomatizes Fourier extraction: $|\\{S : \\sum S = t\\}| = (2\\pi)^{-1} \\int_0^{2\\pi} F(e^{i\\theta}) e^{-it\\theta} d\\theta$.",
-      "startLine": 183,
-      "endLine": 202
+      "id": "part5-multidimensional",
+      "title": "Part 5: Multi-dimensional Generalization",
+      "summary": "The vector-valued generalization underlying Halász's method: `vectorSetSum` (coordinatewise sum of vectors in $(\\mathbb{Z})^d$) and `countVectorSubsetsWithSum`.",
+      "startLine": 148,
+      "endLine": 165,
+      "mathContext": "Multi-dimensional subset sums in $(\\mathbb{Z}^d)$ — the framework behind the $N^2$ bound."
     },
     {
-      "id": "summary",
-      "title": "Summary",
-      "summary": "Main theorem `erdos_362_summary` combines Q1 ($2^N/N^{3/2}$) and Q2 ($2^N/N^2$) as a conjunction, proved by `⟨sarkozy_szemeredi_1965, halasz_1977⟩`.",
-      "startLine": 203,
-      "endLine": 222
+      "id": "part6-generating-function",
+      "title": "Part 6: Generating Function Approach",
+      "summary": "The analytic core. Defines `subsetSumGF A z = ∏_{a∈A}(1+z^a)` and proves its key properties: `zpow_finset_sum`, `gf_at_one` (value $2^N$), `gf_expansion` (coefficients count subsets by sum), and `gf_disjoint_union` (multiplicativity). Then the complex-exponential orthogonality lemmas (`cexp_pow_eq`, `cexp_zpow`, `exp_orthogonality`) drive `fourier_extraction`, recovering the subset-sum count as a Fourier coefficient.",
+      "startLine": 166,
+      "endLine": 309,
+      "mathContext": "Generating function $\\prod_a(1+z^a)$; Fourier/orthogonality extracts $\\#\\{S:\\sum S=t\\}$ as $\\frac{1}{2\\pi}\\int |\\cdot|$ coefficient."
+    },
+    {
+      "id": "part7-summary",
+      "title": "Part 7: Summary",
+      "summary": "Concludes with `erdos_362_summary` and the unconditional `subset_count_le_pow` ($\\#\\{S\\subseteq A : \\sum S=t\\}\\le 2^N$), recapping the SOLVED status across the four historical results.",
+      "startLine": 310,
+      "endLine": 336,
+      "mathContext": "Trivial bound $\\#\\{S : \\sum S = t\\}\\le 2^N$; the deep results sharpen this to $2^N/N^{3/2}$ and $2^N/N^2$."
     }
   ],
   "conclusion": {

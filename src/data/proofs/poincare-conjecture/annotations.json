@@ -16,7 +16,11 @@
       "algebraic topology",
       "Mathlib infrastructure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Algebraic Topology",
+      "Fundamental Group",
+      "Homotopy Theory"
+    ]
   },
   {
     "id": "ann-sphere3",
@@ -80,7 +84,11 @@
       "locally Euclidean",
       "dimension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Topological Manifold",
+      "Compact Space",
+      "Locally Euclidean Space"
+    ]
   },
   {
     "id": "ann-homeomorphism",
@@ -99,7 +107,11 @@
       "continuous bijection",
       "equivalence relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Homeomorphism",
+      "Equivalence Relation",
+      "Continuous Bijection"
+    ]
   },
   {
     "id": "ann-poincare-statement",
@@ -498,6 +510,10 @@
       "axiom-theorem ratio",
       "formal verification strategy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Poincaré Conjecture",
+      "Axiom Versus Theorem",
+      "Formal Verification"
+    ]
   }
 ]

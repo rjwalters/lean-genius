@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-unified-header",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 27 },
+    "type": "concept",
+    "title": "One Menelaus Theorem for Three Geometries",
+    "content": "The Euclidean, spherical, and hyperbolic Menelaus theorems differ only in the function used to measure signed geodesic arcs: the identity for the plane, sin on the sphere, sinh in the hyperbolic plane. All three are odd functions, f(-x) = -f(x). This file isolates that shared structure into a SignedMeasure and proves one unified theorem from which all three classical cases follow as instances. It directly answers the open question posed by the parent spherical-Menelaus entry.",
+    "mathContext": "**Unified claim**: for any odd $f$ and six arcs with $f(\\text{denominators}) \\neq 0$, $\\frac{f(BD)}{f(DC)}\\cdot\\frac{f(CE)}{f(EA)}\\cdot\\frac{f(AF)}{f(FB)} = -1 \\iff f(BD)f(CE)f(AF) = -(f(DC)f(EA)f(FB))$. Setting $f \\in \\{\\mathrm{id}, \\sin, \\sinh\\}$ recovers the Euclidean, spherical, and hyperbolic theorems.",
+    "significance": "key",
+    "relatedConcepts": ["Menelaus theorem", "non-Euclidean geometry", "odd functions", "signed arcs", "unification"],
+    "prerequisites": ["Menelaus theorem classical", "spherical and hyperbolic Menelaus", "odd functions"]
+  },
+  {
+    "id": "ann-signed-measure",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 46, "endLine": 52 },
+    "type": "definition",
+    "title": "SignedMeasure: the unifying abstraction",
+    "content": "A SignedMeasure packages a single field — an odd function f : ℝ → ℝ together with the proof f(-x) = -f(x). This is the entire data distinguishing the three Menelaus geometries. Oddness is not a convenience: it is exactly the property encoding the signed-arc sign convention, where reversing an arc's orientation negates its measure. The Menelaus ratioProduct (a/b)·(c/d)·(e/g) is defined alongside it.",
+    "mathContext": "`structure SignedMeasure where f : ℝ → ℝ; odd : ∀ x, f (-x) = -f x`. Instances: `idMeasure` (oddness by rfl), `sinMeasure` (Real.sin_neg), `sinhMeasure` (Real.sinh_neg).",
+    "significance": "key",
+    "relatedConcepts": ["odd function", "signed arc length", "abstraction"],
+    "prerequisites": ["structures in Lean", "odd functions"]
+  },
+  {
+    "id": "ann-algebraic-core",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 74 },
+    "type": "insight",
+    "title": "Function-agnostic algebraic core",
+    "content": "ratioProduct_eq_neg_one_iff is the heart of every Menelaus theorem, and it assumes nothing about the values beyond nonzero denominators: (a/b)(c/d)(e/g) = -1 iff a·c·e = -(b·d·g). The proof clears denominators with div_mul_div_comm and div_eq_iff, then finishes by linarith. Because it is purely formal, the same lemma serves the plane, the sphere, and the hyperbolic plane — only the inputs (id-, sin-, or sinh-values) change.",
+    "mathContext": "With $D = bdg \\neq 0$, the equation $\\frac{ace}{bdg} = -1$ is equivalent to $ace = -bdg$ via `div_eq_iff`. The companion `ratioProduct_eq_one_iff` gives the Ceva condition $ace = bdg$.",
+    "significance": "key",
+    "relatedConcepts": ["field arithmetic", "Menelaus condition", "geometry-independence"],
+    "prerequisites": ["div_eq_iff", "div_mul_div_comm"]
+  },
+  {
+    "id": "ann-unified-menelaus",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "theorem",
+    "title": "unified_menelaus: the single parametrized theorem",
+    "content": "For any SignedMeasure μ and six arcs whose denominator measures are nonzero, the μ-Menelaus product equals -1 iff the numerator-measure product equals minus the denominator-measure product. This is a two-line consequence of the algebraic core, applied to the f-values of the arcs. It is the affirmative answer to the parent entry's open question: yes, there is one Menelaus theorem parametrized by the measure function.",
+    "mathContext": "`unified_menelaus (μ : SignedMeasure) ... : ratioProduct (μ.f bd) ... = -1 ↔ μ.f bd * μ.f ce * μ.f af = -(μ.f dc * μ.f ea * μ.f fb)`, proved by `ratioProduct_eq_neg_one_iff _ _ _ _ _ _ hdc hea hfb`.",
+    "significance": "key",
+    "relatedConcepts": ["Menelaus theorem", "parametrized theorem", "specialization"],
+    "prerequisites": ["ratioProduct_eq_neg_one_iff", "SignedMeasure"]
+  },
+  {
+    "id": "ann-oddness-toggle",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "insight",
+    "title": "Why oddness: the Ceva ↔ Menelaus toggle",
+    "content": "This is the conceptual payoff. ceva_iff_menelaus_after_reverse shows a configuration satisfies the Ceva condition (product = 1) iff, after reversing a single arc, it satisfies the Menelaus condition (product = -1). The proof uses ratioProduct_reverse_den, which negates the product precisely because μ.f(-ea) = -μ.f(ea). Thus oddness is what buys signed-arc coherence: an odd number of orientation reversals toggles between concurrency (Ceva) and collinearity (Menelaus). The bare algebraic identity holds for any function; oddness is needed only for this sign convention.",
+    "mathContext": "Reversing one denominator arc sends the product $P \\mapsto -P$ (`ratioProduct_reverse_den`, via $f(-x) = -f(x)$ and `div_neg`). Hence $P = 1 \\iff -P = -1$, i.e. Ceva $\\iff$ reversed-Menelaus.",
+    "significance": "key",
+    "relatedConcepts": ["Ceva's theorem", "orientation reversal", "sign convention", "Z/2 grading"],
+    "prerequisites": ["odd functions", "ratioProduct_reverse_den"]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "range": { "startLine": 169, "endLine": 173 },
+    "type": "insight",
+    "title": "Recovering the three classical theorems",
+    "content": "With the unified theorem in hand, each classical Menelaus theorem is a one-line instance. euclidean_menelaus applies unified_menelaus to idMeasure, spherical_menelaus to sinMeasure, hyperbolic_menelaus to sinhMeasure. The only per-geometry input is the oddness witness (rfl for id, Real.sin_neg for sin, Real.sinh_neg for sinh) and the domain condition on denominators (sin excludes multiples of π; id and sinh exclude only 0).",
+    "mathContext": "`euclidean_menelaus ... := unified_menelaus idMeasure ...`; likewise `sinMeasure` and `sinhMeasure`. The hypotheses specialize to $dc, ea, fb \\neq 0$ (Euclidean) and $\\sin/\\sinh$ of those nonzero (spherical/hyperbolic).",
+    "significance": "key",
+    "relatedConcepts": ["instantiation", "Euclidean/spherical/hyperbolic Menelaus", "Real.sin_neg", "Real.sinh_neg"],
+    "prerequisites": ["unified_menelaus", "SignedMeasure instances"]
+  }
+]

@@ -97,43 +97,99 @@
   "sections": [
     {
       "id": "definitions",
-      "title": "Core Definitions: Cochromatic Classes, Colorings, and Numbers",
+      "title": "Part I: Basic Definitions",
       "startLine": 27,
-      "endLine": 60,
-      "summary": "IsCochromaticClass (complete or empty induced subgraph), CochromaticColoring (Fin k assignment), cochromaticNumber (min k for cochromatic coloring), chromaticNumber (min k for proper coloring). All noncomputable due to minimization over ℕ.",
+      "endLine": 58,
+      "summary": "IsCochromaticClass (each color class induces a complete or empty subgraph), CochromaticColoring (a Fin k assignment with all classes cochromatic), cochromaticNumber ζ(G) (min k via Nat.find), chromaticNumber χ(G). All noncomputable due to minimization over ℕ.",
       "mathContext": "Cochromatic: $\\zeta(G) = \\min\\{k : \\exists$ cochromatic $k$-coloring$\\}$. Every independent set is cochromatic, so $\\zeta(G) \\leq \\chi(G)$."
     },
     {
-      "id": "basic-inequalities",
-      "title": "Basic Inequalities: ζ ≤ χ and Complement Symmetry",
-      "startLine": 61,
-      "endLine": 81,
-      "summary": "proper_is_cochromatic (every proper coloring is cochromatic), cochromatic_le_chromatic (ζ ≤ χ), cochromatic_complement (ζ(G) ≤ ζ(Gᶜ)), cochromatic_eq_complement (ζ(G) = ζ(Gᶜ) by symmetry).",
+      "id": "basic-properties",
+      "title": "Part II: Basic Properties",
+      "startLine": 59,
+      "endLine": 80,
+      "summary": "proper_is_cochromatic (every proper coloring is cochromatic via empty classes), cochromatic_le_chromatic (ζ ≤ χ), cochromatic_complement (ζ(G) ≤ ζ(Gᶜ)), cochromatic_eq_complement (ζ(G) = ζ(Gᶜ) by symmetry).",
       "mathContext": "$\\zeta(G) = \\zeta(\\overline{G})$: complement symmetry holds because a clique in $G$ is an independent set in $\\overline{G}$ — both are valid cochromatic classes."
     },
     {
-      "id": "random-graph-bounds",
-      "title": "Random Graph Asymptotics: Sandwich and Heckel-Steiner",
-      "startLine": 83,
-      "endLine": 155,
-      "summary": "ErdosRenyi, AlmostSurely, cochromatic_lower_bound (ζ ≥ n/(2log₂n)), bollobas_upper_bound (χ ≤ (1+o(1))n/(2log₂n)), chromatic_cochromatic_sandwich. MainQuestion (axiom). heckel_steiner_unbounded (2024: χ-ζ → ∞), difference_lower_bound, heckel_density_result.",
-      "mathContext": "Sandwich: $\\frac{n}{2\\log_2 n} \\lessapprox \\zeta \\leq \\chi \\leq (1+o(1))\\frac{n}{2\\log_2 n}$. Heckel-Steiner 2024: $\\chi-\\zeta \\to \\infty$ a.s., but the rate is unknown."
+      "id": "random-graph-model",
+      "title": "Part III: Random Graph Model",
+      "startLine": 81,
+      "endLine": 94,
+      "summary": "RandomGraph structure for G(n, p), ErdosRenyi as G(n, 1/2), and the AlmostSurely predicate (placeholder for the measure-theoretic a.s. statement) used to phrase asymptotic properties of random graphs.",
+      "mathContext": "Erdős-Rényi $G(n, 1/2)$: each edge present independently with probability $1/2$. AlmostSurely abstracts 'with probability $\\to 1$ as $n \\to \\infty$'."
+    },
+    {
+      "id": "known-bounds",
+      "title": "Part IV: Known Bounds",
+      "startLine": 95,
+      "endLine": 114,
+      "summary": "cochromatic_lower_bound (ζ ≥ n/(2 log₂ n) a.s.), bollobas_upper_bound (χ ≤ (1+o(1))n/(2 log₂ n) a.s., Bollobás 1988), and chromatic_cochromatic_sandwich combining both into the squeeze ζ ≤ χ ≤ (1+o(1))n/(2 log₂ n).",
+      "mathContext": "Sandwich: $\\frac{n}{2\\log_2 n} \\lessapprox \\zeta \\leq \\chi \\leq (1+o(1))\\frac{n}{2\\log_2 n}$ almost surely for $G(n,1/2)$."
+    },
+    {
+      "id": "main-question",
+      "title": "Part V: The Main Question",
+      "startLine": 115,
+      "endLine": 129,
+      "summary": "MainQuestion (does χ(G) - ζ(G) → ∞ a.s.?), main_question_open (axiom marking it OPEN), and PrizeValue encoding the $1000 (falsity) / $100 (truth) prize.",
+      "mathContext": "The central open question: $\\chi(G(n,1/2)) - \\zeta(G(n,1/2)) \\to \\infty$ almost surely? Erdős offered \\$100 for truth, \\$1000 for falsity."
+    },
+    {
+      "id": "heckel-steiner",
+      "title": "Part VI: Heckel-Steiner Results (2024)",
+      "startLine": 130,
+      "endLine": 152,
+      "summary": "heckel_steiner_unbounded (Heckel/Steiner 2024: the difference is unbounded w.h.p.), difference_lower_bound (χ-ζ ≥ n^{1/2-o(1)} along subsequences), heckel_density_result (χ-ζ ≥ n^{1-ε} for ~95% of n).",
+      "mathContext": "Heckel-Steiner 2024: $\\chi-\\zeta$ is unbounded w.h.p. — major progress, though the divergence rate is still unknown."
     },
     {
       "id": "heckel-conjecture",
-      "title": "Heckel's Conjecture and Clique-Independence Bounds",
-      "startLine": 156,
-      "endLine": 236,
-      "summary": "HeckelConjecture (χ-ζ ≈ n/(log n)³), heckel_conjecture_open (axiom), heckel_implies_main, cliqueNumber/independenceNumber, clique_independence_bound (ω,α ≈ 2log₂n), cochromatic_clique_independence (ζ ≥ n/(ω+α)), chromatic_concentration, cochromatic_concentration.",
-      "mathContext": "Heckel's conjecture: $\\chi(G)-\\zeta(G) \\approx n/(\\log n)^3$ w.h.p. Bound: $\\zeta(G) \\geq n/(\\omega(G)+\\alpha(G))$ since each cochromatic class has size $\\leq \\max(\\omega,\\alpha)$."
+      "title": "Part VII: Heckel's Conjecture",
+      "startLine": 153,
+      "endLine": 168,
+      "summary": "HeckelConjecture (χ-ζ ≈ n/(log n)³ w.h.p.), heckel_conjecture_open (axiom), and heckel_implies_main (Heckel's conjecture would settle the main question affirmatively).",
+      "mathContext": "Heckel's conjecture: $\\chi(G)-\\zeta(G) \\approx n/(\\log n)^3$ w.h.p. If true, $\\chi-\\zeta \\to \\infty$, answering the main question YES."
     },
     {
-      "id": "known-results-summary",
-      "title": "Known Results Summary and Open Problem Status",
-      "startLine": 237,
-      "endLine": 260,
-      "summary": "known_summary (bundle of established results), problem_status (open question with prize structure: $1000 for FALSE, $100 for TRUE).",
-      "mathContext": "Open: $\\chi(G(n,1/2)) - \\zeta(G(n,1/2)) \\to \\infty$ a.s.? Heckel-Steiner 2024 proves unboundedness but not the divergence rate. Heckel's conjecture (rate $\\approx n/(\\log n)^3$) remains open."
+      "id": "clique-independence",
+      "title": "Part VIII: Clique and Independence Numbers",
+      "startLine": 169,
+      "endLine": 190,
+      "summary": "cliqueNumber ω(G), independenceNumber α(G) = ω(Gᶜ), clique_independence_bound (ω, α ≈ 2 log₂ n a.s.), and cochromatic_clique_independence (ζ(G)·(ω+α) ≥ |V|).",
+      "mathContext": "Bound: $\\zeta(G) \\geq n/(\\omega(G)+\\alpha(G))$ since each cochromatic class has size $\\leq \\max(\\omega,\\alpha)$. In $G(n,1/2)$, $\\omega,\\alpha \\approx 2\\log_2 n$."
+    },
+    {
+      "id": "concentration",
+      "title": "Part IX: Concentration",
+      "startLine": 191,
+      "endLine": 204,
+      "summary": "chromatic_concentration (χ(G) concentrated in an interval of width O(n/log²n)) and cochromatic_concentration (ζ(G) also concentrated, though less is known about its tightness).",
+      "mathContext": "Concentration: $\\chi(G)$ lies within $O(n/\\log^2 n)$ of a deterministic value a.s.; the analogous concentration for $\\zeta(G)$ is weaker/less understood."
+    },
+    {
+      "id": "special-classes",
+      "title": "Part X: Special Graph Classes",
+      "startLine": 205,
+      "endLine": 217,
+      "summary": "Commentary block on special-class behavior (perfect graphs χ=ω, ζ of complete bipartite graphs, ζ of paths). These are recorded as docstring notes rather than theorems because they require predicates not expressible without further definitions.",
+      "mathContext": "For perfect graphs $\\chi=\\omega$; e.g. $\\zeta(K_{n,n})=2$ and $\\zeta(P_n)=\\lceil n/2\\rceil$. Stated informally pending structure-specific definitions."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Part XI: Upper Bounds on Difference",
+      "startLine": 218,
+      "endLine": 230,
+      "summary": "difference_trivial_upper (χ - ζ ≤ χ ≤ n, proved by omega) and difference_better_upper (χ - ζ ≤ n - max(ω, α)).",
+      "mathContext": "Upper bounds: trivially $\\chi-\\zeta \\leq \\chi \\leq n$; sharper, $\\chi-\\zeta \\leq n - \\max(\\omega,\\alpha)$."
+    },
+    {
+      "id": "summary",
+      "title": "Part XII: Summary",
+      "startLine": 231,
+      "endLine": 268,
+      "summary": "known_summary (bundles ζ ≤ χ and ζ(G) = ζ(Gᶜ)), problem_status (unboundedness implies not always equal), and the closing overview of status, the main question, known results, and key sorries.",
+      "mathContext": "Open: $\\chi(G(n,1/2)) - \\zeta(G(n,1/2)) \\to \\infty$ a.s.? Heckel-Steiner 2024 proves unboundedness but not the divergence rate; Heckel's rate conjecture remains open."
     }
   ],
   "conclusion": {

@@ -82,68 +82,124 @@
   },
   "sections": [
     {
-      "id": "introduction",
+      "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
       "endLine": 19,
-      "summary": "Overview of Shannon entropy as the foundation of information theory. Lists key results: entropy definition, non-negativity, maximum entropy, Gibbs inequality, log-sum inequality.",
-      "mathContext": "$H(X) = -\\sum_x p(x) \\log p(x)$"
+      "summary": "Module docstring describing the formalization of Shannon entropy and its core information-theoretic inequalities, plus imports.",
+      "mathContext": "Shannon entropy $H(p) = -\\sum_i p_i \\log p_i$ measures the uncertainty of a discrete distribution; this file proves its basic bounds and the key inequalities of classical information theory up to strong subadditivity."
     },
     {
-      "id": "entropy-definition",
-      "title": "Entropy Definition and Non-Negativity",
+      "id": "entropy-def",
+      "title": "Entropy: Definition and Basic Properties",
       "startLine": 20,
-      "endLine": 30,
-      "summary": "Defines Shannon entropy with the 0·log(0) = 0 convention. Proves non-negativity H(p) >= 0 for probability distributions. Uses natural log (Real.log), not log₂.",
-      "mathContext": "$H(X) = -\\sum_x p(x) \\ln p(x) \\geq 0$ for $p(x) \\geq 0$, $\\sum p(x) = 1$"
+      "endLine": 73,
+      "summary": "`shannonEntropy` (the noncomputable definition), helper lemmas `prob_le_one`/`mul_log_nonpos`, and the basic results `entropy_nonneg` and `entropy_point_mass` (a point mass has zero entropy).",
+      "mathContext": "$H(p) = -\\sum_i p_i \\log p_i \\ge 0$ since each term $-p_i \\log p_i \\ge 0$ for $p_i \\in [0,1]$; entropy is zero exactly for a deterministic (point-mass) distribution."
     },
     {
-      "id": "max-entropy",
-      "title": "Maximum Entropy (Uniform Distribution)",
-      "startLine": 31,
-      "endLine": 35,
-      "summary": "Entropy is maximized by the uniform distribution: H(p) <= log|X|. Proved via Gibbs inequality with q = uniform.",
-      "mathContext": "$H(X) \\leq \\ln |\\mathcal{X}|$ with equality iff $p$ is uniform"
+      "id": "kl-def",
+      "title": "KL Divergence (Relative Entropy)",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "`klDivergence`: the relative entropy $D(p \\Vert q) = \\sum_i p_i \\log(p_i/q_i)$.",
+      "mathContext": "The Kullback–Leibler divergence measures how one distribution diverges from a reference $q$; it is the central quantity from which Gibbs' inequality and the entropy bounds are derived."
+    },
+    {
+      "id": "conditional-entropy-def",
+      "title": "Conditional Entropy",
+      "startLine": 84,
+      "endLine": 96,
+      "summary": "`conditionalEntropy`: the entropy of a joint distribution given the second variable, $H(X \\mid Y)$.",
+      "mathContext": "$H(X \\mid Y) = \\sum_y p(y)\\,H(X \\mid Y=y)$ quantifies the remaining uncertainty in $X$ once $Y$ is known."
+    },
+    {
+      "id": "mutual-information-def",
+      "title": "Mutual Information",
+      "startLine": 97,
+      "endLine": 109,
+      "summary": "`mutualInformation`: $I(X;Y) = \\sum_{x,y} p(x,y)\\log\\frac{p(x,y)}{p(x)p(y)}$.",
+      "mathContext": "Mutual information is the KL divergence between the joint distribution and the product of marginals, measuring the information shared between $X$ and $Y$."
+    },
+    {
+      "id": "key-inequality",
+      "title": "Key Inequality: log(x) ≤ x − 1",
+      "startLine": 110,
+      "endLine": 133,
+      "summary": "`kl_term_bound`: the elementary inequality $\\log x \\le x - 1$ (per-term form) underpinning the non-negativity proofs.",
+      "mathContext": "The concavity bound $\\log x \\le x - 1$ (equality at $x = 1$) is the analytic engine behind Gibbs' inequality and $D(p\\Vert q) \\ge 0$."
+    },
+    {
+      "id": "kl-nonneg",
+      "title": "KL Divergence Non-negativity",
+      "startLine": 134,
+      "endLine": 158,
+      "summary": "`kl_divergence_nonneg`: $D(p \\Vert q) \\ge 0$ for probability distributions $p, q$.",
+      "mathContext": "Applying $\\log x \\le x - 1$ termwise to $\\log(q_i/p_i)$ and summing gives $D(p\\Vert q) \\ge 0$ (Gibbs' inequality in divergence form), with equality iff $p = q$."
     },
     {
       "id": "gibbs",
       "title": "Gibbs Inequality",
-      "startLine": 36,
-      "endLine": 41,
-      "summary": "H(p) <= -sum p(x) log q(x) for any distribution q, equivalently D(p||q) >= 0. Proved from KL divergence non-negativity using the inequality log(x) <= x - 1.",
-      "mathContext": "$D(p \\| q) = \\sum_x p(x) \\ln \\frac{p(x)}{q(x)} \\geq 0$ (Gibbs inequality)"
+      "startLine": 159,
+      "endLine": 188,
+      "summary": "`gibbs_inequality`: $-\\sum p_i \\log p_i \\le -\\sum p_i \\log q_i$, the cross-entropy lower bound on entropy.",
+      "mathContext": "Gibbs' inequality states that the entropy of $p$ is at most its cross-entropy with any other distribution $q$; it is $D(p\\Vert q) \\ge 0$ rearranged."
+    },
+    {
+      "id": "max-entropy",
+      "title": "Maximum Entropy",
+      "startLine": 189,
+      "endLine": 248,
+      "summary": "`entropy_le_log_card` ($H(p) \\le \\log |\\alpha|$) and `entropy_of_uniform_eq_log_card` (the uniform distribution attains it).",
+      "mathContext": "Among all distributions on a finite set of size $n$, the uniform distribution maximizes entropy at $H = \\log n$; this follows from Gibbs' inequality with $q$ uniform."
+    },
+    {
+      "id": "max-entropy-converse",
+      "title": "Maximum Entropy: Equality Case (Converse)",
+      "startLine": 249,
+      "endLine": 478,
+      "summary": "The strict/equality analysis: `log_lt_sub_one_of_pos_of_ne_one`, `kl_term_bound_strict`, `klDivergence_eq_zero_iff` ($D = 0 \\iff p = q$), and the four characterizations `entropy_{eq,lt}_log_card_iff_{uniform,non_uniform,eq_uniform,ne_uniform}`.",
+      "mathContext": "The maximum-entropy bound is attained *only* by the uniform distribution: a strict version of $\\log x < x - 1$ for $x \\ne 1$ shows $D(p\\Vert q) = 0 \\iff p = q$, giving $H(p) = \\log n \\iff p$ uniform."
     },
     {
       "id": "log-sum",
       "title": "Log-Sum Inequality",
-      "startLine": 42,
-      "endLine": 48,
-      "summary": "The log-sum inequality: sum a_i log(a_i/b_i) >= (sum a_i) log((sum a_i)/(sum b_i)). Proved by rescaling the reference measure to make bounds sum to zero, then applying kl_term_bound pointwise.",
-      "mathContext": "$\\sum_i a_i \\ln \\frac{a_i}{b_i} \\geq \\left(\\sum_i a_i\\right) \\ln \\frac{\\sum_i a_i}{\\sum_i b_i}$"
+      "startLine": 479,
+      "endLine": 537,
+      "summary": "`log_sum_inequality`: the classical log-sum inequality $\\sum a_i \\log(a_i/b_i) \\ge (\\sum a_i)\\log\\frac{\\sum a_i}{\\sum b_i}$.",
+      "mathContext": "The log-sum inequality is a convexity result generalizing Gibbs' inequality to unnormalized nonnegative weights; it is the workhorse for the conditioning and subadditivity results."
     },
     {
-      "id": "kl-divergence-def",
-      "title": "KL Divergence Definition and Key Inequality",
-      "startLine": 73,
-      "endLine": 132,
-      "summary": "Defines KL divergence D(p||q), conditional entropy H(X|Y), and mutual information I(X;Y). Proves the pointwise bound p*log(p/q) >= p-q from ln(t) <= t-1 (Real.log_le_sub_one_of_pos).",
-      "mathContext": "$D(p \\| q) = \\sum p(x) \\ln(p(x)/q(x))$. Pointwise: $p \\ln(p/q) \\geq p - q$ from $\\ln t \\leq t - 1$."
+      "id": "mi-conditioning",
+      "title": "Mutual Information and Conditioning",
+      "startLine": 538,
+      "endLine": 717,
+      "summary": "Marginal helper lemmas (`marginal_pos_of_joint_pos`, `sum_prod_eq_nested`, `product_marginals_sum_one`), `mutual_info_nonneg` ($I(X;Y) \\ge 0$), the `chain_rule`, and `conditioning_reduces_entropy` ($H(X\\mid Y) \\le H(X)$).",
+      "mathContext": "Mutual information is non-negative (it is a KL divergence), the chain rule $H(X,Y) = H(Y) + H(X\\mid Y)$ holds, and conditioning never increases entropy — all consequences of the log-sum inequality."
     },
     {
-      "id": "kl-nonneg-gibbs",
-      "title": "KL Non-Negativity, Gibbs, and Maximum Entropy",
-      "startLine": 133,
-      "endLine": 218,
-      "summary": "Fully proves KL divergence non-negativity (sum of pointwise bounds), Gibbs inequality (decomposing KL terms), and maximum entropy (Gibbs with uniform q). All 0 sorries.",
-      "mathContext": "$D(p \\| q) \\geq 0 \\Rightarrow H(p) \\leq -\\sum p \\ln q \\Rightarrow H(X) \\leq \\ln |\\mathcal{X}|$."
+      "id": "cond-entropy-nonneg",
+      "title": "Conditional Entropy Non-negativity",
+      "startLine": 718,
+      "endLine": 752,
+      "summary": "`conditionalEntropy_nonneg`: $H(X \\mid Y) \\ge 0$.",
+      "mathContext": "Conditional entropy is a weighted average of (non-negative) conditional entropies, hence non-negative — the discrete analog of the fact that knowing $Y$ leaves non-negative residual uncertainty."
     },
     {
-      "id": "mutual-info-chain",
-      "title": "Mutual Information, Chain Rule, and Conditioning",
-      "startLine": 230,
-      "endLine": 459,
-      "summary": "Proves I(X;Y) >= 0 via the pointwise KL technique. The chain rule I(X;Y) = H(X) - H(X|Y) is proved by a detailed term-by-term decomposition using log_div, log_mul, and marginal telescoping. Corollary: H(X|Y) <= H(X). All fully proved (0 sorries).",
-      "mathContext": "$I(X;Y) \\geq 0$. Chain rule: $I(X;Y) = H(X) - H(X|Y)$. Corollary: $H(X|Y) \\leq H(X)$ (conditioning reduces entropy)."
+      "id": "mi-symmetry",
+      "title": "Mutual Information Symmetry via Transposition",
+      "startLine": 753,
+      "endLine": 823,
+      "summary": "`transposeJoint` and its lemmas (`transposeJoint_nonneg`, `transposeJoint_sum`), the symmetry `mutual_info_symm` ($I(X;Y) = I(Y;X)$), and `mutual_info_le_entropy_snd` ($I(X;Y) \\le H(Y)$).",
+      "mathContext": "Swapping the two coordinates of the joint distribution shows mutual information is symmetric; combined with non-negativity of conditional entropy it gives $I(X;Y) \\le \\min(H(X), H(Y))$."
+    },
+    {
+      "id": "strong-subadditivity",
+      "title": "Strong Subadditivity of Entropy",
+      "startLine": 824,
+      "endLine": 1196,
+      "summary": "The marginal projections `marginalXY`/`marginalYZ`/`marginalY`, the telescoping helper `marginal_telescope`, the main `strong_subadditivity` theorem, plus `entropy_chain_rule` and `subadditivity`.",
+      "mathContext": "Strong subadditivity $H(XYZ) + H(Y) \\le H(XY) + H(YZ)$ is the deepest classical entropy inequality; equivalently the conditional mutual information $I(X;Z\\mid Y) \\ge 0$. It is proved here via the log-sum inequality and the chain rule."
     }
   ],
   "crossReferences": [

@@ -40,8 +40,13 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 /-- Axiom: in the large-case induction step of Vosper's theorem, when |A| ≥ 4 or |B| ≥ 4
     and all elements of A appear to be redundant, this leads to a contradiction.
-    The proof uses the Dyson e-transform and a Kneser-type argument (~200 lines);
-    the |A|≥4 or |B|≥4 sub-case is deferred to a future formalization session.
+    Route to discharge (~150–200 lines, known result): the **Dyson e-transform**
+    `Finset.addDysonETransform` (Mathlib/Combinatorics/Additive/ETransform.lean), which
+    preserves |A|+|B| (`addDysonETransform.card`) and does not grow the sumset. Induct on
+    |B| (base |B|=2 = `vosper_base`); for |B|≥3 apply the transform with e = b₁-b₂ to
+    strictly shrink |B| while preserving Cauchy–Davenport equality and |A+B|<p, then pull
+    AP structure back. NB: Kneser does NOT help — in `ZMod p` it collapses to Cauchy–Davenport.
+    See research/problems/erdos-476-oq-05/knowledge.md (session 2026-06-15) for the full blueprint.
     (The |B|=2 and |A|=|B|=3 sub-cases are handled directly in the proof.) -/
 axiom vosper_case1_exists_large {A B : Finset (ZMod p)}
     (hA : 3 ≤ A.card) (hB3 : 3 ≤ B.card)

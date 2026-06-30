@@ -90,83 +90,91 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring for Erdős Problem #982: if n points form a convex polygon, some vertex has at least ⌊n/2⌋ distinct distances. Status OPEN, with the progress history (Moser 1952, Erdős-Fishburn 1994, Dumitrescu 2006, Nivasch-Pach-Pinchasi-Zerbib 2013) and Mathlib imports.",
+      "mathContext": "Erdős #982 (OPEN): $n$ points in convex position $\\Rightarrow$ some vertex realizes $\\geq \\lfloor n/2 \\rfloor$ distinct distances. Conjectured bound is sharp for the regular polygon; best known lower bound $\\approx (13/36 + 1/22701)n - O(1)$."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Plane type, distinctDistancesFrom, maxDistinctDistances functions",
       "startLine": 43,
       "endLine": 69,
+      "summary": "Plane type, distinctDistancesFrom, maxDistinctDistances functions",
       "mathContext": "Mathematical content: Plane type, distinctDistancesFrom, maxDistinctDistances functions"
     },
     {
       "id": "convex-position",
       "title": "Convex Polygons",
-      "summary": "InConvexPosition predicate, guaranteedDistinctDistances function f(n)",
       "startLine": 70,
       "endLine": 98,
+      "summary": "InConvexPosition predicate, guaranteedDistinctDistances function f(n)",
       "mathContext": "Mathematical content: InConvexPosition predicate, guaranteedDistinctDistances function f(n)"
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "erdos982Conjecture and erdos982Conjecture' formal statements",
       "startLine": 99,
       "endLine": 125,
+      "summary": "erdos982Conjecture and erdos982Conjecture' formal statements",
       "mathContext": "Mathematical content: erdos982Conjecture and erdos982Conjecture' formal statements"
     },
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "moser_bound, nppz_bound axioms (Moser 1952, Nivasch et al. 2013)",
       "startLine": 126,
-      "endLine": 169,
+      "endLine": 159,
+      "summary": "moser_bound, nppz_bound axioms (Moser 1952, Nivasch et al. 2013)",
       "mathContext": "Axiomatized: moser_bound, nppz_bound axioms"
     },
     {
       "id": "regular-polygon",
       "title": "Regular Polygon Optimality",
+      "startLine": 160,
+      "endLine": 179,
       "summary": "regular_polygon_distances axiom (regular polygon optimality)",
-      "startLine": 170,
-      "endLine": 192,
       "mathContext": "Axiomatized: regular_polygon_distances axiom"
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
+      "startLine": 180,
+      "endLine": 223,
       "summary": "triangle_case, quadrilateral_case, pentagon_case theorems",
-      "startLine": 193,
-      "endLine": 236,
       "mathContext": "Verified: triangle_case, quadrilateral_case, pentagon_case theorems"
     },
     {
       "id": "related-problem",
       "title": "Related Problem",
+      "startLine": 224,
+      "endLine": 248,
       "summary": "strongerConjectureDisproved, connection to Problem #97",
-      "startLine": 237,
-      "endLine": 261,
       "mathContext": "Mathematical content: strongerConjectureDisproved, connection to Problem #97"
     },
     {
       "id": "curve-generalization",
       "title": "Convex Curve Generalization",
-      "summary": "Docstring context: Bárány-Roldán-Pensado (2013) curve conjecture counterexample discussion",
       "startLine": 249,
-      "endLine": 262,
+      "endLine": 270,
+      "summary": "Docstring context: Bárány-Roldán-Pensado (2013) curve conjecture counterexample discussion",
       "mathContext": "Docstring context: convex curve generalization and its disproof (no Lean declarations)"
     },
     {
       "id": "gap-analysis",
       "title": "Gap Analysis",
+      "startLine": 271,
+      "endLine": 290,
       "summary": "currentGap definition, gap_value theorem",
-      "startLine": 294,
-      "endLine": 313,
       "mathContext": "Formal definition: currentGap definition, gap_value theorem"
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_982_status, erdos_982_summary final theorems",
-      "startLine": 314,
+      "startLine": 291,
       "endLine": 333,
+      "summary": "erdos_982_status, erdos_982_summary final theorems",
       "mathContext": "Verified: erdos_982_status, erdos_982_summary final theorems"
     }
   ],

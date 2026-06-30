@@ -8,7 +8,7 @@
     "author": "Euclid (Lean 4 formalization)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Platonic_solid",
     "date": "c. 300 BCE",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PlatonicSolids.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "wiedijk-100",
       "topology"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -34,14 +34,14 @@
       "Proof of duality relationships between Platonic solids"
     ],
     "dateAdded": "2025-12-27",
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 419,
     "prerequisites": [
       "Euler's formula for polyhedra: V - E + F = 2",
       "Schlafli symbols and regular polyhedra",
       "Combinatorics of regular tilings and angle constraints"
     ],
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "Lean.ofReduceBool (via native_decide), 0 sorries, 0 literal axiom declarations. The headline theorem number_of_platonic_solids : validPairs.card = 5 (Wiedijk #50) is discharged entirely by native_decide, so its #print axioms includes Lean.ofReduceBool (closed-term kernel reduction). The structural reduction to the regularity constraint (p-2)(q-2) < 4 and the V/E/F and duality results are native_decide-free, but the presented headline count of exactly five Platonic solids depends on the native_decide enumeration.",
     "mathlib_version": "4.26.0",
     "theoremCount": 24,
     "definitionCount": 11

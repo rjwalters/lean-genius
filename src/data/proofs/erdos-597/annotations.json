@@ -16,7 +16,11 @@
       "ramsey-theory",
       "ordinal-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "infinite combinatorics",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e597-ordinals",
@@ -35,7 +39,11 @@
       "set-theory",
       "cardinal-numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "ordinal arithmetic",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e597-graphs",
@@ -54,7 +62,12 @@
       "complete-graphs",
       "bipartite-graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "cardinal arithmetic",
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e597-partition",
@@ -73,7 +86,11 @@
       "2-coloring",
       "homogeneous-sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "set theory",
+      "well-orderings"
+    ]
   },
   {
     "id": "ann-e597-conjecture",
@@ -92,7 +109,11 @@
       "erdos-problems",
       "partition-calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e597-erdos-hajnal",
@@ -111,7 +132,11 @@
       "triangle",
       "positive-partition-relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "ordinal arithmetic",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-e597-baumgartner",
@@ -130,7 +155,11 @@
       "baumgartner",
       "negative-partition-relation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "infinite combinatorics",
+      "cardinal arithmetic"
+    ]
   },
   {
     "id": "ann-e597-both-conditions",
@@ -149,7 +178,10 @@
       "clique-free",
       "bipartite-free"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "infinite combinatorics"
+    ]
   },
   {
     "id": "ann-e597-summary",
@@ -168,6 +200,10 @@
       "open-problem",
       "partial-results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite combinatorics",
+      "set theory",
+      "Lean 4 tactic mode"
+    ]
   }
 ]

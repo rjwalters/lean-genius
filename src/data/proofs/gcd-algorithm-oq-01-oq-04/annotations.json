@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-gcd-oq0104-header",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "The separation question",
+    "content": "The docstring frames the result against the parent BinaryGcdOQ01: both algorithms have matching O(log) upper bounds, and neither dominates pointwise (euclidSteps 12 8 = 2 < 5 = binaryGcdSteps 12 8, yet euclidSteps 89 55 = 9 > 8). Upper bounds cannot expose a worst-case separation; this file produces one on the diagonal a = a, where Euclid takes 1 step but Binary GCD takes ν₂(a)+1, an unbounded gap.",
+    "mathContext": "On $(a,a)$: $\\mathrm{euclidSteps}(a,a)=1$ while $\\mathrm{binaryGcdSteps}(a,a)=\\nu_2(a)+1$, so the gap is $\\nu_2(a)$, unbounded via $a=2^N$.",
+    "significance": "context",
+    "relatedConcepts": ["worst-case complexity", "algorithm separation", "2-adic valuation", "step-count model"],
+    "prerequisites": ["GCD algorithms", "asymptotic analysis"]
+  },
+  {
+    "id": "ann-gcd-oq0104-euclid-self",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "technique",
+    "title": "Euclid halts on the diagonal in one step",
+    "content": "euclidSteps_self unfolds the recursion on a = a' + 1. The guard b'+1 ≤ a' is false (it would need a'+1 ≤ a'), so the else-branch fires with remainder (a'+1) mod (a'+1) = 0 (Nat.mod_self), and euclidSteps _ 0 = 0. The total is therefore exactly one division step, independent of a. This is the cheap side of the separation.",
+    "mathContext": "$\\mathrm{euclidSteps}(a,a) = 1$: a single division $a \\bmod a = 0$ terminates the algorithm for every $a > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean algorithm", "Nat.mod_self", "equation lemmas"],
+    "prerequisites": ["modular arithmetic", "recursive definitions"]
+  },
+  {
+    "id": "ann-gcd-oq0104-step-lemmas",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 59, "endLine": 73 },
+    "type": "technique",
+    "title": "Unfolding one Binary GCD step",
+    "content": "Two private lemmas resolve Stein's four-branch recursion. binaryGcdSteps_even_even: when both arguments are even, the step halves both and adds one to the count (if_pos on both parity guards). binaryGcdSteps_self_odd: on an odd diagonal the subtraction a − a = 0 terminates, so the count is 1 (the three if_neg discharge the even/even, even/odd, odd/even branches, leaving the subtract branch whose recursive argument is 0).",
+    "mathContext": "Even/even: $\\mathrm{binaryGcdSteps}(a,b) = 1 + \\mathrm{binaryGcdSteps}(a/2, b/2)$. Odd diagonal: $\\mathrm{binaryGcdSteps}(a,a) = 1$ since $a - a = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Stein's binary GCD", "parity case analysis", "if_pos / if_neg"],
+    "prerequisites": ["binary GCD recursion", "even/odd reasoning"]
+  },
+  {
+    "id": "ann-gcd-oq0104-valuation-form",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 75, "endLine": 94 },
+    "type": "insight",
+    "title": "Valuation induction: 2^v·m costs v+1 steps",
+    "content": "binaryGcdSteps_two_pow_mul_self inducts on the valuation v with m odd. The base case v = 0 is the odd-diagonal terminator (one step). The successor case peels a single factor of two: 2^(v+1)·m is even, (2^(v+1)·m)/2 = 2^v·m (via pow_succ and mul_div_cancel_left), so one even/even halving step plus the induction hypothesis gives (v+1)+1. Each factor of two in a costs exactly one halving step before the odd core finishes.",
+    "mathContext": "$\\mathrm{binaryGcdSteps}(2^v m, 2^v m) = v + 1$ for odd $m$: $v$ halvings plus one terminal subtraction.",
+    "significance": "key",
+    "relatedConcepts": ["induction on valuation", "pow_succ", "Nat.mul_div_cancel_left", "halving steps"],
+    "prerequisites": ["mathematical induction", "powers of two"]
+  },
+  {
+    "id": "ann-gcd-oq0104-self",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 96, "endLine": 114 },
+    "type": "insight",
+    "title": "The headline: Binary GCD diagonal = ν₂(a) + 1",
+    "content": "binaryGcdSteps_self reduces the general a to the valuation form by the canonical decomposition a = 2^(ν₂(a)) · m, where m = ordCompl[2] a is the odd core. Nat.ordProj_mul_ordCompl_eq_self supplies the factorization and Nat.not_dvd_ordCompl proves m odd. Rewriting and applying the valuation lemma yields binaryGcdSteps a a = ν₂(a) + 1 for every positive a — the expensive side of the separation in closed form.",
+    "mathContext": "$\\mathrm{binaryGcdSteps}(a,a) = \\nu_2(a) + 1$, where $a = 2^{\\nu_2(a)} \\cdot \\mathrm{ordCompl}[2]\\,a$ and the odd core is coprime to 2.",
+    "significance": "key",
+    "relatedConcepts": ["ordProj/ordCompl decomposition", "2-adic valuation", "Nat.not_dvd_ordCompl", "factorization"],
+    "prerequisites": ["prime factorization", "p-adic valuation"]
+  },
+  {
+    "id": "ann-gcd-oq0104-gap",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 117, "endLine": 121 },
+    "type": "insight",
+    "title": "The pointwise gap is exactly ν₂(a)",
+    "content": "diagonal_gap subtracts the two diagonal counts: binaryGcdSteps a a = euclidSteps a a + ν₂(a). It is a one-line combination of euclidSteps_self (= 1) and binaryGcdSteps_self (= ν₂(a)+1). The gap is purely the cost of stripping trailing zero bits that Euclid never has to remove.",
+    "mathContext": "$\\mathrm{binaryGcdSteps}(a,a) - \\mathrm{euclidSteps}(a,a) = \\nu_2(a)$, the number of trailing zero bits of $a$.",
+    "significance": "key",
+    "relatedConcepts": ["pointwise comparison", "trailing zero bits", "complexity gap"],
+    "prerequisites": ["the two diagonal step counts"]
+  },
+  {
+    "id": "ann-gcd-oq0104-unbounded",
+    "proofId": "gcd-algorithm-oq-01-oq-04",
+    "range": { "startLine": 132, "endLine": 146 },
+    "type": "insight",
+    "title": "Unboundedness: witness a = 2^N",
+    "content": "gap_unbounded exhibits, for every N, the input a = 2^N forcing an N-step overhead: euclidSteps_two_pow = 1 and binaryGcdSteps_two_pow = N+1 give a gap of N. diagonal_ratio sharpens this multiplicatively: on (2^n, 2^n) Binary GCD uses (n+1)·euclidSteps steps, so even the ratio is unbounded. No additive or multiplicative constant relates the two step counts — a separation invisible to the matching O(log) upper bounds.",
+    "mathContext": "$\\forall N,\\ \\mathrm{binaryGcdSteps}(2^N,2^N) = N+1 \\ge \\mathrm{euclidSteps}(2^N,2^N) + N$; ratio $= n+1$ on $(2^n,2^n)$.",
+    "significance": "key",
+    "relatedConcepts": ["unbounded gap", "multiplicative ratio", "powers of two", "incomparability"],
+    "prerequisites": ["existential witnesses", "the diagonal gap"]
+  }
+]

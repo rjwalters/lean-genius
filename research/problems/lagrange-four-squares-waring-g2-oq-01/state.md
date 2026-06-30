@@ -1,8 +1,95 @@
 # Current State
 
-**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped + verified; `k = 8` shipped **build-pending** as draft; S4 / S6 remain queued)
-**Since**: 2026-06-14 (S24 ACT — `g(8) ≥ 279` counting+omega port, byte-mirror of S7 ACT at `k = 8`; shipped as build-pending DRAFT during Docker outage)
-**Iteration**: 24 (S24 ACT — `g(8) ≥ 279` lower bound, build-unverified draft ; researcher-2)
+**Phase**: ORIENT→ACT (lower bound DONE — parametric `…General.lean` merged #24228, build-pending+unregistered; S28 ships exact-value capstone `…ExactValue.lean`; S29 hardens `…General.lean` Step-6 from `nlinarith` heuristic to a deterministic `linear_combination` certificate — the sole residual build-risk flagged by S27; remaining open half = formalizing the deep upper IMPLICATION, Mathlib gap)
+**Since**: 2026-06-15 (S29 — Step-6 deterministic certificate hardening of `…General.lean`, build-pending)
+**Iteration**: 29 (S29 — Step-6 `linear_combination` certificate ACT ; researcher-8)
+
+## S29 ACT 2026-06-15 (researcher-8) — Step-6 deterministic certificate
+
+The S27 audit flagged the closing `ℤ` `nlinarith` of `waring_lower_general`
+(`…General.lean`, the lower-bound bearer that the S28 capstone `…ExactValue.lean`
+imports) as the **sole residual build-risk** — a heuristic search rather than a
+checked certificate. S26 had already confirmed its mathematics. S29 replaces it
+with a deterministic certificate: a single `linear_combination -hZeqn - hcomm`
+establishes the polynomial identity `(M−1)(Q−1−c₂) = c₁+c₂−M−Q+2` (verified by
+`ring`; cross-checked in sympy, residual 0), after which `mul_nonneg` gives
+`0 ≤ (M−1)(Q−1−c₂)` and the contradiction with `c₀ ≥ 0` and the partition
+equation closes by plain `linarith`. **No nonlinear search remains** anywhere in
+the file; 0 sorries / 0 axioms unchanged. This de-risks both `…General.lean` and
+the capstone that depends on it for the eventual Docker registration. Removed the
+now-dead `hc2` binding. Docker DOWN (`docker info` timeout) + Aristotle 404 — no
+build; mirrors only proven idioms + a `ring`-checked certificate.
+
+
+## S28 ACT 2026-06-15 (researcher-10) — exact-value capstone
+
+Shipped `…OQ01ExactValue.lean` (build-pending, UNREGISTERED, imports `…General`):
+`IsUniversalBound s k := ∀ n, IsSumOfKthPowers s k n`; lower half proved via
+`waring_lower_general`; **1 axiom** `ideal_waring_upper` (Dickson–Pillai–Niven
+upper bound under decidable condition `r+q ≤ 2^k`); `waringG_exact` pins
+`g(k) = 2^k+⌊(3/2)^k⌋−2`; k=2 anchor (`upper_bound_two`/`g2_eq_four`) axiom-free
+via `Nat.sum_four_squares`; concrete `g3..g7 = 9,19,37,73,143`. `axiomatized`
+status (NOT verified). Docker DOWN. See knowledge.md S28 for full detail.
+
+
+## S26 ORIENT-depth 2026-06-14 (researcher-2) — upper-bound condition + #24228 review
+
+**Focus**: cover the **upper**-bound half (no committed artifact did). Shipped
+`verify_ideal_condition.py` (stdlib, exact big-int): the Dickson–Pillai condition
+`(*) r+q ≤ 2^k` (necessary & sufficient for `g(k)=2^k+⌊(3/2)^k⌋−2`) holds for ALL
+`k=1..200`; Mahler condition `(M) r·2^k ≤ 4^k−3^k` (stronger, ⟹*) holds for all
+`k≥2..200` (fails only trivial `k=1`); formula matches OEIS A002804 k=1..12.
+Independently reviewed open PR #24228's parametric lower bound: Step-6 `nlinarith`
+certificate is mathematically sound (the `(M−1)(Q−1−c₂)≥0` hint yields
+`M(Q−c₂)+c₂ ≥ M+Q−1`, contradicting the `≤ M+Q−2` from `c₀≥0`); posted confirming
+comment. HONESTY: the implication `(*) ⟹ upper bound` is the DEEP unformalised
+theorem — this verifies the *hypothesis*, not the implication. Both backends down
+(Docker `docker info` timeout; Aristotle `Resource not found`) — no Lean built.
+
+## S25 ORIENT-depth 2026-06-14 (researcher-1) — durable witness verification
+
+**Focus**: make the S24 (and earlier) Python witness arithmetic durable. Until now the
+witness checks (`N_k = 2^k·⌊(3/2)^k⌋−1`, the miss-by-1 calibration, `f_i ≤ 2` soundness
+via `3^k > N_k`) lived only in session transcripts. Committed runnable
+`verify_witnesses.py` (stdlib only, exits 0 on "ALL CHECKS PASSED") that re-derives every
+constant from the Mahler formula and checks, by the exact counting argument the Lean proofs
+use, that `N_k` is **infeasible with g(k)−1 summands** but **feasible (tight) with g(k)** —
+for `k = 3..9`. This covers all five shipped lower-bound files (k=3..7), the paste-port-ready
+S8 (k=8), and the k=9 look-ahead, and cross-checks each `g(k)` against the literature value.
+Build-free, both backends down (Docker `docker ps` timeout; Aristotle MCP loads but `prove`
+→ "Resource not found"). **No Lean built, no ACT shipped** — durable verification only.
+
+## S24 ORIENT-depth 2026-06-14 (researcher-1)
+
+**Focus**: discharge the standing S8 picker caveat ("g(8) ≥ 279 … case-load grows,
+confirm tractability before paste-porting (lower readiness than k≤7)"). Build-free,
+Docker still down — this is ORIENT depth, **no Lean built, no ACT shipped**.
+
+### What was verified (Python, cross-checked vs the 5 shipped siblings)
+
+- **Exact S8 target**: `¬ IsSumOfEighthPowers 278 6399`, witness
+  `N₈ = 2⁸·⌊(3/2)⁸⌋ − 1 = 256·25 − 1 = 6399`, statement bound `s = g(8)−1 = 278`.
+- **f_i ≤ 2 soundness**: `3⁸ = 6561 > 6399`, the same strict inequality that
+  licenses k = 3..7 — so only `1⁸` and `2⁸` are usable and the multiplicity
+  reduction kills the exponential `decide` space.
+- **Miss-by-1 calibration**: `n₂ᵐᵃˣ = ⌊6399/256⌋ = 24`, `r = 255`, terms needed
+  `24 + 255 = 279 = g(8)`; max sum with 278 terms `= 6398 = 6399 − 1`. Identical
+  shape to k = 7 (`2175 = 16·128 + 127`).
+- **Verdict**: **paste-port-ready**. The only k=7→k=8 growth (`n₂ᵐᵃˣ` 16→24,
+  term count 142→278) enters `omega` as linear bounds — no new bearers, no new
+  tactic risk. Est. ~140 LOC, 0 sorries / 0 axioms, byte-mirror of `…CountingG7.lean`.
+- Also fixed two transcription errors in knowledge.md S1 table (g(7)/g(8) formulas
+  showed the wrong `⌊(3/2)^k⌋` term: `2^7+2-2`→`2^7+17-2`, `2^8+5-2`→`2^8+25-2`;
+  final values 143/279 were already correct).
+
+See knowledge.md "S24 … S8 ACT-readiness" for the full parameter table, the
+look-ahead k = 9 sanity check, and the reproducible Python block.
+
+### Carry-forward (unchanged)
+- **B1**: parent `LagrangeFourSquares.lean` v4.26 elaboration errors block S4/S6 (Mechanic-scope).
+- **B2**: G7 (PR #22968) merged during the Docker outage and is build-UNVERIFIED;
+  targeted-build of `Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` still owed once Docker returns.
+- **S8 itself remains Docker-gated** — readiness ≠ shipped. The ACT paste-port awaits a build host.
 
 ## S24 ACT 2026-06-14 (researcher-2)
 
@@ -40,6 +127,7 @@ Witness derivation: `q_8 = ⌊(3/2)^8⌋ = 25`, `n = 25·256 − 1 = 6399`, `s =
 2. **S4 ACT** — upper-bound axioms `waring_g{3..6}_upper` + `waringG k = N` certificates. Blocked on parent `LagrangeFourSquares.lean` v4.26.0 fix (B1).
 3. **Parametric refactor** — six `k`-instances (k=3..8) now drafted; collapse to one `WaringLowerTemplate` definition + six short corollaries. Strongest abstraction case yet.
 4. **Mechanic poke** — `fix/mechanic-lagrange-v426` would unblock S4 / S6.
+
 
 ## S23 STATE-SYNC 2026-06-13 (researcher-2)
 
@@ -460,3 +548,22 @@ The `Iteration` increment 14 → 15 is justified per the slug's iteration-counti
 | S7 | $g(7) \ge 143$ | $\neg \text{IsSumOfSeventhPowers } 142\ 2175$ | counting + omega | **PREP MERGED** #19177 (rescued); **ACT MERGED** #22968 (S7, build-unverified — merged during Docker outage) |
 | S8 | $g(8) \ge 279$ | $\neg \text{IsSumOfEighthPowers } 278\ 6399$ | counting + omega | **ACT DRAFT** (S24, build-pending — Docker outage; byte-mirror of S7 ACT) |
 | (open) | Hilbert–Waring existence | $\forall k \ge 1, \exists s, \forall n, \dots$ | Hardy–Littlewood (axiomatised) | not yet designed |
+
+## REGISTER (2026-06-15, researcher-6)
+Registered the two unregistered, clean (0-sorry, no `native_decide`) capstone files
+in `proofs/Proofs.lean`:
+- `LagrangeFourSquaresWaringG2OQ01General` — `waring_lower_general`: the general
+  lower bound `g(k) ≥ 2^k+⌊(3/2)^k⌋-2` (0 axioms; hardened deterministic
+  `linear_combination` certificate from S29 #24439, no nlinarith search).
+- `LagrangeFourSquaresWaringG2OQ01ExactValue` — exact values `g(2)=4`
+  (UNCONDITIONAL, via `Nat.sum_four_squares`) and `g(3)..g(7)` (modulo the single
+  deep `ideal_waring_upper` axiom = Dickson–Pillai–Niven, absent from Mathlib).
+  Imports General. Its `decide` calls are all trivial small-Nat arithmetic
+  (`2^k+3^k/2^k-2=N`, the Dickson condition) — safe, unlike `native_decide`.
+
+Neither was in the import manifest, so the deployer never compiled them; the
+"0 sorry" status was inspection-only. The heavy `native_decide` Counting{G4..G7}
+files (the alternative computational lower bounds) are already registered and are
+the build-verify-gated frontier; this registration is the lightweight
+formula-based capstone, NOT the counting frontier (open PRs #22889/#23377/#23330
+target g(7)/g(8) counting). Deployer-gated: compile failure blocks merge, not main.

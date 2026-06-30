@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-quartic-def",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "definition",
+    "title": "quarticMartingaleValue: The Degree-4 Martingale Polynomial",
+    "content": "Defines Q(n,s) = s⁴ − 6ns² + 3n² + 2n, the value of the quartic martingale for the simple symmetric random walk. Reaching the second moment of the absorption time τ requires a fourth-moment computation, which is controlled by this degree-4 polynomial: just as E[τ] = k(N−k) comes from the quadratic martingale S_n² − n, Var(τ) needs M_n = Q(n, S_n). The coefficients −6, +3, +2 are pinned exactly by demanding the martingale step-mean identity (next annotation).",
+    "mathContext": "$Q(n,s) = s^4 - 6ns^2 + 3n^2 + 2n$; the process $n \\mapsto Q(n, S_n)$ is a martingale when the increment is uniform on $\\{+1,-1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["quartic martingale", "fourth moment", "simple symmetric random walk", "absorption time"],
+    "prerequisites": ["martingale definition", "simple symmetric random walk"]
+  },
+  {
+    "id": "ann-quartic-step-mean",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 63, "endLine": 71 },
+    "type": "theorem",
+    "title": "quarticMartingaleValue_step_mean: The Martingale Property (proved by ring)",
+    "content": "Proves ½·Q(n+1,s+1) + ½·Q(n+1,s−1) = Q(n,s). This symmetric average over the two equally-likely steps is exactly the pointwise form of the martingale identity E[M_{n+1} | S_n = s] = M_n for the simple symmetric walk. The proof is a one-line `ring` after unfolding the definition — the degree-4 polynomial was engineered precisely so this identity holds, which is what certifies Q as a genuine martingale value.",
+    "mathContext": "$\\tfrac12 Q(n+1,s+1) + \\tfrac12 Q(n+1,s-1) = Q(n,s)$, the pointwise martingale property $E[M_{n+1}\\mid S_n=s] = M_n$.",
+    "significance": "critical",
+    "relatedConcepts": ["martingale property", "conditional expectation", "symmetric step mean", "ring tactic"],
+    "prerequisites": ["quarticMartingaleValue", "polynomial algebra"]
+  },
+  {
+    "id": "ann-cubic-def",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "definition",
+    "title": "cubicMartingaleValue: Auxiliary Degree-3 Martingale for the Hitting Weight",
+    "content": "Defines Y(n,s) = s³ − 3ns, a cubic martingale value introduced for a single purpose: the quartic optional-stopping equation contains the cross moment E[τ·S_τ²], which introduces the barrier-weighted hitting time W = E[τ·𝟙_{S_τ=N}]. W is not directly available, so this lower-degree martingale is used to pin it down via its own optional-stopping equation.",
+    "mathContext": "$Y(n,s) = s^3 - 3ns$; the process $n \\mapsto Y(n, S_n)$ is a martingale, used to compute $W = E[\\tau \\cdot \\mathbb{1}_{S_\\tau = N}]$.",
+    "significance": "key",
+    "relatedConcepts": ["cubic martingale", "hitting weight", "cross moment", "barrier-weighted hitting time"],
+    "prerequisites": ["martingale definition", "quarticMartingaleValue"]
+  },
+  {
+    "id": "ann-cubic-step-mean",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 107, "endLine": 115 },
+    "type": "theorem",
+    "title": "cubicMartingaleValue_step_mean: Martingale Property of Y",
+    "content": "Proves ½·Y(n+1,s+1) + ½·Y(n+1,s−1) = Y(n,s), the pointwise martingale identity for the cubic value, again by `ring`. This certifies Y as a martingale value so that Doob's optional stopping may be applied to it, producing the equation that determines the hitting weight W.",
+    "mathContext": "$\\tfrac12 Y(n+1,s+1) + \\tfrac12 Y(n+1,s-1) = Y(n,s)$, certifying $Y$ as a martingale value.",
+    "significance": "key",
+    "relatedConcepts": ["martingale property", "cubic martingale", "symmetric step mean"],
+    "prerequisites": ["cubicMartingaleValue", "polynomial algebra"]
+  },
+  {
+    "id": "ann-hitting-weight",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 122, "endLine": 130 },
+    "type": "theorem",
+    "title": "hitting_weight: Pinning Down W from the Cubic OST Equation",
+    "content": "Takes the cubic optional-stopping equation k³ = N²k − 3NW as a hypothesis (it encodes E[S_τ³] = N²k and E[τ·S_τ] = NW for S_τ ∈ {0,N}, P(S_τ=N)=k/N) and concludes 3NW = k(N−k)(N+k) via `linear_combination`, i.e. W = k(N²−k²)/(3N). This value of W is the bridge from the cubic martingale to the quartic computation.",
+    "mathContext": "Given $k^3 = N^2 k - 3NW$, then $3NW = k(N-k)(N+k)$, so $W = \\dfrac{k(N^2-k^2)}{3N}$.",
+    "significance": "key",
+    "relatedConcepts": ["optional stopping", "hitting weight", "linear_combination", "boundary distribution"],
+    "prerequisites": ["cubicMartingaleValue_step_mean", "Doob optional stopping"]
+  },
+  {
+    "id": "ann-variance-closed-form",
+    "proofId": "fair-games-theorem-oq-02-oq-03",
+    "range": { "startLine": 132, "endLine": 147 },
+    "type": "theorem",
+    "title": "variance_closed_form: The Variance with W Eliminated",
+    "content": "The main result. Takes both the cubic optional-stopping equation and the quartic one (k⁴ = N³k − 6N²W + 3·E[τ²] + 2·E[τ], with E[τ] = k(N−k)) as hypotheses, and via the single `linear_combination -hquartic + 2*N*hcubic` cancels the unknown hitting weight W to give 3·(E[τ²] − E[τ]²) = k(N−k)(N²−2Nk+2k²−2). Equivalently Var(τ) = (1/3)·k(N−k)(N²−2Nk+2k²−2). The decisive structural fact is that W appears in both OST equations and is eliminated exactly, so the final formula depends only on k and N. Honesty note: the two OST equations are inputs; their measure-theoretic derivation in Mathlib's probability filtration is the open frontier, while everything here — the martingale identities and the W-cancellation algebra — is machine-checked with 0 sorries and 0 axioms.",
+    "mathContext": "$\\mathrm{Var}(\\tau) = E[\\tau^2] - E[\\tau]^2 = \\tfrac{1}{3}\\,k(N-k)(N^2 - 2Nk + 2k^2 - 2)$, obtained by eliminating $W$ between the cubic and quartic optional-stopping equations.",
+    "significance": "critical",
+    "relatedConcepts": ["variance", "optional stopping", "elimination of W", "linear_combination", "gambler's ruin"],
+    "prerequisites": ["hitting_weight", "quarticMartingaleValue_step_mean", "Doob optional stopping"]
+  }
+]

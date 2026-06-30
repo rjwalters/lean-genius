@@ -38,11 +38,13 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Tactic
 
 namespace Erdos1179
 
-open Finset Real
+open Finset Real Filter
 
 /- ## Part I: Representation Counts -/
 
@@ -101,7 +103,7 @@ theorem expectedReprCount_pos {k N : ℕ} (hN : 1 ≤ N) :
     0 < expectedReprCount k N := by
   unfold expectedReprCount
   apply div_pos (pow_pos (by norm_num : (0:ℝ) < 2) k)
-  exact_mod_cast Nat.lt_of_lt_pred (by omega : 0 < N)
+  exact_mod_cast (show 0 < N by omega)
 
 /- ## Part IV: The Function g_ε(N) -/
 
@@ -129,7 +131,7 @@ theorem gEps_pos (ε : ℝ) (N : ℕ) (hε : 0 < ε) (hε1 : ε < 1) (hN : N ≥
     gEps ε N ≥ 1 := by
   have h := basic_lower_bound ε N hε hε1 hN
   have hlog : Real.logb 2 ↑N ≥ 1 := by
-    rw [Real.logb, ge_iff_le, div_le_iff (Real.log_pos (by norm_num : (1:ℝ) < 2)),
+    rw [Real.logb, ge_iff_le, le_div_iff₀ (Real.log_pos (by norm_num : (1:ℝ) < 2)),
         one_mul]
     exact Real.log_le_log (by norm_num : (0:ℝ) < 2) (by exact_mod_cast hN)
   exact_mod_cast (show (1 : ℝ) ≤ ↑(gEps ε N) from le_trans hlog h)
@@ -215,7 +217,7 @@ theorem logloglog_div_loglog_tendsto_zero :
         |Real.log (Real.log (Real.log ↑N)) / Real.log (Real.log ↑N)| < c := by
   intro c hc
   -- Step 1: From isLittleO_log_rpow_atTop(p=1): |log x| ≤ (c/2)|x| for large x
-  have h_olit := Real.isLittleO_log_rpow_atTop (show (0:ℝ) < 1 by norm_num)
+  have h_olit := isLittleO_log_rpow_atTop (show (0:ℝ) < 1 by norm_num)
   have h_bound : ∀ᶠ x in Filter.atTop, ‖Real.log x‖ ≤ c / 2 * ‖x ^ (1:ℝ)‖ :=
     h_olit.bound (by linarith : 0 < c / 2)
   rw [Filter.eventually_atTop] at h_bound
@@ -223,7 +225,7 @@ theorem logloglog_div_loglog_tendsto_zero :
   -- Step 2: log(log(N)) → ∞, so eventually log(log(N)) ≥ max M 1
   have h_ll : Tendsto (fun N : ℕ => Real.log (Real.log (↑N : ℝ))) atTop atTop :=
     Real.tendsto_log_atTop.comp (Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop)
-  rw [Filter.tendsto_atTop] at h_ll
+  rw [Filter.tendsto_atTop_atTop] at h_ll
   obtain ⟨N₀, hN₀⟩ := h_ll (max M 1)
   use N₀
   intro N hN hlog_pos
@@ -239,7 +241,7 @@ theorem logloglog_div_loglog_tendsto_zero :
   rw [abs_div, abs_of_pos hll_pos]
   calc |Real.log (Real.log (Real.log ↑N))| / Real.log (Real.log ↑N)
       ≤ c / 2 * |Real.log (Real.log ↑N)| / Real.log (Real.log ↑N) := by
-        exact div_le_div_of_nonneg_right h_apply _ hll_pos.le
+        exact div_le_div_of_nonneg_right h_apply hll_pos.le
     _ = c / 2 * (|Real.log (Real.log ↑N)| / Real.log (Real.log ↑N)) := by ring
     _ = c / 2 * 1 := by rw [abs_of_pos hll_pos, div_self hll_pos.ne']
     _ = c / 2 := mul_one _
@@ -285,9 +287,9 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
   have h_f_bound : |f| < δ / C := hN₁ N hN1_le hllN_pos
   -- Divide bounds by logb 2 N to get ratio bounds
   have h_ratio_ge : 1 ≤ (gEps ε N : ℝ) / Real.logb 2 ↑N := by
-    rw [le_div_iff hlog_pos, one_mul]; exact h_lower
+    rw [le_div_iff₀ hlog_pos, one_mul]; exact h_lower
   have h_ratio_le : (gEps ε N : ℝ) / Real.logb 2 ↑N ≤ 1 + C * f := by
-    rw [div_le_iff hlog_pos]; exact h_upper
+    rw [div_le_iff₀ hlog_pos, hf_def, ← mul_div_assoc]; exact h_upper
   -- Squeeze: 0 ≤ ratio - 1 ≤ C·f(N), and C·|f(N)| < δ
   rw [abs_lt]
   constructor
@@ -297,7 +299,7 @@ theorem main_asymptotic_derived (ε : ℝ) (hε : 0 < ε) (hε1 : ε < 1) :
     by_cases hf_sign : 0 ≤ f
     · -- f ≥ 0: ratio - 1 ≤ C·f < C·(δ/C) = δ
       have : f < δ / C := by rwa [abs_of_nonneg hf_sign] at h_f_bound
-      have : C * f < δ := by rw [← div_lt_iff hC]; exact this
+      have : C * f < δ := by rw [mul_comm]; exact (lt_div_iff₀ hC).mp this
       linarith
     · -- f < 0: ratio - 1 ≤ C·f < 0, and ratio - 1 ≥ 0, so ratio - 1 < δ
       push_neg at hf_sign

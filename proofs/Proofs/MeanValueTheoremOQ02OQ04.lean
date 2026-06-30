@@ -48,10 +48,13 @@ the namespace and providing cross-references to:
   `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean`
   (theorem `oq04_axiom_is_false`).
 * The **corrected statement** in that same child file
-  (theorem `analytic_taylor_remainder_uniform_bound_complex`,
-  fully proven modulo `cauchy_diag_norm_bound_at_radius` at v4.26.0),
+  (theorem `analytic_taylor_remainder_uniform_bound_complex`),
   which strengthens the hypothesis to `HasFPowerSeriesOnBall f p a R`
-  on a **complex** disk.
+  on a **complex** disk. As of S7 (2026-05-14, child PR #23192) this is
+  **fully proven and sorry-free** at v4.26.0: the finite-radius sub-lemma
+  `cauchy_diag_norm_bound_at_radius` (the last residual `sorry`) was
+  discharged via Mathlib's
+  `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`.
 
 Removing the axiom eliminates a gallery-integrity bug (a `False`-witness
 in the build closure): any downstream consumer that imports
@@ -119,8 +122,8 @@ namespace MeanValueTheoremOQ02OQ04
    the child slug `mean-value-theorem-oq-02-oq-04-oq-01`. See file docstring
    for the full retraction record.
 
-   The corrected complex-disk Cauchy bound is stated and (modulo a single
-   finite-radius sub-lemma) proven in
+   The corrected complex-disk Cauchy bound is stated and (as of S7,
+   2026-05-14, child PR #23192) fully proven sorry-free in
    `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` as
    `analytic_taylor_remainder_uniform_bound_complex`. Consumers should
    import that file directly. -/

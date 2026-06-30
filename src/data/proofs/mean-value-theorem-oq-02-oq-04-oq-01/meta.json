@@ -2,6 +2,45 @@
   "id": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MeanValueTheoremOQ02",
+      "Proofs.MeanValueTheoremOQ02OQ04"
+    ],
+    "opens": [
+      "interval",
+      "`(a",
+      "−",
+      "R,",
+      "a",
+      "+",
+      "R)`",
+      "and",
+      "`|f",
+      "y|",
+      "≤",
+      "M`",
+      "for",
+      "`y`",
+      "in",
+      "that",
+      "interval,",
+      "Real",
+      "Set",
+      "NNReal",
+      "ENNReal",
+      "Topology",
+      "Filter"
+    ],
+    "namespace": "MeanValueTheoremOQ02OQ04OQ01",
+    "lineCount": 771,
+    "axiomCount": 1,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "path": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
+    "sorries": 0
+  },
   "description": "Answers OQ-01 of mean-value-theorem-oq-02-oq-04 with NO: the parent file's axiom analytic_taylor_remainder_uniform_bound is mathematically false as stated. The Runge function f(x)=1/(1+x²), with a=0, R=100, M=1, r=1, n=0, x=1 satisfies every hypothesis (analytic on the open real interval, |f|≤1 uniformly) yet violates the conclusion: |f(1)−f(0)|=1/2 vastly exceeds the claimed bound 1/99. The root cause is the Runge phenomenon: real-analyticity plus a real sup bound does not yield Cauchy coefficient estimates—those require a complex sup bound on a complex disk. The corrected statement replaces AnalyticOn ℝ + real Ioo with a complex HasFPowerSeriesOnBall + Metric.ball hypothesis; it is now fully proven sorry-free (theorem analytic_taylor_remainder_uniform_bound_complex, §3b), the residual Cauchy-coefficient sub-lemma having been discharged at S7 (PR #19063) via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le.",
   "meta": {
     "author": "Lean Genius researchers (refutation by Runge counterexample, formalized 2026)",
@@ -23,7 +62,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 758,
+    "lineCount": 771,
     "assumptions": "1 axiom (inherited from additionalFiles only; main file declares 0 new axioms): taylor_lagrange_remainder in the grandparent file MeanValueTheoremOQ02.lean (qualitative pointwise Lagrange remainder, used to ground the Taylor-polynomial framework reused via MeanValueTheoremOQ02.taylorPolynomial / taylorPolynomial_zero). The parent file's axiom analytic_taylor_remainder_uniform_bound was retracted (S2 retraction; MeanValueTheoremOQ02OQ04.lean now declares 0 axioms) — its mathematical falsity is established by the Runge counterexample fully formalized in section 2. The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in section 3a via constant-1 witness on Complex, S3 contribution). After S7, zero sorries remain. The finite-radius form cauchy_diag_norm_bound_at_radius (the per-degree Cauchy coefficient estimate at a strict intermediate radius r prime in (0, R)) was discharged in S7 via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le. The boundary form cauchy_diag_norm_bound (with norm of w over R) is PROVEN by limit-extraction (ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto, S5 contribution). The section 3b main theorem analytic_taylor_remainder_uniform_bound_complex is fully proven.",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
@@ -90,7 +129,7 @@
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
       "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap). (S7 follow-on: the Cauchy-coefficient gap was discharged in PR #19063 via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le; the file is now sorry-free.)"
     ],
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 3
   },
   "overview": {
@@ -178,49 +217,60 @@
   ],
   "sections": [
     {
-      "id": "header-and-imports",
-      "title": "File Header: Imports and Refutation Summary",
+      "id": "header",
+      "title": "File Header, Imports, and Refutation Summary",
       "startLine": 1,
-      "endLine": 110,
-      "summary": "Imports Mathlib (for AnalyticOn, Set.Ioo/Icc, FormalMultilinearSeries) and the parent files Proofs.MeanValueTheoremOQ02 (for taylorPolynomial and taylorPolynomial_zero) and Proofs.MeanValueTheoremOQ02OQ04 (for namespacing context only — the parent file's axiom is not invoked). The module docstring states the OQ-01 question, the answer (NO, the parent axiom is mathematically false), gives the explicit Runge counterexample with all numerical values, identifies the Runge phenomenon as the root cause, and lays out the corrected complex-disk version's Mathlib chain."
+      "endLine": 142,
+      "summary": "Module docstring explaining that OQ-04's parent axiom (a real-interval Taylor sup bound) is FALSE as stated and is refuted here using the Runge function 1/(1+x²) as a witness, plus the corrected complex-disk Cauchy bound. Imports Mathlib analysis (power series, Cauchy integral, analyticity) and the parent Proofs.MeanValueTheoremOQ02; opens the noncomputable section, Real/Set scopes, and the namespace.",
+      "mathContext": "Runge phenomenon: $f(x)=1/(1+x^2)$ is bounded and real-analytic on $\\mathbb R$ yet equispaced polynomial interpolation diverges; the correct uniform bound lives on the complex disk $\\mathrm{ball}(a,R)\\subset\\mathbb C$."
     },
     {
-      "id": "namespace-setup",
-      "title": "Noncomputable Section and Namespace",
-      "startLine": 112,
-      "endLine": 116,
-      "summary": "Opens noncomputable section, the Real and Set namespaces (for |·|, Set.Ioo, Set.Icc), and declares the file's MeanValueTheoremOQ02OQ04OQ01 namespace."
+      "id": "sec1-runge",
+      "title": "§1. The Runge Function and Its Basic Properties",
+      "startLine": 143,
+      "endLine": 203,
+      "summary": "Defines runge x = 1/(1+x²) and proves its elementary facts: runge_one_add_sq_pos (1+x²>0), runge_abs_le_one (|runge|≤1), runge_zero, runge_one (=1/2), and runge_analyticOn_R (real-analytic on (−100,100) via AnalyticAt combinators + AnalyticAt.div).",
+      "mathContext": "$0<1+x^2$, $0\\le\\mathrm{runge}\\,y\\le 1$, and $\\mathrm{runge}$ is real-analytic on $(-100,100)$."
     },
     {
-      "id": "runge-and-blocks",
-      "title": "§1: The Runge Function and Its Basic Properties",
-      "startLine": 118,
-      "endLine": 175,
-      "summary": "Defines `runge x := 1 / (1 + x^2)`. Proves the building blocks: runge_one_add_sq_pos (denominator > 0 via sq_nonneg + linarith), runge_abs_le_one (uniform sup bound, via div_le_one and abs_of_nonneg), runge_zero (= 1, by norm_num), runge_one (= 1/2, by norm_num), and runge_analyticOn_R (analytic on (-100, 100), proved by composing analyticOn_id, analyticOn_const, AnalyticOn.pow, AnalyticOn.add, AnalyticOn.div with the nonzero-denominator lemma).",
-      "mathContext": "The Runge function 1/(1+x²) is the canonical witness to the gap between real and complex analyticity. It is real-analytic on all of ℝ and bounded by 1, but its complex extension has poles at ±i, limiting the Cauchy radius around 0 to 1. Verified building blocks: |runge y| ≤ 1 uniformly, runge(0)=1, runge(1)=1/2, AnalyticOn ℝ on the open interval (-100, 100)."
+      "id": "sec2-refutation",
+      "title": "§2. Refutation of the OQ-04 Axiom Statement",
+      "startLine": 204,
+      "endLine": 285,
+      "summary": "Repackages the parent OQ-04 axiom as a predicate OQ04_AxiomStatement (real-interval analyticity + sup bound ⟹ Taylor remainder ≤ M·rⁿ⁺¹/(Rⁿ(R−r))) and proves oq04_parent_axiom_is_false_in_principle: the predicate is false. The refutation does NOT invoke the parent axiom, so this file declares no new axioms.",
+      "mathContext": "The real-sup-bound hypothesis is too weak: a function bounded on a real interval need not have complex analyticity controlling the Taylor tail, so the claimed remainder bound fails."
     },
     {
-      "id": "refutation",
-      "title": "§2: Refutation of the OQ-04 Axiom Statement",
-      "startLine": 177,
-      "endLine": 240,
-      "summary": "Defines OQ04_AxiomStatement as a Prop-valued predicate exactly capturing the parent file's axiom signature. Proves oq04_axiom_is_false by specializing the predicate at the Runge witness (a=0, R=100, M=1, r=1, n=0, x=1), substituting taylorPolynomial_zero to reduce the LHS to runge(1) - runge(0) = 1/2 - 1, then deriving the contradiction 1/2 ≤ 1/99 by norm_num. The corollary oq04_parent_axiom_is_false_in_principle restates this finding for the parent axiom by name, providing a clear pointer for downstream consumers.",
-      "mathContext": "The refutation is constructive in three steps: (1) verify every hypothesis of the parent axiom on the Runge witness; (2) extract the resulting bound |f(x) - f(a)| ≤ M·r/(R-r) at n=0; (3) substitute numerical values to obtain |1/2 - 1| ≤ 1/99, i.e. 1/2 ≤ 1/99, which fails by norm_num. The 50× gap (1/2 vs 1/99) makes the refutation robust to any reasonable interpretation of the axiom's constants."
+      "id": "sec3-corrected",
+      "title": "§3. Corrected Statement (Complex-Disk Sup Bound) and Off-by-One Fix",
+      "startLine": 286,
+      "endLine": 406,
+      "summary": "Documents the S3 off-by-one correction (the S1–S2 statement paired partialSum n with an RHS that is off by a factor r/R and is false at n=0) and refutes the uncorrected form: def OriginalRemainderForm (the partialSum n RHS) and originalRemainderForm_is_false (constant-1 witness on ball(0,1) at (R,M,r,n,z)=(1,1,1/4,0,0)).",
+      "mathContext": "Mathlib's partialSum n truncates at degree n−1, so the geometric tail $\\sum_{k\\ge n} M(r/R)^k = M r^n R/(R^n(R-r))$, not $M r^{n+1}/(R^n(R-r))$; the §3b fix uses partialSum (n+1)."
     },
     {
-      "id": "corrected-statement",
-      "title": "§3: Corrected Complex-Disk Statement (with sorry)",
-      "startLine": 242,
-      "endLine": 270,
-      "summary": "States `analytic_taylor_remainder_uniform_bound_complex`: the correct Cauchy uniform bound for `f : ℂ → ℂ` holomorphic on the complex disk Metric.ball a R with uniform sup bound M, with the corrected RHS M · r^(n+1) / (R^n · (R-r)) (note the explicit R^n in the denominator). Proof is `sorry`, deferred to S2 with explicit Mathlib chain documented inline: HasFPowerSeriesOnBall.uniform_geometric_approx' + FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius + geometric tail summation.",
-      "mathContext": "The corrected statement matches Mathlib's API: HasFPowerSeriesOnBall replaces AnalyticOn ℝ + Ioo, Metric.ball replaces Ioo, and the corrected RHS is the standard Cauchy bound M·r^(n+1)/(R^n(R-r)). The sorry marks a formalization gap (chaining three Mathlib lemmas), not a mathematical gap—the corrected statement is a known theorem of complex analysis."
+      "id": "sec3b-corrected-explicit",
+      "title": "§3b. Corrected Statement with partialSum (n+1): Cauchy Bound Lemmas",
+      "startLine": 407,
+      "endLine": 694,
+      "summary": "Builds the corrected explicit complex-disk Cauchy uniform bound (index-shifted to partialSum (n+1) to match the parent's degree-n Taylor polynomial): geometric_tail_identity (pure algebra), cauchy_diag_norm_bound_at_radius and cauchy_diag_norm_bound (per-degree Cauchy coefficient bound ‖p k‖ ≤ M(‖w‖/R)ᵏ), and analytic_taylor_remainder_uniform_bound_complex (the assembled bound). All proven (the historical sorries were discharged at S7).",
+      "mathContext": "Explicit form: $\\|f z - p.\\mathrm{partialSum}(n+1)(z-a)\\| \\le M\\,r^{n+1}/(R^n(R-r))$ on $\\|z-a\\|\\le r<R$, from the Cauchy coefficient bound + geometric tail."
     },
     {
-      "id": "verification",
-      "title": "§4: Verification: #check Sanity Block",
-      "startLine": 272,
-      "endLine": 280,
-      "summary": "Eight #check commands confirm the elaborated types of all theorems and definitions: runge, runge_analyticOn_R, runge_abs_le_one, runge_zero, runge_one, oq04_axiom_is_false, oq04_parent_axiom_is_false_in_principle, analytic_taylor_remainder_uniform_bound_complex. Closes the namespace."
+      "id": "sec3a-existential",
+      "title": "§3a. Existential Cauchy-Style Geometric Approximation (proven)",
+      "startLine": 695,
+      "endLine": 753,
+      "summary": "analytic_taylor_remainder_uniform_geometric_complex: the Mathlib-native existential bound (∃ K∈(0,1), C>0) translating HasFPowerSeriesOnBall.uniform_geometric_approx' from the y-centered form to the z-centered form via z = a + y. Requires only that f admits a power-series expansion, not a sup bound M — that is the hypothesis the parent OQ-04 axiom wrongly drops.",
+      "mathContext": "$\\exists K\\in(0,1),\\,C>0:\\ \\|f z - p.\\mathrm{partialSum}\\,n\\,(z-a)\\| \\le C\\,(K\\,\\|z-a\\|/r)^n$ on $\\mathrm{ball}(a,r)$."
+    },
+    {
+      "id": "sec4-verification",
+      "title": "§4. Verification (#check Block)",
+      "startLine": 754,
+      "endLine": 771,
+      "summary": "#check sanity block confirming the signatures of all public declarations: runge and its lemmas, the two refutation theorems, OriginalRemainderForm + its refutation, and the four corrected-bound theorems.",
+      "mathContext": "No new mathematics — type-checking sanity block ensuring every named result elaborates."
     }
   ],
   "conclusion": {

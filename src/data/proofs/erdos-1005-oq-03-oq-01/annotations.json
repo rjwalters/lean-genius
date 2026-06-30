@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-erdos1005oq0301-header",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 4, "endLine": 58 },
+    "type": "context",
+    "title": "The constructive half: walking the Farey sequence",
+    "content": "The header frames this file as the constructive complement to the sibling adjacency criterion. Where the sibling decides WHEN two unimodular neighbours are adjacent (b + d > n), this file shows HOW to produce the next term: given adjacent a/b < c/d with c/d < 1, the successor is e/f with e = kc − a, f = kd − b, k = ⌊(n+b)/d⌋. The FareyFraction scaffold and the denominator-sum lemma are re-declared (the parent's import no longer resolves under Mathlib v4.26.0). Iterating gives the run-generating recurrence q_{i+1} = ⌊(n+q_{i−1})/q_i⌋·q_i − q_{i−1}.",
+    "mathContext": "$k = \\lfloor (n+b)/d \\rfloor,\\; e = kc - a,\\; f = kd - b$; the next term after $c/d$ in $F_n$ is $e/f$.",
+    "significance": "context",
+    "relatedConcepts": ["Farey sequence", "Stern–Brocot tree", "continued fractions", "linear-time enumeration"],
+    "prerequisites": ["Farey adjacency criterion", "floor division"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-scaffold",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 62, "endLine": 82 },
+    "type": "definition",
+    "title": "Farey fraction scaffold",
+    "content": "The self-contained data carried over from the sibling: FareyFraction n (reduced p/q with 1 ≤ q ≤ n, p ≤ q), its rational value toRat, and the unimodular predicate IsConsecutiveFarey (g.p·f.q − f.p·g.q = 1). These mirror the sibling exactly so the file stands alone.",
+    "mathContext": "Reduced $p/q \\in [0,1]$, $q \\le n$; unimodular neighbours $bc - ad = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["reduced fractions", "unimodular relation"],
+    "prerequisites": ["coprimality"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-denomsum",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 84, "endLine": 129 },
+    "type": "technique",
+    "title": "Reused denominator-sum criterion",
+    "content": "The sibling's machinery, re-proved here for self-containment: toRat_lt_iff (order = cross-multiplication), intermediate_denom_ge (any fraction strictly between a unimodular pair has denominator ≥ b + d, via the identity q·(bc−ad) = d·(pb−aq) + b·(cq−pd)), and farey_adjacent_of_denom_sum_gt (b + d > n ⟹ adjacent). The headline is_successor proof feeds the constructed adjacency back through this last lemma.",
+    "mathContext": "$a/b < p/q < c/d$ unimodular $\\Rightarrow q \\ge b+d$; hence $b+d > n \\Rightarrow$ adjacent in $F_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["denominator-sum criterion", "cross-multiplication", "linear_combination"],
+    "prerequisites": ["integer arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-defs",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 131, "endLine": 165 },
+    "type": "definition",
+    "title": "The successor and the floor-division bracket",
+    "content": "Definitions succK = ⌊(n+b)/d⌋, succNum e = k·c − a, succDen f = k·d − b. The two bracket lemmas are the workhorse: succK_mul_le gives k·d ≤ n+b (so f ≤ n, the successor stays in F_n) and lt_succK_succ_mul gives n+b < (k+1)·d (so d + f > n, the pair is adjacent). The multiplier k is precisely the largest one keeping f ≤ n.",
+    "mathContext": "$kd \\le n+b < (k+1)d$, the defining bracket of $k = \\lfloor (n+b)/d \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": ["floor division", "Nat.div_mul_le_self", "Euclidean division"],
+    "prerequisites": ["floor function", "natural number division"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-genuine-sub",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 166, "endLine": 198 },
+    "type": "technique",
+    "title": "The ℕ subtractions are genuine",
+    "content": "Because e and f are defined with truncated ℕ subtraction, the proof must show k·d > b (den_lt_succK_mul) and k·c > a (num_lt_succK_mul) so that no truncation silently occurs. The denominator bound comes from the bracket and d ≤ n; the numerator bound is obtained by multiplying k·d > b by c and collapsing against the unimodular relation cb = ad + 1. These positivity facts underwrite every later zify/omega step.",
+    "mathContext": "$kd > b$ (since $d \\le n$) and $kc > a$ (multiply by $c$, use $cb = ad+1$), so $e = kc-a, f = kd-b$ are honest subtractions.",
+    "significance": "supporting",
+    "relatedConcepts": ["truncated subtraction", "unimodular relation", "zify"],
+    "prerequisites": ["natural number arithmetic"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-unimodular",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 200, "endLine": 220 },
+    "type": "insight",
+    "title": "Unimodularity is preserved for free",
+    "content": "succ_unimodular: the new pair c/d, e/f again satisfies e·d − c·f = 1. The point is that this is automatic algebra — e·d − c·f = (kc−a)d − c(kd−b) = bc − ad = 1 — the multiplier k cancels entirely. After clearing the truncated subtractions over ℤ via zify (using the genuine-subtraction bounds), a single linear_combination against bc − ad = 1 closes it. The recurrence thus carries the unimodular invariant forward with no extra work.",
+    "mathContext": "$ed - cf = (kc-a)d - c(kd-b) = bc - ad = 1$ — the $k$ terms cancel identically.",
+    "significance": "key",
+    "relatedConcepts": ["unimodular invariant", "linear_combination", "invariant preservation"],
+    "prerequisites": ["integer algebra"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-certificates",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 222, "endLine": 306 },
+    "type": "concept",
+    "title": "The five membership and position certificates",
+    "content": "The facts that make e/f a bona fide order-n Farey fraction adjacent to c/d: succ_den_le (f ≤ n), succ_den_pos (f ≥ 1), succ_adjacent_pair (n < d + f), succ_num_pos (e ≥ 1), succ_coprime (gcd(e,f)=1 from e·d − c·f = 1), and succ_num_le_den (e ≤ f when c < d, keeping e/f ≤ 1, from e·d = c·f + 1 ≤ (d−1)f + 1 ≤ d·f). All are read off the floor bracket and the clean relation e·d = c·f + 1.",
+    "mathContext": "$1 \\le f \\le n$, $n < d+f$, $1 \\le e \\le f$, $\\gcd(e,f)=1$; the bound $e \\le f$ uses $c \\le d-1$ in $ed = cf+1$.",
+    "significance": "key",
+    "relatedConcepts": ["Farey membership", "coprimality", "interval [0,1]"],
+    "prerequisites": ["the floor bracket", "unimodular preservation"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-packaging",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 308, "endLine": 347 },
+    "type": "technique",
+    "title": "Packaging e/f and ordering",
+    "content": "succFarey bundles the five certificates into a FareyFraction n; succFarey_p/_q are the projection simp lemmas. cur_lt_succ shows c/d < e/f (immediate from e·d = c·f + 1), and isConsecutive_cur_succ records that c/d, e/f is again a unimodular pair — the input shape the headline and any iteration need.",
+    "mathContext": "$c/d < e/f$ since $ed = cf + 1 > cf$; and $c/d, e/f$ unimodular, ready to iterate.",
+    "significance": "supporting",
+    "relatedConcepts": ["structure packaging", "simp lemmas", "iteration"],
+    "prerequisites": ["the certificates"]
+  },
+  {
+    "id": "ann-erdos1005oq0301-headline",
+    "proofId": "erdos-1005-oq-03-oq-01",
+    "range": { "startLine": 349, "endLine": 368 },
+    "type": "insight",
+    "title": "Headline: e/f is THE successor, and the closed-form recurrence",
+    "content": "is_successor: no order-n Farey fraction lies strictly between c/d and e/f — proved by feeding the adjacency n < d + f into the reused denominator-sum criterion. Hence e/f is the immediate successor. den_recurrence and num_recurrence record the closed forms f = ⌊(n+b)/d⌋·d − b and e = ⌊(n+b)/d⌋·c − a definitionally, giving the iterable engine q_{i+1} = ⌊(n+q_{i−1})/q_i⌋·q_i − q_{i−1} that walks the whole Farey sequence.",
+    "mathContext": "$e/f$ is the next term after $c/d$ in $F_n$; recurrence $q_{i+1} = \\lfloor (n+q_{i-1})/q_i \\rfloor q_i - q_{i-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Farey successor", "denominator recurrence", "Erdős #1005", "Stern–Brocot insertion"],
+    "prerequisites": ["adjacency criterion", "the certificates"]
+  }
+]

@@ -101,7 +101,7 @@
     "type": "concept",
     "range": {
       "startLine": 56,
-      "endLine": 60
+      "endLine": 59
     },
     "title": "Main Open Conjecture: f(d) = Θ(log d)",
     "content": "**`erdos_187_conjecture`** formalizes the open question: does there exist $c > 0$ such that $f(d) \\geq c \\cdot \\lfloor \\log_2 d \\rfloor$ for all sufficiently large $d$?\n\nCombined with Beck's upper bound, this would give $f(d) = \\Theta(\\log d)$ — the exact answer to Problem #187.\n\n**Current gap:** The only known lower bound is $f(d) \\to \\infty$ (van der Waerden), which provides no rate at all. Even $f(d) \\geq \\log \\log d$ would be new. The conjectured $\\Theta(\\log d)$ lower bound seems plausible from probabilistic heuristics (a random 2-coloring has monochromatic APs of length $\\Theta(\\log d)$), but no proof technique is known.",

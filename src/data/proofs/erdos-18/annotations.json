@@ -16,7 +16,11 @@
       "divisor-sums",
       "number-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisors of an integer",
+      "sums of divisors",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e18-divisors",
@@ -35,7 +39,11 @@
       "subset-sum",
       "finset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of divisors of n (Finset)",
+      "subset-sum representability",
+      "representing integers as sums of distinct divisors"
+    ]
   },
   {
     "id": "ann-e18-practical",
@@ -54,7 +62,11 @@
       "srinivasan",
       "panarithmic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors and their subset sums",
+      "practical numbers (every m ≤ n is a sum of distinct divisors)",
+      "Srinivasan's panarithmic numbers"
+    ]
   },
   {
     "id": "ann-e18-basic-verified",
@@ -73,7 +85,11 @@
       "interval-cases",
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of practical",
+      "base cases n = 1, 2",
+      "case analysis (interval_cases)"
+    ]
   },
   {
     "id": "ann-e18-small-practical",
@@ -92,7 +108,11 @@
       "binary",
       "axiom"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powers of two and binary representation",
+      "why every power of 2 is practical",
+      "axiomatizing a family of examples"
+    ]
   },
   {
     "id": "ann-e18-non-practical",
@@ -111,7 +131,11 @@
       "non-practical",
       "gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "gaps in the subset-sum set",
+      "why odd numbers >1 are not practical"
+    ]
   },
   {
     "id": "ann-e18-stewart",
@@ -130,7 +154,11 @@
       "sierpinski",
       "characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime factorization of n",
+      "the sigma (divisor-sum) function",
+      "the Stewart–Sierpiński characterization"
+    ]
   },
   {
     "id": "ann-e18-h-function",
@@ -149,7 +177,11 @@
       "minimum",
       "divisor-count"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor-counting / minimal-representation function h(m)",
+      "minima over representations",
+      "divisor structure"
+    ]
   },
   {
     "id": "ann-e18-erdos-bound",
@@ -168,7 +200,11 @@
       "factorial",
       "linear"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factorials and their divisors",
+      "linear bounds",
+      "Erdős's factorial bound for practical numbers"
+    ]
   },
   {
     "id": "ann-e18-vose",
@@ -187,7 +223,11 @@
       "polylog",
       "infinite-family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting practical numbers up to x",
+      "polylogarithmic factors",
+      "Vose's 1985 infinite-family theorem"
+    ]
   },
   {
     "id": "ann-e18-conjectures",
@@ -206,6 +246,10 @@
       "subpolynomial",
       "prize-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function of practical numbers",
+      "subpolynomial growth",
+      "the \\$250 prize conjectures"
+    ]
   }
 ]

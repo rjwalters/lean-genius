@@ -30,7 +30,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borsuk-Ulam theorem (conjectured by Borsuk in 1930, proved by Lyusternik-Schnirelmann) states that every continuous map f : S^n \u2192 R^n maps some antipodal pair to the same point. In 1D, this reduces to a consequence of the Intermediate Value Theorem: any continuous f : [-1,1] \u2192 R satisfies f(x\u2080) = f(-x\u2080) for some x\u2080. The quantitative question \u2014 how close to the boundary can the antipodal pair be? \u2014 arises in computational topology (algorithms for finding antipodal pairs), the ham sandwich theorem (which relies on antipodal structures), and topological game theory. Lipschitz bounds providing effective location estimates were studied by B\u00e1r\u00e1ny, F\u00fcredi, and others in the context of computational complexity of topological theorems. This formalization provides machine-verified bounds and a bisection algorithm that locates antipodal pairs within \u03b5 in O(log(1/\u03b5)) steps.",
+    "historicalContext": "The Borsuk-Ulam theorem (conjectured by Ulam and proved by Borsuk in 1933; the equivalent covering form is due to Lyusternik-Schnirelmann in 1930) states that every continuous map f : S^n \u2192 R^n maps some antipodal pair to the same point. In 1D, this reduces to a consequence of the Intermediate Value Theorem: any continuous f : [-1,1] \u2192 R satisfies f(x\u2080) = f(-x\u2080) for some x\u2080. The quantitative question \u2014 how close to the boundary can the antipodal pair be? \u2014 arises in computational topology (algorithms for finding antipodal pairs), the ham sandwich theorem (which relies on antipodal structures), and topological game theory. Lipschitz bounds providing effective location estimates were studied by B\u00e1r\u00e1ny, F\u00fcredi, and others in the context of computational complexity of topological theorems. This formalization provides machine-verified bounds and a bisection algorithm that locates antipodal pairs within \u03b5 in O(log(1/\u03b5)) steps.",
     "problemStatement": "Let $f : [-1,1] \\to \\mathbb{R}$ be $K$-Lipschitz with $|f(1) - f(-1)| = \\delta > 0$. The classical 1D Borsuk-Ulam theorem guarantees the existence of $x_0 \\in [-1,1]$ with $f(x_0) = f(-x_0)$. The quantitative version asks: how close to $\\pm 1$ can $x_0$ be? The answer: $x_0 \\in [-1 + \\delta/(2K),\\, 1 - \\delta/(2K)]$. That is, the antipodal pair is at least $\\delta/(2K)$ away from both endpoints. This bound is tight: for $f(x) = x$ ($K=1$, $\\delta=2$), the unique antipodal pair is $x_0 = 0 = \\pm(1 - 1)$.",
     "proofStrategy": "Define the antisymmetric difference $g(x) = f(x) - f(-x)$. Then $g$ is continuous, $g(-1) = -\\delta$, $g(1) = \\delta$, and $g(x_0) = 0 \\iff f(x_0) = f(-x_0)$. By IVT, $g$ has a zero $x_0 \\in [-1,1]$. Since $f$ is $K$-Lipschitz and negation is $1$-Lipschitz, $g = f - f \\circ \\text{neg}$ is $(K+K)$-Lipschitz. The Lipschitz bound $|g(1) - g(x_0)| \\leq 2K|1 - x_0|$ gives $\\delta \\leq 2K(1-x_0)$, i.e., $x_0 \\leq 1 - \\delta/(2K)$. Symmetry (g is antisymmetric) gives the lower bound. The bisection algorithm then maintains a bracket $[a,b]$ where $g(a) \\leq 0 \\leq g(b)$, halving at each step to locate the zero within $2/2^n$ after $n$ steps.",
     "keyInsights": [
@@ -103,13 +103,11 @@
   },
   "crossReferences": [
     {
-      "id": "borsuk-ulam-oq-03",
-      "title": "1D Borsuk-Ulam (Classical Existence)",
+      "targetId": "borsuk-ulam-oq-03",
       "relationship": "This file adds quantitative location bounds to the classical 1D existence result."
     },
     {
-      "id": "borsuk-ulam",
-      "title": "Borsuk-Ulam Theorem",
+      "targetId": "borsuk-ulam",
       "relationship": "The classical n-dimensional theorem of which this is the 1D quantitative refinement."
     }
   ],

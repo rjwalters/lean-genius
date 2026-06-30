@@ -98,41 +98,43 @@
       "id": "file-header",
       "title": "File Header — The Mistake and Its Fix",
       "startLine": 1,
-      "endLine": 54,
-      "summary": "The opening docstring states the parent file's false axiom `insep_gal_trivial` (inseparable irreducible ⟹ |Gal| = 1), exhibits a concrete char-2 counterexample (f = X⁴+X²+a over F₂(a)), sketches the irreducibility argument by quadratic-factorisation case analysis, observes f' = 0 in char 2 (inseparability), and computes |Gal(f)| = 2 from the Artin-Schreier root pair α^(1/2), α^(1/2)+1. It then states the corrected theorem (purely-inseparable splitting field ⟹ |Gal| = 1) and outlines its proof via iterated Frobenius.",
-      "mathContext": "The header's mathematical content is the discriminating example: $f = g(X^p)$ with $g$ a separable irreducible of degree $\\ge 2$ produces an inseparable irreducible whose splitting field carries the *separable* Galois action of $g$, so $|\\mathrm{Gal}(f)| = |\\mathrm{Gal}(g)| > 1$. The minimal non-degenerate instance over $\\mathbb{F}_p$ is $g = X^2 + X + a$ (Artin-Schreier) over $\\mathbb{F}_2(a)$, $f = g(X^2) = X^4 + X^2 + a$ — exactly the witness used here."
+      "endLine": 62,
+      "summary": "Documents that the parent's insep_gal_trivial axiom is mathematically incorrect and sets up the corrected purely-inseparable framework over F₂(a)."
     },
     {
-      "id": "counterexample-construction",
-      "title": "Base Field, Polynomials, and Inseparability",
-      "startLine": 55,
-      "endLine": 111,
-      "summary": "Imports Mathlib and the parent file. Builds the base field F₂(a) = FractionRing(F₂[X]) with its Field instance, the transcendental generator aGen, and the polynomials f_target = X⁴ + X² + C aGen and g_factor = X² + X + C aGen. Proves the structural identity f_is_g_composed_sq (f_target = g_factor ∘ (X²)) and the inseparability signature f_derivative_zero (f' = 0 in char 2). Closes with the four f_target structural lemmas (natDegree = 4, degree = 4, ne_zero, Monic) needed by every downstream Galois-degree / irreducibility argument.",
-      "mathContext": "Two-level polynomial ring: the *outer* indeterminate $X$ lives in $\\mathbb{F}_2(a)[X]$ where $a$ is a *scalar* (transcendental over $\\mathbb{F}_2$). The composition identity $f(X) = g(X^2)$ pins down the Frobenius-pullback structure, while $f'(X) = 4X^3 + 2X = 0$ in characteristic 2 is the inseparability witness. Structural facts (degree, monicity) discharge the Mathlib API hypotheses that any subsequent SplittingField / irreducibility lemma will demand."
+      "id": "part1-framework",
+      "title": "Part I: The Counterexample Framework",
+      "startLine": 63,
+      "endLine": 169,
+      "summary": "Base field F₂(a), the definitions aGen / f_target = X⁴+X²+a / g_factor, and the proved structural facts: f_is_g_composed_sq, f_derivative_zero, degrees/monicity, and all f_target coefficient lemmas."
     },
     {
-      "id": "artin-schreier-scaffolding",
-      "title": "g_factor Scaffolding + f_target Coefficients",
-      "startLine": 112,
-      "endLine": 158,
-      "summary": "Mirrors the f_target scaffolding for the Artin-Schreier inner factor g_factor: g_factor_natDegree = 2, g_factor_degree = 2, g_factor_ne_zero, g_factor_monic — the structural inputs to a Capelli-style irreducibility argument for f = g(X²). Then proves the five non-trivial coefficient lemmas of f_target (coeff 0 = aGen, coeff 1 = 0, coeff 2 = 1, coeff 3 = 0, coeff 4 = 1), the exact hooks consumed by a quadratic-factorisation-by-coefficient-comparison argument that would discharge `counterexample_gal_card`.",
-      "mathContext": "Capelli's theorem reduces irreducibility of $g(X^n)$ to (i) irreducibility of $g$ and (ii) non-$n$-th-power-ness of a root of $g$ in its base. The scaffolding here speaks the prerequisite vocabulary on both sides. The five coefficient lemmas anchor the alternative low-tech argument: equate $(X^2 + b_1 X + c_1)(X^2 + b_2 X + c_2)$ to $X^4 + 0X^3 + 1 \\cdot X^2 + 0X + a$, derive $b_1 + b_2 = 0$ from $\\mathrm{coeff}_3$, force $b_1 = b_2$ in char 2, and reduce to either the Artin-Schreier case ($b_1 = 0$) or the non-square case ($b_1 \\ne 0$) — both ruled out over $\\mathbb{F}_2(a)$."
+      "id": "part1-5-step1a",
+      "title": "Part I.5: Step 1a — aGen is not a square in base",
+      "startLine": 170,
+      "endLine": 250,
+      "summary": "The next multi-session step toward discharging the construction: proving aGen has no square root in the base field F₂(a) (a putative y²=aGen rewrites via IsLocalization.surj to a degree contradiction)."
     },
     {
-      "id": "correct-theorem",
-      "title": "The Correct Theorem: Purely Inseparable → Trivial Gal",
-      "startLine": 159,
-      "endLine": 215,
-      "summary": "Proves the correct replacement for insep_gal_trivial: sub_pow_char_pow_eq supplies the char-p Frobenius identity (a-b)^(p^n) = a^(p^n) - b^(p^n) via the iterated-Frobenius ring hom; algEquiv_eq_refl_of_isPurelyInseparable shows every F-automorphism of a purely inseparable extension is the identity; gal_card_one_of_purelyInseparable_splitting is the headline corollary.",
-      "mathContext": "Key: (σ(x)-x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0 by char-p Frobenius. Then σ(x) = x since field has no nilpotents."
+      "id": "part2-correct-theorem",
+      "title": "Part II: The Correct Theorem — Purely Inseparable ⟹ Trivial Galois Group",
+      "startLine": 251,
+      "endLine": 310,
+      "summary": "gal_card_one_of_purelyInseparable_splitting: if a polynomial's splitting field is purely inseparable then Nat.card f.Gal = 1, via sub_pow_char_pow_eq and algEquiv_eq_refl_of_isPurelyInseparable -- the correct replacement for the false axiom."
     },
     {
-      "id": "counterexample-and-refutation",
-      "title": "Counterexample, Axiom, and Formal Refutation",
-      "startLine": 217,
-      "endLine": 285,
-      "summary": "Part III axiomatizes |Gal(f_target)| = 2 (counterexample_gal_card, the file's only axiom — pending an Artin-Schreier formalization over F₂(a)) and uses it to prove insep_gal_trivial_refuted: ∃ f, ¬f.Separable ∧ Nat.card f.Gal ≠ 1, which is precisely the negation of the parent file's false axiom. Part IV is a docstring summary table of every theorem and its status.",
-      "mathContext": "X^p - a: splitting field = F(a^(1/p)), purely inseparable since (a^(1/p))^p = a ∈ F. But X⁴+X²+a: splitting field = F₂(a)(α^(1/2)), NOT purely inseparable — has nontrivial automorphism σ : α^(1/2) ↦ α^(1/2) + 1 of order 2, witnessed by (α^(1/2)+1)² = α^(1/2)² + 1² = α + 1 = β (the second Artin-Schreier root) in characteristic 2."
+      "id": "part3-counterexample",
+      "title": "Part III: The Counterexample — |Gal(f_target)| = 2",
+      "startLine": 311,
+      "endLine": 338,
+      "summary": "counterexample_gal_card (axiom: Nat.card f_target.Gal = 2, the Artin-Schreier automorphism) and insep_gal_trivial_refuted: an inseparable irreducible polynomial with nontrivial Galois group, refuting the parent's axiom."
+    },
+    {
+      "id": "part4-summary",
+      "title": "Part IV: Summary",
+      "startLine": 339,
+      "endLine": 380,
+      "summary": "Conclusion that insep_gal_trivial is incorrect and should be replaced by gal_card_one_of_purelyInseparable_splitting, with a status table of all proved theorems and the single intentional axiom."
     }
   ],
   "crossReferences": [

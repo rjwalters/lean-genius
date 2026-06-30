@@ -189,8 +189,8 @@ single-variable bounds are in scope.
 The Chen–Engel–Glotzer (2010) tetrahedral dimer density strictly
 exceeds the Kepler-Hales FCC sphere density.
 
-**Mathematical content.** The parent gallery's `kepler_conjecture`
-axiom states `δ ≤ π/(3√2)` for packings of *congruent spheres*. This
+**Mathematical content.** The parent gallery's `kepler_conjecture` axiom
+asserts `δ ≤ π/(3√2)` for packings of *congruent spheres*. This
 theorem shows that the abstract `PackingDensity` type in
 `Proofs.KeplerConjecture` admits values *strictly above* `fccDensity`,
 witnessed by the tetrahedral dimer construction. Hence the Kepler
@@ -216,6 +216,54 @@ theorem tetrahedronDimerDensity_gt_fccDensity :
   -- Goal: Real.pi * 4671 < 4000 * (3 * Real.sqrt 2)
   -- LHS < 4671 * 3.15 = 14_713.65;  RHS > 12000 * 1.4 = 16800.
   nlinarith [hπ_pos, hπ_ub, hs2_lb]
+
+/--
+**Rational upper bound on the FCC sphere density.**
+
+`fccDensity = π / (3 √ 2)` lies strictly below the rational
+`35329 / 46710 ≈ 0.75634`. This is a sharper, division-cleared
+restatement of `Real.pi_lt_d2` / `Real.lt_sqrt` tailored to the
+margin certificate below (`35329 / 46710` is chosen so that
+`35329 / 46710 + 1/10 = 4000 / 4671 = tetrahedronDimerDensity`).
+
+Same linear chain as `tetrahedronDimerDensity_gt_fccDensity`:
+cross-multiply, then `π · 46710 < 35329 · 3 · √2`, closed by
+`nlinarith` from `π < 3.15` and `√2 > 1.4`
+(`46710 · 3.15 = 147 136.5 < 148 381.8 = 105 987 · 1.4`). No new axioms.
+-/
+theorem fccDensity_lt_35329_div_46710 :
+    fccDensity < 35329 / 46710 := by
+  unfold fccDensity
+  have hπ_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have hπ_ub : Real.pi < 3.15 := Real.pi_lt_d2
+  have hs2_lb : (1.4 : ℝ) < Real.sqrt 2 :=
+    (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.4)).mpr (by norm_num : (1.4 : ℝ) ^ 2 < 2)
+  have h3s_pos : (0 : ℝ) < 3 * Real.sqrt 2 := by positivity
+  rw [div_lt_div_iff₀ h3s_pos (by norm_num : (0 : ℝ) < 46710)]
+  -- Goal: Real.pi * 46710 < 35329 * (3 * Real.sqrt 2)
+  nlinarith [hπ_pos, hπ_ub, hs2_lb]
+
+/--
+**Quantitative margin of the shape-universality refutation.**
+
+Strengthens `tetrahedronDimerDensity_gt_fccDensity` from a bare strict
+inequality to an explicit numerical separation: the tetrahedral dimer
+density exceeds the FCC sphere density by **more than `1/10`**, i.e.
+
+  `fccDensity + 1/10 < tetrahedronDimerDensity`.
+
+This certifies the refutation is robust, not razor-thin — the
+≈ 11.6-percentage-point gap (`4000/4671 − π/(3√2) ≈ 0.1159`) is
+bounded below by a clean rational `1/10`. The rational anchor
+`35329 / 46710` is exactly `4000/4671 − 1/10`, so the result follows
+from `fccDensity_lt_35329_div_46710` by `linarith`. No new axioms.
+-/
+theorem tetrahedronDimerDensity_gt_fccDensity_margin :
+    fccDensity + 1 / 10 < tetrahedronDimerDensity := by
+  have h := fccDensity_lt_35329_div_46710
+  unfold tetrahedronDimerDensity
+  -- 35329/46710 + 1/10 = 40000/46710 = 4000/4671.
+  linarith [h]
 
 /-!
 ## S4 — `PackingDensity` instance + corollary
@@ -298,15 +346,39 @@ formalised in Mathlib v4.26.0). The wrapper structure
 -/
 
 /--
+**Uninterpreted shape predicate: "this density arises from an ellipsoid
+lattice packing".**
+
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsEllipsoidLatticePacking p` for any concrete `p`. This is
+deliberate: it gates the shape-restricted Bezdek–Kuperberg bound below so
+that a generic `PackingDensity` (e.g. the tetrahedral dimer, or a
+density-0 packing) cannot be smuggled in to derive a contradiction.
+
+**Soundness rationale.** A contentless `structure … extends PackingDensity`
+has an anonymous constructor `PackingDensity → …`, so *any* density —
+including `tetrahedronDimerPacking`, whose density exceeds `fccDensity` —
+could be wrapped and fed to the upper-bound axiom, yielding
+`tetrahedronDimerDensity ≤ fccDensity` in contradiction with the
+axiom-free `tetrahedronDimerDensity_gt_fccDensity`. Requiring an
+`IsEllipsoidLatticePacking` proof field blocks that wrap, because nothing
+inhabits the opaque predicate.
+-/
+opaque IsEllipsoidLatticePacking : PackingDensity → Prop
+
+/--
 **Marker structure: an ellipsoid lattice packing in ℝ³.**
 
-Wraps a `PackingDensity` value with the implicit understanding that
-it arises from a lattice arrangement of congruent ellipsoids in ℝ³.
-Definitional only — no axiom. The Bezdek–Kuperberg theorem
-(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, axiom below)
-supplies the density constraint for inhabitants of this type.
+Bundles a `PackingDensity` value with a proof that it arises from a
+lattice arrangement of congruent ellipsoids in ℝ³ (the opaque
+`IsEllipsoidLatticePacking` predicate). The proof field is what makes
+the type non-trivial to inhabit: an arbitrary `PackingDensity` cannot be
+coerced in without exhibiting the (uninhabited) shape proof, which is
+exactly what restores soundness of the Bezdek–Kuperberg upper bound
+(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, axiom below).
 -/
-structure EllipsoidLatticePacking extends PackingDensity
+structure EllipsoidLatticePacking extends PackingDensity where
+  isEllipsoidLattice : IsEllipsoidLatticePacking toPackingDensity
 
 /--
 **Bezdek–Kuperberg (2007).**
@@ -340,25 +412,67 @@ theorem ellipsoid_lattice_le_fccPacking
   bezdek_kuperberg_ellipsoid_lattice_upper_bound e
 
 /--
-**Marker structure: a centrally symmetric convex body packing in ℝ³.**
+**Cross-shape domination: ellipsoid lattice packings are strictly less
+dense than the tetrahedral dimer packing.**
 
-Wraps a `PackingDensity` value with the implicit understanding that
-it arises from a packing of congruent copies of a centrally symmetric
-convex body `K ⊂ ℝ³` (i.e., `K = -K`). Definitional only — no axiom.
+Combines the two opposite arms of the OQ-04 hierarchy into a single
+shape-vs-shape comparison: every ellipsoid *lattice* packing `e`
+satisfies `e.density ≤ fccDensity` (Bezdek–Kuperberg, S5), while the
+tetrahedral *non-lattice* dimer strictly exceeds `fccDensity` (S3,
+axiom-free). Transitivity through `fccDensity` therefore gives
+
+  `e.density < tetrahedronDimerDensity`.
+
+i.e. the FCC density acts as a strict separator: no ellipsoid lattice
+packing can match the tetrahedral dimer. Adds **no new axiom** — it is
+a direct consequence of the existing
+`bezdek_kuperberg_ellipsoid_lattice_upper_bound` axiom and the
+axiom-free `tetrahedronDimerDensity_gt_fccDensity`.
+-/
+theorem ellipsoid_lattice_lt_tetrahedronDimer
+    (e : EllipsoidLatticePacking) :
+    e.density < tetrahedronDimerDensity :=
+  lt_of_le_of_lt
+    (bezdek_kuperberg_ellipsoid_lattice_upper_bound e)
+    tetrahedronDimerDensity_gt_fccDensity
+
+/--
+**Uninterpreted shape predicate: "this density arises from a centrally
+symmetric convex body packing in ℝ³".**
+
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsSymmetricConvexBody3DPacking p` for any concrete `p`.
 Mathlib v4.26.0 has no native `ConvexBody3D` / centrally-symmetric
-abstraction at the level of `PackingDensity`, so the structure
-records the geometric intent without committing to a particular
-choice of formalisation. The Ulam conjecture
-(`ulam_conjecture`, axiom below) supplies the density constraint
-for inhabitants of this type.
+abstraction at the level of `PackingDensity`, so this predicate records
+the geometric intent without committing to a particular formalisation.
+The Ulam conjecture (`ulam_conjecture`, axiom below) supplies the density
+constraint for inhabitants of the gated structure.
 
 A future iteration that formalises `Convex ℝ K` + central symmetry
 + "packing density of `K`" can refine this marker to a structure
 carrying the underlying body `K` and a proof
 `∀ x, x ∈ K ↔ -x ∈ K`; the axiom `ulam_conjecture` would survive
 the refactor as a STATEMENT axiom on the refined type.
+
+**Soundness rationale.** `ulam_conjecture` is a *lower* bound
+(`fccDensity ≤ p.density`). Without a shape gate, wrapping a
+density-0 `PackingDensity` (constructible: `⟨0, le_refl 0, by norm_num⟩`)
+into a contentless marker would yield `fccDensity ≤ 0`, contradicting
+`fccDensity_pos`. The opaque `IsSymmetricConvexBody3DPacking` proof
+field blocks that wrap, exactly as for the ellipsoid case.
 -/
-structure SymmetricConvexBody3DPacking extends PackingDensity
+opaque IsSymmetricConvexBody3DPacking : PackingDensity → Prop
+
+/--
+**Marker structure: a centrally symmetric convex body packing in ℝ³.**
+
+Bundles a `PackingDensity` with a proof of the opaque shape predicate
+`IsSymmetricConvexBody3DPacking`. As with `EllipsoidLatticePacking`,
+the proof field is what prevents an arbitrary `PackingDensity` from
+being coerced in, restoring soundness of the (lower-bound) Ulam axiom.
+-/
+structure SymmetricConvexBody3DPacking extends PackingDensity where
+  isSymmetricConvexBody : IsSymmetricConvexBody3DPacking toPackingDensity
 
 /--
 **Ulam's conjecture (1972, OPEN).**

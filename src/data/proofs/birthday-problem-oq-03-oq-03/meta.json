@@ -73,48 +73,56 @@
   "sections": [
     {
       "id": "pigeonhole-scaling",
-      "title": "Pigeonhole Bound",
-      "startLine": 40,
-      "endLine": 56,
+      "title": "Pigeonhole Bound (Linear Scaling)",
+      "startLine": 39,
+      "endLine": 55,
       "summary": "The pigeonhole bound (k-1)d+1 is linear in both d and k.",
       "mathContext": "Pigeonhole: $n > (k-1)d \\Rightarrow$ k-way coincidence"
     },
     {
       "id": "scaling-exponent",
-      "title": "Scaling Exponent (k-1)/k",
-      "startLine": 58,
-      "endLine": 112,
+      "title": "The Scaling Exponent",
+      "startLine": 56,
+      "endLine": 103,
       "summary": "The growth exponent (k-1)/k is non-negative, less than 1, strictly increasing in k, with concrete values 1/2, 2/3, 3/4 for k=2,3,4.",
       "mathContext": "$\\alpha_k = \\frac{k-1}{k}$, $0 \\le \\alpha_k < 1$"
     },
     {
       "id": "threshold-formula",
-      "title": "Threshold Formula",
-      "startLine": 114,
-      "endLine": 170,
+      "title": "The Threshold Formula",
+      "startLine": 104,
+      "endLine": 153,
       "summary": "The k-th power of the threshold n_k^k = k!·d^{k-1} is positive and monotone in both d and k.",
       "mathContext": "$n_k^k \\approx k! \\cdot d^{k-1}$"
     },
     {
       "id": "classical-recovery",
-      "title": "Classical Recovery",
-      "startLine": 172,
-      "endLine": 194,
+      "title": "Classical Recovery (k = 2)",
+      "startLine": 154,
+      "endLine": 175,
       "summary": "For k=2: n²=2d (square root law). For k=3: n³=6d². For k=4: n⁴=24d³.",
       "mathContext": "$k=2: n_2 \\approx \\sqrt{2d}$"
     },
     {
       "id": "pigeonhole-comparison",
-      "title": "Pigeonhole Comparison",
-      "startLine": 196,
-      "endLine": 220,
+      "title": "Ratio to Pigeonhole Bound",
+      "startLine": 176,
+      "endLine": 196,
       "summary": "The threshold formula gives smaller values than the pigeonhole bound, proved for k=2 and k=3.",
       "mathContext": "$n_k^k = k! d^{k-1} \\le ((k-1)d)^k$"
     },
     {
+      "id": "concrete-thresholds",
+      "title": "Concrete Threshold Values",
+      "startLine": 197,
+      "endLine": 210,
+      "summary": "Worked values at d = 365: thresholdPower 2 365 = 730 and thresholdPower 3 365 = 6·365².",
+      "mathContext": "$n_2^2(365) = 730,\\quad n_3^3(365) = 6 \\cdot 365^2$"
+    },
+    {
       "id": "exponent-limit",
       "title": "Exponent Approaches 1",
-      "startLine": 222,
+      "startLine": 211,
       "endLine": 241,
       "summary": "The scaling exponent (k-1)/k → 1 as k → ∞, proved with explicit convergence rate.",
       "mathContext": "$\\frac{k-1}{k} \\to 1$ as $k \\to \\infty$"

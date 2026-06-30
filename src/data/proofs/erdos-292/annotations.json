@@ -17,7 +17,11 @@
       "Natural density",
       "Prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Natural Density",
+      "Prime Powers"
+    ]
   },
   {
     "id": "erdos-292-egyptian-def",
@@ -36,7 +40,11 @@
       "Largest denominator",
       "Sum to 1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Unit Fractions",
+      "Finite Sets",
+      "Reciprocal Sums"
+    ]
   },
   {
     "id": "erdos-292-straus",
@@ -55,7 +63,11 @@
       "Structural properties",
       "Straus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Multiplicative Closure",
+      "Egyptian Fractions",
+      "Largest Denominator"
+    ]
   },
   {
     "id": "erdos-292-prime-powers",
@@ -74,7 +86,11 @@
       "Exclusion",
       "p-adic constraints"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime Powers",
+      "p-adic Valuation",
+      "Divisibility Constraints"
+    ]
   },
   {
     "id": "erdos-292-doubling",
@@ -92,7 +108,11 @@
       "Doubling",
       "Growth of A"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Egyptian Fractions",
+      "Set Closure Properties",
+      "Largest Denominator"
+    ]
   },
   {
     "id": "erdos-292-complement",
@@ -111,7 +131,11 @@
       "Density",
       "Small multiples of prime powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set Complement",
+      "Natural Density",
+      "Prime Power Multiples"
+    ]
   },
   {
     "id": "erdos-292-martin-theorem",
@@ -130,6 +154,10 @@
       "Martin 2000",
       "Complete resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural Density",
+      "Asymptotic Estimates",
+      "Density Complement"
+    ]
   }
 ]

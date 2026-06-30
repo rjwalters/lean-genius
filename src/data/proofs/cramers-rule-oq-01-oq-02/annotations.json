@@ -2,7 +2,7 @@
   {
     "id": "ann-qdet-theory-four-dets",
     "proofId": "cramers-rule-oq-01-oq-02",
-    "range": { "startLine": 46, "endLine": 81 },
+    "range": { "startLine": 62, "endLine": 76 },
     "type": "definition",
     "title": "All Four Quasideterminants",
     "content": "Defines the complete set of quasideterminants for a $2 \\times 2$ matrix over a division ring $D$. Each is a Schur complement: $|A|_{00} = a - b d^{-1} c$, $|A|_{01} = b - a c^{-1} d$, $|A|_{10} = c - d b^{-1} a$, $|A|_{11} = d - c a^{-1} b$. Unlike CramersRuleOQ03.lean which defines only the two diagonal quasideterminants, this file provides all four, enabling the full algebraic theory.",

@@ -1,0 +1,176 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+  "title": "Newton-Girard k=4 Closed Form over Any CommRing (incl. characteristic 2)",
+  "slug": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+  "description": "Establishes the fully reduced fourth Newton-Girard identity p₄ = e₁⁴ − 4·e₁²·e₂ + 2·e₂² + 4·e₁·e₃ − 4·e₄ in two complementary forms: (1) the universal MvPolynomial statement, derived by extracting the k=4 Newton recurrence p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄ from Mathlib's psum_eq_mul_esymm_sub_sum and substituting the proven closed forms p₃ = e₁³ − 3e₁e₂ + 3e₃, p₂ = e₁² − 2e₂, p₁ = e₁; and (2) a concrete general-Finset form over an arbitrary CommRing obtained by reusing the n-general aeval bridge built for the k=3 entry — transporting the universal identity onto the subtype {x // x ∈ s} with the e₄/p₄ bridge lemmas instantiated at degree 4. The concrete form holds over any commutative ring including characteristic 2. Specializes to the sum-of-fourth-powers identity a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-20",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ03OQ01.lean",
+    "additionalFiles": [],
+    "tags": [
+      "algebra",
+      "symmetric-functions",
+      "newton-girard",
+      "power-sums",
+      "elementary-symmetric-polynomials",
+      "finset",
+      "characteristic-two",
+      "mv-polynomial"
+    ],
+    "badge": "verified",
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.psum_eq_mul_esymm_sub_sum",
+        "description": "The general Newton-Girard recurrence pₙ = (−1)^(n+1)·n·eₙ − Σ_{0<a.1<n} (−1)^a.1 e_{a.1} p_{a.2}; instantiated at n=4 to extract p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄.",
+        "module": "Mathlib.RingTheory.MvPolynomial.NewtonIdentities"
+      },
+      {
+        "theorem": "MvPolynomial.aeval_esymm_eq_multiset_esymm",
+        "description": "aeval of the universal elementary symmetric polynomial equals the multiset elementary symmetric sum of the evaluated variables — the engine of the inherited concrete-Finset bridge (degree 4 instance).",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+      },
+      {
+        "theorem": "Finset.esymm_map_val",
+        "description": "Identifies the multiset elementary symmetric sum over s.val.map f with the powersetCard sum Σ_{t ⊆ s, |t|=n} ∏_{i ∈ t} f i.",
+        "module": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+      }
+    ],
+    "originalContributions": [
+      "psum_four_recurrence: the k=4 Newton recurrence p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄, extracted from Mathlib's psum_eq_mul_esymm_sub_sum by computing the antidiagonal filter {(1,3),(2,2),(3,1)} and the lead term (−1)⁵·4·e₄.",
+      "psum_four_closed: the universal MvPolynomial closed form p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, obtained by substituting the proven lower closed forms into the recurrence and ring-normalising.",
+      "newton_girard_four_finset: the concrete general-Finset closed form over ANY CommRing (characteristic 2 included), obtained by transporting psum_four_closed across the aeval bridge — demonstrating that the k=3 bridge is genuinely degree-general (e4_bridge/p4_bridge are the n=4 instances of aeval_esymm_subtype/aeval_psum_subtype).",
+      "fourth_power_sum_four: the explicit 4-variable instance a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ over any CommRing."
+    ],
+    "dateAdded": "2026-06-20",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 174,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only [propext, Classical.choice, Quot.sound] for both psum_four_closed and newton_girard_four_finset (no sorryAx, no Lean.ofReduceBool). The universal identity is a ring-level corollary of Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum together with the sibling k=1/2/3 closed forms; the concrete-Finset form reuses the k=3 entry's aeval bridge and holds over an arbitrary CommRing including characteristic 2.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (Newton-Girard identities) relate the power sums pₖ = Σ xᵢᵏ to the elementary symmetric polynomials eₖ. Girard stated them around 1629 and Newton independently around 1666 (Arithmetica Universalis, 1707). The fourth identity, p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, is the first case in which the reduced closed form acquires a quadratic e₂² term and a four-distinct elementary symmetric polynomial e₄. While Mathlib provides the general recurrence MvPolynomial.psum_eq_mul_esymm_sub_sum, the fully reduced k=4 closed form purely in e₁, e₂, e₃, e₄ — and its concrete Finset incarnation valid in every commutative ring, characteristic 2 included — is not present in Mathlib.",
+    "problemStatement": "**Open Question (amgm-inequality-oq-02-oq-01-oq-03-oq-01)**: Establish the fully reduced k=4 Newton-Girard identity\n\np₄ = e₁⁴ − 4·e₁²·e₂ + 2·e₂² + 4·e₁·e₃ − 4·e₄\n\nexpressing the fourth power sum purely in terms of e₁, e₂, e₃, e₄, both as the universal MvPolynomial statement and as a concrete identity over a Finset of values in an arbitrary commutative ring. This is the explicit next rung after the k=3 closed form, and a direct test of whether the k=3 aeval bridge is degree-general.\n\n**Answer**: Proved in both forms. The universal form extracts the k=4 recurrence from Mathlib's general Newton identity and substitutes the lower closed forms. The concrete general-Finset form reuses the k=3 entry's aeval bridge (which is already stated for arbitrary degree n) at degree 4, and holds over any CommRing — characteristic 2 included.",
+    "text": "The file AmgmInequalityOQ02OQ01OQ03OQ01.lean resolves the question. The universal section proves psum_four_recurrence (p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄) by instantiating Mathlib's psum_eq_mul_esymm_sub_sum at n=4, computing the antidiagonal filter {(1,3),(2,2),(3,1)}, and ring-normalising; psum_four_closed then substitutes the proven closed forms for p₃, p₂, p₁ and closes with ring. The concrete section reuses the k=3 Finset definitions (e₁, e₂, e₃) and aeval bridge, adds e₄ and p₄ with their degree-4 bridge instances, and proves newton_girard_four_finset over an arbitrary CommRing by congrArg of psum_four_closed under aeval onto the subtype {x // x ∈ s}. The explicit 4-variable sum-of-fourth-powers instance is recorded as fourth_power_sum_four.",
+    "proofStrategy": "**Universal recurrence**: psum_four_recurrence rewrites with MvPolynomial.psum_eq_mul_esymm_sub_sum σ R 4. The antidiagonal {a : a.1+a.2=4, 0<a.1<4} = {(1,3),(2,2),(3,1)} is established by ext + omega; the three-term sum is unfolded by Finset.sum_insert (mem facts by decide) and Finset.sum_singleton, and ring evaluates the (−1)^k coefficients and the lead term (−1)⁵·4·e₄.\n\n**Universal closed form**: psum_four_closed rewrites the recurrence with psum_three_closed, psum_two_eq, psum_one_eq_esymm_one and closes with ring.\n\n**Concrete Finset form (char-2 safe)**: e4_bridge and p4_bridge are the degree-4 instances of the k=3 entry's aeval_esymm_subtype / aeval_psum_subtype, so no new bridge machinery is needed — this is the concrete demonstration that the k=3 bridge is degree-general. newton_girard_four_finset is the congrArg image of psum_four_closed under aeval (fun i : {x // x ∈ s} => f i.1), simplified by map_add/map_sub/map_mul/map_pow/map_ofNat and the five bridge lemmas (e1..e4, p4). Because the transport happens at the level of polynomial coefficients, no factor of 2 is ever cancelled and the identity holds over rings with 2-torsion.",
+    "keyInsights": [
+      "The k=4 closed form is the first rung where the reduced expression is genuinely quartic in the elementary symmetric polynomials, featuring the cross term 2·e₂² absent at k≤3; it remains one recurrence step plus a ring substitution away from Mathlib's general Newton identity.",
+      "The aeval bridge built for the k=3 entry (aeval_psum_subtype / aeval_esymm_subtype) is already stated for arbitrary degree n. The k=4 concrete form therefore needs only e4_bridge := aeval_esymm_subtype s f 4 and p4_bridge := aeval_psum_subtype s f 4 — confirming the bridge is a reusable, degree-uniform transport rather than a degree-3 special case.",
+      "Transporting the universal identity (which lives at the level of polynomial coefficients, before evaluation) yields the concrete Finset identity unconditionally — there is no characteristic-2 obstruction to bypass at k=4 because the closed form is never assembled from a doubled combinatorial partition; it is read off the universal statement directly.",
+      "Extracting the k=4 recurrence from psum_eq_mul_esymm_sub_sum is purely mechanical once the antidiagonal filter {(1,3),(2,2),(3,1)} and the sign of the lead term (−1)^(n+1)·n·eₙ are pinned down, mirroring the k=2 and k=3 derivations exactly."
+    ],
+    "prerequisites": [
+      "k=3 closed form AmgmInequalityOQ02OQ01OQ03: psum_three_closed (p₃ = e₁³ − 3e₁e₂ + 3e₃).",
+      "k=3 Finset bridge AmgmInequalityOQ02OQ01OQ03Finset: the n-general aeval_psum_subtype / aeval_esymm_subtype and the e₁,e₂,e₃ definitions and bridge lemmas.",
+      "Recurrence sibling AmgmInequalityOQ02OQ01OQ02OQ01: psum_two_eq (p₂ = e₁² − 2e₂) and psum_one_eq_esymm_one (p₁ = e₁).",
+      "MvPolynomial.psum_eq_mul_esymm_sub_sum — the general Newton-Girard recurrence (Mathlib).",
+      "Finset.powersetCard — fixed-cardinality subsets, the concrete definition of eₖ (Mathlib)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module Docstring: Newton-Girard k=4 Closed Form",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "States the target identity p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, its lineage from the k=2/k=3 entries, the two-form strategy (universal recurrence/substitution + concrete aeval transport), and the proof status (PROVED, 0 sorries, 0 axioms).",
+      "mathContext": "$p_4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$."
+    },
+    {
+      "id": "universal",
+      "title": "Universal Closed Form (MvPolynomial)",
+      "startLine": 55,
+      "endLine": 103,
+      "summary": "psum_four_recurrence extracts p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄ from psum_eq_mul_esymm_sub_sum at n=4 (antidiagonal {(1,3),(2,2),(3,1)}). psum_four_closed substitutes the proven p₃, p₂, p₁ closed forms and ring-normalises.",
+      "mathContext": "In MvPolynomial σ R: $p_4 = e_1^4 - 4(e_1^2 e_2) + 2 e_2^2 + 4(e_1 e_3) - 4 e_4$."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete General-Finset Form (char-2 safe)",
+      "startLine": 105,
+      "endLine": 148,
+      "summary": "Defines e₄, p₄ over a Finset via powersetCard, adds the degree-4 bridge instances e4_bridge/p4_bridge (reusing the k=3 n-general aeval bridge), and proves newton_girard_four_finset over an arbitrary CommRing by transporting psum_four_closed across aeval onto the membership subtype.",
+      "mathContext": "Over any CommRing: $p_4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$, characteristic 2 included."
+    },
+    {
+      "id": "explicit",
+      "title": "Concrete 4-Variable Instance (Sum of Fourth Powers)",
+      "startLine": 150,
+      "endLine": 173,
+      "summary": "fourth_power_sum_four: a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ over any CommRing, closed by ring — the smallest nondegenerate Finset instance.",
+      "mathContext": "$a^4+b^4+c^4+d^4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Resolves the open question in both the universal MvPolynomial setting and the concrete general-Finset setting. The universal identity p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ is extracted from Mathlib's general Newton recurrence plus the lower closed forms; the concrete Finset form reuses the k=3 entry's degree-general aeval bridge at degree 4 and holds over an arbitrary CommRing (characteristic 2 included). The file is machine-verified with 0 sorries and 0 axioms (only propext/Classical.choice/Quot.sound).",
+    "implications": "**For symmetric function theory**: completes the reduced k=4 Newton-Girard identity, the first with a quadratic e₂² term, extending the gallery's k=2 → k=3 → k=4 chain of explicit closed forms.\n\n**For formalization technique**: directly validates that the k=3 aeval bridge (concrete powersetCard / power-sum defs = aeval of universal MvPolynomial symmetric functions on the membership subtype) is degree-uniform: the k=4 concrete form costs only two one-line bridge instantiations. This answers, by example, the k=3 entry's own open question about generalizing the bridge to arbitrary degree.",
+    "openQuestions": [
+      "Prove the k=4 recurrence and closed form via a single degree-uniform transport lemma pₖ (powersetCard form) = aeval (psum {x // x ∈ s} R k) applied to the full Newton recurrence, eliminating per-degree wrappers (e4_bridge, p4_bridge, …) entirely.",
+      "Continue the chain to k=5: p₅ = e₁⁵ − 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ − 5e₂e₃ − 5e₁e₄ + 5e₅, the first rung involving e₅ and two distinct degree-5 monomials with coefficient 5."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-03",
+      "relationship": "parent",
+      "description": "The k=3 closed form and its n-general aeval bridge (aeval_psum_subtype / aeval_esymm_subtype), which this entry reuses verbatim at degree 4. This entry answers, by example, that parent's open question about a degree-general bridge."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Provides the closed forms p₂ = e₁² − 2e₂, p₁ = e₁ and the pattern for extracting Newton recurrences from MvPolynomial.psum_eq_mul_esymm_sub_sum; this entry repeats that pattern at n=4."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Proves the GENERAL Finset-level Newton-Girard recurrence (pₖ in terms of lower pⱼ and eⱼ) for arbitrary k. This entry is complementary: it gives the fully REDUCED closed form for the specific case k=4, expressing p₄ purely in e₁,e₂,e₃,e₄ rather than recursively."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "The k=2 identity p₂ = e₁² − 2e₂ (concrete Finset pair partition); this entry is the k=4 rung of the same Newton-Girard closed-form chain."
+    },
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "related",
+      "description": "The e₁, e₂, e₃, e₄ appearing here are exactly Vieta's elementary symmetric polynomials in the roots; the identity expresses the fourth power sum of roots via coefficients."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Girard, Albert",
+      "title": "Invention nouvelle en l'algèbre",
+      "year": "1629",
+      "venue": "Amsterdam: Guillaume Iansson Blaeuw",
+      "note": "Earliest known statement of the identities relating power sums to elementary symmetric polynomials."
+    },
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "venue": "Cambridge (manuscript ~1666)",
+      "note": "Newton's independent treatment of the power-sum / elementary-symmetric identities."
+    },
+    {
+      "authors": "Macdonald, I. G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford University Press, 2nd edition, Chapter I §2",
+      "note": "Canonical reference; the Newton-Girard identities appear as (2.11′)/(2.11″)."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/AmgmInequalityOQ02OQ01OQ03OQ01.lean",
+    "lineCount": 174,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "axiomCount": 0,
+    "sorries": 0,
+    "additionalFiles": []
+  }
+}

@@ -19,13 +19,13 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 3,
-    "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (exponential bounds). 1 sorry: base_implies_behavior (limit → exponential behavior, requires Tendsto with nhds ε-balls). limInf_ge_log_c1 now fully proved.",
+    "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (Pyber 1987 exponential bounds c₁ⁿ ≤ h(n) ≤ c₂ⁿ). 0 sorries: the file is now fully machine-checked relative to these three structural axioms. The former sorry in base_implies_behavior is discharged; its statement ExponentialBehavior was corrected to the provable range ε ∈ (0, c) (the unrestricted ∀ ε > 0 form is false, since for ε ≥ c the lower bound (c−ε)ⁿ can exceed h(n) at even n).",
     "erdosNumber": 117,
     "erdosUrl": "https://erdosproblems.com/117",
     "erdosProblemStatus": "open",
-    "lineCount": 269,
+    "lineCount": 300,
     "theoremCount": 8,
     "definitionCount": 9,
     "additionalFiles": [
@@ -80,17 +80,25 @@
       "id": "liminf-limsup",
       "title": "Part III: liminf and limsup via Filter API",
       "startLine": 99,
-      "endLine": 132,
+      "endLine": 153,
       "summary": "Part III block comment (lines 99-104). Definitions growthRateLimInf and growthRateLimSup using Filter.liminf/limsup with atTop (lines 107-112). Theorems limInf_ge_log_c1 (proved, lines 115-138) and limInf_le_limSup (proved, lines 141-151) using IsBoundedUnder witnesses from the bound theorems.",
       "mathContext": "$\\text{LimInf} = \\inf\\{L : r(n) \\geq L \\text{ eventually}\\}$, $\\text{LimSup} = \\sup\\{L : r(n) \\leq L \\text{ eventually}\\}$. Both in $[\\log c_1, \\log c_2]$. `limInf_ge_log_c1` proved via `Filter.liminf_le_liminf` and `Filter.liminf_const`. `limInf_le_limSup` proof: supplies `IsBoundedUnder ≤ atTop growthRate` and `IsCoboundedUnder ≤ atTop growthRate` witnesses."
     },
     {
       "id": "open-question",
-      "title": "Parts IV–V: Open Question Definitions and Implications",
-      "startLine": 133,
-      "endLine": 204,
-      "summary": "Part IV (lines 133-164): propositions growthRateConverges, limInfEqLimSup, exponentialBaseExists, theorem limit_determines_base (proved), ExponentialBehavior definition. Part V (lines 172-197): base_implies_behavior (sorry), AsymptoticallyMultiplicative, submultiplicative_implies_convergence (sorry, Fekete), growthRate_1, erdos117OQ01. Lines 199-202: #check statements. Line 204: end namespace.",
-      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). The 3 sorries: `limInf_ge_log_c1` (liminf lower bound), `base_implies_behavior` (limit → exponential behavior), `submultiplicative_implies_convergence` (Fekete's lemma). The proved theorem `limit_determines_base` uses `Real.log_exp` to construct $c = e^L$ from the limit $L$."
+      "title": "Part IV: The Open Question",
+      "startLine": 154,
+      "endLine": 229,
+      "summary": "Part IV poses the central open question: does the growth rate converge (liminf = limsup)? Propositions growthRateConverges, limInfEqLimSup, and exponentialBaseExists (∃c>1 with growthRate → log c) state it in three equivalent forms. Theorem limit_determines_base (proved) constructs the base c = exp(L) from a limit L via Real.log_exp. ExponentialBehavior c is defined for ε ∈ (0, c) as (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ eventually, and base_implies_behavior now *proves* it from convergence: with δ = min(log(c+ε)−log c, log c−log(c−ε)) > 0, convergence puts log(h n)/n within δ of log c eventually, and exp∘log monotonicity converts the two-sided log bound into the power bounds. The ε < c restriction is essential — the unrestricted ∀ ε > 0 form is false.",
+      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). `limit_determines_base` constructs $c = e^L$ from the limit $L$ via `Real.log_exp`. `base_implies_behavior` is now fully proved (no sorry): assuming convergence to $\\log c$, $h$ has `ExponentialBehavior c` for every $\\varepsilon \\in (0, c)$. The restriction $\\varepsilon < c$ keeps the lower base $c-\\varepsilon$ positive; the unrestricted $\\forall \\varepsilon > 0$ statement is genuinely false. `growthRateConverges`, `limInfEqLimSup`, `exponentialBaseExists` remain definitions of the open question, not claims."
+    },
+    {
+      "id": "known-implications",
+      "title": "Part V: Known Implications",
+      "startLine": 201,
+      "endLine": 269,
+      "summary": "Part V block comment (lines 201-204) asks what an answer would tell us. AsymptoticallyMultiplicative (line 208) is a structural Prop encoding an asymptotic sub/supermultiplicativity constraint on the covering numbers. submultiplicative_implies_convergence (214-254, fully proved) applies Fekete's lemma via Mathlib's Subadditive.tendsto_lim: if h(m+n) ≤ h(m)·h(n) then growthRateConverges, using that log∘h is subadditive and f(n)/n is bounded below by 0. growthRate_1 (257, proved) records the trivial case h(1)=1 ⟹ growthRate 1 = 0. erdos117OQ01 (262) names the open question (exponentialBaseExists). Lines 264-267: #check statements; line 269: end namespace.",
+      "mathContext": "Fekete's lemma: for subadditive $f$ (here $f=\\log\\circ h$), $f(n)/n \\to \\inf_n f(n)/n$. Submultiplicativity $h(m+n)\\le h(m)h(n)$ makes $\\log h$ subadditive, so `Subadditive.tendsto_lim` yields convergence of $\\log h(n)/n = r(n)$. The base case $h(1)=1$ gives $r(1)=\\log 1 = 0$."
     }
   ],
   "conclusion": {
@@ -138,18 +146,18 @@
       "Filter"
     ],
     "namespace": "Erdos117OQ01",
-    "lineCount": 269,
+    "lineCount": 300,
     "axiomCount": 3,
     "theoremCount": 8,
-    "substantiveTheoremCount": 5,
-    "sorryTheorems": 1,
+    "substantiveTheoremCount": 6,
+    "sorryTheorems": 0,
     "definitionCount": 9,
     "path": "Proofs/Erdos117OQ01.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos117OQ01Aristotle.lean",
       "Proofs/Erdos117OQ01OQ01.lean"
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }

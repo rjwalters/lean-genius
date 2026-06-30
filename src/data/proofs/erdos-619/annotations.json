@@ -16,7 +16,11 @@
       "Triangle-free graphs",
       "Edge augmentation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e619-triangle-free",
@@ -36,7 +40,11 @@
       "Graph distance"
     ],
     "leanSymbol": "TriangleFree",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "metric/distance on graphs",
+      "Lean 4 predicate definitions"
+    ]
   },
   {
     "id": "ann-e619-add-edges",
@@ -56,7 +64,12 @@
     ],
     "leanSymbol": "h",
     "mathContext": "See annotation content for formal details of edge addition and h_r(g)",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API",
+      "infimum over sets",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e619-known-bounds",
@@ -76,7 +89,11 @@
       "Tightness"
     ],
     "leanSymbol": "h3_upper_bound",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "asymptotic notation",
+      "research literature"
+    ]
   },
   {
     "id": "ann-e619-open-question",
@@ -96,7 +113,11 @@
     ],
     "leanSymbol": "erdos_619_question",
     "mathContext": "See annotation content for formal details of the erdős question (open)",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "quantifier logic",
+      "Lean 4 proposition statements"
+    ]
   },
   {
     "id": "ann-e619-no-triangle-free",
@@ -116,7 +137,11 @@
       "Constraint impact"
     ],
     "leanSymbol": "without_triangle_free_constraint",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "research literature",
+      "proof comparison"
+    ]
   },
   {
     "id": "ann-e619-path-example",
@@ -136,7 +161,11 @@
     ],
     "leanSymbol": "pathGraph",
     "mathContext": "See annotation content for formal details of path graph example",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph on Fin n",
+      "Lean 4 axiom declarations"
+    ]
   },
   {
     "id": "ann-e619-monotonicity",
@@ -155,7 +184,11 @@
     ],
     "leanSymbol": "h_monotone",
     "mathContext": "See annotation content for formal details of h_r monotonicity",
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "order theory",
+      "inequality reasoning"
+    ]
   },
   {
     "id": "ann-e619-summary",
@@ -175,6 +208,10 @@
     ],
     "leanSymbol": "erdos_619_partial_results",
     "mathContext": "See annotation content for formal details of summary and partial results",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Lean 4 theorem composition",
+      "asymptotic notation"
+    ]
   }
 ]

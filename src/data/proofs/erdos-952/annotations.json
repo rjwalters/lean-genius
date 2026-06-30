@@ -81,7 +81,7 @@
       "startLine": 92,
       "endLine": 97
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "The Moat Conjecture",
     "content": "GaussianMoatConjecture := exists infinite walk x and bound C such that HasBoundedGaps(x, C). ErdosConjecture952 := GaussianMoatConjecture.",
     "mathContext": "Positive answer means Gaussian primes are 'connected' at bounded distance.",
@@ -207,7 +207,7 @@
       "startLine": 191,
       "endLine": 197
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Variants",
     "content": "EisensteinMoatProblem: Same question for ℤ[ω]. RationalPrimeMoat: Related to twin prime conjecture.",
     "mathContext": "Analogous problems exist for other number rings and the integers.",

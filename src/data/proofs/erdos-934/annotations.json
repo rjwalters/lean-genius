@@ -17,7 +17,11 @@
       "2K₂-free graphs",
       "Line graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "bounded degree graphs",
+      "extremal combinatorics"
+    ]
   },
   {
     "id": "erdos-934-edge-dist",
@@ -36,7 +40,11 @@
       "Edge separation",
       "Shortest paths"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph distance metric",
+      "shortest paths",
+      "graph edges"
+    ]
   },
   {
     "id": "erdos-934-t-separated",
@@ -55,7 +63,11 @@
       "2K₂",
       "Edge independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge distance",
+      "induced matchings",
+      "2K2-free graphs"
+    ]
   },
   {
     "id": "erdos-934-h-function",
@@ -74,7 +86,11 @@
       "Ramsey-type functions",
       "Turán-type problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "Turan-type problems",
+      "forbidden subgraphs"
+    ]
   },
   {
     "id": "erdos-934-h1",
@@ -93,7 +109,11 @@
       "Trivial cases",
       "Edge sharing"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "star graphs",
+      "vertex degree",
+      "edge adjacency"
+    ]
   },
   {
     "id": "erdos-934-2k2",
@@ -112,7 +132,11 @@
       "Forbidden subgraphs",
       "2K₂-free graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "induced matchings",
+      "2K2-free graphs",
+      "forbidden subgraphs"
+    ]
   },
   {
     "id": "erdos-934-cgtt",
@@ -131,7 +155,11 @@
       "Complete solutions",
       "Quadratic growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal numbers",
+      "2K2-free graphs",
+      "quadratic growth bounds"
+    ]
   },
   {
     "id": "erdos-934-h3-3",
@@ -150,7 +178,11 @@
       "Small cases",
       "Exact values"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exact extremal values",
+      "small case analysis",
+      "edge distance"
+    ]
   },
   {
     "id": "erdos-934-h3-conjecture",
@@ -169,7 +201,11 @@
       "Prime powers",
       "Projective planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime powers",
+      "projective planes",
+      "cubic growth bounds"
+    ]
   },
   {
     "id": "erdos-934-trivial-upper",
@@ -188,7 +224,11 @@
       "Counting arguments",
       "Polynomial growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "neighborhood counting",
+      "bounded degree graphs",
+      "polynomial bounds"
+    ]
   },
   {
     "id": "erdos-934-improved-upper",
@@ -207,7 +247,11 @@
       "Leading coefficients",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper bound techniques",
+      "asymptotic analysis",
+      "leading coefficients"
+    ]
   },
   {
     "id": "erdos-934-lower-bound",
@@ -226,7 +270,11 @@
       "Constructions",
       "Infinitely often"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit constructions",
+      "asymptotic lower bounds",
+      "polynomial growth"
+    ]
   },
   {
     "id": "erdos-934-asymptotic",
@@ -245,7 +293,11 @@
       "Leading coefficients",
       "Little-o notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic analysis",
+      "little-o notation",
+      "leading coefficients"
+    ]
   },
   {
     "id": "erdos-934-monotonicity",
@@ -264,7 +316,11 @@
       "Parameter bounds",
       "Extremal monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "monotone functions",
+      "extremal function bounds",
+      "parameter ordering"
+    ]
   },
   {
     "id": "erdos-934-line-graph",
@@ -283,7 +339,11 @@
       "Graph diameter",
       "Equivalent formulations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "line graphs",
+      "graph diameter",
+      "equivalent formulations"
+    ]
   },
   {
     "id": "erdos-934-constructions",
@@ -302,6 +362,10 @@
       "Constructions",
       "Projective planes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graphs",
+      "projective planes",
+      "incidence graphs"
+    ]
   }
 ]

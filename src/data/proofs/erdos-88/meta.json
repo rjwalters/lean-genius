@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Problem Statement",
+      "summary": "File header and orientation for Erdős Problem #88 (the Erdős–McKay conjecture), in the `Erdos88` namespace with `Finset` open. The conjecture asks whether, for every $\\varepsilon>0$, there is $\\delta>0$ so that any $n$-vertex graph with no clique or independent set of size $\\geq \\varepsilon \\log n$ has induced subgraphs realizing every edge count from $0$ to $\\delta n^2$. Answer: YES — proved by Kwan–Sah–Sauermann–Sawhney (2022).",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "File header and orientation for Erdős Problem #88 (the Erdős–McKay conjecture), in the `Erdos88` namespace with `Finset` open. The conjecture asks whether, for every $\\varepsilon>0$, there is $\\delta>0$ so that any $n$-vertex graph with no clique or independent set of size $\\geq \\varepsilon \\log n$ has induced subgraphs realizing every edge count from $0$ to $\\delta n^2$. Answer: YES — proved by Kwan–Sah–Sauermann–Sawhney (2022)."
+    },
+    {
       "id": "basic-definitions",
       "title": "Simple Graphs and Basic Definitions",
       "summary": "Sets up the graph-theoretic framework: `Graph V` as an alias for `SimpleGraph V`, `edgeSet` as the set of adjacent pairs, and `edgeCount` via `G.edgeFinset.card`. All definitions are noncomputable due to decidability requirements.",
@@ -97,31 +105,31 @@
       "title": "Ramsey Graphs",
       "summary": "Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). The Ramsey-size bound is referenced in a closing docstring but is not formalized as an axiom or theorem in this file.",
       "startLine": 68,
-      "endLine": 87,
+      "endLine": 83,
       "mathContext": "Formal definition: Defines `IsRamseyBounded G k ℓ` (asymmetric) and `IsEpsilonRamsey G ε` (symmetric, logarithmic scale). The Ramsey-size bound is referenced in a closing docstring but is not formalized as an axiom or theorem in this file."
     },
     {
       "id": "induced-subgraphs",
       "title": "Induced Subgraphs",
       "summary": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a subset achieving exactly m edges.",
-      "startLine": 88,
-      "endLine": 109,
+      "startLine": 84,
+      "endLine": 105,
       "mathContext": "Defines `inducedSubgraph G S` as a `SimpleGraph S` with adjacency inherited from G. The `inducedEdgeCount` filters `edgeFinset` for edges within S. `HasInducedWithEdges G m` asserts existence of a subset achieving exactly m edges."
     },
     {
       "id": "edge-count-range",
       "title": "The Edge Count Range Property",
       "summary": "Defines `AchievesAllEdgeCounts G M` (∀ m ≤ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density.",
-      "startLine": 110,
-      "endLine": 126,
+      "startLine": 106,
+      "endLine": 122,
       "mathContext": "Defines `AchievesAllEdgeCounts G M` (∀ m $\\leq$ M, ∃ S with e(G[S]) = m) and `EdgeCountRangeProperty G δ` which specializes M = ⌊δn²⌋. The quadratic scale is justified by Erdős-Szemerédi density."
     },
     {
       "id": "erdos-mckay",
       "title": "The Erdős-McKay Conjecture",
       "summary": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also defines the weaker `ErdosMcKayWeakBound : Prop` with (log n)² scale; the original Erdős-McKay weak result is described in a docstring but not given an axiom in this file.",
-      "startLine": 127,
-      "endLine": 154,
+      "startLine": 123,
+      "endLine": 148,
       "mathContext": "States `ErdosMcKayConjecture : Prop` with the ∀ε ∃δ quantifier structure. Also defines the weaker `ErdosMcKayWeakBound : Prop` with (log n)² scale; the original Erdős-McKay weak result is described in a docstring but not given an axiom in this file."
     },
     {
@@ -145,8 +153,32 @@
       "title": "The KSSS Theorem",
       "summary": "Axiomatizes `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions for documentation.",
       "startLine": 173,
-      "endLine": 224,
+      "endLine": 192,
       "mathContext": "Axiomatized: `ksss_theorem : ErdosMcKayConjecture` (the 2022 solution). Records the prize ($100) and technique ('Anticoncentration') as string definitions, and adds `axiom R (k ℓ : ℕ) : ℕ` for Ramsey numbers. KSSS optimality, Ramsey-graph existence, and probabilistic Ramsey constructions appear only in docstrings."
+    },
+    {
+      "id": "implications-bounds",
+      "title": "Implications and Bounds",
+      "summary": "Defines `delta ε` by extracting the KSSS witness via `Classical.choose (ksss_theorem ε h)` and proves `delta_pos`: $\\delta(\\varepsilon) > 0$ for $\\varepsilon > 0$. A closing docstring notes the KSSS bound is optimal up to constants.",
+      "startLine": 193,
+      "endLine": 211,
+      "mathContext": "Defines `delta ε` by extracting the KSSS witness via `Classical.choose (ksss_theorem ε h)` and proves `delta_pos`: $\\delta(\\varepsilon) > 0$ for $\\varepsilon > 0$. A closing docstring notes the KSSS bound is optimal up to constants."
+    },
+    {
+      "id": "ramsey-connection",
+      "title": "Connection to Ramsey Theory",
+      "summary": "Relates the problem to Ramsey theory: axiomatizes `R (k ℓ : ℕ) : ℕ` (the Ramsey number, whose exact computation is notoriously hard) and records in docstrings that $\\varepsilon$-Ramsey graphs exist for $n < R(\\lceil \\varepsilon \\log n \\rceil, \\lceil \\varepsilon \\log n \\rceil)$ and that the probabilistic method yields $\\varepsilon$-Ramsey graphs of exponential size.",
+      "startLine": 212,
+      "endLine": 224,
+      "mathContext": "Relates the problem to Ramsey theory: axiomatizes `R (k ℓ : ℕ) : ℕ` (the Ramsey number, whose exact computation is notoriously hard) and records in docstrings that $\\varepsilon$-Ramsey graphs exist for $n < R(\\lceil \\varepsilon \\log n \\rceil, \\lceil \\varepsilon \\log n \\rceil)$ and that the probabilistic method yields $\\varepsilon$-Ramsey graphs of exponential size."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result",
+      "summary": "States the headline result `erdos_88 : ErdosMcKayConjecture := ksss_theorem` — Erdős Problem #88 is SOLVED (the Erdős–McKay conjecture is TRUE, KSSS 2022). Records `erdos_88_answer` (the affirmative string) and `erdos_88_prize := 100`, closing with `#check` commands.",
+      "startLine": 225,
+      "endLine": 257,
+      "mathContext": "States the headline result `erdos_88 : ErdosMcKayConjecture := ksss_theorem` — Erdős Problem #88 is SOLVED (the Erdős–McKay conjecture is TRUE, KSSS 2022). Records `erdos_88_answer` (the affirmative string) and `erdos_88_prize := 100`, closing with `#check` commands."
     }
   ],
   "conclusion": {

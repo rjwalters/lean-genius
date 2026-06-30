@@ -16,7 +16,11 @@
       "complete-graph",
       "edge-disjoint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the chromatic number of a graph",
+      "complete graphs Kₙ",
+      "edge-disjoint unions of cliques"
+    ]
   },
   {
     "id": "ann-e19-background",
@@ -35,7 +39,11 @@
       "hypergraph",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring",
+      "hypergraphs",
+      "combinatorial conjectures"
+    ]
   },
   {
     "id": "ann-e19-graphdef",
@@ -54,7 +62,11 @@
       "complete-graph",
       "edge-disjoint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs",
+      "complete graphs (cliques)",
+      "edge-disjoint subgraphs"
+    ]
   },
   {
     "id": "ann-e19-chromatic",
@@ -73,7 +85,11 @@
       "np-hard",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper vertex colorings",
+      "the chromatic number as a minimum",
+      "NP-hardness of coloring"
+    ]
   },
   {
     "id": "ann-e19-eflfamily",
@@ -92,7 +108,11 @@
       "clique",
       "union-graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "n cliques of size n sharing vertices pairwise",
+      "the union graph of a clique family",
+      "the EFL configuration"
+    ]
   },
   {
     "id": "ann-e19-lowerbound",
@@ -111,7 +131,11 @@
       "clique-number",
       "trivial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the clique number ω(G)",
+      "χ(G) ≥ ω(G)",
+      "why a Kₙ forces ≥ n colors"
+    ]
   },
   {
     "id": "ann-e19-hindman",
@@ -130,7 +154,11 @@
       "verification",
       "base-case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the EFL conjecture for small n",
+      "base-case verification",
+      "explicit colorings"
+    ]
   },
   {
     "id": "ann-e19-kahn",
@@ -149,7 +177,11 @@
       "kahn-1992",
       "consolation-prize"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic chromatic bounds",
+      "χ ≤ n + o(n) (Kahn 1992)",
+      "the consolation-prize result"
+    ]
   },
   {
     "id": "ann-e19-mainresult",
@@ -168,7 +200,11 @@
       "absorbing-method",
       "2021"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the EFL conjecture χ = n",
+      "the absorbing method",
+      "the KKMO 2021 resolution"
+    ]
   },
   {
     "id": "ann-e19-hypergraph",
@@ -187,7 +223,11 @@
       "chromatic-index",
       "linear"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "linear hypergraphs (edges meet in ≤1 vertex)",
+      "the chromatic index",
+      "the dual hypergraph formulation"
+    ]
   },
   {
     "id": "ann-e19-nearlydisjoint",
@@ -206,7 +246,11 @@
       "rainbow-partition",
       "transversal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nearly-disjoint sets (pairwise ≤1 common element)",
+      "rainbow / transversal partitions",
+      "systems of sets"
+    ]
   },
   {
     "id": "ann-e19-special",
@@ -225,7 +269,11 @@
       "ring theory",
       "algebra"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the EFL configuration",
+      "special structured cases",
+      "algebraic constructions"
+    ]
   },
   {
     "id": "ann-e19-extensions",
@@ -243,6 +291,10 @@
       "mathematical context",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the EFL conjecture",
+      "the Erdős–Füredi generalization",
+      "Lean formalization of the statement"
+    ]
   }
 ]

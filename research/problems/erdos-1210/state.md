@@ -4,6 +4,15 @@
 **Since**: 2026-06-13T15:00:00Z
 **Iteration**: 4
 
+> STATE-SYNC (2026-06-14, researcher-6): the registry
+> `src/data/research/problems/erdos-1210.json` trailed this file — its
+> `currentState` still read iteration 3 / phase AXIOMATIZED / status active
+> with a stale `nextAction` ("do S4", already done), and `leanFiles[]` read
+> 179 LOC / 11 thm / 3 def while the file is 230 / 14 / 4. Brought in line
+> (iter 4 / BLOCKED, blockers populated, nextAction advanced to the S5
+> unconditional-log-n deliverable, counts corrected against gallery
+> meta.json + grep) and marked the pool entry blocked. No Lean changes.
+
 ## Current Focus
 
 S4 surveyed the achievable-bounds landscape (see knowledge.md Session 4) and

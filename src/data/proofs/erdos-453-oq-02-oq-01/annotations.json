@@ -1,0 +1,222 @@
+[
+  {
+    "id": "e453oq0201-nthprime",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 62 },
+    "type": "definition",
+    "title": "The 1-indexed prime sequence",
+    "content": "`nthPrime n := if n = 0 then 0 else Nat.nth Nat.Prime (n-1)` fixes the 1-indexed convention p₁=2, p₂=3, … matching the parent files (Mathlib's Nat.nth is 0-indexed). `nthPrime_is_prime` confirms p_n is prime for n ≥ 1 via Nat.prime_nth_prime. This part is fully axiom-free; the single axiom appears only in Part IV.",
+    "mathContext": "$p_n = \\mathrm{nth}\\,\\mathbb{P}\\,(n-1)\\ (n\\ge 1),\\quad p_1=2,\\ p_2=3,\\dots$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth",
+      "Nat.prime_nth_prime",
+      "prime enumeration",
+      "1-indexing convention"
+    ],
+    "prerequisites": [
+      "Nat.nth / Nat.count",
+      "prime numbers in Lean"
+    ]
+  },
+  {
+    "id": "e453oq0201-centralbinom-bound",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 106 },
+    "type": "theorem",
+    "title": "Bounding C(2n,n) by (2n)^{π(2n)}",
+    "content": "`centralBinom_le_pow_primeCounting`: the central binomial coefficient C(2n,n) ≤ (2n)^{π(2n)}. Writing C(2n,n) = ∏_{p ∈ support} p^{e_p} (factorization_prod_pow_eq_self), every prime in the support is ≤ 2n (le_two_mul_of_factorization_centralBinom_pos) so the support embeds in the primes < 2n+1, giving |support| ≤ π(2n); and each prime-power factor p^{e_p} ≤ 2n (pow_factorization_choose_le). Bounding each factor by 2n and the count by π(2n) gives the result. This converts the multiplicative structure of C(2n,n) into a count of primes.",
+    "mathContext": "$\\binom{2n}{n}=\\prod_{p\\mid\\binom{2n}{n}} p^{e_p} \\le (2n)^{\\pi(2n)},\\quad p^{e_p}\\le 2n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.centralBinom",
+      "Nat.pow_factorization_choose_le",
+      "Nat.factorization_prod_pow_eq_self",
+      "prime-counting function π"
+    ],
+    "prerequisites": [
+      "prime factorization of binomial coefficients",
+      "Finset.prod_le_prod'",
+      "Nat.primeCounting"
+    ]
+  },
+  {
+    "id": "e453oq0201-chebyshev-packaged",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "theorem",
+    "title": "The packaged Chebyshev lower bound",
+    "content": "`four_pow_lt_mul_pow_primeCounting`: for n ≥ 4, 4ⁿ < n·(2n)^{π(2n)}. Chains Mathlib's 4ⁿ < n·C(2n,n) (four_pow_lt_mul_centralBinom) with the previous bound C(2n,n) ≤ (2n)^{π(2n)}. Taking logs this is π(2n) > (n·log4 − log n)/log(2n) ≳ n/log n — the elementary Chebyshev lower bound on π, which (unlike the full PNT) is all that the subexponential-growth limit needs.",
+    "mathContext": "$4^n < n\\,(2n)^{\\pi(2n)}\\ (n\\ge 4)\\ \\Longrightarrow\\ \\pi(2n)\\gtrsim n/\\log n.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Chebyshev's theorem",
+      "Nat.four_pow_lt_mul_centralBinom",
+      "prime density",
+      "lower bound on π"
+    ],
+    "prerequisites": [
+      "central binomial lower bound",
+      "monotonicity of n·(2n)^k in k"
+    ]
+  },
+  {
+    "id": "e453oq0201-inversion",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 115, "endLine": 134 },
+    "type": "theorem",
+    "title": "Inverting π-lower-bound into a prime upper bound",
+    "content": "`nth_prime_le_two_mul`: if n ≥ 4 and the explicit inequality n·(2n)ᵏ ≤ 4ⁿ holds, then the k-th prime (0-indexed) is ≤ 2n. Contradiction argument: were π(2n) ≤ k, monotonicity would give n·(2n)^{π(2n)} ≤ n·(2n)ᵏ ≤ 4ⁿ, contradicting the Chebyshev bound; so k < π(2n) = count Prime (2n+1), and the Nat.count/Nat.nth Galois connection (nth_lt_of_lt_count) yields nth Prime k < 2n+1.",
+    "mathContext": "$n\\,(2n)^k\\le 4^n,\\ n\\ge4\\ \\Rightarrow\\ k<\\pi(2n)\\ \\Rightarrow\\ p_k\\le 2n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.nth_lt_of_lt_count",
+      "count/nth Galois connection",
+      "proof by contradiction",
+      "prime-counting inversion"
+    ],
+    "prerequisites": [
+      "Nat.count_eq_card_filter_range",
+      "monotonicity of powers"
+    ]
+  },
+  {
+    "id": "e453oq0201-nat-ineq",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 136, "endLine": 161 },
+    "type": "theorem",
+    "title": "The explicit ℕ inequality via powers of 2",
+    "content": "`nat_pow_ineq`: for k ≥ 1, (k+1)³·(2(k+1)³)ᵏ ≤ 4^{(k+1)³}, the inequality that licenses taking n = (k+1)³ in the inversion. Both sides reduce to powers of 2: LHS = 2ᵏ·(k+1)^{3k+3} and RHS = 2^{2(k+1)³}; the gap closes by bounding (k+1)^{3k+3} ≤ 2^{3(k+1)²} (using k+1 ≤ 2^{k+1}, i.e. lt_two_pow_self) and a final nlinarith on exponents. Reducing everything to base 2 is what keeps this elementary and machine-checkable.",
+    "mathContext": "$(k+1)^3\\bigl(2(k+1)^3\\bigr)^k \\le 4^{(k+1)^3},\\quad k+1\\le 2^{k+1}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.lt_two_pow_self",
+      "reduction to base 2",
+      "nlinarith",
+      "exponent arithmetic"
+    ],
+    "prerequisites": [
+      "power laws in ℕ",
+      "Nat.pow_le_pow_left/right"
+    ]
+  },
+  {
+    "id": "e453oq0201-cube-bound",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 163, "endLine": 179 },
+    "type": "theorem",
+    "title": "Explicit cubic prime bound p_k ≤ 2(k+1)³",
+    "content": "`nth_prime_le_cube` (0-indexed) and `nthPrime_le_cube` (1-indexed, p_n ≤ 2n³ for n ≥ 2): combining the inversion with the ℕ inequality at n = (k+1)³ gives the explicit upper bound on the k-th prime. The truth is p_k ~ k log k; the cubic bound is deliberately loose but elementary and is o(exponential), which is the only thing the asymptotic limit requires.",
+    "mathContext": "$p_k \\le 2(k+1)^3\\ (k\\ge1);\\qquad p_n\\le 2n^3\\ (n\\ge2).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit prime bounds",
+      "polynomial majorant",
+      "loose-but-sufficient estimates"
+    ],
+    "prerequisites": [
+      "nth_prime_le_two_mul",
+      "nat_pow_ineq"
+    ]
+  },
+  {
+    "id": "e453oq0201-majorant",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 185, "endLine": 207 },
+    "type": "concept",
+    "title": "The log-prime sequence and its squeeze majorant",
+    "content": "`logPrime n := log(p_n)` is the sequence whose growth rate is in question. `upper_tendsto_zero` proves the majorant log(2n³)/n → 0 by splitting log(2n³) = log2 + 3·log n and using Mathlib's log n / n → 0 (isLittleO_log_id_atTop) plus log2/n → 0. This is the upper envelope for the squeeze in the headline theorem.",
+    "mathContext": "$\\frac{\\log(2n^3)}{n} = \\frac{\\log 2}{n} + 3\\,\\frac{\\log n}{n} \\to 0.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.isLittleO_log_id_atTop",
+      "tendsto_const_div_atTop_nhds_zero_nat",
+      "log laws",
+      "filter limits"
+    ],
+    "prerequisites": [
+      "little-o / Tendsto",
+      "Real.log_mul, Real.log_pow"
+    ]
+  },
+  {
+    "id": "e453oq0201-axiom-eliminated",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 209, "endLine": 240 },
+    "type": "theorem",
+    "title": "Axiom eliminated: log p_n / n → 0",
+    "content": "`logPrime_ratio_tendsto_zero`: the headline result. log p_n / n → 0, the PNT-consequence the parent file (Erdos453OQ02) had assumed as an axiom, is now PROVED. squeeze_zero' bounds the ratio below by 0 (since p_n ≥ 2 ⟹ log p_n ≥ 0) and above by log(2n³)/n (via the cubic prime bound and monotonicity of log), both tending to 0. No appeal to the full Prime Number Theorem — only the elementary Chebyshev lower bound. This drops the parent OQ-02 axiom count from 2 to 1.",
+    "mathContext": "$\\frac{\\log p_n}{n}\\to 0\\quad(\\text{equiv. } p_n^{1/n}\\to 1),\\ \\text{no full PNT}.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "squeeze theorem (squeeze_zero')",
+      "subexponential prime growth",
+      "axiom elimination",
+      "Prime Number Theorem (avoided)"
+    ],
+    "prerequisites": [
+      "the cubic prime bound",
+      "the squeeze majorant",
+      "Real.log_le_log monotonicity"
+    ]
+  },
+  {
+    "id": "e453oq0201-vertex-def",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 251, "endLine": 253 },
+    "type": "definition",
+    "title": "Upper convex-hull vertex",
+    "content": "`IsConvexHullVertex a n := ∀ 0 < i < n, 2·aₙ > a_{n-i} + a_{n+i}`: the point (n, aₙ) lies strictly above every chord through symmetric neighbours. Applied to aₙ = log p_n, the concavity 2 log p_n > log p_{n-i} + log p_{n+i} is exactly p_n² > p_{n-i}·p_{n+i} — the Erdős #453 inequality. This is the geometric language of Pomerance's 'prime number graph'.",
+    "mathContext": "$2a_n > a_{n-i}+a_{n+i}\\ \\forall\\,0<i<n;\\quad a_n=\\log p_n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex hull",
+      "prime number graph",
+      "concavity",
+      "Pomerance 1979"
+    ],
+    "prerequisites": [
+      "convexity of sequences"
+    ]
+  },
+  {
+    "id": "e453oq0201-remaining-axiom",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 255, "endLine": 260 },
+    "type": "warning",
+    "title": "The one remaining axiom (Pomerance's convex-hull lemma)",
+    "content": "`pomerance_convex_hull_lemma` is the SINGLE remaining axiom (status: axiomatized, axiomCount = 1): any sequence with aₙ = o(n) has infinitely many upper convex-hull vertices. This is the genuine geometric core of Pomerance's 1979 argument and needs discrete convex-hull theory for ℕ→ℝ sequences that Mathlib does not yet have. Its honest disclosure is why this entry is badged `axiom`, not `verified` — the analytic input (subexponential growth) is now elementary, but this combinatorial-geometry input remains assumed.",
+    "mathContext": "$a_n=o(n)\\ \\Rightarrow\\ \\#\\{n:(n,a_n)\\text{ is a hull vertex}\\}=\\infty\\quad(\\textbf{axiom}).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "discrete convex hull",
+      "axiom integrity",
+      "Pomerance's geometric lemma",
+      "Mathlib gap"
+    ],
+    "prerequisites": [
+      "convex-hull vertices",
+      "o(n) growth"
+    ]
+  },
+  {
+    "id": "e453oq0201-pomerance",
+    "proofId": "erdos-453-oq-02-oq-01",
+    "range": { "startLine": 266, "endLine": 316 },
+    "type": "theorem",
+    "title": "Re-deriving Pomerance's theorem from one axiom",
+    "content": "`convexity_implies_product_bound` turns hull-vertex concavity into p_n² > p_{n-i}·p_{n+i} by exponentiating the log inequality (Real.log_lt_log_iff). `pomerance_1979` then feeds the proved limit logPrime_ratio_tendsto_zero into the convex-hull axiom to get infinitely many such n, and `pomerance_consecutive_primes` specialises to i = 1. The original Erdős #453 statement now rests on exactly one axiom instead of two.",
+    "mathContext": "$\\exists^\\infty n:\\ p_n^2 > p_{n+i}\\,p_{n-i}\\ \\forall\\,0<i<n.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.log_lt_log_iff",
+      "Erdős #453",
+      "consecutive primes",
+      "exponentiating log inequalities"
+    ],
+    "prerequisites": [
+      "the proved limit and the convex-hull axiom",
+      "log/exp monotonicity"
+    ]
+  }
+]

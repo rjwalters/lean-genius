@@ -81,10 +81,17 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "Module docstring for Erdős Problem #954 (Rosen's greedy additive sequence): a₀=0, a₁=1, and a_{k+1} is the least n whose representation count R_k(n) is below n. Conjecture R(x)=x+O(x^{1/4+o(1)}) is OPEN; sequence 0,1,3,5,9,13,17,24,31,38,45,… (OEIS A390642). Mathlib imports."
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 44,
+      "startLine": 24,
+      "endLine": 42,
       "summary": "Defines `repCount a k n` as the cumulative representation count via `Finset.Icc` sums, `IsGreedyNext a k` as the minimality condition $a_{k+1} = \\min\\{n : R_k(n) < n\\}$, and `IsRosenSequence a` combining initial values, strict monotonicity, and the greedy property."
     },
     {
@@ -112,21 +119,21 @@
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "startLine": 133,
-      "endLine": 152,
+      "endLine": 144,
       "summary": "Defines `fullRepCount` for the infinite sequence. Includes docstring comments describing the weak conjecture $R(x) = (1+o(1))x$ and strong conjecture $|R(x) - x| = O(x^{1/4} \\log x)$. No axiom declarations for these conjectures — they appear as documentation only."
     },
     {
       "id": "sidon-connection",
       "title": "Connection to Sidon Sets",
-      "startLine": 153,
-      "endLine": 173,
+      "startLine": 145,
+      "endLine": 205,
       "summary": "Defines `IsB2Sequence` (Sidon set predicate). Proves `erdos_turan_context`: fullRepCount is unbounded for any B₂ sequence (fully proved theorem, not an axiom). `rosen_not_b2` does not exist in the file."
     },
     {
       "id": "monotonicity",
       "title": "Representation Count Monotonicity",
-      "startLine": 174,
-      "endLine": 187,
+      "startLine": 206,
+      "endLine": 219,
       "summary": "Proves `repCount_mono_k`: $R_k(n) \\leq R_{k+1}(n)$ via `Finset.sum_le_sum_of_subset_of_nonneg`."
     }
   ],

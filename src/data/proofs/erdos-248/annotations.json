@@ -16,7 +16,11 @@
       "prime factors",
       "Erdos problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Distinct prime divisors",
+      "Sieve theory",
+      "Asymptotic notation"
+    ]
   },
   {
     "id": "ann-e248-imports",
@@ -34,7 +38,11 @@
       "prime numbers"
     ],
     "mathContext": "See annotation content for formal details of mathlib imports",
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Integer factorization",
+      "Set cardinality"
+    ]
   },
   {
     "id": "ann-e248-omega-def",
@@ -53,7 +61,11 @@
       "prime factorization",
       "multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Finite set cardinality",
+      "Arithmetic functions"
+    ]
   },
   {
     "id": "ann-e248-omega-examples",
@@ -72,7 +84,11 @@
       "native_decide",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Decidable propositions",
+      "Native_decide tactic",
+      "Prime factorization"
+    ]
   },
   {
     "id": "ann-e248-smooth-tail",
@@ -91,7 +107,11 @@
       "smooth numbers",
       "prime distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set-builder notation",
+      "Prime omega function",
+      "Real-valued inequalities"
+    ]
   },
   {
     "id": "ann-e248-main-axiom",
@@ -110,7 +130,11 @@
       "analytic number theory",
       "Tao-Teravainen"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite sets",
+      "Sieve theory",
+      "Multiplicative functions"
+    ]
   },
   {
     "id": "ann-e248-omega-prime",
@@ -128,7 +152,11 @@
       "prime numbers",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime numbers",
+      "Prime factorization",
+      "Singleton sets"
+    ]
   },
   {
     "id": "ann-e248-small-examples",
@@ -146,7 +174,11 @@
       "examples",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime omega function",
+      "Natural number inequalities",
+      "Native_decide tactic"
+    ]
   },
   {
     "id": "ann-e248-nonempty",
@@ -164,6 +196,10 @@
       "set theory",
       "infinite sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinite sets",
+      "Nonempty sets",
+      "Existential quantification"
+    ]
   }
 ]

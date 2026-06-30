@@ -77,7 +77,7 @@
       "startLine": 169,
       "endLine": 182
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Liouville Numbers",
     "content": "**Definition**: $\\xi$ is a **Liouville number** if for every $n \\geq 1$, there exist $p, q$ with $q > 1$ such that:\n\n$$0 < \\left|\\xi - \\frac{p}{q}\\right| < \\frac{1}{q^n}$$\n\nThese numbers can be approximated **better than any polynomial bound allows**.\n\nBy the approximation theorem, such numbers cannot be algebraic! The definition captures a precise boundary: algebraic numbers of degree $n$ resist approximation beyond $c/q^n$, but Liouville numbers beat $1/q^n$ for *every* $n$.",
     "mathContext": "$\\xi \\in \\mathcal{L}$ iff $\\forall n \\geq 1, \\exists p/q$ with $q > 1$: $0 < |\\xi - p/q| < q^{-n}$",

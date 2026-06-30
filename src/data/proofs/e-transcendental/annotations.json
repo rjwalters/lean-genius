@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Transcendence of e: Wiedijk #67",
-    "content": "**Main Result**:\n\nEuler's number $e = 2.71828...$ is **transcendental**: it is not the root of any non-zero polynomial with integer coefficients.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(e) = 0$$\n\n**Historical Significance**: Hermite (1873) - first proof that a \"naturally occurring\" number is transcendental.\n\n**Status**: Axiomatized pending Lindemann-Weierstrass formalization.",
+    "content": "**Main Result**:\n\nEuler's number $e = 2.71828...$ is **transcendental**: it is not the root of any non-zero polynomial with integer coefficients.\n\n$$\\nexists P \\in \\mathbb{Z}[X] \\setminus \\{0\\}: P(e) = 0$$\n\n**Historical Significance**: Hermite (1873) - first proof that a \"naturally occurring\" number is transcendental.\n\n**Status**: Axiomatized — the main theorem is proved from a single imported `hermite_lindemann` axiom (Lindemann-Weierstrass is not yet in Mathlib), with no axiom declared in this file.",
     "mathContext": "$\\text{Transcendental}\\; \\mathbb{Z}\\; (\\exp 1)$ — the statement that $e$ is not a root of any nonzero integer polynomial. This is Wiedijk's 100 theorems list entry #67.",
     "significance": "key",
     "relatedConcepts": [
@@ -25,8 +25,8 @@
     "id": "ann-definitions",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 50,
-      "endLine": 65
+      "startLine": 52,
+      "endLine": 68
     },
     "type": "definition",
     "title": "Transcendental Numbers",
@@ -47,8 +47,8 @@
     "id": "ann-properties",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 71,
-      "endLine": 83
+      "startLine": 73,
+      "endLine": 85
     },
     "type": "concept",
     "title": "Properties of e",
@@ -69,8 +69,8 @@
     "id": "ann-hermite-proof",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 88,
-      "endLine": 128
+      "startLine": 90,
+      "endLine": 131
     },
     "type": "concept",
     "title": "Hermite's Proof Strategy",
@@ -92,18 +92,18 @@
     "id": "ann-main-axiom",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 134,
-      "endLine": 156
+      "startLine": 136,
+      "endLine": 152
     },
     "type": "concept",
-    "title": "Main Theorem (Axiomatized)",
-    "content": "**Main Axiom**:\n$$\\text{Transcendental } \\mathbb{Z} \\ (\\exp 1)$$\n\n**Requirements for full proof**:\n1. Polynomial arithmetic over $\\mathbb{Z}$\n2. Integration by parts for polynomial $\\times$ exponential\n3. Divisibility analysis mod $p$\n4. Asymptotic estimates\n\n**Equivalence**:\n$$\\text{Transcendental } \\mathbb{Z} \\ e \\Leftrightarrow \\text{Transcendental } \\mathbb{Q} \\ e$$\n(Clear denominators to convert $\\mathbb{Q}$-polynomial to $\\mathbb{Z}$-polynomial)",
-    "mathContext": "`Transcendental ℤ (Real.exp 1)` — axiomatized because the Lindemann-Weierstrass theorem (the standard generalization) is not yet in Mathlib. The $\\mathbb{Z} \\leftrightarrow \\mathbb{Q}$ equivalence follows from clearing denominators.",
+    "title": "Main Theorem (Derived from Hermite-Lindemann)",
+    "content": "**Main Theorem** (`e_transcendental`):\n$$\\text{Transcendental } \\mathbb{Z} \\ (\\exp 1)$$\n\nProved as `HermiteLindemann.e_transcendental_int` — the imported `hermite_lindemann` axiom specialized to $\\alpha = 1$. This file declares no axiom of its own; the single assumption lives in `Proofs.HermiteLindemann`.\n\n**Why an axiom is still needed**: a from-scratch Hermite proof requires (1) polynomial arithmetic over $\\mathbb{Z}$, (2) integration by parts for polynomial $\\times$ exponential, (3) divisibility analysis mod $p$, and (4) asymptotic estimates — machinery (Lindemann-Weierstrass) not yet in Mathlib.\n\n**Over $\\mathbb{Q}$**:\n$$\\text{Transcendental } \\mathbb{Z} \\ e \\Leftrightarrow \\text{Transcendental } \\mathbb{Q} \\ e$$\nvia `IsFractionRing.isAlgebraic_iff` for $\\mathbb{Z} \\subset \\mathbb{Q}$.",
+    "mathContext": "`e_transcendental : Transcendental ℤ (Real.exp 1) := HermiteLindemann.e_transcendental_int`. The proof is conditional on the imported `hermite_lindemann` axiom, because the Lindemann-Weierstrass theorem is not yet in Mathlib. The $\\mathbb{Z} \\leftrightarrow \\mathbb{Q}$ equivalence follows from `IsFractionRing.isAlgebraic_iff`.",
     "significance": "key",
     "relatedConcepts": [
-      "axiom",
+      "Hermite-Lindemann",
       "Lindemann-Weierstrass",
-      "pending formalization"
+      "imported axiom"
     ],
     "prerequisites": [
       "Transcendental definition",
@@ -114,8 +114,8 @@
     "id": "ann-corollaries",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 162,
-      "endLine": 200
+      "startLine": 157,
+      "endLine": 232
     },
     "type": "concept",
     "title": "Corollaries: Irrationality and Closure Properties",
@@ -136,8 +136,8 @@
     "id": "ann-connections",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 205,
-      "endLine": 231
+      "startLine": 237,
+      "endLine": 264
     },
     "type": "concept",
     "title": "Related Theorems and Open Problems",
@@ -159,8 +159,8 @@
     "id": "ann-significance",
     "proofId": "e-transcendental",
     "range": {
-      "startLine": 237,
-      "endLine": 269
+      "startLine": 269,
+      "endLine": 304
     },
     "type": "concept",
     "title": "Historical and Mathematical Significance",

@@ -1,7 +1,7 @@
 {
   "slug": "prob-method-second-moment-oq-02",
   "title": "Generic indicator-sum variance + subgraph thresholds in G(n, p)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -45,9 +45,9 @@
   "knowledge": {
     "progressSummary": "S1 OBSERVE doc-only: designed the application-layer pipeline from the parent's abstract Chebyshev/Paley-Zygmund tools to threshold-function derivation. Locked three theorem signatures: indicatorSum_variance (generic) + subgraphCount_variance (triangle specialisation via overlap-class decomposition) + triangle_subcritical + triangle_supercritical. Confirmed Mathlib v4.26.0 has no G(n, p) infrastructure; S2 ships an ad-hoc definition under ProbMethod.SecondMoment.RandomGraph namespace. Strategic sorry tolerable in triangle_supercritical case-heavy Paley-Zygmund step.",
     "builtItems": [
-      "research/problems/prob-method-second-moment-oq-02/problem.md (formal scope, three signatures, three sub-OQs)",
-      "research/problems/prob-method-second-moment-oq-02/knowledge.md (parent recap, generic variance, subgraph overlap-class, triangle subcritical+supercritical proofs, Mathlib alignment, LOC estimate)",
-      "research/problems/prob-method-second-moment-oq-02/state.md (phase OBSERVE, S2 scope lock, race awareness)"
+      "verify_triangle_threshold.py (2026-06-15) — EXACT certificate of the triangle second moment + threshold: overlap-class counts exhaustive (n=3..11); Var[X]=C(n,3)[p^3+3(n-3)p^5-(3n-8)p^6] proven == raw overlap-class E[X^2]-E[X]^2 (symbolic in n); brute-force enumeration of all 2^C(n,2) graphs matches E[X] and E[X^2] for n=3..6; at p=c/n, E[X]->c^3/6 (subcritical Markov) and Var/E^2->6/c^3 (supercritical Paley-Zygmund), pinning p*=1/n.",
+      "ProbMethodSecondMomentOQ02.lean (S2-A, merged #22687) — generic variance pair-sum decomposition Var(sum X)=sum Cov over t x t (Docker-verified, 0 sorries).",
+      "research/problems/prob-method-second-moment-oq-02/{problem.md,knowledge.md,state.md} (scope, overlap-class derivation, Mathlib alignment)"
     ],
     "insights": [
       "For indicator sums, Var(X) = Σ μ_i(1 - μ_i) + Σ_{i≠j} Cov(X_i, X_j); the diagonal is bounded by E[X] (since X_i² = X_i), giving the classical second-moment bound.",
@@ -61,8 +61,8 @@
       "Standard subgraph-count threshold lemmas — none in Mathlib."
     ],
     "nextSteps": [
-      "S2 ACT — ship proofs/Proofs/ProbMethodSecondMomentOQ02.lean (~350 LOC, 0-2 sorries).",
-      "S3 (optional) — close strategic Paley-Zygmund sorry if any.",
+      "S2-B ACT — diag/offDiag split of the pair-sum variance (deferred from S2-A).",
+      "Section B/C ACT — G(n,p) subgraphCount_variance + triangle threshold. The overlap-class second moment is now exactly certified (verify_triangle_threshold.py): Lean target is concrete — isolate the shared-edge class 3*C(n,3)(n-3)p^5, then Markov (subcritical) / Paley-Zygmund (supercritical). Build-gated by Docker blackout.",
       "S4 (separate slug) — generalise to other subgraph thresholds (perfect matching, k-clique, Hamilton cycle)."
     ]
   },
@@ -77,12 +77,14 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "prob-method-second-moment",
-    "prob-method-second-moment-oq-01",
-    "prob-method-second-moment-oq-03",
     "prob-method-alteration",
     "prob-method-expectation",
-    "prob-method-lovasz-local"
+    "prob-method-lovasz-local",
+    "prob-method-second-moment",
+    "prob-method-second-moment-oq-01",
+    "prob-method-second-moment-oq-01-oq-01",
+    "prob-method-second-moment-oq-02",
+    "prob-method-second-moment-oq-04"
   ],
   "references": {
     "papers": [
@@ -118,6 +120,39 @@
   "tractability": 5,
   "leanFiles": [
     {
+      "path": "Proofs/ProbMethodSecondMoment.lean",
+      "filename": "ProbMethodSecondMoment.lean",
+      "lineCount": 226,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMoment.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
+      "filename": "ProbMethodSecondMomentOQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ01.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodSecondMomentOQ01OQ01.lean",
+      "filename": "ProbMethodSecondMomentOQ01OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/ProbMethodSecondMomentOQ02.lean",
       "filename": "ProbMethodSecondMomentOQ02.lean",
       "lineCount": 154,
@@ -127,6 +162,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ02.lean"
+    },
+    {
+      "path": "Proofs/ProbMethodSecondMomentOQ04.lean",
+      "filename": "ProbMethodSecondMomentOQ04.lean",
+      "lineCount": 180,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProbMethodSecondMomentOQ04.lean"
     }
   ]
 }

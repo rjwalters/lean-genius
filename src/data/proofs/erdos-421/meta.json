@@ -86,83 +86,140 @@
   },
   "sections": [
     {
-      "id": "sequences",
-      "title": "Sequence Definitions",
-      "summary": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence",
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "summary": "File docstring (Erdős #421, OPEN), Mathlib import, namespace.",
+      "startLine": 1,
+      "endLine": 24,
+      "mathContext": "Density-1 strictly-increasing sequence with all interval products distinct; Selfridge achieves density > 1/e − ε."
+    },
+    {
+      "id": "basic-definitions",
+      "title": "Part 1: Basic Definitions",
+      "summary": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence.",
       "startLine": 25,
       "endLine": 43,
-      "mathContext": "Mathematical content: IsStrictlyIncreasing, StartsAtOne, IsValidSequence"
+      "mathContext": "A valid sequence is strictly increasing (StrictMono) and starts at d 0 ≥ 1."
     },
     {
       "id": "density",
-      "title": "Density of Sequences",
-      "summary": "countingFunc, indexUpTo, HasDensity, HasDensityOne",
+      "title": "Part 2: Density of Sequences",
+      "summary": "countingFunc, indexUpTo, HasDensity, HasDensityOne.",
       "startLine": 44,
-      "endLine": 65,
-      "mathContext": "Mathematical content: countingFunc, indexUpTo, HasDensity, HasDensityOne"
+      "endLine": 67,
+      "mathContext": "Natural density of Set.range d as the limit of countingFunc(n)/n; density 1 is the target."
     },
     {
-      "id": "products",
-      "title": "Interval Products",
-      "summary": "intervalProduct, AllIntervalProducts, ValidPairs, productMap",
-      "startLine": 66,
-      "endLine": 86,
-      "mathContext": "Mathematical content: intervalProduct, AllIntervalProducts, ValidPairs, productMap"
+      "id": "interval-products",
+      "title": "Part 3: Interval Products",
+      "summary": "intervalProduct ∏_{u≤i≤v} dᵢ, AllIntervalProducts, ValidPairs, productMap.",
+      "startLine": 68,
+      "endLine": 88,
+      "mathContext": "Interval products over Finset.Icc u v and the pair → product map on ValidPairs = {u ≤ v}."
     },
     {
       "id": "distinctness",
-      "title": "Distinctness of Products",
-      "summary": "HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv",
-      "startLine": 87,
-      "endLine": 112,
-      "mathContext": "Mathematical content: HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv"
+      "title": "Part 4: Distinctness of Products",
+      "summary": "HasDistinctProducts (InjOn), HasDistinctProductsAlt, and verified equivalence distinct_equiv.",
+      "startLine": 89,
+      "endLine": 114,
+      "mathContext": "Distinctness as injectivity of productMap on ValidPairs, equivalent to the pointwise inequality form."
     },
     {
-      "id": "conjecture",
-      "title": "The Main Conjecture",
-      "summary": "ErdosConjecture421, erdos_421_statement",
-      "startLine": 113,
-      "endLine": 129,
-      "mathContext": "Mathematical content: ErdosConjecture421, erdos_421_statement"
+      "id": "structural-properties",
+      "title": "Part 4b: Structural Properties of Interval Products",
+      "summary": "Verified: intervalProduct_single/_empty/_pos, valid_seq_pos, valid_seq_injective, valid_seq_ge_succ.",
+      "startLine": 115,
+      "endLine": 161,
+      "mathContext": "Single-element product = d u, empty product = 1, positivity; valid sequences inject and satisfy d(i) ≥ i+1."
+    },
+    {
+      "id": "natseq-fails",
+      "title": "Part 4c: Natural Numbers Fail Distinctness",
+      "summary": "natSeq d(i)=i+1 is valid (natSeq_valid) but natSeq_not_distinct.",
+      "startLine": 162,
+      "endLine": 187,
+      "mathContext": "The densest natural sequence already fails: ∏[0,1] = 1·2 = 2 = ∏[1,1]."
+    },
+    {
+      "id": "pow2-fails",
+      "title": "Part 4d: Powers of 2 Also Fail Distinctness",
+      "summary": "pow2Seq d(i)=2^i is valid but pow2Seq_not_distinct.",
+      "startLine": 188,
+      "endLine": 210,
+      "mathContext": "Exponent sums collide: ∏[0,2] = 2^{0+1+2} = 2^3 = ∏[3,3] = 8."
+    },
+    {
+      "id": "density-gap",
+      "title": "Part 4e: The Gap Between Density 0 and Density 1",
+      "summary": "distinct_products_growth_lower: distinct products force d(n−1) ≥ n.",
+      "startLine": 211,
+      "endLine": 232,
+      "mathContext": "Primes have distinct products but density 0; naturals have density 1 but non-distinct products — the tension."
+    },
+    {
+      "id": "advanced-structural",
+      "title": "Part 4f: Advanced Structural Properties",
+      "summary": "Verified: intervalProduct_split, total_product_ge_factorial (≥ n!), first_term_ge_two (d(0) ≥ 2), distinct_products_stronger_growth (d(i) ≥ i+2), total_product_ge_shifted_factorial (≥ (n+1)!).",
+      "startLine": 233,
+      "endLine": 304,
+      "mathContext": "Multiplicative split at a midpoint plus factorial-type lower bounds on the running product under distinctness."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Part 5: The Main Conjecture",
+      "summary": "ErdosConjecture421 and the equivalent formal-conjectures statement erdos_421_statement.",
+      "startLine": 305,
+      "endLine": 322,
+      "mathContext": "∃ a valid density-1 sequence with distinct products; restated in StrictMono / InjOn form."
     },
     {
       "id": "selfridge",
-      "title": "Selfridge's Construction",
-      "summary": "selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e",
-      "startLine": 130,
-      "endLine": 150,
-      "mathContext": "Mathematical content: selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e"
+      "title": "Part 6: Selfridge's Construction",
+      "summary": "axiom selfridge_construction (density > 1/e − ε) and selfridge_achieves_one_over_e.",
+      "startLine": 323,
+      "endLine": 343,
+      "mathContext": "Best known result: for every ε > 0 a distinct-product sequence of density > 1/e − ε exists."
     },
     {
-      "id": "bounds",
-      "title": "Upper Bounds and Obstructions",
-      "summary": "numProductsUpToLength, density constraints",
-      "startLine": 151,
-      "endLine": 165,
-      "mathContext": "Mathematical content: numProductsUpToLength, density constraints"
+      "id": "upper-bounds",
+      "title": "Part 7: Upper Bounds and Obstructions",
+      "summary": "numProductsUpToLength n = n(n+1)/2.",
+      "startLine": 344,
+      "endLine": 358,
+      "mathContext": "The number of interval pairs among the first n terms — the counting obstruction limiting density."
     },
     {
-      "id": "examples",
-      "title": "Simple Examples",
-      "summary": "Natural numbers fail, primes work but sparse",
-      "startLine": 166,
-      "endLine": 185,
-      "mathContext": "Mathematical content: Natural numbers fail, primes work but sparse"
+      "id": "simple-examples",
+      "title": "Part 8: Simple Examples",
+      "summary": "Worked illustrations contrasting natural numbers (fail) and primes (density 0).",
+      "startLine": 359,
+      "endLine": 378,
+      "mathContext": "Concrete small-interval product collisions and why unique factorization helps but costs density."
     },
     {
-      "id": "related",
-      "title": "Related Problem 786",
-      "summary": "RelatedProblem786",
-      "startLine": 186,
-      "endLine": 194
+      "id": "related-786",
+      "title": "Part 9: Related Problem 786",
+      "summary": "RelatedProblem786: covering systems with large minimum modulus.",
+      "startLine": 379,
+      "endLine": 395,
+      "mathContext": "Selfridge's covering-system construction (minimum modulus m₀) connects to the density question."
     },
     {
-      "id": "status",
-      "title": "Problem Status",
-      "summary": "erdos_421_status, OEIS references",
-      "startLine": 195,
-      "endLine": 237,
-      "mathContext": "Mathematical content: erdos_421_status, OEIS references"
+      "id": "counting-constraints",
+      "title": "Part 10: Counting Constraints on Distinct Products",
+      "summary": "Verified counting core: numValidPairs_eq (n(n+1)/2 valid pairs), adjacent_product_bound, consecutive_product_gt_single, single_ne_pair_product, product_strict_mono_right, total_product_lower_from_counting.",
+      "startLine": 396,
+      "endLine": 544,
+      "mathContext": "n(n+1)/2 distinct positive interval products force the total product ∏[0,n−1] ≥ n(n+1)/2, constraining growth (hence density)."
+    },
+    {
+      "id": "status-summary",
+      "title": "Part 11: Problem Status & Summary",
+      "summary": "erdos_421_status = OPEN; closing summary of the 1/e gap.",
+      "startLine": 545,
+      "endLine": 577,
+      "mathContext": "Status OPEN: Selfridge gives density > 1/e − ε; whether density 1 is achievable remains unknown."
     }
   ],
   "conclusion": {

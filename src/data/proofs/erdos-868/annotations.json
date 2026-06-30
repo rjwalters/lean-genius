@@ -16,7 +16,12 @@
       "representation-function",
       "minimal-bases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive basis of order 2",
+      "representation function f(n) = r_{A,2}(n)",
+      "definition of a minimal basis (no removable element)",
+      "asymptotic growth notation f(n) → ∞ and f(n) > c log n"
+    ]
   },
   {
     "id": "ann-e868-additive-basis-def",
@@ -35,7 +40,12 @@
       "cofinite",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sum of h elements a_1 + ... + a_h with a_i ∈ A",
+      "Set.Finite predicate (finiteness of the complement)",
+      "cofinite coverage of ℕ ('all sufficiently large n')",
+      "sumset of a set with itself (order 2)"
+    ]
   },
   {
     "id": "ann-e868-repr-count",
@@ -54,7 +64,12 @@
       "counting",
       "ncard"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsAdditiveBasis A h definition",
+      "Set.ncard for cardinality of sets",
+      "indicator function 1_A and convolution 1_A * 1_A",
+      "functions Fin h → ℕ as tuples of summands"
+    ]
   },
   {
     "id": "ann-e868-minimal-basis-def",
@@ -73,7 +88,12 @@
       "minimal",
       "subbasis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsAdditiveBasis B h definition",
+      "set difference B \\ {b}",
+      "finite vs infinite set of unrepresentable numbers",
+      "essential element (removal breaks the basis property)"
+    ]
   },
   {
     "id": "ann-e868-open-part-i",
@@ -92,7 +112,12 @@
       "open-problem",
       "unbounded-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsAdditiveBasis (basis of order 2)",
+      "reprCount2 representation function",
+      "Filter.Tendsto atTop atTop (f(n) → ∞)",
+      "IsMinimalBasis2 and existence of a subbasis B ⊆ A"
+    ]
   },
   {
     "id": "ann-e868-open-part-ii",
@@ -111,7 +136,12 @@
       "threshold",
       "eventually"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reprCount2 representation function",
+      "Real.log and the bound ε · log n < f(n)",
+      "Filter.Eventually (eventually in atTop)",
+      "comparison with the f(n) > 3.476 log n threshold"
+    ]
   },
   {
     "id": "ann-e868-erdos-nathanson-1979",
@@ -130,7 +160,12 @@
       "sufficient-condition",
       "threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive basis of order 2",
+      "Filter.Eventually for 'all large n'",
+      "erdosNathansonConstant = (log 4/3)⁻¹",
+      "the probabilistic (deletion) method"
+    ]
   },
   {
     "id": "ann-e868-erdos-nathanson-constant",
@@ -149,7 +184,12 @@
       "logarithm",
       "constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Real.log and (Real.log (4/3))⁻¹",
+      "numerical estimate log(4/3) ≈ 0.288",
+      "the Erdős-Nathanson 1979 threshold condition",
+      "axiomatized bound 3.4 < c < 3.5"
+    ]
   },
   {
     "id": "ann-e868-hartter-nathanson",
@@ -168,7 +208,12 @@
       "pathological",
       "construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsAdditiveBasis A h for order h > 1",
+      "subbasis B ⊆ A that remains a basis",
+      "set difference B \\ {b}",
+      "definition of a minimal basis (counterexample target)"
+    ]
   },
   {
     "id": "ann-e868-erdos-nathanson-1989",
@@ -187,7 +232,12 @@
       "bounded",
       "necessary-condition"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "reprCount2 representation function",
+      "Filter.Eventually (eventually f(n) ≥ t)",
+      "definition of a minimal basis",
+      "bounded multiplicity vs structural existence"
+    ]
   },
   {
     "id": "ann-e868-growth-hierarchy",
@@ -206,7 +256,12 @@
       "implication",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Eventually and its transitivity",
+      "erdosNathansonConstant ≈ 3.476 vs ε log n",
+      "growth conditions f(n) → ∞ and f(n) ≥ t",
+      "Erdős-Nathanson 1979 sufficient condition"
+    ]
   },
   {
     "id": "ann-e868-univ-basis",
@@ -225,7 +280,12 @@
       "universal-set",
       "representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsAdditiveBasis A h definition",
+      "Set.univ (the set of all naturals ℕ)",
+      "representation n = n + 0 + ... + 0",
+      "basis of order 2 (n = 0 + n or 1 + (n-1))"
+    ]
   },
   {
     "id": "ann-e868-nat-not-minimal",
@@ -244,7 +304,12 @@
       "counterexample",
       "removable-element"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsMinimalBasis B h definition",
+      "set difference ℕ \\ {0}",
+      "univ_is_basis (ℕ is a basis of order 2)",
+      "removable element (1 + (n-1) representation)"
+    ]
   },
   {
     "id": "ann-e868-essential-theorem",
@@ -263,7 +328,12 @@
       "infinite-gaps",
       "structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IsMinimalBasis B h definition",
+      "IsAdditiveBasis via Set.Finite",
+      "Set.Infinite (not-finite set of gaps)",
+      "set difference B \\ {b}"
+    ]
   },
   {
     "id": "ann-e868-summary",
@@ -282,6 +352,11 @@
       "gap",
       "known-results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "erdos_nathanson_1989 axiom (counterexample, take t=1)",
+      "erdos_nathanson_1979 axiom (sufficient condition)",
+      "existence of a basis with no minimal subbasis",
+      "the gap between sufficient and necessary conditions"
+    ]
   }
 ]

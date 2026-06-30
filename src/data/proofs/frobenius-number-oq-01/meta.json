@@ -144,9 +144,24 @@
       "description": "Direct parent: provides the Frobenius number formula $g(a, b) = ab - a - b$ via `sylvester_frobenius`. This file uses $\\neg\\text{Rep}(g)$ (the largest non-representable element) as the +1 contribution to the count."
     },
     {
-      "targetId": "frobenius-number-oq-02",
-      "relationship": "uses",
-      "description": "Sibling: provides the Frobenius symmetry $\\text{Rep}(k) \\Leftrightarrow \\neg\\text{Rep}(g - k)$ for $0 < k < g$ via `frobenius_symmetry`. This biconditional is the *only* non-elementary input to the bijection lemma."
+      "targetId": "frobenius-number-oq-03",
+      "relationship": "related",
+      "description": "The three-generator companion: defines $\\text{Representable3}\\;a\\;b\\;c\\;n$ and lays the foundation for the Frobenius number with three coin denominations. Unlike the two-generator case proved here, no closed form exists for $g(a,b,c)$ in general — so the clean count $(a-1)(b-1)/2$ established here is special to two coprime generators."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity governs representations of $n$ as $ax + by$ with $x, y \\in \\mathbb{Z}$ (all integers); the coin problem here restricts to $x, y \\in \\mathbb{N}$ (non-negative). Bézout guarantees that coprime $a, b$ represent every integer over $\\mathbb{Z}$, while the non-negativity constraint is exactly what creates a finite set of unrepresentable numbers — the gap this entry counts."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "foundational",
+      "description": "The hypothesis $\\gcd(a, b) = 1$ is essential: without coprimality, only multiples of $\\gcd(a,b)$ are representable and the Frobenius number is undefined (infinitely many gaps). The coprimality used throughout (e.g. `prod_pred_even` derives that $b$ is odd when $a$ is even precisely because $\\gcd(a,b)=1$) is the same notion the Euclidean algorithm computes."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "related",
+      "description": "A complementary algorithmic view of the coprimality test underpinning this result: Stein's binary GCD computes $\\gcd(a,b)$, and the Frobenius/Sylvester count only applies when that value is $1$."
     }
   ],
   "references": [

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "lte-oq01-header",
+    "proofId": "lifting-the-exponent-oq-01",
+    "range": { "startLine": 5, "endLine": 50 },
+    "type": "context",
+    "title": "LTE in textbook padicValNat form, and the finiteness bridge",
+    "content": "The header states the Lifting the Exponent Lemma — for an odd prime p with p ∣ x−y, p ∤ x: v_p(xⁿ−yⁿ) = v_p(x−y) + v_p(n) (and the odd-exponent additive companion) — and explains why it is not already in Mathlib. Mathlib proves LTE only in `emultiplicity` form over ℕ∞, where 'valuation of 0' is ⊤ and no nonzeroness is needed. The textbook statement uses `padicValNat`, an honest natural number, so it is only true once xⁿ−yⁿ, x−y, and n are known nonzero. The file's value is the bridge: discharge those side conditions, cast the goal into ℕ∞ via `padicValNat_eq_emultiplicity`, apply Mathlib's emultiplicity LTE, and pull back across the injective cast ℕ ↪ ℕ∞.",
+    "mathContext": "$v_p(x^n - y^n) = v_p(x - y) + v_p(n)\\quad (p\\text{ odd prime},\\ p \\mid x-y,\\ p \\nmid x,\\ n \\ge 1)$",
+    "significance": "context",
+    "relatedConcepts": ["Lifting the Exponent", "p-adic valuation", "emultiplicity", "olympiad number theory"],
+    "prerequisites": ["p-adic valuation padicValNat", "multiplicity / emultiplicity", "truncated natural subtraction"]
+  },
+  {
+    "id": "lte-oq01-sub",
+    "proofId": "lifting-the-exponent-oq-01",
+    "range": { "startLine": 56, "endLine": 72 },
+    "type": "theorem",
+    "title": "padicValNat_pow_sub_pow: the subtraction form",
+    "content": "`padicValNat_pow_sub_pow` is the main subtraction form. The proof establishes the two nonzeroness side conditions — x−y ≠ 0 from y < x (`Nat.sub_ne_zero_of_lt`) and xⁿ−yⁿ ≠ 0 from yⁿ < xⁿ (`Nat.pow_lt_pow_left`, using 0 < n) — then casts the goal into ℕ∞, rewrites each `padicValNat` to `emultiplicity` via `padicValNat_eq_emultiplicity` (with `Fact p.Prime` in scope), and closes with Mathlib's `Nat.emultiplicity_pow_sub_pow`. Finally `exact_mod_cast` pulls the ℕ∞ equality back to ℕ. The nonzeroness is geometric: xⁿ−yⁿ ≠ 0 is exactly yⁿ < xⁿ, the same condition that makes truncated ℕ-subtraction behave like real subtraction.",
+    "mathContext": "$x - y \\ne 0,\\ x^n - y^n \\ne 0 \\implies (\\text{cast to } \\mathbb{N}_\\infty) = \\text{Mathlib emultiplicity LTE}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.emultiplicity_pow_sub_pow", "padicValNat_eq_emultiplicity", "exact_mod_cast", "nonzeroness side conditions"],
+    "prerequisites": ["the emultiplicity LTE lemma", "casting ℕ ↪ ℕ∞"]
+  },
+  {
+    "id": "lte-oq01-add",
+    "proofId": "lifting-the-exponent-oq-01",
+    "range": { "startLine": 74, "endLine": 91 },
+    "type": "theorem",
+    "title": "padicValNat_pow_add_pow: the addition form (odd exponent)",
+    "content": "`padicValNat_pow_add_pow` is the dual statement v_p(xⁿ+yⁿ) = v_p(x+y) + v_p(n) for *odd* n. The structure is identical to the subtraction form but routed through `Nat.emultiplicity_pow_add_pow` with the extra `Odd n` hypothesis; the nonzeroness conditions x+y ≠ 0 and xⁿ+yⁿ ≠ 0 come cheaply from 0 < x (closed by `omega`), since addition of naturals can't decrease. The odd-exponent restriction is what keeps the additive identity true (for even n, xⁿ+yⁿ need not be divisible by x+y).",
+    "mathContext": "$v_p(x^n + y^n) = v_p(x + y) + v_p(n)\\quad (n\\text{ odd})$",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.emultiplicity_pow_add_pow", "odd exponents", "p-adic valuation"],
+    "prerequisites": ["the subtraction form's bridging pattern", "odd exponents"]
+  },
+  {
+    "id": "lte-oq01-repunit",
+    "proofId": "lifting-the-exponent-oq-01",
+    "range": { "startLine": 93, "endLine": 107 },
+    "type": "theorem",
+    "title": "padicValNat_pow_sub_one: the workhorse specialisation",
+    "content": "`padicValNat_pow_sub_one` specialises the subtraction form at y = 1: v_p(aⁿ−1) = v_p(a−1) + v_p(n) when p ∣ a−1, 1 < a. This is the form used to read off the order of p in numbers like 2ⁿ−1 or repunits. The hypothesis p ∤ a is *automatic* and derived internally: if p ∣ a and p ∣ a−1 then p ∣ a−(a−1) = 1 (`Nat.dvd_sub`, `omega`), impossible for a prime — so this corollary has one fewer hypothesis than the general theorem.",
+    "mathContext": "$v_p(a^n - 1) = v_p(a-1) + v_p(n);\\quad p \\mid a \\wedge p \\mid a-1 \\Rightarrow p \\mid 1\\ (\\text{impossible})$",
+    "significance": "key",
+    "relatedConcepts": ["repunits", "Mersenne numbers", "multiplicative order", "Nat.dvd_sub"],
+    "prerequisites": ["the subtraction form", "divisibility of a prime by 1"]
+  },
+  {
+    "id": "lte-oq01-example",
+    "proofId": "lifting-the-exponent-oq-01",
+    "range": { "startLine": 109, "endLine": 114 },
+    "type": "context",
+    "title": "Numeric check, proved through the theorem",
+    "content": "A worked example: with p = 3, a = 4, n = 6, 4⁶−1 = 4095 = 3²·5·7·13, so v_3(4⁶−1) = 2 = v_3(3) + v_3(6) = 1 + 1. Crucially it is proved by *applying* `padicValNat_pow_sub_one` (with the five hypotheses discharged by `norm_num`), not by raw kernel computation — so the check stays fully axiom-free, with no `decide`/`native_decide`.",
+    "mathContext": "$v_3(4^6 - 1) = v_3(3) + v_3(6) = 1 + 1 = 2,\\quad 4^6 - 1 = 4095 = 3^2 \\cdot 5 \\cdot 7 \\cdot 13$",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "axiom-free verification", "norm_num"],
+    "prerequisites": ["the repunit specialisation"]
+  }
+]

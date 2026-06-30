@@ -1,27 +1,17 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-03-30T21:46:38.106Z
+**Phase**: COMPLETED
 **Iteration**: 1
 
-## Current Focus
+## Outcome
 
-Initial exploration of the problem.
+Shipped PR #27809 (research/erdos-1023-oq-02-interfree): intersection/difference
+analogues of Erdős #1023 union-free families. 0-axiom verified, 326L, 25 thm/12 def.
 
-## Active Approach
-
-None yet.
-
-## Blockers
-
-None.
+- De Morgan duality: complement bijection gives interFreeMax n = unionFreeMax n.
+- antichain_interFree → axiom-free middle-layer lower bound.
+- Difference dichotomy: ∆ complement-stable, \ complement-reversing → transport stops at ∩.
 
 ## Next Action
 
-Begin problem exploration.
-
-## Attempt Counts
-
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+None — completed.

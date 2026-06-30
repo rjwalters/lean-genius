@@ -95,68 +95,108 @@
   },
   "sections": [
     {
-      "id": "derivative-sequence",
-      "title": "Part I: The Derivative Sequence",
+      "id": "module-header",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 123,
-      "summary": "Imports, module docstring, `iterDeriv` definition and properties (commutativity, degree bounds, vanishing beyond degree), and `budanSequence` evaluation sequence $[p(x), p'(x), \\ldots, p^{(n)}(x)]$.",
-      "mathContext": "The iterated derivative $p^{(k)}$ satisfies $\\deg(p^{(k)}) \\leq \\deg(p) - k$ and $p^{(k)} = 0$ for $k > \\deg(p)$. The Budan-Fourier sequence $\\mathbf{B}_p(x) = (p(x), p'(x), \\ldots, p^{(n)}(x))$ encodes local root behavior via Taylor's theorem: the multiplicity of a root $a$ is the index of the first nonzero entry $p^{(m)}(a) \\neq 0$."
+      "endLine": 60,
+      "summary": "Module docstring on Budan's theorem and the Budan-Fourier sequence, polynomial/derivative/Rolle imports from Mathlib, namespace BudanTheorem, open Polynomial.",
+      "mathContext": "Budan-Fourier theory: the sign-variation count of the derivative sequence $[p, p', \\dots, p^{(n)}]$ bounds the number of real roots in an interval."
     },
     {
-      "id": "sign-variation",
-      "title": "Part II-III: Sign Variation Count and Budan-Fourier Count",
+      "id": "part1-derivative-sequence",
+      "title": "Part I: The Derivative Sequence",
+      "startLine": 61,
+      "endLine": 124,
+      "summary": "iterDeriv (iterated derivative) with iterDeriv_zero/succ/derivative, natDegree_iterDeriv_le, iterDeriv_eq_zero, and budanSequence (the list [p(x),…,p⁽ⁿ⁾(x)]) with budanSequence_length.",
+      "mathContext": "The Budan sequence at $x$ is $[p(x), p'(x), \\dots, p^{(n)}(x)]$; the $k$-th iterated derivative has degree $\\le \\deg p - k$ and vanishes for $k > \\deg p$."
+    },
+    {
+      "id": "part2-sign-variation",
+      "title": "Part II: Sign Variation Count",
       "startLine": 125,
-      "endLine": 171,
-      "summary": "`countAdjacentDiffs` and `signChangesInList` (filter zeros, map to $\\pm 1$, count sign changes). `budanCount` $V_p(x) = \\text{signChangesInList}(\\text{budanSequence})$. Constants have $V = 0$.",
-      "mathContext": "$V_p(x) = |\\{i : \\text{sign}(p^{(i)}(x)) \\neq \\text{sign}(p^{(i+1)}(x))\\}|$ where zero entries are skipped. $V_p$ is a non-increasing step function of $x$, bounded above by $\\deg(p)$."
+      "endLine": 174,
+      "summary": "countAdjacentDiffs over integer lists and signChangesInList counting sign changes in a real list (signChangesInList_nil for the empty list).",
+      "mathContext": "The sign-variation count $V$ tallies sign changes across consecutive nonzero entries of a list."
     },
     {
-      "id": "main-theorem",
-      "title": "Part IV-V: Budan's Theorem and Root Intervals",
-      "startLine": 173,
-      "endLine": 235,
-      "summary": "`rootsInInterval` definition. Three axioms (upper bound via Rolle induction, parity via conjugate pairs, large-$x$ vanishing). `budan_theorem` combined: $\\exists k, \\text{roots} + 2k = V_p(a) - V_p(b)$.",
-      "mathContext": "The upper bound follows by induction: if $p$ has $r$ roots in $(a,b]$, Rolle gives $r-1$ roots of $p'$ in the same interval, and sign-change accounting yields $V_p(a) - V_p(b) \\geq r$. Parity: complex roots of $p$ come in conjugate pairs, each contributing 0 to the real root count but an even amount to the variation difference."
+      "id": "part3-budan-fourier-count",
+      "title": "Part III: The Budan-Fourier Count V_p(x)",
+      "startLine": 175,
+      "endLine": 197,
+      "summary": "budanCount p x = number of sign changes in the Budan sequence of p at x; budanCount_zero and budanCount_C (zero for the zero polynomial and constants).",
+      "mathContext": "$V_p(x)$ is the sign-variation count of $[p(x), p'(x), \\dots, p^{(n)}(x)]$."
     },
     {
-      "id": "root-isolation",
+      "id": "part4-roots-in-intervals",
+      "title": "Part IV: Count of Roots in Intervals",
+      "startLine": 198,
+      "endLine": 221,
+      "summary": "rootsInInterval p a b counting roots in (a,b]; rootsInInterval_zero and rootsInInterval_C for the zero polynomial and nonzero constants.",
+      "mathContext": "$\\#\\{\\text{roots of } p \\text{ in } (a,b]\\}$, counted with multiplicity, is the quantity bounded by Budan's theorem."
+    },
+    {
+      "id": "part5-budans-theorem",
+      "title": "Part V: Budan's Theorem — Main Results",
+      "startLine": 222,
+      "endLine": 261,
+      "summary": "The Budan upper bound and parity axioms (budan_upper_bound_axiom, budan_parity_axiom) and their theorem wrappers (budan_upper_bound, budan_parity), combined into budan_theorem.",
+      "mathContext": "Budan's theorem: $\\#\\text{roots}(a,b] \\le V_p(a) - V_p(b)$, with the difference $V_p(a)-V_p(b) - \\#\\text{roots}$ even."
+    },
+    {
+      "id": "part6-root-isolation",
       "title": "Part VI: Root Isolation Certificates",
-      "startLine": 237,
-      "endLine": 272,
-      "summary": "`no_roots_of_equal_budanCount` (0-root certificate), `unique_root_of_budanCount_diff_one` (1-root certificate), `zero_or_two_roots` (2-root certificate). All fully proved from axioms.",
-      "mathContext": "The unique root certificate: if $V_p(a) - V_p(b) = 1$, then $\\text{roots} \\leq 1$ (bound) and $1 - \\text{roots}$ must be even (parity). Since $1 - 0 = 1$ is odd, $\\text{roots} \\neq 0$, so $\\text{roots} = 1$. This elegant parity argument is the key tool in VAS-style root isolation."
+      "startLine": 262,
+      "endLine": 298,
+      "summary": "Root-isolation corollaries from equal/near-equal Budan counts: no_roots_of_equal_budanCount, unique_root_of_budanCount_diff_one, zero_or_two_roots_of_budanCount_diff_two.",
+      "mathContext": "If $V_p(a)-V_p(b)=0$ there are no roots; $=1$ forces exactly one; $=2$ gives zero or two — the basis of bisection root isolation."
     },
     {
-      "id": "descartes-recovery",
-      "title": "Part VII-VIII: Descartes Recovery and Coefficient Connection",
-      "startLine": 274,
-      "endLine": 393,
-      "summary": "`descartes_from_budan`: Descartes' rule as special case ($a=0$, $b \\to \\infty$). `iterDeriv_eval_zero`: $p^{(k)}(0) = k! \\cdot a_k$. `budanCount_zero_eq_coeff_sign_changes`.",
-      "mathContext": "The chain: $V_p(0) = V(p(0), p'(0), \\ldots, p^{(n)}(0)) = V(a_0, 1!a_1, 2!a_2, \\ldots, n!a_n)$. Since $k! > 0$, this equals $V(a_0, a_1, \\ldots, a_n)$ — exactly Descartes' coefficient sign variation count. Taking $b \\to \\infty$ with $V_p(b) = 0$ gives Descartes' rule: $\\#\\{\\text{positive roots}\\} \\leq V(a_0, \\ldots, a_n)$."
+      "id": "part7-descartes-special-case",
+      "title": "Part VII: Descartes' Rule as Special Case",
+      "startLine": 299,
+      "endLine": 366,
+      "summary": "budanCount_large_axiom (Budan count vanishes far out), budanCount_eventually_zero, and descartes_from_budan deriving Descartes' rule of signs as the interval (0,∞) case of Budan's theorem.",
+      "mathContext": "Descartes' rule of signs is the $a=0,\\ b\\to\\infty$ specialization of Budan's theorem on positive roots."
     },
     {
-      "id": "rolle-bridge",
-      "title": "Part IX-XII: Rolle's Theorem, Additivity, and Sturm Framework",
-      "startLine": 395,
-      "endLine": 502,
-      "summary": "`rolle_polynomial` (fully proved via Mathlib's Rolle). `n_roots_derivative_roots` ($n+1$ roots of $p$ give $n$ roots of $p'$, fully proved). `rootsInInterval_split` (interval additivity). `PolyChain` structure for generalization to Sturm chains.",
-      "mathContext": "Rolle's theorem gives the calculus foundation: between consecutive roots of $p$, $p'$ has a zero. By induction, $n+1$ roots of $p$ produce $\\geq n$ roots of $p'$, $\\geq n-1$ of $p''$, etc. This 'Rolle ladder' is the inductive engine for the `budan_upper_bound` axiom. The `PolyChain` abstraction prepares for Sturm's theorem, where pseudo-remainder chains replace derivative chains for exact (not just bounded) root counts."
+      "id": "part8-coefficient-connection",
+      "title": "Part VIII: Connection to Coefficient Sign Variations",
+      "startLine": 367,
+      "endLine": 500,
+      "summary": "Relates the Budan count at 0 to coefficient sign variations: iterDeriv_eq_iterate, iterDeriv_eval_zero (k-th derivative at 0 via coefficients), and budanCount_zero_eq_coeff_sign_changes.",
+      "mathContext": "$V_p(0)$ equals the number of sign changes in the coefficient sequence of $p$, since $p^{(k)}(0) = k!\\,[x^k]p$."
     },
     {
-      "id": "structural-theorems",
-      "title": "Structural Theorems: Degree Bounds and Scalar Invariance",
-      "startLine": 503,
-      "endLine": 600,
-      "summary": "Proves V_p(x) <= deg(p): the Budan count is bounded by the polynomial degree. Key result: signChangesInList is invariant under nonzero scalar multiplication, proved by case analysis on sign of the scalar.",
-      "mathContext": "$V_p(x) \\leq \\deg(p)$. Sign change invariance: $\\text{signChanges}(c \\cdot l) = \\text{signChanges}(l)$ for $c \\neq 0$."
+      "id": "part9-structural-theorems",
+      "title": "Part IX: Structural Theorems",
+      "startLine": 501,
+      "endLine": 611,
+      "summary": "Degree bounds and scalar invariance: budanCount_le_natDegree, iterDeriv_C_mul (iterated derivative of c·p), and budanCount_smul (scaling by a nonzero constant preserves the Budan count).",
+      "mathContext": "$V_p(x) \\le \\deg p$, and $V_{c\\cdot p}(x) = V_p(x)$ for $c \\ne 0$ — the count is a degree-bounded scalar invariant."
     },
     {
-      "id": "budan-scaling",
-      "title": "Budan Count Scaling and Degree Preservation",
-      "startLine": 601,
+      "id": "part10-additivity",
+      "title": "Part X: Root Count Additivity",
+      "startLine": 612,
+      "endLine": 636,
+      "summary": "Additivity over split intervals: rootsInInterval_split and budanCount_diff_split, expressing counts on (a,b] as sums over (a,c] and (c,b].",
+      "mathContext": "$\\#\\text{roots}(a,b] = \\#\\text{roots}(a,c] + \\#\\text{roots}(c,b]$ and the Budan differences add accordingly."
+    },
+    {
+      "id": "part11-rolle-connection",
+      "title": "Part XI: Rolle's Theorem Connection",
+      "startLine": 637,
+      "endLine": 666,
+      "summary": "Rolle-based root counting: rolle_polynomial (a root of p′ between consecutive roots of p) and n_roots_derivative_roots (n roots of p force n−1 roots of p′).",
+      "mathContext": "Rolle's theorem: between any two real roots of $p$ lies a root of $p'$, so $\\#\\text{roots}(p') \\ge \\#\\text{roots}(p) - 1$."
+    },
+    {
+      "id": "part12-sturm-chains",
+      "title": "Part XII: Sturm Chains (Framework)",
+      "startLine": 667,
       "endLine": 698,
-      "summary": "Proves budanCount_smul: scaling a polynomial by a nonzero constant preserves the Budan count. Technical infrastructure for the Budan-Fourier theorem connecting sign variations to root counts.",
-      "mathContext": "Budan scaling: $V_{cp}(x) = V_p(x)$ for $c \\neq 0$. Uses $(cp).\\deg = p.\\deg$ for $c \\neq 0, p \\neq 0$."
+      "summary": "Sturm-chain framework: PolyChain structure, chainVariation (sign-variation count along a chain), budanChain (the derivative chain of p), and chainVariation_budanChain linking it back to budanCount.",
+      "mathContext": "A Sturm/Budan chain generalizes the derivative sequence; chainVariation along budanChain recovers $V_p(x)$."
     }
   ],
   "conclusion": {

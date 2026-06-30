@@ -52,7 +52,7 @@
       "startLine": 34,
       "endLine": 35
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Prime Gap Definition",
     "content": "The n-th prime gap dₙ = p_{n+1} − pₙ measures the spacing between consecutive primes. Marked noncomputable since nthPrime is axiomatized. The first few values are d₀ = 1, d₁ = 2, d₂ = 2, d₃ = 4, ...",
     "mathContext": "$d_n = p_{n+1} - p_n \\in \\mathbb{N}$. The sequence $(d_n)$ encodes the local distribution of primes. By the Prime Number Theorem, the average gap near $x$ is $\\sim \\log x$.",
@@ -187,7 +187,7 @@
       "startLine": 84,
       "endLine": 86
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Maximal Distinct Run Length h(x)",
     "content": "Axiomatizes maxDistinctRun : ℕ → ℕ as the maximum k such that some starting index n with p_n < x has IsDistinctRun n k. Axiomatized rather than defined because computing h(x) requires enumerating primes.",
     "mathContext": "$h(x) = \\max\\{k : \\exists n,\\, p_n < x \\land \\text{IsDistinctRun}(n, k)\\}$. The witness and optimality axioms together characterize $h(x)$ uniquely.",

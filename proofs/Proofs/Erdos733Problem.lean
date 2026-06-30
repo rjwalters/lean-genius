@@ -31,6 +31,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.List.Sort
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.SetTheory.Cardinal.Finite
 
 open Finset Real
 
@@ -101,8 +102,19 @@ def isLineCompatible (seq : List ℕ) (n : ℕ) : Prop :=
 f(n) = number of line-compatible sequences for n points.
 -/
 noncomputable def countLineCompatible (n : ℕ) : ℕ :=
-  ((Finset.range n).powerset.filter (fun s => s.card > 0)).card
-  -- This is a placeholder; the actual definition would enumerate sequences
+  Nat.card { seq : List ℕ // isLineCompatible seq n }
+  -- f(n) = the number of distinct line-compatible (sorted, realizable) sequences
+  -- for n points. `isLineCompatible` already bounds entries to [2, n] and requires
+  -- a realizing n-point configuration, so this is exactly the count the problem asks
+  -- about. (The set is finite: a realizable sequence has length ≤ C(n,2) and entries
+  -- ≤ n; `Nat.card` is `0` on infinite types, so the definition is total regardless.)
+  --
+  -- NOTE: the previous body `((range n).powerset.filter (·.card > 0)).card = 2^n - 1`
+  -- was an explicit placeholder. Under it `upper_bound` (≤ exp(C·√n)) is *provably
+  -- false* — `2^n - 1` grows like `exp(n·log 2)`, which exceeds `exp(C·√n)` for every
+  -- fixed `C` and large `n` — so the axiom set was inconsistent. This genuine count
+  -- makes both `lower_bound` and `upper_bound` the true Erdős / Szemerédi–Trotter
+  -- statements.
 
 /-
 ## Part III: The Szemerédi-Trotter Theorem

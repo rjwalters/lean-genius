@@ -106,11 +106,29 @@ lemma ap_sdiff_endpoint (AP₁ AP₂ : Finset (ZMod p)) (s₁ s₂ d : ZMod p)
     (hAP₁ : IsArithmeticProgression AP₁ s₁ d)
     (hAP₂ : IsArithmeticProgression AP₂ s₂ d)
     (hd : d ≠ 0)
-    (h₁ : 0 < AP₁.card)
+    (h₁ : 2 ≤ AP₁.card)
     (h₁₂ : AP₁.card ≤ AP₂.card)
     (hlt : AP₁.card + AP₂.card ≤ p)
     (h_sdiff : (AP₁ \ AP₂).card = 1) :
     s₁ = s₂ - d ∨ s₁ = s₂ + ((AP₂.card - AP₁.card + 1 : ℕ) : ZMod p) * d := by
+  -- NOTE (hypothesis corrected): the bound here is `2 ≤ AP₁.card`, not `0 < AP₁.card`.
+  -- With only `0 < AP₁.card` the statement is FALSE: take p = 7, d = 1,
+  -- AP₂ = {0,1,2} (s₂ = 0, m = 3) and AP₁ = {4} (s₁ = 4, n = 1). Then
+  -- (AP₁ \ AP₂).card = 1 and n + m = 4 ≤ 7, yet s₁ = 4 is neither s₂ - d = 6
+  -- nor s₂ + (m - n + 1)·d = 3. A singleton AP can sit anywhere outside AP₂.
+  --
+  -- Proof blueprint for the corrected (n ≥ 2) statement [Aristotle target]:
+  -- Multiply through by d⁻¹ and translate by -s₂ (a ZMod-p bijection) to reduce to
+  -- two "intervals mod p": I₂ = {x : x.val < m} = {0,…,m-1} and
+  -- I₁ = {c, c+1, …, c+(n-1)} with c = (s₁ - s₂)·d⁻¹. Using n + m ≤ p (no
+  -- double wraparound), split on whether [γ, γ+n) wraps p where γ = c.val:
+  --   • no wrap (γ ≤ p-n): |I₁ \ I₂| = n - clamp(m-γ, 0, n); = 1 forces
+  --     (given n ≥ 2) γ = m - n + 1, i.e. c = m - n + 1, i.e. s₁ = s₂ + (m-n+1)·d.
+  --   • wrap (γ ≥ p-n+1): the high block {γ,…,p-1} lies outside I₂ (since
+  --     γ ≥ p-n+1 ≥ m) and the wrapped low block stays inside I₂ (vals < n ≤ m),
+  --     so |I₁ \ I₂| = p - γ; = 1 forces γ = p-1, i.e. c = -1, i.e. s₁ = s₂ - d.
+  -- The n = 1 case collapses both regimes to "count = n = 1" for *every* γ,
+  -- which is exactly why n ≥ 2 is required.
   sorry
 
 /-
@@ -255,13 +273,17 @@ lemma case1_exists (A B : Finset (ZMod p))
     by_cases hAB3 : A.card = 3 ∧ B.card = 3
     · obtain ⟨hA3eq, hB3eq⟩ := hAB3
       rw [hA3eq, hB3eq] at hineq; norm_num at hineq
-    · -- |A|≥4 or |B|≥4: (|A|-2)(|B|-2) ≥ 2, consistent with hineq.
-      -- The counting argument is exhausted. Need Kneser's theorem (not in Mathlib) or
-      -- a structural argument using Z/pZ having no proper non-trivial subgroups.
-      -- The key fact: from hredA + hredB, both A and B are "translation-closed" in a
-      -- union sense: ∀ a ∈ A, ∃ d ∈ (B-B)\{0}: a+d ∈ A. For |B|=2, d is unique →
-      -- A is closed under a single translation → orbit of size p. For |B|≥3, multiple
-      -- choices of d make the orbit argument fail without additional prime-group structure.
-      sorry -- [HARD] Requires Kneser's theorem or complete restructuring of Vosper proof
+    · -- |A|≥4 or |B|≥4: (|A|-2)(|B|-2) ≥ 2, consistent with hineq; counting is exhausted.
+      -- NOTE: Kneser's theorem does NOT help here — in `ZMod p` (p prime) the stabilizer
+      -- of A+B is {0} whenever |A+B| < p, so Kneser collapses to Cauchy–Davenport and says
+      -- nothing about the equality case. The correct tool is the **Dyson e-transform**, which
+      -- IS in Mathlib: `Finset.addDysonETransform` (Mathlib/Combinatorics/Additive/ETransform.lean),
+      -- with `Finset.addDysonETransform.card` (preserves |A|+|B|) and sumset-non-growth
+      -- ((τ x).1 + (τ x).2 ⊆ x.1 + x.2). Proof route: induct on |B| (base |B|=2 = vosper_base);
+      -- for |B|≥3 pick e = b₁-b₂ and apply τ to strictly shrink |B| while preserving
+      -- CD-equality and |A+B|<p, then pull AP structure back through the transform. An AP has
+      -- a removable endpoint, contradicting the all-redundant hypothesis. ~150–200 lines.
+      -- See research/problems/erdos-476-oq-05/knowledge.md (session 2026-06-15) for the blueprint.
+      sorry -- [HARD, known result] Dyson e-transform induction; needs a real build to verify API names
 
 end Erdos476OQ05Aristotle

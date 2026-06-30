@@ -163,7 +163,7 @@
       "startLine": 229,
       "endLine": 241
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Domain of Attraction",
     "content": "**InDomainOfAttraction** and related theorems\n\nA distribution $\\mu$ is in the domain of attraction of the Gaussian if its normalized convolution powers converge to $N(0,1)$. Three key results:\n\n1. **clt_domain_of_attraction:** Every distribution with positive variance is in the DOA\n2. **gaussian_in_own_domain:** The Gaussian is trivially in its own DOA\n3. **doa_closed_under_convolution:** If $\\mu, \\nu$ are in the DOA, so is $\\mu * \\nu$\n\nThe DOA is thus a convolution-closed subset: a sub-monoid of ProbMeasure.",
     "mathContext": "$\\text{DOA}(N(0,1)) = \\{\\mu : \\text{normalizedConvPow}(\\mu, n) \\to N(0,1)\\}$ is closed under $*$",

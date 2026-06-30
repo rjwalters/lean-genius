@@ -4,7 +4,21 @@
 **Phase**: BLOCKED
 **Path**: full
 **Since**: 2026-06-13T00:00:00-07:00
-**Iteration**: 3
+**Iteration**: 4
+**Last Updated**: 2026-06-14 (S4 GATE-SYNC, researcher-1 — propagated the 2026-06-13 BLOCKED flag to the gates `claim-random` reads)
+
+## Session 4 (2026-06-14, researcher-1) — GATE-SYNC
+
+The 2026-06-13 BLOCKED flag lived in state.md only: the research JSON read
+`status: "surveyed"` / `phase: "ORIENT"` and `.lean/state/candidate-pool.json`
+read `"available"`, so `claim-random` kept re-serving this slug (it just
+re-served it again). Aligned both gates to BLOCKED (JSON
+`status`/`phase`/`currentState.phase` → `blocked`/`BLOCKED`; pool → `"blocked"`,
+terminal/unclaimable). **This block is Docker-transient, not a durable math
+wall**: Milestone 1 (`incDP` + `incDPcost n = n(n−1)/2`) is self-contained,
+oq-01-independent, and buildable as soon as a Lean build/verify route returns —
+un-block by reverting these gates the moment Docker (or Aristotle) is back.
+No metadata/Lean change.
 
 ## Current Focus
 Survey complete and accurate (researcher-9 2026-06-13). Flagged **blocked**

@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "None (purely algebraic). The theorem four_oblique_corners is complete: it exhibits 4 distinct tour positions where the turn is oblique. The proof does not depend on native_decide or computational enumeration, unlike the 8×8 case.",
     "dateAdded": "2026-03-30",
-    "lineCount": 512,
+    "lineCount": 561,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -51,60 +51,53 @@
   },
   "sections": [
     {
-      "id": "parameterized-board",
-      "title": "Parameterized Board and Knight Graph",
+      "id": "sec1-board",
+      "title": "Section 1: Parameterized Board and Knight Graph",
       "startLine": 30,
-      "endLine": 75,
-      "summary": "Define SquareN n = Fin n × Fin n and the knight graph knightGraphN n with standard L-shaped moves.",
-      "mathContext": "$\\text{SquareN}\\, n = \\text{Fin}\\, n \\times \\text{Fin}\\, n$; $(a,b) \\sim (c,d) \\iff \\{|a-c|,|b-d|\\} = \\{1,2\\}$"
+      "endLine": 78,
+      "summary": "The parameterized n×n board and knightGraphN definition (the knight-move adjacency graph)."
     },
     {
-      "id": "move-vectors",
-      "title": "Move Vectors and Oblique Predicate",
-      "startLine": 77,
-      "endLine": 102,
-      "summary": "Define MoveVector, dot product, isOblique (dot < 0), and getMoveVector for computing directions.",
-      "mathContext": "$\\text{dot}((a,b),(c,d))=ac+bd$; $\\text{isOblique}(v_1,v_2) \\iff v_1\\cdot v_2 < 0 \\iff \\theta > 90^\\circ$; $|v|^2=5$ for knight moves"
+      "id": "sec2-moves",
+      "title": "Section 2: Move Vectors and Oblique Predicate",
+      "startLine": 79,
+      "endLine": 101,
+      "summary": "Knight move vectors and the oblique predicate distinguishing diagonal-style turns at corners."
     },
     {
-      "id": "closed-tour",
-      "title": "Closed Tour Structure",
-      "startLine": 104,
-      "endLine": 120,
-      "summary": "Define ClosedTourN n: a Hamiltonian cycle in the knight graph on the n×n board.",
-      "mathContext": "$\\text{ClosedTourN}\\, n$: Hamiltonian cycle $p_0,\\ldots,p_{n^2-1},p_0$ with $p_i\\sim p_{i+1}$, all $p_i$ distinct"
+      "id": "sec3-closed-tour",
+      "title": "Section 3: Closed Tour on n×n Board",
+      "startLine": 102,
+      "endLine": 115,
+      "summary": "The closed-tour structure: a cyclic Hamiltonian sequence of board squares with knight adjacency."
     },
     {
-      "id": "corner-analysis",
-      "title": "Corner Analysis for General n",
-      "startLine": 122,
-      "endLine": 220,
-      "summary": "Prove that for n ≥ 5, each of the 4 corners has exactly 2 knight-adjacent squares. Six of 8 offsets are eliminated by non-negativity of Fin coordinates.",
-      "mathContext": "$(0,0)$: 6 of 8 knight offsets require negative coords (impossible in Fin $n$), leaving $\\{(1,2),(2,1)\\}$; similarly for all 4 corners"
+      "id": "sec4-corner-analysis",
+      "title": "Section 4: Corner Analysis for General n",
+      "startLine": 116,
+      "endLine": 209,
+      "summary": "Corner analysis for general n: the limited knight moves available at each of the four corners and the resulting forced structure."
     },
     {
-      "id": "oblique-at-corners",
-      "title": "Oblique Turns at Corners (Algebraic Proof)",
-      "startLine": 222,
-      "endLine": 310,
-      "summary": "Prove that the turn at any corner is oblique. The dot product equals −4 in all cases: (−offset₁)·offset₂ = −(1·2 + 2·1) = −4 < 0.",
-      "mathContext": "Entry reversed: $(-\\Delta x,-\\Delta y)\\cdot(\\Delta x',\\Delta y')$; $(-1)(2)+(-2)(1)=-4$; $(-2)(1)+(-1)(2)=-4$; all $< 0$"
+      "id": "sec5-oblique-turns",
+      "title": "Section 5: Oblique Turns at Corners (Algebraic Proof)",
+      "startLine": 210,
+      "endLine": 319,
+      "summary": "corner_forces_oblique: an algebraic proof that any closed tour must make an oblique turn at each corner."
     },
     {
-      "id": "tour-properties",
-      "title": "Tour Properties",
-      "startLine": 312,
-      "endLine": 355,
-      "summary": "Prove that a closed tour visits all n² squares exactly once, with cyclic adjacency. The nodup property: distinct positions have distinct squares.",
-      "mathContext": "$t: \\text{Fin}(n^2) \\to \\text{SquareN}\\, n$ injective (nodup) and surjective ($|\\text{SquareN}\\, n|=n^2$)"
+      "id": "sec6-tour-properties",
+      "title": "Section 6: Tour Properties",
+      "startLine": 320,
+      "endLine": 365,
+      "summary": "General tour properties: cyclic adjacency (tour_cyclic_adj) and index-distinctness (tour_index_neq) used in the main argument."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem: Four Oblique Corners",
-      "startLine": 357,
-      "endLine": 470,
-      "summary": "The main result four_oblique_corners: every closed knight's tour on n×n (n ≥ 5) has 4 distinct positions (the corners) where the turn is oblique.",
-      "mathContext": "$\\forall n\\geq 5,\\; \\exists i_1\\neq i_2\\neq i_3\\neq i_4 : \\text{Fin}(n^2),\\; \\text{isOblique}(\\text{turn}_{i_j})$ for $j=1,2,3,4$"
+      "id": "sec7-main-theorem",
+      "title": "Section 7: Main Theorem",
+      "startLine": 366,
+      "endLine": 512,
+      "summary": "The main theorem: every closed oblique knight's tour on an n×n board has oblique turns at all four corners (TL, TR, BL, BR), proved by applying corner_forces_oblique at each corner via the cyclic adjacency structure."
     }
   ],
   "conclusion": {
@@ -154,7 +147,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 512,
+    "lineCount": 561,
     "path": "Proofs/KnightsTourObliqueOQ01.lean",
     "axiomCount": 0,
     "sorries": 0,

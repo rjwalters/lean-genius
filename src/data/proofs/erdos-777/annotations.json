@@ -16,7 +16,11 @@
       "Extremal set theory",
       "Comparability graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "set theory",
+      "graph theory"
+    ]
   },
   {
     "id": "ann-e777-comparable",
@@ -35,7 +39,11 @@
       "Partial orders",
       "Comparability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "order theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e777-graph",
@@ -54,7 +62,11 @@
       "Edge counting",
       "Finset operations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "Finset operations in Mathlib",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e777-baseset",
@@ -73,7 +85,11 @@
       "Cardinality"
     ],
     "mathContext": "See annotation content for formal details of base set and power set",
-    "prerequisites": []
+    "prerequisites": [
+      "finite set theory",
+      "combinatorics",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e777-question1",
@@ -92,7 +108,11 @@
       "ADGS theorem",
       "Edge counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "asymptotic analysis",
+      "enumerative combinatorics"
+    ]
   },
   {
     "id": "ann-e777-question2",
@@ -111,7 +131,11 @@
       "Edge density",
       "Alon-Frankl construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "probabilistic combinatorics",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e777-question3",
@@ -130,7 +154,11 @@
       "Density bounds",
       "Alon-Frankl theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "asymptotic analysis",
+      "enumerative combinatorics"
+    ]
   },
   {
     "id": "ann-e777-daykin-frankl",
@@ -149,7 +177,11 @@
       "Chains",
       "Complete comparability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "asymptotic analysis",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e777-chain",
@@ -168,7 +200,11 @@
       "Dilworth's theorem"
     ],
     "mathContext": "See annotation content for formal details of chains and antichains",
-    "prerequisites": []
+    "prerequisites": [
+      "order theory",
+      "set theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e777-sperner",
@@ -187,7 +223,11 @@
       "Binomial coefficients",
       "LYM inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "combinatorics",
+      "binomial coefficients"
+    ]
   },
   {
     "id": "ann-e777-examples",
@@ -206,7 +246,11 @@
       "Subset relation"
     ],
     "mathContext": "See annotation content for formal details of comparability examples",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "subset relation",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e777-adgs",
@@ -225,7 +269,11 @@
       "Comparable pairs",
       "Edge bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "asymptotic analysis",
+      "research literature"
+    ]
   },
   {
     "id": "ann-e777-summary",
@@ -244,6 +292,10 @@
       "Three questions"
     ],
     "mathContext": "See annotation content for formal details of main results summary",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic analysis",
+      "Lean 4 syntax"
+    ]
   }
 ]

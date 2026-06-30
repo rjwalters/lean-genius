@@ -1,8 +1,8 @@
 {
   "slug": "four-square-distribution-oq-01",
   "title": "Jacobi's Four-Square Formula r₄(n) = 8·σ*(n) in Lean 4",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,9 @@
     "goal": "Replace the axiom `jacobi_r4_formula` with a fully proved theorem in Lean 4."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-05-08",
-    "iteration": 30,
+    "iteration": 31,
     "focus": "S27 MIGRATION COMPLETE (researcher-2, PR #22949, merged 2026-06-13): FourSquareDistributionOQ01.lean migrated v4.25.x -> v4.26.0. The 87-error `ord_compl` / `Nat.ord_*` / `Nat.divisors_prime` API-drift regression that prior sessions flagged as a doctor/mechanic blocker is RESOLVED in-file via a compat-notation shim + camelCase wrappers (clears ~34 sites, 0 call-site edits) plus shiftedRange / split_ifs / List.nodup_range fixes; researcher-2 reports a clean Docker build (3061 jobs, 0 errors, 0 sorries, single axiom `jacobi_r4_formula` unchanged). Gallery meta re-synced post-migration (S30 PR #23082, researcher-4): meta.json / Lean source / state.md now agree at 2932 LOC / 128 theorems / 10 defs / 1 axiom / 0 sorries. The slug is in a clean, healthy state. Forward research work: Part-34 `combinedStabilizer_card v = z! * prod m_k! * 2^z` (PR #18549 PREP; bearers per PR #18695 audit) as the third stabilizer count toward axiom-free `8 | r4Count`, gated on Docker for verification; the open `jacobi_r4_formula` axiom remains the deep MATH blocker (needs Mathlib q-expansion / Eisenstein machinery, out of scope until upstream lands).",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
@@ -39,13 +39,13 @@
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build verification: the `proofs/.lake` self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold), and the host Docker daemon is currently down (2026-06-13 blackout). Further ACT (Part 34) and re-verification of the cumulative S5 -> S27 build are build-pending until a stable Docker window; per #22949's nextAction, re-verify once Docker is back."
     ],
-    "nextAction": "S30 STATE-SYNC complete: gallery meta.json is re-synced to the post-migration Lean source (2932 LOC / 128 col-0 theorems / 1 axiom `jacobi_r4_formula` / 0 sorries; meta.json, source, and state.md now agree). The v4.26.0 migration (#22949) is Docker BUILD-VERIFY clean (3061 jobs, 0 errors). Forward ACT — Part-34 `combinedStabilizer_card v = z! * prod m_k! * 2^z` (PR #18549 PREP) as the third stabilizer count toward an axiom-free `8 | r4Count` — is Docker-gated and DEFERRED: the host Docker daemon is DOWN (2026-06-13 blackout, `docker info` times out), so no build/verify route is currently available. The deep MATH blocker (`jacobi_r4_formula` axiom) remains open pending Mathlib q-expansion / Eisenstein-coefficient infrastructure. Resume Part-34 verification once Docker is back up.",
+    "nextAction": "S32 BLOCKED-PROPAGATION (researcher-5, 2026-06-14): the S31 BLOCKED decision (state.md) was never propagated to this JSON gate (status was still `active`/`phase ACT`) or the candidate pool (`in-progress`), so claim-random kept re-serving the slug during the Docker blackout despite no actionable work. Set status=blocked / phase=BLOCKED here and in the pool. Build-free re-audit confirmed gallery meta is CLEAN (2932 LOC, theoremCount 142 [intentional inclusive count incl private/protected/noncomputable per PR #23460; col-0 theorem|lemma = 128], 10 defs, 1 axiom, 0 sorries; 32 sections contiguous L60–2932). Both work items remain un-actionable: Part-34 verification is Docker-gated and the `jacobi_r4_formula` axiom needs upstream Mathlib q-expansion machinery. Unblock once Docker is back / upstream lands. PRIOR: S30 STATE-SYNC complete: gallery meta.json is re-synced to the post-migration Lean source (2932 LOC / 128 col-0 theorems / 1 axiom `jacobi_r4_formula` / 0 sorries; meta.json, source, and state.md now agree). The v4.26.0 migration (#22949) is Docker BUILD-VERIFY clean (3061 jobs, 0 errors). Forward ACT — Part-34 `combinedStabilizer_card v = z! * prod m_k! * 2^z` (PR #18549 PREP) as the third stabilizer count toward an axiom-free `8 | r4Count` — is Docker-gated and DEFERRED: the host Docker daemon is DOWN (2026-06-13 blackout, `docker info` times out), so no build/verify route is currently available. The deep MATH blocker (`jacobi_r4_formula` axiom) remains open pending Mathlib q-expansion / Eisenstein-coefficient infrastructure. Resume Part-34 verification once Docker is back up.",
     "attemptCounts": {
       "total": 26,
       "currentApproach": 6,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-13T22:00:00Z"
+    "lastUpdate": "2026-06-14T17:00:00Z"
   },
   "knowledge": {
     "progressSummary": "S27 MIGRATION+BUILD-VERIFY (researcher-2, 2026-06-12): FourSquareDistributionOQ01.lean migrated v4.25.x->v4.26.0 and now builds clean (3061 jobs, 0 errors, 0 sorries, 1 axiom). 87 error lines fixed via ord_proj/ord_compl compat-notation shim + Nat.ord_* camelCase wrappers, hp.divisors, Nat.zero_le for split_ifs, simp[hk_zero] for odd-case ord_compl, List.nodup_range arity, and a shiftedRange root-cause fix (Int.ofNat def to avoid the coercion-induced bind/do split, + Int.ofNat_eq_natCast for omega). +39/-22 LOC; 0 math content change.\n\nSTATE-SYNC + build-verification (this PR, researcher-10, 2026-05-13): catches state.md up to PRs #18418/#18549/#18640/#18695 (4 missing entries) and surfaces 87-error Mathlib v4.26.0 ord_compl regression on origin/main via docker-build. Doctor/mechanic-scope. S18c-orbit-precursor-3 ACT (PR #18640, 2026-05-13): Part 33 permStabilizer_card via DomMulAct, +46 LOC. S18c-orbit PREP (PR #18549, researcher-10, 2026-05-13): combined-stabilizer `z! · ∏ m_k! · 2^z` + 11-case enumeration confirming v₂(|Stab|) ≤ 4 in every (zero-pattern, partition) class. S18c-orbit-precursor-3 PREP (PR #18418, 2026-05-13): perm-stab design locked to `DomMulAct.stabilizer_card'` bearer. S18c-orbit Mathlib audit (PR #18695, researcher-5, 2026-05-13): phantom-lemma audit catching 3 phantom citations + 2 path errors in #18549. S17 (PR #17677, merged 2026-05-11): canonical σ*-side uniqueness reduces axiom to needing 3 hypotheses + 8∣r4Count. S18 spec (PR #17688, merged): 3-stage decomposition for axiom-free 8∣r4Count. S18a (PR #17702, merged ~80 lines Part 27): structural foldl ↔ nested-sum bridge for r4Count, route-agnostic between D₄/(ℤ/2)⁴ ⋊ S₄ orbit decompositions. S18b (this PR, ~70 lines Part 28): shiftedRange ↔ Finset.Icc bridges; innermost-level Finset.card substitution for the 4th-coord filter-length of r4Count_eq_nested_sum. Outer-three-layer nested-sum → Finset.product re-bundling + the orbit-decomposition defer to S18c.",
@@ -208,6 +208,12 @@
   "relatedProofs": [
     "four-square-distribution",
     "four-square-distribution-oq-01",
+    "four-square-distribution-oq-01-oq-01",
+    "four-square-distribution-oq-02",
+    "four-square-distribution-oq-04",
+    "four-square-distribution-oq-05",
+    "four-square-distribution-oq-06",
+    "four-square-distribution-oq-06-oq-01",
     "lagrange-four-squares",
     "lagrange-four-squares-oq-01"
   ],
@@ -228,14 +234,14 @@
     ]
   },
   "started": "2026-05-06T16:07:09+03:00",
-  "lastUpdate": "2026-06-13T22:00:00Z",
+  "lastUpdate": "2026-06-14T17:00:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/FourSquareDistribution.lean",
       "filename": "FourSquareDistribution.lean",
-      "lineCount": 400,
+      "lineCount": 401,
       "theoremCount": 38,
       "axiomCount": 0,
       "defCount": 21,
@@ -246,13 +252,156 @@
     {
       "path": "Proofs/FourSquareDistributionOQ01.lean",
       "filename": "FourSquareDistributionOQ01.lean",
-      "lineCount": 2847,
-      "theoremCount": 125,
+      "lineCount": 2933,
+      "theoremCount": 128,
       "axiomCount": 1,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ01OQ01.lean",
+      "filename": "FourSquareDistributionOQ01OQ01.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ02.lean",
+      "filename": "FourSquareDistributionOQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ02.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04.lean",
+      "filename": "FourSquareDistributionOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Arrange.lean",
+      "filename": "FourSquareDistributionOQ04Arrange.lean",
+      "lineCount": 149,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Arrange.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04ArrangeProof.lean",
+      "filename": "FourSquareDistributionOQ04ArrangeProof.lean",
+      "lineCount": 264,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04ArrangeProof.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Bridge.lean",
+      "filename": "FourSquareDistributionOQ04Bridge.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Bridge.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Decomp.lean",
+      "filename": "FourSquareDistributionOQ04Decomp.lean",
+      "lineCount": 185,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Decomp.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Keystone.lean",
+      "filename": "FourSquareDistributionOQ04Keystone.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Keystone.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04M8.lean",
+      "filename": "FourSquareDistributionOQ04M8.lean",
+      "lineCount": 227,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 22,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04M8.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ04Sign.lean",
+      "filename": "FourSquareDistributionOQ04Sign.lean",
+      "lineCount": 98,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ04Sign.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ05.lean",
+      "filename": "FourSquareDistributionOQ05.lean",
+      "lineCount": 214,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ05.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06.lean",
+      "filename": "FourSquareDistributionOQ06.lean",
+      "lineCount": 173,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06.lean"
+    },
+    {
+      "path": "Proofs/FourSquareDistributionOQ06OQ01.lean",
+      "filename": "FourSquareDistributionOQ06OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ06OQ01.lean"
     }
   ]
 }

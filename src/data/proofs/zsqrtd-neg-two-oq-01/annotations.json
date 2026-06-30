@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "The open question: assemble one bi-conditional for $p = x^2 + 2y^2$",
+    "content": "The module docstring fixes the scope precisely. The parent file `Proofs.ZsqrtdNegTwo` proves the two *forward* implications $p \\equiv 1 \\pmod 8 \\Rightarrow \\exists a\\,b,\\ a^2 + 2b^2 = p$ and $p \\equiv 3 \\pmod 8 \\Rightarrow \\exists a\\,b,\\ a^2 + 2b^2 = p$ via the Euclidean structure of $\\mathbb{Z}[\\sqrt{-2}]$, but never states the **converse** or glues everything into a single $\\iff$. This file adds exactly two things: (1) `repr_mod_eight`, the converse, which is the genuinely new mathematical content; and (2) `prime_sq_add_two_sq_iff`, the unified characterization the open question requests. No new ring theory is introduced — the heavy lifting (the two forward directions) is imported and reused verbatim.",
+    "mathContext": "The classical theorem is that an odd prime $p$ is represented by the principal form $x^2 + 2y^2$ of discriminant $-8$ iff $p \\equiv 1$ or $3 \\pmod 8$, equivalently iff $\\left(\\tfrac{-2}{p}\\right) = 1$. Together with the even prime $2 = 0^2 + 2\\cdot 1^2$ this gives the full list $\\{p : p = 2 \\lor p \\equiv 1,3 \\pmod 8\\}$. This is the $n = 2$ analogue of Fermat's two-squares theorem ($n = 1$: $p = x^2 + y^2 \\iff p = 2 \\lor p \\equiv 1 \\pmod 4$).",
+    "significance": "key",
+    "relatedConcepts": ["binary quadratic forms", "discriminant -8", "Fermat's two-squares theorem", "forward vs converse implication", "open question scoping"],
+    "prerequisites": ["modular arithmetic", "sum-of-two-squares representation theorems"]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 41, "endLine": 46 },
+    "type": "concept",
+    "title": "Imports and the inherited $\\mathtt{SqAddTwoSq}$ namespace",
+    "content": "Two imports: `Mathlib` (the kitchen-sink, bringing `decide`, `omega`, `push_cast`, `norm_num`, `simp` into scope) and `Proofs.ZsqrtdNegTwo`, the parent file. `open SqAddTwoSq` pulls the parent's two forward theorems — `sq_add_two_sq_of_prime_one_mod_eight` and `sq_add_two_sq_of_prime_three_mod_eight` — into the unqualified namespace so the backward direction of the bi-conditional can name them directly. The new declarations live under a fresh `namespace ZsqrtdNegTwoOQ01` to avoid clashing with the parent.",
+    "mathContext": "The parent's forward theorems are the deep inputs: each asserts that a prime in a given residue class mod 8 is a norm from $\\mathbb{Z}[\\sqrt{-2}]$, proved through that ring being a Euclidean domain (hence a PID, hence every prime $p$ with $\\left(\\tfrac{-2}{p}\\right)=1$ splits as $p = \\alpha\\bar\\alpha = a^2 + 2b^2$). This file treats them as a black box.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib import discipline", "namespace management", "code reuse", "Euclidean domain"],
+    "prerequisites": ["Lean 4 modules and namespaces"]
+  },
+  {
+    "id": "ann-converse-statement",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 48, "endLine": 56 },
+    "type": "theorem",
+    "title": "$\\mathtt{repr\\_mod\\_eight}$: the converse, with oddness only",
+    "content": "The new content. `repr_mod_eight` states: if an *odd* natural number $p$ is representable as $a^2 + 2b^2$ with $a, b : \\mathbb{Z}$, then $p \\equiv 1$ or $3 \\pmod 8$. The crucial economy is that **primality is never used** — only the hypothesis `hodd : p % 2 = 1`. This makes the lemma strictly more general than the prime case the open question literally asks about, and decouples the converse entirely from the algebraic-number-theory machinery of the parent.",
+    "mathContext": "Why oddness alone suffices: an odd $p$ forces $a$ odd (since $2b^2$ is even and $a^2 = p - 2b^2$ is then odd), and every odd square satisfies $a^2 \\equiv 1 \\pmod 8$. Meanwhile $2b^2 \\equiv 0$ or $2 \\pmod 8$ according as $b$ is even or odd. Summing, $p = a^2 + 2b^2 \\equiv 1 + \\{0,2\\} = \\{1, 3\\} \\pmod 8$. The Lean proof packages this parity bookkeeping into a single finite check rather than splitting on the parities of $a$ and $b$ by hand.",
+    "significance": "critical",
+    "relatedConcepts": ["converse implication", "odd squares mod 8", "generalization beyond primes", "quadratic form values"],
+    "prerequisites": ["squares modulo 8", "even/odd parity arithmetic"]
+  },
+  {
+    "id": "ann-reduce-mod8",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "tactic",
+    "title": "Step (A): push the integer identity into $\\mathbb{Z}/8\\mathbb{Z}$",
+    "content": "The representing equation `a^2 + 2*b^2 = (p : ℤ)` is transported into `ZMod 8` by applying the ring homomorphism `Int.castRingHom (ZMod 8)` to both sides via `congrArg`, then `simpa` simplifies the cast of a sum/product/power into the corresponding `ZMod 8` operations, yielding `(a : ZMod 8)^2 + 2*(b : ZMod 8)^2 = (p : ZMod 8)`. Using `congrArg` of a ring hom (rather than `push_cast` alone) is the robust idiom when a cast must pass through `^`: a sibling file in this same development hit `push_cast` failing to push `↑(a^2)` through the power, and the fix was precisely `congrArg (Int.castRingHom _)` + `simpa`.",
+    "mathContext": "Reduction mod 8 is a ring homomorphism $\\mathbb{Z} \\to \\mathbb{Z}/8\\mathbb{Z}$, so it preserves the polynomial expression $a^2 + 2b^2$. The point of descending to $\\mathbb{Z}/8\\mathbb{Z}$ is to replace an identity over an infinite ring with an equation in an 8-element ring, where the achievable values can be enumerated by brute force.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring homomorphism", "congrArg", "push_cast", "reduction modulo n", "casts through powers"],
+    "prerequisites": ["ZMod n", "ring homomorphisms preserve operations"]
+  },
+  {
+    "id": "ann-forbidden-decide",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 61, "endLine": 67 },
+    "type": "insight",
+    "title": "Step (B): $x^2 + 2y^2$ is never $5$ or $7$ in $\\mathbb{Z}/8\\mathbb{Z}$ — a $64$-case $\\mathtt{decide}$",
+    "content": "The heart of the converse. `hforbidden : ∀ x y : ZMod 8, x^2 + 2*y^2 ≠ 5 ∧ x^2 + 2*y^2 ≠ 7` is discharged by a single `decide`, which exhaustively evaluates all $8 \\times 8 = 64$ pairs $(x,y)$ in `ZMod 8 × ZMod 8`. Because `ZMod 8` is a `Fintype` with `DecidableEq`, the universally-quantified statement is decidable and the **kernel** reduces it to `True`. This is ordinary `decide`, *not* `native_decide` — so it relies only on kernel reduction and introduces **no** `Lean.ofReduceBool` axiom, keeping the entry genuinely axiom-free. Instantiating `hforbidden` at $(a, b)$ and rewriting backward through step (A)'s identity gives `(p : ZMod 8) ≠ 5` and `≠ 7`.",
+    "mathContext": "Direct enumeration: the squares in $\\mathbb{Z}/8\\mathbb{Z}$ are $\\{0,1,4\\}$ and $2 \\cdot \\{0,1,4\\} = \\{0,2,8\\equiv 0\\} = \\{0,2\\}$, so the achievable sums $x^2 + 2y^2$ are $\\{0,1,4\\} + \\{0,2\\} = \\{0,1,2,3,4,6\\}$. The residues $5$ and $7$ are missing — and these are exactly the two odd residues that must be excluded to pin the odd $p$ into $\\{1,3\\}$.",
+    "significance": "critical",
+    "relatedConcepts": ["decide vs native_decide", "Fintype exhaustive check", "Lean.ofReduceBool axiom", "image of a quadratic form", "axiom-free verification"],
+    "prerequisites": ["decidable propositions over finite types", "squares modulo 8"]
+  },
+  {
+    "id": "ann-transport-omega",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 68, "endLine": 77 },
+    "type": "tactic",
+    "title": "Steps (C)–(D): transport exclusions to $p \\bmod 8$ and close with $\\mathtt{omega}$",
+    "content": "Step (C) bridges the $\\mathbb{Z}/8\\mathbb{Z}$ exclusions back to natural-number residues using `ZMod.natCast_mod : ((p % 8 : ℕ) : ZMod 8) = (p : ZMod 8)`. Assuming `p % 8 = 5` (resp. `7`) and casting would contradict `h5` (resp. `h7`), giving `hv5 : p % 8 ≠ 5` and `hv7 : p % 8 ≠ 7`. Step (D) then has four purely arithmetic facts about the natural number $r := p \\% 8$: $r < 8$ (`Nat.mod_lt`), $r$ is odd (`hpar`, derived from `hodd` by `omega`), $r \\neq 5$, $r \\neq 7$. The single odd residue $< 8$ avoiding $5$ and $7$ that remains is $\\{1, 3\\}$, and `omega` closes the disjunction.",
+    "mathContext": "The transport is the standard bridge between the abstract quotient $\\mathbb{Z}/8\\mathbb{Z}$ (where the `decide` lives) and the concrete remainder $p \\bmod 8 \\in \\{0,\\dots,7\\}$ (where the conclusion lives). `omega` decides linear arithmetic over $\\mathbb{Z}$/$\\mathbb{N}$ with divisibility/modulo, so once the residue is boxed into a finite window with two forbidden values and a parity constraint, the conclusion is mechanical.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod.natCast_mod", "omega decision procedure", "residue transport", "linear arithmetic over N"],
+    "prerequisites": ["natural-number mod", "Presburger arithmetic / omega"]
+  },
+  {
+    "id": "ann-iff-statement",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 79, "endLine": 99 },
+    "type": "theorem",
+    "title": "$\\mathtt{prime\\_sq\\_add\\_two\\_sq\\_iff}$: the unified characterization",
+    "content": "The capstone the open question requested: for every prime $p$, $(\\exists a\\,b : \\mathbb{Z},\\ a^2 + 2b^2 = p) \\iff (p = 2 \\lor p \\% 8 = 1 \\lor p \\% 8 = 3)$. The **forward** direction (`→`) splits on $p = 2$; otherwise `Nat.Prime.eq_two_or_odd` supplies oddness and `repr_mod_eight` finishes. The **backward** direction (`←`) is a three-way case split: $p = 2$ gives the explicit witness $\\langle 0, 1\\rangle$ ($0^2 + 2\\cdot 1^2 = 2$); the $p \\% 8 = 1$ and $p \\% 8 = 3$ branches invoke the parent's two forward theorems, after introducing the `Fact (Nat.Prime p)` instance the parent's API expects. Every branch is either a one-liner witness or a verbatim call to imported machinery — the entire mathematical novelty is concentrated in `repr_mod_eight`.",
+    "mathContext": "This is the complete characterization of primes represented by the principal form $x^2 + 2y^2$ of discriminant $-8$. The class number of discriminant $-8$ is $1$ (the form is the unique reduced form), which is exactly why representability is governed by a single clean congruence condition mod 8 rather than a genus/class decomposition. The even prime $2$ is the ramified prime (it divides the discriminant) and is handled separately by an explicit witness.",
+    "significance": "key",
+    "relatedConcepts": ["bi-conditional characterization", "Nat.Prime.eq_two_or_odd", "Fact typeclass instance", "ramified prime", "class number 1"],
+    "prerequisites": ["prime case analysis (2 vs odd)", "the parent forward theorems"]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "zsqrtd-neg-two-oq-01",
+    "range": { "startLine": 101, "endLine": 105 },
+    "type": "insight",
+    "title": "Sanity checks: explicit witnesses for $2, 3, 11, 17$",
+    "content": "Four `example` declarations pin concrete representations: $2 = 0^2 + 2\\cdot 1^2$, $3 = 1^2 + 2\\cdot 1^2$, $11 = 3^2 + 2\\cdot 1^2$, $17 = 3^2 + 2\\cdot 2^2$, each closed by `norm_num` on the supplied witness. These are not used downstream — they are executable documentation guarding against a vacuous or mis-stated existential: $3 \\equiv 3 \\pmod 8$, $11 \\equiv 3$, $17 \\equiv 1$, and $2$ is the even prime, so the four examples exercise all three branches of the bi-conditional's right-hand side.",
+    "mathContext": "Spot-checking small cases of a representation theorem is a cheap correctness witness: it certifies that the existential $\\exists a\\,b,\\ a^2 + 2b^2 = p$ is genuinely satisfiable for representative primes, complementing the abstract proof. The smallest prime *not* represented is $5$ ($5 \\equiv 5 \\pmod 8$), correctly excluded by the characterization.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "norm_num", "executable documentation", "explicit witnesses"],
+    "prerequisites": ["existential witnesses in Lean"]
+  }
+]

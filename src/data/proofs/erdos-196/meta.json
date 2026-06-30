@@ -47,73 +47,65 @@
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Permutation Type",
+      "title": "Imports and Module Overview",
       "startLine": 21,
-      "endLine": 30,
-      "summary": "Imports Mathlib for equivalences ($\\mathbb{N} \\equiv \\mathbb{N}$), monotonicity, and tactics. Defines `Perm` as the type of bijections on $\\mathbb{N}$."
+      "endLine": 26,
+      "summary": "Imports Mathlib for equivalences ($\\mathbb{N} \\equiv \\mathbb{N}$), monotonicity, and tactics, following the opening module docstring summarizing key results and references."
     },
     {
-      "id": "ap-definitions",
-      "title": "Arithmetic Progression Definitions",
-      "startLine": 33,
-      "endLine": 42,
-      "summary": "Defines IsAP3, IsAP4, IsAP5 via constant differences $b - a = c - b = \\cdots$ with strict ordering $a < b < c < \\cdots$.",
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 27,
+      "endLine": 43,
+      "summary": "Defines `Perm` (the type of bijections on $\\mathbb{N}$) and the progression predicates IsAP3, IsAP4, IsAP5 via constant differences $b - a = c - b = \\cdots$ with strict ordering $a < b < c < \\cdots$.",
       "mathContext": "A $k$-term arithmetic progression: $a, a+d, a+2d, \\ldots, a+(k-1)d$ with common difference $d > 0$. Here $a < b < c$ and $b - a = c - b$."
     },
     {
       "id": "monotone-aps",
       "title": "Monotone APs in Permutations",
-      "startLine": 47,
-      "endLine": 60,
+      "startLine": 44,
+      "endLine": 61,
       "summary": "HasMonotone$k$AP$(\\pi)$: $\\exists$ monotone indices with values forming a $k$-AP. Covers 3, 4, and 5-term variants.",
       "mathContext": "$\\text{HasMonotone4AP}(\\pi) \\iff \\exists i_1 < i_2 < i_3 < i_4$ with $\\pi(i_1), \\pi(i_2), \\pi(i_3), \\pi(i_4)$ forming an AP (either increasing or decreasing)."
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture ($k = 4$)",
-      "startLine": 64,
-      "endLine": 67,
-      "summary": "ErdosProblem196: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. The critical threshold question.",
+      "startLine": 62,
+      "endLine": 69,
+      "summary": "ErdosProblem196: $\\forall \\pi: \\mathbb{N} \\equiv \\mathbb{N},$ HasMonotone4AP$(\\pi)$. The critical threshold question, stated as a definition since it is open.",
       "mathContext": "Conjecture: every permutation $\\pi : \\mathbb{N} \\to \\mathbb{N}$ contains a monotone 4-term AP. OPEN."
     },
     {
-      "id": "degs-results",
-      "title": "DEGS Results ($k = 3$ and $k = 5$)",
-      "startLine": 72,
-      "endLine": 77,
-      "summary": "DEGS (1977): $k = 3$ always exists (axiom), $k = 5$ can be avoided (axiom). Establishes the $k = 4$ threshold.",
-      "mathContext": "DEGS (1977): $k = 3$ — every permutation has a monotone 3-AP. $k = 5$ — there exists a permutation avoiding all monotone 5-APs. So $k = 4$ is the threshold candidate."
-    },
-    {
-      "id": "implication",
-      "title": "4-AP Implies 3-AP (Proved)",
-      "startLine": 80,
-      "endLine": 89,
-      "summary": "Lean proof that the 4-AP conjecture implies the 3-AP theorem by extracting three terms and using `omega`.",
-      "mathContext": "If $\\pi$ has a monotone 4-AP $(a, a+d, a+2d, a+3d)$, then $(a, a+d, a+2d)$ is a monotone 3-AP. Proved in Lean via index extraction and `omega`."
+      "id": "known-results",
+      "title": "Known Results ($k = 3$, $k = 5$, and 4-AP $\\Rightarrow$ 3-AP)",
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "Records the DEGS (1977) results in comments — $k = 3$ always exists, $k = 5$ can be avoided — and proves `conjecture_implies_3ap`: the 4-AP conjecture implies the 3-AP theorem by extracting three terms and using `omega`.",
+      "mathContext": "DEGS (1977): $k = 3$ — every permutation has a monotone 3-AP; $k = 5$ — there exists a permutation avoiding all monotone 5-APs, so $k = 4$ is the threshold candidate. The Lean theorem shows that if $\\pi$ has a monotone 4-AP $(a, a+d, a+2d, a+3d)$, then $(a, a+d, a+2d)$ is a monotone 3-AP."
     },
     {
       "id": "parity",
       "title": "Common Difference Parity Analysis",
-      "startLine": 94,
-      "endLine": 114,
-      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), parity dichotomy (proved), and the structural equivalence to even-CD forcing.",
+      "startLine": 86,
+      "endLine": 130,
+      "summary": "Odd/even CD definitions, LeSaulnier–Vijay odd-CD avoidance (2011), the parity dichotomy `ap4_parity` (proved), and the structural equivalence `conjecture_equiv_even_forced` reducing the conjecture to even-CD forcing.",
       "mathContext": "LeSaulnier-Vijay (2011): odd-CD monotone 4-APs can be avoided. So the conjecture reduces to: can *even-CD* monotone 4-APs be avoided? Parity dichotomy proved in Lean."
     },
     {
       "id": "non-extendability",
       "title": "Non-Extendability Constraints",
-      "startLine": 128,
-      "endLine": 134,
-      "summary": "If no 4-AP exists, each 3-AP forbids a value at all later monotone positions — accumulating constraints toward a contradiction.",
+      "startLine": 131,
+      "endLine": 150,
+      "summary": "`non_extendable_constraint`: if no monotone 4-AP exists, each monotone 3-AP forbids the value $a + 3d$ at all later monotone positions — accumulating constraints toward a contradiction.",
       "mathContext": "If $(a, a+d, a+2d)$ is a monotone 3-AP in $\\pi$, then $a+3d$ cannot appear at a monotone position — a forbidden value constraint."
     },
     {
       "id": "erdos-szekeres",
       "title": "Erdős–Szekeres Connection",
-      "startLine": 138,
-      "endLine": 145,
-      "summary": "Erdős–Szekeres (1935): $n > (r-1)(s-1) \\implies$ monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs.",
+      "startLine": 151,
+      "endLine": 155,
+      "summary": "A closing contextual note (no theorem): Erdős–Szekeres (1935) — every sequence of $(r-1)(s-1)+1$ distinct numbers has a monotone subsequence of length $r$ or $s$. Gives long monotone subsequences but not APs.",
       "mathContext": "Erdős-Szekeres: every sequence of $> (r-1)(s-1)$ distinct reals has an increasing subsequence of length $r$ or decreasing of length $s$. Gives structure but not AP structure."
     }
   ],

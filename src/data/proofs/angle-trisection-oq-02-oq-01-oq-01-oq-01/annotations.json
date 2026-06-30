@@ -6,7 +6,7 @@
       "startLine": 1,
       "endLine": 35
     },
-    "type": "context",
+    "type": "concept",
     "title": "Module Setup: Extending CharZero to Separable",
     "content": "The module opens by importing the parent file AngleTrisectionOQ02OQ01 (which proves natDegree_dvd_card_gal for CharZero fields) and the full Mathlib. The key architectural decision is stated in the header docstring: CharZero is not the true hypothesis — it is only used to invoke `Irreducible.separable`. Once separability is made explicit, the entire proof works over any field, regardless of characteristic.",
     "mathContext": "Parent import: `Proofs.AngleTrisectionOQ02OQ01`. Namespaces opened: `Polynomial`, `IntermediateField`. The file is self-contained: all five theorems are proved from Mathlib lemmas, with one axiom for the inseparable counterexample.",
@@ -51,7 +51,7 @@
       "startLine": 80,
       "endLine": 88
     },
-    "type": "technique",
+    "type": "insight",
     "title": "One-Line CharZero Corollary via Irreducible.separable",
     "content": "The CharZero version is now a one-line corollary: `natDegree_dvd_card_gal_of_sep p_irr p_irr.separable`. The `Irreducible.separable` instance (requiring [CharZero F]) automatically produces p.Separable, which is forwarded to the general theorem. This demonstrates the standard pattern for combining instance-based hypotheses with explicit hypotheses.",
     "mathContext": "Irreducible.separable : [CharZero F] → Irreducible p → p.Separable. Once separability is an explicit argument, CharZero becomes just one way to provide it.",
@@ -73,7 +73,7 @@
       "startLine": 90,
       "endLine": 113
     },
-    "type": "technique",
+    "type": "insight",
     "title": "2-Group Galois Criterion Generalized to Any Characteristic",
     "content": "Two theorems generalize the angle-trisection constructibility criterion to any field (not just CharZero), provided the polynomial is separable. `galois_2group_implies_degree_pow2_sep` shows that if Gal(p) is a 2-group then natDegree(p) | 2^n for some n. `galois_2group_implies_degree_is_pow2_sep` upgrades this to natDegree(p) = 2^k: since natDegree(p) divides a power of 2 and is positive, it must itself be a power of 2. This is used to block trisection constructions for separable cubics over any characteristic-p field.",
     "mathContext": "IsPGroup 2 (p.Gal) + natDegree_dvd_card_gal_of_sep → natDegree(p) | 2^n. Then dvd_pow_two_is_pow_two (any positive divisor of 2^n is 2^k for some k ≤ n) gives natDegree(p) = 2^k. For a cubic (natDegree = 3), this is a contradiction: 3 ≠ 2^k for any k.",

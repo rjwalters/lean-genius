@@ -46,44 +46,53 @@
   },
   "sections": [
     {
-      "id": "leibniz",
-      "title": "Operation Count for Determinant via Leibniz Formula",
+      "id": "part1-det-count",
+      "title": "Part I: Operation Count for Determinant via Leibniz Formula",
       "startLine": 1,
-      "endLine": 55,
-      "summary": "Defines operation counts for computing an n×n determinant: n! summands, each with n-1 multiplications, plus n!-1 additions.",
-      "mathContext": "$\\det(A) = \\sum_{\\sigma \\in S_n} \\text{sign}(\\sigma) \\prod_i a_{i,\\sigma(i)}$. $|S_n| = n!$ summands."
+      "endLine": 62,
+      "summary": "Module overview plus the Leibniz-formula operation model: perm_count (|S_n| = n!), the definitions leibnizSummands/multsPerSummand/detMultiplications/detAdditions/detOperations, and det_operations_formula = n!(n-1) + (n!-1)."
     },
     {
-      "id": "cramer",
-      "title": "Operation Count for Cramer's Rule",
-      "startLine": 56,
-      "endLine": 78,
-      "summary": "Total: (n+1) determinant computations + n divisions.",
-      "mathContext": "Cramer: $x_i = \\det(A_i)/\\det(A)$. Need $n+1$ determinants."
+      "id": "part2-cramer-count",
+      "title": "Part II: Operation Count for Cramer's Rule",
+      "startLine": 63,
+      "endLine": 84,
+      "summary": "cramerOperations n = (n+1)·detOperations n + n, with cramer_lower_bound: at least (n+1)(n!-1) operations for n >= 2."
     },
     {
-      "id": "gaussian",
-      "title": "Operation Count for Gaussian Elimination",
-      "startLine": 79,
-      "endLine": 110,
-      "summary": "Forward elimination + back-substitution. Total ≈ n³/3 + n²/2 = O(n³).",
-      "mathContext": "Forward elimination: $\\sum_{k=1}^{n-1} (n-k)(n-k+1)$ operations."
+      "id": "part3-gaussian-count",
+      "title": "Part III: Operation Count for Gaussian Elimination",
+      "startLine": 85,
+      "endLine": 136,
+      "summary": "forwardElimOps/backSubOps/gaussianOperations definitions, back_sub_formula = n(n-1)/2, and gaussian_cubic_bound: Gaussian elimination is O(n^3) (bounded by n^3 for n >= 1)."
     },
     {
-      "id": "factorial",
-      "title": "Factorial Dominates Polynomial",
-      "startLine": 111,
-      "endLine": 135,
-      "summary": "Proves n! ≥ n³ for n ≥ 6 by strong induction. Base case: 720 ≥ 216. Step: (n+1)·n³ ≥ (n+1)³ since m³ ≥ (m+1)² for m ≥ 3.",
-      "mathContext": "$n! \\geq n^3$ for $n \\geq 6$. Inductive step: $(n+1)! = (n+1) \\cdot n! \\geq (n+1) \\cdot n^3 \\geq (n+1)^3$."
+      "id": "part4-factorial-dominates",
+      "title": "Part IV: Factorial Dominates Polynomial",
+      "startLine": 137,
+      "endLine": 162,
+      "summary": "factorial_ge_cube: n! >= n^3 for n >= 6, by induction with the m^3 >= (m+1)^2 step -- the key asymptotic dominance making Cramer's Rule impractical."
     },
     {
-      "id": "exact-counts",
-      "title": "Exact Operation Counts for Small Systems",
-      "startLine": 136,
-      "endLine": 210,
-      "summary": "Computes exact Cramer operation counts: n=1→1, n=2→11, n=3→71, n=4→479. Discusses when Cramer's Rule is still useful.",
-      "mathContext": "Cramer operations: 1, 11, 71, 479 for $n = 1, 2, 3, 4$."
+      "id": "part5-crossover",
+      "title": "Part V: Exact Crossover Point",
+      "startLine": 163,
+      "endLine": 187,
+      "summary": "Exact small-n Cramer operation counts: cramer_ops_2 = 11, cramer_ops_3 = 71, cramer_ops_4 = 479, locating the crossover with O(n^3) around n = 4-5."
+    },
+    {
+      "id": "part6-when-useful",
+      "title": "Part VI: When IS Cramer's Rule Useful?",
+      "startLine": 188,
+      "endLine": 211,
+      "summary": "cramer_ops_1 = 1 and singleComponentCramer / single_component_formula (one extra determinant per component) -- when Cramer is competitive: tiny systems, single-component, or symbolic/theoretical use."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 212,
+      "endLine": 228,
+      "summary": "Recap of the formalized results (perm_count, det_operations_formula, cramer_lower_bound, factorial_ge_cube, exact counts 1/11/71/479, gaussian_cubic_bound) and #check exports."
     }
   ],
   "conclusion": {

@@ -16,7 +16,11 @@
       "polynomial derivatives",
       "arithmetic progressions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "real analysis",
+      "calculus"
+    ]
   },
   {
     "id": "ann-e1114-imports",
@@ -35,7 +39,10 @@
       "polynomial algebra",
       "real analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lean 4 syntax",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1114-aproots",
@@ -54,7 +61,11 @@
       "polynomial roots",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sequences and series",
+      "Lean 4 type theory",
+      "Mathlib library structure"
+    ]
   },
   {
     "id": "ann-e1114-hasaproots",
@@ -73,7 +84,11 @@
       "IsRoot",
       "factored form"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "field theory",
+      "Lean 4 syntax"
+    ]
   },
   {
     "id": "ann-e1114-rolle",
@@ -92,7 +107,11 @@
       "critical points",
       "intermediate value theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "differential calculus",
+      "polynomial algebra"
+    ]
   },
   {
     "id": "ann-e1114-gap",
@@ -111,7 +130,11 @@
       "monotonicity",
       "Fin arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "Lean 4 type theory",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e1114-midpoint",
@@ -130,7 +153,11 @@
       "absolute value",
       "midpoint formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "Euclidean geometry",
+      "absolute value and metrics"
+    ]
   },
   {
     "id": "ann-e1114-balint",
@@ -149,7 +176,11 @@
       "convexity",
       "logarithmic derivative"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "complex analysis",
+      "convex analysis"
+    ]
   },
   {
     "id": "ann-e1114-symmetric",
@@ -168,7 +199,11 @@
       "endpoint behavior",
       "U-shape pattern"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "order theory",
+      "polynomial algebra"
+    ]
   },
   {
     "id": "ann-e1114-quartic",
@@ -187,7 +222,11 @@
       "special cases",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial algebra",
+      "differential calculus",
+      "real analysis"
+    ]
   },
   {
     "id": "ann-e1114-lorch",
@@ -206,6 +245,10 @@
       "iterated Rolle",
       "Lorch 1976"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real analysis",
+      "differential calculus",
+      "polynomial algebra"
+    ]
   }
 ]

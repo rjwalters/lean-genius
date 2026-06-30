@@ -1,0 +1,135 @@
+{
+  "id": "lhopital-oq-02-incomplete-01",
+  "title": "Growth Limits via the ∞/∞ L'Hôpital Rule: ln x/x, x/eˣ, (x+ln x)/x",
+  "slug": "lhopital-oq-02-incomplete-01",
+  "description": "Three classic growth-comparison limits derived as direct corollaries of the parent's ∞/∞ L'Hôpital rule: (ln x)/x → 0, x/eˣ → 0 (the c = 0 cases), and (x + ln x)/x → 1 (a worked c ≠ 0 instance).",
+  "meta": {
+    "author": "Robb Walters (Lean Genius researcher)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LHopitalOQ02Incomplete01.lean",
+    "tags": [
+      "calculus",
+      "limits",
+      "lhopital",
+      "real-analysis",
+      "indeterminate-forms",
+      "growth-rates"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.hasDerivAt_log",
+        "description": "Derivative of the natural logarithm: HasDerivAt log x⁻¹ x for x ≠ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Deriv"
+      },
+      {
+        "theorem": "Real.hasDerivAt_exp",
+        "description": "Derivative of the exponential: HasDerivAt exp (exp x) x",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Real.tendsto_exp_atTop",
+        "description": "exp → +∞ as x → +∞, supplying the divergent denominator for x/eˣ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "tendsto_inv_atTop_zero",
+        "description": "x⁻¹ → 0 as x → +∞, the auxiliary f'/g' limit for the c = 0 cases",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "(ln x)/x → 0 derived as the c = 0 instance of the parent ∞/∞ L'Hôpital rule (f = log, g = id, f'/g' = x⁻¹ → 0)",
+      "x/eˣ → 0 derived as the c = 0 instance (f = id, g = exp, f'/g' = (eˣ)⁻¹ → 0), showing exponential dominance over the identity",
+      "(x + ln x)/x → 1 derived as a worked c ≠ 0 instance (f'/g' = 1 + x⁻¹ → 1), confirming the parent rule handles a genuinely nonzero target limit",
+      "Demonstrates the parent's abstract ∞/∞ theorem is usable: the hard divergence behaviour is reduced to elementary derivative lemmas and an inverse-limit computation"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 122,
+    "assumptions": "0 axioms, 0 sorries. All three limits fully machine-checked (only the standard foundational axioms propext / Classical.choice / Quot.sound). Depends on the parent entry lhopital-oq-02 for the ∞/∞ L'Hôpital rule (LHopitalInfty.lhopital_infty_atTop), itself 0-axiom.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring framing the leaf as worked corollaries of the parent ∞/∞ rule, a per-limit f/g/f'/g' table, and the status checklist. Imports Log.Deriv, Exp, Exponential, and the parent module Proofs.LHopitalOQ02; opens Set Filter Topology Real.",
+      "mathContext": "Each limit is an ∞/∞ indeterminate form f/g with g → +∞. The parent rule LHopitalInfty.lhopital_infty_atTop reduces the limit of f/g to the easy limit of f'/g'."
+    },
+    {
+      "id": "log-over-id",
+      "title": "Corollary 1: (ln x)/x → 0",
+      "startLine": 65,
+      "endLine": 86,
+      "summary": "log_div_id_atTop: with f = log, g = id, derivatives x⁻¹ and 1, the ratio f'/g' = x⁻¹ → 0 (tendsto_inv_atTop_zero) and g = id → +∞ (tendsto_id), so the parent rule yields (log x)/x → 0.",
+      "mathContext": "The logarithm grows slower than any positive power of x; the degree-one statement is the canonical illustration of the ∞/∞ rule with target c = 0."
+    },
+    {
+      "id": "id-over-exp",
+      "title": "Corollary 2: x/eˣ → 0",
+      "startLine": 87,
+      "endLine": 108,
+      "summary": "id_div_exp_atTop: with f = id, g = exp, derivatives 1 and eˣ, the ratio f'/g' = (eˣ)⁻¹ → 0 (tendsto_inv_atTop_zero ∘ tendsto_exp_atTop) and g = exp → +∞, so the parent rule yields x/eˣ → 0.",
+      "mathContext": "The exponential dominates every polynomial; the degree-one case x/eˣ → 0 is the classic ∞/∞ example named in the parent entry's commentary, here proved rather than annotated."
+    },
+    {
+      "id": "nonzero-limit",
+      "title": "Corollary 3: (x + ln x)/x → 1 (the c ≠ 0 case)",
+      "startLine": 109,
+      "endLine": 122,
+      "summary": "id_add_log_div_id_atTop: with f = x + log x, g = id, derivatives 1 + x⁻¹ and 1, the ratio f'/g' = 1 + x⁻¹ → 1 (tendsto_const_nhds.add tendsto_inv_atTop_zero) and g → +∞, so the parent rule yields (x + ln x)/x → 1.",
+      "mathContext": "Exercises the general c ≠ 0 form of the parent rule, confirming it is not silently specialised to vanishing ratios. The leading-order term x dominates, so the ratio tends to 1."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The parent entry (lhopital-oq-02) fills a gap in Mathlib by formalizing the ∞/∞ form of L'Hôpital's rule, which Mathlib's 26 L'Hôpital variants (as of v4.26.0) do not cover. That entry states the abstract rule and lists x/eˣ → 0 only as commentary. This leaf turns the rule into a working tool, deriving three textbook growth-comparison limits that historically motivated L'Hôpital's ∞/∞ form: the logarithm losing to the identity, the identity losing to the exponential, and a nonzero-limit ratio. These growth hierarchies (log ≪ polynomial ≪ exponential) underpin asymptotic analysis and the analysis of algorithms.",
+    "problemStatement": "Derive concrete growth-comparison limits as corollaries of the ∞/∞ L'Hôpital rule: (i) (ln x)/x → 0, (ii) x/eˣ → 0, and (iii) (x + ln x)/x → 1, all as x → +∞.",
+    "text": "Apply the parent's ∞/∞ L'Hôpital rule to obtain three classic limits, exercising both the c = 0 and c ≠ 0 cases.",
+    "proofStrategy": "For each limit f/g (with g → +∞) supply the derivatives f', g', verify g' ≠ 0 on Ioi 0, verify g → atTop, and compute the elementary limit of f'/g'; LHopitalInfty.lhopital_infty_atTop then delivers the conclusion. The auxiliary f'/g' limits are x⁻¹ → 0, (eˣ)⁻¹ → 0, and 1 + x⁻¹ → 1, all immediate from tendsto_inv_atTop_zero.",
+    "keyInsights": [
+      "An abstract L'Hôpital theorem becomes useful only when the hypotheses (derivative lemmas, non-vanishing denominator, divergence of g, and the f'/g' limit) can be assembled mechanically — these three corollaries demonstrate that for the parent rule",
+      "The c = 0 cases (log/x and x/eˣ) and the c ≠ 0 case ((x+log x)/x → 1) together confirm the parent theorem handles both vanishing and nonzero target limits",
+      "x/eˣ → 0 was listed only as commentary in the parent file; deriving it formally closes the loop between statement and application",
+      "The hard part — the ∞/∞ divergence behaviour — is entirely delegated to the parent's two-variable Cauchy-MVT argument, leaving only routine inverse-limit computations here"
+    ],
+    "conclusion": "All three growth limits are fully machine-checked with no sorries and no extra axioms, depending only on the parent's 0-axiom ∞/∞ L'Hôpital rule and standard Mathlib derivative/limit lemmas."
+  },
+  "conclusion": {
+    "summary": "Three classic growth-comparison limits — (ln x)/x → 0, x/eˣ → 0, and (x + ln x)/x → 1 — are derived as direct corollaries of the parent's ∞/∞ L'Hôpital rule (LHopitalInfty.lhopital_infty_atTop). 0 sorries, 0 axioms; verified with Lean 4.26.0.",
+    "implications": "Demonstrates that the parent's abstract ∞/∞ theorem is genuinely usable: it reduces hard divergent-ratio limits to elementary derivative and inverse-limit computations. The c = 0 cases cover logarithmic and exponential growth dominance, while the c ≠ 0 case shows the general statement is not accidentally restricted to vanishing limits. These corollaries form a small template for deriving further asymptotic limits from the rule.",
+    "openQuestions": [
+      "Can the higher-degree cases (xⁿ/eˣ → 0 for n ≥ 2, or (ln x)/xˢ → 0 for s > 0) be derived by iterating the ∞/∞ rule, and is there a clean inductive packaging of the polynomial-vs-exponential hierarchy?",
+      "Should these limits be phrased as IsLittleO statements (log =o[atTop] id, id =o[atTop] exp) to connect with Mathlib's asymptotics API?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent entry: formalizes the ∞/∞ L'Hôpital rule (LHopitalInfty.lhopital_infty_atTop) that this leaf applies to derive concrete growth limits",
+      "sharedConcepts": [
+        "lhopital",
+        "limits",
+        "derivatives",
+        "indeterminate-forms"
+      ],
+      "targetId": "lhopital-oq-02"
+    },
+    {
+      "relationship": "Sibling: the base L'Hôpital entry formalizing the 0/0 form (Wiedijk #64)",
+      "sharedConcepts": [
+        "lhopital",
+        "limits",
+        "derivatives"
+      ],
+      "targetId": "lhopital"
+    }
+  ],
+  "sorries": 0
+}

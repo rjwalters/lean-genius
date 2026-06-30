@@ -42,8 +42,8 @@
     ],
     "originalContributions": [
       "Formalization of sunflower (delta-system) definition",
-      "Definition of sunflower number f(n,k)",
-      "Axiomatization of Erdős-Rado lemma and modern bounds",
+      "Axiomatization of the sunflower number f(n,k) (its exact value requires checking all families)",
+      "Explicit definition of the Erdős-Rado bound (k-1)^n·n! (erdosRadoBound); the modern bounds (Kostochka, ALWZ, Rao) are recorded as documentation, not Lean axioms",
       "Statement of sunflower conjecture and k=3 special case",
       "Examples of sunflowers with non-empty and empty cores"
     ],
@@ -57,7 +57,7 @@
     "historicalContext": "The Sunflower Conjecture is one of the most famous and longest-standing open problems in combinatorics, carrying a $1,000 Erdős prize. A sunflower (or $\\Delta$-system) is a collection of sets whose pairwise intersections are all identical — this shared part is the 'core', and the remaining parts are the 'petals'.\n\nPaul Erdős and Richard Rado introduced the concept in their seminal 1960 paper 'Intersection theorems for systems of sets' (Journal of the London Mathematical Society), proving the Sunflower Lemma: any family of more than $(k-1)^n \\cdot n!$ sets of size $n$ must contain a $k$-sunflower. They conjectured the $n!$ factor is an artifact of their inductive proof and can be removed entirely.\n\nFor 37 years no one improved on the original bound. In 1997, Alexandr Kostochka achieved the first improvement — replacing $n!$ by $o(n!)$ — earning a $100 consolation prize from Erdős. The problem then stagnated again until 2020, when Ryan Alweiss, Shachar Lovett, Kewen Wu, and Jiapeng Zhang achieved a spectacular breakthrough, reducing the upper bound to $(Ck \\log n \\log \\log n)^n$. Within months, Anup Rao refined this further to $(Ck \\log n)^n$ using ideas from coding theory. The remaining $(\\log n)^n$ gap between Rao's bound and the conjectured $c_k^n$ is now 'the last barrier' — one of the most tantalizing open questions in modern combinatorics.",
     "problemStatement": "**Conjecture (Erdős-Rado, OPEN):** For each k ≥ 3, there exists c_k > 0 such that f(n,k) < c_k^n.\n\nHere f(n,k) is the minimum size such that every family of f(n,k) sets, each of size n, contains a k-sunflower.\n\n**Current best:**\n- Upper bound: (Ck log n)^n (Rao 2020)\n- Lower bound: (k-1)^n\n- Conjectured: c_k^n\n\n**The $1,000 prize** is specifically for the k=3 case.",
     "text": "Is f(n,k) < c_k^n where f(n,k) is the minimum family size guaranteeing a k-sunflower? OPEN with $1,000 prize. Major progress by ALWZ (2020) and Rao (2020).",
-    "proofStrategy": "The formalization defines:\n\n1. `IsUniform F n`: family F has all sets of size n\n2. `IsSunflower petals k`: k sets with identical pairwise intersections\n3. `ContainsSunflower F k`: family F has a k-sunflower\n4. `sunflowerNumber n k`: minimum m guaranteeing sunflower (f(n,k))\n5. `SunflowerConjecture`: f(n,k) < c_k^n for all k ≥ 3\n\nWe axiomatize:\n- Erdős-Rado (1960): f(n,k) ≤ (k-1)^n · n!\n- Kostochka (1997): o(n!) improvement\n- ALWZ (2020): (Ck log n log log n)^n\n- Rao (2020): (Ck log n)^n (current best)",
+    "proofStrategy": "The formalization defines:\n\n1. `IsUniform F n`: family F has all sets of size n\n2. `IsSunflower petals k`: k sets with identical pairwise intersections\n3. `ContainsSunflower F k`: family F has a k-sunflower\n4. `sunflowerNumber n k`: minimum m guaranteeing sunflower (f(n,k))\n5. `SunflowerConjecture`: f(n,k) < c_k^n for all k ≥ 3\n\nWe axiomatize a single object: the sunflower number `sunflowerNumber` (its exact value requires checking all families). The historical upper bounds are recorded as documentation only — they are NOT Lean axioms or proved theorems in this file:\n- Erdős-Rado (1960): f(n,k) ≤ (k-1)^n · n! (`erdosRadoBound` defines the right-hand expression)\n- Kostochka (1997): o(n!) improvement\n- ALWZ (2020): (Ck log n log log n)^n\n- Rao (2020): (Ck log n)^n (current best)\n\nThe one substantive proved result is `gap_description`: the equivalence between `RequiredBound` and the full `SunflowerConjecture`.",
     "keyInsights": [
       "**The $k=3$ barrier:** Erdős said 'the whole difficulty' lies in $k=3$. The $k=2$ case is trivial ($f(n,2) = n+1$ by pigeonhole), and a proof for $k=3$ would likely yield techniques for all $k$.",
       "**Spread approximation revolution:** The 2020 ALWZ breakthrough introduced 'spread' families — where sets remain well-distributed under random restrictions. They proved that large uniform families contain spread subfamilies, which in turn contain sunflowers, reducing $n!$ to $(\\log n)^n$.",
@@ -93,70 +93,70 @@
     {
       "id": "sunflower-number",
       "title": "Sunflower Number $f(n,k)$",
-      "summary": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ and its finiteness",
+      "summary": "Axiomatizes $f(n,k) = \\min\\{m : \\text{every } n\\text{-uniform family of size } m \\text{ has a } k\\text{-sunflower}\\}$ as an opaque function (`sunflowerNumber`)",
       "startLine": 55,
-      "endLine": 65,
+      "endLine": 60,
       "mathContext": "$f(n,k)$: min $m$ such that every $n$-uniform family of size $m$ contains a $k$-sunflower. The sunflower lemma gives upper bounds."
     },
     {
       "id": "erdos-rado",
       "title": "Erdős-Rado Lemma (1960)",
-      "summary": "Original upper bound $f(n,k) \\leq (k-1)^n \\cdot n!$ with explicit bound definition `erdosRadoBound`",
-      "startLine": 66,
-      "endLine": 78,
+      "summary": "Explicit definition `erdosRadoBound` $= (k-1)^n \\cdot n!$ capturing the right-hand side of the 1960 bound (the inequality itself is documented, not formalized)",
+      "startLine": 61,
+      "endLine": 68,
       "mathContext": "Erdos-Rado (1960): $f(n,k) \\\\leq (k-1)^n \\\\cdot n! + 1$. Proved by greedy: if no sunflower, family has bounded size."
     },
     {
       "id": "conjecture",
       "title": "The Sunflower Conjecture",
       "summary": "OPEN conjecture: $\\forall k \\geq 3, \\exists c_k > 0 : f(n,k) < c_k^n$, plus the critical $k=3$ special case",
-      "startLine": 79,
-      "endLine": 92,
+      "startLine": 69,
+      "endLine": 82,
       "mathContext": "OPEN: $\\\\exists c_k$ with $f(n,k) \\\\leq c_k^n$ (exponential in $n$, not factorial). Would remove the $n!$ factor."
     },
     {
       "id": "progress",
       "title": "Progress on the Conjecture",
-      "summary": "Three milestones: Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$",
-      "startLine": 93,
-      "endLine": 112,
+      "summary": "Section header; the three milestones — Kostochka (1997) $o(n!)$ factor, ALWZ (2020) $(Ck\\log n \\log\\log n)^n$, Rao (2020) $(Ck\\log n)^n$ — are recorded in the module documentation, not formalized",
+      "startLine": 83,
+      "endLine": 84,
       "mathContext": "Kostochka (1997): $o(n!)$ factor. ALWZ (2020): $f(n,k) \\\\leq (Ck\\\\log(kn))^n$. Bell-Li-Tao (2021): further improvements."
     },
     {
       "id": "gap",
       "title": "The Remaining Gap",
-      "summary": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation",
-      "startLine": 113,
-      "endLine": 132,
+      "summary": "Defines `RequiredBound` ($\\exists c > 0: f(n,k) \\leq c^n$) and proves its equivalence to the full conjecture via strict/non-strict inequality manipulation (`gap_description`)",
+      "startLine": 85,
+      "endLine": 104,
       "mathContext": "Gap: best upper $\\\\leq (C\\\\log n)^n$ vs conjectured $c_k^n$. Still a $(\\\\log n)^n$ factor from the conjecture."
     },
     {
       "id": "special-cases",
       "title": "Special Cases and Lower Bound",
-      "summary": "Exact values $f(n,2) = n+1$ and $f(2,3) = 6$; lower bound $f(n,k) \\geq (k-1)^n$ from product constructions",
-      "startLine": 133,
-      "endLine": 144,
+      "summary": "Section header; the special values $f(n,2) = n+1$, $f(2,3) = 6$ and the $(k-1)^n$ lower bound are noted in documentation, not formalized",
+      "startLine": 105,
+      "endLine": 106,
       "mathContext": "$f(n,2) = n+1$ (pigeonhole). $f(2,3) = 6$. Lower: $f(n,k) \\\\geq (k-1)^n$."
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "summary": "Verified 3-sunflowers: $\\{1,2,3\\}, \\{1,4,5\\}, \\{1,6,7\\}$ (core $\\{1\\}$) and $\\{1,2\\}, \\{3,4\\}, \\{5,6\\}$ (empty core $\\emptyset$)",
-      "startLine": 145,
-      "endLine": 166,
+      "startLine": 107,
+      "endLine": 128,
       "mathContext": "3-sunflower: $\\\\{1,2,3\\\\}, \\\\{1,4,5\\\\}, \\\\{1,6,7\\\\}$ with core $\\\\{1\\\\}$. Petals disjoint."
     },
     {
       "id": "applications",
-      "title": "Applications",
-      "summary": "Connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS",
-      "startLine": 167,
+      "title": "Applications and Problem Status",
+      "summary": "Documented connections to matrix multiplication exponent, ACC$^0$ circuit lower bounds, and property testing in TCS, plus the problem-status summary and the decidability tautology `erdos_20_open` (LEM)",
+      "startLine": 129,
       "endLine": 168,
       "mathContext": "Matrix multiplication ($\\\\omega$), circuit lower bounds (ACC$^0$), property testing. Sunflower bounds have wide algorithmic implications."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full state of knowledge on Erdős Problem #20, the Sunflower Conjecture. It defines the key concepts (uniform families, sunflowers, cores), axiomatizes the sunflower number $f(n,k)$ and four major upper bounds spanning 60 years of research, proves the equivalence between `RequiredBound` and the full conjecture, and provides verified examples of both non-empty-core and empty-core sunflowers.",
+    "summary": "This formalization captures the full state of knowledge on Erdős Problem #20, the Sunflower Conjecture. It defines the key concepts (uniform families, sunflowers, cores), axiomatizes the sunflower number $f(n,k)$ (the single Lean axiom), gives an explicit definition of the Erdős-Rado bound, and records four major upper bounds spanning 60 years of research as documentation. It proves the equivalence between `RequiredBound` and the full conjecture, and provides verified examples of both non-empty-core and empty-core sunflowers.",
     "implications": "**Theoretical Significance**: The Sunflower Conjecture sits at the intersection of combinatorics and theoretical computer science:\n\n1. **Matrix multiplication:** In the Cohn-Umans group-theoretic framework, sunflower-free families in $\\mathbb{Z}_q^n$ yield constructions for fast matrix multiplication — resolving the conjecture would constrain possible approaches to improving the exponent $\\omega$.\n2. **Circuit complexity:** Razborov's (1985) monotone circuit lower bounds and Rossman's (2014) average-case formula complexity results both rely on sunflower lemma variants.\n**3. Coding theory:** Rao's proof establishes that sunflower-free families are equivalent to certain error-correcting codes, creating a bridge between combinatorics and information theory.\n4. **Probabilistic method evolution:** The ALWZ 'spread approximation' technique has become a new tool in probabilistic combinatorics, influencing work on Kahn-Kalai and other conjectures.\n5. **Formalization significance:** This entry demonstrates how open conjectures with rich partial progress can be meaningfully formalized — the axioms capture the state of the art while the proved equivalence shows genuine mathematical structure.",
     "openQuestions": [
       "Can the $(\\log n)^n$ factor in Rao's bound $f(n,k) \\leq (Ck \\log n)^n$ be removed, proving the conjecture?",

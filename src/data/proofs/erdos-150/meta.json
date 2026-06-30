@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview & Problem Statement",
+      "summary": "Module docstring for Erdős Problem #150 (minimal cuts in graphs): bounding the maximum number of minimal cuts a graph on n vertices can have. SOLVED by Bradač (2024). Includes the statement and Mathlib imports.",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": null
+    },
+    {
       "id": "graph-definitions",
       "title": "Graph Definitions",
       "summary": "isVertexCut, isMinimalCut, minimalCuts definitions",
@@ -116,62 +124,62 @@
       "title": "Seymour's Construction",
       "summary": "seymour_construction axiom: c(3m+2) >= 3^m",
       "startLine": 95,
-      "endLine": 121,
+      "endLine": 118,
       "mathContext": "seymour_construction axiom: c(3m+2) >= $3^{m}$"
     },
     {
       "id": "binary-entropy",
       "title": "Binary Entropy Function",
       "summary": "binaryEntropy H(p) definition and properties",
-      "startLine": 120,
-      "endLine": 142,
+      "startLine": 119,
+      "endLine": 141,
       "mathContext": "Formal definition: binaryEntropy H(p) definition and properties"
     },
     {
       "id": "bradac-theorem",
       "title": "Bradac's Theorem",
       "summary": "limit_exists, alpha, bradac_upper_bound, alpha_less_than_two",
-      "startLine": 143,
-      "endLine": 201,
+      "startLine": 142,
+      "endLine": 200,
       "mathContext": "limit_exists, $\\alpha$, bradac_upper_bound, alpha_less_than_two"
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
       "summary": "erdos_150: the limit exists and alpha < 2",
-      "startLine": 202,
-      "endLine": 224,
+      "startLine": 201,
+      "endLine": 223,
       "mathContext": "erdos_150: the limit exists and $\\alpha$ < 2"
     },
     {
       "id": "bounds-summary",
       "title": "Bounds Summary",
       "summary": "alpha_lower_bound, alpha_upper_bound, alpha_bounds",
-      "startLine": 225,
-      "endLine": 251,
+      "startLine": 224,
+      "endLine": 250,
       "mathContext": "Bound: alpha_lower_bound, alpha_upper_bound, alpha_bounds"
     },
     {
       "id": "bradac-conjecture",
       "title": "Bradac's Conjecture",
       "summary": "bradac_conjecture: alpha = 3^{1/3}",
-      "startLine": 252,
-      "endLine": 265,
+      "startLine": 251,
+      "endLine": 264,
       "mathContext": "bradac_conjecture: $\\alpha$ = $$3^{{1/3}$}$"
     },
     {
       "id": "special-values",
       "title": "Special Values",
       "summary": "c_seymour_bound, c_5_ge_3, c_8_ge_9, c_11_ge_27",
-      "startLine": 266,
-      "endLine": 306,
+      "startLine": 265,
+      "endLine": 305,
       "mathContext": "Bound: c_seymour_bound, c_5_ge_3, c_8_ge_9, c_11_ge_27"
     },
     {
       "id": "main-results",
       "title": "Main Results Summary",
       "summary": "erdos_150_summary, erdos_150_answer",
-      "startLine": 307,
+      "startLine": 306,
       "endLine": 334,
       "mathContext": "Mathematical content: erdos_150_summary, erdos_150_answer"
     }

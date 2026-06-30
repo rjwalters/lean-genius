@@ -143,6 +143,21 @@
       "proofId": "ptolemys-theorem",
       "relationship": "related",
       "description": "Both are classical geometry results from antiquity. Heron (c. 60 AD) and Ptolemy (c. 150 AD) developed foundational geometric computation tools."
+    },
+    {
+      "targetId": "herons-formula-oq-03",
+      "relationship": "extended-by",
+      "description": "Kahan's numerically stable variant of Heron's formula; this verified child proves the algebraic identity kahan_product = 16·heron_product and equivalence with the classical triangle area."
+    },
+    {
+      "targetId": "herons-formula-oq-04",
+      "relationship": "extended-by",
+      "description": "Verified isoperimetric result: among triangles of fixed perimeter the equilateral maximizes area, proved via three-variable AM-GM on (s−a)(s−b)(s−c) ≤ (s/3)³."
+    },
+    {
+      "targetId": "herons-formula-oq-05",
+      "relationship": "extended-by",
+      "description": "Verified generalization to simplex content via the Cayley–Menger determinant, with the triangle case 16·Area² = −cmDet recovering Heron's formula as a polynomial identity in squared edge lengths."
     }
   ],
   "conclusion": {

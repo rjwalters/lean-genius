@@ -88,67 +88,115 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring stating Erdős Problem #789 (the growth rate of h(n), the largest sum-length-free subset) and Mathlib imports.",
+      "mathContext": "Erdős #789 asks for the asymptotic growth of h(n): the size of the largest subset B of {1,...,n} in which no two distinct subsets have the same sum and the same number of terms. The problem remains open."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "SumRep structure, SumLengthFree property",
       "startLine": 41,
-      "endLine": 60,
+      "endLine": 61,
+      "summary": "SumRep structure, SumLengthFree property",
       "mathContext": "SumRep structure, SumLengthFree property"
     },
     {
       "id": "h-function",
       "title": "The Function h(n)",
-      "summary": "Definition and existence axioms for h(n)",
       "startLine": 62,
       "endLine": 75,
+      "summary": "Definition and existence axioms for h(n)",
       "mathContext": "Definition and existence axioms for h(n)"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Erdős n^{5/6}, Straus √n (best known)",
       "startLine": 76,
-      "endLine": 89,
+      "endLine": 90,
+      "summary": "Erdős n^{5/6}, Straus √n (best known)",
       "mathContext": "Erdős n^{5/6}, Straus √n (best known)"
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "summary": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)",
       "startLine": 91,
-      "endLine": 104,
+      "endLine": 105,
+      "summary": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)",
       "mathContext": "Erdős n^{1/3}, Choi (n log n)^{1/3} (best known)"
     },
     {
       "id": "gap",
       "title": "The Gap and Combined Bounds",
-      "summary": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n",
       "startLine": 106,
       "endLine": 119,
+      "summary": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n",
       "mathContext": "Combined bounds theorem: (n log n)^{1/3} ≪ h(n) ≪ √n"
+    },
+    {
+      "id": "erdos-construction",
+      "title": "Erdős's Construction",
+      "startLine": 120,
+      "endLine": 130,
+      "summary": "Erdős's probabilistic construction for the lower bound, and Choi's refinement.",
+      "mathContext": "Documents Erdős's probabilistic lower-bound construction: for random α ∈ [0,1], take B = {a ∈ A : {αa} lies in a short interval around n^{-1/3}}, giving expected |B| ≈ n^{1/3} that is likely sum-length-free; followed by Choi's improvement via more careful analysis."
     },
     {
       "id": "sidon",
       "title": "Connection to Sidon Sets",
-      "summary": "IsSidonSet definition; connection noted in docstrings only, not formalized",
       "startLine": 131,
       "endLine": 141,
+      "summary": "IsSidonSet definition; connection noted in docstrings only, not formalized",
       "mathContext": "IsSidonSet definition"
+    },
+    {
+      "id": "related-problems",
+      "title": "Related Problems",
+      "startLine": 142,
+      "endLine": 149,
+      "summary": "Connections to neighbouring Erdős problems #186 (sum-free sets) and #874.",
+      "mathContext": "Notes the relationship between h(n) and Erdős Problem #186 (sum-free sets) and Problem #874; these connections are recorded as docstrings, not formalized."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 150,
+      "endLine": 156,
+      "summary": "Small-n behaviour: h(1) = 1 trivially, with explicit bounds available for small sets.",
+      "mathContext": "For n = 1, h(1) = 1 trivially; for small sets explicit bounds on the largest sum-length-free subset can be computed directly."
     },
     {
       "id": "examples",
       "title": "Computational Examples",
-      "summary": "√1000 and √10^6 via native_decide",
       "startLine": 157,
-      "endLine": 177,
+      "endLine": 178,
+      "summary": "√1000 and √10^6 via native_decide",
       "mathContext": "√1000 and √10^6 via native_decide"
+    },
+    {
+      "id": "conjectures",
+      "title": "Conjectures",
+      "startLine": 179,
+      "endLine": 196,
+      "summary": "The conjectured growth rates for h(n), packaged as possible_growth_rates.",
+      "mathContext": "Defines possible_growth_rates capturing three plausible asymptotic scenarios for h(n): (1) h(n) ~ n^{1/2} (the Straus upper bound is tight), (2) h(n) ~ n^α for some 1/3 < α < 1/2, or (3) h(n) grows slower than any power of n. Determining the correct exponent is the open problem."
+    },
+    {
+      "id": "proof-techniques",
+      "title": "Proof Techniques",
+      "startLine": 197,
+      "endLine": 206,
+      "summary": "Survey of the methods behind the bounds: counting arguments, the probabilistic method, and Diophantine approximation.",
+      "mathContext": "Summarizes the proof techniques: the upper bound uses a counting argument on sum representations, the lower bound uses the probabilistic method with fractional parts, and Diophantine approximation underlies Erdős's construction."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem combining bounds, problem OPEN",
       "startLine": 207,
       "endLine": 242,
+      "summary": "Main theorem combining bounds, problem OPEN",
       "mathContext": "Main theorem combining bounds, problem OPEN"
     }
   ],

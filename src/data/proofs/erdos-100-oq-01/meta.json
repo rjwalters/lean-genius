@@ -117,6 +117,11 @@
       "targetId": "ramseys-theorem",
       "relationship": "related",
       "description": "Ramsey Theory \u2014 shares the theme of forced structure in large combinatorial configurations. Both Ramsey theory (monochromatic cliques in colorings) and integer distance sets (large diameter forced by integer arithmetic) ask: what structure is unavoidable in large configurations? The Anning-Erd\u0151s theorem (no infinite non-collinear integer distance sets) is a Ramsey-type finiteness result for planar geometry."
+    },
+    {
+      "proofId": "erdos-100-oq-01-wip-01",
+      "relationship": "extended-by",
+      "description": "Implements the Anning-Erdos finiteness theorem (1945) that this entry invokes: any non-collinear planar point set with all pairwise distances integers and bounded by d is finite, via the circle-intersection argument (two fixed points admit only finitely many integer-distance loci, whose pairwise intersections are finite). The WIP entry supplies the rigorous formal proof of the finiteness fact OQ-01 uses qualitatively in its gap analysis."
     }
   ],
   "references": [

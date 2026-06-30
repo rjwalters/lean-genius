@@ -242,7 +242,7 @@
       "startLine": 144,
       "endLine": 145
     },
-    "type": "definition",
+    "type": "axiom",
     "title": "FolkmanNumber",
     "content": "f(l; k) is the minimum number of vertices in a Folkman graph for parameters (l, k). Defined via `Nat.find` using the existence guarantee from the Nešetřil-Rödl theorem.",
     "mathContext": "$f(l;\\, k) = \\min\\{|V(G)| : G \\text{ is } K_{l+1}\\text{-free and } G \\to (K_l)^k_2\\}$. The `Nat.find` definition searches for the minimum $n$ such that `ErdosHajnalQuestion k l` holds with a graph on $n$ vertices. Computing Folkman numbers is extremely challenging: $f(3;\\,2) = 786$, while Folkman's original construction gave $f(3;\\,2) \\le 10^{10^{10}}$. The Nesetril-Rodl construction gives tower-type bounds. Reductions to $f(3;\\,2) = 786$ required decades of work.",

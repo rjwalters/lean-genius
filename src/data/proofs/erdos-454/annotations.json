@@ -125,8 +125,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 92,
-      "endLine": 93
+      "startLine": 102,
+      "endLine": 108
     },
     "title": "The Deviation",
     "content": "`deviation n` $= f(n) - 2p_n$ over $\\mathbb{Z}$. This measures the signed distance between the minimum symmetric sum and twice the central prime. Positive deviation means ALL symmetric sums exceed $2p_n$; negative means some fall below.",
@@ -148,8 +148,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 96,
-      "endLine": 99
+      "startLine": 110,
+      "endLine": 114
     },
     "title": "Extended Natural Deviation",
     "content": "`deviationENat n` casts non-negative deviations to $\\mathbb{N}_\\infty$ and maps negative deviations to $0$. This allows the $\\limsup$ to take values in $\\mathbb{N}_\\infty = \\mathbb{N} \\cup \\{\\infty\\}$, where the conjecture asks whether $\\limsup = \\infty = \\top$.",
@@ -174,8 +174,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 104,
-      "endLine": 106
+      "startLine": 118,
+      "endLine": 121
     },
     "title": "The $i = 0$ Case",
     "content": "Proves `symmetric_sum_at_zero`: $p_{n+0} + p_{n-0} = 2p_n$ by `simp [mul_comm]`. This is the anchor point — the $i = 0$ term always contributes exactly $2p_n$ to the infimum, establishing $f(n) \\le 2p_n$.",
@@ -197,8 +197,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 114,
-      "endLine": 118
+      "startLine": 135,
+      "endLine": 141
     },
     "title": "Asymmetric Behavior",
     "content": "Proves `asymmetric_behavior`: for $i > 0$ and $i < n$, $p_{n+i} > p_n$ and $p_{n-i} < p_n$. Both follow from `nthPrime_strictMono` applied to $n + i > n$ and $n - i < n$. Whether $p_{n+i} + p_{n-i}$ exceeds or falls below $2p_n$ depends on which gap is larger.",
@@ -221,8 +221,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 126,
-      "endLine": 126
+      "startLine": 145,
+      "endLine": 149
     },
     "title": "Pomerance's Lower Bound (1979)",
     "content": "`pomerance_1979` (axiom): $2 \\le \\limsup$ `deviationENat atTop`. Infinitely many $n$ have $f(n) - 2p_n \\ge 2$, meaning ALL symmetric sums at those positions exceed $2p_n + 2$. The proof uses the chromatic number of Pomerance's Prime Number Graph.",
@@ -245,8 +245,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 147,
-      "endLine": 148
+      "startLine": 183,
+      "endLine": 190
     },
     "title": "Main Conjecture: $\\limsup = \\infty$",
     "content": "`Erdos454Conjecture` $:=$ $\\limsup$ `deviationENat atTop` $= \\top$. In $\\mathbb{N}_\\infty$, $\\top = \\infty$, so this asks: for every $M$, there exists $n$ with `deviationENat n` $\\ge M$. Equivalently, deviations are unbounded.",
@@ -269,8 +269,8 @@
     "proofId": "erdos-454",
     "type": "concept",
     "range": {
-      "startLine": 168,
-      "endLine": 169
+      "startLine": 227,
+      "endLine": 229
     },
     "title": "Large Prime Gaps Exist",
     "content": "`large_prime_gaps_exist` (axiom): $\\forall G,\\, \\exists k,\\, p_{k+1} - p_k \\ge G$. Arbitrarily large prime gaps exist — classically proved via the construction $n! + 2, n! + 3, \\ldots, n! + n$ (all composite). Large gaps are necessary but not sufficient for large deviations.",
@@ -292,8 +292,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 227,
-      "endLine": 234
+      "startLine": 284,
+      "endLine": 295
     },
     "title": "The Prime Number Graph",
     "content": "`primeNumberGraph` is a `SimpleGraph ℕ` where $n \\sim m$ iff $n \\ne m$ and $p_n + p_m = p_k$ for some $k$. Symmetry is proved by commutativity of addition ($p_n + p_m = p_m + p_n$). Looplessness follows from $n \\ne n$ being false. This is Pomerance's central construction.",
@@ -318,8 +318,8 @@
     "proofId": "erdos-454",
     "type": "definition",
     "range": {
-      "startLine": 238,
-      "endLine": 240
+      "startLine": 297,
+      "endLine": 301
     },
     "title": "Symmetric Goldbach Property",
     "content": "`goldbachSymmetric`: every even $m > 4$ can be written as $p_{n+i} + p_{n-i}$ for some $n, i$ with $i < n$. This strengthens Goldbach's conjecture by requiring the two primes to be at symmetric positions in the prime sequence.",

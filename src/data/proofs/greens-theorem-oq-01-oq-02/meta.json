@@ -58,39 +58,39 @@
       "id": "definition",
       "title": "Part I: Path Line Integral via intervalIntegral",
       "startLine": 67,
-      "endLine": 92,
+      "endLine": 113,
       "summary": "pathLineIntegral P Q γx γy γx' γy' a b := ∫ t in a..b, P(γx t, γy t) · γx'(t) + Q(γx t, γy t) · γy'(t). Definition uses intervalIntegral directly. Companion lemma pathLineIntegral_swap_endpoints proves the orientation-reversal sign convention via integral_symm.",
       "mathContext": "The classical definition ∫_γ (P dx + Q dy) = ∫_a^b (P γx' + Q γy') dt rendered as a single intervalIntegral. The orientation lemma ∫_γ⁻¹ = -∫_γ is the standard fact that reversing the parameter flips the line integral."
     },
     {
       "id": "edges",
       "title": "Part II: Edge Specializations (Bridge to OQ-01)",
-      "startLine": 94,
-      "endLine": 125,
+      "startLine": 114,
+      "endLine": 146,
       "summary": "pathLineIntegral_horizontal_segment: on the smooth segment t ↦ (t, c), the path integral collapses to ∫ x in a..b, P(x,c) — exactly the bottom-edge integral from rectLineIntegral. pathLineIntegral_vertical_segment is the symmetric statement for t ↦ (k, t). Both proofs are integral_congr + simp.",
       "mathContext": "On a horizontal line segment γ(t) = (t, c), the velocity is (1, 0), so the integrand reduces to P(γ(t)). On a vertical segment γ(t) = (k, t), the velocity is (0, 1), reducing to Q(γ(t)). These are the same integrals OQ-01 calls 'edge integrals'."
     },
     {
       "id": "bridge",
       "title": "Part III: Rectangular Boundary as Four Smooth Edges",
-      "startLine": 127,
-      "endLine": 169,
+      "startLine": 147,
+      "endLine": 190,
       "summary": "rectBoundaryPathIntegral: four-edge counterclockwise parametrization of ∂([a,b]×[c,d]) — bottom, right, top (parametrized backward), left (parametrized backward). pathLineIntegral_rect_boundary_eq_rectLineIntegral: this assembly equals rectLineIntegral on the nose. Proof uses the edge specializations, two applications of pathLineIntegral_swap_endpoints (for top and left), and ring.",
       "mathContext": "Counterclockwise traversal of the rectangle boundary pairs two left-to-right or bottom-to-top sweeps with two right-to-left or top-to-bottom sweeps. The latter pair contributes negatively under the orientation lemma, exactly matching the −∫P(x,d) dx − ∫Q(a,y) dy of rectLineIntegral."
     },
     {
       "id": "axiom",
       "title": "Part IV: General Green's Theorem (Axiomatized)",
-      "startLine": 171,
-      "endLine": 208,
+      "startLine": 191,
+      "endLine": 229,
       "summary": "greens_theorem_smooth_boundary: the planar Green identity ∮_γ (P dx + Q dy) = ∬_D (∂Q/∂x − ∂P/∂y) for a parametrized piecewise-smooth simple closed curve γ bounding a measurable region D. This isolates the genuine Mathlib gap into a single statement — the line-integral side is fully expressible via pathLineIntegral, and the double-integral side via Mathlib's set integral.",
       "mathContext": "The fully general planar Green's theorem requires Jordan-curve / Stokes-type 2-D infrastructure that Mathlib does not yet expose in this form. The axiom is mathematically standard (a theorem of classical analysis); the formalization gap is purely about packaging."
     },
     {
       "id": "summary",
       "title": "Part V: Summary Corollary",
-      "startLine": 210,
-      "endLine": 225,
+      "startLine": 230,
+      "endLine": 246,
       "summary": "oq02_summary: restates the bridge identity rectBoundaryPathIntegral = rectLineIntegral as the headline result — the smooth-curve framework strictly extends OQ-01's rectangular formulation, with the four-edge parametrization recovering the rectangular case exactly.",
       "mathContext": "The framework defined here is a true extension: every result OQ-01 proves about rectLineIntegral lifts to rectBoundaryPathIntegral, and the framework additionally accepts arbitrary smooth and piecewise-smooth boundaries (with the general identity captured by greens_theorem_smooth_boundary)."
     }
@@ -142,11 +142,11 @@
       "Proofs.GreensTheoremOQ01"
     ],
     "namespace": "GreensTheoremOQ01OQ02",
-    "lineCount": 227,
+    "lineCount": 247,
     "axiomCount": 1,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 2,
-    "substantiveTheoremCount": 5,
+    "substantiveTheoremCount": 6,
     "mainTheorems": [
       {
         "name": "pathLineIntegral",

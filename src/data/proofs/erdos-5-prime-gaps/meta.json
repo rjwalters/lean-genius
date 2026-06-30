@@ -144,8 +144,32 @@
       "id": "density-reduction",
       "title": "Part XII: Density Reduction — The Cleanest Path to Erdős #5",
       "startLine": 520,
-      "endLine": 572,
+      "endLine": 571,
       "summary": "Lemma isLimitPoint_of_frequently_near: frequent proximity → limit point (via diagonal argument). Theorem erdos_5_from_dense_values: density of normalizedGap values in [0,∞) implies S = [0,∞). This is the key reduction making the conjecture accessible."
+    },
+    {
+      "id": "forward-density",
+      "title": "Part XIII: Forward Density Direction",
+      "startLine": 572,
+      "endLine": 614,
+      "summary": "Proves frequently_near_of_isLimitPoint (the converse of isLimitPoint_of_frequently_near): any limit point C of the normalized gaps is approached infinitely often, since a convergent subsequence injects ℕ into every ε-ball around C. Combined with the reduction theorem this gives erdos_5_iff_dense_at_every_point — recasting Erdős #5 as the purely distributional claim that normalizedGap visits every neighborhood of every C ∈ [0,∞) infinitely often (plus ∞ a limit point).",
+      "mathContext": "$C \\in S \\iff \\forall \\varepsilon>0,\\ \\{n : |\\,\\mathrm{normalizedGap}(n)-C\\,|<\\varepsilon\\}$ is infinite. Erdős #5 $\\iff$ this holds for every $C\\ge 0$ together with $\\infty$ being a limit point."
+    },
+    {
+      "id": "unconditional-oscillation",
+      "title": "Part XIV: Unconditional Oscillation",
+      "startLine": 615,
+      "endLine": 656,
+      "summary": "The unconditional (theorem-not-axiom) oscillation corollaries. frequently_normalizedGap_lt packages Zhang's bounded-gaps result (2013): for every ε>0 the normalized gap is below ε infinitely often. frequently_normalizedGap_gt packages the Westzynthius/Erdős–Rankin large-gaps result: for every M the normalized gap exceeds M infinitely often. Together they show the normalized gaps are unbounded above and accumulate at 0 without assuming the full conjecture.",
+      "mathContext": "From Zhang: $\\liminf_n \\frac{p_{n+1}-p_n}{\\log p_n}=0$ in the frequent sense; from Westzynthius: $\\limsup_n \\frac{p_{n+1}-p_n}{\\log p_n}=\\infty$. Both are proved unconditionally."
+    },
+    {
+      "id": "liminf-limsup",
+      "title": "Part XV: Liminf / Limsup Corollaries",
+      "startLine": 657,
+      "endLine": 707,
+      "summary": "Final corollaries restating the unconditional oscillation in liminf/limsup and Eventually language. normalizedGap_oscillates bundles the two Part XIV results; not_eventually_normalizedGap_le shows there is no eventual upper bound M (limsup = ⊤); not_eventually_le_normalizedGap shows the gap is not eventually bounded below by any ε (liminf = 0). These pin down that 0 and ∞ are genuine limit points of the normalized prime gaps, the two endpoints of the conjectured S = [0,∞].",
+      "mathContext": "$\\liminf \\frac{p_{n+1}-p_n}{\\log p_n}=0$ and $\\limsup \\frac{p_{n+1}-p_n}{\\log p_n}=\\infty$, equivalently $\\neg(\\forall^\\infty n,\\ g_n\\le M)$ and $\\neg(\\forall^\\infty n,\\ \\varepsilon\\le g_n)$."
     }
   ],
   "sorries": 0

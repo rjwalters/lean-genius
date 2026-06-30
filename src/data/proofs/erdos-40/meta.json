@@ -28,60 +28,68 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Imports and Setup",
-      "summary": "Imports $\\texttt{Nat.Basic}$, $\\texttt{Real.Basic}$, $\\texttt{Real.Sqrt}$, $\\texttt{Set.Basic}$, and Mathlib tactics for formalizing the density conditions and representation counting.",
-      "startLine": 22,
-      "endLine": 27,
-      "mathContext": "Imports: $\\texttt{Real.Sqrt}$ for $\\sqrt{N}$ in density bounds; $\\texttt{Set.ncard}$ for $|A \\cap [1,N]|$ and $|\\{(a,b) : a+b=n\\}|$."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "summary": "File header for Erdős #40 ($500 bounty): for which $g(N)\\to\\infty$ does $|A\\cap\\{1,\\dots,N\\}|\\gg N^{1/2}/g(N)$ force $\\limsup r_A(n)=\\infty$, where $r_A(n)$ counts representations $n=a+b$? Notes this strengthens the Erdős–Turán conjecture (#28), lists references, and imports the Mathlib set/cardinality/real-sqrt theory used.",
+      "startLine": 1,
+      "endLine": 28,
+      "mathContext": "$r_A(n)=|\\{(a,b)\\in A^2: a+b=n\\}|$. Problem #40 asks which density thresholds $N^{1/2}/g(N)$ force an unbounded representation function."
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Defines $r_A(n) = |\\{(a,b) : a \\leq b,\\; a+b=n\\}|$, the counting function $A(N) = |A \\cap [1,N]|$, additive basis of order 2 ($r_A(n) \\geq 1$ eventually), and $\\texttt{RepUnbounded}$ ($\\limsup r_A(n) = \\infty$).",
-      "startLine": 28,
-      "endLine": 47,
-      "mathContext": "$r_A(n) = |\\{(a,b) \\in A^2 : a \\leq b, a+b = n\\}|$; $A(N) = |A \\cap [1,N]|$; additive basis: $\\exists N_0, \\forall n \\geq N_0, r_A(n) \\geq 1$; unbounded: $\\forall M, \\exists n, r_A(n) \\geq M$."
+      "summary": "Defines `repCount A n` (representations $n=a+b$ with $a\\le b$, via `Set.ncard`), `countingFn A N` ($|A\\cap\\{1,\\dots,N\\}|$), `IsAdditiveBasis2` (every large $n$ has $\\ge1$ representation), and `RepUnbounded` ($\\limsup r_A=\\infty$).",
+      "startLine": 29,
+      "endLine": 48,
+      "mathContext": "$r_A(n)$, the counting function $|A\\cap[1,N]|$, additive basis of order 2, and unbounded representation are the four primitives."
     },
     {
-      "id": "erdos-turan",
-      "title": "Erdős-Turan Conjecture (Problem #28)",
-      "summary": "States the 1941 conjecture: every additive basis of order 2 has $\\limsup r_A(n) = \\infty$. Declared as an axiom (OPEN).",
-      "startLine": 48,
+      "id": "erdos-turan-28",
+      "title": "Erdős–Turán Conjecture (Problem #28)",
+      "summary": "Commentary framing the Erdős–Turán conjecture (Problem #28, OPEN): every additive basis of order 2 has an unbounded representation function. Stated as a hypothesis where needed rather than a global axiom.",
+      "startLine": 49,
       "endLine": 54,
-      "mathContext": "Erdős-Turán (1941): $A$ additive basis of order 2 $\\implies \\limsup_{n \\to \\infty} r_A(n) = \\infty$. Equivalently, no additive basis can have uniformly bounded representation function."
+      "mathContext": "Erdős–Turán (#28): additive basis of order 2 $\\Rightarrow$ $\\limsup r_A(n)=\\infty$."
     },
     {
-      "id": "problem-40",
+      "id": "problem-40-strengthened",
       "title": "Problem #40: Strengthened Form",
-      "summary": "Defines $\\texttt{HasDensity}(A, g)$: $A(N) \\geq c\\sqrt{N}/g(N)$. States Problem #40: for ALL $g \\to \\infty$, this density implies $\\limsup r_A(n) = \\infty$. $500 bounty.",
+      "summary": "Defines `HasDensity A g` ($|A\\cap[1,N]|\\ge c\\sqrt N/g(N)$ eventually) and frames Problem #40: for which $g\\to\\infty$ does this density force unbounded representations? Kept as a hypothesis, not an axiom.",
       "startLine": 55,
-      "endLine": 68,
-      "mathContext": "$\\texttt{HasDensity}(A, g) \\Leftrightarrow \\exists c > 0, \\exists N_0, \\forall N > N_0: A(N) \\geq c\\sqrt{N}/g(N)$. Problem #40: $g(N) \\to \\infty \\wedge \\texttt{HasDensity}(A,g) \\implies \\limsup r_A(n) = \\infty$."
+      "endLine": 66,
+      "mathContext": "`HasDensity A g`: $|A\\cap[1,N]|\\ge c\\,\\sqrt N/g(N)$. The strongest form asks whether this holds for ALL $g\\to\\infty$."
     },
     {
-      "id": "connection-28",
-      "title": "Connection to Problem #28",
-      "summary": "Proves the logical implication: Problem #40 $\\Rightarrow$ Problem #28. Key insight: additive bases have $A(N) \\geq c\\sqrt{N} \\geq c\\sqrt{N}/g(N)$ for any divergent $g$.",
-      "startLine": 69,
-      "endLine": 78,
-      "mathContext": "P40 $\\implies$ P28: if $A$ is a basis, $A(N) \\geq c\\sqrt{N}$; taking $g(N) = 1$ (or any $g \\to \\infty$), $\\texttt{HasDensity}(A, g)$ holds, so P40 gives $\\limsup r_A(n) = \\infty$."
+      "id": "proving-40-implies-28",
+      "title": "Proving #40 ⟹ #28",
+      "summary": "Proves the reduction `problem_40_implies_28`: if Problem #40 holds for every $g\\to\\infty$, then #28 follows (take $g(N)=N$, where $1\\ge\\sqrt N/N$ makes the density condition trivial for any basis). Supported by helper lemmas `rep_set_finite`, `basis_has_element`, and `countingFn_pos`.",
+      "startLine": 67,
+      "endLine": 121,
+      "mathContext": "Reduction: solving #40 for any single $g\\to\\infty$ already implies the Erdős–Turán conjecture #28."
     },
     {
-      "id": "partial-results",
+      "id": "known-partial-results",
       "title": "Known Partial Results",
-      "summary": "Sidon set bound (axiom): $r_A(n) \\leq 1 \\Rightarrow A(N) \\leq (1+o(1))\\sqrt{N}$ (tight bound, Lindström 1969). $B_2[g]$ bound (**proved** modulo counting lemma): $r_A(n) \\leq g \\Rightarrow A(N) \\leq 2(g+1)\\sqrt{N}$ via pair counting argument.",
+      "summary": "Density bounds at the $N^{1/2}$ threshold. `SidonDensityBound` records the Sidon case (Lindström 1969). The core `b2g_counting_sq_bound` proves $k^2\\le 2g(2N-1)$ for $B_2[g]$ sets (fiber-decomposition by sum, splitting each fiber into $a\\le b$ / $a>b$ halves each bounded by $g$), yielding `b2g_density_bound`: $|A\\cap[1,N]|\\le 2(g+1)\\sqrt N$.",
       "startLine": 122,
-      "endLine": 171,
-      "mathContext": "Sidon ($B_2$) sets: $r_A(n) \\leq 1 \\implies A(N) \\leq (1+o(1))\\sqrt{N}$ (axiom: tight bound needs Lindström's argument). $B_2[g]$ sets: $r_A(n) \\leq g \\implies A(N) \\leq 2(g+1)\\sqrt{N}$ (theorem: proved from counting inequality $k^2 \\leq 2g(2N-1) \\leq 4(g+1)^2 N$, sorry in pair counting lemma)."
+      "endLine": 261,
+      "mathContext": "$B_2[g]$ sets ($r_A\\le g$) satisfy $|A\\cap[1,N]|\\le 2(g+1)\\sqrt N$ — the $N^{1/2}$ threshold is natural."
     },
     {
-      "id": "heuristic",
+      "id": "proved-properties",
+      "title": "Proved Properties",
+      "summary": "Definitional characterizations: `repUnbounded_iff`, `bounded_rep_not_unbounded` (a uniform bound $B$ on $r_A$ contradicts unboundedness), and `basis2_iff`.",
+      "startLine": 262,
+      "endLine": 284,
+      "mathContext": "Bounded representation $\\Rightarrow$ not `RepUnbounded`; the contrapositive of the Erdős–Turán target."
+    },
+    {
+      "id": "probabilistic-heuristic",
       "title": "Probabilistic Heuristic",
-      "summary": "Random model: $\\mathbb{E}[r_A(n)] \\sim 1/g(N)^2$ vanishes for $g \\to \\infty$, but $\\max_n r_A(n)$ may still diverge. Conjectured threshold near $g(N) \\sim (\\log N)^{1/2+\\epsilon}$.",
-      "startLine": 96,
-      "endLine": 109,
-      "mathContext": "Random $A$ with $|A| \\sim \\sqrt{N}/g(N)$: $\\mathbb{E}[r_A(n)] \\sim |A|^2/N \\sim 1/g(N)^2 \\to 0$. But maximum over $n \\leq 2N$ may still diverge. Threshold conjecture: $g(N) = (\\log N)^{1/2+\\varepsilon}$ suffices."
+      "summary": "Commentary on the random-set heuristic: a random $A$ with $|A|\\sim N^{1/2}/g(N)$ has $\\mathbb{E}[r_A(n)]\\sim 1/g(N)^2\\to0$, so typical $n$ have no representation — but fluctuations may force occasional large values. Conjectured threshold $g(N)=(\\log N)^{1/2+\\varepsilon}$.",
+      "startLine": 285,
+      "endLine": 291,
+      "mathContext": "Heuristic: $\\mathbb{E}[r_A(n)]\\sim 1/g(N)^2$; the conjectured critical threshold is $g(N)=(\\log N)^{1/2+\\varepsilon}$."
     }
   ],
   "overview": {

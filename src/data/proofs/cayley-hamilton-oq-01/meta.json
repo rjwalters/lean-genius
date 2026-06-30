@@ -82,16 +82,6 @@
       "targetId": "cayley-hamilton-oq-02",
       "relationship": "complementary",
       "description": "OQ-02 uses the charpoly-based reduction (Cayley-Hamilton directly) for polynomial evaluation. OQ-01 (this file) proves the sharper minpoly-based reduction and shows they agree: `charpoly_mod_refines_to_minpoly` bridges the two approaches."
-    },
-    {
-      "targetId": "jordan-normal-form",
-      "relationship": "foundational",
-      "description": "The Jordan normal form decomposes K^n as a direct sum of cyclic K[X]-modules, each annihilated by a power of an irreducible polynomial. The minimal polynomial μ_M = ∏ pᵢ^{eᵢ} encodes the largest Jordan block size per eigenvalue — the formalization of Ann(M) = (μ_M) in this file is the algebraic foundation for the Jordan decomposition."
-    },
-    {
-      "targetId": "rational-canonical-form",
-      "relationship": "foundational",
-      "description": "The rational canonical form expresses K^n ≅ K[X]/(d₁) ⊕ ... ⊕ K[X]/(d_k) where d₁|...|d_k = μ_M. This file's annihilator ideal theorem (Ann(M) = (μ_M)) is the key input: the rational canonical form is exactly the cyclic decomposition of K^n as a K[X]-module with annihilator (μ_M)."
     }
   ],
   "sections": [

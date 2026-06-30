@@ -88,7 +88,11 @@ The special case b = 1.
 noncomputable def listChromaticNumber (G : SimpleGraph V) : ℕ :=
   sInf { a : ℕ | IsChoosable G a 1 }
 
-/-- χ_L(G) ≤ a iff G is (a,1)-choosable. -/
+/-- χ_L(G) ≤ a iff G is (a,1)-choosable.
+
+    NOTE (open in this encoding): the forward direction needs the set
+    `{a | IsChoosable G a 1}` to be upward closed, i.e. `choosable_mono_a`
+    below, which is not available here (see its note). Left as `sorry`. -/
 theorem list_chromatic_iff_choosable (G : SimpleGraph V) (a : ℕ) :
     listChromaticNumber G ≤ a ↔ IsChoosable G a 1 := by
   sorry
@@ -99,25 +103,64 @@ theorem list_chromatic_iff_choosable (G : SimpleGraph V) (a : ℕ) :
 Basic facts about (a,b)-choosability.
 -/
 
-/-- Monotonicity: More colors available makes it easier. -/
+/-- Monotonicity: More colors available makes it easier.
+
+    NOTE (open in this encoding): here the palette type `Fin a` is tied to
+    the list size `a`, so the total number of colors and the per-vertex list
+    length coincide. An `a₂`-assignment may use up to `a₂ > a₁` distinct
+    colors, which cannot be injectively relabelled into `Fin a₁`, so the
+    `a₁`-choosability hypothesis gives no usable handle. A faithful proof
+    needs an encoding with a fixed ambient color type. Left as `sorry`. -/
 theorem choosable_mono_a (G : SimpleGraph V) (a₁ a₂ b : ℕ) (h : a₁ ≤ a₂) :
     IsChoosable G a₁ b → IsChoosable G a₂ b := by
   sorry
 
-/-- Anti-monotonicity: Fewer colors to select makes it easier. -/
+/-- Anti-monotonicity: Fewer colors to select makes it easier.
+
+    Given a valid `b₁`-selection, shrink each vertex's chosen set to size
+    `b₂ ≤ b₁`. Subsets of disjoint sets stay disjoint, so adjacency is
+    still respected. -/
 theorem choosable_mono_b (G : SimpleGraph V) (a b₁ b₂ : ℕ) (h : b₁ ≥ b₂) :
     IsChoosable G a b₁ → IsChoosable G a b₂ := by
-  sorry
+  intro hC L hL
+  obtain ⟨S, hValid, hDisj⟩ := hC L hL
+  choose S' hsub hcard using fun v =>
+    Finset.exists_subset_card_eq (s := S v) (n := b₂) (by have := (hValid v).2; omega)
+  refine ⟨S', fun v => ⟨(hsub v).trans (hValid v).1, hcard v⟩, ?_⟩
+  intro u v huv
+  exact ((hDisj u v huv).mono_left (hsub u)).mono_right (hsub v)
 
-/-- Need enough colors: b ≤ a is necessary. -/
-theorem choosable_requires_b_le_a (G : SimpleGraph V) (a b : ℕ) (hb : b > a) :
-    ¬IsChoosable G a b := by
-  sorry
+/-- Need enough colors: `b ≤ a` is necessary (on a nonempty vertex set).
 
-/-- Empty graph is always choosable (if b ≤ a). -/
+    Feed the assignment that gives every vertex the *full* palette `Fin a`.
+    Any valid selection must pick `b` colors from a set of size `a < b`,
+    which is impossible. (The `Nonempty V` hypothesis is essential: over an
+    empty vertex set every graph is vacuously choosable for all `a, b`.) -/
+theorem choosable_requires_b_le_a [Nonempty V] (G : SimpleGraph V) (a b : ℕ)
+    (hb : b > a) : ¬IsChoosable G a b := by
+  intro hC
+  obtain ⟨v⟩ := (inferInstance : Nonempty V)
+  obtain ⟨S, hValid, _⟩ := hC (fun _ => Finset.univ) (by
+    intro w; simp [Finset.card_univ, Fintype.card_fin])
+  have hcard : (S v).card = b := (hValid v).2
+  have hle : (S v).card ≤ a := by
+    calc (S v).card ≤ (Finset.univ : Finset (Fin a)).card :=
+          Finset.card_le_card (hValid v).1
+      _ = a := by simp [Finset.card_univ, Fintype.card_fin]
+  omega
+
+/-- Empty graph is always choosable (if b ≤ a).
+
+    With no edges every disjointness constraint is vacuous, so it suffices
+    to pick any `b`-element subset of each (size `a ≥ b`) color list. -/
 theorem empty_graph_choosable (V : Type*) (a b : ℕ) (h : b ≤ a) :
     IsChoosable (⊥ : SimpleGraph V) a b := by
-  sorry
+  intro L hL
+  choose S hsub hcard using fun v =>
+    Finset.exists_subset_card_eq (s := L v) (n := b) (by rw [hL v]; exact h)
+  refine ⟨S, fun v => ⟨hsub v, hcard v⟩, ?_⟩
+  intro u v huv
+  simp at huv
 
 /-
 ## Part V: The Erdős-Rubin-Taylor Conjecture
@@ -173,8 +216,9 @@ axiom ert_4_1_to_8_2_false : ¬ERT_Case_4_1_to_8_2
 The construction disproving the conjecture.
 -/
 
-/-- **Dvořák-Hu-Sereni Theorem** (2019):
-    There exists a graph that is (4,1)-choosable but NOT (8,2)-choosable. -/
+/- **Dvořák-Hu-Sereni Theorem** (2019):
+   There exists a graph that is (4,1)-choosable but NOT (8,2)-choosable.
+   This is the content axiomatized as `ert_4_1_to_8_2_false` above. -/
 
 /-
 ## Part VIII: The Main Disproof
@@ -197,7 +241,10 @@ theorem ert_conjecture_false : ¬ERT_Conjecture := by
   intro h
   apply ert_m2_false
   intro V G a b hG
-  exact h V G a b (by norm_num) hG
+  have hm2 := h V G a b 2 (by norm_num) hG
+  -- `hm2 : IsChoosable G (a * 2) (b * 2)`; the goal is stated as `(2 * a, 2 * b)`.
+  rw [mul_comm 2 a, mul_comm 2 b]
+  exact hm2
 
 /-- Erdős Problem #632 is DISPROVED. -/
 theorem erdos_632 : ¬ERT_Conjecture :=
@@ -258,3 +305,4 @@ def erdos_632_counterexample : String :=
 #check erdos_632_disproved
 
 end Erdos632
+

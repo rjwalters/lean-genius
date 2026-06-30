@@ -16,7 +16,11 @@
       "weak solutions",
       "Sobolev spaces"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the calculus of variations and minimizers",
+      "weak (distributional) solutions",
+      "Sobolev spaces"
+    ]
   },
   {
     "id": "ann-lagrangian",
@@ -35,7 +39,11 @@
       "energy functional",
       "field theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "functionals and the action/energy integral",
+      "the Lagrangian density",
+      "field/variational formulations"
+    ]
   },
   {
     "id": "ann-euler-lagrange",
@@ -54,7 +62,11 @@
       "first variation",
       "necessary conditions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the first variation of a functional",
+      "minimizers as critical points",
+      "deriving the Euler–Lagrange equation"
+    ]
   },
   {
     "id": "ann-ellipticity",
@@ -73,7 +85,11 @@
       "convexity",
       "elliptic PDE"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "second-order partial differential operators",
+      "convexity of the Lagrangian and the Legendre condition",
+      "uniform ellipticity of a PDE"
+    ]
   },
   {
     "id": "ann-degiorgi",
@@ -92,7 +108,11 @@
       "weak solutions",
       "energy estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "weak solutions of elliptic PDE",
+      "Hölder continuity (C^{0,α})",
+      "energy (Caccioppoli) estimates"
+    ]
   },
   {
     "id": "ann-schauder",
@@ -111,7 +131,11 @@
       "regularity bootstrap",
       "a priori estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hölder spaces C^{k,α}",
+      "a priori estimates for elliptic operators",
+      "the regularity bootstrap"
+    ]
   },
   {
     "id": "ann-main-theorem",
@@ -130,7 +154,11 @@
       "smooth functions",
       "variational calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Euler–Lagrange equation of a variational problem",
+      "uniform ellipticity",
+      "elliptic regularity (weak ⇒ smooth)"
+    ]
   },
   {
     "id": "ann-caccioppoli",
@@ -149,7 +177,11 @@
       "Poincare inequality",
       "De Giorgi iteration"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "weak solutions and test functions",
+      "the Poincaré inequality",
+      "energy estimates over balls"
+    ]
   },
   {
     "id": "ann-oscillation",
@@ -168,7 +200,11 @@
       "geometric decay",
       "iteration argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hölder continuity via oscillation decay",
+      "the Caccioppoli inequality",
+      "iteration / geometric-decay arguments"
+    ]
   },
   {
     "id": "ann-dirichlet",
@@ -187,7 +223,11 @@
       "Laplace equation",
       "potential theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Laplace equation and harmonic functions",
+      "the Dirichlet boundary-value problem",
+      "potential theory"
+    ]
   },
   {
     "id": "ann-systems",
@@ -206,7 +246,11 @@
       "counterexamples",
       "partial regularity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "elliptic systems (vector-valued solutions)",
+      "the scalar De Giorgi–Nash–Moser regularity",
+      "counterexamples and partial regularity"
+    ]
   },
   {
     "id": "ann-summary",
@@ -225,6 +269,10 @@
       "Hilbert problems",
       "PDE theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the calculus of variations and Hilbert's 19th",
+      "De Giorgi–Nash–Moser and Schauder regularity",
+      "scalar vs system regularity"
+    ]
   }
 ]

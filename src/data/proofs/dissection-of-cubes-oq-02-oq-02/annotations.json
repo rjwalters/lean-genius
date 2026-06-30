@@ -27,8 +27,8 @@
     "id": "ann-angle-quot",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 34,
-      "endLine": 50
+      "startLine": 39,
+      "endLine": 51
     },
     "type": "definition",
     "title": "The Angle Quotient Group \u211d/\u03c0\u2124",
@@ -50,8 +50,8 @@
     "id": "ann-angle-props",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 52,
-      "endLine": 82
+      "startLine": 57,
+      "endLine": 83
     },
     "type": "insight",
     "title": "Properties of \u211d/\u03c0\u2124",
@@ -72,8 +72,8 @@
     "id": "ann-dehn-group",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 84,
-      "endLine": 97
+      "startLine": 89,
+      "endLine": 98
     },
     "type": "definition",
     "title": "The Dehn Invariant Group \u211d \u2297_\u2124 (\u211d/\u03c0\u2124)",
@@ -94,8 +94,8 @@
     "id": "ann-torsion-vanishing",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 100,
-      "endLine": 150
+      "startLine": 104,
+      "endLine": 151
     },
     "type": "insight",
     "title": "Rational Angle Vanishing: The Central Algebraic Argument",
@@ -118,8 +118,8 @@
     "id": "ann-special-angles",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 152,
-      "endLine": 180
+      "startLine": 153,
+      "endLine": 181
     },
     "type": "insight",
     "title": "Special Angles and Cube Dehn Invariant",
@@ -139,7 +139,7 @@
     "id": "ann-tetrahedron",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 182,
+      "startLine": 187,
       "endLine": 227
     },
     "type": "insight",
@@ -161,8 +161,8 @@
     "id": "ann-hilbert-third",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 229,
-      "endLine": 244
+      "startLine": 274,
+      "endLine": 285
     },
     "type": "insight",
     "title": "Hilbert's Third Problem: Cube \u2247 Tetrahedron",
@@ -182,8 +182,8 @@
     "id": "ann-octahedron",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 246,
-      "endLine": 283
+      "startLine": 291,
+      "endLine": 328
     },
     "type": "insight",
     "title": "Octahedron: D(oct) = -D(tet)",
@@ -204,12 +204,12 @@
     "id": "ann-dehn-sydler-statement",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 285,
-      "endLine": 333
+      "startLine": 334,
+      "endLine": 382
     },
     "type": "concept",
-    "title": "Dehn-Sydler Completeness Theorem (Axiomatized)",
-    "content": "The Dehn-Sydler theorem is axiomatized: $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. The forward direction ($\\Rightarrow$) is Dehn's 1900 result: cutting creates paired edges with angles summing to $\\pi$, which cancel since $[\\pi] = 0$. The backward direction ($\\Leftarrow$) is Sydler's deep 1965 theorem, requiring analysis of orthogonal prisms and an inductive exchange argument. Two placeholder axioms (`dehn_preserved_by_scissors`, `volume_preserved_by_scissors`) encode the invariance properties; the full `dehn_sydler_theorem` encodes the completeness statement.",
+    "title": "Dehn-Sydler Completeness Theorem (Stated, Not Formalized)",
+    "content": "The Dehn-Sydler theorem states $P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. The forward direction ($\\Rightarrow$) is Dehn's 1900 result: cutting creates paired edges with angles summing to $\\pi$, which cancel since $[\\pi] = 0$. The backward direction ($\\Leftarrow$) is Sydler's deep 1965 theorem, requiring analysis of orthogonal prisms and an inductive exchange argument. Note: in this file the invariance properties (`dehn_preserved_by_scissors`, `volume_preserved_by_scissors`) are PLACEHOLDER theorems of the form `True → x = x := fun _ => rfl` — they record the statements but carry no geometric content (the actual scissors-congruence preservation is not formalized). The headline result that IS fully proved here is Hilbert's Third Problem (cube and tetrahedron have different Dehn invariants, hence are not scissors-congruent).",
     "mathContext": "$P \\cong_{\\text{sc}} Q \\iff \\text{Vol}(P) = \\text{Vol}(Q) \\wedge D(P) = D(Q)$. This completely classifies scissors congruence in $\\mathbb{R}^3$ by two computable invariants.",
     "significance": "key",
     "prerequisites": [
@@ -226,8 +226,8 @@
     "id": "ann-2d-contrast",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 335,
-      "endLine": 365
+      "startLine": 388,
+      "endLine": 414
     },
     "type": "insight",
     "title": "2D Contrast: Why Area Suffices for Polygons",
@@ -249,12 +249,12 @@
     "id": "ann-summary",
     "proofId": "dissection-of-cubes-oq-02-oq-02",
     "range": {
-      "startLine": 367,
-      "endLine": 406
+      "startLine": 420,
+      "endLine": 445
     },
     "type": "insight",
-    "title": "Axiom Budget and Summary",
-    "content": "The axiom budget: 4 substantive axioms (niven_arccos_third, tmul_infinite_order_ne_zero, arccos_neg_third, dehn_sydler_theorem) plus 2 placeholder axioms for scissors congruence preservation. Key proved results: `tmul_torsion_eq_zero`, `rational_angle_vanishes`, `cube_dehn_zero`, `tet_dehn_ne_zero`, `hilbert_third_problem`, `oct_dehn_ne_zero`, `dehn_zero_of_rational_angles`. The `#check` commands verify all key theorems type-check.",
+    "title": "Summary: Zero Axioms",
+    "content": "The closing summary records that the formalization uses 0 axioms (reduced from an earlier 6-axiom draft): `niven_arccos_third` (arccos(1/3) is not a rational multiple of π), `tmul_infinite_order_ne_zero` (the flatness theorem), and `arccos_neg_third` are all now genuinely PROVED rather than assumed. Key proved results: `tmul_torsion_eq_zero`, `rational_angle_vanishes`, `cube_dehn_zero`, `tet_dehn_ne_zero`, `hilbert_third_problem`, `oct_dehn_ne_zero`, `dehn_zero_of_rational_angles`. The two `dehn_*_preserved_by_scissors` declarations remain `True`-valued placeholders, so the Dehn-Sydler completeness direction is stated but not formalized.",
     "mathContext": "The formalization establishes: $D(\\text{cube}) = 0$, $D(\\text{tet}) \\neq 0$, $D(\\text{oct}) = -D(\\text{tet}) \\neq 0$, and $D(P) = 0$ for all rational-angle polyhedra.",
     "significance": "supporting",
     "prerequisites": [

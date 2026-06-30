@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "thue-morse-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "The Thue-Morse Sequence",
+    "content": "The **Thue-Morse sequence** $t : \\mathbb{N} \\to \\{0,1\\}$ records the parity of the number of $1$s in the binary expansion of $n$:\n\n$$t(n) = \\Big(\\sum \\text{binary digits of } n\\Big) \\bmod 2.$$\n\nIt is the unique sequence with $t(0) = 0$, $t(2n) = t(n)$, and $t(2n+1) = 1 - t(n)$. Working in $\\mathbb{Z}/2\\mathbb{Z}$ turns the bit-flip into the algebraic identity $t(2n+1) = t(n) + 1$.\n\n**History.** Prouhet (1851) used it to split integers into classes with equal power sums; Thue (1906, 1912) used it as the first explicit overlap-free word; Morse (1921) found it in symbolic dynamics.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binary expansion",
+      "parity",
+      "Prouhet-Tarry-Escott problem",
+      "combinatorics on words"
+    ],
+    "mathContext": "Thue-Morse value as the ZMod 2 reduction of the base-2 digit sum.",
+    "prerequisites": [
+      "binary expansions",
+      "arithmetic mod 2"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "thue-morse-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "Definition via the digit sum",
+    "content": "```lean\ndef thueMorse (n : ℕ) : ZMod 2 := ((Nat.digits 2 n).sum : ZMod 2)\n```\n\n`Nat.digits 2 n` returns the base-2 digits of $n$ as a list (least significant first). Each entry is $0$ or $1$, so the sum is exactly the number of $1$ bits; casting into $\\mathbb{Z}/2\\mathbb{Z}$ keeps only its parity. Choosing $\\mathbb{Z}/2\\mathbb{Z}$ as the codomain (rather than $\\{0,1\\} \\subset \\mathbb{N}$) is what makes the recurrences clean ring identities.\n\nBy convention $t(0) = 0$ since `Nat.digits 2 0 = []`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.digits",
+      "ZMod 2",
+      "List.sum"
+    ],
+    "mathContext": "$t(n) = (\\sum \\texttt{Nat.digits } 2\\, n) \\bmod 2$."
+  },
+  {
+    "id": "ann-base-recurrences",
+    "proofId": "thue-morse-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "The bit-flip recurrences",
+    "content": "The two characterising recurrences:\n\n```lean\ntheorem thueMorse_two_mul (n : ℕ) : thueMorse (2 * n) = thueMorse n\ntheorem thueMorse_two_mul_add_one (n : ℕ) : thueMorse (2 * n + 1) = thueMorse n + 1\n```\n\nBoth come from the single Mathlib fact `Nat.digits_def'`: for $m > 0$,\n$$\\texttt{Nat.digits } 2\\, m = (m \\bmod 2) :: \\texttt{Nat.digits } 2\\, (m / 2).$$\n\nFor $2n$ the new leading digit is $0$, so the digit sum is unchanged: $t(2n) = t(n)$. For $2n+1$ the new digit is $1$, so the sum gains one: $t(2n+1) = t(n) + 1$. After `List.sum_cons` the cast to $\\mathbb{Z}/2\\mathbb{Z}$ finishes by `simp`/`ring`. The even case at $n = 0$ is closed by `simp` (both sides are $0$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.digits_def'",
+      "List.sum_cons",
+      "structural recursion"
+    ],
+    "mathContext": "$t(2n) = t(n)$ and $t(2n+1) = t(n) + 1$, equivalently $t(2n+1) = 1 - t(n)$."
+  },
+  {
+    "id": "ann-distinct-powers",
+    "proofId": "thue-morse-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Consecutive pairs differ; value at powers of two",
+    "content": "```lean\ntheorem thueMorse_ne_succ_two_mul (n : ℕ) : thueMorse (2 * n) ≠ thueMorse (2 * n + 1)\ntheorem thueMorse_two_pow (k : ℕ) : thueMorse (2 ^ k) = 1\n```\n\nSince $t(2n+1) = t(2n) + 1$ and $1 \\neq 0$ in $\\mathbb{Z}/2\\mathbb{Z}$, every adjacent even/odd pair takes both values - the sequence never repeats a value across such a pair.\n\nFor powers of two, $2^k$ has exactly one $1$ bit, so $t(2^k) = 1$. The proof inducts on $k$: $t(2^{k+1}) = t(2 \\cdot 2^k) = t(2^k)$ by the even recurrence, with base case $t(2^0) = t(1) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod 2",
+      "induction",
+      "powers of two"
+    ],
+    "mathContext": "$t(2n) \\neq t(2n+1)$ and $t(2^k) = 1$ for all $k$."
+  },
+  {
+    "id": "ann-pte-blocks",
+    "proofId": "thue-morse-oq-01",
+    "range": {
+      "startLine": 100,
+      "endLine": 144
+    },
+    "type": "theorem",
+    "title": "Prouhet-Tarry-Escott block identities",
+    "content": "Applying the two base recurrences twice gives the four-term block structure:\n\n```lean\ntheorem thueMorse_four_mul (n) : thueMorse (4*n) = thueMorse n\ntheorem thueMorse_four_mul_add_one (n) : thueMorse (4*n+1) = thueMorse n + 1\ntheorem thueMorse_four_mul_add_two (n) : thueMorse (4*n+2) = thueMorse n + 1\ntheorem thueMorse_four_mul_add_three (n) : thueMorse (4*n+3) = thueMorse n\n```\n\nso each length-four block reads $a\\,(a{+}1)\\,(a{+}1)\\,a$ with $a = t(n)$ - the outer pair agree ($t(4n) = t(4n+3)$) and the inner pair agree ($t(4n+1) = t(4n+2)$). The cancellation $1 + 1 = 0$ in $\\mathbb{Z}/2\\mathbb{Z}$ is what collapses the extra flips.\n\nThis $0110/1001$ pattern is exactly Prouhet's pairing: it splits $\\{0,1,2,3\\}$ into $\\{0,3\\}$ and $\\{1,2\\}$ with equal sums $0+3 = 1+2$, the level-2 case of his equal-power partition theorem (`prouhet_level_two`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Prouhet-Tarry-Escott problem",
+      "equal power sums",
+      "automatic sequences"
+    ],
+    "mathContext": "$t(4n) = t(4n+3) = t(n)$ and $t(4n+1) = t(4n+2) = t(n)+1$; blocks $a(a{+}1)(a{+}1)a$."
+  }
+]

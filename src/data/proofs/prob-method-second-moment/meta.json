@@ -121,7 +121,7 @@
       "id": "quantitative-paley-zygmund",
       "title": "Quantitative Paley-Zygmund Inequality",
       "startLine": 162,
-      "endLine": 226,
+      "endLine": 225,
       "summary": "Full quantitative Paley-Zygmund: for non-negative $f$ and $0 \\leq \\theta < 1$, the number of elements where $f \\geq \\theta\\mu$ is at least $(1-\\theta)^2(\\sum f)^2/\\sum f^2$. Proof decomposes the sum, bounds the complement via the threshold, then chains through Cauchy-Schwarz.",
       "mathContext": "Paley-Zygmund quantitative: $|\\{a : f(a) \\geq \\theta\\mu\\}| \\geq (1-\\theta)^2 (\\sum f)^2 / \\sum f^2$. Setting $\\theta = 0$ recovers the basic Paley-Zygmund. The proof: (1) partition $s$ into big/small sets, (2) bound the small sum by $\\theta \\sum f$, (3) apply Cauchy-Schwarz to the big set."
     }

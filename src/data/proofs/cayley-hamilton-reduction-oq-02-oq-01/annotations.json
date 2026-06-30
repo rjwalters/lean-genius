@@ -73,12 +73,12 @@
     "id": "ann-sorry-theorems",
     "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
     "range": {
-      "startLine": 170,
-      "endLine": 211
+      "startLine": 244,
+      "endLine": 340
     },
     "type": "insight",
-    "title": "Three Sorry Theorems: Annihilation, Charpoly, Minpoly",
-    "content": "Three key theorems are stated with `sorry`. (1) `aeval_companionMatrix`: p(C(p)) = 0, proved conceptually via the orbit: p(C(p))·e₀ = C(p)^d·e₀ + ∑ aₖ C(p)^k·e₀ = (−∑ aᵢeᵢ) + (∑ aₖeₖ) = 0, then commutativity gives p(C(p))·eⱼ = 0. (2) `charpoly_companionMatrix`: charpoly(C(p)) = p, deduced from minpoly = p since both are monic of degree d. (3) `minpoly_companionMatrix`: minpoly(C(p)) = p, using that the orbit implies no polynomial of degree < d annihilates C(p). All infrastructure for completing these proofs is already in place; only the formal argument assembly remains.",
+    "title": "Three Core Theorems: Annihilation, Charpoly, Minpoly",
+    "content": "Three key theorems are fully proved (0 sorries), supported by the private helper lemmas above (`aeval_eq_sum_pow`, `pow_d_mulVec_e0`, `aeval_commute_pow`). (1) `aeval_companionMatrix`: p(C(p)) = 0, proved via the orbit: p(C(p))·e₀ = C(p)^d·e₀ + ∑ aₖ C(p)^k·e₀ = (−∑ aᵢeᵢ) + (∑ aₖeₖ) = 0, then commutativity gives p(C(p))·eⱼ = 0. (2) `minpoly_companionMatrix`: minpoly(C(p)) = p, using that the orbit implies no polynomial of degree < d annihilates C(p). (3) `charpoly_companionMatrix`: charpoly(C(p)) = p, deduced from minpoly = p since both are monic of degree d. The orbit argument supplies a determinant-free proof of annihilation.",
     "mathContext": "$p(C(p)) = 0$; $\\mathrm{minpoly}(C(p)) = p$ (since orbit spans $\\Rightarrow$ no degree-$< d$ annihilator); $\\mathrm{charpoly}(C(p)) = p$ (monic, same degree)",
     "significance": "key",
     "relatedConcepts": [
@@ -98,8 +98,8 @@
     "id": "ann-linear-case",
     "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
     "range": {
-      "startLine": 213,
-      "endLine": 225
+      "startLine": 341,
+      "endLine": 354
     },
     "type": "insight",
     "title": "Base Case: C(x − c) = [c]",
@@ -122,8 +122,8 @@
     "id": "ann-rcf-roadmap",
     "proofId": "cayley-hamilton-reduction-oq-02-oq-01",
     "range": {
-      "startLine": 226,
-      "endLine": 259
+      "startLine": 355,
+      "endLine": 396
     },
     "type": "concept",
     "title": "RCF Roadmap: ~1800 Lines of Missing Infrastructure",

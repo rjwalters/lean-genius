@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fundamental-theorem-algebra-oq-06-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Goal: Surjectivity ⟺ Odd Degree",
+    "content": "The file imports `Mathlib` and opens `Polynomial`, `Filter`, `Topology`. It sharpens the parent entry: where the parent proved that an odd-degree real polynomial has at least one root, this entry pins down exactly when the polynomial *function* x ↦ P.eval x is surjective onto ℝ — precisely when the degree is odd. The forward direction is a short corollary of the parent; the even-degree converse (boundedness) is the new content.",
+    "mathContext": "Target: $\\forall P \\in \\mathbb{R}[X],\\ \\mathrm{Surjective}(P.\\mathrm{eval}) \\iff \\mathrm{Odd}(\\deg P)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["surjectivity", "polynomial degree", "fundamental theorem of algebra"],
+    "prerequisites": ["polynomial evaluation", "Lean 4 module system"]
+  },
+  {
+    "id": "ann-odd-root",
+    "proofId": "fundamental-theorem-algebra-oq-06-oq-01",
+    "range": { "startLine": 47, "endLine": 95 },
+    "type": "technique",
+    "title": "Re-deriving the Odd-Degree Root Theorem",
+    "content": "To keep the file self-contained, the parent's two lemmas are re-derived: `exists_neg_and_pos_eval` (an odd-degree polynomial takes both signs, via the reflected polynomial `Q = P.comp (-X)` whose leading coefficient is `(-1)^deg · lc P = -lc P`) and `odd_natDegree_has_real_root` (feed the two signs into `intermediate_value_uIcc`).",
+    "mathContext": "$\\mathrm{leadingCoeff}(P\\circ(-X)) = (-1)^{\\deg P}\\,\\mathrm{leadingCoeff}(P)$; for odd degree this is $-\\mathrm{leadingCoeff}(P)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["reflected polynomial", "intermediate value theorem", "end behaviour"],
+    "prerequisites": ["Filter.Tendsto", "leadingCoeff_comp"]
+  },
+  {
+    "id": "ann-odd-surjective",
+    "proofId": "fundamental-theorem-algebra-oq-06-oq-01",
+    "range": { "startLine": 96, "endLine": 111 },
+    "type": "key-idea",
+    "title": "Odd Degree ⟹ Surjective via Shifting",
+    "content": "`eval_surjective_of_odd_natDegree`: to attain a target `y`, apply the root theorem to the shifted polynomial `P - C y`. The key fact is `natDegree_sub_C`: subtracting a constant does not change the degree, so `P - C y` is still odd-degree and has a root `x`, which means `P.eval x = y`.",
+    "mathContext": "$\\mathrm{natDegree}(P - C\\,y) = \\mathrm{natDegree}\\,P$, so the shift inherits odd degree and a root $x$ with $P(x)=y$.",
+    "significance": "central",
+    "relatedConcepts": ["surjectivity", "polynomial shift", "natDegree_sub_C"],
+    "prerequisites": ["polynomial root", "IsRoot"]
+  },
+  {
+    "id": "ann-even-bounded",
+    "proofId": "fundamental-theorem-algebra-oq-06-oq-01",
+    "range": { "startLine": 112, "endLine": 178 },
+    "type": "key-idea",
+    "title": "Even Degree ⟹ Bounded ⟹ Not Surjective",
+    "content": "For even degree the reflected polynomial has the *same* leading coefficient (`Even.neg_one_pow`), so P tends to the same infinity at both ends. Combining the `atBot` and `atTop` limits via `cocompact ℝ = atBot ⊔ atTop` and applying the extreme value theorem `Continuous.exists_forall_le` gives a global minimum (or maximum via `-P`). `not_surjective_of_even_natDegree` then observes that `m - 1` (resp. `M + 1`) is never attained.",
+    "mathContext": "Even degree ⟹ $P \\to +\\infty$ (or $-\\infty$) along all of $\\mathrm{cocompact}\\,\\mathbb{R}$, hence bounded on one side; a value past the extremum has no preimage.",
+    "significance": "central",
+    "relatedConcepts": ["extreme value theorem", "cocompact filter", "coercivity"],
+    "prerequisites": ["Continuous.exists_forall_le", "cocompact_eq_atBot_atTop"]
+  },
+  {
+    "id": "ann-characterisation",
+    "proofId": "fundamental-theorem-algebra-oq-06-oq-01",
+    "range": { "startLine": 179, "endLine": 207 },
+    "type": "key-idea",
+    "title": "Assembling the Iff",
+    "content": "`eval_surjective_iff_odd_natDegree` combines the two halves: the reverse implication is `eval_surjective_of_odd_natDegree`; the forward implication is the contrapositive, splitting even degree into the constant case (`natDegree = 0`, image a single point) and the even positive-degree case (`not_surjective_of_even_natDegree`). `range_eval_eq_univ_of_odd` restates surjectivity as range = univ.",
+    "mathContext": "Surjective $\\iff$ Odd degree; the constant case is degenerate (image $\\{c\\}$, misses $c+1$).",
+    "significance": "central",
+    "relatedConcepts": ["characterisation", "contrapositive", "range"],
+    "prerequisites": ["eq_C_of_natDegree_eq_zero", "Function.Surjective"]
+  }
+]

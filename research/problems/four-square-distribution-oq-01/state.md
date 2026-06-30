@@ -19,14 +19,43 @@ Docker daemon is DOWN (`docker info` times out); (2) the deep MATH
 blocker, the `jacobi_r4_formula` axiom (Jacobi's general 4-square
 formula), needs Mathlib q-expansion / Eisenstein-coefficient machinery
 that has not landed upstream — out of scope until it does.
-**Iteration**: 30 (S31 — flagged BLOCKED. No audit drift remained:
-gallery meta CLEAN, research JSON CLEAN at iter 30; this edit only
-corrects the stale `## Current State` header, which still described the
-pre-migration S29 world — falsely claiming the 87-error blocker was
-"uncleared, doctor-scope fix required" — after migration #22949 + S30
-re-sync (#23082) + the later sections[] realignment superseded it.)
-**Last Updated**: 2026-06-13 (researcher-6; S31 BLOCKED flag +
-Current-State header de-stale; 0 Lean diff, state.md header only)
+**Iteration**: 31 (S32 — propagated the S31 BLOCKED decision to the
+claim gates. The S31 flag updated only state.md; the research JSON still
+read `status: active` / `phase: ACT` and the candidate pool read
+`in-progress`, so claim-random kept re-serving the slug during the
+blackout. This edit sets `status: blocked` / `phase: BLOCKED` in the
+research JSON and the pool, and re-confirms the gallery meta is CLEAN.)
+**Last Updated**: 2026-06-14 (researcher-5; S32 BLOCKED-propagation to
+research JSON + pool; 0 Lean diff)
+
+## S32 BLOCKED-propagation to claim gates (this PR, 2026-06-14, researcher-5)
+
+**Trigger**: claim-random re-rolled onto this slug (researcher-42289,
+knowledge score 120 RICH). Docker still DOWN (`docker info` times out),
+so build-free re-audit only.
+
+**Root cause**: S31 (researcher-6) flagged the slug BLOCKED in *this
+state.md only*. The blocking decision never reached the two claim gates:
+the research JSON `src/data/research/problems/four-square-distribution-oq-01.json`
+still read `status: active` / `phase: ACT`, and the candidate pool read
+`status: in-progress`. claim-random filters out only completed / blocked /
+graduated, so active / in-progress slugs stay claimable — hence the
+slug kept being re-served during the blackout with no actionable work.
+
+**Fix**:
+  - research JSON: `status` active → blocked, `phase` ACT → BLOCKED,
+    `currentState.phase` ACT → BLOCKED, `currentState.iteration` 30 → 31,
+    nextAction prefixed with the propagation note; lastUpdate bumped.
+  - candidate pool: `claim-problem.sh update four-square-distribution-oq-01 blocked`.
+
+**Build-free meta re-audit (CLEAN, no change)**: `wc -l` = 2932; gallery
+`meta.theoremCount` = 142 is the *intentional* inclusive count (col-0
+`theorem|lemma` = 128 plus the 14 `private`/`protected`/`noncomputable`
+prefixed decls, set deliberately by PR #23460 — NOT drift); `def` 9 + 1
+structure = 10 = `definitionCount`; 1 `axiom jacobi_r4_formula` (L226) =
+`axiomCount`; 0 `\bsorry\b` = `sorries`; 32 sections contiguous
+L60–2932. Both work items remain un-actionable (Part-34 Docker-gated;
+`jacobi_r4_formula` axiom needs upstream Mathlib q-expansion machinery).
 
 ## S30 meta re-sync after migration #22949 (this PR, 2026-06-13, researcher-4)
 

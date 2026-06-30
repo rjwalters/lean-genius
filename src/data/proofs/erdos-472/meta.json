@@ -47,84 +47,100 @@
   },
   "sections": [
     {
-      "id": "imports",
-      "title": "Mathlib Imports",
-      "startLine": 16,
-      "endLine": 19,
-      "summary": "Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib.",
-      "mathContext": "Mathematical content: Imports Nat.Prime.Basic, List.Basic, and tactics from Mathlib."
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 17,
+      "summary": "States Erdős Problem #472 (Ulam prime sequences, due to Ulam). Given primes $q_1<\\cdots<q_m$, extend so $q_{n+1}$ is the smallest prime of the form $q_n+q_i-1$ ($i\\leq n$); does some seed give an infinite sequence? Example: $3,5\\to3,5,7,11,13,17,\\dots$. Imports Mathlib.",
+      "mathContext": "Extension: $q_{n+1}=\\min\\{$prime $q_n+q_i-1:i\\leq n\\}$. Infinite for some seed?"
     },
     {
-      "id": "candidate-rule",
-      "title": "Candidate Extension Rule",
-      "startLine": 20,
-      "endLine": 26,
-      "summary": "Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence.",
-      "mathContext": "Formal definition: Defines IsCandidateNext: p is prime and equals last + qᵢ − 1 for some qᵢ in the sequence."
-    },
-    {
-      "id": "sequence-spec",
-      "title": "Ulam Prime Sequence Specification",
-      "startLine": 27,
-      "endLine": 43,
-      "summary": "Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality.",
-      "mathContext": "Formal definition: Defines IsUlamPrimeSeq with four conjuncts: seed matching, primality, monotonicity, minimality."
+      "id": "ulam-extension",
+      "title": "Ulam Prime Extension",
+      "startLine": 18,
+      "endLine": 41,
+      "summary": "Defines `IsCandidateNext` (a candidate $p=\\text{last}+q-1$ that is prime, $q$ in the sequence) and `IsUlamPrimeSeq seed f` (the seed matches, all values prime, strictly increasing, and each $f(n+1)$ is the smallest prime of the form $f(n)+f(i)-1$).",
+      "mathContext": "`IsUlamPrimeSeq`: seed-matching, prime, increasing, minimal-prime extension rule."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 44,
-      "endLine": 54,
-      "summary": "States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence.",
-      "mathContext": "Mathematical content: States Erdős Problem 472: existence of a seed producing an infinite Ulam prime sequence."
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Defines `ErdosProblem472`: there exists a finite seed of $\\geq2$ distinct primes whose Ulam extension produces an infinite sequence.",
+      "mathContext": "$\\exists$ seed of primes, $|seed|\\geq2$, sorted, with an infinite Ulam sequence."
     },
     {
-      "id": "seed-verification",
-      "title": "Seed [3, 5] Verification",
-      "startLine": 55,
-      "endLine": 69,
-      "summary": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length ≥ 2) via decide.",
-      "mathContext": "Defines ulamSeed35 and proves it satisfies all seed requirements (prime, sorted, length $\\geq$ 2) via decide."
+      "id": "known-example",
+      "title": "Known Example: Seed [3, 5]",
+      "startLine": 53,
+      "endLine": 67,
+      "summary": "Defines `ulamSeed35 = [3,5]` and PROVES its basic properties (`ulamSeed35_prime`, `_sorted`, `_length`) by `decide`. Conjectured to generate the infinite sequence $3,5,7,11,13,17,\\dots$.",
+      "mathContext": "Seed $[3,5]$: primes, sorted, length $\\geq2$."
     },
     {
       "id": "basic-properties",
-      "title": "Basic Structural Properties",
-      "startLine": 70,
-      "endLine": 114,
-      "summary": "Proves self-candidate oddness, terms ≥ 2, and the consecutive gap bound f(n+1) ≥ f(n) + 2.",
-      "mathContext": "Proves self-candidate oddness, terms $\\geq$ 2, and the consecutive gap bound f(n+1) $\\geq$ f(n) + 2."
+      "title": "Basic Properties",
+      "startLine": 68,
+      "endLine": 112,
+      "summary": "PROVES `candidate_self_odd` ($2f(n)-1$ is odd), `ulam_seq_ge_two` (all terms $\\geq2$), and `ulam_seq_gap` (consecutive terms differ by $\\geq2$, except the $2\\to3$ case).",
+      "mathContext": "$f(n+1)\\geq f(n)+2$ (or $f(n)=2,f(n+1)=3$)."
     },
     {
-      "id": "computable-impl",
-      "title": "Computable Implementation",
-      "startLine": 115,
-      "endLine": 141,
-      "summary": "Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification.",
-      "mathContext": "Mathematical content: Implements listMin, ulamNextCandidate, ulamStep, and ulamExtend for computational verification."
+      "id": "computable-step",
+      "title": "Computable Ulam Step Function",
+      "startLine": 113,
+      "endLine": 139,
+      "summary": "Defines the computable machinery: `listMin`, `ulamNextCandidate` (minimum prime candidate $\\text{last}+q-1>\\text{last}$), `ulamStep` (extend by one), and `ulamExtend` (extend by $n$ steps).",
+      "mathContext": "`ulamNextCandidate`/`ulamStep`/`ulamExtend`: executable extension for `native_decide`."
     },
     {
-      "id": "term-verification",
-      "title": "Computational Term Verification",
-      "startLine": 142,
-      "endLine": 170,
-      "summary": "Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide.",
-      "mathContext": "Mathematical content: Verifies the first 6 terms [3,5,7,11,13,17] step-by-step and as a batch via native_decide."
+      "id": "computational-verification",
+      "title": "Computational Verification of {3, 5}",
+      "startLine": 140,
+      "endLine": 168,
+      "summary": "PROVES (by `native_decide`) the early terms `ulam35_term2/3/4/5` ($7,11,13,17$) and `ulam35_first_terms` ($\\text{ulamExtend}\\,4\\,[3,5]=[3,5,7,11,13,17]$).",
+      "mathContext": "$[3,5]\\to[3,5,7,11,13,17]$ (computed)."
     },
     {
-      "id": "parity-analysis",
-      "title": "Parity Analysis",
-      "startLine": 171,
-      "endLine": 200,
-      "summary": "Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates.",
-      "mathContext": "Verified: Proves odd+odd−1 is odd, seed element 2 gives even candidates, and odd inputs give odd candidates."
+      "id": "structural-observations",
+      "title": "Structural Observations (Parity)",
+      "startLine": 169,
+      "endLine": 197,
+      "summary": "PROVES parity facts: `candidates_odd_of_odd` (odd+odd-1 is odd), `seed_two_gives_even` (the seed element $2$ gives even, hence non-prime, candidates), and `odd_candidate_from_odd` (odd seeds give odd candidates) — explaining why odd seeds are preferred.",
+      "mathContext": "Odd $p,q\\Rightarrow p+q-1$ odd; seed element $2$ gives even (never prime) candidates."
     },
     {
-      "id": "extended-verification",
-      "title": "Extended Verification and Growth",
-      "startLine": 201,
-      "endLine": 223,
-      "summary": "Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture.",
-      "mathContext": "Mathematical content: Extends verification to 8 terms [3,5,7,11,13,17,19,23] and states the all-odd-primes conjecture."
+      "id": "further-extensions",
+      "title": "Further Extensions",
+      "startLine": 198,
+      "endLine": 215,
+      "summary": "PROVES more computed terms: `ulam35_term6/7` ($19,23$), `ulam35_extends_8` ($\\text{ulamExtend}\\,6\\,[3,5]=[3,5,7,11,13,17,19,23]$), and that the first 8 terms are prime (`ulam35_all_prime_8`) and increasing (`ulam35_increasing_8`).",
+      "mathContext": "$[3,5]$ extends to $[3,5,7,11,13,17,19,23]$ (8 terms, all prime, increasing)."
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Structural Bounds",
+      "startLine": 216,
+      "endLine": 255,
+      "summary": "PROVES, for any Ulam sequence from a seed with all primes $\\geq3$: `ulam_seq_ge_three` (every term $\\geq3$), `ulam_seq_ne_two` (no term is $2$), and `ulam_seq_odd` (every term is odd). Plus `ulam35_seed_ge_three`.",
+      "mathContext": "Seed $\\geq3\\Rightarrow$ all terms $\\geq3$, $\\neq2$, odd."
+    },
+    {
+      "id": "growth-observation",
+      "title": "Growth Observation",
+      "startLine": 256,
+      "endLine": 264,
+      "summary": "States the AXIOM `ulam35_contains_all_odd_primes_conjecture`: every odd prime eventually appears in the $\\{3,5\\}$ Ulam extension. If true, this gives infiniteness. OPEN.",
+      "mathContext": "Axiom (conjecture): every odd prime appears in the $\\{3,5\\}$ Ulam sequence."
+    },
+    {
+      "id": "step-analysis",
+      "title": "Step Analysis via Seed Elements",
+      "startLine": 265,
+      "endLine": 327,
+      "summary": "PROVES structural step results for the $\\{3,5\\}$ sequence: `ulam35_f0_eq_three`/`_f1_eq_five`, `ulam35_gap_ge_two`, that $3$ and $5$ stay in the candidate list (`ulam35_three_in_ofFn`/`_five_in_ofFn`), and the prime-gap steps `ulam35_twin_prime_step` ($f(n)+2$ prime $\\Rightarrow f(n+1)=f(n)+2$, via $3$ always present) and `ulam35_cousin_prime_upper` ($f(n)+4$ prime $\\Rightarrow f(n+1)\\leq f(n)+4$, via $5$).",
+      "mathContext": "$f(0)=3,f(1)=5$; twin: $f(n)+2$ prime$\\Rightarrow f(n+1)=f(n)+2$; cousin: $f(n)+4$ prime$\\Rightarrow f(n+1)\\leq f(n)+4$."
     }
   ],
   "conclusion": {

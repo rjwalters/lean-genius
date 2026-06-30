@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "context",
+    "title": "Running the Derivation in Reverse: an Analytic Proof of a Combinatorial Fact",
+    "content": "The sibling GammaReflectionFormulaOQ01OQ03OQ01 proves the integer identity (2n)! = (2n-1)‼·2ⁿ·n! combinatorially and uses it to convert the central Gamma form into the double-factorial form Γ(n+1/2) = (2n-1)‼·√π/2ⁿ. This file runs the deduction in reverse: it proves the double-factorial Gamma form standalone (a fresh induction on Γ(s+1) = s·Γ(s), not routed through the central form) and then recovers the integer identity from the analytic side — once by equating two independent telescopings of Γ(n+1/2), and once directly from Legendre's duplication formula. Because the double-factorial form is established without the identity it goes on to prove, the argument is genuinely non-circular.",
+    "mathContext": "$\\Gamma\\!\\left(n+\\tfrac12\\right) = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$ recovers $(2n)! = (2n-1)!!\\cdot 2^{n}\\cdot n!$.",
+    "significance": "context",
+    "relatedConcepts": ["Gamma function", "double factorial", "Legendre duplication formula", "half-integer Gamma values"]
+  },
+  {
+    "id": "ann-odd-recursion",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 66 },
+    "type": "technique",
+    "title": "The Odd Double-Factorial Recursion",
+    "content": "oddDoubleFactorial_succ establishes (2(k+1)-1)‼ = (2k+1)·(2k-1)‼. Over ℕ the argument 2(k+1)-1 must first be rewritten to 2k+1 (truncated subtraction), after which the claim is exactly Nat.doubleFactorial_add_one : (m+1)‼ = (m+1)·(m-1)‼ at m = 2k. This recursion is the engine of the standalone Gamma induction in the next section.",
+    "mathContext": "$(2k+1)!! = (2k+1)\\,(2k-1)!!$.",
+    "significance": "supporting",
+    "relatedConcepts": ["double factorial", "natural-number subtraction", "recursion"]
+  },
+  {
+    "id": "ann-standalone-gamma",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 92 },
+    "type": "key-step",
+    "title": "The Standalone Double-Factorial Half-Integer Gamma Value",
+    "content": "gamma_nat_add_half_oddDF proves Γ(n+1/2) = (2n-1)‼·√π/2ⁿ directly by induction on n. The base case n = 0 reduces to Γ(1/2) = √π (Real.Gamma_one_half_eq). The step uses Γ((k+1)+1/2) = (k+1/2)·Γ(k+1/2) (Real.Gamma_add_one), substitutes the induction hypothesis, applies the odd-double-factorial recursion transported to ℝ, and closes with field_simp. Crucially this never touches the central binomial form or the factorial identity, which is what makes the later recovery of that identity non-circular.",
+    "mathContext": "$\\Gamma\\!\\left(n+\\tfrac12\\right) = \\dfrac{(2n-1)!!\\,\\sqrt{\\pi}}{2^{n}}$, proved by induction on $\\Gamma(s+1)=s\\,\\Gamma(s)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Gamma functional equation", "mathematical induction", "double factorial"]
+  },
+  {
+    "id": "ann-two-closed-forms",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 137 },
+    "type": "key-step",
+    "title": "The Analytic Reproof via Two Closed Forms",
+    "content": "gamma_nat_add_half_oddDF_div_sqrt_pi divides the standalone form by √π to give the rational quotient (2n-1)‼/2ⁿ. two_mul_factorial_eq_real equates this with the parent's central quotient (2n)!/(4ⁿ·n!) (GammaReflectionFormulaOQ01OQ03.gamma_nat_add_half_div_sqrt_pi), cross-multiplies via div_eq_div_iff, expands 4ⁿ = 2ⁿ·2ⁿ, and cancels one 2ⁿ with mul_right_cancel₀ to obtain ((2n-1)‼ : ℝ)·2ⁿ·n! = (2n)!. two_mul_factorial_eq then lifts this real identity back to ℕ via Nat.cast injectivity — an analytic proof of a purely combinatorial fact.",
+    "mathContext": "$\\dfrac{(2n-1)!!}{2^{n}} = \\dfrac{(2n)!}{4^{n} n!} \\implies (2n)! = (2n-1)!!\\cdot 2^{n}\\cdot n!$.",
+    "significance": "critical",
+    "relatedConcepts": ["cast injectivity", "field manipulation", "combinatorial identity"]
+  },
+  {
+    "id": "ann-duplication-route",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 139, "endLine": 178 },
+    "type": "key-step",
+    "title": "The Legendre-Duplication Route (the Open Question, Verbatim)",
+    "content": "two_mul_factorial_eq_via_duplication recovers the same integer identity directly from Legendre's duplication formula Γ(s)·Γ(s+1/2) = Γ(2s)·2^(1-2s)·√π (Real.Gamma_mul_Gamma_add_half) at s = n+1/2. The three Gamma factors are all elementary: Γ(n+1/2) = (2n-1)‼·√π/2ⁿ (the standalone form), Γ((n+1/2)+1/2) = Γ(n+1) = n!, and Γ(2(n+1/2)) = Γ(2n+1) = (2n)! (Real.Gamma_nat_eq_factorial), while the power collapses to 2^(-2n). After expanding 2^(2n) = 2ⁿ·2ⁿ, both sides are collected as (…)·√π, √π is cancelled (mul_right_cancel₀), and one 2ⁿ is cancelled — a single analytic identity carrying the whole deduction, exactly as the open question requested.",
+    "mathContext": "$\\Gamma(s)\\,\\Gamma\\!\\left(s+\\tfrac12\\right) = 2^{1-2s}\\sqrt{\\pi}\\,\\Gamma(2s)$ at $s = n+\\tfrac12$.",
+    "significance": "critical",
+    "relatedConcepts": ["Legendre duplication formula", "half-integer Gamma values", "real power (rpow)"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+    "range": { "startLine": 180, "endLine": 194 },
+    "type": "context",
+    "title": "Consequences and Spot Check",
+    "content": "oddDoubleFactorial_eq_factorial_div reads the identity as an exact natural-number quotient (2n-1)‼ = (2n)!/(2ⁿ·n!) via Nat.div_eq_of_eq_mul_left, certifying the divisibility 2ⁿ·n! ∣ (2n)!. two_mul_factorial_eq_three confirms the closed form numerically at n = 3: 6! = 720 = 5‼·2³·3! = 15·8·6, by decide.",
+    "mathContext": "$(2n-1)!! = \\dfrac{(2n)!}{2^{n} n!}$; $6! = 5!!\\cdot 2^{3}\\cdot 3! = 720$.",
+    "significance": "supporting",
+    "relatedConcepts": ["divisibility", "natural-number division", "decidability"]
+  }
+]

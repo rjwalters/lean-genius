@@ -23,7 +23,11 @@
       "hereditary-families",
       "intersecting-families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "combinatorics",
+      "set theory"
+    ]
   },
   {
     "id": "ann-e701-hereditary",
@@ -48,7 +52,11 @@
       "independence-systems"
     ],
     "mathContext": "See annotation content for formal details of hereditary family",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "combinatorics",
+      "order theory"
+    ]
   },
   {
     "id": "ann-e701-powerset",
@@ -71,7 +79,10 @@
       "hereditary-families"
     ],
     "mathContext": "See annotation content for formal details of power set example",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "Lean 4 proof tactics"
+    ]
   },
   {
     "id": "ann-e701-bounded",
@@ -95,7 +106,11 @@
       "cardinality-bounds"
     ],
     "mathContext": "See annotation content for formal details of bounded cardinality example",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "finite cardinality",
+      "matroid theory"
+    ]
   },
   {
     "id": "ann-e701-intersecting",
@@ -118,7 +133,11 @@
       "extremal-set-theory"
     ],
     "mathContext": "See annotation content for formal details of intersecting family",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "extremal set theory",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e701-star-def",
@@ -142,7 +161,11 @@
       "extremal-set-theory"
     ],
     "mathContext": "See annotation content for formal details of star definition",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "combinatorics",
+      "Lean 4 definitions"
+    ]
   },
   {
     "id": "ann-e701-star-intersecting",
@@ -165,7 +188,11 @@
       "intersecting-families"
     ],
     "mathContext": "See annotation content for formal details of stars are intersecting",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "combinatorics",
+      "Lean 4 proof tactics"
+    ]
   },
   {
     "id": "ann-e701-conjecture",
@@ -189,7 +216,11 @@
       "extremal-bounds"
     ],
     "mathContext": "See annotation content for formal details of chvátal's conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "finite cardinality",
+      "logic and quantifiers"
+    ]
   },
   {
     "id": "ann-e701-open",
@@ -212,7 +243,11 @@
       "open-problem",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical logic",
+      "Lean 4 axioms",
+      "extremal set theory"
+    ]
   },
   {
     "id": "ann-e701-sterboul",
@@ -236,7 +271,11 @@
       "sterboul-conditions",
       "uniform-families"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "finite cardinality",
+      "matroid theory"
+    ]
   },
   {
     "id": "ann-e701-fk",
@@ -259,7 +298,11 @@
       "covering-number",
       "recent-progress"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "combinatorics",
+      "hypergraph theory"
+    ]
   },
   {
     "id": "ann-e701-borg",
@@ -282,7 +325,11 @@
       "borg-conjecture"
     ],
     "mathContext": "See annotation content for formal details of borg's weighted version",
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "summation over finite sets",
+      "combinatorial optimization"
+    ]
   },
   {
     "id": "ann-e701-ekr",
@@ -305,7 +352,11 @@
       "uniform-hypergraphs",
       "extremal-set-theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal set theory",
+      "binomial coefficients",
+      "hypergraph theory"
+    ]
   },
   {
     "id": "ann-e701-uniform",
@@ -328,6 +379,10 @@
       "hereditary-families"
     ],
     "mathContext": "See annotation content for formal details of uniform not hereditary",
-    "prerequisites": []
+    "prerequisites": [
+      "set theory",
+      "finite cardinality",
+      "Lean 4 proof tactics"
+    ]
   }
 ]

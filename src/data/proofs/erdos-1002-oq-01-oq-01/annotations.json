@@ -216,7 +216,7 @@
       "startLine": 148,
       "endLine": 150
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Distance to Nearest Integer",
     "content": "Defines ‖x‖ = min({x}, 1-{x}), the distance from x to the nearest integer. This is the standard notation in Diophantine approximation, measuring how well x can be approximated by integers.",
     "mathContext": "$\\|x\\| = \\min(\\{x\\}, 1 - \\{x\\}) = \\inf_{n \\in \\mathbb{Z}} |x - n|$. For $x = q\\alpha$, $\\|q\\alpha\\|$ measures the quality of rational approximation $p/q \\approx \\alpha$.",
@@ -238,7 +238,7 @@
       "startLine": 152,
       "endLine": 155
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Badly Approximable Numbers",
     "content": "Defines HasBoundedPartialQuotients: α satisfies ‖qα‖ ≥ C/q for all q ≥ 1 and some C > 0. Equivalently, the continued fraction expansion [a₀; a₁, a₂, ...] has bounded partial quotients (sup aₙ < ∞). This class includes all quadratic irrationals (√2, φ) by Lagrange's theorem, but excludes Liouville numbers which are extremely well approximable.",
     "mathContext": "$\\alpha$ is badly approximable if $\\exists C > 0: \\|q\\alpha\\| \\geq C/q$ for all $q \\geq 1$. By Hurwitz's theorem, $C \\leq 1/\\sqrt{5}$. The set of badly approximable numbers has full Hausdorff dimension 1 but Lebesgue measure zero.",

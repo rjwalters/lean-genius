@@ -90,49 +90,105 @@
       "title": "Core Definitions",
       "startLine": 14,
       "endLine": 20,
-      "summary": "Definitions of W (p-adic valuation of products) and kappa (p-adic valuation of central binomials)."
+      "summary": "Definitions of W_p (p-adic valuation of the product of m+1..m+k) and kappa_p (p-adic valuation of the central binomial coefficient)."
     },
     {
       "id": "forced-carries",
       "title": "Forced Carries Lemma",
       "startLine": 21,
       "endLine": 71,
-      "summary": "Key lemma: if p^j divides m+i for small i, then kappa_p(m) >= j."
+      "summary": "Key lemma: if p^j divides m+i for sufficiently small i, then kappa_p(m) >= j."
     },
     {
-      "id": "large-primes",
+      "id": "large-prime-analysis",
       "title": "Large Prime Analysis",
       "startLine": 72,
       "endLine": 112,
-      "summary": "For primes p > 2k, the p-adic valuations are well-controlled."
+      "summary": "For primes p > 2k, kappa_p(m) >= W_p(m), reducing the analysis to small primes."
     },
     {
-      "id": "counting-bounds",
-      "title": "Counting and Bounds",
+      "id": "counting-interval-bounds",
+      "title": "Counting and Interval Bounds",
       "startLine": 113,
-      "endLine": 200,
-      "summary": "Bounds on N_pj (multiples of prime powers) and spike counts."
+      "endLine": 228,
+      "summary": "Definitions of N_pj, J_p, V_p; bounds on the number of multiples of p^j in (m, m+k]; W_p as a sum of N_pj; residue-class counts in [M, 2M]; and the spike count bound for V_p."
     },
     {
-      "id": "threshold-lemmas",
-      "title": "Threshold Lemmas",
-      "startLine": 700,
-      "endLine": 900,
-      "summary": "Establishing when the p-adic conditions are satisfied."
+      "id": "digit-lower-bound",
+      "title": "Digit Lower Bound for kappa",
+      "startLine": 229,
+      "endLine": 269,
+      "summary": "kappa_p(m) is at least the number of base-p digits d_u (u < L) with d_u >= (p+1)/2, connecting carries to the digit expansion."
     },
     {
-      "id": "good-triples",
+      "id": "probabilistic-carry-model",
+      "title": "Probabilistic Carry Model",
+      "startLine": 270,
+      "endLine": 326,
+      "summary": "Definitions of eta, theta, mu, L_p, Q_p; concentration of m mod Q with error O(M^{-eta}); and the bound Q_p <= M^{1-eta}."
+    },
+    {
+      "id": "mgf-chernoff",
+      "title": "MGF and Chernoff Bound",
+      "startLine": 327,
+      "endLine": 440,
+      "summary": "Moment generating function for the carry count, Markov's inequality, the Chernoff bound P(X_p <= mu/2) <= exp(-mu/8), and the coefficient comparison for log M."
+    },
+    {
+      "id": "parameters-bad-carry-count",
+      "title": "Parameter Choices and Bad-Carry Counting",
+      "startLine": 441,
+      "endLine": 494,
+      "summary": "Definitions of k_val and t_val, a lower bound for mu/2 in terms of log M, and the per-prime bound on m with few carries."
+    },
+    {
+      "id": "erdos-set-bad-set",
+      "title": "Erdős Set and Bad-Set Definitions",
+      "startLine": 495,
+      "endLine": 554,
+      "summary": "The set of admissible triples for Erdős #728, the bad-m set (carry or spike failures), and the summed upper bounds for bad counts over primes."
+    },
+    {
+      "id": "carry-sum-bounds",
+      "title": "Carry-Sum Bounds and Asymptotic Ratios",
+      "startLine": 555,
+      "endLine": 741,
+      "summary": "Splitting the bad-carry bound into term1 and term2, the bound theta >= 1/3, lower bounds for coeff_lhs, and the limiting ratios log M / log(k_val c M) -> infinity."
+    },
+    {
+      "id": "vanishing-bad-carries",
+      "title": "Vanishing of Bad Carries",
+      "startLine": 742,
+      "endLine": 851,
+      "summary": "term2 and the exponential sums tend to 0; sum_bound_carries identity; for large M the number of bad carries is below (M+1)/3; spike bound introduced."
+    },
+    {
+      "id": "vanishing-bad-spikes",
+      "title": "Vanishing of Bad Spikes",
+      "startLine": 852,
+      "endLine": 1020,
+      "summary": "Spike-term definitions, bounds on sum_spike_term1, the limit sum_p p/p^t -> 0, the bound on sum_spike_term2, and bad spikes below (M+1)/3 for large M."
+    },
+    {
+      "id": "reduction-main-inequality",
+      "title": "Reduction and Main Inequality",
+      "startLine": 1021,
+      "endLine": 1138,
+      "summary": "Bounds on k_val (between C log(4M) and (1-2eps)M), the valuation condition for the improved reduction, sufficient divisibility conditions, and the asymptotic main inequality."
+    },
+    {
+      "id": "good-triple-construction",
       "title": "Good Triple Construction",
-      "startLine": 1200,
-      "endLine": 1350,
-      "summary": "Constructing triples (a,b,n) satisfying all required conditions."
+      "startLine": 1139,
+      "endLine": 1337,
+      "summary": "Unbounded third component implies an infinite set; the weak threshold holds for relevant primes; non-bad m yield valuation conditions; construction of an admissible triple and existence of a good m for any c > 0."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem",
-      "startLine": 1351,
+      "startLine": 1338,
       "endLine": 1416,
-      "summary": "The complete proof that infinitely many good triples exist."
+      "summary": "The set of good triples is infinite; erdos_728 and the refined erdos_728_fc establish infinitely many (a,b,n) with a!b! | n!(a+b-n)! in the logarithmic regime."
     }
   ],
   "conclusion": {

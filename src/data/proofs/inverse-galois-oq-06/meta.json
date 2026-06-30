@@ -19,8 +19,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms. (1) three_dvd_gal_card — 3 divides |Gal(q/ℚ)|. This follows from Dedekind's theorem applied to q mod 7 (which factors as (1-cycle)(1-cycle)(3-cycle)), implying the Galois group contains an element of order divisible by 3. Axiomatized because Mathlib lacks Dedekind's theorem for polynomial Galois groups. (2) Lean.ofReduceBool — several credited theorems are discharged by `native_decide` (perm_fin5_order5_order3_not_commute, perm_fin5_no_order_15, a5_card, resolvent_no_positive_root, resolvent_no_negative_root, resolvent_at_zero, and the Sylow subgroup-cardinality steps), which trusts the Lean compiler's kernel reduction (#print axioms lists Lean.ofReduceBool); these results are free of mathematical axioms but not axiom-free in the strict sense.",
     "lineCount": 2067,
     "theoremCount": 84,
     "definitionCount": 12,
@@ -73,10 +73,10 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization proves Gal(q/ℚ) ≅ A₅ for q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5, with exactly one axiom: `three_dvd_gal_card` (Dedekind's theorem mod 7). Starting from 5 axioms, the formalization was systematically reduced to 1 by proving the discriminant bound via the Vandermonde chain and replacing the structural axioms with Sylow theory. This is the first non-solvable group formally realized as a Galois group over ℚ in this library.",
+    "summary": "This formalization proves Gal(q/ℚ) ≅ A₅ for q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5, with one mathematical axiom: `three_dvd_gal_card` (Dedekind's theorem mod 7). Starting from 5 mathematical axioms, the formalization was systematically reduced to 1 by proving the discriminant bound via the Vandermonde chain and replacing the structural axioms with Sylow theory. Several computational steps use `native_decide`, so the build additionally depends on `Lean.ofReduceBool` (Lean's kernel-reduction axiom). This is the first non-solvable group formally realized as a Galois group over ℚ in this library.",
     "implications": "This result marks the boundary between solvable and non-solvable algebra in the formalization. The Vandermonde discriminant technique developed here (proving |Gal| | 60 without axioms via complex embedding and Sophie Germain identity) is reusable for other polynomial Galois group computations. The non-solvability proof connects directly to the Abel-Ruffini theorem: q is not solvable by radicals, providing a concrete quintic witnessing this over ℚ.",
     "openQuestions": [
-      "Formalize Dedekind's theorem (mod-p factorization ↦ cycle types in Gal) in Mathlib, eliminating the last axiom three_dvd_gal_card and making this entry fully verified.",
+      "Formalize Dedekind's theorem (mod-p factorization ↦ cycle types in Gal) in Mathlib, eliminating the mathematical axiom three_dvd_gal_card (the entry would then depend only on Lean.ofReduceBool via native_decide).",
       "Realize PSL(2,7) (order 168, the second smallest non-abelian simple group) over ℚ using the polynomial x⁷ − 7x + 3.",
       "Formalize Shafarevich's theorem: every finite solvable group is realizable as a Galois group over ℚ.",
       "Investigate the Noether problem: does A₅ have a generic polynomial (one whose specializations give all A₅-extensions)?",
