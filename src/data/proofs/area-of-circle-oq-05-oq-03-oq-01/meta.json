@@ -17,10 +17,22 @@
       "complex-analysis",
       "probability"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 242,
+    "mathlibDependencies": [
+      {
+        "theorem": "GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I",
+        "description": "∫ e^{-b x² + (real linear)·x} dx in closed form (vertical-strip shift of the complex Gaussian integral). The engine behind gaussian_fourier_param/gaussian_fourier_dilated — the parametrized dilation law is obtained by completing the square and applying this Mathlib theorem at width b = 1/(2σ²).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform"
+      },
+      {
+        "theorem": "MeasureTheory.integral_mul_const / MeasureTheory.integral_div",
+        "description": "Pull the constant Fourier factor and the normalizing density constant out of the Lebesgue integral when passing to the normalized dilation identity.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      }
+    ],
     "assumptions": "0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound). Builds on Mathlib's Gaussian Fourier transform infrastructure (GaussianFourier.integral_cexp_neg_mul_sq_add_real_mul_I — the vertical-strip shift of the real Gaussian integral). The width parameter is a genuine real σ>0, so the result is the full dilation group, not a single instance.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-21",

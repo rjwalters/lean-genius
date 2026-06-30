@@ -52,41 +52,25 @@ theorem a4_derived1_ne_bot : derivedSeries A4 1 ≠ ⊥ := by
   -- If derivedSeries A4 1 = ⊥, then A4 is abelian
   obtain ⟨a, b, hab⟩ := a4_non_abelian
   apply hab
-  -- a * b = b * a follows from [a, b] ∈ derivedSeries A4 1 = ⊥ = {1}
-  have hmem : a * b * a⁻¹ * b⁻¹ ∈ derivedSeries A4 1 := by
+  -- a * b = b * a follows from ⁅a, b⁆ ∈ derivedSeries A4 1 = ⊥ = {1}
+  have hmem : ⁅a, b⁆ ∈ derivedSeries A4 1 := by
     rw [derivedSeries_one]
-    exact commutator_mem_commutator (mem_top a) (mem_top b)
-  rw [h] at hmem
-  have := Subgroup.mem_bot.mp hmem
-  group at this ⊢
-  linarith [mul_right_cancel₀ (inv_ne_one.mpr (ne_of_apply_ne id hab)) this]
+    exact Subgroup.commutator_mem_commutator (Subgroup.mem_top a) (Subgroup.mem_top b)
+  rw [h, Subgroup.mem_bot, commutatorElement_eq_one_iff_commute] at hmem
+  exact hmem
 
 /-- The 2nd derived subgroup of A₄ is trivial.
 
     Proof: The commutator subgroup [A₄, A₄] = V₄ (the Klein four-group) is abelian
     (in fact, it has exponent 2: every non-identity element has order 2). The
     commutator of an abelian group is trivial. -/
-theorem a4_derived2_eq_bot : derivedSeries A4 2 = ⊥ := by
-  -- Use native_decide on the solvability class of A4
-  -- A4 has solvability class 2: native_decide proves the 2nd term is trivial
-  rw [show (2 : ℕ) = Nat.succ (Nat.succ 0) from rfl]
-  rw [derivedSeries_succ, derivedSeries_succ, derivedSeries_zero]
-  -- Need: ⁅⁅⊤, ⊤⁆, ⁅⊤, ⊤⁆⁆ = ⊥ in A4
-  -- i.e., the commutator of [A4,A4] with itself is trivial
-  -- [A4,A4] = V4 is abelian, so this holds
-  rw [Subgroup.commutator_eq_bot_iff_le_centralizer]
-  -- suffices to show commutator A4 ≤ centralizer (commutator A4)
-  -- i.e., [A4,A4] is abelian
-  -- We prove this by deciding commutativity for the finite group A4
-  intro x hx
-  simp only [Subgroup.mem_centralizer_iff]
-  intro y hy
-  -- x, y ∈ ⁅⊤, ⊤⁆ = commutator A4; need x * y = y * x
-  -- Reduce to Fintype computation: elements of commutator A4 commute
-  -- The commutator subgroup of A4 is the Klein four-group V4 = {e, (12)(34), (13)(24), (14)(23)}
-  -- V4 has exponent 2, hence is abelian
-  -- We verify this by exhaustive check of the 12-element group A4
-  sorry
+theorem a4_derived2_eq_bot : derivedSeries A4 2 = ⊥ :=
+  -- The parent file establishes this exact fact by identifying the commutator
+  -- subgroup ⁅A₄, A₄⁆ with the Klein four-group V₄ (every commutator has order
+  -- dividing 2, by `decide`), and V₄ is abelian, so ⁅V₄, V₄⁆ = ⊥. Hence
+  -- D²(A₄) = ⁅⁅A₄,A₄⁆, ⁅A₄,A₄⁆⁆ ≤ ⁅V₄, V₄⁆ = ⊥. This is a kernel `decide`
+  -- computation (0 axioms), not `native_decide`.
+  AbelRuffiniOQ04OQ02OQ02.a4_derivedSeries_two_eq_bot
 
 /-- A₄ has solvability class exactly 2: the minimum n with derivedSeries A4 n = ⊥ is 2. -/
 theorem a4_solvability_class_two :
@@ -102,7 +86,7 @@ theorem a4_solvability_class_two :
         rw [derivedSeries_succ]
         have ihm : derivedSeries A4 m = ⊥ := ih (Nat.le_of_succ_le_succ h)
         rw [ihm]
-        simp [Subgroup.commutator_bot_left]
+        simp
       | inr h =>
         cases m with
         | zero => omega
@@ -112,7 +96,7 @@ theorem a4_solvability_class_two :
           | succ j =>
             have : derivedSeries A4 (j + 2) = ⊥ := ih (by omega)
             rw [derivedSeries_succ, this]
-            simp [Subgroup.commutator_bot_left]
+            simp
   · exact a4_derived1_ne_bot
 
 -- ============================================================
@@ -148,7 +132,7 @@ theorem a5_perfect : commutator A5 = ⊤ := by
     of a simple group equals its commutator. Since A₅ is perfect, this equals ⊤. -/
 theorem a5_derived_succ_eq_top (n : ℕ) :
     derivedSeries A5 (n + 1) = ⊤ := by
-  rw [IsSimpleGroup.derivedSeries_succ, derivedSeries_one]
+  rw [IsSimpleGroup.derivedSeries_succ]
   exact a5_perfect
 
 /-- A₅'s derived series never reaches ⊥: every term is either ⊤ (n ≥ 1) or ⊤ (n = 0). -/
@@ -204,16 +188,17 @@ theorem derived_length_sequence :
     -- A₅ has infinite derived length
     (∀ n, derivedSeries A5 n ≠ ⊥) := by
   refine ⟨?_, ?_, a4_derived1_ne_bot, a4_derived2_eq_bot, a5_derived_never_bot⟩
-  · intro n hn; omega
+  · -- n < 1 ⟹ n = 0, and derivedSeries A₃ 0 = ⊤ ≠ ⊥ (A₃ is nontrivial)
+    intro n hn
+    interval_cases n
+    rw [derivedSeries_zero]
+    exact top_ne_bot
   · -- A₃ ≅ ℤ/3ℤ is abelian: [A₃, A₃] = {1}
-    rw [derivedSeries_one]
-    apply le_antisymm _ (Subgroup.bot_le _)
-    rw [Subgroup.commutator_le]
-    intro x _ y _
-    -- A₃ is abelian by decide
     have h : ∀ a b : alternatingGroup (Fin 3), a * b = b * a := by decide
-    rw [h x y, mul_inv_cancel_right]
-    exact Subgroup.mem_bot.mpr rfl
+    rw [derivedSeries_one, commutator_def, eq_bot_iff, Subgroup.commutator_le]
+    intro x _ y _
+    rw [Subgroup.mem_bot, commutatorElement_eq_one_iff_commute]
+    exact h x y
 
 /-!
 ## Summary
@@ -228,17 +213,20 @@ theorem derived_length_sequence :
 | `a5_perfect` | commutator A₅ = ⊤ (A₅ is perfect) |
 | `a5_derived_succ_eq_top` | derivedSeries A₅ (n+1) = ⊤ for all n |
 | `a5_derived_never_bot` | derivedSeries A₅ n ≠ ⊥ for all n |
+| `a4_solvability_class_two` | derivedSeries A₄ n = ⊥ for all n ≥ 2, but not n = 1 |
 | `derived_length_gap` | The key gap: A₄ finite, A₅ infinite derived length |
+| `derived_length_sequence` | Profile 0,0,0,1,2,∞ across A₀…A₅ |
 
-Theorems proved: 9 (1 sorry in a4_derived2_eq_bot)
-Sorries: 1 (commutator A4 is abelian — needs V4 computation)
+Theorems proved: 11
+Sorries: 0
 Axioms: 0
 
-The remaining sorry concerns proving [A4,A4] is abelian. The mathematical fact
-is that [A4,A4] = V4 (Klein four-group) which has exponent 2 and is thus abelian.
-The Lean proof requires either:
-1. native_decide on commutativity of commutator A4 (if computable)
-2. Explicit identification of V4 as the commutator subgroup of A4
+`a4_derived2_eq_bot` is discharged by reusing the parent file's
+`a4_derivedSeries_two_eq_bot`, which proves D²(A₄) = ⊥ by identifying the
+commutator subgroup ⁅A₄, A₄⁆ with the Klein four-group V₄ = {e, (12)(34),
+(13)(24), (14)(23)} (every generator ⁅a,b⁆ has order dividing 2, by kernel
+`decide`) and observing that V₄ is abelian, so ⁅V₄, V₄⁆ = ⊥. The whole chain
+uses kernel `decide` only (no `native_decide`), hence is genuinely 0-axiom.
 -/
 
 end AbelRuffiniOQ04OQ02OQ02OQ06

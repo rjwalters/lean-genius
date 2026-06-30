@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-cr0502-padic",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 47, "endLine": 58 },
+    "type": "technique",
+    "title": "p-adic Valuation Decides Perfect Powers",
+    "content": "not_isPerfectNthPow_prime_pow shows a prime power pᵃ is a perfect b-th power only if b ∣ a. The proof reads the p-adic valuation of both sides of pᵃ = kᵇ: Nat.factorization_pow gives (pᵃ).factorization p = a (since the prime's valuation of itself is 1) and (kᵇ).factorization p = b·vₚ(k). Equating yields a = b·vₚ(k), i.e. b ∣ a. Comparing a single prime's exponent collapses an existence statement about perfect powers into a divisibility fact.",
+    "mathContext": "$p^a = k^b \\implies v_p(p^a) = v_p(k^b) \\implies a = b\\,v_p(k) \\implies b \\mid a$.",
+    "significance": "key",
+    "relatedConcepts": ["p-adic valuation", "Nat.factorization", "perfect power", "unique factorization"],
+    "prerequisites": ["prime factorization", "factorization of powers"]
+  },
+  {
+    "id": "ann-cr0502-main",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 60, "endLine": 93 },
+    "type": "theorem",
+    "title": "Prime to a Non-Integer Rational Power is Irrational",
+    "content": "irrational_prime_rpow generalizes the parent's unit-fraction result p^(1/n) to any reduced fraction q = a/b with b ≥ 2. The key rewrite turns p^q into (pᵃ)^(1/b) using rpow_mul and rpow_natCast (a = q.num.natAbs, b = q.den). The sibling's criterion irrational_rpow_inv_iff then says this is irrational iff pᵃ is not a perfect b-th power — which not_isPerfectNthPow_prime_pow supplies once b ∤ a.",
+    "mathContext": "$p^{a/b} = (p^a)^{1/b}$ irrational $\\iff p^a$ is not a perfect $b$-th power, for $p$ prime, $\\gcd(a,b)=1$, $b\\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow", "rpow_mul", "irrational_rpow_inv_iff", "reduced fraction"],
+    "prerequisites": ["real power laws", "the sibling rationality criterion"]
+  },
+  {
+    "id": "ann-cr0502-coprime-ndvd",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 84, "endLine": 91 },
+    "type": "concept",
+    "title": "Reduced Fraction Forces b ∤ a",
+    "content": "The hypothesis that q is in lowest terms (q.reduced gives Nat.Coprime a b) combines with b ≥ 2 to rule out b ∣ a: if b ∣ a then b ∣ gcd(a,b) = 1, forcing b ≤ 1, contradicting b ≥ 2 (omega). This is exactly why the result needs a NON-integer exponent — an integer exponent has b = 1, pᵃ is trivially a perfect 1st power, and p^q is rational.",
+    "mathContext": "$\\gcd(a,b)=1 \\wedge b \\ge 2 \\implies b \\nmid a$.",
+    "significance": "supporting",
+    "relatedConcepts": ["coprimality", "Nat.gcd", "lowest terms", "Rat.reduced"],
+    "prerequisites": ["gcd properties"]
+  },
+  {
+    "id": "ann-cr0502-instances",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 95, "endLine": 103 },
+    "type": "context",
+    "title": "Worked Instances 2^(2/3) and 3^(3/2)",
+    "content": "Two concrete corollaries from irrational_prime_rpow by norm_num discharge of the prime/positivity/denominator side conditions: 2^(2/3) (exponent below 1) and 3^(3/2) (exponent above 1 but still non-integer). They show the result is genuinely about the non-integrality of the exponent, not its size.",
+    "mathContext": "$2^{2/3},\\ 3^{3/2} \\notin \\mathbb{Q}$.",
+    "significance": "context",
+    "relatedConcepts": ["concrete instantiation", "norm_num"],
+    "prerequisites": ["the main theorem"]
+  },
+  {
+    "id": "ann-cr0502-cubic-identity",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 107, "endLine": 130 },
+    "type": "insight",
+    "title": "The Cubing Identity s³ = 5 + 3·∛6·s",
+    "content": "For s = ∛2 + ∛3, expanding (a+c)³ = a³ + c³ + 3ac(a+c) and substituting a³ = 2, c³ = 3, and ac = ∛2·∛3 = ∛6 (Real.mul_rpow) gives the cubic relation s³ = 5 + 3·∛6·s. This algebraic identity is the bridge that expresses the 'hard' irrational ∛6 as a rational function of s, setting up the descent to the sibling's irrational_cbrt_six.",
+    "mathContext": "$(\\sqrt[3]{2}+\\sqrt[3]{3})^3 = 2 + 3 + 3\\sqrt[3]{6}(\\sqrt[3]{2}+\\sqrt[3]{3}) = 5 + 3\\sqrt[3]{6}\\,s$.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "Real.mul_rpow", "binomial cube", "nested radicals"],
+    "prerequisites": ["real power arithmetic", "ring identities"]
+  },
+  {
+    "id": "ann-cr0502-descent",
+    "proofId": "cube-root-2-irrational-oq-05-oq-02",
+    "range": { "startLine": 131, "endLine": 141 },
+    "type": "technique",
+    "title": "Rationality Descent to ∛6",
+    "content": "Assume s = ∛2 + ∛3 is rational, say s = r ∈ ℚ. Since s > 0, 3r ≠ 0, so solving the cubic identity for ∛6 gives ∛6 = (r³ − 5)/(3r), a rational number — contradicting the sibling's irrational_cbrt_six. The algebra is closed by eq_div_iff and linear_combination against the cubic identity. This is the standard 'a sum of surds is irrational because it would make a known irrational rational' descent.",
+    "mathContext": "$s = r \\in \\mathbb{Q},\\ s>0 \\implies \\sqrt[3]{6} = \\dfrac{r^3 - 5}{3r} \\in \\mathbb{Q}$, contradicting $\\sqrt[3]{6} \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "irrational_cbrt_six", "linear_combination", "field of rationals"],
+    "prerequisites": ["the cubing identity", "rationality closure"]
+  }
+]

@@ -1,0 +1,113 @@
+[
+  {
+    "id": "ann-loc-oq08-sqrt-bridge",
+    "proofId": "law-of-cosines-oq-08",
+    "range": {
+      "startLine": 50,
+      "endLine": 57
+    },
+    "type": "theorem",
+    "title": "Squaring is Monotone on the Non-Negative Reals",
+    "content": "Two small bridges, `le_of_sq_le_sq` and `lt_of_sq_lt_sq`, turning `c² ≤ d²` (resp. `c² < d²`) into `c ≤ d` (resp. `c < d`) for non-negative `c, d`. Each is one application of `Real.sqrt` monotonicity (`Real.sqrt_le_sqrt` / `Real.sqrt_lt_sqrt`) followed by `Real.sqrt_sq` to undo the square. These are the only step that converts the squared inequalities below into genuine distance inequalities.",
+    "mathContext": "For 0 ≤ c, d: c = √(c²) ≤ √(d²) = d whenever c² ≤ d², since √ is monotone and √(x²) = x on the non-negatives.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.sqrt",
+      "monotonicity",
+      "order on ℝ"
+    ],
+    "prerequisites": [
+      "Properties of the real square root"
+    ]
+  },
+  {
+    "id": "ann-loc-oq08-scalar-triangle",
+    "proofId": "law-of-cosines-oq-08",
+    "range": {
+      "startLine": 67,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "title": "Triangle Inequality from the Law of Cosines (scalar form)",
+    "content": "The mathematical heart of the entry. Given the law of cosines `c² = a² + b² − 2ab·cos C` with `a, b, c ≥ 0` and the single trigonometric input `cos C ≥ −1`, the third side satisfies `c ≤ a + b`. The proof computes `(a + b)² − c² = 2ab·(1 + cos C) ≥ 0` (one `nlinarith` with the product hint `ab·(1 + cos C) ≥ 0`), giving `c² ≤ (a + b)²`, and then `le_of_sq_le_sq` extracts `c ≤ a + b`.",
+    "mathContext": "(a + b)² − c² = (a² + 2ab + b²) − (a² + b² − 2ab·cos C) = 2ab + 2ab·cos C = 2ab(1 + cos C) ≥ 0, using ab ≥ 0 and 1 + cos C ≥ 0.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "law of cosines",
+      "triangle inequality",
+      "cosine bound",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Law of cosines",
+      "cos ≥ −1"
+    ]
+  },
+  {
+    "id": "ann-loc-oq08-degenerate",
+    "proofId": "law-of-cosines-oq-08",
+    "range": {
+      "startLine": 90,
+      "endLine": 107
+    },
+    "type": "theorem",
+    "title": "Equality Holds iff the Triangle is Degenerate",
+    "content": "For positive adjacent sides `a, b > 0`, the triangle inequality is an equality `c = a + b` exactly when `cos C = −1`, i.e. the angle `C = π` and the three vertices are collinear. Forward: `c = a + b` gives `c² = (a + b)²`, and `linear_combination hlc - hcsq` produces `2ab·(1 + cos C) = 0`; since `2ab ≠ 0` (positivity), `mul_eq_zero` forces `cos C = −1`. Reverse: substituting `cos C = −1` makes `c² = (a + b)²`, and `le_of_sq_le_sq` both ways gives `c = a + b`.",
+    "mathContext": "c = a + b ⇔ c² = (a+b)² ⇔ 2ab(1 + cos C) = 0 ⇔ cos C = −1 (since ab > 0) ⇔ C = π.",
+    "significance": "key",
+    "relatedConcepts": [
+      "degenerate triangle",
+      "equality condition",
+      "mul_eq_zero",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "Law of cosines",
+      "cos C = −1 ⇔ C = π"
+    ]
+  },
+  {
+    "id": "ann-loc-oq08-coordinate-free",
+    "proofId": "law-of-cosines-oq-08",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Coordinate-Free Triangle Inequality in an Inner-Product Space",
+    "content": "In any real inner-product space, `‖x − y‖ ≤ ‖x‖ + ‖y‖`. The proof rewrites Mathlib's vector-angle law of cosines `norm_sub_sq_eq_…_cos_angle` into the `^2` form and feeds it, with `Real.neg_one_le_cos (angle x y)`, into the scalar lemma `triangle_ineq_of_law_cosines` (taking `a = ‖x‖`, `b = ‖y‖`, `c = ‖x − y‖`). The companion `norm_sub_eq_iff_cos_angle` shows equality holds for non-zero `x, y` iff the angle between them is `π`. This re-derives Mathlib's `norm_sub_le` through the law of cosines rather than Cauchy–Schwarz.",
+    "mathContext": "‖x − y‖² = ‖x‖² + ‖y‖² − 2‖x‖‖y‖·cos(angle x y), and cos(angle x y) ≥ −1, so the scalar argument applies verbatim with the side lengths replaced by norms.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "inner-product space",
+      "angle between vectors",
+      "norm_sub_le",
+      "InnerProductGeometry"
+    ],
+    "prerequisites": [
+      "Vector-angle law of cosines",
+      "Norm and angle in inner-product spaces"
+    ]
+  },
+  {
+    "id": "ann-loc-oq08-euclidean",
+    "proofId": "law-of-cosines-oq-08",
+    "range": {
+      "startLine": 145,
+      "endLine": 147
+    },
+    "type": "theorem",
+    "title": "Euclidean Plane Instance",
+    "content": "The familiar planar triangle inequality `‖v − w‖ ≤ ‖v‖ + ‖w‖` in `EuclideanSpace ℝ (Fin 2)`, obtained as a direct instance of the coordinate-free `norm_sub_le_of_law_cosines`. This is the setting `Vec2` of the parent law-of-cosines entry, now reached purely through the cosine rule.",
+    "mathContext": "EuclideanSpace ℝ (Fin 2) is a real inner-product space, so the general theorem specialises with no extra work.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclidean plane",
+      "EuclideanSpace",
+      "specialisation"
+    ],
+    "prerequisites": [
+      "EuclideanSpace as an inner-product space"
+    ]
+  }
+]

@@ -50,6 +50,64 @@
       "The identity C(2n,n) = (n+1)·catalan n (succ_mul_catalan_eq_centralBinom) and the squeeze theorem for sequences"
     ]
   },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Docstring framing the entry as the central-binomial analogue of the sibling Catalan 3/2-exponent file: Mathlib's recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) reads as the ratio s n = 4 − 2/(n+1), whose normalised step s k/4 = 1 − (1/2)/(k+1) exposes the critical exponent 1/2. Imports Mathlib and the parent Proofs.Erdos396OQ04OQ01OQ01, opening its namespace to reuse realHarmonic and realHarmonic_tendsto_atTop."
+    },
+    {
+      "id": "ratio-step",
+      "title": "§ The Central-Binomial Recurrence Ratio s n",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "cbRatio n = (4n+2)/(n+1) defines the ratio of consecutive central binomial coefficients; cbRatio_pos gives positivity. centralBinom_succ_eq_ratio_mul casts Mathlib's Nat.succ_mul_centralBinom_succ to ℝ and, via field_simp and linear_combination, proves the multiplicative reading C(2(n+1),n+1) = s n · C(2n,n)."
+    },
+    {
+      "id": "normalised-step",
+      "title": "§ The Normalised Step s k / 4 and Its Logarithm",
+      "startLine": 78,
+      "endLine": 120,
+      "summary": "cbRatioQuarter_eq rewrites the step as s k/4 = 1 − (1/2)/(k+1) (positivity via cbRatioQuarter_pos). log_cbRatioQuarter_le applies Real.log_le_sub_one_of_pos to get log(s k/4) ≤ −(1/2)/(k+1); log_cbRatioQuarter_ge applies the same inequality to the reciprocal (Real.log_inv, field_simp) for the matching lower bound −1/(2k+1)."
+    },
+    {
+      "id": "telescoping",
+      "title": "§ Telescoping the Recurrence Through the Logarithm",
+      "startLine": 121,
+      "endLine": 144,
+      "summary": "normLog_eq_sum proves the exact identity log(C(2n,n)/4^n) = ∑_{k<n} log(s k/4) by induction: each step factors as (s m/4)·(C(2m,m)/4^m), and Real.log_mul (positive factors) turns the product into the sum over Finset.range."
+    },
+    {
+      "id": "exponent-bound",
+      "title": "§ The 1/2-Exponent Bound",
+      "startLine": 145,
+      "endLine": 192,
+      "summary": "normLog_le sums the per-step bound (Finset.sum_le_sum, Finset.mul_sum against realHarmonic) to log(C(2n,n)/4^n) ≤ −(1/2)·H_n. centralBinom_div_le_exp exponentiates to the headline C(2n,n)/4^n ≤ exp(−(1/2)·H_n) ∼ n^{−1/2}; centralBinom_le_exp_mul is the multiplicative form; normLog_bracket pins the log between two harmonic-type sums both with coefficient 1/2."
+    },
+    {
+      "id": "catalan-link",
+      "title": "§ Structural Link to the Catalan 3/2 Exponent",
+      "startLine": 194,
+      "endLine": 213,
+      "summary": "centralBinom_eq_succ_mul_catalan proves C(2n,n) = (n+1)·catalan n over ℝ, and catalan_div_eq_centralBinom_div divides through by the linear factor. The factor n+1 is exactly the difference between the 1/2 exponent here and the sibling's 3/2 exponent (3/2 = 1/2 + 1 at the level of polynomial decay)."
+    },
+    {
+      "id": "convergence",
+      "title": "§ Independent Convergence with Explicit Rate",
+      "startLine": 214,
+      "endLine": 231,
+      "summary": "expBound_tendsto_zero shows exp(−(1/2)·H_n) → 0 from the divergence of the harmonic series (realHarmonic_tendsto_atTop, const_mul_atTop_of_neg, Real.tendsto_exp_atBot). centralBinom_div_tendsto_zero then squeezes 0 ≤ C(2n,n)/4^n ≤ exp(−(1/2)·H_n) to prove the normalised central binomials vanish — Stirling-free, with explicit rate."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "§ Sanity Checks",
+      "startLine": 232,
+      "endLine": 248,
+      "summary": "Four example instantiations confirm the formulas at small indices: s 0/4 = 1/2, the per-step bound at k=0 is −1/2, and the structural identity C(2n,n) = (n+1)·catalan n at n = 0 (1 = 1·1) and n = 1 (2 = 2·1)."
+    }
+  ],
   "conclusion": {
     "summary": "The central-binomial recurrence, normalised by its limiting rate, forces C(2n,n)/4^n ≤ exp(−(1/2)·H_n), equivalently C(2n,n) ≤ 4^n·exp(−(1/2)·H_n). Since H_n ∼ log n the bound is ∼ n^{−1/2}, exhibiting the critical exponent 1/2 of C(2n,n) ∼ 4^n/√(πn) at the level of the integer recurrence. A reciprocal estimate brackets log(C(2n,n)/4^n) between two harmonic-type sums both with coefficient 1/2, and a squeeze gives an independent proof that C(2n,n)/4^n → 0. The identity C(2n,n) = (n+1)·catalan n ties the result to the sibling's 3/2 exponent: the linear factor n+1 is exactly the difference 3/2 = 1/2 + 1. All fifteen theorems are fully machine-checked with no axioms or sorries.",
     "implications": "The entry closes the sibling's second open question: the same one-line logarithm inequality plus harmonic divergence that produced the Catalan 3/2 exponent produces the central-binomial 1/2 exponent, with no Stirling estimate. Making the structural identity C(2n,n) = (n+1)·catalan n explicit shows the two classical asymptotics are a single recurrence-level phenomenon separated by one linear factor, and the matching reciprocal bound shows each exponent is two-sided.",

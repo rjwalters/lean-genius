@@ -342,4 +342,79 @@ theorem exists_triangleFree_colorable_not_colorable (k : ℕ) :
     mycielskianIter_colorable top_fin_two_colorable_two k,
     fun h => top_fin_two_not_colorable_one (mycielskianIter_colorable_of_add k h)⟩
 
+/-! ## Size of the witness tower
+
+The colourability theorems above pin the *chromatic number* of the tower exactly, but say
+nothing about its *size* — and size is precisely the variable in Erdős #1104's `f(n)`.  One
+Mycielski step roughly doubles the vertex count (`|M(G)| = 2|G| + 1`), so iterating from a
+base of `c` vertices gives `|mycielskianIter G k| = (c + 1)·2^k − 1` vertices while the
+chromatic number rises only additively (`+k`).
+
+Over `K₂` (`c = 2`) the `k`-fold tower therefore has `3·2^k − 1` vertices and chromatic
+number exactly `k + 2`: Mycielski's witnesses realise triangle-free graphs of chromatic
+number `χ ≍ log₂ n`.  This is exponentially weaker than the true Erdős #1104 growth
+`f(n) = Θ(√(n / log n))`, quantifying exactly why the optimal lower bound needs a
+non-Mycielski construction. -/
+
+/-- The iterated vertex type is finite whenever the base is. -/
+instance fintypeMycVertexIter [Fintype V] : ∀ k, Fintype (mycVertexIter V k)
+  | 0     => inferInstanceAs (Fintype V)
+  | k + 1 => by
+      haveI : Fintype (mycVertexIter V k) := fintypeMycVertexIter k
+      exact inferInstanceAs (Fintype (Option (mycVertexIter V k ⊕ mycVertexIter V k)))
+
+/-- One Mycielski step sends `c` vertices to `2c + 1`. -/
+theorem card_mycVertex (W : Type u) [Fintype W] :
+    Fintype.card (MycVertex W) = 2 * Fintype.card W + 1 := by
+  simp only [MycVertex, Fintype.card_option, Fintype.card_sum]
+  ring
+
+/-- The `0`-fold tower is the base graph itself, on the same vertex set. -/
+theorem card_mycVertexIter_zero [Fintype V] :
+    Fintype.card (mycVertexIter V 0) = Fintype.card V := rfl
+
+/-- Vertex-count recurrence for the tower: each step doubles and adds one. -/
+theorem card_mycVertexIter_succ [Fintype V] (k : ℕ) :
+    Fintype.card (mycVertexIter V (k + 1)) =
+      2 * Fintype.card (mycVertexIter V k) + 1 := by
+  -- `mycVertexIter V (k+1)` is definitionally `MycVertex (mycVertexIter V k)`; bridge the
+  -- two finiteness instances with the (instance-agnostic) `Fintype.card_congr`.
+  have e : mycVertexIter V (k + 1) ≃ MycVertex (mycVertexIter V k) := Equiv.refl _
+  rw [Fintype.card_congr e]
+  exact card_mycVertex (mycVertexIter V k)
+
+/-- **Closed form for the tower's size** (subtraction-free):
+`|mycielskianIter G k| + 1 = (|V| + 1)·2^k`, i.e. `(|V| + 1)·2^k − 1` vertices. -/
+theorem card_mycVertexIter_add_one [Fintype V] (k : ℕ) :
+    Fintype.card (mycVertexIter V k) + 1 = (Fintype.card V + 1) * 2 ^ k := by
+  induction k with
+  | zero => rw [card_mycVertexIter_zero]; simp
+  | succ k ih =>
+      rw [card_mycVertexIter_succ, pow_succ]
+      have hrw : (Fintype.card V + 1) * (2 ^ k * 2)
+          = 2 * ((Fintype.card V + 1) * 2 ^ k) := by ring
+      rw [hrw, ← ih]; ring
+
+/-- The Mycielskian tower over `K₂` has `3·2^k − 1` vertices (subtraction-free form). -/
+theorem card_mycVertexIter_fin_two (k : ℕ) :
+    Fintype.card (mycVertexIter (Fin 2) k) + 1 = 3 * 2 ^ k := by
+  simpa [Fintype.card_fin] using card_mycVertexIter_add_one (V := Fin 2) k
+
+/-- **Quantified witness over `K₂`.**  For every `k` there is a triangle-free graph `H` on
+`N` vertices with `N + 1 = 3·2^k`, whose chromatic number is exactly `k + 2`: it is
+`(2 + k)`-colourable but not `(1 + k)`-colourable.  Thus Mycielski's tower realises
+triangle-free graphs of chromatic number `k + 2 ≍ log₂ N` — exponentially short of the true
+Erdős #1104 growth `f(n) = Θ(√(n / log n))`, the precise sense in which the elementary
+construction is sub-optimal. -/
+theorem exists_triangleFree_chromatic_with_card (k : ℕ) :
+    ∃ (W : Type) (_ : Fintype W) (H : SimpleGraph W),
+      Fintype.card W + 1 = 3 * 2 ^ k ∧
+      H.CliqueFree 3 ∧ H.Colorable (2 + k) ∧ ¬ H.Colorable (1 + k) :=
+  ⟨mycVertexIter (Fin 2) k, fintypeMycVertexIter k,
+    mycielskianIter (⊤ : SimpleGraph (Fin 2)) k,
+    card_mycVertexIter_fin_two k,
+    mycielskianIter_cliqueFree_three top_fin_two_cliqueFree_three k,
+    mycielskianIter_colorable top_fin_two_colorable_two k,
+    fun h => top_fin_two_not_colorable_one (mycielskianIter_colorable_of_add k h)⟩
+
 end Erdos1104OQ01

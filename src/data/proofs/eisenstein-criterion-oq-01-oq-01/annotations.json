@@ -1,0 +1,77 @@
+[
+  {
+    "id": "eisenstein-criterion-oq-01-oq-01-module-header",
+    "proofId": "eisenstein-criterion-oq-01-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "title": "Module Header: Φ_p Irreducible via Eisenstein at X + 1",
+    "content": "Realizes the classical Gauss/Eisenstein proof that the $p$-th cyclotomic polynomial $\\Phi_p = 1 + X + \\cdots + X^{p-1}$ is irreducible. The plan, stated in the docstring: from the geometric-sum identity $\\Phi_p\\cdot(X-1) = X^p-1$, the substitution $X \\mapsto X+1$ yields $\\Phi_p(X+1)\\cdot X = (X+1)^p-1$, so the coefficients of $\\Phi_p(X+1)$ are the binomials $\\binom{p}{j+1}$ — an Eisenstein polynomial at $p$. Imports `Mathlib` and the parent `EisensteinCriterionOQ01` (whose `irreducible_of_eisenstein` is the engine).",
+    "mathContext": "$\\Phi_p(X+1) = \\sum_{j=0}^{p-1} \\binom{p}{j+1} X^j;\\quad \\binom{p}{p}=1,\\ p \\mid \\binom{p}{k}\\ (0<k<p),\\ \\binom{p}{1}=p.$",
+    "significance": "context",
+    "relatedConcepts": ["cyclotomic polynomial", "Eisenstein's criterion", "irreducibility", "open question"],
+    "prerequisites": ["polynomial rings", "binomial coefficients", "prime divisibility"]
+  },
+  {
+    "id": "eisenstein-criterion-oq-01-oq-01-substitution-identity",
+    "proofId": "eisenstein-criterion-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 51,
+      "endLine": 64
+    },
+    "title": "Substitution Identity Φ_p(X+1)·X = (X+1)^p − 1",
+    "content": "`cyclotomic_comp_X_add_one_mul_X`: applies `congrArg (·.comp (X + C 1))` to Mathlib's `cyclotomic_prime_mul_X_sub_one` (the identity $\\Phi_p\\cdot(X-1) = X^p-1$). Polynomial composition is a ring homomorphism, so the product and difference distribute; the key simplifications are $(X-1).\\mathrm{comp}(X+1) = X$ and $(X^p).\\mathrm{comp}(X+1) = (X+1)^p$ (via `mul_comp`, `sub_comp`, `pow_comp`, `X_comp`, `one_comp`, `C_1`, `add_sub_cancel_right`).",
+    "mathContext": "$(\\Phi_p\\cdot(X-1)).\\mathrm{comp}(X+1) = \\Phi_p(X+1)\\cdot X;\\quad (X^p-1).\\mathrm{comp}(X+1) = (X+1)^p-1.$",
+    "significance": "key",
+    "relatedConcepts": ["polynomial composition", "ring homomorphism", "geometric sum", "change of variable"],
+    "prerequisites": ["Polynomial.comp", "cyclotomic_prime_mul_X_sub_one"]
+  },
+  {
+    "id": "eisenstein-criterion-oq-01-oq-01-coefficient-formula",
+    "proofId": "eisenstein-criterion-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 66,
+      "endLine": 74
+    },
+    "title": "Coefficient Formula: coeff_j Φ_p(X+1) = C(p, j+1)",
+    "content": "`coeff_cyclotomic_comp_X_add_one`: takes the $(j+1)$-st coefficient of the substitution identity. `coeff_mul_X` collapses $((\\Phi_p(X+1))\\cdot X).\\mathrm{coeff}(j+1)$ to $(\\Phi_p(X+1)).\\mathrm{coeff}\\,j$, and `coeff_sub` together with `coeff_X_add_one_pow` ($((X+1)^p).\\mathrm{coeff}\\,k = \\binom{p}{k}$) turns the right side into $\\binom{p}{j+1}$ — the constant $1$ contributes $0$ at the positive index $j+1$. This exhibits $\\Phi_p(X+1)$ as an Eisenstein polynomial at $p$ and is the structural heart of the proof.",
+    "mathContext": "$(\\Phi_p(X+1)).\\mathrm{coeff}\\,j = ((X+1)^p-1).\\mathrm{coeff}(j+1) = \\binom{p}{j+1}.$",
+    "significance": "key",
+    "relatedConcepts": ["binomial coefficients", "coeff_mul_X", "coeff_X_add_one_pow"],
+    "prerequisites": ["polynomial coefficients", "binomial theorem for (X+1)^n"]
+  },
+  {
+    "id": "eisenstein-criterion-oq-01-oq-01-irreducibility-Z",
+    "proofId": "eisenstein-criterion-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 76,
+      "endLine": 132
+    },
+    "title": "Irreducibility of Φ_p over ℤ via Eisenstein",
+    "content": "`irreducible_cyclotomic_prime`: sets $g = \\Phi_p(X+1)$ — monic (`Monic.comp_X_add_C`) of natDegree $p-1$ (`natDegree_comp`, `natDegree_cyclotomic`, `Nat.totient_prime`) — and $P = $ `Ideal.span {p}`. The four Eisenstein hypotheses reduce to binomial arithmetic via the coefficient formula and `Ideal.mem_span_singleton` / `Ideal.span_singleton_pow`: the leader $\\binom{p}{p}=1 \\notin (p)$ (else $p \\mid 1$); each lower coefficient $\\binom{p}{k} \\in (p)$ by `Nat.Prime.dvd_choose_self` for $1 \\le k < p$; the constant $\\binom{p}{1}=p \\notin (p^2)$ since $p^2 \\nmid p$ (`Int.le_of_dvd`). The parent's `irreducible_of_eisenstein` gives `Irreducible g`, and since $X \\mapsto X+1$ is a ring automorphism (`algEquivAevalXAddC 1`, irreducibility-preserving by `MulEquiv.irreducible_iff`) the result transfers back to $\\Phi_p$.",
+    "mathContext": "Eisenstein at $p$: $\\mathrm{lead}=1\\notin(p)$, $\\binom{p}{k}\\in(p)$ for $1\\le k\\le p-1$, $\\binom{p}{1}=p\\notin(p^2)$; automorphism transfer $\\mathrm{Irreducible}\\,g \\iff \\mathrm{Irreducible}\\,\\Phi_p$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein's criterion", "prime ideal", "ring automorphism", "dvd_choose_self"],
+    "prerequisites": ["irreducible_of_eisenstein", "Ideal.mem_span_singleton", "algEquivAevalXAddC", "MulEquiv.irreducible_iff"]
+  },
+  {
+    "id": "eisenstein-criterion-oq-01-oq-01-corollaries",
+    "proofId": "eisenstein-criterion-oq-01-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 134,
+      "endLine": 150
+    },
+    "title": "Degree p − 1 and Irreducibility over ℚ",
+    "content": "`natDegree_cyclotomic_prime`: $\\deg \\Phi_p = p-1$, the totient of a prime (`natDegree_cyclotomic`, `Nat.totient_prime`). `irreducible_cyclotomic_prime_rat`: rewrites $\\Phi_{p,\\mathbb{Q}}$ as the $\\mathbb{Z}\\to\\mathbb{Q}$ map of $\\Phi_{p,\\mathbb{Z}}$ (`map_cyclotomic_int`) and applies Gauss's lemma (`IsPrimitive.Int.irreducible_iff_irreducible_map_cast`, with $\\Phi_p$ primitive because monic) to upgrade irreducibility from $\\mathbb{Z}$ to $\\mathbb{Q}$ — the form underlying $[\\mathbb{Q}(\\zeta_p):\\mathbb{Q}] = p-1$.",
+    "mathContext": "$\\deg\\Phi_p = \\varphi(p) = p-1;\\quad \\Phi_p\\text{ irreducible over }\\mathbb{Z} \\Rightarrow \\text{irreducible over }\\mathbb{Q}\\ (\\text{Gauss}).$",
+    "significance": "supporting",
+    "relatedConcepts": ["Gauss's lemma", "Euler totient", "cyclotomic field", "minimal polynomial"],
+    "prerequisites": ["map_cyclotomic_int", "IsPrimitive.Int.irreducible_iff_irreducible_map_cast", "Nat.totient_prime"]
+  }
+]

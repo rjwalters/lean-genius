@@ -26,6 +26,23 @@
     "originalContributions": [
       "fib_shallow_diagonal: ∑_{j ∈ range (n+1)} C(n−j, j) = F(n+1), the general shallow-diagonal Fibonacci identity",
       "fib_shallow_diagonal_alt: the mirror form ∑_{k ∈ range (n+1)} C(k, n−k) = F(n+1)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_succ_eq_sum_choose",
+        "description": "F(n+1) = ∑_{p ∈ antidiagonal n} C(p.1, p.2). The entire mathematical content of the identity already lives here, in antidiagonal form; the file only re-presents the index.",
+        "module": "Mathlib.Combinatorics.Choose.Central"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Converts a sum over antidiagonal n into a sum over range (n+1), turning the pair-indexed Fibonacci sum into the range sum ∑_k C(k, n−k) (the mirror form fib_shallow_diagonal_alt).",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Finset.sum_range_reflect",
+        "description": "∑_{k ∈ range m} f k = ∑_{j ∈ range m} f (m−1−j). The index reflection j ↦ n−j that carries the mirror form C(k, n−k) onto the diagonal form C(n−j, j).",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
     ]
   },
   "overview": {
@@ -36,7 +53,9 @@
     "keyInsights": [
       "The antidiagonal {(n−j, j)} is exactly the shallow diagonal of Pascal's triangle, so Mathlib's Nat.fib_succ_eq_sum_choose already contains the identity in disguise.",
       "Passing between the two index conventions (C(n−j, j) vs C(k, n−k)) is a single index reflection j ↦ n − j.",
-      "All the work beyond the Mathlib lemma is natural-number subtraction bookkeeping, dischargeable by omega under the range bound j ≤ n."
+      "All the work beyond the Mathlib lemma is natural-number subtraction bookkeeping, dischargeable by omega under the range bound j ≤ n.",
+      "The diagonal terms C(n−j, j) vanish automatically once 2j > n (the upper index drops below the lower), so the range (n+1) sum is honestly finite without an explicit truncation — Nat.choose returns 0 outside its support.",
+      "The identity is the binomial shadow of the Fibonacci recurrence: Pascal's rule C(n−j, j) = C(n−1−j, j) + C(n−1−j, j−1) reorganizes the diagonal sum at level n into the sums at levels n−1 and n−2, which is exactly F(n+1) = F(n) + F(n−1)."
     ],
     "prerequisites": [
       "Binomial coefficients Nat.choose and the Fibonacci sequence Nat.fib",
@@ -76,16 +95,58 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States the shallow-diagonal Fibonacci identity ∑_j C(n−j, j) = F(n+1), the parent's first open question (recorded there only via native_decide examples), and the strategy: reduce to Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose by reflecting the index. Imports Mathlib and opens Finset.",
+      "mathContext": "$\\sum_{j=0}^{n} \\binom{n-j}{j} = F_{n+1}$; the diagonal of slope 2 through Pascal's triangle, finite because $\\binom{n-j}{j} = 0$ once $2j > n$."
+    },
+    {
+      "id": "mirror-form",
       "title": "Mirror form from the antidiagonal sum",
       "startLine": 29,
       "endLine": 37,
-      "summary": "fib_shallow_diagonal_alt: ∑_{k} C(k, n−k) = F(n+1), Mathlib's Nat.fib_succ_eq_sum_choose written as a range sum."
+      "summary": "fib_shallow_diagonal_alt: ∑_{k} C(k, n−k) = F(n+1), Mathlib's Nat.fib_succ_eq_sum_choose written as a range sum.",
+      "mathContext": "$F_{n+1} = \\sum_{(k,\\,n-k)} \\binom{k}{n-k}$ over $\\mathrm{antidiagonal}\\,n$, rewritten via $\\mathtt{sum\\_antidiagonal\\_eq\\_sum\\_range\\_succ}$ to $\\sum_{k=0}^{n} \\binom{k}{n-k}$."
     },
     {
+      "id": "diagonal-form",
       "title": "The diagonal form by index reflection",
       "startLine": 39,
       "endLine": 50,
-      "summary": "fib_shallow_diagonal: ∑_{j} C(n−j, j) = F(n+1), obtained from the mirror form via Finset.sum_range_reflect and omega-discharged subtraction identities."
+      "summary": "fib_shallow_diagonal: ∑_{j} C(n−j, j) = F(n+1), obtained from the mirror form via Finset.sum_range_reflect and omega-discharged subtraction identities.",
+      "mathContext": "Reflection $j \\mapsto n-j$ on $\\mathrm{range}(n+1)$ sends $\\binom{k}{n-k}$ to $\\binom{n-j}{\\,n-(n-j)\\,} = \\binom{n-j}{j}$, using $n+1-1-j = n-j$ and $n-(n-j)=j$ for $j \\le n$."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["É. Lucas"],
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1, 184–240 / 289–321",
+      "note": "Early systematic study of the Fibonacci/Lucas sequences; the rising-diagonal sums of Pascal's triangle are classically attributed to Lucas."
+    },
+    {
+      "authors": ["S. Vajda"],
+      "title": "Fibonacci & Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover (2008 reprint)",
+      "note": "Standard reference for binomial–Fibonacci diagonal identities, including ∑_j C(n−j, j) = F(n+1)."
+    },
+    {
+      "authors": ["A. T. Benjamin", "J. J. Quinn"],
+      "title": "Proofs that Really Count: The Art of Combinatorial Proof",
+      "year": "2003",
+      "venue": "Mathematical Association of America, Dolciani No. 27",
+      "note": "Bijective (tiling/lattice-path) interpretation of the shallow-diagonal sum — the combinatorial proof posed as an open question here."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "title": "The Lean Mathematical Library — Combinatorics.Choose and Algebra.BigOperators",
+      "year": "2020",
+      "venue": "Lean 4 / Mathlib",
+      "note": "Source of Nat.fib_succ_eq_sum_choose, Finset.Nat.sum_antidiagonal_eq_sum_range_succ, and Finset.sum_range_reflect."
     }
   ],
   "sorries": []

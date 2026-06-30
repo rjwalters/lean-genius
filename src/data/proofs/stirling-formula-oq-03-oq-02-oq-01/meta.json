@@ -1,0 +1,163 @@
+{
+  "id": "stirling-formula-oq-03-oq-02-oq-01",
+  "title": "The Catalan Number Asymptotic: Cₙ ~ 4ⁿ/(√π·n^{3/2})",
+  "slug": "stirling-formula-oq-03-oq-02-oq-01",
+  "description": "Derives the asymptotic growth of the Catalan numbers, catalan n · n · √(πn) / 4ⁿ → 1 (equivalently Cₙ ~ 4ⁿ/(√π·n^{3/2})), directly from the parent's central binomial asymptotic. The bridge is Mathlib's exact identity (n+1)·catalan n = C(2n,n), so catalan n = C(2n,n)/(n+1); multiplying the parent limit by the elementary ratio n/(n+1) → 1 yields the result. Mathlib relates the Catalan number to the central binomial coefficient but does not state its asymptotic.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFormulaOQ03OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "combinatorics",
+      "asymptotics",
+      "catalan-numbers",
+      "central-binomial",
+      "pi",
+      "limits"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.succ_mul_catalan_eq_centralBinom",
+        "description": "The exact relation (n+1)·catalan n = C(2n,n), equivalently catalan n = C(2n,n)/(n+1)",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Filter.Tendsto.inv_tendsto_atTop",
+        "description": "Reciprocal of a sequence tending to +∞ tends to 0: f → atTop ⟹ f⁻¹ → 0",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "tendsto_natCast_atTop_atTop",
+        "description": "The natural-number cast diverges: (n : ℝ) → +∞",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.inv₀",
+        "description": "Reciprocal of a convergent sequence with nonzero limit: f → a ≠ 0 ⟹ f⁻¹ → a⁻¹",
+        "module": "Mathlib.Topology.Algebra.Field"
+      }
+    ],
+    "originalContributions": [
+      "cat_eq: the real-cast Catalan identity catalan n = C(2n,n)/(n+1), obtained from Nat.succ_mul_catalan_eq_centralBinom",
+      "ratio_tendsto: the elementary limit n/(n+1) → 1, written as 1 − (n+1)⁻¹ with (n+1)⁻¹ → 0",
+      "catalan_asymptotic: the textbook Catalan asymptotic catalan n · n · √(πn) / 4ⁿ → 1, i.e. Cₙ ~ 4ⁿ/(√π·n^{3/2}) — not stated by Mathlib; obtained as the parent's central binomial limit times n/(n+1)",
+      "catalan_asymptotic_inv: the equivalent reciprocal form 4ⁿ/(catalan n · n · √(πn)) → 1, via Tendsto.inv₀ and inv_div"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound.",
+    "lineCount": 112,
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Catalan numbers Cₙ = 1, 1, 2, 5, 14, 42, … count an enormous family of combinatorial objects: balanced bracket sequences, triangulations of a polygon, full binary trees, Dyck paths, and non-crossing partitions, among hundreds of others. Their closed form Cₙ = C(2n,n)/(n+1) ties them directly to the central binomial coefficient, and their growth rate Cₙ ~ 4ⁿ/(√π·n^{3/2}) is the standard estimate quoted whenever one needs the order of magnitude of a Catalan-counted family. The extra factor n^{3/2} in the denominator (rather than the n^{1/2} of the central binomial coefficient) is exactly the contribution of the 1/(n+1) normalization — asymptotically n/(n+1) → 1 shifts the polynomial power by one. The parent entry established C(2n,n) ~ 4ⁿ/√(πn) from Wallis' product; this entry shows the Catalan asymptotic is one elementary ratio limit away.",
+    "problemStatement": "Derive the asymptotic growth of the Catalan numbers, Cₙ = C(2n,n)/(n+1) ~ 4ⁿ/(√π·n^{3/2}), from the parent's central binomial asymptotic.\n\n**Answer:** catalan n · n · √(πn) / 4ⁿ → 1. Since catalan n = C(2n,n)/(n+1), this equals the parent limit C(2n,n)·√(πn)/4ⁿ → 1 multiplied by the ratio n/(n+1) → 1.",
+    "text": "The textbook Catalan asymptotic Cₙ ~ 4ⁿ/(√π·n^{3/2}), obtained from the central binomial asymptotic and the exact identity catalan n = C(2n,n)/(n+1) — no rpow manipulation, since n·√(πn) = √π·n^{3/2}.",
+    "proofStrategy": "1. cat_eq: cast Mathlib's (n+1)·catalan n = C(2n,n) (Nat.succ_mul_catalan_eq_centralBinom) to ℝ and divide, giving catalan n = C(2n,n)/(n+1).\n2. ratio_tendsto: (n+1) → +∞ (tendsto_natCast_atTop_atTop + const), so (n+1)⁻¹ → 0 (inv_tendsto_atTop); hence n/(n+1) = 1 − (n+1)⁻¹ → 1.\n3. catalan_asymptotic: multiply the parent's centralBinom_asymptotic (C·√(πn)/4ⁿ → 1) by ratio_tendsto (→1) to get a product → 1; the product equals catalan n · n · √(πn)/4ⁿ pointwise, because (C/(n+1))·n = catalan n · n and the √(πn)/4ⁿ factors match (field_simp).\n4. catalan_asymptotic_inv: apply Tendsto.inv₀ with nonzero limit 1 and rewrite (a/b)⁻¹ = b/a (inv_div) to obtain 4ⁿ/(catalan n · n · √(πn)) → 1.",
+    "keyInsights": [
+      "**The 1/(n+1) shifts the polynomial power by one**: dividing C(2n,n) ~ 4ⁿ/n^{1/2} by (n+1) turns the n^{1/2} into n^{3/2}. Asymptotically the only effect of the normalization is the ratio n/(n+1) → 1.",
+      "**Avoiding rpow**: stating the bound as catalan n · n · √(πn)/4ⁿ → 1 uses n·√(πn) = √π·n^{3/2}, keeping everything in terms of the already-available √(πn) from the parent and a single extra integer factor n — no real-power (rpow) reasoning is needed.",
+      "**One ratio limit on top of the parent**: the entire result is the parent's limit times n/(n+1). The mathematical content beyond the parent is exactly the elementary fact n/(n+1) → 1 plus the exact Catalan identity.",
+      "**Exact identity, then limit algebra**: (n+1)·catalan n = C(2n,n) holds for every n with no error term, so the asymptotic transfers verbatim through a convergent multiplicative factor."
+    ],
+    "prerequisites": [
+      "Catalan numbers and their relation Cₙ = C(2n,n)/(n+1)",
+      "The central binomial asymptotic C(2n,n) ~ 4ⁿ/√(πn) (parent entry)",
+      "Limits of sequences (Filter.Tendsto, 𝓝), products and reciprocals of limits",
+      "The elementary limit n/(n+1) → 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-cat",
+      "title": "Imports and the Real Catalan Number",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "File-level docstring deriving the plan, imports Mathlib and the parent module Proofs.StirlingFormulaOQ03OQ02 (reusing cb, cb_pos, cb_ne_zero, centralBinom_asymptotic), opens Filter/Topology/Nat and scoped Real. Defines cat n = (catalan n : ℝ) with positivity lemmas cat_pos, cat_ne_zero.",
+      "mathContext": "cat n = catalan n cast to ℝ; cat n > 0 since (n+1)·catalan n = C(2n,n) > 0 forces catalan n > 0."
+    },
+    {
+      "id": "catalan-identity",
+      "title": "The Exact Bridge to the Central Binomial Coefficient",
+      "startLine": 63,
+      "endLine": 72,
+      "summary": "cat_eq: the real identity catalan n = C(2n,n)/(n+1), obtained by casting Nat.succ_mul_catalan_eq_centralBinom and dividing by the nonzero (n+1) (linear_combination).",
+      "mathContext": "(n+1)·catalan n = C(2n,n) over ℕ casts to ((n:ℝ)+1)·catalan n = cb n, hence catalan n = cb n/(n+1)."
+    },
+    {
+      "id": "ratio-limit",
+      "title": "The Ratio Limit n/(n+1) → 1",
+      "startLine": 74,
+      "endLine": 86,
+      "summary": "ratio_tendsto: n/(n+1) → 1. Shows (n+1) → +∞ via tendsto_natCast_atTop_atTop, so (n+1)⁻¹ → 0 (inv_tendsto_atTop); then n/(n+1) = 1 − (n+1)⁻¹ → 1 (field_simp on the eventual equality).",
+      "mathContext": "1 − 1/(n+1) = n/(n+1), and 1/(n+1) → 0, so n/(n+1) → 1 — the only asymptotic content beyond the parent limit."
+    },
+    {
+      "id": "catalan-asymptotic",
+      "title": "The Catalan Asymptotic and its Reciprocal Form",
+      "startLine": 88,
+      "endLine": 112,
+      "summary": "catalan_asymptotic (catalan n · n · √(πn)/4ⁿ → 1, the parent limit times n/(n+1), pointwise-equal after rewriting catalan n = cb n/(n+1) and field_simp) and catalan_asymptotic_inv (4ⁿ/(catalan n · n · √(πn)) → 1 via Tendsto.inv₀ at the nonzero limit 1 and inv_div).",
+      "mathContext": "catalan n · n · √(πn)/4ⁿ = [C(2n,n)·√(πn)/4ⁿ]·[n/(n+1)] → 1·1 = 1, i.e. Cₙ ~ 4ⁿ/(√π·n^{3/2}); the reciprocal limit follows since the limit 1 is nonzero."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "note": "Comprehensive treatment of the Catalan numbers, including Cₙ = C(2n,n)/(n+1) and the asymptotic Cₙ ~ 4ⁿ/(√π·n^{3/2})"
+    },
+    {
+      "authors": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Central binomial and Catalan asymptotics via the 1/(n+1) normalization"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Reuses the parent's centralBinom_asymptotic (C(2n,n)·√(πn)/4ⁿ → 1) and multiplies by n/(n+1) → 1 to obtain the Catalan asymptotic"
+    },
+    {
+      "targetId": "ballot-problem-oq-04",
+      "relationship": "supports",
+      "description": "The Catalan numbers count Dyck paths and non-crossing partitions; this entry supplies their growth rate"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Catalan numbers satisfy catalan n · n · √(πn)/4ⁿ → 1 (catalan_asymptotic), i.e. Cₙ ~ 4ⁿ/(√π·n^{3/2}), with the equivalent reciprocal form 4ⁿ/(catalan n · n · √(πn)) → 1 (catalan_asymptotic_inv). The proof uses Mathlib's exact identity (n+1)·catalan n = C(2n,n) to write catalan n = C(2n,n)/(n+1) (cat_eq) and multiplies the parent's central binomial asymptotic by the elementary ratio n/(n+1) → 1 (ratio_tendsto).",
+    "implications": "Provides a directly citable Lean statement of the standard Catalan growth rate, completing the chain Wallis' product → central binomial asymptotic → Catalan asymptotic. The proof isolates the only new ingredient — the ratio n/(n+1) → 1 — showing the n^{3/2} power is purely an artifact of the 1/(n+1) normalization.",
+    "openQuestions": [
+      "Can the asymptotic be sharpened to the next-order Catalan expansion Cₙ = 4ⁿ/(√π·n^{3/2})·(1 − 9/(8n) + O(1/n²))?",
+      "Does the same identity route give a Tendsto-level asymptotic for the super-Catalan / Motzkin numbers, which share a central-binomial-style closed form?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.StirlingFormulaOQ03OQ02"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Nat",
+      "Real (scoped)"
+    ],
+    "namespace": "StirlingFormulaOQ03OQ02OQ01",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/StirlingFormulaOQ03OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

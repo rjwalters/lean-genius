@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 4, "endLine": 46 },
+    "type": "concept",
+    "title": "From 'partial sums stay bounded' to an explicit convergence rate",
+    "content": "This entry answers the parent's second open question: it makes the convergence of the hand-built Tietze series *quantitative*. The grandparent (`urysohns-lemma-oq-01-oq-01-oq-01`) constructed the Tietze extension as a genuinely convergent series `G = ∑' n gₙ` in the Banach space of bounded continuous functions, built only from Urysohn's lemma (never Mathlib's `TietzeExtension`). The parent tracked partial-sum norms to recover the sharp `‖G‖ = ‖f‖`, but its `partialSum_norm_le` only says each partial sum stays in `[−M, M]` — it does not establish *convergence*, let alone a rate. Here the geometric tail is exploited: `G − ∑_{i<n} gᵢ = ∑' i g_{i+n}`, and the majorant `‖g_{i+n}‖ ≤ (2/3)^{i+n}·(M/3)` sums to `(2/3)ⁿ·M`. So the truncation error decays geometrically with explicit ratio `2/3` and the partial sums converge uniformly in sup-norm.",
+    "mathContext": "$\\big\\|G - \\textstyle\\sum_{i<n} g_i\\big\\| \\le (2/3)^n\\cdot M$ — geometric decay of the truncation error with ratio $2/3$.",
+    "significance": "key",
+    "relatedConcepts": ["Tietze extension theorem", "Urysohn's lemma", "uniform convergence", "modulus of convergence", "Banach space of bounded continuous functions"],
+    "prerequisites": ["normed spaces", "summable series in Banach spaces", "geometric series"]
+  },
+  {
+    "id": "ann-geo-tail",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "technique",
+    "title": "The shifted geometric majorant sums to (2/3)ⁿ·M",
+    "content": "`summable_geo_shift` records that shifting the index of a summable series leaves it summable (`summable_nat_add_iff`), and `tsum_geo_tail` evaluates the shifted tail in closed form: `∑' i (2/3)^{i+n}·(M/3) = (2/3)ⁿ·M`. The mechanism is to factor the common power `(2/3)ⁿ` out of every term (`pow_add` then `ring`), reducing the shifted sum to `(2/3)ⁿ` times the *full* geometric sum `∑' i (2/3)ⁱ·(M/3)`. The full sum evaluates via `tsum_geometric_of_lt_one` with `(1 − 2/3)⁻¹ = 3`, which exactly cancels the `M/3` to leave `M`. This closed form is the engine that converts the crude majorant into an explicit, computable error bound.",
+    "mathContext": "$\\sum_{i\\ge0} (2/3)^{i+n}\\tfrac{M}{3} = (2/3)^n\\sum_{i\\ge0}(2/3)^i\\tfrac{M}{3} = (2/3)^n\\cdot\\tfrac{M}{3}\\cdot\\tfrac{1}{1-2/3} = (2/3)^n\\cdot M.$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "tsum_geometric_of_lt_one", "summable_nat_add_iff", "index shift", "closed-form summation"],
+    "prerequisites": ["infinite series", "tsum in Mathlib", "geometric series formula"]
+  },
+  {
+    "id": "ann-tail-bound",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 74, "endLine": 102 },
+    "type": "insight",
+    "title": "The headline tail bound: truncation error ≤ (2/3)ⁿ·M",
+    "content": "`norm_tsum_sub_partialSum_le` is the central estimate: `‖(∑' i gᵢ) − ∑_{i<n} gᵢ‖ ≤ (2/3)ⁿ·M`. The proof first identifies the truncation error with the *shifted tail series* `∑' i g_{i+n}` — valid because the series is summable in the complete space of bounded continuous functions (`Summable.sum_add_tsum_nat_add`, then `abel`). It then chains three inequalities: the norm of a tsum is at most the tsum of norms (`norm_tsum_le_tsum_norm`, the triangle inequality for infinite sums in a Banach space); the termwise majorant `‖g_{i+n}‖ ≤ (2/3)^{i+n}·(M/3)` (`gbcf_norm_le`) bounds it by the shifted geometric sum (`tsum_le_tsum`); and `tsum_geo_tail` evaluates that sum to `(2/3)ⁿ·M`. Completeness is essential — without it the tail would not even be a well-defined element to take the norm of.",
+    "mathContext": "$\\big\\|\\textstyle\\sum_{i} g_{i+n}\\big\\| \\le \\sum_i \\|g_{i+n}\\| \\le \\sum_i (2/3)^{i+n}\\tfrac{M}{3} = (2/3)^n M.$",
+    "significance": "key",
+    "relatedConcepts": ["norm_tsum_le_tsum_norm", "Summable.sum_add_tsum_nat_add", "tail of a series", "triangle inequality for tsum", "completeness"],
+    "prerequisites": ["Banach space completeness", "summable series", "comparison test"]
+  },
+  {
+    "id": "ann-tendsto",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 104, "endLine": 118 },
+    "type": "insight",
+    "title": "Uniform convergence by squeezing the geometric modulus to zero",
+    "content": "`tendsto_partialSum` upgrades the tail bound to genuine uniform convergence: the partial sums `∑_{i<n} gᵢ` converge to `∑' i gᵢ` in sup-norm. The argument is a squeeze: the distance `dist(partialSum n, G)` is nonnegative and, by `norm_tsum_sub_partialSum_le`, bounded above by `(2/3)ⁿ·M`, which tends to `0` (`tendsto_pow_atTop_nhds_zero_of_lt_one` since `2/3 < 1`, scaled by `M`). `squeeze_zero` then forces the distance to `0`. Because the norm is the *sup*-norm on bounded continuous functions, convergence in this norm is exactly *uniform* convergence of the function values — the explicit `(2/3)ⁿ·M → 0` is the modulus of uniform convergence the open question asked for.",
+    "mathContext": "$0 \\le \\mathrm{dist}\\big(\\textstyle\\sum_{i<n}g_i,\\,G\\big) \\le (2/3)^n M \\to 0$, so the partial sums converge uniformly to $G$.",
+    "significance": "supporting",
+    "relatedConcepts": ["squeeze_zero", "tendsto_pow_atTop_nhds_zero_of_lt_one", "uniform convergence", "sup-norm", "modulus of convergence"],
+    "prerequisites": ["limits and the squeeze theorem", "convergence in normed spaces"]
+  },
+  {
+    "id": "ann-packaged",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 122, "endLine": 166 },
+    "type": "insight",
+    "title": "The packaged theorem: a Tietze extension with three simultaneous guarantees",
+    "content": "`tietze_extension_explicit_modulus` assembles everything into one self-contained statement: for a closed `s ⊆ X` (normal) and a bounded continuous `f : s →ᵇ ℝ`, there is a bounded continuous `G` that (1) extends `f` (`G = f` on `s`), (2) is norm-preserving (`‖G‖ = ‖f‖`), (3) equals the explicit Urysohn correction series `∑' n gₙ`, and (4) is its uniform limit with explicit error `‖G − ∑_{i<n} gᵢ‖ ≤ (2/3)ⁿ·‖f‖`. The proof specializes the parent's construction to the sharp bound `M = ‖f‖` (using `f.norm_coe_le_norm` for `|f x| ≤ ‖f‖`), recovers `‖G‖ = ‖f‖` by antisymmetry (upper bound from the parent's pointwise `|G| ≤ ‖f‖`, lower bound because `G` extends `f`), and reads the modulus off `norm_tsum_sub_partialSum_le` with `M = ‖f‖`. Crucially the whole chain rests only on Urysohn's lemma and the explicit series — never on Mathlib's `TietzeExtension` — so it is a genuinely constructive, rate-quantified Tietze theorem.",
+    "mathContext": "$\\exists G:\\;G|_s=f,\\;\\|G\\|=\\|f\\|,\\;G=\\textstyle\\sum_n g_n,\\;\\|G-\\sum_{i<n}g_i\\|\\le(2/3)^n\\|f\\|.$",
+    "significance": "key",
+    "relatedConcepts": ["Tietze extension", "norm-preserving extension", "BoundedContinuousFunction.norm_le", "le_antisymm", "constructive analysis"],
+    "prerequisites": ["the Tietze extension theorem", "bounded continuous functions", "sup-norm antisymmetry argument"]
+  }
+]

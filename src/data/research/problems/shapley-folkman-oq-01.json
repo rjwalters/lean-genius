@@ -45,16 +45,48 @@
   },
   "leanFiles": [
     {
+      "path": "Proofs/ShapleyFolkman.lean",
+      "filename": "ShapleyFolkman.lean",
+      "lineCount": 1239,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkman.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanAristotle.lean",
+      "filename": "ShapleyFolkmanAristotle.lean",
+      "lineCount": 82,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanAristotle.lean"
+    },
+    {
       "path": "Proofs/ShapleyFolkmanOQ01.lean",
       "filename": "ShapleyFolkmanOQ01.lean",
-      "lineCount": 395,
+      "lineCount": 400,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 0,
-      "inheritedAxioms": 5,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ01.lean"
+    },
+    {
+      "path": "Proofs/ShapleyFolkmanOQ03.lean",
+      "filename": "ShapleyFolkmanOQ03.lean",
+      "lineCount": 204,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ03.lean"
     }
   ],
   "knowledge": {
@@ -92,5 +124,9 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-06-13T03:10:00Z"
+  "updatedAt": "2026-06-13T03:10:00Z",
+  "relatedProofs": [
+    "shapley-folkman",
+    "shapley-folkman-oq-03"
+  ]
 }

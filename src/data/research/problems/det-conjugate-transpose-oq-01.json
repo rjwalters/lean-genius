@@ -58,7 +58,9 @@
     "seeker-selected",
     "research"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "det-conjugate-transpose-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -67,5 +69,18 @@
   "started": "2026-06-20T18:12:04.131Z",
   "lastUpdate": "2026-06-20T18:12:04.131Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/DetConjugateTransposeOQ01.lean",
+      "filename": "DetConjugateTransposeOQ01.lean",
+      "lineCount": 114,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DetConjugateTransposeOQ01.lean"
+    }
+  ]
 }

@@ -92,9 +92,44 @@ def ekrStarFamily (n k : ℕ) (x : Fin n) : Finset (Finset (Fin n)) :=
 /--
 **EKR is Achieved:**
 The star family achieves the EKR bound.
--/
-axiom ekr_achieved (n k : ℕ) (hn : n ≥ 2 * k) (hk : k ≥ 1) (x : Fin n) :
-  (ekrStarFamily n k x).card = Nat.choose (n - 1) (k - 1)
+
+This is the pure counting identity that the number of `k`-subsets of `[n]` containing a
+fixed element `x` equals `C(n-1, k-1)`: the bijection `T ↦ insert x T` matches them with
+the `(k-1)`-subsets of the remaining `n-1` points `univ.erase x`.  Previously an axiom;
+now proved from Mathlib (`card_powersetCard`, `card_erase_of_mem`). -/
+theorem ekr_achieved (n k : ℕ) (_hn : n ≥ 2 * k) (hk : k ≥ 1) (x : Fin n) :
+    (ekrStarFamily n k x).card = Nat.choose (n - 1) (k - 1) := by
+  have hxu : x ∈ (Finset.univ : Finset (Fin n)) := Finset.mem_univ x
+  -- The star family is exactly the image of the `(k-1)`-subsets of `univ.erase x`
+  -- under `insert x`.
+  have hset : ekrStarFamily n k x
+      = ((Finset.univ.erase x).powersetCard (k - 1)).image (insert x) := by
+    ext S
+    simp only [ekrStarFamily, Finset.mem_filter, Finset.mem_powerset, Finset.mem_image,
+      Finset.mem_powersetCard]
+    constructor
+    · rintro ⟨_hsub, hcard, hxS⟩
+      refine ⟨S.erase x, ⟨?_, ?_⟩, ?_⟩
+      · exact fun y hy =>
+          Finset.mem_erase.mpr ⟨(Finset.mem_erase.mp hy).1, Finset.mem_univ y⟩
+      · rw [Finset.card_erase_of_mem hxS, hcard]
+      · exact Finset.insert_erase hxS
+    · rintro ⟨T, ⟨hTsub, hTcard⟩, rfl⟩
+      have hxT : x ∉ T := fun h => (Finset.mem_erase.mp (hTsub h)).1 rfl
+      refine ⟨Finset.subset_univ _, ?_, Finset.mem_insert_self x T⟩
+      rw [Finset.card_insert_of_notMem hxT, hTcard]; exact Nat.sub_add_cancel hk
+  rw [hset]
+  have hinj : Set.InjOn (insert x)
+      (↑((Finset.univ.erase x).powersetCard (k - 1)) : Set (Finset (Fin n))) := by
+    intro T₁ hT₁ T₂ hT₂ hEq
+    have hx₁ : x ∉ T₁ := fun h =>
+      (Finset.mem_erase.mp ((Finset.mem_powersetCard.mp (Finset.mem_coe.mp hT₁)).1 h)).1 rfl
+    have hx₂ : x ∉ T₂ := fun h =>
+      (Finset.mem_erase.mp ((Finset.mem_powersetCard.mp (Finset.mem_coe.mp hT₂)).1 h)).1 rfl
+    have hkey := congrArg (fun s => Finset.erase s x) hEq
+    simpa only [Finset.erase_insert hx₁, Finset.erase_insert hx₂] using hkey
+  rw [Finset.card_image_of_injOn hinj, Finset.card_powersetCard,
+    Finset.card_erase_of_mem hxu, Finset.card_univ, Fintype.card_fin]
 
 /-
 ## Part III: The t-Intersecting Problem

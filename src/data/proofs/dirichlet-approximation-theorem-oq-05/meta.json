@@ -97,7 +97,15 @@
       "summary": "goldenRatio_badly_approximable assembles the bound with explicit constant c = 1/4. From norm_form_ne_zero, |p² − pq − q²| ≥ 1, so |φ − p/q|·|ψ − p/q|·q² ≥ 1. A case split on |φ − p/q| finishes: if ≥ 1 the inequality (1/4)/q² ≤ 1/4 ≤ 1 is immediate; if < 1, the triangle inequality bounds the conjugate factor |ψ − p/q| ≤ |φ − p/q| + |φ − ψ| = |φ − p/q| + √5 < 4 (since √5 < 3), and nlinarith combines this with the product bound to conclude |φ − p/q| ≥ 1/(4q²)."
     }
   ],
-  "conclusion": "The golden ratio is badly approximable: c/q² ≤ |φ − p/q| with c = 1/4, proved sorry-free and axiom-free by an elementary norm-form argument. This is the gallery's first Diophantine lower bound — the sharpness dual to Dirichlet's existence theorem — establishing that the exponent 2 cannot be improved for φ, the worst-approximable real number. The constant 1/4 is explicit but not optimal (Hurwitz's sharp value is 1/√5); obtaining the optimal constant via the Fibonacci convergents of φ = [1;1,1,…] is a natural follow-up.",
+  "conclusion": {
+    "summary": "The golden ratio is badly approximable: c/q² ≤ |φ − p/q| with c = 1/4, proved sorry-free and axiom-free by an elementary norm-form argument. The argument turns the ℤ[φ]-norm identity q²(p/q − φ)(p/q − ψ) = p² − pq − q² into a nonzero integer (via irrationality of φ), then bounds the conjugate factor to extract the lower bound.",
+    "implications": "This is the gallery's first Diophantine lower bound — the sharpness dual to Dirichlet's existence theorem — establishing that the exponent 2 cannot be improved for φ, the worst-approximable real number. The constant 1/4 is explicit but not optimal: Hurwitz's sharp value is 1/√5, attained precisely at φ at the top of the Lagrange spectrum.",
+    "openQuestions": [
+      "Can the explicit constant be improved from 1/4 to the optimal Hurwitz value 1/√5 via the Fibonacci convergents of the continued fraction φ = [1;1,1,…]?",
+      "Does the same elementary norm-form argument extend to other quadratic irrationals (e.g. √2, or general roots of x² − x − 1 analogues) to yield explicit badly-approximable constants?",
+      "Can this lower bound be combined with the family's existence results (oq-01, oq-03) to characterize the full Lagrange spectrum value attached to φ?"
+    ]
+  },
   "crossReferences": [
     "dirichlet-approximation-theorem",
     "dirichlet-approximation-theorem-oq-01",

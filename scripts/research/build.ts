@@ -621,12 +621,39 @@ function loadExistingProblemJson(slug: string): ResearchProblem | null {
 }
 
 /**
+ * Best-effort human-readable title derived from a slug. Used only as a
+ * last-resort fallback when a stub JSON carries neither `title` nor `name`.
+ */
+function humanizeSlug(slug: string): string {
+  return slug
+    .split('-')
+    .map(tok =>
+      /^oq$/i.test(tok)
+        ? 'OQ'
+        : /^\d+$/.test(tok)
+          ? tok
+          : tok.charAt(0).toUpperCase() + tok.slice(1)
+    )
+    .join(' ')
+}
+
+/**
  * Update registry-derived fields on an existing problem JSON.
  * The registry may have more current phase/status/dates than the committed JSON.
+ *
+ * Some committed JSONs are minimal stubs ({ id, knowledge, leanFiles, ... })
+ * that lack the canonical `slug`/`title` fields. The registry slug is
+ * authoritative here — the file was loaded as `<entry.slug>.json` — so restore
+ * it; otherwise `generateListing` emits `slug: null`, producing a gallery card
+ * that deep-links to `/research/null`. Fall back to the stub's `name`, then a
+ * humanized slug, so the card isn't blank either.
  */
 function updateRegistryFields(problem: ResearchProblem, entry: RegistryEntry): ResearchProblem {
+  const stubName = (problem as unknown as { name?: string }).name
   return {
     ...problem,
+    slug: problem.slug ?? entry.slug,
+    title: problem.title ?? stubName ?? humanizeSlug(entry.slug),
     phase: entry.phase,
     status: entry.status,
     path: entry.path,

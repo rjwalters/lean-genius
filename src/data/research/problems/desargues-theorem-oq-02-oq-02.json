@@ -68,8 +68,11 @@
     "seeker-selected"
   ],
   "relatedProofs": [
+    "desargues-theorem",
+    "desargues-theorem-oq-01",
+    "desargues-theorem-oq-01-oq-01",
     "desargues-theorem-oq-02",
-    "desargues-theorem"
+    "desargues-theorem-oq-04"
   ],
   "references": {
     "papers": [],
@@ -86,6 +89,39 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/DesarguesTheorem.lean",
+      "filename": "DesarguesTheorem.lean",
+      "lineCount": 448,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheorem.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01.lean",
+      "filename": "DesarguesTheoremOQ01.lean",
+      "lineCount": 286,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+      "filename": "DesarguesTheoremOQ01OQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/DesarguesTheoremOQ02.lean",
       "filename": "DesarguesTheoremOQ02.lean",
       "lineCount": 333,
@@ -95,6 +131,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ04.lean",
+      "filename": "DesarguesTheoremOQ04.lean",
+      "lineCount": 416,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ04.lean"
     }
   ]
 }

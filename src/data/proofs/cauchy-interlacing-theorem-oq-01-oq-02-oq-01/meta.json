@@ -1,0 +1,141 @@
+{
+  "id": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+  "slug": "cauchy-interlacing-theorem-oq-01-oq-02-oq-01",
+  "title": "Ky Fan Trace Interlacing: Weak Majorization of a Compression Spectrum",
+  "description": "Sums the termwise Poincaré separation bounds λ_{k+m} ≤ μ_k ≤ λ_k over an arbitrary index set to obtain the Ky Fan trace inequalities for an orthogonal compression. For any s ⊆ Fin n, ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_k and ∑_{k∈s} λ_{k+m} ≤ ∑_{k∈s} μ_k. Reading s as an initial segment gives weak majorization (every top-j partial sum of the compression eigenvalues is dominated by the j largest eigenvalues of the full operator); reading s as the whole index set traps the trace of the compression between the sum of the n smallest and the sum of the n largest eigenvalues of T. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Ky Fan (1949); formalized for lean-genius",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/CauchyInterlacingKyFan.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "lineCount": 116,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "difficulty": "advanced",
+    "category": "linear-algebra",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "monotonicity of a finite sum under a termwise ≤ — the single engine that turns each Poincaré bound into its summed (Ky Fan) form",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "sum_mu_le_sum_top_lam: for every s : Finset (Fin n), ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩ — the upper Ky Fan bound over an arbitrary index set, subsuming both the trace and every partial sum",
+      "sum_bot_lam_le_sum_mu: the matching lower bound ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k",
+      "partial_sum_mu_le_partial_sum_lam: the weak-majorization statement ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for every j, exhibiting the compression spectrum as weakly majorized by the largest eigenvalues of T",
+      "trace_compress_le / trace_compress_ge: the s = univ specialisations — the trace of the compression is at most the sum of the n largest, and at least the sum of the n smallest, eigenvalues of T",
+      "trace_interlacing: the two-sided trace trapping ∑_{j=m}^{n+m-1} λ_j ≤ ∑_k μ_k ≤ ∑_{j=0}^{n-1} λ_j"
+    ],
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The mathematical content is the Poincaré separation theorem of the parent entry (cauchy-interlacing-theorem-oq-01-oq-02, the explicit-compression form of CauchyInterlacingPoincare); this entry adds only the summation of its termwise bounds via Finset.sum_le_sum. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "tags": [
+      "Cauchy interlacing",
+      "Poincaré separation",
+      "Ky Fan inequality",
+      "weak majorization",
+      "eigenvalues",
+      "trace",
+      "orthogonal compression",
+      "inner product spaces"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CauchyInterlacingPoincare"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "BigOperators",
+      "CauchyInterlacing.Poincare"
+    ],
+    "namespace": "CauchyInterlacing.KyFan",
+    "lineCount": 116,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyInterlacingKyFan.lean",
+    "sorries": 0
+  },
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 derivation of the Ky Fan trace inequalities for an orthogonal compression, obtained by summing the termwise Poincaré separation bounds. Let T be a symmetric operator on an (n+m)-dimensional inner product space V with descending eigenvalues λ, and let TH be the orthogonal compression of T onto a codimension-m subspace H, with descending eigenvalues μ (the abstract hypotheses of poincare_separation). The parent theorem gives, for each k : Fin n, λ_⟨k+m⟩ ≤ μ_k ≤ λ_⟨k⟩. Monotonicity of finite sums (Finset.sum_le_sum) lifts this to: for every s : Finset (Fin n), ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩ and ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k. Specialising s yields the weak-majorization partial sums (s an initial segment) and the two-sided trace trapping (s = univ). 0 axioms, 0 sorries.",
+    "implications": "Packages the summed (Ky Fan) consequences of Poincaré separation: the descending eigenvalues of a compression are weakly majorized by the largest eigenvalues of the full operator, and the trace of any codimension-m orthogonal compression is sandwiched between the sums of the n smallest and the n largest eigenvalues of T. Because the upper and lower bounds are stated over an arbitrary index set, a single pair of theorems covers the trace bound and all top-j partial sums uniformly; the arbitrary-finset form is directly reusable for further majorization-type corollaries (Schur–Horn, Ky Fan's maximum principle).",
+    "openQuestions": [
+      "Identify ∑_k μ_k with LinearMap.trace 𝕜 H TH (the matrix trace in the eigenbasis bH is diagonal with entries μ), turning trace_interlacing into a literal statement about the operator trace rather than the eigenvalue sum.",
+      "Derive the full (two-sided) majorization μ ≺ λ including the lower partial sums ∑_{k≥j} μ_k ≥ ∑ of the corresponding smallest λ, and connect to Mathlib's developing majorization API where available."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cauchy's interlacing theorem (1829) and its codimension-m generalisation, the Poincaré separation theorem, control individual eigenvalues of a compression. Summing these termwise inequalities produces the trace and partial-sum estimates studied by Ky Fan (1949), whose maximum principle expresses the sum of the k largest eigenvalues of a Hermitian operator as a maximum of traces over k-dimensional compressions. The resulting statement — that the descending spectrum of a compression is weakly majorized by the largest eigenvalues of the full operator — is the eigenvalue-majorization backbone behind the Schur–Horn theorem and many trace inequalities in matrix analysis.",
+    "problemStatement": "The parent entry proves the termwise Poincaré separation λ_{k+m} ≤ μ_k ≤ λ_k for the eigenvalues μ of the orthogonal compression of a symmetric operator T onto a codimension-m subspace. What do these say about sums of eigenvalues — equivalently about the trace of the compression? Sum the inequalities over an index set and read off (a) the weak-majorization partial sums and (b) the two-sided trapping of the trace.",
+    "text": "Summing the termwise Poincaré separation bounds over any index set yields the Ky Fan inequalities: the descending eigenvalues of an orthogonal compression are weakly majorized by the largest eigenvalues of the full operator, and the trace of the compression lies between the sums of the n smallest and the n largest eigenvalues.",
+    "proofStrategy": "Each theorem is one application of Finset.sum_le_sum to a termwise bound supplied by the parent theorem poincare_separation. For the upper Ky Fan bound, the termwise input is (poincare_separation … k).2 : μ_k ≤ λ_⟨k⟩; for the lower bound it is (poincare_separation … k).1 : λ_⟨k+m⟩ ≤ μ_k. Stating the two core theorems over an arbitrary s : Finset (Fin n) makes the trace forms (s = Finset.univ) and the weak-majorization partial sums (s = the initial segment {k : k < j}) immediate corollaries — no Fin-segment arithmetic is needed because the summation index set is a free parameter. The Poincaré hypotheses are threaded into every theorem with an explicit include directive, since they appear only in the proof bodies.",
+    "keyInsights": [
+      "Stating the Ky Fan bounds over an arbitrary index set s : Finset (Fin n) — rather than only over Finset.univ — lets a single pair of theorems subsume both the trace estimate and every top-j partial sum, so the weak-majorization statement is a one-line specialisation with no Fin-interval bookkeeping",
+      "The full mathematical weight sits in the parent Poincaré separation theorem; the Ky Fan content is exactly the monotonicity of finite sums, which is honest to record as a Finset.sum_le_sum wrapper rather than dressed up as new spectral theory",
+      "Because the eigenvalues are carried as the free functions λ and μ with the index map k ↦ ⟨k+m⟩ / k ↦ ⟨k⟩, the lower bound automatically references the n SMALLEST eigenvalues of T (indices m … n+m-1) and the upper bound the n LARGEST (indices 0 … n-1), making the trace trapping read off directly"
+    ],
+    "prerequisites": [
+      "The Poincaré separation theorem (cauchy-interlacing-theorem-oq-01-oq-02 / CauchyInterlacingPoincare): termwise interlacing of compression eigenvalues",
+      "Descending (antitone) eigenvalue lists and orthonormal eigenbases for symmetric operators",
+      "Monotonicity of finite sums (Finset.sum_le_sum) and basic Finset manipulation",
+      "Weak majorization: domination of top-j partial sums of two descending sequences"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The Ky Fan Sum Bounds over an Arbitrary Index Set",
+      "content": "sum_mu_le_sum_top_lam and sum_bot_lam_le_sum_mu apply Finset.sum_le_sum to the two halves of the parent's Poincaré separation theorem. For any s : Finset (Fin n), the upper half μ_k ≤ λ_⟨k⟩ sums to ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩, and the lower half λ_⟨k+m⟩ ≤ μ_k sums to ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k. Leaving s free is the design choice that makes every later corollary a specialisation."
+    },
+    {
+      "title": "Weak Majorization: Top-j Partial Sums",
+      "content": "partial_sum_mu_le_partial_sum_lam specialises s to the initial segment {k : Fin n | (k : ℕ) < j}, giving ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for every j : ℕ. This is the Ky Fan weak-majorization statement: the descending spectrum of the compression is weakly majorized by the largest eigenvalues of the full operator."
+    },
+    {
+      "title": "Trace Trapping",
+      "content": "trace_compress_le and trace_compress_ge specialise s to Finset.univ: the trace of the compression (the sum of all n of its eigenvalues) is at most the sum of the n largest eigenvalues of T and at least the sum of the n smallest (those with index m … n+m-1). trace_interlacing bundles the two as ∑_{j=m}^{n+m-1} λ_j ≤ ∑_k μ_k ≤ ∑_{j=0}^{n-1} λ_j."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Fan, K.",
+      "title": "On a theorem of Weyl concerning eigenvalues of linear transformations I",
+      "year": "1949",
+      "note": "Proceedings of the National Academy of Sciences 35(11): 652–655 — the maximum principle and trace/partial-sum eigenvalue inequalities"
+    },
+    {
+      "authors": "Bhatia, R.",
+      "title": "Matrix Analysis",
+      "year": "1997",
+      "note": "Eigenvalue interlacing, majorization, and Ky Fan's maximum principle (Chapters II–III)"
+    },
+    {
+      "authors": "Horn, R. A. and Johnson, C. R.",
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "note": "Cauchy interlacing, Poincaré separation, and majorization of compression spectra"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Sums the termwise Poincaré separation bounds λ_{k+m} ≤ μ_k ≤ λ_k of the parent into their Ky Fan (trace and partial-sum) forms."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-02",
+      "relationship": "related",
+      "description": "The abstract codimension-m Poincaré separation theorem whose summed consequences are formalized here."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling entry assembling the matrix-level eigenvalue corollary of Cauchy interlacing; this entry instead derives the majorization/trace consequences of the abstract separation theorem."
+    }
+  ],
+  "sorries": 0
+}

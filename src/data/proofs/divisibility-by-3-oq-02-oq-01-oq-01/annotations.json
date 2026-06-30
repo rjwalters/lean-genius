@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ann-divframe-cast",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "Casting ofDigits into any commutative ring",
+    "content": "Two ring-level lemmas underpin the framework. `cast_ofDigits` shows the canonical map $\\mathbb N \\to R$ commutes with `ofDigits`: casting the number $\\mathrm{ofDigits}_b(L)$ into a commutative ring $R$ equals evaluating `ofDigits` with the base itself cast into $R$. This is what lets a number be pushed into $\\mathbb Z/m\\mathbb Z$ and read off as a weighted digit value with weights $(b:R)^i$. `ofDigits_cons_ring` is the general-ring Horner unfolding $d + c\\cdot(\\text{rest})$, giving digit $i$ the weight $c^i$.",
+    "mathContext": "$(\\mathrm{ofDigits}_b\\,L : R) = \\mathrm{ofDigits}_{(b:R)}\\,L;\\quad \\mathrm{ofDigits}_c(d::t) = d + c\\cdot\\mathrm{ofDigits}_c\\,t.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ring homomorphism",
+      "Horner's method",
+      "ofDigits"
+    ],
+    "prerequisites": [
+      "commutative rings",
+      "ofDigits API"
+    ]
+  },
+  {
+    "id": "ann-divframe-master-congruence",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 84,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "The master congruence for any modulus and representative",
+    "content": "`modEq_ofDigits_repr` is the unifying theorem: for every base $b$, modulus $m$, and any integer $c$ with $b \\equiv c \\pmod m$, $n \\equiv \\mathrm{ofDigits}_c(\\mathrm{digits}_b\\,n) = \\sum_i d_i c^i \\pmod m$. The two grandparent/parent rules are just two choices of representative — $c=1$ (modulus $b-1$, digit sum) and $c=-1$ (modulus $b+1$, alternating sum). `modEq_ofDigits_emod` picks the canonical small representative $c = b \\bmod m$ to keep weights minimal. One application of Mathlib's `Nat.zmodeq_ofDigits_digits`, now for arbitrary $m$ rather than only $b\\pm1$.",
+    "mathContext": "$b \\equiv c \\pmod m \\;\\Rightarrow\\; n \\equiv \\textstyle\\sum_i d_i c^i \\pmod m.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted digit sum",
+      "representative class",
+      "modular reduction"
+    ],
+    "prerequisites": [
+      "congruences",
+      "ofDigits"
+    ]
+  },
+  {
+    "id": "ann-divframe-master-divrule",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 110
+    },
+    "type": "concept",
+    "title": "The master divisibility rule",
+    "content": "`dvd_iff_dvd_ofDigits_repr`: $m \\mid n \\iff m \\mid \\sum_i d_i c^i$ for any representative $c$ of the base mod $m$. This promotes Mathlib's `Nat.dvd_iff_dvd_ofDigits` from the $b\\pm1$ special cases to every modulus — the single engine from which all concrete divisibility tests below follow by just supplying a $c$.",
+    "mathContext": "$m \\mid (b - c) \\;\\Rightarrow\\; \\big(m \\mid n \\iff m \\mid \\textstyle\\sum_i d_i c^i\\big).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility test",
+      "dvd_iff_dvd_ofDigits"
+    ],
+    "prerequisites": [
+      "the master congruence"
+    ]
+  },
+  {
+    "id": "ann-divframe-zmod",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "ZMod m form: weights are the powers (b : ZMod m)ⁱ",
+    "content": "`natCast_eq_ofDigits_zmod` reads the residue of $n$ in $\\mathbb Z/m\\mathbb Z$ directly as the weighted digit value whose weight on digit $i$ is the power $(b:\\mathbb Z/m\\mathbb Z)^i$. Because $\\mathbb Z/m\\mathbb Z$ is *finite*, these powers cycle — the weight table is periodic (or eventually zero). `dvd_iff_ofDigits_zmod` then says $m \\mid n$ iff that $\\mathbb Z/m\\mathbb Z$ value is $0$. This is the conceptual core: divisibility tests exist because base powers are periodic modulo $m$.",
+    "mathContext": "$(n : \\mathbb Z/m\\mathbb Z) = \\textstyle\\sum_i d_i\\,(b:\\mathbb Z/m\\mathbb Z)^i;\\quad m\\mid n \\iff \\text{this} = 0.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod m",
+      "periodicity of powers",
+      "finite ring"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "cast_ofDigits"
+    ]
+  },
+  {
+    "id": "ann-divframe-recover",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 133,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Recovering the digit-sum and alternating-sum rules",
+    "content": "The grandparent and parent rules drop out as the $c=1$ and $c=-1$ specializations. `ofDigits_one_int` shows the weighted value at base $1$ is the plain integer digit sum; `modEq_digitSum` ($c=1$, modulus $b-1$) recovers $n \\equiv \\sum d_i \\pmod{b-1}$ (parent OQ-02). `modEq_altDigitSum` ($c=-1$, modulus $b+1$, via `ofDigits_neg_one`) recovers the alternating-sum rule (parent OQ-02-OQ-01). Two prior gallery entries become two lines of one master theorem.",
+    "mathContext": "$c=1:\\ n \\equiv \\textstyle\\sum d_i \\pmod{b-1};\\quad c=-1:\\ n \\equiv \\sum (-1)^i d_i \\pmod{b+1}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "digit-sum rule",
+      "alternating-sum rule",
+      "specialization"
+    ],
+    "prerequisites": [
+      "the master congruence"
+    ]
+  },
+  {
+    "id": "ann-divframe-instances",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 164,
+      "endLine": 194
+    },
+    "type": "insight",
+    "title": "New general-modulus instances: 7, 13, 4, 8",
+    "content": "Tests Mathlib does not have, each one line via a representative. Divisibility by 7 ($c=3$, weights $3^i \\bmod 7 = 1,3,2,6,4,5$ period 6) and by 13 ($c=-3$, weights period 6) are the genuinely periodic cases. Divisibility by 4 ($c=2$, weights $1,2,0,0,\\dots$ — last-two-digits rule) and by 8 ($c=2$, weights $1,2,4,0,\\dots$ — last-three-digits rule) are the *prefix* cases where the weights eventually vanish. Mathlib's base-10 by-9 ($c=1$) is also re-derived for uniformity.",
+    "mathContext": "$7\\!: 3^i \\bmod 7$ (period 6);\\ $13\\!: (-3)^i$ (period 6);\\ $4\\!: 2^i \\bmod 4 = 1,2,0,\\dots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility by 7",
+      "last-digits rules",
+      "periodic weights"
+    ],
+    "prerequisites": [
+      "the master divisibility rule"
+    ]
+  },
+  {
+    "id": "ann-divframe-tables",
+    "proofId": "divisibility-by-3-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 200,
+      "endLine": 241
+    },
+    "type": "context",
+    "title": "Periodic weight tables and numerical checks",
+    "content": "Part VI makes the periodicity explicit and machine-checked: $(10:\\mathbb Z/7\\mathbb Z)^6 = 1$ and $(10:\\mathbb Z/13\\mathbb Z)^6 = 1$ (period 6), while $(10:\\mathbb Z/4\\mathbb Z)^2 = 0$ and $(10:\\mathbb Z/8\\mathbb Z)^3 = 0$ are the algebraic reasons the last-digits rules work. Part VII sanity-checks concrete numbers ($1001 = 7\\cdot11\\cdot13$, $124$, $1000$, etc.). Notably all of these use kernel `decide`, **not** `native_decide`, so the entry stays fully verified/0-axiom with no `Lean.ofReduceBool` dependency.",
+    "mathContext": "$(10:\\mathbb Z/7)^6 = 1,\\ (10:\\mathbb Z/4)^2 = 0;\\quad 1001 = 7\\cdot11\\cdot13.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "multiplicative order",
+      "decide vs native_decide",
+      "worked examples"
+    ],
+    "prerequisites": [
+      "the ZMod form",
+      "the instances"
+    ]
+  }
+]

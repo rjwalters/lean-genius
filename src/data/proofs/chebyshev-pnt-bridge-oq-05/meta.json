@@ -1,0 +1,147 @@
+{
+  "id": "chebyshev-pnt-bridge-oq-05",
+  "title": "Chebyshev Lower Density for All m: π(m)·log m ≥ m·log 2 − o(1)",
+  "slug": "chebyshev-pnt-bridge-oq-05",
+  "description": "Extends the Chebyshev lower bound on the prime-counting function from the even-integer subsequence x = 2n to ALL integers m (odd and even alike), answering the parent's fifth open question. The parent proved 4^n ≤ (2n+1)·(2n)^{π(2n)} only at even arguments; here monotonicity of π collapses the even integer 2⌊m/2⌋ ≤ m into m on both base and exponent, giving 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for every m ≥ 2. Taking logarithms yields ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, the Chebyshev lower density log 2 − o(1) over the full sequence m → ∞. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Pafnuty Chebyshev",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "1852",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ05.lean",
+    "tags": [
+      "number-theory",
+      "prime-counting",
+      "chebyshev",
+      "analytic-number-theory",
+      "prime-number-theorem",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.monotone_primeCounting",
+        "description": "π(n) = #{primes ≤ n} is monotone; the engine that transfers the even-only bound at 2⌊m/2⌋ up to m",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Nat.pow_le_pow_left",
+        "description": "a ≤ b ⟹ a^k ≤ b^k; collapses the base (2⌊m/2⌋)^k ≤ m^k",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.pow_le_pow_right",
+        "description": "1 ≤ a, j ≤ k ⟹ a^j ≤ a^k; raises the exponent π(2⌊m/2⌋) ≤ π(m)",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "monotonicity of Real.log on positives; converts the Nat product inequality into the additive log form",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_mul / Real.log_pow",
+        "description": "log(ab) = log a + log b and log(a^k) = k·log a; expands log((m+1)·m^{π m})",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for EVERY m ≥ 2 — a single inequality valid for odd and even m, where the parent ChebyshevPNTBridge.four_pow_le_mul_pow_primeCounting only covered even arguments x = 2n. The transfer absorbs the even integer 2⌊m/2⌋ ≤ m into m on the prefactor (2n+1 ≤ m+1), the base ((2n)^k ≤ m^k), and the exponent (π(2n) ≤ π(m))",
+      "primeCounting_mul_log_lower: ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, the real-logarithmic form obtained by applying Real.log monotonicity to the Nat inequality; since log 4 = 2 log 2 and ⌊m/2⌋/m → 1/2 the leading term is m·log 2, giving the Chebyshev lower density log 2 − o(1) along the full integer sequence rather than the even subsequence",
+      "primeCounting_ge_div_log: the denominator-free quotient form π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m for m ≥ 2"
+    ],
+    "axiomCount": 0,
+    "lineCount": 158,
+    "assumptions": "None — fully verified from Mathlib and the parent bridge with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. The full PNT limit π(x)·log x / x → 1 and the sharper Chebyshev constants 0.921/1.106 remain out of scope (separate open questions of the parent).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Chebyshev's 1852 memoir bracketed π(x)·log(x)/x between two explicit constants by analysing the prime factorization of central binomial coefficients. The elementary lower bound naturally lands on even arguments x = 2n (where the central binomial C(2n,n) lives), and a separate, easy step is needed to spread the estimate to every x — the observation that π is a non-decreasing step function, so a bound at the even integer just below x already controls π(x). This file performs that classical 'fill in the gaps' step in the formalized bridge.",
+    "problemStatement": "The parent bridge proves 4^n ≤ (2n+1)·(2n)^{π(2n)} only for even arguments 2n. Extend the resulting lower density π(x)·log(x)/x ≥ log 2 − o(1) from the even-integer subsequence to all m (equivalently all real x ≥ 1, since π(x) = π(⌊x⌋)).",
+    "text": "Lifts the even-only Chebyshev lower bound to all m via monotonicity of π, giving 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} and the log-form ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m.",
+    "proofStrategy": "Set n = ⌊m/2⌋, so 2n ≤ m is the even integer just below m and n ≥ 1 for m ≥ 2. Feed n into the parent's even-only bound to get 4^n ≤ (2n+1)·(2n)^{π(2n)}. Then make three monotone collapses, all into m: 2n+1 ≤ m+1 (prefactor, omega), (2n)^{π(2n)} ≤ m^{π(2n)} (base, Nat.pow_le_pow_left from 2n ≤ m), and m^{π(2n)} ≤ m^{π(m)} (exponent, Nat.pow_le_pow_right from π(2n) ≤ π(m), itself monotonicity of π at 2n ≤ m). Multiplying gives 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)}. Casting to ℝ and applying Real.log (monotone, with log_mul and log_pow) produces the additive lower bound on π(m)·log m; dividing by log m > 0 gives the quotient form.",
+    "keyInsights": [
+      "π is a non-decreasing step function, so its value at any real x equals its value at ⌊x⌋, and a lower bound at the largest even integer ≤ m already bounds π(m) — no new analytic input is needed to leave the even subsequence",
+      "The even-only deficit costs only o(1): replacing 2n = 2⌊m/2⌋ by m changes the base by at most one factor and ⌊m/2⌋/m → 1/2, so the Chebyshev constant log 2 survives intact in the limit",
+      "All three places where the even integer 2n appears (prefactor, base, exponent) move monotonically in the right direction, so the transfer is a pure inequality chain with no error term to track",
+      "Real.log turns the multiplicative Nat bound 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} into the linear estimate ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, the shape in which the density constant log 2 = ½ log 4 is read off"
+    ],
+    "prerequisites": [
+      "the prime-counting function π and its monotonicity",
+      "the parent Chebyshev–PNT bridge even-integer lower bound",
+      "monotonicity and the product/power laws of Real.log"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Module docstring framing OQ#5: extend the even-only Chebyshev lower bound to all m via monotonicity of π."
+    },
+    {
+      "id": "nat-bound",
+      "title": "Natural-Number Lower Bound for All m",
+      "startLine": 51,
+      "endLine": 101,
+      "summary": "four_pow_half_le_mul_pow_primeCounting: 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} for all m ≥ 2, transferring the parent's even-only bound by collapsing 2⌊m/2⌋ into m on prefactor, base, and exponent.",
+      "mathContext": "n = ⌊m/2⌋ gives 2n ≤ m; Nat.pow_le_pow_left/right and monotone_primeCounting do the three collapses."
+    },
+    {
+      "id": "log-form",
+      "title": "Real-Logarithmic Form",
+      "startLine": 103,
+      "endLine": 145,
+      "summary": "primeCounting_mul_log_lower: ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m, obtained by applying Real.log to the cast Nat inequality.",
+      "mathContext": "log 4 = 2 log 2 makes the leading term m·log 2, the Chebyshev lower density."
+    },
+    {
+      "id": "quotient",
+      "title": "Quotient Form",
+      "startLine": 147,
+      "endLine": 158,
+      "summary": "primeCounting_ge_div_log: π(m) ≥ (⌊m/2⌋·log 4 − log(m+1))/log m for m ≥ 2.",
+      "mathContext": "Dividing the log-form by log m > 0 (m ≥ 2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) extension of the Chebyshev lower bound from even arguments to all m ≥ 2. The Nat inequality 4^{⌊m/2⌋} ≤ (m+1)·m^{π(m)} and its logarithmic form ⌊m/2⌋·log 4 − log(m+1) ≤ π(m)·log m deliver the lower density π(m)·log(m)/m ≥ log 2 − o(1) over the entire integer sequence, not merely the even subsequence the parent controlled.",
+    "implications": "Removes the even-integer restriction in the parent's lower bound, so the Chebyshev lower density now holds for every m (equivalently every real x ≥ 1 via π(x) = π(⌊x⌋)). This is the elementary 'fill the gaps' step that any honest statement of π(x) = Θ(x/log x) requires before invoking the full PNT limit.",
+    "openQuestions": [
+      "Pair this lower density with the parent's upper bound to state the two-sided π(x)·log(x)/x ∈ [log 2 − o(1), 2 log 4 + o(1)] for all real x ≥ 2.",
+      "Sharpen ⌊m/2⌋·log 4 to Chebyshev's original constant 0.921·x by analysing the binomial valuations more carefully.",
+      "Formalize the full PNT limit π(x)·log x / x → 1 — a separate open question of the parent."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "parent",
+      "description": "Parent proving explicit Chebyshev bounds π(x) = Θ(x/log x); this entry answers its fifth open question by extending the even-only lower bound to all m via monotonicity of π"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic",
+      "Proofs.ChebyshevPNTBridge"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "ChebyshevPNTBridgeOQ05",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/ChebyshevPNTBridgeOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

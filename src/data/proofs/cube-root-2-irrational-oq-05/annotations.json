@@ -1,0 +1,76 @@
+[
+  {
+    "id": "ann-nrtprime-oq05-main",
+    "proofId": "cube-root-2-irrational-oq-05",
+    "range": { "startLine": 31, "endLine": 53 },
+    "type": "insight",
+    "title": "The n-th Root of a Prime Is Irrational",
+    "content": "irrational_rpow_inv_prime is the two-parameter headline: for any prime p and degree n ≥ 2, the real power p^(1/n) is irrational. It feeds Mathlib's criterion irrational_nrt_of_n_not_dvd_multiplicity, which reduces irrationality to two facts about x = p^(1/n). First, x^n = p: converting the monoid power to rpow (Real.rpow_natCast), composing exponents (Real.rpow_mul, valid since p ≥ 0), and simplifying n⁻¹·n = 1 (inv_mul_cancel₀) gives (p^(1/n))^n = p^1 = p. Second, n ∤ multiplicity: multiplicity_self gives v_p(p) = 1, and 1 % n = 1 ≠ 0 for n ≥ 2. The single divisibility obstruction — n must divide the p-adic valuation of the radicand — drives everything.",
+    "mathContext": "$$\\big(p^{1/n}\\big)^n = p^{n^{-1}\\cdot n} = p, \\qquad n \\nmid v_p(p) = 1 \\;\\Rightarrow\\; p^{1/n} \\notin \\mathbb{Q}.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic valuation / multiplicity",
+      "unique factorization",
+      "real power (rpow)",
+      "n-th root irrationality criterion"
+    ],
+    "prerequisites": [
+      "irrational_nrt_of_n_not_dvd_multiplicity",
+      "multiplicity_self",
+      "Real.rpow_mul / Real.rpow_natCast"
+    ]
+  },
+  {
+    "id": "ann-nrtprime-oq05-cbrt-prime",
+    "proofId": "cube-root-2-irrational-oq-05",
+    "range": { "startLine": 55, "endLine": 59 },
+    "type": "concept",
+    "title": "Cube Root of a Prime (n = 3)",
+    "content": "irrational_cbrt_prime is the n = 3 specialization: ∛p is irrational for every prime p, not just p = 2. It is a one-line corollary of irrational_rpow_inv_prime with the degree hypothesis 2 ≤ 3 discharged by norm_num. This is the direct generalization of the base gallery entry, which handled only ∛2.",
+    "mathContext": "$$\\sqrt[3]{p} = p^{1/3} \\notin \\mathbb{Q} \\quad \\text{for every prime } p.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cube roots",
+      "specialization of a general theorem"
+    ],
+    "prerequisites": [
+      "irrational_rpow_inv_prime",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-nrtprime-oq05-base-recovery",
+    "proofId": "cube-root-2-irrational-oq-05",
+    "range": { "startLine": 61, "endLine": 70 },
+    "type": "context",
+    "title": "∛2 and ∛3 Recovered as Instances",
+    "content": "irrational_cbrt_two and irrational_cbrt_three plug p = 2 and p = 3 into irrational_cbrt_prime (primality by norm_num, then simpa to normalise the numeral). irrational_cbrt_two is exactly the base gallery entry, now recovered as a single instance of the general family — demonstrating that the two-parameter theorem genuinely subsumes the original ∛2 result rather than merely resembling it.",
+    "mathContext": "$$\\sqrt[3]{2},\\ \\sqrt[3]{3} \\notin \\mathbb{Q}, \\quad \\text{instances of } \\mathrm{irrational\\_cbrt\\_prime}.$$",
+    "significance": "context",
+    "relatedConcepts": [
+      "base entry recovery",
+      "concrete instances"
+    ],
+    "prerequisites": [
+      "irrational_cbrt_prime"
+    ]
+  },
+  {
+    "id": "ann-nrtprime-oq05-roots-of-two",
+    "proofId": "cube-root-2-irrational-oq-05",
+    "range": { "startLine": 72, "endLine": 76 },
+    "type": "concept",
+    "title": "Every n-th Root of 2 Is Irrational",
+    "content": "irrational_rpow_inv_two is the p = 2 slice of the family: for every n ≥ 2, the n-th root of 2 is irrational. It specializes irrational_rpow_inv_prime at p = 2. Together with the cube-root specializations this exhibits the theorem's two-parameter reach — fixing either the base or the degree recovers a familiar one-parameter family, and at n = 2 the general result reproduces Mathlib's Nat.Prime.irrational_sqrt.",
+    "mathContext": "$$\\sqrt[n]{2} = 2^{1/n} \\notin \\mathbb{Q} \\quad \\text{for every } n \\ge 2.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "n-th roots of two",
+      "Nat.Prime.irrational_sqrt (n = 2)",
+      "parameter slices"
+    ],
+    "prerequisites": [
+      "irrational_rpow_inv_prime"
+    ]
+  }
+]

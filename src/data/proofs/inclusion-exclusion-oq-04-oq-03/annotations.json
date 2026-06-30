@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-altpartial",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": { "startLine": 70, "endLine": 98 },
+    "type": "definition",
+    "title": "The Partial Alternating Binomial Sum and Pascal Telescoping",
+    "content": "`altPartial f m = Σ_{j=0}^m (-1)^j C(f,j)` is the alternating binomial sum truncated at level m — the only number-theoretic object the whole proof needs. `altPartial_zero` shows it equals 1 when f = 0 (only the j = 0 term survives). `altPartial_succ` is the engine: for a positive upper index it collapses to a single signed term, Σ_{j=0}^m (-1)^j C(f+1,j) = (-1)^m C(f,m), proved by induction on m using Pascal's rule C(f+1,m+1) = C(f,m) + C(f,m+1). This telescoping is what pins the sign of the entire truncation error to (-1)^m.",
+    "mathContext": "$\\sum_{j=0}^m (-1)^j \\binom{f+1}{j} = (-1)^m \\binom{f}{m}$",
+    "significance": "key",
+    "relatedConcepts": ["alternating binomial sum", "Pascal's rule", "telescoping", "partial sum"],
+    "prerequisites": ["binomial coefficients", "induction", "Finset.sum_range_succ"]
+  },
+  {
+    "id": "ann-deg-sieve",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": { "startLine": 113, "endLine": 127 },
+    "type": "definition",
+    "title": "Element Degree and the Truncated Sieve",
+    "content": "The general setup over an arbitrary finite family A : ι → Finset α. `deg A x` is the number of sets containing x. `sieveLayer A k` is the k-th sieve layer S_k = Σ_{|J|=k} |⋂_{i∈J} A i|, where the intersection over an index set J is recorded as the elements lying in A i for every i ∈ J (so the empty J gives all of α, i.e. S_0 = |α|). `bonf A m` is the inclusion–exclusion sieve sum truncated after the size-m layer, and `noneCard A` counts the elements lying in none of the sets. Everything is integer-valued because the alternating sum cannot live in ℕ.",
+    "mathContext": "$\\deg_A x = \\#\\{i : x \\in A_i\\}, \\quad \\mathrm{bonf}(A,m) = \\sum_{k=0}^m (-1)^k S_k$",
+    "significance": "important",
+    "relatedConcepts": ["inclusion-exclusion sieve", "truncation", "element degree", "Finset intersection"],
+    "prerequisites": ["Finset.powersetCard", "Finset.filter", "big operators over ℤ"]
+  },
+  {
+    "id": "ann-reindexing",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": { "startLine": 156, "endLine": 197 },
+    "type": "technique",
+    "title": "The Per-Element Reindexing (Fubini over the Sieve)",
+    "content": "The combinatorial heart. `bonf_eq_sum_altPartial` proves bonf A m = Σ_x altPartial (deg A x) m. Each sieve layer is first written as an indicator sum over elements (Finset.card_filter); exchanging the order of the (subset J, element x) double sum (Finset.sum_comm) brings the element sum outside; and for a fixed x the size-k index sets all of whose members contain x are exactly the size-k subsets of {i : x ∈ A i} (filter_forall_eq_powersetCard), so they number C(deg A x, k) (Finset.card_powersetCard). The family A vanishes and only the element degrees survive — a 2^|ι|-term sieve becomes a sum over |α| elements weighted by their partial alternating binomial sums.",
+    "mathContext": "$\\mathrm{bonf}(A,m) = \\sum_{x} \\sum_{k=0}^m (-1)^k \\binom{\\deg_A x}{k} = \\sum_x \\mathrm{altPartial}(\\deg_A x, m)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_comm", "Fubini", "double counting", "powersetCard", "reindexing"],
+    "prerequisites": ["exchanging summation order", "Finset.card_filter", "Finset.card_powersetCard"]
+  },
+  {
+    "id": "ann-sign-lemma",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": { "startLine": 228, "endLine": 247 },
+    "type": "insight",
+    "title": "The Truncation Error Is Non-Negative Element by Element",
+    "content": "`neg_one_pow_mul_term_nonneg` is the crux: for each x, (-1)^m times its contribution to bonf A m − noneCard A is non-negative. An element in no set (deg = 0) contributes altPartial 0 m − 1 = 0; an element in f+1 ≥ 1 sets contributes (-1)^m C(f,m) (by altPartial_succ), and multiplying by (-1)^m gives C(f,m) ≥ 0 (using (-1)^m · (-1)^m = 1). Summing over x, `neg_one_pow_mul_bonf_sub_nonneg` gives the unified statement (-1)^m (bonf A m − noneCard A) ≥ 0 for every m — the bracketing is visible term by term, with no global cancellation.",
+    "mathContext": "$0 \\le (-1)^m \\bigl(\\mathrm{bonf}(A,m) - \\mathrm{noneCard}\\,A\\bigr) = \\sum_{x : \\deg_A x \\ge 1} \\binom{\\deg_A x - 1}{m}$",
+    "significance": "key",
+    "relatedConcepts": ["sign analysis", "non-negativity", "parity", "Finset.sum_nonneg"],
+    "prerequisites": ["altPartial_succ", "Even.neg_one_pow", "positivity"]
+  },
+  {
+    "id": "ann-bonferroni",
+    "proofId": "inclusion-exclusion-oq-04-oq-03",
+    "range": { "startLine": 249, "endLine": 285 },
+    "type": "insight",
+    "title": "The Bonferroni Inequalities and the Exact Endpoint",
+    "content": "`bonferroni_even` (m even ⟹ noneCard A ≤ bonf A m) and `bonferroni_odd` (m odd ⟹ bonf A m ≤ noneCard A) follow immediately from the core sign statement by specializing the parity of (-1)^m. `bonf_eq_noneCard_of_card_le` closes the circle: once m ≥ |ι|, every deg A x ≤ |ι| ≤ m forces C(deg−1, m) = 0 (Nat.choose_eq_zero_of_lt), so altPartial (deg A x) m becomes the exact indicator [deg A x = 0] and the truncated sieve equals the true count — the exact inclusion–exclusion principle as the endpoint of the Bonferroni ladder.",
+    "mathContext": "$m \\text{ even} \\Rightarrow \\mathrm{noneCard}\\,A \\le \\mathrm{bonf}(A,m); \\quad m \\ge |\\iota| \\Rightarrow \\mathrm{bonf}(A,m) = \\mathrm{noneCard}\\,A$",
+    "significance": "important",
+    "relatedConcepts": ["Bonferroni inequalities", "parity", "exact inclusion-exclusion", "one-sided bound"],
+    "prerequisites": ["Even.neg_one_pow", "Odd.neg_one_pow", "Nat.choose_eq_zero_of_lt"]
+  }
+]

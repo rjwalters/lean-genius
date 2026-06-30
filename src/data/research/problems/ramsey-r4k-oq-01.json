@@ -27,5 +27,45 @@
       "Formalize the AKS probabilistic deletion argument to replace aks_r4k_upper axiom",
       "Formalize Mattheus-Verstraëte algebraic geometry argument to replace mv_r4k_lower axiom"
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/RamseyR4k.lean",
+      "filename": "RamseyR4k.lean",
+      "lineCount": 588,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4k.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kExtensions.lean",
+      "filename": "RamseyR4kExtensions.lean",
+      "lineCount": 1143,
+      "theoremCount": 74,
+      "axiomCount": 15,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensions.lean"
+    },
+    {
+      "path": "Proofs/RamseyR4kOQ01.lean",
+      "filename": "RamseyR4kOQ01.lean",
+      "lineCount": 188,
+      "theoremCount": 17,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "ramsey-r4k",
+    "ramsey-r4k-extensions",
+    "ramsey-r4k-oq-01"
+  ]
 }

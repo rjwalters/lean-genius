@@ -99,9 +99,18 @@
       "id": "section-lower-bound",
       "title": "§ The unconditional lower bound",
       "startLine": 105,
-      "endLine": 145,
-      "summary": "g_ge_sqrt: ⌊√N⌋ ≤ g(N) via le_csSup applied to the witness. g_ge_one: g(N) ≥ 1 for N ≥ 1. g_ge_sqrt_real: (g N : ℝ) ≥ √N − 1 by bounding √N ≤ ⌊√N⌋ + 1.",
+      "endLine": 154,
+      "summary": "g_ge_sqrt: ⌊√N⌋ ≤ g(N) via le_csSup applied to the witness. g_ge_one: g(N) ≥ 1 for N ≥ 1. g_ge_sqrt_real: (g N : ℝ) ≥ √N − 1 by bounding √N ≤ ⌊√N⌋ + 1. Closes with a summary docstring recording the axiom-free status and the relationship to the parent's Chen–Dai axioms.",
       "mathContext": "g(N) ≥ ⌊√N⌋, hence g(N) = Θ(√N) — with no axioms."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Extracts and fully machine-checks the axiom-free core of Erdős #441: the unconditional lower bound g(N) ≥ ⌊√N⌋ (real form (g N : ℝ) ≥ √N − 1), where g(N) is the largest A ⊆ {1,...,N} with all pairwise lcm(a,b) ≤ N. The witness is the initial segment {1,...,⌊√N⌋}, whose pairwise lcms satisfy lcm(a,b) ≤ a·b ≤ ⌊√N⌋² ≤ N. This already pins the correct order of magnitude g(N) = Θ(√N). 6 theorems, 5 definitions, 0 sorries, 0 axioms.",
+    "implications": "Cleanly separates the elementary, machine-checkable content of Erdős #441 from the deep Chen–Dai analytic number theory that the parent entry records as axioms. The order of magnitude Θ(√N) needs none of that machinery — only the one-line divisibility fact lcm(a,b) ≤ a·b and the simplest possible witness set. The sharp constant (9/8)^{1/2} ≈ 1.0607 is a mere ~6% improvement over the trivial constant 1 proved here, quantifying exactly how much of the problem is 'hard'. The le_csSup-from-a-witness pattern (turning a concrete admissible set into a lower bound on a conditional supremum) is reusable for any extremal-cardinality problem.",
+    "openQuestions": [
+      "Discharge the parent's construction_gives_lower_bound sorry by formalizing Erdős' two-part construction (initial segment up to (N/2)^{1/2} plus even numbers up to (2N)^{1/2}); the crude lcm ≤ product bound already handles the cross-terms and first part, leaving the factor-2 saving for even–even pairs.",
+      "Prove an unconditional upper bound g(N) ≤ C√N to make g(N) = Θ(√N) axiom-free in both directions, not just the lower half.",
+      "Recover the sharp constant (9/8)^{1/2} elementarily by computing the exact cardinality of Erdős' construction, narrowing the gap to the axiomatized Chen–Dai asymptotic."
+    ]
+  }
 }

@@ -2,6 +2,46 @@
   "id": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01-oq-02",
   "slug": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01-oq-02",
   "title": "A Complete n ≡ 3 (mod 4) Obstruction for the Three-Square Multiplier Route",
+  "description": "A 0-axiom answer to the parent slice's open question oq-02: generalise the single n = 3 obstruction of the three-square multiplier–quadratic-residue route to a uniform congruence family. Main theorem: for every n ≡ 3 (mod 4) and every odd prime p with p ≡ −1 (mod n), legendreSym p (−n) = −1. Hence the route's surviving QR hypothesis legendreSym p (−n) = 1 fails for EVERY multiplier prime (p + 1 = d·n) whenever n ≡ 3 (mod 4). The proof is reciprocity-driven and uniform in the prime — J(−n|p) = χ₄ p · J(n|p), reciprocity rewrites J(n|p) via p ≡ −1 (mod n), and for n ≡ 3 (mod 4) all signs collapse to a single −1 — replacing the parent's mod-12 enumeration. The n = 3 result is recovered as the smallest instance, the modulus is shown sharp (n = 2 admits p = 11 with J(−2|11) = 1), and the capstone records that the obstruction is route-specific (many n ≡ 3 mod 4, including 3 itself, ARE sums of three squares), not the genus condition.",
+  "overview": {
+    "historicalContext": "Legendre's three-square theorem characterizes the integers representable as x²+y²+z² as those not of the form 4^a(8b+7). The classical multiplier route to sufficiency multiplies the target by a prime to reduce to a handled case, at the cost of a quadratic-residue side condition; the parent lineage (oq-03-oq-07, oq-03-oq-07-oq-01) reduced that condition to legendreSym p (−n) = 1 for a multiplier prime p = d·n − 1 and showed, by an explicit mod-12 enumeration, that it fails for n = 3. The natural question — how far the phenomenon extends — is a question about the interaction of the quartic character χ₄ with quadratic reciprocity (Gauss), the same machinery that governs which −n are quadratic residues. This entry answers it cleanly: the obstruction is exactly a χ₄/reciprocity sign computation, total on the entire congruence class n ≡ 3 (mod 4).",
+    "problemStatement": "Generalise the parent's isolated n = 3 obstruction to a uniform family (the parent's open question oq-02). Identify a congruence family of n for which legendreSym p (−n) = −1 holds for EVERY odd prime p ≡ −1 (mod n), and prove the corresponding multiplier_route_incomplete statement once for the whole family. Establish it for n ≡ 3 (mod 4), recover n = 3 as the smallest instance, and show the modulus hypothesis is necessary (sharpness).",
+    "proofStrategy": "Work at the level of the Jacobi symbol, uniformly in the prime. Decompose J(−n | p) = χ₄ p · J(n | p) (jacobiSym.neg). Use p ≡ −1 (mod n) to rewrite the numerator mod n: J(p | n) = J(−1 | n) = χ₄ n (jacobiSym.mod_left' + at_neg_one), and for n ≡ 3 (mod 4), χ₄ n = −1. Apply Jacobi quadratic reciprocity in its two residue cases (quadratic_reciprocity_one_mod_four' / _three_mod_four) to relate J(n | p) and J(p | n): for p ≡ 1 (mod 4) the χ₄ p factor is +1 and reciprocity is sign-free, giving product −1; for p ≡ 3 (mod 4) the χ₄ p = −1 and the reciprocity sign is −1, again giving −1. Bridge to the Legendre symbol via legendreSym.to_jacobiSym. The multiplier shape p + 1 = d·n yields p ≡ −1 (mod n) (intMod_neg_one_of_multiplier). Sharpness and the n = 3 specialization are discharged by norm_num/omega.",
+    "keyInsights": [
+      "The whole obstruction is a single sign computation: J(−n | p) = χ₄ p · J(n | p), and for n ≡ 3 (mod 4) the quartic-character factor χ₄ p and the quadratic-reciprocity sign always multiply to −1 — no enumeration in the prime is needed, unlike the parent's mod-12 case check.",
+      "The hypothesis p ≡ −1 (mod n) (forced by the multiplier shape p = d·n − 1) is exactly what lets reciprocity evaluate J(n | p) as χ₄ n via the numerator-mod-n reduction — the multiplier structure and the reciprocity input are the same congruence.",
+      "n ≡ 3 (mod 4) is the precise trigger: χ₄ n = −1 there, and that single fact (ZMod.χ₄_nat_three_mod_four) is what collapses both residue cases of p mod 4 to the same value −1.",
+      "The obstruction is TOTAL on the family — it fails for every multiplier prime, not just generic ones — so it upgrades the parent's single-value negative result to a structural statement about an infinite congruence class.",
+      "The result is route-specific, not arithmetic: 3 = 1²+1²+1² and many other n ≡ 3 (mod 4) are sums of three squares, so the −n-multiplier condition is bookkeeping internal to one reduction, NOT the genus condition n ≠ 4^a(8b+7). This is the honest scoping the capstone records.",
+      "Sharpness is explicit: dropping n ≡ 3 (mod 4) breaks the theorem — for n = 2 the prime p = 11 has p ≡ −1 (mod 2) yet J(−2 | 11) = 1, a qualifying multiplier prime — so the congruence hypothesis cannot be weakened."
+    ]
+  },
+  "sections": [
+    {
+      "id": "kernel",
+      "title": "The Jacobi-Symbol Reciprocity Kernel",
+      "startLine": 70,
+      "endLine": 101,
+      "summary": "jacobiSym_neg_eq_neg_one_of_three_mod_four: for odd n ≡ 3 (mod 4) and odd p with p ≡ −1 (mod n), J(−n | p) = −1. Decomposes J(−n | p) = χ₄ p · J(n | p), evaluates J(p | n) = χ₄ n = −1 via p ≡ −1 (mod n), and case-splits on p mod 4 — both cases collapse to −1 by quadratic reciprocity and χ₄. No enumeration in the prime.",
+      "mathContext": "n ≡ 3 (mod 4), p ≡ −1 (mod n) ⟹ J(−n | p) = χ₄ p · J(n | p) = −1."
+    },
+    {
+      "id": "legendre-and-route",
+      "title": "The Legendre Statement and the Route Obstruction",
+      "startLine": 102,
+      "endLine": 139,
+      "summary": "legendreSym_neg_eq_neg_one_of_three_mod_four lifts the kernel to the Legendre symbol via legendreSym.to_jacobiSym. intMod_neg_one_of_multiplier turns the multiplier shape p + 1 = d·n into p ≡ −1 (mod n). multiplier_route_obstructed_of_three_mod_four / _qr_fails: for every n ≡ 3 (mod 4) the QR hypothesis legendreSym p (−n) = 1 fails for every multiplier prime — the parent's incompleteness, proved for an infinite family.",
+      "mathContext": "n ≡ 3 (mod 4): ∀ multiplier prime p (p+1 = d·n), legendreSym p (−n) = −1 ≠ 1."
+    },
+    {
+      "id": "specialisation-sharpness",
+      "title": "Specialisation to n = 3 and Sharpness",
+      "startLine": 141,
+      "endLine": 176,
+      "summary": "legendreSym_neg_three_eq_neg_one' recovers the parent's n = 3 obstruction from the general theorem. sharpness_n_two shows the modulus hypothesis is necessary (n = 2: p = 11 has p ≡ −1 mod 2 but J(−2 | 11) = 1). obstruction_is_route_specific is the honest capstone: 3 is a sum of three squares yet the −3-route is fully obstructed, so the obstruction is route-specific, not the genus condition.",
+      "mathContext": "n=3 recovered; n=2 (≢3 mod 4) admits qualifying p=11; 3 = 1²+1²+1² yet route obstructed."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -82,8 +122,20 @@
     }
   ],
   "crossReferences": [
-    "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01",
-    "lagrange-four-squares-waring-g2-oq-03-oq-07",
-    "lagrange-four-squares-waring-g2-oq-03"
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-07-oq-01",
+      "relationship": "extends",
+      "description": "Directly answers this parent's open question oq-02. The parent proved the multiplier route's QR hypothesis fails at n = 3 by an explicit mod-12 enumeration and asked for a uniform family; this entry establishes the obstruction for the entire congruence class n ≡ 3 (mod 4) by a uniform reciprocity argument, recovering the n = 3 case as the smallest instance."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-07",
+      "relationship": "related",
+      "description": "Grandparent slice that introduced the multiplier–quadratic-residue reduction. This entry sharpens the negative side: the surviving condition legendreSym p (−n) = 1 is unsatisfiable for a whole congruence family, explaining why the geometry is established only for small multipliers d ∈ {1,2}."
+    },
+    {
+      "targetId": "lagrange-four-squares-waring-g2-oq-03",
+      "relationship": "related",
+      "description": "Part of the Lagrange/Waring g(2)=4 three-square program. This slice clarifies that the −n-multiplier QR condition is route-specific bookkeeping, distinct from the genuine genus condition n ≠ 4^a(8b+7)."
+    }
   ]
 }

@@ -15,11 +15,11 @@
       "constructibility",
       "field-extensions"
     ],
-    "badge": "original",
+    "badge": "infrastructure",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "assumptions": "0 sorries, 0 axioms — the 2-3 number arithmetic and degree-set inclusions are fully machine-verified. However, the constructibility predicates are degree-only and α-independent: `IsNeusisConstructible (_α : ℝ) (d : ℕ) := IsTwoThreeNumber d` and `IsConstructible (_α : ℝ) (d : ℕ) := d > 0 ∧ ∃ n, d ∣ 2^n` both ignore their real-number argument. So statements like `cos_20_neusis_constructible : IsNeusisConstructible (cos (π/9)) 3` are definitionally just `IsTwoThreeNumber 3`; the degree literal `3` is hand-supplied and is NOT proven to be the minimal-polynomial degree of cos(π/9) or ∛2. The geometric constructibility claims (angle trisection / cube duplication with a marked ruler) are therefore presented at the level of Gleason's (1988) algebraic-degree characterization, not formally established for the named angles. The genuinely original, fully-proven content is the 2-3-number / Pierpont-prime arithmetic and the degree-set hierarchy.",
     "lineCount": 599,
     "theoremCount": 43,
     "definitionCount": 10,
@@ -30,7 +30,7 @@
       "Poncelet-Steiner theorem: straightedge plus one given circle equals compass-and-straightedge",
       "Pierpont prime characterization of neusis-constructible regular polygons (7-gon YES, 9-gon YES, 11-gon NO)",
       "two_three_mul: 2-3 numbers closed under multiplication",
-      "Strict hierarchy witness: cos(20°) is neusis-constructible but not compass-constructible",
+      "Strict hierarchy witness at the degree level: degree 3 is a 2-3 number but does not divide any 2^n (so the named-angle constructibility statements hold by the hand-supplied degree-3 literal, not a proven minimal-polynomial degree)",
       "five_not_two_three and eleven_not_pierpont: explicit failures of neusis-constructibility"
     ]
   },
@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization answers OQ-04 completely: natural generalizations to other tools exist and are well-characterized algebraically. The five-level hierarchy — straightedge-only ⊊ {compass+straightedge, compass-only, straightedge+circle} ⊊ marked ruler ⊆ origami — is fully formalized with 43 theorems and 0 sorries. Both classical impossibility results (angle trisection, cube duplication with compass-and-straightedge) and classical possibility results (both with the marked ruler) are formally certified.",
+    "summary": "This formalization answers OQ-04 at the level of Gleason's (1988) algebraic-degree characterization: natural generalizations to other tools exist and are well-characterized algebraically. The five-level hierarchy — straightedge-only ⊊ {compass+straightedge, compass-only, straightedge+circle} ⊊ marked ruler ⊆ origami — is formalized as inclusions of the corresponding degree sets, with 43 theorems and 0 sorries. Note that the constructibility predicates are degree-only and ignore their real-number argument, so the named-angle statements (trisecting 60° / duplicating the cube with a marked ruler) rest on hand-supplied degree-3 literals rather than proven minimal-polynomial degrees. The fully machine-verified content is the 2-3-number / Pierpont-prime arithmetic and the degree-set hierarchy; the geometric impossibility and possibility results are presented at the algebraic-degree level, not as formally certified geometric constructions.",
     "implications": "The 2-3 number theory developed here has independent combinatorial interest: closure under multiplication, detection of non-membership (5 and 11 are not 2-3 numbers). The Pierpont prime classification extends the Gauss-Wantzel theorem and gives a concrete list of regular polygons first enabled by the marked ruler: the 7-gon, 9-gon, 13-gon, 14-gon, and 19-gon, but not the 11-gon.",
     "openQuestions": [
       "Can origami solve equations of degree beyond 2^a · 3^b using simultaneous multi-fold axioms (HJ-6 iterated)?",

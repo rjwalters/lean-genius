@@ -15,6 +15,45 @@
     "sorries": 0
   },
   "title": "Sums of Two Triangular Numbers and the 4n+1 Two-Square Slice",
+  "description": "The two-summand analogue of Gauss's Eureka theorem. For every natural number n, n is a sum of two triangular numbers T(k)=k(k+1)/2 if and only if 4n+1 is a sum of two integer squares — proved unconditionally and axiom-free via the rotation identity 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)². Composing with Mathlib's two-square theorem yields a complete, decidable arithmetic test: n is a sum of two triangular numbers iff every prime ≡ 3 (mod 4) divides 4n+1 to an even power.",
+  "overview": {
+    "historicalContext": "The interplay between polygonal numbers and sums of squares runs through the heart of classical number theory. Fermat's 'polygonal number theorem' (stated 1638, proved in special cases by Lagrange, Gauss, and Cauchy) asserts every natural number is a sum of m m-gonal numbers; Gauss's 1796 diary entry 'EΥΡΗΚΑ! num = Δ+Δ+Δ' records the triangular case, equivalent to Legendre's three-square theorem on the 8n+3 progression. The two-summand story told here is the cleaner sibling: sums of two triangular numbers correspond to sums of two squares on the 4n+1 progression. The two-square theorem itself — a prime is a sum of two squares iff it is 2 or ≡ 1 (mod 4), with the general characterization via even exponents of primes ≡ 3 (mod 4) — is Fermat's 'Christmas theorem' of 1640, first proved by Euler (1749). Because that theorem is fully formalized in Mathlib while three-square sufficiency is not, this entry is unconditional where the Gauss Eureka companion still rests on an axiom.",
+    "problemStatement": "Characterize the natural numbers expressible as a sum of two triangular numbers T(a)+T(b), T(k)=k(k+1)/2. Show (i) n = T(a)+T(b) iff 4n+1 is a sum of two integer (equivalently natural) squares, and (ii) the resulting complete arithmetic test: n is a sum of two triangular numbers iff every prime q ≡ 3 (mod 4) occurs to an even power in 4n+1.",
+    "proofStrategy": "The bridge is the rotation identity 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)², a unimodular change of variables (a,b) ↦ (a+b+1, a−b). Forward: read the identity left-to-right with explicit roots X = a+b+1, Y = a−b. Backward: 4n+1 ≡ 1 (mod 4) forces exactly one square odd; writing the even one 2t and the odd one 2s+1, the inverse rotation p = s+t, q = s−t gives 2n = p(p+1)+q(q+1) with NO division, and the symmetry T(k)=T(−1−k) pulls the integer indices back to natural triangular numbers. Composing the natural-number form with Mathlib's Nat.eq_sq_add_sq_iff delivers the prime-factorization test.",
+    "keyInsights": [
+      "Sums of two triangular numbers are exactly the 4n+1 arithmetic-progression slice of sums of two squares — the two-summand mirror of the three-triangular ⟺ 8n+3 three-square correspondence.",
+      "The whole correspondence is a single unimodular lattice rotation (a,b) ↦ (a+b+1, a−b); the forward and backward directions are just reading this map in the two directions, with parity selecting the valid inverse.",
+      "Designing the inverse with p = s+t, q = s−t keeps the entire argument division-free inside ℤ, sidestepping the 'half of an odd number' obstructions that plague naive triangular-number manipulations.",
+      "Because Mathlib has the two-square theorem (but not three-square sufficiency), this result is unconditional AND decidable, strictly stronger than the still-axiomatized Gauss Eureka companion it mirrors.",
+      "The characterization is genuinely subtle: the naive 'no prime factor ≡ 3 (mod 4)' criterion is FALSE — n = 2 = T₁+T₁ while 4·2+1 = 9 = 3² — the even-exponent condition is essential."
+    ]
+  },
+  "sections": [
+    {
+      "id": "triangular-setup",
+      "title": "Triangular Numbers and Index Symmetry",
+      "startLine": 41,
+      "endLine": 72,
+      "summary": "Defines tri k = k(k+1)/2 and IsSumTwoTriangular; establishes exact halving 2·T(k)=k(k+1) (two_mul_tri) and the symmetry T(k)=T(−1−k) (exists_nat_tri_index) that lets integer indices return to natural triangular numbers.",
+      "mathContext": "T(k)=k(k+1)/2 with 2T(k)=k(k+1) exact, and T(k)=T(−1−k)."
+    },
+    {
+      "id": "rotation",
+      "title": "The Rotation Identity and Both Directions",
+      "startLine": 74,
+      "endLine": 145,
+      "summary": "The identity 4·(T(a)+T(b))+1 = (a+b+1)²+(a−b)² (sum_tri_identity) drives the forward direction (isSumTwoTriangular_to_sq) and, via the division-free parity inversion core_pq, the backward direction (sq_to_isSumTwoTriangular), assembled into the main equivalence isSumTwoTriangular_iff.",
+      "mathContext": "n = T(a)+T(b) ⟺ 4n+1 = X²+Y² over ℤ, via the unimodular rotation (a,b)↦(a+b+1,a−b)."
+    },
+    {
+      "id": "characterization",
+      "title": "Natural-Number Form and Arithmetic Characterization",
+      "startLine": 147,
+      "endLine": 177,
+      "summary": "The int↔nat square bridge (int_sq_iff_nat_sq) gives the ℕ restatement isSumTwoTriangular_iff_nat, and composing with Mathlib's two-square theorem yields the decidable factorization test isSumTwoTriangular_iff_factorization.",
+      "mathContext": "n = T(a)+T(b) ⟺ every prime q ≡ 3 (mod 4) divides 4n+1 to an even power."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -89,12 +128,7 @@
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-01",
       "relationship": "extends",
-      "description": "The two-summand analogue of the Gauss Eureka companion. Where that entry needs the still-open three-square sufficiency axiom to conclude unconditionally, this entry is fully unconditional and axiom-free because Mathlib supplies the two-square theorem, and it adds the complete arithmetic characterization via prime factorization of 4n+1."
-    },
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "Companion to the parent three-square sufficiency study: it records the elementary 4n+1 ⟷ two-triangular bijection in the same sums-of-squares ↔ triangular-numbers circle of ideas, using the (a,b)↦(a+b+1,a−b) rotation."
+      "description": "The two-summand analogue of the Gauss Eureka companion (three triangular ⟺ 8n+3 three squares). Where that entry needs the still-open three-square sufficiency axiom to conclude unconditionally, this entry is fully unconditional and axiom-free because Mathlib supplies the two-square theorem, and it adds the complete arithmetic characterization via prime factorization of 4n+1."
     }
   ],
   "references": [

@@ -62,26 +62,26 @@
   {
     "id": "ann-polar-angle-axiom",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
-    "range": { "startLine": 163, "endLine": 175 },
-    "type": "warning",
-    "title": "Axiom: Polar Angle = π − Original Side",
-    "content": "Axiom #1 of 2. States the dual to `polar_side_eq_pi_minus_angle`: the dihedral angles of the polar triangle equal $\\pi$ minus the corresponding sides of the original. Mathematically the proof is *exactly analogous* to the side formula — apply `cross_dot_eq_neg_projperp` to the polar triangle's projections — but the chain involves nested `normalize3` and `projPerp` of cross products, which compounds the algebraic complexity. **Open question (#1)**: the meta lists this as the natural target for axiom elimination once the bookkeeping is simplified.",
+    "range": { "startLine": 189, "endLine": 373 },
+    "type": "theorem",
+    "title": "Polar Angle = π − Original Side (Proved)",
+    "content": "**Formerly the file's sole axiom; now fully proved** (`polar_angle_eq`, eliminated in Session 4). This is the dual to `polar_side_eq_pi_minus_angle`: the dihedral angles of the polar triangle equal $\\pi$ minus the corresponding sides of the original. The proof realizes \"the polar of the polar is the original (up to sign)\": apply `polar_side_eq_pi_minus_angle` to the polar triangle $A'B'C'$, then use the cross-of-crosses identities `cross_CA_cross_AB`, `cross_AB_cross_BC` to compute $B'\\times C' = (t/(n_{CA}n_{AB}))\\,A$ and $C'\\times A' = (t/(n_{AB}n_{BC}))\\,B$ with $t = \\mathrm{tripleProduct}(A,B,C)$. Matching signs ($\\mathrm{sign}(t)^2 = 1$) collapse the dot product to $\\langle A, B\\rangle$, giving the result. The non-degeneracy hypothesis forces $t \\neq 0$. The entry is therefore 0-axiom, 0-sorry.",
     "mathContext": "$\\mathrm{dihedralAngle}(\\widehat{A\\times B},\\ \\widehat{B\\times C},\\ \\widehat{C\\times A}) = \\pi - \\mathrm{arcLen}(A, B)$",
-    "significance": "supporting",
-    "relatedConcepts": ["axiomatized statement", "duality of polar triangle"],
-    "prerequisites": ["polar_side_eq_pi_minus_angle pattern"]
+    "significance": "critical",
+    "relatedConcepts": ["polar triangle duality", "cross-of-crosses identity", "triple product", "axiom elimination"],
+    "prerequisites": ["polar_side_eq_pi_minus_angle", "cross_CA_cross_AB", "cross_AB_cross_BC"]
   },
   {
     "id": "ann-projperp-sinsincos-axiom",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
-    "range": { "startLine": 177, "endLine": 184 },
-    "type": "warning",
-    "title": "Axiom: Projection Dot = sin·sin·cos",
-    "content": "Axiom #2 of 2. The standard identity $\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle = \\sin a \\cdot \\sin b \\cdot \\cos\\gamma$ where $a = \\mathrm{arcLen}(A, C)$, $b = \\mathrm{arcLen}(B, C)$, $\\gamma$ = dihedral angle at $C$. Follows from the definition $\\gamma = \\arccos\\bigl(\\langle \\mathrm{proj} A, \\mathrm{proj} B\\rangle / (\\|\\mathrm{proj} A\\|\\|\\mathrm{proj} B\\|)\\bigr)$ plus the identity $\\|\\mathrm{proj}_{C^\\perp} A\\| = \\sin a$ established earlier. The remaining work is bookkeeping with `Real.cos_arccos` and a Cauchy–Schwarz bound to show the ratio lies in $[-1, 1]$.",
+    "range": { "startLine": 369, "endLine": 432 },
+    "type": "theorem",
+    "title": "Projection Dot = sin·sin·cos (Proved)",
+    "content": "**Fully proved** (`projperp_dot_sinsincos`) — not an assumption. The standard identity $\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle = \\sin a \\cdot \\sin b \\cdot \\cos\\gamma$ where $a = \\mathrm{arcLen}(A, C)$, $b = \\mathrm{arcLen}(B, C)$, $\\gamma$ = dihedral angle at $C$. The proof unfolds `dihedralAngle` in the non-degenerate case and applies `Real.cos_arccos`, discharging the $[-1, 1]$ side condition via the Cauchy–Schwarz bound $(\\langle p_A, p_B\\rangle)^2 \\le \\|p_A\\|^2\\|p_B\\|^2$ (from `lagrange_identity`), then converts $\\sin^2(\\mathrm{arcLen})$ to $\\|\\mathrm{proj}_{C^\\perp}\\cdot\\|^2$ via `normSq_projPerp_unit`.",
     "mathContext": "$\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle = \\sin a \\sin b \\cos\\gamma$",
-    "significance": "supporting",
-    "relatedConcepts": ["dihedral angle", "Cauchy–Schwarz", "Real.cos_arccos"],
-    "prerequisites": ["definition of dihedralAngle"]
+    "significance": "key",
+    "relatedConcepts": ["dihedral angle", "Cauchy–Schwarz", "Real.cos_arccos", "Lagrange identity"],
+    "prerequisites": ["definition of dihedralAngle", "normSq_projPerp_unit"]
   },
   {
     "id": "ann-dual-trig-identity",
@@ -113,10 +113,10 @@
     "range": { "startLine": 236, "endLine": 269 },
     "type": "theorem",
     "title": "Main Result — Dual Spherical Law of Cosines",
-    "content": "**The headline theorem.** For any non-degenerate spherical triangle with unit vertices $A, B, C$, the dual spherical law holds: $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$, where $\\alpha, \\beta, \\gamma$ are dihedral angles at $A, B, C$ and $c = \\mathrm{arcLen}(A, B)$. Note the *negative* sign on the leading $\\cos\\alpha\\cos\\beta$ — this is what distinguishes the dual law from the standard law on the sphere. The proof assembles `polar_triangle_std_law` (applied to the polar triangle of $A, B, C$) with three instances of `polar_side_eq_pi_minus_angle` (substituting $a' = \\pi - \\alpha$, $b' = \\pi - \\beta$, $c' = \\pi - \\gamma$) and one application of the `polar_angle_eq` axiom (substituting $\\gamma' = \\pi - c$). The final `dual_trig_identity` step converts $\\cos(\\pi - \\cdot)$ to $-\\cos$ and $\\sin(\\pi - \\cdot)$ to $\\sin$ throughout. The rewrites `arcLen_comm` and `dihedralAngle_comm_last` are needed for the second polar-side instance because the polar construction is cyclic but `polar_side_eq_pi_minus_angle` is not symmetric in its argument order.",
+    "content": "**The headline theorem.** For any non-degenerate spherical triangle with unit vertices $A, B, C$, the dual spherical law holds: $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$, where $\\alpha, \\beta, \\gamma$ are dihedral angles at $A, B, C$ and $c = \\mathrm{arcLen}(A, B)$. Note the *negative* sign on the leading $\\cos\\alpha\\cos\\beta$ — this is what distinguishes the dual law from the standard law on the sphere. The proof assembles `polar_triangle_std_law` (applied to the polar triangle of $A, B, C$) with three instances of `polar_side_eq_pi_minus_angle` (substituting $a' = \\pi - \\alpha$, $b' = \\pi - \\beta$, $c' = \\pi - \\gamma$) and one application of the proved theorem `polar_angle_eq` (substituting $\\gamma' = \\pi - c$). The final `dual_trig_identity` step converts $\\cos(\\pi - \\cdot)$ to $-\\cos$ and $\\sin(\\pi - \\cdot)$ to $\\sin$ throughout. The rewrites `arcLen_comm` and `dihedralAngle_comm_last` are needed for the second polar-side instance because the polar construction is cyclic but `polar_side_eq_pi_minus_angle` is not symmetric in its argument order.",
     "mathContext": "$\\cos\\gamma = -\\cos\\alpha \\cdot \\cos\\beta + \\sin\\alpha \\cdot \\sin\\beta \\cdot \\cos c$",
     "significance": "critical",
     "relatedConcepts": ["dual spherical law", "Gauss-Bonnet on sphere", "Napier's analogies", "spherical trigonometry"],
-    "prerequisites": ["all preceding theorems and both axioms"]
+    "prerequisites": ["all preceding theorems (polar_angle_eq, polar_triangle_std_law, dual_trig_identity)"]
   }
 ]

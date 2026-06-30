@@ -1,0 +1,50 @@
+[
+  {
+    "id": "buffon-oq020201-ann-header",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 39 },
+    "type": "context",
+    "title": "Monotonicity of the n-Dimensional Crossing Factor",
+    "content": "The n-dimensional Buffon noodle formula E[crossings] = αₙ·L/d is governed by the crossing factor αₙ = E_{Sⁿ⁻¹}[|u₁|], the expected absolute first coordinate of a uniform random direction. It satisfies the recurrence α_{n+2} = (n/(n+1))·αₙ with base values α₂ = 2/π, α₃ = 1/2. The companion file records individual values and positivity but leaves open the global monotone behaviour. This entry proves the structural monotonicity: αₙ strictly decreases in two-dimension steps, is maximized at α₂ = 2/π, and is therefore uniformly below 1 in every dimension. (The recurrence is re-declared verbatim because the companion fails to build on the pinned Mathlib — a Filter.Tendsto.div API drift.)",
+    "mathContext": "$\\alpha_n = E_{S^{n-1}}[|u_1|],\\quad \\alpha_{n+2} = \\frac{n}{n+1}\\alpha_n,\\quad \\alpha_2 = \\frac{2}{\\pi},\\ \\alpha_3 = \\frac12$",
+    "significance": "key",
+    "relatedConcepts": ["Buffon's needle", "Buffon noodle", "concentration of measure", "expected crossings"],
+    "prerequisites": ["expectation on spheres", "recurrence relations"]
+  },
+  {
+    "id": "buffon-oq020201-ann-recurrence",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 47, "endLine": 78 },
+    "type": "definition",
+    "title": "The Crossing-Factor Recurrence and Positivity",
+    "content": "crossingFactor : ℕ → ℝ is defined by the two-step recurrence α_{n+4} = ((n+2)/(n+3))·α_{n+2} with bases α₀=α₁=1, α₂=2/π, α₃=1/2 — re-declared verbatim from the companion. The simp lemmas crossingFactor_two/three/succ_succ expose the base values and the recurrence. crossingFactor_pos proves 0 < αₙ for all n ≥ 2 by strong induction: the base cases use positivity/norm_num, and each recurrence step multiplies a positive value by a positive ratio (m+2)/(m+3).",
+    "mathContext": "$\\alpha_{n+4} = \\frac{n+2}{n+3}\\alpha_{n+2}$; positivity by strong induction on the two-step recurrence",
+    "significance": "supporting",
+    "relatedConcepts": ["two-step recurrence", "strong induction", "positivity", "noncomputable definition"],
+    "prerequisites": ["Nat.strong_induction_on", "positivity tactic"]
+  },
+  {
+    "id": "buffon-oq020201-ann-monotone",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "theorem",
+    "title": "Strict Two-Step Monotonicity",
+    "content": "crossingFactor_two_step_lt proves α_{n+2} < αₙ for n ≥ 2: the recurrence multiplies the positive αₙ by the ratio n/(n+1) < 1, strictly shrinking it (closed by nlinarith using positivity and the ratio bound). The two-step (rather than one-step) form reflects the even/odd interleaving of the recurrence — the even and odd subsequences each descend independently. crossingFactor_three_lt_two makes the first cross-parity comparison concrete: α₃ = 1/2 < 2/π = α₂ (since π < 4), seeding the interleaving.",
+    "mathContext": "$\\alpha_{n+2} = \\frac{n}{n+1}\\alpha_n < \\alpha_n$ since $\\frac{n}{n+1} < 1$; $\\alpha_3 = \\tfrac12 < \\tfrac2\\pi$ as $\\pi < 4$",
+    "significance": "key",
+    "relatedConcepts": ["monotone subsequences", "even/odd interleaving", "nlinarith", "pi bounds"],
+    "prerequisites": ["the recurrence", "positivity"]
+  },
+  {
+    "id": "buffon-oq020201-ann-max",
+    "proofId": "buffons-needle-oq-02-oq-02-oq-01",
+    "range": { "startLine": 99, "endLine": 151 },
+    "type": "insight",
+    "title": "The Maximum is 2/π, Hence αₙ < 1 in Every Dimension",
+    "content": "crossingFactor_le_two_div_pi proves αₙ ≤ 2/π for all n ≥ 2 by strong induction: both base values satisfy it (α₂ = 2/π; α₃ = 1/2 ≤ 2/π since π ≤ 4) and each recurrence step shrinks by a ratio ≤ 1. So the classical planar Buffon value α₂ = 2/π is the global maximum across all dimensions. crossingFactor_lt_one then concludes αₙ < 1 for every n ≥ 2 because 2/π < 1 (as 2 < π) — the expected number of hyperplane crossings per unit L/d never reaches one in any dimension, reflecting that a random direction's first coordinate concentrates near 0 as dimension grows (αₙ → 0).",
+    "mathContext": "$\\alpha_n \\le \\tfrac2\\pi$ for $n\\ge 2$, maximized at $n=2$; $\\tfrac2\\pi < 1 \\Rightarrow \\alpha_n < 1$",
+    "significance": "key",
+    "relatedConcepts": ["global maximum", "concentration of measure", "π inequalities", "dimension asymptotics"],
+    "prerequisites": ["the two-step monotonicity", "Real.pi bounds"]
+  }
+]

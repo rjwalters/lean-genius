@@ -9,30 +9,32 @@ import Proofs.QuadraticReciprocityAlgorithmOQ03
 
 ## Status
 
-**BUILD-PENDING — BEARERS AUDITED (S21, researcher-5, 2026-06-16).** Authored under the
-Docker + Aristotle blackout (`docker info` times out; Aristotle MCP `prove` returns
-`"Resource not found"`), so still no machine verification. **However, every named bearer
-below was re-confirmed present at the repo pin (mathlib `2df2f01` / v4.26.0) with matching
-signature and correct hypothesis direction (S21 offline audit against a full mathlib4
-checkout at the exact pin):**
+**VERIFIED (machine-checked, 2026-06-25, researcher-1).** Compiled single-file with the host
+toolchain off cached Mathlib oleans (`lake env lean`, Lean v4.26.0 / mathlib `2df2f01`) —
+Docker still down, but this file imports only Mathlib + the verified parent and needs no
+Docker. `#print axioms` on `legendreSym_eq_sign_mulLeft₀` reports
+`[propext, Classical.choice, Quot.sound]` only: **0 sorries, 0 axioms, no
+`native_decide`/`sorryAx`.**
+
+The one repair beyond the S18/S21 blind transcription was at the two `subtypePerm` call
+sites: higher-order unification could not infer the subtype predicate `p` from the
+bidirectional hypothesis `h₁` alone (the elaborator left it a metavariable `?m` and the
+whole term silently collapsed to `sorryAx`). Fixed by supplying the predicate explicitly,
+`subtypePerm (p := fun x : ZMod p => x ≠ 0) h₁`. The `rfl`/defeq points #1 and #3 below held
+as written. Now registered in `Proofs.lean`. Rebuild under Docker with:
+
+  `./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge`
+
+Bearers re-confirmed at the pin (S21 offline audit; all now exercised by the compile):
 
   - `sign_subtypePerm (f) (h₁ : ∀ x, p (f x) ↔ p x) (h₂ : ∀ x, f x ≠ x → p x)` — `Sign.lean:453` ✓
   - `sign_eq_sign_of_equiv (f) (g) (e) (h : ∀ x, e (f x) = g (e x))` — `Sign.lean:467` ✓
-  - `subtypePerm (f) (h : ∀ x, p (f x) ↔ p x)` — `Algebra/Group/End.lean:373`; the `h₁` here
-    (`∀ x, mulLeft₀ a ha x ≠ 0 ↔ x ≠ 0`) is exactly `∀ x, p (f x) ↔ p x` with `p = (· ≠ 0)` ✓
-  - `unitsEquivNeZero : G₀ˣ ≃ {a // a ≠ 0}`, `@[simps]`, `a ↦ ⟨↑a, a.ne_zero⟩` (so `.val = ↑a`
-    by rfl) — `GroupWithZero/Units/Equiv.lean:27` ✓
-  - `Equiv.mulLeft₀ a ha := (Units.mk0 a ha).mulLeft`, `@[simps! -fullyApplied]` (generates the
-    apply lemma for the `happ` fallback) — same file `:33` ✓
-  - `Units.val_mk0 : (mk0 a h : G₀) = a` (rfl-level) — `GroupWithZero/Units/Basic.lean:173` ✓
-  - parent headline `legendreSym_eq_sign_mulLeft (hp : 2 < p) (u : (ZMod p)ˣ)` — call site exact ✓
-
-The only residuals are the three documented `rfl`/defeq repair points below; each is low-risk
-(`mulLeft₀`/`unitsEquivNeZero` reduce definitionally, and each has a documented `simp` fallback).
-This file is **UNREGISTERED** — intentionally absent from `Proofs.lean`, so it cannot affect the
-gallery auto-merge build until a Docker session verifies and registers it. Build with:
-
-  `./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge`
+  - `subtypePerm (f) (h : ∀ x, p (f x) ↔ p x)` — `Algebra/Group/End.lean:373` (predicate `p`
+    must be supplied explicitly — see above) ✓
+  - `unitsEquivNeZero : G₀ˣ ≃ {a // a ≠ 0}`, `@[simps]`, `a ↦ ⟨↑a, a.ne_zero⟩` ✓
+  - `Equiv.mulLeft₀ a ha := (Units.mk0 a ha).mulLeft` ✓
+  - `Units.val_mk0 : (mk0 a h : G₀) = a` (rfl-level) ✓
+  - parent headline `legendreSym_eq_sign_mulLeft (hp : 2 < p) (u : (ZMod p)ˣ)` ✓
 
 ## What this adds
 
@@ -68,15 +70,15 @@ all for every odd prime `3 ≤ p < 80` and every nonzero `a` (768 (p,a) pairs, a
   — same file `:33` (note: `mulLeft₀ a ha x = a * x` is the relevant unfolding).
 - verified `QuadraticReciprocityAlgorithmOQ03.legendreSym_eq_sign_mulLeft`.
 
-## Repair points for the Docker session (most-likely build adjustments)
+## Build history (resolved at verification)
 
-1. `happ : Equiv.mulLeft₀ a ha x = a * x` is asserted `rfl`. If `rfl` fails, replace with
-   `by simp [Equiv.mulLeft₀]` or the `@[simps]`-generated `Equiv.mulLeft₀_apply`.
-2. `(unitsEquivNeZero z).val = ↑z` and `(↑(Units.mk0 a ha) : ZMod p) = a` are used at `rfl`/
-   `Units.val_mk0` level; if the `Subtype.ext` step does not close, add
-   `simp [unitsEquivNeZero, Equiv.subtypePerm_apply, Units.val_mul, Units.val_mk0]`.
-3. The `sign_subtypePerm` `h₂` (moved point ⇒ nonzero) discharge may need `Equiv.mulLeft₀`
-   unfolded before `simp`/`omega`.
+The actual repair (2026-06-25) was none of the three anticipated `rfl`/defeq points — those
+held as written. The single blocker was predicate inference at the two `subtypePerm` call
+sites (`p` left as a metavariable ⇒ silent `sorryAx`), fixed by `(p := fun x : ZMod p => x ≠ 0)`.
+Anticipated points (all confirmed already correct):
+1. `happ : Equiv.mulLeft₀ a ha x = a * x` — `rfl` held.
+2. `Subtype.ext` value equality via `Units.val_mk0` — held.
+3. `sign_subtypePerm` `h₂` (moved point ⇒ nonzero) discharge — held.
 -/
 
 namespace QuadraticReciprocityAlgorithmOQ03
@@ -89,7 +91,7 @@ and `a : ZMod p` with `a ≠ 0`, the Legendre symbol equals the sign of left-mul
 `legendreSym p a.val = sign (Equiv.mulLeft₀ a ha)`.
 
 Derived from the verified units-form headline `legendreSym_eq_sign_mulLeft` via the
-fixed-point sign bridge. **BUILD-PENDING / UNVERIFIED** (authored under blackout, S18). -/
+fixed-point sign bridge. **VERIFIED** (`lake env lean`, 2026-06-25; 0 sorry / 0 axiom). -/
 theorem legendreSym_eq_sign_mulLeft₀ {p : ℕ} [Fact p.Prime] (hp : 2 < p)
     {a : ZMod p} (ha : a ≠ 0) :
     legendreSym p ((a).val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft₀ a ha) : ℤ) := by
@@ -104,7 +106,7 @@ theorem legendreSym_eq_sign_mulLeft₀ {p : ℕ} [Fact p.Prime] (hp : 2 < p)
     rw [happ, mul_ne_zero_iff]
     exact ⟨fun h => h.2, fun h => ⟨ha, h⟩⟩
   -- STEP 1: dropping the fixed point `0` preserves the sign
-  have hstep1 : Equiv.Perm.sign ((Equiv.mulLeft₀ a ha).subtypePerm h₁)
+  have hstep1 : Equiv.Perm.sign ((Equiv.mulLeft₀ a ha).subtypePerm (p := fun x : ZMod p => x ≠ 0) h₁)
         = Equiv.Perm.sign (Equiv.mulLeft₀ a ha) := by
     apply Equiv.Perm.sign_subtypePerm
     intro x hx
@@ -114,7 +116,7 @@ theorem legendreSym_eq_sign_mulLeft₀ {p : ℕ} [Fact p.Prime] (hp : 2 < p)
     rw [hx0, happ, mul_zero]
   -- STEP 2: the restriction is intertwined with `mulLeft u` by `unitsEquivNeZero`
   have hstep2 : Equiv.Perm.sign (Equiv.mulLeft u)
-        = Equiv.Perm.sign ((Equiv.mulLeft₀ a ha).subtypePerm h₁) := by
+        = Equiv.Perm.sign ((Equiv.mulLeft₀ a ha).subtypePerm (p := fun x : ZMod p => x ≠ 0) h₁) := by
     apply Equiv.Perm.sign_eq_sign_of_equiv _ _ (unitsEquivNeZero (G₀ := ZMod p))
     intro y
     apply Subtype.ext
