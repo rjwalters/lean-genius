@@ -65,7 +65,50 @@
       "Filter.Tendsto and basic order limit lemmas"
     ]
   },
-  "sections": null,
+  "sections": [
+    {
+      "id": "framing",
+      "title": "From bounded defect to convergence",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring recalling the parent integral-test result: the antitone comparison on f(x) = 1/x bounded the harmonic defect aₙ = Hₙ − log(n+1) in [0,1] but stopped short of a limit. Since the defect is also monotone increasing, a bounded-monotone argument forces convergence; the limit is the Euler–Mascheroni constant γ. Sets up the bridge to Mathlib's Real.eulerMascheroniConstant."
+    },
+    {
+      "id": "convergence",
+      "title": "Convergence of the defect (both forms)",
+      "startLine": 42,
+      "endLine": 56,
+      "summary": "tendsto_harmonic_sub_log_add_one states the parent's exact sequence Hₙ − log(n+1) → γ, directly answering the parent's open question. tendsto_harmonic_sub_log gives the textbook form Hₙ − log n → γ, i.e. the asymptotic Hₙ ∼ log n + γ; the two limits agree because log(n+1) − log n → 0."
+    },
+    {
+      "id": "bracketing",
+      "title": "Two-sided bracketing of γ",
+      "startLine": 58,
+      "endLine": 78,
+      "summary": "harmonic_sub_log_add_one_lt_gamma (lower) and gamma_lt_harmonic_sub_log (upper) trap γ between the increasing and decreasing parent-style sequences: Hₙ − log(n+1) < γ < Hₙ − log n for n ≥ 1. gamma_mem_Ioo packages them as the nested enclosure γ ∈ (Hₙ − log(n+1), Hₙ − log n). Proofs unfold eulerMascheroniSeq / eulerMascheroniSeq' inside Mathlib's strict bound lemmas."
+    },
+    {
+      "id": "width",
+      "title": "Bracket width tends to 0",
+      "startLine": 80,
+      "endLine": 95,
+      "summary": "bracket_width is the ring identity that the gap between upper and lower brackets equals log(n+1) − log n. tendsto_bracket_width shows it → 0 by subtracting the two convergent bracket sequences (both → γ) and rewriting γ − γ = 0 with sub_self, matching pointwise by ring. The nested intervals therefore shrink to the single point γ."
+    },
+    {
+      "id": "numeric",
+      "title": "Numeric bounds 1/2 < γ < 2/3",
+      "startLine": 97,
+      "endLine": 108,
+      "summary": "gamma_pos and gamma_lt_one record 0 < γ < 1, sharpened by gamma_mem_Ioo_half_twoThirds to Mathlib's estimate 1/2 < γ < 2/3 (true value γ ≈ 0.5772). These chain one_half_lt_eulerMascheroniConstant and eulerMascheroniConstant_lt_two_thirds through norm_num."
+    },
+    {
+      "id": "enclosure-six",
+      "title": "Concrete rational enclosure at n = 6",
+      "startLine": 110,
+      "endLine": 124,
+      "summary": "harmonic_six computes H₆ = 49/20 by norm_num on the harmonic sum, and gamma_enclosure_six substitutes it into the n = 6 brackets to give the explicit closed-form enclosure 49/20 − log 7 < γ < 49/20 − log 6 — a fully verified two-sided estimate."
+    }
+  ],
   "conclusion": {
     "summary": "The parent's bounded harmonic defect Hₙ − log(n+1) is shown to converge to the Euler–Mascheroni constant γ, in both the parent's form and the textbook form Hₙ − log n → γ (so Hₙ ∼ log n + γ). The two parent-style sequences bracket γ from below and above with width log(n+1) − log n → 0, giving a nested enclosure; γ satisfies 0 < γ < 1, sharpened to 1/2 < γ < 2/3, with the concrete bracket 49/20 − log 7 < γ < 49/20 − log 6 at n = 6. 12 theorems, 0 definitions, 124 lines, 0 sorries, 0 axioms.",
     "implications": "Completes the integral-test story for the harmonic series: the parent proved the defect bounded, this entry proves it convergent and names the limit, turning the integral comparison into the asymptotic Hₙ = log n + γ + o(1). The bracketing scheme is a constructive enclosure of γ to arbitrary precision.",
@@ -75,6 +118,17 @@
     ]
   },
   "references": null,
-  "crossReferences": null,
+  "crossReferences": [
+    {
+      "proofId": "antitone-integral-sum-comparison-oq-01",
+      "relationship": "Parent entry",
+      "description": "The Integral Test: runs the antitone sum–integral comparison on f(x) = 1/x and bounds the harmonic defect Hₙ − log(n+1) in [0,1] (harmonic_sub_log_nonneg, harmonic_succ_sub_log_le_one). This entry answers its open question by upgrading boundedness to convergence and naming the limit γ."
+    },
+    {
+      "proofId": "antitone-integral-sum-comparison-oq-01-oq-01",
+      "relationship": "Sibling extension",
+      "description": "The Monotone Integral Test: applies the same comparison machinery to derive Stirling bounds for log n! and the p-series convergence criterion — a parallel consequence of the integral test from the shared parent."
+    }
+  ],
   "sorries": null
 }
