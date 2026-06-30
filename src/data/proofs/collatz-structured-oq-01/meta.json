@@ -2,7 +2,7 @@
   "id": "collatz-structured-oq-01",
   "title": "Collatz Conjecture: Reduction to Odd Inputs",
   "slug": "collatz-structured-oq-01",
-  "description": "Proves, axiom-free, the structural reduction of the Collatz conjecture to odd numbers: every n ≥ 1 reaches 1 iff every odd n ≥ 1 does. Built on one-step invariance of the reaching set (ReachesOne (collatz n) ↔ ReachesOne n) and doubling invariance (ReachesOne (2^m·n) ↔ ReachesOne n). The conjecture itself remains open; this organizes the search space.",
+  "description": "Proves, axiom-free, the structural reduction of the Collatz conjecture to odd numbers: every n ≥ 1 reaches 1 iff every odd n ≥ 1 does. Built on one-step invariance of the reaching set (ReachesOne (collatz n) ↔ ReachesOne n) and doubling invariance (ReachesOne (2^m·n) ↔ ReachesOne n). Strengthened to the accelerated Syracuse map n ↦ (3n+1)/2^v₂(3n+1): for odd n the Syracuse and Collatz reaching predicates coincide (reachesOne_iff_syrReachesOne), so the conjecture is equivalent to its Syracuse form (collatz_iff_syracuse). The conjecture itself remains open; this organizes the search space.",
   "meta": {
     "status": "verified",
     "proofRepoPath": "Proofs/CollatzStructuredOQ01.lean",
@@ -21,10 +21,10 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 183,
-    "theoremCount": 11,
-    "definitionCount": 1,
-    "assumptions": "None. 0 axioms, 0 sorries. The file imports Proofs.CollatzStructured (which declares the conjecture as an axiom) but no theorem here uses that axiom — every result is proved from the sInf-free dynamical definitions and Mathlib's 2-adic factorization API (ordCompl/ordProj). #print axioms collatz_reduces_to_odd reports only propext / Classical.choice / Quot.sound. The Collatz conjecture itself is NOT proved; the reduction is an equivalence between two open statements.",
+    "lineCount": 347,
+    "theoremCount": 22,
+    "definitionCount": 3,
+    "assumptions": "None. 0 axioms, 0 sorries. The file imports Proofs.CollatzStructured (which declares the conjecture as an axiom) but no theorem here uses that axiom — every result is proved from the sInf-free dynamical definitions and Mathlib's 2-adic factorization API (ordCompl/ordProj). #print axioms collatz_reduces_to_odd and #print axioms collatz_iff_syracuse both report only propext / Classical.choice / Quot.sound (no sorryAx, no custom axiom). The Collatz conjecture itself is NOT proved; the reduction is an equivalence between two open statements.",
     "dateAdded": "2026-06-26",
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Collatz_conjecture",
@@ -56,7 +56,11 @@
       "reachesOne_two_mul_iff / reachesOne_pow_two_mul_iff: doubling invariance as an equivalence (the parent file had only the forward closure direction)",
       "oddPart and its lemmas: oddPart n = ordCompl[2] n is odd and positive for n ≥ 1, with the factorization 2^v₂(n)·oddPart n = n",
       "collatz_reduces_to_odd: the headline equivalence — the Collatz conjecture for all n ≥ 1 holds iff it holds for all odd n ≥ 1",
-      "collatz_counterexample_odd: contrapositive — any Collatz counterexample implies an odd counterexample"
+      "collatz_counterexample_odd: contrapositive — any Collatz counterexample implies an odd counterexample",
+      "syracuse n = oddPart (3n+1): the accelerated odd map, always landing on an odd number (syracuse_odd)",
+      "collatz_iter_eq_syracuse: the accelerated step is realised by exactly v₂(3n+1)+1 ordinary Collatz steps (via collatz_iter_pow_two_mul_le, the power-of-two halving lemma)",
+      "reachesOne_iff_syrReachesOne: full equireachability — for odd n, the Syracuse reaching predicate SyrReachesOne coincides with the Collatz ReachesOne (forward = block of ordinary steps; converse = strong induction on the step count showing the trajectory cannot reach 1 before the accelerated step)",
+      "collatz_iff_syracuse: the headline — the Collatz conjecture is equivalent to 'every odd m ≥ 1 reaches 1 under the accelerated Syracuse map', refining the reduction from the slow map to the fast one"
     ]
   },
   "overview": {
@@ -109,6 +113,14 @@
       "startLine": 170,
       "endLine": 183,
       "mathContext": "The conjecture for all n ≥ 1 is equivalent to the conjecture for odd n ≥ 1; counterexamples may be taken odd."
+    },
+    {
+      "id": "syracuse",
+      "title": "The Syracuse (accelerated odd) map and full equivalence",
+      "summary": "syracuse n = oddPart (3n+1); collatz_iter_eq_syracuse realises it in v₂(3n+1)+1 steps; reachesOne_iff_syrReachesOne and collatz_iff_syracuse",
+      "startLine": 184,
+      "endLine": 338,
+      "mathContext": "The accelerated odd map does the 3n+1 step and strips all resulting powers of two at once. It is realised by finitely many ordinary Collatz steps, and for odd inputs its reaching predicate coincides exactly with the Collatz one (per-step, iterated, and full equivalence). Hence the Collatz conjecture is equivalent to its Syracuse form. The converse direction (Collatz-reaching ⟹ Syracuse-reaching) is proved by strong induction on the Collatz step count, using that the trajectory of an odd n > 1 cannot reach 1 before the accelerated step."
     }
   ],
   "conclusion": {
@@ -144,6 +156,18 @@
       "type": "core",
       "description": "Any Collatz counterexample implies an odd counterexample",
       "leanType": "(∃ n, n ≥ 1 ∧ ¬ ReachesOne n) → ∃ m, m ≥ 1 ∧ m % 2 = 1 ∧ ¬ ReachesOne m"
+    },
+    {
+      "name": "reachesOne_iff_syrReachesOne",
+      "type": "supporting",
+      "description": "For odd n, the Syracuse and Collatz reaching predicates coincide",
+      "leanType": "∀ {n}, n % 2 = 1 → (SyrReachesOne n ↔ ReachesOne n)"
+    },
+    {
+      "name": "collatz_iff_syracuse",
+      "type": "core",
+      "description": "The Collatz conjecture is equivalent to its accelerated Syracuse form: every n ≥ 1 reaches 1 iff every odd m ≥ 1 reaches 1 under n ↦ (3n+1)/2^v₂(3n+1)",
+      "leanType": "(∀ n, n ≥ 1 → ReachesOne n) ↔ (∀ m, m ≥ 1 → m % 2 = 1 → SyrReachesOne m)"
     }
   ],
   "crossReferences": [
@@ -181,10 +205,10 @@
     ],
     "opens": [],
     "namespace": "Collatz",
-    "lineCount": 183,
+    "lineCount": 347,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 1,
+    "theoremCount": 22,
+    "definitionCount": 3,
     "sorries": 0,
     "additionalFiles": [
       "Proofs/CollatzStructured.lean"

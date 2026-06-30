@@ -175,9 +175,173 @@ theorem collatz_counterexample_odd
   obtain ⟨n, hn, hnot⟩ := h
   exact hnot (collatz_reduces_to_odd.mpr (fun m hm hodd => hc m hm hodd) n hn)
 
+/-!
+## The Syracuse (accelerated odd) map
+
+The standard *accelerated* Collatz map acts on odd numbers by `n ↦ (3n+1)/2^v₂(3n+1)`,
+i.e. it does the `3n+1` step and then strips **all** the resulting powers of two in one
+move, landing on the next odd number in the trajectory. Concretely
+
+    `syracuse n = oddPart (3 n + 1)`.
+
+We show this map is realised by finitely many ordinary Collatz steps, that its reaching
+set is *exactly* the Collatz reaching set on odd inputs, and hence that the Collatz
+conjecture is **equivalent** to "every odd `m ≥ 1` reaches 1 under `syracuse`". This is
+the second item on the file's research agenda (equireachability for the accelerated map).
+-/
+
+/-- The Syracuse / accelerated odd map: `n ↦ (3n+1)` with all factors of two stripped. -/
+def syracuse (n : ℕ) : ℕ := oddPart (3 * n + 1)
+
+/-- The Syracuse map always lands on an odd number (`3n+1 ≥ 1`, so its odd part is odd). -/
+theorem syracuse_odd (n : ℕ) : syracuse n % 2 = 1 :=
+  oddPart_odd (by omega)
+
+/-- **Halving a pure power-of-two multiple.** Applying `collatz` `i ≤ v` times to
+    `2^v · q` strips `i` factors of two: `collatz^[i] (2^v · q) = 2^(v-i) · q`. -/
+theorem collatz_iter_pow_two_mul_le (q : ℕ) :
+    ∀ i v, i ≤ v → collatz^[i] (2 ^ v * q) = 2 ^ (v - i) * q := by
+  intro i
+  induction i with
+  | zero => intro v _; simp
+  | succ j ih =>
+    intro v hv
+    have hv1 : 1 ≤ v := by omega
+    rw [Function.iterate_succ_apply]
+    have hsplit : 2 ^ v * q = 2 * (2 ^ (v - 1) * q) := by
+      rw [← mul_assoc]
+      congr 1
+      rw [← pow_succ']
+      congr 1
+      omega
+    rw [hsplit, collatz_two_mul, ih (v - 1) (by omega)]
+    have hexp : v - 1 - j = v - (j + 1) := by omega
+    rw [hexp]
+
+/-- **Collatz realises Syracuse.** From an odd `n`, exactly `v₂(3n+1) + 1` ordinary
+    Collatz steps reach `syracuse n` (the `3n+1` step plus the halvings). -/
+theorem collatz_iter_eq_syracuse {n : ℕ} (hodd : n % 2 = 1) :
+    collatz^[(3 * n + 1).factorization 2 + 1] n = syracuse n := by
+  set v := (3 * n + 1).factorization 2 with hvdef
+  have hfac : 2 ^ v * syracuse n = 3 * n + 1 := by
+    rw [hvdef]; unfold syracuse; exact pow_factorization_mul_oddPart (3 * n + 1)
+  rw [Function.iterate_succ_apply, collatz_odd hodd, ← hfac,
+      collatz_iter_pow_two_mul_le _ v v (le_refl v)]
+  simp
+
+/-- **Per-step equireachability.** For odd `n`, `syracuse n` reaches 1 iff `n` does. -/
+theorem reachesOne_syracuse_iff {n : ℕ} (hodd : n % 2 = 1) :
+    ReachesOne (syracuse n) ↔ ReachesOne n := by
+  unfold syracuse
+  rw [reachesOne_oddPart_iff (n := 3 * n + 1) (by omega), ← collatz_odd hodd]
+  exact reachesOne_collatz_iff n
+
+/-- Iterating the Syracuse map preserves oddness. -/
+theorem syracuseIter_odd {n : ℕ} (hodd : n % 2 = 1) (k : ℕ) :
+    (syracuse^[k] n) % 2 = 1 := by
+  cases k with
+  | zero => simpa using hodd
+  | succ j => rw [Function.iterate_succ_apply']; exact syracuse_odd _
+
+/-- **Iterated equireachability.** For odd `n`, any Syracuse iterate `syracuse^[k] n`
+    reaches 1 iff `n` does. -/
+theorem reachesOne_syracuseIter_iff {n : ℕ} (hodd : n % 2 = 1) (k : ℕ) :
+    ReachesOne (syracuse^[k] n) ↔ ReachesOne n := by
+  induction k with
+  | zero => simp
+  | succ j ih =>
+    rw [Function.iterate_succ_apply', reachesOne_syracuse_iff (syracuseIter_odd hodd j), ih]
+
+/-!
+## The Syracuse reaching predicate and full equivalence
+
+`SyrReachesOne n` means some *Syracuse* iterate of `n` equals 1. For odd inputs this is
+**equivalent** to the ordinary Collatz reaching predicate `ReachesOne`.
+-/
+
+/-- `n` reaches 1 under the Syracuse map. -/
+def SyrReachesOne (n : ℕ) : Prop := ∃ k : ℕ, syracuse^[k] n = 1
+
+/-- **Forward direction.** If an odd `n` reaches 1 under Syracuse, it reaches 1 under
+    ordinary Collatz (each accelerated step is a block of ordinary steps). -/
+theorem reachesOne_of_syrReachesOne {n : ℕ} (hodd : n % 2 = 1)
+    (h : SyrReachesOne n) : ReachesOne n := by
+  obtain ⟨k, hk⟩ := h
+  have h1 : ReachesOne (syracuse^[k] n) := by rw [hk]; exact one_reaches_one
+  exact (reachesOne_syracuseIter_iff hodd k).mp h1
+
+/-- Auxiliary for the converse: strong induction on the Collatz step count. -/
+theorem syrReaches_aux : ∀ k n, n % 2 = 1 → collatz^[k] n = 1 → SyrReachesOne n := by
+  intro k
+  induction k using Nat.strong_induction_on with
+  | _ k ih =>
+    intro n hodd hk
+    by_cases hn1 : n = 1
+    · subst hn1; exact ⟨0, rfl⟩
+    · have hn_gt1 : n > 1 := by omega
+      set v := (3 * n + 1).factorization 2 with hvdef
+      have hfac : 2 ^ v * syracuse n = 3 * n + 1 := by
+        rw [hvdef]; unfold syracuse; exact pow_factorization_mul_oddPart (3 * n + 1)
+      -- `v + 1` Collatz steps realise one Syracuse step.
+      have hreal : collatz^[v + 1] n = syracuse n := by
+        rw [Function.iterate_succ_apply, collatz_odd hodd, ← hfac,
+            collatz_iter_pow_two_mul_le _ v v (le_refl v)]
+        simp
+      -- The trajectory cannot reach 1 before step `v + 1`, so `v + 1 ≤ k`.
+      have hsle : v + 1 ≤ k := by
+        rcases Nat.lt_or_ge k (v + 1) with hlt | hge
+        · exfalso
+          rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+          · subst hk0; simp only [Function.iterate_zero_apply] at hk; omega
+          · obtain ⟨i, rfl⟩ : ∃ i, k = i + 1 := ⟨k - 1, by omega⟩
+            have hval : collatz^[i + 1] n = 2 ^ (v - i) * syracuse n := by
+              rw [Function.iterate_succ_apply, collatz_odd hodd, ← hfac,
+                  collatz_iter_pow_two_mul_le _ i v (by omega)]
+            rw [hval] at hk
+            have hdvd : 2 ∣ 2 ^ (v - i) * syracuse n :=
+              (dvd_pow_self 2 (by omega : v - i ≠ 0)).mul_right _
+            rw [hk] at hdvd
+            omega
+        · exact hge
+      -- Recurse on the smaller residual count for `syracuse n`.
+      have hk' : collatz^[k - (v + 1)] (syracuse n) = 1 := by
+        have hcomp : collatz^[k - (v + 1)] (collatz^[v + 1] n) = 1 := by
+          rw [← Function.iterate_add_apply, Nat.sub_add_cancel hsle]; exact hk
+        rwa [hreal] at hcomp
+      have hlt' : k - (v + 1) < k := by omega
+      obtain ⟨t, ht⟩ := ih _ hlt' _ (syracuse_odd n) hk'
+      exact ⟨t + 1, by rw [Function.iterate_succ_apply, ht]⟩
+
+/-- **Converse direction.** If an odd `n` reaches 1 under ordinary Collatz, it reaches 1
+    under the accelerated Syracuse map. -/
+theorem syrReachesOne_of_reachesOne {n : ℕ} (hodd : n % 2 = 1)
+    (h : ReachesOne n) : SyrReachesOne n := by
+  obtain ⟨k, hk⟩ := h
+  simp only [collatzIter] at hk
+  exact syrReaches_aux k n hodd hk
+
+/-- **Full equireachability (headline).** For odd `n`, the Syracuse and Collatz reaching
+    predicates coincide. -/
+theorem reachesOne_iff_syrReachesOne {n : ℕ} (hodd : n % 2 = 1) :
+    SyrReachesOne n ↔ ReachesOne n :=
+  ⟨reachesOne_of_syrReachesOne hodd, syrReachesOne_of_reachesOne hodd⟩
+
+/-- **The Collatz conjecture is equivalent to its Syracuse form.** Every positive integer
+    reaches 1 under Collatz iff every odd positive integer reaches 1 under the accelerated
+    Syracuse map. This refines `collatz_reduces_to_odd` from the slow map to the fast one. -/
+theorem collatz_iff_syracuse :
+    (∀ n, n ≥ 1 → ReachesOne n) ↔ (∀ m, m ≥ 1 → m % 2 = 1 → SyrReachesOne m) := by
+  rw [collatz_reduces_to_odd]
+  constructor
+  · intro H m hm hodd; exact (reachesOne_iff_syrReachesOne hodd).mpr (H m hm hodd)
+  · intro H m hm hodd; exact (reachesOne_iff_syrReachesOne hodd).mp (H m hm hodd)
+
 #check @collatz_reduces_to_odd
 #check @reachesOne_collatz_iff
+#check @collatz_iff_syracuse
+#check @reachesOne_iff_syrReachesOne
 #print axioms collatz_reduces_to_odd
 #print axioms reachesOne_pow_two_mul_iff
+#print axioms collatz_iff_syracuse
 
 end Collatz
